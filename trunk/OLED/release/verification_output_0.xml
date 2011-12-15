@@ -1,0 +1,56 @@
+<alloy builddate="2009/03/19 02:02 EDT">
+
+<instance bitwidth="4" maxseq="5" command="Run run$1 for 5" filename="">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Quantity1" ID="4" parentID="2">
+   <atom label="Quantity1$0"/>
+</sig>
+
+<sig label="this/State" ID="5" parentID="2">
+   <atom label="State$0"/>
+   <atom label="State$1"/>
+   <atom label="State$2"/>
+   <atom label="State$3"/>
+   <atom label="State$4"/>
+</sig>
+
+<field label="exists" ID="6" parentID="5">
+   <tuple> <atom label="State$0"/> <atom label="Quantity1$0"/> </tuple>
+   <tuple> <atom label="State$1"/> <atom label="Quantity1$0"/> </tuple>
+   <tuple> <atom label="State$2"/> <atom label="Quantity1$0"/> </tuple>
+   <tuple> <atom label="State$3"/> <atom label="Quantity1$0"/> </tuple>
+   <types> <type ID="5"/> <type ID="4"/> </types>
+</field>
+
+<sig label="ordering/Ord" ID="7" parentID="2" one="yes" private="yes">
+   <atom label="ordering/Ord$0"/>
+</sig>
+
+<field label="First" ID="8" parentID="7" private="yes">
+   <tuple> <atom label="ordering/Ord$0"/> <atom label="State$0"/> </tuple>
+   <types> <type ID="7"/> <type ID="5"/> </types>
+</field>
+
+<field label="Next" ID="9" parentID="7" private="yes">
+   <tuple> <atom label="ordering/Ord$0"/> <atom label="State$0"/> <atom label="State$1"/> </tuple>
+   <tuple> <atom label="ordering/Ord$0"/> <atom label="State$1"/> <atom label="State$2"/> </tuple>
+   <tuple> <atom label="ordering/Ord$0"/> <atom label="State$2"/> <atom label="State$3"/> </tuple>
+   <tuple> <atom label="ordering/Ord$0"/> <atom label="State$3"/> <atom label="State$4"/> </tuple>
+   <types> <type ID="7"/> <type ID="5"/> <type ID="5"/> </types>
+</field>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+</instance>
+
+</alloy>
