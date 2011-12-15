@@ -1,30 +1,16 @@
 package br.inf.ufes.nemo.transformation.ontouml2alloy.v3;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import RefOntoUML.Model;
-import RefOntoUML.PackageableElement;
 import RefOntoUML.impl.ModelImpl;
-import br.inf.ufes.nemo.transformation.Rule;
-import br.inf.ufes.nemo.transformation.SimpleTransformerImpl;
-import br.inf.ufes.nemo.transformation.Transformer;
 import br.inf.ufes.nemo.transformation.ontouml2alloy.AlloyProcessor;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v3.base.AlloyBaseElement;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v3.rules.SubstanceSortal2Signature;
-import edu.mit.csail.sdg.alloy4compiler.ast.Expr;
-import edu.mit.csail.sdg.alloy4compiler.ast.Sig.PrimSig;
 
 
 public class Processor implements AlloyProcessor {
 
 	Model allObjects;
-	Transformer transformer;	
-	Map<PackageableElement, AlloyBaseElement> elementMap = new HashMap<PackageableElement, AlloyBaseElement>();
+	//Transformer transformer;	
+	//Map<PackageableElement, AlloyBaseElement> elementMap = new HashMap<PackageableElement, AlloyBaseElement>();
 
-	@SuppressWarnings("rawtypes")
 	public String process(Model model) {
 		
 		allObjects = model;		
@@ -45,7 +31,7 @@ public class Processor implements AlloyProcessor {
 			if(allObjects instanceof ModelImpl)
 			{
 				
-				List<Class<? extends Rule>> ruleTypes = new ArrayList<Class<? extends Rule>>();
+				/*List<Class<? extends Rule>> ruleTypes = new ArrayList<Class<? extends Rule>>();
 		       
 				ruleTypes.add(SubstanceSortal2Signature.class);
 				
@@ -65,7 +51,7 @@ public class Processor implements AlloyProcessor {
 					} catch (Exception ex) {
 						
 					}
-				}
+				}*/
 			}
 			
 		} catch (Exception e) {

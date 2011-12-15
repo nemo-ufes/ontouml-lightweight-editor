@@ -8,7 +8,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.SubKind;
 import RefOntoUML.impl.MomentClassImpl;
 import RefOntoUML.impl.RigidSortalClassImpl;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.util.invalidSubKindException;
+import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.util.invalidSubKindException;
 
 public class AlloySubkind extends AlloySigClass
 {
