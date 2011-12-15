@@ -43,8 +43,6 @@ import RefOntoUML.impl.RoleImpl;
 import RefOntoUML.impl.SubKindImpl;
 import RefOntoUML.impl.SubstanceSortalImpl;
 import br.inf.ufes.nemo.transformation.ontouml2alloy.AlloyProcessor;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.util.invalidModelException;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.util.invalidSubKindException;
 import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyDatatypeRelationship;
 import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyDependencyRelationship;
 import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyDirectedBinaryRelationship;
@@ -68,6 +66,8 @@ import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloySimpleD
 import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyStructuredDatatype;
 import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloySubkind;
 import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyUltimateIdentityProvider;
+import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.util.invalidModelException;
+import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.util.invalidSubKindException;
 
 //TODO: documentar!
 /*
