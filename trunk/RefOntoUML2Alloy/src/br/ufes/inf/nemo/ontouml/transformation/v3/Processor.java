@@ -1,4 +1,4 @@
-package br.inf.ufes.nemo.transformation.ontouml2alloy.v3;
+package br.ufes.inf.nemo.ontouml.transformation.v3;
 
 import RefOntoUML.Model;
 import RefOntoUML.impl.ModelImpl;

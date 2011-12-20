@@ -1,4 +1,4 @@
-package br.inf.ufes.nemo.transformation.ontouml2alloy.v2;
+package br.ufes.inf.nemo.ontouml.transformation.v2;
 
 import java.io.IOException;
 import java.io.StringWriter;
