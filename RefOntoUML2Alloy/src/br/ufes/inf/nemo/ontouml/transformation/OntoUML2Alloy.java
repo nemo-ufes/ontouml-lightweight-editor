@@ -1,4 +1,4 @@
-package br.inf.ufes.nemo.transformation.ontouml2alloy;
+package br.ufes.inf.nemo.ontouml.transformation;
 
 import java.io.File;
 import java.io.FileWriter;
