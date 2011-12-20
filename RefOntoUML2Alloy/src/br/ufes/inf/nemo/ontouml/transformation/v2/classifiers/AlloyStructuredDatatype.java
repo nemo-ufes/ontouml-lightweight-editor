@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import RefOntoUML.DataType;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyDatatypeRelationship;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloyDatatypeRelationship;
 
 public class AlloyStructuredDatatype extends AlloyDatatype
 {

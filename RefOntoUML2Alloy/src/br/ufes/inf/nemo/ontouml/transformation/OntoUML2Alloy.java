@@ -119,14 +119,14 @@ public class OntoUML2Alloy {
 		AlloyProcessor processor;
 		
 		if(type == TransformationType.V2){
-			//processor = new br.inf.ufes.nemo.transformation.ontouml2alloy.v2.Processor();
+			processor = new br.ufes.inf.nemo.ontouml.transformation.v2.Processor();
 			
 		}
 		else {
-			//processor = new br.inf.ufes.nemo.transformation.ontouml2alloy.v3.Processor();
+			processor = new br.ufes.inf.nemo.ontouml.transformation.v2.Processor();
 		}
 		
-		return null;//processor.process(model);
+		return processor.process(model);
 	}
 	
 	/**
@@ -144,14 +144,14 @@ public class OntoUML2Alloy {
 		AlloyProcessor processor;
 		
 		if(type == TransformationType.V2){
-			//processor = new br.inf.ufes.nemo.transformation.ontouml2alloy.v2.Processor();
+			processor = new br.ufes.inf.nemo.ontouml.transformation.v2.Processor();
 			
 		}
 		else {
-			//processor = new br.inf.ufes.nemo.transformation.ontouml2alloy.v3.Processor();
+			processor = new br.ufes.inf.nemo.ontouml.transformation.v3.Processor();
 		}
 		
-		alloy = null; //processor.process(model);
+		alloy = processor.process(model);
 		
 		try {
 			if(alloy != null && alloy.equals("") == false)

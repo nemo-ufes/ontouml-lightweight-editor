@@ -8,10 +8,10 @@ import java.util.Set;
 
 import RefOntoUML.Class;
 import RefOntoUML.impl.DirectedBinaryAssociationImpl;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyDatatypeRelationship;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyDirectedBinaryRelationship;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyGeneralizationSet;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloySigDatatypeRelationship;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloyDatatypeRelationship;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloyDirectedBinaryRelationship;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloyGeneralizationSet;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloySigDatatypeRelationship;
 
 
 //The sig classes are the Rigid Sortal Classes and the Moment Classes

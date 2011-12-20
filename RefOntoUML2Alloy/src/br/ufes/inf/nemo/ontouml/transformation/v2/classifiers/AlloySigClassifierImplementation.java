@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashSet;
 
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloySigDatatypeRelationship;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloySigDatatypeRelationship;
 
 
 public class AlloySigClassifierImplementation implements AlloySigClassifier 
@@ -18,6 +18,8 @@ public class AlloySigClassifierImplementation implements AlloySigClassifier
 		//owner = o;
 		readOnlyDatatypeRelationships = new HashSet<AlloySigDatatypeRelationship>();
 	}
+	
+	//AlloySigRelationship
 	public void addSigDatatypeRelationship(AlloySigDatatypeRelationship r) 
 	{
 		readOnlyDatatypeRelationships.add(r);

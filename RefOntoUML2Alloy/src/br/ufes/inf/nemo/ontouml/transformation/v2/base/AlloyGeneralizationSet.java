@@ -9,9 +9,9 @@ import org.eclipse.emf.common.util.EList;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyClassifier;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.util.invalidGeneralizationSetException;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.util.invalidModelException;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyClassifier;
+import br.ufes.inf.nemo.ontouml.transformation.v2.util.invalidGeneralizationSetException;
+import br.ufes.inf.nemo.ontouml.transformation.v2.util.invalidModelException;
 
 public class AlloyGeneralizationSet
 {

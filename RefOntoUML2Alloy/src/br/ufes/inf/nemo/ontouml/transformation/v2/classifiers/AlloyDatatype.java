@@ -5,7 +5,7 @@ import java.io.Writer;
 import java.util.HashSet;
 
 import RefOntoUML.DataType;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloySigDatatypeRelationship;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloySigDatatypeRelationship;
 
 public abstract class AlloyDatatype extends AlloyClassifier implements AlloyIsAnAtom, AlloySigClassifier
 {

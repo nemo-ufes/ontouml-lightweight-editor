@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.ontouml.transformation.v2.base;
 import java.io.IOException;
 import java.io.Writer;
 
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloySigClassifier;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloySigClassifier;
 
 public class AlloySigRelationshipImplementation extends AlloyStaticRelationshipImplementation implements AlloySigRelationship 
 {
