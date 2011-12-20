@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import RefOntoUML.DirectedBinaryAssociation;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyClassifier;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyClassifier;
 
 
 public abstract class AlloyDirectedBinaryRelationship extends AlloyRelationship

@@ -7,9 +7,9 @@ import java.util.Iterator;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.GeneralizationSet;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyClass;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyClassifier;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.util.invalidModelException;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyClass;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyClassifier;
+import br.ufes.inf.nemo.ontouml.transformation.v2.util.invalidModelException;
 
 public class AlloyPhaseGeneralizationSet extends AlloyGeneralizationSet
 {

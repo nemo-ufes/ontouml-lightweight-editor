@@ -1,10 +1,11 @@
 package br.ufes.inf.nemo.ontouml.transformation.v3;
 
+import br.ufes.inf.nemo.ontouml.transformation.AlloyProcessor;
 import RefOntoUML.Model;
 import RefOntoUML.impl.ModelImpl;
 
 
-public class Processor implements br.inf.ufes.nemo.transformation.ontouml2alloy.AlloyProcessor {
+public class Processor implements AlloyProcessor {
 
 	Model allObjects;
 	//Transformer transformer;	

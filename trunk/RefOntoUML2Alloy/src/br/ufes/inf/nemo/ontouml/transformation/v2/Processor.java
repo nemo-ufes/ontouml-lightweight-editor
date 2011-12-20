@@ -42,31 +42,32 @@ import RefOntoUML.impl.RigidSortalClassImpl;
 import RefOntoUML.impl.RoleImpl;
 import RefOntoUML.impl.SubKindImpl;
 import RefOntoUML.impl.SubstanceSortalImpl;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyDatatypeRelationship;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyDependencyRelationship;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyDirectedBinaryRelationship;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyGeneralizationSet;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyMeronymic;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyProperty;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloyRelationship;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.base.AlloySigDatatypeRelationship;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyAntiRigidSortalClass;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyCategory;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyClass;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyClassifier;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyDatatype;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyNonRigidClass;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyNonRigidMixinClass;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyPhase;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyRole;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloySigClass;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloySigClassifier;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloySimpleDatatype;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyStructuredDatatype;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloySubkind;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloyUltimateIdentityProvider;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.util.invalidModelException;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.util.invalidSubKindException;
+import br.ufes.inf.nemo.ontouml.transformation.AlloyProcessor;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloyDatatypeRelationship;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloyDependencyRelationship;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloyDirectedBinaryRelationship;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloyGeneralizationSet;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloyMeronymic;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloyProperty;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloyRelationship;
+import br.ufes.inf.nemo.ontouml.transformation.v2.base.AlloySigDatatypeRelationship;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyAntiRigidSortalClass;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyCategory;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyClass;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyClassifier;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyDatatype;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyNonRigidClass;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyNonRigidMixinClass;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyPhase;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyRole;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloySigClass;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloySigClassifier;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloySimpleDatatype;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyStructuredDatatype;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloySubkind;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloyUltimateIdentityProvider;
+import br.ufes.inf.nemo.ontouml.transformation.v2.util.invalidModelException;
+import br.ufes.inf.nemo.ontouml.transformation.v2.util.invalidSubKindException;
 
 //TODO: documentar!
 /*
@@ -113,7 +114,7 @@ import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.util.invalidSubKindExcep
 *      
 */
 
-public class Processor implements br.inf.ufes.nemo.transformation.ontouml2alloy.AlloyProcessor {
+public class Processor implements AlloyProcessor {
 
 	// TODO Rename variables
 	// Mapeamentos

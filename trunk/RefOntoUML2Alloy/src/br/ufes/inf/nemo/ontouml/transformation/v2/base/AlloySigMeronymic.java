@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.Writer;
 
 import RefOntoUML.Meronymic;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloySigClass;
-import br.inf.ufes.nemo.transformation.ontouml2alloy.v2.classifiers.AlloySigClassifier;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloySigClass;
+import br.ufes.inf.nemo.ontouml.transformation.v2.classifiers.AlloySigClassifier;
 
 //SigMeronymics will only happen for Essential and Inseparable Meronymics
 public class AlloySigMeronymic extends AlloyStaticMeronymic implements AlloySigRelationship, AlloySigRelationshipParent
