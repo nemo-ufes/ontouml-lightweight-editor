@@ -56,6 +56,10 @@ implements Command {
 				node.getAbsoluteY1());
 	}
 
+	public Node getNode() {
+		return node;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

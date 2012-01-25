@@ -21,12 +21,14 @@ package br.ufes.inf.nemo.oled.ui.diagram.commands;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import javax.swing.undo.AbstractUndoableEdit;
+import java.util.ArrayList;
+import java.util.List;
 
-
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DoubleDimension;
 import br.ufes.inf.nemo.oled.draw.Node;
-import br.ufes.inf.nemo.oled.util.Command;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
 
 
 /**
@@ -35,11 +37,9 @@ import br.ufes.inf.nemo.oled.util.Command;
  * @author Wei-ju Wu, Antognoni Albuquerque
  * @version 1.1
  */
-public class ResizeElementCommand extends AbstractUndoableEdit
-implements Command {
+public class ResizeElementCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = -3090945928366890788L;
-	private DiagramEditorNotification notification;
 	private Node element;
 	private Point2D newpos = new Point2D.Double(), oldpos = new Point2D.Double();
 	private Dimension2D newsize = new DoubleDimension(), oldsize = new DoubleDimension();
@@ -52,7 +52,7 @@ implements Command {
 	 * @param aNewSize the new size
 	 */
 	public ResizeElementCommand(DiagramEditorNotification aNotification, Node anElement, Point2D aNewPos, Dimension2D aNewSize) {
-		notification = aNotification;
+		this.notification = aNotification;
 		element = anElement;
 		newpos.setLocation(aNewPos);
 		newsize.setSize(aNewSize);
@@ -66,7 +66,10 @@ implements Command {
 	public void run() {
 		element.setAbsolutePos(newpos.getX(), newpos.getY());
 		element.setSize(newsize.getWidth(), newsize.getHeight());
-		notification.notifyElementResized(element);
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(element);
+		notification.notifyChange(elements, ChangeType.ELEMENTS_RESIZED, redo ? NotificationType.REDO : NotificationType.DO);
 	}
 
 	/**
@@ -74,6 +77,7 @@ implements Command {
 	 */
 	@Override
 	public void redo() {
+		redo = true;
 		super.redo();
 		run();
 	}
@@ -86,6 +90,9 @@ implements Command {
 		super.undo();
 		element.setAbsolutePos(oldpos.getX(), oldpos.getY());
 		element.setSize(oldsize.getWidth(), oldsize.getHeight());
-		notification.notifyElementResized(element);
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(element);
+		notification.notifyChange(elements, ChangeType.ELEMENTS_RESIZED, NotificationType.UNDO);
 	}
 }

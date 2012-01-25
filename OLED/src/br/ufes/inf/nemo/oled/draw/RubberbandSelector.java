@@ -49,8 +49,8 @@ public class RubberbandSelector implements Selection {
   }
 
   /**
-   * Returns the selected elements.
-   * @return the selected elements
+   * Returns the selected allElements.
+   * @return the selected allElements
    */
   public List<DiagramElement> getSelectedElements() {
     return selectedElements;

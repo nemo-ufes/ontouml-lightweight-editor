@@ -19,36 +19,37 @@
  */
 package br.ufes.inf.nemo.oled.ui.diagram.commands;
 
-import javax.swing.undo.AbstractUndoableEdit;
+import java.util.ArrayList;
+import java.util.List;
 
-import br.ufes.inf.nemo.oled.util.Command;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.draw.MoveNodeOperation;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
 
 
 /**
- * This class represents the move of one or more diagram elements.
+ * This class represents the move of one or more diagram allElements.
  * Theoretically, this method simply executes the list of Commands and could
  * also execute anything else. The difference is that this method also
  * notifies the system about an element move.
  *
- * @author Wei-ju Wu
+ * @author Wei-ju Wu, Antognoni Albuquerque
  * @version 1.0
  */
-public class MoveElementCommand extends AbstractUndoableEdit
-implements Command {
+public class MoveElementCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = 2523534899493234371L;
-	private DiagramEditorNotification notification;
-	private Command[] moveOperations;
+	private MoveNodeOperation[] moveOperations;
 
 	/**
 	 * Constructor.
 	 * @param aNotification the notification
 	 * @param aMoveOperations the move operations
 	 */
-	public MoveElementCommand(DiagramEditorNotification aNotification,
-			final Command[] aMoveOperations) {
-		notification = aNotification;
-		moveOperations = new Command[aMoveOperations.length];
+	public MoveElementCommand(DiagramEditorNotification aNotification, final MoveNodeOperation[] aMoveOperations) {
+		this.notification = aNotification;
+		moveOperations = new MoveNodeOperation[aMoveOperations.length];
 		for (int i = 0; i < aMoveOperations.length; i++) {
 			moveOperations[i] = aMoveOperations[i];
 		}
@@ -58,10 +59,15 @@ implements Command {
 	 * {@inheritDoc}
 	 */
 	public void run() {
-		for (Command moveOperation : moveOperations) {
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		
+		for (MoveNodeOperation moveOperation : moveOperations) {
 			moveOperation.run();
+			elements.add(moveOperation.getNode());
 		}
-		notification.notifyElementsMoved();
+		
+		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
 	}
 
 	/**
@@ -69,11 +75,18 @@ implements Command {
 	 */
 	@Override
 	public void undo() {
+		
 		super.undo();
-		for (Command moveOperation : moveOperations) {
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		
+		for (MoveNodeOperation moveOperation : moveOperations) {
 			moveOperation.undo();
+			elements.add(moveOperation.getNode());
 		}
-		notification.notifyElementsMoved();
+		
+		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.UNDO);
+		
 	}
 
 	/**
@@ -81,10 +94,17 @@ implements Command {
 	 */
 	@Override
 	public void redo() {
+		redo = true;
+	
 		super.redo();
-		for (Command moveOperation : moveOperations) {
+	
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		
+		for (MoveNodeOperation moveOperation : moveOperations) {
 			moveOperation.redo();
+			elements.add(moveOperation.getNode());
 		}
-		notification.notifyElementsMoved();
+		
+		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.REDO);
 	}
 }

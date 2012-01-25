@@ -23,8 +23,6 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-import br.ufes.inf.nemo.oled.util.Command;
-
 
 /**
  * An abstract interface to define operations on a diagram. These are invoked
@@ -36,10 +34,10 @@ import br.ufes.inf.nemo.oled.util.Command;
 public interface DiagramOperations {
 
   /**
-   * Moves the specified elements using a list of Commands.
+   * Moves the specified allElements using a list of Commands.
    * @param moveOperations the move operations
    */
-  void moveElements(Command[] moveOperations);
+  void moveElements(MoveNodeOperation[] moveOperations);
 
   /**
    * Resizes the specified element and moves it in one step.

@@ -1,7 +1,7 @@
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
- * This file is part of OLED (OntoUML Lightweight Editor).
+ * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
  * licence terms.
  *
@@ -36,7 +36,7 @@ import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 
 /**
- * This class is a handler for line shaped elements.
+ * This class is a handler for line shaped allElements.
  *
  * @author Wei-ju Wu, Antognoni Albuquerque
  * @version 1.1
@@ -135,7 +135,7 @@ public class LineHandler implements EditorMode {
       UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlNode) target);
       connectMethod.generateAndSetPointsToConnection(conn, source, (UmlNode) target, anchor, tmpPos);
       
-      AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) source.getClassifier(), (Classifier) ((UmlNode)target).getClassifier(), editor.getProject());
+      AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) source.getClassifier(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject());
       editor.execute(command);
     }
     isDragging = false;

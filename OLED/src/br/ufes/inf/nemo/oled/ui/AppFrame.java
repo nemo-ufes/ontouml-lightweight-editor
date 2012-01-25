@@ -116,6 +116,10 @@ public class AppFrame extends JFrame implements AppCommandListener {
 					new MethodCall(DiagramManager.class.getMethod("newProject")));
 			selectorMap.put("OPEN_PROJECT",
 					new MethodCall(DiagramManager.class.getMethod("openProject")));
+			selectorMap.put("COMMUNITY",
+					new MethodCall(DiagramManager.class.getMethod("openCommunity")));
+			selectorMap.put("LEARN_ONTOUML",
+					new MethodCall(DiagramManager.class.getMethod("openLearnOntoUML")));
 			selectorMap.put("SAVE_PROJECT_AS",
 					new MethodCall(DiagramManager.class.getMethod("saveProjectAs")));
 			selectorMap.put("SAVE_PROJECT",
@@ -155,7 +159,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			else
 				methodcall.call(this);
 		} else { 
-			System.out.println("not handled: " + command);
+			//System.out.println("not handled: " + command);
 		}
 	}
 

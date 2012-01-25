@@ -25,7 +25,7 @@ import java.awt.geom.Point2D;
 import java.util.Collection;
 
 /**
- * This class implements basic functionality for rectangular elements.
+ * This class implements basic functionality for rectangular allElements.
  *
  * @author Wei-ju Wu
  * @version 1.0

@@ -41,8 +41,8 @@ import br.ufes.inf.nemo.oled.util.AppCommandListener;
 
 
 /**
- * This class handles selections of diagram elements, this includes all
- * non-line elements and multiple selections. It also handles displaying
+ * This class handles selections of diagram allElements, this includes all
+ * non-line allElements and multiple selections. It also handles displaying
  * the context menu.
  *
  * @author Wei-ju Wu
@@ -72,7 +72,7 @@ public class SelectionHandler implements EditorMode {
 	}
 
 	/**
-	 * Deselects all elements.
+	 * Deselects all allElements.
 	 */
 	public void deselectAll() { selection = NullSelection.getInstance(); }
 
@@ -121,7 +121,9 @@ public class SelectionHandler implements EditorMode {
 			if (element == NullElement.getInstance()) {
 				element = editor.getDiagram();
 			}
+			
 			selection = element.getSelection(editor);
+			
 		}
 		editor.redraw();
 		notifyListeners();
@@ -170,12 +172,12 @@ public class SelectionHandler implements EditorMode {
 		{
 			if (selection instanceof NodeSelection)
 			{
-				ArrayList<DiagramElement> elements = new ArrayList<DiagramElement>();
+				ArrayList<DiagramElement> allElements = new ArrayList<DiagramElement>();
 				DiagramElement selectedElement = selection.getElement();
-				elements.add(selectedElement);
+				allElements.add(selectedElement);
 				DiagramElement newSelectedElement = newSelection.getElement();
-				elements.add(newSelectedElement);
-				selection = new MultiSelection(editor, elements);
+				allElements.add(newSelectedElement);
+				selection = new MultiSelection(editor, allElements);
 				
 				//selection = selection;
 			}
@@ -267,12 +269,12 @@ public class SelectionHandler implements EditorMode {
 			{
 				if (selection instanceof NodeSelection)
 				{
-					ArrayList<DiagramElement> elements = new ArrayList<DiagramElement>();
+					ArrayList<DiagramElement> allElements = new ArrayList<DiagramElement>();
 					DiagramElement selectedElement = selection.getElement();
-					elements.add(selectedElement);
+					allElements.add(selectedElement);
 					DiagramElement newSelectedElement = newSelection.getElement();
-					elements.add(newSelectedElement);
-					selection = new MultiSelection(editor, elements);
+					allElements.add(newSelectedElement);
+					selection = new MultiSelection(editor, allElements);
 					
 					//selection = selection;
 				}
@@ -362,9 +364,11 @@ public class SelectionHandler implements EditorMode {
 	 * selection contains the removed element, that selection is removed.
 	 * @param element the removed element
 	 */
-	public void elementRemoved(DiagramElement element) {
-		if (selection.getElements().contains(element)) {
-			selection = NullSelection.getInstance();
+	public void elementRemoved(List<DiagramElement> elements) {
+		for (DiagramElement element : elements) {
+			if (selection.getElements().contains(element)) {
+				selection = NullSelection.getInstance();
+			}
 		}
 	}
 

@@ -58,7 +58,7 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 /**
  * Implementation of the DiagramElementFactory interface. A
  * DiagramElementFactory instance belongs to a particular UmlDiagram instance,
- * so it can automatically associate elements to the diagram they belong to.
+ * so it can automatically associate allElements to the diagram they belong to.
  *
  * @author Wei-ju Wu
  * @version 1.0

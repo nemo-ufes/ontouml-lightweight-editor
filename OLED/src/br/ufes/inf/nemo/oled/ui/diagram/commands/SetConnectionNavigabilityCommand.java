@@ -19,13 +19,16 @@
  */
 package br.ufes.inf.nemo.oled.ui.diagram.commands;
 
-import javax.swing.undo.AbstractUndoableEdit;
+import java.util.ArrayList;
+import java.util.List;
 
 import RefOntoUML.Association;
 import RefOntoUML.impl.AssociationImpl;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
-import br.ufes.inf.nemo.oled.util.Command;
 
 
 /**
@@ -34,11 +37,9 @@ import br.ufes.inf.nemo.oled.util.Command;
  * @author Wei-ju Wu
  * @version 1.0
  */
-public class SetConnectionNavigabilityCommand extends AbstractUndoableEdit
-implements Command {
+public class SetConnectionNavigabilityCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = -3010234913328981820L;
-	private DiagramEditorNotification notification;
 	private UmlConnection connection;
 	private RelationEndType endType;
 	private boolean oldflag, newflag;
@@ -50,10 +51,8 @@ implements Command {
 	 * @param theEndType the relation end type
 	 * @param flag the new value
 	 */
-	public SetConnectionNavigabilityCommand(DiagramEditorNotification
-			aNotification, UmlConnection aConnection, RelationEndType theEndType,
-			boolean flag) {
-		notification = aNotification;
+	public SetConnectionNavigabilityCommand(DiagramEditorNotification aNotification, UmlConnection aConnection, RelationEndType theEndType, boolean flag) {
+		this.notification = aNotification;
 		connection = aConnection;
 		endType = theEndType;
 		newflag = flag;
@@ -64,6 +63,7 @@ implements Command {
 	 */
 	@Override
 	public void redo() {
+		redo = true;
 		super.redo();
 		run();
 	}
@@ -75,7 +75,10 @@ implements Command {
 	public void undo() {
 		super.undo();
 		setNavigability(oldflag);
-		notification.notifyElementsMoved();
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(connection);
+		notification.notifyChange(elements, ChangeType.CONNECTION_NAVEGABILITY_SET, NotificationType.UNDO);
 	}
 
 	/**
@@ -84,7 +87,10 @@ implements Command {
 	public void run() {
 		oldflag = getNavigability();
 		setNavigability(newflag);
-		notification.notifyElementsMoved();
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(connection);
+		notification.notifyChange(elements, ChangeType.CONNECTION_NAVEGABILITY_SET, redo ? NotificationType.REDO : NotificationType.DO);
 	}
 
 	/**

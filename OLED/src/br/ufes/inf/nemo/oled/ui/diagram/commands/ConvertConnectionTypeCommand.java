@@ -19,12 +19,14 @@
  */
 package br.ufes.inf.nemo.oled.ui.diagram.commands;
 
-import javax.swing.undo.AbstractUndoableEdit;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import br.ufes.inf.nemo.oled.draw.Connection;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
-import br.ufes.inf.nemo.oled.util.Command;
 
 
 /**
@@ -33,13 +35,11 @@ import br.ufes.inf.nemo.oled.util.Command;
  * @author Wei-ju Wu
  * @version 1.0
  */
-public class ConvertConnectionTypeCommand extends AbstractUndoableEdit
-implements Command {
+public class ConvertConnectionTypeCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = -8661812094443443847L;
 	private UmlConnection connection;
 	private Connection newconnection;
-	private DiagramEditorNotification notification;
 	private Connection oldconnection;
 
 	/**
@@ -48,9 +48,8 @@ implements Command {
 	 * @param umlconn the UmlConnection wrapped object
 	 * @param theNewConnection the new connection to be wrapped
 	 */
-	public ConvertConnectionTypeCommand(DiagramEditorNotification aNotification,
-			UmlConnection umlconn, Connection theNewConnection) {
-		notification = aNotification;
+	public ConvertConnectionTypeCommand(DiagramEditorNotification aNotification, UmlConnection umlconn, Connection theNewConnection) {
+		this.notification = aNotification;
 		connection = umlconn;
 		newconnection = theNewConnection;
 	}
@@ -62,7 +61,10 @@ implements Command {
 		oldconnection = connection.getConnection();
 		newconnection.copyData(oldconnection);
 		connection.setConnection(newconnection);
-		notification.notifyElementsMoved();
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(connection);
+		notification.notifyChange(elements, ChangeType.CONNECTION_TYPE_CONVERTED, redo ? NotificationType.REDO : NotificationType.DO);
 	}
 
 	/**
@@ -72,7 +74,10 @@ implements Command {
 	public void undo() {
 		super.undo();
 		connection.setConnection(oldconnection);
-		notification.notifyElementsMoved();
+	
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(connection);
+		notification.notifyChange(elements, ChangeType.CONNECTION_TYPE_CONVERTED, NotificationType.UNDO);
 	}
 
 	/**
@@ -80,6 +85,7 @@ implements Command {
 	 */
 	@Override
 	public void redo() {
+		redo = true;
 		super.redo();
 		run();
 	}

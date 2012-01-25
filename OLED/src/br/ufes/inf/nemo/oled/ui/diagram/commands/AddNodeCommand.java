@@ -1,7 +1,7 @@
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
- * This file is part of OLED (OntoUML Lightweight Editor).
+ * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
  * licence terms.
  *
@@ -22,11 +22,17 @@
 
 package br.ufes.inf.nemo.oled.ui.diagram.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.emf.edit.command.AddCommand;
 
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
 
@@ -41,7 +47,6 @@ import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 public class AddNodeCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = -3148409380703192555L;
-	private DiagramEditorNotification notification;
 	private Node element;
 	private CompositeElement parent;
 	private double absx, absy;
@@ -54,14 +59,13 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 * @param x the absolute x position
 	 * @param y the absolute y position
 	 */
-	public AddNodeCommand(DiagramEditorNotification editorNotification,
-			CompositeElement parent, Node aNode, double x, double y, UmlProject aProject) {
+	public AddNodeCommand(DiagramEditorNotification editorNotification, CompositeElement parent, Node aNode, double x, double y, UmlProject project) {
 		this.parent = parent;
+		this.project = project;
+		this.notification = editorNotification;
 		element = aNode;
 		absx = x;
 		absy = y;
-		project = aProject;
-		notification = editorNotification;
 	}
 
 	/**
@@ -72,9 +76,11 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		super.undo();
 		
 		project.getEditingDomain().getCommandStack().undo();
-		
 		parent.removeChild(element);
-		notification.notifyElementRemoved(element);
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(element);
+		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);
 	}
 
 	/**
@@ -82,6 +88,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 */
 	@Override
 	public void redo() {
+		redo = true;
 		super.redo();
 		run();
 	}
@@ -104,6 +111,8 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		parent.addChild(element);
 		element.setAbsolutePos(absx, absy);
 		
-		notification.notifyElementAdded(element);
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(element);
+		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
 	}
 }

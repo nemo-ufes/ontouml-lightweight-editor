@@ -20,7 +20,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 /** 
  * Wrapper class for {@link DiagramEditor} responsible for providing toolbar and handling the model file.  
  */
-public class DiagramEditorWrapper extends JPanel {
+public class DiagramEditorWrapper extends JPanel implements Editor{
 
 	private static final long serialVersionUID = -1962960747434759099L;
 	private DiagramEditor editor;
@@ -28,7 +28,7 @@ public class DiagramEditorWrapper extends JPanel {
 	private JSplitPane editorArea  = new JSplitPane();
 	private File projectFile;
 	
-	public DiagramEditorWrapper(DiagramEditor editor, EditorCommandDispatcher editorDispatcher)
+	public DiagramEditorWrapper(DiagramEditor editor, DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		super(new BorderLayout());
 		this.editor = editor;
@@ -174,5 +174,15 @@ public class DiagramEditorWrapper extends JPanel {
         {
         	editorArea.setDividerLocation(0.83);
         }
+	}
+
+	@Override
+	public boolean isSaveNeeded() {
+		return editor.isSaveNeeded();
+	}
+
+	@Override
+	public EditorNature getEditorNature() {
+		return editor.getEditorNature();
 	}
 }

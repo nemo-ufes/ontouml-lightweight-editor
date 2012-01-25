@@ -24,7 +24,7 @@ import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 
 /**
- * A specialized interface that is used for Node elements that have an
+ * A specialized interface that is used for Node allElements that have an
  * associated UML model element.
  * @author Wei-ju Wu
  * @version 1.0

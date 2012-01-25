@@ -28,5 +28,4 @@ import br.ufes.inf.nemo.oled.model.UmlDiagram;
  * @version 1.0
  */
 public interface Diagram extends UmlDiagram, CompositeNode, Snapping {
-
 }

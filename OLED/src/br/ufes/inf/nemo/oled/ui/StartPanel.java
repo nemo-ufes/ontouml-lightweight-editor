@@ -1,7 +1,7 @@
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
- * This file is part of OLED (OntoUML Lightweight Editor).
+ * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
  * licence terms.
  *
@@ -50,7 +50,7 @@ import br.ufes.inf.nemo.oled.util.IconLoader.IconType;
 * @author Antognoni Albuquerque
 * @version 1.0
 */
-public class StartPanel extends JPanel {
+public class StartPanel extends JPanel implements Editor {
 
 	private static final long serialVersionUID = 2465192499054892865L;
 	private JPanel backgroundPanel;
@@ -272,6 +272,16 @@ public class StartPanel extends JPanel {
 			}
 		}
 
+	}
+
+	@Override
+	public boolean isSaveNeeded() {
+		return false;
+	}
+
+	@Override
+	public EditorNature getEditorNature() {
+		return EditorNature.READ_ONLY;
 	}
 
 }

@@ -1,7 +1,7 @@
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
- * This file is part of OLED (OntoUML Lightweight Editor).
+ * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
  * licence terms.
  *
@@ -25,6 +25,7 @@ package br.ufes.inf.nemo.oled.ui;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -36,8 +37,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.net.URI;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -64,13 +64,17 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorMouseEvent;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorStateListener;
 import br.ufes.inf.nemo.oled.ui.diagram.SelectionListener;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ColorPalette;
+import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
+import br.ufes.inf.nemo.oled.util.OLEDSettings;
+import br.ufes.inf.nemo.oled.util.OLEDSettings.Setting;
 import br.ufes.inf.nemo.oled.util.ValidationHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
-import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
+import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 
 /**
  * Class responsible for managing and organizing the {@link DiagramEditor}s in tabs.
@@ -79,10 +83,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 	private static final long serialVersionUID = 5019191384767258996L;
 	private final AppFrame frame;
-	private EditorCommandDispatcher editorDispatcher;
-	List<String> outputFiles;
-	
-	//private List<UmlProject> validatingModels = new ArrayList<UmlProject>(); 
+	private DiagramEditorCommandDispatcher editorDispatcher;
 
 	/**
 	 * Constructor for the DiagramManager class.
@@ -94,7 +95,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 		//setFocusable(false);
 		
-		editorDispatcher = new EditorCommandDispatcher(this);
+		editorDispatcher = new DiagramEditorCommandDispatcher(this);
 		//editingDomain = RefOntoUMLHelper.getAdapterEditingDomain();
 		
 		//When the user selects a tab show the model tree in the tool manager 
@@ -116,10 +117,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void newProject() {
 		//if (canCreateNewModel()) {
-		UmlProject model = new UmlProject();
-		StructureDiagram diagram = new StructureDiagram(model);
-		model.addDiagram(diagram);
-		diagram.setLabelText("New Diagram");
+		UmlProject project = new UmlProject();
+		StructureDiagram diagram = new StructureDiagram(project);
+		project.addDiagram(diagram);
+		diagram.setLabelText("New Diagram");		
+		project.setSaveModelNeeded(true);
+		diagram.setSaveNeeded(true);
 		createEditor(diagram);
 	}
 	
@@ -189,6 +192,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		} else {
 			saveProjectFile(getProjectFile());
 		}
+		
+		getCurrentEditor().getProject().setSaveModelNeeded(false);
+		getCurrentEditor().getDiagram().setSaveNeeded(false);
+		
+		updateUI();
 	}
 	
 	/**
@@ -320,7 +328,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	
 	/**
 	 * Imports an Ecore model.
-	 * */
+	 */
 	public void importEcore() {
 
 		JFileChooser fileChooser = new JFileChooser();
@@ -328,6 +336,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		FileNameExtensionFilter owlFilter = new FileNameExtensionFilter(
 				"Eclipse Ecore Model (*.ecore)", "ecore");
 		fileChooser.addChoosableFileFilter(owlFilter);
+		fileChooser.setFileFilter(owlFilter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 			if (fileChooser.getFileFilter() == owlFilter) {
@@ -346,7 +355,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/**
-	 * Creates an editor for a given UmlDiagram.
+	 * Creates an editor for a given Diagram.
 	 * @param diagram the diagram to be edited by the editor
 	 * */
 	public void createEditor(StructureDiagram diagram)
@@ -363,6 +372,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		diagram.addNameLabelChangeListener(new LabelChangeListener() {
 			/** {@inheritDoc} */
 			public void labelTextChanged(Label label) {
+				
+				//TODO Write a command for this
 				DiagramManager.this.setTitleAt(DiagramManager.this.indexOfComponent(comp),
 						label.getNameLabelText());
 
@@ -380,28 +391,42 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		this.add("Start", start);
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void stateChanged(DiagramEditor editor) {
-		frame.updateMenuAndToolbars(editor);
+	public void openCommunity()
+	{
+		openLinkWithBrowser("http://nemo.inf.ufes.br/");
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void elementAdded(DiagramEditor editor) {
-		frame.selectPaletteDefaultElement();
-		frame.updateMenuAndToolbars(editor);
+	
+	public void openLearnOntoUML()
+	{
+		openLinkWithBrowser("http://nemo.inf.ufes.br/");
 	}
+	
+	public void openLinkWithBrowser(String link)
+	{
+		Desktop desktop = Desktop.getDesktop();
 
+        if( !desktop.isSupported(Desktop.Action.BROWSE)){
+            System.err.println( "Desktop doesn't support the browse action (fatal)" );
+            return;
+        }
+
+        try {
+            URI uri = new URI(link);
+            desktop.browse(uri);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+	}
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void elementRemoved(DiagramEditor editor) {
+	public void stateChanged(DiagramEditor editor, ChangeType changeType) {
+		
+		if(changeType == ChangeType.ELEMENTS_ADDED)
+			frame.selectPaletteDefaultElement();
+		
 		frame.updateMenuAndToolbars(editor);
 	}
 
@@ -410,6 +435,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	@Override
 	public void selectionStateChanged() {
+		
 	}
 
 	/**
@@ -423,15 +449,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Sets the dispatcher for the editor events
 	 * @param editorDispatcher the dispatcher responsible for routing events 
 	 * */
-	public void setEditorDispatcher(EditorCommandDispatcher editorDispatcher) {
+	public void setEditorDispatcher(DiagramEditorCommandDispatcher editorDispatcher) {
 		this.editorDispatcher = editorDispatcher;
 	}
 
 	/**
 	 * Gets the dispatcher for the editor events
-	 * @return EditorCommandDispatcher the dispatcher responsible for routing events
+	 * @return DiagramEditorCommandDispatcher the dispatcher responsible for routing events
 	 * */
-	public EditorCommandDispatcher getEditorDispatcher() {
+	public DiagramEditorCommandDispatcher getEditorDispatcher() {
 		return editorDispatcher;
 	}
 
@@ -453,13 +479,25 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/**
 	 * Gets the project being edited 
 	 * @return {@link UmlProject} the project
-	 * */
+	 */
 	public UmlProject getCurrentProject() {
 		DiagramEditor editor = getCurrentEditor();
 		if(editor != null)
 			return editor.getProject();
 		return null;
 	}
+	
+	/**
+	 * Gets the wrapper for the selected DiagramEditor
+	 * @return {@link UmlProject} the project
+	 */
+	public DiagramEditorWrapper getCurrentWrapper()
+	{
+		if(this.getSelectedComponent() instanceof DiagramEditorWrapper)
+			return ((DiagramEditorWrapper) this.getSelectedComponent());
+		return null;
+	}
+	
 	
 	/**
 	 * Gets the file associated with the model.
@@ -500,31 +538,42 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/**
-	 * Verify the current model (the model behind the current DiagramEditor) satisfability using Alloy.
+	 * Verify the current model (the model behind the current DiagramEditor) using simulation with Alloy.
 	 */
 	public void verifyCurrentModel() {
-		UmlProject project = ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor().getProject();
-		outputFiles = new LinkedList<String>();
-		String verificationResult = VerificationHelper.verifyModel(project.getModel(), outputFiles);
-		((DiagramEditorWrapper) this.getSelectedComponent()).showOutputText(verificationResult, true);
+		
+		UmlProject project = getCurrentEditor().getProject();
+
+		A4Solution solution = VerificationHelper.verifyModel(project.getModel());
+		
+		if(solution != null)
+		{
+			this.add("Verification Output", new InstanceVisualizer(solution));
+		}
+		else
+		{
+			getCurrentWrapper().showOutputText("No instance found.", true); //TODO Localize this message
+		}	
 	}
 
 	public void verifyCurrentModelFile() {
-		outputFiles = new LinkedList<String>();
-		String verificationResult = VerificationHelper.verifyModelFromAlloyFile("Simulation.als", outputFiles);
-		((DiagramEditorWrapper) this.getSelectedComponent()).showOutputText(verificationResult, true);
+
+		String fileName = OLEDSettings.getInstance().getSetting(Setting.SIMULATION_DEFAULT_FILE);
+		A4Solution solution = VerificationHelper.verifyModelFromAlloyFile(fileName);
+		
+		if(solution != null)
+		{
+			this.add("Verification Output", new InstanceVisualizer(solution));
+		}
+		else
+		{
+			getCurrentWrapper().showOutputText("No instance found.", true); //TODO Localize this message
+		}	
 	}
 
 	
 	public void showOutputPane() {
 		((DiagramEditorWrapper) this.getSelectedComponent()).showOrHideOutput();
-	}
-	
-	public void viewOutput() {
-		if(outputFiles != null && outputFiles.size() > 0)
-			this.add("Verification Output", new InstanceVisualizer(outputFiles));
-		else
-			((DiagramEditorWrapper) this.getSelectedComponent()).showOutputText("There's no output to be shown", true);
 	}
 	
 	/**
@@ -540,7 +589,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		this.setSelectedIndex(this.getTabCount()-1);
 		return component;
 	}
-
+	
 	/**
 	 * Internal class used to create closable tabs
 	 */
@@ -568,8 +617,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				private static final long serialVersionUID = -5791363706451298026L;
 				public String getText() {
 					int i = pane.indexOfTabComponent(ClosableTab.this);
-					if (i != -1) {
-						return pane.getTitleAt(i);
+					if (i != -1) {													
+						return ((Editor) pane.getComponentAt(i)).isSaveNeeded() ? pane.getTitleAt(i) + "*" : pane.getTitleAt(i);
 					}
 					return null;
 				}

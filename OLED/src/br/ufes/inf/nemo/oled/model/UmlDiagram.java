@@ -1,7 +1,7 @@
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
- * This file is part of OLED (OntoUML Lightweight Editor).
+ * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
  * licence terms.
  *
@@ -30,4 +30,8 @@ import RefOntoUML.NamedElement;
  */
 public interface UmlDiagram extends NamedElement {
 
+	public UmlProject getProject();
+	
+	public void setSaveNeeded(boolean saveNeeded);
+	
 }

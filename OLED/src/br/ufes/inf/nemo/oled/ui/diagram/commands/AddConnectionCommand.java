@@ -1,7 +1,7 @@
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
- * This file is part of OLED (OntoUML Lightweight Editor).
+ * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
  * licence terms.
  *
@@ -22,6 +22,9 @@
 
 package br.ufes.inf.nemo.oled.ui.diagram.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 
@@ -36,9 +39,10 @@ import RefOntoUML.impl.GeneralizationImpl;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
-import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 
@@ -51,7 +55,6 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 public class AddConnectionCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = 2924451842640450250L;
-	private DiagramEditorNotification notification;
 	private DiagramElement element;
 	private CompositeElement parent;
 	private Classifier source;
@@ -65,14 +68,13 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 * @param aTarget 
 	 * @param aSource 
 	 */
-	public AddConnectionCommand(DiagramEditorNotification editorNotification,
-			StructureDiagram structureDiagram, UmlConnection conn, Classifier aSource, Classifier aTarget, UmlProject aProject) {
-		this.parent = structureDiagram;
+	public AddConnectionCommand(DiagramEditorNotification editorNotification, CompositeElement parent, UmlConnection conn, Classifier aSource, Classifier aTarget, UmlProject project) {
+		this.parent = parent;
+		this.project = project;
+		this.notification = editorNotification;
 		element = conn;
-		project = aProject;
 		source = aSource;
 		target = aTarget;
-		this.notification = editorNotification;
 	}
 
 	/**
@@ -97,7 +99,9 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		}
 				
 		parent.removeChild(element);
-		notification.notifyElementRemoved(element);
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(element);
+		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);
 	}
 
 	/**
@@ -105,6 +109,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 */
 	@Override
 	public void redo() {
+		redo = true;
 		super.redo();
 		run();
 	}
@@ -131,13 +136,19 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	    		Property node1Property = ModelHelper.getDefaultOwnedEnd(source);
 	    		Property node2Property = ModelHelper.getDefaultOwnedEnd(target);
 	    		
+	    		//TODO Change this. 
+	    		// Remove the if(association instanceof DirectedBinaryAssociationImpl...
+	    		// 
+	    		
 	    		association.getOwnedEnd().add(node1Property);
 	    		association.getOwnedEnd().add(node2Property);
 	    		
 	    		association.getMemberEnd().add(node1Property);
 	    		association.getMemberEnd().add(node2Property);
 	    		
-	    		if(association instanceof DirectedBinaryAssociationImpl == false && association instanceof FormalAssociationImpl == false && association instanceof MaterialAssociation == false)
+	    		if(association instanceof DirectedBinaryAssociationImpl == false 
+	    				&& association instanceof FormalAssociationImpl == false 
+	    				&& association instanceof MaterialAssociation == false)
 	    		{
 		    		if(node1Property.getType() instanceof DataTypeImpl)
 		    			association.getNavigableOwnedEnd().add(node1Property);
@@ -153,6 +164,9 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		
 		//Adds the element to the diagram
 		parent.addChild(element);
-		notification.notifyElementAdded(element);
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(element);
+		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
 	}
 }

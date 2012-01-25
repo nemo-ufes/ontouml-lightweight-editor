@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.List;
 
 import br.ufes.inf.nemo.oled.util.ColorPalette;
-import br.ufes.inf.nemo.oled.util.Command;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 
 
@@ -209,7 +208,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 			pos.setLocation(tmpPos);
 			
 			MoveNodeOperation op = new MoveNodeOperation(node, node.getParent(), pos);
-			editor.moveElements(new Command[] {op});
+			editor.moveElements(new MoveNodeOperation[] {op});
 		}
 
 	}
@@ -226,13 +225,13 @@ public class NodeSelection implements Selection, NodeChangeListener {
 			pos.setLocation(tmpPos);
 			
 			MoveNodeOperation op = new MoveNodeOperation(node, newparent, pos);
-			editor.moveElements(new Command[] {op});
+			editor.moveElements(new MoveNodeOperation[] {op});
 		}
 	}
 
 	/**
 	 * Determines if the current element can be dropped into the specified
-	 * target. The main conditions are that elements can not be added to
+	 * target. The main conditions are that allElements can not be added to
 	 * themselves or to their ancestors.
 	 * @param dropTarget the drop target
 	 * @return true if can be dropped, false otherwise

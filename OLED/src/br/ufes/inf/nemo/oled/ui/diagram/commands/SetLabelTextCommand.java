@@ -19,21 +19,22 @@
  */
 package br.ufes.inf.nemo.oled.ui.diagram.commands;
 
-import javax.swing.undo.AbstractUndoableEdit;
+import java.util.ArrayList;
+import java.util.List;
 
-
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
-import br.ufes.inf.nemo.oled.util.Command;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
 
 /**
  * This class represents a reversible operation that sets a Label to a new
  * text.
  *
- * @author Wei-ju Wu
+ * @author Wei-ju Wu, Antognoni Albuquerque
  * @version 1.0
  */
-public class SetLabelTextCommand extends AbstractUndoableEdit
-implements Command {
+public class SetLabelTextCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = 5701807952287882396L;
 	private Label label;
@@ -44,7 +45,8 @@ implements Command {
 	 * @param aLabel the Label
 	 * @param aText the new text
 	 */
-	public SetLabelTextCommand(Label aLabel, String aText) {
+	public SetLabelTextCommand(DiagramEditorNotification aNotification, Label aLabel, String aText) {
+		this.notification = aNotification;
 		label = aLabel;
 		text = aText;
 		oldText = aLabel.getNameLabelText();
@@ -55,6 +57,10 @@ implements Command {
 	 */
 	public void run() {
 		label.setNameLabelText(text);
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(label);
+		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, redo ? NotificationType.REDO : NotificationType.DO);
 	}
 
 	/**
@@ -62,6 +68,7 @@ implements Command {
 	 */
 	@Override
 	public void redo() {
+		redo = true;
 		super.redo();
 		run();
 	}
@@ -73,5 +80,9 @@ implements Command {
 	public void undo() {
 		super.undo();
 		label.setNameLabelText(oldText);
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(label);
+		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, NotificationType.UNDO);
 	}
 }

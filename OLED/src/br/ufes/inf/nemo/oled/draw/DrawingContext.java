@@ -28,9 +28,9 @@ import java.awt.Shape;
 
 /**
  * DrawingContext is a very simple abstraction above the Java2D API. It provides
- * elementary drawing elements needed to draw UML diagrams. It also hides
- * information about the style with which the elements are drawn. UmlDiagram
- * elements render themselves by invoking methods on this interface.
+ * elementary drawing allElements needed to draw UML diagrams. It also hides
+ * information about the style with which the allElements are drawn. UmlDiagram
+ * allElements render themselves by invoking methods on this interface.
  *
  * @author Wei-ju Wu
  * @version 1.0

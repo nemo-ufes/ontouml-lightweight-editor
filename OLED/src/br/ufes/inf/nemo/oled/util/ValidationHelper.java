@@ -6,10 +6,8 @@ import java.util.Map;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Model;
-import RefOntoUML.impl.NamedElementImpl;
 
 /**
  * Helper class for dealing with model validation
@@ -42,7 +40,7 @@ public class ValidationHelper {
 					sb.append(handleName(item.getData().get(0)) + " - " + message + "\n\n");
 				}*/
 				
-				sb.append(handleName(item.getData().get(0)) + " - " + handleMessage(item.getMessage()) + "\n\n");
+				sb.append(ModelHelper.handleName(item.getData().get(0)) + " - " + handleMessage(item.getMessage()) + "\n\n");
 				
 			}	
 		}
@@ -50,22 +48,7 @@ public class ValidationHelper {
 		sb.append(MessageFormat.format("--- Model validated in {0} ms, {1} error(s) found ---", (validationEndMilis - validationStartMilis),  diag.getChildren().size()));
 		return sb.toString();		
 	}
-	
-	/**
-	 * Handles the objects name when showing the error message
-	 */
-	public static String handleName(Object element)
-	{
-		String name = "[unnamed]";
-		if(element instanceof NamedElementImpl)
-		{
-			NamedElementImpl namedElement = (NamedElementImpl) element;
-			if (namedElement.getName() != null)
-				name = namedElement.getName();
-		}
-		
-		return MessageFormat.format("{0} ({1})", name, ModelHelper.getClassAsStereotype((EObject) element));
-	}
+
 	
 	/**
 	 * Handles the error message

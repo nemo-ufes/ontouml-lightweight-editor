@@ -39,7 +39,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.swing.AbstractAction;
-import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
@@ -49,20 +48,23 @@ import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
+import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.draw.DrawingContextImpl;
 import br.ufes.inf.nemo.oled.draw.Label;
+import br.ufes.inf.nemo.oled.draw.MoveNodeOperation;
 import br.ufes.inf.nemo.oled.draw.MultiLineLabel;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.draw.NodeChangeListener;
 import br.ufes.inf.nemo.oled.draw.RectilinearConnection;
 import br.ufes.inf.nemo.oled.draw.Scaling;
 import br.ufes.inf.nemo.oled.draw.SimpleConnection;
-import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
+import br.ufes.inf.nemo.oled.draw.SimpleLabel;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
+import br.ufes.inf.nemo.oled.ui.BaseEditor;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.ConvertConnectionTypeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
@@ -75,25 +77,26 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.SetConnectionNavigabilityComman
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationLabel;
+import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.Command;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 
 /**
  * This class represents the diagram editor. It mainly acts as the
  * component to draw the diagram and to handle the events from the input
  * system. The actual drawing is handled by the UmlDiagram class and its sub
- * elements.
+ * allElements.
  *
  * @author Wei-ju Wu
  * @version 1.0
  */
-public class DiagramEditor extends JComponent
-implements ActionListener, MouseListener, MouseMotionListener,
-DiagramEditorNotification, DiagramOperations, NodeChangeListener {
+public class DiagramEditor extends BaseEditor implements ActionListener, MouseListener, MouseMotionListener, DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 
 	private static final long serialVersionUID = 4210158437374056534L;
 	// For now, we define the margins of the diagram as constants
@@ -235,7 +238,7 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 		addMouseListener(this);
 		addMouseMotionListener(this);
 
-		// Editor listeners
+		// BaseEditor listeners
 		captionEditor.addActionListener(this);
 
 		// install Escape and Delete KeyBinding
@@ -274,7 +277,7 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 	 */
 	public void deleteSelection() {
 		Collection<DiagramElement> elements = getSelectedElements();
-		execute(new DeleteElementCommand(this, elements, manager.getCurrentProject()));
+		execute(new DeleteElementCommand(this, elements, diagram.getProject()));
 	}
 
 	// *************************************************************************
@@ -332,7 +335,7 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 		clearScreen(g, bounds, background);
 		drawingContext.setGraphics2D(g2d, bounds);	
 		diagram.draw(drawingContext);
-		// Draw user interface specific elements (e.g. selections)
+		// Draw user interface specific allElements (e.g. selections)
 		if (toScreen) {
 			editorMode.draw(drawingContext);
 		}
@@ -411,10 +414,12 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 		if (multilineEditor.isVisible()) {
 			currentEditor = multilineEditor;
 		}
+		
+		//O problema está aqui. É necessário veirificar o modo do editor
 		if (currentEditor != null && currentEditor.isVisible()) {
 			String text = currentEditor.getText();
 			Label label = currentEditor.getLabel();
-			SetLabelTextCommand command = new SetLabelTextCommand(label, text);
+			SetLabelTextCommand command = new SetLabelTextCommand(this, label, text);
 			execute(command);
 			currentEditor.hideEditor();
 			repaint();
@@ -507,7 +512,7 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 	}
 
 	// ************************************************************************
-	// ***** Editor information
+	// ***** BaseEditor information
 	// ************************************************************************
 
 	/**
@@ -558,7 +563,7 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 	}
 
 	// ************************************************************************
-	// ***** Editor commands. These are invoked by external clients, the main
+	// ***** BaseEditor commands. These are invoked by external clients, the main
 	// ***** purpose is to provide the external interface for menu commands
 	// ***** and sorts.
 	// ************************************************************************
@@ -679,8 +684,7 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 		if (getSelectedElements().size() > 0 &&
 				getSelectedElements().get(0) instanceof UmlConnection) {
 			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
-			execute(new ConvertConnectionTypeCommand(this, conn,
-					new SimpleConnection()));
+			execute(new ConvertConnectionTypeCommand(this, conn, new SimpleConnection()));
 			// we can only tell the selection handler to forget about the selection
 			selectionHandler.deselectAll();
 		}
@@ -693,8 +697,7 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 		if (getSelectedElements().size() > 0 &&
 				getSelectedElements().get(0) instanceof UmlConnection) {
 			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
-			execute(new ConvertConnectionTypeCommand(this, conn,
-					new RectilinearConnection()));
+			execute(new ConvertConnectionTypeCommand(this, conn, new RectilinearConnection()));
 			// we can only tell the selection handler to forget about the selection
 			selectionHandler.deselectAll();
 		}
@@ -711,12 +714,10 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 			//Relationship relationship = (Relationship) conn.getModelElement();
 			// Setup a toggle
 			if (endType == RelationEndType.SOURCE) {
-				execute(new SetConnectionNavigabilityCommand(this, conn, endType,
-						true)); //FIXME Improve this = !relationship.isNavigableToElement1()
+				execute(new SetConnectionNavigabilityCommand(this, conn, endType, true)); //FIXME Improve this = !relationship.isNavigableToElement1()
 			}
 			if (endType == RelationEndType.TARGET) {
-				execute(new SetConnectionNavigabilityCommand(this, conn, endType,
-						true));
+				execute(new SetConnectionNavigabilityCommand(this, conn, endType, true));
 			}
 		}
 	}
@@ -735,19 +736,21 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 		// We need to run() after notifying the UndoManager in order to ensure
 		// correct menu behaviour
 		command.run();
+		
+		manager.updateUI();
 	}
 
-	/**
+	/*
 	 * Notifies the listeners about a state change.
-	 */
+	 //CLEANUP
 	private void notifyStateChanged() {
 		for (EditorStateListener l : editorListeners) {
 			l.stateChanged(this);
 		}
-	}
+	}*/
 
 	// *************************************************************************
-	// ***** Editor callbacks
+	// ***** BaseEditor callbacks
 	// *********************************
 
 	/**
@@ -769,53 +772,97 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 	// *************************************************************************
 	// ***** DiagramEditorNotification
 	// *********************************
-	/**
-	 * Update method called after a state change from a Command. Such state
-	 * changes include move operations.
-	 */
-	public void notifyElementsMoved() {
+	
+	public void notifyChange(List<DiagramElement> elements, ChangeType changeType, NotificationType notificationType)
+	{
 		editorMode.stateChanged();
-		notifyStateChanged();
-		repaint();
 		
-		frame.showStatus("Element moved");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void notifyElementAdded(DiagramElement element) {
 		for (EditorStateListener l : editorListeners) {
-			l.elementAdded(this);
+			l.stateChanged(this, changeType);
 		}
 		repaint();
 		
-		frame.showStatus("Element added");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void notifyElementRemoved(DiagramElement element) {
-		for (EditorStateListener l : editorListeners) {
-			l.elementRemoved(this);
+		if(changeType == ChangeType.ELEMENTS_REMOVED || (changeType == ChangeType.ELEMENTS_ADDED && notificationType == NotificationType.UNDO))
+			selectionHandler.elementRemoved(elements);
+		
+		//In case of the three commands  
+		if(changeType == ChangeType.ELEMENTS_ADDED || changeType == ChangeType.ELEMENTS_REMOVED || changeType == ChangeType.LABEL_TEXT_SET || changeType == ChangeType.CONNECTION_NAVEGABILITY_SET)
+		{
+			getProject().setSaveModelNeeded(true);
 		}
-		selectionHandler.elementRemoved(element);
-		repaint();
+
+		diagram.setSaveNeeded(true);		
 		
-		frame.showStatus("Element removed");
+		showStatus(elements, changeType, notificationType);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void notifyElementResized(DiagramElement element) {
-		editorMode.stateChanged();
-		notifyStateChanged();
-		repaint();
+	private void showStatus(List<DiagramElement> elements, ChangeType commandType, NotificationType notificationType)
+	{
+	
+		StringBuilder sb = new StringBuilder();
 		
-		frame.showStatus("Element resized");
+		if(notificationType == NotificationType.UNDO)
+		{
+			sb.append("undo");
+		}
+		
+		else if (notificationType == NotificationType.REDO)
+		{
+			sb.append("redo");
+		}
+		
+		switch (commandType) {
+			case ELEMENTS_ADDED: 
+				if(notificationType == NotificationType.DO) sb.append("added"); else sb.append(" add");
+				break;
+			case ELEMENTS_REMOVED:
+				if(notificationType == NotificationType.DO) sb.append("removed"); else sb.append(" remove");
+				break;
+			case ELEMENTS_MOVED:
+				if(notificationType == NotificationType.DO) sb.append("moved"); else sb.append(" move");
+				break;
+			case ELEMENTS_RESIZED:
+				if(notificationType == NotificationType.DO) sb.append("resized"); else sb.append(" resize");
+				break;
+			case CONNECTION_NAVEGABILITY_SET:
+				if(notificationType == NotificationType.DO) sb.append("navegability set"); else sb.append(" set navegability");
+				break;
+			case CONNECTION_TYPE_CONVERTED:
+				if(notificationType == NotificationType.DO) sb.append("connnection type changed"); else sb.append(" change connnection type");
+				break;
+			case CONNECTION_POINT_EDITED:
+				if(notificationType == NotificationType.DO) sb.append("connection point changed"); else sb.append(" change connnection point");
+				break;
+			case CONNECTION_POINTS_RESET:
+				if(notificationType == NotificationType.DO) sb.append("connection points reset"); else sb.append(" reset connection points");
+				break;
+			case LABEL_TEXT_SET:
+				if(notificationType == NotificationType.DO) sb.append("label text set"); else sb.append(" set label text");
+				break;	
+		}
+
+		sb.append(" : ");
+		
+		for (int i = 0; i < elements.size(); i++) {
+			
+			DiagramElement element = elements.get(i);
+			
+			if(element instanceof ClassElement)
+				sb.append(ModelHelper.handleName(((ClassElement)element).getClassifier()) + (i < elements.size()-1 ? ", " : ""));
+			else if(element instanceof BaseConnection)
+				sb.append(ModelHelper.handleName(((BaseConnection)element).getRelationship()) + (i < elements.size()-1 ? ", " : ""));
+			else if (element instanceof SimpleLabel || element instanceof AssociationLabel)
+				sb.append(((Label) element).getSource().getLabelText());
+		}
+		
+		frame.showStatus(capitalize(sb.toString()));
 	}
+	
+	private String capitalize(String s) {
+        if (s.length() == 0) return s;
+        return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+    }
+
 
 	// *************************************************************************
 	// ***** DiagramEditorOperations
@@ -846,13 +893,12 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 			dialog.setVisible(true);
 			redraw();
 		}
-		
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void moveElements(Command[] moveOperations) {
+	public void moveElements(MoveNodeOperation[] moveOperations) {
 		MoveElementCommand cmd = new MoveElementCommand(this, moveOperations);
 		execute(cmd);
 	}
@@ -904,4 +950,22 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 	public DiagramManager getDiagramManager() {
 		return manager;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public EditorNature getEditorNature()
+	{
+		return EditorNature.ONTOUML;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isSaveNeeded()
+	{
+		return diagram.getProject().isSaveModelNeeded() || diagram.isSaveNeeded();
+	}
+
 }

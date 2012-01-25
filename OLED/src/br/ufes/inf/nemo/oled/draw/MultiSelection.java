@@ -49,7 +49,7 @@ public class MultiSelection implements Selection {
   /**
    * Constructor.
    * @param operations the DiagramOperations object
-   * @param theElements the diagram elements that are the base for this object
+   * @param theElements the diagram allElements that are the base for this object
    */
   public MultiSelection(DiagramOperations operations,
     List<DiagramElement> theElements) {
@@ -118,7 +118,7 @@ public class MultiSelection implements Selection {
 	          transx, transy);
 	      }
 	    }
-	    editor.moveElements(moveOperations.toArray(new Command[0]));
+	    editor.moveElements(moveOperations.toArray(new MoveNodeOperation[0]));
 	    updateDimensions();
 	}
     isDragging = false;

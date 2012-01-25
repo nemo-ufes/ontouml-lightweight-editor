@@ -17,7 +17,7 @@ import br.ufes.inf.nemo.oled.util.ColorPalette;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 
 /**
- * This class provides an accordion pane for accomodating the many elements 
+ * This class provides an accordion pane for accomodating the many allElements 
  * used by the editor.
  */
 public class PaletteAccordion extends JPanel{
@@ -67,7 +67,7 @@ public class PaletteAccordion extends JPanel{
 
 	}
 
-	public void createStaticStructurePalettes(EditorCommandDispatcher editorDispatcher)
+	public void createStaticStructurePalettes(DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		createStaticClassesPalette(editorDispatcher);		
 		createStaticRelationshipsPalette(editorDispatcher);
@@ -123,7 +123,7 @@ public class PaletteAccordion extends JPanel{
 		return paletteMap.get(openPalette);
 	}
 
-	private void createStaticClassesPalette(EditorCommandDispatcher editorDispatcher)
+	private void createStaticClassesPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		Palette palette =  new Palette(this, "Classes");
 		palette.createElement("staticpalette.classes", "select");
@@ -148,7 +148,7 @@ public class PaletteAccordion extends JPanel{
 			openPalette = "Classes";
 	}
 
-	private void createStaticRelationshipsPalette(EditorCommandDispatcher editorDispatcher)
+	private void createStaticRelationshipsPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		Palette palette =  new Palette(this, "Relationships");
 		palette.createElement("staticpalette.relations", "select");
@@ -173,7 +173,7 @@ public class PaletteAccordion extends JPanel{
 	}
 
 	@SuppressWarnings("unused")
-	private void createMiscellaneousPalette(EditorCommandDispatcher editorDispatcher)
+	private void createMiscellaneousPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		Palette palette =  new Palette(this, "Miscellaneous");
 		palette.createElement("staticpalette.misc", "select");
@@ -190,7 +190,7 @@ public class PaletteAccordion extends JPanel{
 	}
 	
 	@SuppressWarnings("unused")
-	private void createStaticRulesPalette(EditorCommandDispatcher editorDispatcher)
+	private void createStaticRulesPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		Palette palette =  new Palette(this, "Rules");
 		palette.createElement("staticpalette.rules", "select");
