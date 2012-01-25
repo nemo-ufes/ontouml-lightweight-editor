@@ -9,10 +9,10 @@ public class ToolManager extends JTabbedPane {
 	private static final long serialVersionUID = 1752050268631906319L;
 	@SuppressWarnings("unused")
 	private AppFrame frame;
-	private EditorCommandDispatcher editorDispatcher;
+	private DiagramEditorCommandDispatcher editorDispatcher;
 	private PaletteAccordion palettes;	
 
-	public ToolManager(AppFrame frame, EditorCommandDispatcher editorDispatcher)
+	public ToolManager(AppFrame frame, DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		super();
 		
@@ -40,7 +40,7 @@ public class ToolManager extends JTabbedPane {
 		//revalidate();
 	}
 	
-	public EditorCommandDispatcher getEditorDispatcher() {
+	public DiagramEditorCommandDispatcher getEditorDispatcher() {
 		return editorDispatcher;
 	}
 	

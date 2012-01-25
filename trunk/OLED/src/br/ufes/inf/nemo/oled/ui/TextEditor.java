@@ -1,12 +1,14 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class TextEditor extends JPanel {
+public class TextEditor extends JPanel implements Editor {
 
 	private static final long serialVersionUID = -1832428183354138999L;
 	private JTextArea textArea = new JTextArea();
@@ -17,13 +19,42 @@ public class TextEditor extends JPanel {
 		JScrollPane scroll = new JScrollPane(textArea);
 		add(scroll, BorderLayout.CENTER);
 	}
-
+	
+	public TextEditor(String path)
+	{
+		super(new BorderLayout());
+		JScrollPane scroll = new JScrollPane(textArea);
+		add(scroll, BorderLayout.CENTER);
+				
+		try {
+			
+			FileReader fr = new FileReader(path);
+			BufferedReader br = new BufferedReader(fr);
+			textArea.read(br, null);
+			br.close();
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+	}
+	
 	public void setText(String text) {
-		this.textArea.setText(text);
+		textArea.setText(text);
 	}
 
 	public String getTextArea() {
 		return textArea.getText();
+	}
+
+	@Override
+	public boolean isSaveNeeded() {
+		return false;
+	}
+
+	@Override
+	public EditorNature getEditorNature() {
+		return EditorNature.TEXT;
 	}
 		
 }

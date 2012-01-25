@@ -26,7 +26,7 @@ import java.util.List;
 
 
 /**
- * This class implements a visual binary connection between to Node elements.
+ * This class implements a visual binary connection between to Node allElements.
  * The current implementation tries to implement any kind of line connection,
  * the visual representation is dependent on the embedded model element and a
  * number of view parameters.

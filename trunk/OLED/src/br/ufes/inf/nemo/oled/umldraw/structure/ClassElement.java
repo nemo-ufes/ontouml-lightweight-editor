@@ -469,7 +469,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 		recalculateAttributesCompartment(drawingContext);
 		recalculateOperationsCompartment(drawingContext);
 		double totalWidth = calculateTotalWidth();
-		// do not invalidate the sub elements
+		// do not invalidate the sub allElements
 		setSizePlain(totalWidth, calculateTotalHeight());
 		// adjust main compartment, in case the other compartments made this
 		// element wider

@@ -19,6 +19,8 @@
  */
 package br.ufes.inf.nemo.oled.ui.diagram;
 
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+
 /**
  * An interface to report state changes within the diagram editor.
  */
@@ -34,18 +36,8 @@ public interface EditorStateListener {
   /**
    * Some state changed in the editor.
    * @param editor the editor that changed
+   * @param the type of the change made in the diagram
    */
-  void stateChanged(DiagramEditor editor);
+  void stateChanged(DiagramEditor editor, ChangeType changeType);
 
-  /**
-   * An element was added.
-   * @param editor the editor that sent the event
-   */
-  void elementAdded(DiagramEditor editor);
-
-  /**
-   * An element was removed.
-   * @param editor the editor that sent the event
-   */
-  void elementRemoved(DiagramEditor editor);
 }

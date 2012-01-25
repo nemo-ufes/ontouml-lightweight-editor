@@ -1,7 +1,7 @@
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
- * This file is part of OLED (OntoUML Lightweight Editor).
+ * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
  * licence terms.
  *
@@ -31,7 +31,8 @@ import javax.swing.UIManager;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /*
- * TODO
+ * Features TO-DO
+ * ======================================================
  * 
  * Implementar associação entre relações
  * Implantar o reposicionamento de labels
@@ -39,18 +40,23 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * Funcionalidade Copiar/Colar
  * Tela Sobre (About) 
  * 
- * Before release
+ * 
+ * Antes do release
+ * ======================================================
  * 
  * Revisão Geral do Códgio - Limpeza
  * Revisão Geral do Códgio - Documentação
  * Revisão Geral arquivo de captions
  * 
+ * 
  * Sem previsão
+ * ======================================================
  * 
  * Localization
  * 
  * 
- *  ISSUES
+ * Problemas conhecidos
+ * ======================================================
  *  
  * - Aberto : Classes não estão redimensionando bem
  * 			: Só está acontecendo quando a opção snap to grid está habilitada

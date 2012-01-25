@@ -44,7 +44,7 @@ public interface DiagramElement extends Serializable, Cloneable {
   Rectangle2D getAbsoluteBounds();
 
   /**
-   * Determines whether this elements intersects with the specified Rectangle2D.
+   * Determines whether this allElements intersects with the specified Rectangle2D.
    * @param bounds the rectangle to check against
    * @return true if intersects, false otherwise
    */
@@ -80,7 +80,10 @@ public interface DiagramElement extends Serializable, Cloneable {
    */
   CompositeNode getParent();
 
-  //A Shortcut to get the parent
+  /**
+   * a helper method which returns the elements diagram parent 
+   * @return the elements diagram parent 
+   */
   Diagram getDiagram();
     
   void addedToDiagram(Diagram diagram);
@@ -143,9 +146,9 @@ public interface DiagramElement extends Serializable, Cloneable {
 
   /**
    * This property indicates whether this DiagramElement can nest other
-   * elements. This is defined separately from containment in a composite
+   * allElements. This is defined separately from containment in a composite
    * node, because a composite does not automatically mean that it can
-   * nest other elements. In fact, the default value is false and at the
+   * nest other allElements. In fact, the default value is false and at the
    * moment only makes sense for PackageElements.
    * @return true if nestable, false otherwise
    */
@@ -153,9 +156,9 @@ public interface DiagramElement extends Serializable, Cloneable {
 
   /**
    * This property indicates whether this DiagramElement can be nested in
-   * other elements. By default (and throughout the primitive elements in the
+   * other allElements. By default (and throughout the primitive allElements in the
    * draw package), this is false and should be overridden in client packages.
-   * @return true if the element is nestable in other elements, false otherwise
+   * @return true if the element is nestable in other allElements, false otherwise
    */
   boolean isNestable();
 }

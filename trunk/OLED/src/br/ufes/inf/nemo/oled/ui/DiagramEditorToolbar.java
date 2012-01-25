@@ -34,7 +34,7 @@ public class DiagramEditorToolbar implements ActionListener {
     toolbar.add(createButton(validationGroup, "validate"));
     toolbar.add(createButton(validationGroup, "verify")); 
     toolbar.add(createButton(validationGroup, "verifyfile")); 
-    toolbar.add(createButton(validationGroup, "viewoutput")); 
+    
     //toolbar.addSeparator(new Dimension(10, 25));
     //toolbar.add(createToggleButton(diagramOptionsGroup, "rectilinear"));
     //toolbar.add(createToggleButton(diagramOptionsGroup, "straight"));

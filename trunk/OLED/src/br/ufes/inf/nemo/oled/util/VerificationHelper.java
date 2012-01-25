@@ -1,12 +1,11 @@
 package br.ufes.inf.nemo.oled.util;
 
 import java.io.File;
-import java.text.MessageFormat;
-import java.util.List;
+
+import refontouml2alloy.bts.OntoUML2Alloy;
 
 import RefOntoUML.Model;
-import br.ufes.inf.nemo.ontouml.transformation.OntoUML2Alloy;
-import br.ufes.inf.nemo.ontouml.transformation.OntoUML2Alloy.TransformationType;
+import br.ufes.inf.nemo.oled.util.OLEDSettings.Setting;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4compiler.ast.Command;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
@@ -17,113 +16,76 @@ import edu.mit.csail.sdg.alloy4compiler.translator.TranslateAlloyToKodkod;
 
 public class VerificationHelper {
 	
-	public static String verifyModel(Model model, List<String> outputFiles)
-	{
+	public static A4Solution verifyModelFromAlloyFile(String fileName)
+	{    	    	
+    	File alloyFile = new File(fileName);  	
 		
-		if(model.getPackagedElement().size() == 0)
-			return("An empty model cannot be verified.");
-		
-		//TODO Parametrize this
-		String fileName = "Simulation.als"; 
-		
-		StringBuilder sb = new StringBuilder();	
-		sb.append("--- Verification Results ---\n\n");
-		
-		long validationStartMilis = System.currentTimeMillis();
-		
-		try {
-			
-			if(OntoUML2Alloy.transformToAlloyFile(model, TransformationType.V3, fileName))
-			{
-				sb.append(verifyModel(fileName, outputFiles));
-			}
-			else
-			{
-				return("An error has occurred generating the Alloy file.\n\n");
-			}
-			
-		} catch (Exception ex) {
-			return("An error has occurred when verifying the model.\n" + ex.getMessage());
-		}
-		
-		long validationEndMilis = System.currentTimeMillis();
-		sb.append(MessageFormat.format("--- Model verified in {0} ms ---", (validationEndMilis - validationStartMilis)));
-
-		return sb.toString();
-		
-	}
-	
-	public static String verifyModelFromAlloyFile(String fileName, List<String> outputFiles)
-	{
-
-		StringBuilder sb = new StringBuilder();	
-		sb.append("--- Verification Results ---\n\n");
-		
-		long validationStartMilis = System.currentTimeMillis();
-		
-		try {
-			
-			sb.append(verifyModel(fileName, outputFiles));
-			
-		} catch (Exception ex) {
-			
-			return("An error has occurred when verifying the model.\n\n" + ex.getLocalizedMessage());
-			
-		}
-	
-		long validationEndMilis = System.currentTimeMillis();
-		sb.append(MessageFormat.format("--- Model verified in {0} ms ---", (validationEndMilis - validationStartMilis)));
-
-		return sb.toString();
-		
-	}
-	
-	public static String verifyModel(String fileName, List<String> outputFiles)
-	{
-		
-		File file = new File(fileName);
-				  	
-		if(file.exists())
+    	if(alloyFile.exists())
 		{		
-			// Chooses the Alloy4 options
 	        A4Options opt = new A4Options();
 	        opt.solver = A4Options.SatSolver.SAT4J;
-
-	        boolean satisfiable = true;
-	        int i = 0;
 	        
 	        try {		
-	        	Module world = CompUtil.parseEverything_fromFile(null, null, fileName);
-	        	for (Command command: world.getAllCommands()) {
-	        		// Execute the command
-	                A4Solution ans = TranslateAlloyToKodkod.execute_command(null, world.getAllReachableSigs(), command, opt);
-	                satisfiable &= ans.satisfiable();
-	                
-	                String outputFileName = "verification_output_" + i + ".xml";
-	                ans.writeXML(outputFileName);
-	                outputFiles.add(outputFileName);
+	        		        	
+	        	Module module = CompUtil.parseEverything_fromFile(null, null, fileName);
 
-	                i++;
-	            }
+	        	if(!module.getAllCommands().isEmpty())
+	        	{
+		        	Command command = module.getAllCommands().get(0); //Obter e executar somente um comando, assim como o AlloyAnalyzer faz
+		        	A4Solution solution = TranslateAlloyToKodkod.execute_command(null, module.getAllReachableSigs(), command, opt);
+		        	
+		        	return solution;
+	        	}
+	        	else
+	        	{
+	        		return null;
+	        	}
 	        	
 	        } catch (Err e) {
-	        	
-	        	return("An error has occurred when verifying the model.\n\n" + e.getLocalizedMessage());
+	        	return null; 
 			} 
-	        
-	        if(satisfiable)
-	        {
-	        	return("Model appears to be consistent.\n\n");
-	        }
-	        else
-	        {
-	        	return("\nModel is NOT consistent. \n\n");
-	        	
-	        }
 		}
-		else
-		{
-			return("Alloy file not found.\n\n");
-		}
+    	
+    	return null;
+		
 	}
+		
+    public static A4Solution verifyModel(Model model)
+	{
+		String fileName = OLEDSettings.getInstance().getSetting(Setting.SIMULATION_DEFAULT_FILE); 
+		
+    	if(!OntoUML2Alloy.transformToAlloyFile(model, model.getPackagedElement(), fileName))
+    		return null;
+    	    	
+    	File alloyFile = new File(fileName);  	
+		
+    	if(alloyFile.exists())
+		{		
+	        A4Options opt = new A4Options();
+	        opt.solver = A4Options.SatSolver.SAT4J;
+	        
+	        try {		
+	        		        	
+	        	Module module = CompUtil.parseEverything_fromFile(null, null, fileName);
+
+	        	if(!module.getAllCommands().isEmpty())
+	        	{
+		        	Command command = module.getAllCommands().get(0); //Obter e executar somente um comando, assim como o AlloyAnalyzer faz
+		        	A4Solution solution = TranslateAlloyToKodkod.execute_command(null, module.getAllReachableSigs(), command, opt);
+		        	
+		        	return solution;
+	        	}
+	        	else
+	        	{
+	        		return null;
+	        	}
+	        	
+	        } catch (Err e) {
+	        	return null; 
+			} 
+		}
+    	
+    	return null;
+	}
+
 }

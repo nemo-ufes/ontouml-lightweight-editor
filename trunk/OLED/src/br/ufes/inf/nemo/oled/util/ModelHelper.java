@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.util;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,6 +36,7 @@ import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.Relationship;
 import RefOntoUML.impl.DataTypeImpl;
 import RefOntoUML.impl.MeronymicImpl;
+import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.impl.RefOntoUMLPackageImpl;
 import RefOntoUML.provider.RefOntoUMLItemProviderAdapterFactory;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -172,15 +174,33 @@ public class ModelHelper {
 		 * diagnostics, context); } return valid;
 		 */
 	}
-
+	
+	/**
+	 * Handles the objects name when showing the error message
+	 */
+	public static String handleName(Object element)
+	{
+		String name = "[unnamed]";
+		if(element instanceof NamedElementImpl)
+		{
+			NamedElementImpl namedElement = (NamedElementImpl) element;
+			if (namedElement.getName() != null)
+				name = namedElement.getName();
+		}
+		
+		return MessageFormat.format("{0} ({1})", name, getClassAsStereotype((EObject) element));
+	}
+	
 	public static String getClassAsStereotype(EObject eObject) {
 		String ret = eObject.eClass().getName().toLowerCase()
 				.replace("association", "");
 		return "«" + ret + "»";
 	}
-
-	// Creates a property with multiplicity 1..1 as a owned end to associations
-	// given a classifier
+ 
+	/**
+	 * Helper method which creates a property with default multiplicity 1..1 as a owned end to associations
+	 * of a given classifier
+	 */
 	public static Property getDefaultOwnedEnd(Classifier classifier) {
 		if (!initialized) {
 			initializeHelper();

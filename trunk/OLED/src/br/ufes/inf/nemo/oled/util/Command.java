@@ -34,4 +34,5 @@ import javax.swing.undo.UndoableEdit;
  * @version 1.0
  */
 public interface Command extends Runnable, UndoableEdit {
+		
 }

@@ -5,9 +5,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
@@ -19,8 +16,12 @@ import javax.swing.JToolBar;
 
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.IconLoader.IconType;
+import br.ufes.inf.nemo.oled.util.OLEDSettings;
+import br.ufes.inf.nemo.oled.util.OLEDSettings.Setting;
+import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.OurUtil;
 import edu.mit.csail.sdg.alloy4.Util;
+import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 import edu.mit.csail.sdg.alloy4viz.AlloyInstance;
 import edu.mit.csail.sdg.alloy4viz.AlloyType;
 import edu.mit.csail.sdg.alloy4viz.StaticInstanceReader;
@@ -31,11 +32,10 @@ import edu.mit.csail.sdg.alloy4viz.VizState;
 /**
  * This class provides an visualizer for the alloy generated instances. It is based on {@link VizGUI}.
  */
-public class InstanceVisualizer extends JPanel {
+public class InstanceVisualizer extends JPanel implements Editor{
 
 	private static final long serialVersionUID = 704479201259601034L;
-	private LinkedList<String> xmlFiles = new LinkedList<String>();
-	private String currentXmlFile = null;
+	
 	private VisualizerMode currentMode = VisualizerMode.get();
 	private VizState myState;
 	private VizGraphPanel myGraphPanel;
@@ -45,17 +45,19 @@ public class InstanceVisualizer extends JPanel {
 	private JButton projectionButton, nextButton;
 	private int fontSize = 12;
 
-	public InstanceVisualizer(List<String> outputFiles) {
+    private	A4Solution currentSolution;
+	
+	public InstanceVisualizer(A4Solution solution) {
 
 		super();
 
-		this.xmlFiles.addAll(outputFiles); 
+		currentSolution = solution;
+		 
 		initGUI();
-
-		if (outputFiles.size()>0) 
-			nextSolution();
+		
+		loadSolution();
 	}
-
+	
 	public void initGUI() {
 
 		this.setLayout(new BorderLayout());
@@ -98,55 +100,48 @@ public class InstanceVisualizer extends JPanel {
 
 	private void nextSolution() {
 		
-		String fileName;
-		
-		if(currentXmlFile != null)
-		{		
-			int pos = xmlFiles.lastIndexOf(currentXmlFile);
+		try {
 			
-			if(pos == xmlFiles.size() - 1)
+			A4Solution newSolution = currentSolution.next();
+			
+			if(newSolution.satisfiable())
 			{
-				fileName = xmlFiles.getFirst();
+				currentSolution = newSolution;
+				loadSolution();
 			}
-			else
-			{
-				fileName = xmlFiles.get(pos + 1);
-			}
-		}
-		else
-		{
-			fileName = xmlFiles.getFirst();
+			
+		} catch (Err e) {
+			
+			e.printStackTrace();
 		}
 		
-		loadXML(fileName, true);
 	}
 
-	private void loadXML(final String fileName, boolean forcefully) {
+	private void loadSolution() {
 		
+		AlloyInstance myInstance;
+		
+		String fileName = OLEDSettings.getInstance().getSetting(Setting.SIMULATION_SOLUTION_FILE);
 		String canonicalFileName = Util.canon(fileName);
 		
 		File file = new File(canonicalFileName);
 		
-		if (forcefully || !canonicalFileName.equals(Util.canon(this.currentXmlFile))) {
-			
-			AlloyInstance myInstance;
-			
-			try {
-				if (!file.exists())
-					throw new IOException("File " + canonicalFileName + " does not exist.");
-				myInstance = StaticInstanceReader.parseInstance(file);
-			} catch (Throwable e) {
-				return;
-			}
+		try {
+		
+			currentSolution.writeXML(canonicalFileName);
+		
+			myInstance = StaticInstanceReader.parseInstance(file);
 			
 			if (myState == null)
 				myState = new VizState(myInstance);
 			else
 				myState.loadInstance(myInstance);
-
+	
 			loadProjectionPopup();
+		
+		} catch (Err e) {
 			
-			this.currentXmlFile = fileName;
+			e.printStackTrace();
 		}
 		
 		updateDisplay();
@@ -159,9 +154,9 @@ public class InstanceVisualizer extends JPanel {
 		}
 		
 		projectionPopup.removeAll();
-		for (AlloyType type : myState.getProjectedTypes()) {
+		/*for (AlloyType type : myState.getProjectedTypes()) {
 			myState.deproject(type);
-		}
+		}*/
 		
 		for (final AlloyType type : myState.getOriginalModel().getTypes())
 			
@@ -183,6 +178,10 @@ public class InstanceVisualizer extends JPanel {
 				});
 				
 				projectionPopup.add(menuItem);
+								
+				if(myState.getProjectedTypes().contains(type))
+					menuItem.setSelected(true);
+					//projectionPopup.setSelected(menuItem);
 			}
 	}
 
@@ -240,7 +239,6 @@ public class InstanceVisualizer extends JPanel {
 		return null;
 	}
 	
-	/** This enum defines the set of possible visualizer modes. */
 	private enum VisualizerMode {
 		/** Visualize using graphviz's dot. */
 		Viz("graphviz"),
@@ -287,6 +285,16 @@ public class InstanceVisualizer extends JPanel {
 			return parse(Preferences.userNodeForPackage(Util.class).get(
 					"VisualizerMode", ""));
 		}
+	}
+
+	@Override
+	public boolean isSaveNeeded() {
+		return false;
+	}
+
+	@Override
+	public EditorNature getEditorNature() {
+		return EditorNature.ALLOY_SIMULATION;
 	};
 
 }

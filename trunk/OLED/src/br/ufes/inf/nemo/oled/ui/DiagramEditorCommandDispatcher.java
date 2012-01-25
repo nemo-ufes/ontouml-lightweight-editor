@@ -32,15 +32,15 @@ import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.MethodCall;
 
 /**
- * This class receives Editor related AppCommands and dispatches them to
+ * This class receives BaseEditor related AppCommands and dispatches them to
  * the right places. This offloads editor related commands from the
  * AppFrame object, while AppFrame handles commands on a global level,
- * EditorCommandDispatcher handles it on the level of the current editor.
+ * DiagramEditorCommandDispatcher handles it on the level of the current editor.
  *
  * @author Wei-ju Wu
  * @version 1.0
  */
-public class EditorCommandDispatcher implements AppCommandListener {
+public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 	//private AppFrame frame;
 	private DiagramManager manager;
@@ -50,7 +50,7 @@ public class EditorCommandDispatcher implements AppCommandListener {
 	 * Constructor.
 	 * @param aFrame the application frame
 	 */
-	public EditorCommandDispatcher(DiagramManager manager) {
+	public DiagramEditorCommandDispatcher(DiagramManager manager) {
 		this.manager = manager;
 		initSelectorMap();
 	}
@@ -247,9 +247,6 @@ public class EditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("VERIFY_MODEL_FILE", new MethodCall(
 					getClass().getMethod("verifyModelFile")));
 			
-			selectorMap.put("VIEW_OUTPUT", new MethodCall(
-					getClass().getMethod("viewOutput")));
-			
 			//selectorMap.put("CREATE_DEPENDENCY", new MethodCall(
 			//		DiagramEditor.class.getMethod("setCreateConnectionMode",
 			//				RelationType.class), RelationType.DEPENDENCY));
@@ -274,20 +271,18 @@ public class EditorCommandDispatcher implements AppCommandListener {
 
 	@Override
 	public void handleCommand(String command) {
-	    MethodCall methodcall = selectorMap.get(command);
-	    if (methodcall != null) {
-	      Object target = manager.getCurrentEditor();
-	      if(target != null)
-	      {
-		      // in order to catch the self calling methods
-		      if (methodcall.getMethod().getDeclaringClass() == EditorCommandDispatcher.class) {
-		        target = this;
-		      }
-		      methodcall.call(target);
-	      }
-	    } /*else {
-	      System.out.println("not handled: " + command);
-	    }*/
+		MethodCall methodcall = selectorMap.get(command);
+		if (methodcall != null) {
+			  Object target = manager.getCurrentEditor();
+			  if(target != null)
+			  {
+			      // in order to catch the self calling methods
+			      if (methodcall.getMethod().getDeclaringClass() == DiagramEditorCommandDispatcher.class) {
+			        target = this;
+			      }
+			      methodcall.call(target);
+			  }
+		} 
 	}
 
 	public void showOutputPane()
@@ -306,11 +301,6 @@ public class EditorCommandDispatcher implements AppCommandListener {
 	public void verifyModelFile()
 	{
 		manager.verifyCurrentModelFile();
-	}
-	
-	public void viewOutput()
-	{
-		manager.viewOutput();
 	}
 	
 	/**

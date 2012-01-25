@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
@@ -80,27 +79,36 @@ public class CreationHandler implements EditorMode {
   /**
    * {@inheritDoc}
    */
-  public void mouseClicked(EditorMouseEvent event) { }
+  public void mouseClicked(EditorMouseEvent event) { 
+	  
+  }
 
   /**
    * {@inheritDoc}
    */
   public void mousePressed(EditorMouseEvent event) {
     CompositeNode parent = editor.getDiagram();
-    DiagramElement possibleParent = editor.getDiagram().getChildAt(
-      tmpPos.getX(), tmpPos.getY());
+    DiagramElement possibleParent = editor.getDiagram().getChildAt(tmpPos.getX(), tmpPos.getY());
+    
     if (isNestingCondition(possibleParent)) {
-      parent = (CompositeNode) possibleParent;
+    	parent = (CompositeNode) possibleParent;
     }
-    AddNodeCommand createCommand = new AddNodeCommand(editor,
-      parent, element, tmpPos.getX(), tmpPos.getY(), editor.getProject());
+    
+    AddNodeCommand createCommand = new AddNodeCommand(editor, parent, element, tmpPos.getX(), tmpPos.getY(), editor.getDiagram().getProject());
     editor.execute(createCommand);
+   	  
+    //CLEANUP
+    //if(element instanceof ClassElement)
+	//	editor.editLabel(((ClassElement)element).getMainLabel());
   }
 
   /**
    * {@inheritDoc}
    */
-  public void mouseReleased(EditorMouseEvent event) { }
+  public void mouseReleased(EditorMouseEvent event) {
+	  
+	  System.out.println("released");
+  }
 
   /**
    * {@inheritDoc}

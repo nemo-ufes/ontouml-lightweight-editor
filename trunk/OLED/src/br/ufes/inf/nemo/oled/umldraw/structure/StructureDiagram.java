@@ -1,7 +1,7 @@
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
- * This file is part of OLED (OntoUML Lightweight Editor).
+ * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
  * licence terms.
  *
@@ -95,7 +95,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	private Label nameLabel = new SimpleLabel();
 	private UmlProject project;
 	private DiagramElementFactory elementFactory = new DiagramElementFactoryImpl(this);
-	private transient boolean gridVisible = true, snapToGrid = true;
+	private transient boolean gridVisible = true, snapToGrid = true, saveNeeded = true;
 	private transient Collection<LabelChangeListener> nameChangeListeners = new ArrayList<LabelChangeListener>();
 	private transient Set<NodeChangeListener> nodeChangeListeners = new HashSet<NodeChangeListener>();
 	
@@ -137,6 +137,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 
 		gridVisible = true;
 		snapToGrid = true;
+		saveNeeded = false;
 		nameChangeListeners = new ArrayList<LabelChangeListener>();
 		nodeChangeListeners = new HashSet<NodeChangeListener>();
 	}
@@ -218,6 +219,14 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		setName(aText);
 	}
 
+	public boolean isSaveNeeded() {
+		return saveNeeded;
+	}
+	
+	public void setSaveNeeded(boolean saveNeeded) {
+		this.saveNeeded = saveNeeded;
+	}
+	
 	/**
 	 * Sets the visibility flag of the grid.
 	 * 
@@ -578,7 +587,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	
 	// *************************************************************************
 	// ****** NodeChangeListeners of diagrams are usually user interface
-	// ****** elements. User interfaces are not part of the persistence project
+	// ****** allElements. User interfaces are not part of the persistence project
 	// ****** so the listeners are redefined as transient list.
 	// **************************************************************************
 	/**

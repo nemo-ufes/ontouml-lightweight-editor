@@ -30,11 +30,13 @@ import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
 /**
- * A command class to remove elements from a diagram.
+ * A command class to remove allElements from a diagram.
  * 
  * @author Wei-ju Wu, Antognoni Albuquerque
  * @version 1.1
@@ -43,7 +45,6 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 
 	private static final long serialVersionUID = 2456036038567915529L;
 	private Collection<DiagramElement> elements;
-	private DiagramEditorNotification notification;
 
 	/**
 	 * A helper class to store the original parent child relation.
@@ -60,8 +61,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		 * @param aParent
 		 *            the element's parent
 		 */
-		public ParentChildRelation(DiagramElement anElement,
-				CompositeNode aParent) {
+		public ParentChildRelation(DiagramElement anElement, CompositeNode aParent) {
 			parent = aParent;
 			element = anElement;
 		}
@@ -77,11 +77,10 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * @param theElements
 	 *            the DiagramElements to remove, each must have a parent
 	 */
-	public DeleteElementCommand(DiagramEditorNotification aNotification,
-			Collection<DiagramElement> theElements, UmlProject aProject) {
-		notification = aNotification;
+	public DeleteElementCommand(DiagramEditorNotification aNotification, Collection<DiagramElement> theElements, UmlProject project) {
+		this.project = project;
+		this.notification = aNotification;
 		elements = theElements;
-		project = aProject;
 		for (DiagramElement elem : elements) {
 			parentChildRelations.add(new ParentChildRelation(elem, elem.getParent()));
 		}
@@ -92,35 +91,36 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 */
 	public void run() {
 
-		for (DiagramElement diagramElement : elements) {
-			if (diagramElement instanceof Connection) {
-				detachConnectionFromNodes((Connection) diagramElement);
+		for (DiagramElement element : elements) {
+			if (element instanceof Connection) {
+				detachConnectionFromNodes((Connection) element);
 			}
-			else if (diagramElement instanceof Node) {
-				detachNodeConnections((Node) diagramElement);
+			else if (element instanceof Node) {
+				detachNodeConnections((Node) element);
 			}
 			
 			//Removes the element from model
-			if(diagramElement instanceof ClassElement)
+			if(element instanceof ClassElement)
 			{
-				ClassElement classElement = (ClassElement) diagramElement;
+				ClassElement classElement = (ClassElement) element;
 			
 				DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), classElement.getClassifier());
 				project.getEditingDomain().getCommandStack().execute(cmd);
 			}
 			
-			else if(diagramElement instanceof BaseConnection)
+			else if(element instanceof BaseConnection)
 			{
-				BaseConnection connection = (BaseConnection) diagramElement;
+				BaseConnection connection = (BaseConnection) element;
 			
 				DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), connection.getRelationship());
 				project.getEditingDomain().getCommandStack().execute(cmd);
 			}
 						
 			//Removes the element from diagram
-			diagramElement.getParent().removeChild(diagramElement);
-			notification.notifyElementRemoved(diagramElement);
+			element.getParent().removeChild(element);
 		}
+		
+		notification.notifyChange((List<DiagramElement>) elements, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);
 	}
 
 	/**
@@ -128,6 +128,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 */
 	@Override
 	public void redo() {
+		redo = true;
 		super.redo();
 		run();
 	}
@@ -138,6 +139,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	@Override
 	public void undo() {
 		super.undo();
+		
 		for (ParentChildRelation relation : parentChildRelations) {
 			if (relation.element instanceof Connection) {
 				reattachConnectionToNodes((Connection) relation.element);
@@ -146,10 +148,11 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			}
 			
 			project.getEditingDomain().getCommandStack().undo();
-			
 			relation.parent.addChild(relation.element);
-			notification.notifyElementAdded(relation.element);
 		}
+		
+		notification.notifyChange((List<DiagramElement>) elements, ChangeType.ELEMENTS_REMOVED, NotificationType.UNDO);
+
 	}
 
 	/**

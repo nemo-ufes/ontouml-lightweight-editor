@@ -22,11 +22,11 @@ package br.ufes.inf.nemo.oled.ui.diagram.commands;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.undo.AbstractUndoableEdit;
-
 
 import br.ufes.inf.nemo.oled.draw.Connection;
-import br.ufes.inf.nemo.oled.util.Command;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
 
 
 /**
@@ -36,11 +36,9 @@ import br.ufes.inf.nemo.oled.util.Command;
  * @author Wei-ju Wu
  * @version 1.0
  */
-public class EditConnectionPointsCommand extends AbstractUndoableEdit
-implements Command {
+public class EditConnectionPointsCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = -6538389889543538053L;
-	private DiagramEditorNotification notification;
 	private Connection connection;
 	private List<Point2D> oldpoints, newpoints;
 
@@ -50,9 +48,8 @@ implements Command {
 	 * @param aConnection the connection object
 	 * @param theNewpoints the new point list
 	 */
-	public EditConnectionPointsCommand(DiagramEditorNotification aNotification,
-			Connection aConnection, List<Point2D> theNewpoints) {
-		notification = aNotification;
+	public EditConnectionPointsCommand(DiagramEditorNotification aNotification, Connection aConnection, List<Point2D> theNewpoints) {
+		this.notification = aNotification;
 		connection = aConnection;
 		newpoints = clonePointList(theNewpoints);
 	}
@@ -63,7 +60,10 @@ implements Command {
 	public void run() {
 		oldpoints = clonePointList(connection.getPoints());
 		connection.setPoints(newpoints);
-		notification.notifyElementsMoved();
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(connection);
+		notification.notifyChange(elements, ChangeType.CONNECTION_POINT_EDITED, redo ? NotificationType.REDO : NotificationType.DO);
 	}
 
 	/**
@@ -86,7 +86,10 @@ implements Command {
 	public void undo() {
 		super.undo();
 		connection.setPoints(oldpoints);
-		notification.notifyElementsMoved();
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(connection);
+		notification.notifyChange(elements, ChangeType.CONNECTION_POINT_EDITED, NotificationType.UNDO);
 	}
 
 	/**
@@ -94,6 +97,7 @@ implements Command {
 	 */
 	@Override
 	public void redo() {
+		redo = true;
 		super.redo();
 		run();
 	}

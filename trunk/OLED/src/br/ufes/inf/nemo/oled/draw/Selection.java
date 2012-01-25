@@ -41,9 +41,9 @@ public interface Selection {
   DiagramElement getElement();
 
   /**
-   * Returns the currently selected elements. Single selections only contain
+   * Returns the currently selected allElements. Single selections only contain
    * one element.
-   * @return the selected elements
+   * @return the selected allElements
    */
   List<DiagramElement> getElements();
 

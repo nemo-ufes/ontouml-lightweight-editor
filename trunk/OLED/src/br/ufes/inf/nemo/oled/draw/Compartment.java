@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * A compartment represents a rectangular area which contains other diagram
- * elements. For now these are labels, which are placed vertically. Label
+ * allElements. For now these are labels, which are placed vertically. Label
  * alignment can either be centered or left aligned.
  * Note that the clone() method must be overridden, to correctly set the
  * label parents contained in the compartment.

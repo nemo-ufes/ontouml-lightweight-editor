@@ -36,13 +36,13 @@ import br.ufes.inf.nemo.oled.draw.DrawingContext;
 public interface EditorMode extends EditorMouseHandler {
 
   /**
-   * Draws any additional elements or decorations supported by this mode.
+   * Draws any additional allElements or decorations supported by this mode.
    * @param drawingContext the DrawingContext
    */
   void draw(DrawingContext drawingContext);
 
   /**
-   * The editor state was changed, update any elements.
+   * The editor state was changed, update any allElements.
    */
   void stateChanged();
 

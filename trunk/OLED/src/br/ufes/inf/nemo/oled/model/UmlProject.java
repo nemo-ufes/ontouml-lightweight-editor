@@ -1,7 +1,7 @@
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
- * This file is part of OLED (OntoUML Lightweight Editor).
+ * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
  * licence terms.
  *
@@ -41,21 +41,22 @@ import RefOntoUML.impl.GeneralizationSetImpl;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
- * Class responsible for holding the model instance and its diagrams
+ * Class responsable for holding the model instance and its diagrams
  * @author Antognoni Albuquerque
  */
 public class UmlProject implements Serializable {
 
-	//The UmlProject is serialized to a binary file in order to store the diagrams and its graphics elements.
+	//The UmlProject is serialized to a binary file in order to store the diagrams and its graphics allElements.
 	//The model (contained in a resource) is serialized separately, by its own means so here it is transient.
-	//All the model operations like adding, removing or changing elements are done through a editing domain
+	//All the model operations like adding, removing or changing allElements are done through a editing domain
 	//which provides some useful features, like redo/undo, clipboard etc.
 	
 	private static final long serialVersionUID = -2356413039446009810L;
 	private transient AdapterFactoryEditingDomain editingDomain;
 	private transient Resource resource;
 	private List<UmlDiagram> diagrams = new ArrayList<UmlDiagram>();
-
+	private transient boolean saveNeeded = false;
+	
 	public UmlProject() {
 		super();
 		
@@ -195,6 +196,14 @@ public class UmlProject implements Serializable {
 		if(editingDomain == null)
 			editingDomain = ModelHelper.getAdapterEditingDomain();
 		return editingDomain;
+	}
+
+	public void setSaveModelNeeded(boolean saveNeeded) {
+		this.saveNeeded = saveNeeded;
+	}
+
+	public boolean isSaveModelNeeded() {
+		return saveNeeded;
 	}
 
 }
