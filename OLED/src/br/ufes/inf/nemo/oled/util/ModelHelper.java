@@ -24,6 +24,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
 import RefOntoUML.Element;
@@ -34,6 +35,7 @@ import RefOntoUML.Model;
 import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.Relationship;
+import RefOntoUML.impl.AssociationImpl;
 import RefOntoUML.impl.DataTypeImpl;
 import RefOntoUML.impl.MeronymicImpl;
 import RefOntoUML.impl.NamedElementImpl;
@@ -138,16 +140,27 @@ public class ModelHelper {
 	//Pseudo clone
 	public static Relationship clone(Relationship relationship) {
 		Relationship cloned = (Relationship) factory.create(relationship.eClass());
-		if(cloned instanceof MeronymicImpl)
+		
+		if(cloned instanceof AssociationImpl)
 		{
-			Meronymic meronymic = (Meronymic) relationship; 
-			Meronymic meronymicCloned = (Meronymic) cloned;
+			Association association = (Association) relationship;
+			Association associationCloned = (Association) cloned;
 			
-			meronymicCloned.setIsShareable(meronymic.isIsShareable());
-			meronymicCloned.setIsEssential(meronymic.isIsEssential());
-			meronymicCloned.setIsInseparable(meronymic.isIsInseparable());
-			meronymicCloned.setIsImmutableWhole(meronymic.isIsImmutableWhole());
-			meronymicCloned.setIsImmutablePart(meronymic.isIsImmutablePart());
+			associationCloned.setName(association.getName());
+			associationCloned.setIsAbstract(association.isIsAbstract());
+			associationCloned.setVisibility(association.getVisibility());
+			
+			if(cloned instanceof MeronymicImpl)
+			{
+				Meronymic meronymic = (Meronymic) relationship; 
+				Meronymic meronymicCloned = (Meronymic) cloned;
+				
+				meronymicCloned.setIsShareable(meronymic.isIsShareable());
+				meronymicCloned.setIsEssential(meronymic.isIsEssential());
+				meronymicCloned.setIsInseparable(meronymic.isIsInseparable());
+				meronymicCloned.setIsImmutableWhole(meronymic.isIsImmutableWhole());
+				meronymicCloned.setIsImmutablePart(meronymic.isIsImmutablePart());
+			}
 		}
 		
 		return cloned;
@@ -317,7 +330,7 @@ public class ModelHelper {
 		}
 		return dataTypes;
 	}
-
+	
 	public static ChangeRecorder getChangeRecorder()
 	{
 		if (!initialized) {

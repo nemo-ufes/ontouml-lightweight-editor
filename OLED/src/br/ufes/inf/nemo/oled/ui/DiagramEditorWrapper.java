@@ -15,6 +15,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 
+import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 
 /** 
@@ -64,7 +65,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		return editor;
 	}
 	
-	public void showOutputText(String text, boolean clear)
+	public void showOutputText(String text, boolean clear, boolean showOutput)
 	{		
 		if(clear)
 		{
@@ -75,9 +76,11 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 			outputPane.apped(text);
 		}
 		
-		outputPane.setVisible(true);
-		
-		showOutput();
+		if(showOutput)
+		{
+			outputPane.setVisible(true);
+			showOutput();
+		}
 	}
 	
 	public void setModelFile(File modelFile) {
@@ -184,5 +187,10 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	@Override
 	public EditorNature getEditorNature() {
 		return editor.getEditorNature();
+	}
+
+	@Override
+	public Diagram getDiagram() {
+		return editor.getDiagram();
 	}
 }

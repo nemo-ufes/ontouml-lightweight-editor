@@ -88,9 +88,14 @@ public class Palette extends JPanel
 
 		elementMap.put(name, element);
 		content.add(element);
-		content.add(PaletteAccordion.getSpacer());
+		content.add(PaletteAccordion.getSpacer(0,1));
 	}
 
+	public void addSpacer(int width, int height)
+	{
+		content.add(PaletteAccordion.getSpacer(width, height));
+	}
+	
 	public void selectDefault()
 	{
 		elementMap.get("select").setSelected(true);

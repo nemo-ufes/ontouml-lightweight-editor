@@ -1,6 +1,7 @@
 
 package br.ufes.inf.nemo.oled.ui;
 
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +32,10 @@ public class DiagramEditorToolbar implements ActionListener {
     //diagramOptionsGroup = new ButtonGroup();
     
     toolbar.add(createButton(validationGroup, "showoutput"));
+    toolbar.addSeparator(new Dimension(10, 25));
     toolbar.add(createButton(validationGroup, "validate"));
+    toolbar.addSeparator(new Dimension(10, 25));
+    toolbar.add(createButton(validationGroup, "verifysettings")); 
     toolbar.add(createButton(validationGroup, "verify")); 
     toolbar.add(createButton(validationGroup, "verifyfile")); 
     

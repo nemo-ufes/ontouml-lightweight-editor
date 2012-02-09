@@ -33,8 +33,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -50,6 +52,8 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import refontouml2alloy.bts.simulation.SimulationAttribute;
+import refontouml2alloy.bts.simulation.SimulationElement;
 import RefOntoUML.Comment;
 import RefOntoUML.Dependency;
 import RefOntoUML.DirectedRelationship;
@@ -58,9 +62,12 @@ import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Namespace;
 import RefOntoUML.Package;
+import RefOntoUML.PackageableElement;
 import RefOntoUML.Relationship;
 import RefOntoUML.StringExpression;
 import RefOntoUML.VisibilityKind;
+import RefOntoUML.impl.NonRigidMixinClassImpl;
+import RefOntoUML.impl.SubstanceSortalImpl;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.Connection;
@@ -68,6 +75,7 @@ import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
+import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
@@ -75,9 +83,10 @@ import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.draw.NodeChangeListener;
 import br.ufes.inf.nemo.oled.draw.Selection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
-import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.shared.DiagramSelection;
+import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
  * This class implements the effective layout area. It shows the boundaries of
@@ -98,8 +107,10 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	private transient boolean gridVisible = true, snapToGrid = true, saveNeeded = true;
 	private transient Collection<LabelChangeListener> nameChangeListeners = new ArrayList<LabelChangeListener>();
 	private transient Set<NodeChangeListener> nodeChangeListeners = new HashSet<NodeChangeListener>();
+	private List<SimulationElement> simulationElements = new ArrayList<SimulationElement>();
+	private transient String tempDir;
+	private transient boolean generateTheme = true;
 	
-
 	/**
 	 * Writes the instance variables to the stream.
 	 * 
@@ -114,6 +125,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		stream.writeObject(connections);
 		stream.writeObject(nameLabel);
 		stream.writeObject(project);
+		stream.writeObject(simulationElements);
 	}
 
 	/**
@@ -134,14 +146,23 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		connections = (List<Connection>) stream.readObject();
 		nameLabel = (Label) stream.readObject();
 		project = (UmlProject) stream.readObject();
-
+		simulationElements = (List<SimulationElement>) stream.readObject();
+		
 		gridVisible = true;
 		snapToGrid = true;
 		saveNeeded = false;
 		nameChangeListeners = new ArrayList<LabelChangeListener>();
 		nodeChangeListeners = new HashSet<NodeChangeListener>();
+		generateTheme = true;		
+		
+		refreshSimulationElements();
 	}
 
+	private void refreshSimulationElements()
+	{
+		//TODO Implement this refreshSimulationElements()
+	}
+	
 	/**
 	 * Constructor.
 	 * 
@@ -225,6 +246,23 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	
 	public void setSaveNeeded(boolean saveNeeded) {
 		this.saveNeeded = saveNeeded;
+	}
+	
+	public String getTempDir()
+	{
+		if(tempDir == null)
+			tempDir = ConfigurationHelper.makeTempDir();
+		
+		return tempDir;
+	}
+	
+
+	public void setGenerateTheme(boolean generateTheme) {
+		this.generateTheme = generateTheme;
+	}
+
+	public boolean isGenerateTheme() {
+		return generateTheme;
 	}
 	
 	/**
@@ -618,6 +656,120 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		return project;
 	}
 
+	public List<SimulationElement> getSimulationElements() {
+		updateSimulationElements();
+		return simulationElements;
+	}
+
+	public void setSimulationElements(List<SimulationElement> simulationElements) {
+		this.simulationElements = simulationElements;
+	}
+
+	//Updates the SimulationElements list in order to include the newly added model elements
+	//and also define a random theme for them if they are identity providers
+	private void updateSimulationElements()
+	{
+		//We keep track of the new identity providers added to the model so we can 
+		//set their style properly
+		List<SimulationElement> newIdentityProviders = new ArrayList<SimulationElement>();
+		
+		//We keep track of the used attributes so we don't repeat (at least we try to)
+		Set<SimulationAttribute> usedAttributes = new HashSet<SimulationAttribute>();
+		
+		//We always iterate thru model items in case there are new items
+		for (PackageableElement element : project.getElements()) {
+			
+			SimulationElement existingElement = getSimulationElement(element);
+			
+			if(existingElement != null)
+			{
+				usedAttributes.add(existingElement.getColor());
+				usedAttributes.add(existingElement.getShape());
+			}
+			else
+			{
+				SimulationElement simulatioElement = new SimulationElement();
+				simulatioElement.setElement(element);
+				simulatioElement.setSimulate(true);
+				simulatioElement.setColor(SimulationAttribute.COLOR_INHERIT);
+				simulatioElement.setStyle(SimulationAttribute.STYLE_INHERIT);
+				simulatioElement.setShape(SimulationAttribute.SHAPE_INHERIT);
+				
+				if(element instanceof SubstanceSortalImpl || element instanceof NonRigidMixinClassImpl)
+					newIdentityProviders.add(simulatioElement);
+				
+				simulationElements.add(simulatioElement);
+			}
+		}
+		
+		if(newIdentityProviders.size() > 0)
+			defaultThemeForIdentityProvider(newIdentityProviders, usedAttributes);
+	}
+	
+	public SimulationElement getSimulationElement(PackageableElement element) {
+		
+		SimulationElement found = null;
+		for (SimulationElement entry : simulationElements) {
+			if(entry.getElementUUID().equals(ModelHelper.getUUIDFromElement(element)))
+				found = entry;
+		}
+		return found;
+	}
+
+	private void defaultThemeForIdentityProvider(List<SimulationElement> simulationElements, Set<SimulationAttribute> usedAttributes)
+	{
+		List<SimulationAttribute> defaultColors = new LinkedList<SimulationAttribute>();
+		
+		//defaultAttributes.add();
+		defaultColors.add(SimulationAttribute.COLOR_RED);
+		defaultColors.add(SimulationAttribute.COLOR_GREEN);
+		defaultColors.add(SimulationAttribute.COLOR_BLUE);
+		defaultColors.add(SimulationAttribute.COLOR_YELLOW);
+		defaultColors.add(SimulationAttribute.COLOR_GRAY);
+		
+		List<SimulationAttribute> defaultShapes = new LinkedList<SimulationAttribute>();
+		
+		defaultShapes.add(SimulationAttribute.SHAPE_CIRCLE);
+		defaultShapes.add(SimulationAttribute.SHAPE_TRAPEZIUM);
+		defaultShapes.add(SimulationAttribute.SHAPE_TRIANGLE);
+		defaultShapes.add(SimulationAttribute.SHAPE_DIAMOND);
+		defaultShapes.add(SimulationAttribute.SHAPE_OCTAGON);
+		defaultShapes.add(SimulationAttribute.SHAPE_DIAMOND);
+				
+		SimulationAttribute color;
+		SimulationAttribute shape;
+		
+		for (SimulationElement item : simulationElements) {
+			
+			color = getRandom(defaultColors, usedAttributes);
+			shape = getRandom(defaultShapes, usedAttributes);
+			
+			item.setColor(color);
+			item.setShape(shape);
+
+			usedAttributes.add(color);
+			usedAttributes.add(shape);
+		}
+	}
+	
+	private SimulationAttribute getRandom(List<SimulationAttribute> possibleAttributes, Set<SimulationAttribute> usedAttributes)
+	{
+		Random generator = new Random();
+		int tries = 0;
+		
+		while(tries < possibleAttributes.size())
+		{
+			SimulationAttribute attribute = possibleAttributes.get(generator.nextInt(possibleAttributes.size()));
+			if(!usedAttributes.contains(attribute))
+				return attribute;
+			else
+				tries++;
+		}
+		
+		//If all attributes are already used picks randomly one, repeating that one
+		return possibleAttributes.get(generator.nextInt(possibleAttributes.size()));
+	}
+	
 	@Override
 	public void unsetName() { }
 
@@ -948,4 +1100,5 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	@Override
 	public void eSetDeliver(boolean arg0) {
 	}
+
 }

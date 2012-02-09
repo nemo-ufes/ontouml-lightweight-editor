@@ -14,13 +14,17 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 
+import br.ufes.inf.nemo.oled.draw.Diagram;
+import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
+import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.IconLoader.IconType;
 import br.ufes.inf.nemo.oled.util.OLEDSettings;
-import br.ufes.inf.nemo.oled.util.OLEDSettings.Setting;
+import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.OurUtil;
 import edu.mit.csail.sdg.alloy4.Util;
+import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 import edu.mit.csail.sdg.alloy4viz.AlloyInstance;
 import edu.mit.csail.sdg.alloy4viz.AlloyType;
@@ -44,20 +48,25 @@ public class InstanceVisualizer extends JPanel implements Editor{
 	private JPopupMenu projectionPopup;
 	private JButton projectionButton, nextButton;
 	private int fontSize = 12;
-
-    private	A4Solution currentSolution;
+	private StructureDiagram diagram; 
+    private	A4Solution solution;
+    private Module module;
+    private ConstMap<String, String> alloySources;
 	
-	public InstanceVisualizer(A4Solution solution) {
+	public InstanceVisualizer(StructureDiagram diagram, A4Solution solution, Module module, ConstMap<String, String> alloyMap) {
 
 		super();
 
-		currentSolution = solution;
-		 
+		this.diagram = diagram;		
+		this.solution = solution;
+		this.module = module;
+		this.alloySources = alloyMap;
+		
 		initGUI();
 		
 		loadSolution();
 	}
-	
+
 	public void initGUI() {
 
 		this.setLayout(new BorderLayout());
@@ -102,11 +111,12 @@ public class InstanceVisualizer extends JPanel implements Editor{
 		
 		try {
 			
-			A4Solution newSolution = currentSolution.next();
+			A4Solution newSolution = solution.next();
 			
 			if(newSolution.satisfiable())
 			{
-				currentSolution = newSolution;
+				solution = newSolution;
+				
 				loadSolution();
 			}
 			
@@ -116,31 +126,38 @@ public class InstanceVisualizer extends JPanel implements Editor{
 		}
 		
 	}
-
-	private void loadSolution() {
-		
+    
+	public void loadSolution() {
+			
 		AlloyInstance myInstance;
 		
-		String fileName = OLEDSettings.getInstance().getSetting(Setting.SIMULATION_SOLUTION_FILE);
-		String canonicalFileName = Util.canon(fileName);
+		String solutionFileName = ConfigurationHelper.getCanonPath(diagram.getTempDir() , OLEDSettings.SIMULATION_SOLUTION_FILE.getValue());
+		String themeFileName = ConfigurationHelper.getCanonPath(diagram.getTempDir(), OLEDSettings.SIMULATION_THEME_FILE.getValue());
 		
-		File file = new File(canonicalFileName);
+		File solutionFile = new File(solutionFileName);
+		solutionFile.deleteOnExit();
+		
+		File themeFile = new File(themeFileName);
+		themeFile.deleteOnExit();
 		
 		try {
 		
-			currentSolution.writeXML(canonicalFileName);
-		
-			myInstance = StaticInstanceReader.parseInstance(file);
+			solution.writeXML(null, solutionFileName, module.getAllFunc(), alloySources);
+			
+			myInstance = StaticInstanceReader.parseInstance(solutionFile);
 			
 			if (myState == null)
 				myState = new VizState(myInstance);
 			else
 				myState.loadInstance(myInstance);
-	
+				
+			myState.loadPaletteXML(themeFileName);
+			
 			loadProjectionPopup();
 		
 		} catch (Err e) {
-			
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -154,6 +171,7 @@ public class InstanceVisualizer extends JPanel implements Editor{
 		}
 		
 		projectionPopup.removeAll();
+		
 		/*for (AlloyType type : myState.getProjectedTypes()) {
 			myState.deproject(type);
 		}*/
@@ -294,7 +312,36 @@ public class InstanceVisualizer extends JPanel implements Editor{
 
 	@Override
 	public EditorNature getEditorNature() {
-		return EditorNature.ALLOY_SIMULATION;
+		return EditorNature.INSTANCE_VISUALIZER;
+	}
+	
+	@Override
+	public Diagram getDiagram() {
+		return diagram;
+	}
+	
+	public A4Solution getSolution() {
+		return solution;
+	}
+
+	public void setSolution(A4Solution solution) {
+		this.solution = solution;
+	}
+
+	public Module getModule() {
+		return module;
+	}
+
+	public void setModule(Module module) {
+		this.module = module;
+	}
+
+	public ConstMap<String, String> getAlloySources() {
+		return alloySources;
+	}
+
+	public void setAlloySources(ConstMap<String, String> alloySources) {
+		this.alloySources = alloySources;
 	};
 
 }

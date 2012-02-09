@@ -65,6 +65,7 @@ public final class IconLoader {
 		NOTE_CONNECTOR, 
 		SHOW_OUTPUT,
 		VALIDATE, 
+		VERIFY_SETTINGS,
 		VERIFY, 
 		VERIFY_FILE,
 		VIEW,
@@ -118,6 +119,7 @@ public final class IconLoader {
 		
 		urlMap.put(IconType.SHOW_OUTPUT, "resources/br/ufes/inf/nemo/oled/ui/output.png");
 		urlMap.put(IconType.VALIDATE, "resources/br/ufes/inf/nemo/oled/ui/validate.png");
+		urlMap.put(IconType.VERIFY_SETTINGS, "resources/br/ufes/inf/nemo/oled/ui/verifysettings.png");
 		urlMap.put(IconType.VERIFY, "resources/br/ufes/inf/nemo/oled/ui/verify.png");
 		urlMap.put(IconType.VERIFY_FILE, "resources/br/ufes/inf/nemo/oled/ui/verifyfile.png");
 		urlMap.put(IconType.VIEW, "resources/br/ufes/inf/nemo/oled/ui/view.png");

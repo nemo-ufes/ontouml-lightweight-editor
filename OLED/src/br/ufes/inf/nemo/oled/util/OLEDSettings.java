@@ -1,36 +1,54 @@
 package br.ufes.inf.nemo.oled.util;
 
+import java.util.Properties;
 
-public class OLEDSettings {
-
-	public enum Setting
-	{
-		SIMULATION_DEFAULT_FILE,
-		SIMULATION_SOLUTION_FILE
-	}
+public enum OLEDSettings {
 	
-	private static OLEDSettings instance = new OLEDSettings();
-	//private Map<IconType, String> settingMap = new HashMap<IconType, String>();
-	
-	/**
-	 * Private constructor to enforce Singleton.
-	 */
-	private OLEDSettings() { }
-
-	/**
-	 * Returns the singleton instance.
-	 * @return the singleton instance
-	 */
-	public static OLEDSettings getInstance() { return instance; }
-	
-	public String getSetting(Setting setting)
-	{
-		if(setting == Setting.SIMULATION_DEFAULT_FILE)
-			return "simulation.als";
-		else if(setting == Setting.SIMULATION_SOLUTION_FILE)
-			return "solution_output.xml";
+	USER_LOCALE("USER_LOCALE", "en-US"),
+	SIMULATION_DEFAULT_FILE("SIMULATION_DEFAULT_FILE", "simulation.als"),
+	SIMULATION_THEME_FILE("SIMULATION_SOLUTION_FILE", "simulation.thm"),
+	SIMULATION_SOLUTION_FILE("SIMULATION_SOLUTION_FILE", "solution_output.xml"),
+	OLED_SETTINGS_FILE("OLED_SETTINGS_FILE", "cnf.xml");
 		
-		return null;
+	private final String propertyKey;
+	private final String defaultValue;
+	
+	private OLEDSettings(String propertyKey, String defaultValue) {
+		this.propertyKey = propertyKey;
+		this.defaultValue = defaultValue;
 	}
 
+	public String getPropertyKey() {
+		return this.propertyKey;
+	}
+
+	public String getDefaultValue() {
+		return this.defaultValue;
+	}
+
+	public String getValue() {
+		Properties properties = ConfigurationHelper.getProperties();
+		if(properties != null)
+			return properties.getProperty(getPropertyKey(), getDefaultValue());
+		
+		return getDefaultValue();
+	}
+	
+	public void setValue(String value) {
+		Properties properties = ConfigurationHelper.getProperties();
+		if(properties != null)
+			properties.put(getPropertyKey(), value);
+	}
+	
+	public int getIntValue()
+	{
+		String value = getValue();
+		return Integer.parseInt(value);
+	}
+	
+	public boolean getBoolValue()
+	{
+		String value = getValue();
+		return Boolean.parseBoolean(value);
+	}
 }
