@@ -31,6 +31,7 @@ public class PaletteAccordion extends JPanel{
 	private JPanel topTitles;
 	private JPanel bottomTitles;
 
+	private static int PALLETE_VSPACE = 20;
 	private static Border resetBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
 	private static Color resetBackground = null;
 
@@ -127,17 +128,22 @@ public class PaletteAccordion extends JPanel{
 	{
 		Palette palette =  new Palette(this, "Classes");
 		palette.createElement("staticpalette.classes", "select");
+		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.classes", "kind");
 		palette.createElement("staticpalette.classes", "quantity");
 		palette.createElement("staticpalette.classes", "collective");
 		palette.createElement("staticpalette.classes", "subkind");
+		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.classes", "phase");
 		palette.createElement("staticpalette.classes", "role");
+		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.classes", "category");
 		palette.createElement("staticpalette.classes", "rolemixin");
 		palette.createElement("staticpalette.classes", "mixin");
+		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.classes", "mode");
 		palette.createElement("staticpalette.classes", "relator");
+		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.classes", "datatype");
 		
 		palette.addCommandListener(editorDispatcher);
@@ -152,17 +158,22 @@ public class PaletteAccordion extends JPanel{
 	{
 		Palette palette =  new Palette(this, "Relationships");
 		palette.createElement("staticpalette.relations", "select");
+		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.relations", "generalization");
+		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.relations", "material");
 		palette.createElement("staticpalette.relations", "formal");
+		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.relations", "characterization");
 		palette.createElement("staticpalette.relations", "mediation");
 		palette.createElement("staticpalette.relations", "derivation");
-		palette.createElement("staticpalette.relations", "datatyperelationship");
+		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.relations", "componentof");
 		palette.createElement("staticpalette.relations", "memberof");	
 		palette.createElement("staticpalette.relations", "subcollectionof");
 		palette.createElement("staticpalette.relations", "subquantityof");
+		palette.addSpacer(0,PALLETE_VSPACE);
+		palette.createElement("staticpalette.relations", "datatyperelationship");
 		
 		palette.addCommandListener(editorDispatcher);
 
@@ -252,7 +263,7 @@ public class PaletteAccordion extends JPanel{
 		return unselectedPaletteBackground;
 	}
 
-	public static Component getSpacer() {
-		return Box.createRigidArea(new Dimension(0,1));
+	public static Component getSpacer(int width, int height) {
+		return Box.createRigidArea(new Dimension(width, height));
 	}	
 }

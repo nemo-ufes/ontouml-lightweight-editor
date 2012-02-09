@@ -780,6 +780,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		for (EditorStateListener l : editorListeners) {
 			l.stateChanged(this, changeType);
 		}
+		
 		repaint();
 		
 		if(changeType == ChangeType.ELEMENTS_REMOVED || (changeType == ChangeType.ELEMENTS_ADDED && notificationType == NotificationType.UNDO))

@@ -57,6 +57,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 
 		pack();
 		initSelectorMap();
+		
 	}
 
 	/**
@@ -188,11 +189,14 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 * Quits the application without confirmation.
 	 * */
 	public void quitApplication() {
-		if (canQuit()) {
+		if (canQuit()) {		
 			statusBar.getTimer().cancel();
 			statusBar.getTimer().purge();
 			dispose();
 			Thread.currentThread().interrupt();
+			
+			System.gc();
+			Runtime.getRuntime().exit(0);
 		}
 	}
 

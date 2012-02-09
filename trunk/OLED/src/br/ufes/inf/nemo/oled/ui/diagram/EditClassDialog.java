@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -55,7 +56,7 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class EditClassDialog extends javax.swing.JDialog {
+public class EditClassDialog extends JDialog {
 
 	private static final long serialVersionUID = -6707497708908105957L;
 	private JButton attributeAddButton;

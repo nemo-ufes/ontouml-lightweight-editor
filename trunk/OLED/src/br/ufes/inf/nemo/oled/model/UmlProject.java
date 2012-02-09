@@ -56,7 +56,7 @@ public class UmlProject implements Serializable {
 	private transient Resource resource;
 	private List<UmlDiagram> diagrams = new ArrayList<UmlDiagram>();
 	private transient boolean saveNeeded = false;
-	
+
 	public UmlProject() {
 		super();
 		

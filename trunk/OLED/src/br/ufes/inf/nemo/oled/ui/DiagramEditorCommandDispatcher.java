@@ -241,28 +241,14 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("VALIDATE_MODEL", new MethodCall(
 					getClass().getMethod("validateModel")));
 			
+			selectorMap.put("VERIFY_SETTINGS", new MethodCall(
+					getClass().getMethod("verifySettings")));
+			
 			selectorMap.put("VERIFY_MODEL", new MethodCall(
 			getClass().getMethod("verifyModel")));
 			
 			selectorMap.put("VERIFY_MODEL_FILE", new MethodCall(
 					getClass().getMethod("verifyModelFile")));
-			
-			//selectorMap.put("CREATE_DEPENDENCY", new MethodCall(
-			//		DiagramEditor.class.getMethod("setCreateConnectionMode",
-			//				RelationType.class), RelationType.DEPENDENCY));
-			
-			//selectorMap.put("CREATE_COMPOSITION", new MethodCall(
-			//		DiagramEditor.class.getMethod("setCreateConnectionMode",
-			//				RelationType.class), RelationType.COMPOSITION));
-			
-			//selectorMap.put("CREATE_AGGREGATION", new MethodCall(
-			//		DiagramEditor.class.getMethod("setCreateConnectionMode",
-			//				RelationType.class), RelationType.AGGREGATION));
-						
-			//selectorMap.put("CREATE_INTERFACE_REALIZATION", new MethodCall(
-			//		DiagramEditor.class.getMethod("setCreateConnectionMode",
-			//				RelationType.class), RelationType.INTERFACE_REALIZATION));
-			
 			
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
@@ -292,6 +278,10 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	
 	public void validateModel() {
 		manager.validateCurrentModel();
+	}
+	
+	public void verifySettings() {
+		manager.verificationSettings();
 	}
 	
 	public void verifyModel() {

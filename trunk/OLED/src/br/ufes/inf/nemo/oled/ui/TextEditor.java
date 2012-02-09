@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import br.ufes.inf.nemo.oled.draw.Diagram;
+
 public class TextEditor extends JPanel implements Editor {
 
 	private static final long serialVersionUID = -1832428183354138999L;
@@ -55,6 +57,11 @@ public class TextEditor extends JPanel implements Editor {
 	@Override
 	public EditorNature getEditorNature() {
 		return EditorNature.TEXT;
+	}
+
+	@Override
+	public Diagram getDiagram() {
+		return null;
 	}
 		
 }

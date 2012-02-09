@@ -64,16 +64,19 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorMouseEvent;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorStateListener;
 import br.ufes.inf.nemo.oled.ui.diagram.SelectionListener;
+import br.ufes.inf.nemo.oled.ui.diagram.VerificationSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ColorPalette;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
-import br.ufes.inf.nemo.oled.util.OLEDSettings;
-import br.ufes.inf.nemo.oled.util.OLEDSettings.Setting;
+import br.ufes.inf.nemo.oled.util.OperationResult;
+import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.oled.util.ValidationHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
+import edu.mit.csail.sdg.alloy4.ConstMap;
+import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 
 /**
@@ -110,6 +113,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		});
 		
 		ModelHelper.initializeHelper();
+		
 	}
 
 	/**
@@ -374,8 +378,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			public void labelTextChanged(Label label) {
 				
 				//TODO Write a command for this
-				DiagramManager.this.setTitleAt(DiagramManager.this.indexOfComponent(comp),
-						label.getNameLabelText());
+				DiagramManager.this.setTitleAt(DiagramManager.this.indexOfComponent(comp), label.getNameLabelText());
 
 				DiagramManager.this.updateUI();
 			}
@@ -486,7 +489,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			return editor.getProject();
 		return null;
 	}
-	
+		
 	/**
 	 * Gets the wrapper for the selected DiagramEditor
 	 * @return {@link UmlProject} the project
@@ -532,43 +535,93 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Semantically validate the current model (the model behind the current DiagramEditor).
 	 */
 	public void validateCurrentModel() {
-		UmlProject project = ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor().getProject();
+		UmlProject project = getCurrentEditor().getProject();
 		String validationResult = ValidationHelper.validateModel(project.getModel());
-		((DiagramEditorWrapper) this.getSelectedComponent()).showOutputText(validationResult, true);
+		((DiagramEditorWrapper) this.getSelectedComponent()).showOutputText(validationResult, true, true);
 	}
 	
+
 	/**
-	 * Verify the current model (the model behind the current DiagramEditor) using simulation with Alloy.
+	 * Shows a dialog for choosing the elements to simulate and the style settings 
 	 */
+	public void verificationSettings() {
+		VerificationSettingsDialog dialog = new VerificationSettingsDialog(frame, this, true);
+		dialog.setLocationRelativeTo(frame);
+		dialog.setVisible(true);
+	}	
+	
+	/**
+	 * Simulate the selected model elements using Alloy.
+	 */
+	@SuppressWarnings("unchecked")
 	public void verifyCurrentModel() {
 		
 		UmlProject project = getCurrentEditor().getProject();
-
-		A4Solution solution = VerificationHelper.verifyModel(project.getModel());
+		StructureDiagram diagram = getCurrentEditor().getDiagram();
 		
-		if(solution != null)
+		OperationResult result = VerificationHelper.verifyModel(project.getModel(), diagram.getSimulationElements(), diagram.getTempDir(), diagram.isGenerateTheme());
+		
+		if(result.getResultType() != ResultType.ERROR)
 		{
-			this.add("Verification Output", new InstanceVisualizer(solution));
+			getCurrentWrapper().showOutputText(result.toString(), true, false); 
+			
+			A4Solution solution = (A4Solution) result.getData()[0];
+			Module module = (Module) result.getData()[1];
+			ConstMap<String, String> alloySources = (ConstMap<String, String>) result.getData()[2];
+			
+			showModelInstances(diagram, solution, module, alloySources);
 		}
 		else
 		{
-			getCurrentWrapper().showOutputText("No instance found.", true); //TODO Localize this message
-		}	
+			getCurrentWrapper().showOutputText(result.toString(), true, true); 
+		}
 	}
 
+	private void showModelInstances(StructureDiagram diagram, A4Solution solution, Module module, ConstMap<String, String> alloySources)
+	{
+		int totalTabs = getTabCount();
+		for(int i = 0; i < totalTabs; i++)
+		{
+			if(getComponentAt(i) instanceof InstanceVisualizer)
+			{
+				InstanceVisualizer visualizer = (InstanceVisualizer) getComponentAt(i);
+				
+				if(visualizer.getDiagram() == diagram)
+				{
+					visualizer.setSolution(solution);
+					visualizer.setModule(module);
+					visualizer.setAlloySources(alloySources);
+					visualizer.loadSolution();
+					setSelectedIndex(i);
+					return;
+				}
+			}
+		}
+		//TODO Localize this;
+		this.add("Verification Output", new InstanceVisualizer(diagram, solution, module, alloySources)); 
+	}
+	
+	@SuppressWarnings("unchecked")
 	public void verifyCurrentModelFile() {
 
-		String fileName = OLEDSettings.getInstance().getSetting(Setting.SIMULATION_DEFAULT_FILE);
-		A4Solution solution = VerificationHelper.verifyModelFromAlloyFile(fileName);
+		StructureDiagram diagram = getCurrentEditor().getDiagram();
 		
-		if(solution != null)
+		OperationResult result = VerificationHelper.verifyModelFromAlloyFile(diagram.getTempDir());
+		
+		if(result.getResultType() != ResultType.ERROR)
 		{
-			this.add("Verification Output", new InstanceVisualizer(solution));
+			getCurrentWrapper().showOutputText(result.toString(), true, false); 
+			
+			A4Solution solution = (A4Solution) result.getData()[0];
+			Module module = (Module) result.getData()[1];
+			ConstMap<String, String> alloySources = (ConstMap<String, String>) result.getData()[2];
+			
+			showModelInstances(diagram, solution, module, alloySources);
 		}
 		else
 		{
-			getCurrentWrapper().showOutputText("No instance found.", true); //TODO Localize this message
-		}	
+			getCurrentWrapper().showOutputText(result.toString(), true, true); 
+		}
 	}
 
 	
@@ -727,5 +780,5 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				}
 			}
 		};
-	}	
+	}
 }

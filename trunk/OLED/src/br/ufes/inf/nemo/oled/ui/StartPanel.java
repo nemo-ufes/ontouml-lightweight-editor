@@ -38,12 +38,26 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.IconLoader.IconType;
 
 
+
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
 /**
 * This class provides a start screen for the application
 * 
@@ -98,6 +112,7 @@ public class StartPanel extends JPanel implements Editor {
 					buttonsPanel.setBackground(new java.awt.Color(255,255,255));
 					{
 						headLabel = new JLabel();
+						headLabel.setSize(384, 90);
 						headLabel.setIcon(IconLoader.getInstance().getIcon(IconType.HEAD_WELCOME));
 					}
 					{
@@ -123,7 +138,7 @@ public class StartPanel extends JPanel implements Editor {
 						        .addComponent(communityButton, GroupLayout.Alignment.LEADING, 0, 182, Short.MAX_VALUE)))
 						.addComponent(headLabel, GroupLayout.Alignment.LEADING, 0, 384, Short.MAX_VALUE));
 					buttonsPanelLayout.setVerticalGroup(buttonsPanelLayout.createSequentialGroup()
-						.addComponent(headLabel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+						.addComponent(headLabel, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 						.addGap(26)
 						.addGroup(buttonsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 						    .addComponent(newProjectButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
@@ -282,6 +297,11 @@ public class StartPanel extends JPanel implements Editor {
 	@Override
 	public EditorNature getEditorNature() {
 		return EditorNature.READ_ONLY;
+	}
+
+	@Override
+	public Diagram getDiagram() {
+		return null;
 	}
 
 }

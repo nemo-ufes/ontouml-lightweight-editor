@@ -34,12 +34,29 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * Features TO-DO
  * ======================================================
  * 
+ * Implementar tema
+ * 
+ * Tela para seleção de entidades na simulação e das cores no tema
+ * 
+ * Descição do ultimo comando executado na barra de status 
+ * 
+ * Retornar texto na simulação, para ser exibido no output pane
+ * 
  * Implementar associação entre relações
  * Implantar o reposicionamento de labels
  * Permitir auto-relacionamentos
  * Funcionalidade Copiar/Colar
  * Tela Sobre (About) 
  * 
+ *  
+ * Abrir geraçao de OWL no editor de Texto. Implementar Salvar como? Mas sem fazer, desfazer.
+ * Botão para determinar o tipo da conexão Retilinear ou direta.
+ * Atualizar nome do aruivo na aba?
+ * 
+ * 
+ * Atalho para criação de generalization set
+ * 
+ *  
  * 
  * Antes do release
  * ======================================================
@@ -57,16 +74,30 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * 
  * Problemas conhecidos
  * ======================================================
- *  
+ * 
+ * - Aberto : o temp dir do diagrama não está sendo excluído automaticamente
+ * - Aberto : A A4Solution não está sendo gerada com o skolem $visible e 
+ * 			: logo não está implementando a associação visible
+ * 
+ * - Aberto : Tratar a simulação quando a geração de alloy retorna vazia
+ * - Aberto : Nomes das associações não estão aparecendo
+ * 		 	  Connection name labels não estão sendo renderizadas?
+ * - Aberto : Redimensionamento do canvas não está respeitando a posição dos nodos
  * - Aberto : Classes não estão redimensionando bem
  * 			: Só está acontecendo quando a opção snap to grid está habilitada
  * - Aberto : Ordenação dos atributos nas propriedades da classe não é respeitada  
  * - Aberto : Incluir os atributos das relações meronimicas na label da relação
- * - Aberto : Tratar os eventos de mudança nas abas do editor para atualizar o redo/undo
  * - Aberto : Habilitar o clique com shift para selecionar ou desselecionar o elemento
- * - Aberto : Tratar a simulação quando a geração de alloy retorna vazia
+ * - Aberto : Ao fazer Undo/Redo algumas ações não tem efeito aparente - Ver linehandler
+ * 			  Isso acontece pois o clique está sendo tratado como um comando de mover / redimensionar com nenhuma modificação.
+ * 			  Como saber se o usuário está movendo, redimensionando ou selecionando os nodes? O SelectionHandler informará isso.
+ * 		      Selecionando = node selecionado ou não posicao do click release igual posição inicial
+ * 			  Movendo = node previamente selecionado, posicao do click release diferente da posição inicial
+ * 			  Redimensionando = node previamente selecionado...
  * 
+ * - Aberto : Transformação para Alloy não está gerando Quantity/SubQuantity
  * 
+ * - OK : Tratar os eventos de mudança nas abas do editor para atualizar o redo/undo
  * - OK : Setas do output pane não estão funcionando
  * - OK : Erro ao transferir dados na janela de edição de classe (invalid cast) 
  * - OK : Erro na geração de alloy (Bernardo) quando uma category (mixin) é supertipo
@@ -77,11 +108,6 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * - OK : Renomear itens de menu para open project e save project
  * - OK : Redimensionar tamanho inicial da janela principal para acomodar resolções 1024x768
  * - OK : Undo/Redo para ações visuais como redimensionamento não estão funcionando bem
- * - Aberto para relações Ver linehandler : Ao fazer Undo/Redo algumas ações não tem efeito aparente - Isso acontece pois o clique está sendo tratado como um comando de mover / redimensionar com nenhuma modificação.
- * 		: Como saber se o usuário está movendo, redimensionando ou selecionando os nodes? O SelectionHandler informará isso.
- * 		: Selecionando = node selecionado ou não posicao do click release igual posição inicial
- * 		: Movendo = node previamente selecionado, posicao do click release diferente da posição inicial
- * 		: Redimensionando = node previamente selecionado...
  * 
  */
 
