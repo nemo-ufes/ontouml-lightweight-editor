@@ -74,14 +74,14 @@ public final class SimulationAttibuteIconLoader {
 		urlMap.put(SimulationAttribute.SHAPE_HEXAGON, "resources/br/ufes/inf/nemo/oled/ui/simulation/hexagon.gif");
 		urlMap.put(SimulationAttribute.SHAPE_HOUSE, "resources/br/ufes/inf/nemo/oled/ui/simulation/house.gif");
 		urlMap.put(SimulationAttribute.SHAPE_INVHOUSE, "resources/br/ufes/inf/nemo/oled/ui/simulation/invhouse.gif");
-		urlMap.put(SimulationAttribute.SHAPE_INVTRAPEZIUM, "resources/br/ufes/inf/nemo/oled/ui/simulation/invtrapezium.gif");
+		urlMap.put(SimulationAttribute.SHAPE_INVTRAPEZOID, "resources/br/ufes/inf/nemo/oled/ui/simulation/invtrapezium.gif");
 		urlMap.put(SimulationAttribute.SHAPE_INVTRIANGLE, "resources/br/ufes/inf/nemo/oled/ui/simulation/invtriangle.gif");
-		urlMap.put(SimulationAttribute.SHAPE_MCIRCLE, "resources/br/ufes/inf/nemo/oled/ui/simulation/Mcircle.gif");
-		urlMap.put(SimulationAttribute.SHAPE_MDIAMOND, "resources/br/ufes/inf/nemo/oled/ui/simulation/Mdiamond.gif");
-		urlMap.put(SimulationAttribute.SHAPE_MSQUARE, "resources/br/ufes/inf/nemo/oled/ui/simulation/Msquare.gif");
+		urlMap.put(SimulationAttribute.SHAPE_LINEDCIRCLE, "resources/br/ufes/inf/nemo/oled/ui/simulation/Mcircle.gif");
+		urlMap.put(SimulationAttribute.SHAPE_LINEDDIAMOND, "resources/br/ufes/inf/nemo/oled/ui/simulation/Mdiamond.gif");
+		urlMap.put(SimulationAttribute.SHAPE_LINEDSQUARE, "resources/br/ufes/inf/nemo/oled/ui/simulation/Msquare.gif");
 		urlMap.put(SimulationAttribute.SHAPE_OCTAGON, "resources/br/ufes/inf/nemo/oled/ui/simulation/octagon.gif");
 		urlMap.put(SimulationAttribute.SHAPE_PARALLELOGRAM, "resources/br/ufes/inf/nemo/oled/ui/simulation/parallelogram.gif");
-		urlMap.put(SimulationAttribute.SHAPE_TRAPEZIUM, "resources/br/ufes/inf/nemo/oled/ui/simulation/trapezium.gif");
+		urlMap.put(SimulationAttribute.SHAPE_TRAPEZOID, "resources/br/ufes/inf/nemo/oled/ui/simulation/trapezium.gif");
 		urlMap.put(SimulationAttribute.SHAPE_TRIANGLE, "resources/br/ufes/inf/nemo/oled/ui/simulation/triangle.gif");
 		urlMap.put(SimulationAttribute.SHAPE_TRIPLEOCTAGON, "resources/br/ufes/inf/nemo/oled/ui/simulation/tripleoctagon.gif");
 		
@@ -124,14 +124,14 @@ public final class SimulationAttibuteIconLoader {
 		list.add(SimulationAttribute.SHAPE_HEXAGON);
 		list.add(SimulationAttribute.SHAPE_HOUSE);
 		list.add(SimulationAttribute.SHAPE_INVHOUSE);
-		list.add(SimulationAttribute.SHAPE_INVTRAPEZIUM);
+		list.add(SimulationAttribute.SHAPE_INVTRAPEZOID);
 		list.add(SimulationAttribute.SHAPE_INVTRIANGLE);
-		list.add(SimulationAttribute.SHAPE_MCIRCLE);
-		list.add(SimulationAttribute.SHAPE_MDIAMOND);
-		list.add(SimulationAttribute.SHAPE_MSQUARE);
+		list.add(SimulationAttribute.SHAPE_LINEDCIRCLE);
+		list.add(SimulationAttribute.SHAPE_LINEDDIAMOND);
+		list.add(SimulationAttribute.SHAPE_LINEDSQUARE);
 		list.add(SimulationAttribute.SHAPE_OCTAGON);
 		list.add(SimulationAttribute.SHAPE_PARALLELOGRAM);
-		list.add(SimulationAttribute.SHAPE_TRAPEZIUM);
+		list.add(SimulationAttribute.SHAPE_TRAPEZOID);
 		list.add(SimulationAttribute.SHAPE_TRIANGLE);
 		list.add(SimulationAttribute.SHAPE_TRIPLEOCTAGON);
 			

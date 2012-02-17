@@ -39,7 +39,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		Dimension size = new Dimension(1000, 648);
-		Dimension minimumSize = new Dimension(700, 570);
+		Dimension minimumSize = new Dimension(700, 650);
 		this.setSize(size);
 		this.setPreferredSize(size);
 		this.setMinimumSize(minimumSize);
@@ -57,7 +57,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 
 		pack();
 		initSelectorMap();
-		
 	}
 
 	/**
@@ -190,6 +189,9 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 * */
 	public void quitApplication() {
 		if (canQuit()) {		
+			
+			diagramManager.dispose();
+			
 			statusBar.getTimer().cancel();
 			statusBar.getTimer().purge();
 			dispose();

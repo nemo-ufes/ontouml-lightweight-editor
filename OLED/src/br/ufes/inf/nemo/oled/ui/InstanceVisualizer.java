@@ -342,6 +342,11 @@ public class InstanceVisualizer extends JPanel implements Editor{
 
 	public void setAlloySources(ConstMap<String, String> alloySources) {
 		this.alloySources = alloySources;
+	}
+
+	@Override
+	public void dispose() {
+		
 	};
 
 }

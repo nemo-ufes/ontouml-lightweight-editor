@@ -969,4 +969,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		return diagram.getProject().isSaveModelNeeded() || diagram.isSaveNeeded();
 	}
 
+	@Override
+	public void dispose() {
+		
+	}
+
 }

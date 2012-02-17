@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
+import br.ufes.inf.nemo.oled.util.OLEDSettings;
 
 /**
  * Reads a model from a file. Models are stored and retrieved using
@@ -79,14 +80,14 @@ public final class ProjectReader extends FileHandler {
 		ZipEntry entry;
 		while(entries.hasMoreElements()) {
 			entry = entries.nextElement();
-			if(entry.getName().equals(getFileName(FileType.MODEL)) && !modelLoaded)
+			if(entry.getName().equals(OLEDSettings.MODEL.getValue()) && !modelLoaded)
 			{
 				InputStream in = inFile.getInputStream(entry);
 				resource.load(in, Collections.EMPTY_MAP);
 				in.close();
 				modelLoaded = true;
 			}
-			else if (entry.getName().equals(getFileName(FileType.PROJECT)) && !projectLoaded)
+			else if (entry.getName().equals(OLEDSettings.PROJECT.getValue()) && !projectLoaded)
 			{
 				InputStream in = inFile.getInputStream(entry);
 				ObjectInputStream oin = new ObjectInputStream(in);

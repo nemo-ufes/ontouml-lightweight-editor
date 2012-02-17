@@ -31,16 +31,22 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.LayoutStyle;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
+import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.IconLoader.IconType;
 
@@ -71,6 +77,10 @@ public class StartPanel extends JPanel implements Editor {
 	private JPanel contentPanel;
 	private JButton openProjectButton;
 	private JButton learnOntoUMLButton;
+	private JPanel recentPanel;
+	private JList recentList;
+	private JScrollPane recentScroll;
+	private JLabel recentLabel;
 	private JButton communityButton;
 	private JButton newProjectButton;
 	private JLabel headLabel;
@@ -86,14 +96,19 @@ public class StartPanel extends JPanel implements Editor {
 		super();
 		this.commandListener = commandDispatcher;
 		initGUI();
+		populateRecentProjects();
 	}
 	
+	private void populateRecentProjects() {
+		recentList.setModel(new DefaultComboBoxModel(ConfigurationHelper.getRecentProjects()));
+	}
+
 	//Builds the UI
 	private void initGUI() {
 		try {
 			BorderLayout thisLayout = new BorderLayout();
 			this.setLayout(thisLayout);
-			this.setPreferredSize(new Dimension(450, 300));
+			this.setPreferredSize(new java.awt.Dimension(450, 393));
 			{
 				contentPanel = new JPanel();
 				this.add(contentPanel, BorderLayout.CENTER);
@@ -102,18 +117,37 @@ public class StartPanel extends JPanel implements Editor {
 				contentPanelLayout.setVgap(50);
 				contentPanel.setLayout(contentPanelLayout);
 				contentPanel.setBackground(new java.awt.Color(255,255,255));
-				contentPanel.setPreferredSize(new java.awt.Dimension(450, 300));
+				contentPanel.setPreferredSize(new java.awt.Dimension(450, 392));
 				{
 					buttonsPanel = new JPanel();
-					GroupLayout buttonsPanelLayout = new GroupLayout((JComponent)buttonsPanel);
 					contentPanel.add(buttonsPanel);
+					GroupLayout buttonsPanelLayout = new GroupLayout((JComponent)buttonsPanel);
 					buttonsPanel.setLayout(buttonsPanelLayout);
-					buttonsPanel.setPreferredSize(new java.awt.Dimension(384, 218));
+					buttonsPanel.setPreferredSize(new java.awt.Dimension(384, 312));
 					buttonsPanel.setBackground(new java.awt.Color(255,255,255));
 					{
 						headLabel = new JLabel();
 						headLabel.setSize(384, 90);
 						headLabel.setIcon(IconLoader.getInstance().getIcon(IconType.HEAD_WELCOME));
+					}
+					{
+						recentPanel = new JPanel();
+						BorderLayout recentPanelLayout = new BorderLayout();
+						recentPanel.setLayout(recentPanelLayout);
+						recentPanel.setBackground(new java.awt.Color(255,255,255));
+						{
+							recentScroll = new JScrollPane();
+							recentPanel.add(recentScroll, BorderLayout.CENTER);
+							recentScroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+							{
+								recentList = new JList();
+								recentScroll.setViewportView(recentList);
+							}
+						}
+					}
+					{
+						recentLabel = new JLabel();
+						recentLabel.setText("Open Recent:");
 					}
 					{
 						learnOntoUMLButton = createStartButton("learnontouml");
@@ -127,26 +161,70 @@ public class StartPanel extends JPanel implements Editor {
 					{
 						newProjectButton = createStartButton("newproject");
 					}
+
+					/*
+					 
+					 
 					buttonsPanelLayout.setHorizontalGroup(buttonsPanelLayout.createParallelGroup()
-						.addGroup(buttonsPanelLayout.createSequentialGroup()
-						    .addGroup(buttonsPanelLayout.createParallelGroup()
-						        .addComponent(newProjectButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
-						        .addComponent(learnOntoUMLButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE))
-						    .addGap(22)
-						    .addGroup(buttonsPanelLayout.createParallelGroup()
-						        .addComponent(openProjectButton, GroupLayout.Alignment.LEADING, 0, 182, Short.MAX_VALUE)
-						        .addComponent(communityButton, GroupLayout.Alignment.LEADING, 0, 182, Short.MAX_VALUE)))
-						.addComponent(headLabel, GroupLayout.Alignment.LEADING, 0, 384, Short.MAX_VALUE));
+					 	.addComponent(headLabel, GroupLayout.Alignment.LEADING, 0, 384, Short.MAX_VALUE)
+					 	.addComponent(recentPanel, GroupLayout.Alignment.LEADING, 0, 384, Short.MAX_VALUE)
+					 	.addGroup(buttonsPanelLayout.createSequentialGroup()
+					 	    .addGroup(buttonsPanelLayout.createParallelGroup()
+					 	        .addComponent(recentLabel, GroupLayout.Alignment.LEADING, 0, 207, Short.MAX_VALUE)
+					 	        .addGroup(GroupLayout.Alignment.LEADING, buttonsPanelLayout.createSequentialGroup()
+					 	            .addComponent(newProjectButton, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
+					 	            .addGap(25))
+					 	        .addGroup(GroupLayout.Alignment.LEADING, buttonsPanelLayout.createSequentialGroup()
+					 	            .addComponent(learnOntoUMLButton, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
+					 	            .addGap(25)))
+					 	    .addGroup(buttonsPanelLayout.createParallelGroup()
+					 	        .addComponent(openProjectButton, GroupLayout.Alignment.LEADING, 0, 177, Short.MAX_VALUE)
+					 	        .addComponent(communityButton, GroupLayout.Alignment.LEADING, 0, 177, Short.MAX_VALUE))));
 					buttonsPanelLayout.setVerticalGroup(buttonsPanelLayout.createSequentialGroup()
-						.addComponent(headLabel, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-						.addGap(26)
-						.addGroup(buttonsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						    .addComponent(newProjectButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-						    .addComponent(openProjectButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE))
-						.addGap(0, 22, GroupLayout.PREFERRED_SIZE)
-						.addGroup(buttonsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						    .addComponent(learnOntoUMLButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-						    .addComponent(communityButton, GroupLayout.Alignment.BASELINE, 0, 47, Short.MAX_VALUE)));
+					 	.addComponent(headLabel, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+					 	.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+					 	.addGroup(buttonsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					 	    .addComponent(newProjectButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					 	    .addComponent(openProjectButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
+					 	.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+					 	.addGroup(buttonsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					 	    .addComponent(learnOntoUMLButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					 	    .addComponent(communityButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
+					 	.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+					 	.addComponent(recentLabel, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+					 	.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+					 	.addComponent(recentPanel, 0, 70, Short.MAX_VALUE));
+					  
+					 */
+					buttonsPanelLayout.setHorizontalGroup(buttonsPanelLayout.createParallelGroup()
+					 	.addGroup(buttonsPanelLayout.createSequentialGroup()
+					 	    .addGroup(buttonsPanelLayout.createParallelGroup()
+					 	        .addComponent(recentLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
+					 	        .addGroup(GroupLayout.Alignment.LEADING, buttonsPanelLayout.createSequentialGroup()
+					 	            .addComponent(newProjectButton, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
+					 	            .addGap(25))
+					 	        .addGroup(GroupLayout.Alignment.LEADING, buttonsPanelLayout.createSequentialGroup()
+					 	            .addComponent(learnOntoUMLButton, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
+					 	            .addGap(25)))
+					 	    .addGroup(buttonsPanelLayout.createParallelGroup()
+					 	        .addComponent(openProjectButton, GroupLayout.Alignment.LEADING, 0, 177, Short.MAX_VALUE)
+					 	        .addComponent(communityButton, GroupLayout.Alignment.LEADING, 0, 177, Short.MAX_VALUE)))
+					 	.addComponent(headLabel, GroupLayout.Alignment.LEADING, 0, 384, Short.MAX_VALUE)
+					 	.addComponent(recentPanel, GroupLayout.Alignment.LEADING, 0, 384, Short.MAX_VALUE));
+					buttonsPanelLayout.setVerticalGroup(buttonsPanelLayout.createSequentialGroup()
+					 	.addComponent(headLabel, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+					 	.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+					 	.addGroup(buttonsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					 	    .addComponent(newProjectButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					 	    .addComponent(openProjectButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
+					 	.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+					 	.addGroup(buttonsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					 	    .addComponent(learnOntoUMLButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					 	    .addComponent(communityButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
+					 	.addGap(0, 31, Short.MAX_VALUE)
+					 	.addComponent(recentLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					 	.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+					 	.addComponent(recentPanel, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE));
 				}
 			}
 			{
@@ -190,9 +268,7 @@ public class StartPanel extends JPanel implements Editor {
 	
 	/**
 	 * Internal panel, used to decorate the footer of the start screen
-	 * 
 	 * @author Antognoni Albuquerque
-	 * @version 1.0
 	 */
 	private class BackgroundPanel extends JPanel
 	{
@@ -228,9 +304,7 @@ public class StartPanel extends JPanel implements Editor {
 
 	/**
 	 * Custom button, created based on a given image
-	 * 
 	 * @author Antognoni Albuquerque
-	 * @version 1.0
 	 */
 	@SuppressWarnings("unused")
 	private class ImageButton extends JButton {
@@ -302,6 +376,11 @@ public class StartPanel extends JPanel implements Editor {
 	@Override
 	public Diagram getDiagram() {
 		return null;
+	}
+
+	@Override
+	public void dispose() {
+		
 	}
 
 }

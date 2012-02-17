@@ -52,9 +52,12 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import org.eclipse.emf.edit.provider.IDisposable;
+
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
 import br.ufes.inf.nemo.oled.ui.commands.OwlExporter;
 import br.ufes.inf.nemo.oled.ui.commands.PngExporter;
@@ -70,9 +73,11 @@ import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ColorPalette;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
+import br.ufes.inf.nemo.oled.util.SBVRHelper;
 import br.ufes.inf.nemo.oled.util.ValidationHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
 import edu.mit.csail.sdg.alloy4.ConstMap;
@@ -82,7 +87,7 @@ import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 /**
  * Class responsible for managing and organizing the {@link DiagramEditor}s in tabs.
  */
-public class DiagramManager extends JTabbedPane implements SelectionListener, EditorStateListener {
+public class DiagramManager extends JTabbedPane implements SelectionListener, EditorStateListener, IDisposable {
 
 	private static final long serialVersionUID = 5019191384767258996L;
 	private final AppFrame frame;
@@ -113,7 +118,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		});
 		
 		ModelHelper.initializeHelper();
-		
 	}
 
 	/**
@@ -141,11 +145,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			fileChooser.addChoosableFileFilter(createModelFileFilter());
 			if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				try {
-					File projectFile = fileChooser.getSelectedFile();
-					UmlProject model = (UmlProject) ProjectReader.getInstance().readProject(projectFile);				
+					File file = fileChooser.getSelectedFile();
+					UmlProject model = (UmlProject) ProjectReader.getInstance().readProject(file);				
 					createEditor((StructureDiagram) model.getDiagrams().get(0));
-					setModelFile(projectFile);
-
+					setModelFile(file);
+					
+					ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 					//updateFrameTitle(); FIXME
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(this, ex.getMessage(),
@@ -179,6 +184,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			result = ProjectWriter.getInstance().writeProject(this, file, getCurrentEditor().getProject());
 			getCurrentEditor().clearUndoManager();
 			frame.updateMenuAndToolbars(getCurrentEditor());
+			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(this, ex.getMessage(),
@@ -539,7 +545,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		String validationResult = ValidationHelper.validateModel(project.getModel());
 		((DiagramEditorWrapper) this.getSelectedComponent()).showOutputText(validationResult, true, true);
 	}
-	
 
 	/**
 	 * Shows a dialog for choosing the elements to simulate and the style settings 
@@ -579,26 +584,22 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 	private void showModelInstances(StructureDiagram diagram, A4Solution solution, Module module, ConstMap<String, String> alloySources)
 	{
-		int totalTabs = getTabCount();
-		for(int i = 0; i < totalTabs; i++)
+		InstanceVisualizer instanceViz = (InstanceVisualizer) getEditorForDiagram(diagram, EditorNature.INSTANCE_VISUALIZER);
+		
+		if(instanceViz == null)
 		{
-			if(getComponentAt(i) instanceof InstanceVisualizer)
-			{
-				InstanceVisualizer visualizer = (InstanceVisualizer) getComponentAt(i);
-				
-				if(visualizer.getDiagram() == diagram)
-				{
-					visualizer.setSolution(solution);
-					visualizer.setModule(module);
-					visualizer.setAlloySources(alloySources);
-					visualizer.loadSolution();
-					setSelectedIndex(i);
-					return;
-				}
-			}
+			//TODO Localize this;
+			this.add("Verification Output", new InstanceVisualizer(diagram, solution, module, alloySources)); 
 		}
-		//TODO Localize this;
-		this.add("Verification Output", new InstanceVisualizer(diagram, solution, module, alloySources)); 
+		else
+		{
+			instanceViz.setSolution(solution);
+			instanceViz.setModule(module);
+			instanceViz.setAlloySources(alloySources);
+			instanceViz.loadSolution();
+			setSelectedComponent(instanceViz);
+		}
+		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -623,10 +624,90 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			getCurrentWrapper().showOutputText(result.toString(), true, true); 
 		}
 	}
-
 	
 	public void showOutputPane() {
 		((DiagramEditorWrapper) this.getSelectedComponent()).showOrHideOutput();
+	}
+	
+	/**
+	 * Generates OWL from the selected model   
+	 */
+	public void generateOwl() {
+		
+	}
+	
+	/**
+	 * Generates SBVR from the selected model 
+	 */
+	public void generateSbvr() {
+		
+		UmlProject project = getCurrentEditor().getProject();
+		StructureDiagram diagram = getCurrentEditor().getDiagram();
+		
+		OperationResult result = SBVRHelper.generateSBVR(project.getModel(), diagram.getTempDir());
+		
+		if(result.getResultType() != ResultType.ERROR)
+		{
+			getCurrentWrapper().showOutputText(result.toString(), true, false); 
+			
+			HTMLVisualizer htmlViz = (HTMLVisualizer) getEditorForDiagram(diagram, EditorNature.HTML);
+			
+			if(htmlViz == null)
+			{
+				htmlViz = new HTMLVisualizer(diagram);
+				
+				//TODO Localize this;
+				add("SBVR Generated", htmlViz);
+			}
+			else
+			{
+				setSelectedComponent(htmlViz);
+				frame.setVisible(true); //HACK!!! Needed to force to show the browser
+			}
+			
+			String htmlFilePath = (String) result.getData()[0];
+			
+			if(!htmlViz.loadLocalPage(htmlFilePath))
+			{
+				getCurrentWrapper().showOutputText("\n\nCouldn't open the documentation with the internal browser. Trying to open with the system default browser...", false, true);
+				openLinkWithBrowser(new File(htmlFilePath).toURI().toString());
+			}
+
+		}
+		else
+		{
+			getCurrentWrapper().showOutputText(result.toString(), true, true); 
+		}
+	}
+/*
+	private int getEditorIndexForDiagram(StructureDiagram diagram, EditorNature nature)
+	{
+		int totalTabs = getTabCount();
+		for(int i = 0; i < totalTabs; i++)
+		{
+			Editor editor = (Editor)getComponentAt(i);
+			
+			if(editor.getEditorNature() == nature && editor.getDiagram() == diagram)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}*/
+	
+	private Editor getEditorForDiagram(StructureDiagram diagram, EditorNature nature)
+	{
+		int totalTabs = getTabCount();
+		for(int i = 0; i < totalTabs; i++)
+		{
+			Editor editor = (Editor)getComponentAt(i);
+			
+			if(editor.getEditorNature() == nature && editor.getDiagram() == diagram)
+			{
+				return editor;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -725,8 +806,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			public void actionPerformed(ActionEvent e) {
 				int i = pane.indexOfTabComponent(ClosableTab.this);
 				if (i != -1) {
+					
+					IDisposable disposable = (IDisposable) pane.getComponentAt(i);
+					if(disposable != null)
+					{
+						disposable.dispose();
+					}
 					pane.remove(i);
-					//TODO Check if there nothing else needed in order to close the DiagramManager
 				}
 			}
 
@@ -780,5 +866,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				}
 			}
 		};
+	}
+
+	@Override
+	public void dispose() {
+		int totalTabs = getTabCount();
+		for(int i = 0; i < totalTabs; i++)
+		{
+			IDisposable disposable = (IDisposable) getComponentAt(i);
+			if(disposable != null)
+			{
+				disposable.dispose();
+			}
+		}
 	}
 }

@@ -250,6 +250,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("VERIFY_MODEL_FILE", new MethodCall(
 					getClass().getMethod("verifyModelFile")));
 			
+			selectorMap.put("GENERATE_OWL", new MethodCall(
+					getClass().getMethod("generateOwl")));
+			
+			selectorMap.put("GENERATE_SBVR", new MethodCall(
+					getClass().getMethod("generateSbvr")));
+			
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
 		}
@@ -276,21 +282,34 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		manager.showOutputPane();
 	}
 	
-	public void validateModel() {
+	public void validateModel() 
+	{
 		manager.validateCurrentModel();
 	}
 	
-	public void verifySettings() {
+	public void verifySettings() 
+	{
 		manager.verificationSettings();
 	}
 	
-	public void verifyModel() {
+	public void verifyModel() 
+	{
 		manager.verifyCurrentModel();
 	}
 	
 	public void verifyModelFile()
 	{
 		manager.verifyCurrentModelFile();
+	}
+	
+	public void generateOwl() 
+	{
+		manager.generateOwl();
+	}
+	
+	public void generateSbvr()
+	{
+		manager.generateSbvr();
 	}
 	
 	/**

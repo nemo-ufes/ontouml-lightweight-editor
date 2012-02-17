@@ -55,23 +55,5 @@ public abstract class FileHandler {
     }
     return result;
   }
-  
-  	public enum FileType {
-		MODEL, PROJECT, SIMULATION, SIMULATION_OUTPUT
-	}
-	
-	public static String getFileName(FileType type) {
-		switch (type) {
-		case MODEL:
-			return "model.ontouml";
-		case PROJECT:
-			return "project.dat";
-		case SIMULATION:
-			return "simulation.als";
-		case SIMULATION_OUTPUT:
-			return "simulation_output.xml";
-		default:
-			return null;
-		}
-	}
+ 
 }

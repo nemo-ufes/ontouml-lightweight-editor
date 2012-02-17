@@ -15,6 +15,10 @@ import java.util.Random;
 
 import edu.mit.csail.sdg.alloy4.Util;
 
+/**
+ * A helper class which provides settings and file management facilities. 
+ * @author Antognoni Albuquerque
+ */
 public final class ConfigurationHelper {
 	
 	private static String OLED_HOME = null;
@@ -26,7 +30,7 @@ public final class ConfigurationHelper {
 	{
 		if(propertiesStore != null)
 		{
-			File file = new File(getPathFor(OLEDSettings.OLED_SETTINGS_FILE.getValue()));
+			File file = new File(getCanonPath(getOLEDHome(), OLEDSettings.OLED_SETTINGS_FILE.getValue()));
 			try {
 				FileOutputStream out = new FileOutputStream(file);
 				propertiesStore.storeToXML(out, "OLED Configuration File", "UTF-8");
@@ -46,7 +50,7 @@ public final class ConfigurationHelper {
 		
 		propertiesStore = new Properties();
 		
-		File file = new File(getPathFor(OLEDSettings.OLED_SETTINGS_FILE.getValue()));
+		File file = new File(getCanonPath(getOLEDHome(), OLEDSettings.OLED_SETTINGS_FILE.getValue()));
 		if(file.exists())
 		{
 			try {
@@ -60,8 +64,43 @@ public final class ConfigurationHelper {
 		return propertiesStore;
 	}
 
-    /** Create an empty temporary directory for use, designate it "deleteOnExit", then return it.
-     * It is guaranteed to be a canonical absolute path. */
+	public static void addRecentProject(String path)
+	{
+		if(!OLEDSettings.RECENT_PROJECT_1.getValue().equals(path))
+		{
+			int histSize = 5;
+		
+			for (int i = histSize-1; i > 0; i--) {
+				OLEDSettings setting = OLEDSettings.valueOf("RECENT_PROJECT_" + i); 
+				OLEDSettings nextSetting = OLEDSettings.valueOf("RECENT_PROJECT_" + (i + 1));
+				nextSetting.setValue(setting.getValue());
+			}
+			
+			OLEDSettings.RECENT_PROJECT_1.setValue(path);
+			saveProperties();
+		}
+	}
+	
+	public static String[] getRecentProjects()
+	{
+		int histSize = 5;
+		String[] ans = new String[histSize];
+		
+		for (int i = 1; i < histSize; i++) {
+			ans[i] = OLEDSettings.valueOf("RECENT_PROJECT_" + i).getValue();
+		}
+		
+		return ans;
+	}
+	
+	public static String getSimpleFileName(String filePath)
+	{
+		return new File(filePath).getName();
+	}
+    /** 
+     * Create an empty temporary directory for use, designate it "deleteOnExit", then return it.
+     * It is guaranteed to be a canonical absolute path. 
+     */
     public static String makeTempDir() {
         Random r=new Random(new Date().getTime());
         while(true) {
@@ -74,11 +113,6 @@ public final class ConfigurationHelper {
             }
         }
     }
-    
-	public static String getPathFor(String fileName)
-	{
-		return getOLEDHome() + File.separatorChar + fileName;
-	}
 	
 	public static String getCanonPath(String dir, String fileName)
 	{

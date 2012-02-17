@@ -32,16 +32,18 @@ public class DiagramEditorToolbar implements ActionListener {
     //diagramOptionsGroup = new ButtonGroup();
     
     toolbar.add(createButton(validationGroup, "showoutput"));
-    toolbar.addSeparator(new Dimension(10, 25));
+    //toolbar.add(createToggleButton(diagramOptionsGroup, "rectilinear"));
+    //toolbar.add(createToggleButton(diagramOptionsGroup, "straight"));
+    
+    toolbar.addSeparator(new Dimension(20, 25));
     toolbar.add(createButton(validationGroup, "validate"));
-    toolbar.addSeparator(new Dimension(10, 25));
+    toolbar.addSeparator(new Dimension(20, 25));
     toolbar.add(createButton(validationGroup, "verifysettings")); 
     toolbar.add(createButton(validationGroup, "verify")); 
     toolbar.add(createButton(validationGroup, "verifyfile")); 
-    
-    //toolbar.addSeparator(new Dimension(10, 25));
-    //toolbar.add(createToggleButton(diagramOptionsGroup, "rectilinear"));
-    //toolbar.add(createToggleButton(diagramOptionsGroup, "straight"));
+    toolbar.addSeparator(new Dimension(20, 25));
+    toolbar.add(createButton(validationGroup, "generateowl"));
+    toolbar.add(createButton(validationGroup, "generatesbvr"));
   }
 
   public void addCommandListener(AppCommandListener l) {
