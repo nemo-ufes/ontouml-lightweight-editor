@@ -63,5 +63,10 @@ public class TextEditor extends JPanel implements Editor {
 	public Diagram getDiagram() {
 		return null;
 	}
+
+	@Override
+	public void dispose() {
+		
+	}
 		
 }

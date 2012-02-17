@@ -32,6 +32,7 @@ import java.util.zip.ZipOutputStream;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.util.OLEDSettings;
 
 /**
  * This class writes the current model and diagram data to an XML file.
@@ -72,14 +73,14 @@ public final class ProjectWriter extends FileWriter {
 		ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
 		
 		//Save the model as a resource inside the file
-		ZipEntry modelEntry = new ZipEntry(getFileName(FileType.MODEL));			
+		ZipEntry modelEntry = new ZipEntry(OLEDSettings.MODEL.getValue());			
 		out.putNextEntry(modelEntry);
 		Resource resource = project.getResource();
 		resource.save(out, Collections.EMPTY_MAP);
 		out.closeEntry();
 		
 		//Save the project a.k.a the diagrams inside the file
-		ZipEntry projectEntry = new ZipEntry(getFileName(FileType.PROJECT));
+		ZipEntry projectEntry = new ZipEntry(OLEDSettings.PROJECT.getValue());
 		out.putNextEntry(projectEntry);
 		ObjectOutputStream oos = new ObjectOutputStream(out);
 		oos.writeObject(project); 

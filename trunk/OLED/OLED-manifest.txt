@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Class-Path: OLED.jar 
-Main-Class: org.tinyuml.Main.java
-SplashScreen-Image: src/resources/org/ontouml/ui/splash.png

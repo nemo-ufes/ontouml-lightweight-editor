@@ -193,4 +193,9 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	public Diagram getDiagram() {
 		return editor.getDiagram();
 	}
+
+	@Override
+	public void dispose() {
+		
+	}
 }

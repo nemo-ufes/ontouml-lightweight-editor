@@ -34,29 +34,38 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * Features TO-DO
  * ======================================================
  * 
- * Implementar tema
+ * http://archive.eclipse.org/eclipse/downloads/drops/S-3.7RC4-201106030909/index.php#SWT
  * 
- * Tela para seleção de entidades na simulação e das cores no tema
+ * OK Implementar tema : Ver cinza e Trapezio
  * 
- * Descição do ultimo comando executado na barra de status 
+ * +/- Tela para seleção de entidades na simulação e das cores no tema
+ * 	Permitir seleção para simulação somente de classes válidas semânticamente
+ *  OK Geração de tema  
+ *   
+ * +/- Descição do ultimo comando executado na barra de status 
  * 
  * Retornar texto na simulação, para ser exibido no output pane
+ *  - Implementar o retorno OperationResult para validação
  * 
+ * 
+ * OK Integrar SBVR : ver deleteonexit pois os arquivos não estão apagando
+ *  
+ * Abrir geraçao de OWL no editor de Texto. Implementar Salvar como? Mas sem fazer, desfazer.
+ * Implementar nova transformação para OWL
+ *  
  * Implementar associação entre relações
  * Implantar o reposicionamento de labels
  * Permitir auto-relacionamentos
  * Funcionalidade Copiar/Colar
  * Tela Sobre (About) 
  * 
- *  
- * Abrir geraçao de OWL no editor de Texto. Implementar Salvar como? Mas sem fazer, desfazer.
+ *   
  * Botão para determinar o tipo da conexão Retilinear ou direta.
  * Atualizar nome do aruivo na aba?
  * 
  * 
  * Atalho para criação de generalization set
- * 
- *  
+ *   
  * 
  * Antes do release
  * ======================================================
@@ -76,8 +85,6 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * ======================================================
  * 
  * - Aberto : o temp dir do diagrama não está sendo excluído automaticamente
- * - Aberto : A A4Solution não está sendo gerada com o skolem $visible e 
- * 			: logo não está implementando a associação visible
  * 
  * - Aberto : Tratar a simulação quando a geração de alloy retorna vazia
  * - Aberto : Nomes das associações não estão aparecendo
@@ -96,7 +103,9 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * 			  Redimensionando = node previamente selecionado...
  * 
  * - Aberto : Transformação para Alloy não está gerando Quantity/SubQuantity
- * 
+ *
+ * - OK : A A4Solution não está sendo gerada com o skolem $visible e 
+ * 		: logo não está implementando a associação visible
  * - OK : Tratar os eventos de mudança nas abas do editor para atualizar o redo/undo
  * - OK : Setas do output pane não estão funcionando
  * - OK : Erro ao transferir dados na janela de edição de classe (invalid cast) 
@@ -137,6 +146,9 @@ public final class Main {
 			"OLED");
 		}
 		
+		//Needed for the embedded SWT Browser in Linux systems
+		System.setProperty("sun.awt.xembedserver", "true");
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			/**
 			 * {@inheritDoc}
@@ -154,4 +166,5 @@ public final class Main {
 			}
 		});
 	}
+
 }

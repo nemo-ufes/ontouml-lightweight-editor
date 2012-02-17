@@ -725,12 +725,11 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		defaultColors.add(SimulationAttribute.COLOR_GREEN);
 		defaultColors.add(SimulationAttribute.COLOR_BLUE);
 		defaultColors.add(SimulationAttribute.COLOR_YELLOW);
-		defaultColors.add(SimulationAttribute.COLOR_GRAY);
 		
 		List<SimulationAttribute> defaultShapes = new LinkedList<SimulationAttribute>();
 		
 		defaultShapes.add(SimulationAttribute.SHAPE_CIRCLE);
-		defaultShapes.add(SimulationAttribute.SHAPE_TRAPEZIUM);
+		defaultShapes.add(SimulationAttribute.SHAPE_TRAPEZOID);
 		defaultShapes.add(SimulationAttribute.SHAPE_TRIANGLE);
 		defaultShapes.add(SimulationAttribute.SHAPE_DIAMOND);
 		defaultShapes.add(SimulationAttribute.SHAPE_OCTAGON);
