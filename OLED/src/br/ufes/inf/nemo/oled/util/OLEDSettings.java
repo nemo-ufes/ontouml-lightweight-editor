@@ -5,16 +5,31 @@ import java.util.Properties;
 public enum OLEDSettings {
 	
 	USER_LOCALE("USER_LOCALE", "en-US"),
+	
 	OLED_SETTINGS_FILE("OLED_SETTINGS_FILE", "cnf.xml"),
-	MODEL("MODEL", "model.refontouml"),
-	PROJECT("PROJECT","project.dat"),
+	
+	MODEL_DEFAULT_FILE("MODEL_DEFAULT_FILE", "model.refontouml"),
+	
+	PROJECT_DEFAULT_FILE("PROJECT_DEFAULT_FILE","project.dat"),
+	
+	OWL_DEFAULT_FILE("OWL_DEFAULT_FILE", "model.owl"),
+	
+	SBVR_DEFAULT_FILE("SBVR_DEFAULT_FILE", "model-sbvr.html"),
+	
 	SIMULATION_DEFAULT_FILE("SIMULATION_DEFAULT_FILE", "simulation.als"),
+	
 	SIMULATION_THEME_FILE("SIMULATION_SOLUTION_FILE", "simulation.thm"),
+	
 	SIMULATION_SOLUTION_FILE("SIMULATION_SOLUTION_FILE", "solution_output.xml"),
+	
 	RECENT_PROJECT_1("RECENT_PROJECT_1", ""),
+	
 	RECENT_PROJECT_2("RECENT_PROJECT_2", ""),
+	
 	RECENT_PROJECT_3("RECENT_PROJECT_3", ""),
+	
 	RECENT_PROJECT_4("RECENT_PROJECT_4", ""),
+	
 	RECENT_PROJECT_5("RECENT_PROJECT_5", "");
 		
 	private final String propertyKey;

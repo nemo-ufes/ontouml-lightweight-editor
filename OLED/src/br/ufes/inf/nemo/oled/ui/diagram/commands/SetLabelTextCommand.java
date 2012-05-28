@@ -24,8 +24,8 @@ import java.util.List;
 
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
 /**
  * This class represents a reversible operation that sets a Label to a new
@@ -45,7 +45,7 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 	 * @param aLabel the Label
 	 * @param aText the new text
 	 */
-	public SetLabelTextCommand(DiagramEditorNotification aNotification, Label aLabel, String aText) {
+	public SetLabelTextCommand(DiagramNotification aNotification, Label aLabel, String aText) {
 		this.notification = aNotification;
 		label = aLabel;
 		text = aText;

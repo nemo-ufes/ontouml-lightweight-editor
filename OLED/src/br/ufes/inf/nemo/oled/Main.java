@@ -34,43 +34,46 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * Features TO-DO
  * ======================================================
  * 
- * http://archive.eclipse.org/eclipse/downloads/drops/S-3.7RC4-201106030909/index.php#SWT
- * 
- * OK Implementar tema : Ver cinza e Trapezio
- * 
- * +/- Tela para seleção de entidades na simulação e das cores no tema
- * 	Permitir seleção para simulação somente de classes válidas semânticamente
- *  OK Geração de tema  
- *   
- * +/- Descição do ultimo comando executado na barra de status 
- * 
- * Retornar texto na simulação, para ser exibido no output pane
- *  - Implementar o retorno OperationResult para validação
- * 
- * 
- * OK Integrar SBVR : ver deleteonexit pois os arquivos não estão apagando
- *  
- * Abrir geraçao de OWL no editor de Texto. Implementar Salvar como? Mas sem fazer, desfazer.
+ * Colocar IRI no modelo RefOntoUML
  * Implementar nova transformação para OWL
- *  
+ * Implementar Salvar como na visualizaão do OWL? Mas sem fazer, desfazer.
+ * 
+ * Permitir seleção para simulação somente de classes válidas sintaticamente
+ * Descição do ultimo comando executado na barra de status
+ *   
+ * Criar elementos com propriedades default
+ * 		Mediation com ends read only.
+ * 
  * Implementar associação entre relações
  * Implantar o reposicionamento de labels
  * Permitir auto-relacionamentos
  * Funcionalidade Copiar/Colar
  * Tela Sobre (About) 
  * 
- *   
  * Botão para determinar o tipo da conexão Retilinear ou direta.
  * Atualizar nome do aruivo na aba?
- * 
- * 
  * Atalho para criação de generalization set
- *   
+ * 		Seleção de várias classes para gerar generalizations e generalization sets
+ * 		Generalizations não criadas
+ * 
+ * 
+ *  
+ * http://archive.eclipse.org/eclipse/downloads/drops/S-3.7RC4-201106030909/index.php#SWT
+ * 
+ * OK Implementar tema : Ver cinza e Trapezio
+ * OK Tela para seleção de entidades na simulação e das cores no tema
+ * OK Geração de tema  
+ * OK Retornar texto na simulação, para ser exibido no output pane
+ * OK Implementar o retorno OperationResult para validação
+ * OK Integrar SBVR : ver deleteonexit pois os arquivos não estão apagando
+ * OK Abrir geraçao de OWL no editor de Texto. 
+ * OK Implementar seeting com nome default do arquivo 
  * 
  * Antes do release
  * ======================================================
  * 
  * Revisão Geral do Códgio - Limpeza
+ * Reestruturação da interface usando form layout.
  * Revisão Geral do Códgio - Documentação
  * Revisão Geral arquivo de captions
  * 
@@ -84,17 +87,29 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * Problemas conhecidos
  * ======================================================
  * 
+ * - Aberto : Melhorar o tratamento de DataTypes ao inserir no modelo.
+ * 			  Ele permitiu a duplicação de datatypes (mesmo nome e mesma id)
+ * 			  Além disso, quando um datatype é inserido na janela de edição de classe
+ * 			  Não aparece nas dropdowns a menos que seja apertado OK.
+ * 
  * - Aberto : o temp dir do diagrama não está sendo excluído automaticamente
  * 
  * - Aberto : Tratar a simulação quando a geração de alloy retorna vazia
+ * 
  * - Aberto : Nomes das associações não estão aparecendo
  * 		 	  Connection name labels não estão sendo renderizadas?
+ * 
  * - Aberto : Redimensionamento do canvas não está respeitando a posição dos nodos
+ * 
  * - Aberto : Classes não estão redimensionando bem
  * 			: Só está acontecendo quando a opção snap to grid está habilitada
+ * 
  * - Aberto : Ordenação dos atributos nas propriedades da classe não é respeitada  
+ * 
  * - Aberto : Incluir os atributos das relações meronimicas na label da relação
+ * 
  * - Aberto : Habilitar o clique com shift para selecionar ou desselecionar o elemento
+ * 
  * - Aberto : Ao fazer Undo/Redo algumas ações não tem efeito aparente - Ver linehandler
  * 			  Isso acontece pois o clique está sendo tratado como um comando de mover / redimensionar com nenhuma modificação.
  * 			  Como saber se o usuário está movendo, redimensionando ou selecionando os nodes? O SelectionHandler informará isso.
@@ -118,6 +133,9 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * - OK : Redimensionar tamanho inicial da janela principal para acomodar resolções 1024x768
  * - OK : Undo/Redo para ações visuais como redimensionamento não estão funcionando bem
  * 
+ * 
+ * Testar se o objeto pertence à interface:
+ * Collection.class.isInstance(o)
  */
 
 

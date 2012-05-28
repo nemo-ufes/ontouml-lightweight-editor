@@ -52,8 +52,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import refontouml2alloy.bts.simulation.SimulationAttribute;
-import refontouml2alloy.bts.simulation.SimulationElement;
+import edu.mit.csail.sdg.alloy4graph.DotColor;
+import edu.mit.csail.sdg.alloy4graph.DotShape;
+import edu.mit.csail.sdg.alloy4graph.DotStyle;
+
 import RefOntoUML.Comment;
 import RefOntoUML.Dependency;
 import RefOntoUML.DirectedRelationship;
@@ -66,6 +68,8 @@ import RefOntoUML.PackageableElement;
 import RefOntoUML.Relationship;
 import RefOntoUML.StringExpression;
 import RefOntoUML.VisibilityKind;
+import RefOntoUML.impl.AssociationImpl;
+import RefOntoUML.impl.ClassImpl;
 import RefOntoUML.impl.NonRigidMixinClassImpl;
 import RefOntoUML.impl.SubstanceSortalImpl;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
@@ -87,6 +91,8 @@ import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.shared.DiagramSelection;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
+import br.ufes.inf.nemo.oled.util.SimulationAttribute;
+import br.ufes.inf.nemo.oled.util.SimulationElement;
 
 /**
  * This class implements the effective layout area. It shows the boundaries of
@@ -139,8 +145,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	 *             if class was not found
 	 */
 	@SuppressWarnings("unchecked")
-	private void readObject(ObjectInputStream stream) throws IOException,
-			ClassNotFoundException {
+	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		gridSize = stream.readInt();
 		name = stream.readUTF();
 		connections = (List<Connection>) stream.readObject();
@@ -155,24 +160,17 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		nodeChangeListeners = new HashSet<NodeChangeListener>();
 		generateTheme = true;		
 		
-		refreshSimulationElements();
-	}
-
-	private void refreshSimulationElements()
-	{
-		//TODO Implement this refreshSimulationElements()
 	}
 	
 	/**
 	 * Constructor.
-	 * 
-	 * @param aModel
-	 *            the ModelAdapter
 	 */
 	public StructureDiagram(UmlProject project) {
 		initializeNameLabel();
 		setSize(670, 400);
 		this.project = project;
+		
+		simulationElements.add(getStateSimulationElement());
 	}
 
 	/**
@@ -674,7 +672,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		List<SimulationElement> newIdentityProviders = new ArrayList<SimulationElement>();
 		
 		//We keep track of the used attributes so we don't repeat (at least we try to)
-		Set<SimulationAttribute> usedAttributes = new HashSet<SimulationAttribute>();
+		Set<Object> usedAttributes = new HashSet<Object>();
 		
 		//We always iterate thru model items in case there are new items
 		for (PackageableElement element : project.getElements()) {
@@ -688,60 +686,85 @@ public class StructureDiagram extends AbstractCompositeNode implements
 			}
 			else
 			{
-				SimulationElement simulatioElement = new SimulationElement();
-				simulatioElement.setElement(element);
-				simulatioElement.setSimulate(true);
-				simulatioElement.setColor(SimulationAttribute.COLOR_INHERIT);
-				simulatioElement.setStyle(SimulationAttribute.STYLE_INHERIT);
-				simulatioElement.setShape(SimulationAttribute.SHAPE_INHERIT);
-				
-				if(element instanceof SubstanceSortalImpl || element instanceof NonRigidMixinClassImpl)
-					newIdentityProviders.add(simulatioElement);
-				
-				simulationElements.add(simulatioElement);
+				if(element instanceof ClassImpl || element instanceof AssociationImpl)
+				{
+					SimulationElement simulatioElement = new SimulationElement();
+					simulatioElement.setElement(element);
+					simulatioElement.setSimulate(true);
+					simulatioElement.setColor(null);
+					simulatioElement.setStyle(null);
+					simulatioElement.setShape(null);
+					
+					if(element instanceof SubstanceSortalImpl || element instanceof NonRigidMixinClassImpl)
+					{
+						newIdentityProviders.add(simulatioElement);
+						simulatioElement.setStyle(DotStyle.SOLID);
+					}
+					
+					simulationElements.add(simulatioElement);
+				}
 			}
 		}
 		
 		if(newIdentityProviders.size() > 0)
 			defaultThemeForIdentityProvider(newIdentityProviders, usedAttributes);
+		
+		//Clear the deleted elements
+		List<SimulationElement> toRemove = new ArrayList<SimulationElement>();
+		for (SimulationElement elm : simulationElements) {
+			if(elm.getElementUUID() != null && ModelHelper.getElementByUUID(project.getModel(), elm.getElementUUID()) == null)
+				toRemove.add(elm);
+		}
+		simulationElements.removeAll(toRemove);
 	}
 	
 	public SimulationElement getSimulationElement(PackageableElement element) {
 		
 		SimulationElement found = null;
 		for (SimulationElement entry : simulationElements) {
-			if(entry.getElementUUID().equals(ModelHelper.getUUIDFromElement(element)))
+			if(entry.getElementUUID() != null && entry.getElementUUID().equals(ModelHelper.getUUIDFromElement(element)))
 				found = entry;
 		}
 		return found;
 	}
 
-	private void defaultThemeForIdentityProvider(List<SimulationElement> simulationElements, Set<SimulationAttribute> usedAttributes)
+	private SimulationElement getStateSimulationElement()
 	{
-		List<SimulationAttribute> defaultColors = new LinkedList<SimulationAttribute>();
+		SimulationElement stateElement = new SimulationElement();
+		stateElement.setName("State");
+		stateElement.setSimulate(true);
+		stateElement.setColor(DotColor.GRAY);
+		stateElement.setShape(DotShape.INV_HOUSE);
+		
+		return stateElement;
+	}
+	
+	private void defaultThemeForIdentityProvider(List<SimulationElement> simulationElements, Set<Object> usedAttributes)
+	{
+		List<Object> defaultColors = new LinkedList<Object>();
 		
 		//defaultAttributes.add();
-		defaultColors.add(SimulationAttribute.COLOR_RED);
-		defaultColors.add(SimulationAttribute.COLOR_GREEN);
-		defaultColors.add(SimulationAttribute.COLOR_BLUE);
-		defaultColors.add(SimulationAttribute.COLOR_YELLOW);
+		defaultColors.add(DotColor.RED);
+		defaultColors.add(DotColor.GREEN);
+		defaultColors.add(DotColor.BLUE);
+		defaultColors.add(DotColor.YELLOW);
 		
-		List<SimulationAttribute> defaultShapes = new LinkedList<SimulationAttribute>();
+		List<Object> defaultShapes = new LinkedList<Object>();
 		
-		defaultShapes.add(SimulationAttribute.SHAPE_CIRCLE);
-		defaultShapes.add(SimulationAttribute.SHAPE_TRAPEZOID);
-		defaultShapes.add(SimulationAttribute.SHAPE_TRIANGLE);
-		defaultShapes.add(SimulationAttribute.SHAPE_DIAMOND);
-		defaultShapes.add(SimulationAttribute.SHAPE_OCTAGON);
-		defaultShapes.add(SimulationAttribute.SHAPE_DIAMOND);
+		defaultShapes.add(DotShape.CIRCLE);
+		defaultShapes.add(DotShape.TRAPEZOID);
+		defaultShapes.add(DotShape.TRIANGLE);
+		defaultShapes.add(DotShape.DIAMOND);
+		defaultShapes.add(DotShape.OCTAGON);
+		defaultShapes.add(DotShape.DIAMOND);
 				
-		SimulationAttribute color;
-		SimulationAttribute shape;
+		DotColor color;
+		DotShape shape;
 		
 		for (SimulationElement item : simulationElements) {
 			
-			color = getRandom(defaultColors, usedAttributes);
-			shape = getRandom(defaultShapes, usedAttributes);
+			color = (DotColor) getRandom(defaultColors, usedAttributes);
+			shape = (DotShape) getRandom(defaultShapes, usedAttributes);
 			
 			item.setColor(color);
 			item.setShape(shape);
@@ -751,22 +774,22 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		}
 	}
 	
-	private SimulationAttribute getRandom(List<SimulationAttribute> possibleAttributes, Set<SimulationAttribute> usedAttributes)
+	private Object getRandom(List<Object> possible, Set<Object> used)
 	{
 		Random generator = new Random();
 		int tries = 0;
 		
-		while(tries < possibleAttributes.size())
+		while(tries < possible.size())
 		{
-			SimulationAttribute attribute = possibleAttributes.get(generator.nextInt(possibleAttributes.size()));
-			if(!usedAttributes.contains(attribute))
-				return attribute;
+			Object atr = possible.get(generator.nextInt(possible.size()));
+			if(!used.contains(atr))
+				return atr;
 			else
 				tries++;
 		}
 		
 		//If all attributes are already used picks randomly one, repeating that one
-		return possibleAttributes.get(generator.nextInt(possibleAttributes.size()));
+		return possible.get(generator.nextInt(possible.size()));
 	}
 	
 	@Override

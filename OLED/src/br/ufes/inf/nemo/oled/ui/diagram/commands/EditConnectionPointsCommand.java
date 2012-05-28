@@ -25,8 +25,8 @@ import java.util.List;
 
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
 
 /**
@@ -48,7 +48,7 @@ public class EditConnectionPointsCommand extends BaseDiagramCommand {
 	 * @param aConnection the connection object
 	 * @param theNewpoints the new point list
 	 */
-	public EditConnectionPointsCommand(DiagramEditorNotification aNotification, Connection aConnection, List<Point2D> theNewpoints) {
+	public EditConnectionPointsCommand(DiagramNotification aNotification, Connection aConnection, List<Point2D> theNewpoints) {
 		this.notification = aNotification;
 		connection = aConnection;
 		newpoints = clonePointList(theNewpoints);

@@ -24,7 +24,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * This class implements a TableModel for class proprties, at the moment
+ * This class implements a BaseTableModel for class proprties, at the moment
  * it simply holds strings.
  *
  * @author Wei-ju Wu

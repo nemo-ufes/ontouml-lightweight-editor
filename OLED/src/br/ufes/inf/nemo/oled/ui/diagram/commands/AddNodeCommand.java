@@ -31,8 +31,8 @@ import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
 
@@ -53,13 +53,13 @@ public class AddNodeCommand extends BaseDiagramCommand {
 
 	/**
 	 * Constructor.
-	 * @param editorNotification a DiagramEditorNotification object
+	 * @param editorNotification a ModelNotification object
 	 * @param parent the parent component
 	 * @param aNode the created element
 	 * @param x the absolute x position
 	 * @param y the absolute y position
 	 */
-	public AddNodeCommand(DiagramEditorNotification editorNotification, CompositeElement parent, Node aNode, double x, double y, UmlProject project) {
+	public AddNodeCommand(DiagramNotification editorNotification, CompositeElement parent, Node aNode, double x, double y, UmlProject project) {
 		this.parent = parent;
 		this.project = project;
 		this.notification = editorNotification;

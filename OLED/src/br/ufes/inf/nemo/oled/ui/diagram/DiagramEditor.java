@@ -68,7 +68,7 @@ import br.ufes.inf.nemo.oled.ui.BaseEditor;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.ConvertConnectionTypeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.EditConnectionPointsCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.MoveElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.ResetConnectionPointsCommand;
@@ -96,7 +96,7 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
  * @author Wei-ju Wu
  * @version 1.0
  */
-public class DiagramEditor extends BaseEditor implements ActionListener, MouseListener, MouseMotionListener, DiagramEditorNotification, DiagramOperations, NodeChangeListener {
+public class DiagramEditor extends BaseEditor implements ActionListener, MouseListener, MouseMotionListener, DiagramNotification, DiagramOperations, NodeChangeListener {
 
 	private static final long serialVersionUID = 4210158437374056534L;
 	// For now, we define the margins of the diagram as constants
@@ -111,8 +111,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private transient SelectionHandler selectionHandler;
 	private transient CreationHandler creationHandler;
 	private transient LineHandler lineHandler;
-	private transient List<UndoableEditListener> editListeners =
-		new ArrayList<UndoableEditListener>();
+	private transient List<UndoableEditListener> editListeners = new ArrayList<UndoableEditListener>();
 	private transient Scaling scaling = Scaling.SCALING_100;
 
 	/**
@@ -162,10 +161,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 	private AppFrame frame;
 
-	private DiagramManager manager;
+	private DiagramManager diagramManager;
 	
 	public DiagramManager getManager() {
-		return manager;
+		return diagramManager;
 	}
 
 	// The command processor to hold this diagram's operations.
@@ -178,18 +177,18 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 	/**
 	 * Constructor. Basic setup of the layout area.
-	 * @param aFrame the frame
+	 * @param frame the frame
 	 * @param diagramManager 
-	 * @param aDiagram the diagram
+	 * @param diagram the diagram
 	 */
-	public DiagramEditor(AppFrame aFrame, DiagramManager aManager, StructureDiagram aDiagram) {
-		frame = aFrame;
-		manager = aManager;
-		diagram = aDiagram;
-		diagram.addNodeChangeListener(this);
+	public DiagramEditor(AppFrame frame, DiagramManager diagramManager, StructureDiagram diagram) {
+		this.frame = frame;
+		this.diagramManager = diagramManager;
+		this.diagram = diagram;
+		this.diagram.addNodeChangeListener(this);
 		initEditorMembers();
 
-		// Make sure the this component has no layout manager, is opaque and has
+		// Make sure the this component has no layout diagramManager, is opaque and has
 		// no double buffer
 		setLayout(null);
 		setOpaque(true);
@@ -534,7 +533,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public boolean canRedo() { return undoManager.canRedo(); }
 
 	/**
-	 * Clears the undo manager.
+	 * Clears the undo diagramManager.
 	 */
 	public void clearUndoManager() {
 		undoManager.discardAllEdits();
@@ -737,7 +736,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		// correct menu behaviour
 		command.run();
 		
-		manager.updateUI();
+		diagramManager.updateUI();
 	}
 
 	/*
@@ -770,7 +769,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	}
 
 	// *************************************************************************
-	// ***** DiagramEditorNotification
+	// ***** ModelNotification
 	// *********************************
 	
 	public void notifyChange(List<DiagramElement> elements, ChangeType changeType, NotificationType notificationType)
@@ -875,21 +874,22 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void editProperties(DiagramElement element) {
 		if (element instanceof ClassElement) {
 			ClassElement classElement = (ClassElement) element;
-			EditClassDialog dialog = new EditClassDialog(frame, manager, classElement, true);
+			EditClassDialog dialog = new EditClassDialog(frame, diagramManager, classElement, true);
+			//EditClassDialog2 dialog = new EditClassDialog2(frame);
+			//EditClassDialog2 dialog = new EditClassDialog2(frame, diagramManager, classElement, true);
 			dialog.setLocationRelativeTo(frame);
 			dialog.setVisible(true);
 			redraw();
 		} else if (element instanceof AssociationElement) {
 			AssociationElement association = (AssociationElement) element;
-			EditAssociationDialog dialog = new EditAssociationDialog(frame,
-					association, true);
+			EditAssociationDialog dialog = new EditAssociationDialog(frame, diagramManager, association, true);
 			dialog.setLocationRelativeTo(frame);
 			dialog.setVisible(true);
 			redraw();
 		} else if (element instanceof GeneralizationElement) {
 			GeneralizationElement generalization = (GeneralizationElement) element;
 			EditGeneralizationDialogNew dialog = new EditGeneralizationDialogNew(frame,
-					generalization, manager, true);
+					generalization, diagramManager, true);
 			dialog.setLocationRelativeTo(frame);
 			dialog.setVisible(true);
 			redraw();
@@ -945,11 +945,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void nodeMoved(Node node) { }
 
 	public void requestFocusInEditor() {
-		manager.requestFocus();		
+		diagramManager.requestFocus();		
 	}
 	
 	public DiagramManager getDiagramManager() {
-		return manager;
+		return diagramManager;
 	}
 	
 	/**

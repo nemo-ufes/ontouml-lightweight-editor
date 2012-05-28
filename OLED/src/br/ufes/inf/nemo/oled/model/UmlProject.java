@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
@@ -56,10 +57,11 @@ public class UmlProject implements Serializable {
 	private transient Resource resource;
 	private List<UmlDiagram> diagrams = new ArrayList<UmlDiagram>();
 	private transient boolean saveNeeded = false;
-
+	private Properties properties;
+	
 	public UmlProject() {
 		super();
-		
+		properties = new Properties();
 		resource = ModelHelper.createResource();
 		Model model = ModelHelper.getFactory().createModel();
 		resource.getContents().add(model);
@@ -68,6 +70,7 @@ public class UmlProject implements Serializable {
 	
 	public UmlProject(Model model) {
 		super();
+		properties = new Properties();
 		resource = ModelHelper.createResource();
 		resource.getContents().add(model);
 		getEditingDomain();
@@ -85,6 +88,7 @@ public class UmlProject implements Serializable {
 		return (Model) resource.getContents().get(0);
 	}
 
+	//CLEANUP
 	/*public void addElement(Element element) {	
 		AddCommand cmd = new AddCommand(getEditingDomain(), getModel().getPackagedElement(), element);
 		getEditingDomain().getCommandStack().execute(cmd);
@@ -151,6 +155,7 @@ public class UmlProject implements Serializable {
 		return getModel().getPackagedElement();
 	}
 
+	
 	public Set<RefOntoUML.Class> getClasses() {
 		Set<RefOntoUML.Class> classes = new HashSet<RefOntoUML.Class>();
 		for (PackageableElement item : getElements()) {
@@ -206,4 +211,11 @@ public class UmlProject implements Serializable {
 		return saveNeeded;
 	}
 
+	public Properties getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Properties properties) {
+		this.properties = properties;
+	}
 }

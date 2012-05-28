@@ -250,6 +250,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("VERIFY_MODEL_FILE", new MethodCall(
 					getClass().getMethod("verifyModelFile")));
 			
+			selectorMap.put("GENERATE_OWL_SETTINGS", new MethodCall(
+					getClass().getMethod("generateOwlSettings")));
+			
 			selectorMap.put("GENERATE_OWL", new MethodCall(
 					getClass().getMethod("generateOwl")));
 			
@@ -300,6 +303,11 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void verifyModelFile()
 	{
 		manager.verifyCurrentModelFile();
+	}
+	
+	public void generateOwlSettings() 
+	{
+		manager.generateOwlSettings();
 	}
 	
 	public void generateOwl() 

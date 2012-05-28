@@ -5,8 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.EObject;
+
 import refontouml2alloy.bts.OntoUML2Alloy;
-import refontouml2alloy.bts.simulation.SimulationElement;
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import edu.mit.csail.sdg.alloy4.ConstMap;
@@ -19,12 +20,12 @@ import edu.mit.csail.sdg.alloy4compiler.translator.TranslateAlloyToKodkod;
 
 public class VerificationHelper {
 	
-   public static OperationResult verifyModel(Model model, List<SimulationElement> simulationElements, String tempDir, boolean generateTheme){
+   public static OperationResult verifyModel(Model model, List<SimulationElement> simulationElements, String tempDir){
 	   
 		String alloyFileName = ConfigurationHelper.getCanonPath(tempDir, OLEDSettings.SIMULATION_DEFAULT_FILE.getValue()); 
 		String themeFileName = ConfigurationHelper.getCanonPath(tempDir, OLEDSettings.SIMULATION_THEME_FILE.getValue());
 		
-    	if(!OntoUML2Alloy.transformToAlloyFile(model, simulationElements, alloyFileName, themeFileName, generateTheme))
+    	if(!OntoUML2Alloy.transformToAlloyFile(model, null, alloyFileName, themeFileName))
     		return new OperationResult(ResultType.ERROR, "Error while generating the alloy file", null);
     	    	
     	File alloyFile = new File(alloyFileName);  	

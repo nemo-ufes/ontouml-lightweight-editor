@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.oled.ui.diagram;
 
 import java.awt.BorderLayout;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -17,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -41,21 +41,11 @@ import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
+import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
+import br.ufes.inf.nemo.oled.util.IconLoader.IconType;
 
 
-/**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
 public class EditClassDialog extends JDialog {
 
 	private static final long serialVersionUID = -6707497708908105957L;
@@ -73,18 +63,20 @@ public class EditClassDialog extends JDialog {
 	private JTable attributesTable;
 	private JPanel attributesPanel;
 	private ClassElement classElement;
-	private PropertyTableModel attributesTableModel;
+	private AttributeTableModel attributesTableModel;
 	private DiagramManager diagramManager;
 	private Map<String, DataType> modelDataTypes; 
+	private JButton clsAnttButton;
 	private JCheckBox abstractCheck;
+	private JFrame parent;
 
-	public EditClassDialog(Frame parent, DiagramManager aDiagramManager, ClassElement aClassElement,
-			boolean modal) {
+	public EditClassDialog(JFrame parent, DiagramManager diagramManager, ClassElement classElement, boolean modal) {
 		super(parent, modal);
 		
-		diagramManager = aDiagramManager;
-		classElement = aClassElement;
-
+		this.diagramManager = diagramManager;
+		this.classElement = classElement;
+		this.parent = parent;
+		
 		initGUI();
 		myPostInit();
 	}
@@ -92,13 +84,14 @@ public class EditClassDialog extends JDialog {
 	private void initGUI() {
 		try {
 			{
-				setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-				setTitle(ApplicationResources.getInstance().getString(
-						"dialog.classproperties.title"));
-
-				GroupLayout layout = new GroupLayout(
-						(JComponent) getContentPane());
+				{
+					setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+					setTitle(ApplicationResources.getInstance().getString("dialog.classproperties.title"));
+				}
+				
+				GroupLayout layout = new GroupLayout((JComponent) getContentPane());
 				getContentPane().setLayout(layout);
+				
 				this.setResizable(false);
 				{
 					classAttributesPanel = new JPanel();
@@ -125,7 +118,7 @@ public class EditClassDialog extends JDialog {
 							attributeScroll.setEnabled(false);
 							{
 
-								attributesTableModel = new PropertyTableModel();
+								attributesTableModel = new AttributeTableModel(classElement.getClassifier());
 								attributesTable = new JTable();
 								attributesTable.setRowHeight(23);
 								TableColumnModel columnModel =  new DefaultTableColumnModel() {
@@ -172,8 +165,7 @@ public class EditClassDialog extends JDialog {
 					}
 					{
 						attributeAddButton = new JButton();
-						attributeAddButton.setText(ApplicationResources.getInstance()
-								.getString("stdcaption.add"));
+						attributeAddButton.setText(ApplicationResources.getInstance().getString("stdcaption.add"));
 						attributeAddButton.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent evt) {
 								attributeAddButtonActionPerformed(evt);
@@ -182,8 +174,7 @@ public class EditClassDialog extends JDialog {
 					}
 					{
 						attributeDeleteButton = new JButton();
-						attributeDeleteButton.setText(ApplicationResources.getInstance()
-								.getString("stdcaption.delete"));
+						attributeDeleteButton.setText(ApplicationResources.getInstance().getString("stdcaption.delete"));
 						attributeDeleteButton.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent evt) {
 								attributeDeleteButtonActionPerformed(evt);
@@ -236,10 +227,8 @@ public class EditClassDialog extends JDialog {
 				{
 					cancelButton = new JButton();
 					cancelButton.setText(ApplicationResources.getInstance().getString("stdcaption.cancel"));
-					cancelButton
-							.addActionListener(new java.awt.event.ActionListener() {
-								public void actionPerformed(
-										java.awt.event.ActionEvent evt) {
+					cancelButton.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent evt) {
 									cancelButtonActionPerformed(evt);
 								}
 							});
@@ -247,27 +236,39 @@ public class EditClassDialog extends JDialog {
 				{
 					okButton = new JButton();
 					okButton.setText(ApplicationResources.getInstance().getString("stdcaption.ok"));
-					okButton.addActionListener(new java.awt.event.ActionListener() {
-						public void actionPerformed(
-								java.awt.event.ActionEvent evt) {
+					okButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent evt) {
 							okButtonActionPerformed(evt);
 						}
 					});
 				}
+				{
+					clsAnttButton = new JButton();
+					clsAnttButton.setToolTipText("Annotations for this element");
+					clsAnttButton.setIcon(IconLoader.getInstance().getIcon(IconType.ANNOTATION));
+					clsAnttButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent evt) {
+							EditAnnotationDialog antDialog = new EditAnnotationDialog(parent, diagramManager, classElement.getClassifier(), true);
+							antDialog.setVisible(true);
+						}
+					});
+				}
 				layout.setVerticalGroup(layout.createSequentialGroup()
-					.addContainerGap(12, Short.MAX_VALUE)
+					.addContainerGap(19, 19)
 					.addGroup(layout.createParallelGroup()
-					    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-					        .addComponent(classNameLabel, GroupLayout.Alignment.BASELINE, 0, 17, Short.MAX_VALUE)
+					    .addGroup(GroupLayout.Alignment.LEADING, layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					        .addComponent(classNameLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
 					        .addComponent(abstractCheck, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-					    .addComponent(classNameText, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					    .addGroup(GroupLayout.Alignment.LEADING, layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					        .addComponent(classNameText, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					        .addComponent(clsAnttButton, GroupLayout.Alignment.BASELINE, 0, 16, Short.MAX_VALUE)))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 					.addComponent(classAttributesPanel, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+					.addGap(0, 16, GroupLayout.PREFERRED_SIZE)
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(cancelButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					    .addComponent(okButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap());
+					.addContainerGap(17, 17));
 				layout.setHorizontalGroup(layout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(layout.createParallelGroup()
@@ -276,18 +277,23 @@ public class EditClassDialog extends JDialog {
 					        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					        .addGroup(layout.createParallelGroup()
 					            .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-					                .addComponent(classNameText, GroupLayout.PREFERRED_SIZE, 289, GroupLayout.PREFERRED_SIZE)
+					                .addComponent(classNameText, GroupLayout.PREFERRED_SIZE, 235, GroupLayout.PREFERRED_SIZE)
 					                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-					                .addComponent(abstractCheck, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
+					                .addComponent(clsAnttButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+					                .addGap(9))
 					            .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-					                .addGap(0, 194, Short.MAX_VALUE)
-					                .addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-					                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, 1, GroupLayout.PREFERRED_SIZE)
-					                .addComponent(okButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-					                .addGap(0, 10, GroupLayout.PREFERRED_SIZE))))
-					    .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-					        .addComponent(classAttributesPanel, 0, 422, Short.MAX_VALUE)
-					        .addGap(10))));
+					                .addGap(0, 202, GroupLayout.PREFERRED_SIZE)
+					                .addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)))
+					        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+					        .addGroup(layout.createParallelGroup()
+					            .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+					                .addComponent(abstractCheck, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+					                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, Short.MAX_VALUE))
+					            .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+					                .addPreferredGap(abstractCheck, okButton, LayoutStyle.ComponentPlacement.INDENT)
+					                .addComponent(okButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))))
+					    .addComponent(classAttributesPanel, GroupLayout.Alignment.LEADING, 0, 430, Short.MAX_VALUE))
+					.addContainerGap());
 
 			}
 			this.setSize(460, 380);
@@ -448,4 +454,5 @@ public class EditClassDialog extends JDialog {
         combo.setEditable(true);
         return new DefaultCellEditor(combo);
     }
+	
 }

@@ -30,8 +30,8 @@ import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
@@ -73,11 +73,11 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * Constructor.
 	 * 
 	 * @param aNotification
-	 *            the DiagramEditorNotification object
+	 *            the ModelNotification object
 	 * @param theElements
 	 *            the DiagramElements to remove, each must have a parent
 	 */
-	public DeleteElementCommand(DiagramEditorNotification aNotification, Collection<DiagramElement> theElements, UmlProject project) {
+	public DeleteElementCommand(DiagramNotification aNotification, Collection<DiagramElement> theElements, UmlProject project) {
 		this.project = project;
 		this.notification = aNotification;
 		elements = theElements;

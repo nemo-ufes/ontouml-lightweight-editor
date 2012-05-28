@@ -7,7 +7,10 @@ import java.util.Map;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 
+import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
+
 import RefOntoUML.Model;
+import RefOntoUML.PackageableElement;
 
 /**
  * Helper class for dealing with model validation
@@ -16,42 +19,55 @@ import RefOntoUML.Model;
  *   @version 1.0
  */
 public class ValidationHelper {
-
-	public static String validateModel(Model model)
+	
+	/**
+	 * Validates the model sintatically, against the rules defined in the ecore metamodel. 
+	 * 
+	 * @param model
+	 * @return OperationResult the sintatical validation result
+	 */
+	public static OperationResult validateModel(Model model)
 	{
 		Map<Object, Object> context = new HashMap<Object, Object>();
 		BasicDiagnostic diag = new BasicDiagnostic();
-		StringBuilder sb = new StringBuilder();		
-		
-		sb.append("--- Validation Results ---\n\n");
+
 		long validationStartMilis = System.currentTimeMillis();
 		boolean valid = ModelHelper.validate(model, diag, context);
 		long validationEndMilis = System.currentTimeMillis();
-		//int effectiveErrors = 0;
+		
+		StringBuilder sb = new StringBuilder();		
+		Map<PackageableElement, String> errorsMap = new HashMap<PackageableElement, String>();
 		
 		if(!valid)
 		{
+			sb.append("The model is not valid sintatically. The following error(s) where found:\n\n");
+			
 			for (Diagnostic item : diag.getChildren()) {
 				
-				/*String message = handleMessage(item.getMessage());
-				if(message != null)
-				{
-					effectiveErrors++;
-					sb.append(handleName(item.getData().get(0)) + " - " + message + "\n\n");
-				}*/
+				PackageableElement element = (PackageableElement) item.getData().get(0);
+				String errors = "";
 				
-				sb.append(ModelHelper.handleName(item.getData().get(0)) + " - " + handleMessage(item.getMessage()) + "\n\n");
+				if(errorsMap.containsKey(element))
+				{
+					errors = errorsMap.get(element);
+				}
+				
+				String currentError = handleMessage(item.getMessage()) + "\n\n";
+				errors += currentError;
+				errorsMap.put(element, errors);
+				sb.append(ModelHelper.handleName(element) + " - " + currentError);
 				
 			}	
 		}
 		
-		sb.append(MessageFormat.format("--- Model validated in {0} ms, {1} error(s) found ---", (validationEndMilis - validationStartMilis),  diag.getChildren().size()));
-		return sb.toString();		
+		sb.append(MessageFormat.format("Model validated in {0} ms, {1} error(s) found", (validationEndMilis - validationStartMilis),  diag.getChildren().size()));
+		return new OperationResult(valid ? ResultType.SUCESS : ResultType.ERROR, sb.toString(), new Object[] { errorsMap });		
 	}
-
 	
 	/**
-	 * Handles the error message
+	 * Handles the error message, returning a more friendly message
+	 * @param message
+	 * @return String the friendly message
 	 */
 	public static String handleMessage(String message)
 	{

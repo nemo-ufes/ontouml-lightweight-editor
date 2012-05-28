@@ -12,7 +12,7 @@ import br.ufes.inf.nemo.oled.util.Command;
  */
 public abstract class BaseDiagramCommand extends AbstractUndoableEdit implements Command {
 	private static final long serialVersionUID = 733613330226013575L;
-	protected DiagramEditorNotification notification;
+	protected DiagramNotification notification;
 	protected boolean redo = false;
 	protected UmlProject project;
 }

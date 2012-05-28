@@ -42,6 +42,7 @@ public class DiagramEditorToolbar implements ActionListener {
     toolbar.add(createButton(validationGroup, "verify")); 
     toolbar.add(createButton(validationGroup, "verifyfile")); 
     toolbar.addSeparator(new Dimension(20, 25));
+    toolbar.add(createButton(validationGroup, "generateowlsettings"));
     toolbar.add(createButton(validationGroup, "generateowl"));
     toolbar.add(createButton(validationGroup, "generatesbvr"));
   }

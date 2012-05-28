@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import edu.mit.csail.sdg.alloy4.Util;
 
@@ -97,7 +98,27 @@ public final class ConfigurationHelper {
 	{
 		return new File(filePath).getName();
 	}
-    /** 
+    
+  /**
+   * Inspects the name of the specified file and checks if it ends with the
+   * specified suffix. If not, a new file will be created, appending the suffix
+   * to the file name, otherwise the original file object will be returned.
+   * @param file the file to check
+   * @param the extension
+   * @return the file that ends with the specified suffix
+   */
+	public static File getFileWithExtension(File file, String extension) {
+	    String path = file.getPath();
+	    File result = file;
+	    Pattern pattern = Pattern.compile(".*\\" + extension);
+	    if (!pattern.matcher(path).matches()) {
+	      path = path + extension;
+	      result = new File(path);
+	    }
+	    return result;
+	  }
+	
+	/** 
      * Create an empty temporary directory for use, designate it "deleteOnExit", then return it.
      * It is guaranteed to be a canonical absolute path. 
      */
@@ -147,6 +168,11 @@ public final class ConfigurationHelper {
 		}
 		
 		return OLED_HOME = ans;
+	}
+	
+	public static String getUserHome()
+	{
+		return canon(System.getProperty("user.name"));
 	}
 	
 	public static final String canon(String filename) {

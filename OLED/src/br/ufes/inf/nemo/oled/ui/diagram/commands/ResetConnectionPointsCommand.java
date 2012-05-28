@@ -25,8 +25,8 @@ import java.util.List;
 
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
 
 /**
@@ -46,7 +46,7 @@ public class ResetConnectionPointsCommand extends BaseDiagramCommand {
 	 * @param aNotification the notification object
 	 * @param conn the connection
 	 */
-	public ResetConnectionPointsCommand(DiagramEditorNotification aNotification, Connection conn) {
+	public ResetConnectionPointsCommand(DiagramNotification aNotification, Connection conn) {
 		this.notification = aNotification;
 		connection = conn;
 	}

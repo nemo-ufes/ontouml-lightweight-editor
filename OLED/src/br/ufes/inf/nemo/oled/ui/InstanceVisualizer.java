@@ -5,6 +5,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
@@ -20,6 +21,7 @@ import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.IconLoader.IconType;
 import br.ufes.inf.nemo.oled.util.OLEDSettings;
+import br.ufes.inf.nemo.oled.util.SimulationElement;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.OurUtil;
@@ -27,6 +29,8 @@ import edu.mit.csail.sdg.alloy4.Util;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 import edu.mit.csail.sdg.alloy4viz.AlloyInstance;
+import edu.mit.csail.sdg.alloy4viz.AlloyRelation;
+import edu.mit.csail.sdg.alloy4viz.AlloySet;
 import edu.mit.csail.sdg.alloy4viz.AlloyType;
 import edu.mit.csail.sdg.alloy4viz.StaticInstanceReader;
 import edu.mit.csail.sdg.alloy4viz.VizGUI;
@@ -52,8 +56,9 @@ public class InstanceVisualizer extends JPanel implements Editor{
     private	A4Solution solution;
     private Module module;
     private ConstMap<String, String> alloySources;
-	
-	public InstanceVisualizer(StructureDiagram diagram, A4Solution solution, Module module, ConstMap<String, String> alloyMap) {
+    private List<SimulationElement> simulationElements; 
+    
+	public InstanceVisualizer(StructureDiagram diagram, A4Solution solution, Module module, ConstMap<String, String> alloyMap, List<SimulationElement> simElements) {
 
 		super();
 
@@ -63,8 +68,8 @@ public class InstanceVisualizer extends JPanel implements Editor{
 		this.alloySources = alloyMap;
 		
 		initGUI();
-		
 		loadSolution();
+		setSimulationElements(simElements);
 	}
 
 	public void initGUI() {
@@ -151,7 +156,8 @@ public class InstanceVisualizer extends JPanel implements Editor{
 			else
 				myState.loadInstance(myInstance);
 				
-			myState.loadPaletteXML(themeFileName);
+			if(themeFile.exists())
+				myState.loadPaletteXML(themeFileName);
 			
 			loadProjectionPopup();
 		
@@ -245,6 +251,8 @@ public class InstanceVisualizer extends JPanel implements Editor{
 			content.validate();
 			content.setVisible(true);
 		}
+		
+		
 	}
 	
 	private AlloyType getType(String typeName)
@@ -347,6 +355,52 @@ public class InstanceVisualizer extends JPanel implements Editor{
 	@Override
 	public void dispose() {
 		
+	}
+
+	public void setSimulationElements(List<SimulationElement> simulationElements) {
+		
+		this.simulationElements = simulationElements;
+	    
+		if(myState != null)
+		{
+			for (AlloyType type: myState.getCurrentModel().getTypes()) {
+				for (SimulationElement elm : simulationElements) {
+					if(type.getName().equals(elm.getName()))
+					{
+						myState.nodeColor.put(type, elm.getColor());
+						myState.shape.put(type, elm.getShape());
+						myState.nodeStyle.put(type, elm.getStyle());
+					}
+				}
+			}
+			
+			for (AlloySet set: myState.getCurrentModel().getSets()) {
+				for (SimulationElement elm : simulationElements) {
+					if(set.getName().endsWith("/" + elm.getName()))
+					{
+						myState.nodeColor.put(set, elm.getColor());
+						myState.shape.put(set, elm.getShape());
+						myState.nodeStyle.put(set, elm.getStyle());
+					}
+				}
+			}
+			
+			for (AlloyRelation rel: myState.getCurrentModel().getRelations()) {
+				for (SimulationElement elm : simulationElements) {
+					if(rel.getName().equals(elm.getName()))
+					{
+						myState.edgeColor.put(rel, elm.getColor());
+						myState.edgeStyle.put(rel, elm.getStyle());
+					}
+				}
+			}
+			
+			updateDisplay();
+		}
+	}
+
+	public List<SimulationElement> getSimulationElements() {
+		return simulationElements;
 	};
 
 }

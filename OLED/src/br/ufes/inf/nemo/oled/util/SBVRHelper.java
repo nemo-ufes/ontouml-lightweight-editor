@@ -23,7 +23,7 @@ public class SBVRHelper {
 		// the transformation. If we decide to incorporate the OntoUML2SBVR plugin, we should modify the transformation to add the possibility to run 
 		// the transformation directly from the model object
 		
-		String modelFileName = ConfigurationHelper.getCanonPath(tempDir, OLEDSettings.MODEL.getValue());
+		String modelFileName = ConfigurationHelper.getCanonPath(tempDir, OLEDSettings.MODEL_DEFAULT_FILE.getValue());
 		
 		File modelFile = new File(modelFileName);  	
     	modelFile.deleteOnExit();
@@ -37,7 +37,7 @@ public class SBVRHelper {
 			
 			String docPage = modelFile.getPath().replace(".refontouml", ".html");
 			
-			return new OperationResult(ResultType.SUCESS, "SBVR Generated successfully", new Object[] { docPage });
+			return new OperationResult(ResultType.SUCESS, "SBVR generated successfully", new Object[] { docPage });
 			
 		} catch (Exception ex) {
 			return new OperationResult(ResultType.ERROR, "Error while generating the SBVR representaion. Details: " + ex.getMessage(), null);

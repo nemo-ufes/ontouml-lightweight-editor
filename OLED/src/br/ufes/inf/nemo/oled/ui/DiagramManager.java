@@ -38,6 +38,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -59,27 +60,31 @@ import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
-import br.ufes.inf.nemo.oled.ui.commands.OwlExporter;
 import br.ufes.inf.nemo.oled.ui.commands.PngExporter;
 import br.ufes.inf.nemo.oled.ui.commands.ProjectReader;
 import br.ufes.inf.nemo.oled.ui.commands.ProjectWriter;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorMouseEvent;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorStateListener;
+import br.ufes.inf.nemo.oled.ui.diagram.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.diagram.SelectionListener;
 import br.ufes.inf.nemo.oled.ui.diagram.VerificationSettingsDialog;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ColorPalette;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
+import br.ufes.inf.nemo.oled.util.OWLHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
+import br.ufes.inf.nemo.oled.util.ProjectSettings;
 import br.ufes.inf.nemo.oled.util.SBVRHelper;
+import br.ufes.inf.nemo.oled.util.SimulationElement;
 import br.ufes.inf.nemo.oled.util.ValidationHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
+import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
@@ -286,7 +291,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Generates OWL from the current model (the model behind the current DiagramEditor).
 	 * */
 	public void exportOwl() {
-		if(getCurrentEditor() != null)
+		//CLEANUP
+		/*if(getCurrentEditor() != null)
 		{
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setDialogTitle(getResourceString("dialog.exportowl.title"));
@@ -306,7 +312,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					}
 				}
 			}
-		}
+		}*/
 	}
 	
 	/**
@@ -538,12 +544,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/**
-	 * Semantically validate the current model (the model behind the current DiagramEditor).
+	 * Sintatically validate the current model (the model behind the current DiagramEditor).
 	 */
 	public void validateCurrentModel() {
 		UmlProject project = getCurrentEditor().getProject();
-		String validationResult = ValidationHelper.validateModel(project.getModel());
-		((DiagramEditorWrapper) this.getSelectedComponent()).showOutputText(validationResult, true, true);
+		OperationResult result = ValidationHelper.validateModel(project.getModel());
+		((DiagramEditorWrapper) this.getSelectedComponent()).showOutputText(result.toString(), true, true);
 	}
 
 	/**
@@ -564,7 +570,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		UmlProject project = getCurrentEditor().getProject();
 		StructureDiagram diagram = getCurrentEditor().getDiagram();
 		
-		OperationResult result = VerificationHelper.verifyModel(project.getModel(), diagram.getSimulationElements(), diagram.getTempDir(), diagram.isGenerateTheme());
+		List<SimulationElement> simulationElements = diagram.getSimulationElements();
+		OperationResult result = VerificationHelper.verifyModel(project.getModel(), simulationElements, diagram.getTempDir());
 		
 		if(result.getResultType() != ResultType.ERROR)
 		{
@@ -574,32 +581,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			Module module = (Module) result.getData()[1];
 			ConstMap<String, String> alloySources = (ConstMap<String, String>) result.getData()[2];
 			
-			showModelInstances(diagram, solution, module, alloySources);
+			showModelInstances(diagram, solution, module, alloySources, simulationElements);
 		}
 		else
 		{
 			getCurrentWrapper().showOutputText(result.toString(), true, true); 
 		}
-	}
-
-	private void showModelInstances(StructureDiagram diagram, A4Solution solution, Module module, ConstMap<String, String> alloySources)
-	{
-		InstanceVisualizer instanceViz = (InstanceVisualizer) getEditorForDiagram(diagram, EditorNature.INSTANCE_VISUALIZER);
-		
-		if(instanceViz == null)
-		{
-			//TODO Localize this;
-			this.add("Verification Output", new InstanceVisualizer(diagram, solution, module, alloySources)); 
-		}
-		else
-		{
-			instanceViz.setSolution(solution);
-			instanceViz.setModule(module);
-			instanceViz.setAlloySources(alloySources);
-			instanceViz.loadSolution();
-			setSelectedComponent(instanceViz);
-		}
-		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -607,6 +594,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 		StructureDiagram diagram = getCurrentEditor().getDiagram();
 		
+		List<SimulationElement> simulationElements = diagram.getSimulationElements();
 		OperationResult result = VerificationHelper.verifyModelFromAlloyFile(diagram.getTempDir());
 		
 		if(result.getResultType() != ResultType.ERROR)
@@ -617,7 +605,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			Module module = (Module) result.getData()[1];
 			ConstMap<String, String> alloySources = (ConstMap<String, String>) result.getData()[2];
 			
-			showModelInstances(diagram, solution, module, alloySources);
+			showModelInstances(diagram, solution, module, alloySources, simulationElements);
 		}
 		else
 		{
@@ -625,15 +613,96 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
+	/**
+	 * Shows or hides the output pane, in case the current editor is a DiagramEditor. 
+	 */
 	public void showOutputPane() {
 		((DiagramEditorWrapper) this.getSelectedComponent()).showOrHideOutput();
 	}
+	
+	/**
+	 * Shows model instances for a given Alloy Solution/Module. 
+	 */
+	private void showModelInstances(StructureDiagram diagram, A4Solution solution, Module module, ConstMap<String, String> alloySources, List<SimulationElement> simulationElements)
+	{
+		InstanceVisualizer instanceViz = (InstanceVisualizer) getEditorForDiagram(diagram, EditorNature.INSTANCE_VISUALIZER);
+		if(instanceViz == null)
+		{
+			//TODO Localize this;
+			this.add("Verification Output", new InstanceVisualizer(diagram, solution, module, alloySources, simulationElements)); 
+		}
+		else
+		{
+			instanceViz.setSolution(solution);
+			instanceViz.setModule(module);
+			instanceViz.setAlloySources(alloySources);
+			instanceViz.loadSolution();
+			instanceViz.setSimulationElements(getCurrentEditor().getDiagram().getSimulationElements());
+			setSelectedComponent(instanceViz);
+		}
+		
+	}
+	
+	/**
+	 * Shows a dialog for choosing the owl seneration settings 
+	 */
+	public void generateOwlSettings() {
+		OWLSettingsDialog dialog = new OWLSettingsDialog(frame, this, true);
+		dialog.setLocationRelativeTo(frame);
+		dialog.setVisible(true);
+	}	
 	
 	/**
 	 * Generates OWL from the selected model   
 	 */
 	public void generateOwl() {
 		
+		UmlProject project = getCurrentEditor().getProject();
+		StructureDiagram diagram = getCurrentEditor().getDiagram();
+		
+		String owlType = ProjectSettings.OWL_MAPPING_TYPE.getValue(project);
+		MappingType mappingType = null;
+		if(!owlType.equals("SIMPLE"))
+			mappingType = MappingType.valueOf(owlType); 
+		
+		OperationResult result = OWLHelper.generateOwl(project.getModel(), 
+				ProjectSettings.OWL_ONTOLOGY_IRI.getValue(project),
+				mappingType,
+				ProjectSettings.OWL_GENERATE_FILE.getBoolValue(project),
+				ProjectSettings.OWL_FILE_PATH.getValue(project));
+		
+		//Model model, String ontologyIRI, String mappingType, boolean fileOutput, String filePath
+				
+		if(result.getResultType() != ResultType.ERROR)
+		{
+			if(!ProjectSettings.OWL_GENERATE_FILE.getBoolValue(project))
+			{
+				getCurrentWrapper().showOutputText(result.toString(), true, false);
+				
+				TextEditor textViz = (TextEditor) getEditorForDiagram(diagram, EditorNature.TEXT);
+				
+				if(textViz == null)
+				{
+					textViz = new TextEditor(diagram);
+					
+					//TODO Localize this;
+					add("OWL Generated", textViz);
+				}
+				else
+				{
+					setSelectedComponent(textViz);
+				}
+				textViz.setText((String) result.getData()[0]);
+			}
+			else
+			{
+				getCurrentWrapper().showOutputText(result.toString(), true, true);
+			}
+		}
+		else
+		{
+			getCurrentWrapper().showOutputText(result.toString(), true, true); 
+		}
 	}
 	
 	/**
@@ -648,11 +717,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 		if(result.getResultType() != ResultType.ERROR)
 		{
-			getCurrentWrapper().showOutputText(result.toString(), true, false); 
+			getCurrentWrapper().showOutputText(result.toString(), true, true); 
 			
-			HTMLVisualizer htmlViz = (HTMLVisualizer) getEditorForDiagram(diagram, EditorNature.HTML);
+			//HTMLVisualizer htmlViz = (HTMLVisualizer) getEditorForDiagram(diagram, EditorNature.HTML);
 			
-			if(htmlViz == null)
+			/*if(htmlViz == null)
 			{
 				htmlViz = new HTMLVisualizer(diagram);
 				
@@ -663,15 +732,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			{
 				setSelectedComponent(htmlViz);
 				frame.setVisible(true); //HACK!!! Needed to force to show the browser
-			}
+			}*/
 			
 			String htmlFilePath = (String) result.getData()[0];
+			File file = new File(htmlFilePath);			
+			openLinkWithBrowser(file.toURI().toString());
 			
-			if(!htmlViz.loadLocalPage(htmlFilePath))
+			/*if(!htmlViz.loadLocalPage(htmlFilePath))
 			{
 				getCurrentWrapper().showOutputText("\n\nCouldn't open the documentation with the internal browser. Trying to open with the system default browser...", false, true);
 				openLinkWithBrowser(new File(htmlFilePath).toURI().toString());
-			}
+			}*/
 
 		}
 		else
@@ -679,21 +750,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			getCurrentWrapper().showOutputText(result.toString(), true, true); 
 		}
 	}
-/*
-	private int getEditorIndexForDiagram(StructureDiagram diagram, EditorNature nature)
-	{
-		int totalTabs = getTabCount();
-		for(int i = 0; i < totalTabs; i++)
-		{
-			Editor editor = (Editor)getComponentAt(i);
-			
-			if(editor.getEditorNature() == nature && editor.getDiagram() == diagram)
-			{
-				return i;
-			}
-		}
-		return -1;
-	}*/
 	
 	private Editor getEditorForDiagram(StructureDiagram diagram, EditorNature nature)
 	{

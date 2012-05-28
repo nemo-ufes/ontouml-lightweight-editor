@@ -73,14 +73,14 @@ public final class ProjectWriter extends FileWriter {
 		ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
 		
 		//Save the model as a resource inside the file
-		ZipEntry modelEntry = new ZipEntry(OLEDSettings.MODEL.getValue());			
+		ZipEntry modelEntry = new ZipEntry(OLEDSettings.MODEL_DEFAULT_FILE.getValue());			
 		out.putNextEntry(modelEntry);
 		Resource resource = project.getResource();
 		resource.save(out, Collections.EMPTY_MAP);
 		out.closeEntry();
 		
 		//Save the project a.k.a the diagrams inside the file
-		ZipEntry projectEntry = new ZipEntry(OLEDSettings.PROJECT.getValue());
+		ZipEntry projectEntry = new ZipEntry(OLEDSettings.PROJECT_DEFAULT_FILE.getValue());
 		out.putNextEntry(projectEntry);
 		ObjectOutputStream oos = new ObjectOutputStream(out);
 		oos.writeObject(project); 
