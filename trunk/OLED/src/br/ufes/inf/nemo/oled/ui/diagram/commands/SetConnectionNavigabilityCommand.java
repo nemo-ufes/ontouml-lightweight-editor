@@ -26,8 +26,8 @@ import RefOntoUML.Association;
 import RefOntoUML.impl.AssociationImpl;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 
 
@@ -51,7 +51,7 @@ public class SetConnectionNavigabilityCommand extends BaseDiagramCommand {
 	 * @param theEndType the relation end type
 	 * @param flag the new value
 	 */
-	public SetConnectionNavigabilityCommand(DiagramEditorNotification aNotification, UmlConnection aConnection, RelationEndType theEndType, boolean flag) {
+	public SetConnectionNavigabilityCommand(DiagramNotification aNotification, UmlConnection aConnection, RelationEndType theEndType, boolean flag) {
 		this.notification = aNotification;
 		connection = aConnection;
 		endType = theEndType;

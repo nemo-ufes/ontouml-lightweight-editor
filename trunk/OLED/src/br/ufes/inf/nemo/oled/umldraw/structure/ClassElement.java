@@ -66,10 +66,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 	private Label mainLabel;
 	private Label ontoUmlLabel;
 	private String ontoUmlStereotype;
-
-	private boolean showOperations = false, showAttributes = false,
-			showStereotypes = true;
-
+	private boolean showOperations = false, showAttributes = false, showStereotypes = true;
 	private static ClassElement prototype = new ClassElement();
 
 	/**
@@ -125,11 +122,9 @@ public final class ClassElement extends AbstractCompositeNode implements
 		cloned.mainCompartment.removeAllLabels();
 		cloned.mainCompartment.addLabel(cloned.ontoUmlLabel);
 		cloned.mainCompartment.addLabel(cloned.mainLabel);
-		cloned.attributesCompartment = (Compartment) attributesCompartment
-				.clone();
+		cloned.attributesCompartment = (Compartment) attributesCompartment.clone();
 		cloned.attributesCompartment.setParent(cloned);
-		cloned.operationsCompartment = (Compartment) operationsCompartment
-				.clone();
+		cloned.operationsCompartment = (Compartment) operationsCompartment.clone();
 		cloned.operationsCompartment.setParent(cloned);
 		
 		cloned.setupOntoUmlLabelSource();
@@ -137,6 +132,32 @@ public final class ClassElement extends AbstractCompositeNode implements
 		return cloned;
 	}
 
+	/***
+	 * Compares two elements, returns true if tey hold the same data, false otherwise
+	 * @param snapshot
+	 * @return
+	 */
+	public Boolean compareTo(ClassElement snapshot)
+	{
+		boolean ret = true;
+		
+		ret &= snapshot.getClassifier().getName().equals(classData.getName());
+		ret &= snapshot.showAttributes() && showAttributes;
+		ret &= snapshot.showOperations() && showOperations;
+		
+		return ret;
+	}
+	
+	public void copyDataTo(ClassElement elm)
+	{
+		elm.setShowAttributes(showAttributes);
+		elm.setShowOperations(showOperations);
+		elm.setShowStereotypes(showStereotypes);
+		elm.setSize(getSize().getWidth(), getSize().getHeight());
+			
+		//invalidate();
+	}
+	
 	private void setupOntoUmlLabelSource()
 	{
 		ontoUmlLabel.setSource(new LabelSource() {
@@ -273,8 +294,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 	 */
 	public void setShowAttributes(boolean flag) {
 		if (showAttributes && !flag) {
-			setHeight(getSize().getHeight()
-					- attributesCompartment.getSize().getHeight());
+			setHeight(getSize().getHeight()	- attributesCompartment.getSize().getHeight());
 		}
 		showAttributes = flag;
 		invalidate();

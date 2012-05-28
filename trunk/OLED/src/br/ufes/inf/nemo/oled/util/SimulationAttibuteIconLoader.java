@@ -30,8 +30,6 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import refontouml2alloy.bts.simulation.SimulationAttribute;
-
 /**
  * This class accesses images for icons from the class path.
  *

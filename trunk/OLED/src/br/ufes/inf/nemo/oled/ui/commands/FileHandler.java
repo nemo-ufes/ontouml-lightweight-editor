@@ -20,7 +20,8 @@
 package br.ufes.inf.nemo.oled.ui.commands;
 
 import java.io.File;
-import java.util.regex.Pattern;
+
+import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 
 
 /**
@@ -46,14 +47,7 @@ public abstract class FileHandler {
    * @return the file that ends with the specified suffix
    */
   protected File getFileWithExtension(File file) {
-    String path = file.getPath();
-    File result = file;
-    Pattern pattern = Pattern.compile(".*\\" + getSuffix());
-    if (!pattern.matcher(path).matches()) {
-      path = path + getSuffix();
-      result = new File(path);
-    }
-    return result;
+	  return ConfigurationHelper.getFileWithExtension(file, getSuffix());
   }
  
 }

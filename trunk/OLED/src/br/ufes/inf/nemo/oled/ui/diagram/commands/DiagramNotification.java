@@ -29,7 +29,7 @@ import br.ufes.inf.nemo.oled.draw.DiagramElement;
  * @author Antognoni Albuquerque
  * @version 1.0
  */
-public interface DiagramEditorNotification {
+public interface DiagramNotification {
 
 	/**
 	 * Represents the action type made in a diagram by a command 
@@ -48,6 +48,7 @@ public interface DiagramEditorNotification {
 	public enum ChangeType {
 		ELEMENTS_ADDED, 
 		ELEMENTS_REMOVED, 
+		ELEMENTS_CHANGED, 
 		ELEMENTS_MOVED, 
 		ELEMENTS_RESIZED, 
 		LABEL_TEXT_SET, 

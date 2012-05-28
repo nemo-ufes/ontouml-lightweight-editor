@@ -80,14 +80,14 @@ public final class ProjectReader extends FileHandler {
 		ZipEntry entry;
 		while(entries.hasMoreElements()) {
 			entry = entries.nextElement();
-			if(entry.getName().equals(OLEDSettings.MODEL.getValue()) && !modelLoaded)
+			if(entry.getName().equals(OLEDSettings.MODEL_DEFAULT_FILE.getValue()) && !modelLoaded)
 			{
 				InputStream in = inFile.getInputStream(entry);
 				resource.load(in, Collections.EMPTY_MAP);
 				in.close();
 				modelLoaded = true;
 			}
-			else if (entry.getName().equals(OLEDSettings.PROJECT.getValue()) && !projectLoaded)
+			else if (entry.getName().equals(OLEDSettings.PROJECT_DEFAULT_FILE.getValue()) && !projectLoaded)
 			{
 				InputStream in = inFile.getInputStream(entry);
 				ObjectInputStream oin = new ObjectInputStream(in);

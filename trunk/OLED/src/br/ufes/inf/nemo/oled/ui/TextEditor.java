@@ -14,23 +14,20 @@ public class TextEditor extends JPanel implements Editor {
 
 	private static final long serialVersionUID = -1832428183354138999L;
 	private JTextArea textArea = new JTextArea();
+	private Diagram diagram;
 	
-	public TextEditor()
+	public TextEditor(Diagram diagram)
 	{
 		super(new BorderLayout());
 		JScrollPane scroll = new JScrollPane(textArea);
 		add(scroll, BorderLayout.CENTER);
+		
+		this.diagram = diagram;
 	}
-	
-	public TextEditor(String path)
-	{
-		super(new BorderLayout());
-		JScrollPane scroll = new JScrollPane(textArea);
-		add(scroll, BorderLayout.CENTER);
-				
+
+	public void loadFile(String filePath) {
 		try {
-			
-			FileReader fr = new FileReader(path);
+			FileReader fr = new FileReader(filePath);
 			BufferedReader br = new BufferedReader(fr);
 			textArea.read(br, null);
 			br.close();
@@ -38,7 +35,6 @@ public class TextEditor extends JPanel implements Editor {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
 	}
 	
 	public void setText(String text) {
@@ -61,7 +57,7 @@ public class TextEditor extends JPanel implements Editor {
 
 	@Override
 	public Diagram getDiagram() {
-		return null;
+		return diagram;
 	}
 
 	@Override

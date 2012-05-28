@@ -51,6 +51,7 @@ public final class IconLoader {
 		UNDO, 
 		REDO, 
 		ABOUT, 
+		ANNOTATION, //CLEANUP
 		MOUSE_POINTER, 
 		CLASS, 
 		ASSOCIATION, 
@@ -76,6 +77,7 @@ public final class IconLoader {
 		WINDOW, 
 		PALETTE_OPEN, 
 		PALETTE_CLOSED, 
+		GENERATE_OWL_SETTINGS,
 		GENERATE_OWL,
 		GENERATE_SBVR,
 		IMPORT, 
@@ -88,7 +90,14 @@ public final class IconLoader {
 		LEARN_ONTOUML,
 		COMMUNITY,
 		NEXT,
-		PACKAGE
+		PACKAGE,
+		ADD,
+		REMOVE,
+		GREEN_LIGHT,
+		RED_LIGHT,
+		GREY_LIGHT,
+		ARROW_UP,
+		ARROW_DOWN
 	}
 
 	private Map<IconType, String> urlMap = new HashMap<IconType, String>();
@@ -112,6 +121,7 @@ public final class IconLoader {
 		urlMap.put(IconType.AGGREGATION_C, "resources/br/ufes/inf/nemo/oled/ui/aggregation-c.png");
 		urlMap.put(IconType.AGGREGATION_M, "resources/br/ufes/inf/nemo/oled/ui/aggregation-m.png");
 		urlMap.put(IconType.AGGREGATION_Q, "resources/br/ufes/inf/nemo/oled/ui/aggregation-q.png");
+		urlMap.put(IconType.ANNOTATION, "resources/br/ufes/inf/nemo/oled/ui/annotation.png"); //CLEANUP
 		
 		urlMap.put(IconType.COMPOSITION, "resources/br/ufes/inf/nemo/oled/ui/composition.png");
 		urlMap.put(IconType.INHERITANCE, "resources/br/ufes/inf/nemo/oled/ui/inheritance.png");
@@ -125,6 +135,7 @@ public final class IconLoader {
 		urlMap.put(IconType.VERIFY_FILE, "resources/br/ufes/inf/nemo/oled/ui/verifyfile.png");
 		urlMap.put(IconType.VIEW, "resources/br/ufes/inf/nemo/oled/ui/view.png");
 		urlMap.put(IconType.GENERATE_OWL, "resources/br/ufes/inf/nemo/oled/ui/owl.png");
+		urlMap.put(IconType.GENERATE_OWL_SETTINGS, "resources/br/ufes/inf/nemo/oled/ui/owlsettings.png");
 		urlMap.put(IconType.GENERATE_SBVR, "resources/br/ufes/inf/nemo/oled/ui/sbvr.png");
 		urlMap.put(IconType.RECTILINEAR, "resources/br/ufes/inf/nemo/oled/ui/rectilinear.png");
 		urlMap.put(IconType.STRAIGHT, "resources/br/ufes/inf/nemo/oled/ui/straight.png");
@@ -158,8 +169,15 @@ public final class IconLoader {
 		urlMap.put(IconType.COMMUNITY, "resources/br/ufes/inf/nemo/oled/ui/community.png");
 		urlMap.put(IconType.NEXT, "resources/br/ufes/inf/nemo/oled/ui/next.png");			
 		urlMap.put(IconType.PACKAGE, "resources/br/ufes/inf/nemo/oled/ui/package.png");
-
 		
+		urlMap.put(IconType.ADD, "resources/br/ufes/inf/nemo/oled/ui/add.png");
+		urlMap.put(IconType.REMOVE, "resources/br/ufes/inf/nemo/oled/ui/remove.png");
+		urlMap.put(IconType.GREEN_LIGHT, "resources/br/ufes/inf/nemo/oled/ui/greenlight.png");
+		urlMap.put(IconType.RED_LIGHT, "resources/br/ufes/inf/nemo/oled/ui/redlight.png");
+		urlMap.put(IconType.GREY_LIGHT, "resources/br/ufes/inf/nemo/oled/ui/greylight.png");
+		urlMap.put(IconType.ARROW_UP, "resources/br/ufes/inf/nemo/oled/ui/arrowup.png");
+		urlMap.put(IconType.ARROW_DOWN, "resources/br/ufes/inf/nemo/oled/ui/arrowdown.png");
+
 	}
 
 	/**

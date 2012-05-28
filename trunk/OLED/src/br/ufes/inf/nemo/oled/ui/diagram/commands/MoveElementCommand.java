@@ -24,8 +24,8 @@ import java.util.List;
 
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.MoveNodeOperation;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
 
 /**
@@ -47,7 +47,7 @@ public class MoveElementCommand extends BaseDiagramCommand {
 	 * @param aNotification the notification
 	 * @param aMoveOperations the move operations
 	 */
-	public MoveElementCommand(DiagramEditorNotification aNotification, final MoveNodeOperation[] aMoveOperations) {
+	public MoveElementCommand(DiagramNotification aNotification, final MoveNodeOperation[] aMoveOperations) {
 		this.notification = aNotification;
 		moveOperations = new MoveNodeOperation[aMoveOperations.length];
 		for (int i = 0; i < aMoveOperations.length; i++) {

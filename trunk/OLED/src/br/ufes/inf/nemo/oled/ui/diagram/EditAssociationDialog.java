@@ -25,9 +25,12 @@ import RefOntoUML.Association;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import RefOntoUML.impl.MeronymicImpl;
+import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
+import br.ufes.inf.nemo.oled.util.IconLoader;
+import br.ufes.inf.nemo.oled.util.IconLoader.IconType;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
@@ -70,6 +73,9 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 	private JPanel wholePanel;
 	private JLabel multiplicitySourceLabel;
 	private ButtonGroup nameDirectionGroup;
+	private JButton assocAnttButton;
+	private JButton trgPropAnttButton;
+	private JButton srcPropAnttButton;
 	private JCheckBox showRolesCheck;
 	private JCheckBox showMultiplicityCheck;
 	private JCheckBox readonlySourceCheck;
@@ -84,11 +90,16 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 	private JTabbedPane contentTabbedPane;
 	private JButton cancelButton;
 	private AssociationElement associationElement;
-	
+	private JFrame parent;
+	private DiagramManager diagramManager;
 
-	public EditAssociationDialog(JFrame parent, AssociationElement anAssociation, boolean modal) {
+	public EditAssociationDialog(JFrame parent, DiagramManager diagramManager, AssociationElement associationElement, boolean modal) {
 		super(parent, modal);
-		associationElement = anAssociation;
+		
+		this.diagramManager = diagramManager;
+		this.associationElement = associationElement;
+		this.parent = parent;
+		
 		initGUI();
 		myPostInit();
 	}
@@ -97,6 +108,7 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 		try {
 			{
 				setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+				this.setResizable(false);
 				setTitle(ApplicationResources.getInstance().getString("dialog.assocproperties.title"));
 			}
 			{
@@ -229,36 +241,74 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 							sourceNavigableCheck = new JCheckBox();
 							sourceNavigableCheck.setText("Navigable");
 						}
+						{
+							srcPropAnttButton = new JButton();
+							srcPropAnttButton.setToolTipText("Annotations for this element");
+							srcPropAnttButton.setIcon(IconLoader.getInstance().getIcon(IconType.ANNOTATION));
+							srcPropAnttButton.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent evt) {
+									EditAnnotationDialog antDialog = new EditAnnotationDialog(parent, diagramManager, associationElement.getAssociation().getOwnedEnd().get(0), true);
+									antDialog.setVisible(true);
+								}
+							});
+						}
+						{
+							trgPropAnttButton = new JButton();
+							trgPropAnttButton.setToolTipText("Annotations for this element");
+							trgPropAnttButton.setIcon(IconLoader.getInstance().getIcon(IconType.ANNOTATION));
+							trgPropAnttButton.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent evt) {
+									EditAnnotationDialog antDialog = new EditAnnotationDialog(parent, diagramManager, associationElement.getAssociation().getOwnedEnd().get(1), true);
+									antDialog.setVisible(true);
+								}
+							});
+						}
+						{
+							assocAnttButton = new JButton();
+							assocAnttButton.setToolTipText("Annotations for this element");
+							assocAnttButton.setIcon(IconLoader.getInstance().getIcon(IconType.ANNOTATION));
+							assocAnttButton.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent evt) {
+									EditAnnotationDialog antDialog = new EditAnnotationDialog(parent, diagramManager, associationElement.getAssociation(), true);
+									antDialog.setVisible(true);
+								}
+							});
+						}
 						sourcePanelLayout.setHorizontalGroup(sourcePanelLayout.createSequentialGroup()
 							.addContainerGap()
 							.addGroup(sourcePanelLayout.createParallelGroup()
-							    .addGroup(GroupLayout.Alignment.LEADING, sourcePanelLayout.createSequentialGroup()
-							        .addComponent(readonlySourceCheck, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
-							        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-							        .addComponent(sourceNavigableCheck, 0, 108, Short.MAX_VALUE))
 							    .addGroup(sourcePanelLayout.createSequentialGroup()
 							        .addGroup(sourcePanelLayout.createParallelGroup()
 							            .addComponent(multiplicitySourceLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+							            .addGroup(GroupLayout.Alignment.LEADING, sourcePanelLayout.createSequentialGroup()
+							                .addComponent(srcPropAnttButton, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+							                .addGap(51))
 							            .addComponent(sourceRoleLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
 							        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 							        .addGroup(sourcePanelLayout.createParallelGroup()
 							            .addComponent(multiplicitySourceCombo, GroupLayout.Alignment.LEADING, 0, 143, Short.MAX_VALUE)
-							            .addComponent(sourceRoleText, GroupLayout.Alignment.LEADING, 0, 143, Short.MAX_VALUE))))
+							            .addComponent(sourceRoleText, GroupLayout.Alignment.LEADING, 0, 143, Short.MAX_VALUE)))
+							    .addGroup(GroupLayout.Alignment.LEADING, sourcePanelLayout.createSequentialGroup()
+							        .addComponent(readonlySourceCheck, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
+							        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+							        .addComponent(sourceNavigableCheck, 0, 108, Short.MAX_VALUE)))
 							.addContainerGap());
 						sourcePanelLayout.setVerticalGroup(sourcePanelLayout.createSequentialGroup()
 							.addGroup(sourcePanelLayout.createParallelGroup()
+							    .addComponent(multiplicitySourceCombo, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 							    .addGroup(GroupLayout.Alignment.LEADING, sourcePanelLayout.createSequentialGroup()
 							        .addComponent(multiplicitySourceLabel, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-							        .addGap(7))
-							    .addComponent(multiplicitySourceCombo, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+							        .addGap(7)))
 							.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 							.addGroup(sourcePanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 							    .addComponent(sourceRoleText, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 							    .addComponent(sourceRoleLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, 1, Short.MAX_VALUE)
-							.addGroup(sourcePanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-							    .addComponent(sourceNavigableCheck, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-							    .addComponent(readonlySourceCheck, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+							.addGroup(sourcePanelLayout.createParallelGroup()
+							    .addComponent(readonlySourceCheck, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+							    .addComponent(sourceNavigableCheck, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(0, 15, Short.MAX_VALUE)
+							.addComponent(srcPropAnttButton, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap());
 					}
 					{
@@ -301,12 +351,15 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 							.addGroup(jPanel1Layout1.createParallelGroup()
 							    .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout1.createSequentialGroup()
 							        .addComponent(readonlyTargetCheck, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-							        .addGap(0, 18, GroupLayout.PREFERRED_SIZE)
-							        .addComponent(targetNavigableCheck, 0, 113, Short.MAX_VALUE))
+							        .addGap(19)
+							        .addComponent(targetNavigableCheck, 0, 111, Short.MAX_VALUE))
 							    .addGroup(jPanel1Layout1.createSequentialGroup()
 							        .addGroup(jPanel1Layout1.createParallelGroup()
 							            .addComponent(multiplicityTargetLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-							            .addComponent(targetRoleLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
+							            .addComponent(targetRoleLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+							            .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout1.createSequentialGroup()
+							                .addComponent(trgPropAnttButton, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+							                .addGap(51)))
 							        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 							        .addGroup(jPanel1Layout1.createParallelGroup()
 							            .addComponent(multiplicityTargetCombo, GroupLayout.Alignment.LEADING, 0, 144, Short.MAX_VALUE)
@@ -314,20 +367,20 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 							.addContainerGap());
 						jPanel1Layout1.setVerticalGroup(jPanel1Layout1.createSequentialGroup()
 							.addGroup(jPanel1Layout1.createParallelGroup()
+							    .addComponent(multiplicityTargetCombo, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 							    .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout1.createSequentialGroup()
 							        .addComponent(multiplicityTargetLabel, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-							        .addGap(7))
-							    .addComponent(multiplicityTargetCombo, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+							        .addGap(7)))
 							.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 							.addGroup(jPanel1Layout1.createParallelGroup(GroupLayout.Alignment.BASELINE)
 							    .addComponent(targetRoleText, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 							    .addComponent(targetRoleLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+							.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 							.addGroup(jPanel1Layout1.createParallelGroup()
-							    .addComponent(targetNavigableCheck, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-							    .addGroup(jPanel1Layout1.createSequentialGroup()
-							        .addComponent(readonlyTargetCheck, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-							        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)))
+							    .addComponent(readonlyTargetCheck, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+							    .addComponent(targetNavigableCheck, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(0, 0, Short.MAX_VALUE)
+							.addComponent(trgPropAnttButton, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap());
 					}
 					associationPropertiesPanelLayout.setHorizontalGroup(associationPropertiesPanelLayout.createSequentialGroup()
@@ -336,10 +389,12 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 						    .addGroup(GroupLayout.Alignment.LEADING, associationPropertiesPanelLayout.createSequentialGroup()
 						        .addComponent(associatioNameLabel, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
 						        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-						        .addComponent(associationNameText, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE)
-						        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-						        .addComponent(nameVisibilityCheck, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-						        .addGap(0, 0, Short.MAX_VALUE))
+						        .addComponent(associationNameText, GroupLayout.PREFERRED_SIZE, 332, GroupLayout.PREFERRED_SIZE)
+						        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+						        .addComponent(assocAnttButton, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+						        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+						        .addComponent(nameVisibilityCheck, 0, 114, Short.MAX_VALUE)
+						        .addGap(6))
 						    .addGroup(associationPropertiesPanelLayout.createSequentialGroup()
 						        .addGroup(associationPropertiesPanelLayout.createParallelGroup()
 						            .addComponent(sourcePanel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE)
@@ -350,30 +405,33 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 						                .addComponent(targetPanel, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE))
 						            .addGroup(associationPropertiesPanelLayout.createSequentialGroup()
 						                .addComponent(showRolesCheck, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE)))
-						        .addGap(0, 0, Short.MAX_VALUE))
-						    .addComponent(nameDirectionPanel, GroupLayout.Alignment.LEADING, 0, 555, Short.MAX_VALUE))
+						        .addGap(0, 10, Short.MAX_VALUE))
+						    .addComponent(nameDirectionPanel, GroupLayout.Alignment.LEADING, 0, 565, Short.MAX_VALUE))
 						.addContainerGap());
 					associationPropertiesPanelLayout.setVerticalGroup(associationPropertiesPanelLayout.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(associationPropertiesPanelLayout.createParallelGroup()
 						    .addComponent(associationNameText, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						    .addComponent(assocAnttButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
 						    .addGroup(GroupLayout.Alignment.LEADING, associationPropertiesPanelLayout.createSequentialGroup()
-						        .addComponent(nameVisibilityCheck, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						        .addComponent(nameVisibilityCheck, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 						        .addGap(6))
 						    .addGroup(GroupLayout.Alignment.LEADING, associationPropertiesPanelLayout.createSequentialGroup()
 						        .addGap(8)
 						        .addComponent(associatioNameLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 						        .addGap(15)))
-						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+						.addGap(0, 17, Short.MAX_VALUE)
 						.addComponent(nameDirectionPanel, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(associationPropertiesPanelLayout.createParallelGroup()
-						    .addComponent(showRolesCheck, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-						    .addComponent(showMultiplicityCheck, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+						    .addComponent(showRolesCheck, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						    .addGroup(associationPropertiesPanelLayout.createSequentialGroup()
+						        .addComponent(showMultiplicityCheck, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)))
 						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 						.addGroup(associationPropertiesPanelLayout.createParallelGroup()
-						    .addComponent(sourcePanel, GroupLayout.Alignment.LEADING, 0, 119, Short.MAX_VALUE)
-						    .addComponent(targetPanel, GroupLayout.Alignment.LEADING, 0, 119, Short.MAX_VALUE))
+						    .addComponent(targetPanel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)
+						    .addComponent(sourcePanel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE))
 						.addContainerGap());
 				}
 				{
@@ -471,7 +529,7 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 						.addContainerGap(126, 126));
 				}
 			}
-			setSize(600, 370);
+			this.setSize(600, 398);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -535,6 +593,8 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 		targetRoleText.setText(targetEnd.getName());
 		
 		getRootPane().setDefaultButton(okButton);
+		
+		setLocationRelativeTo(null);
 	}
 	
 	private ButtonGroup getNameDirectionGroup() {

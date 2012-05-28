@@ -24,8 +24,8 @@ import java.util.List;
 
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 
 
@@ -48,7 +48,7 @@ public class ConvertConnectionTypeCommand extends BaseDiagramCommand {
 	 * @param umlconn the UmlConnection wrapped object
 	 * @param theNewConnection the new connection to be wrapped
 	 */
-	public ConvertConnectionTypeCommand(DiagramEditorNotification aNotification, UmlConnection umlconn, Connection theNewConnection) {
+	public ConvertConnectionTypeCommand(DiagramNotification aNotification, UmlConnection umlconn, Connection theNewConnection) {
 		this.notification = aNotification;
 		connection = umlconn;
 		newconnection = theNewConnection;

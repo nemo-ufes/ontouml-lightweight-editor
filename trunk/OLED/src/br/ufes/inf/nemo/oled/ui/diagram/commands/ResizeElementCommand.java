@@ -27,8 +27,8 @@ import java.util.List;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DoubleDimension;
 import br.ufes.inf.nemo.oled.draw.Node;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
 
 /**
@@ -46,12 +46,12 @@ public class ResizeElementCommand extends BaseDiagramCommand {
 
 	/**
 	 * Constructor.
-	 * @param aNotification the DiagramEditorNotification object
+	 * @param aNotification the ModelNotification object
 	 * @param anElement the element to resize
 	 * @param aNewPos the new position
 	 * @param aNewSize the new size
 	 */
-	public ResizeElementCommand(DiagramEditorNotification aNotification, Node anElement, Point2D aNewPos, Dimension2D aNewSize) {
+	public ResizeElementCommand(DiagramNotification aNotification, Node anElement, Point2D aNewPos, Dimension2D aNewSize) {
 		this.notification = aNotification;
 		element = anElement;
 		newpos.setLocation(aNewPos);

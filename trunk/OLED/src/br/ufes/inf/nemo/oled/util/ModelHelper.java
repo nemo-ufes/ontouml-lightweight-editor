@@ -67,14 +67,9 @@ public class ModelHelper {
 
 	public static void initializeHelper() {
 		resourceSet = new ResourceSetImpl();
-		resourceSet.getResourceFactoryRegistry()
-				.getExtensionToFactoryMap()
-				.put(Resource.Factory.Registry.DEFAULT_EXTENSION,
-						new OLEDResourceFactory());
-		
-		resourceSet.getPackageRegistry().put(
-				RefOntoUML.RefOntoUMLPackage.eNS_URI,
-				RefOntoUML.RefOntoUMLPackage.eINSTANCE);
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,new OLEDResourceFactory());
+		//resourceSet.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI, RefOntoUML.RefOntoUMLPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI, RefOntoUML.RefOntoUMLPackage.eINSTANCE);
 		
 		RefOntoUMLPackageImpl.init();
 
@@ -174,18 +169,6 @@ public class ModelHelper {
 		}
 				
 		return validator.validate(model, diagnostics, context);
-		
-		// EcoreValidator validator = EcoreValidator.INSTANCE;
-		
-		//validator.validate(0, resource, diagnostics, context);
-
-		/*
-		 * boolean valid = true; TreeIterator<EObject> iterator =
-		 * resource.getAllContents(); EObject item = null;
-		 * while(iterator.hasNext()) { item = iterator.next(); valid &=
-		 * validator.validate(item.eClass().getClassifierID(), item,
-		 * diagnostics, context); } return valid;
-		 */
 	}
 	
 	/**

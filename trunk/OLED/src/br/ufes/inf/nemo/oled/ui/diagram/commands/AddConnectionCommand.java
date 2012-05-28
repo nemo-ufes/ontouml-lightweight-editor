@@ -39,8 +39,8 @@ import RefOntoUML.impl.GeneralizationImpl;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
@@ -62,13 +62,13 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 
 	/**
 	 * Constructor.
-	 * @param editorNotification a DiagramEditorNotification object
+	 * @param editorNotification a ModelNotification object
 	 * @param structureDiagram the parent component
 	 * @param conn the element created
 	 * @param aTarget 
 	 * @param aSource 
 	 */
-	public AddConnectionCommand(DiagramEditorNotification editorNotification, CompositeElement parent, UmlConnection conn, Classifier aSource, Classifier aTarget, UmlProject project) {
+	public AddConnectionCommand(DiagramNotification editorNotification, CompositeElement parent, UmlConnection conn, Classifier aSource, Classifier aTarget, UmlProject project) {
 		this.parent = parent;
 		this.project = project;
 		this.notification = editorNotification;

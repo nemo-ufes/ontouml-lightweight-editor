@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -26,11 +27,16 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import refontouml2alloy.bts.simulation.SimulationAttribute;
-import refontouml2alloy.bts.simulation.SimulationElement;
+import edu.mit.csail.sdg.alloy4graph.DotColor;
+import edu.mit.csail.sdg.alloy4graph.DotPalette;
+import edu.mit.csail.sdg.alloy4graph.DotShape;
+import edu.mit.csail.sdg.alloy4graph.DotStyle;
+
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.SimulationAttibuteIconLoader;
+import br.ufes.inf.nemo.oled.util.SimulationAttribute;
+import br.ufes.inf.nemo.oled.util.SimulationElement;
 
 
 /**
@@ -77,11 +83,22 @@ public class VerificationSettingsDialog extends JDialog {
 		getRootPane().setDefaultButton(okButton);
 	}
 	
+	private Object[] getArrayWithNullElement(Object[] objs)
+	{
+		Object[] ret = new Object[objs.length + 1];
+		ret[0] = null;
+		for (int i = 1; i < ret.length; i++) {
+			ret[i] = objs[i-1];
+		}
+		
+		return ret;
+	}
+	
 	private void loadModelElements()
 	{				
-		Object[] colors = SimulationAttibuteIconLoader.getInstance().getColorSimulationAttributes().toArray();
-		Object[] styles = SimulationAttibuteIconLoader.getInstance().getStyleSimulationAttributes().toArray();
-		Object[] shapes = SimulationAttibuteIconLoader.getInstance().getShapeSimulationAttributes().toArray();
+		Object[] colors = getArrayWithNullElement(DotColor.valuesWithout(DotColor.MAGIC));
+		Object[] styles = getArrayWithNullElement(DotStyle.values());
+		Object[] shapes = getArrayWithNullElement(DotShape.values());
 		
 		TableColumn colorColumn = elementTable.getColumnModel().getColumn(2);	
 		colorColumn.setCellEditor(createEditor(colors));
@@ -190,7 +207,7 @@ public class VerificationSettingsDialog extends JDialog {
 					}
 					{
 						genThemeCheck = new JCheckBox();
-						genThemeCheck.setText("Generate theme (overwrites previusly generated)");
+						genThemeCheck.setText("Project over state");
 					}
 					elementSelectionPanelLayout.setHorizontalGroup(elementSelectionPanelLayout.createSequentialGroup()
 						.addContainerGap()
@@ -246,7 +263,7 @@ public class VerificationSettingsDialog extends JDialog {
 			//setOpaque(false);
 		}
 
-		public Component getTableCellRendererComponent(JTable table, Object simulationAttribute, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			
 			if (isBordered) {
 				if (isSelected) {
@@ -264,14 +281,38 @@ public class VerificationSettingsDialog extends JDialog {
 				}
 			}
 			
-			setIcon(SimulationAttibuteIconLoader.getInstance().getIcon((SimulationAttribute) simulationAttribute));
-			setText(((SimulationAttribute) simulationAttribute).getValue());
+			Icon icon = null;
+			String text = null;
+			
+			if(value == null)
+			{
+				icon = DotColor.MAGIC.getIcon(DotPalette.CLASSIC);
+				text = "Automatic";
+			}
+			else if(value instanceof DotColor)
+			{
+				icon = ((DotColor) value).getIcon(DotPalette.CLASSIC);
+				text = ((DotColor) value).getDisplayedText();
+			}
+			else if(value instanceof DotShape)
+			{
+				icon = ((DotShape) value).getIcon();
+				text = ((DotShape) value).getDisplayedText();
+			}
+			else if(value instanceof DotStyle)
+			{
+				icon = ((DotStyle) value).getIcon();
+				text = ((DotStyle) value).getDisplayedText();
+			}
+			
+			setIcon(icon);
+			setText(text);
 			
 			return this;
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList list, Object simulationAttribute, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
 			if (isBordered) {
 				if (isSelected) {
@@ -289,8 +330,33 @@ public class VerificationSettingsDialog extends JDialog {
 				}
 			}
 			
-			setIcon(SimulationAttibuteIconLoader.getInstance().getIcon((SimulationAttribute) simulationAttribute));
-			setText(((SimulationAttribute) simulationAttribute).getValue());
+			Icon icon = null;
+			String text = null;
+			
+			if(value == null)
+			{
+				icon = DotColor.MAGIC.getIcon(DotPalette.CLASSIC);
+				text = "Automatic";
+			}
+			else if(value instanceof DotColor)
+			{
+				icon = ((DotColor) value).getIcon(DotPalette.CLASSIC);
+				text = ((DotColor) value).getDisplayedText();
+			}
+			else if(value instanceof DotShape)
+			{
+				icon = ((DotShape) value).getIcon();
+				text = ((DotShape) value).getDisplayedText();
+			}
+			else if(value instanceof DotStyle)
+			{
+				icon = ((DotStyle) value).getIcon();
+				text = ((DotStyle) value).getDisplayedText();
+			}
+			
+			setIcon(icon);
+			setText(text);
+			
 			return this;
 		}
 	}

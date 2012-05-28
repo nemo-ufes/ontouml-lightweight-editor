@@ -19,7 +19,7 @@
  */
 package br.ufes.inf.nemo.oled.ui.diagram;
 
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramEditorNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 
 /**
  * An interface to report state changes within the diagram editor.
