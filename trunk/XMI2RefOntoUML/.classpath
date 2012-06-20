@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml.refontouml"/>
+	<classpathentry kind="lib" path="lib/jgoodies-forms.jar" sourcepath="lib/jgoodies-forms-src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/XMI2RefOntoUML/lib/jgoodies-forms-javadoc.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jgoodies-common.jar" sourcepath="lib/jgoodies-common-src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/XMI2RefOntoUML/lib/jgoodies-common-javadoc.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/lablib-checkboxtree-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.common_2.7.0.v20120127-1122.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore_2.7.0.v20120127-1122.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.xmi_2.7.0.v20120127-1122.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml.refontouml2alloy"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.alloy"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/eclipse/plugins/org.eclipse.uml2.uml_3.1.2.v201010261927.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/eclipse/plugins/org.eclipse.emf.compare_1.1.2.v20110202-0936.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/eclipse/plugins/org.eclipse.uml2.common_1.5.0.v201005031530.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>XMI2RefOntoUML</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.ManifestBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.SchemaBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.pde.PluginNature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>Infraestutura Rodoviária.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/Documents/ANTT/XMItoOntoRef/Infraestutura%20Rodovi%C3%A1ria.xml</locationURI>
+		</link>
+		<link>
+			<name>Ontologia da ANTT.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/Documents/ANTT/XMItoOntoRef/Ontologia%20da%20ANTT.xml</locationURI>
+		</link>
+		<link>
+			<name>PessoaSimplesEA2.1.uml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/Documents/ANTT/XMItoOntoRef/PessoaSimplesEA2.1.xml</locationURI>
+		</link>
+		<link>
+			<name>Tipos de Pessoa.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/Documents/ANTT/XMItoOntoRef/Tipos%20de%20Pessoa.xml</locationURI>
+		</link>
+		<link>
+			<name>sampleAstah.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/Documents/ANTT/XMItoOntoRef/sampleAstah.xml</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>
