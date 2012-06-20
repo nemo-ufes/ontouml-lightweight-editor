@@ -37,7 +37,7 @@ public class Reader {
 			p = readModel(rs, uri);
 		}
 		else
-			p = m;
+			p = readModel(m);
 		
 		preProccess(p);
 	}
@@ -152,16 +152,33 @@ public class Reader {
 		}
 	}
 	
+	private static Package readModel(Model m) {
+		
+		RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
+		
+		Package p = m;
+		Model m2 = factory.createModel();
+		StringCheck ch = new StringCheck();
+		m2.setName(ch.removeSpecialNames(p.getName()));
+		
+		addElements(p);
+		
+		for(PackageableElement pack : modelElements)
+			m2.getPackagedElement().add(pack);
+		
+		return (Package)m2;
+	}
+	
 	private static Package readModel(ResourceSet rs, URI uri) {
 		
 		RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
 		
 		Resource resource = rs.getResource(uri, true);
 		EObject p1 = resource.getContents().get(0);
-		
+		StringCheck ch = new StringCheck();
 		Package p = (Package)p1;
 		Model m = factory.createModel();
-		m.setName(p.getName());
+		m.setName(ch.removeSpecialNames(p.getName()));
 		
 		addElements(p);
 		
