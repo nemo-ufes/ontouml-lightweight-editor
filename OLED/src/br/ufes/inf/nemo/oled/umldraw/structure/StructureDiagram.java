@@ -71,6 +71,7 @@ import RefOntoUML.VisibilityKind;
 import RefOntoUML.impl.AssociationImpl;
 import RefOntoUML.impl.ClassImpl;
 import RefOntoUML.impl.NonRigidMixinClassImpl;
+import RefOntoUML.impl.PackageImpl;
 import RefOntoUML.impl.SubstanceSortalImpl;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
@@ -674,8 +675,56 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		//We keep track of the used attributes so we don't repeat (at least we try to)
 		Set<Object> usedAttributes = new HashSet<Object>();
 		
-		//We always iterate thru model items in case there are new items
-		for (PackageableElement element : project.getElements()) {
+		packageToSimulationElements(project.getModel(), usedAttributes, newIdentityProviders);
+		
+//		//We always iterate thru model items in case there are new items
+//		for (PackageableElement element : project.getElements()) {
+//			
+//			SimulationElement existingElement = getSimulationElement(element);
+//			
+//			if(existingElement != null)
+//			{
+//				usedAttributes.add(existingElement.getColor());
+//				usedAttributes.add(existingElement.getShape());
+//			}
+//			else
+//			{
+//				if(element instanceof)
+//				if(element instanceof ClassImpl || element instanceof AssociationImpl)
+//				{
+//					SimulationElement simulatioElement = new SimulationElement();
+//					simulatioElement.setElement(element);
+//					simulatioElement.setSimulate(true);
+//					simulatioElement.setColor(null);
+//					simulatioElement.setStyle(null);
+//					simulatioElement.setShape(null);
+//					
+//					if(element instanceof SubstanceSortalImpl || element instanceof NonRigidMixinClassImpl)
+//					{
+//						newIdentityProviders.add(simulatioElement);
+//						simulatioElement.setStyle(DotStyle.SOLID);
+//					}
+//					
+//					simulationElements.add(simulatioElement);
+//				}
+//			}
+//		}
+//		
+		if(newIdentityProviders.size() > 0)
+			defaultThemeForIdentityProvider(newIdentityProviders, usedAttributes);
+		
+		//Clear the deleted elements
+		List<SimulationElement> toRemove = new ArrayList<SimulationElement>();
+		for (SimulationElement elm : simulationElements) {
+			if(elm.getElementUUID() != null && ModelHelper.getElementByUUID(project.getModel(), elm.getElementUUID()) == null)
+				toRemove.add(elm);
+		}
+		simulationElements.removeAll(toRemove);
+	}
+	
+	private void packageToSimulationElements(Package pack, Set<Object> usedAttributes, List<SimulationElement> newIdentityProviders) {
+		
+		for (PackageableElement element : pack.getPackagedElement()) {
 			
 			SimulationElement existingElement = getSimulationElement(element);
 			
@@ -703,19 +752,11 @@ public class StructureDiagram extends AbstractCompositeNode implements
 					
 					simulationElements.add(simulatioElement);
 				}
+				else if (element instanceof PackageImpl) {
+					packageToSimulationElements((Package)element, usedAttributes, newIdentityProviders);
+				}
 			}
 		}
-		
-		if(newIdentityProviders.size() > 0)
-			defaultThemeForIdentityProvider(newIdentityProviders, usedAttributes);
-		
-		//Clear the deleted elements
-		List<SimulationElement> toRemove = new ArrayList<SimulationElement>();
-		for (SimulationElement elm : simulationElements) {
-			if(elm.getElementUUID() != null && ModelHelper.getElementByUUID(project.getModel(), elm.getElementUUID()) == null)
-				toRemove.add(elm);
-		}
-		simulationElements.removeAll(toRemove);
 	}
 	
 	public SimulationElement getSimulationElement(PackageableElement element) {

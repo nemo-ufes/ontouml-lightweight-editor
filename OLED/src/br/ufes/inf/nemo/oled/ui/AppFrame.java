@@ -132,6 +132,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 					new MethodCall(DiagramManager.class.getMethod("exportEcore")));
 			selectorMap.put("IMPORT_ECORE",
 					new MethodCall(DiagramManager.class.getMethod("importEcore")));
+			selectorMap.put("IMPORT_XMI",
+					new MethodCall(DiagramManager.class.getMethod("importXMI")));
 			selectorMap.put("DELETE",
 					new MethodCall(DiagramManager.class.getMethod("delete")));
 			selectorMap.put("EDIT_SETTINGS", new MethodCall(getClass()

@@ -20,5 +20,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/RefOntoUML2SBVR"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RefOntoUML2SimpleOwl"/>
 	<classpathentry kind="lib" path="lib/forms-1.1.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/XMI2RefOntoUML"/>
+	<classpathentry kind="lib" path="/XMI2RefOntoUML/lib/lablib-checkboxtree-3.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
