@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 
-import refontouml2alloy.bts.OntoUML2Alloy;
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
+import br.ufes.inf.nemo.ontouml.refontouml2alloy.OntoUML2Alloy;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Command;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
@@ -25,9 +25,19 @@ public class VerificationHelper {
 		String alloyFileName = ConfigurationHelper.getCanonPath(tempDir, OLEDSettings.SIMULATION_DEFAULT_FILE.getValue()); 
 		String themeFileName = ConfigurationHelper.getCanonPath(tempDir, OLEDSettings.SIMULATION_THEME_FILE.getValue());
 		
-    	if(!OntoUML2Alloy.transformToAlloyFile(model, null, alloyFileName, themeFileName))
-    		return new OperationResult(ResultType.ERROR, "Error while generating the alloy file", null);
-    	    	
+		OntoUML2Alloy.dirPath = ConfigurationHelper.getCanonPath(tempDir, "");
+		
+		
+    	try {
+			if(!OntoUML2Alloy.transformToAlloyFile(model, null, alloyFileName, themeFileName))
+				return new OperationResult(ResultType.ERROR, "Error while generating the alloy file", null);
+			else
+				return new OperationResult(ResultType.SUCESS, "Model has been successfuly transformed.", null );
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	/*
     	File alloyFile = new File(alloyFileName);  	
     	alloyFile.deleteOnExit();
 
@@ -70,7 +80,7 @@ public class VerificationHelper {
 	        	return new OperationResult(ResultType.ERROR, "A problem has ocurred when verifying the model \nDetails: " + ex.getMessage(), new Object[] { ex });
 			} 
 		}
-    	
+    	*/
     	return new OperationResult(ResultType.ERROR, "A problem has ocurred when verifying the model", null);
 	}
 
