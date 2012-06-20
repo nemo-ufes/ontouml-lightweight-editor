@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<alloy>
+
+<view>
+
+<projection> <type name="World"/> </projection>
+
+<defaultnode/>
+
+<defaultedge/>
+
+<node>
+   <type name="Int"/>
+   <type name="String"/>
+   <type name="World"/>
+   <type name="seq/Int"/>
+   <type name="world_structure/CounterfactualWorld"/>
+   <type name="world_structure/CurrentWorld"/>
+   <type name="world_structure/FutureWorld"/>
+   <type name="world_structure/PastWorld"/>
+   <type name="world_structure/TemporalWorld"/>
+   <set name="$w" type="World"/>
+   <set name="Category1" type="Substantial"/>
+   <set name="Category2" type="Substantial"/>
+   <set name="Kind1" type="Substantial"/>
+   <set name="Kind2" type="Substantial"/>
+</node>
+
+<node showlabel="no">
+   <set name="$all_elements_exists_w" type="univ"/>
+   <set name="$x" type="Substantial"/>
+   <set name="exists" type="Substantial"/>
+</node>
+
+<node visible="no">
+   <type name="univ"/>
+</node>
+
+<node visible="yes" color="Red">
+   <type name="Substantial"/>
+</node>
+
+<node visible="yes" showlabel="no">
+   <set name="$visible" type="univ"/>
+</node>
+
+</view>
+
+</alloy>
