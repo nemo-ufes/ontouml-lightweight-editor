@@ -356,7 +356,7 @@ public class EditClassDialog extends JDialog {
 			//If the property has name or type set
 			if(property.getName().trim().length() > 0 || property.getType().getName().trim().length() > 0)
 			{
-				Type existingType = modelDataTypes.get(property.getType().getName().trim());
+				DataType existingType = modelDataTypes.get(property.getType().getName().trim());
 				if(existingType != null)
 				{
 					property.setType(existingType);
