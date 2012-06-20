@@ -610,6 +610,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		{
 			getCurrentWrapper().showOutputText(result.toString(), true, false); 
 			/*
+			 * 
 			A4Solution solution = (A4Solution) result.getData()[0];
 			Module module = (Module) result.getData()[1];
 			ConstMap<String, String> alloySources = (ConstMap<String, String>) result.getData()[2];

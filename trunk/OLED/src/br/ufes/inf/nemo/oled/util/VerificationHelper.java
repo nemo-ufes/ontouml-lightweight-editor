@@ -1,22 +1,11 @@
 package br.ufes.inf.nemo.oled.util;
 
 import java.io.File;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.ontouml.refontouml2alloy.OntoUML2Alloy;
-import edu.mit.csail.sdg.alloy4.ConstMap;
-import edu.mit.csail.sdg.alloy4compiler.ast.Command;
-import edu.mit.csail.sdg.alloy4compiler.ast.Module;
-import edu.mit.csail.sdg.alloy4compiler.parser.CompUtil;
-import edu.mit.csail.sdg.alloy4compiler.translator.A4Options;
-import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
-import edu.mit.csail.sdg.alloy4compiler.translator.TranslateAlloyToKodkod;
 
 public class VerificationHelper {
 	
@@ -90,7 +79,7 @@ public class VerificationHelper {
 		String alloyFileName = ConfigurationHelper.getCanonPath(tempDir, OLEDSettings.SIMULATION_DEFAULT_FILE.getValue());
 		File alloyFile = new File(alloyFileName);  	
     	alloyFile.deleteOnExit();
-    	    	
+    	    /*	
     	if(alloyFile.exists())
 		{		
 	        A4Options opt = new A4Options();
@@ -129,9 +118,10 @@ public class VerificationHelper {
 	        	return new OperationResult(ResultType.ERROR, "A problem has ocurred when verifying the model \nDetails: " + ex.getMessage(), new Object[] { ex });
 			} 
 		}
+    	*/
+    	return new OperationResult(ResultType.ERROR, "Not Implemented yet.", null);
     	
-    	return new OperationResult(ResultType.ERROR, "A problem has ocurred when verifying the model", null);
-    	
+	
 		
 	}
 		
