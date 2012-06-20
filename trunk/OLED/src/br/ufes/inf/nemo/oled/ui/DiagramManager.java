@@ -371,6 +371,39 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/**
+	 * Imports a model from a XMI file.
+	 */
+	public void importXMI() {
+		
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle(getResourceString("dialog.importxmi.title"));
+		FileNameExtensionFilter owlFilter = new FileNameExtensionFilter(
+				"XMI, XML (*.xmi, *.xml)", "xmi", "xml");
+		fileChooser.addChoosableFileFilter(owlFilter);
+		fileChooser.setFileFilter(owlFilter);
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			if (fileChooser.getFileFilter() == owlFilter) {
+				try {
+					File file = fileChooser.getSelectedFile();
+
+		            ImportXMIDialog inst = new ImportXMIDialog(frame, file, this, true);
+		            inst.setLocationRelativeTo(frame);
+		        	inst.setVisible(true);
+		            
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(this, "File could not be parsed.",
+							getResourceString("dialog.importecore.title"),
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+        } else {
+            System.out.println("File selection cancelled by user.");
+            
+        }
+	}
+	
+	/**
 	 * Creates an editor for a given Diagram.
 	 * @param diagram the diagram to be edited by the editor
 	 * */
