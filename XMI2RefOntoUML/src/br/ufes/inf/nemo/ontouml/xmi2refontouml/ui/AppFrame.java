@@ -174,9 +174,11 @@ public class AppFrame extends JFrame implements WindowListener, ActionListener, 
                 System.out.println("File/Path to save selected: " + file.getAbsolutePath() + ".");
                 //Sets the path into alloy transformation
                 String dir = readFileChooser.getSelectedFile().getAbsolutePath().replace(readFileChooser.getSelectedFile().getName(),"");
+                /*
                 br.ufes.inf.nemo.ontouml.refontouml2alloy.Launcher.dirPath = dir;
                 br.ufes.inf.nemo.ontouml.refontouml2alloy.Launcher.alsPath = file.getAbsolutePath().split("\\.")[0] + ".als";
                 br.ufes.inf.nemo.ontouml.refontouml2alloy.Reader.inputPath = file.getAbsolutePath().split("\\.")[0] + ".refontouml";
+                */
                 
             } else {
                 System.out.println("File selection cancelled by user.");
@@ -195,9 +197,11 @@ public class AppFrame extends JFrame implements WindowListener, ActionListener, 
                 System.out.println("File/Path to save selected: " + file.getAbsolutePath() + ".");
                 //Sets the path into alloy transformation
                 String dir = saveFileChooser.getSelectedFile().getAbsolutePath().replace(saveFileChooser.getSelectedFile().getName(),"");
+                /*
                 br.ufes.inf.nemo.ontouml.refontouml2alloy.Launcher.dirPath = dir;
                 br.ufes.inf.nemo.ontouml.refontouml2alloy.Launcher.alsPath = file.getAbsolutePath().split("\\.")[0] + ".als";
                 br.ufes.inf.nemo.ontouml.refontouml2alloy.Reader.inputPath = file.getAbsolutePath().split("\\.")[0] + ".refontouml";
+                */
                 
             } else {
             	System.out.println("File selection cancelled by user.");
@@ -240,7 +244,9 @@ public class AppFrame extends JFrame implements WindowListener, ActionListener, 
         	if (fileIsSelected()) {
 	        	try {
 	        		//Calls the transformation
+	        		/*
 	        		br.ufes.inf.nemo.ontouml.refontouml2alloy.Launcher.call();
+	        		*/
 				} catch (Exception e1) {
 					System.out.println("An error has occurred during the transformation.");
 				}
