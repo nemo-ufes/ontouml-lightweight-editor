@@ -152,7 +152,7 @@ public class Transformer {
 		UnaryOperation uOp = factory.createUnaryOperation();
 		
 		
-		co.setOperator(CompareOperator.LESS_EQUAL_LITERAL);
+		co.setOperator(CompareOperator.GREATER_EQUAL_LITERAL);
 		co.setLeftExpression(uOp);
 		vr = factory.createVariableReference();
 		vr.setVariable("2");
