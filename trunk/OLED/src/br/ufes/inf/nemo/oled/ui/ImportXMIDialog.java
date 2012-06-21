@@ -136,10 +136,11 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
         	this.chckTree = modelTree;
             this.transfManager = transfManager;
             
-        } else {
-        	this.dispose();
-        	throw new Exception();
-        }
+        } 
+//        else {
+//        	this.dispose();
+//        	throw new Exception();
+//        }
 	}
 
 	@Override

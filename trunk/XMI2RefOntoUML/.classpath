@@ -21,6 +21,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/RefOntoUML2Alloy"/>
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.refontouml.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.common_1.6.0.v201105021727.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml_3.2.100.v201108110105.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

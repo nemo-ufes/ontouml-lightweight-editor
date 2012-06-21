@@ -53,6 +53,7 @@ public class Mediator {
     private DefaultMutableTreeNode actualParent;
     // Auxiliary string to stack the path of the element with error
     private String errorPath;
+    public static String Log;
     
     public void initialize() {
         //Call the factory to read the Document and decide which Mapper
@@ -69,6 +70,8 @@ public class Mediator {
     	
     	//Resets the CheckboxTree
     	actualParent = null;
+    	
+    	Log = "";
     }
     
     public void save() {
@@ -145,7 +148,7 @@ public class Mediator {
     	}
     }
     
-    public DefaultMutableTreeNode parse() {
+    public DefaultMutableTreeNode parse() throws Exception {
     	
     	initialize();
     	if (mapper == null) {
@@ -158,9 +161,12 @@ public class Mediator {
         // Cria o modelo propriamente dito
         Object modelelement = mapper.getModelElement();
         if (createElement(modelelement, ElementType.MODEL) == null) {
-        	System.out.println("Path of the element with error: " + errorPath);
-        	System.out.println("File could not be parsed.");
-        	return null;
+        	Log += "Path of the element with error: " + errorPath + "\n";
+        	Exception e = new Exception(Log);
+        	throw e;
+        	//System.out.println("Path of the element with error: " + errorPath);
+        	//System.out.println("File could not be parsed.");
+        	//return null;
         	
         } else {
         	dealModel();
