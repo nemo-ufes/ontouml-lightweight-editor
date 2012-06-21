@@ -34,7 +34,6 @@ import edu.mit.csail.sdg.alloy4graph.DotStyle;
 
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
-import br.ufes.inf.nemo.oled.util.SimulationAttibuteIconLoader;
 import br.ufes.inf.nemo.oled.util.SimulationAttribute;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
 

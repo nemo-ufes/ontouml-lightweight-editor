@@ -42,42 +42,39 @@ public class Transformer {
 	
 	public static Resource resource;
 	public static AlloyFactory factory = AlloyFactory.eINSTANCE;
-	public static ArrayList<String> sigsTop = new ArrayList<String>();
+	public ArrayList<String> sigsTop = new ArrayList<String>();
 	
-	public static AlloyModule module;
-	public static SignatureDeclaration world;
-	public static SignatureDeclaration Substantial = null;
-	public static SignatureDeclaration Moment = null;
-	public static SignatureDeclaration Datatype = null;
-	public static FactDeclaration association_properties = null;
-	public static FactDeclaration derivations = null;
-	public static Variable exists;
-	public static FactDeclaration all_rigid_classes;
-	public static BinaryOperation boSMD;
+	public AlloyModule module;
+	public SignatureDeclaration world;
+	public SignatureDeclaration Substantial = null;
+	public SignatureDeclaration Moment = null;
+	public SignatureDeclaration Datatype = null;
+	public FactDeclaration association_properties = null;
+	public FactDeclaration derivations = null;
+	public Variable exists;
+	public FactDeclaration all_rigid_classes;
+	public BinaryOperation boSMD;
 	
-	public static ArrayList<String> defaultSignatures = new ArrayList<String>();
+	public ArrayList<String> defaultSignatures = new ArrayList<String>();
 		
 	public static String path = "models/out.xmi";
 	
-	public static ArrayList<String> substantialsList = new ArrayList<String>();
-	public static ArrayList<String> momentsList = new ArrayList<String>();
-	public static ArrayList<String> datatypesList = new ArrayList<String>();
+	public ArrayList<String> substantialsList = new ArrayList<String>();
+	public ArrayList<String> momentsList = new ArrayList<String>();
+	public ArrayList<String> datatypesList = new ArrayList<String>();
 	
-	public static ArrayList<Classifier> rigidElements = new ArrayList<Classifier>();
+	public ArrayList<Classifier> rigidElements = new ArrayList<Classifier>();
 	
-	public static ArrayList<String> momentsListDisj = new ArrayList<String>();
-	public static ArrayList<String> datatypeListDisj = new ArrayList<String>();
-	public static ArrayList<String> kindsListDisj = new ArrayList<String>();
+	public ArrayList<String> momentsListDisj = new ArrayList<String>();
+	public ArrayList<String> datatypeListDisj = new ArrayList<String>();
+	public ArrayList<String> kindsListDisj = new ArrayList<String>();
 	
 	
 	
 	//TODO: TIRAR MULTIPLICITY DE DECLARATION NO METAMODELO, EH PRA SER UM UNARYOPERATION COM OPERATOR SET POR EXEMPLO
-	public static void init(Model m){
+	public void init(Model m){
 		//Creates a ResourceSet to manage the model 
 		initResource();
-		
-		//Calls the Reader Preprocessor method
-		Reader.init(m);
 		
 		//Creates a Module
 		createModule();
@@ -88,7 +85,7 @@ public class Transformer {
 		saveAlloyXMI();
 	}
 	
-	public static void createAbstractClause(Classifier c, Package p) {
+	public void createAbstractClause(Classifier c, Package p) {
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
 		for(PackageableElement gen : p.getPackagedElement())
 			if(gen instanceof Generalization)
@@ -139,7 +136,7 @@ public class Transformer {
 		}
 	}
 	
-	public static void createRelatorAssociations(Relator c, Package p) {
+	public void createRelatorAssociations(Relator c, Package p) {
 		QuantificationExpression qe = factory.createQuantificationExpression();
 		qe.setQuantificator(Quantificator.ALL_LITERAL);
 		Declaration decl = factory.createDeclaration();
@@ -266,7 +263,7 @@ public class Transformer {
 			world.getBlock().getExpression().add(qe);
 	}
 	
-	public static void transformClassifier(Classifier c, Package p) {
+	public void transformClassifier(Classifier c, Package p) {
 		String name = c.getName();
 		if(c instanceof ObjectClass)
 		{
@@ -297,7 +294,7 @@ public class Transformer {
 		}
 	}
 	
-	public static void transformGeneralizations(Generalization g) {
+	public void transformGeneralizations(Generalization g) {
 		CompareOperation co = factory.createCompareOperation();
 		co.setOperator(CompareOperator.SUBSET_LITERAL);
 		
@@ -314,7 +311,7 @@ public class Transformer {
 		
 	}
 	
-	public static void transformGeneralizationSets(GeneralizationSet gs) {
+	public void transformGeneralizationSets(GeneralizationSet gs) {
 		if(gs.isIsCovering())
 		{
 			CompareOperation co = factory.createCompareOperation();
@@ -372,7 +369,7 @@ public class Transformer {
 		}
 	}
 	
-	public static void transformDerivations(Derivation d, Package p) {
+	public void transformDerivations(Derivation d, Package p) {
 		PredicateInvocation pI = factory.createPredicateInvocation();
 		pI.setPredicate("derivation");
 		VariableReference material = factory.createVariableReference(),mediation1 = factory.createVariableReference(),mediation2 = factory.createVariableReference();
@@ -452,7 +449,7 @@ public class Transformer {
 		derivations.getBlock().getExpression().add(pI);
 	}
 	
-	public static void transformAssociations(Association ass) {
+	public void transformAssociations(Association ass) {
 		Variable var = factory.createVariable();
 		VariableReference source = factory.createVariableReference();
 		VariableReference target = factory.createVariableReference();
@@ -484,8 +481,7 @@ public class Transformer {
 		world.getRelation().add(decl);
 	}
 	
-
-	private static void prepareMeronymicAssociation(Meronymic ass,
+	private void prepareMeronymicAssociation(Meronymic ass,
 			VariableReference source, VariableReference target,
 			ArrowOperation aOp) {
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
@@ -554,8 +550,7 @@ public class Transformer {
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
-	
-	private static void prepareMediationAssociation(Association ass,
+	private void prepareMediationAssociation(Association ass,
 			VariableReference source, VariableReference target,
 			ArrowOperation aOp) {
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
@@ -608,8 +603,7 @@ public class Transformer {
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
-	
-	private static void prepareCharacterizationAssociation(Association ass,
+	private void prepareCharacterizationAssociation(Association ass,
 			VariableReference source, VariableReference target,
 			ArrowOperation aOp) {
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
@@ -662,8 +656,7 @@ public class Transformer {
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
-	
-	private static void prepareAssociation(Association ass,
+	private void prepareAssociation(Association ass,
 			VariableReference source, VariableReference target,
 			ArrowOperation aOp) {
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
@@ -721,8 +714,7 @@ public class Transformer {
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
-	
-	private static void setCardinalities(ArrowOperation aOp, int lowerSource,
+	private void setCardinalities(ArrowOperation aOp, int lowerSource,
 			int upperSource, int lowerTarget, int upperTarget, 
 			VariableReference source, VariableReference target, Association ass) {
 		//SOURCE CARDINALITY
@@ -768,8 +760,7 @@ public class Transformer {
 		}
 	}
 	
-	
-	private static void upperTargetCardinalities(int upperSource,
+	private void upperTargetCardinalities(int upperSource,
 			VariableReference target, Association ass) {
 		
 		QuantificationExpression qe = factory.createQuantificationExpression();
@@ -809,8 +800,7 @@ public class Transformer {
 		world.getBlock().getExpression().add(qe);
 	}
 	
-	
-	private static void lowerTargetCardinalities(int lowerSource,
+	private void lowerTargetCardinalities(int lowerSource,
 			VariableReference target, Association ass) {
 		
 		QuantificationExpression qe = factory.createQuantificationExpression();
@@ -850,8 +840,7 @@ public class Transformer {
 		world.getBlock().getExpression().add(qe);
 	}
 	
-	
-	private static void upperSourceCardinalities(int upperSource,
+	private void upperSourceCardinalities(int upperSource,
 			VariableReference target, Association ass) {
 		
 		QuantificationExpression qe = factory.createQuantificationExpression();
@@ -891,8 +880,7 @@ public class Transformer {
 		world.getBlock().getExpression().add(qe);
 	}
 
-	
-	private static void lowerSourceCardinalities(int lowerSource,
+	private void lowerSourceCardinalities(int lowerSource,
 			VariableReference target, Association ass) {
 		
 		QuantificationExpression qe = factory.createQuantificationExpression();
@@ -932,8 +920,7 @@ public class Transformer {
 		world.getBlock().getExpression().add(qe);
 	}
 	
-	
-	static void saveAlloyXMI() {
+	void saveAlloyXMI() {
 	//		try {
 	//			//Save XMI model
 	//			resource.save(null);
@@ -954,8 +941,7 @@ public class Transformer {
 		
 	}
 
-	
-	private static void createModule() {
+	private void createModule() {
 		module = factory.createAlloyModule();
 		module.setName(Reader.modelname);
 		resource.getContents().add(module);
@@ -1052,8 +1038,7 @@ public class Transformer {
 		
 	}
 
-	
-	public static void finalAdditions(){
+	public void finalAdditions(){
 		//Creates Rigidity Fact
 		createRigidityFact();
 		
@@ -1064,8 +1049,7 @@ public class Transformer {
 		createRun();
 	}
 	
-	
-	private static void createRun() {
+	private void createRun() {
 		CommandDeclaration run = factory.createCommandDeclaration();
 		run.setIsRun(true);
 		
@@ -1076,8 +1060,7 @@ public class Transformer {
 		module.getParagraph().add(run);
 	}
 
-	
-	private static void createVisible() {
+	private void createVisible() {
 		VariableReference vr;
 		FunctionDeclaration fun = factory.createFunctionDeclaration();
 		fun.setName("visible");
@@ -1100,8 +1083,7 @@ public class Transformer {
 		module.getParagraph().add(fun);
 	}
 
-	
-	private static void createRigidityFact() {
+	private void createRigidityFact() {
 		if(rigidElements.size()>0)
 		{
 			all_rigid_classes = factory.createFactDeclaration();
@@ -1143,8 +1125,7 @@ public class Transformer {
 		}
 	}
 
-	
-	private static void newSigSubtantialMomentDatatype() {
+	private void newSigSubtantialMomentDatatype() {
 		int cont = 1;
 		SignatureDeclaration sigDecl = null;
 		for(String sigElement : defaultSignatures)
@@ -1177,8 +1158,7 @@ public class Transformer {
 		}
 	}
 	
-	
-	private static Expression newBOPSubtantialMomentDatatype() {
+	private Expression newBOPSubtantialMomentDatatype() {
 		int cont = 1;
 		//boSMD is an operation containing the union between Substantial, Moment and Datatype
 		BinaryOperation bo = null;
@@ -1223,8 +1203,7 @@ public class Transformer {
 		return exp;
 	}
 	
-	
-	private static void createObjectClassDeclaration(String name) {
+	private void createObjectClassDeclaration(String name) {
 		Declaration decl = factory.createDeclaration();
 		Variable var = factory.createVariable();
 		UnaryOperation uOp = factory.createUnaryOperation();
@@ -1251,8 +1230,7 @@ public class Transformer {
 		world.getRelation().add(decl);
 	}
 	
-	
-	private static void createDatatypeDeclaration(String name) {
+	private void createDatatypeDeclaration(String name) {
 		Declaration decl = factory.createDeclaration();
 		Variable var = factory.createVariable();
 		UnaryOperation uOp = factory.createUnaryOperation();
@@ -1279,8 +1257,7 @@ public class Transformer {
 		world.getRelation().add(decl);
 	}
 	
-	
-	private static void createMomentClassDeclaration(String name) {
+	private void createMomentClassDeclaration(String name) {
 		Declaration decl = factory.createDeclaration();
 		Variable var = factory.createVariable();
 		UnaryOperation uOp = factory.createUnaryOperation();
@@ -1307,8 +1284,7 @@ public class Transformer {
 		world.getRelation().add(decl);
 	}
 	
-	
-	private static void initResource() {
+	public static void initResource() {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new AlloyResourceFactoryImpl() );
 		resourceSet.getPackageRegistry().put(AlloyPackage.eNS_URI,AlloyPackage.eINSTANCE);
@@ -1318,8 +1294,7 @@ public class Transformer {
 		resource = resourceSet.createResource(URI.createURI(path));
 	}
 	
-	
-	public static void createExists(String param) {
+	public void createExists(String param) {
 		CompareOperation co = factory.createCompareOperation();
 		co.setOperator(CompareOperator.SUBSET_LITERAL);
 		
@@ -1354,7 +1329,14 @@ public class Transformer {
 		BinaryOperation bo = null;
 		for(String subs : list)
 		{
-			if(cont == 1)
+			
+			if(list.size() == 1)
+			{
+				vr = factory.createVariableReference();
+				vr.setVariable(subs);
+				co.setRightExpression(vr);
+			}
+			if(cont == 1 && list.size() != 1)
 			{
 				bo = factory.createBinaryOperation();
 				bo.setOperator(BinaryOperator.UNION_LITERAL);
@@ -1372,7 +1354,7 @@ public class Transformer {
 				((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
 				bo = ((BinaryOperation)bo.getRightExpression());
 			}
-			if(cont == list.size())
+			if(cont == list.size() && cont != 1)
 			{
 				vr = factory.createVariableReference();
 				vr.setVariable(subs);
@@ -1383,8 +1365,7 @@ public class Transformer {
 		world.getBlock().getExpression().add(co);
 	}
 	
-	
-	public static void createKindDatatypeMomentDisjoint() {
+	public void createKindDatatypeMomentDisjoint() {
 		DisjointExpression disj = null;
 		
 		//Kinds, Quantyties and Collectives
@@ -1426,4 +1407,175 @@ public class Transformer {
 			world.getBlock().getExpression().add(disj);
 		}
 	}
+
+	
+	public Resource getResource() {
+		return resource;
+	}
+
+	public void setResource(Resource resource) {
+		this.resource = resource;
+	}
+
+	public ArrayList<String> getSigsTop() {
+		return sigsTop;
+	}
+
+	public void setSigsTop(ArrayList<String> sigsTop) {
+		this.sigsTop = sigsTop;
+	}
+
+	public AlloyModule getModule() {
+		return module;
+	}
+
+	public void setModule(AlloyModule module) {
+		this.module = module;
+	}
+
+	public SignatureDeclaration getWorld() {
+		return world;
+	}
+
+	public void setWorld(SignatureDeclaration world) {
+		this.world = world;
+	}
+
+	public SignatureDeclaration getSubstantial() {
+		return Substantial;
+	}
+
+	public void setSubstantial(SignatureDeclaration substantial) {
+		Substantial = substantial;
+	}
+
+	public SignatureDeclaration getMoment() {
+		return Moment;
+	}
+
+	public void setMoment(SignatureDeclaration moment) {
+		Moment = moment;
+	}
+
+	public SignatureDeclaration getDatatype() {
+		return Datatype;
+	}
+
+	public void setDatatype(SignatureDeclaration datatype) {
+		Datatype = datatype;
+	}
+
+	public FactDeclaration getAssociation_properties() {
+		return association_properties;
+	}
+
+	public void setAssociation_properties(FactDeclaration association_properties) {
+		this.association_properties = association_properties;
+	}
+
+	public FactDeclaration getDerivations() {
+		return derivations;
+	}
+
+	public void setDerivations(FactDeclaration derivations) {
+		this.derivations = derivations;
+	}
+
+	public Variable getExists() {
+		return exists;
+	}
+
+	public void setExists(Variable exists) {
+		this.exists = exists;
+	}
+
+	public FactDeclaration getAll_rigid_classes() {
+		return all_rigid_classes;
+	}
+
+	public void setAll_rigid_classes(FactDeclaration all_rigid_classes) {
+		this.all_rigid_classes = all_rigid_classes;
+	}
+
+	public BinaryOperation getBoSMD() {
+		return boSMD;
+	}
+
+	public void setBoSMD(BinaryOperation boSMD) {
+		this.boSMD = boSMD;
+	}
+
+	public ArrayList<String> getDefaultSignatures() {
+		return defaultSignatures;
+	}
+
+	public void setDefaultSignatures(ArrayList<String> defaultSignatures) {
+		this.defaultSignatures = defaultSignatures;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public ArrayList<String> getSubstantialsList() {
+		return substantialsList;
+	}
+
+	public void setSubstantialsList(ArrayList<String> substantialsList) {
+		this.substantialsList = substantialsList;
+	}
+
+	public ArrayList<String> getMomentsList() {
+		return momentsList;
+	}
+
+	public void setMomentsList(ArrayList<String> momentsList) {
+		this.momentsList = momentsList;
+	}
+
+	public ArrayList<String> getDatatypesList() {
+		return datatypesList;
+	}
+
+	public void setDatatypesList(ArrayList<String> datatypesList) {
+		this.datatypesList = datatypesList;
+	}
+
+	public ArrayList<Classifier> getRigidElements() {
+		return rigidElements;
+	}
+
+	public void setRigidElements(ArrayList<Classifier> rigidElements) {
+		this.rigidElements = rigidElements;
+	}
+
+	public ArrayList<String> getMomentsListDisj() {
+		return momentsListDisj;
+	}
+
+	public void setMomentsListDisj(ArrayList<String> momentsListDisj) {
+		this.momentsListDisj = momentsListDisj;
+	}
+
+	public ArrayList<String> getDatatypeListDisj() {
+		return datatypeListDisj;
+	}
+
+	public void setDatatypeListDisj(ArrayList<String> datatypeListDisj) {
+		this.datatypeListDisj = datatypeListDisj;
+	}
+
+	public ArrayList<String> getKindsListDisj() {
+		return kindsListDisj;
+	}
+
+	public void setKindsListDisj(ArrayList<String> kindsListDisj) {
+		this.kindsListDisj = kindsListDisj;
+	}
+	
+	
 }

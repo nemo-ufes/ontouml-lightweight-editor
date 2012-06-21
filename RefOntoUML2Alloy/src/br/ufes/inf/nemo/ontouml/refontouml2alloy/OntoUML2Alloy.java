@@ -3,7 +3,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
-import edu.mit.csail.sdg.alloy4whole.SimpleGUI;
+import edu.mit.csail.sdg.alloy4whole.SimpleGUI_custom;
+
+
 
 import RefOntoUML.Model;
 import RefOntoUML.PackageableElement;
@@ -14,11 +16,14 @@ public class OntoUML2Alloy {
 	public static String themePath = "alloy/simulation.thm";
 	public static String alsPath = "out.als";
 	public static String dirPath = "";
+	public static String[] filenames = {""};
+	Transformer transformer;
 	
 	public static boolean transformToAlloyFile(Model m, ArrayList<PackageableElement> elements, String alloyFilePath, String themeFilePath) throws Exception {
 		
 		alsPath = alloyFilePath;
 		themePath = themeFilePath;
+		
 		
 		try {
 			copyfile(AuxFiles.world_structure, dirPath + "\\world_structure.als");
@@ -28,14 +33,10 @@ public class OntoUML2Alloy {
 			return false;
 		}
 		
-		Transformer.init(m);
-		String[] filenames = {alsPath};
+		Reader.init(m);
+		filenames[0] = alsPath;
 		
-		try {
-			SimpleGUI.main(filenames);
-		}catch (Exception e) {
-			return false;
-		}
+		SimpleGUI_custom.main(OntoUML2Alloy.filenames);
 		
 		return true;
 	}
@@ -45,9 +46,9 @@ public class OntoUML2Alloy {
 		//Call inicialization of transformation Class
 		copyfile(AuxFiles.world_structure, dirPath + "world_structure.als");
 		copyfile(AuxFiles.ontological_properties, dirPath + "ontological_properties.als");
-		Transformer.init(m);
+		Reader.init(m);
 		String[] filenames = {alsPath};
-		SimpleGUI.main(filenames);
+		SimpleGUI_custom.main(filenames);
 	}
 	
 	private static void copyfile(String srFile, String dtFile){
