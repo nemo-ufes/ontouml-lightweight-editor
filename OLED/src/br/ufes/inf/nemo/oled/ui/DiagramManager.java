@@ -392,7 +392,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		        	inst.setVisible(true);
 		            
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(this, "File could not be parsed.",
+					JOptionPane.showMessageDialog(this, ex.getMessage(),
 							getResourceString("dialog.importecore.title"),
 							JOptionPane.ERROR_MESSAGE);
 				}

@@ -43,7 +43,7 @@ public class RefOntoCreator {
 		try {
 			resource.save(Collections.EMPTY_MAP);
 		}catch (Exception e) {
-			System.out.println(e.getMessage());
+			Mediator.Log += e.getMessage() + "\n";
 		}
 		
 	}
@@ -101,7 +101,7 @@ public class RefOntoCreator {
     		newclass = factory.createRoleMixin();
     	}
     	else {
-    		System.out.println("Error: Stereotype '" + stereotype + "' not supported.");
+    		Mediator.Log += "Error: Stereotype '" + stereotype + "' not supported." + "\n";
     	}
 		
 		return newclass;
@@ -122,7 +122,7 @@ public class RefOntoCreator {
     		newdatatype = factory.createEnumeration();
     	}
     	else {
-    		System.out.println("Error: Stereotype '" + stereotype + "' not supported.");
+    		Mediator.Log += "Error: Stereotype '" + stereotype + "' not supported." + "\n";
     	}
     	
     	return newdatatype;
@@ -160,7 +160,7 @@ public class RefOntoCreator {
     		newassoc = factory.createsubQuantityOf();
     	}
 		else {
-			System.out.println("Error: Stereotype '" + stereotype + "' not supported.");
+			Mediator.Log += "Error: Stereotype '" + stereotype + "' not supported.\n";
 		}
 		
 		return newassoc;
@@ -335,7 +335,7 @@ public class RefOntoCreator {
 			mel.setLowerValue(lowerValue);
 			mel.setUpperValue(upperValue);
 		} else {
-			System.out.println("Warning: Property '"+hashProp.get("name")+"' multiplicity undefined.");
+			Mediator.Log += "Warning: Property '"+hashProp.get("name")+"' multiplicity undefined.\n";
 		}
 		
 		dealElement(mel, hashProp);
