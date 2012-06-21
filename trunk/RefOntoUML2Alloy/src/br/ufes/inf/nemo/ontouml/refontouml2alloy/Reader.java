@@ -19,12 +19,15 @@ import RefOntoUML.Package;
 public class Reader {
 	public static Package p;
 	public static String modelname;
+	public static Transformer transformer;
 	
 	public static ArrayList<PackageableElement> modelElements = new ArrayList<PackageableElement>();
 	
 	public static String inputPath = "teste.xml";
 	
-	public static void init(Model m){		
+	public static void init(Model m){	
+		transformer = new Transformer();
+		
 		// Read the objects in the model
 		if(m == null)
 		{
@@ -40,6 +43,8 @@ public class Reader {
 			p = readModel(m);
 		
 		preProccess(p);
+		
+		transformer.init(m);
 	}
 
 	public static void transformModel(Package p) {
@@ -48,14 +53,14 @@ public class Reader {
 		readGeneralizations(p);
 		readGeneralizationSets(p);
 		readAssociations(p);
-		if(Transformer.substantialsList.size() > 0)
-			Transformer.createExists("Substantial");
-		if(Transformer.momentsList.size() > 0)
-			Transformer.createExists("Moment");
-		if(Transformer.datatypesList.size() > 0)
-			Transformer.createExists("Datatype");
-		Transformer.createKindDatatypeMomentDisjoint();
-		Transformer.finalAdditions();
+		if(transformer.substantialsList.size() > 0)
+			transformer.createExists("Substantial");
+		if(transformer.momentsList.size() > 0)
+			transformer.createExists("Moment");
+		if(transformer.datatypesList.size() > 0)
+			transformer.createExists("Datatype");
+		transformer.createKindDatatypeMomentDisjoint();
+		transformer.finalAdditions();
 	}
 	
 	private static void checkNames(Package p) {
@@ -78,21 +83,21 @@ public class Reader {
 		for (PackageableElement pe : p.getPackagedElement())
 		{			
 			if (pe instanceof ObjectClass) {
-				Transformer.defaultSignatures.add("Substantial");
+				transformer.defaultSignatures.add("Substantial");
 				break;
 			}
 		}
 		for (PackageableElement pe : p.getPackagedElement())
 		{			
 			if (pe instanceof MomentClass) {
-				Transformer.defaultSignatures.add("Moment");
+				transformer.defaultSignatures.add("Moment");
 				break;
 			}
 		}
 		for (PackageableElement pe : p.getPackagedElement())
 		{			
 			if (pe instanceof DataType) {
-				Transformer.defaultSignatures.add("DataType");
+				transformer.defaultSignatures.add("DataType");
 				break;
 			}
 		}
@@ -102,12 +107,12 @@ public class Reader {
 		for (PackageableElement pe : p.getPackagedElement())
 		{			
 			if (pe instanceof Classifier) {
-				Transformer.transformClassifier((Classifier) pe, p);
+				transformer.transformClassifier((Classifier) pe, p);
 				if(((Classifier)pe).isIsAbstract())
-					Transformer.createAbstractClause((Classifier) pe,p);
+					transformer.createAbstractClause((Classifier) pe,p);
 				//For each rigid class (kind, subkind, collective, quantity, category, relator, mode, datatype), there is one fact that states its rigidity
 				if((pe instanceof Kind) || (pe instanceof SubKind) || (pe instanceof Collective) || (pe instanceof Quantity) || (pe instanceof Category) || (pe instanceof Relator) || (pe instanceof Mode) || (pe instanceof DataType))
-					Transformer.rigidElements.add((Classifier)pe);
+					transformer.rigidElements.add((Classifier)pe);
 			}
 		}
 	}
@@ -116,12 +121,12 @@ public class Reader {
 		for (PackageableElement pe : p.getPackagedElement())
 		{
 			if (pe instanceof Association && !(pe instanceof Derivation))
-				Transformer.transformAssociations((Association) pe);
+				transformer.transformAssociations((Association) pe);
 		}
 		for (PackageableElement pe : p.getPackagedElement())
 		{
 			if (pe instanceof Derivation)
-				Transformer.transformDerivations((Derivation) pe, p);
+				transformer.transformDerivations((Derivation) pe, p);
 		}
 	}
 	
@@ -130,7 +135,7 @@ public class Reader {
 		{			
 			if (pe instanceof Class)
 				for(Generalization gen : ((Class)pe).getGeneralization())
-					Transformer.transformGeneralizations(gen);
+					transformer.transformGeneralizations(gen);
 		}
 	}
 	
@@ -138,7 +143,7 @@ public class Reader {
 		for (PackageableElement pe : p.getPackagedElement())
 		{			
 			if (pe instanceof GeneralizationSet)
-				Transformer.transformGeneralizationSets((GeneralizationSet) pe);
+				transformer.transformGeneralizationSets((GeneralizationSet) pe);
 		}
 	}
 

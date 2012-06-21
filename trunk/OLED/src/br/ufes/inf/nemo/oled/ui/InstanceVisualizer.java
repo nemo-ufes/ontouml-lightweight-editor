@@ -33,12 +33,11 @@ import edu.mit.csail.sdg.alloy4viz.AlloyRelation;
 import edu.mit.csail.sdg.alloy4viz.AlloySet;
 import edu.mit.csail.sdg.alloy4viz.AlloyType;
 import edu.mit.csail.sdg.alloy4viz.StaticInstanceReader;
-import edu.mit.csail.sdg.alloy4viz.VizGUI;
 import edu.mit.csail.sdg.alloy4viz.VizGraphPanel;
 import edu.mit.csail.sdg.alloy4viz.VizState;
 
 /**
- * This class provides an visualizer for the alloy generated instances. It is based on {@link VizGUI}.
+ * This class provides an visualizer for the alloy generated instances. It is based on {@link VizGUI_custom}.
  */
 public class InstanceVisualizer extends JPanel implements Editor{
 
