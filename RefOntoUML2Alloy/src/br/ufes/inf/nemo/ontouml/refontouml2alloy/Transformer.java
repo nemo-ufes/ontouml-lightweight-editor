@@ -19,6 +19,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
+import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Kind;
@@ -87,10 +88,11 @@ public class Transformer {
 	
 	public void createAbstractClause(Classifier c, Package p) {
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-		for(PackageableElement gen : p.getPackagedElement())
-			if(gen instanceof Generalization)
-				if(((Generalization) gen).getGeneral().getName() == c.getName())
-					generalizations.add((Generalization) gen);
+		for(PackageableElement elem : p.getPackagedElement() )
+			if(elem instanceof Classifier)
+				for(Generalization gen : ((Classifier)elem).getGeneralization() )
+					if(((Generalization) gen).getGeneral().getName() == c.getName())
+						generalizations.add((Generalization) gen);
 		
 		int cont = 1;
 		BinaryOperation bo = factory.createBinaryOperation();
