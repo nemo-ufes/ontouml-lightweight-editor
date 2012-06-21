@@ -159,7 +159,10 @@ public class Reader {
 		Package p = m;
 		Model m2 = factory.createModel();
 		StringCheck ch = new StringCheck();
-		m2.setName(ch.removeSpecialNames(p.getName()));
+		if(p.getName() == null)
+			m2.setName("modelo");
+		else
+			m2.setName(ch.removeSpecialNames(p.getName()));
 		
 		addElements(p);
 		
@@ -178,7 +181,10 @@ public class Reader {
 		StringCheck ch = new StringCheck();
 		Package p = (Package)p1;
 		Model m = factory.createModel();
-		m.setName(ch.removeSpecialNames(p.getName()));
+		if(p.getName() == null)
+			m.setName("modelo");
+		else
+			m.setName(ch.removeSpecialNames(p.getName()));
 		
 		addElements(p);
 		
