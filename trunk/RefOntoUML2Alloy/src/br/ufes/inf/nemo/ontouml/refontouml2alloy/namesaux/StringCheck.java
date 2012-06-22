@@ -31,6 +31,14 @@ public class StringCheck {
 		str = str.replaceAll(" ", "");
 		str = str.replaceAll(",", "");
 		str = str.replaceAll("-", "");
+		str = str.replaceAll("\\.", "");
+		str = str.replaceAll("\\{", "");
+		str = str.replaceAll("\\}", "");
+		str = str.replaceAll("\\(", "");
+		str = str.replaceAll("\\)", "");
+		str = str.replaceAll("\\[", "");
+		str = str.replaceAll("\\]", "");
+		
 		
 		if(names.get(str)==null)
 		{

@@ -338,10 +338,22 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * @generated
 	 */
 	public String toString() {
+		String param = "";
+		if(getParameter().size()>0) {
+			param = " [";
+			for(int i=0;i<getParameter().size();i++)
+			{
+				if(getParameter().get(i).equals(getParameter().get(getParameter().size()-1)))
+					param = param + getParameter().get(i);
+				else
+					param = param + getParameter().get(i)+",";
+			}
+			param = param + "]";
+		}
 		if(getExpression() != null)
-			return "fun "+name+" : "+getType() +"{\n\t"+getExpression()+"\n}\n";
+			return "fun "+name+param+" : "+getType() +"{\n\t"+getExpression()+"\n}\n";
 		else
-			return "fun "+name+" : "+getType() +"{\n}\n";
+			return "fun "+name+param+" : "+getType() +"{}\n";
 	}
 
 } //FunctionDeclarationImpl

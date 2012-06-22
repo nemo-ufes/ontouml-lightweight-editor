@@ -296,6 +296,7 @@ public class Transformer {
 		}
 	}
 	
+	//TODO: Verificar casos de especialização de ralação, se os targets são diferentes
 	public void transformGeneralizations(Generalization g) {
 		CompareOperation co = factory.createCompareOperation();
 		co.setOperator(CompareOperator.SUBSET_LITERAL);
@@ -451,6 +452,173 @@ public class Transformer {
 		derivations.getBlock().getExpression().add(pI);
 	}
 	
+	public void transformAssociationsEnds(Association ass, VariableReference source, VariableReference target) {
+		
+		//Create function for the first associationEnd
+				if(ass.getOwnedEnd().get(0).getName() != null)
+				if(ass.getOwnedEnd().get(0).getName().compareTo("") != 0)	
+				{
+					FunctionDeclaration fun = factory.createFunctionDeclaration();
+					fun.setName(ass.getOwnedEnd().get(0).getName());
+					UnaryOperation uOp = factory.createUnaryOperation();
+					uOp.setOperator(UnaryOperator.SET_LITERAL);
+					
+					BinaryOperation bOp = factory.createBinaryOperation();
+					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+					
+					VariableReference vr = factory.createVariableReference();
+					vr.setVariable(ass.getOwnedEnd().get(0).getType().getName());
+					VariableReference vr2 = factory.createVariableReference();
+					vr2.setVariable(world.getName());
+					bOp.setLeftExpression(vr2);
+					bOp.setRightExpression(vr);
+					
+					uOp.setExpression(bOp);
+					fun.setType(uOp);
+					
+					Declaration decl = factory.createDeclaration();
+					Variable var = factory.createVariable();
+					var.setName("x");
+					var.setDeclaration(decl);
+					
+					bOp = factory.createBinaryOperation();
+					vr = factory.createVariableReference();
+					vr2 = factory.createVariableReference();
+					vr.setVariable(world.getName());
+					vr2.setVariable(ass.getOwnedEnd().get(1).getType().getName());
+					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+					bOp.setLeftExpression(vr);
+					bOp.setRightExpression(vr2);
+					decl.setExpression(bOp);
+					
+					fun.getParameter().add(decl);
+					
+					decl = factory.createDeclaration();
+					var = factory.createVariable();
+					var.setName("w");
+					var.setDeclaration(decl);
+					
+					vr = factory.createVariableReference();
+					vr.setVariable(world.getName());
+					decl.setExpression(vr);
+					
+					fun.getParameter().add(decl);
+					
+					
+					bOp = factory.createBinaryOperation();
+					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+					vr = factory.createVariableReference();
+					vr.setVariable("w");
+					vr2 = factory.createVariableReference();
+					vr2.setVariable(ass.getName());
+					bOp.setLeftExpression(vr);
+					bOp.setRightExpression(vr2);
+					
+					vr = factory.createVariableReference();
+					vr.setVariable("x");
+					
+					BinaryOperation bOp2 = factory.createBinaryOperation();
+					bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
+					if(ass.getOwnedEnd().get(0).getType().getName() == target.getVariable())
+					{
+						bOp2.setLeftExpression(vr);
+						bOp2.setRightExpression(bOp);
+					}
+					else
+					{
+						bOp2.setLeftExpression(bOp);
+						bOp2.setRightExpression(vr);
+					}
+					
+					fun.setExpression(bOp2);
+					
+					module.getParagraph().add(fun);
+					
+				}
+				//Create function for the second associationEnd
+				if(ass.getOwnedEnd().get(1).getName() != null)
+				if(ass.getOwnedEnd().get(1).getName().compareTo("") != 0)
+				{
+					FunctionDeclaration fun = factory.createFunctionDeclaration();
+					fun.setName(ass.getOwnedEnd().get(1).getName());
+					UnaryOperation uOp = factory.createUnaryOperation();
+					uOp.setOperator(UnaryOperator.SET_LITERAL);
+					
+					BinaryOperation bOp = factory.createBinaryOperation();
+					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+					
+					VariableReference vr = factory.createVariableReference();
+					vr.setVariable(ass.getOwnedEnd().get(1).getType().getName());
+					VariableReference vr2 = factory.createVariableReference();
+					vr2.setVariable(world.getName());
+					bOp.setLeftExpression(vr2);
+					bOp.setRightExpression(vr);
+					
+					uOp.setExpression(bOp);
+					fun.setType(uOp);
+					
+					Declaration decl = factory.createDeclaration();
+					Variable var = factory.createVariable();
+					var.setName("x");
+					var.setDeclaration(decl);
+					
+					bOp = factory.createBinaryOperation();
+					vr = factory.createVariableReference();
+					vr2 = factory.createVariableReference();
+					vr.setVariable(world.getName());
+					vr2.setVariable(ass.getOwnedEnd().get(0).getType().getName());
+					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+					bOp.setLeftExpression(vr);
+					bOp.setRightExpression(vr2);
+					decl.setExpression(bOp);
+					
+					fun.getParameter().add(decl);
+					
+					decl = factory.createDeclaration();
+					var = factory.createVariable();
+					var.setName("w");
+					var.setDeclaration(decl);
+					
+					vr = factory.createVariableReference();
+					vr.setVariable(world.getName());
+					decl.setExpression(vr);
+					
+					fun.getParameter().add(decl);
+					
+					
+					bOp = factory.createBinaryOperation();
+					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+					vr = factory.createVariableReference();
+					vr.setVariable("w");
+					vr2 = factory.createVariableReference();
+					vr2.setVariable(ass.getName());
+					bOp.setLeftExpression(vr);
+					bOp.setRightExpression(vr2);
+					
+					vr = factory.createVariableReference();
+					vr.setVariable("x");
+					
+					BinaryOperation bOp2 = factory.createBinaryOperation();
+					bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
+					if(ass.getOwnedEnd().get(1).getType().getName() == target.getVariable())
+					{
+						bOp2.setLeftExpression(vr);
+						bOp2.setRightExpression(bOp);
+					}
+					else
+					{
+						bOp2.setLeftExpression(bOp);
+						bOp2.setRightExpression(vr);
+					}
+					
+					fun.setExpression(bOp2);
+					
+					module.getParagraph().add(fun);
+					
+				}
+		
+	}
+	
 	public void transformAssociations(Association ass) {
 		Variable var = factory.createVariable();
 		VariableReference source = factory.createVariableReference();
@@ -478,6 +646,9 @@ public class Transformer {
 		else if(!(ass instanceof Derivation))
 			prepareAssociation(ass, source, target, aOp);
 		
+		if(ass.getOwnedEnd().get(0).getName() != null || ass.getOwnedEnd().get(1).getName() != null)
+			transformAssociationsEnds(ass,source,target);
+		
 		
 		uOp.setExpression(aOp);
 		world.getRelation().add(decl);
@@ -487,16 +658,23 @@ public class Transformer {
 			VariableReference source, VariableReference target,
 			ArrowOperation aOp) {
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
-		int cont = 1;
 		
-		source.setVariable(ass.whole().getName());
-		lowerSource = ass.wholeEnd().getLower();
-		upperSource = ass.wholeEnd().getUpper();
-		cont++;
-	
-		target.setVariable(ass.part().getName());
-		lowerTarget = ass.partEnd().getLower();
-		upperTarget = ass.partEnd().getUpper();
+		for(Property prop : ass.getOwnedEnd())
+		{
+			if(prop.getAggregation() != null)
+			if(prop.getAggregation().getName().compareTo("none") != 0)
+			{
+				source.setVariable(ass.whole().getName());
+				lowerSource = ass.wholeEnd().getLower();
+				upperSource = ass.wholeEnd().getUpper();
+			}
+			else
+			{
+				target.setVariable(ass.part().getName());
+				lowerTarget = ass.partEnd().getLower();
+				upperTarget = ass.partEnd().getUpper();
+			}
+		}
 		
 		if(ass instanceof subQuantityOf)
 		{
@@ -1410,174 +1588,4 @@ public class Transformer {
 		}
 	}
 
-	
-	public Resource getResource() {
-		return resource;
-	}
-
-	public void setResource(Resource resource) {
-		this.resource = resource;
-	}
-
-	public ArrayList<String> getSigsTop() {
-		return sigsTop;
-	}
-
-	public void setSigsTop(ArrayList<String> sigsTop) {
-		this.sigsTop = sigsTop;
-	}
-
-	public AlloyModule getModule() {
-		return module;
-	}
-
-	public void setModule(AlloyModule module) {
-		this.module = module;
-	}
-
-	public SignatureDeclaration getWorld() {
-		return world;
-	}
-
-	public void setWorld(SignatureDeclaration world) {
-		this.world = world;
-	}
-
-	public SignatureDeclaration getSubstantial() {
-		return Substantial;
-	}
-
-	public void setSubstantial(SignatureDeclaration substantial) {
-		Substantial = substantial;
-	}
-
-	public SignatureDeclaration getMoment() {
-		return Moment;
-	}
-
-	public void setMoment(SignatureDeclaration moment) {
-		Moment = moment;
-	}
-
-	public SignatureDeclaration getDatatype() {
-		return Datatype;
-	}
-
-	public void setDatatype(SignatureDeclaration datatype) {
-		Datatype = datatype;
-	}
-
-	public FactDeclaration getAssociation_properties() {
-		return association_properties;
-	}
-
-	public void setAssociation_properties(FactDeclaration association_properties) {
-		this.association_properties = association_properties;
-	}
-
-	public FactDeclaration getDerivations() {
-		return derivations;
-	}
-
-	public void setDerivations(FactDeclaration derivations) {
-		this.derivations = derivations;
-	}
-
-	public Variable getExists() {
-		return exists;
-	}
-
-	public void setExists(Variable exists) {
-		this.exists = exists;
-	}
-
-	public FactDeclaration getAll_rigid_classes() {
-		return all_rigid_classes;
-	}
-
-	public void setAll_rigid_classes(FactDeclaration all_rigid_classes) {
-		this.all_rigid_classes = all_rigid_classes;
-	}
-
-	public BinaryOperation getBoSMD() {
-		return boSMD;
-	}
-
-	public void setBoSMD(BinaryOperation boSMD) {
-		this.boSMD = boSMD;
-	}
-
-	public ArrayList<String> getDefaultSignatures() {
-		return defaultSignatures;
-	}
-
-	public void setDefaultSignatures(ArrayList<String> defaultSignatures) {
-		this.defaultSignatures = defaultSignatures;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public ArrayList<String> getSubstantialsList() {
-		return substantialsList;
-	}
-
-	public void setSubstantialsList(ArrayList<String> substantialsList) {
-		this.substantialsList = substantialsList;
-	}
-
-	public ArrayList<String> getMomentsList() {
-		return momentsList;
-	}
-
-	public void setMomentsList(ArrayList<String> momentsList) {
-		this.momentsList = momentsList;
-	}
-
-	public ArrayList<String> getDatatypesList() {
-		return datatypesList;
-	}
-
-	public void setDatatypesList(ArrayList<String> datatypesList) {
-		this.datatypesList = datatypesList;
-	}
-
-	public ArrayList<Classifier> getRigidElements() {
-		return rigidElements;
-	}
-
-	public void setRigidElements(ArrayList<Classifier> rigidElements) {
-		this.rigidElements = rigidElements;
-	}
-
-	public ArrayList<String> getMomentsListDisj() {
-		return momentsListDisj;
-	}
-
-	public void setMomentsListDisj(ArrayList<String> momentsListDisj) {
-		this.momentsListDisj = momentsListDisj;
-	}
-
-	public ArrayList<String> getDatatypeListDisj() {
-		return datatypeListDisj;
-	}
-
-	public void setDatatypeListDisj(ArrayList<String> datatypeListDisj) {
-		this.datatypeListDisj = datatypeListDisj;
-	}
-
-	public ArrayList<String> getKindsListDisj() {
-		return kindsListDisj;
-	}
-
-	public void setKindsListDisj(ArrayList<String> kindsListDisj) {
-		this.kindsListDisj = kindsListDisj;
-	}
-	
-	
 }
