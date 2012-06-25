@@ -3,6 +3,8 @@ package br.ufes.inf.nemo.ontouml.refontouml2alloy.namesaux;
 import java.text.Normalizer;
 import java.util.HashMap;
 
+import org.eclipse.emf.ecore.EValidator.PatternMatcher;
+
 public class StringCheck {
 	
 	public int Relator=0,Mode=0,Kind=0,Quantity=0,Collective=0,Phase=0,Role=0,Category=0,RoleMixin=0,Mixin=0;
@@ -38,6 +40,9 @@ public class StringCheck {
 		str = str.replaceAll("\\)", "");
 		str = str.replaceAll("\\[", "");
 		str = str.replaceAll("\\]", "");
+		str = str.replaceAll("\\\\", "");
+		str = str.replaceAll("/", "");
+		str = str.replaceAll("\\|", "");
 		
 		
 		if(names.get(str)==null)
