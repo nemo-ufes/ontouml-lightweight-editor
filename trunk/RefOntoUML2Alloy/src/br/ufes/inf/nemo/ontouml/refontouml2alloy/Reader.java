@@ -53,13 +53,13 @@ public class Reader {
 		readGeneralizations(p);
 		readGeneralizationSets(p);
 		readAssociations(p);
-		if(transformer.substantialsList.size() > 0)
-			transformer.createExists("Substantial");
-		if(transformer.momentsList.size() > 0)
-			transformer.createExists("Moment");
+		if(transformer.ObjectsList.size() > 0)
+			transformer.createExists("Object");
+		if(transformer.PropertiesList.size() > 0)
+			transformer.createExists("Property");
 		if(transformer.datatypesList.size() > 0)
 			transformer.createExists("Datatype");
-		transformer.createKindDatatypeMomentDisjoint();
+		transformer.createKindDatatypePropertyDisjoint();
 		transformer.finalAdditions();
 	}
 	
@@ -83,14 +83,14 @@ public class Reader {
 		for (PackageableElement pe : p.getPackagedElement())
 		{			
 			if (pe instanceof ObjectClass) {
-				transformer.defaultSignatures.add("Substantial");
+				transformer.defaultSignatures.add("Object");
 				break;
 			}
 		}
 		for (PackageableElement pe : p.getPackagedElement())
 		{			
 			if (pe instanceof MomentClass) {
-				transformer.defaultSignatures.add("Moment");
+				transformer.defaultSignatures.add("Property");
 				break;
 			}
 		}

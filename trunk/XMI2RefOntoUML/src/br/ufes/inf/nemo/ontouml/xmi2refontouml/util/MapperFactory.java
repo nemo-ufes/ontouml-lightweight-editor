@@ -13,6 +13,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
+
 
 
 public class MapperFactory {
@@ -56,14 +58,15 @@ public class MapperFactory {
 			return identifyExporter(doc);
 			
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Exception x = e.getException();
+			Mediator.errorLog += ((x == null) ? e : x).getMessage();
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Mediator.errorLog += "File " + file.getAbsolutePath() + 
+			" does not exist or could not be oppened.";
+			
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Mediator.errorLog += e.getMessage();
 		}
 		
 		return null;

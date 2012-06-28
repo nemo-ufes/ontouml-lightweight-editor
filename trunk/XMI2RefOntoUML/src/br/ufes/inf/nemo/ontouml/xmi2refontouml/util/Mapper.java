@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface Mapper {
 	
-	public String getIDName();
-	
 	public Object getModelElement();
 	
 	/* GET FUNCTIONS. THESE ARE REFERENT TO ONE ELEMENT */

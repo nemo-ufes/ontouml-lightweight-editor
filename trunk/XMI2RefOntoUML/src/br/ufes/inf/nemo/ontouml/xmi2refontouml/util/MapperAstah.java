@@ -17,6 +17,8 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
+
 
 
 public class MapperAstah implements Mapper {
@@ -30,28 +32,26 @@ public class MapperAstah implements Mapper {
 	        //docBuilderFactory.setNamespaceAware(true);
 	        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 	        
-	        //System.out.println("Parsing file...");
 	        doc = docBuilder.parse(new File(read_file_address));
 	        
 	        // Set the xmi.id to be the ID element
             setID(doc.getDocumentElement());
 	        
 		} catch (SAXParseException err) {
-            System.out.println("** Parsing error" + ", line "
-                    + err.getLineNumber() + ", uri " + err.getSystemId());
-            System.out.println(" " + err.getMessage());
+            Mediator.errorLog += "** Parsing error" + ", line "
+                    + err.getLineNumber() + ", uri " + err.getSystemId();
+            Mediator.errorLog += " " + err.getMessage();
  
-        } catch (SAXException e) {
-            Exception x = e.getException();
-            ((x == null) ? e : x).printStackTrace();
- 
-        } catch (IOException ioe) {
-        	System.out.println("File " + read_file_address + 
-        			" does not exist or could not be oppened.");
-        	
-        } catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (SAXException e) {
+			Exception x = e.getException();
+			Mediator.errorLog += ((x == null) ? e : x).getMessage();
+			
+		} catch (IOException e) {
+			Mediator.errorLog += "File " + read_file_address + 
+			" does not exist or could not be oppened.";
+			
+		} catch (ParserConfigurationException e) {
+			Mediator.errorLog += e.getMessage();
 		}
 	}
 	
@@ -66,10 +66,6 @@ public class MapperAstah implements Mapper {
 	    		setID((Element)child);
 	    	}
 	    }
-    }
-    
-    public String getIDName() {
-    	return "xmi.id";
     }
     
     public String getID(Object elem) {
@@ -289,7 +285,7 @@ public class MapperAstah implements Mapper {
 				}
 	    	}
     	} catch (NullPointerException npe) {
-    		System.out.println("Warning: Empty package '" +	parent.getAttribute("name") + "'.");
+    		Mediator.warningLog += "Warning: Empty package '" + parent.getAttribute("name") + "'.\n";
     	}
 		return list;
 	}
@@ -312,10 +308,14 @@ public class MapperAstah implements Mapper {
 		Document doc = elem.getOwnerDocument();
 		
     	NodeList stereotypeRef = elem.getElementsByTagName("UML:Stereotype");
-		Element stereotypeElem = (Element) stereotypeRef.item(0);
-		stereotypeElem = doc.getElementById(stereotypeElem.getAttribute("xmi.idref"));
-
-		return stereotypeElem.getAttribute("name");
+    	if (stereotypeRef.getLength() == 0) {
+    		return "";
+    		
+    	} else {
+    		Element stereotypeElem = (Element) stereotypeRef.item(0);
+    		stereotypeElem = doc.getElementById(stereotypeElem.getAttribute("xmi.idref"));
+    		return stereotypeElem.getAttribute("name");
+    	}
 	}
 
 	/* A função retorna um HashMap com as propriedades do elemento em questão. Para que a transformação
@@ -364,8 +364,7 @@ public class MapperAstah implements Mapper {
     		try {
 				hashProp.put("name", URLDecoder.decode((String)hashProp.get("name"), "UTF-8"));
 			} catch (UnsupportedEncodingException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
+				Mediator.warningLog += "Name could not be decoded in " + hashProp.get("name") + "\n";
 			}
     	}
     	
@@ -491,8 +490,7 @@ public class MapperAstah implements Mapper {
 		    	try {
 					hashProp.put("body", URLDecoder.decode((String)hashProp.get("body"), "UTF-8"));
 				} catch (UnsupportedEncodingException e) {
-					System.out.println(e.getMessage());
-					e.printStackTrace();
+					Mediator.warningLog += "Name could not be decoded in " + hashProp.get("name") + "\n";
 				}
 	    	}
 		}
