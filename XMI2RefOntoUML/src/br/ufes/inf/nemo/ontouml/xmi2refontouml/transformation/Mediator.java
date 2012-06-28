@@ -53,7 +53,8 @@ public class Mediator {
     private DefaultMutableTreeNode actualParent;
     // Auxiliary string to stack the path of the element with error
     private String errorPath;
-    public static String Log;
+    public static String errorLog;
+    public static String warningLog;
     
     public void initialize() {
         //Call the factory to read the Document and decide which Mapper
@@ -61,7 +62,7 @@ public class Mediator {
     	MapperFactory mapperFactory = new MapperFactory();
     	mapper = mapperFactory.createMapper(new File(READ_FILE_ADDRESS));
     	if (mapper == null) {
-    		System.out.println("Exporter not identified or not supported.");
+    		errorLog += "Exporter not identified or not supported.\n";
     		return;
     	}
     	
@@ -71,7 +72,8 @@ public class Mediator {
     	//Resets the CheckboxTree
     	actualParent = null;
     	
-    	Log = "";
+    	errorLog = "\n";
+    	warningLog = "\n";
     }
     
     public void save() {
@@ -80,7 +82,7 @@ public class Mediator {
 			refcreator.saveXMI();
 			System.out.println("File saved.");
 		} catch (IOException e) {
-			System.out.println("Error saving file.");
+			errorLog += "Error saving file.\n";
 			e.printStackTrace();
 		}
     }
@@ -152,7 +154,9 @@ public class Mediator {
     	
     	initialize();
     	if (mapper == null) {
-    		return null;
+    		errorLog += "Problem identifiyng exporter.\n";
+    		Exception e = new Exception(errorLog);
+        	throw e;
     	}
     	
     	//Initializes the model
@@ -161,16 +165,12 @@ public class Mediator {
         // Cria o modelo propriamente dito
         Object modelelement = mapper.getModelElement();
         if (createElement(modelelement, ElementType.MODEL) == null) {
-        	Log += "Path of the element with error: " + errorPath + "\n";
-        	Exception e = new Exception(Log);
+        	errorLog += "Path of the element with error: " + errorPath + "\n";
+        	Exception e = new Exception(errorLog);
         	throw e;
-        	//System.out.println("Path of the element with error: " + errorPath);
-        	//System.out.println("File could not be parsed.");
-        	//return null;
         	
         } else {
         	dealModel();
-        	System.out.println("Parsing done.");
         	return actualParent;
         }
     }
@@ -195,21 +195,19 @@ public class Mediator {
     			break;
     			
     		case CLASS:
-    			try {
-    				stereotype = mapper.getStereotype(element);
-	    			if (stereotype.equalsIgnoreCase("enum") || stereotype.equalsIgnoreCase("enumeration") ||
-	    					stereotype.equalsIgnoreCase("datatype") || stereotype.equalsIgnoreCase("primitivetype")) {
-	    				elem1 = refcreator.createDataType(stereotype);
-	    			} else {
-		    			elem1 = refcreator.createClass(stereotype);
-	    			}
-	    			doClassifier(element, (RefOntoUML.Classifier)elem1);
-    			} catch (NullPointerException npe) {
-    				System.out.println("Class " + mapper.getName(element) +
-    						" has unsupported stereotype '"+ stereotype + "'.");
+				stereotype = mapper.getStereotype(element);
+    			if (stereotype.equalsIgnoreCase("enum") || stereotype.equalsIgnoreCase("enumeration") ||
+    					stereotype.equalsIgnoreCase("datatype") || stereotype.equalsIgnoreCase("primitivetype")) {
+    				elem1 = refcreator.createDataType(stereotype);
+    			} else {
+	    			elem1 = refcreator.createClass(stereotype);
+    			}
+    			
+    			if (elem1 == null) {
     				errorPath = mapper.getName(element);
     				break;
     			}
+    			doClassifier(element, (RefOntoUML.Classifier)elem1);
     			//Add in the tree
     			newTreeNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(elem1));
     			actualParent.add(newTreeNode);
@@ -220,13 +218,11 @@ public class Mediator {
     			break;
     			
     		case ASSOCIATION:
-    			try {
-    				stereotype = mapper.getStereotype(element);
-	    			elem1 = refcreator.createAssociation(stereotype);
-	    			doClassifier(element, (RefOntoUML.Classifier)elem1);
-    			} catch (NullPointerException npe) {
-    				System.out.println("Association " + mapper.getName(element) +
-    						" has unsupported stereotype '"+ stereotype + "'.");
+				stereotype = mapper.getStereotype(element);
+    			elem1 = refcreator.createAssociation(stereotype);
+    			doClassifier(element, (RefOntoUML.Classifier)elem1);
+    			
+    			if (elem1 == null) {
     				errorPath = mapper.getName(element);
     				break;
     			}
@@ -243,9 +239,9 @@ public class Mediator {
     			elem1 = refcreator.createGeneralizationSet();
     			break;
     			
-    		case DEPENDENCY:
-    			elem1 = refcreator.createDependency();
-    			break;
+//    		case DEPENDENCY:
+//    			elem1 = refcreator.createDependency();
+//    			break;
     			
     		case COMMENT:
     			elem1 = refcreator.createComment();
@@ -301,10 +297,10 @@ public class Mediator {
     			doGeneralizationSet(hashProp);
     			refcreator.dealGeneralizationSet((RefOntoUML.GeneralizationSet)modelElem, hashProp);
     			
-    		} else if (modelElem instanceof RefOntoUML.Dependency) {
-    			doDependency(hashProp);
-    			refcreator.dealDependency((RefOntoUML.Dependency)modelElem, hashProp);
-    			
+//    		} else if (modelElem instanceof RefOntoUML.Dependency) {
+//    			doDependency(hashProp);
+//    			refcreator.dealDependency((RefOntoUML.Dependency)modelElem, hashProp);
+//    			
     		} else if (modelElem instanceof RefOntoUML.Comment) {
     			doComment(hashProp);
     			refcreator.dealComment((RefOntoUML.Comment)modelElem, hashProp);
@@ -357,12 +353,12 @@ public class Mediator {
         	RefOntoUML.GeneralizationSet genset1 = (RefOntoUML.GeneralizationSet) createElement(e, ElementType.GENERALIZATIONSET);
         	refcreator.addPackagedElement(pack, genset1);
         }
-        // Create Dependencies
-        List<Object> listDepend = mapper.getElements(element, ElementType.DEPENDENCY);
-        for (Object e : listDepend) {
-        	RefOntoUML.Dependency depend1 = (RefOntoUML.Dependency) createElement(e, ElementType.DEPENDENCY);
-        	refcreator.addPackagedElement(pack, depend1);
-        }
+//        // Create Dependencies
+//        List<Object> listDepend = mapper.getElements(element, ElementType.DEPENDENCY);
+//        for (Object e : listDepend) {
+//        	RefOntoUML.Dependency depend1 = (RefOntoUML.Dependency) createElement(e, ElementType.DEPENDENCY);
+//        	refcreator.addPackagedElement(pack, depend1);
+//        }
         
         return pack;
     }
@@ -406,20 +402,20 @@ public class Mediator {
     	hashProp.put("generalization", generalizations);
     }
     
-    protected void doDependency(Map<String, Object> hashProp) {
-    	
-    	List<RefOntoUML.NamedElement> clients = new ArrayList<RefOntoUML.NamedElement>();
-    	for (Object client : (List<?>)hashProp.get("client")) {
-    		clients.add((RefOntoUML.NamedElement)elemMap.get((String)client));
-		}
-    	hashProp.put("client", clients);
-    	
-    	List<RefOntoUML.NamedElement> suppliers = new ArrayList<RefOntoUML.NamedElement>();
-    	for (Object supplier : (List<?>)hashProp.get("supplier")) {
-    		suppliers.add((RefOntoUML.NamedElement)elemMap.get((String)supplier));
-		}
-    	hashProp.put("supplier", suppliers);
-    }
+//    protected void doDependency(Map<String, Object> hashProp) {
+//    	
+//    	List<RefOntoUML.NamedElement> clients = new ArrayList<RefOntoUML.NamedElement>();
+//    	for (Object client : (List<?>)hashProp.get("client")) {
+//    		clients.add((RefOntoUML.NamedElement)elemMap.get((String)client));
+//		}
+//    	hashProp.put("client", clients);
+//    	
+//    	List<RefOntoUML.NamedElement> suppliers = new ArrayList<RefOntoUML.NamedElement>();
+//    	for (Object supplier : (List<?>)hashProp.get("supplier")) {
+//    		suppliers.add((RefOntoUML.NamedElement)elemMap.get((String)supplier));
+//		}
+//    	hashProp.put("supplier", suppliers);
+//    }
     
     protected void doComment(Map<String, Object> hashProp) {
     	List<RefOntoUML.Element> annotatedElements = new ArrayList<RefOntoUML.Element>();

@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -54,6 +55,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.eclipse.emf.edit.provider.IDisposable;
+import org.jdesktop.swingx.JXErrorPane;
+import org.jdesktop.swingx.error.ErrorInfo;
 
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
@@ -392,14 +395,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		        	inst.setVisible(true);
 		            
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(this, ex.getMessage(),
-							getResourceString("dialog.importecore.title"),
-							JOptionPane.ERROR_MESSAGE);
+//					JOptionPane.showMessageDialog(this, ex.getMessage(),
+//							getResourceString("dialog.importecore.title"),
+//							JOptionPane.ERROR_MESSAGE);
+					ErrorInfo info = new ErrorInfo("Error", "Parsing not done.",
+		        			null, "category", ex, Level.SEVERE, null);
+		        	JXErrorPane.showDialog(this, info);
 				}
 			}
-        } else {
-            System.out.println("File selection cancelled by user.");
-            
         }
 	}
 	

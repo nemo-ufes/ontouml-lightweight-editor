@@ -19,7 +19,6 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
-import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Kind;
@@ -47,8 +46,8 @@ public class Transformer {
 	
 	public AlloyModule module;
 	public SignatureDeclaration world;
-	public SignatureDeclaration Substantial = null;
-	public SignatureDeclaration Moment = null;
+	public SignatureDeclaration Object = null;
+	public SignatureDeclaration Property = null;
 	public SignatureDeclaration Datatype = null;
 	public FactDeclaration association_properties = null;
 	public FactDeclaration derivations = null;
@@ -60,13 +59,13 @@ public class Transformer {
 		
 	public static String path = "models/out.xmi";
 	
-	public ArrayList<String> substantialsList = new ArrayList<String>();
-	public ArrayList<String> momentsList = new ArrayList<String>();
+	public ArrayList<String> ObjectsList = new ArrayList<String>();
+	public ArrayList<String> PropertiesList = new ArrayList<String>();
 	public ArrayList<String> datatypesList = new ArrayList<String>();
 	
 	public ArrayList<Classifier> rigidElements = new ArrayList<Classifier>();
 	
-	public ArrayList<String> momentsListDisj = new ArrayList<String>();
+	public ArrayList<String> PropertysListDisj = new ArrayList<String>();
 	public ArrayList<String> datatypeListDisj = new ArrayList<String>();
 	public ArrayList<String> kindsListDisj = new ArrayList<String>();
 	
@@ -270,7 +269,7 @@ public class Transformer {
 		if(c instanceof ObjectClass)
 		{
 			createObjectClassDeclaration(name);
-			substantialsList.add(name);
+			ObjectsList.add(name);
 			if((c instanceof Kind) || (c instanceof Collective) || (c instanceof Quantity))
 			{
 				kindsListDisj.add(name);
@@ -288,15 +287,15 @@ public class Transformer {
 		{
 			if(c instanceof Relator)
 				createRelatorAssociations((Relator) c, p);
-			createMomentClassDeclaration(name);
-			momentsList.add(name);
-			//all Moments without fathers are naturally disjoint, which means that multiple inheritance between Moments isn't allowed.
+			createPropertyClassDeclaration(name);
+			PropertiesList.add(name);
+			//all Propertys without fathers are naturally disjoint, which means that multiple inheritance between Propertys isn't allowed.
 			if(((MomentClass)c).getGeneralization().size() == 0)
-				momentsListDisj.add(name);
+				PropertysListDisj.add(name);
 		}
 	}
 	
-	//TODO: Verificar casos de especialização de ralação, se os targets são diferentes
+	//TODO: Verificar casos de especializaï¿½ï¿½o de ralaï¿½ï¿½o, se os targets sï¿½o diferentes
 	public void transformGeneralizations(Generalization g) {
 		CompareOperation co = factory.createCompareOperation();
 		co.setOperator(CompareOperator.SUBSET_LITERAL);
@@ -630,7 +629,7 @@ public class Transformer {
 		uOp.setOperator(UnaryOperator.SET_LITERAL);
 		var.setName(ass.getName());
 		var.setDeclaration(decl);
-		//TODO: Tratar associação sem nome
+		//TODO: Tratar associaï¿½ï¿½o sem nome
 		association.setVariable(ass.getName());
 		
 		
@@ -1161,9 +1160,9 @@ public class Transformer {
 		UnaryOperation uOp = factory.createUnaryOperation();
 		uOp.setOperator(UnaryOperator.SOME_LITERAL);
 		
-		newSigSubtantialMomentDatatype();
+		newSigSubtantialPropertyDatatype();
 		
-		uOp.setExpression(newBOPSubtantialMomentDatatype());
+		uOp.setExpression(newBOPSubtantialPropertyDatatype());
 		declaration.setExpression(uOp);
 		
 		world.getRelation().add(exists.getDeclaration());
@@ -1185,7 +1184,7 @@ public class Transformer {
 		
 		pI = factory.createPredicateInvocation();
 		pI.setPredicate("all_elements_exists");
-		pI.getParameter().add(newBOPSubtantialMomentDatatype());
+		pI.getParameter().add(newBOPSubtantialPropertyDatatype());
 		vr = factory.createVariableReference();
 		vr.setVariable(exists.getName());
 		pI.getParameter().add(vr);
@@ -1280,13 +1279,13 @@ public class Transformer {
 				if(rigid instanceof ObjectClass)
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(Substantial.getName());
+					vr.setVariable(Object.getName());
 					pI.getParameter().add(vr);
 				}
 				if(rigid instanceof MomentClass)
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(Moment.getName());
+					vr.setVariable(Property.getName());
 					pI.getParameter().add(vr);
 				}
 				if(rigid instanceof DataType)
@@ -1305,7 +1304,7 @@ public class Transformer {
 		}
 	}
 
-	private void newSigSubtantialMomentDatatype() {
+	private void newSigSubtantialPropertyDatatype() {
 		int cont = 1;
 		SignatureDeclaration sigDecl = null;
 		for(String sigElement : defaultSignatures)
@@ -1328,19 +1327,19 @@ public class Transformer {
 				sigDecl.setName(sigElement);
 				module.getParagraph().add(sigDecl);
 			}
-			if(sigDecl.getName().equals("Substantial"))
-				Substantial = sigDecl;
-			if(sigDecl.getName().equals("Moment"))
-				Moment = sigDecl;
+			if(sigDecl.getName().equals("Object"))
+				Object = sigDecl;
+			if(sigDecl.getName().equals("Property"))
+				Property = sigDecl;
 			if(sigDecl.getName().equals("DataType"))
 				Datatype = sigDecl;
 			cont = cont + 1;
 		}
 	}
 	
-	private Expression newBOPSubtantialMomentDatatype() {
+	private Expression newBOPSubtantialPropertyDatatype() {
 		int cont = 1;
-		//boSMD is an operation containing the union between Substantial, Moment and Datatype
+		//boSMD is an operation containing the union between Object, Property and Datatype
 		BinaryOperation bo = null;
 		Expression exp = null;
 		for(String sigElement : defaultSignatures)
@@ -1391,7 +1390,7 @@ public class Transformer {
 		VariableReference vr = factory.createVariableReference();
 		SignatureReference sr = factory.createSignatureReference();
 		
-		sr.setSignature(Substantial.getName());
+		sr.setSignature(Object.getName());
 		
 		vr.setVariable(exists.getName());
 		
@@ -1437,7 +1436,7 @@ public class Transformer {
 		world.getRelation().add(decl);
 	}
 	
-	private void createMomentClassDeclaration(String name) {
+	private void createPropertyClassDeclaration(String name) {
 		Declaration decl = factory.createDeclaration();
 		Variable var = factory.createVariable();
 		UnaryOperation uOp = factory.createUnaryOperation();
@@ -1445,7 +1444,7 @@ public class Transformer {
 		VariableReference vr = factory.createVariableReference();
 		SignatureReference sr = factory.createSignatureReference();
 		
-		sr.setSignature(Moment.getName());
+		sr.setSignature(Property.getName());
 		
 		vr.setVariable(exists.getName());
 		
@@ -1485,16 +1484,16 @@ public class Transformer {
 		vr.setVariable(exists.getName());
 		bOp.setLeftExpression(vr);
 		
-		ArrayList<String> list = substantialsList;
-		if(param.compareTo("Substantial") == 0) {
+		ArrayList<String> list = ObjectsList;
+		if(param.compareTo("Object") == 0) {
 			vr = factory.createVariableReference();
-			vr.setVariable(Substantial.getName());
-			list = substantialsList;
+			vr.setVariable(Object.getName());
+			list = ObjectsList;
 		}
-		if(param.compareTo("Moment") == 0) {
+		if(param.compareTo("Property") == 0) {
 			vr = factory.createVariableReference();
-			vr.setVariable(Moment.getName());
-			list = momentsList;
+			vr.setVariable(Property.getName());
+			list = PropertiesList;
 		}
 		if(param.compareTo("Datatype") == 0) {
 			vr = factory.createVariableReference();
@@ -1545,7 +1544,7 @@ public class Transformer {
 		world.getBlock().getExpression().add(co);
 	}
 	
-	public void createKindDatatypeMomentDisjoint() {
+	public void createKindDatatypePropertyDisjoint() {
 		DisjointExpression disj = null;
 		
 		//Kinds, Quantyties and Collectives
@@ -1574,14 +1573,14 @@ public class Transformer {
 			world.getBlock().getExpression().add(disj);
 		}
 		
-		//Moments
-		if(momentsListDisj.size()>1)
+		//Propertys
+		if(PropertysListDisj.size()>1)
 		{
 			disj = factory.createDisjointExpression();
-			for(String moment : momentsListDisj)
+			for(String Property : PropertysListDisj)
 			{
 				VariableReference vr = factory.createVariableReference();
-				vr.setVariable(moment);
+				vr.setVariable(Property);
 				disj.getSet().add(vr);
 			}
 			world.getBlock().getExpression().add(disj);

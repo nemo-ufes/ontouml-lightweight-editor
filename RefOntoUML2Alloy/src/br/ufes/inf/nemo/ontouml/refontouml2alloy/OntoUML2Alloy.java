@@ -47,10 +47,9 @@ public class OntoUML2Alloy {
 		
 		try {
 			copyfile(AuxFiles.world_structure, dirPath
-					+ "\\world_structure.als");
+					+ File.separator + "world_structure.als");
 			copyfile(AuxFiles.ontological_properties, dirPath
-					+ "\\ontological_properties.als");
-			copyfile(AuxFiles.alloyTheme, themeFilePath);
+					+ File.separator + "ontological_properties.als");
 		} catch (Exception e) {
 			return false;
 		}

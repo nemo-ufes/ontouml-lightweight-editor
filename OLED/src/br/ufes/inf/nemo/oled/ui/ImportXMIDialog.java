@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.logging.Level;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,6 +22,9 @@ import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import org.jdesktop.swingx.JXErrorPane;
+import org.jdesktop.swingx.error.ErrorInfo;
 
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -126,6 +130,13 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		transfManager.READ_FILE_ADDRESS = file.getAbsolutePath();
 		transfManager.SAVE_FILE_ADDRESS = file.getAbsolutePath().split("\\.")[0] + ".refontouml";
         DefaultMutableTreeNode root = transfManager.parse();
+        
+        if (Mediator.warningLog != "") {
+        	//TODO essa lib que usei tem muita coisa desnecessária, talvez fosse melhor copiar o source
+        	ErrorInfo info = new ErrorInfo("Warning", "Parsing done with warnings",
+        			null, "category", new Exception(Mediator.warningLog), Level.WARNING, null);
+        	JXErrorPane.showDialog(diagManager, info);
+    	}
         
         if (root != null) {
         	CheckboxTree modelTree = new CheckboxTree(root);

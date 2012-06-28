@@ -18,7 +18,6 @@ import RefOntoUML.impl.*;
 
 public class RefOntoCreator {
 	
-	public static String save_file_address;
 	public Resource resource;
 	public RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
 	
@@ -32,18 +31,15 @@ public class RefOntoCreator {
 		
 		//Cria um novo modelo (Resource) na URL especificada
 		resource = resourceSet.createResource(URI.createURI(saveAddress));
-		save_file_address = saveAddress;
 
 	}
 	
 	public void saveXMI() throws IOException {
 		// Saves XMI into file
-	
-		//resource.setURI(URI.createURI("file://"+save_file_address));
 		try {
 			resource.save(Collections.EMPTY_MAP);
 		}catch (Exception e) {
-			Mediator.Log += e.getMessage() + "\n";
+			Mediator.errorLog += e.getMessage() + "\n";
 		}
 		
 	}
@@ -100,8 +96,11 @@ public class RefOntoCreator {
     	else if (stereotype.equalsIgnoreCase("rolemixin")) {
     		newclass = factory.createRoleMixin();
     	}
+    	else if (stereotype.equalsIgnoreCase("")) {
+    		newclass = factory.createClass();
+    	}
     	else {
-    		Mediator.Log += "Error: Stereotype '" + stereotype + "' not supported." + "\n";
+    		Mediator.errorLog += "Error: Class stereotype '" + stereotype + "' not supported." + "\n";
     	}
 		
 		return newclass;
@@ -122,7 +121,7 @@ public class RefOntoCreator {
     		newdatatype = factory.createEnumeration();
     	}
     	else {
-    		Mediator.Log += "Error: Stereotype '" + stereotype + "' not supported." + "\n";
+    		Mediator.errorLog += "Error: Datatype stereotype '" + stereotype + "' not supported." + "\n";
     	}
     	
     	return newdatatype;
@@ -159,8 +158,11 @@ public class RefOntoCreator {
 		else if (stereotype.equalsIgnoreCase("subquantityof")) {
     		newassoc = factory.createsubQuantityOf();
     	}
+		else if (stereotype.equalsIgnoreCase("") || stereotype.equalsIgnoreCase("datatyperelationship")) {
+			newassoc = factory.createAssociation();
+		}
 		else {
-			Mediator.Log += "Error: Stereotype '" + stereotype + "' not supported.\n";
+			Mediator.errorLog += "Error: Association stereotype '" + stereotype + "' not supported.\n";
 		}
 		
 		return newassoc;
@@ -335,7 +337,7 @@ public class RefOntoCreator {
 			mel.setLowerValue(lowerValue);
 			mel.setUpperValue(upperValue);
 		} else {
-			Mediator.Log += "Warning: Property '"+hashProp.get("name")+"' multiplicity undefined.\n";
+			Mediator.warningLog += "Warning: Property '" + hashProp.get("name") + "' multiplicity undefined.\n";
 		}
 		
 		dealElement(mel, hashProp);
