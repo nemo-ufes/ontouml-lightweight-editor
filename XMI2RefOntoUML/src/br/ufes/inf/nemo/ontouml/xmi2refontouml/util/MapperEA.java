@@ -283,7 +283,7 @@ public class MapperEA implements Mapper {
     		for (Element memberEnd : memberEndsAux) {
     			memberEnds.add(memberEnd.getAttributeNS(XMINS, "idref"));
     		}
-    		hashProp.put("memberEnd", memberEnds);
+    		hashProp.put("memberend", memberEnds);
     	}
     	
 		return hashProp;
