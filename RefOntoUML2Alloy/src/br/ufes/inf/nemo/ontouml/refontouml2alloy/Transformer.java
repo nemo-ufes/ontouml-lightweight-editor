@@ -35,6 +35,7 @@ import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.Class;
 import RefOntoUML.Relator;
+import RefOntoUML.ValueSpecification;
 import RefOntoUML.subQuantityOf;
 import RefOntoUML.Package;
 
@@ -799,17 +800,17 @@ public class Transformer {
 			{
 				if(c.getType() instanceof Relator && cont == 1)
 				{
-					source.setVariable(c.getType().getName());
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
+					upperSource = c.getUpperValue().integerValue();
 					isSourceReadOnly = c.isIsReadOnly();
 					cont++;
 				}
 				else
 				{
 					target.setVariable(c.getType().getName());
-					lowerTarget = c.getLower();
-					upperTarget = c.getUpper();
+					lowerSource = c.getLower();
+					upperSource = c.getUpper();
 				}
 			}
 		}
@@ -916,8 +917,8 @@ public class Transformer {
 				else
 				{
 					target.setVariable(c.getType().getName());
-					lowerTarget = c.getLower();
-					upperTarget = c.getUpper();
+					lowerSource = c.getLower();
+					upperSource = c.getUpper();
 					isTargetReadOnly = c.isIsReadOnly();
 				}
 			}
