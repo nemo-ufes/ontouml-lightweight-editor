@@ -457,13 +457,14 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 		for(Declaration decl : getRelation())
 		{
 			if(decl.equals(relation.get(relation.size()-1)))
-				result.append(decl+"\n");
+				result.append("\t"+decl+"\n");
 			else
-				result.append(decl+",\n");
+				result.append("\t"+decl+",\n");
 		}
-		result.append("}\n");
+		result.append("}");
+		if(getBlock() == null) result.append("\n"); 
 		if(getBlock() != null)
-			result.append("{\n"+getBlock()+"\n}\n");
+			result.append("{\n"+getBlock()+"}\n");
 		
 		return result.toString();
 	}

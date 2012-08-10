@@ -342,7 +342,7 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer();
-		result.append("\t");
+		result.append(" ");
 		for(Variable var : variable)
 		{
 			if(var.equals(variable.get(variable.size()-1)))

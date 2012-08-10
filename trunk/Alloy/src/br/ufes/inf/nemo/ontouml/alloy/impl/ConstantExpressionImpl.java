@@ -152,9 +152,9 @@ public class ConstantExpressionImpl extends ExpressionImpl implements ConstantEx
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (constant: ");
+		result.append(" constant: ");
 		result.append(constant);
-		result.append(')');
+		result.append(' ');
 		return result.toString();
 	}
 

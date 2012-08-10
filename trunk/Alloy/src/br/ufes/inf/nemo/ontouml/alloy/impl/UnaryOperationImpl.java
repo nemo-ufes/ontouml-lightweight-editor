@@ -7,8 +7,6 @@
 package br.ufes.inf.nemo.ontouml.alloy.impl;
 
 import br.ufes.inf.nemo.ontouml.alloy.AlloyPackage;
-import br.ufes.inf.nemo.ontouml.alloy.BinaryOperation;
-import br.ufes.inf.nemo.ontouml.alloy.CompareOperation;
 import br.ufes.inf.nemo.ontouml.alloy.Expression;
 import br.ufes.inf.nemo.ontouml.alloy.UnaryOperation;
 import br.ufes.inf.nemo.ontouml.alloy.UnaryOperator;
@@ -234,7 +232,7 @@ public class UnaryOperationImpl extends ExpressionImpl implements UnaryOperation
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer();
-		result.append(operator + "(" +expression+")");
+		result.append(operator + " " +expression);
 		return result.toString();
 	}
 

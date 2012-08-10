@@ -350,7 +350,7 @@ public class CompareOperationImpl extends ExpressionImpl implements CompareOpera
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer();
-		result.append(getLeftExpression() + " " + operator + " (" + getRightExpression()+")");
+		result.append(getLeftExpression() + " " + operator + " " + getRightExpression()+"");
 		return result.toString();
 	}
 

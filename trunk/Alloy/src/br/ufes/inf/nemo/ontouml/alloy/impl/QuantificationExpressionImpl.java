@@ -342,7 +342,7 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	public String toString() {
 		StringBuffer result = new StringBuffer();
 		
-		result.append(getQuantificator()+" ");
+		result.append(getQuantificator()+"");
 		for(Declaration d : getDeclaration()) {
 			if(d.equals(getDeclaration().get(getDeclaration().size()-1)))
 				result.append(d+" ");
