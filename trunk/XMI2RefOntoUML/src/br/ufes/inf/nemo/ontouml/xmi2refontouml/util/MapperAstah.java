@@ -468,9 +468,11 @@ public class MapperAstah implements Mapper {
 		//Association properties
 		else if (elem.getNodeName().equals("UML:Association")) {
 			List<Object> elemList = getChildsByTagName(elem, CONNECTION_TAG_PATH);
+			List<String> memberEnds = new ArrayList<String>();
 			for (Object memberEnd : elemList) {
-				hashProp.put("memberend", ((Element)memberEnd).getAttribute("xmi.id"));
+				memberEnds.add(((Element)memberEnd).getAttribute("xmi.id"));
 			}
+			hashProp.put("memberend", memberEnds);
 		}
 	}
 	
