@@ -15,8 +15,9 @@ public class StringCheck {
 	public String removeSpecialNames(String str) {
 		int cont=-1;
 		
+
 		
-		String[] keywords  = {"World","abstract","all","and","as","assert","but","check","disj","else","exactly","extends","fact","for","fun","iden","iff","implies","in","Int","let","lone","module","no","none","not","one","open","or","pred","run","set","sig","some","sum","univ"};
+		String[] keywords  = {"World","abstract","all","and","as","assert","but","check","disj","else","exactly","extends","fact","for","fun","iden","iff","implies","in","Int","let","lone","module","no","none","not","one","open","or","pred","run","set","sig","some","sum","univ","int","Int"};
 		for(int i=0;i<keywords.length;i++)
 		{
 			if(str==keywords[i])
@@ -61,7 +62,10 @@ public class StringCheck {
 		str = str.replaceAll("/", "");
 		str = str.replaceAll("\\|", "");
 		
-		
+		if(str==null)
+		{}
+		else if(str.equals(""))
+		{}
 		if(names.get(str)==null)
 		{
 			names.put(str, new WordCounter(str, 0));

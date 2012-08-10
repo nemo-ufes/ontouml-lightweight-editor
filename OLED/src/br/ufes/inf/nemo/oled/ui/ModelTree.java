@@ -9,7 +9,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
+import org.eclipse.emf.common.util.EList;
+
+import RefOntoUML.NamedElement;
+import RefOntoUML.Package;
+import RefOntoUML.PackageableElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 
 
@@ -36,14 +42,24 @@ public class ModelTree extends JPanel {
 	 * */
 	private void buildTree(UmlProject project)
 	{
-		//ModelElementWrapper root = new ModelElementWrapper(model.getName());
+		ModelElementWrapper root = new ModelElementWrapper(project.getModel().getName());
 		
-		//for (NamedElement element : model.getElements()) {
-		//	ModelElementWrapper child = new ModelElementWrapper(element.getName());
-		//	root.add(child);
-		//}
+		buildTreeRRecursive(project.getModel().getPackagedElement(),root);
 	
-		///tree.setModel(new DefaultTreeModel(root));
+		tree.setModel(new DefaultTreeModel(root));
+	}
+	
+	private void buildTreeRRecursive(EList<PackageableElement> list, ModelElementWrapper root)
+	{
+		ModelElementWrapper child = null;
+		for (PackageableElement element : list ) {
+			if(element instanceof NamedElement) {
+				child = new ModelElementWrapper(element.getName());
+				root.add(child);
+				if(element instanceof Package)
+					buildTreeRRecursive(((Package) element).getPackagedElement(),child);
+			}
+		}
 	}
 	
 	public static ModelTree getTreeFor(UmlProject project) {
