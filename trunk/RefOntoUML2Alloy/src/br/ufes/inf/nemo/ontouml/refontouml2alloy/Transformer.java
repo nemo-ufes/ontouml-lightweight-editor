@@ -30,6 +30,7 @@ import RefOntoUML.Model;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.PackageableElement;
+import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.Class;
@@ -37,7 +38,10 @@ import RefOntoUML.Relator;
 import RefOntoUML.subQuantityOf;
 import RefOntoUML.Package;
 
-
+/**
+ * @author thom
+ *
+ */
 public class Transformer {
 	
 	public static Resource resource;
@@ -69,9 +73,13 @@ public class Transformer {
 	public ArrayList<String> datatypeListDisj = new ArrayList<String>();
 	public ArrayList<String> kindsListDisj = new ArrayList<String>();
 	
-	
-	
-	//TODO: TIRAR MULTIPLICITY DE DECLARATION NO METAMODELO, EH PRA SER UM UNARYOPERATION COM OPERATOR SET POR EXEMPLO
+	/**
+	 * That method initializes elements to do the transformation
+	 * Every OntoUML inputted to the transformation has one element name Model, 
+	 * which is the root of all the other elements in the model. 
+	 * Its name defines the name of the produced Alloy module.
+	 * @param Model
+	 */
 	public void init(Model m){
 		//Creates a ResourceSet to manage the model 
 		initResource();
@@ -82,11 +90,18 @@ public class Transformer {
 		//Read for transformation
 		Reader.transformModel(Reader.p);
 		
-		saveAlloyXMI();
+		//Save alloy model as als file
+		saveAls();
 	}
 	
+	/**
+	 * For each abstract class.
+	 * @param classifier
+	 * @param package
+	 */
 	public void createAbstractClause(Classifier c, Package p) {
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+		//Get all generalizations that the Classifier c is the father
 		for(PackageableElement elem : p.getPackagedElement() )
 			if(elem instanceof Classifier)
 				for(Generalization gen : ((Classifier)elem).getGeneralization() )
@@ -94,6 +109,8 @@ public class Transformer {
 						generalizations.add((Generalization) gen);
 		
 		int cont = 1;
+		//Create BinaryOperation with union operator(+) to represent the completeness
+		//between father(Classifier) and sons
 		BinaryOperation bo = factory.createBinaryOperation();
 		if(generalizations.size() > 0)
 		{
@@ -137,7 +154,52 @@ public class Transformer {
 		}
 	}
 	
+	public void auxMethodRelator(ArrayList<String> list, Relator r, Package p){
+		for(PackageableElement pe : p.getPackagedElement())
+		{
+			if(pe instanceof Mediation)
+			{
+				if( ((Mediation)pe).sourceEnd().getType() instanceof Relator )
+				{
+					if(((Mediation)pe).sourceEnd().getType().getName() == r.getName())
+					{
+						list.add(pe.getName());
+						for(Generalization gen : ((Relator)((Mediation)pe).sourceEnd().getType()).getGeneralization())
+							auxMethodRelator(list,(Relator)gen.getGeneral(),p);
+					}
+				}
+				else if( ((Mediation)pe).targetEnd().getType() instanceof Relator )
+				{
+					if(((Mediation)pe).targetEnd().getType().getName() == r.getName())
+					{
+						list.add(pe.getName());
+						for(Generalization gen : ((Relator)((Mediation)pe).targetEnd().getType()).getGeneralization())
+							auxMethodRelator(list,(Relator)gen.getGeneral(),p);
+					}
+				}
+				
+			}
+		}
+	}
+	
+	/**
+	 * For each Relator c in a Package p define a rule in alloy
+	 * @param Relator
+	 * @param Package
+	 */
 	public void createRelatorAssociations(Relator c, Package p) {
+		for(PackageableElement pe : p.getPackagedElement())
+		{
+			if(pe instanceof GeneralizationSet)
+			{
+				GeneralizationSet gs = ((GeneralizationSet)pe);
+				if(gs.isIsCovering())
+					for(Generalization gen : gs.getGeneralization())
+						if(gen.getGeneral().getName() == c.getName())
+							return;
+			}
+		}
+		
 		QuantificationExpression qe = factory.createQuantificationExpression();
 		qe.setQuantificator(Quantificator.ALL_LITERAL);
 		Declaration decl = factory.createDeclaration();
@@ -160,30 +222,8 @@ public class Transformer {
 		co.setRightExpression(vr);
 
 		ArrayList<String> associationNames = new ArrayList<String>();
-		boolean hasMediation = false;
-		for(PackageableElement pe : p.getPackagedElement())
-		{
-			if(pe instanceof Mediation)
-			{
-				if( ((Mediation)pe).sourceEnd().getType() instanceof Relator )
-				{
-					if(((Mediation)pe).sourceEnd().getType().getName() == c.getName())
-					{
-						associationNames.add(pe.getName());
-						hasMediation = true;
-					}
-				}
-				else if( ((Mediation)pe).targetEnd().getType() instanceof Relator )
-				{
-					if(((Mediation)pe).targetEnd().getType().getName() == c.getName())
-					{
-						associationNames.add(pe.getName());
-						hasMediation = true;
-					}
-				}
-				
-			}
-		}
+		
+		auxMethodRelator(associationNames, c, p);
 		
 		
 		int cont = 1;
@@ -201,6 +241,7 @@ public class Transformer {
 				vr.setVariable(name);
 				bo.setRightExpression(vr);
 				uOp.setExpression(bo);
+				break;
 			}
 			if(cont == 1)
 			{
@@ -260,10 +301,21 @@ public class Transformer {
 		
 		qe.setExpression(co);
 		
-		if(hasMediation)
+		if(associationNames.size()>0)
 			world.getBlock().getExpression().add(qe);
 	}
 	
+	/**
+	 * A general rule that define a basic common rules for classifiers
+	 * Every generated specification has at most four signature declarations: 
+	 * World, Substantial, Moment and Datatype. The Substantial signature is created 
+	 * if the input model contains at least one class stereotyped as kind, collective, 
+	 * quantity, role, phase, subkind, category, roleMixin or Mixin, whilst 
+	 * the Moment signature if there are modes or relators and the Datatype if 
+	 * there are any datatypes.
+	 * @Classifier
+	 * @Package
+	 */
 	public void transformClassifier(Classifier c, Package p) {
 		String name = c.getName();
 		if(c instanceof ObjectClass)
@@ -275,7 +327,7 @@ public class Transformer {
 				kindsListDisj.add(name);
 			}
 		}
-		if(c instanceof DataType)
+		if(c instanceof DataType && !(c instanceof PrimitiveType))
 		{
 			createDatatypeDeclaration(name);
 			datatypesList.add(name);
@@ -285,8 +337,8 @@ public class Transformer {
 		}
 		if(c instanceof MomentClass)
 		{
-			if(c instanceof Relator)
-				createRelatorAssociations((Relator) c, p);
+			if(c instanceof Relator && !(c.isIsAbstract()))
+					createRelatorAssociations((Relator) c, p);
 			createPropertyClassDeclaration(name);
 			PropertiesList.add(name);
 			//all Propertys without fathers are naturally disjoint, which means that multiple inheritance between Propertys isn't allowed.
@@ -296,6 +348,10 @@ public class Transformer {
 	}
 	
 	//TODO: Verificar casos de especializa��o de rala��o, se os targets s�o diferentes
+	/**
+	 * That method creates a rule in alloy for every Generalization 
+	 * @param Generalization
+	 */
 	public void transformGeneralizations(Generalization g) {
 		CompareOperation co = factory.createCompareOperation();
 		co.setOperator(CompareOperator.SUBSET_LITERAL);
@@ -656,23 +712,25 @@ public class Transformer {
 	private void prepareMeronymicAssociation(Meronymic ass,
 			VariableReference source, VariableReference target,
 			ArrowOperation aOp) {
-		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
+		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1,cont=0;
 		
 		for(Property prop : ass.getOwnedEnd())
 		{
 			if(prop.getAggregation() != null)
-			if(prop.getAggregation().getName().compareTo("none") != 0)
-			{
-				source.setVariable(ass.whole().getName());
-				lowerSource = ass.wholeEnd().getLower();
-				upperSource = ass.wholeEnd().getUpper();
-			}
-			else
-			{
-				target.setVariable(ass.part().getName());
-				lowerTarget = ass.partEnd().getLower();
-				upperTarget = ass.partEnd().getUpper();
-			}
+				//if(prop.getAggregation().getName().compareTo("none") != 0)
+				if(cont==0)
+				{
+					source.setVariable(ass.whole().getName());
+					lowerSource = ass.wholeEnd().getLower();
+					upperSource = ass.wholeEnd().getUpper();
+					cont++;
+				}
+				else
+				{
+					target.setVariable(ass.part().getName());
+					lowerTarget = ass.partEnd().getLower();
+					upperTarget = ass.partEnd().getUpper();
+				}
 		}
 		
 		if(ass instanceof subQuantityOf)
@@ -845,7 +903,7 @@ public class Transformer {
 			return;
 		for(Property c : ass.getOwnedEnd())
 		{
-			if(c.getType() instanceof Class)
+			if(c.getType() instanceof Classifier)
 			{
 				if(cont == 1)
 				{
@@ -1099,7 +1157,7 @@ public class Transformer {
 		world.getBlock().getExpression().add(qe);
 	}
 	
-	void saveAlloyXMI() {
+	void saveAls() {
 	//		try {
 	//			//Save XMI model
 	//			resource.save(null);
@@ -1128,7 +1186,16 @@ public class Transformer {
 		
 		SignatureDeclaration sig;
 		
-		//Create Module Importation
+		/**
+		 * Create Module Importation
+		 * In all executions of the transformation, two Alloy modules are 
+		 * imported: world_structure and ontological_properties, 
+		 * both parameterized by the World signature. The first defines 
+		 * the Kripke  world structure [35], with past, future and 
+		 * counterfactual worlds, whilst the second provides functions and 
+		 * predicates that characterize ontological properties, such as 
+		 * rigidity and dependence.
+		 */
 		ModuleImportation mi = factory.createModuleImportation();
 		ModuleImportation mi2 = factory.createModuleImportation();
 		mi.setName("world_structure");
@@ -1288,7 +1355,7 @@ public class Transformer {
 					vr.setVariable(Property.getName());
 					pI.getParameter().add(vr);
 				}
-				if(rigid instanceof DataType)
+				if(rigid instanceof DataType && !(rigid instanceof PrimitiveType))
 				{
 					vr = factory.createVariableReference();
 					vr.setVariable(Datatype.getName());

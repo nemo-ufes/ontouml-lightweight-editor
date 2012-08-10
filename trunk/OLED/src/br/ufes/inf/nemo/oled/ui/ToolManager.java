@@ -27,17 +27,17 @@ public class ToolManager extends JTabbedPane {
 		//Assistent patternsPanel = new Assistent();
 				
 		this.add("Elements", palettes); //TODO Localize these
-		//this.add("Model", null);
+		this.add("Model", null);
 		//this.add("Assistent", assistent);
 		//this.add("Patterns", patternsPanel);
 	}
 
 	public void showModelTree(UmlProject project)
 	{
-		//ModelTree modelTree = ModelTree.getTreeFor(project);
-		//this.setComponentAt(indexOfTab("Model"), modelTree);
-		//repaint();
-		//revalidate();
+		ModelTree modelTree = ModelTree.getTreeFor(project);
+		this.setComponentAt(indexOfTab("Model"), modelTree);
+		repaint();
+		revalidate();
 	}
 	
 	public DiagramEditorCommandDispatcher getEditorDispatcher() {

@@ -16,11 +16,16 @@ import RefOntoUML.PackageableElement;
 
 public class OntoUML2Alloy {
 
+	//Path to the default theme 
 	public static String themePath = "alloy/simulation.thm";
+	//Path to the Alloy output specification
 	public static String alsPath = "out.als";
+	//Temp dir to put some files(provided by OLED)
 	public static String dirPath = "";
+	//Aux variable to call Alloy Analizer
 	public static String[] filenames = { "" };
 
+	//Method used to call the transformation
 	public static boolean transformToAlloyFile(Model m,
 			ArrayList<PackageableElement> elements, String alloyFilePath,
 			String themeFilePath) throws Exception {
@@ -28,12 +33,13 @@ public class OntoUML2Alloy {
 		alsPath = alloyFilePath;
 		themePath = themeFilePath;
 
+		//Copy alloy4.2-rc.jar into OLED temp dir (TODO: Think in a way to run it internally)
 		InputStream is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("alloy4.2-rc.jar");
 		if(is == null)
 			is = new FileInputStream("lib/alloy4.2-rc.jar");
 		OutputStream out = new FileOutputStream(new File(dirPath + "\\alloy4.2-rc.jar"));
+		//MB per MB
 		byte[] src = new byte[1024];
-
 		int read = 0;
 		while ((read = is.read(src)) != -1) {
 			out.write(src, 0, read);
@@ -42,9 +48,8 @@ public class OntoUML2Alloy {
 		is.close();
 		out.flush();
 		out.close();
-
-		System.out.println(dirPath);
 		
+		//Modules that are used in generated Alloy code
 		try {
 			copyfile(AuxFiles.world_structure, dirPath
 					+ File.separator + "world_structure.als");
@@ -54,25 +59,19 @@ public class OntoUML2Alloy {
 			return false;
 		}
 
+		//Here the transformation begins
 		Reader.init(m);
+		
+		//param to call SimpleGUI 
 		filenames[0] = alsPath;
 
+		//Open Alloy Analyzer
 		SimpleGUI_custom.main(OntoUML2Alloy.filenames);
 
 		return true;
 	}
 
-	public static void call(Model m) throws Exception {
-
-		// Call inicialization of transformation Class
-		copyfile(AuxFiles.world_structure, dirPath + "world_structure.als");
-		copyfile(AuxFiles.ontological_properties, dirPath
-				+ "ontological_properties.als");
-		Reader.init(m);
-		String[] filenames = { alsPath };
-		SimpleGUI_custom.main(filenames);
-	}
-
+	//Aux function
 	private static void copyfile(String srFile, String dtFile) {
 		try {
 			// Create file

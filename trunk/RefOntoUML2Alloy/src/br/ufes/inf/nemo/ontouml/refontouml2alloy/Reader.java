@@ -25,10 +25,11 @@ public class Reader {
 	
 	public static String inputPath = "teste.xml";
 	
+	
+	//Initializes the proccess of transformation
 	public static void init(Model m){	
 		transformer = new Transformer();
-		
-		// Read the objects in the model
+		// Read the objects in the model 
 		if(m == null)
 		{
 			// Configure ResourceSet
@@ -39,14 +40,18 @@ public class Reader {
 			
 			p = readModel(rs, uri);
 		}
+		//If the model is already instantiated
 		else
 			p = readModel(m);
 		
+		//PreProccess model to know which standard signatures that will be used (Signatures: Property; Object; Datatype) 
 		preProccess(p);
 		
+		//Initializes the transformation making a skell document(with standard structure from als file) for Alloy output 
 		transformer.init(m);
 	}
 
+	
 	public static void transformModel(Package p) {
 		checkNames(p);
 		readClassifiers(p);
@@ -67,8 +72,15 @@ public class Reader {
 		StringCheck ch = new StringCheck();
 		for(PackageableElement pe : p.getPackagedElement())
 		{
-			if(pe instanceof Class || pe instanceof Association)
+			if((pe instanceof Class || pe instanceof Association || pe instanceof DataType) && !(pe instanceof PrimitiveType))
 			{
+				if(pe instanceof Association)
+				{
+					if(((Association)pe).getOwnedEnd().get(0).getName() != null && !(((Association)pe).getOwnedEnd().get(0).getName().equals("")))
+					((Association)pe).getOwnedEnd().get(0).setName(ch.removeSpecialNames(((Association)pe).getOwnedEnd().get(0).getName()));
+					if(((Association)pe).getOwnedEnd().get(1).getName() != null && !(((Association)pe).getOwnedEnd().get(1).getName().equals("")))
+					((Association)pe).getOwnedEnd().get(1).setName(ch.removeSpecialNames(((Association)pe).getOwnedEnd().get(1).getName()));
+				}
 				if( pe.getName() != null )
 					if(pe.getName().compareTo("") != 0)
 						pe.setName(ch.removeSpecialNames(pe.getName()));
@@ -96,7 +108,7 @@ public class Reader {
 		}
 		for (PackageableElement pe : p.getPackagedElement())
 		{			
-			if (pe instanceof DataType) {
+			if (pe instanceof DataType && !(pe instanceof PrimitiveType) ) {
 				transformer.defaultSignatures.add("DataType");
 				break;
 			}
@@ -111,7 +123,7 @@ public class Reader {
 				if(((Classifier)pe).isIsAbstract())
 					transformer.createAbstractClause((Classifier) pe,p);
 				//For each rigid class (kind, subkind, collective, quantity, category, relator, mode, datatype), there is one fact that states its rigidity
-				if((pe instanceof Kind) || (pe instanceof SubKind) || (pe instanceof Collective) || (pe instanceof Quantity) || (pe instanceof Category) || (pe instanceof Relator) || (pe instanceof Mode) || (pe instanceof DataType))
+				if(((pe instanceof Kind) || (pe instanceof SubKind) || (pe instanceof Collective) || (pe instanceof Quantity) || (pe instanceof Category) || (pe instanceof Relator) || (pe instanceof Mode) || (pe instanceof DataType)) && !(pe instanceof PrimitiveType))
 					transformer.rigidElements.add((Classifier)pe);
 			}
 		}
@@ -147,6 +159,11 @@ public class Reader {
 		}
 	}
 
+	/**
+	*This is a recursive method to collect elements there are no package, in
+	*other words: This method removes the packages but keeps all elements
+	*at the same level in hierarchy
+	**/
 	private static void addElements(PackageableElement pack) {
 		for(PackageableElement p : ((Package) pack).getPackagedElement())
 		{
@@ -157,6 +174,9 @@ public class Reader {
 		}
 	}
 	
+	//Read model elements and prepare a new instance from model that will be used in transformation
+	//That function constructs a model without package hierarchy. 
+	//Already instantiated model (Model m)
 	private static Package readModel(Model m) {
 		
 		RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
@@ -164,11 +184,12 @@ public class Reader {
 		Package p = m;
 		Model m2 = factory.createModel();
 		StringCheck ch = new StringCheck();
+		
 		if(p.getName() == null)
-			m2.setName("modelo");
+			m2.setName("alloymodel");
 		else
 			m2.setName(ch.removeSpecialNames(p.getName()));
-		
+		//Remove nested packages
 		addElements(p);
 		
 		for(PackageableElement pack : modelElements)
@@ -177,8 +198,12 @@ public class Reader {
 		return (Package)m2;
 	}
 	
+	//Read model elements and prepare a new instance from model that will be used in transformation
+	//That function constructs a model without package hierarchy. 
+	//Non instantiated model (Will be created from the uri path)
 	private static Package readModel(ResourceSet rs, URI uri) {
 		
+		//Default factory
 		RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
 		
 		Resource resource = rs.getResource(uri, true);
@@ -187,7 +212,7 @@ public class Reader {
 		Package p = (Package)p1;
 		Model m = factory.createModel();
 		if(p.getName() == null)
-			m.setName("modelo");
+			m.setName("alloymodel");
 		else
 			m.setName(ch.removeSpecialNames(p.getName()));
 		
@@ -210,6 +235,7 @@ public class Reader {
 		return uri;
 	}
 
+	//EMF standard code
 	private static ResourceSet initResource() {
 		ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
