@@ -411,7 +411,10 @@ public class RefOntoCreator {
 	public void dealMultiplicityElement (RefOntoUML.MultiplicityElement mel, Map<String, Object> hashProp) {
 		if (hashProp.get("lower") != null && hashProp.get("upper") != null) {
 			mel.setLowerValue(createValueSpecification(Integer.parseInt((String)hashProp.get("lower"))));
-			mel.setUpperValue(createValueSpecification(Integer.parseInt((String)hashProp.get("upper"))));
+			//mel.setUpperValue(createValueSpecification(Integer.parseInt((String)hashProp.get("upper"))));
+			RefOntoUML.LiteralUnlimitedNatural litun = factory.createLiteralUnlimitedNatural();
+			litun.setValue((Integer.parseInt((String)hashProp.get("upper"))));
+			mel.setUpperValue(litun);
 			
 		} else {
 			Mediator.warningLog += "Warning: Property '" + hashProp.get("name") + "' multiplicity undefined.\n";
@@ -467,6 +470,7 @@ public class RefOntoCreator {
 		}
 		else if (classf instanceof RefOntoUML.Association) {
 			((RefOntoUML.Association)classf).getOwnedEnd().add(prop);
+			//((RefOntoUML.Association)classf).getMemberEnd().add(prop);
 			prop.setAssociation(((RefOntoUML.Association)classf));
 		}
 	}
