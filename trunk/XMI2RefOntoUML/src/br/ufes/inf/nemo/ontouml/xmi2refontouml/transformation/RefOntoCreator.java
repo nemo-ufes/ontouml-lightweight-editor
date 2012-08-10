@@ -283,7 +283,10 @@ public class RefOntoCreator {
     	} catch (ClassCastException e) {
     		// DO NOTHING
     	}
-		
+    	
+    	for (Object prop : (List<?>)hashProp.get("memberend")) {
+    		assoc1.getMemberEnd().add((Property)prop);
+		}
 		assoc1.setIsDerived(Boolean.parseBoolean((String)hashProp.get("isderived")));
 		dealClassifier(assoc1, hashProp);
 		dealRelashionship(assoc1, hashProp);
@@ -464,7 +467,6 @@ public class RefOntoCreator {
 		}
 		else if (classf instanceof RefOntoUML.Association) {
 			((RefOntoUML.Association)classf).getOwnedEnd().add(prop);
-			((RefOntoUML.Association)classf).getMemberEnd().add(prop);
 			prop.setAssociation(((RefOntoUML.Association)classf));
 		}
 	}
