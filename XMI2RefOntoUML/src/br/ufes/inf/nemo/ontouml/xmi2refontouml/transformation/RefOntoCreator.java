@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.RefOntoUMLResourceFactory;
-
 
 import RefOntoUML.*;
 import RefOntoUML.impl.*;
@@ -20,6 +20,22 @@ public class RefOntoCreator {
 	
 	public Resource resource;
 	public RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
+	
+	public static PrimitiveType INTEGER_PRIMITIVE;
+	public static PrimitiveType BOOLEAN_PRIMITIVE;
+	public static PrimitiveType STRING_PRIMITIVE;
+	public static PrimitiveType UNLIMITED_NATURAL_PRIMITIVE;
+	
+	public RefOntoCreator() {
+		INTEGER_PRIMITIVE = factory.createPrimitiveType();
+		INTEGER_PRIMITIVE.setName("Integer");
+		BOOLEAN_PRIMITIVE = factory.createPrimitiveType();
+		BOOLEAN_PRIMITIVE.setName("Boolean");
+		STRING_PRIMITIVE = factory.createPrimitiveType();
+		STRING_PRIMITIVE.setName("String");
+		UNLIMITED_NATURAL_PRIMITIVE = factory.createPrimitiveType();
+		UNLIMITED_NATURAL_PRIMITIVE.setName("Unlimited Natural");
+	}
 	
 	public void intialize(String saveAddress) {
 
@@ -56,6 +72,10 @@ public class RefOntoCreator {
 	
 	public RefOntoUML.Package createPackage() {
 		return factory.createPackage();
+	}
+	
+	public RefOntoUML.PrimitiveType createPrimitiveType() {
+		return factory.createPrimitiveType();
 	}
 	
 	public RefOntoUML.Class createClass(String stereotype) {
@@ -137,13 +157,13 @@ public class RefOntoCreator {
 		else if (stereotype.equalsIgnoreCase("componentof")) {
     		newassoc = factory.createcomponentOf();
     	}
-		else if (stereotype.equalsIgnoreCase("formal")) {
+		else if (stereotype.equalsIgnoreCase("formal") || stereotype.equalsIgnoreCase("formalassociation")) {
     		newassoc = factory.createFormalAssociation();
     	}
 		else if (stereotype.equalsIgnoreCase("derivation")) {
     		newassoc = factory.createDerivation();
     	}
-		else if (stereotype.equalsIgnoreCase("material")) {
+		else if (stereotype.equalsIgnoreCase("material") || stereotype.equalsIgnoreCase("materialassociation")) {
     		newassoc = factory.createMaterialAssociation();
     	}
 		else if (stereotype.equalsIgnoreCase("mediation")) {
@@ -172,6 +192,10 @@ public class RefOntoCreator {
 		return factory.createProperty();
 	}
 	
+	public RefOntoUML.EnumerationLiteral createEnumLiteral() {
+		return factory.createEnumerationLiteral();
+	}
+	
 	public RefOntoUML.Generalization createGeneralization() {
 		return factory.createGeneralization();
 	}
@@ -186,6 +210,32 @@ public class RefOntoCreator {
 	
 	public RefOntoUML.Comment createComment() {
 		return factory.createComment();
+	}
+	
+	public RefOntoUML.ValueSpecification createValueSpecification(Object value) {
+		
+		RefOntoUML.ValueSpecification ValueSpec;
+		
+		if (value instanceof Boolean) {
+			ValueSpec = factory.createLiteralBoolean();
+		
+		} else if (value instanceof Integer) {
+			if ((Integer)value == -1) {
+				ValueSpec = factory.createLiteralUnlimitedNatural();
+				((RefOntoUML.LiteralUnlimitedNatural)ValueSpec).setValue((Integer) value);
+			} else {
+				ValueSpec = factory.createLiteralInteger();
+				((RefOntoUML.LiteralInteger)ValueSpec).setValue((Integer) value);
+			}
+		
+		} else if (value instanceof String) {
+			ValueSpec = factory.createLiteralString();
+		
+		} else {
+			ValueSpec = factory.createLiteralNull();
+		}
+		
+		return ValueSpec;
 	}
 	
 	/* 
@@ -220,7 +270,12 @@ public class RefOntoCreator {
 	public void dealAssociation(RefOntoUML.Association assoc1, Map<String, Object> hashProp) {
 		try {
 			// Specific properties of Meronymic associations.
-    		((Meronymic)assoc1).setIsEssential(Boolean.parseBoolean((String)hashProp.get("isessential")));
+			if(assoc1 instanceof subQuantityOf) {
+				((subQuantityOf) assoc1).setIsEssential(true);
+			
+			} else {
+				((Meronymic)assoc1).setIsEssential(Boolean.parseBoolean((String)hashProp.get("isessential")));
+			}
     		((Meronymic)assoc1).setIsImmutablePart(Boolean.parseBoolean((String)hashProp.get("isimmutablepart")));
     		((Meronymic)assoc1).setIsImmutableWhole(Boolean.parseBoolean((String)hashProp.get("isimmutablewhole")));
     		((Meronymic)assoc1).setIsInseparable(Boolean.parseBoolean((String)hashProp.get("isinseparable")));
@@ -228,13 +283,19 @@ public class RefOntoCreator {
     	} catch (ClassCastException e) {
     		// DO NOTHING
     	}
+		
 		assoc1.setIsDerived(Boolean.parseBoolean((String)hashProp.get("isderived")));
 		dealClassifier(assoc1, hashProp);
 		dealRelashionship(assoc1, hashProp);
 	}
 	
 	public void dealClassifier (Classifier c1, Map<String, Object> hashProp) {
-		c1.setIsAbstract(Boolean.parseBoolean((String)hashProp.get("isabstract")));
+		//Categories, roleMixins and Mixins are abstract by default
+		if (c1 instanceof Category || c1 instanceof RoleMixin || c1 instanceof Mixin) {
+			c1.setIsAbstract(true);
+		} else {
+			c1.setIsAbstract(Boolean.parseBoolean((String)hashProp.get("isabstract")));
+		}
 		dealNamespace(c1, hashProp);
 		dealRedefElement(c1, hashProp);
 		dealType(c1, hashProp);
@@ -284,15 +345,21 @@ public class RefOntoCreator {
 	
 	public void dealProperty(RefOntoUML.Property prop1, Map<String, Object> hashProp) {
 		prop1.setIsDerived(Boolean.parseBoolean((String)hashProp.get("isderived")));
-		//property.setIsDerivedUnion(Boolean.parseBoolean(hashProp.get("isderivedunion")));
-		//property.setDefault(value);
-		//property.setIsComposite(Boolean.parseBoolean(hashProp.get("iscomposite")));
+		prop1.setIsDerivedUnion(Boolean.parseBoolean((String)hashProp.get("isderivedunion")));
+		prop1.setIsOrdered(Boolean.parseBoolean((String)hashProp.get("isordered")));
+		prop1.setIsUnique(Boolean.parseBoolean((String)hashProp.get("isunique")));
+		prop1.setDefault((String)hashProp.get("default"));
 		prop1.setAggregation(AggregationKind.get((String)hashProp.get("aggregation")));
 		dealStructFeature(prop1, hashProp);
 	}
 	
 	public void dealStructFeature (StructuralFeature stf, Map<String, Object> hashProp) {
-		stf.setIsReadOnly(Boolean.parseBoolean((String)hashProp.get("isreadonly")));
+		if ((stf.eContainer() instanceof Mediation && !(hashProp.get("type") instanceof Relator)) ||
+				(stf.eContainer() instanceof Characterization && hashProp.get("type") instanceof Mode)) {
+			stf.setIsReadOnly(true);
+		} else {
+			stf.setIsReadOnly(Boolean.parseBoolean((String)hashProp.get("isreadonly")));
+		}
 		dealFeature(stf, hashProp);
 		dealTypedElement(stf, hashProp);
 		dealMultiplicityElement(stf, hashProp);
@@ -305,6 +372,17 @@ public class RefOntoCreator {
 	
 	public void dealType (RefOntoUML.Type typ, Map<String, Object> hashProp) {
 		dealPackageableElement(typ, hashProp);
+	}
+	
+	public void dealEnumLiteral(RefOntoUML.EnumerationLiteral elit1, Map<String, Object> hashProp) {
+		dealInstanceSpecification(elit1, hashProp);
+	}
+	
+	public void dealInstanceSpecification(RefOntoUML.InstanceSpecification ispec, Map<String, Object> hashProp) {
+//		for (Object classf : (List<?>)hashProp.get("classifier")) {
+//			ispec.getClassifier().add((Classifier)classf);
+//		}
+		dealNamedElement(ispec, hashProp);
 	}
 	
 	public void dealTypedElement (RefOntoUML.TypedElement tel, Map<String, Object> hashProp) {
@@ -328,16 +406,22 @@ public class RefOntoCreator {
 	}
 	
 	public void dealMultiplicityElement (RefOntoUML.MultiplicityElement mel, Map<String, Object> hashProp) {
-		RefOntoUML.LiteralInteger lowerValue = factory.createLiteralInteger();
-		RefOntoUML.LiteralUnlimitedNatural upperValue = factory.createLiteralUnlimitedNatural();
-		
 		if (hashProp.get("lower") != null && hashProp.get("upper") != null) {
-			lowerValue.setValue(Integer.parseInt((String)hashProp.get("lower")));
-			upperValue.setValue(Integer.parseInt((String)hashProp.get("upper")));
-			mel.setLowerValue(lowerValue);
-			mel.setUpperValue(upperValue);
+			mel.setLowerValue(createValueSpecification(Integer.parseInt((String)hashProp.get("lower"))));
+			mel.setUpperValue(createValueSpecification(Integer.parseInt((String)hashProp.get("upper"))));
+			
 		} else {
 			Mediator.warningLog += "Warning: Property '" + hashProp.get("name") + "' multiplicity undefined.\n";
+			String warningPath = hashProp.get("name") + "\n";
+			for (EObject aux = mel.eContainer(); aux != null; aux = aux.eContainer()) {
+				if (aux instanceof NamedElement && ((NamedElement) aux).getName() != null) {
+					warningPath = ((NamedElement) aux).getName() + " -> " + warningPath;
+					
+				} else {
+					warningPath = "<" + aux.eClass().getName() + "> -> " + warningPath;
+				}
+			}
+			Mediator.warningLog += "Property of: " + warningPath + "\n";
 		}
 		
 		dealElement(mel, hashProp);
@@ -385,12 +469,20 @@ public class RefOntoCreator {
 		}
 	}
 	
+	public void addEnumLiteral(RefOntoUML.Enumeration enumeration, RefOntoUML.EnumerationLiteral lit) {
+		enumeration.getOwnedLiteral().add(lit);
+	}
+	
 	public void addGeneralization(RefOntoUML.Classifier classf, RefOntoUML.Generalization gen) {
 		classf.getGeneralization().add(gen);
 	}
 	
 	public void addComment(RefOntoUML.Element elem, RefOntoUML.Comment comment) {
 		elem.getOwnedComment().add(comment);
+	}
+	
+	public void setName(RefOntoUML.NamedElement nelem, String name) {
+		nelem.setName(name);
 	}
 
 }

@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import RefOntoUML.Association;
 import RefOntoUML.Dependency;
 import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Property;
 
 
@@ -60,6 +61,12 @@ public class RefOntoUMLUtil {
 	    	  if (setting.getEObject() instanceof Generalization ||
 	    			  setting.getEObject() instanceof Dependency) {
 	    		  delete(setting.getEObject());
+	    		  
+	    	  } else if (setting.getEObject() instanceof GeneralizationSet) {
+	    		  EcoreUtil.remove(setting, eObject);
+	    		  if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
+		    			  EcoreUtil.remove(setting.getEObject());
+	    		  }
 	    		  
 	    	  } else if (setting.getEObject() instanceof Property &&
 	    			  setting.getEObject().eContainer() instanceof Association) {
@@ -138,6 +145,12 @@ public class RefOntoUMLUtil {
 	        	  if (setting.getEObject() instanceof Generalization ||
 		    			  setting.getEObject() instanceof Dependency) {
 		    		  delete(setting.getEObject());
+		    		  
+		    	  } else if (setting.getEObject() instanceof GeneralizationSet) {
+		    		  EcoreUtil.remove(setting, deletedEObject);
+		    		  if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
+			    			  EcoreUtil.remove(setting.getEObject());
+		    		  }
 		    		  
 		    	  } else if (setting.getEObject() instanceof Property &&
 		    			  setting.getEObject().eContainer() instanceof Association) {
