@@ -802,7 +802,6 @@ public class Transformer {
 				{
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
-					upperSource = c.getUpperValue().integerValue();
 					isSourceReadOnly = c.isIsReadOnly();
 					cont++;
 				}
