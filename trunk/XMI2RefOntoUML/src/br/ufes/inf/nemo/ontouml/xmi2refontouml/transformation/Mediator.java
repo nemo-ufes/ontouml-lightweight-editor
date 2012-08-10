@@ -194,14 +194,27 @@ public class Mediator {
     				return null;
     			break;
     			
+    		case PRIMITIVE:
+    			elem1 = refcreator.createPrimitiveType();
+    			break;
+    			
+    		case DATATYPE:
+    			stereotype = mapper.getStereotype(element);
+    			elem1 = refcreator.createDataType(stereotype);
+    			
+    			if (elem1 == null) {
+    				errorPath = mapper.getName(element);
+    				break;
+    			}
+    			doClassifier(element, (RefOntoUML.Classifier)elem1);
+    			//Add in the tree
+    			newTreeNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(elem1));
+    			actualParent.add(newTreeNode);
+    			break;
+    			
     		case CLASS:
 				stereotype = mapper.getStereotype(element);
-    			if (stereotype.equalsIgnoreCase("enum") || stereotype.equalsIgnoreCase("enumeration") ||
-    					stereotype.equalsIgnoreCase("datatype") || stereotype.equalsIgnoreCase("primitivetype")) {
-    				elem1 = refcreator.createDataType(stereotype);
-    			} else {
-	    			elem1 = refcreator.createClass(stereotype);
-    			}
+	    		elem1 = refcreator.createClass(stereotype);
     			
     			if (elem1 == null) {
     				errorPath = mapper.getName(element);
@@ -217,15 +230,25 @@ public class Mediator {
     			elem1 = refcreator.createProperty();
     			break;
     			
+    		case ENUMLITERAL:
+    			elem1 = refcreator.createEnumLiteral();
+    			break;
+    			
     		case ASSOCIATION:
 				stereotype = mapper.getStereotype(element);
     			elem1 = refcreator.createAssociation(stereotype);
-    			doClassifier(element, (RefOntoUML.Classifier)elem1);
     			
     			if (elem1 == null) {
-    				errorPath = mapper.getName(element);
+    				List<Object> listProp = mapper.getElements(element, ElementType.PROPERTY);
+    				errorPath = "Ends: ";
+    		    	for (Object e : listProp) {
+    		    		Map<String, Object> hashProp = mapper.getProperties(e);
+    		    		errorPath += mapper.getName(mapper.getElementById((String)hashProp.get("type"))) + ", ";
+    		    	}
+    		    	errorPath = mapper.getName(element) + "\n" + errorPath;
     				break;
     			}
+    			doClassifier(element, (RefOntoUML.Classifier)elem1);
     			//Add in the tree
     			newTreeNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(elem1));
     			actualParent.add(newTreeNode);
@@ -250,12 +273,16 @@ public class Mediator {
     	
     	//Every Element can have a Comment
     	if (elem1 != null) {
+    		String name = mapper.getName(element);
+        	if (elem1 instanceof RefOntoUML.NamedElement) {
+        		refcreator.setName((RefOntoUML.NamedElement)elem1, name);
+        	}
+        	
 	    	List<Object> listComment = mapper.getElements(element, ElementType.COMMENT);
 	        for (Object e : listComment) {
 		        RefOntoUML.Comment comment1 = (RefOntoUML.Comment) createElement(e, ElementType.COMMENT);
 		        refcreator.addComment(elem1, comment1);
 	        }
-    	
 	        elemMap.put(mapper.getID(element), elem1);
     	}
     	
@@ -285,6 +312,9 @@ public class Mediator {
     		} else if (modelElem instanceof RefOntoUML.Property) {
     			doProperty(hashProp);
     			refcreator.dealProperty((RefOntoUML.Property)modelElem, hashProp);
+    			
+    		} else if (modelElem instanceof RefOntoUML.EnumerationLiteral) {
+    			refcreator.dealEnumLiteral((RefOntoUML.EnumerationLiteral)modelElem, hashProp);
     			
     		} else if (modelElem instanceof RefOntoUML.Association) {
     			refcreator.dealAssociation((RefOntoUML.Association)modelElem, hashProp);
@@ -316,49 +346,101 @@ public class Mediator {
     	}
     	actualParent = newTreeNode;
     	// Create the Packageable Elements Inside the package
-    	// Create nested Packages
-    	List<Object> listPacks = mapper.getElements(element, ElementType.PACKAGE);
-        for (Object e : listPacks) {
-	        RefOntoUML.Package pack1 = (RefOntoUML.Package) createElement(e, ElementType.PACKAGE);
-	        if (pack1 == null) {
-	        	errorPath = mapper.getName(element) + " -> " + errorPath;
-        		return null;
-        	}
-	        refcreator.addPackagedElement(pack, pack1);
-	        actualParent = newTreeNode;
-        }
-        // Create Classes e Datatypes. Treated equally for they differ in one parameter only.
-        List<Object> listClass = mapper.getElements(element, ElementType.CLASS);
-        for (Object e : listClass) {
-        	RefOntoUML.Classifier class1 = (RefOntoUML.Classifier) createElement(e, ElementType.CLASS);
-        	if (class1 == null) {
-        		errorPath = mapper.getName(element) + " -> " + errorPath;
-        		return null;
-        	}
-        	refcreator.addPackagedElement(pack, class1);
-        }
-        // Create Associations
-        List<Object> listAssoc = mapper.getElements(element, ElementType.ASSOCIATION);
-        for (Object e : listAssoc) {
-        	RefOntoUML.Association assoc1 = (RefOntoUML.Association) createElement(e, ElementType.ASSOCIATION);
-        	if (assoc1 == null) {
-        		errorPath = mapper.getName(element) + " -> " + errorPath;
-        		return null;
-        	}
-        	refcreator.addPackagedElement(pack, assoc1);
-        }
-        // Create Generalization Sets
-        List<Object> listGenSet = mapper.getElements(element, ElementType.GENERALIZATIONSET);
-        for (Object e : listGenSet) {
-        	RefOntoUML.GeneralizationSet genset1 = (RefOntoUML.GeneralizationSet) createElement(e, ElementType.GENERALIZATIONSET);
-        	refcreator.addPackagedElement(pack, genset1);
-        }
-//        // Create Dependencies
-//        List<Object> listDepend = mapper.getElements(element, ElementType.DEPENDENCY);
-//        for (Object e : listDepend) {
-//        	RefOntoUML.Dependency depend1 = (RefOntoUML.Dependency) createElement(e, ElementType.DEPENDENCY);
-//        	refcreator.addPackagedElement(pack, depend1);
-//        }
+    	try {
+    		// Create Primitive Types first
+            List<Object> listPrimitive = mapper.getElements(element, ElementType.PRIMITIVE);
+            for (Object e : listPrimitive) {
+            	if (mapper.getName(e).equals("int") || mapper.getName(e).equals("integer")) {
+            		refcreator.addPackagedElement(pack, RefOntoCreator.INTEGER_PRIMITIVE);
+            		elemMap.put(mapper.getID(e), RefOntoCreator.INTEGER_PRIMITIVE);
+            	} else if (mapper.getName(e).equals("bool") || mapper.getName(e).equals("boolean")) {
+            		refcreator.addPackagedElement(pack, RefOntoCreator.BOOLEAN_PRIMITIVE);
+            		elemMap.put(mapper.getID(e), RefOntoCreator.BOOLEAN_PRIMITIVE);
+            	} else if (mapper.getName(e).equals("str") || mapper.getName(e).equals("string")) {
+            		refcreator.addPackagedElement(pack, RefOntoCreator.STRING_PRIMITIVE);
+            		elemMap.put(mapper.getID(e), RefOntoCreator.STRING_PRIMITIVE);
+            	} else if (mapper.getName(e).contains("unlimited")) {
+            		refcreator.addPackagedElement(pack, RefOntoCreator.UNLIMITED_NATURAL_PRIMITIVE);
+            		elemMap.put(mapper.getID(e), RefOntoCreator.UNLIMITED_NATURAL_PRIMITIVE);
+            	} else {
+            		RefOntoUML.PrimitiveType primt1 = (RefOntoUML.PrimitiveType) createElement(e, ElementType.PRIMITIVE);
+            		if (primt1 == null) {
+    		        	errorPath = mapper.getName(element) + " -> " + errorPath;
+    	        		return null;
+    	        	}
+            		refcreator.addPackagedElement(pack, primt1);
+            	}
+            }
+            // Create nested Packages
+	    	List<Object> listPacks = mapper.getElements(element, ElementType.PACKAGE);
+	        for (Object e : listPacks) {
+		        RefOntoUML.Package pack1 = (RefOntoUML.Package) createElement(e, ElementType.PACKAGE);
+		        if (pack1 == null) {
+		        	errorPath = mapper.getName(element) + " -> " + errorPath;
+	        		return null;
+	        	}
+		        refcreator.addPackagedElement(pack, pack1);
+		        actualParent = newTreeNode;
+	        }
+	        // Create Classes
+	        List<Object> listClass = mapper.getElements(element, ElementType.CLASS);
+	        for (Object e : listClass) {
+	        	RefOntoUML.Class class1 = (RefOntoUML.Class) createElement(e, ElementType.CLASS);
+	        	if (class1 == null) {
+	        		errorPath = mapper.getName(element) + " -> " + errorPath;
+	        		return null;
+	        	}
+	        	refcreator.addPackagedElement(pack, class1);
+	        }
+	        // Create DataTypes
+	        List<Object> listDataTypes = mapper.getElements(element, ElementType.DATATYPE);
+	        for (Object e : listDataTypes) {
+	        	RefOntoUML.DataType dt1 = (RefOntoUML.DataType) createElement(e, ElementType.DATATYPE);
+	        	if (dt1 == null) {
+	        		errorPath = mapper.getName(element) + " -> " + errorPath;
+	        		return null;
+	        	}
+	        	refcreator.addPackagedElement(pack, dt1);
+	        }
+	        // Create Enumerations
+	        List<Object> listEnumerations = mapper.getElements(element, ElementType.ENUMERATION);
+	        for (Object e : listEnumerations) {
+	        	RefOntoUML.Enumeration enum1 = (RefOntoUML.Enumeration) createElement(e, ElementType.ENUMERATION);
+	        	if (enum1 == null) {
+	        		errorPath = mapper.getName(element) + " -> " + errorPath;
+	        		return null;
+	        	}
+	        	refcreator.addPackagedElement(pack, enum1);
+	        }
+	        // Create Associations
+	        List<Object> listAssoc = mapper.getElements(element, ElementType.ASSOCIATION);
+	        for (Object e : listAssoc) {
+	        	RefOntoUML.Association assoc1 = (RefOntoUML.Association) createElement(e, ElementType.ASSOCIATION);
+	        	if (assoc1 == null) {
+	        		errorPath = mapper.getName(element) + " -> " + errorPath;
+	        		return null;
+	        	}
+	        	refcreator.addPackagedElement(pack, assoc1);
+	        	if (assoc1 instanceof RefOntoUML.MaterialAssociation) {
+	        		doMaterial((RefOntoUML.MaterialAssociation)assoc1, e, pack);
+	        	}
+	        }
+	        // Create Generalization Sets
+	        List<Object> listGenSet = mapper.getElements(element, ElementType.GENERALIZATIONSET);
+	        for (Object e : listGenSet) {
+	        	RefOntoUML.GeneralizationSet genset1 = (RefOntoUML.GeneralizationSet) createElement(e, ElementType.GENERALIZATIONSET);
+	        	refcreator.addPackagedElement(pack, genset1);
+	        }
+	//        // Create Dependencies
+	//        List<Object> listDepend = mapper.getElements(element, ElementType.DEPENDENCY);
+	//        for (Object e : listDepend) {
+	//        	RefOntoUML.Dependency depend1 = (RefOntoUML.Dependency) createElement(e, ElementType.DEPENDENCY);
+	//        	refcreator.addPackagedElement(pack, depend1);
+	//        }
+    	} catch (NullPointerException npe) {
+    		npe.printStackTrace();
+    		Mediator.warningLog += "Warning: Empty package '" + pack.getName() + "'.\n";
+    	}
         
         return pack;
     }
@@ -366,12 +448,20 @@ public class Mediator {
     protected void doClassifier(Object classelement, RefOntoUML.Classifier class1) {
     	
 		// Get the classifier properties (they can be attributes or association ends)
-    	List<Object> listProp = mapper.getElements(classelement, ElementType.PROPERTY);
-    	for (Object e : listProp) {
-            RefOntoUML.Property prop1 = (RefOntoUML.Property) createElement(e, ElementType.PROPERTY);
-            refcreator.addProperty((RefOntoUML.Classifier)class1, prop1);
+    	if (class1 instanceof RefOntoUML.Enumeration) {
+    		List<Object> listLit = mapper.getElements(classelement, ElementType.ENUMLITERAL);
+        	for (Object e : listLit) {
+        		RefOntoUML.EnumerationLiteral lit1 = (RefOntoUML.EnumerationLiteral) createElement(e, ElementType.ENUMLITERAL);
+        		refcreator.addEnumLiteral((RefOntoUML.Enumeration)class1, lit1);
+        	}
+    	} else {
+	    	List<Object> listProp = mapper.getElements(classelement, ElementType.PROPERTY);
+	    	for (Object e : listProp) {
+	    		RefOntoUML.Property prop1 = (RefOntoUML.Property) createElement(e, ElementType.PROPERTY);
+	    		refcreator.addProperty((RefOntoUML.Classifier)class1, prop1);
+	    	}
     	}
-    	// Get the class generalizations
+    	// Get the classifier generalizations
     	List<Object> listGen = mapper.getElements(classelement, ElementType.GENERALIZATION);
     	for (Object e : listGen) {
         	RefOntoUML.Generalization gen1 = (RefOntoUML.Generalization) createElement(e, ElementType.GENERALIZATION);
@@ -423,5 +513,32 @@ public class Mediator {
     		annotatedElements.add((RefOntoUML.Element)elemMap.get((String)annotElem));
 		}
     	hashProp.put("annotatedelement", annotatedElements);
+    }
+    
+    protected void doMaterial(RefOntoUML.MaterialAssociation material, Object materialObject, 
+    		RefOntoUML.Package pack) {
+    	String relatorID = mapper.getRelatorfromMaterial(materialObject);
+    	if (relatorID != null && relatorID != "") {
+    		RefOntoUML.Derivation der = (RefOntoUML.Derivation) refcreator.createAssociation("Derivation");
+    		RefOntoUML.Relator relator = (RefOntoUML.Relator) elemMap.get(relatorID);
+    		
+        	Map<String, Object> hashProp = new HashMap<String, Object>();
+//        	hashProp.put("name", "Derivation_" + material.getName() + "_" + relator.getName());
+//        	refcreator.dealAssociation(der, hashProp);
+        	
+        	RefOntoUML.Property prop1 = refcreator.createProperty();
+        	hashProp.put("type", relator);
+        	hashProp.put("lower", "1");
+        	hashProp.put("upper", "1");
+        	refcreator.dealProperty(prop1, hashProp);
+        	refcreator.addProperty(der, prop1);
+        	
+        	RefOntoUML.Property prop2 = refcreator.createProperty();
+        	hashProp.put("type", material);
+        	refcreator.dealProperty(prop2, hashProp);
+        	refcreator.addProperty(der, prop2);
+        	
+        	refcreator.addPackagedElement(pack, der);
+    	}
     }
 }

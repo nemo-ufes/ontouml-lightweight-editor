@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,6 +24,20 @@ import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
 
 public class MapperAstah implements Mapper {
 	
+	private final String[] ASSOCIATION_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Association"};
+	private final String[] CLASS_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Class"};
+	private final String[] COMMENT_TAG_PATH = {"UML:ModelElement.comment", "UML:Comment"};
+	//private final String[] DATATYPE_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Class"};
+	private final String[] DEPENDENCY_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Dependency"};
+	//private final String[] ENUMERATION_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Class"};
+	//private final String[] ENUMLITERAL_TAG_PATH = {"UML:Classifier.feature", "UML:Attribute"};
+	private final String[] GENERALIZATION_TAG_PATH = {"UML:GeneralizableElement.generalization", "UML:Generalization"};
+	//private final String[] GENERALIZATIONSET_TAG_PATH = {"JUDE:GeneralizationGroupPresentation"};
+	private final String[] PACKAGE_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Package"};
+	private final String[] PRIMITIVE_TAG_PATH = {"UML:Primitive"};
+	private final String[] ATTRIBUTE_TAG_PATH = {"UML:Classifier.feature", "UML:Attribute"};
+	private final String[] CONNECTION_TAG_PATH = {"UML:Association.connection", "UML:AssociationEnd"};
+
 	Document doc;
 	
 	public MapperAstah(String read_file_address) {
@@ -55,7 +70,7 @@ public class MapperAstah implements Mapper {
 		}
 	}
 	
-	//For the Element 'element', if it is an element node sets the xmi.id to be the ID
+	//For the Element 'element', if it is an ELEMENT_NODE sets the xmi.id to be the ID
     protected void setID(Element element) {
     	
 	    for (Node child = element.getFirstChild(); child != null; child = child.getNextSibling()) {
@@ -68,56 +83,10 @@ public class MapperAstah implements Mapper {
 	    }
     }
     
-    public String getID(Object elem) {
-    	return ((Element)elem).getAttribute("xmi.id");
-    }
-    
-    public String getName(Object elem) {
-    	return ((Element)elem).getAttribute("name");
-    }
-    
-    public ElementType getType(Object elem) {
-    	String type = ((Element)elem).getNodeName();
-    	if (type.equals("UML:Model")) {
-    		return ElementType.MODEL;
-    	}
-    	else if (type.equals("UML:Package")) {
-    		return ElementType.PACKAGE;
-    	}
-    	else if (type.equals("UML:Class")) {
-    		return ElementType.CLASS;
-    	}
-    	else if (type.equals("UML:Datatype")) {
-    		return ElementType.DATATYPE;
-    	}
-    	else if (type.equals("UML:Association")) {
-    		return ElementType.ASSOCIATION;
-    	}
-    	else if (type.equals("UML:Property")) {
-    		return ElementType.PROPERTY;
-    	}
-    	else if (type.equals("UML:Generalization")) {
-    		return ElementType.GENERALIZATION;
-    	}
-    	else if (type.equals("UML:GeneralizationSet")) {
-    		return ElementType.GENERALIZATIONSET;
-    	}
-    	else if (type.equals("UML:Dependency")) {
-    		return ElementType.DEPENDENCY;
-    	}
-    	else
-    		return null;
-    }
-    
-    public Object getElementById(String id) {
-    	return doc.getElementById(id);
-    }
-    
     // Retorna o elemento principal de um modelo UML, o UML:Model. Supõe que o XMI é bem formado e só possui
     // uma tag to tipo UML:Model
     public Object getModelElement() {
-    	NodeList model = doc.getElementsByTagName("UML:Model");
-		return (Element)model.item(0);
+		return doc.getElementsByTagName("UML:Model").item(0);
     }
 	
 	/*
@@ -126,100 +95,115 @@ public class MapperAstah implements Mapper {
 	 */
 	public List<Object> getElements(Object scope, ElementType type) {
 		List<Object> elemList = new ArrayList<Object>();
+		List<Object> elemListAux;
 		
 		Element parent = (Element) scope;
 		
 		switch (type) {
-			case PACKAGE:
-				elemList = getChildElements(parent, "UML:Package");
+			case ASSOCIATION:
+				elemList = getChildsByTagName(parent, ASSOCIATION_TAG_PATH);
 				break;
 			case CLASS:
-				elemList = getChildElements(parent, "UML:Class");
-				break;
-			case PROPERTY:
-				if (parent.getNodeName().equals("UML:Class")) {
-					elemList = getAttributes(parent);
-				} else if (parent.getNodeName().equals("UML:Association")) {
-					elemList = getConnections(parent);
+				elemListAux = getChildsByTagName(parent, CLASS_TAG_PATH);
+				for (Object o : elemListAux) {
+					String stereotype = getStereotype((Element)o);
+					if (ElementType.get(stereotype) != ElementType.ENUMERATION && 
+							ElementType.get(stereotype) != ElementType.DATATYPE &&
+							ElementType.get(stereotype) != ElementType.PRIMITIVE) {
+						elemList.add(o);
+					}
 				}
 				break;
-			case ASSOCIATION:
-				elemList = getChildElements(parent, "UML:Association");
+			case COMMENT:
+				elemList = getChildsByTagName(parent, COMMENT_TAG_PATH);
+				break;
+			case DATATYPE:
+				elemList = getClassifierByType(parent, ElementType.DATATYPE);
+				break;
+			case DEPENDENCY:
+				elemList = getChildsByTagName(parent, DEPENDENCY_TAG_PATH);
+				break;
+			case ENUMERATION:
+				elemList = getClassifierByType(parent, ElementType.ENUMERATION);
+				break;
+			case ENUMLITERAL:
+				elemList = getChildsByTagName(parent, ATTRIBUTE_TAG_PATH);
 				break;
 			case GENERALIZATION:
-				elemList = getGeneralizations(parent);
+				elemList = getChildsByTagName(parent, GENERALIZATION_TAG_PATH);
 				break;
 			case GENERALIZATIONSET:
 				elemList = getGeneralizationsSets(parent);
+				//elemList = getChildsByTagName(parent, GENERALIZATIONSET_TAG_PATH);
 				break;
-			case DEPENDENCY:
-				elemList = getChildElements(parent, "UML:Dependency");
+			case PACKAGE:
+				elemList = getChildsByTagName(parent, PACKAGE_TAG_PATH);
 				break;
-			case COMMENT:
-				elemList = getComments(parent);
+			case PRIMITIVE:
+				Element model = (Element) getModelElement();
+				if (parent == model) {
+					elemList = getChildsByTagName((Element)model.getParentNode(), PRIMITIVE_TAG_PATH);
+				}
+				elemList.addAll(getClassifierByType(parent, ElementType.PRIMITIVE));
+				break;
+			case PROPERTY:
+				if (parent.getNodeName().equals("UML:Class")) {
+					elemList = getChildsByTagName(parent, ATTRIBUTE_TAG_PATH);
+				} else if (parent.getNodeName().equals("UML:Association")) {
+					elemList = getChildsByTagName(parent, CONNECTION_TAG_PATH);
+//				} else if (parent.getNodeName().equals("Derivation")) {
+//					elemList = getChildsByTagName(parent, CONNECTION_TAG_PATH);
+				}
 				break;
 		}
+
 		return elemList;
 	}
 	
-	// Get all the attributes for the class (the ones defined by the user)
-	public List<Object> getAttributes(Element elem) {
+	private List<Object> getClassifierByType(Element elem, ElementType type) {
+		List<Object> elemList = new ArrayList<Object>();
+		List<Object> elemListAux = getChildsByTagName(elem, CLASS_TAG_PATH);
 		
-		NodeList listAtt = elem.getElementsByTagName("UML:Attribute");
-		List<Object> list = new ArrayList<Object>();
+		for (Object o : elemListAux) {
+			String stereotype = getStereotype((Element)o);
+			if (ElementType.get(stereotype) == type) {
+				elemList.add(o);
+			}
+		}
 		
-		for (int i = 0; i < listAtt.getLength(); i++) {
-    		list.add((Element)listAtt.item(i));
-    	}
-		return list;
+		return elemList;
 	}
 	
-	// Get all the connections for the association
-	public List<Object> getConnections(Element elem) {
+	private List<Object> getChildsByTagName(Element elem, String[] tag) {
 		
-		NodeList listCon = elem.getElementsByTagName("UML:AssociationEnd");
-		List<Object> list = new ArrayList<Object>();
+		int n = tag.length;
+		if (n > 1) {
+			return getChildsByTagName(getChild(elem, tag[0]), Arrays.copyOfRange(tag, 1, n));
+		}
 		
-		for (int i = 0; i < listCon.getLength(); i++) {
-			//Since the AssociationEnd inside the Association can be a
-			//reference or the definition itself, we have to deal with
-			//this by making sure the Element has child nodes.
-			if (listCon.item(i).hasChildNodes()) {
-				list.add((Element)listCon.item(i));
-			} else {
-				Document doc = elem.getOwnerDocument();
-				String elemID = ((Element)listCon.item(i)).getAttribute("xmi.idref");
-				list.add(doc.getElementById(elemID));
-			}
-    	}
+		List<Object> elemList = new ArrayList<Object>();
 		
-		return list;
-	}
-    
-	// Get a list of the Generalization of element 'elem'
-	public List<Object> getGeneralizations(Element elem) {
-		
-		Document doc = elem.getOwnerDocument();
-		
-		Element allgen = getChild(elem, "UML:GeneralizableElement.generalization");
-		List<Object> listGen = new ArrayList<Object>();
-		
-		if (allgen != null) { // If garante que classe tem generalizações antes de executar o for.
-			for (Node child = allgen.getFirstChild(); child != null; child = child.getNextSibling()) {
-				if (child instanceof Element) {
-					Element genele = (Element) doc.getElementById(((Element)child).getAttribute("xmi.idref"));
-					listGen.add(genele);
+		if (elem != null) {
+			
+			for (Node child = elem.getFirstChild(); child != null; child = child.getNextSibling()) {
+	    		if (child instanceof Element &&
+	    				((Element)child).getNodeName().equalsIgnoreCase(tag[0])) {
+	    			if (((Element)child).hasAttribute("xmi.idref")) {
+	    				String elemID = ((Element)child).getAttribute("xmi.idref");
+	    				elemList.add(doc.getElementById(elemID));
+	    			}
+	    			else {
+						elemList.add(child);
+	    			}
 				}
 			}
 		}
 		
-		return listGen;
+		return elemList;
 	}
 	
 	public List<Object> getGeneralizationsSets(Element elem) {
 		List<Object> listGenSet = new ArrayList<Object>();
-		
-		Document doc = elem.getOwnerDocument();
 		
 		// Retorna os agrupamentos de generalizações. Por definição do projeto, quando se tem esse agrupamento
 		// se tem um GeneralizationSet.
@@ -227,7 +211,15 @@ public class MapperAstah implements Mapper {
 		
 		for (int i = 0; i < gengroups.getLength(); i++) {
 			
+			// If it only a reference (does not have any child tags) ignore
 			if (!((Element)gengroups.item(i)).hasChildNodes()) {
+				continue;
+			}
+			
+			// If it does not have the "disjoint" or "complete" properties do not threat as a GenSet
+			HashMap<String, Object> hashPropAux = new HashMap<String, Object>();
+			getGenSetProperties((Element)gengroups.item(i), hashPropAux);
+			if (!hashPropAux.containsKey("isdisjoint") && !hashPropAux.containsKey("iscovering")) {
 				continue;
 			}
 			
@@ -251,45 +243,6 @@ public class MapperAstah implements Mapper {
 		return listGenSet;
 	}
 	
-	public List<Object> getComments(Element elem) {
-		
-		Element commentsElem = getChild(elem, "UML:ModelElement.comment");
-		List<Object> listComment = new ArrayList<Object>();
-		
-		if (commentsElem != null) {
-			for (Node child = commentsElem.getFirstChild(); child != null; child = child.getNextSibling()) {
-				if (child instanceof Element) {
-					//See if the comment is defined inside the element or if its just a reference
-					if (child.hasChildNodes()) {
-						listComment.add((Element)child);
-					} else {
-						Document doc = elem.getOwnerDocument();
-						String elemID = ((Element)child).getAttribute("xmi.idref");
-						listComment.add(doc.getElementById(elemID));
-					}
-				}
-			}
-		}
-		
-		return listComment;
-	}
-	
-	// Auxiliary function that returns all owned elements of @parent with name @name, and put in a List.
-	public List<Object> getChildElements(Element parent, String name) {
-		Element ownedElement = getChild(parent, "UML:Namespace.ownedElement");
-    	List<Object> list = new ArrayList<Object>();
-    	try {
-	    	for (Node child = ownedElement.getFirstChild(); child != null; child = child.getNextSibling()) {
-	    		if (child instanceof Element && child.getNodeName().equals(name)) {
-	    			list.add((Element)child);
-				}
-	    	}
-    	} catch (NullPointerException npe) {
-    		Mediator.warningLog += "Warning: Empty package '" + parent.getAttribute("name") + "'.\n";
-    	}
-		return list;
-	}
-	
 	// Auxiliary function that returns the first direct child of @parent with name @name
 	public Element getChild(Element parent, String name) {
 		for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
@@ -301,11 +254,13 @@ public class MapperAstah implements Mapper {
 	}
 	
 	// Get the stereotype of the element node
-	public String getStereotype(Object element) throws NullPointerException {
+	public String getStereotype(Object element) throws NullPointerException { 
 		
 		Element elem = (Element) element;
-		
-		Document doc = elem.getOwnerDocument();
+//		
+//		if (elem.getNodeName().equals("Derivation")) {
+//			return "derivation";
+//		}
 		
     	NodeList stereotypeRef = elem.getElementsByTagName("UML:Stereotype");
     	if (stereotypeRef.getLength() == 0) {
@@ -337,17 +292,19 @@ public class MapperAstah implements Mapper {
 		// Como GeneralizationSet não é suportado pelo Astah, as propriedades 
 		// (Mesmo as comuns à todos os elementos) são obtidas de forma diferente.
 		if (elem.getNodeName().equals("JUDE:GeneralizationGroupPresentation")) {
-			return getGenSetProperties(elem);
+			getGenSetProperties(elem, hashProp);
 		}
 		
-		// Obtem as propriedades comuns à todos os elementos
-		getCommonProperties(elem, hashProp);
-		
-		// Obtem as propriedades não definidas no metamodelo de UML, ou não suportadas pelo Astah.
-		getExtendedProperties(elem, hashProp);
-		
-		// Obtem as propriedades específicas de determinados elementos
-		getSpecificProperties(elem, hashProp);
+		else {
+			// Obtem as propriedades comuns à todos os elementos
+			getCommonProperties(elem, hashProp);
+			
+			// Obtem as propriedades não definidas no metamodelo de UML, ou não suportadas pelo Astah.
+			getExtendedProperties(elem, hashProp);
+			
+			// Obtem as propriedades específicas de determinados elementos
+			getSpecificProperties(elem, hashProp);
+		}
     	
     	return hashProp;
 	}
@@ -360,7 +317,7 @@ public class MapperAstah implements Mapper {
     		hashProp.put(listProp.item(j).getNodeName().toLowerCase(), listProp.item(j).getNodeValue());
     	}
     	
-    	if (hashProp.get("name") != null) {
+    	if (hashProp.containsKey("name")) {
     		try {
 				hashProp.put("name", URLDecoder.decode((String)hashProp.get("name"), "UTF-8"));
 			} catch (UnsupportedEncodingException e) {
@@ -389,6 +346,9 @@ public class MapperAstah implements Mapper {
 							((Element)child).getAttribute("value"));
 				}
 			}
+	    	if (hashProp.containsKey("derive")) {
+	    		hashProp.put("isderived", hashProp.get("derive"));
+	    	}
     	}
 	}
 	
@@ -402,10 +362,20 @@ public class MapperAstah implements Mapper {
 				Element range = (Element)mult.getElementsByTagName("UML:MultiplicityRange").item(0);
 				getCommonProperties(range, hashProp);
 	    	}
-			hashProp.put("isderived", hashProp.get("derive"));
+			if (hashProp.containsKey("changeability") && hashProp.get("changeability").equals("frozen")) {
+				hashProp.put("isreadonly", "true");
+			}
+			Element initial = getChild(elem, "UML:Attribute.initialValue");
+			if (initial == null) {
+				initial = getChild(elem, "UML:AssociationEnd.initialValue");
+			}
+			if (initial != null) {
+				NodeList body = initial.getElementsByTagName("UML:Expression.body");
+				hashProp.put("default", body.item(0).getTextContent());
+			}
 			
 			if (elem.getNodeName().equals("UML:AssociationEnd")) {
-				// Gets the target, which becomes the 'type'
+				// Get the target, which becomes the 'type'
 				Element participant = getChild(elem, "UML:AssociationEnd.participant");
 				if (participant != null) {
 					Element type = getChild(participant, "UML:Classifier");
@@ -413,19 +383,19 @@ public class MapperAstah implements Mapper {
 						hashProp.put("type", type.getAttribute("xmi.idref"));
 					}
 		    	}
-				// Gets 'isLeaf', 'isStatic' and 'isDerived'
-				if (hashProp.get("changeability").equals("frozen")) {
-					hashProp.put("isleaf", "true");
-				}
-				if (hashProp.get("targetscope").equals("classifier")) {
+				if (hashProp.containsKey("targetscope") && hashProp.get("targetscope").equals("classifier")) {
 					hashProp.put("isstatic", "true");
 				}
 			} else {
-				// Gets 'isLeaf', 'isStatic' and 'isDerived'
-				if (hashProp.get("changeability").equals("frozen")) {
-					hashProp.put("isreadonly", "true");
-				}
-				if (hashProp.get("ownerscope").equals("classifier")) {
+				// Get the 'type'
+				Element type = getChild(elem, "UML:StructuralFeature.type");
+				if (type != null) {
+					Element classf = getChild(type, "UML:Classifier");
+					if (classf != null) {
+						hashProp.put("type", classf.getAttribute("xmi.idref"));
+					}
+		    	}
+				if (hashProp.containsKey("ownerscope") && hashProp.get("ownerscope").equals("classifier")) {
 					hashProp.put("isstatic", "true");
 				}
 			}
@@ -496,16 +466,16 @@ public class MapperAstah implements Mapper {
 		}
 	}
 	
-	public HashMap<String, Object> getGenSetProperties (Element elem) {
+	public void getGenSetProperties (Element elem, HashMap<String, Object> hashProp) {
 		
-		HashMap<String, Object> hashProp = new HashMap<String, Object>();
 		// Lista onde serão gravados os ids das generalizações que fazem parte do GeneralizationSet
 		List<String> genIdList = new ArrayList<String>();
 		
-		Document doc = elem.getOwnerDocument();
-		
 		// Busca as generalizações que fazem parte do GeneralizationSet
 		Element clients = getChild(elem, "JUDE:UPresentation.clients");
+		if (clients == null) {
+			return;
+		}
 		NodeList genpresent = clients.getElementsByTagName("JUDE:GeneralizationPresentation");
 		
 		for (int i=0; i < genpresent.getLength(); i++) {
@@ -522,14 +492,77 @@ public class MapperAstah implements Mapper {
 			getExtendedProperties(genelement, hashProp);
 			// Se estiver no nome
 			String genname = genelement.getAttribute("name");
-			if (genname.contains("disjoint")) {
+			// Se estiver no contraint
+			String constname = "";
+			Element constraint = getChild(genelement, "UML:ModelElement.constraint");
+			if (constraint != null) {
+				constraint = getChild(constraint, "UML:Constraint");
+				constname = constraint.getAttribute("name");
+			}
+			
+			if (genname.contains("disjoint") || constname.contains("disjoint")) {
 				hashProp.put("isdisjoint", "true");
 			}
-			if (genname.contains("complete")) {
+			if (genname.contains("complete") || constname.contains("complete")) {
 				hashProp.put("iscovering", "true");
 			}
+			
+			
 		}
+	}
+	
+	@Override
+	public String getID(Object elem) {
+    	return ((Element)elem).getAttribute("xmi.id");
+    }
+    
+	@Override
+    public String getName(Object elem) {
+    	try {
+			return URLDecoder.decode(((Element)elem).getAttribute("name"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			Mediator.warningLog += "Name could not be decoded in " + ((Element)elem).getAttribute("name") + "\n";
+		}
+		return "";
+    }
+    
+	@Override
+    public ElementType getType(Object elem) {
+    	String type = ((Element)elem).getNodeName();
+    	return ElementType.get(type.replace("UML:", ""));
+    }
+    
+	@Override
+    public Object getElementById(String id) {
+    	return doc.getElementById(id);
+    }
+	
+	@Override
+	public String getRelatorfromMaterial(Object element) {
+		Element elem = (Element) element;
 		
-		return hashProp;
+		if (elem.getNodeName().equalsIgnoreCase("UML:Association") &&
+				getStereotype(elem).equalsIgnoreCase("material")) {
+			HashMap<String, Object> hashProp = new HashMap<String, Object>();
+			getExtendedProperties(elem, hashProp);
+			if (hashProp.containsKey("relator")) {
+				return getRelatorID(elem, (String)hashProp.get("relator"));
+			}
+		}
+		return null;
+	}
+	
+	public String getRelatorID(Element elem, String name) {
+		Node parent = elem.getParentNode();
+		while (parent.getNodeName() != "UML:Package" && parent.getNodeName() != "UML:Model") {
+			parent = parent.getParentNode();
+		}
+		List<Object> list = getChildsByTagName((Element)parent, CLASS_TAG_PATH);
+		for (Object c : list) {
+			if (((Element)c).getAttribute("name").equalsIgnoreCase(name)) {
+				return ((Element)c).getAttribute("xmi.id");
+			}
+		}
+		return null;
 	}
 }
