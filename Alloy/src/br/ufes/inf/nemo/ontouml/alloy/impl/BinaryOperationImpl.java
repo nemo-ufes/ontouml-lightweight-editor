@@ -298,7 +298,7 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer();
-		result.append("("+getLeftExpression() + operator +getRightExpression()+")");
+		result.append(""+getLeftExpression() + operator + getRightExpression());
 		return result.toString();
 	}
 

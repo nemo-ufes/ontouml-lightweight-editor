@@ -97,7 +97,7 @@ public interface AlloyModule extends EObject {
 	 * @model type="alloy.SignatureParameter" containment="true" required="true"
 	 * @generated
 	 */
-	EList getParameters();
+	EList<SignatureParameter> getParameters();
 
 	/**
 	 * Returns the value of the '<em><b>Paragraph</b></em>' containment reference list.
@@ -113,7 +113,7 @@ public interface AlloyModule extends EObject {
 	 * @model type="alloy.Paragraph" containment="true"
 	 * @generated
 	 */
-	EList getParagraph();
+	EList<Paragraph> getParagraph();
 
 	/**
 	 * Returns the value of the '<em><b>Imports</b></em>' containment reference list.

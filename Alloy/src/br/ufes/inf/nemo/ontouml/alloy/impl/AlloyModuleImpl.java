@@ -220,11 +220,11 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.ALLOY_MODULE__PARAMETERS:
-				return ((InternalEList)getParameters()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
 			case AlloyPackage.ALLOY_MODULE__PARAGRAPH:
-				return ((InternalEList)getParagraph()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getParagraph()).basicRemove(otherEnd, msgs);
 			case AlloyPackage.ALLOY_MODULE__IMPORTS:
-				return ((InternalEList)getImports()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getImports()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -255,6 +255,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.ALLOY_MODULE__NAME:

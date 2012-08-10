@@ -351,9 +351,9 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 			param = param + "]";
 		}
 		if(getExpression() != null)
-			return "fun "+name+param+" : "+getType() +"{\n\t"+getExpression()+"\n}\n";
+			return "fun "+name+param+" : "+getType() +" {\n\t"+getExpression()+"\n}\n";
 		else
-			return "fun "+name+param+" : "+getType() +"{}\n";
+			return "fun "+name+param+" : "+getType() +" {}\n";
 	}
 
 } //FunctionDeclarationImpl
