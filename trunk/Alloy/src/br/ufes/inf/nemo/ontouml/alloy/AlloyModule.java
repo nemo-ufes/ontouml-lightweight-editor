@@ -129,6 +129,7 @@ public interface AlloyModule extends EObject {
 	 * @model type="alloy.ModuleImportation" containment="true"
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	EList getImports();
 
 } // AlloyModule

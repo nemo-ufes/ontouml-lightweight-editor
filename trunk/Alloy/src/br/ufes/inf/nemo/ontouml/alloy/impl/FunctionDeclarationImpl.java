@@ -81,6 +81,7 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * @generated
 	 * @ordered
 	 */
+	@SuppressWarnings("rawtypes")
 	protected EList parameter;
 
 	/**
@@ -180,6 +181,7 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public EList getParameter() {
 		if (parameter == null) {
 			parameter = new EObjectContainmentEList(Declaration.class, this, AlloyPackage.FUNCTION_DECLARATION__PARAMETER);
@@ -235,6 +237,7 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.FUNCTION_DECLARATION__EXPRESSION:
@@ -271,6 +274,7 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.FUNCTION_DECLARATION__EXPRESSION:

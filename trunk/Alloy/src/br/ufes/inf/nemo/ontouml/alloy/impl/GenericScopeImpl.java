@@ -48,6 +48,7 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * @generated
 	 * @ordered
 	 */
+	@SuppressWarnings("rawtypes")
 	protected EList scopeable;
 
 	/**
@@ -93,6 +94,7 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public EList getScopeable() {
 		if (scopeable == null) {
 			scopeable = new EObjectContainmentEList(Scopeable.class, this, AlloyPackage.GENERIC_SCOPE__SCOPEABLE);
@@ -126,6 +128,7 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.GENERIC_SCOPE__SCOPEABLE:
@@ -154,6 +157,7 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.GENERIC_SCOPE__SCOPEABLE:

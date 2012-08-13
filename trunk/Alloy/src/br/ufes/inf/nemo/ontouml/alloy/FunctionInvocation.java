@@ -40,6 +40,7 @@ public interface FunctionInvocation extends Expression {
 	 * @model type="alloy.Expression" containment="true"
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	EList getParameter();
 
 	/**

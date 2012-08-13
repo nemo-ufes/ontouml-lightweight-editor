@@ -94,6 +94,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * @generated
 	 * @ordered
 	 */
+	@SuppressWarnings("rawtypes")
 	protected EList parameters;
 
 	/**
@@ -181,6 +182,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EList getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList(SignatureParameter.class, this, AlloyPackage.ALLOY_MODULE__PARAMETERS);
@@ -193,6 +195,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public EList getParagraph() {
 		if (paragraph == null) {
 			paragraph = new EObjectContainmentEList(Paragraph.class, this, AlloyPackage.ALLOY_MODULE__PARAGRAPH);
@@ -205,6 +208,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public EList getImports() {
 		if (imports == null) {
 			imports = new EObjectContainmentEList(ModuleImportation.class, this, AlloyPackage.ALLOY_MODULE__IMPORTS);

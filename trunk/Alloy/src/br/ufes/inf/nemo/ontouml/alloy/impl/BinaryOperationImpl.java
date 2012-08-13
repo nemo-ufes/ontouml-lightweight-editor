@@ -298,7 +298,22 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer();
-		result.append(""+getLeftExpression() + operator + getRightExpression());
+		
+		// case of: (x.y).z
+		if (getLeftExpression() instanceof BinaryOperation && !(getRightExpression() instanceof BinaryOperation) && 
+	       ((BinaryOperation)getLeftExpression()).getOperator().equals(BinaryOperator.JOIN_LITERAL)) {
+				result.append("("+getLeftExpression()+")" + operator + getRightExpression());
+		}
+		// case of: x.(y.z)
+		else if (getRightExpression() instanceof BinaryOperation && !(getLeftExpression() instanceof BinaryOperation) && 
+				((BinaryOperation)getRightExpression()).getOperator().equals(BinaryOperator.JOIN_LITERAL)) {
+				result.append(""+getLeftExpression() + operator + "("+getRightExpression()+")");			
+		}
+		// otherwise no precedence
+		else {
+			result.append(""+getLeftExpression() + operator + getRightExpression());
+		}
+		
 		return result.toString();
 	}
 

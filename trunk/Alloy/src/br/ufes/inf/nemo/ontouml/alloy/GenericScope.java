@@ -40,6 +40,7 @@ public interface GenericScope extends ScopeSpecification {
 	 * @model type="alloy.Scopeable" containment="true"
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	EList getScopeable();
 
 	/**

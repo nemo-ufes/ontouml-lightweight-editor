@@ -39,6 +39,7 @@ public interface DetailedScope extends ScopeSpecification {
 	 * @model type="alloy.Scopeable" containment="true" required="true"
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	EList getScopeable();
 
 } // DetailedScope

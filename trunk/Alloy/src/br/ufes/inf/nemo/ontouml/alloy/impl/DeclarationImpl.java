@@ -192,6 +192,7 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public EList getVariable() {
 		if (variable == null) {
 			variable = new EObjectContainmentWithInverseEList(Variable.class, this, AlloyPackage.DECLARATION__VARIABLE, AlloyPackage.VARIABLE__DECLARATION);
@@ -225,6 +226,7 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.DECLARATION__VARIABLE:
@@ -238,6 +240,7 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.DECLARATION__EXPRESSION:
@@ -272,6 +275,7 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.DECLARATION__IS_DISJOINT:

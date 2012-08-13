@@ -44,6 +44,7 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	 * @generated
 	 * @ordered
 	 */
+	@SuppressWarnings("rawtypes")
 	protected EList set;
 
 	/**
@@ -69,6 +70,7 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EList<Expression> getSet() {
 		if (set == null) {
 			set = new EObjectContainmentEList(Expression.class, this, AlloyPackage.DISJOINT_EXPRESSION__SET);
@@ -81,6 +83,7 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.DISJOINT_EXPRESSION__SET:
@@ -107,6 +110,7 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.DISJOINT_EXPRESSION__SET:

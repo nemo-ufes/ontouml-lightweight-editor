@@ -99,6 +99,7 @@ public interface SignatureDeclaration extends Paragraph {
 	 * @model type="alloy.Declaration" containment="true"
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	EList getRelation();
 
 	/**
