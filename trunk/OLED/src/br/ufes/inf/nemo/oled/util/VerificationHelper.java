@@ -16,7 +16,6 @@ public class VerificationHelper {
 		
 		OntoUML2Alloy.dirPath = ConfigurationHelper.getCanonPath(tempDir, "");
 		
-		
     	try {
 			if(!OntoUML2Alloy.transformToAlloyFile(model, null, alloyFileName, themeFileName))
 				return new OperationResult(ResultType.ERROR, "Error while generating the alloy file", null);

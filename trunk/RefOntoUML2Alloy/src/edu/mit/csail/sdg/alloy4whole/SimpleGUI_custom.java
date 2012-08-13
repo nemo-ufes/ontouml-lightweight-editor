@@ -127,7 +127,7 @@ import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4SolutionReader;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Tuple;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4TupleSet;
-import edu.mit.csail.sdg.alloy4viz.VizGUI;
+import edu.mit.csail.sdg.alloy4viz.VizGUI_custom;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUI_custom;
 import edu.mit.csail.sdg.alloy4whole.SwingLogPanel_custom;
 import edu.mit.csail.sdg.alloy4whole.SimpleReporter_custom.SimpleCallback1;
@@ -278,7 +278,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
     private JFrame frame;
 
     /** The JFrame for the visualizer window. */
-    private VizGUI viz;
+    private VizGUI_custom viz;
 
     /** The "File", "Edit", "Run", "Option", "Window", and "Help" menus. */
     private JMenu filemenu, editmenu, runmenu, optmenu, windowmenu, windowmenu2, helpmenu;
@@ -980,6 +980,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
 
     /** This method executes a particular RUN or CHECK command. */
     private Runner doRun(Integer commandIndex) {
+    	
         if (wrap) return wrapMe(commandIndex);
         final int index = commandIndex;
         if (WorkerEngine.isBusy()) return null;
@@ -1695,6 +1696,8 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         }
     };
 
+	private static String themePath;
+
     /** Returns true iff the output says "s SATISFIABLE" (while ignoring comment lines and value lines) */
     private static boolean isSat(String output) {
         int i=0, n=output.length();
@@ -1711,6 +1714,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
 
     /** Main method that launches the program; this method might be called by an arbitrary thread. */
     public static void main(final String[] args) throws Exception {
+    	themePath = args[1];
         SwingUtilities.invokeLater(new Runnable() {
             public void run() { new SimpleGUI_custom(args); }
         });
@@ -1866,7 +1870,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         }
 
         // Pre-load the visualizer
-        viz = new VizGUI(false, "", windowmenu2, enumerator, evaluator);
+        viz = new VizGUI_custom(false, "", windowmenu2, enumerator, evaluator,themePath);
         viz.doSetFontSize(FontSize.get());
 
         // Create the toolbar

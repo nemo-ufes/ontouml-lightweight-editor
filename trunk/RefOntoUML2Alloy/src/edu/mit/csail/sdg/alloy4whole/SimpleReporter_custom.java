@@ -54,7 +54,7 @@ import edu.mit.csail.sdg.alloy4compiler.translator.A4SolutionReader;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4SolutionWriter;
 import edu.mit.csail.sdg.alloy4compiler.translator.TranslateAlloyToKodkod;
 import edu.mit.csail.sdg.alloy4viz.StaticInstanceReader;
-import edu.mit.csail.sdg.alloy4viz.VizGUI;
+import edu.mit.csail.sdg.alloy4viz.VizGUI_custom;
 
 /** This helper method is used by SimpleGUI. */
 
@@ -62,14 +62,14 @@ final class SimpleReporter_custom extends A4Reporter {
 
     public static final class SimpleCallback1 implements WorkerCallback {
         private final SimpleGUI_custom gui;
-        private final VizGUI viz;
+        private final VizGUI_custom viz;
         private final SwingLogPanel_custom span;
         private final Set<ErrorWarning> warnings = new HashSet<ErrorWarning>();
         private final List<String> results = new ArrayList<String>();
         private int len2=0, len3=0, verbosity=0;
         private final String latestName;
         private final int latestVersion;
-        public SimpleCallback1(SimpleGUI_custom simpleGUI_custom, VizGUI viz, SwingLogPanel_custom span, int verbosity, String latestName, int latestVersion) {
+        public SimpleCallback1(SimpleGUI_custom simpleGUI_custom, VizGUI_custom viz, SwingLogPanel_custom span, int verbosity, String latestName, int latestVersion) {
             this.gui=simpleGUI_custom; this.viz=viz; this.span=span; this.verbosity=verbosity;
             this.latestName=latestName; this.latestVersion=latestVersion;
             len2 = len3 = span.getLength();

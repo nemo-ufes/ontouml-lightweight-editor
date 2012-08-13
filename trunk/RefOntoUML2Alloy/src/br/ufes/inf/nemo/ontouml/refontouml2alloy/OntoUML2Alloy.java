@@ -23,7 +23,7 @@ public class OntoUML2Alloy {
 	//Temp dir to put some files(provided by OLED)
 	public static String dirPath = "";
 	//Aux variable to call Alloy Analizer
-	public static String[] filenames = { "" };
+	public static String[] filenames = { "", "" };
 
 	//Method used to call the transformation
 	public static boolean transformToAlloyFile(Model m,
@@ -43,11 +43,24 @@ public class OntoUML2Alloy {
 		int read = 0;
 		while ((read = is.read(src)) != -1) {
 			out.write(src, 0, read);
-		}
-		
+		}		
 		is.close();
 		out.flush();
 		out.close();
+		
+		// Copy theme into dir temp path
+		is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("standart_theme.thm");
+		if(is == null)
+			is = new FileInputStream("alloy/standart_theme.thm");
+		out = new FileOutputStream(new File(dirPath + "\\standart_theme.thm"));
+		src = new byte[1024];
+		read = 0;
+		while ((read = is.read(src)) != -1) {
+			out.write(src, 0, read);
+		}
+		is.close();
+		out.flush();
+		out.close();		
 		
 		//Modules that are used in generated Alloy code
 		try {
@@ -64,6 +77,8 @@ public class OntoUML2Alloy {
 		
 		//param to call SimpleGUI 
 		filenames[0] = alsPath;
+		filenames[1] = themePath;
+		
 
 		//Open Alloy Analyzer
 		SimpleGUI_custom.main(OntoUML2Alloy.filenames);
