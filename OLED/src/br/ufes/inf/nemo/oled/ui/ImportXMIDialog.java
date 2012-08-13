@@ -131,7 +131,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		transfManager.SAVE_FILE_ADDRESS = file.getAbsolutePath().split("\\.")[0] + ".refontouml";
         DefaultMutableTreeNode root = transfManager.parse();
         
-        if (Mediator.warningLog != "") {
+        if (Mediator.warningLog != "\n") {
         	//TODO essa lib que usei tem muita coisa desnecessária, talvez fosse melhor copiar o source
         	ErrorInfo info = new ErrorInfo("Warning", "Parsing done with warnings",
         			null, "category", new Exception(Mediator.warningLog), Level.WARNING, null);
