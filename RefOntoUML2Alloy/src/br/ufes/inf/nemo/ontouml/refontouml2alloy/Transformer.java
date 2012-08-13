@@ -800,6 +800,7 @@ public class Transformer {
 			{
 				if(c.getType() instanceof Relator && cont == 1)
 				{
+					source.setVariable(c.getType().getName());
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
 					isSourceReadOnly = c.isIsReadOnly();
