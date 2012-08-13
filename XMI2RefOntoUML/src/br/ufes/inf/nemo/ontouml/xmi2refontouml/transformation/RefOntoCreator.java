@@ -417,7 +417,7 @@ public class RefOntoCreator {
 			mel.setUpperValue(upper);
 			RefOntoUML.LiteralInteger lower = factory.createLiteralInteger();
 			lower.setValue((Integer.parseInt((String)hashProp.get("lower"))));
-			mel.setUpperValue(lower);
+			mel.setLowerValue(lower);
 			
 		} else {
 			Mediator.warningLog += "Warning: Property '" + hashProp.get("name") + "' multiplicity undefined.\n";
