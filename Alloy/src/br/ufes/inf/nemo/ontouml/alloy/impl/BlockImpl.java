@@ -8,7 +8,6 @@ package br.ufes.inf.nemo.ontouml.alloy.impl;
 
 import br.ufes.inf.nemo.ontouml.alloy.AlloyPackage;
 import br.ufes.inf.nemo.ontouml.alloy.Block;
-import br.ufes.inf.nemo.ontouml.alloy.Declaration;
 import br.ufes.inf.nemo.ontouml.alloy.Expression;
 
 import java.util.Collection;
@@ -47,6 +46,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * @generated
 	 * @ordered
 	 */
+	@SuppressWarnings("rawtypes")
 	protected EList expression;
 
 	/**
@@ -72,6 +72,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EList<Expression> getExpression() {
 		if (expression == null) {
 			expression = new EObjectContainmentEList(Expression.class, this, AlloyPackage.BLOCK__EXPRESSION);
@@ -84,6 +85,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.BLOCK__EXPRESSION:
@@ -110,6 +112,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.BLOCK__EXPRESSION:

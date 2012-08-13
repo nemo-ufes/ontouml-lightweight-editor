@@ -39,6 +39,7 @@ public interface DisjointExpression extends Expression {
 	 * @model type="alloy.Expression" containment="true"
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	EList getSet();
 
 } // DisjointExpression

@@ -80,6 +80,7 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * @generated
 	 * @ordered
 	 */
+	@SuppressWarnings("rawtypes")
 	protected EList parameter;
 
 	/**
@@ -169,6 +170,7 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public EList getParameter() {
 		if (parameter == null) {
 			parameter = new EObjectContainmentEList(Declaration.class, this, AlloyPackage.PREDICATE_DECLARATION__PARAMETER);
@@ -181,6 +183,7 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_DECLARATION__BLOCK:
@@ -213,6 +216,7 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_DECLARATION__BLOCK:

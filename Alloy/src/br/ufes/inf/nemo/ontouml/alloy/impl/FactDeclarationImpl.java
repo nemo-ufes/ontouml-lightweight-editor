@@ -8,7 +8,6 @@ package br.ufes.inf.nemo.ontouml.alloy.impl;
 
 import br.ufes.inf.nemo.ontouml.alloy.AlloyPackage;
 import br.ufes.inf.nemo.ontouml.alloy.Block;
-import br.ufes.inf.nemo.ontouml.alloy.Expression;
 import br.ufes.inf.nemo.ontouml.alloy.FactDeclaration;
 
 import org.eclipse.emf.common.notify.Notification;

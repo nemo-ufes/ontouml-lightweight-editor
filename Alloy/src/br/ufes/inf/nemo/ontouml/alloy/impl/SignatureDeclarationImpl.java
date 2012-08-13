@@ -9,7 +9,6 @@ package br.ufes.inf.nemo.ontouml.alloy.impl;
 import br.ufes.inf.nemo.ontouml.alloy.AlloyPackage;
 import br.ufes.inf.nemo.ontouml.alloy.Block;
 import br.ufes.inf.nemo.ontouml.alloy.Declaration;
-import br.ufes.inf.nemo.ontouml.alloy.Expression;
 import br.ufes.inf.nemo.ontouml.alloy.Inheritance;
 import br.ufes.inf.nemo.ontouml.alloy.Multiplicity;
 import br.ufes.inf.nemo.ontouml.alloy.SignatureDeclaration;
@@ -203,6 +202,7 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EList<Declaration> getRelation() {
 		if (relation == null) {
 			relation = new EObjectContainmentEList(Declaration.class, this, AlloyPackage.SIGNATURE_DECLARATION__RELATION);
@@ -322,6 +322,7 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_DECLARATION__RELATION:
@@ -362,6 +363,7 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_DECLARATION__IS_ABSTRACT:

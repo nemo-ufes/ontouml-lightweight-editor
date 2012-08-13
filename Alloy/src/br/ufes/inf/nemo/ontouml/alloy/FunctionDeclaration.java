@@ -94,6 +94,7 @@ public interface FunctionDeclaration extends Paragraph {
 	 * @model type="alloy.Declaration" containment="true"
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	EList getParameter();
 
 	/**

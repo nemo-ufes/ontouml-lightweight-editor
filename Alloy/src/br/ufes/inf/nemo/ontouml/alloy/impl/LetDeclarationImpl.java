@@ -72,6 +72,7 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 	 * @generated
 	 * @ordered
 	 */
+	@SuppressWarnings("rawtypes")
 	protected EList name;
 
 	/**
@@ -233,6 +234,7 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public EList getName() {
 		if (name == null) {
 			name = new EDataTypeUniqueEList(String.class, this, AlloyPackage.LET_DECLARATION__NAME);
@@ -364,6 +366,7 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.LET_DECLARATION__EQUAL_EXPRESSION:

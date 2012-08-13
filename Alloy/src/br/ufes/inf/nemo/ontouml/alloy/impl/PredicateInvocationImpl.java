@@ -93,6 +93,7 @@ public class PredicateInvocationImpl extends ExpressionImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public EList<Expression> getParameter() {
 		if (parameter == null) {
 			parameter = new EObjectContainmentEList(Expression.class, this, AlloyPackage.PREDICATE_INVOCATION__PARAMETER);
@@ -126,6 +127,7 @@ public class PredicateInvocationImpl extends ExpressionImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_INVOCATION__PARAMETER:
@@ -154,6 +156,7 @@ public class PredicateInvocationImpl extends ExpressionImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_INVOCATION__PARAMETER:

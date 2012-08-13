@@ -195,6 +195,7 @@ public class ModuleImportationImpl extends EObjectImpl implements ModuleImportat
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EList<String> getParameters() {
 		if (parameters == null) {
 			parameters = new EDataTypeUniqueEList(String.class, this, AlloyPackage.MODULE_IMPORTATION__PARAMETERS);
@@ -226,6 +227,7 @@ public class ModuleImportationImpl extends EObjectImpl implements ModuleImportat
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.MODULE_IMPORTATION__NAME:

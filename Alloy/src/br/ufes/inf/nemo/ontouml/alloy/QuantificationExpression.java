@@ -71,6 +71,7 @@ public interface QuantificationExpression extends Expression {
 	 * @model type="alloy.Declaration" containment="true" required="true"
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	EList getDeclaration();
 
 	/**

@@ -98,6 +98,7 @@ public interface Declaration extends EObject {
 	 * @model type="alloy.Variable" opposite="declaration" containment="true" required="true"
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	EList getVariable();
 
 	/**

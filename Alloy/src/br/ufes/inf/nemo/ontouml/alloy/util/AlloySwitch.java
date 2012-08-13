@@ -70,6 +70,7 @@ public class AlloySwitch {
 			return doSwitch(theEClass.getClassifierID(), theEObject);
 		}
 		else {
+			@SuppressWarnings("rawtypes")
 			List eSuperTypes = theEClass.getESuperTypes();
 			return
 				eSuperTypes.isEmpty() ?

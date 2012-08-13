@@ -44,6 +44,7 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * @generated
 	 * @ordered
 	 */
+	@SuppressWarnings("rawtypes")
 	protected EList scopeable;
 
 	/**
@@ -69,6 +70,7 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public EList getScopeable() {
 		if (scopeable == null) {
 			scopeable = new EObjectContainmentEList(Scopeable.class, this, AlloyPackage.DETAILED_SCOPE__SCOPEABLE);
@@ -81,6 +83,7 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.DETAILED_SCOPE__SCOPEABLE:
@@ -107,6 +110,7 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.DETAILED_SCOPE__SCOPEABLE:

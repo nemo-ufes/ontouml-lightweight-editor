@@ -41,6 +41,7 @@ public interface Block extends EObject {
 	 * @model type="alloy.Expression" containment="true"
 	 * @generated
 	 */
+	@SuppressWarnings("rawtypes")
 	EList getExpression();
 
 } // Block
