@@ -277,6 +277,7 @@ public class MapperEA implements Mapper {
             		hashProp.put("default", childElem.getAttribute("value"));
             	}
         	}
+        	
     	} else if (getType(elem) == ElementType.ASSOCIATION || getType(elem) == ElementType.ASSOCIATIONCLASS) {
     		List<Element> memberEndsAux = getElementChildsByTagName(elem, "memberEnd");
     		List<String> memberEnds = new ArrayList<String>();
@@ -284,6 +285,14 @@ public class MapperEA implements Mapper {
     			memberEnds.add(memberEnd.getAttributeNS(XMINS, "idref"));
     		}
     		hashProp.put("memberend", memberEnds);
+    		
+    	} else if (getType(elem) == ElementType.GENERALIZATIONSET) {
+    		List<Element> generalizationsAux = getElementChildsByTagName(elem, "generalization");
+    		List<String> generalizations = new ArrayList<String>();
+    		for (Element generalization : generalizationsAux) {
+    			generalizations.add(generalization.getAttributeNS(XMINS, "idref"));
+    		}
+    		hashProp.put("generalization", generalizations);
     	}
     	
 		return hashProp;

@@ -14,7 +14,12 @@ public class ChckBoxTreeNodeElem {
 	
 	public String toString() {
 		if (element instanceof NamedElement) {
-			return ((NamedElement)element).getName();
+			String nome = ((NamedElement)element).getName();
+			if (nome == null || nome.equals("")) {
+				return "<" + element.getClass().toString().replace("class " +
+						"RefOntoUML.impl.", "").replace("Impl", "") + ">";
+			} else
+				return nome;
 		} else
 			return "<Name Unavailable>";
 	}

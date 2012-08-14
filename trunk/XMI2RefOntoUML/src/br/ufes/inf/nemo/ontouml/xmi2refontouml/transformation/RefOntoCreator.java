@@ -54,10 +54,43 @@ public class RefOntoCreator {
 		// Saves XMI into file
 		try {
 			resource.save(Collections.EMPTY_MAP);
-		}catch (Exception e) {
+			
+		} catch (Exception e) {
 			Mediator.errorLog += e.getMessage() + "\n";
 		}
 		
+	}
+	
+	/**
+	 * Custom exception class that is thrown when creating
+	 * or dealing with a RefOntoUML object, if something
+	 * goes unexpected.
+	 * 
+	 * @author Vinicius
+	 *
+	 */
+	
+	class RefOntoUMLException extends Exception {
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		String error_msg;
+		
+		public RefOntoUMLException() {
+			super();
+			error_msg = "";
+		}
+	  
+		public RefOntoUMLException(String err) {
+			super(err);
+			error_msg = err;
+		}
+
+		public String getError() {
+			return error_msg;
+	  	}
 	}
 	
 	/*
@@ -78,7 +111,15 @@ public class RefOntoCreator {
 		return factory.createPrimitiveType();
 	}
 	
-	public RefOntoUML.Class createClass(String stereotype) {
+	public RefOntoUML.Enumeration createEnumeraion() {
+		return factory.createEnumeration();
+	}
+	
+	public RefOntoUML.DataType createDataType() {
+		return factory.createDataType();
+	}
+	
+	public RefOntoUML.Class createClass(String stereotype) throws RefOntoUMLException {
 		
 		RefOntoUML.Class newclass = null;
 		
@@ -120,34 +161,13 @@ public class RefOntoCreator {
     		newclass = factory.createClass();
     	}
     	else {
-    		Mediator.errorLog += "Error: Class stereotype '" + stereotype + "' not supported." + "\n";
+    		throw new RefOntoUMLException("Error: Class stereotype '" + stereotype + "' not supported." + "\n");
     	}
 		
 		return newclass;
 	}
 	
-	public RefOntoUML.DataType createDataType(String stereotype) {
-		
-		DataType newdatatype = null;
-		
-		//Cria elementos do tipo DataType
-    	if (stereotype.equalsIgnoreCase("datatype")) {
-    		newdatatype = factory.createDataType();
-    	}
-    	else if (stereotype.equalsIgnoreCase("primitivetype")) {
-    		newdatatype = factory.createPrimitiveType();
-    	}
-    	else if (stereotype.equalsIgnoreCase("enumeration") || stereotype.equalsIgnoreCase("enum")) {
-    		newdatatype = factory.createEnumeration();
-    	}
-    	else {
-    		Mediator.errorLog += "Error: Datatype stereotype '" + stereotype + "' not supported." + "\n";
-    	}
-    	
-    	return newdatatype;
-	}
-	
-	public RefOntoUML.Association createAssociation(String stereotype) {
+	public RefOntoUML.Association createAssociation(String stereotype) throws RefOntoUMLException {
 		
 		Association newassoc = null;
 		
@@ -182,7 +202,7 @@ public class RefOntoCreator {
 			newassoc = factory.createAssociation();
 		}
 		else {
-			Mediator.errorLog += "Error: Association stereotype '" + stereotype + "' not supported.\n";
+			throw new RefOntoUMLException("Error: Association stereotype '" + stereotype + "' not supported.\n");
 		}
 		
 		return newassoc;
