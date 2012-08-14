@@ -252,7 +252,8 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         /** Level 2. */  DEBUG("2", "high"),
         /** Level 3. */  FULLDEBUG("3", "debug only");
         /** Returns true if it is greater than or equal to "other". */
-        public boolean geq(Verbosity other) { return ordinal() >= other.ordinal(); }
+        @SuppressWarnings("unused")
+		public boolean geq(Verbosity other) { return ordinal() >= other.ordinal(); }
         /** This is a unique String for this value; it should be kept consistent in future versions. */
         private final String id;
         /** This is the label that the toString() method will return. */
@@ -911,7 +912,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
     //===============================================================================================================//
 
     /** This method refreshes the "run" menu. */
-    private Runner doRefreshRun() {
+    private Runner doRefreshRun() {    	
         if (wrap) return wrapMe();
         KeyStroke ac = KeyStroke.getKeyStroke(VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
         try {
@@ -974,7 +975,8 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             }
         } finally {
             wrap = false;
-        }
+        }     
+        viz.loadThemeFile(themePath);
         return null;
     }
 
@@ -1039,7 +1041,8 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             log.logDivider();
             log.flush();
             doStop(2);
-        }
+        }       
+        viz.loadThemeFile(themePath);
         return null;
     }
 
@@ -1162,6 +1165,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         } finally {
             wrap = false;
         }
+        viz.loadThemeFile(themePath);
         return null;
     }
 
@@ -1538,7 +1542,8 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         if (arg.startsWith("CORE: ")) { // CORE: filename
             String filename = Util.canon(arg.substring(6));
             Pair<Set<Pos>,Set<Pos>> hCore;
-            Set<Pos> lCore;
+            @SuppressWarnings("unused")
+			Set<Pos> lCore;
             InputStream is = null;
             ObjectInputStream ois = null;
             try {
@@ -1597,7 +1602,8 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             final String arg = (String)input;
             OurUtil.show(frame);
             if (WorkerEngine.isBusy())
-                throw new RuntimeException("Alloy4 is currently executing a SAT solver command. Please wait until that command has finished.");
+                throw new RuntimeException("Alloy4 is currently executing a SAT solver command. Please wait until that command has finished.");            
+            viz.loadThemeFile(themePath);
             SimpleCallback1 cb = new SimpleCallback1(SimpleGUI_custom.this, viz, log, Verbosity.get().ordinal(), latestAlloyVersionName, latestAlloyVersion);
             SimpleTask2 task = new SimpleTask2();
             task.filename = arg;
@@ -1871,7 +1877,8 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
 
         // Pre-load the visualizer
         viz = new VizGUI_custom(false, "", windowmenu2, enumerator, evaluator,themePath);
-        viz.doSetFontSize(FontSize.get());
+        viz.loadThemeFile(themePath);
+        viz.doSetFontSize(FontSize.get());        
 
         // Create the toolbar
         try {
@@ -1943,7 +1950,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         } catch (Throwable ex) { }
 
         // Testing the SAT solvers
-        if (1==1) {
+        if (true) {
             satChoices = SatSolver.values().makeCopy();
 //            String test1 = Subprocess.exec(20000, new String[]{binary+fs+"berkmin", binary+fs+"tmp.cnf"});
 //            if (!isSat(test1)) satChoices.remove(SatSolver.BerkMinPIPE);
@@ -2050,6 +2057,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
           }
         });
         t.start();
+        viz.loadThemeFile(themePath);
     }
 
     /** {@inheritDoc} */
@@ -2057,6 +2065,8 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
       if (sender instanceof OurTabbedSyntaxWidget) switch(e) {
          case FOCUSED: notifyFocusGained(); break;
          case STATUS_CHANGE: notifyChange(); break;
+         default:
+        	 break;
       }
       return true;
    }

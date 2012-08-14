@@ -92,7 +92,6 @@ import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.shared.DiagramSelection;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
-import br.ufes.inf.nemo.oled.util.SimulationAttribute;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
 
 /**

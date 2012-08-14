@@ -27,6 +27,7 @@ package br.ufes.inf.nemo.oled.draw;
  */
 public final class Scaling {
 
+  @SuppressWarnings("unused")
   private static final long serialVersionUID = 6922910336017674609L;
   private double scaleFactor;
   public static final Scaling SCALING_50 = new Scaling(0.5);

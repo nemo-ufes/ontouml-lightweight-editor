@@ -36,11 +36,8 @@ import org.eclipse.emf.edit.command.AddCommand;
 
 import RefOntoUML.Class;
 import RefOntoUML.Comment;
-import RefOntoUML.Constraintx;
 import RefOntoUML.DataType;
-import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
-import RefOntoUML.impl.ConstraintxImpl;
 import RefOntoUML.impl.DataTypeImpl;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;

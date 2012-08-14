@@ -1,11 +1,6 @@
 package br.ufes.inf.nemo.oled.ui.diagram;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.swing.table.AbstractTableModel;
-
-import RefOntoUML.NamedElement;
 
 /**
  * This class defines a generic TableModel to hold Namedelementss

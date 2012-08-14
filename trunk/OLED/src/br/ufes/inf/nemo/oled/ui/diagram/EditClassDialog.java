@@ -35,7 +35,6 @@ import org.eclipse.emf.edit.command.AddCommand;
 import RefOntoUML.Class;
 import RefOntoUML.DataType;
 import RefOntoUML.Property;
-import RefOntoUML.Type;
 import RefOntoUML.impl.DataTypeImpl;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;

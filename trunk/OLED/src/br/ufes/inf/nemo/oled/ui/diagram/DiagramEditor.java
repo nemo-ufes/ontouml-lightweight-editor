@@ -838,6 +838,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 				break;
 			case LABEL_TEXT_SET:
 				if(notificationType == NotificationType.DO) sb.append("label text set"); else sb.append(" set label text");
+				break;
+			default:
 				break;	
 		}
 
