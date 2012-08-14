@@ -257,9 +257,7 @@ public final class VizGUI_custom implements ComponentListener {
    /** If true, that means the event handlers should return a Runner encapsulating them, rather than perform the actual work. */
    private boolean wrap = false;
 
-private String themePath;
-
-   /** Wraps the calling method into a Runnable whose run() will call the calling method with (false) as the only argument. */
+/** Wraps the calling method into a Runnable whose run() will call the calling method with (false) as the only argument. */
    private Runner wrapMe() {
       final String name;
       try { throw new Exception(); } catch(Exception ex) { name = ex.getStackTrace()[1].getMethodName(); }
@@ -696,8 +694,7 @@ private String themePath;
    /** This method loads a specific theme file. */
    public boolean loadThemeFile(String filename) {
 	   thmFileName=filename;
-	   themePath = filename;
-      if (myState==null) return false; // Can only load if there is a VizState loaded
+	   if (myState==null) return false; // Can only load if there is a VizState loaded
       filename = Util.canon(filename);
       try {
          myState.loadPaletteXML(filename);
