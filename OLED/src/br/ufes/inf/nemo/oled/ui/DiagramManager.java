@@ -600,7 +600,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/**
 	 * Simulate the selected model elements using Alloy.
 	 */
-	@SuppressWarnings("unchecked")
 	public void verifyCurrentModel() {
 		
 		UmlProject project = getCurrentEditor().getProject();

@@ -354,7 +354,7 @@ public final class VizGUI_custom implements ComponentListener {
       if (height>screenHeight) height=screenHeight;
       int x=VizX.get(); if (x<0 || x>screenWidth-10) x=0;
       int y=VizY.get(); if (y<0 || y>screenHeight-10) y=0;
-
+      
       // Create the menubar
       JMenuBar mb = new JMenuBar();
       try {
@@ -444,9 +444,8 @@ public final class VizGUI_custom implements ComponentListener {
          try { wrap=true; frame.addWindowListener(doClose()); } finally { wrap=false; }
          frame.addComponentListener(this);
       }
-      if (xmlFileName.length()>0) doLoadInstance(xmlFileName);
-      thmFileName = theme;
-      loadThemeFile(theme);
+      if (xmlFileName.length()>0) doLoadInstance(xmlFileName);      
+      
    }
 
    /** Invoked when the Visualizationwindow is resized. */
@@ -491,6 +490,7 @@ public final class VizGUI_custom implements ComponentListener {
          if (on) { num++; if (num==1) label="Projected over "+t.getName(); }
       }
       projectionButton.setText(num>1 ? ("Projected over "+num+" sigs") : label);
+      
    }
 
    /** Helper method that refreshes the right-side visualization panel with the latest settings. */
@@ -600,7 +600,8 @@ public final class VizGUI_custom implements ComponentListener {
       if (frame!=null) frame.setContentPane(splitpane);
       if (settingsOpen!=2) content.requestFocusInWindow(); else myEvaluatorPanel.requestFocusInWindow();
       repopulateProjectionPopup();
-      if (frame!=null) frame.validate(); else splitpane.validate();
+      if (frame!=null) frame.validate(); else splitpane.validate(); 
+     
    }
 
    /** Helper method that creates a button and add it to both the "SolutionButtons" list, as well as the toolbar. */
@@ -691,6 +692,8 @@ public final class VizGUI_custom implements ComponentListener {
       updateDisplay();
    }
 
+   
+   
    /** This method loads a specific theme file. */
    public boolean loadThemeFile(String filename) {
 	   thmFileName=filename;
@@ -796,7 +799,7 @@ public final class VizGUI_custom implements ComponentListener {
          menuItem(thememenu,    "Reset Theme",          'R', doResetTheme());
       } finally {
          wrap=false;
-      }
+      }      
       return null;
    }
 
@@ -948,6 +951,7 @@ public final class VizGUI_custom implements ComponentListener {
       return wrapMe();
    }
 
+   
    /** This method attempts to derive the next satisfying instance. */
    private Runner doNext() {
       if (wrap) return wrapMe();
@@ -959,6 +963,7 @@ public final class VizGUI_custom implements ComponentListener {
       } else {
          try { enumerator.compute(xmlFileName); } catch(Throwable ex) { OurDialog.alert(ex.getMessage()); }
       }
+      loadThemeFile(thmFileName);
       return null;
    }
 

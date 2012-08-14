@@ -35,7 +35,6 @@ import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.Class;
 import RefOntoUML.Relator;
-import RefOntoUML.ValueSpecification;
 import RefOntoUML.subQuantityOf;
 import RefOntoUML.Package;
 
@@ -100,6 +99,7 @@ public class Transformer {
 	 * @param classifier
 	 * @param package
 	 */
+	@SuppressWarnings("unchecked")
 	public void createAbstractClause(Classifier c, Package p) {
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
 		//Get all generalizations that the Classifier c is the father
@@ -188,6 +188,7 @@ public class Transformer {
 	 * @param Relator
 	 * @param Package
 	 */
+	@SuppressWarnings("unchecked")
 	public void createRelatorAssociations(Relator c, Package p) {
 		for(PackageableElement pe : p.getPackagedElement())
 		{
@@ -353,6 +354,7 @@ public class Transformer {
 	 * That method creates a rule in alloy for every Generalization 
 	 * @param Generalization
 	 */
+	@SuppressWarnings("unchecked")
 	public void transformGeneralizations(Generalization g) {
 		CompareOperation co = factory.createCompareOperation();
 		co.setOperator(CompareOperator.SUBSET_LITERAL);
@@ -370,6 +372,7 @@ public class Transformer {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void transformGeneralizationSets(GeneralizationSet gs) {
 		if(gs.isIsCovering())
 		{
@@ -428,6 +431,7 @@ public class Transformer {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void transformDerivations(Derivation d, Package p) {
 		PredicateInvocation pI = factory.createPredicateInvocation();
 		pI.setPredicate("derivation");
@@ -508,6 +512,7 @@ public class Transformer {
 		derivations.getBlock().getExpression().add(pI);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void transformAssociationsEnds(Association ass, VariableReference source, VariableReference target) {
 		
 		//Create function for the first associationEnd
@@ -675,6 +680,7 @@ public class Transformer {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void transformAssociations(Association ass) {
 		Variable var = factory.createVariable();
 		VariableReference source = factory.createVariableReference();
@@ -710,6 +716,7 @@ public class Transformer {
 		world.getRelation().add(decl);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void prepareMeronymicAssociation(Meronymic ass,
 			VariableReference source, VariableReference target,
 			ArrowOperation aOp) {
@@ -788,6 +795,7 @@ public class Transformer {
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void prepareMediationAssociation(Association ass,
 			VariableReference source, VariableReference target,
 			ArrowOperation aOp) {
@@ -841,6 +849,7 @@ public class Transformer {
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void prepareCharacterizationAssociation(Association ass,
 			VariableReference source, VariableReference target,
 			ArrowOperation aOp) {
@@ -894,6 +903,7 @@ public class Transformer {
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void prepareAssociation(Association ass,
 			VariableReference source, VariableReference target,
 			ArrowOperation aOp) {
@@ -998,6 +1008,7 @@ public class Transformer {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void upperTargetCardinalities(int upperSource,
 			VariableReference target, Association ass) {
 		
@@ -1038,6 +1049,7 @@ public class Transformer {
 		world.getBlock().getExpression().add(qe);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void lowerTargetCardinalities(int lowerSource,
 			VariableReference target, Association ass) {
 		
@@ -1078,6 +1090,7 @@ public class Transformer {
 		world.getBlock().getExpression().add(qe);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void upperSourceCardinalities(int upperSource,
 			VariableReference target, Association ass) {
 		
@@ -1118,6 +1131,7 @@ public class Transformer {
 		world.getBlock().getExpression().add(qe);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void lowerSourceCardinalities(int lowerSource,
 			VariableReference target, Association ass) {
 		
@@ -1179,13 +1193,12 @@ public class Transformer {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createModule() {
 		module = factory.createAlloyModule();
 		module.setName(Reader.modelname);
 		resource.getContents().add(module);
 		
-		
-		SignatureDeclaration sig;
 		
 		/**
 		 * Create Module Importation
@@ -1330,6 +1343,7 @@ public class Transformer {
 		module.getParagraph().add(fun);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createRigidityFact() {
 		if(rigidElements.size()>0)
 		{
@@ -1450,6 +1464,7 @@ public class Transformer {
 		return exp;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void createObjectClassDeclaration(String name) {
 		Declaration decl = factory.createDeclaration();
 		Variable var = factory.createVariable();
@@ -1477,6 +1492,7 @@ public class Transformer {
 		world.getRelation().add(decl);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void createDatatypeDeclaration(String name) {
 		Declaration decl = factory.createDeclaration();
 		Variable var = factory.createVariable();
@@ -1504,6 +1520,7 @@ public class Transformer {
 		world.getRelation().add(decl);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void createPropertyClassDeclaration(String name) {
 		Declaration decl = factory.createDeclaration();
 		Variable var = factory.createVariable();
@@ -1541,6 +1558,7 @@ public class Transformer {
 		resource = resourceSet.createResource(URI.createURI(path));
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void createExists(String param) {
 		CompareOperation co = factory.createCompareOperation();
 		co.setOperator(CompareOperator.SUBSET_LITERAL);
@@ -1612,6 +1630,7 @@ public class Transformer {
 		world.getBlock().getExpression().add(co);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void createKindDatatypePropertyDisjoint() {
 		DisjointExpression disj = null;
 		

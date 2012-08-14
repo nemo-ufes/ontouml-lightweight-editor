@@ -26,10 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.change.ChangeDescription;
-import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.ChangeCommand;
 
-import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.UmlProject;

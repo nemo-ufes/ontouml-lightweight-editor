@@ -85,7 +85,6 @@ public class ModelTree extends JPanel {
 	//	buildTree(source);		
 	//}
 	
-	@SuppressWarnings("unused")
 	private class ModelElementWrapper extends DefaultMutableTreeNode
 	{
 		private static final long serialVersionUID = -8295824591047732619L;
