@@ -445,7 +445,7 @@ public final class VizGUI_custom implements ComponentListener {
          frame.addComponentListener(this);
       }
       if (xmlFileName.length()>0) doLoadInstance(xmlFileName);      
-      
+          
    }
 
    /** Invoked when the Visualizationwindow is resized. */
@@ -963,7 +963,6 @@ public final class VizGUI_custom implements ComponentListener {
       } else {
          try { enumerator.compute(xmlFileName); } catch(Throwable ex) { OurDialog.alert(ex.getMessage()); }
       }
-      loadThemeFile(thmFileName);
       return null;
    }
 

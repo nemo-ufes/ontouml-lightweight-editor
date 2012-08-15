@@ -975,8 +975,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             }
         } finally {
             wrap = false;
-        }     
-        viz.loadThemeFile(themePath);
+        } 
         return null;
     }
 
@@ -1041,8 +1040,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             log.logDivider();
             log.flush();
             doStop(2);
-        }       
-        viz.loadThemeFile(themePath);
+        }
         return null;
     }
 
@@ -1164,8 +1162,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             }
         } finally {
             wrap = false;
-        }
-        viz.loadThemeFile(themePath);
+        }        
         return null;
     }
 
@@ -1598,12 +1595,15 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
 
     /** This object performs solution enumeration. */
     private final Computer enumerator = new Computer() {
-        public String compute(Object input) {
+        public String compute(Object input) {        	
             final String arg = (String)input;
             OurUtil.show(frame);
+
+            // Added for standart theme
+            viz.loadThemeFile(themePath);
+            
             if (WorkerEngine.isBusy())
                 throw new RuntimeException("Alloy4 is currently executing a SAT solver command. Please wait until that command has finished.");            
-            viz.loadThemeFile(themePath);
             SimpleCallback1 cb = new SimpleCallback1(SimpleGUI_custom.this, viz, log, Verbosity.get().ordinal(), latestAlloyVersionName, latestAlloyVersion);
             SimpleTask2 task = new SimpleTask2();
             task.filename = arg;
@@ -1877,7 +1877,6 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
 
         // Pre-load the visualizer
         viz = new VizGUI_custom(false, "", windowmenu2, enumerator, evaluator,themePath);
-        viz.loadThemeFile(themePath);
         viz.doSetFontSize(FontSize.get());        
 
         // Create the toolbar
@@ -2006,7 +2005,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             File file = new File(f);
             if (file.exists() && file.isFile()) doOpenFile(file.getPath());
         }
-
+        
         // Update the title and status bar
         notifyChange();
         text.get().requestFocusInWindow();
@@ -2057,7 +2056,6 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
           }
         });
         t.start();
-        viz.loadThemeFile(themePath);
     }
 
     /** {@inheritDoc} */

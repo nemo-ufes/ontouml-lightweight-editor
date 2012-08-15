@@ -49,18 +49,17 @@ public class OntoUML2Alloy {
 		out.close();
 		
 		// Copy theme into dir temp path
-		is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("standart_theme.thm");
-		if(is == null)
-			is = new FileInputStream("alloy/standart_theme.thm");
-		out = new FileOutputStream(new File(dirPath + "\\standart_theme.thm"));
+		InputStream is2 = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("standart_theme.thm");
+		if(is2 == null) is2 = new FileInputStream("alloy/standart_theme.thm");		
+		OutputStream out2 = new FileOutputStream(new File(dirPath + "\\standart_theme.thm"));
 		src = new byte[1024];
 		read = 0;
-		while ((read = is.read(src)) != -1) {
-			out.write(src, 0, read);
+		while ((read = is2.read(src)) != -1) {
+			out2.write(src, 0, read);
 		}
-		is.close();
-		out.flush();
-		out.close();		
+		is2.close();
+		out2.flush();
+		out2.close();		
 		
 		//Modules that are used in generated Alloy code
 		try {
@@ -77,8 +76,7 @@ public class OntoUML2Alloy {
 		
 		//param to call SimpleGUI 
 		filenames[0] = alsPath;
-		filenames[1] = themePath;
-		
+		filenames[1] = themePath;		
 
 		//Open Alloy Analyzer
 		SimpleGUI_custom.main(OntoUML2Alloy.filenames);
