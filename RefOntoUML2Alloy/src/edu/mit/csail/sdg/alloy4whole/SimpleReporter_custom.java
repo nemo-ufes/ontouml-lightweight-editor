@@ -70,13 +70,13 @@ final class SimpleReporter_custom extends A4Reporter {
         private final String latestName;
         private final int latestVersion;
         public SimpleCallback1(SimpleGUI_custom simpleGUI_custom, VizGUI_custom viz, SwingLogPanel_custom span, int verbosity, String latestName, int latestVersion) {
-            this.gui=simpleGUI_custom; this.viz=viz; this.span=span; this.verbosity=verbosity;
+            this.gui=simpleGUI_custom; this.viz=viz; this.span=span; this.verbosity=verbosity;            
             this.latestName=latestName; this.latestVersion=latestVersion;
             len2 = len3 = span.getLength();
         }
         public void done() { if (viz!=null) span.setLength(len2); else span.logDivider(); span.flush(); gui.doStop(0); }
         public void fail() { span.logBold("\nAn error has occurred!\n"); span.logDivider(); span.flush(); gui.doStop(1); }
-        public void callback(Object msg) {
+        public void callback(Object msg) {        	
             if (msg==null) { span.logBold("Done\n"); span.flush(); return; }
             if (msg instanceof String) { span.logBold( ((String)msg).trim() + "\n" ); span.flush(); return; }
             if (msg instanceof Throwable) {
