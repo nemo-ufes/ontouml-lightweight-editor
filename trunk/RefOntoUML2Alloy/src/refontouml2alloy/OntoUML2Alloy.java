@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import edu.mit.csail.sdg.alloy4whole.SimpleGUI_Custom;
+import edu.mit.csail.sdg.alloy4whole.SimpleGUI_custom;
 
 import RefOntoUML.Model;
 import RefOntoUML.PackageableElement;
@@ -79,7 +79,7 @@ public class OntoUML2Alloy {
 		filenames[1] = themePath;		
 
 		//Open Alloy Analyzer
-		SimpleGUI_Custom.main(OntoUML2Alloy.filenames);
+		SimpleGUI_custom.main(OntoUML2Alloy.filenames);
 
 		return true;
 	}
