@@ -3,9 +3,10 @@ package br.ufes.inf.nemo.oled.util;
 import java.io.File;
 import java.util.List;
 
+import refontouml2alloy.OntoUML2Alloy;
+
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
-import br.ufes.inf.nemo.ontouml.refontouml2alloy.OntoUML2Alloy;
 
 public class VerificationHelper {
 	
