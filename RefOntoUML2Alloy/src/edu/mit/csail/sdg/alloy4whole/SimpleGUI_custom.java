@@ -1609,7 +1609,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             task.filename = arg;
             try {
                 WorkerEngine.run(task, SubMemory.get(), SubStack.get(), alloyHome() + fs + "binary", "", cb);
-//                task.run(cb);
+                //task.run(cb);
             } catch(Throwable ex) {
                 WorkerEngine.stop();
                 log.logBold("Fatal Error: Solver failed due to unknown reason.\n" +

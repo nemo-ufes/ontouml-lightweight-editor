@@ -89,7 +89,7 @@ final class SwingLogPanel_custom {
     /** When the window gains focus, we'll call handler.run(ev_logFocused);
      * When a hyperlink is clicked, we'll call handler.run(evs_visualize, linkURL).
      */
-    private final SimpleGUI_Custom handler;
+    private final SimpleGUI_custom handler;
 
     /** The current length of the log, not counting any "red" error message at the end of the log. */
     private int lastSize = 0;
@@ -121,7 +121,7 @@ final class SwingLogPanel_custom {
     public SwingLogPanel_custom(
         final JScrollPane parent, String fontName, int fontSize,
         final Color background, final Color regular, final Color red,
-        final SimpleGUI_Custom simpleGUI_custom) {
+        final SimpleGUI_custom simpleGUI_custom) {
         this.handler = simpleGUI_custom;
         this.fontName = fontName;
         this.fontSize = fontSize;
