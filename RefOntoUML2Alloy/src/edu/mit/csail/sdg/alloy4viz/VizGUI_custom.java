@@ -689,6 +689,7 @@ public final class VizGUI_custom implements ComponentListener {
          frame.setTitle("Alloy Visualizer "+Version.version()+" loading... Please wait...");
          OurUtil.show(frame);
       }
+      loadThemeFile(thmFileName);
       updateDisplay();
    }
 
