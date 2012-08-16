@@ -61,7 +61,7 @@ import edu.mit.csail.sdg.alloy4viz.VizGUI_custom;
 final class SimpleReporter_custom extends A4Reporter {
 
     public static final class SimpleCallback1 implements WorkerCallback {
-        private final SimpleGUI_custom gui;
+        private final SimpleGUI_Custom gui;
         private final VizGUI_custom viz;
         private final SwingLogPanel_custom span;
         private final Set<ErrorWarning> warnings = new HashSet<ErrorWarning>();
@@ -69,7 +69,7 @@ final class SimpleReporter_custom extends A4Reporter {
         private int len2=0, len3=0, verbosity=0;
         private final String latestName;
         private final int latestVersion;
-        public SimpleCallback1(SimpleGUI_custom simpleGUI_custom, VizGUI_custom viz, SwingLogPanel_custom span, int verbosity, String latestName, int latestVersion) {
+        public SimpleCallback1(SimpleGUI_Custom simpleGUI_custom, VizGUI_custom viz, SwingLogPanel_custom span, int verbosity, String latestName, int latestVersion) {
             this.gui=simpleGUI_custom; this.viz=viz; this.span=span; this.verbosity=verbosity;            
             this.latestName=latestName; this.latestVersion=latestVersion;
             len2 = len3 = span.getLength();
