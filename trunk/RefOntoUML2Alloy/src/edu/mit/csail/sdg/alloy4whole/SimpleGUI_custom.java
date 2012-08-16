@@ -1041,6 +1041,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             log.flush();
             doStop(2);
         }
+        viz.loadThemeFile(themePath);
         return null;
     }
 
@@ -1598,10 +1599,6 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         public String compute(Object input) {        	
             final String arg = (String)input;
             OurUtil.show(frame);
-
-            // Added for standart theme
-            viz.loadThemeFile(themePath);
-            
             if (WorkerEngine.isBusy())
                 throw new RuntimeException("Alloy4 is currently executing a SAT solver command. Please wait until that command has finished.");            
             SimpleCallback1 cb = new SimpleCallback1(SimpleGUI_custom.this, viz, log, Verbosity.get().ordinal(), latestAlloyVersionName, latestAlloyVersion);

@@ -1,7 +1,7 @@
 package refontouml2alloy.util;
 
 /**
- * This class is used as a content repository of the alloy libraries developed by our transformation
+ * This class is used as a content repository of the alloy libraries developed by this transformation
  *  
  * @author Lucas Thom
  */
