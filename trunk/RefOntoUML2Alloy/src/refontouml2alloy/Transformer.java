@@ -1,5 +1,11 @@
 package refontouml2alloy;
 
+/**
+ * This class is used as a Transformer for this transformation 
+ * 
+ * @author Lucas Thom
+ */
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -38,10 +44,6 @@ import RefOntoUML.Relator;
 import RefOntoUML.subQuantityOf;
 import RefOntoUML.Package;
 
-/**
- * @author thom
- *
- */
 public class Transformer {
 	
 	public static Resource resource;
@@ -78,9 +80,9 @@ public class Transformer {
 	 * Every OntoUML inputted to the transformation has one element name Model, 
 	 * which is the root of all the other elements in the model. 
 	 * Its name defines the name of the produced Alloy module.
-	 * @param Model
 	 */
-	public void init(Model m){
+	public void init(Model m)
+	{
 		//Creates a ResourceSet to manage the model 
 		initResource();
 		
@@ -96,12 +98,12 @@ public class Transformer {
 	
 	/**
 	 * For each abstract class.
-	 * @param classifier
-	 * @param package
 	 */
 	@SuppressWarnings("unchecked")
-	public void createAbstractClause(Classifier c, Package p) {
+	public void createAbstractClause(Classifier c, Package p) 
+	{
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+		
 		//Get all generalizations that the Classifier c is the father
 		for(PackageableElement elem : p.getPackagedElement() )
 			if(elem instanceof Classifier)
@@ -110,6 +112,7 @@ public class Transformer {
 						generalizations.add((Generalization) gen);
 		
 		int cont = 1;
+		
 		//Create BinaryOperation with union operator(+) to represent the completeness
 		//between father(Classifier) and sons
 		BinaryOperation bo = factory.createBinaryOperation();
@@ -155,7 +158,8 @@ public class Transformer {
 		}
 	}
 	
-	public void auxMethodRelator(ArrayList<String> list, Relator r, Package p){
+	public void auxMethodRelator(ArrayList<String> list, Relator r, Package p)
+	{
 		for(PackageableElement pe : p.getPackagedElement())
 		{
 			if(pe instanceof Mediation)
@@ -177,19 +181,15 @@ public class Transformer {
 						for(Generalization gen : ((Relator)((Mediation)pe).targetEnd().getType()).getGeneralization())
 							auxMethodRelator(list,(Relator)gen.getGeneral(),p);
 					}
-				}
-				
+				}				
 			}
 		}
 	}
 	
-	/**
-	 * For each Relator c in a Package p define a rule in alloy
-	 * @param Relator
-	 * @param Package
-	 */
+	/** For each Relator c in a Package p define a rule in alloy */
 	@SuppressWarnings("unchecked")
-	public void createRelatorAssociations(Relator c, Package p) {
+	public void createRelatorAssociations(Relator c, Package p) 
+	{
 		for(PackageableElement pe : p.getPackagedElement())
 		{
 			if(pe instanceof GeneralizationSet)
@@ -214,8 +214,7 @@ public class Transformer {
 		qe.getDeclaration().add(decl);
 		
 		CompareOperation co = factory.createCompareOperation();
-		UnaryOperation uOp = factory.createUnaryOperation();
-		
+		UnaryOperation uOp = factory.createUnaryOperation();		
 		
 		co.setOperator(CompareOperator.GREATER_EQUAL_LITERAL);
 		co.setLeftExpression(uOp);
@@ -225,8 +224,7 @@ public class Transformer {
 
 		ArrayList<String> associationNames = new ArrayList<String>();
 		
-		auxMethodRelator(associationNames, c, p);
-		
+		auxMethodRelator(associationNames, c, p);		
 		
 		int cont = 1;
 		BinaryOperation bo = factory.createBinaryOperation();
@@ -274,11 +272,9 @@ public class Transformer {
 				bo2.setLeftExpression(vr);
 				vr = factory.createVariableReference();
 				vr.setVariable(name);
-				bo2.setRightExpression(vr);
+				bo2.setRightExpression(vr);				
 				
-				
-				((BinaryOperation)bo.getRightExpression()).setLeftExpression(bo2);
-				
+				((BinaryOperation)bo.getRightExpression()).setLeftExpression(bo2);				
 				
 				bo = ((BinaryOperation)bo.getRightExpression());
 			}
@@ -296,8 +292,7 @@ public class Transformer {
 				bo.setRightExpression(bo2);
 			}
 			cont++;
-		}
-		
+		}		
 		
 		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);
 		
@@ -318,7 +313,8 @@ public class Transformer {
 	 * @Classifier
 	 * @Package
 	 */
-	public void transformClassifier(Classifier c, Package p) {
+	public void transformClassifier(Classifier c, Package p) 
+	{
 		String name = c.getName();
 		if(c instanceof ObjectClass)
 		{
@@ -333,6 +329,7 @@ public class Transformer {
 		{
 			createDatatypeDeclaration(name);
 			datatypesList.add(name);
+			
 			//all datatypes without fathers are naturally disjoint, which means that multiple inheritance between datatypes isn't allowed.
 			if(((DataType)c).getGeneralization().size() == 0)
 				datatypeListDisj.add(name);
@@ -343,19 +340,19 @@ public class Transformer {
 					createRelatorAssociations((Relator) c, p);
 			createPropertyClassDeclaration(name);
 			PropertiesList.add(name);
+			
 			//all Propertys without fathers are naturally disjoint, which means that multiple inheritance between Propertys isn't allowed.
 			if(((MomentClass)c).getGeneralization().size() == 0)
 				PropertysListDisj.add(name);
 		}
 	}
 	
-	//TODO: Verificar casos de especializa��o de rala��o, se os targets s�o diferentes
-	/**
-	 * That method creates a rule in alloy for every Generalization 
-	 * @param Generalization
-	 */
+	// TODO: Verificar casos de especializa��o de rala��o, se os targets s�o diferentes
+	
+	/** That method creates a rule in alloy for every Generalization  */
 	@SuppressWarnings("unchecked")
-	public void transformGeneralizations(Generalization g) {
+	public void transformGeneralizations(Generalization g) 
+	{
 		CompareOperation co = factory.createCompareOperation();
 		co.setOperator(CompareOperator.SUBSET_LITERAL);
 		
@@ -367,13 +364,12 @@ public class Transformer {
 		vr.setVariable(g.getGeneral().getName());
 		co.setRightExpression(vr);
 		
-		world.getBlock().getExpression().add(co);
-		
-		
+		world.getBlock().getExpression().add(co);		
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void transformGeneralizationSets(GeneralizationSet gs) {
+	public void transformGeneralizationSets(GeneralizationSet gs) 
+	{
 		if(gs.isIsCovering())
 		{
 			CompareOperation co = factory.createCompareOperation();
@@ -432,7 +428,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void transformDerivations(Derivation d, Package p) {
+	public void transformDerivations(Derivation d, Package p) 
+	{
 		PredicateInvocation pI = factory.createPredicateInvocation();
 		pI.setPredicate("derivation");
 		VariableReference material = factory.createVariableReference(),mediation1 = factory.createVariableReference(),mediation2 = factory.createVariableReference();
@@ -447,8 +444,7 @@ public class Transformer {
 			}
 		}		
 		
-		Relator derRelator = (Relator) (d.relator() instanceof Relator ? d.relator() : d.material());
-		
+		Relator derRelator = (Relator) (d.relator() instanceof Relator ? d.relator() : d.material());		
 		
 		String class1 = "",class2 = "";
 		
@@ -513,175 +509,175 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void transformAssociationsEnds(Association ass, VariableReference source, VariableReference target) {
-		
+	public void transformAssociationsEnds(Association ass, VariableReference source, VariableReference target) 
+	{		
 		//Create function for the first associationEnd
-				if(ass.getOwnedEnd().get(0).getName() != null)
-				if(ass.getOwnedEnd().get(0).getName().compareTo("") != 0)	
-				{
-					FunctionDeclaration fun = factory.createFunctionDeclaration();
-					fun.setName(ass.getOwnedEnd().get(0).getName());
-					UnaryOperation uOp = factory.createUnaryOperation();
-					uOp.setOperator(UnaryOperator.SET_LITERAL);
-					
-					BinaryOperation bOp = factory.createBinaryOperation();
-					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-					
-					VariableReference vr = factory.createVariableReference();
-					vr.setVariable(ass.getOwnedEnd().get(0).getType().getName());
-					VariableReference vr2 = factory.createVariableReference();
-					vr2.setVariable(world.getName());
-					bOp.setLeftExpression(vr2);
-					bOp.setRightExpression(vr);
-					
-					uOp.setExpression(bOp);
-					fun.setType(uOp);
-					
-					Declaration decl = factory.createDeclaration();
-					Variable var = factory.createVariable();
-					var.setName("x");
-					var.setDeclaration(decl);
-					
-					bOp = factory.createBinaryOperation();
-					vr = factory.createVariableReference();
-					vr2 = factory.createVariableReference();
-					vr.setVariable(world.getName());
-					vr2.setVariable(ass.getOwnedEnd().get(1).getType().getName());
-					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-					bOp.setLeftExpression(vr);
-					bOp.setRightExpression(vr2);
-					decl.setExpression(bOp);
-					
-					fun.getParameter().add(decl);
-					
-					decl = factory.createDeclaration();
-					var = factory.createVariable();
-					var.setName("w");
-					var.setDeclaration(decl);
-					
-					vr = factory.createVariableReference();
-					vr.setVariable(world.getName());
-					decl.setExpression(vr);
-					
-					fun.getParameter().add(decl);
-					
-					
-					bOp = factory.createBinaryOperation();
-					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-					vr = factory.createVariableReference();
-					vr.setVariable("w");
-					vr2 = factory.createVariableReference();
-					vr2.setVariable(ass.getName());
-					bOp.setLeftExpression(vr);
-					bOp.setRightExpression(vr2);
-					
-					vr = factory.createVariableReference();
-					vr.setVariable("x");
-					
-					BinaryOperation bOp2 = factory.createBinaryOperation();
-					bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
-					if(ass.getOwnedEnd().get(0).getType().getName() == target.getVariable())
-					{
-						bOp2.setLeftExpression(vr);
-						bOp2.setRightExpression(bOp);
-					}
-					else
-					{
-						bOp2.setLeftExpression(bOp);
-						bOp2.setRightExpression(vr);
-					}
-					
-					fun.setExpression(bOp2);
-					
-					module.getParagraph().add(fun);
-					
-				}
-				//Create function for the second associationEnd
-				if(ass.getOwnedEnd().get(1).getName() != null)
-				if(ass.getOwnedEnd().get(1).getName().compareTo("") != 0)
-				{
-					FunctionDeclaration fun = factory.createFunctionDeclaration();
-					fun.setName(ass.getOwnedEnd().get(1).getName());
-					UnaryOperation uOp = factory.createUnaryOperation();
-					uOp.setOperator(UnaryOperator.SET_LITERAL);
-					
-					BinaryOperation bOp = factory.createBinaryOperation();
-					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-					
-					VariableReference vr = factory.createVariableReference();
-					vr.setVariable(ass.getOwnedEnd().get(1).getType().getName());
-					VariableReference vr2 = factory.createVariableReference();
-					vr2.setVariable(world.getName());
-					bOp.setLeftExpression(vr2);
-					bOp.setRightExpression(vr);
-					
-					uOp.setExpression(bOp);
-					fun.setType(uOp);
-					
-					Declaration decl = factory.createDeclaration();
-					Variable var = factory.createVariable();
-					var.setName("x");
-					var.setDeclaration(decl);
-					
-					bOp = factory.createBinaryOperation();
-					vr = factory.createVariableReference();
-					vr2 = factory.createVariableReference();
-					vr.setVariable(world.getName());
-					vr2.setVariable(ass.getOwnedEnd().get(0).getType().getName());
-					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-					bOp.setLeftExpression(vr);
-					bOp.setRightExpression(vr2);
-					decl.setExpression(bOp);
-					
-					fun.getParameter().add(decl);
-					
-					decl = factory.createDeclaration();
-					var = factory.createVariable();
-					var.setName("w");
-					var.setDeclaration(decl);
-					
-					vr = factory.createVariableReference();
-					vr.setVariable(world.getName());
-					decl.setExpression(vr);
-					
-					fun.getParameter().add(decl);
-					
-					
-					bOp = factory.createBinaryOperation();
-					bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-					vr = factory.createVariableReference();
-					vr.setVariable("w");
-					vr2 = factory.createVariableReference();
-					vr2.setVariable(ass.getName());
-					bOp.setLeftExpression(vr);
-					bOp.setRightExpression(vr2);
-					
-					vr = factory.createVariableReference();
-					vr.setVariable("x");
-					
-					BinaryOperation bOp2 = factory.createBinaryOperation();
-					bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
-					if(ass.getOwnedEnd().get(1).getType().getName() == target.getVariable())
-					{
-						bOp2.setLeftExpression(vr);
-						bOp2.setRightExpression(bOp);
-					}
-					else
-					{
-						bOp2.setLeftExpression(bOp);
-						bOp2.setRightExpression(vr);
-					}
-					
-					fun.setExpression(bOp2);
-					
-					module.getParagraph().add(fun);
-					
-				}
+		if(ass.getOwnedEnd().get(0).getName() != null)
+		if(ass.getOwnedEnd().get(0).getName().compareTo("") != 0)	
+		{
+			FunctionDeclaration fun = factory.createFunctionDeclaration();
+			fun.setName(ass.getOwnedEnd().get(0).getName());
+			UnaryOperation uOp = factory.createUnaryOperation();
+			uOp.setOperator(UnaryOperator.SET_LITERAL);
+			
+			BinaryOperation bOp = factory.createBinaryOperation();
+			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+			
+			VariableReference vr = factory.createVariableReference();
+			vr.setVariable(ass.getOwnedEnd().get(0).getType().getName());
+			VariableReference vr2 = factory.createVariableReference();
+			vr2.setVariable(world.getName());
+			bOp.setLeftExpression(vr2);
+			bOp.setRightExpression(vr);
+			
+			uOp.setExpression(bOp);
+			fun.setType(uOp);
+			
+			Declaration decl = factory.createDeclaration();
+			Variable var = factory.createVariable();
+			var.setName("x");
+			var.setDeclaration(decl);
+			
+			bOp = factory.createBinaryOperation();
+			vr = factory.createVariableReference();
+			vr2 = factory.createVariableReference();
+			vr.setVariable(world.getName());
+			vr2.setVariable(ass.getOwnedEnd().get(1).getType().getName());
+			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+			bOp.setLeftExpression(vr);
+			bOp.setRightExpression(vr2);
+			decl.setExpression(bOp);
+			
+			fun.getParameter().add(decl);
+			
+			decl = factory.createDeclaration();
+			var = factory.createVariable();
+			var.setName("w");
+			var.setDeclaration(decl);
+			
+			vr = factory.createVariableReference();
+			vr.setVariable(world.getName());
+			decl.setExpression(vr);
+			
+			fun.getParameter().add(decl);
+						
+			bOp = factory.createBinaryOperation();
+			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+			vr = factory.createVariableReference();
+			vr.setVariable("w");
+			vr2 = factory.createVariableReference();
+			vr2.setVariable(ass.getName());
+			bOp.setLeftExpression(vr);
+			bOp.setRightExpression(vr2);
+			
+			vr = factory.createVariableReference();
+			vr.setVariable("x");
+			
+			BinaryOperation bOp2 = factory.createBinaryOperation();
+			bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
+			if(ass.getOwnedEnd().get(0).getType().getName() == target.getVariable())
+			{
+				bOp2.setLeftExpression(vr);
+				bOp2.setRightExpression(bOp);
+			}
+			else
+			{
+				bOp2.setLeftExpression(bOp);
+				bOp2.setRightExpression(vr);
+			}
+			
+			fun.setExpression(bOp2);
+			
+			module.getParagraph().add(fun);
+			
+		}
 		
+		//Create function for the second associationEnd
+		if(ass.getOwnedEnd().get(1).getName() != null)
+		if(ass.getOwnedEnd().get(1).getName().compareTo("") != 0)
+		{
+			FunctionDeclaration fun = factory.createFunctionDeclaration();
+			fun.setName(ass.getOwnedEnd().get(1).getName());
+			UnaryOperation uOp = factory.createUnaryOperation();
+			uOp.setOperator(UnaryOperator.SET_LITERAL);
+			
+			BinaryOperation bOp = factory.createBinaryOperation();
+			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+			
+			VariableReference vr = factory.createVariableReference();
+			vr.setVariable(ass.getOwnedEnd().get(1).getType().getName());
+			VariableReference vr2 = factory.createVariableReference();
+			vr2.setVariable(world.getName());
+			bOp.setLeftExpression(vr2);
+			bOp.setRightExpression(vr);
+			
+			uOp.setExpression(bOp);
+			fun.setType(uOp);
+			
+			Declaration decl = factory.createDeclaration();
+			Variable var = factory.createVariable();
+			var.setName("x");
+			var.setDeclaration(decl);
+			
+			bOp = factory.createBinaryOperation();
+			vr = factory.createVariableReference();
+			vr2 = factory.createVariableReference();
+			vr.setVariable(world.getName());
+			vr2.setVariable(ass.getOwnedEnd().get(0).getType().getName());
+			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+			bOp.setLeftExpression(vr);
+			bOp.setRightExpression(vr2);
+			decl.setExpression(bOp);
+			
+			fun.getParameter().add(decl);
+			
+			decl = factory.createDeclaration();
+			var = factory.createVariable();
+			var.setName("w");
+			var.setDeclaration(decl);
+			
+			vr = factory.createVariableReference();
+			vr.setVariable(world.getName());
+			decl.setExpression(vr);
+			
+			fun.getParameter().add(decl);			
+			
+			bOp = factory.createBinaryOperation();
+			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+			vr = factory.createVariableReference();
+			vr.setVariable("w");
+			vr2 = factory.createVariableReference();
+			vr2.setVariable(ass.getName());
+			bOp.setLeftExpression(vr);
+			bOp.setRightExpression(vr2);
+			
+			vr = factory.createVariableReference();
+			vr.setVariable("x");
+			
+			BinaryOperation bOp2 = factory.createBinaryOperation();
+			bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
+			if(ass.getOwnedEnd().get(1).getType().getName() == target.getVariable())
+			{
+				bOp2.setLeftExpression(vr);
+				bOp2.setRightExpression(bOp);
+			}
+			else
+			{
+				bOp2.setLeftExpression(bOp);
+				bOp2.setRightExpression(vr);
+			}
+			
+			fun.setExpression(bOp2);
+			
+			module.getParagraph().add(fun);
+			
+		}
+	
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void transformAssociations(Association ass) {
+	public void transformAssociations(Association ass) 
+	{
 		Variable var = factory.createVariable();
 		VariableReference source = factory.createVariableReference();
 		VariableReference target = factory.createVariableReference();
@@ -692,12 +688,11 @@ public class Transformer {
 		uOp.setOperator(UnaryOperator.SET_LITERAL);
 		var.setName(ass.getName());
 		var.setDeclaration(decl);
-		//TODO: Tratar associa��o sem nome
-		association.setVariable(ass.getName());
 		
+		//TODO: Tratar associa��o sem nome		
+		association.setVariable(ass.getName());	
 		
-		decl.setExpression(uOp);
-		
+		decl.setExpression(uOp);		
 		
 		if(ass instanceof Characterization)
 			prepareCharacterizationAssociation(ass, source, target, aOp);
@@ -709,17 +704,15 @@ public class Transformer {
 			prepareAssociation(ass, source, target, aOp);
 		
 		if(ass.getOwnedEnd().get(0).getName() != null || ass.getOwnedEnd().get(1).getName() != null)
-			transformAssociationsEnds(ass,source,target);
-		
+			transformAssociationsEnds(ass,source,target);		
 		
 		uOp.setExpression(aOp);
 		world.getRelation().add(decl);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void prepareMeronymicAssociation(Meronymic ass,
-			VariableReference source, VariableReference target,
-			ArrowOperation aOp) {
+	private void prepareMeronymicAssociation(Meronymic ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
+	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1,cont=0;
 		
 		for(Property prop : ass.getOwnedEnd())
@@ -796,9 +789,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void prepareMediationAssociation(Association ass,
-			VariableReference source, VariableReference target,
-			ArrowOperation aOp) {
+	private void prepareMediationAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
+	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
 		int cont = 1;
 		boolean isSourceReadOnly = false;
@@ -850,9 +842,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void prepareCharacterizationAssociation(Association ass,
-			VariableReference source, VariableReference target,
-			ArrowOperation aOp) {
+	private void prepareCharacterizationAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
+	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
 		int cont = 1;
 		boolean isSourceReadOnly = false;
@@ -904,9 +895,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void prepareAssociation(Association ass,
-			VariableReference source, VariableReference target,
-			ArrowOperation aOp) {
+	private void prepareAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
+	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
 		int cont = 1;
 		boolean isTargetReadOnly = false, isSourceReadOnly = false;
@@ -962,9 +952,9 @@ public class Transformer {
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
-	private void setCardinalities(ArrowOperation aOp, int lowerSource,
-			int upperSource, int lowerTarget, int upperTarget, 
-			VariableReference source, VariableReference target, Association ass) {
+	private void setCardinalities(ArrowOperation aOp, int lowerSource, int upperSource, int lowerTarget, int upperTarget, 
+	VariableReference source, VariableReference target, Association ass) 
+	{
 		//SOURCE CARDINALITY
 		if(lowerSource == 1 && upperSource == 1)
 			aOp.setLeftMultiplicity(Multiplicity.ONE_LITERAL);
@@ -1009,9 +999,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void upperTargetCardinalities(int upperSource,
-			VariableReference target, Association ass) {
-		
+	private void upperTargetCardinalities(int upperSource, VariableReference target, Association ass) 
+	{		
 		QuantificationExpression qe = factory.createQuantificationExpression();
 		qe.setQuantificator(Quantificator.ALL_LITERAL);
 		Declaration decl = factory.createDeclaration();
@@ -1050,9 +1039,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void lowerTargetCardinalities(int lowerSource,
-			VariableReference target, Association ass) {
-		
+	private void lowerTargetCardinalities(int lowerSource, VariableReference target, Association ass) 
+	{		
 		QuantificationExpression qe = factory.createQuantificationExpression();
 		qe.setQuantificator(Quantificator.ALL_LITERAL);
 		Declaration decl = factory.createDeclaration();
@@ -1091,9 +1079,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void upperSourceCardinalities(int upperSource,
-			VariableReference target, Association ass) {
-		
+	private void upperSourceCardinalities(int upperSource, VariableReference target, Association ass) 
+	{		
 		QuantificationExpression qe = factory.createQuantificationExpression();
 		qe.setQuantificator(Quantificator.ALL_LITERAL);
 		Declaration decl = factory.createDeclaration();
@@ -1132,9 +1119,8 @@ public class Transformer {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void lowerSourceCardinalities(int lowerSource,
-			VariableReference target, Association ass) {
-		
+	private void lowerSourceCardinalities(int lowerSource, VariableReference target, Association ass) 
+	{		
 		QuantificationExpression qe = factory.createQuantificationExpression();
 		qe.setQuantificator(Quantificator.ALL_LITERAL);
 		Declaration decl = factory.createDeclaration();
@@ -1172,44 +1158,46 @@ public class Transformer {
 		world.getBlock().getExpression().add(qe);
 	}
 	
-	void saveAls() {
-	//		try {
-	//			//Save XMI model
-	//			resource.save(null);
-	//		} catch (IOException e) {
-	//			e.printStackTrace();
-	//		}
+	void saveAls() 
+	{
+		// save XMI model
+		// try { 	 
+		//	 resource.save(null);
+		// } catch (IOException e) {
+		//	 e.printStackTrace();
+		// }
 			
-		try{
+		try{			
 			//Create file 
 			FileWriter fstream = new FileWriter(OntoUML2Alloy.alsPath);
 			BufferedWriter out = new BufferedWriter(fstream);
 			out.write(resource.getContents().get(0).toString());
+			
 			//Close the output stream
 			out.close();
 		  }catch (Exception e){//Catch exception if any
 			  System.err.println("Error: " + e.getMessage());
-		  }
-		
+		  }		
 	}
 
 	@SuppressWarnings("unchecked")
-	private void createModule() {
+	private void createModule() 
+	{
 		module = factory.createAlloyModule();
 		module.setName(Reader.modelname);
-		resource.getContents().add(module);
-		
+		resource.getContents().add(module);		
 		
 		/**
-		 * Create Module Importation
-		 * In all executions of the transformation, two Alloy modules are 
-		 * imported: world_structure and ontological_properties, 
-		 * both parameterized by the World signature. The first defines 
-		 * the Kripke  world structure [35], with past, future and 
-		 * counterfactual worlds, whilst the second provides functions and 
-		 * predicates that characterize ontological properties, such as 
-		 * rigidity and dependence.
-		 */
+		* Create Module Importation
+		* In all executions of the transformation, two Alloy modules are 
+		* imported: world_structure and ontological_properties, 
+		* both parameterized by the World signature. The first defines 
+		* the Kripke  world structure [35], with past, future and 
+		* counterfactual worlds, whilst the second provides functions and 
+		* predicates that characterize ontological properties, such as 
+		* rigidity and dependence.
+		*/
+		
 		ModuleImportation mi = factory.createModuleImportation();
 		ModuleImportation mi2 = factory.createModuleImportation();
 		mi.setName("world_structure");
@@ -1298,7 +1286,8 @@ public class Transformer {
 		
 	}
 
-	public void finalAdditions(){
+	public void finalAdditions()
+	{
 		//Creates Rigidity Fact
 		createRigidityFact();
 		
@@ -1309,7 +1298,8 @@ public class Transformer {
 		createRun();
 	}
 	
-	private void createRun() {
+	private void createRun() 
+	{
 		CommandDeclaration run = factory.createCommandDeclaration();
 		run.setIsRun(true);
 		
@@ -1320,7 +1310,8 @@ public class Transformer {
 		module.getParagraph().add(run);
 	}
 
-	private void createVisible() {
+	private void createVisible() 
+	{
 		VariableReference vr;
 		FunctionDeclaration fun = factory.createFunctionDeclaration();
 		fun.setName("visible");
@@ -1344,7 +1335,8 @@ public class Transformer {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void createRigidityFact() {
+	private void createRigidityFact() 
+	{
 		if(rigidElements.size()>0)
 		{
 			all_rigid_classes = factory.createFactDeclaration();
@@ -1386,7 +1378,8 @@ public class Transformer {
 		}
 	}
 
-	private void newSigSubtantialPropertyDatatype() {
+	private void newSigSubtantialPropertyDatatype() 
+	{
 		int cont = 1;
 		SignatureDeclaration sigDecl = null;
 		for(String sigElement : defaultSignatures)
@@ -1419,7 +1412,8 @@ public class Transformer {
 		}
 	}
 	
-	private Expression newBOPSubtantialPropertyDatatype() {
+	private Expression newBOPSubtantialPropertyDatatype() 
+	{
 		int cont = 1;
 		//boSMD is an operation containing the union between Object, Property and Datatype
 		BinaryOperation bo = null;
@@ -1465,7 +1459,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void createObjectClassDeclaration(String name) {
+	private void createObjectClassDeclaration(String name) 
+	{
 		Declaration decl = factory.createDeclaration();
 		Variable var = factory.createVariable();
 		UnaryOperation uOp = factory.createUnaryOperation();
@@ -1493,7 +1488,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void createDatatypeDeclaration(String name) {
+	private void createDatatypeDeclaration(String name) 
+	{
 		Declaration decl = factory.createDeclaration();
 		Variable var = factory.createVariable();
 		UnaryOperation uOp = factory.createUnaryOperation();
@@ -1521,7 +1517,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void createPropertyClassDeclaration(String name) {
+	private void createPropertyClassDeclaration(String name) 
+	{
 		Declaration decl = factory.createDeclaration();
 		Variable var = factory.createVariable();
 		UnaryOperation uOp = factory.createUnaryOperation();
@@ -1548,7 +1545,8 @@ public class Transformer {
 		world.getRelation().add(decl);
 	}
 	
-	public static void initResource() {
+	public static void initResource() 
+	{
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new AlloyResourceFactoryImpl() );
 		resourceSet.getPackageRegistry().put(AlloyPackage.eNS_URI,AlloyPackage.eINSTANCE);
@@ -1559,7 +1557,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void createExists(String param) {
+	public void createExists(String param) 
+	{		
 		CompareOperation co = factory.createCompareOperation();
 		co.setOperator(CompareOperator.SUBSET_LITERAL);
 		
@@ -1631,7 +1630,8 @@ public class Transformer {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void createKindDatatypePropertyDisjoint() {
+	public void createKindDatatypePropertyDisjoint() 
+	{
 		DisjointExpression disj = null;
 		
 		//Kinds, Quantyties and Collectives
