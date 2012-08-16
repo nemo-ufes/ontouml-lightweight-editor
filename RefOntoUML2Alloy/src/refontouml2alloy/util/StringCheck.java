@@ -1,21 +1,33 @@
 package refontouml2alloy.util;
 
+/**
+ * This class is used for check the String provided by the RefOntoUML model 
+ * and for remove the invalid characters
+ *  
+ * @author Lucas Thom
+ */
+
 import java.text.Normalizer;
 import java.util.HashMap;
 
 public class StringCheck {
 	
-	public int Relator=0,Mode=0,Kind=0,Quantity=0,Collective=0,Phase=0,Role=0,Category=0,RoleMixin=0,Mixin=0;
-	public int componentOf=0,subQuantityOf=0,subCollectionOf=0,memberOf=0,Mediation=0,Characterization=0,
-			Derivation=0,FomalAssociation=0,MaterialAssociation=0;
+	public int Relator=0, Mode=0, Kind=0, Quantity=0, Collective=0, Phase=0, Role=0, Category=0, RoleMixin=0, Mixin=0;
+	
+	public int componentOf=0, subQuantityOf=0, subCollectionOf=0, memberOf=0, Mediation=0, Characterization=0,
+			   Derivation=0, FomalAssociation=0, MaterialAssociation=0;
+	
 	public HashMap<String, WordCounter> names = new HashMap<String, WordCounter>();
 	
 	public String removeSpecialNames(String str) {
 		int cont=-1;
 		
-
+		String[] keywords  = {
+				"World","abstract","all","and","as","assert","but","check","disj","else","exactly","extends","fact",
+				"for","fun","iden","iff","implies","in","Int","let","lone","module","no","none","not","one","open",
+				"or","pred","run","set","sig","some","sum","univ","int","Int"
+		};
 		
-		String[] keywords  = {"World","abstract","all","and","as","assert","but","check","disj","else","exactly","extends","fact","for","fun","iden","iff","implies","in","Int","let","lone","module","no","none","not","one","open","or","pred","run","set","sig","some","sum","univ","int","Int"};
 		for(int i=0;i<keywords.length;i++)
 		{
 			if(str==keywords[i])

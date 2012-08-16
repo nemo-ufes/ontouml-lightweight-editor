@@ -23,9 +23,9 @@ public class VerificationHelper {
 			else
 				return new OperationResult(ResultType.SUCESS, "Model has been successfuly transformed.", null );
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
     	/*
     	File alloyFile = new File(alloyFileName);  	
     	alloyFile.deleteOnExit();
@@ -79,7 +79,8 @@ public class VerificationHelper {
 		String alloyFileName = ConfigurationHelper.getCanonPath(tempDir, OLEDSettings.SIMULATION_DEFAULT_FILE.getValue());
 		File alloyFile = new File(alloyFileName);  	
     	alloyFile.deleteOnExit();
-    	    /*	
+    
+    	/*	
     	if(alloyFile.exists())
 		{		
 	        A4Options opt = new A4Options();
@@ -119,11 +120,7 @@ public class VerificationHelper {
 			} 
 		}
     	*/
-    	return new OperationResult(ResultType.ERROR, "Not Implemented yet.", null);
-    	
-	
-		
+    	return new OperationResult(ResultType.ERROR, "Not Implemented yet.", null);		
 	}
-		
  
 }
