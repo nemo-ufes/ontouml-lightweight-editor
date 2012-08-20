@@ -17,8 +17,6 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.emf.common_2.7.0.v20120127-1122.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore_2.7.0.v20120127-1122.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.xmi_2.7.0.v20120127-1122.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Alloy"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/RefOntoUML2Alloy"/>
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.refontouml.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.common_1.6.0.v201105021727.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml_3.2.100.v201108110105.jar"/>
