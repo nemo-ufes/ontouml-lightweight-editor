@@ -52,8 +52,8 @@ public class MapperEA implements Mapper {
 	        		if (docAttributes.item(i).getNodeName().equalsIgnoreCase("xmlns:OntoUML")) {
 	        			OntoUML = docAttributes.item(i).getNodeValue();
 	        		} else {
-	        			System.out.println("tem outro");
-	        			System.out.println(docAttributes.item(i).getNodeName());
+	        			// TODO There is another unknown namespace.
+	        			// Will have to know how to deal with it
 	        		}
 	        	}
 	        }
@@ -82,7 +82,7 @@ public class MapperEA implements Mapper {
     	List<Element> childList = getElementChilds(element);
 	    for (Element child : childList) {
     		if (child.hasAttributeNS(XMINS, "id") &&
-    			!child.getNodeName().equals("Association")) {
+    			doc.getElementById(child.getAttributeNS(XMINS, "id")) == null) {
     			child.setIdAttributeNS(XMINS, "id", true);
     		}
     		setID(child);
@@ -98,12 +98,14 @@ public class MapperEA implements Mapper {
 	public String getStereotype(Object element) {
 		Element elem = (Element) element;
 		
-		String type = elem.getAttributeNS(XMINS, "type");
-		
 		Element stereotypeElem = getElementByBaseRef(elem);
 		if (stereotypeElem != null) {
 	    	return stereotypeElem.getNodeName().replace("OntoUML:", "");
 		} else {
+			String type = elem.getAttributeNS(XMINS, "type");
+			if (ElementType.get(type.replace("uml:", "")) == ElementType.CLASS) {
+				return "";
+			}
 			return type.replace("uml:", "");
 		}
 	}
