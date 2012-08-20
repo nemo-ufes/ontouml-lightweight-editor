@@ -161,7 +161,7 @@ public class RefOntoCreator {
     		newclass = factory.createClass();
     	}
     	else {
-    		throw new RefOntoUMLException("Error: Class stereotype '" + stereotype + "' not supported." + "\n");
+    		throw new RefOntoUMLException("Class stereotype '" + stereotype + "' not supported." + "\n");
     	}
 		
 		return newclass;
@@ -202,7 +202,7 @@ public class RefOntoCreator {
 			newassoc = factory.createAssociation();
 		}
 		else {
-			throw new RefOntoUMLException("Error: Association stereotype '" + stereotype + "' not supported.\n");
+			throw new RefOntoUMLException("Association stereotype '" + stereotype + "' not supported.\n");
 		}
 		
 		return newassoc;
@@ -299,7 +299,9 @@ public class RefOntoCreator {
     		((Meronymic)assoc1).setIsImmutablePart(Boolean.parseBoolean((String)hashProp.get("isimmutablepart")));
     		((Meronymic)assoc1).setIsImmutableWhole(Boolean.parseBoolean((String)hashProp.get("isimmutablewhole")));
     		((Meronymic)assoc1).setIsInseparable(Boolean.parseBoolean((String)hashProp.get("isinseparable")));
-    		((Meronymic)assoc1).setIsShareable(Boolean.parseBoolean((String)hashProp.get("isshareable")));
+    		if (hashProp.containsKey("isshareable")) {
+    			((Meronymic)assoc1).setIsShareable(Boolean.parseBoolean((String)hashProp.get("isshareable")));
+    		}
     	} catch (ClassCastException e) {
     		// DO NOTHING
     	}
@@ -325,11 +327,13 @@ public class RefOntoCreator {
 	}
 	
 	public void dealGeneralization (Generalization gen1, Map<String, Object> hashProp) {
-		gen1.setIsSubstitutable(Boolean.parseBoolean((String)hashProp.get("issubstitutable")));
+		if (hashProp.containsKey("issubstitutable")) {
+			gen1.setIsSubstitutable(Boolean.parseBoolean((String)hashProp.get("issubstitutable")));
+		}
 		// General and Specific are EOposites.
 		// Given that, it`s only necessary to define one of those properties.
 		gen1.setGeneral((Classifier)hashProp.get("general"));
-		gen1.setSpecific((Classifier)hashProp.get("specific"));
+		//gen1.setSpecific((Classifier)hashProp.get("specific"));
 		dealDirectedRelashionship(gen1, hashProp);
 	}
 	
@@ -369,8 +373,6 @@ public class RefOntoCreator {
 	public void dealProperty(RefOntoUML.Property prop1, Map<String, Object> hashProp) {
 		prop1.setIsDerived(Boolean.parseBoolean((String)hashProp.get("isderived")));
 		prop1.setIsDerivedUnion(Boolean.parseBoolean((String)hashProp.get("isderivedunion")));
-		prop1.setIsOrdered(Boolean.parseBoolean((String)hashProp.get("isordered")));
-		prop1.setIsUnique(Boolean.parseBoolean((String)hashProp.get("isunique")));
 		prop1.setDefault((String)hashProp.get("default"));
 		prop1.setAggregation(AggregationKind.get((String)hashProp.get("aggregation")));
 		dealStructFeature(prop1, hashProp);
@@ -451,6 +453,11 @@ public class RefOntoCreator {
 				}
 			}
 			Mediator.warningLog += "Property of: " + warningPath + "\n";
+		}
+		
+		mel.setIsOrdered(Boolean.parseBoolean((String)hashProp.get("isordered")));
+		if (hashProp.containsKey("isunique")) {
+			mel.setIsUnique(Boolean.parseBoolean((String)hashProp.get("isunique")));
 		}
 		
 		dealElement(mel, hashProp);

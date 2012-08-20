@@ -16,6 +16,7 @@ import javax.swing.tree.TreePath;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.Diagnostician;
 
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.RefOntoCreator.RefOntoUMLException;
@@ -73,8 +74,9 @@ public class Mediator {
     	//Resets the CheckboxTree
     	actualParent = null;
     	
-    	errorLog = "\n";
-    	warningLog = "\n";
+    	errorLog = "";
+    	errorPath = "";
+    	warningLog = "";
     }
     
     public void save() {
@@ -165,18 +167,12 @@ public class Mediator {
         
         // Cria o modelo propriamente dito
         Object modelelement = mapper.getModelElement();
-        if (createElement(modelelement, ElementType.MODEL) == null) {
-        	errorLog += "Path of the element with error: " + errorPath + "\n";
-        	Exception e = new Exception(errorLog);
-        	throw e;
-        	
-        } else {
-        	dealModel();
-        	return actualParent;
-        }
+        createElement(modelelement, ElementType.MODEL);
+        dealModel();
+        return actualParent;
     }
     
-    protected RefOntoUML.Element createElement(Object element, ElementType elemType) throws RefOntoUMLException {
+    protected RefOntoUML.Element createElement(Object element, ElementType elemType) throws Exception {
     	RefOntoUML.Element elem1 = null;
     	String stereotype = null;
     	
@@ -268,7 +264,7 @@ public class Mediator {
     			break;
     	}
     	
-    	if (elem1 instanceof RefOntoUML.Classifier) {
+    	if (elem1 instanceof RefOntoUML.Classifier && !(elem1 instanceof RefOntoUML.PrimitiveType)) {
     		doClassifier(element, (RefOntoUML.Classifier)elem1);
 			//Add in the tree
 			newTreeNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(elem1));
@@ -344,7 +340,7 @@ public class Mediator {
     	}
     }
     
-    protected RefOntoUML.Package doPackage(RefOntoUML.Package pack, Object element) {
+    protected RefOntoUML.Package doPackage(RefOntoUML.Package pack, Object element) throws Exception {
     	DefaultMutableTreeNode newTreeNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(pack));
     	if (actualParent != null) {
     		actualParent.add(newTreeNode);
@@ -380,30 +376,39 @@ public class Mediator {
     		npe.printStackTrace();
     		Mediator.warningLog += "Warning: Empty package '" + pack.getName() + "'.\n";
     		
-    	} catch (RefOntoUMLException refe) {
-    		errorPath += refe.getError();
-    		errorPath = mapper.getName(element) + " -> " + errorPath;
-    		return null;
     	}
         
         return pack;
     }
     
-    protected void packageIterator(RefOntoUML.Package pack, Object domParent, ElementType type) throws RefOntoUMLException {
-    	List<Object> listPacks = mapper.getElements(domParent, type);
+    protected void packageIterator(RefOntoUML.Package pack, Object domParent, ElementType type) throws Exception {
+		List<Object> listPacks = mapper.getElements(domParent, type);
         for (Object e : listPacks) {
-	    	Object refOntoElement = createElement(e, type);
-			refcreator.addPackagedElement(pack, (RefOntoUML.PackageableElement) refOntoElement);
-			
-			if (refOntoElement instanceof RefOntoUML.Package) {
-				actualParent = (DefaultMutableTreeNode) actualParent.getParent();
-			} else if (refOntoElement instanceof RefOntoUML.MaterialAssociation) {
-        		doMaterial((RefOntoUML.MaterialAssociation)refOntoElement, e, pack);
+        	try {
+        		
+        		Object refOntoElement = createElement(e, type);
+				refcreator.addPackagedElement(pack, (RefOntoUML.PackageableElement) refOntoElement);
+				
+				if (refOntoElement instanceof RefOntoUML.Package) {
+					actualParent = (DefaultMutableTreeNode) actualParent.getParent();
+				} else if (refOntoElement instanceof RefOntoUML.MaterialAssociation) {
+	        		doMaterial((RefOntoUML.MaterialAssociation)refOntoElement, e, pack);
+	        	}
+				
+        	} catch (RefOntoUMLException refe) {
+        		errorLog = refe.getError();
+        		errorPath = mapper.getName(domParent) + " -> " + mapper.getName(e);
+        		for (EObject eObj = pack.eContainer(); eObj != null; eObj = eObj.eContainer()) {
+        			errorPath = ((RefOntoUML.Package)eObj).getName() + " -> " + errorPath;
+        		}
+        		errorLog += "Path of the element with error: " + errorPath + "\n";
+            	Exception ex = new Exception(errorLog);
+            	throw ex;
         	}
         }
     }
     
-    protected void doClassifier(Object classelement, RefOntoUML.Classifier class1) throws RefOntoUMLException {
+    protected void doClassifier(Object classelement, RefOntoUML.Classifier class1) throws Exception {
     	
 		// Get the classifier properties (they can be attributes or association ends)
     	if (class1 instanceof RefOntoUML.Enumeration) {
