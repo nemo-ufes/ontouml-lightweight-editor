@@ -16,17 +16,19 @@ public class VerificationHelper {
 	   	String alloyFileName = OLEDSettings.SIMULATION_DEFAULT_FILE.getValue();		
 	   	String themeFileName = OLEDSettings.SIMULATION_THEME_FILE.getValue();
 	   	Boolean succeeds = false;
+	   	String message = "";
     	try	{    		
 		
     		OntoUML2Alloy.transformToAlloyFile(model, dirPath, alloyFileName, themeFileName);
 			succeeds = true;
 			
 		} catch (Exception e) {
+			message = e.getLocalizedMessage();
 			e.printStackTrace();
 		}
     	
     	if (succeeds) return new OperationResult(ResultType.SUCESS, "The OntoUML Model has been successfuly transformed into alloy.", null );
-    	if (!succeeds) return new OperationResult(ResultType.ERROR, "An Error ocurred while executing the transformation of OntoUML into alloy", null);
+    	if (!succeeds) return new OperationResult(ResultType.ERROR, "An Error ocurred while executing the transformation of OntoUML into alloy\n"+message, null);
     	
     	/*
     	File alloyFile = new File(alloyFileName);  	
