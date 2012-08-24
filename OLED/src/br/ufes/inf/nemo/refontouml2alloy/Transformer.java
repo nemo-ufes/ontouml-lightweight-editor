@@ -523,7 +523,9 @@ public class Transformer {
 					{
 						list.add(Reader.modelElementsMap.get(pe));
 						for(Generalization gen : ((Relator)((Mediation)pe).sourceEnd().getType()).getGeneralization())
-							auxMethodRelator(list,(Relator)gen.getGeneral());
+						{							
+							if (gen.getGeneral() instanceof Relator) auxMethodRelator(list,(Relator)gen.getGeneral());
+						}
 					}
 				}
 				else if( ((Mediation)pe).targetEnd().getType() instanceof Relator )
@@ -532,7 +534,9 @@ public class Transformer {
 					{
 						list.add(Reader.modelElementsMap.get(pe));
 						for(Generalization gen : ((Relator)((Mediation)pe).targetEnd().getType()).getGeneralization())
-							auxMethodRelator(list,(Relator)gen.getGeneral());
+						{
+							if (gen.getGeneral() instanceof Relator) auxMethodRelator(list,(Relator)gen.getGeneral());
+						}
 					}
 				}				
 			}
