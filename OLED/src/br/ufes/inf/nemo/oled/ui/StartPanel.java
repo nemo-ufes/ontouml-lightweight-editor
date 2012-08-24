@@ -78,6 +78,7 @@ public class StartPanel extends JPanel implements Editor {
 	private JButton openProjectButton;
 	private JButton learnOntoUMLButton;
 	private JPanel recentPanel;
+	@SuppressWarnings("rawtypes")
 	private JList recentList;
 	private JScrollPane recentScroll;
 	private JLabel recentLabel;
@@ -99,11 +100,13 @@ public class StartPanel extends JPanel implements Editor {
 		populateRecentProjects();
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void populateRecentProjects() {
 		recentList.setModel(new DefaultComboBoxModel(ConfigurationHelper.getRecentProjects()));
 	}
 
 	//Builds the UI
+	@SuppressWarnings("rawtypes")
 	private void initGUI() {
 		try {
 			BorderLayout thisLayout = new BorderLayout();

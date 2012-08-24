@@ -60,18 +60,22 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
 	private JPanel memberPanel;
 	private JTextField nameText;
 	private JLabel nameLabel;
+	@SuppressWarnings("rawtypes")
 	private JComboBox chooseGenSetCombo;
 	private JLabel chooseLabel;
 	private JPanel genSetPropertiesPanel;
 	private JButton removeButton;
 	private JButton addButton;
+	@SuppressWarnings("rawtypes")
 	private JComboBox addGenSetCombo;
 	private JPanel parentPanel;
 	private JCheckBox coveringCheck;
 	private JButton saveButton;
 	private JCheckBox disjointCheck;
+	@SuppressWarnings("rawtypes")
 	private JList memberList;
 	private JScrollPane memberScroll;
+	@SuppressWarnings("rawtypes")
 	private JList parentList;
 	private JScrollPane parentScroll;
 	private JPanel parentTablePanel;
@@ -114,6 +118,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void populateAddGenSetCombo()
  	{
  		Object[] items = new Object[modelGeneralizationSets.size() + 1];
@@ -128,10 +133,12 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
  			}	
  		}
  		
+		@SuppressWarnings("rawtypes")
 		ComboBoxModel comboModel = new DefaultComboBoxModel(items);
 		addGenSetCombo.setModel(comboModel);
  	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void populateParentList()
 	{
 		List<String> genSetsNames = new ArrayList<String>();
@@ -142,6 +149,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
 		parentList.setModel(new DefaultComboBoxModel(genSetsNames.toArray()));
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void populateChooseGenSetCombo()
  	{
  		Object[] items = new Object[modelGeneralizationSets.size() + 2];
@@ -157,10 +165,12 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
  			}	
  		}
  		
+		@SuppressWarnings({ "rawtypes" })
 		ComboBoxModel comboModel = new DefaultComboBoxModel(items);
 		chooseGenSetCombo.setModel(comboModel);
  	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void populateMemberList(GeneralizationSet genSet)
 	{
 		List<String> generalizations = new ArrayList<String>();
@@ -170,7 +180,8 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
 		memberList.setModel(new DefaultComboBoxModel(generalizations.toArray()));
 	}
 	
- 	private void initGUI() {
+ 	@SuppressWarnings("rawtypes")
+	private void initGUI() {
 		try {
 			{
 				setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -518,6 +529,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void resetGenSetProperties() {
 		nameText.setText(null);
 		disjointCheck.setSelected(false);

@@ -14,8 +14,9 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.edit_2.6.0.v20100914-1218.jar"/>
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.refontouml.jar"/>
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/RefOntoUML2Alloy"/>
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.refontouml.edit.jar"/>
+	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.transformation.ref2uml_1.0.0.201208171545.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml_3.2.100.v201108110105.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RefOntoUML2SBVR"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RefOntoUML2SimpleOwl"/>
 	<classpathentry kind="lib" path="lib/forms-1.1.0.jar"/>
@@ -23,5 +24,6 @@
 	<classpathentry kind="lib" path="/XMI2RefOntoUML/lib/lablib-checkboxtree-3.3.jar"/>
 	<classpathentry kind="lib" path="lib/alloy4.2-rc.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-all-1.6.3.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Alloy"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
