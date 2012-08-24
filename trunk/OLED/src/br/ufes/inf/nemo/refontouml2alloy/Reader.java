@@ -51,23 +51,26 @@ public class Reader {
 	public static Transformer transformer;	
 	
 	// HashMap < PackageableElement modelElement, String modifiedName >
-	public static HashMap<PackageableElement,String> modelElementsMap = new HashMap<PackageableElement,String>();
+	public static HashMap<PackageableElement,String> modelElementsMap;
 	
 	// HashMap < Property AssocEnd, String modifiedName >
-	public static HashMap<Property,String> modelAssocEndMap = new HashMap<Property,String>();
+	public static HashMap<Property,String> modelAssocEndMap;
 	
 	// default
-	public static String modelName = "model";
+	public static String modelName;
 	
 	// performs modifications on names
-	public static StringCheck ch = new StringCheck();
-			
+	public static StringCheck ch ;			
 	
 	/* ============================================================================*/
 		
 	public static void init(Model m)
 	{	
 		transformer = new Transformer();		
+		modelAssocEndMap = new HashMap<Property,String>();
+		modelElementsMap = new HashMap<PackageableElement,String>();
+		ch = new StringCheck();
+		modelName = "model";
 		
 		if(m != null) 
 		{		
