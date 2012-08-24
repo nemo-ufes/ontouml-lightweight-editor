@@ -1142,8 +1142,8 @@ public class Transformer {
 				else
 				{
 					target.setVariable(Reader.modelElementsMap.get(c.getType()));
-					lowerSource = c.getLower();
-					upperSource = c.getUpper();
+					lowerTarget = c.getLower();
+					upperTarget = c.getUpper();
 				}
 			}
 		}
@@ -1254,8 +1254,8 @@ public class Transformer {
 				else
 				{
 					target.setVariable(Reader.modelElementsMap.get(c.getType()));
-					lowerSource = c.getLower();
-					upperSource = c.getUpper();
+					lowerTarget = c.getLower();
+					upperTarget = c.getUpper();
 					isTargetReadOnly = c.isIsReadOnly();
 				}
 			}

@@ -1,8 +1,6 @@
 package br.ufes.inf.nemo.refontouml2alloy;
 
 /**
- * @author Lucas Thom
- * @author Tiago Prince
  * 
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
