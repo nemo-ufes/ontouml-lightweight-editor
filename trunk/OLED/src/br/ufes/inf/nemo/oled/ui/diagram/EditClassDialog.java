@@ -421,7 +421,8 @@ public class EditClassDialog extends JDialog {
 	}
 	
 	private TableCellEditor createEditor(Object[] objects) {
-        JComboBox combo = new JComboBox(objects) {
+        @SuppressWarnings({ "rawtypes", "unchecked" })
+		JComboBox combo = new JComboBox(objects) {
 
         	private static final long serialVersionUID = 1L;
 			

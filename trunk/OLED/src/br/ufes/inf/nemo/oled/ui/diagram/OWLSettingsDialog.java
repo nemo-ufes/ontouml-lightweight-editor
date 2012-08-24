@@ -49,6 +49,7 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 	private ButtonGroup destinationGroup;
 	private JRadioButton fileButton;
 	private JTextField filePathText;
+	@SuppressWarnings("rawtypes")
 	private JComboBox mappingTypeCombo;
 	private JButton cancelButton;
 	private JButton okButton;
@@ -122,6 +123,7 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
  		ProjectSettings.OWL_MAPPING_TYPE.setValue(project, ((MappingTypeComboItem) mappingTypeCombo.getSelectedItem()).value);
  	}
  	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initGUI() {
 		try {
 			{
@@ -376,6 +378,7 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 		return manager;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ComboBoxModel getMappingTypeComboModel()
 	{
 		MappingTypeComboItem simpleItem = new MappingTypeComboItem();

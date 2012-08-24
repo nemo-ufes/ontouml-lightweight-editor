@@ -472,6 +472,7 @@ public class EditClassDialog2 extends javax.swing.JDialog {
 	
 	private TableCellEditor createComboEditor(Object[] objects) {
         
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox combo = new JComboBox(objects) {
 
         	private static final long serialVersionUID = 1L;

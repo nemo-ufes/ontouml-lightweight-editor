@@ -243,6 +243,7 @@ public class VerificationSettingsDialog extends JDialog {
  		dispose();
 	}
 	 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private TableCellEditor createEditor(Object[] objects) {
         JComboBox combo = new JComboBox(objects);
         combo.setEditable(false);
@@ -250,6 +251,7 @@ public class VerificationSettingsDialog extends JDialog {
         return new DefaultCellEditor(combo);
     }
 	
+	@SuppressWarnings("rawtypes")
 	class IconRenderer extends JLabel implements TableCellRenderer, ListCellRenderer {
 
 		private static final long serialVersionUID = 1L;

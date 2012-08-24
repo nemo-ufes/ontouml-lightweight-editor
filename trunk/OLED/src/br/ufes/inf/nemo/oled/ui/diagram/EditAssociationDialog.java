@@ -58,6 +58,7 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 	private JTextField sourceRoleText;
 	private JLabel sourceRoleLabel;
 	private JCheckBox readonlyTargetCheck;
+	@SuppressWarnings("rawtypes")
 	private JComboBox multiplicityTargetCombo;
 	private JLabel multiplicityTargetLabel;
 	private JPanel targetPanel;
@@ -79,6 +80,7 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 	private JCheckBox showRolesCheck;
 	private JCheckBox showMultiplicityCheck;
 	private JCheckBox readonlySourceCheck;
+	@SuppressWarnings("rawtypes")
 	private JComboBox multiplicitySourceCombo;
 	private JRadioButton r2lRadio;
 	private JPanel nameDirectionPanel;
@@ -104,6 +106,7 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 		myPostInit();
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initGUI() {
 		try {
 			{
@@ -538,6 +541,7 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 	/**
 	 * Post-Initialization code.
 	 */
+	@SuppressWarnings("unchecked")
 	private void myPostInit() {
 		
 		associationNameText.setText(getAssociation().getName());
@@ -641,7 +645,7 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 	 *            the JComboBox
 	 * @return true if valid, false otherwise
 	 */
-	private boolean verifyMultiplicity(JComboBox combobox) {
+	private boolean verifyMultiplicity(@SuppressWarnings("rawtypes") JComboBox combobox) {
 		try {
 			ModelHelper.setMultiplicityFromString(null, combobox.getSelectedItem().toString());
 			return true;
@@ -721,6 +725,7 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 		return (Association) associationElement.getAssociation();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ComboBoxModel getDefaultMultiplicitiesModel(String multiplicity) {
 		ComboBoxModel model = new DefaultComboBoxModel(new String[] { "0..1", "1", "*", "1..*" });
 		if(multiplicity != null)
