@@ -13,6 +13,7 @@ import br.ufes.inf.nemo.ontouml.alloy.CommandDeclaration;
 import br.ufes.inf.nemo.ontouml.alloy.GenericScope;
 import br.ufes.inf.nemo.ontouml.alloy.PredicateDeclaration;
 import br.ufes.inf.nemo.ontouml.alloy.ScopeSpecification;
+import br.ufes.inf.nemo.ontouml.alloy.Scopeable;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -466,7 +467,14 @@ public class CommandDeclarationImpl extends ParagraphImpl implements CommandDecl
 	public String toString() {
 		StringBuffer result = new StringBuffer();
 		if(isRun) {
-			result.append("run {\n} for "+((GenericScope)scope).getScopeSize());
+			GenericScope genScope = (GenericScope)scope;
+			result.append("run {\n} for "+genScope.getScopeSize());
+			
+			if(((Scopeable)genScope.getScopeable().get(0))!= null) 
+			{
+				Scopeable s = ((Scopeable)genScope.getScopeable().get(0));
+				result.append(" but "+s.getScopeSize()+" "+s.getSignature());
+			}			
 		}
 		
 		return result.toString();
