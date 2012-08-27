@@ -60,7 +60,7 @@ public class OntoUML2Alloy {
 		// Parameters to call SimpleGUI 
 		argsAnalyzer[0] = alsPath;
 		argsAnalyzer[1] = themePath;
-				
+						
 		/* ============================================================================*/
 		
 		// Copy alloy4.2-rc.jar into directory Path
@@ -88,10 +88,10 @@ public class OntoUML2Alloy {
 		OutputStream out2 = new FileOutputStream(new File(themePath));
 		
 		// Copy data flow -> MB x MB
-		src = new byte[1024];
-		read = 0;
-		while ((read = is2.read(src)) != -1) {
-			out2.write(src, 0, read);
+		byte[]src2 = new byte[1024];
+		int read2 = 0;
+		while ((read2 = is2.read(src2)) != -1) {
+			out2.write(src2, 0, read2);
 		}
 		is2.close();
 		out2.flush();
