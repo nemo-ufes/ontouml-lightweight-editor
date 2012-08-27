@@ -60,28 +60,47 @@ public class Reader {
 	public static String modelName;
 	
 	// performs modifications on names
-	public static StringCheck ch ;			
+	public static StringCheck ch ;
 	
 	/* ============================================================================*/
 		
+	public static void printModelElementsMap ()
+	{		
+		System.out.println("modelElementsMap < PackageableElement elem, String modifiedName >");
+		for(PackageableElement p: modelElementsMap.keySet())
+		{
+			System.out.println("\""+p.getName()+"\"->\""+modelElementsMap.get(p)+"\"");			
+		}
+	}
+	
+	public static void printModelAssocEndMap ()
+	{		
+		System.out.println("modelAssocEndMap <Property assocEnd,String modifiedName>");
+		for(Property p: modelAssocEndMap.keySet())
+		{
+			System.out.println("\""+p.getName()+"\"->\""+modelAssocEndMap.get(p)+"\"");			
+		}
+	}
+	
+	/* ============================================================================*/
+	
 	public static void init(Model m)
 	{	
 		transformer = new Transformer();		
 		modelAssocEndMap = new HashMap<Property,String>();
 		modelElementsMap = new HashMap<PackageableElement,String>();
-		ch = new StringCheck();
-		modelName = "model";
+		ch = new StringCheck();		
 		
 		if(m != null) 
-		{		
+		{
 			initModelName(m);
 			
-			initModelElements(m);		
+			initModelElements(m);
 			
 			setDefaultSigsTransformer(m);	
 			
 			transformer.init();
-		}
+		}		
 	}
 	
 	/* ============================================================================*/
@@ -90,7 +109,7 @@ public class Reader {
 	{				
 		StringCheck ch = new StringCheck();		
 		
-		if((m.getName() != null)&&(m.getName() != "")) modelName = ch.removeSpecialNames(m.getName());				
+		if(m.getName() != null) modelName = ch.removeSpecialNames(m.getName(),m.getClass().toString());				
 	}
 	
 	/* ============================================================================*/
@@ -115,23 +134,19 @@ public class Reader {
 				
 				if( (property0.getName() != null) && !(property0.getName().equals("")) )
 				{
-					modelAssocEndMap.put(property0, ch.removeSpecialNames(property0.getName()));
+					modelAssocEndMap.put(property0, ch.removeSpecialNames(property0.getName(),property0.getClass().toString()));
 				}
 				if( (property1.getName() != null) && !(property1.getName().equals("")) )
 				{
-					modelAssocEndMap.put(property1, ch.removeSpecialNames(property1.getName()));
+					modelAssocEndMap.put(property1, ch.removeSpecialNames(property1.getName(),property1.getClass().toString()));
 				}
 			}
 			if( pe.getName() != null )
-			{
-				if(pe.getName().compareTo("") != 0)
-					modelElementsMap.put(pe,ch.removeSpecialNames(pe.getName()));
-				
-				else if (pe.getName().compareTo("") == 0)
-					modelElementsMap.put(pe,ch.removeSpecialNames(pe.getClass().toString()));
+			{				
+				modelElementsMap.put(pe,ch.removeSpecialNames(pe.getName(),pe.getClass().toString()));				
 			}
 		}else{
-			modelElementsMap.put(pe,"#!");	
+			
 		}		
 	}
 	
