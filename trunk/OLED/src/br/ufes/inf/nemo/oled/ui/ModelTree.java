@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
+import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,12 +50,21 @@ public class ModelTree extends JPanel {
 		tree.setModel(new DefaultTreeModel(root));
 	}
 	
+	private String ExtractClassName (String str)
+	{
+		str = str.replaceAll("class RefOntoUML.impl.","");
+        str = str.replaceAll("Impl","");
+        str = Normalizer.normalize(str, Normalizer.Form.NFD);
+        return str;
+	}
+	
 	private void buildTreeRRecursive(EList<PackageableElement> list, ModelElementWrapper root)
 	{
 		ModelElementWrapper child = null;
 		for (PackageableElement element : list ) {
-			if(element instanceof NamedElement) {
-				child = new ModelElementWrapper(element.getName());
+			if(element instanceof NamedElement) 
+			{				
+				child = new ModelElementWrapper("("+ExtractClassName(element.getClass().toString())+") "+element.getName());
 				root.add(child);
 				if(element instanceof Package)
 					buildTreeRRecursive(((Package) element).getPackagedElement(),child);

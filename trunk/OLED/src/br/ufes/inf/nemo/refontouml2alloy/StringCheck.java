@@ -46,6 +46,15 @@ public class StringCheck {
         {
                 int cont=-1;
                 
+                if(str==null)
+                {
+                	str = strClass;
+                }
+                else if(str.equals(""))
+                {
+                	str = strClass;
+                }
+                
                 String[] keywords  = 
                 {
                 		"World","abstract","all","and","as","assert","but","check","disj","else","exactly","extends","fact",
@@ -62,11 +71,10 @@ public class StringCheck {
                         }
                 }
                 
-                strClass = strClass.replaceAll("class RefOntoUML.impl.","");
-                strClass = strClass.replaceAll("Impl","");
-                strClass = Normalizer.normalize(strClass, Normalizer.Form.NFD);
-                
+                str = str.replaceAll("class RefOntoUML.impl.","");
+                str = str.replaceAll("Impl","");
                 str = Normalizer.normalize(str, Normalizer.Form.NFD);
+                
                 str = str.replaceAll("[^\\p{ASCII}]", "");
                 str = str.replaceAll(" ", "");
                 str = str.replaceAll(",", "");
@@ -98,13 +106,7 @@ public class StringCheck {
                 str = str.replaceAll("\\\\", "");
                 str = str.replaceAll("/", "");
                 str = str.replaceAll("\\|", "");
-                
-                if(str==null)
-                {}
-                else if(str.equals(""))
-                {
-                	str = strClass;
-                }
+                               
                 
                 if(namesCounterMap.get(str)==null)
                 {

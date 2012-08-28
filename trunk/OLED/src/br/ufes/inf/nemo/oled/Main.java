@@ -143,7 +143,7 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * This is the start class of the OLED application. OLED is based on the TinyUML project by Wei-ju Wu.
  */
 public final class Main {
-
+	
 	/**
 	 * Private constructor.
 	 */

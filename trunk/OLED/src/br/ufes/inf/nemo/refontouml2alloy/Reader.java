@@ -28,13 +28,10 @@ import RefOntoUML.Association;
 import RefOntoUML.Category;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
-import RefOntoUML.Collective;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import RefOntoUML.Kind;
-import RefOntoUML.Mode;
 import RefOntoUML.Model;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
@@ -42,12 +39,11 @@ import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
-import RefOntoUML.Quantity;
-import RefOntoUML.Relator;
-import RefOntoUML.SubKind;
+import RefOntoUML.RigidSortalClass;
 
 public class Reader {
 		
+	//This class performs the transformation
 	public static Transformer transformer;	
 	
 	// HashMap < PackageableElement modelElement, String modifiedName >
@@ -56,7 +52,7 @@ public class Reader {
 	// HashMap < Property AssocEnd, String modifiedName >
 	public static HashMap<Property,String> modelAssocEndMap;
 	
-	// default
+	// Model Name
 	public static String modelName;
 	
 	// performs modifications on names
@@ -84,6 +80,7 @@ public class Reader {
 	
 	/* ============================================================================*/
 	
+	/** Constructor */
 	public static void init(Model m)
 	{	
 		transformer = new Transformer();		
@@ -96,7 +93,7 @@ public class Reader {
 			initModelName(m);
 			
 			initModelElements(m);
-			
+				
 			setDefaultSigsTransformer(m);	
 			
 			transformer.init();
@@ -109,11 +106,11 @@ public class Reader {
 	{				
 		StringCheck ch = new StringCheck();		
 		
-		if(m.getName() != null) modelName = ch.removeSpecialNames(m.getName(),m.getClass().toString());				
+		modelName = ch.removeSpecialNames(m.getName(),m.getClass().toString());				
 	}
 	
 	/* ============================================================================*/
-	
+		
 	private static void initModelElements(PackageableElement pack) 
 	{		
 		for(PackageableElement p : ((Package) pack).getPackagedElement())
@@ -125,7 +122,7 @@ public class Reader {
 	
 	private static void addModelElements(PackageableElement pe)
 	{
-		if((pe instanceof Class || pe instanceof Association || pe instanceof DataType) && !(pe instanceof PrimitiveType))
+		if (pe instanceof Class || pe instanceof Association || ((pe instanceof DataType) && !(pe instanceof PrimitiveType)) || (pe instanceof GeneralizationSet)) 
 		{
 			if(pe instanceof Association)
 			{
@@ -141,10 +138,8 @@ public class Reader {
 					modelAssocEndMap.put(property1, ch.removeSpecialNames(property1.getName(),property1.getClass().toString()));
 				}
 			}
-			if( pe.getName() != null )
-			{				
-				modelElementsMap.put(pe,ch.removeSpecialNames(pe.getName(),pe.getClass().toString()));				
-			}
+			
+			modelElementsMap.put(pe,ch.removeSpecialNames(pe.getName(),pe.getClass().toString()));			
 		}else{
 			
 		}		
@@ -191,8 +186,7 @@ public class Reader {
 		
 		if(transformer.ObjectsList.size() > 0) transformer.createExists("Object");		
 		if(transformer.PropertiesList.size() > 0) transformer.createExists("Property");
-		if(transformer.datatypesList.size() > 0) transformer.createExists("Datatype");	
-		
+		if(transformer.datatypesList.size() > 0) transformer.createExists("Datatype");		
 		transformer.createKindDatatypePropertyDisjoint();
 		transformer.finalAdditions();
 	}
@@ -209,11 +203,39 @@ public class Reader {
 				
 				if ( ((Classifier)pe).isIsAbstract() ) transformer.createAbstractClause( (Classifier)pe );				
 
-				if (
-					(pe instanceof Kind) || (pe instanceof SubKind) || (pe instanceof Collective) || (pe instanceof Quantity) || 
-					(pe instanceof Category) || (pe instanceof Relator) || (pe instanceof Mode) || ((pe instanceof DataType) && !(pe instanceof PrimitiveType))
-				)
-					transformer.rigidElements.add((Classifier)pe);
+				if ( (pe instanceof RigidSortalClass) || (pe instanceof Category) || (pe instanceof MomentClass) || ((pe instanceof DataType)&&!(pe instanceof PrimitiveType)) ) 
+				{ 
+					transformer.rigidElements.add((Classifier)pe); 
+				}				
+			}
+		}
+	}	
+	
+	/* ============================================================================*/
+	
+	private static void callTransformationGeneralizations() 
+	{		
+		for (PackageableElement pe : modelElementsMap.keySet())
+		{			
+			if (pe instanceof Class)
+			{
+				for(Generalization gen : ((Class)pe).getGeneralization())
+				{
+					transformer.transformGeneralizations(gen);
+				}
+			}
+		}
+	}
+	
+	/* ============================================================================*/
+	
+	private static void callTransformationGeneralizationSets() 
+	{		
+		for (PackageableElement pe : modelElementsMap.keySet())
+		{			
+			if (pe instanceof GeneralizationSet)
+			{
+				transformer.transformGeneralizationSets((GeneralizationSet) pe);
 			}
 		}
 	}
@@ -228,37 +250,10 @@ public class Reader {
 			{
 				transformer.transformAssociations((Association) pe);
 			}
-		}
-		for (PackageableElement pe : modelElementsMap.keySet())
-		{
-			if (pe instanceof Derivation)
+			else if (pe instanceof Derivation)
 			{
 				transformer.transformDerivations((Derivation) pe);
 			}
-		}
+		}		
 	}
-	
-	/* ============================================================================*/
-	
-	private static void callTransformationGeneralizations() 
-	{		
-		for (PackageableElement pe : modelElementsMap.keySet())
-		{			
-			if (pe instanceof Class)
-				for(Generalization gen : ((Class)pe).getGeneralization())
-					transformer.transformGeneralizations(gen);
-		}
-	}
-	
-	/* ============================================================================*/
-	
-	private static void callTransformationGeneralizationSets() 
-	{		
-		for (PackageableElement pe : modelElementsMap.keySet())
-		{			
-			if (pe instanceof GeneralizationSet)
-				transformer.transformGeneralizationSets((GeneralizationSet) pe);
-		}
-	}
-	
 }
