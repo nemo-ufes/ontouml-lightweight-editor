@@ -230,9 +230,11 @@ public class UnaryOperationImpl extends ExpressionImpl implements UnaryOperation
 	 */
 	public String toString() {
 		if (eIsProxy()) return super.toString();
-
 		StringBuffer result = new StringBuffer();
-		result.append(operator + " " +expression);
+		
+		if (operator.equals(UnaryOperator.CARDINALITY_LITERAL)) result.append(operator + " (" +expression+")"); 
+		else result.append(operator + " " +expression);
+		
 		return result.toString();
 	}
 

@@ -52,6 +52,8 @@ import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
+import RefOntoUML.RigidSortalClass;
+import RefOntoUML.Type;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.ontouml.alloy.AlloyFactory;
 import br.ufes.inf.nemo.ontouml.alloy.AlloyModule;
@@ -103,21 +105,16 @@ public class Transformer {
 	
 	/* ============================================================================*/
 	
-	public static String path = "models/out.xmi";
-	public FactDeclaration all_rigid_classes;			
+	public static String path = "models/out.xmi";	
 	public ArrayList<String> ObjectsList = new ArrayList<String>();
 	public ArrayList<String> PropertiesList = new ArrayList<String>();
-	public ArrayList<String> datatypesList = new ArrayList<String>();	
-	public ArrayList<Classifier> rigidElements = new ArrayList<Classifier>();	
+	public ArrayList<String> datatypesList = new ArrayList<String>();		
+	public ArrayList<String> kindsListDisj = new ArrayList<String>();
 	public ArrayList<String> PropertysListDisj = new ArrayList<String>();
 	public ArrayList<String> datatypeListDisj = new ArrayList<String>();
-	public ArrayList<String> kindsListDisj = new ArrayList<String>();
+	public ArrayList<Classifier> rigidElements = new ArrayList<Classifier>();
+	public FactDeclaration all_rigid_classes;			
 	
-	/* ============================================================================*/
-		
-	public ArrayList<String> sigsTop = new ArrayList<String>();
-	public BinaryOperation boSMD;
-
 	/* ============================================================================*/
 	
 	public void init()
@@ -363,7 +360,13 @@ public class Transformer {
 			co.setLeftExpression(vr);
 			for(Generalization gen : generalizations)
 			{
-				if(generalizations.size() == 1) break;
+				if(generalizations.size() == 1) 
+				{
+					vr = factory.createVariableReference();
+					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));					
+					co.setRightExpression(vr);
+					break;
+				}
 				if(cont == 1)
 				{
 					bo.setOperator(BinaryOperator.UNION_LITERAL);
@@ -393,7 +396,7 @@ public class Transformer {
 		}
 	}
 			
-	/* ============================================================================*/
+	/* =========================================================================================================*/
 	
 	@SuppressWarnings("unchecked")
 	public void createRelatorAssociations(Relator c) 
@@ -410,6 +413,9 @@ public class Transformer {
 							return;
 			}
 		}
+		
+		ArrayList<String> associationNames = new ArrayList<String>();		
+		getAllMediations(associationNames, c);		
 		
 		QuantificationExpression qe = factory.createQuantificationExpression();
 		qe.setQuantificator(Quantificator.ALL_LITERAL);
@@ -431,9 +437,124 @@ public class Transformer {
 		vr.setVariable("2");
 		co.setRightExpression(vr);
 
-		ArrayList<String> associationNames = new ArrayList<String>();
+		int cont = 1;
+		BinaryOperation bo = factory.createBinaryOperation();
+		BinaryOperation bo2 = factory.createBinaryOperation();
+		for(String name : associationNames)
+		{
+			if(associationNames.size() == 1)
+			{
+				bo.setOperator(BinaryOperator.JOIN_LITERAL);
+				vr = factory.createVariableReference();
+				vr.setVariable("x");
+				bo.setLeftExpression(vr);
+				vr = factory.createVariableReference();
+				vr.setVariable(name);
+				bo.setRightExpression(vr);
+				uOp.setExpression(bo);
+				break;
+			}
+			if(cont == 1)
+			{
+				bo.setOperator(BinaryOperator.UNION_LITERAL);
+
+				bo2.setOperator(BinaryOperator.JOIN_LITERAL);
+				vr = factory.createVariableReference();
+				vr.setVariable("x");
+				bo2.setLeftExpression(vr);
+				vr = factory.createVariableReference();
+				vr.setVariable(name);
+				bo2.setRightExpression(vr);
+				
+				bo.setLeftExpression(bo2);
+				
+				uOp.setExpression(bo);
+			}
+			if(cont > 1 && cont != associationNames.size())
+			{
+				
+				bo.setRightExpression(factory.createBinaryOperation());
+				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
+				
+				bo2 = factory.createBinaryOperation();
+				bo2.setOperator(BinaryOperator.JOIN_LITERAL);
+				vr = factory.createVariableReference();
+				vr.setVariable("x");
+				bo2.setLeftExpression(vr);
+				vr = factory.createVariableReference();
+				vr.setVariable(name);
+				bo2.setRightExpression(vr);				
+				
+				((BinaryOperation)bo.getRightExpression()).setLeftExpression(bo2);				
+				
+				bo = ((BinaryOperation)bo.getRightExpression());
+			}
+			if(cont == associationNames.size())
+			{
+				bo2 = factory.createBinaryOperation();
+				bo2.setOperator(BinaryOperator.JOIN_LITERAL);
+				vr = factory.createVariableReference();
+				vr.setVariable("x");
+				bo2.setLeftExpression(vr);
+				vr = factory.createVariableReference();
+				vr.setVariable(name);
+				bo2.setRightExpression(vr);
+				
+				bo.setRightExpression(bo2);
+			}
+			cont++;
+		}		
 		
-		auxMethodRelator(associationNames, c);		
+		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);
+		
+		qe.setExpression(co);
+		
+		if(associationNames.size()>0)
+			world.getBlock().getExpression().add(qe);
+	}
+	
+	/* =========================================================================================================*/
+	
+	@SuppressWarnings("unchecked")
+	public void createWeakSupplementationRule(Classifier c) 
+	{
+		for(PackageableElement pe : Reader.modelElementsMap.keySet())
+		{
+			if(pe instanceof GeneralizationSet)
+			{
+				GeneralizationSet gs = ((GeneralizationSet)pe);
+				if(gs.isIsCovering())
+				{
+					for(Generalization gen : gs.getGeneralization())
+					{
+						if(gen.getGeneral().getName() == c.getName()) return;
+					}
+				}
+			}
+		}
+		
+		ArrayList<String> associationNames = new ArrayList<String>();		
+		getAllMeronymics(associationNames, c);	
+		
+		QuantificationExpression qe = factory.createQuantificationExpression();
+		qe.setQuantificator(Quantificator.ALL_LITERAL);
+		Declaration decl = factory.createDeclaration();
+		Variable var = factory.createVariable();
+		var.setName("x");
+		var.setDeclaration(decl);
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(Reader.modelElementsMap.get(c));
+		decl.setExpression(vr);
+		qe.getDeclaration().add(decl);
+		
+		CompareOperation co = factory.createCompareOperation();
+		UnaryOperation uOp = factory.createUnaryOperation();		
+		
+		co.setOperator(CompareOperator.GREATER_EQUAL_LITERAL);
+		co.setLeftExpression(uOp);
+		vr = factory.createVariableReference();
+		vr.setVariable("2");
+		co.setRightExpression(vr);
 		
 		int cont = 1;
 		BinaryOperation bo = factory.createBinaryOperation();
@@ -511,74 +632,107 @@ public class Transformer {
 			world.getBlock().getExpression().add(qe);
 	}
 	
-	public void auxMethodRelator(ArrayList<String> list, Relator r)
+	/* =========================================================================================================*/
+	
+	private void getAllMediations(ArrayList<String> list, Relator r)
 	{
 		for(PackageableElement pe : Reader.modelElementsMap.keySet())
 		{
 			if(pe instanceof Mediation)
 			{
-				if( ((Mediation)pe).sourceEnd().getType() instanceof Relator )
+				Type sourceType = ((Mediation)pe).sourceEnd().getType();
+				Type targetType = ((Mediation)pe).targetEnd().getType();
+				
+				if(sourceType instanceof Relator)
 				{
-					if(((Mediation)pe).sourceEnd().getType().getName() == r.getName())
-					{
-						list.add(Reader.modelElementsMap.get(pe));
-						for(Generalization gen : ((Relator)((Mediation)pe).sourceEnd().getType()).getGeneralization())
-						{							
-							if (gen.getGeneral() instanceof Relator) auxMethodRelator(list,(Relator)gen.getGeneral());
-						}
-					}
-				}
-				else if( ((Mediation)pe).targetEnd().getType() instanceof Relator )
+					if(sourceType.getName() == r.getName()) list.add(Reader.modelElementsMap.get(pe));						
+				}				
+				else if(targetType instanceof Relator)
 				{
-					if(((Mediation)pe).targetEnd().getType().getName() == r.getName())
-					{
-						list.add(Reader.modelElementsMap.get(pe));
-						for(Generalization gen : ((Relator)((Mediation)pe).targetEnd().getType()).getGeneralization())
-						{
-							if (gen.getGeneral() instanceof Relator) auxMethodRelator(list,(Relator)gen.getGeneral());
-						}
-					}
+					if(targetType.getName() == r.getName())list.add(Reader.modelElementsMap.get(pe));				
 				}				
 			}
 		}
+		for(Generalization gen : ((Relator)r).getGeneralization())
+		{							
+			if (gen.getGeneral() instanceof Relator) getAllMediations(list,(Relator)gen.getGeneral());
+		}
 	}
 	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
+		
+	private void getAllMeronymics(ArrayList<String> list, Classifier c)
+	{
+		for(PackageableElement pe : Reader.modelElementsMap.keySet())
+		{
+			if(pe instanceof Meronymic)
+			{
+				Type sourceType = ((Meronymic)pe).sourceEnd().getType();
+				Type targetType = ((Meronymic)pe).targetEnd().getType();
+				
+				if(sourceType instanceof RigidSortalClass)
+				{
+					if(sourceType.getName() == c.getName()) list.add(Reader.modelElementsMap.get(pe));					
+				}				
+				else if(targetType instanceof RigidSortalClass)
+				{
+					if(targetType.getName() == c.getName())	list.add(Reader.modelElementsMap.get(pe));						
+				}	 
+			}
+		}
+		for(Generalization gen : ((RigidSortalClass)c).getGeneralization())
+		{							
+			if (gen.getGeneral() instanceof RigidSortalClass) getAllMeronymics(list,(RigidSortalClass)gen.getGeneral());
+		}
+	}
+	
+	/* =========================================================================================================*/
 	
 	public void transformClassifier(Classifier c) 
 	{		
 		if(c instanceof ObjectClass)
 		{
-			createObjectClassDeclaration((ObjectClass)c);
+			createObjectClassDeclaration((ObjectClass)c);			
+			
 			ObjectsList.add(Reader.modelElementsMap.get(c));
+			
 			if((c instanceof Kind) || (c instanceof Collective) || (c instanceof Quantity))
 			{
 				kindsListDisj.add(Reader.modelElementsMap.get(c));
 			}
+			
+			if(c instanceof RigidSortalClass && !(c.isIsAbstract())) createWeakSupplementationRule(c);
 		}
 		if(c instanceof DataType && !(c instanceof PrimitiveType))
 		{
 			createDatatypeDeclaration((DataType)c);
+			
 			datatypesList.add(Reader.modelElementsMap.get(c));
 			
 			// all datatypes without fathers are naturally disjoint, 
-			// which means that multiple inheritance between datatypes isn't allowed.
-			
+			// which means that multiple inheritance between datatypes isn't allowed.			
 			if(((DataType)c).getGeneralization().size() == 0)
+			{
 				datatypeListDisj.add(Reader.modelElementsMap.get(c));
+			}
 		}
 		if(c instanceof MomentClass)
 		{
 			if(c instanceof Relator && !(c.isIsAbstract()))
-					createRelatorAssociations((Relator) c);
+			{
+				createRelatorAssociations((Relator) c);
+			}
+			
 			createPropertyClassDeclaration((MomentClass)c);
+			
 			PropertiesList.add(Reader.modelElementsMap.get(c));
 			
 			// all Propertys without fathers are naturally disjoint, 
-			// which means that multiple inheritance between Propertys isn't allowed.
-			
+			// which means that multiple inheritance between Propertys isn't allowed.			
 			if(((MomentClass)c).getGeneralization().size() == 0)
+			{
 				PropertysListDisj.add(Reader.modelElementsMap.get(c));
+			}
 		}
 	}
 	
