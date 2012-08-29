@@ -31,6 +31,7 @@ import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.ChckBoxTreeNodeElem;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.RefOntoUMLUtil;
 
 
 /**
@@ -59,6 +60,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	Mediator transfManager;
 	CheckboxTree chckTree;
 	DiagramManager diagManager;
+	Model model;
 
 //	public static void main(String[] args) {
 //		JFrame frame = new JFrame();
@@ -129,7 +131,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		Mediator transfManager = new Mediator();
 		transfManager.READ_FILE_ADDRESS = file.getAbsolutePath();
 		transfManager.SAVE_FILE_ADDRESS = file.getAbsolutePath().split("\\.")[0] + ".refontouml";
-        DefaultMutableTreeNode root = transfManager.parse();
+        RefOntoUML.Model model = transfManager.parse();
         
         if (Mediator.warningLog != "") {
         	//TODO essa lib que usei tem muita coisa desnecessária, talvez fosse melhor copiar o source
@@ -138,32 +140,34 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
         	JXErrorPane.showDialog(diagManager, info);
     	}
         
-        if (root != null) {
-        	CheckboxTree modelTree = new CheckboxTree(root);
+        if (model != null) {
+        	CheckboxTree modelTree = RefOntoUMLUtil.createSelectionTreeFromModel(model);
         	modelTree.getCheckingModel().setCheckingMode(
         			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_CHECK);
         	modelTree.addTreeSelectionListener(this);
         	
+//        	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(transfManager.mapper);
+//        	diagramTree.getCheckingModel().setCheckingMode(
+//        			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_CHECK);
+//        	diagramTree.addTreeSelectionListener(this);
+        	
         	this.chckTree = modelTree;
+        	//this.chckTree = diagramTree;
             this.transfManager = transfManager;
+            this.model = model;
             
         } 
-//        else {
-//        	this.dispose();
-//        	throw new Exception();
-//        }
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getSource() == deleteButton) {
-			transfManager.filter(chckTree);
+			RefOntoUMLUtil.filter(chckTree);
 			chckTree.clearChecking();
 			
 		} else if (e.getSource() == importButton) {
-			UmlProject project = new UmlProject((Model)((ChckBoxTreeNodeElem)
-					((DefaultMutableTreeNode)chckTree.getModel().getRoot()).getUserObject()).getElement());
+			UmlProject project = new UmlProject(this.model);
 			StructureDiagram diagram = new StructureDiagram(project);
 			project.addDiagram(diagram);
 			diagram.setLabelText("Imported Diagram");		
