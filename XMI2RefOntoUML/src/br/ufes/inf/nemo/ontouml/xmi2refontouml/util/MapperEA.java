@@ -103,7 +103,8 @@ public class MapperEA implements Mapper {
 	    	return stereotypeElem.getNodeName().replace("OntoUML:", "");
 		} else {
 			String type = elem.getAttributeNS(XMINS, "type");
-			if (ElementType.get(type.replace("uml:", "")) == ElementType.CLASS) {
+			if (ElementType.get(type.replace("uml:", "")) == ElementType.CLASS ||
+					ElementType.get(type.replace("uml:", "")) == ElementType.ASSOCIATION) {
 				return "";
 			}
 			return type.replace("uml:", "");
@@ -342,6 +343,9 @@ public class MapperEA implements Mapper {
 	@Override
 	public String getName(Object element) {
 		Element elem = (Element) element;
+		if (elem.getNodeName().equals("diagram")) {
+			elem = XMLDOMUtil.getChild(elem, "properties");
+		}
 		return elem.getAttribute("name");
 	}
 
@@ -366,6 +370,35 @@ public class MapperEA implements Mapper {
 			return elem.getAttribute("relator");
 		}
 		return null;
+	}
+
+	@Override
+	public List<Object> getDiagramList() {
+		List<Object> diagramList = new ArrayList<Object>();
+		NodeList diagrams = doc.getElementsByTagName("diagrams");
+		if (diagrams != null) {
+			diagramList = XMLDOMUtil.getElementChilds((Element)diagrams.item(0));
+		}
+		
+		return diagramList;
+	}
+
+	@Override
+	public List<String> getDiagramElements(Object diagram) {
+		List<String> diagElemIDList = new ArrayList<String>();
+		Element elements = XMLDOMUtil.getChild((Element)diagram, "elements");
+		List<Object> diagElemList = XMLDOMUtil.getElementChilds(elements);
+
+		for (Object diagElem : diagElemList) {
+			ElementType type = getType(getElementById(((Element)diagElem).getAttribute("subject")));
+			if (type == ElementType.CLASS ||
+					type == ElementType.ASSOCIATION) {
+				
+				diagElemIDList.add(((Element)diagElem).getAttribute("subject"));
+			}
+		}
+		
+		return diagElemIDList;
 	}
 
 }
