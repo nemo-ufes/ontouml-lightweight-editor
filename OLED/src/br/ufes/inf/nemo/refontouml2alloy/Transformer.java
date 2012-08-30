@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import RefOntoUML.Association;
+import RefOntoUML.Category;
 import RefOntoUML.Characterization;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
@@ -55,6 +56,7 @@ import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Type;
 import RefOntoUML.subQuantityOf;
+
 import br.ufes.inf.nemo.ontouml.alloy.AlloyFactory;
 import br.ufes.inf.nemo.ontouml.alloy.AlloyModule;
 import br.ufes.inf.nemo.ontouml.alloy.AlloyPackage;
@@ -86,14 +88,40 @@ import br.ufes.inf.nemo.ontouml.alloy.VariableReference;
 import br.ufes.inf.nemo.ontouml.alloy.impl.AlloyPackageImpl;
 import br.ufes.inf.nemo.ontouml.alloy.util.AlloyResourceFactoryImpl;
 
+
+/*
+ * 	Methods Summary...
+ *
+ * >> public void transformClassifier(Classifier c);
+ *		>>
+ * 		>> public void createRelatorRule(Relator c);
+ * 		>> public void createWeakSupplementationRule(Classifier c);
+ *		.	>
+ *  	.	> private boolean isAbstractFromGeneralizationSets(Classifier c);
+ *  	.	> private void getAllMediations(ArrayList<String> list, Relator r);
+ *		.	> private void getAllMeronymics(ArrayList<String> list, RigidSortalClass c);
+ *		.
+ *		.	> private QuantificationExpression createQuantificationExpression(Quantificator quantificator, String variableName, String typeName);
+ *		.	> private QuantificationExpression createQuantificationExpression(Quantificator quantificator, String variableName1, String variableName2, String typeName);
+ *		.	> private BinaryOperation createBinaryOperation(String variableName1, BinaryOperator binOperator, String variableName2);
+ *		.	> private BinaryOperation createBinaryOperation(String variableName1, BinaryOperator binOperator, BinaryOperation binOperation);
+ *		.	> private QuantificationExpression createQuantificationExpression(ArrayList<String> associationNames, String typeName);
+ *		.	>
+ *		>> public void createAbstractClauseRule(Classifier c);
+ *		.	>
+ * 		.	> private void getAllGeneralizations(ArrayList<Generalization> generalizations, Classifier c);		
+ *		.	>
+ *		>> public void createObjectClassDeclaration(ObjectClass c); 
+ *		>> public void createDatatypeDeclaration(DataType c); 
+ *		>> public void createPropertyClassDeclaration(MomentClass c);
+ *		.  		
+ * >> public void transformGeneralizations(Generalization g); 
+ * 		.
+ * 		>> public void createGeneralizationRule(Generalization g);
+ */
+
 public class Transformer {
 	
-	public static Resource alsresource;	
-	
-	/* ============================================================================*/
-	
-	public static AlloyFactory factory = AlloyFactory.eINSTANCE;
-	public AlloyModule module;
 	public SignatureDeclaration world;
 	public Variable exists;
 	public SignatureDeclaration Object = null;
@@ -102,18 +130,53 @@ public class Transformer {
 	public FactDeclaration association_properties = null;
 	public FactDeclaration derivations = null;	
 	public ArrayList<String> defaultSignatures = new ArrayList<String>();
+	public static String path = "models/out.xmi";	
+		
+	public FactDeclaration all_rigid_classes;			
+
+	/* ============================================================================*/
+	
+	/** Alloy model resource. */
+	public static Resource alsresource;
+	
+	/** Alloy instance. */
+	public static AlloyFactory factory = AlloyFactory.eINSTANCE;
+	
+	/** Alloy Module. */
+	public AlloyModule module;
 	
 	/* ============================================================================*/
 	
-	public static String path = "models/out.xmi";	
-	public ArrayList<String> ObjectsList = new ArrayList<String>();
-	public ArrayList<String> PropertiesList = new ArrayList<String>();
-	public ArrayList<String> datatypesList = new ArrayList<String>();		
-	public ArrayList<String> kindsListDisj = new ArrayList<String>();
-	public ArrayList<String> PropertysListDisj = new ArrayList<String>();
-	public ArrayList<String> datatypeListDisj = new ArrayList<String>();
+	/** List containing all the names of Substances Sortals that are disjoint. */
+	public ArrayList<String> subsortalDisjNamesList = new ArrayList<String>();
+	
+	/** List containing all the names of Moment Classes that are disjoint. */
+	public ArrayList<String> momentDisjNamesList = new ArrayList<String>();
+	
+	/** List containing all the names of DataTypes that are disjoint. */
+	public ArrayList<String> datatypeDisjNamesList = new ArrayList<String>();
+	
+	/* ============================================================================*/
+	
+	/** List containing all the Object Class names. */
+	public ArrayList<String> objectNamesList = new ArrayList<String>();	
+	
+	/** List containing all the Moment Class names. */
+	public ArrayList<String> momentNamesList = new ArrayList<String>();
+	
+	/** List containing all the DataTypes names. */
+	public ArrayList<String> datatypeNamesList = new ArrayList<String>();
+	
+	/* ============================================================================*/
+	
+	/** List containing all the rigid classifier. */
 	public ArrayList<Classifier> rigidElements = new ArrayList<Classifier>();
-	public FactDeclaration all_rigid_classes;			
+	
+	/** List containing all the facts for relator's rule. */
+	public ArrayList<FactDeclaration> relator_rule = new ArrayList<FactDeclaration>();
+
+	/** List containing all the facts for weak supplementation's rule. */
+	public ArrayList<FactDeclaration> weak_supplementation_rule = new ArrayList<FactDeclaration>();
 	
 	/* ============================================================================*/
 	
@@ -128,8 +191,9 @@ public class Transformer {
 		saveAls();
 	}
 	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
 	
+	/** Init Alloy Resource 'alsresource'. */
 	public static void initAlsResource() 
 	{
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -139,7 +203,629 @@ public class Transformer {
 		alsresource = resourceSet.createResource(URI.createURI(path));
 	}
 	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
+	
+	/** Save 'alsresource' content into a file (.als). */
+	public void saveAls() 
+	{		
+		try{			
+			FileWriter fstream = new FileWriter(OntoUML2Alloy.alsPath);
+			BufferedWriter out = new BufferedWriter(fstream);
+			out.write(alsresource.getContents().get(0).toString());			
+			out.close();
+		  }catch (Exception e){
+			  System.err.println("Error: " + e.getMessage());
+		  }		
+	}	
+	
+	/* =========================================================================================================*/
+
+	/**
+	 * Performs transformation of Classifiers.
+	 * 
+	 * @param c: RefOntoUML.Classifier
+	 */
+	public void transformClassifier(Classifier c) 
+	{		
+		if(c instanceof ObjectClass)
+		{
+			createObjectClassDeclaration((ObjectClass)c);			
+			
+			objectNamesList.add(Reader.modelElementsMap.get(c));
+
+			if((c instanceof Kind) || (c instanceof Collective) || (c instanceof Quantity))
+			{
+				subsortalDisjNamesList.add(Reader.modelElementsMap.get(c));
+			}			
+			
+			if(c instanceof RigidSortalClass && !(c.isIsAbstract())) createWeakSupplementationRule(c);
+		}
+		
+		if(c instanceof DataType && !(c instanceof PrimitiveType))
+		{			
+			createDatatypeDeclaration((DataType)c);			
+			
+			datatypeNamesList.add(Reader.modelElementsMap.get(c));
+			
+			// all dataTypes without fathers are naturally disjoint, 
+			// which means that multiple inheritance between datatypes isn't allowed.			
+			if(((DataType)c).getGeneralization().size() == 0)
+			{
+				datatypeDisjNamesList.add(Reader.modelElementsMap.get(c));
+			}
+		}
+		if(c instanceof MomentClass)
+		{
+			if(c instanceof Relator && !(c.isIsAbstract())) createRelatorRule((Relator) c);			
+			
+			createPropertyClassDeclaration((MomentClass)c);			
+			
+			momentNamesList.add(Reader.modelElementsMap.get(c));
+			
+			// all Properties without fathers are naturally disjoint, 
+			// which means that multiple inheritance between Properties isn't allowed.			
+			if(((MomentClass)c).getGeneralization().size() == 0)
+			{
+				momentDisjNamesList.add(Reader.modelElementsMap.get(c));
+			}
+		}		
+		
+		if (c.isIsAbstract()) createAbstractClauseRule(c);		
+		
+		if ( (c instanceof RigidSortalClass) || (c instanceof Category) || (c instanceof MomentClass) || ((c instanceof DataType)&&!(c instanceof PrimitiveType)) ) 
+		{ 
+			rigidElements.add(c); 
+		}
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 *
+	 * Relator Rule.
+	 *
+	 * Let R be a relator universal and let {C1C2} be a set of universals mediated by R (related
+	 * to R via a «mediation» relation). Finally, let lowerCi be the value of the minimum cardinality
+	 * constraint of the association end connected to C(i) in the «mediation» relation. Then, we have
+	 * that (Σ= n, i=1 lowerCi) ≥ 2.
+	 * 
+	 * @param c: RefOntoUML.Relator
+	 */
+	@SuppressWarnings("unchecked")
+	public void createRelatorRule(Relator c) 
+	{
+		// isAbstract from generalization Sets (Disjoint and Complete)
+		if (isAbstractFromGeneralizationSets(c)) return;
+		
+		// get all 'c' mediations
+		ArrayList<String> associationNames = new ArrayList<String>();		
+		getAllMediations(associationNames, c);		
+		
+		if(associationNames.size()>0)
+		{			
+			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
+			QuantificationExpression q = createQuantificationExpression(associationNames, Reader.modelElementsMap.get(c));
+			
+			// create fact from q
+			FactDeclaration RelatorRuleFact = factory.createFactDeclaration();
+			RelatorRuleFact.setName("relator_rule_"+Reader.modelElementsMap.get(c));
+			RelatorRuleFact.setBlock(factory.createBlock());			
+			RelatorRuleFact.getBlock().getExpression().add(q);
+			
+			// add to list
+			relator_rule.add(RelatorRuleFact);			
+		}		
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Weak Supplementation Rule.
+	 * 
+	 * Let U be a universal whose instances are wholes and let
+	 * {C1C2} be a set of universals related to U via aggregation relations. Let lowerCi be the
+	 * value of the minimum cardinality constraint of the association end connected to Ci in the
+	 * aggregation relation. Then, we have that (Σ= n, i=1 lowerCi) ≥ 2.
+	 *  
+	 * @param c: RefOntoUML.RigidSortalClass (Functional Complexes)
+	 */
+	@SuppressWarnings("unchecked")
+	public void createWeakSupplementationRule(Classifier c) 
+	{
+		// isAbstract from generalization Sets (Disjoint and Complete)
+		if (isAbstractFromGeneralizationSets(c)) return;
+		
+		// get all 'c' meronymics
+		ArrayList<String> associationNames = new ArrayList<String>();		
+		getAllMeronymics(associationNames, (RigidSortalClass)c);	
+		
+		if( associationNames.size() > 0)
+		{
+			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
+			QuantificationExpression q = createQuantificationExpression(associationNames, Reader.modelElementsMap.get(c));
+			
+			// create fact from q
+			FactDeclaration WeakSupplementationFact = factory.createFactDeclaration();
+			WeakSupplementationFact.setName("weak_supplementation_"+Reader.modelElementsMap.get(c));
+			WeakSupplementationFact.setBlock(factory.createBlock());			
+			WeakSupplementationFact.getBlock().getExpression().add(q);			
+			
+			// add to list
+			weak_supplementation_rule.add(WeakSupplementationFact);			
+		}	
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * This method creates a specific Quantification Expression in Alloy.
+	 * <quantificator> <varibleName>: <typeName>
+	 * Example: all w: World
+	 */	 
+	@SuppressWarnings("unchecked")
+	private QuantificationExpression createQuantificationExpression(Quantificator quantificator, String variableName, String typeName)
+	{
+		QuantificationExpression qe = factory.createQuantificationExpression();
+		qe.setQuantificator(quantificator);		
+		Declaration decl = factory.createDeclaration();
+		Variable varbl = factory.createVariable();
+		varbl.setName(variableName);		
+		varbl.setDeclaration(decl);
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(typeName);
+		decl.setExpression(vr);
+		qe.getDeclaration().add(decl);
+		return qe;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * This method creates a specific Quantification Expression in Alloy.
+	 * <quantificator> <varibleName>: <variableName2>.<typeName> 
+	 * Example: all x: w.RelatorName
+	 */	 
+	@SuppressWarnings("unchecked")
+	private QuantificationExpression createQuantificationExpression(Quantificator quantificator, String variableName1, String variableName2, String typeName)
+	{
+		QuantificationExpression qe = factory.createQuantificationExpression();
+		qe.setQuantificator(quantificator);
+		Declaration decl = factory.createDeclaration();
+		Variable varx = factory.createVariable();
+		varx.setName(variableName1);
+		varx.setDeclaration(decl);
+		BinaryOperation bo = createBinaryOperation(variableName2,BinaryOperator.JOIN_LITERAL,typeName);		
+		decl.setExpression(bo);
+		qe.getDeclaration().add(decl);
+		return qe;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * This method creates a specific BinaryOperation in Alloy.
+	 * <varibleName1> <binOperator> <variableName2>
+	 * Example: w.RelatorName
+	 */
+	private BinaryOperation createBinaryOperation(String variableName1, BinaryOperator binOperator, String variableName2)
+	{
+		BinaryOperation bo = factory.createBinaryOperation();
+		bo.setOperator(binOperator);
+		VariableReference vrR = factory.createVariableReference();
+		vrR.setVariable(variableName1);
+		bo.setLeftExpression(vrR);		
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(variableName2);		
+		bo.setRightExpression(vr);
+		return bo; 
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * This method creates a specific BinaryOperation in Alloy.
+	 * <varibleName1> <binOperator> <binaryOperation>
+	 * Example: x.(w.RelatorName)
+	 */	 
+	private BinaryOperation createBinaryOperation(String variableName1, BinaryOperator binOperator, BinaryOperation binOperation)
+	{
+		BinaryOperation bo = factory.createBinaryOperation();
+		bo.setOperator(binOperator);
+		VariableReference vrR = factory.createVariableReference();
+		vrR.setVariable(variableName1);
+		bo.setLeftExpression(vrR);		
+		bo.setRightExpression(binOperation);
+		return bo; 
+	}
+		
+	/* =========================================================================================================*/
+	
+	/**
+	 * This method creates a specific Quantification Expression in Alloy.
+	 * all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
+	 * 
+	 * @param associationNames: Array List containing all the association from the typeName variable
+	 * @param typeName: String type Name
+	 * @return
+	 */	
+	private QuantificationExpression createQuantificationExpression(ArrayList<String> associationNames, String typeName)
+	{
+		// all w: World
+		QuantificationExpression qeWorld = createQuantificationExpression(Quantificator.ALL_LITERAL,"w","World");	
+		// all x: w.name
+		QuantificationExpression qe = createQuantificationExpression(Quantificator.ALL_LITERAL,"x","w",typeName);
+		qeWorld.setExpression(qe);
+
+		// # (...) >= 2
+		CompareOperation co = factory.createCompareOperation();
+		co.setOperator(CompareOperator.GREATER_EQUAL_LITERAL);		
+		UnaryOperation uOp = factory.createUnaryOperation();		
+		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);		
+		co.setLeftExpression(uOp);
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable("2");
+		co.setRightExpression(vr);
+		
+		//( x.(w.name) + x.(w.name) + ... + x.(w.name) )
+		int cont = 1;
+		BinaryOperation bo = factory.createBinaryOperation();
+		BinaryOperation bo2 = factory.createBinaryOperation();		
+		for(String name : associationNames)
+		{
+			if(associationNames.size() == 1)
+			{	
+				// x.(w.name)
+				bo = createBinaryOperation("x",BinaryOperator.JOIN_LITERAL, createBinaryOperation("w",BinaryOperator.JOIN_LITERAL,name));				
+				uOp.setExpression(bo);
+				break;
+			}
+			if(cont == 1)
+			{
+				bo.setOperator(BinaryOperator.UNION_LITERAL);
+				// x.(w.name)
+				bo2 = createBinaryOperation("x",BinaryOperator.JOIN_LITERAL, createBinaryOperation("w",BinaryOperator.JOIN_LITERAL,name)); 				
+				bo.setLeftExpression(bo2);				
+				uOp.setExpression(bo);
+			}
+			if(cont > 1 && cont != associationNames.size())
+			{				
+				bo.setRightExpression(factory.createBinaryOperation());
+				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);	
+				// x.(w.name)
+				bo2 = createBinaryOperation("x",BinaryOperator.JOIN_LITERAL, createBinaryOperation("w",BinaryOperator.JOIN_LITERAL,name));				
+				((BinaryOperation)bo.getRightExpression()).setLeftExpression(bo2);				
+				bo = ((BinaryOperation)bo.getRightExpression());
+			}
+			if(cont == associationNames.size())
+			{
+				// x.(w.name)
+				bo2 = createBinaryOperation("x",BinaryOperator.JOIN_LITERAL, createBinaryOperation("w",BinaryOperator.JOIN_LITERAL,name));				
+				bo.setRightExpression(bo2);
+			}
+			cont++;
+		}
+		qe.setExpression(co);
+		return qeWorld;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete
+	 * What means that this Classifier is an Abstract Classifier.
+	 * 
+	 * @param c: Classifier c 
+	 * @return
+	 */
+	private boolean isAbstractFromGeneralizationSets(Classifier c) 
+	{
+		for(PackageableElement pe : Reader.modelElementsMap.keySet())
+		{
+			if(pe instanceof GeneralizationSet)
+			{
+				GeneralizationSet gs = ((GeneralizationSet)pe);
+				if(gs.isIsCovering())
+				{
+					for(Generalization gen : gs.getGeneralization())
+					{
+						if(gen.getGeneral().getName() == c.getName()) 
+							return true;
+					}
+				}
+			}
+		}		
+		return false;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Get all Mediations relations that have as a source the Relator 'r' or one of its Super Types. 
+	 * 
+	 * @param list: Mediation Relations Names
+	 * @param r: RefOntoUML.Relator
+	 */
+	private void getAllMediations(ArrayList<String> list, Relator r)
+	{
+		for(PackageableElement pe : Reader.modelElementsMap.keySet())
+		{
+			if(pe instanceof Mediation)
+			{
+				Type sourceType = ((Mediation)pe).sourceEnd().getType();
+				Type targetType = ((Mediation)pe).targetEnd().getType();
+				
+				if(sourceType instanceof Relator)
+				{
+					if(sourceType.getName() == r.getName()) list.add(Reader.modelElementsMap.get(pe));						
+				}				
+				else if(targetType instanceof Relator)
+				{
+					if(targetType.getName() == r.getName())list.add(Reader.modelElementsMap.get(pe));				
+				}				
+			}
+		}
+		for(Generalization gen : ((Relator)r).getGeneralization())
+		{							
+			if (gen.getGeneral() instanceof Relator) getAllMediations(list,(Relator)gen.getGeneral());
+		}
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Get all Meronymic relations that have as a Whole the RigidSortalClass 'c' or one of its Super Types
+	 * RigidSortalClass : Kind, Collective, Quantity, SubKind.
+	 *   
+	 * @param list: Meronymic Relations Names
+	 * @param c: RefOntoUML.RigidSortalClass
+	 * 
+	 */	
+	private void getAllMeronymics(ArrayList<String> list, RigidSortalClass c)
+	{
+		for(PackageableElement pe : Reader.modelElementsMap.keySet())
+		{
+			if(pe instanceof Meronymic)
+			{
+				Type sourceType = ((Meronymic)pe).sourceEnd().getType();
+				Type targetType = ((Meronymic)pe).targetEnd().getType();
+				
+				if(sourceType instanceof RigidSortalClass)
+				{
+					if(sourceType.getName() == c.getName()) list.add(Reader.modelElementsMap.get(pe));					
+				}				
+				else if(targetType instanceof RigidSortalClass)
+				{
+					if(targetType.getName() == c.getName())	list.add(Reader.modelElementsMap.get(pe));						
+				}	 
+			}
+		}
+		for(Generalization gen : ((RigidSortalClass)c).getGeneralization())
+		{
+			if (gen.getGeneral() instanceof RigidSortalClass) getAllMeronymics(list,(RigidSortalClass)gen.getGeneral());
+		}
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Create Abstract Clause Rule.
+	 * 
+	 * BinaryOperation with union operator(+) to represent the completeness
+	 * between father(Classifier) and child.
+	 * 
+	 * @param c: RefOntoUML.Classifier
+	 */
+	@SuppressWarnings("unchecked")
+	public void createAbstractClauseRule(Classifier c) 
+	{
+		// get all generalizations
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+		getAllGeneralizations(generalizations,c);
+		
+		int cont = 1;		
+		BinaryOperation bo = factory.createBinaryOperation();
+		if(generalizations.size() > 0)
+		{
+			CompareOperation co = factory.createCompareOperation();
+			co.setOperator(CompareOperator.EQUAL_LITERAL);
+			
+			VariableReference vr = factory.createVariableReference();
+			vr.setVariable(Reader.modelElementsMap.get(c));
+			
+			co.setLeftExpression(vr);
+			for(Generalization gen : generalizations)
+			{
+				if(generalizations.size() == 1) 
+				{
+					vr = factory.createVariableReference();
+					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));					
+					co.setRightExpression(vr);
+					break;
+				}
+				if(cont == 1)
+				{
+					bo.setOperator(BinaryOperator.UNION_LITERAL);
+					vr = factory.createVariableReference();
+					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
+					bo.setLeftExpression(vr);
+					co.setRightExpression(bo);
+				}
+				if(cont > 1 && cont != generalizations.size())
+				{
+					vr = factory.createVariableReference();
+					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
+					bo.setRightExpression(factory.createBinaryOperation());
+					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
+					((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
+					bo = ((BinaryOperation)bo.getRightExpression());
+				}
+				if(cont == generalizations.size())
+				{
+					vr = factory.createVariableReference();
+					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
+					bo.setRightExpression(vr);
+				}
+				cont++;
+			}
+			world.getBlock().getExpression().add(co);
+		}
+	}
+			
+	/* =========================================================================================================*/
+	
+	/**
+	 * Get all Generalizations that the Classifier 'c' is the father.
+	 * 
+	 * @param generalizations: ArrayList RefOntoUML.Generalization
+	 * @param c: RefOntoUML.Classifier
+	 */
+	private void getAllGeneralizations(ArrayList<Generalization> generalizations, Classifier c)
+	{		
+		for(PackageableElement elem : Reader.modelElementsMap.keySet() )
+		{
+			if(elem instanceof Classifier)
+			{
+				for(Generalization gen : ((Classifier)elem).getGeneralization() )
+				{
+					if(((Generalization) gen).getGeneral().getName() == c.getName())
+					{
+						generalizations.add((Generalization) gen);
+					}
+				}
+			}
+		}
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Create Object Declaration. 
+	 * 
+	 * A field into the World Signature...
+	 * 
+	 * @param c: RefOntoUML.ObjectClass
+	 */
+	@SuppressWarnings("unchecked")
+	public void createObjectClassDeclaration(ObjectClass c) 
+	{
+		Declaration decl = factory.createDeclaration();
+		Variable var = factory.createVariable();
+		UnaryOperation uOp = factory.createUnaryOperation();
+		BinaryOperation bo = factory.createBinaryOperation();
+		VariableReference vr = factory.createVariableReference();
+		SignatureReference sr = factory.createSignatureReference();		
+		sr.setSignature(Object.getName());		
+		vr.setVariable(exists.getName());		
+		var.setName(Reader.modelElementsMap.get(c));
+		var.setDeclaration(decl);		
+		uOp.setOperator(UnaryOperator.SET_LITERAL);
+		uOp.setExpression(bo);		
+		bo.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
+		bo.setLeftExpression(vr);
+		bo.setRightExpression(sr);		
+		decl.setExpression(uOp);		
+		world.getRelation().add(decl);
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Create DataType Declaration. 
+	 * 
+	 * A field into the World Signature...
+	 * 
+	 * @param c: RefOntoUML.DataType
+	 */
+	@SuppressWarnings("unchecked")	 
+	public void createDatatypeDeclaration(DataType c) 
+	{
+		Declaration decl = factory.createDeclaration();
+		Variable var = factory.createVariable();
+		UnaryOperation uOp = factory.createUnaryOperation();
+		BinaryOperation bo = factory.createBinaryOperation();
+		VariableReference vr = factory.createVariableReference();
+		SignatureReference sr = factory.createSignatureReference();		
+		sr.setSignature(Datatype.getName());		
+		vr.setVariable(exists.getName());		
+		var.setName(Reader.modelElementsMap.get(c));		
+		var.setDeclaration(decl);		
+		uOp.setOperator(UnaryOperator.SET_LITERAL);
+		uOp.setExpression(bo);		
+		bo.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
+		bo.setLeftExpression(vr);
+		bo.setRightExpression(sr);		
+		decl.setExpression(uOp);		
+		world.getRelation().add(decl);
+	}
+
+	/* =========================================================================================================*/
+	
+	/**
+	 * Create Property Declaration. 
+	 * 
+	 * A field into the World Signature...
+	 *  
+	 * @param c: RefOntoUML.MomentClass
+	 */
+	@SuppressWarnings("unchecked")	
+	public void createPropertyClassDeclaration(MomentClass c) 
+	{
+		Declaration decl = factory.createDeclaration();
+		Variable var = factory.createVariable();
+		UnaryOperation uOp = factory.createUnaryOperation();
+		BinaryOperation bo = factory.createBinaryOperation();
+		VariableReference vr = factory.createVariableReference();
+		SignatureReference sr = factory.createSignatureReference();		
+		sr.setSignature(Property.getName());		
+		vr.setVariable(exists.getName());		
+		var.setName(Reader.modelElementsMap.get(c));
+		var.setDeclaration(decl);		
+		uOp.setOperator(UnaryOperator.SET_LITERAL);
+		uOp.setExpression(bo);		
+		bo.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
+		bo.setLeftExpression(vr);
+		bo.setRightExpression(sr);		
+		decl.setExpression(uOp);		
+		world.getRelation().add(decl);
+	}	
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Performs transformation of Generalizations
+	 * 
+	 * @param g: RefOntoUML.Generalization
+	 */	
+	public void transformGeneralizations(Generalization g) 
+	{
+		createGeneralizationRule(g);	
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Create Generalization Rule.
+	 * 
+	 * The child Classifier is a subset of the father Classifier. 
+	 * Create the rule "child in father" into the World signature.
+	 * 
+	 * @param g: RefOntoUML.Generalization
+	 */
+	@SuppressWarnings("unchecked")	 
+	public void createGeneralizationRule(Generalization g)
+	{
+		CompareOperation co = factory.createCompareOperation();
+		co.setOperator(CompareOperator.SUBSET_LITERAL);		
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(Reader.modelElementsMap.get(g.getSpecific()));
+		co.setLeftExpression(vr);		
+		vr = factory.createVariableReference();
+		vr.setVariable(Reader.modelElementsMap.get(g.getGeneral()));
+		co.setRightExpression(vr);		
+		world.getBlock().getExpression().add(co);
+	}
+				
+	/* =========================================================================================================*/
 			
 	@SuppressWarnings("unchecked")
 	private void createAlloyModule() 
@@ -323,530 +1009,10 @@ public class Transformer {
 	
 	/* ============================================================================*/
 	
-	@SuppressWarnings("unchecked")
-	public void createAbstractClause(Classifier c) 
-	{
-		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-		
-		// Get all generalizations that the Classifier c is the father
-		for(PackageableElement elem : Reader.modelElementsMap.keySet() )
-		{
-			if(elem instanceof Classifier)
-			{
-				for(Generalization gen : ((Classifier)elem).getGeneralization() )
-				{
-					if(((Generalization) gen).getGeneral().getName() == c.getName())
-					{
-						generalizations.add((Generalization) gen);
-					}
-				}
-			}
-		}
-		
-		int cont = 1;		
-		
-		// Create BinaryOperation with union operator(+) to represent the completeness
-		// between father(Classifier) and sons
-		
-		BinaryOperation bo = factory.createBinaryOperation();
-		if(generalizations.size() > 0)
-		{
-			CompareOperation co = factory.createCompareOperation();
-			co.setOperator(CompareOperator.EQUAL_LITERAL);
-			
-			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(Reader.modelElementsMap.get(c));
-			
-			co.setLeftExpression(vr);
-			for(Generalization gen : generalizations)
-			{
-				if(generalizations.size() == 1) 
-				{
-					vr = factory.createVariableReference();
-					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));					
-					co.setRightExpression(vr);
-					break;
-				}
-				if(cont == 1)
-				{
-					bo.setOperator(BinaryOperator.UNION_LITERAL);
-					vr = factory.createVariableReference();
-					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
-					bo.setLeftExpression(vr);
-					co.setRightExpression(bo);
-				}
-				if(cont > 1 && cont != generalizations.size())
-				{
-					vr = factory.createVariableReference();
-					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
-					bo.setRightExpression(factory.createBinaryOperation());
-					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
-					((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
-					bo = ((BinaryOperation)bo.getRightExpression());
-				}
-				if(cont == generalizations.size())
-				{
-					vr = factory.createVariableReference();
-					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
-					bo.setRightExpression(vr);
-				}
-				cont++;
-			}
-			world.getBlock().getExpression().add(co);
-		}
-	}
-			
-	/* =========================================================================================================*/
-	
-	@SuppressWarnings("unchecked")
-	public void createRelatorAssociations(Relator c) 
-	{
-		// For each Relator c in a Package p define a rule in alloy
-		for(PackageableElement pe : Reader.modelElementsMap.keySet())
-		{
-			if(pe instanceof GeneralizationSet)
-			{
-				GeneralizationSet gs = ((GeneralizationSet)pe);
-				if(gs.isIsCovering())
-					for(Generalization gen : gs.getGeneralization())
-						if(gen.getGeneral().getName() == c.getName())
-							return;
-			}
-		}
-		
-		ArrayList<String> associationNames = new ArrayList<String>();		
-		getAllMediations(associationNames, c);		
-		
-		QuantificationExpression qe = factory.createQuantificationExpression();
-		qe.setQuantificator(Quantificator.ALL_LITERAL);
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		var.setName("x");
-		var.setDeclaration(decl);
-		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(Reader.modelElementsMap.get(c));
-		decl.setExpression(vr);
-		qe.getDeclaration().add(decl);
-		
-		CompareOperation co = factory.createCompareOperation();
-		UnaryOperation uOp = factory.createUnaryOperation();		
-		
-		co.setOperator(CompareOperator.GREATER_EQUAL_LITERAL);
-		co.setLeftExpression(uOp);
-		vr = factory.createVariableReference();
-		vr.setVariable("2");
-		co.setRightExpression(vr);
-
-		int cont = 1;
-		BinaryOperation bo = factory.createBinaryOperation();
-		BinaryOperation bo2 = factory.createBinaryOperation();
-		for(String name : associationNames)
-		{
-			if(associationNames.size() == 1)
-			{
-				bo.setOperator(BinaryOperator.JOIN_LITERAL);
-				vr = factory.createVariableReference();
-				vr.setVariable("x");
-				bo.setLeftExpression(vr);
-				vr = factory.createVariableReference();
-				vr.setVariable(name);
-				bo.setRightExpression(vr);
-				uOp.setExpression(bo);
-				break;
-			}
-			if(cont == 1)
-			{
-				bo.setOperator(BinaryOperator.UNION_LITERAL);
-
-				bo2.setOperator(BinaryOperator.JOIN_LITERAL);
-				vr = factory.createVariableReference();
-				vr.setVariable("x");
-				bo2.setLeftExpression(vr);
-				vr = factory.createVariableReference();
-				vr.setVariable(name);
-				bo2.setRightExpression(vr);
-				
-				bo.setLeftExpression(bo2);
-				
-				uOp.setExpression(bo);
-			}
-			if(cont > 1 && cont != associationNames.size())
-			{
-				
-				bo.setRightExpression(factory.createBinaryOperation());
-				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
-				
-				bo2 = factory.createBinaryOperation();
-				bo2.setOperator(BinaryOperator.JOIN_LITERAL);
-				vr = factory.createVariableReference();
-				vr.setVariable("x");
-				bo2.setLeftExpression(vr);
-				vr = factory.createVariableReference();
-				vr.setVariable(name);
-				bo2.setRightExpression(vr);				
-				
-				((BinaryOperation)bo.getRightExpression()).setLeftExpression(bo2);				
-				
-				bo = ((BinaryOperation)bo.getRightExpression());
-			}
-			if(cont == associationNames.size())
-			{
-				bo2 = factory.createBinaryOperation();
-				bo2.setOperator(BinaryOperator.JOIN_LITERAL);
-				vr = factory.createVariableReference();
-				vr.setVariable("x");
-				bo2.setLeftExpression(vr);
-				vr = factory.createVariableReference();
-				vr.setVariable(name);
-				bo2.setRightExpression(vr);
-				
-				bo.setRightExpression(bo2);
-			}
-			cont++;
-		}		
-		
-		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);
-		
-		qe.setExpression(co);
-		
-		if(associationNames.size()>0)
-			world.getBlock().getExpression().add(qe);
-	}
-	
-	/* =========================================================================================================*/
-	
-	@SuppressWarnings("unchecked")
-	public void createWeakSupplementationRule(Classifier c) 
-	{
-		for(PackageableElement pe : Reader.modelElementsMap.keySet())
-		{
-			if(pe instanceof GeneralizationSet)
-			{
-				GeneralizationSet gs = ((GeneralizationSet)pe);
-				if(gs.isIsCovering())
-				{
-					for(Generalization gen : gs.getGeneralization())
-					{
-						if(gen.getGeneral().getName() == c.getName()) return;
-					}
-				}
-			}
-		}
-		
-		ArrayList<String> associationNames = new ArrayList<String>();		
-		getAllMeronymics(associationNames, c);	
-		
-		QuantificationExpression qe = factory.createQuantificationExpression();
-		qe.setQuantificator(Quantificator.ALL_LITERAL);
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		var.setName("x");
-		var.setDeclaration(decl);
-		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(Reader.modelElementsMap.get(c));
-		decl.setExpression(vr);
-		qe.getDeclaration().add(decl);
-		
-		CompareOperation co = factory.createCompareOperation();
-		UnaryOperation uOp = factory.createUnaryOperation();		
-		
-		co.setOperator(CompareOperator.GREATER_EQUAL_LITERAL);
-		co.setLeftExpression(uOp);
-		vr = factory.createVariableReference();
-		vr.setVariable("2");
-		co.setRightExpression(vr);
-		
-		int cont = 1;
-		BinaryOperation bo = factory.createBinaryOperation();
-		BinaryOperation bo2 = factory.createBinaryOperation();
-		for(String name : associationNames)
-		{
-			if(associationNames.size() == 1)
-			{
-				bo.setOperator(BinaryOperator.JOIN_LITERAL);
-				vr = factory.createVariableReference();
-				vr.setVariable("x");
-				bo.setLeftExpression(vr);
-				vr = factory.createVariableReference();
-				vr.setVariable(name);
-				bo.setRightExpression(vr);
-				uOp.setExpression(bo);
-				break;
-			}
-			if(cont == 1)
-			{
-				bo.setOperator(BinaryOperator.UNION_LITERAL);
-
-				bo2.setOperator(BinaryOperator.JOIN_LITERAL);
-				vr = factory.createVariableReference();
-				vr.setVariable("x");
-				bo2.setLeftExpression(vr);
-				vr = factory.createVariableReference();
-				vr.setVariable(name);
-				bo2.setRightExpression(vr);
-				
-				bo.setLeftExpression(bo2);
-				
-				uOp.setExpression(bo);
-			}
-			if(cont > 1 && cont != associationNames.size())
-			{
-				
-				bo.setRightExpression(factory.createBinaryOperation());
-				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
-				
-				bo2 = factory.createBinaryOperation();
-				bo2.setOperator(BinaryOperator.JOIN_LITERAL);
-				vr = factory.createVariableReference();
-				vr.setVariable("x");
-				bo2.setLeftExpression(vr);
-				vr = factory.createVariableReference();
-				vr.setVariable(name);
-				bo2.setRightExpression(vr);				
-				
-				((BinaryOperation)bo.getRightExpression()).setLeftExpression(bo2);				
-				
-				bo = ((BinaryOperation)bo.getRightExpression());
-			}
-			if(cont == associationNames.size())
-			{
-				bo2 = factory.createBinaryOperation();
-				bo2.setOperator(BinaryOperator.JOIN_LITERAL);
-				vr = factory.createVariableReference();
-				vr.setVariable("x");
-				bo2.setLeftExpression(vr);
-				vr = factory.createVariableReference();
-				vr.setVariable(name);
-				bo2.setRightExpression(vr);
-				
-				bo.setRightExpression(bo2);
-			}
-			cont++;
-		}		
-		
-		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);
-		
-		qe.setExpression(co);
-		
-		if(associationNames.size()>0)
-			world.getBlock().getExpression().add(qe);
-	}
-	
-	/* =========================================================================================================*/
-	
-	private void getAllMediations(ArrayList<String> list, Relator r)
-	{
-		for(PackageableElement pe : Reader.modelElementsMap.keySet())
-		{
-			if(pe instanceof Mediation)
-			{
-				Type sourceType = ((Mediation)pe).sourceEnd().getType();
-				Type targetType = ((Mediation)pe).targetEnd().getType();
-				
-				if(sourceType instanceof Relator)
-				{
-					if(sourceType.getName() == r.getName()) list.add(Reader.modelElementsMap.get(pe));						
-				}				
-				else if(targetType instanceof Relator)
-				{
-					if(targetType.getName() == r.getName())list.add(Reader.modelElementsMap.get(pe));				
-				}				
-			}
-		}
-		for(Generalization gen : ((Relator)r).getGeneralization())
-		{							
-			if (gen.getGeneral() instanceof Relator) getAllMediations(list,(Relator)gen.getGeneral());
-		}
-	}
-	
-	/* =========================================================================================================*/
-		
-	private void getAllMeronymics(ArrayList<String> list, Classifier c)
-	{
-		for(PackageableElement pe : Reader.modelElementsMap.keySet())
-		{
-			if(pe instanceof Meronymic)
-			{
-				Type sourceType = ((Meronymic)pe).sourceEnd().getType();
-				Type targetType = ((Meronymic)pe).targetEnd().getType();
-				
-				if(sourceType instanceof RigidSortalClass)
-				{
-					if(sourceType.getName() == c.getName()) list.add(Reader.modelElementsMap.get(pe));					
-				}				
-				else if(targetType instanceof RigidSortalClass)
-				{
-					if(targetType.getName() == c.getName())	list.add(Reader.modelElementsMap.get(pe));						
-				}	 
-			}
-		}
-		for(Generalization gen : ((RigidSortalClass)c).getGeneralization())
-		{							
-			if (gen.getGeneral() instanceof RigidSortalClass) getAllMeronymics(list,(RigidSortalClass)gen.getGeneral());
-		}
-	}
-	
-	/* =========================================================================================================*/
-	
-	public void transformClassifier(Classifier c) 
-	{		
-		if(c instanceof ObjectClass)
-		{
-			createObjectClassDeclaration((ObjectClass)c);			
-			
-			ObjectsList.add(Reader.modelElementsMap.get(c));
-			
-			if((c instanceof Kind) || (c instanceof Collective) || (c instanceof Quantity))
-			{
-				kindsListDisj.add(Reader.modelElementsMap.get(c));
-			}
-			
-			if(c instanceof RigidSortalClass && !(c.isIsAbstract())) createWeakSupplementationRule(c);
-		}
-		if(c instanceof DataType && !(c instanceof PrimitiveType))
-		{
-			createDatatypeDeclaration((DataType)c);
-			
-			datatypesList.add(Reader.modelElementsMap.get(c));
-			
-			// all datatypes without fathers are naturally disjoint, 
-			// which means that multiple inheritance between datatypes isn't allowed.			
-			if(((DataType)c).getGeneralization().size() == 0)
-			{
-				datatypeListDisj.add(Reader.modelElementsMap.get(c));
-			}
-		}
-		if(c instanceof MomentClass)
-		{
-			if(c instanceof Relator && !(c.isIsAbstract()))
-			{
-				createRelatorAssociations((Relator) c);
-			}
-			
-			createPropertyClassDeclaration((MomentClass)c);
-			
-			PropertiesList.add(Reader.modelElementsMap.get(c));
-			
-			// all Propertys without fathers are naturally disjoint, 
-			// which means that multiple inheritance between Propertys isn't allowed.			
-			if(((MomentClass)c).getGeneralization().size() == 0)
-			{
-				PropertysListDisj.add(Reader.modelElementsMap.get(c));
-			}
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void createObjectClassDeclaration(ObjectClass c) 
-	{
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		UnaryOperation uOp = factory.createUnaryOperation();
-		BinaryOperation bo = factory.createBinaryOperation();
-		VariableReference vr = factory.createVariableReference();
-		SignatureReference sr = factory.createSignatureReference();
-		
-		sr.setSignature(Object.getName());
-		
-		vr.setVariable(exists.getName());
-		
-		var.setName(Reader.modelElementsMap.get(c));
-		var.setDeclaration(decl);
-		
-		uOp.setOperator(UnaryOperator.SET_LITERAL);
-		uOp.setExpression(bo);
-		
-		bo.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
-		bo.setLeftExpression(vr);
-		bo.setRightExpression(sr);
-		
-		decl.setExpression(uOp);
-		
-		world.getRelation().add(decl);
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void createDatatypeDeclaration(DataType c) 
-	{
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		UnaryOperation uOp = factory.createUnaryOperation();
-		BinaryOperation bo = factory.createBinaryOperation();
-		VariableReference vr = factory.createVariableReference();
-		SignatureReference sr = factory.createSignatureReference();
-		
-		sr.setSignature(Datatype.getName());
-		
-		vr.setVariable(exists.getName());
-		
-		var.setName(Reader.modelElementsMap.get(c));
-		
-		var.setDeclaration(decl);
-		
-		uOp.setOperator(UnaryOperator.SET_LITERAL);
-		uOp.setExpression(bo);
-		
-		bo.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
-		bo.setLeftExpression(vr);
-		bo.setRightExpression(sr);
-		
-		decl.setExpression(uOp);
-		
-		world.getRelation().add(decl);
-	}
-
-	@SuppressWarnings("unchecked")
-	private void createPropertyClassDeclaration(MomentClass c) 
-	{
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		UnaryOperation uOp = factory.createUnaryOperation();
-		BinaryOperation bo = factory.createBinaryOperation();
-		VariableReference vr = factory.createVariableReference();
-		SignatureReference sr = factory.createSignatureReference();
-		
-		sr.setSignature(Property.getName());
-		
-		vr.setVariable(exists.getName());
-		
-		var.setName(Reader.modelElementsMap.get(c));
-		var.setDeclaration(decl);
-		
-		uOp.setOperator(UnaryOperator.SET_LITERAL);
-		uOp.setExpression(bo);
-		
-		bo.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
-		bo.setLeftExpression(vr);
-		bo.setRightExpression(sr);
-		
-		decl.setExpression(uOp);
-		
-		world.getRelation().add(decl);
-	}	
-	
-	/* ============================================================================*/
-	
-	@SuppressWarnings("unchecked")
-	public void transformGeneralizations(Generalization g) 
-	{
-		// That method creates a rule in alloy for every Generalization
-		
-		CompareOperation co = factory.createCompareOperation();
-		co.setOperator(CompareOperator.SUBSET_LITERAL);
-		
-		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(Reader.modelElementsMap.get(g.getSpecific()));
-		co.setLeftExpression(vr);
-		
-		vr = factory.createVariableReference();
-		vr.setVariable(Reader.modelElementsMap.get(g.getGeneral()));
-		co.setRightExpression(vr);
-		
-		world.getBlock().getExpression().add(co);		
-	}
-	
-	/* ============================================================================*/
-	
+	/**
+	 * 
+	 * @param gs: RefOntoUML.GeneralizationSet
+	 */
 	@SuppressWarnings("unchecked")
 	public void transformGeneralizationSets(GeneralizationSet gs) 
 	{
@@ -1662,25 +1828,35 @@ public class Transformer {
 		
 		world.getBlock().getExpression().add(qe);
 	}
-	
-	/* ============================================================================*/
-	
-	public void saveAls() 
-	{		
-		try{			
-			FileWriter fstream = new FileWriter(OntoUML2Alloy.alsPath);
-			BufferedWriter out = new BufferedWriter(fstream);
-			out.write(alsresource.getContents().get(0).toString());			
-			out.close();
-		  }catch (Exception e){
-			  System.err.println("Error: " + e.getMessage());
-		  }		
-	}	
 
 	/* ============================================================================*/
 	
+	public void createRelatorRuleFact()
+	{
+		for (FactDeclaration f: relator_rule)
+		{
+			module.getParagraph().add(f);
+		}
+	}	
+	
+	/* ============================================================================*/
+	
+	public void createWeakSupplementationRuleFact()
+	{
+		for (FactDeclaration f: weak_supplementation_rule)
+		{
+			module.getParagraph().add(f);
+		}
+	}	
+	
+	/* ============================================================================*/
+			
 	public void finalAdditions()
 	{		
+		createRelatorRuleFact();
+		
+		createWeakSupplementationRuleFact();
+		
 		createRigidityFact();		
 		
 		createVisible();
@@ -1796,21 +1972,21 @@ public class Transformer {
 		vr.setVariable(exists.getName());
 		bOp.setLeftExpression(vr);
 		
-		ArrayList<String> list = ObjectsList;
+		ArrayList<String> list = objectNamesList;
 		if(param.compareTo("Object") == 0) {
 			vr = factory.createVariableReference();
 			vr.setVariable(Object.getName());
-			list = ObjectsList;
+			list = objectNamesList;
 		}
 		if(param.compareTo("Property") == 0) {
 			vr = factory.createVariableReference();
 			vr.setVariable(Property.getName());
-			list = PropertiesList;
+			list = momentNamesList;
 		}
 		if(param.compareTo("Datatype") == 0) {
 			vr = factory.createVariableReference();
 			vr.setVariable(Datatype.getName());
-			list = datatypesList;
+			list = datatypeNamesList;
 		}
 		
 		bOp.setRightExpression(vr);
@@ -1864,23 +2040,23 @@ public class Transformer {
 		DisjointExpression disj = null;
 		
 		//Kinds, Quantities and Collectives
-		if(kindsListDisj.size()>1)
+		if(subsortalDisjNamesList.size()>1)
 		{
 			disj = factory.createDisjointExpression();
-			for(String kind : kindsListDisj)
+			for(String s : subsortalDisjNamesList)
 			{
 				VariableReference vr = factory.createVariableReference();
-				vr.setVariable(kind);
+				vr.setVariable(s);
 				disj.getSet().add(vr);
 			}
 			world.getBlock().getExpression().add(disj);
 		}
 		
 		//DataTypes
-		if(datatypeListDisj.size()>1)
+		if(datatypeDisjNamesList.size()>1)
 		{
 			disj = factory.createDisjointExpression();
-			for(String datatype : datatypeListDisj)
+			for(String datatype : datatypeDisjNamesList)
 			{
 				VariableReference vr = factory.createVariableReference();
 				vr.setVariable(datatype);
@@ -1890,10 +2066,10 @@ public class Transformer {
 		}
 		
 		//Properties
-		if(PropertysListDisj.size()>1)
+		if(momentDisjNamesList.size()>1)
 		{
 			disj = factory.createDisjointExpression();
-			for(String Property : PropertysListDisj)
+			for(String Property : momentDisjNamesList)
 			{
 				VariableReference vr = factory.createVariableReference();
 				vr.setVariable(Property);

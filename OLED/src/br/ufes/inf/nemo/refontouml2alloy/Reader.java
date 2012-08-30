@@ -25,7 +25,6 @@ package br.ufes.inf.nemo.refontouml2alloy;
 import java.util.HashMap;
 
 import RefOntoUML.Association;
-import RefOntoUML.Category;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
@@ -39,88 +38,63 @@ import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
-import RefOntoUML.RigidSortalClass;
 
 public class Reader {
 		
-	//This class performs the transformation
+	/* ============================================================================*/
+	
+	/** This class performs the transformation. */
 	public static Transformer transformer;	
 	
-	// HashMap < PackageableElement modelElement, String modifiedName >
+	/** HashMap < PackageableElement modelElement, String modifiedName >. */
 	public static HashMap<PackageableElement,String> modelElementsMap;
 	
-	// HashMap < Property AssocEnd, String modifiedName >
+	/** HashMap < Property AssocEnd, String modifiedName > */
 	public static HashMap<Property,String> modelAssocEndMap;
 	
-	// Model Name
+	/** Model Name. */
 	public static String modelName;
 	
-	// performs modifications on names
+	/** Performs modifications on names */
 	public static StringCheck ch ;
-	
-	/* ============================================================================*/
-		
-	public static void printModelElementsMap ()
-	{		
-		System.out.println("modelElementsMap < PackageableElement elem, String modifiedName >");
-		for(PackageableElement p: modelElementsMap.keySet())
-		{
-			System.out.println("\""+p.getName()+"\"->\""+modelElementsMap.get(p)+"\"");			
-		}
-	}
-	
-	public static void printModelAssocEndMap ()
-	{		
-		System.out.println("modelAssocEndMap <Property assocEnd,String modifiedName>");
-		for(Property p: modelAssocEndMap.keySet())
-		{
-			System.out.println("\""+p.getName()+"\"->\""+modelAssocEndMap.get(p)+"\"");			
-		}
-	}
-	
+			
 	/* ============================================================================*/
 	
-	/** Constructor */
+	/** Initial Method. The transformation begins here. */
 	public static void init(Model m)
 	{	
-		transformer = new Transformer();		
+		transformer = new Transformer();
+		
 		modelAssocEndMap = new HashMap<Property,String>();
 		modelElementsMap = new HashMap<PackageableElement,String>();
+		
 		ch = new StringCheck();		
 		
 		if(m != null) 
 		{
-			initModelName(m);
+			modelName = ch.removeSpecialNames(m.getName(),m.getClass().toString());		
 			
-			initModelElements(m);
+			initHashMaps(m);
 				
 			setDefaultSigsTransformer(m);	
 			
+			// Here the transformation begins...
 			transformer.init();
 		}		
-	}
+	}	
 	
 	/* ============================================================================*/
 		
-	private static void initModelName(Model m) 
-	{				
-		StringCheck ch = new StringCheck();		
-		
-		modelName = ch.removeSpecialNames(m.getName(),m.getClass().toString());				
-	}
-	
-	/* ============================================================================*/
-		
-	private static void initModelElements(PackageableElement pack) 
+	private static void initHashMaps(PackageableElement pack) 
 	{		
 		for(PackageableElement p : ((Package) pack).getPackagedElement())
 		{
-			if(p instanceof Package) initModelElements(p);
-			else addModelElements(p);			
+			if(p instanceof Package) initHashMaps(p);
+			else addToHashMaps(p);			
 		}
 	}		
 	
-	private static void addModelElements(PackageableElement pe)
+	private static void addToHashMaps(PackageableElement pe)
 	{
 		if (pe instanceof Class || pe instanceof Association || ((pe instanceof DataType) && !(pe instanceof PrimitiveType)) || (pe instanceof GeneralizationSet)) 
 		{
@@ -140,9 +114,7 @@ public class Reader {
 			}
 			
 			modelElementsMap.put(pe,ch.removeSpecialNames(pe.getName(),pe.getClass().toString()));			
-		}else{
-			
-		}		
+		}				
 	}
 	
 	/* ============================================================================*/
@@ -184,9 +156,10 @@ public class Reader {
 		callTransformationGeneralizationSets();
 		callTransformationAssociations();		
 		
-		if(transformer.ObjectsList.size() > 0) transformer.createExists("Object");		
-		if(transformer.PropertiesList.size() > 0) transformer.createExists("Property");
-		if(transformer.datatypesList.size() > 0) transformer.createExists("Datatype");		
+		if(transformer.objectNamesList.size() > 0) transformer.createExists("Object");		
+		if(transformer.momentNamesList.size() > 0) transformer.createExists("Property");
+		if(transformer.datatypeNamesList.size() > 0) transformer.createExists("Datatype");
+		
 		transformer.createKindDatatypePropertyDisjoint();
 		transformer.finalAdditions();
 	}
@@ -199,14 +172,7 @@ public class Reader {
 		{			
 			if (pe instanceof Classifier) 
 			{
-				transformer.transformClassifier( (Classifier)pe );
-				
-				if ( ((Classifier)pe).isIsAbstract() ) transformer.createAbstractClause( (Classifier)pe );				
-
-				if ( (pe instanceof RigidSortalClass) || (pe instanceof Category) || (pe instanceof MomentClass) || ((pe instanceof DataType)&&!(pe instanceof PrimitiveType)) ) 
-				{ 
-					transformer.rigidElements.add((Classifier)pe); 
-				}				
+				transformer.transformClassifier( (Classifier)pe );								
 			}
 		}
 	}	
@@ -255,5 +221,29 @@ public class Reader {
 				transformer.transformDerivations((Derivation) pe);
 			}
 		}		
+	}
+	
+	/* ============================================================================*/
+	
+	/** Print HashMap. This class is used for test. */
+	public static void printModelElementsMap ()
+	{		
+		System.out.println("modelElementsMap < PackageableElement elem, String modifiedName >");
+		for(PackageableElement p: modelElementsMap.keySet())
+		{
+			System.out.println("\""+p.getName()+"\"->\""+modelElementsMap.get(p)+"\"");			
+		}
+	}
+	
+	/* ============================================================================*/
+	
+	/** Print HashMap. This class is used for test. */
+	public static void printModelAssocEndMap ()
+	{		
+		System.out.println("modelAssocEndMap <Property assocEnd,String modifiedName>");
+		for(Property p: modelAssocEndMap.keySet())
+		{
+			System.out.println("\""+p.getName()+"\"->\""+modelAssocEndMap.get(p)+"\"");			
+		}
 	}
 }
