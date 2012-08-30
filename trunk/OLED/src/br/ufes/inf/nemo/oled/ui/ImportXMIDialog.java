@@ -17,6 +17,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
@@ -51,14 +52,15 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	 * 
 	 */
 	private static final long serialVersionUID = -5072745232874390321L;
-	private JScrollPane treeScrollPane;
+	private JScrollPane modelTreeScrollPane, diagrTreeScrollPane;
 	private JButton importButton;
 	private JTextPane infoPane;
 	private JButton deleteButton;
 	private JPanel buttonsPanel;
+	private JTabbedPane treeTabbedPane;
 	
 	Mediator transfManager;
-	CheckboxTree modelChckTree, diagrChckTree;
+	CheckboxTree modelChckTree, diagrChckTree, activeTree;
 	DiagramManager diagManager;
 	Model model;
 
@@ -92,11 +94,22 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 			setBounds(new Rectangle(0, 0, 400, 300));
 			
 			{
-				treeScrollPane = new JScrollPane();
-				getContentPane().add(treeScrollPane, BorderLayout.WEST);
-				treeScrollPane.setPreferredSize(new java.awt.Dimension(200, 239));
-				treeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-				treeScrollPane.getViewport().add(modelChckTree);
+				treeTabbedPane = new JTabbedPane();
+				{
+					modelTreeScrollPane = new JScrollPane();
+					modelTreeScrollPane.setPreferredSize(new java.awt.Dimension(200, 239));
+					modelTreeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+					modelTreeScrollPane.getViewport().add(modelChckTree);
+				}
+				{
+					diagrTreeScrollPane = new JScrollPane();
+					diagrTreeScrollPane.setPreferredSize(new java.awt.Dimension(200, 239));
+					diagrTreeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+					diagrTreeScrollPane.getViewport().add(diagrChckTree);
+				}
+				treeTabbedPane.addTab("Model", modelTreeScrollPane);
+				treeTabbedPane.addTab("Diagram", diagrTreeScrollPane);
+				getContentPane().add(treeTabbedPane, BorderLayout.WEST);
 			}
 			{
 				buttonsPanel = new JPanel();
@@ -163,8 +176,20 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getSource() == deleteButton) {
-			RefOntoUMLUtil.filter(modelChckTree);
+			switch (treeTabbedPane.getSelectedIndex()) {
+				case 0:
+					RefOntoUMLUtil.filter(modelChckTree);
+					RefOntoUMLUtil.removeExcludedNodes((DefaultMutableTreeNode)
+							diagrChckTree.getModel().getRoot(), diagrChckTree);
+					break;
+				case 1:
+					RefOntoUMLUtil.filter(diagrChckTree);
+					RefOntoUMLUtil.removeExcludedNodes((DefaultMutableTreeNode)
+							modelChckTree.getModel().getRoot(), modelChckTree);
+					break;
+			}
 			modelChckTree.clearChecking();
+			diagrChckTree.clearChecking();
 			
 		} else if (e.getSource() == importButton) {
 			UmlProject project = new UmlProject(this.model);
