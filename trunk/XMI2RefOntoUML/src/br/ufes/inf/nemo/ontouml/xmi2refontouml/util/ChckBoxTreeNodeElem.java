@@ -7,21 +7,32 @@ import RefOntoUML.*;
 public class ChckBoxTreeNodeElem {
 	
 	private Element element;
+	private String name;
 	
 	public ChckBoxTreeNodeElem (Element element) {
 		this.element = element;
+		try {
+			this.name = ((NamedElement)element).getName();
+		} catch (ClassCastException ccex) {
+			System.out.println(element.toString());
+			System.out.println("Something wrong is not right.");
+		}
 	}
 	
+	public ChckBoxTreeNodeElem (String name) {
+		this.name = name;
+	}
+	
+	@Override
 	public String toString() {
-		if (element instanceof NamedElement) {
-			String nome = ((NamedElement)element).getName();
-			if (nome == null || nome.equals("")) {
+		if (name == null || name.equals("")) {
+			if (element != null) {
 				return "<" + element.getClass().toString().replace("class " +
 						"RefOntoUML.impl.", "").replace("Impl", "") + ">";
 			} else
-				return nome;
+				return "<Name Unavailable>";
 		} else
-			return "<Name Unavailable>";
+			return name;
 	}
 	
 	public Element getElement() {
@@ -32,16 +43,22 @@ public class ChckBoxTreeNodeElem {
 		String info = this.toString() + "\n\n";
 		info += "Type: ";
 		
-		info += element.getClass().toString().replace("class " +
+		if (element != null) {
+		
+			info += element.getClass().toString().replace("class " +
 				"RefOntoUML.impl.", "").replace("Impl", "") + "\n";
 		
-		if (element instanceof Association) {
-			Association assoc = (Association)element;
-			EList<Property> ownedEnds = assoc.getOwnedEnd();
-			info +=	"Connections:\n";
-			for (Property prop : ownedEnds) {
-				info +=	"      " + prop.getType().getName() + "\n";
+			if (element instanceof Association) {
+				Association assoc = (Association)element;
+				EList<Property> ownedEnds = assoc.getOwnedEnd();
+				info +=	"Connections:\n";
+				for (Property prop : ownedEnds) {
+					info +=	"      " + prop.getType().getName() + "\n";
+				}
 			}
+			
+		} else {
+			info += "Diagram";
 		}
 		
 		return info;

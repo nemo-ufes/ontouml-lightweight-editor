@@ -1,27 +1,192 @@
 package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
 
+import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
+
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+
 import org.eclipse.emf.common.util.BasicEList.UnmodifiableEList;
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
 
 import RefOntoUML.Association;
 import RefOntoUML.Dependency;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Property;
+import RefOntoUML.util.ValidationMessage;
 
 
 public class RefOntoUMLUtil {
+	
+	/**
+	 * Creates a CheckboxTree from a RefOntoUML.Model to serve
+	 * as a element selection to the XMI2RefOntoUML transformation.
+	 * @param model the RefOntoUML Model
+	 * @return the CheckboxTree with the Model elements to be selected.
+	 */
+	
+	public static CheckboxTree createSelectionTreeFromModel(RefOntoUML.Model model) {
+		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(model));
+		CheckboxTree modelTree = new CheckboxTree(rootNode);
+		drawTree(rootNode, model);
+		return modelTree;
+	}
+	
+	/**
+	 * Auxiliary function for the createSelectionTreeFromModel.
+	 * It runs the Elements from the model creating the tree nodes.
+	 * @param parent the direct parent node of the element that will be created.
+	 * @param refElement the RefOntoUML Element for which a node will be created.
+	 */
+	
+	private static void drawTree(DefaultMutableTreeNode parent, RefOntoUML.Element refElement) {
+		if (refElement instanceof RefOntoUML.Model) {
+			EList<EObject> contents = refElement.eContents();
+			for (EObject eobj : contents) {
+				drawTree(parent, (RefOntoUML.Element) eobj);
+			}
+			
+		} else if (refElement instanceof RefOntoUML.Package) {
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(refElement));
+			parent.add(newNode);
+			
+			EList<EObject> contents = refElement.eContents();
+			for (EObject eobj : contents) {
+				drawTree(newNode, (RefOntoUML.Element) eobj);
+			}
+			
+		} else if (refElement instanceof RefOntoUML.Class ||
+				refElement instanceof RefOntoUML.Association) {
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(refElement));			
+			parent.add(newNode);
+			
+		}
+	}
+	
+	/**
+	 * Creates a CheckboxTree organizing the elements by diagrams
+	 * instead of by the Model structure (Packages). It uses the
+	 * Mapper to find the diagrams and their classes.
+	 * @param mapper the bridge that in responsible for reading the
+	 * tool specific XMI and returning the information that is needed.
+	 * @return the CheckboxTree with the elements organized by diagram.
+	 */
+	
+	public static CheckboxTree createSelectionTreeByDiagram(Mapper mapper) {
+		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem("Diagrams"));
+		CheckboxTree modelTree = new CheckboxTree(rootNode);
+		
+		List<Object> diagramList = mapper.getDiagramList();
+    	for (Object diagram : diagramList) {
+    		DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(
+    				new ChckBoxTreeNodeElem(mapper.getName(diagram)));
+    		rootNode.add(newNode);
+    		List<String> elemIdList = mapper.getDiagramElements(diagram);
+    		for (String id : elemIdList) {
+    			DefaultMutableTreeNode newElemNode = new DefaultMutableTreeNode(
+    					new ChckBoxTreeNodeElem(Mediator.elemMap.get(id)));
+    			newNode.add(newElemNode);
+    		}
+    	}
+    	
+    	return modelTree;
+	}
+	
+	/**
+	 * Removes the selected elements from the Model and from the Tree.
+	 * @param modelTree the tree containing the Model that will be filtered.
+	 */
+
+	public static void filter(CheckboxTree modelTree) {
+    	TreePath[] treepathList = modelTree.getCheckingPaths();
+    	for (TreePath treepath : treepathList) {
+    		DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)treepath.getLastPathComponent();
+    		ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) childNode.getUserObject();
+    		
+    		RefOntoUML.Element oldElem = chckNode.getElement();
+    		
+    		RefOntoUMLUtil.delete(oldElem, true);
+    	}
+    	
+    	removeExcludedNodes((DefaultMutableTreeNode) modelTree.getModel().getRoot(), modelTree);
+    }
+	
+	/**
+	 * Auxiliary function that removes from the tree the nodes that contain
+	 * elements that were removed from the Model.
+	 * @param treeNode
+	 * @param modelTree
+	 */
+    
+    private static void removeExcludedNodes(DefaultMutableTreeNode treeNode, CheckboxTree modelTree) {
+    	
+    	if (treeNode == null) {
+    		return;
+    	}
+    	
+    	if (!treeNode.isLeaf()) {
+    		removeExcludedNodes((DefaultMutableTreeNode)treeNode.getFirstChild(), modelTree);
+    	}
+    	
+    	removeExcludedNodes(treeNode.getNextSibling(), modelTree);
+    	
+		ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) treeNode.getUserObject();
+		
+		RefOntoUML.Element oldElem = chckNode.getElement();
+		if (oldElem != null && oldElem.eResource() == null) {
+			DefaultTreeModel treeModel = (DefaultTreeModel)modelTree.getModel();
+			treeModel.removeNodeFromParent(treeNode);
+		}
+    	
+    }
+    
+    /**
+     * Validates a model according to the RefOntoUML OCL rules.
+     * @param model the model that will be validated.
+     */
+    
+    public void validate(RefOntoUML.Model model) {
+		Diagnostician validator = Diagnostician.INSTANCE;
+		
+		// (Opcional, apenas para inicializar mais rápido) 
+		// As the first validation takes long due to initialization process,
+		// we start it here so the user doesn't get the initialization hit
+		//validator.validate(factory.createClass());
+		
+		Map<Object, Object> context = new HashMap<Object, Object>();
+		BasicDiagnostic diag = new BasicDiagnostic();
+		
+		// Returns true if the model is valid.
+		if (validator.validate(model, diag, context)){
+			System.out.println("Valid model.");
+		} else {
+			System.out.println("Invalid model.");
+		}
+		
+		for (Diagnostic item : diag.getChildren()) {	
+			System.out.println(ValidationMessage.getFinalMessage(item.getMessage()));
+		}
+	}
 	
 	/**
 	   * Deletes the object from its {@link EObject#eResource containing} resource 
@@ -31,7 +196,7 @@ public class RefOntoUMLUtil {
 	   * @param eObject the object to delete.
 	   * @since 2.3
 	   */
-	  public static void delete(EObject eObject)
+    public static void delete(EObject eObject)
 	  {
 	    EObject rootEObject = EcoreUtil.getRootContainer(eObject);
 	    Resource resource = rootEObject.eResource();

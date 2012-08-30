@@ -24,4 +24,7 @@ public interface Mapper {
 	
 	public String getRelatorfromMaterial(Object element);
 	
+	public List<Object> getDiagramList();
+	public List<String> getDiagramElements(Object diagram);
+	
 }

@@ -37,6 +37,9 @@ public class MapperAstah implements Mapper {
 	private final String[] PRIMITIVE_TAG_PATH = {"UML:Primitive"};
 	private final String[] ATTRIBUTE_TAG_PATH = {"UML:Classifier.feature", "UML:Attribute"};
 	private final String[] CONNECTION_TAG_PATH = {"UML:Association.connection", "UML:AssociationEnd"};
+	private final String[] DIAGRAM_TAG_PATH = {"JUDE:Diagram"};
+	private final String[] DIAGCLA_TAG_PATH = {"JUDE:Diagram.presentations", "JUDE:ClassifierPresentation"};
+	private final String[] DIAGASS_TAG_PATH = {"JUDE:Diagram.presentations", "JUDE:AssociationPresentation"};
 
 	Document doc;
 	
@@ -574,5 +577,30 @@ public class MapperAstah implements Mapper {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public List<Object> getDiagramList() {
+		NodeList extensions = doc.getElementsByTagName("XMI.extension");
+		List<Object> diagramList = new ArrayList<Object>();
+		for (int i = 0 ; i < extensions.getLength(); i++) {
+			Element diagram = getChild((Element)extensions.item(i), "JUDE:Diagram");
+			if (diagram != null) {
+				diagramList = getChildsByTagName((Element)extensions.item(i), DIAGRAM_TAG_PATH);
+			}
+		}
+		return diagramList;
+	}
+
+	@Override
+	public List<String> getDiagramElements(Object diagram) {
+		List<String> diagElemIDList = new ArrayList<String>();
+		List<Object> diagElemList = getChildsByTagName((Element)diagram, DIAGCLA_TAG_PATH);
+		diagElemList.addAll(getChildsByTagName((Element)diagram, DIAGASS_TAG_PATH));
+		for (Object diagElem : diagElemList) {
+			Element semanticElement = getChild((Element)diagElem, "JUDE:UPresentation.semanticModel");
+			diagElemIDList.add(((Element)semanticElement.getChildNodes().item(1)).getAttribute("xmi.idref"));
+		}
+		return diagElemIDList;
 	}
 }

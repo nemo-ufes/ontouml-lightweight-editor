@@ -59,6 +59,18 @@ public class MapperMagicDraw implements Mapper {
 		return null;
 	}
 
+	@Override
+	public List<Object> getDiagramList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getDiagramElements(Object diagram) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 //	public MapperEA(String inputPath) {		
 //	//preProcess(inputPath);
