@@ -19,7 +19,7 @@ public class VerificationHelper {
 	   	String message = "";
     	try	{    		
 		
-    		OntoUML2Alloy.transformToAlloyFile(model, dirPath, alloyFileName, themeFileName);
+    		OntoUML2Alloy.Transformation(model, dirPath, alloyFileName, themeFileName);
 			succeeds = true;
 			
 		} catch (Exception e) {
