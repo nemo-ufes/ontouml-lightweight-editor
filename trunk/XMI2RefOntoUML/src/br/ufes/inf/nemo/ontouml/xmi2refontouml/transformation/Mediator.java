@@ -1,7 +1,5 @@
 package br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation;
 
-import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,23 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
-
-import org.eclipse.emf.common.util.BasicDiagnostic;
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.Diagnostician;
 
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.RefOntoCreator.RefOntoUMLException;
-import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.ChckBoxTreeNodeElem;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.ElementType;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.Mapper;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.MapperFactory;
-import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.RefOntoUMLUtil;
-
-import RefOntoUML.util.ValidationMessage;
 
 
 /**
@@ -46,13 +33,11 @@ public class Mediator {
 	public String SAVE_FILE_ADDRESS;
 	// Mapeia o id dos elementos para elementos RefOntoUML. É utilizado como auxiliar para se criar referências,
 	// como por exemplo em generalizations e associations.
-	private static HashMap<String, RefOntoUML.Element> elemMap = new HashMap<String, RefOntoUML.Element>();
+	public static HashMap<String, RefOntoUML.Element> elemMap = new HashMap<String, RefOntoUML.Element>();
 	// Leitor de arquivo XMI que conhece as tags específicas do programa que exportou o arquivo
-	private Mapper mapper;
+	public Mapper mapper;
 	// Instância da classe que cria os objetos RefOntoUML
     private RefOntoCreator refcreator = new RefOntoCreator();
-    // Root of the CheckboxTree. Will be displayed in the API.
-    private DefaultMutableTreeNode actualParent;
     // Auxiliary string to stack the path of the element with error
     private String errorPath;
     public static String errorLog;
@@ -71,9 +56,6 @@ public class Mediator {
     	//Resets the element map
     	elemMap = new HashMap<String, RefOntoUML.Element>();
     	
-    	//Resets the CheckboxTree
-    	actualParent = null;
-    	
     	errorLog = "";
     	errorPath = "";
     	warningLog = "";
@@ -90,70 +72,7 @@ public class Mediator {
 		}
     }
     
-    public void filter(CheckboxTree modelTree) {
-    	TreePath[] treepathList = modelTree.getCheckingPaths();
-    	for (TreePath treepath : treepathList) {
-    		DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)treepath.getLastPathComponent();
-    		ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) childNode.getUserObject();
-    		
-    		RefOntoUML.Element oldElem = chckNode.getElement();
-    		
-    		RefOntoUMLUtil.delete(oldElem, true);
-    	}
-    	
-    	removeExcludedNodes(actualParent, modelTree);
-    }
-    
-    public void removeExcludedNodes(DefaultMutableTreeNode treeNode, CheckboxTree modelTree) {
-    	
-    	if (treeNode == null) {
-    		return;
-    	}
-    	
-    	if (!treeNode.isLeaf()) {
-    		removeExcludedNodes((DefaultMutableTreeNode)treeNode.getFirstChild(), modelTree);
-    	}
-    	
-    	removeExcludedNodes(treeNode.getNextSibling(), modelTree);
-    	
-		ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) treeNode.getUserObject();
-		
-		RefOntoUML.Element oldElem = chckNode.getElement();
-		if (oldElem.eResource() == null) {
-			DefaultTreeModel treeModel = (DefaultTreeModel)modelTree.getModel();
-			treeModel.removeNodeFromParent(treeNode);
-		}
-    	
-    }
-    
-    public void validate() {
-    	Diagnostician validator = Diagnostician.INSTANCE;
-
-    	// (Opcional, apenas para inicializar mais rápido) 
-    	// As the first validation takes long due to initialization process,
-    	// we start it here so the user doesn't get the initialization hit
-    	//validator.validate(factory.createClass());
-
-    	Map<Object, Object> context = new HashMap<Object, Object>();
-    	BasicDiagnostic diag = new BasicDiagnostic();
-    	ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) actualParent.getUserObject();
-		RefOntoUML.Model model = (RefOntoUML.Model) chckNode.getElement();
-
-    	//Retorna true se o modelo for válido
-    	if (validator.validate(model, diag, context)){
-    		System.out.println("Valid model.");
-    	} else {
-    		System.out.println("Invalid model.");
-    	}
-    	
-    	for (Diagnostic item : diag.getChildren()) {	
-	    	//PackageableElement element = (PackageableElement) item.getData().get(0);
-	    	System.out.println(ValidationMessage.getFinalMessage(item.getMessage()));
-	    	//System.out.println(item.getChildren());
-    	}
-    }
-    
-    public DefaultMutableTreeNode parse() throws Exception {
+    public RefOntoUML.Model parse() throws Exception {
     	
     	initialize();
     	if (mapper == null) {
@@ -167,16 +86,14 @@ public class Mediator {
         
         // Cria o modelo propriamente dito
         Object modelelement = mapper.getModelElement();
-        createElement(modelelement, ElementType.MODEL);
+        RefOntoUML.Model model = (RefOntoUML.Model) createElement(modelelement, ElementType.MODEL);
         dealModel();
-        return actualParent;
+        return model;
     }
     
     protected RefOntoUML.Element createElement(Object element, ElementType elemType) throws Exception {
     	RefOntoUML.Element elem1 = null;
     	String stereotype = null;
-    	
-    	DefaultMutableTreeNode newTreeNode;
     	
     	switch (elemType) {
     		case MODEL:
@@ -207,6 +124,7 @@ public class Mediator {
     			
     		case DATATYPE:
     			elem1 = refcreator.createDataType();
+    			doClassifier(element, (RefOntoUML.Classifier)elem1);
     			break;
     			
     		case CLASS:
@@ -217,6 +135,7 @@ public class Mediator {
     				errorPath = mapper.getName(element);
     				break;
     			}
+    			doClassifier(element, (RefOntoUML.Classifier)elem1);
     			break;
     			
     		case PROPERTY:
@@ -225,6 +144,7 @@ public class Mediator {
     			
     		case ENUMERATION:
     			elem1 = refcreator.createEnumeraion();
+    			doClassifier(element, (RefOntoUML.Classifier)elem1);
     			break;
     			
     		case ENUMLITERAL:
@@ -245,6 +165,7 @@ public class Mediator {
     		    	errorPath = mapper.getName(element) + "\n" + errorPath;
     				break;
     			}
+    			doClassifier(element, (RefOntoUML.Classifier)elem1);
     			break;
     			
     		case GENERALIZATION:
@@ -262,13 +183,6 @@ public class Mediator {
     		case COMMENT:
     			elem1 = refcreator.createComment();
     			break;
-    	}
-    	
-    	if (elem1 instanceof RefOntoUML.Classifier && !(elem1 instanceof RefOntoUML.PrimitiveType)) {
-    		doClassifier(element, (RefOntoUML.Classifier)elem1);
-			//Add in the tree
-			newTreeNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(elem1));
-			actualParent.add(newTreeNode);
     	}
     	
     	//Every Element can have a Comment
@@ -341,11 +255,6 @@ public class Mediator {
     }
     
     protected RefOntoUML.Package doPackage(RefOntoUML.Package pack, Object element) throws Exception {
-    	DefaultMutableTreeNode newTreeNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(pack));
-    	if (actualParent != null) {
-    		actualParent.add(newTreeNode);
-    	}
-    	actualParent = newTreeNode;
     	// Create the Packageable Elements Inside the package
     	try {
     		// Create Primitive Types first
@@ -389,9 +298,7 @@ public class Mediator {
         		Object refOntoElement = createElement(e, type);
 				refcreator.addPackagedElement(pack, (RefOntoUML.PackageableElement) refOntoElement);
 				
-				if (refOntoElement instanceof RefOntoUML.Package) {
-					actualParent = (DefaultMutableTreeNode) actualParent.getParent();
-				} else if (refOntoElement instanceof RefOntoUML.MaterialAssociation) {
+				if (refOntoElement instanceof RefOntoUML.MaterialAssociation) {
 	        		doMaterial((RefOntoUML.MaterialAssociation)refOntoElement, e, pack);
 	        	}
 				

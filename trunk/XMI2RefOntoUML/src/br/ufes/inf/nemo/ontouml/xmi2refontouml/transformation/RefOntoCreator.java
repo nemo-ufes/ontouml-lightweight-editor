@@ -94,7 +94,7 @@ public class RefOntoCreator {
 	}
 	
 	/*
-	 * CREATOR METHODS
+	 * CREATION METHODS
 	 */
 	
 	public RefOntoUML.Model createModel() {
@@ -306,9 +306,25 @@ public class RefOntoCreator {
     		// DO NOTHING
     	}
     	
-    	for (Object prop : (List<?>)hashProp.get("memberend")) {
-    		assoc1.getMemberEnd().add((Property)prop);
-		}
+    	// Makes sure the Properties (memberEnds) are added in the correct order
+    	// to be in accordance to the RefOntoUML metamodel.
+    	List<?> endList = (List<?>)hashProp.get("memberend");
+    	if ((assoc1 instanceof Mediation && ((Property)endList.get(1)).getType() instanceof Relator) || 
+    			(assoc1 instanceof Characterization && ((Property)endList.get(1)).getType() instanceof Mode) || 
+    			(assoc1 instanceof Derivation && ((Property)endList.get(1)).getType() instanceof MaterialAssociation) ||
+    			((Property)endList.get(1)).getAggregation() == AggregationKind.COMPOSITE ||
+    			((Property)endList.get(1)).getAggregation() == AggregationKind.SHARED) {
+    		assoc1.getMemberEnd().removeAll(endList);
+    		assoc1.getMemberEnd().add((Property)endList.get(1));
+    		assoc1.getMemberEnd().add((Property)endList.get(0));
+    	} else {
+    		assoc1.getMemberEnd().add((Property)endList.get(0));
+			assoc1.getMemberEnd().add((Property)endList.get(1));
+//	    	for (Object prop : (List<?>)hashProp.get("memberend")) {
+//	    		assoc1.getMemberEnd().add((Property)prop);
+//			}
+    	}
+    	
 		assoc1.setIsDerived(Boolean.parseBoolean((String)hashProp.get("isderived")));
 		dealClassifier(assoc1, hashProp);
 		dealRelashionship(assoc1, hashProp);
@@ -380,7 +396,7 @@ public class RefOntoCreator {
 	
 	public void dealStructFeature (StructuralFeature stf, Map<String, Object> hashProp) {
 		if ((stf.eContainer() instanceof Mediation && !(hashProp.get("type") instanceof Relator)) ||
-				(stf.eContainer() instanceof Characterization && hashProp.get("type") instanceof Mode)) {
+				(stf.eContainer() instanceof Characterization && !(hashProp.get("type") instanceof Mode))) {
 			stf.setIsReadOnly(true);
 		} else {
 			stf.setIsReadOnly(Boolean.parseBoolean((String)hashProp.get("isreadonly")));
@@ -438,7 +454,11 @@ public class RefOntoCreator {
 			upper.setValue((Integer.parseInt((String)hashProp.get("upper"))));
 			mel.setUpperValue(upper);
 			RefOntoUML.LiteralInteger lower = factory.createLiteralInteger();
-			lower.setValue((Integer.parseInt((String)hashProp.get("lower"))));
+			if (hashProp.get("lower").equals("-1")) {
+				lower.setValue(0);
+			} else {
+				lower.setValue((Integer.parseInt((String)hashProp.get("lower"))));
+			}
 			mel.setLowerValue(lower);
 			
 		} else {
@@ -500,7 +520,6 @@ public class RefOntoCreator {
 		}
 		else if (classf instanceof RefOntoUML.Association) {
 			((RefOntoUML.Association)classf).getOwnedEnd().add(prop);
-			//((RefOntoUML.Association)classf).getMemberEnd().add(prop);
 			prop.setAssociation(((RefOntoUML.Association)classf));
 		}
 	}
