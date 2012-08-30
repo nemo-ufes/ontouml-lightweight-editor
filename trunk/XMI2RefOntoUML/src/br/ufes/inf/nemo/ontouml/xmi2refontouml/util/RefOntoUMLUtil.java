@@ -1,7 +1,12 @@
 package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
 
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
+import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTreeCellRenderer;
+import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +14,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -48,6 +59,7 @@ public class RefOntoUMLUtil {
 	public static CheckboxTree createSelectionTreeFromModel(RefOntoUML.Model model) {
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(model));
 		CheckboxTree modelTree = new CheckboxTree(rootNode);
+		modelTree.setCellRenderer(new OntoUMLTreeCellRenderer());
 		drawTree(rootNode, model);
 		return modelTree;
 	}
@@ -95,6 +107,7 @@ public class RefOntoUMLUtil {
 	public static CheckboxTree createSelectionTreeByDiagram(Mapper mapper) {
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem("Diagrams"));
 		CheckboxTree modelTree = new CheckboxTree(rootNode);
+		modelTree.setCellRenderer(new OntoUMLTreeCellRenderer());
 		
 		List<Object> diagramList = mapper.getDiagramList();
     	for (Object diagram : diagramList) {
@@ -138,7 +151,7 @@ public class RefOntoUMLUtil {
 	 * @param modelTree
 	 */
     
-    private static void removeExcludedNodes(DefaultMutableTreeNode treeNode, CheckboxTree modelTree) {
+    public static void removeExcludedNodes(DefaultMutableTreeNode treeNode, CheckboxTree modelTree) {
     	
     	if (treeNode == null) {
     		return;
@@ -158,6 +171,64 @@ public class RefOntoUMLUtil {
 			treeModel.removeNodeFromParent(treeNode);
 		}
     	
+    }
+    
+    static class OntoUMLTreeCellRenderer implements CheckboxTreeCellRenderer {
+
+    	JCheckBox button = new JCheckBox();
+    	JPanel panel = new JPanel();
+    	JLabel label = new JLabel();
+    	
+    	@Override
+		public boolean isOnHotspot(int x, int y) {
+			return (button.getBounds().contains(x, y));
+		}
+
+    	public OntoUMLTreeCellRenderer() {
+    		label.setFocusable(true);
+    		label.setOpaque(true);
+    		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    		panel.add(button);
+    		panel.add(label);
+    		button.setBackground(UIManager.getColor("Tree.textBackground"));
+    		panel.setBackground(UIManager.getColor("Tree.textBackground"));
+    	}
+       
+    	@Override
+    	public Component getTreeCellRendererComponent(JTree tree, Object value, 
+    			boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    	   
+    		label.setText(value.toString());
+    		String elementType;
+    		RefOntoUML.Element element = ((ChckBoxTreeNodeElem)((DefaultMutableTreeNode)value).
+    				getUserObject()).getElement();
+    		if (element != null) {
+    			elementType = element.getClass().toString().replace("class " +
+    					"RefOntoUML.impl.", "").replace("Impl", "");
+    		} else
+    			elementType = "diagram";
+    		label.setIcon(new ImageIcon("src/resources/br/ufes/inf/nemo/oled/ui/xmi2ontoref/"+
+    				elementType.toLowerCase()+".png"));
+    		
+    		if (selected)
+    			label.setBackground(UIManager.getColor("Tree.selectionBackground"));
+    		else
+    			label.setBackground(UIManager.getColor("Tree.textBackground"));
+    	   
+    		TreeCheckingModel checkingModel = ((CheckboxTree)tree).getCheckingModel();
+    	   	TreePath path = tree.getPathForRow(row);
+    	   	boolean enabled = checkingModel.isPathEnabled(path);
+    	   	boolean checked = checkingModel.isPathChecked(path);
+    	   	boolean grayed = checkingModel.isPathGreyed(path);
+    	   	button.setEnabled(enabled);
+    	   	if (grayed) {
+    	   		label.setForeground(Color.lightGray);
+    	   	} else {
+    	   		label.setForeground(Color.black);
+    	   	}
+    	   	button.setSelected(checked);
+    	   	return panel;
+    	}
     }
     
     /**
