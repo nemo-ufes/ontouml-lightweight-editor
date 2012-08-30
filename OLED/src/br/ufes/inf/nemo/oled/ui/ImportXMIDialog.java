@@ -58,7 +58,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	private JPanel buttonsPanel;
 	
 	Mediator transfManager;
-	CheckboxTree chckTree;
+	CheckboxTree modelChckTree, diagrChckTree;
 	DiagramManager diagManager;
 	Model model;
 
@@ -96,7 +96,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				getContentPane().add(treeScrollPane, BorderLayout.WEST);
 				treeScrollPane.setPreferredSize(new java.awt.Dimension(200, 239));
 				treeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-				treeScrollPane.getViewport().add(chckTree);
+				treeScrollPane.getViewport().add(modelChckTree);
 			}
 			{
 				buttonsPanel = new JPanel();
@@ -146,13 +146,13 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
         			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_CHECK);
         	modelTree.addTreeSelectionListener(this);
         	
-//        	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(transfManager.mapper);
-//        	diagramTree.getCheckingModel().setCheckingMode(
-//        			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_CHECK);
-//        	diagramTree.addTreeSelectionListener(this);
+        	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(transfManager.mapper);
+        	diagramTree.getCheckingModel().setCheckingMode(
+        			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_CHECK);
+        	diagramTree.addTreeSelectionListener(this);
         	
-        	this.chckTree = modelTree;
-        	//this.chckTree = diagramTree;
+        	this.modelChckTree = modelTree;
+        	this.diagrChckTree = diagramTree;
             this.transfManager = transfManager;
             this.model = model;
             
@@ -163,8 +163,8 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getSource() == deleteButton) {
-			RefOntoUMLUtil.filter(chckTree);
-			chckTree.clearChecking();
+			RefOntoUMLUtil.filter(modelChckTree);
+			modelChckTree.clearChecking();
 			
 		} else if (e.getSource() == importButton) {
 			UmlProject project = new UmlProject(this.model);
