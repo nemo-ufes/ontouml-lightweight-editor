@@ -207,8 +207,8 @@ public class RefOntoUMLUtil {
     					"RefOntoUML.impl.", "").replace("Impl", "");
     		} else
     			elementType = "diagram";
-    		label.setIcon(new ImageIcon("src/resources/br/ufes/inf/nemo/oled/ui/xmi2ontoref/"+
-    				elementType.toLowerCase()+".png"));
+    		label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/xmi2ontoref/"+
+    				elementType.toLowerCase()+".png")));
     		
     		if (selected)
     			label.setBackground(UIManager.getColor("Tree.selectionBackground"));
