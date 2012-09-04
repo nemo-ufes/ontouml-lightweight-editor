@@ -15,7 +15,6 @@
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.refontouml.jar"/>
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.refontouml.edit.jar"/>
-	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.transformation.ref2uml_1.0.0.201208171545.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml_3.2.100.v201108110105.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RefOntoUML2SBVR"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RefOntoUML2SimpleOwl"/>

@@ -36,32 +36,25 @@ public class OntoUML2Alloy {
 		
 	public static String dirPath;	
 	public static String alsPath;	
-	
-	public static String[] argsAnalyzer = {"",""};
-	
+	public static String[] argsAnalyzer = {"",""};	
 	public static boolean relatorRuleFlag = true;	
 	public static boolean weakSupplementationRuleFlag = true;
-	
-	/* ============================================================================*/
 	
 	public static boolean Transformation (Model refmodel, String destinationPath, boolean RelatorRuleFlag, boolean WeakSupplementationRuleFlag) throws Exception 
 	{
 		dirPath = destinationPath;
-		
+
 		if (refmodel.getName()=="" || refmodel.getName()==null) 
 			alsPath = dirPath + "\\"+ "Model" + ".als";
 		else
 			alsPath = dirPath + "\\"+ refmodel.getName() + ".als";		
 		File f = new File(alsPath);
-		f.deleteOnExit();
-				
-		argsAnalyzer[0] = alsPath;
-		argsAnalyzer[1] = dirPath + "\\" + "standart_theme.thm"	;	
+		f.deleteOnExit();	
 		
 		relatorRuleFlag = RelatorRuleFlag;
 		weakSupplementationRuleFlag = WeakSupplementationRuleFlag;
 		
-		// Copy alloy4.2-rc.jar into directory Path
+		// "alloy4.2-rc.jar" 
 		InputStream is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("alloy4.2-rc.jar");
 		if(is == null) is = new FileInputStream("lib/alloy4.2-rc.jar");
 		File alloyJarFile = new File(dirPath + "\\" + "alloy4.2-rc.jar");
@@ -77,28 +70,15 @@ public class OntoUML2Alloy {
 		is.close();
 		out.flush();
 		out.close();
-						
-		// Copy standart_theme.thm into directory Path		
-		InputStream is2 = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("standart_theme.thm");
-		if(is2 == null) is2 = new FileInputStream("src/standart_theme.thm");
-		File themeFile = new File(dirPath + "\\" + "standart_theme.thm");
-		themeFile.deleteOnExit();
-		OutputStream out2 = new FileOutputStream(themeFile);
-		
-		// Copy data flow -> MB x MB
-		byte[]src2 = new byte[1024];
-		int read2 = 0;
-		while ((read2 = is2.read(src2)) != -1) {
-			out2.write(src2, 0, read2);
-		}
-		is2.close();
-		out2.flush();
-		out2.close();		
-				
+
+		AlloyThemeFile.generateAlloyThemeFile(dirPath);	
+
 		OntoLibraryFiles.generateLibraryFiles(dirPath);	
 		
-		Reader.init(refmodel);		
+		Reader.init(refmodel);
 		
+		argsAnalyzer[0] = alsPath;
+		argsAnalyzer[1] = dirPath + "\\" + "standart_theme.thm"	;	
 		SimpleGUI_custom.main(OntoUML2Alloy.argsAnalyzer);
 
 		return true;

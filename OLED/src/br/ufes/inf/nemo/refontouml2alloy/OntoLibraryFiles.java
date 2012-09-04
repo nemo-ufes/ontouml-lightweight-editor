@@ -1,9 +1,5 @@
 package br.ufes.inf.nemo.refontouml2alloy;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
@@ -25,6 +21,8 @@ import java.io.FileWriter;
  * along with OLED; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
+import java.io.File;
 
 public class OntoLibraryFiles {
 	
@@ -120,27 +118,9 @@ public class OntoLibraryFiles {
 		File lib2File = new File(dirPath + File.separator + "ontological_properties.als");			
 		lib1File.deleteOnExit();
 		lib2File.deleteOnExit();				
-		copyStringToFile(world_structure, dirPath + File.separator + "world_structure.als");
-		copyStringToFile(ontological_properties, dirPath + File.separator + "ontological_properties.als");
-	}	
-
-	/** 
-	 * Copy String to a File. 
-	 * */
-	public static void copyStringToFile(String content, String FilePath) {
-		try {
-			FileWriter fstream = new FileWriter(FilePath);
-			BufferedWriter out = new BufferedWriter(fstream);
-			out.write(content);
-			out.close();
-			System.out.println("Done!");
-		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
-		}
-	}	
-	
-	
-
+		FileUtil.copyStringToFile(world_structure, dirPath + File.separator + "world_structure.als");
+		FileUtil.copyStringToFile(ontological_properties, dirPath + File.separator + "ontological_properties.als");
+	}
 }
 			
 	

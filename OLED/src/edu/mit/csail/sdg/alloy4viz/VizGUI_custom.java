@@ -972,12 +972,15 @@ public final class VizGUI_custom implements ComponentListener {
    /** This method updates the graph with the current theme customization. */
    private Runner doApply() {
       if (!wrap) updateDisplay();
+      if( (new File(thmFileName)).exists() ) (new File(thmFileName)).delete();      
+      saveThemeFile(thmFileName);
+      loadThemeFile(thmFileName);
       return wrapMe();
    }
 
    /** This method opens the theme customization panel if closed. */
    private Runner doOpenThemePanel() {
-      if (!wrap) { settingsOpen=1; updateDisplay(); }
+      if (!wrap) { settingsOpen=1; updateDisplay(); }      
       return wrapMe();
    }
 
