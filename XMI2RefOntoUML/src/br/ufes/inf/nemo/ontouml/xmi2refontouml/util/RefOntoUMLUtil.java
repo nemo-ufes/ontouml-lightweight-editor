@@ -87,8 +87,7 @@ public class RefOntoUMLUtil {
 				drawTree(newNode, (RefOntoUML.Element) eobj);
 			}
 			
-		} else if (refElement instanceof RefOntoUML.Class ||
-				refElement instanceof RefOntoUML.Association) {
+		} else if (refElement instanceof RefOntoUML.Classifier) {
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(refElement));			
 			parent.add(newNode);
 			
@@ -207,7 +206,9 @@ public class RefOntoUMLUtil {
     					"RefOntoUML.impl.", "").replace("Impl", "");
     		} else
     			elementType = "diagram";
-    		label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/xmi2ontoref/"+
+    		
+    		label.setIcon(new ImageIcon(getClass().getClassLoader().
+    				getResource("resources/br/ufes/inf/nemo/oled/ui/xmi2ontoref/"+
     				elementType.toLowerCase()+".png")));
     		
     		if (selected)
