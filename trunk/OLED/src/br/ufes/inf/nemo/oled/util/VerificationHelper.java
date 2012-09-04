@@ -5,7 +5,6 @@ import java.util.List;
 
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
-import br.ufes.inf.nemo.ref2uml.OntoUML2UML;
 import br.ufes.inf.nemo.refontouml2alloy.ui.OntoUML2AlloyGUI;
 
 public class VerificationHelper {
@@ -17,7 +16,6 @@ public class VerificationHelper {
 	   	String message = new String();	   		   	
     	try	{
     		
-    	OntoUML2UML.Transformation(refmodel);
     	OntoUML2AlloyGUI.invoke(refmodel, directoryPath);    	
     	
     	succeeds = true;
