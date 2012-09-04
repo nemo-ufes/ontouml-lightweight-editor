@@ -89,52 +89,12 @@ import br.ufes.inf.nemo.ontouml.alloy.impl.AlloyPackageImpl;
 import br.ufes.inf.nemo.ontouml.alloy.util.AlloyResourceFactoryImpl;
 
 
-/*
- * 	Methods Summary...
- *
- * >> public void transformClassifier(Classifier c);
- *		>>
- * 		>> public void createRelatorRule(Relator c);
- * 		>> public void createWeakSupplementationRule(Classifier c);
- *		.	>
- *  	.	> private boolean isAbstractFromGeneralizationSets(Classifier c);
- *  	.	> private void getAllMediations(ArrayList<String> list, Relator r);
- *		.	> private void getAllMeronymics(ArrayList<String> list, RigidSortalClass c);
- *		.
- *		.	> private QuantificationExpression createQuantificationExpression(Quantificator quantificator, String variableName, String typeName);
- *		.	> private QuantificationExpression createQuantificationExpression(Quantificator quantificator, String variableName1, String variableName2, String typeName);
- *		.	> private BinaryOperation createBinaryOperation(String variableName1, BinaryOperator binOperator, String variableName2);
- *		.	> private BinaryOperation createBinaryOperation(String variableName1, BinaryOperator binOperator, BinaryOperation binOperation);
- *		.	> private QuantificationExpression createQuantificationExpression(ArrayList<String> associationNames, String typeName);
- *		.	>
- *		>> public void createAbstractClauseRule(Classifier c);
- *		.	>
- * 		.	> private void getAllGeneralizations(ArrayList<Generalization> generalizations, Classifier c);		
- *		.	>
- *		>> public void createObjectClassDeclaration(ObjectClass c); 
- *		>> public void createDatatypeDeclaration(DataType c); 
- *		>> public void createPropertyClassDeclaration(MomentClass c);
- *		.  		
- * >> public void transformGeneralizations(Generalization g); 
- * 		.
- * 		>> public void createGeneralizationRule(Generalization g);
- */
-
 public class Transformer {
 	
-	public SignatureDeclaration world;
-	public Variable exists;
-	public SignatureDeclaration Object = null;
-	public SignatureDeclaration Property = null;
-	public SignatureDeclaration Datatype = null;
-	public FactDeclaration association_properties = null;
-	public FactDeclaration derivations = null;	
-	public ArrayList<String> defaultSignatures = new ArrayList<String>();
-	public static String path = "models/out.xmi";	
-		
-	public FactDeclaration all_rigid_classes;			
+	public ArrayList<String> defaultSignatures = new ArrayList<String>();		
+	public static String path = "models/out.xmi";		
 
-	/* ============================================================================*/
+	/* =========================================================================================================*/
 	
 	/** Alloy model resource. */
 	public static Resource alsresource;
@@ -145,7 +105,31 @@ public class Transformer {
 	/** Alloy Module. */
 	public AlloyModule module;
 	
-	/* ============================================================================*/
+	/** Alloy Signature World. */
+	public SignatureDeclaration world;
+	
+	/** Alloy World Field exists. */
+	public Variable exists;
+	
+	/** Alloy Default Signature : sig Object{}. */
+	public SignatureDeclaration Object;
+	
+	/** Alloy Default Signature : sig Property{}. */
+	public SignatureDeclaration Property;
+	
+	/** Alloy Default Signature : sig DataType{}. */
+	public SignatureDeclaration Datatype;
+	
+	/** Alloy association_properties Fact Declaration. */
+	public FactDeclaration association_properties;
+	
+	/** Alloy derivation Fact Declaration. */
+	public FactDeclaration derivations;
+	
+	/** Alloy all_rigid_classes Fact Declaration. */
+	public FactDeclaration all_rigid_classes;
+	
+	/* =========================================================================================================*/
 	
 	/** List containing all the names of Substances Sortals that are disjoint. */
 	public ArrayList<String> subsortalDisjNamesList = new ArrayList<String>();
@@ -156,7 +140,7 @@ public class Transformer {
 	/** List containing all the names of DataTypes that are disjoint. */
 	public ArrayList<String> datatypeDisjNamesList = new ArrayList<String>();
 	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
 	
 	/** List containing all the Object Class names. */
 	public ArrayList<String> objectNamesList = new ArrayList<String>();	
@@ -167,10 +151,12 @@ public class Transformer {
 	/** List containing all the DataTypes names. */
 	public ArrayList<String> datatypeNamesList = new ArrayList<String>();
 	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
 	
 	/** List containing all the rigid classifier. */
 	public ArrayList<Classifier> rigidElements = new ArrayList<Classifier>();
+	
+	/* =========================================================================================================*/
 	
 	/** List containing all the facts for relator's rule. */
 	public ArrayList<FactDeclaration> relator_rule = new ArrayList<FactDeclaration>();
@@ -178,7 +164,7 @@ public class Transformer {
 	/** List containing all the facts for weak supplementation's rule. */
 	public ArrayList<FactDeclaration> weak_supplementation_rule = new ArrayList<FactDeclaration>();
 	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
 	
 	public void init()
 	{
@@ -220,6 +206,191 @@ public class Transformer {
 	
 	/* =========================================================================================================*/
 
+	@SuppressWarnings("unchecked")
+	private void createAlloyModule() 
+	{
+		// module
+		module = factory.createAlloyModule();
+		module.setName(Reader.modelName); 
+		alsresource.getContents().add(module);		
+		
+		// abstract sig World  
+		world = factory.createSignatureDeclaration();
+		world.setExists(false);
+		world.setIsAbstract(true);
+		world.setBlock(factory.createBlock());
+		world.setName("World");
+				
+		// open world_structure[World]
+		ModuleImportation ws = factory.createModuleImportation();		
+		ws.setName("world_structure");
+		ws.setPath(""); 
+		module.getImports().add(ws);
+		ws.getParameters().add(world.getName());
+		
+		// open ontological_propertis[World]
+		ModuleImportation op = factory.createModuleImportation();
+		op.setName("ontological_properties");
+		op.setPath(""); 
+		module.getImports().add(op);		
+		op.getParameters().add(world.getName());
+		
+		// sig Object{}
+		// sig Property{}
+		// sig DataType{}	 
+		// abstract sig World { exists: some Object+Property+DataTYpe, }
+		exists = factory.createVariable();
+		exists.setName("exists");
+		Declaration declaration = factory.createDeclaration();
+		declaration.getVariable().add(exists);
+		exists.setDeclaration(declaration);
+		UnaryOperation uOp = factory.createUnaryOperation();
+		uOp.setOperator(UnaryOperator.SOME_LITERAL);
+		
+		createDefaultSignatures();
+		
+		uOp.setExpression(createExpUnionObjectPropertyDatatype());
+		declaration.setExpression(uOp);		
+		world.getRelation().add(exists.getDeclaration());		
+		module.getParagraph().add(world);
+		
+		// fact additional_facts { }
+		FactDeclaration additional_facts = factory.createFactDeclaration();
+		additional_facts.setName("additional_facts");
+		Block block = factory.createBlock();
+		additional_facts.setBlock(block);
+
+		// linear_existence[exists] 
+		PredicateInvocation pI = factory.createPredicateInvocation();
+		pI.setPredicate("linear_existence");
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(exists.getName());
+		pI.getParameter().add(vr);
+		block.getExpression().add(pI);
+		
+		// all_elements_exists[Object+Property+DataType,exists]
+		pI = factory.createPredicateInvocation();
+		pI.setPredicate("all_elements_exists");
+		pI.getParameter().add(createExpUnionObjectPropertyDatatype());
+		vr = factory.createVariableReference();
+		vr.setVariable(exists.getName());
+		pI.getParameter().add(vr);
+		block.getExpression().add(pI);
+		
+		// always_exists[DataType,exists]
+		if(Datatype != null) {
+			pI = factory.createPredicateInvocation();
+			pI.setPredicate("always_exists");
+			SignatureReference srDataType = factory.createSignatureReference();
+			srDataType.setSignature(Datatype.getName());
+			pI.getParameter().add(srDataType);
+			vr = factory.createVariableReference();
+			vr.setVariable(exists.getName());
+			pI.getParameter().add(vr);
+			block.getExpression().add(pI);
+		}
+		module.getParagraph().add(additional_facts);
+		
+		// fact association_properties { }
+		Block b1 = factory.createBlock();
+		association_properties = factory.createFactDeclaration();
+		association_properties.setName("association_properties");
+		association_properties.setBlock(b1);
+		module.getParagraph().add(association_properties);
+		
+		// derivation
+		b1 = factory.createBlock();
+		derivations = factory.createFactDeclaration();
+		derivations.setName("derivations");
+		derivations.setBlock(b1);
+		module.getParagraph().add(derivations);		
+	}
+	
+	/* =========================================================================================================*/
+	
+	/** This method creates the Expression : "Object+Property+DataType" in Alloy. */
+	private Expression createExpUnionObjectPropertyDatatype() 
+	{
+		int cont = 1;		
+		BinaryOperation bo = null;
+		Expression exp = null;
+		for(String sigElement : defaultSignatures)
+		{
+			if(defaultSignatures.size() == 1)
+			{
+				SignatureReference sr = factory.createSignatureReference();
+				sr.setSignature(sigElement);
+				exp = sr;
+			} else {
+				if(cont == 1)
+				{
+					SignatureReference sr = factory.createSignatureReference();
+					sr.setSignature(sigElement);
+					bo = factory.createBinaryOperation();
+					bo.setOperator(BinaryOperator.UNION_LITERAL);
+					bo.setLeftExpression(sr);
+					exp = bo;
+				}
+				if(cont > 1 && cont != defaultSignatures.size())
+				{
+					SignatureReference sr = factory.createSignatureReference();
+					sr.setSignature(sigElement);
+					bo.setRightExpression(factory.createBinaryOperation());
+					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
+					((BinaryOperation)bo.getRightExpression()).setLeftExpression(sr);
+					bo = ((BinaryOperation)bo.getRightExpression());
+				}
+				if(cont == defaultSignatures.size())
+				{
+					SignatureReference sr = factory.createSignatureReference();
+					sr.setSignature(sigElement);
+					bo.setRightExpression(sr);
+				}
+			}
+			cont = cont + 1;
+		}
+		return exp;
+	}
+		
+	/* =========================================================================================================*/
+	
+	/**
+	 * This method is used for creating the default Signatures in Alloy module.
+	 * Signatures Object{}, Property{} and DataType{}.
+	 */
+	private void createDefaultSignatures() 
+	{
+		int cont = 1;
+		SignatureDeclaration sigDecl = null;
+		for(String sigElement : defaultSignatures)
+		{
+			if(cont == 1)
+			{
+				sigDecl = factory.createSignatureDeclaration();
+				sigDecl.setName(sigElement);
+				module.getParagraph().add(sigDecl);
+			}
+			if(cont > 1 && cont != defaultSignatures.size())
+			{
+				sigDecl = factory.createSignatureDeclaration();
+				sigDecl.setName(sigElement);
+				module.getParagraph().add(sigDecl);
+			}
+			if(cont > 1 && cont == defaultSignatures.size())
+			{
+				sigDecl = factory.createSignatureDeclaration();
+				sigDecl.setName(sigElement);
+				module.getParagraph().add(sigDecl);
+			}
+			if(sigDecl.getName().equals("Object")) Object = sigDecl;
+			if(sigDecl.getName().equals("Property")) Property = sigDecl;
+			if(sigDecl.getName().equals("DataType")) Datatype = sigDecl;
+			cont = cont + 1;
+		}
+	}
+	
+	/* =========================================================================================================*/
+	
 	/**
 	 * Performs transformation of Classifiers.
 	 * 
@@ -237,8 +408,10 @@ public class Transformer {
 			{
 				subsortalDisjNamesList.add(Reader.modelElementsMap.get(c));
 			}			
-			
-			if(c instanceof RigidSortalClass && !(c.isIsAbstract())) createWeakSupplementationRule(c);
+			if (OntoUML2Alloy.weakSupplementationRuleFlag)
+			{
+				if(c instanceof RigidSortalClass && !(c.isIsAbstract())) createWeakSupplementationRule(c);
+			}
 		}
 		
 		if(c instanceof DataType && !(c instanceof PrimitiveType))
@@ -256,7 +429,10 @@ public class Transformer {
 		}
 		if(c instanceof MomentClass)
 		{
-			if(c instanceof Relator && !(c.isIsAbstract())) createRelatorRule((Relator) c);			
+			if (OntoUML2Alloy.relatorRuleFlag)
+			{
+				if(c instanceof Relator && !(c.isIsAbstract())) createRelatorRule((Relator) c);
+			}
 			
 			createPropertyClassDeclaration((MomentClass)c);			
 			
@@ -359,8 +535,8 @@ public class Transformer {
 	
 	/**
 	 * This method creates a specific Quantification Expression in Alloy.
-	 * <quantificator> <varibleName>: <typeName>
-	 * Example: all w: World
+	 * QuantificationExpression = "[quantificator] [varibleName]: [typeName]".
+	 * For Example = "all w: World".
 	 */	 
 	@SuppressWarnings("unchecked")
 	private QuantificationExpression createQuantificationExpression(Quantificator quantificator, String variableName, String typeName)
@@ -382,8 +558,8 @@ public class Transformer {
 	
 	/**
 	 * This method creates a specific Quantification Expression in Alloy.
-	 * <quantificator> <varibleName>: <variableName2>.<typeName> 
-	 * Example: all x: w.RelatorName
+	 * QuantificationExpression = "[quantificator] [varibleName]: [variableName2].[typeName]". 
+	 * For Example: "all x: w.Enrollment".
 	 */	 
 	@SuppressWarnings("unchecked")
 	private QuantificationExpression createQuantificationExpression(Quantificator quantificator, String variableName1, String variableName2, String typeName)
@@ -404,8 +580,8 @@ public class Transformer {
 	
 	/**
 	 * This method creates a specific BinaryOperation in Alloy.
-	 * <varibleName1> <binOperator> <variableName2>
-	 * Example: w.RelatorName
+	 * BinaryOperation = "[varibleName1] [binOperator] [variableName2]".
+	 * For Example: "w.Enrollment".
 	 */
 	private BinaryOperation createBinaryOperation(String variableName1, BinaryOperator binOperator, String variableName2)
 	{
@@ -424,8 +600,8 @@ public class Transformer {
 	
 	/**
 	 * This method creates a specific BinaryOperation in Alloy.
-	 * <varibleName1> <binOperator> <binaryOperation>
-	 * Example: x.(w.RelatorName)
+	 * BinaryOperation = "[varibleName1] [binOperator] [binaryOperation]".
+	 * For Example: "x.(w.Enrollment)".
 	 */	 
 	private BinaryOperation createBinaryOperation(String variableName1, BinaryOperator binOperator, BinaryOperation binOperation)
 	{
@@ -442,11 +618,8 @@ public class Transformer {
 	
 	/**
 	 * This method creates a specific Quantification Expression in Alloy.
-	 * all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
-	 * 
-	 * @param associationNames: Array List containing all the association from the typeName variable
-	 * @param typeName: String type Name
-	 * @return
+	 * QuantificationExpression = "all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2".
+	 * For Example: "all w: World | all x: w.RelatorName | # ( x.(w.possui) + x.(w.faz) ) >= 2". 
 	 */	
 	private QuantificationExpression createQuantificationExpression(ArrayList<String> associationNames, String typeName)
 	{
@@ -698,6 +871,34 @@ public class Transformer {
 	
 	/* =========================================================================================================*/
 	
+	/** 
+	 * This method creates a specific Declaration in Alloy.
+	 * Declaration = "[variableName]: set exists:>[typeName],".
+	 * For Example: "Imovel: set exists:>Object,". 
+	 */
+	private Declaration createDeclaration (String variableName, String typeName)
+	{
+		Declaration decl = factory.createDeclaration();
+		Variable var = factory.createVariable();
+		UnaryOperation uOp = factory.createUnaryOperation();
+		BinaryOperation bo = factory.createBinaryOperation();
+		VariableReference vr = factory.createVariableReference();
+		SignatureReference sr = factory.createSignatureReference();		
+		sr.setSignature(typeName);		
+		vr.setVariable(exists.getName());		
+		var.setName(variableName);
+		var.setDeclaration(decl);		
+		uOp.setOperator(UnaryOperator.SET_LITERAL);
+		uOp.setExpression(bo);		
+		bo.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
+		bo.setLeftExpression(vr);
+		bo.setRightExpression(sr);		
+		decl.setExpression(uOp);	
+		return decl;
+	}
+	
+	/* =========================================================================================================*/
+	
 	/**
 	 * Create Object Declaration. 
 	 * 
@@ -708,22 +909,8 @@ public class Transformer {
 	@SuppressWarnings("unchecked")
 	public void createObjectClassDeclaration(ObjectClass c) 
 	{
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		UnaryOperation uOp = factory.createUnaryOperation();
-		BinaryOperation bo = factory.createBinaryOperation();
-		VariableReference vr = factory.createVariableReference();
-		SignatureReference sr = factory.createSignatureReference();		
-		sr.setSignature(Object.getName());		
-		vr.setVariable(exists.getName());		
-		var.setName(Reader.modelElementsMap.get(c));
-		var.setDeclaration(decl);		
-		uOp.setOperator(UnaryOperator.SET_LITERAL);
-		uOp.setExpression(bo);		
-		bo.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
-		bo.setLeftExpression(vr);
-		bo.setRightExpression(sr);		
-		decl.setExpression(uOp);		
+		// [c.name]: set exists:>Object,
+		Declaration decl = createDeclaration(Reader.modelElementsMap.get(c), Object.getName());				
 		world.getRelation().add(decl);
 	}
 	
@@ -739,22 +926,8 @@ public class Transformer {
 	@SuppressWarnings("unchecked")	 
 	public void createDatatypeDeclaration(DataType c) 
 	{
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		UnaryOperation uOp = factory.createUnaryOperation();
-		BinaryOperation bo = factory.createBinaryOperation();
-		VariableReference vr = factory.createVariableReference();
-		SignatureReference sr = factory.createSignatureReference();		
-		sr.setSignature(Datatype.getName());		
-		vr.setVariable(exists.getName());		
-		var.setName(Reader.modelElementsMap.get(c));		
-		var.setDeclaration(decl);		
-		uOp.setOperator(UnaryOperator.SET_LITERAL);
-		uOp.setExpression(bo);		
-		bo.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
-		bo.setLeftExpression(vr);
-		bo.setRightExpression(sr);		
-		decl.setExpression(uOp);		
+		// [c.name]: set exists:>DataType,
+		Declaration decl = createDeclaration(Reader.modelElementsMap.get(c), Datatype.getName());	
 		world.getRelation().add(decl);
 	}
 
@@ -770,22 +943,8 @@ public class Transformer {
 	@SuppressWarnings("unchecked")	
 	public void createPropertyClassDeclaration(MomentClass c) 
 	{
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		UnaryOperation uOp = factory.createUnaryOperation();
-		BinaryOperation bo = factory.createBinaryOperation();
-		VariableReference vr = factory.createVariableReference();
-		SignatureReference sr = factory.createSignatureReference();		
-		sr.setSignature(Property.getName());		
-		vr.setVariable(exists.getName());		
-		var.setName(Reader.modelElementsMap.get(c));
-		var.setDeclaration(decl);		
-		uOp.setOperator(UnaryOperator.SET_LITERAL);
-		uOp.setExpression(bo);		
-		bo.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
-		bo.setLeftExpression(vr);
-		bo.setRightExpression(sr);		
-		decl.setExpression(uOp);		
+		// [c.name]: set exists:>Property,
+		Declaration decl = createDeclaration(Reader.modelElementsMap.get(c),Property.getName());
 		world.getRelation().add(decl);
 	}	
 	
@@ -824,190 +983,10 @@ public class Transformer {
 		co.setRightExpression(vr);		
 		world.getBlock().getExpression().add(co);
 	}
-				
+	
 	/* =========================================================================================================*/
-			
-	@SuppressWarnings("unchecked")
-	private void createAlloyModule() 
-	{
-		// module
-		module = factory.createAlloyModule();
-		module.setName(Reader.modelName); 
-		alsresource.getContents().add(module);		
-		
-		// World 
-		world = factory.createSignatureDeclaration();
-		world.setExists(false);
-		world.setIsAbstract(true);
-		world.setBlock(factory.createBlock());
-		world.setName("World");
-				
-		// open world_structure[World]
-		ModuleImportation ws = factory.createModuleImportation();		
-		ws.setName("world_structure");
-		ws.setPath(""); 
-		module.getImports().add(ws);
-		ws.getParameters().add(world.getName());
-		
-		// open ontological_propertis[World]
-		ModuleImportation op = factory.createModuleImportation();
-		op.setName("ontological_properties");
-		op.setPath(""); 
-		module.getImports().add(op);		
-		op.getParameters().add(world.getName());
-		
-		// exists
-		exists = factory.createVariable();
-		exists.setName("exists");
-		Declaration declaration = factory.createDeclaration();
-		declaration.getVariable().add(exists);
-		exists.setDeclaration(declaration);
-		UnaryOperation uOp = factory.createUnaryOperation();
-		uOp.setOperator(UnaryOperator.SOME_LITERAL);
-		
-		// Object, Property, DataType
-		createSigSubtantialPropertyDatatype();
-		
-		uOp.setExpression(createExpUnionObjectPropertyDatatype());
-		declaration.setExpression(uOp);
-		
-		world.getRelation().add(exists.getDeclaration());
-		
-		module.getParagraph().add(world);
-		
-		// additional_facts
-		FactDeclaration additional_facts = factory.createFactDeclaration();
-		additional_facts.setName("additional_facts");
-		Block block = factory.createBlock();
-		additional_facts.setBlock(block);
-
-		// linear_existence predicate
-		PredicateInvocation pI = factory.createPredicateInvocation();
-		pI.setPredicate("linear_existence");
-		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(exists.getName());
-		pI.getParameter().add(vr);
-		block.getExpression().add(pI);
-		
-		// all_elements_exists predicate
-		pI = factory.createPredicateInvocation();
-		pI.setPredicate("all_elements_exists");
-		pI.getParameter().add(createExpUnionObjectPropertyDatatype());
-		vr = factory.createVariableReference();
-		vr.setVariable(exists.getName());
-		pI.getParameter().add(vr);
-		block.getExpression().add(pI);
-		
-		// always_exists DataType predicate
-		if(Datatype != null) {
-			pI = factory.createPredicateInvocation();
-			pI.setPredicate("always_exists");
-			SignatureReference srDataType = factory.createSignatureReference();
-			srDataType.setSignature(Datatype.getName());
-			pI.getParameter().add(srDataType);
-			vr = factory.createVariableReference();
-			vr.setVariable(exists.getName());
-			pI.getParameter().add(vr);
-			block.getExpression().add(pI);
-		}
-		module.getParagraph().add(additional_facts);
-		
-		// association_properties
-		Block b1 = factory.createBlock();
-		association_properties = factory.createFactDeclaration();
-		association_properties.setName("association_properties");
-		association_properties.setBlock(b1);
-		module.getParagraph().add(association_properties);
-		
-		// derivation
-		b1 = factory.createBlock();
-		derivations = factory.createFactDeclaration();
-		derivations.setName("derivations");
-		derivations.setBlock(b1);
-		module.getParagraph().add(derivations);
-		
-	}
-	
-	/* ============================================================================*/
-	
-	private Expression createExpUnionObjectPropertyDatatype() 
-	{
-		int cont = 1;		
-		BinaryOperation bo = null;
-		Expression exp = null;
-		for(String sigElement : defaultSignatures)
-		{
-			if(defaultSignatures.size() == 1)
-			{
-				SignatureReference sr = factory.createSignatureReference();
-				sr.setSignature(sigElement);
-				exp = sr;
-			} else {
-				if(cont == 1)
-				{
-					SignatureReference sr = factory.createSignatureReference();
-					sr.setSignature(sigElement);
-					bo = factory.createBinaryOperation();
-					bo.setOperator(BinaryOperator.UNION_LITERAL);
-					bo.setLeftExpression(sr);
-					exp = bo;
-				}
-				if(cont > 1 && cont != defaultSignatures.size())
-				{
-					SignatureReference sr = factory.createSignatureReference();
-					sr.setSignature(sigElement);
-					bo.setRightExpression(factory.createBinaryOperation());
-					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
-					((BinaryOperation)bo.getRightExpression()).setLeftExpression(sr);
-					bo = ((BinaryOperation)bo.getRightExpression());
-				}
-				if(cont == defaultSignatures.size())
-				{
-					SignatureReference sr = factory.createSignatureReference();
-					sr.setSignature(sigElement);
-					bo.setRightExpression(sr);
-				}
-			}
-			cont = cont + 1;
-		}
-		return exp;
-	}
-		
-	private void createSigSubtantialPropertyDatatype() 
-	{
-		int cont = 1;
-		SignatureDeclaration sigDecl = null;
-		for(String sigElement : defaultSignatures)
-		{
-			if(cont == 1)
-			{
-				sigDecl = factory.createSignatureDeclaration();
-				sigDecl.setName(sigElement);
-				module.getParagraph().add(sigDecl);
-			}
-			if(cont > 1 && cont != defaultSignatures.size())
-			{
-				sigDecl = factory.createSignatureDeclaration();
-				sigDecl.setName(sigElement);
-				module.getParagraph().add(sigDecl);
-			}
-			if(cont > 1 && cont == defaultSignatures.size())
-			{
-				sigDecl = factory.createSignatureDeclaration();
-				sigDecl.setName(sigElement);
-				module.getParagraph().add(sigDecl);
-			}
-			if(sigDecl.getName().equals("Object"))
-				Object = sigDecl;
-			if(sigDecl.getName().equals("Property"))
-				Property = sigDecl;
-			if(sigDecl.getName().equals("DataType"))
-				Datatype = sigDecl;
-			cont = cont + 1;
-		}
-	}
-	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
+	/* =========================================================================================================*/
 	
 	/**
 	 * 

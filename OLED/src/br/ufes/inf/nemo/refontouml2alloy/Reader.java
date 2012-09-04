@@ -24,6 +24,7 @@ package br.ufes.inf.nemo.refontouml2alloy;
 
 import java.util.HashMap;
 
+
 import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;

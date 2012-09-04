@@ -23,11 +23,9 @@ package br.ufes.inf.nemo.refontouml2alloy;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -35,58 +33,38 @@ import RefOntoUML.Model;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUI_custom;
 
 public class OntoUML2Alloy {
-
-	/* ============================================================================*/
+		
+	public static String dirPath;	
+	public static String alsPath;	
 	
-	/** Path of the Destination Directory. */
-	public static String dirPath = "";
-	
-	/** Alloy File. (Example: simulation.als) */
-	public static String alsPath = "";	
-	
-	/** Alloy Theme File. (Example: standart_theme.thm) */
-	public static String themePath = "";
-	
-	/** Parameters to call the Alloy Analyzer. */
 	public static String[] argsAnalyzer = {"",""};
-
+	
+	public static boolean relatorRuleFlag = true;	
+	public static boolean weakSupplementationRuleFlag = true;
+	
 	/* ============================================================================*/
 	
-	/**
-	 * This method is use to call the transformation From OLED Editor.
-	 * 
-	 * @param refmodel: RefOntoUML.Model
-	 * @param destinationPath: Path of the Destination Directory
-	 * @param alloyFileName: Alloy File  (Example: simulation.als)
-	 * @param themeFileName: Alloy Theme File  (Example: standart_theme.thm)
-	 * @return
-	 * @throws Exception
-	 */
-	public static boolean Transformation (Model refmodel, String destinationPath, String alloyFile, String themeFile) throws Exception 
+	public static boolean Transformation (Model refmodel, String destinationPath, boolean RelatorRuleFlag, boolean WeakSupplementationRuleFlag) throws Exception 
 	{
-		// dirPath Initialization
 		dirPath = destinationPath;
 		
-		// alsPath Initialization
-		if (alloyFile == null || alloyFile == "") alloyFile = "simulation.als";
-		alsPath = dirPath + "\\"+ alloyFile;
+		if (refmodel.getName()=="" || refmodel.getName()==null) 
+			alsPath = dirPath + "\\"+ "Model" + ".als";
+		else
+			alsPath = dirPath + "\\"+ refmodel.getName() + ".als";		
 		File f = new File(alsPath);
 		f.deleteOnExit();
-		
-		// themePath Initialization
-		if (themeFile == null || themeFile == "") themeFile = "standart_theme.thm";
-		themePath = dirPath + "\\" + themeFile;
-		File t = new File(themePath);
-		t.deleteOnExit();
-		
-		// Parameters to call SimpleGUI 
+				
 		argsAnalyzer[0] = alsPath;
-		argsAnalyzer[1] = themePath;		
+		argsAnalyzer[1] = dirPath + "\\" + "standart_theme.thm"	;	
+		
+		relatorRuleFlag = RelatorRuleFlag;
+		weakSupplementationRuleFlag = WeakSupplementationRuleFlag;
 		
 		// Copy alloy4.2-rc.jar into directory Path
 		InputStream is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("alloy4.2-rc.jar");
 		if(is == null) is = new FileInputStream("lib/alloy4.2-rc.jar");
-		File alloyJarFile = new File(dirPath + "\\alloy4.2-rc.jar");
+		File alloyJarFile = new File(dirPath + "\\" + "alloy4.2-rc.jar");
 		alloyJarFile.deleteOnExit();
 		OutputStream out = new FileOutputStream(alloyJarFile);
 
@@ -101,9 +79,11 @@ public class OntoUML2Alloy {
 		out.close();
 						
 		// Copy standart_theme.thm into directory Path		
-		InputStream is2 = OntoUML2Alloy.class.getClassLoader().getResourceAsStream(themeFile);
-		if(is2 == null) is2 = new FileInputStream("src/standart_theme.thm");		
-		OutputStream out2 = new FileOutputStream(new File(themePath));
+		InputStream is2 = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("standart_theme.thm");
+		if(is2 == null) is2 = new FileInputStream("src/standart_theme.thm");
+		File themeFile = new File(dirPath + "\\" + "standart_theme.thm");
+		themeFile.deleteOnExit();
+		OutputStream out2 = new FileOutputStream(themeFile);
 		
 		// Copy data flow -> MB x MB
 		byte[]src2 = new byte[1024];
@@ -114,45 +94,13 @@ public class OntoUML2Alloy {
 		is2.close();
 		out2.flush();
 		out2.close();		
-		
-		// Copy the alloy modules into directory: world_structure.als and ontological_properties.als
-		try 
-		{
-			File lib1File = new File(dirPath + File.separator + "world_structure.als");
-			File lib2File = new File(dirPath + File.separator + "ontological_properties.als");
-			
-			lib1File.deleteOnExit();
-			lib2File.deleteOnExit();	
-			
-			copyStringToFile(LibraryFiles.world_structure, dirPath + File.separator + "world_structure.als");
-			copyStringToFile(LibraryFiles.ontological_properties, dirPath + File.separator + "ontological_properties.als");
-			
-		} catch (Exception e) {
-			return false;
-		}		
-		
-		// Here the transformation begins...
-		Reader.init(refmodel);		
 				
-		// Open Alloy Analyzer
+		OntoLibraryFiles.generateLibraryFiles(dirPath);	
+		
+		Reader.init(refmodel);		
+		
 		SimpleGUI_custom.main(OntoUML2Alloy.argsAnalyzer);
 
 		return true;
-	}
-		
-	/* ============================================================================*/
-	
-	/** Copy String to a File */
-	private static void copyStringToFile(String content, String FilePath) {
-		try {
-			FileWriter fstream = new FileWriter(FilePath);
-			BufferedWriter out = new BufferedWriter(fstream);
-			out.write(content);
-			out.close();
-			System.out.println("Done!");
-		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
-		}
 	}	
-	
 }
