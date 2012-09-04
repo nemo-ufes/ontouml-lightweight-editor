@@ -19,16 +19,6 @@
    <type name="world_structure/FutureWorld"/>
    <type name="world_structure/PastWorld"/>
    <type name="world_structure/TemporalWorld"/>
-   <set name="Contrato" type="Object"/>
-   <set name="ContratodeConvenio" type="Object"/>
-   <set name="Convenente" type="Object"/>
-   <set name="Convenio" type="Property"/>
-   <set name="Data" type="DataType"/>
-   <set name="IntervalodeTempo" type="DataType"/>
-   <set name="PessoaFisica" type="Object"/>
-   <set name="PessoaJuridica" type="Object"/>
-   <set name="RepresentacaoemConvenio" type="Property"/>
-   <set name="RepresentantedaConvenente" type="Object"/>
 </node>
 
 <node shape="Box" color="Yellow">
