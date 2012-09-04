@@ -170,7 +170,7 @@ public class FactDeclarationImpl extends ParagraphImpl implements FactDeclaratio
 		return super.eIsSet(featureID);
 	}
 	
-	public String toString() {
+	public String toString() {		
 		if(getBlock().getExpression().size() > 0)
 			return "fact "+name+" {\n"+getBlock()+"}\n";
 		else
