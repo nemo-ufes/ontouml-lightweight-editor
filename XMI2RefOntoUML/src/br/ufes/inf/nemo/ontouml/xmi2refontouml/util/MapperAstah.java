@@ -403,6 +403,10 @@ public class MapperAstah implements Mapper {
 				}
 			}
 			
+			if (hashProp.containsKey("aggregation") && hashProp.get("aggregation").equals("aggregate")) {
+	    		hashProp.put("aggregation", "shared");
+	    	}
+			
 		}
 		
     	// Generalization properties
@@ -452,10 +456,11 @@ public class MapperAstah implements Mapper {
 			List<String> annotElements = new ArrayList<String>();
 			Element annotElem = getChild(elem, "UML:Comment.annotatedElement");
 	    	if (annotElem != null) {
-	    		for (Node child = annotElem.getFirstChild(); child != null; child = child.getNextSibling()) {
-	    			if (child instanceof Element) {
-	    				annotElements.add(((Element)child).getAttribute("xmi.idref"));
-					}
+	    		List<Object> annotatedElems = XMLDOMUtil.getElementChilds(annotElem);
+	    		for (Object annotRef : annotatedElems) {
+	    			if (annotRef.equals(annotatedElems.get(0))) {
+	    				annotElements.add(((Element)annotRef).getAttribute("xmi.idref"));
+	    			}
 	    		}
 	    		hashProp.put("annotatedelement", annotElements);
 	    	}

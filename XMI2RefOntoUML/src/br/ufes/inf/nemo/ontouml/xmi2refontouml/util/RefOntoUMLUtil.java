@@ -40,6 +40,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
 
 import RefOntoUML.Association;
+import RefOntoUML.Comment;
 import RefOntoUML.Dependency;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
@@ -137,7 +138,9 @@ public class RefOntoUMLUtil {
     		
     		RefOntoUML.Element oldElem = chckNode.getElement();
     		
-    		RefOntoUMLUtil.delete(oldElem, true);
+    		if (oldElem != null) {
+    			RefOntoUMLUtil.delete(oldElem, true);
+    		}
     	}
     	
     	removeExcludedNodes((DefaultMutableTreeNode) modelTree.getModel().getRoot(), modelTree);
@@ -165,7 +168,8 @@ public class RefOntoUMLUtil {
 		ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) treeNode.getUserObject();
 		
 		RefOntoUML.Element oldElem = chckNode.getElement();
-		if (oldElem != null && oldElem.eResource() == null) {
+		if ((oldElem != null && oldElem.eResource() == null) ||
+				(oldElem == null && treeNode.getChildCount() == 0)) {
 			DefaultTreeModel treeModel = (DefaultTreeModel)modelTree.getModel();
 			treeModel.removeNodeFromParent(treeNode);
 		}
@@ -305,17 +309,24 @@ public class RefOntoUMLUtil {
 		    			  EcoreUtil.remove(setting.getEObject());
 	    		  }
 	    		  
-	    	  } else if (setting.getEObject() instanceof Property &&
-	    			  setting.getEObject().eContainer() instanceof Association) {
-	    		  EcoreUtil.remove(setting.getEObject().eContainer());
+	    	  } else if (setting.getEObject() instanceof Property) {
+	    		  if (setting.getEObject().eContainer() instanceof Association) {
+	    			  delete(setting.getEObject().eContainer(), true);
+	    		  } else {
+	    			  delete(setting.getEObject(), true);
+	    		  }
+	    		  
+	    	  } else if (setting.getEObject() instanceof Comment) {
+	    		  EcoreUtil.remove(setting, eObject);
+	    		  if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
+	    			  delete (setting.getEObject());
+	    		  }
 	    		  
 	    	  } else if (!(setting instanceof UnmodifiableEList)) {
 	    		  EcoreUtil.remove(setting, eObject);
 	    	  }
-	    	  
 	      }
 	    }
-
 	    EcoreUtil.remove(eObject);
 	  }
 
@@ -389,9 +400,18 @@ public class RefOntoUMLUtil {
 			    			  EcoreUtil.remove(setting.getEObject());
 		    		  }
 		    		  
-		    	  } else if (setting.getEObject() instanceof Property &&
-		    			  setting.getEObject().eContainer() instanceof Association) {
-		    		  EcoreUtil.remove(setting.getEObject().eContainer());
+		    	  } else if (setting.getEObject() instanceof Property) {
+		    		  if (setting.getEObject().eContainer() instanceof Association) {
+		    			  delete(setting.getEObject().eContainer(), true);
+		    		  } else {
+		    			  delete(setting.getEObject(), true);
+		    		  }
+		    		  
+		    	  } else if (setting.getEObject() instanceof Comment) {
+		    		  EcoreUtil.remove(setting, deletedEObject);
+		    		  if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
+		    			  delete (setting.getEObject());
+		    		  }
 		    		  
 		    	  } else if (!(setting instanceof UnmodifiableEList)) {
 		    		  EcoreUtil.remove(setting, deletedEObject);
@@ -399,8 +419,7 @@ public class RefOntoUMLUtil {
 	          }
 	        }
 	      }
-	  
-	      EcoreUtil.remove(eObject);
+	  		EcoreUtil.remove(eObject);
 
 	      for (EObject crossResourceEObject : crossResourceEObjects)
 	      {
