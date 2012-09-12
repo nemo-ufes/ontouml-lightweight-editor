@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.refontouml2alloy.util;
 
 import java.io.File;
+import java.io.IOException;
 
 public class AlloyLibraryFiles {
 	
@@ -88,7 +89,7 @@ public class AlloyLibraryFiles {
 			"check future_worlds_cannot_reach_the_current_world_by_the_future for 10\n";
 	
 	/** Generate "world_structure.als" and "ontological_properties.als" into the directory path "dirPath". */
-	public static void generateLibraryFiles (String dirPath)
+	public static void generateLibraryFiles (String dirPath) throws IOException
 	{
 		File lib1File = new File(dirPath + File.separator + "world_structure.als");
 		File lib2File = new File(dirPath + File.separator + "ontological_properties.als");			

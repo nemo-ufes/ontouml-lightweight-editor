@@ -16,6 +16,10 @@ import RefOntoUML.PrimitiveType;
 
 import br.ufes.inf.nemo.refontouml2alloy.mapper.NamesMapper;
 
+/**
+ *	This class is used as a Reader for the transformation.
+ */
+
 public class Reader {
 	
 	public static Transformer transformer;	
