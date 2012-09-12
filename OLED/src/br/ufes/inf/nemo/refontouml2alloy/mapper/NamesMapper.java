@@ -12,7 +12,7 @@ import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 
 /**
- *  This class is used for associate the Elements of the refontouml model with their modified names.
+ *  This class is used for associate the Elements of the model with their modified names.
  */
 
 public class NamesMapper {
@@ -51,8 +51,7 @@ public class NamesMapper {
 	{
 		this.modelname = c1.treatName(rootpack.getName(),rootpack.getClass().toString());
 	}
-	
-	
+		
 	private void initHashMaps(PackageableElement rootpack) 
 	{		
 		for(PackageableElement p : ((Package) rootpack).getPackagedElement())

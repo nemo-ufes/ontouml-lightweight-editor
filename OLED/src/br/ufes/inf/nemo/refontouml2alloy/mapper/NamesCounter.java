@@ -11,8 +11,6 @@ public class NamesCounter {
         
     public HashMap<String, WordCounter> namesCounterMap = new HashMap<String, WordCounter>();
     
-    public NamesCounter () { }    
-    
     public String treatName (String str, String strClass) 
     {
     	int cont=-1;

@@ -10,7 +10,12 @@ import br.ufes.inf.nemo.refontouml2alloy.util.AlloyLibraryFiles;
 import br.ufes.inf.nemo.refontouml2alloy.util.AlloyThemeFile;
 
 import RefOntoUML.Model;
+
 import edu.mit.csail.sdg.alloy4whole.SimpleGUI_custom;
+
+/**
+ *	This class is used to call the transformation of OntoUML into Alloy. 
+ */
 
 public class OntoUML2Alloy {
 		

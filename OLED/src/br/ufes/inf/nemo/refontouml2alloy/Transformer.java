@@ -66,6 +66,9 @@ import br.ufes.inf.nemo.ontouml.alloy.VariableReference;
 import br.ufes.inf.nemo.ontouml.alloy.impl.AlloyPackageImpl;
 import br.ufes.inf.nemo.ontouml.alloy.util.AlloyResourceFactoryImpl;
 
+/**
+ *	This class is used as a Transformer for the transformation.
+ */
 
 public class Transformer {
 	

@@ -1,9 +1,11 @@
 package br.ufes.inf.nemo.refontouml2alloy.util;
 
 import java.io.File;
+import java.io.IOException;
 
 public class AlloyThemeFile {
 
+	/** standart_theme.thm content. */
 	public static String standart_theme = 
 			
 			"<?xml version=\"1.0\"?>" + "\n" +					
@@ -64,7 +66,7 @@ public class AlloyThemeFile {
 			"</alloy>" + "\n\n";
 		
 	/** Generate "world_structure.als" and "ontological_properties.als" into the directory path "dirPath". */
-	public static void generateAlloyThemeFile (String dirPath)
+	public static void generateAlloyThemeFile (String dirPath) throws IOException
 	{		
 		File themeFile = new File(dirPath + File.separator + "standart_theme.thm");		
 		themeFile.deleteOnExit();		
