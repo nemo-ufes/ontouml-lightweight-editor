@@ -1,27 +1,5 @@
 package br.ufes.inf.nemo.refontouml2alloy;
 
-/**
- * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
- *
- * This file is part of OLED (OntoUML Lightweight BaseEditor).
- * OLED is based on TinyUML and so is distributed under the same
- * licence terms.
- *
- * OLED is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * OLED is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OLED; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -31,6 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Category;
 import RefOntoUML.Characterization;
@@ -56,7 +35,6 @@ import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Type;
 import RefOntoUML.subQuantityOf;
-
 import br.ufes.inf.nemo.ontouml.alloy.AlloyFactory;
 import br.ufes.inf.nemo.ontouml.alloy.AlloyModule;
 import br.ufes.inf.nemo.ontouml.alloy.AlloyPackage;
@@ -211,7 +189,7 @@ public class Transformer {
 	{
 		// module
 		module = factory.createAlloyModule();
-		module.setName(Reader.modelName); 
+		module.setName(Reader.mapper.modelname); 
 		alsresource.getContents().add(module);		
 		
 		// abstract sig World  
@@ -402,11 +380,11 @@ public class Transformer {
 		{
 			createObjectClassDeclaration((ObjectClass)c);			
 			
-			objectNamesList.add(Reader.modelElementsMap.get(c));
+			objectNamesList.add(Reader.mapper.elementsMap.get(c));
 
 			if((c instanceof Kind) || (c instanceof Collective) || (c instanceof Quantity))
 			{
-				subsortalDisjNamesList.add(Reader.modelElementsMap.get(c));
+				subsortalDisjNamesList.add(Reader.mapper.elementsMap.get(c));
 			}			
 			if (OntoUML2Alloy.weakSupplementationRuleFlag)
 			{
@@ -418,13 +396,13 @@ public class Transformer {
 		{			
 			createDatatypeDeclaration((DataType)c);			
 			
-			datatypeNamesList.add(Reader.modelElementsMap.get(c));
+			datatypeNamesList.add(Reader.mapper.elementsMap.get(c));
 			
 			// all dataTypes without fathers are naturally disjoint, 
 			// which means that multiple inheritance between datatypes isn't allowed.			
 			if(((DataType)c).getGeneralization().size() == 0)
 			{
-				datatypeDisjNamesList.add(Reader.modelElementsMap.get(c));
+				datatypeDisjNamesList.add(Reader.mapper.elementsMap.get(c));
 			}
 		}
 		if(c instanceof MomentClass)
@@ -436,13 +414,13 @@ public class Transformer {
 			
 			createPropertyClassDeclaration((MomentClass)c);			
 			
-			momentNamesList.add(Reader.modelElementsMap.get(c));
+			momentNamesList.add(Reader.mapper.elementsMap.get(c));
 			
 			// all Properties without fathers are naturally disjoint, 
 			// which means that multiple inheritance between Properties isn't allowed.			
 			if(((MomentClass)c).getGeneralization().size() == 0)
 			{
-				momentDisjNamesList.add(Reader.modelElementsMap.get(c));
+				momentDisjNamesList.add(Reader.mapper.elementsMap.get(c));
 			}
 		}		
 		
@@ -480,11 +458,11 @@ public class Transformer {
 		if(associationNames.size()>0)
 		{			
 			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
-			QuantificationExpression q = createQuantificationExpression(associationNames, Reader.modelElementsMap.get(c));
+			QuantificationExpression q = createQuantificationExpression(associationNames, Reader.mapper.elementsMap.get(c));
 			
 			// create fact from q
 			FactDeclaration RelatorRuleFact = factory.createFactDeclaration();
-			RelatorRuleFact.setName("relator_rule_"+Reader.modelElementsMap.get(c));
+			RelatorRuleFact.setName("relator_rule_"+Reader.mapper.elementsMap.get(c));
 			RelatorRuleFact.setBlock(factory.createBlock());			
 			RelatorRuleFact.getBlock().getExpression().add(q);
 			
@@ -518,11 +496,11 @@ public class Transformer {
 		if( associationNames.size() > 0)
 		{
 			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
-			QuantificationExpression q = createQuantificationExpression(associationNames, Reader.modelElementsMap.get(c));
+			QuantificationExpression q = createQuantificationExpression(associationNames, Reader.mapper.elementsMap.get(c));
 			
 			// create fact from q
 			FactDeclaration WeakSupplementationFact = factory.createFactDeclaration();
-			WeakSupplementationFact.setName("weak_supplementation_"+Reader.modelElementsMap.get(c));
+			WeakSupplementationFact.setName("weak_supplementation_"+Reader.mapper.elementsMap.get(c));
 			WeakSupplementationFact.setBlock(factory.createBlock());			
 			WeakSupplementationFact.getBlock().getExpression().add(q);			
 			
@@ -692,7 +670,7 @@ public class Transformer {
 	 */
 	private boolean isAbstractFromGeneralizationSets(Classifier c) 
 	{
-		for(PackageableElement pe : Reader.modelElementsMap.keySet())
+		for(PackageableElement pe : Reader.mapper.elementsMap.keySet())
 		{
 			if(pe instanceof GeneralizationSet)
 			{
@@ -720,7 +698,7 @@ public class Transformer {
 	 */
 	private void getAllMediations(ArrayList<String> list, Relator r)
 	{
-		for(PackageableElement pe : Reader.modelElementsMap.keySet())
+		for(PackageableElement pe : Reader.mapper.elementsMap.keySet())
 		{
 			if(pe instanceof Mediation)
 			{
@@ -729,11 +707,11 @@ public class Transformer {
 				
 				if(sourceType instanceof Relator)
 				{
-					if(sourceType.getName() == r.getName()) list.add(Reader.modelElementsMap.get(pe));						
+					if(sourceType.getName() == r.getName()) list.add(Reader.mapper.elementsMap.get(pe));						
 				}				
 				else if(targetType instanceof Relator)
 				{
-					if(targetType.getName() == r.getName())list.add(Reader.modelElementsMap.get(pe));				
+					if(targetType.getName() == r.getName())list.add(Reader.mapper.elementsMap.get(pe));				
 				}				
 			}
 		}
@@ -755,7 +733,7 @@ public class Transformer {
 	 */	
 	private void getAllMeronymics(ArrayList<String> list, RigidSortalClass c)
 	{
-		for(PackageableElement pe : Reader.modelElementsMap.keySet())
+		for(PackageableElement pe : Reader.mapper.elementsMap.keySet())
 		{
 			if(pe instanceof Meronymic)
 			{
@@ -764,11 +742,11 @@ public class Transformer {
 				
 				if(sourceType instanceof RigidSortalClass)
 				{
-					if(sourceType.getName() == c.getName()) list.add(Reader.modelElementsMap.get(pe));					
+					if(sourceType.getName() == c.getName()) list.add(Reader.mapper.elementsMap.get(pe));					
 				}				
 				else if(targetType instanceof RigidSortalClass)
 				{
-					if(targetType.getName() == c.getName())	list.add(Reader.modelElementsMap.get(pe));						
+					if(targetType.getName() == c.getName())	list.add(Reader.mapper.elementsMap.get(pe));						
 				}	 
 			}
 		}
@@ -803,7 +781,7 @@ public class Transformer {
 			co.setOperator(CompareOperator.EQUAL_LITERAL);
 			
 			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(Reader.modelElementsMap.get(c));
+			vr.setVariable(Reader.mapper.elementsMap.get(c));
 			
 			co.setLeftExpression(vr);
 			for(Generalization gen : generalizations)
@@ -811,7 +789,7 @@ public class Transformer {
 				if(generalizations.size() == 1) 
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));					
+					vr.setVariable(Reader.mapper.elementsMap.get(gen.getSpecific()));					
 					co.setRightExpression(vr);
 					break;
 				}
@@ -819,14 +797,14 @@ public class Transformer {
 				{
 					bo.setOperator(BinaryOperator.UNION_LITERAL);
 					vr = factory.createVariableReference();
-					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
+					vr.setVariable(Reader.mapper.elementsMap.get(gen.getSpecific()));
 					bo.setLeftExpression(vr);
 					co.setRightExpression(bo);
 				}
 				if(cont > 1 && cont != generalizations.size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
+					vr.setVariable(Reader.mapper.elementsMap.get(gen.getSpecific()));
 					bo.setRightExpression(factory.createBinaryOperation());
 					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
 					((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
@@ -835,7 +813,7 @@ public class Transformer {
 				if(cont == generalizations.size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
+					vr.setVariable(Reader.mapper.elementsMap.get(gen.getSpecific()));
 					bo.setRightExpression(vr);
 				}
 				cont++;
@@ -854,7 +832,7 @@ public class Transformer {
 	 */
 	private void getAllGeneralizations(ArrayList<Generalization> generalizations, Classifier c)
 	{		
-		for(PackageableElement elem : Reader.modelElementsMap.keySet() )
+		for(PackageableElement elem : Reader.mapper.elementsMap.keySet() )
 		{
 			if(elem instanceof Classifier)
 			{
@@ -910,7 +888,7 @@ public class Transformer {
 	public void createObjectClassDeclaration(ObjectClass c) 
 	{
 		// [c.name]: set exists:>Object,
-		Declaration decl = createDeclaration(Reader.modelElementsMap.get(c), Object.getName());				
+		Declaration decl = createDeclaration(Reader.mapper.elementsMap.get(c), Object.getName());				
 		world.getRelation().add(decl);
 	}
 	
@@ -927,7 +905,7 @@ public class Transformer {
 	public void createDatatypeDeclaration(DataType c) 
 	{
 		// [c.name]: set exists:>DataType,
-		Declaration decl = createDeclaration(Reader.modelElementsMap.get(c), Datatype.getName());	
+		Declaration decl = createDeclaration(Reader.mapper.elementsMap.get(c), Datatype.getName());	
 		world.getRelation().add(decl);
 	}
 
@@ -944,7 +922,7 @@ public class Transformer {
 	public void createPropertyClassDeclaration(MomentClass c) 
 	{
 		// [c.name]: set exists:>Property,
-		Declaration decl = createDeclaration(Reader.modelElementsMap.get(c),Property.getName());
+		Declaration decl = createDeclaration(Reader.mapper.elementsMap.get(c),Property.getName());
 		world.getRelation().add(decl);
 	}	
 	
@@ -976,10 +954,10 @@ public class Transformer {
 		CompareOperation co = factory.createCompareOperation();
 		co.setOperator(CompareOperator.SUBSET_LITERAL);		
 		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(Reader.modelElementsMap.get(g.getSpecific()));
+		vr.setVariable(Reader.mapper.elementsMap.get(g.getSpecific()));
 		co.setLeftExpression(vr);		
 		vr = factory.createVariableReference();
-		vr.setVariable(Reader.modelElementsMap.get(g.getGeneral()));
+		vr.setVariable(Reader.mapper.elementsMap.get(g.getGeneral()));
 		co.setRightExpression(vr);		
 		world.getBlock().getExpression().add(co);
 	}
@@ -1001,7 +979,7 @@ public class Transformer {
 			co.setOperator(CompareOperator.EQUAL_LITERAL);
 			
 			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(Reader.modelElementsMap.get(gs.getGeneralization().get(0).getGeneral()));
+			vr.setVariable(Reader.mapper.elementsMap.get(gs.getGeneralization().get(0).getGeneral()));
 			
 			co.setLeftExpression(vr);
 			
@@ -1015,14 +993,14 @@ public class Transformer {
 				{
 					bo.setOperator(BinaryOperator.UNION_LITERAL);
 					vr = factory.createVariableReference();
-					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
+					vr.setVariable(Reader.mapper.elementsMap.get(gen.getSpecific()));
 					bo.setLeftExpression(vr);
 					co.setRightExpression(bo);
 				}
 				if(cont > 1 && cont != gs.getGeneralization().size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
+					vr.setVariable(Reader.mapper.elementsMap.get(gen.getSpecific()));
 					bo.setRightExpression(factory.createBinaryOperation());
 					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
 					((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
@@ -1031,7 +1009,7 @@ public class Transformer {
 				if(cont == gs.getGeneralization().size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
+					vr.setVariable(Reader.mapper.elementsMap.get(gen.getSpecific()));
 					bo.setRightExpression(vr);
 				}
 				cont++;
@@ -1045,7 +1023,7 @@ public class Transformer {
 			for(Generalization gen : gs.getGeneralization())
 			{
 				VariableReference vr = factory.createVariableReference();
-				vr.setVariable(Reader.modelElementsMap.get(gen.getSpecific()));
+				vr.setVariable(Reader.mapper.elementsMap.get(gen.getSpecific()));
 				disj.getSet().add(vr);
 			}
 			world.getBlock().getExpression().add(disj);
@@ -1066,7 +1044,7 @@ public class Transformer {
 		{
 			if(prop.getType() instanceof MaterialAssociation)
 			{
-				material.setVariable(Reader.modelElementsMap.get(prop.getType()));
+				material.setVariable(Reader.mapper.elementsMap.get(prop.getType()));
 				ma = (MaterialAssociation)prop.getType();
 			}
 		}		
@@ -1091,7 +1069,7 @@ public class Transformer {
 		}
 		
 		cont = 1;
-		for (PackageableElement pe : Reader.modelElementsMap.keySet())
+		for (PackageableElement pe : Reader.mapper.elementsMap.keySet())
 		{
 			if(pe instanceof Mediation)
 			{
@@ -1118,12 +1096,12 @@ public class Transformer {
 				{
 					if(cont == 1)
 					{
-						mediation1.setVariable(Reader.modelElementsMap.get(((Mediation)pe)));
+						mediation1.setVariable(Reader.mapper.elementsMap.get(((Mediation)pe)));
 						cont++;
 					}
 					else
 					{
-						mediation2.setVariable(Reader.modelElementsMap.get(((Mediation)pe)));
+						mediation2.setVariable(Reader.mapper.elementsMap.get(((Mediation)pe)));
 						break;
 					}
 				}
@@ -1146,7 +1124,7 @@ public class Transformer {
 		if(ass.getOwnedEnd().get(0).getName().compareTo("") != 0)	
 		{
 			FunctionDeclaration fun = factory.createFunctionDeclaration();
-			fun.setName(Reader.modelAssocEndMap.get(ass.getOwnedEnd().get(0)));
+			fun.setName(Reader.mapper.assocEndMap.get(ass.getOwnedEnd().get(0)));
 			UnaryOperation uOp = factory.createUnaryOperation();
 			uOp.setOperator(UnaryOperator.SET_LITERAL);
 			
@@ -1154,7 +1132,7 @@ public class Transformer {
 			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
 			
 			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(Reader.modelElementsMap.get(ass.getOwnedEnd().get(0).getType()));
+			vr.setVariable(Reader.mapper.elementsMap.get(ass.getOwnedEnd().get(0).getType()));
 			VariableReference vr2 = factory.createVariableReference();
 			vr2.setVariable(world.getName());
 			bOp.setLeftExpression(vr2);
@@ -1172,7 +1150,7 @@ public class Transformer {
 			vr = factory.createVariableReference();
 			vr2 = factory.createVariableReference();
 			vr.setVariable(world.getName());
-			vr2.setVariable(Reader.modelElementsMap.get(ass.getOwnedEnd().get(1).getType()));
+			vr2.setVariable(Reader.mapper.elementsMap.get(ass.getOwnedEnd().get(1).getType()));
 			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
 			bOp.setLeftExpression(vr);
 			bOp.setRightExpression(vr2);
@@ -1196,7 +1174,7 @@ public class Transformer {
 			vr = factory.createVariableReference();
 			vr.setVariable("w");
 			vr2 = factory.createVariableReference();
-			vr2.setVariable(Reader.modelElementsMap.get(ass));
+			vr2.setVariable(Reader.mapper.elementsMap.get(ass));
 			bOp.setLeftExpression(vr);
 			bOp.setRightExpression(vr2);
 			
@@ -1205,7 +1183,7 @@ public class Transformer {
 			
 			BinaryOperation bOp2 = factory.createBinaryOperation();
 			bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
-			if(Reader.modelAssocEndMap.get(ass.getOwnedEnd().get(0).getType()) == target.getVariable())
+			if(Reader.mapper.assocEndMap.get(ass.getOwnedEnd().get(0).getType()) == target.getVariable())
 			{
 				bOp2.setLeftExpression(vr);
 				bOp2.setRightExpression(bOp);
@@ -1228,7 +1206,7 @@ public class Transformer {
 		if(ass.getOwnedEnd().get(1).getName().compareTo("") != 0)
 		{
 			FunctionDeclaration fun = factory.createFunctionDeclaration();
-			fun.setName(Reader.modelAssocEndMap.get(ass.getOwnedEnd().get(1)));
+			fun.setName(Reader.mapper.assocEndMap.get(ass.getOwnedEnd().get(1)));
 			UnaryOperation uOp = factory.createUnaryOperation();
 			uOp.setOperator(UnaryOperator.SET_LITERAL);
 			
@@ -1236,7 +1214,7 @@ public class Transformer {
 			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
 			
 			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(Reader.modelElementsMap.get(ass.getOwnedEnd().get(1).getType()));
+			vr.setVariable(Reader.mapper.elementsMap.get(ass.getOwnedEnd().get(1).getType()));
 			VariableReference vr2 = factory.createVariableReference();
 			vr2.setVariable(world.getName());
 			bOp.setLeftExpression(vr2);
@@ -1254,7 +1232,7 @@ public class Transformer {
 			vr = factory.createVariableReference();
 			vr2 = factory.createVariableReference();
 			vr.setVariable(world.getName());
-			vr2.setVariable(Reader.modelElementsMap.get(ass.getOwnedEnd().get(0).getType()));
+			vr2.setVariable(Reader.mapper.elementsMap.get(ass.getOwnedEnd().get(0).getType()));
 			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
 			bOp.setLeftExpression(vr);
 			bOp.setRightExpression(vr2);
@@ -1278,7 +1256,7 @@ public class Transformer {
 			vr = factory.createVariableReference();
 			vr.setVariable("w");
 			vr2 = factory.createVariableReference();
-			vr2.setVariable(Reader.modelElementsMap.get(ass));
+			vr2.setVariable(Reader.mapper.elementsMap.get(ass));
 			bOp.setLeftExpression(vr);
 			bOp.setRightExpression(vr2);
 			
@@ -1287,7 +1265,7 @@ public class Transformer {
 			
 			BinaryOperation bOp2 = factory.createBinaryOperation();
 			bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
-			if(Reader.modelElementsMap.get(ass.getOwnedEnd().get(1).getType()) == target.getVariable())
+			if(Reader.mapper.elementsMap.get(ass.getOwnedEnd().get(1).getType()) == target.getVariable())
 			{
 				bOp2.setLeftExpression(vr);
 				bOp2.setRightExpression(bOp);
@@ -1319,10 +1297,10 @@ public class Transformer {
 		UnaryOperation uOp = factory.createUnaryOperation();
 		ArrowOperation aOp = factory.createArrowOperation();
 		uOp.setOperator(UnaryOperator.SET_LITERAL);
-		var.setName(Reader.modelElementsMap.get(ass)); 
+		var.setName(Reader.mapper.elementsMap.get(ass)); 
 		var.setDeclaration(decl);
 		
-		association.setVariable(Reader.modelElementsMap.get(ass));	
+		association.setVariable(Reader.mapper.elementsMap.get(ass));	
 		
 		decl.setExpression(uOp);		
 		
@@ -1347,25 +1325,22 @@ public class Transformer {
 	@SuppressWarnings("unchecked")
 	private void prepareMeronymicAssociation(Meronymic ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
 	{
-		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1,cont=0;
+		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
 		
-		for(Property prop : ass.getOwnedEnd())
+		for(Property prop : ass.getMemberEnd())
 		{
-			if(prop.getAggregation() != null)
-				//if(prop.getAggregation().getName().compareTo("none") != 0)
-				if(cont==0)
-				{
-					source.setVariable(Reader.modelElementsMap.get(ass.whole()));
-					lowerSource = ass.wholeEnd().getLower();
-					upperSource = ass.wholeEnd().getUpper();
-					cont++;
-				}
-				else
-				{
-					target.setVariable(Reader.modelElementsMap.get(ass.part()));
-					lowerTarget = ass.partEnd().getLower();
-					upperTarget = ass.partEnd().getUpper();
-				}
+			if(! prop.getAggregation().equals(AggregationKind.NONE))
+			{
+				source.setVariable(Reader.mapper.elementsMap.get(prop.getType()));				
+				lowerSource = prop.getLower();
+				upperSource = prop.getUpper();				
+			}
+			else
+			{
+				target.setVariable(Reader.mapper.elementsMap.get(prop.getType()));				
+				lowerTarget = prop.getLower();				
+				upperTarget = prop.getUpper();
+			}
 		}
 		
 		if(ass instanceof subQuantityOf)
@@ -1374,7 +1349,7 @@ public class Transformer {
 			pI.setPredicate("immutable_target");
 			VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
 			param1.setVariable(source.getVariable());
-			param2.setVariable(Reader.modelElementsMap.get(ass));
+			param2.setVariable(Reader.mapper.elementsMap.get(ass));
 			pI.getParameter().add(param1);
 			pI.getParameter().add(param2);
 			association_properties.getBlock().getExpression().add(pI);
@@ -1385,7 +1360,7 @@ public class Transformer {
 				param1 = factory.createVariableReference();
 				param2 = factory.createVariableReference();
 				param1.setVariable(target.getVariable());
-				param2.setVariable(Reader.modelElementsMap.get(ass));
+				param2.setVariable(Reader.mapper.elementsMap.get(ass));
 				pI.getParameter().add(param1);
 				pI.getParameter().add(param2);
 				association_properties.getBlock().getExpression().add(pI);
@@ -1399,7 +1374,7 @@ public class Transformer {
 				pI.setPredicate("immutable_target");
 				VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
 				param1.setVariable(source.getVariable());
-				param2.setVariable(Reader.modelElementsMap.get(ass));
+				param2.setVariable(Reader.mapper.elementsMap.get(ass));
 				pI.getParameter().add(param1);
 				pI.getParameter().add(param2);
 				association_properties.getBlock().getExpression().add(pI);
@@ -1410,7 +1385,7 @@ public class Transformer {
 				pI.setPredicate("immutable_source");
 				VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
 				param1.setVariable(target.getVariable());
-				param2.setVariable(Reader.modelElementsMap.get(ass));
+				param2.setVariable(Reader.mapper.elementsMap.get(ass));
 				pI.getParameter().add(param1);
 				pI.getParameter().add(param2);
 				association_properties.getBlock().getExpression().add(pI);
@@ -1436,7 +1411,7 @@ public class Transformer {
 			{
 				if(c.getType() instanceof Relator && cont == 1)
 				{
-					source.setVariable(Reader.modelElementsMap.get(c.getType()));
+					source.setVariable(Reader.mapper.elementsMap.get(c.getType()));
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
 					isSourceReadOnly = c.isIsReadOnly();
@@ -1444,7 +1419,7 @@ public class Transformer {
 				}
 				else
 				{
-					target.setVariable(Reader.modelElementsMap.get(c.getType()));
+					target.setVariable(Reader.mapper.elementsMap.get(c.getType()));
 					lowerTarget = c.getLower();
 					upperTarget = c.getUpper();
 				}
@@ -1454,7 +1429,7 @@ public class Transformer {
 		pI.setPredicate("immutable_target");
 		VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
 		param1.setVariable(source.getVariable());
-		param2.setVariable(Reader.modelElementsMap.get(ass));
+		param2.setVariable(Reader.mapper.elementsMap.get(ass));
 		pI.getParameter().add(param1);
 		pI.getParameter().add(param2);
 		association_properties.getBlock().getExpression().add(pI);
@@ -1466,7 +1441,7 @@ public class Transformer {
 			param1 = factory.createVariableReference();
 			param2 = factory.createVariableReference();
 			param1.setVariable(target.getVariable());
-			param2.setVariable(Reader.modelElementsMap.get(ass));
+			param2.setVariable(Reader.mapper.elementsMap.get(ass));
 			pI.getParameter().add(param1);
 			pI.getParameter().add(param2);
 			association_properties.getBlock().getExpression().add(pI);
@@ -1491,7 +1466,7 @@ public class Transformer {
 			{
 				if(c.getType() instanceof Mode && cont == 1)
 				{
-					source.setVariable(Reader.modelElementsMap.get(c.getType()));
+					source.setVariable(Reader.mapper.elementsMap.get(c.getType()));
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
 					isSourceReadOnly = c.isIsReadOnly();
@@ -1499,7 +1474,7 @@ public class Transformer {
 				}
 				else
 				{
-					target.setVariable(Reader.modelElementsMap.get(c.getType()));
+					target.setVariable(Reader.mapper.elementsMap.get(c.getType()));
 					lowerTarget = c.getLower();
 					upperTarget = c.getUpper();
 				}
@@ -1510,7 +1485,7 @@ public class Transformer {
 		pI.setPredicate("immutable_target");
 		VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
 		param1.setVariable(source.getVariable());
-		param2.setVariable(Reader.modelElementsMap.get(ass));
+		param2.setVariable(Reader.mapper.elementsMap.get(ass));
 		pI.getParameter().add(param1);
 		pI.getParameter().add(param2);
 		association_properties.getBlock().getExpression().add(pI);
@@ -1522,7 +1497,7 @@ public class Transformer {
 			param1 = factory.createVariableReference();
 			param2 = factory.createVariableReference();
 			param1.setVariable(target.getVariable());
-			param2.setVariable(Reader.modelElementsMap.get(ass));
+			param2.setVariable(Reader.mapper.elementsMap.get(ass));
 			pI.getParameter().add(param1);
 			pI.getParameter().add(param2);
 			association_properties.getBlock().getExpression().add(pI);
@@ -1548,7 +1523,7 @@ public class Transformer {
 			{
 				if(cont == 1)
 				{
-					source.setVariable(Reader.modelElementsMap.get(c.getType()));
+					source.setVariable(Reader.mapper.elementsMap.get(c.getType()));
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
 					isSourceReadOnly = c.isIsReadOnly();
@@ -1556,7 +1531,7 @@ public class Transformer {
 				}
 				else
 				{
-					target.setVariable(Reader.modelElementsMap.get(c.getType()));
+					target.setVariable(Reader.mapper.elementsMap.get(c.getType()));
 					lowerTarget = c.getLower();
 					upperTarget = c.getUpper();
 					isTargetReadOnly = c.isIsReadOnly();
@@ -1570,7 +1545,7 @@ public class Transformer {
 			pI.setPredicate("immutable_target");
 			VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
 			param1.setVariable(source.getVariable());
-			param2.setVariable(Reader.modelElementsMap.get(ass));
+			param2.setVariable(Reader.mapper.elementsMap.get(ass));
 			pI.getParameter().add(param1);
 			pI.getParameter().add(param2);
 			association_properties.getBlock().getExpression().add(pI);
@@ -1581,7 +1556,7 @@ public class Transformer {
 			pI.setPredicate("immutable_source");
 			VariableReference param1 = factory.createVariableReference(), param2 = factory.createVariableReference();
 			param1.setVariable(target.getVariable());
-			param2.setVariable(Reader.modelElementsMap.get(ass));
+			param2.setVariable(Reader.mapper.elementsMap.get(ass));
 			pI.getParameter().add(param1);
 			pI.getParameter().add(param2);
 			association_properties.getBlock().getExpression().add(pI);
@@ -1662,7 +1637,7 @@ public class Transformer {
 		
 		boJoin.setOperator(BinaryOperator.JOIN_LITERAL);
 		vr = factory.createVariableReference();
-		vr.setVariable(Reader.modelElementsMap.get(ass));
+		vr.setVariable(Reader.mapper.elementsMap.get(ass));
 		boJoin.setRightExpression(vr);
 		vr = factory.createVariableReference();
 		vr.setVariable(var.getName());
@@ -1704,7 +1679,7 @@ public class Transformer {
 		
 		boJoin.setOperator(BinaryOperator.JOIN_LITERAL);
 		vr = factory.createVariableReference();
-		vr.setVariable(Reader.modelElementsMap.get(ass));
+		vr.setVariable(Reader.mapper.elementsMap.get(ass));
 		boJoin.setRightExpression(vr);
 		vr = factory.createVariableReference();
 		vr.setVariable(var.getName());
@@ -1746,7 +1721,7 @@ public class Transformer {
 		
 		boJoin.setOperator(BinaryOperator.JOIN_LITERAL);
 		vr = factory.createVariableReference();
-		vr.setVariable(Reader.modelElementsMap.get(ass));
+		vr.setVariable(Reader.mapper.elementsMap.get(ass));
 		boJoin.setLeftExpression(vr);
 		vr = factory.createVariableReference();
 		vr.setVariable(var.getName());
@@ -1788,7 +1763,7 @@ public class Transformer {
 		
 		boJoin.setOperator(BinaryOperator.JOIN_LITERAL);
 		vr = factory.createVariableReference();
-		vr.setVariable(Reader.modelElementsMap.get(ass));
+		vr.setVariable(Reader.mapper.elementsMap.get(ass));
 		boJoin.setLeftExpression(vr);
 		vr = factory.createVariableReference();
 		vr.setVariable(var.getName());
@@ -1906,7 +1881,7 @@ public class Transformer {
 				PredicateInvocation pI = factory.createPredicateInvocation();
 				pI.setPredicate("rigidity");
 				VariableReference vr = factory.createVariableReference();
-				vr.setVariable(Reader.modelElementsMap.get(rigid));
+				vr.setVariable(Reader.mapper.elementsMap.get(rigid));
 				pI.getParameter().add(vr);
 				if(rigid instanceof ObjectClass)
 				{

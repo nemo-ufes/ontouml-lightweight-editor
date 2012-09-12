@@ -1,30 +1,8 @@
-package br.ufes.inf.nemo.refontouml2alloy;
-
-/**
- * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
- *
- * This file is part of OLED (OntoUML Lightweight BaseEditor).
- * OLED is based on TinyUML and so is distributed under the same
- * licence terms.
- *
- * OLED is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * OLED is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OLED; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+package br.ufes.inf.nemo.refontouml2alloy.util;
 
 import java.io.File;
 
-public class OntoLibraryFiles {
+public class AlloyLibraryFiles {
 	
 	/** ontological_properties content. */
 	public static String ontological_properties = 
@@ -109,9 +87,7 @@ public class OntoLibraryFiles {
 			"check every_world_reach_the_current_world for 10\n" +
 			"check future_worlds_cannot_reach_the_current_world_by_the_future for 10\n";
 	
-	/**
-	 * Generate "world_structure.als" and "ontological_properties.als" into the directory path "dirPath". 
-	 * */
+	/** Generate "world_structure.als" and "ontological_properties.als" into the directory path "dirPath". */
 	public static void generateLibraryFiles (String dirPath)
 	{
 		File lib1File = new File(dirPath + File.separator + "world_structure.als");
