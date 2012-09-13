@@ -30,9 +30,9 @@ public class OntoUML2Alloy {
 		dirPath = destinationPath;
 
 		if (refmodel.getName()=="" || refmodel.getName()==null) 
-			alsPath = dirPath + "\\"+ "Model" + ".als";
+			alsPath = dirPath + File.separator+ "Model" + ".als";
 		else
-			alsPath = dirPath + "\\"+ refmodel.getName() + ".als";		
+			alsPath = dirPath + File.separator + refmodel.getName() + ".als";		
 		File f = new File(alsPath);
 		f.deleteOnExit();	
 		
@@ -42,7 +42,7 @@ public class OntoUML2Alloy {
 		// "alloy4.2-rc.jar" 
 		InputStream is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("alloy4.2-rc.jar");
 		if(is == null) is = new FileInputStream("lib/alloy4.2-rc.jar");
-		File alloyJarFile = new File(dirPath + "\\" + "alloy4.2-rc.jar");
+		File alloyJarFile = new File(dirPath + File.separator + "alloy4.2-rc.jar");
 		alloyJarFile.deleteOnExit();
 		OutputStream out = new FileOutputStream(alloyJarFile);
 
@@ -63,7 +63,7 @@ public class OntoUML2Alloy {
 		Reader.init(refmodel);
 		
 		argsAnalyzer[0] = alsPath;
-		argsAnalyzer[1] = dirPath + "\\" + "standart_theme.thm"	;	
+		argsAnalyzer[1] = dirPath + File.separator + "standart_theme.thm"	;	
 		SimpleGUI_custom.main(OntoUML2Alloy.argsAnalyzer);
 
 		return true;
