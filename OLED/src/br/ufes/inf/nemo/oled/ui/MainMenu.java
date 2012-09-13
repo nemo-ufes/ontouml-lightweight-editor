@@ -79,7 +79,7 @@ public class MainMenu implements ActionListener {
 		fileMenu.addSeparator();
 		createMenuItem(fileMenu, "quit");
 		
-		enableMenuItem("IMPORT_ECORE", false);
+		//enableMenuItem("IMPORT_ECORE", false);
 	}
 
 	/**
