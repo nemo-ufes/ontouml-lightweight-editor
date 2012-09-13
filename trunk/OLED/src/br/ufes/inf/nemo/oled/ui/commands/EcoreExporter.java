@@ -59,6 +59,6 @@ public class EcoreExporter extends FileWriter {
 	 * {@inheritDoc}
 	 */
 	protected String getSuffix() {
-		return ".ecore";
+		return ".refontouml";
 	}
 }

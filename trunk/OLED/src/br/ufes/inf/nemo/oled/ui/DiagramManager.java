@@ -37,7 +37,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -54,6 +54,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.provider.IDisposable;
 import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.error.ErrorInfo;
@@ -79,6 +82,7 @@ import br.ufes.inf.nemo.oled.util.ColorPalette;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
+import br.ufes.inf.nemo.oled.util.OLEDResourceFactory;
 import br.ufes.inf.nemo.oled.util.OWLHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
@@ -319,7 +323,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/**
-	 * Saves the current model as an Ecore file.
+	 * Saves the current model as an Ecore-based file.
 	 * */
 	public void exportEcore() {
 		if(getCurrentEditor() != null)
@@ -327,7 +331,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setDialogTitle(getResourceString("dialog.exportecore.title"));
 			FileNameExtensionFilter owlFilter = new FileNameExtensionFilter(
-					"Eclipse Ecore Model (*.ecore)", "ecore");
+					"Eclipse Ecore-based Model (*.refontouml)", "refontouml");
 			fileChooser.addChoosableFileFilter(owlFilter);
 			fileChooser.setAcceptAllFileFilterUsed(false);
 			if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -346,24 +350,38 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/**
-	 * Imports an Ecore model.
+	 * Imports an Ecore-based model.
 	 */
 	public void importEcore() {
 
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle(getResourceString("dialog.importecore.title"));
 		FileNameExtensionFilter owlFilter = new FileNameExtensionFilter(
-				"Eclipse Ecore Model (*.ecore)", "ecore");
+				"Eclipse Ecore-based Model (*.refontouml)", "refontouml");
 		fileChooser.addChoosableFileFilter(owlFilter);
 		fileChooser.setFileFilter(owlFilter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 			if (fileChooser.getFileFilter() == owlFilter) {
 				try {
-					//Resource resource = RefOntoUMLHelper.createResource();
-					//resource.setURI(URI.createFileURI(fileChooser.getSelectedFile().getPath()));
-					//resource.getContents().add(getCurrentEditor().getProject().getModel());
-					//RefOntoUMLHelper.saveXMI(resource);
+					ResourceSet resourceSet = new ResourceSetImpl();
+					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,new OLEDResourceFactory());
+					resourceSet.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI, RefOntoUML.RefOntoUMLPackage.eINSTANCE);
+
+					File file = new File(fileChooser.getSelectedFile().getPath());					
+					org.eclipse.emf.common.util.URI fileURI = org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath());		
+					Resource resource = resourceSet.createResource(fileURI);		
+					
+					resource.load(Collections.emptyMap());
+					
+					UmlProject project = new UmlProject( (RefOntoUML.Model)resource.getContents().get(0) );
+					StructureDiagram diagram = new StructureDiagram(project);
+					project.addDiagram(diagram);
+					diagram.setLabelText("Imported Diagram");		
+					project.setSaveModelNeeded(true);
+					diagram.setSaveNeeded(true);
+					createEditor(diagram);					
+			
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(this, ex.getMessage(),
 							getResourceString("dialog.importecore.title"),
@@ -462,7 +480,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
         }
 
         try {
-            URI uri = new URI(link);
+            java.net.URI uri = new java.net.URI(link);
             desktop.browse(uri);
         }
         catch (Exception ex) {
