@@ -7,6 +7,7 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -130,20 +131,61 @@ public class RefOntoUMLUtil {
 	 * @param modelTree the tree containing the Model that will be filtered.
 	 */
 
+//	public static void filter(CheckboxTree modelTree) {
+//    	TreePath[] treepathList = modelTree.getCheckingPaths();
+//    	for (TreePath treepath : treepathList) {
+//    		DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)treepath.getLastPathComponent();
+//    		ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) childNode.getUserObject();
+//    		
+//    		RefOntoUML.Element oldElem = chckNode.getElement();
+//    		
+//    		if (oldElem != null) {
+//    			RefOntoUMLUtil.delete(oldElem, true);
+//    		}
+//    	}
+//    	
+//    	removeExcludedNodes((DefaultMutableTreeNode) modelTree.getModel().getRoot(), modelTree);
+//    }
+	
 	public static void filter(CheckboxTree modelTree) {
+		List<DefaultMutableTreeNode> checkedNodes = new ArrayList<DefaultMutableTreeNode>();
     	TreePath[] treepathList = modelTree.getCheckingPaths();
+    	
     	for (TreePath treepath : treepathList) {
-    		DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)treepath.getLastPathComponent();
-    		ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) childNode.getUserObject();
-    		
-    		RefOntoUML.Element oldElem = chckNode.getElement();
-    		
-    		if (oldElem != null) {
-    			RefOntoUMLUtil.delete(oldElem, true);
-    		}
+    		checkedNodes.add((DefaultMutableTreeNode)treepath.getLastPathComponent());
     	}
     	
-    	removeExcludedNodes((DefaultMutableTreeNode) modelTree.getModel().getRoot(), modelTree);
+    	crossTreeDeleting((DefaultMutableTreeNode) modelTree.getModel().getRoot(), modelTree, checkedNodes);
+    }
+	
+	public static void crossTreeDeleting(DefaultMutableTreeNode treeNode, 
+			CheckboxTree modelTree, List<DefaultMutableTreeNode> checkedNodes) {
+    	
+    	if (treeNode == null) {
+    		return;
+    	}
+    	
+    	if (!treeNode.isLeaf()) {
+    		crossTreeDeleting((DefaultMutableTreeNode)treeNode.getFirstChild(), modelTree, checkedNodes);
+    	}
+    	
+    	crossTreeDeleting(treeNode.getNextSibling(), modelTree, checkedNodes);
+    	
+		if (!checkedNodes.contains(treeNode)) {
+			ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) treeNode.getUserObject();
+			RefOntoUML.Element oldElem = chckNode.getElement();
+			
+			if (oldElem != null) {
+				RefOntoUMLUtil.delete(oldElem, true);
+				if (oldElem.eResource() != null) {
+					System.out.println("Debbug: Não excluiu e era pra excluir.");
+				}
+			}
+			
+			DefaultTreeModel treeModel = (DefaultTreeModel)modelTree.getModel();
+			treeModel.removeNodeFromParent(treeNode);
+		}
+    	
     }
 	
 	/**
@@ -419,7 +461,8 @@ public class RefOntoUMLUtil {
 	          }
 	        }
 	      }
-	  		EcoreUtil.remove(eObject);
+	      
+	      EcoreUtil.remove(eObject);
 
 	      for (EObject crossResourceEObject : crossResourceEObjects)
 	      {

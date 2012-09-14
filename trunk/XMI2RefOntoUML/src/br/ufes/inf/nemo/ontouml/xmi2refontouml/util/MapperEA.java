@@ -3,6 +3,8 @@ package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -379,8 +381,9 @@ public class MapperEA implements Mapper {
 		if (diagrams != null) {
 			diagramList = XMLDOMUtil.getElementChilds((Element)diagrams.item(0));
 		}
-		
-		return diagramList;
+		Object[] diagramArray = diagramList.toArray();
+		Arrays.sort(diagramArray, new EAComparator());
+		return Arrays.asList(diagramArray);
 	}
 
 	@Override
@@ -399,6 +402,21 @@ public class MapperEA implements Mapper {
 		}
 		
 		return diagElemIDList;
+	}
+	
+	class EAComparator implements Comparator<Object> {
+
+		@Override
+		public int compare(Object arg0, Object arg1) {
+			Element elem1 = (Element) arg0;
+			Element elem2 = (Element) arg1;
+			
+			String name1 = getName(elem1);
+			String name2 = getName(elem2);
+			
+			return name1.compareToIgnoreCase(name2);
+		}
+		
 	}
 
 }
