@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextPane;
+import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -33,6 +33,10 @@ import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.ChckBoxTreeNodeElem;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.RefOntoUMLUtil;
+import javax.swing.JLabel;
+import java.awt.Component;
+import javax.swing.Box;
+import javax.swing.SwingConstants;
 
 
 /**
@@ -54,10 +58,11 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	private static final long serialVersionUID = -5072745232874390321L;
 	private JScrollPane modelTreeScrollPane, diagrTreeScrollPane;
 	private JButton importButton;
-	private JTextPane infoPane;
-	private JButton deleteButton;
-	private JPanel buttonsPanel;
+	private JTextArea infoPane;
+	private JPanel labelPane, panel;
 	private JTabbedPane treeTabbedPane;
+	private JLabel lblDetails, lblTitle;
+	private Component horizontalStrut;
 	
 	Mediator transfManager;
 	CheckboxTree modelChckTree, diagrChckTree, activeTree;
@@ -92,47 +97,62 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 			setTitle("Import from XMI"); //TODO adicionar no arquivo de captions
 			setPreferredSize(new Dimension(400, 300));
 			setBounds(new Rectangle(0, 0, 400, 300));
-			
+			{
+				labelPane = new JPanel();
+				labelPane.setPreferredSize(new Dimension(398, 36));
+				getContentPane().add(labelPane, BorderLayout.NORTH);
+				{
+					lblTitle = new JLabel("Select the classes to import");
+					lblTitle.setHorizontalTextPosition(SwingConstants.LEADING);
+					lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+					labelPane.add(lblTitle);
+				}
+			}
 			{
 				treeTabbedPane = new JTabbedPane();
+				getContentPane().add(treeTabbedPane, BorderLayout.WEST);
 				{
 					modelTreeScrollPane = new JScrollPane();
 					modelTreeScrollPane.setPreferredSize(new java.awt.Dimension(200, 239));
 					modelTreeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-					modelTreeScrollPane.getViewport().add(modelChckTree);
+					modelTreeScrollPane.setViewportView(modelChckTree);
 				}
 				{
 					diagrTreeScrollPane = new JScrollPane();
 					diagrTreeScrollPane.setPreferredSize(new java.awt.Dimension(200, 239));
 					diagrTreeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-					diagrTreeScrollPane.getViewport().add(diagrChckTree);
+					diagrTreeScrollPane.setViewportView(diagrChckTree);
 				}
 				treeTabbedPane.addTab("Model", modelTreeScrollPane);
 				treeTabbedPane.addTab("Diagram", diagrTreeScrollPane);
-				getContentPane().add(treeTabbedPane, BorderLayout.WEST);
 			}
 			{
-				buttonsPanel = new JPanel();
-				getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
-				buttonsPanel.setPreferredSize(new java.awt.Dimension(398, 36));
+				panel = new JPanel();
+				panel.setPreferredSize(new Dimension(179, 220));
+				getContentPane().add(panel, BorderLayout.EAST);
 				{
-					deleteButton = new JButton();
-					buttonsPanel.add(deleteButton);
-					deleteButton.setText("Delete Selected Elements");
-					deleteButton.addActionListener(this);
+					lblDetails = new JLabel("Details:");
+					lblDetails.setHorizontalTextPosition(SwingConstants.LEADING);
+					lblDetails.setHorizontalAlignment(SwingConstants.LEFT);
+					panel.add(lblDetails);
+				}
+				{
+					horizontalStrut = Box.createHorizontalStrut(20);
+					horizontalStrut.setPreferredSize(new Dimension(120, 0));
+					panel.add(horizontalStrut);
+				}
+				{
+					infoPane = new JTextArea();
+					panel.add(infoPane);
+					infoPane.setPreferredSize(new Dimension(170, 150));
+					infoPane.setEditable(false);
 				}
 				{
 					importButton = new JButton();
-					buttonsPanel.add(importButton);
+					panel.add(importButton);
 					importButton.setText("Import Model");
 					importButton.addActionListener(this);
 				}
-			}
-			{
-				infoPane = new JTextPane();
-				getContentPane().add(infoPane, BorderLayout.EAST);
-				infoPane.setPreferredSize(new java.awt.Dimension(183, 226));
-				infoPane.setEditable(false);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -156,12 +176,12 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
         if (model != null) {
         	CheckboxTree modelTree = RefOntoUMLUtil.createSelectionTreeFromModel(model);
         	modelTree.getCheckingModel().setCheckingMode(
-        			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_CHECK);
+        			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
         	modelTree.addTreeSelectionListener(this);
         	
         	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(transfManager.mapper);
         	diagramTree.getCheckingModel().setCheckingMode(
-        			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_CHECK);
+        			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
         	diagramTree.addTreeSelectionListener(this);
         	
         	this.modelChckTree = modelTree;
@@ -174,24 +194,22 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if (e.getSource() == deleteButton) {
+		if (e.getSource() == importButton) {
 			switch (treeTabbedPane.getSelectedIndex()) {
-				case 0:
-					RefOntoUMLUtil.filter(modelChckTree);
-					RefOntoUMLUtil.removeExcludedNodes((DefaultMutableTreeNode)
-							diagrChckTree.getModel().getRoot(), diagrChckTree);
-					break;
-				case 1:
-					RefOntoUMLUtil.filter(diagrChckTree);
-					RefOntoUMLUtil.removeExcludedNodes((DefaultMutableTreeNode)
-							modelChckTree.getModel().getRoot(), modelChckTree);
-					break;
+			case 0:
+				RefOntoUMLUtil.filter(modelChckTree);
+				RefOntoUMLUtil.removeExcludedNodes((DefaultMutableTreeNode)
+						diagrChckTree.getModel().getRoot(), diagrChckTree);
+				break;
+			case 1:
+				RefOntoUMLUtil.filter(diagrChckTree);
+				RefOntoUMLUtil.removeExcludedNodes((DefaultMutableTreeNode)
+						modelChckTree.getModel().getRoot(), modelChckTree);
+				break;
 			}
 			modelChckTree.clearChecking();
 			diagrChckTree.clearChecking();
-			
-		} else if (e.getSource() == importButton) {
+		
 			UmlProject project = new UmlProject(this.model);
 			StructureDiagram diagram = new StructureDiagram(project);
 			project.addDiagram(diagram);
