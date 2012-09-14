@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class MapperAstah implements Mapper {
 	
 	private final String[] ASSOCIATION_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Association"};
 	private final String[] CLASS_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Class"};
-	private final String[] COMMENT_TAG_PATH = {"UML:ModelElement.comment", "UML:Comment"};
+	private final String[] COMMENT_TAG_PATH = {"UML:Comment"};
 	//private final String[] DATATYPE_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Class"};
 	private final String[] DEPENDENCY_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Dependency"};
 	//private final String[] ENUMERATION_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Class"};
@@ -118,7 +119,9 @@ public class MapperAstah implements Mapper {
 				}
 				break;
 			case COMMENT:
-				elemList = getChildsByTagName(parent, COMMENT_TAG_PATH);
+				if (getType(parent) == ElementType.MODEL) {
+					elemList = getChildsByTagName((Element)parent.getParentNode(), COMMENT_TAG_PATH);
+				}
 				break;
 			case DATATYPE:
 				elemList = getClassifierByType(parent, ElementType.DATATYPE);
@@ -458,9 +461,7 @@ public class MapperAstah implements Mapper {
 	    	if (annotElem != null) {
 	    		List<Object> annotatedElems = XMLDOMUtil.getElementChilds(annotElem);
 	    		for (Object annotRef : annotatedElems) {
-	    			if (annotRef.equals(annotatedElems.get(0))) {
-	    				annotElements.add(((Element)annotRef).getAttribute("xmi.idref"));
-	    			}
+	    			annotElements.add(((Element)annotRef).getAttribute("xmi.idref"));
 	    		}
 	    		hashProp.put("annotatedelement", annotElements);
 	    	}
@@ -594,7 +595,9 @@ public class MapperAstah implements Mapper {
 				diagramList = getChildsByTagName((Element)extensions.item(i), DIAGRAM_TAG_PATH);
 			}
 		}
-		return diagramList;
+		Object[] diagramArray = diagramList.toArray();
+		Arrays.sort(diagramArray, new AstahComparator());
+		return Arrays.asList(diagramArray);
 	}
 
 	@Override
@@ -607,5 +610,20 @@ public class MapperAstah implements Mapper {
 			diagElemIDList.add(((Element)semanticElement.getChildNodes().item(1)).getAttribute("xmi.idref"));
 		}
 		return diagElemIDList;
+	}
+	
+	class AstahComparator implements Comparator<Object> {
+
+		@Override
+		public int compare(Object arg0, Object arg1) {
+			Element elem1 = (Element) arg0;
+			Element elem2 = (Element) arg1;
+			
+			String name1 = getName(elem1);
+			String name2 = getName(elem2);
+			
+			return name1.compareToIgnoreCase(name2);
+		}
+		
 	}
 }
