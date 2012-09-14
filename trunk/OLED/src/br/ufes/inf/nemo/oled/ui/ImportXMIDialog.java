@@ -1,6 +1,8 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
+import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingEvent;
+import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingListener;
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 
 import java.awt.BorderLayout;
@@ -51,7 +53,7 @@ import javax.swing.SwingConstants;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class ImportXMIDialog extends JDialog implements ActionListener, TreeSelectionListener {
+public class ImportXMIDialog extends JDialog implements ActionListener, TreeSelectionListener, TreeCheckingListener {
 	/**
 	 * 
 	 */
@@ -65,7 +67,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	private Component horizontalStrut;
 	
 	Mediator transfManager;
-	CheckboxTree modelChckTree, diagrChckTree, activeTree;
+	CheckboxTree modelChckTree, diagrChckTree;
 	DiagramManager diagManager;
 	Model model;
 
@@ -152,6 +154,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 					panel.add(importButton);
 					importButton.setText("Import Model");
 					importButton.addActionListener(this);
+					importButton.setEnabled(false);
 				}
 			}
 		} catch (Exception e) {
@@ -178,11 +181,17 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
         	modelTree.getCheckingModel().setCheckingMode(
         			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
         	modelTree.addTreeSelectionListener(this);
+        	modelTree.addTreeCheckingListener(this);
         	
+<<<<<<< .mine
+        	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(transfManager.mapper, model);
+=======
         	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(transfManager.mapper,model);
+>>>>>>> .r152
         	diagramTree.getCheckingModel().setCheckingMode(
         			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
         	diagramTree.addTreeSelectionListener(this);
+        	modelTree.addTreeCheckingListener(this);
         	
         	this.modelChckTree = modelTree;
         	this.diagrChckTree = diagramTree;
@@ -227,6 +236,23 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) node.getUserObject();
 		String info = chckNode.getInfo();
 		infoPane.setText(info);
+	}
+
+	@Override
+	public void valueChanged(TreeCheckingEvent arg0) {
+		importButton.setEnabled(true);
+		switch (treeTabbedPane.getSelectedIndex()) {
+		case 0:
+			if (modelChckTree.getCheckingPaths().length == 0) {
+				importButton.setEnabled(false);
+			}
+			break;
+		case 1:
+			if (diagrChckTree.getCheckingPaths().length == 0) {
+				importButton.setEnabled(false);
+			}
+			break;
+		}		
 	}
 
 }
