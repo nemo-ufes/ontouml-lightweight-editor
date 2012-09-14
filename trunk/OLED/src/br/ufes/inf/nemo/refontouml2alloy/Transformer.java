@@ -390,8 +390,8 @@ public class Transformer {
 				subsortalDisjNamesList.add(Reader.mapper.elementsMap.get(c));
 			}			
 			if (OntoUML2Alloy.weakSupplementationRuleFlag)
-			{
-				if(c instanceof RigidSortalClass && !(c.isIsAbstract())) createWeakSupplementationRule(c);
+			{				
+				if(c instanceof RigidSortalClass) createWeakSupplementationRule(c);
 			}
 		}
 		
@@ -412,7 +412,7 @@ public class Transformer {
 		{
 			if (OntoUML2Alloy.relatorRuleFlag)
 			{
-				if(c instanceof Relator && !(c.isIsAbstract())) createRelatorRule((Relator) c);
+				if(c instanceof Relator) createRelatorRule((Relator) c);
 			}
 			
 			createPropertyClassDeclaration((MomentClass)c);			
@@ -451,12 +451,18 @@ public class Transformer {
 	@SuppressWarnings("unchecked")
 	public void createRelatorRule(Relator c) 
 	{
+		if (c.isIsAbstract()) return;
+		
 		// isAbstract from generalization Sets (Disjoint and Complete)
 		if (isAbstractFromGeneralizationSets(c)) return;
+		
+		if (!isSourceOfMeronymicRelation(c)) return;
 		
 		// get all 'c' mediations
 		ArrayList<String> associationNames = new ArrayList<String>();		
 		getAllMediations(associationNames, c);		
+		
+		System.out.println(c.getName()+"\n"+associationNames+"\n");
 		
 		if(associationNames.size()>0)
 		{			
@@ -474,6 +480,7 @@ public class Transformer {
 		}		
 	}
 	
+
 	/* =========================================================================================================*/
 	
 	/**
@@ -489,12 +496,18 @@ public class Transformer {
 	@SuppressWarnings("unchecked")
 	public void createWeakSupplementationRule(Classifier c) 
 	{
+		if (c.isIsAbstract()) return;
+				
 		// isAbstract from generalization Sets (Disjoint and Complete)
-		if (isAbstractFromGeneralizationSets(c)) return;
+		if (isAbstractFromGeneralizationSets(c)) return;	
+		
+		if (!isSourceOfMeronymicRelation(c)) return;
 		
 		// get all 'c' meronymics
 		ArrayList<String> associationNames = new ArrayList<String>();		
 		getAllMeronymics(associationNames, (RigidSortalClass)c);	
+		
+		System.out.println(c.getName()+"\n"+associationNames+"\n");
 		
 		if( associationNames.size() > 0)
 		{
@@ -683,7 +696,39 @@ public class Transformer {
 					for(Generalization gen : gs.getGeneralization())
 					{
 						if(gen.getGeneral().getName() == c.getName()) 
+						{							
 							return true;
+						}
+					}
+				}
+			}
+		}		
+		return false;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Verify if the Classifier 'c' is the source of some Meronymic Relation.
+	 *  
+	 * @param c: RefOntoUML.Classifier
+	 * @return
+	 */
+	private boolean isSourceOfMeronymicRelation (Classifier c)
+	{
+		for(PackageableElement pe : Reader.mapper.elementsMap.keySet())
+		{
+			if (pe instanceof Meronymic) 
+			{
+				Meronymic assoc = (Meronymic)pe;				
+				for( Property p : assoc.getMemberEnd())
+				{
+					if (!p.getAggregation().equals(AggregationKind.NONE))
+					{
+						if (p.getType().getName().equals(c.getName()))
+						{							
+							return true;
+						}
 					}
 				}
 			}
@@ -705,18 +750,18 @@ public class Transformer {
 		{
 			if(pe instanceof Mediation)
 			{
-				Type sourceType = ((Mediation)pe).sourceEnd().getType();
-				Type targetType = ((Mediation)pe).targetEnd().getType();
-				
-				if(sourceType instanceof Relator)
+				Mediation assoc = (Mediation)pe;
+				for( Property p : assoc.getMemberEnd())
 				{
-					if(sourceType.getName() == r.getName()) list.add(Reader.mapper.elementsMap.get(pe));						
-				}				
-				else if(targetType instanceof Relator)
-				{
-					if(targetType.getName() == r.getName())list.add(Reader.mapper.elementsMap.get(pe));				
-				}				
-			}
+					if (p.getType() instanceof Relator)
+					{
+						if (p.getType().getName().equals(r.getName()))
+						{
+							list.add(Reader.mapper.elementsMap.get(pe));							
+						}
+					}
+				}
+			}			
 		}
 		for(Generalization gen : ((Relator)r).getGeneralization())
 		{							
@@ -740,17 +785,17 @@ public class Transformer {
 		{
 			if(pe instanceof Meronymic)
 			{
-				Type sourceType = ((Meronymic)pe).sourceEnd().getType();
-				Type targetType = ((Meronymic)pe).targetEnd().getType();
-				
-				if(sourceType instanceof RigidSortalClass)
+				Meronymic assoc = (Meronymic)pe;
+				for( Property p : assoc.getMemberEnd())
 				{
-					if(sourceType.getName() == c.getName()) list.add(Reader.mapper.elementsMap.get(pe));					
-				}				
-				else if(targetType instanceof RigidSortalClass)
-				{
-					if(targetType.getName() == c.getName())	list.add(Reader.mapper.elementsMap.get(pe));						
-				}	 
+					if (!p.getAggregation().equals(AggregationKind.NONE))
+					{
+						if (p.getType().getName().equals(c.getName()))
+						{
+							list.add(Reader.mapper.elementsMap.get(pe));							
+						}
+					}
+				}
 			}
 		}
 		for(Generalization gen : ((RigidSortalClass)c).getGeneralization())
