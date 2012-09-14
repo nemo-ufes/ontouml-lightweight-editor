@@ -33,7 +33,6 @@ import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
-import RefOntoUML.Type;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.ontouml.alloy.AlloyFactory;
 import br.ufes.inf.nemo.ontouml.alloy.AlloyModule;
@@ -462,8 +461,6 @@ public class Transformer {
 		ArrayList<String> associationNames = new ArrayList<String>();		
 		getAllMediations(associationNames, c);		
 		
-		System.out.println(c.getName()+"\n"+associationNames+"\n");
-		
 		if(associationNames.size()>0)
 		{			
 			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
@@ -506,8 +503,6 @@ public class Transformer {
 		// get all 'c' meronymics
 		ArrayList<String> associationNames = new ArrayList<String>();		
 		getAllMeronymics(associationNames, (RigidSortalClass)c);	
-		
-		System.out.println(c.getName()+"\n"+associationNames+"\n");
 		
 		if( associationNames.size() > 0)
 		{
