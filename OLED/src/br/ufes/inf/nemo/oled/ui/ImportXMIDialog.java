@@ -179,7 +179,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
         			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
         	modelTree.addTreeSelectionListener(this);
         	
-        	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(model, transfManager.mapper);
+        	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(transfManager.mapper,model);
         	diagramTree.getCheckingModel().setCheckingMode(
         			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
         	diagramTree.addTreeSelectionListener(this);
