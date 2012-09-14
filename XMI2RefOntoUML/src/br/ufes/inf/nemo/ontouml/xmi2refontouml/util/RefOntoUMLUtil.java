@@ -45,6 +45,9 @@ import RefOntoUML.Comment;
 import RefOntoUML.Dependency;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import RefOntoUML.Model;
+import RefOntoUML.PackageableElement;
+import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.util.ValidationMessage;
 
@@ -105,10 +108,18 @@ public class RefOntoUMLUtil {
 	 * @return the CheckboxTree with the elements organized by diagram.
 	 */
 	
-	public static CheckboxTree createSelectionTreeByDiagram(Mapper mapper) {
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem("Diagrams"));
+	public static CheckboxTree createSelectionTreeByDiagram(Mapper mapper, Model model) {
+		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(model));
 		CheckboxTree modelTree = new CheckboxTree(rootNode);
 		modelTree.setCellRenderer(new OntoUMLTreeCellRenderer());
+		
+		for (PackageableElement pel : model.getPackagedElement()) {
+			if (pel instanceof PrimitiveType) {
+				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(
+	    				new ChckBoxTreeNodeElem(pel));
+	    		rootNode.add(newNode);
+			}
+		}
 		
 		List<Object> diagramList = mapper.getDiagramList();
     	for (Object diagram : diagramList) {
@@ -147,7 +158,7 @@ public class RefOntoUMLUtil {
 //    	removeExcludedNodes((DefaultMutableTreeNode) modelTree.getModel().getRoot(), modelTree);
 //    }
 	
-	public static void filter(CheckboxTree modelTree) {
+	public static void Filter(CheckboxTree modelTree) {
 		List<DefaultMutableTreeNode> checkedNodes = new ArrayList<DefaultMutableTreeNode>();
     	TreePath[] treepathList = modelTree.getCheckingPaths();
     	
