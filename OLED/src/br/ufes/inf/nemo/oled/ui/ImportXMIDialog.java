@@ -179,7 +179,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
         			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
         	modelTree.addTreeSelectionListener(this);
         	
-        	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(transfManager.mapper);
+        	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(model, transfManager.mapper);
         	diagramTree.getCheckingModel().setCheckingMode(
         			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
         	diagramTree.addTreeSelectionListener(this);
@@ -197,14 +197,14 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		if (e.getSource() == importButton) {
 			switch (treeTabbedPane.getSelectedIndex()) {
 			case 0:
-				RefOntoUMLUtil.filter(modelChckTree);
-				RefOntoUMLUtil.removeExcludedNodes((DefaultMutableTreeNode)
-						diagrChckTree.getModel().getRoot(), diagrChckTree);
+				RefOntoUMLUtil.Filter(modelChckTree);
+//				RefOntoUMLUtil.removeExcludedNodes((DefaultMutableTreeNode)
+//						diagrChckTree.getModel().getRoot(), diagrChckTree);
 				break;
 			case 1:
-				RefOntoUMLUtil.filter(diagrChckTree);
-				RefOntoUMLUtil.removeExcludedNodes((DefaultMutableTreeNode)
-						modelChckTree.getModel().getRoot(), modelChckTree);
+				RefOntoUMLUtil.Filter(diagrChckTree);
+//				RefOntoUMLUtil.removeExcludedNodes((DefaultMutableTreeNode)
+//						modelChckTree.getModel().getRoot(), modelChckTree);
 				break;
 			}
 			modelChckTree.clearChecking();
