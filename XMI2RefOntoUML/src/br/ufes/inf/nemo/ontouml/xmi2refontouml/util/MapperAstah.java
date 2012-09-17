@@ -503,10 +503,14 @@ public class MapperAstah implements Mapper {
 			Element gen = (Element)genpres.getElementsByTagName("UML:Generalization").item(0);
 			genIdList.add(gen.getAttribute("xmi.idref"));
 		}
-		hashProp.put("generalization", genIdList);
 		
+		List<String> brokenRefs = new ArrayList<String>();
 		for (String id : genIdList) {
 			Element genelement = (Element) doc.getElementById(id);
+			if (genelement == null) {
+				brokenRefs.add(id);
+				continue;
+			}
 			// Se estiver em Tagged Values
 			getExtendedProperties(genelement, hashProp);
 			// Se estiver no nome
@@ -525,9 +529,9 @@ public class MapperAstah implements Mapper {
 			if (genname.contains("complete") || constname.contains("complete")) {
 				hashProp.put("iscovering", "true");
 			}
-			
-			
 		}
+		genIdList.removeAll(brokenRefs);
+		hashProp.put("generalization", genIdList);
 	}
 	
 	@Override

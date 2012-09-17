@@ -109,6 +109,9 @@ public class MapperEA implements Mapper {
 					ElementType.get(type.replace("uml:", "")) == ElementType.ASSOCIATION) {
 				return "";
 			}
+			if (ElementType.get(type.replace("uml:", "")) == ElementType.ASSOCIATIONCLASS) {
+				return "relator";
+			}
 			return type.replace("uml:", "");
 		}
 	}
@@ -152,17 +155,17 @@ public class MapperEA implements Mapper {
 					Element assocClassElemClone = (Element) assocClassElem.cloneNode(true);
 					NodeList extendedProp = doc.getElementsByTagName("extendedProperties");
 					for (int i = 0; i < extendedProp.getLength(); i++) {
-						if (((Element)extendedProp.item(i)).hasAttribute("associationclass")) {
+						if (((Element)extendedProp.item(i)).hasAttribute("associationclass") &&
+								((Element)extendedProp.item(i)).getAttribute("associationclass").equals(assocClassElem.getAttributeNS(XMINS, "id"))) {
 							assocClassElemClone.setAttribute("relator", 
 									assocClassElemClone.getAttributeNS(XMINS, "id"));
 							assocClassElemClone.setAttributeNS(XMINS, "id", 
 									((Element)extendedProp.item(i).getParentNode()).getAttributeNS(XMINS, "idref"));
-							assocClassElemClone.setIdAttributeNS(XMINS, "id", true);
 							assocClassElemClone.setAttribute("name", 
 									((Element)extendedProp.item(i).getParentNode()).getAttribute("name"));
-							
 							assocClassElem.getParentNode().appendChild(assocClassElemClone);
 							assocClassElem.setIdAttributeNS(XMINS, "id", true);
+							assocClassElemClone.setIdAttributeNS(XMINS, "id", true);
 						}
 					}
 					elemList.add(assocClassElemClone);
@@ -298,6 +301,14 @@ public class MapperEA implements Mapper {
     			generalizations.add(generalization.getAttributeNS(XMINS, "idref"));
     		}
     		hashProp.put("generalization", generalizations);
+    		
+    	} else if (getType(elem) == ElementType.COMMENT) {
+    		List<Element> commentsAux = getElementChildsByTagName(elem, "annotatedElement");
+    		List<String> comments = new ArrayList<String>();
+    		for (Element comment : commentsAux) {
+    			comments.add(comment.getAttributeNS(XMINS, "idref"));
+    		}
+    		hashProp.put("annotatedelement", comments);
     	}
     	
 		return hashProp;
