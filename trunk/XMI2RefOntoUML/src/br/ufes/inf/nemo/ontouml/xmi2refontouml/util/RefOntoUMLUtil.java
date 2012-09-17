@@ -109,6 +109,9 @@ public class RefOntoUMLUtil {
 	 */
 	
 	public static CheckboxTree createSelectionTreeByDiagram(Mapper mapper, Model model) {
+		if (mapper instanceof MapperEA) { //TODO
+			return null;
+		}
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(model));
 		CheckboxTree modelTree = new CheckboxTree(rootNode);
 		modelTree.setCellRenderer(new OntoUMLTreeCellRenderer());
@@ -128,9 +131,14 @@ public class RefOntoUMLUtil {
     		rootNode.add(newNode);
     		List<String> elemIdList = mapper.getDiagramElements(diagram);
     		for (String id : elemIdList) {
-    			DefaultMutableTreeNode newElemNode = new DefaultMutableTreeNode(
+    			try {
+    				DefaultMutableTreeNode newElemNode = new DefaultMutableTreeNode(
     					new ChckBoxTreeNodeElem(Mediator.elemMap.get(id)));
-    			newNode.add(newElemNode);
+    				newNode.add(newElemNode);
+    			} catch (NullPointerException npe) {
+    				continue;
+    			}
+    			
     		}
     	}
     	
