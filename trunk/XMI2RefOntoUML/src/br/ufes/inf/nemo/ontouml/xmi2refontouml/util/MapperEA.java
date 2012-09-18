@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -11,17 +10,12 @@ import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
-import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
 
 
 public class MapperEA implements Mapper {
@@ -37,47 +31,43 @@ public class MapperEA implements Mapper {
 	
 	Document doc;
 	
-	public MapperEA(String inputPath) {
-		try {
-	        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-	        docBuilderFactory.setNamespaceAware(true);
-	        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-	        
-	        doc = docBuilder.parse(new File(inputPath));
-	        
-	        Element root = doc.getDocumentElement();
-	        NamedNodeMap docAttributes = root.getAttributes();
-	        for (int i = 0; i < docAttributes.getLength(); i++) {
-	        	if (docAttributes.item(i).getNamespaceURI().equals(XMLNS) &&
-	        			!docAttributes.item(i).getNodeName().equals("xmlns:uml") &&
-	        			!docAttributes.item(i).getNodeName().equals("xmlns:xmi")) {
-	        		if (docAttributes.item(i).getNodeName().equalsIgnoreCase("xmlns:OntoUML")) {
-	        			OntoUML = docAttributes.item(i).getNodeValue();
-	        		} else {
-	        			// TODO There is another unknown namespace.
-	        			// Will have to know how to deal with it
-	        		}
-	        	}
-	        }
+	Map<String, Element> stereotypes = new HashMap<String, Element>();
+	
+	public MapperEA(String inputPath) throws Exception {
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        docBuilderFactory.setNamespaceAware(true);
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        
+        doc = docBuilder.parse(new File(inputPath));
+        
+        Element root = doc.getDocumentElement();
+        NamedNodeMap docAttributes = root.getAttributes();
+        for (int i = 0; i < docAttributes.getLength(); i++) {
+        	if (docAttributes.item(i).getNamespaceURI().equals(XMLNS)) {
+        		String nsName = docAttributes.item(i).getNodeName();
+        		String nsValue = docAttributes.item(i).getNodeValue();
+        		if (nsName.equalsIgnoreCase("xmlns:uml") &&
+        				!nsValue.equals(UMLNS)) {
+        			//Mediator.errorLog += "Unsuported version of UML Namespace";
+        			throw new Exception("Unsuported version of UML Namespace");
+        		}
+        		if (nsName.equalsIgnoreCase("xmlns:xmi") &&
+        				!nsValue.equals(XMINS)) {
+        			//Mediator.errorLog += "Unsuported version of XMI Namespace";
+        			throw new Exception("Unsuported version of XMI Namespace");
+        		}
+        		if (nsName.equalsIgnoreCase("xmlns:OntoUML")) {
+        			OntoUML = docAttributes.item(i).getNodeValue();
+        		}
+        		if (nsName.equalsIgnoreCase("xmlns:EAUML")) {
+//        			EAUML = docAttributes.item(i).getNodeValue();
+        		}
+        	}
+        }
 
-            setID(doc.getDocumentElement());
-	        
-		} catch (SAXParseException err) {
-            Mediator.errorLog += "** Parsing error" + ", line "
-                    + err.getLineNumber() + ", uri " + err.getSystemId();
-            Mediator.errorLog += " " + err.getMessage();
- 
-		} catch (SAXException e) {
-			Exception x = e.getException();
-			Mediator.errorLog += ((x == null) ? e : x).getMessage();
-			
-		} catch (IOException e) {
-			Mediator.errorLog += "File " + inputPath + 
-			" does not exist or could not be oppened.";
-			
-		} catch (ParserConfigurationException e) {
-			Mediator.errorLog += e.getMessage();
-		}
+        setID(doc.getDocumentElement());
+        
+        createStereotypesMap();
 	}
 	
     protected void setID(Element element) {
@@ -90,6 +80,24 @@ public class MapperEA implements Mapper {
     		setID(child);
 	    }
     }
+    
+    protected void createStereotypesMap() {
+    	NodeList stereotypeList = doc.getElementsByTagNameNS(OntoUML, "*");
+    	if (stereotypeList.getLength() != 0) {
+    		for (int i=0; i < stereotypeList.getLength(); i++) {
+    			Element stereotypeElem = (Element) stereotypeList.item(i);
+    			
+    			if (stereotypeElem.hasAttribute("base_Class")) {
+    				stereotypes.put(stereotypeElem.getAttribute("base_Class"),
+    						stereotypeElem);
+    			}
+    			if (stereotypeElem.hasAttribute("base_Association")) {
+    				stereotypes.put(stereotypeElem.getAttribute("base_Association"),
+    						stereotypeElem);
+    			}
+    		}
+    	}
+    }
 
 	@Override
 	public Object getModelElement() {
@@ -99,46 +107,27 @@ public class MapperEA implements Mapper {
 	@Override
 	public String getStereotype(Object element) {
 		Element elem = (Element) element;
+		String stereotype;
 		
-		Element stereotypeElem = getElementByBaseRef(elem);
-		if (stereotypeElem != null) {
-	    	return stereotypeElem.getNodeName().replace("OntoUML:", "");
-		} else {
-			String type = elem.getAttributeNS(XMINS, "type");
-			if (ElementType.get(type.replace("uml:", "")) == ElementType.CLASS ||
-					ElementType.get(type.replace("uml:", "")) == ElementType.ASSOCIATION) {
-				return "";
+		Element stereotypeElem = stereotypes.get(elem.getAttributeNS(XMINS, "id"));
+    	if (stereotypeElem != null) {
+    		stereotype = stereotypeElem.getNodeName().replace("OntoUML:", "");
+    		
+    	} else {
+			String type = elem.getAttributeNS(XMINS, "type").replace("uml:", "");
+			if (ElementType.get(type) == ElementType.CLASS ||
+					ElementType.get(type) == ElementType.ASSOCIATION) {
+				stereotype = "";
+				
+			} else if (ElementType.get(type) == ElementType.ASSOCIATIONCLASS) {
+				stereotype = "relator";
+				
+			} else {
+				stereotype = type;
 			}
-			if (ElementType.get(type.replace("uml:", "")) == ElementType.ASSOCIATIONCLASS) {
-				return "relator";
-			}
-			return type.replace("uml:", "");
 		}
-	}
-	
-	private Element getElementByBaseRef(Element elem) {
-		NodeList stereotypeList = doc.getElementsByTagNameNS(OntoUML, "*");
 		
-		if (stereotypeList.getLength() != 0) {
-    		for (int i=0; i < stereotypeList.getLength(); i++) {
-    			Element stereotypeElem = (Element) stereotypeList.item(i);
-    			String elemID = elem.getAttributeNS(XMINS, "id");
-    			if ((getType(elem) == ElementType.CLASS ||
-    					getType(elem) == ElementType.ASSOCIATIONCLASS) && 
-    					stereotypeElem.hasAttribute("base_Class") &&
-    					stereotypeElem.getAttribute("base_Class").equals(elemID)) {
-    				return stereotypeElem;
-    			}
-    			if ((getType(elem) == ElementType.ASSOCIATION ||
-    					getType(elem) == ElementType.ASSOCIATIONCLASS) &&
-    					stereotypeElem.hasAttribute("base_Association") &&
-    					stereotypeElem.getAttribute("base_Association").equals(elemID)) {
-    				return stereotypeElem;
-    			}
-    		}
-    	}
-		
-		return null;
+		return stereotype;
 	}
 
 	@Override
@@ -260,7 +249,7 @@ public class MapperEA implements Mapper {
     	}
     	
     	// Tagged Values
-    	Element stereotypeElem = getElementByBaseRef(elem);
+    	Element stereotypeElem = stereotypes.get(elem.getAttributeNS(XMINS, "id"));
     	if (stereotypeElem != null) {
     		NamedNodeMap tagList = stereotypeElem.getAttributes();
     		if (tagList.getLength() > 1) {

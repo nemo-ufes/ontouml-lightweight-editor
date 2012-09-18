@@ -22,7 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import org.eclipse.emf.common.util.BasicEList.UnmodifiableEList;
@@ -41,11 +40,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
 
 import RefOntoUML.Association;
+import RefOntoUML.Classifier;
 import RefOntoUML.Comment;
 import RefOntoUML.Dependency;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Model;
+import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
@@ -59,8 +60,7 @@ public class RefOntoUMLUtil {
 	 * as a element selection to the XMI2RefOntoUML transformation.
 	 * @param model the RefOntoUML Model
 	 * @return the CheckboxTree with the Model elements to be selected.
-	 */
-	
+	 */	
 	public static CheckboxTree createSelectionTreeFromModel(RefOntoUML.Model model) {
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(model));
 		CheckboxTree modelTree = new CheckboxTree(rootNode);
@@ -74,8 +74,7 @@ public class RefOntoUMLUtil {
 	 * It runs the Elements from the model creating the tree nodes.
 	 * @param parent the direct parent node of the element that will be created.
 	 * @param refElement the RefOntoUML Element for which a node will be created.
-	 */
-	
+	 */	
 	private static void drawTree(DefaultMutableTreeNode parent, RefOntoUML.Element refElement) {
 		if (refElement instanceof RefOntoUML.Model) {
 			EList<EObject> contents = refElement.eContents();
@@ -106,12 +105,8 @@ public class RefOntoUMLUtil {
 	 * @param mapper the bridge that in responsible for reading the
 	 * tool specific XMI and returning the information that is needed.
 	 * @return the CheckboxTree with the elements organized by diagram.
-	 */
-	
+	 */	
 	public static CheckboxTree createSelectionTreeByDiagram(Mapper mapper, Model model) {
-		if (mapper instanceof MapperEA) { //TODO
-			return null;
-		}
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(model));
 		CheckboxTree modelTree = new CheckboxTree(rootNode);
 		modelTree.setCellRenderer(new OntoUMLTreeCellRenderer());
@@ -148,94 +143,115 @@ public class RefOntoUMLUtil {
 	/**
 	 * Removes the selected elements from the Model and from the Tree.
 	 * @param modelTree the tree containing the Model that will be filtered.
-	 */
-
-//	public static void filter(CheckboxTree modelTree) {
-//    	TreePath[] treepathList = modelTree.getCheckingPaths();
-//    	for (TreePath treepath : treepathList) {
-//    		DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)treepath.getLastPathComponent();
-//    		ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) childNode.getUserObject();
-//    		
-//    		RefOntoUML.Element oldElem = chckNode.getElement();
-//    		
-//    		if (oldElem != null) {
-//    			RefOntoUMLUtil.delete(oldElem, true);
-//    		}
-//    	}
-//    	
-//    	removeExcludedNodes((DefaultMutableTreeNode) modelTree.getModel().getRoot(), modelTree);
-//    }
-	
+	 */	
 	public static void Filter(CheckboxTree modelTree) {
-		List<DefaultMutableTreeNode> checkedNodes = new ArrayList<DefaultMutableTreeNode>();
+		List<EObject> uncheckedNodes = new ArrayList<EObject>();
+		List<EObject> checkedNodes = new ArrayList<EObject>();
     	TreePath[] treepathList = modelTree.getCheckingPaths();
     	
     	for (TreePath treepath : treepathList) {
-    		checkedNodes.add((DefaultMutableTreeNode)treepath.getLastPathComponent());
+    		checkedNodes.add(((ChckBoxTreeNodeElem)((DefaultMutableTreeNode)
+    				treepath.getLastPathComponent()).getUserObject()).getElement());
     	}
     	
-    	crossTreeDeleting((DefaultMutableTreeNode) modelTree.getModel().getRoot(), modelTree, checkedNodes);
+    	DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelTree.getModel().getRoot();
+    	ChckBoxTreeNodeElem rootObject = (ChckBoxTreeNodeElem) root.getUserObject();
+
+    	filterModel(rootObject.getElement(), checkedNodes, uncheckedNodes);
+    	
+    	deleteAll(uncheckedNodes, rootObject.getElement());
     }
 	
-	public static void crossTreeDeleting(DefaultMutableTreeNode treeNode, 
-			CheckboxTree modelTree, List<DefaultMutableTreeNode> checkedNodes) {
+	public static void filterModel(EObject element, List<EObject> checkedElements,
+			List<EObject> uncheckedElements) {
     	
-    	if (treeNode == null) {
+    	if (element == null || !(element instanceof Classifier || 
+    			element instanceof Association || element instanceof Package)) {
     		return;
     	}
     	
-    	if (!treeNode.isLeaf()) {
-    		crossTreeDeleting((DefaultMutableTreeNode)treeNode.getFirstChild(), modelTree, checkedNodes);
-    	}
+    	Object[] elemArray = element.eContents().toArray();
+		for (Object obj : elemArray) {
+			filterModel((EObject)obj, checkedElements, uncheckedElements);
+		}
     	
-    	crossTreeDeleting(treeNode.getNextSibling(), modelTree, checkedNodes);
-    	
-		if (!checkedNodes.contains(treeNode)) {
-			ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) treeNode.getUserObject();
-			RefOntoUML.Element oldElem = chckNode.getElement();
-			
-			if (oldElem != null) {
-				RefOntoUMLUtil.delete(oldElem, true);
-				if (oldElem.eResource() != null) {
-					System.out.println("Debbug: Não excluiu e era pra excluir.");
+    	if (!checkedElements.contains(element)) {
+    		if (element instanceof Package) {
+    			if (((Package) element).getPackagedElement().size() == 0) {
+    				uncheckedElements.add(element);
+    				EcoreUtil.remove(element);
+    			}
+    		} else {
+    			uncheckedElements.add(element);
+    			EcoreUtil.remove(element);
+    		}
+    	}	
+    }
+	
+	public static void deleteAll(Collection<EObject> eObjList, EObject rootEObject) {
+		for (EObject eObject : eObjList) {
+			Set<EObject> eObjects = new HashSet<EObject>();
+			Set<EObject> crossResourceEObjects = new HashSet<EObject>();
+			eObjects.add(eObject);
+			for (@SuppressWarnings("unchecked") TreeIterator<InternalEObject> j = 
+				(TreeIterator<InternalEObject>)(TreeIterator<?>)eObject.eAllContents();  j.hasNext(); ) {
+				
+				InternalEObject childEObject = j.next();
+				if (childEObject.eDirectResource() != null) {
+					System.out.println("só por desencargo");
+					crossResourceEObjects.add(childEObject);
+					
+				} else {
+					eObjects.add(childEObject);
 				}
 			}
 			
-			DefaultTreeModel treeModel = (DefaultTreeModel)modelTree.getModel();
-			treeModel.removeNodeFromParent(treeNode);
-		}
-    	
-    }
-	
-	/**
-	 * Auxiliary function that removes from the tree the nodes that contain
-	 * elements that were removed from the Model.
-	 * @param treeNode
-	 * @param modelTree
-	 */
-    
-    public static void removeExcludedNodes(DefaultMutableTreeNode treeNode, CheckboxTree modelTree) {
-    	
-    	if (treeNode == null) {
-    		return;
-    	}
-    	
-    	if (!treeNode.isLeaf()) {
-    		removeExcludedNodes((DefaultMutableTreeNode)treeNode.getFirstChild(), modelTree);
-    	}
-    	
-    	removeExcludedNodes(treeNode.getNextSibling(), modelTree);
-    	
-		ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) treeNode.getUserObject();
-		
-		RefOntoUML.Element oldElem = chckNode.getElement();
-		if ((oldElem != null && oldElem.eResource() == null) ||
-				(oldElem == null && treeNode.getChildCount() == 0)) {
-			DefaultTreeModel treeModel = (DefaultTreeModel)modelTree.getModel();
-			treeModel.removeNodeFromParent(treeNode);
-		}
-    	
-    }
+			Map<EObject, Collection<EStructuralFeature.Setting>> usages;
+			usages = EcoreUtil.UsageCrossReferencer.findAll(eObjects, rootEObject);
+
+			for (Map.Entry<EObject, Collection<EStructuralFeature.Setting>> entry : usages.entrySet()) {
+				EObject deletedEObject = entry.getKey();
+				Collection<EStructuralFeature.Setting> settings = entry.getValue();
+				for (EStructuralFeature.Setting setting : settings) {
+					if (!eObjects.contains(setting.getEObject()) && 
+							setting.getEStructuralFeature().isChangeable()) {
+						
+						if (setting.getEObject() instanceof Generalization ||
+								setting.getEObject() instanceof Dependency) {
+							delete(setting.getEObject());
+		    		  
+						} else if (setting.getEObject() instanceof GeneralizationSet) {
+							EcoreUtil.remove(setting, deletedEObject);
+							if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
+								EcoreUtil.remove(setting.getEObject());
+							}
+		    		  
+						} else if (setting.getEObject() instanceof Property) {
+							if (setting.getEObject().eContainer() instanceof Association) {
+								delete(setting.getEObject().eContainer(), true);
+							} else {
+								delete(setting.getEObject(), true);
+							}
+		    		  
+						} else if (setting.getEObject() instanceof Comment) {
+							EcoreUtil.remove(setting, deletedEObject);
+							if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
+								delete (setting.getEObject());
+							}
+		    		  
+						} else if (!(setting instanceof UnmodifiableEList)) {
+							EcoreUtil.remove(setting, deletedEObject);
+						}
+					}
+				}
+	      }
+
+	      for (EObject crossResourceEObject : crossResourceEObjects)
+	      {
+	    	  EcoreUtil.remove(crossResourceEObject.eContainer(), crossResourceEObject.eContainmentFeature(), crossResourceEObject);
+	      }
+	    }
+	}
     
     static class OntoUMLTreeCellRenderer implements CheckboxTreeCellRenderer {
 
@@ -300,8 +316,7 @@ public class RefOntoUMLUtil {
     /**
      * Validates a model according to the RefOntoUML OCL rules.
      * @param model the model that will be validated.
-     */
-    
+     */    
     public void validate(RefOntoUML.Model model) {
 		Diagnostician validator = Diagnostician.INSTANCE;
 		
@@ -391,7 +406,7 @@ public class RefOntoUMLUtil {
 	    EcoreUtil.remove(eObject);
 	  }
 
-	  /**
+    /**
 	   * Deletes the object from its {@link EObject#eResource containing} resource 
 	   * and/or its {@link EObject#eContainer containing} object
 	   * as well as from any other feature that references it 
@@ -401,7 +416,7 @@ public class RefOntoUMLUtil {
 	   * @param eObject the object to delete.
 	   * @param recursive whether references to contained children should also be removed.
 	   * @since 2.4
-	   */
+	   */	  
 	  public static void delete(EObject eObject, boolean recursive)
 	  {
 	    if (recursive)
@@ -417,6 +432,7 @@ public class RefOntoUMLUtil {
 	        InternalEObject childEObject = j.next();
 	        if (childEObject.eDirectResource() != null)
 	        {
+	        	System.out.println("só por desencargo");
 	          crossResourceEObjects.add(childEObject);
 	        }
 	        else
