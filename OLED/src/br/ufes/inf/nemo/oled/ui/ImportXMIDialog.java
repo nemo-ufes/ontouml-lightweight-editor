@@ -125,7 +125,6 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 					diagrTreeScrollPane.setViewportView(diagrChckTree);
 				}
 				treeTabbedPane.addTab("Model", modelTreeScrollPane);
-				if (diagrChckTree != null) //TODO
 				treeTabbedPane.addTab("Diagram", diagrTreeScrollPane);
 			}
 			{
@@ -183,14 +182,12 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
         	
         	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(transfManager.mapper, model);
 
-        	if (diagramTree != null) { //TODO
         	diagramTree.getCheckingModel().setCheckingMode(
         			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
         	diagramTree.addTreeSelectionListener(this);
-        	this.diagrChckTree = diagramTree;
-        	}
         	
         	this.modelChckTree = modelTree;
+        	this.diagrChckTree = diagramTree;
         	
             this.transfManager = transfManager;
             this.model = model;
@@ -220,7 +217,6 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				break;
 			}
 			modelChckTree.clearChecking();
-			if (diagrChckTree != null) //TODO
 			diagrChckTree.clearChecking();
 		
 			UmlProject project = new UmlProject(this.model);

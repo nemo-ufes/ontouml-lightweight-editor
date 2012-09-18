@@ -5,13 +5,13 @@ import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
 
@@ -47,6 +47,7 @@ public class MapperFactory {
 		xmiFile = file;
 		
 		try {
+			
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         	DocumentBuilder docBuilder;
 		
@@ -57,16 +58,22 @@ public class MapperFactory {
 			
 			return identifyExporter(doc);
 			
+		} catch (SAXParseException err) {
+            Mediator.errorLog += "** Parsing error" + ", line "
+                    + err.getLineNumber() + ", uri " + err.getSystemId();
+            Mediator.errorLog += " " + err.getMessage() + "\n";
+ 
 		} catch (SAXException e) {
 			Exception x = e.getException();
-			Mediator.errorLog += ((x == null) ? e : x).getMessage();
+			Mediator.errorLog += ((x == null) ? e : x).getMessage() + "\n";
 			
 		} catch (IOException e) {
 			Mediator.errorLog += "File " + file.getAbsolutePath() + 
-			" does not exist or could not be oppened.";
+			" does not exist or could not be oppened." + "\n";
 			
-		} catch (ParserConfigurationException e) {
-			Mediator.errorLog += e.getMessage();
+		} catch (Exception e) {
+			Mediator.errorLog += e.getMessage() + "\n";
+		
 		}
 		
 		return null;
@@ -74,7 +81,7 @@ public class MapperFactory {
 	
 	//Read the DOM Document and look for the program or the exporter
 	//of the XMI
-	private Mapper identifyExporter(Document doc) {
+	private Mapper identifyExporter(Document doc) throws Exception {
 		
 		Element root = doc.getDocumentElement();
 		NamedNodeMap nnm = root.getAttributes();
@@ -103,7 +110,8 @@ public class MapperFactory {
 				return new MapperEA(xmiFile.getAbsolutePath());
 			}
 		}
-		return null;
+
+		throw new Exception("Unsuported Exporter or XMI version");
 		
 	}
 }

@@ -39,18 +39,18 @@ public class Mediator {
 	// Instância da classe que cria os objetos RefOntoUML
     private RefOntoCreator refcreator = new RefOntoCreator();
     // Auxiliary string to stack the path of the element with error
-    private String errorPath;
-    public static String errorLog;
-    public static String warningLog;
+    private String errorPath = "";
+    public static String errorLog = "";
+    public static String warningLog = "";
     
-    public void initialize() {
+    public void initialize() throws Exception {
         //Call the factory to read the Document and decide which Mapper
         //to create, depending on the program/exporter of the XMI
     	MapperFactory mapperFactory = new MapperFactory();
     	mapper = mapperFactory.createMapper(new File(READ_FILE_ADDRESS));
     	if (mapper == null) {
-    		errorLog += "Exporter not identified or not supported.\n";
-    		return;
+    		Exception e = new Exception(errorLog);
+        	throw e;
     	}
     	
     	//Resets the element map
@@ -75,11 +75,6 @@ public class Mediator {
     public RefOntoUML.Model parse() throws Exception {
     	
     	initialize();
-    	if (mapper == null) {
-    		errorLog += "Problem identifiyng exporter.\n";
-    		Exception e = new Exception(errorLog);
-        	throw e;
-    	}
     	
     	//Initializes the model
         refcreator.intialize(SAVE_FILE_ADDRESS);
