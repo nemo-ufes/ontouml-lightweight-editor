@@ -412,6 +412,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		            inst.setLocationRelativeTo(frame);
 		        	inst.setVisible(true);
 		            
+		        	frame.getToolManager().setSelectedIndex(1);
+		        	
 				} catch (Exception ex) {
 //					JOptionPane.showMessageDialog(this, ex.getMessage(),
 //							getResourceString("dialog.importecore.title"),
