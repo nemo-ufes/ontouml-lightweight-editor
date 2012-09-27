@@ -22,6 +22,7 @@
 	<classpathentry kind="lib" path="/XMI2RefOntoUML/lib/lablib-checkboxtree-3.3.jar"/>
 	<classpathentry kind="lib" path="lib/alloy4.2-rc.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-all-1.6.3.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Alloy"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.alloy"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2Alloy"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
