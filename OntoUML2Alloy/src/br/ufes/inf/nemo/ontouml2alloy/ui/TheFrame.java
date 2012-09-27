@@ -106,7 +106,9 @@ public class TheFrame extends JFrame {
 			}
 		});		
 				
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Image.class.getResource("/resources/window.png")));
+		String iconPath = "/resources/br/ufes/inf/nemo/ontouml2alloy/window.png";
+		
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Image.class.getResource(iconPath)));
 	}
 		
 	/**
