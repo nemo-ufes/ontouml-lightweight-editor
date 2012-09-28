@@ -170,7 +170,7 @@ public class TheFrame extends JFrame {
 			fpanel.alsPath = fpanel.txtAlloy.getText();
 		}
 				
-		OntoUML2Alloy.Transformation(fpanel.refmodel, fpanel.alsPath, relatorsRule, weakSuppl);
+		OntoUML2Alloy.Transformation(fpanel.refmodel, fpanel.alsPath, relatorsRule, weakSuppl,true);
 
 		} catch (Exception e) {
 			

@@ -16,9 +16,7 @@ import edu.mit.csail.sdg.alloy4whole.SimpleGUI_custom;
 /**
  *	This class is used to call the transformation of OntoUML to Alloy. 
  *  
- *  @author Tiago Salles
  *  @author John Guerson    
- *  @author Luca Thom
  */
 
 public class OntoUML2Alloy {
@@ -41,23 +39,21 @@ public class OntoUML2Alloy {
 	/**
 	 * 
 	 * This method performs the transformation of the RefOntoUML Model 
-	 * into an Alloy specification (.als). The Alloy specification is generated 
-	 * to the destination directory path, as well as Alloy libraries used by this transformation.
-	 * The Alloy Analyzer is opened at the end of the transformation by default.  
-	 * To open the Analyzer standalone, we need to copy the Analyzer into the destination 
-	 * directory as well.
+	 * into an Alloy specification (.als). The Alloy libraries used 
+	 * by this transformation are generated into the same folder of the Alloy file, as well as
+	 * the standard Alloy theme file. In order to open the Analyzer standalone, we need to copy the Analyzer 
+	 * into the folder as well.
 	 * 
 	 * @param refmodel : The root of .refontouml model (RefOntoUML.Model).
-	 * @param destinationPath: The destination directory absolute path.
-	 * @param RelatorRuleFlag: True if the relators constraints should be transformed. 
+	 * @param alloyPath: The absolute path of alloy model.
+	 * @param RelatorRuleFlag: True if the relator constraint should be transformed. 
 	 * @param WeakSupplementationRuleFlag:  True if the weak supplementation rule should be transformed.
 	 * 
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean Transformation (Model refmodel, String alloyPath, boolean RelatorRuleFlag, boolean WeakSupplementationRuleFlag) throws Exception 
+	public static boolean Transformation (Model refmodel, String alloyPath, boolean RelatorRuleFlag, boolean WeakSupplementationRuleFlag, boolean openAnalyzer) throws Exception 
 	{
-
 		alsPath = alloyPath;
 		
 		File f = new File(alsPath);
@@ -96,12 +92,15 @@ public class OntoUML2Alloy {
 		out.close();
 		
 		// Here the transformation begins...
-		Reader.init(refmodel);
+		Transformation.start(refmodel);
 		
 		// open he Alloy Analyzer
-		argsAnalyzer[0] = alsPath;
-		argsAnalyzer[1] = dirPath + File.separator + "standart_theme.thm"	;	
-		SimpleGUI_custom.main(argsAnalyzer);
+		if (openAnalyzer)
+		{
+			argsAnalyzer[0] = alsPath;
+			argsAnalyzer[1] = dirPath + File.separator + "standart_theme.thm"	;	
+			SimpleGUI_custom.main(argsAnalyzer);
+		}
 
 		return true;
 	}	

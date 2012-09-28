@@ -22,10 +22,10 @@ public class NamesMapper {
 	/** Name of the RefOntoUML Model root. */
 	public String refmodelname;
 	
-	/** HashMap < PackageableElement modelElement, String modifiedName >. */
+	/** Associate the Packageable Elements of the model with their modified names. */
 	public HashMap<PackageableElement,String> elementsMap;
 	
-	/** HashMap < Property AssocEnd, String modifiedName > */
+	/** Associate the Propeties of the model (AssociationEnds) with their modified names. */
 	public HashMap<Property,String> assocEndMap;
 	
 	/** Performs modification on model name. */
