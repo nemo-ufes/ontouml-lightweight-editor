@@ -6,13 +6,12 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Export-Package: br.ufes.inf.nemo.ontouml.alloy,
- br.ufes.inf.nemo.ontouml.alloy.impl,
- br.ufes.inf.nemo.ontouml.alloy.util
+Export-Package: br.ufes.inf.nemo.alloy,
+ br.ufes.inf.nemo.alloy.impl,
+ br.ufes.inf.nemo.alloy.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

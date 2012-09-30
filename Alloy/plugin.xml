@@ -13,14 +13,14 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
             uri="http://alloy/1.0"
-            class="br.ufes.inf.nemo.ontouml.alloy.AlloyPackage"
+            class="br.ufes.inf.nemo.alloy.AlloyPackage"
             genModel="model/Alloy.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.extension_parser">
       <parser
             type="alloy"
-            class="br.ufes.inf.nemo.ontouml.alloy.util.AlloyResourceFactoryImpl"/>
+            class="br.ufes.inf.nemo.alloy.util.AlloyResourceFactoryImpl"/>
    </extension>
 
 </plugin>
