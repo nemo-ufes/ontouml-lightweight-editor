@@ -508,7 +508,7 @@ public class Transformer {
 		// isAbstract from generalization Sets (Disjoint and Complete)
 		if ( OntoUMLUtil.isAbstractFromGeneralizationSets(refmapper,c)) return null;
 		
-		if (! OntoUMLUtil.isSourceOfMeronymicRelation(refmapper,c)) return null;
+		if (! OntoUMLUtil.isSourceOfMediationRelation(refmapper,c)) return null;
 		
 		// get all 'c' mediations
 		ArrayList<String> associationNames = new ArrayList<String>();		
