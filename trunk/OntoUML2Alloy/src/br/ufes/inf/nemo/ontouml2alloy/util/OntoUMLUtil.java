@@ -25,9 +25,6 @@ public class OntoUMLUtil {
 
 	/**
 	 * Verify if the Classifier 'c' is the source of some Meronymic Relation.
-	 *  
-	 * @param c: RefOntoUML.Classifier
-	 * @return
 	 */
 	public static boolean isSourceOfMeronymicRelation (NamesMapper refmapper, Classifier c)
 	{
@@ -54,11 +51,29 @@ public class OntoUMLUtil {
 	/* =========================================================================================================*/
 	
 	/**
+	 * Verify if the Classifier 'c' is the source of some Mediation Relation.
+	 */
+	public static boolean isSourceOfMediationRelation (NamesMapper refmapper, Relator c)
+	{
+		for(PackageableElement pe : refmapper.elementsMap.keySet())
+		{
+			if (pe instanceof Mediation) 
+			{
+				Mediation assoc = (Mediation)pe;				
+				
+				Property p = assoc.getMemberEnd().get(0);
+				
+				if (p.getType().getName().equals(c.getName())) return true;				
+			}
+		}
+		return false;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
 	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete
 	 * What means that this Classifier is an Abstract Classifier.
-	 * 
-	 * @param c: Classifier c 
-	 * @return
 	 */
 	public static boolean isAbstractFromGeneralizationSets(NamesMapper refmapper, Classifier c) 
 	{
@@ -86,9 +101,6 @@ public class OntoUMLUtil {
 	
 	/**
 	 * Get all Mediations relations that have as a source the Relator 'r' or one of its Super Types. 
-	 * 
-	 * @param list: Mediation Relations Names
-	 * @param r: RefOntoUML.Relator
 	 */
 	public static void getAllMediations(NamesMapper refmapper, ArrayList<String> list, Relator r)
 	{
@@ -120,9 +132,6 @@ public class OntoUMLUtil {
 	/**
 	 * Get all Meronymic relations that have as a Whole the RigidSortalClass 'c' or one of its Super Types
 	 * RigidSortalClass : Kind, Collective, Quantity, SubKind.
-	 *   
-	 * @param list: Meronymic Relations Names
-	 * @param c: RefOntoUML.RigidSortalClass
 	 * 
 	 */	
 	public static void getAllMeronymics(NamesMapper refmapper, ArrayList<String> list, RigidSortalClass c)
@@ -154,9 +163,6 @@ public class OntoUMLUtil {
 	
 	/**
 	 * Get all Generalizations that the Classifier 'c' is the father.
-	 * 
-	 * @param generalizations: ArrayList RefOntoUML.Generalization
-	 * @param c: RefOntoUML.Classifier
 	 */
 	public static void getAllGeneralizations(NamesMapper refmapper, ArrayList<Generalization> generalizations, Classifier c)
 	{		
