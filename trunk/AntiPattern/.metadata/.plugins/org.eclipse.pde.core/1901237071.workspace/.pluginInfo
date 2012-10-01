@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map>
+	<bundle bundleID="911" localization="plugin" name="OntoUML Reference Metamodel" project="br.ufes.inf.nemo.ontouml.refontouml" provider="Roberto Carraretto">
+		<library name="br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
+	</bundle>
+</map>

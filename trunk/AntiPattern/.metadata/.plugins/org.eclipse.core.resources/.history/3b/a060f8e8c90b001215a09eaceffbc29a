@@ -1,0 +1,121 @@
+package br.ufes.inf.nemo.ontouml.antipattern;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import RefOntoUML.Mediation;
+import RefOntoUML.Relator;
+import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
+import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.ontouml.antipattern.util.Combinacao;
+
+//Relation Between Overlapping Subtypes
+public class RBOS {
+	
+	public static String OCLQuery = "Association.allInstances()->select(x:Association | x.ownedEnd.type->isUnique(name) and  x.ownedEnd.type->forAll(y1,y2:Type | y1.oclAsType(Classifier).allParents()->intersection(y2.oclAsType(Classifier).allParents())->intersection(Kind.allInstances().oclAsType(Class)->union(Collective.allInstances().oclAsType(Class))->union(Quantity.allInstances().oclAsType(Class)))->size()>0 ) and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(y1,y2:Generalization | y1<>y2 and Classifier.allInstances()->select(z1:Classifier | z1.allParents()->includes(y1.specific))->including(y1.specific)->includes(x.ownedEnd.type->at(1)) and Classifier.allInstances()->select(z2:Classifier | z2.allParents()->includes(y2.specific))->including(y2.specific)->includes(x.ownedEnd.type->at(2))) )->forAll(chosen_gs:GeneralizationSet | chosen_gs.isDisjoint=false))";
+	public static String OCLQueryRelator = "Relator.allInstances()->select(r:Relator | (r.mediations()->size()>2 or (r.mediations()->size()=2 and (r.mediations()->at(1).mediatedEnd().lower>1 or r.mediations()->at(2).mediatedEnd().lower>1) ) )	and r.mediated()->exists(t1,t2:Classifier |	t1<>t2	and	t1.allParents()->intersection(t2.allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet |  gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(t1) or g1.specific=t1) and (g2.specific.allChildren()->includes(t2) or g2.specific=t2)))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false)))";
+	
+	public static String ExclusiveRolesAlloyPredicate(Relator relator, NamesMapper mapper){
+		String predicate, rules, predicateName, relatorName;
+		ArrayList<Object> saida;
+		ArrayList<Object> mediations = new ArrayList<>();
+		Combinacao comb1;
+		
+		relatorName = mapper.elementsMap.get(relator);
+		
+		for (Mediation med : relator.mediations()) {
+	        	mediations.add(mapper.elementsMap.get(med));
+	    }
+		
+		comb1 = new Combinacao(mediations, 2);
+		
+		predicateName = "exclusiveRole_"+relatorName;
+		rules = "some w:World | some x:w."+relatorName+" | ";
+		
+		// Combinacoes de mediations agrupadas 2 a 2
+        while (comb1.hasNext()) {
+            saida = comb1.next();
+            rules+="# (x.(w."+saida.get(0)+") & x.(w."+saida.get(1)+")) = 0";
+            
+            if(comb1.hasNext())
+            	rules+=" and ";
+        }
+		
+		predicate = AlloyConstructor.AlloyParagraph(predicateName, rules, AlloyConstructor.PRED);
+		predicate += AlloyConstructor.RunCheckCommand(predicateName, "10", "1", AlloyConstructor.PRED)+"\n";
+		
+		return predicate;
+	}
+	
+	public static String NonExclusiveRolesAlloyPredicate(Relator relator, NamesMapper mapper){
+		String predicate, rules, predicateName, relatorName;
+				
+		relatorName = mapper.elementsMap.get(relator);
+		predicateName = "nonExclusiveRole_"+relatorName;
+		
+		rules = "some w:World | some x:w."+relatorName+" | # (";
+		
+		for (int count=0; count < relator.mediations().size(); count++){
+			 rules+="x.(w."+mapper.elementsMap.get(relator.mediations().get(count))+")"; 
+			 
+			 if (count < relator.mediations().size()-1)
+				 rules += " & ";
+	    }
+			
+		rules+=") > 0";
+		predicate = AlloyConstructor.AlloyParagraph(predicateName, rules, AlloyConstructor.PRED);
+		predicate += AlloyConstructor.RunCheckCommand(predicateName, "10", "1", AlloyConstructor.PRED)+"\n";
+		
+		return predicate;
+	}
+	
+	public static String SpecificNonExclusiveRolesAlloyPredicate(Relator relator, NamesMapper mapper){
+		String predicates="", rules, predicateName, relatorName;
+		ArrayList<Object>  mediations = new ArrayList<>(), saida = new ArrayList<>(), saida2, aux;
+		Combinacao comb1, comb2;
+		
+		relatorName = mapper.elementsMap.get(relator);
+		
+		for (Mediation med : relator.mediations()) {
+	        	mediations.add(mapper.elementsMap.get(med));
+	    }
+		
+		comb1 = new Combinacao(mediations, 2);
+		
+		// Combinacoes de mediations agrupadas 2 a 2
+        while (comb1.hasNext()) {
+            saida.add(comb1.next());
+        }
+        
+        comb2 = new Combinacao(saida,0);
+        
+        while (comb2.hasNext()) {
+            saida2=(comb2.next());
+            
+            predicateName = "specificNonExclusiveRole_"+relatorName;
+            rules = "some w:World | some x:w."+relatorName+" | "; 
+
+            for (int n=0;n<saida2.size();n++){
+            	rules+="# (";
+            	for (int n2=0; n2<((ArrayList<Object>)(saida2).get(n)).size();n2++) {
+	            	
+            		rules+="x.(w."+((ArrayList<Object>) saida2.get(n)).get(n)+")";
+	            	
+	            	if (n2==((ArrayList<Object>)(saida2).get(n)).size()-1)
+	            		rules+=") = 0";
+            	}
+            	
+            	if(n<saida2.size()-1)
+            		rules += " and ";
+            
+            	predicates += AlloyConstructor.AlloyParagraph(predicateName, rules, AlloyConstructor.PRED);
+        		predicates += AlloyConstructor.RunCheckCommand(predicateName, "10", "1", AlloyConstructor.PRED)+"\n";
+            }
+            
+            
+        }
+        
+        return predicates;
+	}
+	
+}
