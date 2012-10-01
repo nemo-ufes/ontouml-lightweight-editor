@@ -1,5 +1,25 @@
 package br.ufes.inf.nemo.ontouml2alloy.ui;
 
+/**
+ * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
+ *
+ * This file is part of OntoUML2Alloy (OntoUML to Alloy Transformation).
+ *
+ * OntoUML2Alloy is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * OntoUML2Alloy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OntoUML2Alloy; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
@@ -16,7 +36,9 @@ import javax.swing.SwingConstants;
 /**
  * This panel was created using the Windows Builder in Eclipse.
  * 
- * @author John Guerson
+ * 	@author John Guerson 
+ *  @author Tiago Sales 
+ *  @author Lucas Thom
  *
  */
 
@@ -89,16 +111,16 @@ public class FilesPanel extends JPanel {
 		
 		GroupLayout gl_FilesPanel = new GroupLayout(this);
 		gl_FilesPanel.setHorizontalGroup(
-			gl_FilesPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_FilesPanel.createSequentialGroup()
+			gl_FilesPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_FilesPanel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblDescription, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
 					.addGap(35))
 				.addGroup(gl_FilesPanel.createSequentialGroup()
 					.addGap(21)
-					.addGroup(gl_FilesPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblModelAlreadyLoaded, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_FilesPanel.createSequentialGroup()
+					.addGroup(gl_FilesPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblModelAlreadyLoaded, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+						.addGroup(gl_FilesPanel.createSequentialGroup()
 							.addGroup(gl_FilesPanel.createParallelGroup(Alignment.TRAILING)
 								.addComponent(lblAlloy)
 								.addComponent(lblOntouml))
@@ -110,13 +132,13 @@ public class FilesPanel extends JPanel {
 							.addGroup(gl_FilesPanel.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(btnBrowseAlloy, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(btnBrowseOntoUML, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-						.addComponent(lblStandalone, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
-						.addComponent(lblProvideTheOntouml, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
+						.addComponent(lblStandalone, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+						.addComponent(lblProvideTheOntouml, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
 					.addGap(24))
-				.addGroup(gl_FilesPanel.createSequentialGroup()
-					.addContainerGap(167, Short.MAX_VALUE)
+				.addGroup(Alignment.TRAILING, gl_FilesPanel.createSequentialGroup()
+					.addContainerGap(179, Short.MAX_VALUE)
 					.addComponent(btnExecute, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
-					.addGap(164))
+					.addGap(152))
 		);
 		gl_FilesPanel.setVerticalGroup(
 			gl_FilesPanel.createParallelGroup(Alignment.TRAILING)
@@ -127,7 +149,7 @@ public class FilesPanel extends JPanel {
 					.addComponent(lblStandalone)
 					.addGap(18)
 					.addComponent(lblDescription)
-					.addPreferredGap(ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
 					.addGroup(gl_FilesPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnBrowseOntoUML)
 						.addComponent(txtOntoUML, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)

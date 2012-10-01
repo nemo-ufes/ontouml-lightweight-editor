@@ -1,5 +1,25 @@
 package br.ufes.inf.nemo.ontouml2alloy.transformer;
 
+/**
+ * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
+ *
+ * This file is part of OntoUML2Alloy (OntoUML to Alloy Transformation).
+ *
+ * OntoUML2Alloy is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * OntoUML2Alloy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OntoUML2Alloy; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
 import java.util.ArrayList;
 
 import RefOntoUML.AggregationKind;
@@ -27,6 +47,7 @@ import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.subQuantityOf;
+
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyModule;
 import br.ufes.inf.nemo.alloy.ArrowOperation;
@@ -43,7 +64,6 @@ import br.ufes.inf.nemo.alloy.ModuleImportation;
 import br.ufes.inf.nemo.alloy.Multiplicity;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
-import br.ufes.inf.nemo.alloy.Quantificator;
 import br.ufes.inf.nemo.alloy.SignatureDeclaration;
 import br.ufes.inf.nemo.alloy.UnaryOperation;
 import br.ufes.inf.nemo.alloy.UnaryOperator;
@@ -58,6 +78,10 @@ import br.ufes.inf.nemo.ontouml2alloy.util.OntoUMLUtil;
  *	First, is created an alloy module skeleton as a base for transformation.
  *  Then, every element of the model is transformed. (i.e. Classifiers, Generalizations, 
  *  GenearlizationSets and Associations). 
+ *  
+ * 	@author John Guerson 
+ *  @author Tiago Sales 
+ *  @author Lucas Thom
  */
 
 public class Transformer {
@@ -150,8 +174,6 @@ public class Transformer {
 	
 	/**
 	 * Constructor().
-	 * 
-	 * @param mapper
 	 */
 	public Transformer (NamesMapper mapper)
 	{
@@ -259,9 +281,7 @@ public class Transformer {
 	/* =========================================================================================================*/
 
 	/**
-	 *	Creates a skeleton Alloy Module.
-	 *   
-	 * @return
+	 *	Creates a skeleton Alloy Module as Initial Additions.
 	 */
 	@SuppressWarnings("unchecked")
 	public void initialAditions() 
@@ -343,6 +363,9 @@ public class Transformer {
 		
 	/* =========================================================================================================*/
 	
+	/**
+	 * Creates final additions to alloy code.
+	 */
 	public void finalAdditions()
 	{		
 		if(objectNamesList.size() > 0) 
@@ -400,8 +423,7 @@ public class Transformer {
 	/**
 	 * 	Creates " all_rigid_classes" Fact Declaration in Alloy.
 	 *  
-	 *  fact all_rigid_classes { ... }
-			
+	 *  fact all_rigid_classes { ... }			
 	 */
 	@SuppressWarnings("unchecked")
 	private void createAllRigidClassesFacts() 
@@ -444,8 +466,6 @@ public class Transformer {
 	
 	/**
 	 * Transforms OntoUML Classifiers into Alloy
-	 * 
-	 * @param c: RefOntoUML.Classifier
 	 */
 	@SuppressWarnings("unchecked")
 	public void transformClassifier(Classifier c) 
@@ -497,8 +517,6 @@ public class Transformer {
 	 * Relator Constraint.
 	 * 
 	 * all w: World | all x: w.<RelatorName> | # ( x.(w.<associationName1>)+ x.(w.<associationName2>) + ...) >= 2
-	 * 
-	 * @param c: RefOntoUML.Relator
 	 */
 	@SuppressWarnings("unchecked")
 	private FactDeclaration createRelatorConstraintFact(Relator c) 
@@ -538,8 +556,6 @@ public class Transformer {
 	 * Weak Supplementation.
   	 *
   	 * all w: World | all x: w.<RigidSortalName> | # ( x.(w.meronymicName1)+ x.(w.meronymicName2) + ...) >= 2
-  	 *
-	 * @param c: RefOntoUML.RigidSortalClass (Functional Complexes)
 	 */
 	@SuppressWarnings("unchecked")
 	private FactDeclaration createWeakSupplementation(Classifier c) 
@@ -574,39 +590,15 @@ public class Transformer {
 	/* =========================================================================================================*/
 
 	/**
-	 * Transforms OntoUML Generalizations into Alloy.
-	 * 
-	 * The child Classifier is a subset of the father Classifier. 
-	 * 
-	 * "child in father"
-	 * 
-	 * @param g: RefOntoUML.Generalization
-	 */
-	@SuppressWarnings("unchecked")
-	public void transformGeneralizations(Generalization g) 
-	{
-		CompareOperation co = AlloyUtil.createCompareOperation( factory, 
-				refmapper.elementsMap.get(g.getSpecific()), 
-				CompareOperator.SUBSET_LITERAL, 
-				refmapper.elementsMap.get(g.getGeneral())
-		);
-		world.getBlock().getExpression().add(co);
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
 	 * Create Abstract Clause Rule.
 	 * 
 	 * BinaryOperation with union operator(+) to represent the completeness
 	 * between father(Classifier) and childs.
 	 * 
 	 * "father = child1 + child2 + child3 + ..." 
-	 * 
-	 * @param c: RefOntoUML.Classifier
 	 */
 	@SuppressWarnings("unchecked")
-	public void createAbstractClauseRule(Classifier c) 
+	private void createAbstractClauseRule(Classifier c) 
 	{
 		// get all generalizations
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
@@ -660,13 +652,36 @@ public class Transformer {
 			world.getBlock().getExpression().add(co);
 		}
 	}
-			
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Transforms OntoUML Generalizations into Alloy.
+	 * 
+	 * The child Classifier is a subset of the father Classifier. 
+	 * 
+	 * "child in father"
+	 */
+	@SuppressWarnings("unchecked")
+	public void transformGeneralizations(Generalization g) 
+	{
+		CompareOperation co = AlloyUtil.createCompareOperation( factory, 
+				refmapper.elementsMap.get(g.getSpecific()), 
+				CompareOperator.SUBSET_LITERAL, 
+				refmapper.elementsMap.get(g.getGeneral())
+		);
+		world.getBlock().getExpression().add(co);
+	}
+				
 	/* =========================================================================================================*/
 	
 	/**
 	 * Transforms OntoUML Generalizations Sets into Alloy.
 	 * 
-	 * @param gs: RefOntoUML.GeneralizationSet
+	 * Father = Child1 + Child2 + Child3 + ...
+	 * 
+	 * disj[Child1, Child2, Child3,...]
+	 * 	
 	 */
 	@SuppressWarnings("unchecked")
 	public void transformGeneralizationSets(GeneralizationSet gs) 
@@ -730,114 +745,18 @@ public class Transformer {
 	/* =========================================================================================================*/
 	
 	/**
-	 * Transforms OntoUML Derivation Associations into Alloy.
-	 * 
-	 * @param d: RefOntoUML.Derivation
-	 */
-	@SuppressWarnings("unchecked")
-	public void transformDerivations(Derivation d)
-	{
-		PredicateInvocation pI = factory.createPredicateInvocation();
-		pI.setPredicate("derivation");
-		
-		// material association
-		VariableReference material = factory.createVariableReference();
-		MaterialAssociation ma = null;		
-		for(Property prop : d.getMemberEnd())
-		{
-			if(prop.getType() instanceof MaterialAssociation)
-			{
-				material.setVariable(refmapper.elementsMap.get(prop.getType()));
-				ma = (MaterialAssociation)prop.getType();
-			}
-		}		
-				
-		// source and target of material association
-		String class1 = "",class2 = "";		
-		int cont = 1;		
-		for(Property prop : ma.getMemberEnd())
-		{
-			if(prop.getType() instanceof Class)
-			{
-				if(cont==1)
-				{
-					class1 = prop.getType().getName();
-					cont++;
-				}
-				else
-					class2 = prop.getType().getName();
-			}
-		}
-
-		// relator class
-		Relator derRelator = (Relator) (d.relator() instanceof Relator ? d.relator() : d.material());
-		
-		// mediations associations
-		VariableReference mediation1 = factory.createVariableReference();
-		VariableReference mediation2 = factory.createVariableReference();		
-		cont = 1;
-		for (PackageableElement pe : refmapper.elementsMap.keySet())
-		{
-			if(pe instanceof Mediation)
-			{
-				int cont2 = 1;
-				Relator relator = null;
-				Class mediated = null;
-				
-				for(Property prop : ((Mediation)pe).getMemberEnd())
-				{	
-					if(prop.getType() instanceof Relator)
-					{
-						relator = (Relator) prop.getType();
-						if(cont2 > 1)
-							mediated = (Relator) prop.getType();
-						cont2++;
-					}
-					else if(prop.getType() instanceof Class)
-					{
-						mediated = (Class) prop.getType();
-					}
-					
-				}
-				cont2 = 1;
-				if(relator.getName() == derRelator.getName() && (mediated.getName() == class1 || mediated.getName() == class2))
-				{
-					if(cont == 1)
-					{
-						mediation1.setVariable(refmapper.elementsMap.get(((Mediation)pe)));
-						cont++;
-					}
-					else
-					{
-						mediation2.setVariable(refmapper.elementsMap.get(((Mediation)pe)));
-						break;
-					}
-				}
-			}
-		}
-		pI.getParameter().add(material);
-		pI.getParameter().add(mediation1);
-		pI.getParameter().add(mediation2);
-		derivations.getBlock().getExpression().add(pI);
-	}
-	
-	/* ============================================================================*/
-	
-	/**
-	 * Transforms OntoUML Associations into Alloy.
-	 * 
-	 * @param ass: RefOntoUML.Association
+	 * Transforms OntoUML Associations into Alloy. 
 	 */
 	@SuppressWarnings("unchecked")
 	public void transformAssociations(Association ass) 
 	{
-		Variable var = factory.createVariable();
-		VariableReference source = factory.createVariableReference();
-		VariableReference target = factory.createVariableReference();
-		VariableReference association = factory.createVariableReference();
+		Variable var = factory.createVariable();		
 		Declaration decl = factory.createDeclaration();
 		UnaryOperation uOp = factory.createUnaryOperation();
 		ArrowOperation aOp = factory.createArrowOperation();
+		VariableReference source = factory.createVariableReference();
+		VariableReference target = factory.createVariableReference();
+		VariableReference association = factory.createVariableReference();
 		
 		uOp.setOperator(UnaryOperator.SET_LITERAL);
 		var.setName(refmapper.elementsMap.get(ass)); 
@@ -845,45 +764,82 @@ public class Transformer {
 		
 		association.setVariable(refmapper.elementsMap.get(ass));	
 		
-		decl.setExpression(uOp);		
+		decl.setExpression(uOp);
 		
-		// Characterization
 		if(ass instanceof Characterization)
-			prepareCharacterizationAssociation(ass, source, target, aOp);
-		
-		// Mediation
+
+			// Characterization
+			transformCharacterizationAssociation(ass, source, target, aOp);
+				
 		else if(ass instanceof Mediation)
-			prepareMediationAssociation(ass, source, target, aOp);
+
+			// Mediation
+			transformMediationAssociation(ass, source, target, aOp);
 		
-		// Meronymic
 		else if(ass instanceof Meronymic)
-			prepareMeronymicAssociation((Meronymic)ass, source, target, aOp);
+			
+			// Meronymic
+			transformMeronymicAssociation((Meronymic)ass, source, target, aOp);
 		
-		// Association
 		else if(!(ass instanceof Derivation))
-			prepareAssociation(ass, source, target, aOp);
+			
+			transformOtherAssociation(ass, source, target, aOp);
 		
-		// Association Ends
 		if(ass.getMemberEnd().get(0).getName() != null || ass.getMemberEnd().get(1).getName() != null)
+			
+			// Association Ends
 			transformAssociationsEnds(ass,source,target);		
 		
 		uOp.setExpression(aOp);
 		world.getRelation().add(decl);
 	}
-	
-	/* ============================================================================*/
+
+	/* =========================================================================================================*/
 	
 	/**
-	 * 
+	 * Transforms OntoUML Association Ends into Alloy Module.
+	 */
+	private void transformAssociationsEnds(Association ass, VariableReference source, VariableReference target) 
+	{
+		if(ass.getMemberEnd().get(0).getName() != null)
+			
+		if(ass.getMemberEnd().get(0).getName().compareTo("") != 0)	
+		{
+			String functionName = refmapper.assocEndMap.get(ass.getMemberEnd().get(0));			
+			String returnName = refmapper.elementsMap.get(ass.getMemberEnd().get(0).getType());			
+			String paramName = refmapper.elementsMap.get(ass.getMemberEnd().get(1).getType());			
+			String assocName = refmapper.elementsMap.get(ass);
+			
+			FunctionDeclaration fun = 
+					AlloyUtil.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);
+												
+			module.getParagraph().add(fun);			
+		}
+		
+		if(ass.getMemberEnd().get(1).getName() != null)
+			
+		if(ass.getMemberEnd().get(1).getName().compareTo("") != 0)
+		{
+			String functionName = refmapper.assocEndMap.get(ass.getMemberEnd().get(1));			
+			String returnName = refmapper.elementsMap.get(ass.getMemberEnd().get(1).getType());			
+			String paramName = refmapper.elementsMap.get(ass.getMemberEnd().get(0).getType());			
+			String assocName = refmapper.elementsMap.get(ass);
+			
+			FunctionDeclaration fun = 
+					AlloyUtil.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);
+												
+			module.getParagraph().add(fun);			
+		}	
+	}
+	
+	/* =========================================================================================================*/
+	
+	/** 
 	 * Transforms Meronymic Association into Alloy.
 	 * 
-	 * @param ass: RefOntoUML.Meronymic ass
-	 * @param source: VariableReference source
-	 * @param target: VariableReference target
-	 * @param aOp: ArrowOperation aOp
 	 */
 	@SuppressWarnings("unchecked")
-	private void prepareMeronymicAssociation(Meronymic ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
+	private void transformMeronymicAssociation(Meronymic ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
 	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
 		
@@ -905,76 +861,59 @@ public class Transformer {
 		
 		if(ass instanceof subQuantityOf)
 		{
-			PredicateInvocation pI = factory.createPredicateInvocation();
-			pI.setPredicate("immutable_target");
-			VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
-			param1.setVariable(source.getVariable());
-			param2.setVariable(refmapper.elementsMap.get(ass));
-			pI.getParameter().add(param1);
-			pI.getParameter().add(param2);
+			PredicateInvocation pI = 
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), refmapper.elementsMap.get(ass));
+			
 			association_properties.getBlock().getExpression().add(pI);
+			
 			if(ass.sourceEnd().isIsReadOnly() || ass.isIsInseparable() || ass.isIsImmutableWhole())
 			{
-				pI = factory.createPredicateInvocation();
-				pI.setPredicate("immutable_source");
-				param1 = factory.createVariableReference();
-				param2 = factory.createVariableReference();
-				param1.setVariable(target.getVariable());
-				param2.setVariable(refmapper.elementsMap.get(ass));
-				pI.getParameter().add(param1);
-				pI.getParameter().add(param2);
-				association_properties.getBlock().getExpression().add(pI);
+				PredicateInvocation pIS = 
+						AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), refmapper.elementsMap.get(ass));
+				
+				association_properties.getBlock().getExpression().add(pIS);
 			}
 		}
 		else
 		{
 			if(ass.targetEnd().isIsReadOnly() || ass.isIsEssential() || ass.isIsImmutablePart())
 			{
-				PredicateInvocation pI = factory.createPredicateInvocation();
-				pI.setPredicate("immutable_target");
-				VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
-				param1.setVariable(source.getVariable());
-				param2.setVariable(refmapper.elementsMap.get(ass));
-				pI.getParameter().add(param1);
-				pI.getParameter().add(param2);
+				PredicateInvocation pI = 
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), refmapper.elementsMap.get(ass));
+				
 				association_properties.getBlock().getExpression().add(pI);
 			}
+			
 			if(ass.sourceEnd().isIsReadOnly() || ass.isIsInseparable() || ass.isIsImmutableWhole())
 			{
-				PredicateInvocation pI = factory.createPredicateInvocation();
-				pI.setPredicate("immutable_source");
-				VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
-				param1.setVariable(target.getVariable());
-				param2.setVariable(refmapper.elementsMap.get(ass));
-				pI.getParameter().add(param1);
-				pI.getParameter().add(param2);
+				PredicateInvocation pI = 
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), refmapper.elementsMap.get(ass));
+				
 				association_properties.getBlock().getExpression().add(pI);
 			}
 		}
 					
 		aOp.setLeftExpression(source);
 		aOp.setRightExpression(target);
+		
+		// Set Cardinalities
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
 	
 	/**
-	 * 
 	 * Transforms Mediation Association into Alloy.
 	 * 
-	 * @param ass: RefOntoUML.Meronymic ass
-	 * @param source: VariableReference source
-	 * @param target: VariableReference target
-	 * @param aOp: ArrowOperation aOp
 	 */
 	@SuppressWarnings("unchecked")
-	private void prepareMediationAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
+	private void transformMediationAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
 	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
 		int cont = 1;
 		boolean isSourceReadOnly = false;
-		for(Property c : ass.getOwnedEnd())
+		
+		for(Property c : ass.getMemberEnd())
 		{
 			if(c.getType() instanceof Class)
 			{
@@ -994,50 +933,40 @@ public class Transformer {
 				}
 			}
 		}
-		PredicateInvocation pI = factory.createPredicateInvocation();
-		pI.setPredicate("immutable_target");
-		VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
-		param1.setVariable(source.getVariable());
-		param2.setVariable(refmapper.elementsMap.get(ass));
-		pI.getParameter().add(param1);
-		pI.getParameter().add(param2);
+		
+		PredicateInvocation pI = 
+				AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), refmapper.elementsMap.get(ass));
+		
 		association_properties.getBlock().getExpression().add(pI);
 		
 		if(isSourceReadOnly)
 		{
-			pI = factory.createPredicateInvocation();
-			pI.setPredicate("immutable_source");
-			param1 = factory.createVariableReference();
-			param2 = factory.createVariableReference();
-			param1.setVariable(target.getVariable());
-			param2.setVariable(refmapper.elementsMap.get(ass));
-			pI.getParameter().add(param1);
-			pI.getParameter().add(param2);
-			association_properties.getBlock().getExpression().add(pI);
+			PredicateInvocation pIS = 
+				AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), refmapper.elementsMap.get(ass));
+			
+			association_properties.getBlock().getExpression().add(pIS);
 		}
 		
 		aOp.setLeftExpression(source);
 		aOp.setRightExpression(target);
+		
+		// Set Cardinalities
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
 	
-	/**
-	 * 
+	/** 
 	 * Transforms Characterization Association into Alloy.
 	 * 
- 	 * @param ass: RefOntoUML.Meronymic ass
-	 * @param source: VariableReference source
-	 * @param target: VariableReference target
-	 * @param aOp: ArrowOperation aOp
 	 */
 	@SuppressWarnings("unchecked")
-	private void prepareCharacterizationAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
+	private void transformCharacterizationAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
 	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
 		int cont = 1;
 		boolean isSourceReadOnly = false;
+		
 		for(Property c : ass.getOwnedEnd())
 		{
 			if(c.getType() instanceof Class)
@@ -1059,51 +988,41 @@ public class Transformer {
 			}
 		}
 		
-		PredicateInvocation pI = factory.createPredicateInvocation();
-		pI.setPredicate("immutable_target");
-		VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
-		param1.setVariable(source.getVariable());
-		param2.setVariable(refmapper.elementsMap.get(ass));
-		pI.getParameter().add(param1);
-		pI.getParameter().add(param2);
+		PredicateInvocation pI = 
+				AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), refmapper.elementsMap.get(ass));
+		
 		association_properties.getBlock().getExpression().add(pI);
 		
 		if(isSourceReadOnly)
 		{
-			pI = factory.createPredicateInvocation();
-			pI.setPredicate("immutable_source");
-			param1 = factory.createVariableReference();
-			param2 = factory.createVariableReference();
-			param1.setVariable(target.getVariable());
-			param2.setVariable(refmapper.elementsMap.get(ass));
-			pI.getParameter().add(param1);
-			pI.getParameter().add(param2);
-			association_properties.getBlock().getExpression().add(pI);
+			PredicateInvocation pIS = 
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), refmapper.elementsMap.get(ass));
+			
+			association_properties.getBlock().getExpression().add(pIS);
 		}
+		
 		aOp.setLeftExpression(source);
 		aOp.setRightExpression(target);
+		
+		// Set Cardinalities
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
 	
-	/**
-	 * 
-	 * Transforms Association that are not Derivations into Alloy.
-	 * 
- 	 * @param ass: RefOntoUML.Meronymic ass
-	 * @param source: VariableReference source
-	 * @param target: VariableReference target
-	 * @param aOp: ArrowOperation aOp
+	/** 
+	 * Transforms Formal, Material and DataTypeRelationships into Alloy.
 	 */
 	@SuppressWarnings("unchecked")
-	private void prepareAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
+	private void transformOtherAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
 	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
 		int cont = 1;
 		boolean isTargetReadOnly = false, isSourceReadOnly = false;
+		
 		if(ass instanceof Derivation)
 			return;
+		
 		for(Property c : ass.getOwnedEnd())
 		{
 			if(c.getType() instanceof Classifier)
@@ -1128,436 +1047,194 @@ public class Transformer {
 		
 		if(isTargetReadOnly)
 		{
-			PredicateInvocation pI = factory.createPredicateInvocation();
-			pI.setPredicate("immutable_target");
-			VariableReference param1 = factory.createVariableReference(),param2 = factory.createVariableReference();
-			param1.setVariable(source.getVariable());
-			param2.setVariable(refmapper.elementsMap.get(ass));
-			pI.getParameter().add(param1);
-			pI.getParameter().add(param2);
-			association_properties.getBlock().getExpression().add(pI);
+			PredicateInvocation pI = 
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), refmapper.elementsMap.get(ass));
+			
+			association_properties.getBlock().getExpression().add(pI);			
 		}
+		
 		if(isSourceReadOnly)
 		{
-			PredicateInvocation pI = factory.createPredicateInvocation();
-			pI.setPredicate("immutable_source");
-			VariableReference param1 = factory.createVariableReference(), param2 = factory.createVariableReference();
-			param1.setVariable(target.getVariable());
-			param2.setVariable(refmapper.elementsMap.get(ass));
-			pI.getParameter().add(param1);
-			pI.getParameter().add(param2);
-			association_properties.getBlock().getExpression().add(pI);
+			PredicateInvocation pIS = 
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), refmapper.elementsMap.get(ass));
+			
+			association_properties.getBlock().getExpression().add(pIS);			
 		}
 		
 		aOp.setLeftExpression(source);
 		aOp.setRightExpression(target);
+		
+		// Set Cardinalities
 		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
 	}
 	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
 	
 	/**
+	 * Set cardinalities of the Arrow Operations according to OntoUML Associations.
 	 * 
-	 * Set cardinalities of Alloy Arrow Operation...
-	 * 
-	 * @param aOp: Arrow Operation
-	 * @param lowerSource
-	 * @param upperSource
-	 * @param lowerTarget
-	 * @param upperTarget
-	 * @param source : VariableReference source
-	 * @param target : VariableReference target
-	 * @param ass: RefOntoUML.Association
 	 */
+	@SuppressWarnings("unchecked")
 	private void setCardinalities(ArrowOperation aOp, int lowerSource, int upperSource, int lowerTarget, int upperTarget, 
 	VariableReference source, VariableReference target, Association ass) 
 	{
 		// Source Cardinality
-		if(lowerSource == 1 && upperSource == 1)
-			aOp.setLeftMultiplicity(Multiplicity.ONE_LITERAL);
-		else
-			if(lowerSource == 0 && upperSource == 1)
-				aOp.setLeftMultiplicity(Multiplicity.LONE_LITERAL);
+		if(lowerSource == 1 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.ONE_LITERAL);		
+		else 
+		{
+			if(lowerSource == 0 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.LONE_LITERAL);
 			else
-				if(lowerSource >= 1)
-					aOp.setLeftMultiplicity(Multiplicity.SOME_LITERAL);
-				else
-					aOp.setLeftMultiplicity(Multiplicity.SET_LITERAL);
+			{
+				if(lowerSource >= 1) aOp.setLeftMultiplicity(Multiplicity.SOME_LITERAL);
+				else aOp.setLeftMultiplicity(Multiplicity.SET_LITERAL);
+			}
+		}
 		
 		// Target Cardinality
-		if(lowerTarget == 1 && upperTarget == 1)
-			aOp.setRightMultiplicity(Multiplicity.ONE_LITERAL);
+		if(lowerTarget == 1 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.ONE_LITERAL);
 		else
-			if(lowerTarget == 0 && upperTarget == 1)
-				aOp.setRightMultiplicity(Multiplicity.LONE_LITERAL);
+		{
+			if(lowerTarget == 0 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.LONE_LITERAL);
 			else
-				if(lowerTarget >= 1)
-					aOp.setRightMultiplicity(Multiplicity.SOME_LITERAL);
-				else
-					aOp.setRightMultiplicity(Multiplicity.SET_LITERAL);
+			{
+				if(lowerTarget >= 1) aOp.setRightMultiplicity(Multiplicity.SOME_LITERAL);
+				else aOp.setRightMultiplicity(Multiplicity.SET_LITERAL);
+			}
+		}
 		
-		// Cardinalities that are different of 1, 0 or *
-		if(lowerSource > 1)
+		// Cardinalities that are different of 1, 0 or *		
+		
+		if (lowerSource > 1)
 		{
-			lowerSourceCardinalities(lowerSource, target, ass);
+			QuantificationExpression qe =
+					
+				AlloyUtil.createQuantificationExpression(factory, target.getVariable(), refmapper.elementsMap.get(ass), 
+				CompareOperator.GREATER_EQUAL_LITERAL, lowerSource);
+			
+			world.getBlock().getExpression().add(qe);
 		}
-		if (upperSource > 1 && upperSource != -1)
+		
+		if (upperSource > 1 && upperSource != -1) 
 		{
-			upperSourceCardinalities(upperSource, target, ass);
+			QuantificationExpression qe =
+					
+				AlloyUtil.createQuantificationExpression(factory, target.getVariable(), refmapper.elementsMap.get(ass), 
+				CompareOperator.LESS_EQUAL_LITERAL, upperSource);
+				
+			world.getBlock().getExpression().add(qe);
 		}
-		if(lowerTarget > 1)
+		
+		if (lowerTarget > 1) 
 		{
-			lowerTargetCardinalities(lowerTarget, source, ass);
+			QuantificationExpression qe =
+					
+				AlloyUtil.createQuantificationExpression(factory, source.getVariable(), refmapper.elementsMap.get(ass), 
+				CompareOperator.GREATER_EQUAL_LITERAL, lowerTarget);
+				
+			world.getBlock().getExpression().add(qe);
 		}
-		if (upperTarget > 1 && upperTarget != -1)
+		
+		if (upperTarget > 1 && upperTarget != -1) 
 		{
-			upperTargetCardinalities(upperTarget, source, ass);
+			QuantificationExpression qe =
+					
+				AlloyUtil.createQuantificationExpression(factory, source.getVariable(), refmapper.elementsMap.get(ass), 
+				CompareOperator.LESS_EQUAL_LITERAL, upperTarget);
+				
+			world.getBlock().getExpression().add(qe);		
 		}
-	}
+	}	
 	
-	/* ============================================================================*/
+	/* =========================================================================================================*/
 	
 	/**
+	 * Transforms OntoUML Derivation Associations into Alloy.
 	 * 
-	 * @param upperSource
-	 * @param target
-	 * @param ass
 	 */
 	@SuppressWarnings("unchecked")
-	private void upperTargetCardinalities(int upperSource, VariableReference target, Association ass) 
-	{		
-		QuantificationExpression qe = factory.createQuantificationExpression();
-		qe.setQuantificator(Quantificator.ALL_LITERAL);
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		var.setName("x");
-		var.setDeclaration(decl);
-		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(target.getVariable());
-		decl.setExpression(vr);
-		qe.getDeclaration().add(decl);
+	public void transformDerivations(Derivation d)
+	{
+		PredicateInvocation pI = factory.createPredicateInvocation();
+		pI.setPredicate("derivation");
 		
-		BinaryOperation boJoin = factory.createBinaryOperation();
-		CompareOperation co = factory.createCompareOperation();
-		UnaryOperation uOp = factory.createUnaryOperation();
-		
-		boJoin.setOperator(BinaryOperator.JOIN_LITERAL);
-		vr = factory.createVariableReference();
-		vr.setVariable(Transformation.mapper.elementsMap.get(ass));
-		boJoin.setRightExpression(vr);
-		vr = factory.createVariableReference();
-		vr.setVariable(var.getName());
-		boJoin.setLeftExpression(vr);
-		
-		co.setOperator(CompareOperator.LESS_EQUAL_LITERAL);
-		co.setLeftExpression(uOp);
-		vr = factory.createVariableReference();
-		vr.setVariable(String.valueOf(upperSource));
-		co.setRightExpression(vr);
-		
-		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);
-		uOp.setExpression(boJoin);
-		
-		qe.setExpression(co);
-		
-		world.getBlock().getExpression().add(qe);
-	}
-	
-	/* ============================================================================*/
-	
-	@SuppressWarnings("unchecked")
-	private void lowerTargetCardinalities(int lowerSource, VariableReference target, Association ass) 
-	{		
-		QuantificationExpression qe = factory.createQuantificationExpression();
-		qe.setQuantificator(Quantificator.ALL_LITERAL);
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		var.setName("x");
-		var.setDeclaration(decl);
-		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(target.getVariable());
-		decl.setExpression(vr);
-		qe.getDeclaration().add(decl);
-		
-		BinaryOperation boJoin = factory.createBinaryOperation();
-		CompareOperation co = factory.createCompareOperation();
-		UnaryOperation uOp = factory.createUnaryOperation();
-		
-		boJoin.setOperator(BinaryOperator.JOIN_LITERAL);
-		vr = factory.createVariableReference();
-		vr.setVariable(Transformation.mapper.elementsMap.get(ass));
-		boJoin.setRightExpression(vr);
-		vr = factory.createVariableReference();
-		vr.setVariable(var.getName());
-		boJoin.setLeftExpression(vr);
-		
-		co.setOperator(CompareOperator.GREATER_EQUAL_LITERAL);
-		co.setLeftExpression(uOp);
-		vr = factory.createVariableReference();
-		vr.setVariable(String.valueOf(lowerSource));
-		co.setRightExpression(vr);
-		
-		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);
-		uOp.setExpression(boJoin);
-		
-		qe.setExpression(co);
-		
-		world.getBlock().getExpression().add(qe);
-	}
-	
-	/* ============================================================================*/
-	
-	@SuppressWarnings("unchecked")
-	private void upperSourceCardinalities(int upperSource, VariableReference target, Association ass) 
-	{		
-		QuantificationExpression qe = factory.createQuantificationExpression();
-		qe.setQuantificator(Quantificator.ALL_LITERAL);
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		var.setName("x");
-		var.setDeclaration(decl);
-		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(target.getVariable());
-		decl.setExpression(vr);
-		qe.getDeclaration().add(decl);
-		
-		BinaryOperation boJoin = factory.createBinaryOperation();
-		CompareOperation co = factory.createCompareOperation();
-		UnaryOperation uOp = factory.createUnaryOperation();
-		
-		boJoin.setOperator(BinaryOperator.JOIN_LITERAL);
-		vr = factory.createVariableReference();
-		vr.setVariable(Transformation.mapper.elementsMap.get(ass));
-		boJoin.setLeftExpression(vr);
-		vr = factory.createVariableReference();
-		vr.setVariable(var.getName());
-		boJoin.setRightExpression(vr);
-		
-		co.setOperator(CompareOperator.LESS_EQUAL_LITERAL);
-		co.setLeftExpression(uOp);
-		vr = factory.createVariableReference();
-		vr.setVariable(String.valueOf(upperSource));
-		co.setRightExpression(vr);
-		
-		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);
-		uOp.setExpression(boJoin);
-		
-		qe.setExpression(co);
-		
-		world.getBlock().getExpression().add(qe);
-	}
-
-	/* ============================================================================*/
-	
-	@SuppressWarnings("unchecked")
-	private void lowerSourceCardinalities(int lowerSource, VariableReference target, Association ass) 
-	{		
-		QuantificationExpression qe = factory.createQuantificationExpression();
-		qe.setQuantificator(Quantificator.ALL_LITERAL);
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		var.setName("x");
-		var.setDeclaration(decl);
-		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(target.getVariable());
-		decl.setExpression(vr);
-		qe.getDeclaration().add(decl);
-		
-		BinaryOperation boJoin = factory.createBinaryOperation();
-		CompareOperation co = factory.createCompareOperation();
-		UnaryOperation uOp = factory.createUnaryOperation();
-		
-		boJoin.setOperator(BinaryOperator.JOIN_LITERAL);
-		vr = factory.createVariableReference();
-		vr.setVariable(Transformation.mapper.elementsMap.get(ass));
-		boJoin.setLeftExpression(vr);
-		vr = factory.createVariableReference();
-		vr.setVariable(var.getName());
-		boJoin.setRightExpression(vr);
-		
-		co.setOperator(CompareOperator.GREATER_EQUAL_LITERAL);
-		co.setLeftExpression(uOp);
-		vr = factory.createVariableReference();
-		vr.setVariable(String.valueOf(lowerSource));
-		co.setRightExpression(vr);
-		
-		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);
-		uOp.setExpression(boJoin);
-		
-		qe.setExpression(co);
-		
-		world.getBlock().getExpression().add(qe);
-	}
-
-	
-
-	/**
-	 * Transforms OntoUML Association Ends into Alloy.
-	 * 
-	 * @param ass: RefOntoUML.Association
-	 * @param source: VariableReference source
-	 * @param target: VariableRefernce target 
-	 */
-	@SuppressWarnings("unchecked")
-	public void transformAssociationsEnds(Association ass, VariableReference source, VariableReference target) 
-	{		
-		if(ass.getMemberEnd().get(0).getName() != null)
-		if(ass.getMemberEnd().get(0).getName().compareTo("") != 0)	
+		// Material
+		VariableReference material = factory.createVariableReference();
+		MaterialAssociation ma = null;		
+		for(Property prop : d.getMemberEnd())
 		{
-			FunctionDeclaration fun = factory.createFunctionDeclaration();
-			fun.setName(refmapper.assocEndMap.get(ass.getOwnedEnd().get(0)));
-			UnaryOperation uOp = factory.createUnaryOperation();
-			uOp.setOperator(UnaryOperator.SET_LITERAL);
-			
-			BinaryOperation bOp = factory.createBinaryOperation();
-			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-			
-			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(refmapper.elementsMap.get(ass.getOwnedEnd().get(0).getType()));
-			VariableReference vr2 = factory.createVariableReference();
-			vr2.setVariable(world.getName());
-			bOp.setLeftExpression(vr2);
-			bOp.setRightExpression(vr);
-			
-			uOp.setExpression(bOp);
-			fun.setType(uOp);
-			
-			Declaration decl = factory.createDeclaration();
-			Variable var = factory.createVariable();
-			var.setName("x");
-			var.setDeclaration(decl);
-			
-			bOp = factory.createBinaryOperation();
-			vr = factory.createVariableReference();
-			vr2 = factory.createVariableReference();
-			vr.setVariable(world.getName());
-			vr2.setVariable(refmapper.elementsMap.get(ass.getOwnedEnd().get(1).getType()));
-			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-			bOp.setLeftExpression(vr);
-			bOp.setRightExpression(vr2);
-			decl.setExpression(bOp);
-			
-			fun.getParameter().add(decl);
-			
-			decl = factory.createDeclaration();
-			var = factory.createVariable();
-			var.setName("w");
-			var.setDeclaration(decl);
-			
-			vr = factory.createVariableReference();
-			vr.setVariable(world.getName());
-			decl.setExpression(vr);
-			
-			fun.getParameter().add(decl);
-						
-			bOp = factory.createBinaryOperation();
-			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-			vr = factory.createVariableReference();
-			vr.setVariable("w");
-			vr2 = factory.createVariableReference();
-			vr2.setVariable(refmapper.elementsMap.get(ass));
-			bOp.setLeftExpression(vr);
-			bOp.setRightExpression(vr2);
-			
-			vr = factory.createVariableReference();
-			vr.setVariable("x");
-			
-			BinaryOperation bOp2 = factory.createBinaryOperation();
-			bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
-			if(refmapper.elementsMap.get(ass.getMemberEnd().get(0).getType()) == target.getVariable())
+			if(prop.getType() instanceof MaterialAssociation)
 			{
-				bOp2.setLeftExpression(vr);
-				bOp2.setRightExpression(bOp);
+				material.setVariable(refmapper.elementsMap.get(prop.getType()));
+				ma = (MaterialAssociation)prop.getType();
 			}
-			else
+		}		
+				
+		// Material Source and Material Target
+		String class1 = "",class2 = "";		
+		int cont = 1;		
+		for(Property prop : ma.getMemberEnd())
+		{
+			if(prop.getType() instanceof Class)
 			{
-				bOp2.setLeftExpression(bOp);
-				bOp2.setRightExpression(vr);
+				if(cont==1) {
+					class1 = prop.getType().getName();
+					cont++;
+				} else {
+					class2 = prop.getType().getName();
+				}
 			}
-			
-			fun.setExpression(bOp2);
-			
-			module.getParagraph().add(fun);			
 		}
-		
-		if(ass.getMemberEnd().get(1).getName() != null)
-		if(ass.getMemberEnd().get(1).getName().compareTo("") != 0)
-		{
-			FunctionDeclaration fun = factory.createFunctionDeclaration();
-			fun.setName(refmapper.assocEndMap.get(ass.getOwnedEnd().get(1)));
-			UnaryOperation uOp = factory.createUnaryOperation();
-			uOp.setOperator(UnaryOperator.SET_LITERAL);
-			
-			BinaryOperation bOp = factory.createBinaryOperation();
-			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-			
-			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(refmapper.elementsMap.get(ass.getOwnedEnd().get(1).getType()));
-			VariableReference vr2 = factory.createVariableReference();
-			vr2.setVariable(world.getName());
-			bOp.setLeftExpression(vr2);
-			bOp.setRightExpression(vr);
-			
-			uOp.setExpression(bOp);
-			fun.setType(uOp);
-			
-			Declaration decl = factory.createDeclaration();
-			Variable var = factory.createVariable();
-			var.setName("x");
-			var.setDeclaration(decl);
-			
-			bOp = factory.createBinaryOperation();
-			vr = factory.createVariableReference();
-			vr2 = factory.createVariableReference();
-			vr.setVariable(world.getName());
-			vr2.setVariable(refmapper.elementsMap.get(ass.getOwnedEnd().get(0).getType()));
-			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-			bOp.setLeftExpression(vr);
-			bOp.setRightExpression(vr2);
-			decl.setExpression(bOp);
-			
-			fun.getParameter().add(decl);
-			
-			decl = factory.createDeclaration();
-			var = factory.createVariable();
-			var.setName("w");
-			var.setDeclaration(decl);
-			
-			vr = factory.createVariableReference();
-			vr.setVariable(world.getName());
-			decl.setExpression(vr);
-			
-			fun.getParameter().add(decl);			
-			
-			bOp = factory.createBinaryOperation();
-			bOp.setOperator(BinaryOperator.JOIN_LITERAL);
-			vr = factory.createVariableReference();
-			vr.setVariable("w");
-			vr2 = factory.createVariableReference();
-			vr2.setVariable(refmapper.elementsMap.get(ass));
-			bOp.setLeftExpression(vr);
-			bOp.setRightExpression(vr2);
-			
-			vr = factory.createVariableReference();
-			vr.setVariable("x");
-			
-			BinaryOperation bOp2 = factory.createBinaryOperation();
-			bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
-			if(refmapper.elementsMap.get(ass.getMemberEnd().get(1).getType()) == target.getVariable())
-			{
-				bOp2.setLeftExpression(vr);
-				bOp2.setRightExpression(bOp);
-			}
-			else
-			{
-				bOp2.setLeftExpression(bOp);
-				bOp2.setRightExpression(vr);
-			}
-			
-			fun.setExpression(bOp2);
-			
-			module.getParagraph().add(fun);			
-		}	
-	}
 
+		// Relator
+		Relator derRelator = (Relator) (d.relator() instanceof Relator ? d.relator() : d.material());
+		
+		// Mediations
+		VariableReference mediation1 = factory.createVariableReference();
+		VariableReference mediation2 = factory.createVariableReference();		
+		cont = 1;
+		for (PackageableElement pe : refmapper.elementsMap.keySet())
+		{
+			if(pe instanceof Mediation)
+			{
+				int cont2 = 1;
+				Relator relator = null;
+				Class mediated = null;
+				
+				for(Property prop : ((Mediation)pe).getMemberEnd())
+				{	
+					if(prop.getType() instanceof Relator) 
+					{
+						relator = (Relator) prop.getType();
+						if(cont2 > 1) mediated = (Relator) prop.getType();
+						cont2++;
+					}
+					else if(prop.getType() instanceof Class)
+					{
+						mediated = (Class) prop.getType();
+					}
+					
+				}
+				
+				cont2 = 1;
+				if(relator.getName() == derRelator.getName() && (mediated.getName() == class1 || mediated.getName() == class2))
+				{
+					if(cont == 1)
+					{
+						mediation1.setVariable(refmapper.elementsMap.get(((Mediation)pe)));
+						cont++;
+					}
+					else
+					{
+						mediation2.setVariable(refmapper.elementsMap.get(((Mediation)pe)));
+						break;
+					}
+				}
+			}
+		}
+		pI.getParameter().add(material);
+		pI.getParameter().add(mediation1);
+		pI.getParameter().add(mediation2);
+		
+		derivations.getBlock().getExpression().add(pI);
+	}			
 }

@@ -1,5 +1,25 @@
 package br.ufes.inf.nemo.ontouml2alloy.util;
 
+/**
+ * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
+ *
+ * This file is part of OntoUML2Alloy (OntoUML to Alloy Transformation).
+ *
+ * OntoUML2Alloy is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * OntoUML2Alloy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OntoUML2Alloy; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
 import java.util.ArrayList;
 
 import br.ufes.inf.nemo.alloy.AlloyFactory;
@@ -30,7 +50,9 @@ import br.ufes.inf.nemo.alloy.VariableReference;
 /**
  * This class is used to provide useful methods of manipulating the Alloy API.
  * 
- * @author John Guerson
+ * 	@author John Guerson 
+ *  @author Tiago Sales 
+ *  @author Lucas Thom
  *
  */
 public class AlloyUtil {
@@ -39,8 +61,6 @@ public class AlloyUtil {
 	 * Creates Alloy Signature World: 
 	 * 
 	 * abstract sig World {}
-	 * 
-	 * @return
 	 */
 	public static SignatureDeclaration createSigWorld(AlloyFactory factory)
 	{
@@ -59,9 +79,6 @@ public class AlloyUtil {
 	 * 
 	 * open world_structure[World]
 	 * open ontological_propertis[World]
-	 * 
-	 * @param modulename: module name
-	 * @return
 	 */
 	public static ModuleImportation createModuleImport (AlloyFactory factory, String modulename, String path, SignatureDeclaration param)
 	{
@@ -81,8 +98,6 @@ public class AlloyUtil {
 	 * sig Property{} 
 	 * sig DataType{}
 	 * ...
-	 * 
-	 * @param module
 	 */
 	public static void createDefaultSignatures(AlloyFactory factory, AlloyModule module, ArrayList<String> defaultSignatures) 
 	{		
@@ -100,8 +115,6 @@ public class AlloyUtil {
 	 * Creates exists Variable with Declaration.
 	 * 
 	 * exists: some Object + Property + DataType +...,
-	 * 
-	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public static Variable createExistsVariableDeclaration(AlloyFactory factory, ArrayList<String> defaultSignatures)
@@ -124,8 +137,6 @@ public class AlloyUtil {
 	 * Creates an union expression between default signatures.
 	 * 
 	 * Object + Property + DataType +...
-	 *  
-	 * @return
 	 */	 
 	public static Expression createDefaultSignaturesUnionExpression(AlloyFactory factory, ArrayList<String> defaultSignatures) 
 	{
@@ -176,9 +187,6 @@ public class AlloyUtil {
 	 * Creates the "linear_existence" predicate invocation.
 	 * 
 	 * all_elements_exists[Object+Property+DataType,exists]
-	 * 
-	 * @param exists
-	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createAllElementsExistsInvocation(AlloyFactory factory, Variable exists, ArrayList<String> defaultSignatures)
@@ -198,8 +206,6 @@ public class AlloyUtil {
 	 * Creates the "linear_existence" predicate invocation.
 	 * 
 	 * linear_existence[exists]
-	 * 
-	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createLinearExistenceInvocation(AlloyFactory factory, Variable exists)
@@ -218,9 +224,6 @@ public class AlloyUtil {
 	 * Creates "always_exists" predicate invocation.
 	 * 
 	 * always_exists[DataType,exists]
-	 * 
-	 * @param exists
-	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createAlwaysExistsInvocation(AlloyFactory factory, Variable exists, SignatureDeclaration sigDatatype)
@@ -241,11 +244,8 @@ public class AlloyUtil {
 	/**
 	 * Creates a specific Declaration in Alloy:
 	 * 
-	 * "[variableName]: set exists:>[typeName],".
+	 * variableName: set exists:>typeName,
 	 *  
-	 * @param variableName
-	 * @param typeName
-	 * @return
 	 */
 	public static Declaration createDeclaration (AlloyFactory factory, Variable exists, String variableName, String typeName)
 	{
@@ -271,9 +271,53 @@ public class AlloyUtil {
 	/* =========================================================================================================*/
 	
 	/**
+	 *	Creates a specific Declaration in Alloy.
+	 *
+	 *  x: World.name
+	 */
+	public static Declaration createDeclaration (AlloyFactory factory,SignatureDeclaration world, String name)
+	{	
+		Declaration decl = factory.createDeclaration();
+		Variable var = factory.createVariable();
+		var.setName("x");
+		var.setDeclaration(decl);	
+		BinaryOperation bOp = factory.createBinaryOperation();
+		VariableReference vr = factory.createVariableReference();
+		VariableReference vr2 = factory.createVariableReference();
+		vr.setVariable(world.getName());
+		vr2.setVariable(name);
+		bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+		bOp.setLeftExpression(vr);
+		bOp.setRightExpression(vr2);
+		decl.setExpression(bOp);
+		return decl;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 *	Creates a specific Declaration in Alloy.
+	 *
+	 *  w: World
+	 */
+	public static Declaration createDeclaration (AlloyFactory factory,SignatureDeclaration world)
+	{	
+		Declaration decl = factory.createDeclaration();		
+		Variable var = factory.createVariable();
+		var.setName("w");
+		var.setDeclaration(decl);	
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(world.getName());
+		decl.setExpression(vr);
+		return decl;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
 	 * Creates a specific Quantification Expression in Alloy.
 	 * 
-	 * QuantificationExpression = "[quantificator] [varibleName]: [typeName]".
+	 * QuantificationExpression = "quantificator varibleName: typeName".
 	 * 
 	 * For Example = "all w: World".
 	 */	 
@@ -298,7 +342,7 @@ public class AlloyUtil {
 	/**
 	 * Creates a specific Quantification Expression in Alloy.
 	 * 
-	 * QuantificationExpression = "[quantificator] [varibleName]: [variableName2].[typeName]".
+	 * QuantificationExpression = "quantificator varibleName: variableName2.typeName".
 	 *  
 	 * For Example: "all x: w.Enrollment".
 	 */	 
@@ -322,9 +366,9 @@ public class AlloyUtil {
 	/**
 	 * Creates a specific BinaryOperation in Alloy.
 	 * 
-	 * BinaryOperation = "[varibleName1] [binOperator] [variableName2]".
+	 * BinaryOperation = "varibleName1 binOperator variableName2".
 	 * 
-	 * For Example: "w.Enrollment".
+	 * For Example: w.Enrollment.
 	 */
 	public static BinaryOperation createBinaryOperation(AlloyFactory factory, String variableName1, BinaryOperator binOperator, String variableName2)
 	{
@@ -579,10 +623,12 @@ public class AlloyUtil {
 		module.getParagraph().add(run);
 	}
 	
+	/* =========================================================================================================*/
+	
 	/**
 	 * Creates a rigidity predicate invocation in Alloy.
 	 * 
-	 * rigidity[ rigidClassName, defaultsig, exists ]
+	 * rigidity[rigidClassName,defaultsig,exists]
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -602,8 +648,15 @@ public class AlloyUtil {
 		return pI;		
 	}
 
+	/* =========================================================================================================*/
+	
 	/**
-	 * 
+	 *  Creates a Compare Operation in Alloy.
+	 *  
+	 *  leftName CompareOperator rightName
+	 *  
+	 *  For Example: child in father
+	 *  
 	 */
 	public static CompareOperation createCompareOperation (AlloyFactory factory, String leftName, CompareOperator cop, String rightName)
 	{
@@ -616,5 +669,132 @@ public class AlloyUtil {
 		vr.setVariable(rightName);
 		co.setRightExpression(vr);
 		return co;
-	}	
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Creates a specific Function Declaration in Alloy.
+	 * 
+	 * fun nameFunction [x: World.paramName,w: World] : set World.returnName {
+	 * 		x.(w.assocName)
+	 * }
+	 * 
+	 *  or  
+	 * 
+	 * fun nameFunction [x: World.paramName,w: World] : set World.returnName {
+	 * 		(w.assocName).x
+	 * }
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public static FunctionDeclaration createFunctionDeclaration (AlloyFactory factory, SignatureDeclaration world, VariableReference target, String functionName, String paramName, String returnName, String assocName )
+	{
+		FunctionDeclaration fun = factory.createFunctionDeclaration();
+		fun.setName(functionName);
+		
+		// set World.returnName
+		UnaryOperation uOp = factory.createUnaryOperation();
+		uOp.setOperator(UnaryOperator.SET_LITERAL);		
+		BinaryOperation bOp = createBinaryOperation(factory, world.getName(), BinaryOperator.JOIN_LITERAL, returnName);		
+		uOp.setExpression(bOp);
+		fun.setType(uOp);
+	
+		// x: World.paramName
+		Declaration decl = createDeclaration(factory, world, paramName);
+		fun.getParameter().add(decl);
+	
+		// w: World
+		decl = createDeclaration(factory,world);	
+		fun.getParameter().add(decl);
+		
+		// w.assocName
+		bOp = createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,assocName);
+			
+		// x.(w.assocName)  or  (w.assocName).x
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable("x");	
+		BinaryOperation bOp2 = factory.createBinaryOperation();
+		bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
+		if(returnName == target.getVariable())
+		{
+			bOp2.setLeftExpression(vr);
+			bOp2.setRightExpression(bOp);
+		}
+		else
+		{
+			bOp2.setLeftExpression(bOp);
+			bOp2.setRightExpression(vr);
+		}	
+		
+		fun.setExpression(bOp2);
+		
+		return fun;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 *	Creates a specific Imuttable Predicate Invocation.
+	 *
+	 *  predName[typeName,assocName]
+	 *  
+	 *  For Example: immutable_source[Enrollment,enr]
+	 *  For Example: immutable_target[Integer,dt]
+	 *
+	 */
+	@SuppressWarnings("unchecked")
+	public static PredicateInvocation createImmutablePredicateInvocation (AlloyFactory factory, String predName, String typeName, String assocName)
+	{
+		PredicateInvocation pI = factory.createPredicateInvocation();
+		pI.setPredicate(predName);
+		VariableReference param1 = factory.createVariableReference();
+		VariableReference param2 = factory.createVariableReference();
+		param1.setVariable(typeName);
+		param2.setVariable(assocName);
+		pI.getParameter().add(param1);
+		pI.getParameter().add(param2);
+		return pI;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Create a specific Quantification Expression.
+	 * 
+	 * all x: typeName | # x.assocName op value
+	 */
+	@SuppressWarnings("unchecked")
+	public static QuantificationExpression createQuantificationExpression (AlloyFactory factory, String typeName, String assocName, CompareOperator op, int value)
+	{
+		QuantificationExpression qe = factory.createQuantificationExpression();
+		qe.setQuantificator(Quantificator.ALL_LITERAL);
+		Declaration decl = factory.createDeclaration();
+		Variable var = factory.createVariable();
+		var.setName("x");
+		var.setDeclaration(decl);
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(typeName);
+		decl.setExpression(vr);
+		qe.getDeclaration().add(decl);		
+		BinaryOperation boJoin = factory.createBinaryOperation();
+		CompareOperation co = factory.createCompareOperation();
+		UnaryOperation uOp = factory.createUnaryOperation();		
+		boJoin.setOperator(BinaryOperator.JOIN_LITERAL);
+		vr = factory.createVariableReference();
+		vr.setVariable(assocName);
+		boJoin.setRightExpression(vr);
+		vr = factory.createVariableReference();
+		vr.setVariable(var.getName());
+		boJoin.setLeftExpression(vr);		
+		co.setOperator(op);
+		co.setLeftExpression(uOp);
+		vr = factory.createVariableReference();
+		vr.setVariable(String.valueOf(value));
+		co.setRightExpression(vr);		
+		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);
+		uOp.setExpression(boJoin);		
+		qe.setExpression(co);
+		return qe;
+	}
 }
