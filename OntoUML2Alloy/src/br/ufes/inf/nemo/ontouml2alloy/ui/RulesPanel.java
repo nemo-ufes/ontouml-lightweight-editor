@@ -61,10 +61,12 @@ public class RulesPanel extends JPanel {
 		cbxWeakSupplementation.setSelected(true);
 		
 		JLabel lblRelatorsDescription = new JLabel("This rule enforces that the concrete relators mediate two distinct entities.");
+		lblRelatorsDescription.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblRelatorsDescription.setForeground(Color.GRAY);
 		lblRelatorsDescription.setVerticalAlignment(SwingConstants.TOP);
 		
 		JLabel lblWeakDescription = new JLabel("This rule enforces that each whole has at least two disjoint parts.");
+		lblWeakDescription.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblWeakDescription.setForeground(Color.GRAY);
 		lblWeakDescription.setVerticalAlignment(SwingConstants.TOP);
 		
@@ -80,38 +82,36 @@ public class RulesPanel extends JPanel {
 				.addGroup(gl_RulesPanel.createSequentialGroup()
 					.addGap(22)
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblWeakDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
 						.addGroup(gl_RulesPanel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblWeakSupplementationRule)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(cbxWeakSupplementation)
-							.addContainerGap())
+							.addComponent(cbxWeakSupplementation))
 						.addGroup(gl_RulesPanel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblRelatorsRule)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(cbxRelators)
-							.addContainerGap())
-						.addGroup(gl_RulesPanel.createSequentialGroup()
-							.addGroup(gl_RulesPanel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(lblWeakDescription, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(lblRelatorsDescription, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 397, GroupLayout.PREFERRED_SIZE))
-							.addContainerGap(28, Short.MAX_VALUE))))
+							.addComponent(cbxRelators))
+						.addComponent(lblRelatorsDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_RulesPanel.setVerticalGroup(
 			gl_RulesPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_RulesPanel.createSequentialGroup()
-					.addGap(18)
+					.addGap(40)
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblRelatorsRule)
 						.addComponent(cbxRelators))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblRelatorsDescription, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
-					.addGap(7)
+					.addGap(21)
+					.addComponent(lblRelatorsDescription, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+					.addGap(16)
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblWeakSupplementationRule)
 						.addComponent(cbxWeakSupplementation))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblWeakDescription, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-					.addGap(19))
+					.addGap(18)
+					.addComponent(lblWeakDescription, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+					.addGap(132))
 		);
 		this.setLayout(gl_RulesPanel);		
 	}
