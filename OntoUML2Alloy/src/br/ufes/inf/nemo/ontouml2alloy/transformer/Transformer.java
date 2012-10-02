@@ -22,7 +22,6 @@ package br.ufes.inf.nemo.ontouml2alloy.transformer;
 
 import java.util.ArrayList;
 
-import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Category;
 import RefOntoUML.Characterization;
@@ -47,7 +46,6 @@ import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.subQuantityOf;
-
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyModule;
 import br.ufes.inf.nemo.alloy.ArrowOperation;
@@ -842,14 +840,16 @@ public class Transformer {
 	private void transformMeronymicAssociation(Meronymic ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
 	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
+		int count = 0;
 		
 		for(Property prop : ass.getMemberEnd())
-		{
-			if(! prop.getAggregation().equals(AggregationKind.NONE))
+		{			
+			if(count == 0)
 			{
 				source.setVariable(refmapper.elementsMap.get(prop.getType()));				
 				lowerSource = prop.getLower();
-				upperSource = prop.getUpper();				
+				upperSource = prop.getUpper();
+				count++;
 			}
 			else
 			{
@@ -858,7 +858,7 @@ public class Transformer {
 				upperTarget = prop.getUpper();
 			}
 		}
-		
+	
 		if(ass instanceof subQuantityOf)
 		{
 			PredicateInvocation pI = 
@@ -967,7 +967,7 @@ public class Transformer {
 		int cont = 1;
 		boolean isSourceReadOnly = false;
 		
-		for(Property c : ass.getOwnedEnd())
+		for(Property c : ass.getMemberEnd())
 		{
 			if(c.getType() instanceof Class)
 			{
@@ -1023,7 +1023,7 @@ public class Transformer {
 		if(ass instanceof Derivation)
 			return;
 		
-		for(Property c : ass.getOwnedEnd())
+		for(Property c : ass.getMemberEnd())
 		{
 			if(c.getType() instanceof Classifier)
 			{
