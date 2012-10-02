@@ -317,7 +317,7 @@ public class RefOntoUMLUtil {
      * Validates a model according to the RefOntoUML OCL rules.
      * @param model the model that will be validated.
      */    
-    public void validate(RefOntoUML.Model model) {
+    public static void validate(RefOntoUML.Model model) {
 		Diagnostician validator = Diagnostician.INSTANCE;
 		
 		// (Opcional, apenas para inicializar mais rápido) 

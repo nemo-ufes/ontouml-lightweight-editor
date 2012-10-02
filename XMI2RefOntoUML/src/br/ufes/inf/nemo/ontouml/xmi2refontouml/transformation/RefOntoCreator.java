@@ -308,7 +308,7 @@ public class RefOntoCreator {
     	
     	// Makes sure the Properties (memberEnds) are added in the correct order
     	// to be in accordance to the RefOntoUML metamodel.
-		if (assoc1.getMemberEnd().size() == 2) {
+		if (((List<?>)hashProp.get("memberend")).size() == 2) {
 	    	List<?> endList = (List<?>)hashProp.get("memberend");
 	    	if ((assoc1 instanceof Mediation && ((Property)endList.get(1)).getType() instanceof Relator) || 
 	    			(assoc1 instanceof Characterization && ((Property)endList.get(1)).getType() instanceof Mode) || 
@@ -319,6 +319,7 @@ public class RefOntoCreator {
 	    		assoc1.getMemberEnd().add((Property)endList.get(1));
 	    		assoc1.getMemberEnd().add((Property)endList.get(0));
 	    	} else {
+	    		assoc1.getMemberEnd().removeAll(endList);
 	    		assoc1.getMemberEnd().add((Property)endList.get(0));
 				assoc1.getMemberEnd().add((Property)endList.get(1));
 	    	}
