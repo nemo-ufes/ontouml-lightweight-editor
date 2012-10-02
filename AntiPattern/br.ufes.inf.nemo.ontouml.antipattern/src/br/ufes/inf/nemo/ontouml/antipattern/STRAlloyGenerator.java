@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 
+/*Self Type Relationship*/
 public class STRAlloyGenerator {
 	
 	public static String ReflexiveAlloyPredicate (String type, String association, String cardinality) {
