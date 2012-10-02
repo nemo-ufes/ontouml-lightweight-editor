@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ontouml2alloy.util;
+package br.ufes.inf.nemo.ontouml2alloy.api;
 
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
@@ -48,14 +48,14 @@ import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
 
 /**
- * This class is used to provide useful methods of manipulating the Alloy API.
+ * This class is used to provide useful methods of manipulating the Alloy model Instances.
  * 
  * 	@author John Guerson 
  *  @author Tiago Sales 
  *  @author Lucas Thom
  *
  */
-public class AlloyUtil {
+public class AlloyAPI {
 
 	/**
 	 * Creates Alloy Signature World: 
@@ -415,9 +415,9 @@ public class AlloyUtil {
 	public static QuantificationExpression createQuantificationExpression(AlloyFactory factory, ArrayList<String> associationNames, String typeName)
 	{
 		// all w: World
-		QuantificationExpression qeWorld = AlloyUtil.createQuantificationExpression(factory,Quantificator.ALL_LITERAL,"w","World");	
+		QuantificationExpression qeWorld = AlloyAPI.createQuantificationExpression(factory,Quantificator.ALL_LITERAL,"w","World");	
 		// all x: w.name
-		QuantificationExpression qe = AlloyUtil.createQuantificationExpression(factory,Quantificator.ALL_LITERAL,"x","w",typeName);
+		QuantificationExpression qe = AlloyAPI.createQuantificationExpression(factory,Quantificator.ALL_LITERAL,"x","w",typeName);
 		qeWorld.setExpression(qe);
 
 		// # (...) >= 2
@@ -439,7 +439,7 @@ public class AlloyUtil {
 			if(associationNames.size() == 1)
 			{	
 				// x.(w.name)
-				bo = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
+				bo = AlloyAPI.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyAPI.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
 				uOp.setExpression(bo);
 				break;
 			}
@@ -447,7 +447,7 @@ public class AlloyUtil {
 			{
 				bo.setOperator(BinaryOperator.UNION_LITERAL);
 				// x.(w.name)
-				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name)); 				
+				bo2 = AlloyAPI.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyAPI.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name)); 				
 				bo.setLeftExpression(bo2);				
 				uOp.setExpression(bo);
 			}
@@ -456,14 +456,14 @@ public class AlloyUtil {
 				bo.setRightExpression(factory.createBinaryOperation());
 				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);	
 				// x.(w.name)
-				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
+				bo2 = AlloyAPI.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyAPI.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
 				((BinaryOperation)bo.getRightExpression()).setLeftExpression(bo2);				
 				bo = ((BinaryOperation)bo.getRightExpression());
 			}
 			if(cont == associationNames.size())
 			{
 				// x.(w.name)
-				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
+				bo2 = AlloyAPI.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyAPI.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
 				bo.setRightExpression(bo2);
 			}
 			cont++;

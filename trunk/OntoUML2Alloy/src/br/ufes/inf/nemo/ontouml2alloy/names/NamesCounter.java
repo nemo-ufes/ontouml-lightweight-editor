@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ontouml2alloy.mapper;
+package br.ufes.inf.nemo.ontouml2alloy.names;
 
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)

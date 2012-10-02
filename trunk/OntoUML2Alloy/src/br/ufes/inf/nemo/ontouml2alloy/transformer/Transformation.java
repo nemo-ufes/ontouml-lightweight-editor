@@ -39,11 +39,10 @@ import RefOntoUML.PackageableElement;
 import br.ufes.inf.nemo.alloy.AlloyPackage;
 import br.ufes.inf.nemo.alloy.impl.AlloyPackageImpl;
 import br.ufes.inf.nemo.alloy.util.AlloyResourceFactoryImpl;
-import br.ufes.inf.nemo.ontouml2alloy.mapper.NamesMapper;
+import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
 /**
- *	This class is used as a Reader for the RefOntoUML.Model, performing the
- *  transformation of every element in the model.
+ *	This class is used to start the transformation of every element in the ontouml model into alloy.
  *  
  * 	@author John Guerson 
  *  @author Tiago Sales 
@@ -53,11 +52,11 @@ import br.ufes.inf.nemo.ontouml2alloy.mapper.NamesMapper;
 public class Transformation {
 	
 	/** 
-	 *  Provide a names mapper for ontouml model.
-	 *  This mapper is used for associate the elements of the ontouml model 
+	 *  Provide the ontouml model elements.
+	 *  It is also used for associate the elements of the ontouml model 
 	 *  with their modified names (i.e. without special characters: #, !, @, $, %, and etc...). 
 	 */
-	public static NamesMapper mapper;
+	public static OntoUMLParser ontoparser;
 	
 	/** 
 	 * Performs the transformation of ontouml elements. 
@@ -70,20 +69,20 @@ public class Transformation {
 	public static Resource alsresource;
 	
 	/**
-	 * Initialize the Reader and starts the transformation...
+	 * Starts the transformation...
 	 *  
 	 * @param m: The root of .refontouml model (RefOntoUML.Model).
 	 */	 
-	public static void start(Model m)
+	public static void start(Model model)
 	{
-		mapper = new NamesMapper(m);
+		ontoparser = new OntoUMLParser(model);
 		
-		transformer = new Transformer(mapper);		
+		transformer = new Transformer(ontoparser);		
 		
 		transformer.initialAditions();
 		
 		// Classifiers
-		for (PackageableElement pe : mapper.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.elementsMap.keySet())
 		{			
 			if (pe instanceof Classifier) 
 				
@@ -91,7 +90,7 @@ public class Transformation {
 		}
 				
 		// Generalizations
-		for (PackageableElement pe : mapper.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.elementsMap.keySet())
 		{			
 			if (pe instanceof Class)
 			{
@@ -103,7 +102,7 @@ public class Transformation {
 		}
 		
 		// GeneralizationSets
-		for (PackageableElement pe : mapper.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.elementsMap.keySet())
 		{			
 			if (pe instanceof GeneralizationSet) 
 				
@@ -111,7 +110,7 @@ public class Transformation {
 		}
 		
 		// Associations
-		for (PackageableElement pe : mapper.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.elementsMap.keySet())
 		{
 			if (pe instanceof Association && !(pe instanceof Derivation))
 			{
