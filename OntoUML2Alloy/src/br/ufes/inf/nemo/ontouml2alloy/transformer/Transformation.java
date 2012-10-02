@@ -82,7 +82,7 @@ public class Transformation {
 		transformer.initialAditions();
 		
 		// Classifiers
-		for (PackageableElement pe : ontoparser.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.getPackageableElements())
 		{			
 			if (pe instanceof Classifier) 
 				
@@ -90,7 +90,7 @@ public class Transformation {
 		}
 				
 		// Generalizations
-		for (PackageableElement pe : ontoparser.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.getPackageableElements())
 		{			
 			if (pe instanceof Class)
 			{
@@ -102,7 +102,7 @@ public class Transformation {
 		}
 		
 		// GeneralizationSets
-		for (PackageableElement pe : ontoparser.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.getPackageableElements())
 		{			
 			if (pe instanceof GeneralizationSet) 
 				
@@ -110,7 +110,7 @@ public class Transformation {
 		}
 		
 		// Associations
-		for (PackageableElement pe : ontoparser.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.getPackageableElements())
 		{
 			if (pe instanceof Association && !(pe instanceof Derivation))
 			{
