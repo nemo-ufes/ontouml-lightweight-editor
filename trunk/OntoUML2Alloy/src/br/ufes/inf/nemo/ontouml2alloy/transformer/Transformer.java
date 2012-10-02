@@ -189,39 +189,39 @@ public class Transformer {
 	 */
 	private void initializeNamesLists()
 	{
-		for (PackageableElement pe : ontoparser.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.getPackageableElements())
 		{			
 			if (pe instanceof ObjectClass) 
 			{
-				objectNamesList.add(ontoparser.elementsMap.get(pe));
+				objectNamesList.add(ontoparser.getName(pe));
 
 				if((pe instanceof Kind) || (pe instanceof Collective) || (pe instanceof Quantity))
 				{
-					subsortalDisjNamesList.add(ontoparser.elementsMap.get(pe));
+					subsortalDisjNamesList.add(ontoparser.getName(pe));
 				}
 			}
 			if (pe instanceof MomentClass) 
 			{
-				propertyNamesList.add(ontoparser.elementsMap.get(pe));
+				propertyNamesList.add(ontoparser.getName(pe));
 				
 				// all Properties without fathers are naturally disjoint, 
 				// which means that multiple inheritance between Properties isn't allowed.
 				
 				if(((MomentClass)pe).getGeneralization().size() == 0)
 				{
-					propertyDisjNamesList.add(ontoparser.elementsMap.get(pe));
+					propertyDisjNamesList.add(ontoparser.getName(pe));
 				}
 			}
 			if (pe instanceof DataType && !(pe instanceof PrimitiveType) ) 
 			{
-				datatypeNamesList.add(ontoparser.elementsMap.get(pe));
+				datatypeNamesList.add(ontoparser.getName(pe));
 				
 				// all dataTypes without fathers are naturally disjoint, 
 				// which means that multiple inheritance between dataTypes isn't allowed.
 				
 				if(((DataType)pe).getGeneralization().size() == 0)
 				{
-					datatypeDisjNamesList.add(ontoparser.elementsMap.get(pe));
+					datatypeDisjNamesList.add(ontoparser.getName(pe));
 				}
 			}
 			if ( (pe instanceof RigidSortalClass) || (pe instanceof Category) || (pe instanceof MomentClass) || ((pe instanceof DataType)&&!(pe instanceof PrimitiveType)) ) 
@@ -238,7 +238,7 @@ public class Transformer {
 	 */
 	private void initializeDefaultSignatures ()
 	{
-		for (PackageableElement pe : ontoparser.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.getPackageableElements())
 		{			
 			if (pe instanceof ObjectClass) 
 			{
@@ -250,7 +250,7 @@ public class Transformer {
 				break;
 			}
 		}
-		for (PackageableElement pe : ontoparser.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.getPackageableElements())
 		{			
 			if (pe instanceof MomentClass) 
 			{
@@ -262,7 +262,7 @@ public class Transformer {
 				break;
 			}
 		}
-		for (PackageableElement pe : ontoparser.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.getPackageableElements())
 		{			
 			if (pe instanceof DataType && !(pe instanceof PrimitiveType) ) 
 			{
@@ -285,7 +285,7 @@ public class Transformer {
 	public void initialAditions() 
 	{		
 		module = factory.createAlloyModule();
-		module.setName(ontoparser.refmodelname);				
+		module.setName(ontoparser.getModelName());				
 	
 		// abstract sig World {}
 		
@@ -438,21 +438,21 @@ public class Transformer {
 				{	
 					// rigidity[ rigidClassName, Object, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigObject, exists, ontoparser.elementsMap.get(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigObject, exists, ontoparser.getName(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}	
 				if(rigid instanceof MomentClass)
 				{
 					// rigidity[ rigidClassName, Property, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigProperty, exists, ontoparser.elementsMap.get(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigProperty, exists, ontoparser.getName(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}
 				if(rigid instanceof DataType && !(rigid instanceof PrimitiveType))
 				{
 					// rigidity[ rigidClassName, DataType, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigDatatype, exists, ontoparser.elementsMap.get(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigDatatype, exists, ontoparser.getName(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}				
 			}			
@@ -472,7 +472,7 @@ public class Transformer {
 		{
 			// ObjectClassName: set exists:>Object,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.elementsMap.get(c), sigObject.getName());				
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), sigObject.getName());				
 			world.getRelation().add(decl);			
 
 			if ((c instanceof RigidSortalClass) && (OntoUML2Alloy.weakSupplementationRuleFlag))
@@ -487,7 +487,7 @@ public class Transformer {
 		{			
 			// DataTypeName: set exists:>DataType,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.elementsMap.get(c), sigDatatype.getName());	
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), sigDatatype.getName());	
 			world.getRelation().add(decl);									
 		}
 		
@@ -495,7 +495,7 @@ public class Transformer {
 		{
 			// PropertyName: set exists:>Property,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.elementsMap.get(c),sigProperty.getName());
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c),sigProperty.getName());
 			world.getRelation().add(decl);
 			
 			if ((c instanceof Relator) && (OntoUML2Alloy.relatorRuleFlag))
@@ -533,11 +533,11 @@ public class Transformer {
 		if(associationNames.size()>0)
 		{			
 			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
-			QuantificationExpression q = AlloyAPI.createQuantificationExpression(factory,associationNames, ontoparser.elementsMap.get(c));
+			QuantificationExpression q = AlloyAPI.createQuantificationExpression(factory,associationNames, ontoparser.getName(c));
 			
 			// create fact from q
 			FactDeclaration RelatorRuleFact = factory.createFactDeclaration();
-			RelatorRuleFact.setName("relator_constraint_"+ontoparser.elementsMap.get(c));
+			RelatorRuleFact.setName("relator_constraint_"+ontoparser.getName(c));
 			RelatorRuleFact.setBlock(factory.createBlock());			
 			RelatorRuleFact.getBlock().getExpression().add(q);
 			
@@ -572,11 +572,11 @@ public class Transformer {
 		if( associationNames.size() > 0)
 		{
 			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
-			QuantificationExpression q = AlloyAPI.createQuantificationExpression(factory,associationNames, ontoparser.elementsMap.get(c));
+			QuantificationExpression q = AlloyAPI.createQuantificationExpression(factory,associationNames, ontoparser.getName(c));
 			
 			// create fact from q
 			FactDeclaration WeakSupplementationFact = factory.createFactDeclaration();
-			WeakSupplementationFact.setName("weak_supplementation_"+ontoparser.elementsMap.get(c));
+			WeakSupplementationFact.setName("weak_supplementation_"+ontoparser.getName(c));
 			WeakSupplementationFact.setBlock(factory.createBlock());			
 			WeakSupplementationFact.getBlock().getExpression().add(q);			
 			
@@ -610,7 +610,7 @@ public class Transformer {
 			co.setOperator(CompareOperator.EQUAL_LITERAL);
 			
 			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(ontoparser.elementsMap.get(c));
+			vr.setVariable(ontoparser.getName(c));
 			
 			co.setLeftExpression(vr);
 			for(Generalization gen : generalizations)
@@ -618,7 +618,7 @@ public class Transformer {
 				if(generalizations.size() == 1) 
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.elementsMap.get(gen.getSpecific()));					
+					vr.setVariable(ontoparser.getName(gen.getSpecific()));					
 					co.setRightExpression(vr);
 					break;
 				}
@@ -626,14 +626,14 @@ public class Transformer {
 				{
 					bo.setOperator(BinaryOperator.UNION_LITERAL);
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.elementsMap.get(gen.getSpecific()));
+					vr.setVariable(ontoparser.getName(gen.getSpecific()));
 					bo.setLeftExpression(vr);
 					co.setRightExpression(bo);
 				}
 				if(cont > 1 && cont != generalizations.size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.elementsMap.get(gen.getSpecific()));
+					vr.setVariable(ontoparser.getName(gen.getSpecific()));
 					bo.setRightExpression(factory.createBinaryOperation());
 					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
 					((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
@@ -642,7 +642,7 @@ public class Transformer {
 				if(cont == generalizations.size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.elementsMap.get(gen.getSpecific()));
+					vr.setVariable(ontoparser.getName(gen.getSpecific()));
 					bo.setRightExpression(vr);
 				}
 				cont++;
@@ -664,9 +664,9 @@ public class Transformer {
 	public void transformGeneralizations(Generalization g) 
 	{
 		CompareOperation co = AlloyAPI.createCompareOperation( factory, 
-				ontoparser.elementsMap.get(g.getSpecific()), 
+				ontoparser.getName(g.getSpecific()), 
 				CompareOperator.SUBSET_LITERAL, 
-				ontoparser.elementsMap.get(g.getGeneral())
+				ontoparser.getName(g.getGeneral())
 		);
 		world.getBlock().getExpression().add(co);
 	}
@@ -690,7 +690,7 @@ public class Transformer {
 			co.setOperator(CompareOperator.EQUAL_LITERAL);
 			
 			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(ontoparser.elementsMap.get(gs.getGeneralization().get(0).getGeneral()));
+			vr.setVariable(ontoparser.getName(gs.getGeneralization().get(0).getGeneral()));
 			
 			co.setLeftExpression(vr);
 			
@@ -704,14 +704,14 @@ public class Transformer {
 				{
 					bo.setOperator(BinaryOperator.UNION_LITERAL);
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.elementsMap.get(gen.getSpecific()));
+					vr.setVariable(ontoparser.getName(gen.getSpecific()));
 					bo.setLeftExpression(vr);
 					co.setRightExpression(bo);
 				}
 				if(cont > 1 && cont != gs.getGeneralization().size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.elementsMap.get(gen.getSpecific()));
+					vr.setVariable(ontoparser.getName(gen.getSpecific()));
 					bo.setRightExpression(factory.createBinaryOperation());
 					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
 					((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
@@ -720,7 +720,7 @@ public class Transformer {
 				if(cont == gs.getGeneralization().size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.elementsMap.get(gen.getSpecific()));
+					vr.setVariable(ontoparser.getName(gen.getSpecific()));
 					bo.setRightExpression(vr);
 				}
 				cont++;
@@ -733,7 +733,7 @@ public class Transformer {
 			for(Generalization gen : gs.getGeneralization())
 			{
 				VariableReference vr = factory.createVariableReference();
-				vr.setVariable(ontoparser.elementsMap.get(gen.getSpecific()));
+				vr.setVariable(ontoparser.getName(gen.getSpecific()));
 				disj.getSet().add(vr);
 			}
 			world.getBlock().getExpression().add(disj);
@@ -757,10 +757,10 @@ public class Transformer {
 		VariableReference association = factory.createVariableReference();
 		
 		uOp.setOperator(UnaryOperator.SET_LITERAL);
-		var.setName(ontoparser.elementsMap.get(ass)); 
+		var.setName(ontoparser.getName(ass)); 
 		var.setDeclaration(decl);
 		
-		association.setVariable(ontoparser.elementsMap.get(ass));	
+		association.setVariable(ontoparser.getName(ass));	
 		
 		decl.setExpression(uOp);
 		
@@ -803,10 +803,10 @@ public class Transformer {
 			
 		if(ass.getMemberEnd().get(0).getName().compareTo("") != 0)	
 		{
-			String functionName = ontoparser.assocEndMap.get(ass.getMemberEnd().get(0));			
-			String returnName = ontoparser.elementsMap.get(ass.getMemberEnd().get(0).getType());			
-			String paramName = ontoparser.elementsMap.get(ass.getMemberEnd().get(1).getType());			
-			String assocName = ontoparser.elementsMap.get(ass);
+			String functionName = ontoparser.getName(ass.getMemberEnd().get(0));			
+			String returnName = ontoparser.getName(ass.getMemberEnd().get(0).getType());			
+			String paramName = ontoparser.getName(ass.getMemberEnd().get(1).getType());			
+			String assocName = ontoparser.getName(ass);
 			
 			FunctionDeclaration fun = 
 					AlloyAPI.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);
@@ -818,10 +818,10 @@ public class Transformer {
 			
 		if(ass.getMemberEnd().get(1).getName().compareTo("") != 0)
 		{
-			String functionName = ontoparser.assocEndMap.get(ass.getMemberEnd().get(1));			
-			String returnName = ontoparser.elementsMap.get(ass.getMemberEnd().get(1).getType());			
-			String paramName = ontoparser.elementsMap.get(ass.getMemberEnd().get(0).getType());			
-			String assocName = ontoparser.elementsMap.get(ass);
+			String functionName = ontoparser.getName(ass.getMemberEnd().get(1));			
+			String returnName = ontoparser.getName(ass.getMemberEnd().get(1).getType());			
+			String paramName = ontoparser.getName(ass.getMemberEnd().get(0).getType());			
+			String assocName = ontoparser.getName(ass);
 			
 			FunctionDeclaration fun = 
 					AlloyAPI.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);
@@ -846,14 +846,14 @@ public class Transformer {
 		{			
 			if(count == 0)
 			{
-				source.setVariable(ontoparser.elementsMap.get(prop.getType()));				
+				source.setVariable(ontoparser.getName(prop.getType()));				
 				lowerSource = prop.getLower();
 				upperSource = prop.getUpper();
 				count++;
 			}
 			else
 			{
-				target.setVariable(ontoparser.elementsMap.get(prop.getType()));				
+				target.setVariable(ontoparser.getName(prop.getType()));				
 				lowerTarget = prop.getLower();				
 				upperTarget = prop.getUpper();
 			}
@@ -862,14 +862,14 @@ public class Transformer {
 		if(ass instanceof subQuantityOf)
 		{
 			PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.elementsMap.get(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getName(ass));
 			
 			association_properties.getBlock().getExpression().add(pI);
 			
 			if(ass.sourceEnd().isIsReadOnly() || ass.isIsInseparable() || ass.isIsImmutableWhole())
 			{
 				PredicateInvocation pIS = 
-						AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.elementsMap.get(ass));
+						AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getName(ass));
 				
 				association_properties.getBlock().getExpression().add(pIS);
 			}
@@ -879,7 +879,7 @@ public class Transformer {
 			if(ass.targetEnd().isIsReadOnly() || ass.isIsEssential() || ass.isIsImmutablePart())
 			{
 				PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.elementsMap.get(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getName(ass));
 				
 				association_properties.getBlock().getExpression().add(pI);
 			}
@@ -887,7 +887,7 @@ public class Transformer {
 			if(ass.sourceEnd().isIsReadOnly() || ass.isIsInseparable() || ass.isIsImmutableWhole())
 			{
 				PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.elementsMap.get(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getName(ass));
 				
 				association_properties.getBlock().getExpression().add(pI);
 			}
@@ -919,7 +919,7 @@ public class Transformer {
 			{
 				if(c.getType() instanceof Relator && cont == 1)
 				{
-					source.setVariable(ontoparser.elementsMap.get(c.getType()));
+					source.setVariable(ontoparser.getName(c.getType()));
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
 					isSourceReadOnly = c.isIsReadOnly();
@@ -927,7 +927,7 @@ public class Transformer {
 				}
 				else
 				{
-					target.setVariable(ontoparser.elementsMap.get(c.getType()));
+					target.setVariable(ontoparser.getName(c.getType()));
 					lowerTarget = c.getLower();
 					upperTarget = c.getUpper();
 				}
@@ -935,14 +935,14 @@ public class Transformer {
 		}
 		
 		PredicateInvocation pI = 
-				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.elementsMap.get(ass));
+				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getName(ass));
 		
 		association_properties.getBlock().getExpression().add(pI);
 		
 		if(isSourceReadOnly)
 		{
 			PredicateInvocation pIS = 
-				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.elementsMap.get(ass));
+				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getName(ass));
 			
 			association_properties.getBlock().getExpression().add(pIS);
 		}
@@ -973,7 +973,7 @@ public class Transformer {
 			{
 				if(c.getType() instanceof Mode && cont == 1)
 				{
-					source.setVariable(ontoparser.elementsMap.get(c.getType()));
+					source.setVariable(ontoparser.getName(c.getType()));
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
 					isSourceReadOnly = c.isIsReadOnly();
@@ -981,7 +981,7 @@ public class Transformer {
 				}
 				else
 				{
-					target.setVariable(ontoparser.elementsMap.get(c.getType()));
+					target.setVariable(ontoparser.getName(c.getType()));
 					lowerTarget = c.getLower();
 					upperTarget = c.getUpper();
 				}
@@ -989,14 +989,14 @@ public class Transformer {
 		}
 		
 		PredicateInvocation pI = 
-				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.elementsMap.get(ass));
+				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getName(ass));
 		
 		association_properties.getBlock().getExpression().add(pI);
 		
 		if(isSourceReadOnly)
 		{
 			PredicateInvocation pIS = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.elementsMap.get(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getName(ass));
 			
 			association_properties.getBlock().getExpression().add(pIS);
 		}
@@ -1029,7 +1029,7 @@ public class Transformer {
 			{
 				if(cont == 1)
 				{
-					source.setVariable(ontoparser.elementsMap.get(c.getType()));
+					source.setVariable(ontoparser.getName(c.getType()));
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
 					isSourceReadOnly = c.isIsReadOnly();
@@ -1037,7 +1037,7 @@ public class Transformer {
 				}
 				else
 				{
-					target.setVariable(ontoparser.elementsMap.get(c.getType()));
+					target.setVariable(ontoparser.getName(c.getType()));
 					lowerTarget = c.getLower();
 					upperTarget = c.getUpper();
 					isTargetReadOnly = c.isIsReadOnly();
@@ -1048,7 +1048,7 @@ public class Transformer {
 		if(isTargetReadOnly)
 		{
 			PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.elementsMap.get(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getName(ass));
 			
 			association_properties.getBlock().getExpression().add(pI);			
 		}
@@ -1056,7 +1056,7 @@ public class Transformer {
 		if(isSourceReadOnly)
 		{
 			PredicateInvocation pIS = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.elementsMap.get(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getName(ass));
 			
 			association_properties.getBlock().getExpression().add(pIS);			
 		}
@@ -1108,7 +1108,7 @@ public class Transformer {
 		{
 			QuantificationExpression qe =
 					
-				AlloyAPI.createQuantificationExpression(factory, target.getVariable(), ontoparser.elementsMap.get(ass), 
+				AlloyAPI.createQuantificationExpression(factory, target.getVariable(), ontoparser.getName(ass), 
 				CompareOperator.GREATER_EQUAL_LITERAL, lowerSource);
 			
 			world.getBlock().getExpression().add(qe);
@@ -1118,7 +1118,7 @@ public class Transformer {
 		{
 			QuantificationExpression qe =
 					
-				AlloyAPI.createQuantificationExpression(factory, target.getVariable(), ontoparser.elementsMap.get(ass), 
+				AlloyAPI.createQuantificationExpression(factory, target.getVariable(), ontoparser.getName(ass), 
 				CompareOperator.LESS_EQUAL_LITERAL, upperSource);
 				
 			world.getBlock().getExpression().add(qe);
@@ -1128,7 +1128,7 @@ public class Transformer {
 		{
 			QuantificationExpression qe =
 					
-				AlloyAPI.createQuantificationExpression(factory, source.getVariable(), ontoparser.elementsMap.get(ass), 
+				AlloyAPI.createQuantificationExpression(factory, source.getVariable(), ontoparser.getName(ass), 
 				CompareOperator.GREATER_EQUAL_LITERAL, lowerTarget);
 				
 			world.getBlock().getExpression().add(qe);
@@ -1138,7 +1138,7 @@ public class Transformer {
 		{
 			QuantificationExpression qe =
 					
-				AlloyAPI.createQuantificationExpression(factory, source.getVariable(), ontoparser.elementsMap.get(ass), 
+				AlloyAPI.createQuantificationExpression(factory, source.getVariable(), ontoparser.getName(ass), 
 				CompareOperator.LESS_EQUAL_LITERAL, upperTarget);
 				
 			world.getBlock().getExpression().add(qe);		
@@ -1164,7 +1164,7 @@ public class Transformer {
 		{
 			if(prop.getType() instanceof MaterialAssociation)
 			{
-				material.setVariable(ontoparser.elementsMap.get(prop.getType()));
+				material.setVariable(ontoparser.getName(prop.getType()));
 				ma = (MaterialAssociation)prop.getType();
 			}
 		}		
@@ -1192,7 +1192,7 @@ public class Transformer {
 		VariableReference mediation1 = factory.createVariableReference();
 		VariableReference mediation2 = factory.createVariableReference();		
 		cont = 1;
-		for (PackageableElement pe : ontoparser.elementsMap.keySet())
+		for (PackageableElement pe : ontoparser.getPackageableElements())
 		{
 			if(pe instanceof Mediation)
 			{
@@ -1220,12 +1220,12 @@ public class Transformer {
 				{
 					if(cont == 1)
 					{
-						mediation1.setVariable(ontoparser.elementsMap.get(((Mediation)pe)));
+						mediation1.setVariable(ontoparser.getName(((Mediation)pe)));
 						cont++;
 					}
 					else
 					{
-						mediation2.setVariable(ontoparser.elementsMap.get(((Mediation)pe)));
+						mediation2.setVariable(ontoparser.getName(((Mediation)pe)));
 						break;
 					}
 				}

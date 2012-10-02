@@ -1,3 +1,4 @@
+
 package br.ufes.inf.nemo.ontouml2alloy.parser;
 
 /**
@@ -22,6 +23,7 @@ package br.ufes.inf.nemo.ontouml2alloy.parser;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -49,20 +51,20 @@ import RefOntoUML.Property;
 public class OntoUMLParser {
 
 	/** Name of the RefOntoUML Model root. */
-	public String refmodelname;
+	private String refmodelname;
 	
 	/** Associate the Packageable Elements of the model with their modified names. */
-	public HashMap<PackageableElement,String> elementsMap;
+	private HashMap<PackageableElement,String> elementsMap;
 	
 	/** Associate the Propeties of the model (AssociationEnds) with their modified names. */
-	public HashMap<Property,String> assocEndMap;
+	private HashMap<Property,String> assocEndMap;
 	
 	/** Performs modification on model name. */
 	private NamesHandler h1;
 	
 	/** Performs modifications on names. */
 	private NamesHandler h2;
-		
+
 	/**
 	 * Constructor.
 	 *  
@@ -99,8 +101,8 @@ public class OntoUMLParser {
 		
 		h2 = new NamesHandler();
 		initializeHashMaps(refmodel);
-	}
-	
+	}	
+
 	/** 
 	 * Initialize the Hash Maps.
 	 * 
@@ -143,6 +145,33 @@ public class OntoUMLParser {
 			
 			elementsMap.put(pe,h2.treatName(pe.getName(),pe.getClass().toString()));			
 		}				
+	}	
+	
+	
+	public Set<Property> getProperties()
+	{
+		return assocEndMap.keySet();
 	}
+	
+	public Set<PackageableElement> getPackageableElements()
+	{
+		return elementsMap.keySet();
+	}
+	
+	public String getName(PackageableElement elem)
+	{
+		return elementsMap.get(elem);
+	}
+	
+	public String getName(Property prop)
+	{
+		return assocEndMap.get(prop);
+	}
+	
+	public String getModelName()
+	{
+		return refmodelname;
+	}	
+	
 	
 }

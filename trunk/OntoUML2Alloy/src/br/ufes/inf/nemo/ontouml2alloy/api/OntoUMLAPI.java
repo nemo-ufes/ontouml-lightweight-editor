@@ -48,9 +48,9 @@ public class OntoUMLAPI {
 	/**
 	 * Verify if the Classifier 'c' is the source of some Meronymic Relation.
 	 */
-	public static boolean isSourceOfMeronymicRelation (OntoUMLParser refmapper, Classifier c)
+	public static boolean isSourceOfMeronymicRelation (OntoUMLParser ontoparser, Classifier c)
 	{
-		for(PackageableElement pe : refmapper.elementsMap.keySet())
+		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
 			if (pe instanceof Meronymic) 
 			{
@@ -75,9 +75,9 @@ public class OntoUMLAPI {
 	/**
 	 * Verify if the Classifier 'c' is the source of some Mediation Relation.
 	 */
-	public static boolean isSourceOfMediationRelation (OntoUMLParser refmapper, Relator c)
+	public static boolean isSourceOfMediationRelation (OntoUMLParser ontoparser, Relator c)
 	{
-		for(PackageableElement pe : refmapper.elementsMap.keySet())
+		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
 			if (pe instanceof Mediation) 
 			{
@@ -97,9 +97,9 @@ public class OntoUMLAPI {
 	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete
 	 * What means that this Classifier is an Abstract Classifier.
 	 */
-	public static boolean isAbstractFromGeneralizationSets(OntoUMLParser refmapper, Classifier c) 
+	public static boolean isAbstractFromGeneralizationSets(OntoUMLParser ontoparser, Classifier c) 
 	{
-		for(PackageableElement pe : refmapper.elementsMap.keySet())
+		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
 			if(pe instanceof GeneralizationSet)
 			{
@@ -124,9 +124,9 @@ public class OntoUMLAPI {
 	/**
 	 * Get all Mediations relations that have as a source the Relator 'r' or one of its Super Types. 
 	 */
-	public static void getAllMediations(OntoUMLParser refmapper, ArrayList<String> list, Relator r)
+	public static void getAllMediations(OntoUMLParser ontoparser, ArrayList<String> list, Relator r)
 	{
-		for(PackageableElement pe : refmapper.elementsMap.keySet())
+		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
 			if(pe instanceof Mediation)
 			{
@@ -137,7 +137,7 @@ public class OntoUMLAPI {
 					{
 						if (p.getType().getName().equals(r.getName()))
 						{
-							list.add(refmapper.elementsMap.get(pe));							
+							list.add(ontoparser.getName(pe));							
 						}
 					}
 				}
@@ -145,7 +145,7 @@ public class OntoUMLAPI {
 		}
 		for(Generalization gen : ((Relator)r).getGeneralization())
 		{							
-			if (gen.getGeneral() instanceof Relator) getAllMediations(refmapper,list,(Relator)gen.getGeneral());
+			if (gen.getGeneral() instanceof Relator) getAllMediations(ontoparser,list,(Relator)gen.getGeneral());
 		}
 	}
 	
@@ -156,9 +156,9 @@ public class OntoUMLAPI {
 	 * RigidSortalClass : Kind, Collective, Quantity, SubKind.
 	 * 
 	 */	
-	public static void getAllMeronymics(OntoUMLParser refmapper, ArrayList<String> list, RigidSortalClass c)
+	public static void getAllMeronymics(OntoUMLParser ontoparser, ArrayList<String> list, RigidSortalClass c)
 	{
-		for(PackageableElement pe : refmapper.elementsMap.keySet())
+		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
 			if(pe instanceof Meronymic)
 			{
@@ -169,7 +169,7 @@ public class OntoUMLAPI {
 					{
 						if (p.getType().getName().equals(c.getName()))
 						{
-							list.add(refmapper.elementsMap.get(pe));							
+							list.add(ontoparser.getName(pe));							
 						}
 					}
 				}
@@ -177,7 +177,7 @@ public class OntoUMLAPI {
 		}
 		for(Generalization gen : ((RigidSortalClass)c).getGeneralization())
 		{
-			if (gen.getGeneral() instanceof RigidSortalClass) getAllMeronymics(refmapper,list,(RigidSortalClass)gen.getGeneral());
+			if (gen.getGeneral() instanceof RigidSortalClass) getAllMeronymics(ontoparser,list,(RigidSortalClass)gen.getGeneral());
 		}
 	}
 	
@@ -186,9 +186,9 @@ public class OntoUMLAPI {
 	/**
 	 * Get all Generalizations that the Classifier 'c' is the father.
 	 */
-	public static void getAllGeneralizations(OntoUMLParser refmapper, ArrayList<Generalization> generalizations, Classifier c)
+	public static void getAllGeneralizations(OntoUMLParser ontoparser, ArrayList<Generalization> generalizations, Classifier c)
 	{		
-		for(PackageableElement elem : refmapper.elementsMap.keySet() )
+		for(PackageableElement elem : ontoparser.getPackageableElements() )
 		{
 			if(elem instanceof Classifier)
 			{
