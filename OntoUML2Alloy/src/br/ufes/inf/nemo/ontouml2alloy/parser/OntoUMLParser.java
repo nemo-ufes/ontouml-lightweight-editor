@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ontouml2alloy.mapper;
+package br.ufes.inf.nemo.ontouml2alloy.parser;
 
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
@@ -20,7 +20,13 @@ package br.ufes.inf.nemo.ontouml2alloy.mapper;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+import java.io.IOException;
 import java.util.HashMap;
+
+import org.eclipse.emf.ecore.resource.Resource;
+
+import br.ufes.inf.nemo.ontouml2alloy.names.NamesHandler;
+import br.ufes.inf.nemo.ontouml2alloy.util.ResourceUtil;
 
 import RefOntoUML.Association;
 import RefOntoUML.Class;
@@ -32,14 +38,15 @@ import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 
 /**
- *  This class is used to associate the Elements of the model with their modified name.
+ *  This class is used to read the model instance and to associate the Elements of the model 
+ *  with their modified names into Hash Maps.
  *  
  * 	@author John Guerson 
  *  @author Tiago Sales 
  *  @author Lucas Thom   
  */
 
-public class NamesMapper {
+public class OntoUMLParser {
 
 	/** Name of the RefOntoUML Model root. */
 	public String refmodelname;
@@ -51,17 +58,17 @@ public class NamesMapper {
 	public HashMap<Property,String> assocEndMap;
 	
 	/** Performs modification on model name. */
-	public NamesHandler h1;
+	private NamesHandler h1;
 	
 	/** Performs modifications on names. */
-	public NamesHandler h2;
+	private NamesHandler h2;
 		
 	/**
 	 * Constructor.
 	 *  
 	 * @param refmodel: The root of .refontouml model (RefOntoUML.Model).
 	 */	 
-	public NamesMapper(RefOntoUML.Model refmodel)
+	public OntoUMLParser(RefOntoUML.Model refmodel)
 	{
 		assocEndMap = new HashMap<Property,String>();
 		elementsMap = new HashMap<PackageableElement,String>();
@@ -71,6 +78,27 @@ public class NamesMapper {
 		
 		h2 = new NamesHandler();
 		initializeHashMaps(refmodel);		
+	}
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param refontoumlPath: Absolute Path of the OntoUML Model.
+	 * @throws IOException
+	 */
+	public OntoUMLParser(String refontoumlPath) throws IOException
+	{
+		Resource resource = ResourceUtil.loadOntoUML(refontoumlPath);
+		RefOntoUML.Model refmodel = (RefOntoUML.Model)resource.getContents().get(0);
+		
+		assocEndMap = new HashMap<Property,String>();
+		elementsMap = new HashMap<PackageableElement,String>();
+		
+		h1 = new NamesHandler();
+		this.refmodelname = h1.treatName(refmodel.getName(),refmodel.getClass().toString());
+		
+		h2 = new NamesHandler();
+		initializeHashMaps(refmodel);
 	}
 	
 	/** 
@@ -99,10 +127,10 @@ public class NamesMapper {
 		if (pe instanceof Class || pe instanceof Association || ((pe instanceof DataType) && !(pe instanceof PrimitiveType)) || (pe instanceof GeneralizationSet)) 
 		{
 			if(pe instanceof Association)
-			{
-				Property property0 = ((Association)pe).getOwnedEnd().get(0);
-				Property property1 = ((Association)pe).getOwnedEnd().get(1);
-				
+			{				
+				Property property0 = ((Association)pe).getMemberEnd().get(0);				
+				Property property1 = ((Association)pe).getMemberEnd().get(1);
+
 				if( (property0.getName() != null) && !(property0.getName().equals("")) )
 				{
 					assocEndMap.put(property0, h2.treatName(property0.getName(),property0.getClass().toString()));

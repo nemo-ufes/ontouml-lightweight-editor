@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ontouml2alloy.util;
+package br.ufes.inf.nemo.ontouml2alloy.api;
 
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
@@ -22,7 +22,7 @@ package br.ufes.inf.nemo.ontouml2alloy.util;
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.ontouml2alloy.mapper.NamesMapper;
+import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Classifier;
@@ -36,19 +36,19 @@ import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 
 /**
- * This class is used to provide useful methods of manipulating the OntoUML API.
+ * This class is used to provide useful methods of manipulating the OntoUML model instances.
  * 
  * 	@author John Guerson 
  *  @author Tiago Sales 
  *  @author Lucas Thom
  *
  */
-public class OntoUMLUtil {
+public class OntoUMLAPI {
 
 	/**
 	 * Verify if the Classifier 'c' is the source of some Meronymic Relation.
 	 */
-	public static boolean isSourceOfMeronymicRelation (NamesMapper refmapper, Classifier c)
+	public static boolean isSourceOfMeronymicRelation (OntoUMLParser refmapper, Classifier c)
 	{
 		for(PackageableElement pe : refmapper.elementsMap.keySet())
 		{
@@ -75,7 +75,7 @@ public class OntoUMLUtil {
 	/**
 	 * Verify if the Classifier 'c' is the source of some Mediation Relation.
 	 */
-	public static boolean isSourceOfMediationRelation (NamesMapper refmapper, Relator c)
+	public static boolean isSourceOfMediationRelation (OntoUMLParser refmapper, Relator c)
 	{
 		for(PackageableElement pe : refmapper.elementsMap.keySet())
 		{
@@ -97,7 +97,7 @@ public class OntoUMLUtil {
 	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete
 	 * What means that this Classifier is an Abstract Classifier.
 	 */
-	public static boolean isAbstractFromGeneralizationSets(NamesMapper refmapper, Classifier c) 
+	public static boolean isAbstractFromGeneralizationSets(OntoUMLParser refmapper, Classifier c) 
 	{
 		for(PackageableElement pe : refmapper.elementsMap.keySet())
 		{
@@ -124,7 +124,7 @@ public class OntoUMLUtil {
 	/**
 	 * Get all Mediations relations that have as a source the Relator 'r' or one of its Super Types. 
 	 */
-	public static void getAllMediations(NamesMapper refmapper, ArrayList<String> list, Relator r)
+	public static void getAllMediations(OntoUMLParser refmapper, ArrayList<String> list, Relator r)
 	{
 		for(PackageableElement pe : refmapper.elementsMap.keySet())
 		{
@@ -156,7 +156,7 @@ public class OntoUMLUtil {
 	 * RigidSortalClass : Kind, Collective, Quantity, SubKind.
 	 * 
 	 */	
-	public static void getAllMeronymics(NamesMapper refmapper, ArrayList<String> list, RigidSortalClass c)
+	public static void getAllMeronymics(OntoUMLParser refmapper, ArrayList<String> list, RigidSortalClass c)
 	{
 		for(PackageableElement pe : refmapper.elementsMap.keySet())
 		{
@@ -186,7 +186,7 @@ public class OntoUMLUtil {
 	/**
 	 * Get all Generalizations that the Classifier 'c' is the father.
 	 */
-	public static void getAllGeneralizations(NamesMapper refmapper, ArrayList<Generalization> generalizations, Classifier c)
+	public static void getAllGeneralizations(OntoUMLParser refmapper, ArrayList<Generalization> generalizations, Classifier c)
 	{		
 		for(PackageableElement elem : refmapper.elementsMap.keySet() )
 		{
