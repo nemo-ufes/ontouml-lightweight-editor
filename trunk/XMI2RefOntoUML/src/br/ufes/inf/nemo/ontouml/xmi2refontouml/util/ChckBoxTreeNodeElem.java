@@ -50,9 +50,9 @@ public class ChckBoxTreeNodeElem {
 		
 			if (element instanceof Association) {
 				Association assoc = (Association)element;
-				EList<Property> ownedEnds = assoc.getOwnedEnd();
+				EList<Property> memberEnds = assoc.getMemberEnd();
 				info +=	"Connections:\n";
-				for (Property prop : ownedEnds) {
+				for (Property prop : memberEnds) {
 					info +=	"      " + prop.getType().getName() + "\n";
 				}
 			}
