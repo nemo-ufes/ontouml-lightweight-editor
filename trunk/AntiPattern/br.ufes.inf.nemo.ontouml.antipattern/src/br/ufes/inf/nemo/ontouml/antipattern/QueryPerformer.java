@@ -23,7 +23,7 @@ public class QueryPerformer {
 		RefOntoUMLPackage refMetaPack = RefOntoUMLPackage.eINSTANCE;
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		// Get the URI of the model file.
-		URI fileURI = URI.createFileURI(new File("models/XML Models/Georreferenciamento.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
 		
@@ -57,14 +57,21 @@ public class QueryPerformer {
 		    	
 		    }
 		    
-		    Collection<Relator>result2 = RBOSIdentifier.RBOSRelatorQuery(m);
-		    System.out.println(result2.size());
+		    Collection<Relator>result2 = RWORIdentifier.RWORQuery(m);
+		    System.out.println("#Relator With Overlapping Roles Antipatterns : "+result2.size());
 	
 		    for (Relator c : result2) {
-		    	System.out.println(RBOSAlloyGenerator.ExclusiveRolesAlloyPredicate(c, mapper));
-		    	System.out.println(RBOSAlloyGenerator.NonExclusiveRolesAlloyPredicate(c, mapper));
-		    	System.out.println(RBOSAlloyGenerator.MultipleExclusiveRolesAlloyPredicate(c,mapper));
+		    	System.out.println(RWORAlloyGenerator.ExclusiveRolesAlloyPredicate(c, mapper));
+		    	System.out.println(RWORAlloyGenerator.NonExclusiveRolesAlloyPredicate(c, mapper));
+		    	System.out.println(RWORAlloyGenerator.MultipleExclusiveRolesAlloyPredicate(c,mapper));
 
+		    }
+		    
+		    Collection<Association> result3 = RBOSIdentifier.RBOSQuery(m);
+		    System.out.println("#Relation Between Overlapping Subtypes Antipatterns : "+result3.size());
+		    for (Association c : result3) {
+		    	System.out.println(RBOSAlloyGenerator.DisjointParticipantsAlloyPredicate(c, mapper));
+		    	System.out.println(RBOSAlloyGenerator.OverlappingParticipantsAlloyPredicate(c, mapper));
 		    }
 		    		    
 		} catch (ParserException e) {
