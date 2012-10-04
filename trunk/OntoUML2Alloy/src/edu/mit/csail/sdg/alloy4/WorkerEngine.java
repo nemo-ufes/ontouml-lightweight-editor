@@ -30,7 +30,7 @@ import java.io.PrintStream;
 import java.io.Serializable;
 import java.lang.Thread.UncaughtExceptionHandler;
 
-import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
 
 /** This class allows you to execute tasks in a subprocess, and receive its outputs via callback.
  *
