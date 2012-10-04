@@ -762,38 +762,24 @@ public class AlloyAPI {
 	/**
 	 * Create a specific Quantification Expression.
 	 * 
-	 * all x: typeName | # x.assocName op value
+	 * all x: type | # binOperation CompOperation value
 	 */
-	@SuppressWarnings("unchecked")
-	public static QuantificationExpression createQuantificationExpression (AlloyFactory factory, String typeName, String assocName, CompareOperator op, int value)
+	public static QuantificationExpression createQuantificationExpression (AlloyFactory factory, VariableReference type, BinaryOperation binOperation, CompareOperator CompOperator, int value)
 	{
-		QuantificationExpression qe = factory.createQuantificationExpression();
-		qe.setQuantificator(Quantificator.ALL_LITERAL);
-		Declaration decl = factory.createDeclaration();
-		Variable var = factory.createVariable();
-		var.setName("x");
-		var.setDeclaration(decl);
-		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(typeName);
-		decl.setExpression(vr);
-		qe.getDeclaration().add(decl);		
-		BinaryOperation boJoin = factory.createBinaryOperation();
-		CompareOperation co = factory.createCompareOperation();
+		QuantificationExpression qe = createQuantificationExpression(factory, Quantificator.ALL_LITERAL, "x", type.getVariable());
+					
+		CompareOperation co = factory.createCompareOperation();		
+
 		UnaryOperation uOp = factory.createUnaryOperation();		
-		boJoin.setOperator(BinaryOperator.JOIN_LITERAL);
-		vr = factory.createVariableReference();
-		vr.setVariable(assocName);
-		boJoin.setRightExpression(vr);
-		vr = factory.createVariableReference();
-		vr.setVariable(var.getName());
-		boJoin.setLeftExpression(vr);		
-		co.setOperator(op);
-		co.setLeftExpression(uOp);
-		vr = factory.createVariableReference();
-		vr.setVariable(String.valueOf(value));
-		co.setRightExpression(vr);		
 		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);
-		uOp.setExpression(boJoin);		
+		uOp.setExpression(binOperation);		
+		co.setLeftExpression(uOp);
+		
+		co.setOperator(CompOperator);		
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(String.valueOf(value));		
+		co.setRightExpression(vr);
+		
 		qe.setExpression(co);
 		return qe;
 	}

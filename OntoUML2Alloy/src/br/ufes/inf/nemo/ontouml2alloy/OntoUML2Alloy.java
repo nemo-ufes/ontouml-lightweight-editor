@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ontouml2alloy.transformer;
+package br.ufes.inf.nemo.ontouml2alloy;
 
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
@@ -20,21 +20,40 @@ package br.ufes.inf.nemo.ontouml2alloy.transformer;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+
+import br.ufes.inf.nemo.alloy.AlloyPackage;
+import br.ufes.inf.nemo.alloy.impl.AlloyPackageImpl;
+import br.ufes.inf.nemo.alloy.util.AlloyResourceFactoryImpl;
+import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
+import br.ufes.inf.nemo.ontouml2alloy.transformer.Transformer;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyLibraryFiles;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyThemeFile;
 
+import RefOntoUML.Association;
+import RefOntoUML.Class;
+import RefOntoUML.Classifier;
+import RefOntoUML.Derivation;
+import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Model;
+import RefOntoUML.PackageableElement;
 
 import edu.mit.csail.sdg.alloy4whole.SimpleGUI_custom;
 
 /**
- *	This class is used to call the transformation of OntoUML to Alloy. 
+ *	This class is used to execute the transformation of OntoUML to Alloy. 
  *  
  * 	@author John Guerson 
  *  @author Tiago Sales 
@@ -57,6 +76,23 @@ public class OntoUML2Alloy {
 	
 	/** Parameters to open Alloy Analyzer. */
 	public static String[] argsAnalyzer = {"",""};
+	
+	/** 
+	 *  Provide the ontouml model elements.
+	 *  It is also used for associate the elements of the ontouml model 
+	 *  with their modified names (i.e. without special characters: #, !, @, $, %, and etc...). 
+	 */
+	public static Parser ontoparser;
+	
+	/** 
+	 * Performs the transformation of ontouml elements. 
+	 */
+	public static Transformer transformer;
+	
+	/** 
+	 * Alloy model resource. 
+	 */
+	public static Resource alsresource;
 	
 	/**
 	 * 
@@ -114,7 +150,7 @@ public class OntoUML2Alloy {
 		out.close();
 		
 		// Here the transformation begins...
-		Transformation.start(refmodel);
+		start(refmodel);
 		
 		// open he Alloy Analyzer
 		if (openAnalyzer)
@@ -125,5 +161,90 @@ public class OntoUML2Alloy {
 		}
 
 		return true;
+	}	
+	
+	private static void start(RefOntoUML.Model refmodel)
+	{
+		ontoparser = new Parser(refmodel);
+		
+		transformer = new Transformer(ontoparser);		
+		
+		transformer.initialAditions();
+		
+		// Classifiers
+		for (PackageableElement pe : ontoparser.getPackageableElements())
+		{			
+			if (pe instanceof Classifier) 
+				
+				transformer.transformClassifier( (Classifier)pe );			
+		}
+				
+		// Generalizations
+		for (PackageableElement pe : ontoparser.getPackageableElements())
+		{			
+			if (pe instanceof Class)
+			{
+				for(Generalization gen : ((Class)pe).getGeneralization())
+				{
+					transformer.transformGeneralizations(gen);
+				}
+			}
+		}
+		
+		// GeneralizationSets
+		for (PackageableElement pe : ontoparser.getPackageableElements())
+		{			
+			if (pe instanceof GeneralizationSet) 
+				
+				transformer.transformGeneralizationSets((GeneralizationSet) pe);			
+		}
+		
+		// Associations
+		for (PackageableElement pe : ontoparser.getPackageableElements())
+		{
+			if (pe instanceof Association && !(pe instanceof Derivation))
+			{
+				transformer.transformAssociations((Association) pe);
+			}
+			else if (pe instanceof Derivation)
+			{
+				transformer.transformDerivations((Derivation) pe);
+			}
+		}
+						
+		transformer.finalAdditions();
+		
+		createAlsResource();
+		
+		alsresource.getContents().add(transformer.module);
+		
+		saveAlsResourceToFile();
+	}
+	
+	/** 
+	 * Init Alloy Resource 'alsresource'. 
+	 */
+	private static void createAlsResource() 
+	{
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new AlloyResourceFactoryImpl() );
+		resourceSet.getPackageRegistry().put(AlloyPackage.eNS_URI,AlloyPackage.eINSTANCE);
+		AlloyPackageImpl.init();
+		alsresource = resourceSet.createResource(URI.createURI("models/out.xmi"));
+	}
+	
+	/** 
+	 * Save 'alsresource' content into a file (.als). 
+	 */
+	private static void saveAlsResourceToFile() 
+	{		
+		try{			
+			FileWriter fstream = new FileWriter(OntoUML2Alloy.alsPath);
+			BufferedWriter out = new BufferedWriter(fstream);
+			out.write(alsresource.getContents().get(0).toString());			
+			out.close();
+		  }catch (Exception e){
+			  System.err.println("Error: " + e.getMessage());
+		  }		
 	}	
 }

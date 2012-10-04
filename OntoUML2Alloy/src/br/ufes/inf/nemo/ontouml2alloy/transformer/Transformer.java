@@ -67,9 +67,10 @@ import br.ufes.inf.nemo.alloy.UnaryOperation;
 import br.ufes.inf.nemo.alloy.UnaryOperator;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
-import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
+import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
 
 /**
  *	This class is used to transform every element of the model into alloy. 
@@ -83,62 +84,19 @@ import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
  */
 
 public class Transformer {
-				
-	/* =========================================================================================================*/
-
+		
 	/** 
 	 *  Provide the ontouml model elements.
 	 *  It is also used for associate the elements of the ontouml model 
 	 *  with their modified names (i.e. without special characters: #, !, @, $, %, and etc...). 
 	 */
-	public OntoUMLParser ontoparser;
+	public Parser ontoparser;
 			
 	/** 
 	 * Alloy instance. 
 	 */
 	public AlloyFactory factory = AlloyFactory.eINSTANCE;
 
-	/* =========================================================================================================*/
-	
-	// initialized by initializeDefaultSignatures() method 
-	
-	/** Alloy Default Signatures Names. */
-	public ArrayList<String> defaultSignatures = new ArrayList<String>();
-
-	/** Alloy Default Signature : sig Object{}. */
-	public SignatureDeclaration sigObject;
-	
-	/** Alloy Default Signature : sig Property{}. */
-	public SignatureDeclaration sigProperty;
-	
-	/** Alloy Default Signature : sig DataType{}. */
-	public SignatureDeclaration sigDatatype;
-	
-	/* =========================================================================================================*/
-	
-	// initialized by initializeNamesList() method
-	
-	/** List containing all the Object Class names. */
-	public ArrayList<String> objectNamesList = new ArrayList<String>();	
-	
-	/** List containing all the Moment Class names. */
-	public ArrayList<String> propertyNamesList = new ArrayList<String>();
-	
-	/** List containing all the DataTypes names. */
-	public ArrayList<String> datatypeNamesList = new ArrayList<String>();
-	
-	/** List containing all the names of Substances Sortals that are disjoint. */
-	public ArrayList<String> subsortalDisjNamesList = new ArrayList<String>();
-	
-	/** List containing all the names of Moment Classes that are disjoint. */
-	public ArrayList<String> propertyDisjNamesList = new ArrayList<String>();
-	
-	/** List containing all the names of DataTypes that are disjoint. */
-	public ArrayList<String> datatypeDisjNamesList = new ArrayList<String>();
-		
-	/** List containing all the rigid classifier. */
-	public ArrayList<Classifier> rigidElementsList = new ArrayList<Classifier>();
-	
 	/* =========================================================================================================*/
 
 	// initialized by method initialAditions() :
@@ -147,33 +105,74 @@ public class Transformer {
 	public AlloyModule module;
 	
 	/** Alloy Signature World. */
-	public SignatureDeclaration world;
+	private SignatureDeclaration world;
 	
 	/** Alloy World Field exists. */
-	public Variable exists;
+	private Variable exists;
 	
 	/** Alloy association_properties Fact Declaration. */
-	public FactDeclaration association_properties;
+	private FactDeclaration association_properties;
 
 	/** Alloy derivation Fact Declaration. */
-	public FactDeclaration derivations;
+	private FactDeclaration derivations;
 
+	/* =========================================================================================================*/
+
+	// initialized by initializeDefaultSignatures() method 
+	
+	/** Alloy Default Signatures Names. */
+	private ArrayList<String> defaultSignatures = new ArrayList<String>();
+
+	/** Alloy Default Signature : sig Object{}. */
+	private SignatureDeclaration sigObject;
+	
+	/** Alloy Default Signature : sig Property{}. */
+	private SignatureDeclaration sigProperty;
+	
+	/** Alloy Default Signature : sig DataType{}. */
+	private SignatureDeclaration sigDatatype;
+	
+	/* =========================================================================================================*/
+	
+	// initialized by initializeNamesList() method
+	
+	/** List containing all the Object Class names. */
+	private ArrayList<String> objectNamesList = new ArrayList<String>();	
+	
+	/** List containing all the Moment Class names. */
+	private ArrayList<String> propertyNamesList = new ArrayList<String>();
+	
+	/** List containing all the DataTypes names. */
+	private ArrayList<String> datatypeNamesList = new ArrayList<String>();
+	
+	/** List containing all the names of Substances Sortals that are disjoint. */
+	private ArrayList<String> subsortalDisjNamesList = new ArrayList<String>();
+	
+	/** List containing all the names of Moment Classes that are disjoint. */
+	private ArrayList<String> propertyDisjNamesList = new ArrayList<String>();
+	
+	/** List containing all the names of DataTypes that are disjoint. */
+	private ArrayList<String> datatypeDisjNamesList = new ArrayList<String>();
+		
+	/** List containing all the rigid classifier. */
+	private ArrayList<Classifier> rigidElementsList = new ArrayList<Classifier>();
+	
 	/* =========================================================================================================*/
 	
 	// initialized by transformClassifier()
 	
 	/** List containing all the facts for relator's rule. */
-	public ArrayList<FactDeclaration> relatorConstraintFactList = new ArrayList<FactDeclaration>();
+	private ArrayList<FactDeclaration> relatorConstraintFactList = new ArrayList<FactDeclaration>();
 
 	/** List containing all the facts for weak supplementation's rule. */
-	public ArrayList<FactDeclaration> weakSupplementationFactList = new ArrayList<FactDeclaration>();
+	private ArrayList<FactDeclaration> weakSupplementationFactList = new ArrayList<FactDeclaration>();
 	
 	/* =========================================================================================================*/
 	
 	/**
 	 * Constructor().
 	 */
-	public Transformer (OntoUMLParser parser)
+	public Transformer (Parser parser)
 	{
 		ontoparser = parser;
 		
@@ -1106,40 +1105,44 @@ public class Transformer {
 		
 		if (lowerSource > 1)
 		{
-			QuantificationExpression qe =
-					
-				AlloyAPI.createQuantificationExpression(factory, target.getVariable(), ontoparser.getName(ass), 
-				CompareOperator.GREATER_EQUAL_LITERAL, lowerSource);
+			BinaryOperation binJoin = 
+					AlloyAPI.createBinaryOperation(factory, ontoparser.getName(ass), BinaryOperator.JOIN_LITERAL, "x");
+			
+			QuantificationExpression qe =					
+				AlloyAPI.createQuantificationExpression(factory, target, binJoin, CompareOperator.GREATER_EQUAL_LITERAL, lowerSource);
 			
 			world.getBlock().getExpression().add(qe);
 		}
 		
 		if (upperSource > 1 && upperSource != -1) 
 		{
-			QuantificationExpression qe =
-					
-				AlloyAPI.createQuantificationExpression(factory, target.getVariable(), ontoparser.getName(ass), 
-				CompareOperator.LESS_EQUAL_LITERAL, upperSource);
+			BinaryOperation binJoin = 
+				AlloyAPI.createBinaryOperation(factory,ontoparser.getName(ass), BinaryOperator.JOIN_LITERAL,"x");
+			
+			QuantificationExpression qe =					
+				AlloyAPI.createQuantificationExpression(factory, target, binJoin, CompareOperator.LESS_EQUAL_LITERAL, upperSource);
 				
 			world.getBlock().getExpression().add(qe);
 		}
 		
 		if (lowerTarget > 1) 
 		{
-			QuantificationExpression qe =
-					
-				AlloyAPI.createQuantificationExpression(factory, source.getVariable(), ontoparser.getName(ass), 
-				CompareOperator.GREATER_EQUAL_LITERAL, lowerTarget);
+			BinaryOperation binJoin = 
+					AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,ontoparser.getName(ass));
+			
+			QuantificationExpression qe =					
+				AlloyAPI.createQuantificationExpression(factory, source, binJoin, CompareOperator.GREATER_EQUAL_LITERAL, lowerTarget);
 				
 			world.getBlock().getExpression().add(qe);
 		}
 		
 		if (upperTarget > 1 && upperTarget != -1) 
 		{
-			QuantificationExpression qe =
-					
-				AlloyAPI.createQuantificationExpression(factory, source.getVariable(), ontoparser.getName(ass), 
-				CompareOperator.LESS_EQUAL_LITERAL, upperTarget);
+			BinaryOperation binJoin = 
+					AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,ontoparser.getName(ass));			
+			
+			QuantificationExpression qe =					
+				AlloyAPI.createQuantificationExpression(factory, source, binJoin, CompareOperator.LESS_EQUAL_LITERAL, upperTarget);
 				
 			world.getBlock().getExpression().add(qe);		
 		}

@@ -36,7 +36,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
-import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.util.ResourceUtil;
 
 /**
