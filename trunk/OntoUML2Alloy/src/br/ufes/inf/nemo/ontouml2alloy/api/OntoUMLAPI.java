@@ -22,7 +22,7 @@ package br.ufes.inf.nemo.ontouml2alloy.api;
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
+import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
 
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Classifier;
@@ -48,7 +48,7 @@ public class OntoUMLAPI {
 	/**
 	 * Verify if the Classifier 'c' is the source of some Meronymic Relation.
 	 */
-	public static boolean isSourceOfMeronymicRelation (OntoUMLParser ontoparser, Classifier c)
+	public static boolean isSourceOfMeronymicRelation (Parser ontoparser, Classifier c)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -75,7 +75,7 @@ public class OntoUMLAPI {
 	/**
 	 * Verify if the Classifier 'c' is the source of some Mediation Relation.
 	 */
-	public static boolean isSourceOfMediationRelation (OntoUMLParser ontoparser, Relator c)
+	public static boolean isSourceOfMediationRelation (Parser ontoparser, Relator c)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -97,7 +97,7 @@ public class OntoUMLAPI {
 	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete
 	 * What means that this Classifier is an Abstract Classifier.
 	 */
-	public static boolean isAbstractFromGeneralizationSets(OntoUMLParser ontoparser, Classifier c) 
+	public static boolean isAbstractFromGeneralizationSets(Parser ontoparser, Classifier c) 
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -124,7 +124,7 @@ public class OntoUMLAPI {
 	/**
 	 * Get all Mediations relations that have as a source the Relator 'r' or one of its Super Types. 
 	 */
-	public static void getAllMediations(OntoUMLParser ontoparser, ArrayList<String> list, Relator r)
+	public static void getAllMediations(Parser ontoparser, ArrayList<String> list, Relator r)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -156,7 +156,7 @@ public class OntoUMLAPI {
 	 * RigidSortalClass : Kind, Collective, Quantity, SubKind.
 	 * 
 	 */	
-	public static void getAllMeronymics(OntoUMLParser ontoparser, ArrayList<String> list, RigidSortalClass c)
+	public static void getAllMeronymics(Parser ontoparser, ArrayList<String> list, RigidSortalClass c)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -186,7 +186,7 @@ public class OntoUMLAPI {
 	/**
 	 * Get all Generalizations that the Classifier 'c' is the father.
 	 */
-	public static void getAllGeneralizations(OntoUMLParser ontoparser, ArrayList<Generalization> generalizations, Classifier c)
+	public static void getAllGeneralizations(Parser ontoparser, ArrayList<Generalization> generalizations, Classifier c)
 	{		
 		for(PackageableElement elem : ontoparser.getPackageableElements() )
 		{
