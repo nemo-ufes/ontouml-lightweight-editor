@@ -9,6 +9,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import org.eclipse.ocl.ParserException;
+import org.eclipse.ocl.util.Tuple;
+
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
 import RefOntoUML.Association;
 import RefOntoUML.Model;
@@ -23,7 +25,9 @@ public class QueryPerformer {
 		RefOntoUMLPackage refMetaPack = RefOntoUMLPackage.eINSTANCE;
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		// Get the URI of the model file.
-		URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/Georreferenciamento.xmi").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/RelationSpecialization.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
 		
@@ -73,12 +77,23 @@ public class QueryPerformer {
 		    	System.out.println(RBOSAlloyGenerator.DisjointParticipantsAlloyPredicate(c, mapper));
 		    	System.out.println(RBOSAlloyGenerator.OverlappingParticipantsAlloyPredicate(c, mapper));
 		    }
+		    
+		    Collection<Tuple<Association,Association>> result4 = RSIdentifier.RSQuery(m);
+		    System.out.println("#Relation Specialization Antipatterns: "+result4.size());
+		    
+		    for (Tuple<Association,Association> o : result4) {
+		    	System.out.println(RSAlloyGenerator.subsetAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
+		    	System.out.println(RSAlloyGenerator.notSubsetAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
+		    	System.out.println(RSAlloyGenerator.redefineAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
+		    }
 		    		    
 		} catch (ParserException e) {
 		    // record failure to parse
 		    //valid = false;
 		    System.err.println(e.getLocalizedMessage());
 		}
+		
+		
 		
         
 	}
