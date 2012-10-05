@@ -48,7 +48,7 @@ import RefOntoUML.Property;
  *  @author Lucas Thom   
  */
 
-public class OntoUMLParser {
+public class Parser {
 
 	/** Name of the RefOntoUML Model root. */
 	private String refmodelname;
@@ -70,7 +70,7 @@ public class OntoUMLParser {
 	 *  
 	 * @param refmodel: The root of .refontouml model (RefOntoUML.Model).
 	 */	 
-	public OntoUMLParser(RefOntoUML.Model refmodel)
+	public Parser(RefOntoUML.Model refmodel)
 	{
 		assocEndMap = new HashMap<Property,String>();
 		elementsMap = new HashMap<PackageableElement,String>();
@@ -88,7 +88,7 @@ public class OntoUMLParser {
 	 * @param refontoumlPath: Absolute Path of the OntoUML Model.
 	 * @throws IOException
 	 */
-	public OntoUMLParser(String refontoumlPath) throws IOException
+	public Parser(String refontoumlPath) throws IOException
 	{
 		Resource resource = ResourceUtil.loadOntoUML(refontoumlPath);
 		RefOntoUML.Model refmodel = (RefOntoUML.Model)resource.getContents().get(0);
