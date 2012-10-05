@@ -557,13 +557,13 @@ public class Transformer {
 	@SuppressWarnings("unchecked")
 	private FactDeclaration createWeakSupplementation(Classifier c) 
 	{
-		if (c.isIsAbstract()) return null;
-				
+		if (c.isIsAbstract()) { return null; }
+		
 		// isAbstract from generalization Sets (Disjoint and Complete)
-		if ( OntoUMLAPI.isAbstractFromGeneralizationSets(ontoparser,c)) return null;	
+		if (OntoUMLAPI.isAbstractFromGeneralizationSets(ontoparser,c)) { return null; }	
 		
-		if (! OntoUMLAPI.isSourceOfMeronymicRelation(ontoparser,c)) return null;
-		
+		if (! OntoUMLAPI.isSourceOfMeronymicRelation(ontoparser,c)) { return null; } 
+				
 		// get all 'c' meronymics
 		ArrayList<String> associationNames = new ArrayList<String>();		
 		OntoUMLAPI.getAllMeronymics(ontoparser,associationNames, (RigidSortalClass)c);	

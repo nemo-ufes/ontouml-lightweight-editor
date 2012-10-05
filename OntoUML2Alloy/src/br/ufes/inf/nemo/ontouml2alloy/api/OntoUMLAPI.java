@@ -22,9 +22,6 @@ package br.ufes.inf.nemo.ontouml2alloy.api;
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
-
-import RefOntoUML.AggregationKind;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
@@ -34,6 +31,7 @@ import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
+import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
 
 /**
  * This class is used to provide useful methods of manipulating the OntoUML model instances.
@@ -54,15 +52,17 @@ public class OntoUMLAPI {
 		{
 			if (pe instanceof Meronymic) 
 			{
-				Meronymic assoc = (Meronymic)pe;				
+				Meronymic assoc = (Meronymic)pe;		
+				int count=0;
 				for( Property p : assoc.getMemberEnd())
 				{
-					if (!p.getAggregation().equals(AggregationKind.NONE))
+					if (count==0)
 					{
 						if (p.getType().getName().equals(c.getName()))
-						{							
+						{
 							return true;
-						}
+						}	
+						count++;
 					}
 				}
 			}
@@ -163,14 +163,16 @@ public class OntoUMLAPI {
 			if(pe instanceof Meronymic)
 			{
 				Meronymic assoc = (Meronymic)pe;
+				int count=0;
 				for( Property p : assoc.getMemberEnd())
 				{
-					if (!p.getAggregation().equals(AggregationKind.NONE))
+					if (count==0)
 					{
 						if (p.getType().getName().equals(c.getName()))
 						{
 							list.add(ontoparser.getName(pe));							
 						}
+						count++;
 					}
 				}
 			}
