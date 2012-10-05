@@ -85,7 +85,10 @@ public class QueryPerformer {
 		    	System.out.println(RSAlloyGenerator.subsetAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
 		    	System.out.println(RSAlloyGenerator.notSubsetAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
 		    	System.out.println(RSAlloyGenerator.redefineAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
+		    	System.out.println(RSAlloyGenerator.disjointAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
 		    }
+		    
+		    
 		    		    
 		} catch (ParserException e) {
 		    // record failure to parse
