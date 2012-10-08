@@ -1,7 +1,9 @@
-package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
+package br.ufes.inf.nemo.ontouml.xmi2refontouml.core;
 
 import java.util.Map;
 import java.util.List;
+
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.ElementType;
 
 
 

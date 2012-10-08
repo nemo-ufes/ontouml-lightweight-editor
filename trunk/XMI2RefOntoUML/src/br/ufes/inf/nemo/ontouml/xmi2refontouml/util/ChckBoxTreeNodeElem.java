@@ -11,11 +11,8 @@ public class ChckBoxTreeNodeElem {
 	
 	public ChckBoxTreeNodeElem (Element element) {
 		this.element = element;
-		try {
+		if (element instanceof NamedElement) {
 			this.name = ((NamedElement)element).getName();
-		} catch (ClassCastException ccex) {
-			System.out.println(element.toString());
-			System.out.println("Something wrong is not right.");
 		}
 	}
 	

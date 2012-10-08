@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
+package br.ufes.inf.nemo.ontouml.xmi2refontouml.mapperImpl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +16,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mapper;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.ElementType;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.XMLDOMUtil;
 
 
 public class MapperEA implements Mapper {
