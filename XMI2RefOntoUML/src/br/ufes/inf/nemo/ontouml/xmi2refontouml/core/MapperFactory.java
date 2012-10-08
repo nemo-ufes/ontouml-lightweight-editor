@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
+package br.ufes.inf.nemo.ontouml.xmi2refontouml.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,8 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.mapperImpl.MapperAstah;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.mapperImpl.MapperEA;
 
 
 

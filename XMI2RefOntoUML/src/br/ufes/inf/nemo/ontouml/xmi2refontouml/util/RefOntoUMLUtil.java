@@ -7,6 +7,7 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,11 +33,10 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mapper;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
 
 import RefOntoUML.Association;
@@ -50,6 +50,7 @@ import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
+import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.util.ValidationMessage;
 
 
@@ -159,7 +160,9 @@ public class RefOntoUMLUtil {
 
     	filterModel(rootObject.getElement(), checkedNodes, uncheckedNodes);
     	
-    	deleteAll(uncheckedNodes, rootObject.getElement());
+    	for (EObject eObject : uncheckedNodes) {
+    		delete(eObject, rootObject.getElement());
+    	}
     }
 	
 	public static void filterModel(EObject element, List<EObject> checkedElements,
@@ -188,68 +191,139 @@ public class RefOntoUMLUtil {
     	}	
     }
 	
-	public static void deleteAll(Collection<EObject> eObjList, EObject rootEObject) {
-		for (EObject eObject : eObjList) {
-			Set<EObject> eObjects = new HashSet<EObject>();
-			Set<EObject> crossResourceEObjects = new HashSet<EObject>();
-			eObjects.add(eObject);
-			for (@SuppressWarnings("unchecked") TreeIterator<InternalEObject> j = 
-				(TreeIterator<InternalEObject>)(TreeIterator<?>)eObject.eAllContents();  j.hasNext(); ) {
-				
-				InternalEObject childEObject = j.next();
-				if (childEObject.eDirectResource() != null) {
-					System.out.println("só por desencargo");
-					crossResourceEObjects.add(childEObject);
-					
-				} else {
-					eObjects.add(childEObject);
-				}
-			}
-			
-			Map<EObject, Collection<EStructuralFeature.Setting>> usages;
-			usages = EcoreUtil.UsageCrossReferencer.findAll(eObjects, rootEObject);
+//	public static void deleteAll(Collection<EObject> eObjList, EObject rootEObject) {
+//		Set<EObject> eObjects = new HashSet<EObject>();
+//		Set<EObject> crossResourceEObjects = new HashSet<EObject>();
+//		
+//		for (EObject eObject : eObjList) {
+//			eObjects.add(eObject);
+//			for (@SuppressWarnings("unchecked") TreeIterator<InternalEObject> j = 
+//				(TreeIterator<InternalEObject>)(TreeIterator<?>)eObject.eAllContents();  j.hasNext(); ) {
+//				
+//				InternalEObject childEObject = j.next();
+//				if (childEObject.eDirectResource() != null) {
+//					System.out.println("só por desencargo");
+//					crossResourceEObjects.add(childEObject);
+//					
+//				} else {
+//					eObjects.add(childEObject);
+//				}
+//			}
+//		}
+//			
+//		Map<EObject, Collection<EStructuralFeature.Setting>> usages;
+//		usages = EcoreUtil.UsageCrossReferencer.findAll(eObjects, rootEObject);
+//
+//		for (Map.Entry<EObject, Collection<EStructuralFeature.Setting>> entry : usages.entrySet()) {
+//			EObject deletedEObject = entry.getKey();
+//			Collection<EStructuralFeature.Setting> settings = entry.getValue();
+//			for (EStructuralFeature.Setting setting : settings) {
+//				if (!eObjects.contains(setting.getEObject()) && 
+//						setting.getEStructuralFeature().isChangeable()) {
+//						
+//					if (setting.getEObject() instanceof Generalization ||
+//							setting.getEObject() instanceof Dependency) {
+//						delete(setting.getEObject());
+//		    		  
+//					} else if (setting.getEObject() instanceof GeneralizationSet) {
+//						EcoreUtil.remove(setting, deletedEObject);
+//						if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
+//							EcoreUtil.remove(setting.getEObject());
+//						}
+//		    		  
+//					} else if (setting.getEObject() instanceof Property) {
+//						if (setting.getEObject().eContainer() instanceof Association) {
+//							delete(setting.getEObject().eContainer(), true);
+//						} else {
+//							delete(setting.getEObject(), true);
+//						}
+//	    		  
+//					} else if (setting.getEObject() instanceof Comment) {
+//						EcoreUtil.remove(setting, deletedEObject);
+//						if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
+//							delete (setting.getEObject());
+//						}
+//	    		  
+//					} else if (!(setting instanceof UnmodifiableEList)) {
+//						EcoreUtil.remove(setting, deletedEObject);
+//					}
+//				}
+//			}
+//		}
+//
+//		for (EObject crossResourceEObject : crossResourceEObjects) {
+//			EcoreUtil.remove(crossResourceEObject.eContainer(), crossResourceEObject.eContainmentFeature(), crossResourceEObject);
+//		}
+//	}
+	
+	/**
+	   * Deletes the object from its {@link EObject#eResource containing} resource 
+	   * and/or its {@link EObject#eContainer containing} object
+	   * as well as from any other feature that references it 
+	   * within the enclosing root object. Function was adapted
+	   * from EcoreUtil.
+	   * @param eObject the object to delete.
+	   */
+	public static void delete(EObject eObject, EObject rootEObject) {
+	    Set<EObject> eObjects = new HashSet<EObject>();
+	    Set<EObject> crossResourceEObjects = new HashSet<EObject>();
+	    
+	    eObjects.add(eObject);
+	    for (@SuppressWarnings("unchecked") TreeIterator<InternalEObject> j = 
+	    		(TreeIterator<InternalEObject>)(TreeIterator<?>)eObject.eAllContents();  j.hasNext(); ) {
+	    	InternalEObject childEObject = j.next();
+	        if (childEObject.eDirectResource() != null) {
+	        	crossResourceEObjects.add(childEObject);
+	        }
+	        else {
+	        	eObjects.add(childEObject);
+	        }
+	    }
 
-			for (Map.Entry<EObject, Collection<EStructuralFeature.Setting>> entry : usages.entrySet()) {
-				EObject deletedEObject = entry.getKey();
-				Collection<EStructuralFeature.Setting> settings = entry.getValue();
-				for (EStructuralFeature.Setting setting : settings) {
-					if (!eObjects.contains(setting.getEObject()) && 
-							setting.getEStructuralFeature().isChangeable()) {
-						
-						if (setting.getEObject() instanceof Generalization ||
-								setting.getEObject() instanceof Dependency) {
-							delete(setting.getEObject());
-		    		  
-						} else if (setting.getEObject() instanceof GeneralizationSet) {
-							EcoreUtil.remove(setting, deletedEObject);
-							if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
-								EcoreUtil.remove(setting.getEObject());
-							}
-		    		  
-						} else if (setting.getEObject() instanceof Property) {
-							if (setting.getEObject().eContainer() instanceof Association) {
-								delete(setting.getEObject().eContainer(), true);
-							} else {
-								delete(setting.getEObject(), true);
-							}
-		    		  
-						} else if (setting.getEObject() instanceof Comment) {
-							EcoreUtil.remove(setting, deletedEObject);
-							if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
-								delete (setting.getEObject());
-							}
-		    		  
-						} else if (!(setting instanceof UnmodifiableEList)) {
-							EcoreUtil.remove(setting, deletedEObject);
-						}
-					}
-				}
-	      }
+	    Map<EObject, Collection<EStructuralFeature.Setting>> usages;
+	    usages = EcoreUtil.UsageCrossReferencer.findAll(eObjects, rootEObject);
 
-	      for (EObject crossResourceEObject : crossResourceEObjects)
-	      {
-	    	  EcoreUtil.remove(crossResourceEObject.eContainer(), crossResourceEObject.eContainmentFeature(), crossResourceEObject);
-	      }
+	    for (Map.Entry<EObject, Collection<EStructuralFeature.Setting>> entry : usages.entrySet()) {
+	        EObject deletedEObject = entry.getKey();
+	        Collection<EStructuralFeature.Setting> settings = entry.getValue();
+	        for (EStructuralFeature.Setting setting : settings) {
+	        	if (!eObjects.contains(setting.getEObject()) && setting.getEStructuralFeature().isChangeable()) {
+	        	  
+	        		if (setting.getEObject() instanceof Generalization ||
+		    			  setting.getEObject() instanceof Dependency) {
+	        			delete(setting.getEObject(), rootEObject);
+		    		  
+	        		} else if (setting.getEObject() instanceof GeneralizationSet) {
+	        			EcoreUtil.remove(setting, deletedEObject);
+	        			if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
+	        				EcoreUtil.remove(setting.getEObject());
+	        			}
+		    		  
+	        		} else if (setting.getEObject() instanceof Property) {
+	        			if (setting.getEObject().eContainer() instanceof Association) {
+	        				delete(setting.getEObject().eContainer(), rootEObject);
+	        			} else {
+	        				delete(setting.getEObject(), rootEObject);
+	        			}
+		    		  
+	        		} else if (setting.getEObject() instanceof Comment) {
+	        			EcoreUtil.remove(setting, deletedEObject);
+	        			if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
+	        				delete (setting.getEObject(), rootEObject);
+	        			}
+		    		  
+	        		} else if (!(setting instanceof UnmodifiableEList)) {
+	        			EcoreUtil.remove(setting, deletedEObject);
+	        		}
+	        	}
+	        }
+	    }
+	      
+	    EcoreUtil.remove(eObject);
+
+	    for (EObject crossResourceEObject : crossResourceEObjects) {
+	    	EcoreUtil.remove(crossResourceEObject.eContainer(), 
+	    			crossResourceEObject.eContainmentFeature(), crossResourceEObject);
 	    }
 	}
     
@@ -319,195 +393,56 @@ public class RefOntoUMLUtil {
      */    
     public static void validate(RefOntoUML.Model model) {
 		Diagnostician validator = Diagnostician.INSTANCE;
-		
-		// (Opcional, apenas para inicializar mais rápido) 
-		// As the first validation takes long due to initialization process,
-		// we start it here so the user doesn't get the initialization hit
-		//validator.validate(factory.createClass());
-		
+
 		Map<Object, Object> context = new HashMap<Object, Object>();
 		BasicDiagnostic diag = new BasicDiagnostic();
-		
+
 		// Returns true if the model is valid.
-		if (validator.validate(model, diag, context)){
-			System.out.println("Valid model.");
-		} else {
-			System.out.println("Invalid model.");
-		}
+		Map<PackageableElement, String> errorsMap = new HashMap<PackageableElement, String>();
 		
-		for (Diagnostic item : diag.getChildren()) {	
-			System.out.println(ValidationMessage.getFinalMessage(item.getMessage()));
+		if(!validator.validate(model, diag, context))
+		{
+			System.out.println("The model is not valid sintatically. The following error(s) where found:\n\n");
+			
+			for (Diagnostic item : diag.getChildren()) {
+				
+				PackageableElement element = (PackageableElement) item.getData().get(0);
+				String errors = "";
+				
+				if(errorsMap.containsKey(element))
+				{
+					errors = errorsMap.get(element);
+				}
+				
+				String message = ValidationMessage.getFinalMessage(item.getMessage());
+				String currentError = message.substring(message.indexOf("- ")+2, message.length()) + "\n\n";
+				errors += currentError;
+				errorsMap.put(element, errors);
+				System.out.println(handleName(element) + " - " + currentError);
+				
+			}	
+		} else {
+			System.out.println("valid model.");
 		}
 	}
+    
+    public static String handleName(Object element)
+	{
+		String name = "[unnamed]";
+		if(element instanceof NamedElementImpl)
+		{
+			NamedElementImpl namedElement = (NamedElementImpl) element;
+			if (namedElement.getName() != null)
+				name = namedElement.getName();
+		}
+		
+		return MessageFormat.format("{0} ({1})", name, getClassAsStereotype((EObject) element));
+	}
 	
-	/**
-	   * Deletes the object from its {@link EObject#eResource containing} resource 
-	   * and/or its {@link EObject#eContainer containing} object
-	   * as well as from any other feature that references it 
-	   * within the enclosing resource set, resource, or root object.
-	   * @param eObject the object to delete.
-	   * @since 2.3
-	   */
-    public static void delete(EObject eObject)
-	  {
-	    EObject rootEObject = EcoreUtil.getRootContainer(eObject);
-	    Resource resource = rootEObject.eResource();
-
-	    Collection<EStructuralFeature.Setting> usages;
-	    if (resource == null)
-	    {
-	      usages = EcoreUtil.UsageCrossReferencer.find(eObject, rootEObject);
-	    }
-	    else
-	    {
-	      ResourceSet resourceSet = resource.getResourceSet();
-	      if (resourceSet == null)
-	      {
-	        usages = EcoreUtil.UsageCrossReferencer.find(eObject, resource);
-	      }
-	      else
-	      {
-	        usages = EcoreUtil.UsageCrossReferencer.find(eObject, resourceSet);
-	      }
-	    }
-
-	    for (EStructuralFeature.Setting setting : usages)
-	    {
-	      if (setting.getEStructuralFeature().isChangeable())
-	      {	    	  
-	    	  if (setting.getEObject() instanceof Generalization ||
-	    			  setting.getEObject() instanceof Dependency) {
-	    		  delete(setting.getEObject());
-	    		  
-	    	  } else if (setting.getEObject() instanceof GeneralizationSet) {
-	    		  EcoreUtil.remove(setting, eObject);
-	    		  if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
-		    			  EcoreUtil.remove(setting.getEObject());
-	    		  }
-	    		  
-	    	  } else if (setting.getEObject() instanceof Property) {
-	    		  if (setting.getEObject().eContainer() instanceof Association) {
-	    			  delete(setting.getEObject().eContainer(), true);
-	    		  } else {
-	    			  delete(setting.getEObject(), true);
-	    		  }
-	    		  
-	    	  } else if (setting.getEObject() instanceof Comment) {
-	    		  EcoreUtil.remove(setting, eObject);
-	    		  if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
-	    			  delete (setting.getEObject());
-	    		  }
-	    		  
-	    	  } else if (!(setting instanceof UnmodifiableEList)) {
-	    		  EcoreUtil.remove(setting, eObject);
-	    	  }
-	      }
-	    }
-	    EcoreUtil.remove(eObject);
-	  }
-
-    /**
-	   * Deletes the object from its {@link EObject#eResource containing} resource 
-	   * and/or its {@link EObject#eContainer containing} object
-	   * as well as from any other feature that references it 
-	   * within the enclosing resource set, resource, or root object.
-	   * If recursive true, contained children of the object that are in the same resource 
-	   * are similarly removed from any features that references them.
-	   * @param eObject the object to delete.
-	   * @param recursive whether references to contained children should also be removed.
-	   * @since 2.4
-	   */	  
-	  public static void delete(EObject eObject, boolean recursive)
-	  {
-	    if (recursive)
-	    {
-	      EObject rootEObject = EcoreUtil.getRootContainer(eObject);
-	      Resource resource = rootEObject.eResource();
-
-	      Set<EObject> eObjects = new HashSet<EObject>();        
-	      Set<EObject> crossResourceEObjects = new HashSet<EObject>();        
-	      eObjects.add(eObject);
-	      for (@SuppressWarnings("unchecked") TreeIterator<InternalEObject> j = (TreeIterator<InternalEObject>)(TreeIterator<?>)eObject.eAllContents();  j.hasNext(); )
-	      {
-	        InternalEObject childEObject = j.next();
-	        if (childEObject.eDirectResource() != null)
-	        {
-	        	System.out.println("só por desencargo");
-	          crossResourceEObjects.add(childEObject);
-	        }
-	        else
-	        {
-	          eObjects.add(childEObject);
-	        }
-	      }
-
-	      Map<EObject, Collection<EStructuralFeature.Setting>> usages;
-	      if (resource == null)
-	      {
-	        usages = EcoreUtil.UsageCrossReferencer.findAll(eObjects, rootEObject);
-	      }
-	      else
-	      {
-	        ResourceSet resourceSet = resource.getResourceSet();
-	        if (resourceSet == null)
-	        {
-	          usages = EcoreUtil.UsageCrossReferencer.findAll(eObjects, resource);
-	        }
-	        else
-	        {
-	          usages = EcoreUtil.UsageCrossReferencer.findAll(eObjects, resourceSet);
-	        }
-	      }
-
-	      for (Map.Entry<EObject, Collection<EStructuralFeature.Setting>> entry : usages.entrySet())
-	      {
-	        EObject deletedEObject = entry.getKey();
-	        Collection<EStructuralFeature.Setting> settings = entry.getValue();
-	        for (EStructuralFeature.Setting setting : settings)
-	        {
-	          if (!eObjects.contains(setting.getEObject()) && setting.getEStructuralFeature().isChangeable())
-	          {
-	        	  if (setting.getEObject() instanceof Generalization ||
-		    			  setting.getEObject() instanceof Dependency) {
-		    		  delete(setting.getEObject());
-		    		  
-		    	  } else if (setting.getEObject() instanceof GeneralizationSet) {
-		    		  EcoreUtil.remove(setting, deletedEObject);
-		    		  if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
-			    			  EcoreUtil.remove(setting.getEObject());
-		    		  }
-		    		  
-		    	  } else if (setting.getEObject() instanceof Property) {
-		    		  if (setting.getEObject().eContainer() instanceof Association) {
-		    			  delete(setting.getEObject().eContainer(), true);
-		    		  } else {
-		    			  delete(setting.getEObject(), true);
-		    		  }
-		    		  
-		    	  } else if (setting.getEObject() instanceof Comment) {
-		    		  EcoreUtil.remove(setting, deletedEObject);
-		    		  if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
-		    			  delete (setting.getEObject());
-		    		  }
-		    		  
-		    	  } else if (!(setting instanceof UnmodifiableEList)) {
-		    		  EcoreUtil.remove(setting, deletedEObject);
-		    	  }
-	          }
-	        }
-	      }
-	      
-	      EcoreUtil.remove(eObject);
-
-	      for (EObject crossResourceEObject : crossResourceEObjects)
-	      {
-	    	  EcoreUtil.remove(crossResourceEObject.eContainer(), crossResourceEObject.eContainmentFeature(), crossResourceEObject);
-	      }
-	    }
-	    else
-	    {
-	      delete(eObject);
-	    }
-	  }
+	public static String getClassAsStereotype(EObject eObject) {
+		String ret = eObject.eClass().getName().toLowerCase()
+				.replace("association", "");
+		return "<<" + ret + ">>";
+	}
 	
 }
