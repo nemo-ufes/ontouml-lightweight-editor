@@ -177,11 +177,12 @@ public class TheFrame extends JFrame {
 		if (fpanel.txtOntoUML.isEnabled()) 
 		{
 			Resource resource = ResourceUtil.loadOntoUML(fpanel.txtOntoUML.getText());
-			fpanel.refmodel = (RefOntoUML.Model) resource.getContents().get(0);
-			fpanel.alsPath = fpanel.txtAlloy.getText();
+			fpanel.refmodel = (RefOntoUML.Model) resource.getContents().get(0);			
 		}
 				
-		OntoUML2Alloy.Transformation(fpanel.refmodel, fpanel.alsPath, relatorsRule, weakSuppl,true);
+		fpanel.alsPath = fpanel.txtAlloy.getText();
+		
+		OntoUML2Alloy.Transformation(fpanel.refmodel, fpanel.txtAlloy.getText(), relatorsRule, weakSuppl,true);
 
 		} catch (Exception e) {
 			

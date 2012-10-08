@@ -109,8 +109,8 @@ import edu.mit.csail.sdg.alloy4.Util.BooleanPref;
 import edu.mit.csail.sdg.alloy4.Util.IntPref;
 import edu.mit.csail.sdg.alloy4.Util.StringPref;
 import edu.mit.csail.sdg.alloy4.Version;
-import edu.mit.csail.sdg.alloy4.WorkerEngine;
-import edu.mit.csail.sdg.alloy4.WorkerEngine.WorkerCallback;
+import edu.mit.csail.sdg.alloy4.WorkerEngine_custom;
+import edu.mit.csail.sdg.alloy4.WorkerEngine_custom.WorkerCallback;
 import edu.mit.csail.sdg.alloy4.XMLNode;
 import edu.mit.csail.sdg.alloy4compiler.ast.Browsable;
 import edu.mit.csail.sdg.alloy4compiler.ast.Command;
@@ -770,7 +770,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
     /** This method performs File->Quit. */
     private Runner doQuit() {
         if (!wrap) if (text.closeAll()) {
-            try { WorkerEngine.stop(); } finally {  }
+            try { WorkerEngine_custom.stop(); } finally {  }
         }
         return wrapMe();
     }
@@ -986,7 +986,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
     	
         if (wrap) return wrapMe(commandIndex);
         final int index = commandIndex;
-        if (WorkerEngine.isBusy()) return null;
+        if (WorkerEngine_custom.isBusy()) return null;
         if (index==(-2)) subrunningTask=1; else subrunningTask=0;
         latestAutoInstance="";
         if (index>=0) latestCommand=index;
@@ -1026,15 +1026,15 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             showbutton.setEnabled(false);
             stopbutton.setVisible(true);
             int newmem = SubMemory.get(), newstack = SubStack.get();
-            if (newmem != subMemoryNow || newstack != subStackNow) WorkerEngine.stop();
+            if (newmem != subMemoryNow || newstack != subStackNow) WorkerEngine_custom.stop();
             if ("yes".equals(System.getProperty("debug")) && Verbosity.get()==Verbosity.FULLDEBUG)
-                WorkerEngine.runLocally(task, cb);
+                WorkerEngine_custom.runLocally(task, cb);
             else
-                WorkerEngine.run(task, newmem, newstack, alloyHome() + fs + "binary", "", cb);
+                WorkerEngine_custom.run(task, newmem, newstack, alloyHome() + fs + "binary", "", cb);
             subMemoryNow = newmem;
             subStackNow = newstack;
         } catch(Throwable ex) {
-            WorkerEngine.stop();
+            WorkerEngine_custom.stop();
             log.logBold("Fatal Error: Solver failed due to unknown reason.\n" +
               "One possible cause is that, in the Options menu, your specified\n" +
               "memory size is larger than the amount allowed by your OS.\n" +
@@ -1052,8 +1052,8 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         if (wrap) return wrapMe(how);
         int h = how;
         if (h!=0) {
-           if (h==2 && WorkerEngine.isBusy()) { WorkerEngine.stop(); log.logBold("\nSolving Stopped.\n"); log.logDivider(); }
-           WorkerEngine.stop();
+           if (h==2 && WorkerEngine_custom.isBusy()) { WorkerEngine_custom.stop(); log.logBold("\nSolving Stopped.\n"); log.logDivider(); }
+           WorkerEngine_custom.stop();
         }
         runmenu.setEnabled(true);
         runbutton.setVisible(true);
@@ -1603,16 +1603,16 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         public String compute(Object input) {        	
             final String arg = (String)input;
             OurUtil.show(frame);
-            if (WorkerEngine.isBusy())
+            if (WorkerEngine_custom.isBusy())
                 throw new RuntimeException("Alloy4 is currently executing a SAT solver command. Please wait until that command has finished.");            
             SimpleCallback1 cb = new SimpleCallback1(SimpleGUI_custom.this, viz, log, Verbosity.get().ordinal(), latestAlloyVersionName, latestAlloyVersion);
             SimpleTask2 task = new SimpleTask2();
             task.filename = arg;
             try {
-                WorkerEngine.run(task, SubMemory.get(), SubStack.get(), alloyHome() + fs + "binary", "", cb);
+                WorkerEngine_custom.run(task, SubMemory.get(), SubStack.get(), alloyHome() + fs + "binary", "", cb);
                 //task.run(cb);
             } catch(Throwable ex) {
-                WorkerEngine.stop();
+                WorkerEngine_custom.stop();
                 log.logBold("Fatal Error: Solver failed due to unknown reason.\n" +
                   "One possible cause is that, in the Options menu, your specified\n" +
                   "memory size is larger than the amount allowed by your OS.\n" +
@@ -1739,7 +1739,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
     }
 
     /** Create a dummy task object for testing purpose. */
-    private static final WorkerEngine.WorkerTask dummyTask = new WorkerEngine.WorkerTask() {
+    private static final WorkerEngine_custom.WorkerTask dummyTask = new WorkerEngine_custom.WorkerTask() {
         private static final long serialVersionUID = 0;
         public void run(WorkerCallback out) { }
     };
@@ -1794,7 +1794,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         // since we want the minimized window title on Linux/FreeBSD to just say Alloy Analyzer
 
         // Test the allowed memory sizes
-        final WorkerEngine.WorkerCallback c = new WorkerEngine.WorkerCallback() {
+        final WorkerEngine_custom.WorkerCallback c = new WorkerEngine_custom.WorkerCallback() {
             private final List<Integer> allowed = new ArrayList<Integer>();
             private final List<Integer> toTry = new ArrayList<Integer>(Arrays.asList(256,512,768,1024,1536,2048,2560,3072,3584,4096));
             private int mem;
@@ -1805,7 +1805,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
                     });
                     return;
                 }
-                try { mem=toTry.remove(0); WorkerEngine.stop(); WorkerEngine.run(dummyTask, mem, 128, "", "", this); return; } catch(IOException ex) { fail(); }
+                try { mem=toTry.remove(0); WorkerEngine_custom.stop(); WorkerEngine_custom.run(dummyTask, mem, 128, "", "", this); return; } catch(IOException ex) { fail(); }
             }
             public synchronized void done() {
                 //System.out.println("Alloy4 can use "+mem+"M"); System.out.flush();
