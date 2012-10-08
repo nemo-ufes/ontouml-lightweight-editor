@@ -19,7 +19,7 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
 
 
 
@@ -160,6 +160,8 @@ public class MapperAstah implements Mapper {
 //				} else if (parent.getNodeName().equals("Derivation")) {
 //					elemList = getChildsByTagName(parent, CONNECTION_TAG_PATH);
 				}
+				break;
+			default:
 				break;
 		}
 

@@ -215,6 +215,8 @@ public class MapperEA implements Mapper {
 					elemList = getChildsByType(elem, ElementType.PROPERTY);
 				}
 				break;
+			default:
+				break;
 		}
 		
 		return elemList;
