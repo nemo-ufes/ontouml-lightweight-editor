@@ -37,7 +37,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;

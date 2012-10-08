@@ -13,7 +13,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import br.ufes.inf.nemo.ontouml.xmi2refontouml.transformation.Mediator;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
 
 
 
