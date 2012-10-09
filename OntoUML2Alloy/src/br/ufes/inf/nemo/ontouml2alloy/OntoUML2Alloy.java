@@ -120,9 +120,9 @@ public class OntoUML2Alloy {
 		
 		// initialize dirPath
 		dirPath = alsPath.substring(0,alsPath.lastIndexOf(File.separator)+1);
-
+				
 		// generate alloy standard theme file
-		AlloyThemeFile.generateAlloyThemeFile(dirPath);	
+		AlloyThemeFile.generateAlloyThemeFile(dirPath);		
 
 		// generate alloy library files
 		AlloyLibraryFiles.generateLibraryFiles(dirPath);	
@@ -132,9 +132,9 @@ public class OntoUML2Alloy {
 		weakSupplementationRuleFlag = WeakSupplementationRuleFlag;
 		
 		// Copy "alloy4.2-rc.jar" to the destination directory 
-		InputStream is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("br.ufes.inf.nemo.alloy.analyzer.jar");
-		if(is == null) is = new FileInputStream("lib/br.ufes.inf.nemo.alloy.analyzer.jar");
-		File alloyJarFile = new File(dirPath + File.separator + "br.ufes.inf.nemo.alloy.analyzer.jar");
+		InputStream is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("alloy4.2-rc.jar");
+		if(is == null) is = new FileInputStream("lib/alloy4.2-rc.jar");
+		File alloyJarFile = new File(dirPath + "alloy4.2-rc.jar");
 		alloyJarFile.deleteOnExit();
 		OutputStream out = new FileOutputStream(alloyJarFile);
 
@@ -155,8 +155,8 @@ public class OntoUML2Alloy {
 		if (openAnalyzer)
 		{
 			argsAnalyzer[0] = alsPath;
-			argsAnalyzer[1] = dirPath + File.separator + "standart_theme.thm"	;	
-			SimpleGUI_custom.main(argsAnalyzer);			
+			argsAnalyzer[1] = dirPath + "standart_theme.thm"	;	
+			SimpleGUI_custom.main(argsAnalyzer);
 			/*Runtime.getRuntime().exec(
 					"java -jar "+alloyJarFile.getAbsolutePath()
 					+" "+argsAnalyzer[0]+" "+argsAnalyzer[1]

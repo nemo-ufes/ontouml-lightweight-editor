@@ -165,7 +165,7 @@ public final class WorkerEngine_custom {
                      "-Xss" + newstack + "k",
                      "-Djava.library.path=" + jniPath,
                      "-Ddebug=" + debug,
-                     "-cp", classPath+";"+OntoUML2Alloy.dirPath+"\\alloy4.2-rc.jar", WorkerEngine_custom.class.getName(),
+                     "-cp", classPath+";"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", WorkerEngine_custom.class.getName(),
                      Version.buildDate(), ""+Version.buildNumber()
                });
             else
@@ -174,7 +174,7 @@ public final class WorkerEngine_custom {
                      "-Xmx" + newmem + "m",
                      "-Xss" + newstack + "k",
                      "-Ddebug=" + debug,
-                     "-cp", classPath+";"+OntoUML2Alloy.dirPath+"\\alloy4.2-rc.jar", WorkerEngine_custom.class.getName(),
+                     "-cp", classPath+";"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", WorkerEngine_custom.class.getName(),
                      Version.buildDate(), ""+Version.buildNumber()
                });
             latest_sub = sub;

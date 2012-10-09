@@ -339,8 +339,8 @@ public final class VizGUI_custom implements ComponentListener {
     *
     * <p> Note: if standalone==false and xmlFileName.length()==0 and makeWindow==true, then we will initially hide the window.
     */
-   public VizGUI_custom(boolean standalone, String xmlFileName, JMenu windowmenu, Computer enumerator, Computer evaluator, boolean makeWindow, String theme) {
-
+   public VizGUI_custom(boolean standalone, String xmlFileName, JMenu windowmenu, Computer enumerator, Computer evaluator, boolean makeWindow, String theme) 
+   {
       this.enumerator = enumerator;
       this.standalone = standalone;
       this.evaluator = evaluator;
