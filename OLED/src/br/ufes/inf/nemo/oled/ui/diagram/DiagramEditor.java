@@ -27,6 +27,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -252,12 +254,23 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		});
 		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DELETE"),
 		"deleteSelection");
+		
 		getActionMap().put("deleteSelection", new AbstractAction() {
 			
 			private static final long serialVersionUID = -6375878624042384546L;
 			/** {@inheritDoc} */
 			public void actionPerformed(ActionEvent e) { deleteSelection(); }
 		});
+				
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(
+				   KeyEvent.VK_BACK_SPACE, InputEvent.META_MASK),
+				"deleteSelection");
+				getActionMap().put("deleteSelection", new AbstractAction() {
+					
+					private static final long serialVersionUID = -6375878624042384546L;
+					/** {@inheritDoc} */
+					public void actionPerformed(ActionEvent e) { deleteSelection(); }
+				});
 	}
 
 	/**
