@@ -49,15 +49,20 @@ public class AttributeTableModel extends BaseTableModel {
 
 	@Override
 	public void moveUpEntry(int index) {
+		attributes.move(index-1, index);
+		fireTableRowsUpdated(index-1, index);
 	}
 
 	@Override
 	public void moveDownEntry(int index) {
+		attributes.move(index+1, index);
+		fireTableRowsUpdated(index+1, index);
 	}
 
 	@Override
 	public void removeEntryAt(int index) {
-		
+		attributes.remove(index);
+		fireTableRowsDeleted(index, index);
 	}
 	
 	/**
