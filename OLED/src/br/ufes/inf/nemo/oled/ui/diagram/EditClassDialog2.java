@@ -438,8 +438,7 @@ public class EditClassDialog2 extends javax.swing.JDialog {
 		int selectedRow = table.getSelectedRow();
 		if (selectedRow >= 0 && selectedRow < ((BaseTableModel) table.getModel()).getRowCount()) {
 			((BaseTableModel) table.getModel()).removeEntryAt(selectedRow);
-		}
-		
+		}		
 	}
 	
 	protected void moveUpSelected(JTable table) {

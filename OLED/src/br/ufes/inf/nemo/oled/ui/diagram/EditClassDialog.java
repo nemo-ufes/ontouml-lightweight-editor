@@ -406,7 +406,7 @@ public class EditClassDialog extends JDialog {
 
 	private void moveUpAttribute() {
 		int row = attributesTable.getSelectedRow();
-		if (row > 0 && row < attributesTable.getRowCount()) {
+		if (row >=0  && row < attributesTable.getRowCount()) {
 			attributesTableModel.moveUpEntry(row);
 			attributesTable.setRowSelectionInterval(row - 1, row - 1);
 		}
@@ -414,8 +414,8 @@ public class EditClassDialog extends JDialog {
 
 	private void moveDownAttribute() {
 		int row = attributesTable.getSelectedRow();
-		if (row > 0 && row < attributesTable.getRowCount()) {
-			attributesTableModel.moveUpEntry(row);
+		if (row >=0  && row < attributesTable.getRowCount()) {
+			attributesTableModel.moveDownEntry(row);
 			attributesTable.setRowSelectionInterval(row + 1, row + 1);
 		}
 	}
