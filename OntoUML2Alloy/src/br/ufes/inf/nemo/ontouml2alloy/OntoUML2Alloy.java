@@ -33,13 +33,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-import br.ufes.inf.nemo.alloy.AlloyPackage;
-import br.ufes.inf.nemo.alloy.impl.AlloyPackageImpl;
-import br.ufes.inf.nemo.alloy.util.AlloyResourceFactoryImpl;
-import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
-import br.ufes.inf.nemo.ontouml2alloy.transformer.Transformer;
-import br.ufes.inf.nemo.ontouml2alloy.util.AlloyLibraryFiles;
-import br.ufes.inf.nemo.ontouml2alloy.util.AlloyThemeFile;
+import edu.mit.csail.sdg.alloy4whole.SimpleGUI_custom;
 
 import RefOntoUML.Association;
 import RefOntoUML.Class;
@@ -49,8 +43,13 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Model;
 import RefOntoUML.PackageableElement;
-
-import edu.mit.csail.sdg.alloy4whole.SimpleGUI_custom;
+import br.ufes.inf.nemo.alloy.AlloyPackage;
+import br.ufes.inf.nemo.alloy.impl.AlloyPackageImpl;
+import br.ufes.inf.nemo.alloy.util.AlloyResourceFactoryImpl;
+import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
+import br.ufes.inf.nemo.ontouml2alloy.transformer.Transformer;
+import br.ufes.inf.nemo.ontouml2alloy.util.AlloyLibraryFiles;
+import br.ufes.inf.nemo.ontouml2alloy.util.AlloyThemeFile;
 
 /**
  *	This class is used to execute the transformation of OntoUML to Alloy. 
@@ -133,9 +132,9 @@ public class OntoUML2Alloy {
 		weakSupplementationRuleFlag = WeakSupplementationRuleFlag;
 		
 		// Copy "alloy4.2-rc.jar" to the destination directory 
-		InputStream is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("alloy4.2-rc.jar");
-		if(is == null) is = new FileInputStream("lib/alloy4.2-rc.jar");
-		File alloyJarFile = new File(dirPath + File.separator + "alloy4.2-rc.jar");
+		InputStream is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("br.ufes.inf.nemo.alloy.analyzer.jar");
+		if(is == null) is = new FileInputStream("lib/br.ufes.inf.nemo.alloy.analyzer.jar");
+		File alloyJarFile = new File(dirPath + File.separator + "br.ufes.inf.nemo.alloy.analyzer.jar");
 		alloyJarFile.deleteOnExit();
 		OutputStream out = new FileOutputStream(alloyJarFile);
 
@@ -157,7 +156,11 @@ public class OntoUML2Alloy {
 		{
 			argsAnalyzer[0] = alsPath;
 			argsAnalyzer[1] = dirPath + File.separator + "standart_theme.thm"	;	
-			SimpleGUI_custom.main(argsAnalyzer);
+			SimpleGUI_custom.main(argsAnalyzer);			
+			/*Runtime.getRuntime().exec(
+					"java -jar "+alloyJarFile.getAbsolutePath()
+					+" "+argsAnalyzer[0]+" "+argsAnalyzer[1]
+			);*/			
 		}
 
 		return true;
