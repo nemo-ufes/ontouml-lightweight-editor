@@ -1720,10 +1720,12 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
     //====== Main Method ====================================================//
 
     /** Main method that launches the program; this method might be called by an arbitrary thread. */
-    public static void main(final String[] args) throws Exception {
-    	themePath = args[1];
+    public static void main(final String[] args) throws Exception {    	
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() { new SimpleGUI_custom(args); }
+            public void run() { 
+            	themePath = args[1];
+            	new SimpleGUI_custom(args); 
+            }
         });
     }
 

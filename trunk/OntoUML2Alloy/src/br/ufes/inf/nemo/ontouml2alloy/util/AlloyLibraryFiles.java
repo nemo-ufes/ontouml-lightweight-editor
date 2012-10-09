@@ -124,12 +124,12 @@ public class AlloyLibraryFiles {
 	 */
 	public static void generateLibraryFiles (String dirPath) throws IOException
 	{
-		File lib1File = new File(dirPath + File.separator + "world_structure.als");
-		File lib2File = new File(dirPath + File.separator + "ontological_properties.als");			
+		File lib1File = new File(dirPath + "world_structure.als");
+		File lib2File = new File(dirPath + "ontological_properties.als");			
 		lib1File.deleteOnExit();
 		lib2File.deleteOnExit();				
-		FileUtil.copyStringToFile(world_structure, dirPath + File.separator + "world_structure.als");
-		FileUtil.copyStringToFile(ontological_properties, dirPath + File.separator + "ontological_properties.als");
+		FileUtil.copyStringToFile(world_structure, dirPath + "world_structure.als");
+		FileUtil.copyStringToFile(ontological_properties, dirPath + "ontological_properties.als");
 	}
 }
 			

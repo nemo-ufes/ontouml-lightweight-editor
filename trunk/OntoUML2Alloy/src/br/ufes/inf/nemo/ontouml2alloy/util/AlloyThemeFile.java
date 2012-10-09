@@ -94,16 +94,16 @@ public class AlloyThemeFile {
 			"</alloy>" + "\n\n";
 		
 	/**
-	 * Generate "world_structure.als" and "ontological_properties.als" into the directory path "dirPath".
+	 * Generate "standart_theme.thm" into the directory path "dirPath".
 	 *  
 	 * @param dirPath
 	 * @throws IOException
 	 */
 	public static void generateAlloyThemeFile (String dirPath) throws IOException
 	{		
-		File themeFile = new File(dirPath + File.separator + "standart_theme.thm");		
+		File themeFile = new File(dirPath + "standart_theme.thm");		
 		themeFile.deleteOnExit();		
-		FileUtil.copyStringToFile(standart_theme, dirPath + File.separator + "standart_theme.thm");
+		FileUtil.copyStringToFile(standart_theme, dirPath + "standart_theme.thm");
 	}
 	
 }
