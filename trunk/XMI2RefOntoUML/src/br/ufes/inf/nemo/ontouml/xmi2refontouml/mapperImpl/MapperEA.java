@@ -156,9 +156,9 @@ public class MapperEA implements Mapper {
 									((Element)extendedProp.item(i).getParentNode()).getAttributeNS(XMINS, "idref"));
 							assocClassElemClone.setAttribute("name", 
 									((Element)extendedProp.item(i).getParentNode()).getAttribute("name"));
+							assocClassElemClone.setIdAttributeNS(XMINS, "id", true);
 							assocClassElem.getParentNode().appendChild(assocClassElemClone);
 							assocClassElem.setIdAttributeNS(XMINS, "id", true);
-							assocClassElemClone.setIdAttributeNS(XMINS, "id", true);
 						}
 					}
 					elemList.add(assocClassElemClone);
