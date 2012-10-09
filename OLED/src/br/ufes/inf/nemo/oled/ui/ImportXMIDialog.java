@@ -201,7 +201,8 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 			switch (treeTabbedPane.getSelectedIndex()) {
 			case 0:
 				if (modelChckTree.getCheckingPaths().length == 0) {
-					JOptionPane.showMessageDialog(this, "No Element is selected in the active tree. Please select at least one Element");
+					JOptionPane.showMessageDialog(this, "No Element is selected " +
+							"in the active tree. Please select at least one Element");
 					return;
 				} else {
 					RefOntoUMLUtil.Filter(modelChckTree);
@@ -209,7 +210,8 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				break;
 			case 1:
 				if (diagrChckTree.getCheckingPaths().length == 0) {
-					JOptionPane.showMessageDialog(this, "No Element is selected in the active tree. Please select at least one Element");
+					JOptionPane.showMessageDialog(this, "No Element is selected " +
+							"in the active tree. Please select at least one Element");
 					return;
 				} else {
 					RefOntoUMLUtil.Filter(diagrChckTree);
