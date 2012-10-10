@@ -158,26 +158,61 @@ public final class WorkerEngine_custom {
                if (f.isFile()) java = f.getAbsolutePath();
             }
             String debug = "yes".equals(System.getProperty("debug")) ? "yes" : "no";
-            if (jniPath!=null && jniPath.length()>0)
-               sub = Runtime.getRuntime().exec(new String[] {
-                     java,
+            if (Util.onWindows()) {
+            	if (jniPath!=null && jniPath.length()>0)
+            		sub = Runtime.getRuntime().exec(new String[] {
+            		 java,
                      "-Xmx" + newmem + "m",
                      "-Xss" + newstack + "k",
                      "-Djava.library.path=" + jniPath,
                      "-Ddebug=" + debug,
-                     "-cp", classPath+";"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", WorkerEngine_custom.class.getName(),
-                     Version.buildDate(), ""+Version.buildNumber()
-               });
-            else
-               sub = Runtime.getRuntime().exec(new String[] {
+                     "-cp", 
+                     classPath+";"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", 
+                     WorkerEngine_custom.class.getName(),
+                     Version.buildDate(), 
+                     ""+Version.buildNumber()
+            		});            
+            	else
+            		sub = Runtime.getRuntime().exec(new String[] {
                      java,
                      "-Xmx" + newmem + "m",
                      "-Xss" + newstack + "k",
                      "-Ddebug=" + debug,
-                     "-cp", classPath+";"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", WorkerEngine_custom.class.getName(),
-                     Version.buildDate(), ""+Version.buildNumber()
-               });
-            latest_sub = sub;
+                     "-cp", 
+                     classPath+";"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", 
+                     WorkerEngine_custom.class.getName(),
+                     Version.buildDate(), 
+                     ""+Version.buildNumber()
+            		});
+            }else {
+            	if (jniPath!=null && jniPath.length()>0)
+            		sub = Runtime.getRuntime().exec(new String[] {
+            		 java,
+                     "-Xmx" + newmem + "m",
+                     "-Xss" + newstack + "k",
+                     "-Djava.library.path=" + jniPath,
+                     "-Ddebug=" + debug,
+                     "-cp", 
+                     classPath+":"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", 
+                     WorkerEngine_custom.class.getName(),
+                     Version.buildDate(), 
+                     ""+Version.buildNumber()
+            		});            
+            	else
+            		sub = Runtime.getRuntime().exec(new String[] {
+                     java,
+                     "-Xmx" + newmem + "m",
+                     "-Xss" + newstack + "k",
+                     "-Ddebug=" + debug,
+                     "-cp", 
+                     classPath+":"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", 
+                     WorkerEngine_custom.class.getName(),
+                     Version.buildDate(), 
+                     ""+Version.buildNumber()
+            		});
+
+            }
+            latest_sub = sub;            
          } else {
             sub = latest_sub;
          }

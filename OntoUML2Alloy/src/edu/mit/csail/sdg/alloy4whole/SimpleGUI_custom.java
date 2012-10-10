@@ -1609,7 +1609,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             SimpleTask2 task = new SimpleTask2();
             task.filename = arg;
             try {
-                WorkerEngine_custom.run(task, SubMemory.get(), SubStack.get(), alloyHome() + fs + "binary", "", cb);
+                WorkerEngine_custom.run(task, SubMemory.get(), SubStack.get(), alloyHome() + fs + "binary","", cb);
                 //task.run(cb);
             } catch(Throwable ex) {
                 WorkerEngine_custom.stop();
