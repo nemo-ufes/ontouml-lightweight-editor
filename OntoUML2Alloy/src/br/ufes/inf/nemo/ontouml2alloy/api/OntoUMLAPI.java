@@ -146,7 +146,7 @@ public class OntoUMLAPI {
 			if (gen.getGeneral() instanceof Relator) getAllMediations(ontoparser,list,(Relator)gen.getGeneral());
 		}
 	}
-	
+		
 	/* =========================================================================================================*/
 	
 	/**
@@ -203,4 +203,23 @@ public class OntoUMLAPI {
 		}
 	}
 	
+	/**
+	 *  
+	 */
+	public static void getAllConcreteChilds(Parser ontoparser, ArrayList<Classifier> list, Classifier c)
+	{
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+		getAllGeneralizations(ontoparser, generalizations, c);
+		for(Generalization g: generalizations)
+		{
+			if (! g.getSpecific().isIsAbstract())
+			{
+				if (!list.contains((Classifier)g.getSpecific()))
+				{
+					list.add((Classifier)g.getSpecific());
+				}
+			}
+			getAllConcreteChilds(ontoparser, list, g.getSpecific());
+		}
+	}	
 }
