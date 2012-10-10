@@ -78,4 +78,30 @@ public class SourceTargetAssociation {
 		result.add(getTargetAlloy(a));
 		return result;
 	}
+	
+	public static int getUpperSourceCardinality (Association a) {
+		Type t0,t1, source;
+		
+		source = SourceTargetAssociation.getSourceAlloy(a);
+		t0 = a.getMemberEnd().get(0).getType();
+		t1 = a.getMemberEnd().get(1).getType();
+		
+		if (t0.equals(source))
+			return a.getMemberEnd().get(0).getUpper();
+		else 
+			return a.getMemberEnd().get(1).getUpper();
+	}
+	
+	public static int getUpperTargetCardinality (Association a) {
+		Type t0,t1, source;
+		
+		source = SourceTargetAssociation.getSourceAlloy(a);
+		t0 = a.getMemberEnd().get(0).getType();
+		t1 = a.getMemberEnd().get(1).getType();
+		
+		if (t0.equals(source))
+			return a.getMemberEnd().get(1).getUpper();
+		else 
+			return a.getMemberEnd().get(0).getUpper();
+	}
 }

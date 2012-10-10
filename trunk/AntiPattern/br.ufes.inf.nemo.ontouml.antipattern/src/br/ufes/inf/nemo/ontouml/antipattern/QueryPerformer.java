@@ -25,9 +25,9 @@ public class QueryPerformer {
 		RefOntoUMLPackage refMetaPack = RefOntoUMLPackage.eINSTANCE;
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		// Get the URI of the model file.
-		//URI fileURI = URI.createFileURI(new File("models/XML Models/Georreferenciamento.xmi").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/RelationSpecialization.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
 		
@@ -43,7 +43,7 @@ public class QueryPerformer {
 		    	    
 		    Collection<Association> result = STRIdentifier.STRQuery(m);
 		    
-		    System.out.println("#SelfTypeRelationship Antipatterns : "+result.size());
+		    System.out.println("#SelfTypeRelationship Antipatterns: "+result.size());
 		    String type;
 		    String association;
 		    String cardinality = "4";
@@ -62,7 +62,7 @@ public class QueryPerformer {
 		    }
 		    
 		    Collection<Relator>result2 = RWORIdentifier.RWORQuery(m);
-		    System.out.println("#Relator With Overlapping Roles Antipatterns : "+result2.size());
+		    System.out.println("#Relator With Overlapping Roles Antipatterns: "+result2.size());
 	
 		    for (Relator c : result2) {
 		    	System.out.println(RWORAlloyGenerator.ExclusiveRolesAlloyPredicate(c, mapper));
@@ -72,7 +72,7 @@ public class QueryPerformer {
 		    }
 		    
 		    Collection<Association> result3 = RBOSIdentifier.RBOSQuery(m);
-		    System.out.println("#Relation Between Overlapping Subtypes Antipatterns : "+result3.size());
+		    System.out.println("#Relation Between Overlapping Subtypes Antipatterns: "+result3.size());
 		    for (Association c : result3) {
 		    	System.out.println(RBOSAlloyGenerator.DisjointParticipantsAlloyPredicate(c, mapper));
 		    	System.out.println(RBOSAlloyGenerator.OverlappingParticipantsAlloyPredicate(c, mapper));
@@ -88,7 +88,12 @@ public class QueryPerformer {
 		    	System.out.println(RSAlloyGenerator.disjointAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
 		    }
 		    
+		    Collection<Association> result5 = IAIdentifier.IAQuery(m);
+		    System.out.println("#Imprecise Abstractions Antipatterns: "+result5.size());
 		    
+		    for (Association a : result5){
+		    	System.out.println(IAAlloyGenerator.impreciseAbstractionPredicates(a, mapper));
+		    }
 		    		    
 		} catch (ParserException e) {
 		    // record failure to parse
