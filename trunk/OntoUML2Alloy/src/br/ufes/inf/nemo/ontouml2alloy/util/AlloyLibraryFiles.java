@@ -26,9 +26,7 @@ import java.io.IOException;
 /**
  *	This class is used to generate our Alloy library Files into destination directory path.
  *  
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom   
+ * 	@authors Tiago Sales, John Guerson and Lucas Thom 
  */
 
 public class AlloyLibraryFiles {

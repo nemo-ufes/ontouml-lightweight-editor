@@ -36,9 +36,7 @@ import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
 /**
  * This class is used to provide useful methods of manipulating the OntoUML model instances.
  * 
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom
+ * 	@authors Tiago Sales, John Guerson and Lucas Thom 
  *
  */
 public class OntoUMLAPI {

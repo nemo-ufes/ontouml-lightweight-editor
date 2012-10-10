@@ -33,9 +33,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 /**
  * This class is used as a Resource utility.
  * 
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom
+ * 	@authors Tiago Sales, John Guerson and Lucas Thom
  */
 
 public class ResourceUtil {

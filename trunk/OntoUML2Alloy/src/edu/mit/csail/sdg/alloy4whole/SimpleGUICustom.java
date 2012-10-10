@@ -109,8 +109,8 @@ import edu.mit.csail.sdg.alloy4.Util.BooleanPref;
 import edu.mit.csail.sdg.alloy4.Util.IntPref;
 import edu.mit.csail.sdg.alloy4.Util.StringPref;
 import edu.mit.csail.sdg.alloy4.Version;
-import edu.mit.csail.sdg.alloy4.WorkerEngine_custom;
-import edu.mit.csail.sdg.alloy4.WorkerEngine_custom.WorkerCallback;
+import edu.mit.csail.sdg.alloy4.WorkerEngineCustom;
+import edu.mit.csail.sdg.alloy4.WorkerEngineCustom.WorkerCallback;
 import edu.mit.csail.sdg.alloy4.XMLNode;
 import edu.mit.csail.sdg.alloy4compiler.ast.Browsable;
 import edu.mit.csail.sdg.alloy4compiler.ast.Command;
@@ -129,12 +129,12 @@ import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4SolutionReader;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Tuple;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4TupleSet;
-import edu.mit.csail.sdg.alloy4viz.VizGUI_custom;
-import edu.mit.csail.sdg.alloy4whole.SimpleGUI_custom;
-import edu.mit.csail.sdg.alloy4whole.SwingLogPanel_custom;
-import edu.mit.csail.sdg.alloy4whole.SimpleReporter_custom.SimpleCallback1;
-import edu.mit.csail.sdg.alloy4whole.SimpleReporter_custom.SimpleTask1;
-import edu.mit.csail.sdg.alloy4whole.SimpleReporter_custom.SimpleTask2;
+import edu.mit.csail.sdg.alloy4viz.VizGUICustom;
+import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
+import edu.mit.csail.sdg.alloy4whole.SwingLogPanelCustom;
+import edu.mit.csail.sdg.alloy4whole.SimpleReporterCustom.SimpleCallback1;
+import edu.mit.csail.sdg.alloy4whole.SimpleReporterCustom.SimpleTask1;
+import edu.mit.csail.sdg.alloy4whole.SimpleReporterCustom.SimpleTask2;
 
 /** Simple graphical interface for accessing various features of the analyzer.
  *
@@ -145,7 +145,7 @@ import edu.mit.csail.sdg.alloy4whole.SimpleReporter_custom.SimpleTask2;
  * <br> (2) the run() method in the instance watcher (in constructor) is launched from a fresh thread
  */
 
-public final class SimpleGUI_custom implements ComponentListener, Listener {
+public final class SimpleGUICustom implements ComponentListener, Listener {
 
     /** The latest welcome screen; each time we update the welcome screen, we increment this number. */
     private static final int welcomeLevel = 2;
@@ -281,7 +281,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
     private JFrame frame;
 
     /** The JFrame for the visualizer window. */
-    private VizGUI_custom viz;
+    private VizGUICustom viz;
 
     /** The "File", "Edit", "Run", "Option", "Window", and "Help" menus. */
     private JMenu filemenu, editmenu, runmenu, optmenu, windowmenu, windowmenu2, helpmenu;
@@ -305,7 +305,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
     private OurTabbedSyntaxWidget text;
 
     /** The "message panel" on the right. */
-    private SwingLogPanel_custom log;
+    private SwingLogPanelCustom log;
 
     /** The scrollpane containing the "message panel". */
     private JScrollPane logpane;
@@ -539,7 +539,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             public void run() {
                 try {
                     method.setAccessible(true);
-                    method.invoke(SimpleGUI_custom.this, new Object[]{});
+                    method.invoke(SimpleGUICustom.this, new Object[]{});
                 } catch (Throwable ex) {
                     ex = new IllegalArgumentException("Failed call to "+name+"()", ex);
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), ex);
@@ -562,7 +562,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             public void run(Object arg) {
                 try {
                     method.setAccessible(true);
-                    method.invoke(SimpleGUI_custom.this, new Object[]{arg});
+                    method.invoke(SimpleGUICustom.this, new Object[]{arg});
                 } catch (Throwable ex) {
                     ex = new IllegalArgumentException("Failed call to "+name+"("+arg+")", ex);
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), ex);
@@ -770,7 +770,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
     /** This method performs File->Quit. */
     private Runner doQuit() {
         if (!wrap) if (text.closeAll()) {
-            try { WorkerEngine_custom.stop(); } finally {  }
+            try { WorkerEngineCustom.stop(); } finally {  }
         }
         return wrapMe();
     }
@@ -986,7 +986,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
     	
         if (wrap) return wrapMe(commandIndex);
         final int index = commandIndex;
-        if (WorkerEngine_custom.isBusy()) return null;
+        if (WorkerEngineCustom.isBusy()) return null;
         if (index==(-2)) subrunningTask=1; else subrunningTask=0;
         latestAutoInstance="";
         if (index>=0) latestCommand=index;
@@ -1026,15 +1026,15 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
             showbutton.setEnabled(false);
             stopbutton.setVisible(true);
             int newmem = SubMemory.get(), newstack = SubStack.get();
-            if (newmem != subMemoryNow || newstack != subStackNow) WorkerEngine_custom.stop();
+            if (newmem != subMemoryNow || newstack != subStackNow) WorkerEngineCustom.stop();
             if ("yes".equals(System.getProperty("debug")) && Verbosity.get()==Verbosity.FULLDEBUG)
-                WorkerEngine_custom.runLocally(task, cb);
+                WorkerEngineCustom.runLocally(task, cb);
             else
-                WorkerEngine_custom.run(task, newmem, newstack, alloyHome() + fs + "binary", "", cb);
+                WorkerEngineCustom.run(task, newmem, newstack, alloyHome() + fs + "binary", "", cb);
             subMemoryNow = newmem;
             subStackNow = newstack;
         } catch(Throwable ex) {
-            WorkerEngine_custom.stop();
+            WorkerEngineCustom.stop();
             log.logBold("Fatal Error: Solver failed due to unknown reason.\n" +
               "One possible cause is that, in the Options menu, your specified\n" +
               "memory size is larger than the amount allowed by your OS.\n" +
@@ -1052,8 +1052,8 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         if (wrap) return wrapMe(how);
         int h = how;
         if (h!=0) {
-           if (h==2 && WorkerEngine_custom.isBusy()) { WorkerEngine_custom.stop(); log.logBold("\nSolving Stopped.\n"); log.logDivider(); }
-           WorkerEngine_custom.stop();
+           if (h==2 && WorkerEngineCustom.isBusy()) { WorkerEngineCustom.stop(); log.logBold("\nSolving Stopped.\n"); log.logDivider(); }
+           WorkerEngineCustom.stop();
         }
         runmenu.setEnabled(true);
         runbutton.setVisible(true);
@@ -1603,16 +1603,16 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         public String compute(Object input) {        	
             final String arg = (String)input;
             OurUtil.show(frame);
-            if (WorkerEngine_custom.isBusy())
+            if (WorkerEngineCustom.isBusy())
                 throw new RuntimeException("Alloy4 is currently executing a SAT solver command. Please wait until that command has finished.");            
-            SimpleCallback1 cb = new SimpleCallback1(SimpleGUI_custom.this, viz, log, Verbosity.get().ordinal(), latestAlloyVersionName, latestAlloyVersion);
+            SimpleCallback1 cb = new SimpleCallback1(SimpleGUICustom.this, viz, log, Verbosity.get().ordinal(), latestAlloyVersionName, latestAlloyVersion);
             SimpleTask2 task = new SimpleTask2();
             task.filename = arg;
             try {
-                WorkerEngine_custom.run(task, SubMemory.get(), SubStack.get(), alloyHome() + fs + "binary","", cb);
+                WorkerEngineCustom.run(task, SubMemory.get(), SubStack.get(), alloyHome() + fs + "binary","", cb);
                 //task.run(cb);
             } catch(Throwable ex) {
-                WorkerEngine_custom.stop();
+                WorkerEngineCustom.stop();
                 log.logBold("Fatal Error: Solver failed due to unknown reason.\n" +
                   "One possible cause is that, in the Options menu, your specified\n" +
                   "memory size is larger than the amount allowed by your OS.\n" +
@@ -1724,7 +1724,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() { 
             	themePath = args[1];
-            	new SimpleGUI_custom(args); 
+            	new SimpleGUICustom(args); 
             }
         });
     }
@@ -1741,13 +1741,13 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
     }
 
     /** Create a dummy task object for testing purpose. */
-    private static final WorkerEngine_custom.WorkerTask dummyTask = new WorkerEngine_custom.WorkerTask() {
+    private static final WorkerEngineCustom.WorkerTask dummyTask = new WorkerEngineCustom.WorkerTask() {
         private static final long serialVersionUID = 0;
         public void run(WorkerCallback out) { }
     };
 
     /** The constructor; this method will be called by the AWT event thread, using the "invokeLater" method. */
-    private SimpleGUI_custom (final String[] args) {
+    private SimpleGUICustom (final String[] args) {
 
         // Register an exception handler for uncaught exceptions
         MailBug.setup();
@@ -1796,18 +1796,18 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         // since we want the minimized window title on Linux/FreeBSD to just say Alloy Analyzer
 
         // Test the allowed memory sizes
-        final WorkerEngine_custom.WorkerCallback c = new WorkerEngine_custom.WorkerCallback() {
+        final WorkerEngineCustom.WorkerCallback c = new WorkerEngineCustom.WorkerCallback() {
             private final List<Integer> allowed = new ArrayList<Integer>();
             private final List<Integer> toTry = new ArrayList<Integer>(Arrays.asList(256,512,768,1024,1536,2048,2560,3072,3584,4096));
             private int mem;
             public synchronized void callback(Object msg) {
                 if (toTry.size()==0) {
                     SwingUtilities.invokeLater(new Runnable() {
-                        public void run() { SimpleGUI_custom.this.frame=frame; SimpleGUI_custom.this.finishInit(args, allowed, windowWidth); }
+                        public void run() { SimpleGUICustom.this.frame=frame; SimpleGUICustom.this.finishInit(args, allowed, windowWidth); }
                     });
                     return;
                 }
-                try { mem=toTry.remove(0); WorkerEngine_custom.stop(); WorkerEngine_custom.run(dummyTask, mem, 128, "", "", this); return; } catch(IOException ex) { fail(); }
+                try { mem=toTry.remove(0); WorkerEngineCustom.stop(); WorkerEngineCustom.run(dummyTask, mem, 128, "", "", this); return; } catch(IOException ex) { fail(); }
             }
             public synchronized void done() {
                 //System.out.println("Alloy4 can use "+mem+"M"); System.out.flush();
@@ -1879,7 +1879,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
         }
 
         // Pre-load the visualizer
-        viz = new VizGUI_custom(false, "", windowmenu2, enumerator, evaluator,themePath);
+        viz = new VizGUICustom(false, "", windowmenu2, enumerator, evaluator,themePath);
         viz.doSetFontSize(FontSize.get());        
 
         // Create the toolbar
@@ -1907,7 +1907,7 @@ public final class SimpleGUI_custom implements ComponentListener, Listener {
 
         // Create the message area
         logpane = OurUtil.scrollpane(null);
-        log = new SwingLogPanel_custom(logpane, fontName, fontSize, background, Color.BLACK, new Color(.7f,.2f,.2f), this);
+        log = new SwingLogPanelCustom(logpane, fontName, fontSize, background, Color.BLACK, new Color(.7f,.2f,.2f), this);
 
         // Create the text area
         text = new OurTabbedSyntaxWidget(fontName, fontSize, TabSize.get());

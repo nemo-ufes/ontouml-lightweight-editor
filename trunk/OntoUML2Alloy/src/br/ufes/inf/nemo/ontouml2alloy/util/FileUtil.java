@@ -27,9 +27,7 @@ import java.io.IOException;
 /**
  *	This class is used as a File utility.
  *  
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom    
+ * 	@authors Tiago Sales, John Guerson and Lucas Thom
  */
 
 public class FileUtil {

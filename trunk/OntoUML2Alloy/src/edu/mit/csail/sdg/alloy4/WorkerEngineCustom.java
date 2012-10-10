@@ -46,7 +46,7 @@ import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
  * then a new subprocess will be spawned automatically.
  */
 
-public final class WorkerEngine_custom {
+public final class WorkerEngineCustom {
 
    /** This defines an interface for performing tasks in a subprocess. */
    public interface WorkerTask extends Serializable {
@@ -97,18 +97,18 @@ public final class WorkerEngine_custom {
    private static Thread latest_manager = null;
 
    /** Constructor is private since this class does not need to be instantiated. */
-   private WorkerEngine_custom() { }
+   private WorkerEngineCustom() { }
 
    /** This terminates the subprocess, and prevent any further results from reaching the parent's callback handler. */
    public static void stop() {
-      synchronized(WorkerEngine_custom.class) {
+      synchronized(WorkerEngineCustom.class) {
          try { if (latest_sub!=null) latest_sub.destroy(); } finally { latest_manager=null; latest_sub=null; }
       }
    }
 
    /** This returns true iff the subprocess is still busy processing the last task. */
    public static boolean isBusy() {
-      synchronized(WorkerEngine_custom.class) { return latest_manager!=null && latest_manager.isAlive(); }
+      synchronized(WorkerEngineCustom.class) { return latest_manager!=null && latest_manager.isAlive(); }
    }
 
    /** This executes a task using the current thread.
@@ -117,7 +117,7 @@ public final class WorkerEngine_custom {
     * @throws IOException - if a previous task is still busy executing
     */
    public static void runLocally(final WorkerTask task, final WorkerCallback callback) throws Exception {
-      synchronized(WorkerEngine_custom.class) {
+      synchronized(WorkerEngineCustom.class) {
          if (latest_manager!=null && latest_manager.isAlive()) throw new IOException("Subprocess still performing the last task.");
          try { task.run(callback); callback.done(); } catch(Throwable ex) { callback.callback(ex); callback.fail(); }
       }
@@ -141,7 +141,7 @@ public final class WorkerEngine_custom {
    (final WorkerTask task, int newmem, int newstack, String jniPath, String classPath, final WorkerCallback callback)
    throws IOException {
       if (classPath==null || classPath.length()==0) classPath = System.getProperty("java.class.path");
-      synchronized(WorkerEngine_custom.class) {
+      synchronized(WorkerEngineCustom.class) {
          final Process sub;
          if (latest_manager!=null && latest_manager.isAlive()) throw new IOException("Subprocess still performing the last task.");
          try {
@@ -168,7 +168,7 @@ public final class WorkerEngine_custom {
                      "-Ddebug=" + debug,
                      "-cp", 
                      classPath+";"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", 
-                     WorkerEngine_custom.class.getName(),
+                     WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
             		});            
@@ -180,7 +180,7 @@ public final class WorkerEngine_custom {
                      "-Ddebug=" + debug,
                      "-cp", 
                      classPath+";"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", 
-                     WorkerEngine_custom.class.getName(),
+                     WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
             		});
@@ -194,7 +194,7 @@ public final class WorkerEngine_custom {
                      "-Ddebug=" + debug,
                      "-cp", 
                      classPath+":"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", 
-                     WorkerEngine_custom.class.getName(),
+                     WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
             		});            
@@ -206,7 +206,7 @@ public final class WorkerEngine_custom {
                      "-Ddebug=" + debug,
                      "-cp", 
                      classPath+":"+OntoUML2Alloy.dirPath+"alloy4.2-rc.jar", 
-                     WorkerEngine_custom.class.getName(),
+                     WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
             		});
@@ -229,28 +229,28 @@ public final class WorkerEngine_custom {
                   Util.close(main2sub); 
                   Util.close(sub2main);
                  
-                  synchronized(WorkerEngine_custom.class) { 
+                  synchronized(WorkerEngineCustom.class) { 
                 	  if (latest_sub != sub) 
                 		  return; 
                 	  callback.fail(); 
                 	  return; }
                }
                while(true) {
-                  synchronized(WorkerEngine_custom.class) { if (latest_sub != sub) return; }
+                  synchronized(WorkerEngineCustom.class) { if (latest_sub != sub) return; }
                   Object x;
                   try {
                      x = sub2main.readObject();
                   } catch(Throwable ex) {
                      sub.destroy(); 
                      Util.close(sub2main);
-                     synchronized(WorkerEngine_custom.class) { 
+                     synchronized(WorkerEngineCustom.class) { 
                     	 if (latest_sub != sub) 
                     		 return; 
                     	 callback.fail(); 
                     	 return; 
                     	 }
                   }
-                  synchronized(WorkerEngine_custom.class) {
+                  synchronized(WorkerEngineCustom.class) {
                      if (latest_sub != sub) return; if (x==null) {callback.done(); return;} else callback.callback(x);
                   }
                }

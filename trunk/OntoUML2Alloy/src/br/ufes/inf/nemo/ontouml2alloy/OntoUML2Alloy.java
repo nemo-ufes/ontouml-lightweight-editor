@@ -33,7 +33,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-import edu.mit.csail.sdg.alloy4whole.SimpleGUI_custom;
+import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 import RefOntoUML.Association;
 import RefOntoUML.Class;
@@ -54,9 +54,7 @@ import br.ufes.inf.nemo.ontouml2alloy.util.AlloyThemeFile;
 /**
  *	This class is used to execute the transformation of OntoUML to Alloy. 
  *  
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom  
+ * 	@authors Tiago Sales, John Guerson and Lucas Thom 
  */
 
 public class OntoUML2Alloy {
@@ -156,7 +154,7 @@ public class OntoUML2Alloy {
 		{
 			argsAnalyzer[0] = alsPath;
 			argsAnalyzer[1] = dirPath + "standart_theme.thm"	;	
-			SimpleGUI_custom.main(argsAnalyzer);
+			SimpleGUICustom.main(argsAnalyzer);
 			/*Runtime.getRuntime().exec(
 					"java -jar "+alloyJarFile.getAbsolutePath()
 					+" "+argsAnalyzer[0]+" "+argsAnalyzer[1]
