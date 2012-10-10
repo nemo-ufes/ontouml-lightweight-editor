@@ -363,10 +363,10 @@ public class Transformer {
 	 */
 	public void finalAdditions()
 	{		
-		if(objectNamesList.size() > 0) 
+		if(subsortalDisjNamesList.size() > 0) 
 			
 			// exists:>Object in NamesList[0] + NamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigObject, objectNamesList);
+			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigObject, subsortalDisjNamesList);
 		
 		if(propertyNamesList.size() > 0) 
 		
@@ -588,20 +588,20 @@ public class Transformer {
 	 * Create Abstract Clause Rule.
 	 * 
 	 * BinaryOperation with union operator(+) to represent the completeness
-	 * between father(Classifier) and childs.
+	 * between abstract father(Classifiers) and concrete childs.
 	 * 
-	 * "father = child1 + child2 + child3 + ..." 
+	 * "abstract_father = concrete_child1 + concrete_child2 + concrete_child3 + ..." 
 	 */
 	@SuppressWarnings("unchecked")
 	private void createAbstractClauseRule(Classifier c) 
-	{
-		// get all generalizations
-		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-		OntoUMLAPI.getAllGeneralizations(ontoparser, generalizations, c);
+	{		
+		ArrayList<Classifier> concretes = new ArrayList<Classifier>();
 		
+		OntoUMLAPI.getAllConcreteChilds(ontoparser, concretes, c);
+						
 		int cont = 1;		
 		BinaryOperation bo = factory.createBinaryOperation();
-		if(generalizations.size() > 0)
+		if(concretes.size() > 0)
 		{
 			CompareOperation co = factory.createCompareOperation();
 			co.setOperator(CompareOperator.EQUAL_LITERAL);
@@ -610,12 +610,12 @@ public class Transformer {
 			vr.setVariable(ontoparser.getName(c));
 			
 			co.setLeftExpression(vr);
-			for(Generalization gen : generalizations)
+			for(Classifier classifier : concretes)
 			{
-				if(generalizations.size() == 1) 
+				if(concretes.size() == 1) 
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(gen.getSpecific()));					
+					vr.setVariable(ontoparser.getName(classifier));					
 					co.setRightExpression(vr);
 					break;
 				}
@@ -623,23 +623,23 @@ public class Transformer {
 				{
 					bo.setOperator(BinaryOperator.UNION_LITERAL);
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(gen.getSpecific()));
+					vr.setVariable(ontoparser.getName(classifier));
 					bo.setLeftExpression(vr);
 					co.setRightExpression(bo);
 				}
-				if(cont > 1 && cont != generalizations.size())
+				if(cont > 1 && cont != concretes.size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(gen.getSpecific()));
+					vr.setVariable(ontoparser.getName(classifier));
 					bo.setRightExpression(factory.createBinaryOperation());
 					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
 					((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
 					bo = ((BinaryOperation)bo.getRightExpression());
 				}
-				if(cont == generalizations.size())
+				if(cont == concretes.size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(gen.getSpecific()));
+					vr.setVariable(ontoparser.getName(classifier));
 					bo.setRightExpression(vr);
 				}
 				cont++;
