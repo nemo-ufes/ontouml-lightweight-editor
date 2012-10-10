@@ -44,8 +44,8 @@ import edu.mit.csail.sdg.alloy4.Pos;
 import edu.mit.csail.sdg.alloy4.Util;
 import edu.mit.csail.sdg.alloy4.Version;
 import edu.mit.csail.sdg.alloy4.XMLNode;
-import edu.mit.csail.sdg.alloy4.WorkerEngine_custom.WorkerCallback;
-import edu.mit.csail.sdg.alloy4.WorkerEngine_custom.WorkerTask;
+import edu.mit.csail.sdg.alloy4.WorkerEngineCustom.WorkerCallback;
+import edu.mit.csail.sdg.alloy4.WorkerEngineCustom.WorkerTask;
 import edu.mit.csail.sdg.alloy4compiler.ast.Command;
 import edu.mit.csail.sdg.alloy4compiler.ast.Sig;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
@@ -56,22 +56,22 @@ import edu.mit.csail.sdg.alloy4compiler.translator.A4SolutionReader;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4SolutionWriter;
 import edu.mit.csail.sdg.alloy4compiler.translator.TranslateAlloyToKodkod;
 import edu.mit.csail.sdg.alloy4viz.StaticInstanceReader;
-import edu.mit.csail.sdg.alloy4viz.VizGUI_custom;
+import edu.mit.csail.sdg.alloy4viz.VizGUICustom;
 
 /** This helper method is used by SimpleGUI. */
 
-final class SimpleReporter_custom extends A4Reporter {
+final class SimpleReporterCustom extends A4Reporter {
 
     public static final class SimpleCallback1 implements WorkerCallback {
-        private final SimpleGUI_custom gui;
-        private final VizGUI_custom viz;
-        private final SwingLogPanel_custom span;
+        private final SimpleGUICustom gui;
+        private final VizGUICustom viz;
+        private final SwingLogPanelCustom span;
         private final Set<ErrorWarning> warnings = new HashSet<ErrorWarning>();
         private final List<String> results = new ArrayList<String>();
         private int len2=0, len3=0, verbosity=0;
         private final String latestName;
         private final int latestVersion;
-        public SimpleCallback1(SimpleGUI_custom simpleGUI_custom, VizGUI_custom viz, SwingLogPanel_custom span, int verbosity, String latestName, int latestVersion) {
+        public SimpleCallback1(SimpleGUICustom simpleGUI_custom, VizGUICustom viz, SwingLogPanelCustom span, int verbosity, String latestName, int latestVersion) {
             this.gui=simpleGUI_custom; this.viz=viz; this.span=span; this.verbosity=verbosity;            
             this.latestName=latestName; this.latestVersion=latestVersion;
             len2 = len3 = span.getLength();
@@ -251,7 +251,7 @@ final class SimpleReporter_custom extends A4Reporter {
         Command cmd = (Command)command;
         String formula = recordKodkod ? sol.debugExtractKInput() : "";
         String filename = tempfile+".xml";
-        synchronized(SimpleReporter_custom.class) {
+        synchronized(SimpleReporterCustom.class) {
             try {
                 cb("R3", "   Writing the XML file...");
                 if (latestModule!=null) writeXML(this, latestModule, filename, sol, latestKodkodSRC);
@@ -359,7 +359,7 @@ final class SimpleReporter_custom extends A4Reporter {
     private static String latestMetamodelXML=null;
 
     /** Constructor is private. */
-    private SimpleReporter_custom(WorkerCallback cb, boolean recordKodkod) { this.cb=cb; this.recordKodkod=recordKodkod; }
+    private SimpleReporterCustom(WorkerCallback cb, boolean recordKodkod) { this.cb=cb; this.recordKodkod=recordKodkod; }
 
     /** Helper method to write out a full XML file. */
     private static void writeXML(A4Reporter rep, Module mod, String filename, A4Solution sol, Map<String,String> sources) throws Exception {
@@ -380,7 +380,7 @@ final class SimpleReporter_custom extends A4Reporter {
             cb("S2", "Enumerating...\n");
             A4Solution sol;
             Module mod;
-            synchronized(SimpleReporter_custom.class) {
+            synchronized(SimpleReporterCustom.class) {
                 if (latestMetamodelXML!=null && latestMetamodelXML.equals(filename))
                    {cb("pop", "You cannot enumerate a metamodel.\n"); return;}
                 if (latestKodkodXML==null || !latestKodkodXML.equals(filename))
@@ -403,7 +403,7 @@ final class SimpleReporter_custom extends A4Reporter {
                    "Note: due to symmetry breaking and other optimizations,\n" +
                    "some equivalent solutions may have been omitted."); return;}
                 String toString = sol.toString();
-                synchronized(SimpleReporter_custom.class) {
+                synchronized(SimpleReporterCustom.class) {
                     if (!latestKodkods.add(toString)) if (tries<100) { tries++; continue; }
                     // The counter is needed to avoid a Kodkod bug where sometimes we might repeat the same solution infinitely number of times; this at least allows the user to keep going
                     writeXML(null, mod, filename, sol, latestKodkodSRC); latestKodkod=sol;
@@ -433,7 +433,7 @@ final class SimpleReporter_custom extends A4Reporter {
         public void cb(WorkerCallback out, Object... objs) throws IOException { out.callback(objs); }
         public void run(WorkerCallback out) throws Exception {
             cb(out, "S2", "Starting the solver...\n\n");
-            final SimpleReporter_custom rep = new SimpleReporter_custom(out, options.recordKodkod);
+            final SimpleReporterCustom rep = new SimpleReporterCustom(out, options.recordKodkod);
             final Module world = CompUtil.parseEverything_fromFile(rep, map, options.originalFilename, resolutionMode);
             final List<Sig> sigs = world.getAllReachableSigs();
             final ConstList<Command> cmds = world.getAllCommands();
@@ -450,9 +450,9 @@ final class SimpleReporter_custom extends A4Reporter {
                 Util.close(of);
                 if ("yes".equals(System.getProperty("debug"))) validate(outf);
                 cb(out, "metamodel", outf);
-                synchronized(SimpleReporter_custom.class) { latestMetamodelXML=outf; }
+                synchronized(SimpleReporterCustom.class) { latestMetamodelXML=outf; }
             } else for(int i=0; i<cmds.size(); i++) if (bundleIndex<0 || i==bundleIndex) {
-                synchronized(SimpleReporter_custom.class) { latestModule=world; latestKodkodSRC=ConstMap.make(map); }
+                synchronized(SimpleReporterCustom.class) { latestModule=world; latestKodkodSRC=ConstMap.make(map); }
                 final String tempXML=tempdir+File.separatorChar+i+".cnf.xml";
                 final String tempCNF=tempdir+File.separatorChar+i+".cnf";
                 final Command cmd=cmds.get(i);

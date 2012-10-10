@@ -50,9 +50,7 @@ import br.ufes.inf.nemo.alloy.VariableReference;
 /**
  * This class is used to provide useful methods of manipulating the Alloy model Instances.
  * 
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom
+ * 	@authors Tiago Sales, John Guerson and Lucas Thom
  *
  */
 public class AlloyAPI {

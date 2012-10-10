@@ -47,7 +47,7 @@ import edu.mit.csail.sdg.alloy4.OurUtil;
 
 /** This helper method is used by SimpleGUI; only the AWT Event Thread may call methods in this class. */
 
-final class SwingLogPanel_custom {
+final class SwingLogPanelCustom {
 
     /** Try to wrap the input to about 60 characters per line; however, if a token is too long, we won't break it. */
     private static void linewrap(StringBuilder sb, String msg) {
@@ -91,7 +91,7 @@ final class SwingLogPanel_custom {
     /** When the window gains focus, we'll call handler.run(ev_logFocused);
      * When a hyperlink is clicked, we'll call handler.run(evs_visualize, linkURL).
      */
-    private final SimpleGUI_custom handler;
+    private final SimpleGUICustom handler;
 
     /** The current length of the log, not counting any "red" error message at the end of the log. */
     private int lastSize = 0;
@@ -120,10 +120,10 @@ final class SwingLogPanel_custom {
      * @param red - the color to use for red messages
      * @param simpleGUI_custom - the SimpleGUI parent
      */
-    public SwingLogPanel_custom(
+    public SwingLogPanelCustom(
         final JScrollPane parent, String fontName, int fontSize,
         final Color background, final Color regular, final Color red,
-        final SimpleGUI_custom simpleGUI_custom) {
+        final SimpleGUICustom simpleGUI_custom) {
         this.handler = simpleGUI_custom;
         this.fontName = fontName;
         this.fontSize = fontSize;

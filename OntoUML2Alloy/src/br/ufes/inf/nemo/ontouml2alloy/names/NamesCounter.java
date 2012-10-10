@@ -23,9 +23,7 @@ package br.ufes.inf.nemo.ontouml2alloy.names;
 /**
  *	This class is used as a name counter for names in the model. 
  *
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom
+ * 	@authors Tiago Sales, John Guerson and Lucas Thom 
  */
 
 public class NamesCounter {

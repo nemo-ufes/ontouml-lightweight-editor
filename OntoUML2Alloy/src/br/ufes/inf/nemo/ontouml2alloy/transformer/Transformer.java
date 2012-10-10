@@ -78,9 +78,7 @@ import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
  *  Then, every element of the model is transformed. (i.e. Classifiers, Generalizations, 
  *  GenearlizationSets and Associations). 
  *  
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom
+ * 	@authors Tiago Sales, John Guerson and Lucas Thom
  */
 
 public class Transformer {

@@ -72,7 +72,7 @@ import static edu.mit.csail.sdg.alloy4.OurUtil.menuItem;
  * <p><b>Thread Safety:</b> Can be called only by the AWT event thread.
  */
 
-public final class VizGUI_custom implements ComponentListener {
+public final class VizGUICustom implements ComponentListener {
 
    /** The background color for the toolbar. */
    private static final Color background = new Color(0.9f, 0.9f, 0.9f);
@@ -272,7 +272,7 @@ public final class VizGUI_custom implements ComponentListener {
          public void run() {
             try {
                method.setAccessible(true);
-               method.invoke(VizGUI_custom.this, new Object[]{});
+               method.invoke(VizGUICustom.this, new Object[]{});
             } catch (Throwable ex) {
                ex = new IllegalArgumentException("Failed call to "+name+"()", ex);
                Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), ex);
@@ -295,7 +295,7 @@ public final class VizGUI_custom implements ComponentListener {
          public void run(Object arg) {
             try {
                method.setAccessible(true);
-               method.invoke(VizGUI_custom.this, new Object[]{arg});
+               method.invoke(VizGUICustom.this, new Object[]{arg});
             } catch (Throwable ex) {
                ex = new IllegalArgumentException("Failed call to "+name+"("+arg+")", ex);
                Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), ex);
@@ -312,7 +312,7 @@ public final class VizGUI_custom implements ComponentListener {
     *
     * <p> Note: if standalone==false and xmlFileName.length()==0, then we will initially hide the window.
     */
-   public VizGUI_custom(boolean standalone, String xmlFileName, JMenu windowmenu) {
+   public VizGUICustom(boolean standalone, String xmlFileName, JMenu windowmenu) {
       this(standalone, xmlFileName, windowmenu, null, null,"");
    }
 
@@ -325,7 +325,7 @@ public final class VizGUI_custom implements ComponentListener {
     *
     * <p> Note: if standalone==false and xmlFileName.length()==0, then we will initially hide the window.
     */
-   public VizGUI_custom(boolean standalone, String xmlFileName, JMenu windowmenu, Computer enumerator, Computer evaluator,String theme) {
+   public VizGUICustom(boolean standalone, String xmlFileName, JMenu windowmenu, Computer enumerator, Computer evaluator,String theme) {
       this(standalone, xmlFileName, windowmenu, enumerator, evaluator, true, theme);
    }
 
@@ -339,7 +339,7 @@ public final class VizGUI_custom implements ComponentListener {
     *
     * <p> Note: if standalone==false and xmlFileName.length()==0 and makeWindow==true, then we will initially hide the window.
     */
-   public VizGUI_custom(boolean standalone, String xmlFileName, JMenu windowmenu, Computer enumerator, Computer evaluator, boolean makeWindow, String theme) 
+   public VizGUICustom(boolean standalone, String xmlFileName, JMenu windowmenu, Computer enumerator, Computer evaluator, boolean makeWindow, String theme) 
    {
       this.enumerator = enumerator;
       this.standalone = standalone;

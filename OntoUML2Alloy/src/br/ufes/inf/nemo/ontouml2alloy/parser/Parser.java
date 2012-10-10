@@ -43,9 +43,7 @@ import RefOntoUML.Property;
  *  This class is used to read the model instance and to associate the Elements of the model 
  *  with their modified names into Hash Maps.
  *  
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom   
+ * 	@authors Tiago Sales,John Guerson and Lucas Thom
  */
 
 public class Parser {

@@ -27,9 +27,7 @@ import java.util.HashMap;
  *	This class is used to remove the special characters of a given name in the model and to
  *	store this modified name into a hash map.
  *
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom    
+ * 	@authors Tiago Sales, John Guerson and Lucas Thom 
  */
 
 public class NamesHandler {

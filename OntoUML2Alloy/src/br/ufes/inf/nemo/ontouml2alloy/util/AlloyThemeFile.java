@@ -26,9 +26,7 @@ import java.io.IOException;
 /**
  *	This class is used to generate our standard Alloy theme File into destination directory path.
  *  
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom   
+ * 	@authors Tiago Sales, John Guerson and Lucas Thom
  */
 
 public class AlloyThemeFile {
