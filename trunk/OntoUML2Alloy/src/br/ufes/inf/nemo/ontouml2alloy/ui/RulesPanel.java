@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.ontouml2alloy.ui;
 
+
+
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
  *
@@ -82,7 +84,6 @@ public class RulesPanel extends JPanel {
 				.addGroup(gl_RulesPanel.createSequentialGroup()
 					.addGap(22)
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblWeakDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
 						.addGroup(gl_RulesPanel.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblWeakSupplementationRule)
@@ -93,7 +94,8 @@ public class RulesPanel extends JPanel {
 							.addComponent(lblRelatorsRule)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(cbxRelators))
-						.addComponent(lblRelatorsDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
+						.addComponent(lblRelatorsDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+						.addComponent(lblWeakDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_RulesPanel.setVerticalGroup(
@@ -103,15 +105,15 @@ public class RulesPanel extends JPanel {
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblRelatorsRule)
 						.addComponent(cbxRelators))
-					.addGap(21)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblRelatorsDescription, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-					.addGap(16)
+					.addGap(30)
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblWeakSupplementationRule)
 						.addComponent(cbxWeakSupplementation))
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblWeakDescription, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-					.addGap(132))
+					.addGap(143))
 		);
 		this.setLayout(gl_RulesPanel);		
 	}
