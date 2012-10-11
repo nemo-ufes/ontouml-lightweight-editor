@@ -106,8 +106,9 @@ public class RefOntoUMLUtil {
 	 * @param mapper the bridge that in responsible for reading the
 	 * tool specific XMI and returning the information that is needed.
 	 * @return the CheckboxTree with the elements organized by diagram.
+	 * @throws Exception 
 	 */	
-	public static CheckboxTree createSelectionTreeByDiagram(Mapper mapper, Model model) {
+	public static CheckboxTree createSelectionTreeByDiagram(Mapper mapper, Model model) throws Exception {
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(model));
 		CheckboxTree modelTree = new CheckboxTree(rootNode);
 		modelTree.setCellRenderer(new OntoUMLTreeCellRenderer());

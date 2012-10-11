@@ -167,9 +167,9 @@ public class Mediator {
     			elem1 = refcreator.createGeneralizationSet();
     			break;
     			
-//    		case DEPENDENCY:
-//    			elem1 = refcreator.createDependency();
-//    			break;
+    		case DEPENDENCY:
+    			elem1 = refcreator.createDependency();
+    			break;
     			
     		case COMMENT:
     			elem1 = refcreator.createComment();
@@ -189,6 +189,10 @@ public class Mediator {
 	        for (Object e : listComment) {
 		        RefOntoUML.Comment comment1 = (RefOntoUML.Comment) createElement(e, ElementType.COMMENT);
 		        refcreator.addComment(elem1, comment1);
+	        }
+	        if (mapper.getID(element) == "") {
+	        	throw new Exception("XMI file is invalid. Element with no ID " +
+						"found. Try exporting the XMI again.");
 	        }
 	        elemMap.put(mapper.getID(element), elem1);
     	}
@@ -235,9 +239,9 @@ public class Mediator {
     			doGeneralizationSet(hashProp);
     			refcreator.dealGeneralizationSet((RefOntoUML.GeneralizationSet)modelElem, hashProp);
     			
-//    		} else if (modelElem instanceof RefOntoUML.Dependency) {
-//    			doDependency(hashProp);
-//    			refcreator.dealDependency((RefOntoUML.Dependency)modelElem, hashProp);
+    		} else if (modelElem instanceof RefOntoUML.Dependency) {
+    			doDependency(hashProp);
+    			refcreator.dealDependency((RefOntoUML.Dependency)modelElem, hashProp);
 //    			
     		} else if (modelElem instanceof RefOntoUML.Comment) {
     			doComment(hashProp);
@@ -364,20 +368,20 @@ public class Mediator {
     	hashProp.put("generalization", generalizations);
     }
     
-//    protected void doDependency(Map<String, Object> hashProp) {
-//    	
-//    	List<RefOntoUML.NamedElement> clients = new ArrayList<RefOntoUML.NamedElement>();
-//    	for (Object client : (List<?>)hashProp.get("client")) {
-//    		clients.add((RefOntoUML.NamedElement)elemMap.get((String)client));
-//		}
-//    	hashProp.put("client", clients);
-//    	
-//    	List<RefOntoUML.NamedElement> suppliers = new ArrayList<RefOntoUML.NamedElement>();
-//    	for (Object supplier : (List<?>)hashProp.get("supplier")) {
-//    		suppliers.add((RefOntoUML.NamedElement)elemMap.get((String)supplier));
-//		}
-//    	hashProp.put("supplier", suppliers);
-//    }
+    protected void doDependency(Map<String, Object> hashProp) {
+    	
+    	List<RefOntoUML.NamedElement> clients = new ArrayList<RefOntoUML.NamedElement>();
+    	for (Object client : (List<?>)hashProp.get("client")) {
+    		clients.add((RefOntoUML.NamedElement)elemMap.get((String)client));
+		}
+    	hashProp.put("client", clients);
+    	
+    	List<RefOntoUML.NamedElement> suppliers = new ArrayList<RefOntoUML.NamedElement>();
+    	for (Object supplier : (List<?>)hashProp.get("supplier")) {
+    		suppliers.add((RefOntoUML.NamedElement)elemMap.get((String)supplier));
+		}
+    	hashProp.put("supplier", suppliers);
+    }
     
     protected void doComment(Map<String, Object> hashProp) {
     	List<RefOntoUML.Element> annotatedElements = new ArrayList<RefOntoUML.Element>();
