@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Characterization;
+import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Mode;
@@ -13,33 +14,16 @@ import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
 
 public class RSAlloyGenerator {
 	
-	public static String subsetAlloyPredicate (Association a1, Association a2, NamesMapper mapper) {
-		String predicate, rules, name, a1Name, a2Name;
+	public static String subsetAlloyPredicate (Association specificAssociation, Association generealAssociation, NamesMapper mapper) {
+		String predicate, rules, name, specificName, generalName;
 		
-		a1Name = mapper.elementsMap.get(a1);
-		a2Name = mapper.elementsMap.get(a2);
+		specificName = mapper.elementsMap.get(specificAssociation);
+		generalName = mapper.elementsMap.get(generealAssociation);
 				
-		name = "subset_"+a1Name+"_"+a2Name;
-		rules = "some "+a1Name+"\n\t";
-		rules += "some "+a2Name+"\n\t";
-		rules += a1Name+" in "+a2Name;
-				
-		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
-		
-		return predicate;
-	}
-	
-	public static String notSubsetAlloyPredicate (Association a1, Association a2, NamesMapper mapper) {
-		String predicate, rules, name, a1Name, a2Name;
-		
-		a1Name = mapper.elementsMap.get(a1);
-		a2Name = mapper.elementsMap.get(a2);
-				
-		name = "not_subset_"+a1Name+"_"+a2Name;
-		rules = "some "+a1Name+"\n\t";
-		rules += "some "+a2Name+"\n\t";
-		rules += a1Name+" not in "+a2Name;
+		name = "subset_"+specificName+"_"+generalName;
+		rules = "some "+specificName+"\n\t";
+		rules += "some "+generalName+"\n\t";
+		rules += specificName+" in "+generalName;
 				
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
@@ -47,16 +31,16 @@ public class RSAlloyGenerator {
 		return predicate;
 	}
 	
-	public static String disjointAlloyPredicate (Association a1, Association a2, NamesMapper mapper) {
-		String predicate, rules, name, a1Name, a2Name;
+	public static String notSubsetAlloyPredicate (Association specificAssociation, Association generealAssociation, NamesMapper mapper) {
+		String predicate, rules, name, specificName, generalName;
 		
-		a1Name = mapper.elementsMap.get(a1);
-		a2Name = mapper.elementsMap.get(a2);
+		specificName = mapper.elementsMap.get(specificAssociation);
+		generalName = mapper.elementsMap.get(generealAssociation);
 				
-		name = "disjoint_"+a1Name+"_"+a2Name;
-		rules = "some "+a1Name+"\n\t";
-		rules += "some "+a2Name+"\n\t";
-		rules += "no "+a1Name+" & "+a2Name;
+		name = "not_subset_"+specificName+"_"+generalName;
+		rules = "some "+specificName+"\n\t";
+		rules += "some "+generalName+"\n\t";
+		rules += specificName+" not in "+generalName;
 				
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
@@ -64,17 +48,51 @@ public class RSAlloyGenerator {
 		return predicate;
 	}
 	
-	public static String redefineAlloyPredicate (Association a1, Association a2, NamesMapper mapper) {
-		String predicate, rules, name, a1Name, a2Name, a1SourceName;
+	public static String disjointAlloyPredicate (Association specificAssociation, Association generealAssociation, NamesMapper mapper) {
+		String predicate, rules, name, specificName, generalName;
 		
-		a1Name = mapper.elementsMap.get(a1);
-		a2Name = mapper.elementsMap.get(a2);
+		specificName = mapper.elementsMap.get(specificAssociation);
+		generalName = mapper.elementsMap.get(generealAssociation);
+				
+		name = "disjoint_"+specificName+"_"+generalName;
+		rules = "some "+specificName+"\n\t";
+		rules += "some "+generalName+"\n\t";
+		rules += "no "+specificName+" & "+generalName;
+				
+		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
+		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
 		
-		a1SourceName = mapper.elementsMap.get(SourceTargetAssociation.getSourceAlloy(a1));
+		return predicate;
+	}
+	
+	public static String redefineAlloyPredicate (Association specificAssociation, Association generalAssociation, NamesMapper mapper) {
+		String predicate, rules, name, generalName, specificName, typeName;
+		Classifier specificSource,specificTarget,generalSource,generalTarget;
+		specificName = mapper.elementsMap.get(specificAssociation);
+		generalName = mapper.elementsMap.get(generalAssociation);
 		
-		name = "redefine_"+a1Name+"_"+a2Name;
-		rules = "some "+a1SourceName+"\n\t";
-		rules += "all w:World, x:w."+a1SourceName+" | x.(w."+a1Name+")=x.(w."+a2Name+")";
+		name = "redefine_"+specificName+"_"+generalName;
+				
+		specificSource=(Classifier) SourceTargetAssociation.getSourceAlloy(specificAssociation);
+		specificTarget=(Classifier) SourceTargetAssociation.getTargetAlloy(specificAssociation);
+		generalSource=(Classifier) SourceTargetAssociation.getSourceAlloy(generalAssociation);
+		generalTarget=(Classifier) SourceTargetAssociation.getTargetAlloy(generalAssociation);
+		
+		System.out.println("SpecificSource: "+mapper.elementsMap.get(specificSource));
+		System.out.println("SpecificTarget: "+mapper.elementsMap.get(specificTarget));
+		System.out.println("GeneralSource: "+mapper.elementsMap.get(generalSource));
+		System.out.println("GeneralTarget: "+mapper.elementsMap.get(generalTarget));
+		
+		if (specificSource.allParents().contains(generalSource) || specificSource.allParents().contains(generalTarget)){
+			typeName = mapper.elementsMap.get(specificSource);
+			rules = "some "+typeName+"\n\t";
+			rules += "all w:World, x:w."+typeName+" | x.(w."+specificName+")=x.(w."+generalName+")";
+		}
+		else{
+			typeName = mapper.elementsMap.get(specificTarget);
+			rules = "some "+typeName+"\n\t";
+			rules += "all w:World, x:w."+typeName+" | (w."+specificName+").x=(w."+generalName+").x";
+		}
 				
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";

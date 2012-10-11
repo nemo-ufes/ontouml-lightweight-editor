@@ -27,7 +27,7 @@ public class QueryPerformer {
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/RelationSpecialization.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
 		
@@ -94,6 +94,8 @@ public class QueryPerformer {
 		    for (Association a : result5){
 		    	System.out.println(IAAlloyGenerator.impreciseAbstractionPredicates(a, mapper));
 		    }
+		    
+		    ACIdentifier.IAQuery(m, 5);
 		    		    
 		} catch (ParserException e) {
 		    // record failure to parse
