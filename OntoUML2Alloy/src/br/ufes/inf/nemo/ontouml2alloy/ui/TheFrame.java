@@ -58,7 +58,7 @@ public class TheFrame extends JFrame {
 	public RulesPanel rpanel;
 	
 	public FilesPanel fpanel;	
-		
+			
 	/**
 	 * Create the frame for OLED.
 	 */
@@ -90,7 +90,7 @@ public class TheFrame extends JFrame {
 		
 		rpanel = new RulesPanel();
 		tabbedPane.addTab("Rules", null, rpanel, null);
-		
+				
 		contentPane.add(tabbedPane);
 		
 		fpanel.btnBrowseOntoUML.addActionListener(new ActionListener() 
