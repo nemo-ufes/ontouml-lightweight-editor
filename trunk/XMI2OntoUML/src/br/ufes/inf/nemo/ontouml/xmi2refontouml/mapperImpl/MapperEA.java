@@ -156,9 +156,9 @@ public class MapperEA implements Mapper {
 									((Element)extendedProp.item(i).getParentNode()).getAttributeNS(XMINS, "idref"));
 							assocClassElemClone.setAttribute("name", 
 									((Element)extendedProp.item(i).getParentNode()).getAttribute("name"));
-							assocClassElemClone.setIdAttributeNS(XMINS, "id", true);
 							assocClassElem.getParentNode().appendChild(assocClassElemClone);
 							assocClassElem.setIdAttributeNS(XMINS, "id", true);
+							assocClassElemClone.setIdAttributeNS(XMINS, "id", true);
 						}
 					}
 					elemList.add(assocClassElemClone);
@@ -393,17 +393,24 @@ public class MapperEA implements Mapper {
 	}
 
 	@Override
-	public List<String> getDiagramElements(Object diagram) {
+	public List<String> getDiagramElements(Object diagram) throws Exception {
 		List<String> diagElemIDList = new ArrayList<String>();
 		Element elements = XMLDOMUtil.getChild((Element)diagram, "elements");
-		List<Object> diagElemList = XMLDOMUtil.getElementChilds(elements);
-
-		for (Object diagElem : diagElemList) {
-			ElementType type = getType(getElementById(((Element)diagElem).getAttribute("subject")));
-			if (type == ElementType.CLASS ||
-					type == ElementType.ASSOCIATION) {
-				
-				diagElemIDList.add(((Element)diagElem).getAttribute("subject"));
+		if (elements != null) {
+			List<Object> diagElemList = XMLDOMUtil.getElementChilds(elements);
+	
+			for (Object diagElem : diagElemList) {
+				if (getElementById(((Element)diagElem).getAttribute("subject")) == null) {
+					throw new Exception("XMI file is invalid. Reference to a inexistent element " +
+							"in diagram " + ((Element)((Element)diagram).getElementsByTagName
+							("properties").item(0)).getAttribute("name") + " found.");
+				}
+				ElementType type = getType(getElementById(((Element)diagElem).getAttribute("subject")));
+				if (type == ElementType.CLASS ||
+						type == ElementType.ASSOCIATION) {
+					
+					diagElemIDList.add(((Element)diagElem).getAttribute("subject"));
+				}
 			}
 		}
 		
