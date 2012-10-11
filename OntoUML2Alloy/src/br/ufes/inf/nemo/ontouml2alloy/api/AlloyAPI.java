@@ -611,11 +611,17 @@ public class AlloyAPI {
 		GenericScope gs = factory.createGenericScope();		
 		gs.setScopeSize(10);
 		
-		Scopeable s = factory.createScopeable();		
-		s.setIsExactly(true);
-		s.setScopeSize(3);
-		s.setSignature("World");
-		gs.getScopeable().add(s);
+		Scopeable s1 = factory.createScopeable();		
+		s1.setIsExactly(false);
+		s1.setScopeSize(3);
+		s1.setSignature("World");
+		gs.getScopeable().add(s1);
+		
+		Scopeable s2 = factory.createScopeable();
+		s2.setIsExactly(false);
+		s2.setScopeSize(7);
+		s2.setSignature("int");
+		gs.getScopeable().add(s2);
 		
 		run.setScope(gs);
 		module.getParagraph().add(run);
