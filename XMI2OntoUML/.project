@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>XMI2RefOntoUML</name>
+	<name>XMI2OntoUML</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -29,7 +29,13 @@
 		<link>
 			<name>Testes OntoUML2Alloy.xml</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Projeto%20XMI-Alloy/Testes/Testes%20OntoUML2Alloy.xml</locationURI>
+			<locationURI>copy_PARENT/Projeto%20XMI-Alloy/Testes/Testes%20OntoUML2Alloy.xml</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>copy_PARENT</name>
+			<value>$%7BPARENT-5-PROJECT_LOC%7D/Development</value>
+		</variable>
+	</variableList>
 </projectDescription>
