@@ -19,7 +19,7 @@
 	<classpathentry kind="lib" path="lib/swingx-all-1.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/lablib-checkboxtree-3.3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2Alloy"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2SBVR"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2SimpleOwl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/XMI2OntoUML"/>
