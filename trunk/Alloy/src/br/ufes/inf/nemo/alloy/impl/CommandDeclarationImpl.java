@@ -466,15 +466,23 @@ public class CommandDeclarationImpl extends ParagraphImpl implements CommandDecl
 	 */
 	public String toString() {
 		StringBuffer result = new StringBuffer();
-		if(isRun) {
+		
+		if(isRun) 
+		{
 			GenericScope genScope = (GenericScope)scope;
 			result.append("run {\n} for "+genScope.getScopeSize());
 			
-			if(((Scopeable)genScope.getScopeable().get(0))!= null) 
+			if (genScope.getScopeable().size()>0)
 			{
-				Scopeable s = ((Scopeable)genScope.getScopeable().get(0));
-				result.append(" but "+s.getScopeSize()+" "+s.getSignature());
-			}			
+				result.append(" but ");
+				
+				Scopeable s1 = ((Scopeable)genScope.getScopeable().get(0));
+				result.append(s1.getScopeSize()+" "+s1.getSignature()+", ");
+				
+				Scopeable s2 = ((Scopeable)genScope.getScopeable().get(1));
+				result.append(s2.getScopeSize()+" "+s2.getSignature());
+					
+			}									
 		}
 		
 		return result.toString();
