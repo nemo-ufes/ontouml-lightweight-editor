@@ -39,6 +39,7 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Model;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.impl.GeneralizationSetImpl;
+import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
@@ -55,8 +56,9 @@ public class UmlProject implements Serializable {
 	private static final long serialVersionUID = -2356413039446009810L;
 	private transient AdapterFactoryEditingDomain editingDomain;
 	private transient Resource resource;
-	private List<UmlDiagram> diagrams = new ArrayList<UmlDiagram>();
 	private transient boolean saveNeeded = false;
+	private transient String tempDir;
+	private List<UmlDiagram> diagrams = new ArrayList<UmlDiagram>();
 	private Properties properties;
 	
 	public UmlProject() {
@@ -217,5 +219,13 @@ public class UmlProject implements Serializable {
 
 	public void setProperties(Properties properties) {
 		this.properties = properties;
+	}
+	
+	public String getTempDir()
+	{
+		if(tempDir == null)
+			tempDir = ConfigurationHelper.makeTempDir();
+		
+		return tempDir;
 	}
 }

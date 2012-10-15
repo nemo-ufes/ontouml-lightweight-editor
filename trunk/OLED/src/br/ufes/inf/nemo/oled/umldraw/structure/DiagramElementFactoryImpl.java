@@ -300,7 +300,7 @@ private void setupElementMaps() {
     relationCounters.put(RelationType.DERIVATION, 0);  
    
     Association datatyperelationship = factory.createAssociation();
-    datatyperelationship.setName("DatatypeRelationship");
+    datatyperelationship.setName("Association");
     datatyperelationship.setVisibility(VisibilityKind.PUBLIC);
     AssociationElement datatyperelationshipElement = (AssociationElement) AssociationElement.getPrototype().clone();
     datatyperelationshipElement.setRelationship(datatyperelationship);

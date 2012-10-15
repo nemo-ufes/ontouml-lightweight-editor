@@ -30,6 +30,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -44,26 +46,13 @@ import javax.swing.LayoutStyle;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
+import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.IconLoader.IconType;
 
-
-
-/**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
 /**
 * This class provides a start screen for the application
 * 
@@ -103,8 +92,21 @@ public class StartPanel extends JPanel implements Editor {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void populateRecentProjects() {
 		recentList.setModel(new DefaultComboBoxModel(ConfigurationHelper.getRecentProjects()));
+		recentList.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+		        if (evt.getClickCount() >= 2) 
+		        {
+		        	commandListener.handleCommand("OPEN_RECENT_PROJECT");
+		        }
+		    }
+		});
 	}
 
+	public String getSelectedRecentFile()
+	{
+		return (String) recentList.getSelectedValue();
+	}
+	
 	//Builds the UI
 	@SuppressWarnings("rawtypes")
 	private void initGUI() {
@@ -384,6 +386,11 @@ public class StartPanel extends JPanel implements Editor {
 	@Override
 	public void dispose() {
 		
+	}
+
+	@Override
+	public UmlProject getProject() {
+		return null;
 	}
 
 }

@@ -425,8 +425,8 @@ public class EditClassDialog2 extends javax.swing.JDialog {
 		//If there is any change in the model elements or in the diagram (graphical) element, fire the undoable change command
 		if(desc.getObjectChanges().size() > 0 || !element.compareTo(snapshot))
 		{
-			ChangeNodeCommand cmd = new ChangeNodeCommand(manager.getCurrentEditor(), element, snapshot, manager.getCurrentProject(), desc);
-			manager.getCurrentEditor().execute(cmd);
+			ChangeNodeCommand cmd = new ChangeNodeCommand(manager.getCurrentDiagramEditor(), element, snapshot, manager.getCurrentProject(), desc);
+			manager.getCurrentDiagramEditor().execute(cmd);
 		}
 	}
 

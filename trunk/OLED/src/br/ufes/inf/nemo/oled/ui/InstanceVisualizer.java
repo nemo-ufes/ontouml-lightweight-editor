@@ -16,6 +16,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
+import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -135,8 +136,8 @@ public class InstanceVisualizer extends JPanel implements Editor{
 			
 		AlloyInstance myInstance;
 		
-		String solutionFileName = ConfigurationHelper.getCanonPath(diagram.getTempDir() , OLEDSettings.SIMULATION_SOLUTION_FILE.getValue());
-		String themeFileName = ConfigurationHelper.getCanonPath(diagram.getTempDir(), OLEDSettings.SIMULATION_THEME_FILE.getValue());
+		String solutionFileName = ConfigurationHelper.getCanonPath(diagram.getProject().getTempDir() , OLEDSettings.SIMULATION_SOLUTION_FILE.getValue());
+		String themeFileName = ConfigurationHelper.getCanonPath(diagram.getProject().getTempDir(), OLEDSettings.SIMULATION_THEME_FILE.getValue());
 		
 		File solutionFile = new File(solutionFileName);
 		solutionFile.deleteOnExit();
@@ -327,6 +328,11 @@ public class InstanceVisualizer extends JPanel implements Editor{
 		return diagram;
 	}
 	
+	@Override
+	public UmlProject getProject() {
+		return diagram.getProject();
+	}
+	
 	public A4Solution getSolution() {
 		return solution;
 	}
@@ -400,6 +406,6 @@ public class InstanceVisualizer extends JPanel implements Editor{
 
 	public List<SimulationElement> getSimulationElements() {
 		return simulationElements;
-	};
+	}
 
 }

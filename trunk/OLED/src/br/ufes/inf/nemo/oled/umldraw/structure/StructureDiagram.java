@@ -52,10 +52,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import edu.mit.csail.sdg.alloy4graph.DotColor;
-import edu.mit.csail.sdg.alloy4graph.DotShape;
-import edu.mit.csail.sdg.alloy4graph.DotStyle;
-
 import RefOntoUML.Comment;
 import RefOntoUML.Dependency;
 import RefOntoUML.DirectedRelationship;
@@ -90,9 +86,11 @@ import br.ufes.inf.nemo.oled.draw.Selection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.shared.DiagramSelection;
-import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
+import edu.mit.csail.sdg.alloy4graph.DotColor;
+import edu.mit.csail.sdg.alloy4graph.DotShape;
+import edu.mit.csail.sdg.alloy4graph.DotStyle;
 
 /**
  * This class implements the effective layout area. It shows the boundaries of
@@ -104,17 +102,17 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	private static final long serialVersionUID = -874538211438595440L;
 	private static final int ADDITIONAL_SPACE_RIGHT = 30;
 	private static final int ADDITIONAL_SPACE_BOTTOM = 30;
+	private transient boolean gridVisible = true, snapToGrid = true, saveNeeded = true;
+	private transient Collection<LabelChangeListener> nameChangeListeners = new ArrayList<LabelChangeListener>();
+	private transient Set<NodeChangeListener> nodeChangeListeners = new HashSet<NodeChangeListener>();
 	private int gridSize = 5;
 	private String name;
 	private List<Connection> connections = new ArrayList<Connection>();
 	private Label nameLabel = new SimpleLabel();
 	private UmlProject project;
 	private DiagramElementFactory elementFactory = new DiagramElementFactoryImpl(this);
-	private transient boolean gridVisible = true, snapToGrid = true, saveNeeded = true;
-	private transient Collection<LabelChangeListener> nameChangeListeners = new ArrayList<LabelChangeListener>();
-	private transient Set<NodeChangeListener> nodeChangeListeners = new HashSet<NodeChangeListener>();
 	private List<SimulationElement> simulationElements = new ArrayList<SimulationElement>();
-	private transient String tempDir;
+
 	private transient boolean generateTheme = true;
 	
 	/**
@@ -246,15 +244,6 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		this.saveNeeded = saveNeeded;
 	}
 	
-	public String getTempDir()
-	{
-		if(tempDir == null)
-			tempDir = ConfigurationHelper.makeTempDir();
-		
-		return tempDir;
-	}
-	
-
 	public void setGenerateTheme(boolean generateTheme) {
 		this.generateTheme = generateTheme;
 	}

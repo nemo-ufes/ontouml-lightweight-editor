@@ -46,7 +46,6 @@ import br.ufes.inf.nemo.oled.model.UmlProject;
 public class ModelHelper {
 
 	private static Diagnostician validator;
-	//private static RefOntoUMLValidator validator2;
 	private static ResourceSet resourceSet;
 	private static RefOntoUMLFactory factory;
 	private static ComposedAdapterFactory adapterFactory; // TODO Cleanup
@@ -197,7 +196,7 @@ public class ModelHelper {
 	 * Helper method which creates a property with default multiplicity 1..1 as a owned end to associations
 	 * of a given classifier
 	 */
-	public static Property getDefaultOwnedEnd(Classifier classifier) {
+	public static Property getDefaultOwnedEnd(Classifier classifier, int lower, int upper) {
 		if (!initialized) {
 			initializeHelper();
 		}
@@ -206,10 +205,9 @@ public class ModelHelper {
 		property.setType(classifier);
 
 		LiteralInteger lowerBound = factory.createLiteralInteger();
-		lowerBound.setValue(1);
-		LiteralUnlimitedNatural upperBound = factory
-				.createLiteralUnlimitedNatural();
-		upperBound.setValue(1);
+		lowerBound.setValue(lower);
+		LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
+		upperBound.setValue(upper);
 
 		property.setLowerValue(lowerBound);
 		property.setUpperValue(upperBound);
@@ -217,6 +215,7 @@ public class ModelHelper {
 		return property;
 	}
 
+	
 	public static String getMultiplicityString(Property property) {
 		int lowerBound = property.getLower(), upperBound = property.getUpper();
 		if (upperBound == -1)

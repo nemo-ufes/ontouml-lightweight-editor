@@ -16,6 +16,7 @@ import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
+import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 
 /** 
@@ -27,6 +28,8 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	private DiagramEditor editor;
 	private OutputPane outputPane = new OutputPane();
 	private JSplitPane editorArea  = new JSplitPane();
+	
+	//TODO Remove me
 	private File projectFile;
 	
 	public DiagramEditorWrapper(DiagramEditor editor, DiagramEditorCommandDispatcher editorDispatcher)
@@ -179,6 +182,11 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
         }
 	}
 
+	@Override
+	public UmlProject getProject() {
+		return editor.getDiagram().getProject();
+	}
+	
 	@Override
 	public boolean isSaveNeeded() {
 		return editor.isSaveNeeded();

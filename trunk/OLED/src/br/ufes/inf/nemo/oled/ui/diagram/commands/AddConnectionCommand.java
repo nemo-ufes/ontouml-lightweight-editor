@@ -28,14 +28,20 @@ import java.util.List;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 
+import RefOntoUML.AggregationKind;
 import RefOntoUML.Classifier;
-import RefOntoUML.MaterialAssociation;
+import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import RefOntoUML.impl.AssociationImpl;
+import RefOntoUML.impl.CharacterizationImpl;
 import RefOntoUML.impl.DataTypeImpl;
 import RefOntoUML.impl.DirectedBinaryAssociationImpl;
 import RefOntoUML.impl.FormalAssociationImpl;
 import RefOntoUML.impl.GeneralizationImpl;
+import RefOntoUML.impl.MaterialAssociationImpl;
+import RefOntoUML.impl.MediationImpl;
+import RefOntoUML.impl.MeronymicImpl;
+import RefOntoUML.impl.componentOfImpl;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -133,12 +139,28 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			else if(connection.getRelationship() instanceof AssociationImpl)
 			{
 				AssociationImpl association  = (AssociationImpl) connection.getRelationship();
-	    		Property node1Property = ModelHelper.getDefaultOwnedEnd(source);
-	    		Property node2Property = ModelHelper.getDefaultOwnedEnd(target);
+				
+	    		Property node1Property, node2Property;
 	    		
-	    		//TODO Change this. 
-	    		// Remove the if(association instanceof DirectedBinaryAssociationImpl...
-	    		// 
+	    		node1Property = ModelHelper.getDefaultOwnedEnd(source, 1, 1);
+	    		
+	    		//If the association is a ComponentOf, set the default cardinality to 2..*, to help in validation
+	    		if(association instanceof componentOfImpl)
+	    			node2Property = ModelHelper.getDefaultOwnedEnd(target, 2, -1);
+	    		else
+	    			node2Property = ModelHelper.getDefaultOwnedEnd(target, 1, 1);
+	    		
+	    		if(association instanceof MeronymicImpl)
+	    		{
+	    			if(((Meronymic)association).isIsShareable())
+	    			{
+	    				node1Property.setAggregation(AggregationKind.SHARED);
+	    			}
+	    			else
+	    			{
+	    				node1Property.setAggregation(AggregationKind.COMPOSITE);
+	    			}	
+	    		}
 	    		
 	    		association.getOwnedEnd().add(node1Property);
 	    		association.getOwnedEnd().add(node2Property);
@@ -146,9 +168,18 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	    		association.getMemberEnd().add(node1Property);
 	    		association.getMemberEnd().add(node2Property);
 	    		
-	    		if(association instanceof DirectedBinaryAssociationImpl == false 
-	    				&& association instanceof FormalAssociationImpl == false 
-	    				&& association instanceof MaterialAssociation == false)
+	    		if(association instanceof DirectedBinaryAssociationImpl || association instanceof FormalAssociationImpl || association instanceof MaterialAssociationImpl)
+	    		{
+	    			association.getNavigableOwnedEnd().add(node1Property);
+	    			association.getNavigableOwnedEnd().add(node2Property);
+	    			
+	    			//If the association is Mediation or Characterization, set target readonly to help in validation
+	    			if(association instanceof MediationImpl || association instanceof CharacterizationImpl)
+	    			{
+	    				node2Property.setIsReadOnly(true);
+	    			}
+	    		}
+	    		else
 	    		{
 		    		if(node1Property.getType() instanceof DataTypeImpl)
 		    			association.getNavigableOwnedEnd().add(node1Property);

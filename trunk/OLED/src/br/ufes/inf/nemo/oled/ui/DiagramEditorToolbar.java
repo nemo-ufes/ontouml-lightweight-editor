@@ -37,11 +37,11 @@ public class DiagramEditorToolbar implements ActionListener {
     
     toolbar.addSeparator(new Dimension(20, 25));
     toolbar.add(createButton(validationGroup, "validate"));
-    toolbar.addSeparator(new Dimension(20, 25));
-    toolbar.add(createButton(validationGroup, "verifysettings")); 
+    //toolbar.addSeparator(new Dimension(20, 25));
+    //toolbar.add(createButton(validationGroup, "verifysettings")); 
     toolbar.add(createButton(validationGroup, "verify")); 
-    toolbar.add(createButton(validationGroup, "verifyfile")); 
-    toolbar.addSeparator(new Dimension(20, 25));
+    //toolbar.add(createButton(validationGroup, "verifyfile")); 
+    //toolbar.addSeparator(new Dimension(20, 25));
     toolbar.add(createButton(validationGroup, "generateowlsettings"));
     toolbar.add(createButton(validationGroup, "generateowl"));
     toolbar.add(createButton(validationGroup, "generatesbvr"));
@@ -96,12 +96,11 @@ private JToggleButton createToggleButton(ButtonGroup aButtonGroup,
     return button;
   }
   
-  private JButton createButton(ButtonGroup aButtonGroup,
-    String name) {
+  private JButton createButton(ButtonGroup aButtonGroup, String name) {
     String prefix = "editortoolbar." + name;
-    JButton button = new JButton(
-      IconLoader.getInstance().getIcon(getResourceString(prefix + ".icon")));
-    button.setMargin(new Insets(3, 3, 3, 3));
+    String label = getResourceString(prefix + ".label");
+    JButton button = new JButton(label,IconLoader.getInstance().getIcon(getResourceString(prefix + ".icon")));
+    button.setMargin(new Insets(5, 5, 5, 5));
     String actionCommand = getResourceString(prefix + ".command");
     button.setActionCommand(actionCommand);
     button.addActionListener(this);

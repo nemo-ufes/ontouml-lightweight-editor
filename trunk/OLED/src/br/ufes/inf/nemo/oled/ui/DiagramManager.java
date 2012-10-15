@@ -112,17 +112,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public DiagramManager(final AppFrame frame) {
 		super();
 		this.frame = frame;
-		
-		//setFocusable(false);
-		
+
 		editorDispatcher = new DiagramEditorCommandDispatcher(this);
-		//editingDomain = RefOntoUMLHelper.getAdapterEditingDomain();
 		
 		//When the user selects a tab show the model tree in the tool manager 
 		addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				DiagramEditor editor = getCurrentEditor();
+				DiagramEditor editor = getCurrentDiagramEditor();
 				if(editor != null)
 					DiagramManager.this.frame.getToolManager().showModelTree(editor.getProject());		
 				frame.updateMenuAndToolbars(editor);
@@ -140,6 +137,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		UmlProject project = new UmlProject();
 		StructureDiagram diagram = new StructureDiagram(project);
 		project.addDiagram(diagram);
+		//TODO Localize this
 		diagram.setLabelText("New Diagram");		
 		project.setSaveModelNeeded(true);
 		diagram.setSaveNeeded(true);
@@ -153,8 +151,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void openProject() {
 		if (canOpen()) {
 			JFileChooser fileChooser = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
 			fileChooser.setDialogTitle(getResourceString("dialog.openmodel.title"));
-			fileChooser.addChoosableFileFilter(createModelFileFilter());
+			fileChooser.addChoosableFileFilter(filter);
+			fileChooser.setFileFilter(filter);
+			fileChooser.setAcceptAllFileFilterUsed(false);
 			if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				try {
 					File file = fileChooser.getSelectedFile();
@@ -169,6 +170,30 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 							getResourceString("error.readfile.title"),
 							JOptionPane.ERROR_MESSAGE);
 				}
+			}
+		}
+	}
+	
+	/**
+	 * Opens an existing project.
+	 */
+	public void openRecentProject() {
+		if (canOpen()) 
+		{
+			try {
+				StartPanel startPanel = (StartPanel) getCurrentEditor();
+				if(startPanel != null)
+				{
+					File file = new File(startPanel.getSelectedRecentFile());
+					UmlProject model = (UmlProject) ProjectReader.getInstance().readProject(file);				
+					createEditor((StructureDiagram) model.getDiagrams().get(0));
+					setModelFile(file);
+					
+					ConfigurationHelper.addRecentProject(file.getCanonicalPath());
+					//updateFrameTitle(); FIXME
+				}
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -193,14 +218,19 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	private File saveProjectFile(File file) {
 		File result = null;
 		try {
+
+			if(!file.getName().endsWith(".oled"))
+			{
+				file = new File(file.getCanonicalFile() + ".oled");
+			}
+			
 			result = ProjectWriter.getInstance().writeProject(this, file, getCurrentEditor().getProject());
-			getCurrentEditor().clearUndoManager();
-			frame.updateMenuAndToolbars(getCurrentEditor());
+			getCurrentDiagramEditor().clearUndoManager();
+			frame.updateMenuAndToolbars(getCurrentDiagramEditor());
 			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(this, ex.getMessage(),
-					getResourceString("error.savefile.title"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.savefile.title"), JOptionPane.ERROR_MESSAGE);
 		}
 		return result;
 	}
@@ -227,7 +257,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void saveProjectAs() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle(getResourceString("dialog.saveas.title"));
-		fileChooser.addChoosableFileFilter(createModelFileFilter());
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);
+		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 			setModelFile(saveProjectFile(fileChooser.getSelectedFile()));
 			//updateFrameTitle(); FIXME
@@ -246,10 +279,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Returns the FileFilter for the TinyUML serialized model files.
 	 * @return the FileFilter
 	 */
-	private FileNameExtensionFilter createModelFileFilter() {
-		return new FileNameExtensionFilter(
-				"OLED Project (*.oled)", "oled");
-	}
+	//private FileNameExtensionFilter createModelFileFilter() {
+	//	return new FileNameExtensionFilter(
+	//			"OLED Project (*.oled)", "oled");
+	//}
 	
 
 	/**
@@ -261,10 +294,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		fileChooser.setDialogTitle(getResourceString("dialog.exportgfx.title"));
 		//FileNameExtensionFilter svgFilter = new FileNameExtensionFilter(
 		//  "Scalable Vector Graphics file (*.svg)", "svg");
-		FileNameExtensionFilter pngFilter = new FileNameExtensionFilter(
-				"Portable Network Graphics file (*.png)", "png");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Portable Network Graphics file (*.png)", "png");
 		//fileChooser.addChoosableFileFilter(svgFilter);
-		fileChooser.addChoosableFileFilter(pngFilter);
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 			//if (fileChooser.getFileFilter() == svgFilter) {
@@ -277,10 +310,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			//      JOptionPane.ERROR_MESSAGE);
 			//  }
 			//} else 
-			if (fileChooser.getFileFilter() == pngFilter) {
+			if (fileChooser.getFileFilter() == filter) {
 				try {
 					PngExporter exporter = new PngExporter();
-					exporter.writePNG(getCurrentEditor(), fileChooser.getSelectedFile());
+					exporter.writePNG(getCurrentDiagramEditor(), fileChooser.getSelectedFile());
 				} catch (IOException ex) {
 					JOptionPane.showMessageDialog(this, ex.getMessage(),
 							getResourceString("error.exportgfx.title"),
@@ -299,27 +332,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * */
 	public void exportOwl() {
 		//CLEANUP
-		/*if(getCurrentEditor() != null)
-		{
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setDialogTitle(getResourceString("dialog.exportowl.title"));
-			FileNameExtensionFilter owlFilter = new FileNameExtensionFilter(
-					"Web Ontology Language file (*.owl)", "owl");
-			fileChooser.addChoosableFileFilter(owlFilter);
-			fileChooser.setAcceptAllFileFilterUsed(false);
-			if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-				if (fileChooser.getFileFilter() == owlFilter) {
-					try {
-							OwlExporter exporter = new OwlExporter();
-							exporter.writeOwl(this, fileChooser.getSelectedFile(), getCurrentEditor().getProject());
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(this, ex.getMessage(),
-								getResourceString("error.exportgfx.title"),
-								JOptionPane.ERROR_MESSAGE);
-					}
-				}
-			}
-		}*/
 	}
 	
 	/**
@@ -330,12 +342,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		{
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setDialogTitle(getResourceString("dialog.exportecore.title"));
-			FileNameExtensionFilter owlFilter = new FileNameExtensionFilter(
-					"Eclipse Ecore-based Model (*.refontouml)", "refontouml");
-			fileChooser.addChoosableFileFilter(owlFilter);
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
+			fileChooser.addChoosableFileFilter(filter);
+			fileChooser.setFileFilter(filter);
 			fileChooser.setAcceptAllFileFilterUsed(false);
 			if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-				if (fileChooser.getFileFilter() == owlFilter) {
+				if (fileChooser.getFileFilter() == filter) {
 					try {						
 						EcoreExporter exporter = new EcoreExporter();
 						exporter.writeEcore(this, fileChooser.getSelectedFile(), getCurrentEditor().getProject());
@@ -350,19 +362,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/**
-	 * Imports an Ecore-based model.
+	 * Imports an RefOntoUML model.
 	 */
 	public void importEcore() {
 
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle(getResourceString("dialog.importecore.title"));
-		FileNameExtensionFilter owlFilter = new FileNameExtensionFilter(
-				"Eclipse Ecore-based Model (*.refontouml)", "refontouml");
-		fileChooser.addChoosableFileFilter(owlFilter);
-		fileChooser.setFileFilter(owlFilter);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-			if (fileChooser.getFileFilter() == owlFilter) {
+			if (fileChooser.getFileFilter() == filter) {
 				try {
 					ResourceSet resourceSet = new ResourceSetImpl();
 					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,new OLEDResourceFactory());
@@ -398,13 +409,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle(getResourceString("dialog.importxmi.title"));
-		FileNameExtensionFilter owlFilter = new FileNameExtensionFilter(
-				"XMI, XML (*.xmi, *.xml)", "xmi", "xml");
-		fileChooser.addChoosableFileFilter(owlFilter);
-		fileChooser.setFileFilter(owlFilter);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("XMI, XML (*.xmi, *.xml)", "xmi", "xml");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			if (fileChooser.getFileFilter() == owlFilter) {
+			if (fileChooser.getFileFilter() == filter) {
 				try {
 					File file = fileChooser.getSelectedFile();
 
@@ -537,12 +547,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * If there's no suitable editor, returns null.
 	 * @return DiagramEditor the current focused DiagramEditor
 	 * */
-	public DiagramEditor getCurrentEditor() {
+	public Editor getCurrentEditor() {
 		if(this.getSelectedIndex() != -1)
 		{
 			Object obj = this.getSelectedComponent();
-			if(obj instanceof DiagramEditorWrapper)
-				return ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor();	
+			if(obj instanceof Editor)
+				return (Editor) obj;	
 		}
 		return null;
 	}
@@ -552,9 +562,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * @return {@link UmlProject} the project
 	 */
 	public UmlProject getCurrentProject() {
-		DiagramEditor editor = getCurrentEditor();
-		if(editor != null)
-			return editor.getProject();
+		Editor editor = getCurrentDiagramEditor();
+		if(editor instanceof DiagramEditor)
+			return ((DiagramEditor)editor).getProject();
 		return null;
 	}
 		
@@ -569,6 +579,16 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return null;
 	}
 	
+	/**
+	 * Gets the wrapper for the selected DiagramEditor
+	 * @return {@link UmlProject} the project
+	 */
+	public DiagramEditor getCurrentDiagramEditor() 
+	{
+		if(this.getSelectedComponent() instanceof DiagramEditorWrapper)
+			return ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor();
+		return null;
+	}
 	
 	/**
 	 * Gets the file associated with the model.
@@ -623,10 +643,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void verifyCurrentModel() {
 		
 		UmlProject project = getCurrentEditor().getProject();
-		StructureDiagram diagram = getCurrentEditor().getDiagram();
+		StructureDiagram diagram = (StructureDiagram) getCurrentEditor().getDiagram();
 		
 		List<SimulationElement> simulationElements = diagram.getSimulationElements();
-		OperationResult result = VerificationHelper.verifyModel(project.getModel(), simulationElements, diagram.getTempDir());
+		OperationResult result = VerificationHelper.verifyModel(project.getModel(), simulationElements, project.getTempDir());
 		
 		if(result.getResultType() != ResultType.ERROR)
 		{
@@ -649,10 +669,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	@SuppressWarnings("unchecked")
 	public void verifyCurrentModelFile() {
 
-		StructureDiagram diagram = getCurrentEditor().getDiagram();
+		StructureDiagram diagram = (StructureDiagram) getCurrentWrapper().getDiagram();
+		UmlProject project = getCurrentProject();
 		
 		List<SimulationElement> simulationElements = diagram.getSimulationElements();
-		OperationResult result = VerificationHelper.verifyModelFromAlloyFile(diagram.getTempDir());
+		OperationResult result = VerificationHelper.verifyModelFromAlloyFile(project.getTempDir());
 		
 		if(result.getResultType() != ResultType.ERROR)
 		{
@@ -690,11 +711,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		else
 		{
+			List<SimulationElement> simElements = ((StructureDiagram) getCurrentWrapper().getDiagram()).getSimulationElements();
+			
 			instanceViz.setSolution(solution);
 			instanceViz.setModule(module);
 			instanceViz.setAlloySources(alloySources);
 			instanceViz.loadSolution();
-			instanceViz.setSimulationElements(getCurrentEditor().getDiagram().getSimulationElements());
+			instanceViz.setSimulationElements(simElements);
 			setSelectedComponent(instanceViz);
 		}
 		
@@ -714,8 +737,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void generateOwl() {
 		
-		UmlProject project = getCurrentEditor().getProject();
-		StructureDiagram diagram = getCurrentEditor().getDiagram();
+		UmlProject project = getCurrentProject();
+		//StructureDiagram diagram = getCurrentEditor().getDiagram();
 		
 		String owlType = ProjectSettings.OWL_MAPPING_TYPE.getValue(project);
 		MappingType mappingType = null;
@@ -736,11 +759,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			{
 				getCurrentWrapper().showOutputText(result.toString(), true, false);
 				
-				TextEditor textViz = (TextEditor) getEditorForDiagram(diagram, EditorNature.TEXT);
+				TextEditor textViz = (TextEditor) getEditorForProject(project, EditorNature.TEXT);
 				
 				if(textViz == null)
 				{
-					textViz = new TextEditor(diagram);
+					textViz = new TextEditor(project);
 					
 					//TODO Localize this;
 					add("OWL Generated", textViz);
@@ -767,10 +790,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void generateSbvr() {
 		
-		UmlProject project = getCurrentEditor().getProject();
-		StructureDiagram diagram = getCurrentEditor().getDiagram();
-		
-		OperationResult result = SBVRHelper.generateSBVR(project.getModel(), diagram.getTempDir());
+		UmlProject project = getCurrentProject();
+		OperationResult result = SBVRHelper.generateSBVR(project.getModel(), project.getTempDir());
 		
 		if(result.getResultType() != ResultType.ERROR)
 		{
@@ -808,6 +829,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
+	//TODO Remove-me
 	private Editor getEditorForDiagram(StructureDiagram diagram, EditorNature nature)
 	{
 		int totalTabs = getTabCount();
@@ -816,6 +838,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			Editor editor = (Editor)getComponentAt(i);
 			
 			if(editor.getEditorNature() == nature && editor.getDiagram() == diagram)
+			{
+				return editor;
+			}
+		}
+		return null;
+	}
+	
+	private Editor getEditorForProject(UmlProject project, EditorNature nature)
+	{
+		int totalTabs = getTabCount();
+		for(int i = 0; i < totalTabs; i++)
+		{
+			Editor editor = (Editor)getComponentAt(i);
+			
+			if(editor.getEditorNature() == nature && editor.getProject() == project)
 			{
 				return editor;
 			}

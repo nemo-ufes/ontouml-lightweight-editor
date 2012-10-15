@@ -34,7 +34,8 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * Features TO-DO
  * ======================================================
  * 
- * Colocar IRI no modelo RefOntoUML
+*
+* * Colocar IRI no modelo RefOntoUML
  * Implementar nova transformação para OWL
  * Implementar Salvar como na visualizaão do OWL? Mas sem fazer, desfazer.
  * 
