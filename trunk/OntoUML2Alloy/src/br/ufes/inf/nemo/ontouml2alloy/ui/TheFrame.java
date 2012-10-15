@@ -37,6 +37,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
+import br.ufes.inf.nemo.ontouml2alloy.Options;
 import br.ufes.inf.nemo.ontouml2alloy.util.ResourceUtil;
 
 /**
@@ -55,9 +56,9 @@ public class TheFrame extends JFrame {
 	
 	public JTabbedPane tabbedPane;
 	
-	public RulesPanel rpanel;
+	public EnforcePanel enforcepanel;
 	
-	public FilesPanel fpanel;	
+	public FilesPanel filespanel;	
 			
 	/**
 	 * Create the frame for OLED.
@@ -65,7 +66,7 @@ public class TheFrame extends JFrame {
 	public TheFrame (RefOntoUML.Model model, String alsPath)
 	{
 		this();
-		fpanel.configurePanelForOLED(model, alsPath);
+		filespanel.configurePanelForOLED(model, alsPath);
 	}
 	
 	/**
@@ -85,15 +86,15 @@ public class TheFrame extends JFrame {
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		
-		fpanel = new FilesPanel();		
-		tabbedPane.addTab("Files", null, fpanel, null);
+		filespanel = new FilesPanel();		
+		tabbedPane.addTab("Files", null, filespanel, null);
 		
-		rpanel = new RulesPanel();
-		tabbedPane.addTab("Rules", null, rpanel, null);
+		enforcepanel = new EnforcePanel();
+		tabbedPane.addTab("Enforce", null, enforcepanel, null);
 				
 		contentPane.add(tabbedPane);
 		
-		fpanel.btnBrowseOntoUML.addActionListener(new ActionListener() 
+		filespanel.btnBrowseOntoUML.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
@@ -101,7 +102,7 @@ public class TheFrame extends JFrame {
 			}
 		});
 		
-		fpanel.btnExecute.addActionListener(new ActionListener() 
+		filespanel.btnExecute.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{								
@@ -109,7 +110,7 @@ public class TheFrame extends JFrame {
 			}
 		});
 
-		fpanel.btnBrowseAlloy.addActionListener(new ActionListener() 
+		filespanel.btnBrowseAlloy.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
@@ -138,7 +139,7 @@ public class TheFrame extends JFrame {
 		{
 			if (fileChooser.getFileFilter() == ontoumlFilter) 
 			{				
-				fpanel.txtOntoUML.setText( fileChooser.getSelectedFile().getPath() );
+				filespanel.txtOntoUML.setText( fileChooser.getSelectedFile().getPath() );
 			}
 		}
 	}
@@ -159,7 +160,7 @@ public class TheFrame extends JFrame {
 		{
 			if (fileChooser.getFileFilter() == alloyFilter) 
 			{				
-				fpanel.txtAlloy.setText( fileChooser.getSelectedFile().getPath() );
+				filespanel.txtAlloy.setText( fileChooser.getSelectedFile().getPath() );
 			}
 		}
 	}
@@ -170,19 +171,21 @@ public class TheFrame extends JFrame {
 	public void ExecuteButtonActionPerformed (ActionEvent arg0)
 	{
 		try {
-
-		boolean weakSuppl = rpanel.cbxWeakSupplementation.isSelected();
-		boolean relatorsRule = rpanel.cbxRelators.isSelected();
-				
-		if (fpanel.txtOntoUML.isEnabled()) 
+		
+		Options opt = new Options();
+		opt.weakSupplementationConstraint = enforcepanel.cbxWeakSupplementation.isSelected();
+		opt.relatorConstraint = enforcepanel.cbxRelator.isSelected();
+		opt.identityPrinciple = enforcepanel.cbxIdentityPrinciple.isSelected();
+		
+		if (filespanel.txtOntoUML.isEnabled()) 
 		{
-			Resource resource = ResourceUtil.loadOntoUML(fpanel.txtOntoUML.getText());
-			fpanel.refmodel = (RefOntoUML.Model) resource.getContents().get(0);			
+			Resource resource = ResourceUtil.loadOntoUML(filespanel.txtOntoUML.getText());
+			filespanel.refmodel = (RefOntoUML.Package) resource.getContents().get(0);			
 		}
 				
-		fpanel.alsPath = fpanel.txtAlloy.getText();
+		filespanel.alsPath = filespanel.txtAlloy.getText();
 		
-		OntoUML2Alloy.Transformation(fpanel.refmodel, fpanel.txtAlloy.getText(), relatorsRule, weakSuppl,true);
+		OntoUML2Alloy.Transformation(filespanel.refmodel, filespanel.txtAlloy.getText(), opt);
 
 		} catch (Exception e) {
 			

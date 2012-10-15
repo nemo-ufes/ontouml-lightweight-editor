@@ -56,7 +56,7 @@ public class FilesPanel extends JPanel {
 	
 	public JButton btnExecute;
 	
-	public RefOntoUML.Model refmodel;
+	public RefOntoUML.Package refmodel;
 	
 	public String alsPath;
 	
@@ -153,7 +153,7 @@ public class FilesPanel extends JPanel {
 	/**
 	 * Create the panel from a model.
 	 */
-	public void configurePanelForOLED (RefOntoUML.Model model, String alloyPath)
+	public void configurePanelForOLED (RefOntoUML.Package model, String alloyPath)
 	{				
 		refmodel = model;
 		alsPath = alloyPath;		

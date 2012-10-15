@@ -42,41 +42,53 @@ import javax.swing.LayoutStyle.ComponentPlacement;
  *
  */
 
-public class RulesPanel extends JPanel {
+public class EnforcePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	public JCheckBox cbxWeakSupplementation;
 	
-	public JCheckBox cbxRelators;
+	public JCheckBox cbxRelator;
+	
+	public JCheckBox cbxIdentityPrinciple;
 	
 	/**
 	 * Create the panel.
 	 */
 	
-	public RulesPanel() 
+	public EnforcePanel() 
 	{
-		cbxRelators = new JCheckBox("Enforce");
-		cbxRelators.setSelected(true);
+		cbxRelator = new JCheckBox("Enforce");
+		cbxRelator.setSelected(true);
 		
 		cbxWeakSupplementation = new JCheckBox("Enforce");
 		cbxWeakSupplementation.setSelected(true);
 		
 		JLabel lblRelatorsDescription = new JLabel("This rule enforces that the concrete relators mediate two distinct entities.");
 		lblRelatorsDescription.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblRelatorsDescription.setForeground(Color.GRAY);
+		lblRelatorsDescription.setForeground(Color.DARK_GRAY);
 		lblRelatorsDescription.setVerticalAlignment(SwingConstants.TOP);
 		
 		JLabel lblWeakDescription = new JLabel("This rule enforces that each whole has at least two disjoint parts.");
 		lblWeakDescription.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblWeakDescription.setForeground(Color.GRAY);
+		lblWeakDescription.setForeground(Color.DARK_GRAY);
 		lblWeakDescription.setVerticalAlignment(SwingConstants.TOP);
 		
-		JLabel lblRelatorsRule = new JLabel("Relator Constraint");
-		lblRelatorsRule.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JLabel lblRelator = new JLabel("Relator Constraint");
+		lblRelator.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		JLabel lblWeakSupplementationRule = new JLabel("Weak Supplementation");
-		lblWeakSupplementationRule.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JLabel lblWeakSupplementation = new JLabel("Weak Supplementation Constraint");
+		lblWeakSupplementation.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		JLabel lblIdentityPrinciple = new JLabel("Identity Principle");
+		lblIdentityPrinciple.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		cbxIdentityPrinciple = new JCheckBox("Enforce");
+		cbxIdentityPrinciple.setSelected(true);
+		
+		JLabel lblIdentityDescription = new JLabel("This rule enforces that all objects have an identity principle.");
+		lblIdentityDescription.setForeground(Color.DARK_GRAY);
+		lblIdentityDescription.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		GroupLayout gl_RulesPanel = new GroupLayout(this);
 		gl_RulesPanel.setHorizontalGroup(
@@ -85,35 +97,48 @@ public class RulesPanel extends JPanel {
 					.addGap(22)
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_RulesPanel.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblWeakSupplementationRule)
+							.addComponent(lblWeakSupplementation)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(cbxWeakSupplementation))
 						.addGroup(gl_RulesPanel.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblRelatorsRule)
+							.addComponent(lblRelator)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(cbxRelators))
-						.addComponent(lblRelatorsDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
-						.addComponent(lblWeakDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
+							.addComponent(cbxRelator))
+						.addComponent(lblRelatorsDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+						.addGroup(gl_RulesPanel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_RulesPanel.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(lblIdentityDescription, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addGroup(gl_RulesPanel.createSequentialGroup()
+									.addComponent(lblIdentityPrinciple)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(cbxIdentityPrinciple))))
+						.addComponent(lblWeakDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_RulesPanel.setVerticalGroup(
 			gl_RulesPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_RulesPanel.createSequentialGroup()
-					.addGap(40)
+					.addGap(27)
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblRelatorsRule)
-						.addComponent(cbxRelators))
+						.addComponent(lblRelator)
+						.addComponent(cbxRelator))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblRelatorsDescription, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-					.addGap(30)
+					.addGap(18)
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblWeakSupplementationRule)
+						.addComponent(lblWeakSupplementation)
 						.addComponent(cbxWeakSupplementation))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblWeakDescription, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-					.addGap(143))
+					.addGap(18)
+					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblIdentityPrinciple)
+						.addComponent(cbxIdentityPrinciple))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(lblIdentityDescription)
+					.addGap(72))
 		);
 		this.setLayout(gl_RulesPanel);		
 	}
