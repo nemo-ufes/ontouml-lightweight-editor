@@ -33,6 +33,7 @@ import edu.mit.csail.sdg.alloy4graph.DotShape;
 import edu.mit.csail.sdg.alloy4graph.DotStyle;
 
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
+import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.SimulationAttribute;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
@@ -69,7 +70,7 @@ public class VerificationSettingsDialog extends JDialog {
 		super(frame, modal);
 		diagramManager = amanager;
 		
-		List<SimulationElement> simulationElements =  diagramManager.getCurrentEditor().getDiagram().getSimulationElements();
+		List<SimulationElement> simulationElements =  ((StructureDiagram) diagramManager.getCurrentWrapper().getDiagram()).getSimulationElements();
 		simulationModel = new VerificationModel(simulationElements);
 			
 		initGUI();
@@ -111,7 +112,7 @@ public class VerificationSettingsDialog extends JDialog {
 		elementTable.setDefaultRenderer(SimulationAttribute.class, new IconRenderer(true));
 		elementTable.setDefaultRenderer(String.class, new StringRenderer(true));
 		
-		genThemeCheck.setSelected(diagramManager.getCurrentEditor().getDiagram().isGenerateTheme());
+		genThemeCheck.setSelected(((StructureDiagram) diagramManager.getCurrentWrapper().getDiagram()).isGenerateTheme());
 	}
 		
  	private void initGUI() {
@@ -234,8 +235,8 @@ public class VerificationSettingsDialog extends JDialog {
 	}
 	
  	private void okButtonActionPerformed(ActionEvent evt) {
- 		diagramManager.getCurrentEditor().getDiagram().setSimulationElements(simulationModel.getEntries());
- 		diagramManager.getCurrentEditor().getDiagram().setGenerateTheme(genThemeCheck.isSelected());
+ 		((StructureDiagram) diagramManager.getCurrentWrapper().getDiagram()).setSimulationElements(simulationModel.getEntries());
+ 		((StructureDiagram) diagramManager.getCurrentWrapper().getDiagram()).setGenerateTheme(genThemeCheck.isSelected());
  		dispose();
 	}
 

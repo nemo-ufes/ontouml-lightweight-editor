@@ -173,7 +173,7 @@ public class PaletteAccordion extends JPanel{
 		palette.createElement("staticpalette.relations", "subcollectionof");
 		palette.createElement("staticpalette.relations", "subquantityof");
 		palette.addSpacer(0,PALLETE_VSPACE);
-		palette.createElement("staticpalette.relations", "datatyperelationship");
+		palette.createElement("staticpalette.relations", "association");
 		
 		palette.addCommandListener(editorDispatcher);
 

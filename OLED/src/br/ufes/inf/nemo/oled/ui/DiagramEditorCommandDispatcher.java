@@ -97,6 +97,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("EDIT_PROPERTIES", new MethodCall(
 					DiagramEditor.class.getMethod("editProperties")));
 
+			selectorMap.put("DELETE", new MethodCall(
+					DiagramEditor.class.getMethod("deleteSelection")));
+			
 			//Commands for creating classes
 			selectorMap.put("CREATE_KIND", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
@@ -187,7 +190,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.DERIVATION));
 
-			selectorMap.put("CREATE_DATATYPERELATIONSHIP", new MethodCall(
+			selectorMap.put("CREATE_ASSOCIATION", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.ASSOCIATION));
 			
@@ -245,7 +248,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					getClass().getMethod("verifySettings")));
 			
 			selectorMap.put("VERIFY_MODEL", new MethodCall(
-			getClass().getMethod("verifyModel")));
+					getClass().getMethod("verifyModel")));
 			
 			selectorMap.put("VERIFY_MODEL_FILE", new MethodCall(
 					getClass().getMethod("verifyModelFile")));
@@ -268,7 +271,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void handleCommand(String command) {
 		MethodCall methodcall = selectorMap.get(command);
 		if (methodcall != null) {
-			  Object target = manager.getCurrentEditor();
+			  Object target = manager.getCurrentDiagramEditor();
 			  if(target != null)
 			  {
 			      // in order to catch the self calling methods
@@ -325,8 +328,8 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	 */
 
 	public void showGrid() {
-		manager.getCurrentEditor().showGrid(getMenuManager().isSelected("SHOW_GRID"));
-		manager.getCurrentEditor().redraw();
+		manager.getCurrentDiagramEditor().showGrid(getMenuManager().isSelected("SHOW_GRID"));
+		manager.getCurrentDiagramEditor().redraw();
 	}
 
 	/**
@@ -341,6 +344,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	 * Activates snapping depending on the selection state of the menu item.
 	 */
 	public void snapToGrid() {
-		manager.getCurrentEditor().snapToGrid(getMenuManager().isSelected("SNAP_TO_GRID"));
+		manager.getCurrentDiagramEditor().snapToGrid(getMenuManager().isSelected("SNAP_TO_GRID"));
 	}
 }

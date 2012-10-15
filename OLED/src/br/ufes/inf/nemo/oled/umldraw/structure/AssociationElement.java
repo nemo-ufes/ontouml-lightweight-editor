@@ -88,6 +88,8 @@ public final class AssociationElement extends BaseConnection {
 		setupMultiplicityLabels();
 		setupRoleLabels();
 		setupNameLabel();
+		
+		showMultiplicities = true;
 	}
 
 	/**
@@ -375,8 +377,7 @@ public final class AssociationElement extends BaseConnection {
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unused")
-	private void drawRombus(DrawingContext drawingContext,
-			AffineTransform rotationTransform, boolean filled) {
+	private void drawRombus(DrawingContext drawingContext, AffineTransform rotationTransform, boolean filled) {
 		Point2D endpoint = getEndPoint1();
 		double x = endpoint.getX(), y = endpoint.getY();
 		GeneralPath rombus = new GeneralPath();
@@ -403,8 +404,7 @@ public final class AssociationElement extends BaseConnection {
 		drawingContext.draw(circle, fillColor);
 	}
 
-	private void drawParthood(DrawingContext drawingContext,
-			AffineTransform rotationTransform, boolean shareable, String content) {
+	private void drawParthood(DrawingContext drawingContext, AffineTransform rotationTransform, boolean shareable, String content) {
 		Point2D endpoint = getEndPoint1();
 		double x = endpoint.getX(), y = endpoint.getY();
 		GeneralPath rombus = new GeneralPath();

@@ -9,20 +9,21 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
+import br.ufes.inf.nemo.oled.model.UmlProject;
 
 public class TextEditor extends JPanel implements Editor {
 
 	private static final long serialVersionUID = -1832428183354138999L;
 	private JTextArea textArea = new JTextArea();
-	private Diagram diagram;
+	private UmlProject project;
 	
-	public TextEditor(Diagram diagram)
+	public TextEditor(UmlProject project)
 	{
 		super(new BorderLayout());
 		JScrollPane scroll = new JScrollPane(textArea);
 		add(scroll, BorderLayout.CENTER);
 		
-		this.diagram = diagram;
+		this.project = project;
 	}
 
 	public void loadFile(String filePath) {
@@ -57,12 +58,17 @@ public class TextEditor extends JPanel implements Editor {
 
 	@Override
 	public Diagram getDiagram() {
-		return diagram;
+		return null;
 	}
 
 	@Override
 	public void dispose() {
 		
+	}
+
+	@Override
+	public UmlProject getProject() {
+		return project;
 	}
 		
 }

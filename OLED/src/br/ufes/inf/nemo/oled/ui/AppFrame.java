@@ -43,7 +43,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		this.setSize(size);
 		this.setPreferredSize(size);
 		this.setMinimumSize(minimumSize);
-
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
 		installManagers();
 		installMainMenu();
 		installMainToolBar();
@@ -116,6 +117,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 					new MethodCall(DiagramManager.class.getMethod("newProject")));
 			selectorMap.put("OPEN_PROJECT",
 					new MethodCall(DiagramManager.class.getMethod("openProject")));
+			selectorMap.put("OPEN_RECENT_PROJECT",
+					new MethodCall(DiagramManager.class.getMethod("openRecentProject")));
 			selectorMap.put("COMMUNITY",
 					new MethodCall(DiagramManager.class.getMethod("openCommunity")));
 			selectorMap.put("LEARN_ONTOUML",
@@ -211,7 +214,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 */
 	private boolean canQuit() {
 		
-		DiagramEditor editor = diagramManager.getCurrentEditor();
+		DiagramEditor editor = diagramManager.getCurrentDiagramEditor();
 		if(editor != null)
 			if (editor.canUndo()) {
 				return JOptionPane.showConfirmDialog(

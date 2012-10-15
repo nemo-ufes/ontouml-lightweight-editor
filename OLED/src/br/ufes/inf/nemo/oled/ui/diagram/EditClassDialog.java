@@ -33,8 +33,10 @@ import javax.swing.table.TableColumnModel;
 import org.eclipse.emf.edit.command.AddCommand;
 
 import RefOntoUML.Class;
+import RefOntoUML.Collective;
 import RefOntoUML.DataType;
 import RefOntoUML.Property;
+import RefOntoUML.impl.CollectiveImpl;
 import RefOntoUML.impl.DataTypeImpl;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
@@ -43,7 +45,6 @@ import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.oled.util.IconLoader.IconType;
-
 
 public class EditClassDialog extends JDialog {
 
@@ -65,6 +66,7 @@ public class EditClassDialog extends JDialog {
 	private AttributeTableModel attributesTableModel;
 	private DiagramManager diagramManager;
 	private Map<String, DataType> modelDataTypes; 
+	private JCheckBox extensionalCheck;
 	private JButton clsAnttButton;
 	private JCheckBox abstractCheck;
 	private JFrame parent;
@@ -224,6 +226,10 @@ public class EditClassDialog extends JDialog {
 					abstractCheck.setText(ApplicationResources.getInstance().getString("stdcaption.abstract"));
 				}
 				{
+					extensionalCheck = new JCheckBox();
+					extensionalCheck.setText(ApplicationResources.getInstance().getString("dialog.classproperties.extensional"));
+				}
+				{
 					cancelButton = new JButton();
 					cancelButton.setText(ApplicationResources.getInstance().getString("stdcaption.cancel"));
 					cancelButton.addActionListener(new ActionListener() {
@@ -253,17 +259,16 @@ public class EditClassDialog extends JDialog {
 					});
 				}
 				layout.setVerticalGroup(layout.createSequentialGroup()
-					.addContainerGap(19, 19)
-					.addGroup(layout.createParallelGroup()
-					    .addGroup(GroupLayout.Alignment.LEADING, layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-					        .addComponent(classNameLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-					        .addComponent(abstractCheck, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-					    .addGroup(GroupLayout.Alignment.LEADING, layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-					        .addComponent(classNameText, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					        .addComponent(clsAnttButton, GroupLayout.Alignment.BASELINE, 0, 16, Short.MAX_VALUE)))
-					.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+					.addContainerGap(20, Short.MAX_VALUE)
+					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					    .addComponent(classNameText, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					    .addComponent(clsAnttButton, GroupLayout.Alignment.BASELINE, 0, 29, Short.MAX_VALUE)
+					    .addComponent(classNameLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+					    .addComponent(abstractCheck, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					    .addComponent(extensionalCheck, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addComponent(classAttributesPanel, GroupLayout.PREFERRED_SIZE, 258, GroupLayout.PREFERRED_SIZE)
-					.addGap(0, 16, GroupLayout.PREFERRED_SIZE)
+					.addGap(16)
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(cancelButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					    .addComponent(okButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -274,25 +279,23 @@ public class EditClassDialog extends JDialog {
 					    .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
 					        .addComponent(classNameLabel, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
 					        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+					        .addComponent(classNameText, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
+					        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+					        .addComponent(clsAnttButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+					        .addGap(11)
 					        .addGroup(layout.createParallelGroup()
+					            .addComponent(cancelButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
 					            .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-					                .addComponent(classNameText, GroupLayout.PREFERRED_SIZE, 235, GroupLayout.PREFERRED_SIZE)
-					                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-					                .addComponent(clsAnttButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-					                .addGap(9))
-					            .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-					                .addGap(0, 202, GroupLayout.PREFERRED_SIZE)
-					                .addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)))
+					                .addComponent(abstractCheck, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+					                .addGap(6)))
 					        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					        .addGroup(layout.createParallelGroup()
 					            .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-					                .addComponent(abstractCheck, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-					                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, Short.MAX_VALUE))
-					            .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-					                .addPreferredGap(abstractCheck, okButton, LayoutStyle.ComponentPlacement.INDENT)
-					                .addComponent(okButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))))
-					    .addComponent(classAttributesPanel, GroupLayout.Alignment.LEADING, 0, 430, Short.MAX_VALUE))
-					.addContainerGap());
+					                .addComponent(okButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+					                .addGap(0, 7, Short.MAX_VALUE))
+					            .addComponent(extensionalCheck, GroupLayout.Alignment.LEADING, 0, 87, Short.MAX_VALUE))
+					        .addGap(11))
+					    .addComponent(classAttributesPanel, GroupLayout.Alignment.LEADING, 0, 442, Short.MAX_VALUE)));
 
 			}
 			this.setSize(460, 380);
@@ -315,9 +318,7 @@ public class EditClassDialog extends JDialog {
 		typeColumn.setCellEditor(createEditor(modelDataTypes.keySet().toArray()));
 
 		attributesTable.setSurrendersFocusOnKeystroke(true);
-        		
 		classNameText.setText(classElement.getClassifier().getName());
-		
 		abstractCheck.setSelected(classElement.getClassifier().isIsAbstract());
 		
 		if(classElement.getClassifier() instanceof DataTypeImpl)
@@ -334,6 +335,16 @@ public class EditClassDialog extends JDialog {
 			for (Property attribute : umlclass.getAttribute()) {
 				attributesTableModel.addEntry(attribute);
 			}
+			
+			if(umlclass instanceof CollectiveImpl)
+			{
+				extensionalCheck.setSelected(((Collective)classElement.getClassifier()).isIsExtensional());
+			}
+			else
+			{
+				extensionalCheck.setEnabled(false);
+			}
+			
 		}
 		
 		getRootPane().setDefaultButton(okButton);
@@ -349,6 +360,11 @@ public class EditClassDialog extends JDialog {
 		
 		classElement.getClassifier().setIsAbstract(abstractCheck.isSelected());
 		
+		if((Class)classElement.getClassifier() instanceof CollectiveImpl)
+		{
+			((Collective)classElement.getClassifier()).setIsExtensional(extensionalCheck.isSelected());
+		}
+		
 		classElement.setShowAttributes(attributeVisibilityCheck.isSelected());
 		List<Property> classAttributes = attributesTableModel.getEntries();
 		for (Property property : classAttributes) {
@@ -360,10 +376,13 @@ public class EditClassDialog extends JDialog {
 				{
 					property.setType(existingType);
 				}
+				
 				if(classElement.getClassifier() instanceof DataTypeImpl)
 					((DataType)classElement.getClassifier()).getOwnedAttribute().add(property);
 				else
+				{
 					((Class)classElement.getClassifier()).getOwnedAttribute().add(property);
+				}
 			}
 		}
 	}

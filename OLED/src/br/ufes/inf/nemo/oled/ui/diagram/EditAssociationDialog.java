@@ -24,7 +24,10 @@ import javax.swing.LayoutStyle;
 import RefOntoUML.Association;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
+import RefOntoUML.impl.CharacterizationImpl;
+import RefOntoUML.impl.MediationImpl;
 import RefOntoUML.impl.MeronymicImpl;
+import RefOntoUML.impl.subQuantityOfImpl;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
@@ -573,6 +576,18 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 			inseparableCheck.setSelected(meronymic.isIsInseparable());
 			immutableWholeCheck.setSelected(meronymic.isIsImmutableWhole());
 			immutablePartCheck.setSelected(meronymic.isIsImmutablePart());
+			
+			if(meronymic instanceof subQuantityOfImpl)
+			{
+				//If the association is a SubQuantityOf, it is always non-shareable
+				shareableCheck.setEnabled(false);
+			}
+		}
+		
+		if(getAssociation() instanceof CharacterizationImpl || getAssociation() instanceof MediationImpl)
+		{
+			readonlySourceCheck.setEnabled(false);
+			readonlyTargetCheck.setEnabled(false);
 		}
 		
 		Property sourceEnd = getAssociation().getOwnedEnd().get(0);
