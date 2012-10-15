@@ -68,7 +68,7 @@ public class Parser {
 	 *  
 	 * @param refmodel: The root of .refontouml model (RefOntoUML.Model).
 	 */	 
-	public Parser(RefOntoUML.Model refmodel)
+	public Parser(RefOntoUML.Package refmodel)
 	{
 		assocEndMap = new HashMap<Property,String>();
 		elementsMap = new HashMap<PackageableElement,String>();

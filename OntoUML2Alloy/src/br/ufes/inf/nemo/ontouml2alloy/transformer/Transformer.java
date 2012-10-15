@@ -67,7 +67,7 @@ import br.ufes.inf.nemo.alloy.UnaryOperation;
 import br.ufes.inf.nemo.alloy.UnaryOperator;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
-import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
+import br.ufes.inf.nemo.ontouml2alloy.Options;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
@@ -90,6 +90,11 @@ public class Transformer {
 	 */
 	public Parser ontoparser;
 			
+	/**
+	 * Transformation Options.
+	 */
+	public Options options;
+	
 	/** 
 	 * Alloy instance. 
 	 */
@@ -170,9 +175,11 @@ public class Transformer {
 	/**
 	 * Constructor().
 	 */
-	public Transformer (Parser parser)
+	public Transformer (Parser parser, Options opt)
 	{
 		ontoparser = parser;
+		
+		options = opt;
 		
 		initializeDefaultSignatures();
 		
@@ -363,19 +370,24 @@ public class Transformer {
 	 */
 	public void finalAdditions()
 	{		
-		if(subsortalDisjNamesList.size() > 0) 
+		if(options.identityPrinciple && subsortalDisjNamesList.size() > 0) 
 			
-			// exists:>Object in NamesList[0] + NamesList[1] + ...
+			// exists:>Object in subsortalNamesList[0] + subsortalNamesList[1] + ...
 			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigObject, subsortalDisjNamesList);
+		
+		if(!options.identityPrinciple && objectNamesList.size() > 0)
+			
+			// exists:>Object in objectNamesList[0] + objectNamesList[1] + ...
+			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigObject, objectNamesList);
 		
 		if(propertyNamesList.size() > 0) 
 		
-			// exists:>Property in NamesList[0] + NamesList[1] + ...
+			// exists:>Property in propertyNamesList[0] + propertyNamesList[1] + ...
 			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigProperty, propertyNamesList);
 		
 		if(datatypeNamesList.size() > 0) 
 		
-			// exists:>DataType in NamesList[0] + NamesList[1] + ...
+			// exists:>DataType in datatypeNamesList[0] + datatypeNamesList[1] + ...
 			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigDatatype, datatypeNamesList);
 		
 		// disj[ DisjNamesList[0], DisjNamesList[1], ... ],
@@ -472,7 +484,7 @@ public class Transformer {
 			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), sigObject.getName());				
 			world.getRelation().add(decl);			
 
-			if ((c instanceof RigidSortalClass) && (OntoUML2Alloy.weakSupplementationRuleFlag))
+			if ((c instanceof RigidSortalClass) && (options.weakSupplementationConstraint))
 			{				
 				FactDeclaration fact = createWeakSupplementation(c);
 				if (fact!=null) weakSupplementationFactList.add(fact);
@@ -495,7 +507,7 @@ public class Transformer {
 			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c),sigProperty.getName());
 			world.getRelation().add(decl);
 			
-			if ((c instanceof Relator) && (OntoUML2Alloy.relatorRuleFlag))
+			if ((c instanceof Relator) && (options.relatorConstraint))
 			{
 				FactDeclaration fact = createRelatorConstraintFact((Relator) c);				
 				if (fact!= null) relatorConstraintFactList.add(fact);

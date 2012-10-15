@@ -33,15 +33,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
-
 import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import RefOntoUML.Model;
 import RefOntoUML.PackageableElement;
 import br.ufes.inf.nemo.alloy.AlloyPackage;
 import br.ufes.inf.nemo.alloy.impl.AlloyPackageImpl;
@@ -50,6 +47,7 @@ import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.Transformer;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyLibraryFiles;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyThemeFile;
+import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
  *	This class is used to execute the transformation of OntoUML to Alloy. 
@@ -62,12 +60,6 @@ public class OntoUML2Alloy {
 	/** Destination directory path. */
 	public static String dirPath;	
 	
-	/** If the relators constraints should be transformed. */
-	public static boolean relatorRuleFlag = true;
-	
-	/** If the weak supplementation rule should be transformed. */
-	public static boolean weakSupplementationRuleFlag = true;
-		
 	/** Alloy specification absolute path. */
 	public static String alsPath;
 	
@@ -107,7 +99,7 @@ public class OntoUML2Alloy {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean Transformation (Model refmodel, String alloyPath, boolean RelatorRuleFlag, boolean WeakSupplementationRuleFlag, boolean openAnalyzer) throws Exception 
+	public static boolean Transformation (RefOntoUML.Package refmodel, String alloyPath, Options opt) throws Exception 
 	{
 		alsPath = alloyPath;
 		
@@ -125,10 +117,6 @@ public class OntoUML2Alloy {
 		// generate alloy library files
 		AlloyLibraryFiles.generateLibraryFiles(dirPath);	
 				
-		// initialize the options
-		relatorRuleFlag = RelatorRuleFlag;
-		weakSupplementationRuleFlag = WeakSupplementationRuleFlag;
-		
 		// Copy "alloy4.2-rc.jar" to the destination directory 
 		InputStream is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("alloy4.2-rc.jar");
 		if(is == null) is = new FileInputStream("lib/alloy4.2-rc.jar");
@@ -147,28 +135,24 @@ public class OntoUML2Alloy {
 		out.close();
 		
 		// Here the transformation begins...
-		start(refmodel);
+		start(refmodel,opt);
 		
 		// open he Alloy Analyzer
-		if (openAnalyzer)
+		if (opt.openAnalyzer)
 		{
 			argsAnalyzer[0] = alsPath;
 			argsAnalyzer[1] = dirPath + "standart_theme.thm"	;	
 			SimpleGUICustom.main(argsAnalyzer);
-			/*Runtime.getRuntime().exec(
-					"java -jar "+alloyJarFile.getAbsolutePath()
-					+" "+argsAnalyzer[0]+" "+argsAnalyzer[1]
-			);*/			
 		}
 
 		return true;
 	}	
 	
-	private static void start(RefOntoUML.Model refmodel)
+	private static void start(RefOntoUML.Package refmodel, Options opt)
 	{
 		ontoparser = new Parser(refmodel);
 		
-		transformer = new Transformer(ontoparser);		
+		transformer = new Transformer(ontoparser, opt);		
 		
 		transformer.initialAditions();
 		
