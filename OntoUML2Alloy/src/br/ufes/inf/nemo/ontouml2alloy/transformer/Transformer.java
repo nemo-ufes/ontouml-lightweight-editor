@@ -1267,7 +1267,7 @@ public class Transformer {
 	/* =========================================================================================================*/
 	
 	/**
-	 * Create a Rule for Top Levels Classifier in the model. 
+	 * Create Rule for Top Levels Classifiers in the model. 
 	 */
 	private void createTopLevelDisjointRule ()
 	{
