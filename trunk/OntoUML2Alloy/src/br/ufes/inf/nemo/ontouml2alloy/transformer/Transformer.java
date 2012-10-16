@@ -21,6 +21,7 @@ package br.ufes.inf.nemo.ontouml2alloy.transformer;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import RefOntoUML.Association;
 import RefOntoUML.Category;
@@ -157,8 +158,11 @@ public class Transformer {
 	/** List containing all the names of DataTypes that are disjoint. */
 	private ArrayList<String> datatypeDisjNamesList = new ArrayList<String>();
 		
-	/** List containing all the rigid classifier. */
+	/** List containing all the rigid classifiers. */
 	private ArrayList<Classifier> rigidElementsList = new ArrayList<Classifier>();
+	
+	/** List containing all the top level classifiers. */
+	private ArrayList<Classifier> topLevelElementsHashMap = new ArrayList<Classifier>();
 	
 	/* =========================================================================================================*/
 	
@@ -231,6 +235,11 @@ public class Transformer {
 			if ( (pe instanceof RigidSortalClass) || (pe instanceof Category) || (pe instanceof MomentClass) || ((pe instanceof DataType)&&!(pe instanceof PrimitiveType)) ) 
 			{ 
 				rigidElementsList.add((Classifier)pe); 
+			}
+			
+			if ( pe instanceof Class)
+			{				
+				if (OntoUMLAPI.isTopLevel((Classifier)pe)) topLevelElementsHashMap.add((Classifier)pe);
 			}
 		}
 	}
@@ -370,6 +379,10 @@ public class Transformer {
 	 */
 	public void finalAdditions()
 	{		
+		if(topLevelElementsHashMap.size() > 1)
+			
+			createTopLevelDisjointRule();
+		
 		if(options.identityPrinciple && subsortalDisjNamesList.size() > 0) 
 			
 			// exists:>Object in subsortalNamesList[0] + subsortalNamesList[1] + ...
@@ -516,7 +529,7 @@ public class Transformer {
 		
 		if (c.isIsAbstract()) createAbstractClauseRule(c);
 	}
-			
+	
 	/* =========================================================================================================*/
 	
 	/**
@@ -533,7 +546,7 @@ public class Transformer {
 		// isAbstract from generalization Sets (Disjoint and Complete)
 		if ( OntoUMLAPI.isAbstractFromGeneralizationSets(ontoparser,c)) return null;
 		
-		if (! OntoUMLAPI.isSourceOfMediationRelation(ontoparser,c)) return null;
+		if (! OntoUMLAPI.hasMediationRelation(ontoparser,c)) return null;
 		
 		// get all 'c' mediations
 		ArrayList<String> associationNames = new ArrayList<String>();		
@@ -572,7 +585,7 @@ public class Transformer {
 		// isAbstract from generalization Sets (Disjoint and Complete)
 		if (OntoUMLAPI.isAbstractFromGeneralizationSets(ontoparser,c)) { return null; }	
 		
-		if (! OntoUMLAPI.isSourceOfMeronymicRelation(ontoparser,c)) { return null; } 
+		if (! OntoUMLAPI.hasMeronymicRelation(ontoparser,c)) { return null; } 
 				
 		// get all 'c' meronymics
 		ArrayList<String> associationNames = new ArrayList<String>();		
@@ -600,7 +613,7 @@ public class Transformer {
 	 * Create Abstract Clause Rule.
 	 * 
 	 * BinaryOperation with union operator(+) to represent the completeness
-	 * between abstract father(Classifiers) and concrete childs.
+	 * between abstract father(Classifiers) and his concrete childs.
 	 * 
 	 * "abstract_father = concrete_child1 + concrete_child2 + concrete_child3 + ..." 
 	 */
@@ -609,8 +622,8 @@ public class Transformer {
 	{		
 		ArrayList<Classifier> concretes = new ArrayList<Classifier>();
 		
-		OntoUMLAPI.getAllConcreteChilds(ontoparser, concretes, c);
-						
+		OntoUMLAPI.getConcreteDescendants(ontoparser, concretes, c);
+		
 		int cont = 1;		
 		BinaryOperation bo = factory.createBinaryOperation();
 		if(concretes.size() > 0)
@@ -658,8 +671,8 @@ public class Transformer {
 			}
 			world.getBlock().getExpression().add(co);
 		}
-	}
-	
+	}	
+		
 	/* =========================================================================================================*/
 	
 	/**
@@ -1249,5 +1262,83 @@ public class Transformer {
 		pI.getParameter().add(mediation2);
 		
 		derivations.getBlock().getExpression().add(pI);
-	}			
+	}	
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Create a Rule for Top Levels Classifier in the model. 
+	 */
+	private void createTopLevelDisjointRule ()
+	{
+		HashMap< ArrayList<Classifier>, Integer > listsHashMap = new HashMap< ArrayList<Classifier>,Integer >();
+		
+		for (Classifier c1: topLevelElementsHashMap)
+		{
+			ArrayList<Classifier> descendants1 = new ArrayList<Classifier>();
+			OntoUMLAPI.getDescendants(ontoparser, descendants1, c1);
+
+			// creates a single List containing the topLevel classifier 'c1' 
+			// and the top levels classifiers that have their descendants overlapping 
+			// with the descendants of the classifier 'c1'
+			
+			ArrayList<Classifier> singleList = new ArrayList<Classifier>();
+			singleList.add(c1);
+			
+			for (Classifier c2: topLevelElementsHashMap)
+			{
+				if (!c2.equals(c1)) 
+				{
+					ArrayList<Classifier> descendants2 = new ArrayList<Classifier>();
+					OntoUMLAPI.getDescendants(ontoparser, descendants2, c2);
+										
+					Classifier overlap = OntoUMLAPI.isOverlapping(descendants1, descendants2);
+					if (overlap != null) singleList.add(c2);						
+				}
+			}
+			
+			listsHashMap.put(singleList,0);			
+		}
+		
+		// Now we remove lists that overlapping with others 
+		for (ArrayList<Classifier> l1 : listsHashMap.keySet())
+		{
+			if (listsHashMap.get(l1)==0) 
+			{
+				for (ArrayList<Classifier> l2 : listsHashMap.keySet())
+				{
+					if(!l2.equals(l1) && listsHashMap.get(l2)==0)
+					{
+						Classifier overlap = OntoUMLAPI.isOverlapping(l1, l2);
+						if (overlap!=null)
+						{
+							if(l1.size() < l2.size()) listsHashMap.put(l1,1);
+							else listsHashMap.put(l2, 1);
+						}					
+					}
+				}			
+			}
+		}
+
+		// create a union (+) String expression for every singleList that has the value equal to 0
+		ArrayList<String> exprList = new ArrayList<String>();
+		for (ArrayList<Classifier> singleList : listsHashMap.keySet())
+		{
+			if (listsHashMap.get(singleList)==0)
+			{
+				int count = 0;
+				String expr = new String();
+				for(Classifier c: singleList) 
+				{
+					if (count==0) { expr = ontoparser.getName(c); count++; }
+					else expr += "+"+ontoparser.getName(c);
+				}
+				exprList.add(expr);
+			}			
+		}
+		
+		//create Top Level Disjoint Rule
+		AlloyAPI.createDisjointExpressionInWorld(factory, world, exprList);
+	}
+	
 }

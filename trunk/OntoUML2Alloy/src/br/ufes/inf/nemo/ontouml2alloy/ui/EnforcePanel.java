@@ -66,12 +66,12 @@ public class EnforcePanel extends JPanel {
 		
 		JLabel lblRelatorsDescription = new JLabel("This rule enforces that the concrete relators mediate two distinct entities.");
 		lblRelatorsDescription.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblRelatorsDescription.setForeground(Color.DARK_GRAY);
+		lblRelatorsDescription.setForeground(Color.GRAY);
 		lblRelatorsDescription.setVerticalAlignment(SwingConstants.TOP);
 		
 		JLabel lblWeakDescription = new JLabel("This rule enforces that each whole has at least two disjoint parts.");
 		lblWeakDescription.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblWeakDescription.setForeground(Color.DARK_GRAY);
+		lblWeakDescription.setForeground(Color.GRAY);
 		lblWeakDescription.setVerticalAlignment(SwingConstants.TOP);
 		
 		JLabel lblRelator = new JLabel("Relator Constraint");
@@ -87,7 +87,7 @@ public class EnforcePanel extends JPanel {
 		cbxIdentityPrinciple.setSelected(true);
 		
 		JLabel lblIdentityDescription = new JLabel("This rule enforces that all objects have an identity principle.");
-		lblIdentityDescription.setForeground(Color.DARK_GRAY);
+		lblIdentityDescription.setForeground(Color.GRAY);
 		lblIdentityDescription.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		GroupLayout gl_RulesPanel = new GroupLayout(this);
@@ -97,6 +97,7 @@ public class EnforcePanel extends JPanel {
 					.addGap(22)
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_RulesPanel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblWeakSupplementation)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(cbxWeakSupplementation))
@@ -106,15 +107,14 @@ public class EnforcePanel extends JPanel {
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(cbxRelator))
 						.addComponent(lblRelatorsDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+						.addComponent(lblWeakDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
 						.addGroup(gl_RulesPanel.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_RulesPanel.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(lblIdentityDescription, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addGroup(gl_RulesPanel.createSequentialGroup()
-									.addComponent(lblIdentityPrinciple)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(cbxIdentityPrinciple))))
-						.addComponent(lblWeakDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE))
+							.addComponent(lblIdentityPrinciple)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(cbxIdentityPrinciple)
+							.addPreferredGap(ComponentPlacement.RELATED, 246, Short.MAX_VALUE))
+						.addComponent(lblIdentityDescription, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_RulesPanel.setVerticalGroup(
@@ -124,21 +124,21 @@ public class EnforcePanel extends JPanel {
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblRelator)
 						.addComponent(cbxRelator))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(17)
 					.addComponent(lblRelatorsDescription, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addGap(16)
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblWeakSupplementation)
 						.addComponent(cbxWeakSupplementation))
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(17)
 					.addComponent(lblWeakDescription, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblIdentityPrinciple)
-						.addComponent(cbxIdentityPrinciple))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(cbxIdentityPrinciple)
+						.addComponent(lblIdentityPrinciple))
+					.addGap(18)
 					.addComponent(lblIdentityDescription)
-					.addGap(72))
+					.addGap(60))
 		);
 		this.setLayout(gl_RulesPanel);		
 	}
