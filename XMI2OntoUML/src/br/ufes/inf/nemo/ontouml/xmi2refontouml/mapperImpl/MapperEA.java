@@ -407,7 +407,8 @@ public class MapperEA implements Mapper {
 				}
 				ElementType type = getType(getElementById(((Element)diagElem).getAttribute("subject")));
 				if (type == ElementType.CLASS ||
-						type == ElementType.ASSOCIATION) {
+						type == ElementType.ASSOCIATION ||
+						type == ElementType.ASSOCIATIONCLASS) {
 					
 					diagElemIDList.add(((Element)diagElem).getAttribute("subject"));
 				}

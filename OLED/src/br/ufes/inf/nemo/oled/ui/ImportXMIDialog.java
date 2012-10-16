@@ -96,11 +96,11 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 			
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			setTitle("Import from XMI"); //TODO adicionar no arquivo de captions
-			setPreferredSize(new Dimension(400, 300));
-			setBounds(new Rectangle(0, 0, 400, 300));
+			setPreferredSize(new Dimension(800, 600));
+			setBounds(new Rectangle(0, 0, 800, 600));
 			{
 				labelPane = new JPanel();
-				labelPane.setPreferredSize(new Dimension(398, 36));
+				labelPane.setPreferredSize(new Dimension(800, 40));
 				getContentPane().add(labelPane, BorderLayout.NORTH);
 				{
 					lblTitle = new JLabel("Select the classes to import");
@@ -114,13 +114,13 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				getContentPane().add(treeTabbedPane, BorderLayout.WEST);
 				{
 					modelTreeScrollPane = new JScrollPane();
-					modelTreeScrollPane.setPreferredSize(new java.awt.Dimension(200, 239));
+					modelTreeScrollPane.setPreferredSize(new java.awt.Dimension(400, 360));
 					modelTreeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 					modelTreeScrollPane.setViewportView(modelChckTree);
 				}
 				{
 					diagrTreeScrollPane = new JScrollPane();
-					diagrTreeScrollPane.setPreferredSize(new java.awt.Dimension(200, 239));
+					diagrTreeScrollPane.setPreferredSize(new java.awt.Dimension(400, 360));
 					diagrTreeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 					diagrTreeScrollPane.setViewportView(diagrChckTree);
 				}
@@ -129,7 +129,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 			}
 			{
 				panel = new JPanel();
-				panel.setPreferredSize(new Dimension(179, 220));
+				panel.setPreferredSize(new Dimension(370, 220));
 				getContentPane().add(panel, BorderLayout.EAST);
 				{
 					lblDetails = new JLabel("Details:");
@@ -139,13 +139,13 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				}
 				{
 					horizontalStrut = Box.createHorizontalStrut(20);
-					horizontalStrut.setPreferredSize(new Dimension(120, 0));
+					horizontalStrut.setPreferredSize(new Dimension(320, 0));
 					panel.add(horizontalStrut);
 				}
 				{
 					infoPane = new JTextArea();
 					panel.add(infoPane);
-					infoPane.setPreferredSize(new Dimension(170, 150));
+					infoPane.setPreferredSize(new Dimension(370, 200));
 					infoPane.setEditable(false);
 				}
 				{
