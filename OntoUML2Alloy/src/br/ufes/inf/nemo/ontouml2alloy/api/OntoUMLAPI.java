@@ -22,6 +22,7 @@ package br.ufes.inf.nemo.ontouml2alloy.api;
 
 import java.util.ArrayList;
 
+import RefOntoUML.AggregationKind;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
@@ -42,25 +43,20 @@ import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
 public class OntoUMLAPI {
 
 	/**
-	 * Verify if the Classifier 'c' is the source of some Meronymic Relation.
+	 * Verify if the Classifier 'c' is the source or target of some Meronymic Relation.
 	 */
-	public static boolean isSourceOfMeronymicRelation (Parser ontoparser, Classifier c)
+	public static boolean hasMeronymicRelation (Parser ontoparser, Classifier c)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
 			if (pe instanceof Meronymic) 
 			{
-				Meronymic assoc = (Meronymic)pe;		
-				int count=0;
+				Meronymic assoc = (Meronymic)pe;				
 				for( Property p : assoc.getMemberEnd())
 				{
-					if (count==0)
+					if(! p.getAggregation().equals(AggregationKind.NONE))
 					{
-						if (p.getType().getName().equals(c.getName()))
-						{
-							return true;
-						}	
-						count++;
+						if (p.getType().getName().equals(c.getName())) return true;						
 					}
 				}
 			}
@@ -71,19 +67,21 @@ public class OntoUMLAPI {
 	/* =========================================================================================================*/
 	
 	/**
-	 * Verify if the Classifier 'c' is the source of some Mediation Relation.
+	 * Verify if the Classifier 'c' is the source or target of some Mediation Relation.
 	 */
-	public static boolean isSourceOfMediationRelation (Parser ontoparser, Relator c)
+	public static boolean hasMediationRelation (Parser ontoparser, Relator c)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
 			if (pe instanceof Mediation) 
 			{
-				Mediation assoc = (Mediation)pe;				
-				
-				Property p = assoc.getMemberEnd().get(0);
-				
-				if (p.getType().getName().equals(c.getName())) return true;				
+				for(Property p : ((Mediation)pe).getMemberEnd())
+				{
+					if(p.getType() instanceof Relator)
+					{						
+						if (p.getType().getName().equals(c.getName())) return true;
+					}
+				}								
 			}
 		}
 		return false;
@@ -93,7 +91,7 @@ public class OntoUMLAPI {
 	
 	/**
 	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete
-	 * What means that this Classifier is an Abstract Classifier.
+	 * Which means that this Classifier is an Abstract Classifier.
 	 */
 	public static boolean isAbstractFromGeneralizationSets(Parser ontoparser, Classifier c) 
 	{
@@ -161,16 +159,15 @@ public class OntoUMLAPI {
 			if(pe instanceof Meronymic)
 			{
 				Meronymic assoc = (Meronymic)pe;
-				int count=0;
+
 				for( Property p : assoc.getMemberEnd())
 				{
-					if (count==0)
-					{
+					if (!p.getAggregation().equals(AggregationKind.NONE))
+					{					
 						if (p.getType().getName().equals(c.getName()))
 						{
 							list.add(ontoparser.getName(pe));							
-						}
-						count++;
+						}						
 					}
 				}
 			}
@@ -203,10 +200,12 @@ public class OntoUMLAPI {
 		}
 	}
 	
+	/* =========================================================================================================*/
+	
 	/**
-	 *  
+	 *  Get all non-abstract descendants of Classifier c.
 	 */
-	public static void getAllConcreteChilds(Parser ontoparser, ArrayList<Classifier> list, Classifier c)
+	public static void getConcreteDescendants(Parser ontoparser, ArrayList<Classifier> list, Classifier c)
 	{
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
 		getAllGeneralizations(ontoparser, generalizations, c);
@@ -219,7 +218,58 @@ public class OntoUMLAPI {
 					list.add((Classifier)g.getSpecific());
 				}
 			}
-			getAllConcreteChilds(ontoparser, list, g.getSpecific());
+			getConcreteDescendants(ontoparser, list, g.getSpecific());
 		}
 	}	
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Get all descendants of Classifier c.
+	 */
+	public static void getDescendants(Parser ontoparser, ArrayList<Classifier> list, Classifier c)
+	{
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+		getAllGeneralizations(ontoparser, generalizations, c);
+		for(Generalization g: generalizations)
+		{
+			if (!list.contains((Classifier)g.getSpecific()))
+			{
+				list.add((Classifier)g.getSpecific());
+			}			
+			getDescendants(ontoparser, list, g.getSpecific());			
+		}
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Verify if the lists have at least one element in common.
+	 */
+	public static Classifier isOverlapping (ArrayList<Classifier> list1, ArrayList<Classifier> list2)
+	{
+		for (Classifier c1: list1)
+		{
+			for (Classifier c2: list2)
+			{
+				if (c2.equals(c1)) return c1;
+			}
+		}
+		return null;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Verify if the Classifier 'c' is a Top Level Classifier.
+	 */
+	public static boolean isTopLevel (Classifier c)
+	{
+		if (((Classifier) c).getGeneralization().size() == 0 )
+		{
+			return true;
+		}
+		return false;
+	}
+	
 }

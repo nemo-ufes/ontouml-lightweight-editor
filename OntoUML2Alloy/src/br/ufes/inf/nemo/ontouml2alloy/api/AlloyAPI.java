@@ -558,8 +558,7 @@ public class AlloyAPI {
 		int cont = 1;
 		BinaryOperation bo = null;
 		for(String subs : NamesList)
-		{
-			
+		{			
 			if(NamesList.size() == 1)
 			{
 				vr = factory.createVariableReference();
