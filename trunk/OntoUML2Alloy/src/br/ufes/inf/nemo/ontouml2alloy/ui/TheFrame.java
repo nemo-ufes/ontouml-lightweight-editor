@@ -43,9 +43,7 @@ import br.ufes.inf.nemo.ontouml2alloy.util.ResourceUtil;
 /**
  * This Frame was created using the Windows Builder in Eclipse. 
  *
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom
+ * 	@author John Guerson, Tiago Sales and Lucas Thom
  */
 
 public class TheFrame extends JFrame {
@@ -66,7 +64,7 @@ public class TheFrame extends JFrame {
 	public TheFrame (RefOntoUML.Model model, String alsPath)
 	{
 		this();
-		filespanel.configurePanelForOLED(model, alsPath);
+		filespanel.configurePanelForOLED(model, alsPath);		
 	}
 	
 	/**
@@ -170,6 +168,8 @@ public class TheFrame extends JFrame {
 	 */
 	public void ExecuteButtonActionPerformed (ActionEvent arg0)
 	{
+		dispose();
+		
 		try {
 		
 		Options opt = new Options();
@@ -192,6 +192,8 @@ public class TheFrame extends JFrame {
 			JOptionPane.showMessageDialog(contentPane,e.getLocalizedMessage(),"Error",JOptionPane.ERROR_MESSAGE);					
 			e.printStackTrace();
 		}
+		
+		
 	}
 	
 }

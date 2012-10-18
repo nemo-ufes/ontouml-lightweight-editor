@@ -36,9 +36,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 /**
  * This panel was created using the Windows Builder in Eclipse.
  * 
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom
+ * 	@author John Guerson, Tiago Sales and Lucas Thom
  *
  */
 

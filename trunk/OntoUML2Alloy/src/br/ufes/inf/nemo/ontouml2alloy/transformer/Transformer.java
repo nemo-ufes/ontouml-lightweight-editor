@@ -46,6 +46,7 @@ import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
+import RefOntoUML.Type;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyModule;
@@ -407,9 +408,11 @@ public class Transformer {
 		
 		AlloyAPI.createDisjointExpressionInWorld(factory, world, subsortalDisjNamesList);	
 		
-		AlloyAPI.createDisjointExpressionInWorld(factory, world, datatypeDisjNamesList);
+		// not needed anymore....
+		//AlloyAPI.createDisjointExpressionInWorld(factory, world, datatypeDisjNamesList);
 		
-		AlloyAPI.createDisjointExpressionInWorld(factory, world, propertyDisjNamesList);		
+		// not needed anymore....
+		//AlloyAPI.createDisjointExpressionInWorld(factory, world, propertyDisjNamesList);		
 		
 		// fact relator_constraint { } 
 		
@@ -1183,38 +1186,39 @@ public class Transformer {
 		PredicateInvocation pI = factory.createPredicateInvocation();
 		pI.setPredicate("derivation");
 		
-		// Material
-		VariableReference material = factory.createVariableReference();
-		MaterialAssociation ma = null;		
+		// Get Material Association
+		VariableReference vrMaterial = factory.createVariableReference();
+		MaterialAssociation material = null;		
 		for(Property prop : d.getMemberEnd())
 		{
 			if(prop.getType() instanceof MaterialAssociation)
 			{
-				material.setVariable(ontoparser.getName(prop.getType()));
-				ma = (MaterialAssociation)prop.getType();
+				vrMaterial.setVariable(ontoparser.getName(prop.getType()));
+				material = (MaterialAssociation)prop.getType();
 			}
 		}		
 				
-		// Material Source and Material Target
-		String class1 = "",class2 = "";		
+		// Get Source and Target of Material Association
+		Type sourceType= null;
+		Type targetType = null;
 		int cont = 1;		
-		for(Property prop : ma.getMemberEnd())
+		for(Property prop : material.getMemberEnd())
 		{
 			if(prop.getType() instanceof Class)
 			{
 				if(cont==1) {
-					class1 = prop.getType().getName();
+					sourceType = prop.getType();
 					cont++;
 				} else {
-					class2 = prop.getType().getName();
+					targetType = prop.getType();
 				}
 			}
 		}
-
-		// Relator
+		
+		// Get Relator
 		Relator derRelator = (Relator) (d.relator() instanceof Relator ? d.relator() : d.material());
 		
-		// Mediations
+		// Get Mediations
 		VariableReference mediation1 = factory.createVariableReference();
 		VariableReference mediation2 = factory.createVariableReference();		
 		cont = 1;
@@ -1223,41 +1227,37 @@ public class Transformer {
 			if(pe instanceof Mediation)
 			{
 				int cont2 = 1;
-				Relator relator = null;
-				Class mediated = null;
-				
+				Type relator = null;
+				Type mediated = null;				
 				for(Property prop : ((Mediation)pe).getMemberEnd())
 				{	
 					if(prop.getType() instanceof Relator) 
 					{
-						relator = (Relator) prop.getType();
-						if(cont2 > 1) mediated = (Relator) prop.getType();
+						if(cont2 ==1) relator = prop.getType();
+						if(cont2 > 1) mediated = prop.getType();
 						cont2++;
-					}
-					else if(prop.getType() instanceof Class)
-					{
-						mediated = (Class) prop.getType();
-					}
-					
+					}else{
+						mediated = prop.getType();
+					}					
 				}
 				
 				cont2 = 1;
-				if(relator.getName() == derRelator.getName() && (mediated.getName() == class1 || mediated.getName() == class2))
+				if(relator.getName() == derRelator.getName() && (mediated == sourceType || mediated == targetType))
 				{
 					if(cont == 1)
 					{
 						mediation1.setVariable(ontoparser.getName(((Mediation)pe)));
-						cont++;
+						cont++;						
 					}
 					else
 					{
-						mediation2.setVariable(ontoparser.getName(((Mediation)pe)));
+						mediation2.setVariable(ontoparser.getName(((Mediation)pe)));						
 						break;
 					}
 				}
 			}
 		}
-		pI.getParameter().add(material);
+		pI.getParameter().add(vrMaterial);
 		pI.getParameter().add(mediation1);
 		pI.getParameter().add(mediation2);
 		
