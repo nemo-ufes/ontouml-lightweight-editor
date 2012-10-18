@@ -36,9 +36,7 @@ import javax.swing.SwingConstants;
 /**
  * This panel was created using the Windows Builder in Eclipse.
  * 
- * 	@author John Guerson 
- *  @author Tiago Sales 
- *  @author Lucas Thom
+ * 	@author John Guerson, Tiago Sales and Lucas Thom
  *
  */
 
@@ -102,7 +100,7 @@ public class FilesPanel extends JPanel {
 		
 		GroupLayout gl_FilesPanel = new GroupLayout(this);
 		gl_FilesPanel.setHorizontalGroup(
-			gl_FilesPanel.createParallelGroup(Alignment.TRAILING)
+			gl_FilesPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_FilesPanel.createSequentialGroup()
 					.addGap(25)
 					.addGroup(gl_FilesPanel.createParallelGroup(Alignment.TRAILING)
@@ -115,14 +113,16 @@ public class FilesPanel extends JPanel {
 								.addComponent(txtAlloy, GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
 								.addComponent(txtOntoUML, GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_FilesPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnBrowseAlloy)
-								.addComponent(btnBrowseOntoUML, GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))))
+							.addGroup(gl_FilesPanel.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(gl_FilesPanel.createSequentialGroup()
+									.addComponent(btnBrowseAlloy)
+									.addPreferredGap(ComponentPlacement.RELATED, 1, Short.MAX_VALUE))
+								.addComponent(btnBrowseOntoUML, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE))))
 					.addGap(24))
-				.addGroup(Alignment.LEADING, gl_FilesPanel.createSequentialGroup()
+				.addGroup(gl_FilesPanel.createSequentialGroup()
 					.addGap(134)
-					.addComponent(btnExecute, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(141, Short.MAX_VALUE))
+					.addComponent(btnExecute, GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+					.addGap(141))
 		);
 		gl_FilesPanel.setVerticalGroup(
 			gl_FilesPanel.createParallelGroup(Alignment.TRAILING)
