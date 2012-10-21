@@ -163,6 +163,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					createEditor((StructureDiagram) model.getDiagrams().get(0));
 					setModelFile(file);
 					
+					((StructureDiagram) model.getDiagrams().get(0)).setLabelText(file.getName().replace(".oled", ""));
+					
 					ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 					//updateFrameTitle(); FIXME
 				} catch (Exception ex) {
@@ -367,18 +369,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void importEcore() {
 
 		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle(getResourceString("dialog.saveas.title"));
 		fileChooser.setDialogTitle(getResourceString("dialog.importecore.title"));
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
 		fileChooser.addChoosableFileFilter(filter);
 		fileChooser.setFileFilter(filter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			if (fileChooser.getFileFilter() == filter) {
 				try {
 					ResourceSet resourceSet = new ResourceSetImpl();
 					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,new OLEDResourceFactory());
 					resourceSet.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI, RefOntoUML.RefOntoUMLPackage.eINSTANCE);
-
+					resourceSet.getPackageRegistry().put("http://nemo.inf.ufes.br/ontouml/refontouml", RefOntoUML.RefOntoUMLPackage.eINSTANCE);
+					
 					File file = new File(fileChooser.getSelectedFile().getPath());					
 					org.eclipse.emf.common.util.URI fileURI = org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath());		
 					Resource resource = resourceSet.createResource(fileURI);		
@@ -388,7 +392,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					UmlProject project = new UmlProject( (RefOntoUML.Model)resource.getContents().get(0) );
 					StructureDiagram diagram = new StructureDiagram(project);
 					project.addDiagram(diagram);
-					diagram.setLabelText("Imported Diagram");		
+					
+					diagram.setLabelText(file.getName().replace(".refontouml", ""));		
+					
 					project.setSaveModelNeeded(true);
 					diagram.setSaveNeeded(true);
 					createEditor(diagram);					

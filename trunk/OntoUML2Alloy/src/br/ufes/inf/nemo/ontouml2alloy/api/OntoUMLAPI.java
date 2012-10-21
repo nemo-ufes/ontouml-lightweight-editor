@@ -118,9 +118,9 @@ public class OntoUMLAPI {
 	/* =========================================================================================================*/
 	
 	/**
-	 * Get all Mediations relations that have as a source the Relator 'r' or one of its Super Types. 
+	 * Get all Mediations relations Names that have as a source the Relator 'r' or one of its Super Types. 
 	 */
-	public static void getAllMediations(Parser ontoparser, ArrayList<String> list, Relator r)
+	public static void getAllMediationsNames(Parser ontoparser, ArrayList<String> list, Relator r)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -141,14 +141,45 @@ public class OntoUMLAPI {
 		}
 		for(Generalization gen : ((Relator)r).getGeneralization())
 		{							
-			if (gen.getGeneral() instanceof Relator) getAllMediations(ontoparser,list,(Relator)gen.getGeneral());
+			if (gen.getGeneral() instanceof Relator) getAllMediationsNames(ontoparser,list,(Relator)gen.getGeneral());
 		}
 	}
 		
 	/* =========================================================================================================*/
 	
 	/**
-	 * Get all Meronymic relations that have as a Whole the RigidSortalClass 'c' or one of its Super Types
+	 * Get all Mediations that have as a source the Relator 'r' or one of its Super Types. 
+	 */
+	public static void getAllMediations(Parser ontoparser, ArrayList<Mediation> list, Relator r)
+	{
+		for(PackageableElement pe : ontoparser.getPackageableElements())
+		{
+			if(pe instanceof Mediation)
+			{
+				Mediation assoc = (Mediation)pe;
+				for( Property p : assoc.getMemberEnd())
+				{
+					if (p.getType() instanceof Relator)
+					{
+						if (p.getType().getName().equals(r.getName()))
+						{
+							list.add((Mediation)pe);							
+						}
+					}
+				}
+			}			
+		}
+		for(Generalization gen : ((Relator)r).getGeneralization())
+		{							
+			if (gen.getGeneral() instanceof Relator) getAllMediations(ontoparser,list,(Relator)gen.getGeneral());
+		}
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Get all Meronymic relations Names that have as a Whole the RigidSortalClass 'c' or one of its Super Types
+	 * 
 	 * RigidSortalClass : Kind, Collective, Quantity, SubKind.
 	 * 
 	 */	
