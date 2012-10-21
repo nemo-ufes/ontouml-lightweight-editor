@@ -553,7 +553,7 @@ public class Transformer {
 		
 		// get all 'c' mediations
 		ArrayList<String> associationNames = new ArrayList<String>();		
-		OntoUMLAPI.getAllMediations(ontoparser,associationNames, c);		
+		OntoUMLAPI.getAllMediationsNames(ontoparser,associationNames, c);		
 		
 		if(associationNames.size()>0)
 		{			
@@ -1214,49 +1214,48 @@ public class Transformer {
 				}
 			}
 		}
-		
+						
 		// Get Relator
 		Relator derRelator = (Relator) (d.relator() instanceof Relator ? d.relator() : d.material());
 		
-		// Get Mediations
 		VariableReference mediation1 = factory.createVariableReference();
-		VariableReference mediation2 = factory.createVariableReference();		
-		cont = 1;
-		for (PackageableElement pe : ontoparser.getPackageableElements())
-		{
-			if(pe instanceof Mediation)
-			{
-				int cont2 = 1;
-				Type relator = null;
-				Type mediated = null;				
-				for(Property prop : ((Mediation)pe).getMemberEnd())
-				{	
-					if(prop.getType() instanceof Relator) 
-					{
-						if(cont2 ==1) relator = prop.getType();
-						if(cont2 > 1) mediated = prop.getType();
-						cont2++;
-					}else{
-						mediated = prop.getType();
-					}					
-				}
+		VariableReference mediation2 = factory.createVariableReference();
+		
+		// Get Mediations
+		ArrayList<Mediation> mediations = new ArrayList<Mediation>();
+		OntoUMLAPI.getAllMediations(ontoparser, mediations, derRelator);
 				
-				cont2 = 1;
-				if(relator.getName() == derRelator.getName() && (mediated == sourceType || mediated == targetType))
-				{
-					if(cont == 1)
-					{
-						mediation1.setVariable(ontoparser.getName(((Mediation)pe)));
-						cont++;						
-					}
-					else
-					{
-						mediation2.setVariable(ontoparser.getName(((Mediation)pe)));						
-						break;
-					}
+		// Get the two first mediations related with source and target of the material relation
+		int cont1=1;
+		for (Mediation med: mediations)
+		{
+			int cont2=1;			
+			Type mediated = null;
+			for(Property prop : med.getMemberEnd())
+			{	
+				if(prop.getType() instanceof Relator && cont2==1)
+				{											
+					cont2++;
+				}else{
+					mediated = prop.getType();
 				}
 			}
-		}
+			
+			if(mediated == sourceType || mediated == targetType)
+			{
+				if(cont1 == 1)
+				{						
+					mediation1.setVariable(ontoparser.getName(med));
+					cont1++;						
+				}
+				else
+				{					
+					mediation2.setVariable(ontoparser.getName(med));						
+					break;
+				}
+			}			
+		}	
+		
 		pI.getParameter().add(vrMaterial);
 		pI.getParameter().add(mediation1);
 		pI.getParameter().add(mediation2);
