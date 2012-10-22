@@ -65,9 +65,9 @@ public class SourceTargetAssociation {
 	public static Type getTargetAlloy (Association a){
 		Type t0;
 		t0 = getSourceAlloy(a);
-		if(a.getRelatedElement().get(0).equals(t0))
-				return (Type) a.getRelatedElement().get(1);
-		return (Type) a.getRelatedElement().get(0);
+		if(a.getMemberEnd().get(0).getType().equals(t0))
+				return a.getMemberEnd().get(1).getType();
+		return a.getMemberEnd().get(0).getType();
 		
 	}
 	

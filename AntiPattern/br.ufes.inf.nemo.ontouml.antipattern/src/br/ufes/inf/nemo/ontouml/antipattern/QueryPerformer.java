@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ontouml.antipattern;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -11,6 +12,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.util.Tuple;
 
+import br.ufes.inf.nemo.ontouml.antipattern.deprecated.STRAlloyGenerator;
+import br.ufes.inf.nemo.ontouml.antipattern.deprecated.STRIdentifier;
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
 import RefOntoUML.Association;
 import RefOntoUML.Model;
@@ -19,7 +22,7 @@ import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.Relator;
 
 public class QueryPerformer {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		// Register the default resource factory -- only needed for stand-alone!
 		RefOntoUMLPackage refMetaPack = RefOntoUMLPackage.eINSTANCE;
@@ -27,7 +30,7 @@ public class QueryPerformer {
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/RelationSpecialization.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/Georreferenciamento.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
 		
@@ -41,23 +44,18 @@ public class QueryPerformer {
 			
 		try {
 		    	    
-		    Collection<Association> result = STRIdentifier.STRQuery(m);
+		    ArrayList<STRAntiPattern> result = AntiPatternIdentifier.identifySTR(m, mapper);
 		    
 		    System.out.println("#SelfTypeRelationship Antipatterns: "+result.size());
-		    String type;
-		    String association;
-		    String cardinality = "4";
 		    
-		    for (Association c : result) {
-		    	type = mapper.elementsMap.get(c.getOwnedEnd().get(0).getType());
-		    	association = mapper.elementsMap.get(c);
-		    	  	
-		    	System.out.println(STRAlloyGenerator.SymmetricAlloyPredicate(type, association, cardinality));
-		    	System.out.println(STRAlloyGenerator.AntisymmetricAlloyPredicate(type, association, cardinality));
-		    	System.out.println(STRAlloyGenerator.ReflexiveAlloyPredicate(type, association, cardinality));
-				System.out.println(STRAlloyGenerator.IrreflexiveAlloyPredicate(type, association, cardinality));
-		    	System.out.println(STRAlloyGenerator.TransitiveAlloyPredicate(type, association, cardinality));
-		    	System.out.println(STRAlloyGenerator.IntransitiveAlloyPredicate(type, association, cardinality));
+		    for (STRAntiPattern str : result) {
+		    	System.out.println(str+"\n");
+		    	/*System.out.println(str.generateTransitivePredicate(4));
+		    	System.out.println(str.generateIntransitivePredicate(4));
+		    	System.out.println(str.generateReflexivePredicate(4));
+		    	System.out.println(str.generateIrreflexivePredicate(4));
+		    	System.out.println(str.generateSymmetricPredicate(4));
+		    	System.out.println(str.generateAntisymmetricPredicate(4));    */	
 		    	
 		    }
 		    
@@ -78,14 +76,16 @@ public class QueryPerformer {
 		    	System.out.println(RBOSAlloyGenerator.OverlappingParticipantsAlloyPredicate(c, mapper));
 		    }
 		    
-		    Collection<Tuple<Association,Association>> result4 = RSIdentifier.RSQuery(m);
+		    ArrayList<RSAntiPattern> result4 = AntiPatternIdentifier.identifyRS(m, mapper);
 		    System.out.println("#Relation Specialization Antipatterns: "+result4.size());
 		    
-		    for (Tuple<Association,Association> o : result4) {
-		    	System.out.println(RSAlloyGenerator.subsetAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
-		    	System.out.println(RSAlloyGenerator.notSubsetAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
-		    	System.out.println(RSAlloyGenerator.redefineAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
-		    	System.out.println(RSAlloyGenerator.disjointAlloyPredicate((Association)o.getValue("a1"), (Association)o.getValue("a2"), mapper));
+		    for (RSAntiPattern rs : result4) {
+		    	System.out.println(rs+"\n");
+		    	/*System.out.println(rs.generateSubsetPredicate());
+		    	System.out.println(rs.generateRedefinePredicate());
+		    	System.out.println(rs.generateNotSubsetPredicate());
+		    	System.out.println(rs.generateDisjointPredicate());
+		    	*/		    	
 		    }
 		    
 		    Collection<Association> result5 = IAIdentifier.IAQuery(m);
