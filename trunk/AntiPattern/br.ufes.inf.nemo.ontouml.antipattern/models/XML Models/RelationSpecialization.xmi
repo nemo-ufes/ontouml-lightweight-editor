@@ -3,7 +3,8 @@
     xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml">  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_71evsBJJEeK-WPeJTxRqZA" name="Kind1" visibility="public">
+    xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml">  
+   <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_71evsBJJEeK-WPeJTxRqZA" name="Kind1" visibility="public">
     <generalization xmi:id="_ISYf0BJLEeK-WPeJTxRqZA" general="_EgN1wBJLEeK-WPeJTxRqZA"/>
   </packagedElement>
   <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_8RKmIBJJEeK-WPeJTxRqZA" name="Kind2" visibility="public">
