@@ -654,6 +654,31 @@ public class AlloyAPI {
 	/* =========================================================================================================*/
 	
 	/**
+	 * Creates a antirigidity predicate invocation in Alloy.
+	 * 
+	 * antirigidity[antirigidClassName,Object,exists]
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public static PredicateInvocation createAntiRigidityInvocation (AlloyFactory factory, SignatureDeclaration Object, Variable exists, String antirigidClassName)
+	{
+		PredicateInvocation pI = factory.createPredicateInvocation();
+		pI.setPredicate("antirigidity");
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(antirigidClassName);
+		pI.getParameter().add(vr);
+		vr = factory.createVariableReference();
+		vr.setVariable(Object.getName());
+		pI.getParameter().add(vr);	
+		vr = factory.createVariableReference();
+		vr.setVariable(exists.getName());
+		pI.getParameter().add(vr);
+		return pI;		
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
 	 *  Creates a Compare Operation in Alloy.
 	 *  
 	 *  leftName CompareOperator rightName
@@ -786,4 +811,50 @@ public class AlloyAPI {
 		qe.setExpression(co);
 		return qe;
 	}
+	
+	/**
+	 *	Create Union Expression.
+	 *
+	 *  list[0] + list[1] + list[2]...
+	 */
+	public static BinaryOperation createUnionExpression (AlloyFactory factory, ArrayList<String> list)
+	{	
+		int cont = 1;
+		BinaryOperation bo = factory.createBinaryOperation();
+		BinaryOperation main = bo;
+		for(String str : list)
+		{
+			if(list.size() == 1) 
+			{				
+				break;
+			}
+			if(cont == 1)
+			{
+				bo.setOperator(BinaryOperator.UNION_LITERAL);
+				VariableReference vr = factory.createVariableReference();
+				vr.setVariable(str);
+				bo.setLeftExpression(vr);				
+			}
+			if(cont > 1 && cont != list.size())
+			{
+				bo.setRightExpression(factory.createBinaryOperation());
+												
+				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
+				VariableReference vr = factory.createVariableReference();
+				vr.setVariable(str);
+				((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
+				bo = ((BinaryOperation)bo.getRightExpression());
+			}
+			if(cont == list.size())
+			{
+				VariableReference vr = factory.createVariableReference();
+				vr.setVariable(str);
+				bo.setRightExpression(vr);
+			}
+			cont++;
+		}
+		return main;
+	}
+	
+	
 }

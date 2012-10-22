@@ -251,7 +251,7 @@ public class OntoUMLAPI {
 			}
 			getConcreteDescendants(ontoparser, list, g.getSpecific());
 		}
-	}	
+	}
 	
 	/* =========================================================================================================*/
 	

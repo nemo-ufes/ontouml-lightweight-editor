@@ -26,18 +26,16 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
-import br.ufes.inf.nemo.ontouml2alloy.Options;
+import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 import br.ufes.inf.nemo.ontouml2alloy.util.ResourceUtil;
 
 /**
@@ -57,14 +55,18 @@ public class TheFrame extends JFrame {
 	public EnforcePanel enforcepanel;
 	
 	public FilesPanel filespanel;	
-			
+		
+	public ExecutePanel executepanel;
+	
+	public TitlePanel titlepanel;
+	
 	/**
 	 * Create the frame for OLED.
 	 */
 	public TheFrame (RefOntoUML.Model model, String alsPath)
 	{
 		this();
-		filespanel.configurePanelForOLED(model, alsPath);		
+		filespanel.load(model, alsPath);		
 	}
 	
 	/**
@@ -75,7 +77,7 @@ public class TheFrame extends JFrame {
 	{							
 		setTitle("OntoUML2Alloy");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 478, 391);
+		setBounds(100, 100, 483, 466);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -85,115 +87,57 @@ public class TheFrame extends JFrame {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		
 		filespanel = new FilesPanel();		
-		tabbedPane.addTab("Files", null, filespanel, null);
+		tabbedPane.addTab("Files", null, filespanel, null);		
 		
 		enforcepanel = new EnforcePanel();
-		tabbedPane.addTab("Enforce", null, enforcepanel, null);
 				
-		contentPane.add(tabbedPane);
+		tabbedPane.addTab("Enforce", null, enforcepanel, null);
 		
-		filespanel.btnBrowseOntoUML.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				BrowseOntoUMLActionPerformed(arg0);
-			}
-		});
+		contentPane.add(BorderLayout.CENTER,tabbedPane);
+				
+		executepanel = new ExecutePanel();
 		
-		filespanel.btnExecute.addActionListener(new ActionListener() 
+		contentPane.add(BorderLayout.SOUTH,executepanel);
+				
+		titlepanel = new TitlePanel();		
+		contentPane.add(BorderLayout.NORTH,titlepanel);
+		
+		String iconPath = "/resources/br/ufes/inf/nemo/ontouml2alloy/window.png";
+		
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Image.class.getResource(iconPath)));
+		
+		executepanel.btnExecuteWithAnalyzer .addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{								
 				ExecuteButtonActionPerformed (arg0);				
 			}
 		});
+	}		
 
-		filespanel.btnBrowseAlloy.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				BrowseAlloyActionPerformed(arg0);
-			}
-		});		
-				
-		String iconPath = "/resources/br/ufes/inf/nemo/ontouml2alloy/window.png";
-		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Image.class.getResource(iconPath)));
-	}
-		
-	/**
-	 *	Action Performed for Browse OntoUML JButton in FilesPanel. 
-	 */
-	public void BrowseOntoUMLActionPerformed (ActionEvent arg0)
-	{
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Open");
-		FileNameExtensionFilter ontoumlFilter = new FileNameExtensionFilter(
-				"Eclipse Ecore-based Model (*.refontouml)", "refontouml");
-		fileChooser.addChoosableFileFilter(ontoumlFilter);
-		fileChooser.setFileFilter(ontoumlFilter);
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
-		{
-			if (fileChooser.getFileFilter() == ontoumlFilter) 
-			{				
-				filespanel.txtOntoUML.setText( fileChooser.getSelectedFile().getPath() );
-			}
-		}
-	}
-	
-	/**
-	 *	Action Performed for Browse Alloy JButton in FilesPanel. 
-	 */
-	public void BrowseAlloyActionPerformed (ActionEvent arg0)
-	{
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Open");
-		FileNameExtensionFilter alloyFilter = new FileNameExtensionFilter(
-				"Eclipse Ecore-based Model (*.als)", "als");
-		fileChooser.addChoosableFileFilter(alloyFilter);
-		fileChooser.setFileFilter(alloyFilter);
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
-		{
-			if (fileChooser.getFileFilter() == alloyFilter) 
-			{				
-				filespanel.txtAlloy.setText( fileChooser.getSelectedFile().getPath() );
-			}
-		}
-	}
-	
-	/**
-	 *	Action Performed for Execute JButton in FilesPanel. 	
-	 */
+
 	public void ExecuteButtonActionPerformed (ActionEvent arg0)
 	{
 		dispose();
 		
 		try {
 		
-		Options opt = new Options();
-		opt.weakSupplementationConstraint = enforcepanel.cbxWeakSupplementation.isSelected();
-		opt.relatorConstraint = enforcepanel.cbxRelator.isSelected();
-		opt.identityPrinciple = enforcepanel.cbxIdentityPrinciple.isSelected();
-		
+		Options opt = enforcepanel.getOptions();
+						
 		if (filespanel.txtOntoUML.isEnabled()) 
 		{
-			Resource resource = ResourceUtil.loadOntoUML(filespanel.txtOntoUML.getText());
+			Resource resource = ResourceUtil.loadOntoUML(filespanel.getOntoUMLPath());
 			filespanel.refmodel = (RefOntoUML.Package) resource.getContents().get(0);			
 		}
 				
-		filespanel.alsPath = filespanel.txtAlloy.getText();
+		filespanel.setAlloyPath(filespanel.getAlloyPath());
 		
-		OntoUML2Alloy.Transformation(filespanel.refmodel, filespanel.txtAlloy.getText(), opt);
+		OntoUML2Alloy.Transformation(filespanel.refmodel, filespanel.getAlloyPath(), opt);
 
 		} catch (Exception e) {
 			
-			JOptionPane.showMessageDialog(contentPane,e.getLocalizedMessage(),"Error",JOptionPane.ERROR_MESSAGE);					
+			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error",JOptionPane.ERROR_MESSAGE);					
 			e.printStackTrace();
-		}
-		
-		
+		}		
 	}
-	
 }
