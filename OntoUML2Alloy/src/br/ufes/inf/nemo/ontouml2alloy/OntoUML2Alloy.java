@@ -47,6 +47,7 @@ import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.Transformer;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyLibraryFiles;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyThemeFile;
+import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**

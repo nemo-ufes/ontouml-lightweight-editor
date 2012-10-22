@@ -41,11 +41,14 @@ import RefOntoUML.Mode;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.PackageableElement;
+import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
+import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
 import RefOntoUML.Type;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
@@ -69,10 +72,10 @@ import br.ufes.inf.nemo.alloy.UnaryOperation;
 import br.ufes.inf.nemo.alloy.UnaryOperator;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
-import br.ufes.inf.nemo.ontouml2alloy.Options;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
+import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 
 /**
  *	This class is used to transform every element of the model into alloy. 
@@ -165,6 +168,9 @@ public class Transformer {
 	/** List containing all the top level classifiers. */
 	private ArrayList<Classifier> topLevelElementsHashMap = new ArrayList<Classifier>();
 	
+	/** List containing all the antirigid classifiers. */
+	private ArrayList<Classifier> antirigidElementsList = new ArrayList<Classifier>();
+	
 	/* =========================================================================================================*/
 	
 	// initialized by transformClassifier()
@@ -233,6 +239,7 @@ public class Transformer {
 					datatypeDisjNamesList.add(ontoparser.getName(pe));
 				}
 			}
+			
 			if ( (pe instanceof RigidSortalClass) || (pe instanceof Category) || (pe instanceof MomentClass) || ((pe instanceof DataType)&&!(pe instanceof PrimitiveType)) ) 
 			{ 
 				rigidElementsList.add((Classifier)pe); 
@@ -241,6 +248,11 @@ public class Transformer {
 			if ( pe instanceof Class)
 			{				
 				if (OntoUMLAPI.isTopLevel((Classifier)pe)) topLevelElementsHashMap.add((Classifier)pe);
+			}
+			
+			if ((pe instanceof Role) || (pe instanceof RoleMixin) || (pe instanceof Phase))
+			{
+				antirigidElementsList.add((Classifier)pe);
 			}
 		}
 	}
@@ -436,6 +448,10 @@ public class Transformer {
 		
 		createAllRigidClassesFacts();	
 		
+		// fact all_antirigid_classes { antirigidity[...] }
+		
+		if (options.antiRigidity) createAllAntiRigidClassesFacts();
+		
 		//  run { } for 10 but 3 World
 		
 		AlloyAPI.createDefaultRunComand(factory, module);			
@@ -484,6 +500,37 @@ public class Transformer {
 			module.getParagraph().add(all_rigid_classes);
 		}
 	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * 	Creates " all_antirigid_classes" Fact Declaration in Alloy.
+	 *  
+	 *  fact all_antirigid_classes { ... }			
+	 */
+	@SuppressWarnings("unchecked")
+	private void createAllAntiRigidClassesFacts() 
+	{
+		if(antirigidElementsList.size()>0)
+		{
+			FactDeclaration all_antirigid_classes = factory.createFactDeclaration();
+			all_antirigid_classes.setName("all_antirigid_classes");
+			all_antirigid_classes.setBlock(factory.createBlock());
+			
+			for(Classifier antirigid : antirigidElementsList)
+			{
+				if(antirigid instanceof ObjectClass)
+				{	
+					// antirigidity[ antirigidClassName, Object, exists]
+					
+					PredicateInvocation pI = AlloyAPI.createAntiRigidityInvocation(factory, sigObject, exists, ontoparser.getName(antirigid));
+					all_antirigid_classes.getBlock().getExpression().add(pI);
+				}					
+			}			
+			module.getParagraph().add(all_antirigid_classes);
+		}
+	}
+	
 	
 	/* =========================================================================================================*/
 	
@@ -724,7 +771,12 @@ public class Transformer {
 			for(Generalization gen : gs.getGeneralization())
 			{
 				if(gs.getGeneralization().size() == 1)
+				{
+					VariableReference vr1 = factory.createVariableReference();
+					vr1.setVariable(ontoparser.getName(gen.getSpecific()));					
+					co.setRightExpression(vr);				
 					break;
+				}
 				if(cont == 1)
 				{
 					bo.setOperator(BinaryOperator.UNION_LITERAL);
@@ -1273,7 +1325,7 @@ public class Transformer {
 		HashMap< ArrayList<Classifier>, Integer > listsHashMap = new HashMap< ArrayList<Classifier>,Integer >();
 		
 		for (Classifier c1: topLevelElementsHashMap)
-		{
+		{			
 			ArrayList<Classifier> descendants1 = new ArrayList<Classifier>();
 			OntoUMLAPI.getDescendants(ontoparser, descendants1, c1);
 
@@ -1292,52 +1344,45 @@ public class Transformer {
 					OntoUMLAPI.getDescendants(ontoparser, descendants2, c2);
 										
 					Classifier overlap = OntoUMLAPI.isOverlapping(descendants1, descendants2);
-					if (overlap != null) singleList.add(c2);						
+					if (overlap == null) singleList.add(c2);						
 				}
 			}
-			
-			listsHashMap.put(singleList,0);			
+						
+			listsHashMap.put(singleList,0);
 		}
-		
-		// Now we remove lists that overlapping with others 
-		for (ArrayList<Classifier> l1 : listsHashMap.keySet())
-		{
-			if (listsHashMap.get(l1)==0) 
-			{
-				for (ArrayList<Classifier> l2 : listsHashMap.keySet())
-				{
-					if(!l2.equals(l1) && listsHashMap.get(l2)==0)
-					{
-						Classifier overlap = OntoUMLAPI.isOverlapping(l1, l2);
-						if (overlap!=null)
-						{
-							if(l1.size() < l2.size()) listsHashMap.put(l1,1);
-							else listsHashMap.put(l2, 1);
-						}					
-					}
-				}			
-			}
-		}
-
-		// create a union (+) String expression for every singleList that has the value equal to 0
-		ArrayList<String> exprList = new ArrayList<String>();
+				
+		// create a union (+) String expression for every singleList 
+		// starting at the second element
+				
 		for (ArrayList<Classifier> singleList : listsHashMap.keySet())
 		{
 			if (listsHashMap.get(singleList)==0)
 			{
+				// create a list of the elements starting at the second element
 				int count = 0;
-				String expr = new String();
+				ArrayList<String> exprList = new ArrayList<String>();
 				for(Classifier c: singleList) 
 				{
-					if (count==0) { expr = ontoparser.getName(c); count++; }
-					else expr += "+"+ontoparser.getName(c);
+					if (count>=1) exprList.add(ontoparser.getName(c));					
+					count++;
 				}
-				exprList.add(expr);
+				
+				ArrayList<String> paramList = new ArrayList<String>();
+				paramList.add(ontoparser.getName(singleList.get(0)));
+				
+				if (exprList.size()>1) 
+				{
+					// create a union(+) operation for the exprList
+					BinaryOperation bo = AlloyAPI.createUnionExpression(factory, exprList);
+					paramList.add(bo.toString());					
+				}else{
+					paramList.add(ontoparser.getName(singleList.get(1)));					
+				}						
+				
+				//create Top Level Disjoint Rule
+				AlloyAPI.createDisjointExpressionInWorld(factory, world, paramList);				
 			}			
-		}
-		
-		//create Top Level Disjoint Rule
-		AlloyAPI.createDisjointExpressionInWorld(factory, world, exprList);
+		}		
 	}
 	
 }
