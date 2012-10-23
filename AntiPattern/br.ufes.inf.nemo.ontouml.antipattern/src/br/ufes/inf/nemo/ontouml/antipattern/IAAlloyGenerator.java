@@ -9,7 +9,7 @@ import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
-import br.ufes.inf.nemo.ontouml.antipattern.util.Combinacao;
+import br.ufes.inf.nemo.ontouml.antipattern.util.Combination;
 import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
 
 public class IAAlloyGenerator {
@@ -18,7 +18,7 @@ public class IAAlloyGenerator {
 		Class source = (Class) SourceTargetAssociation.getSourceAlloy(a);
 		Class target = (Class) SourceTargetAssociation.getTargetAlloy(a);
 		String predicates="", rules, predicateName, sourceName, targetName, assocName=mapper.elementsMap.get(a);
-		Combinacao comb1;
+		Combination comb1;
 		EList<Classifier> auxChildrenSource = source.children();
 		EList<Classifier> auxChildrenTarget = target.children();
 		
@@ -35,7 +35,7 @@ public class IAAlloyGenerator {
 		//Check if there are specializations on the source of the relation and also if the source upper cardinality is unlimited or greater then 1
 		if ((childrenSource.size()>0) && (SourceTargetAssociation.getUpperSourceCardinality(a)==-1 || SourceTargetAssociation.getUpperSourceCardinality(a)>1)) {
 			
-			comb1 = new Combinacao(childrenSource, 0);
+			comb1 = new Combination(childrenSource, 0);
 			while (comb1.hasNext()) {
 				saida=(comb1.next());
 				predicateName = "imprecise_abstraction_"+targetName+"_"+assocName;
@@ -62,7 +62,7 @@ public class IAAlloyGenerator {
 		//Check if there are specializations on the source of the relation and also if the source upper cardinality is unlimited or greater then 1
 		if ((childrenTarget.size()>0) && (SourceTargetAssociation.getUpperTargetCardinality(a)==-1 || SourceTargetAssociation.getUpperTargetCardinality(a)>1)) {
 			
-			comb1 = new Combinacao(childrenTarget, 0);
+			comb1 = new Combination(childrenTarget, 0);
 			while (comb1.hasNext()) {
 				saida=(comb1.next());
 				predicateName = "imprecise_abstraction_"+sourceName+"_"+assocName;

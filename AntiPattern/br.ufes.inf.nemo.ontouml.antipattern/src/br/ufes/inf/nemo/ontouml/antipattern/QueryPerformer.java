@@ -10,13 +10,12 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import org.eclipse.ocl.ParserException;
-import br.ufes.inf.nemo.ontouml.antipattern.deprecated.RBOSIdentifier;
+
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
 import RefOntoUML.Association;
 import RefOntoUML.Model;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
-import RefOntoUML.Relator;
 
 public class QueryPerformer {
 	public static void main(String[] args) throws Exception {
@@ -26,8 +25,8 @@ public class QueryPerformer {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
-		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
 		
@@ -42,11 +41,10 @@ public class QueryPerformer {
 		try {
 		    	    
 		    ArrayList<STRAntiPattern> result = AntiPatternIdentifier.identifySTR(m, mapper);
-		    
-		    System.out.println("#SelfTypeRelationship Antipatterns: "+result.size());
+		    System.out.println("#SelfTypeRelationship Antipatterns: "+result.size()+"\n");
 		    
 		    for (STRAntiPattern str : result) {
-		    	System.out.println(str+"\n");
+		    	System.out.println(str);
 		    	/*System.out.println(str.generateTransitivePredicate(4));
 		    	System.out.println(str.generateIntransitivePredicate(4));
 		    	System.out.println(str.generateReflexivePredicate(4));
@@ -55,28 +53,30 @@ public class QueryPerformer {
 		    	System.out.println(str.generateAntisymmetricPredicate(4));    */	
 		    	
 		    }
+		    System.out.println("**************************************************************");
 		    
-		    Collection<Relator>result2 = RWORIdentifier.RWORQuery(m);
-		    System.out.println("#Relator With Overlapping Roles Antipatterns: "+result2.size());
-	
-		    for (Relator c : result2) {
-		    	System.out.println(RWORAlloyGenerator.ExclusiveRolesAlloyPredicate(c, mapper));
-		    	System.out.println(RWORAlloyGenerator.NonExclusiveRolesAlloyPredicate(c, mapper));
-		    	System.out.println(RWORAlloyGenerator.MultipleExclusiveRolesAlloyPredicate(c,mapper));
-
+		    ArrayList<RWORAntiPattern> result21 = AntiPatternIdentifier.identifyRWOR(m, mapper);
+		    System.out.println("#Relator With Overlapping Roles Antipatterns: "+result21.size()+"\n");
+		    for (RWORAntiPattern rwor : result21){
+		    	System.out.println(rwor);
+		    	/*System.out.println(rwor.generateExclusivePredicate());
+		    	System.out.println(rwor.generateNonExclusivePredicate());
+		    	System.out.println(rwor.generateMultipleExclusivePredicate());*/
 		    }
+		    System.out.println("**************************************************************");
 		    
-		    Collection<Association> result3 = RBOSIdentifier.RBOSQuery(m);
-		    System.out.println("#Relation Between Overlapping Subtypes Antipatterns: "+result3.size());
-		    for (Association c : result3) {
-		    	System.out.println(new RBOSAntiPattern(c, mapper)+"\n");
-		    	/*System.out.println(RBOSAlloyGenerator.DisjointParticipantsAlloyPredicate(c, mapper));
-		    	System.out.println(RBOSAlloyGenerator.OverlappingParticipantsAlloyPredicate(c, mapper));*/
+		    
+		    ArrayList<RBOSAntiPattern> result3 = AntiPatternIdentifier.identifyRBOS(m, mapper);
+		    System.out.println("#Relation Between Overlapping Subtypes Antipatterns: "+result3.size()+"\n");
+		    for (RBOSAntiPattern rbos : result3){
+		    	System.out.println(rbos);
+		    	/*System.out.println(rbos.generateDisjointPredicate());
+		    	System.out.println(rbos.generateOverlappingPredicate());*/
 		    }
+		    System.out.println("**************************************************************");
 		    
 		    ArrayList<RSAntiPattern> result4 = AntiPatternIdentifier.identifyRS(m, mapper);
-		    System.out.println("#Relation Specialization Antipatterns: "+result4.size());
-		    
+		    System.out.println("#Relation Specialization Antipatterns: "+result4.size()+"\n");
 		    for (RSAntiPattern rs : result4) {
 		    	System.out.println(rs+"\n");
 		    	/*System.out.println(rs.generateSubsetPredicate());
@@ -85,16 +85,22 @@ public class QueryPerformer {
 		    	System.out.println(rs.generateDisjointPredicate());
 		    	*/		    	
 		    }
+		    System.out.println("**************************************************************");
 		    
 		    Collection<Association> result5 = IAIdentifier.IAQuery(m);
-		    System.out.println("#Imprecise Abstractions Antipatterns: "+result5.size());
-		    
+		    System.out.println("#Imprecise Abstractions Antipatterns: "+result5.size()+"\n");
 		    for (Association a : result5){
-		    	System.out.println(IAAlloyGenerator.impreciseAbstractionPredicates(a, mapper));
+		    	System.out.println(new IAAntiPattern(a, mapper)+"\n");
+		    	//System.out.println(IAAlloyGenerator.impreciseAbstractionPredicates(a, mapper));
 		    }
 		    
-		    ACIdentifier.IAQuery(m, 5);
-		    		    
+		    ArrayList<IAAntiPattern> result51 = AntiPatternIdentifier.identifyIA(m, mapper);
+		    System.out.println("#Imprecise Abstractions Antipatterns: "+result51.size()+"\n");
+		    for (IAAntiPattern ia : result51){
+		    	System.out.println(ia+"\n");
+		    	//System.out.println(IAAlloyGenerator.impreciseAbstractionPredicates(a, mapper));
+		    }
+				    		    
 		} catch (ParserException e) {
 		    // record failure to parse
 		    //valid = false;
