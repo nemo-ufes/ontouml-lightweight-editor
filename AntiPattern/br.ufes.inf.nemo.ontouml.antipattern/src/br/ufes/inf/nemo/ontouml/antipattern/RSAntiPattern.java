@@ -146,8 +146,8 @@ public class RSAntiPattern {
 	@Override
 	public String toString() {
 		String result;
-		result = "RS AntiPattern\n";
-		result += "General: "+generalSourceName+" - "+generalName+" - "+generalTargetName+"\n";
+		
+		result = "General: "+generalSourceName+" - "+generalName+" - "+generalTargetName+"\n";
 		result += "Specific: "+specificSourceName+" - "+specificName+" - "+specificTargetName;
 		
 		return result;

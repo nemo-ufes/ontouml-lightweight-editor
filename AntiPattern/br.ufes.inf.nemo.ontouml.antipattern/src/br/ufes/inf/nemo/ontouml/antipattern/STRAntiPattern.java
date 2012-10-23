@@ -6,6 +6,7 @@ import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 
+/*Self-Type Relationship AntiPattern*/
 public class STRAntiPattern {
 	private Association association;
 	private Classifier type;
@@ -108,8 +109,10 @@ public class STRAntiPattern {
 
 	public void setAssociation(Association association, NamesMapper mapper) throws Exception {
 		
+		
 		if (association == null)
 			throw new NullPointerException();
+		/*Check if the provided association indeed characterizes a SelfType Relationship AntiPattern*/
 		else if (!association.getMemberEnd().get(0).getType().equals(association.getMemberEnd().get(1).getType()))
 			throw new Exception("Input association does not characterize a Self-Type Relationship AntiPattern");
 		
@@ -126,7 +129,7 @@ public class STRAntiPattern {
 	
 	@Override
 	public String toString() {
-		return "STRAssociation: "+typeName+" - "+associationName;
+		return this.typeName+" - "+this.associationName;
 	}
 
 }

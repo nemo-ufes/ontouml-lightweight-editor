@@ -10,10 +10,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import org.eclipse.ocl.ParserException;
-import org.eclipse.ocl.util.Tuple;
-
-import br.ufes.inf.nemo.ontouml.antipattern.deprecated.STRAlloyGenerator;
-import br.ufes.inf.nemo.ontouml.antipattern.deprecated.STRIdentifier;
+import br.ufes.inf.nemo.ontouml.antipattern.deprecated.RBOSIdentifier;
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
 import RefOntoUML.Association;
 import RefOntoUML.Model;
@@ -30,7 +27,7 @@ public class QueryPerformer {
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/Georreferenciamento.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
 		
@@ -72,8 +69,9 @@ public class QueryPerformer {
 		    Collection<Association> result3 = RBOSIdentifier.RBOSQuery(m);
 		    System.out.println("#Relation Between Overlapping Subtypes Antipatterns: "+result3.size());
 		    for (Association c : result3) {
-		    	System.out.println(RBOSAlloyGenerator.DisjointParticipantsAlloyPredicate(c, mapper));
-		    	System.out.println(RBOSAlloyGenerator.OverlappingParticipantsAlloyPredicate(c, mapper));
+		    	System.out.println(new RBOSAntiPattern(c, mapper)+"\n");
+		    	/*System.out.println(RBOSAlloyGenerator.DisjointParticipantsAlloyPredicate(c, mapper));
+		    	System.out.println(RBOSAlloyGenerator.OverlappingParticipantsAlloyPredicate(c, mapper));*/
 		    }
 		    
 		    ArrayList<RSAntiPattern> result4 = AntiPatternIdentifier.identifyRS(m, mapper);

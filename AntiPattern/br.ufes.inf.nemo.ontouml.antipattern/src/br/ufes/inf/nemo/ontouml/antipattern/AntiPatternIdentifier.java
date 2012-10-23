@@ -26,7 +26,6 @@ public class AntiPatternIdentifier {
 		
 		query_result = (Collection<Tuple<Association, Association>>)OCLQueryExecuter.executeQuery(RS_OCLQuery, m.eClass(), m);
 		
-		System.out.println("RESULTADOOO: "+query_result.size()+"\n");
 		for (Tuple<Association, Association> t : query_result) {
 			RSAntiPattern rs = new RSAntiPattern((Association)t.getValue("a1"), (Association)t.getValue("a2"), mapper); 
 			result.add(rs);
