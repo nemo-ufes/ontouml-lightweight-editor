@@ -25,31 +25,23 @@ import java.util.HashMap;
 
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
-import RefOntoUML.Category;
 import RefOntoUML.Characterization;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
-import RefOntoUML.Collective;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import RefOntoUML.Kind;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Mode;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
-import RefOntoUML.PackageableElement;
-import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
-import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
-import RefOntoUML.Role;
-import RefOntoUML.RoleMixin;
 import RefOntoUML.Type;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
@@ -75,7 +67,7 @@ import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
-import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
+import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 
 /**
@@ -94,12 +86,17 @@ public class Transformer {
 	 *  It is also used for associate the elements of the ontouml model 
 	 *  with their modified names (i.e. without special characters: #, !, @, $, %, and etc...). 
 	 */
-	public Parser ontoparser;
+	public OntoUMLParser ontoparser;
 			
 	/**
 	 * Transformation Options.
 	 */
 	public Options options;
+
+	/**
+	 * Model information.
+	 */
+	public Info modelinfo;
 	
 	/** 
 	 * Alloy instance. 
@@ -126,53 +123,6 @@ public class Transformer {
 	private FactDeclaration derivations;
 
 	/* =========================================================================================================*/
-
-	// initialized by initializeDefaultSignatures() method 
-	
-	/** Alloy Default Signatures Names. */
-	private ArrayList<String> defaultSignatures = new ArrayList<String>();
-
-	/** Alloy Default Signature : sig Object{}. */
-	private SignatureDeclaration sigObject;
-	
-	/** Alloy Default Signature : sig Property{}. */
-	private SignatureDeclaration sigProperty;
-	
-	/** Alloy Default Signature : sig DataType{}. */
-	private SignatureDeclaration sigDatatype;
-	
-	/* =========================================================================================================*/
-	
-	// initialized by initializeNamesList() method
-	
-	/** List containing all the Object Class names. */
-	private ArrayList<String> objectNamesList = new ArrayList<String>();	
-	
-	/** List containing all the Moment Class names. */
-	private ArrayList<String> propertyNamesList = new ArrayList<String>();
-	
-	/** List containing all the DataTypes names. */
-	private ArrayList<String> datatypeNamesList = new ArrayList<String>();
-	
-	/** List containing all the names of Substances Sortals that are disjoint. */
-	private ArrayList<String> subsortalDisjNamesList = new ArrayList<String>();
-	
-	/** List containing all the names of Moment Classes that are disjoint. */
-	private ArrayList<String> propertyDisjNamesList = new ArrayList<String>();
-	
-	/** List containing all the names of DataTypes that are disjoint. */
-	private ArrayList<String> datatypeDisjNamesList = new ArrayList<String>();
-		
-	/** List containing all the rigid classifiers. */
-	private ArrayList<Classifier> rigidElementsList = new ArrayList<Classifier>();
-	
-	/** List containing all the top level classifiers. */
-	private ArrayList<Classifier> topLevelElementsHashMap = new ArrayList<Classifier>();
-	
-	/** List containing all the antirigid classifiers. */
-	private ArrayList<Classifier> antirigidElementsList = new ArrayList<Classifier>();
-	
-	/* =========================================================================================================*/
 	
 	// initialized by transformClassifier()
 	
@@ -187,122 +137,18 @@ public class Transformer {
 	/**
 	 * Constructor().
 	 */
-	public Transformer (Parser parser, Options opt)
-	{
-		ontoparser = parser;
+	public Transformer (OntoUMLParser parser, Options opt, AlloyFactory factory)
+	{		
+		this.ontoparser = parser;		
 		
-		options = opt;
+		this.options = opt;		
 		
-		initializeDefaultSignatures();
+		this.factory = factory;
 		
-		initializeNamesLists();
+		this.modelinfo = new Info(parser,factory);
+		
 	}
-			
-	/* =========================================================================================================*/
-	
-	/**
-	 * Initialize Names Lists.
-	 */
-	private void initializeNamesLists()
-	{
-		for (PackageableElement pe : ontoparser.getPackageableElements())
-		{			
-			if (pe instanceof ObjectClass) 
-			{
-				objectNamesList.add(ontoparser.getName(pe));
-
-				if((pe instanceof Kind) || (pe instanceof Collective) || (pe instanceof Quantity))
-				{
-					subsortalDisjNamesList.add(ontoparser.getName(pe));
-				}
-			}
-			if (pe instanceof MomentClass) 
-			{
-				propertyNamesList.add(ontoparser.getName(pe));
-				
-				// all Properties without fathers are naturally disjoint, 
-				// which means that multiple inheritance between Properties isn't allowed.
-				
-				if(((MomentClass)pe).getGeneralization().size() == 0)
-				{
-					propertyDisjNamesList.add(ontoparser.getName(pe));
-				}
-			}
-			if (pe instanceof DataType && !(pe instanceof PrimitiveType) ) 
-			{
-				datatypeNamesList.add(ontoparser.getName(pe));
-				
-				// all dataTypes without fathers are naturally disjoint, 
-				// which means that multiple inheritance between dataTypes isn't allowed.
-				
-				if(((DataType)pe).getGeneralization().size() == 0)
-				{
-					datatypeDisjNamesList.add(ontoparser.getName(pe));
-				}
-			}
-			
-			if ( (pe instanceof RigidSortalClass) || (pe instanceof Category) || (pe instanceof MomentClass) || ((pe instanceof DataType)&&!(pe instanceof PrimitiveType)) ) 
-			{ 
-				rigidElementsList.add((Classifier)pe); 
-			}
-			
-			if ( pe instanceof Class)
-			{				
-				if (OntoUMLAPI.isTopLevel((Classifier)pe)) topLevelElementsHashMap.add((Classifier)pe);
-			}
-			
-			if ((pe instanceof Role) || (pe instanceof RoleMixin) || (pe instanceof Phase))
-			{
-				antirigidElementsList.add((Classifier)pe);
-			}
-		}
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * Initialize Default Signatures (i.e. Object, Property and DataType).
-	 */
-	private void initializeDefaultSignatures ()
-	{
-		for (PackageableElement pe : ontoparser.getPackageableElements())
-		{			
-			if (pe instanceof ObjectClass) 
-			{
-				defaultSignatures.add("Object");
-				
-				sigObject = factory.createSignatureDeclaration();
-				sigObject.setName("Object");
-				
-				break;
-			}
-		}
-		for (PackageableElement pe : ontoparser.getPackageableElements())
-		{			
-			if (pe instanceof MomentClass) 
-			{
-				defaultSignatures.add("Property");
-				
-				sigProperty = factory.createSignatureDeclaration();
-				sigProperty.setName("Property");
-				
-				break;
-			}
-		}
-		for (PackageableElement pe : ontoparser.getPackageableElements())
-		{			
-			if (pe instanceof DataType && !(pe instanceof PrimitiveType) ) 
-			{
-				defaultSignatures.add("DataType");
-				
-				sigDatatype = factory.createSignatureDeclaration();
-				sigDatatype.setName("DataType");
-												
-				break;
-			}
-		}
-	}
-	
+		
 	/* =========================================================================================================*/
 
 	/**
@@ -330,11 +176,11 @@ public class Transformer {
 		// sig Property{} 
 		// sig DataType{}
 		
-		AlloyAPI.createDefaultSignatures(factory,module,defaultSignatures);
+		AlloyAPI.createDefaultSignatures(factory,module,modelinfo.defaultSignatures);
 		
 		// exists: some Object+Property+DataType,
 		
-		exists = AlloyAPI.createExistsVariableDeclaration(factory,defaultSignatures);
+		exists = AlloyAPI.createExistsVariableDeclaration(factory,modelinfo.defaultSignatures);
 		
 		world.getRelation().add(exists.getDeclaration());
 		
@@ -354,14 +200,14 @@ public class Transformer {
 		
 		// all_elements_exists[Object+Property+DataType,exists]
 		
-		PredicateInvocation pI2 = AlloyAPI.createAllElementsExistsInvocation(factory,exists,defaultSignatures);
+		PredicateInvocation pI2 = AlloyAPI.createAllElementsExistsInvocation(factory,exists,modelinfo.defaultSignatures);
 		block.getExpression().add(pI2);
 		
-		if(sigDatatype != null) 
+		if(modelinfo.sigDatatype != null) 
 		{
 			// always_exists[DataType,exists]
 			
-			PredicateInvocation pI3 = AlloyAPI.createAlwaysExistsInvocation(factory,exists,sigDatatype);
+			PredicateInvocation pI3 = AlloyAPI.createAlwaysExistsInvocation(factory,exists,modelinfo.sigDatatype);
 			block.getExpression().add(pI3);
 		}
 		
@@ -393,33 +239,33 @@ public class Transformer {
 	 */
 	public void finalAdditions()
 	{		
-		if(topLevelElementsHashMap.size() > 1)
+		if(modelinfo.topLevelElementsList.size() > 1)
 			
 			createTopLevelDisjointRule();
 		
-		if(options.identityPrinciple && subsortalDisjNamesList.size() > 0) 
+		if(options.identityPrinciple && modelinfo.subsortalDisjNamesList.size() > 0) 
 			
 			// exists:>Object in subsortalNamesList[0] + subsortalNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigObject, subsortalDisjNamesList);
+			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, modelinfo.sigObject, modelinfo.subsortalDisjNamesList);
 		
-		if(!options.identityPrinciple && objectNamesList.size() > 0)
+		if(!options.identityPrinciple && modelinfo.objectNamesList.size() > 0)
 			
 			// exists:>Object in objectNamesList[0] + objectNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigObject, objectNamesList);
+			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, modelinfo.sigObject,modelinfo.objectNamesList);
 		
-		if(propertyNamesList.size() > 0) 
+		if(modelinfo.propertyNamesList.size() > 0) 
 		
 			// exists:>Property in propertyNamesList[0] + propertyNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigProperty, propertyNamesList);
+			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, modelinfo.sigProperty, modelinfo.propertyNamesList);
 		
-		if(datatypeNamesList.size() > 0) 
+		if(modelinfo.datatypeNamesList.size() > 0) 
 		
 			// exists:>DataType in datatypeNamesList[0] + datatypeNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigDatatype, datatypeNamesList);
+			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, modelinfo.sigDatatype, modelinfo.datatypeNamesList);
 		
 		// disj[ DisjNamesList[0], DisjNamesList[1], ... ],
 		
-		AlloyAPI.createDisjointExpressionInWorld(factory, world, subsortalDisjNamesList);	
+		AlloyAPI.createDisjointExpressionInWorld(factory, world, modelinfo.subsortalDisjNamesList);	
 		
 		// not needed anymore....
 		//AlloyAPI.createDisjointExpressionInWorld(factory, world, datatypeDisjNamesList);
@@ -468,33 +314,33 @@ public class Transformer {
 	@SuppressWarnings("unchecked")
 	private void createAllRigidClassesFacts() 
 	{
-		if(rigidElementsList.size()>0)
+		if(modelinfo.rigidElementsList.size()>0)
 		{
 			FactDeclaration all_rigid_classes = factory.createFactDeclaration();
 			all_rigid_classes.setName("all_rigid_classes");
 			all_rigid_classes.setBlock(factory.createBlock());
 			
-			for(Classifier rigid : rigidElementsList)
+			for(Classifier rigid : modelinfo.rigidElementsList)
 			{				
 				if(rigid instanceof ObjectClass)
 				{	
 					// rigidity[ rigidClassName, Object, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigObject, exists, ontoparser.getName(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, modelinfo.sigObject, exists, ontoparser.getName(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}	
 				if(rigid instanceof MomentClass)
 				{
 					// rigidity[ rigidClassName, Property, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigProperty, exists, ontoparser.getName(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, modelinfo.sigProperty, exists, ontoparser.getName(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}
 				if(rigid instanceof DataType && !(rigid instanceof PrimitiveType))
 				{
 					// rigidity[ rigidClassName, DataType, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigDatatype, exists, ontoparser.getName(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, modelinfo.sigDatatype, exists, ontoparser.getName(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}				
 			}			
@@ -512,19 +358,19 @@ public class Transformer {
 	@SuppressWarnings("unchecked")
 	private void createAllAntiRigidClassesFacts() 
 	{
-		if(antirigidElementsList.size()>0)
+		if(modelinfo.antirigidElementsList.size()>0)
 		{
 			FactDeclaration all_antirigid_classes = factory.createFactDeclaration();
 			all_antirigid_classes.setName("all_antirigid_classes");
 			all_antirigid_classes.setBlock(factory.createBlock());
 			
-			for(Classifier antirigid : antirigidElementsList)
+			for(Classifier antirigid : modelinfo.antirigidElementsList)
 			{
 				if(antirigid instanceof ObjectClass)
 				{	
 					// antirigidity[ antirigidClassName, Object, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createAntiRigidityInvocation(factory, sigObject, exists, ontoparser.getName(antirigid));
+					PredicateInvocation pI = AlloyAPI.createAntiRigidityInvocation(factory, modelinfo.sigObject, exists, ontoparser.getName(antirigid));
 					all_antirigid_classes.getBlock().getExpression().add(pI);
 				}					
 			}			
@@ -545,7 +391,7 @@ public class Transformer {
 		{
 			// ObjectClassName: set exists:>Object,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), sigObject.getName());				
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), modelinfo.sigObject.getName());				
 			world.getRelation().add(decl);			
 
 			if ((c instanceof RigidSortalClass) && (options.weakSupplementationConstraint))
@@ -560,7 +406,7 @@ public class Transformer {
 		{			
 			// DataTypeName: set exists:>DataType,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), sigDatatype.getName());	
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), modelinfo.sigDatatype.getName());	
 			world.getRelation().add(decl);									
 		}
 		
@@ -568,7 +414,7 @@ public class Transformer {
 		{
 			// PropertyName: set exists:>Property,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c),sigProperty.getName());
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c),modelinfo.sigProperty.getName());
 			world.getRelation().add(decl);
 			
 			if ((c instanceof Relator) && (options.relatorConstraint))
@@ -1325,7 +1171,7 @@ public class Transformer {
 	{
 		HashMap< ArrayList<Classifier>, Integer > listsHashMap = new HashMap< ArrayList<Classifier>,Integer >();
 		
-		for (Classifier c1: topLevelElementsHashMap)
+		for (Classifier c1: modelinfo.topLevelElementsList)
 		{			
 			ArrayList<Classifier> descendants1 = new ArrayList<Classifier>();
 			OntoUMLAPI.getDescendants(ontoparser, descendants1, c1);
@@ -1337,7 +1183,7 @@ public class Transformer {
 			ArrayList<Classifier> singleList = new ArrayList<Classifier>();
 			singleList.add(c1);
 			
-			for (Classifier c2: topLevelElementsHashMap)
+			for (Classifier c2: modelinfo.topLevelElementsList)
 			{
 				if (!c2.equals(c1)) 
 				{

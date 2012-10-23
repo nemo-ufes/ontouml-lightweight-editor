@@ -73,6 +73,14 @@ public class EnforcePanel extends JPanel {
 		return opt;
 	}
 	
+	public EnforcePanel(Options opt)
+	{
+		cbxAntiRigidity.setSelected(opt.antiRigidity);
+		cbxIdentityPrinciple.setSelected(opt.identityPrinciple);
+		cbxRelator.setSelected(opt.relatorConstraint);
+		cbxWeakSupplementation.setSelected(opt.weakSupplementationConstraint);
+	}
+	
 	/**
 	 * Create the panel.
 	 */

@@ -24,16 +24,22 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.eclipse.emf.ecore.resource.Resource;
+
+import br.ufes.inf.nemo.ontouml2alloy.util.ResourceUtil;
 
 /**
  * This panel was created using the Windows Builder in Eclipse.
@@ -52,7 +58,7 @@ public class FilesPanel extends JPanel {
 	
 	public JButton btnBrowseAlloy;
 	
-	public JButton btnBrowseOntoUML;	
+	public JButton btnLoadOntoUML;	
 	
 	public RefOntoUML.Package refmodel;
 	
@@ -83,9 +89,9 @@ public class FilesPanel extends JPanel {
 		txtOntoUML.setEditable(false);
 		txtOntoUML.setEnabled(false);
 		
-		btnBrowseOntoUML.setEnabled(false);
+		btnLoadOntoUML.setEnabled(false);
 		
-		txtAlloy.setText(alsPath);	 
+		txtAlloy.setText(alsPath);		
 	}	
 	
 	/**
@@ -98,8 +104,8 @@ public class FilesPanel extends JPanel {
 		txtOntoUML.setText("C:"+File.separator+"teste.refontouml");
 		txtOntoUML.setColumns(10);
 		
-		btnBrowseOntoUML = new JButton("Browse...");		
-		btnBrowseOntoUML.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnLoadOntoUML = new JButton("Browse...");		
+		btnLoadOntoUML.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		txtAlloy = new JTextField();
 		txtAlloy.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -118,11 +124,11 @@ public class FilesPanel extends JPanel {
 		JLabel lblFiles = new JLabel("Files");
 		lblFiles.setFont(new Font("Dialog", Font.BOLD, 14));
 		
-		btnBrowseOntoUML.addActionListener(new ActionListener() 
+		btnLoadOntoUML.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				BrowseOntoUMLActionPerformed(arg0);
+				BrowseOntoUMLActionPerformed(arg0);				
 			}
 		});
 	
@@ -151,7 +157,7 @@ public class FilesPanel extends JPanel {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(txtOntoUML, GroupLayout.PREFERRED_SIZE, 307, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnBrowseOntoUML, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(btnLoadOntoUML, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_FilesPanel.setVerticalGroup(
@@ -163,7 +169,7 @@ public class FilesPanel extends JPanel {
 					.addComponent(lblOntouml)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_FilesPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnBrowseOntoUML)
+						.addComponent(btnLoadOntoUML)
 						.addComponent(txtOntoUML, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblAlloy)
@@ -192,6 +198,16 @@ public class FilesPanel extends JPanel {
 			if (fileChooser.getFileFilter() == ontoumlFilter) 
 			{				
 				txtOntoUML.setText( fileChooser.getSelectedFile().getPath() );
+				
+				try {
+				
+					Resource resource = ResourceUtil.loadOntoUML(txtOntoUML.getText());
+					refmodel = (RefOntoUML.Package) resource.getContents().get(0);
+					
+				} catch (IOException e) {				
+					String msg = "An error ocurred while loading the model into a resource";
+					JOptionPane.showMessageDialog(this,msg,"Error",JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
 	}
@@ -212,7 +228,8 @@ public class FilesPanel extends JPanel {
 			if (fileChooser.getFileFilter() == alloyFilter) 
 			{				
 				txtAlloy.setText( fileChooser.getSelectedFile().getPath() );
+				alsPath = txtAlloy.getText();
 			}
 		}
-	}	
+	}
 }

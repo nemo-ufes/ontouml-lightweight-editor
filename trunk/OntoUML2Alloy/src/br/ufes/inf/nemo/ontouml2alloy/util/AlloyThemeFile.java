@@ -71,6 +71,8 @@ public class AlloyThemeFile {
 
 			"<node showlabel=\"no\">" + "\n" +
 			"	<set name=\"$all_elements_exists_w\" type=\"univ\"/>" + "\n" +
+			"   <set name=\"$antirigidity_x\" type=\"univ\"/> " +
+			"   <set name=\"$antirigidity_x&apos;\" type=\"univ\"/> " + 
 			"	<set name=\"exists\" type=\"DataType\"/>" + "\n" +
 			"	<set name=\"exists\" type=\"Object\"/>" + "\n" +
 			"</node>" + "\n\n" +

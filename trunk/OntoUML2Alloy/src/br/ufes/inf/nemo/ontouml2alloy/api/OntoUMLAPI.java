@@ -32,7 +32,7 @@ import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
-import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
+import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
 /**
  * This class is used to provide useful methods of manipulating the OntoUML model instances.
@@ -45,7 +45,7 @@ public class OntoUMLAPI {
 	/**
 	 * Verify if the Classifier 'c' is the source or target of some Meronymic Relation.
 	 */
-	public static boolean hasMeronymicRelation (Parser ontoparser, Classifier c)
+	public static boolean hasMeronymicRelation (OntoUMLParser ontoparser, Classifier c)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -69,7 +69,7 @@ public class OntoUMLAPI {
 	/**
 	 * Verify if the Classifier 'c' is the source or target of some Mediation Relation.
 	 */
-	public static boolean hasMediationRelation (Parser ontoparser, Relator c)
+	public static boolean hasMediationRelation (OntoUMLParser ontoparser, Relator c)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -93,7 +93,7 @@ public class OntoUMLAPI {
 	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete
 	 * Which means that this Classifier is an Abstract Classifier.
 	 */
-	public static boolean isAbstractFromGeneralizationSets(Parser ontoparser, Classifier c) 
+	public static boolean isAbstractFromGeneralizationSets(OntoUMLParser ontoparser, Classifier c) 
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -120,7 +120,7 @@ public class OntoUMLAPI {
 	/**
 	 * Get all Mediations relations Names that have as a source the Relator 'r' or one of its Super Types. 
 	 */
-	public static void getAllMediationsNames(Parser ontoparser, ArrayList<String> list, Relator r)
+	public static void getAllMediationsNames(OntoUMLParser ontoparser, ArrayList<String> list, Relator r)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -150,7 +150,7 @@ public class OntoUMLAPI {
 	/**
 	 * Get all Mediations that have as a source the Relator 'r' or one of its Super Types. 
 	 */
-	public static void getAllMediations(Parser ontoparser, ArrayList<Mediation> list, Relator r)
+	public static void getAllMediations(OntoUMLParser ontoparser, ArrayList<Mediation> list, Relator r)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -183,7 +183,7 @@ public class OntoUMLAPI {
 	 * RigidSortalClass : Kind, Collective, Quantity, SubKind.
 	 * 
 	 */	
-	public static void getAllMeronymics(Parser ontoparser, ArrayList<String> list, RigidSortalClass c)
+	public static void getAllMeronymics(OntoUMLParser ontoparser, ArrayList<String> list, RigidSortalClass c)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -214,7 +214,7 @@ public class OntoUMLAPI {
 	/**
 	 * Get all Generalizations that the Classifier 'c' is the father.
 	 */
-	public static void getAllGeneralizations(Parser ontoparser, ArrayList<Generalization> generalizations, Classifier c)
+	public static void getAllGeneralizations(OntoUMLParser ontoparser, ArrayList<Generalization> generalizations, Classifier c)
 	{		
 		for(PackageableElement elem : ontoparser.getPackageableElements() )
 		{
@@ -236,7 +236,7 @@ public class OntoUMLAPI {
 	/**
 	 *  Get all non-abstract descendants of Classifier c.
 	 */
-	public static void getConcreteDescendants(Parser ontoparser, ArrayList<Classifier> list, Classifier c)
+	public static void getConcreteDescendants(OntoUMLParser ontoparser, ArrayList<Classifier> list, Classifier c)
 	{
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
 		getAllGeneralizations(ontoparser, generalizations, c);
@@ -258,7 +258,7 @@ public class OntoUMLAPI {
 	/**
 	 * Get all descendants of Classifier c.
 	 */
-	public static void getDescendants(Parser ontoparser, ArrayList<Classifier> list, Classifier c)
+	public static void getDescendants(OntoUMLParser ontoparser, ArrayList<Classifier> list, Classifier c)
 	{
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
 		getAllGeneralizations(ontoparser, generalizations, c);

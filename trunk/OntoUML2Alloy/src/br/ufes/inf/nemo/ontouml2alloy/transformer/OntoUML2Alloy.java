@@ -40,10 +40,11 @@ import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.PackageableElement;
+import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyPackage;
 import br.ufes.inf.nemo.alloy.impl.AlloyPackageImpl;
 import br.ufes.inf.nemo.alloy.util.AlloyResourceFactoryImpl;
-import br.ufes.inf.nemo.ontouml2alloy.parser.Parser;
+import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyLibraryFiles;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyThemeFile;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
@@ -71,7 +72,7 @@ public class OntoUML2Alloy {
 	 *  It is also used for associate the elements of the ontouml model 
 	 *  with their modified names (i.e. without special characters: #, !, @, $, %, and etc...). 
 	 */
-	public static Parser ontoparser;
+	public static OntoUMLParser ontoparser;
 	
 	/** 
 	 * Performs the transformation of ontouml elements. 
@@ -150,9 +151,11 @@ public class OntoUML2Alloy {
 	
 	private static void start(RefOntoUML.Package refmodel, Options opt)
 	{
-		ontoparser = new Parser(refmodel);
+		ontoparser = new OntoUMLParser(refmodel);
 		
-		transformer = new Transformer(ontoparser, opt);		
+		AlloyFactory factory = AlloyFactory.eINSTANCE;
+		
+		transformer = new Transformer(ontoparser, opt, factory);		
 		
 		transformer.initialAditions();
 		

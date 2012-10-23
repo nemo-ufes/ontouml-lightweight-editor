@@ -104,6 +104,7 @@ public class TheFrame extends JFrame {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		
 		filespanel = new FilesPanel();		
+		
 		tabbedPane.addTab("Files", null, filespanel, null);		
 		
 		enforcepanel = new EnforcePanel();
