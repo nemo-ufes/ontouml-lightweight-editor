@@ -8,7 +8,7 @@ import RefOntoUML.Mediation;
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
-import br.ufes.inf.nemo.ontouml.antipattern.util.Combinacao;
+import br.ufes.inf.nemo.ontouml.antipattern.util.Combination;
 
 /*Relation Between Overlapping Subtypes*/
 public class RBOSAlloyGenerator {
