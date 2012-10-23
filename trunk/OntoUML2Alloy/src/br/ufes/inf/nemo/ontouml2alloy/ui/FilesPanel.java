@@ -94,7 +94,7 @@ public class FilesPanel extends JPanel {
 	public FilesPanel() 
 	{				
 		txtOntoUML = new JTextField();
-		txtOntoUML.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtOntoUML.setFont(new Font("Dialog", Font.PLAIN, 12));
 		txtOntoUML.setText("C:"+File.separator+"teste.refontouml");
 		txtOntoUML.setColumns(10);
 		
@@ -102,21 +102,21 @@ public class FilesPanel extends JPanel {
 		btnBrowseOntoUML.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		txtAlloy = new JTextField();
-		txtAlloy.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtAlloy.setFont(new Font("Dialog", Font.PLAIN, 12));
 		txtAlloy.setText("C:"+File.separator+"teste.als");
 		txtAlloy.setColumns(10);
 		
 		btnBrowseAlloy = new JButton("Browse...");
 		btnBrowseAlloy.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		JLabel lblOntouml = new JLabel("OntoUML Model:");
+		JLabel lblOntouml = new JLabel("OntoUML Model Input:");
 		lblOntouml.setFont(new Font("Dialog", Font.BOLD, 12));
 		
-		JLabel lblAlloy = new JLabel("Alloy Specification:");
+		JLabel lblAlloy = new JLabel("Alloy Specification Output:");
 		lblAlloy.setFont(new Font("Dialog", Font.BOLD, 12));
 		
-		JLabel lblFiles = new JLabel("Load Files");
-		lblFiles.setFont(new Font("Dialog", Font.BOLD, 16));
+		JLabel lblFiles = new JLabel("Files");
+		lblFiles.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		btnBrowseOntoUML.addActionListener(new ActionListener() 
 		{
@@ -138,48 +138,40 @@ public class FilesPanel extends JPanel {
 		gl_FilesPanel.setHorizontalGroup(
 			gl_FilesPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_FilesPanel.createSequentialGroup()
-					.addGap(25)
-					.addGroup(gl_FilesPanel.createParallelGroup(Alignment.TRAILING)
-						.addGroup(Alignment.LEADING, gl_FilesPanel.createSequentialGroup()
-							.addGroup(gl_FilesPanel.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(lblAlloy, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addGroup(gl_FilesPanel.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtAlloy, GroupLayout.PREFERRED_SIZE, 308, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnBrowseAlloy)))
-							.addGap(27))
+					.addGap(37)
+					.addGroup(gl_FilesPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblOntouml)
 						.addGroup(gl_FilesPanel.createSequentialGroup()
-							.addGroup(gl_FilesPanel.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(lblFiles, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addGroup(gl_FilesPanel.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(gl_FilesPanel.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(lblOntouml, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addGroup(gl_FilesPanel.createSequentialGroup()
-											.addComponent(txtOntoUML, GroupLayout.PREFERRED_SIZE, 307, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(btnBrowseOntoUML, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)))))
-							.addContainerGap(27, Short.MAX_VALUE))))
+							.addComponent(txtAlloy, GroupLayout.PREFERRED_SIZE, 308, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnBrowseAlloy))
+						.addComponent(lblAlloy, GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+						.addComponent(lblFiles, GroupLayout.PREFERRED_SIZE, 307, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_FilesPanel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(txtOntoUML, GroupLayout.PREFERRED_SIZE, 307, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnBrowseOntoUML, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
 		);
 		gl_FilesPanel.setVerticalGroup(
 			gl_FilesPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_FilesPanel.createSequentialGroup()
-					.addGap(18)
+					.addGap(29)
 					.addComponent(lblFiles)
-					.addGap(18)
+					.addGap(22)
 					.addComponent(lblOntouml)
-					.addGap(4)
-					.addGroup(gl_FilesPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtOntoUML, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnBrowseOntoUML))
-					.addGap(23)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_FilesPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnBrowseOntoUML)
+						.addComponent(txtOntoUML, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblAlloy)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(7)
 					.addGroup(gl_FilesPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtAlloy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnBrowseAlloy))
-					.addGap(128))
+					.addGap(108))
 		);
 		this.setLayout(gl_FilesPanel);
 	}	

@@ -23,6 +23,7 @@ package br.ufes.inf.nemo.ontouml2alloy.transformer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Category;
 import RefOntoUML.Characterization;
@@ -917,11 +918,11 @@ public class Transformer {
 	private void transformMeronymicAssociation(Meronymic ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
 	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
-		int count = 0;
+		int count = 1;
 		
 		for(Property prop : ass.getMemberEnd())
 		{			
-			if(count == 0)
+			if(!prop.getAggregation().equals(AggregationKind.NONE) && count==1)
 			{
 				source.setVariable(ontoparser.getName(prop.getType()));				
 				lowerSource = prop.getLower();

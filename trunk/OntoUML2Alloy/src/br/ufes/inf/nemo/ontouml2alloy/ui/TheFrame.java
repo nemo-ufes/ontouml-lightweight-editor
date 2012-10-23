@@ -27,6 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -34,7 +36,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
-import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
+import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 import br.ufes.inf.nemo.ontouml2alloy.util.ResourceUtil;
 
@@ -55,10 +57,14 @@ public class TheFrame extends JFrame {
 	public EnforcePanel enforcepanel;
 	
 	public FilesPanel filespanel;	
-		
-	public ExecutePanel executepanel;
 	
-	public TitlePanel titlepanel;
+	public ExecutePanel executepanel;
+		
+	private JMenuBar menuBar;
+	
+	private JMenu mnHelp;
+	
+	private JMenu mnFile;
 	
 	/**
 	 * Create the frame for OLED.
@@ -66,7 +72,8 @@ public class TheFrame extends JFrame {
 	public TheFrame (RefOntoUML.Model model, String alsPath)
 	{
 		this();
-		filespanel.load(model, alsPath);		
+		filespanel.load(model, alsPath);
+		tabbedPane.setSelectedIndex(1);
 	}
 	
 	/**
@@ -75,44 +82,53 @@ public class TheFrame extends JFrame {
 	
 	public TheFrame() 
 	{							
-		setTitle("OntoUML2Alloy");
+		setTitle("OntoUML Model Simulation - OntoUML2Alloy");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 483, 466);
+		setBounds(100, 100, 483, 402);
 		setLocationRelativeTo(null);
+						
+		menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		
+				        
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		
 		filespanel = new FilesPanel();		
 		tabbedPane.addTab("Files", null, filespanel, null);		
 		
 		enforcepanel = new EnforcePanel();
-				
-		tabbedPane.addTab("Enforce", null, enforcepanel, null);
+		enforcepanel.btnAntirigidityInfo.setToolTipText("<html>\r\n\r\n<br/>\r\nThis rule enforces the anti-rigidity axiom. \r\n<br/><br/>\r\nCheck this box if you always want to visualize objects instantiating an anti-rigid type \r\nin a World and not instantiating it in another World.\r\n<br/>\r\nNote: if you enforce this axiom you need to simulate the model with at least two Worlds.\r\n<br/><br/>\r\n\r\n</html>");
 		
-		contentPane.add(BorderLayout.CENTER,tabbedPane);
-				
 		executepanel = new ExecutePanel();
 		
-		contentPane.add(BorderLayout.SOUTH,executepanel);
-				
-		titlepanel = new TitlePanel();		
-		contentPane.add(BorderLayout.NORTH,titlepanel);
+		executepanel.btnExecuteWithAnalyzer.addActionListener(new ActionListener() 
+		{
+	       public void actionPerformed(ActionEvent event) 
+	       {        	   
+	    	   ExecuteButtonActionPerformed(event);
+	       }
+	    });
 		
+		contentPane.add(BorderLayout.SOUTH,executepanel);
+		
+		tabbedPane.addTab("Enforce", null, enforcepanel, null);
+		
+		contentPane.add(BorderLayout.CENTER,tabbedPane);				
+						
 		String iconPath = "/resources/br/ufes/inf/nemo/ontouml2alloy/window.png";
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Image.class.getResource(iconPath)));
 		
-		executepanel.btnExecuteWithAnalyzer .addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{								
-				ExecuteButtonActionPerformed (arg0);				
-			}
-		});
 	}		
 
 
