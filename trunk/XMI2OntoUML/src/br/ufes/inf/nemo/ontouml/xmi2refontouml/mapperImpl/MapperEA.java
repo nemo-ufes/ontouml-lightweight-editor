@@ -268,6 +268,7 @@ public class MapperEA implements Mapper {
     	
     	// Specific Properties
     	if (getType(elem) == ElementType.PROPERTY) {
+    		reverseComposition(hashProp, elem);
     		List<Element> childList = getElementChilds(elem);
         	for (Element childElem : childList) {
         		if (childElem.getNodeName().equals("type")) {
@@ -307,6 +308,26 @@ public class MapperEA implements Mapper {
     	}
     	
 		return hashProp;
+	}
+	
+	private void reverseComposition(HashMap<String, Object> hashProp, Element elem) {
+		String aggregation = elem.getAttribute("aggregation");
+		if (aggregation.equals("composite") || aggregation.equals("shared")) {
+			hashProp.put("aggregation", "none");
+			
+		} else if (aggregation.equals("none")) {
+			Element packagedAssoc = (Element) doc.getElementById(elem.getAttribute("association"));
+			List<Element> memberEnds = getElementChildsByTagName(packagedAssoc, "memberEnd");
+			for (Element memberEnd : memberEnds) {
+				Element ownedEnd = doc.getElementById(memberEnd.getAttributeNS(XMINS, "idref"));
+				String aggregation2 = ownedEnd.getAttribute("aggregation");
+				if (!ownedEnd.equals(elem) && 
+						aggregation2.equals("shared") ||
+						aggregation2.equals("composite")) {
+					hashProp.put("aggregation", aggregation2);
+				}
+			}
+		}
 	}
 	
 	private List<Object> getChildsByType (Element elem, ElementType type) {
