@@ -505,13 +505,13 @@ public class AlloyAPI {
 	/* =========================================================================================================*/
 	
 	/**
-	 *	Creates a Disjoint Expression in the Block of Signature World.
+	 *	Creates a Disjoint Expression in Alloy
 	 *
 	 * 	disj[ DisjNamesList[0], DisjNamesList[1], ... ],
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public static void createDisjointExpressionInWorld (AlloyFactory factory, SignatureDeclaration world, ArrayList<String> DisjNamesList)
+	public static DisjointExpression createDisjointExpression (AlloyFactory factory, ArrayList<String> DisjNamesList)
 	{
 		DisjointExpression disj = null;
 		
@@ -524,9 +524,9 @@ public class AlloyAPI {
 				VariableReference vr = factory.createVariableReference();
 				vr.setVariable(s);
 				disj.getSet().add(vr);
-			}
-			world.getBlock().getExpression().add(disj);
-		}		
+			}			
+		}			
+		return disj;
 	}
 	
 	/* =========================================================================================================*/
@@ -599,7 +599,7 @@ public class AlloyAPI {
 	/**
 	 *	 Creates the default Run command in Alloy.
 	 *
-	 *	 run { } for 10 but 3 World
+	 *	 run { } for 10 but 3 World,7Int
 	 */
 	@SuppressWarnings("unchecked")
 	public static void createDefaultRunComand(AlloyFactory factory, AlloyModule module) 

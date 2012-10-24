@@ -24,8 +24,10 @@ public class OntoUMLVerifier {
 			if ((c instanceof Kind)||(c instanceof Collective)||(c instanceof Quantity))
 			{
 				haveSubstanceSortal = true;
+				return;
 			}
 		}
 		haveSubstanceSortal = false;
+		return;
 	}
 }

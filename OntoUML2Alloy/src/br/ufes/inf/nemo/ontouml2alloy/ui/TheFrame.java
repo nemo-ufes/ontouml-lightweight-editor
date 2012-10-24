@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 import br.ufes.inf.nemo.ontouml2alloy.util.ResourceUtil;
+import br.ufes.inf.nemo.ontouml2alloy.verifier.OntoUMLVerifier;
 
 /**
  * This Frame was created using the Windows Builder in Eclipse. 
@@ -134,9 +135,7 @@ public class TheFrame extends JFrame {
 
 
 	public void ExecuteButtonActionPerformed (ActionEvent arg0)
-	{
-		dispose();
-		
+	{				
 		try {
 		
 		Options opt = enforcepanel.getOptions();
@@ -148,6 +147,19 @@ public class TheFrame extends JFrame {
 		}
 				
 		filespanel.setAlloyPath(filespanel.getAlloyPath());
+		
+		OntoUMLVerifier verifier = new OntoUMLVerifier(filespanel.refmodel);
+		verifier.initialize();
+		
+		if (!verifier.haveSubstanceSortal && opt.identityPrinciple) 
+		{
+			opt.identityPrinciple=false;
+			enforcepanel.cbxIdentityPrinciple.setSelected(false);
+			JOptionPane.showMessageDialog(this, "No Substance Sortals in the model.\n\nThe Identity Principle Axiom should not be enforced."
+					+"\nThis option was unchecked by default.\n ", "Warning",JOptionPane.WARNING_MESSAGE);
+		}
+	
+		dispose();
 		
 		OntoUML2Alloy.Transformation(filespanel.refmodel, filespanel.getAlloyPath(), opt);
 
