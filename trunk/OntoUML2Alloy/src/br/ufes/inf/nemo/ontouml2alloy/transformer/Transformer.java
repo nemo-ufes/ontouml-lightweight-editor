@@ -21,7 +21,6 @@ package br.ufes.inf.nemo.ontouml2alloy.transformer;
  */
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
@@ -45,22 +44,18 @@ import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Type;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
-import br.ufes.inf.nemo.alloy.AlloyModule;
 import br.ufes.inf.nemo.alloy.ArrowOperation;
 import br.ufes.inf.nemo.alloy.BinaryOperation;
 import br.ufes.inf.nemo.alloy.BinaryOperator;
-import br.ufes.inf.nemo.alloy.Block;
 import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.Declaration;
 import br.ufes.inf.nemo.alloy.DisjointExpression;
 import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.FunctionDeclaration;
-import br.ufes.inf.nemo.alloy.ModuleImportation;
 import br.ufes.inf.nemo.alloy.Multiplicity;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
-import br.ufes.inf.nemo.alloy.SignatureDeclaration;
 import br.ufes.inf.nemo.alloy.UnaryOperation;
 import br.ufes.inf.nemo.alloy.UnaryOperator;
 import br.ufes.inf.nemo.alloy.Variable;
@@ -68,6 +63,12 @@ import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
+import br.ufes.inf.nemo.ontouml2alloy.rules.AbstractClauseRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.GeneralizationRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.GeneralizationSetRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.RelatorRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.TopLevelRules;
+import br.ufes.inf.nemo.ontouml2alloy.rules.WeakSupplementationRule;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 
 /**
@@ -79,7 +80,7 @@ import br.ufes.inf.nemo.ontouml2alloy.util.Options;
  * 	@authors Tiago Sales, John Guerson and Lucas Thom
  */
 
-public class Transformer {
+public class Transformer extends BaseTransformer {
 		
 	/** 
 	 *  Provide the ontouml model elements.
@@ -89,39 +90,29 @@ public class Transformer {
 	public OntoUMLParser ontoparser;
 			
 	/**
+	 * Alloy Factory Instance.
+	 */
+	public AlloyFactory factory;
+	
+	/**
 	 * Transformation Options.
 	 */
 	public Options options;
-
+		
 	/**
-	 * Model information.
+	 * Constructor().
 	 */
-	public Info modelinfo;
-	
-	/** 
-	 * Alloy instance. 
-	 */
-	public AlloyFactory factory = AlloyFactory.eINSTANCE;
-
-	/* =========================================================================================================*/
-
-	// initialized by method initialAditions() :
-	
-	/** Alloy Module. */
-	public AlloyModule module;
-	
-	/** Alloy Signature World. */
-	private SignatureDeclaration world;
-	
-	/** Alloy World Field exists. */
-	private Variable exists;
-	
-	/** Alloy association_properties Fact Declaration. */
-	private FactDeclaration association_properties;
-
-	/** Alloy derivation Fact Declaration. */
-	private FactDeclaration derivations;
-
+	public Transformer (OntoUMLParser parser, AlloyFactory factory, Options opt)
+	{		
+		super(parser,factory);
+		
+		this.ontoparser = parser;		
+		
+		this.factory = factory;
+		
+		this.options = opt;		
+	}
+			
 	/* =========================================================================================================*/
 	
 	// initialized by transformClassifier()
@@ -132,140 +123,46 @@ public class Transformer {
 	/** List containing all the facts for weak supplementation's rule. */
 	private ArrayList<FactDeclaration> weakSupplementationFactList = new ArrayList<FactDeclaration>();
 	
-	/* =========================================================================================================*/
-	
-	/**
-	 * Constructor().
-	 */
-	public Transformer (OntoUMLParser parser, Options opt, AlloyFactory factory)
-	{		
-		this.ontoparser = parser;		
-		
-		this.options = opt;		
-		
-		this.factory = factory;
-		
-		this.modelinfo = new Info(parser,factory);
-		
-	}
-		
-	/* =========================================================================================================*/
-
-	/**
-	 *	Creates a skeleton Alloy Module as Initial Additions.
-	 */
-	@SuppressWarnings("unchecked")
-	public void initialAditions() 
-	{		
-		module = factory.createAlloyModule();
-		module.setName(ontoparser.getModelName());				
-	
-		// abstract sig World {}
-		
-		world = AlloyAPI.createSigWorld(factory);
-		
-		// open world_structure[World]
-		// open ontological_propertis[World]
-		
-		ModuleImportation mi1 = AlloyAPI.createModuleImport(factory,"world_structure","", world);		
-		ModuleImportation mi2 = AlloyAPI.createModuleImport(factory,"ontological_properties","", world);
-		module.getImports().add(mi1);
-		module.getImports().add(mi2);
-		
-		// sig Object{}
-		// sig Property{} 
-		// sig DataType{}
-		
-		AlloyAPI.createDefaultSignatures(factory,module,modelinfo.defaultSignatures);
-		
-		// exists: some Object+Property+DataType,
-		
-		exists = AlloyAPI.createExistsVariableDeclaration(factory,modelinfo.defaultSignatures);
-		
-		world.getRelation().add(exists.getDeclaration());
-		
-		module.getParagraph().add(world);
-						
-		// fact additional_facts {}
-		
-		FactDeclaration additional_facts = factory.createFactDeclaration();
-		additional_facts.setName("additional_facts");
-		Block block = factory.createBlock();
-		additional_facts.setBlock(block);
-
-		// linear_existence[exists]
-		
-		PredicateInvocation pI = AlloyAPI.createLinearExistenceInvocation(factory,exists);
-		block.getExpression().add(pI);
-		
-		// all_elements_exists[Object+Property+DataType,exists]
-		
-		PredicateInvocation pI2 = AlloyAPI.createAllElementsExistsInvocation(factory,exists,modelinfo.defaultSignatures);
-		block.getExpression().add(pI2);
-		
-		if(modelinfo.sigDatatype != null) 
-		{
-			// always_exists[DataType,exists]
-			
-			PredicateInvocation pI3 = AlloyAPI.createAlwaysExistsInvocation(factory,exists,modelinfo.sigDatatype);
-			block.getExpression().add(pI3);
-		}
-		
-		module.getParagraph().add(additional_facts);
-		
-		// fact association_properties {}
-		
-		Block b1 = factory.createBlock();
-		association_properties = factory.createFactDeclaration();
-		association_properties.setName("association_properties");
-		association_properties.setBlock(b1);
-		
-		module.getParagraph().add(association_properties);
-		
-		// fact derivations {}
-		
-		Block b2 = factory.createBlock();
-		derivations = factory.createFactDeclaration();
-		derivations.setName("derivations");
-		derivations.setBlock(b2);
-		
-		module.getParagraph().add(derivations);				
-	}
-		
-	/* =========================================================================================================*/
-	
 	/**
 	 * Creates final additions to alloy code.
 	 */
+	@SuppressWarnings("unchecked")
 	public void finalAdditions()
 	{		
-		if(modelinfo.topLevelElementsList.size() > 1)
+		if(topLevelElementsList.size() > 1)
+		{
+			ArrayList<DisjointExpression> rulesList = TopLevelRules.createTopLevelDisjointRules(ontoparser, factory, topLevelElementsList);
 			
-			createTopLevelDisjointRule();
+			for (DisjointExpression disj : rulesList) 
+			{ 
+				world.getBlock().getExpression().add(disj); 
+			}
+		}
 		
-		if(options.identityPrinciple && modelinfo.subsortalDisjNamesList.size() > 0) 
+		if(options.identityPrinciple && subsortalDisjNamesList.size() > 0) 
 			
 			// exists:>Object in subsortalNamesList[0] + subsortalNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, modelinfo.sigObject, modelinfo.subsortalDisjNamesList);
+			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigObject, subsortalDisjNamesList);
 		
-		if(!options.identityPrinciple && modelinfo.objectNamesList.size() > 0)
+		if(!options.identityPrinciple && objectNamesList.size() > 0)
 			
 			// exists:>Object in objectNamesList[0] + objectNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, modelinfo.sigObject,modelinfo.objectNamesList);
+			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigObject,objectNamesList);
 		
-		if(modelinfo.propertyNamesList.size() > 0) 
+		if(propertyNamesList.size() > 0) 
 		
 			// exists:>Property in propertyNamesList[0] + propertyNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, modelinfo.sigProperty, modelinfo.propertyNamesList);
+			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigProperty, propertyNamesList);
 		
-		if(modelinfo.datatypeNamesList.size() > 0) 
+		if(datatypeNamesList.size() > 0) 
 		
 			// exists:>DataType in datatypeNamesList[0] + datatypeNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, modelinfo.sigDatatype, modelinfo.datatypeNamesList);
+			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigDatatype, datatypeNamesList);
 		
 		// disj[ DisjNamesList[0], DisjNamesList[1], ... ],
 		
-		AlloyAPI.createDisjointExpressionInWorld(factory, world, modelinfo.subsortalDisjNamesList);	
+		DisjointExpression disj = AlloyAPI.createDisjointExpression(factory, subsortalDisjNamesList);	
+		if (disj!=null) world.getBlock().getExpression().add(disj);
 		
 		// not needed anymore....
 		//AlloyAPI.createDisjointExpressionInWorld(factory, world, datatypeDisjNamesList);
@@ -314,33 +211,29 @@ public class Transformer {
 	@SuppressWarnings("unchecked")
 	private void createAllRigidClassesFacts() 
 	{
-		if(modelinfo.rigidElementsList.size()>0)
-		{
-			FactDeclaration all_rigid_classes = factory.createFactDeclaration();
-			all_rigid_classes.setName("all_rigid_classes");
-			all_rigid_classes.setBlock(factory.createBlock());
-			
-			for(Classifier rigid : modelinfo.rigidElementsList)
+		if(rigidElementsList.size()>0)
+		{						
+			for(Classifier rigid :rigidElementsList)
 			{				
 				if(rigid instanceof ObjectClass)
 				{	
 					// rigidity[ rigidClassName, Object, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, modelinfo.sigObject, exists, ontoparser.getName(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigObject, exists, ontoparser.getName(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}	
 				if(rigid instanceof MomentClass)
 				{
 					// rigidity[ rigidClassName, Property, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, modelinfo.sigProperty, exists, ontoparser.getName(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigProperty, exists, ontoparser.getName(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}
 				if(rigid instanceof DataType && !(rigid instanceof PrimitiveType))
 				{
 					// rigidity[ rigidClassName, DataType, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, modelinfo.sigDatatype, exists, ontoparser.getName(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigDatatype, exists, ontoparser.getName(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}				
 			}			
@@ -358,19 +251,16 @@ public class Transformer {
 	@SuppressWarnings("unchecked")
 	private void createAllAntiRigidClassesFacts() 
 	{
-		if(modelinfo.antirigidElementsList.size()>0)
-		{
-			FactDeclaration all_antirigid_classes = factory.createFactDeclaration();
-			all_antirigid_classes.setName("all_antirigid_classes");
-			all_antirigid_classes.setBlock(factory.createBlock());
-			
-			for(Classifier antirigid : modelinfo.antirigidElementsList)
+		if(antirigidElementsList.size()>0)
+		{						
+			for(Classifier antirigid : antirigidElementsList)
 			{
 				if(antirigid instanceof ObjectClass)
 				{	
 					// antirigidity[ antirigidClassName, Object, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createAntiRigidityInvocation(factory, modelinfo.sigObject, exists, ontoparser.getName(antirigid));
+					PredicateInvocation pI = AlloyAPI.createAntiRigidityInvocation(factory,sigObject, exists, ontoparser.getName(antirigid));
+					
 					all_antirigid_classes.getBlock().getExpression().add(pI);
 				}					
 			}			
@@ -382,7 +272,7 @@ public class Transformer {
 	/* =========================================================================================================*/
 	
 	/**
-	 * Transforms OntoUML Classifiers into Alloy
+	 * Transforms OntoUML Classifiers.
 	 */
 	@SuppressWarnings("unchecked")
 	public void transformClassifier(Classifier c) 
@@ -391,14 +281,17 @@ public class Transformer {
 		{
 			// ObjectClassName: set exists:>Object,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), modelinfo.sigObject.getName());				
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), sigObject.getName());				
+			
 			world.getRelation().add(decl);			
 
 			if ((c instanceof RigidSortalClass) && (options.weakSupplementationConstraint))
 			{				
-				FactDeclaration fact = createWeakSupplementation(c);
-				if (fact!=null) weakSupplementationFactList.add(fact);
-					
+				// all w: World | all x: w.<RigidSortalName> | # ( x.(w.meronymicName1)+ x.(w.meronymicName2) + ...) >= 2
+						
+				FactDeclaration fact = WeakSupplementationRule.createFactDeclaration(ontoparser, factory, c);
+				
+				if (fact!=null) weakSupplementationFactList.add(fact);					
 			}
 		}
 		
@@ -406,7 +299,8 @@ public class Transformer {
 		{			
 			// DataTypeName: set exists:>DataType,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), modelinfo.sigDatatype.getName());	
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), sigDatatype.getName());	
+			
 			world.getRelation().add(decl);									
 		}
 		
@@ -414,252 +308,67 @@ public class Transformer {
 		{
 			// PropertyName: set exists:>Property,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c),modelinfo.sigProperty.getName());
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c),sigProperty.getName());
+			
 			world.getRelation().add(decl);
 			
 			if ((c instanceof Relator) && (options.relatorConstraint))
 			{
-				FactDeclaration fact = createRelatorConstraintFact((Relator) c);				
+				// all w: World | all x: w.<RelatorName> | # ( x.(w.<associationName1>)+ x.(w.<associationName2>) + ...) >= 2
+				
+				FactDeclaration fact = RelatorRule.createFactDeclaration(ontoparser, factory, (Relator)c);				
+				
 				if (fact!= null) relatorConstraintFactList.add(fact);
 			}									
 		}
 		
-		if (c.isIsAbstract()) createAbstractClauseRule(c);
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 *
-	 * Relator Constraint.
-	 * 
-	 * all w: World | all x: w.<RelatorName> | # ( x.(w.<associationName1>)+ x.(w.<associationName2>) + ...) >= 2
-	 */
-	@SuppressWarnings("unchecked")
-	private FactDeclaration createRelatorConstraintFact(Relator c) 
-	{
-		if (c.isIsAbstract()) return null;
-		
-		// isAbstract from generalization Sets (Disjoint and Complete)
-		if ( OntoUMLAPI.isAbstractFromGeneralizationSets(ontoparser,c)) return null;
-		
-		if (! OntoUMLAPI.hasMediationRelation(ontoparser,c)) return null;
-		
-		// get all 'c' mediations
-		ArrayList<String> associationNames = new ArrayList<String>();		
-		OntoUMLAPI.getAllMediationsNames(ontoparser,associationNames, c);		
-		
-		if(associationNames.size()>0)
-		{			
-			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
-			QuantificationExpression q = AlloyAPI.createQuantificationExpression(factory,associationNames, ontoparser.getName(c));
-			
-			// create fact from q
-			FactDeclaration RelatorRuleFact = factory.createFactDeclaration();
-			RelatorRuleFact.setName("relator_constraint_"+ontoparser.getName(c));
-			RelatorRuleFact.setBlock(factory.createBlock());			
-			RelatorRuleFact.getBlock().getExpression().add(q);
-			
-			return RelatorRuleFact;						
-		}		
-		
-		return null;
-	}
-	
-
-	/* =========================================================================================================*/
-	
-	/**
-	 * Weak Supplementation.
-  	 *
-  	 * all w: World | all x: w.<RigidSortalName> | # ( x.(w.meronymicName1)+ x.(w.meronymicName2) + ...) >= 2
-	 */
-	@SuppressWarnings("unchecked")
-	private FactDeclaration createWeakSupplementation(Classifier c) 
-	{
-		if (c.isIsAbstract()) { return null; }
-		
-		// isAbstract from generalization Sets (Disjoint and Complete)
-		if (OntoUMLAPI.isAbstractFromGeneralizationSets(ontoparser,c)) { return null; }	
-		
-		if (! OntoUMLAPI.hasMeronymicRelation(ontoparser,c)) { return null; } 
-				
-		// get all 'c' meronymics
-		ArrayList<String> associationNames = new ArrayList<String>();		
-		OntoUMLAPI.getAllMeronymics(ontoparser,associationNames, (RigidSortalClass)c);	
-		
-		if( associationNames.size() > 0)
+		if (c.isIsAbstract()) 
 		{
-			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
-			QuantificationExpression q = AlloyAPI.createQuantificationExpression(factory,associationNames, ontoparser.getName(c));
+			// abstract_father = concrete_child1 + concrete_child2 + concrete_child3 + ...
 			
-			// create fact from q
-			FactDeclaration WeakSupplementationFact = factory.createFactDeclaration();
-			WeakSupplementationFact.setName("weak_supplementation_"+ontoparser.getName(c));
-			WeakSupplementationFact.setBlock(factory.createBlock());			
-			WeakSupplementationFact.getBlock().getExpression().add(q);			
+			CompareOperation co = AbstractClauseRule.createCompareOperation(ontoparser, factory, c);
 			
-			return WeakSupplementationFact;					
-		}	
-		return null;
-	}
-
-	/* =========================================================================================================*/
-
-	/**
-	 * Create Abstract Clause Rule.
-	 * 
-	 * BinaryOperation with union operator(+) to represent the completeness
-	 * between abstract father(Classifiers) and his concrete childs.
-	 * 
-	 * "abstract_father = concrete_child1 + concrete_child2 + concrete_child3 + ..." 
-	 */
-	@SuppressWarnings("unchecked")
-	private void createAbstractClauseRule(Classifier c) 
-	{		
-		ArrayList<Classifier> concretes = new ArrayList<Classifier>();
-		
-		OntoUMLAPI.getConcreteDescendants(ontoparser, concretes, c);
-		
-		int cont = 1;		
-		BinaryOperation bo = factory.createBinaryOperation();
-		if(concretes.size() > 0)
-		{
-			CompareOperation co = factory.createCompareOperation();
-			co.setOperator(CompareOperator.EQUAL_LITERAL);
-			
-			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(ontoparser.getName(c));
-			
-			co.setLeftExpression(vr);
-			for(Classifier classifier : concretes)
-			{
-				if(concretes.size() == 1) 
-				{
-					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(classifier));					
-					co.setRightExpression(vr);
-					break;
-				}
-				if(cont == 1)
-				{
-					bo.setOperator(BinaryOperator.UNION_LITERAL);
-					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(classifier));
-					bo.setLeftExpression(vr);
-					co.setRightExpression(bo);
-				}
-				if(cont > 1 && cont != concretes.size())
-				{
-					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(classifier));
-					bo.setRightExpression(factory.createBinaryOperation());
-					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
-					((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
-					bo = ((BinaryOperation)bo.getRightExpression());
-				}
-				if(cont == concretes.size())
-				{
-					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(classifier));
-					bo.setRightExpression(vr);
-				}
-				cont++;
-			}
-			world.getBlock().getExpression().add(co);
+			world.getBlock().getExpression().add(co);			
 		}
-	}	
-		
+	}
+	
 	/* =========================================================================================================*/
 	
 	/**
-	 * Transforms OntoUML Generalizations into Alloy.
-	 * 
-	 * The child Classifier is a subset of the father Classifier. 
-	 * 
-	 * "child in father"
+	 * Transforms OntoUML Generalizations.
 	 */
 	@SuppressWarnings("unchecked")
 	public void transformGeneralizations(Generalization g) 
 	{
-		CompareOperation co = AlloyAPI.createCompareOperation( factory, 
-				ontoparser.getName(g.getSpecific()), 
-				CompareOperator.SUBSET_LITERAL, 
-				ontoparser.getName(g.getGeneral())
-		);
+		// child in father
+		
+		CompareOperation co = GeneralizationRule.createCompareOperation(ontoparser, factory, g);
+		
 		world.getBlock().getExpression().add(co);
 	}
 				
 	/* =========================================================================================================*/
 	
 	/**
-	 * Transforms OntoUML Generalizations Sets into Alloy.
-	 * 
-	 * Father = Child1 + Child2 + Child3 + ...
-	 * 
-	 * disj[Child1, Child2, Child3,...]
-	 * 	
+	 * Transforms OntoUML Generalizations Sets.
 	 */
 	@SuppressWarnings("unchecked")
 	public void transformGeneralizationSets(GeneralizationSet gs) 
 	{
 		if(gs.isIsCovering())
 		{
-			CompareOperation co = factory.createCompareOperation();
-			co.setOperator(CompareOperator.EQUAL_LITERAL);
+			// Father = Child1 + Child2 + Child3 + ...
 			
-			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(ontoparser.getName(gs.getGeneralization().get(0).getGeneral()));
+			CompareOperation co = GeneralizationSetRule.createCompleteCompareOperation(ontoparser, factory, gs);
 			
-			co.setLeftExpression(vr);
-			
-			int cont = 1;
-			BinaryOperation bo = factory.createBinaryOperation();
-			for(Generalization gen : gs.getGeneralization())
-			{
-				if(gs.getGeneralization().size() == 1)
-				{
-					VariableReference vr1 = factory.createVariableReference();
-					vr1.setVariable(ontoparser.getName(gen.getSpecific()));					
-					co.setRightExpression(vr);				
-					break;
-				}
-				if(cont == 1)
-				{
-					bo.setOperator(BinaryOperator.UNION_LITERAL);
-					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(gen.getSpecific()));
-					bo.setLeftExpression(vr);
-					co.setRightExpression(bo);
-				}
-				if(cont > 1 && cont != gs.getGeneralization().size())
-				{
-					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(gen.getSpecific()));
-					bo.setRightExpression(factory.createBinaryOperation());
-					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
-					((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
-					bo = ((BinaryOperation)bo.getRightExpression());
-				}
-				if(cont == gs.getGeneralization().size())
-				{
-					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(gen.getSpecific()));
-					bo.setRightExpression(vr);
-				}
-				cont++;
-			}
 			world.getBlock().getExpression().add(co);			
 		}
 		if(gs.isIsDisjoint())
 		{
-			DisjointExpression disj = factory.createDisjointExpression();
-			for(Generalization gen : gs.getGeneralization())
-			{
-				VariableReference vr = factory.createVariableReference();
-				vr.setVariable(ontoparser.getName(gen.getSpecific()));
-				disj.getSet().add(vr);
-			}
+			// disj[Child1, Child2, Child3,...]
+			
+			DisjointExpression disj = GeneralizationSetRule.createDisjointExpression(ontoparser, factory, gs);
+						
 			world.getBlock().getExpression().add(disj);
 		}
 	}
@@ -1133,7 +842,7 @@ public class Transformer {
 			for(Property prop : med.getMemberEnd())
 			{	
 				if(prop.getType() instanceof Relator && cont2==1)
-				{											
+				{
 					cont2++;
 				}else{
 					mediated = prop.getType();
@@ -1160,76 +869,5 @@ public class Transformer {
 		pI.getParameter().add(mediation2);
 		
 		derivations.getBlock().getExpression().add(pI);
-	}	
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * Create Rule for Top Levels Classifiers in the model. 
-	 */
-	private void createTopLevelDisjointRule ()
-	{
-		HashMap< ArrayList<Classifier>, Integer > listsHashMap = new HashMap< ArrayList<Classifier>,Integer >();
-		
-		for (Classifier c1: modelinfo.topLevelElementsList)
-		{			
-			ArrayList<Classifier> descendants1 = new ArrayList<Classifier>();
-			OntoUMLAPI.getDescendants(ontoparser, descendants1, c1);
-
-			// creates a single List containing the topLevel classifier 'c1' 
-			// and the top levels classifiers that have their descendants overlapping 
-			// with the descendants of the classifier 'c1'
-			
-			ArrayList<Classifier> singleList = new ArrayList<Classifier>();
-			singleList.add(c1);
-			
-			for (Classifier c2: modelinfo.topLevelElementsList)
-			{
-				if (!c2.equals(c1)) 
-				{
-					ArrayList<Classifier> descendants2 = new ArrayList<Classifier>();
-					OntoUMLAPI.getDescendants(ontoparser, descendants2, c2);
-										
-					Classifier overlap = OntoUMLAPI.isOverlapping(descendants1, descendants2);
-					if (overlap == null) singleList.add(c2);						
-				}
-			}
-						
-			listsHashMap.put(singleList,0);
-		}
-				
-		// create a union (+) String expression for every singleList 
-		// starting at the second element
-				
-		for (ArrayList<Classifier> singleList : listsHashMap.keySet())
-		{
-			if (listsHashMap.get(singleList)==0)
-			{
-				// create a list of the elements starting at the second element
-				int count = 0;
-				ArrayList<String> exprList = new ArrayList<String>();
-				for(Classifier c: singleList) 
-				{
-					if (count>=1) exprList.add(ontoparser.getName(c));					
-					count++;
-				}
-				
-				ArrayList<String> paramList = new ArrayList<String>();
-				paramList.add(ontoparser.getName(singleList.get(0)));
-				
-				if (exprList.size()>1) 
-				{
-					// create a union(+) operation for the exprList
-					BinaryOperation bo = AlloyAPI.createUnionExpression(factory, exprList);
-					paramList.add(bo.toString());					
-				}else{
-					paramList.add(ontoparser.getName(singleList.get(1)));					
-				}						
-				
-				//create Top Level Disjoint Rule
-				AlloyAPI.createDisjointExpressionInWorld(factory, world, paramList);				
-			}			
-		}		
 	}
-	
 }

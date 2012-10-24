@@ -155,9 +155,7 @@ public class OntoUML2Alloy {
 		
 		AlloyFactory factory = AlloyFactory.eINSTANCE;
 		
-		transformer = new Transformer(ontoparser, opt, factory);		
-		
-		transformer.initialAditions();
+		transformer = new Transformer(ontoparser, factory, opt);		
 		
 		// Classifiers
 		for (PackageableElement pe : ontoparser.getPackageableElements())
