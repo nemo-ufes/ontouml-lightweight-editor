@@ -18,8 +18,87 @@ public class IAAntiPattern {
 	public IAAntiPattern(Association a) throws Exception {
 		this.setAssociation(a);
 	}
-
-	public String generateImpreciseAbstractionPredicates(NamesMapper mapper) {
+	
+	//generates an alloy predicate whose instances allowed show that the target end of the relation only has the types inputed in the parameter, on the variable subtypes. 
+	public String generateTargetPredicate(ArrayList<Classifier> subtypes, NamesMapper mapper){
+		String predicate="", rules, predicateName, sourceName, associationName, childName;
+		
+		//maps to the names of the objects in alloy
+		associationName = mapper.elementsMap.get(association);
+		sourceName = mapper.elementsMap.get(this.source);
+		
+		//builds the basic structure for the generated predicate
+		predicateName = "imprecise_abstraction_"+sourceName+"_"+associationName;
+		rules = "all w:World | #w."+sourceName+">=1\n\t";
+		rules += "some w:World | all x:w."+sourceName+" | #x.(w."+associationName+")>1 and ";
+		
+		if(subtypes!=null && subtypes.size()>0 && targetChildren.containsAll(subtypes)){
+			for (int n=0;n<targetChildren.size();n++){
+				childName = mapper.elementsMap.get(targetChildren.get(n));
+            	
+				if (subtypes.contains(targetChildren.get(n))){
+	            	predicateName += "_"+childName;
+            		rules += "some ";
+            	}
+            	else
+            		rules += "no ";
+            	
+            	rules += "x.(w."+associationName+") & w."+childName;
+            	if (n<targetChildren.size()-1)
+            		rules += " and ";
+			}
+			predicate += AlloyConstructor.AlloyParagraph(predicateName, rules, AlloyConstructor.PRED);
+			predicate += AlloyConstructor.RunCheckCommand(predicateName, "10", "1", AlloyConstructor.PRED)+"\n\n";
+			
+			return predicate;
+		}
+		
+		else
+			return null;
+		
+	}
+	
+	//generates an alloy predicate whose instances allowed show that the source end of the relation only has the types inputed in the parameter, on the variable subtypes. 
+		public String generateSourcePredicate(ArrayList<Classifier> subtypes, NamesMapper mapper){
+			String predicate="", rules, predicateName, targetName, associationName, childName;
+			
+			//maps to the names of the objects in alloy
+			associationName = mapper.elementsMap.get(association);
+			targetName = mapper.elementsMap.get(this.target);
+			
+			//builds the basic structure for the generated predicate
+			predicateName = "imprecise_abstraction_"+targetName+"_"+associationName;
+			rules = "all w:World | #w."+targetName+">=1\n\t";
+			rules += "some w:World | all x:w."+targetName+" | #(w."+associationName+").x>1 and ";
+			
+			if(subtypes!=null && subtypes.size()>0 && sourceChildren.containsAll(subtypes)){
+				for (int n=0;n<sourceChildren.size();n++){
+					childName = mapper.elementsMap.get(sourceChildren.get(n));
+	            	
+					if (subtypes.contains(sourceChildren.get(n))){
+		            	predicateName += "_"+childName;
+	            		rules += "some ";
+	            	}
+	            	else
+	            		rules += "no ";
+	            	
+	            	rules += "(w."+associationName+").x & w."+childName;
+	            	if (n<sourceChildren.size()-1)
+	            		rules += " and ";
+				}
+				predicate += AlloyConstructor.AlloyParagraph(predicateName, rules, AlloyConstructor.PRED);
+				predicate += AlloyConstructor.RunCheckCommand(predicateName, "10", "1", AlloyConstructor.PRED)+"\n\n";
+				
+				return predicate;
+			}
+			
+			else
+				return null;
+			
+		}
+	
+	
+	public String generateAllImpreciseAbstractionPredicates(NamesMapper mapper) {
 		String predicates="", rules, predicateName;
 		Combination comb1;
 		ArrayList<Object> saida = new ArrayList<>();
@@ -67,7 +146,7 @@ public class IAAntiPattern {
 			}
 		}
 		
-		//Check if there are specializations on the source of the relation and also if the source upper cardinality is unlimited or greater then 1
+		//Check if there are specializations on the target of the relation and also if the target upper cardinality is unlimited or greater then 1
 		if ((targetChildrenName.size()>0) && (SourceTargetAssociation.getUpperTargetCardinality(association)==-1 || SourceTargetAssociation.getUpperTargetCardinality(association)>1)) {
 			
 			comb1 = new Combination(targetChildrenName, 0);
@@ -116,15 +195,15 @@ public class IAAntiPattern {
 		this.source = (Classifier) SourceTargetAssociation.getSourceAlloy(association);
 		
 		this.sourceChildren = new ArrayList<>();
-		//this.sourceChildren.addAll(source.allChildren());
-		this.sourceChildren.addAll(source.children());
+		this.sourceChildren.addAll(source.allChildren());
+		//this.sourceChildren.addAll(source.children());
 		
 		this.target = (Classifier) SourceTargetAssociation.getTargetAlloy(association);
 		
 		this.targetChildren = new ArrayList<>();
 		/*If the method get all the children, the number of combinations will be too big*/
-		//this.targetChildren.addAll(target.allChildren());
-		this.targetChildren.addAll(target.children());
+		this.targetChildren.addAll(target.allChildren());
+		//this.targetChildren.addAll(target.children());
 		
 	}
 
