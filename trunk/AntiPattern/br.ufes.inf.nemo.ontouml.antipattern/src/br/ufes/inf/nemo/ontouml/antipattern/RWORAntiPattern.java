@@ -21,26 +21,30 @@ public class RWORAntiPattern {
 		this.setRelator(relator);
 	}
 	
-	public String generateExclusivePredicate(NamesMapper mapper){
+	public String generateExclusivePredicate(NamesMapper mapper, int cardinality){
 		String predicate, rules, predicateName, relatorName;
 		ArrayList<Object> saida, mediations = new ArrayList<>();
 		Combination comb1;
-		
-		HashMap<String, String> mediationsName = new HashMap<>();
-				
+							
 		relatorName=mapper.elementsMap.get(relator);
-		for (Mediation med : this.mediations.keySet())
-			mediationsName.put(mapper.elementsMap.get(med), mapper.elementsMap.get(med.mediated()));
-		
-		comb1 = new Combination(mediations, 2);
 		
 		predicateName = "exclusiveRole_"+relatorName;
-		rules = "some w:World | some x:w."+relatorName+" | ";
 		
+		//the number of relators must be always greater or equal to 1;
+		if(cardinality<=0)
+			rules = "#"+relatorName+">=1";
+		else
+			rules = "#"+relatorName+">="+cardinality;
+		
+		rules += "\n\tall w:World | all x:w."+relatorName+" | ";
+
 		// Combinacoes de mediations agrupadas 2 a 2
-        while (comb1.hasNext()) {
+		mediations.addAll(this.mediations.keySet());
+		comb1 = new Combination(mediations, 2);
+        
+		while (comb1.hasNext()) {
             saida = comb1.next();
-            rules+="# (x.(w."+saida.get(0)+") & x.(w."+saida.get(1)+")) = 0";
+            rules+="#(x.(w."+mapper.elementsMap.get(saida.get(0))+") & x.(w."+mapper.elementsMap.get(saida.get(1))+")) = 0";
             
             if(comb1.hasNext())
             	rules+=" and ";
@@ -52,43 +56,87 @@ public class RWORAntiPattern {
 		return predicate;
 	}
 	
-	public String generateNonExclusivePredicate(NamesMapper mapper){
+	public String generateNonExclusivePredicate(NamesMapper mapper, int cardinality){
 		String predicate, rules, predicateName, relatorName;
-		HashMap<String, String> mediationsName = new HashMap<>();
-		int i=0;
-		
+		ArrayList<Object> saida, mediations = new ArrayList<>();
+		Combination comb1;
+							
 		relatorName=mapper.elementsMap.get(relator);
-		for (Mediation med : this.mediations.keySet())
-			mediationsName.put(mapper.elementsMap.get(med), mapper.elementsMap.get(med.mediated()));
 		
 		predicateName = "nonExclusiveRole_"+relatorName;
-		rules = "some w:World | some x:w."+relatorName+" | # (";
-				
-		for (String med : mediationsName.keySet()) {
-			rules+="x.(w."+med+")";
-			
-			if (i < mediationsName.keySet().size()-1)
-				 rules += " & ";
-			
-			i++;
-		}
-			
-		rules+=") > 0";
+		
+		//the number of relators must be always greater or equal to 1;
+		if(cardinality<=0)
+			rules = "#"+relatorName+">=1";
+		else
+			rules = "#"+relatorName+">="+cardinality;
+		
+		rules += "\n\tall w:World | all x:w."+relatorName+" | ";
+
+		// Combinacoes de mediations agrupadas 2 a 2
+		mediations.addAll(this.mediations.keySet());
+		comb1 = new Combination(mediations, 2);
+        
+		while (comb1.hasNext()) {
+            saida = comb1.next();
+            rules+="#(x.(w."+mapper.elementsMap.get(saida.get(0))+") & x.(w."+mapper.elementsMap.get(saida.get(1))+")) > 0";
+            
+            if(comb1.hasNext())
+            	rules+=" or ";
+        }
+		
 		predicate = AlloyConstructor.AlloyParagraph(predicateName, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(predicateName, "10", "1", AlloyConstructor.PRED)+"\n";
 		
 		return predicate;
 	}
+	
+	public String generateMultipleExclusivePredicate (ArrayList<ArrayList<Mediation>> exclusiveMatrix, NamesMapper mapper, int cardinality){
+		String predicate="", rules, predicateName, relatorName;
+		Combination comb1;
+		ArrayList<Mediation> output;
 		
-	public String generateAllMultipleExclusivePredicate(NamesMapper mapper){
+		relatorName=mapper.elementsMap.get(relator);
+		
+		predicateName = "MultipleExclusiveRole_"+relatorName;
+		rules = "#"+relatorName+">="+cardinality;
+		
+		for (ArrayList<Mediation> exclusiveList : exclusiveMatrix){
+			comb1 = new Combination(exclusiveList, 2);
+			
+			if(!this.mediations.keySet().containsAll(exclusiveList) || exclusiveList.size()<2)
+				return null;
+			
+			predicateName+="__";
+			for (Mediation med : exclusiveList)
+				predicateName+="_"+med.getMemberEnd().get(1).getType().getName();
+			
+			rules += "\n\tall w:World | all x:w."+relatorName+" | ";
+			while(comb1.hasNext()){
+				output = comb1.next();
+				rules+="#(x.(w."+mapper.elementsMap.get(output.get(0))+") & x.(w."+mapper.elementsMap.get(output.get(1))+")) = 0";
+				
+				if(comb1.hasNext())
+            		rules += " and ";
+			}
+			
+		}
+			
+		predicate += AlloyConstructor.AlloyParagraph(predicateName, rules, AlloyConstructor.PRED);
+		predicate += AlloyConstructor.RunCheckCommand(predicateName, "10", "1", AlloyConstructor.PRED)+"\n\n";
+		
+		return predicate;
+		
+	}
+	
+ 	public String generateAllMultipleExclusivePredicate(NamesMapper mapper, int cardinality){
 		String predicates="", rules, predicateName, relatorName;
 		ArrayList<Object>  mediations = new ArrayList<>(), output = new ArrayList<>(), output2, aux;
-		HashMap<String, String> mediationsName = new HashMap<>();
 		Combination comb1, comb2;
 		
 		relatorName=mapper.elementsMap.get(relator);
-		for (Mediation med : this.mediations.keySet())
-			mediationsName.put(mapper.elementsMap.get(med), mapper.elementsMap.get(med.mediated()));
+
+		mediations.addAll(this.mediations.keySet());
 		
 		comb1 = new Combination(mediations, 2);
 		
@@ -104,14 +152,15 @@ public class RWORAntiPattern {
             output2=(comb2.next());
             
             predicateName = "MultipleExclusiveRole_"+relatorName;
-            rules = "some w:World | some x:w."+relatorName+" | "; 
+            rules = "#"+relatorName+">="+cardinality;
+            rules += "\n\tall w:World | all x:w."+relatorName+" | "; 
 
             for (int n=0;n<output2.size();n++){
             	predicateName += n;
             	rules+="# (";
             	for (int n2=0; n2<((ArrayList<Object>)(output2).get(n)).size();n2++) {
 	            	
-            		rules+="x.(w."+((ArrayList<Object>) output2.get(n)).get(n2)+")";
+            		rules+="x.(w."+mapper.elementsMap.get(((ArrayList<Object>) output2.get(n)).get(n2))+")";
 	            	
 	            	if (n2==((ArrayList<Object>)(output2).get(n)).size()-1)
 	            		rules+=") = 0";
@@ -196,7 +245,6 @@ public class RWORAntiPattern {
 		
 	}
 	
-	
 	@Override
 	public String toString() {
 		String result;
@@ -205,7 +253,7 @@ public class RWORAntiPattern {
 		result += "Supertype: "+supertype.getName()+"\n";
 		
 		for (Mediation med : mediations.keySet()) {
-			result += mediations.get(med).getName() + " - " + med + "\n";
+			result += mediations.get(med).getName() + " - " + med.getName() + "\n";
 		}
 		
 		return result;
