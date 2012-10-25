@@ -7,6 +7,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 
 public class ExecutePanel extends JPanel {
 
@@ -20,25 +21,25 @@ public class ExecutePanel extends JPanel {
 	public ExecutePanel() 
 	{		
 		btnExecuteWithAnalyzer = new JButton("Execute with Analyzer");
+		btnExecuteWithAnalyzer.setIcon(new ImageIcon(ExecutePanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/play.png")));
 		btnExecuteWithAnalyzer.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		setPreferredSize(new Dimension(450, 71));
+		setPreferredSize(new Dimension(535, 71));
 		
 		GroupLayout groupLayout = new GroupLayout(this);
-		
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-					.addGap(140)
-					.addComponent(btnExecuteWithAnalyzer, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(140, Short.MAX_VALUE))
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap(174, Short.MAX_VALUE)
+					.addComponent(btnExecuteWithAnalyzer, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE)
+					.addGap(164))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(26)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap(24, Short.MAX_VALUE)
 					.addComponent(btnExecuteWithAnalyzer)
-					.addContainerGap(34, Short.MAX_VALUE))
+					.addGap(22))
 		);
 		setLayout(groupLayout);
 	}	

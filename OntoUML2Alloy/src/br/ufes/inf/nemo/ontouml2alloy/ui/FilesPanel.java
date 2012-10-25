@@ -121,9 +121,6 @@ public class FilesPanel extends JPanel {
 		JLabel lblAlloy = new JLabel("Alloy Specification Output:");
 		lblAlloy.setFont(new Font("Dialog", Font.BOLD, 12));
 		
-		JLabel lblFiles = new JLabel("Files");
-		lblFiles.setFont(new Font("Dialog", Font.BOLD, 14));
-		
 		btnLoadOntoUML.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
@@ -151,8 +148,7 @@ public class FilesPanel extends JPanel {
 							.addComponent(txtAlloy, GroupLayout.PREFERRED_SIZE, 308, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnBrowseAlloy))
-						.addComponent(lblAlloy, GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
-						.addComponent(lblFiles, GroupLayout.PREFERRED_SIZE, 307, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblAlloy, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
 						.addGroup(gl_FilesPanel.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(txtOntoUML, GroupLayout.PREFERRED_SIZE, 307, GroupLayout.PREFERRED_SIZE)
@@ -163,9 +159,7 @@ public class FilesPanel extends JPanel {
 		gl_FilesPanel.setVerticalGroup(
 			gl_FilesPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_FilesPanel.createSequentialGroup()
-					.addGap(29)
-					.addComponent(lblFiles)
-					.addGap(22)
+					.addGap(70)
 					.addComponent(lblOntouml)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_FilesPanel.createParallelGroup(Alignment.LEADING)
