@@ -14,26 +14,28 @@ import RefOntoUML.Relator;
 
 public class RWORAntiPattern {
 	private Relator relator;
-	private HashMap<Mediation, Classifier> mediations;
-	private HashMap<String, String> mediationsName;
 	private Classifier supertype;
-	String relatorName, supertypeName;
+	private HashMap<Mediation, Classifier> mediations;
 	
-	public RWORAntiPattern(Relator relator, NamesMapper mapper) throws Exception {
-		this.setRelator(relator, mapper);
+	public RWORAntiPattern(Relator relator) throws Exception {
+		this.setRelator(relator);
 	}
 	
-	public String generateExclusivePredicate(){
-		String predicate, rules, predicateName;
-		ArrayList<Object> saida;
-		ArrayList<Object> mediations = new ArrayList<>();
+	public String generateExclusivePredicate(NamesMapper mapper){
+		String predicate, rules, predicateName, relatorName;
+		ArrayList<Object> saida, mediations = new ArrayList<>();
 		Combination comb1;
 		
-		mediations.addAll(this.mediationsName.keySet());
+		HashMap<String, String> mediationsName = new HashMap<>();
+				
+		relatorName=mapper.elementsMap.get(relator);
+		for (Mediation med : this.mediations.keySet())
+			mediationsName.put(mapper.elementsMap.get(med), mapper.elementsMap.get(med.mediated()));
+		
 		comb1 = new Combination(mediations, 2);
 		
-		predicateName = "exclusiveRole_"+this.relatorName;
-		rules = "some w:World | some x:w."+this.relatorName+" | ";
+		predicateName = "exclusiveRole_"+relatorName;
+		rules = "some w:World | some x:w."+relatorName+" | ";
 		
 		// Combinacoes de mediations agrupadas 2 a 2
         while (comb1.hasNext()) {
@@ -50,17 +52,22 @@ public class RWORAntiPattern {
 		return predicate;
 	}
 	
-	public String generateNonExclusivePredicate(){
-		String predicate, rules, predicateName;
+	public String generateNonExclusivePredicate(NamesMapper mapper){
+		String predicate, rules, predicateName, relatorName;
+		HashMap<String, String> mediationsName = new HashMap<>();
 		int i=0;
 		
-		predicateName = "nonExclusiveRole_"+this.relatorName;
-		rules = "some w:World | some x:w."+this.relatorName+" | # (";
+		relatorName=mapper.elementsMap.get(relator);
+		for (Mediation med : this.mediations.keySet())
+			mediationsName.put(mapper.elementsMap.get(med), mapper.elementsMap.get(med.mediated()));
+		
+		predicateName = "nonExclusiveRole_"+relatorName;
+		rules = "some w:World | some x:w."+relatorName+" | # (";
 				
-		for (String med : this.mediationsName.keySet()) {
+		for (String med : mediationsName.keySet()) {
 			rules+="x.(w."+med+")";
 			
-			if (i < this.mediationsName.keySet().size()-1)
+			if (i < mediationsName.keySet().size()-1)
 				 rules += " & ";
 			
 			i++;
@@ -73,12 +80,16 @@ public class RWORAntiPattern {
 		return predicate;
 	}
 		
-	public String generateAllMultipleExclusivePredicate(){
-		String predicates="", rules, predicateName;
+	public String generateAllMultipleExclusivePredicate(NamesMapper mapper){
+		String predicates="", rules, predicateName, relatorName;
 		ArrayList<Object>  mediations = new ArrayList<>(), output = new ArrayList<>(), output2, aux;
+		HashMap<String, String> mediationsName = new HashMap<>();
 		Combination comb1, comb2;
 		
-		mediations.addAll(this.mediationsName.keySet());
+		relatorName=mapper.elementsMap.get(relator);
+		for (Mediation med : this.mediations.keySet())
+			mediationsName.put(mapper.elementsMap.get(med), mapper.elementsMap.get(med.mediated()));
+		
 		comb1 = new Combination(mediations, 2);
 		
 		// Generate all the combinations of the mediation 2 by 2
@@ -92,8 +103,8 @@ public class RWORAntiPattern {
         while (comb2.hasNext()) {
             output2=(comb2.next());
             
-            predicateName = "MultipleExclusiveRole_"+this.relatorName;
-            rules = "some w:World | some x:w."+this.relatorName+" | "; 
+            predicateName = "MultipleExclusiveRole_"+relatorName;
+            rules = "some w:World | some x:w."+relatorName+" | "; 
 
             for (int n=0;n<output2.size();n++){
             	predicateName += n;
@@ -130,7 +141,7 @@ public class RWORAntiPattern {
 		return relator;
 	}
 	
-	public void setRelator(Relator relator, NamesMapper mapper) throws Exception {
+	public void setRelator(Relator relator) throws Exception {
 		/*ArrayList which will contain all the mediations of the relator and its supertypes*/
 		ArrayList<Mediation> mediations = new ArrayList<Mediation>();
 		
@@ -147,7 +158,7 @@ public class RWORAntiPattern {
 			throw new Exception("The provided object is not a Relator.");	
 		
 		this.relator=relator;
-		this.relatorName=mapper.elementsMap.get(relator);
+		
 		
 		//add the input relator to the list
 		allRelators.add(relator);
@@ -166,7 +177,6 @@ public class RWORAntiPattern {
 			throw new Exception("The input relator does not have enough mediations to characterize the Anti-Pattern");
 		
 		this.mediations = new HashMap<>();
-		this.mediationsName = new HashMap<>();
 		
 		//Adds all supertypes to the ArrayList
 		for (Mediation med : mediations)
@@ -174,7 +184,6 @@ public class RWORAntiPattern {
 		
 		for (Mediation med : mediations) {
 			this.mediations.put(med, med.mediated());
-			this.mediationsName.put(mapper.elementsMap.get(med), mapper.elementsMap.get(med.mediated()));
 			
 			if(!ArrayListOperations.intersection(mediatedTypesAllParents, med.mediated().allParents()).isEmpty())
 				mediatedTypesAllParents.retainAll(med.mediated().allParents());
@@ -184,7 +193,7 @@ public class RWORAntiPattern {
 			throw new NullPointerException("There is no common supertype of the mediated entities");
 		
 		this.supertype = mediatedTypesAllParents.iterator().next();
-		this.supertypeName = mapper.elementsMap.get(this.supertype);
+		
 	}
 	
 	
@@ -192,11 +201,11 @@ public class RWORAntiPattern {
 	public String toString() {
 		String result;
 		
-		result = "Relator: "+this.relatorName+"\n";
-		result += "Supertype: "+this.supertypeName+"\n";
+		result = "Relator: "+relator.getName()+"\n";
+		result += "Supertype: "+supertype.getName()+"\n";
 		
-		for (String med : this.mediationsName.keySet()) {
-			result += mediationsName.get(med) + " - " + med + "\n";
+		for (Mediation med : mediations.keySet()) {
+			result += mediations.get(med).getName() + " - " + med + "\n";
 		}
 		
 		return result;

@@ -10,19 +10,23 @@ import RefOntoUML.Classifier;
 public class STRAntiPattern {
 	private Association association;
 	private Classifier type;
-	private String associationName, typeName;
 	
-	public STRAntiPattern (Association association, NamesMapper mapper) throws Exception{
-		this.setAssociation(association, mapper);
+	
+	public STRAntiPattern (Association association) throws Exception{
+		this.setAssociation(association);
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is REFLEXIVE*/
-	public String generateReflexivePredicate (int cardinality) {
+	public String generateReflexivePredicate (int cardinality, NamesMapper mapper) {
 		String predicate, rules, name;
 		
-		name = "reflexive_"+this.associationName;
-		rules = "#" + this.associationName + ">" + cardinality;
-		rules += "\n\tall w:World | reflexive[w."+ this.associationName +", w."+this.typeName+"]";
+		String associationName, typeName;
+		associationName = mapper.elementsMap.get(this.association);
+		typeName = mapper.elementsMap.get(this.type);
+		
+		name = "reflexive_"+associationName;
+		rules = "#" + associationName + ">" + cardinality;
+		rules += "\n\tall w:World | reflexive[w."+ associationName +", w."+typeName+"]";
 		
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
@@ -31,13 +35,16 @@ public class STRAntiPattern {
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is IRREFLEXIVE*/
-	public String generateIrreflexivePredicate (int cardinality){
+	public String generateIrreflexivePredicate (int cardinality, NamesMapper mapper){
 		String predicate, rules, name;
 		
-		name = "irreflexive_"+this.associationName;
+		String associationName;
+		associationName = mapper.elementsMap.get(this.association);
 		
-		rules = "#" + this.associationName + ">" + cardinality; 
-		rules += "\n\tall w:World | irreflexive[w."+ this.associationName +"]";
+		name = "irreflexive_"+associationName;
+		
+		rules = "#" + associationName + ">" + cardinality; 
+		rules += "\n\tall w:World | irreflexive[w."+ associationName +"]";
 				
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n"; 
@@ -46,13 +53,15 @@ public class STRAntiPattern {
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is Transitive*/
-	public String generateTransitivePredicate (int cardinality){
+	public String generateTransitivePredicate (int cardinality, NamesMapper mapper){
 		String predicate, rules, name;
 		
-		name = "transitive_"+this.associationName;
+		String associationName;
+		associationName = mapper.elementsMap.get(this.association);
+		name = "transitive_"+associationName;
 		
-		rules = "#" + this.associationName + ">" + cardinality; 
-		rules += "\n\tall w:World | transitive[w."+ this.associationName +"]";
+		rules = "#" + associationName + ">" + cardinality; 
+		rules += "\n\tall w:World | transitive[w."+ associationName +"]";
 				
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n"; 
@@ -61,12 +70,16 @@ public class STRAntiPattern {
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is INTRANSITIVE*/
-	public String generateIntransitivePredicate (int cardinality){
+	public String generateIntransitivePredicate (int cardinality, NamesMapper mapper){
 		String predicate, rules, name;
 		
-		name = "instransitive_"+this.associationName;
-		rules = "#" + this.associationName + ">" + cardinality; 
-		rules += "\n\tall w:World | all disj x,y,z: w."+ this.typeName +" | (y in x.(w."+ this.associationName +") and z in y.(w."+ this.associationName +") ) implies z not in x.(w."+ this.associationName +")";
+		String associationName, typeName;
+		associationName = mapper.elementsMap.get(this.association);
+		typeName = mapper.elementsMap.get(this.type);
+		
+		name = "instransitive_"+associationName;
+		rules = "#" + associationName + ">" + cardinality; 
+		rules += "\n\tall w:World | all disj x,y,z: w."+ typeName +" | (y in x.(w."+ associationName +") and z in y.(w."+ associationName +") ) implies z not in x.(w."+ associationName +")";
 		
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n"; 
@@ -75,13 +88,15 @@ public class STRAntiPattern {
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is SYMMETRIC*/
-	public String generateSymmetricPredicate (int cardinality){
+	public String generateSymmetricPredicate (int cardinality, NamesMapper mapper){
 		String predicate, rules, name;
 		
-		name = "symmetric_"+this.associationName;
+		String associationName;
+		associationName = mapper.elementsMap.get(this.association);
+		name = "symmetric_"+associationName;
 		
-		rules = "#" + this.associationName + ">" + cardinality; 
-		rules += "\n\tall w:World | symmetric[w."+ this.associationName +"]";
+		rules = "#" + associationName + ">" + cardinality; 
+		rules += "\n\tall w:World | symmetric[w."+ associationName +"]";
 				
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n"; 
@@ -90,12 +105,14 @@ public class STRAntiPattern {
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is ANTISYMMETRIC*/
-	public String generateAntisymmetricPredicate (int cardinality){
+	public String generateAntisymmetricPredicate (int cardinality, NamesMapper mapper){
 		String predicate, rules, name;
 		
-		name = "antisymmetric_"+this.associationName;
-		rules = "#" + this.associationName + ">" + cardinality;
-		rules += "\n\tall w:World | antisymmetric[w."+ this.associationName +"]";
+		String associationName;
+		associationName = mapper.elementsMap.get(this.association);
+		name = "antisymmetric_"+associationName;
+		rules = "#" + associationName + ">" + cardinality;
+		rules += "\n\tall w:World | antisymmetric[w."+ associationName +"]";
 		
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
@@ -107,7 +124,7 @@ public class STRAntiPattern {
 		return association;
 	}
 
-	public void setAssociation(Association association, NamesMapper mapper) throws Exception {
+	public void setAssociation(Association association) throws Exception {
 		
 		
 		if (association == null)
@@ -118,9 +135,6 @@ public class STRAntiPattern {
 		
 		this.association = association;
 		this.type = (Classifier) association.getMemberEnd().get(0).getType();
-		
-		associationName = mapper.elementsMap.get(this.association);
-		typeName = mapper.elementsMap.get(this.type);
 	}
 
 	public Classifier getType() {
@@ -129,7 +143,7 @@ public class STRAntiPattern {
 	
 	@Override
 	public String toString() {
-		return this.typeName+" - "+this.associationName;
+		return type.getName()+" - "+association.getName();
 	}
 
 }

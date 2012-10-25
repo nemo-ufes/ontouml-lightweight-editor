@@ -15,18 +15,20 @@ public class RBOSAntiPattern {
 	private Classifier target;
 	private Association association;
 	
-	private String supertypeName, sourceName, targetName, associationName;
-	
-	public RBOSAntiPattern (Association association, NamesMapper mapper) throws Exception{
-		this.setAssociation(association, mapper);
+	public RBOSAntiPattern (Association association) throws Exception{
+		this.setAssociation(association);
 	}
+	
 	/*Generates an Alloy predicate that produces model instances in which the related elements are always different*/
-	public String generateDisjointPredicate(){
+	public String generateDisjointPredicate(NamesMapper mapper){
 		String predicate, rules, predicateName;
-				
-		predicateName = "disjointParticipants_"+this.associationName;
-		rules = "some "+this.associationName+"\n\t";
-		rules += "no "+this.associationName+" & (World->iden)";
+		
+		String associationName;
+		associationName=mapper.elementsMap.get(this.association);
+		
+		predicateName = "disjointParticipants_"+associationName;
+		rules = "some "+associationName+"\n\t";
+		rules += "no "+associationName+" & (World->iden)";
 				
 		predicate = AlloyConstructor.AlloyParagraph(predicateName, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(predicateName, "10", "1", AlloyConstructor.PRED)+"\n";
@@ -35,12 +37,15 @@ public class RBOSAntiPattern {
 	}
 
 	/*Generates an Alloy predicate that produces model instances in which the association may have the same participant in both ends*/
-	public String generateOverlappingPredicate(){
+	public String generateOverlappingPredicate(NamesMapper mapper){
 		String predicate, rules, predicateName;
 		
-		predicateName = "overlappingParticipants_"+this.associationName;
-		rules = "some "+this.associationName+"\n\t";
-		rules += "some "+this.associationName+" & (World->iden)";
+		String associationName;
+		associationName=mapper.elementsMap.get(this.association);
+		
+		predicateName = "overlappingParticipants_"+associationName;
+		rules = "some "+associationName+"\n\t";
+		rules += "some "+associationName+" & (World->iden)";
 				
 		predicate = AlloyConstructor.AlloyParagraph(predicateName, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(predicateName, "10", "1", AlloyConstructor.PRED)+"\n";
@@ -52,7 +57,7 @@ public class RBOSAntiPattern {
 		return association;
 	}
 
-	public void setAssociation(Association association, NamesMapper mapper) throws Exception {
+	public void setAssociation(Association association) throws Exception {
 		EList<Classifier> parentsSource, parentsTarget;
 
 		if(association==null)
@@ -88,13 +93,6 @@ public class RBOSAntiPattern {
 		/*TODO improve the test to guarantee that the provided association characterizes an antipattern*/
 		if(supertype==null)
 			throw new Exception("No common supertype for the association's related types");
-		
-		this.associationName=mapper.elementsMap.get(this.association);
-		this.supertypeName=mapper.elementsMap.get(this.supertype);
-		this.sourceName=mapper.elementsMap.get(this.source);
-		this.targetName=mapper.elementsMap.get(this.target);
-		
-		
 	}
 	
 	public Classifier getTarget() {
@@ -113,8 +111,8 @@ public class RBOSAntiPattern {
 	public String toString() {
 		String result;
 
-		result= "Supertype: "+this.supertypeName+"\n";
-		result+= this.sourceName+" - "+this.associationName+" - "+this.targetName;
+		result= "Supertype: "+supertype.getName()+"\n";
+		result+= this.source.getName()+" - "+association.getName()+" - "+this.target.getName();
 		return result;
 	}
 

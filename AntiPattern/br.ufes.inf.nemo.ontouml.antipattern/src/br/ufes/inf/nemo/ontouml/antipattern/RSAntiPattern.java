@@ -14,10 +14,8 @@ public class RSAntiPattern {
 	private Classifier generalTarget;
 	private Classifier specificSource;
 	private Classifier specificTarget;
-	private String generalName, specificName, specificSourceName, specificTargetName, generalSourceName, generalTargetName; 
-	
-	
-	public RSAntiPattern (Association specific, Association general, NamesMapper mapper) throws Exception{
+		
+	public RSAntiPattern (Association specific, Association general) throws Exception{
 						
 		this.setGeneral(general);
 		this.setSpecific(specific);
@@ -29,26 +27,21 @@ public class RSAntiPattern {
 		specificTarget = (Classifier) SourceTargetAssociation.getTargetAlloy(specific);
 		generalSource = (Classifier) SourceTargetAssociation.getSourceAlloy(general);
 		generalTarget = (Classifier) SourceTargetAssociation.getTargetAlloy(general);
-		
-		/*This provides the names that will be used in the generated Alloy code.
-		 * There is a difference between the element name in the model and in the Alloy specification, since there may be repeated names in the model, but not in Alloy*/ 
-		generalName = mapper.elementsMap.get(general);
-		specificName = mapper.elementsMap.get(specific);
-		specificSourceName = mapper.elementsMap.get(specificSource);
-		specificTargetName = mapper.elementsMap.get(specificTarget);
-		generalSourceName = mapper.elementsMap.get(generalSource);
-		generalTargetName = mapper.elementsMap.get(generalTarget);
-		
+				
 	}
 	
 	/*This method generates an Alloy predicate that states that the specific association is a SUBTYPE of the general association*/
-	public String generateSubsetPredicate () {
+	public String generateSubsetPredicate (NamesMapper mapper) {
 		String predicate, rules, name;
-					
-		name = "subset_"+this.specificName+"_"+this.generalName;
-		rules = "some "+this.specificName+"\n\t";
-		rules += "some "+this.generalName+"\n\t";
-		rules += this.specificName+" in "+this.generalName;
+		
+		String generalName, specificName;
+		generalName = mapper.elementsMap.get(general);
+		specificName = mapper.elementsMap.get(specific);
+		
+		name = "subset_"+specificName+"_"+generalName;
+		rules = "some "+specificName+"\n\t";
+		rules += "some "+generalName+"\n\t";
+		rules += specificName+" in "+generalName;
 				
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
@@ -57,13 +50,17 @@ public class RSAntiPattern {
 	}
 	
 	/*This method generates an Alloy predicate that states that the specific association is NOT A SUBTYPE of the general association*/
-	public String generateNotSubsetPredicate () {
+	public String generateNotSubsetPredicate (NamesMapper mapper) {
 		String predicate, rules, name;
 		
-		name = "not_subset_"+this.specificName+"_"+this.generalName;
-		rules = "some "+this.specificName+"\n\t";
-		rules += "some "+this.generalName+"\n\t";
-		rules += this.specificName+" not in "+this.generalName;
+		String generalName, specificName;
+		generalName = mapper.elementsMap.get(general);
+		specificName = mapper.elementsMap.get(specific);
+		
+		name = "not_subset_"+specificName+"_"+generalName;
+		rules = "some "+specificName+"\n\t";
+		rules += "some "+generalName+"\n\t";
+		rules += specificName+" not in "+generalName;
 				
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
@@ -72,13 +69,17 @@ public class RSAntiPattern {
 	}
 	
 	/*This method generates an Alloy predicate that states that the specific association is DISJOINT with the general association*/
-	public String generateDisjointPredicate () {
+	public String generateDisjointPredicate (NamesMapper mapper) {
 		String predicate, rules, name;
-						
-		name = "disjoint_"+this.specificName+"_"+this.generalName;
-		rules = "some "+this.specificName+"\n\t";
-		rules += "some "+this.generalName+"\n\t";
-		rules += "no "+this.specificName+" & "+this.generalName;
+		
+		String generalName, specificName;
+		generalName = mapper.elementsMap.get(general);
+		specificName = mapper.elementsMap.get(specific);
+		
+		name = "disjoint_"+specificName+"_"+generalName;
+		rules = "some "+specificName+"\n\t";
+		rules += "some "+generalName+"\n\t";
+		rules += "no "+specificName+" & "+generalName;
 				
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
@@ -87,18 +88,23 @@ public class RSAntiPattern {
 	}
 	
 	/*This method generates an Alloy predicate that states that the specific association is a REDEFINITION of the general association*/
-	public String generateRedefinePredicate () {
+	public String generateRedefinePredicate (NamesMapper mapper) {
 		String predicate, rules, name;
-				
+		
+		String generalName, specificName, specificSourceName, specificTargetName;
+		generalName = mapper.elementsMap.get(general);
+		specificName = mapper.elementsMap.get(specific);
+		specificSourceName = mapper.elementsMap.get(specificSource);
+		specificTargetName = mapper.elementsMap.get(specificTarget);
 		name = "redefine_"+specificName+"_"+generalName;
 				
 		if (this.specificSource.allParents().contains(generalSource) || this.specificSource.allParents().contains(generalTarget)){
-			rules = "some "+this.specificSourceName+"\n\t";
-			rules += "all w:World, x:w."+this.specificSourceName+" | x.(w."+this.specificName+")=x.(w."+this.generalName+")";
+			rules = "some "+specificSourceName+"\n\t";
+			rules += "all w:World, x:w."+specificSourceName+" | x.(w."+specificName+")=x.(w."+generalName+")";
 		}
 		else{
-			rules = "some "+this.specificTargetName+"\n\t";
-			rules += "all w:World, x:w."+this.specificTargetName+" | (w."+this.specificName+").x=(w."+this.generalName+").x";
+			rules = "some "+specificTargetName+"\n\t";
+			rules += "all w:World, x:w."+specificTargetName+" | (w."+specificName+").x=(w."+generalName+").x";
 		}
 				
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
@@ -147,8 +153,8 @@ public class RSAntiPattern {
 	public String toString() {
 		String result;
 		
-		result = "General: "+generalSourceName+" - "+generalName+" - "+generalTargetName+"\n";
-		result += "Specific: "+specificSourceName+" - "+specificName+" - "+specificTargetName;
+		result = "General: "+generalSource.getName()+" - "+general.getName()+" - "+generalTarget.getName()+"\n";
+		result += "Specific: "+specificSource.getName()+" - "+specific.getName()+" - "+specificTarget.getName();
 		
 		return result;
 	}
