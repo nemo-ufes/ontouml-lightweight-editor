@@ -104,22 +104,22 @@ public class AxiomatizationPanel extends JPanel {
 		
 		GroupLayout gl_RulesPanel = new GroupLayout(this);
 		gl_RulesPanel.setHorizontalGroup(
-			gl_RulesPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_RulesPanel.createSequentialGroup()
+			gl_RulesPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_RulesPanel.createSequentialGroup()
 					.addGap(28)
-					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
-						.addComponent(txtpnUncheckingTheEnforcement, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE))
-					.addGap(25))
+					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(txtpnUncheckingTheEnforcement, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE))
+					.addContainerGap(26, Short.MAX_VALUE))
 		);
 		gl_RulesPanel.setVerticalGroup(
 			gl_RulesPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_RulesPanel.createSequentialGroup()
-					.addGap(34)
-					.addComponent(txtpnUncheckingTheEnforcement, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
+					.addGap(22)
+					.addComponent(txtpnUncheckingTheEnforcement, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(42, Short.MAX_VALUE))
+					.addContainerGap(20, Short.MAX_VALUE))
 		);
 		
 		/* =================== Relator Constraint ===================== */
@@ -143,7 +143,7 @@ public class AxiomatizationPanel extends JPanel {
 				AxiomInfoDialog.open(AxiomatizationPanel.this,"Relator Axiom",info);				
 			}
 		});
-		btnRelatorInfo.setToolTipText("");
+		btnRelatorInfo.setToolTipText("Click here to see the Axiom Description...");
 		btnRelatorInfo.setIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
 		btnRelatorInfo.setFocusPainted(false);
 		btnRelatorInfo.setBorderPainted(false);
@@ -171,7 +171,7 @@ public class AxiomatizationPanel extends JPanel {
 			}
 		});
 		btnWeakInfo.setIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
-		btnWeakInfo.setToolTipText("");
+		btnWeakInfo.setToolTipText("Click here to see the Axiom Description...");
 		btnWeakInfo.setFocusPainted(false);
 		btnWeakInfo.setContentAreaFilled(false);
 		btnWeakInfo.setBorderPainted(false);
@@ -199,7 +199,7 @@ public class AxiomatizationPanel extends JPanel {
 			}
 		});
 		btnIdentityInfo.setIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
-		btnIdentityInfo.setToolTipText("");
+		btnIdentityInfo.setToolTipText("Click here to see the Axiom Description...");
 		btnIdentityInfo.setFocusPainted(false);
 		btnIdentityInfo.setContentAreaFilled(false);
 		btnIdentityInfo.setBorderPainted(false);		
@@ -227,7 +227,7 @@ public class AxiomatizationPanel extends JPanel {
 			}
 		});
 		btnAntirigidityInfo.setIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
-		btnAntirigidityInfo.setToolTipText("");
+		btnAntirigidityInfo.setToolTipText("Click here to see the Axiom Description...");
 		btnAntirigidityInfo.setFocusPainted(false);
 		btnAntirigidityInfo.setContentAreaFilled(false);
 		btnAntirigidityInfo.setBorderPainted(false);
