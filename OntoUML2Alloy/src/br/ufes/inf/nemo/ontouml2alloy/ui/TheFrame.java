@@ -55,7 +55,7 @@ public class TheFrame extends JFrame {
 	
 	public JTabbedPane tabbedPane;
 	
-	public EnforcePanel enforcepanel;
+	public AxiomatizationPanel enforcepanel;
 	
 	public FilesPanel filespanel;	
 	
@@ -83,9 +83,9 @@ public class TheFrame extends JFrame {
 	
 	public TheFrame() 
 	{							
-		setTitle("OntoUML Model Simulation - OntoUML2Alloy");
+		setTitle("OntoUML Model Validation Environment");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 483, 402);
+		setBounds(100, 100, 520, 506);
 		setLocationRelativeTo(null);
 						
 		menuBar = new JMenuBar();
@@ -108,7 +108,7 @@ public class TheFrame extends JFrame {
 		
 		tabbedPane.addTab("Files", null, filespanel, null);		
 		
-		enforcepanel = new EnforcePanel();
+		enforcepanel = new AxiomatizationPanel();
 		enforcepanel.btnAntirigidityInfo.setToolTipText("<html>\r\n\r\n<br/>\r\nThis rule enforces the anti-rigidity axiom. \r\n<br/><br/>\r\nCheck this box if you always want to visualize objects instantiating an anti-rigid type \r\nin a World and not instantiating it in another World.\r\n<br/>\r\nNote: if you enforce this axiom you need to simulate the model with at least two Worlds.\r\n<br/><br/>\r\n\r\n</html>");
 		
 		executepanel = new ExecutePanel();
@@ -123,7 +123,7 @@ public class TheFrame extends JFrame {
 		
 		contentPane.add(BorderLayout.SOUTH,executepanel);
 		
-		tabbedPane.addTab("Enforce", null, enforcepanel, null);
+		tabbedPane.addTab("Axiomatization Enforcement", null, enforcepanel, null);
 		
 		contentPane.add(BorderLayout.CENTER,tabbedPane);				
 						

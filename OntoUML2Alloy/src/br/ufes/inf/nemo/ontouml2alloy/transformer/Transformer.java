@@ -283,7 +283,7 @@ public class Transformer extends BaseTransformer {
 			
 			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), sigObject.getName());				
 			
-			world.getRelation().add(decl);			
+			if (decl!=null) world.getRelation().add(decl);			
 
 			if ((c instanceof RigidSortalClass) && (options.weakSupplementationConstraint))
 			{				
@@ -301,7 +301,7 @@ public class Transformer extends BaseTransformer {
 			
 			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), sigDatatype.getName());	
 			
-			world.getRelation().add(decl);									
+			if (decl!=null) world.getRelation().add(decl);									
 		}
 		
 		if(c instanceof MomentClass)
@@ -328,7 +328,7 @@ public class Transformer extends BaseTransformer {
 			
 			CompareOperation co = AbstractClauseRule.createCompareOperation(ontoparser, factory, c);
 			
-			world.getBlock().getExpression().add(co);			
+			if (co!=null) world.getBlock().getExpression().add(co);			
 		}
 	}
 	
@@ -344,7 +344,7 @@ public class Transformer extends BaseTransformer {
 		
 		CompareOperation co = GeneralizationRule.createCompareOperation(ontoparser, factory, g);
 		
-		world.getBlock().getExpression().add(co);
+		if (co!=null) world.getBlock().getExpression().add(co);
 	}
 				
 	/* =========================================================================================================*/
@@ -361,7 +361,7 @@ public class Transformer extends BaseTransformer {
 			
 			CompareOperation co = GeneralizationSetRule.createCompleteCompareOperation(ontoparser, factory, gs);
 			
-			world.getBlock().getExpression().add(co);			
+			if (co!=null) world.getBlock().getExpression().add(co);			
 		}
 		if(gs.isIsDisjoint())
 		{
@@ -369,7 +369,7 @@ public class Transformer extends BaseTransformer {
 			
 			DisjointExpression disj = GeneralizationSetRule.createDisjointExpression(ontoparser, factory, gs);
 						
-			world.getBlock().getExpression().add(disj);
+			if (disj!=null) world.getBlock().getExpression().add(disj);
 		}
 	}
 	
