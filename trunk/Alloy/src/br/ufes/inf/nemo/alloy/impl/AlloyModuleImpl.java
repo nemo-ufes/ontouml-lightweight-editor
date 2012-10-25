@@ -338,7 +338,9 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 */
 	public String toString() {
 		StringBuffer result = new StringBuffer();
+		
 		result.append("module "+name+"\n\n");
+		int cont=1;
 		for(ModuleImportation mi : imports)
 		{
 			String params = "";
@@ -354,10 +356,10 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 					params = params + param + ",";
 				}
 			}
-			result.append("open "+mi.getName()+"["+params+"]\n");
+			if (cont < imports.size()) result.append("open "+mi.getName()+"["+params+"]\n");
+			else result.append("open "+mi.getName()+"["+params+"]\n\n");
+			cont++;
 		}
-		
-		result.append("\n");
 		
 		for(Paragraph p : paragraph)
 		{
