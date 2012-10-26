@@ -11,7 +11,7 @@ import br.ufes.inf.nemo.alloy.DisjointExpression;
 import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
-public class GeneralizationSetRule {
+public class TGeneralizationSetRule {
 
 
 	/**

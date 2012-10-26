@@ -10,7 +10,7 @@ import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
-public class RelatorRule {
+public class TRelatorRule {
 
 	/**
 	 *

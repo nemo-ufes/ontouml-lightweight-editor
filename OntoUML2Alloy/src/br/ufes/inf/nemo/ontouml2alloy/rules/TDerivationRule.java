@@ -15,7 +15,7 @@ import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
-public class DerivationRule {
+public class TDerivationRule {
 
 	/**
 	 *	Create Derivation Predicate Invocation
