@@ -11,12 +11,15 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.ocl.ParserException;
 
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
+import br.ufes.inf.nemo.ontouml.antipattern.util.Ecore2Graph;
+import br.ufes.inf.nemo.ontouml.antipattern.util.GraphAlgo;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Model;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
+import RefOntoUML.Relationship;
 
 public class QueryPerformer {
 	public static void main(String[] args) throws Exception {
@@ -38,7 +41,7 @@ public class QueryPerformer {
 		m = (Model) resource.getContents().get(0);
 		
 		NamesMapper mapper = new NamesMapper(m);
-			
+		
 		try {
 		    	    
 		    ArrayList<STRAntiPattern> result = AntiPatternIdentifier.identifySTR(m);
@@ -62,7 +65,7 @@ public class QueryPerformer {
 		    	System.out.println(rwor);
 		    	//System.out.println(rwor.generateExclusivePredicate(mapper, 1));
 		    	//System.out.println(rwor.generateNonExclusivePredicate(mapper, 1));
-		    	
+		    	/*
 		    	System.out.println("#######");
 		    	
 		    		
@@ -82,7 +85,7 @@ public class QueryPerformer {
 		    	matrix.add(list2);
 		    	System.out.println(rwor.generateMultipleExclusivePredicate(matrix, mapper, 1));
 		    	
-		    	System.out.println("#######");
+		    	System.out.println("#######");*/
 		    }
 		    System.out.println("**************************************************************");
 		    
@@ -133,8 +136,45 @@ public class QueryPerformer {
 		    System.err.println(e.getLocalizedMessage());
 		}
 		
+		int aux[][]; 
+		int nodei[], nodej[];
+		ArrayList<RefOntoUML.Class> classes = new ArrayList<>();
+		ArrayList<Relationship> relationships = new ArrayList<>();
 		
+		aux = Ecore2Graph.buildGraph(m, classes, relationships);
+		nodei = aux[0];
+		nodej = aux[1];
 		
+		System.out.println("class2vertex");
+		
+		for (int i=1; i<classes.size(); i++) {
+			System.out.println(i+" - "+classes.get(i).getName());
+		}
+		
+		System.out.print("\nnodei: ");
+		for (int i=0; i<nodei.length; i++) {
+			System.out.print(nodei[i]);
+			if(i<nodej.length-1)
+				System.out.print(", ");
+		}
+		
+		System.out.print("\nnodej: ");
+		for (int i=0; i<nodei.length; i++) {
+			System.out.print(nodej[i]);
+			if(i<nodej.length-1)
+				System.out.print(", ");
+		}
+		
+		int fundcycle[][] = new int [relationships.size()-2][classes.size()];
+		GraphAlgo.fundamentalCycles(classes.size()-1, relationships.size()-1, nodei, nodej, fundcycle);
+		System.out.println("number of components of the graph = " + 
+                 fundcycle[0][1]  + "\n"); 
+		for (int i=1; i<=fundcycle[0][0]; i++) { 
+			System.out.print("nodes in cycle " + i + ": "); 
+			for (int j=1; j<=fundcycle[i][0]; j++) 
+				System.out.printf("%3d", fundcycle[i][j]); 
+			System.out.println(); 
+		} 
         
 	}
 }
