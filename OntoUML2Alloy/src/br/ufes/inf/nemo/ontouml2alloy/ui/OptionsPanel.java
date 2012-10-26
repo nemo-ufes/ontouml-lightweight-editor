@@ -44,7 +44,7 @@ import java.awt.event.ActionEvent;
  *
  */
 
-public class AxiomatizationPanel extends JPanel {
+public class OptionsPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -80,7 +80,7 @@ public class AxiomatizationPanel extends JPanel {
 		return opt;
 	}
 	
-	public AxiomatizationPanel(Options opt)
+	public OptionsPanel(Options opt)
 	{
 		cbxAntiRigidity.setSelected(opt.antiRigidity);
 		cbxIdentityPrinciple.setSelected(opt.identityPrinciple);
@@ -92,7 +92,7 @@ public class AxiomatizationPanel extends JPanel {
 	 * Create the panel.
 	 */
 	
-	public AxiomatizationPanel() 
+	public OptionsPanel() 
 	{
 		
 		JTextPane txtpnUncheckingTheEnforcement = new JTextPane();
@@ -140,15 +140,15 @@ public class AxiomatizationPanel extends JPanel {
 						""+"This rule enforces that the concrete relators mediate two distinct entities."+"\n\n"+
 						"Uncheck this box if you have at least one relator that the sum of its mediation's"+"\n" + 
 						"cardinality at the target side is less than 2."+"\n"; 
-				AxiomInfoDialog.open(AxiomatizationPanel.this,"Relator Axiom",info);				
+				AxiomInfoDialog.open(OptionsPanel.this,"Relator Axiom",info);				
 			}
 		});
 		btnRelatorInfo.setToolTipText("Click here to see the Axiom Description...");
-		btnRelatorInfo.setIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
+		btnRelatorInfo.setIcon(new ImageIcon(OptionsPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
 		btnRelatorInfo.setFocusPainted(false);
 		btnRelatorInfo.setBorderPainted(false);
 		btnRelatorInfo.setContentAreaFilled(false);
-		btnRelatorInfo.setRolloverIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about-rollover.png")));
+		btnRelatorInfo.setRolloverIcon(new ImageIcon(OptionsPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about-rollover.png")));
 		
 		/* =================== Weak Supplementation Axiom ==================== */
 		
@@ -167,15 +167,15 @@ public class AxiomatizationPanel extends JPanel {
 				String info = 
 						""+"This rule enforces that each whole has at least two disjoint parts."+"\n\n"+
 						"Uncheck this box if there's a meronymic relation where the part side has minimum \n"+"cardinality less than 2."+"\n"; 
-				AxiomInfoDialog.open(AxiomatizationPanel.this,"Weak Supplementation",info);				
+				AxiomInfoDialog.open(OptionsPanel.this,"Weak Supplementation",info);				
 			}
 		});
-		btnWeakInfo.setIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
+		btnWeakInfo.setIcon(new ImageIcon(OptionsPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
 		btnWeakInfo.setToolTipText("Click here to see the Axiom Description...");
 		btnWeakInfo.setFocusPainted(false);
 		btnWeakInfo.setContentAreaFilled(false);
 		btnWeakInfo.setBorderPainted(false);
-		btnWeakInfo.setRolloverIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about-rollover.png")));
+		btnWeakInfo.setRolloverIcon(new ImageIcon(OptionsPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about-rollover.png")));
 		
 		/* ======================= Identity Axiom ======================= */
 		
@@ -195,15 +195,15 @@ public class AxiomatizationPanel extends JPanel {
 						""+"This rule enforces that all objects have an identity principle."+"\n\n"+
 						"Uncheck this box if you have at least one element without identity principle " +"\n"+
 						"(i.e. an element that has no kind, quantity or collective as its supertype)."+"\n";
-				AxiomInfoDialog.open(AxiomatizationPanel.this,"Identity Principle",info);		
+				AxiomInfoDialog.open(OptionsPanel.this,"Identity Principle",info);		
 			}
 		});
-		btnIdentityInfo.setIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
+		btnIdentityInfo.setIcon(new ImageIcon(OptionsPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
 		btnIdentityInfo.setToolTipText("Click here to see the Axiom Description...");
 		btnIdentityInfo.setFocusPainted(false);
 		btnIdentityInfo.setContentAreaFilled(false);
 		btnIdentityInfo.setBorderPainted(false);		
-		btnIdentityInfo.setRolloverIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about-rollover.png")));
+		btnIdentityInfo.setRolloverIcon(new ImageIcon(OptionsPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about-rollover.png")));
 		
 		/* ======================= Antirigidity Axiom ======================= */
 		
@@ -223,15 +223,15 @@ public class AxiomatizationPanel extends JPanel {
 						"Check this box if you always want to visualize objects instantiating an anti-rigid type"+"\n"+ 
 						"in a World and not instantiating it in another World."+"\n\n"+
 						"Note: if you enforce this axiom you need to simulate the model with at least two Worlds."+"\n";
-				AxiomInfoDialog.open(AxiomatizationPanel.this,"Antirigidity",info);	
+				AxiomInfoDialog.open(OptionsPanel.this,"Antirigidity",info);	
 			}
 		});
-		btnAntirigidityInfo.setIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
+		btnAntirigidityInfo.setIcon(new ImageIcon(OptionsPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));
 		btnAntirigidityInfo.setToolTipText("Click here to see the Axiom Description...");
 		btnAntirigidityInfo.setFocusPainted(false);
 		btnAntirigidityInfo.setContentAreaFilled(false);
 		btnAntirigidityInfo.setBorderPainted(false);
-		btnAntirigidityInfo.setRolloverIcon(new ImageIcon(AxiomatizationPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about-rollover.png")));
+		btnAntirigidityInfo.setRolloverIcon(new ImageIcon(OptionsPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about-rollover.png")));
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
