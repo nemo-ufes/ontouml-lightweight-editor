@@ -11,7 +11,7 @@ import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
-public class WeakSupplementationRule {
+public class TWeakSupplementationRule {
 
 	/**
 	 * Create Weak Supplementation Fact Declaration in Alloy

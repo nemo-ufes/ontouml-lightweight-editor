@@ -11,7 +11,7 @@ import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
-public class TopLevelRules {
+public class TTopLevelRule {
 	
 	/**
 	 *  Create Rule for Top Levels Classifiers in the model.

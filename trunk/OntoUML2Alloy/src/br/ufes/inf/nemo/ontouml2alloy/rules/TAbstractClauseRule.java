@@ -12,7 +12,7 @@ import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
-public class AbstractClauseRule {
+public class TAbstractClauseRule {
 
 	/**
 	 * Create Abstract Clause Rule Compare Operation in Alloy.

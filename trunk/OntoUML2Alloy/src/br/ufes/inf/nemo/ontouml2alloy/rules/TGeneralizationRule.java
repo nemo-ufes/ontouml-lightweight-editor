@@ -7,7 +7,7 @@ import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
-public class GeneralizationRule {
+public class TGeneralizationRule {
 
 	/**
 	 *	Create Compare Operation for Generalization Rule in Alloy. 

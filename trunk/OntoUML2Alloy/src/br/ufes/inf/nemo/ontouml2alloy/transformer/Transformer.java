@@ -60,13 +60,13 @@ import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2alloy.rules.AbstractClauseRule;
-import br.ufes.inf.nemo.ontouml2alloy.rules.DerivationRule;
-import br.ufes.inf.nemo.ontouml2alloy.rules.GeneralizationRule;
-import br.ufes.inf.nemo.ontouml2alloy.rules.GeneralizationSetRule;
-import br.ufes.inf.nemo.ontouml2alloy.rules.RelatorRule;
-import br.ufes.inf.nemo.ontouml2alloy.rules.TopLevelRules;
-import br.ufes.inf.nemo.ontouml2alloy.rules.WeakSupplementationRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.TAbstractClauseRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.TDerivationRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.TGeneralizationRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.TGeneralizationSetRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.TRelatorRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.TTopLevelRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.TWeakSupplementationRule;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 
 /**
@@ -129,7 +129,7 @@ public class Transformer extends BaseTransformer {
 	{		
 		if(topLevelElementsList.size() > 1)
 		{
-			ArrayList<DisjointExpression> rulesList = TopLevelRules.createTopLevelDisjointRules(ontoparser, factory, topLevelElementsList);
+			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topLevelElementsList);
 			
 			for (DisjointExpression disj : rulesList) 
 			{ 
@@ -287,7 +287,7 @@ public class Transformer extends BaseTransformer {
 			{				
 				// all w: World | all x: w.<RigidSortalName> | # ( x.(w.meronymicName1)+ x.(w.meronymicName2) + ...) >= 2
 						
-				FactDeclaration fact = WeakSupplementationRule.createFactDeclaration(ontoparser, factory, c);
+				FactDeclaration fact = TWeakSupplementationRule.createFactDeclaration(ontoparser, factory, c);
 				
 				if (fact!=null) weakSupplementationFactList.add(fact);					
 			}
@@ -314,7 +314,7 @@ public class Transformer extends BaseTransformer {
 			{
 				// all w: World | all x: w.<RelatorName> | # ( x.(w.<associationName1>)+ x.(w.<associationName2>) + ...) >= 2
 				
-				FactDeclaration fact = RelatorRule.createFactDeclaration(ontoparser, factory, (Relator)c);				
+				FactDeclaration fact = TRelatorRule.createFactDeclaration(ontoparser, factory, (Relator)c);				
 				
 				if (fact!= null) relatorConstraintFactList.add(fact);
 			}									
@@ -324,7 +324,7 @@ public class Transformer extends BaseTransformer {
 		{
 			// abstract_father = concrete_child1 + concrete_child2 + concrete_child3 + ...
 			
-			CompareOperation co = AbstractClauseRule.createCompareOperation(ontoparser, factory, c);
+			CompareOperation co = TAbstractClauseRule.createCompareOperation(ontoparser, factory, c);
 			
 			if (co!=null) world.getBlock().getExpression().add(co);			
 		}
@@ -340,7 +340,7 @@ public class Transformer extends BaseTransformer {
 	{
 		// child in father
 		
-		CompareOperation co = GeneralizationRule.createCompareOperation(ontoparser, factory, g);
+		CompareOperation co = TGeneralizationRule.createCompareOperation(ontoparser, factory, g);
 		
 		if (co!=null) world.getBlock().getExpression().add(co);
 	}
@@ -357,7 +357,7 @@ public class Transformer extends BaseTransformer {
 		{
 			// Father = Child1 + Child2 + Child3 + ...
 			
-			CompareOperation co = GeneralizationSetRule.createCompleteCompareOperation(ontoparser, factory, gs);
+			CompareOperation co = TGeneralizationSetRule.createCompleteCompareOperation(ontoparser, factory, gs);
 			
 			if (co!=null) world.getBlock().getExpression().add(co);			
 		}
@@ -365,7 +365,7 @@ public class Transformer extends BaseTransformer {
 		{
 			// disj[Child1, Child2, Child3,...]
 			
-			DisjointExpression disj = GeneralizationSetRule.createDisjointExpression(ontoparser, factory, gs);
+			DisjointExpression disj = TGeneralizationSetRule.createDisjointExpression(ontoparser, factory, gs);
 						
 			if (disj!=null) world.getBlock().getExpression().add(disj);
 		}
@@ -379,8 +379,8 @@ public class Transformer extends BaseTransformer {
 	@SuppressWarnings("unchecked")
 	public void transformDerivations(Derivation d)
 	{
-		PredicateInvocation pI = DerivationRule.createPredicateInvocation(ontoparser, factory, d);		
-		if (pI!=null) derivations.getBlock().getExpression().add(pI);
+		PredicateInvocation pI = TDerivationRule.createPredicateInvocation(ontoparser, factory, d);		
+		if (pI!=null) derivations.getBlock().getExpression().add(pI);		
 	}
 	
 	/* =========================================================================================================*/
