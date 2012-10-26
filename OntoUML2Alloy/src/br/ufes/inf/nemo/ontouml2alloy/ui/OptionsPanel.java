@@ -65,6 +65,10 @@ public class OptionsPanel extends JPanel {
 	public JButton btnIdentityInfo;
 	
 	public JButton btnAntirigidityInfo;	
+	private JLabel lbldescription;
+	private JLabel lbldescription_1;
+	private JLabel lbldescription_2;
+	private JLabel lbldescription_3;
 	
 	
 	/**
@@ -104,22 +108,22 @@ public class OptionsPanel extends JPanel {
 		
 		GroupLayout gl_RulesPanel = new GroupLayout(this);
 		gl_RulesPanel.setHorizontalGroup(
-			gl_RulesPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_RulesPanel.createSequentialGroup()
+			gl_RulesPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_RulesPanel.createSequentialGroup()
 					.addGap(28)
-					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(gl_RulesPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
 						.addComponent(txtpnUncheckingTheEnforcement, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE))
-					.addContainerGap(26, Short.MAX_VALUE))
+					.addGap(26))
 		);
 		gl_RulesPanel.setVerticalGroup(
 			gl_RulesPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_RulesPanel.createSequentialGroup()
 					.addGap(22)
-					.addComponent(txtpnUncheckingTheEnforcement, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+					.addComponent(txtpnUncheckingTheEnforcement, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(20, Short.MAX_VALUE))
+					.addContainerGap(32, Short.MAX_VALUE))
 		);
 		
 		/* =================== Relator Constraint ===================== */
@@ -233,6 +237,14 @@ public class OptionsPanel extends JPanel {
 		btnAntirigidityInfo.setBorderPainted(false);
 		btnAntirigidityInfo.setRolloverIcon(new ImageIcon(OptionsPanel.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about-rollover.png")));
 		
+		lbldescription = new JLabel("(Description)");
+		
+		lbldescription_1 = new JLabel("(Description)");
+		
+		lbldescription_2 = new JLabel("(Description)");
+		
+		lbldescription_3 = new JLabel("(Description)");
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -244,51 +256,63 @@ public class OptionsPanel extends JPanel {
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(lblAntirigidity)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAntirigidityInfo, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
+							.addComponent(btnAntirigidityInfo, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lbldescription_3))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(cbxIdentityPrinciple)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(lblIdentityPrinciple)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnIdentityInfo, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
+							.addComponent(btnIdentityInfo, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lbldescription_2))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(cbxWeakSupplementation)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(lblWeakSupplementation, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE)
 							.addGap(4)
-							.addComponent(btnWeakInfo, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
+							.addComponent(btnWeakInfo, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(lbldescription_1))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(cbxRelator)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(lblRelator)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnRelatorInfo, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)))
-					.addGap(188))
+							.addComponent(btnRelatorInfo, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lbldescription)))
+					.addGap(165))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnRelatorInfo, 0, 0, Short.MAX_VALUE)
-						.addComponent(lblRelator, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(cbxRelator, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lbldescription, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnRelatorInfo, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
+						.addComponent(lblRelator, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(cbxRelator, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(lbldescription_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(btnWeakInfo, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
 						.addComponent(lblWeakSupplementation, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(cbxWeakSupplementation, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lbldescription_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(btnIdentityInfo, 0, 0, Short.MAX_VALUE)
 						.addComponent(lblIdentityPrinciple, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(cbxIdentityPrinciple, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lbldescription_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(btnAntirigidityInfo, 0, 0, Short.MAX_VALUE)
 						.addComponent(lblAntirigidity, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(cbxAntiRigidity, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addContainerGap(28, Short.MAX_VALUE))
+					.addContainerGap(14, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		this.setLayout(gl_RulesPanel);		
