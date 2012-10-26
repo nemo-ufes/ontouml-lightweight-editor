@@ -263,19 +263,19 @@ public class BaseTransformer {
 		// linear_existence[exists]
 		
 		PredicateInvocation pI = AlloyAPI.createLinearExistenceInvocation(factory,exists);
-		block.getExpression().add(pI);
+		if (pI!=null)block.getExpression().add(pI);
 		
 		// all_elements_exists[Object+Property+DataType,exists]
 		
 		PredicateInvocation pI2 = AlloyAPI.createAllElementsExistsInvocation(factory,exists,defaultSignatures);
-		block.getExpression().add(pI2);
+		if (pI!=null) block.getExpression().add(pI2);
 		
 		if(sigDatatype != null) 
 		{
 			// always_exists[DataType,exists]
 			
 			PredicateInvocation pI3 = AlloyAPI.createAlwaysExistsInvocation(factory,exists,sigDatatype);
-			block.getExpression().add(pI3);
+			if (pI3!=null) block.getExpression().add(pI3);
 		}
 		
 		module.getParagraph().add(additional_facts);
