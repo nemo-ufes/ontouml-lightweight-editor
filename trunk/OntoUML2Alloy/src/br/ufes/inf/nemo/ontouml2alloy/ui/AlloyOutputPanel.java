@@ -84,12 +84,12 @@ public class AlloyOutputPanel extends JPanel {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, 488, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblAlloySpecificationOutput)
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnChangeLocation)))
-					.addContainerGap(27, Short.MAX_VALUE))
+							.addComponent(btnChangeLocation))
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, 469, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -100,7 +100,7 @@ public class AlloyOutputPanel extends JPanel {
 						.addComponent(btnChangeLocation))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(225, Short.MAX_VALUE))
+					.addContainerGap(216, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 	}
