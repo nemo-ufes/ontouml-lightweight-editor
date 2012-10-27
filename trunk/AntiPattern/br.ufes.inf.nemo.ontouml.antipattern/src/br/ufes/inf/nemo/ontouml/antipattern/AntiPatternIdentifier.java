@@ -6,10 +6,16 @@ import java.util.Collection;
 import org.eclipse.ocl.util.Tuple;
 
 import RefOntoUML.Association;
+import RefOntoUML.Classifier;
+import RefOntoUML.Generalization;
 import RefOntoUML.Model;
+import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
+import RefOntoUML.Type;
 
 import br.ufes.inf.nemo.ontouml.antipattern.RSAntiPattern;
+import br.ufes.inf.nemo.ontouml.antipattern.util.RefOntoUML2Graph;
+import br.ufes.inf.nemo.ontouml.antipattern.util.GraphAlgo;
 import br.ufes.inf.nemo.ontouml.antipattern.util.OCLQueryExecuter;
 
 public class AntiPatternIdentifier {
@@ -103,6 +109,95 @@ public class AntiPatternIdentifier {
 		for (Association a : query_result) {
 			result.add(new IAAntiPattern(a));
 		}
+		
+		return result;
+	}
+	
+	public static ArrayList<ACAntiPattern> identifyAC(Model m){
+		
+		int aux[][]; 
+		int nodei[], nodej[];
+		ArrayList<RefOntoUML.Class> classes = new ArrayList<>(),  cycle;
+		ArrayList<Relationship> relationships = new ArrayList<>(), cycle_ass;
+		ArrayList<ACAntiPattern> result = new ArrayList<>();
+		
+		aux = RefOntoUML2Graph.buildGraph(m, classes, relationships, false, false);
+		nodei = aux[0];
+		nodej = aux[1];
+		/*
+		System.out.println("class2vertex");
+		
+		for (int i=1; i<classes.size(); i++) {
+			System.out.println(i+" - "+classes.get(i).getName());
+		}
+		
+		System.out.print("\nnodei: ");
+		for (int i=0; i<nodei.length; i++) {
+			System.out.print(nodei[i]);
+			if(i<nodej.length-1)
+				System.out.print(", ");
+		}
+		
+		System.out.print("\nnodej: ");
+		for (int i=0; i<nodei.length; i++) {
+			System.out.print(nodej[i]);
+			if(i<nodej.length-1)
+				System.out.print(", ");
+		}
+		*/
+		
+		int fundcycle[][] = new int [relationships.size()-2][classes.size()];
+		GraphAlgo.fundamentalCycles(classes.size()-1, relationships.size()-1, nodei, nodej, fundcycle);
+		//System.out.println("\nnumber of components of the graph = " + fundcycle[0][1]  + "\n"); 
+		
+		for (int i=1; i<=fundcycle[0][0]; i++) { 
+			
+			//System.out.print("nodes in cycle " + i + ": "); 
+			cycle = new ArrayList<>();
+			cycle_ass = new ArrayList<>();
+			
+			for (int j=1; j<=fundcycle[i][0]; j++) {
+				//System.out.printf("%3d", fundcycle[i][j]);
+				cycle.add(classes.get(fundcycle[i][j]));
+			}
+			
+			for (int j = 0; j < cycle.size(); j++) {
+				
+				int pos1, pos2;
+				if(j<cycle.size()-1) {
+					pos1 = j;
+					pos2 = j+1;
+				}
+				else {
+					pos1=j;
+					pos2=0;
+				}
+					
+				
+				for (Relationship r : relationships) {
+					if(r instanceof Association){
+						Type source, target;
+						source = ((Association)r).getMemberEnd().get(0).getType();
+						target = ((Association)r).getMemberEnd().get(1).getType();
+						if( (source.equals(cycle.get(pos1)) && target.equals(cycle.get(pos2))) || (source.equals(cycle.get(pos2)) && target.equals(cycle.get(pos1))))
+							cycle_ass.add(r);
+					}
+					if (r instanceof Generalization){
+						Classifier general, specific;
+						general = ((Generalization)r).getGeneral();
+						specific = ((Generalization)r).getSpecific();
+						if ( (general.equals(cycle.get(pos1)) && specific.equals(cycle.get(pos2))) || (general.equals(cycle.get(pos2)) && specific.equals(cycle.get(pos1))) )
+							cycle_ass.add(r);
+					}
+						
+							
+				}
+					
+			}
+			
+			result.add(new ACAntiPattern(cycle,cycle_ass));
+			System.out.println(); 
+		} 
 		
 		return result;
 	}

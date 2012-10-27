@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.ocl.ParserException;
 
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
-import br.ufes.inf.nemo.ontouml.antipattern.util.Ecore2Graph;
+import br.ufes.inf.nemo.ontouml.antipattern.util.RefOntoUML2Graph;
 import br.ufes.inf.nemo.ontouml.antipattern.util.GraphAlgo;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
@@ -29,7 +29,8 @@ public class QueryPerformer {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/GenericCycle.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
@@ -136,45 +137,13 @@ public class QueryPerformer {
 		    System.err.println(e.getLocalizedMessage());
 		}
 		
-		int aux[][]; 
-		int nodei[], nodej[];
-		ArrayList<RefOntoUML.Class> classes = new ArrayList<>();
-		ArrayList<Relationship> relationships = new ArrayList<>();
-		
-		aux = Ecore2Graph.buildGraph(m, classes, relationships);
-		nodei = aux[0];
-		nodej = aux[1];
-		
-		System.out.println("class2vertex");
-		
-		for (int i=1; i<classes.size(); i++) {
-			System.out.println(i+" - "+classes.get(i).getName());
+		ArrayList<ACAntiPattern> result6 = AntiPatternIdentifier.identifyAC(m);
+		System.out.println("# of Generic Cycles Identified: "+result6.size());
+		for (ACAntiPattern ac : result6) {
+			System.out.println(ac);
+			//System.out.println(ac.generateClosedCyclePredicate(mapper, 2));
+			System.out.println(ac.generateOpenCyclePredicate(mapper, 2));
 		}
-		
-		System.out.print("\nnodei: ");
-		for (int i=0; i<nodei.length; i++) {
-			System.out.print(nodei[i]);
-			if(i<nodej.length-1)
-				System.out.print(", ");
-		}
-		
-		System.out.print("\nnodej: ");
-		for (int i=0; i<nodei.length; i++) {
-			System.out.print(nodej[i]);
-			if(i<nodej.length-1)
-				System.out.print(", ");
-		}
-		
-		int fundcycle[][] = new int [relationships.size()-2][classes.size()];
-		GraphAlgo.fundamentalCycles(classes.size()-1, relationships.size()-1, nodei, nodej, fundcycle);
-		System.out.println("number of components of the graph = " + 
-                 fundcycle[0][1]  + "\n"); 
-		for (int i=1; i<=fundcycle[0][0]; i++) { 
-			System.out.print("nodes in cycle " + i + ": "); 
-			for (int j=1; j<=fundcycle[i][0]; j++) 
-				System.out.printf("%3d", fundcycle[i][j]); 
-			System.out.println(); 
-		} 
         
 	}
 }
