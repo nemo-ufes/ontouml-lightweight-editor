@@ -26,4 +26,13 @@ public class AlloyConstructor {
 		command += executableName + " for " + scope + " but " + world + " World";
 		return command;
 	}
+	
+	public static String AlloyFunction(String funName, String rules, String parameters, String return_type){
+		String function;
+		
+		function = "fun "+funName+" ["+parameters+"] : "+return_type+" {"+
+				"\n\t"+rules+
+				"\n}";
+		return function;
+	}
 }
