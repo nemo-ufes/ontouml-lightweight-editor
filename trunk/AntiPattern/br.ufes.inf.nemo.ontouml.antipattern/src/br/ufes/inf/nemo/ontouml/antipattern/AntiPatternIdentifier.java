@@ -124,42 +124,17 @@ public class AntiPatternIdentifier {
 		aux = RefOntoUML2Graph.buildGraph(m, classes, relationships, false, false);
 		nodei = aux[0];
 		nodej = aux[1];
-		/*
-		System.out.println("class2vertex");
-		
-		for (int i=1; i<classes.size(); i++) {
-			System.out.println(i+" - "+classes.get(i).getName());
-		}
-		
-		System.out.print("\nnodei: ");
-		for (int i=0; i<nodei.length; i++) {
-			System.out.print(nodei[i]);
-			if(i<nodej.length-1)
-				System.out.print(", ");
-		}
-		
-		System.out.print("\nnodej: ");
-		for (int i=0; i<nodei.length; i++) {
-			System.out.print(nodej[i]);
-			if(i<nodej.length-1)
-				System.out.print(", ");
-		}
-		*/
 		
 		int fundcycle[][] = new int [relationships.size()-2][classes.size()];
 		GraphAlgo.fundamentalCycles(classes.size()-1, relationships.size()-1, nodei, nodej, fundcycle);
-		//System.out.println("\nnumber of components of the graph = " + fundcycle[0][1]  + "\n"); 
 		
 		for (int i=1; i<=fundcycle[0][0]; i++) { 
 			
-			//System.out.print("nodes in cycle " + i + ": "); 
 			cycle = new ArrayList<>();
 			cycle_ass = new ArrayList<>();
 			
-			for (int j=1; j<=fundcycle[i][0]; j++) {
-				//System.out.printf("%3d", fundcycle[i][j]);
+			for (int j=1; j<=fundcycle[i][0]; j++)
 				cycle.add(classes.get(fundcycle[i][j]));
-			}
 			
 			for (int j = 0; j < cycle.size(); j++) {
 				
@@ -196,7 +171,6 @@ public class AntiPatternIdentifier {
 			}
 			
 			result.add(new ACAntiPattern(cycle,cycle_ass));
-			System.out.println(); 
 		} 
 		
 		return result;

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.ontouml.antipattern.util.ArrayListOperations;
+import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 import br.ufes.inf.nemo.ontouml.antipattern.util.Combination;
 
 import RefOntoUML.Classifier;
@@ -19,6 +20,34 @@ public class RWORAntiPattern {
 	
 	public RWORAntiPattern(Relator relator) throws Exception {
 		this.setRelator(relator);
+	}
+	
+	public String generateExclusiveOcl(ArrayList<Classifier> disjointTypes){
+		String result = "context "+relator.getName()+"\n"+
+						"inv: ";
+		if (disjointTypes.size()<2)
+			return null;
+		
+		for (Mediation mediation : this.mediations.keySet()) {
+			if(mediation.getMemberEnd().get(0).getType().equals(disjointTypes.get(0)))
+				result+="self."+AssociationEndNameGenerator.associationEndName(mediation.getMemberEnd().get(0));
+			if(mediation.getMemberEnd().get(1).getType().equals(disjointTypes.get(0)))
+				result+="self."+AssociationEndNameGenerator.associationEndName(mediation.getMemberEnd().get(1));
+		}
+		
+		for (int i = 1; i<disjointTypes.size(); i++){
+			Classifier classifier = disjointTypes.get(i);
+			for (Mediation mediation : this.mediations.keySet()) {
+				if(mediation.getMemberEnd().get(0).getType().equals(classifier))
+					result+="->intersection(self."+AssociationEndNameGenerator.associationEndName(mediation.getMemberEnd().get(0))+")";
+				if(mediation.getMemberEnd().get(1).getType().equals(classifier))
+					result+="->intersection(self."+AssociationEndNameGenerator.associationEndName(mediation.getMemberEnd().get(1))+")";
+			}
+			
+			i++;
+		}
+		
+		return result;
 	}
 	
 	public String generateExclusivePredicate(NamesMapper mapper, int cardinality){

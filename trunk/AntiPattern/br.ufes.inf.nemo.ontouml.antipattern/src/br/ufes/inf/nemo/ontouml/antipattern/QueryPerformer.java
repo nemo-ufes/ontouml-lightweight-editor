@@ -30,7 +30,7 @@ public class QueryPerformer {
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/GenericCycle.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/RelationSpecialization.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
@@ -103,12 +103,14 @@ public class QueryPerformer {
 		    ArrayList<RSAntiPattern> result4 = AntiPatternIdentifier.identifyRS(m);
 		    System.out.println("#Relation Specialization Antipatterns: "+result4.size()+"\n");
 		    for (RSAntiPattern rs : result4) {
-		    	System.out.println(rs+"\n");
+		    	System.out.println(rs);
+		    	System.out.println(rs.generateSubsetOcl());
+		    	System.out.println(rs.generateRedefineOcl());
 		    	/*System.out.println(rs.generateSubsetPredicate(mapper));
 		    	System.out.println(rs.generateRedefinePredicate(mapper));
 		    	System.out.println(rs.generateNotSubsetPredicate(mapper));
 		    	System.out.println(rs.generateDisjointPredicate(mapper));*/
-		    			    	
+		    	System.out.println();
 		    }
 		    System.out.println("**************************************************************");
 		    
@@ -130,6 +132,15 @@ public class QueryPerformer {
 		    	System.out.println(ia.generateSourcePredicate(subtypes, mapper));
 		    	//System.out.println(ia.generateImpreciseAbstractionPredicates(mapper));*/
 		    }
+		    System.out.println("**************************************************************");
+		    
+		    ArrayList<ACAntiPattern> result6 = AntiPatternIdentifier.identifyAC(m);
+			System.out.println("# of Generic Cycles Identified: "+result6.size());
+			for (ACAntiPattern ac : result6) {
+				System.out.println(ac);
+				/*System.out.println(ac.generateClosedCyclePredicate(mapper, 2));
+				System.out.println(ac.generateOpenCyclePredicate(mapper, 2));*/
+			}
 				    		    
 		} catch (ParserException e) {
 		    // record failure to parse
@@ -137,13 +148,7 @@ public class QueryPerformer {
 		    System.err.println(e.getLocalizedMessage());
 		}
 		
-		ArrayList<ACAntiPattern> result6 = AntiPatternIdentifier.identifyAC(m);
-		System.out.println("# of Generic Cycles Identified: "+result6.size());
-		for (ACAntiPattern ac : result6) {
-			System.out.println(ac);
-			//System.out.println(ac.generateClosedCyclePredicate(mapper, 2));
-			System.out.println(ac.generateOpenCyclePredicate(mapper, 2));
-		}
+		
         
 	}
 }

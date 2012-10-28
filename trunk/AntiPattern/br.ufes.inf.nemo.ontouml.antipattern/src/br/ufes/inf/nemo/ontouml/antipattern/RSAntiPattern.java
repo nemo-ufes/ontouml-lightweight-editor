@@ -2,9 +2,11 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Property;
 
 /*Relation Specialization*/
 public class RSAntiPattern {
@@ -28,6 +30,30 @@ public class RSAntiPattern {
 		generalSource = (Classifier) SourceTargetAssociation.getSourceAlloy(general);
 		generalTarget = (Classifier) SourceTargetAssociation.getTargetAlloy(general);
 				
+	}
+	
+	public String generateSubsetOcl(){
+		
+		String aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
+		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
+		
+		return "context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv : self."+aeg_name+"->includesAll(self."+aes_name+")";
+	}
+	
+	public String generateRedefineOcl(){
+		Property associationEndSpecific = specific.getMemberEnd().get(1);
+		Property associationEndGeneral = general.getMemberEnd().get(1);
+		String aes_name = associationEndSpecific.getName();
+		String aeg_name = associationEndGeneral.getName();
+		
+		if(aes_name==null)
+			aes_name = associationEndSpecific.getType().getName().toLowerCase();
+		if(aeg_name==null)
+			aeg_name = associationEndGeneral.getType().getName().toLowerCase();
+			
+		return "context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv : self.oclAsType("+general.getMemberEnd().get(0).getType().getName()+")."+aeg_name+"=self."+aes_name;
 	}
 	
 	/*This method generates an Alloy predicate that states that the specific association is a SUBTYPE of the general association*/
