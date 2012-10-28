@@ -8,7 +8,6 @@ import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
 
 import RefOntoUML.Association;
 import RefOntoUML.Class;
-import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
@@ -172,6 +171,6 @@ public class ACAntiPattern {
 		}
 		
 		
-		return result+"\n";
+		return result;
 	}
 }
