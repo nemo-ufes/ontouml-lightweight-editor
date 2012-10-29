@@ -22,7 +22,7 @@ public class ResourceUtil {
 	public static Resource loadReferenceOntoUML (String refontoumlpath) throws IOException
 	{
 		ResourceSet rset = new ResourceSetImpl();				
-		
+					
 		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("refontouml",new XMIResourceFactoryImpl());	
 		
 		rset.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI,	RefOntoUML.RefOntoUMLPackage.eINSTANCE);		
