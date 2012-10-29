@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.common.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontouml.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 import br.ufes.inf.nemo.ontouml.antipattern.util.Combination;

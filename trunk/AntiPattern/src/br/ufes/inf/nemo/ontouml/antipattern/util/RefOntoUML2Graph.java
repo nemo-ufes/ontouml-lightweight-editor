@@ -6,14 +6,14 @@ import RefOntoUML.Association;
 import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
 import RefOntoUML.MaterialAssociation;
-import RefOntoUML.Model;
+import RefOntoUML.Package;
 import RefOntoUML.Class;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Relationship;
 
 public class RefOntoUML2Graph {
 	
-	public static int[][] buildGraph (Model model, ArrayList<Class> classes, ArrayList<Relationship> relationships, boolean incGen, boolean incMat){
+	public static int[][] buildGraph (Package model, ArrayList<Class> classes, ArrayList<Relationship> relationships, boolean incGen, boolean incMat){
 		
 		classes.add(null);
 		relationships.add(null);
