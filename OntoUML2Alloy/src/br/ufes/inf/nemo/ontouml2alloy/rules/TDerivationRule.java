@@ -12,7 +12,7 @@ import RefOntoUML.Type;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.VariableReference;
-import br.ufes.inf.nemo.common.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.parser.Parser;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
 public class TDerivationRule {
@@ -24,7 +24,7 @@ public class TDerivationRule {
 	 *  
 	 */
 	@SuppressWarnings("unchecked")
-	public static PredicateInvocation createPredicateInvocation (OntoUMLParser ontoparser, AlloyFactory factory, Derivation d)
+	public static PredicateInvocation createPredicateInvocation (Parser ontoparser, AlloyFactory factory, Derivation d)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();
 		pI.setPredicate("derivation");

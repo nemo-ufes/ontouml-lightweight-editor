@@ -9,7 +9,7 @@ import br.ufes.inf.nemo.alloy.BinaryOperator;
 import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.VariableReference;
-import br.ufes.inf.nemo.common.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.parser.Parser;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
 public class TAbstractClauseRule {
@@ -22,7 +22,7 @@ public class TAbstractClauseRule {
 	 * 
 	 * "abstract_father = concrete_child1 + concrete_child2 + concrete_child3 + ..." 
 	 */
-	public static CompareOperation createCompareOperation(OntoUMLParser ontoparser, AlloyFactory factory, Classifier c) 
+	public static CompareOperation createCompareOperation(Parser ontoparser, AlloyFactory factory, Classifier c) 
 	{		
 		ArrayList<Classifier> concretes = new ArrayList<Classifier>();		
 		OntoUMLAPI.getConcreteDescendants(ontoparser, concretes, c);

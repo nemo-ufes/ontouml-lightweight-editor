@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.ontouml2alloy.verifier;
 
-import br.ufes.inf.nemo.common.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.parser.Parser;
 import RefOntoUML.Collective;
 import RefOntoUML.Kind;
 import RefOntoUML.PackageableElement;
@@ -8,13 +8,13 @@ import RefOntoUML.Quantity;
 
 public class OntoUMLVerifier {
 
-	public OntoUMLParser ontoparser;
+	public Parser ontoparser;
 	
 	public boolean haveSubstanceSortal;
 	
 	public OntoUMLVerifier (RefOntoUML.Package model)
 	{
-		ontoparser = new OntoUMLParser(model);
+		ontoparser = new Parser(model);
 	}
 		
 	public void initialize()
