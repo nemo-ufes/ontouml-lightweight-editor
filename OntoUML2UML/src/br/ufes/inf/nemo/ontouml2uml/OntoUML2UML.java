@@ -44,4 +44,21 @@ public class OntoUML2UML {
 	   
 	   return umlmodel;
 	}
+	
+	public static Resource Transformation (String refontoumlPath, String umlPath) throws IOException
+	{
+	   Resource refontoumlResource = ResourceUtil.loadReferenceOntoUML(refontoumlPath);
+	   	   
+	   EObject model = refontoumlResource.getContents().get(0);    	
+	   Resource umlResource = null;   
+	   
+	   if(model instanceof RefOntoUML.Package)
+	   {		   		
+		   transformer = new Transformation((RefOntoUML.Package)model);			  
+		   org.eclipse.uml2.uml.Package umlmodel = transformer.Transform();		   		   
+		   umlResource = ResourceUtil.saveUML(umlPath,umlmodel);		   
+		}
+	   
+	    return umlResource;
+	}
 }
