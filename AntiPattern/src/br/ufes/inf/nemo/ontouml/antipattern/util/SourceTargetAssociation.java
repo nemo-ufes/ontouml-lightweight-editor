@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Characterization;
-import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Mode;
@@ -71,6 +70,7 @@ public class SourceTargetAssociation {
 		
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static ArrayList<Type> getRelatedAlloy (Association a){
 		ArrayList<Type> result = new ArrayList();
 		
@@ -79,8 +79,11 @@ public class SourceTargetAssociation {
 		return result;
 	}
 	
+	@SuppressWarnings("unused")
 	public static int getUpperSourceCardinality (Association a) {
-		Type t0,t1, source;
+		Type t0;		
+		Type source;
+		Type t1;
 		
 		source = SourceTargetAssociation.getSourceAlloy(a);
 		t0 = a.getMemberEnd().get(0).getType();
@@ -92,6 +95,7 @@ public class SourceTargetAssociation {
 			return a.getMemberEnd().get(1).getUpper();
 	}
 	
+	@SuppressWarnings("unused")
 	public static int getUpperTargetCardinality (Association a) {
 		Type t0,t1, source;
 		

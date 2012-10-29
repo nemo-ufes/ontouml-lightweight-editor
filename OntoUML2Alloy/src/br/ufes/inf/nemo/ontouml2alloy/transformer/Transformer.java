@@ -58,7 +58,7 @@ import br.ufes.inf.nemo.alloy.UnaryOperation;
 import br.ufes.inf.nemo.alloy.UnaryOperator;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
-import br.ufes.inf.nemo.common.parser.Parser;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TAbstractClauseRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TDerivationRule;
@@ -85,7 +85,7 @@ public class Transformer extends BaseTransformer {
 	 *  It is also used for associate the elements of the ontouml model 
 	 *  with their modified names (i.e. without special characters: #, !, @, $, %, and etc...). 
 	 */
-	public Parser ontoparser;
+	public OntoUMLParser ontoparser;
 			
 	/**
 	 * Alloy Factory Instance.
@@ -100,7 +100,7 @@ public class Transformer extends BaseTransformer {
 	/**
 	 * Constructor().
 	 */
-	public Transformer (Parser parser, AlloyFactory factory, Options opt)
+	public Transformer (OntoUMLParser parser, AlloyFactory factory, Options opt)
 	{		
 		super(parser,factory);
 		

@@ -4,7 +4,7 @@ import RefOntoUML.Generalization;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
-import br.ufes.inf.nemo.common.parser.Parser;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 
 public class TGeneralizationRule {
@@ -16,7 +16,7 @@ public class TGeneralizationRule {
 	 * 
 	 * "child in father"
 	 */	
-	public static CompareOperation createCompareOperation (Parser ontoparser, AlloyFactory factory,Generalization g)
+	public static CompareOperation createCompareOperation (OntoUMLParser ontoparser, AlloyFactory factory,Generalization g)
 	{
 		return AlloyAPI.createCompareOperation(factory, ontoparser.getName(g.getSpecific()), CompareOperator.SUBSET_LITERAL, ontoparser.getName(g.getGeneral()));
 	}

@@ -7,7 +7,7 @@ import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.BinaryOperation;
 import br.ufes.inf.nemo.alloy.DisjointExpression;
-import br.ufes.inf.nemo.common.parser.Parser;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
@@ -18,7 +18,7 @@ public class TTopLevelRule {
 	 * 
 	 *  Should be more of a description here....
 	 */
-	public static ArrayList<DisjointExpression> createTopLevelDisjointRules (Parser ontoparser, AlloyFactory factory, ArrayList<Classifier> toplevels)
+	public static ArrayList<DisjointExpression> createTopLevelDisjointRules (OntoUMLParser ontoparser, AlloyFactory factory, ArrayList<Classifier> toplevels)
 	{
 		HashMap< ArrayList<Classifier>, Integer > listsHashMap = new HashMap< ArrayList<Classifier>,Integer >();
 		ArrayList<DisjointExpression> result = new ArrayList<DisjointExpression>();

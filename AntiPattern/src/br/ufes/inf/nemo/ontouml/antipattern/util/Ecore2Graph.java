@@ -1,13 +1,11 @@
 package br.ufes.inf.nemo.ontouml.antipattern.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
 
 import RefOntoUML.Association;
+import RefOntoUML.Class;
 import RefOntoUML.Generalization;
 import RefOntoUML.Model;
-import RefOntoUML.Class;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Relationship;
 

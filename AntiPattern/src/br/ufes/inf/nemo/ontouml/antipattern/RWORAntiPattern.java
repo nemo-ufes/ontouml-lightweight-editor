@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.ontouml.antipattern.util.ArrayListOperations;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
@@ -49,12 +49,12 @@ public class RWORAntiPattern {
 		return result;
 	}
 	
-	public String generateExclusivePredicate(NamesMapper mapper, int cardinality){
+	public String generateExclusivePredicate(OntoUMLParser mapper, int cardinality){
 		String predicate, rules, predicateName, relatorName;
 		ArrayList<Object> saida, mediations = new ArrayList<>();
 		Combination comb1;
 							
-		relatorName=mapper.elementsMap.get(relator);
+		relatorName=mapper.getName(relator);
 		
 		predicateName = "exclusiveRole_"+relatorName;
 		
@@ -72,7 +72,7 @@ public class RWORAntiPattern {
         
 		while (comb1.hasNext()) {
             saida = comb1.next();
-            rules+="#(x.(w."+mapper.elementsMap.get(saida.get(0))+") & x.(w."+mapper.elementsMap.get(saida.get(1))+")) = 0";
+            rules+="#(x.(w."+mapper.getName(saida.get(0))+") & x.(w."+mapper.getName(saida.get(1))+")) = 0";
             
             if(comb1.hasNext())
             	rules+=" and ";
@@ -84,12 +84,12 @@ public class RWORAntiPattern {
 		return predicate;
 	}
 	
-	public String generateNonExclusivePredicate(NamesMapper mapper, int cardinality){
+	public String generateNonExclusivePredicate(OntoUMLParser mapper, int cardinality){
 		String predicate, rules, predicateName, relatorName;
 		ArrayList<Object> saida, mediations = new ArrayList<>();
 		Combination comb1;
 							
-		relatorName=mapper.elementsMap.get(relator);
+		relatorName=mapper.getName(relator);
 		
 		predicateName = "nonExclusiveRole_"+relatorName;
 		
@@ -107,7 +107,7 @@ public class RWORAntiPattern {
         
 		while (comb1.hasNext()) {
             saida = comb1.next();
-            rules+="#(x.(w."+mapper.elementsMap.get(saida.get(0))+") & x.(w."+mapper.elementsMap.get(saida.get(1))+")) > 0";
+            rules+="#(x.(w."+mapper.getName(saida.get(0))+") & x.(w."+mapper.getName(saida.get(1))+")) > 0";
             
             if(comb1.hasNext())
             	rules+=" or ";
@@ -119,12 +119,12 @@ public class RWORAntiPattern {
 		return predicate;
 	}
 	
-	public String generateMultipleExclusivePredicate (ArrayList<ArrayList<Mediation>> exclusiveMatrix, NamesMapper mapper, int cardinality){
+	public String generateMultipleExclusivePredicate (ArrayList<ArrayList<Mediation>> exclusiveMatrix, OntoUMLParser mapper, int cardinality){
 		String predicate="", rules, predicateName, relatorName;
 		Combination comb1;
 		ArrayList<Mediation> output;
 		
-		relatorName=mapper.elementsMap.get(relator);
+		relatorName=mapper.getName(relator);
 		
 		predicateName = "MultipleExclusiveRole_"+relatorName;
 		rules = "#"+relatorName+">="+cardinality;
@@ -142,7 +142,7 @@ public class RWORAntiPattern {
 			rules += "\n\tall w:World | all x:w."+relatorName+" | ";
 			while(comb1.hasNext()){
 				output = comb1.next();
-				rules+="#(x.(w."+mapper.elementsMap.get(output.get(0))+") & x.(w."+mapper.elementsMap.get(output.get(1))+")) = 0";
+				rules+="#(x.(w."+mapper.getName(output.get(0))+") & x.(w."+mapper.getName(output.get(1))+")) = 0";
 				
 				if(comb1.hasNext())
             		rules += " and ";
@@ -157,12 +157,13 @@ public class RWORAntiPattern {
 		
 	}
 	
- 	public String generateAllMultipleExclusivePredicate(NamesMapper mapper, int cardinality){
+ 	@SuppressWarnings("unchecked")
+	public String generateAllMultipleExclusivePredicate(OntoUMLParser mapper, int cardinality){
 		String predicates="", rules, predicateName, relatorName;
 		ArrayList<Object>  mediations = new ArrayList<>(), output = new ArrayList<>(), output2, aux;
 		Combination comb1, comb2;
 		
-		relatorName=mapper.elementsMap.get(relator);
+		relatorName=mapper.getName(relator);
 
 		mediations.addAll(this.mediations.keySet());
 		
@@ -188,7 +189,7 @@ public class RWORAntiPattern {
             	rules+="# (";
             	for (int n2=0; n2<((ArrayList<Object>)(output2).get(n)).size();n2++) {
 	            	
-            		rules+="x.(w."+mapper.elementsMap.get(((ArrayList<Object>) output2.get(n)).get(n2))+")";
+            		rules+="x.(w."+mapper.getName(((ArrayList<Object>) output2.get(n)).get(n2))+")";
 	            	
 	            	if (n2==((ArrayList<Object>)(output2).get(n)).size()-1)
 	            		rules+=") = 0";
