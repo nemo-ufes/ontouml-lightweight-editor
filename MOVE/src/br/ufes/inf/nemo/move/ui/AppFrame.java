@@ -16,6 +16,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import java.awt.Toolkit;
 
 public class AppFrame extends JFrame {
 
@@ -30,6 +31,7 @@ public class AppFrame extends JFrame {
 	 */
 	public AppFrame() 
 	{
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/move/window.png")));
 		setTitle("OntoUML Model Validation Environment - MOVE");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 624, 300);

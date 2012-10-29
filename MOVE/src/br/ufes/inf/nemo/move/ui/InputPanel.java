@@ -82,7 +82,7 @@ public class InputPanel extends JPanel {
 	public InputPanel() 
 	{
 		setBackground(SystemColor.inactiveCaption);
-		setPreferredSize(new Dimension(620, 69));
+		setPreferredSize(new Dimension(610, 69));
 		
 		textOntoUML = new JTextField();
 		textOntoUML.setText("*.refontouml");
