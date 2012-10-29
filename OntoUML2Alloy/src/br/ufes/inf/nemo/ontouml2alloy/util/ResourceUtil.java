@@ -52,8 +52,9 @@ public class ResourceUtil {
 		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("refontouml",new XMIResourceFactoryImpl());	
 		
 		rset.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI,	RefOntoUML.RefOntoUMLPackage.eINSTANCE);		
-				
-		File file = new File(path);
+	    rset.getPackageRegistry().put("http://nemo.inf.ufes.br/ontouml/refontouml", RefOntoUML.RefOntoUMLPackage.eINSTANCE);
+		
+	    File file = new File(path);
 		URI fileURI = URI.createFileURI(file.getAbsolutePath());		
 		Resource resource = rset.createResource(fileURI);		
 		
