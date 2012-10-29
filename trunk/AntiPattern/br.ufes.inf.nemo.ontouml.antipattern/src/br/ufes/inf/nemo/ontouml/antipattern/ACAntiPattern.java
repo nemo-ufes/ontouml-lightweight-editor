@@ -13,6 +13,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
 
+/*Association Cycle Anti-Pattern*/
 public class ACAntiPattern {
 	ArrayList<Class> cycle;
 	ArrayList<Relationship> cycleRelationship;
