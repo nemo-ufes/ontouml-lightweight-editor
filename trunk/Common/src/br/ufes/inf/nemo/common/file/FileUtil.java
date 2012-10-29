@@ -1,9 +1,13 @@
 package br.ufes.inf.nemo.common.file;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  *	This class is used as a File utility.
@@ -41,4 +45,19 @@ public class FileUtil {
 		return file;
 	}
 	
+    public static String readFile (String filePath) throws IOException
+	{
+		String result = new String();
+		
+		FileInputStream fstream = new FileInputStream(filePath);			
+		DataInputStream in = new DataInputStream(fstream);
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		String strLine;			
+		while ((strLine = br.readLine()) != null)   
+		{
+			result += strLine+"\n";
+		}
+		in.close();		
+		return result;
+	}
 }
