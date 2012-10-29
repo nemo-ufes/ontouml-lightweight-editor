@@ -8,7 +8,6 @@
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.ocl_3.2.0.v20120611-1210.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.ocl.ecore_3.2.0.v20120522-1637.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
 	<classpathentry kind="lib" path="lib/lpg.runtime.java_2.0.17.v201004271640.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
