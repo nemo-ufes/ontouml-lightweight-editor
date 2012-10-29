@@ -14,7 +14,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Model;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
-import br.ufes.inf.nemo.common.ontouml.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class QueryPerformer {
 	public static void main(String[] args) throws Exception {

@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ontouml.antipattern.util;
+package br.ufes.inf.nemo.common.ocl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
+
 import org.eclipse.ocl.OCL;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
@@ -20,9 +21,9 @@ import org.eclipse.ocl.helper.OCLHelper;
 import RefOntoUML.Model;
 
 public class OCLQueryExecuter {
+	
 	public static Object executeQuery (String oclQuery, EClassifier context, Model m) throws ParserException
 	{
-
 		OCLExpression<EClassifier> query = null;
 		
 		 // create an OCL instance for Ecore
@@ -37,6 +38,7 @@ public class OCLQueryExecuter {
 	    Query<EClassifier, EClass, EObject> eval;
 	    query = helper.createQuery(oclQuery); 
 	    eval = ocl.createQuery(query);
+	    
 	    return eval.evaluate(m);
 	}
 }

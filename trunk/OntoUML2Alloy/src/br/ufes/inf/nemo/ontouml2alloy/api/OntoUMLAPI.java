@@ -22,7 +22,7 @@ package br.ufes.inf.nemo.ontouml2alloy.api;
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.common.ontouml.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Classifier;

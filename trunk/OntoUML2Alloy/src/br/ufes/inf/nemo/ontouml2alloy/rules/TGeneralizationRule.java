@@ -4,7 +4,7 @@ import RefOntoUML.Generalization;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
-import br.ufes.inf.nemo.common.ontouml.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 
 public class TGeneralizationRule {

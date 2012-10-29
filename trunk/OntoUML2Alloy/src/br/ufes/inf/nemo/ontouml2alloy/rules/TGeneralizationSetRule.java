@@ -9,7 +9,7 @@ import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.DisjointExpression;
 import br.ufes.inf.nemo.alloy.VariableReference;
-import br.ufes.inf.nemo.common.ontouml.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class TGeneralizationSetRule {
 

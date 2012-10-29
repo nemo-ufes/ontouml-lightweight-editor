@@ -12,7 +12,7 @@ import RefOntoUML.Type;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.VariableReference;
-import br.ufes.inf.nemo.common.ontouml.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
 public class TDerivationRule {

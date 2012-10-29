@@ -58,7 +58,7 @@ import br.ufes.inf.nemo.alloy.UnaryOperation;
 import br.ufes.inf.nemo.alloy.UnaryOperator;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
-import br.ufes.inf.nemo.common.ontouml.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TAbstractClauseRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TDerivationRule;

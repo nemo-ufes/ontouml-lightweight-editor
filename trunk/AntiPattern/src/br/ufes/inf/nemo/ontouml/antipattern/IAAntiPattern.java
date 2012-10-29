@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.common.ontouml.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.list.Combination;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
-import br.ufes.inf.nemo.ontouml.antipattern.util.Combination;
 import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
 
 public class IAAntiPattern {

@@ -13,10 +13,10 @@ import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.Type;
 
+import br.ufes.inf.nemo.common.graph.GraphAlgo;
+import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
+import br.ufes.inf.nemo.common.ontouml2graph.OntoUML2Graph;
 import br.ufes.inf.nemo.ontouml.antipattern.RSAntiPattern;
-import br.ufes.inf.nemo.ontouml.antipattern.util.RefOntoUML2Graph;
-import br.ufes.inf.nemo.ontouml.antipattern.util.GraphAlgo;
-import br.ufes.inf.nemo.ontouml.antipattern.util.OCLQueryExecuter;
 
 public class AntiPatternIdentifier {
 	
@@ -126,7 +126,7 @@ public class AntiPatternIdentifier {
 		ArrayList<Relationship> relationships = new ArrayList<>(), cycle_ass;
 		ArrayList<ACAntiPattern> result = new ArrayList<>();
 		
-		aux = RefOntoUML2Graph.buildGraph(m, classes, relationships, false, false);
+		aux = OntoUML2Graph.buildGraph(m, classes, relationships, false, false);
 		nodei = aux[0];
 		nodej = aux[1];
 		
