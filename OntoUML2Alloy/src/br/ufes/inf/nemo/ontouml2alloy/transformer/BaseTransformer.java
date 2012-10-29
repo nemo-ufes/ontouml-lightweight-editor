@@ -26,11 +26,10 @@ import br.ufes.inf.nemo.alloy.ModuleImportation;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.SignatureDeclaration;
 import br.ufes.inf.nemo.alloy.Variable;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
-
-import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
 public class BaseTransformer {
 	

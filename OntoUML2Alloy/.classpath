@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.ocl.ecore_3.0.0.v201005061704.jar"/>
 	<classpathentry kind="lib" path="lib/alloy4.2-rc.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Alloy"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Common"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

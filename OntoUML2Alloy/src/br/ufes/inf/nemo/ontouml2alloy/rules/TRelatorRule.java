@@ -6,9 +6,9 @@ import RefOntoUML.Relator;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
-import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
 public class TRelatorRule {
 
