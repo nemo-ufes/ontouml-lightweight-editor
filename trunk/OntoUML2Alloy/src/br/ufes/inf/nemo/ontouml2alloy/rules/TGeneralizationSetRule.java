@@ -9,7 +9,7 @@ import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.DisjointExpression;
 import br.ufes.inf.nemo.alloy.VariableReference;
-import br.ufes.inf.nemo.common.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.parser.Parser;
 
 public class TGeneralizationSetRule {
 
@@ -20,7 +20,7 @@ public class TGeneralizationSetRule {
 	 *  disj[Child1, Child2, Child3,...]
 	 */
 	@SuppressWarnings("unchecked")
-	public static DisjointExpression createDisjointExpression (OntoUMLParser ontoparser, AlloyFactory factory, GeneralizationSet gs)
+	public static DisjointExpression createDisjointExpression (Parser ontoparser, AlloyFactory factory, GeneralizationSet gs)
 	{
 		DisjointExpression disj = factory.createDisjointExpression();
 		for(Generalization gen : gs.getGeneralization())
@@ -37,7 +37,7 @@ public class TGeneralizationSetRule {
 	 * 
 	 * Father = Child1 + Child2 + Child3 + ...
 	 */
-	public static CompareOperation createCompleteCompareOperation (OntoUMLParser ontoparser, AlloyFactory factory, GeneralizationSet gs)
+	public static CompareOperation createCompleteCompareOperation (Parser ontoparser, AlloyFactory factory, GeneralizationSet gs)
 	{
 		CompareOperation co = factory.createCompareOperation();
 		co.setOperator(CompareOperator.EQUAL_LITERAL);

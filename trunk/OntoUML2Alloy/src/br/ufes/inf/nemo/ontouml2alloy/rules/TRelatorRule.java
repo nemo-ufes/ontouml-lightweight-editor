@@ -6,7 +6,7 @@ import RefOntoUML.Relator;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
-import br.ufes.inf.nemo.common.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.parser.Parser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
@@ -19,7 +19,7 @@ public class TRelatorRule {
 	 * all w: World | all x: w.<RelatorName> | # ( x.(w.<associationName1>)+ x.(w.<associationName2>) + ...) >= 2
 	 */
 	@SuppressWarnings("unchecked")
-	public static FactDeclaration createFactDeclaration(OntoUMLParser ontoparser, AlloyFactory factory, Relator c) 
+	public static FactDeclaration createFactDeclaration(Parser ontoparser, AlloyFactory factory, Relator c) 
 	{
 		if (c.isIsAbstract()) return null;
 		

@@ -7,7 +7,7 @@ import RefOntoUML.RigidSortalClass;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
-import br.ufes.inf.nemo.common.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.parser.Parser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
@@ -19,7 +19,7 @@ public class TWeakSupplementationRule {
   	 * all w: World | all x: w.<RigidSortalName> | # ( x.(w.meronymicName1)+ x.(w.meronymicName2) + ...) >= 2
 	 */
 	@SuppressWarnings("unchecked")
-	public static FactDeclaration createFactDeclaration(OntoUMLParser ontoparser, AlloyFactory factory, Classifier c) 
+	public static FactDeclaration createFactDeclaration(Parser ontoparser, AlloyFactory factory, Classifier c) 
 	{
 		if (c.isIsAbstract()) { return null; }
 		
