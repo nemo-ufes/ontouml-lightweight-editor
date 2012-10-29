@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.ontouml.antipattern;
 
-import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 
@@ -50,12 +50,12 @@ public class STRAntiPattern {
 	/*TODO criar as regras para transitive*/
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is REFLEXIVE*/
-	public String generateReflexivePredicate (int cardinality, NamesMapper mapper) {
+	public String generateReflexivePredicate (int cardinality, OntoUMLParser mapper) {
 		String predicate, rules, name;
 		
 		String associationName, typeName;
-		associationName = mapper.elementsMap.get(this.association);
-		typeName = mapper.elementsMap.get(this.type);
+		associationName = mapper.getName(this.association);
+		typeName = mapper.getName(this.type);
 		
 		name = "reflexive_"+associationName;
 		rules = "#" + associationName + ">" + cardinality;
@@ -68,11 +68,11 @@ public class STRAntiPattern {
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is IRREFLEXIVE*/
-	public String generateIrreflexivePredicate (int cardinality, NamesMapper mapper){
+	public String generateIrreflexivePredicate (int cardinality, OntoUMLParser mapper){
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.elementsMap.get(this.association);
+		associationName = mapper.getName(this.association);
 		
 		name = "irreflexive_"+associationName;
 		
@@ -86,11 +86,11 @@ public class STRAntiPattern {
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is Transitive*/
-	public String generateTransitivePredicate (int cardinality, NamesMapper mapper){
+	public String generateTransitivePredicate (int cardinality, OntoUMLParser mapper){
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.elementsMap.get(this.association);
+		associationName = mapper.getName(this.association);
 		name = "transitive_"+associationName;
 		
 		rules = "#" + associationName + ">" + cardinality; 
@@ -103,12 +103,12 @@ public class STRAntiPattern {
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is INTRANSITIVE*/
-	public String generateIntransitivePredicate (int cardinality, NamesMapper mapper){
+	public String generateIntransitivePredicate (int cardinality, OntoUMLParser mapper){
 		String predicate, rules, name;
 		
 		String associationName, typeName;
-		associationName = mapper.elementsMap.get(this.association);
-		typeName = mapper.elementsMap.get(this.type);
+		associationName = mapper.getName(this.association);
+		typeName = mapper.getName(this.type);
 		
 		name = "instransitive_"+associationName;
 		rules = "#" + associationName + ">" + cardinality; 
@@ -121,11 +121,11 @@ public class STRAntiPattern {
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is SYMMETRIC*/
-	public String generateSymmetricPredicate (int cardinality, NamesMapper mapper){
+	public String generateSymmetricPredicate (int cardinality, OntoUMLParser mapper){
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.elementsMap.get(this.association);
+		associationName = mapper.getName(this.association);
 		name = "symmetric_"+associationName;
 		
 		rules = "#" + associationName + ">" + cardinality; 
@@ -138,11 +138,11 @@ public class STRAntiPattern {
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is ANTISYMMETRIC*/
-	public String generateAntisymmetricPredicate (int cardinality, NamesMapper mapper){
+	public String generateAntisymmetricPredicate (int cardinality, OntoUMLParser mapper){
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.elementsMap.get(this.association);
+		associationName = mapper.getName(this.association);
 		name = "antisymmetric_"+associationName;
 		rules = "#" + associationName + ">" + cardinality;
 		rules += "\n\tall w:World | antisymmetric[w."+ associationName +"]";

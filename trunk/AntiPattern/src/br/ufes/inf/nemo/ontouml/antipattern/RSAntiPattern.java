@@ -1,12 +1,11 @@
 package br.ufes.inf.nemo.ontouml.antipattern;
 
-import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
+import RefOntoUML.Association;
+import RefOntoUML.Classifier;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
-import RefOntoUML.Association;
-import RefOntoUML.Classifier;
-import RefOntoUML.Property;
 
 /*Relation Specialization*/
 public class RSAntiPattern {
@@ -66,12 +65,12 @@ public class RSAntiPattern {
 	}
 	
 	/*This method generates an Alloy predicate that states that the specific association is a SUBTYPE of the general association*/
-	public String generateSubsetPredicate (NamesMapper mapper) {
+	public String generateSubsetPredicate (OntoUMLParser mapper) {
 		String predicate, rules, name;
 		
 		String generalName, specificName;
-		generalName = mapper.elementsMap.get(general);
-		specificName = mapper.elementsMap.get(specific);
+		generalName = mapper.getName(general);
+		specificName = mapper.getName(specific);
 		
 		name = "subset_"+specificName+"_"+generalName;
 		rules = "some "+specificName+"\n\t";
@@ -85,12 +84,12 @@ public class RSAntiPattern {
 	}
 	
 	/*This method generates an Alloy predicate that states that the specific association is NOT A SUBTYPE of the general association*/
-	public String generateNotSubsetPredicate (NamesMapper mapper) {
+	public String generateNotSubsetPredicate (OntoUMLParser mapper) {
 		String predicate, rules, name;
 		
 		String generalName, specificName;
-		generalName = mapper.elementsMap.get(general);
-		specificName = mapper.elementsMap.get(specific);
+		generalName = mapper.getName(general);
+		specificName = mapper.getName(specific);
 		
 		name = "not_subset_"+specificName+"_"+generalName;
 		rules = "some "+specificName+"\n\t";
@@ -104,12 +103,12 @@ public class RSAntiPattern {
 	}
 	
 	/*This method generates an Alloy predicate that states that the specific association is DISJOINT with the general association*/
-	public String generateDisjointPredicate (NamesMapper mapper) {
+	public String generateDisjointPredicate (OntoUMLParser mapper) {
 		String predicate, rules, name;
 		
 		String generalName, specificName;
-		generalName = mapper.elementsMap.get(general);
-		specificName = mapper.elementsMap.get(specific);
+		generalName = mapper.getName(general);
+		specificName = mapper.getName(specific);
 		
 		name = "disjoint_"+specificName+"_"+generalName;
 		rules = "some "+specificName+"\n\t";
@@ -123,14 +122,14 @@ public class RSAntiPattern {
 	}
 	
 	/*This method generates an Alloy predicate that states that the specific association is a REDEFINITION of the general association*/
-	public String generateRedefinePredicate (NamesMapper mapper) {
+	public String generateRedefinePredicate (OntoUMLParser mapper) {
 		String predicate, rules, name;
 		
 		String generalName, specificName, specificSourceName, specificTargetName;
-		generalName = mapper.elementsMap.get(general);
-		specificName = mapper.elementsMap.get(specific);
-		specificSourceName = mapper.elementsMap.get(specificSource);
-		specificTargetName = mapper.elementsMap.get(specificTarget);
+		generalName = mapper.getName(general);
+		specificName = mapper.getName(specific);
+		specificSourceName = mapper.getName(specificSource);
+		specificTargetName = mapper.getName(specificTarget);
 		name = "redefine_"+specificName+"_"+generalName;
 				
 		if (this.specificSource.allParents().contains(generalSource) || this.specificSource.allParents().contains(generalTarget)){

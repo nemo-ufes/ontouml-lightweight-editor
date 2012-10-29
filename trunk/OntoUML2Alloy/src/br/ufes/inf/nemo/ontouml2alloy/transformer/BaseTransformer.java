@@ -26,7 +26,7 @@ import br.ufes.inf.nemo.alloy.ModuleImportation;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.SignatureDeclaration;
 import br.ufes.inf.nemo.alloy.Variable;
-import br.ufes.inf.nemo.common.parser.Parser;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
@@ -105,7 +105,7 @@ public class BaseTransformer {
 	/** 
 	 * Constructor
 	 */
-	public BaseTransformer (Parser ontoparser, AlloyFactory alsfactory)
+	public BaseTransformer (OntoUMLParser ontoparser, AlloyFactory alsfactory)
 	{
 		initializeDefaultSignatures(ontoparser, alsfactory);
 		
@@ -119,7 +119,7 @@ public class BaseTransformer {
 	/**
 	 * Initialize Default Signatures (i.e. Object, Property and DataType).
 	 */
-	private void initializeDefaultSignatures (Parser ontoparser, AlloyFactory factory)
+	private void initializeDefaultSignatures (OntoUMLParser ontoparser, AlloyFactory factory)
 	{
 		for (PackageableElement pe : ontoparser.getPackageableElements())
 		{			
@@ -162,7 +162,7 @@ public class BaseTransformer {
 	/**
 	 * Initialize Names Lists.
 	 */
-	private void initializeNamesLists(Parser ontoparser, AlloyFactory factory)
+	private void initializeNamesLists(OntoUMLParser ontoparser, AlloyFactory factory)
 	{
 		for (PackageableElement pe : ontoparser.getPackageableElements())
 		{			
@@ -221,7 +221,7 @@ public class BaseTransformer {
 	 *	Creates a skeleton Alloy Module as Initial Additions.
 	 */
 	@SuppressWarnings("unchecked")
-	public void makeSkeleton(Parser ontoparser, AlloyFactory factory) 
+	public void makeSkeleton(OntoUMLParser ontoparser, AlloyFactory factory) 
 	{		
 		module = factory.createAlloyModule();
 		module.setName(ontoparser.getModelName());				

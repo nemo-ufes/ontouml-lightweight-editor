@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 import br.ufes.inf.nemo.ontouml.antipattern.util.Combination;
@@ -66,12 +66,12 @@ public class IAAntiPattern {
 	}
 	
 	//generates an alloy predicate whose instances allowed show that the target end of the relation only has the types inputed in the parameter, on the variable subtypes. 
-	public String generateTargetPredicate(ArrayList<Classifier> subtypes, NamesMapper mapper){
+	public String generateTargetPredicate(ArrayList<Classifier> subtypes, OntoUMLParser mapper){
 		String predicate="", rules, predicateName, sourceName, associationName, childName;
 		
 		//maps to the names of the objects in alloy
-		associationName = mapper.elementsMap.get(association);
-		sourceName = mapper.elementsMap.get(this.source);
+		associationName = mapper.getName(association);
+		sourceName = mapper.getName(this.source);
 		
 		//builds the basic structure for the generated predicate
 		predicateName = "imprecise_abstraction_"+sourceName+"_"+associationName;
@@ -80,7 +80,7 @@ public class IAAntiPattern {
 		
 		if(subtypes!=null && subtypes.size()>0 && targetChildren.containsAll(subtypes)){
 			for (int n=0;n<targetChildren.size();n++){
-				childName = mapper.elementsMap.get(targetChildren.get(n));
+				childName = mapper.getName(targetChildren.get(n));
             	
 				if (subtypes.contains(targetChildren.get(n))){
 	            	predicateName += "_"+childName;
@@ -105,12 +105,12 @@ public class IAAntiPattern {
 	}
 	
 	//generates an alloy predicate whose instances allowed show that the source end of the relation only has the types inputed in the parameter, on the variable subtypes. 
-		public String generateSourcePredicate(ArrayList<Classifier> subtypes, NamesMapper mapper){
+		public String generateSourcePredicate(ArrayList<Classifier> subtypes, OntoUMLParser mapper){
 			String predicate="", rules, predicateName, targetName, associationName, childName;
 			
 			//maps to the names of the objects in alloy
-			associationName = mapper.elementsMap.get(association);
-			targetName = mapper.elementsMap.get(this.target);
+			associationName = mapper.getName(association);
+			targetName = mapper.getName(this.target);
 			
 			//builds the basic structure for the generated predicate
 			predicateName = "imprecise_abstraction_"+targetName+"_"+associationName;
@@ -119,7 +119,7 @@ public class IAAntiPattern {
 			
 			if(subtypes!=null && subtypes.size()>0 && sourceChildren.containsAll(subtypes)){
 				for (int n=0;n<sourceChildren.size();n++){
-					childName = mapper.elementsMap.get(sourceChildren.get(n));
+					childName = mapper.getName(sourceChildren.get(n));
 	            	
 					if (subtypes.contains(sourceChildren.get(n))){
 		            	predicateName += "_"+childName;
@@ -144,25 +144,25 @@ public class IAAntiPattern {
 		}
 	
 	
-	public String generateAllImpreciseAbstractionPredicates(NamesMapper mapper) {
+	public String generateAllImpreciseAbstractionPredicates(OntoUMLParser mapper) {
 		String predicates="", rules, predicateName;
 		Combination comb1;
 		ArrayList<Object> saida = new ArrayList<>();
 		
 		String associationName, sourceName, targetName;
 		ArrayList<String> sourceChildrenName, targetChildrenName;
-		associationName = mapper.elementsMap.get(association);
-		sourceName = mapper.elementsMap.get(this.source);
-		targetName = mapper.elementsMap.get(this.target);
+		associationName = mapper.getName(association);
+		sourceName = mapper.getName(this.source);
+		targetName = mapper.getName(this.target);
 		
 		sourceChildrenName = new ArrayList<>();
 		for (Classifier c : this.sourceChildren) {
-			sourceChildrenName.add(mapper.elementsMap.get(c));
+			sourceChildrenName.add(mapper.getName(c));
 		}
 		
 		targetChildrenName = new ArrayList<>();
 		for (Classifier c : this.targetChildren) {
-			targetChildrenName.add(mapper.elementsMap.get(c));
+			targetChildrenName.add(mapper.getName(c));
 		}
 		
 		//Check if there are specializations on the source of the relation and also if the source upper cardinality is unlimited or greater then 1

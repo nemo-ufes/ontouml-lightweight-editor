@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Combination {
     private int r ;
-    private ArrayList input ;
+    @SuppressWarnings("rawtypes")
+	private ArrayList input ;
     private int MAX ;
     private int N ;
 
@@ -68,7 +69,8 @@ public class Combination {
      * disponivel. Ou seja, sempre use next()
      * quando hasNext() retornar true.
      */
-    public <T> ArrayList<T> next() {
+    @SuppressWarnings("unchecked")
+	public <T> ArrayList<T> next() {
         int input_index, i;
 
         ArrayList<T> output = new ArrayList<>();

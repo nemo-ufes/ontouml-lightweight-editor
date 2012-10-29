@@ -2,7 +2,7 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 
 import org.eclipse.emf.common.util.EList;
 
-import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
@@ -33,11 +33,11 @@ public class RBOSAntiPattern {
 	}
 	
 	/*Generates an Alloy predicate that produces model instances in which the related elements are always different*/
-	public String generateIrreflexivePredicate(NamesMapper mapper){
+	public String generateIrreflexivePredicate(OntoUMLParser mapper){
 		String predicate, rules, predicateName;
 		
 		String associationName;
-		associationName=mapper.elementsMap.get(this.association);
+		associationName=mapper.getName(this.association);
 		
 		predicateName = "disjointParticipants_"+associationName;
 		rules = "some "+associationName+"\n\t";
@@ -50,11 +50,11 @@ public class RBOSAntiPattern {
 	}
 
 	/*Generates an Alloy predicate that produces model instances in which the association may have the same participant in both ends*/
-	public String generateReflexivePredicate(NamesMapper mapper){
+	public String generateReflexivePredicate(OntoUMLParser mapper){
 		String predicate, rules, predicateName;
 		
 		String associationName;
-		associationName=mapper.elementsMap.get(this.association);
+		associationName=mapper.getName(this.association);
 		
 		predicateName = "overlappingParticipants_"+associationName;
 		rules = "some "+associationName+"\n\t";

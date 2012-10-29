@@ -2,7 +2,8 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
+
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
@@ -19,15 +20,15 @@ public class ACAntiPattern {
 	ArrayList<Relationship> cycleRelationship;
 	static int OPEN=0, CLOSED=1;
 	
-	public String generateClosedCyclePredicate(NamesMapper mapper, int cardinality) {
+	public String generateClosedCyclePredicate(OntoUMLParser mapper, int cardinality) {
 		String predicate, rules, name;
 		String typeName;
 		Association a;
 		Type last_source, last_target, source, target;
 				
-		typeName = mapper.elementsMap.get(this.cycle.get(0));
+		typeName = mapper.getName(this.cycle.get(0));
 		
-		name = "closedCycle_"+typeName+"_"+mapper.elementsMap.get(cycle.get(1));
+		name = "closedCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
 		rules = "all w:World | #w." + typeName + ">=" + cardinality;
 		rules += "\n\tall w:World | all x:w."+typeName+" | ";
 		
@@ -36,10 +37,10 @@ public class ACAntiPattern {
 		last_target = SourceTargetAssociation.getTargetAlloy(a);
 		
 		if (last_source.equals(this.cycle.get(0)))
-			rules += "(x.(w."+mapper.elementsMap.get(a)+"))";
+			rules += "(x.(w."+mapper.getName(a)+"))";
 		
 		else {
-			rules += "((w."+mapper.elementsMap.get(a)+").x)";
+			rules += "((w."+mapper.getName(a)+").x)";
 			last_target = SourceTargetAssociation.getSourceAlloy(a);
 			last_source = SourceTargetAssociation.getTargetAlloy(a);
 		}
@@ -48,21 +49,22 @@ public class ACAntiPattern {
 			Relationship r = cycleRelationship.get(i);
 			 
 			if(r instanceof Association){
+				Association assoc = (Association)r;
 				source = SourceTargetAssociation.getSourceAlloy((Association)r);
 				target = SourceTargetAssociation.getTargetAlloy((Association)r);
-				
+				r = (Association)r;
 				if( (source.equals(last_target)) ){
-					rules+=".(w."+mapper.elementsMap.get(r)+")";
+					rules+=".(w."+mapper.getName(assoc)+")";
 					last_source = source;
 					last_target = target;
 				}
 				else {
-					rules+=".(~(w."+mapper.elementsMap.get(r)+"))";
+					rules+=".(~(w."+mapper.getName(assoc)+"))";
 					last_target = source;
 					last_source = target;
 				}
 				
-				name+="_"+mapper.elementsMap.get(last_target);
+				name+="_"+mapper.getName(last_target);
 				
 			}
 		}
@@ -125,15 +127,15 @@ public class ACAntiPattern {
 		return rule;
 	}	
 	
-	public String generateOpenCyclePredicate(NamesMapper mapper, int cardinality) {
+	public String generateOpenCyclePredicate(OntoUMLParser mapper, int cardinality) {
 		String predicate, predicate_rules, name, function_name = "cycleaux", function_rules="", function_parameters="x:Object, w:World", function_return="Object";
 		String typeName;
 		Association a;
 		Type last_source, last_target, source, target;
 				
-		typeName = mapper.elementsMap.get(this.cycle.get(0));
+		typeName = mapper.getName(this.cycle.get(0));
 		
-		name = "openCycle_"+typeName+"_"+mapper.elementsMap.get(cycle.get(1));
+		name = "openCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
 		predicate_rules = "all w:World | #w."+typeName+">="+cardinality+" and all x:w."+typeName+" | some "+function_name+"[x,w] and no "+function_name+"[x,w] & x";
 		
 		a = (Association)this.cycleRelationship.get(0);
@@ -141,10 +143,10 @@ public class ACAntiPattern {
 		last_target = SourceTargetAssociation.getTargetAlloy(a);
 		
 		if (last_source.equals(this.cycle.get(0)))
-			function_rules += "(x.(w."+mapper.elementsMap.get(a)+"))";
+			function_rules += "(x.(w."+mapper.getName(a)+"))";
 		
 		else {
-			function_rules += "((w."+mapper.elementsMap.get(a)+").x)";
+			function_rules += "((w."+mapper.getName(a)+").x)";
 			last_target = SourceTargetAssociation.getSourceAlloy(a);
 			last_source = SourceTargetAssociation.getTargetAlloy(a);
 		}
@@ -155,19 +157,20 @@ public class ACAntiPattern {
 			if(r instanceof Association){
 				source = SourceTargetAssociation.getSourceAlloy((Association)r);
 				target = SourceTargetAssociation.getTargetAlloy((Association)r);
+				Association assoc = (Association)r;
 				
 				if( (source.equals(last_target)) ){
-					function_rules+=".(w."+mapper.elementsMap.get(r)+")";
+					function_rules+=".(w."+mapper.getName(assoc)+")";
 					last_source = source;
 					last_target = target;
 				}
 				else {
-					function_rules+=".(~(w."+mapper.elementsMap.get(r)+"))";
+					function_rules+=".(~(w."+mapper.getName(assoc)+"))";
 					last_target = source;
 					last_source = target;
 				}
 				
-				name+="_"+mapper.elementsMap.get(last_target);
+				name+="_"+mapper.getName(last_target);
 				
 			}
 		}
