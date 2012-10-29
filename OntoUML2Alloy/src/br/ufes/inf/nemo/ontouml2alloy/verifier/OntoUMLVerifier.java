@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.ontouml2alloy.verifier;
 
-import br.ufes.inf.nemo.common.ontouml.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import RefOntoUML.Collective;
 import RefOntoUML.Kind;
 import RefOntoUML.PackageableElement;
