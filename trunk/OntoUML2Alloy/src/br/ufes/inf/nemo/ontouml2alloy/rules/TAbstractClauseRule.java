@@ -9,8 +9,8 @@ import br.ufes.inf.nemo.alloy.BinaryOperator;
 import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.VariableReference;
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
-import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
 public class TAbstractClauseRule {
 

@@ -23,6 +23,8 @@ package br.ufes.inf.nemo.ontouml2alloy.util;
 import java.io.File;
 import java.io.IOException;
 
+import br.ufes.inf.nemo.common.file.FileUtil;
+
 /**
  *	This class is used to generate our Alloy library Files into destination directory path.
  *  

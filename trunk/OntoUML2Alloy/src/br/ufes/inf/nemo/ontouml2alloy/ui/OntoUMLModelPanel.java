@@ -33,7 +33,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
-import br.ufes.inf.nemo.ontouml2alloy.util.ResourceUtil;
+import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 /**
  * This Panel was created using the Windows Builder in Eclipse. 
@@ -51,7 +51,7 @@ public class OntoUMLModelPanel extends JPanel {
 	
 	public void setModel (String modelpath) throws IOException
 	{		
-		Resource resource = ResourceUtil.loadOntoUML(modelpath);
+		Resource resource = ResourceUtil.loadReferenceOntoUML(modelpath);
 		refmodel = (RefOntoUML.Package) resource.getContents().get(0);
 		
 		textField.setText(modelpath);

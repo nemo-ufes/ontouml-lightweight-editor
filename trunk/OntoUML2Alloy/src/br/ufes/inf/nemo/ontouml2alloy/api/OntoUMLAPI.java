@@ -22,6 +22,8 @@ package br.ufes.inf.nemo.ontouml2alloy.api;
 
 import java.util.ArrayList;
 
+import br.ufes.inf.nemo.common.parser.OntoUMLParser;
+
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
@@ -32,7 +34,6 @@ import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
-import br.ufes.inf.nemo.ontouml2alloy.parser.OntoUMLParser;
 
 /**
  * This class is used to provide useful methods of manipulating the OntoUML model instances.
