@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
@@ -15,6 +16,38 @@ public class STRAntiPattern {
 	public STRAntiPattern (Association association) throws Exception{
 		this.setAssociation(association);
 	}
+	
+	public String generateIrreflexiveOcl(){
+		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
+		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv : !(self."+aet_name+"->includes(self))";
+	}
+	
+	public String generateReflexiveOcl(){
+		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
+		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv : self."+aet_name+"->includes(self)";
+	}
+	
+	public String generateSymmetricOcl(){
+		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
+		String aes_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(0));
+		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv : self."+aet_name+"->forAll(x : "+association.getMemberEnd().get(1).getType().getName()+" | x."+aes_name+"->includes(self))"+
+				"context "+association.getMemberEnd().get(1).getType().getName()+"\n"+
+				"inv : self."+aes_name+"->forAll(x : "+association.getMemberEnd().get(0).getType().getName()+" | x."+aet_name+"->includes(self))";
+	}
+	
+	public String generateAntiSymmetricOcl(){
+		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
+		String aes_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(0));
+		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv : self."+aet_name+"->forAll(x : "+association.getMemberEnd().get(1).getType().getName()+" | !(x."+aes_name+"->includes(self)))"+
+				"context "+association.getMemberEnd().get(1).getType().getName()+"\n"+
+				"inv : self."+aes_name+"->forAll(x : "+association.getMemberEnd().get(0).getType().getName()+" | !(x."+aet_name+"->includes(self)))";
+	}
+	
+	/*TODO criar as regras para transitive*/
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is REFLEXIVE*/
 	public String generateReflexivePredicate (int cardinality, NamesMapper mapper) {

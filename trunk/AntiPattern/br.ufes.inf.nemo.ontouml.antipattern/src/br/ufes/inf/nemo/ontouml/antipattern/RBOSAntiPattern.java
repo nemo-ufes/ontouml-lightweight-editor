@@ -4,6 +4,7 @@ import org.eclipse.emf.common.util.EList;
 
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
@@ -19,8 +20,20 @@ public class RBOSAntiPattern {
 		this.setAssociation(association);
 	}
 	
+	public String generateIrreflexiveOcl(){
+		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
+		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv : !(self."+aet_name+"->includes(self))";
+	}
+	
+	public String generateReflexiveOcl(){
+		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
+		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv : self."+aet_name+"->includes(self)";
+	}
+	
 	/*Generates an Alloy predicate that produces model instances in which the related elements are always different*/
-	public String generateDisjointPredicate(NamesMapper mapper){
+	public String generateIrreflexivePredicate(NamesMapper mapper){
 		String predicate, rules, predicateName;
 		
 		String associationName;
@@ -37,7 +50,7 @@ public class RBOSAntiPattern {
 	}
 
 	/*Generates an Alloy predicate that produces model instances in which the association may have the same participant in both ends*/
-	public String generateOverlappingPredicate(NamesMapper mapper){
+	public String generateReflexivePredicate(NamesMapper mapper){
 		String predicate, rules, predicateName;
 		
 		String associationName;
