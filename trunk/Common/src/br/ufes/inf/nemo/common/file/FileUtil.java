@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.common.file;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -25,4 +26,19 @@ public class FileUtil {
 		out.write(content);
 		out.close();
 	}
+	
+    /** Procedure for creating a File */	
+    public static File createFile (String path) 
+    {    	
+		File file = new File(path);		
+		if (!file.exists()) {			
+			try{
+				file.createNewFile();
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		}
+		return file;
+	}
+	
 }
