@@ -13,8 +13,8 @@ import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.Type;
 
-import br.ufes.inf.nemo.common.graph.GraphAlgo;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
+import br.ufes.inf.nemo.common.ontouml2graph.GraphAlgo;
 import br.ufes.inf.nemo.common.ontouml2graph.OntoUML2Graph;
 import br.ufes.inf.nemo.ontouml.antipattern.RSAntiPattern;
 

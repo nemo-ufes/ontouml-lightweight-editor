@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.common.graph;
+package br.ufes.inf.nemo.common.ontouml2graph;
 
 public class GraphAlgo {
 
