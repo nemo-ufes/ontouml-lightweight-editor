@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import br.ufes.inf.nemo.common.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontouml.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.ontouml.antipattern.util.ArrayListOperations;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;

@@ -1,30 +1,39 @@
-package br.ufes.inf.nemo.ontouml.antipattern.util;
+package br.ufes.inf.nemo.common.ontouml2graph;
 
 import java.util.ArrayList;
 
 import RefOntoUML.Association;
-import RefOntoUML.Class;
+import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
+import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Package;
+import RefOntoUML.Class;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Relationship;
 
-public class Ecore2Graph {
+public class OntoUML2Graph {
 	
-	public static int[][] buildGraph (Package model, ArrayList<Class> classes, ArrayList<Relationship> relationships){
+	public static int[][] buildGraph (Package model, ArrayList<Class> classes, ArrayList<Relationship> relationships, boolean incGen, boolean incMat){
 		
 		classes.add(null);
 		relationships.add(null);
 		
-		for (PackageableElement element : model.getPackagedElement()) {
-			if(element instanceof Class) {
+		for (PackageableElement element : model.getPackagedElement()) 
+		{
+			if(element instanceof Class) 
+			{
 				classes.add((Class) element);
-				for (Generalization g : ((Class)element).getGeneralization()) {
-					relationships.add(g);
+				if(incGen)
+				{
+					for (Generalization g : ((Class)element).getGeneralization()) 
+					{
+						relationships.add(g);
+					}
 				}
 				
 			}
-			if(element instanceof Association || element instanceof Generalization){
+			if((element instanceof Association || element instanceof Generalization) && !(element instanceof Derivation) && ( !(element instanceof MaterialAssociation) || incMat ) )
+			{
 				relationships.add((Relationship) element);
 			}
 		}
@@ -35,15 +44,18 @@ public class Ecore2Graph {
 		nodei[0]=0;
 		nodej[0]=0;
 		
-		for (Relationship r : relationships) {
+		for (Relationship r : relationships) 
+		{
 			if (r==null)
 				continue;
 			
-			if (r instanceof Association) {
+			if (r instanceof Association)
+			{
 				nodei[relationships.indexOf(r)] = classes.indexOf(((Association)r).getMemberEnd().get(0).getType());
 				nodej[relationships.indexOf(r)] = classes.indexOf(((Association)r).getMemberEnd().get(1).getType());
 			}
-			if (r instanceof Generalization){
+			if (r instanceof Generalization)
+			{
 				nodei[relationships.indexOf(r)] = classes.indexOf(((Generalization)r).getGeneral());
 				nodej[relationships.indexOf(r)] = classes.indexOf(((Generalization)r).getSpecific());
 			}
