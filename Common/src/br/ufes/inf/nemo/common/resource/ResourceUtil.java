@@ -9,8 +9,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.resource.UMLResource;
 
 /**
  * This class is used as a Resource utility.
@@ -38,29 +36,5 @@ public class ResourceUtil {
 		
 		return resource;		
 	}
-	
-	/** 
-	 * Save UML Model to a Resource 
-	 */	
-	public static Resource saveUML (String umlpath, org.eclipse.uml2.uml.Package umlmodel) 
-	{
-		final ResourceSet rset = new ResourceSetImpl();
-		
-		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);	
-		rset.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-    	
-		URI fileURI = URI.createFileURI(umlpath);    	
-	    final Resource resource = rset.createResource(fileURI);    	
-	    resource.getContents().add(umlmodel);    	
-	
-	    try{
-	    	resource.save(Collections.emptyMap());
-	    }catch(IOException e){
-	    	e.printStackTrace();
-	    }
-	    
-	    return resource;		   	
-	}
-	
 	
 }
