@@ -125,10 +125,9 @@
       memberEnd="_pY1D4QpWEeKzUuEIE05i3w _pY1q8gpWEeKzUuEIE05i3w">
     <ownedEnd
         xmi:id="_pY1D4QpWEeKzUuEIE05i3w"
+        name="surgery"
         type="_oFlTUApWEeKzUuEIE05i3w"
         association="_pY1D4ApWEeKzUuEIE05i3w">
-      <name
-          xsi:nil="true"/>
       <upperValue
           xsi:type="RefOntoUML:LiteralUnlimitedNatural"
           xmi:id="_zqlAgQpWEeKzUuEIE05i3w"
@@ -140,11 +139,10 @@
     </ownedEnd>
     <ownedEnd
         xmi:id="_pY1q8gpWEeKzUuEIE05i3w"
+        name="surgeon"
         type="_ggMPQApWEeKzUuEIE05i3w"
         isReadOnly="true"
         association="_pY1D4ApWEeKzUuEIE05i3w">
-      <name
-          xsi:nil="true"/>
       <upperValue
           xsi:type="RefOntoUML:LiteralUnlimitedNatural"
           xmi:id="_zqlAgwpWEeKzUuEIE05i3w"

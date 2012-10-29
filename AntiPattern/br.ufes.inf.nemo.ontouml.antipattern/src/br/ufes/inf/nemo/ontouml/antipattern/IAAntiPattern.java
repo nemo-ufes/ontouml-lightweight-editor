@@ -6,6 +6,7 @@ import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.ontouml.antipattern.mapper.NamesMapper;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 import br.ufes.inf.nemo.ontouml.antipattern.util.Combination;
 import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
 
@@ -17,6 +18,51 @@ public class IAAntiPattern {
 	
 	public IAAntiPattern(Association a) throws Exception {
 		this.setAssociation(a);
+	}
+	
+	 
+	public String generateTargetOcl(ArrayList<Classifier> subtypes){
+		String result;
+		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
+		
+		result = "context "+source.getName()+"\n"+
+				 "inv: ";	
+		
+		if(subtypes!=null && subtypes.size()>0 && targetChildren.containsAll(subtypes)){
+			for (int n=0;n<subtypes.size();n++){
+				result += "self."+aet_name+"->intersection("+subtypes.get(n).getName()+".allInstances())->size()>0";
+				if (n<subtypes.size()-1)
+            		result += " and ";
+			}
+							
+			return result;
+		}
+		
+		else
+			return null;
+		
+	}
+	
+	public String generateSourceOcl(ArrayList<Classifier> subtypes){
+		String result;
+		String aes_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(0));
+		
+		result = "context "+target.getName()+"\n"+
+				 "inv: ";	
+		
+		if(subtypes!=null && subtypes.size()>0 && sourceChildren.containsAll(subtypes)){
+			for (int n=0;n<subtypes.size();n++){
+				result += "self."+aes_name+"->intersection("+subtypes.get(n).getName()+".allInstances())->size()>0";
+				if (n<subtypes.size()-1)
+            		result += " and ";
+			}
+							
+			return result;
+		}
+		
+		else
+			return null;
+		
 	}
 	
 	//generates an alloy predicate whose instances allowed show that the target end of the relation only has the types inputed in the parameter, on the variable subtypes. 

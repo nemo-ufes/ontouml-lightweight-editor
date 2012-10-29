@@ -29,8 +29,9 @@ public class QueryPerformer {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
-		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/RelationSpecialization.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/GenericCycle.xmi").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/RelationSpecialization.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
@@ -66,8 +67,13 @@ public class QueryPerformer {
 		    	System.out.println(rwor);
 		    	//System.out.println(rwor.generateExclusivePredicate(mapper, 1));
 		    	//System.out.println(rwor.generateNonExclusivePredicate(mapper, 1));
-		    	/*
-		    	System.out.println("#######");
+		    	
+		    	ArrayList<Classifier> classes = new ArrayList<>();
+		    	classes.addAll(rwor.getMediations().values());
+		    	System.out.println(rwor.generateExclusiveOcl(classes));
+		    	
+		    	
+		    	/*System.out.println("#######");
 		    	
 		    		
 		    	ArrayList<Mediation> list1, list2;
@@ -95,6 +101,8 @@ public class QueryPerformer {
 		    System.out.println("#Relation Between Overlapping Subtypes Antipatterns: "+result3.size()+"\n");
 		    for (RBOSAntiPattern rbos : result3){
 		    	System.out.println(rbos);
+		    	System.out.println(rbos.generateIrreflexiveOcl());
+		    	System.out.println(rbos.generateReflexiveOcl());
 		    	/*System.out.println(rbos.generateDisjointPredicate(mapper));
 		    	System.out.println(rbos.generateOverlappingPredicate(mapper));*/
 		    }
@@ -106,6 +114,8 @@ public class QueryPerformer {
 		    	System.out.println(rs);
 		    	System.out.println(rs.generateSubsetOcl());
 		    	System.out.println(rs.generateRedefineOcl());
+		    	System.out.println(rs.generateNotSubsetOcl());
+		    	System.out.println(rs.generateDisjointOcl());
 		    	/*System.out.println(rs.generateSubsetPredicate(mapper));
 		    	System.out.println(rs.generateRedefinePredicate(mapper));
 		    	System.out.println(rs.generateNotSubsetPredicate(mapper));
@@ -115,21 +125,22 @@ public class QueryPerformer {
 		    System.out.println("**************************************************************");
 		    
 		    ArrayList<IAAntiPattern> result5 = AntiPatternIdentifier.identifyIA(m);
-		    ArrayList<Classifier> subtypes;
+		    
 		    System.out.println("#Imprecise Abstractions Antipatterns: "+result5.size()+"\n");
 		    for (IAAntiPattern ia : result5){
 		    	System.out.println(ia+"\n");
-		    	/*//System.out.println(ia.generateTargetPredicate(ia.getTargetChildren(), mapper));
-		    	subtypes = new ArrayList<>();
-		    	
+		    	//System.out.println(ia.generateTargetPredicate(ia.getTargetChildren(), mapper));
+		    	ArrayList<Classifier> subtypes = new ArrayList<>();
 		    	subtypes.addAll(ia.getSourceChildren());
 		    	
-		    	if(subtypes.size()>1){
-		    		subtypes.remove(0);
-		    		subtypes.remove(0);
-		    	}
+		    	System.out.println(ia.generateSourceOcl(subtypes));
 		    	
-		    	System.out.println(ia.generateSourcePredicate(subtypes, mapper));
+		    	subtypes = new ArrayList<>();
+		    	subtypes.addAll(ia.getTargetChildren());
+		    	
+		    	System.out.println(ia.generateTargetOcl(subtypes));
+		    	
+		    	//System.out.println(ia.generateSourcePredicate(subtypes, mapper));
 		    	//System.out.println(ia.generateImpreciseAbstractionPredicates(mapper));*/
 		    }
 		    System.out.println("**************************************************************");
@@ -138,6 +149,8 @@ public class QueryPerformer {
 			System.out.println("# of Generic Cycles Identified: "+result6.size());
 			for (ACAntiPattern ac : result6) {
 				System.out.println(ac);
+				System.out.println(ac.generateCycleOcl(ACAntiPattern.CLOSED));
+				System.out.println(ac.generateCycleOcl(ACAntiPattern.OPEN));
 				/*System.out.println(ac.generateClosedCyclePredicate(mapper, 2));
 				System.out.println(ac.generateOpenCyclePredicate(mapper, 2));*/
 			}

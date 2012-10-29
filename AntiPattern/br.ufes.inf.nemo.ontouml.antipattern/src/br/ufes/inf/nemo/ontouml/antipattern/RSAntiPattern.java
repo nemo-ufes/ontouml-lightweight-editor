@@ -37,23 +37,32 @@ public class RSAntiPattern {
 		String aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
 		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
 		
-		return "context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv : self."+aeg_name+"->includesAll(self."+aes_name+")";
+		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv : self.oclAsType("+general.getMemberEnd().get(0).getType().getName()+")."+aeg_name+"->includesAll(self."+aes_name+")";
 	}
 	
 	public String generateRedefineOcl(){
-		Property associationEndSpecific = specific.getMemberEnd().get(1);
-		Property associationEndGeneral = general.getMemberEnd().get(1);
-		String aes_name = associationEndSpecific.getName();
-		String aeg_name = associationEndGeneral.getName();
-		
-		if(aes_name==null)
-			aes_name = associationEndSpecific.getType().getName().toLowerCase();
-		if(aeg_name==null)
-			aeg_name = associationEndGeneral.getType().getName().toLowerCase();
+		String aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
+		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
 			
-		return "context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
+		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
 				"inv : self.oclAsType("+general.getMemberEnd().get(0).getType().getName()+")."+aeg_name+"=self."+aes_name;
+	}
+	
+	public String generateDisjointOcl(){
+		String aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
+		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
+			
+		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv : self.oclAsType("+general.getMemberEnd().get(0).getType().getName()+")."+aeg_name+"->intersection(self."+aes_name+")->size()=0";
+	}
+	
+	public String generateNotSubsetOcl(){
+		String aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
+		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
+			
+		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv : !(self.oclAsType("+general.getMemberEnd().get(0).getType().getName()+")."+aeg_name+"->includesAll(self."+aes_name+"))";
 	}
 	
 	/*This method generates an Alloy predicate that states that the specific association is a SUBTYPE of the general association*/

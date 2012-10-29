@@ -34,7 +34,7 @@ public class RWORAntiPattern {
 			if(mediation.getMemberEnd().get(1).getType().equals(disjointTypes.get(0)))
 				result+="self."+AssociationEndNameGenerator.associationEndName(mediation.getMemberEnd().get(1));
 		}
-		
+		System.out.println(disjointTypes.size());
 		for (int i = 1; i<disjointTypes.size(); i++){
 			Classifier classifier = disjointTypes.get(i);
 			for (Mediation mediation : this.mediations.keySet()) {
@@ -43,9 +43,8 @@ public class RWORAntiPattern {
 				if(mediation.getMemberEnd().get(1).getType().equals(classifier))
 					result+="->intersection(self."+AssociationEndNameGenerator.associationEndName(mediation.getMemberEnd().get(1))+")";
 			}
-			
-			i++;
 		}
+		result += "->size=0";
 		
 		return result;
 	}
