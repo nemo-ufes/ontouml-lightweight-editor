@@ -20,6 +20,7 @@ public class QueryPerformer {
 	public static void main(String[] args) throws Exception {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		// Register the default resource factory -- only needed for stand-alone!
+		@SuppressWarnings("unused")
 		RefOntoUMLPackage refMetaPack = RefOntoUMLPackage.eINSTANCE;
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		// Get the URI of the model file.
@@ -37,6 +38,7 @@ public class QueryPerformer {
 		
 		m = (Model) resource.getContents().get(0);
 		
+		@SuppressWarnings("unused")
 		OntoUMLParser mapper = new OntoUMLParser(m);
 		
 		try {

@@ -11,6 +11,7 @@ import br.ufes.inf.nemo.ontouml.antipattern.util.Combination;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
+import RefOntoUML.PackageableElement;
 import RefOntoUML.Relator;
 
 public class RWORAntiPattern {
@@ -72,7 +73,7 @@ public class RWORAntiPattern {
         
 		while (comb1.hasNext()) {
             saida = comb1.next();
-            rules+="#(x.(w."+mapper.getName(saida.get(0))+") & x.(w."+mapper.getName(saida.get(1))+")) = 0";
+            rules+="#(x.(w."+mapper.getName((PackageableElement)saida.get(0))+") & x.(w."+mapper.getName((PackageableElement)saida.get(1))+")) = 0";
             
             if(comb1.hasNext())
             	rules+=" and ";
@@ -107,7 +108,7 @@ public class RWORAntiPattern {
         
 		while (comb1.hasNext()) {
             saida = comb1.next();
-            rules+="#(x.(w."+mapper.getName(saida.get(0))+") & x.(w."+mapper.getName(saida.get(1))+")) > 0";
+            rules+="#(x.(w."+mapper.getName((PackageableElement)saida.get(0))+") & x.(w."+mapper.getName((PackageableElement)saida.get(1))+")) > 0";
             
             if(comb1.hasNext())
             	rules+=" or ";
@@ -157,7 +158,7 @@ public class RWORAntiPattern {
 		
 	}
 	
- 	@SuppressWarnings("unchecked")
+ 	@SuppressWarnings({ "unchecked", "unused" })
 	public String generateAllMultipleExclusivePredicate(OntoUMLParser mapper, int cardinality){
 		String predicates="", rules, predicateName, relatorName;
 		ArrayList<Object>  mediations = new ArrayList<>(), output = new ArrayList<>(), output2, aux;
@@ -189,7 +190,7 @@ public class RWORAntiPattern {
             	rules+="# (";
             	for (int n2=0; n2<((ArrayList<Object>)(output2).get(n)).size();n2++) {
 	            	
-            		rules+="x.(w."+mapper.getName(((ArrayList<Object>) output2.get(n)).get(n2))+")";
+            		rules+="x.(w."+mapper.getName((PackageableElement)((ArrayList<Object>) output2.get(n)).get(n2))+")";
 	            	
 	            	if (n2==((ArrayList<Object>)(output2).get(n)).size()-1)
 	            		rules+=") = 0";
