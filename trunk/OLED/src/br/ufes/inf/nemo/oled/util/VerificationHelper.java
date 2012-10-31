@@ -7,8 +7,8 @@ import java.util.List;
 import javax.swing.UIManager;
 
 import RefOntoUML.Model;
+import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
-import br.ufes.inf.nemo.ontouml2alloy.ui.TheFrame;
 
 public class VerificationHelper {
 	
@@ -35,7 +35,7 @@ public class VerificationHelper {
     				try {
     					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-    					TheFrame frame = new TheFrame(refmodel,alsPath);
+    					TheFrame frame = new TheFrame(refmodel,"",alsPath);
     					frame.setVisible(true);
     					frame.setLocationRelativeTo(null);
     				
@@ -52,10 +52,10 @@ public class VerificationHelper {
 		}    	
     	
     	if (succeeds) 
-    		return new OperationResult(ResultType.SUCESS, "The model has been successfuly transformed into alloy.", null );    	
+    		return new OperationResult(ResultType.SUCESS, "Model Validation Environment called succesfully.", null );    	
     	
     	if (!succeeds) 
-    		return new OperationResult(ResultType.ERROR, "An Error ocurred while executing the transformation into alloy\n"+message, null);
+    		return new OperationResult(ResultType.ERROR, "An Error ocurred while calling the Model Validation Environment \n"+message, null);
     	    	
     	return new OperationResult(ResultType.ERROR, "A problem has ocurred when verifying the model", null);
 	}

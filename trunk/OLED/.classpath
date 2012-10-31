@@ -14,14 +14,14 @@
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.refontouml.jar"/>
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
 	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.refontouml.edit.jar"/>
-	<classpathentry kind="lib" path="lib/alloy4.2-rc.jar"/>
 	<classpathentry kind="lib" path="lib/forms-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-all-1.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/lablib-checkboxtree-3.3.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2Alloy"/>
+	<classpathentry kind="lib" path="lib/alloy4.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2SBVR"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2SimpleOwl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/XMI2OntoUML"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/MOVE"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
