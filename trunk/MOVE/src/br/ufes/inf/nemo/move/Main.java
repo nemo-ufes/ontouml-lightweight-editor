@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.UIManager;
 
-import br.ufes.inf.nemo.move.ui.AppFrame;
+import br.ufes.inf.nemo.move.ui.TheFrame;
 
 public final class Main {
 
@@ -37,7 +37,7 @@ public final class Main {
 				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					
-					AppFrame frame = new AppFrame();
+					TheFrame frame = new TheFrame();
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
 					
