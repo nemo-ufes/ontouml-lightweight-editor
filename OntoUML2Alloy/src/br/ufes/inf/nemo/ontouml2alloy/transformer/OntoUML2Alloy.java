@@ -22,11 +22,7 @@ package br.ufes.inf.nemo.ontouml2alloy.transformer;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -48,7 +44,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyLibraryFiles;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyThemeFile;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
-import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
  *	This class is used to execute the transformation of OntoUML to Alloy. 
@@ -63,10 +58,7 @@ public class OntoUML2Alloy {
 	
 	/** Alloy specification absolute path. */
 	public static String alsPath;
-	
-	/** Parameters to open Alloy Analyzer. */
-	public static String[] argsAnalyzer = {"",""};
-	
+		
 	/** 
 	 *  Provide the ontouml model elements.
 	 *  It is also used for associate the elements of the ontouml model 
@@ -116,36 +108,11 @@ public class OntoUML2Alloy {
 		AlloyThemeFile.generateAlloyThemeFile(dirPath);		
 
 		// generate alloy library files
-		AlloyLibraryFiles.generateLibraryFiles(dirPath);	
+		AlloyLibraryFiles.generateLibraryFiles(dirPath);				
 				
-		// Copy "alloy4.2-rc.jar" to the destination directory 
-		InputStream is = OntoUML2Alloy.class.getClassLoader().getResourceAsStream("alloy4.2-rc.jar");
-		if(is == null) is = new FileInputStream("lib/alloy4.2-rc.jar");
-		File alloyJarFile = new File(dirPath + "alloy4.2-rc.jar");
-		alloyJarFile.deleteOnExit();
-		OutputStream out = new FileOutputStream(alloyJarFile);
-
-		// copy data flow -> MB x MB
-		byte[] src = new byte[1024];
-		int read = 0;
-		while ((read = is.read(src)) != -1) {
-			out.write(src, 0, read);
-		}		
-		is.close();
-		out.flush();
-		out.close();
-		
 		// Here the transformation begins...
 		start(refmodel,opt);
 		
-		// open he Alloy Analyzer
-		if (opt.openAnalyzer)
-		{
-			argsAnalyzer[0] = alsPath;
-			argsAnalyzer[1] = dirPath + "standart_theme.thm"	;	
-			SimpleGUICustom.main(argsAnalyzer);
-		}
-
 		return true;
 	}	
 	
