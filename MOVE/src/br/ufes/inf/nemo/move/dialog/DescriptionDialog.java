@@ -56,7 +56,7 @@ public class DescriptionDialog extends JDialog {
 	 */
 	public DescriptionDialog(String title, String info) 
 	{
-		setIconImage(Toolkit.getDefaultToolkit().getImage(DescriptionDialog.class.getResource("/resources/br/ufes/inf/nemo/ontouml2alloy/about.png")));		
+		setIconImage(Toolkit.getDefaultToolkit().getImage(DescriptionDialog.class.getResource("/resources/br/ufes/inf/nemo/move/about.png")));		
 		setTitle("Axiom Description");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 501, 251);
