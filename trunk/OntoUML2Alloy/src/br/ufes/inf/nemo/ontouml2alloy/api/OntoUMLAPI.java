@@ -30,6 +30,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
+import RefOntoUML.ObjectClass;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
@@ -57,7 +58,7 @@ public class OntoUMLAPI {
 				{
 					if(! p.getAggregation().equals(AggregationKind.NONE))
 					{
-						if (p.getType().getName().equals(c.getName())) return true;						
+						if (p.getType().equals(c)) return true;						
 					}
 				}
 			}
@@ -80,7 +81,7 @@ public class OntoUMLAPI {
 				{
 					if(p.getType() instanceof Relator)
 					{						
-						if (p.getType().getName().equals(c.getName())) return true;
+						if (p.getType().equals(c)) return true;
 					}
 				}								
 			}
@@ -184,7 +185,7 @@ public class OntoUMLAPI {
 	 * RigidSortalClass : Kind, Collective, Quantity, SubKind.
 	 * 
 	 */	
-	public static void getAllMeronymics(OntoUMLParser ontoparser, ArrayList<String> list, RigidSortalClass c)
+	public static void getAllMeronymics(OntoUMLParser ontoparser, ArrayList<String> list, Classifier c)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
 		{
@@ -204,9 +205,9 @@ public class OntoUMLAPI {
 				}
 			}
 		}
-		for(Generalization gen : ((RigidSortalClass)c).getGeneralization())
+		for(Generalization gen : c.getGeneralization())
 		{
-			if (gen.getGeneral() instanceof RigidSortalClass) getAllMeronymics(ontoparser,list,(RigidSortalClass)gen.getGeneral());
+			if (gen.getGeneral() instanceof ObjectClass) getAllMeronymics(ontoparser,list,gen.getGeneral());
 		}
 	}
 	
