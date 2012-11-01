@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2Alloy"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/AntiPattern"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
