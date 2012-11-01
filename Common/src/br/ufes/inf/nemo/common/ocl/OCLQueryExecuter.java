@@ -18,11 +18,12 @@ import org.eclipse.ocl.ecore.SendSignalAction;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.helper.OCLHelper;
 
-import RefOntoUML.Model;
+import RefOntoUML.Package;
+
 
 public class OCLQueryExecuter {
 	
-	public static Object executeQuery (String oclQuery, EClassifier context, Model m) throws ParserException
+	public static Object executeQuery (String oclQuery, EClassifier context, Package model) throws ParserException
 	{
 		OCLExpression<EClassifier> query = null;
 		
@@ -39,6 +40,6 @@ public class OCLQueryExecuter {
 	    query = helper.createQuery(oclQuery); 
 	    eval = ocl.createQuery(query);
 	    
-	    return eval.evaluate(m);
+	    return eval.evaluate(model);
 	}
 }
