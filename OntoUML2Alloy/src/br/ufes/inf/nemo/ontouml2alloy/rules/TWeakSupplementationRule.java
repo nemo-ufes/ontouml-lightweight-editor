@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.ontouml2alloy.rules;
 import java.util.ArrayList;
 
 import RefOntoUML.Classifier;
-import RefOntoUML.RigidSortalClass;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
@@ -26,11 +25,13 @@ public class TWeakSupplementationRule {
 		// isAbstract from generalization Sets (Disjoint and Complete)
 		if (OntoUMLAPI.isAbstractFromGeneralizationSets(ontoparser,c)) { return null; }	
 		
-		if (! OntoUMLAPI.hasMeronymicRelation(ontoparser,c)) { return null; } 
+		//if (! OntoUMLAPI.hasMeronymicRelation(ontoparser,c)) { return null; } 
 				
 		// get all 'c' meronymics
 		ArrayList<String> associationNames = new ArrayList<String>();		
-		OntoUMLAPI.getAllMeronymics(ontoparser,associationNames, (RigidSortalClass)c);	
+		OntoUMLAPI.getAllMeronymics(ontoparser,associationNames, c);	
+		
+		if(associationNames.size()==0) return null;
 		
 		if( associationNames.size() > 0)
 		{

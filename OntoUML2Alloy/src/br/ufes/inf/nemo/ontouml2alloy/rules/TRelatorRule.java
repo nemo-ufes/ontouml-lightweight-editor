@@ -26,12 +26,14 @@ public class TRelatorRule {
 		// isAbstract from generalization Sets (Disjoint and Complete)
 		if ( OntoUMLAPI.isAbstractFromGeneralizationSets(ontoparser,c)) return null;
 		
-		if (! OntoUMLAPI.hasMediationRelation(ontoparser,c)) return null;
+		//if (! OntoUMLAPI.hasMediationRelation(ontoparser,c)) return null;
 		
 		// get all 'c' mediations
 		ArrayList<String> associationNames = new ArrayList<String>();		
 		OntoUMLAPI.getAllMediationsNames(ontoparser,associationNames, c);		
 		
+		if(associationNames.size()==0) return null; 
+			
 		if(associationNames.size()>0)
 		{			
 			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
