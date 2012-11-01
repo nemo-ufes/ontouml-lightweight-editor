@@ -1,3 +1,5 @@
+package edu.mit.csail.sdg.alloy4whole;
+
 /** 
  * Alloy Analyzer 4 -- Copyright (c) 2006-2009, Felix Chang
  *
@@ -14,8 +16,6 @@
  * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE..
  * 
  */
-
-package edu.mit.csail.sdg.alloy4whole;
 
 import java.io.File;
 import java.io.FileOutputStream;
