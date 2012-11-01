@@ -3,15 +3,16 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.ocl.util.Tuple;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
-import RefOntoUML.Model;
 import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.Type;
+import RefOntoUML.Package;
 
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontouml2graph.GraphAlgo;
@@ -25,12 +26,12 @@ public class AntiPatternIdentifier {
 	
 	/*Returns all the Relation Specialization AntiPatterns in the input model m*/ 
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RSAntiPattern> identifyRS(Model m) throws Exception 
+	public static ArrayList<RSAntiPattern> identifyRS(Package model) throws Exception 
 	{
 		Collection<Tuple<Association, Association>> query_result;
 		ArrayList<RSAntiPattern> result = new ArrayList<>();
 		
-		query_result = (Collection<Tuple<Association, Association>>)OCLQueryExecuter.executeQuery(RS_OCLQuery, m.eClass(), m);
+		query_result = (Collection<Tuple<Association, Association>>)OCLQueryExecuter.executeQuery(RS_OCLQuery, (EClassifier)model.eClass(), model);
 		
 		for (Tuple<Association, Association> t : query_result) {
 			RSAntiPattern rs = new RSAntiPattern((Association)t.getValue("a1"), (Association)t.getValue("a2")); 
@@ -45,12 +46,12 @@ public class AntiPatternIdentifier {
 	
 	/*Returns all the Self-Type Relationship AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
-	public static ArrayList<STRAntiPattern> identifySTR (Model m) throws Exception
+	public static ArrayList<STRAntiPattern> identifySTR (Package model) throws Exception
 	{
 		Collection<Association> query_result;
 		ArrayList<STRAntiPattern> result = new ArrayList<>();
 		
-		query_result = (Collection<Association>) OCLQueryExecuter.executeQuery(STR_OCLQuery, m.eClass(), m);
+		query_result = (Collection<Association>) OCLQueryExecuter.executeQuery(STR_OCLQuery, (EClassifier)model.eClass(), model);
 		
 		for (Association a : query_result) {
 			result.add(new STRAntiPattern(a));
@@ -64,12 +65,12 @@ public class AntiPatternIdentifier {
 	
 	/*Returns all the Relation Between Overlapping Subtypes AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RBOSAntiPattern> identifyRBOS (Model m) throws Exception 
+	public static ArrayList<RBOSAntiPattern> identifyRBOS (Package model) throws Exception 
 	{
 		Collection<Association> query_result;
 		ArrayList<RBOSAntiPattern> result = new ArrayList<>();
 		
-		query_result = (Collection<Association>)OCLQueryExecuter.executeQuery(RBOS_OCLQuery, m.eClass(), m);
+		query_result = (Collection<Association>)OCLQueryExecuter.executeQuery(RBOS_OCLQuery, (EClassifier)model.eClass(), model);
 		
 		for (Association a : query_result) {
 			result.add(new RBOSAntiPattern(a));
@@ -84,13 +85,13 @@ public class AntiPatternIdentifier {
 	
 	/*Returns all the Relator With Overlapping Roles AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RWORAntiPattern> identifyRWOR (Model m) throws Exception
+	public static ArrayList<RWORAntiPattern> identifyRWOR (Package model) throws Exception
 	{
 		
 		Collection<Relator> query_result;
 		ArrayList<RWORAntiPattern> result = new ArrayList<>();
 		
-		query_result = (Collection<Relator>)OCLQueryExecuter.executeQuery(RWOROCLQuery, m.eClass(), m);
+		query_result = (Collection<Relator>)OCLQueryExecuter.executeQuery(RWOROCLQuery, (EClassifier)model.eClass(), model);
 		
 		for (Relator a : query_result) {
 			result.add(new RWORAntiPattern(a));
@@ -104,12 +105,12 @@ public class AntiPatternIdentifier {
 	
 	/*Returns all the Imprecise Abstraction AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
-	public static ArrayList<IAAntiPattern> identifyIA(Model m) throws Exception 
+	public static ArrayList<IAAntiPattern> identifyIA(Package model) throws Exception 
 	{
 		Collection<Association> query_result;
 		ArrayList<IAAntiPattern> result = new ArrayList<>();
 		
-		query_result = (Collection<Association>)OCLQueryExecuter.executeQuery(IA_OCLQuery, m.eClass(), m);
+		query_result = (Collection<Association>)OCLQueryExecuter.executeQuery(IA_OCLQuery, (EClassifier)model.eClass(), model);
 		
 		for (Association a : query_result) {
 			result.add(new IAAntiPattern(a));
@@ -118,7 +119,7 @@ public class AntiPatternIdentifier {
 		return result;
 	}
 	
-	public static ArrayList<ACAntiPattern> identifyAC(Model m){
+	public static ArrayList<ACAntiPattern> identifyAC(Package model){
 		
 		int aux[][]; 
 		int nodei[], nodej[];
@@ -126,7 +127,7 @@ public class AntiPatternIdentifier {
 		ArrayList<Relationship> relationships = new ArrayList<>(), cycle_ass;
 		ArrayList<ACAntiPattern> result = new ArrayList<>();
 		
-		aux = OntoUML2Graph.buildGraph(m, classes, relationships, false, false);
+		aux = OntoUML2Graph.buildGraph(model, classes, relationships, false, false);
 		nodei = aux[0];
 		nodej = aux[1];
 		
