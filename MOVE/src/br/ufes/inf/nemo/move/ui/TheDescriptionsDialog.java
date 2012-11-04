@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.move.ui;
 
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -14,15 +13,15 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.SoftBevelBorder;
+import java.awt.BorderLayout;
 
 /**
- * This Panel was created using the Windows Builder in Eclipse. 
+ * This Dialog was created using the Windows Builder in Eclipse. 
  * 
  * @author John Guerson
  */
@@ -33,21 +32,22 @@ public class TheDescriptionsDialog extends JDialog {
 	
 	private final JPanel contentPanel = new JPanel();
 
-	/* Description */
 	private JTextPane textDescription;
 	
-	/* Title */
 	private JLabel lblTitle;
 	
-	/* Quit Button */
 	private JButton btnClose;
+	
+	private JSeparator separator;
+	
+	private JPanel buttonPanel;
 	
 	/**
 	 * Launch Dialog according to the identifier.
 	 */
 	public static void open (Component parent, String identifier)
 	{
-		if (identifier=="RELATOR CONSTRAINT AXIOM") 
+		if (identifier=="RELATOR_CONSTRAINT_AXIOM") 
 		{
 			String info = 
 				""+"This rule enforces that the concrete relators mediate two distinct entities."+"\n\n"+
@@ -57,7 +57,7 @@ public class TheDescriptionsDialog extends JDialog {
 			open(parent,"Relator Constraint Axiom",info);
 		}
 		
-		if (identifier=="WEAK SUPPLEMENTATION AXIOM") 
+		if (identifier=="WEAK_SUPPLEMENTATION_AXIOM") 
 		{
 			String info = 
 				""+"This rule enforces that each whole has at least two disjoint parts."+"\n\n"+
@@ -67,7 +67,7 @@ public class TheDescriptionsDialog extends JDialog {
 			open(parent,"Weak Supplementation Axiom",info);
 		}
 		
-		if (identifier=="IDENTITY PRINCIPLE AXIOM") 
+		if (identifier=="IDENTITY_PRINCIPLE_AXIOM") 
 		{
 			String info = 
 				""+"This rule enforces that all objects have an identity principle."+"\n\n"+
@@ -77,7 +77,7 @@ public class TheDescriptionsDialog extends JDialog {
 			open(parent,"Identity Principle Axiom",info);
 		}
 		
-		if (identifier=="ANTIRIGIDITY AXIOM") 
+		if (identifier=="ANTIRIGIDITY_AXIOM") 
 		{
 			String info = 
 				""+"This rule enforces the anti-rigidity axiom."+"\n\n"+ 
@@ -117,57 +117,76 @@ public class TheDescriptionsDialog extends JDialog {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TheDescriptionsDialog.class.getResource("/resources/br/ufes/inf/nemo/move/about.png")));		
 		setTitle("Axiom Description");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 501, 251);
+		setBounds(100, 100, 501, 323);
 		
-		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
 		textDescription = new JTextPane();
 		textDescription.setEditable(false);
 		textDescription.setBackground(UIManager.getColor("Panel.background"));
-		textDescription.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		textDescription.setText(info);
 		
 		lblTitle = new JLabel(title);
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
-		btnClose = new JButton("Close");		
-		btnClose.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			 dispose();				
-       		}
-       	});		
+		separator = new JSeparator();
+		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addGap(18)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(textDescription, GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
-								.addComponent(lblTitle)))
-						.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
-							.addContainerGap(383, Short.MAX_VALUE)
-							.addComponent(btnClose, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(lblTitle, GroupLayout.PREFERRED_SIZE, 447, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addGap(20)
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(textDescription)
+								.addComponent(separator, GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE))))
 					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
-			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addContainerGap()
+					.addGap(27)
 					.addComponent(lblTitle)
 					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 4, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(textDescription, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnClose)
-					.addContainerGap(13, Short.MAX_VALUE))
+					.addGap(45))
 		);
 		contentPanel.setLayout(gl_contentPanel);
+		getContentPane().add(contentPanel,BorderLayout.NORTH);
+		
+		buttonPanel = new JPanel();
+		getContentPane().add(buttonPanel, BorderLayout.CENTER);
+		
+		btnClose = new JButton("Close");
+		GroupLayout gl_buttonPanel = new GroupLayout(buttonPanel);
+		gl_buttonPanel.setHorizontalGroup(
+			gl_buttonPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_buttonPanel.createSequentialGroup()
+					.addGap(383)
+					.addComponent(btnClose, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_buttonPanel.setVerticalGroup(
+			gl_buttonPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_buttonPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnClose)
+					.addContainerGap(14, Short.MAX_VALUE))
+		);
+		buttonPanel.setLayout(gl_buttonPanel);
+		btnClose.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			 dispose();				
+       		}
+       	});
 	}
-
 }

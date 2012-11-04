@@ -1,7 +1,7 @@
 package br.ufes.inf.nemo.move.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -15,7 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -33,16 +34,13 @@ public class TheModelsPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	/* models */
 	private RefOntoUML.Package refmodel;
 	private String oclConstraints;
 	
-	/* models paths */
 	private JTextField textOntoUML;	
 	private JTextField textOCL;		
 	private JTextField textAlloy;
 	
-	/* load path buttons */
 	private JButton btnLoadOntoUML;	
 	private JButton btnLoadOCL;	
 	private JButton btnAlloyOutput;
@@ -144,25 +142,29 @@ public class TheModelsPanel extends JPanel {
 	 */
 	public TheModelsPanel() 
 	{
-		setBorder(new TitledBorder(null, "Models", TitledBorder.CENTER, TitledBorder.TOP, null, null));
-		setBackground(SystemColor.inactiveCaption);
-		setPreferredSize(new Dimension(476, 127));
+		setBorder(new EmptyBorder(0, 0, 0, 0));
+		setBackground(UIManager.getColor("Panel.background"));
+		setPreferredSize(new Dimension(905, 83));
+		setSize(905,83);
 		
-		JLabel lblYourOntoumlModel = new JLabel("OntoUML Model :");
-		JLabel lblLoadConstraints = new JLabel("Domain Constraints : ");
-		JLabel lblAlloyOutput = new JLabel("Alloy Output:");
+		JLabel lblYourOntoumlModel = new JLabel("OntoUML Model");
+		JLabel lblLoadConstraints = new JLabel("OCL Domain Constraints");
+		JLabel lblAlloyOutput = new JLabel("Alloy Specification Output");
 		
 		textOntoUML = new JTextField();
-		textOntoUML.setText("*.refontouml");
+		textOntoUML.setBackground(Color.WHITE);
 		textOntoUML.setEditable(false);
+		textOntoUML.setText("*.refontouml");
 		textOntoUML.setColumns(10);
 		
 		textOCL = new JTextField();
-		textOCL.setText("*.ocl");
+		textOCL.setBackground(Color.WHITE);
 		textOCL.setEditable(false);
+		textOCL.setText("*.ocl");
 		textOCL.setColumns(10);
 
 		textAlloy = new JTextField();
+		textAlloy.setBackground(Color.WHITE);
 		textAlloy.setEditable(false);
 		textAlloy.setText("*.als");
 		textAlloy.setColumns(10);
@@ -198,42 +200,48 @@ public class TheModelsPanel extends JPanel {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(textOntoUML, GroupLayout.PREFERRED_SIZE, 255, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnLoadOntoUML, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblYourOntoumlModel, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE))
+					.addGap(13)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(textOCL, GroupLayout.PREFERRED_SIZE, 241, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnLoadOCL, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblLoadConstraints, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE))
+					.addGap(13)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(textAlloy, 237, 237, 237)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAlloyOutput, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblAlloyOutput, GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(17)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblYourOntoumlModel)
 						.addComponent(lblLoadConstraints)
 						.addComponent(lblAlloyOutput))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(textAlloy, Alignment.LEADING)
-						.addComponent(textOCL, Alignment.LEADING)
-						.addComponent(textOntoUML, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 282, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(btnAlloyOutput, 0, 0, Short.MAX_VALUE)
-						.addComponent(btnLoadOCL, 0, 0, Short.MAX_VALUE)
-						.addComponent(btnLoadOntoUML, GroupLayout.PREFERRED_SIZE, 32, Short.MAX_VALUE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblYourOntoumlModel)
-						.addComponent(textOntoUML, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnLoadOntoUML))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblLoadConstraints)
-						.addComponent(textOCL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnLoadOCL))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textAlloy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblAlloyOutput)
-						.addComponent(btnAlloyOutput))
-					.addContainerGap(12, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(textOntoUML, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnLoadOntoUML))
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(textOCL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(textAlloy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnAlloyOutput)
+							.addComponent(btnLoadOCL)))
+					.addContainerGap())
 		);
 		setLayout(groupLayout);
 	}	
