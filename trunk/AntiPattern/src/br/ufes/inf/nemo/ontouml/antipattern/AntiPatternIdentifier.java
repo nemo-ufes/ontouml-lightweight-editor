@@ -61,7 +61,8 @@ public class AntiPatternIdentifier {
 	}
 	
 	/*OCL query for the identification of the Relation Between Overlapping Subtypes AntiPattern*/
-	private static String RBOS_OCLQuery = "Association.allInstances()-> select(x:Association | x.ownedEnd.type->at(1)<>x.ownedEnd.type->at(2) and ( (x.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->includes(x.ownedEnd.type->at(2))) or (x.ownedEnd.type->at(2).oclAsType(Classifier).allParents()->includes(x.ownedEnd.type->at(1))) or (x.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->intersection(x.ownedEnd.type->at(2).oclAsType(Classifier).allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(x.ownedEnd.type->at(1)) or g1.specific=x.ownedEnd.type->at(1)) and (g2.specific.allChildren()->includes(x.ownedEnd.type->at(2)) or g2.specific=x.ownedEnd.type->at(2))))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
+	//private static String RBOS_OCLQuery = "Association.allInstances()-> select(x:Association | x.ownedEnd.type->at(1)<>x.ownedEnd.type->at(2) and ( (x.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->includes(x.ownedEnd.type->at(2))) or (x.ownedEnd.type->at(2).oclAsType(Classifier).allParents()->includes(x.ownedEnd.type->at(1))) or (x.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->intersection(x.ownedEnd.type->at(2).oclAsType(Classifier).allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(x.ownedEnd.type->at(1)) or g1.specific=x.ownedEnd.type->at(1)) and (g2.specific.allChildren()->includes(x.ownedEnd.type->at(2)) or g2.specific=x.ownedEnd.type->at(2))))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
+	private static String RBOS_OCLQuery = "Association.allInstances()-> select(x:Association | x.ownedEnd.type->at(1)<>x.ownedEnd.type->at(2) and ( (x.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->includes(x.ownedEnd.type->at(2).oclAsType(Classifier)) or (x.ownedEnd.type->at(2).oclAsType(Classifier)).allParents()->includes(x.ownedEnd.type->at(1).oclAsType(Classifier))) or (x.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->intersection(x.ownedEnd.type->at(2).oclAsType(Classifier).allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(x.ownedEnd.type->at(1).oclAsType(Classifier)) or g1.specific=x.ownedEnd.type->at(1)) and (g2.specific.allChildren()->includes(x.ownedEnd.type->at(2).oclAsType(Classifier)) or g2.specific=x.ownedEnd.type->at(2))))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
 	
 	/*Returns all the Relation Between Overlapping Subtypes AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
@@ -130,6 +131,8 @@ public class AntiPatternIdentifier {
 		aux = OntoUML2Graph.buildGraph(model, classes, relationships, false, false);
 		nodei = aux[0];
 		nodej = aux[1];
+		
+		if (relationships.size()<2) return result;
 		
 		int fundcycle[][] = new int [relationships.size()-2][classes.size()];
 		GraphAlgo.fundamentalCycles(classes.size()-1, relationships.size()-1, nodei, nodej, fundcycle);
