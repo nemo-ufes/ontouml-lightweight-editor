@@ -124,7 +124,7 @@ public class SingleACPanel extends JPanel {
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			//not implemented yet...
+
        		}
        	});
 		btnPanel.add(btnGenerateAlloy);
