@@ -222,8 +222,6 @@ public class OntoUMLAPI {
 			{
 				for(Generalization gen : ((Classifier)elem).getGeneralization() )
 				{
-					System.out.println(c);
-					System.out.println(((Generalization) gen).getGeneral()+"\n");
 					if(((Generalization) gen).getGeneral().equals(c))
 					{
 						generalizations.add((Generalization) gen);
