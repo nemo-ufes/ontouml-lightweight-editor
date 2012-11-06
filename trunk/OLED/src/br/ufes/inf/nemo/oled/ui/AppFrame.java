@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
@@ -217,12 +216,18 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		DiagramEditor editor = diagramManager.getCurrentDiagramEditor();
 		if(editor != null)
 			if (editor.canUndo()) {
-				return JOptionPane.showConfirmDialog(
-						this,
-						ApplicationResources.getInstance().getString(
-								"confirm.quit.message"),
-						ApplicationResources.getInstance().getString(
-								"confirm.quit.title"), JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+				return true;
+				
+				// Commented this line because we don't want this dialog anymore...
+				
+				/*
+				JOptionPane.showConfirmDialog(
+					this,
+					ApplicationResources.getInstance().getString(
+						"confirm.quit.message"),
+					ApplicationResources.getInstance().getString(
+						"confirm.quit.title"), JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+				 */
 			}
 		return true;
 	}
