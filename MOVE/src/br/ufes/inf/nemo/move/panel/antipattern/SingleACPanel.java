@@ -19,6 +19,9 @@ import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.ontouml.antipattern.ACAntiPattern;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import java.awt.FlowLayout;
 
 /**
  * @author John Guerson
@@ -28,18 +31,13 @@ public class SingleACPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextPane txtClassCycle;
-	
+	private JTextPane txtClassCycle;	
 	private JCheckBox cbxOpenCycle;	
-	private JCheckBox cbxClosedCycle;
-	
-	private JButton btnGenerateAlloy;	
-	private JButton btnGenerateOclSolution;
-	
-	@SuppressWarnings("unused")
-	private ACAntiPattern ac;
-	
-	@SuppressWarnings("unused")
+	private JCheckBox cbxClosedCycle;	
+	private JSpinner spinScope;	
+	private JButton btnShowCycle;	
+	private JButton btnOclSolution;		
+	private ACAntiPattern ac;		
 	private TheFrame frame;
 	
 	/**
@@ -76,12 +74,12 @@ public class SingleACPanel extends JPanel {
 	}	
 	
 	/**
-	 * Create the panel.
+	 * Create the AC AntiPattern Panel.
 	 */
 	public SingleACPanel() 
 	{
 		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), "AC #1", TitledBorder.LEFT, TitledBorder.BELOW_TOP, null, Color.RED));
-		setPreferredSize(new Dimension(330, 218));
+		setPreferredSize(new Dimension(330, 276));
 
 		txtClassCycle = new JTextPane();
 		txtClassCycle.setEditable(false);
@@ -91,18 +89,58 @@ public class SingleACPanel extends JPanel {
 		lblClassCycle.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JPanel cbxPanel = new JPanel();		
-		JPanel btnPanel = new JPanel();
+		JPanel btnPanel = new JPanel();		
+		JPanel btnScope = new JPanel();
+		btnScope.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JLabel lblEscope = new JLabel("Escope :");
+		btnScope.add(lblEscope);
+		
+		spinScope = new JSpinner();
+		spinScope.setModel(new SpinnerNumberModel(new Integer(2), new Integer(0), null, new Integer(1)));
+		spinScope.setPreferredSize(new Dimension(60, 20));
+		btnScope.add(spinScope);
+		
+		cbxOpenCycle = new JCheckBox("Open Cycle");		
+		cbxPanel.add(cbxOpenCycle);
+		
+		cbxClosedCycle = new JCheckBox("Closed Cycle");
+		cbxPanel.add(cbxClosedCycle);
+		
+		btnShowCycle = new JButton("Show Cycle");
+		btnShowCycle.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{       			
+       			ShowCycleActionPerformed(event);
+       		}
+       	});
+		btnPanel.add(btnShowCycle);
+		
+		btnOclSolution = new JButton("OCL Constraint Solution");
+		btnOclSolution.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			GenerateOCLSolutionActionPerformed(event);
+       		}
+       	});
+		btnPanel.add(btnOclSolution);
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(13)
+					.addComponent(btnPanel, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+					.addContainerGap())
 				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-						.addComponent(cbxPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-						.addComponent(lblClassCycle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-						.addComponent(txtClassCycle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE))
+						.addComponent(btnScope, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+						.addComponent(lblClassCycle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+						.addComponent(txtClassCycle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+						.addComponent(cbxPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE))
 					.addGap(13))
 		);
 		groupLayout.setVerticalGroup(
@@ -112,40 +150,67 @@ public class SingleACPanel extends JPanel {
 					.addComponent(lblClassCycle)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(txtClassCycle, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(cbxPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnScope, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(19))
-		);
-		
-		btnGenerateAlloy = new JButton("Generate Alloy");
-		btnGenerateAlloy.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-
-       		}
-       	});
-		btnPanel.add(btnGenerateAlloy);
-		
-		btnGenerateOclSolution = new JButton("Generate OCL Solution");
-		btnGenerateOclSolution.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			//not implemented yet...
-       		}
-       	});
-		btnPanel.add(btnGenerateOclSolution);
-		
-		cbxOpenCycle = new JCheckBox("Open Cycle");		
-		cbxPanel.add(cbxOpenCycle);
-		
-		cbxClosedCycle = new JCheckBox("Closed Cycle");
-		cbxPanel.add(cbxClosedCycle);
-		
+					.addGap(77))
+		);							
+				
 		setLayout(groupLayout);
-
 	}
+	
+	/**
+	 * Show Cycle using Alloy.
+	 * 
+	 * @param event
+	 */
+	public void ShowCycleActionPerformed(ActionEvent event)
+	{
+		Integer cardinality = (Integer)spinScope.getModel().getValue();       			
+		Boolean openCycle = cbxOpenCycle.isSelected();
+		Boolean closedCycle = cbxClosedCycle.isSelected();
+		String openCyclePred = new String();
+		String closedCyclePred = new String();
+			
+		if(openCycle) 
+		{
+			openCyclePred = ac.generateOpenCyclePredicate(frame.getTheModelsPanel().getOntoUMLParser(),cardinality);
+		}
+		if(closedCycle) 
+		{
+			closedCyclePred = ac.generateClosedCyclePredicate(frame.getTheModelsPanel().getOntoUMLParser(), cardinality); 
+		}
+		
+		frame.getTheConsolePanel().write(openCyclePred+"\n\n"+closedCyclePred);
+		frame.ShowConsole();
+	}
+	
+	/**
+	 * Generate OCL Constraint Solution.
+	 * 
+	 * @param event
+	 */
+	public void GenerateOCLSolutionActionPerformed(ActionEvent event)
+	{		       			
+		Boolean openCycle = cbxOpenCycle.isSelected();
+		Boolean closedCycle = cbxClosedCycle.isSelected();
+		String openCycleConstraint = new String();
+		String closedCycleConstraint = new String();
+			
+		if(openCycle) 
+		{
+			openCycleConstraint = ac.generateCycleOcl(ACAntiPattern.OPEN);
+		}
+		if(closedCycle) 
+		{
+			closedCycleConstraint = ac.generateCycleOcl(ACAntiPattern.CLOSED); 
+		}
+			
+		frame.getTheConsolePanel().write(openCycleConstraint+"\n\n"+closedCycleConstraint);
+		frame.ShowConsole();
+	}
+	
 }

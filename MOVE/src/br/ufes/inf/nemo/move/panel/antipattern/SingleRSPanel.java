@@ -31,23 +31,17 @@ public class SingleRSPanel extends JPanel {
 	
 	private JTextField textGeneralSource;
 	private JTextField textGeneralTarget;
-	private JTextField textGeneralAssociation;
-	
+	private JTextField textGeneralAssociation;	
 	private JTextField textSpecificSource;
 	private JTextField textSpecificAssociation;
 	private JTextField textSpecificTarget;
-
 	private JCheckBox cbxSubtype;
 	private JCheckBox cbxRedefinition;
 	private JCheckBox cbxNonsubsetting; 
-	private JCheckBox cbxDisjoint;
-	
+	private JCheckBox cbxDisjoint;	
 	private JButton btnGenerateAlloy;
-	private JButton btnGenerateOclSolution;
-	
-	@SuppressWarnings("unused")
+	private JButton btnGenerateOclSolution;	
 	private RSAntiPattern rs;
-	@SuppressWarnings("unused")
 	private TheFrame frame;
 		
 	/**
@@ -86,7 +80,7 @@ public class SingleRSPanel extends JPanel {
 	public SingleRSPanel() 
 	{
 		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), "RS #1", TitledBorder.LEFT, TitledBorder.BELOW_TOP, null, Color.RED));
-		setPreferredSize(new Dimension(330, 366));
+		setPreferredSize(new Dimension(330, 389));
 		
 		JLabel lblSourceType = new JLabel("[General]");
 		lblSourceType.setHorizontalAlignment(SwingConstants.CENTER);
@@ -141,17 +135,56 @@ public class SingleRSPanel extends JPanel {
 		textSpecificTarget.setColumns(10);
 		
 		JPanel btnPanel = new JPanel();		
-		JPanel cbxPanel1 = new JPanel();		
+		JPanel cbxPanel1 = new JPanel();	
 		JPanel cbxPanel2 = new JPanel();
+		
+		cbxPanel2.setLayout(new GridLayout(2, 2, 0, 0));
+		cbxRedefinition = new JCheckBox("Redefinition");		
+		cbxPanel2.add(cbxRedefinition);		
+		cbxRedefinition.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		cbxNonsubsetting = new JCheckBox("Non-Subsetting");
+		cbxPanel2.add(cbxNonsubsetting);		
+		cbxNonsubsetting.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		cbxPanel1.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		cbxSubtype = new JCheckBox("Subsetting\r\n");
+		cbxPanel1.add(cbxSubtype);
+		cbxSubtype.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		cbxDisjoint = new JCheckBox("Disjointness");
+		cbxPanel1.add(cbxDisjoint);
+		cbxDisjoint.setHorizontalAlignment(SwingConstants.LEFT);
+				
+		btnGenerateAlloy = new JButton("Generate Alloy");	
+		btnGenerateAlloy.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			GenerateAlloyActionPerformed(event);
+       		}
+       	});		
+		btnPanel.add(btnGenerateAlloy);
+		
+		btnGenerateOclSolution = new JButton("Generate OCL Solution");
+		btnGenerateOclSolution.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			GenerateOCLSolutionActionPerformed(event);
+       		}
+       	});		
+		btnPanel.add(btnGenerateOclSolution);
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(16)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-						.addComponent(lblSourceType, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+						.addComponent(btnPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+						.addComponent(lblSourceType, GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(lblSpecificAssociation, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
@@ -159,11 +192,11 @@ public class SingleRSPanel extends JPanel {
 								.addComponent(lblSepecificSourceType, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(textGeneralTarget, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
-								.addComponent(textGeneralAssociation, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
-								.addComponent(textGeneralSource, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)))
+								.addComponent(textGeneralTarget, GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+								.addComponent(textGeneralAssociation, GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+								.addComponent(textGeneralSource, GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblSpecific, GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+							.addComponent(lblSpecific, GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
 							.addGap(2))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
@@ -172,13 +205,13 @@ public class SingleRSPanel extends JPanel {
 								.addComponent(lblSource, GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(textSpecificSource, GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-								.addComponent(textSpecificAssociation, GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-								.addComponent(textSpecificTarget, GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+								.addComponent(textSpecificSource, GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+								.addComponent(textSpecificAssociation, GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+								.addComponent(textSpecificTarget, GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(cbxPanel2, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+									.addComponent(cbxPanel2, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(cbxPanel1, GroupLayout.PREFERRED_SIZE, 113, Short.MAX_VALUE)))))
+									.addComponent(cbxPanel1, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)))))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -213,49 +246,66 @@ public class SingleRSPanel extends JPanel {
 						.addComponent(lblTarget)
 						.addComponent(textSpecificTarget, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(cbxPanel2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxPanel1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(cbxPanel2, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxPanel1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addComponent(btnPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(21))
 		);
 		
-		cbxPanel2.setLayout(new GridLayout(2, 2, 0, 0));
-		cbxRedefinition = new JCheckBox("Redefinition");		
-		cbxPanel2.add(cbxRedefinition);
-		cbxRedefinition.setHorizontalAlignment(SwingConstants.LEFT);
-		cbxNonsubsetting = new JCheckBox("Non-Subsetting");
-		cbxPanel2.add(cbxNonsubsetting);
-		cbxNonsubsetting.setHorizontalAlignment(SwingConstants.LEFT);
-		cbxPanel1.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		cbxSubtype = new JCheckBox("Subsetting\r\n");
-		cbxPanel1.add(cbxSubtype);
-		cbxDisjoint = new JCheckBox("Disjointness");
-		cbxPanel1.add(cbxDisjoint);
-		cbxDisjoint.setHorizontalAlignment(SwingConstants.LEFT);
-		
-		btnGenerateAlloy = new JButton("Generate Alloy");	
-		btnGenerateAlloy.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			//not implemented yet...
-       		}
-       	});		
-		btnPanel.add(btnGenerateAlloy);
-		
-		btnGenerateOclSolution = new JButton("Generate OCL Solution");
-		btnGenerateOclSolution.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			//not implemented yet...
-       		}
-       	});		
-		btnPanel.add(btnGenerateOclSolution);
-		
 		setLayout(groupLayout);
+	}
+	
+	/**
+	 * Generate Alloy.
+	 * 
+	 * @param event
+	 */
+	public void GenerateAlloyActionPerformed(ActionEvent event)
+	{
+		Boolean redefinition = cbxRedefinition.isSelected();
+		Boolean nonSubsetting = cbxNonsubsetting.isSelected();
+		Boolean subtype = cbxSubtype.isSelected();
+		Boolean disj = cbxDisjoint.isSelected();
+		
+		String redefinitionPred = new String();
+		String disjPred = new String();
+		String nonSubsettingPred = new String();
+		String subtypePred = new String();
+		
+		if (disj) disjPred = rs.generateDisjointPredicate(frame.getTheModelsPanel().getOntoUMLParser());
+		if (redefinition) redefinitionPred = rs.generateRedefinePredicate(frame.getTheModelsPanel().getOntoUMLParser());
+		if (nonSubsetting) nonSubsettingPred = rs.generateNotSubsetPredicate(frame.getTheModelsPanel().getOntoUMLParser());
+		if (subtype) subtypePred = rs.generateSubsetPredicate(frame.getTheModelsPanel().getOntoUMLParser());
+		
+		frame.getTheConsolePanel().write(disjPred +"\n\n"+redefinitionPred+"\n\n"+nonSubsettingPred+"\n\n"+subtypePred);
+		frame.ShowConsole();
+	}
+	
+	/**
+	 * Generate OCL Solution.
+	 * 
+	 * @param event
+	 */
+	public void GenerateOCLSolutionActionPerformed(ActionEvent event)
+	{
+		Boolean redefinition = cbxRedefinition.isSelected();
+		Boolean nonSubsetting = cbxNonsubsetting.isSelected();
+		Boolean subtype = cbxSubtype.isSelected();
+		Boolean disj = cbxDisjoint.isSelected();
+		
+		String redefinitionConstraint = new String();
+		String disjConstraint = new String();
+		String nonSubsettingConstraint = new String();
+		String subtypeConstraint = new String();
+		
+		if (disj) disjConstraint = rs.generateDisjointOcl();
+		if (redefinition) redefinitionConstraint = rs.generateRedefineOcl();
+		if (nonSubsetting) nonSubsettingConstraint = rs.generateNotSubsetOcl();
+		if (subtype) subtypeConstraint = rs.generateSubsetOcl();
+		
+		frame.getTheConsolePanel().write(disjConstraint +"\n\n"+redefinitionConstraint+"\n\n"+nonSubsettingConstraint+"\n\n"+subtypeConstraint);
+		frame.ShowConsole();		
 	}
 }

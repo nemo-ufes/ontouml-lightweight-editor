@@ -31,18 +31,12 @@ public class SingleRBOSPanel extends JPanel {
 	private JTextField textSuperType;	
 	private JTextField textAssociation;	
 	private JTextField textSource;		
-	private JTextField textTarget;
-	
+	private JTextField textTarget;	
 	private JCheckBox chckbxRflexive;	
-	private JCheckBox chckbxIrreflexive;
-	
+	private JCheckBox chckbxIrreflexive;	
 	private JButton btnGenerateAlloy;	
-	private JButton btnGenerateOclSolution;
-	
-	@SuppressWarnings("unused")
-	private RBOSAntiPattern rbos;
-	
-	@SuppressWarnings("unused")
+	private JButton btnGenerateOclSolution;	
+	private RBOSAntiPattern rbos;	
 	private TheFrame frame;	
 	
 	/**
@@ -111,6 +105,32 @@ public class SingleRBOSPanel extends JPanel {
 		JPanel btnPanel = new JPanel();		
 		JPanel cbxPanel = new JPanel();
 		
+		chckbxRflexive = new JCheckBox("Reflexive");		
+		cbxPanel.add(chckbxRflexive);
+		
+		chckbxIrreflexive = new JCheckBox("Irreflexive");
+		cbxPanel.add(chckbxIrreflexive);
+		
+		btnGenerateAlloy = new JButton("Generate Alloy");		
+		btnGenerateAlloy.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			GenerateAlloyActionPerformed(event);
+       		}
+       	});
+		btnPanel.add(btnGenerateAlloy);
+		
+		btnGenerateOclSolution = new JButton("Generate OCL Solution");
+		btnGenerateOclSolution.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			GenerateOCLSolutionActionPerformed(event);
+       		}
+       	});		
+		btnPanel.add(btnGenerateOclSolution);
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -167,32 +187,58 @@ public class SingleRBOSPanel extends JPanel {
 					.addContainerGap(123, Short.MAX_VALUE))
 		);
 		
-		chckbxRflexive = new JCheckBox("Reflexive");		
-		cbxPanel.add(chckbxRflexive);
-		
-		chckbxIrreflexive = new JCheckBox("Irreflexive");
-		cbxPanel.add(chckbxIrreflexive);
-		
-		btnGenerateAlloy = new JButton("Generate Alloy");		
-		btnGenerateAlloy.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			//not implemented yet...
-       		}
-       	});
-		btnPanel.add(btnGenerateAlloy);
-		
-		btnGenerateOclSolution = new JButton("Generate OCL Solution");
-		btnGenerateOclSolution.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			//not implemented yet...
-       		}
-       	});		
-		btnPanel.add(btnGenerateOclSolution);
-		
 		setLayout(groupLayout);
 	}
+	
+	/**
+	 * Generate Alloy Solution.
+	 * 
+	 * @param event
+	 */
+	public void GenerateAlloyActionPerformed(ActionEvent event)
+	{		       			
+		Boolean reflexive = chckbxRflexive.isSelected();
+		Boolean irreflexive = chckbxIrreflexive.isSelected();
+		String reflexivePred = new String();
+		String irreflexivePred = new String();
+			
+		if(reflexive) 
+		{
+			reflexivePred = rbos.generateReflexivePredicate(frame.getTheModelsPanel().getOntoUMLParser());
+		}
+		if(irreflexive) 
+		{
+			irreflexivePred = rbos.generateIrreflexivePredicate(frame.getTheModelsPanel().getOntoUMLParser()); 
+		}
+			
+		frame.getTheConsolePanel().write(reflexivePred+"\n\n"+irreflexivePred);
+		frame.ShowConsole();
+	}
+	
+	/**
+	 * Generate OCL SOlution.
+	 * 
+	 * @param event
+	 */	
+	public void GenerateOCLSolutionActionPerformed(ActionEvent event)
+	{
+		Boolean reflexive = chckbxRflexive.isSelected();
+		Boolean irreflexive = chckbxIrreflexive.isSelected();
+		String reflexiveConstraint = new String();
+		String irreflexiveConstraint = new String();
+		
+		if(reflexive) 
+		{
+			reflexiveConstraint = rbos.generateReflexiveOcl();
+		}
+		if(irreflexive) 
+		{
+			irreflexiveConstraint = rbos.generateIrreflexiveOcl(); 
+		}
+		
+		frame.getTheConsolePanel().write(reflexiveConstraint+"\n\n"+irreflexiveConstraint);
+		frame.ShowConsole();
+	}
+	 
+	
 }
