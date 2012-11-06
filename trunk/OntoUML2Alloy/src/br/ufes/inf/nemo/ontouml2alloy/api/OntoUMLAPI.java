@@ -195,7 +195,7 @@ public class OntoUMLAPI {
 				{
 					if (!p.getAggregation().equals(AggregationKind.NONE))
 					{					
-						if (p.getType().getName().equals(c.getName()))
+						if (p.getType().equals(c))
 						{
 							list.add(ontoparser.getName(pe));							
 						}						
@@ -222,7 +222,9 @@ public class OntoUMLAPI {
 			{
 				for(Generalization gen : ((Classifier)elem).getGeneralization() )
 				{
-					if(((Generalization) gen).getGeneral().getName() == c.getName())
+					System.out.println(c);
+					System.out.println(((Generalization) gen).getGeneral()+"\n");
+					if(((Generalization) gen).getGeneral().equals(c))
 					{
 						generalizations.add((Generalization) gen);
 					}
