@@ -18,7 +18,7 @@ import RefOntoUML.Type;
 public class ACAntiPattern {
 	ArrayList<Class> cycle;
 	ArrayList<Relationship> cycleRelationship;
-	static int OPEN=0, CLOSED=1;
+	public static int OPEN=0, CLOSED=1;
 	
 	public String generateClosedCyclePredicate(OntoUMLParser mapper, int cardinality) {
 		String predicate, rules, name;
