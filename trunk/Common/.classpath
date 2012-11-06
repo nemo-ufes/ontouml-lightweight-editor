@@ -25,5 +25,10 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml.profile.l3_1.0.0.v20120604-0919.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml.resources_4.0.0.v20120604-0919.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.ocl.uml_4.0.0.v20120611-1210.jar"/>
+	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.refontouml.edit_1.0.0.201209061023.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.ocl.edit_3.2.0.v20120613-0850.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.edit_2.8.0.v20120608-0554.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.change_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.edit_2.8.0.v20120608-0554.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
