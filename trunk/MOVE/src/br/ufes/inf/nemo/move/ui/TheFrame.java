@@ -30,9 +30,11 @@ public class TheFrame extends JFrame {
 	private TheStatusBar statuspanel;	
 	private TheConsolePanel consolepanel;
 	private TheModelsPanel modelspanel;
+	
 	private JSplitPane mainSplitPane;
 	private JSplitPane innerSplitPane;
 	private JSplitPane centerSplitPane;
+	
 	private OntoUMLPanel ontoumlpanel;	
 	private OCLPanel oclpanel;	
 	private AntiPatternPanel antipatternpanel;
@@ -70,6 +72,9 @@ public class TheFrame extends JFrame {
 	      	innerSplitPane.setDividerLocation(0.50);
 	    }
 	}
+	
+	public void ShowAntiPattern() { innerSplitPane.setDividerLocation(0.50); }
+	public void HideAntiPattern() { innerSplitPane.setDividerLocation(1.00); }
 	
 	public void ShowOrHideConsole()
 	{

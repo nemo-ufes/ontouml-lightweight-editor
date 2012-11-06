@@ -90,8 +90,8 @@ public class AntiPatternDialog extends JDialog {
 	 */
 	public AntiPatternDialog() 
 	{
-		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternDialog.class.getResource("/resources/br/ufes/inf/nemo/move/window.png")));
-		setTitle("AntiPattern Options");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternDialog.class.getResource("/resources/br/ufes/inf/nemo/move/search.png")));
+		setTitle("Identify AntiPattern");
 		setBounds(100, 100, 332, 256);
 		
 		getContentPane().setLayout(new BorderLayout());

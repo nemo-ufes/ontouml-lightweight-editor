@@ -23,6 +23,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 /**
@@ -34,7 +35,10 @@ public class TheModelsPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private RefOntoUML.Package refmodel;
+	private OntoUMLParser refparser;
+	
 	private String oclConstraints;	
+	
 	private String alsPath;
 	private String umlPath;
 	
@@ -54,7 +58,8 @@ public class TheModelsPanel extends JPanel {
 	public void setOntoUMLModel (String modelpath) throws IOException
 	{		
 		Resource resource = ResourceUtil.loadReferenceOntoUML(modelpath);
-		refmodel = (RefOntoUML.Package) resource.getContents().get(0);
+		this.refmodel = (RefOntoUML.Package) resource.getContents().get(0);		
+		this.refparser = new OntoUMLParser(refmodel);
 		
 		textOntoUML.setText(modelpath);
 	}
@@ -64,7 +69,8 @@ public class TheModelsPanel extends JPanel {
 	 */
 	public void setOntoUMLModel (RefOntoUML.Package refmodel)
 	{
-		this.refmodel = refmodel;
+		this.refmodel = refmodel;		
+		this.refparser = new OntoUMLParser(refmodel);
 		
 		textOntoUML.setText("Loaded...");
 		
@@ -76,7 +82,16 @@ public class TheModelsPanel extends JPanel {
 	 */
 	public RefOntoUML.Package getOntoUMLModel ()
 	{
-		return refmodel;
+		return this.refmodel;
+	}
+	
+	/**
+	 * Get OntoUML Parser.
+	 * @return
+	 */
+	public OntoUMLParser getOntoUMLParser ()
+	{
+		return refparser;
 	}
 	
 	/**
@@ -92,7 +107,7 @@ public class TheModelsPanel extends JPanel {
 	 */
 	public String getOCLModel ()	
 	{
-		return oclConstraints;
+		return this.oclConstraints;
 	}
 	
 	/**
@@ -133,7 +148,8 @@ public class TheModelsPanel extends JPanel {
 	 */
 	public void setAlloyPath(String alloyPath)
 	{			
-		alsPath = alloyPath;
+		this.alsPath = alloyPath;
+		
 		textAlloy.setText(alloyPath);
 	}
 
@@ -142,7 +158,7 @@ public class TheModelsPanel extends JPanel {
 	 */
 	public String getAlloyPath()
 	{
-		return alsPath;
+		return this.alsPath;
 	}
 	
 	/**
@@ -150,7 +166,8 @@ public class TheModelsPanel extends JPanel {
 	 */
 	public void setUMLPath(String umlpath)
 	{			
-		umlPath = umlpath;
+		this.umlPath = umlpath;
+		
 		textUML.setText(umlpath);
 	}
 
@@ -159,7 +176,7 @@ public class TheModelsPanel extends JPanel {
 	 */
 	public String getUMLPath()
 	{
-		return umlPath;
+		return this.umlPath;
 	}	
 	
 	/**
@@ -312,6 +329,7 @@ public class TheModelsPanel extends JPanel {
 					
 					setAlloyPath(fileChooser.getSelectedFile().getPath().replace(".refontouml", ".als"));
 					setUMLPath(fileChooser.getSelectedFile().getPath().replace(".refontouml", ".uml"));
+					
 					TheFrame.dirPath = alsPath.substring(0, alsPath.lastIndexOf(File.separator)+1);	
 					
 				} catch (IOException e) {				
