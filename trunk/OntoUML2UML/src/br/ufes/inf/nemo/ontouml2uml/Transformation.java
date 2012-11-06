@@ -4,15 +4,19 @@ import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
 
+/**
+ * @author John Guerson
+ */
+
 public class Transformation {
 
-	public Dealer mydealer;
-	 
-	public HashMap <RefOntoUML.Package,org.eclipse.uml2.uml.Package> packagesMap;
-			
+	public Dealer mydealer;	 
+	public HashMap <RefOntoUML.Package,org.eclipse.uml2.uml.Package> packagesMap;			
 	public RefOntoUML.Package refmodel;
 	
-	
+	/** 
+	 * Constructor 
+	 */
 	public Transformation(RefOntoUML.Package model)  
     { 
     	mydealer = new Dealer(model);  
@@ -20,9 +24,13 @@ public class Transformation {
     	refmodel = model;
     }
 	
-		
+	/**
+	 * Transforming...
+	 */
 	public org.eclipse.uml2.uml.Package Transform ()
-    {                  
+    {           
+		Dealer.outln("Transforming OntoUML Model to UML...");
+		
         org.eclipse.uml2.uml.Package umlmodel = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createModel();
                 
         mydealer.DealNamedElement((RefOntoUML.NamedElement) refmodel, (org.eclipse.uml2.uml.NamedElement) umlmodel);
@@ -34,26 +42,22 @@ public class Transformation {
         
         VerifyElements();
                     
-        TransformingPrimitiveTypes();
-        
-        TransformingEnumerations();
-        
+        TransformingPrimitiveTypes();        
+        TransformingEnumerations();        
         TransformingDataTypes();
         
-        TransformingClasses();
-        
-        TransformingAssociations();
-        
-        TransformingGeneralizations();
-        
+        TransformingClasses();        
+        TransformingAssociations();        
+        TransformingGeneralizations();        
         TransformingGeneralizationSets();
             
+        Dealer.outln("Executed Succesfully.");
+        
         return umlmodel;
     }
-
 		
     /** 
-     * Packages 
+     * Transforming Packages. 
      */  
     public void TransformingPackages (RefOntoUML.Package refmodel, org.eclipse.uml2.uml.Package umlmodel)
     {               
@@ -68,11 +72,10 @@ public class Transformation {
         		TransformingPackages((RefOntoUML.Package)obj,umlpackage);        						            	
             }
         }
-	}
-	
+	}	
 	
     /** 
-     * Non Classifiers, Non GeneralizationSet, Non Dependency 
+     * Verifying Non Permitted Elements: Non Classifiers, Non GeneralizationSet and Non Dependency 
      */
 	public void VerifyElements ()
 	{
@@ -92,11 +95,10 @@ public class Transformation {
 				}
 	        }
 		}
-	}
-	
+	}	
 		
     /**
-     * Classes 
+     * Transforming Classes. 
      */
 	public void TransformingClasses ()
 	{
@@ -116,10 +118,9 @@ public class Transformation {
 	        }
 		}			        
 	}
-	
-	
+		
 	/**
-	 * PrimitiveTypes 
+	 * Transforming PrimitiveTypes. 
 	 */
 	public void TransformingPrimitiveTypes ()
 	{
@@ -137,11 +138,10 @@ public class Transformation {
 	            }
 	        }
 		}
-	}	
-	
+	}		
 	
 	/**
-	 * Enumerations 
+	 * Transforming Enumerations. 
 	 */
 	public void TransformingEnumerations ()
 	{
@@ -160,10 +160,9 @@ public class Transformation {
 	        }
 		}
 	}
-	
-	
+		
 	/** 
-	 * DataTypes 
+	 * Transforming DataTypes. 
 	 */
 	public void TransformingDataTypes ()
 	{
@@ -181,11 +180,10 @@ public class Transformation {
 	            }
 	        }
 		}
-	}	
-	
+	}		
 		
 	/**
-	 * Associations 
+	 * Transforming Associations. 
 	 */
 	public void TransformingAssociations ()
 	{
@@ -208,11 +206,10 @@ public class Transformation {
 				}
 	        }
         }
-	}
-	
+	}	
 		
 	/**
-	 * (Process) Generalizations 
+	 * Transforming Generalizations. 
 	 */
 	public void TransformingGeneralizations ()
 	{
@@ -228,11 +225,10 @@ public class Transformation {
 				}
 	        }         	
 		}
-	}
-		
+	}		
 	
 	/**
-	 * Generalization Sets 
+	 * Transforming Generalization Sets. 
 	 */
 	public void TransformingGeneralizationSets ()
 	{

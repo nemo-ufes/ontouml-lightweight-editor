@@ -3,6 +3,10 @@ package br.ufes.inf.nemo.ontouml2uml;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+/**
+ * @author John Guerson
+ */
+
 public class Dealer {
 		
 	/** Creates UML Objects */	
@@ -39,13 +43,22 @@ public class Dealer {
 	/** Method for output. */
     public static void outln(String output) 
     {
-    	System.out.println(output);
+    	//System.out.println(output);
+    	OntoUML2UML.logDetails += output+"\n";
     }
 
+	/** Method for output. */
+    public static void out(String output) 
+    {
+    	//System.out.println(output);
+    	OntoUML2UML.logDetails += output;
+    }
+    
     /** Method for err output. */
     public static void err(String error) 
     {
-        System.err.println(error);
+        //System.err.println(error);
+        OntoUML2UML.logDetails += error+"\n";
     }
 	
     /* ============================================================================*/
@@ -447,7 +460,7 @@ public class Dealer {
         DealNamedElement(gs1, gs2);
                              
         /* print out */
-        System.out.print("UML:GeneralizationSet :: ");
+        out("UML:GeneralizationSet :: ");
         		
         /* Add all the generalizations */
         for  (RefOntoUML.Generalization gen1 : gs1.getGeneralization())
@@ -455,7 +468,7 @@ public class Dealer {
         	org.eclipse.uml2.uml.Generalization gen2 = (org.eclipse.uml2.uml.Generalization) GetElement(gen1);
                      
         	/* print out */ 
-        	System.out.print(gen2.getSpecific().getName()+"->"+gen2.getGeneral().getName()+"  "); 
+        	out(gen2.getSpecific().getName()+"->"+gen2.getGeneral().getName()+"  "); 
         	
             /* Poderia ter setado apenas um dos dois (GeneralizationSet::Generalization, Generalization::GeneralizationSet), ja que sao EOpposites */
             gs2.getGeneralizations().add(gen2);
@@ -467,7 +480,7 @@ public class Dealer {
         gs2.setIsDisjoint(gs1.isIsDisjoint());
        
         /* print out */
-        System.out.print("isCovering="+gs2.isCovering()+", isDisjoint="+gs2.isDisjoint()+"\n");
+        out("isCovering="+gs2.isCovering()+", isDisjoint="+gs2.isDisjoint()+"\n");
         
         /* They are PackageableElements, don't forget it */
         RelateElements (gs1, gs2);
