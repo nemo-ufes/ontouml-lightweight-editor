@@ -15,6 +15,10 @@ import br.ufes.inf.nemo.move.panel.antipattern.AntiPatternPanel;
 import br.ufes.inf.nemo.move.panel.ocl.OCLPanel;
 import br.ufes.inf.nemo.move.panel.ontouml.OntoUMLPanel;
 
+/**
+ * @author John Guerson
+ */
+
 public class TheFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -23,13 +27,20 @@ public class TheFrame extends JFrame {
 	
 	private TheToolBar toolBar;	
 	private TheMenuBar menuBar;	
+	private TheStatusBar statuspanel;	
+	private TheConsolePanel consolepanel;
 	private TheModelsPanel modelspanel;
-	private TheConsolePanel consolepanel;	
-	private JSplitPane mainSplitPane;	
+	private JSplitPane mainSplitPane;
+	private JSplitPane innerSplitPane;
+	private JSplitPane centerSplitPane;
 	private OntoUMLPanel ontoumlpanel;	
 	private OCLPanel oclpanel;	
 	private AntiPatternPanel antipatternpanel;
-	
+		
+	public TheConsolePanel getTheConsolePanel()
+	{
+		return consolepanel;
+	}
 	
 	public TheMenuBar getTheMenuBar()
 	{
@@ -39,6 +50,25 @@ public class TheFrame extends JFrame {
 	public TheModelsPanel getTheModelsPanel()
 	{
 		return modelspanel;
+	}
+	
+	public AntiPatternPanel getAntiPatternPanel()
+	{
+		return antipatternpanel;
+	}
+	
+	public void ShowOrHideAntiPatternPanel()
+	{
+		int location = innerSplitPane.getDividerLocation();
+		int maxLocation = innerSplitPane.getMaximumDividerLocation();
+		if(location < maxLocation)
+	    {
+			innerSplitPane.setDividerLocation(1.0);	
+	    }
+	    else
+	    {
+	      	innerSplitPane.setDividerLocation(0.50);
+	    }
 	}
 	
 	public void ShowOrHideConsole()
@@ -51,9 +81,12 @@ public class TheFrame extends JFrame {
 	    }
 	    else
 	    {
-	      	mainSplitPane.setDividerLocation(0.75);
+	      	mainSplitPane.setDividerLocation(0.60);
 	    }
 	}
+	
+	public void ShowConsole() { mainSplitPane.setDividerLocation(0.50); }
+	public void HideConsole() { mainSplitPane.setDividerLocation(1.00); }
 	
 	/**
 	 * Create the frame.
@@ -69,6 +102,7 @@ public class TheFrame extends JFrame {
 		modelspanel.setOntoUMLModel(model);
 		modelspanel.setOCLModel(oclConstraints,2);
 		modelspanel.setAlloyPath(alsPath);
+		modelspanel.setUMLPath(alsPath.replace(".als", ".uml"));
 		dirPath = alsPath.substring(0, alsPath.lastIndexOf(File.separator)+1);		
 	}	
 		
@@ -77,6 +111,8 @@ public class TheFrame extends JFrame {
 	 */
 	public TheFrame() 
 	{
+		super(); 
+		
 		getContentPane().setBackground(new Color(230, 230, 250));
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -98,23 +134,30 @@ public class TheFrame extends JFrame {
 		setTitle("OntoUML Model Validation Environment - MOVE");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 930, 710);
-	
-		ontoumlpanel = new OntoUMLPanel();
+			
 		oclpanel = new OCLPanel();
-		antipatternpanel = new AntiPatternPanel();
+		antipatternpanel = new AntiPatternPanel(this);
 		
-		JSplitPane innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclpanel,antipatternpanel);
-		innerSplitPane.setOneTouchExpandable(true);
-		innerSplitPane.setDividerLocation(1.0);
+		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclpanel,antipatternpanel);
+		innerSplitPane.setOneTouchExpandable(true);		
+
+		ontoumlpanel = new OntoUMLPanel();
 		
-		JSplitPane centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlpanel,innerSplitPane);
-		centerSplitPane.setOneTouchExpandable(true);
-		centerSplitPane.setDividerLocation(0.75);
+		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlpanel,innerSplitPane);
+		centerSplitPane.setOneTouchExpandable(true);		
 		
 		consolepanel = new TheConsolePanel();		
 		mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,centerSplitPane,consolepanel);
-		mainSplitPane.setOneTouchExpandable(true);
-		mainSplitPane.setDividerLocation(1.0);
+		mainSplitPane.setOneTouchExpandable(true);		
 		getContentPane().add(BorderLayout.CENTER,mainSplitPane);
+		
+		statuspanel = new TheStatusBar();
+		getContentPane().add(BorderLayout.SOUTH,statuspanel);
+		
+		pack();
+		
+		mainSplitPane.setDividerLocation(1.0);
+		centerSplitPane.setDividerLocation(0.25);
+		innerSplitPane.setDividerLocation(0.50);
 	}
 }

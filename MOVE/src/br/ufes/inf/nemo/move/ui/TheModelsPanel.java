@@ -25,8 +25,6 @@ import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 /**
- * This Panel was created using the Windows Builder in Eclipse. 
- * 
  * @author John Guerson
  */
 
@@ -35,15 +33,19 @@ public class TheModelsPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private RefOntoUML.Package refmodel;
-	private String oclConstraints;
+	private String oclConstraints;	
+	private String alsPath;
+	private String umlPath;
 	
 	private JTextField textOntoUML;	
-	private JTextField textOCL;		
+	private JTextField textOCL;
 	private JTextField textAlloy;
+	private JTextField textUML;
 	
 	private JButton btnLoadOntoUML;	
 	private JButton btnLoadOCL;	
 	private JButton btnAlloyOutput;
+	private JButton btnUMLOutput;
 	
 	/**
 	 *	Set OntoUML Model and Path. 
@@ -64,6 +66,8 @@ public class TheModelsPanel extends JPanel {
 		this.refmodel = refmodel;
 		
 		textOntoUML.setText("Loaded...");
+		
+		btnLoadOntoUML.setEnabled(false);
 	}
 	
 	/**
@@ -117,24 +121,44 @@ public class TheModelsPanel extends JPanel {
 			String content = str;
 			this.oclConstraints = content;
 			textOCL.setText("Loaded...");
+			btnLoadOCL.setEnabled(false);
+			
 		}
 			
 	}
 	
 	/**
-	 *	Set Alloy Path. 
+	 *	Set Output Alloy Path. 
 	 */
 	public void setAlloyPath(String alloyPath)
 	{			
+		alsPath = alloyPath;
 		textAlloy.setText(alloyPath);
 	}
 
 	/**
-	 *	Get AlloyPath. 
+	 *	Get Output AlloyPath. 
 	 */
 	public String getAlloyPath()
 	{
-		return textAlloy.getText();
+		return alsPath;
+	}
+	
+	/**
+	 *	Set Output UML Path. 
+	 */
+	public void setUMLPath(String umlpath)
+	{			
+		umlPath = umlpath;
+		textUML.setText(umlpath);
+	}
+
+	/**
+	 *	Get Output UML Path. 
+	 */
+	public String getUMLPath()
+	{
+		return umlPath;
 	}	
 	
 	/**
@@ -144,12 +168,13 @@ public class TheModelsPanel extends JPanel {
 	{
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setBackground(UIManager.getColor("Panel.background"));
-		setPreferredSize(new Dimension(905, 83));
+		setPreferredSize(new Dimension(1074, 83));
 		setSize(905,83);
 		
-		JLabel lblYourOntoumlModel = new JLabel("OntoUML Model");
-		JLabel lblLoadConstraints = new JLabel("OCL Domain Constraints");
-		JLabel lblAlloyOutput = new JLabel("Alloy Specification Output");
+		JLabel lblYourOntoumlModel = new JLabel("OntoUML Model:");
+		JLabel lblLoadConstraints = new JLabel("Domain Constraints:");
+		JLabel lblAlloyOutput = new JLabel("Alloy Output:");
+		JLabel lblUmlOutput = new JLabel("UML Output:");
 		
 		textOntoUML = new JTextField();
 		textOntoUML.setBackground(Color.WHITE);
@@ -162,12 +187,18 @@ public class TheModelsPanel extends JPanel {
 		textOCL.setEditable(false);
 		textOCL.setText("*.ocl");
 		textOCL.setColumns(10);
-
+		
 		textAlloy = new JTextField();
-		textAlloy.setBackground(Color.WHITE);
-		textAlloy.setEditable(false);
 		textAlloy.setText("*.als");
+		textAlloy.setEditable(false);
 		textAlloy.setColumns(10);
+		textAlloy.setBackground(Color.WHITE);
+		
+		textUML = new JTextField();
+		textUML.setText("*.uml");
+		textUML.setEditable(false);
+		textUML.setColumns(10);
+		textUML.setBackground(Color.WHITE);
 		
 		btnLoadOntoUML = new JButton("...");		
 		btnLoadOntoUML.addActionListener(new ActionListener() 
@@ -185,14 +216,23 @@ public class TheModelsPanel extends JPanel {
        		{
        			 LoadOCLActionPerformed(event);					
        		}
-       	});
-		
-		btnAlloyOutput = new JButton("...");		
+       	});		
+				
+		btnAlloyOutput = new JButton("...");
 		btnAlloyOutput.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			 SetOutputLocationActionPerformed(event);					
+       			AlloyOutputActionPerformed(event);
+       		}
+       	});		
+						
+		btnUMLOutput = new JButton("...");
+		btnUMLOutput.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			UMLOutputActionPerformed(event);
        		}
        	});
 		
@@ -201,47 +241,51 @@ public class TheModelsPanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lblYourOntoumlModel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(lblLoadConstraints, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(textOntoUML)
+						.addComponent(textOCL, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnLoadOCL, 0, 0, Short.MAX_VALUE)
+						.addComponent(btnLoadOntoUML, GroupLayout.PREFERRED_SIZE, 32, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lblUmlOutput, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(lblAlloyOutput, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(textUML)
+						.addComponent(textAlloy, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(textOntoUML, GroupLayout.PREFERRED_SIZE, 255, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnLoadOntoUML, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblYourOntoumlModel, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE))
-					.addGap(13)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(textOCL, GroupLayout.PREFERRED_SIZE, 241, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnLoadOCL, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblLoadConstraints, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE))
-					.addGap(13)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(textAlloy, 237, 237, 237)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAlloyOutput, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblAlloyOutput, GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE))
-					.addContainerGap())
+						.addComponent(btnAlloyOutput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnUMLOutput, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+					.addGap(39))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(17)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGap(15)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblYourOntoumlModel)
+						.addComponent(textOntoUML, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnLoadOntoUML)
+						.addComponent(lblAlloyOutput)
+						.addComponent(btnAlloyOutput)
+						.addComponent(textAlloy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblLoadConstraints)
-						.addComponent(lblAlloyOutput))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(textOntoUML, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnLoadOntoUML))
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(textOCL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(textAlloy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnAlloyOutput)
-							.addComponent(btnLoadOCL)))
-					.addContainerGap())
+						.addComponent(btnLoadOCL)
+						.addComponent(textOCL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblUmlOutput)
+						.addComponent(textUML, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnUMLOutput))
+					.addGap(14))
 		);
 		setLayout(groupLayout);
 	}	
@@ -265,7 +309,8 @@ public class TheModelsPanel extends JPanel {
 					
 					setOntoUMLModel(fileChooser.getSelectedFile().getPath());
 					
-					setAlloyPath(fileChooser.getSelectedFile().getPath().replace(".refontouml", "als"));
+					setAlloyPath(fileChooser.getSelectedFile().getPath().replace(".refontouml", ".als"));
+					setUMLPath(fileChooser.getSelectedFile().getPath().replace(".refontouml", ".uml"));
 					
 				} catch (IOException e) {				
 					String msg = "An error ocurred while loading the model.\n"+e.getMessage();
@@ -303,26 +348,48 @@ public class TheModelsPanel extends JPanel {
 	}
 	
 	/**	
-	 * Changing Location of Alloy Output. 
+	 * Changing Alloy Output Location... 
 	 */
-	public void SetOutputLocationActionPerformed (ActionEvent arg0)
+	public void AlloyOutputActionPerformed (ActionEvent arg0)
 	{
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Output Location");
-		FileNameExtensionFilter alloyFilter = new FileNameExtensionFilter("Alloy Specification (*.als)", "als");
-		fileChooser.addChoosableFileFilter(alloyFilter);
-		fileChooser.setFileFilter(alloyFilter);
+		fileChooser.setDialogTitle("Alloy Output Location");
+		FileNameExtensionFilter alsFilter = new FileNameExtensionFilter("Alloy Specification (*.als)", "als");
+		fileChooser.addChoosableFileFilter(alsFilter);
+		fileChooser.setFileFilter(alsFilter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) 
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
 		{
-			if (fileChooser.getFileFilter() == alloyFilter) 
-			{				
-				if(!fileChooser.getSelectedFile().getPath().contains(".als"))
-					setAlloyPath(fileChooser.getSelectedFile().getPath()+".als");
-				else
+			if (fileChooser.getFileFilter() == alsFilter) 
+			{					
+				if (fileChooser.getSelectedFile().getPath().contains(".als"))
 					setAlloyPath(fileChooser.getSelectedFile().getPath());
+				else
+					setAlloyPath(fileChooser.getSelectedFile().getPath()+".als");
 			}
 		}
 	}
-
+	
+	/**	
+	 * Changing UML Output Location... 
+	 */
+	public void UMLOutputActionPerformed (ActionEvent arg0)
+	{
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("UML Output Location");
+		FileNameExtensionFilter umlFilter = new FileNameExtensionFilter("UML Model (*.uml)", "uml");
+		fileChooser.addChoosableFileFilter(umlFilter);
+		fileChooser.setFileFilter(umlFilter);
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
+		{
+			if (fileChooser.getFileFilter() == umlFilter) 
+			{					
+				if (fileChooser.getSelectedFile().getPath().contains(".uml"))
+					setUMLPath(fileChooser.getSelectedFile().getPath());
+				else
+					setUMLPath(fileChooser.getSelectedFile().getPath()+".uml");
+			}
+		}
+	}
 }

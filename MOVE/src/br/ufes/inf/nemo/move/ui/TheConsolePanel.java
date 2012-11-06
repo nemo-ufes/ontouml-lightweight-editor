@@ -2,30 +2,36 @@ package br.ufes.inf.nemo.move.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.border.EmptyBorder;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+
+/**
+ * @author John Guerson
+ */
 
 public class TheConsolePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	private JScrollPane scrollpane;	
-	private JTextPane output;
+	private JTextArea output;
 	private JTextPane title;
 	
 	public void append(String text)
-	{
+	{		
 		output.setText(output.getText() + text);
 	}
 	
 	public void write(String text)
-	{
+	{		
 		output.setText(text);
 	}
 	
@@ -44,9 +50,13 @@ public class TheConsolePanel extends JPanel {
 		title.setBackground(Color.BLACK);
 		title.setEditable(false);
 		
-		output = new JTextPane();
+		output = new JTextArea();
+		output.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		output.setBorder(new EmptyBorder(0, 0, 0, 0));
 		output.setEditable(false);
+		output.setMargin(new Insets(6, 6, 6, 6));
+		output.setLineWrap(true);
+		output.setWrapStyleWord(true);
 		
 		scrollpane = new JScrollPane();
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
