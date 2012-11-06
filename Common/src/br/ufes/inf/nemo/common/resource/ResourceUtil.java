@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
+
 /**
  * This class is used as a Resource utility.
  */
@@ -23,11 +24,11 @@ public class ResourceUtil {
 	{
 		ResourceSet rset = new ResourceSetImpl();				
 					
-		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("refontouml",new XMIResourceFactoryImpl());	
+		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("refontouml",new RefOntoUMLResourceFactoryImpl());	
 		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",new XMIResourceFactoryImpl());
 		
 		rset.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI,	RefOntoUML.RefOntoUMLPackage.eINSTANCE);		
-	    rset.getPackageRegistry().put("http://nemo.inf.ufes.br/ontouml/refontouml", RefOntoUML.RefOntoUMLPackage.eINSTANCE);
+	    rset.getPackageRegistry().put("RefOntoUML", RefOntoUML.RefOntoUMLPackage.eINSTANCE);
 		
 	    File file = new File(refontoumlpath);
 		URI fileURI = URI.createFileURI(file.getAbsolutePath());		
