@@ -31,7 +31,7 @@ public class OCLPanel extends JPanel {
 	 */
 	public OCLPanel() 
 	{		
-		setLayout(new BorderLayout(0, 0));
+		setLayout(new BorderLayout(0, 0));		
 		
 		txtOclConstraints = new JTextField();
 		txtOclConstraints.setText("OCL Domain Constraints");

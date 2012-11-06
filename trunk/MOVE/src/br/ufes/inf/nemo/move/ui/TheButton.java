@@ -10,6 +10,10 @@ import javax.swing.JButton;
 import br.ufes.inf.nemo.move.util.ColorPalette;
 import br.ufes.inf.nemo.move.util.ColorPalette.ThemeColor;
 
+/**
+ * @author John Guerson
+ */
+
 public class TheButton extends JButton implements MouseListener {
 
 	private static final long serialVersionUID = 1L;

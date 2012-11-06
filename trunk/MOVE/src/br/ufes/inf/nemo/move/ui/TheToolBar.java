@@ -9,14 +9,14 @@ import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
+import br.ufes.inf.nemo.move.panel.antipattern.AntiPatternDialog;
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
+import br.ufes.inf.nemo.ocl2alloy.OCLParser;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
- * This ToolBar was created using the Windows Builder in Eclipse. 
- * 
  * @author John Guerson
  */
 
@@ -30,6 +30,7 @@ public class TheToolBar extends JToolBar {
 	private JButton btnHideConsole;
 	
 	private TheFrame frame;
+	private TheButton btnParseOcl;
 		
 	
 	/**
@@ -58,6 +59,7 @@ public class TheToolBar extends JToolBar {
 		createShowHideOutputButton();
 		createExecuteButton();
 		createSyntaticButton();
+		createParseOCLButton();
 		createAntiPatternButton();		
 	}
 	
@@ -80,21 +82,37 @@ public class TheToolBar extends JToolBar {
 	}
 	
 	/**
-	 * Create Syntatic Verification Button.
+	 * Create Syntactic Verification Button.
 	 */
 	public void createSyntaticButton ()
 	{
-		btnSyntaticVerification = new TheButton("Syntatic Verification","/resources/br/ufes/inf/nemo/move/check.png");
+		btnSyntaticVerification = new TheButton("Syntactic Verification","/resources/br/ufes/inf/nemo/move/check.png");
+		btnSyntaticVerification.setText("Verify OntoUML Syntax");
 				
 		btnSyntaticVerification.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			// not implemented yet...
+       			SyntaticButtonActionPerformed(event);
        		}
        	});
 		
 		add(btnSyntaticVerification);
+	}
+	
+	public void createParseOCLButton ()
+	{
+		btnParseOcl = new TheButton("Parse OCL Domain Constraints","/resources/br/ufes/inf/nemo/move/check.png");
+				
+		btnParseOcl.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			ParseOCLDomainConstraints(event);
+       		}
+       	});
+		
+		add(btnParseOcl);		
 	}
 	
 	/**
@@ -107,8 +125,8 @@ public class TheToolBar extends JToolBar {
 		btnSearchForAntipatterns.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
-       		{
-       			 AntiPatternButtonActionPerformed(event);		
+       		{       			
+       			AntiPatternButtonActionPerformed(event);		
        		}
        	});
 		
@@ -132,6 +150,46 @@ public class TheToolBar extends JToolBar {
        	});
 		
 		add(btnExecute);
+	}
+	
+	/**
+	 * Searching AntiPatterns.
+	 */
+	public void  AntiPatternButtonActionPerformed(ActionEvent event)
+	{
+		try {
+			
+			AntiPatternDialog.open(frame);
+			
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error",JOptionPane.ERROR_MESSAGE);					
+			e.printStackTrace();
+		}		
+	}	
+	
+	/**	
+	 * OntoUML Syntax Verification 
+	 */
+	public void SyntaticButtonActionPerformed(ActionEvent arg0)
+	{
+		// not implemented yet...
+	}
+	
+	/**
+	 * Parsing OCL Domain COnstraints...
+	 */
+	private void ParseOCLDomainConstraints(ActionEvent event)
+	{		
+		OCLParser oclparser = new OCLParser();	
+		
+		RefOntoUML.Package refmodel = frame.getTheModelsPanel().getOntoUMLModel();
+		String oclConstraints = frame.getTheModelsPanel().getOCLModel();	
+		String umlPath = frame.getTheModelsPanel().getUMLPath();
+		
+		oclparser.parse(refmodel,oclConstraints,umlPath);	
+				
+		frame.getTheConsolePanel().append(oclparser.logDetails);	
+		frame.ShowConsole();
 	}
 	
 	/**	
@@ -180,47 +238,5 @@ public class TheToolBar extends JToolBar {
 			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error",JOptionPane.ERROR_MESSAGE);					
 			e.printStackTrace();
 		}		
-	}
-	
-	/**
-	 * Searching AntiPatterns.
-	 */
-	public void  AntiPatternButtonActionPerformed(ActionEvent event)
-	{
-		try {
-			
-			TheAntiPatternOptionDialog.open(frame);
-			
-		}catch(Exception e){
-			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error",JOptionPane.ERROR_MESSAGE);					
-			e.printStackTrace();
-		}
-			/*
-		ArrayList<ACAntiPattern> aclist = new ArrayList<ACAntiPattern>();
-		ArrayList<RSAntiPattern> rslist = new ArrayList<RSAntiPattern>();
-		ArrayList<RBOSAntiPattern> rboslist = new ArrayList<RBOSAntiPattern>();
-		ArrayList<RWORAntiPattern> rworlist = new ArrayList<RWORAntiPattern>();
-		ArrayList<IAAntiPattern> ialist = new ArrayList<IAAntiPattern>();
-		ArrayList<STRAntiPattern> strlist = new ArrayList<STRAntiPattern>();
-		
-		if (antipatternOptionsPanel.ACisSelected()) aclist = AntiPatternIdentifier.identifyAC(modelspanel.getOntoUMLModel());		
-		if (antipatternOptionsPanel.RSisSelected())	rslist = AntiPatternIdentifier.identifyRS(modelspanel.getOntoUMLModel());		
-		if (antipatternOptionsPanel.RBOSisSelected()) rboslist = AntiPatternIdentifier.identifyRBOS(modelspanel.getOntoUMLModel());		
-		if (antipatternOptionsPanel.RWORisSelected()) rworlist = AntiPatternIdentifier.identifyRWOR(modelspanel.getOntoUMLModel());		
-		if (antipatternOptionsPanel.IAisSelected()) ialist = AntiPatternIdentifier.identifyIA(modelspanel.getOntoUMLModel());		
-		if (antipatternOptionsPanel.STRisSelected()) strlist = AntiPatternIdentifier.identifySTR(modelspanel.getOntoUMLModel());
-		
-		String result = new String();
-		if (aclist.size()>0) result += "AC AntiPattern : "+aclist.size()+" items founded.\n";
-		if (rslist.size()>0) result += "RS AntiPattern : "+rslist.size()+" items founded.\n";
-		if (rboslist.size()>0) result += "RBOS AntiPattern : "+rboslist.size()+" items founded.\n";
-		if (rworlist.size()>0) result += "RWOR AntiPattern : "+rworlist.size()+" items founded.\n";
-		if (ialist.size()>0) result += "IA AntiPattern : "+ialist.size()+" items founded.\n";
-		if (strlist.size()>0) result += "STR AntiPattern : "+strlist.size()+" items founded.\n";
-		
-		if (!result.isEmpty()) JOptionPane.showMessageDialog(this,result,"AntiPatterns",JOptionPane.INFORMATION_MESSAGE);
-		else JOptionPane.showMessageDialog(this,"No AntiPatterns Found.","AntiPatterns",JOptionPane.INFORMATION_MESSAGE);
-		*/		
-		
 	}	
 }

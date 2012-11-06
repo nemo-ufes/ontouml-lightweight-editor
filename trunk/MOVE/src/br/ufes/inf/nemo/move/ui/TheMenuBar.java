@@ -9,11 +9,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import br.ufes.inf.nemo.move.dialog.TheDescriptionsDialog;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 
 /**
- * This MenuBar was created using the Windows Builder in Eclipse. 
- * 
  * @author John Guerson
  */
 
@@ -32,6 +31,8 @@ public class TheMenuBar extends JMenuBar {
 	private JMenuItem mntmAntirigidity;
 	
 	private TheFrame frame;
+	private JMenu mnOutput;
+	private JMenuItem mntmChangeLocation;
 	
 	/**
 	 *	Get Options from Panel. 
@@ -93,6 +94,13 @@ public class TheMenuBar extends JMenuBar {
 		
 		cbxAntirigidity = new JCheckBoxMenuItem("AntiRigidity");
 		mnEnforceAxioms.add(cbxAntirigidity);
+		
+		mnOutput = new JMenu("Output");
+		add(mnOutput);
+		
+		mntmChangeLocation = new JMenuItem("Change Location...");
+		mnOutput.add(mntmChangeLocation
+				);
 		JMenu mnHelp = new JMenu("Help");
 		add(mnHelp);
 		
@@ -152,6 +160,14 @@ public class TheMenuBar extends JMenuBar {
        		public void actionPerformed(ActionEvent event) 
        		{
        			TheDescriptionsDialog.open(frame, "ANTIRIGIDITY_AXIOM");
+       		}
+       	});
+		
+		mntmChangeLocation.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			// not implemented yet...
        		}
        	});
 	
