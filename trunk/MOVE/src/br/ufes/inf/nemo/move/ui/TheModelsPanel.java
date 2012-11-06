@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.GroupLayout;
@@ -311,6 +312,7 @@ public class TheModelsPanel extends JPanel {
 					
 					setAlloyPath(fileChooser.getSelectedFile().getPath().replace(".refontouml", ".als"));
 					setUMLPath(fileChooser.getSelectedFile().getPath().replace(".refontouml", ".uml"));
+					TheFrame.dirPath = alsPath.substring(0, alsPath.lastIndexOf(File.separator)+1);	
 					
 				} catch (IOException e) {				
 					String msg = "An error ocurred while loading the model.\n"+e.getMessage();

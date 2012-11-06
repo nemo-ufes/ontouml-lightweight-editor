@@ -24,8 +24,6 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml.profile.l2_1.0.0.v20120604-0919.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml.profile.l3_1.0.0.v20120604-0919.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml.resources_4.0.0.v20120604-0919.jar"/>
-	<classpathentry kind="lib" path="lib/alloy4.2.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.ocl.uml.edit_4.0.0.v20120504-1447.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.ocl.uml_4.0.0.v20120611-1210.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
