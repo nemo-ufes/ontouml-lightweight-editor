@@ -14,10 +14,32 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
+/**
+ * @author John Guerson
+ */
+
 public class OntoUML2UML {
 		 	  
 	public static Transformation transformer;
-		
+	
+	public static String logDetails = new String();
+	
+	/**
+	 * Test....
+	 * @param args
+	 */
+	public static void main(String[] args)
+	{
+		try {
+			Transformation("C:\\Users\\John\\SVNs\\SVN-OLED\\OntoUML2UML\\model\\project.refontouml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Transforming to UML from an OntoUML Path.
+	 */
 	public static Resource Transformation (String refontoumlPath) throws IOException
 	{
 	   Resource refontoumlResource = ResourceUtil.loadReferenceOntoUML(refontoumlPath);
@@ -40,17 +62,21 @@ public class OntoUML2UML {
 	}
     		
 	/** 
-	 * I Use this one for a particular case. 
+	 * Transforming to UML from an OntoUML Package and UML Path. I Use this one for a particular case. 
 	 */
-	public static org.eclipse.uml2.uml.Package Transformation (RefOntoUML.Package model)
+	public static Resource Transformation (RefOntoUML.Package model, String umlPath)
 	{
 	   transformer = new Transformation((RefOntoUML.Package)model);	
 	   
 	   org.eclipse.uml2.uml.Package umlmodel = transformer.Transform();
+	   Resource umlResource = saveUML(umlPath, umlmodel);	
 	   
-	   return umlmodel;
+	   return umlResource;
 	}
 	
+	/**
+	 * Transforming to UML from an OntoUML Path and UML Path.
+	 */
 	public static Resource Transformation (String refontoumlPath, String umlPath) throws IOException
 	{
 	   Resource refontoumlResource = ResourceUtil.loadReferenceOntoUML(refontoumlPath);
