@@ -12,7 +12,7 @@ import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.move.panel.antipattern.AntiPatternPanel;
-import br.ufes.inf.nemo.move.panel.ocl.OCLPanel;
+import br.ufes.inf.nemo.move.panel.ocl.ConstraintPanel;
 import br.ufes.inf.nemo.move.panel.ontouml.OntoUMLPanel;
 
 /**
@@ -28,18 +28,18 @@ public class TheFrame extends JFrame {
 	private TheToolBar toolBar;	
 	private TheMenuBar menuBar;	
 	private TheStatusBar statuspanel;	
-	private TheConsolePanel consolepanel;
-	private TheModelsPanel modelspanel;
+	private TheConsole consolepanel;
+	private TheModelBar modelspanel;
 	
 	private JSplitPane mainSplitPane;
 	private JSplitPane innerSplitPane;
 	private JSplitPane centerSplitPane;
 	
 	private OntoUMLPanel ontoumlpanel;	
-	private OCLPanel oclpanel;	
+	private ConstraintPanel oclpanel;	
 	private AntiPatternPanel antipatternpanel;
 		
-	public TheConsolePanel getTheConsolePanel()
+	public TheConsole getTheConsolePanel()
 	{
 		return consolepanel;
 	}
@@ -49,7 +49,7 @@ public class TheFrame extends JFrame {
 		return menuBar;
 	}
 	
-	public TheModelsPanel getTheModelsPanel()
+	public TheModelBar getTheModelsPanel()
 	{
 		return modelspanel;
 	}
@@ -125,7 +125,7 @@ public class TheFrame extends JFrame {
 		setJMenuBar(menuBar);
 		
 		toolBar = new TheToolBar(this);
-		modelspanel = new TheModelsPanel();
+		modelspanel = new TheModelBar();
 		
 		JPanel headpanel = new JPanel();
 		headpanel.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -140,7 +140,7 @@ public class TheFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 930, 710);
 			
-		oclpanel = new OCLPanel();
+		oclpanel = new ConstraintPanel();
 		antipatternpanel = new AntiPatternPanel(this);
 		
 		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclpanel,antipatternpanel);
@@ -151,7 +151,7 @@ public class TheFrame extends JFrame {
 		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlpanel,innerSplitPane);
 		centerSplitPane.setOneTouchExpandable(true);		
 		
-		consolepanel = new TheConsolePanel();		
+		consolepanel = new TheConsole();		
 		mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,centerSplitPane,consolepanel);
 		mainSplitPane.setOneTouchExpandable(true);		
 		getContentPane().add(BorderLayout.CENTER,mainSplitPane);

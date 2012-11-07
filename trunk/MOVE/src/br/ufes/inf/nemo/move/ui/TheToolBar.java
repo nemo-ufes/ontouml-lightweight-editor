@@ -103,6 +103,7 @@ public class TheToolBar extends JToolBar {
 	public void createParseOCLButton ()
 	{
 		btnParseOcl = new TheButton("Parse OCL Domain Constraints","/resources/br/ufes/inf/nemo/move/check.png");
+		btnParseOcl.setText("Verify OCL Syntax");
 				
 		btnParseOcl.addActionListener(new ActionListener() 
 		{

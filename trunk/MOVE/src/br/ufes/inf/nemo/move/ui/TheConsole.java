@@ -17,7 +17,7 @@ import javax.swing.border.EmptyBorder;
  * @author John Guerson
  */
 
-public class TheConsolePanel extends JPanel {
+public class TheConsole extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public class TheConsolePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TheConsolePanel() 
+	public TheConsole() 
 	{
 		setBackground(Color.WHITE);
 		setBorder(new EmptyBorder(0, 0, 0, 0));

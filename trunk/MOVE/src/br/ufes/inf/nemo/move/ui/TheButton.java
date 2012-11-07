@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import br.ufes.inf.nemo.move.util.ColorPalette;
 import br.ufes.inf.nemo.move.util.ColorPalette.ThemeColor;
 
+
 /**
  * @author John Guerson
  */
@@ -41,26 +42,22 @@ public class TheButton extends JButton implements MouseListener {
 	public void mouseEntered(MouseEvent e) 
 	{		
 		setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHT));
-		//setBorder(new LineBorder(ColorPalette.getInstance().getColor(ThemeColor.GREEN_DARK),1,true));
 		repaint();
 	}	
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		setBackground(new Color(240,240,240));
-		//setBorder(null);
 		repaint();
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	

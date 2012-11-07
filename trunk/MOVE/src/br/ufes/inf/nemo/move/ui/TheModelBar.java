@@ -30,7 +30,7 @@ import br.ufes.inf.nemo.common.resource.ResourceUtil;
  * @author John Guerson
  */
 
-public class TheModelsPanel extends JPanel {
+public class TheModelBar extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -182,7 +182,7 @@ public class TheModelsPanel extends JPanel {
 	/**
 	 * Create the Panel.
 	 */
-	public TheModelsPanel() 
+	public TheModelBar() 
 	{
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setBackground(UIManager.getColor("Panel.background"));

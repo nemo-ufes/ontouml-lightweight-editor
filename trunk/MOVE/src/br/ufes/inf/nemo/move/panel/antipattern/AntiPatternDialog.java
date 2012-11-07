@@ -276,10 +276,10 @@ public class AntiPatternDialog extends JDialog {
 		if (ialist.size()>0) result += "IA AntiPattern : "+ialist.size()+" items found.\n";
 		if (strlist.size()>0) result += "STR AntiPattern : "+strlist.size()+" items found.\n";
 		
-		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No AntiPatterns Found.","AntiPatterns",JOptionPane.INFORMATION_MESSAGE); 
+		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No AntiPatterns Found.","Identifying AntiPatterns....",JOptionPane.INFORMATION_MESSAGE); 
 		else 
 		{			
-			JOptionPane.showMessageDialog(this,result,"AntiPatterns",JOptionPane.ERROR_MESSAGE);			
+			JOptionPane.showMessageDialog(this,result,"Identifying AntiPatterns....",JOptionPane.INFORMATION_MESSAGE);			
 			frame.getAntiPatternPanel().Clear();
 			
 			if (aclist.size()>0) { frame.getAntiPatternPanel().createACTabPanel(); frame.getAntiPatternPanel().initializeACTabPanel(aclist);}
