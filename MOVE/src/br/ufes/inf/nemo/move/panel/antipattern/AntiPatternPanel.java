@@ -203,7 +203,7 @@ public class AntiPatternPanel extends JPanel {
 			SingleRBOSPanel singleRBOS =  new SingleRBOSPanel(rbos,this.frame);			
 			rbosTabPanel.add(singleRBOS);
 			
-			singleRBOS.setTitleBorder("RBOS #"+i);
+			singleRBOS.setTitleBorder("Relation Between Overlapping SubTypes : #"+i);
 			i++;
 			
 			this.singleRBOS.add(singleRBOS);
@@ -224,7 +224,7 @@ public class AntiPatternPanel extends JPanel {
 			SingleRSPanel singleRS =  new SingleRSPanel(rs,this.frame);			
 			rsTabPanel.add(singleRS);
 			
-			singleRS.setTitleBorder("RS #"+i);
+			singleRS.setTitleBorder("Relation Specialization : #"+i);
 			i++;
 			
 			this.singleRS.add(singleRS);
@@ -245,7 +245,7 @@ public class AntiPatternPanel extends JPanel {
 			SingleSTRPanel singleSTR =  new SingleSTRPanel(str,this.frame);			
 			strTabPanel.add(singleSTR);
 			
-			singleSTR.setTitleBorder("STR #"+i);
+			singleSTR.setTitleBorder("Self-Type Relationship : #"+i);
 			i++;
 			
 			this.singleSTR.add(singleSTR);
@@ -266,7 +266,7 @@ public class AntiPatternPanel extends JPanel {
 			SingleACPanel singleAC =  new SingleACPanel(ac,this.frame);			
 			acTabPanel.add(singleAC);
 			
-			singleAC.setTitleBorder("AC #"+i);
+			singleAC.setTitleBorder("Association Cycle : #"+i);
 			i++;
 			
 			this.singleAC.add(singleAC);
@@ -287,7 +287,7 @@ public class AntiPatternPanel extends JPanel {
 			SingleIAPanel singleIA =  new SingleIAPanel(ia,this.frame);			
 			iaTabPanel.add(singleIA);
 			
-			singleIA.setTitleBorder("IA #"+i);
+			singleIA.setTitleBorder("Imprecise Abstraction : #"+i);
 			i++;
 			
 			this.singleIA.add(singleIA);
@@ -308,7 +308,7 @@ public class AntiPatternPanel extends JPanel {
 			SingleRWORPanel singleRWOR =  new SingleRWORPanel(rwor,this.frame);			
 			rworTabPanel.add(singleRWOR);
 			
-			singleRWOR.setTitleBorder("RWOR #"+i);
+			singleRWOR.setTitleBorder("Relator With Overlapping Roles : #"+i);
 			i++;
 			
 			this.singleRWOR.add(singleRWOR);

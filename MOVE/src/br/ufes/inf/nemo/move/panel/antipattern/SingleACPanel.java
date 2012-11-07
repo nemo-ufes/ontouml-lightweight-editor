@@ -35,7 +35,7 @@ public class SingleACPanel extends JPanel {
 	private JCheckBox cbxOpenCycle;	
 	private JCheckBox cbxClosedCycle;	
 	private JSpinner spinScope;	
-	private JButton btnShowCycle;	
+	private JButton btnGenerateAlloy;	
 	private JButton btnOclSolution;		
 	private ACAntiPattern ac;		
 	private TheFrame frame;
@@ -78,7 +78,7 @@ public class SingleACPanel extends JPanel {
 	 */
 	public SingleACPanel() 
 	{
-		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), "AC #1", TitledBorder.LEFT, TitledBorder.BELOW_TOP, null, Color.RED));
+		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), "Association Cycle 1", TitledBorder.CENTER, TitledBorder.BELOW_TOP, null, new Color(255, 0, 0)));
 		setPreferredSize(new Dimension(330, 276));
 
 		txtClassCycle = new JTextPane();
@@ -107,17 +107,17 @@ public class SingleACPanel extends JPanel {
 		cbxClosedCycle = new JCheckBox("Closed Cycle");
 		cbxPanel.add(cbxClosedCycle);
 		
-		btnShowCycle = new JButton("Show Cycle");
-		btnShowCycle.addActionListener(new ActionListener() 
+		btnGenerateAlloy = new JButton("Generate Alloy");
+		btnGenerateAlloy.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
        		{       			
-       			ShowCycleActionPerformed(event);
+       			GenerateAlloyActionPerformed(event);
        		}
        	});
-		btnPanel.add(btnShowCycle);
+		btnPanel.add(btnGenerateAlloy);
 		
-		btnOclSolution = new JButton("OCL Constraint Solution");
+		btnOclSolution = new JButton("Generate OCL Solution");
 		btnOclSolution.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -163,11 +163,11 @@ public class SingleACPanel extends JPanel {
 	}
 	
 	/**
-	 * Show Cycle using Alloy.
+	 * Generate Alloy.
 	 * 
 	 * @param event
 	 */
-	public void ShowCycleActionPerformed(ActionEvent event)
+	public void GenerateAlloyActionPerformed(ActionEvent event)
 	{
 		Integer cardinality = (Integer)spinScope.getModel().getValue();       			
 		Boolean openCycle = cbxOpenCycle.isSelected();
