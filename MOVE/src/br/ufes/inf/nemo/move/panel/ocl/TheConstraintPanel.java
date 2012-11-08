@@ -9,7 +9,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class ConstraintPanel extends JPanel {
+public class TheConstraintPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -29,7 +29,7 @@ public class ConstraintPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ConstraintPanel() 
+	public TheConstraintPanel() 
 	{		
 		setLayout(new BorderLayout(0, 0));		
 		

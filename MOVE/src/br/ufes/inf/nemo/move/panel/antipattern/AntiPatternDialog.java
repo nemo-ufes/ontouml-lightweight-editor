@@ -258,7 +258,7 @@ public class AntiPatternDialog extends JDialog {
 		ArrayList<IAAntiPattern> ialist = new ArrayList<IAAntiPattern>();
 		ArrayList<STRAntiPattern> strlist = new ArrayList<STRAntiPattern>();
 		
-		RefOntoUML.Package refmodel = frame.getTheModelsPanel().getOntoUMLModel();
+		RefOntoUML.Package refmodel = frame.getTheModelsBar().getOntoUMLModel();
 		
 		if (ACisSelected()) aclist = AntiPatternIdentifier.identifyAC(refmodel);		
 		if (RSisSelected())	rslist = AntiPatternIdentifier.identifyRS(refmodel);		

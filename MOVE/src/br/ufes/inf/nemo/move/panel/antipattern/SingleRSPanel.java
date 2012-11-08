@@ -274,10 +274,10 @@ public class SingleRSPanel extends JPanel {
 		String nonSubsettingPred = new String();
 		String subtypePred = new String();
 		
-		if (disj) disjPred = rs.generateDisjointPredicate(frame.getTheModelsPanel().getOntoUMLParser());
-		if (redefinition) redefinitionPred = rs.generateRedefinePredicate(frame.getTheModelsPanel().getOntoUMLParser());
-		if (nonSubsetting) nonSubsettingPred = rs.generateNotSubsetPredicate(frame.getTheModelsPanel().getOntoUMLParser());
-		if (subtype) subtypePred = rs.generateSubsetPredicate(frame.getTheModelsPanel().getOntoUMLParser());
+		if (disj) disjPred = rs.generateDisjointPredicate(frame.getTheModelsBar().getOntoUMLParser());
+		if (redefinition) redefinitionPred = rs.generateRedefinePredicate(frame.getTheModelsBar().getOntoUMLParser());
+		if (nonSubsetting) nonSubsettingPred = rs.generateNotSubsetPredicate(frame.getTheModelsBar().getOntoUMLParser());
+		if (subtype) subtypePred = rs.generateSubsetPredicate(frame.getTheModelsBar().getOntoUMLParser());
 		
 		frame.getTheConsolePanel().write(disjPred +"\n\n"+redefinitionPred+"\n\n"+nonSubsettingPred+"\n\n"+subtypePred);
 		frame.ShowConsole();

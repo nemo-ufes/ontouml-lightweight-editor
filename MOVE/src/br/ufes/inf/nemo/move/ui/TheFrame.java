@@ -11,9 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.move.panel.antipattern.AntiPatternPanel;
-import br.ufes.inf.nemo.move.panel.ocl.ConstraintPanel;
-import br.ufes.inf.nemo.move.panel.ontouml.OntoUMLPanel;
+import br.ufes.inf.nemo.move.panel.antipattern.TheAntiPatternPanel;
+import br.ufes.inf.nemo.move.panel.ocl.TheConstraintPanel;
+import br.ufes.inf.nemo.move.panel.ontouml.TheModelPanel;
 
 /**
  * @author John Guerson
@@ -35,9 +35,9 @@ public class TheFrame extends JFrame {
 	private JSplitPane innerSplitPane;
 	private JSplitPane centerSplitPane;
 	
-	private OntoUMLPanel ontoumlpanel;	
-	private ConstraintPanel oclpanel;	
-	private AntiPatternPanel antipatternpanel;
+	private TheModelPanel ontoumlpanel;	
+	private TheConstraintPanel oclpanel;	
+	private TheAntiPatternPanel antipatternpanel;
 		
 	public TheConsole getTheConsolePanel()
 	{
@@ -49,12 +49,17 @@ public class TheFrame extends JFrame {
 		return menuBar;
 	}
 	
-	public TheModelBar getTheModelsPanel()
+	public TheModelBar getTheModelsBar()
 	{
 		return modelspanel;
 	}
 	
-	public AntiPatternPanel getAntiPatternPanel()
+	public TheModelPanel getTheModelPanel()
+	{
+		return ontoumlpanel;
+	}
+	
+	public TheAntiPatternPanel getAntiPatternPanel()
 	{
 		return antipatternpanel;
 	}
@@ -108,9 +113,11 @@ public class TheFrame extends JFrame {
 		modelspanel.setOCLModel(oclConstraints,2);
 		modelspanel.setAlloyPath(alsPath);
 		modelspanel.setUMLPath(alsPath.replace(".als", ".uml"));
-		dirPath = alsPath.substring(0, alsPath.lastIndexOf(File.separator)+1);		
-	}	
+		dirPath = alsPath.substring(0, alsPath.lastIndexOf(File.separator)+1);
 		
+		ontoumlpanel.setModelTree(modelspanel.getOntoUMLModel());
+	}	
+
 	/**
 	 * Create the frame.
 	 */
@@ -140,13 +147,13 @@ public class TheFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 930, 710);
 			
-		oclpanel = new ConstraintPanel();
-		antipatternpanel = new AntiPatternPanel(this);
+		oclpanel = new TheConstraintPanel();
+		antipatternpanel = new TheAntiPatternPanel(this);
 		
 		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclpanel,antipatternpanel);
 		innerSplitPane.setOneTouchExpandable(true);		
 
-		ontoumlpanel = new OntoUMLPanel();
+		ontoumlpanel = new TheModelPanel();
 		
 		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlpanel,innerSplitPane);
 		centerSplitPane.setOneTouchExpandable(true);		
@@ -162,7 +169,7 @@ public class TheFrame extends JFrame {
 		pack();
 		
 		mainSplitPane.setDividerLocation(1.0);
-		centerSplitPane.setDividerLocation(0.25);
+		centerSplitPane.setDividerLocation(0.35);
 		innerSplitPane.setDividerLocation(0.50);
 	}
 }

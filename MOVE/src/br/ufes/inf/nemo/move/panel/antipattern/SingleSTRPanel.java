@@ -93,39 +93,39 @@ public class SingleSTRPanel extends JPanel {
 		txtAssociation.setEditable(false);
 		txtAssociation.setColumns(10);
 		
-		JPanel panel = new JPanel();		
-		JPanel panel_1 = new JPanel();		
-		JPanel panel_2 = new JPanel();		
-		JPanel panel_3 = new JPanel();
+		JPanel btnPanel = new JPanel();		
+		JPanel checkPanel1 = new JPanel();		
+		JPanel checkPanel2 = new JPanel();		
+		JPanel scopePanel = new JPanel();
 		
-		JLabel lblEscope = new JLabel("Escope: ");
-		panel_3.add(lblEscope);
+		JLabel lblScope = new JLabel("Scope: ");
+		scopePanel.add(lblScope);
 		
 		spinScope = new JSpinner();
 		spinScope.setPreferredSize(new Dimension(40, 20));		
 		spinScope.setModel(new SpinnerNumberModel(new Integer(2), new Integer(0), null, new Integer(1)));
-		panel_3.add(spinScope);
+		scopePanel.add(spinScope);
 		
-		panel_2.setLayout(new GridLayout(3, 1, 0, 0));
+		checkPanel2.setLayout(new GridLayout(3, 1, 0, 0));
 		
 		cbxAntireflexive = new JCheckBox("AntiReflexive");		
-		panel_2.add(cbxAntireflexive);
+		checkPanel2.add(cbxAntireflexive);
 		
 		cbxTransitive = new JCheckBox("Transitive");
-		panel_2.add(cbxTransitive);
+		checkPanel2.add(cbxTransitive);
 		
 		cbxNontransitive = new JCheckBox("Non-Transitive");
-		panel_2.add(cbxNontransitive);
-		panel_1.setLayout(new GridLayout(3, 1, 0, 0));
+		checkPanel2.add(cbxNontransitive);
+		checkPanel1.setLayout(new GridLayout(3, 1, 0, 0));
 		
 		cbxSymmetryc = new JCheckBox("Symmetric ");		
-		panel_1.add(cbxSymmetryc);
+		checkPanel1.add(cbxSymmetryc);
 		
 		cbxAntisymmetric = new JCheckBox("AntiSymmetric");		
-		panel_1.add(cbxAntisymmetric);
+		checkPanel1.add(cbxAntisymmetric);
 		
 		cbxReflexive = new JCheckBox("Reflexive");		
-		panel_1.add(cbxReflexive);
+		checkPanel1.add(cbxReflexive);
 		
 		btnGenerateAlloy = new JButton("Generate Alloy");	
 		btnGenerateAlloy.addActionListener(new ActionListener() 
@@ -135,7 +135,7 @@ public class SingleSTRPanel extends JPanel {
        			GenerateAlloyActionPerformed(event);
        		}
        	});		
-		panel.add(btnGenerateAlloy);
+		btnPanel.add(btnGenerateAlloy);
 		
 		btnGenerateOclSolution = new JButton("Generate OCL Solution");
 		btnGenerateOclSolution.addActionListener(new ActionListener() 
@@ -145,7 +145,7 @@ public class SingleSTRPanel extends JPanel {
        			GenerateOCLSolutionActionPerformed(event);
        		}
        	});		
-		panel.add(btnGenerateOclSolution);
+		btnPanel.add(btnGenerateOclSolution);
 
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -153,12 +153,12 @@ public class SingleSTRPanel extends JPanel {
 				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addGap(19)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-						.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+						.addComponent(btnPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+						.addComponent(scopePanel, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
 						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+							.addComponent(checkPanel1, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
+							.addComponent(checkPanel2, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
 						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
 								.addComponent(lblAssociation)
@@ -182,12 +182,12 @@ public class SingleSTRPanel extends JPanel {
 						.addComponent(txtAssociation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(checkPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(checkPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(scopePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(btnPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(28))
 		);		
 				
@@ -215,12 +215,12 @@ public class SingleSTRPanel extends JPanel {
 		String nontransitivePred = new String();
 		
 		Integer cardinality = (Integer)spinScope.getModel().getValue();
-		if(symmetryc) symmetrycPred =str.generateSymmetricPredicate(cardinality, frame.getTheModelsPanel().getOntoUMLParser());
-		if(reflexive) reflexivePred =str.generateReflexivePredicate(cardinality, frame.getTheModelsPanel().getOntoUMLParser());
-		if(transitive) transitivePred = str.generateTransitivePredicate(cardinality, frame.getTheModelsPanel().getOntoUMLParser());
-		if(antisymmetric) antisymmetricPred = str.generateAntisymmetricPredicate(cardinality, frame.getTheModelsPanel().getOntoUMLParser());
-		if(antireflexive) antireflexivePred = str.generateIrreflexivePredicate(cardinality, frame.getTheModelsPanel().getOntoUMLParser());
-		if(nontransitive) nontransitivePred = str.generateIntransitivePredicate(cardinality, frame.getTheModelsPanel().getOntoUMLParser());
+		if(symmetryc) symmetrycPred =str.generateSymmetricPredicate(cardinality, frame.getTheModelsBar().getOntoUMLParser());
+		if(reflexive) reflexivePred =str.generateReflexivePredicate(cardinality, frame.getTheModelsBar().getOntoUMLParser());
+		if(transitive) transitivePred = str.generateTransitivePredicate(cardinality, frame.getTheModelsBar().getOntoUMLParser());
+		if(antisymmetric) antisymmetricPred = str.generateAntisymmetricPredicate(cardinality, frame.getTheModelsBar().getOntoUMLParser());
+		if(antireflexive) antireflexivePred = str.generateIrreflexivePredicate(cardinality, frame.getTheModelsBar().getOntoUMLParser());
+		if(nontransitive) nontransitivePred = str.generateIntransitivePredicate(cardinality, frame.getTheModelsBar().getOntoUMLParser());
 		
 		frame.getTheConsolePanel().write(symmetrycPred +"\n\n"+reflexivePred+"\n\n"+transitivePred+"\n\n"+antisymmetricPred+"\n\n"+antireflexivePred+"\n\n"+nontransitivePred);
 		frame.ShowConsole();
@@ -234,26 +234,27 @@ public class SingleSTRPanel extends JPanel {
 	{
 		Boolean symmetryc = cbxSymmetryc.isSelected();
 		Boolean reflexive = cbxReflexive.isSelected();
-		//Boolean transitive = cbxTransitive.isSelected();
+		Boolean transitive = cbxTransitive.isSelected();
 		Boolean antisymmetric = cbxAntisymmetric.isSelected();
 		Boolean antireflexive = cbxAntireflexive.isSelected();
-		//Boolean nontransitive = cbxNontransitive.isSelected();
+		Boolean nontransitive = cbxNontransitive.isSelected();
 		
 		String symmetrycConstraint = new String();
 		String reflexiveConstraint = new String();
-		//String transitiveConstraint = new String();
+		String transitiveConstraint = new String();
 		String antisymmetricConstraint = new String();
 		String antireflexiveConstraint = new String();
-		//String nontransitiveConstraint = new String();
+		String intransitiveConstraint = new String();
 				
 		if(symmetryc) symmetrycConstraint =str.generateSymmetricOcl();
 		if(reflexive) reflexiveConstraint =str.generateReflexiveOcl();
-		//if(transitive) transitiveConstraint = str.generateTransitiveOcl();
+		if(transitive) transitiveConstraint = str.generateTransitiveOcl();
 		if(antisymmetric) antisymmetricConstraint = str.generateAntiSymmetricOcl();
 		if(antireflexive) antireflexiveConstraint = str.generateIrreflexiveOcl();
-		//if(nontransitive) nontransitiveConstraint = str.generateIntransitiveOcl();
+		if(nontransitive) intransitiveConstraint = str.generateIntransitiveOcl();
 		
-		frame.getTheConsolePanel().write(symmetrycConstraint +"\n\n"+reflexiveConstraint+"\n\n"+antisymmetricConstraint +"\n\n"+antireflexiveConstraint+"\n\n");
+		frame.getTheConsolePanel().write(symmetrycConstraint +"\n\n"+reflexiveConstraint+"\n\n"+
+		antisymmetricConstraint +"\n\n"+antireflexiveConstraint+"\n\n"+transitiveConstraint+"\n\n"+intransitiveConstraint+"\n\n");
 		frame.ShowConsole();
 	}
 	

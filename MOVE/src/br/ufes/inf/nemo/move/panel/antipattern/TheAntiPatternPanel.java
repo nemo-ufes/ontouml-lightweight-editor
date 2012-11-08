@@ -27,7 +27,7 @@ import javax.swing.UIManager;
  * @author John Guerson
  */
 
-public class AntiPatternPanel extends JPanel {
+public class TheAntiPatternPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -54,7 +54,7 @@ public class AntiPatternPanel extends JPanel {
 	 * Create the AntiPatern Panel
 	 * @param frame
 	 */
-	public AntiPatternPanel(TheFrame frame)
+	public TheAntiPatternPanel(TheFrame frame)
 	{
 		this();		
 		
@@ -64,7 +64,7 @@ public class AntiPatternPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public AntiPatternPanel() 
+	public TheAntiPatternPanel() 
 	{
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));

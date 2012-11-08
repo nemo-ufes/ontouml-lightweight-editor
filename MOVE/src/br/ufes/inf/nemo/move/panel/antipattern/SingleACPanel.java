@@ -90,16 +90,16 @@ public class SingleACPanel extends JPanel {
 		
 		JPanel cbxPanel = new JPanel();		
 		JPanel btnPanel = new JPanel();		
-		JPanel btnScope = new JPanel();
-		btnScope.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JPanel scopePanel = new JPanel();
+		scopePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JLabel lblEscope = new JLabel("Escope :");
-		btnScope.add(lblEscope);
+		JLabel lblScope = new JLabel("Scope :");
+		scopePanel.add(lblScope);
 		
 		spinScope = new JSpinner();
 		spinScope.setModel(new SpinnerNumberModel(new Integer(2), new Integer(0), null, new Integer(1)));
 		spinScope.setPreferredSize(new Dimension(60, 20));
-		btnScope.add(spinScope);
+		scopePanel.add(spinScope);
 		
 		cbxOpenCycle = new JCheckBox("Open Cycle");		
 		cbxPanel.add(cbxOpenCycle);
@@ -137,7 +137,7 @@ public class SingleACPanel extends JPanel {
 				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnScope, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+						.addComponent(scopePanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
 						.addComponent(lblClassCycle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
 						.addComponent(txtClassCycle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
 						.addComponent(cbxPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE))
@@ -153,7 +153,7 @@ public class SingleACPanel extends JPanel {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(cbxPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnScope, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+					.addComponent(scopePanel, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(77))
@@ -175,15 +175,9 @@ public class SingleACPanel extends JPanel {
 		String openCyclePred = new String();
 		String closedCyclePred = new String();
 			
-		if(openCycle) 
-		{
-			openCyclePred = ac.generateOpenCyclePredicate(frame.getTheModelsPanel().getOntoUMLParser(),cardinality);
-		}
-		if(closedCycle) 
-		{
-			closedCyclePred = ac.generateClosedCyclePredicate(frame.getTheModelsPanel().getOntoUMLParser(), cardinality); 
-		}
-		
+		if(openCycle) openCyclePred = ac.generateOpenCyclePredicate(frame.getTheModelsBar().getOntoUMLParser(),cardinality);
+		if(closedCycle) closedCyclePred = ac.generateClosedCyclePredicate(frame.getTheModelsBar().getOntoUMLParser(), cardinality); 
+				
 		frame.getTheConsolePanel().write(openCyclePred+"\n\n"+closedCyclePred);
 		frame.ShowConsole();
 	}

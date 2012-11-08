@@ -22,5 +22,7 @@
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.osgi_3.8.0.v20120529-1548.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
 	<classpathentry kind="lib" path="lib/alloy4.2.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/lablib-checkboxtree-3.3.jar" sourcepath="/Common/lib/lablib-checkboxtree-3.3-sources.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/lablib-checkboxtree-3.3-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
