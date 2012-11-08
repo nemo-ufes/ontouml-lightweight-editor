@@ -20,13 +20,13 @@ public class STRAntiPattern {
 	public String generateIrreflexiveOcl(){
 		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
 		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv : !(self."+aet_name+"->includes(self))";
+				"inv irreflexive_"+(association.getName().trim())+" : not (self."+aet_name+"->includes(self))";
 	}
 	
 	public String generateReflexiveOcl(){
 		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
 		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv : self."+aet_name+"->includes(self)";
+				"inv reflexive_"+(association.getName().trim())+" : self."+aet_name+"->includes(self)";
 	}
 	
 	public String generateSymmetricOcl(){
@@ -45,6 +45,21 @@ public class STRAntiPattern {
 				"inv : self."+aet_name+"->forAll(x : "+association.getMemberEnd().get(1).getType().getName()+" | !(x."+aes_name+"->includes(self)))"+
 				"context "+association.getMemberEnd().get(1).getType().getName()+"\n"+
 				"inv : self."+aes_name+"->forAll(x : "+association.getMemberEnd().get(0).getType().getName()+" | !(x."+aet_name+"->includes(self)))";
+	}
+	
+	public String generateTransitiveOcl(){
+		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));		
+		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv transitive_"+association.getName().trim()+
+				" : self."+aet_name+"->asSet()->includesAll(self."+aet_name+"."+aet_name+"->asSet())";				
+	}
+	
+	public String generateIntransitiveOcl(){
+		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));		
+		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
+				"inv intransitive_"+association.getName().trim()+
+				" : self."+aet_name+"->asSet()->excludesAll(self."+aet_name+"."+aet_name+"->asSet())";
+				
 	}
 	
 	/*TODO criar as regras para transitive*/

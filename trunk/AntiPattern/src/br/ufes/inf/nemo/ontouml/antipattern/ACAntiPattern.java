@@ -84,11 +84,17 @@ public class ACAntiPattern {
 		Type last_target;
 				
 		typeName = this.cycle.get(0).getName();
+				
+		rule = 	"self.";
 		
-		rule = 	"context "+ typeName + "\n"+
-				"inv : self.";
+		String invName = new String();
+		
+		if(type==OPEN) invName +=  "openCycle";
+		else invName +=  "closedCycle";			
 		
 		a = (Association)this.cycleRelationship.get(0);
+		
+		invName += "_"+a.getName().trim();
 		
 		if (a.getMemberEnd().get(0).getType().equals(this.cycle.get(0))) {
 			rule += AssociationEndNameGenerator.associationEndName(a.getMemberEnd().get(1));
@@ -104,6 +110,8 @@ public class ACAntiPattern {
 			Relationship r = cycleRelationship.get(i);
 			 
 			if(r instanceof Association){
+				
+				invName+= "_"+((Association)r).getName().trim();
 				
 				if( ((Association)r).getMemberEnd().get(0).getType().equals(last_target)) {
 					rule += "."+AssociationEndNameGenerator.associationEndName(((Association)r).getMemberEnd().get(1));
@@ -124,7 +132,10 @@ public class ACAntiPattern {
 		else
 			return null;
 			
-		return rule;
+		String result = "context "+ typeName + "\n"+
+						"inv "+invName+ " : " + rule;
+				
+		return result;
 	}	
 	
 	public String generateOpenCyclePredicate(OntoUMLParser mapper, int cardinality) {

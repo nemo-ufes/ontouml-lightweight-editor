@@ -10,6 +10,6 @@ public class AssociationEndNameGenerator {
 		if(ae_name==null)
 			ae_name = p.getType().getName().toLowerCase();
 		
-		return ae_name;
+		return ae_name.trim();
 	}
 }

@@ -23,13 +23,13 @@ public class RBOSAntiPattern {
 	public String generateIrreflexiveOcl(){
 		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
 		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv : !(self."+aet_name+"->includes(self))";
+				"inv irreflexive_"+(association.getName().trim())+" : not (self."+aet_name+"->includes(self))";
 	}
 	
 	public String generateReflexiveOcl(){
 		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
 		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv : self."+aet_name+"->includes(self)";
+				"inv reflexive_"+(association.getName().trim())+" : self."+aet_name+"->includes(self)";
 	}
 	
 	/*Generates an Alloy predicate that produces model instances in which the related elements are always different*/
