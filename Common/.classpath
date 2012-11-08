@@ -30,5 +30,7 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.emf.edit_2.8.0.v20120608-0554.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.change_2.8.0.v20120606-0717.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.edit_2.8.0.v20120608-0554.jar"/>
+	<classpathentry kind="lib" path="lib/lablib-checkboxtree-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/lablib-checkboxtree-3.3-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
