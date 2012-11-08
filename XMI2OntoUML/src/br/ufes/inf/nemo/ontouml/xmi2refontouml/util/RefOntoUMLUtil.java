@@ -189,7 +189,7 @@ public class RefOntoUMLUtil {
     			uncheckedElements.add(element);
     			EcoreUtil.remove(element);
     		}
-    	}	
+    	}
     }
 	
 //	public static void deleteAll(Collection<EObject> eObjList, EObject rootEObject) {

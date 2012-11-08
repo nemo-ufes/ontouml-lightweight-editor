@@ -151,7 +151,7 @@ public class MapperEA implements Mapper {
 						if (((Element)extendedProp.item(i)).hasAttribute("associationclass") &&
 								((Element)extendedProp.item(i)).getAttribute("associationclass").equals(assocClassElem.getAttributeNS(XMINS, "id"))) {
 							assocClassElemClone.setAttribute("relator", 
-									assocClassElemClone.getAttributeNS(XMINS, "id"));
+									assocClassElem.getAttributeNS(XMINS, "id"));
 							assocClassElemClone.setAttributeNS(XMINS, "id", 
 									((Element)extendedProp.item(i).getParentNode()).getAttributeNS(XMINS, "idref"));
 							assocClassElemClone.setAttribute("name", 
@@ -184,7 +184,9 @@ public class MapperEA implements Mapper {
 				elemList = getChildsByType(elem, ElementType.ENUMLITERAL);
 				break;
 			case GENERALIZATION:
-				elemList = getChildsByType(elem, ElementType.GENERALIZATION);
+				if (getType(elem) != ElementType.ASSOCIATIONCLASS || !elem.hasAttribute("relator")) {
+					elemList = getChildsByType(elem, ElementType.GENERALIZATION);
+				}
 				break;
 			case GENERALIZATIONSET:
 				elemList = getChildsByType(elem, ElementType.GENERALIZATIONSET);
