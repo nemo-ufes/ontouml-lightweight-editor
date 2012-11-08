@@ -204,11 +204,11 @@ public class SingleRBOSPanel extends JPanel {
 			
 		if(reflexive) 
 		{
-			reflexivePred = rbos.generateReflexivePredicate(frame.getTheModelsPanel().getOntoUMLParser());
+			reflexivePred = rbos.generateReflexivePredicate(frame.getTheModelsBar().getOntoUMLParser());
 		}
 		if(irreflexive) 
 		{
-			irreflexivePred = rbos.generateIrreflexivePredicate(frame.getTheModelsPanel().getOntoUMLParser()); 
+			irreflexivePred = rbos.generateIrreflexivePredicate(frame.getTheModelsBar().getOntoUMLParser()); 
 		}
 			
 		frame.getTheConsolePanel().write(reflexivePred+"\n\n"+irreflexivePred);

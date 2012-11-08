@@ -14,8 +14,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
@@ -42,6 +44,8 @@ public class SingleRWORPanel extends JPanel {
 	private JCheckBox cbxCustomizedExclusive;	
 	private RWORAntiPattern rwor;	
 	private TheFrame frame;
+	private Collection<Classifier> disjRoles;
+	private JSpinner spinScope;
 			
 	/**
 	 * Create a Single RWOR AntiPattern Panel.
@@ -53,14 +57,16 @@ public class SingleRWORPanel extends JPanel {
 		this();
 		
 		this.rwor = rwor;
-		this.frame= frame;
+		this.frame= frame;				
 		
 		textRelator.setText(rwor.getRelator().getName());		
 		
-		Collection<Classifier> roles = rwor.getMediations().values();		
+		disjRoles = rwor.getMediations().values();		
 		
-		table.setRolesTableModel(roles);
-		table.setPreferredSize(new Dimension(table.getRowCount()*20,table.getColumnCount()*50));						
+		table.setRWORAntiPattern(rwor);
+		
+		table.setRolesTableModel(disjRoles);
+		table.setPreferredSize(new Dimension(table.getRowCount()*20,table.getColumnCount()*50));		
 	}	
 
 	/**
@@ -124,21 +130,28 @@ public class SingleRWORPanel extends JPanel {
 		tablePane.setBackground(Color.WHITE);
 		tablePane.setLayout(new BorderLayout(0, 0));
 		
+		JPanel scopePanel = new JPanel();
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(21)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(tablePane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-						.addComponent(lblDisjointsRoles, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-						.addComponent(btnPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-						.addComponent(checkPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(tablePane, GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+						.addComponent(lblDisjointsRoles, GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+						.addComponent(checkPane, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblRelator)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(textRelator, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)))
 					.addGap(21))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(24)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+						.addComponent(scopePanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE))
+					.addGap(22))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -150,20 +163,30 @@ public class SingleRWORPanel extends JPanel {
 					.addGap(15)
 					.addComponent(lblDisjointsRoles)
 					.addGap(18)
-					.addComponent(tablePane, GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+					.addComponent(tablePane, GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(checkPane, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scopePanel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(44))
+					.addGap(8))
 		);
+		
+		JLabel lblScope = new JLabel("Scope");
+		scopePanel.add(lblScope);
+		
+		spinScope = new JSpinner();
+		spinScope.setModel(new SpinnerNumberModel(new Integer(2), new Integer(0), null, new Integer(1)));
+		spinScope.setPreferredSize(new Dimension(60, 20));
+		scopePanel.add(spinScope);
 		
 		scrollPane = new JScrollPane();
 		tablePane.add(scrollPane, BorderLayout.CENTER);
-
+		
 		table = new RoleJTable();		
-		scrollPane.setViewportView(table);	
-
+		scrollPane.setViewportView(table);
+		
 		setLayout(groupLayout);			
 	}
 	
@@ -173,8 +196,8 @@ public class SingleRWORPanel extends JPanel {
 	 * @param event
 	 */
 	public void GenerateAlloyActionPerformed(ActionEvent event)
-	{
-		/*
+	{		
+		
 		Boolean exclusive = cbxExclusive.isSelected();
 		Boolean overlapping = cbxOverlapping.isSelected();
 		Boolean custom = cbxCustomizedExclusive.isSelected();
@@ -182,7 +205,15 @@ public class SingleRWORPanel extends JPanel {
 		String exclusivePred = new String();
 		String overlappingPred = new String();
 		String customPred = new String();
-		*/			
+
+		int cardinality = (Integer)spinScope.getValue();
+		
+		if(exclusive) exclusivePred = rwor.generateAllMultipleExclusivePredicate(frame.getTheModelsBar().getOntoUMLParser(), cardinality);
+		if(overlapping) overlappingPred = rwor.generateOverlappingPredicate(frame.getTheModelsBar().getOntoUMLParser(), cardinality);
+		if(custom) customPred = rwor.generateMultipleExclusivePredicate(table.getMediationsMatrixFromRolesTable(), frame.getTheModelsBar().getOntoUMLParser(), cardinality);
+		
+		frame.getTheConsolePanel().write(exclusivePred+"\n\n"+overlappingPred+"\n\n"+customPred);
+		frame.ShowConsole();
 	}
 	
 	/**
@@ -191,15 +222,22 @@ public class SingleRWORPanel extends JPanel {
 	 * @param event
 	 */
 	public void GenerateOCLSolutionActionPerformed(ActionEvent event)
-	{
-		/*
-		Boolean exclusive = cbxExclusive.isSelected();
+	{		
+		/*Boolean exclusive = cbxExclusive.isSelected();
 		Boolean overlapping = cbxOverlapping.isSelected();
 		Boolean custom = cbxCustomizedExclusive.isSelected();
 				
 		String exclusiveConstraint = new String();
 		String overlappingConstraint = new String();
 		String customConstraint = new String();	
-		*/				
+		
+		int cardinality = (Integer)spinScope.getValue();
+		
+		if(exclusive) exclusivePred = rwor.generateAllMultipleExclusivePredicate(frame.getTheModelsBar().getOntoUMLParser(), cardinality);
+		if(overlapping) overlappingPred = rwor.generateOverlappingPredicate(frame.getTheModelsBar().getOntoUMLParser(), cardinality);
+		if(custom) customPred = rwor.generateMultipleExclusivePredicate(table.getMediationsMatrixFromRolesTable(), frame.getTheModelsBar().getOntoUMLParser(), cardinality);
+		
+		frame.getTheConsolePanel().write(exclusivePred+"\n\n"+overlappingPred+"\n\n"+customPred);
+		frame.ShowConsole();*/
 	}
 }

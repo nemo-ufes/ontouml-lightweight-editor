@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.ontouml.antipattern.IAAntiPattern;
+import javax.swing.JCheckBox;
 
 /**
  * @author John Guerson
@@ -88,21 +89,28 @@ public class SingleIAPanel extends JPanel {
 		textTarget.setEditable(false);
 		textTarget.setColumns(10);
 		
+		JCheckBox chckbxSourceCustom = new JCheckBox("Source Custom");
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(lblTarget, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(lblAssociation, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(lblSource, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
-					.addGap(6)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(textTarget, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-						.addComponent(textSource, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-						.addComponent(textAssociation, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))
-					.addGap(28))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(lblTarget, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(lblAssociation, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(lblSource, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
+							.addGap(6)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(textTarget, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+								.addComponent(textSource, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+								.addComponent(textAssociation, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))
+							.addGap(28))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(chckbxSourceCustom)
+							.addContainerGap(217, Short.MAX_VALUE))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -119,7 +127,9 @@ public class SingleIAPanel extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblTarget)
 						.addComponent(textTarget, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(203, Short.MAX_VALUE))
+					.addGap(34)
+					.addComponent(chckbxSourceCustom)
+					.addContainerGap(137, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 	}

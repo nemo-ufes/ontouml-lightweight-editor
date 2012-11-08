@@ -181,11 +181,13 @@ public class TheToolBar extends JToolBar {
 	 */
 	private void ParseOCLDomainConstraints(ActionEvent event)
 	{		
+		if (frame.getTheModelsBar().getOCLModel().isEmpty() || frame.getTheModelsBar().getOCLModel() == null) return;
+		
 		OCLParser oclparser = new OCLParser();	
 		
-		RefOntoUML.Package refmodel = frame.getTheModelsPanel().getOntoUMLModel();
-		String oclConstraints = frame.getTheModelsPanel().getOCLModel();	
-		String umlPath = frame.getTheModelsPanel().getUMLPath();
+		RefOntoUML.Package refmodel = frame.getTheModelsBar().getOntoUMLModel();
+		String oclConstraints = frame.getTheModelsBar().getOCLModel();	
+		String umlPath = frame.getTheModelsBar().getUMLPath();
 		
 		oclparser.parse(refmodel,oclConstraints,umlPath);	
 				
@@ -197,13 +199,13 @@ public class TheToolBar extends JToolBar {
 	 * Executing Validation with Analyzer. 
 	 */
 	private void ExecuteActionPerformed (ActionEvent arg0)
-	{				
+	{		
 		try {
 		
 		Options opt = frame.getTheMenuBar().getOptions();
-		String alsPath = frame.getTheModelsPanel().getAlloyPath();
-		RefOntoUML.Package refmodel = frame.getTheModelsPanel().getOntoUMLModel();
-		String oclConstraints = frame.getTheModelsPanel().getOCLModel();				
+		String alsPath = frame.getTheModelsBar().getAlloyPath();
+		RefOntoUML.Package refmodel = frame.getTheModelsBar().getOntoUMLModel();
+		String oclConstraints = frame.getTheModelsBar().getOCLModel();				
 		
 		if(oclConstraints == null || oclConstraints.equals("")) OntoUML2Alloy.Transformation(refmodel, alsPath, opt);
 		
