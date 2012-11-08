@@ -37,7 +37,8 @@ public class RSAntiPattern {
 		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
 		
 		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv : self.oclAsType("+general.getMemberEnd().get(0).getType().getName()+")."+aeg_name+"->includesAll(self."+aes_name+")";
+				"inv subsetting_"+specific.getName().trim()+"_"+general.getName().trim()+
+				" : self."+aeg_name+"->includesAll(self."+aes_name+")";
 	}
 	
 	public String generateRedefineOcl(){
@@ -45,7 +46,8 @@ public class RSAntiPattern {
 		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
 			
 		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv : self.oclAsType("+general.getMemberEnd().get(0).getType().getName()+")."+aeg_name+"=self."+aes_name;
+				"inv redefine_"+specific.getName().trim()+"_"+general.getName().trim()+
+				" : self."+aeg_name+"=self."+aes_name;
 	}
 	
 	public String generateDisjointOcl(){
@@ -53,7 +55,8 @@ public class RSAntiPattern {
 		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
 			
 		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv : self.oclAsType("+general.getMemberEnd().get(0).getType().getName()+")."+aeg_name+"->intersection(self."+aes_name+")->size()=0";
+				"inv disjoint_"+specific.getName().trim()+"_"+general.getName().trim()+
+				" : self."+aeg_name+"->excludesAll(self."+aes_name+")";
 	}
 	
 	public String generateNotSubsetOcl(){
@@ -61,7 +64,8 @@ public class RSAntiPattern {
 		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
 			
 		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv : !(self.oclAsType("+general.getMemberEnd().get(0).getType().getName()+")."+aeg_name+"->includesAll(self."+aes_name+"))";
+				"inv notsubset_"+specific.getName().trim()+"_"+general.getName().trim()+
+				" : not (self."+aeg_name+"->includesAll(self."+aes_name+"))";
 	}
 	
 	/*This method generates an Alloy predicate that states that the specific association is a SUBTYPE of the general association*/

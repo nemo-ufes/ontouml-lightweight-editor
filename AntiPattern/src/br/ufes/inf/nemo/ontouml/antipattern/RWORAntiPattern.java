@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import br.ufes.inf.nemo.common.list.ArrayListOperations;
 import br.ufes.inf.nemo.common.list.Combination;
@@ -21,6 +22,18 @@ public class RWORAntiPattern {
 	
 	public RWORAntiPattern(Relator relator) throws Exception {
 		this.setRelator(relator);
+	}
+	
+	public Mediation getKeyByValue(Classifier value) 
+	{
+	    for (Entry<Mediation,Classifier> entry : mediations.entrySet()) 
+	    {
+	        if (value.equals(entry.getValue())) 
+	        {
+	            return entry.getKey();
+	        }
+	    }
+	    return null;
 	}
 	
 	public String generateExclusiveOcl(ArrayList<Classifier> disjointTypes){
@@ -85,7 +98,7 @@ public class RWORAntiPattern {
 		return predicate;
 	}
 	
-	public String generateNonExclusivePredicate(OntoUMLParser mapper, int cardinality){
+	public String generateOverlappingPredicate(OntoUMLParser mapper, int cardinality){
 		String predicate, rules, predicateName, relatorName;
 		ArrayList<Object> saida, mediations = new ArrayList<>();
 		Combination comb1;
