@@ -37,9 +37,9 @@ public class RSAntiPattern {
 		String aes_name, aeg_name;
 		
 		Classifier specificSource = (Classifier) specific.getMemberEnd().get(0).getType();
-		Classifier specificTarget = (Classifier) specific.getMemberEnd().get(1).getType();
+		//Classifier specificTarget = (Classifier) specific.getMemberEnd().get(1).getType();
 		Classifier generalSource = (Classifier) general.getMemberEnd().get(0).getType();
-		Classifier generalTarget = (Classifier) general.getMemberEnd().get(1).getType();
+		//Classifier generalTarget = (Classifier) general.getMemberEnd().get(1).getType();
 		
 		if (specificSource.equals(generalSource) || specificSource.allParents().contains(generalSource)){
 			aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
@@ -82,12 +82,14 @@ public class RSAntiPattern {
 	/*This method generates alloy predicates for the RS AntiPattern. */
 	public String generatePredicate (OntoUMLParser mapper, int type) throws Exception {
 		String predicate, rules, name = new String();
+		String generalName, specificName, specificSourceName, specificTargetName, generalSourceName, generalTargetName;
 		
-		String generalName, specificName, specificSourceName, specificTargetName;
 		generalName = mapper.getName(general);
 		specificName = mapper.getName(specific);
 		specificSourceName = mapper.getName(specificSource);
 		specificTargetName = mapper.getName(specificTarget);
+		generalSourceName = mapper.getName(generalSource);
+		generalTargetName = mapper.getName(generalTarget);
 		
 		if(type==SUBSET)
 			name = "subset";
@@ -102,30 +104,54 @@ public class RSAntiPattern {
 		
 		name += "_"+specificName+"_"+generalName;
 		rules = "some "+specificName+"\n\t" +
-				"some "+generalName+"\n\t" +
-				"all w:World | ";
+				"some "+generalName+"\n\t";
+		
+			if (type==REDEFINE){
+				if (specificSource.allParents().contains(generalSource))
+					rules += specificSourceName+"!="+generalSourceName+"\n\t";
+				if (specificTarget.allParents().contains(generalTarget))			
+					rules += specificTargetName+"!="+generalTargetName+"\n\t";
+				if (specificTarget.allParents().contains(generalSource))
+					rules += specificTargetName+"!="+generalSourceName+"\n\t";
+				if (specificSource.allParents().contains(generalTarget))
+					rules += specificSourceName+"!="+generalTargetName+"\n\t";
+			}
+		
+		
+		
+		rules += "all w:World | ";
 		
 		if (specificSource.equals(generalSource) || specificSource.allParents().contains(generalSource)){
-			if (type==SUBSET)
-				rules += "w."+specificName+" in w."+generalName;
+			if (type==SUBSET){
+				if(general.getMemberEnd().get(0).getUpper()!=1 || general.getMemberEnd().get(1).getUpper()!=1)
+					rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+")!=x.(w."+generalName+") and x.(w."+specificName+") in "+"x.(w."+generalName+") and (w."+specificName+").y in "+"(w."+generalName+").y";
+				else
+					rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") in "+"x.(w."+generalName+") and (w."+specificName+").y in "+"(w."+generalName+").y";
+			}
 			if (type==DISJOINT)
-				rules += "no (w."+specificName+" & w."+generalName+")";
+				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | no (x.(w."+specificName+") & "+"x.(w."+generalName+")) and no ((w."+specificName+").y & "+"(w."+generalName+").y)";
 			if (type==NONSUBSET)
-				rules += "!(w."+specificName+" in w."+generalName+")";
+				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") not in "+"x.(w."+generalName+") and (w."+specificName+").y not in "+"(w."+generalName+").y";
 			if (type==REDEFINE)
-				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") = "+"x.(w"+generalName+") and (w."+specificName+").y = "+"(w."+generalName+").y";
+				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") = "+"x.(w."+generalName+") and (w."+specificName+").y = "+"(w."+generalName+").y";
 		}
 		
 		else {
-			if (type==SUBSET)
-				rules += "w."+specificName+" in ~(w."+generalName+"))";
+			if (type==SUBSET){
+				if(general.getMemberEnd().get(0).getUpper()!=1 || general.getMemberEnd().get(1).getUpper()!=1)
+					rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+")!=x.(~(w."+generalName+")) and x.(w."+specificName+") in "+"x.(~(w."+generalName+")) and (w."+specificName+").y in "+"(~(w."+generalName+")).y";
+				else
+					rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") in "+"x.(~(w."+generalName+")) and (w."+specificName+").y in "+"(~(w."+generalName+")).y";
+			}
 			if (type==DISJOINT)
-				rules += "no (w."+specificName+" & ~(w."+generalName+"))";
+				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | no (x.(w."+specificName+") & "+"x.(~(w."+generalName+"))) and no ((w."+specificName+").y & "+"(~(w."+generalName+")).y)";
 			if (type==NONSUBSET)
-				rules += "!(w."+specificName+" in ~(w."+generalName+"))";
+				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") not in "+"x.(~(w."+generalName+")) and (w."+specificName+").y not in "+"(~(w."+generalName+")).y";
 			if (type==REDEFINE)
-				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") = "+"x.(~(w"+generalName+")) and (w."+specificName+").y = "+"(~(w."+generalName+")).y";
+				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") = "+"x.(~(w."+generalName+")) and (w."+specificName+").y = "+"(~(w."+generalName+")).y";
 		}
+		
+		
 						
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";

@@ -40,7 +40,6 @@ public class QueryPerformer {
 		
 		
 		
-		@SuppressWarnings("unused")
 		OntoUMLParser mapper = new OntoUMLParser(m);
 		
 		try {
