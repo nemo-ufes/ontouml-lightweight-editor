@@ -25,9 +25,9 @@ public class QueryPerformer {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/GenericCycle.xmi").getAbsolutePath());
-		//URI fileURI = URI.createFileURI(new File("models/XML Models/RelationSpecialization.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/RBOS_regular_and_inverted.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
@@ -37,6 +37,8 @@ public class QueryPerformer {
 		Model m = factory.createModel();
 		
 		m = (Model) resource.getContents().get(0);
+		
+		
 		
 		@SuppressWarnings("unused")
 		OntoUMLParser mapper = new OntoUMLParser(m);
@@ -65,7 +67,7 @@ public class QueryPerformer {
 		    	//System.out.println(rwor.generateExclusivePredicate(mapper, 1));
 		    	//System.out.println(rwor.generateNonExclusivePredicate(mapper, 1));
 		    	
-		    	ArrayList<Classifier> classes = new ArrayList<>();
+		    	/*ArrayList<Classifier> classes = new ArrayList<>();
 		    	classes.addAll(rwor.getMediations().values());
 		    	System.out.println(rwor.generateExclusiveOcl(classes));
 		    	
@@ -98,9 +100,9 @@ public class QueryPerformer {
 		    System.out.println("#Relation Between Overlapping Subtypes Antipatterns: "+result3.size()+"\n");
 		    for (RBOSAntiPattern rbos : result3){
 		    	System.out.println(rbos);
-		    	System.out.println(rbos.generateIrreflexiveOcl());
+		    	/*System.out.println(rbos.generateIrreflexiveOcl());
 		    	System.out.println(rbos.generateReflexiveOcl());
-		    	/*System.out.println(rbos.generateDisjointPredicate(mapper));
+		    	System.out.println(rbos.generateDisjointPredicate(mapper));
 		    	System.out.println(rbos.generateOverlappingPredicate(mapper));*/
 		    }
 		    System.out.println("**************************************************************");
@@ -109,14 +111,14 @@ public class QueryPerformer {
 		    System.out.println("#Relation Specialization Antipatterns: "+result4.size()+"\n");
 		    for (RSAntiPattern rs : result4) {
 		    	System.out.println(rs);
-		    	System.out.println(rs.generateSubsetOcl());
-		    	System.out.println(rs.generateRedefineOcl());
-		    	System.out.println(rs.generateNotSubsetOcl());
-		    	System.out.println(rs.generateDisjointOcl());
-		    	/*System.out.println(rs.generateSubsetPredicate(mapper));
-		    	System.out.println(rs.generateRedefinePredicate(mapper));
-		    	System.out.println(rs.generateNotSubsetPredicate(mapper));
-		    	System.out.println(rs.generateDisjointPredicate(mapper));*/
+		    	System.out.println(rs.generateOcl(RSAntiPattern.SUBSET));
+		    	System.out.println(rs.generateOcl(RSAntiPattern.REDEFINE));
+		    	System.out.println(rs.generateOcl(RSAntiPattern.NONSUBSET));
+		    	System.out.println(rs.generateOcl(RSAntiPattern.DISJOINT));
+		    	System.out.println(rs.generatePredicate(mapper, RSAntiPattern.SUBSET));
+		    	System.out.println(rs.generatePredicate(mapper, RSAntiPattern.REDEFINE));
+		    	System.out.println(rs.generatePredicate(mapper, RSAntiPattern.NONSUBSET));
+		    	System.out.println(rs.generatePredicate(mapper, RSAntiPattern.DISJOINT));
 		    	System.out.println();
 		    }
 		    System.out.println("**************************************************************");
