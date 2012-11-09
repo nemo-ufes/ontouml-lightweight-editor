@@ -8,7 +8,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 
 /**
@@ -22,13 +21,11 @@ public class ResourceUtil {
 	 */
 	public static Resource loadReferenceOntoUML (String refontoumlpath) throws IOException
 	{
-		ResourceSet rset = new ResourceSetImpl();				
-					
-		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("refontouml",new RefOntoUMLResourceFactoryImpl());	
-		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",new XMIResourceFactoryImpl());
+		ResourceSet rset = new ResourceSetImpl();					
+			
+		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("refontouml",new RefOntoUMLResourceFactoryImpl());
 		
 		rset.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI,	RefOntoUML.RefOntoUMLPackage.eINSTANCE);		
-	    rset.getPackageRegistry().put("RefOntoUML", RefOntoUML.RefOntoUMLPackage.eINSTANCE);
 		
 	    File file = new File(refontoumlpath);
 		URI fileURI = URI.createFileURI(file.getAbsolutePath());		

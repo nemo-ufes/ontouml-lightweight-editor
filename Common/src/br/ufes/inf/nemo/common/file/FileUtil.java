@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 /**
  *	This class is used as a File utility.
@@ -59,5 +60,15 @@ public class FileUtil {
 		}
 		in.close();		
 		return result;
+	}
+    
+    public static void writeToFile (String content, String filePath) throws IOException
+	{
+		File file = createFile(filePath);
+		FileWriter fw = new FileWriter(file,true);
+		PrintWriter pWriter = new PrintWriter(new BufferedWriter(fw));		
+		pWriter.println(content);		
+		pWriter.close();
+		fw.close();						
 	}
 }
