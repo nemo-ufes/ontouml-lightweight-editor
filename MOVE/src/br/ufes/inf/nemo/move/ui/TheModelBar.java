@@ -34,97 +34,74 @@ public class TheModelBar extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private RefOntoUML.Package refmodel;
-	private OntoUMLParser refparser;
-	
-	private String oclConstraints;	
-	
-	private String alsPath;
-	private String umlPath;
-	
 	private JTextField textOntoUML;	
 	private JTextField textOCL;
 	private JTextField textAlloy;
-	private JTextField textUML;
-	
+	private JTextField textUML;	
 	private JButton btnLoadOntoUML;	
 	private JButton btnLoadOCL;	
 	private JButton btnAlloyOutput;
 	private JButton btnUMLOutput;
 	
+	/* OntoUML */
+	private RefOntoUML.Package refmodel;
+	private OntoUMLParser refparser;
+	private String refmodelName;
+	
+	/* OCL */
+	private String oclConstraints;	
+	
+	/* Alloy Output */
+	private String alsPath;
+	public String alsmodelName;
+	public static String alsOutDirectory;
+		
+	/* UML Output */
+	private String umlPath;
+	public String umlmodelName;
+	public static String umlOutDirectory;
+	
+	
 	/**
-	 *	Set OntoUML Model and Path. 
+	 *	Set OntoUML. 
 	 */
-	public void setOntoUMLModel (String modelpath) throws IOException
+	public void setOntoUML (String modelpath) throws IOException
 	{		
 		Resource resource = ResourceUtil.loadReferenceOntoUML(modelpath);
+		
 		this.refmodel = (RefOntoUML.Package) resource.getContents().get(0);		
 		this.refparser = new OntoUMLParser(refmodel);
+		this.refmodelName = refparser.getModelName();
 		
 		textOntoUML.setText(modelpath);
 	}
 
 	/**
-	 * Set OntoUML Model.
+	 * Set OntoUML.
 	 */
-	public void setOntoUMLModel (RefOntoUML.Package refmodel)
+	public void setOntoUML (RefOntoUML.Package refmodel)
 	{
 		this.refmodel = refmodel;		
 		this.refparser = new OntoUMLParser(refmodel);
+		this.refmodelName = refparser.getModelName();
 		
 		textOntoUML.setText("Loaded...");
 		
 		btnLoadOntoUML.setEnabled(false);
 	}
 	
-	/**
-	 * Get OntoUML Model.
-	 */
-	public RefOntoUML.Package getOntoUMLModel ()
-	{
-		return this.refmodel;
-	}
+	public RefOntoUML.Package getOntoUMLModel () { return this.refmodel; }
+	public OntoUMLParser getOntoUMLParser () { return refparser; }
+	public String getOntoUMLModelName () { return refmodelName; }		
+	public String getOntoUMLPath() { return textOntoUML.getText(); }
 	
 	/**
-	 * Get OntoUML Parser.
-	 * @return
-	 */
-	public OntoUMLParser getOntoUMLParser ()
-	{
-		return refparser;
-	}
-	
-	/**
-	 *	Get OntoUML Path. 
-	 */
-	public String getOntoUMLPath()
-	{
-		return textOntoUML.getText();
-	}
-	
-	/**
-	 *	Get OCL Model. i.e. String Constraints.
-	 */
-	public String getOCLModel ()	
-	{
-		return this.oclConstraints;
-	}
-	
-	/**
-	 * Get OCL Path.
-	 */
-	public String getOCLPath()
-	{
-		return textOCL.getText();
-	}	
-	
-	/**
-	 * Set OCL Model.
+	 * Set OCL.
 	 * 
-	 * If option=1, OCL will be loaded from a File, 
-	 * else if option=2, OCL will be loaded from String content.
+	 * If option=1, OCL will be loaded from a Path file, 
+	 * else if option=2, OCL will be loaded from OCL String content.
 	 */
-	public void setOCLModel (String str, int option) throws IOException
+	public void setOCL (String str, int option) throws IOException
 	{
 		if  (option==1) 
 		{
@@ -139,48 +116,47 @@ public class TheModelBar extends JPanel {
 			textOCL.setText("Loaded...");
 			btnLoadOCL.setEnabled(false);
 			
-		}
-			
+		}			
 	}
 	
+	public String getOCLStringConstraints () { return this.oclConstraints; }	
+	public String getOCLPath() { return textOCL.getText(); }	
+		
 	/**
-	 *	Set Output Alloy Path. 
+	 *	Set Alloy. 
 	 */
-	public void setAlloyPath(String alloyPath)
+	public void setAlloy(String alloyPath)
 	{			
 		this.alsPath = alloyPath;
+		
+		alsOutDirectory = alsPath.substring(0, alsPath.lastIndexOf(File.separator)+1);
+		
+		alsmodelName = alsPath.substring(alsPath.lastIndexOf(File.separator)+1,alsPath.length()).replace(".als","");
 		
 		textAlloy.setText(alloyPath);
 	}
 
-	/**
-	 *	Get Output AlloyPath. 
-	 */
-	public String getAlloyPath()
-	{
-		return this.alsPath;
-	}
+	public String getAlloyPath() { return this.alsPath;	}
 	
 	/**
-	 *	Set Output UML Path. 
+	 *	Set UML. 
 	 */
 	public void setUMLPath(String umlpath)
 	{			
 		this.umlPath = umlpath;
 		
+		umlOutDirectory = umlPath.substring(0, umlPath.lastIndexOf(File.separator)+1);
+		
+		umlmodelName = umlPath.substring(umlPath.lastIndexOf(File.separator)+1,umlPath.length()).replace(".uml","");
+		
 		textUML.setText(umlpath);
 	}
 
-	/**
-	 *	Get Output UML Path. 
-	 */
-	public String getUMLPath()
-	{
-		return this.umlPath;
-	}	
+	public String getUMLPath() { return this.umlPath; }	
+	
 	
 	/**
-	 * Create the Panel.
+	 * Create Model Bar.
 	 */
 	public TheModelBar() 
 	{
@@ -223,7 +199,8 @@ public class TheModelBar extends JPanel {
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			 LoadOntoUMLActionPerformed(event);					
+       			/* Loading OntoUML... */
+       			LoadOntoUMLActionPerformed(event);					
        		}
        	});	
 		
@@ -232,6 +209,7 @@ public class TheModelBar extends JPanel {
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
+       			/* Loading OCL... */
        			 LoadOCLActionPerformed(event);					
        		}
        	});		
@@ -241,6 +219,7 @@ public class TheModelBar extends JPanel {
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
+       			/* Setting Alloy Output... */
        			AlloyOutputActionPerformed(event);
        		}
        	});		
@@ -250,6 +229,7 @@ public class TheModelBar extends JPanel {
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
+       			/* Setting UML Output... */
        			UMLOutputActionPerformed(event);
        		}
        	});
@@ -309,13 +289,13 @@ public class TheModelBar extends JPanel {
 	}	
 
 	/**	
-	 * Loading  OntoUML Model. 
+	 * Loading OntoUML. 
 	 */
 	public void LoadOntoUMLActionPerformed (ActionEvent arg0)
 	{
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Load OntoUML Model");
-		FileNameExtensionFilter ontoumlFilter = new FileNameExtensionFilter("OntoUML Model (*.refontouml)", "refontouml");
+		fileChooser.setDialogTitle("Loading OntoUML...");
+		FileNameExtensionFilter ontoumlFilter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
 		fileChooser.addChoosableFileFilter(ontoumlFilter);
 		fileChooser.setFileFilter(ontoumlFilter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
@@ -325,12 +305,10 @@ public class TheModelBar extends JPanel {
 			{
 				try{
 					
-					setOntoUMLModel(fileChooser.getSelectedFile().getPath());
+					setOntoUML(fileChooser.getSelectedFile().getPath());
 					
-					setAlloyPath(fileChooser.getSelectedFile().getPath().replace(".refontouml", ".als"));
-					setUMLPath(fileChooser.getSelectedFile().getPath().replace(".refontouml", ".uml"));
-					
-					TheFrame.dirPath = alsPath.substring(0, alsPath.lastIndexOf(File.separator)+1);	
+					setAlloy(fileChooser.getSelectedFile().getPath().replace(".refontouml", ".als"));
+					setUMLPath(fileChooser.getSelectedFile().getPath().replace(".refontouml", ".uml"));						
 					
 				} catch (IOException e) {				
 					String msg = "An error ocurred while loading the model.\n"+e.getMessage();
@@ -346,7 +324,7 @@ public class TheModelBar extends JPanel {
 	public void LoadOCLActionPerformed (ActionEvent arg0)
 	{
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Load OCL Constraints");
+		fileChooser.setDialogTitle("Loading OCL...");
 		FileNameExtensionFilter oclFilter = new FileNameExtensionFilter("OCL Constraints (*.ocl)", "ocl");
 		fileChooser.addChoosableFileFilter(oclFilter);
 		fileChooser.setFileFilter(oclFilter);
@@ -357,7 +335,7 @@ public class TheModelBar extends JPanel {
 			{
 				try{
 					
-					setOCLModel(fileChooser.getSelectedFile().getPath(),1);
+					setOCL(fileChooser.getSelectedFile().getPath(),1);
 					
 				} catch (IOException e) {				
 					String msg = "An error ocurred while loading the ocl file.\n"+e.getMessage();
@@ -368,12 +346,12 @@ public class TheModelBar extends JPanel {
 	}
 	
 	/**	
-	 * Changing Alloy Output Location... 
+	 * Setting Alloy Output... 
 	 */
 	public void AlloyOutputActionPerformed (ActionEvent arg0)
 	{
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Alloy Output Location");
+		fileChooser.setDialogTitle("Setting Alloy Output...");
 		FileNameExtensionFilter alsFilter = new FileNameExtensionFilter("Alloy Specification (*.als)", "als");
 		fileChooser.addChoosableFileFilter(alsFilter);
 		fileChooser.setFileFilter(alsFilter);
@@ -383,20 +361,20 @@ public class TheModelBar extends JPanel {
 			if (fileChooser.getFileFilter() == alsFilter) 
 			{					
 				if (fileChooser.getSelectedFile().getPath().contains(".als"))
-					setAlloyPath(fileChooser.getSelectedFile().getPath());
+					setAlloy(fileChooser.getSelectedFile().getPath());
 				else
-					setAlloyPath(fileChooser.getSelectedFile().getPath()+".als");
+					setAlloy(fileChooser.getSelectedFile().getPath()+".als");
 			}
 		}
 	}
 	
 	/**	
-	 * Changing UML Output Location... 
+	 * Setting UML Output... 
 	 */
 	public void UMLOutputActionPerformed (ActionEvent arg0)
 	{
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("UML Output Location");
+		fileChooser.setDialogTitle("Setting UML Output...");
 		FileNameExtensionFilter umlFilter = new FileNameExtensionFilter("UML Model (*.uml)", "uml");
 		fileChooser.addChoosableFileFilter(umlFilter);
 		fileChooser.setFileFilter(umlFilter);

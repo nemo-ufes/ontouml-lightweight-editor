@@ -200,10 +200,10 @@ public class TheAntiPatternPanel extends JPanel {
 		int i=1;
 		for(RBOSAntiPattern rbos: rboslist)
 		{
-			SingleRBOSPanel singleRBOS =  new SingleRBOSPanel(rbos,this.frame);			
+			SingleRBOSPanel singleRBOS =  new SingleRBOSPanel(rbos,this.frame,i);			
 			rbosTabPanel.add(singleRBOS);
 			
-			singleRBOS.setTitleBorder("Relation Between Overlapping SubTypes : #"+i);
+			singleRBOS.setTitleBorder("");
 			i++;
 			
 			this.singleRBOS.add(singleRBOS);
@@ -221,10 +221,10 @@ public class TheAntiPatternPanel extends JPanel {
 		int i=1;
 		for(RSAntiPattern rs: rslist)
 		{
-			SingleRSPanel singleRS =  new SingleRSPanel(rs,this.frame);			
+			SingleRSPanel singleRS =  new SingleRSPanel(rs,this.frame,i);			
 			rsTabPanel.add(singleRS);
 			
-			singleRS.setTitleBorder("Relation Specialization : #"+i);
+			singleRS.setTitleBorder("");
 			i++;
 			
 			this.singleRS.add(singleRS);
@@ -242,10 +242,10 @@ public class TheAntiPatternPanel extends JPanel {
 		int i=1;
 		for(STRAntiPattern str: strlist)
 		{
-			SingleSTRPanel singleSTR =  new SingleSTRPanel(str,this.frame);			
+			SingleSTRPanel singleSTR =  new SingleSTRPanel(str,this.frame,i);			
 			strTabPanel.add(singleSTR);
 			
-			singleSTR.setTitleBorder("Self-Type Relationship : #"+i);
+			singleSTR.setTitleBorder("");
 			i++;
 			
 			this.singleSTR.add(singleSTR);
@@ -263,10 +263,10 @@ public class TheAntiPatternPanel extends JPanel {
 		int i=1;
 		for(ACAntiPattern ac: aclist)
 		{
-			SingleACPanel singleAC =  new SingleACPanel(ac,this.frame);			
+			SingleACPanel singleAC =  new SingleACPanel(ac,this.frame,i);			
 			acTabPanel.add(singleAC);
 			
-			singleAC.setTitleBorder("Association Cycle : #"+i);
+			singleAC.setTitleBorder("");
 			i++;
 			
 			this.singleAC.add(singleAC);

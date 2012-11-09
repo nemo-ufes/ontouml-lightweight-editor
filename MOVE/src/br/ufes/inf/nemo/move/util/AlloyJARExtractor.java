@@ -19,11 +19,13 @@ public class AlloyJARExtractor {
 
 	public static void extractAlloyJaRTo (String FileNameWithExtension, String dirPath) throws IOException
 	{
+		File alloyJarFile = new File(dirPath + FileNameWithExtension);
+		
 		// Copy "alloy4.2.jar" to the destination directory 
 		InputStream is = TheFrame.class.getClassLoader().getResourceAsStream(FileNameWithExtension);
 		if(is == null) is = new FileInputStream("lib/"+FileNameWithExtension);
-		File alloyJarFile = new File(dirPath + FileNameWithExtension);
-		alloyJarFile.deleteOnExit();
+		
+		alloyJarFile.deleteOnExit();		
 		OutputStream out = new FileOutputStream(alloyJarFile);
 
 		// copy data flow -> MB x MB
