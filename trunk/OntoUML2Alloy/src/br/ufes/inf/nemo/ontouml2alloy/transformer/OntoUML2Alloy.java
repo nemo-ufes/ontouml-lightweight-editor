@@ -92,7 +92,7 @@ public class OntoUML2Alloy {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean Transformation (RefOntoUML.Package refmodel, String alloyPath, Options opt) throws Exception 
+	public static String Transformation (RefOntoUML.Package refmodel, String alloyPath, Options opt) throws Exception 
 	{
 		alsPath = alloyPath;
 		
@@ -113,7 +113,7 @@ public class OntoUML2Alloy {
 		// Here the transformation begins...
 		start(refmodel,opt);
 		
-		return true;
+		return transformer.module.toString();
 	}	
 	
 	private static void start(RefOntoUML.Package refmodel, Options opt)
