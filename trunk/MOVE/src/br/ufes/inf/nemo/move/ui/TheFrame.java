@@ -27,9 +27,9 @@ public class TheFrame extends JFrame {
 	
 	private TheToolBar toolBar;	
 	private TheMenuBar menuBar;	
-	private TheStatusBar statuspanel;	
+	private TheStatusBar statusbar;	
+	private TheModelBar modelsbar;
 	private TheConsole consolepanel;
-	private TheModelBar modelspanel;
 	
 	private JSplitPane mainSplitPane;
 	private JSplitPane innerSplitPane;
@@ -49,9 +49,9 @@ public class TheFrame extends JFrame {
 		return menuBar;
 	}
 	
-	public TheModelBar getTheModelsBar()
+	public TheModelBar getTheModelBar()
 	{
-		return modelspanel;
+		return modelsbar;
 	}
 	
 	public TheModelPanel getTheModelPanel()
@@ -109,13 +109,13 @@ public class TheFrame extends JFrame {
 	public TheFrame (RefOntoUML.Package model, String oclConstraints, String alsPath) throws IOException
 	{
 		this();
-		modelspanel.setOntoUMLModel(model);
-		modelspanel.setOCLModel(oclConstraints,2);
-		modelspanel.setAlloyPath(alsPath);
-		modelspanel.setUMLPath(alsPath.replace(".als", ".uml"));
+		modelsbar.setOntoUML(model);
+		modelsbar.setOCL(oclConstraints,2);
+		modelsbar.setAlloy(alsPath);
+		modelsbar.setUMLPath(alsPath.replace(".als", ".uml"));
 		dirPath = alsPath.substring(0, alsPath.lastIndexOf(File.separator)+1);
 		
-		ontoumlpanel.setModelTree(modelspanel.getOntoUMLModel());
+		ontoumlpanel.setModelTree(modelsbar.getOntoUMLModel());
 	}	
 
 	/**
@@ -132,13 +132,13 @@ public class TheFrame extends JFrame {
 		setJMenuBar(menuBar);
 		
 		toolBar = new TheToolBar(this);
-		modelspanel = new TheModelBar();
+		modelsbar = new TheModelBar();
 		
 		JPanel headpanel = new JPanel();
 		headpanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		headpanel.setLayout(new BorderLayout(0, 0));
 		headpanel.add(BorderLayout.NORTH,toolBar);
-		headpanel.add(BorderLayout.CENTER,modelspanel);
+		headpanel.add(BorderLayout.CENTER,modelsbar);
 		
 		getContentPane().add(BorderLayout.NORTH,headpanel);		
 		
@@ -163,8 +163,8 @@ public class TheFrame extends JFrame {
 		mainSplitPane.setOneTouchExpandable(true);		
 		getContentPane().add(BorderLayout.CENTER,mainSplitPane);
 		
-		statuspanel = new TheStatusBar();
-		getContentPane().add(BorderLayout.SOUTH,statuspanel);
+		statusbar = new TheStatusBar();
+		getContentPane().add(BorderLayout.SOUTH,statusbar);
 		
 		pack();
 		

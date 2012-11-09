@@ -23,7 +23,9 @@ import javax.swing.border.TitledBorder;
 
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.move.ui.TheFrame;
+import br.ufes.inf.nemo.move.ui.TheTextField;
 import br.ufes.inf.nemo.ontouml.antipattern.RWORAntiPattern;
+import javax.swing.SwingConstants;
 
 /**
  * @author John Guerson
@@ -42,10 +44,15 @@ public class SingleRWORPanel extends JPanel {
 	private JCheckBox cbxExclusive;
 	private JCheckBox cbxOverlapping;
 	private JCheckBox cbxCustomizedExclusive;	
+	
 	private RWORAntiPattern rwor;	
 	private TheFrame frame;
+	
 	private Collection<Classifier> disjRoles;
+	
 	private JSpinner spinScope;
+	private JLabel lblatLeast;
+	private JLabel lblRelationWithOverlapping;
 			
 	/**
 	 * Create a Single RWOR AntiPattern Panel.
@@ -63,8 +70,7 @@ public class SingleRWORPanel extends JPanel {
 		
 		disjRoles = rwor.getMediations().values();		
 		
-		table.setRWORAntiPattern(rwor);
-		
+		table.setRWORAntiPattern(rwor);		
 		table.setRolesTableModel(disjRoles);
 		table.setPreferredSize(new Dimension(table.getRowCount()*20,table.getColumnCount()*50));		
 	}	
@@ -84,12 +90,12 @@ public class SingleRWORPanel extends JPanel {
 	 */
 	public SingleRWORPanel() 
 	{
-		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 1, true), "RWOR #1", TitledBorder.LEFT, TitledBorder.BELOW_TOP, null, Color.RED));
+		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128)), "", TitledBorder.RIGHT, TitledBorder.BELOW_TOP, null, new Color(255, 0, 0)));
 		
 		JLabel lblRelator = new JLabel("Relator:");		
-		JLabel lblDisjointsRoles = new JLabel("Disjoints Roles:");
+		JLabel lblDisjointsRoles = new JLabel("Customizing Disjoints Roles:");
 		
-		textRelator = new JTextField();
+		textRelator = new TheTextField();
 		textRelator.setBackground(Color.WHITE);
 		textRelator.setEditable(false);
 		textRelator.setColumns(10);
@@ -97,7 +103,7 @@ public class SingleRWORPanel extends JPanel {
 		JPanel checkPane = new JPanel();		
 		JPanel btnPane = new JPanel();
 		
-		btnGenerateAlloy = new JButton("Generate Alloy");
+		btnGenerateAlloy = new JButton("Execute With Analyzer");
 		btnGenerateAlloy.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -107,7 +113,7 @@ public class SingleRWORPanel extends JPanel {
        	});		
 		btnPane.add(btnGenerateAlloy);
 		
-		btnGenerateOclSolution = new JButton("Generate OCL Solution");
+		btnGenerateOclSolution = new JButton("OCL Solution");
 		btnGenerateOclSolution.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -132,45 +138,55 @@ public class SingleRWORPanel extends JPanel {
 		
 		JPanel scopePanel = new JPanel();
 		
+		lblRelationWithOverlapping = new JLabel("Relation With Overlapping Roles");
+		lblRelationWithOverlapping.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 					.addGap(21)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(tablePane, GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-						.addComponent(lblDisjointsRoles, GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-						.addComponent(checkPane, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblRelator)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textRelator, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)))
-					.addGap(21))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(24)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
-						.addComponent(scopePanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE))
-					.addGap(22))
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(tablePane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
+								.addComponent(checkPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))
+							.addGap(22))
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblDisjointsRoles, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+								.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+									.addComponent(lblRelator)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(textRelator))
+								.addComponent(lblRelationWithOverlapping, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
+							.addGap(25))
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(btnPane, GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
+								.addComponent(scopePanel, GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE))
+							.addGap(21))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(19)
+					.addGap(28)
+					.addComponent(lblRelationWithOverlapping)
+					.addGap(34)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblRelator)
 						.addComponent(textRelator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(15)
-					.addComponent(lblDisjointsRoles)
-					.addGap(18)
-					.addComponent(tablePane, GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(checkPane, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblDisjointsRoles, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(tablePane, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(checkPane, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(scopePanel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(8))
+					.addContainerGap(38, Short.MAX_VALUE))
 		);
 		
 		JLabel lblScope = new JLabel("Scope");
@@ -180,6 +196,9 @@ public class SingleRWORPanel extends JPanel {
 		spinScope.setModel(new SpinnerNumberModel(new Integer(2), new Integer(0), null, new Integer(1)));
 		spinScope.setPreferredSize(new Dimension(60, 20));
 		scopePanel.add(spinScope);
+		
+		lblatLeast = new JLabel("(at least)");
+		scopePanel.add(lblatLeast);
 		
 		scrollPane = new JScrollPane();
 		tablePane.add(scrollPane, BorderLayout.CENTER);
@@ -208,9 +227,9 @@ public class SingleRWORPanel extends JPanel {
 
 		int cardinality = (Integer)spinScope.getValue();
 		
-		if(exclusive) exclusivePred = rwor.generateAllMultipleExclusivePredicate(frame.getTheModelsBar().getOntoUMLParser(), cardinality);
-		if(overlapping) overlappingPred = rwor.generateOverlappingPredicate(frame.getTheModelsBar().getOntoUMLParser(), cardinality);
-		if(custom) customPred = rwor.generateMultipleExclusivePredicate(table.getMediationsMatrixFromRolesTable(), frame.getTheModelsBar().getOntoUMLParser(), cardinality);
+		if(exclusive) exclusivePred = rwor.generateAllMultipleExclusivePredicate(frame.getTheModelBar().getOntoUMLParser(), cardinality);
+		if(overlapping) overlappingPred = rwor.generateOverlappingPredicate(frame.getTheModelBar().getOntoUMLParser(), cardinality);
+		if(custom) customPred = rwor.generateMultipleExclusivePredicate(table.getMediationsMatrixFromRolesTable(), frame.getTheModelBar().getOntoUMLParser(), cardinality);
 		
 		frame.getTheConsolePanel().write(exclusivePred+"\n\n"+overlappingPred+"\n\n"+customPred);
 		frame.ShowConsole();
