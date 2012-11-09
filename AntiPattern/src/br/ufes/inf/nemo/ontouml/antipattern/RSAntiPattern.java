@@ -15,6 +15,7 @@ public class RSAntiPattern {
 	private Classifier generalTarget;
 	private Classifier specificSource;
 	private Classifier specificTarget;
+	public static int SUBSET = 1, REDEFINE = 2, NONSUBSET = 3, DISJOINT = 4;
 		
 	public RSAntiPattern (Association specific, Association general) throws Exception{
 						
@@ -31,120 +32,101 @@ public class RSAntiPattern {
 				
 	}
 	
-	public String generateSubsetOcl(){
+	public String generateOcl(int type) throws Exception{
+		String invName = new String(), contextName = new String(), invRule = new String();
+		String aes_name, aeg_name;
 		
-		String aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
-		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
+		Classifier specificSource = (Classifier) specific.getMemberEnd().get(0).getType();
+		Classifier specificTarget = (Classifier) specific.getMemberEnd().get(1).getType();
+		Classifier generalSource = (Classifier) general.getMemberEnd().get(0).getType();
+		Classifier generalTarget = (Classifier) general.getMemberEnd().get(1).getType();
 		
-		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv subsetting_"+specific.getName().trim()+"_"+general.getName().trim()+
-				" : self."+aeg_name+"->includesAll(self."+aes_name+")";
+		if (specificSource.equals(generalSource) || specificSource.allParents().contains(generalSource)){
+			aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
+			aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
+		}
+		else {
+			aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
+			aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(0));
+		}
+		
+		contextName = specific.getMemberEnd().get(0).getType().getName();
+		
+		if(type==SUBSET){
+			invName = "subset";
+			invRule = "self."+aeg_name+"->includesAll(self."+aes_name+")";
+		}
+		else if (type==REDEFINE){
+			invName = "redefine";
+			invRule = "self."+aeg_name+"=self."+aes_name;
+		}
+		else if (type==DISJOINT){
+			invName = "disjoint";
+			invRule = "self."+aeg_name+"->excludesAll(self."+aes_name+")";
+		}
+		else if (type==NONSUBSET){
+			invName = "nonSubset";
+			invRule = "not (self."+aeg_name+"->includesAll(self."+aes_name+"))";
+		}
+		else
+			throw new Exception("The method 'RSAntiPattern::generateOcl' requires that a valid type of predicate is provided");
+		
+		invName += "_"+specific.getName().trim()+"_"+general.getName().trim();
+		
+		return 	"context "+contextName+"\n"+
+				"inv "+invName+" : "+invRule;
+		
 	}
 	
-	public String generateRedefineOcl(){
-		String aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
-		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
-			
-		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv redefine_"+specific.getName().trim()+"_"+general.getName().trim()+
-				" : self."+aeg_name+"=self."+aes_name;
-	}
-	
-	public String generateDisjointOcl(){
-		String aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
-		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
-			
-		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv disjoint_"+specific.getName().trim()+"_"+general.getName().trim()+
-				" : self."+aeg_name+"->excludesAll(self."+aes_name+")";
-	}
-	
-	public String generateNotSubsetOcl(){
-		String aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
-		String aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
-			
-		return 	"context "+specific.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv notsubset_"+specific.getName().trim()+"_"+general.getName().trim()+
-				" : not (self."+aeg_name+"->includesAll(self."+aes_name+"))";
-	}
-	
-	/*This method generates an Alloy predicate that states that the specific association is a SUBTYPE of the general association*/
-	public String generateSubsetPredicate (OntoUMLParser mapper) {
-		String predicate, rules, name;
 		
-		String generalName, specificName;
-		generalName = mapper.getName(general);
-		specificName = mapper.getName(specific);
-		
-		name = "subset_"+specificName+"_"+generalName;
-		rules = "some "+specificName+"\n\t";
-		rules += "some "+generalName+"\n\t";
-		rules += specificName+" in "+generalName;
-				
-		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
-		
-		return predicate;
-	}
-	
-	/*This method generates an Alloy predicate that states that the specific association is NOT A SUBTYPE of the general association*/
-	public String generateNotSubsetPredicate (OntoUMLParser mapper) {
-		String predicate, rules, name;
-		
-		String generalName, specificName;
-		generalName = mapper.getName(general);
-		specificName = mapper.getName(specific);
-		
-		name = "not_subset_"+specificName+"_"+generalName;
-		rules = "some "+specificName+"\n\t";
-		rules += "some "+generalName+"\n\t";
-		rules += specificName+" not in "+generalName;
-				
-		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
-		
-		return predicate;
-	}
-	
-	/*This method generates an Alloy predicate that states that the specific association is DISJOINT with the general association*/
-	public String generateDisjointPredicate (OntoUMLParser mapper) {
-		String predicate, rules, name;
-		
-		String generalName, specificName;
-		generalName = mapper.getName(general);
-		specificName = mapper.getName(specific);
-		
-		name = "disjoint_"+specificName+"_"+generalName;
-		rules = "some "+specificName+"\n\t";
-		rules += "some "+generalName+"\n\t";
-		rules += "no "+specificName+" & "+generalName;
-				
-		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
-		
-		return predicate;
-	}
-	
-	/*This method generates an Alloy predicate that states that the specific association is a REDEFINITION of the general association*/
-	public String generateRedefinePredicate (OntoUMLParser mapper) {
-		String predicate, rules, name;
+	/*This method generates alloy predicates for the RS AntiPattern. */
+	public String generatePredicate (OntoUMLParser mapper, int type) throws Exception {
+		String predicate, rules, name = new String();
 		
 		String generalName, specificName, specificSourceName, specificTargetName;
 		generalName = mapper.getName(general);
 		specificName = mapper.getName(specific);
 		specificSourceName = mapper.getName(specificSource);
 		specificTargetName = mapper.getName(specificTarget);
-		name = "redefine_"+specificName+"_"+generalName;
-				
-		if (this.specificSource.allParents().contains(generalSource) || this.specificSource.allParents().contains(generalTarget)){
-			rules = "some "+specificSourceName+"\n\t";
-			rules += "all w:World, x:w."+specificSourceName+" | x.(w."+specificName+")=x.(w."+generalName+")";
+		
+		if(type==SUBSET)
+			name = "subset";
+		else if (type==REDEFINE)
+			name = "redefine";
+		else if (type==DISJOINT)
+			name = "disjoint";
+		else if (type==NONSUBSET)
+			name = "nonSubset";
+		else
+			throw new Exception("The method 'RSAntiPattern::generatePredicate' requires that a valid type of predicate is provided");
+		
+		name += "_"+specificName+"_"+generalName;
+		rules = "some "+specificName+"\n\t" +
+				"some "+generalName+"\n\t" +
+				"all w:World | ";
+		
+		if (specificSource.equals(generalSource) || specificSource.allParents().contains(generalSource)){
+			if (type==SUBSET)
+				rules += "w."+specificName+" in w."+generalName;
+			if (type==DISJOINT)
+				rules += "no (w."+specificName+" & w."+generalName+")";
+			if (type==NONSUBSET)
+				rules += "!(w."+specificName+" in w."+generalName+")";
+			if (type==REDEFINE)
+				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") = "+"x.(w"+generalName+") and (w."+specificName+").y = "+"(w."+generalName+").y";
 		}
-		else{
-			rules = "some "+specificTargetName+"\n\t";
-			rules += "all w:World, x:w."+specificTargetName+" | (w."+specificName+").x=(w."+generalName+").x";
+		
+		else {
+			if (type==SUBSET)
+				rules += "w."+specificName+" in ~(w."+generalName+"))";
+			if (type==DISJOINT)
+				rules += "no (w."+specificName+" & ~(w."+generalName+"))";
+			if (type==NONSUBSET)
+				rules += "!(w."+specificName+" in ~(w."+generalName+"))";
+			if (type==REDEFINE)
+				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") = "+"x.(~(w"+generalName+")) and (w."+specificName+").y = "+"(~(w."+generalName+")).y";
 		}
-				
+						
 		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
 		
