@@ -106,21 +106,70 @@ public class RSAntiPattern {
 		rules = "some "+specificName+"\n\t" +
 				"some "+generalName+"\n\t";
 		
-			if (type==REDEFINE){
-				if (specificSource.allParents().contains(generalSource))
-					rules += specificSourceName+"!="+generalSourceName+"\n\t";
-				if (specificTarget.allParents().contains(generalTarget))			
-					rules += specificTargetName+"!="+generalTargetName+"\n\t";
-				if (specificTarget.allParents().contains(generalSource))
-					rules += specificTargetName+"!="+generalSourceName+"\n\t";
-				if (specificSource.allParents().contains(generalTarget))
-					rules += specificSourceName+"!="+generalTargetName+"\n\t";
+		if (type==REDEFINE){
+			if ((specificSource.equals(generalSource) && specificTarget.equals(generalTarget)) || (specificSource.equals(generalTarget) && specificTarget.equals(generalSource)))
+				throw new Exception("A association may not redefine another if the related types are the same.");
+			
+			if (specificSource.allParents().contains(generalSource) && specificTarget.allParents().contains(generalTarget))
+				rules += specificSourceName+"!="+generalSourceName+"\n\t";
+			else if (specificSource.allParents().contains(generalTarget) && specificTarget.allParents().contains(generalSource))
+				rules += specificSourceName+"!="+generalTargetName+"\n\t";
+			
+			//Adds to the redefine predicate a rule to make the supertype different from the subtype, so the analyzer better exemplify a redefinition
+			if (specificSource.allParents().contains(generalSource)){
+				//check if the source in the alloy transformation is the same as the one in the model, since it may change if it is wrongly defined.
+				if(specific.getMemberEnd().get(0).getType().equals(specificSource)){
+					if(specific.getMemberEnd().get(0).getLower()==0)
+						rules += specificSourceName+"!="+generalSourceName+"\n\t";
+				}
+				else{
+					if(specific.getMemberEnd().get(1).getLower()==0)
+						rules += specificSourceName+"!="+generalSourceName+"\n\t";
+				}
 			}
-		
-		
+			else if (specificTarget.allParents().contains(generalTarget)) {			
+				//check if the source in the alloy transformation is the same as the one in the model, since it may change if it is wrongly defined.
+				if(specific.getMemberEnd().get(1).getType().equals(specificTarget)){
+					if(specific.getMemberEnd().get(1).getLower()==0)
+						rules += specificTargetName+"!="+generalTargetName+"\n\t";
+				}
+				else{
+					if(specific.getMemberEnd().get(0).getLower()==0)
+						rules += specificTargetName+"!="+generalTargetName+"\n\t";
+				}
+			}
+			else if (specificTarget.allParents().contains(generalSource)) {
+				
+				//check if the source in the alloy transformation is the same as the one in the model, since it may change if it is wrongly defined.
+				if(specific.getMemberEnd().get(1).getType().equals(specificTarget)){
+					if(specific.getMemberEnd().get(1).getLower()==0)
+						rules += specificTargetName+"!="+generalSourceName+"\n\t";
+				}
+				else{
+					if(specific.getMemberEnd().get(0).getLower()==0)
+						rules += specificTargetName+"!="+generalSourceName+"\n\t";
+				}
+			}
+			else if (specificSource.allParents().contains(generalTarget)) {
+				
+				//check if the source in the alloy transformation is the same as the one in the model, since it may change if it is wrongly defined.
+				if(specific.getMemberEnd().get(0).getType().equals(specificSource)){
+					if(specific.getMemberEnd().get(0).getLower()==0)
+						rules += specificSourceName+"!="+generalTargetName+"\n\t";
+				}
+				else{
+					if(specific.getMemberEnd().get(1).getLower()==0)
+						rules += specificSourceName+"!="+generalTargetName+"\n\t";
+				}
+			}
+			else {
+				throw new Exception("Undefined Relation Specialization AntiPattern");
+			}
+		}
+				
 		
 		rules += "all w:World | ";
-		
+		//Case in which the SOURCE of the SPECIFIC association is SUBTYPE_OF or EQUAL_TO the SOURCE of the GENERAL association
 		if (specificSource.equals(generalSource) || specificSource.allParents().contains(generalSource)){
 			if (type==SUBSET){
 				if(general.getMemberEnd().get(0).getUpper()!=1 || general.getMemberEnd().get(1).getUpper()!=1)
@@ -132,10 +181,16 @@ public class RSAntiPattern {
 				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | no (x.(w."+specificName+") & "+"x.(w."+generalName+")) and no ((w."+specificName+").y & "+"(w."+generalName+").y)";
 			if (type==NONSUBSET)
 				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") not in "+"x.(w."+generalName+") and (w."+specificName+").y not in "+"(w."+generalName+").y";
-			if (type==REDEFINE)
-				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") = "+"x.(w."+generalName+") and (w."+specificName+").y = "+"(w."+generalName+").y";
+			if (type==REDEFINE){
+				//the source is specialized
+				if(!specificSource.equals(generalSource))
+					rules += " all x:w."+specificSourceName+" | x.(w."+specificName+") = "+"x.(w."+generalName+")";
+				//the target is specialized
+				else
+					rules += " all x:w."+specificTargetName+" | (w."+specificName+").x = "+"(w."+generalName+").x";
+			}
 		}
-		
+		//Case in which the SOURCE of the SPECIFIC association is SUBTYPE_OF or EQUAL_TO the TARGET of the GENERAL association
 		else {
 			if (type==SUBSET){
 				if(general.getMemberEnd().get(0).getUpper()!=1 || general.getMemberEnd().get(1).getUpper()!=1)
@@ -148,7 +203,13 @@ public class RSAntiPattern {
 			if (type==NONSUBSET)
 				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") not in "+"x.(~(w."+generalName+")) and (w."+specificName+").y not in "+"(~(w."+generalName+")).y";
 			if (type==REDEFINE)
-				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") = "+"x.(~(w."+generalName+")) and (w."+specificName+").y = "+"(~(w."+generalName+")).y";
+				//the source is specialized
+				if(!specificSource.equals(generalTarget))
+					rules += " all x:w."+specificSourceName+"| x.(w."+specificName+") = "+"x.(~(w."+generalName+"))";
+				//the target is specialized
+				else
+					rules += " all x:w."+specificTargetName+"| (w."+specificName+").x = "+"(~(w."+generalName+")).x";
+					
 		}
 		
 		
