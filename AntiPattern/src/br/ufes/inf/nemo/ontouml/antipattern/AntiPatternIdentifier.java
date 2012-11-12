@@ -82,8 +82,60 @@ public class AntiPatternIdentifier {
 	
 	/*TODO This query uses the mediations() operation defined in the metamodel, which does not take into account the inverted ones, i.e. mediations with the target as the relator*/ 
 	/*OCL query for the identification of the Relator With Overlapping Roles AntiPattern*/
-	public static String RWOROCLQuery = "Relator.allInstances()->select(r:Relator | r.oclAsType(Classifier).isAbstract=false and ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()>2 or ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()=2 and ( r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(1).mediatedEnd().lower>1 or r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(2).mediatedEnd().lower>1))) and r.allParents()->including(r).oclAsType(Relator).mediated()->exists(t1,t2:Classifier | t1<>t2 and ( (t1.allParents()->includes(t2)) or  (t2.allParents()->includes(t1)) or ( t1.allParents()->intersection(t2.allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(t1) or g1.specific=t1) and (g2.specific.allChildren()->includes(t2) or g2.specific=t2)))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false)))))";
-	
+	//public static String RWOROCLQuery = "Relator.allInstances()->select(r:Relator | r.oclAsType(Classifier).isAbstract=false and ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()>2 or ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()=2 and ( r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(1).mediatedEnd().lower>1 or r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(2).mediatedEnd().lower>1))) and r.allParents()->including(r).oclAsType(Relator).mediated()->exists(t1,t2:Classifier | t1<>t2 and ( (t1.allParents()->includes(t2)) or  (t2.allParents()->includes(t1)) or ( t1.allParents()->intersection(t2.allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(t1) or g1.specific=t1) and (g2.specific.allChildren()->includes(t2) or g2.specific=t2)))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false)))))";
+	public static String RWOROCLQuery = "Relator.allInstances()->select(r:Relator | r.oclAsType(Classifier).isAbstract=false and ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()>2 or ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()=2 and ( r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(1).mediatedEnd().lower>1 or r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(2).mediatedEnd().lower>1))) and r.allParents()->including(r).oclAsType(Relator).mediated()->exists(t1,t2:Classifier | t1<>t2 and t1.allParents()->excludes(t2) and t2.allParents()->excludes(t1) and ( t1.allParents()->intersection(t2.allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(t1) or g1.specific=t1) and (g2.specific.allChildren()->includes(t2) or g2.specific=t2)))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
+	/*	Relator.allInstances()->
+	Relator.allInstances()->
+	select(r:Relator | 
+			r.oclAsType(Classifier).isAbstract=false 
+			and 
+			( 
+				r.allParents()->including(r).oclAsType(Relator).mediations()->size()>2 
+				or 
+				( 
+					r.allParents()->including(r).oclAsType(Relator).mediations()->size()=2 
+					and 
+					( 
+						r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(1).mediatedEnd().lower>1 
+						or 
+						r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(2).mediatedEnd().lower>1
+					)
+				)
+			) 
+			and 
+			r.allParents()->including(r).oclAsType(Relator).mediated()->exists(t1,t2:Classifier | 
+				t1<>t2
+				and 
+				t1.allParents()->excludes(t2)
+				and 
+				t2.allParents()->excludes(t1)
+				
+				and 
+				( 
+					t1.allParents()->intersection(t2.allParents())->intersection(SubstanceSortal.allInstances())->size()>0 
+					and 
+					GeneralizationSet.allInstances()->select(gs:GeneralizationSet | 
+						gs.generalization->exists(g1,g2:Generalization | 
+							g1<>g2 
+							and 
+							(
+								g1.specific.allChildren()->includes(t1) 
+								or 
+								g1.specific=t1
+							) 
+							and 
+							(
+								g2.specific.allChildren()->includes(t2) 
+								or g2.specific=t2
+							)
+						)
+						)->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false)
+			
+				)
+			)
+	)
+	 */
+		
 	/*Returns all the Relator With Overlapping Roles AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
 	public static ArrayList<RWORAntiPattern> identifyRWOR (Package model) throws Exception
