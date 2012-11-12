@@ -138,7 +138,7 @@ public class OntoUMLCheckBoxTree {
     		} else
     			elementType = "diagram";
     		    		    		
-    		label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/move/modeltree/"+elementType.toLowerCase()+".png")));
+    		label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/move/checkboxtree/"+elementType.toLowerCase()+".png")));
     		
     		if (selected)
     			//label.setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_MEDIUM));
