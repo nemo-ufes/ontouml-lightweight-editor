@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.ocl.ParserException;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.Mediation;
 import RefOntoUML.Model;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
@@ -25,9 +26,9 @@ public class QueryPerformer {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
-		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/GenericCycle.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/RBOS_regular_and_inverted.refontouml").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOS_regular_and_inverted.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
@@ -63,15 +64,15 @@ public class QueryPerformer {
 		    System.out.println("Number of identified RWOR Anti-Patterns: "+result21.size()+"\n");
 		    for (RWORAntiPattern rwor : result21){
 		    	System.out.println(rwor);
-		    	//System.out.println(rwor.generateExclusivePredicate(mapper, 1));
-		    	//System.out.println(rwor.generateNonExclusivePredicate(mapper, 1));
+		    	System.out.println(rwor.generateExclusivePredicate(mapper, 1));
+		    	System.out.println(rwor.generateOverlappingPredicate(mapper, 1));
 		    	
 		    	/*ArrayList<Classifier> classes = new ArrayList<>();
 		    	classes.addAll(rwor.getMediations().values());
 		    	System.out.println(rwor.generateExclusiveOcl(classes));
 		    	
 		    	
-		    	/*System.out.println("#######");
+		    	System.out.println("#######");*/
 		    	
 		    		
 		    	ArrayList<Mediation> list1, list2;
@@ -90,7 +91,7 @@ public class QueryPerformer {
 		    	matrix.add(list2);
 		    	System.out.println(rwor.generateMultipleExclusivePredicate(matrix, mapper, 1));
 		    	
-		    	System.out.println("#######");*/
+		    	System.out.println("#######");
 		    }
 		    System.out.println("**************************************************************");
 		    

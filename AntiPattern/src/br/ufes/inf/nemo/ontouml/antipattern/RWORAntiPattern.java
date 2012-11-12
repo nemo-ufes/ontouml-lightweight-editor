@@ -172,7 +172,7 @@ public class RWORAntiPattern {
 	}
 	
  	@SuppressWarnings({ "unchecked", "unused" })
-	public String generateAllMultipleExclusivePredicate(OntoUMLParser mapper, int cardinality){
+/*	public String generateAllMultipleExclusivePredicate(OntoUMLParser mapper, int cardinality){
 		String predicates="", rules, predicateName, relatorName;
 		ArrayList<Object>  mediations = new ArrayList<>(), output = new ArrayList<>(), output2, aux;
 		Combination comb1, comb2;
@@ -188,7 +188,7 @@ public class RWORAntiPattern {
             output.add(comb1.next());
         }
         
-        /*Generates all the combinations of any size with the comb1 result*/ 
+        //Generates all the combinations of any size with the comb1 result
         comb2 = new Combination(output,0);
         
         while (comb2.hasNext()) {
@@ -219,7 +219,7 @@ public class RWORAntiPattern {
         }
         
         return predicates;
-	}
+	}*/
 	
 	public Classifier getSupertype() {
 		return supertype;
