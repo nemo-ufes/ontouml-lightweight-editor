@@ -37,14 +37,14 @@ public class OntoUMLCheckBoxTree {
 	 * @param refmodel
 	 */
 	public static CheckboxTree createCheckBoxTree(RefOntoUML.Package refmodel)
-	{
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refmodel));		
+	{				
+		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refmodel));
 		CheckboxTree modelTree = new CheckboxTree(rootNode);		
-		OntoUMLTreeCellRenderer ontoCellRenderer = new OntoUMLTreeCellRenderer();
-		//ontoCellRenderer.checkbox.setSelected(true);
-		modelTree.setCellRenderer(ontoCellRenderer);		
 		modelTree.getCheckingModel().setCheckingMode(TreeCheckingModel.CheckingMode.PROPAGATE);		
-		drawTree(rootNode, refmodel);		
+		OntoUMLTreeCellRenderer ontoCellRenderer = new OntoUMLTreeCellRenderer();
+		modelTree.setCellRenderer(ontoCellRenderer);
+		drawTree(rootNode, refmodel);
+		modelTree.addCheckingPath(new TreePath(rootNode.getPath()));
 		return modelTree;
 	}
 	
