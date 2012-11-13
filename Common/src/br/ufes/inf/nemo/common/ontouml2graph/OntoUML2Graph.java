@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.common.ontouml2graph;
 
 import java.util.ArrayList;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+
 import RefOntoUML.Association;
 import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
@@ -14,11 +16,11 @@ import RefOntoUML.Relationship;
 public class OntoUML2Graph {
 	
 	public static int[][] buildGraph (Package model, ArrayList<Class> classes, ArrayList<Relationship> relationships, boolean incGen, boolean incMat){
-		
+		OntoUMLParser parser = new OntoUMLParser(model);
 		classes.add(null);
 		relationships.add(null);
 		
-		for (PackageableElement element : model.getPackagedElement()) 
+		for (PackageableElement element : parser.getPackageableElements()) 
 		{
 			if(element instanceof Class) 
 			{
