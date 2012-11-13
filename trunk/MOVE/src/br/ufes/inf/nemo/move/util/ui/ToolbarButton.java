@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.move.ui;
+package br.ufes.inf.nemo.move.util.ui;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.SwingConstants;
 
 import br.ufes.inf.nemo.move.util.ColorPalette;
 import br.ufes.inf.nemo.move.util.ColorPalette.ThemeColor;
@@ -15,18 +16,20 @@ import br.ufes.inf.nemo.move.util.ColorPalette.ThemeColor;
  * @author John Guerson
  */
 
-public class TheButton extends JButton implements MouseListener {
+public class ToolbarButton extends JButton implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
-	public TheButton (String name, String path)
+	public ToolbarButton (String name, String path)
 	{
 		this();
 		setText(name);		
-		setIcon(new ImageIcon(TheButton.class.getResource(path)));
+		setIcon(new ImageIcon(ToolbarButton.class.getResource(path)));
+		setVerticalTextPosition(SwingConstants.BOTTOM);
+		setHorizontalTextPosition(SwingConstants.CENTER);
 	}
 	
-	public TheButton ()
+	public ToolbarButton ()
 	{
 		super();
 		setFocusable(false);

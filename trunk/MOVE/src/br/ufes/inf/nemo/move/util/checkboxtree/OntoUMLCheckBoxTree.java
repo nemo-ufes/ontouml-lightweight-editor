@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.move.panel.ontouml;
+package br.ufes.inf.nemo.move.util.checkboxtree;
 
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTreeCellRenderer;
@@ -38,7 +38,7 @@ public class OntoUMLCheckBoxTree {
 	 */
 	public static CheckboxTree createCheckBoxTree(RefOntoUML.Package refmodel)
 	{
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new OntoUMLCheckBoxTreeNodeElem(refmodel));		
+		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refmodel));		
 		CheckboxTree modelTree = new CheckboxTree(rootNode);		
 		modelTree.setCellRenderer(new OntoUMLTreeCellRenderer());		
 		modelTree.getCheckingModel().setCheckingMode(TreeCheckingModel.CheckingMode.PROPAGATE);		
@@ -63,7 +63,7 @@ public class OntoUMLCheckBoxTree {
 		/* Package */
 		} else if (refElement instanceof RefOntoUML.Package) 
 		{
-			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLCheckBoxTreeNodeElem(refElement));
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement));
 			parent.add(newNode);
 			
 			EList<EObject> contents = refElement.eContents();
@@ -75,7 +75,7 @@ public class OntoUMLCheckBoxTree {
 		/* Classifier */
 		} else if (refElement instanceof RefOntoUML.Classifier)		
 		{
-			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLCheckBoxTreeNodeElem(refElement));			
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement));			
 			parent.add(newNode);			
 			
 			for(Generalization gen: ((RefOntoUML.Classifier)refElement).getGeneralization())
@@ -86,13 +86,13 @@ public class OntoUMLCheckBoxTree {
 		/* Generalization */
 		} else if (refElement instanceof RefOntoUML.Generalization)
 		{
-			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLCheckBoxTreeNodeElem(refElement));			
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement));			
 			parent.add(newNode);
 		
 		/* GeneralizationSet */
 		}else if (refElement instanceof RefOntoUML.GeneralizationSet)
 		{
-			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLCheckBoxTreeNodeElem(refElement));			
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement));			
 			parent.add(newNode);
 		}
 	}
@@ -131,7 +131,7 @@ public class OntoUMLCheckBoxTree {
     		
     		String elementType;
     		
-    		RefOntoUML.Element element = ((OntoUMLCheckBoxTreeNodeElem)((DefaultMutableTreeNode)value).getUserObject()).getElement();
+    		RefOntoUML.Element element = ((OntoUMLTreeNodeElem)((DefaultMutableTreeNode)value).getUserObject()).getElement();
     		
     		if (element != null) {
     			elementType = element.getClass().toString().replace("class " +"RefOntoUML.impl.", "").replace("Impl", "");
@@ -182,11 +182,11 @@ public class OntoUMLCheckBoxTree {
 	    	
 	    for (TreePath treepath : treepathList) 
 	    {
-	    	checkedNodes.add(((OntoUMLCheckBoxTreeNodeElem)((DefaultMutableTreeNode)treepath.getLastPathComponent()).getUserObject()).getElement());
+	    	checkedNodes.add(((OntoUMLTreeNodeElem)((DefaultMutableTreeNode)treepath.getLastPathComponent()).getUserObject()).getElement());
 	    }
 	    	
 	    DefaultMutableTreeNode root = (DefaultMutableTreeNode) modeltree.getModel().getRoot();
-		OntoUMLCheckBoxTreeNodeElem rootObject = (OntoUMLCheckBoxTreeNodeElem) root.getUserObject();
+		OntoUMLTreeNodeElem rootObject = (OntoUMLTreeNodeElem) root.getUserObject();
 	    	    
 		initUncheckeNodes(rootObject.getElement(), checkedNodes, uncheckedNodes);
     	    	
