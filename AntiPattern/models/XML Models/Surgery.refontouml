@@ -44,7 +44,7 @@
   <packagedElement
       xsi:type="RefOntoUML:Mediation"
       xmi:id="_ovzVAApWEeKzUuEIE05i3w"
-      name="Mediation1"
+      name="med"
       visibility="public"
       memberEnd="_ovzVAQpWEeKzUuEIE05i3w _ovzVBApWEeKzUuEIE05i3w">
     <ownedEnd
@@ -234,7 +234,7 @@
   <packagedElement
       xsi:type="RefOntoUML:Mediation"
       xmi:id="_zX6hYAqREeKIjqxcJ_UENg"
-      name="Mediation1"
+      name="med"
       visibility="public"
       memberEnd="_zX6hYQqREeKIjqxcJ_UENg _zX6hZAqREeKIjqxcJ_UENg">
     <ownedEnd

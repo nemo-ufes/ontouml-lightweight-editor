@@ -881,7 +881,7 @@
   <packagedElement
       xsi:type="RefOntoUML:Mediation"
       xmi:id="_eaDOwB0FEeKICbfMnVI6Ow"
-      name="Mediation1"
+      name="med"
       visibility="public"
       memberEnd="_eaDOwR0FEeKICbfMnVI6Ow _eaDOxB0FEeKICbfMnVI6Ow"
       navigableOwnedEnd="_eaDOwR0FEeKICbfMnVI6Ow _eaDOxB0FEeKICbfMnVI6Ow">
