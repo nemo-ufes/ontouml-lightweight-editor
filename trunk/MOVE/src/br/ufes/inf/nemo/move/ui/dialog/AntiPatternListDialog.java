@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.move.ui;
+package br.ufes.inf.nemo.move.ui.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -25,6 +25,7 @@ import br.ufes.inf.nemo.move.antipattern.rbos.RBOSAntiPatternModel;
 import br.ufes.inf.nemo.move.antipattern.rs.RSAntiPatternModel;
 import br.ufes.inf.nemo.move.antipattern.rwor.RWORAntiPatternModel;
 import br.ufes.inf.nemo.move.antipattern.str.STRAntiPatternModel;
+import br.ufes.inf.nemo.move.ui.TheFrame;
 
 import br.ufes.inf.nemo.ontouml.antipattern.ACAntiPattern;
 import br.ufes.inf.nemo.ontouml.antipattern.AntiPatternIdentifier;
@@ -97,7 +98,7 @@ public class AntiPatternListDialog extends JDialog {
 	 */
 	public AntiPatternListDialog() 
 	{
-		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/move/search.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/move/search-24x24.png")));
 		setTitle("Identify AntiPattern");
 		setBounds(100, 100, 332, 256);
 		
