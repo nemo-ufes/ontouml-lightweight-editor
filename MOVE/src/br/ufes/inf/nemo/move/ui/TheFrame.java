@@ -3,8 +3,6 @@ package br.ufes.inf.nemo.move.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -15,19 +13,15 @@ import javax.swing.border.EmptyBorder;
 import br.ufes.inf.nemo.move.antipattern.AntiPatternListController;
 import br.ufes.inf.nemo.move.antipattern.AntiPatternListModel;
 import br.ufes.inf.nemo.move.antipattern.AntiPatternListView;
-
 import br.ufes.inf.nemo.move.ocl.OCLController;
 import br.ufes.inf.nemo.move.ocl.OCLModel;
 import br.ufes.inf.nemo.move.ocl.OCLView;
-
 import br.ufes.inf.nemo.move.ontouml.OntoUMLController;
 import br.ufes.inf.nemo.move.ontouml.OntoUMLModel;
 import br.ufes.inf.nemo.move.ontouml.OntoUMLView;
-
 import br.ufes.inf.nemo.move.option.OptionController;
 import br.ufes.inf.nemo.move.option.OptionModel;
 import br.ufes.inf.nemo.move.option.OptionView;
-
 import br.ufes.inf.nemo.move.output.OutputController;
 import br.ufes.inf.nemo.move.output.OutputModel;
 import br.ufes.inf.nemo.move.output.OutputView;
@@ -40,7 +34,7 @@ public class TheFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static String dirPath;
+	public boolean loadedFromModelInstance;
 	
 	private TheToolBar toolBar;	
 	private TheMenuBar menuBar;	
@@ -96,13 +90,19 @@ public class TheFrame extends JFrame {
 	public TheFrame (RefOntoUML.Package model, String oclConstraints, String alsPath) throws IOException
 	{
 		this();		
+		
+		loadedFromModelInstance=true;
+		
 		ontoumlmodel.setOntoUML(model);
 		ontoumlview.setPath(ontoumlmodel.getOntoUMLPath(),ontoumlmodel.getOntoUMLModelInstance());
     	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance());    	
     	ontoumlview.validate();
     	ontoumlview.repaint();    	
     	OutputModel outputmodel = new OutputModel(alsPath,alsPath.replace(".als",".uml"));    	
-    	ontoumlview.getTheFrame().setOutputModel(outputmodel);		
+    	ontoumlview.getTheFrame().setOutputModel(outputmodel);
+    			
+    	setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
 	}	
 
 	/**
@@ -111,6 +111,7 @@ public class TheFrame extends JFrame {
 	public TheFrame() 
 	{
 		super();
+				
 		setExtendedState(MAXIMIZED_BOTH);
 		
 		getContentPane().setBackground(new Color(230, 230, 250));
@@ -171,11 +172,8 @@ public class TheFrame extends JFrame {
 		centerSplitPane.setDividerLocation(0.50);
 		innerSplitPane.setDividerLocation(1.0);
 		
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				quitApplication();
-			}
-		});
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 	}
 	
 	/**
