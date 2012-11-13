@@ -30,7 +30,7 @@ import java.io.PrintStream;
 import java.io.Serializable;
 import java.lang.Thread.UncaughtExceptionHandler;
 
-import br.ufes.inf.nemo.move.ui.TheFrame;
+import br.ufes.inf.nemo.move.output.OutputModel;
 
 /** This class allows you to execute tasks in a subprocess, and receive its outputs via callback.
  *
@@ -167,7 +167,7 @@ public final class WorkerEngineCustom {
                      "-Djava.library.path=" + jniPath,
                      "-Ddebug=" + debug,
                      "-cp", 
-                     classPath+";"+TheFrame.dirPath+"alloy4.2.jar", 
+                     classPath+";"+OutputModel.alsOutDirectory+"alloy4.2.jar", 
                      WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
@@ -179,7 +179,7 @@ public final class WorkerEngineCustom {
                      "-Xss" + newstack + "k",
                      "-Ddebug=" + debug,
                      "-cp", 
-                     classPath+";"+TheFrame.dirPath+"alloy4.2.jar", 
+                     classPath+";"+OutputModel.alsOutDirectory+"alloy4.2.jar", 
                      WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
@@ -193,7 +193,7 @@ public final class WorkerEngineCustom {
                      "-Djava.library.path=" + jniPath,
                      "-Ddebug=" + debug,
                      "-cp", 
-                     classPath+":"+TheFrame.dirPath+"alloy4.2.jar", 
+                     classPath+":"+OutputModel.alsOutDirectory+"alloy4.2.jar", 
                      WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
@@ -205,7 +205,7 @@ public final class WorkerEngineCustom {
                      "-Xss" + newstack + "k",
                      "-Ddebug=" + debug,
                      "-cp", 
-                     classPath+":"+TheFrame.dirPath+"alloy4.2.jar", 
+                     classPath+":"+OutputModel.alsOutDirectory+"alloy4.2.jar", 
                      WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
