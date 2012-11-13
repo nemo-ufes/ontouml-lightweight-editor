@@ -81,7 +81,7 @@ public class OntoUMLView extends JPanel {
 		if (refmodel!=null)
 		{
 			if(modeltree!=null) treeScrollPane.treePanel.remove(modeltree);			
-			modeltree = OntoUMLCheckBoxTree.createCheckBoxTree(refmodel);
+			modeltree = OntoUMLCheckBoxTree.createCheckBoxTree(refmodel);			
 			modeltree.expandAll();		
 			treeScrollPane.treePanel.add(BorderLayout.CENTER,modeltree);
 			treeScrollPane.validate();
