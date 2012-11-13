@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.move.panel.ontouml;
+package br.ufes.inf.nemo.move.util.checkboxtree;
 
 import java.text.Normalizer;
 
@@ -13,7 +13,7 @@ import RefOntoUML.NamedElement;
  * @author John Guerson
  */
 
-public class OntoUMLCheckBoxTreeNodeElem {
+public class OntoUMLTreeNodeElem {
 	
 	private Element element;
 	private String name;
@@ -24,7 +24,7 @@ public class OntoUMLCheckBoxTreeNodeElem {
 	 * 
 	 * @param element
 	 */
-	public OntoUMLCheckBoxTreeNodeElem (Element element) 
+	public OntoUMLTreeNodeElem (Element element) 
 	{
 		this.element = element;
 		
@@ -43,7 +43,7 @@ public class OntoUMLCheckBoxTreeNodeElem {
 	 * 
 	 * @param name
 	 */
-	public OntoUMLCheckBoxTreeNodeElem (String name) 
+	public OntoUMLTreeNodeElem (String name) 
 	{
 		this.name = name;
 	}	
