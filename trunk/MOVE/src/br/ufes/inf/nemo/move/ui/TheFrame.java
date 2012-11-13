@@ -3,7 +3,8 @@ package br.ufes.inf.nemo.move.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Toolkit;
-import java.io.File;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -11,9 +12,25 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.move.panel.antipattern.TheAntiPatternPanel;
-import br.ufes.inf.nemo.move.panel.ocl.TheConstraintPanel;
-import br.ufes.inf.nemo.move.panel.ontouml.TheModelPanel;
+import br.ufes.inf.nemo.move.antipattern.AntiPatternListController;
+import br.ufes.inf.nemo.move.antipattern.AntiPatternListModel;
+import br.ufes.inf.nemo.move.antipattern.AntiPatternListView;
+
+import br.ufes.inf.nemo.move.ocl.OCLController;
+import br.ufes.inf.nemo.move.ocl.OCLModel;
+import br.ufes.inf.nemo.move.ocl.OCLView;
+
+import br.ufes.inf.nemo.move.ontouml.OntoUMLController;
+import br.ufes.inf.nemo.move.ontouml.OntoUMLModel;
+import br.ufes.inf.nemo.move.ontouml.OntoUMLView;
+
+import br.ufes.inf.nemo.move.option.OptionController;
+import br.ufes.inf.nemo.move.option.OptionModel;
+import br.ufes.inf.nemo.move.option.OptionView;
+
+import br.ufes.inf.nemo.move.output.OutputController;
+import br.ufes.inf.nemo.move.output.OutputModel;
+import br.ufes.inf.nemo.move.output.OutputView;
 
 /**
  * @author John Guerson
@@ -28,43 +45,169 @@ public class TheFrame extends JFrame {
 	private TheToolBar toolBar;	
 	private TheMenuBar menuBar;	
 	private TheStatusBar statusbar;	
-	private TheModelBar modelsbar;
-	private TheConsole consolepanel;
+	private TheConsole console;
 	
 	private JSplitPane mainSplitPane;
-	private JSplitPane innerSplitPane;
+	private JSplitPane innerSplitPane;	
 	private JSplitPane centerSplitPane;
 	
-	private TheModelPanel ontoumlpanel;	
-	private TheConstraintPanel oclpanel;	
-	private TheAntiPatternPanel antipatternpanel;
+	private OntoUMLModel ontoumlmodel;
+	private OntoUMLView ontoumlview;	
+	@SuppressWarnings("unused")
+	private OntoUMLController ontoumlcontroller;
 		
-	public TheConsole getTheConsolePanel()
+	private OCLModel oclmodel;
+	private OCLView oclview;	
+	@SuppressWarnings("unused")
+	private OCLController oclcontroller;
+	
+	private AntiPatternListModel antipatternmodel;
+	private AntiPatternListView antipatternview;
+	@SuppressWarnings("unused")
+	private AntiPatternListController antipatterncontroller;
+	
+	private OptionModel optmodel;
+	private OptionView optview;
+	@SuppressWarnings("unused")
+	private OptionController optcontroller;
+	
+	private OutputModel outputmodel;
+	private OutputView outputview;
+	@SuppressWarnings("unused")
+	private OutputController outputcontroller;
+	
+	public TheConsole getConsole() { return console; }
+	public TheToolBar getToolBar() { return toolBar; }
+	public TheMenuBar getTheMenuBar() { return menuBar; }
+	public TheStatusBar getTheStatusBar() { return statusbar; }
+	
+	public OntoUMLModel getOntoUMLModel() { return ontoumlmodel; }
+	public OntoUMLView getOntoUMLView() { return ontoumlview; }
+	
+	public OutputView getOutputView() { return outputview; }
+	public OutputModel getOutputModel() { return outputmodel; }
+	
+	public OptionView getOptionView() { return optview;	}
+	public OptionModel getOptionModel() { return optmodel; }	
+	
+	/**
+	 * Create the frame.
+	 */
+	public TheFrame (RefOntoUML.Package model, String oclConstraints, String alsPath) throws IOException
 	{
-		return consolepanel;
+		this();		
+		ontoumlmodel.setOntoUML(model);
+		ontoumlview.setPath(ontoumlmodel.getOntoUMLPath(),ontoumlmodel.getOntoUMLModelInstance());
+    	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance());    	
+    	ontoumlview.validate();
+    	ontoumlview.repaint();    	
+    	OutputModel outputmodel = new OutputModel(alsPath,alsPath.replace(".als",".uml"));    	
+    	ontoumlview.getTheFrame().setOutputModel(outputmodel);		
+	}	
+
+	/**
+	 * Create the frame.
+	 */
+	public TheFrame() 
+	{
+		super();
+		setExtendedState(MAXIMIZED_BOTH);
+		
+		getContentPane().setBackground(new Color(230, 230, 250));
+		getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		menuBar = new TheMenuBar(this);
+		setJMenuBar(menuBar);
+		
+		toolBar = new TheToolBar(this);
+				
+		JPanel headpanel = new JPanel();
+		headpanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		headpanel.setLayout(new BorderLayout(0, 0));
+		headpanel.add(BorderLayout.NORTH,toolBar);
+				
+		getContentPane().add(BorderLayout.NORTH,headpanel);		
+		
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/window.png")));
+		setTitle("OntoUML Model Validation Environment - MOVE");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					
+		oclmodel = new OCLModel();
+		oclview = new OCLView(oclmodel,this);
+		oclcontroller = new OCLController(oclview,oclmodel);
+		
+		antipatternmodel = new AntiPatternListModel();
+		antipatternview = new AntiPatternListView(antipatternmodel,this);		
+		
+		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclview,antipatternview);
+		innerSplitPane.setOneTouchExpandable(true);		
+
+		ontoumlmodel = new OntoUMLModel();
+		ontoumlview = new OntoUMLView(ontoumlmodel,this);
+		ontoumlcontroller = new OntoUMLController(ontoumlview,ontoumlmodel);
+		
+		optmodel = new OptionModel();
+		optview = new OptionView(optmodel,this);
+		optcontroller = new OptionController(optview,optmodel);
+		
+		outputmodel = new OutputModel();
+		outputview = new OutputView(outputmodel,this);
+		outputcontroller = new OutputController(outputview,outputmodel);
+		
+		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlview,innerSplitPane);
+		centerSplitPane.setOneTouchExpandable(true);		
+		
+		console = new TheConsole();		
+		mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,centerSplitPane,console);
+		mainSplitPane.setOneTouchExpandable(true);		
+		getContentPane().add(BorderLayout.CENTER,mainSplitPane);
+		
+		statusbar = new TheStatusBar();
+		getContentPane().add(BorderLayout.SOUTH,statusbar);
+				
+		pack();
+		
+		mainSplitPane.setDividerLocation(1.0);
+		centerSplitPane.setDividerLocation(0.50);
+		innerSplitPane.setDividerLocation(1.0);
+		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				quitApplication();
+			}
+		});
 	}
 	
-	public TheMenuBar getTheMenuBar()
+	/**
+	 * Quits the application without confirmation.
+	 * */
+	public void quitApplication() 
 	{
-		return menuBar;
+		dispose();
+		Thread.currentThread().interrupt();
+			
+		System.gc();
+		Runtime.getRuntime().exit(0);		
+	}	
+	
+	public void setOutputView(OutputView outputview) 
+	{
+		this.outputview = outputview;
 	}
 	
-	public TheModelBar getTheModelBar()
+	public void setOutputModel(OutputModel outputmodel)
 	{
-		return modelsbar;
+		this.outputmodel = outputmodel;
+		this.outputview.setOutputModel(outputmodel);
 	}
 	
-	public TheModelPanel getTheModelPanel()
-	{
-		return ontoumlpanel;
+	public void setAntiPatternListModel(AntiPatternListModel antipatternListModel) 
+	{ 
+		this.antipatternmodel = antipatternListModel; 
+		this.antipatternview.setAntiPatternListModel(antipatternListModel);		
 	}
 	
-	public TheAntiPatternPanel getAntiPatternPanel()
-	{
-		return antipatternpanel;
-	}
-	
-	public void ShowOrHideAntiPatternPanel()
+	public void ShowOrHideAntiPatternView()
 	{
 		int location = innerSplitPane.getDividerLocation();
 		int maxLocation = innerSplitPane.getMaximumDividerLocation();
@@ -78,8 +221,8 @@ public class TheFrame extends JFrame {
 	    }
 	}
 	
-	public void ShowAntiPattern() { innerSplitPane.setDividerLocation(0.50); }
-	public void HideAntiPattern() { innerSplitPane.setDividerLocation(1.00); }
+	public void ShowAntiPatternView() { innerSplitPane.setDividerLocation(0.50); }
+	public void HideAntiPatternView() { innerSplitPane.setDividerLocation(1.00); }
 	
 	public void ShowOrHideConsole()
 	{
@@ -98,78 +241,4 @@ public class TheFrame extends JFrame {
 	public void ShowConsole() { mainSplitPane.setDividerLocation(0.50); }
 	public void HideConsole() { mainSplitPane.setDividerLocation(1.00); }
 	
-	/**
-	 * Create the frame.
-	 * 
-	 * @param model
-	 * @param oclConstraints
-	 * @param alsPath
-	 * @throws IOException
-	 */
-	public TheFrame (RefOntoUML.Package model, String oclConstraints, String alsPath) throws IOException
-	{
-		this();
-		modelsbar.setOntoUML(model);
-		modelsbar.setOCL(oclConstraints,2);
-		modelsbar.setAlloy(alsPath);
-		modelsbar.setUMLPath(alsPath.replace(".als", ".uml"));
-		dirPath = alsPath.substring(0, alsPath.lastIndexOf(File.separator)+1);
-		
-		ontoumlpanel.setModelTree(modelsbar.getOntoUMLModel());
-	}	
-
-	/**
-	 * Create the frame.
-	 */
-	public TheFrame() 
-	{
-		super(); 
-		
-		getContentPane().setBackground(new Color(230, 230, 250));
-		getContentPane().setLayout(new BorderLayout(0, 0));
-		
-		menuBar = new TheMenuBar(this);
-		setJMenuBar(menuBar);
-		
-		toolBar = new TheToolBar(this);
-		modelsbar = new TheModelBar();
-		
-		JPanel headpanel = new JPanel();
-		headpanel.setBorder(new EmptyBorder(0, 0, 0, 0));
-		headpanel.setLayout(new BorderLayout(0, 0));
-		headpanel.add(BorderLayout.NORTH,toolBar);
-		headpanel.add(BorderLayout.CENTER,modelsbar);
-		
-		getContentPane().add(BorderLayout.NORTH,headpanel);		
-		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/window.png")));
-		setTitle("OntoUML Model Validation Environment - MOVE");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 930, 710);
-			
-		oclpanel = new TheConstraintPanel();
-		antipatternpanel = new TheAntiPatternPanel(this);
-		
-		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclpanel,antipatternpanel);
-		innerSplitPane.setOneTouchExpandable(true);		
-
-		ontoumlpanel = new TheModelPanel();
-		
-		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlpanel,innerSplitPane);
-		centerSplitPane.setOneTouchExpandable(true);		
-		
-		consolepanel = new TheConsole();		
-		mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,centerSplitPane,consolepanel);
-		mainSplitPane.setOneTouchExpandable(true);		
-		getContentPane().add(BorderLayout.CENTER,mainSplitPane);
-		
-		statusbar = new TheStatusBar();
-		getContentPane().add(BorderLayout.SOUTH,statusbar);
-		
-		pack();
-		
-		mainSplitPane.setDividerLocation(1.0);
-		centerSplitPane.setDividerLocation(0.35);
-		innerSplitPane.setDividerLocation(0.50);
-	}
 }

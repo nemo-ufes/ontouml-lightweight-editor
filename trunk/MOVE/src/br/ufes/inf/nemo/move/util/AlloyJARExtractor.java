@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import br.ufes.inf.nemo.move.ui.TheFrame;
-
 /**
  * Copy "alloy4.2.jar" to the destination directory.
  * 
@@ -22,7 +20,7 @@ public class AlloyJARExtractor {
 		File alloyJarFile = new File(dirPath + FileNameWithExtension);
 		
 		// Copy "alloy4.2.jar" to the destination directory 
-		InputStream is = TheFrame.class.getClassLoader().getResourceAsStream(FileNameWithExtension);
+		InputStream is = AlloyJARExtractor.class.getClassLoader().getResourceAsStream(FileNameWithExtension);
 		if(is == null) is = new FileInputStream("lib/"+FileNameWithExtension);
 		
 		alloyJarFile.deleteOnExit();		

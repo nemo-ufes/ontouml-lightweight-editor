@@ -4,13 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import br.ufes.inf.nemo.move.dialog.TheDescriptionsDialog;
-import br.ufes.inf.nemo.ontouml2alloy.util.Options;
+import br.ufes.inf.nemo.move.TheDescriptionsDialog;
 
 /**
  * @author John Guerson
@@ -19,45 +17,18 @@ import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 public class TheMenuBar extends JMenuBar {
 
 	private static final long serialVersionUID = 1L;
-
-	private JCheckBoxMenuItem cbxRelator;	
-	private JCheckBoxMenuItem cbxWeakSup;	
-	private JCheckBoxMenuItem cbxIdentity;	
-	private JCheckBoxMenuItem cbxAntirigidity;
 	
+	private TheFrame frame;
 	private JMenuItem mntmRelatorConstraint;	
 	private JMenuItem mntmWeakSupplementation;	
 	private JMenuItem mntmIdentityPrinciple;	
-	private JMenuItem mntmAntirigidity;
-	
-	private TheFrame frame;
-	
-	/**
-	 *	Get Options from Panel. 
-	 */
-	public Options getOptions ()
-	{		
-		Options opt = new Options();
-		opt.antiRigidity = cbxAntirigidity.isSelected();
-		opt.identityPrinciple = cbxIdentity.isSelected();
-		opt.relatorConstraint = cbxRelator.isSelected();
-		opt.weakSupplementationConstraint = cbxWeakSup.isSelected();
-		return opt;
-	}
+	private JMenuItem mntmAntirigidity;	
+	private JMenu mnOutput;
+	private JMenuItem mntmChangeLocation;
+	private JMenu mnFile;
 	
 	/**
-	 *	Set Options of the Panel. 
-	 */
-	public void setOptions(Options opt)
-	{
-		cbxAntirigidity.setSelected(opt.antiRigidity);
-		cbxIdentity.setSelected(opt.identityPrinciple);
-		cbxRelator.setSelected(opt.relatorConstraint);
-		cbxWeakSup.setSelected(opt.weakSupplementationConstraint);
-	}	
-
-	/**
-	 * Create MenuBar.
+	 * Constructor.
 	 * 
 	 * @param parent
 	 */
@@ -69,29 +40,21 @@ public class TheMenuBar extends JMenuBar {
 	}
 	
 	/**
-	 * Create Menu Bar.
+	 * Constructor.
 	 */
 	public TheMenuBar()
 	{	
 		super();
 		
-		JMenu mnEnforceAxioms = new JMenu("Enforce Axioms");
-		add(mnEnforceAxioms);
+		mnFile = new JMenu("File");
+		add(mnFile);
 		
-		cbxRelator = new JCheckBoxMenuItem("Relator Constraint");
-		cbxRelator.setSelected(true);
-		mnEnforceAxioms.add(cbxRelator);
+		mnOutput = new JMenu("Output");
+		add(mnOutput);
 		
-		cbxWeakSup = new JCheckBoxMenuItem("Weak Supplementation");
-		cbxWeakSup.setSelected(true);
-		mnEnforceAxioms.add(cbxWeakSup);
+		mntmChangeLocation = new JMenuItem("Change Location...");
+		mnOutput.add(mntmChangeLocation);
 		
-		cbxIdentity = new JCheckBoxMenuItem("Identity Principle");
-		cbxIdentity.setSelected(true);
-		mnEnforceAxioms.add(cbxIdentity);
-		
-		cbxAntirigidity = new JCheckBoxMenuItem("AntiRigidity");
-		mnEnforceAxioms.add(cbxAntirigidity);
 		JMenu mnHelp = new JMenu("Help");
 		add(mnHelp);
 		
@@ -153,8 +116,13 @@ public class TheMenuBar extends JMenuBar {
        			TheDescriptionsDialog.open(frame, "ANTIRIGIDITY_AXIOM");
        		}
        	});
-	
+		
+		mntmChangeLocation.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			 frame.getOutputView().setVisible(true);       			        			 
+       		}
+       	});	
 	}
-
-
 }
