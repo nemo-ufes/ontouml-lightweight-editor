@@ -68,7 +68,7 @@ public class RWORAntiPatternView extends JPanel {
 		table.setRWORAntiPatternModel(rworModel);		
 		table.setPreferredSize(new Dimension(table.getRowCount()*20,table.getColumnCount()*50));	
 		
-		lblRelationWithOverlapping.setText("Relation With Overlapping Roles "+rworModel.getId());
+		lblRelationWithOverlapping.setText("Relator With Overlapping Roles "+rworModel.getId());
 		lblScope.setText("\""+rworModel.getRWORAntiPattern().getRelator().getName()+"\""+" Scope:");
 	}	
 

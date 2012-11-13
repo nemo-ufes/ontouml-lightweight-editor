@@ -14,7 +14,7 @@ public class OutputController {
 	private OutputModel outModel;
 	
 	/**
-	 * COnstructor.
+	 * Constructor.
 	 * 
 	 * @param outView
 	 * @param outModel

@@ -1,19 +1,19 @@
 package br.ufes.inf.nemo.move.option;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 
-import javax.swing.JDialog;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
-import javax.swing.JButton;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import java.awt.Toolkit;
 
 /**
  * @author John Guerson
@@ -23,6 +23,7 @@ public class OptionView extends JDialog {
 	
 	private static final long serialVersionUID = 7877781445149017806L;
 	
+	@SuppressWarnings("unused")
 	private OptionModel optModel;
 		
 	private TheFrame frame;
@@ -45,13 +46,16 @@ public class OptionView extends JDialog {
 		this.optModel = optModel;
 		this.frame = frame;
 		
-		setLocationRelativeTo(frame);
-		
+		setLocationRelativeTo(frame);			
+		setOptionView(optModel);
+	}
+
+	public void setOptionView (OptionModel optModel)
+	{
 		this.cbxAntirigidity.setSelected(optModel.getOptions().antiRigidity);
 		this.cbxIdentityPrinciple.setSelected(optModel.getOptions().identityPrinciple);
 		this.cbxRelatorConstraint.setSelected(optModel.getOptions().relatorConstraint);
-		this.cbxWeakSupplementation.setSelected(optModel.getOptions().weakSupplementationConstraint);
-		
+		this.cbxWeakSupplementation.setSelected(optModel.getOptions().weakSupplementationConstraint);		
 		this.cbxOpenAnalyzer.setSelected(optModel.getOptions().openAnalyzer);
 	}
 
@@ -129,9 +133,29 @@ public class OptionView extends JDialog {
 		btnOk.addActionListener(actionListener);
 	}
 	
-	public OptionModel getOptionModel()
+	public boolean isSelectedRelatorConstraint()
 	{
-		return optModel;
+		return cbxRelatorConstraint.isSelected();
+	}
+	
+	public boolean isSelectedWeakSupplementation()
+	{
+		return cbxWeakSupplementation.isSelected();
+	}
+	
+	public boolean isSelectedAntirigidity()
+	{
+		return cbxAntirigidity.isSelected();
+	}
+	
+	public boolean isSelectedIdentityPrinciple()
+	{
+		return cbxIdentityPrinciple.isSelected();
+	}
+	
+	public boolean isSelectedOpenAnalyzer()
+	{
+		return cbxOpenAnalyzer.isSelected();
 	}
 	
 	public TheFrame getTheFrame()

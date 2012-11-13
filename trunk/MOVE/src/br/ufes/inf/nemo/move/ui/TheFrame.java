@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
@@ -25,6 +26,10 @@ import br.ufes.inf.nemo.move.option.OptionView;
 import br.ufes.inf.nemo.move.output.OutputController;
 import br.ufes.inf.nemo.move.output.OutputModel;
 import br.ufes.inf.nemo.move.output.OutputView;
+import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
+import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
+import br.ufes.inf.nemo.ontouml2alloy.util.Options;
+import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
  * @author John Guerson
@@ -33,9 +38,7 @@ import br.ufes.inf.nemo.move.output.OutputView;
 public class TheFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	
-	public boolean loadedFromModelInstance;
-	
+		
 	private TheToolBar toolBar;	
 	private TheMenuBar menuBar;	
 	private TheStatusBar statusbar;	
@@ -75,6 +78,9 @@ public class TheFrame extends JFrame {
 	public TheMenuBar getTheMenuBar() { return menuBar; }
 	public TheStatusBar getTheStatusBar() { return statusbar; }
 	
+	public AntiPatternListModel getAntiPatternListModel() { return antipatternmodel; }
+	public AntiPatternListView getAntiPatternListView() { return antipatternview; }
+	
 	public OntoUMLModel getOntoUMLModel() { return ontoumlmodel; }
 	public OntoUMLView getOntoUMLView() { return ontoumlview; }
 	
@@ -91,14 +97,14 @@ public class TheFrame extends JFrame {
 	{
 		this();		
 		
-		loadedFromModelInstance=true;
-		
 		ontoumlmodel.setOntoUML(model);
 		ontoumlview.setPath(ontoumlmodel.getOntoUMLPath(),ontoumlmodel.getOntoUMLModelInstance());
     	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance());    	
     	ontoumlview.validate();
-    	ontoumlview.repaint();    	
-    	OutputModel outputmodel = new OutputModel(alsPath,alsPath.replace(".als",".uml"));    	
+    	ontoumlview.repaint();    
+    	
+    	OutputModel outputmodel = new OutputModel(alsPath,alsPath.replace(".als",".uml"));
+    	
     	ontoumlview.getTheFrame().setOutputModel(outputmodel);
     			
     	setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -176,6 +182,48 @@ public class TheFrame extends JFrame {
 		
 	}
 	
+	public void Validate () 
+	{
+		try {
+		
+			if (getOntoUMLModel().getOntoUMLModelInstance()==null) 
+				return;
+		
+			Options opt = getOptionModel().getOptions();				
+			String alsPath = getOutputModel().getAlloyPath();		
+			RefOntoUML.Package refmodel = getOntoUMLModel().getOntoUMLModelInstance();				
+			OntoUML2Alloy.Transformation(refmodel, alsPath, opt);
+			
+			if (opt.openAnalyzer)
+			{
+				AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", OutputModel.alsOutDirectory);
+			
+				String[] argsAnalyzer = { "","" };
+				argsAnalyzer[0] = alsPath;
+				getOutputModel();
+				argsAnalyzer[1] = OutputModel.alsOutDirectory + "standart_theme.thm"	;	
+				SimpleGUICustom.main(argsAnalyzer);
+			}
+			
+			/*
+			// run verifier...
+			OntoUMLVerifier verifier = new OntoUMLVerifier(refmodel);
+			verifier.initialize();
+			
+			// no substance sortal warning...
+			if (!verifier.haveSubstanceSortal && opt.identityPrinciple) 
+			{
+				opt.identityPrinciple=false;
+				enforcepanel.cbxIdentityPrinciple.setSelected(false);
+				JOptionPane.showMessageDialog(this, "No Substance Sortals in the model.\n\nThe Identity Principle Axiom should not be enforced."
+						+"\nThis option was unchecked by default.\n ", "Warning",JOptionPane.WARNING_MESSAGE);
+			}*/
+			
+		} catch (Exception e) {			
+			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error",JOptionPane.ERROR_MESSAGE);					
+			e.printStackTrace();
+		}	
+	}
 	/**
 	 * Quits the application without confirmation.
 	 * */
