@@ -9,9 +9,9 @@ import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
-import br.ufes.inf.nemo.move.panel.antipattern.AntiPatternDialog;
+import br.ufes.inf.nemo.move.output.OutputModel;
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
-import br.ufes.inf.nemo.ocl2alloy.OCLParser;
+import br.ufes.inf.nemo.move.util.ui.ToolbarButton;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
@@ -24,17 +24,19 @@ public class TheToolBar extends JToolBar {
 	
 	private static final long serialVersionUID = 1L;
 
+	private TheFrame frame;		
 	private JButton btnSyntaticVerification;	
 	private JButton btnSearchForAntipatterns;	
 	private JButton btnExecute;	
 	private JButton btnHideConsole;
-	
-	private TheFrame frame;
-	private TheButton btnParseOcl;
-		
+	private JButton btnOutput;
+	private JButton btnOptions;
+	private JButton btnInfo;
+	private JButton btnOntoUML;
+	private ToolbarButton btnParseOcl;	
 	
 	/**
-	 * Create ToolBar.
+	 * Constructor.
 	 * 
 	 * @param parent
 	 */
@@ -46,102 +48,127 @@ public class TheToolBar extends JToolBar {
 	}
 	
 	/**
-	 *	Create Toolbar. 
+	 *	Constructor.
 	 */
 	public TheToolBar() 
 	{
 		super();
-		setFloatable(false);
-		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		
+		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));		
 		setBackground(UIManager.getColor("ToolBar.dockingBackground"));
-	
-		createShowHideOutputButton();
-		createExecuteButton();
-		createSyntaticButton();
-		createParseOCLButton();
-		createAntiPatternButton();		
+		
+		createButtons();
 	}
 	
 	/**
-	 * Create Show/Hide Output Button.
+	 * Create ToolBar buttons.
 	 */
-	public void createShowHideOutputButton()
+	public void createButtons()
+	{		
+		createSyntaticButton();
+		createExecuteButton();
+		createAntiPatternButton();		
+		createOptionsButton();		
+		createInfoButton();
+		createOutputButton();		
+	}
+	
+
+	/**
+	 * Output Location Button.
+	 */
+	public void createOntoUMLButton()
 	{
-		btnHideConsole = new TheButton("Show/Hide Console","/resources/br/ufes/inf/nemo/move/output.png");
-						
-		btnHideConsole.addActionListener(new ActionListener() 
+		btnOntoUML = new ToolbarButton("Load Model","/resources/br/ufes/inf/nemo/move/ontouml-48x30.png");				
+		btnOntoUML.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			frame.ShowOrHideConsole();
+       			// not implemented yet...
        		}
-       	});		
-		
-		add(btnHideConsole);	
+       	});
+		add(btnOntoUML);	
 	}
 	
 	/**
-	 * Create Syntactic Verification Button.
+	 * Output Location Button.
 	 */
+	public void createInfoButton()
+	{
+		btnInfo = new ToolbarButton("Information","/resources/br/ufes/inf/nemo/move/info-36x36.png");				
+		btnInfo.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			// not implemented yet...
+       		}
+       	});
+		add(btnInfo);	
+	}
+	
+	
+	/**
+	 * Output Location Button.
+	 */
+	public void createOutputButton()
+	{
+		btnOutput = new ToolbarButton("Output","/resources/br/ufes/inf/nemo/move/out-36x36.png");				
+		btnOutput.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			frame.getOutputView().setVisible(true);
+       		}
+       	});
+		add(btnOutput);	
+	}
+	
+	/**
+	 * Options Button.
+	 */
+	public void createOptionsButton()
+	{
+		btnOptions = new ToolbarButton("Options","/resources/br/ufes/inf/nemo/move/options-36x36.png");
+								
+		btnOptions.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			frame.getOptionView().setVisible(true);
+       		}
+       	});
+		
+		add(btnOptions);	
+	}
+
 	public void createSyntaticButton ()
 	{
-		btnSyntaticVerification = new TheButton("Syntactic Verification","/resources/br/ufes/inf/nemo/move/check.png");
-		btnSyntaticVerification.setText("Verify OntoUML Syntax");
-				
+		btnSyntaticVerification = new ToolbarButton("Verify","/resources/br/ufes/inf/nemo/move/check-36x36.png");						
 		btnSyntaticVerification.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			SyntaticButtonActionPerformed(event);
+       			// not implemented yet...
        		}
        	});
-		
 		add(btnSyntaticVerification);
 	}
-	
-	public void createParseOCLButton ()
-	{
-		btnParseOcl = new TheButton("Parse OCL Domain Constraints","/resources/br/ufes/inf/nemo/move/check.png");
-		btnParseOcl.setText("Verify OCL Syntax");
-				
-		btnParseOcl.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			ParseOCLDomainConstraints(event);
-       		}
-       	});
-		
-		add(btnParseOcl);		
-	}
-	
-	/**
-	 * Create Identify AntiPattern Button.
-	 */
+			
 	public void createAntiPatternButton()
 	{
-		btnSearchForAntipatterns = new TheButton("Identify AntiPatterns","/resources/br/ufes/inf/nemo/move/search.png");
-		
+		btnSearchForAntipatterns = new ToolbarButton("AntiPatterns","/resources/br/ufes/inf/nemo/move/search-36x36.png");		
 		btnSearchForAntipatterns.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
-       		{       			
-       			AntiPatternButtonActionPerformed(event);		
+       		{
+       			AntiPatternButtonActionPerformed(event);					
        		}
        	});
-		
-		add(btnSearchForAntipatterns);
-		
+		add(btnSearchForAntipatterns);		
 	}
 
-	/**
-	 * Create Execute Button
-	 */	
 	public void createExecuteButton ()	
 	{
-		btnExecute = new TheButton("Execute with Analyzer","/resources/br/ufes/inf/nemo/move/play.png");
-		
+		btnExecute = new ToolbarButton("Validate","/resources/br/ufes/inf/nemo/move/play-36x36.png");		
 		btnExecute.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -149,9 +176,36 @@ public class TheToolBar extends JToolBar {
        			 ExecuteActionPerformed(event);					
        		}
        	});
-		
 		add(btnExecute);
 	}
+		
+	public void createShowHideOutputButton()
+	{
+		btnHideConsole = new ToolbarButton("Show/Hide Console","/resources/br/ufes/inf/nemo/move/output.png");						
+		btnHideConsole.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			frame.ShowOrHideConsole();
+       		}
+       	});				
+		add(btnHideConsole);	
+	}
+	
+	public void createParseOCLButton ()
+	{
+		btnParseOcl = new ToolbarButton("Parse OCL","/resources/br/ufes/inf/nemo/move/check.png");						
+		btnParseOcl.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			// not implemented yet...
+       		}
+       	});		
+		add(btnParseOcl);		
+	}
+	
+	/*============================ ACTIONS =============================*/
 	
 	/**
 	 * Searching AntiPatterns.
@@ -160,53 +214,29 @@ public class TheToolBar extends JToolBar {
 	{
 		try {
 			
-			AntiPatternDialog.open(frame);
+			AntiPatternListDialog.open(frame);
 			
 		}catch(Exception e){
 			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error",JOptionPane.ERROR_MESSAGE);					
 			e.printStackTrace();
 		}		
 	}	
-	
-	/**	
-	 * OntoUML Syntax Verification 
-	 */
-	public void SyntaticButtonActionPerformed(ActionEvent arg0)
-	{
-		// not implemented yet...
-	}
-	
-	/**
-	 * Parsing OCL Domain COnstraints...
-	 */
-	private void ParseOCLDomainConstraints(ActionEvent event)
-	{		
-		if (frame.getTheModelBar().getOCLStringConstraints().isEmpty() || frame.getTheModelBar().getOCLStringConstraints() == null) return;
-		
-		OCLParser oclparser = new OCLParser();	
-		
-		RefOntoUML.Package refmodel = frame.getTheModelBar().getOntoUMLModel();
-		String oclConstraints = frame.getTheModelBar().getOCLStringConstraints();	
-		String umlPath = frame.getTheModelBar().getUMLPath();
-		
-		oclparser.parse(refmodel,oclConstraints,umlPath);	
-				
-		frame.getTheConsolePanel().append(oclparser.logDetails);	
-		frame.ShowConsole();
-	}
-	
+			
 	/**	
 	 * Executing Validation with Analyzer. 
 	 */
 	private void ExecuteActionPerformed (ActionEvent arg0)
 	{		
-		try {
+		try {				
 		
-		Options opt = frame.getTheMenuBar().getOptions();
-		String alsPath = frame.getTheModelBar().getAlloyPath();
-		RefOntoUML.Package refmodel = frame.getTheModelBar().getOntoUMLModel();
-		//String oclConstraints = frame.getTheModelsBar().getOCLModel();				
+		if (frame.getOntoUMLModel().getOntoUMLModelInstance()==null) return;
 		
+		Options opt = frame.getOptionModel().getOptions();
+				
+		String alsPath = frame.getOutputModel().getAlloyPath();
+		
+		RefOntoUML.Package refmodel = frame.getOntoUMLModel().getOntoUMLModelInstance();
+				
 		OntoUML2Alloy.Transformation(refmodel, alsPath, opt);
 		
 		/*
@@ -229,11 +259,12 @@ public class TheToolBar extends JToolBar {
 		
 		if (opt.openAnalyzer)
 		{
-			AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", TheFrame.dirPath);
+			AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", OutputModel.alsOutDirectory);
 			
 			String[] argsAnalyzer = { "","" };
 			argsAnalyzer[0] = alsPath;
-			argsAnalyzer[1] = TheFrame.dirPath + "standart_theme.thm"	;	
+			frame.getOutputModel();
+			argsAnalyzer[1] = OutputModel.alsOutDirectory + "standart_theme.thm"	;	
 			SimpleGUICustom.main(argsAnalyzer);
 		}		
 		

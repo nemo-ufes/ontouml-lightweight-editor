@@ -24,19 +24,9 @@ public class TheConsole extends JPanel {
 	private JScrollPane scrollpane;	
 	private JTextArea output;
 	private JTextPane title;
-	
-	public void append(String text)
-	{		
-		output.setText(output.getText() + text);
-	}
-	
-	public void write(String text)
-	{		
-		output.setText(text);
-	}
-	
+		
 	/**
-	 * Create the panel.
+	 * Constructor.
 	 */
 	public TheConsole() 
 	{
@@ -82,6 +72,16 @@ public class TheConsole extends JPanel {
 		groupLayout.setAutoCreateContainerGaps(false);
 		groupLayout.setAutoCreateGaps(false);
 		setLayout(groupLayout);
-
 	}
+
+	public void append(String text)
+	{		
+		output.setText(output.getText() + text);
+	}
+	
+	public void write(String text)
+	{		
+		output.setText(text);
+	}
+
 }
