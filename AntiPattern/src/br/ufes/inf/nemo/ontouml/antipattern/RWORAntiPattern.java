@@ -144,24 +144,23 @@ public class RWORAntiPattern {
 		rules = "#"+relatorName+">="+cardinality;
 		
 		for (ArrayList<Mediation> exclusiveList : exclusiveMatrix){
-			comb1 = new Combination(exclusiveList, 2);
-			
-			if(!this.mediations.keySet().containsAll(exclusiveList) || exclusiveList.size()<2)
-				return null;
-			
-			predicateName+="__";
-			for (Mediation med : exclusiveList)
-				predicateName+="_"+med.getMemberEnd().get(1).getType().getName();
-			
-			rules += "\n\tall w:World | all x:w."+relatorName+" | ";
-			while(comb1.hasNext()){
-				output = comb1.next();
-				rules+="#(x.(w."+mapper.getName(output.get(0))+") & x.(w."+mapper.getName(output.get(1))+")) = 0";
+			if (this.mediations.keySet().containsAll(exclusiveList) && exclusiveList.size()>=2) {
 				
-				if(comb1.hasNext())
-            		rules += " and ";
+				comb1 = new Combination(exclusiveList, 2);
+				
+				predicateName+="__";
+				for (Mediation med : exclusiveList)
+					predicateName+="_"+med.getMemberEnd().get(1).getType().getName();
+				
+				rules += "\n\tall w:World | all x:w."+relatorName+" | ";
+				while(comb1.hasNext()){
+					output = comb1.next();
+					rules+="#(x.(w."+mapper.getName(output.get(0))+") & x.(w."+mapper.getName(output.get(1))+")) = 0";
+					
+					if(comb1.hasNext())
+	            		rules += " and ";
+				}
 			}
-			
 		}
 			
 		predicate += AlloyConstructor.AlloyParagraph(predicateName, rules, AlloyConstructor.PRED);
@@ -171,7 +170,6 @@ public class RWORAntiPattern {
 		
 	}
 	
- 	@SuppressWarnings({ "unchecked", "unused" })
 /*	public String generateAllMultipleExclusivePredicate(OntoUMLParser mapper, int cardinality){
 		String predicates="", rules, predicateName, relatorName;
 		ArrayList<Object>  mediations = new ArrayList<>(), output = new ArrayList<>(), output2, aux;
