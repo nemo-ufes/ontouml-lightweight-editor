@@ -81,7 +81,9 @@ public class RSAntiPatternController {
 	    				rsView.getTheFrame().getOutputModel().alsmodelName+"$RS"+rsModel.getId()+".als";		
 						
 	    		Options opt = rsView.getTheFrame().getOptionModel().getOptions();
-			
+	    		
+	    		System.out.println(opt.relatorConstraint);
+	    		
 	    		RefOntoUML.Package refmodel = rsView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
 			
 	    		OntoUML2Alloy.Transformation(refmodel, alsPath, opt);

@@ -35,10 +35,7 @@ public class OptionModel {
 	
 	public void setOptions(Options opt)
 	{
-		this.option.antiRigidity = opt.antiRigidity;
-		this.option.weakSupplementationConstraint = opt.weakSupplementationConstraint;
-		this.option.identityPrinciple = opt.identityPrinciple;
-		this.option.antiRigidity = opt.antiRigidity;
+		this.option = opt;
 	}	
 	
 }

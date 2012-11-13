@@ -49,14 +49,15 @@ public class OntoUMLController {
 	    	ontoumlmodel.setOntoUML(path);
 	    					
 	    	ontoumlview.setPath(ontoumlmodel.getOntoUMLPath(),ontoumlmodel.getOntoUMLModelInstance());
-	    	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance());
-	    		
+	    	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance());	    		
 	    	ontoumlview.validate();
 	    	ontoumlview.repaint();
 	    	
-	    	OutputModel outputmodel = new OutputModel(path.replace(".refontouml",".als"),path.replace(".refontouml",".uml"));	
+	    	OutputModel outputmodel = new OutputModel(path.replace(".refontouml",".als"),path.replace(".refontouml",".uml"));	    	
 	    	
-	    	ontoumlview.getTheFrame().setOutputModel(outputmodel);
+	    	ontoumlview.getTheFrame().setOutputModel(outputmodel);	    	
+	    	
+	    	ontoumlview.getTheFrame().getAntiPatternListView().Clear();
 	    					
 	    	} catch (IOException exception) {				
 	    		String msg = "An error ocurred while loading the model.\n"+exception.getMessage();
