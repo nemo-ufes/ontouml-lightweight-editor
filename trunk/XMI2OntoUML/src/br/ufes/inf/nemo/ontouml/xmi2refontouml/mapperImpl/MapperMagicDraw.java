@@ -74,6 +74,12 @@ public class MapperMagicDraw implements Mapper {
 		return null;
 	}
 
+	@Override
+	public String getPath(Object element) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 //	public MapperEA(String inputPath) {		
 //	//preProcess(inputPath);

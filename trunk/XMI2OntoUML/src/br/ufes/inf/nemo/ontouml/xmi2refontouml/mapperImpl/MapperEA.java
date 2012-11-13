@@ -18,6 +18,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mapper;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.ElementType;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.XMLDOMUtil;
 
@@ -63,8 +64,9 @@ public class MapperEA implements Mapper {
         		if (nsName.equalsIgnoreCase("xmlns:OntoUML")) {
         			OntoUML = docAttributes.item(i).getNodeValue();
         		}
-        		if (nsName.equalsIgnoreCase("xmlns:EAUML")) {
-//        			EAUML = docAttributes.item(i).getNodeValue();
+        		if (nsName.equalsIgnoreCase("xmlns:thecustomprofile")) {
+        			Mediator.warningLog += "Warning: Problem with the Profile " +
+        					"or some stereotype. Transformation may not occur as expected.\n";
         		}
         	}
         }
@@ -385,6 +387,20 @@ public class MapperEA implements Mapper {
 		Element elem = (Element) element;
 		return ElementType.get(elem.getAttributeNS(XMINS, "type").replace("uml:", ""));
 	}
+	
+	@Override
+    public String getPath(Object element) {
+		String elementPath = getName(element);
+		for (Node elem = (Node) element; getType(elem) != ElementType.MODEL; elem = elem.getParentNode()) {
+			if (elem instanceof Element && 
+					(getType(elem) == ElementType.CLASS ||
+					getType(elem) == ElementType.ASSOCIATION ||
+					getType(elem) == ElementType.PACKAGE)) {
+				elementPath = getName(elem) + " -> " + elementPath;
+			}
+		}
+    	return elementPath;
+    }
 
 	@Override
 	public Object getElementById(String id) {

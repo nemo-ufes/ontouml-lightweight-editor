@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.emf.ecore.EObject;
-
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.RefOntoCreator.RefOntoUMLException;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.ElementType;
 
@@ -36,8 +34,8 @@ public class Mediator {
 	public Mapper mapper;
 	// Instância da classe que cria os objetos RefOntoUML
     private RefOntoCreator refcreator = new RefOntoCreator();
-    // Auxiliary string to stack the path of the element with error
-    private String errorPath = "";
+//    // Auxiliary string to stack the path of the element with error
+//    private String errorPath = "";
     public static String errorLog = "";
     public static String warningLog = "";
     
@@ -55,7 +53,7 @@ public class Mediator {
     	elemMap = new HashMap<String, RefOntoUML.Element>();
     	
     	errorLog = "";
-    	errorPath = "";
+//    	errorPath = "";
     	warningLog = "";
     }
     
@@ -122,10 +120,10 @@ public class Mediator {
 				stereotype = mapper.getStereotype(element);
 	    		elem1 = refcreator.createClass(stereotype);
     			
-    			if (elem1 == null) {
-    				errorPath = mapper.getName(element);
-    				break;
-    			}
+//    			if (elem1 == null) {
+//    				errorPath = mapper.getName(element);
+//    				break;
+//    			}
     			doClassifier(element, (RefOntoUML.Classifier)elem1);
     			break;
     			
@@ -146,16 +144,16 @@ public class Mediator {
 				stereotype = mapper.getStereotype(element);
     			elem1 = refcreator.createAssociation(stereotype);
     			
-    			if (elem1 == null) {
-    				List<Object> listProp = mapper.getElements(element, ElementType.PROPERTY);
-    				errorPath = "Ends: ";
-    		    	for (Object e : listProp) {
-    		    		Map<String, Object> hashProp = mapper.getProperties(e);
-    		    		errorPath += mapper.getName(mapper.getElementById((String)hashProp.get("type"))) + ", ";
-    		    	}
-    		    	errorPath = mapper.getName(element) + "\n" + errorPath;
-    				break;
-    			}
+//    			if (elem1 == null) {
+//    				List<Object> listProp = mapper.getElements(element, ElementType.PROPERTY);
+//    				errorPath = "Ends: ";
+//    		    	for (Object e : listProp) {
+//    		    		Map<String, Object> hashProp = mapper.getProperties(e);
+//    		    		errorPath += mapper.getName(mapper.getElementById((String)hashProp.get("type"))) + ", ";
+//    		    	}
+//    		    	errorPath = mapper.getName(element) + "\n" + errorPath;
+//    				break;
+//    			}
     			doClassifier(element, (RefOntoUML.Classifier)elem1);
     			break;
     			
@@ -191,8 +189,11 @@ public class Mediator {
 		        refcreator.addComment(elem1, comment1);
 	        }
 	        if (mapper.getID(element) == "") {
-	        	throw new Exception("XMI file is invalid. Element with no ID " +
-						"found. Try exporting the XMI again.");
+	        	String error = "XMI file is invalid. Element with no ID found.\n" +
+	        			"Element Type: " + elemType + ".\n" +
+	        			"Element Name: " + mapper.getName(element) + ".\n" +
+	        			"Element Path: " + mapper.getPath(element);
+	        	throw new Exception(error);
 	        }
 	        elemMap.put(mapper.getID(element), elem1);
     	}
@@ -242,7 +243,7 @@ public class Mediator {
     		} else if (modelElem instanceof RefOntoUML.Dependency) {
     			doDependency(hashProp);
     			refcreator.dealDependency((RefOntoUML.Dependency)modelElem, hashProp);
-//    			
+    			
     		} else if (modelElem instanceof RefOntoUML.Comment) {
     			doComment(hashProp);
     			refcreator.dealComment((RefOntoUML.Comment)modelElem, hashProp);
@@ -301,11 +302,20 @@ public class Mediator {
 				
         	} catch (RefOntoUMLException refe) {
         		errorLog = refe.getError();
-        		errorPath = mapper.getName(domParent) + " -> " + mapper.getName(e);
-        		for (EObject eObj = pack.eContainer(); eObj != null; eObj = eObj.eContainer()) {
-        			errorPath = ((RefOntoUML.Package)eObj).getName() + " -> " + errorPath;
+//        		errorPath = mapper.getName(domParent) + " -> " + mapper.getName(e);
+//        		for (EObject eObj = pack.eContainer(); eObj != null; eObj = eObj.eContainer()) {
+//        			errorPath = ((RefOntoUML.Package)eObj).getName() + " -> " + errorPath;
+//        		}
+        		errorLog += "Path of the element with error: " + mapper.getPath(e) + "\n";
+        		if (mapper.getType(e) == ElementType.ASSOCIATION) {
+        			List<Object> listProp = mapper.getElements(e, ElementType.PROPERTY);
+    				String ends = "Ends: ";
+    		    	for (Object p : listProp) {
+    		    		Map<String, Object> hashProp = mapper.getProperties(p);
+    		    		ends += mapper.getName(mapper.getElementById((String)hashProp.get("type"))) + ", ";
+    		    	}
+    		    	errorLog += ends;
         		}
-        		errorLog += "Path of the element with error: " + errorPath + "\n";
             	Exception ex = new Exception(errorLog);
             	throw ex;
         	}
@@ -403,16 +413,16 @@ public class Mediator {
 //        	refcreator.dealAssociation(der, hashProp);
         	
         	RefOntoUML.Property prop1 = refcreator.createProperty();
-        	hashProp.put("type", relator);
+        	hashProp.put("type", material);
         	hashProp.put("lower", "1");
         	hashProp.put("upper", "1");
-        	refcreator.dealProperty(prop1, hashProp);
         	refcreator.addProperty(der, prop1);
+        	refcreator.dealProperty(prop1, hashProp);
         	
         	RefOntoUML.Property prop2 = refcreator.createProperty();
-        	hashProp.put("type", material);
-        	refcreator.dealProperty(prop2, hashProp);
+        	hashProp.put("type", relator);
         	refcreator.addProperty(der, prop2);
+        	refcreator.dealProperty(prop2, hashProp);
         	
         	refcreator.addPackagedElement(pack, der);
     	}

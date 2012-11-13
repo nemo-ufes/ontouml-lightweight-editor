@@ -436,6 +436,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					ErrorInfo info = new ErrorInfo("Error", "Parsing not done.",
 		        			null, "category", ex, Level.SEVERE, null);
 		        	JXErrorPane.showDialog(this, info);
+		        	System.out.println(ex.getMessage());
+		        	ex.printStackTrace();
 				}
 			}
         }

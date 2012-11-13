@@ -300,27 +300,13 @@ public class RefOntoCreator {
     	} catch (ClassCastException e) {
     		// DO NOTHING
     	}
-    	
-    	// Makes sure the Properties (memberEnds) are added in the correct order
-    	// to be in accordance to the RefOntoUML metamodel.
-		if (((List<?>)hashProp.get("memberend")).size() == 2) {
-	    	List<?> endList = (List<?>)hashProp.get("memberend");
-	    	if ((assoc1 instanceof Mediation && ((Property)endList.get(1)).getType() instanceof Relator) || 
-	    			(assoc1 instanceof Characterization && ((Property)endList.get(1)).getType() instanceof Mode) || 
-	    			(assoc1 instanceof Derivation && ((Property)endList.get(1)).getType() instanceof MaterialAssociation) ||
-	    			((Property)endList.get(1)).getAggregation() == AggregationKind.COMPOSITE ||
-	    			((Property)endList.get(1)).getAggregation() == AggregationKind.SHARED) {
-	    		assoc1.getMemberEnd().removeAll(endList);
-	    		assoc1.getMemberEnd().add((Property)endList.get(1));
-	    		assoc1.getMemberEnd().add((Property)endList.get(0));
-	    	} else {
-	    		assoc1.getMemberEnd().removeAll(endList);
-	    		assoc1.getMemberEnd().add((Property)endList.get(0));
-				assoc1.getMemberEnd().add((Property)endList.get(1));
-	    	}
+		
+		//Material Association is always derived
+		if(assoc1 instanceof MaterialAssociation) {
+			assoc1.setIsDerived(true);
+		} else {
+			assoc1.setIsDerived(Boolean.parseBoolean((String)hashProp.get("isderived")));
 		}
-    	
-		assoc1.setIsDerived(Boolean.parseBoolean((String)hashProp.get("isderived")));
 		dealClassifier(assoc1, hashProp);
 		dealRelashionship(assoc1, hashProp);
 	}
@@ -387,11 +373,34 @@ public class RefOntoCreator {
 		prop1.setDefault((String)hashProp.get("default"));
 		prop1.setAggregation(AggregationKind.get((String)hashProp.get("aggregation")));
 		dealStructFeature(prop1, hashProp);
+		
+		// Makes sure the Properties (memberEnds) are added in the correct order
+    	// to be in accordance to the RefOntoUML metamodel.
+		Association assoc1 = prop1.getAssociation();
+		if (assoc1 != null && assoc1.getMemberEnd().size() == 2 &&
+				assoc1.getMemberEnd().get(0).getType() != null && 
+				assoc1.getMemberEnd().get(1).getType() != null) {
+	    	List<Property> endList = assoc1.getMemberEnd();
+	    	if ((assoc1 instanceof Mediation && ((Property)endList.get(1)).getType() instanceof Relator) || 
+	    			(assoc1 instanceof Characterization && ((Property)endList.get(1)).getType() instanceof Mode) || 
+	    			(assoc1 instanceof Derivation && ((Property)endList.get(1)).getType() instanceof MaterialAssociation) ||
+	    			((Property)endList.get(1)).getAggregation() == AggregationKind.COMPOSITE ||
+	    			((Property)endList.get(1)).getAggregation() == AggregationKind.SHARED) {
+	    		if (endList.get(0).equals(prop1)) {
+	    			assoc1.getMemberEnd().remove(prop1);
+	    			assoc1.getMemberEnd().add(1, prop1);
+	    		} else {
+	    			assoc1.getMemberEnd().remove(prop1);
+    				assoc1.getMemberEnd().add(0, prop1);
+	    		}
+	    	}
+		}
 	}
 	
 	public void dealStructFeature (StructuralFeature stf, Map<String, Object> hashProp) {
 		if ((stf.eContainer() instanceof Mediation && !(hashProp.get("type") instanceof Relator)) ||
-				(stf.eContainer() instanceof Characterization && !(hashProp.get("type") instanceof Mode))) {
+				(stf.eContainer() instanceof Characterization && !(hashProp.get("type") instanceof Mode)) ||
+				(stf.eContainer() instanceof Derivation && !(hashProp.get("type") instanceof MaterialAssociation))) {
 			stf.setIsReadOnly(true);
 		} else {
 			stf.setIsReadOnly(Boolean.parseBoolean((String)hashProp.get("isreadonly")));
@@ -402,7 +411,7 @@ public class RefOntoCreator {
 	}
 	
 	public void dealFeature (StructuralFeature feat, Map<String, Object> hashProp) {
-		feat.setIsReadOnly(Boolean.parseBoolean((String)hashProp.get("isstatic")));
+		feat.setIsStatic(Boolean.parseBoolean((String)hashProp.get("isstatic")));
 		dealRedefElement(feat, hashProp);
 	}
 	
