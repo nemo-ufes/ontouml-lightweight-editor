@@ -76,17 +76,13 @@ public class TheFrame extends JFrame {
 	public TheConsole getConsole() { return console; }
 	public TheToolBar getToolBar() { return toolBar; }
 	public TheMenuBar getTheMenuBar() { return menuBar; }
-	public TheStatusBar getTheStatusBar() { return statusbar; }
-	
+	public TheStatusBar getTheStatusBar() { return statusbar; }	
 	public AntiPatternListModel getAntiPatternListModel() { return antipatternmodel; }
-	public AntiPatternListView getAntiPatternListView() { return antipatternview; }
-	
+	public AntiPatternListView getAntiPatternListView() { return antipatternview; }	
 	public OntoUMLModel getOntoUMLModel() { return ontoumlmodel; }
-	public OntoUMLView getOntoUMLView() { return ontoumlview; }
-	
+	public OntoUMLView getOntoUMLView() { return ontoumlview; }	
 	public OutputView getOutputView() { return outputview; }
-	public OutputModel getOutputModel() { return outputmodel; }
-	
+	public OutputModel getOutputModel() { return outputmodel; }	
 	public OptionView getOptionView() { return optview;	}
 	public OptionModel getOptionModel() { return optmodel; }	
 	
@@ -178,10 +174,50 @@ public class TheFrame extends JFrame {
 		centerSplitPane.setDividerLocation(0.50);
 		innerSplitPane.setDividerLocation(1.0);
 		
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);		
 	}
 	
+	/**
+	 * Show Or Hide AntiPAttern View...
+	 */
+	public void ShowOrHideAntiPatternView()
+	{
+		int location = innerSplitPane.getDividerLocation();
+		int maxLocation = innerSplitPane.getMaximumDividerLocation();
+		if(location < maxLocation)
+	    {
+			innerSplitPane.setDividerLocation(1.0);	
+	    }
+	    else
+	    {
+	      	innerSplitPane.setDividerLocation(0.50);
+	    }
+	}	
+	public void ShowAntiPatternView() { innerSplitPane.setDividerLocation(0.50); }
+	public void HideAntiPatternView() { innerSplitPane.setDividerLocation(1.00); }
+	
+	/**
+	 * Show Or Hide Console...
+	 */
+	public void ShowOrHideConsole()
+	{
+		int location = mainSplitPane.getDividerLocation();
+		int maxLocation = mainSplitPane.getMaximumDividerLocation();
+		if(location < maxLocation)
+	    {
+			mainSplitPane.setDividerLocation(1.0);	
+	    }
+	    else
+	    {
+	      	mainSplitPane.setDividerLocation(0.60);
+	    }
+	}	
+	public void ShowConsole() { mainSplitPane.setDividerLocation(0.50); }
+	public void HideConsole() { mainSplitPane.setDividerLocation(1.00); }
+	
+	/** 
+	 * Validate...
+	 */
 	public void Validate () 
 	{
 		try {
@@ -224,17 +260,6 @@ public class TheFrame extends JFrame {
 			e.printStackTrace();
 		}	
 	}
-	/**
-	 * Quits the application without confirmation.
-	 * */
-	public void quitApplication() 
-	{
-		dispose();
-		Thread.currentThread().interrupt();
-			
-		System.gc();
-		Runtime.getRuntime().exit(0);		
-	}	
 	
 	public void setOutputView(OutputView outputview) 
 	{
@@ -253,38 +278,6 @@ public class TheFrame extends JFrame {
 		this.antipatternview.setAntiPatternListModel(antipatternListModel);		
 	}
 	
-	public void ShowOrHideAntiPatternView()
-	{
-		int location = innerSplitPane.getDividerLocation();
-		int maxLocation = innerSplitPane.getMaximumDividerLocation();
-		if(location < maxLocation)
-	    {
-			innerSplitPane.setDividerLocation(1.0);	
-	    }
-	    else
-	    {
-	      	innerSplitPane.setDividerLocation(0.50);
-	    }
-	}
 	
-	public void ShowAntiPatternView() { innerSplitPane.setDividerLocation(0.50); }
-	public void HideAntiPatternView() { innerSplitPane.setDividerLocation(1.00); }
-	
-	public void ShowOrHideConsole()
-	{
-		int location = mainSplitPane.getDividerLocation();
-		int maxLocation = mainSplitPane.getMaximumDividerLocation();
-		if(location < maxLocation)
-	    {
-			mainSplitPane.setDividerLocation(1.0);	
-	    }
-	    else
-	    {
-	      	mainSplitPane.setDividerLocation(0.60);
-	    }
-	}
-	
-	public void ShowConsole() { mainSplitPane.setDividerLocation(0.50); }
-	public void HideConsole() { mainSplitPane.setDividerLocation(1.00); }
 	
 }

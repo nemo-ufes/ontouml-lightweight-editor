@@ -8,6 +8,7 @@ import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
+import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
 import br.ufes.inf.nemo.move.util.ui.ToolbarButton;
 
 /**
@@ -69,6 +70,7 @@ public class TheToolBar extends JToolBar {
 	public void createSyntaticButton ()
 	{
 		btnSyntaticVerification = new ToolbarButton("Verify","/resources/br/ufes/inf/nemo/move/check-36x36.png");						
+		btnSyntaticVerification.setEnabled(false);
 		btnSyntaticVerification.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -118,6 +120,7 @@ public class TheToolBar extends JToolBar {
 	public void createInfoButton()
 	{
 		btnInfo = new ToolbarButton("Information","/resources/br/ufes/inf/nemo/move/info-36x36.png");				
+		btnInfo.setEnabled(false);
 		btnInfo.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 

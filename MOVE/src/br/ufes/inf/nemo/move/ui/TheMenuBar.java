@@ -8,7 +8,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import br.ufes.inf.nemo.move.TheDescriptionsDialog;
+import br.ufes.inf.nemo.move.ui.dialog.TheDescriptionsDialog;
 
 /**
  * @author John Guerson
