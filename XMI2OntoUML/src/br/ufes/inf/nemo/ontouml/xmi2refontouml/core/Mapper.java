@@ -16,6 +16,7 @@ public interface Mapper {
 	public String getName(Object element);
 	public ElementType getType(Object element);
 	public String getStereotype(Object element);
+	public String getPath(Object element);
 	
 	public Object getElementById(String id);
 	

@@ -555,9 +555,23 @@ public class MapperAstah implements Mapper {
     }
     
 	@Override
-    public ElementType getType(Object elem) {
-    	String type = ((Element)elem).getNodeName();
+    public ElementType getType(Object element) {
+    	String type = ((Element)element).getNodeName();
     	return ElementType.get(type.replace("UML:", ""));
+    }
+	
+	@Override
+    public String getPath(Object element) {
+		String elementPath = getName(element);
+		for (Node elem = (Node) element; getType(elem) != ElementType.MODEL; elem = elem.getParentNode()) {
+			if (elem instanceof Element && 
+					(getType(elem) == ElementType.CLASS ||
+					getType(elem) == ElementType.ASSOCIATION ||
+					getType(elem) == ElementType.PACKAGE)) {
+				elementPath = getName(elem) + " -> " + elementPath;
+			}
+		}
+    	return elementPath;
     }
     
 	@Override
