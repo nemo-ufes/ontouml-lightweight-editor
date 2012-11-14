@@ -83,7 +83,8 @@ public class AlloyAPI {
 		ModuleImportation mi = factory.createModuleImportation();		
 		mi.setName(modulename);
 		mi.setPath(path);
-		mi.getParameters().add(param.getName());
+		if(param!=null)
+			mi.getParameters().add(param.getName());
 		return mi;		
 	}	
 	

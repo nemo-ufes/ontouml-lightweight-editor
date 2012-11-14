@@ -42,24 +42,25 @@ public class ACAntiPatternController {
 	 */
 	class ExecuteWithAnalzyerListener implements ActionListener 
 	{
-	    public void actionPerformed(ActionEvent e) 
+	    @SuppressWarnings("static-access")
+		public void actionPerformed(ActionEvent e) 
 	    {			
 	    	try{
 	    		String predicates = new String();
 				
 	    		if(acView.isSelectedOpenCycle()) 
 	    		{
-	    			predicates += "\n\n"+acModel.getACAntiPattern().generateOpenCyclePredicate(
+	    			predicates += "\n\n"+acModel.getACAntiPattern().generatePredicate(
 	    				acView.getTheFrame().getOntoUMLModel().getOntoUMLParser(),
-	    				acView.getScope()
+	    				acView.getScope(), acModel.getACAntiPattern().OPEN
 	    			);
 	    		}
 			
 	    		if(acView.isSelectedClosedCycle())				
 	    		{
-	    			predicates += "\n\n"+acModel.getACAntiPattern().generateClosedCyclePredicate(
+	    			predicates += "\n\n"+acModel.getACAntiPattern().generatePredicate(
 	    				acView.getTheFrame().getOntoUMLModel().getOntoUMLParser(), 
-	    				acView.getScope()
+	    				acView.getScope(), acModel.getACAntiPattern().CLOSED
 	    			); 
 	    		}
 								

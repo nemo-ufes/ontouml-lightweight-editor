@@ -20,7 +20,7 @@ public class ACAntiPattern {
 	ArrayList<Relationship> cycleRelationship;
 	public static int OPEN=0, CLOSED=1;
 	
-	public String generateClosedCyclePredicate(OntoUMLParser mapper, int cardinality) {
+	/*public String generateClosedCyclePredicate(OntoUMLParser mapper, int cardinality) {
 		String predicate, rules, name;
 		String typeName;
 		Association a;
@@ -76,7 +76,7 @@ public class ACAntiPattern {
 		
 		return predicate;
 		
-	}
+	}*/
 	
 	public String generateCycleOcl(int type) {
 		String rule, typeName;
@@ -138,16 +138,33 @@ public class ACAntiPattern {
 		return result;
 	}	
 	
-	public String generateOpenCyclePredicate(OntoUMLParser mapper, int cardinality) {
-		String predicate, predicate_rules, name, function_name = "cycleaux", function_rules="", function_parameters="x:Object, w:World", function_return="Object";
+	public String generatePredicate(OntoUMLParser mapper, int cardinality, int type) throws Exception {
+		String predicate, predicate_rules, name, function_name = "CycleAux", function_rules="", function_parameters="x:univ, w:World", function_return="univ";
 		String typeName;
 		Association a;
 		Type last_source, last_target, source, target;
 				
 		typeName = mapper.getName(this.cycle.get(0));
 		
-		name = "openCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
-		predicate_rules = "all w:World | #w."+typeName+">="+cardinality+" and all x:w."+typeName+" | some "+function_name+"[x,w] and no "+function_name+"[x,w] & x";
+		if(type==OPEN) {
+			name = "openCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
+			function_name = "open"+function_name;
+		}
+		else if(type==CLOSED) {
+			name = "closedCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
+			function_name = "closed"+function_name;
+		}
+		else
+			throw new Exception("There may only be open and closed cycles.");
+		
+		predicate_rules = 	"#"+typeName+">="+cardinality+"\n\t" +
+							"all w:World, x:w."+typeName+" | some "+function_name+"[x,w] ";
+		
+		
+		if (type==OPEN)
+			predicate_rules+="and no "+function_name+"[x,w] & x";
+		if(type==CLOSED)
+			predicate_rules+="implies "+function_name+"[x,w] = x";
 		
 		a = (Association)this.cycleRelationship.get(0);
 		last_source = SourceTargetAssociation.getSourceAlloy(a);
