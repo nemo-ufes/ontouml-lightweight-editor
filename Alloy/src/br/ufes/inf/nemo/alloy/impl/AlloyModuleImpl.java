@@ -343,7 +343,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 		int cont=1;
 		for(ModuleImportation mi : imports)
 		{
-			String params = "";
+			String params = new String();
 			
 			for(String param : mi.getParameters())
 			{
@@ -356,8 +356,20 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 					params = params + param + ",";
 				}
 			}
-			if (cont < imports.size()) result.append("open "+mi.getName()+"["+params+"]\n");
-			else result.append("open "+mi.getName()+"["+params+"]\n\n");
+			
+			if(mi.getPath()!=null && !(mi.getPath().isEmpty()) )
+				result.append("open "+mi.getPath()+"/");
+			else
+				result.append("open ");
+			
+			result.append(mi.getName());
+			if(mi.getParameters().size()!=0)
+				result.append("["+params+"]");
+			
+			if (cont < imports.size()) 
+				result.append("\n");
+			else 
+				result.append("\n\n");
 			cont++;
 		}
 		
