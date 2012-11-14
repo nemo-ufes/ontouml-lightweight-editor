@@ -148,10 +148,10 @@ public class QueryPerformer {
 			System.out.println("# of Generic Cycles Identified: "+result6.size());
 			for (ACAntiPattern ac : result6) {
 				System.out.println(ac);
-			/*	System.out.println(ac.generateCycleOcl(ACAntiPattern.CLOSED));
-				System.out.println(ac.generateCycleOcl(ACAntiPattern.OPEN));*/
-				/*System.out.println(ac.generateClosedCyclePredicate(mapper, 2));
-				System.out.println(ac.generateOpenCyclePredicate(mapper, 2));*/
+				/*System.out.println(ac.generateCycleOcl(ACAntiPattern.CLOSED));
+				System.out.println(ac.generateCycleOcl(ACAntiPattern.OPEN));
+				*/System.out.println(ac.generatePredicate(mapper, 2, ACAntiPattern.OPEN));
+				System.out.println(ac.generatePredicate(mapper, 2, ACAntiPattern.CLOSED));
 			}
 				    		    
 		} catch (ParserException e) {

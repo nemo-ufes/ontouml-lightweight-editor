@@ -232,11 +232,14 @@ public class BaseTransformer {
 		
 		// open world_structure[World]
 		// open ontological_propertis[World]
+		// open util/relation
 		
 		ModuleImportation mi1 = AlloyAPI.createModuleImport(factory,"world_structure","", world);		
 		ModuleImportation mi2 = AlloyAPI.createModuleImport(factory,"ontological_properties","", world);
+		ModuleImportation mi3 = AlloyAPI.createModuleImport(factory,"relation","util", null);
 		module.getImports().add(mi1);
 		module.getImports().add(mi2);
+		module.getImports().add(mi3);
 		
 		// sig Object{}
 		// sig Property{} 
