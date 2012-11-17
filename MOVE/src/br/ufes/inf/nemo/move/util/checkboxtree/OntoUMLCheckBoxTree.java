@@ -43,15 +43,16 @@ public class OntoUMLCheckBoxTree {
 		modelTree.getCheckingModel().setCheckingMode(TreeCheckingModel.CheckingMode.PROPAGATE);		
 		OntoUMLTreeCellRenderer ontoCellRenderer = new OntoUMLTreeCellRenderer();
 		modelTree.setCellRenderer(ontoCellRenderer);
-		drawTree(rootNode, refmodel);
-		modelTree.addCheckingPath(new TreePath(rootNode.getPath()));
+		TreeCheckingModel checkingModel = modelTree.getCheckingModel();
+		drawTree(rootNode, refmodel,checkingModel);		
+		modelTree.addCheckingPath(new TreePath(rootNode.getPath()));		
 		return modelTree;
 	}
 	
 	/**
 	 * Auxiliary function. It runs the Elements from the model creating the tree nodes.
 	 */	
-	private static void drawTree(DefaultMutableTreeNode parent, RefOntoUML.Element refElement) 
+	private static void drawTree(DefaultMutableTreeNode parent, RefOntoUML.Element refElement,TreeCheckingModel checkingModel) 
 	{
 		/* Model */
 		if (refElement instanceof RefOntoUML.Model) 
@@ -59,7 +60,7 @@ public class OntoUMLCheckBoxTree {
 			EList<EObject> contents = refElement.eContents();
 			for (EObject eobj : contents) 
 			{
-				drawTree(parent, (RefOntoUML.Element) eobj);
+				drawTree(parent, (RefOntoUML.Element) eobj,checkingModel);
 			}
 			
 		/* Package */
@@ -71,7 +72,7 @@ public class OntoUMLCheckBoxTree {
 			EList<EObject> contents = refElement.eContents();
 			for (EObject eobj : contents) 
 			{
-				drawTree(newNode, (RefOntoUML.Element) eobj);
+				drawTree(newNode, (RefOntoUML.Element) eobj,checkingModel);
 			}
 			
 		/* Classifier */
@@ -82,20 +83,33 @@ public class OntoUMLCheckBoxTree {
 			
 			for(Generalization gen: ((RefOntoUML.Classifier)refElement).getGeneralization())
 			{
-				drawTree(newNode, (RefOntoUML.Element) gen);					
+				drawTree(newNode, (RefOntoUML.Element) gen,checkingModel);					
+			}
+			
+			if (refElement instanceof RefOntoUML.Association)
+			{
+				drawTree(newNode, ((RefOntoUML.Association) refElement).getMemberEnd().get(0),checkingModel);
+				drawTree(newNode, ((RefOntoUML.Association) refElement).getMemberEnd().get(1),checkingModel);
 			}
 			
 		/* Generalization */
 		} else if (refElement instanceof RefOntoUML.Generalization)
 		{
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement));			
-			parent.add(newNode);
+			parent.add(newNode);			
 		
 		/* GeneralizationSet */
 		}else if (refElement instanceof RefOntoUML.GeneralizationSet)
 		{
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement));			
-			parent.add(newNode);
+			parent.add(newNode);		
+			
+		/* Property */
+		}else if (refElement instanceof RefOntoUML.Property)
+		{
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement));			
+			parent.add(newNode);		
+			checkingModel.setPathEnabled(new TreePath(newNode.getPath()),false);
 		}
 	}
 	
@@ -151,7 +165,7 @@ public class OntoUMLCheckBoxTree {
     	   
     		TreeCheckingModel checkingModel = ((CheckboxTree)tree).getCheckingModel();
     	   	TreePath path = tree.getPathForRow(row);
-
+    	   	    	   	   	   	
     	   	boolean enabled = checkingModel.isPathEnabled(path);
     	   	boolean checked = checkingModel.isPathChecked(path);
     	   	boolean grayed = checkingModel.isPathGreyed(path);
