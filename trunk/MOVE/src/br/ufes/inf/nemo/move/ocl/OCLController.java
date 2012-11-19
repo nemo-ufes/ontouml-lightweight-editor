@@ -42,7 +42,9 @@ public class OCLController {
 	    	try{
 	     	
 	      	String path = oclview.getOCLPathLocation();
-	    				
+	    		
+	      	if (path==null) return;
+	      	
 	    	oclmodel.setOCL(path,"PATH");
 	    					
 	    	oclview.setPath(oclmodel.getOCLPath(),oclmodel.getOCLModelInstance());
