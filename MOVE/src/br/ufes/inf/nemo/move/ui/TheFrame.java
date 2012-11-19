@@ -81,6 +81,8 @@ public class TheFrame extends JFrame {
 	public AntiPatternListView getAntiPatternListView() { return antipatternview; }	
 	public OntoUMLModel getOntoUMLModel() { return ontoumlmodel; }
 	public OntoUMLView getOntoUMLView() { return ontoumlview; }	
+	public OCLModel getOCLModel() { return oclmodel; }
+	public OCLView getOCLView() { return oclview; }
 	public OutputView getOutputView() { return outputview; }
 	public OutputModel getOutputModel() { return outputmodel; }	
 	public OptionView getOptionView() { return optview;	}

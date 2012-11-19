@@ -25,7 +25,7 @@ public class OntoUML2UML {
 	public static String logDetails = new String();
 	
 	/**
-	 * Test....
+	 * Test.
 	 * @param args
 	 */
 	public static void main(String[] args)

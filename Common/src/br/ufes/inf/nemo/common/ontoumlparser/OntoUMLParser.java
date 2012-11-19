@@ -40,7 +40,7 @@ public class OntoUMLParser {
 	
 	/** Performs modifications on names. */
 	private NameHandler h2;
-
+	
 	/**
 	 * Constructor.
 	 *  
