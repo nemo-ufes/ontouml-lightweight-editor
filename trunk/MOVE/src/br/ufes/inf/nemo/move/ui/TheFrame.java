@@ -14,9 +14,9 @@ import javax.swing.border.EmptyBorder;
 import br.ufes.inf.nemo.move.antipattern.AntiPatternListController;
 import br.ufes.inf.nemo.move.antipattern.AntiPatternListModel;
 import br.ufes.inf.nemo.move.antipattern.AntiPatternListView;
-import br.ufes.inf.nemo.move.ocl.OCLController;
-import br.ufes.inf.nemo.move.ocl.OCLModel;
-import br.ufes.inf.nemo.move.ocl.OCLView;
+import br.ufes.inf.nemo.move.ocl.OCLConstraintListController;
+import br.ufes.inf.nemo.move.ocl.OCLConstraintListModel;
+import br.ufes.inf.nemo.move.ocl.OCLConstraintListView;
 import br.ufes.inf.nemo.move.ontouml.OntoUMLController;
 import br.ufes.inf.nemo.move.ontouml.OntoUMLModel;
 import br.ufes.inf.nemo.move.ontouml.OntoUMLView;
@@ -26,6 +26,9 @@ import br.ufes.inf.nemo.move.option.OptionView;
 import br.ufes.inf.nemo.move.output.OutputController;
 import br.ufes.inf.nemo.move.output.OutputModel;
 import br.ufes.inf.nemo.move.output.OutputView;
+import br.ufes.inf.nemo.move.uml.UMLController;
+import br.ufes.inf.nemo.move.uml.UMLModel;
+import br.ufes.inf.nemo.move.uml.UMLView;
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
@@ -53,10 +56,15 @@ public class TheFrame extends JFrame {
 	@SuppressWarnings("unused")
 	private OntoUMLController ontoumlcontroller;
 		
-	private OCLModel oclmodel;
-	private OCLView oclview;	
+	private UMLModel umlmodel;
+	private UMLView umlview;
 	@SuppressWarnings("unused")
-	private OCLController oclcontroller;
+	private UMLController umlcontroller;
+	
+	private OCLConstraintListModel oclmodel;
+	private OCLConstraintListView oclview;	
+	@SuppressWarnings("unused")
+	private OCLConstraintListController oclcontroller;
 	
 	private AntiPatternListModel antipatternmodel;
 	private AntiPatternListView antipatternview;
@@ -81,8 +89,10 @@ public class TheFrame extends JFrame {
 	public AntiPatternListView getAntiPatternListView() { return antipatternview; }	
 	public OntoUMLModel getOntoUMLModel() { return ontoumlmodel; }
 	public OntoUMLView getOntoUMLView() { return ontoumlview; }	
-	public OCLModel getOCLModel() { return oclmodel; }
-	public OCLView getOCLView() { return oclview; }
+	public UMLModel getUMLModel() { return umlmodel; }
+	public UMLView getUMLModelView() { return umlview; }
+	public OCLConstraintListModel getOCLModel() { return oclmodel; }
+	public OCLConstraintListView getOCLView() { return oclview; }
 	public OutputView getOutputView() { return outputview; }
 	public OutputModel getOutputModel() { return outputmodel; }	
 	public OptionView getOptionView() { return optview;	}
@@ -101,12 +111,14 @@ public class TheFrame extends JFrame {
     	ontoumlview.validate();
     	ontoumlview.repaint();    
     	
-    	OutputModel outputmodel = new OutputModel(alsPath,alsPath.replace(".als",".uml"));
+    	// create UML BackEnd Model from OntoUML...
+    	ontoumlview.getTheFrame().getUMLModel().setUMLModel(alsPath.replace(".als",".uml"),ontoumlmodel.getOntoUMLModelInstance());
     	
+    	// temporary code...
+    	OutputModel outputmodel = new OutputModel(alsPath,alsPath.replace(".als",".uml"));    	
     	ontoumlview.getTheFrame().setOutputModel(outputmodel);
     			
-    	setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
+    	setDefaultCloseOperation(DISPOSE_ON_CLOSE);		
 	}	
 
 	/**
@@ -137,9 +149,9 @@ public class TheFrame extends JFrame {
 		setTitle("OntoUML Model Validation Environment - MOVE");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					
-		oclmodel = new OCLModel();
-		oclview = new OCLView(oclmodel,this);
-		oclcontroller = new OCLController(oclview,oclmodel);
+		oclmodel = new OCLConstraintListModel();
+		oclview = new OCLConstraintListView(oclmodel,this);
+		oclcontroller = new OCLConstraintListController(oclview,oclmodel);
 		
 		antipatternmodel = new AntiPatternListModel();
 		antipatternview = new AntiPatternListView(antipatternmodel,this);		
@@ -150,6 +162,10 @@ public class TheFrame extends JFrame {
 		ontoumlmodel = new OntoUMLModel();
 		ontoumlview = new OntoUMLView(ontoumlmodel,this);
 		ontoumlcontroller = new OntoUMLController(ontoumlview,ontoumlmodel);
+		
+		umlmodel = new UMLModel();
+		umlview = new UMLView();
+		umlcontroller = new UMLController();
 		
 		optmodel = new OptionModel();
 		optview = new OptionView(optmodel,this);

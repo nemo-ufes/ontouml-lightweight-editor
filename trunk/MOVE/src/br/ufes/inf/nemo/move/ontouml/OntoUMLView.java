@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import br.ufes.inf.nemo.move.ontouml.tree.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.util.checkboxtree.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.util.ui.PathPanel;
 import br.ufes.inf.nemo.move.util.ui.TitleTextField;
 import br.ufes.inf.nemo.move.util.ui.TreeScrollPane;
@@ -81,8 +81,7 @@ public class OntoUMLView extends JPanel {
 		if (refmodel!=null)
 		{
 			if(modeltree!=null) treeScrollPane.treePanel.remove(modeltree);			
-			modeltree = OntoUMLCheckBoxTree.createCheckBoxTree(refmodel);			
-			modeltree.expandAll();		
+			modeltree = OntoUMLCheckBoxTree.createCheckBoxTree(refmodel);					
 			treeScrollPane.treePanel.add(BorderLayout.CENTER,modeltree);
 			treeScrollPane.validate();
 			treeScrollPane.repaint();

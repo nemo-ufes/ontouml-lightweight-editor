@@ -24,5 +24,6 @@
 	<classpathentry kind="lib" path="lib/alloy4.2.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/lablib-checkboxtree-3.3.jar" sourcepath="/Common/lib/lablib-checkboxtree-3.3-sources.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/lablib-checkboxtree-3.3-sources.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2UML"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
