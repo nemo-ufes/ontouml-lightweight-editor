@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 import br.ufes.inf.nemo.move.antipattern.ac.ACAntiPatternController;
 import br.ufes.inf.nemo.move.antipattern.ac.ACAntiPatternModel;
 import br.ufes.inf.nemo.move.antipattern.ac.ACAntiPatternView;
+
 import br.ufes.inf.nemo.move.antipattern.ia.IAAntiPatternController;
 import br.ufes.inf.nemo.move.antipattern.ia.IAAntiPatternModel;
 import br.ufes.inf.nemo.move.antipattern.ia.IAAntiPatternView;

@@ -53,12 +53,16 @@ public class OntoUMLController {
 	    	ontoumlview.validate();
 	    	ontoumlview.repaint();
 	    	
-	    	OutputModel outputmodel = new OutputModel(path.replace(".refontouml",".als"),path.replace(".refontouml",".uml"));	    	
-	    	
-	    	ontoumlview.getTheFrame().setOutputModel(outputmodel);	    	
-	    	
+	    	// clear AntiPattern View...
 	    	ontoumlview.getTheFrame().getAntiPatternListView().Clear();
-	    					
+	    	
+	    	// create UML BackEnd Model from OntoUML...
+	    	ontoumlview.getTheFrame().getUMLModel().setUMLModel(path.replace(".refontouml",".uml"),ontoumlmodel.getOntoUMLModelInstance());
+	    	
+	    	// temporary code...
+	    	OutputModel outputmodel = new OutputModel(path.replace(".refontouml",".als"),path.replace(".refontouml",".uml"));	    	
+	    	ontoumlview.getTheFrame().setOutputModel(outputmodel);	    	
+	    		    					
 	    	} catch (IOException exception) {				
 	    		String msg = "An error ocurred while loading the model.\n"+exception.getMessage();
 	    		JOptionPane.showMessageDialog(ontoumlview,msg,"Error",JOptionPane.ERROR_MESSAGE);
