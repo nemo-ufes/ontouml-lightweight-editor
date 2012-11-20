@@ -14,9 +14,9 @@ import javax.swing.border.EmptyBorder;
 import br.ufes.inf.nemo.move.antipattern.AntiPatternListController;
 import br.ufes.inf.nemo.move.antipattern.AntiPatternListModel;
 import br.ufes.inf.nemo.move.antipattern.AntiPatternListView;
-import br.ufes.inf.nemo.move.ocl.OCLConstraintListController;
-import br.ufes.inf.nemo.move.ocl.OCLConstraintListModel;
-import br.ufes.inf.nemo.move.ocl.OCLConstraintListView;
+import br.ufes.inf.nemo.move.ocl.OCLController;
+import br.ufes.inf.nemo.move.ocl.OCLModel;
+import br.ufes.inf.nemo.move.ocl.OCLView;
 import br.ufes.inf.nemo.move.ontouml.OntoUMLController;
 import br.ufes.inf.nemo.move.ontouml.OntoUMLModel;
 import br.ufes.inf.nemo.move.ontouml.OntoUMLView;
@@ -61,10 +61,10 @@ public class TheFrame extends JFrame {
 	@SuppressWarnings("unused")
 	private UMLController umlcontroller;
 	
-	private OCLConstraintListModel oclmodel;
-	private OCLConstraintListView oclview;	
+	private OCLModel oclmodel;
+	private OCLView oclview;	
 	@SuppressWarnings("unused")
-	private OCLConstraintListController oclcontroller;
+	private OCLController oclcontroller;
 	
 	private AntiPatternListModel antipatternmodel;
 	private AntiPatternListView antipatternview;
@@ -91,8 +91,8 @@ public class TheFrame extends JFrame {
 	public OntoUMLView getOntoUMLView() { return ontoumlview; }	
 	public UMLModel getUMLModel() { return umlmodel; }
 	public UMLView getUMLModelView() { return umlview; }
-	public OCLConstraintListModel getOCLModel() { return oclmodel; }
-	public OCLConstraintListView getOCLView() { return oclview; }
+	public OCLModel getOCLModel() { return oclmodel; }
+	public OCLView getOCLView() { return oclview; }
 	public OutputView getOutputView() { return outputview; }
 	public OutputModel getOutputModel() { return outputmodel; }	
 	public OptionView getOptionView() { return optview;	}
@@ -149,9 +149,9 @@ public class TheFrame extends JFrame {
 		setTitle("OntoUML Model Validation Environment - MOVE");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					
-		oclmodel = new OCLConstraintListModel();
-		oclview = new OCLConstraintListView(oclmodel,this);
-		oclcontroller = new OCLConstraintListController(oclview,oclmodel);
+		oclmodel = new OCLModel();
+		oclview = new OCLView(oclmodel,this);
+		oclcontroller = new OCLController(oclview,oclmodel);
 		
 		antipatternmodel = new AntiPatternListModel();
 		antipatternview = new AntiPatternListView(antipatternmodel,this);		

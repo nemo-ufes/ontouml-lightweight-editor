@@ -64,10 +64,12 @@ public class OntoUMLView extends JPanel {
 		panel.setLayout(new BorderLayout(0, 0));
 				
 		titleTextField = new TitleTextField();
-		titleTextField.setText("OntoUML Model");
+		titleTextField.setText("OntoUML Conceptual Model");
 		panel.add(BorderLayout.NORTH,titleTextField);
 		
 		ontoPathPanel = new PathPanel();
+		ontoPathPanel.btnSave.setEnabled(false);
+		ontoPathPanel.btnNew.setEnabled(false);
 		panel.add(BorderLayout.CENTER,ontoPathPanel);
 		
 		add(BorderLayout.NORTH,panel);
@@ -103,7 +105,7 @@ public class OntoUMLView extends JPanel {
 	
 	public void addLoadOntoUMLListener(ActionListener actionListener) 
 	{
-		ontoPathPanel.btnLoad.addActionListener(actionListener);
+		ontoPathPanel.btnOpen.addActionListener(actionListener);
 	}	    
 	
 	public String getOntoUMLPathLocation()

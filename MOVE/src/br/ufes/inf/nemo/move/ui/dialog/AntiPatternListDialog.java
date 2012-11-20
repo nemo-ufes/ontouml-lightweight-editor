@@ -268,7 +268,8 @@ public class AntiPatternListDialog extends JDialog {
 		ArrayList<IAAntiPatternModel> iaListModel = new ArrayList<IAAntiPatternModel>();
 		
 		RefOntoUML.Package refmodel = frame.getOntoUMLModel().getOntoUMLModelInstance();
-		
+		if (refmodel == null) return;
+				
 		if (ACisSelected()) 
 		{
 			int id=1;

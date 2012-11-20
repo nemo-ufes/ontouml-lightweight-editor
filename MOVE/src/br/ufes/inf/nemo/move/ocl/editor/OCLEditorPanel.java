@@ -20,6 +20,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import br.ufes.inf.nemo.move.util.ColorPalette;
 import br.ufes.inf.nemo.move.util.ColorPalette.ThemeColor;
+
 import java.awt.Color;
 import java.io.IOException;
 
@@ -44,6 +45,11 @@ public class OCLEditorPanel extends JPanel {
 	public void setText(String text)
 	{
 		textArea.setText(text);
+	}
+	
+	public void getText()
+	{
+		textArea.getText();
 	}
 	
 	/**
@@ -91,7 +97,7 @@ public class OCLEditorPanel extends JPanel {
 	    textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
 	    textArea.setAntiAliasingEnabled(true);
 		textArea.setForeground(Color.BLACK);
-		textArea.setBackground(new Color(255, 255, 255));
+		textArea.setBackground(new Color(255, 255, 255));		
 		setFont(textArea,new Font("Consolas", Font.PLAIN, 11));		
 		textArea.setCurrentLineHighlightColor(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
 		
@@ -102,7 +108,7 @@ public class OCLEditorPanel extends JPanel {
       	setLayout(new BorderLayout(0, 0));
 
       	scrollPane = new RTextScrollPane(textArea);
-      	scrollPane.getGutter().setLineNumberColor(Color.BLACK);
+      	scrollPane.getGutter().setLineNumberColor(Color.GRAY);
       	scrollPane.getTextArea().setRows(5);
       	scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
       	
