@@ -45,8 +45,8 @@ public class OntoUMLCheckBoxTree {
 		modelTree.setCellRenderer(ontoCellRenderer);
 		TreeCheckingModel checkingModel = modelTree.getCheckingModel();
 		drawTree(rootNode, refmodel,checkingModel,modelTree);		
-		modelTree.addCheckingPath(new TreePath(rootNode.getPath()));
-		modelTree.expandPath(new TreePath(rootNode.getPath()));
+		modelTree.addCheckingPath(new TreePath(rootNode.getPath()));		
+		modelTree.expandPath(new TreePath(rootNode.getPath()));		
 		return modelTree;
 	}
 	
