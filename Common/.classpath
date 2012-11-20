@@ -32,5 +32,9 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.edit_2.8.0.v20120608-0554.jar"/>
 	<classpathentry kind="lib" path="lib/lablib-checkboxtree-3.3.jar"/>
 	<classpathentry kind="lib" path="lib/lablib-checkboxtree-3.3-sources.jar"/>
+	<classpathentry kind="lib" path="lib/autocomplete_2.0.0_Source.zip"/>
+	<classpathentry kind="lib" path="lib/autocomplete.jar"/>
+	<classpathentry kind="lib" path="lib/rsyntaxtextarea_2.0.1_Source.zip"/>
+	<classpathentry kind="lib" path="lib/rsyntaxtextarea.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
