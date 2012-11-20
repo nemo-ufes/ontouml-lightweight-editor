@@ -111,7 +111,7 @@ public class OntoUMLView extends JPanel {
 	public String getOntoUMLPathLocation()
 	{
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Loading OntoUML...");
+		fileChooser.setDialogTitle("Open OntoUML");
 		FileNameExtensionFilter ontoumlFilter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
 		fileChooser.addChoosableFileFilter(ontoumlFilter);
 		fileChooser.setFileFilter(ontoumlFilter);

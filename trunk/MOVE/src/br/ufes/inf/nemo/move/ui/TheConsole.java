@@ -9,9 +9,10 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
+
+import br.ufes.inf.nemo.move.util.ColorPalette;
+import br.ufes.inf.nemo.move.util.ColorPalette.ThemeColor;
 
 /**
  * @author John Guerson
@@ -23,7 +24,6 @@ public class TheConsole extends JPanel {
 
 	private JScrollPane scrollpane;	
 	private JTextArea output;
-	private JTextPane title;
 		
 	/**
 	 * Constructor.
@@ -33,13 +33,6 @@ public class TheConsole extends JPanel {
 		setBackground(Color.WHITE);
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		
-		title = new JTextPane();
-		title.setFont(new Font("Tahoma", Font.BOLD, 11));
-		title.setText("   Console");
-		title.setForeground(Color.WHITE);
-		title.setBackground(Color.BLACK);
-		title.setEditable(false);
-		
 		output = new JTextArea();
 		output.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		output.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -47,6 +40,9 @@ public class TheConsole extends JPanel {
 		output.setMargin(new Insets(6, 6, 6, 6));
 		output.setLineWrap(true);
 		output.setWrapStyleWord(true);
+		output.setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
+		
+		setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
 		
 		scrollpane = new JScrollPane();
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
@@ -60,13 +56,11 @@ public class TheConsole extends JPanel {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(2)
 					.addComponent(scrollpane, GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE))
-				.addComponent(title, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(title, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(26)
 					.addComponent(scrollpane, GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
 		);
 		groupLayout.setAutoCreateContainerGaps(false);

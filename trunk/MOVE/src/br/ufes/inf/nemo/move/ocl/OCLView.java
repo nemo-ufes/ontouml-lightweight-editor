@@ -47,6 +47,8 @@ public class OCLView extends JPanel {
 		setPath(oclmodel.getOCLPath(),oclmodel.getOCLString());		
 		setConstraints(oclmodel.getOCLString());
 		
+		ocleditor.setText("-- Write your constraints below... Press Ctrl+Space too see the options.\n\n");
+		
 		validate();
 		repaint();
 	}
@@ -69,7 +71,6 @@ public class OCLView extends JPanel {
 		
 		oclPathPanel = new PathPanel();
 		oclPathPanel.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		oclPathPanel.btnNew.setEnabled(false);		
 		panel.add(BorderLayout.CENTER,oclPathPanel);
 		
 		add(BorderLayout.NORTH,panel);	
@@ -136,7 +137,7 @@ public class OCLView extends JPanel {
 	public String openOCLPathLocation()
 	{
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Loading OCL...");
+		fileChooser.setDialogTitle("Open OCL");
 		FileNameExtensionFilter oclFilter = new FileNameExtensionFilter("OCL Constraints (*.ocl)", "ocl");
 		fileChooser.addChoosableFileFilter(oclFilter);
 		fileChooser.setFileFilter(oclFilter);
