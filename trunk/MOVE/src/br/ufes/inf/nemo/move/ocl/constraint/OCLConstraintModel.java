@@ -29,7 +29,7 @@ public class OCLConstraintModel {
 	 */
 	public OCLConstraintModel()
 	{
-		
+		oclString = "";
 	}
 
 	public String getOCLString()

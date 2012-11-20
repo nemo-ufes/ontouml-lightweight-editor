@@ -23,7 +23,10 @@
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
 	<classpathentry kind="lib" path="lib/alloy4.2.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/lablib-checkboxtree-3.3.jar" sourcepath="/Common/lib/lablib-checkboxtree-3.3-sources.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/lablib-checkboxtree-3.3-sources.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2UML"/>
+	<classpathentry kind="lib" path="/Common/lib/autocomplete.jar" sourcepath="/Common/lib/autocomplete_2.0.0_Source.zip"/>
+	<classpathentry kind="lib" path="/Common/lib/rsyntaxtextarea.jar" sourcepath="/Common/lib/rsyntaxtextarea_2.0.1_Source.zip"/>
+	<classpathentry kind="lib" path="/Common/lib/autocomplete_2.0.0_Source.zip"/>
+	<classpathentry kind="lib" path="/Common/lib/rsyntaxtextarea_2.0.1_Source.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

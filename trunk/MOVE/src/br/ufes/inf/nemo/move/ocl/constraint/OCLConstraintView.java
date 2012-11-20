@@ -1,6 +1,8 @@
 package br.ufes.inf.nemo.move.ocl.constraint;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -12,6 +14,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import br.ufes.inf.nemo.move.ocl.editor.OCLEditorPanel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 
 /**
@@ -25,15 +28,12 @@ public class OCLConstraintView extends JPanel {
 	@SuppressWarnings("unused")
 	private OCLConstraintModel oclConstraintModel;
 	
-	@SuppressWarnings("unused")
-	private TheFrame frame;
-	
+	private TheFrame frame;	
 	private JCheckBox cbxEnable;
-	
+	private OCLEditorPanel ocltextpanel;
 	@SuppressWarnings("rawtypes")
 	private JComboBox comboModeList;
-	
-	private OCLEditorScrollPane editorScrollPane;
+	private JPanel endpanel;
 	
 	/**
 	 * Constructor.
@@ -52,12 +52,7 @@ public class OCLConstraintView extends JPanel {
 		
 		validate();
 		repaint();
-	}
-	
-	public void setConstraint(OCLConstraintModel oclConstraintModel)
-	{		
-		editorScrollPane.write(oclConstraintModel.getOCLString());
-	}
+	}	
 	
 	/**
 	 * Constructor.
@@ -66,40 +61,55 @@ public class OCLConstraintView extends JPanel {
 	public OCLConstraintView() 
 	{
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
+		setLayout(new BorderLayout(0, 0));
+		
+		JPanel headpanel = new JPanel();
+		headpanel.setPreferredSize(new Dimension(50,50));
+		
+		add(headpanel, BorderLayout.NORTH);
+		
+		ocltextpanel = new OCLEditorPanel();
+		add(ocltextpanel,BorderLayout.CENTER);
+		
+		cbxEnable = new JCheckBox("");
+		cbxEnable.setHorizontalAlignment(SwingConstants.RIGHT);
+		cbxEnable.setSelected(true);
 		
 		comboModeList = new JComboBox();
 		comboModeList.setModel(new DefaultComboBoxModel(new String[] {"FACT", "SIMULATION", "ASSERTION"}));
 		
-		cbxEnable = new JCheckBox("Enable");
-		cbxEnable.setHorizontalAlignment(SwingConstants.RIGHT);
-		cbxEnable.setSelected(true);
-		
-		editorScrollPane = new OCLEditorScrollPane();
-		
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-					.addGap(25)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(editorScrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(comboModeList, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cbxEnable, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)))
-					.addGap(23))
+		GroupLayout gl_headpanel = new GroupLayout(headpanel);
+		gl_headpanel.setHorizontalGroup(
+			gl_headpanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_headpanel.createSequentialGroup()
+					.addGap(18)
+					.addComponent(comboModeList, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(cbxEnable)
+					.addContainerGap(260, Short.MAX_VALUE))
 		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(comboModeList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxEnable))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(editorScrollPane, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(56, Short.MAX_VALUE))
+		gl_headpanel.setVerticalGroup(
+			gl_headpanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_headpanel.createSequentialGroup()
+					.addContainerGap(18, Short.MAX_VALUE)
+					.addGroup(gl_headpanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(cbxEnable)
+						.addComponent(comboModeList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(11))
 		);
-		setLayout(groupLayout);
+		headpanel.setLayout(gl_headpanel);
+		
+		endpanel = new JPanel();
+		add(endpanel, BorderLayout.SOUTH);
+	}	
+	
+	public void setConstraint(OCLConstraintModel oclConstraintModel)
+	{		
+		ocltextpanel.textArea.setText(oclConstraintModel.getOCLString());
+	}
+	
+	public TheFrame getTheFrame()
+	{
+		return frame;
 	}	
 }

@@ -21,6 +21,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import br.ufes.inf.nemo.move.ocl.constraint.OCLConstraintController;
 import br.ufes.inf.nemo.move.ocl.constraint.OCLConstraintModel;
 import br.ufes.inf.nemo.move.ocl.constraint.OCLConstraintView;
+
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.util.ui.PathPanel;
 import br.ufes.inf.nemo.move.util.ui.TitleTextField;
@@ -45,6 +46,7 @@ public class OCLConstraintListView extends JPanel {
 	private JPanel constraintsPanel;	
 	private JButton btnDisableAll;
 	private JButton btnEnableAll;
+	private JButton btnSaveTofile;
 	
 	/**
 	 * Constructor.
@@ -78,7 +80,7 @@ public class OCLConstraintListView extends JPanel {
 		panel.setLayout(new BorderLayout(0, 0));
 				
 		titleTextField = new TitleTextField();
-		titleTextField.setText("OCL");
+		titleTextField.setText("OCL Domain Constraints");
 		panel.add(BorderLayout.NORTH,titleTextField);
 		
 		oclPathPanel = new PathPanel();
@@ -90,12 +92,9 @@ public class OCLConstraintListView extends JPanel {
 		btnPanel.setPreferredSize(new Dimension(80, 50));		
 		panel.add(BorderLayout.SOUTH,btnPanel);
 		
-		btnAdd = new JButton("Add");
-		
-		JButton btnSaveTofile = new JButton("Save As...");
-		
-		btnDisableAll = new JButton("Disable All");
-		
+		btnAdd = new JButton("Add");		
+		btnSaveTofile = new JButton("Save As...");		
+		btnDisableAll = new JButton("Disable All");		
 		btnEnableAll = new JButton("Enable All");
 		
 		GroupLayout gl_btnPanel = new GroupLayout(btnPanel);
@@ -129,11 +128,12 @@ public class OCLConstraintListView extends JPanel {
 
 		constraintsPanel = new JPanel();
 		
+		constraintsPanel.setLayout(new GridLayout(1, 1, 0, 0));
+		
 		scrollPane = new JScrollPane();
 		scrollPane.setPreferredSize(new java.awt.Dimension(400, 360));
 		scrollPane.setViewportView(constraintsPanel);
-		
-		constraintsPanel.setLayout(new GridLayout(1, 0, 0, 0));
+				
 		add(BorderLayout.CENTER,scrollPane);		
 	}
 	
@@ -149,8 +149,8 @@ public class OCLConstraintListView extends JPanel {
 			oclPathPanel.textPath.setText("Loaded...");
 		else if (path!=null)
 			oclPathPanel.textPath.setText(path);
-	}
-		
+	}	
+	
 	/**
 	 * Set Constraints.
 	 * 
@@ -160,7 +160,7 @@ public class OCLConstraintListView extends JPanel {
 	{
 		if (oclListModel.size()==0) return;
 		
-		constraintsPanel.setLayout(new GridLayout(oclListModel.size(), 0, 0, 0));
+		constraintsPanel.setLayout(new GridLayout(oclListModel.size(), 1, 0, 0));
 		
 		for(OCLConstraintModel ctModel: oclListModel)
 		{
@@ -174,14 +174,58 @@ public class OCLConstraintListView extends JPanel {
 		constraintsPanel.repaint();
 	}	
 	
+	public void Update()
+	{
+		/*
+		constraintsPanel.removeAll();
+		
+		if(OCLConstraintModel ctModel : oclListModel.getConstraintModelList())
+		{
+			OCLConstraintView ctView = new OCLConstraintView(ctModel,viewList.getTheFrame());
+			@SuppressWarnings("unused")
+			OCLConstraintController ctController = new OCLConstraintController();
+			
+			viewList.UpdateRowGridLayout(oclListModel.getConstraintModelList().size());
+			viewList.validate();
+			viewList.repaint();
+		}
+		
+		viewList.add(ctView);
+		((GridLayout)constraintsPanel.getLayout()).setRows(rows);
+		((GridLayout)constraintsPanel.getLayout()).setColumns(1);
+		
+		constraintsPanel.validate();
+		constraintsPanel.repaint();*/
+	}
+	
 	public void addLoadOCLListener(ActionListener actionListener) 
 	{
 		oclPathPanel.btnLoad.addActionListener(actionListener);
 	}
 	
-	public void addConstraintListener(ActionListener actionListener)
+	public void addAditionalConstraintListener(ActionListener actionListener)
 	{
 		btnAdd.addActionListener(actionListener);
+	}
+	
+	public void addSaveAsListener(ActionListener actionListener)
+	{
+		btnSaveTofile.addActionListener(actionListener);
+	}
+	
+	public void addEnableAllListener(ActionListener actionListener)
+	{
+		btnEnableAll.addActionListener(actionListener);
+	}
+	
+	public void addDisableAllListener(ActionListener actionListener)
+	{
+		btnDisableAll.addActionListener(actionListener);
+	}
+	
+	public TheFrame getTheFrame()
+	{
+		return frame;
 	}
 	
 	public String getOCLPathLocation()
