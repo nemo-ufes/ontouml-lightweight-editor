@@ -44,7 +44,6 @@ public class TheFrame extends JFrame {
 		
 	private TheToolBar toolBar;	
 	private TheMenuBar menuBar;	
-	private TheStatusBar statusbar;	
 	private TheConsole console;
 	
 	private JSplitPane mainSplitPane;
@@ -84,7 +83,7 @@ public class TheFrame extends JFrame {
 	public TheConsole getConsole() { return console; }
 	public TheToolBar getToolBar() { return toolBar; }
 	public TheMenuBar getTheMenuBar() { return menuBar; }
-	public TheStatusBar getTheStatusBar() { return statusbar; }	
+	//public TheStatusBar getTheStatusBar() { return statusbar; }	
 	public AntiPatternListModel getAntiPatternListModel() { return antipatternmodel; }
 	public AntiPatternListView getAntiPatternListView() { return antipatternview; }	
 	public OntoUMLModel getOntoUMLModel() { return ontoumlmodel; }
@@ -182,15 +181,13 @@ public class TheFrame extends JFrame {
 		mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,centerSplitPane,console);
 		mainSplitPane.setOneTouchExpandable(true);		
 		getContentPane().add(BorderLayout.CENTER,mainSplitPane);
-		
-		statusbar = new TheStatusBar();
-		getContentPane().add(BorderLayout.SOUTH,statusbar);
 				
 		pack();
 		
 		mainSplitPane.setDividerLocation(1.0);
 		centerSplitPane.setDividerLocation(0.50);
 		innerSplitPane.setDividerLocation(1.0);
+		
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);		
 	}

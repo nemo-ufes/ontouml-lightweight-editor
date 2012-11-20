@@ -85,10 +85,10 @@ public class TheToolBar extends JToolBar {
        				JOptionPane.showMessageDialog(frame,"OCL Model: Parse Completed Succesfully !","Verification",JOptionPane.INFORMATION_MESSAGE);
        				
        			}catch(ParserException e){
-       				JOptionPane.showMessageDialog(frame,e.getLocalizedMessage(),"Parser Error",JOptionPane.ERROR_MESSAGE);					
+       				JOptionPane.showMessageDialog(frame,e.getDiagnostic().getMessage(),"Parser Error",JOptionPane.ERROR_MESSAGE);					
 					e.printStackTrace();
        			}catch(IOException e2){
-       				JOptionPane.showMessageDialog(frame,e2.getLocalizedMessage(),"IO Error",JOptionPane.ERROR_MESSAGE);					
+       				JOptionPane.showMessageDialog(frame,e2.getMessage(),"IO Error",JOptionPane.ERROR_MESSAGE);					
 					e2.printStackTrace();
        			}
        		}

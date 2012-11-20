@@ -93,7 +93,7 @@ public class OCLEditorPanel extends JPanel {
 	 */
 	public OCLEditorPanel ()
 	{
-		textArea = new RSyntaxTextArea(5, 30);
+		textArea = new RSyntaxTextArea(5, 30);		
 	    textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
 	    textArea.setAntiAliasingEnabled(true);
 		textArea.setForeground(Color.BLACK);

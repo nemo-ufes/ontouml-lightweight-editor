@@ -40,7 +40,7 @@ public class PathPanel extends JPanel {
 		btnSave.setIcon(new ImageIcon(PathPanel.class.getResource("/resources/br/ufes/inf/nemo/move/save-16x16.png")));
 		
 		btnNew = new JButton("");
-		btnNew.setIcon(new ImageIcon(PathPanel.class.getResource("/resources/br/ufes/inf/nemo/move/new-16x16.png")));
+		btnNew.setIcon(new ImageIcon(PathPanel.class.getResource("/resources/br/ufes/inf/nemo/move/doc-16x16.png")));
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(

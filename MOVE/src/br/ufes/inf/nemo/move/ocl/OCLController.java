@@ -71,14 +71,20 @@ public class OCLController {
 	 class NewOCLListener implements ActionListener 
 	 {
 	    public void actionPerformed(ActionEvent e) 
-	    {		
-			/*OCLConstraintModel ctModel = new OCLConstraintModel();
-			modelList.getConstraintModelList().add(ctModel);
-			
-			viewList.setConstraintsListView(modelList.getConstraintModelList());
-			
-			viewList.validate();
-	      	viewList.repaint();	*/			
+	    {	    	
+	    	boolean option = JOptionPane.showConfirmDialog(
+	    			oclview.getTheFrame(),
+	    			"Do you really want to create a new OCL Document?\n",
+	    			"New OCL Document",
+	    			JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+	    	
+	    	if (option)
+	    	{
+	    		oclmodel.clearModel();
+	    	
+	    		oclview.setPath(oclmodel.getOCLPath(), oclmodel.getOCLString());
+	    		oclview.setConstraints(oclmodel.getOCLString());
+	    	}
 	    }
 	 }	 	 
 	 
@@ -100,7 +106,7 @@ public class OCLController {
 	    			oclmodel.setConstraints(oclview.getConstraints(),"CONTENT");
 	    			oclmodel.setOCLPath(path);
 	    			
-	    			FileUtil.writeToFile(oclview.getConstraints(), path);
+	    			FileUtil.copyStringToFile(oclview.getConstraints(), path);
 	    			
 	    			oclview.setPath(path,oclview.getConstraints());
 	    			
@@ -114,7 +120,7 @@ public class OCLController {
 	    			oclmodel.setConstraints(oclview.getConstraints(),"CONTENT");
 	    			oclmodel.setOCLPath(oclview.getOCLPath());
 	    			
-	    			FileUtil.writeToFile(oclview.getConstraints(), oclview.getOCLPath());
+	    			FileUtil.copyStringToFile(oclview.getConstraints(), oclview.getOCLPath());
 	    			
 	    		}catch(IOException exception){
 	    			String msg = "An error ocurred while saving the model.\n"+exception.getMessage();
@@ -122,8 +128,8 @@ public class OCLController {
 	    		}		      		
 	    	}
 	    	
-	    	String msg = "OCL Constraints succesfully saved!\n";
-    		JOptionPane.showMessageDialog(oclview,msg,"Info",JOptionPane.INFORMATION_MESSAGE);
+	    	String msg = "Your Constraints has been successfully saved.\n";
+    		JOptionPane.showMessageDialog(oclview,msg,"Message",JOptionPane.INFORMATION_MESSAGE);
 	    	
 	    }
 	 }
