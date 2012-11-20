@@ -64,7 +64,7 @@ public class OntoUMLView extends JPanel {
 		panel.setLayout(new BorderLayout(0, 0));
 				
 		titleTextField = new TitleTextField();
-		titleTextField.setText("OntoUML");
+		titleTextField.setText("OntoUML Model");
 		panel.add(BorderLayout.NORTH,titleTextField);
 		
 		ontoPathPanel = new PathPanel();

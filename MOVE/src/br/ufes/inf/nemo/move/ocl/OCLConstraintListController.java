@@ -27,7 +27,11 @@ public class OCLConstraintListController {
 		this.viewList = viewList;
 		this.modelList = oclmodellist;
 		
-		viewList.addLoadOCLListener(new LoadOCLListener());        
+		viewList.addLoadOCLListener(new LoadOCLListener()); 
+		viewList.addAditionalConstraintListener(new AditionalConstraintListener());
+		viewList.addSaveAsListener(new SaveAsListener());
+		viewList.addEnableAllListener(new EnableAllListener());
+		viewList.addDisableAllListener(new DisableAllListener());
 	}
 	
 	/**
@@ -59,5 +63,57 @@ public class OCLConstraintListController {
 	    	}
 	    }
 	 }   
+	 
+	/**
+	 * Aditional Constraint Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class AditionalConstraintListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {		
+						
+	    }
+	 }
+	 
+	/**
+	 * Enable All Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class EnableAllListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	
+	    }
+	 }
+	 
+	 /**
+	 * Disable All Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class DisableAllListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	
+	    }
+	 }
+	 
+	 /**
+	 * Save As Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class SaveAsListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	
+	    }
+	 }
 	 
 }

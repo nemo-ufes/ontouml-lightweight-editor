@@ -20,14 +20,15 @@ import br.ufes.inf.nemo.move.ocl.constraint.OCLConstraintModel;
  */
 
 public class OCLConstraintListModel {
-		
-	private String oclstring;	
+			
 	private String oclpath;	
-	private ArrayList<String> oclstringlist;	
+	
+	private String oclstring;
+	private ArrayList<String> oclstringlist = new ArrayList<String>();	
+	private ArrayList<OCLConstraintModel> oclListModel = new ArrayList<OCLConstraintModel>();
+	
 	private OCLParser oclparser;
 	
-	private ArrayList<OCLConstraintModel> oclListModel = new ArrayList<OCLConstraintModel>();
-		
 	/**
 	 * Constructor.
 	 * 
@@ -47,6 +48,16 @@ public class OCLConstraintListModel {
 	{
 		
 	}
+		
+	/**
+	 * Set OCL Constraint List from a Single COnstraint Model.
+	 */
+	public void addConstraint (OCLConstraintModel ctModel)
+	{
+		oclListModel.add(ctModel);
+		this.oclstring += ctModel.getOCLString();
+		this.oclstringlist.add(ctModel.getOCLString());
+	}
 	
 	/**
 	 * Set OCL Constraint List from PATH or CONTENT.
@@ -62,6 +73,7 @@ public class OCLConstraintListModel {
 			this.oclstring = content;			
 			this.oclstringlist = divideIntoConstraints(oclstring);
 			for(String ct: oclstringlist) this.oclListModel.add(new OCLConstraintModel(ct));
+			
 			this.oclpath = str;
 			
 		} else  if (type=="CONTENT") {
@@ -70,6 +82,7 @@ public class OCLConstraintListModel {
 			this.oclstring = content;			
 			this.oclstringlist = divideIntoConstraints(oclstring);
 			for(String ct: oclstringlist) this.oclListModel.add(new OCLConstraintModel(ct));
+			
 			this.oclpath=null;
 		}
 	}
