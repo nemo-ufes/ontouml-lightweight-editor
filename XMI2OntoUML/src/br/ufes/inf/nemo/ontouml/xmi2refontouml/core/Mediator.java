@@ -119,11 +119,6 @@ public class Mediator {
     		case CLASS:
 				stereotype = mapper.getStereotype(element);
 	    		elem1 = refcreator.createClass(stereotype);
-    			
-//    			if (elem1 == null) {
-//    				errorPath = mapper.getName(element);
-//    				break;
-//    			}
     			doClassifier(element, (RefOntoUML.Classifier)elem1);
     			break;
     			

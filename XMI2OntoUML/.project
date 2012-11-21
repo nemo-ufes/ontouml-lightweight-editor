@@ -25,13 +25,6 @@
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>Testes OntoUML2Alloy.xml</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Projeto%20XMI-Alloy/Testes/Testes%20OntoUML2Alloy.xml</locationURI>
-		</link>
-	</linkedResources>
 	<variableList>
 		<variable>
 			<name>copy_PARENT</name>
