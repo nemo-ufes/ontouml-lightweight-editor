@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.move.ocl;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -10,10 +11,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.eclipse.ocl.ParserException;
+
+import br.ufes.inf.nemo.move.ocl.editor.OCLEditorBar;
 import br.ufes.inf.nemo.move.ocl.editor.OCLEditorPanel;
+
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.util.ui.PathPanel;
 import br.ufes.inf.nemo.move.util.ui.TitleTextField;
+import br.ufes.inf.nemo.ocl2alloy.OCLParser;
 
 /**
  * @author John Guerson
@@ -28,7 +33,7 @@ public class OCLView extends JPanel {
 	
 	private TheFrame frame;	
 	private TitleTextField titleTextField;
-	private PathPanel oclPathPanel;
+	private OCLEditorBar oclbar;
 	private OCLEditorPanel ocleditor;
 		
 	/**
@@ -48,6 +53,7 @@ public class OCLView extends JPanel {
 		setConstraints(oclmodel.getOCLString());
 		
 		ocleditor.setText("-- Write your constraints below... Press Ctrl+Space too see the options.\n\n");
+		ocleditor.setParent(frame);
 		
 		validate();
 		repaint();
@@ -69,9 +75,9 @@ public class OCLView extends JPanel {
 		titleTextField.setText("OCL Domain Constraints");
 		panel.add(BorderLayout.NORTH,titleTextField);
 		
-		oclPathPanel = new PathPanel();
-		oclPathPanel.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		panel.add(BorderLayout.CENTER,oclPathPanel);
+		oclbar = new OCLEditorBar();
+		oclbar.setBorder(new LineBorder(Color.LIGHT_GRAY));
+		panel.add(BorderLayout.CENTER,oclbar);
 		
 		add(BorderLayout.NORTH,panel);	
 
@@ -89,9 +95,9 @@ public class OCLView extends JPanel {
 	public void setPath(String path, String oclmodel)
 	{
 		if (path==null && oclmodel !=null)
-			oclPathPanel.textPath.setText("Loaded...");
+			oclbar.textPath.setText("Loaded...");
 		else if (path!=null)
-			oclPathPanel.textPath.setText(path);
+			oclbar.textPath.setText(path);
 	}	
 	
 	/**
@@ -104,6 +110,17 @@ public class OCLView extends JPanel {
 		ocleditor.setText(oclmodel);
 	}			
 	
+	/**
+	 * Parse Constraint from the Editor.
+	 * 
+	 * @throws ParserException
+	 * @throws IOException
+	 */
+	public void parseConstraints() throws ParserException,IOException
+	{
+		new OCLParser(getConstraints(),frame.getOntoUMLModel().getOntoUMLModelInstance(),frame.getUMLModel().getUMLPath());
+	}
+	
 	public String getConstraints()
 	{
 		return ocleditor.textArea.getText();
@@ -111,22 +128,32 @@ public class OCLView extends JPanel {
 	
 	public String getOCLPath()
 	{
-		return oclPathPanel.textPath.getText();
+		return oclbar.textPath.getText();
 	}
 		
 	public void addOpenOCLListener(ActionListener actionListener) 
 	{
-		oclPathPanel.btnOpen.addActionListener(actionListener);
+		oclbar.btnOpen.addActionListener(actionListener);
 	}
 	
 	public void addSaveOCLListener(ActionListener actionListener) 
 	{
-		oclPathPanel.btnSave.addActionListener(actionListener);
+		oclbar.btnSave.addActionListener(actionListener);
 	}
 	
 	public void addNewOCLListener(ActionListener actionListener) 
 	{
-		oclPathPanel.btnNew.addActionListener(actionListener);
+		oclbar.btnNew.addActionListener(actionListener);
+	}
+	
+	public void addParseOCLListener(ActionListener actionListener) 
+	{
+		oclbar.btnParse.addActionListener(actionListener);
+	}
+	
+	public void addHelpOCLListener(ActionListener actionListener) 
+	{
+		oclbar.btnHelp.addActionListener(actionListener);
 	}
 	
 	public TheFrame getTheFrame()
@@ -155,7 +182,7 @@ public class OCLView extends JPanel {
 	public String saveOCLPathLocation()
 	{
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Saving OCL...");
+		fileChooser.setDialogTitle("Save OCL");
 		FileNameExtensionFilter oclFilter = new FileNameExtensionFilter("OCL Constraints (*.ocl)", "ocl");
 		fileChooser.addChoosableFileFilter(oclFilter);
 		fileChooser.setFileFilter(oclFilter);

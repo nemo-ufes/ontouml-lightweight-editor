@@ -11,8 +11,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import br.ufes.inf.nemo.move.ontouml.tree.OntoUMLCheckBoxTree;
+import br.ufes.inf.nemo.move.ontouml.tree.OntoUMLTreeBar;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.util.ui.PathPanel;
 import br.ufes.inf.nemo.move.util.ui.TitleTextField;
 import br.ufes.inf.nemo.move.util.ui.TreeScrollPane;
 
@@ -30,7 +30,7 @@ public class OntoUMLView extends JPanel {
 	private TheFrame frame;
 	
 	private TitleTextField titleTextField;
-	private PathPanel ontoPathPanel;
+	private OntoUMLTreeBar ontobar;
 	private TreeScrollPane treeScrollPane;
 	private CheckboxTree modeltree;
 	
@@ -67,10 +67,8 @@ public class OntoUMLView extends JPanel {
 		titleTextField.setText("OntoUML Conceptual Model");
 		panel.add(BorderLayout.NORTH,titleTextField);
 		
-		ontoPathPanel = new PathPanel();
-		ontoPathPanel.btnSave.setEnabled(false);
-		ontoPathPanel.btnNew.setEnabled(false);
-		panel.add(BorderLayout.CENTER,ontoPathPanel);
+		ontobar = new OntoUMLTreeBar();
+		panel.add(BorderLayout.CENTER,ontobar);
 		
 		add(BorderLayout.NORTH,panel);
 		
@@ -93,9 +91,9 @@ public class OntoUMLView extends JPanel {
 	public void setPath(String path, RefOntoUML.Package refmodel)
 	{
 		if (path==null && refmodel!=null)
-			ontoPathPanel.textPath.setText("Loaded...");
+			ontobar.textPath.setText("Loaded...");
 		else if (path!= null && refmodel !=null)
-			ontoPathPanel.textPath.setText(path);
+			ontobar.textPath.setText(path);
 	}
 	
 	public TheFrame getTheFrame()
@@ -105,7 +103,7 @@ public class OntoUMLView extends JPanel {
 	
 	public void addLoadOntoUMLListener(ActionListener actionListener) 
 	{
-		ontoPathPanel.btnOpen.addActionListener(actionListener);
+		ontobar.btnOpen.addActionListener(actionListener);
 	}	    
 	
 	public String getOntoUMLPathLocation()
