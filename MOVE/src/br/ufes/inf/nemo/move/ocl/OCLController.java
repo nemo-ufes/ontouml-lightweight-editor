@@ -4,9 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import org.eclipse.ocl.ParserException;
+
 import br.ufes.inf.nemo.common.file.FileUtil;
+import br.ufes.inf.nemo.move.ocl.editor.OCLEditorBar;
 
 /**
  * @author John Guerson
@@ -30,7 +34,9 @@ public class OCLController {
 		
 		oclview.addOpenOCLListener(new OpenOCLLListener());		
 		oclview.addSaveOCLListener(new SaveOCLListener());		
-		oclview.addNewOCLListener(new NewOCLListener());		
+		oclview.addNewOCLListener(new NewOCLListener());
+		oclview.addHelpOCLListener(new HelpOCLListener());	
+		oclview.addParseOCLListener(new ParseOCLListener());	
 	}
 	
 	/**
@@ -59,6 +65,7 @@ public class OCLController {
 	    	} catch (IOException exception) {				
 	    		String msg = "An error ocurred while loading the model.\n"+exception.getMessage();
 	    		JOptionPane.showMessageDialog(oclview,msg,"Error",JOptionPane.ERROR_MESSAGE);
+	    		exception.printStackTrace();
 	    	}
 	    }
 	}   
@@ -97,7 +104,7 @@ public class OCLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	if (oclview.getOCLPath()==null || oclview.getOCLPath()=="")
+	    	if (oclview.getOCLPath()==null || oclview.getOCLPath().isEmpty())
 	    	{
 	    		try{
 	    			String path = oclview.saveOCLPathLocation();	    		
@@ -110,9 +117,14 @@ public class OCLController {
 	    			
 	    			oclview.setPath(path,oclview.getConstraints());
 	    			
-	    		}catch(IOException exception){
+	    		}catch(IOException exception)
+	    		{
 	    			String msg = "An error ocurred while saving the model.\n"+exception.getMessage();
-		    		JOptionPane.showMessageDialog(oclview,msg,"Error",JOptionPane.ERROR_MESSAGE);
+	    			JOptionPane.showMessageDialog(
+		       			oclview.getTheFrame(),msg,"IO",JOptionPane.ERROR_MESSAGE,
+		       			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
+		       		);
+	    			exception.printStackTrace();
 	    		}
 		      			      	
 	    	}else{
@@ -122,16 +134,66 @@ public class OCLController {
 	    			
 	    			FileUtil.copyStringToFile(oclview.getConstraints(), oclview.getOCLPath());
 	    			
-	    		}catch(IOException exception){
+	    		}catch(IOException exception)
+	    		{
 	    			String msg = "An error ocurred while saving the model.\n"+exception.getMessage();
-		    		JOptionPane.showMessageDialog(oclview,msg,"Error",JOptionPane.ERROR_MESSAGE);
+	    			JOptionPane.showMessageDialog(
+	       				oclview.getTheFrame(),msg,"IO",JOptionPane.ERROR_MESSAGE,
+	       				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
+	       			);
+	    			exception.printStackTrace();
 	    		}		      		
-	    	}
-	    	
-	    	String msg = "Your Constraints has been successfully saved.\n";
-    		JOptionPane.showMessageDialog(oclview,msg,"Message",JOptionPane.INFORMATION_MESSAGE);
-	    	
+	    	}	    	
 	    }
 	 }
+	 
+	 /**
+	 * Help OCL Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class HelpOCLListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+		    	
+	    }
+	 }
+	 
+	 /**
+	 * Parse OCL Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class ParseOCLListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	try {
+	    		
+	    		oclview.parseConstraints();
+   				
+   				JOptionPane.showMessageDialog(
+   					oclview.getTheFrame(),"Your Constraints are Syntactically Correct !\n","Parse",JOptionPane.INFORMATION_MESSAGE,
+   					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-36x36.png"))
+   				);
+   				
+   			}catch(ParserException e1){
+   				JOptionPane.showMessageDialog(
+   					oclview.getTheFrame(),e1.getMessage(),"Parse",JOptionPane.ERROR_MESSAGE,
+   					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
+   				);					
+				e1.printStackTrace();
+				
+   			}catch(IOException e2){
+   				JOptionPane.showMessageDialog(
+   					oclview.getTheFrame(),e2.getMessage(),"IO",JOptionPane.ERROR_MESSAGE,
+   					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
+   				);					
+				e2.printStackTrace();
+   			}
+	    }
+	 }
+		 
 	 
 }

@@ -2,14 +2,11 @@ package br.ufes.inf.nemo.move.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
-
-import org.eclipse.ocl.ParserException;
 
 import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
 import br.ufes.inf.nemo.move.util.ui.ToolbarButton;
@@ -28,6 +25,7 @@ public class TheToolBar extends JToolBar {
 	private ToolbarButton btnExecute;	
 	private ToolbarButton btnOutput;
 	private ToolbarButton btnInfo;
+	private ToolbarButton btnShowHideConsole;
 	
 	/**
 	 * Constructor.
@@ -58,45 +56,47 @@ public class TheToolBar extends JToolBar {
 	 */
 	public void createButtons()
 	{		
+		createShowHideConsole();
+		
 		createSyntaticButton();
 		
 		createExecuteButton();
 		
 		createAntiPatternButton();	
 		
-		createInfoButton();
+		//createInfoButton();
 		
-		createOutputButton();		
+		//createOutputButton();		
 	}		
 
-	/** Verify */
+	public void createShowHideConsole ()
+	{
+		btnShowHideConsole = new ToolbarButton("Console","/resources/br/ufes/inf/nemo/move/display-36x36.png");
+		btnShowHideConsole.setEnabled(true);
+		btnShowHideConsole.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			frame.ShowOrHideConsole();
+       		}
+       	});
+		add(btnShowHideConsole);
+	}
+	
 	public void createSyntaticButton ()
 	{
-		btnSyntaticVerification = new ToolbarButton("Verify","/resources/br/ufes/inf/nemo/move/check-36x36.png");						
+		btnSyntaticVerification = new ToolbarButton("Verify","/resources/br/ufes/inf/nemo/move/check-36x36.png");
 		btnSyntaticVerification.setEnabled(true);
 		btnSyntaticVerification.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			try {
-       				
-       				frame.getOCLModel().parse(frame.getOntoUMLModel().getOntoUMLModelInstance(), frame.getOutputModel().getUMLPath());
-       				
-       				JOptionPane.showMessageDialog(frame,"OCL Model: Parse Completed Succesfully !","Verification",JOptionPane.INFORMATION_MESSAGE);
-       				
-       			}catch(ParserException e){
-       				JOptionPane.showMessageDialog(frame,e.getDiagnostic().getMessage(),"Parser Error",JOptionPane.ERROR_MESSAGE);					
-					e.printStackTrace();
-       			}catch(IOException e2){
-       				JOptionPane.showMessageDialog(frame,e2.getMessage(),"IO Error",JOptionPane.ERROR_MESSAGE);					
-					e2.printStackTrace();
-       			}
+       			//
        		}
        	});
 		add(btnSyntaticVerification);
 	}
 	
-	/** Execute */
 	public void createExecuteButton ()	
 	{
 		btnExecute = new ToolbarButton("Validate","/resources/br/ufes/inf/nemo/move/play-36x36.png");		
@@ -110,7 +110,6 @@ public class TheToolBar extends JToolBar {
 		add(btnExecute);
 	}
 	
-	/** AntiPattern */
 	public void createAntiPatternButton()
 	{
 		btnSearchForAntipatterns = new ToolbarButton("AntiPatterns","/resources/br/ufes/inf/nemo/move/search-36x36.png");		
@@ -150,6 +149,7 @@ public class TheToolBar extends JToolBar {
 	public void createOutputButton()
 	{
 		btnOutput = new ToolbarButton("Output","/resources/br/ufes/inf/nemo/move/out-36x36.png");				
+		btnOutput.setEnabled(false);
 		btnOutput.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
