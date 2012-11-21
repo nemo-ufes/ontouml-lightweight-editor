@@ -262,6 +262,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("GENERATE_SBVR", new MethodCall(
 					getClass().getMethod("generateSbvr")));
 			
+			selectorMap.put("GENERATE_TEXT", new MethodCall(
+					getClass().getMethod("generateText")));
+			
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
 		}
@@ -321,6 +324,11 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void generateSbvr()
 	{
 		manager.generateSbvr();
+	}
+	
+	public void generateText()
+	{
+		manager.generateText();
 	}
 	
 	/**

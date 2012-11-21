@@ -45,6 +45,7 @@ public class DiagramEditorToolbar implements ActionListener {
     toolbar.add(createButton(validationGroup, "generateowlsettings"));
     toolbar.add(createButton(validationGroup, "generateowl"));
     toolbar.add(createButton(validationGroup, "generatesbvr"));
+    toolbar.add(createButton(validationGroup, "generatetext"));
   }
 
   public void addCommandListener(AppCommandListener l) {

@@ -23,5 +23,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2SimpleOwl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/XMI2OntoUML"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/MOVE"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2Text"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
