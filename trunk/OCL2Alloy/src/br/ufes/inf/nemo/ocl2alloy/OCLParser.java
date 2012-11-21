@@ -49,6 +49,9 @@ public class OCLParser {
 
     public OCLParser (String oclConstraints, RefOntoUML.Package refmodel, String umlPath) throws ParserException
     {	
+    	if (refmodel==null) return;
+    	if (umlPath == null) return;
+    	
 		umlResource = OntoUML2UML.Transformation(refmodel,umlPath);
 	
 		org.eclipse.uml2.uml.Package umlmodel = (org.eclipse.uml2.uml.Package) umlResource.getContents().get(0);
