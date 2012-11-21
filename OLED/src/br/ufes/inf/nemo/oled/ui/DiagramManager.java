@@ -85,6 +85,7 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.oled.util.OLEDResourceFactory;
 import br.ufes.inf.nemo.oled.util.OWLHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult;
+import br.ufes.inf.nemo.oled.util.TextDescriptionHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
 import br.ufes.inf.nemo.oled.util.SBVRHelper;
@@ -430,9 +431,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		        	frame.getToolManager().setSelectedIndex(1);
 		        	
 				} catch (Exception ex) {
-//					JOptionPane.showMessageDialog(this, ex.getMessage(),
-//							getResourceString("dialog.importecore.title"),
-//							JOptionPane.ERROR_MESSAGE);
 					ErrorInfo info = new ErrorInfo("Error", "Parsing not done.",
 		        			null, "category", ex, Level.SEVERE, null);
 		        	JXErrorPane.showDialog(this, info);
@@ -828,6 +826,40 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				getCurrentWrapper().showOutputText("\n\nCouldn't open the documentation with the internal browser. Trying to open with the system default browser...", false, true);
 				openLinkWithBrowser(new File(htmlFilePath).toURI().toString());
 			}*/
+
+		}
+		else
+		{
+			getCurrentWrapper().showOutputText(result.toString(), true, true); 
+		}
+	}
+	
+	/**
+	 * Generates a text description of the model 
+	 */
+	public void generateText() {
+		
+		UmlProject project = getCurrentEditor().getProject();
+		OperationResult result = TextDescriptionHelper.generateText(project.getModel(), project.getTempDir());
+		
+		if(result.getResultType() != ResultType.ERROR)
+		{
+			getCurrentWrapper().showOutputText(result.toString(), true, true); 
+			
+			TextEditor textViz = (TextEditor) getEditorForProject(project, EditorNature.TEXT);
+			
+			if(textViz == null)
+			{
+				textViz = new TextEditor(project);
+				
+				//TODO Localize this;
+				add("Text Description Generated", textViz);
+			}
+			else
+			{
+				setSelectedComponent(textViz);
+			}
+			textViz.setText((String) result.getData()[0]);
 
 		}
 		else

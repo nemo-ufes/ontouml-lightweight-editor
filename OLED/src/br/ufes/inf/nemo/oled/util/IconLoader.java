@@ -80,6 +80,7 @@ public final class IconLoader {
 		GENERATE_OWL_SETTINGS,
 		GENERATE_OWL,
 		GENERATE_SBVR,
+		GENERATE_TEXT,
 		IMPORT, 
 		EXPORT, 
 		PICTURE,
@@ -137,6 +138,7 @@ public final class IconLoader {
 		urlMap.put(IconType.GENERATE_OWL, "resources/br/ufes/inf/nemo/oled/ui/owl.png");
 		urlMap.put(IconType.GENERATE_OWL_SETTINGS, "resources/br/ufes/inf/nemo/oled/ui/owlsettings.png");
 		urlMap.put(IconType.GENERATE_SBVR, "resources/br/ufes/inf/nemo/oled/ui/sbvr.png");
+		urlMap.put(IconType.GENERATE_TEXT, "resources/br/ufes/inf/nemo/oled/ui/text.png");
 		urlMap.put(IconType.RECTILINEAR, "resources/br/ufes/inf/nemo/oled/ui/rectilinear.png");
 		urlMap.put(IconType.STRAIGHT, "resources/br/ufes/inf/nemo/oled/ui/straight.png");
 		urlMap.put(IconType.NOTE, "resources/br/ufes/inf/nemo/oled/ui/note.png");
