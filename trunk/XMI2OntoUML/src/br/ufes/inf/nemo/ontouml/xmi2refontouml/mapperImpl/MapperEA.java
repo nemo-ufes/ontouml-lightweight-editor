@@ -171,6 +171,9 @@ public class MapperEA implements Mapper {
 				elemList.addAll(getChildsByType(elem, ElementType.ASSOCIATIONCLASS));
 				break;
 			case COMMENT:
+				if (getType(elem) != ElementType.COMMENT) {
+					createDescriptionNode(elem);
+				}
 				elemList = getChildsByType(elem, ElementType.COMMENT);
 				break;
 			case DATATYPE:
@@ -245,6 +248,29 @@ public class MapperEA implements Mapper {
 			}
 		}
 		return elemList;
+	}
+	
+	private void createDescriptionNode(Element elem) {
+		Element elements = XMLDOMUtil.getChild((Element)doc.getElementsByTagNameNS(XMINS, "Extension").item(0), "elements");
+		if (elements != null) {
+			List<Object> elemList = XMLDOMUtil.getElementChilds(elements);
+	
+			for (Object element : elemList) {
+				Element properties = XMLDOMUtil.getChild((Element)element, "properties");
+				if (((Element)element).getAttributeNS(XMINS, "idref").equals(elem.getAttributeNS(XMINS, "id")) &&
+						properties != null &&
+						properties.getAttribute("documentation") != "") {
+					
+					Element description = doc.createElement("ownedComment");
+					description.setAttributeNS(XMINS, "id", elem.getAttributeNS(XMINS, "id") + "_description");
+					description.setIdAttributeNS(XMINS, "id", true);
+					description.setAttributeNS(XMINS, "type", "uml:Comment");
+					description.setAttribute("body", properties.getAttribute("documentation"));
+					elem.appendChild(description);
+					
+				}
+			}
+		}
 	}
 
 	@Override
