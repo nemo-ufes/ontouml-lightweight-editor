@@ -107,6 +107,11 @@ public class OntoUMLView extends JPanel {
 		ontobar.btnOpen.addActionListener(actionListener);
 	}	    
 	
+	public void addVerifyModelListener(ActionListener actionListener) 
+	{
+		ontobar.btnVerify.addActionListener(actionListener);
+	}	
+	
 	public String getOntoUMLPathLocation()
 	{
 		JFileChooser fileChooser = new JFileChooser();

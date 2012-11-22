@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.move.ui;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
 
@@ -30,12 +29,12 @@ public class TheConsole extends JPanel {
 	 */
 	public TheConsole() 
 	{
-		setBackground(Color.WHITE);
+		setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		output = new JTextArea();
 		output.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		output.setBorder(new EmptyBorder(0, 0, 0, 0));
+		output.setBorder(new EmptyBorder(5, 5, 5, 5));
 		output.setEditable(false);
 		output.setMargin(new Insets(6, 6, 6, 6));
 		output.setLineWrap(true);
@@ -55,13 +54,11 @@ public class TheConsole extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(2)
-					.addComponent(scrollpane, GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE))
+					.addComponent(scrollpane))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(26)
-					.addComponent(scrollpane, GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
+				.addComponent(scrollpane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
 		);
 		groupLayout.setAutoCreateContainerGaps(false);
 		groupLayout.setAutoCreateGaps(false);
