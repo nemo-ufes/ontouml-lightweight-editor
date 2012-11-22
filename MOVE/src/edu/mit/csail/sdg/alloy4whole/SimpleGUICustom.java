@@ -1043,7 +1043,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
             log.flush();
             doStop(2);
         }
-        viz.loadThemeFile(themePath);
+        if ((!themePath.isEmpty()) && (themePath != null)) viz.loadThemeFile(themePath);
         return null;
     }
 

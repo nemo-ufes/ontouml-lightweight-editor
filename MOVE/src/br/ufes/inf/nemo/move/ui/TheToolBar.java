@@ -4,12 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
-import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
-import br.ufes.inf.nemo.move.util.ui.ToolbarButton;
+import br.ufes.inf.nemo.move.mvc.controller.OptionsController;
+import br.ufes.inf.nemo.move.mvc.view.OptionsView;
+import br.ufes.inf.nemo.move.util.ToolbarButton;
 
 /**
  * @author John Guerson
@@ -20,12 +23,11 @@ public class TheToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 
 	private TheFrame frame;		
+	private ToolbarButton btnOpenOntoUML;
 	private ToolbarButton btnSyntaticVerification;	
 	private ToolbarButton btnSearchForAntipatterns;	
-	private ToolbarButton btnExecute;	
-	private ToolbarButton btnOutput;
-	private ToolbarButton btnInfo;
 	private ToolbarButton btnShowHideConsole;
+	private ToolbarButton btnAlloyAnalyzer;
 	
 	/**
 	 * Constructor.
@@ -56,22 +58,78 @@ public class TheToolBar extends JToolBar {
 	 */
 	public void createButtons()
 	{		
+		//createOpenOntoUML();
+		
+		//JSeparator toolBarSeparator0 = new Separator();  
+	    //toolBarSeparator0.setVisible(false);
+	    // toolBarSeparator0.setOrientation( SwingConstants.VERTICAL );  
+	    //add(toolBarSeparator0);
+	        
 		createShowHideConsole();
 		
-		createSyntaticButton();
+        JSeparator toolBarSeparator1 = new Separator();  
+        toolBarSeparator1.setVisible(false);
+        toolBarSeparator1.setOrientation( SwingConstants.VERTICAL );  
+        add( toolBarSeparator1 );
+        
+        createSyntaticButton();	
+				
+        JSeparator toolBarSeparator2 = new Separator();
+        toolBarSeparator2.setVisible(false);
+        toolBarSeparator2.setOrientation( SwingConstants.VERTICAL );  
+        add( toolBarSeparator2 );  
+        
+        createAlloyAnalyzerButton();	
 		
-		createExecuteButton();
-		
-		createAntiPatternButton();	
-		
-		//createInfoButton();
-		
-		//createOutputButton();		
+        JSeparator toolBarSeparator4 = new Separator();
+        toolBarSeparator4.setVisible(false);
+        toolBarSeparator4.setOrientation( SwingConstants.VERTICAL );  
+        add( toolBarSeparator4 );
+        
+		createAntiPatternButton();			
 	}		
 
+	public void createAlloyAnalyzerButton()
+	{
+		btnAlloyAnalyzer = new ToolbarButton("Launch Analyzer","/resources/br/ufes/inf/nemo/move/alloy-36x36.png");
+		btnAlloyAnalyzer.setToolTipText("Run Validation With Analyzer");
+		btnAlloyAnalyzer.setEnabled(true);
+		btnAlloyAnalyzer.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			if(frame.getAlloyModel().getAlloyPath().isEmpty() || frame.getAlloyModel().getAlloyPath()==null)
+       			{	       			
+       				frame.OpenAlloyModelWithAnalyzer();
+       			}else{
+       				OptionsView optview = new OptionsView(frame.getOptionModel(),frame);
+	       			new OptionsController(optview,frame.getOptionModel()); 
+	       			optview.setVisible(true);
+       			}
+       		}
+       	});
+		add(btnAlloyAnalyzer);
+	}
+	
+	public void createOpenOntoUML ()
+	{
+		btnOpenOntoUML = new ToolbarButton("Open Model","/resources/br/ufes/inf/nemo/move/ontouml-36x36.png");
+		btnOpenOntoUML.setToolTipText("Open Model");
+		btnOpenOntoUML.setEnabled(true);
+		btnOpenOntoUML.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			
+       		}
+       	});
+		add(btnOpenOntoUML);
+	}
+	
 	public void createShowHideConsole ()
 	{
-		btnShowHideConsole = new ToolbarButton("Console","/resources/br/ufes/inf/nemo/move/display-36x36.png");
+		btnShowHideConsole = new ToolbarButton("Show Console","/resources/br/ufes/inf/nemo/move/display-36x36.png");
+		btnShowHideConsole.setToolTipText("Show/Hide Console");
 		btnShowHideConsole.setEnabled(true);
 		btnShowHideConsole.addActionListener(new ActionListener() 
 		{
@@ -85,7 +143,8 @@ public class TheToolBar extends JToolBar {
 	
 	public void createSyntaticButton ()
 	{
-		btnSyntaticVerification = new ToolbarButton("Verify","/resources/br/ufes/inf/nemo/move/check-36x36.png");
+		btnSyntaticVerification = new ToolbarButton("Verify Syntax","/resources/br/ufes/inf/nemo/move/check-36x36.png");
+		btnSyntaticVerification.setToolTipText("Verify All Models Sintactically");
 		btnSyntaticVerification.setEnabled(true);
 		btnSyntaticVerification.addActionListener(new ActionListener() 
 		{
@@ -96,23 +155,11 @@ public class TheToolBar extends JToolBar {
        	});
 		add(btnSyntaticVerification);
 	}
-	
-	public void createExecuteButton ()	
-	{
-		btnExecute = new ToolbarButton("Validate","/resources/br/ufes/inf/nemo/move/play-36x36.png");		
-		btnExecute.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getOptionView().setVisible(true);					
-       		}
-       	});
-		add(btnExecute);
-	}
-	
+		
 	public void createAntiPatternButton()
 	{
-		btnSearchForAntipatterns = new ToolbarButton("AntiPatterns","/resources/br/ufes/inf/nemo/move/search-36x36.png");		
+		btnSearchForAntipatterns = new ToolbarButton("Search AntiPatterns","/resources/br/ufes/inf/nemo/move/search-36x36.png");		
+		btnSearchForAntipatterns.setToolTipText("Search for AntiPatterns");
 		btnSearchForAntipatterns.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent event) 
@@ -128,36 +175,5 @@ public class TheToolBar extends JToolBar {
 			}
 		});
 		add(btnSearchForAntipatterns);		
-	}
-
-	/** Information */
-	public void createInfoButton()
-	{
-		btnInfo = new ToolbarButton("Information","/resources/br/ufes/inf/nemo/move/info-36x36.png");				
-		btnInfo.setEnabled(false);
-		btnInfo.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			// TO DO!
-       		}
-       	});
-		add(btnInfo);	
-	}
-	
-	/** File Output Location */
-	public void createOutputButton()
-	{
-		btnOutput = new ToolbarButton("Output","/resources/br/ufes/inf/nemo/move/out-36x36.png");				
-		btnOutput.setEnabled(false);
-		btnOutput.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getOutputView().setVisible(true);
-       		}
-       	});
-		add(btnOutput);	
-	}
-	
+	}	
 }

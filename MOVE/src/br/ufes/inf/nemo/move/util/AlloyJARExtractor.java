@@ -8,8 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Copy "alloy4.2.jar" to the destination directory.
- * 
  * @author John Guerson
  */
 
