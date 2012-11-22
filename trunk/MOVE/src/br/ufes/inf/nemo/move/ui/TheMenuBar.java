@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.move.ui;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
+
 /**
  * @author John Guerson
  */
@@ -13,6 +14,7 @@ public class TheMenuBar extends JMenuBar {
 	
 	@SuppressWarnings("unused")
 	private TheFrame frame;
+	
 	private JMenu mnFile;
 	
 	/**
@@ -48,5 +50,6 @@ public class TheMenuBar extends JMenuBar {
 	 */
 	private void addActionListeners()
 	{
+		
 	}
 }
