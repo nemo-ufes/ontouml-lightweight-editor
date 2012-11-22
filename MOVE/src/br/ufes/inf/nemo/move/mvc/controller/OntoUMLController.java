@@ -29,7 +29,8 @@ public class OntoUMLController {
 		this.ontoumlview = ontoumlview;
 		this.ontoumlmodel = ontoumlmodel;
 		
-		ontoumlview.addLoadOntoUMLListener(new LoadOntoUMLListener());        
+		ontoumlview.addLoadOntoUMLListener(new LoadOntoUMLListener());
+		ontoumlview.addVerifyModelListener(new VerifyModelListener());
 	}	
 	
 	/**
@@ -66,5 +67,19 @@ public class OntoUMLController {
 	    	}
 	    }
 	 }   
+	 
+	 /**
+	 * Verify OntoUML Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class VerifyModelListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	ontoumlview.getTheFrame().getConsole().write(ontoumlmodel.verifyModel());	    	
+	    	ontoumlview.getTheFrame().ShowConsole();
+	    }
+	 }
 	 
 }
