@@ -19,7 +19,7 @@ import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
 import br.ufes.inf.nemo.move.ui.ocl.OCLEditorPanel;
 import br.ufes.inf.nemo.move.util.TitleTextField;
-import br.ufes.inf.nemo.ocl2alloy.OCLParser;
+import br.ufes.inf.nemo.ocl2alloy.parser.OCLParser;
 
 /**
  * @author John Guerson

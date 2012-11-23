@@ -1,7 +1,11 @@
 package br.ufes.inf.nemo.move.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 
 /**
@@ -11,11 +15,10 @@ import javax.swing.JMenuBar;
 public class TheMenuBar extends JMenuBar {
 
 	private static final long serialVersionUID = 1L;
-	
-	@SuppressWarnings("unused")
-	private TheFrame frame;
-	
+		
+	private TheFrame frame;	
 	private JMenu mnFile;
+	private JMenuItem mntmAbout; 
 	
 	/**
 	 * Constructor.
@@ -42,6 +45,9 @@ public class TheMenuBar extends JMenuBar {
 		JMenu mnHelp = new JMenu("Help");
 		add(mnHelp);
 		
+		mntmAbout = new JMenuItem("About MOVE");
+		mnHelp.add(mntmAbout);
+		
 		addActionListeners();
 	}
 	
@@ -50,6 +56,12 @@ public class TheMenuBar extends JMenuBar {
 	 */
 	private void addActionListeners()
 	{
-		
+		mntmAbout.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			AboutDialog.open(frame);
+       		}
+		});
 	}
 }

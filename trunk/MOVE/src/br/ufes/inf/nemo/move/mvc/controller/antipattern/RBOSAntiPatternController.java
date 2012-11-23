@@ -35,6 +35,7 @@ public class RBOSAntiPatternController {
 		this.rbosModel = rbosModel;		
 		
 		rbosView.addExecuteWithAnalzyerListener(new ExecuteWithAnalzyerListener());
+		rbosView.addOCLSolutionListener(new OCLSolutionListener());
 	}
 	
 	/**
@@ -91,5 +92,30 @@ public class RBOSAntiPatternController {
 	    	
 	    }
 	}
-
+	
+	/**
+	 * Generate OCL Solution
+	 * 
+	 * @author John
+	 */
+	class OCLSolutionListener implements ActionListener 
+	{
+		public void actionPerformed(ActionEvent e) 
+	    {
+			String constraints = new String();
+			
+    		if(rbosView.isSelectedReflexive()) 
+    		{
+    			constraints += "\n\n"+rbosModel.getRBOSAntiPattern().generateReflexiveOcl();
+    		}
+		
+    		if(rbosView.isSelectedIrreflexive())				
+    		{
+    			constraints += "\n\n"+rbosModel.getRBOSAntiPattern().generateIrreflexiveOcl(); 
+    		}
+    		
+    		rbosView.getTheFrame().getConsole().write(constraints);
+    		rbosView.getTheFrame().ShowConsole();
+	    }
+	}	
 }

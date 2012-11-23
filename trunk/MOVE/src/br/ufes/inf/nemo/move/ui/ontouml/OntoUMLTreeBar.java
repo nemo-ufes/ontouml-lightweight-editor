@@ -58,9 +58,9 @@ public class OntoUMLTreeBar extends JPanel {
 		separator_2.setOrientation(SwingConstants.VERTICAL);
 		
 		btnShowUnique = new JButton("");
-		btnShowUnique.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/visible-16x16.png")));
 		btnShowUnique.setToolTipText("Show Aliases");
-		
+		btnShowUnique.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/visible-16x16.png")));
+				
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)

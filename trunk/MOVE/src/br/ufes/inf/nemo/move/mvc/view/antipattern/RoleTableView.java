@@ -81,11 +81,35 @@ public class RoleTableView extends JTable {
 	}
 	
 	/**
+	 * Get Roles matrix from selected roles in the table.
+	 * 
+	 * @return
+	 */
+	public ArrayList<ArrayList<Classifier>> getRolesMatrix()
+	{
+		ArrayList<ArrayList<Classifier>> matrix = new ArrayList<ArrayList<Classifier>>();
+		
+		for(int i =0; i< getModel().getRowCount(); i++)
+		{
+			ArrayList<Classifier> row = new ArrayList<Classifier>();			
+			
+			for(int j=0; j< getModel().getColumnCount(); j++)
+			{
+				if ((Boolean)getModel().getValueAt(i, j))
+					row.add(rolesArrayList.get(j));
+			}
+			if(row.size()>0) matrix.add(row);
+		}
+		
+		return matrix;
+	}
+	
+	/**
 	 * Get mediations matrix from selected roles in the table.
 	 * 
 	 * @return
 	 */
-	public ArrayList<ArrayList<Mediation>> getMediationsMatrixFromRolesTable()
+	public ArrayList<ArrayList<Mediation>> getMediationsMatrix()
 	{
 		ArrayList<ArrayList<Mediation>> matrix = new ArrayList<ArrayList<Mediation>>();
 		

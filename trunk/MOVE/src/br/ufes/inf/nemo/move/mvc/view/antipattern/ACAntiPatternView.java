@@ -180,21 +180,7 @@ public class ACAntiPatternView extends JPanel {
 	public void addOCLSolutionListener(ActionListener actionListener) 
 	{
 		btnOclSolution.addActionListener(actionListener);
-	}
+	}	
 	
-	/*
-	public void GenerateOCLSolutionActionPerformed(ActionEvent event)
-	{		
-		Boolean openCycle = cbxOpenCycle.isSelected();
-		Boolean closedCycle = cbxClosedCycle.isSelected();
-		String openCycleConstraint = new String();
-		String closedCycleConstraint = new String();
-			
-		if(openCycle) openCycleConstraint = ac.generateCycleOcl(ACAntiPattern.OPEN);		
-		if(closedCycle) closedCycleConstraint = ac.generateCycleOcl(ACAntiPattern.CLOSED);		
-			
-		frame.getConsole().write(openCycleConstraint+"\n\n"+closedCycleConstraint);
-		frame.ShowConsole();		
-	}*/
 }
 

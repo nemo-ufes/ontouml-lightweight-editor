@@ -35,6 +35,7 @@ public class IAAntiPatternController {
 		this.iaModel = iaModel;
 			
 		iaView.addExecuteWithAnalzyerListener(new ExecuteWithAnalzyerListener());
+		iaView.addOCLSolutionListener(new OCLSolutionListener());
 	}
 	
 	/**
@@ -92,4 +93,35 @@ public class IAAntiPatternController {
 	    	
 	    }
 	}	
+	
+	/**
+	 * Generate OCL Solution
+	 * 
+	 * @author John
+	 */
+	class OCLSolutionListener implements ActionListener 
+	{
+		public void actionPerformed(ActionEvent e) 
+	    {
+			String constraints = new String();
+			
+    		if(iaView.isSelectedSourceCustom()) 
+    		{
+    			constraints += "\n\n"+iaModel.getIAAntiPattern().generateSourceOcl(
+    				iaView.getSourceCustomClassifiers()    					    				
+    			);
+    		}
+		
+    		if(iaView.isSelectedTargetCustom())				
+    		{
+    			constraints += "\n\n"+iaModel.getIAAntiPattern().generateTargetOcl(
+    				iaView.getTargetCustomClassifiers()    					    			
+    			); 
+    		}    		
+    		
+    		iaView.getTheFrame().getConsole().write(constraints);
+    		iaView.getTheFrame().ShowConsole();
+	    }
+	}
+	
 }

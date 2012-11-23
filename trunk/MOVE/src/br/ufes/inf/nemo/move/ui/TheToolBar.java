@@ -58,27 +58,13 @@ public class TheToolBar extends JToolBar {
 	 */
 	public void createButtons()
 	{		
-		/*createOpenOntoUML();
-		
-		JSeparator toolBarSeparator0 = new Separator();  
-	    toolBarSeparator0.setVisible(false);
-	    toolBarSeparator0.setOrientation( SwingConstants.VERTICAL );  
-	    add(toolBarSeparator0);
-	    */
 		createShowHideConsole();
 		
         JSeparator toolBarSeparator1 = new Separator();  
         toolBarSeparator1.setVisible(false);
         toolBarSeparator1.setOrientation( SwingConstants.VERTICAL );  
-        add( toolBarSeparator1 );
-        
-        createSyntaticButton();	
-				
-        JSeparator toolBarSeparator2 = new Separator();
-        toolBarSeparator2.setVisible(false);
-        toolBarSeparator2.setOrientation( SwingConstants.VERTICAL );  
-        add( toolBarSeparator2 );  
-        
+        add( toolBarSeparator1 );        
+       
         createAlloyAnalyzerButton();	
 		
         JSeparator toolBarSeparator4 = new Separator();

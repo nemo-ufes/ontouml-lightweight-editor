@@ -6,12 +6,17 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
+
 import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
+
 import br.ufes.inf.nemo.move.mvc.model.antipattern.ACAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.ACAntiPatternView;
+
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
+
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.util.Options;
+
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
@@ -35,8 +40,9 @@ public class ACAntiPatternController {
 		this.acModel = acModel;		
 		
 		acView.addExecuteWithAnalzyerListener(new ExecuteWithAnalzyerListener());
+		acView.addOCLSolutionListener(new OCLSolutionListener());
 	}
-	
+		
 	/**
 	 * Execute With Analyzer Action Listener
 	 * 
@@ -93,6 +99,29 @@ public class ACAntiPatternController {
 	    	
 	    }
 	}
+	
+	/**
+	 * Generate OCL Solution
+	 * 
+	 * @author John
+	 */
+	class OCLSolutionListener implements ActionListener 
+	{
+		@SuppressWarnings("static-access")
+		public void actionPerformed(ActionEvent e) 
+	    {
+			Boolean openCycle = acView.isSelectedOpenCycle();
+			Boolean closedCycle = acView.isSelectedClosedCycle();
 
+			String openCycleConstraint = new String();
+			String closedCycleConstraint = new String();
+					
+			if(openCycle) openCycleConstraint = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().OPEN);		
+			if(closedCycle) closedCycleConstraint = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().CLOSED);		
+					
+			acView.getTheFrame().getConsole().write(openCycleConstraint+"\n\n"+closedCycleConstraint);
+			acView.getTheFrame().ShowConsole();
+	    }
+	}
 	
 }
