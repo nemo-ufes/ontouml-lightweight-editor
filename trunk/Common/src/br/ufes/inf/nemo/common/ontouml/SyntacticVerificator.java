@@ -50,7 +50,7 @@ public class SyntacticVerificator {
 				
 			}	
 		} else {
-			result+= "valid model.";
+			result+= "Valid Model.";
 		}
 		return result;
 	}
