@@ -36,6 +36,7 @@ public class RWORAntiPatternController {
 		
 		rworView.addExecuteWithAnalzyerListener(new ExecuteWithAnalzyerListener());
 		rworView.addEmptyEntryRoleTableListener(new EmptyEntryRoleTableListener());
+		rworView.addOCLSolutionListener(new OCLSolutionListener());
 	}
 	
 	/**
@@ -84,7 +85,7 @@ public class RWORAntiPatternController {
 	    		if(rworView.isSelectedCustomizedExclusive())				
 	    		{
 	    			predicates += "\n\n"+rworModel.getRWORAntiPattern().generateMultipleExclusivePredicate(
-	    				rworView.getTableView().getMediationsMatrixFromRolesTable(),
+	    				rworView.getTableView().getMediationsMatrix(),
 	    				rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser(), 
 	    				rworView.getScope()
 	    			); 
@@ -113,8 +114,42 @@ public class RWORAntiPatternController {
 	    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(rworView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-	    	}
-	    	
+	    	}	    	
+	    }
+	}
+		
+	/**
+	 * Generate OCL Solution
+	 * 
+	 * @author John
+	 */
+	class OCLSolutionListener implements ActionListener 
+	{
+		public void actionPerformed(ActionEvent e) 
+	    {
+			String constraints = new String();
+						
+    		if(rworView.isSelectedExclusive()) 
+    		{
+    			constraints += "\n\n"+rworModel.getRWORAntiPattern().generateExclusiveOcl(
+    				rworView.getTableView().getRolesArrayList()
+    			);
+    		}		
+    		if(rworView.isSelectedOverlapping())				
+    		{
+    			// nothing to do...
+    		}    			    		
+    		if(rworView.isSelectedCustomizedExclusive())				
+    		{
+    			Integer size = rworView.getTableView().getRolesMatrix().size();
+    			for(int i = 0; i< size; i++)
+    			{
+    				constraints += "\n\n"+rworModel.getRWORAntiPattern().generateExclusiveOcl(rworView.getTableView().getRolesMatrix().get(i));
+    			}
+    			
+    		}    		
+    		rworView.getTheFrame().getConsole().write(constraints);
+    		rworView.getTheFrame().ShowConsole();
 	    }
 	}
 }

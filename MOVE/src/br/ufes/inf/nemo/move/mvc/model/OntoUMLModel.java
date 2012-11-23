@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
-import br.ufes.inf.nemo.common.ontouml.SyntacticVerificator;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 /**

@@ -221,19 +221,5 @@ public class RBOSAntiPatternView extends JPanel {
 		btnGenerateOclSolution.addActionListener(actionListener);
 	}
 	
-	/*
-	public void GenerateOCLSolutionActionPerformed(ActionEvent event)
-	{
-		Boolean reflexive = chckbxRflexive.isSelected();
-		Boolean irreflexive = chckbxIrreflexive.isSelected();
-		String reflexiveConstraint = new String();
-		String irreflexiveConstraint = new String();
 		
-		if(reflexive) reflexiveConstraint = rbos.generateReflexiveOcl();
-		if(irreflexive) irreflexiveConstraint = rbos.generateIrreflexiveOcl();		
-		
-		frame.getConsole().write(reflexiveConstraint+"\n\n"+irreflexiveConstraint);
-		frame.ShowConsole();
-	}*/
-	
 }

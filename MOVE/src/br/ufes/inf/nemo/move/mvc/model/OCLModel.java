@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.eclipse.ocl.ParserException;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.ocl2alloy.OCLParser;
+import br.ufes.inf.nemo.ocl2alloy.parser.OCLParser;
 
 /**
  * @author John Guerson

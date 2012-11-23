@@ -35,6 +35,7 @@ public class RSAntiPatternController {
 		this.rsModel = rsModel;		
 		
 		rsView.addExecuteWithAnalzyerListener(new ExecuteWithAnalzyerListener());
+		rsView.addOCLSolutionListener(new OCLSolutionListener());
 	}
 	
 	/**
@@ -108,4 +109,50 @@ public class RSAntiPatternController {
 	    	
 	    }
 	}
+	
+	/**
+	 * Generate OCL Solution
+	 * 
+	 * @author John
+	 */
+	class OCLSolutionListener implements ActionListener 
+	{
+		@SuppressWarnings("static-access")
+		public void actionPerformed(ActionEvent e) 
+	    {
+			try {
+				String constraints = new String();
+				
+	    		if(rsView.isSelectedDisjoint()) 
+	    		{
+	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
+	    				rsModel.getRSAntiPattern().DISJOINT
+	    			);
+	    		}			
+	    		if(rsView.isSelectedNonSubsetting())				
+	    		{
+	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
+	    				rsModel.getRSAntiPattern().NONSUBSET
+	    			); 
+	    		}	    		
+	    		if(rsView.isSelectedRedefinition()) 
+	    		{
+	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
+	    				rsModel.getRSAntiPattern().REDEFINE
+	    			)+"\n\n";
+	    		}			
+	    		if(rsView.isSelectedSubType())				
+	    		{
+	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
+	    				rsModel.getRSAntiPattern().SUBSET
+	    			)+"\n\n"; 
+	    		}    		
+	    		rsView.getTheFrame().getConsole().write(constraints);
+	    		rsView.getTheFrame().ShowConsole();
+    		
+		    }catch(Exception exception){
+	    		JOptionPane.showMessageDialog(rsView.getTheFrame(),exception.getMessage(),"Error - RS AntiPattern ",JOptionPane.ERROR_MESSAGE);
+	    	}
+	    }
+	}	
 }

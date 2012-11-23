@@ -94,6 +94,7 @@ public class OntoUMLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
+	    	if (ontoumlview.getModelTree()==null) return;
 	    	((OntoUMLCheckBoxTree.OntoUMLTreeCellRenderer)ontoumlview.getModelTree().getCellRenderer()).showOrHideUniqueName();	    	
 	    	ontoumlview.getModelTree().updateUI();
 	    }

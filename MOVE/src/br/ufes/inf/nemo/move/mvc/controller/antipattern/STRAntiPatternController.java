@@ -35,6 +35,7 @@ public class STRAntiPatternController {
 		this.strModel = strModel;		
 		
 		strView.addExecuteWithAnalzyerListener(new ExecuteWithAnalzyerListener());
+		strView.addOCLSolutionListener(new OCLSolutionListener());
 	}
 	
 	/**
@@ -120,4 +121,44 @@ public class STRAntiPatternController {
 	    	
 	    }
 	}
+	
+	/**
+	 * Generate OCL Solution
+	 * 
+	 * @author John
+	 */
+	class OCLSolutionListener implements ActionListener 
+	{
+		public void actionPerformed(ActionEvent e) 
+	    {
+			String constraints = new String();
+			
+    		if(strView.isSelectedAntiSymmetric()) 
+    		{
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateAntiSymmetricOcl();
+    		}		
+    		if(strView.isSelectedIntransitive()) 
+    		{
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateIntransitiveOcl();
+    		}	    		
+    		if(strView.isSelectedIrreflexive()) 
+    		{
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateIrreflexiveOcl();
+    		}		
+    		if(strView.isSelectedReflexive()) 
+    		{
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateReflexiveOcl();
+    		}							
+    		if(strView.isSelectedSymmetric()) 
+    		{
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateSymmetricOcl();
+    		}    		
+    		if(strView.isSelectedTransitive()) 
+    		{
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateTransitiveOcl();
+    		}    		
+    		strView.getTheFrame().getConsole().write(constraints);
+    		strView.getTheFrame().ShowConsole();
+	    }
+	}	
 }

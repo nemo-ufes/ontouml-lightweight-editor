@@ -172,7 +172,7 @@ public class OCLController {
 	    public void actionPerformed(ActionEvent e) 
 	    {
 	    	try {
-	    		
+
 	    		oclview.parseConstraints();
    				
    				JOptionPane.showMessageDialog(

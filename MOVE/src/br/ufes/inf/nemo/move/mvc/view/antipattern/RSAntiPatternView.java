@@ -319,26 +319,4 @@ public class RSAntiPatternView extends JPanel {
 	{
 		btnGenerateOclSolution.addActionListener(actionListener);
 	}
-	/*
-	public void GenerateOCLSolutionActionPerformed(ActionEvent event) throws Exception
-	{
-		Boolean redefinition = cbxRedefinition.isSelected();
-		Boolean nonSubsetting = cbxNonsubsetting.isSelected();
-		Boolean subtype = cbxSubtype.isSelected();
-		Boolean disj = cbxDisjoint.isSelected();
-		
-		String redefinitionConstraint = new String();
-		String disjConstraint = new String();
-		String nonSubsettingConstraint = new String();
-		String subtypeConstraint = new String();
-		
-		if (disj) disjConstraint = rs.generateOcl(RSAntiPattern.DISJOINT);
-		if (redefinition) redefinitionConstraint = rs.generateOcl(RSAntiPattern.REDEFINE);
-		if (nonSubsetting) nonSubsettingConstraint = rs.generateOcl(RSAntiPattern.NONSUBSET);
-		if (subtype) subtypeConstraint = rs.generateOcl(RSAntiPattern.SUBSET);
-				
-		frame.getConsole().write(disjConstraint +"\n\n"+redefinitionConstraint+"\n\n"+nonSubsettingConstraint+"\n\n"+subtypeConstraint);
-		frame.ShowConsole();		
-	}*/
-
 }
