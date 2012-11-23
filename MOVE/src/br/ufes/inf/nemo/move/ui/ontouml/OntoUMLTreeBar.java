@@ -25,6 +25,7 @@ public class OntoUMLTreeBar extends JPanel {
 	public JButton btnOpen;
 	public JButton btnHelp;
 	public JButton btnVerify;
+	public JButton btnShowUnique;
 	
 	public OntoUMLTreeBar() 
 	{		
@@ -53,6 +54,13 @@ public class OntoUMLTreeBar extends JPanel {
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setOrientation(SwingConstants.VERTICAL);
+		
+		btnShowUnique = new JButton("");
+		btnShowUnique.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/visible-16x16.png")));
+		btnShowUnique.setToolTipText("Show Aliases");
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -68,7 +76,11 @@ public class OntoUMLTreeBar extends JPanel {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnHelp, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
+							.addComponent(btnHelp, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(separator_2, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnShowUnique, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
 						.addComponent(textPath, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE))
 					.addContainerGap())
 		);
@@ -83,7 +95,9 @@ public class OntoUMLTreeBar extends JPanel {
 						.addComponent(separator, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
 						.addComponent(btnOpen, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
 						.addComponent(btnVerify, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(btnHelp, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+						.addComponent(btnHelp, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+						.addComponent(separator_2, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnShowUnique, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		

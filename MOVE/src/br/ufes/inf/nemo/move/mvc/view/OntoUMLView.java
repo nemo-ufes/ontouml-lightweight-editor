@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
@@ -47,7 +48,7 @@ public class OntoUMLView extends JPanel {
 		this.frame = frame;
 		
 		setPath(ontoumlModel.getOntoUMLPath(),ontoumlModel.getOntoUMLModelInstance());
-		setModelTree(ontoumlModel.getOntoUMLModelInstance());
+		setModelTree(ontoumlModel.getOntoUMLModelInstance(),ontoumlModel.getOntoUMLParser());
 		
 		validate();
 		repaint();
@@ -69,6 +70,8 @@ public class OntoUMLView extends JPanel {
 		panel.add(BorderLayout.NORTH,titleTextField);
 		
 		ontobar = new OntoUMLTreeBar();
+		ontobar.btnShowUnique.setToolTipText("");
+		ontobar.setToolTipText("Show Aliases");
 		panel.add(BorderLayout.CENTER,ontobar);
 		
 		add(BorderLayout.NORTH,panel);
@@ -77,16 +80,21 @@ public class OntoUMLView extends JPanel {
 		add(BorderLayout.CENTER,treeScrollPane);
 	}
 		
-	public void setModelTree(RefOntoUML.Package refmodel)
+	public void setModelTree(RefOntoUML.Package refmodel,OntoUMLParser refparser)
 	{	
 		if (refmodel!=null)
 		{
 			if(modeltree!=null) treeScrollPane.treePanel.remove(modeltree);			
-			modeltree = OntoUMLCheckBoxTree.createCheckBoxTree(refmodel);					
+			modeltree = OntoUMLCheckBoxTree.createCheckBoxTree(refmodel,refparser);					
 			treeScrollPane.treePanel.add(BorderLayout.CENTER,modeltree);
 			treeScrollPane.validate();
 			treeScrollPane.repaint();
 		}
+	}
+	
+	public CheckboxTree getModelTree()
+	{
+		return modeltree;
 	}
 	
 	public void setPath(String path, RefOntoUML.Package refmodel)
@@ -111,6 +119,11 @@ public class OntoUMLView extends JPanel {
 	{
 		ontobar.btnVerify.addActionListener(actionListener);
 	}	
+	
+	public void addShowUniqueNamesListener(ActionListener actionListener) 
+	{
+		ontobar.btnShowUnique.addActionListener(actionListener);
+	}
 	
 	public String getOntoUMLPathLocation()
 	{
