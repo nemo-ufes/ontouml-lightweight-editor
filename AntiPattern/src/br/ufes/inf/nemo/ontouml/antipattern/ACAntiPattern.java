@@ -128,7 +128,7 @@ public class ACAntiPattern {
 		if(type==CLOSED)
 			rule += " = self";
 		else if(type==OPEN)
-			rule += " != self";
+			rule += "->excludes(self)";
 		else
 			return null;
 			
