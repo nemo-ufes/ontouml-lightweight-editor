@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 
 /**
  * @author John Guerson
@@ -31,6 +32,7 @@ public class OntoUMLController {
 		
 		ontoumlview.addLoadOntoUMLListener(new LoadOntoUMLListener());
 		ontoumlview.addVerifyModelListener(new VerifyModelListener());
+		ontoumlview.addShowUniqueNamesListener(new ShowUniqueNamesListener());
 	}	
 	
 	/**
@@ -51,7 +53,7 @@ public class OntoUMLController {
 	    	ontoumlmodel.setOntoUML(path);
 	    					
 	    	ontoumlview.setPath(ontoumlmodel.getOntoUMLPath(),ontoumlmodel.getOntoUMLModelInstance());
-	    	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance());	    		
+	    	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance(),ontoumlmodel.getOntoUMLParser());	    		
 	    	ontoumlview.validate();
 	    	ontoumlview.repaint();
 	    	
@@ -79,6 +81,21 @@ public class OntoUMLController {
 	    {
 	    	ontoumlview.getTheFrame().getConsole().write(ontoumlmodel.verifyModel());	    	
 	    	ontoumlview.getTheFrame().ShowConsole();
+	    }
+	 }
+	 
+	 
+	 /**
+	 * Show Unique Names Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class ShowUniqueNamesListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	((OntoUMLCheckBoxTree.OntoUMLTreeCellRenderer)ontoumlview.getModelTree().getCellRenderer()).showOrHideUniqueName();	    	
+	    	ontoumlview.getModelTree().updateUI();
 	    }
 	 }
 	 

@@ -72,7 +72,7 @@ public class TheFrame extends JFrame {
     	alloymodel.setAlloyModel(alsPath);
     	
 		ontoumlview.setPath(ontoumlmodel.getOntoUMLPath(),ontoumlmodel.getOntoUMLModelInstance());
-    	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance());    	
+    	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance(),ontoumlmodel.getOntoUMLParser());    	
     	ontoumlview.validate();
     	ontoumlview.repaint();
     	

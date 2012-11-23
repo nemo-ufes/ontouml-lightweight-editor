@@ -18,13 +18,14 @@ public class OntoUMLTreeNodeElem {
 	private Element element;
 	private String name;
 	private String type;
+	private String uniqueName="";
 	
 	/** 
 	 * Create a CheckBox Tree Node Element from Element.
 	 * 
 	 * @param element
 	 */
-	public OntoUMLTreeNodeElem (Element element) 
+	public OntoUMLTreeNodeElem (Element element, String uniqueName) 
 	{
 		this.element = element;
 		
@@ -35,7 +36,9 @@ public class OntoUMLTreeNodeElem {
 		
 		type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
 	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);	    
+	    type = Normalizer.normalize(type, Normalizer.Form.NFD);	
+	    
+	    this.uniqueName= uniqueName; 
 	}
 	
 	/**
@@ -47,6 +50,11 @@ public class OntoUMLTreeNodeElem {
 	{
 		this.name = name;
 	}	
+	
+	public String getUniqueName()
+	{
+		return uniqueName;
+	}
 	
 	/**
 	 * To String.
