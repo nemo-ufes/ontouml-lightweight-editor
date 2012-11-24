@@ -1,0 +1,125 @@
+
+OLED ChangeLog
+==============
+
+
+Version 0.50 (Release) Java 7 required
+
+
+- Search for AntiPatterns in MOVE environment.
+- New interface for MOVE environment.
+- Parse OCL Domain COnstraint in MOVE environment.
+- other major changes...
+
+
+
+
+
+==========================================
+
+Version 0.49 (Relase) Java 7 required
+
+- first attempt to integrate OLED with the MOVE environment...
+- other major changes...
+
+==========================================
+
+Version 0.48 (Release) Java 7 required
+
+OntoUML2Alloy:
+
+- Salvamento de arquivos ALS: 
+  Mudando o local de salvamento do arquivo als, o código não aparece no arquivo.
+
+- Local das Regras de Simulação: 
+  A janela de escolha das regras para validação ("Enforce X"), poderia ficar ao lado do execute, assim como é a janela de importação de diagramas!
+
+- Descrição das Regras de Simulação: 
+  Para as regras, complementar as descrições com: "Uncheck this box if you have relators wich the sum of its cardinalities is less then 2."
+
+- No null error: 
+  Transformar modelo com Mixin, category e Rolemixin com roles.
+
+- UI da transformação
+
+==========================================
+
+Version 0.47 (Release) Java 7 required
+
+XMI2OntoUML : reverse aggregation
+
+OntoUML2Alloy: lot of changes...
+
+==========================================
+
+Version 0.46 (Release) Java 7 required
+
+- ontoUML2Alloy : Bug Fixed: Create a new constraint for Top Level Classes.
+
+- ontoUML2Alloy : Bug Fixed: Remove the old constraint for Top Level Classes.
+
+- ontoUML2Alloy : Bug Fixed: Another null in derivations facts.
+
+- ontoUML2Alloy : Bug Fixed: Create a new enforcement option: Enforce Antirigidity.
+
+==========================================
+
+Version 0.45 (Release) Java 7 required
+
+
+- OntoUML2Alloy: Bug Fixed: fact declaration of derivations. Mediation name equal to null.
+
+- OntoUML2Alloy: Bug Fixed: remove disjoint constraint of Properties and DataTypes.
+
+==========================================
+
+Version 0.44 (Release) Java 7 required
+
+- XMI2OntoUML: Import dialog raised
+
+- XMI2OntoUML: Import of Association Classes by diagram adjusted
+
+- OntoUML2Alloy: Added a new constraint for Top Level classes
+
+- OntoUML2Alloy: Bug Fixed: Mediations and Meronymics may have the source class and the target class exchanged.
+
+==========================================
+
+Version 0.43 (Release) Java 7 required
+
+
+- Added the delete selection funcionality from the context menu (right-click)
+
+- Added support for AggregationKind, setting automatically the aggregation kind for meronymic relations. (non-shareable = uml-composite, shareable = uml-shared)
+
+- Added support for the isExtensional feature of Collectives (in the class properties dialog)
+
+- Enabled show multiplicities by default
+
+- Both association ends navigable default (But not in the case of associations with DataType)
+
+- Read-only target ends for meadiation and characterization by default (the source, is the one clicked first when setting up is always a Relator or Mode e.g.)
+
+- Disabled the possibility to change the read-only in association properties of a meadiation and characterization association
+
+- Disabled the possibility to change the shareable in meronymic properties of a SubQuantityOf association
+
+- Diagram editor Icons changed, removed some rarely used and added labels to improve identification/usability
+
+- Changed to open the application in a maximized frame by default
+
+- Added support for opening the recent projects in the start tab
+
+- Corrected the file filters for opening and saving files
+
+- OntoUML2Alloy: Options added. Enforce indentity principle in all objects.
+
+==========================================
+
+Version 0.42 (Release) Java 7 required
+
+- Now Java 7 is required.
+
+- Bug Fixed: XMI2OntoUML - Non existent element in XMI file.
+
+- Bug Fixed: OntoUML2Alloy - Default bitwidth of run command equal to 7.
