@@ -7,10 +7,8 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,16 +24,14 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.eclipse.emf.common.util.BasicEList.UnmodifiableEList;
-import org.eclipse.emf.common.util.BasicDiagnostic;
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mapper;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
 
@@ -50,12 +46,9 @@ import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
-import RefOntoUML.impl.NamedElementImpl;
-import RefOntoUML.util.ValidationMessage;
 
 
 public class RefOntoUMLUtil {
-	
 	/**
 	 * Creates a CheckboxTree from a RefOntoUML.Model to serve
 	 * as a element selection to the XMI2RefOntoUML transformation.
@@ -66,7 +59,9 @@ public class RefOntoUMLUtil {
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(model));
 		CheckboxTree modelTree = new CheckboxTree(rootNode);
 		modelTree.setCellRenderer(new OntoUMLTreeCellRenderer());
+		
 		drawTree(rootNode, model);
+		
 		return modelTree;
 	}
 	
@@ -93,7 +88,7 @@ public class RefOntoUMLUtil {
 			}
 			
 		} else if (refElement instanceof RefOntoUML.Classifier) {
-			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(refElement));			
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(refElement));
 			parent.add(newNode);
 			
 		}
@@ -159,7 +154,24 @@ public class RefOntoUMLUtil {
     	DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelTree.getModel().getRoot();
     	ChckBoxTreeNodeElem rootObject = (ChckBoxTreeNodeElem) root.getUserObject();
 
-    	filterModel(rootObject.getElement(), checkedNodes, uncheckedNodes);
+//    	filterModel(rootObject.getElement(), checkedNodes, uncheckedNodes);
+    	
+    	OntoUMLParser ontoParser = new OntoUMLParser((Model)rootObject.getElement());
+    	Set<PackageableElement> pelList = ontoParser.getPackageableElements();
+    	for (PackageableElement pel : pelList)
+    	{
+    		Package parent = (Package) pel.eContainer();
+    		if (!checkedNodes.contains(pel))
+    		{
+    			uncheckedNodes.add(pel);
+        		EcoreUtil.remove(pel);
+        	}
+    		if (parent.getPackagedElement().size() == 0)
+    		{
+    			uncheckedNodes.add(parent);
+    			EcoreUtil.remove(parent);
+    		}
+    	}
     	
     	for (EObject eObject : uncheckedNodes) {
     		delete(eObject, rootObject.getElement());
@@ -169,8 +181,7 @@ public class RefOntoUMLUtil {
 	public static void filterModel(EObject element, List<EObject> checkedElements,
 			List<EObject> uncheckedElements) {
     	
-    	if (element == null || !(element instanceof Classifier || 
-    			element instanceof Association || element instanceof Package)) {
+    	if (element == null || !(element instanceof Classifier || element instanceof Package)) {
     		return;
     	}
     	
@@ -191,71 +202,6 @@ public class RefOntoUMLUtil {
     		}
     	}
     }
-	
-//	public static void deleteAll(Collection<EObject> eObjList, EObject rootEObject) {
-//		Set<EObject> eObjects = new HashSet<EObject>();
-//		Set<EObject> crossResourceEObjects = new HashSet<EObject>();
-//		
-//		for (EObject eObject : eObjList) {
-//			eObjects.add(eObject);
-//			for (@SuppressWarnings("unchecked") TreeIterator<InternalEObject> j = 
-//				(TreeIterator<InternalEObject>)(TreeIterator<?>)eObject.eAllContents();  j.hasNext(); ) {
-//				
-//				InternalEObject childEObject = j.next();
-//				if (childEObject.eDirectResource() != null) {
-//					System.out.println("só por desencargo");
-//					crossResourceEObjects.add(childEObject);
-//					
-//				} else {
-//					eObjects.add(childEObject);
-//				}
-//			}
-//		}
-//			
-//		Map<EObject, Collection<EStructuralFeature.Setting>> usages;
-//		usages = EcoreUtil.UsageCrossReferencer.findAll(eObjects, rootEObject);
-//
-//		for (Map.Entry<EObject, Collection<EStructuralFeature.Setting>> entry : usages.entrySet()) {
-//			EObject deletedEObject = entry.getKey();
-//			Collection<EStructuralFeature.Setting> settings = entry.getValue();
-//			for (EStructuralFeature.Setting setting : settings) {
-//				if (!eObjects.contains(setting.getEObject()) && 
-//						setting.getEStructuralFeature().isChangeable()) {
-//						
-//					if (setting.getEObject() instanceof Generalization ||
-//							setting.getEObject() instanceof Dependency) {
-//						delete(setting.getEObject());
-//		    		  
-//					} else if (setting.getEObject() instanceof GeneralizationSet) {
-//						EcoreUtil.remove(setting, deletedEObject);
-//						if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
-//							EcoreUtil.remove(setting.getEObject());
-//						}
-//		    		  
-//					} else if (setting.getEObject() instanceof Property) {
-//						if (setting.getEObject().eContainer() instanceof Association) {
-//							delete(setting.getEObject().eContainer(), true);
-//						} else {
-//							delete(setting.getEObject(), true);
-//						}
-//	    		  
-//					} else if (setting.getEObject() instanceof Comment) {
-//						EcoreUtil.remove(setting, deletedEObject);
-//						if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
-//							delete (setting.getEObject());
-//						}
-//	    		  
-//					} else if (!(setting instanceof UnmodifiableEList)) {
-//						EcoreUtil.remove(setting, deletedEObject);
-//					}
-//				}
-//			}
-//		}
-//
-//		for (EObject crossResourceEObject : crossResourceEObjects) {
-//			EcoreUtil.remove(crossResourceEObject.eContainer(), crossResourceEObject.eContainmentFeature(), crossResourceEObject);
-//		}
-//	}
 	
 	/**
 	   * Deletes the object from its {@link EObject#eResource containing} resource 
@@ -387,63 +333,5 @@ public class RefOntoUMLUtil {
     	   	return panel;
     	}
     }
-    
-    /**
-     * Validates a model according to the RefOntoUML OCL rules.
-     * @param model the model that will be validated.
-     */    
-    public static void validate(RefOntoUML.Model model) {
-		Diagnostician validator = Diagnostician.INSTANCE;
-
-		Map<Object, Object> context = new HashMap<Object, Object>();
-		BasicDiagnostic diag = new BasicDiagnostic();
-
-		// Returns true if the model is valid.
-		Map<PackageableElement, String> errorsMap = new HashMap<PackageableElement, String>();
-		
-		if(!validator.validate(model, diag, context))
-		{
-			System.out.println("The model is not valid sintatically. The following error(s) where found:\n\n");
-			
-			for (Diagnostic item : diag.getChildren()) {
-				
-				PackageableElement element = (PackageableElement) item.getData().get(0);
-				String errors = "";
-				
-				if(errorsMap.containsKey(element))
-				{
-					errors = errorsMap.get(element);
-				}
-				
-				String message = ValidationMessage.getFinalMessage(item.getMessage());
-				String currentError = message.substring(message.indexOf("- ")+2, message.length()) + "\n\n";
-				errors += currentError;
-				errorsMap.put(element, errors);
-				System.out.println(handleName(element) + " - " + currentError);
-				
-			}	
-		} else {
-			System.out.println("valid model.");
-		}
-	}
-    
-    public static String handleName(Object element)
-	{
-		String name = "[unnamed]";
-		if(element instanceof NamedElementImpl)
-		{
-			NamedElementImpl namedElement = (NamedElementImpl) element;
-			if (namedElement.getName() != null)
-				name = namedElement.getName();
-		}
-		
-		return MessageFormat.format("{0} ({1})", name, getClassAsStereotype((EObject) element));
-	}
-	
-	public static String getClassAsStereotype(EObject eObject) {
-		String ret = eObject.eClass().getName().toLowerCase()
-				.replace("association", "");
-		return "<<" + ret + ">>";
-	}
 	
 }

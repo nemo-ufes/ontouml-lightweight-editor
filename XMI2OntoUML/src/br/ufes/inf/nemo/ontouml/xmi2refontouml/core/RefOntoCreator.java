@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.RefOntoUMLResourceFactory;
+import br.ufes.inf.nemo.common.resource.RefOntoUMLResourceFactoryImpl;
 
 import RefOntoUML.*;
 import RefOntoUML.impl.*;
@@ -41,7 +41,7 @@ public class RefOntoCreator {
 
 		//Criar um ResourceSet para "gerenciar" o resource do modelo
 		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new RefOntoUMLResourceFactory());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new RefOntoUMLResourceFactoryImpl());
 		resourceSet.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI,RefOntoUML.RefOntoUMLPackage.eINSTANCE);
 		RefOntoUMLPackageImpl.init();
 		
@@ -282,6 +282,7 @@ public class RefOntoCreator {
 		dealClassifier(dt, hashProp);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void dealAssociation(RefOntoUML.Association assoc1, Map<String, Object> hashProp) {
 		try {
 			// Specific properties of Meronymic associations.
@@ -300,6 +301,9 @@ public class RefOntoCreator {
     	} catch (ClassCastException e) {
     		// DO NOTHING
     	}
+
+		assoc1.getMemberEnd().add(((List<Property>) hashProp.get("memberend")).get(0));
+		assoc1.getMemberEnd().add(((List<Property>) hashProp.get("memberend")).get(1));
 		
 		//Material Association is always derived
 		if(assoc1 instanceof MaterialAssociation) {

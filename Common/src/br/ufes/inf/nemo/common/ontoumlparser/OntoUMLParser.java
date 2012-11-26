@@ -11,8 +11,8 @@ import br.ufes.inf.nemo.common.ontoumlparser.NameHandler;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 import RefOntoUML.Association;
-import RefOntoUML.Class;
-import RefOntoUML.DataType;
+import RefOntoUML.Classifier;
+import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
@@ -32,8 +32,11 @@ public class OntoUMLParser {
 	/** Associate the Packageable Elements of the model with their modified names. */
 	private HashMap<PackageableElement,String> elementsMap;
 	
-	/** Associate the Propeties of the model (AssociationEnds) with their modified names. */
+	/** Associate the Properties of the model (AssociationEnds) with their modified names. */
 	private HashMap<Property,String> assocEndMap;
+	
+	/** Associate the Generalizations of the model with their modified names. */
+	private HashMap<Generalization,String> generalsMap;
 	
 	/** Performs modification on model name. */
 	private NameHandler h1;
@@ -50,12 +53,13 @@ public class OntoUMLParser {
 	{
 		assocEndMap = new HashMap<Property,String>();
 		elementsMap = new HashMap<PackageableElement,String>();
+		generalsMap = new HashMap<Generalization,String>();
 		
 		h1 = new NameHandler();
 		this.refmodelname = h1.treatName(refmodel.getName(),refmodel.getClass().toString());
 		
 		h2 = new NameHandler();
-		initializeHashMaps(refmodel);		
+		initializeHashMaps(refmodel);
 	}
 	
 	/**
@@ -71,6 +75,7 @@ public class OntoUMLParser {
 		
 		assocEndMap = new HashMap<Property,String>();
 		elementsMap = new HashMap<PackageableElement,String>();
+		generalsMap = new HashMap<Generalization,String>();
 		
 		h1 = new NameHandler();
 		this.refmodelname = h1.treatName(refmodel.getName(),refmodel.getClass().toString());
@@ -91,7 +96,7 @@ public class OntoUMLParser {
 			if(p instanceof Package) 
 				initializeHashMaps(p);
 			else 
-				addToHashMaps(p);			
+				addToHashMaps(p);
 		}
 	}		
 	
@@ -102,10 +107,11 @@ public class OntoUMLParser {
 	 */
 	private void addToHashMaps(PackageableElement pe)
 	{
-		if (pe instanceof Class || pe instanceof Association || ((pe instanceof DataType) && !(pe instanceof PrimitiveType)) || (pe instanceof GeneralizationSet)) 
+		if ((pe instanceof Classifier && !(pe instanceof PrimitiveType)) || (pe instanceof GeneralizationSet))
+//		if (pe instanceof Class || pe instanceof Association || ((pe instanceof DataType) && !(pe instanceof PrimitiveType)) || (pe instanceof GeneralizationSet)) 
 		{
 			if(pe instanceof Association)
-			{				
+			{
 				Property property0 = ((Association)pe).getMemberEnd().get(0);				
 				Property property1 = ((Association)pe).getMemberEnd().get(1);
 
@@ -120,7 +126,15 @@ public class OntoUMLParser {
 			}
 			
 			elementsMap.put(pe,h2.treatName(pe.getName(),pe.getClass().toString()));			
-		}				
+		}
+		
+		if (pe instanceof Classifier && !((Classifier) pe).getGeneralization().isEmpty())
+		{
+			for (Generalization gen : ((Classifier) pe).getGeneralization())
+			{
+				generalsMap.put(gen, h2.treatName(gen.toString(),gen.getClass().toString()));
+			}
+		}
 	}	
 	
 	
@@ -132,6 +146,11 @@ public class OntoUMLParser {
 	public Set<PackageableElement> getPackageableElements()
 	{
 		return elementsMap.keySet();
+	}
+	
+	public Set<Generalization> getGeneralizations()
+	{
+		return generalsMap.keySet();
 	}
 	
 	public String getName(PackageableElement elem)
