@@ -9,8 +9,8 @@ import java.util.Map.Entry;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.Environment;
-import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.OCLInput;
+import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.uml.UMLEnvironmentFactory;
 import org.eclipse.uml2.uml.Constraint;
 
@@ -43,6 +43,8 @@ public class OCLParser {
         
     public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> umlHashMap;
     
+    public String logDetails = "";
+    
     /**
      * Get OntoUML Element from UML Element.
      * 
@@ -72,20 +74,20 @@ public class OCLParser {
     public OCLParser (String oclConstraints, RefOntoUML.Package refmodel, String umlPath) throws ParserException
     {	
     	if (refmodel==null) return;
-    	if (umlPath == null) return;
+    	if (umlPath==null) return;
     	
-		umlResource = OntoUML2UML.Transformation(refmodel,umlPath);
-		
-		umlHashMap = OntoUML2UML.transformer.mydealer.mymap;
-		
+    	umlResource = OntoUML2UML.Transformation(refmodel,umlPath);		
+    	umlHashMap = OntoUML2UML.transformer.mydealer.mymap;
+    	logDetails = OntoUML2UML.logDetails;
+    	
+    	// this line was added due to a bug of Eclipse :
+    	// https://bugs.eclipse.org/bugs/show_bug.cgi?id=372258
+    	Environment.Registry.INSTANCE.registerEnvironment(new UMLEnvironmentFactory().createEnvironment());
+    			
 		org.eclipse.uml2.uml.Package umlmodel = (org.eclipse.uml2.uml.Package) umlResource.getContents().get(0);
 		umlResource.getResourceSet().getPackageRegistry().put(null,umlmodel);			
 		org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());
-		
-		// this line was added due to a bug of Eclipse :
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=372258
-		Environment.Registry.INSTANCE.registerEnvironment(new UMLEnvironmentFactory().createEnvironment());
-		
+						
 		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
 		umlenv = envFactory.createEnvironment();		
 		org.eclipse.ocl.uml.OCL myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
@@ -111,14 +113,16 @@ public class OCLParser {
 				
 		umlHashMap = OntoUML2UML.transformer.mydealer.mymap;
 		
-		org.eclipse.uml2.uml.Package umlmodel = (org.eclipse.uml2.uml.Package) umlResource.getContents().get(0);		
-		umlResource.getResourceSet().getPackageRegistry().put(null,umlmodel);		
-		org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());
+		logDetails = OntoUML2UML.logDetails;
 		
 		// this line was added due to a bug of Eclipse :
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=372258
 		Environment.Registry.INSTANCE.registerEnvironment(new UMLEnvironmentFactory().createEnvironment());
-		
+				
+		org.eclipse.uml2.uml.Package umlmodel = (org.eclipse.uml2.uml.Package) umlResource.getContents().get(0);		
+		umlResource.getResourceSet().getPackageRegistry().put(null,umlmodel);		
+		org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());
+						
 		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
 		umlenv = envFactory.createEnvironment();		
 		org.eclipse.ocl.uml.OCL myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
@@ -141,6 +145,11 @@ public class OCLParser {
 		return umlenv;
 	}
 
+	public String getDetails()
+	{
+		return logDetails;
+	}
+	
     public Resource getUMLResource()
     {
     	return umlResource;
