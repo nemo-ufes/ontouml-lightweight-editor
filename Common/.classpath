@@ -38,5 +38,7 @@
 	<classpathentry kind="lib" path="lib/textarea/rstaui.jar"/>
 	<classpathentry kind="lib" path="lib/textarea/rsyntaxtextarea_2.0.4.1_Source.zip"/>
 	<classpathentry kind="lib" path="lib/textarea/rsyntaxtextarea.jar"/>
+	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
