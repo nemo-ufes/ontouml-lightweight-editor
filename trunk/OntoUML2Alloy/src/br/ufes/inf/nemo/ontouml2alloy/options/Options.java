@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ontouml2alloy.util;
+package br.ufes.inf.nemo.ontouml2alloy.options;
 
 /**
  * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)

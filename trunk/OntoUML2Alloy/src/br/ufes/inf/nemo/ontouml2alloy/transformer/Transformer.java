@@ -60,6 +60,7 @@ import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
+import br.ufes.inf.nemo.ontouml2alloy.options.Options;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TAbstractClauseRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TDerivationRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TGeneralizationRule;
@@ -67,7 +68,6 @@ import br.ufes.inf.nemo.ontouml2alloy.rules.TGeneralizationSetRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TRelatorRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TTopLevelRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TWeakSupplementationRule;
-import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 
 /**
  *	This class is used to transform every element of the model into alloy. 
