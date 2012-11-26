@@ -88,7 +88,7 @@ public class ModelHelper {
 
 		// As the first validation takes long due to initialization process,
 		// we start it here so the user doesn't get the initialization hit
-		validator.validate(factory.createClass());
+		//validator.validate(factory.createClass());
 		
 		//validator2 = RefOntoUMLValidator.INSTANCE;
 				
