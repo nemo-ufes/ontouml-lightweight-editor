@@ -53,9 +53,19 @@ public class OCLModel {
 			this.oclpath=null;
 		}
 	}
+	
+	/**
+	 * Set Parser.
+	 * 
+	 * @param oclparser
+	 */
+	public void setParser(OCLParser oclparser)
+	{
+		this.oclparser = oclparser;
+	}
 		
 	/**
-	 * Set OCL Parser.
+	 * Parse.
 	 * 
 	 * @param refmodel: RefOntoUML.Package
 	 * @param umlPath^UML Model Path

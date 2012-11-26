@@ -18,6 +18,7 @@ public class UMLModel {
 	public static String umlOutDirectory;	
 	private Resource umlResource;
 	private Package umlmodel;
+	private String logDetails= new String();
 	
 	/**
 	 * Constructor.
@@ -74,14 +75,20 @@ public class UMLModel {
 	 */
 	public void setUMLModel(String umlPath,OntoUMLModel ontoumlmodel)
 	{
-		// Transforming OntoUML into UML...
 		umlResource = OntoUML2UML.Transformation(ontoumlmodel.getOntoUMLModelInstance(),umlPath);
+		
+		logDetails = OntoUML2UML.logDetails;
 		
 		umlmodel = (Package)umlResource.getContents().get(0);
 		
 		setUMLModel(umlPath);
 	}
 
+	public String getDetails()
+	{		
+		return logDetails;
+	}
+	
 	public Package getUMLModelInstance()
 	{
 		return umlmodel;

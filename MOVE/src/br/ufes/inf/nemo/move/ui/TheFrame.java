@@ -67,7 +67,7 @@ public class TheFrame extends JFrame {
 		
 		ontoumlmodel.setOntoUML(model);
 
-    	umlmodel.setUMLModel(alsPath.replace(".als",".uml"),ontoumlmodel);
+    	umlmodel.setUMLModel(alsPath.replace(".als",".uml"));
     	
     	alloymodel.setAlloyModel(alsPath);
     	
@@ -264,7 +264,8 @@ public class TheFrame extends JFrame {
 	{
 		try {
 			
-			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;		
+			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;	
+			
 			alloymodel.setAlloyModel(ontoumlmodel,optmodel);
 			
 		} catch (Exception e) {			
@@ -282,8 +283,31 @@ public class TheFrame extends JFrame {
 			
 			umlmodel.setUMLModel(ontoumlmodel.getOntoUMLPath().replace(".refontouml",".uml"),ontoumlmodel);
 			
+			console.write(umlmodel.getDetails());
+			
 		}catch (Exception e) {			
 			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error - Transforming OntoUML into UML",JOptionPane.ERROR_MESSAGE);					
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Transforms OCL Model into Alloy.
+	 */
+	public void TransformsOCLIntoAlloy()
+	{
+		try {
+			
+			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;
+			
+			if (oclmodel.getOCLParser()==null) oclmodel.setParser(oclview.parseConstraints());			
+			
+			console.write(oclmodel.getOCLParser().getDetails());
+			
+			alloymodel.addConstraints(ontoumlmodel, oclmodel);
+			
+		} catch (Exception e) {			
+			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error - Transforming OCL into Alloy",JOptionPane.ERROR_MESSAGE);					
 			e.printStackTrace();
 		}
 	}

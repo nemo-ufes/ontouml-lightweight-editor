@@ -173,7 +173,7 @@ public class OCLController {
 	    {
 	    	try {
 
-	    		oclview.parseConstraints();
+	    		oclmodel.setParser(oclview.parseConstraints());
    				
    				JOptionPane.showMessageDialog(
    					oclview.getTheFrame(),"Your Constraints are Syntactically Correct !\n","Parse",JOptionPane.INFORMATION_MESSAGE,

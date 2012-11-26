@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import br.ufes.inf.nemo.move.mvc.model.OptionsModel;
 import br.ufes.inf.nemo.move.mvc.view.OptionsView;
-import br.ufes.inf.nemo.ontouml2alloy.util.Options;
+import br.ufes.inf.nemo.ontouml2alloy.options.Options;
 
 /**
  * @author John Guerson
@@ -44,6 +44,7 @@ public class OptionsController {
 	    	optView.dispose();	    		    	
 	    	
 	    	optView.getTheFrame().TransformsOntoUMLIntoAlloy();
+	    	optView.getTheFrame().TransformsOCLIntoAlloy();
 	    	optView.getTheFrame().OpenAlloyModelWithAnalyzer();	    		    	
 	    }
 	 }

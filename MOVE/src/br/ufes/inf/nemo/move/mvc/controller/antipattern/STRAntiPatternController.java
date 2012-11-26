@@ -10,8 +10,8 @@ import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.STRAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.STRAntiPatternView;
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
+import br.ufes.inf.nemo.ontouml2alloy.options.Options;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
-import br.ufes.inf.nemo.ontouml2alloy.util.Options;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
