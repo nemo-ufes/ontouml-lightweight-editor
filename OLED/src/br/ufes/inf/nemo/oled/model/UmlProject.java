@@ -66,6 +66,7 @@ public class UmlProject implements Serializable {
 		properties = new Properties();
 		resource = ModelHelper.createResource();
 		Model model = ModelHelper.getFactory().createModel();
+		if(model.getName()==null || model.getName()=="") model.setName("Model");
 		resource.getContents().add(model);
 		getEditingDomain();
 	}
