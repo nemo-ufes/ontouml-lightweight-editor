@@ -464,7 +464,7 @@ public class MapperAstah implements Mapper {
 			List<String> annotElements = new ArrayList<String>();
 			Element annotElem = getChild(elem, "UML:Comment.annotatedElement");
 	    	if (annotElem != null) {
-	    		List<Object> annotatedElems = XMLDOMUtil.getElementChilds(annotElem);
+	    		List<Element> annotatedElems = XMLDOMUtil.getElementChilds(annotElem);
 	    		for (Object annotRef : annotatedElems) {
 	    			annotElements.add(((Element)annotRef).getAttribute("xmi.idref"));
 	    		}

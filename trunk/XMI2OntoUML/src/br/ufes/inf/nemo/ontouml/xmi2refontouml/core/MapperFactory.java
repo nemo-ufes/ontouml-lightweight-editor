@@ -24,25 +24,6 @@ public class MapperFactory {
 	
 	private File xmiFile;
 	
-//	//Create a Mapper from a string that represents the program
-//	//or the exporter of the XMI
-//	public Mapper createMapper(String name) {
-//		if (name.toLowerCase().contains("astah") || 
-//				name.toLowerCase().contains("jomt") || 
-//				name.toLowerCase().contains("jude")) {
-//			return new MapperAstah();
-//			
-//		} else if (name.contains("EA")) {
-//			return new MapperEA();
-//		}
-//		return null;
-//	}
-//	
-//	//Create a Mapper from a DOM Document
-//	public Mapper createMapper(Document doc) {
-//		return identifyExporter(doc);
-//	}
-	
 	public Mapper createMapper(File file) {
 		
 		xmiFile = file;

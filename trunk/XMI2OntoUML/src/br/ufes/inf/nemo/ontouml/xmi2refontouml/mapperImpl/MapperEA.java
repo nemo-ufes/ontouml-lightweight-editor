@@ -77,7 +77,7 @@ public class MapperEA implements Mapper {
 	}
 	
     protected void setID(Element element) {
-    	List<Element> childList = getElementChilds(element);
+    	List<Element> childList = XMLDOMUtil.getElementChilds(element);
 	    for (Element child : childList) {
     		if (child.hasAttributeNS(XMINS, "id") &&
     			doc.getElementById(child.getAttributeNS(XMINS, "id")) == null) {
@@ -138,13 +138,13 @@ public class MapperEA implements Mapper {
 
 	@Override
 	public List<Object> getElements(Object element, ElementType type) {
-		List<Object> elemList = new ArrayList<Object>();
+		List<Element> elemList = new ArrayList<Element>();
 		Element elem = (Element) element;
 		
 		switch (type) {
 			case ASSOCIATION:
-				elemList = getChildsByType(elem, ElementType.ASSOCIATION);
-				List<Object> assoClassList = getChildsByType(elem, ElementType.ASSOCIATIONCLASS);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATION, this);
+				List<Element> assoClassList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATIONCLASS, this);
 				for (Object assocClass : assoClassList) {
 					Element assocClassElem = (Element) assocClass;
 					Element assocClassElemClone = (Element) assocClassElem.cloneNode(true);
@@ -167,48 +167,48 @@ public class MapperEA implements Mapper {
 				}
 				break;
 			case CLASS:
-				elemList = getChildsByType(elem, ElementType.CLASS);
-				elemList.addAll(getChildsByType(elem, ElementType.ASSOCIATIONCLASS));
+				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.CLASS, this);
+				elemList.addAll(XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATIONCLASS, this));
 				break;
 			case COMMENT:
 				if (getType(elem) != ElementType.COMMENT) {
 					createDescriptionNode(elem);
 				}
-				elemList = getChildsByType(elem, ElementType.COMMENT);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.COMMENT, this);
 				break;
 			case DATATYPE:
-				elemList = getChildsByType(elem, ElementType.DATATYPE);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.DATATYPE, this);
 				break;
 			case DEPENDENCY:
-				elemList = getChildsByType(elem, ElementType.DEPENDENCY);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.DEPENDENCY, this);
 				break;
 			case ENUMERATION:
-				elemList = getChildsByType(elem, ElementType.ENUMERATION);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ENUMERATION, this);
 				break;
 			case ENUMLITERAL:
-				elemList = getChildsByType(elem, ElementType.ENUMLITERAL);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ENUMLITERAL, this);
 				break;
 			case GENERALIZATION:
 				if (getType(elem) != ElementType.ASSOCIATIONCLASS || !elem.hasAttribute("relator")) {
-					elemList = getChildsByType(elem, ElementType.GENERALIZATION);
+					elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.GENERALIZATION, this);
 				}
 				break;
 			case GENERALIZATIONSET:
-				elemList = getChildsByType(elem, ElementType.GENERALIZATIONSET);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.GENERALIZATIONSET, this);
 				break;
 			case PACKAGE:
-				elemList = getChildsByType(elem, ElementType.PACKAGE);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.PACKAGE, this);
 				break;
 			case PRIMITIVE:
 				Element model = (Element) getModelElement();
 				if (elem == model) {
 					elemList = getPrimitives();
 				}
-				elemList.addAll(getChildsByType(elem, ElementType.PRIMITIVE));
+				elemList.addAll(XMLDOMUtil.getElementChildsByType(elem, ElementType.PRIMITIVE, this));
 				break;
 			case PROPERTY:
 				if (getType(elem) == ElementType.ASSOCIATIONCLASS) {
-					List<Object> elemListAux = getChildsByType(elem, ElementType.PROPERTY);
+					List<Element> elemListAux = XMLDOMUtil.getElementChildsByType(elem, ElementType.PROPERTY, this);
 					for (Object o : elemListAux) {
 						Element e = (Element) o;
 						if (elem.hasAttribute("relator")) {
@@ -223,18 +223,18 @@ public class MapperEA implements Mapper {
 						}
 					}
 				} else {
-					elemList = getChildsByType(elem, ElementType.PROPERTY);
+					elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.PROPERTY, this);
 				}
 				break;
 			default:
 				break;
 		}
 		
-		return elemList;
+		return Arrays.asList(elemList.toArray());
 	}
 	
-	private List<Object> getPrimitives() {
-		List<Object> elemList = new ArrayList<Object>();
+	private List<Element> getPrimitives() {
+		List<Element> elemList = new ArrayList<Element>();
 		NodeList primPackList = doc.getElementsByTagName("primitivetypes");
 		if (primPackList.getLength() != 0) {
 			NodeList primList = ((Element)primPackList.item(0)).getElementsByTagName("packagedElement");
@@ -242,7 +242,7 @@ public class MapperEA implements Mapper {
 				for (int i = 0; i < primList.getLength(); i++) {
 					Node child = primList.item(i);
 					if (child instanceof Element && getType(child) == ElementType.PRIMITIVE) {
-						elemList.add(child);
+						elemList.add((Element)child);
 					}
 				}
 			}
@@ -251,12 +251,12 @@ public class MapperEA implements Mapper {
 	}
 	
 	private void createDescriptionNode(Element elem) {
-		Element elements = XMLDOMUtil.getChild((Element)doc.getElementsByTagNameNS(XMINS, "Extension").item(0), "elements");
+		Element elements = XMLDOMUtil.getFirstAppearanceOf((Element)doc.getElementsByTagNameNS(XMINS, "Extension").item(0), "elements");
 		if (elements != null) {
-			List<Object> elemList = XMLDOMUtil.getElementChilds(elements);
+			List<Element> elemList = XMLDOMUtil.getElementChilds(elements);
 	
 			for (Object element : elemList) {
-				Element properties = XMLDOMUtil.getChild((Element)element, "properties");
+				Element properties = XMLDOMUtil.getFirstAppearanceOf((Element)element, "properties");
 				if (((Element)element).getAttributeNS(XMINS, "idref").equals(elem.getAttributeNS(XMINS, "id")) &&
 						properties != null &&
 						properties.getAttribute("documentation") != "") {
@@ -299,7 +299,7 @@ public class MapperEA implements Mapper {
     	// Specific Properties
     	if (getType(elem) == ElementType.PROPERTY) {
     		reverseComposition(hashProp, elem);
-    		List<Element> childList = getElementChilds(elem);
+    		List<Element> childList = XMLDOMUtil.getElementChilds(elem);
         	for (Element childElem : childList) {
         		if (childElem.getNodeName().equals("type")) {
             		hashProp.put("type", childElem.getAttributeNS(XMINS, "idref"));
@@ -313,7 +313,7 @@ public class MapperEA implements Mapper {
         	}
         	
     	} else if (getType(elem) == ElementType.ASSOCIATION || getType(elem) == ElementType.ASSOCIATIONCLASS) {
-    		List<Element> memberEndsAux = getElementChildsByTagName(elem, "memberEnd");
+    		List<Element> memberEndsAux = XMLDOMUtil.getElementChildsByTagName(elem, "memberEnd");
     		List<String> memberEnds = new ArrayList<String>();
     		for (Element memberEnd : memberEndsAux) {
     			memberEnds.add(memberEnd.getAttributeNS(XMINS, "idref"));
@@ -321,7 +321,7 @@ public class MapperEA implements Mapper {
     		hashProp.put("memberend", memberEnds);
     		
     	} else if (getType(elem) == ElementType.GENERALIZATIONSET) {
-    		List<Element> generalizationsAux = getElementChildsByTagName(elem, "generalization");
+    		List<Element> generalizationsAux = XMLDOMUtil.getElementChildsByTagName(elem, "generalization");
     		List<String> generalizations = new ArrayList<String>();
     		for (Element generalization : generalizationsAux) {
     			generalizations.add(generalization.getAttributeNS(XMINS, "idref"));
@@ -329,7 +329,7 @@ public class MapperEA implements Mapper {
     		hashProp.put("generalization", generalizations);
     		
     	} else if (getType(elem) == ElementType.COMMENT) {
-    		List<Element> commentsAux = getElementChildsByTagName(elem, "annotatedElement");
+    		List<Element> commentsAux = XMLDOMUtil.getElementChildsByTagName(elem, "annotatedElement");
     		List<String> comments = new ArrayList<String>();
     		for (Element comment : commentsAux) {
     			comments.add(comment.getAttributeNS(XMINS, "idref"));
@@ -347,7 +347,7 @@ public class MapperEA implements Mapper {
 			
 		} else if (aggregation.equals("none")) {
 			Element packagedAssoc = (Element) doc.getElementById(elem.getAttribute("association"));
-			List<Element> memberEnds = getElementChildsByTagName(packagedAssoc, "memberEnd");
+			List<Element> memberEnds = XMLDOMUtil.getElementChildsByTagName(packagedAssoc, "memberEnd");
 			for (Element memberEnd : memberEnds) {
 				Element ownedEnd = doc.getElementById(memberEnd.getAttributeNS(XMINS, "idref"));
 				String aggregation2 = ownedEnd.getAttribute("aggregation");
@@ -358,36 +358,6 @@ public class MapperEA implements Mapper {
 				}
 			}
 		}
-	}
-	
-	private List<Object> getChildsByType (Element elem, ElementType type) {
-		List<Object> elemList = new ArrayList<Object>();
-		for (Node child = elem.getFirstChild(); child != null; child = child.getNextSibling()) {
-    		if (child instanceof Element && getType(child) == type) {
-				elemList.add((Element)child);
-			}
-		}
-		return elemList;
-	}
-	
-	private List<Element> getElementChildsByTagName (Element elem, String TagName) {
-		List<Element> elemList = new ArrayList<Element>();
-		for (Node child = elem.getFirstChild(); child != null; child = child.getNextSibling()) {
-    		if (child instanceof Element && child.getNodeName().equals(TagName)) {
-				elemList.add((Element)child);
-			}
-		}
-		return elemList;
-	}
-	
-	private List<Element> getElementChilds (Element elem) {
-		List<Element> elemList = new ArrayList<Element>();
-		for (Node child = elem.getFirstChild(); child != null; child = child.getNextSibling()) {
-    		if (child instanceof Element) {
-    			elemList.add((Element)child);
-    		}
-		}
-		return elemList;
 	}
 
 	@Override
@@ -403,7 +373,7 @@ public class MapperEA implements Mapper {
 	public String getName(Object element) {
 		Element elem = (Element) element;
 		if (elem.getNodeName().equals("diagram")) {
-			elem = XMLDOMUtil.getChild(elem, "properties");
+			elem = XMLDOMUtil.getFirstAppearanceOf(elem, "properties");
 		}
 		return elem.getAttribute("name");
 	}
@@ -447,7 +417,7 @@ public class MapperEA implements Mapper {
 
 	@Override
 	public List<Object> getDiagramList() {
-		List<Object> diagramList = new ArrayList<Object>();
+		List<Element> diagramList = new ArrayList<Element>();
 		NodeList diagrams = doc.getElementsByTagName("diagrams");
 		if (diagrams != null) {
 			diagramList = XMLDOMUtil.getElementChilds((Element)diagrams.item(0));
@@ -460,9 +430,9 @@ public class MapperEA implements Mapper {
 	@Override
 	public List<String> getDiagramElements(Object diagram) throws Exception {
 		List<String> diagElemIDList = new ArrayList<String>();
-		Element elements = XMLDOMUtil.getChild((Element)diagram, "elements");
+		Element elements = XMLDOMUtil.getFirstAppearanceOf((Element)diagram, "elements");
 		if (elements != null) {
-			List<Object> diagElemList = XMLDOMUtil.getElementChilds(elements);
+			List<Element> diagElemList = XMLDOMUtil.getElementChilds(elements);
 	
 			for (Object diagElem : diagElemList) {
 				if (getElementById(((Element)diagElem).getAttribute("subject")) == null) {
