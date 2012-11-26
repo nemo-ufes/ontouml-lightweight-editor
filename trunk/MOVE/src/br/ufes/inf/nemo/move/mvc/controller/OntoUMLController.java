@@ -59,7 +59,7 @@ public class OntoUMLController {
 	    	
 	    	ontoumlview.getTheFrame().getAntiPatternListView().Clear();
 	    	
-	    	ontoumlview.getTheFrame().TransformsOntoUMLIntoUML();
+	    	ontoumlview.getTheFrame().getUMLModel().setUMLModel(path.replace(".refontouml",".uml"));
 	    	
 	    	ontoumlview.getTheFrame().getAlloyModel().setAlloyModel(path.replace(".refontouml",".als"));
 	    		    		    					

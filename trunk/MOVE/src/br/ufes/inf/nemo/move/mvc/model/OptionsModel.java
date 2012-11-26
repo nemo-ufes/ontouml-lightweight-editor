@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.move.mvc.model;
 
-import br.ufes.inf.nemo.ontouml2alloy.util.Options;
+import br.ufes.inf.nemo.ontouml2alloy.options.Options;
 
 /**
  * @author John Guerson
