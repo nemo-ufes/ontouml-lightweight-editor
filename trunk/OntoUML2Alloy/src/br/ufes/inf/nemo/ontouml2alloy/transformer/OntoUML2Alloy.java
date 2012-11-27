@@ -41,7 +41,7 @@ import br.ufes.inf.nemo.alloy.AlloyPackage;
 import br.ufes.inf.nemo.alloy.impl.AlloyPackageImpl;
 import br.ufes.inf.nemo.alloy.util.AlloyResourceFactoryImpl;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2alloy.options.Options;
+import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyLibraryFiles;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyThemeFile;
 
@@ -92,7 +92,7 @@ public class OntoUML2Alloy {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String Transformation (RefOntoUML.Package refmodel, String alloyPath, Options opt) throws Exception 
+	public static String Transformation (RefOntoUML.Package refmodel, String alloyPath, OntoUMLOptions opt) throws Exception 
 	{
 		alsPath = alloyPath;
 		
@@ -116,7 +116,7 @@ public class OntoUML2Alloy {
 		return transformer.module.toString();
 	}	
 	
-	private static void start(RefOntoUML.Package refmodel, Options opt)
+	private static void start(RefOntoUML.Package refmodel, OntoUMLOptions opt)
 	{
 		ontoparser = new OntoUMLParser(refmodel);
 		

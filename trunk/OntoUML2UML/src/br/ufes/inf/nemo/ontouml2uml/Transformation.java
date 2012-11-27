@@ -29,7 +29,7 @@ public class Transformation {
 	 */
 	public org.eclipse.uml2.uml.Package Transform ()
     {           
-		Dealer.outln("Transforming OntoUML Model into UML.");
+		Dealer.outln("Transforming the OntoUML model...");
 		
         org.eclipse.uml2.uml.Package umlmodel = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createModel();
                 
@@ -51,7 +51,7 @@ public class Transformation {
         TransformingGeneralizations();        
         TransformingGeneralizationSets();
             
-        Dealer.outln("Executed Succesfully.");
+        Dealer.outln("Executed succesfully.");
         
         return umlmodel;
     }
