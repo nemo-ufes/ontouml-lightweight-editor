@@ -10,7 +10,7 @@ import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RSAntiPatternView;
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
-import br.ufes.inf.nemo.ontouml2alloy.options.Options;
+import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
@@ -83,7 +83,7 @@ public class RSAntiPatternController {
 	    		String alsPath = AlloyModel.alsOutDirectory+
 	    				rsView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RS"+rsModel.getId()+".als";		
 						
-	    		Options opt = rsView.getTheFrame().getOptionModel().getOptions();
+	    		OntoUMLOptions opt = rsView.getTheFrame().getOptionModel().getOptions();
 	    		
 	    		System.out.println(opt.relatorConstraint);
 	    		

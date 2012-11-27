@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import org.eclipse.ocl.ParserException;
+import org.eclipse.ocl.SemanticException;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.OCLModel;
@@ -173,26 +174,36 @@ public class OCLController {
 	    {
 	    	try {
 
-	    		oclmodel.setParser(oclview.parseConstraints());
-   				
+	    		oclmodel.setParser(oclview.parseConstraints());	
+	    		
+	    		oclview.getTheFrame().getConsole().write(oclmodel.getOCLParser().getDetails());
+	    		
    				JOptionPane.showMessageDialog(
    					oclview.getTheFrame(),"Your Constraints are Syntactically Correct !\n","Parse",JOptionPane.INFORMATION_MESSAGE,
    					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-36x36.png"))
    				);
    				
-   			}catch(ParserException e1){
+   			
+	    	}catch(SemanticException e2){
+   				JOptionPane.showMessageDialog(
+   					oclview.getTheFrame(),e2.getMessage(),"Semantic",JOptionPane.ERROR_MESSAGE,
+   					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
+   				);					
+   				e2.printStackTrace();  
+   				
+	    	}catch(ParserException e1){
    				JOptionPane.showMessageDialog(
    					oclview.getTheFrame(),e1.getMessage(),"Parse",JOptionPane.ERROR_MESSAGE,
    					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
    				);					
 				e1.printStackTrace();
-				
-   			}catch(IOException e2){
+	    	
+   			}catch(IOException e3){
    				JOptionPane.showMessageDialog(
-   					oclview.getTheFrame(),e2.getMessage(),"IO",JOptionPane.ERROR_MESSAGE,
+   					oclview.getTheFrame(),e3.getMessage(),"IO",JOptionPane.ERROR_MESSAGE,
    					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
    				);					
-				e2.printStackTrace();
+				e3.printStackTrace();
    			}
 	    }
 	 }

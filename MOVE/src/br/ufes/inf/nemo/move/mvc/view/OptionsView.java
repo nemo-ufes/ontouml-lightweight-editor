@@ -1,11 +1,12 @@
 package br.ufes.inf.nemo.move.mvc.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -14,13 +15,16 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
+import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
+import javax.swing.border.EtchedBorder;
+
+import org.eclipse.uml2.uml.Constraint;
 
 import br.ufes.inf.nemo.move.mvc.model.OptionsModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
+import br.ufes.inf.nemo.move.util.SingleConstraintPanel;
 
 /**
  * @author John Guerson
@@ -38,10 +42,14 @@ public class OptionsView extends JDialog {
 	private JCheckBox cbxWeakSupplementation ;	
 	private JCheckBox cbxIdentityPrinciple ;
 	private JCheckBox cbxAntirigidity;
-	private JCheckBox cbxOpenAnalyzer;
-	private JButton btnOk;
+	private JCheckBox cbxOpenAnalyzer;	
+	private JButton btnOk;	
+	private JButton btnCancel;
 	private JPanel optpanel;
-	private JPanel centerpanel;
+	private JPanel oclOptPanel;
+	private JPanel ctpanel;
+	private JScrollPane scrollPane;	
+	private ArrayList<SingleConstraintPanel> singleConstraintsListPanel;
 	
 	/**
 	 * Constructor.
@@ -71,6 +79,21 @@ public class OptionsView extends JDialog {
 		this.cbxRelatorConstraint.setSelected(optModel.getOptions().relatorConstraint);
 		this.cbxWeakSupplementation.setSelected(optModel.getOptions().weakSupplementationConstraint);		
 		this.cbxOpenAnalyzer.setSelected(optModel.getOptions().openAnalyzer);
+		
+		if (optModel.getOCLOptions().getConstraintList().size()<3)
+			ctpanel.setLayout(new GridLayout(3, 1, 0, 0));
+		else
+			ctpanel.setLayout(new GridLayout(optModel.getOCLOptions().getConstraintList().size(), 1, 0, 0));
+		
+		for(Constraint ct : optModel.getOCLOptions().getConstraintList())
+		{
+			SingleConstraintPanel singleConstraint = new SingleConstraintPanel();
+			
+			singleConstraint.txtConstraintName.setText(ct.getName());
+			singleConstraint.txtConstraintType.setText(optModel.getOCLOptions().getConstraintType(ct));	
+			
+			singleConstraintsListPanel.add(singleConstraint);
+		}
 	}
 
 	/**
@@ -80,105 +103,83 @@ public class OptionsView extends JDialog {
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(OptionsView.class.getResource("/resources/br/ufes/inf/nemo/move/options.png")));
 		setPreferredSize(new Dimension(323,300));
-		setSize(new Dimension(386, 321));
-		
+		setSize(new Dimension(689, 352));				
 		setTitle("Options");
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		optpanel = new JPanel();
 		optpanel.setBorder(null);
-		optpanel.setPreferredSize(new Dimension(200, 100));
-		
+		optpanel.setPreferredSize(new Dimension(200, 100));		
 		getContentPane().add(optpanel, BorderLayout.WEST);
 		
 		cbxRelatorConstraint = new JCheckBox("Relator Constraint");		
 		cbxWeakSupplementation = new JCheckBox("Weak Supplementation");		
 		cbxIdentityPrinciple = new JCheckBox("Identity Principle");		
 		cbxAntirigidity = new JCheckBox("Antirigidity");		
-		
-		JLabel lblEnforceAxioms = new JLabel("Enforce Axioms");
-		lblEnforceAxioms.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEnforceAxioms.setFont(new Font("Tahoma", Font.BOLD, 11));
-		
 		cbxOpenAnalyzer = new JCheckBox("Open With Analyzer");
 		cbxOpenAnalyzer.setEnabled(false);
 		cbxOpenAnalyzer.setSelected(true);
 		
-		JSeparator separator = new JSeparator();
-		separator.setOrientation(SwingConstants.VERTICAL);
+		JLabel lblEnforceAxioms = new JLabel("OntoUML Axioms");
+		lblEnforceAxioms.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEnforceAxioms.setFont(new Font("Tahoma", Font.BOLD, 11));
+								
+		JLabel lblDomainConstraintsOptions = new JLabel("OCL Domain Constraints");
+		lblDomainConstraintsOptions.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDomainConstraintsOptions.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		GroupLayout gl_optpanel = new GroupLayout(optpanel);
 		gl_optpanel.setHorizontalGroup(
 			gl_optpanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_optpanel.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGroup(gl_optpanel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(cbxOpenAnalyzer, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(cbxRelatorConstraint, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(lblEnforceAxioms, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-						.addComponent(cbxWeakSupplementation, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(cbxIdentityPrinciple, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(cbxAntirigidity, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
-					.addGap(15))
+					.addGap(15)
+					.addGroup(gl_optpanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblEnforceAxioms, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+						.addComponent(cbxRelatorConstraint, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+						.addComponent(cbxWeakSupplementation, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+						.addComponent(cbxIdentityPrinciple, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+						.addComponent(cbxAntirigidity, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+						.addComponent(cbxOpenAnalyzer, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
+					.addGap(21))
 		);
 		gl_optpanel.setVerticalGroup(
 			gl_optpanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_optpanel.createSequentialGroup()
-					.addGap(21)
-					.addComponent(lblEnforceAxioms, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-					.addGap(7)
+					.addGap(31)
+					.addComponent(lblEnforceAxioms)
+					.addGap(18)
 					.addComponent(cbxRelatorConstraint)
-					.addGap(2)
+					.addGap(18)
 					.addComponent(cbxWeakSupplementation)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(18)
 					.addComponent(cbxIdentityPrinciple)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(18)
 					.addComponent(cbxAntirigidity)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(18)
 					.addComponent(cbxOpenAnalyzer)
-					.addContainerGap(21, Short.MAX_VALUE))
-				.addComponent(separator, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+					.addContainerGap(19, Short.MAX_VALUE))
 		);
 		optpanel.setLayout(gl_optpanel);
-		
-		JPanel titlepanel = new JPanel();
-		titlepanel.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		titlepanel.setBackground(Color.WHITE);
-		titlepanel.setPreferredSize(new Dimension(200,50));
-		
-		getContentPane().add(titlepanel, BorderLayout.NORTH);
-		GroupLayout gl_titlepanel = new GroupLayout(titlepanel);
-		gl_titlepanel.setHorizontalGroup(
-			gl_titlepanel.createParallelGroup(Alignment.TRAILING)
-				.addGap(0, 370, Short.MAX_VALUE)
-		);
-		gl_titlepanel.setVerticalGroup(
-			gl_titlepanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 50, Short.MAX_VALUE)
-		);
-		titlepanel.setLayout(gl_titlepanel);
 		
 		JPanel btnpanel = new JPanel();
 		getContentPane().add(btnpanel, BorderLayout.SOUTH);
 		
-		btnOk = new JButton("OK");
+		btnOk = new JButton("OK");		
+		btnCancel = new JButton("Cancel");
 		
-		JButton btnCancel = new JButton("Cancel");
 		GroupLayout gl_btnpanel = new GroupLayout(btnpanel);
 		gl_btnpanel.setHorizontalGroup(
-			gl_btnpanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_btnpanel.createSequentialGroup()
-					.addContainerGap(93, Short.MAX_VALUE)
+			gl_btnpanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_btnpanel.createSequentialGroup()
+					.addGap(93)
 					.addComponent(btnOk, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-					.addGap(83))
+					.addContainerGap(83, Short.MAX_VALUE))
 		);
 		gl_btnpanel.setVerticalGroup(
-			gl_btnpanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_btnpanel.createSequentialGroup()
+			gl_btnpanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_btnpanel.createSequentialGroup()
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGroup(gl_btnpanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnOk)
@@ -187,19 +188,44 @@ public class OptionsView extends JDialog {
 		);
 		btnpanel.setLayout(gl_btnpanel);
 		
-		centerpanel = new JPanel();
-		centerpanel.setBorder(null);
-		getContentPane().add(centerpanel, BorderLayout.CENTER);
-		GroupLayout gl_centerpanel = new GroupLayout(centerpanel);
-		gl_centerpanel.setHorizontalGroup(
-			gl_centerpanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 170, Short.MAX_VALUE)
+		oclOptPanel = new JPanel();
+		oclOptPanel.setBorder(null);
+				
+		ctpanel = new JPanel();
+		ctpanel.setPreferredSize(new Dimension(412,3*72));
+
+		scrollPane = new JScrollPane();
+		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(10);
+		scrollPane.setViewportView(ctpanel);
+		ctpanel.setLayout(new GridLayout(3, 0, 0, 0));
+				
+		singleConstraintsListPanel = new ArrayList<SingleConstraintPanel>();
+				
+		scrollPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		
+		GroupLayout gl_oclOptPanel = new GroupLayout(oclOptPanel);
+		gl_oclOptPanel.setHorizontalGroup(
+			gl_oclOptPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_oclOptPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_oclOptPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+						.addComponent(lblDomainConstraintsOptions, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE))
+					.addContainerGap())
 		);
-		gl_centerpanel.setVerticalGroup(
-			gl_centerpanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 188, Short.MAX_VALUE)
+		gl_oclOptPanel.setVerticalGroup(
+			gl_oclOptPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_oclOptPanel.createSequentialGroup()
+					.addGap(24)
+					.addComponent(lblDomainConstraintsOptions)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+					.addContainerGap())
 		);
-		centerpanel.setLayout(gl_centerpanel);
+		oclOptPanel.setLayout(gl_oclOptPanel);
+				
+		getContentPane().add(oclOptPanel, BorderLayout.CENTER);
 	}
 	
 	public void addOKActionListener(ActionListener actionListener) 

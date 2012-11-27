@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import br.ufes.inf.nemo.move.mvc.model.OptionsModel;
 import br.ufes.inf.nemo.move.mvc.view.OptionsView;
-import br.ufes.inf.nemo.ontouml2alloy.options.Options;
+import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 
 /**
  * @author John Guerson
@@ -33,7 +33,7 @@ public class OptionsController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	Options opt = new Options();
+	    	OntoUMLOptions opt = new OntoUMLOptions();
 	    	opt.antiRigidity = optView.isSelectedAntirigidity(); 
 	    	opt.identityPrinciple = optView.isSelectedIdentityPrinciple();
 	    	opt.weakSupplementationConstraint = optView.isSelectedWeakSupplementation();

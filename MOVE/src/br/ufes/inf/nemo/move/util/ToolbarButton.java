@@ -10,8 +10,6 @@ import javax.swing.SwingConstants;
 
 import br.ufes.inf.nemo.move.util.ColorPalette.ThemeColor;
 
-
-
 /**
  * @author John Guerson
  */

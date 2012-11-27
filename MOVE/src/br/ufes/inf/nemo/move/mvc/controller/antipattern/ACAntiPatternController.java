@@ -14,7 +14,7 @@ import br.ufes.inf.nemo.move.mvc.view.antipattern.ACAntiPatternView;
 
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
 
-import br.ufes.inf.nemo.ontouml2alloy.options.Options;
+import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
@@ -75,7 +75,7 @@ public class ACAntiPatternController {
 	    		String alsPath = AlloyModel.alsOutDirectory+
 	    				acView.getTheFrame().getAlloyModel().getAlloyModelName()+"$AC"+acModel.getId()+".als";		
 						
-	    		Options opt = acView.getTheFrame().getOptionModel().getOptions();
+	    		OntoUMLOptions opt = acView.getTheFrame().getOptionModel().getOptions();
 			
 	    		RefOntoUML.Package refmodel = acView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
 			

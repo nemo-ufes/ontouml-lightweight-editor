@@ -10,19 +10,31 @@ import br.ufes.inf.nemo.ocl2alloy.transformer.OCL2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 
 /**
+ * 
+ * This class represents an Alloy Model.
+ * 
  * @author John Guerson
  */
 
 public class AlloyModel {
 
+	/** Absolute directory path of alloy specification. */
 	public static String alsOutDirectory = AlloyModel.class.getProtectionDomain().getCodeSource().getLocation().getPath();	
+	
+	/** File name of alloy specification. */
 	private String alsmodelName = "OUTPUT";	
+	
+	/** Absolute path of alloy specification. */
 	private String alsPath = AlloyModel.class.getProtectionDomain().getCodeSource().getLocation().getPath()+alsmodelName+".als";	
+	
+	/** Content of alloy specification. */	
 	private String content = new String();
+	
+	/** Log details for operations made. */
 	private String logDetails = new String();
 
 	/**
-	 * Constructor.
+	 * This constructor basically initialize the path of alloy model, i.e. without any content.
 	 * 
 	 * @param alloyPath
 	 */
@@ -34,11 +46,14 @@ public class AlloyModel {
 	}	
 	
 	/**
-	 * COnstructor.
+	 * This constructor initialize the path of this alloy model and transforms
+	 * the OntoUML model into alloy according to the Options, saving the resultant
+	 * code of the transformation into the alloy specification.
 	 * 
 	 * @param alloyPath
 	 * @param ontoumlmodel
 	 * @param optmodel
+	 * 
 	 * @throws Exception
 	 */
 	public AlloyModel(String alloyPath,OntoUMLModel ontoumlmodel, OptionsModel optmodel) throws Exception
@@ -49,19 +64,19 @@ public class AlloyModel {
 	}
 	
 	/**
-	 * Constructor.
+	 * Creates an empty alloy model.
 	 */
-	public AlloyModel()
-	{
-		
-	}	
+	public AlloyModel() { }	
 	
 	/**
-	 * Set Alloy Model from OntoUML and Options.
+	 * This method initialize the path of this alloy model and transforms
+	 * the OntoUML model into alloy according to the Options, saving the resultant
+	 * code of the transformation into the alloy specification.
 	 * 
 	 * @param alloyPath
 	 * @param refmodel
 	 * @param opt
+	 * 
 	 * @throws Exception
 	 */
 	public void setAlloyModel(String alloyPath, OntoUMLModel ontoumlmodel, OptionsModel optmodel) throws Exception
@@ -71,10 +86,12 @@ public class AlloyModel {
 	}
 	
 	/**
-	 * Set Alloy Model.
+	 * This method transforms the OntoUML model into alloy according to the Options, 
+	 * saving the resulting code of the transformation into the alloy specification.
 	 * 
 	 * @param ontoumlmodel
 	 * @param optmodel
+	 * 
 	 * @throws Exception
 	 */
 	public void setAlloyModel(OntoUMLModel ontoumlmodel, OptionsModel optmodel) throws Exception
@@ -83,7 +100,7 @@ public class AlloyModel {
 	}
 	
 	/**
-	 * Set Path of Alloy Model.
+	 * This method basically initialize the path of alloy model, i.e. without any content.
 	 * 
 	 * @param alloyPath
 	 */
@@ -96,50 +113,38 @@ public class AlloyModel {
 	}
 	
 	/**
-	 * Add Constraints to Alloy Model.
+	 * This method transforms the OCL constraints according to the OntoUML model 
+	 * into alloy, adding the resulting code into the alloy specification .
 	 * 
 	 * @param ontoumlmodel
 	 * @param oclmodel
+	 * 
 	 * @return
 	 */
 	public String addConstraints(OntoUMLModel ontoumlmodel, OCLModel oclmodel) throws IOException
 	{
 		String result = new String();
+		result = "\n";
 		for(Constraint ct: oclmodel.getOCLParser().getConstraints())
 		{
 			result += OCL2Alloy.Transformation(ct, "FACT", oclmodel.getOCLParser(), ontoumlmodel.getOntoUMLParser())+"\n";
+			//result += OCL2Alloy.Transformation(ct, "SIMULATION", oclmodel.getOCLParser(), ontoumlmodel.getOntoUMLParser())+"\n";
+			//result += OCL2Alloy.Transformation(ct, "ASSERTION", oclmodel.getOCLParser(), ontoumlmodel.getOntoUMLParser())+"\n";
 		}
-		FileUtil.writeToFile(result, alsPath);
-		return result;		
+		FileUtil.writeToFile(result, alsPath);		
+		return OCL2Alloy.log;		
 	}
 	
-	public String getDetails()
-	{
-		return logDetails;
-	}
+	/** Get Log details for made operations. */
+	public String getDetails() { return logDetails; }
 	
-	public String getAlloyPath()
-	{
-		return alsPath;
-	}
+	/**  Get absolute path of alloy specification. */
+	public String getAlloyPath() { return alsPath; }
 	
-	public String getAlloyModelName()
-	{
-		return alsmodelName;
-	}
+	/** Get file name of alloy specification. */
+	public String getAlloyModelName() {	return alsmodelName; }
 	
-	public String getContent()
-	{
-		return content;
-	}
+	/** Get content of alloy specification. */
+	public String getContent() { return content; }
 	
-	public void addToContent(String text)
-	{
-		content+=text;
-	}
-	
-	public void setContent(String content)
-	{
-		this.content = content;
-	}
 }
