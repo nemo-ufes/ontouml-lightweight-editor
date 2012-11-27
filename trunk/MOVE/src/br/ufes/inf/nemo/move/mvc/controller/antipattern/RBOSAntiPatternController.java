@@ -10,7 +10,7 @@ import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RBOSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RBOSAntiPatternView;
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
-import br.ufes.inf.nemo.ontouml2alloy.options.Options;
+import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
@@ -68,7 +68,7 @@ public class RBOSAntiPatternController {
 	    		String alsPath = AlloyModel.alsOutDirectory+
 	    				rbosView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RBOS"+rbosModel.getId()+".als";		
 						
-	    		Options opt = rbosView.getTheFrame().getOptionModel().getOptions();
+	    		OntoUMLOptions opt = rbosView.getTheFrame().getOptionModel().getOptions();
 			
 	    		RefOntoUML.Package refmodel = rbosView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
 			

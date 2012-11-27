@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.move.mvc.model;
 
-import br.ufes.inf.nemo.ontouml2alloy.options.Options;
+import br.ufes.inf.nemo.ocl2alloy.options.OCLOptions;
+import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 
 /**
  * @author John Guerson
@@ -8,16 +9,18 @@ import br.ufes.inf.nemo.ontouml2alloy.options.Options;
 
 public class OptionsModel {
 	
-	private Options option;
+	private OntoUMLOptions option;
+	private OCLOptions oclOptions;
 	
 	/**
 	 * Constructor.
 	 * 
 	 * @param opt
 	 */
-	public OptionsModel (Options opt)
+	public OptionsModel (OntoUMLOptions opt, OCLOptions oclOptions)
 	{
 		this.option = opt;
+		this.oclOptions = oclOptions;
 	}
 	
 	/**
@@ -25,15 +28,26 @@ public class OptionsModel {
 	 */
 	public OptionsModel ()
 	{
-		this.option = new Options();
+		this.option = new OntoUMLOptions();
+		this.oclOptions = new OCLOptions();
 	}
-
-	public Options getOptions()
+		
+	public OCLOptions getOCLOptions()
+	{
+		return oclOptions;
+	}
+	
+	public void setOCLOptions(OCLOptions oclOptions)
+	{
+		this.oclOptions = oclOptions;
+	}
+	
+	public OntoUMLOptions getOptions()
 	{
 		return option;
 	}
 	
-	public void setOptions(Options opt)
+	public void setOptions(OntoUMLOptions opt)
 	{
 		this.option = opt;
 	}	

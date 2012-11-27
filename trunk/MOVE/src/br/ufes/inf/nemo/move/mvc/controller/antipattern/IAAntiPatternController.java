@@ -10,7 +10,7 @@ import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.IAAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.IAAntiPatternView;
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
-import br.ufes.inf.nemo.ontouml2alloy.options.Options;
+import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
@@ -69,7 +69,7 @@ public class IAAntiPatternController {
 	    		String alsPath = AlloyModel.alsOutDirectory+
 	    				iaView.getTheFrame().getAlloyModel().getAlloyModelName()+"$IA"+iaModel.getId()+".als";		
 						
-	    		Options opt = iaView.getTheFrame().getOptionModel().getOptions();
+	    		OntoUMLOptions opt = iaView.getTheFrame().getOptionModel().getOptions();
 			
 	    		RefOntoUML.Package refmodel = iaView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
 			

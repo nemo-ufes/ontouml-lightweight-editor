@@ -290,7 +290,7 @@ public class TheFrame extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	
+		
 	/**
 	 * Transforms OCL Model into Alloy.
 	 */
@@ -304,7 +304,7 @@ public class TheFrame extends JFrame {
 			
 			console.write(oclmodel.getOCLParser().getDetails());
 			
-			alloymodel.addConstraints(ontoumlmodel, oclmodel);
+			console.append(alloymodel.addConstraints(ontoumlmodel, oclmodel));
 			
 		} catch (Exception e) {			
 			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error - Transforming OCL into Alloy",JOptionPane.ERROR_MESSAGE);					

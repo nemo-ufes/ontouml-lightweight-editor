@@ -8,6 +8,8 @@ import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.ocl2alloy.parser.OCLParser;
 
 /**
+ * This class representes an OCL Model.
+ * 
  * @author John Guerson
  */
 
