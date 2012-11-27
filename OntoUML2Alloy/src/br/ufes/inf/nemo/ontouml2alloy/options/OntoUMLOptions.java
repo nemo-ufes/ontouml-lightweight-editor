@@ -20,7 +20,7 @@ package br.ufes.inf.nemo.ontouml2alloy.options;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-public class Options {
+public class OntoUMLOptions {
 	
 	public boolean weakSupplementationConstraint = true;
 	
@@ -32,6 +32,6 @@ public class Options {
 	
 	public boolean openAnalyzer = true;
 	
-	public Options() {}
+	public OntoUMLOptions() {}
 	
 }

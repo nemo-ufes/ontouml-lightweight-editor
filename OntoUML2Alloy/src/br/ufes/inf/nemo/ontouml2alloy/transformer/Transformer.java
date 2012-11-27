@@ -60,7 +60,7 @@ import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
-import br.ufes.inf.nemo.ontouml2alloy.options.Options;
+import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TAbstractClauseRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TDerivationRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TGeneralizationRule;
@@ -95,12 +95,12 @@ public class Transformer extends BaseTransformer {
 	/**
 	 * Transformation Options.
 	 */
-	public Options options;
+	public OntoUMLOptions options;
 		
 	/**
 	 * Constructor().
 	 */
-	public Transformer (OntoUMLParser parser, AlloyFactory factory, Options opt)
+	public Transformer (OntoUMLParser parser, AlloyFactory factory, OntoUMLOptions opt)
 	{		
 		super(parser,factory);
 		

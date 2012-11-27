@@ -569,16 +569,14 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                 	String nameClassifier = refparser.getName(ontoClassifier);
                 			
                 	result.append("w."+nameClassifier+" | ");
-                    result.append(constraint.getName()+"[self,w] \n}\n\n");
-                    
-                    result.append("pred "+constraint.getName()+" [self: "+"World."+nameClassifier+", w: World] {\n");
+                	
                     org.eclipse.ocl.uml.ExpressionInOCL expr = (org.eclipse.ocl.uml.ExpressionInOCL) constraint.getSpecification();
                             			
-                    result.append("\t").append(visit(expr)); 
-                    result.append("\n}\n\n");                 
+                    result.append(visit(expr)); 
+                    result.append("\n}\n");                 
                     
-                    if(stereo_invariant.equals("SIMULATION")) result.append("run "+"inv_"+constraint.getName()+" for 10 but 3 World, 7 Int\n\n");
-                    else if(stereo_invariant.equals("ASSERTION")) result.append("check "+"inv_"+constraint.getName()+" for 10 but 3 World, 7 Int\n\n");
+                    if(stereo_invariant.equals("SIMULATION")) result.append("run "+"inv_"+constraint.getName()+" for 10 but 3 World, 7 Int\n");
+                    else if(stereo_invariant.equals("ASSERTION")) result.append("check "+"inv_"+constraint.getName()+" for 10 but 3 World, 7 Int\n");
                 	
                 } 
                 else if (oclparser.getUMLReflection().isOperation(elem)); 
@@ -610,7 +608,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                 	else if(stereo_invariant.equals("SIMULATION")) result.append("pred ");
                 	else result.append("fact ");
                 	
-                	result.append("derive_derivation_rule"+count_derivation).append(" {\n");                	
+                	result.append("derive_"+count_derivation).append(" {\n");                	
                 	result.append("\tall w: World | all self: ");                	         	
                 	
                 	// The type_property is equal to : "Set(typename)"
@@ -636,23 +634,16 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                	    // Considering the direction
                 	if(typename.equals(src_name)) result.append("w."+tgt_name+" | ");                	
                 	if(typename.equals(tgt_name)) result.append("w."+src_name+" | ");
-                	
-                	result.append("derivation_rule"+count_derivation+"[self,w] \n}\n\n");
-                	
-                	if(typename.equals(src_name)) 
-                		result.append("pred "+"derivation_rule"+count_derivation+" [self: "+"World."+tgt_name+", w: World] {\n");
-                	if(typename.equals(tgt_name)) 
-                		result.append("pred "+"derivation_rule"+count_derivation+" [self: "+"World."+src_name+", w: World] {\n");
-                	
-                	result.append("\tself."+name_property+"[w] = ");
+                	                	
+                	result.append("self."+name_property+"[w] = ");
                 	
                 	org.eclipse.ocl.uml.ExpressionInOCL expr = (org.eclipse.ocl.uml.ExpressionInOCL) constraint.getSpecification();
                     result.append(visit(expr));
                 	
-                	result.append("\n}\n\n");
+                	result.append("\n}\n");
                 	
-                	if(stereo_invariant.equals("SIMULATION")) result.append("run "+"derive_"+"derivation_rule"+count_derivation+" for 10 but 3 World, 7 Int\n\n");
-                    else if(stereo_invariant.equals("ASSERTION")) result.append("check "+"derive_"+"derivation_rule"+count_derivation+" for 10 but 3 World, 7 Int\n\n");
+                	if(stereo_invariant.equals("SIMULATION")) result.append("run "+"derive_"+""+count_derivation+" for 10 but 3 World, 7 Int\n");
+                    else if(stereo_invariant.equals("ASSERTION")) result.append("check "+"derive_"+""+count_derivation+" for 10 but 3 World, 7 Int\n");
                 	
                 }                
                 else if (oclparser.getUMLReflection().isClassifier(elem));
