@@ -83,7 +83,7 @@ public class RSAntiPatternController {
 	    		String alsPath = AlloyModel.alsOutDirectory+
 	    				rsView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RS"+rsModel.getId()+".als";		
 						
-	    		OntoUMLOptions opt = rsView.getTheFrame().getOptionModel().getOptions();
+	    		OntoUMLOptions opt = rsView.getTheFrame().getOntoUMLOptionModel().getOptions();
 	    		
 	    		System.out.println(opt.relatorConstraint);
 	    		

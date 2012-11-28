@@ -56,7 +56,7 @@ public class AlloyModel {
 	 * 
 	 * @throws Exception
 	 */
-	public AlloyModel(String alloyPath,OntoUMLModel ontoumlmodel, OptionsModel optmodel) throws Exception
+	public AlloyModel(String alloyPath,OntoUMLModel ontoumlmodel, OntoUMLOptionsModel optmodel) throws Exception
 	{
 		this();
 		
@@ -79,7 +79,7 @@ public class AlloyModel {
 	 * 
 	 * @throws Exception
 	 */
-	public void setAlloyModel(String alloyPath, OntoUMLModel ontoumlmodel, OptionsModel optmodel) throws Exception
+	public void setAlloyModel(String alloyPath, OntoUMLModel ontoumlmodel, OntoUMLOptionsModel optmodel) throws Exception
 	{
 		setAlloyModel(alloyPath);				
 		setAlloyModel(ontoumlmodel,optmodel);	
@@ -94,7 +94,7 @@ public class AlloyModel {
 	 * 
 	 * @throws Exception
 	 */
-	public void setAlloyModel(OntoUMLModel ontoumlmodel, OptionsModel optmodel) throws Exception
+	public void setAlloyModel(OntoUMLModel ontoumlmodel, OntoUMLOptionsModel optmodel) throws Exception
 	{
 		content = OntoUML2Alloy.Transformation(ontoumlmodel.getOntoUMLModelInstance(), alsPath, optmodel.getOptions());		
 	}

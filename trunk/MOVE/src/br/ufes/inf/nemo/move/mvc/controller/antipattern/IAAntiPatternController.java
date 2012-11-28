@@ -69,7 +69,7 @@ public class IAAntiPatternController {
 	    		String alsPath = AlloyModel.alsOutDirectory+
 	    				iaView.getTheFrame().getAlloyModel().getAlloyModelName()+"$IA"+iaModel.getId()+".als";		
 						
-	    		OntoUMLOptions opt = iaView.getTheFrame().getOptionModel().getOptions();
+	    		OntoUMLOptions opt = iaView.getTheFrame().getOntoUMLOptionModel().getOptions();
 			
 	    		RefOntoUML.Package refmodel = iaView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
 			

@@ -5,24 +5,30 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
+import org.eclipse.ocl.ParserException;
+import org.eclipse.ocl.SemanticException;
+
 import br.ufes.inf.nemo.move.mvc.controller.OCLController;
 import br.ufes.inf.nemo.move.mvc.controller.OntoUMLController;
 import br.ufes.inf.nemo.move.mvc.controller.antipattern.list.AntiPatternListController;
 import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.OCLModel;
+import br.ufes.inf.nemo.move.mvc.model.OCLOptionsModel;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
-import br.ufes.inf.nemo.move.mvc.model.OptionsModel;
+import br.ufes.inf.nemo.move.mvc.model.OntoUMLOptionsModel;
 import br.ufes.inf.nemo.move.mvc.model.UMLModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.list.AntiPatternListModel;
 import br.ufes.inf.nemo.move.mvc.view.OCLView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.list.AntiPatternListView;
+import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUI;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
@@ -46,7 +52,8 @@ public class TheFrame extends JFrame {
 	private UMLModel umlmodel;
 	private OCLModel oclmodel;
 	private AntiPatternListModel antipatternmodel;
-	private OptionsModel optmodel;
+	private OntoUMLOptionsModel ontoumlOptModel;
+	private OCLOptionsModel oclOptModel;
 	private AlloyModel alloymodel;
 	
 	private OntoUMLView ontoumlview;			
@@ -130,7 +137,8 @@ public class TheFrame extends JFrame {
 		umlmodel = new UMLModel();
 		oclmodel = new OCLModel();
 		antipatternmodel = new AntiPatternListModel();
-		optmodel = new OptionsModel();
+		ontoumlOptModel = new OntoUMLOptionsModel();
+		oclOptModel = new OCLOptionsModel();
 		alloymodel = new AlloyModel();
 	}
 	
@@ -188,8 +196,12 @@ public class TheFrame extends JFrame {
 		return alloymodel; 
 	}
 	/** Get Option Model */
-	public OptionsModel getOptionModel() { 
-		return optmodel; 
+	public OntoUMLOptionsModel getOntoUMLOptionModel() { 
+		return ontoumlOptModel; 
+	}	
+	/** Get Option Model */
+	public OCLOptionsModel getOCLOptionModel() { 
+		return oclOptModel; 
 	}	
 	
 	/** Get AntiPattern View */
@@ -266,7 +278,7 @@ public class TheFrame extends JFrame {
 			
 			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;	
 			
-			alloymodel.setAlloyModel(ontoumlmodel,optmodel);
+			alloymodel.setAlloyModel(ontoumlmodel,ontoumlOptModel);
 			
 		} catch (Exception e) {			
 			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error - Transforming OntoUML into Alloy",JOptionPane.ERROR_MESSAGE);					
@@ -292,6 +304,41 @@ public class TheFrame extends JFrame {
 	}
 		
 	/**
+	 * Parse OCL.
+	 */
+	public void ParseOCL()
+	{
+		try {			
+			
+			if (oclmodel.getOCLParser()==null) oclmodel.setParser(oclview.parseConstraints());
+			console.write(oclmodel.getOCLParser().getDetails());			
+			
+			JOptionPane.showMessageDialog(
+				oclview.getTheFrame(),"Your Constraints are Syntactically Correct !\n","Parse",JOptionPane.INFORMATION_MESSAGE,
+				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-36x36.png"))
+			);			
+    	}catch(SemanticException e2){
+			JOptionPane.showMessageDialog(
+				oclview.getTheFrame(),e2.getMessage(),"Semantic",JOptionPane.ERROR_MESSAGE,
+				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
+			);					
+			e2.printStackTrace();				
+    	}catch(ParserException e1){
+				JOptionPane.showMessageDialog(
+					oclview.getTheFrame(),e1.getMessage(),"Parse",JOptionPane.ERROR_MESSAGE,
+					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
+				);					
+			e1.printStackTrace();    	
+		}catch(IOException e3){
+			JOptionPane.showMessageDialog(
+				oclview.getTheFrame(),e3.getMessage(),"IO",JOptionPane.ERROR_MESSAGE,
+				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
+			);					
+			e3.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Transforms OCL Model into Alloy.
 	 */
 	public void TransformsOCLIntoAlloy()
@@ -299,8 +346,7 @@ public class TheFrame extends JFrame {
 		try {
 			
 			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;
-			
-			if (oclmodel.getOCLParser()==null) oclmodel.setParser(oclview.parseConstraints());			
+			if (oclmodel.getOCLParser()==null) return;
 			
 			console.write(oclmodel.getOCLParser().getDetails());
 			
@@ -336,7 +382,7 @@ public class TheFrame extends JFrame {
 			try {
 				
 				// open custom...		
-				if (optmodel.getOptions().openAnalyzer)
+				if (ontoumlOptModel.getOptions().openAnalyzer)
 				{
 					AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", AlloyModel.alsOutDirectory);					
 					String[] argsAnalyzer = { "","" };

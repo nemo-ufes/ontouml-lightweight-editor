@@ -97,7 +97,7 @@ public class STRAntiPatternController {
 	    		String alsPath = AlloyModel.alsOutDirectory+
 	    				strView.getTheFrame().getAlloyModel().getAlloyModelName()+"$STR"+strModel.getId()+".als";		
 						
-	    		OntoUMLOptions opt = strView.getTheFrame().getOptionModel().getOptions();
+	    		OntoUMLOptions opt = strView.getTheFrame().getOntoUMLOptionModel().getOptions();
 			
 	    		RefOntoUML.Package refmodel = strView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
 			

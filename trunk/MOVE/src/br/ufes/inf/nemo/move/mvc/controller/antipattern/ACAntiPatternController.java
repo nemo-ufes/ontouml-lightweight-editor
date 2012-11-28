@@ -75,7 +75,7 @@ public class ACAntiPatternController {
 	    		String alsPath = AlloyModel.alsOutDirectory+
 	    				acView.getTheFrame().getAlloyModel().getAlloyModelName()+"$AC"+acModel.getId()+".als";		
 						
-	    		OntoUMLOptions opt = acView.getTheFrame().getOptionModel().getOptions();
+	    		OntoUMLOptions opt = acView.getTheFrame().getOntoUMLOptionModel().getOptions();
 			
 	    		RefOntoUML.Package refmodel = acView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
 			

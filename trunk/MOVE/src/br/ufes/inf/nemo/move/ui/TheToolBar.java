@@ -10,8 +10,6 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
-import br.ufes.inf.nemo.move.mvc.controller.OptionsController;
-import br.ufes.inf.nemo.move.mvc.view.OptionsView;
 import br.ufes.inf.nemo.move.util.ToolbarButton;
 
 /**
@@ -23,8 +21,6 @@ public class TheToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 
 	private TheFrame frame;		
-	private ToolbarButton btnOpenOntoUML;
-	private ToolbarButton btnSyntaticVerification;	
 	private ToolbarButton btnSearchForAntipatterns;	
 	private ToolbarButton btnShowHideConsole;
 	private ToolbarButton btnAlloyAnalyzer;
@@ -88,30 +84,17 @@ public class TheToolBar extends JToolBar {
        			{	       			
        				frame.OpenAlloyModelWithAnalyzer();
        			}else{
-       				OptionsView optview = new OptionsView(frame.getOptionModel(),frame);
-	       			new OptionsController(optview,frame.getOptionModel()); 
+       				
+       				frame.ParseOCL();
+       				
+       				OptionsDialog optview = new OptionsDialog(frame.getOntoUMLOptionModel(),frame.getOCLOptionModel(),frame);
 	       			optview.setVisible(true);
        			}
        		}
        	});
 		add(btnAlloyAnalyzer);
 	}
-	
-	public void createOpenOntoUML ()
-	{
-		btnOpenOntoUML = new ToolbarButton("Open Model","/resources/br/ufes/inf/nemo/move/ontouml-36x36.png");
-		btnOpenOntoUML.setToolTipText("Open Model");
-		btnOpenOntoUML.setEnabled(true);
-		btnOpenOntoUML.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			
-       		}
-       	});
-		add(btnOpenOntoUML);
-	}
-	
+		
 	public void createShowHideConsole ()
 	{
 		btnShowHideConsole = new ToolbarButton("Show Console","/resources/br/ufes/inf/nemo/move/display-36x36.png");
@@ -126,22 +109,7 @@ public class TheToolBar extends JToolBar {
        	});
 		add(btnShowHideConsole);
 	}
-	
-	public void createSyntaticButton ()
-	{
-		btnSyntaticVerification = new ToolbarButton("Verify Syntax","/resources/br/ufes/inf/nemo/move/check-36x36.png");
-		btnSyntaticVerification.setToolTipText("Verify All Models Sintactically");
-		btnSyntaticVerification.setEnabled(true);
-		btnSyntaticVerification.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			//
-       		}
-       	});
-		add(btnSyntaticVerification);
-	}
-		
+			
 	public void createAntiPatternButton()
 	{
 		btnSearchForAntipatterns = new ToolbarButton("Search AntiPatterns","/resources/br/ufes/inf/nemo/move/search-36x36.png");		
