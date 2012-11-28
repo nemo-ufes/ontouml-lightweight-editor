@@ -24,6 +24,10 @@ public class OCLOptions {
 	 */
 	public OCLOptions(OCLParser oclparser)
 	{
+		this();
+		
+		if (oclparser==null) return;
+		
 		for(Constraint ct: oclparser.getConstraints())
 		{
 			constraintsList.add(ct);
