@@ -1,20 +1,27 @@
 package br.ufes.inf.nemo.ontouml.antipattern;
 
+import java.util.ArrayList;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
+
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Type;
 
 /*Self-Type Relationship AntiPattern*/
-public class STRAntiPattern {
+public class STRAntiPattern extends Antipattern{
 	private Association association;
 	private Classifier type;
 	
 	
 	public STRAntiPattern (Association association) throws Exception{
 		this.setAssociation(association);
+		
 	}
 	
 	public String generateIrreflexiveOcl(){
@@ -192,6 +199,26 @@ public class STRAntiPattern {
 	@Override
 	public String toString() {
 		return type.getName()+" - "+association.getName();
+	}
+
+	@Override
+	protected void buildModel() {
+		ArrayList<EObject> selected;
+		String log;
+		
+		if(association instanceof Association && type instanceof Type){
+			log = new String();
+			
+			selected = new ArrayList<>();
+			selected.add(association);
+			
+			copier = new Copier();
+			
+			model = Recreator.recreatePackage(selected, log, false, copier);
+			parser = new OntoUMLParser(model);
+			
+		}
+		
 	}
 
 }

@@ -190,7 +190,7 @@ public class AntiPatternIdentifier {
 		nodei = aux[0];
 		nodej = aux[1];
 		
-		if (relationships.size()<2) return result;
+		if (relationships.size()<=2) return result;
 		
 		int fundcycle[][] = new int [relationships.size()-2][classes.size()];
 		GraphAlgo.fundamentalCycles(classes.size()-1, relationships.size()-1, nodei, nodej, fundcycle);
