@@ -46,7 +46,7 @@ public class OCL2Alloy {
 		 * System.out.println(visitor.visitConstraint(ct));
 		 */	
 		
-		for(Constraint ct: oclparser.getConstraints())
+		for(Constraint ct: opt.getConstraintList())
 		{	
 			try{	
 		

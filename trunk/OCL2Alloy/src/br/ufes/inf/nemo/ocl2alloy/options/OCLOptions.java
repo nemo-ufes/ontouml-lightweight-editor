@@ -36,7 +36,7 @@ public class OCLOptions {
 			commandScope.add(10);
 		}		
 	}
-	
+		
 	/**
 	 * COnstructor.
 	 */
@@ -50,9 +50,25 @@ public class OCLOptions {
 		return constraintsList;
 	}
 	
+	public void setConstraintList(ArrayList<Constraint> constraintsList)
+	{
+		this.constraintsList = constraintsList;
+	}
+	
+	public void setCommandScope(ArrayList<Integer> scopeList)
+	{
+		commandScope = scopeList;
+	}
+	
 	public Integer getCommandScope(Constraint ct)
 	{
 		return commandScope.get(constraintsList.indexOf(ct));
+	}
+	
+	
+	public void setTransformationType(ArrayList<String> transformationTypeList)
+	{
+		this.transformationType = transformationTypeList;
 	}
 	
 	public String getTransformationType(Constraint ct)
@@ -60,9 +76,19 @@ public class OCLOptions {
 		return transformationType.get(constraintsList.indexOf(ct));
 	}
 	
+	public ArrayList<String> getTransformationType()
+	{
+		return transformationType;
+	}
+	
+	
 	public String getConstraintType(Constraint ct)
 	{
 		return constraintType.get(constraintsList.indexOf(ct));
-	}
+	}	
 	
+	public ArrayList<String> getConstraintType()
+	{
+		return constraintType;
+	}
 }
