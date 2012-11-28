@@ -30,6 +30,7 @@ import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.list.AntiPatternListView;
 import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
+import br.ufes.inf.nemo.ocl2alloy.options.OCLOptions;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUI;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
@@ -310,7 +311,10 @@ public class TheFrame extends JFrame {
 	{
 		try {			
 			
-			if (oclmodel.getOCLParser()==null) oclmodel.setParser(oclview.parseConstraints());
+			oclmodel.setParser(oclview.parseConstraints());
+			
+			oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));
+			
 			console.write(oclmodel.getOCLParser().getDetails());			
 			
 			JOptionPane.showMessageDialog(
@@ -350,7 +354,12 @@ public class TheFrame extends JFrame {
 			
 			console.write(oclmodel.getOCLParser().getDetails());
 			
-			console.append(alloymodel.addConstraints(ontoumlmodel, oclmodel));
+			String logMessage = alloymodel.addConstraints(ontoumlmodel, oclmodel,oclOptModel);
+			
+			if (!logMessage.isEmpty() && logMessage!=null)
+			{
+				JOptionPane.showMessageDialog(this,logMessage,"Warning",JOptionPane.WARNING_MESSAGE);					
+			}
 			
 		} catch (Exception e) {			
 			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error - Transforming OCL into Alloy",JOptionPane.ERROR_MESSAGE);					
