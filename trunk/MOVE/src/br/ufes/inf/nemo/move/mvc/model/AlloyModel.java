@@ -3,8 +3,6 @@ package br.ufes.inf.nemo.move.mvc.model;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.uml2.uml.Constraint;
-
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.ocl2alloy.transformer.OCL2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
@@ -121,17 +119,15 @@ public class AlloyModel {
 	 * 
 	 * @return
 	 */
-	public String addConstraints(OntoUMLModel ontoumlmodel, OCLModel oclmodel) throws IOException
+	public String addConstraints(OntoUMLModel ontoumlmodel, OCLModel oclmodel, OCLOptionsModel oclOptModel) throws IOException
 	{
 		String result = new String();
 		result = "\n";
-		for(Constraint ct: oclmodel.getOCLParser().getConstraints())
-		{
-			result += OCL2Alloy.Transformation(ct, "FACT", oclmodel.getOCLParser(), ontoumlmodel.getOntoUMLParser())+"\n";
-			//result += OCL2Alloy.Transformation(ct, "SIMULATION", oclmodel.getOCLParser(), ontoumlmodel.getOntoUMLParser())+"\n";
-			//result += OCL2Alloy.Transformation(ct, "ASSERTION", oclmodel.getOCLParser(), ontoumlmodel.getOntoUMLParser())+"\n";
-		}
-		FileUtil.writeToFile(result, alsPath);		
+		
+		result += OCL2Alloy.Transformation(oclmodel.getOCLParser(), oclOptModel.getOCLOptions(), ontoumlmodel.getOntoUMLParser());
+		
+		FileUtil.writeToFile(result, alsPath);
+		
 		return OCL2Alloy.log;		
 	}
 	
