@@ -68,7 +68,7 @@ public class RBOSAntiPatternController {
 	    		String alsPath = AlloyModel.alsOutDirectory+
 	    				rbosView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RBOS"+rbosModel.getId()+".als";		
 						
-	    		OntoUMLOptions opt = rbosView.getTheFrame().getOptionModel().getOptions();
+	    		OntoUMLOptions opt = rbosView.getTheFrame().getOntoUMLOptionModel().getOptions();
 			
 	    		RefOntoUML.Package refmodel = rbosView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
 			

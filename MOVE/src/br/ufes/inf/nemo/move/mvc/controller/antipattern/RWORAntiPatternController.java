@@ -94,7 +94,7 @@ public class RWORAntiPatternController {
 	    		String alsPath = AlloyModel.alsOutDirectory+
 	    				rworView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RWOR"+rworModel.getId()+".als";		
 						
-	    		OntoUMLOptions opt = rworView.getTheFrame().getOptionModel().getOptions();
+	    		OntoUMLOptions opt = rworView.getTheFrame().getOntoUMLOptionModel().getOptions();
 			
 	    		RefOntoUML.Package refmodel = rworView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
 			
