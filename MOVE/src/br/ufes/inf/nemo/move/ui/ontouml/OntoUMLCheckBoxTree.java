@@ -93,7 +93,7 @@ public class OntoUMLCheckBoxTree {
 		/* Classifier */
 		} else if (refElement instanceof RefOntoUML.Classifier)		
 		{
-			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement,refparser.getName((RefOntoUML.Classifier)refElement)));			
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement,refparser.getAlias((RefOntoUML.Classifier)refElement)));			
 			parent.add(newNode);			
 			//modelTree.collapsePath(new TreePath(newNode.getPath()));
 			
@@ -123,7 +123,7 @@ public class OntoUMLCheckBoxTree {
 		/* Property */
 		}else if (refElement instanceof RefOntoUML.Property)
 		{
-			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement,refparser.getName((RefOntoUML.Property)refElement)));			
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement,refparser.getAlias((RefOntoUML.Property)refElement)));			
 			parent.add(newNode);		
 			checkingModel.setPathEnabled(new TreePath(newNode.getPath()),false);
 		}

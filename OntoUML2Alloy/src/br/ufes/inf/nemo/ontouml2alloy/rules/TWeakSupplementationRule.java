@@ -36,11 +36,11 @@ public class TWeakSupplementationRule {
 		if( associationNames.size() > 0)
 		{
 			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
-			QuantificationExpression q = AlloyAPI.createQuantificationExpression(factory,associationNames, ontoparser.getName(c));
+			QuantificationExpression q = AlloyAPI.createQuantificationExpression(factory,associationNames, ontoparser.getAlias(c));
 			
 			// create fact from q
 			FactDeclaration WeakSupplementationFact = factory.createFactDeclaration();
-			WeakSupplementationFact.setName("weak_supplementation_"+ontoparser.getName(c));
+			WeakSupplementationFact.setName("weak_supplementation_"+ontoparser.getAlias(c));
 			WeakSupplementationFact.setBlock(factory.createBlock());			
 			WeakSupplementationFact.getBlock().getExpression().add(q);			
 			

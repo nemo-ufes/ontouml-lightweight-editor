@@ -26,7 +26,7 @@ public class TGeneralizationSetRule {
 		for(Generalization gen : gs.getGeneralization())
 		{
 			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(ontoparser.getName(gen.getSpecific()));
+			vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
 			disj.getSet().add(vr);
 		}
 		return disj;
@@ -43,7 +43,7 @@ public class TGeneralizationSetRule {
 		co.setOperator(CompareOperator.EQUAL_LITERAL);
 		
 		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(ontoparser.getName(gs.getGeneralization().get(0).getGeneral()));
+		vr.setVariable(ontoparser.getAlias(gs.getGeneralization().get(0).getGeneral()));
 		
 		co.setLeftExpression(vr);
 		
@@ -54,7 +54,7 @@ public class TGeneralizationSetRule {
 			if(gs.getGeneralization().size() == 1)
 			{
 				VariableReference vr1 = factory.createVariableReference();
-				vr1.setVariable(ontoparser.getName(gen.getSpecific()));					
+				vr1.setVariable(ontoparser.getAlias(gen.getSpecific()));					
 				co.setRightExpression(vr);				
 				break;
 			}
@@ -62,14 +62,14 @@ public class TGeneralizationSetRule {
 			{
 				bo.setOperator(BinaryOperator.UNION_LITERAL);
 				vr = factory.createVariableReference();
-				vr.setVariable(ontoparser.getName(gen.getSpecific()));
+				vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
 				bo.setLeftExpression(vr);
 				co.setRightExpression(bo);
 			}
 			if(cont > 1 && cont != gs.getGeneralization().size())
 			{
 				vr = factory.createVariableReference();
-				vr.setVariable(ontoparser.getName(gen.getSpecific()));
+				vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
 				bo.setRightExpression(factory.createBinaryOperation());
 				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
 				((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
@@ -78,7 +78,7 @@ public class TGeneralizationSetRule {
 			if(cont == gs.getGeneralization().size())
 			{
 				vr = factory.createVariableReference();
-				vr.setVariable(ontoparser.getName(gen.getSpecific()));
+				vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
 				bo.setRightExpression(vr);
 			}
 			cont++;

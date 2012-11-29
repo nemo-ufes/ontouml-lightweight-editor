@@ -217,21 +217,21 @@ public class Transformer extends BaseTransformer {
 				{	
 					// rigidity[ rigidClassName, Object, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigObject, exists, ontoparser.getName(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigObject, exists, ontoparser.getAlias(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}	
 				if(rigid instanceof MomentClass)
 				{
 					// rigidity[ rigidClassName, Property, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigProperty, exists, ontoparser.getName(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigProperty, exists, ontoparser.getAlias(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}
 				if(rigid instanceof DataType && !(rigid instanceof PrimitiveType))
 				{
 					// rigidity[ rigidClassName, DataType, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigDatatype, exists, ontoparser.getName(rigid));
+					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigDatatype, exists, ontoparser.getAlias(rigid));
 					all_rigid_classes.getBlock().getExpression().add(pI);
 				}				
 			}			
@@ -257,7 +257,7 @@ public class Transformer extends BaseTransformer {
 				{	
 					// antirigidity[ antirigidClassName, Object, exists]
 					
-					PredicateInvocation pI = AlloyAPI.createAntiRigidityInvocation(factory,sigObject, exists, ontoparser.getName(antirigid));
+					PredicateInvocation pI = AlloyAPI.createAntiRigidityInvocation(factory,sigObject, exists, ontoparser.getAlias(antirigid));
 					
 					all_antirigid_classes.getBlock().getExpression().add(pI);
 				}					
@@ -279,7 +279,7 @@ public class Transformer extends BaseTransformer {
 		{
 			// ObjectClassName: set exists:>Object,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), sigObject.getName());				
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c), sigObject.getName());				
 			
 			if (decl!=null) world.getRelation().add(decl);			
 
@@ -297,7 +297,7 @@ public class Transformer extends BaseTransformer {
 		{			
 			// DataTypeName: set exists:>DataType,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c), sigDatatype.getName());	
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c), sigDatatype.getName());	
 			
 			if (decl!=null) world.getRelation().add(decl);									
 		}
@@ -306,7 +306,7 @@ public class Transformer extends BaseTransformer {
 		{
 			// PropertyName: set exists:>Property,
 			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getName(c),sigProperty.getName());
+			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c),sigProperty.getName());
 			
 			world.getRelation().add(decl);
 			
@@ -400,10 +400,10 @@ public class Transformer extends BaseTransformer {
 		VariableReference association = factory.createVariableReference();
 		
 		uOp.setOperator(UnaryOperator.SET_LITERAL);
-		var.setName(ontoparser.getName(ass)); 
+		var.setName(ontoparser.getAlias(ass)); 
 		var.setDeclaration(decl);
 		
-		association.setVariable(ontoparser.getName(ass));	
+		association.setVariable(ontoparser.getAlias(ass));	
 		
 		decl.setExpression(uOp);
 		
@@ -446,10 +446,10 @@ public class Transformer extends BaseTransformer {
 			
 		if(ass.getMemberEnd().get(0).getName().compareTo("") != 0)	
 		{
-			String functionName = ontoparser.getName(ass.getMemberEnd().get(0));			
-			String returnName = ontoparser.getName(ass.getMemberEnd().get(0).getType());			
-			String paramName = ontoparser.getName(ass.getMemberEnd().get(1).getType());			
-			String assocName = ontoparser.getName(ass);
+			String functionName = ontoparser.getAlias(ass.getMemberEnd().get(0));			
+			String returnName = ontoparser.getAlias(ass.getMemberEnd().get(0).getType());			
+			String paramName = ontoparser.getAlias(ass.getMemberEnd().get(1).getType());			
+			String assocName = ontoparser.getAlias(ass);
 			
 			FunctionDeclaration fun = 
 					AlloyAPI.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);
@@ -461,10 +461,10 @@ public class Transformer extends BaseTransformer {
 			
 		if(ass.getMemberEnd().get(1).getName().compareTo("") != 0)
 		{
-			String functionName = ontoparser.getName(ass.getMemberEnd().get(1));			
-			String returnName = ontoparser.getName(ass.getMemberEnd().get(1).getType());			
-			String paramName = ontoparser.getName(ass.getMemberEnd().get(0).getType());			
-			String assocName = ontoparser.getName(ass);
+			String functionName = ontoparser.getAlias(ass.getMemberEnd().get(1));			
+			String returnName = ontoparser.getAlias(ass.getMemberEnd().get(1).getType());			
+			String paramName = ontoparser.getAlias(ass.getMemberEnd().get(0).getType());			
+			String assocName = ontoparser.getAlias(ass);
 			
 			FunctionDeclaration fun = 
 					AlloyAPI.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);
@@ -489,14 +489,14 @@ public class Transformer extends BaseTransformer {
 		{			
 			if(!prop.getAggregation().equals(AggregationKind.NONE) && count==1)
 			{
-				source.setVariable(ontoparser.getName(prop.getType()));				
+				source.setVariable(ontoparser.getAlias(prop.getType()));				
 				lowerSource = prop.getLower();
 				upperSource = prop.getUpper();
 				count++;
 			}
 			else
 			{
-				target.setVariable(ontoparser.getName(prop.getType()));				
+				target.setVariable(ontoparser.getAlias(prop.getType()));				
 				lowerTarget = prop.getLower();				
 				upperTarget = prop.getUpper();
 			}
@@ -505,14 +505,14 @@ public class Transformer extends BaseTransformer {
 		if(ass instanceof subQuantityOf)
 		{
 			PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getName(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
 			
 			association_properties.getBlock().getExpression().add(pI);
 			
 			if(ass.sourceEnd().isIsReadOnly() || ass.isIsInseparable() || ass.isIsImmutableWhole())
 			{
 				PredicateInvocation pIS = 
-						AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getName(ass));
+						AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
 				
 				association_properties.getBlock().getExpression().add(pIS);
 			}
@@ -522,7 +522,7 @@ public class Transformer extends BaseTransformer {
 			if(ass.targetEnd().isIsReadOnly() || ass.isIsEssential() || ass.isIsImmutablePart())
 			{
 				PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getName(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
 				
 				association_properties.getBlock().getExpression().add(pI);
 			}
@@ -530,7 +530,7 @@ public class Transformer extends BaseTransformer {
 			if(ass.sourceEnd().isIsReadOnly() || ass.isIsInseparable() || ass.isIsImmutableWhole())
 			{
 				PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getName(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
 				
 				association_properties.getBlock().getExpression().add(pI);
 			}
@@ -562,7 +562,7 @@ public class Transformer extends BaseTransformer {
 			{
 				if(c.getType() instanceof Relator && cont == 1)
 				{
-					source.setVariable(ontoparser.getName(c.getType()));
+					source.setVariable(ontoparser.getAlias(c.getType()));
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
 					isSourceReadOnly = c.isIsReadOnly();
@@ -570,7 +570,7 @@ public class Transformer extends BaseTransformer {
 				}
 				else
 				{
-					target.setVariable(ontoparser.getName(c.getType()));
+					target.setVariable(ontoparser.getAlias(c.getType()));
 					lowerTarget = c.getLower();
 					upperTarget = c.getUpper();
 				}
@@ -578,14 +578,14 @@ public class Transformer extends BaseTransformer {
 		}
 		
 		PredicateInvocation pI = 
-				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getName(ass));
+				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
 		
 		association_properties.getBlock().getExpression().add(pI);
 		
 		if(isSourceReadOnly)
 		{
 			PredicateInvocation pIS = 
-				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getName(ass));
+				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
 			
 			association_properties.getBlock().getExpression().add(pIS);
 		}
@@ -616,7 +616,7 @@ public class Transformer extends BaseTransformer {
 			{
 				if(c.getType() instanceof Mode && cont == 1)
 				{
-					source.setVariable(ontoparser.getName(c.getType()));
+					source.setVariable(ontoparser.getAlias(c.getType()));
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
 					isSourceReadOnly = c.isIsReadOnly();
@@ -624,7 +624,7 @@ public class Transformer extends BaseTransformer {
 				}
 				else
 				{
-					target.setVariable(ontoparser.getName(c.getType()));
+					target.setVariable(ontoparser.getAlias(c.getType()));
 					lowerTarget = c.getLower();
 					upperTarget = c.getUpper();
 				}
@@ -632,14 +632,14 @@ public class Transformer extends BaseTransformer {
 		}
 		
 		PredicateInvocation pI = 
-				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getName(ass));
+				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
 		
 		association_properties.getBlock().getExpression().add(pI);
 		
 		if(isSourceReadOnly)
 		{
 			PredicateInvocation pIS = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getName(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
 			
 			association_properties.getBlock().getExpression().add(pIS);
 		}
@@ -672,7 +672,7 @@ public class Transformer extends BaseTransformer {
 			{
 				if(cont == 1)
 				{
-					source.setVariable(ontoparser.getName(c.getType()));
+					source.setVariable(ontoparser.getAlias(c.getType()));
 					lowerSource = c.getLower();
 					upperSource = c.getUpper();
 					isSourceReadOnly = c.isIsReadOnly();
@@ -680,7 +680,7 @@ public class Transformer extends BaseTransformer {
 				}
 				else
 				{
-					target.setVariable(ontoparser.getName(c.getType()));
+					target.setVariable(ontoparser.getAlias(c.getType()));
 					lowerTarget = c.getLower();
 					upperTarget = c.getUpper();
 					isTargetReadOnly = c.isIsReadOnly();
@@ -691,7 +691,7 @@ public class Transformer extends BaseTransformer {
 		if(isTargetReadOnly)
 		{
 			PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getName(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
 			
 			association_properties.getBlock().getExpression().add(pI);			
 		}
@@ -699,7 +699,7 @@ public class Transformer extends BaseTransformer {
 		if(isSourceReadOnly)
 		{
 			PredicateInvocation pIS = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getName(ass));
+					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
 			
 			association_properties.getBlock().getExpression().add(pIS);			
 		}
@@ -750,7 +750,7 @@ public class Transformer extends BaseTransformer {
 		if (lowerSource > 1)
 		{
 			BinaryOperation binJoin = 
-					AlloyAPI.createBinaryOperation(factory, ontoparser.getName(ass), BinaryOperator.JOIN_LITERAL, "x");
+					AlloyAPI.createBinaryOperation(factory, ontoparser.getAlias(ass), BinaryOperator.JOIN_LITERAL, "x");
 			
 			QuantificationExpression qe =					
 				AlloyAPI.createQuantificationExpression(factory, target, binJoin, CompareOperator.GREATER_EQUAL_LITERAL, lowerSource);
@@ -761,7 +761,7 @@ public class Transformer extends BaseTransformer {
 		if (upperSource > 1 && upperSource != -1) 
 		{
 			BinaryOperation binJoin = 
-				AlloyAPI.createBinaryOperation(factory,ontoparser.getName(ass), BinaryOperator.JOIN_LITERAL,"x");
+				AlloyAPI.createBinaryOperation(factory,ontoparser.getAlias(ass), BinaryOperator.JOIN_LITERAL,"x");
 			
 			QuantificationExpression qe =					
 				AlloyAPI.createQuantificationExpression(factory, target, binJoin, CompareOperator.LESS_EQUAL_LITERAL, upperSource);
@@ -772,7 +772,7 @@ public class Transformer extends BaseTransformer {
 		if (lowerTarget > 1) 
 		{
 			BinaryOperation binJoin = 
-					AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,ontoparser.getName(ass));
+					AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,ontoparser.getAlias(ass));
 			
 			QuantificationExpression qe =					
 				AlloyAPI.createQuantificationExpression(factory, source, binJoin, CompareOperator.GREATER_EQUAL_LITERAL, lowerTarget);
@@ -783,7 +783,7 @@ public class Transformer extends BaseTransformer {
 		if (upperTarget > 1 && upperTarget != -1) 
 		{
 			BinaryOperation binJoin = 
-					AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,ontoparser.getName(ass));			
+					AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,ontoparser.getAlias(ass));			
 			
 			QuantificationExpression qe =					
 				AlloyAPI.createQuantificationExpression(factory, source, binJoin, CompareOperator.LESS_EQUAL_LITERAL, upperTarget);

@@ -144,14 +144,14 @@ public class ACAntiPattern {
 		Association a;
 		Type last_source, last_target, source, target;
 				
-		typeName = mapper.getName(this.cycle.get(0));
+		typeName = mapper.getAlias(this.cycle.get(0));
 		
 		if(type==OPEN) {
-			name = "openCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
+			name = "openCycle_"+typeName+"_"+mapper.getAlias(cycle.get(1));
 			function_name = "open"+function_name;
 		}
 		else if(type==CLOSED) {
-			name = "closedCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
+			name = "closedCycle_"+typeName+"_"+mapper.getAlias(cycle.get(1));
 			function_name = "closed"+function_name;
 		}
 		else
@@ -171,10 +171,10 @@ public class ACAntiPattern {
 		last_target = SourceTargetAssociation.getTargetAlloy(a);
 		
 		if (last_source.equals(this.cycle.get(0)))
-			function_rules += "(x.(w."+mapper.getName(a)+"))";
+			function_rules += "(x.(w."+mapper.getAlias(a)+"))";
 		
 		else {
-			function_rules += "((w."+mapper.getName(a)+").x)";
+			function_rules += "((w."+mapper.getAlias(a)+").x)";
 			last_target = SourceTargetAssociation.getSourceAlloy(a);
 			last_source = SourceTargetAssociation.getTargetAlloy(a);
 		}
@@ -188,17 +188,17 @@ public class ACAntiPattern {
 				Association assoc = (Association)r;
 				
 				if( (source.equals(last_target)) ){
-					function_rules+=".(w."+mapper.getName(assoc)+")";
+					function_rules+=".(w."+mapper.getAlias(assoc)+")";
 					last_source = source;
 					last_target = target;
 				}
 				else {
-					function_rules+=".(~(w."+mapper.getName(assoc)+"))";
+					function_rules+=".(~(w."+mapper.getAlias(assoc)+"))";
 					last_target = source;
 					last_source = target;
 				}
 				
-				name+="_"+mapper.getName(last_target);
+				name+="_"+mapper.getAlias(last_target);
 				
 			}
 		}

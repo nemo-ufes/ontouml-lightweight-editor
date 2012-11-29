@@ -354,7 +354,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 		
 		// get Property Name
     	RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getKeyByValue(property);
-    	String nameProperty = refparser.getName(ontoProperty);
+    	String nameProperty = refparser.getAlias(ontoProperty);
     	
 		result.append(sourceResult + "." + nameProperty+ "[w]");
 				
@@ -369,7 +369,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 		
 		// get Classifier Name
     	RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(classifier);
-    	String nameClassifier = refparser.getName(ontoClassifier);
+    	String nameClassifier = refparser.getAlias(ontoClassifier);
 	
 		return "w." + nameClassifier;
 	}
@@ -566,7 +566,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                 	
                 	// get name Classifier
                 	RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(classifier);
-                	String nameClassifier = refparser.getName(ontoClassifier);
+                	String nameClassifier = refparser.getAlias(ontoClassifier);
                 			
                 	result.append("w."+nameClassifier+" | ");
                 	
@@ -598,11 +598,11 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                 	
                 	// get Property Name
                 	RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getKeyByValue(property);
-                	String name_property = refparser.getName(ontoProperty);
+                	String name_property = refparser.getAlias(ontoProperty);
                 	
                 	// get Type Name
                 	RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(property.getType());
-                	String type_property = refparser.getName(ontoClassifier);
+                	String type_property = refparser.getAlias(ontoClassifier);
                 	                	
                 	if(stereo_invariant.equals("ASSERTION")) result.append("assert ");
                 	else if(stereo_invariant.equals("SIMULATION")) result.append("pred ");
@@ -625,11 +625,11 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                 	
                 	// get Source Type Name
                 	RefOntoUML.PackageableElement sourceType = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(src_type);
-                	String src_name = refparser.getName(sourceType);                	
+                	String src_name = refparser.getAlias(sourceType);                	
                 	
                 	// get Target Type Name
                 	RefOntoUML.PackageableElement targetType = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(tgt_type);
-                	String tgt_name = refparser.getName(targetType);
+                	String tgt_name = refparser.getAlias(targetType);
                 	                	                	                	
                	    // Considering the direction
                 	if(typename.equals(src_name)) result.append("w."+tgt_name+" | ");                	

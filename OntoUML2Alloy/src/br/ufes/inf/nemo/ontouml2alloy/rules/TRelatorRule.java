@@ -37,11 +37,11 @@ public class TRelatorRule {
 		if(associationNames.size()>0)
 		{			
 			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
-			QuantificationExpression q = AlloyAPI.createQuantificationExpression(factory,associationNames, ontoparser.getName(c));
+			QuantificationExpression q = AlloyAPI.createQuantificationExpression(factory,associationNames, ontoparser.getAlias(c));
 			
 			// create fact from q
 			FactDeclaration RelatorRuleFact = factory.createFactDeclaration();
-			RelatorRuleFact.setName("relator_constraint_"+ontoparser.getName(c));
+			RelatorRuleFact.setName("relator_constraint_"+ontoparser.getAlias(c));
 			RelatorRuleFact.setBlock(factory.createBlock());			
 			RelatorRuleFact.getBlock().getExpression().add(q);
 			

@@ -18,6 +18,6 @@ public class TGeneralizationRule {
 	 */	
 	public static CompareOperation createCompareOperation (OntoUMLParser ontoparser, AlloyFactory factory,Generalization g)
 	{
-		return AlloyAPI.createCompareOperation(factory, ontoparser.getName(g.getSpecific()), CompareOperator.SUBSET_LITERAL, ontoparser.getName(g.getGeneral()));
+		return AlloyAPI.createCompareOperation(factory, ontoparser.getAlias(g.getSpecific()), CompareOperator.SUBSET_LITERAL, ontoparser.getAlias(g.getGeneral()));
 	}
 }
