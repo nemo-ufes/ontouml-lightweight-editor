@@ -9,17 +9,24 @@ import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 /**
+ * This class represents an OntoUML Model.
+ * 
  * @author John Guerson
  */
 
 public class OntoUMLModel {
 
+	/** root ontoUML Package (or ontoUML Model). */	
 	private RefOntoUML.Package refmodel;
+	
+	/** OntoUML parser of the root ontoUML Package. */
 	private OntoUMLParser refparser;	
+	
+	/** Absolute path of ontoUML model. */
 	private String refPath;
 	
 	/**
-	 * Constructor.
+	 * This constructor initializes the path of the ontoUML model.  i.e. without any content.
 	 * 
 	 * @param refPath
 	 * @throws IOException
@@ -30,15 +37,12 @@ public class OntoUMLModel {
 	}	
 	
 	/**
-	 * Constructor.
+	 * Creates an Empty ontoUML model.
 	 */
-	public OntoUMLModel()
-	{
-		
-	}
+	public OntoUMLModel() { }
 	
 	/**
-	 * Constructor.
+	 * This constructor initializes the content (root ontoUML Package or Model) .  i.e. without the absolute path.
 	 * 
 	 * @param refmodel
 	 */
@@ -48,13 +52,20 @@ public class OntoUMLModel {
 	}
 	
 	/**
-	 * Verify Model Syntactically.
+	 * This methods verifies the model Syntactically.
+	 * 
+	 * @return
 	 */
 	public String verifyModel()
 	{
 		return SyntacticVerificator.verify(refmodel);
 	}
 	
+	/**
+	 * This method set the content (root ontoUML Package or Model) .  i.e. without the absolute path.
+	 * 
+	 * @param refmodel
+	 */
 	public void setOntoUML (RefOntoUML.Package refmodel)
 	{
 		this.refmodel = refmodel;

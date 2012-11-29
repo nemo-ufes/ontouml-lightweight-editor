@@ -21,6 +21,8 @@ import javax.swing.UIManager;
 
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLOptionsModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
+import java.awt.FlowLayout;
+import javax.swing.border.EmptyBorder;
 
 /**
  * @author John Guerson
@@ -82,8 +84,9 @@ public class OntoUMLOptionsView extends JPanel {
 	 */
 	public OntoUMLOptionsView() 
 	{
+		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setBackground(UIManager.getColor("Panel.background"));
-		setPreferredSize(new Dimension(186, 228));
+		setPreferredSize(new Dimension(591, 228));
 		setSize(new Dimension(186, 228));				
 								
 		JLabel lblDomainConstraintsOptions = new JLabel("OCL Domain Constraints");
@@ -101,21 +104,26 @@ public class OntoUMLOptionsView extends JPanel {
 		scrollPane.setViewportView(cbxPanel);
 				
 		btnPanel = new JPanel();
+		btnPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		FlowLayout flowLayout = (FlowLayout) btnPanel.getLayout();
+		flowLayout.setAlignment(FlowLayout.RIGHT);
 		btnPanel.setPreferredSize(new Dimension(100,40));
 		
 		titlePanel = new JPanel();
 		titlePanel.setBackground(Color.WHITE);
 		titlePanel.setPreferredSize(new Dimension(100, 30));
-		lblEnforceAxioms = new JLabel("Enforce Axioms...");
+		lblEnforceAxioms = new JLabel("Enforce Axioms.");
 		lblEnforceAxioms.setBackground(Color.WHITE);
 		lblEnforceAxioms.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEnforceAxioms.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
-		btnEnableall = new JButton("EnableAll");
+		btnEnableall = new JButton("Enable All");
 		btnPanel.add(btnEnableall);
-				
-		btnDisableall = new JButton("DisableAll");
+		btnEnableall.setPreferredSize(new Dimension(100, 25));
+		
+		btnDisableall = new JButton("Disable All");
 		btnPanel.add(btnDisableall);
+		btnDisableall.setPreferredSize(new Dimension(100, 25));
 		
 		btnDisableall.addActionListener(new ActionListener() 
 		{
@@ -157,22 +165,13 @@ public class OntoUMLOptionsView extends JPanel {
 			gl_cbxPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_cbxPanel.createSequentialGroup()
 					.addGap(21)
-					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_cbxPanel.createSequentialGroup()
-							.addComponent(cbxOpenAnalyzer, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(gl_cbxPanel.createSequentialGroup()
-							.addComponent(cbxAntirigidity, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(gl_cbxPanel.createSequentialGroup()
-							.addComponent(cbxIdentityPrinciple, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(gl_cbxPanel.createSequentialGroup()
-							.addComponent(cbxWeakSupplementation, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
-						.addGroup(gl_cbxPanel.createSequentialGroup()
-							.addComponent(cbxRelatorConstraint, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
+					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(cbxOpenAnalyzer, GroupLayout.PREFERRED_SIZE, 545, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxAntirigidity, GroupLayout.PREFERRED_SIZE, 545, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxIdentityPrinciple, GroupLayout.PREFERRED_SIZE, 545, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxWeakSupplementation, GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
+						.addComponent(cbxRelatorConstraint, GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_cbxPanel.setVerticalGroup(
 			gl_cbxPanel.createParallelGroup(Alignment.LEADING)
@@ -194,19 +193,26 @@ public class OntoUMLOptionsView extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		add(titlePanel, BorderLayout.NORTH);
 		
+		JLabel lblModel = new JLabel("Model Options : ");
+		lblModel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
 		GroupLayout gl_titlePanel = new GroupLayout(titlePanel);
 		gl_titlePanel.setHorizontalGroup(
 			gl_titlePanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_titlePanel.createSequentialGroup()
-					.addGap(24)
+					.addGap(26)
+					.addComponent(lblModel)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblEnforceAxioms)
-					.addContainerGap(86, Short.MAX_VALUE))
+					.addContainerGap(443, Short.MAX_VALUE))
 		);
 		gl_titlePanel.setVerticalGroup(
-			gl_titlePanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_titlePanel.createSequentialGroup()
+			gl_titlePanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_titlePanel.createSequentialGroup()
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(lblEnforceAxioms)
+					.addGroup(gl_titlePanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblModel)
+						.addComponent(lblEnforceAxioms))
 					.addContainerGap())
 		);
 		titlePanel.setLayout(gl_titlePanel);

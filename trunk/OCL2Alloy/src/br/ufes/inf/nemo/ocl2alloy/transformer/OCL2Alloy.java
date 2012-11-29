@@ -75,8 +75,7 @@ public class OCL2Alloy {
 				succeeds=false; 
 			}			
 		}
-		
-		if (succeeds) log += "\nTransforming OCL constraints... \nExecuted succesfully.";
+				
 		return result;
 	}
 	

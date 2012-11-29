@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.move.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -11,7 +10,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
+import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
 
 import br.ufes.inf.nemo.move.mvc.model.OCLOptionsModel;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLOptionsModel;
@@ -19,6 +19,7 @@ import br.ufes.inf.nemo.move.mvc.view.OCLOptionsView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLOptionsView;
 import br.ufes.inf.nemo.ocl2alloy.options.OCLOptions;
 import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
+import javax.swing.border.EmptyBorder;
 
 /**
  * @author John Guerson
@@ -37,6 +38,7 @@ public class OptionsDialog extends JDialog {
 	private JButton btnOk;	
 	private JButton btnCancel;	
 	private JPanel btnpanel;
+	private JTabbedPane tabbedPane;
 	
 	/**
 	 * Launch the Dialog.
@@ -97,9 +99,10 @@ public class OptionsDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(OptionsDialog.class.getResource("/resources/br/ufes/inf/nemo/move/options.png")));
 		setTitle("Options");
-		setSize(new Dimension(800, 349));
+		setSize(new Dimension(611, 349));
 		
-		btnOk = new JButton("OK");		
+		btnOk = new JButton("OK");	
+		btnOk.setPreferredSize(new Dimension(100, 25));
 		btnOk.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -109,6 +112,7 @@ public class OptionsDialog extends JDialog {
        	});
 		
 		btnCancel = new JButton("Cancel");
+		btnCancel.setPreferredSize(new Dimension(100, 25));
 		btnCancel.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -117,21 +121,25 @@ public class OptionsDialog extends JDialog {
        		}
        	});
 		
-		btnpanel = new JPanel();	
-		btnpanel.setBorder(new LineBorder(Color.LIGHT_GRAY));
+		btnpanel = new JPanel();
 		btnpanel.setPreferredSize(new Dimension(100, 40));
-		
-		ontoumlOptView = new OntoUMLOptionsView();		
-		ontoumlOptView.setBorder(null);
-		oclOptView = new OCLOptionsView();
-		
-		getContentPane().setLayout(new BorderLayout(0, 0));
-		getContentPane().add(btnpanel, BorderLayout.SOUTH);
-		btnpanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		btnpanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		btnpanel.add(btnOk);
 		btnpanel.add(btnCancel);
-		getContentPane().add(ontoumlOptView, BorderLayout.WEST);
-		getContentPane().add(oclOptView);		
+		
+		ontoumlOptView = new OntoUMLOptionsView();		
+		ontoumlOptView.setBorder(new EmptyBorder(0, 0, 0, 0));
+		oclOptView = new OCLOptionsView();
+		
+		tabbedPane = new JTabbedPane();		
+		tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		tabbedPane.setBackground(UIManager.getColor("Panel.background"));
+		tabbedPane.add(ontoumlOptView,"OntoUML");
+		tabbedPane.add(oclOptView,"OCL");
+		
+		getContentPane().setLayout(new BorderLayout(0, 0));		
+		getContentPane().add(btnpanel, BorderLayout.SOUTH);		
+		getContentPane().add(tabbedPane, BorderLayout.WEST);				
 	}
 			
 	public void OkActionPerformed(ActionEvent event)
