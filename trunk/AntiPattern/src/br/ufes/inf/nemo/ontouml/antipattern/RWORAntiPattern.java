@@ -68,7 +68,7 @@ public class RWORAntiPattern {
 		ArrayList<Object> saida, mediations = new ArrayList<>();
 		Combination comb1;
 							
-		relatorName=mapper.getName(relator);
+		relatorName=mapper.getAlias(relator);
 		
 		predicateName = "exclusiveRole_"+relatorName;
 		
@@ -86,7 +86,7 @@ public class RWORAntiPattern {
         
 		while (comb1.hasNext()) {
             saida = comb1.next();
-            rules+="#(x.(w."+mapper.getName((PackageableElement)saida.get(0))+") & x.(w."+mapper.getName((PackageableElement)saida.get(1))+")) = 0";
+            rules+="#(x.(w."+mapper.getAlias((PackageableElement)saida.get(0))+") & x.(w."+mapper.getAlias((PackageableElement)saida.get(1))+")) = 0";
             
             if(comb1.hasNext())
             	rules+=" and ";
@@ -103,7 +103,7 @@ public class RWORAntiPattern {
 		ArrayList<Object> saida, mediations = new ArrayList<>();
 		Combination comb1;
 							
-		relatorName=mapper.getName(relator);
+		relatorName=mapper.getAlias(relator);
 		
 		predicateName = "nonExclusiveRole_"+relatorName;
 		
@@ -121,7 +121,7 @@ public class RWORAntiPattern {
         
 		while (comb1.hasNext()) {
             saida = comb1.next();
-            rules+="#(x.(w."+mapper.getName((PackageableElement)saida.get(0))+") & x.(w."+mapper.getName((PackageableElement)saida.get(1))+")) > 0";
+            rules+="#(x.(w."+mapper.getAlias((PackageableElement)saida.get(0))+") & x.(w."+mapper.getAlias((PackageableElement)saida.get(1))+")) > 0";
             
             if(comb1.hasNext())
             	rules+=" or ";
@@ -138,7 +138,7 @@ public class RWORAntiPattern {
 		Combination comb1;
 		ArrayList<Mediation> output;
 		
-		relatorName=mapper.getName(relator);
+		relatorName=mapper.getAlias(relator);
 		
 		predicateName = "MultipleExclusiveRole_"+relatorName;
 		rules = "#"+relatorName+">="+cardinality;
@@ -155,7 +155,7 @@ public class RWORAntiPattern {
 				rules += "\n\tall w:World | all x:w."+relatorName+" | ";
 				while(comb1.hasNext()){
 					output = comb1.next();
-					rules+="#(x.(w."+mapper.getName(output.get(0))+") & x.(w."+mapper.getName(output.get(1))+")) = 0";
+					rules+="#(x.(w."+mapper.getAlias(output.get(0))+") & x.(w."+mapper.getAlias(output.get(1))+")) = 0";
 					
 					if(comb1.hasNext())
 	            		rules += " and ";

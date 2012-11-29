@@ -84,12 +84,12 @@ public class RSAntiPattern {
 		String predicate, rules, name = new String();
 		String generalName, specificName, specificSourceName, specificTargetName, generalSourceName, generalTargetName;
 		
-		generalName = mapper.getName(general);
-		specificName = mapper.getName(specific);
-		specificSourceName = mapper.getName(specificSource);
-		specificTargetName = mapper.getName(specificTarget);
-		generalSourceName = mapper.getName(generalSource);
-		generalTargetName = mapper.getName(generalTarget);
+		generalName = mapper.getAlias(general);
+		specificName = mapper.getAlias(specific);
+		specificSourceName = mapper.getAlias(specificSource);
+		specificTargetName = mapper.getAlias(specificTarget);
+		generalSourceName = mapper.getAlias(generalSource);
+		generalTargetName = mapper.getAlias(generalTarget);
 		
 		if(type==SUBSET)
 			name = "subset";

@@ -168,35 +168,35 @@ public class BaseTransformer {
 		{			
 			if (pe instanceof ObjectClass) 
 			{
-				objectNamesList.add(ontoparser.getName(pe));
+				objectNamesList.add(ontoparser.getAlias(pe));
 
 				if((pe instanceof Kind) || (pe instanceof Collective) || (pe instanceof Quantity))
 				{
-					subsortalDisjNamesList.add(ontoparser.getName(pe));
+					subsortalDisjNamesList.add(ontoparser.getAlias(pe));
 				}
 			}
 			if (pe instanceof MomentClass) 
 			{
-				propertyNamesList.add(ontoparser.getName(pe));
+				propertyNamesList.add(ontoparser.getAlias(pe));
 				
 				// all Properties without fathers are naturally disjoint, 
 				// which means that multiple inheritance between Properties isn't allowed.
 				
 				if(((MomentClass)pe).getGeneralization().size() == 0)
 				{
-					propertyDisjNamesList.add(ontoparser.getName(pe));
+					propertyDisjNamesList.add(ontoparser.getAlias(pe));
 				}
 			}
 			if (pe instanceof DataType && !(pe instanceof PrimitiveType) ) 
 			{
-				datatypeNamesList.add(ontoparser.getName(pe));
+				datatypeNamesList.add(ontoparser.getAlias(pe));
 				
 				// all dataTypes without fathers are naturally disjoint, 
 				// which means that multiple inheritance between dataTypes isn't allowed.
 				
 				if(((DataType)pe).getGeneralization().size() == 0)
 				{
-					datatypeDisjNamesList.add(ontoparser.getName(pe));
+					datatypeDisjNamesList.add(ontoparser.getAlias(pe));
 				}
 			}
 			

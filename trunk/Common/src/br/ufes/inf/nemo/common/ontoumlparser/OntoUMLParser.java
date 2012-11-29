@@ -1,23 +1,21 @@
 package br.ufes.inf.nemo.common.ontoumlparser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import br.ufes.inf.nemo.common.ontoumlparser.NameHandler;
-
-import br.ufes.inf.nemo.common.resource.ResourceUtil;
-
 import RefOntoUML.Association;
-import RefOntoUML.Classifier;
+import RefOntoUML.Class;
 import RefOntoUML.Generalization;
-import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
-import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 /**
  *  This class is used to read the model instance and to associate the Elements of the model 
@@ -29,20 +27,7 @@ public class OntoUMLParser {
 	/** Name of the RefOntoUML Model root. */
 	private String refmodelname;
 	
-	/** Associate the Packageable Elements of the model with their modified names. */
-	private HashMap<PackageableElement,String> elementsMap;
-	
-	/** Associate the Properties of the model (AssociationEnds) with their modified names. */
-	private HashMap<Property,String> assocEndMap;
-	
-	/** Associate the Generalizations of the model with their modified names. */
-	private HashMap<Generalization,String> generalsMap;
-	
-	/** Performs modification on model name. */
-	private NameHandler h1;
-	
-	/** Performs modifications on names. */
-	private NameHandler h2;
+	private HashMap<EObject,ParsingElement> elementHash; 
 	
 	/**
 	 * Constructor.
@@ -51,16 +36,16 @@ public class OntoUMLParser {
 	 */	 
 	public OntoUMLParser(RefOntoUML.Package refmodel)
 	{
-		assocEndMap = new HashMap<Property,String>();
-		elementsMap = new HashMap<PackageableElement,String>();
-		generalsMap = new HashMap<Generalization,String>();
+			
+		elementHash = new HashMap<EObject,ParsingElement>();
 		
-		h1 = new NameHandler();
+		NameHandler h1 = new NameHandler();
 		this.refmodelname = h1.treatName(refmodel.getName(),refmodel.getClass().toString());
 		
-		h2 = new NameHandler();
-		initializeHashMaps(refmodel);
+		NameHandler h2 = new NameHandler();
+		initializeElementList(refmodel, h2);
 	}
+	
 	
 	/**
 	 * Constructor.
@@ -71,17 +56,15 @@ public class OntoUMLParser {
 	public OntoUMLParser(String refontoumlPath) throws IOException
 	{
 		Resource resource = ResourceUtil.loadReferenceOntoUML(refontoumlPath);
-		RefOntoUML.Model refmodel = (RefOntoUML.Model)resource.getContents().get(0);
+		Package refmodel = (Package)resource.getContents().get(0);
 		
-		assocEndMap = new HashMap<Property,String>();
-		elementsMap = new HashMap<PackageableElement,String>();
-		generalsMap = new HashMap<Generalization,String>();
+		elementHash = new HashMap<EObject,ParsingElement>();
 		
-		h1 = new NameHandler();
+		NameHandler h1 = new NameHandler();
 		this.refmodelname = h1.treatName(refmodel.getName(),refmodel.getClass().toString());
 		
-		h2 = new NameHandler();
-		initializeHashMaps(refmodel);
+		NameHandler h2 = new NameHandler();
+		initializeElementList(refmodel, h2);
 	}	
 
 	/** 
@@ -89,14 +72,13 @@ public class OntoUMLParser {
 	 * 
 	 * @param rootpack: Usually the root of .refontouml model (RefOntoUML.Model).
 	 */
-	private void initializeHashMaps (PackageableElement rootpack) 
+	private void initializeElementList (PackageableElement rootpack, NameHandler h2) 
 	{
 		for(PackageableElement p : ((Package) rootpack).getPackagedElement())
 		{
+			add2ElementHash(p, h2);
 			if(p instanceof Package) 
-				initializeHashMaps(p);
-			else 
-				addToHashMaps(p);
+				initializeElementList(p, h2);
 		}
 	}		
 	
@@ -105,62 +87,94 @@ public class OntoUMLParser {
 	 * 
 	 * @param pe: A Packageable Element of the ontouml model.
 	 */
-	private void addToHashMaps(PackageableElement pe)
+	private void add2ElementHash(PackageableElement pe, NameHandler h2)
 	{
-		if ((pe instanceof Classifier && !(pe instanceof PrimitiveType)) || (pe instanceof GeneralizationSet))
-//		if (pe instanceof Class || pe instanceof Association || ((pe instanceof DataType) && !(pe instanceof PrimitiveType)) || (pe instanceof GeneralizationSet)) 
-		{
-			if(pe instanceof Association)
-			{
-				Property property0 = ((Association)pe).getMemberEnd().get(0);				
-				Property property1 = ((Association)pe).getMemberEnd().get(1);
-
-				if( (property0.getName() != null) && !(property0.getName().equals("")) )
-				{
-					assocEndMap.put(property0, h2.treatName(property0.getName(),property0.getClass().toString()));
-				}
-				if( (property1.getName() != null) && !(property1.getName().equals("")) )
-				{
-					assocEndMap.put(property1, h2.treatName(property1.getName(),property1.getClass().toString()));
-				}
-			}
+		ParsingElement e;
+		
+		if(pe instanceof Class){
+			e = new ParsingElement(pe, true, h2.treatName(pe.getName(),pe.getClass().toString()));
+			this.elementHash.put(pe,e);
 			
-			elementsMap.put(pe,h2.treatName(pe.getName(),pe.getClass().toString()));			
+			for (Generalization g : ((Class)pe).getGeneralization()) {
+				e = new ParsingElement(g, true, h2.treatName("",g.getClass().toString()));
+				this.elementHash.put(g,e);
+			}
 		}
 		
-		if (pe instanceof Classifier && !((Classifier) pe).getGeneralization().isEmpty())
-		{
-			for (Generalization gen : ((Classifier) pe).getGeneralization())
-			{
-				generalsMap.put(gen, h2.treatName(gen.toString(),gen.getClass().toString()));
-			}
+		else if(pe instanceof Association){
+			e = new ParsingElement(pe, true, h2.treatName(pe.getName(),pe.getClass().toString()));
+			this.elementHash.put(pe,e);
+			
+			Property property0 = ((Association)pe).getMemberEnd().get(0);				
+			Property property1 = ((Association)pe).getMemberEnd().get(1);
+
+			e = new ParsingElement(property0, true, h2.treatName(property0.getName(),property0.getClass().toString()));
+			this.elementHash.put(property0,e);
+			
+			e = new ParsingElement(property1, true, h2.treatName(property1.getName(),property1.getClass().toString()));
+			this.elementHash.put(property1,e);
 		}
-	}	
+		
+		else{
+			e = new ParsingElement(pe, true, h2.treatName(pe.getName(),pe.getClass().toString()));
+			this.elementHash.put(pe,e);
+		}
+		
+	}
 	
+	public void selectElements(ArrayList<EObject> list){
+		for (ParsingElement pe : elementHash.values()) {
+			if(list.contains(pe.getElement())){
+				pe.setSelected(true);
+			}
+			else
+				pe.setSelected(false);
+		}
+	}
 	
 	public Set<Property> getProperties()
 	{
-		return assocEndMap.keySet();
+		Set<Property> list = new HashSet<Property>(); 
+		
+		for (EObject o : elementHash.keySet()) {
+			if(o instanceof Property)
+				list.add((Property) o);
+		}
+		
+		return list;
 	}
 	
 	public Set<PackageableElement> getPackageableElements()
 	{
-		return elementsMap.keySet();
+		Set<PackageableElement> list = new HashSet<PackageableElement>(); 
+		
+		for (EObject o : elementHash.keySet()) {
+			if(o instanceof PackageableElement)
+				list.add((PackageableElement) o);
+		}
+		
+		return list;
 	}
 	
 	public Set<Generalization> getGeneralizations()
 	{
-		return generalsMap.keySet();
+		Set<Generalization> list = new HashSet<Generalization>(); 
+		
+		for (EObject pe : elementHash.keySet()) {
+			if(pe instanceof Generalization)
+				list.add((Generalization) pe);
+		}
+		
+		return list;
 	}
 	
-	public String getName(PackageableElement elem)
+	public String getAlias(EObject elem)
 	{
-		return elementsMap.get(elem);
+		return elementHash.get(elem).getAlias();
 	}
 	
-	public String getName(Property prop)
-	{
-		return assocEndMap.get(prop);
+	public Boolean isSelected (EObject elem) {
+		return elementHash.get(elem).getSelected();
 	}
 	
 	public String getModelName()

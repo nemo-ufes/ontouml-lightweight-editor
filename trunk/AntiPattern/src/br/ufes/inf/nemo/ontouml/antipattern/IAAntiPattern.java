@@ -70,8 +70,8 @@ public class IAAntiPattern {
 		String predicate="", rules, predicateName, sourceName, associationName, childName;
 		
 		//maps to the names of the objects in alloy
-		associationName = mapper.getName(association);
-		sourceName = mapper.getName(this.source);
+		associationName = mapper.getAlias(association);
+		sourceName = mapper.getAlias(this.source);
 		
 		//builds the basic structure for the generated predicate
 		predicateName = "imprecise_abstraction_"+sourceName+"_"+associationName;
@@ -80,7 +80,7 @@ public class IAAntiPattern {
 		
 		if(subtypes!=null && subtypes.size()>0 && targetChildren.containsAll(subtypes)){
 			for (int n=0;n<targetChildren.size();n++){
-				childName = mapper.getName(targetChildren.get(n));
+				childName = mapper.getAlias(targetChildren.get(n));
             	
 				if (subtypes.contains(targetChildren.get(n))){
 	            	predicateName += "_"+childName;
@@ -109,8 +109,8 @@ public class IAAntiPattern {
 			String predicate="", rules, predicateName, targetName, associationName, childName;
 			
 			//maps to the names of the objects in alloy
-			associationName = mapper.getName(association);
-			targetName = mapper.getName(this.target);
+			associationName = mapper.getAlias(association);
+			targetName = mapper.getAlias(this.target);
 			
 			//builds the basic structure for the generated predicate
 			predicateName = "imprecise_abstraction_"+targetName+"_"+associationName;
@@ -119,7 +119,7 @@ public class IAAntiPattern {
 			
 			if(subtypes!=null && subtypes.size()>0 && sourceChildren.containsAll(subtypes)){
 				for (int n=0;n<sourceChildren.size();n++){
-					childName = mapper.getName(sourceChildren.get(n));
+					childName = mapper.getAlias(sourceChildren.get(n));
 	            	
 					if (subtypes.contains(sourceChildren.get(n))){
 		            	predicateName += "_"+childName;
@@ -151,18 +151,18 @@ public class IAAntiPattern {
 		
 		String associationName, sourceName, targetName;
 		ArrayList<String> sourceChildrenName, targetChildrenName;
-		associationName = mapper.getName(association);
-		sourceName = mapper.getName(this.source);
-		targetName = mapper.getName(this.target);
+		associationName = mapper.getAlias(association);
+		sourceName = mapper.getAlias(this.source);
+		targetName = mapper.getAlias(this.target);
 		
 		sourceChildrenName = new ArrayList<>();
 		for (Classifier c : this.sourceChildren) {
-			sourceChildrenName.add(mapper.getName(c));
+			sourceChildrenName.add(mapper.getAlias(c));
 		}
 		
 		targetChildrenName = new ArrayList<>();
 		for (Classifier c : this.targetChildren) {
-			targetChildrenName.add(mapper.getName(c));
+			targetChildrenName.add(mapper.getAlias(c));
 		}
 		
 		//Check if there are specializations on the source of the relation and also if the source upper cardinality is unlimited or greater then 1

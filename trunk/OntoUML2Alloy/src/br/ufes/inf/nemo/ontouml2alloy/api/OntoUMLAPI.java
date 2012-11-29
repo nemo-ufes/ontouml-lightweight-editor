@@ -133,7 +133,7 @@ public class OntoUMLAPI {
 					{
 						if (p.getType().getName().equals(r.getName()))
 						{
-							list.add(ontoparser.getName(pe));							
+							list.add(ontoparser.getAlias(pe));							
 						}
 					}
 				}
@@ -197,7 +197,7 @@ public class OntoUMLAPI {
 					{					
 						if (p.getType().equals(c))
 						{
-							list.add(ontoparser.getName(pe));							
+							list.add(ontoparser.getAlias(pe));							
 						}						
 					}
 				}

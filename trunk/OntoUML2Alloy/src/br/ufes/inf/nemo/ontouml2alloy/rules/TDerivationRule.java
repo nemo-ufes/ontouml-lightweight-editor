@@ -36,7 +36,7 @@ public class TDerivationRule {
 		{
 			if(prop.getType() instanceof MaterialAssociation)
 			{
-				vrMaterial.setVariable(ontoparser.getName(prop.getType()));
+				vrMaterial.setVariable(ontoparser.getAlias(prop.getType()));
 				material = (MaterialAssociation)prop.getType();
 			}
 		}		
@@ -88,12 +88,12 @@ public class TDerivationRule {
 			{
 				if(cont1 == 1)
 				{						
-					mediation1.setVariable(ontoparser.getName(med));
+					mediation1.setVariable(ontoparser.getAlias(med));
 					cont1++;						
 				}
 				else
 				{					
-					mediation2.setVariable(ontoparser.getName(med));						
+					mediation2.setVariable(ontoparser.getAlias(med));						
 					break;
 				}
 			}			

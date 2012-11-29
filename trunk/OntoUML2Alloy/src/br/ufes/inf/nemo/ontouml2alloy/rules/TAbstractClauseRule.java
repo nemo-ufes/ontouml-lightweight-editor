@@ -35,7 +35,7 @@ public class TAbstractClauseRule {
 			co.setOperator(CompareOperator.EQUAL_LITERAL);
 			
 			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(ontoparser.getName(c));
+			vr.setVariable(ontoparser.getAlias(c));
 			
 			co.setLeftExpression(vr);
 			
@@ -45,7 +45,7 @@ public class TAbstractClauseRule {
 				if(concretes.size() == 1) 
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(classifier));					
+					vr.setVariable(ontoparser.getAlias(classifier));					
 					co.setRightExpression(vr);
 					break;
 				}
@@ -53,14 +53,14 @@ public class TAbstractClauseRule {
 				{
 					bo.setOperator(BinaryOperator.UNION_LITERAL);
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(classifier));
+					vr.setVariable(ontoparser.getAlias(classifier));
 					bo.setLeftExpression(vr);
 					co.setRightExpression(bo);
 				}
 				if(cont > 1 && cont != concretes.size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(classifier));
+					vr.setVariable(ontoparser.getAlias(classifier));
 					bo.setRightExpression(factory.createBinaryOperation());
 					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
 					((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
@@ -69,7 +69,7 @@ public class TAbstractClauseRule {
 				if(cont == concretes.size())
 				{
 					vr = factory.createVariableReference();
-					vr.setVariable(ontoparser.getName(classifier));
+					vr.setVariable(ontoparser.getAlias(classifier));
 					bo.setRightExpression(vr);
 				}
 				cont++;

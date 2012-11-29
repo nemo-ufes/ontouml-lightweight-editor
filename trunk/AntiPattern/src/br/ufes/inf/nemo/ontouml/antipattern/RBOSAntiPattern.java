@@ -37,7 +37,7 @@ public class RBOSAntiPattern {
 		String predicate, rules, predicateName;
 		
 		String associationName;
-		associationName=mapper.getName(this.association);
+		associationName=mapper.getAlias(this.association);
 		
 		predicateName = "disjointParticipants_"+associationName;
 		rules = "some "+associationName+"\n\t";
@@ -54,7 +54,7 @@ public class RBOSAntiPattern {
 		String predicate, rules, predicateName;
 		
 		String associationName;
-		associationName=mapper.getName(this.association);
+		associationName=mapper.getAlias(this.association);
 		
 		predicateName = "overlappingParticipants_"+associationName;
 		rules = "some "+associationName+"\n\t";

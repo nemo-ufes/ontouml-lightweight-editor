@@ -76,8 +76,8 @@ public class STRAntiPattern extends Antipattern{
 		String predicate, rules, name;
 		
 		String associationName, typeName;
-		associationName = mapper.getName(this.association);
-		typeName = mapper.getName(this.type);
+		associationName = mapper.getAlias(this.association);
+		typeName = mapper.getAlias(this.type);
 		
 		name = "reflexive_"+associationName;
 		rules = "#" + associationName + ">" + cardinality;
@@ -94,7 +94,7 @@ public class STRAntiPattern extends Antipattern{
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.getName(this.association);
+		associationName = mapper.getAlias(this.association);
 		
 		name = "irreflexive_"+associationName;
 		
@@ -112,7 +112,7 @@ public class STRAntiPattern extends Antipattern{
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.getName(this.association);
+		associationName = mapper.getAlias(this.association);
 		name = "transitive_"+associationName;
 		
 		rules = "#" + associationName + ">" + cardinality; 
@@ -129,8 +129,8 @@ public class STRAntiPattern extends Antipattern{
 		String predicate, rules, name;
 		
 		String associationName, typeName;
-		associationName = mapper.getName(this.association);
-		typeName = mapper.getName(this.type);
+		associationName = mapper.getAlias(this.association);
+		typeName = mapper.getAlias(this.type);
 		
 		name = "instransitive_"+associationName;
 		rules = "#" + associationName + ">" + cardinality; 
@@ -147,7 +147,7 @@ public class STRAntiPattern extends Antipattern{
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.getName(this.association);
+		associationName = mapper.getAlias(this.association);
 		name = "symmetric_"+associationName;
 		
 		rules = "#" + associationName + ">" + cardinality; 
@@ -164,7 +164,7 @@ public class STRAntiPattern extends Antipattern{
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.getName(this.association);
+		associationName = mapper.getAlias(this.association);
 		name = "antisymmetric_"+associationName;
 		rules = "#" + associationName + ">" + cardinality;
 		rules += "\n\tall w:World | antisymmetric[w."+ associationName +"]";

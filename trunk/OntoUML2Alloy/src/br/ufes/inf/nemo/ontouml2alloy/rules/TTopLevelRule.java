@@ -62,12 +62,12 @@ public class TTopLevelRule {
 				ArrayList<String> exprList = new ArrayList<String>();
 				for(Classifier c: singleList) 
 				{
-					if (count>=1) exprList.add(ontoparser.getName(c));					
+					if (count>=1) exprList.add(ontoparser.getAlias(c));					
 					count++;
 				}
 				
 				ArrayList<String> paramList = new ArrayList<String>();
-				paramList.add(ontoparser.getName(singleList.get(0)));
+				paramList.add(ontoparser.getAlias(singleList.get(0)));
 				
 				if (exprList.size()>1) 
 				{
@@ -75,7 +75,7 @@ public class TTopLevelRule {
 					BinaryOperation bo = AlloyAPI.createUnionExpression(factory, exprList);
 					paramList.add(bo.toString());					
 				}else{
-					paramList.add(ontoparser.getName(singleList.get(1)));					
+					paramList.add(ontoparser.getAlias(singleList.get(1)));					
 				}						
 				
 				//add Top Level Disjoint Expression Rule to to the List
