@@ -2,31 +2,34 @@ package br.ufes.inf.nemo.move.mvc.model;
 
 import java.io.IOException;
 
-import org.eclipse.ocl.ParserException;
-
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.ocl2alloy.parser.OCLParser;
 
 /**
- * This class representes an OCL Model.
+ * This class represents an OCL Model.
  * 
  * @author John Guerson
  */
 
 public class OCLModel {
 		
+	/** All OCL Constraints in one single String. This is our "model.*/
 	private String oclstring;
+	
+	/** Absolute path of ocl document. */
 	private String oclpath;	
+	
+	/** OCL Parser . */
 	private OCLParser oclparser;
 		
 	/**
-	 * Constructor.
+	 * Creates an empty ocl model.
 	 */
-	public OCLModel()
-	{
+	public OCLModel() {}
 		
-	}
-		
+	/**
+	 * Clear this model.
+	 */
 	public void clearModel()
 	{		
 		oclstring="";
@@ -35,7 +38,7 @@ public class OCLModel {
 	}
 
 	/**
-	 * Set OCL Constraints from PATH or CONTENT.
+	 * Set OCL Constraints from a file Path or string Content.
 	 * 
 	 * If type="PATH", OCL will be loaded from a Path file, 
 	 * else if type="CONTENT", OCL will be loaded from OCL String content.
@@ -57,52 +60,33 @@ public class OCLModel {
 	}
 	
 	/**
-	 * Set Parser.
+	 * Set OCL Parser.
 	 * 
 	 * @param oclparser
 	 */
-	public void setParser(OCLParser oclparser)
-	{
-		this.oclparser = oclparser;
-	}
-		
+	public void setParser(OCLParser oclparser) { this.oclparser = oclparser; }
+	
+	/** Get OCL single String containing all Constraints. */
+	public String getOCLString() { return oclstring; }
+	
 	/**
-	 * Parse.
+	 * Set OCL single String containing all Constraints.
 	 * 
-	 * @param refmodel: RefOntoUML.Package
-	 * @param umlPath^UML Model Path
+	 * @param text
 	 */
-	public void parse(OntoUMLModel ontoumlmodel, UMLModel umlmodel) throws IOException, ParserException
-	{
-		if (oclstring !=null)
-		{
-			this.oclparser = new OCLParser(oclstring,ontoumlmodel.getOntoUMLModelInstance(), umlmodel.getUMLPath());			
-		}
-	}	
-
-	public String getOCLString() 
-	{ 
-		return oclstring; 
-	}
+	public void setOCLString(String text) { oclstring = text; }
 	
-	public void setOCLString(String text)
-	{
-		oclstring = text;
-	}
+	/** Get Absolute path of OCL document.	*/
+	public String getOCLPath() { return oclpath; }
 	
-	public String getOCLPath() 
-	{ 
-		return oclpath; 
-	}
-	
-	public void setOCLPath (String path)
-	{
-		oclpath = path;
-	}
+	/**
+	 * Set Absolute path of OCL document.
+	 * 
+	 * @param path
+	 */
+	public void setOCLPath (String path) { oclpath = path; }
 		
-	public OCLParser getOCLParser ()
-	{
-		return oclparser;
-	}
+	/** Get OCL Parser. */
+	public OCLParser getOCLParser () { return oclparser; }
 }
 

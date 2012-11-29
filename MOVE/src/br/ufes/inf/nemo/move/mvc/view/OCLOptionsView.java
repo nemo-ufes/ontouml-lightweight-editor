@@ -23,6 +23,9 @@ import org.eclipse.uml2.uml.Constraint;
 import br.ufes.inf.nemo.move.mvc.model.OCLOptionsModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.util.SingleConstraintPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Font;
 
 /**
  * @author John Guerson
@@ -42,6 +45,7 @@ public class OCLOptionsView extends JPanel {
 	private JButton btnDisableAll;
 	private JButton btnEnableAll;
 	private JLabel lblYouCanAlso;
+	private JLabel lblConstraints;
 	
 	public OCLOptionsView (OCLOptionsModel oclOptModel,TheFrame frame)
 	{		
@@ -72,7 +76,7 @@ public class OCLOptionsView extends JPanel {
 		
 		for(Constraint ct : oclOptModel.getOCLOptions().getConstraintList())
 		{
-			SingleConstraintPanel singleConstraint = new SingleConstraintPanel(ct,"<<"+oclOptModel.getOCLOptions().getConstraintType(ct)+">>  ");						
+			SingleConstraintPanel singleConstraint = new SingleConstraintPanel(ct,oclOptModel.getOCLOptions().getConstraintType(ct));						
 			singleConstraintsListPanel.add(singleConstraint);
 			ctpanel.add(singleConstraint);
 		}		
@@ -133,6 +137,7 @@ public class OCLOptionsView extends JPanel {
 	 */
 	public OCLOptionsView() 
 	{
+		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setPreferredSize(new Dimension(591,179));
 		setLayout(new BorderLayout(0,0));
 		
@@ -158,29 +163,38 @@ public class OCLOptionsView extends JPanel {
 		
 		add(introPanel,BorderLayout.NORTH);
 		
-		lblYouCanAlso = new JLabel("You can also check and simulate constraints against the model...");
+		lblYouCanAlso = new JLabel("You can also check and simulate constraints against the model.");
 		lblYouCanAlso.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		lblConstraints = new JLabel("Constraints Options : ");
+		lblConstraints.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GroupLayout gl_introPanel = new GroupLayout(introPanel);
 		gl_introPanel.setHorizontalGroup(
 			gl_introPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_introPanel.createSequentialGroup()
 					.addGap(20)
+					.addComponent(lblConstraints)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblYouCanAlso)
-					.addContainerGap(262, Short.MAX_VALUE))
+					.addContainerGap(205, Short.MAX_VALUE))
 		);
 		gl_introPanel.setVerticalGroup(
 			gl_introPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_introPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblYouCanAlso)
+					.addGroup(gl_introPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblYouCanAlso)
+						.addComponent(lblConstraints))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		introPanel.setLayout(gl_introPanel);
 		add(scrollPane,BorderLayout.CENTER);
 		add(btnPanel,BorderLayout.SOUTH);
 		
-		btnEnableAll = new JButton("Enable All");		
+		btnEnableAll = new JButton("Enable All");	
+		btnEnableAll.setPreferredSize(new Dimension(100, 25));
 		btnDisableAll = new JButton("Disable All");
+		btnDisableAll.setPreferredSize(new Dimension(100, 25));
 		
 		btnEnableAll.addActionListener(new ActionListener() 
 		{

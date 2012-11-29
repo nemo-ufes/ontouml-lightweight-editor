@@ -98,7 +98,7 @@ public class AntiPatternListDialog extends JDialog {
 	public AntiPatternListDialog() 
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/move/search-24x24.png")));
-		setTitle("Identify AntiPattern");
+		setTitle("Search AntiPatterns");
 		setBounds(100, 100, 332, 256);
 		
 		getContentPane().setLayout(new BorderLayout());
@@ -173,7 +173,7 @@ public class AntiPatternListDialog extends JDialog {
 	 */
 	public void createIdentifyButton(JPanel buttonPane)
 	{
-		identifyButton = new JButton("Identify");
+		identifyButton = new JButton("Search");
 		buttonPane.add(identifyButton);		
 		
 		identifyButton.addActionListener(new ActionListener() 
@@ -191,7 +191,7 @@ public class AntiPatternListDialog extends JDialog {
 	 */
 	public void createEnableallButton (JPanel buttonPane)
 	{
-		JButton btnEnableall = new JButton("EnableAll");
+		JButton btnEnableall = new JButton("Enable All");
 		buttonPane.add(btnEnableall);
 				
 		btnEnableall.addActionListener(new ActionListener() 
@@ -214,7 +214,7 @@ public class AntiPatternListDialog extends JDialog {
 	 */
 	public void createDisableallButton (JPanel buttonPane)
 	{
-		JButton btnDisableall = new JButton("DisableAll");
+		JButton btnDisableall = new JButton("Disable All");
 		buttonPane.add(btnDisableall);
 		
 		btnDisableall.addActionListener(new ActionListener() 
@@ -346,10 +346,10 @@ public class AntiPatternListDialog extends JDialog {
 		if (rworListModel.size()>0) result += "RWOR AntiPattern : "+rworListModel.size()+" items found.\n";
 		if (iaListModel.size()>0) result += "IA AntiPattern : "+iaListModel.size()+" items found.\n";
 				
-		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No AntiPatterns Found.","Identifying AntiPatterns....",JOptionPane.INFORMATION_MESSAGE); 
+		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No AntiPatterns Found.","Search AntiPatterns",JOptionPane.INFORMATION_MESSAGE); 
 		else 
 		{			
-			JOptionPane.showMessageDialog(this,result,"Identifying AntiPatterns....",JOptionPane.INFORMATION_MESSAGE);			
+			JOptionPane.showMessageDialog(this,result,"Search AntiPatterns",JOptionPane.INFORMATION_MESSAGE);			
 			
 			AntiPatternListModel antipatternListModel = new AntiPatternListModel
 			(

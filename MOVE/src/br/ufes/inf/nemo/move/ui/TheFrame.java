@@ -307,7 +307,7 @@ public class TheFrame extends JFrame {
 	/**
 	 * Parse OCL.
 	 */
-	public void ParseOCL()
+	public void ParseOCL(boolean showSuccesfullyMessage)
 	{
 		try {			
 			
@@ -315,12 +315,15 @@ public class TheFrame extends JFrame {
 			
 			oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));
 			
-			console.write(oclmodel.getOCLParser().getDetails());			
+			console.write(oclmodel.getOCLParser().getDetails());
 			
-			JOptionPane.showMessageDialog(
-				oclview.getTheFrame(),"Your Constraints are Syntactically Correct !\n","Parse",JOptionPane.INFORMATION_MESSAGE,
-				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-36x36.png"))
-			);			
+			if(showSuccesfullyMessage)
+			{
+				JOptionPane.showMessageDialog(
+					oclview.getTheFrame(),"Your Constraints are Syntactically Correct !\n","Parse",JOptionPane.INFORMATION_MESSAGE,
+					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-36x36.png"))
+				);
+			}
     	}catch(SemanticException e2){
 			JOptionPane.showMessageDialog(
 				oclview.getTheFrame(),e2.getMessage(),"Semantic",JOptionPane.ERROR_MESSAGE,

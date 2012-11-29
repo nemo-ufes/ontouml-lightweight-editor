@@ -169,7 +169,7 @@ public class OCLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-    		oclview.getTheFrame().ParseOCL();
+    		oclview.getTheFrame().ParseOCL(true);
 	    }
 	 }	 
 }
