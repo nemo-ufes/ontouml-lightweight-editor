@@ -220,19 +220,20 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * This method set the selection of every ontoUML Element according to the list of selected elements.
+	 * Select this elements in the model. If 'unselectOthers' is true, the other elements are unselected (i.e. selected=false). 
+	 * Otherwise, if 'unselectOther' is false, then nothing is made with the others elements, they maybe selected or not. i.e. selected = true or false.
 	 * 
 	 * @param list
 	 */
-	public void setSelection(ArrayList<EObject> list)
+	public void selectThisElements(ArrayList<EObject> selected, boolean unselectOthers)
 	{
 		for (ParsingElement pe : elementsHash.values()) 
 		{
-			if(list.contains(pe.getElement())) pe.setSelected(true);
-			else pe.setSelected(false);
+			if(selected.contains(pe.getElement())) pe.setSelected(true);
+			else if (unselectOthers) pe.setSelected(false);
 		}
 	}
-	
+		
 	/**
 	 * This method selects all Elements of the model.
 	 */
@@ -497,26 +498,114 @@ public class OntoUMLParser {
 		return false;
 	}
 	
-	/**
-	 * Recreates the model keeping only the selected classes.
+	/** 
 	 * 
-	 * @param root
-	 * @param log
-	 * @param includeHierarchy
-	 * @param copier
-	 * @param selected
+	 * Select elements that should be selected by the user. 
+	 * 
+	 * Guarantees that there will be no null pointer in the generalization,
+	 * by including the general and the specific to the list of selected elements.
+	 * Guarantee that the types related in a association are included in the new model. 
+	 * 
 	 * @return
 	 */
-	public Package recreatePackageFromSelectedClasses (String log, boolean includeHierarchy, Copier copier)
+	private ArrayList<EObject> completeSelections()
+	{
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
+	
+		for (ParsingElement pe : elementsHash.values()) 
+		{
+			if(pe.getElement() instanceof Generalization)
+			{
+				Generalization g = (Generalization) pe.getElement();
+				// general
+				if (!isSelected(g.getGeneral()) && !objectsToAdd.contains(g.getGeneral()) ) 
+				{
+					objectsToAdd.add(g.getGeneral());
+					System.out.println(g.getGeneral().getName()+" added\n.");					
+				}
+				//specific
+				if (!isSelected(g.getSpecific()) && !objectsToAdd.contains(g.getSpecific()) ) 
+				{
+					objectsToAdd.add(g.getSpecific());
+					System.out.println(g.getSpecific().getName()+" added\n.");
+				}
+			}
+			if(pe.getElement() instanceof Association) 
+			{
+				Association a = (Association)pe.getElement();
+				Type source = a.getMemberEnd().get(0).getType();
+				Type target = a.getMemberEnd().get(1).getType();
+				//source
+				if(!isSelected(source) && !objectsToAdd.contains(source))
+				{
+					objectsToAdd.add(source);
+					System.out.println(source.getName()+" added.\n");
+				}
+				//target
+				if(!isSelected(target) && !objectsToAdd.contains(target))
+				{
+					objectsToAdd.add(target);
+					System.out.println(target.getName()+" added.\n");
+				}								
+			}
+		}
+		// add this elements to selection...
+		selectThisElements(objectsToAdd,false);
+		
+		return objectsToAdd;
+	}
+	
+	/**
+	 * Select elements that should be selected by the user. 
+	 * 
+	 * Guarantees that there will be no null pointer in the generalization,
+	 * by including the general and the specific to the list of selected elements.
+	 * Guarantee that the types related in a association are included in the new model. 
+	 * 
+	 * And if the option 'includeHierarchy' was true, it includes 
+	 * the hierarchy for every type class that is selected.
+	 * 
+	 * @param includeHierarchy
+	 */
+	public ArrayList<EObject> completeSelections(boolean includeHierarchy)
 	{		
+		ArrayList<EObject> objectsAdded = completeSelections();
+		
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
+		if (includeHierarchy)
+		{
+			for (EObject o : getElements()) 
+			{
+				if (o instanceof Class)
+				{
+					for (Classifier c : ((Classifier)o).allParents()) 
+					{
+						if(!isSelected(c) && !objectsToAdd.contains(c))
+						{
+							objectsToAdd.add(c);
+							System.out.println(c.getName()+" added.\n");
+						}
+					}
+				}
+			}
+			// add this elements to selection...
+			selectThisElements(objectsToAdd,false);
+		}
+		ArrayList<EObject> allObjectsAdded = new ArrayList<EObject>();
+		allObjectsAdded.addAll(objectsAdded);
+		allObjectsAdded.addAll(objectsToAdd);
+		
+		return allObjectsAdded;
+	}
+	
+	/*=====================================================================*/
+		
+	public ArrayList<EObject> getSelectedResolvingLostReferences (String log, boolean includeHierarchy)
+	{
+		ArrayList<EObject> class_add_list = new ArrayList<>();		
 		ArrayList<EObject> selected = new ArrayList<EObject>();
 		
-		selected.addAll(this.getElements());
-		
-		ArrayList<EObject> class_add_list = new ArrayList<>();
-		ArrayList<EObject> selected_copy = new ArrayList<EObject>();
-		
-		Package pack_copy;
+		selected.addAll(getElements());		
 		
 		for (EObject o : selected)
 		{
@@ -562,15 +651,14 @@ public class OntoUMLParser {
 				{
 					class_add_list.add(target);
 					log += target.getName()+" added.\n";
-				}
-								
+				}								
 			}
 		}
 		
 		selected.addAll(class_add_list);
 		class_add_list = new ArrayList<>();
 		
-		//if the option to include hierarchy for everytype class is selected.
+		//if the option to include hierarchy for every type class is selected.
 		if (includeHierarchy)
 		{
 			for (EObject o : selected) 
@@ -589,6 +677,25 @@ public class OntoUMLParser {
 			}
 			selected.addAll(class_add_list);
 		}
+		return selected;
+	}	
+	
+	/**
+	 * Recreates the model keeping only the selected classes.
+	 * 
+	 * @param root
+	 * @param log
+	 * @param includeHierarchy
+	 * @param copier
+	 * @param selected
+	 * @return
+	 */
+	public Package recreatePackageFromSelectedClasses (String log, boolean includeHierarchy, Copier copier)
+	{		
+		Package pack_copy;
+		ArrayList<EObject> selected_copy = new ArrayList<EObject>();
+		
+		ArrayList<EObject> selected = getSelectedResolvingLostReferences(log,includeHierarchy);
 		
 		pack_copy = (Package) copier.copy(model);
 		copier.copyReferences();

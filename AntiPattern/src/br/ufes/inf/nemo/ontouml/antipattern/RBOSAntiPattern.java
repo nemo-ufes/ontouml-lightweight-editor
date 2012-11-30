@@ -179,7 +179,7 @@ public class RBOSAntiPattern extends Antipattern{
 		selection.add(supertype);
 		selection.add(association);
 		
-		parser.setSelection(selection);
+		parser.selectThisElements(selection,true);
 		
 	}
 

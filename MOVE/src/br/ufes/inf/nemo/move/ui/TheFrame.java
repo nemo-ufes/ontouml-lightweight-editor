@@ -284,11 +284,12 @@ public class TheFrame extends JFrame {
 			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;	
 			
 			List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());   			
-   			ontoumlmodel.getOntoUMLParser().setSelection((ArrayList<EObject>)selected);
+   			ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);
+   			ontoumlmodel.getOntoUMLParser().completeSelections(false);
    			
 			alloymodel.setAlloyModel(ontoumlmodel,ontoumlOptModel);
 			
-		} catch (Exception e) {			
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this,e.getLocalizedMessage(),"Error - Transforming OntoUML into Alloy",JOptionPane.ERROR_MESSAGE);					
 			e.printStackTrace();
 		}

@@ -280,6 +280,6 @@ public class RSAntiPattern extends Antipattern{
 		selection.add(specificTarget);
 		selection.addAll(specificTarget.allParents());
 		
-		parser.setSelection(selection);
+		parser.selectThisElements(selection,true);
 	}
 }

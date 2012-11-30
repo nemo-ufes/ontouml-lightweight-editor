@@ -210,7 +210,7 @@ public class STRAntiPattern extends Antipattern{
 		selection.add(type);
 		selection.add(association);
 		
-		parser.setSelection(selection);
+		parser.selectThisElements(selection,true);
 	}
 	
 

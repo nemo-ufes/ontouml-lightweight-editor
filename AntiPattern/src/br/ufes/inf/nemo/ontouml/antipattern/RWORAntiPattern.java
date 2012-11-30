@@ -310,7 +310,7 @@ public class RWORAntiPattern extends Antipattern{
 		selection.add(relator);
 		selection.add(supertype);
 		
-		parser.setSelection(selection);
+		parser.selectThisElements(selection,true);
 		
 	}
 	
