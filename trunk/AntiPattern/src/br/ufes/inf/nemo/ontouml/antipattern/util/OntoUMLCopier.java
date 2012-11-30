@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.ontouml.antipattern.util;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import RefOntoUML.Association;
-import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Type;
 

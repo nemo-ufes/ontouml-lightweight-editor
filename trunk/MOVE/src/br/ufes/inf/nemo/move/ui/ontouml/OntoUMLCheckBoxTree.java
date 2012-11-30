@@ -230,12 +230,12 @@ public class OntoUMLCheckBoxTree {
 	}
 	
 	/**
-	 * Get Unchecked Elements.
+	 * Get Checked Elements.
 	 * 
 	 * @param modeltree
 	 * @return
 	 */
-	public static List<EObject> getUncheckedElements (CheckboxTree modeltree)
+	public static List<EObject> getCheckedElements (CheckboxTree modeltree)
 	{
 		List<EObject> uncheckedNodes = new ArrayList<EObject>();
 		List<EObject> checkedNodes = new ArrayList<EObject>();
@@ -251,7 +251,7 @@ public class OntoUMLCheckBoxTree {
 	    	    
 		initUncheckeNodes(rootObject.getElement(), checkedNodes, uncheckedNodes);
     	    	
-	    return uncheckedNodes;
+	    return checkedNodes;
 	}
 	
 	/**
