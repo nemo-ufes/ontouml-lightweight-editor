@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -12,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
@@ -29,6 +32,7 @@ import br.ufes.inf.nemo.move.mvc.view.OCLView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.list.AntiPatternListView;
 import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
 import br.ufes.inf.nemo.ocl2alloy.options.OCLOptions;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUI;
@@ -279,6 +283,9 @@ public class TheFrame extends JFrame {
 			
 			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;	
 			
+			List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());   			
+   			ontoumlmodel.getOntoUMLParser().setSelection((ArrayList<EObject>)selected);
+   			
 			alloymodel.setAlloyModel(ontoumlmodel,ontoumlOptModel);
 			
 		} catch (Exception e) {			

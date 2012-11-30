@@ -13,7 +13,6 @@ import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
 public class TDerivationRule {
 
@@ -66,7 +65,7 @@ public class TDerivationRule {
 	
 		// Get Mediations
 		ArrayList<Mediation> mediations = new ArrayList<Mediation>();
-		OntoUMLAPI.getAllMediations(ontoparser, mediations, derRelator);
+		ontoparser.getAllMediations(derRelator,mediations);
 			
 		// Get the two first mediations related with source and target of the material relation
 		int cont1=1;

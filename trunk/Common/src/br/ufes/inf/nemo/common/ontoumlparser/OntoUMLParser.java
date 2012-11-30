@@ -11,18 +11,23 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
+import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Category;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
 import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
+import RefOntoUML.Mediation;
+import RefOntoUML.Meronymic;
 import RefOntoUML.MomentClass;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
+import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
@@ -162,6 +167,22 @@ public class OntoUMLParser {
 	}
 	
 	/**
+	 * Get Alias List for a List of OntoUML Elements.
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public ArrayList<String> getAlias (ArrayList<EObject> list)
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		for(EObject obj: getElements())
+		{
+			if (list.contains(obj)) result.add(getAlias(obj));
+		}
+		return result;
+	}
+	
+	/**
 	 * This method verifies if a given onotuML elem is selected or not.
 	 * 
 	 * @param elem
@@ -230,13 +251,11 @@ public class OntoUMLParser {
 	 */
 	public Set<Property> getProperties()
 	{
-		Set<Property> list = new HashSet<Property>(); 
-		
-		for (ParsingElement pe : elementsHash.values()) 
+		Set<Property> list = new HashSet<Property>(); 		
+		for (EObject obj : getElements()) 
 		{
-			if(pe.getElement() instanceof Property && pe.getSelected()) list.add((Property) pe.getElement());
-		}
-		
+			if(obj instanceof Property) list.add((Property)obj);
+		}		
 		return list;
 	}
 			
@@ -247,16 +266,11 @@ public class OntoUMLParser {
 	 */
 	public Set<PackageableElement> getPackageableElements()
 	{
-		Set<PackageableElement> list = new HashSet<PackageableElement>(); 
-		
-		for (ParsingElement o : elementsHash.values()) 
+		Set<PackageableElement> list = new HashSet<PackageableElement>(); 		
+		for (EObject obj : getElements()) 
 		{
-			if(o.getElement() instanceof PackageableElement && o.getSelected())
-			{
-				list.add((PackageableElement) o.getElement());
-			}
-		}
-		
+			if(obj instanceof PackageableElement) list.add((PackageableElement)obj);			
+		}		
 		return list;
 	} 
 	
@@ -267,16 +281,29 @@ public class OntoUMLParser {
 	 */
 	public Set<Generalization> getGeneralizations()
 	{
-		Set<Generalization> list = new HashSet<Generalization>(); 
-		
-		for (ParsingElement pe : elementsHash.values()) 
+		Set<Generalization> list = new HashSet<Generalization>();		
+		for (EObject obj : getElements()) 
 		{
-			if(pe.getElement() instanceof Generalization && pe.getSelected()) list.add((Generalization) pe.getElement());
-		}
-		
+			if(obj instanceof Generalization) list.add((Generalization)obj);
+		}		
 		return list;
 	}
 		
+	/**
+	 * This method gets all the generalizationSets of the model. 
+	 * 
+	 * @return
+	 */
+	public Set<GeneralizationSet> getGeneralizationSets()
+	{
+		Set<GeneralizationSet> list = new HashSet<GeneralizationSet>(); 		
+		for (EObject obj :getElements()) 
+		{
+			if(obj instanceof GeneralizationSet) list.add((GeneralizationSet)obj);
+		}		
+		return list;
+	}
+	
 	/**
 	 *This method gets all the ontoUML generalization that the Classifier c is the general classifier.
 	 * 
@@ -284,16 +311,12 @@ public class OntoUMLParser {
 	 */
 	public Set<Generalization> getGeneralizations(Classifier c)
 	{
-		Set<Generalization> list = new HashSet<Generalization>(); 
-		
-		for (ParsingElement pe : elementsHash.values()) 
+		Set<Generalization> list = new HashSet<Generalization>();		
+		for (EObject obj : getElements()) 
 		{
-			if(pe.getSelected())
-			{
-				if(pe.getElement() instanceof Generalization && pe.getSelected() && ((Generalization)pe).getGeneral().equals(c)) 
-					
-					list.add((Generalization) pe.getElement());
-			}
+			if(obj instanceof Generalization && ((Generalization)obj).getGeneral().equals(c)) 
+				
+			list.add((Generalization)obj);			
 		}		
 		return list;
 	}
@@ -305,13 +328,12 @@ public class OntoUMLParser {
 	 */
 	public Set<Class> getTopLevelClasses()
 	{
-		Set<Class> list = new HashSet<Class>(); 
-		
-		for (ParsingElement pe : elementsHash.values())
+		Set<Class> list = new HashSet<Class>(); 		
+		for (EObject obj : getElements())
 		{
-			if (pe.getElement() instanceof Class && pe.getSelected() && ((Class)pe.getElement()).getGeneralization().size()==0 )
+			if ((obj instanceof Class) && ((Class)obj).getGeneralization().size()==0 )
 				
-				list.add((Class) pe.getElement());
+				list.add((Class) obj);
 		}		
 		return list;
 	}	
@@ -321,22 +343,17 @@ public class OntoUMLParser {
 	 * 
 	 * @return
 	 */
-	public Set<Class> getRigidClasses()
+	public Set<Classifier> getRigidClasses()
 	{
-		Set<Class> list = new HashSet<Class>(); 
-		
-		for (ParsingElement pe : elementsHash.values())
-		{
-			if(pe.getSelected())
-			{
-				if (
-					(pe.getElement() instanceof RigidSortalClass) || (pe.getElement() instanceof Category) || 
-					(pe.getElement() instanceof MomentClass) || ((pe.getElement() instanceof DataType)&&!(pe.getElement() instanceof PrimitiveType))
-				)				
-				list.add((Class) pe.getElement());
-			}
-		}
-		
+		Set<Classifier> list = new HashSet<Classifier>();		
+		for (EObject obj : getElements())
+		{			
+			if (
+				(obj instanceof RigidSortalClass) || (obj instanceof Category) || 
+				(obj instanceof MomentClass) || ((obj instanceof DataType)&&!(obj instanceof PrimitiveType))
+			)				
+			list.add((Classifier) obj);			
+		}		
 		return list;
 	}
 			
@@ -345,20 +362,14 @@ public class OntoUMLParser {
 	 * 
 	 * @return
 	 */
-	public Set<Class> getAntiRigidClasses()
+	public Set<Classifier> getAntiRigidClasses()
 	{
-		Set<Class> list = new HashSet<Class>(); 
-		
-		for (ParsingElement pe : elementsHash.values())
+		Set<Classifier> list = new HashSet<Classifier>();		
+		for (EObject obj : getElements())
 		{
-			if(pe.getSelected())				
-			{					
-				if((pe.getElement() instanceof Role) || (pe.getElement() instanceof RoleMixin) || (pe.getElement() instanceof Phase))
-					
-					list.add((Class) pe.getElement());
-			}
-		}
-		
+			if((obj instanceof Role) || (obj instanceof RoleMixin) || (obj instanceof Phase))				
+			list.add((Class)obj);			
+		}		
 		return list;
 	}
 	
@@ -387,7 +398,7 @@ public class OntoUMLParser {
 	 * @param result
 	 */
 	public void getConcreteDescendants(Classifier c, ArrayList<Classifier> result)
-	{		
+	{
 		for(Generalization g: getGeneralizations(c))
 		{
 			if (!g.getSpecific().isIsAbstract())
@@ -399,6 +410,91 @@ public class OntoUMLParser {
 			}
 			getConcreteDescendants(g.getSpecific(),result);
 		}
+	}
+	
+	/**
+	 * Get all Meronymic relations that have as a Whole the Classifier 'c' or one of its Super Types.
+	 * 
+	 * @param c
+	 * @param result
+	 */
+	public void getAllMeronymics(Classifier c, ArrayList<Meronymic> result)
+	{
+		for(EObject obj : getElements())
+		{
+			if(obj instanceof Meronymic)
+			{
+				for( Property p : ((Meronymic)obj).getMemberEnd())
+				{
+					if (!p.getAggregation().equals(AggregationKind.NONE))
+					{					
+						if (isSelected(p.getType()) && p.getType().equals(c))
+						{
+							result.add((Meronymic)obj);
+						}						
+					}
+				}
+			}
+		}
+		for(Generalization gen : c.getGeneralization())
+		{
+			if (isSelected(gen)) getAllMeronymics(gen.getGeneral(),result);			
+		}
+	}
+			
+	/**
+	 * Get all Mediations that have as a source the Relator 'r' or one of its Super Types.
+	 * 
+	 * @param r
+	 * @param result
+	 */
+	public void getAllMediations(Relator r,ArrayList<Mediation> result)
+	{
+		for(EObject obj : getElements())
+		{
+			if(obj instanceof Mediation)
+			{				
+				for( Property p : ((Mediation)obj).getMemberEnd())
+				{
+					if (p.getType() instanceof Relator)
+					{
+						if (isSelected(p.getType()) && p.getType().equals(r))
+						{
+							result.add((Mediation)obj);							
+						}
+					}
+				}
+			}			
+		}
+		for(Generalization gen : r.getGeneralization())
+		{						
+			if(isSelected(gen))	if (gen.getGeneral() instanceof Relator) getAllMediations((Relator)gen.getGeneral(),result);			
+		}
+	}
+	
+	/**
+	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete
+	 * Which means that this Classifier is an Abstract Classifier.
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public boolean isAbstractFromGeneralizationSet(Classifier c) 
+	{
+		for(GeneralizationSet gs : getGeneralizationSets())
+		{			
+			if(gs.isIsCovering())
+			{
+				for(Generalization gen : gs.getGeneralization())
+				{
+					if (isSelected(gen)) 
+					{
+						if (isSelected(gen.getGeneral()) && gen.getGeneral().equals(c)) return true;
+					}
+				}
+			}			
+		}		
+		return false;
 	}
 	
 	/**
