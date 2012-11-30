@@ -1,14 +1,17 @@
 package br.ufes.inf.nemo.ontouml.antipattern;
 
+import java.util.ArrayList;
+
+import org.eclipse.emf.ecore.EObject;
+
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
-import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
 
 /*Relation Specialization*/
-public class RSAntiPattern {
+public class RSAntiPattern extends Antipattern{
 	private Association general;
 	private Association specific;
 	private Classifier generalSource;
@@ -32,7 +35,7 @@ public class RSAntiPattern {
 				
 	}
 	
-	public String generateOcl(int type) throws Exception{
+	public String generateOcl(int type, OntoUMLParser parser) throws Exception{
 		String invName = new String(), contextName = new String(), invRule = new String();
 		String aes_name, aeg_name;
 		
@@ -42,12 +45,12 @@ public class RSAntiPattern {
 		//Classifier generalTarget = (Classifier) general.getMemberEnd().get(1).getType();
 		
 		if (specificSource.equals(generalSource) || specificSource.allParents().contains(generalSource)){
-			aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
-			aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(1));
+			aes_name = parser.getAlias(specific.getMemberEnd().get(1));
+			aeg_name = parser.getAlias(general.getMemberEnd().get(1));
 		}
 		else {
-			aes_name = AssociationEndNameGenerator.associationEndName(specific.getMemberEnd().get(1));
-			aeg_name = AssociationEndNameGenerator.associationEndName(general.getMemberEnd().get(0));
+			aes_name = parser.getAlias(specific.getMemberEnd().get(1));
+			aeg_name = parser.getAlias(general.getMemberEnd().get(0));
 		}
 		
 		contextName = specific.getMemberEnd().get(0).getType().getName();
@@ -80,16 +83,16 @@ public class RSAntiPattern {
 	
 		
 	/*This method generates alloy predicates for the RS AntiPattern. */
-	public String generatePredicate (OntoUMLParser mapper, int type) throws Exception {
+	public String generatePredicate (OntoUMLParser parser, int type) throws Exception {
 		String predicate, rules, name = new String();
 		String generalName, specificName, specificSourceName, specificTargetName, generalSourceName, generalTargetName;
 		
-		generalName = mapper.getAlias(general);
-		specificName = mapper.getAlias(specific);
-		specificSourceName = mapper.getAlias(specificSource);
-		specificTargetName = mapper.getAlias(specificTarget);
-		generalSourceName = mapper.getAlias(generalSource);
-		generalTargetName = mapper.getAlias(generalTarget);
+		generalName = parser.getAlias(general);
+		specificName = parser.getAlias(specific);
+		specificSourceName = parser.getAlias(specificSource);
+		specificTargetName = parser.getAlias(specificTarget);
+		generalSourceName = parser.getAlias(generalSource);
+		generalTargetName = parser.getAlias(generalTarget);
 		
 		if(type==SUBSET)
 			name = "subset";
@@ -266,4 +269,17 @@ public class RSAntiPattern {
 		return result;
 	}
 	
+	@Override
+	public void setSelected(OntoUMLParser parser) {
+		ArrayList<EObject> selection = new ArrayList<EObject>();
+		
+		selection.add(general);
+		selection.add(specific);
+		selection.add(specificSource);
+		selection.addAll(specificSource.allParents());
+		selection.add(specificTarget);
+		selection.addAll(specificTarget.allParents());
+		
+		parser.setSelection(selection);
+	}
 }

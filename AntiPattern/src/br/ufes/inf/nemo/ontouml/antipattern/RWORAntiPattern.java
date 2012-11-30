@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import br.ufes.inf.nemo.common.list.ArrayListOperations;
-import br.ufes.inf.nemo.common.list.Combination;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
-import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
+import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Relator;
+import br.ufes.inf.nemo.common.list.ArrayListOperations;
+import br.ufes.inf.nemo.common.list.Combination;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 
-public class RWORAntiPattern {
+public class RWORAntiPattern extends Antipattern{
 	private Relator relator;
 	private Classifier supertype;
 	private HashMap<Mediation, Classifier> mediations;
@@ -36,7 +36,7 @@ public class RWORAntiPattern {
 	    return null;
 	}
 	
-	public String generateExclusiveOcl(ArrayList<Classifier> disjointTypes){
+	public String generateExclusiveOcl(ArrayList<Classifier> disjointTypes, OntoUMLParser parser){
 		String result = "context "+relator.getName()+"\n"+
 						"inv: ";
 		if (disjointTypes.size()<2)
@@ -44,18 +44,18 @@ public class RWORAntiPattern {
 		
 		for (Mediation mediation : this.mediations.keySet()) {
 			if(mediation.getMemberEnd().get(0).getType().equals(disjointTypes.get(0)))
-				result+="self."+AssociationEndNameGenerator.associationEndName(mediation.getMemberEnd().get(0));
+				result+="self."+parser.getAlias(mediation.getMemberEnd().get(0));
 			if(mediation.getMemberEnd().get(1).getType().equals(disjointTypes.get(0)))
-				result+="self."+AssociationEndNameGenerator.associationEndName(mediation.getMemberEnd().get(1));
+				result+="self."+parser.getAlias(mediation.getMemberEnd().get(1));
 		}
 		System.out.println(disjointTypes.size());
 		for (int i = 1; i<disjointTypes.size(); i++){
 			Classifier classifier = disjointTypes.get(i);
 			for (Mediation mediation : this.mediations.keySet()) {
 				if(mediation.getMemberEnd().get(0).getType().equals(classifier))
-					result+="->intersection(self."+AssociationEndNameGenerator.associationEndName(mediation.getMemberEnd().get(0))+")";
+					result+="->intersection(self."+parser.getAlias(mediation.getMemberEnd().get(0))+")";
 				if(mediation.getMemberEnd().get(1).getType().equals(classifier))
-					result+="->intersection(self."+AssociationEndNameGenerator.associationEndName(mediation.getMemberEnd().get(1))+")";
+					result+="->intersection(self."+parser.getAlias(mediation.getMemberEnd().get(1))+")";
 			}
 		}
 		result += "->size=0";
@@ -63,12 +63,12 @@ public class RWORAntiPattern {
 		return result;
 	}
 	
-	public String generateExclusivePredicate(OntoUMLParser mapper, int cardinality){
+	public String generateExclusivePredicate(OntoUMLParser parser, int cardinality){
 		String predicate, rules, predicateName, relatorName;
 		ArrayList<Object> saida, mediations = new ArrayList<>();
 		Combination comb1;
 							
-		relatorName=mapper.getAlias(relator);
+		relatorName=parser.getAlias(relator);
 		
 		predicateName = "exclusiveRole_"+relatorName;
 		
@@ -86,7 +86,7 @@ public class RWORAntiPattern {
         
 		while (comb1.hasNext()) {
             saida = comb1.next();
-            rules+="#(x.(w."+mapper.getAlias((PackageableElement)saida.get(0))+") & x.(w."+mapper.getAlias((PackageableElement)saida.get(1))+")) = 0";
+            rules+="#(x.(w."+parser.getAlias((PackageableElement)saida.get(0))+") & x.(w."+parser.getAlias((PackageableElement)saida.get(1))+")) = 0";
             
             if(comb1.hasNext())
             	rules+=" and ";
@@ -98,12 +98,12 @@ public class RWORAntiPattern {
 		return predicate;
 	}
 	
-	public String generateOverlappingPredicate(OntoUMLParser mapper, int cardinality){
+	public String generateOverlappingPredicate(OntoUMLParser parser, int cardinality){
 		String predicate, rules, predicateName, relatorName;
 		ArrayList<Object> saida, mediations = new ArrayList<>();
 		Combination comb1;
 							
-		relatorName=mapper.getAlias(relator);
+		relatorName=parser.getAlias(relator);
 		
 		predicateName = "nonExclusiveRole_"+relatorName;
 		
@@ -121,7 +121,7 @@ public class RWORAntiPattern {
         
 		while (comb1.hasNext()) {
             saida = comb1.next();
-            rules+="#(x.(w."+mapper.getAlias((PackageableElement)saida.get(0))+") & x.(w."+mapper.getAlias((PackageableElement)saida.get(1))+")) > 0";
+            rules+="#(x.(w."+parser.getAlias((PackageableElement)saida.get(0))+") & x.(w."+parser.getAlias((PackageableElement)saida.get(1))+")) > 0";
             
             if(comb1.hasNext())
             	rules+=" or ";
@@ -133,12 +133,12 @@ public class RWORAntiPattern {
 		return predicate;
 	}
 	
-	public String generateMultipleExclusivePredicate (ArrayList<ArrayList<Mediation>> exclusiveMatrix, OntoUMLParser mapper, int cardinality){
+	public String generateMultipleExclusivePredicate (ArrayList<ArrayList<Mediation>> exclusiveMatrix, OntoUMLParser parser, int cardinality){
 		String predicate="", rules, predicateName, relatorName;
 		Combination comb1;
 		ArrayList<Mediation> output;
 		
-		relatorName=mapper.getAlias(relator);
+		relatorName=parser.getAlias(relator);
 		
 		predicateName = "MultipleExclusiveRole_"+relatorName;
 		rules = "#"+relatorName+">="+cardinality;
@@ -155,7 +155,7 @@ public class RWORAntiPattern {
 				rules += "\n\tall w:World | all x:w."+relatorName+" | ";
 				while(comb1.hasNext()){
 					output = comb1.next();
-					rules+="#(x.(w."+mapper.getAlias(output.get(0))+") & x.(w."+mapper.getAlias(output.get(1))+")) = 0";
+					rules+="#(x.(w."+parser.getAlias(output.get(0))+") & x.(w."+parser.getAlias(output.get(1))+")) = 0";
 					
 					if(comb1.hasNext())
 	            		rules += " and ";
@@ -170,12 +170,12 @@ public class RWORAntiPattern {
 		
 	}
 	
-/*	public String generateAllMultipleExclusivePredicate(OntoUMLParser mapper, int cardinality){
+/*	public String generateAllMultipleExclusivePredicate(OntoUMLParser parser, int cardinality){
 		String predicates="", rules, predicateName, relatorName;
 		ArrayList<Object>  mediations = new ArrayList<>(), output = new ArrayList<>(), output2, aux;
 		Combination comb1, comb2;
 		
-		relatorName=mapper.getName(relator);
+		relatorName=parser.getName(relator);
 
 		mediations.addAll(this.mediations.keySet());
 		
@@ -201,7 +201,7 @@ public class RWORAntiPattern {
             	rules+="# (";
             	for (int n2=0; n2<((ArrayList<Object>)(output2).get(n)).size();n2++) {
 	            	
-            		rules+="x.(w."+mapper.getName((PackageableElement)((ArrayList<Object>) output2.get(n)).get(n2))+")";
+            		rules+="x.(w."+parser.getName((PackageableElement)((ArrayList<Object>) output2.get(n)).get(n2))+")";
 	            	
 	            	if (n2==((ArrayList<Object>)(output2).get(n)).size()-1)
 	            		rules+=") = 0";
@@ -298,6 +298,20 @@ public class RWORAntiPattern {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public void setSelected(OntoUMLParser parser) {
+		ArrayList<EObject> selection = new ArrayList<EObject>();
+		
+		for (Mediation c : this.mediations.keySet())
+			selection.add(c);
+		
+		selection.add(relator);
+		selection.add(supertype);
+		
+		parser.setSelection(selection);
+		
 	}
 	
 }
