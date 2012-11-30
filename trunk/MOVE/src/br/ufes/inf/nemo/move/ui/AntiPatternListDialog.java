@@ -18,6 +18,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.ACAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.IAAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RBOSAntiPatternModel;
@@ -266,13 +267,13 @@ public class AntiPatternListDialog extends JDialog {
 		ArrayList<RWORAntiPatternModel> rworListModel = new ArrayList<RWORAntiPatternModel>();				
 		ArrayList<IAAntiPatternModel> iaListModel = new ArrayList<IAAntiPatternModel>();
 		
-		RefOntoUML.Package refmodel = frame.getOntoUMLModel().getOntoUMLModelInstance();
-		if (refmodel == null) return;
+		OntoUMLParser parser = frame.getOntoUMLModel().getOntoUMLParser();
+		if (parser.getSelectedElements() == null) return;
 				
 		if (ACisSelected()) 
 		{
 			int id=1;
-			for(ACAntiPattern ac: AntiPatternIdentifier.identifyAC(refmodel)) 
+			for(ACAntiPattern ac: AntiPatternIdentifier.identifyAC(parser)) 
 			{
 				ACAntiPatternModel acModel = new ACAntiPatternModel(ac);
 				acModel.setId(id++);				
@@ -283,7 +284,7 @@ public class AntiPatternListDialog extends JDialog {
 		if (RSisSelected())	
 		{
 			int id=1;
-			for(RSAntiPattern rs: AntiPatternIdentifier.identifyRS(refmodel)) 
+			for(RSAntiPattern rs: AntiPatternIdentifier.identifyRS(parser)) 
 			{
 				RSAntiPatternModel rsModel = new RSAntiPatternModel(rs);
 				rsModel.setId(id++);	
@@ -294,7 +295,7 @@ public class AntiPatternListDialog extends JDialog {
 		if (RBOSisSelected()) 
 		{
 			int id=1;
-			for(RBOSAntiPattern rbos: AntiPatternIdentifier.identifyRBOS(refmodel)) 
+			for(RBOSAntiPattern rbos: AntiPatternIdentifier.identifyRBOS(parser)) 
 			{
 				RBOSAntiPatternModel rbosModel = new RBOSAntiPatternModel(rbos);
 				rbosModel.setId(id++);	
@@ -305,7 +306,7 @@ public class AntiPatternListDialog extends JDialog {
 		if (STRisSelected()) 
 		{
 			int id=1;
-			for(STRAntiPattern str: AntiPatternIdentifier.identifySTR(refmodel)) 
+			for(STRAntiPattern str: AntiPatternIdentifier.identifySTR(parser)) 
 			{
 				STRAntiPatternModel strModel = new STRAntiPatternModel(str);
 				strModel.setId(id++);	
@@ -316,7 +317,7 @@ public class AntiPatternListDialog extends JDialog {
 		if (RWORisSelected()) 
 		{
 			int id=1;
-			for(RWORAntiPattern rwor: AntiPatternIdentifier.identifyRWOR(refmodel)) 
+			for(RWORAntiPattern rwor: AntiPatternIdentifier.identifyRWOR(parser)) 
 			{
 				RWORAntiPatternModel rworModel = new RWORAntiPatternModel(rwor);
 				rworModel.setId(id++);	
@@ -327,7 +328,7 @@ public class AntiPatternListDialog extends JDialog {
 		if (IAisSelected()) 
 		{
 			int id=1;
-			for(IAAntiPattern ia: AntiPatternIdentifier.identifyIA(refmodel)) 
+			for(IAAntiPattern ia: AntiPatternIdentifier.identifyIA(parser)) 
 			{
 				IAAntiPatternModel iaModel = new IAAntiPatternModel(ia);
 				iaModel.setId(id++);	
