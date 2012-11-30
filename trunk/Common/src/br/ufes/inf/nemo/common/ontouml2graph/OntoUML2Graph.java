@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.common.ontouml2graph;
 
 import java.util.ArrayList;
 
+import org.eclipse.emf.ecore.EObject;
+
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 import RefOntoUML.Association;
@@ -15,12 +17,12 @@ import RefOntoUML.Relationship;
 
 public class OntoUML2Graph {
 	
-	public static int[][] buildGraph (Package model, ArrayList<Class> classes, ArrayList<Relationship> relationships, boolean incGen, boolean incMat){
-		OntoUMLParser parser = new OntoUMLParser(model);
+	public static int[][] buildGraph (OntoUMLParser parser, ArrayList<Class> classes, ArrayList<Relationship> relationships, boolean incGen, boolean incMat){
+		
 		classes.add(null);
 		relationships.add(null);
 		
-		for (PackageableElement element : parser.getPackageableElements()) 
+		for (EObject element : parser.getSelectedElements()) 
 		{
 			if(element instanceof Class) 
 			{
