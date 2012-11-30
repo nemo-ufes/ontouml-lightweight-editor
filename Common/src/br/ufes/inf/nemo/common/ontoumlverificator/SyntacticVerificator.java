@@ -16,11 +16,10 @@ import RefOntoUML.util.ValidationMessage;
 public class SyntacticVerificator {
 	
 	public static String verify(RefOntoUML.Package refmodel)
-	{
-		
+	{		
 		String result = new String();
 		
-		if (refmodel==null) return "First you need to load the OntoUML Conceptual Model...";
+		if (refmodel==null) return "First you need to provide the OntoUML Conceptual Model.";
 		
 		Diagnostician validator = Diagnostician.INSTANCE;
 
@@ -71,9 +70,10 @@ public class SyntacticVerificator {
 		return MessageFormat.format("{0} ({1})", name, getClassAsStereotype((EObject) element));
 	}
 	
-	private static String getClassAsStereotype(EObject eObject) {
-		String ret = eObject.eClass().getName().toLowerCase()
-				.replace("association", "");
+	private static String getClassAsStereotype(EObject eObject) 
+	{
+		String ret = eObject.eClass().getName().toLowerCase().replace("association", "");
+		
 		return "<<" + ret + ">>";
 	}
 }

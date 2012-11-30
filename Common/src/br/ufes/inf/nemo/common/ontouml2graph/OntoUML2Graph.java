@@ -4,16 +4,13 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-
 import RefOntoUML.Association;
+import RefOntoUML.Class;
 import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
 import RefOntoUML.MaterialAssociation;
-import RefOntoUML.Package;
-import RefOntoUML.Class;
-import RefOntoUML.PackageableElement;
 import RefOntoUML.Relationship;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class OntoUML2Graph {
 	
@@ -22,7 +19,7 @@ public class OntoUML2Graph {
 		classes.add(null);
 		relationships.add(null);
 		
-		for (EObject element : parser.getSelectedElements()) 
+		for (EObject element : parser.getElements()) 
 		{
 			if(element instanceof Class) 
 			{

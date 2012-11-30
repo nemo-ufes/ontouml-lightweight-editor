@@ -2,22 +2,14 @@ package br.ufes.inf.nemo.ontouml2alloy.transformer;
 
 import java.util.ArrayList;
 
-import RefOntoUML.Category;
-import RefOntoUML.Class;
-import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.DataType;
 import RefOntoUML.Kind;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.PackageableElement;
-import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Quantity;
-import RefOntoUML.RigidSortalClass;
-import RefOntoUML.Role;
-import RefOntoUML.RoleMixin;
-
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyModule;
 import br.ufes.inf.nemo.alloy.Block;
@@ -27,9 +19,7 @@ import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.SignatureDeclaration;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
-import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
 public class BaseTransformer {
 	
@@ -90,15 +80,6 @@ public class BaseTransformer {
 	
 	/** List containing all the names of DataTypes that are disjoint. */
 	public ArrayList<String> datatypeDisjNamesList = new ArrayList<String>();
-	
-	/** List containing all the rigid classifiers. */
-	public ArrayList<Classifier> rigidElementsList = new ArrayList<Classifier>();
-	
-	/** List containing all the top level classifiers. */
-	public ArrayList<Classifier> topLevelElementsList = new ArrayList<Classifier>();
-	
-	/** List containing all the antirigid classifiers. */
-	public ArrayList<Classifier> antirigidElementsList = new ArrayList<Classifier>();	
 	
 	/*===========================================*/
 	
@@ -198,22 +179,7 @@ public class BaseTransformer {
 				{
 					datatypeDisjNamesList.add(ontoparser.getAlias(pe));
 				}
-			}
-			
-			if ( (pe instanceof RigidSortalClass) || (pe instanceof Category) || (pe instanceof MomentClass) || ((pe instanceof DataType)&&!(pe instanceof PrimitiveType)) ) 
-			{ 
-				rigidElementsList.add((Classifier)pe); 
-			}
-			
-			if ( pe instanceof Class)
-			{				
-				if (OntoUMLAPI.isTopLevel((Classifier)pe)) topLevelElementsList.add((Classifier)pe);
-			}
-			
-			if ((pe instanceof Role) || (pe instanceof RoleMixin) || (pe instanceof Phase))
-			{
-				antirigidElementsList.add((Classifier)pe);
-			}
+			}			
 		}
 	}	
 	

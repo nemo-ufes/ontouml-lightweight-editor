@@ -9,10 +9,6 @@ import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RWORAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RWORAntiPatternView;
-import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
-import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
-import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
-import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
  * @author John Guerson
@@ -90,28 +86,17 @@ public class RWORAntiPatternController {
 	    				rworView.getScope()
 	    			); 
 	    		}
-								
-	    		String alsPath = AlloyModel.alsOutDirectory+
-	    				rworView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RWOR"+rworModel.getId()+".als";		
-						
-	    		OntoUMLOptions opt = rworView.getTheFrame().getOntoUMLOptionModel().getOptions();
-			
-	    		RefOntoUML.Package refmodel = rworView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
-			
-	    		OntoUML2Alloy.Transformation(refmodel, alsPath, opt);
-						
+							
+	    		rworModel.getRWORAntiPattern().setSelected(rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
+	    		
+	    		rworView.getTheFrame().TransformsOntoUMLIntoAlloy();
+	    		//iaView.getTheFrame().TransformsOCLIntoAlloy();
+	    		
+	    		String alsPath = AlloyModel.alsOutDirectory+rworView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RWOR"+rworModel.getId()+".als";	
 	    		FileUtil.writeToFile(predicates, alsPath);
 			
-	    		if (opt.openAnalyzer)
-	    		{
-	    			AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", AlloyModel.alsOutDirectory);
-				
-	    			String[] argsAnalyzer = { "","" };
-	    			argsAnalyzer[0] = alsPath;
-	    			argsAnalyzer[1] = AlloyModel.alsOutDirectory + "standart_theme.thm"	;	
-	    			SimpleGUICustom.main(argsAnalyzer);
-	    		}
-	    		
+	    		rworView.getTheFrame().OpenAlloyModelWithAnalyzer();	
+    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(rworView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 	    	}	    	

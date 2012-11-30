@@ -127,10 +127,12 @@ public class Transformer extends BaseTransformer {
 	@SuppressWarnings("unchecked")
 	public void finalAdditions()
 	{		
+		ArrayList<Classifier> topLevelElementsList = new ArrayList<Classifier>();
+		topLevelElementsList.addAll(ontoparser.getTopLevelClasses());
+		
 		if(topLevelElementsList.size() > 1)
 		{
-			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topLevelElementsList);
-			
+			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topLevelElementsList);			
 			for (DisjointExpression disj : rulesList) 
 			{ 
 				world.getBlock().getExpression().add(disj); 
@@ -209,6 +211,9 @@ public class Transformer extends BaseTransformer {
 	@SuppressWarnings("unchecked")
 	private void createAllRigidClassesFacts() 
 	{
+		ArrayList<Classifier> rigidElementsList = new ArrayList<Classifier>();
+		rigidElementsList.addAll(ontoparser.getRigidClasses());
+		
 		if(rigidElementsList.size()>0)
 		{						
 			for(Classifier rigid :rigidElementsList)
@@ -249,6 +254,9 @@ public class Transformer extends BaseTransformer {
 	@SuppressWarnings("unchecked")
 	private void createAllAntiRigidClassesFacts() 
 	{
+		ArrayList<Classifier> antirigidElementsList = new ArrayList<Classifier>();
+		antirigidElementsList.addAll(ontoparser.getAntiRigidClasses());
+		
 		if(antirigidElementsList.size()>0)
 		{						
 			for(Classifier antirigid : antirigidElementsList)

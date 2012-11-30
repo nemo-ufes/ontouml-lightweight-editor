@@ -9,10 +9,6 @@ import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RSAntiPatternView;
-import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
-import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
-import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
-import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
  * @author John Guerson
@@ -79,29 +75,16 @@ public class RSAntiPatternController {
 	    					rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser(), rsModel.getRSAntiPattern().SUBSET
 	    			)+"\n\n"; 
 	    		}
-								
-	    		String alsPath = AlloyModel.alsOutDirectory+
-	    				rsView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RS"+rsModel.getId()+".als";		
-						
-	    		OntoUMLOptions opt = rsView.getTheFrame().getOntoUMLOptionModel().getOptions();
+				
+	    		rsModel.getRSAntiPattern().setSelected(rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
 	    		
-	    		System.out.println(opt.relatorConstraint);
+	    		rsView.getTheFrame().TransformsOntoUMLIntoAlloy();
+	    		//iaView.getTheFrame().TransformsOCLIntoAlloy();
 	    		
-	    		RefOntoUML.Package refmodel = rsView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
-			
-	    		OntoUML2Alloy.Transformation(refmodel, alsPath, opt);
-						
+	    		String alsPath = AlloyModel.alsOutDirectory+rsView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RS"+rsModel.getId()+".als";	
 	    		FileUtil.writeToFile(predicates, alsPath);
 			
-	    		if (opt.openAnalyzer)
-	    		{
-	    			AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", AlloyModel.alsOutDirectory);
-				
-	    			String[] argsAnalyzer = { "","" };
-	    			argsAnalyzer[0] = alsPath;
-	    			argsAnalyzer[1] = AlloyModel.alsOutDirectory + "standart_theme.thm"	;	
-	    			SimpleGUICustom.main(argsAnalyzer);
-	    		}
+	    		rsView.getTheFrame().OpenAlloyModelWithAnalyzer();	
 	    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(rsView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

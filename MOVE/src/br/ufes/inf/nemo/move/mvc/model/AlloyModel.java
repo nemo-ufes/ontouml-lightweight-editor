@@ -94,7 +94,7 @@ public class AlloyModel {
 	 */
 	public void setAlloyModel(OntoUMLModel ontoumlmodel, OntoUMLOptionsModel optmodel) throws Exception
 	{
-		content = OntoUML2Alloy.Transformation(ontoumlmodel.getOntoUMLModelInstance(), alsPath, optmodel.getOptions());		
+		content = OntoUML2Alloy.Transformation(ontoumlmodel.getOntoUMLParser(), alsPath, optmodel.getOptions());		
 	}
 	
 	/**

@@ -12,12 +12,20 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
 import RefOntoUML.Association;
+import RefOntoUML.Category;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
+import RefOntoUML.DataType;
 import RefOntoUML.Generalization;
+import RefOntoUML.MomentClass;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
+import RefOntoUML.Phase;
+import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
+import RefOntoUML.RigidSortalClass;
+import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
@@ -79,7 +87,7 @@ public class OntoUMLParser {
 	}	
 
 	/**
-	 * This method initialize the HashMap used for keeping the mappings between
+	 * This private method initialize the HashMap used for keeping the mappings between
 	 * ontoUML model elements.
 	 * 
 	 * @param rootpack
@@ -96,7 +104,7 @@ public class OntoUMLParser {
 	}		
 
 	/**
-	 * This method add a Element to the HashMap. It associate an ontoUML Element
+	 * This private method add a Element to the HashMap. It associate an ontoUML Element
 	 * with an unique alias and by default with boolean value selected=true.
 	 *
 	 * @param pe
@@ -143,126 +151,7 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * This method set the selection of every ontoUML Element according to the list of selected elements.
-	 * 
-	 * @param list
-	 */
-	public void setSelection(ArrayList<EObject> list)
-	{
-		for (ParsingElement pe : elementsHash.values()) 
-		{
-			if(list.contains(pe.getElement())) pe.setSelected(true);
-			else pe.setSelected(false);
-		}
-	}
-	
-	/**
-	 * This method get all the ontoUML Properties of the model.
-	 * 
-	 * @return
-	 */
-	public Set<Property> getProperties()
-	{
-		Set<Property> list = new HashSet<Property>(); 
-		
-		for (EObject o : elementsHash.keySet()) 
-		{
-			if(o instanceof Property) list.add((Property) o);
-		}
-		
-		return list;
-	}
-	
-	/**
-	 * This methos get all the Selected Properties of the model.
-	 * 
-	 * @return
-	 */
-	public Set<Property> getSelectedProperties()
-	{
-		Set<Property> list = new HashSet<Property>(); 
-		
-		for (ParsingElement pe : elementsHash.values()) 
-		{
-			if(pe.getElement() instanceof Property && pe.selected) list.add((Property) pe);
-		}
-		
-		return list;
-	}
-	
-	/**
-	 * This method get all the ontoUML PackageableElements of the model.
-	 * 
-	 * @return
-	 */
-	public Set<PackageableElement> getPackageableElements()
-	{
-		Set<PackageableElement> list = new HashSet<PackageableElement>(); 
-		
-		for (EObject o : elementsHash.keySet()) 
-		{
-			if(o instanceof PackageableElement) list.add((PackageableElement) o);
-		}
-		
-		return list;
-	}
-	
-	/**
-	 * This method get all the Selected ontoUML PackageableElement of the model.
-	 * 
-	 * @return
-	 */
-	public Set<PackageableElement> getSelectedPackageableElements()
-	{
-		Set<PackageableElement> list = new HashSet<PackageableElement>(); 
-		
-		for (ParsingElement o : elementsHash.values()) 
-		{
-			if(o.getElement() instanceof PackageableElement && o.getSelected())
-			{
-				list.add((PackageableElement) o);
-			}
-		}
-		
-		return list;
-	} 
-	
-	/**
-	 * This method gets all the ontoUML generalizations of the model.
-	 * 
-	 * @return
-	 */
-	public Set<Generalization> getGeneralizations()
-	{
-		Set<Generalization> list = new HashSet<Generalization>(); 
-		
-		for (EObject pe : elementsHash.keySet()) 
-		{
-			if(pe instanceof Generalization) list.add((Generalization) pe);
-		}
-		
-		return list;
-	}
-	
-	/**
-	 * This method gets all the Selected generaliations of the model.
-	 * 
-	 * @return
-	 */
-	public Set<Generalization> getSelectedGeneralizations()
-	{
-		Set<Generalization> list = new HashSet<Generalization>(); 
-		
-		for (ParsingElement pe : elementsHash.values()) 
-		{
-			if(pe.getElement() instanceof Generalization && pe.getSelected()) list.add((Generalization) pe);
-		}
-		
-		return list;
-	}
-	
-	/**
-	 * This method get the alias of a given ontoUML Element.
+	 * This method gets the alias of a given ontoUML Element.
 	 * 
 	 * @param elem
 	 * @return
@@ -292,33 +181,226 @@ public class OntoUMLParser {
 	{
 		return refmodelname;
 	}	
-	
+		
 	/**
 	 * Get all the ontoUML elements of the model.
-	 * 
 	 * @return
 	 */
 	public Set<EObject> getElements()
-	{
-		return elementsHash.keySet();
-	}
-	
-	/**
-	 * Get all the ontoUML selected elements of the mode.
-	 * @return
-	 */
-	public Set<EObject> getSelectedElements()
 	{
 		Set<EObject> list = new HashSet<EObject>(); 
 		
 		for (ParsingElement pe : elementsHash.values()) 
 		{
-			if(pe.selected) list.add(pe.getElement());
+			if(pe.getSelected()) list.add(pe.getElement());
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * This method set the selection of every ontoUML Element according to the list of selected elements.
+	 * 
+	 * @param list
+	 */
+	public void setSelection(ArrayList<EObject> list)
+	{
+		for (ParsingElement pe : elementsHash.values()) 
+		{
+			if(list.contains(pe.getElement())) pe.setSelected(true);
+			else pe.setSelected(false);
+		}
+	}
+	
+	/**
+	 * This method selects all Elements of the model.
+	 */
+	public void SelectAllElements()
+	{
+		for (ParsingElement pe : elementsHash.values()) 
+		{
+			pe.setSelected(true);
+		}
+	}
+	
+	/**
+	 * This method get all the Properties of the model.
+	 * 
+	 * @return
+	 */
+	public Set<Property> getProperties()
+	{
+		Set<Property> list = new HashSet<Property>(); 
+		
+		for (ParsingElement pe : elementsHash.values()) 
+		{
+			if(pe.getElement() instanceof Property && pe.getSelected()) list.add((Property) pe.getElement());
+		}
+		
+		return list;
+	}
+			
+	/**
+	 * This method get all the ontoUML PackageableElement of the model.
+	 * 
+	 * @return
+	 */
+	public Set<PackageableElement> getPackageableElements()
+	{
+		Set<PackageableElement> list = new HashSet<PackageableElement>(); 
+		
+		for (ParsingElement o : elementsHash.values()) 
+		{
+			if(o.getElement() instanceof PackageableElement && o.getSelected())
+			{
+				list.add((PackageableElement) o.getElement());
+			}
+		}
+		
+		return list;
+	} 
+	
+	/**
+	 * This method gets all the generalizations of the model. 
+	 * 
+	 * @return
+	 */
+	public Set<Generalization> getGeneralizations()
+	{
+		Set<Generalization> list = new HashSet<Generalization>(); 
+		
+		for (ParsingElement pe : elementsHash.values()) 
+		{
+			if(pe.getElement() instanceof Generalization && pe.getSelected()) list.add((Generalization) pe.getElement());
 		}
 		
 		return list;
 	}
 		
+	/**
+	 *This method gets all the ontoUML generalization that the Classifier c is the general classifier.
+	 * 
+	 * @return
+	 */
+	public Set<Generalization> getGeneralizations(Classifier c)
+	{
+		Set<Generalization> list = new HashSet<Generalization>(); 
+		
+		for (ParsingElement pe : elementsHash.values()) 
+		{
+			if(pe.getSelected())
+			{
+				if(pe.getElement() instanceof Generalization && pe.getSelected() && ((Generalization)pe).getGeneral().equals(c)) 
+					
+					list.add((Generalization) pe.getElement());
+			}
+		}		
+		return list;
+	}
+	
+	/**
+	 * This method gets Top Level Classes of the model.
+	 * 
+	 * @return
+	 */
+	public Set<Class> getTopLevelClasses()
+	{
+		Set<Class> list = new HashSet<Class>(); 
+		
+		for (ParsingElement pe : elementsHash.values())
+		{
+			if (pe.getElement() instanceof Class && pe.getSelected() && ((Class)pe.getElement()).getGeneralization().size()==0 )
+				
+				list.add((Class) pe.getElement());
+		}		
+		return list;
+	}	
+		
+	/**
+	 * This method gets rigid Classes of the model.
+	 * 
+	 * @return
+	 */
+	public Set<Class> getRigidClasses()
+	{
+		Set<Class> list = new HashSet<Class>(); 
+		
+		for (ParsingElement pe : elementsHash.values())
+		{
+			if(pe.getSelected())
+			{
+				if (
+					(pe.getElement() instanceof RigidSortalClass) || (pe.getElement() instanceof Category) || 
+					(pe.getElement() instanceof MomentClass) || ((pe.getElement() instanceof DataType)&&!(pe.getElement() instanceof PrimitiveType))
+				)				
+				list.add((Class) pe.getElement());
+			}
+		}
+		
+		return list;
+	}
+			
+	/**
+	 * This method gets anti rigid Classes of the model.
+	 * 
+	 * @return
+	 */
+	public Set<Class> getAntiRigidClasses()
+	{
+		Set<Class> list = new HashSet<Class>(); 
+		
+		for (ParsingElement pe : elementsHash.values())
+		{
+			if(pe.getSelected())				
+			{					
+				if((pe.getElement() instanceof Role) || (pe.getElement() instanceof RoleMixin) || (pe.getElement() instanceof Phase))
+					
+					list.add((Class) pe.getElement());
+			}
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * Get all descendants of Classifier c.
+	 * 
+	 * @param c
+	 * @param result
+	 */
+	public void getDescendants(Classifier c, ArrayList<Classifier> result)
+	{		
+		for(Generalization g: getGeneralizations(c))
+		{
+			if (!result.contains(g.getSpecific()))
+			{
+				if(isSelected(g.getSpecific())) result.add(g.getSpecific());
+			}			
+			getDescendants(g.getSpecific(),result);			
+		}
+	}
+	
+	/**
+	 * Get all non-abstract descendants of Classifier c.
+	 * 
+	 * @param c
+	 * @param result
+	 */
+	public void getConcreteDescendants(Classifier c, ArrayList<Classifier> result)
+	{		
+		for(Generalization g: getGeneralizations(c))
+		{
+			if (!g.getSpecific().isIsAbstract())
+			{
+				if (!result.contains(g.getSpecific()))
+				{
+					if(isSelected(g.getSpecific())) result.add(g.getSpecific());
+				}
+			}
+			getConcreteDescendants(g.getSpecific(),result);
+		}
+	}
+	
 	/**
 	 * Recreates the model keeping only the selected classes.
 	 * 
@@ -333,7 +415,7 @@ public class OntoUMLParser {
 	{		
 		ArrayList<EObject> selected = new ArrayList<EObject>();
 		
-		selected.addAll(this.getSelectedElements());
+		selected.addAll(this.getElements());
 		
 		ArrayList<EObject> class_add_list = new ArrayList<>();
 		ArrayList<EObject> selected_copy = new ArrayList<EObject>();

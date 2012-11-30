@@ -9,10 +9,6 @@ import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RBOSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RBOSAntiPatternView;
-import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
-import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
-import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
-import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
  * @author John Guerson
@@ -64,27 +60,17 @@ public class RBOSAntiPatternController {
 	    					rbosView.getTheFrame().getOntoUMLModel().getOntoUMLParser() 
 	    			); 
 	    		}
-								
-	    		String alsPath = AlloyModel.alsOutDirectory+
-	    				rbosView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RBOS"+rbosModel.getId()+".als";		
-						
-	    		OntoUMLOptions opt = rbosView.getTheFrame().getOntoUMLOptionModel().getOptions();
-			
-	    		RefOntoUML.Package refmodel = rbosView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
-			
-	    		OntoUML2Alloy.Transformation(refmodel, alsPath, opt);
-						
+					
+	    		rbosModel.getRBOSAntiPattern().setSelected(rbosView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
+	    		
+	    		rbosView.getTheFrame().TransformsOntoUMLIntoAlloy();
+	    		rbosView.getTheFrame().TransformsOCLIntoAlloy();
+	    		
+	    		String alsPath = AlloyModel.alsOutDirectory+rbosView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RBOS"+rbosModel.getId()+".als";	
 	    		FileUtil.writeToFile(predicates, alsPath);
 			
-	    		if (opt.openAnalyzer)
-	    		{
-	    			AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", AlloyModel.alsOutDirectory);
-				
-	    			String[] argsAnalyzer = { "","" };
-	    			argsAnalyzer[0] = alsPath;
-	    			argsAnalyzer[1] = AlloyModel.alsOutDirectory + "standart_theme.thm"	;	
-	    			SimpleGUICustom.main(argsAnalyzer);
-	    		}
+	    		rbosView.getTheFrame().OpenAlloyModelWithAnalyzer();	 
+	    		 		
 	    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(rbosView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

@@ -30,7 +30,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import RefOntoUML.Association;
-import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
@@ -92,7 +91,7 @@ public class OntoUML2Alloy {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String Transformation (RefOntoUML.Package refmodel, String alloyPath, OntoUMLOptions opt) throws Exception 
+	public static String Transformation (OntoUMLParser refparser, String alloyPath, OntoUMLOptions opt) throws Exception 
 	{
 		alsPath = alloyPath;
 		
@@ -111,14 +110,14 @@ public class OntoUML2Alloy {
 		AlloyLibraryFiles.generateLibraryFiles(dirPath);				
 				
 		// Here the transformation begins...
-		start(refmodel,opt);
+		start(refparser,opt);
 		
 		return transformer.module.toString();
 	}	
 	
-	private static void start(RefOntoUML.Package refmodel, OntoUMLOptions opt)
+	private static void start(OntoUMLParser refparser, OntoUMLOptions opt)
 	{
-		ontoparser = new OntoUMLParser(refmodel);
+		ontoparser = refparser;
 		
 		AlloyFactory factory = AlloyFactory.eINSTANCE;
 		
@@ -133,15 +132,9 @@ public class OntoUML2Alloy {
 		}
 				
 		// Generalizations
-		for (PackageableElement pe : ontoparser.getPackageableElements())
+		for (Generalization gen : ontoparser.getGeneralizations())
 		{			
-			if (pe instanceof Class)
-			{
-				for(Generalization gen : ((Class)pe).getGeneralization())
-				{
-					transformer.transformGeneralizations(gen);
-				}
-			}
+			transformer.transformGeneralizations(gen);
 		}
 		
 		// GeneralizationSets
@@ -164,7 +157,7 @@ public class OntoUML2Alloy {
 				transformer.transformDerivations((Derivation) pe);
 			}
 		}
-						
+				
 		transformer.finalAdditions();
 		
 		createAlsResource();

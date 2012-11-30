@@ -98,7 +98,7 @@ public class TheToolBar extends JToolBar {
        			
        			frame.getOntoUMLModel().getOntoUMLParser().setSelection((ArrayList<EObject>)selected);
        			
-       			for (EObject eObject : frame.getOntoUMLModel().getOntoUMLParser().getSelectedElements()) {
+       			for (EObject eObject : frame.getOntoUMLModel().getOntoUMLParser().getElements()) {
 					System.out.println(eObject);
 				}
        			
