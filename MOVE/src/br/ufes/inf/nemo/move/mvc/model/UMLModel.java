@@ -8,20 +8,33 @@ import org.eclipse.uml2.uml.Package;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 
 /**
+ * This class represents an UML Model.
+ * 
  * @author John Guerson
  */
 
 public class UMLModel {
 	
+	/** Absolute path of UML model in file system. */
 	private String umlPath;	
+	
+	/** File name of UML model. */
 	public String umlmodelName;
+	
+	/** Destination directory of UML model file. */	
 	public static String umlOutDirectory;	
+	
+	/** UML resource containing the UML model. */	
 	private Resource umlResource;
+	
+	/** UML root Package or root Model. */
 	private Package umlmodel;
+	
+	/** Details of some operations. */
 	private String logDetails= new String();
 	
 	/**
-	 * Constructor.
+	 * This constructor creates an UML model from a absolute path. i.e. without any content.
 	 * 
 	 * @param umlPath
 	 */
@@ -33,7 +46,8 @@ public class UMLModel {
 	}
 	
 	/**
-	 * Constructor.
+	 * This constructor creates an UML model from a absolute path initializing the UML model content
+	 * with the transformation of OntoUML model into UML.
 	 * 
 	 * @param umlPath
 	 * @param refmodel
@@ -47,12 +61,9 @@ public class UMLModel {
 	}
 	
 	/**
-	 * Constructor.
+	 * Creates an Empty UML model.
 	 */
-	public UMLModel ()
-	{
-		
-	}
+	public UMLModel () { }
 	
 	/**
 	 * Set Path of UML Model.

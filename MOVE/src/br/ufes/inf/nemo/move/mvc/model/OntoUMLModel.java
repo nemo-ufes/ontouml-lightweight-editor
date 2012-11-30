@@ -73,6 +73,12 @@ public class OntoUMLModel {
 		this.refPath = null;
 	}
 	
+	/**
+	 * This method set the ontoUML model from a absolute path in file system.
+	 * 
+	 * @param refPath
+	 * @throws IOException
+	 */
 	public void setOntoUML (String refPath) throws IOException
 	{
 		this.refPath = refPath;
@@ -81,18 +87,12 @@ public class OntoUMLModel {
 		this.refparser = new OntoUMLParser(refmodel);		
 	}	
 	
-	public RefOntoUML.Package getOntoUMLModelInstance ()
-	{
-		return refmodel;
-	}
+	/** Get ontoUML model instance (root Package or Model). */
+	public RefOntoUML.Package getOntoUMLModelInstance () { return refmodel; }
 	
-	public OntoUMLParser getOntoUMLParser ()
-	{
-		return refparser;
-	}
+	/** Get ontoUML Parser. */
+	public OntoUMLParser getOntoUMLParser () { return refparser; }
 	
-	public String getOntoUMLPath ()
-	{
-		return refPath;
-	}
+	/** Get ontoUML Absolute path. */
+	public String getOntoUMLPath () { return refPath; }
 }
