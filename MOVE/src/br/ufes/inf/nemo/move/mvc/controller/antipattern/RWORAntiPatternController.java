@@ -131,9 +131,10 @@ public class RWORAntiPatternController {
 						
     		if(rworView.isSelectedExclusive()) 
     		{
-    			constraints += "\n\n"+rworModel.getRWORAntiPattern().generateExclusiveOcl(
-    				rworView.getTableView().getRolesArrayList()
-    			);
+    			constraints += rworModel.getRWORAntiPattern().generateExclusiveOcl(
+    				rworView.getTableView().getRolesArrayList(),
+    				rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+    			)+"\n\n";
     		}		
     		if(rworView.isSelectedOverlapping())				
     		{
@@ -144,7 +145,10 @@ public class RWORAntiPatternController {
     			Integer size = rworView.getTableView().getRolesMatrix().size();
     			for(int i = 0; i< size; i++)
     			{
-    				constraints += "\n\n"+rworModel.getRWORAntiPattern().generateExclusiveOcl(rworView.getTableView().getRolesMatrix().get(i));
+    				constraints += "\n\n"+rworModel.getRWORAntiPattern().generateExclusiveOcl(
+    						rworView.getTableView().getRolesMatrix().get(i),
+    	    				rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+    				)+"\n\n";
     			}
     			
     		}    		

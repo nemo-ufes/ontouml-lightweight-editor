@@ -107,16 +107,12 @@ public class IAAntiPatternController {
 			
     		if(iaView.isSelectedSourceCustom()) 
     		{
-    			constraints += "\n\n"+iaModel.getIAAntiPattern().generateSourceOcl(
-    				iaView.getSourceCustomClassifiers()    					    				
-    			);
+    			constraints += "\n\n"+iaModel.getIAAntiPattern().generateSourceOcl(iaView.getSourceCustomClassifiers(), iaView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
     		}
 		
     		if(iaView.isSelectedTargetCustom())				
     		{
-    			constraints += "\n\n"+iaModel.getIAAntiPattern().generateTargetOcl(
-    				iaView.getTargetCustomClassifiers()    					    			
-    			); 
+    			constraints += "\n\n"+iaModel.getIAAntiPattern().generateTargetOcl(iaView.getTargetCustomClassifiers(), iaView.getTheFrame().getOntoUMLModel().getOntoUMLParser()); 
     		}    		
     		
     		iaView.getTheFrame().getConsole().write(constraints);

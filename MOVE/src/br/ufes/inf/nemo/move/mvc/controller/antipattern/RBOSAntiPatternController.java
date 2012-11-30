@@ -106,12 +106,12 @@ public class RBOSAntiPatternController {
 			
     		if(rbosView.isSelectedReflexive()) 
     		{
-    			constraints += "\n\n"+rbosModel.getRBOSAntiPattern().generateReflexiveOcl();
+    			constraints += "\n\n"+rbosModel.getRBOSAntiPattern().generateReflexiveOcl(rbosView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
     		}
 		
     		if(rbosView.isSelectedIrreflexive())				
     		{
-    			constraints += "\n\n"+rbosModel.getRBOSAntiPattern().generateIrreflexiveOcl(); 
+    			constraints += "\n\n"+rbosModel.getRBOSAntiPattern().generateIrreflexiveOcl(rbosView.getTheFrame().getOntoUMLModel().getOntoUMLParser()); 
     		}
     		
     		rbosView.getTheFrame().getConsole().write(constraints);
