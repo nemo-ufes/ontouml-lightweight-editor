@@ -96,7 +96,7 @@ public class TheToolBar extends JToolBar {
        		{
        			List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(frame.getOntoUMLView().getModelTree());
        			
-       			frame.getOntoUMLModel().getOntoUMLParser().setSelection((ArrayList<EObject>)selected);
+       			frame.getOntoUMLModel().getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);
        			
        			for (EObject eObject : frame.getOntoUMLModel().getOntoUMLParser().getElements()) {
 					System.out.println(eObject);

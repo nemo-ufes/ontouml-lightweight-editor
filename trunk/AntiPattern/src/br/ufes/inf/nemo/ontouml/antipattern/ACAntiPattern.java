@@ -265,7 +265,7 @@ public class ACAntiPattern extends Antipattern{
 		for (Relationship r : this.cycleRelationship)
 			selection.add(r);
 		
-		parser.setSelection(selection);
+		parser.selectThisElements(selection,true);
 		
 	}
 }

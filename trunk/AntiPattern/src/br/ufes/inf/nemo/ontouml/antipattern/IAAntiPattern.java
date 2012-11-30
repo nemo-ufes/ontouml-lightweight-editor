@@ -315,7 +315,7 @@ public class IAAntiPattern extends Antipattern{
 		selection.addAll(sourceChildren);
 		selection.addAll(targetChildren);
 				
-		parser.setSelection(selection);
+		parser.selectThisElements(selection,true);
 		
 	}
 
