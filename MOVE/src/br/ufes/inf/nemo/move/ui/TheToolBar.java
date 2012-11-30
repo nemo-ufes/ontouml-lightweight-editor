@@ -15,7 +15,6 @@ import javax.swing.border.EtchedBorder;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
-import RefOntoUML.PackageableElement;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.util.ToolbarButton;
@@ -106,7 +105,7 @@ public class TheToolBar extends JToolBar {
        			String result = new String();
        			
        			String log = new String();
-       			RefOntoUML.Package p = frame.getOntoUMLModel().getOntoUMLParser().recreatePackage(log, false, new Copier());
+       			RefOntoUML.Package p = frame.getOntoUMLModel().getOntoUMLParser().recreatePackageFromSelectedClasses(log, false, new Copier());
        			OntoUMLParser parser2 = new OntoUMLParser(p);
        			result = "SIZE: "+parser2.getElements().size();
        			for(EObject eo: parser2.getElements())
