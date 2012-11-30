@@ -2,12 +2,31 @@ package br.ufes.inf.nemo.common.ontoumlparser;
 
 import org.eclipse.emf.ecore.EObject;
 
-public class ParsingElement 
-{
-	EObject element;
-	Boolean selected;
-	String alias;
+/**
+ * This class represents a Parsing Element. 
+ * OntoUMLParser uses this to keep useful information about an OntoUML Element. 
+ * 
+ * @author John
+ *
+ */
+public class ParsingElement {
 	
+	/** OntoUML Element. */
+	private EObject element;
+	
+	/** Is Selected (for transformation purposes). */
+	private Boolean selected;
+	
+	/** Alias Name. */
+	private String alias;
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param element
+	 * @param selected
+	 * @param alias
+	 */
 	public ParsingElement (EObject element, Boolean selected, String alias)
 	{
 		this.element = element;
@@ -15,27 +34,21 @@ public class ParsingElement
 		this.alias = alias;
 	}
 
-	public EObject getElement() {
-		return element;
-	}
+	/** Get OntoUML Element. */
+	public EObject getElement() { return element; }
 
-	public void setElement(EObject element) {
-		this.element = element;
-	}
+	/** Set OntoUML Element. */
+	public void setElement(EObject element) { this.element = element; }
 
-	public Boolean getSelected() {
-		return selected;
-	}
+	/** Verifies if the OntoUML Element Is Selected. */
+	public Boolean getSelected() { return selected; }
 
-	public void setSelected(Boolean selected) {
-		this.selected = selected;
-	}
+	/** Set if the OntoUML Element is Selected or Not. */
+	public void setSelected(Boolean selected) { this.selected = selected; }
 
-	public String getAlias() {
-		return alias;
-	}
+	/** Get Alias Name. */
+	public String getAlias() { return alias; }
 
-	public void setAlias(String alias) {
-		this.alias = alias;
-	}
+	/** Set Alias Name. */
+	public void setAlias(String alias) { this.alias = alias; }
 }

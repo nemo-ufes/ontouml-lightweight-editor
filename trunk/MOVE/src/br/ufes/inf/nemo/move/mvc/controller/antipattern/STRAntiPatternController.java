@@ -9,10 +9,6 @@ import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.STRAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.STRAntiPatternView;
-import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
-import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
-import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
-import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
  * @author John Guerson
@@ -94,27 +90,16 @@ public class STRAntiPatternController {
 	    			);
 	    		}
 	    		
-	    		String alsPath = AlloyModel.alsOutDirectory+
-	    				strView.getTheFrame().getAlloyModel().getAlloyModelName()+"$STR"+strModel.getId()+".als";		
-						
-	    		OntoUMLOptions opt = strView.getTheFrame().getOntoUMLOptionModel().getOptions();
-			
-	    		RefOntoUML.Package refmodel = strView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
-			
-	    		OntoUML2Alloy.Transformation(refmodel, alsPath, opt);
-						
+	    		strModel.getSTRAntiPattern().setSelected(strView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
+	    		
+	    		strView.getTheFrame().TransformsOntoUMLIntoAlloy();
+	    		//iaView.getTheFrame().TransformsOCLIntoAlloy();
+	    		
+	    		String alsPath = AlloyModel.alsOutDirectory+strView.getTheFrame().getAlloyModel().getAlloyModelName()+"$STR"+strModel.getId()+".als";	
 	    		FileUtil.writeToFile(predicates, alsPath);
 			
-	    		if (opt.openAnalyzer)
-	    		{
-	    			AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", AlloyModel.alsOutDirectory);
-				
-	    			String[] argsAnalyzer = { "","" };
-	    			argsAnalyzer[0] = alsPath;
-	    			argsAnalyzer[1] = AlloyModel.alsOutDirectory + "standart_theme.thm"	;	
-	    			SimpleGUICustom.main(argsAnalyzer);
-	    		}
-	    		
+	    		strView.getTheFrame().OpenAlloyModelWithAnalyzer();	
+    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(strView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 	    	}

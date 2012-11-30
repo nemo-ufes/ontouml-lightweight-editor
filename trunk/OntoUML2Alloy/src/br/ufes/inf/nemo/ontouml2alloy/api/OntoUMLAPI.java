@@ -43,53 +43,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 public class OntoUMLAPI {
 
 	/**
-	 * Verify if the Classifier 'c' is the source or target of some Meronymic Relation.
-	 */
-	public static boolean hasMeronymicRelation (OntoUMLParser ontoparser, Classifier c)
-	{
-		for(PackageableElement pe : ontoparser.getPackageableElements())
-		{
-			if (pe instanceof Meronymic) 
-			{
-				Meronymic assoc = (Meronymic)pe;				
-				for( Property p : assoc.getMemberEnd())
-				{
-					if(! p.getAggregation().equals(AggregationKind.NONE))
-					{
-						if (p.getType().equals(c)) return true;						
-					}
-				}
-			}
-		}		
-		return false;
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * Verify if the Classifier 'c' is the source or target of some Mediation Relation.
-	 */
-	public static boolean hasMediationRelation (OntoUMLParser ontoparser, Relator c)
-	{
-		for(PackageableElement pe : ontoparser.getPackageableElements())
-		{
-			if (pe instanceof Mediation) 
-			{
-				for(Property p : ((Mediation)pe).getMemberEnd())
-				{
-					if(p.getType() instanceof Relator)
-					{						
-						if (p.getType().equals(c)) return true;
-					}
-				}								
-			}
-		}
-		return false;
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
 	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete
 	 * Which means that this Classifier is an Abstract Classifier.
 	 */
@@ -104,9 +57,9 @@ public class OntoUMLAPI {
 				{
 					for(Generalization gen : gs.getGeneralization())
 					{
-						if(gen.getGeneral().getName() == c.getName()) 
-						{							
-							return true;
+						if (ontoparser.isSelected(gen))
+						{
+							if(gen.getGeneral().equals(c)) return true;
 						}
 					}
 				}
@@ -131,7 +84,7 @@ public class OntoUMLAPI {
 				{
 					if (p.getType() instanceof Relator)
 					{
-						if (p.getType().getName().equals(r.getName()))
+						if (p.getType().equals(r))
 						{
 							list.add(ontoparser.getAlias(pe));							
 						}
@@ -140,8 +93,11 @@ public class OntoUMLAPI {
 			}			
 		}
 		for(Generalization gen : ((Relator)r).getGeneralization())
-		{							
-			if (gen.getGeneral() instanceof Relator) getAllMediationsNames(ontoparser,list,(Relator)gen.getGeneral());
+		{						
+			if (ontoparser.isSelected(gen))
+			{
+				if (gen.getGeneral() instanceof Relator) getAllMediationsNames(ontoparser,list,(Relator)gen.getGeneral());
+			}
 		}
 	}
 		
@@ -161,7 +117,7 @@ public class OntoUMLAPI {
 				{
 					if (p.getType() instanceof Relator)
 					{
-						if (p.getType().getName().equals(r.getName()))
+						if (p.getType().equals(r))
 						{
 							list.add((Mediation)pe);							
 						}
@@ -170,8 +126,11 @@ public class OntoUMLAPI {
 			}			
 		}
 		for(Generalization gen : ((Relator)r).getGeneralization())
-		{							
-			if (gen.getGeneral() instanceof Relator) getAllMediations(ontoparser,list,(Relator)gen.getGeneral());
+		{						
+			if(ontoparser.isSelected(gen))
+			{
+				if (gen.getGeneral() instanceof Relator) getAllMediations(ontoparser,list,(Relator)gen.getGeneral());
+			}
 		}
 	}
 	
@@ -182,7 +141,7 @@ public class OntoUMLAPI {
 	 * 
 	 * RigidSortalClass : Kind, Collective, Quantity, SubKind.
 	 * 
-	 */	
+	 */
 	public static void getAllMeronymics(OntoUMLParser ontoparser, ArrayList<String> list, Classifier c)
 	{
 		for(PackageableElement pe : ontoparser.getPackageableElements())
@@ -205,102 +164,10 @@ public class OntoUMLAPI {
 		}
 		for(Generalization gen : c.getGeneralization())
 		{
-			if (gen.getGeneral() instanceof ObjectClass) getAllMeronymics(ontoparser,list,gen.getGeneral());
-		}
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * Get all Generalizations that the Classifier 'c' is the father.
-	 */
-	public static void getAllGeneralizations(OntoUMLParser ontoparser, ArrayList<Generalization> generalizations, Classifier c)
-	{		
-		for(PackageableElement elem : ontoparser.getPackageableElements() )
-		{
-			if(elem instanceof Classifier)
+			if (ontoparser.isSelected(gen))
 			{
-				for(Generalization gen : ((Classifier)elem).getGeneralization() )
-				{
-					if(((Generalization) gen).getGeneral().equals(c))
-					{
-						generalizations.add((Generalization) gen);
-					}
-				}
+				if (gen.getGeneral() instanceof ObjectClass) getAllMeronymics(ontoparser,list,gen.getGeneral());
 			}
 		}
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 *  Get all non-abstract descendants of Classifier c.
-	 */
-	public static void getConcreteDescendants(OntoUMLParser ontoparser, ArrayList<Classifier> list, Classifier c)
-	{
-		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-		getAllGeneralizations(ontoparser, generalizations, c);
-		for(Generalization g: generalizations)
-		{
-			if (! g.getSpecific().isIsAbstract())
-			{
-				if (!list.contains((Classifier)g.getSpecific()))
-				{
-					list.add((Classifier)g.getSpecific());
-				}
-			}
-			getConcreteDescendants(ontoparser, list, g.getSpecific());
-		}
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * Get all descendants of Classifier c.
-	 */
-	public static void getDescendants(OntoUMLParser ontoparser, ArrayList<Classifier> list, Classifier c)
-	{
-		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-		getAllGeneralizations(ontoparser, generalizations, c);
-		for(Generalization g: generalizations)
-		{
-			if (!list.contains((Classifier)g.getSpecific()))
-			{
-				list.add((Classifier)g.getSpecific());
-			}			
-			getDescendants(ontoparser, list, g.getSpecific());			
-		}
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * Verify if the lists have at least one element in common.
-	 */
-	public static Classifier isOverlapping (ArrayList<Classifier> list1, ArrayList<Classifier> list2)
-	{
-		for (Classifier c1: list1)
-		{
-			for (Classifier c2: list2)
-			{
-				if (c2.equals(c1)) return c1;
-			}
-		}
-		return null;
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * Verify if the Classifier 'c' is a Top Level Classifier.
-	 */
-	public static boolean isTopLevel (Classifier c)
-	{
-		if (((Classifier) c).getGeneralization().size() == 0 )
-		{
-			return true;
-		}
-		return false;
-	}
-	
+	}	
 }

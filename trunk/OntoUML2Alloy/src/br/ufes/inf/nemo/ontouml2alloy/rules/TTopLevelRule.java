@@ -9,9 +9,23 @@ import br.ufes.inf.nemo.alloy.BinaryOperation;
 import br.ufes.inf.nemo.alloy.DisjointExpression;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
-import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
 public class TTopLevelRule {
+	
+	/**
+	 * Verify if the lists have at least one element in common.
+	 */
+	public static Classifier isOverlapping (ArrayList<Classifier> list1, ArrayList<Classifier> list2)
+	{
+		for (Classifier c1: list1)
+		{
+			for (Classifier c2: list2)
+			{
+				if (c2.equals(c1)) return c1;
+			}
+		}
+		return null;
+	}
 	
 	/**
 	 *  Create Rule for Top Levels Classifiers in the model.
@@ -26,7 +40,7 @@ public class TTopLevelRule {
 		for (Classifier c1: toplevels)
 		{			
 			ArrayList<Classifier> descendants1 = new ArrayList<Classifier>();
-			OntoUMLAPI.getDescendants(ontoparser, descendants1, c1);
+			ontoparser.getDescendants(c1,descendants1);
 
 			// creates a single List containing the topLevel classifier 'c1' 
 			// and the top levels classifiers that have their descendants overlapping 
@@ -40,9 +54,9 @@ public class TTopLevelRule {
 				if (!c2.equals(c1)) 
 				{
 					ArrayList<Classifier> descendants2 = new ArrayList<Classifier>();
-					OntoUMLAPI.getDescendants(ontoparser, descendants2, c2);
+					ontoparser.getDescendants(c2,descendants2);
 										
-					Classifier overlap = OntoUMLAPI.isOverlapping(descendants1, descendants2);
+					Classifier overlap = isOverlapping(descendants1, descendants2);
 					if (overlap == null) singleList.add(c2);						
 				}
 			}

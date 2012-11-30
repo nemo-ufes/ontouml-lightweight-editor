@@ -268,7 +268,7 @@ public class AntiPatternListDialog extends JDialog {
 		ArrayList<IAAntiPatternModel> iaListModel = new ArrayList<IAAntiPatternModel>();
 		
 		OntoUMLParser parser = frame.getOntoUMLModel().getOntoUMLParser();
-		if (parser.getSelectedElements() == null) return;
+		if (parser.getElements() == null) return;
 				
 		if (ACisSelected()) 
 		{

@@ -10,7 +10,6 @@ import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
 public class TAbstractClauseRule {
 
@@ -25,7 +24,7 @@ public class TAbstractClauseRule {
 	public static CompareOperation createCompareOperation(OntoUMLParser ontoparser, AlloyFactory factory, Classifier c) 
 	{		
 		ArrayList<Classifier> concretes = new ArrayList<Classifier>();		
-		OntoUMLAPI.getConcreteDescendants(ontoparser, concretes, c);
+		ontoparser.getConcreteDescendants(c,concretes);
 						
 		if(concretes.size() > 0)
 		{

@@ -9,10 +9,6 @@ import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.IAAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.IAAntiPatternView;
-import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
-import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
-import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
-import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
  * @author John Guerson
@@ -66,26 +62,15 @@ public class IAAntiPatternController {
 	    			); 
 	    		}
 								
-	    		String alsPath = AlloyModel.alsOutDirectory+
-	    				iaView.getTheFrame().getAlloyModel().getAlloyModelName()+"$IA"+iaModel.getId()+".als";		
-						
-	    		OntoUMLOptions opt = iaView.getTheFrame().getOntoUMLOptionModel().getOptions();
-			
-	    		RefOntoUML.Package refmodel = iaView.getTheFrame().getOntoUMLModel().getOntoUMLModelInstance();		
-			
-	    		OntoUML2Alloy.Transformation(refmodel, alsPath, opt);
-						
+	    		iaModel.getIAAntiPattern().setSelected(iaView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
+	    		
+	    		iaView.getTheFrame().TransformsOntoUMLIntoAlloy();
+	    		//iaView.getTheFrame().TransformsOCLIntoAlloy();
+	    		
+	    		String alsPath = AlloyModel.alsOutDirectory+iaView.getTheFrame().getAlloyModel().getAlloyModelName()+"$IA"+iaModel.getId()+".als";	
 	    		FileUtil.writeToFile(predicates, alsPath);
 			
-	    		if (opt.openAnalyzer)
-	    		{
-	    			AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", AlloyModel.alsOutDirectory);
-				
-	    			String[] argsAnalyzer = { "","" };
-	    			argsAnalyzer[0] = alsPath;
-	    			argsAnalyzer[1] = AlloyModel.alsOutDirectory + "standart_theme.thm"	;	
-	    			SimpleGUICustom.main(argsAnalyzer);
-	    		}
+	    		iaView.getTheFrame().OpenAlloyModelWithAnalyzer();	    		
 	    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(iaView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

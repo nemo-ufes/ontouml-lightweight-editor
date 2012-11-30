@@ -25,9 +25,12 @@ public class TGeneralizationSetRule {
 		DisjointExpression disj = factory.createDisjointExpression();
 		for(Generalization gen : gs.getGeneralization())
 		{
-			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
-			disj.getSet().add(vr);
+			if(ontoparser.isSelected(gen))
+			{
+				VariableReference vr = factory.createVariableReference();
+				vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
+				disj.getSet().add(vr);
+			}
 		}
 		return disj;
 	}
@@ -51,6 +54,8 @@ public class TGeneralizationSetRule {
 		BinaryOperation bo = factory.createBinaryOperation();
 		for(Generalization gen : gs.getGeneralization())
 		{
+			if (ontoparser.isSelected(gen))
+			{
 			if(gs.getGeneralization().size() == 1)
 			{
 				VariableReference vr1 = factory.createVariableReference();
@@ -80,8 +85,9 @@ public class TGeneralizationSetRule {
 				vr = factory.createVariableReference();
 				vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
 				bo.setRightExpression(vr);
-			}
+			}			
 			cont++;
+			}
 		}
 		return co;
 	}
