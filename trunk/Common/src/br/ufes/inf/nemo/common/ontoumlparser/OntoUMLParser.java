@@ -547,7 +547,7 @@ public class OntoUMLParser {
 					objectsToAdd.add(target);
 					System.out.println(target.getName()+" added.\n");
 				}								
-			}
+			}			
 		}
 		// add this elements to selection...
 		selectThisElements(objectsToAdd,false);

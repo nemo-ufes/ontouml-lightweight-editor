@@ -92,6 +92,11 @@ public class OntoUMLView extends JPanel {
 		}
 	}
 	
+	public boolean includeHierarchy()
+	{
+		return ontobar.cbxIncludeHierarchy.isSelected();		
+	}
+	
 	public CheckboxTree getModelTree()
 	{
 		return modeltree;
