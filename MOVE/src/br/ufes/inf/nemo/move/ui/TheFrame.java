@@ -285,7 +285,7 @@ public class TheFrame extends JFrame {
 			
 			List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());   			
    			ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);
-   			ontoumlmodel.getOntoUMLParser().completeSelections(false);
+   			ontoumlmodel.getOntoUMLParser().completeSelections(ontoumlview.includeHierarchy());
    			
 			alloymodel.setAlloyModel(ontoumlmodel,ontoumlOptModel);
 			
