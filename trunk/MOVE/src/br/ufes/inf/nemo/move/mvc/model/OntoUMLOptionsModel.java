@@ -3,11 +3,15 @@ package br.ufes.inf.nemo.move.mvc.model;
 import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 
 /**
+ * 
+ * This class represents an OntoUML Model Options.
+ * 
  * @author John Guerson
  */
 
 public class OntoUMLOptionsModel {
 	
+	/** OntoUML model options */
 	private OntoUMLOptions option;
 	
 	/**
@@ -27,12 +31,21 @@ public class OntoUMLOptionsModel {
 	{
 		this.option = new OntoUMLOptions();
 	}
-			
+		
+	/**
+	 * Get OntoUML Model Options.
+	 * @return
+	 */
 	public OntoUMLOptions getOptions()
 	{
 		return option;
 	}
 	
+	/**
+	 * Set OntoUML Model Options.
+	 * 
+	 * @param opt
+	 */
 	public void setOptions(OntoUMLOptions opt)
 	{
 		this.option = opt;

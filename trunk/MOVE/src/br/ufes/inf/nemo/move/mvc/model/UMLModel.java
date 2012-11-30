@@ -66,7 +66,7 @@ public class UMLModel {
 	public UMLModel () { }
 	
 	/**
-	 * Set Path of UML Model.
+	 * Set Absolute path of UML model. i.e. without any content.
 	 * 
 	 * @param umlPath
 	 */
@@ -79,7 +79,7 @@ public class UMLModel {
 	}
 	
 	/**
-	 * Set UML Model from OntoUML...
+	 * Set UML model content from a OntoUML model by transforming the OntoUML model into UML.
 	 * 
 	 * @param umlPath
 	 * @param ontoumlmodel
@@ -95,24 +95,31 @@ public class UMLModel {
 		setUMLModel(umlPath);
 	}
 
-	public String getDetails()
-	{		
-		return logDetails;
-	}
+	/**
+	 * Get the operations details.
+	 * 
+	 * @return
+	 */
+	public String getDetails() { return logDetails; }
 	
-	public Package getUMLModelInstance()
-	{
-		return umlmodel;
-	}
+	/** Get the UML model package instance.
+	 * 
+	 * @return
+	 */
+	public Package getUMLModelInstance() { return umlmodel; }
 	
-	public Resource getUMLResource()
-	{
-		return umlResource;
-	}	
+	/**
+	 * Get UML resource containing the UML model intance Package.
+	 * 
+	 * @return
+	 */
+	public Resource getUMLResource() { return umlResource; }	
 
-	public String getUMLPath() 
-	{ 
-		return this.umlPath; 
-	}	
+	/**
+	 * Get UML absolute path in file system. 
+	 * 
+	 * @return
+	 */
+	public String getUMLPath() { return this.umlPath; }	
 
 }

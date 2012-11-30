@@ -9,9 +9,10 @@ import br.ufes.inf.nemo.move.mvc.model.antipattern.RSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RWORAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.STRAntiPatternModel;
 
-
-
 /**
+ * 
+ * This class represents a AntiPattern List Model.
+ * 
  * @author John Guerson
  */
 
@@ -25,7 +26,7 @@ public class AntiPatternListModel {
 	private ArrayList<IAAntiPatternModel> iaListModel = new ArrayList<IAAntiPatternModel>();
 	
 	/**
-	 * Constructor.
+	 * Creates a AntiPattern Model List from a list of AntiPatterns Models.
 	 * 
 	 * @param acListModel
 	 * @param rbosListModel
@@ -48,68 +49,119 @@ public class AntiPatternListModel {
 	}
 
 	/**
-	 * COnstructor.
+	 * Creates an Empty AntiPattern Model List.
 	 */
-	public AntiPatternListModel()
-	{
-		
-	}	
+	public AntiPatternListModel() { }	
 	
-	public ArrayList<ACAntiPatternModel> getACListModel()
+	/**
+	 * Get AC AntiPattern Model List.
+	 * @return
+	 */
+	public ArrayList<ACAntiPatternModel> getACListModel() 
 	{
 		return acListModel;
 	}
 	
+	/**
+	 * Get RBOS AntiPattern Model List.
+	 * @return
+	 */
 	public ArrayList<RBOSAntiPatternModel> getRBOSListModel()
 	{
 		return rbosListModel;
 	}
 	
+	/**
+	 * Get STR AntiPattern Model List.
+	 * @return
+	 */
 	public ArrayList<STRAntiPatternModel> getSTRListModel()
 	{
 		return strListModel;
 	}
 	
+	/**
+	 * Get RS AntiPattern model List.
+	 * @return
+	 */
 	public ArrayList<RSAntiPatternModel> getRSListModel()
 	{
 		return rsListModel;
 	}
 	
+	/**
+	 * Get RWOR AntiPattern model List.
+	 * @return
+	 */
 	public ArrayList<RWORAntiPatternModel> getRWORListModel()
 	{
 		return rworListModel;
 	}
 	
+	/**
+	 * Get IA AntiPattern Model List.
+	 * @return
+	 */
 	public ArrayList<IAAntiPatternModel> getIAListModel()
 	{
 		return iaListModel;
 	}	
 	
+	/**
+	 * Set AC AntiPattern Model List.
+	 * 
+	 * @param acListModel
+	 */
 	public void setACListModel(ArrayList<ACAntiPatternModel> acListModel)
 	{
 		this.acListModel = acListModel;
 	}
 	
+	/**
+	 * Set RBOS AntiPattern Model List.
+	 * 
+	 * @param rbosListModel
+	 */
 	public void setRBOSListModel(ArrayList<RBOSAntiPatternModel> rbosListModel)
 	{
 		this.rbosListModel = rbosListModel;
 	}
 	
+	/**
+	 * Set STR AntiPAttern Model List.
+	 * 
+	 * @param strListModel
+	 */
 	public void setSTRListModel(ArrayList<STRAntiPatternModel>  strListModel)
 	{
 		this.strListModel = strListModel;
 	}
 	
+	/**
+	 * Set RS AntiPAttern Model List.
+	 * 
+	 * @param rsListModel
+	 */
 	public void setRSListModel(ArrayList<RSAntiPatternModel> rsListModel)
 	{
 		this.rsListModel = rsListModel;
 	}
 	
+	/**
+	 * Set RWOR AntiPattern Model List.
+	 * 
+	 * @param rworListModel
+	 */
 	public void setRWORListModel(ArrayList<RWORAntiPatternModel> rworListModel)
 	{
 		this.rworListModel = rworListModel;
 	}
 	
+	/**
+	 * Set IA AntiPattern Model List.
+	 * 
+	 * @param iaListModel
+	 */
 	public void setIAListModel(ArrayList<IAAntiPatternModel> iaListModel)
 	{
 		this.iaListModel = iaListModel;
