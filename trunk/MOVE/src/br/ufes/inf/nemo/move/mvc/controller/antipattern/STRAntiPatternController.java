@@ -135,27 +135,39 @@ public class STRAntiPatternController {
 			
     		if(strView.isSelectedAntiSymmetric()) 
     		{
-    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateAntiSymmetricOcl();
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateAntiSymmetricOcl(
+    					strView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+    			);
     		}		
     		if(strView.isSelectedIntransitive()) 
     		{
-    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateIntransitiveOcl();
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateIntransitiveOcl(
+    					strView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+    	    			);
     		}	    		
     		if(strView.isSelectedIrreflexive()) 
     		{
-    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateIrreflexiveOcl();
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateIrreflexiveOcl(
+    					strView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+    	    			);
     		}		
     		if(strView.isSelectedReflexive()) 
     		{
-    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateReflexiveOcl();
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateReflexiveOcl(
+    					strView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+    	    			);
     		}							
     		if(strView.isSelectedSymmetric()) 
     		{
-    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateSymmetricOcl();
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateSymmetricOcl(
+    					strView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+    	    			);
     		}    		
     		if(strView.isSelectedTransitive()) 
     		{
-    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateTransitiveOcl();
+    			constraints += "\n\n"+strModel.getSTRAntiPattern().generateTransitiveOcl(
+    					strView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+    	    			);
     		}    		
     		strView.getTheFrame().getConsole().write(constraints);
     		strView.getTheFrame().ShowConsole();
