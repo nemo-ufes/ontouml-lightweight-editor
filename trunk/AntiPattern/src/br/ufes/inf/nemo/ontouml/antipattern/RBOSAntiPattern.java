@@ -1,16 +1,18 @@
 package br.ufes.inf.nemo.ontouml.antipattern;
 
-import org.eclipse.emf.common.util.EList;
+import java.util.ArrayList;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
-import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
-import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Type;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
 
-public class RBOSAntiPattern {
+public class RBOSAntiPattern extends Antipattern{
 	private Classifier supertype;
 	private Classifier source;
 	private Classifier target;
@@ -20,24 +22,63 @@ public class RBOSAntiPattern {
 		this.setAssociation(association);
 	}
 	
-	public String generateIrreflexiveOcl(){
-		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
-		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv irreflexive_"+(association.getName().trim())+" : not (self."+aet_name+"->includes(self))";
+	public String generateIrreflexiveOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv irreflexive_"+parser.getAlias(association)+" : not (self."+aet_name+"->includes(self))";
 	}
 	
-	public String generateReflexiveOcl(){
-		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
-		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv reflexive_"+(association.getName().trim())+" : self."+aet_name+"->includes(self)";
+	public String generateReflexiveOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv reflexive_"+parser.getAlias(association)+" : self."+aet_name+"->includes(self)";
+	}
+	
+	public String generateSymmetricOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));
+		String aes_name = parser.getAlias(association.getMemberEnd().get(0));
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv symmetric_"+parser.getAlias(association)+"_source : self."+aet_name+"->forAll(x : "+parser.getAlias(association.getMemberEnd().get(1).getType())+" | x."+aes_name+"->includes(self))"+
+				
+				"context "+parser.getAlias(association.getMemberEnd().get(1).getType())+"\n"+
+				"inv symmetric_"+parser.getAlias(association)+"_target : self."+aes_name+"->forAll(x : "+parser.getAlias(association.getMemberEnd().get(0).getType())+" | x."+aet_name+"->includes(self))";
+	}
+	
+	public String generateAntiSymmetricOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));
+		String aes_name = parser.getAlias(association.getMemberEnd().get(0));
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv antisymmetric_"+parser.getAlias(association)+"_source : self."+aet_name+"->forAll(x : "+parser.getAlias(association.getMemberEnd().get(1).getType())+" | !(x."+aes_name+"->includes(self)))"+
+				
+				"context "+parser.getAlias(association.getMemberEnd().get(1).getType())+"\n"+
+				"inv antisymmetric_"+parser.getAlias(association)+"_target : self."+aes_name+"->forAll(x : "+parser.getAlias(association.getMemberEnd().get(0).getType())+" | !(x."+aet_name+"->includes(self)))";
+	}
+	
+	public String generateTransitiveOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));		
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv transitive_" + association.getName().trim() + " : self."+aet_name+"->asSet()->includesAll(self."+aet_name+"."+aet_name+"->asSet())";				
+	}
+	
+	public String generateIntransitiveOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));		
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv intransitive_"+association.getName().trim()+ " : self."+aet_name+"->asSet()->excludesAll(self."+aet_name+"."+aet_name+"->asSet())";
+				
 	}
 	
 	/*Generates an Alloy predicate that produces model instances in which the related elements are always different*/
-	public String generateIrreflexivePredicate(OntoUMLParser mapper){
+	public String generateIrreflexivePredicate(OntoUMLParser parser){
 		String predicate, rules, predicateName;
 		
 		String associationName;
-		associationName=mapper.getAlias(this.association);
+		associationName=parser.getAlias(this.association);
 		
 		predicateName = "disjointParticipants_"+associationName;
 		rules = "some "+associationName+"\n\t";
@@ -50,11 +91,11 @@ public class RBOSAntiPattern {
 	}
 
 	/*Generates an Alloy predicate that produces model instances in which the association may have the same participant in both ends*/
-	public String generateReflexivePredicate(OntoUMLParser mapper){
+	public String generateReflexivePredicate(OntoUMLParser parser){
 		String predicate, rules, predicateName;
 		
 		String associationName;
-		associationName=mapper.getAlias(this.association);
+		associationName=parser.getAlias(this.association);
 		
 		predicateName = "overlappingParticipants_"+associationName;
 		rules = "some "+associationName+"\n\t";
@@ -127,6 +168,19 @@ public class RBOSAntiPattern {
 		result= "Supertype: "+supertype.getName()+"\n";
 		result+= this.source.getName()+" - "+association.getName()+" - "+this.target.getName();
 		return result;
+	}
+
+	@Override
+	public void setSelected(OntoUMLParser parser) {
+		ArrayList<EObject> selection = new ArrayList<EObject>();
+		
+		selection.add(source);
+		selection.add(target);
+		selection.add(supertype);
+		selection.add(association);
+		
+		parser.setSelection(selection);
+		
 	}
 
 	

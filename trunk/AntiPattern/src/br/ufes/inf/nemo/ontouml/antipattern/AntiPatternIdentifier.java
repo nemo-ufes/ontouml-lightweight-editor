@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.ocl.util.Tuple;
 
 import RefOntoUML.Association;
@@ -17,24 +19,44 @@ import RefOntoUML.Package;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontouml2graph.GraphAlgo;
 import br.ufes.inf.nemo.common.ontouml2graph.OntoUML2Graph;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.RSAntiPattern;
 
 public class AntiPatternIdentifier {
+	
+	public static EObject getOriginal(EObject copy, Copier copier){
+		
+		for (EObject element : copier.keySet()) {
+			if(copier.get(element).equals(copy))
+				return element;
+		}
+		
+		return null;
+	}
 	
 	/*OCL query for the identification of the Relation Specialization AntiPattern*/
 	private static String RS_OCLQuery = "Association.allInstances()->product(Association.allInstances())->collect( x | Tuple {a1:Association = x.first, a2:Association = x.second})->select( x | x.a1<>x.a2 and ( ( x.a1.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->including(x.a1.ownedEnd.type->at(1).oclAsType(Classifier))->includes(x.a2.ownedEnd.type->at(1).oclAsType(Classifier)) and x.a1.ownedEnd.type->at(2).oclAsType(Classifier).allParents()->including(x.a1.ownedEnd.type->at(2).oclAsType(Classifier))->includes(x.a2.ownedEnd.type->at(2).oclAsType(Classifier)) ) or ( x.a1.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->including(x.a1.ownedEnd.type->at(1).oclAsType(Classifier))->includes(x.a2.ownedEnd.type->at(2).oclAsType(Classifier)) and x.a1.ownedEnd.type->at(2).oclAsType(Classifier).allParents()->including(x.a1.ownedEnd.type->at(2).oclAsType(Classifier))->includes(x.a2.ownedEnd.type->at(1).oclAsType(Classifier)) )) )";
 	
 	/*Returns all the Relation Specialization AntiPatterns in the input model m*/ 
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RSAntiPattern> identifyRS(Package model) throws Exception 
+	public static ArrayList<RSAntiPattern> identifyRS(OntoUMLParser parser) throws Exception 
 	{
+		String log = new String();
+		Copier copier = new Copier();
+		
+		Package model = parser.recreatePackageFromSelectedClasses(log, true, copier);
+		
 		Collection<Tuple<Association, Association>> query_result;
 		ArrayList<RSAntiPattern> result = new ArrayList<>();
 		
 		query_result = (Collection<Tuple<Association, Association>>)OCLQueryExecuter.executeQuery(RS_OCLQuery, (EClassifier)model.eClass(), model);
 		
 		for (Tuple<Association, Association> t : query_result) {
-			RSAntiPattern rs = new RSAntiPattern((Association)t.getValue("a1"), (Association)t.getValue("a2")); 
+			
+			Association a1 = (Association) AntiPatternIdentifier.getOriginal((Association)t.getValue("a1"), copier);
+			Association a2 = (Association) AntiPatternIdentifier.getOriginal((Association)t.getValue("a2"), copier);
+			
+			RSAntiPattern rs = new RSAntiPattern(a1,a2); 
 			result.add(rs);
 		}
 		
@@ -46,15 +68,21 @@ public class AntiPatternIdentifier {
 	
 	/*Returns all the Self-Type Relationship AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
-	public static ArrayList<STRAntiPattern> identifySTR (Package model) throws Exception
+	public static ArrayList<STRAntiPattern> identifySTR (OntoUMLParser parser) throws Exception
 	{
+		String log = new String();
+		Copier copier = new Copier();
+		
+		Package model = parser.recreatePackageFromSelectedClasses(log, true, copier);
+		
 		Collection<Association> query_result;
 		ArrayList<STRAntiPattern> result = new ArrayList<>();
 		
 		query_result = (Collection<Association>) OCLQueryExecuter.executeQuery(STR_OCLQuery, (EClassifier)model.eClass(), model);
 		
 		for (Association a : query_result) {
-			result.add(new STRAntiPattern(a));
+			Association original = (Association) AntiPatternIdentifier.getOriginal(a, copier);
+			result.add(new STRAntiPattern(original));
 		}
 		
 		return result;
@@ -66,15 +94,21 @@ public class AntiPatternIdentifier {
 	
 	/*Returns all the Relation Between Overlapping Subtypes AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RBOSAntiPattern> identifyRBOS (Package model) throws Exception 
+	public static ArrayList<RBOSAntiPattern> identifyRBOS (OntoUMLParser parser) throws Exception 
 	{
+		String log = new String();
+		Copier copier = new Copier();
+		
+		Package model = parser.recreatePackageFromSelectedClasses(log, true, copier);
+		
 		Collection<Association> query_result;
 		ArrayList<RBOSAntiPattern> result = new ArrayList<>();
 		
 		query_result = (Collection<Association>)OCLQueryExecuter.executeQuery(RBOS_OCLQuery, (EClassifier)model.eClass(), model);
 		
 		for (Association a : query_result) {
-			result.add(new RBOSAntiPattern(a));
+			Association original = (Association) AntiPatternIdentifier.getOriginal(a, copier);
+			result.add(new RBOSAntiPattern(original));
 		}
 		
 		return result;
@@ -144,16 +178,21 @@ public class AntiPatternIdentifier {
 		
 	/*Returns all the Relator With Overlapping Roles AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RWORAntiPattern> identifyRWOR (Package model) throws Exception
+	public static ArrayList<RWORAntiPattern> identifyRWOR (OntoUMLParser parser) throws Exception
 	{
+		String log = new String();
+		Copier copier = new Copier();
+		
+		Package model = parser.recreatePackageFromSelectedClasses(log, true, copier);
 		
 		Collection<Relator> query_result;
 		ArrayList<RWORAntiPattern> result = new ArrayList<>();
 		
 		query_result = (Collection<Relator>)OCLQueryExecuter.executeQuery(RWOROCLQuery, (EClassifier)model.eClass(), model);
 		
-		for (Relator a : query_result) {
-			result.add(new RWORAntiPattern(a));
+		for (Relator r : query_result) {
+			Relator original = (Relator) AntiPatternIdentifier.getOriginal(r, copier);
+			result.add(new RWORAntiPattern(original));
 		}
 		
 		return result;
@@ -164,21 +203,27 @@ public class AntiPatternIdentifier {
 	
 	/*Returns all the Imprecise Abstraction AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
-	public static ArrayList<IAAntiPattern> identifyIA(Package model) throws Exception 
+	public static ArrayList<IAAntiPattern> identifyIA(OntoUMLParser parser) throws Exception 
 	{
+		String log = new String();
+		Copier copier = new Copier();
+		
+		Package model = parser.recreatePackageFromSelectedClasses(log, true, copier);
+		
 		Collection<Association> query_result;
 		ArrayList<IAAntiPattern> result = new ArrayList<>();
 		
 		query_result = (Collection<Association>)OCLQueryExecuter.executeQuery(IA_OCLQuery, (EClassifier)model.eClass(), model);
 		
 		for (Association a : query_result) {
-			result.add(new IAAntiPattern(a));
+			Association original = (Association) AntiPatternIdentifier.getOriginal(a, copier);
+			result.add(new IAAntiPattern(original));
 		}
 		
 		return result;
 	}
 	
-	public static ArrayList<ACAntiPattern> identifyAC(Package model){
+	public static ArrayList<ACAntiPattern> identifyAC(OntoUMLParser parser){
 		
 		int aux[][]; 
 		int nodei[], nodej[];
@@ -186,7 +231,7 @@ public class AntiPatternIdentifier {
 		ArrayList<Relationship> relationships = new ArrayList<>(), cycle_ass;
 		ArrayList<ACAntiPattern> result = new ArrayList<>();
 		
-		aux = OntoUML2Graph.buildGraph(model, classes, relationships, false, false);
+		aux = OntoUML2Graph.buildGraph(parser, classes, relationships, false, false);
 		nodei = aux[0];
 		nodej = aux[1];
 		

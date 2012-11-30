@@ -37,13 +37,11 @@ public class QueryPerformer {
 		
 		m = (Model) resource.getContents().get(0);
 		
-		
-		
-		OntoUMLParser mapper = new OntoUMLParser(m);
+		OntoUMLParser parser = new OntoUMLParser(m);
 		
 		try {
 		    	    
-		    ArrayList<STRAntiPattern> result = AntiPatternIdentifier.identifySTR(m);
+		    ArrayList<STRAntiPattern> result = AntiPatternIdentifier.identifySTR(parser);
 		    System.out.println("#SelfTypeRelationship Antipatterns: "+result.size()+"\n");
 		    
 		    for (STRAntiPattern str : result) {
@@ -58,7 +56,7 @@ public class QueryPerformer {
 		    }
 		    System.out.println("**************************************************************");
 		    
-		    ArrayList<RWORAntiPattern> result21 = AntiPatternIdentifier.identifyRWOR(m);
+		    ArrayList<RWORAntiPattern> result21 = AntiPatternIdentifier.identifyRWOR(parser);
 		    System.out.println("Number of identified RWOR Anti-Patterns: "+result21.size()+"\n");
 		    for (RWORAntiPattern rwor : result21){
 		    	System.out.println(rwor);
@@ -94,7 +92,7 @@ public class QueryPerformer {
 		    System.out.println("**************************************************************");
 		    
 		    
-		    ArrayList<RBOSAntiPattern> result3 = AntiPatternIdentifier.identifyRBOS(m);
+		    ArrayList<RBOSAntiPattern> result3 = AntiPatternIdentifier.identifyRBOS(parser);
 		    System.out.println("#Relation Between Overlapping Subtypes Antipatterns: "+result3.size()+"\n");
 		    for (RBOSAntiPattern rbos : result3){
 		    	System.out.println(rbos);
@@ -105,7 +103,7 @@ public class QueryPerformer {
 		    }
 		    System.out.println("**************************************************************");
 		    
-		    ArrayList<RSAntiPattern> result4 = AntiPatternIdentifier.identifyRS(m);
+		    ArrayList<RSAntiPattern> result4 = AntiPatternIdentifier.identifyRS(parser);
 		    System.out.println("#Relation Specialization Antipatterns: "+result4.size()+"\n");
 		    for (RSAntiPattern rs : result4) {
 		    	System.out.println(rs);
@@ -121,7 +119,7 @@ public class QueryPerformer {
 		    }
 		    System.out.println("**************************************************************");
 		    
-		    ArrayList<IAAntiPattern> result5 = AntiPatternIdentifier.identifyIA(m);
+		    ArrayList<IAAntiPattern> result5 = AntiPatternIdentifier.identifyIA(parser);
 		    
 		    System.out.println("#Imprecise Abstractions Antipatterns: "+result5.size()+"\n");
 		    for (IAAntiPattern ia : result5){
@@ -142,14 +140,14 @@ public class QueryPerformer {
 		    }
 		    System.out.println("**************************************************************");
 		    
-		    ArrayList<ACAntiPattern> result6 = AntiPatternIdentifier.identifyAC(m);
+		    ArrayList<ACAntiPattern> result6 = AntiPatternIdentifier.identifyAC(parser);
 			System.out.println("# of Generic Cycles Identified: "+result6.size());
 			for (ACAntiPattern ac : result6) {
 				System.out.println(ac);
 				/*System.out.println(ac.generateCycleOcl(ACAntiPattern.CLOSED));
 				System.out.println(ac.generateCycleOcl(ACAntiPattern.OPEN));
-				*/System.out.println(ac.generatePredicate(mapper, 2, ACAntiPattern.OPEN));
-				System.out.println(ac.generatePredicate(mapper, 2, ACAntiPattern.CLOSED));
+				*/System.out.println(ac.generatePredicate(parser, 2, ACAntiPattern.OPEN));
+				System.out.println(ac.generatePredicate(parser, 2, ACAntiPattern.CLOSED));
 			}
 				    		    
 		} catch (ParserException e) {

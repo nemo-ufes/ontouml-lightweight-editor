@@ -3,15 +3,11 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
-
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
-import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import RefOntoUML.Type;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
 
 /*Self-Type Relationship AntiPattern*/
 public class STRAntiPattern extends Antipattern{
@@ -24,60 +20,66 @@ public class STRAntiPattern extends Antipattern{
 		
 	}
 	
-	public String generateIrreflexiveOcl(){
-		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
-		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv irreflexive_"+(association.getName().trim())+" : not (self."+aet_name+"->includes(self))";
+	public String generateIrreflexiveOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv irreflexive_"+parser.getAlias(association)+" : not (self."+aet_name+"->includes(self))";
 	}
 	
-	public String generateReflexiveOcl(){
-		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
-		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv reflexive_"+(association.getName().trim())+" : self."+aet_name+"->includes(self)";
+	public String generateReflexiveOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv reflexive_"+parser.getAlias(association)+" : self."+aet_name+"->includes(self)";
 	}
 	
-	public String generateSymmetricOcl(){
-		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
-		String aes_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(0));
-		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv : self."+aet_name+"->forAll(x : "+association.getMemberEnd().get(1).getType().getName()+" | x."+aes_name+"->includes(self))"+
-				"context "+association.getMemberEnd().get(1).getType().getName()+"\n"+
-				"inv : self."+aes_name+"->forAll(x : "+association.getMemberEnd().get(0).getType().getName()+" | x."+aet_name+"->includes(self))";
+	public String generateSymmetricOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));
+		String aes_name = parser.getAlias(association.getMemberEnd().get(0));
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv symmetric_"+parser.getAlias(association)+"_source : self."+aet_name+"->forAll(x : "+parser.getAlias(association.getMemberEnd().get(1).getType())+" | x."+aes_name+"->includes(self))"+
+				
+				"context "+parser.getAlias(association.getMemberEnd().get(1).getType())+"\n"+
+				"inv symmetric_"+parser.getAlias(association)+"_target : self."+aes_name+"->forAll(x : "+parser.getAlias(association.getMemberEnd().get(0).getType())+" | x."+aet_name+"->includes(self))";
 	}
 	
-	public String generateAntiSymmetricOcl(){
-		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
-		String aes_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(0));
-		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv : self."+aet_name+"->forAll(x : "+association.getMemberEnd().get(1).getType().getName()+" | !(x."+aes_name+"->includes(self)))"+
-				"context "+association.getMemberEnd().get(1).getType().getName()+"\n"+
-				"inv : self."+aes_name+"->forAll(x : "+association.getMemberEnd().get(0).getType().getName()+" | !(x."+aet_name+"->includes(self)))";
+	public String generateAntiSymmetricOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));
+		String aes_name = parser.getAlias(association.getMemberEnd().get(0));
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv antisymmetric_"+parser.getAlias(association)+"_source : self."+aet_name+"->forAll(x : "+parser.getAlias(association.getMemberEnd().get(1).getType())+" | !(x."+aes_name+"->includes(self)))"+
+				
+				"context "+parser.getAlias(association.getMemberEnd().get(1).getType())+"\n"+
+				"inv antisymmetric_"+parser.getAlias(association)+"_target : self."+aes_name+"->forAll(x : "+parser.getAlias(association.getMemberEnd().get(0).getType())+" | !(x."+aet_name+"->includes(self)))";
 	}
 	
-	public String generateTransitiveOcl(){
-		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));		
-		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv transitive_"+association.getName().trim()+
-				" : self."+aet_name+"->asSet()->includesAll(self."+aet_name+"."+aet_name+"->asSet())";				
+	public String generateTransitiveOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));		
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv transitive_" + association.getName().trim() + " : self."+aet_name+"->asSet()->includesAll(self."+aet_name+"."+aet_name+"->asSet())";				
 	}
 	
-	public String generateIntransitiveOcl(){
-		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));		
-		return 	"context "+association.getMemberEnd().get(0).getType().getName()+"\n"+
-				"inv intransitive_"+association.getName().trim()+
-				" : self."+aet_name+"->asSet()->excludesAll(self."+aet_name+"."+aet_name+"->asSet())";
+	public String generateIntransitiveOcl(OntoUMLParser parser){
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));		
+		
+		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
+				"inv intransitive_"+association.getName().trim()+ " : self."+aet_name+"->asSet()->excludesAll(self."+aet_name+"."+aet_name+"->asSet())";
 				
 	}
 	
 	/*TODO criar as regras para transitive*/
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is REFLEXIVE*/
-	public String generateReflexivePredicate (int cardinality, OntoUMLParser mapper) {
+	public String generateReflexivePredicate (int cardinality, OntoUMLParser parser) {
 		String predicate, rules, name;
 		
 		String associationName, typeName;
-		associationName = mapper.getAlias(this.association);
-		typeName = mapper.getAlias(this.type);
+		associationName = parser.getAlias(this.association);
+		typeName = parser.getAlias(this.type);
 		
 		name = "reflexive_"+associationName;
 		rules = "#" + associationName + ">" + cardinality;
@@ -90,11 +92,11 @@ public class STRAntiPattern extends Antipattern{
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is IRREFLEXIVE*/
-	public String generateIrreflexivePredicate (int cardinality, OntoUMLParser mapper){
+	public String generateIrreflexivePredicate (int cardinality, OntoUMLParser parser){
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.getAlias(this.association);
+		associationName = parser.getAlias(this.association);
 		
 		name = "irreflexive_"+associationName;
 		
@@ -108,11 +110,11 @@ public class STRAntiPattern extends Antipattern{
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is Transitive*/
-	public String generateTransitivePredicate (int cardinality, OntoUMLParser mapper){
+	public String generateTransitivePredicate (int cardinality, OntoUMLParser parser){
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.getAlias(this.association);
+		associationName = parser.getAlias(this.association);
 		name = "transitive_"+associationName;
 		
 		rules = "#" + associationName + ">" + cardinality; 
@@ -125,12 +127,12 @@ public class STRAntiPattern extends Antipattern{
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is INTRANSITIVE*/
-	public String generateIntransitivePredicate (int cardinality, OntoUMLParser mapper){
+	public String generateIntransitivePredicate (int cardinality, OntoUMLParser parser){
 		String predicate, rules, name;
 		
 		String associationName, typeName;
-		associationName = mapper.getAlias(this.association);
-		typeName = mapper.getAlias(this.type);
+		associationName = parser.getAlias(this.association);
+		typeName = parser.getAlias(this.type);
 		
 		name = "instransitive_"+associationName;
 		rules = "#" + associationName + ">" + cardinality; 
@@ -143,11 +145,11 @@ public class STRAntiPattern extends Antipattern{
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is SYMMETRIC*/
-	public String generateSymmetricPredicate (int cardinality, OntoUMLParser mapper){
+	public String generateSymmetricPredicate (int cardinality, OntoUMLParser parser){
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.getAlias(this.association);
+		associationName = parser.getAlias(this.association);
 		name = "symmetric_"+associationName;
 		
 		rules = "#" + associationName + ">" + cardinality; 
@@ -160,11 +162,11 @@ public class STRAntiPattern extends Antipattern{
 	}
 	
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is ANTISYMMETRIC*/
-	public String generateAntisymmetricPredicate (int cardinality, OntoUMLParser mapper){
+	public String generateAntisymmetricPredicate (int cardinality, OntoUMLParser parser){
 		String predicate, rules, name;
 		
 		String associationName;
-		associationName = mapper.getAlias(this.association);
+		associationName = parser.getAlias(this.association);
 		name = "antisymmetric_"+associationName;
 		rules = "#" + associationName + ">" + cardinality;
 		rules += "\n\tall w:World | antisymmetric[w."+ associationName +"]";
@@ -202,23 +204,14 @@ public class STRAntiPattern extends Antipattern{
 	}
 
 	@Override
-	protected void buildModel() {
-		ArrayList<EObject> selected;
-		String log;
+	public void setSelected(OntoUMLParser parser) {
+		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
-		if(association instanceof Association && type instanceof Type){
-			log = new String();
-			
-			selected = new ArrayList<>();
-			selected.add(association);
-			
-			copier = new Copier();
-			
-			model = Recreator.recreatePackage(selected, log, false, copier);
-			parser = new OntoUMLParser(model);
-			
-		}
+		selection.add(type);
+		selection.add(association);
 		
+		parser.setSelection(selection);
 	}
+	
 
 }

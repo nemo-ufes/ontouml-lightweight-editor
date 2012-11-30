@@ -2,15 +2,16 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 
 import java.util.ArrayList;
 
+import org.eclipse.emf.ecore.EObject;
+
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
-import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
 import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
 
-public class IAAntiPattern {
+public class IAAntiPattern extends Antipattern{
 	private Association association;
 	private Classifier source, target;
 	
@@ -21,9 +22,9 @@ public class IAAntiPattern {
 	}
 	
 	 
-	public String generateTargetOcl(ArrayList<Classifier> subtypes){
+	public String generateTargetOcl(ArrayList<Classifier> subtypes, OntoUMLParser parser){
 		String result;
-		String aet_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(1));
+		String aet_name = parser.getAlias(association.getMemberEnd().get(1));
 		
 		result = "context "+source.getName()+"\n"+
 				 "inv: ";	
@@ -43,9 +44,9 @@ public class IAAntiPattern {
 		
 	}
 	
-	public String generateSourceOcl(ArrayList<Classifier> subtypes){
+	public String generateSourceOcl(ArrayList<Classifier> subtypes, OntoUMLParser parser){
 		String result;
-		String aes_name = AssociationEndNameGenerator.associationEndName(association.getMemberEnd().get(0));
+		String aes_name = parser.getAlias(association.getMemberEnd().get(0));
 		
 		result = "context "+target.getName()+"\n"+
 				 "inv: ";	
@@ -66,12 +67,12 @@ public class IAAntiPattern {
 	}
 	
 	//generates an alloy predicate whose instances allowed show that the target end of the relation only has the types inputed in the parameter, on the variable subtypes. 
-	public String generateTargetPredicate(ArrayList<Classifier> subtypes, OntoUMLParser mapper){
+	public String generateTargetPredicate(ArrayList<Classifier> subtypes, OntoUMLParser parser){
 		String predicate="", rules, predicateName, sourceName, associationName, childName;
 		
 		//maps to the names of the objects in alloy
-		associationName = mapper.getAlias(association);
-		sourceName = mapper.getAlias(this.source);
+		associationName = parser.getAlias(association);
+		sourceName = parser.getAlias(this.source);
 		
 		//builds the basic structure for the generated predicate
 		predicateName = "imprecise_abstraction_"+sourceName+"_"+associationName;
@@ -80,7 +81,7 @@ public class IAAntiPattern {
 		
 		if(subtypes!=null && subtypes.size()>0 && targetChildren.containsAll(subtypes)){
 			for (int n=0;n<targetChildren.size();n++){
-				childName = mapper.getAlias(targetChildren.get(n));
+				childName = parser.getAlias(targetChildren.get(n));
             	
 				if (subtypes.contains(targetChildren.get(n))){
 	            	predicateName += "_"+childName;
@@ -105,12 +106,12 @@ public class IAAntiPattern {
 	}
 	
 	//generates an alloy predicate whose instances allowed show that the source end of the relation only has the types inputed in the parameter, on the variable subtypes. 
-		public String generateSourcePredicate(ArrayList<Classifier> subtypes, OntoUMLParser mapper){
+		public String generateSourcePredicate(ArrayList<Classifier> subtypes, OntoUMLParser parser){
 			String predicate="", rules, predicateName, targetName, associationName, childName;
 			
 			//maps to the names of the objects in alloy
-			associationName = mapper.getAlias(association);
-			targetName = mapper.getAlias(this.target);
+			associationName = parser.getAlias(association);
+			targetName = parser.getAlias(this.target);
 			
 			//builds the basic structure for the generated predicate
 			predicateName = "imprecise_abstraction_"+targetName+"_"+associationName;
@@ -119,7 +120,7 @@ public class IAAntiPattern {
 			
 			if(subtypes!=null && subtypes.size()>0 && sourceChildren.containsAll(subtypes)){
 				for (int n=0;n<sourceChildren.size();n++){
-					childName = mapper.getAlias(sourceChildren.get(n));
+					childName = parser.getAlias(sourceChildren.get(n));
 	            	
 					if (subtypes.contains(sourceChildren.get(n))){
 		            	predicateName += "_"+childName;
@@ -144,25 +145,25 @@ public class IAAntiPattern {
 		}
 	
 	
-	public String generateAllImpreciseAbstractionPredicates(OntoUMLParser mapper) {
+	public String generateAllImpreciseAbstractionPredicates(OntoUMLParser parser) {
 		String predicates="", rules, predicateName;
 		Combination comb1;
 		ArrayList<Object> saida = new ArrayList<>();
 		
 		String associationName, sourceName, targetName;
 		ArrayList<String> sourceChildrenName, targetChildrenName;
-		associationName = mapper.getAlias(association);
-		sourceName = mapper.getAlias(this.source);
-		targetName = mapper.getAlias(this.target);
+		associationName = parser.getAlias(association);
+		sourceName = parser.getAlias(this.source);
+		targetName = parser.getAlias(this.target);
 		
 		sourceChildrenName = new ArrayList<>();
 		for (Classifier c : this.sourceChildren) {
-			sourceChildrenName.add(mapper.getAlias(c));
+			sourceChildrenName.add(parser.getAlias(c));
 		}
 		
 		targetChildrenName = new ArrayList<>();
 		for (Classifier c : this.targetChildren) {
-			targetChildrenName.add(mapper.getAlias(c));
+			targetChildrenName.add(parser.getAlias(c));
 		}
 		
 		//Check if there are specializations on the source of the relation and also if the source upper cardinality is unlimited or greater then 1
@@ -301,6 +302,21 @@ public class IAAntiPattern {
 		}
 		
 		return result;
+	}
+
+
+	@Override
+	public void setSelected(OntoUMLParser parser) {
+		ArrayList<EObject> selection = new ArrayList<EObject>();
+		
+		selection.add(association);
+		selection.add(source);
+		selection.add(target);
+		selection.addAll(sourceChildren);
+		selection.addAll(targetChildren);
+				
+		parser.setSelection(selection);
+		
 	}
 
 }

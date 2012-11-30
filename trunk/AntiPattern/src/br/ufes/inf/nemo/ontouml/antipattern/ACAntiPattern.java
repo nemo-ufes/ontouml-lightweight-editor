@@ -2,20 +2,19 @@ package br.ufes.inf.nemo.ontouml.antipattern;
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-
-import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
-import br.ufes.inf.nemo.ontouml.antipattern.util.AssociationEndNameGenerator;
-import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
+import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.Generalization;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ontouml.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.ontouml.antipattern.util.SourceTargetAssociation;
 
 /*Association Cycle Anti-Pattern*/
-public class ACAntiPattern {
+public class ACAntiPattern extends Antipattern{
 	ArrayList<Class> cycle;
 	ArrayList<Relationship> cycleRelationship;
 	public static int OPEN=0, CLOSED=1;
@@ -78,7 +77,7 @@ public class ACAntiPattern {
 		
 	}*/
 	
-	public String generateCycleOcl(int type) {
+	public String generateCycleOcl(int type, OntoUMLParser parser) {
 		String rule, typeName;
 		Association a;
 		Type last_target;
@@ -97,11 +96,11 @@ public class ACAntiPattern {
 		invName += "_"+a.getName().trim();
 		
 		if (a.getMemberEnd().get(0).getType().equals(this.cycle.get(0))) {
-			rule += AssociationEndNameGenerator.associationEndName(a.getMemberEnd().get(1));
+			rule += parser.getAlias(a.getMemberEnd().get(1));
 			last_target = a.getMemberEnd().get(1).getType();
 		}
 		else{ 
-			rule += AssociationEndNameGenerator.associationEndName(a.getMemberEnd().get(0));
+			rule += parser.getAlias(a.getMemberEnd().get(0));
 			last_target = a.getMemberEnd().get(0).getType();
 		}
 			
@@ -114,11 +113,11 @@ public class ACAntiPattern {
 				invName+= "_"+((Association)r).getName().trim();
 				
 				if( ((Association)r).getMemberEnd().get(0).getType().equals(last_target)) {
-					rule += "."+AssociationEndNameGenerator.associationEndName(((Association)r).getMemberEnd().get(1));
+					rule += "."+parser.getAlias(((Association)r).getMemberEnd().get(1));
 					last_target =((Association)r).getMemberEnd().get(1).getType();
 				}
 				else {
-					rule += "."+AssociationEndNameGenerator.associationEndName(((Association)r).getMemberEnd().get(0));
+					rule += "."+parser.getAlias(((Association)r).getMemberEnd().get(0));
 					last_target =((Association)r).getMemberEnd().get(0).getType();
 				}
 					
@@ -138,20 +137,20 @@ public class ACAntiPattern {
 		return result;
 	}	
 	
-	public String generatePredicate(OntoUMLParser mapper, int cardinality, int type) throws Exception {
+	public String generatePredicate(OntoUMLParser parser, int cardinality, int type) throws Exception {
 		String predicate, predicate_rules, name, function_name = "CycleAux", function_rules="", function_parameters="x:univ, w:World", function_return="univ";
 		String typeName;
 		Association a;
 		Type last_source, last_target, source, target;
 				
-		typeName = mapper.getAlias(this.cycle.get(0));
+		typeName = parser.getAlias(this.cycle.get(0));
 		
 		if(type==OPEN) {
-			name = "openCycle_"+typeName+"_"+mapper.getAlias(cycle.get(1));
+			name = "openCycle_"+typeName+"_"+parser.getAlias(cycle.get(1));
 			function_name = "open"+function_name;
 		}
 		else if(type==CLOSED) {
-			name = "closedCycle_"+typeName+"_"+mapper.getAlias(cycle.get(1));
+			name = "closedCycle_"+typeName+"_"+parser.getAlias(cycle.get(1));
 			function_name = "closed"+function_name;
 		}
 		else
@@ -171,10 +170,10 @@ public class ACAntiPattern {
 		last_target = SourceTargetAssociation.getTargetAlloy(a);
 		
 		if (last_source.equals(this.cycle.get(0)))
-			function_rules += "(x.(w."+mapper.getAlias(a)+"))";
+			function_rules += "(x.(w."+parser.getAlias(a)+"))";
 		
 		else {
-			function_rules += "((w."+mapper.getAlias(a)+").x)";
+			function_rules += "((w."+parser.getAlias(a)+").x)";
 			last_target = SourceTargetAssociation.getSourceAlloy(a);
 			last_source = SourceTargetAssociation.getTargetAlloy(a);
 		}
@@ -188,17 +187,17 @@ public class ACAntiPattern {
 				Association assoc = (Association)r;
 				
 				if( (source.equals(last_target)) ){
-					function_rules+=".(w."+mapper.getAlias(assoc)+")";
+					function_rules+=".(w."+parser.getAlias(assoc)+")";
 					last_source = source;
 					last_target = target;
 				}
 				else {
-					function_rules+=".(~(w."+mapper.getAlias(assoc)+"))";
+					function_rules+=".(~(w."+parser.getAlias(assoc)+"))";
 					last_target = source;
 					last_source = target;
 				}
 				
-				name+="_"+mapper.getAlias(last_target);
+				name+="_"+parser.getAlias(last_target);
 				
 			}
 		}
@@ -255,5 +254,18 @@ public class ACAntiPattern {
 		
 		
 		return result;
+	}
+
+	@Override
+	public void setSelected(OntoUMLParser parser) {
+		ArrayList<EObject> selection = new ArrayList<EObject>();
+		
+		for (Class c : this.cycle)
+			selection.add(c);
+		for (Relationship r : this.cycleRelationship)
+			selection.add(r);
+		
+		parser.setSelection(selection);
+		
 	}
 }
