@@ -37,8 +37,7 @@ public class OntoUMLParser {
 	private String refmodelname;
 	
 	private HashMap<EObject,ParsingElement> elementsHash;	
-	
-	
+		
 	/**
 	 * This constructor creates a parser from a root ontoUML Package.
 	 * 
