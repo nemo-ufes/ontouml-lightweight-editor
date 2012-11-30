@@ -134,7 +134,7 @@ public class TheToolBar extends JToolBar {
        			if(frame.getAlloyModel().getAlloyPath().isEmpty() || frame.getAlloyModel().getAlloyPath()==null)
        			{	       			
        				frame.OpenAlloyModelWithAnalyzer();
-       			}else{       				
+       			}else{ 
        				frame.ParseOCL(false);       				
        				OptionsDialog.open(frame.getOntoUMLOptionModel(),frame.getOCLOptionModel(),frame);	       			
        			}

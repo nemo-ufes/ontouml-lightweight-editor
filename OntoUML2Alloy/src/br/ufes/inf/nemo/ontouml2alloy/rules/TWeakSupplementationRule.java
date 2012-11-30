@@ -2,13 +2,15 @@ package br.ufes.inf.nemo.ontouml2alloy.rules;
 
 import java.util.ArrayList;
 
+import org.eclipse.emf.ecore.EObject;
+
 import RefOntoUML.Classifier;
+import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
-import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
 public class TWeakSupplementationRule {
 
@@ -23,13 +25,19 @@ public class TWeakSupplementationRule {
 		if (c.isIsAbstract()) { return null; }
 		
 		// isAbstract from generalization Sets (Disjoint and Complete)
-		if (OntoUMLAPI.isAbstractFromGeneralizationSets(ontoparser,c)) { return null; }	
+		if (ontoparser.isAbstractFromGeneralizationSet(c)) { return null; }	
 		
 		//if (! OntoUMLAPI.hasMeronymicRelation(ontoparser,c)) { return null; } 
 				
-		// get all 'c' meronymics
-		ArrayList<String> associationNames = new ArrayList<String>();		
-		OntoUMLAPI.getAllMeronymics(ontoparser,associationNames, c);	
+		// get all 'c' meronymics				
+		ArrayList<Meronymic> meronymics = new ArrayList<Meronymic>();
+		ontoparser.getAllMeronymics(c, meronymics);
+		
+		// get all c meronymics names
+		ArrayList<EObject> eobjects = new ArrayList<EObject>();
+		eobjects.addAll(meronymics);		
+		ArrayList<String> associationNames = new ArrayList<String>();
+		associationNames = ontoparser.getAlias(eobjects);
 		
 		if(associationNames.size()==0) return null;
 		

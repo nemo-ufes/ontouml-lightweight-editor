@@ -2,13 +2,15 @@ package br.ufes.inf.nemo.ontouml2alloy.rules;
 
 import java.util.ArrayList;
 
+import org.eclipse.emf.ecore.EObject;
+
+import RefOntoUML.Mediation;
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
-import br.ufes.inf.nemo.ontouml2alloy.api.OntoUMLAPI;
 
 public class TRelatorRule {
 
@@ -24,13 +26,19 @@ public class TRelatorRule {
 		if (c.isIsAbstract()) return null;
 		
 		// isAbstract from generalization Sets (Disjoint and Complete)
-		if ( OntoUMLAPI.isAbstractFromGeneralizationSets(ontoparser,c)) return null;
+		if ( ontoparser.isAbstractFromGeneralizationSet(c)) return null;
 		
 		//if (! OntoUMLAPI.hasMediationRelation(ontoparser,c)) return null;
 		
-		// get all 'c' mediations
-		ArrayList<String> associationNames = new ArrayList<String>();		
-		OntoUMLAPI.getAllMediationsNames(ontoparser,associationNames, c);		
+		// get all 'c' mediations				
+		ArrayList<Mediation> mediations = new ArrayList<Mediation>();
+		ontoparser.getAllMediations(c, mediations);
+				
+		// get all c mediations names
+		ArrayList<EObject> eobjects = new ArrayList<EObject>();
+		eobjects.addAll(mediations);		
+		ArrayList<String> associationNames = new ArrayList<String>();
+		associationNames = ontoparser.getAlias(eobjects);		
 		
 		if(associationNames.size()==0) return null; 
 			
