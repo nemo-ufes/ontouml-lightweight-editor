@@ -24,10 +24,10 @@ public class Recreator {
 		
 		RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
 		Package pack_copy = factory.createPackage();
-				
+		pack_copy.setName("Model");		
 		
 		if (selected == null || selected.size()==0) 
-			return null;
+			return pack_copy;
 		
 		for (EObject o : selected){
 			//guarantees that there will be no null pointer in the generalization, by including the general and the specific to the list of selected elementsz
@@ -101,7 +101,7 @@ public class Recreator {
 			}
 			
 			else
-				pack_copy.getPackagedElement().add((PackageableElement) o);
+				pack_copy.getPackagedElement().add((PackageableElement) copier.copy(o));
 		}
 		
 		for (int i = 0; i < gen_remove_list.size(); i++) {
