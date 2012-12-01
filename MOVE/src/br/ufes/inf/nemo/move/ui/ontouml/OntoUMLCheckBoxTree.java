@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -63,7 +64,7 @@ public class OntoUMLCheckBoxTree {
 		
 		return modelTree;
 	}
-	
+		
 	/**
 	 * Auxiliary function. It runs the Elements from the model creating the tree nodes.
 	 */	
@@ -254,6 +255,35 @@ public class OntoUMLCheckBoxTree {
 	    return checkedNodes;
 	}
 	
+	/**
+	 * Check this elements.
+	 * 
+	 * @param elements
+	 * @param modeltree
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void checkElements(List<EObject> elements, boolean safe, CheckboxTree modeltree) 
+	{
+		DefaultMutableTreeNode root = (DefaultMutableTreeNode) modeltree.getModel().getRoot();
+	    DefaultMutableTreeNode node = null;
+	    Enumeration e = root.breadthFirstEnumeration();
+	    while (e.hasMoreElements()) 
+	    {
+	      node = (DefaultMutableTreeNode) e.nextElement();
+	      if ( elements.contains( ((OntoUMLTreeNodeElem)node.getUserObject()).getElement() )) 
+	      {
+	    	modeltree.addCheckingPath(new TreePath(node.getPath()));	
+	    	
+	    	if(safe) {
+	    		if (node.getChildCount()>0){
+	    			TreePath path = new TreePath(((DefaultMutableTreeNode)node.getFirstChild()).getPath());
+	    			modeltree.getCheckingModel().removeCheckingPath(path);
+	    		}
+	    	}
+	      }
+	    }	    
+	}	
+	 
 	/**
 	 * Initialize Unchecked Nodes.
 	 */

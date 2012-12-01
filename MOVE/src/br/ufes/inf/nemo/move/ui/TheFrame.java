@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
+import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.move.mvc.controller.OCLController;
 import br.ufes.inf.nemo.move.mvc.controller.OntoUMLController;
 import br.ufes.inf.nemo.move.mvc.controller.antipattern.list.AntiPatternListController;
@@ -285,7 +286,9 @@ public class TheFrame extends JFrame {
 			
 			List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());   			
    			ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);
-   			ontoumlmodel.getOntoUMLParser().completeSelections(ontoumlview.includeHierarchy());
+   			List<EObject> added = ontoumlmodel.getOntoUMLParser().completeSelections(ontoumlview.includeHierarchy());
+   			
+   			for(EObject o: added) { console.write(((NamedElement)o).getName()+" added.\n"); }
    			
 			alloymodel.setAlloyModel(ontoumlmodel,ontoumlOptModel);
 			
@@ -363,7 +366,7 @@ public class TheFrame extends JFrame {
 			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;
 			if (oclmodel.getOCLParser()==null) return;
 			
-			console.write(oclmodel.getOCLParser().getDetails());
+			//console.write(oclmodel.getOCLParser().getDetails());
 			
 			String logMessage = alloymodel.addConstraints(ontoumlmodel, oclmodel,oclOptModel);
 			

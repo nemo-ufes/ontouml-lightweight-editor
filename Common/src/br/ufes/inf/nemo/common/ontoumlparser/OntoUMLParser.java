@@ -512,42 +512,60 @@ public class OntoUMLParser {
 	{
 		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
 	
-		for (ParsingElement pe : elementsHash.values()) 
+		for (EObject obj : getElements()) 
 		{
-			if(pe.getElement() instanceof Generalization)
+			if(obj instanceof Generalization)
 			{
-				Generalization g = (Generalization) pe.getElement();
+				Generalization g = (Generalization) obj;
 				// general
 				if (!isSelected(g.getGeneral()) && !objectsToAdd.contains(g.getGeneral()) ) 
 				{
-					objectsToAdd.add(g.getGeneral());
-					System.out.println(g.getGeneral().getName()+" added\n.");					
+					objectsToAdd.add(g.getGeneral());										
 				}
 				//specific
 				if (!isSelected(g.getSpecific()) && !objectsToAdd.contains(g.getSpecific()) ) 
 				{
-					objectsToAdd.add(g.getSpecific());
-					System.out.println(g.getSpecific().getName()+" added\n.");
+					objectsToAdd.add(g.getSpecific());					
 				}
 			}
-			if(pe.getElement() instanceof Association) 
+			if(obj instanceof Association) 
 			{
-				Association a = (Association)pe.getElement();
+				Association a = (Association)obj;
 				Type source = a.getMemberEnd().get(0).getType();
 				Type target = a.getMemberEnd().get(1).getType();
 				//source
 				if(!isSelected(source) && !objectsToAdd.contains(source))
 				{
-					objectsToAdd.add(source);
-					System.out.println(source.getName()+" added.\n");
+					objectsToAdd.add(source);					
 				}
 				//target
 				if(!isSelected(target) && !objectsToAdd.contains(target))
 				{
-					objectsToAdd.add(target);
-					System.out.println(target.getName()+" added.\n");
+					objectsToAdd.add(target);					
 				}								
-			}			
+			}		
+			if(obj instanceof GeneralizationSet) 
+			{
+				GeneralizationSet gs = (GeneralizationSet)obj;				
+				//generalizations
+				for(Generalization g: gs.getGeneralization())
+				{
+					if(!isSelected(g))
+					{
+						objectsToAdd.add(g);						
+					}
+					//specific
+					if (!isSelected(g.getSpecific()) && !objectsToAdd.contains(g.getSpecific())) 
+					{
+						objectsToAdd.add(g.getSpecific());						
+					}
+					//general
+					if (!isSelected(g.getGeneral()) && !objectsToAdd.contains(g.getGeneral())) 
+					{
+						objectsToAdd.add(g.getGeneral());						
+					}
+				}								
+			}
 		}
 		// add this elements to selection...
 		selectThisElements(objectsToAdd,false);
@@ -582,8 +600,7 @@ public class OntoUMLParser {
 					{
 						if(!isSelected(c) && !objectsToAdd.contains(c))
 						{
-							objectsToAdd.add(c);
-							System.out.println(c.getName()+" added.\n");
+							objectsToAdd.add(c);							
 						}
 					}
 				}

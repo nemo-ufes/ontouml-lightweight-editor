@@ -27,6 +27,7 @@ public class OntoUMLTreeBar extends JPanel {
 	public JButton btnVerify;
 	public JButton btnShowUnique;
 	public JCheckBox cbxIncludeHierarchy;
+	public JButton btnCompleteSelect;
 	
 	public OntoUMLTreeBar() 
 	{		
@@ -35,7 +36,7 @@ public class OntoUMLTreeBar extends JPanel {
 		textPath.setEditable(false);
 		textPath.setColumns(10);
 		
-		setPreferredSize(new Dimension(360, 80));
+		setPreferredSize(new Dimension(401, 80));
 		
 		btnOpen = new JButton("");
 		btnOpen.setToolTipText("Open OntoUML Model");
@@ -58,8 +59,15 @@ public class OntoUMLTreeBar extends JPanel {
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setOrientation(SwingConstants.VERTICAL);
 		
-		cbxIncludeHierarchy = new JCheckBox("Includes Hierarchy");
+		cbxIncludeHierarchy = new JCheckBox("All Hierarchy");
 		cbxIncludeHierarchy.setToolTipText("Includes every hierarchy of every class that is selected.");
+		
+		btnCompleteSelect = new JButton("");
+		btnCompleteSelect.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-16x16.png")));
+		btnCompleteSelect.setToolTipText("Complete Selections");
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setOrientation(SwingConstants.VERTICAL);
 				
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -69,7 +77,7 @@ public class OntoUMLTreeBar extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnOpen, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-							.addGap(7)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnVerify, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
@@ -79,9 +87,13 @@ public class OntoUMLTreeBar extends JPanel {
 							.addComponent(btnShowUnique, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(separator_3, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
-							.addComponent(cbxIncludeHierarchy))
-						.addComponent(textPath, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(cbxIncludeHierarchy)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnCompleteSelect, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(separator_2, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textPath, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -91,13 +103,15 @@ public class OntoUMLTreeBar extends JPanel {
 					.addComponent(textPath, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(separator_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(separator, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
 						.addComponent(btnOpen, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+						.addComponent(separator, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
 						.addComponent(btnVerify, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(cbxIncludeHierarchy)
-						.addComponent(btnShowUnique, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-						.addComponent(separator_3, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
+						.addComponent(separator_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+						.addComponent(btnShowUnique, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+						.addComponent(separator_3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+						.addComponent(separator_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxIncludeHierarchy, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnCompleteSelect, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		
