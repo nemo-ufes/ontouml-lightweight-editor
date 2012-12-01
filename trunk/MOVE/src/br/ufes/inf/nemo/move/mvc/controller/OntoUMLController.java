@@ -3,11 +3,19 @@ package br.ufes.inf.nemo.move.mvc.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import org.eclipse.emf.ecore.EObject;
+
+import RefOntoUML.Generalization;
+import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
+import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 
 /**
@@ -33,6 +41,7 @@ public class OntoUMLController {
 		ontoumlview.addLoadOntoUMLListener(new LoadOntoUMLListener());
 		ontoumlview.addVerifyModelListener(new VerifyModelListener());
 		ontoumlview.addShowUniqueNamesListener(new ShowUniqueNamesListener());
+		ontoumlview.addCompleteSelectionListener(new CompleteSelectionListener());
 	}	
 	
 	/**
@@ -98,6 +107,40 @@ public class OntoUMLController {
 	    	((OntoUMLCheckBoxTree.OntoUMLTreeCellRenderer)ontoumlview.getModelTree().getCellRenderer()).showOrHideUniqueName();	    	
 	    	ontoumlview.getModelTree().updateUI();
 	    }
-	 }
+	 }	 
 	 
+	 /**
+	 * Complete Selection Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class CompleteSelectionListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	if (ontoumlview.getModelTree()==null) return;
+	    	
+	    	List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree()); 
+	    	
+   			ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);
+   			
+   			List<EObject> added = ontoumlmodel.getOntoUMLParser().completeSelections(ontoumlview.includeHierarchy());
+   			
+   			String msg = new String();
+   			for(EObject o: added) 
+   			{
+   				if (o instanceof NamedElement) msg += ((NamedElement)o).getName()+" added.\n";
+   				if (o instanceof Generalization) msg += ((Generalization)o).getSpecific().getName()+"->"+((Generalization)o).getGeneral().getName()+" added.\n";	   						
+   			}
+   			if (msg.isEmpty()) msg = "All the elements are correctly selected.";
+   			
+    		JOptionPane.showMessageDialog(
+    			ontoumlview.getTheFrame(),msg,"Complete Selections",JOptionPane.INFORMATION_MESSAGE,
+    			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
+    		);
+    		
+    		OntoUMLCheckBoxTree.checkElements(added, true,ontoumlview.getModelTree());	    		
+	    	ontoumlview.getModelTree().updateUI();
+	    }
+	 }	 
 }
