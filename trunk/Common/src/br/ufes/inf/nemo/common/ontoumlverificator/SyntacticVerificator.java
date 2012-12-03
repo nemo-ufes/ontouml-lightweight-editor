@@ -15,6 +15,10 @@ import RefOntoUML.util.ValidationMessage;
 
 public class SyntacticVerificator {
 	
+	/**
+     * Validates a model according to the RefOntoUML OCL synctatic rules.
+     * @param refmodel the model that will be validated.
+     */  
 	public static String verify(RefOntoUML.Package refmodel)
 	{		
 		String result = new String();

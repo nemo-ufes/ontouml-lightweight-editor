@@ -1,20 +1,25 @@
 package br.ufes.inf.nemo.oled.util;
 
 
-import ontouml2text.core.Writer;
+import javax.swing.JFrame;
+
+import ontouml2text.ui.OntoUML2TextDialog;
 
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 
 public class TextDescriptionHelper {
 	
-   public static OperationResult generateText(final Model refmodel, String tempDir) {
+   public static OperationResult generateText(final Model refmodel, String tempDir, JFrame frame) {
 	   
 	   try {
 		   
 	   		String textOutput;
 	   		
-	   		textOutput = Writer.Write(refmodel);
+	   		OntoUML2TextDialog writer = new OntoUML2TextDialog(frame, refmodel);
+	   		writer.setLocationRelativeTo(frame);
+	   		writer.setVisible(true);
+	   		textOutput = "";
 				
 	   		if(textOutput != null && textOutput.length() > 0)
 	   		{
