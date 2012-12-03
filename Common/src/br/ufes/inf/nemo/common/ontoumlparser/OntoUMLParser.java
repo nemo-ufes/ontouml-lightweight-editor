@@ -100,6 +100,9 @@ public class OntoUMLParser {
 	 */
 	private void initializeElementList (PackageableElement rootpack, NameHandler h2) 
 	{
+		ParsingElement e = new ParsingElement(rootpack, true, h2.treatName(rootpack));
+		this.elementsHash.put(rootpack,e);
+		
 		for(PackageableElement p : ((Package) rootpack).getPackagedElement())
 		{
 			add2ElementHash(p, h2);
@@ -150,7 +153,7 @@ public class OntoUMLParser {
 		
 		} else {
 			e = new ParsingElement(pe, true, h2.treatName(pe));
-			this.elementsHash.put(pe,e);
+			this.elementsHash.put(pe,e);			
 		}
 		
 	}
@@ -189,7 +192,7 @@ public class OntoUMLParser {
 	 * @return
 	 */
 	public Boolean isSelected (EObject elem) 
-	{
+	{		
 		return elementsHash.get(elem).getSelected();
 	}
 	
@@ -233,7 +236,7 @@ public class OntoUMLParser {
 			else if (unselectOthers) pe.setSelected(false);
 		}
 	}
-		
+	
 	/**
 	 * This method selects all Elements of the model.
 	 */
@@ -493,25 +496,25 @@ public class OntoUMLParser {
 						if (isSelected(gen.getGeneral()) && gen.getGeneral().equals(c)) return true;
 					}
 				}
-			}			
+			}
 		}		
 		return false;
 	}
 	
 	/** 
+	 * Guarantees that: 
 	 * 
-	 * Select elements that should be selected by the user. 
-	 * 
-	 * Guarantees that there will be no null pointer in the generalization,
-	 * by including the general and the specific to the list of selected elements.
-	 * Guarantee that the types related in a association are included in the new model. 
+	 * There will be no null pointer in the generalization,
+	 * by including the general and the specific classifier to the list of selected elements. 
+	 * The types related in a association are also included, as well the Generalizations in a Generalization Set  
+	 * and their general and specific classifiers.
 	 * 
 	 * @return
 	 */
 	private ArrayList<EObject> completeSelections()
 	{
 		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
-	
+		
 		for (EObject obj : getElements()) 
 		{
 			if(obj instanceof Generalization)
@@ -530,7 +533,7 @@ public class OntoUMLParser {
 			}
 			if(obj instanceof Association) 
 			{
-				Association a = (Association)obj;
+				Association a = (Association)obj;				
 				Type source = a.getMemberEnd().get(0).getType();
 				Type target = a.getMemberEnd().get(1).getType();
 				//source
@@ -566,7 +569,16 @@ public class OntoUMLParser {
 					}
 				}								
 			}
+			if(obj instanceof PackageableElement) 
+			{
+				// packages
+				if(!isSelected(obj.eContainer()) && !objectsToAdd.contains(obj.eContainer())) 
+				{
+					objectsToAdd.add(obj.eContainer());
+				}
+			}
 		}
+		
 		// add this elements to selection...
 		selectThisElements(objectsToAdd,false);
 		
