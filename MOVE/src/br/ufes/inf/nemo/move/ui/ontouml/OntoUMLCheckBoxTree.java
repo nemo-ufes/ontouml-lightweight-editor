@@ -256,6 +256,35 @@ public class OntoUMLCheckBoxTree {
 	}
 	
 	/**
+	 * Check Node.
+	 * 
+	 * @param node
+	 * @param safe
+	 * @param modeltree
+	 */
+	@SuppressWarnings({ "rawtypes", "unused" })
+	public static void checkNode(DefaultMutableTreeNode node, boolean safe,CheckboxTree modeltree)
+	{
+		EObject childObject;		
+		modeltree.addCheckingPath(new TreePath(node.getPath()));		
+		EObject obj = ((OntoUMLTreeNodeElem)node.getUserObject()).getElement();
+		
+		//unselected children only if was different than Association
+    	if(safe && node.getChildCount()>0 && !(obj instanceof Association)) 
+    	{
+			Enumeration e = node.breadthFirstEnumeration();
+			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)e.nextElement();		
+						
+			while (e.hasMoreElements()) 
+	    	{
+				childNode = (DefaultMutableTreeNode)e.nextElement();
+				childObject = ((OntoUMLTreeNodeElem)childNode.getUserObject()).getElement();
+				modeltree.getCheckingModel().removeCheckingPath(new TreePath(childNode.getPath()));				
+			}
+    	}
+	}
+	
+	/**
 	 * Check this elements.
 	 * 
 	 * @param elements
@@ -265,23 +294,18 @@ public class OntoUMLCheckBoxTree {
 	public static void checkElements(List<EObject> elements, boolean safe, CheckboxTree modeltree) 
 	{
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) modeltree.getModel().getRoot();
-	    DefaultMutableTreeNode node = null;
+	    
+		List<EObject> alreadyChecked = getCheckedElements(modeltree);
+	    alreadyChecked.addAll(elements);
+	    
 	    Enumeration e = root.breadthFirstEnumeration();
+	    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)e.nextElement();
 	    while (e.hasMoreElements()) 
 	    {
-	      node = (DefaultMutableTreeNode) e.nextElement();
-	      if ( elements.contains( ((OntoUMLTreeNodeElem)node.getUserObject()).getElement() )) 
-	      {
-	    	modeltree.addCheckingPath(new TreePath(node.getPath()));	
-	    	
-	    	if(safe) {
-	    		if (node.getChildCount()>0){
-	    			TreePath path = new TreePath(((DefaultMutableTreeNode)node.getFirstChild()).getPath());
-	    			modeltree.getCheckingModel().removeCheckingPath(path);
-	    		}
-	    	}
-	      }
-	    }	    
+	    	EObject obj = ((OntoUMLTreeNodeElem)node.getUserObject()).getElement();
+	    	if (alreadyChecked.contains(obj)) checkNode(node,true,modeltree);
+	    	node = (DefaultMutableTreeNode)e.nextElement();
+	    }
 	}	
 	 
 	/**
