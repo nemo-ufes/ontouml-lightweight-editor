@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Common"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="forms-1.3.0.jar" sourcepath="forms-1.3.0-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

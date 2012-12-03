@@ -840,7 +840,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void generateText() {
 		
 		UmlProject project = getCurrentEditor().getProject();
-		OperationResult result = TextDescriptionHelper.generateText(project.getModel(), project.getTempDir());
+		OperationResult result = TextDescriptionHelper.generateText(project.getModel(), project.getTempDir(), frame);
 		
 		if(result.getResultType() != ResultType.ERROR)
 		{

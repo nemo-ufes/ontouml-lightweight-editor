@@ -36,7 +36,6 @@ import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mapper;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
 
 import RefOntoUML.Association;
-import RefOntoUML.Classifier;
 import RefOntoUML.Comment;
 import RefOntoUML.Dependency;
 import RefOntoUML.Generalization;
@@ -160,6 +159,10 @@ public class RefOntoUMLUtil {
     	Set<PackageableElement> pelList = ontoParser.getPackageableElements();
     	for (PackageableElement pel : pelList)
     	{
+    		if (pel instanceof GeneralizationSet)
+    		{
+    			continue;
+    		}
     		Package parent = (Package) pel.eContainer();
     		if (!checkedNodes.contains(pel))
     		{
@@ -178,30 +181,30 @@ public class RefOntoUMLUtil {
     	}
     }
 	
-	public static void filterModel(EObject element, List<EObject> checkedElements,
-			List<EObject> uncheckedElements) {
-    	
-    	if (element == null || !(element instanceof Classifier || element instanceof Package)) {
-    		return;
-    	}
-    	
-    	Object[] elemArray = element.eContents().toArray();
-		for (Object obj : elemArray) {
-			filterModel((EObject)obj, checkedElements, uncheckedElements);
-		}
-    	
-    	if (!checkedElements.contains(element)) {
-    		if (element instanceof Package) {
-    			if (((Package) element).getPackagedElement().size() == 0) {
-    				uncheckedElements.add(element);
-    				EcoreUtil.remove(element);
-    			}
-    		} else {
-    			uncheckedElements.add(element);
-    			EcoreUtil.remove(element);
-    		}
-    	}
-    }
+//	public static void filterModel(EObject element, List<EObject> checkedElements,
+//			List<EObject> uncheckedElements) {
+//    	
+//    	if (element == null || !(element instanceof Classifier || element instanceof Package)) {
+//    		return;
+//    	}
+//    	
+//    	Object[] elemArray = element.eContents().toArray();
+//		for (Object obj : elemArray) {
+//			filterModel((EObject)obj, checkedElements, uncheckedElements);
+//		}
+//    	
+//    	if (!checkedElements.contains(element)) {
+//    		if (element instanceof Package) {
+//    			if (((Package) element).getPackagedElement().size() == 0) {
+//    				uncheckedElements.add(element);
+//    				EcoreUtil.remove(element);
+//    			}
+//    		} else {
+//    			uncheckedElements.add(element);
+//    			EcoreUtil.remove(element);
+//    		}
+//    	}
+//    }
 	
 	/**
 	   * Deletes the object from its {@link EObject#eResource containing} resource 
