@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
-import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.move.mvc.controller.OCLController;
 import br.ufes.inf.nemo.move.mvc.controller.OntoUMLController;
 import br.ufes.inf.nemo.move.mvc.controller.antipattern.list.AntiPatternListController;
@@ -274,6 +273,32 @@ public class TheFrame extends JFrame {
 	public void HideConsole() { 
 		mainSplitPane.setDividerLocation(1.00); 
 	}
+
+	/**
+	 * Select elements of the Parser from Check Box Model Tree for Transformations purposes.
+	 */
+	public String UpdateSelection()
+	{		
+		List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());   			
+		
+		ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);		
+		List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(ontoumlview.hierarchyOption(),false);   			
+				
+		String msg = new String();
+		for(EObject o: added)
+		{
+			msg += ""+ontoumlmodel.getOntoUMLParser().getStringRepresentation(o)+" added.\n";
+		}
+		msg += "\nSelection Completed!";
+		
+		selected.addAll(added);
+		OntoUMLCheckBoxTree.checkElements(selected, true,ontoumlview.getModelTree());
+		
+    	ontoumlview.getModelTree().updateUI();
+		
+    	console.write("This Elements are selected: \n\n"+ontoumlmodel.getOntoUMLParser().getStringRepresentations());
+		return msg;
+	}
 	
 	/**
 	 * Transforms OntoUML Model into Alloy according to the options.
@@ -284,11 +309,7 @@ public class TheFrame extends JFrame {
 			
 			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;	
 			
-			List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());   			
-   			ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);
-   			List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(ontoumlview.includeHierarchy());
-   			
-   			for(EObject o: added) { console.write(((NamedElement)o).getName()+" added.\n"); }
+			UpdateSelection();
    			
 			alloymodel.setAlloyModel(ontoumlmodel,ontoumlOptModel);
 			

@@ -92,9 +92,12 @@ public class OntoUMLView extends JPanel {
 		}
 	}
 	
-	public boolean includeHierarchy()
+	public int hierarchyOption()
 	{
-		return ontobar.cbxIncludeHierarchy.isSelected();		
+		if (ontobar.rdbtnAllHierarchy.isSelected()) return OntoUMLParser.COMPLETE_HIERARCHY;
+		if (ontobar.rdbtnSubstanceSortal.isSelected()) return OntoUMLParser.SORTAL_HIERARCHY;
+		if (ontobar.rdbtnNone.isSelected()) return OntoUMLParser.NO_HIERARCHY;
+		return -1;
 	}
 	
 	public CheckboxTree getModelTree()

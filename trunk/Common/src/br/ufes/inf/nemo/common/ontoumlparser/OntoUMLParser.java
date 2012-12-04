@@ -46,10 +46,8 @@ import br.ufes.inf.nemo.common.resource.ResourceUtil;
  */
 public class OntoUMLParser {
 
-	private Package model;
-	
-	private String refmodelname;
-	
+	private Package model;	
+	private String refmodelname;	
 	private HashMap<EObject,ParsingElement> elementsHash;
 	
 	public static int NO_HIERARCHY = 0, SORTAL_HIERARCHY = 1, COMPLETE_HIERARCHY = 2;
@@ -170,6 +168,31 @@ public class OntoUMLParser {
 	public String getAlias(EObject elem) 
 	{
 		return elementsHash.get(elem).getAlias();
+	}
+	
+	/**
+	 * This method gets the String representation for this element.
+	 * 
+	 * @param elem
+	 * @return
+	 */
+	public String getStringRepresentation(EObject elem)
+	{
+		return elementsHash.get(elem).toString();
+	}
+	
+	/**
+	 * Get String Representation of All Elements.
+	 * 
+	 * @return
+	 */
+	public String getStringRepresentations()
+	{
+		String result = new String();
+	
+		for (EObject obj: getElements()) { result+= getStringRepresentation(obj)+"\n"; }
+		
+		return result;		
 	}
 	
 	/**
@@ -503,18 +526,17 @@ public class OntoUMLParser {
 		}		
 		return false;
 	}
-	
-	/** 
-	 * Guarantees that: 
+		 
+	/**
+	 * Auto Select Elements : Mandatory Dependencies.
 	 * 
-	 * There will be no null pointer in the generalization,
-	 * by including the general and the specific classifier to the list of selected elements. 
-	 * The types related in a association are also included, as well the Generalizations in a Generalization Set  
-	 * and their general and specific classifiers.
+	 * In Generalizations, the general and specific classifiers must be selected. 
+	 * In Associations, the source and target types must be selected.
+	 * In PackageableElements, the container of this elements, for instance, the package container, must be selected. 
 	 * 
 	 * @return
 	 */
-	public ArrayList<EObject> autoSelectMandatoryDependencies()
+	private ArrayList<EObject> autoSelectMandatoryDependencies()
 	{
 		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
 		
@@ -554,7 +576,7 @@ public class OntoUMLParser {
 			if(obj instanceof PackageableElement) 
 			{
 				// packages
-				if(!isSelected(obj.eContainer()) && !objectsToAdd.contains(obj.eContainer())) 
+				if((obj.eContainer()!=null) && !isSelected(obj.eContainer()) && !objectsToAdd.contains(obj.eContainer())) 
 				{
 					objectsToAdd.add(obj.eContainer());
 				}
@@ -566,9 +588,16 @@ public class OntoUMLParser {
 		
 		return objectsToAdd;
 	}
-
-	public ArrayList<EObject> autoSelectGeneralizationSet() {
-		
+	
+	/**
+	 * Auto Select Elements: Generalization Set.
+	 * 
+	 * In Generalization Set, the Generalizations and the general and specific classifiers, must be selected.
+	 * 
+	 * @return
+	 */
+	private ArrayList<EObject> autoSelectGeneralizationSet() 
+	{		
 		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
 		
 		for(EObject obj : getElements()){
@@ -598,30 +627,47 @@ public class OntoUMLParser {
 		
 		// add this elements to selection...
 		selectThisElements(objectsToAdd,false);
+		
 		return objectsToAdd;
 	}
 	
-	public ArrayList<EObject> autoSelectHierarchy(int option) {
+	/**
+	 * Auto Select Elements including the hierarchy of types.
+	 * 
+	 * Every Class must have all the parents and their generalizations selected,
+	 * or until some Substance Sortal be found.
+	 * 
+	 * @param option
+	 * @return
+	 */
+	private ArrayList<EObject> autoSelectHierarchy(int option) 
+	{
 		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
 		
-		if (option==NO_HIERARCHY)
-			return objectsToAdd;
+		if (option==NO_HIERARCHY) return objectsToAdd;
 		
 		for (EObject o : getElements()) 
 		{
-			if (o instanceof Class)
-				getHierarchy((Classifier) o, objectsToAdd, option);
+			if (o instanceof Class) getHierarchy((Classifier) o, objectsToAdd, option);
 		}
+		
 		// add this elements to selection...
 		selectThisElements(objectsToAdd,false);
 	
 		return objectsToAdd;
 	}
-	
+
+	/**
+	 * Private method to get all the hierarchy of a Class.
+	 * 
+	 * @param o
+	 * @param objectsToAdd
+	 * @param option
+	 */
 	private void getHierarchy (Classifier o, ArrayList<EObject> objectsToAdd, int option){
 		
-		if(o instanceof SubstanceSortal && option==SORTAL_HIERARCHY)
-			return;
+		if(o instanceof SubstanceSortal && option==SORTAL_HIERARCHY) return;
+		
 		for (Generalization g : ((Class) o).getGeneralization()) 
 		{
 			if(!isSelected(g) && !objectsToAdd.contains(g))
@@ -632,38 +678,37 @@ public class OntoUMLParser {
 				getHierarchy(g.getGeneral(), objectsToAdd,option);
 			}
 		}
-	}
-	
-	
+	}	
 	
 	/**
-	 * Select elements that should be selected by the user. 
+	 * Auto Select Elements :  explicit dependencies through parameters.
 	 * 
-	 * Guarantees that there will be no null pointer in the generalization,
-	 * by including the general and the specific to the list of selected elements.
-	 * Guarantee that the types related in a association are included in the new model. 
-	 * 
-	 * And if the option 'includeHierarchy' was true, it includes 
-	 * the hierarchy for every type class that is selected.
-	 * 
-	 * @param includeHierarchy
+	 * @param hierarchyOption
+	 * @param includeGeneralizationSet
+	 * @return
 	 */
 	public ArrayList<EObject> autoSelectDependencies(int hierarchyOption, boolean includeGeneralizationSet)
 	{		
-		ArrayList<EObject> objectsAdded = autoSelectMandatoryDependencies();
+		ArrayList<EObject> objectsAdded = new ArrayList<EObject>();
 		
-		if (includeGeneralizationSet)
-			objectsAdded.addAll(autoSelectGeneralizationSet());
-		
+		objectsAdded.addAll(autoSelectMandatoryDependencies());
+						
 		objectsAdded.addAll(autoSelectHierarchy(hierarchyOption));
+		
+		if (includeGeneralizationSet) objectsAdded.addAll(autoSelectGeneralizationSet());
 		
 		return objectsAdded;
 	}
+				
 	
 	
 	
-	/*=====================================================================*/
-		
+	
+	/*=============================================================================*/
+	
+	
+	
+	
 	public ArrayList<EObject> getSelectedResolvingLostReferences (String log, boolean includeHierarchy)
 	{
 		ArrayList<EObject> class_add_list = new ArrayList<>();		
@@ -744,16 +789,6 @@ public class OntoUMLParser {
 		return selected;
 	}	
 	
-	/**
-	 * Recreates the model keeping only the selected classes.
-	 * 
-	 * @param root
-	 * @param log
-	 * @param includeHierarchy
-	 * @param copier
-	 * @param selected
-	 * @return
-	 */
 	public Package recreatePackageFromSelectedClasses (String log, boolean includeHierarchy, Copier copier)
 	{		
 		Package pack_copy;
@@ -774,12 +809,6 @@ public class OntoUMLParser {
 		return pack_copy;
 	}
 	
-	/**
-	 * Delete selected elements from a root Package model.
-	 * 
-	 * @param pack
-	 * @param selected
-	 */
 	private void deleteElement (Package pack, ArrayList<EObject> selected)
 	{
 		ArrayList<EObject> delete_list = new ArrayList<EObject>();

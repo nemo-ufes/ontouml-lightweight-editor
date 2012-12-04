@@ -3,16 +3,10 @@ package br.ufes.inf.nemo.move.mvc.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import org.eclipse.emf.ecore.EObject;
-
-import RefOntoUML.Generalization;
-import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
 import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
@@ -120,27 +114,12 @@ public class OntoUMLController {
 	    {
 	    	if (ontoumlview.getModelTree()==null) return;
 	    	
-	    	List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree()); 
-	    	
-   			ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);
-   			
-   			List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(ontoumlview.includeHierarchy());
-   			
-   			String msg = new String();
-   			for(EObject o: added) 
-   			{
-   				if (o instanceof NamedElement) msg += ((NamedElement)o).getName()+" added.\n";
-   				if (o instanceof Generalization) msg += ((Generalization)o).getSpecific().getName()+"->"+((Generalization)o).getGeneral().getName()+" added.\n";	   						
-   			}
-   			if (msg.isEmpty()) msg = "All the elements are correctly selected.";
-   			
+	    	String msg = ontoumlview.getTheFrame().UpdateSelection();   			
+   			   			
     		JOptionPane.showMessageDialog(
     			ontoumlview.getTheFrame(),msg,"Complete Selections",JOptionPane.INFORMATION_MESSAGE,
     			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
-    		);
-    		
-    		OntoUMLCheckBoxTree.checkElements(added, true,ontoumlview.getModelTree());	    		
-	    	ontoumlview.getModelTree().updateUI();
+    		);    		
 	    }
 	 }	 
 }
