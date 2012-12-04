@@ -25,6 +25,9 @@ import java.awt.FlowLayout;
 import javax.swing.border.EmptyBorder;
 
 /**
+ * 
+ * This class represents a View for OntoUML Options Model.
+ * 
  * @author John Guerson
  */
 
@@ -48,7 +51,7 @@ public class OntoUMLOptionsView extends JPanel {
 	private JPanel titlePanel;
 		
 	/**
-	 * COnstructor.
+	 * Creates a View from OntoUML Options Model and the main frame application.
 	 * 
 	 * @param optModel
 	 * @param frame
@@ -64,7 +67,7 @@ public class OntoUMLOptionsView extends JPanel {
 	}
 
 	/**
-	 * Set OntoUML Options View from Model.
+	 * Set OntoUML Options View from OntoUML Options Model.
 	 * 
 	 * @param optModel
 	 */
@@ -80,7 +83,7 @@ public class OntoUMLOptionsView extends JPanel {
 	}
 
 	/**
-	 * Constructor
+	 * Creates an Empty View for OntoUML Options Model.
 	 */
 	public OntoUMLOptionsView() 
 	{
@@ -220,33 +223,45 @@ public class OntoUMLOptionsView extends JPanel {
 		add(btnPanel, BorderLayout.SOUTH);
 	}
 	
-	public boolean isSelectedRelatorConstraint()
-	{
-		return cbxRelatorConstraint.isSelected();
-	}
+	/**
+	 * Is Selected Relator Constraint Option.
+	 * 
+	 * @return
+	 */	
+	public boolean isSelectedRelatorConstraint() { return cbxRelatorConstraint.isSelected(); }
 	
-	public boolean isSelectedWeakSupplementation()
-	{
-		return cbxWeakSupplementation.isSelected();
-	}
+	/**
+	 * Is Selected Weak Supplementation Option.
+	 * 
+	 * @return
+	 */
+	public boolean isSelectedWeakSupplementation() { return cbxWeakSupplementation.isSelected(); }
 	
-	public boolean isSelectedAntirigidity()
-	{
-		return cbxAntirigidity.isSelected();
-	}
+	/**
+	 * Is Selected AntiRigidity Option.
+	 * 
+	 * @return
+	 */
+	public boolean isSelectedAntirigidity() { return cbxAntirigidity.isSelected(); }
+		
+	/**
+	 * Is Selected Identity Principle Option.
+	 * 
+	 * @return
+	 */
+	public boolean isSelectedIdentityPrinciple() { return cbxIdentityPrinciple.isSelected(); }
 	
-	public boolean isSelectedIdentityPrinciple()
-	{
-		return cbxIdentityPrinciple.isSelected();
-	}
+	/**
+	 * Is Selected Open Analyzer Option.
+	 * 
+	 * @return
+	 */
+	public boolean isSelectedOpenAnalyzer() { return cbxOpenAnalyzer.isSelected(); }
 	
-	public boolean isSelectedOpenAnalyzer()
-	{
-		return cbxOpenAnalyzer.isSelected();
-	}
-	
-	public TheFrame getTheFrame()
-	{
-		return frame;
-	}
+	/**
+	 * Get the main frame application.
+	 * 
+	 * @return
+	 */
+	public TheFrame getTheFrame() { return frame; }
 }

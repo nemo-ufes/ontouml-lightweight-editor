@@ -13,6 +13,8 @@ import br.ufes.inf.nemo.move.mvc.view.OCLView;
 import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
 
 /**
+ * This class represents a Controller between OCL Model and OCL View.
+ * 
  * @author John Guerson
  */
 

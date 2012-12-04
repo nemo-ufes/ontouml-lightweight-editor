@@ -41,6 +41,7 @@ public class OntoUMLController {
 		ontoumlview.addAllDescendantsSelectionListener(new AllDescendantsSelectionListener());
 		ontoumlview.addDefaultSelectionListener(new DefaultSelectionListener());
 		ontoumlview.addSortalAncestorsSelectionListener(new SortalAncestorsSelectionListener());
+		ontoumlview.addCompleteHierarchySelectionListener(new CompleteHierarchySelectionListener());		
 	}	
 	
 	/**
@@ -187,4 +188,24 @@ public class OntoUMLController {
     		);   		
 	    }
 	 }	
+	 
+	 /**
+	 * Complete all hierarchy {all acnestors and descendants} Selection Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class CompleteHierarchySelectionListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	if (ontoumlview.getModelTree()==null) return;
+	    	
+	    	String msg = ontoumlview.getTheFrame().UpdateSelection(OntoUMLParser.COMPLETE_HIERARCHY);
+   				    	
+    		JOptionPane.showMessageDialog(
+    			ontoumlview.getTheFrame(),msg,"Complete Selections - All Ancestors and Descendants",JOptionPane.INFORMATION_MESSAGE,
+    			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
+    		);   		
+	    }
+	 }			 
 }

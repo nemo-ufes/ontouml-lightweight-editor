@@ -22,6 +22,9 @@ import br.ufes.inf.nemo.move.util.TitleTextField;
 import br.ufes.inf.nemo.ocl2alloy.parser.OCLParser;
 
 /**
+ * 
+ * This class represents a View for OCL Model.
+ * 
  * @author John Guerson
  */
 
@@ -38,7 +41,7 @@ public class OCLView extends JPanel {
 	private OCLEditorPanel ocleditor;
 		
 	/**
-	 * Constructor.
+	 * Creates a View for OCL Model and the main frame of Application.
 	 * 
 	 * @param oclmodel
 	 * @param frame
@@ -61,7 +64,7 @@ public class OCLView extends JPanel {
 	}
 	
 	/**
-	 * Constructor.
+	 * Creates a Empty View for OCL Model.
 	 */
 	public OCLView() 
 	{
@@ -88,7 +91,7 @@ public class OCLView extends JPanel {
 	}
 	
 	/**
-	 * Set Path View.
+	 * Set Path View from a absolute path and the ocl model content.
 	 * 
 	 * @param path
 	 * @param oclmodel
@@ -102,7 +105,7 @@ public class OCLView extends JPanel {
 	}	
 	
 	/**
-	 * Set Editor View.
+	 * Set Editor View from a ocl model content.
 	 * 
 	 * @param oclmodel
 	 */
@@ -112,7 +115,7 @@ public class OCLView extends JPanel {
 	}			
 	
 	/**
-	 * Parse Constraint from the Editor.
+	 * Parse Constraints from the Editor View.
 	 * 
 	 * @throws ParserException
 	 * @throws IOException
@@ -122,46 +125,84 @@ public class OCLView extends JPanel {
 		return new OCLParser(getConstraints(),frame.getOntoUMLModel().getOntoUMLModelInstance(),frame.getUMLModel().getUMLPath());
 	}
 	
-	public String getConstraints()
-	{
-		return ocleditor.textArea.getText();
-	}
+	/**
+	 * Get Constraints from the Editor View.
+	 * 
+	 * @return
+	 */
+	public String getConstraints() { return ocleditor.textArea.getText(); }
 	
-	public String getOCLPath()
-	{
-		return oclbar.textPath.getText();
-	}
+	/**
+	 * Get OCL Path from View.
+	 * 
+	 * @return
+	 */
+	public String getOCLPath() { return oclbar.textPath.getText(); }
 		
+	/**
+	 * Add Open OCL Document Action Listener.
+	 * 
+	 * @param actionListener
+	 */
 	public void addOpenOCLListener(ActionListener actionListener) 
 	{
 		oclbar.btnOpen.addActionListener(actionListener);
 	}
 	
+	/**
+	 * Add Save OCL Document Action Listener.
+	 * 
+	 * @param actionListener
+	 */
 	public void addSaveOCLListener(ActionListener actionListener) 
 	{
 		oclbar.btnSave.addActionListener(actionListener);
 	}
 	
+	/**
+	 * Add New OCL Document Action Listener.
+	 * 
+	 * @param actionListener
+	 */
 	public void addNewOCLListener(ActionListener actionListener) 
 	{
 		oclbar.btnNew.addActionListener(actionListener);
 	}
 	
+	/**
+	 * Add Parse OCL Constraints Action Listener.
+	 * 
+	 * @param actionListener
+	 */
 	public void addParseOCLListener(ActionListener actionListener) 
 	{
 		oclbar.btnParse.addActionListener(actionListener);
 	}
 	
+	/**
+	 * Add Help OCL Action Listener.
+	 * @param actionListener
+	 */
 	public void addHelpOCLListener(ActionListener actionListener) 
 	{
 		oclbar.btnHelp.addActionListener(actionListener);
 	}
 	
+	/**
+	 * Get the main frame application.
+	 * 
+	 * @return
+	 */
 	public TheFrame getTheFrame()
 	{
 		return frame;
 	}
 	
+	/**
+	 * Open OCL Path Location.
+	 * 
+	 * @return
+	 */
 	public String openOCLPathLocation()
 	{
 		JFileChooser fileChooser = new JFileChooser();
@@ -180,6 +221,11 @@ public class OCLView extends JPanel {
 		return null;
 	}	
 	
+	/**
+	 * Save OCL Path Location.
+	 * 
+	 * @return
+	 */
 	public String saveOCLPathLocation()
 	{
 		JFileChooser fileChooser = new JFileChooser();

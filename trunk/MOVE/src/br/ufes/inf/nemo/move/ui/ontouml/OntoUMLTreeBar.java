@@ -35,6 +35,7 @@ public class OntoUMLTreeBar extends JPanel {
 	public JMenuItem menuItemAllAncestors;
 	public JMenuItem menuItemSortalAncestors;
 	public JMenuItem menuItemAllDescendants;
+	public JMenuItem menuItemCompletehierarchy;
 	
 	public OntoUMLTreeBar() 
 	{		
@@ -74,13 +75,15 @@ public class OntoUMLTreeBar extends JPanel {
 		
 		menuItemDefault = new JMenuItem("Complete selection with mandatory dependencies");
 		menuItemAllAncestors = new JMenuItem("Complete selection with all ancestors");
+		menuItemSortalAncestors = new JMenuItem("Complete selection with ancestors until a SubstanceSortal");
 		menuItemAllDescendants = new JMenuItem("Complete selection with all descendants");
-		menuItemSortalAncestors = new JMenuItem("Complete selection with ancestors until a SubstanceSortal");		
+		menuItemCompletehierarchy = new JMenuItem("Complete selection with all ancestors and descendants");
 		
 		popupCompleteSelect.add(menuItemDefault);
 		popupCompleteSelect.add(menuItemAllAncestors);
 		popupCompleteSelect.add(menuItemSortalAncestors);
 		popupCompleteSelect.add(menuItemAllDescendants);
+		popupCompleteSelect.add(menuItemCompletehierarchy);
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
