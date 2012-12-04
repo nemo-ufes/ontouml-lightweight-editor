@@ -12,12 +12,9 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.ocl.ParserException;
 
 import RefOntoUML.AntiRigidSortalClass;
-import RefOntoUML.Kind;
 import RefOntoUML.Model;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
-import RefOntoUML.Relator;
-import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class QueryPerformer {

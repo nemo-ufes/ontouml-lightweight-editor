@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.move.ui.ontouml;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -29,17 +31,11 @@ public class OntoUMLTreeBar extends JPanel {
 	public JButton btnCompleteSelect;
 	public JPopupMenu popupCompleteSelect;	
 	
-	public JMenuItem menuItemDefaultAncestors;
+	public JMenuItem menuItemDefault;
 	public JMenuItem menuItemAllAncestors;
-	public JMenuItem menuItemSortalAncestor;
+	public JMenuItem menuItemSortalAncestors;
+	public JMenuItem menuItemAllDescendants;
 	
-	public void showPopupCompleteSelect()
-	{
-		popupCompleteSelect.show(btnCompleteSelect, 10, 10);
-   	    btnCompleteSelect.repaint();
-   	    btnCompleteSelect.validate();
-	}
-		
 	public OntoUMLTreeBar() 
 	{		
 		textPath = new JTextField();
@@ -47,14 +43,14 @@ public class OntoUMLTreeBar extends JPanel {
 		textPath.setEditable(false);
 		textPath.setColumns(10);
 		
-		setPreferredSize(new Dimension(441, 92));
+		setPreferredSize(new Dimension(441, 87));
 		
 		btnOpen = new JButton("");
 		btnOpen.setToolTipText("Open OntoUML Model");
 		btnOpen.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/open-16x16.png")));
 		
 		btnVerify = new JButton("");
-		btnVerify.setToolTipText("Verify Model Sintactically");
+		btnVerify.setToolTipText("Verify All Model Sintactically");
 		btnVerify.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-16x16.png")));
 		
 		btnShowUnique = new JButton("");
@@ -64,14 +60,27 @@ public class OntoUMLTreeBar extends JPanel {
 		btnCompleteSelect = new JButton("");
 		btnCompleteSelect.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-16x16.png")));
 		btnCompleteSelect.setToolTipText("Complete Selections");
-						
+		btnCompleteSelect.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent event) 
+			{
+				popupCompleteSelect.show(btnCompleteSelect, 10, 10);
+		   	    btnCompleteSelect.repaint();
+		   	    btnCompleteSelect.validate();
+			}
+		});
+		
 		popupCompleteSelect = new JPopupMenu();
-		menuItemDefaultAncestors = new JMenuItem("Default");
-		menuItemAllAncestors = new JMenuItem("All Ancestors");
-		menuItemSortalAncestor = new JMenuItem("Ancestors until SubstanceSortal");
-		popupCompleteSelect.add(menuItemDefaultAncestors);
+		
+		menuItemDefault = new JMenuItem("Complete selection with mandatory dependencies");
+		menuItemAllAncestors = new JMenuItem("Complete selection with all ancestors");
+		menuItemAllDescendants = new JMenuItem("Complete selection with all descendants");
+		menuItemSortalAncestors = new JMenuItem("Complete selection with ancestors until a SubstanceSortal");		
+		
+		popupCompleteSelect.add(menuItemDefault);
 		popupCompleteSelect.add(menuItemAllAncestors);
-		popupCompleteSelect.add(menuItemSortalAncestor);
+		popupCompleteSelect.add(menuItemSortalAncestors);
+		popupCompleteSelect.add(menuItemAllDescendants);
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
