@@ -212,6 +212,21 @@ public class OntoUMLParser {
 	}
 	
 	/**
+	 * Get String Representation of All Elements.
+	 * 
+	 * @return
+	 */
+	public String getStringRepresentations(ArrayList<EObject> list)
+	{
+		String result = new String();
+	
+		for (EObject obj: getElements()) { if (list.contains(obj)) result+= getStringRepresentation(obj)+"\n"; }
+		
+		return result;		
+	}
+	
+	
+	/**
 	 * This method verifies if a given onotuML elem is selected or not.
 	 * 
 	 * @param elem
@@ -289,6 +304,21 @@ public class OntoUMLParser {
 		return list;
 	}
 			
+	/**
+	 * This method get all the Associations of the model.
+	 * 
+	 * @return
+	 */
+	public Set<Association> getAssociations()
+	{
+		Set<Association> list = new HashSet<Association>(); 		
+		for (EObject obj : getElements()) 
+		{
+			if(obj instanceof Association) list.add((Association)obj);
+		}		
+		return list;
+	}
+	
 	/**
 	 * This method get all the ontoUML PackageableElement of the model.
 	 * 
@@ -530,7 +560,7 @@ public class OntoUMLParser {
 	/**
 	 * Auto Select Elements : Mandatory Dependencies.
 	 * 
-	 * In Generalizations, the general and specific classifiers must be selected. 
+	 * In Generalizations, the general and specific classifiers must be selected, as well as the generalization set. 
 	 * In Associations, the source and target types must be selected.
 	 * In PackageableElements, the container of this elements, for instance, the package container, must be selected. 
 	 * 
@@ -555,6 +585,14 @@ public class OntoUMLParser {
 				{
 					objectsToAdd.add(g.getSpecific());					
 				}
+				//generalization set
+                for (GeneralizationSet gs : g.getGeneralizationSet()) 
+                {
+                    if(!isSelected(gs) && !objectsToAdd.contains(gs))
+                    {
+                        objectsToAdd.add(gs);                                        
+                    }
+                }
 			}
 			if(obj instanceof Association) 
 			{
@@ -632,7 +670,7 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * Auto Select Elements including the hierarchy of types.
+	 * Auto Select Elements : All the ancestors of a Class. i.e. Parents and Generalizations.
 	 * 
 	 * Every Class must have all the parents and their generalizations selected,
 	 * or until some Substance Sortal be found.
@@ -640,7 +678,7 @@ public class OntoUMLParser {
 	 * @param option
 	 * @return
 	 */
-	private ArrayList<EObject> autoSelectHierarchy(int option) 
+	private ArrayList<EObject> autoSelectAncestorsHierarchy(int option) 
 	{
 		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
 		
@@ -648,7 +686,7 @@ public class OntoUMLParser {
 		
 		for (EObject o : getElements()) 
 		{
-			if (o instanceof Class) getHierarchy((Classifier) o, objectsToAdd, option);
+			if (o instanceof Class) getAncestorsHierarchy((Classifier) o, objectsToAdd, option);
 		}
 		
 		// add this elements to selection...
@@ -658,13 +696,13 @@ public class OntoUMLParser {
 	}
 
 	/**
-	 * Private method to get all the hierarchy of a Class.
+	 * Private method to get all the ancestors of a Class. i.e. Parents and Generalizations.
 	 * 
 	 * @param o
 	 * @param objectsToAdd
 	 * @param option
 	 */
-	private void getHierarchy (Classifier o, ArrayList<EObject> objectsToAdd, int option){
+	private void getAncestorsHierarchy (Classifier o, ArrayList<EObject> objectsToAdd, int option){
 		
 		if(o instanceof SubstanceSortal && option==SORTAL_HIERARCHY) return;
 		
@@ -675,7 +713,7 @@ public class OntoUMLParser {
 				objectsToAdd.add(g);
 				objectsToAdd.add(g.getGeneral());
 				
-				getHierarchy(g.getGeneral(), objectsToAdd,option);
+				getAncestorsHierarchy(g.getGeneral(), objectsToAdd,option);
 			}
 		}
 	}	
@@ -693,13 +731,13 @@ public class OntoUMLParser {
 		
 		objectsAdded.addAll(autoSelectMandatoryDependencies());
 						
-		objectsAdded.addAll(autoSelectHierarchy(hierarchyOption));
+		objectsAdded.addAll(autoSelectAncestorsHierarchy(hierarchyOption));
 		
 		if (includeGeneralizationSet) objectsAdded.addAll(autoSelectGeneralizationSet());
 		
 		return objectsAdded;
 	}
-				
+
 	
 	
 	

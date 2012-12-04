@@ -114,12 +114,14 @@ public class OntoUMLController {
 	    {
 	    	if (ontoumlview.getModelTree()==null) return;
 	    	
-	    	String msg = ontoumlview.getTheFrame().UpdateSelection();   			
-   			   			
+	    	//ontoumlview.showCompletePoup();
+	    	/*
+	    	String msg = ontoumlview.getTheFrame().UpdateSelection();
+   				    	
     		JOptionPane.showMessageDialog(
     			ontoumlview.getTheFrame(),msg,"Complete Selections",JOptionPane.INFORMATION_MESSAGE,
     			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
-    		);    		
+    		);*/    		
 	    }
 	 }	 
 }

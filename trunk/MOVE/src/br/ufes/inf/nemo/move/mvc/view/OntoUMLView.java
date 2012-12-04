@@ -91,15 +91,7 @@ public class OntoUMLView extends JPanel {
 			treeScrollPane.repaint();
 		}
 	}
-	
-	public int hierarchyOption()
-	{
-		if (ontobar.rdbtnAllHierarchy.isSelected()) return OntoUMLParser.COMPLETE_HIERARCHY;
-		if (ontobar.rdbtnSubstanceSortal.isSelected()) return OntoUMLParser.SORTAL_HIERARCHY;
-		if (ontobar.rdbtnNone.isSelected()) return OntoUMLParser.NO_HIERARCHY;
-		return -1;
-	}
-	
+		
 	public CheckboxTree getModelTree()
 	{
 		return modeltree;
@@ -137,6 +129,21 @@ public class OntoUMLView extends JPanel {
 	{
 		ontobar.btnCompleteSelect.addActionListener(actionListener);
 	}
+	
+	public void addDefaultAncestorsListener(ActionListener actionListener) 
+	{
+		ontobar.menuItemDefaultAncestors.addActionListener(actionListener);
+	}
+
+	public void addAllAncestorsListener(ActionListener actionListener) 
+	{
+		ontobar.menuItemAllAncestors.addActionListener(actionListener);
+	}
+	
+	public void addSubstanceSortalAncestorsListener(ActionListener actionListener) 
+	{
+		ontobar.menuItemSortalAncestor.addActionListener(actionListener);
+	}	
 	
 	public String getOntoUMLPathLocation()
 	{
