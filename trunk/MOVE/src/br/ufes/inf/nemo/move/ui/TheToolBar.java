@@ -2,8 +2,6 @@ package br.ufes.inf.nemo.move.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
@@ -12,11 +10,6 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
-
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.util.ToolbarButton;
 
 /**
@@ -31,7 +24,6 @@ public class TheToolBar extends JToolBar {
 	private ToolbarButton btnSearchForAntipatterns;	
 	private ToolbarButton btnShowHideConsole;
 	private ToolbarButton btnAlloyAnalyzer;
-	private ToolbarButton btnTreeTeste;
 	
 	/**
 	 * Constructor.
@@ -62,13 +54,6 @@ public class TheToolBar extends JToolBar {
 	 */
 	public void createButtons()
 	{		
-		createTreeTesteButton();
-		
-        JSeparator toolBarSeparator0 = new Separator();  
-        toolBarSeparator0.setVisible(false);
-        toolBarSeparator0.setOrientation( SwingConstants.VERTICAL );  
-        add( toolBarSeparator0 );  
-        
 		createShowHideConsole();
 		
         JSeparator toolBarSeparator1 = new Separator();  
@@ -85,43 +70,7 @@ public class TheToolBar extends JToolBar {
         
 		createAntiPatternButton();			
 	}		
-
-	public void createTreeTesteButton()
-	{
-		btnTreeTeste = new ToolbarButton("Selection Test","/resources/br/ufes/inf/nemo/move/check-36x36.png");
-		btnTreeTeste.setEnabled(true);
-		btnTreeTeste.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(frame.getOntoUMLView().getModelTree());
-       			
-       			frame.getOntoUMLModel().getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);
-       			
-       			for (EObject eObject : frame.getOntoUMLModel().getOntoUMLParser().getElements()) {
-					System.out.println(eObject);
-				}
-       			
-       			String result = new String();
-       			
-       			String log = new String();
-       			RefOntoUML.Package p = frame.getOntoUMLModel().getOntoUMLParser().recreatePackageFromSelectedClasses(log, false, new Copier());
-       			OntoUMLParser parser2 = new OntoUMLParser(p);
-       			result = "SIZE: "+parser2.getElements().size();
-       			for(EObject eo: parser2.getElements())
-       			{
-       				result += eo.toString()+"\n";       				
-       			}       			
-       			
-       			System.out.println("***********\nCheckBox Size: "+selected.size());
-       			System.out.println("***********\nOriginal Model Size: "+frame.getOntoUMLModel().getOntoUMLParser().getElements().size());
-       			System.out.println("***********\nCopy Size: "+parser2.getElements().size());
-       			frame.getConsole().write(result);
-       		}
-       	});
-		add(btnTreeTeste);
-	}
-	
+		
 	public void createAlloyAnalyzerButton()
 	{
 		btnAlloyAnalyzer = new ToolbarButton("Launch Analyzer","/resources/br/ufes/inf/nemo/move/alloy-36x36.png");
