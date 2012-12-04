@@ -33,7 +33,7 @@ public class AssociationsPanel extends JScrollPane {
 	{
 		initGUI();
 		
-		Set<PackageableElement> pelSet = ontoParser.getPackageableElements();
+		Set<PackageableElement> pelSet = ontoParser.getAllInstances(PackageableElement.class);
 		
 		for (PackageableElement pel : pelSet)
 		{

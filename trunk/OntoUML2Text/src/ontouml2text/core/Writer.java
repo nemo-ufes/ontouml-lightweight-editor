@@ -21,7 +21,7 @@ public class Writer {
 	{
 		String genDescr = new String();
 		
-		Set<Generalization> genSet = ontoParser.getGeneralizations();
+		Set<Generalization> genSet = ontoParser.getAllInstances(Generalization.class);
 		
 		for (Generalization gen : genSet)
 		{
@@ -35,7 +35,7 @@ public class Writer {
 	{
 		String attDescr = new String();
 		
-		Set<PackageableElement> pelSet = ontoParser.getPackageableElements();
+		Set<PackageableElement> pelSet = ontoParser.getAllInstances(PackageableElement.class);
 		
 		for (PackageableElement pel : pelSet)
 		{
@@ -43,10 +43,25 @@ public class Writer {
 			{
 				Classifier classf = (Classifier) pel;
 				
+				String singAttDescr = classf.getName() + " possui ";
+				String delim = "";
+				int i = 1;
+				
 				for (Property prop : classf.getAttribute())
 				{
 					String mult = processMultiplicity(prop);
-					attDescr += classf.getName() + " possui " + mult + " " + prop.getName() + "\n";
+					singAttDescr += delim + mult + " " + prop.getName();
+					delim = ", ";
+					i++;
+					if (i == classf.getAttribute().size())
+					{
+						delim = " e ";
+					}
+				}
+				
+				if (delim != "")
+				{
+					attDescr += singAttDescr + "\n";
 				}
 			}
 		}
@@ -58,10 +73,15 @@ public class Writer {
 	{
 		String assocDescr = new String();
 		
-		Set<PackageableElement> pelSet = ontoParser.getPackageableElements();
+		Set<PackageableElement> pelSet = ontoParser.getAllInstances(PackageableElement.class);
 		
 		for (PackageableElement pel : pelSet)
 		{
+			if (assocMap == null)
+			{
+				break;
+			}
+			
 			if (pel instanceof Association)
 			{
 				Association assoc = (Association) pel;
