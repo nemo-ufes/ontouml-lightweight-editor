@@ -21,19 +21,10 @@ public class OntoUML2Graph {
 		
 		for (EObject element : parser.getElements()) 
 		{
-			if(element instanceof Class) 
-			{
+			if(element instanceof Class)
 				classes.add((Class) element);
-				if(incGen)
-				{
-					for (Generalization g : ((Class)element).getGeneralization()) 
-					{
-						relationships.add(g);
-					}
-				}
-				
-			}
-			if((element instanceof Association || element instanceof Generalization) && !(element instanceof Derivation) && ( !(element instanceof MaterialAssociation) || incMat ) )
+
+			if(element instanceof Association && !(element instanceof Derivation) && ( !(element instanceof MaterialAssociation) || incMat ) )
 			{
 				relationships.add((Relationship) element);
 			}

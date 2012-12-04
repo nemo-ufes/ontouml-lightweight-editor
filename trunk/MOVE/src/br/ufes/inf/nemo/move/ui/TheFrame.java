@@ -286,7 +286,7 @@ public class TheFrame extends JFrame {
 			
 			List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());   			
    			ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);
-   			List<EObject> added = ontoumlmodel.getOntoUMLParser().completeSelections(ontoumlview.includeHierarchy());
+   			List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(ontoumlview.includeHierarchy());
    			
    			for(EObject o: added) { console.write(((NamedElement)o).getName()+" added.\n"); }
    			

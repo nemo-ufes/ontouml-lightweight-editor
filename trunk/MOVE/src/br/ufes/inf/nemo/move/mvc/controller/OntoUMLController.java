@@ -124,7 +124,7 @@ public class OntoUMLController {
 	    	
    			ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);
    			
-   			List<EObject> added = ontoumlmodel.getOntoUMLParser().completeSelections(ontoumlview.includeHierarchy());
+   			List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(ontoumlview.includeHierarchy());
    			
    			String msg = new String();
    			for(EObject o: added) 
