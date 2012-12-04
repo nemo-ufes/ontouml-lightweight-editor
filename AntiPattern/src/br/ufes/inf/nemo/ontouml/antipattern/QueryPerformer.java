@@ -4,15 +4,20 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.ocl.ParserException;
 
+import RefOntoUML.AntiRigidSortalClass;
+import RefOntoUML.Kind;
 import RefOntoUML.Model;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
+import RefOntoUML.Relator;
+import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class QueryPerformer {
@@ -38,6 +43,9 @@ public class QueryPerformer {
 		m = (Model) resource.getContents().get(0);
 		
 		OntoUMLParser parser = new OntoUMLParser(m);
+		
+		
+		
 		
 		try {
 		    	    
@@ -156,6 +164,9 @@ public class QueryPerformer {
 		    System.err.println(e.getLocalizedMessage());
 		}
 		
+		for (EObject k : parser.getAllInstances(AntiRigidSortalClass.class)) {
+			System.out.println(parser.getStringRepresentation(k));
+		}
 		
         
 	}

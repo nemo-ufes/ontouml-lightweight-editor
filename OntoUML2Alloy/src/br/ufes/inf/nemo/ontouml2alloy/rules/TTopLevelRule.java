@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.ontouml2alloy.rules;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
@@ -15,7 +16,7 @@ public class TTopLevelRule {
 	/**
 	 * Verify if the lists have at least one element in common.
 	 */
-	public static Classifier isOverlapping (ArrayList<Classifier> list1, ArrayList<Classifier> list2)
+	public static Classifier isOverlapping (Set<Classifier> list1, Set<Classifier> list2)
 	{
 		for (Classifier c1: list1)
 		{
@@ -39,8 +40,7 @@ public class TTopLevelRule {
 		
 		for (Classifier c1: toplevels)
 		{			
-			ArrayList<Classifier> descendants1 = new ArrayList<Classifier>();
-			ontoparser.getDescendants(c1,descendants1);
+			Set<Classifier> descendants1 = ontoparser.getAllChildren(c1);
 
 			// creates a single List containing the topLevel classifier 'c1' 
 			// and the top levels classifiers that have their descendants overlapping 
@@ -53,8 +53,7 @@ public class TTopLevelRule {
 			{
 				if (!c2.equals(c1)) 
 				{
-					ArrayList<Classifier> descendants2 = new ArrayList<Classifier>();
-					ontoparser.getDescendants(c2,descendants2);
+					Set<Classifier> descendants2 = ontoparser.getAllChildren(c2);
 										
 					Classifier overlap = isOverlapping(descendants1, descendants2);
 					if (overlap == null) singleList.add(c2);						

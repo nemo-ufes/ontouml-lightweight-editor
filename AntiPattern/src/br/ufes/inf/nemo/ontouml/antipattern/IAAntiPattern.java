@@ -312,10 +312,9 @@ public class IAAntiPattern extends Antipattern{
 		selection.add(association);
 		selection.add(source);
 		selection.add(target);
-		selection.addAll(sourceChildren);
-		selection.addAll(targetChildren);
 				
 		parser.selectThisElements(selection,true);
+		parser.autoSelectDependencies(OntoUMLParser.ALL_DESCENDANTS, false);
 		
 	}
 

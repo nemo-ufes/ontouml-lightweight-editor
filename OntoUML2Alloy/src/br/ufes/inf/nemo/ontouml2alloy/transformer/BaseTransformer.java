@@ -102,31 +102,23 @@ public class BaseTransformer {
 	 */
 	private void initializeDefaultSignatures (OntoUMLParser ontoparser, AlloyFactory factory)
 	{
-		for (PackageableElement pe : ontoparser.getPackageableElements())
-		{			
-			if (pe instanceof ObjectClass) 
-			{
-				defaultSignatures.add("Object");
-				
-				sigObject = factory.createSignatureDeclaration();
-				sigObject.setName("Object");
-				
-				break;
-			}
+		if (ontoparser.getAllInstances(ObjectClass.class).size()>0)
+		{	
+			defaultSignatures.add("Object");
+			
+			sigObject = factory.createSignatureDeclaration();
+			sigObject.setName("Object");
+			
 		}
-		for (PackageableElement pe : ontoparser.getPackageableElements())
-		{			
-			if (pe instanceof MomentClass) 
-			{
-				defaultSignatures.add("Property");
-				
-				sigProperty = factory.createSignatureDeclaration();
-				sigProperty.setName("Property");
-				
-				break;
-			}
+		if (ontoparser.getAllInstances(MomentClass.class).size()>0)
+		{	
+			defaultSignatures.add("Property");
+			
+			sigProperty = factory.createSignatureDeclaration();
+			sigProperty.setName("Property");
+			
 		}
-		for (PackageableElement pe : ontoparser.getPackageableElements())
+		for (DataType pe : ontoparser.getAllInstances(DataType.class))
 		{			
 			if (pe instanceof DataType && !(pe instanceof PrimitiveType) ) 
 			{
@@ -145,7 +137,7 @@ public class BaseTransformer {
 	 */
 	private void initializeNamesLists(OntoUMLParser ontoparser, AlloyFactory factory)
 	{
-		for (PackageableElement pe : ontoparser.getPackageableElements())
+		for (PackageableElement pe : ontoparser.getAllInstances(PackageableElement.class))
 		{			
 			if (pe instanceof ObjectClass) 
 			{

@@ -281,5 +281,6 @@ public class RSAntiPattern extends Antipattern{
 		selection.addAll(specificTarget.allParents());
 		
 		parser.selectThisElements(selection,true);
+		parser.autoSelectDependencies(OntoUMLParser.ALL_ANCESTORS, false);
 	}
 }
