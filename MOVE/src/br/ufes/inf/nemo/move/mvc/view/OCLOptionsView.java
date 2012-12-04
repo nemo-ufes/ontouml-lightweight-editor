@@ -28,6 +28,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Font;
 
 /**
+ * 
+ * This class is a View for OCL Options Model.
+ * 
  * @author John Guerson
  */
 
@@ -47,6 +50,12 @@ public class OCLOptionsView extends JPanel {
 	private JLabel lblYouCanAlso;
 	private JLabel lblConstraints;
 	
+	/**
+	 * Creates a View from a OCL Options Model and the main Frame of the application.
+	 * 
+	 * @param oclOptModel
+	 * @param frame
+	 */
 	public OCLOptionsView (OCLOptionsModel oclOptModel,TheFrame frame)
 	{		
 		this();
@@ -58,7 +67,7 @@ public class OCLOptionsView extends JPanel {
 	}
 	
 	/**
-	 * Set Option Model.
+	 * Set View from a OCL Options Model.
 	 * 
 	 * @param optModel
 	 */
@@ -85,7 +94,7 @@ public class OCLOptionsView extends JPanel {
 	}
 		
 	/**
-	 * Get Scopes Options List.
+	 * Get a list of Scopes from Options View.
 	 * 
 	 * @return
 	 */
@@ -101,7 +110,7 @@ public class OCLOptionsView extends JPanel {
 	}
 	
 	/**
-	 * Get Transformation Types Options List.
+	 * Get a list of Transformation Types from Options View. i.e. if it is "FACT","SIMULATION" OR "ASSERTION"
 	 * 
 	 * @return
 	 */
@@ -117,7 +126,7 @@ public class OCLOptionsView extends JPanel {
 	}
 	
 	/**
-	 * Get Constraint Options List .
+	 * Get a list of Constraint from Options View.
 	 * 
 	 * @return
 	 */
@@ -133,7 +142,7 @@ public class OCLOptionsView extends JPanel {
 	}
 			
 	/**
-	 * Create the panel.
+	 * Create an Empty View for OCL Options Model.
 	 */
 	public OCLOptionsView() 
 	{
@@ -223,6 +232,11 @@ public class OCLOptionsView extends JPanel {
 		btnPanel.add(btnDisableAll);
 	}
 	
+	/**
+	 * Get the main Frame of Application.
+	 * 
+	 * @return
+	 */
 	public TheFrame getTheFrame()
 	{
 		return frame;
