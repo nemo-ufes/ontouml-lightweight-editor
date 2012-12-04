@@ -43,7 +43,7 @@ public class OntoUMLTreeBar extends JPanel {
 		textPath.setEditable(false);
 		textPath.setColumns(10);
 		
-		setPreferredSize(new Dimension(441, 87));
+		setPreferredSize(new Dimension(360, 80));
 		
 		btnOpen = new JButton("");
 		btnOpen.setToolTipText("Open OntoUML Model");
@@ -88,28 +88,34 @@ public class OntoUMLTreeBar extends JPanel {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(textPath, GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+						.addComponent(textPath, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnOpen, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnOpen, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnShowUnique, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnVerify, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnVerify, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnShowUnique, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnCompleteSelect, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(btnCompleteSelect, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(10)
+					.addContainerGap()
 					.addComponent(textPath, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnCompleteSelect, GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-						.addComponent(btnShowUnique, GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-						.addComponent(btnVerify, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-						.addComponent(btnOpen, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnVerify, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnOpen, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnCompleteSelect, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+								.addComponent(btnShowUnique, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))))
 					.addContainerGap())
 		);
 		setLayout(groupLayout);
