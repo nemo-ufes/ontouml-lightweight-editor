@@ -18,6 +18,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
+import RefOntoUML.Generalization;
+import RefOntoUML.PackageableElement;
+import RefOntoUML.Property;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.controller.OCLController;
 import br.ufes.inf.nemo.move.mvc.controller.OntoUMLController;
 import br.ufes.inf.nemo.move.mvc.controller.antipattern.list.AntiPatternListController;
@@ -275,14 +279,16 @@ public class TheFrame extends JFrame {
 	}
 
 	/**
-	 * Select elements of the Parser from Check Box Model Tree for Transformations purposes.
+	 * Select elements of the Parser from Check Box Model Tree. Run complete selections
+	 * of elements and then update the Check Box Tree again.
+	 * 
 	 */
-	public String UpdateSelection()
+	public String UpdateSelection(int option)
 	{		
 		List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());   			
 		
 		ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);		
-		List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(1,false);   			
+		List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(option,false);   			
 				
 		String msg = new String();
 		for(EObject o: added)
@@ -301,30 +307,25 @@ public class TheFrame extends JFrame {
 		return msg;
 	}
 	
+	/**
+	 * Print the elements that are selected on the OntoUML Parser.
+	 */
 	public void printSelectedElements()
 	{		
 		String result = new String();		
 		result += "This Elements are selected: \n\n";
 				
 		ArrayList<EObject> associations = new ArrayList<EObject>();
-		associations.addAll(ontoumlmodel.getOntoUMLParser().getAssociations());
+		associations.addAll(ontoumlmodel.getOntoUMLParser().getAllInstances(PackageableElement.class));
 		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(associations);
-		
-		ArrayList<EObject> rigid = new ArrayList<EObject>();
-		rigid.addAll(ontoumlmodel.getOntoUMLParser().getRigidClasses());
-		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(rigid);
-		
-		ArrayList<EObject> antirigid = new ArrayList<EObject>();
-		antirigid.addAll(ontoumlmodel.getOntoUMLParser().getAntiRigidClasses());
-		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(antirigid);
 
 		ArrayList<EObject> generalizations = new ArrayList<EObject>();
-		generalizations.addAll(ontoumlmodel.getOntoUMLParser().getGeneralizations());
+		generalizations.addAll(ontoumlmodel.getOntoUMLParser().getAllInstances(Generalization.class));
 		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(generalizations);
 
-		ArrayList<EObject> generalizationsSets = new ArrayList<EObject>();
-		generalizationsSets.addAll(ontoumlmodel.getOntoUMLParser().getGeneralizationSets());
-		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(generalizationsSets);
+		ArrayList<EObject> properties = new ArrayList<EObject>();
+		properties.addAll(ontoumlmodel.getOntoUMLParser().getAllInstances(Property.class));
+		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(properties);
 		
 		console.write(result);
 	}
@@ -338,7 +339,7 @@ public class TheFrame extends JFrame {
 			
 			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;	
 			
-			UpdateSelection();
+			UpdateSelection(OntoUMLParser.NO_HIERARCHY);
    			
 			alloymodel.setAlloyModel(ontoumlmodel,ontoumlOptModel);
 			

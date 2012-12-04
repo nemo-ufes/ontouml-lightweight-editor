@@ -125,24 +125,24 @@ public class OntoUMLView extends JPanel {
 		ontobar.btnShowUnique.addActionListener(actionListener);
 	}
 	
-	public void addCompleteSelectionListener(ActionListener actionListener) 
+	public void addDefaultSelectionListener(ActionListener actionListener) 
 	{
-		ontobar.btnCompleteSelect.addActionListener(actionListener);
-	}
-	
-	public void addDefaultAncestorsListener(ActionListener actionListener) 
-	{
-		ontobar.menuItemDefaultAncestors.addActionListener(actionListener);
+		ontobar.menuItemDefault.addActionListener(actionListener);
 	}
 
-	public void addAllAncestorsListener(ActionListener actionListener) 
+	public void addAllAncestorsSelectionListener(ActionListener actionListener) 
 	{
 		ontobar.menuItemAllAncestors.addActionListener(actionListener);
 	}
 	
-	public void addSubstanceSortalAncestorsListener(ActionListener actionListener) 
+	public void addAllDescendantsSelectionListener(ActionListener actionListener) 
 	{
-		ontobar.menuItemSortalAncestor.addActionListener(actionListener);
+		ontobar.menuItemAllDescendants.addActionListener(actionListener);
+	}	
+	
+	public void addSortalAncestorsSelectionListener(ActionListener actionListener) 
+	{
+		ontobar.menuItemSortalAncestors.addActionListener(actionListener);
 	}	
 	
 	public String getOntoUMLPathLocation()

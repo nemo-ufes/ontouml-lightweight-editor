@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
 import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
@@ -35,7 +36,11 @@ public class OntoUMLController {
 		ontoumlview.addLoadOntoUMLListener(new LoadOntoUMLListener());
 		ontoumlview.addVerifyModelListener(new VerifyModelListener());
 		ontoumlview.addShowUniqueNamesListener(new ShowUniqueNamesListener());
-		ontoumlview.addCompleteSelectionListener(new CompleteSelectionListener());
+		
+		ontoumlview.addAllAncestorsSelectionListener(new AllAncestorsSelectionListener());
+		ontoumlview.addAllDescendantsSelectionListener(new AllDescendantsSelectionListener());
+		ontoumlview.addDefaultSelectionListener(new DefaultSelectionListener());
+		ontoumlview.addSortalAncestorsSelectionListener(new SortalAncestorsSelectionListener());
 	}	
 	
 	/**
@@ -104,24 +109,82 @@ public class OntoUMLController {
 	 }	 
 	 
 	 /**
-	 * Complete Selection Action Listener.
+	 * All Ancestors Selection Action Listener.
 	 * 
 	 * @author John
 	 */
-	 class CompleteSelectionListener implements ActionListener 
+	 class AllAncestorsSelectionListener implements ActionListener 
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
 	    	if (ontoumlview.getModelTree()==null) return;
 	    	
-	    	//ontoumlview.showCompletePoup();
-	    	/*
-	    	String msg = ontoumlview.getTheFrame().UpdateSelection();
+	    	String msg = ontoumlview.getTheFrame().UpdateSelection(OntoUMLParser.ALL_ANCESTORS);
    				    	
     		JOptionPane.showMessageDialog(
-    			ontoumlview.getTheFrame(),msg,"Complete Selections",JOptionPane.INFORMATION_MESSAGE,
+    			ontoumlview.getTheFrame(),msg,"Complete Selections - All Ancestors",JOptionPane.INFORMATION_MESSAGE,
     			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
-    		);*/    		
+    		);   		
 	    }
 	 }	 
+	 
+	 /**
+	 * All Descendants Selection Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class AllDescendantsSelectionListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	if (ontoumlview.getModelTree()==null) return;
+	    	
+	    	String msg = ontoumlview.getTheFrame().UpdateSelection(OntoUMLParser.ALL_DESCENDANTS);
+   				    	
+    		JOptionPane.showMessageDialog(
+    			ontoumlview.getTheFrame(),msg,"Complete Selections - All Descendants",JOptionPane.INFORMATION_MESSAGE,
+    			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
+    		);   		
+	    }
+	 }	
+	 
+	 /**
+	 * Default Selection Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class DefaultSelectionListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	if (ontoumlview.getModelTree()==null) return;
+	    	
+	    	String msg = ontoumlview.getTheFrame().UpdateSelection(OntoUMLParser.NO_HIERARCHY);
+   				    	
+    		JOptionPane.showMessageDialog(
+    			ontoumlview.getTheFrame(),msg,"Complete Selections - Mandatory Dependencies",JOptionPane.INFORMATION_MESSAGE,
+    			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
+    		);   		
+	    }
+	 }			 
+	 
+	 /**
+	 * Substance Sortal Ancestors Selection Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class SortalAncestorsSelectionListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	if (ontoumlview.getModelTree()==null) return;
+	    	
+	    	String msg = ontoumlview.getTheFrame().UpdateSelection(OntoUMLParser.SORTAL_ANCESTORS);
+   				    	
+    		JOptionPane.showMessageDialog(
+    			ontoumlview.getTheFrame(),msg,"Complete Selections - Ancestors until a Substance Sortal",JOptionPane.INFORMATION_MESSAGE,
+    			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
+    		);   		
+	    }
+	 }	
 }
