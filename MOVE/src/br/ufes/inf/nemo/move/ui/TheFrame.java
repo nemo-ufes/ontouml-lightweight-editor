@@ -282,7 +282,7 @@ public class TheFrame extends JFrame {
 		List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());   			
 		
 		ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);		
-		List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(ontoumlview.hierarchyOption(),false);   			
+		List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(1,false);   			
 				
 		String msg = new String();
 		for(EObject o: added)
@@ -295,9 +295,38 @@ public class TheFrame extends JFrame {
 		OntoUMLCheckBoxTree.checkElements(selected, true,ontoumlview.getModelTree());
 		
     	ontoumlview.getModelTree().updateUI();
-		
-    	console.write("This Elements are selected: \n\n"+ontoumlmodel.getOntoUMLParser().getStringRepresentations());
+		    	
+    	printSelectedElements();
+    	
 		return msg;
+	}
+	
+	public void printSelectedElements()
+	{		
+		String result = new String();		
+		result += "This Elements are selected: \n\n";
+				
+		ArrayList<EObject> associations = new ArrayList<EObject>();
+		associations.addAll(ontoumlmodel.getOntoUMLParser().getAssociations());
+		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(associations);
+		
+		ArrayList<EObject> rigid = new ArrayList<EObject>();
+		rigid.addAll(ontoumlmodel.getOntoUMLParser().getRigidClasses());
+		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(rigid);
+		
+		ArrayList<EObject> antirigid = new ArrayList<EObject>();
+		antirigid.addAll(ontoumlmodel.getOntoUMLParser().getAntiRigidClasses());
+		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(antirigid);
+
+		ArrayList<EObject> generalizations = new ArrayList<EObject>();
+		generalizations.addAll(ontoumlmodel.getOntoUMLParser().getGeneralizations());
+		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(generalizations);
+
+		ArrayList<EObject> generalizationsSets = new ArrayList<EObject>();
+		generalizationsSets.addAll(ontoumlmodel.getOntoUMLParser().getGeneralizationSets());
+		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(generalizationsSets);
+		
+		console.write(result);
 	}
 	
 	/**
