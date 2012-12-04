@@ -211,6 +211,7 @@ public class STRAntiPattern extends Antipattern{
 		selection.add(association);
 		
 		parser.selectThisElements(selection,true);
+		parser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY, false);
 	}
 	
 

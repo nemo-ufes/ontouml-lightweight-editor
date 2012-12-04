@@ -19,64 +19,6 @@ public class ACAntiPattern extends Antipattern{
 	ArrayList<Relationship> cycleRelationship;
 	public static int OPEN=0, CLOSED=1;
 	
-	/*public String generateClosedCyclePredicate(OntoUMLParser mapper, int cardinality) {
-		String predicate, rules, name;
-		String typeName;
-		Association a;
-		Type last_source, last_target, source, target;
-				
-		typeName = mapper.getName(this.cycle.get(0));
-		
-		name = "closedCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
-		rules = "all w:World | #w." + typeName + ">=" + cardinality;
-		rules += "\n\tall w:World | all x:w."+typeName+" | ";
-		
-		a = (Association)this.cycleRelationship.get(0);
-		last_source = SourceTargetAssociation.getSourceAlloy(a);
-		last_target = SourceTargetAssociation.getTargetAlloy(a);
-		
-		if (last_source.equals(this.cycle.get(0)))
-			rules += "(x.(w."+mapper.getName(a)+"))";
-		
-		else {
-			rules += "((w."+mapper.getName(a)+").x)";
-			last_target = SourceTargetAssociation.getSourceAlloy(a);
-			last_source = SourceTargetAssociation.getTargetAlloy(a);
-		}
-		
-		for (int i = 1; i<cycleRelationship.size();i++) {
-			Relationship r = cycleRelationship.get(i);
-			 
-			if(r instanceof Association){
-				Association assoc = (Association)r;
-				source = SourceTargetAssociation.getSourceAlloy((Association)r);
-				target = SourceTargetAssociation.getTargetAlloy((Association)r);
-				r = (Association)r;
-				if( (source.equals(last_target)) ){
-					rules+=".(w."+mapper.getName(assoc)+")";
-					last_source = source;
-					last_target = target;
-				}
-				else {
-					rules+=".(~(w."+mapper.getName(assoc)+"))";
-					last_target = source;
-					last_source = target;
-				}
-				
-				name+="_"+mapper.getName(last_target);
-				
-			}
-		}
-		
-		rules += " = x";
-		
-		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
-		
-		return predicate;
-		
-	}*/
-	
 	public String generateCycleOcl(int type, OntoUMLParser parser) {
 		String rule, typeName;
 		Association a;
@@ -266,6 +208,65 @@ public class ACAntiPattern extends Antipattern{
 			selection.add(r);
 		
 		parser.selectThisElements(selection,true);
+		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
 		
 	}
+	
+	/*public String generateClosedCyclePredicate(OntoUMLParser mapper, int cardinality) {
+	String predicate, rules, name;
+	String typeName;
+	Association a;
+	Type last_source, last_target, source, target;
+			
+	typeName = mapper.getName(this.cycle.get(0));
+	
+	name = "closedCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
+	rules = "all w:World | #w." + typeName + ">=" + cardinality;
+	rules += "\n\tall w:World | all x:w."+typeName+" | ";
+	
+	a = (Association)this.cycleRelationship.get(0);
+	last_source = SourceTargetAssociation.getSourceAlloy(a);
+	last_target = SourceTargetAssociation.getTargetAlloy(a);
+	
+	if (last_source.equals(this.cycle.get(0)))
+		rules += "(x.(w."+mapper.getName(a)+"))";
+	
+	else {
+		rules += "((w."+mapper.getName(a)+").x)";
+		last_target = SourceTargetAssociation.getSourceAlloy(a);
+		last_source = SourceTargetAssociation.getTargetAlloy(a);
+	}
+	
+	for (int i = 1; i<cycleRelationship.size();i++) {
+		Relationship r = cycleRelationship.get(i);
+		 
+		if(r instanceof Association){
+			Association assoc = (Association)r;
+			source = SourceTargetAssociation.getSourceAlloy((Association)r);
+			target = SourceTargetAssociation.getTargetAlloy((Association)r);
+			r = (Association)r;
+			if( (source.equals(last_target)) ){
+				rules+=".(w."+mapper.getName(assoc)+")";
+				last_source = source;
+				last_target = target;
+			}
+			else {
+				rules+=".(~(w."+mapper.getName(assoc)+"))";
+				last_target = source;
+				last_source = target;
+			}
+			
+			name+="_"+mapper.getName(last_target);
+			
+		}
+	}
+	
+	rules += " = x";
+	
+	predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
+	predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
+	
+	return predicate;
+	
+}*/
 }

@@ -176,10 +176,10 @@ public class RBOSAntiPattern extends Antipattern{
 		
 		selection.add(source);
 		selection.add(target);
-		selection.add(supertype);
 		selection.add(association);
 		
 		parser.selectThisElements(selection,true);
+		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 		
 	}
 

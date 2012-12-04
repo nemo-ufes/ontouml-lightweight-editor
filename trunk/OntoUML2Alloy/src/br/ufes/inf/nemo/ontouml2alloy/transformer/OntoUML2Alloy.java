@@ -124,7 +124,7 @@ public class OntoUML2Alloy {
 		transformer = new Transformer(ontoparser, factory, opt);		
 		
 		// Classifiers
-		for (PackageableElement pe : ontoparser.getPackageableElements())
+		for (PackageableElement pe : ontoparser.getAllInstances(PackageableElement.class))
 		{			
 			if (pe instanceof Classifier) 
 				
@@ -132,30 +132,24 @@ public class OntoUML2Alloy {
 		}
 				
 		// Generalizations
-		for (Generalization gen : ontoparser.getGeneralizations())
+		for (Generalization gen : ontoparser.getAllInstances(Generalization.class))
 		{			
 			transformer.transformGeneralizations(gen);
 		}
 		
 		// GeneralizationSets
-		for (PackageableElement pe : ontoparser.getPackageableElements())
+		for (GeneralizationSet gs : ontoparser.getAllInstances(GeneralizationSet.class))
 		{			
-			if (pe instanceof GeneralizationSet) 
-				
-				transformer.transformGeneralizationSets((GeneralizationSet) pe);			
+			transformer.transformGeneralizationSets(gs);			
 		}
 		
 		// Associations
-		for (PackageableElement pe : ontoparser.getPackageableElements())
+		for (Association a : ontoparser.getAllInstances(Association.class))
 		{
-			if (pe instanceof Association && !(pe instanceof Derivation))
-			{
-				transformer.transformAssociations((Association) pe);
-			}
-			else if (pe instanceof Derivation)
-			{
-				transformer.transformDerivations((Derivation) pe);
-			}
+			if (a instanceof Derivation)
+				transformer.transformDerivations((Derivation) a);
+			else
+				transformer.transformAssociations(a);
 		}
 				
 		transformer.finalAdditions();

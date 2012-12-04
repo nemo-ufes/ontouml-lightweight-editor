@@ -311,6 +311,7 @@ public class RWORAntiPattern extends Antipattern{
 		selection.add(supertype);
 		
 		parser.selectThisElements(selection,true);
+		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 		
 	}
 	

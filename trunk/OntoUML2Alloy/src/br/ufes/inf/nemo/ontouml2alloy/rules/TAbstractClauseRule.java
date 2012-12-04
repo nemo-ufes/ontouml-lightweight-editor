@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.ontouml2alloy.rules;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
@@ -23,8 +23,7 @@ public class TAbstractClauseRule {
 	 */
 	public static CompareOperation createCompareOperation(OntoUMLParser ontoparser, AlloyFactory factory, Classifier c) 
 	{		
-		ArrayList<Classifier> concretes = new ArrayList<Classifier>();		
-		ontoparser.getConcreteDescendants(c,concretes);
+		Set<Classifier> concretes = ontoparser.getAllConcreteChildren(c);
 						
 		if(concretes.size() > 0)
 		{

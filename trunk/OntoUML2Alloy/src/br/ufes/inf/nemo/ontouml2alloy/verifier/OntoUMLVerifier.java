@@ -1,10 +1,7 @@
 package br.ufes.inf.nemo.ontouml2alloy.verifier;
 
+import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import RefOntoUML.Collective;
-import RefOntoUML.Kind;
-import RefOntoUML.PackageableElement;
-import RefOntoUML.Quantity;
 
 public class OntoUMLVerifier {
 
@@ -19,15 +16,9 @@ public class OntoUMLVerifier {
 		
 	public void initialize()
 	{
-		for (PackageableElement c : ontoparser.getPackageableElements())
-		{
-			if ((c instanceof Kind)||(c instanceof Collective)||(c instanceof Quantity))
-			{
-				haveSubstanceSortal = true;
-				return;
-			}
-		}
-		haveSubstanceSortal = false;
-		return;
+		if(ontoparser.getAllInstances(SubstanceSortal.class).size()>0)
+			haveSubstanceSortal = true;
+		else
+			haveSubstanceSortal = false;
 	}
 }
