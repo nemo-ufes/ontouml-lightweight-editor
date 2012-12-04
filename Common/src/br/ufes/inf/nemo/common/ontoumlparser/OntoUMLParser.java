@@ -31,6 +31,7 @@ import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
+import RefOntoUML.SubstanceSortal;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
@@ -49,7 +50,9 @@ public class OntoUMLParser {
 	
 	private String refmodelname;
 	
-	private HashMap<EObject,ParsingElement> elementsHash;	
+	private HashMap<EObject,ParsingElement> elementsHash;
+	
+	public static int NO_HIERARCHY = 0, SORTAL_HIERARCHY = 1, COMPLETE_HIERARCHY = 2;
 		
 	/**
 	 * This constructor creates a parser from a root ontoUML Package.
@@ -511,7 +514,7 @@ public class OntoUMLParser {
 	 * 
 	 * @return
 	 */
-	private ArrayList<EObject> completeSelections()
+	public ArrayList<EObject> autoSelectMandatoryDependencies()
 	{
 		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
 		
@@ -547,6 +550,28 @@ public class OntoUMLParser {
 					objectsToAdd.add(target);					
 				}								
 			}		
+			
+			if(obj instanceof PackageableElement) 
+			{
+				// packages
+				if(!isSelected(obj.eContainer()) && !objectsToAdd.contains(obj.eContainer())) 
+				{
+					objectsToAdd.add(obj.eContainer());
+				}
+			}
+		}
+		
+		// add this elements to selection...
+		selectThisElements(objectsToAdd,false);
+		
+		return objectsToAdd;
+	}
+
+	public ArrayList<EObject> autoSelectGeneralizationSet() {
+		
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
+		
+		for(EObject obj : getElements()){
 			if(obj instanceof GeneralizationSet) 
 			{
 				GeneralizationSet gs = (GeneralizationSet)obj;				
@@ -569,21 +594,47 @@ public class OntoUMLParser {
 					}
 				}								
 			}
-			if(obj instanceof PackageableElement) 
-			{
-				// packages
-				if(!isSelected(obj.eContainer()) && !objectsToAdd.contains(obj.eContainer())) 
-				{
-					objectsToAdd.add(obj.eContainer());
-				}
-			}
 		}
 		
 		// add this elements to selection...
 		selectThisElements(objectsToAdd,false);
-		
 		return objectsToAdd;
 	}
+	
+	public ArrayList<EObject> autoSelectHierarchy(int option) {
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
+		
+		if (option==NO_HIERARCHY)
+			return objectsToAdd;
+		
+		for (EObject o : getElements()) 
+		{
+			if (o instanceof Class)
+				getHierarchy((Classifier) o, objectsToAdd, option);
+		}
+		// add this elements to selection...
+		selectThisElements(objectsToAdd,false);
+	
+		return objectsToAdd;
+	}
+	
+	private void getHierarchy (Classifier o, ArrayList<EObject> objectsToAdd, int option){
+		
+		if(o instanceof SubstanceSortal && option==SORTAL_HIERARCHY)
+			return;
+		for (Generalization g : ((Class) o).getGeneralization()) 
+		{
+			if(!isSelected(g) && !objectsToAdd.contains(g))
+			{
+				objectsToAdd.add(g);
+				objectsToAdd.add(g.getGeneral());
+				
+				getHierarchy(g.getGeneral(), objectsToAdd,option);
+			}
+		}
+	}
+	
+	
 	
 	/**
 	 * Select elements that should be selected by the user. 
@@ -597,35 +648,19 @@ public class OntoUMLParser {
 	 * 
 	 * @param includeHierarchy
 	 */
-	public ArrayList<EObject> completeSelections(boolean includeHierarchy)
+	public ArrayList<EObject> autoSelectDependencies(int hierarchyOption, boolean includeGeneralizationSet)
 	{		
-		ArrayList<EObject> objectsAdded = completeSelections();
+		ArrayList<EObject> objectsAdded = autoSelectMandatoryDependencies();
 		
-		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
-		if (includeHierarchy)
-		{
-			for (EObject o : getElements()) 
-			{
-				if (o instanceof Class)
-				{
-					for (Classifier c : ((Classifier)o).allParents()) 
-					{
-						if(!isSelected(c) && !objectsToAdd.contains(c))
-						{
-							objectsToAdd.add(c);							
-						}
-					}
-				}
-			}
-			// add this elements to selection...
-			selectThisElements(objectsToAdd,false);
-		}
-		ArrayList<EObject> allObjectsAdded = new ArrayList<EObject>();
-		allObjectsAdded.addAll(objectsAdded);
-		allObjectsAdded.addAll(objectsToAdd);
+		if (includeGeneralizationSet)
+			objectsAdded.addAll(autoSelectGeneralizationSet());
 		
-		return allObjectsAdded;
+		objectsAdded.addAll(autoSelectHierarchy(hierarchyOption));
+		
+		return objectsAdded;
 	}
+	
+	
 	
 	/*=====================================================================*/
 		
