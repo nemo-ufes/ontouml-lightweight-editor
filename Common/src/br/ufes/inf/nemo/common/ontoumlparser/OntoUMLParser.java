@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -292,21 +291,6 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * This method get all the Properties of the model.
-	 * 
-	 * @return
-	 */
-	public Set<Property> getProperties()
-	{
-		Set<Property> list = new HashSet<Property>(); 		
-		for (EObject obj : getElements()) 
-		{
-			if(obj instanceof Property) list.add((Property)obj);
-		}		
-		return list;
-	}
-	
-	/**
 	 * This method returns all elements from the input list that are selected in the parser.
 	 * 
 	 * @param elements: list of elements of any type.
@@ -344,7 +328,7 @@ public class OntoUMLParser {
 	 * 
 	 * @return
 	 */
-	public Set<Class> getTopLevelClasses()
+	public Set<Class> getTopLevelInstances()
 	{
 		Set<Class> list = new HashSet<Class>(); 		
 		for (EObject obj : getElements())
@@ -490,6 +474,21 @@ public class OntoUMLParser {
 		}
 		return result;
 	}
+	
+	
+	public <T> Set<T> getTopLevelInstances(java.lang.Class<T> type){
+		Set<T> result = new HashSet<T>();
+		
+		for (EObject o : getElements()) {
+			if(isSelected(o) && type.isInstance(o)){
+				if(o instanceof Classifier && ((Classifier)o).getGeneralization().size()==0)
+					result.add((T) o);
+			}
+		}
+		return result;
+	}
+	
+	
 	
 	/**
 	 * Get all Meronymic relations that have as a Whole the Classifier 'c' or one of its Super Types.
@@ -746,7 +745,7 @@ public class OntoUMLParser {
 			{
 				objectsToAdd.add(c);
 				for (Generalization g : c.getGeneralization()) {
-					if(g.getGeneral().equals(c))
+					if(g.getGeneral().equals(o))
 						objectsToAdd.add(g);
 				}
 				getDescendantsHierarchy(c, objectsToAdd);
