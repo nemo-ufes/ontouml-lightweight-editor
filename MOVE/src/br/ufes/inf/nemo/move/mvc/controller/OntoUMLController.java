@@ -87,8 +87,9 @@ public class OntoUMLController {
 	 class VerifyModelListener implements ActionListener 
 	 {
 	    public void actionPerformed(ActionEvent e) 
-	    {
-	    	ontoumlview.getTheFrame().getConsole().write(ontoumlmodel.verifyModel());	    	
+	    {	    	
+	    	ontoumlview.getTheFrame().getConsole().write(ontoumlview.getTheFrame().getManager().verifyModel());	    	
+	    	
 	    	ontoumlview.getTheFrame().ShowConsole();
 	    }
 	 }
@@ -103,7 +104,7 @@ public class OntoUMLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	if (ontoumlview.getModelTree()==null) return;
+	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
 	    	((OntoUMLCheckBoxTree.OntoUMLTreeCellRenderer)ontoumlview.getModelTree().getCellRenderer()).showOrHideUniqueName();	    	
 	    	ontoumlview.getModelTree().updateUI();
 	    }
@@ -118,12 +119,12 @@ public class OntoUMLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	if (ontoumlview.getModelTree()==null) return;
+	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
 	    	
 	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.ALL_ANCESTORS);
    				    	
     		JOptionPane.showMessageDialog(
-    			ontoumlview.getTheFrame(),msg,"Complete Selections - All Ancestors",JOptionPane.INFORMATION_MESSAGE,
+    			ontoumlview.getTheFrame(),msg,"All Ancestors",JOptionPane.INFORMATION_MESSAGE,
     			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
     		);   		
 	    }
@@ -138,12 +139,12 @@ public class OntoUMLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	if (ontoumlview.getModelTree()==null) return;
+	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
 	    	
 	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.ALL_DESCENDANTS);
    				    	
     		JOptionPane.showMessageDialog(
-    			ontoumlview.getTheFrame(),msg,"Complete Selections - All Descendants",JOptionPane.INFORMATION_MESSAGE,
+    			ontoumlview.getTheFrame(),msg,"All Descendants",JOptionPane.INFORMATION_MESSAGE,
     			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
     		);   		
 	    }
@@ -158,12 +159,12 @@ public class OntoUMLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	if (ontoumlview.getModelTree()==null) return;
+	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
 	    	
 	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.NO_HIERARCHY);
    				    	
     		JOptionPane.showMessageDialog(
-    			ontoumlview.getTheFrame(),msg,"Complete Selections - Mandatory Dependencies",JOptionPane.INFORMATION_MESSAGE,
+    			ontoumlview.getTheFrame(),msg,"Dependencies",JOptionPane.INFORMATION_MESSAGE,
     			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
     		);   		
 	    }
@@ -178,12 +179,12 @@ public class OntoUMLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	if (ontoumlview.getModelTree()==null) return;
+	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
 	    	
 	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.SORTAL_ANCESTORS);
    				    	
     		JOptionPane.showMessageDialog(
-    			ontoumlview.getTheFrame(),msg,"Complete Selections - Ancestors until a Substance Sortal",JOptionPane.INFORMATION_MESSAGE,
+    			ontoumlview.getTheFrame(),msg," Ancestors until a Substance Sortal",JOptionPane.INFORMATION_MESSAGE,
     			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
     		);   		
 	    }
@@ -198,12 +199,12 @@ public class OntoUMLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	if (ontoumlview.getModelTree()==null) return;
+	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
 	    	
 	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.COMPLETE_HIERARCHY);
    				    	
     		JOptionPane.showMessageDialog(
-    			ontoumlview.getTheFrame(),msg,"Complete Selections - All Ancestors and Descendants",JOptionPane.INFORMATION_MESSAGE,
+    			ontoumlview.getTheFrame(),msg,"All Ancestors and Descendants",JOptionPane.INFORMATION_MESSAGE,
     			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
     		);   		
 	    }

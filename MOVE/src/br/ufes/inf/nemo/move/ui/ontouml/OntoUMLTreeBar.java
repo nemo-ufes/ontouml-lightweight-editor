@@ -51,7 +51,7 @@ public class OntoUMLTreeBar extends JPanel {
 		btnOpen.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/open-16x16.png")));
 		
 		btnVerify = new JButton("");
-		btnVerify.setToolTipText("Verify All Model Sintactically");
+		btnVerify.setToolTipText("Verify Model Sintactically");
 		btnVerify.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-16x16.png")));
 		
 		btnShowUnique = new JButton("");
@@ -81,9 +81,9 @@ public class OntoUMLTreeBar extends JPanel {
 		
 		popupCompleteSelect.add(menuItemDefault);
 		popupCompleteSelect.add(menuItemAllAncestors);
-		popupCompleteSelect.add(menuItemSortalAncestors);
-		popupCompleteSelect.add(menuItemAllDescendants);
+		popupCompleteSelect.add(menuItemAllDescendants);		
 		popupCompleteSelect.add(menuItemCompletehierarchy);
+		popupCompleteSelect.add(menuItemSortalAncestors);
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(

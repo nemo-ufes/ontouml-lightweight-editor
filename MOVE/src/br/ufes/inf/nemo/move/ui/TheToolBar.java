@@ -83,7 +83,7 @@ public class TheToolBar extends JToolBar {
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			if(frame.getManager().getAlloyModel().getAlloyPath().isEmpty() || frame.getManager().getAlloyModel().getAlloyPath()==null)
+       			if(frame.getManager().getOntoUMLModel().getOntoUMLParser()==null)
        			{	       			
        				frame.getManager().OpenAlloyModelWithAnalyzer(frame.getManager().getAlloyModel().getAlloyPath(),AlloyModel.alsOutDirectory);
        			}else{ 
@@ -118,6 +118,8 @@ public class TheToolBar extends JToolBar {
 		{
 			public void actionPerformed(ActionEvent event) 
 			{
+				if (frame.getManager().getOntoUMLModel().getOntoUMLParser()==null) { frame.getConsole().write("First you need to load the Model"); return; }
+				
 				try {
 					
 					AntiPatternListDialog.open(frame);

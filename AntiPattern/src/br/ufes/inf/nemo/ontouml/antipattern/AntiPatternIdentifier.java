@@ -11,16 +11,14 @@ import org.eclipse.ocl.util.Tuple;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
+import RefOntoUML.Package;
 import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.Type;
-import RefOntoUML.Package;
-
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontouml2graph.GraphAlgo;
 import br.ufes.inf.nemo.common.ontouml2graph.OntoUML2Graph;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml.antipattern.RSAntiPattern;
 
 public class AntiPatternIdentifier {
 	
@@ -41,10 +39,9 @@ public class AntiPatternIdentifier {
 	@SuppressWarnings("unchecked")
 	public static ArrayList<RSAntiPattern> identifyRS(OntoUMLParser parser) throws Exception 
 	{
-		String log = new String();
 		Copier copier = new Copier();
 		
-		Package model = parser.createPackageFromSelections(log, true, copier);
+		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Tuple<Association, Association>> query_result;
 		ArrayList<RSAntiPattern> result = new ArrayList<>();
@@ -70,10 +67,9 @@ public class AntiPatternIdentifier {
 	@SuppressWarnings("unchecked")
 	public static ArrayList<STRAntiPattern> identifySTR (OntoUMLParser parser) throws Exception
 	{
-		String log = new String();
 		Copier copier = new Copier();
 		
-		Package model = parser.createPackageFromSelections(log, true, copier);
+		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Association> query_result;
 		ArrayList<STRAntiPattern> result = new ArrayList<>();
@@ -96,10 +92,9 @@ public class AntiPatternIdentifier {
 	@SuppressWarnings("unchecked")
 	public static ArrayList<RBOSAntiPattern> identifyRBOS (OntoUMLParser parser) throws Exception 
 	{
-		String log = new String();
 		Copier copier = new Copier();
 		
-		Package model = parser.createPackageFromSelections(log, true, copier);
+		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Association> query_result;
 		ArrayList<RBOSAntiPattern> result = new ArrayList<>();
@@ -180,10 +175,9 @@ public class AntiPatternIdentifier {
 	@SuppressWarnings("unchecked")
 	public static ArrayList<RWORAntiPattern> identifyRWOR (OntoUMLParser parser) throws Exception
 	{
-		String log = new String();
 		Copier copier = new Copier();
 		
-		Package model = parser.createPackageFromSelections(log, true, copier);
+		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Relator> query_result;
 		ArrayList<RWORAntiPattern> result = new ArrayList<>();
@@ -205,10 +199,9 @@ public class AntiPatternIdentifier {
 	@SuppressWarnings("unchecked")
 	public static ArrayList<IAAntiPattern> identifyIA(OntoUMLParser parser) throws Exception 
 	{
-		String log = new String();
 		Copier copier = new Copier();
 		
-		Package model = parser.createPackageFromSelections(log, true, copier);
+		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Association> query_result;
 		ArrayList<IAAntiPattern> result = new ArrayList<>();
