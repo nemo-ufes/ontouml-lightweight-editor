@@ -295,17 +295,22 @@ public class OntoUMLCheckBoxTree {
 	{
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) modeltree.getModel().getRoot();
 	    
-		List<EObject> alreadyChecked = getCheckedElements(modeltree);
-	    alreadyChecked.addAll(elements);
+		List<EObject> alreadyChecked = getCheckedElements(modeltree);		
 	    
+		alreadyChecked.removeAll(elements);
+		alreadyChecked.addAll(elements);		
+		
 	    Enumeration e = root.breadthFirstEnumeration();
 	    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)e.nextElement();
 	    while (e.hasMoreElements()) 
 	    {
 	    	EObject obj = ((OntoUMLTreeNodeElem)node.getUserObject()).getElement();
-	    	if (alreadyChecked.contains(obj)) checkNode(node,true,modeltree);
-	    	node = (DefaultMutableTreeNode)e.nextElement();
+	    	if (alreadyChecked.contains(obj)) { checkNode(node,true,modeltree); }
+	    	node = (DefaultMutableTreeNode)e.nextElement();	    	
 	    }
+	    //last element
+	    EObject obj = ((OntoUMLTreeNodeElem)node.getUserObject()).getElement();
+	    if (alreadyChecked.contains(obj)) { checkNode(node,true,modeltree); }
 	}	
 	 
 	/**

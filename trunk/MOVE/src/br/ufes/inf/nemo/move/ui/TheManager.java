@@ -11,11 +11,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
-import RefOntoUML.Generalization;
-import RefOntoUML.PackageableElement;
-import RefOntoUML.Property;
-
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
 import br.ufes.inf.nemo.move.mvc.controller.OCLController;
 import br.ufes.inf.nemo.move.mvc.controller.OntoUMLController;
 import br.ufes.inf.nemo.move.mvc.controller.antipattern.list.AntiPatternListController;
@@ -36,9 +33,19 @@ import br.ufes.inf.nemo.ocl2alloy.options.OCLOptions;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUI;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
+/**
+ * This class represents a Manager to Models, View and Controllers of the main frame application.
+ * 
+ * @author John Guerson
+ *
+ */
 public class TheManager {
 
 	private TheFrame frame;
+	
+	private OntoUMLView ontoumlview;			
+	private OCLView oclview;		
+	private AntiPatternListView antipatternview;
 	
 	private OntoUMLModel ontoumlmodel;
 	private UMLModel umlmodel;
@@ -47,25 +54,32 @@ public class TheManager {
 	private OntoUMLOptionsModel ontoumlOptModel;
 	private OCLOptionsModel oclOptModel;
 	private AlloyModel alloymodel;
-	
-	private OntoUMLView ontoumlview;			
-	private OCLView oclview;		
-	private AntiPatternListView antipatternview;
-		
+			
+	/**
+	 * Set Manager from OntoUML Package, String COnstraints and Alloy Path.
+	 * 
+	 * @param frame
+	 * @param model
+	 * @param oclConstraints
+	 * @param alsPath
+	 * @throws IOException
+	 */
 	public void setManager (TheFrame frame, RefOntoUML.Package model, String oclConstraints, String alsPath) throws IOException
 	{
 		ontoumlmodel.setOntoUML(model);
-
-    	umlmodel.setUMLModel(alsPath.replace(".als",".uml"));
-    	
-    	alloymodel.setAlloyModel(alsPath);
-    	
+    	umlmodel.setUMLModel(alsPath.replace(".als",".uml"));    	
+    	alloymodel.setAlloyModel(alsPath);    	
 		ontoumlview.setPath(ontoumlmodel.getOntoUMLPath(),ontoumlmodel.getOntoUMLModelInstance());
     	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance(),ontoumlmodel.getOntoUMLParser());    	
     	ontoumlview.validate();
     	ontoumlview.repaint();    	
 	}	
 	
+	/**
+	 * Creates a Manager to Models, Views and Controllers of the main frame application.
+	 * 
+	 * @param frame
+	 */
 	public TheManager(TheFrame frame)
 	{
 		this.frame = frame;
@@ -73,8 +87,7 @@ public class TheManager {
 		createModels();
 		createViews();
 		createControllers();
-	}
-	
+	}	
 	
 	/**
 	 * Create Model layer - MVC Design Pattern
@@ -152,69 +165,42 @@ public class TheManager {
 		return oclview; 
 	}
 	
-	/**
-	 * Select elements of the Parser from Check Box Model Tree. Run complete selections
-	 * of elements and then update the Check Box Tree again.
-	 * 
-	 */
+
+	public String verifyModel()
+	{		
+		String log = new String();		
+		if (ontoumlmodel.getOntoUMLParser()==null) return "First you need to load the Model. ";		
+		UpdateSelection(OntoUMLParser.NO_HIERARCHY);		
+		RefOntoUML.Package refmodel = ontoumlmodel.getOntoUMLParser().createPackageFromSelections(new org.eclipse.emf.ecore.util.EcoreUtil.Copier());						
+		log = SyntacticVerificator.verify(refmodel);
+		return log;
+	}
+	
 	public String UpdateSelection(int option)
 	{		
-		List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());   			
-		
+		List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());
 		ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);		
-		List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(option,false);   			
-				
+		List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(option,false);			
 		String msg = new String();
 		for(EObject o: added)
 		{
 			msg += ""+ontoumlmodel.getOntoUMLParser().getStringRepresentation(o)+" added.\n";
 		}
-		msg += "\nSelection Completed!";
-		
-		selected.addAll(added);
-		OntoUMLCheckBoxTree.checkElements(selected, true,ontoumlview.getModelTree());
-		
-    	ontoumlview.getModelTree().updateUI();
-		    	
-    	printSelectedElements();
-    	
+		msg += "\nSelection Completed!";		
+		selected.removeAll(added);
+		selected.addAll(added);				
+		OntoUMLCheckBoxTree.checkElements(selected, true, ontoumlview.getModelTree());		
+    	ontoumlview.getModelTree().updateUI();		      	
 		return msg;
 	}
-	
-	/**
-	 * Print the elements that are selected on the OntoUML Parser.
-	 */
-	public void printSelectedElements()
-	{		
-		String result = new String();		
-		result += "This Elements are selected: \n\n";
-				
-		ArrayList<EObject> associations = new ArrayList<EObject>();
-		associations.addAll(ontoumlmodel.getOntoUMLParser().getAllInstances(PackageableElement.class));
-		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(associations);
 
-		ArrayList<EObject> generalizations = new ArrayList<EObject>();
-		generalizations.addAll(ontoumlmodel.getOntoUMLParser().getAllInstances(Generalization.class));
-		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(generalizations);
 
-		ArrayList<EObject> properties = new ArrayList<EObject>();
-		properties.addAll(ontoumlmodel.getOntoUMLParser().getAllInstances(Property.class));
-		result += ontoumlmodel.getOntoUMLParser().getStringRepresentations(properties);
-		
-		frame.getConsole().write(result);
-	}
-	
-	/**
-	 * Transforms OntoUML Model into Alloy according to the options.
-	 */
 	public void TransformsOntoUMLIntoAlloy()
 	{
-		try {
+		try {			
 			
-			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;	
-			
-			UpdateSelection(OntoUMLParser.NO_HIERARCHY);
-   			
+			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;			
+			UpdateSelection(OntoUMLParser.NO_HIERARCHY);   			
 			alloymodel.setAlloyModel(ontoumlmodel,ontoumlOptModel);
 			
 		} catch (Exception e) {
@@ -222,16 +208,14 @@ public class TheManager {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Transforms OntoUML Model into UML.
-	 */
+
+
 	public void TransformsOntoUMLIntoUML()
 	{
 		try{
 			
-			umlmodel.setUMLModel(ontoumlmodel.getOntoUMLPath().replace(".refontouml",".uml"),ontoumlmodel);
-			
+			UpdateSelection(OntoUMLParser.NO_HIERARCHY); 
+			umlmodel.setUMLModel(ontoumlmodel.getOntoUMLPath().replace(".refontouml",".uml"),ontoumlmodel);			
 			frame.getConsole().write(umlmodel.getDetails());
 			
 		}catch (Exception e) {			
@@ -240,19 +224,14 @@ public class TheManager {
 		}
 	}
 		
-	/**
-	 * Parse OCL.
-	 */
+
 	public void ParseOCL(boolean showSuccesfullyMessage)
 	{
 		try {			
 			
-			oclmodel.setParser(oclview.parseConstraints());
-			
-			oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));
-			
-			frame.getConsole().write(oclmodel.getOCLParser().getDetails());
-			
+			oclmodel.setParser(oclview.parseConstraints());			
+			oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));			
+			frame.getConsole().write(oclmodel.getOCLParser().getDetails());			
 			if(showSuccesfullyMessage)
 			{
 				JOptionPane.showMessageDialog(
@@ -260,18 +239,21 @@ public class TheManager {
 					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-36x36.png"))
 				);
 			}
+			
     	}catch(SemanticException e2){
 			JOptionPane.showMessageDialog(
 				oclview.getTheFrame(),e2.getMessage(),"Semantic",JOptionPane.ERROR_MESSAGE,
 				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
 			);					
-			e2.printStackTrace();				
+			e2.printStackTrace();	
+			
     	}catch(ParserException e1){
 				JOptionPane.showMessageDialog(
 					oclview.getTheFrame(),e1.getMessage(),"Parse",JOptionPane.ERROR_MESSAGE,
 					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
 				);					
 			e1.printStackTrace();    	
+			
 		}catch(IOException e3){
 			JOptionPane.showMessageDialog(
 				oclview.getTheFrame(),e3.getMessage(),"IO",JOptionPane.ERROR_MESSAGE,
@@ -280,21 +262,16 @@ public class TheManager {
 			e3.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Transforms OCL Model into Alloy.
-	 */
+
+
 	public void TransformsOCLIntoAlloy()
 	{
 		try {
 			
 			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;
-			if (oclmodel.getOCLParser()==null) return;
-			
-			//console.write(oclmodel.getOCLParser().getDetails());
-			
-			String logMessage = alloymodel.addConstraints(ontoumlmodel, oclmodel,oclOptModel);
-			
+			if (oclmodel.getOCLParser()==null) return;			
+			//console.write(oclmodel.getOCLParser().getDetails());			
+			String logMessage = alloymodel.addConstraints(ontoumlmodel, oclmodel,oclOptModel);			
 			if (!logMessage.isEmpty() && logMessage!=null)
 			{
 				JOptionPane.showMessageDialog(frame,logMessage,"Warning",JOptionPane.WARNING_MESSAGE);					
@@ -306,9 +283,7 @@ public class TheManager {
 		}
 	}
 		
-	/** 
-	 * Open Alloy Model with Analyzer.
-	 */
+
 	public void OpenAlloyModelWithAnalyzer (String alsPath, String alsOutDirectory) 
 	{		
 		if (alsPath.isEmpty() || alsPath==null)
@@ -351,8 +326,7 @@ public class TheManager {
 		this.antipatternmodel = antipatternListModel; 
 		this.antipatternview.setAntiPatternListModel(antipatternListModel);		
 	}
-	
-		
+			
 	// run verifier...
 	/*OntoUMLVerifier verifier = new OntoUMLVerifier(refmodel);
 	verifier.initialize();			

@@ -825,7 +825,7 @@ public class OntoUMLParser {
 	 * @param copier
 	 * @return
 	 */
-	public Package createPackageFromSelections (String log, boolean includeHierarchy, Copier copier)
+	public Package createPackageFromSelections (Copier copier)
 	{		
 		Package pack_copy;
 		ArrayList<EObject> selected_copy = new ArrayList<EObject>();				
