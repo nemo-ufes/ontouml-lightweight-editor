@@ -64,8 +64,7 @@ public class IAAntiPatternController {
 								
 	    		iaModel.getIAAntiPattern().setSelected(iaView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
 	    		
-	    		iaView.getTheFrame().TransformsOntoUMLIntoAlloy();
-	    		//iaView.getTheFrame().TransformsOCLIntoAlloy();
+	    		iaView.getTheFrame().getAlloyModel().setAlloyModel(iaView.getTheFrame().getOntoUMLModel(),iaView.getTheFrame().getOntoUMLOptionModel());
 	    		
 	    		String content = FileUtil.readFile(iaView.getTheFrame().getAlloyModel().getAlloyPath());
 	    		String alsPath = AlloyModel.alsOutDirectory+iaView.getTheFrame().getAlloyModel().getAlloyModelName()+"$IA"+iaModel.getId()+".als";	
