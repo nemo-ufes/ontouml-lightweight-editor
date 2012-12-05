@@ -56,13 +56,13 @@ public class ACAntiPatternView extends JPanel {
 		this.acModel = acModel;
 		this.frame = frame; 
 		
-		int i=1;
+		int i=0;
 		String resultBuffer= new String();
 		resultBuffer += "  ";
 		for (RefOntoUML.Class c : acModel.getACAntiPattern().getCycle())
 		{			
 			if (i != acModel.getACAntiPattern().getCycle().size()) resultBuffer += c.getName()+"->";			
-			if(i==acModel.getACAntiPattern().getCycle().size()) resultBuffer += acModel.getACAntiPattern().getCycle().get(0).getName();
+			if(i==acModel.getACAntiPattern().getCycle().size()-1) resultBuffer += acModel.getACAntiPattern().getCycle().get(0).getName();
 			i++;
 		}
 		txtClassCycle.setText(resultBuffer);
