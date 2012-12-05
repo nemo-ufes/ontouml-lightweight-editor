@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
 import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
@@ -36,6 +37,7 @@ public class OntoUMLController {
 		ontoumlview.addLoadOntoUMLListener(new LoadOntoUMLListener());
 		ontoumlview.addVerifyModelListener(new VerifyModelListener());
 		ontoumlview.addShowUniqueNamesListener(new ShowUniqueNamesListener());
+		ontoumlview.addExportModelListener(new ExportModelActionListener());
 		
 		ontoumlview.addAllAncestorsSelectionListener(new AllAncestorsSelectionListener());
 		ontoumlview.addAllDescendantsSelectionListener(new AllDescendantsSelectionListener());
@@ -93,8 +95,7 @@ public class OntoUMLController {
 	    	ontoumlview.getTheFrame().ShowConsole();
 	    }
 	 }
-	 
-	 
+	 	 
 	 /**
 	 * Show Unique Names Action Listener.
 	 * 
@@ -107,6 +108,22 @@ public class OntoUMLController {
 	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
 	    	((OntoUMLCheckBoxTree.OntoUMLTreeCellRenderer)ontoumlview.getModelTree().getCellRenderer()).showOrHideUniqueName();	    	
 	    	ontoumlview.getModelTree().updateUI();
+	    }
+	 }	 
+	 
+	 /**
+	 * Export Model Action Listener.
+	 * 
+	 * @author John
+	 */
+	 class ExportModelActionListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
+	    	ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.NO_HIERARCHY);
+	    	String path = ontoumlview.saveOntoUMLPathLocation();
+	    	ResourceUtil.saveReferenceOntoUML(path, ontoumlview.getTheFrame().getManager().getOntoUMLModel().getOntoUMLModelInstance());
 	    }
 	 }	 
 	 

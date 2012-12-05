@@ -36,4 +36,29 @@ public class ResourceUtil {
 		return resource;		
 	}
 	
+	/** 
+	 * Save Reference OntoUML Model to a Resource.
+	 */	
+	public static Resource saveReferenceOntoUML (String refontoumlpath, RefOntoUML.Package refmodel) 
+	{
+		ResourceSet rset = new ResourceSetImpl();					
+		
+		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("refontouml",new RefOntoUMLResourceFactoryImpl());
+		
+		rset.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI,	RefOntoUML.RefOntoUMLPackage.eINSTANCE);
+    	
+		URI fileURI = URI.createFileURI(refontoumlpath);    	
+	    final Resource resource = rset.createResource(fileURI);    	
+	    resource.getContents().add(refmodel);    	
+	
+	    try{
+	    	resource.save(Collections.emptyMap());
+	    }catch(IOException e){
+	    	e.printStackTrace();
+	    }
+	    
+	    return resource;		   	
+	}
+
+	
 }

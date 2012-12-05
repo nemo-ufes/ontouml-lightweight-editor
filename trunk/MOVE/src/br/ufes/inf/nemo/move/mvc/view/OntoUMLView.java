@@ -157,6 +157,15 @@ public class OntoUMLView extends JPanel {
 	}
 	
 	/**
+	 * Export Model Action Listener.
+	 * 
+	 * @param actionListener
+	 */
+	public void addExportModelListener(ActionListener actionListener)
+	{
+		ontobar.btnExport.addActionListener(actionListener);
+	}
+	/**
 	 * Add Default Selection Action Listener.
 	 * 
 	 * @param actionListener
@@ -222,6 +231,31 @@ public class OntoUMLView extends JPanel {
 			if (fileChooser.getFileFilter() == ontoumlFilter) 
 			{
 				return fileChooser.getSelectedFile().getPath();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Save OntoUML Path Location.
+	 */
+	public String saveOntoUMLPathLocation()
+	{
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Save OntoUML");
+		FileNameExtensionFilter ontoumlFilter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
+		fileChooser.addChoosableFileFilter(ontoumlFilter);
+		fileChooser.setFileFilter(ontoumlFilter);
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) 
+		{
+			if (fileChooser.getFileFilter() == ontoumlFilter) 
+			{
+				String path = fileChooser.getSelectedFile().getPath();
+				if (path.contains(".refontouml"))
+					return fileChooser.getSelectedFile().getPath();
+				else
+					return fileChooser.getSelectedFile().getPath()+".refontouml";				
 			}
 		}
 		return null;
