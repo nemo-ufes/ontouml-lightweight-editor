@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 
+import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.OCLOptionsModel;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLOptionsModel;
 import br.ufes.inf.nemo.move.mvc.view.OCLOptionsView;
@@ -162,7 +163,7 @@ public class OptionsDialog extends JDialog {
     	
     	frame.TransformsOntoUMLIntoAlloy();
     	frame.TransformsOCLIntoAlloy();
-    	frame.OpenAlloyModelWithAnalyzer();	 
+    	frame.OpenAlloyModelWithAnalyzer(frame.getAlloyModel().getAlloyPath(),AlloyModel.alsOutDirectory);	 
 	}
 	
 	public TheFrame getTheFrame()

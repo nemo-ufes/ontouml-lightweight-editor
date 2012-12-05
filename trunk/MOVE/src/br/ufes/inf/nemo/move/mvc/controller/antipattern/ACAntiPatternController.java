@@ -68,10 +68,11 @@ public class ACAntiPatternController {
 	    		acView.getTheFrame().TransformsOntoUMLIntoAlloy();
 	    		//acView.getTheFrame().TransformsOCLIntoAlloy();
 	    		
+	    		String content = FileUtil.readFile(acView.getTheFrame().getAlloyModel().getAlloyPath());	    		
 	    		String alsPath = AlloyModel.alsOutDirectory+acView.getTheFrame().getAlloyModel().getAlloyModelName()+"$AC"+acModel.getId()+".als";
-	    		FileUtil.writeToFile(predicates, alsPath);
-			
-	    		acView.getTheFrame().OpenAlloyModelWithAnalyzer();
+	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
+	    		
+	    		acView.getTheFrame().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);
 	    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(acView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

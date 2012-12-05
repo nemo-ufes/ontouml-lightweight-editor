@@ -10,6 +10,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
+import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.util.ToolbarButton;
 
 /**
@@ -82,7 +83,7 @@ public class TheToolBar extends JToolBar {
        		{
        			if(frame.getAlloyModel().getAlloyPath().isEmpty() || frame.getAlloyModel().getAlloyPath()==null)
        			{	       			
-       				frame.OpenAlloyModelWithAnalyzer();
+       				frame.OpenAlloyModelWithAnalyzer(frame.getAlloyModel().getAlloyPath(),AlloyModel.alsOutDirectory);
        			}else{ 
        				frame.ParseOCL(false);       				
        				OptionsDialog.open(frame.getOntoUMLOptionModel(),frame.getOCLOptionModel(),frame);	       			
