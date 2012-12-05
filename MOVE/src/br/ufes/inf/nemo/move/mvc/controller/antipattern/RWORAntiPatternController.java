@@ -90,6 +90,7 @@ public class RWORAntiPatternController {
 	    		rworModel.getRWORAntiPattern().setSelected(rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
 	    		
 	    		rworView.getTheFrame().getAlloyModel().setAlloyModel(rworView.getTheFrame().getOntoUMLModel(),rworView.getTheFrame().getOntoUMLOptionModel());
+	    		rworView.getTheFrame().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
 	    		
 	    		String content = FileUtil.readFile(rworView.getTheFrame().getAlloyModel().getAlloyPath());
 	    		String alsPath = AlloyModel.alsOutDirectory+rworView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RWOR"+rworModel.getId()+".als";	
