@@ -92,8 +92,7 @@ public class STRAntiPatternController {
 	    		
 	    		strModel.getSTRAntiPattern().setSelected(strView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
 	    		
-	    		strView.getTheFrame().TransformsOntoUMLIntoAlloy();
-	    		//strView.getTheFrame().TransformsOCLIntoAlloy();
+	    		strView.getTheFrame().getAlloyModel().setAlloyModel(strView.getTheFrame().getOntoUMLModel(),strView.getTheFrame().getOntoUMLOptionModel());
 	    		
 	    		String content = FileUtil.readFile(strView.getTheFrame().getAlloyModel().getAlloyPath());
 	    		String alsPath = AlloyModel.alsOutDirectory+strView.getTheFrame().getAlloyModel().getAlloyModelName()+"$STR"+strModel.getId()+".als";	

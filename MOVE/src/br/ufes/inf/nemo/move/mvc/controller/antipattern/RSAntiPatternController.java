@@ -78,8 +78,7 @@ public class RSAntiPatternController {
 				
 	    		rsModel.getRSAntiPattern().setSelected(rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
 	    		
-	    		rsView.getTheFrame().TransformsOntoUMLIntoAlloy();
-	    		//iaView.getTheFrame().TransformsOCLIntoAlloy();
+	    		rsView.getTheFrame().getAlloyModel().setAlloyModel(rsView.getTheFrame().getOntoUMLModel(),rsView.getTheFrame().getOntoUMLOptionModel());
 	    		
 	    		String content = FileUtil.readFile(rsView.getTheFrame().getAlloyModel().getAlloyPath());
 	    		String alsPath = AlloyModel.alsOutDirectory+rsView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RS"+rsModel.getId()+".als";	
