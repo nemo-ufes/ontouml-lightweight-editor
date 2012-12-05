@@ -763,14 +763,15 @@ public class OntoUMLParser {
 		for (Classifier c : o.children()) 
 		{
 			if(!isSelected(c) && !objectsToAdd.contains(c))
-			{
 				objectsToAdd.add(c);				
-				for (Generalization g : c.getGeneralization()) 
-				{
-					if(g.getGeneral().equals(o)) objectsToAdd.add(g);
-				}
-				getDescendantsHierarchy(c, objectsToAdd);
+			
+			for (Generalization g : c.getGeneralization()) 
+			{
+				if(g.getGeneral().equals(o) && !isSelected(g) && !objectsToAdd.contains(g)) 
+					objectsToAdd.add(g);
 			}
+			getDescendantsHierarchy(c, objectsToAdd);
+			
 		}
 	}
 	
@@ -788,11 +789,11 @@ public class OntoUMLParser {
 		for (Generalization g : ((Class) o).getGeneralization()) 
 		{
 			if(!isSelected(g) && !objectsToAdd.contains(g))
-			{
 				objectsToAdd.add(g);
-				objectsToAdd.add(g.getGeneral());				
-				getAncestorsHierarchy(g.getGeneral(), objectsToAdd,option);
-			}
+			if(!isSelected(g.getGeneral()) && !objectsToAdd.contains(g.getGeneral()))
+				objectsToAdd.add(g.getGeneral());
+			
+			getAncestorsHierarchy(g.getGeneral(), objectsToAdd,option);
 		}
 	}	
 	
