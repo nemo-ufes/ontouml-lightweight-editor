@@ -50,7 +50,7 @@ public class IAAntiPatternController {
 	    		{
 	    			predicates += "\n\n"+iaModel.getIAAntiPattern().generateSourcePredicate(
 	    				iaView.getSourceCustomClassifiers(),
-	    				iaView.getTheFrame().getOntoUMLModel().getOntoUMLParser()	    				
+	    				iaView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()	    				
 	    			);
 	    		}
 			
@@ -58,20 +58,20 @@ public class IAAntiPatternController {
 	    		{
 	    			predicates += "\n\n"+iaModel.getIAAntiPattern().generateTargetPredicate(
 	    					iaView.getTargetCustomClassifiers(),
-	    				iaView.getTheFrame().getOntoUMLModel().getOntoUMLParser()	    			
+	    				iaView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()	    			
 	    			); 
 	    		}
 								
-	    		iaModel.getIAAntiPattern().setSelected(iaView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
+	    		iaModel.getIAAntiPattern().setSelected(iaView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
 	    		
-	    		iaView.getTheFrame().getAlloyModel().setAlloyModel(iaView.getTheFrame().getOntoUMLModel(),iaView.getTheFrame().getOntoUMLOptionModel());
-	    		iaView.getTheFrame().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		iaView.getTheFrame().getManager().getAlloyModel().setAlloyModel(iaView.getTheFrame().getManager().getOntoUMLModel(),iaView.getTheFrame().getManager().getOntoUMLOptionModel());
+	    		iaView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
 	    		
-	    		String content = FileUtil.readFile(iaView.getTheFrame().getAlloyModel().getAlloyPath());
-	    		String alsPath = AlloyModel.alsOutDirectory+iaView.getTheFrame().getAlloyModel().getAlloyModelName()+"$IA"+iaModel.getId()+".als";	
+	    		String content = FileUtil.readFile(iaView.getTheFrame().getManager().getAlloyModel().getAlloyPath());
+	    		String alsPath = AlloyModel.alsOutDirectory+iaView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$IA"+iaModel.getId()+".als";	
 	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		iaView.getTheFrame().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	    		
+	    		iaView.getTheFrame().getManager().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	    		
 	    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(iaView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
@@ -93,12 +93,12 @@ public class IAAntiPatternController {
 			
     		if(iaView.isSelectedSourceCustom()) 
     		{
-    			constraints += "\n\n"+iaModel.getIAAntiPattern().generateSourceOcl(iaView.getSourceCustomClassifiers(), iaView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
+    			constraints += "\n\n"+iaModel.getIAAntiPattern().generateSourceOcl(iaView.getSourceCustomClassifiers(), iaView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
     		}
 		
     		if(iaView.isSelectedTargetCustom())				
     		{
-    			constraints += "\n\n"+iaModel.getIAAntiPattern().generateTargetOcl(iaView.getTargetCustomClassifiers(), iaView.getTheFrame().getOntoUMLModel().getOntoUMLParser()); 
+    			constraints += "\n\n"+iaModel.getIAAntiPattern().generateTargetOcl(iaView.getTargetCustomClassifiers(), iaView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()); 
     		}    		
     		
     		iaView.getTheFrame().getConsole().write(constraints);

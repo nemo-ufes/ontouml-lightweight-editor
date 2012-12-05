@@ -50,27 +50,27 @@ public class RBOSAntiPatternController {
 	    		if(rbosView.isSelectedReflexive()) 
 	    		{
 	    			predicates += "\n\n"+rbosModel.getRBOSAntiPattern().generateReflexivePredicate(
-	    				rbosView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+	    				rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
 	    			);
 	    		}
 			
 	    		if(rbosView.isSelectedIrreflexive())				
 	    		{
 	    			predicates += "\n\n"+rbosModel.getRBOSAntiPattern().generateIrreflexivePredicate(
-	    					rbosView.getTheFrame().getOntoUMLModel().getOntoUMLParser() 
+	    					rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser() 
 	    			); 
 	    		}
 					
-	    		rbosModel.getRBOSAntiPattern().setSelected(rbosView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
+	    		rbosModel.getRBOSAntiPattern().setSelected(rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
 	    		
-	    		rbosView.getTheFrame().getAlloyModel().setAlloyModel(rbosView.getTheFrame().getOntoUMLModel(),rbosView.getTheFrame().getOntoUMLOptionModel());
-	    		rbosView.getTheFrame().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		rbosView.getTheFrame().getManager().getAlloyModel().setAlloyModel(rbosView.getTheFrame().getManager().getOntoUMLModel(),rbosView.getTheFrame().getManager().getOntoUMLOptionModel());
+	    		rbosView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
 	    		
-	    		String content = FileUtil.readFile(rbosView.getTheFrame().getAlloyModel().getAlloyPath());
-	    		String alsPath = AlloyModel.alsOutDirectory+rbosView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RBOS"+rbosModel.getId()+".als";	
+	    		String content = FileUtil.readFile(rbosView.getTheFrame().getManager().getAlloyModel().getAlloyPath());
+	    		String alsPath = AlloyModel.alsOutDirectory+rbosView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$RBOS"+rbosModel.getId()+".als";	
 	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		rbosView.getTheFrame().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	 
+	    		rbosView.getTheFrame().getManager().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	 
 	    		 		
 	    		
 	    	}catch(Exception exception){
@@ -93,12 +93,12 @@ public class RBOSAntiPatternController {
 			
     		if(rbosView.isSelectedReflexive()) 
     		{
-    			constraints += "\n\n"+rbosModel.getRBOSAntiPattern().generateReflexiveOcl(rbosView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
+    			constraints += "\n\n"+rbosModel.getRBOSAntiPattern().generateReflexiveOcl(rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
     		}
 		
     		if(rbosView.isSelectedIrreflexive())				
     		{
-    			constraints += "\n\n"+rbosModel.getRBOSAntiPattern().generateIrreflexiveOcl(rbosView.getTheFrame().getOntoUMLModel().getOntoUMLParser()); 
+    			constraints += "\n\n"+rbosModel.getRBOSAntiPattern().generateIrreflexiveOcl(rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()); 
     		}
     		
     		rbosView.getTheFrame().getConsole().write(constraints);
