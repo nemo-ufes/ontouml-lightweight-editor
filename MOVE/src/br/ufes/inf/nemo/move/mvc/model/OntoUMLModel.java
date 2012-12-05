@@ -63,6 +63,16 @@ public class OntoUMLModel {
 	}
 	
 	/**
+	 * This method set only the root OntoUML Package Model.
+	 * 
+	 * @param refpackage
+	 */
+	public void setOntoUMLPackage(RefOntoUML.Package refpackage)
+	{
+		this.refmodel = refpackage;
+	}
+	
+	/**
 	 * This method set the ontoUML model from a absolute path in file system.
 	 * 
 	 * @param refPath

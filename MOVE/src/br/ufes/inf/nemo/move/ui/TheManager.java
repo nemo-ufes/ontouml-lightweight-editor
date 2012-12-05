@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
@@ -170,9 +171,8 @@ public class TheManager {
 	{		
 		String log = new String();		
 		if (ontoumlmodel.getOntoUMLParser()==null) return "First you need to load the Model. ";		
-		UpdateSelection(OntoUMLParser.NO_HIERARCHY);		
-		RefOntoUML.Package refmodel = ontoumlmodel.getOntoUMLParser().createPackageFromSelections(new org.eclipse.emf.ecore.util.EcoreUtil.Copier());						
-		log = SyntacticVerificator.verify(refmodel);
+		UpdateSelection(OntoUMLParser.NO_HIERARCHY);								
+		log = SyntacticVerificator.verify(ontoumlmodel.getOntoUMLModelInstance());
 		return log;
 	}
 	
@@ -188,18 +188,18 @@ public class TheManager {
 		}
 		msg += "\nSelection Completed!";		
 		selected.removeAll(added);
-		selected.addAll(added);				
+		selected.addAll(added);
 		OntoUMLCheckBoxTree.checkElements(selected, true, ontoumlview.getModelTree());		
-    	ontoumlview.getModelTree().updateUI();		      	
+    	ontoumlview.getModelTree().updateUI();	
+    	ontoumlmodel.setOntoUMLPackage(ontoumlmodel.getOntoUMLParser().createPackageFromSelections(new Copier()));
 		return msg;
 	}
-
 
 	public void TransformsOntoUMLIntoAlloy()
 	{
 		try {			
 			
-			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;			
+			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;				
 			UpdateSelection(OntoUMLParser.NO_HIERARCHY);   			
 			alloymodel.setAlloyModel(ontoumlmodel,ontoumlOptModel);
 			
@@ -214,8 +214,9 @@ public class TheManager {
 	{
 		try{
 			
-			UpdateSelection(OntoUMLParser.NO_HIERARCHY); 
-			umlmodel.setUMLModel(ontoumlmodel.getOntoUMLPath().replace(".refontouml",".uml"),ontoumlmodel);			
+			UpdateSelection(OntoUMLParser.NO_HIERARCHY); 			
+			String umlPath = ontoumlmodel.getOntoUMLPath().replace(".refontouml",".uml");
+			umlmodel.setUMLModel(umlPath,ontoumlmodel.getOntoUMLModelInstance());			
 			frame.getConsole().write(umlmodel.getDetails());
 			
 		}catch (Exception e) {			
@@ -228,6 +229,7 @@ public class TheManager {
 	public void ParseOCL(boolean showSuccesfullyMessage)
 	{
 		try {			
+			UpdateSelection(OntoUMLParser.NO_HIERARCHY); 
 			
 			oclmodel.setParser(oclview.parseConstraints());			
 			oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));			

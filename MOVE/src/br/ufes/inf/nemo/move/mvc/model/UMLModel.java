@@ -52,12 +52,12 @@ public class UMLModel {
 	 * @param umlPath
 	 * @param refmodel
 	 */
-	public UMLModel(String umlPath, OntoUMLModel ontoumlmodel)
+	public UMLModel(String umlPath, RefOntoUML.Package refmodel)
 	{
 		this();
 		
 		setUMLModel(umlPath);
-		setUMLModel(umlPath,ontoumlmodel);
+		setUMLModel(umlPath,refmodel);
 	}
 	
 	/**
@@ -84,9 +84,9 @@ public class UMLModel {
 	 * @param umlPath
 	 * @param ontoumlmodel
 	 */
-	public void setUMLModel(String umlPath,OntoUMLModel ontoumlmodel)
+	public void setUMLModel(String umlPath,RefOntoUML.Package refmodel)
 	{
-		umlResource = OntoUML2UML.Transformation(ontoumlmodel.getOntoUMLModelInstance(),umlPath);
+		umlResource = OntoUML2UML.Transformation(refmodel,umlPath);
 		
 		logDetails = OntoUML2UML.logDetails;
 		

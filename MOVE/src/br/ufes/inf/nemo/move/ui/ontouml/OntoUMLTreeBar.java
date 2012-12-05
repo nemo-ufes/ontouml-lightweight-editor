@@ -27,6 +27,7 @@ public class OntoUMLTreeBar extends JPanel {
 	public JButton btnOpen;
 	public JButton btnVerify;
 	public JButton btnShowUnique;
+	public JButton btnExport;
 	
 	public JButton btnCompleteSelect;
 	public JPopupMenu popupCompleteSelect;	
@@ -85,6 +86,10 @@ public class OntoUMLTreeBar extends JPanel {
 		popupCompleteSelect.add(menuItemCompletehierarchy);
 		popupCompleteSelect.add(menuItemSortalAncestors);
 		
+		btnExport = new JButton("");
+		btnExport.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/export-16x16.png")));
+		btnExport.setToolTipText("Export Model");
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -99,7 +104,9 @@ public class OntoUMLTreeBar extends JPanel {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnShowUnique, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnCompleteSelect, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(btnCompleteSelect, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -107,18 +114,13 @@ public class OntoUMLTreeBar extends JPanel {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(textPath, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnVerify, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnOpen, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnCompleteSelect, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-								.addComponent(btnShowUnique, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnVerify, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+						.addComponent(btnOpen, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+						.addComponent(btnCompleteSelect, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+						.addComponent(btnShowUnique, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+						.addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		setLayout(groupLayout);
