@@ -170,27 +170,34 @@ public class RSAntiPattern extends Antipattern{
 			}
 		}
 				
-		
-		rules += "all w:World | ";
 		//Case in which the SOURCE of the SPECIFIC association is SUBTYPE_OF or EQUAL_TO the SOURCE of the GENERAL association
 		if (specificSource.equals(generalSource) || specificSource.allParents().contains(generalSource)){
 			if (type==SUBSET){
 				if(general.getMemberEnd().get(0).getUpper()!=1 || general.getMemberEnd().get(1).getUpper()!=1)
-					rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+")!=x.(w."+generalName+") and x.(w."+specificName+") in "+"x.(w."+generalName+") and (w."+specificName+").y in "+"(w."+generalName+").y";
+					rules += "all w:World | all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+")!=x.(w."+generalName+") and x.(w."+specificName+") in "+"x.(w."+generalName+") and (w."+specificName+").y in "+"(w."+generalName+").y";
 				else
-					rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") in "+"x.(w."+generalName+") and (w."+specificName+").y in "+"(w."+generalName+").y";
+					rules += "all w:World | all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") in "+"x.(w."+generalName+") and (w."+specificName+").y in "+"(w."+generalName+").y";
 			}
 			if (type==DISJOINT)
-				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | no (x.(w."+specificName+") & "+"x.(w."+generalName+")) and no ((w."+specificName+").y & "+"(w."+generalName+").y)";
+				rules += "all w:World | all x:w."+specificSourceName+", y:w."+specificTargetName+" | no (x.(w."+specificName+") & "+"x.(w."+generalName+")) and no ((w."+specificName+").y & "+"(w."+generalName+").y)";
 			if (type==NONSUBSET)
-				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") not in "+"x.(w."+generalName+") and (w."+specificName+").y not in "+"(w."+generalName+").y";
+				rules += "all w:World | all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") not in "+"x.(w."+generalName+") and (w."+specificName+").y not in "+"(w."+generalName+").y";
+
+			//flag to check if the first if was true; 
+			boolean second_rule = false;
 			if (type==REDEFINE){
 				//the source is specialized
-				if(!specificSource.equals(generalSource))
-					rules += " all x:w."+specificSourceName+" | x.(w."+specificName+") = "+"x.(w."+generalName+")";
+				if(!specificSource.equals(generalSource)){
+					rules += "all w:World | all x:w."+specificSourceName+" | x.(w."+specificName+") = "+"x.(w."+generalName+")";
+					second_rule=true;
+				}
 				//the target is specialized
-				else
-					rules += " all x:w."+specificTargetName+" | (w."+specificName+").x = "+"(w."+generalName+").x";
+				if(!specificTarget.equals(generalTarget)){
+					if(second_rule)
+						rules+="\n\t";
+						
+					rules += "all w:World | all x:w."+specificTargetName+" | (w."+specificName+").x = "+"(w."+generalName+").x";
+				}
 			}
 		}
 		//Case in which the SOURCE of the SPECIFIC association is SUBTYPE_OF or EQUAL_TO the TARGET of the GENERAL association
@@ -205,13 +212,21 @@ public class RSAntiPattern extends Antipattern{
 				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | no (x.(w."+specificName+") & "+"x.(~(w."+generalName+"))) and no ((w."+specificName+").y & "+"(~(w."+generalName+")).y)";
 			if (type==NONSUBSET)
 				rules += " all x:w."+specificSourceName+", y:w."+specificTargetName+" | x.(w."+specificName+") not in "+"x.(~(w."+generalName+")) and (w."+specificName+").y not in "+"(~(w."+generalName+")).y";
+
+			//flag to check if the first if was true; 
+			boolean second_rule = false;
 			if (type==REDEFINE)
 				//the source is specialized
-				if(!specificSource.equals(generalTarget))
+				if(!specificSource.equals(generalTarget)){
 					rules += " all x:w."+specificSourceName+"| x.(w."+specificName+") = "+"x.(~(w."+generalName+"))";
+					second_rule = true;
+				}
 				//the target is specialized
-				else
+				if(!specificTarget.equals(generalSource)){
+					if(second_rule)
+						rules+="\n\t";
 					rules += " all x:w."+specificTargetName+"| (w."+specificName+").x = "+"(~(w."+generalName+")).x";
+				}
 					
 		}
 		
