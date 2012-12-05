@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+
 /**
  * @author John Guerson
  */
@@ -12,16 +14,16 @@ public class Transformation {
 
 	public Dealer mydealer;	 
 	public HashMap <RefOntoUML.Package,org.eclipse.uml2.uml.Package> packagesMap;			
-	public RefOntoUML.Package refmodel;
+	public OntoUMLParser refparser;
 	
 	/** 
 	 * Constructor 
 	 */
-	public Transformation(RefOntoUML.Package model)  
+	public Transformation(OntoUMLParser refparser)  
     { 
-    	mydealer = new Dealer(model);  
+		this.refparser = refparser;
+    	mydealer = new Dealer();  
     	packagesMap = new HashMap<RefOntoUML.Package,org.eclipse.uml2.uml.Package>(); 
-    	refmodel = model;
     }
 	
 	/**
@@ -29,18 +31,18 @@ public class Transformation {
 	 */
 	public org.eclipse.uml2.uml.Package Transform ()
     {           
-		Dealer.outln("Transforming the OntoUML model...");
+		Dealer.outln("Transforming OntoUML model...");
 		
         org.eclipse.uml2.uml.Package umlmodel = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createModel();
                 
-        mydealer.DealNamedElement((RefOntoUML.NamedElement) refmodel, (org.eclipse.uml2.uml.NamedElement) umlmodel);
-        mydealer.RelateElements((RefOntoUML.Element) refmodel, (org.eclipse.uml2.uml.Element) umlmodel);
+        mydealer.DealNamedElement((RefOntoUML.NamedElement) refparser.getModel(), (org.eclipse.uml2.uml.NamedElement) umlmodel);
+        mydealer.RelateElements((RefOntoUML.Element) refparser.getModel(), (org.eclipse.uml2.uml.Element) umlmodel);
         
-        packagesMap.put(refmodel, umlmodel);
+        packagesMap.put(refparser.getModel(), umlmodel);
                 
-        TransformingPackages(refmodel,umlmodel);
+        TransformingPackages(refparser.getModel(),umlmodel);
         
-        VerifyElements();
+        //VerifyElements();
                     
         TransformingPrimitiveTypes();        
         TransformingEnumerations();        
@@ -63,7 +65,7 @@ public class Transformation {
     {               
         for (EObject obj : refmodel.eContents())
         { 
-            if (obj instanceof RefOntoUML.Package)
+            if (obj instanceof RefOntoUML.Package && refparser.isSelected(obj))
             {
             	org.eclipse.uml2.uml.Package umlpackage = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createPackage();
         		mydealer.DealPackage( (RefOntoUML.Package)obj,umlpackage);            	            		
@@ -109,7 +111,7 @@ public class Transformation {
 	        
 			for (EObject elem : refmodel.eContents())
 	        {        	
-	            if (elem instanceof RefOntoUML.Class)
+	            if (elem instanceof RefOntoUML.Class && refparser.isSelected(elem))
 	            {
 	          		org.eclipse.uml2.uml.Class umlclass = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createClass();  
 	           		mydealer.DealClass( (RefOntoUML.Class) elem, umlclass);	           			           		
@@ -131,7 +133,7 @@ public class Transformation {
 	        
 			for (EObject elem : refmodel.eContents())
 	        {        	
-				if (elem instanceof RefOntoUML.PrimitiveType)
+				if (elem instanceof RefOntoUML.PrimitiveType && refparser.isSelected(elem))
 	            {
 	                 org.eclipse.uml2.uml.PrimitiveType dt2 = mydealer.DealPrimitiveType ((RefOntoUML.PrimitiveType) elem);	                 	                 		           		
 	                 umlmodel.getPackagedElements().add(dt2);                               
@@ -152,7 +154,7 @@ public class Transformation {
 	        
 			for (EObject elem : refmodel.eContents())
 	        {        	
-				if (elem instanceof RefOntoUML.Enumeration) 
+				if (elem instanceof RefOntoUML.Enumeration && refparser.isSelected(elem)) 
 	            {
 	                 org.eclipse.uml2.uml.Enumeration dt2 = mydealer.DealEnumeration ((RefOntoUML.Enumeration) elem);
 	                 umlmodel.getPackagedElements().add(dt2);                               
@@ -173,7 +175,7 @@ public class Transformation {
 	        
 			for (EObject elem : refmodel.eContents())
 	        {        	
-				if ((elem instanceof RefOntoUML.DataType) && !(elem instanceof RefOntoUML.PrimitiveType) && !(elem instanceof RefOntoUML.Enumeration))  
+				if ((elem instanceof RefOntoUML.DataType) && !(elem instanceof RefOntoUML.PrimitiveType) && !(elem instanceof RefOntoUML.Enumeration) && refparser.isSelected(elem))  
 	            {
 	                 org.eclipse.uml2.uml.DataType dt2 = mydealer.DealDataType ((RefOntoUML.DataType) elem);
 	                 umlmodel.getPackagedElements().add(dt2);                               
@@ -194,12 +196,12 @@ public class Transformation {
 	        
 			for (EObject elem : refmodel.eContents())
 	        {        	
-				if(elem instanceof RefOntoUML.Derivation)
+				if(elem instanceof RefOntoUML.Derivation && refparser.isSelected(elem))
 				{
 					org.eclipse.uml2.uml.Association assoc = mydealer.DealAssociation ((RefOntoUML.Association) elem);
 					umlmodel.getPackagedElements().add(assoc);
 					
-				} else if( elem instanceof RefOntoUML.Association)
+				} else if( elem instanceof RefOntoUML.Association && refparser.isSelected(elem))
 				{        		
 					org.eclipse.uml2.uml.Association assoc = mydealer.DealAssociation ((RefOntoUML.Association) elem);
 					umlmodel.getPackagedElements().add(assoc);        		
@@ -219,9 +221,13 @@ public class Transformation {
 	        	
 			for (EObject elem : refmodel.eContents())
 	        {	
-				if (elem instanceof RefOntoUML.Classifier)
-				{                    	    
-					mydealer.ProcessGeneralizations((RefOntoUML.Classifier)elem);
+				if (elem instanceof RefOntoUML.Classifier && refparser.isSelected(elem))
+				{               
+					/* Generalizations */
+			        for (RefOntoUML.Generalization gen : ((RefOntoUML.Classifier)elem).getGeneralization())
+			        {
+			        	if (refparser.isSelected(gen)) mydealer.ProcessGeneralizations(gen);
+			        }
 				}
 	        }         	
 		}
@@ -239,7 +245,7 @@ public class Transformation {
 	        	
 			for (EObject elem : refmodel.eContents())
 	        {	            
-				if (elem instanceof RefOntoUML.GeneralizationSet)
+				if (elem instanceof RefOntoUML.GeneralizationSet && refparser.isSelected(elem))
 				{
 					org.eclipse.uml2.uml.GeneralizationSet gs2 = mydealer.DealGeneralizationSet ((RefOntoUML.GeneralizationSet) elem);        
 					umlmodel.getPackagedElements().add(gs2);

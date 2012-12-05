@@ -5,6 +5,7 @@ import java.io.File;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.Package;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 
 /**
@@ -52,12 +53,12 @@ public class UMLModel {
 	 * @param umlPath
 	 * @param refmodel
 	 */
-	public UMLModel(String umlPath, RefOntoUML.Package refmodel)
+	public UMLModel(String umlPath, OntoUMLParser refparser)
 	{
 		this();
 		
 		setUMLModel(umlPath);
-		setUMLModel(umlPath,refmodel);
+		setUMLModel(umlPath,refparser);
 	}
 	
 	/**
@@ -84,9 +85,9 @@ public class UMLModel {
 	 * @param umlPath
 	 * @param ontoumlmodel
 	 */
-	public void setUMLModel(String umlPath,RefOntoUML.Package refmodel)
+	public void setUMLModel(String umlPath, OntoUMLParser refparser)
 	{
-		umlResource = OntoUML2UML.Transformation(refmodel,umlPath);
+		umlResource = OntoUML2UML.Transformation(refparser,umlPath);
 		
 		logDetails = OntoUML2UML.logDetails;
 		

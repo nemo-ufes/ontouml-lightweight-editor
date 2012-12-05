@@ -32,7 +32,7 @@ public class Dealer {
     /* ============================================================================*/
     
     /** Constructor. */
-	public Dealer(RefOntoUML.Package model)
+	public Dealer()
     {
 		myfactory = org.eclipse.uml2.uml.UMLFactory.eINSTANCE;
         mymap = new HashMap<RefOntoUML.Element, org.eclipse.uml2.uml.Element>();
@@ -50,7 +50,7 @@ public class Dealer {
 	/** Method for output. */
     public static void out(String output) 
     {
-    	//System.out.println(output);
+    	//System.out.print(output);
     	OntoUML2UML.logDetails += output;
     }
     
@@ -350,13 +350,9 @@ public class Dealer {
 	/* ============================================================================*/
 	
 	 /** Process the Generalizations of this Classifier. */	
-     public void ProcessGeneralizations (RefOntoUML.Classifier c1)
-     {
-        /* Generalizations */
-        for (RefOntoUML.Generalization gen : c1.getGeneralization())
-        {
-            DealGeneralization (gen);
-        }       
+     public void ProcessGeneralizations (RefOntoUML.Generalization gen)
+     {        
+        DealGeneralization (gen);               
      }
       
      /* ============================================================================*/
