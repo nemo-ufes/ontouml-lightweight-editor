@@ -47,10 +47,19 @@ import br.ufes.inf.nemo.common.resource.ResourceUtil;
  */
 public class OntoUMLParser {
 
+	/** Root Package of OntoUML Model. */
 	private Package model;	
+	
+	/** Unique Name of Root Package. */
 	private String refmodelname;	
+	
+	/** 
+	 *  HashMap containing Every Element of the model associating with the custom parsing element. The parsing Element contains all 
+	 *  the useful information about the OntoUML Element. 
+	 */
 	private HashMap<EObject,ParsingElement> elementsHash;
 	
+	/** Options for complete element selections in the model (transformation purposes). */
 	public static int NO_HIERARCHY = 0, SORTAL_ANCESTORS = 1, ALL_ANCESTORS = 2, ALL_DESCENDANTS = 3, COMPLETE_HIERARCHY = 4;
 		
 	/**
@@ -68,7 +77,7 @@ public class OntoUMLParser {
 		this.refmodelname = h1.treatName(model);	
 		
 		NameHandler h2 = new NameHandler();
-		initializeElementList(model, h2);
+		initElementsHashMap(model, h2);
 	}
 		
 	/**
@@ -90,7 +99,7 @@ public class OntoUMLParser {
 		this.refmodelname = h1.treatName(model);
 		
 		NameHandler h2 = new NameHandler();
-		initializeElementList(model, h2);
+		initElementsHashMap(model, h2);
 	}	
 
 	/**
@@ -100,16 +109,16 @@ public class OntoUMLParser {
 	 * @param rootpack
 	 * @param h2
 	 */
-	private void initializeElementList (PackageableElement rootpack, NameHandler h2) 
+	private void initElementsHashMap (PackageableElement rootpack, NameHandler h2) 
 	{
 		ParsingElement e = new ParsingElement(rootpack, true, h2.treatName(rootpack));
 		this.elementsHash.put(rootpack,e);
 		
 		for(PackageableElement p : ((Package) rootpack).getPackagedElement())
 		{
-			add2ElementHash(p, h2);
+			addToElementsHashMap(p, h2);
 			
-			if(p instanceof Package) initializeElementList(p, h2);
+			if(p instanceof Package) initElementsHashMap(p, h2);
 		}
 	}		
 
@@ -120,7 +129,7 @@ public class OntoUMLParser {
 	 * @param pe
 	 * @param h2
 	 */
-	private void add2ElementHash(PackageableElement pe, NameHandler h2)
+	private void addToElementsHashMap(PackageableElement pe, NameHandler h2)
 	{
 		ParsingElement e;
 		
@@ -172,7 +181,7 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * This method gets the String representation for this element.
+	 * This method gets the String representation of a given ontoUML Element.
 	 * 
 	 * @param elem
 	 * @return
@@ -183,7 +192,7 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * Get String Representation of All Elements.
+	 * Get String Representation of All Elements in the model.
 	 * 
 	 * @return
 	 */
@@ -197,7 +206,7 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * Get Alias List for a List of OntoUML Elements.
+	 * Get Aliases of a List of OntoUML Elements.
 	 * 
 	 * @param list
 	 * @return
@@ -213,7 +222,7 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * Get String Representation of All Elements.
+	 * Get String Representation of a List of OntoUML Elements.
 	 * 
 	 * @return
 	 */
@@ -228,7 +237,7 @@ public class OntoUMLParser {
 	
 	
 	/**
-	 * This method verifies if a given onotuML elem is selected or not.
+	 * Verifies if a given OntoUML Element is selected or not.
 	 * 
 	 * @param elem
 	 * @return
@@ -239,7 +248,7 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * Get onotUML model name.
+	 * Get Unique Name of OntoUML Root Package.
 	 *  
 	 * @return
 	 */
@@ -249,7 +258,7 @@ public class OntoUMLParser {
 	}	
 		
 	/**
-	 * Get all the ontoUML elements of the model.
+	 * Get OntoUML Elements of the Model.
 	 * @return
 	 */
 	public Set<EObject> getElements()
@@ -266,7 +275,7 @@ public class OntoUMLParser {
 	
 	/**
 	 * Select this elements in the model. If 'unselectOthers' is true, the other elements are unselected (i.e. selected=false). 
-	 * Otherwise, if 'unselectOther' is false, then nothing is made with the others elements, they maybe selected or not. i.e. selected = true or false.
+	 * Otherwise, if 'unselectOther' is false, nothing is made with the others elements, they maybe selected or not. i.e. selected = true or false.
 	 * 
 	 * @param list
 	 */
@@ -295,19 +304,18 @@ public class OntoUMLParser {
 	 * 
 	 * @param elements: list of elements of any type.
 	 */
-	public <T> Set<T> retainSelected(List<T> elements){
-		Set<T> result = new HashSet<T>();
-		
-		for (T elem : elements) {
-			if(elem instanceof EObject && isSelected((EObject) elem))
-				result.add(elem);
-		}
-		
+	public <T> Set<T> retainSelected(List<T> elements)
+	{
+		Set<T> result = new HashSet<T>();		
+		for (T elem : elements) 
+		{
+			if(elem instanceof EObject && isSelected((EObject) elem)) result.add(elem);
+		}		
 		return result;
 	}
 			
 	/**
-	 *This method gets all the ontoUML generalization that the Classifier c is the general classifier.
+	 * This method gets all the OntoUML Generalizations that the Classifier c is the general classifier.
 	 * 
 	 * @return
 	 */
@@ -357,23 +365,19 @@ public class OntoUMLParser {
 		}		
 		return list;
 	}
-	
-	
-	
-	
+		
 	/**
 	 * Get all descendants (direct or indirect) of Classifier c.
 	 * 
 	 * @param c
 	 */
-	public Set<Classifier> getAllChildren(Classifier c){
-		Set<Classifier> result = new HashSet<Classifier>();
-		
-		for (Classifier classifier : c.allChildren()) {
-			if(isSelected(classifier))
-				result.add(classifier);
-		}
-		
+	public Set<Classifier> getAllChildren(Classifier c)
+	{
+		Set<Classifier> result = new HashSet<Classifier>();		
+		for (Classifier classifier : c.allChildren()) 
+		{
+			if(isSelected(classifier)) result.add(classifier);
+		}		
 		return result;
 	}
 	
@@ -382,14 +386,13 @@ public class OntoUMLParser {
 	 * 
 	 * @param c
 	 */
-	public Set<Classifier> getChildren(Classifier c){
-		Set<Classifier> result = new HashSet<Classifier>();
-		
-		for (Classifier classifier : c.children()) {
-			if(isSelected(classifier))
-				result.add(classifier);
-		}
-		
+	public Set<Classifier> getChildren(Classifier c)
+	{
+		Set<Classifier> result = new HashSet<Classifier>();		
+		for (Classifier classifier : c.children()) 
+		{
+			if(isSelected(classifier)) result.add(classifier);
+		}		
 		return result;
 	} 
 	
@@ -398,14 +401,13 @@ public class OntoUMLParser {
 	 * 
 	 * @param c
 	 */
-	public Set<Classifier> getAllParents(Classifier c){
-		Set<Classifier> result = new HashSet<Classifier>();
-		
-		for (Classifier classifier : c.allParents()) {
-			if(isSelected(classifier))
-				result.add(classifier);
-		}
-		
+	public Set<Classifier> getAllParents(Classifier c)
+	{
+		Set<Classifier> result = new HashSet<Classifier>();		
+		for (Classifier classifier : c.allParents()) 
+		{
+			if(isSelected(classifier)) result.add(classifier);
+		}		
 		return result;
 	}
 	
@@ -414,14 +416,13 @@ public class OntoUMLParser {
 	 * 
 	 * @param c
 	 */
-	public Set<Classifier> getParents(Classifier c){
-		Set<Classifier> result = new HashSet<Classifier>();
-		
-		for (Classifier classifier : c.parents()) {
-			if(isSelected(classifier))
-				result.add(classifier);
-		}
-		
+	public Set<Classifier> getParents(Classifier c)
+	{
+		Set<Classifier> result = new HashSet<Classifier>();		
+		for (Classifier classifier : c.parents()) 
+		{
+			if(isSelected(classifier)) result.add(classifier);
+		}		
 		return result;
 	} 
 	
@@ -431,52 +432,56 @@ public class OntoUMLParser {
 	 * @param c
 	 */
 		
-	public Set<Classifier> getAllConcreteChildren(Classifier c){
-		Set<Classifier> result = new HashSet<Classifier>();
-		
-		for (Classifier classifier : getAllChildren(c)) {
-			if(isSelected(classifier))
-				result.add(classifier);
+	public Set<Classifier> getAllConcreteChildren(Classifier c)
+	{
+		Set<Classifier> result = new HashSet<Classifier>();		
+		for (Classifier classifier : getAllChildren(c)) 
+		{
+			if(isSelected(classifier)) result.add(classifier);
 		}
 		return result;
 	}
 	
-	@SuppressWarnings("unchecked")
 	/**
-	 * Get all selected instances of a given class in the OntoUMLParser 
+	 * Get all instances of a given class in the OntoUMLParser 
 	 * 
 	 * @param type: class from the OntoUML metamodel. use ´class_name´.class
 	 * @return all instances of the type in the parameter 
 	 */
-	public <T> Set<T> getAllInstances(java.lang.Class<T> type){
-		Set<T> result = new HashSet<T>();
-		
-		for (EObject o : getElements()) {
-			if(isSelected(o) && type.isInstance(o) )
-				result.add((T) o);
+	@SuppressWarnings("unchecked")
+	public <T> Set<T> getAllInstances(java.lang.Class<T> type)
+	{
+		Set<T> result = new HashSet<T>();		
+		for (EObject o : getElements()) 
+		{
+			if(isSelected(o) && type.isInstance(o)) result.add((T) o);
 		}
 		return result;
 	}
 	
-	
+	/**
+	 * Get Top Level Instances of the Model.
+	 * 
+	 * @param type
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
-	public <T> Set<T> getTopLevelInstances(java.lang.Class<T> type){
-		Set<T> result = new HashSet<T>();
-		
-		for (EObject o : getElements()) {
-			if(isSelected(o) && type.isInstance(o)){
-				if(o instanceof Classifier && ((Classifier)o).getGeneralization().size()==0){
+	public <T> Set<T> getTopLevelInstances(java.lang.Class<T> type)
+	{
+		Set<T> result = new HashSet<T>();		
+		for (EObject o : getElements()) 
+		{
+			if(isSelected(o) && type.isInstance(o))
+			{
+				if(o instanceof Classifier && ((Classifier)o).getGeneralization().size()==0)
+				{
 					if(o instanceof DataType && ! (o instanceof PrimitiveType)) result.add((T) o);
-					else if (!(o instanceof DataType)) result.add((T) o);
-					
-				}
-					
+					else if (!(o instanceof DataType)) result.add((T) o);					
+				}					
 			}
 		}
 		return result;
-	}
-	
-	
+	}	
 	
 	/**
 	 * Get all Meronymic relations that have as a Whole the Classifier 'c' or one of its Super Types.
@@ -566,9 +571,8 @@ public class OntoUMLParser {
 	/**
 	 * Auto Select Elements : Mandatory Dependencies.
 	 * 
-	 * In Generalizations, the general and specific classifiers must be selected, as well as the generalization set. 
+	 * In Generalizations, the general and specific classifiers must be selected. 
 	 * In Associations, the source and target types must be selected.
-	 * In PackageableElements, the container of this elements, for instance, the package container, must be selected. 
 	 * 
 	 * @return
 	 */
@@ -607,14 +611,34 @@ public class OntoUMLParser {
 				{
 					objectsToAdd.add(target);					
 				}								
-			}		
-			
-			if(obj instanceof PackageableElement) 
+			}			
+		}
+		
+		// add this elements to selection...
+		selectThisElements(objectsToAdd,false);
+		
+		return objectsToAdd;
+	}
+	
+	/**
+	 * Auto Select Elements : Packages Dependencies.
+	 *
+	 * In PackageableElements or Packages their container must be selected. 
+	 * 
+	 * @return
+	 */
+	private ArrayList<EObject> autoSelectPackagesDependencies()
+	{
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
+		
+		for (ParsingElement obj : elementsHash.values()) 
+		{	
+			if(obj.getElement() instanceof PackageableElement || obj.getElement() instanceof Package) 
 			{
 				// packages
-				if((obj.eContainer()!=null) && !isSelected(obj.eContainer()) && !objectsToAdd.contains(obj.eContainer())) 
+				if((obj.getElement().eContainer()!=null) && !isSelected(obj.getElement().eContainer()) && !objectsToAdd.contains(obj.getElement().eContainer())) 
 				{
-					objectsToAdd.add(obj.eContainer());
+					objectsToAdd.add(obj.getElement().eContainer());
 				}
 			}
 		}
@@ -625,7 +649,15 @@ public class OntoUMLParser {
 		return objectsToAdd;
 	}
 	
-	private ArrayList<EObject> autoSelectGeneralizationSetFromGeneralization(){
+	/**
+	 * Auto Select Elements : Generalization.
+	 * 
+	 * In Generalizations, thei Generalizations Set must be selected.
+	 * 
+	 * @return
+	 */
+	private ArrayList<EObject> autoSelectGeneralizationSetFromGeneralization()
+	{
 		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
 		
 		for (Generalization g : getAllInstances(Generalization.class))
@@ -688,10 +720,7 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * Auto Select Elements : All the ancestors of a Class. i.e. Parents and Generalizations.
-	 * 
-	 * Every Class must have all the parents and their generalizations selected,
-	 * or until some Substance Sortal be found.
+	 * Auto Select Elements : Hierarchies.
 	 * 
 	 * @param option
 	 * @return
@@ -704,10 +733,14 @@ public class OntoUMLParser {
 
 		for (EObject o : getElements()) 
 		{
-			if (o instanceof Class) {
+			if (o instanceof Class) 
+			{
 				if (option==SORTAL_ANCESTORS || option==ALL_ANCESTORS || option==COMPLETE_HIERARCHY)
+					
 					getAncestorsHierarchy((Classifier) o, objectsToAdd, option);
+				
 				if (option==ALL_DESCENDANTS || option==COMPLETE_HIERARCHY)
+					
 					getDescendantsHierarchy((Classifier) o, objectsToAdd);
 			}
 		}
@@ -719,7 +752,7 @@ public class OntoUMLParser {
 	}
 
 	/**
-	 * Private method to get all the ancestors of a Class. i.e. Parents and Generalizations.
+	 * Get all the descendants hierarchy of a Classifier. i.e. Children and Generalizations.
 	 * 
 	 * @param o
 	 * @param objectsToAdd
@@ -731,10 +764,10 @@ public class OntoUMLParser {
 		{
 			if(!isSelected(c) && !objectsToAdd.contains(c))
 			{
-				objectsToAdd.add(c);
-				for (Generalization g : c.getGeneralization()) {
-					if(g.getGeneral().equals(o))
-						objectsToAdd.add(g);
+				objectsToAdd.add(c);				
+				for (Generalization g : c.getGeneralization()) 
+				{
+					if(g.getGeneral().equals(o)) objectsToAdd.add(g);
 				}
 				getDescendantsHierarchy(c, objectsToAdd);
 			}
@@ -742,7 +775,7 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * Private method to get all the ancestors of a Class. i.e. Parents and Generalizations.
+	 *Get all the ancestors hierarchy of a Classifier. i.e. Parents and Generalizations.
 	 * 
 	 * @param o
 	 * @param objectsToAdd
@@ -757,15 +790,14 @@ public class OntoUMLParser {
 			if(!isSelected(g) && !objectsToAdd.contains(g))
 			{
 				objectsToAdd.add(g);
-				objectsToAdd.add(g.getGeneral());
-				
+				objectsToAdd.add(g.getGeneral());				
 				getAncestorsHierarchy(g.getGeneral(), objectsToAdd,option);
 			}
 		}
 	}	
 	
 	/**
-	 * Auto Select Elements :  explicit dependencies through parameters.
+	 * Auto Select Elements :  Explicit dependencies through parameters.
 	 * 
 	 * @param hierarchyOption
 	 * @param includeGeneralizationSet
@@ -775,18 +807,14 @@ public class OntoUMLParser {
 	{		
 		ArrayList<EObject> objectsAdded = new ArrayList<EObject>();
 		
-		objectsAdded.addAll(autoSelectMandatoryDependencies());
-						
-		objectsAdded.addAll(autoSelectHierarchy(hierarchyOption));
-		
-		objectsAdded.addAll(autoSelectGeneralizationSetFromGeneralization());
-		
+		objectsAdded.addAll(autoSelectMandatoryDependencies());		
+		objectsAdded.addAll(autoSelectPackagesDependencies());						
+		objectsAdded.addAll(autoSelectHierarchy(hierarchyOption));		
+		objectsAdded.addAll(autoSelectGeneralizationSetFromGeneralization());		
 		if (includeGeneralizationSet) objectsAdded.addAll(autoSelectGeneralizationSet());
 		
 		return objectsAdded;
 	}
-
-	
 	
 	
 	
