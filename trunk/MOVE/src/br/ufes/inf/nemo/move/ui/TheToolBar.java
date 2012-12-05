@@ -86,7 +86,7 @@ public class TheToolBar extends JToolBar {
        				frame.OpenAlloyModelWithAnalyzer(frame.getAlloyModel().getAlloyPath(),AlloyModel.alsOutDirectory);
        			}else{ 
        				frame.ParseOCL(false);       				
-       				OptionsDialog.open(frame.getOntoUMLOptionModel(),frame.getOCLOptionModel(),frame);	       			
+       				OptionsDialog.open(frame.getOntoUMLOptionModel(),frame.getOCLOptionModel(),frame);       				
        			}
        		}
        	});

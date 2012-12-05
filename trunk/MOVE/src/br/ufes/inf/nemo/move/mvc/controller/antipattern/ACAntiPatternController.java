@@ -66,7 +66,8 @@ public class ACAntiPatternController {
 	    		acModel.getACAntiPattern().setSelected(acView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
 
 	    		acView.getTheFrame().getAlloyModel().setAlloyModel(acView.getTheFrame().getOntoUMLModel(),acView.getTheFrame().getOntoUMLOptionModel());
-	    		
+	    		acView.getTheFrame().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    				
 	    		String content = FileUtil.readFile(acView.getTheFrame().getAlloyModel().getAlloyPath());	    		
 	    		String alsPath = AlloyModel.alsOutDirectory+acView.getTheFrame().getAlloyModel().getAlloyModelName()+"$AC"+acModel.getId()+".als";
 	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);

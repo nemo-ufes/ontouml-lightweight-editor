@@ -64,6 +64,7 @@ public class RBOSAntiPatternController {
 	    		rbosModel.getRBOSAntiPattern().setSelected(rbosView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
 	    		
 	    		rbosView.getTheFrame().getAlloyModel().setAlloyModel(rbosView.getTheFrame().getOntoUMLModel(),rbosView.getTheFrame().getOntoUMLOptionModel());
+	    		rbosView.getTheFrame().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
 	    		
 	    		String content = FileUtil.readFile(rbosView.getTheFrame().getAlloyModel().getAlloyPath());
 	    		String alsPath = AlloyModel.alsOutDirectory+rbosView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RBOS"+rbosModel.getId()+".als";	
