@@ -44,7 +44,7 @@ public class AntiPatternIdentifier {
 		String log = new String();
 		Copier copier = new Copier();
 		
-		Package model = parser.recreatePackageFromSelectedClasses(log, true, copier);
+		Package model = parser.createPackageFromSelections(log, true, copier);
 		
 		Collection<Tuple<Association, Association>> query_result;
 		ArrayList<RSAntiPattern> result = new ArrayList<>();
@@ -73,7 +73,7 @@ public class AntiPatternIdentifier {
 		String log = new String();
 		Copier copier = new Copier();
 		
-		Package model = parser.recreatePackageFromSelectedClasses(log, true, copier);
+		Package model = parser.createPackageFromSelections(log, true, copier);
 		
 		Collection<Association> query_result;
 		ArrayList<STRAntiPattern> result = new ArrayList<>();
@@ -99,7 +99,7 @@ public class AntiPatternIdentifier {
 		String log = new String();
 		Copier copier = new Copier();
 		
-		Package model = parser.recreatePackageFromSelectedClasses(log, true, copier);
+		Package model = parser.createPackageFromSelections(log, true, copier);
 		
 		Collection<Association> query_result;
 		ArrayList<RBOSAntiPattern> result = new ArrayList<>();
@@ -183,7 +183,7 @@ public class AntiPatternIdentifier {
 		String log = new String();
 		Copier copier = new Copier();
 		
-		Package model = parser.recreatePackageFromSelectedClasses(log, true, copier);
+		Package model = parser.createPackageFromSelections(log, true, copier);
 		
 		Collection<Relator> query_result;
 		ArrayList<RWORAntiPattern> result = new ArrayList<>();
@@ -208,7 +208,7 @@ public class AntiPatternIdentifier {
 		String log = new String();
 		Copier copier = new Copier();
 		
-		Package model = parser.recreatePackageFromSelectedClasses(log, true, copier);
+		Package model = parser.createPackageFromSelections(log, true, copier);
 		
 		Collection<Association> query_result;
 		ArrayList<IAAntiPattern> result = new ArrayList<>();
