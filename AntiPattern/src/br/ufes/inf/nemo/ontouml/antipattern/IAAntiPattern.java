@@ -314,7 +314,7 @@ public class IAAntiPattern extends Antipattern{
 		selection.add(target);
 				
 		parser.selectThisElements(selection,true);
-		parser.autoSelectDependencies(OntoUMLParser.ALL_DESCENDANTS, false);
+		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
 		
 	}
 
