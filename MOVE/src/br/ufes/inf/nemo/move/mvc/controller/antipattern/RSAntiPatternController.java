@@ -66,14 +66,14 @@ public class RSAntiPatternController {
 	    		{
 	    			predicates += "\n\n"+rsModel.getRSAntiPattern().generatePredicate(
 	    				rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser(),rsModel.getRSAntiPattern().REDEFINE
-	    			)+"\n\n";
+	    			);
 	    		}
 			
 	    		if(rsView.isSelectedSubType())				
 	    		{
 	    			predicates += "\n\n"+rsModel.getRSAntiPattern().generatePredicate(
 	    					rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser(), rsModel.getRSAntiPattern().SUBSET
-	    			)+"\n\n"; 
+	    			); 
 	    		}
 				
 	    		rsModel.getRSAntiPattern().setSelected(rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
@@ -81,10 +81,11 @@ public class RSAntiPatternController {
 	    		rsView.getTheFrame().TransformsOntoUMLIntoAlloy();
 	    		//iaView.getTheFrame().TransformsOCLIntoAlloy();
 	    		
+	    		String content = FileUtil.readFile(rsView.getTheFrame().getAlloyModel().getAlloyPath());
 	    		String alsPath = AlloyModel.alsOutDirectory+rsView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RS"+rsModel.getId()+".als";	
-	    		FileUtil.writeToFile(predicates, alsPath);
+	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		rsView.getTheFrame().OpenAlloyModelWithAnalyzer();	
+	    		rsView.getTheFrame().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	
 	    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(rsView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

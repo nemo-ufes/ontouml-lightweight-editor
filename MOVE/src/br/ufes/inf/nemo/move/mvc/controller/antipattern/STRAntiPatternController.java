@@ -93,12 +93,13 @@ public class STRAntiPatternController {
 	    		strModel.getSTRAntiPattern().setSelected(strView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
 	    		
 	    		strView.getTheFrame().TransformsOntoUMLIntoAlloy();
-	    		//iaView.getTheFrame().TransformsOCLIntoAlloy();
+	    		//strView.getTheFrame().TransformsOCLIntoAlloy();
 	    		
+	    		String content = FileUtil.readFile(strView.getTheFrame().getAlloyModel().getAlloyPath());
 	    		String alsPath = AlloyModel.alsOutDirectory+strView.getTheFrame().getAlloyModel().getAlloyModelName()+"$STR"+strModel.getId()+".als";	
-	    		FileUtil.writeToFile(predicates, alsPath);
+	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		strView.getTheFrame().OpenAlloyModelWithAnalyzer();	
+	    		strView.getTheFrame().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	
     		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(strView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

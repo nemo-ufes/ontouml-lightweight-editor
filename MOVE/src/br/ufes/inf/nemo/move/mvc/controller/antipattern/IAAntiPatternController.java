@@ -67,10 +67,11 @@ public class IAAntiPatternController {
 	    		iaView.getTheFrame().TransformsOntoUMLIntoAlloy();
 	    		//iaView.getTheFrame().TransformsOCLIntoAlloy();
 	    		
+	    		String content = FileUtil.readFile(iaView.getTheFrame().getAlloyModel().getAlloyPath());
 	    		String alsPath = AlloyModel.alsOutDirectory+iaView.getTheFrame().getAlloyModel().getAlloyModelName()+"$IA"+iaModel.getId()+".als";	
-	    		FileUtil.writeToFile(predicates, alsPath);
+	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		iaView.getTheFrame().OpenAlloyModelWithAnalyzer();	    		
+	    		iaView.getTheFrame().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	    		
 	    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(iaView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

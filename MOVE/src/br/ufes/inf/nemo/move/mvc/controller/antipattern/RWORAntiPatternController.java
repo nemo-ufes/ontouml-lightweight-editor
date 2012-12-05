@@ -90,12 +90,13 @@ public class RWORAntiPatternController {
 	    		rworModel.getRWORAntiPattern().setSelected(rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
 	    		
 	    		rworView.getTheFrame().TransformsOntoUMLIntoAlloy();
-	    		//iaView.getTheFrame().TransformsOCLIntoAlloy();
+	    		//rworView.getTheFrame().TransformsOCLIntoAlloy();
 	    		
+	    		String content = FileUtil.readFile(rworView.getTheFrame().getAlloyModel().getAlloyPath());
 	    		String alsPath = AlloyModel.alsOutDirectory+rworView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RWOR"+rworModel.getId()+".als";	
-	    		FileUtil.writeToFile(predicates, alsPath);
+	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		rworView.getTheFrame().OpenAlloyModelWithAnalyzer();	
+	    		rworView.getTheFrame().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	
     		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(rworView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

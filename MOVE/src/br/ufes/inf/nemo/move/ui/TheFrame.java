@@ -435,16 +435,16 @@ public class TheFrame extends JFrame {
 	/** 
 	 * Open Alloy Model with Analyzer.
 	 */
-	public void OpenAlloyModelWithAnalyzer () 
+	public void OpenAlloyModelWithAnalyzer (String alsPath, String alsOutDirectory) 
 	{		
-		if (alloymodel.getAlloyPath().isEmpty() || alloymodel.getAlloyPath()==null)
+		if (alsPath.isEmpty() || alsPath==null)
 		{
 			try {
 				
 				// open standalone...
-				AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", AlloyModel.alsOutDirectory);				
+				AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", alsOutDirectory);				
 				String[] argsAnalyzer = { "","" };
-				argsAnalyzer[0] = alloymodel.getAlloyPath();				
+				argsAnalyzer[0] = alsPath;
 				SimpleGUI.main(argsAnalyzer);
 				
 			} catch (Exception e) {			
@@ -458,10 +458,10 @@ public class TheFrame extends JFrame {
 				// open custom...		
 				if (ontoumlOptModel.getOptions().openAnalyzer)
 				{
-					AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", AlloyModel.alsOutDirectory);					
+					AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", alsOutDirectory);					
 					String[] argsAnalyzer = { "","" };
-					argsAnalyzer[0] = alloymodel.getAlloyPath();
-					argsAnalyzer[1] = AlloyModel.alsOutDirectory + "standart_theme.thm"	;					
+					argsAnalyzer[0] = alsPath;
+					argsAnalyzer[1] = alsOutDirectory + "standart_theme.thm"	;					
 					SimpleGUICustom.main(argsAnalyzer);
 				}
 				
