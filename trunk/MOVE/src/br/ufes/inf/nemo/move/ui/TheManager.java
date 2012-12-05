@@ -186,7 +186,7 @@ public class TheManager {
 		{
 			msg += ""+ontoumlmodel.getOntoUMLParser().getStringRepresentation(o)+" added.\n";
 		}
-		msg += "\nSelection Completed!";		
+		msg += "Selection Completed!";		
 		selected.removeAll(added);
 		selected.addAll(added);
 		OntoUMLCheckBoxTree.checkElements(selected, true, ontoumlview.getModelTree());		
