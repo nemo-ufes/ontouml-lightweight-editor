@@ -103,6 +103,14 @@ public class OntoUMLParser {
 	}	
 
 	/**
+	 * Get Root Model Package.
+	 */
+	public RefOntoUML.Package getModel()
+	{
+		return model;
+	}
+	
+	/**
 	 * This private method initialize the HashMap used for keeping the mappings between
 	 * ontoUML model elements.
 	 * 
