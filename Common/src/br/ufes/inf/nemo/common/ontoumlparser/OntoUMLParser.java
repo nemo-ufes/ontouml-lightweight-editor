@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -302,6 +304,22 @@ public class OntoUMLParser {
 			if(obj instanceof Property) list.add((Property)obj);
 		}		
 		return list;
+	}
+	
+	/**
+	 * This method returns all elements from the input list that are selected in the parser.
+	 * 
+	 * @param elements: list of elements of any type.
+	 */
+	public <T> Set<T> retainSelected(List<T> elements){
+		Set<T> result = new HashSet<T>();
+		
+		for (T elem : elements) {
+			if(elem instanceof EObject && isSelected((EObject) elem))
+				result.add(elem);
+		}
+		
+		return result;
 	}
 			
 	/**

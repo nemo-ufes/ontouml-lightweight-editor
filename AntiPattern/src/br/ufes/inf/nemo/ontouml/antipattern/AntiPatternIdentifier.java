@@ -192,7 +192,7 @@ public class AntiPatternIdentifier {
 		
 		for (Relator r : query_result) {
 			Relator original = (Relator) AntiPatternIdentifier.getOriginal(r, copier);
-			result.add(new RWORAntiPattern(original));
+			result.add(new RWORAntiPattern(original, parser));
 		}
 		
 		return result;

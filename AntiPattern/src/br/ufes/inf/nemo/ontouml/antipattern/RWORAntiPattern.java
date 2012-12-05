@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
@@ -20,8 +21,8 @@ public class RWORAntiPattern extends Antipattern{
 	private Classifier supertype;
 	private HashMap<Mediation, Classifier> mediations;
 	
-	public RWORAntiPattern(Relator relator) throws Exception {
-		this.setRelator(relator);
+	public RWORAntiPattern(Relator relator, OntoUMLParser parser) throws Exception {
+		this.setRelator(relator, parser);
 	}
 	
 	public Mediation getKeyByValue(Classifier value) 
@@ -231,7 +232,7 @@ public class RWORAntiPattern extends Antipattern{
 		return relator;
 	}
 	
-	public void setRelator(Relator relator) throws Exception {
+	public void setRelator(Relator relator, OntoUMLParser parser) throws Exception {
 		/*ArrayList which will contain all the mediations of the relator and its supertypes*/
 		ArrayList<Mediation> mediations = new ArrayList<Mediation>();
 		
@@ -253,13 +254,13 @@ public class RWORAntiPattern extends Antipattern{
 		//add the input relator to the list
 		allRelators.add(relator);
 		//add all supertypes to the list
-		allRelators.addAll(relator.allParents());
+		allRelators.addAll(parser.getAllParents(relator));
 			
 		/*TODO considers that all mediations are accordingly to the metamodel wrt its source and target. The mediation operation of the metamodel returns the second member end only.*/
 		//creates the list that contains all the mediations of the input relator and its supertypes.
 		for (Classifier rel : allRelators) {
 			aux = (Relator)rel;
-			mediations.addAll(aux.mediations());
+			mediations.addAll(parser.retainSelected(aux.mediations()));
 		}
 		
 		//if there are not at least two mediations, the anti-pattern is not characterized
@@ -270,13 +271,19 @@ public class RWORAntiPattern extends Antipattern{
 		
 		//Adds all supertypes to the ArrayList
 		for (Mediation med : mediations)
-			mediatedTypesAllParents.addAll(med.mediated().allParents());
+			mediatedTypesAllParents.addAll(parser.retainSelected(med.mediated().allParents()));
 		
 		for (Mediation med : mediations) {
 			this.mediations.put(med, med.mediated());
 			
-			if(!ArrayListOperations.intersection(mediatedTypesAllParents, med.mediated().allParents()).isEmpty())
-				mediatedTypesAllParents.retainAll(med.mediated().allParents());
+			ArrayList<Classifier> aux2 = new ArrayList<Classifier>();
+			aux2.addAll(parser.retainSelected(med.mediated().allParents()));
+			
+			if(!ArrayListOperations.intersection(mediatedTypesAllParents, aux2).isEmpty()){
+				aux2 = new ArrayList<Classifier>();
+				aux2.addAll(parser.retainSelected(med.mediated().allParents()));
+				mediatedTypesAllParents.retainAll(aux2);
+			}
 		}
 		
 		if(mediatedTypesAllParents.isEmpty())
