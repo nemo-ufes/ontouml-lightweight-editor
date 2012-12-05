@@ -216,7 +216,7 @@ public class TheManager {
 			
 			UpdateSelection(OntoUMLParser.NO_HIERARCHY); 			
 			String umlPath = ontoumlmodel.getOntoUMLPath().replace(".refontouml",".uml");
-			umlmodel.setUMLModel(umlPath,ontoumlmodel.getOntoUMLModelInstance());			
+			umlmodel.setUMLModel(umlPath,ontoumlmodel.getOntoUMLParser());			
 			frame.getConsole().write(umlmodel.getDetails());
 			
 		}catch (Exception e) {			

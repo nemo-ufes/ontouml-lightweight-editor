@@ -122,7 +122,7 @@ public class OCLView extends JPanel {
 	 */
 	public OCLParser parseConstraints() throws ParserException,IOException
 	{
-		return new OCLParser(getConstraints(),frame.getManager().getOntoUMLModel().getOntoUMLModelInstance(),frame.getManager().getUMLModel().getUMLPath());
+		return new OCLParser(getConstraints(),frame.getManager().getOntoUMLModel().getOntoUMLParser(),frame.getManager().getUMLModel().getUMLPath());
 	}
 	
 	/**

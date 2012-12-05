@@ -14,6 +14,7 @@ import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.uml.UMLEnvironmentFactory;
 import org.eclipse.uml2.uml.Constraint;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 
 /**
@@ -71,12 +72,12 @@ public class OCLParser {
      * @param umlPath
      */
 
-    public OCLParser (String oclConstraints, RefOntoUML.Package refmodel, String umlPath) throws ParserException
+    public OCLParser (String oclConstraints, OntoUMLParser refparser, String umlPath) throws ParserException
     {	
-    	if (refmodel==null) return;
+    	if (refparser==null) return;
     	if (umlPath==null) return;
     	
-    	umlResource = OntoUML2UML.Transformation(refmodel,umlPath);		
+    	umlResource = OntoUML2UML.Transformation(refparser,umlPath);		
     	umlHashMap = OntoUML2UML.transformer.mydealer.mymap;
     	logDetails = OntoUML2UML.logDetails;
     	
@@ -109,7 +110,7 @@ public class OCLParser {
      */
     public OCLParser (String oclAbsolutePath, String refAbsolutePath) throws IOException,ParserException
 	{ 			
-		umlResource = OntoUML2UML.Transformation(refAbsolutePath);							
+		umlResource = OntoUML2UML.Transformation(new OntoUMLParser(refAbsolutePath),refAbsolutePath.replace(".refontouml" , ".uml"));							
 				
 		umlHashMap = OntoUML2UML.transformer.mydealer.mymap;
 		
