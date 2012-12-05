@@ -322,24 +322,7 @@ public class OntoUMLParser {
 		}		
 		return list;
 	}
-	
-	/**
-	 * This method gets Top Level Classes of the model.
-	 * 
-	 * @return
-	 */
-	public Set<Class> getTopLevelInstances()
-	{
-		Set<Class> list = new HashSet<Class>(); 		
-		for (EObject obj : getElements())
-		{
-			if ((obj instanceof Class) && ((Class)obj).getGeneralization().size()==0 )
-				
-				list.add((Class) obj);
-		}		
-		return list;
-	}	
-		
+			
 	/**
 	 * This method gets rigid Classes of the model.
 	 * 
@@ -476,6 +459,7 @@ public class OntoUMLParser {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public <T> Set<T> getTopLevelInstances(java.lang.Class<T> type){
 		Set<T> result = new HashSet<T>();
 		

@@ -127,18 +127,45 @@ public class Transformer extends BaseTransformer {
 	@SuppressWarnings("unchecked")
 	public void finalAdditions()
 	{		
-		ArrayList<Classifier> topLevelElementsList = new ArrayList<Classifier>();
-		topLevelElementsList.addAll(ontoparser.getTopLevelClasses());
+		// top level object classes rule
+		ArrayList<Classifier> topObjectClassList = new ArrayList<Classifier>();
+		topObjectClassList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.ObjectClass.class));
 		
-		if(topLevelElementsList.size() > 1)
+		if(topObjectClassList.size() > 1)
 		{
-			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topLevelElementsList);			
+			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topObjectClassList);			
 			for (DisjointExpression disj : rulesList) 
 			{ 
 				world.getBlock().getExpression().add(disj); 
 			}
 		}
 		
+		// top level moment classes rule
+		ArrayList<Classifier> topMomentClassList = new ArrayList<Classifier>();
+		topMomentClassList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.ObjectClass.class));
+		
+		if(topObjectClassList.size() > 1)
+		{
+			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topMomentClassList);			
+			for (DisjointExpression disj : rulesList) 
+			{ 
+				world.getBlock().getExpression().add(disj); 
+			}
+		}
+		
+		// top level dataType rule
+		ArrayList<Classifier> topDataTypeList = new ArrayList<Classifier>();
+		topDataTypeList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.ObjectClass.class));
+		
+		if(topObjectClassList.size() > 1)
+		{
+			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topDataTypeList);			
+			for (DisjointExpression disj : rulesList) 
+			{ 
+				world.getBlock().getExpression().add(disj); 
+			}
+		}
+				
 		if(options.identityPrinciple && subsortalDisjNamesList.size() > 0) 
 			
 			// exists:>Object in subsortalNamesList[0] + subsortalNamesList[1] + ...
