@@ -810,131 +810,49 @@ public class OntoUMLParser {
 		objectsAdded.addAll(autoSelectMandatoryDependencies());		
 		objectsAdded.addAll(autoSelectPackagesDependencies());						
 		objectsAdded.addAll(autoSelectHierarchy(hierarchyOption));		
-		objectsAdded.addAll(autoSelectGeneralizationSetFromGeneralization());		
+		objectsAdded.addAll(autoSelectGeneralizationSetFromGeneralization());
+		
 		if (includeGeneralizationSet) objectsAdded.addAll(autoSelectGeneralizationSet());
 		
 		return objectsAdded;
 	}
-	
-	
-	
-	/*=============================================================================*/
-	
-	
-	
-	
-	public ArrayList<EObject> getSelectedResolvingLostReferences (String log, boolean includeHierarchy)
-	{
-		ArrayList<EObject> class_add_list = new ArrayList<>();		
-		ArrayList<EObject> selected = new ArrayList<EObject>();
-		
-		selected.addAll(getElements());		
-		
-		for (EObject o : selected)
-		{
-			//guarantees that there will be no null pointer in the generalization, 
-			//by including the general and the specific to the list of selected elementsz
-			
-			if(o instanceof Generalization)
-			{
-				Generalization g = (Generalization) o;
-				Classifier general, specific;
-				
-				general = g.getGeneral();
-				if (!selected.contains(general) && !class_add_list.contains(general) ) 
-				{
-					class_add_list.add(general);
-					log += general.getName()+" added\n.";
-				}
-				
-				specific = g.getSpecific();
-				if (!selected.contains(specific) && !class_add_list.contains(specific)) 
-				{
-					class_add_list.add(specific);
-					log += specific.getName()+" added.\n";
-				}
-			}
-			
-			//guarantee that the types related in a association are included in the new model
-			
-			if(o instanceof Association) 
-			{
-				Association a = (Association)o;
-				Type source, target;
-				
-				source = a.getMemberEnd().get(0).getType();
-				if(!selected.contains(source) && !class_add_list.contains(source))
-				{
-					class_add_list.add(source);
-					log += source.getName()+" added.\n";
-				}
-				
-				target = a.getMemberEnd().get(1).getType();
-				if(!selected.contains(target) && !class_add_list.contains(target))
-				{
-					class_add_list.add(target);
-					log += target.getName()+" added.\n";
-				}								
-			}
-		}
-		
-		selected.addAll(class_add_list);
-		class_add_list = new ArrayList<>();
-		
-		//if the option to include hierarchy for every type class is selected.
-		if (includeHierarchy)
-		{
-			for (EObject o : selected) 
-			{
-				if (o instanceof Class)
-				{
-					for (Classifier c : ((Classifier)o).allParents()) 
-					{
-						if(!selected.contains(c) && !class_add_list.contains(c))
-						{
-							class_add_list.add(c);
-							log += c.getName()+" added.\n";
-						}
-					}
-				}
-			}
-			selected.addAll(class_add_list);
-		}
-		return selected;
-	}	
-	
-	public Package recreatePackageFromSelectedClasses (String log, boolean includeHierarchy, Copier copier)
+
+	/**
+	 * Create a new Package Model from the Selections.
+	 * 
+	 * @param log
+	 * @param includeHierarchy
+	 * @param copier
+	 * @return
+	 */
+	public Package createPackageFromSelections (String log, boolean includeHierarchy, Copier copier)
 	{		
 		Package pack_copy;
-		ArrayList<EObject> selected_copy = new ArrayList<EObject>();
-		
-		ArrayList<EObject> selected = getSelectedResolvingLostReferences(log,includeHierarchy);
-		
+		ArrayList<EObject> selected_copy = new ArrayList<EObject>();				
 		pack_copy = (Package) copier.copy(model);
-		copier.copyReferences();
-		
-		for (EObject element : selected) 
+		copier.copyReferences();		
+		for (EObject element : getElements()) 
 		{
 			selected_copy.add(copier.get(element));
-		}
-		
-		deleteElement(pack_copy, selected_copy);
-		
+		}		
+		deleteElement(pack_copy, selected_copy);		
 		return pack_copy;
 	}
 	
+	/**
+	 * Delete Elements of the Package that aren't selected.
+	 * 
+	 * @param pack
+	 * @param selected
+	 */
 	private void deleteElement (Package pack, ArrayList<EObject> selected)
 	{
-		ArrayList<EObject> delete_list = new ArrayList<EObject>();
-		
+		ArrayList<EObject> delete_list = new ArrayList<EObject>();		
 		for (PackageableElement eo : pack.getPackagedElement()) 
 		{
-			if(!selected.contains(eo)) delete_list.add(eo);
-			
-			else {
-				
-				if (eo instanceof Package) deleteElement((Package) eo, selected);
-				
+			if(!selected.contains(eo)) delete_list.add(eo);			
+			else {				
+				if (eo instanceof Package) deleteElement((Package) eo, selected);				
 				else {
 					for (EObject c : eo.eContents()) 
 					{
@@ -942,8 +860,7 @@ public class OntoUMLParser {
 					}
 				}					
 			}		
-		}
-		
+		}		
 		for(int i = 0; i<delete_list.size(); i++) EcoreUtil.remove(delete_list.get(i));
 	}
 	

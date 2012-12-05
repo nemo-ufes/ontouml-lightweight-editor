@@ -73,11 +73,11 @@ public class OntoUMLTreeBar extends JPanel {
 		
 		popupCompleteSelect = new JPopupMenu();
 		
-		menuItemDefault = new JMenuItem("Complete selection with mandatory dependencies");
+		menuItemDefault = new JMenuItem("Complete selection with dependencies");
 		menuItemAllAncestors = new JMenuItem("Complete selection with all ancestors");
-		menuItemSortalAncestors = new JMenuItem("Complete selection with ancestors until a SubstanceSortal");
 		menuItemAllDescendants = new JMenuItem("Complete selection with all descendants");
 		menuItemCompletehierarchy = new JMenuItem("Complete selection with all ancestors and descendants");
+		menuItemSortalAncestors = new JMenuItem("Complete selection with ancestors until a SubstanceSortal");		
 		
 		popupCompleteSelect.add(menuItemDefault);
 		popupCompleteSelect.add(menuItemAllAncestors);
