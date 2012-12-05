@@ -51,41 +51,41 @@ public class RSAntiPatternController {
 	    		if(rsView.isSelectedDisjoint()) 
 	    		{
 	    			predicates += "\n\n"+rsModel.getRSAntiPattern().generatePredicate(
-	    				rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser(),rsModel.getRSAntiPattern().DISJOINT
+	    				rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(),rsModel.getRSAntiPattern().DISJOINT
 	    			);
 	    		}
 			
 	    		if(rsView.isSelectedNonSubsetting())				
 	    		{
 	    			predicates += "\n\n"+rsModel.getRSAntiPattern().generatePredicate(
-	    					rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser(), rsModel.getRSAntiPattern().NONSUBSET
+	    					rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(), rsModel.getRSAntiPattern().NONSUBSET
 	    			); 
 	    		}
 	    		
 	    		if(rsView.isSelectedRedefinition()) 
 	    		{
 	    			predicates += "\n\n"+rsModel.getRSAntiPattern().generatePredicate(
-	    				rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser(),rsModel.getRSAntiPattern().REDEFINE
+	    				rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(),rsModel.getRSAntiPattern().REDEFINE
 	    			);
 	    		}
 			
 	    		if(rsView.isSelectedSubType())				
 	    		{
 	    			predicates += "\n\n"+rsModel.getRSAntiPattern().generatePredicate(
-	    					rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser(), rsModel.getRSAntiPattern().SUBSET
+	    					rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(), rsModel.getRSAntiPattern().SUBSET
 	    			); 
 	    		}
 				
-	    		rsModel.getRSAntiPattern().setSelected(rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
+	    		rsModel.getRSAntiPattern().setSelected(rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
 	    		
-	    		rsView.getTheFrame().getAlloyModel().setAlloyModel(rsView.getTheFrame().getOntoUMLModel(),rsView.getTheFrame().getOntoUMLOptionModel());
-	    		rsView.getTheFrame().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		rsView.getTheFrame().getManager().getAlloyModel().setAlloyModel(rsView.getTheFrame().getManager().getOntoUMLModel(),rsView.getTheFrame().getManager().getOntoUMLOptionModel());
+	    		rsView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
 	    		
-	    		String content = FileUtil.readFile(rsView.getTheFrame().getAlloyModel().getAlloyPath());
-	    		String alsPath = AlloyModel.alsOutDirectory+rsView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RS"+rsModel.getId()+".als";	
+	    		String content = FileUtil.readFile(rsView.getTheFrame().getManager().getAlloyModel().getAlloyPath());
+	    		String alsPath = AlloyModel.alsOutDirectory+rsView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$RS"+rsModel.getId()+".als";	
 	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		rsView.getTheFrame().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	
+	    		rsView.getTheFrame().getManager().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	
 	    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(rsView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
@@ -111,28 +111,28 @@ public class RSAntiPatternController {
 	    		{
 	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
 	    				rsModel.getRSAntiPattern().DISJOINT,
-	    				rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+	    				rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
 	    			)+"\n\n";
 	    		}			
 	    		if(rsView.isSelectedNonSubsetting())				
 	    		{
 	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
 	    				rsModel.getRSAntiPattern().NONSUBSET,
-	    				rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+	    				rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
 	    			)+"\n\n"; 
 	    		}	    		
 	    		if(rsView.isSelectedRedefinition()) 
 	    		{
 	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
 	    				rsModel.getRSAntiPattern().REDEFINE,
-	    				rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+	    				rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
 	    			)+"\n\n";
 	    		}			
 	    		if(rsView.isSelectedSubType())				
 	    		{
 	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
 	    				rsModel.getRSAntiPattern().SUBSET,
-	    				rsView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+	    				rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
 	    			)+"\n\n"; 
 	    		}    		
 	    		rsView.getTheFrame().getConsole().write(constraints);

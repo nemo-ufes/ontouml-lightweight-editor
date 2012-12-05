@@ -171,7 +171,7 @@ public class OCLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-    		oclview.getTheFrame().ParseOCL(true);
+    		oclview.getTheFrame().getManager().ParseOCL(true);
 	    }
 	 }	 
 }

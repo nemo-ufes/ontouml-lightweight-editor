@@ -50,7 +50,7 @@ public class ACAntiPatternController {
 	    		if(acView.isSelectedOpenCycle()) 
 	    		{
 	    			predicates += "\n\n"+acModel.getACAntiPattern().generatePredicate(
-	    				acView.getTheFrame().getOntoUMLModel().getOntoUMLParser(),
+	    				acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(),
 	    				acView.getScope(), acModel.getACAntiPattern().OPEN
 	    			);
 	    		}
@@ -58,21 +58,21 @@ public class ACAntiPatternController {
 	    		if(acView.isSelectedClosedCycle())				
 	    		{
 	    			predicates += "\n\n"+acModel.getACAntiPattern().generatePredicate(
-	    				acView.getTheFrame().getOntoUMLModel().getOntoUMLParser(), 
+	    				acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(), 
 	    				acView.getScope(), acModel.getACAntiPattern().CLOSED
 	    			); 
 	    		}
 				
-	    		acModel.getACAntiPattern().setSelected(acView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
+	    		acModel.getACAntiPattern().setSelected(acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
 
-	    		acView.getTheFrame().getAlloyModel().setAlloyModel(acView.getTheFrame().getOntoUMLModel(),acView.getTheFrame().getOntoUMLOptionModel());
-	    		acView.getTheFrame().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		acView.getTheFrame().getManager().getAlloyModel().setAlloyModel(acView.getTheFrame().getManager().getOntoUMLModel(),acView.getTheFrame().getManager().getOntoUMLOptionModel());
+	    		acView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
 	    				
-	    		String content = FileUtil.readFile(acView.getTheFrame().getAlloyModel().getAlloyPath());	    		
-	    		String alsPath = AlloyModel.alsOutDirectory+acView.getTheFrame().getAlloyModel().getAlloyModelName()+"$AC"+acModel.getId()+".als";
+	    		String content = FileUtil.readFile(acView.getTheFrame().getManager().getAlloyModel().getAlloyPath());	    		
+	    		String alsPath = AlloyModel.alsOutDirectory+acView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$AC"+acModel.getId()+".als";
 	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 	    		
-	    		acView.getTheFrame().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);
+	    		acView.getTheFrame().getManager().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);
 	    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(acView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
@@ -97,8 +97,8 @@ public class ACAntiPatternController {
 			String openCycleConstraint = new String();
 			String closedCycleConstraint = new String();
 					
-			if(openCycle) openCycleConstraint = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().OPEN, acView.getTheFrame().getOntoUMLModel().getOntoUMLParser());		
-			if(closedCycle) closedCycleConstraint = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().CLOSED, acView.getTheFrame().getOntoUMLModel().getOntoUMLParser());		
+			if(openCycle) openCycleConstraint = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().OPEN, acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());		
+			if(closedCycle) closedCycleConstraint = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().CLOSED, acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());		
 					
 			acView.getTheFrame().getConsole().write(openCycleConstraint+"\n\n"+closedCycleConstraint);
 			acView.getTheFrame().ShowConsole();

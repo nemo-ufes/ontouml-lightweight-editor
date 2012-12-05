@@ -11,6 +11,8 @@ import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
 import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
+import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
+import br.ufes.inf.nemo.move.ui.dialog.OptionsDialog;
 import br.ufes.inf.nemo.move.util.ToolbarButton;
 
 /**
@@ -81,12 +83,12 @@ public class TheToolBar extends JToolBar {
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			if(frame.getAlloyModel().getAlloyPath().isEmpty() || frame.getAlloyModel().getAlloyPath()==null)
+       			if(frame.getManager().getAlloyModel().getAlloyPath().isEmpty() || frame.getManager().getAlloyModel().getAlloyPath()==null)
        			{	       			
-       				frame.OpenAlloyModelWithAnalyzer(frame.getAlloyModel().getAlloyPath(),AlloyModel.alsOutDirectory);
+       				frame.getManager().OpenAlloyModelWithAnalyzer(frame.getManager().getAlloyModel().getAlloyPath(),AlloyModel.alsOutDirectory);
        			}else{ 
-       				frame.ParseOCL(false);       				
-       				OptionsDialog.open(frame.getOntoUMLOptionModel(),frame.getOCLOptionModel(),frame);       				
+       				frame.getManager().ParseOCL(false);       				
+       				OptionsDialog.open(frame.getManager().getOntoUMLOptionModel(),frame.getManager().getOCLOptionModel(),frame);       				
        			}
        		}
        	});

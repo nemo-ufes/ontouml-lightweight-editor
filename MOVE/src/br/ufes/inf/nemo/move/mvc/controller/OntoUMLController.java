@@ -66,11 +66,11 @@ public class OntoUMLController {
 	    	ontoumlview.validate();
 	    	ontoumlview.repaint();
 	    	
-	    	ontoumlview.getTheFrame().getAntiPatternListView().Clear();
+	    	ontoumlview.getTheFrame().getManager().getAntiPatternListView().Clear();
 	    	
-	    	ontoumlview.getTheFrame().getUMLModel().setUMLModel(path.replace(".refontouml",".uml"));
+	    	ontoumlview.getTheFrame().getManager().getUMLModel().setUMLModel(path.replace(".refontouml",".uml"));
 	    	
-	    	ontoumlview.getTheFrame().getAlloyModel().setAlloyModel(path.replace(".refontouml",".als"));
+	    	ontoumlview.getTheFrame().getManager().getAlloyModel().setAlloyModel(path.replace(".refontouml",".als"));
 	    		    		    					
 	    	} catch (IOException exception) {				
 	    		String msg = "An error ocurred while loading the model.\n"+exception.getMessage();
@@ -120,7 +120,7 @@ public class OntoUMLController {
 	    {
 	    	if (ontoumlview.getModelTree()==null) return;
 	    	
-	    	String msg = ontoumlview.getTheFrame().UpdateSelection(OntoUMLParser.ALL_ANCESTORS);
+	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.ALL_ANCESTORS);
    				    	
     		JOptionPane.showMessageDialog(
     			ontoumlview.getTheFrame(),msg,"Complete Selections - All Ancestors",JOptionPane.INFORMATION_MESSAGE,
@@ -140,7 +140,7 @@ public class OntoUMLController {
 	    {
 	    	if (ontoumlview.getModelTree()==null) return;
 	    	
-	    	String msg = ontoumlview.getTheFrame().UpdateSelection(OntoUMLParser.ALL_DESCENDANTS);
+	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.ALL_DESCENDANTS);
    				    	
     		JOptionPane.showMessageDialog(
     			ontoumlview.getTheFrame(),msg,"Complete Selections - All Descendants",JOptionPane.INFORMATION_MESSAGE,
@@ -160,7 +160,7 @@ public class OntoUMLController {
 	    {
 	    	if (ontoumlview.getModelTree()==null) return;
 	    	
-	    	String msg = ontoumlview.getTheFrame().UpdateSelection(OntoUMLParser.NO_HIERARCHY);
+	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.NO_HIERARCHY);
    				    	
     		JOptionPane.showMessageDialog(
     			ontoumlview.getTheFrame(),msg,"Complete Selections - Mandatory Dependencies",JOptionPane.INFORMATION_MESSAGE,
@@ -180,7 +180,7 @@ public class OntoUMLController {
 	    {
 	    	if (ontoumlview.getModelTree()==null) return;
 	    	
-	    	String msg = ontoumlview.getTheFrame().UpdateSelection(OntoUMLParser.SORTAL_ANCESTORS);
+	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.SORTAL_ANCESTORS);
    				    	
     		JOptionPane.showMessageDialog(
     			ontoumlview.getTheFrame(),msg,"Complete Selections - Ancestors until a Substance Sortal",JOptionPane.INFORMATION_MESSAGE,
@@ -200,7 +200,7 @@ public class OntoUMLController {
 	    {
 	    	if (ontoumlview.getModelTree()==null) return;
 	    	
-	    	String msg = ontoumlview.getTheFrame().UpdateSelection(OntoUMLParser.COMPLETE_HIERARCHY);
+	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.COMPLETE_HIERARCHY);
    				    	
     		JOptionPane.showMessageDialog(
     			ontoumlview.getTheFrame(),msg,"Complete Selections - All Ancestors and Descendants",JOptionPane.INFORMATION_MESSAGE,

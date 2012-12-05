@@ -65,7 +65,7 @@ public class RWORAntiPatternController {
 	    		if(rworView.isSelectedExclusive()) 
 	    		{
 	    			predicates += "\n\n"+rworModel.getRWORAntiPattern().generateExclusivePredicate(
-	    				rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser(),
+	    				rworView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(),
 	    				rworView.getScope()
 	    			);
 	    		}
@@ -73,7 +73,7 @@ public class RWORAntiPatternController {
 	    		if(rworView.isSelectedOverlapping())				
 	    		{
 	    			predicates += "\n\n"+rworModel.getRWORAntiPattern().generateOverlappingPredicate(
-	    				rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser(), 
+	    				rworView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(), 
 	    				rworView.getScope()
 	    			); 
 	    		}
@@ -82,21 +82,21 @@ public class RWORAntiPatternController {
 	    		{
 	    			predicates += "\n\n"+rworModel.getRWORAntiPattern().generateMultipleExclusivePredicate(
 	    				rworView.getTableView().getMediationsMatrix(),
-	    				rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser(), 
+	    				rworView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(), 
 	    				rworView.getScope()
 	    			); 
 	    		}
 							
-	    		rworModel.getRWORAntiPattern().setSelected(rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser());
+	    		rworModel.getRWORAntiPattern().setSelected(rworView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
 	    		
-	    		rworView.getTheFrame().getAlloyModel().setAlloyModel(rworView.getTheFrame().getOntoUMLModel(),rworView.getTheFrame().getOntoUMLOptionModel());
-	    		rworView.getTheFrame().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		rworView.getTheFrame().getManager().getAlloyModel().setAlloyModel(rworView.getTheFrame().getManager().getOntoUMLModel(),rworView.getTheFrame().getManager().getOntoUMLOptionModel());
+	    		rworView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
 	    		
-	    		String content = FileUtil.readFile(rworView.getTheFrame().getAlloyModel().getAlloyPath());
-	    		String alsPath = AlloyModel.alsOutDirectory+rworView.getTheFrame().getAlloyModel().getAlloyModelName()+"$RWOR"+rworModel.getId()+".als";	
+	    		String content = FileUtil.readFile(rworView.getTheFrame().getManager().getAlloyModel().getAlloyPath());
+	    		String alsPath = AlloyModel.alsOutDirectory+rworView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$RWOR"+rworModel.getId()+".als";	
 	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		rworView.getTheFrame().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	
+	    		rworView.getTheFrame().getManager().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	
     		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(rworView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
@@ -119,7 +119,7 @@ public class RWORAntiPatternController {
     		{
     			constraints += rworModel.getRWORAntiPattern().generateExclusiveOcl(
     				rworView.getTableView().getRolesArrayList(),
-    				rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+    				rworView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
     			)+"\n\n";
     		}		
     		if(rworView.isSelectedOverlapping())				
@@ -133,7 +133,7 @@ public class RWORAntiPatternController {
     			{
     				constraints += "\n\n"+rworModel.getRWORAntiPattern().generateExclusiveOcl(
     						rworView.getTableView().getRolesMatrix().get(i),
-    	    				rworView.getTheFrame().getOntoUMLModel().getOntoUMLParser()
+    	    				rworView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
     				)+"\n\n";
     			}
     			
