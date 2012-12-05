@@ -465,8 +465,12 @@ public class OntoUMLParser {
 		
 		for (EObject o : getElements()) {
 			if(isSelected(o) && type.isInstance(o)){
-				if(o instanceof Classifier && ((Classifier)o).getGeneralization().size()==0)
-					result.add((T) o);
+				if(o instanceof Classifier && ((Classifier)o).getGeneralization().size()==0){
+					if(o instanceof DataType && ! (o instanceof PrimitiveType)) result.add((T) o);
+					else if (!(o instanceof DataType)) result.add((T) o);
+					
+				}
+					
 			}
 		}
 		return result;

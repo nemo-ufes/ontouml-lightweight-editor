@@ -142,9 +142,9 @@ public class Transformer extends BaseTransformer {
 		
 		// top level moment classes rule
 		ArrayList<Classifier> topMomentClassList = new ArrayList<Classifier>();
-		topMomentClassList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.ObjectClass.class));
+		topMomentClassList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.MomentClass.class));
 		
-		if(topObjectClassList.size() > 1)
+		if(topMomentClassList.size() > 1)
 		{
 			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topMomentClassList);			
 			for (DisjointExpression disj : rulesList) 
@@ -155,9 +155,9 @@ public class Transformer extends BaseTransformer {
 		
 		// top level dataType rule
 		ArrayList<Classifier> topDataTypeList = new ArrayList<Classifier>();
-		topDataTypeList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.ObjectClass.class));
+		topDataTypeList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.DataType.class));
 		
-		if(topObjectClassList.size() > 1)
+		if(topDataTypeList.size() > 1)
 		{
 			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topDataTypeList);			
 			for (DisjointExpression disj : rulesList) 
