@@ -9,9 +9,11 @@ import javax.swing.JPanel;
 import javax.swing.ScrollPaneConstants;
 
 import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.ShorthandCompletion;
+import org.fife.ui.autocomplete.TemplateCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
@@ -133,7 +135,10 @@ public class OCLEditorPanel extends JPanel {
        
        provider.addCompletion(new ShorthandCompletion(provider, "Context","context type\ninv : true","context declaration"));
        provider.addCompletion(new ShorthandCompletion(provider, "Property Context","context type::property : propertyType\nderive: null","derive property context declaration"));
-
+       String template = "for (int ${i} = 0; ${i} < ${array}.length; ${i}++) {\n\t${cursor}\n}";
+       Completion c = new TemplateCompletion(provider, "for", "for-loop", template);
+       provider.addCompletion(c);
+       
        /*
        provider.addCompletion(new BasicCompletion(provider, "."));
        provider.addCompletion(new BasicCompletion(provider, "->"));
