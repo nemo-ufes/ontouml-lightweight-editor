@@ -27,7 +27,7 @@ public class OntoUMLTreeBar extends JPanel {
 	public JButton btnOpen;
 	public JButton btnVerify;
 	public JButton btnShowUnique;
-	public JButton btnExport;
+	public JButton btnSaveAs;
 	
 	public JButton btnCompleteSelect;
 	public JPopupMenu popupCompleteSelect;	
@@ -86,9 +86,9 @@ public class OntoUMLTreeBar extends JPanel {
 		popupCompleteSelect.add(menuItemCompletehierarchy);
 		popupCompleteSelect.add(menuItemSortalAncestors);
 		
-		btnExport = new JButton("");
-		btnExport.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/export-16x16.png")));
-		btnExport.setToolTipText("Export Model");
+		btnSaveAs = new JButton("");
+		btnSaveAs.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/save-16x16.png")));
+		btnSaveAs.setToolTipText("Save Model ");
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -106,7 +106,7 @@ public class OntoUMLTreeBar extends JPanel {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnCompleteSelect, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(btnSaveAs, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -120,7 +120,7 @@ public class OntoUMLTreeBar extends JPanel {
 						.addComponent(btnOpen, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
 						.addComponent(btnCompleteSelect, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
 						.addComponent(btnShowUnique, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnSaveAs, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		setLayout(groupLayout);

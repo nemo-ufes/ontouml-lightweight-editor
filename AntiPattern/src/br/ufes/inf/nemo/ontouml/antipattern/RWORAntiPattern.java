@@ -35,7 +35,7 @@ public class RWORAntiPattern extends Antipattern{
 	    }
 	    return null;
 	}
-	
+		
 	public String generateExclusiveOcl(ArrayList<Classifier> disjointTypes, OntoUMLParser parser){
 		String result = "context "+relator.getName()+"\n"+
 						"inv: ";
@@ -61,6 +61,13 @@ public class RWORAntiPattern extends Antipattern{
 		result += "->size=0";
 		
 		return result;
+	}
+	
+	/*=============================== TO DO ==================================*/
+	
+	public String generateDisjointPredicate(OntoUMLParser parser, int cardinality)
+	{ 
+		return ""; 
 	}
 	
 	public String generateExclusivePredicate(OntoUMLParser parser, int cardinality){

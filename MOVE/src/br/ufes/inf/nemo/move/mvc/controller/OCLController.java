@@ -171,6 +171,12 @@ public class OCLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
+	    	if (oclview.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()==null)
+	    	{ 
+	    		oclview.getTheFrame().getConsole().write("First you need to load the Model"); 
+	    		return; 
+	    	}
+	    
     		oclview.getTheFrame().getManager().ParseOCL(true);
 	    }
 	 }	 

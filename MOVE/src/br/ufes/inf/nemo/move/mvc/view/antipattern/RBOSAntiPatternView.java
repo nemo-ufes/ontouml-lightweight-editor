@@ -18,6 +18,7 @@ import javax.swing.border.TitledBorder;
 
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RBOSAntiPatternModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
+import java.awt.GridLayout;
 
 /**
  * @author John Guerson
@@ -35,11 +36,16 @@ public class RBOSAntiPatternView extends JPanel {
 	private JTextField textAssociation;	
 	private JTextField textSource;		
 	private JTextField textTarget;	
-	private JCheckBox chckbxRflexive;	
-	private JCheckBox chckbxIrreflexive;	
 	private JButton btnGenerateAlloy;	
 	private JButton btnGenerateOclSolution;	
 	private JLabel lblOverlapping;
+	private JCheckBox cbxSymmetric;			
+	private JCheckBox cbxAntiReflexive;			
+	private JCheckBox cbxAntiSymmetric;	
+	private JCheckBox cbxTransitive;			
+	private JCheckBox cbxReflexive;			
+	private JCheckBox cbxNonTransitive;	
+	private JCheckBox cbxDisjoint;
 	
 	/**
 	 * COnstructor.
@@ -68,19 +74,9 @@ public class RBOSAntiPatternView extends JPanel {
 	public RBOSAntiPatternView() 
 	{
 		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128)), "", TitledBorder.RIGHT, TitledBorder.BELOW_TOP, null, new Color(255, 0, 0)));
-		setPreferredSize(new Dimension(330, 298));
+		setPreferredSize(new Dimension(330, 312));
 		
-		JPanel btnPanel = new JPanel();		
-		JPanel cbxPanel = new JPanel();
-		
-		JLabel lblGeneratePredicate = new JLabel("Generate Predicate:");
-		cbxPanel.add(lblGeneratePredicate);
-		
-		chckbxRflexive = new JCheckBox("Reflexive");		
-		cbxPanel.add(chckbxRflexive);
-		
-		chckbxIrreflexive = new JCheckBox("Irreflexive");
-		cbxPanel.add(chckbxIrreflexive);
+		JPanel btnPanel = new JPanel();
 		
 		btnGenerateAlloy = new JButton("Execute With Analyzer");	
 		btnPanel.add(btnGenerateAlloy);
@@ -94,16 +90,32 @@ public class RBOSAntiPatternView extends JPanel {
 		
 		JPanel textPanel = new JPanel();
 		
+		JPanel cbxPanel = new JPanel();
+		cbxPanel.setLayout(new GridLayout(0, 3, 0, 0));
+		
+		cbxSymmetric = new JCheckBox("Symmetric ");
+		cbxPanel.add(cbxSymmetric);		
+		cbxReflexive = new JCheckBox("Reflexive");
+		cbxPanel.add(cbxReflexive);		
+		cbxTransitive = new JCheckBox("Transitive");
+		cbxPanel.add(cbxTransitive);		
+		cbxAntiSymmetric = new JCheckBox("AntiSymmetric");
+		cbxPanel.add(cbxAntiSymmetric);		
+		cbxAntiReflexive = new JCheckBox("AntiReflexive");
+		cbxPanel.add(cbxAntiReflexive);		
+		cbxNonTransitive = new JCheckBox("Non-Transitive");
+		cbxPanel.add(cbxNonTransitive);
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
-						.addComponent(cbxPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
-						.addComponent(textPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
-						.addComponent(lblOverlapping, GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE))
+						.addComponent(cbxPanel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 305, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+						.addComponent(textPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+						.addComponent(lblOverlapping, GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE))
 					.addGap(13))
 		);
 		groupLayout.setVerticalGroup(
@@ -114,11 +126,14 @@ public class RBOSAntiPatternView extends JPanel {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(textPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(cbxPanel, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(40, Short.MAX_VALUE))
+					.addContainerGap(18, Short.MAX_VALUE))
 		);
+		
+		cbxDisjoint = new JCheckBox("Disjoint");
+		cbxPanel.add(cbxDisjoint);
 		
 		textSuperType = new JTextField();
 		textSuperType.setPreferredSize(new Dimension(30, 20));
@@ -195,15 +210,40 @@ public class RBOSAntiPatternView extends JPanel {
 		
 		setLayout(groupLayout);
 	}
-
-	public boolean isSelectedReflexive()
+	
+	public boolean isSelectedDisjoint()
 	{
-		return chckbxRflexive.isSelected();
+		return cbxDisjoint.isSelected();
 	}
 	
 	public boolean isSelectedIrreflexive()
 	{
-		return chckbxIrreflexive.isSelected();
+		return cbxAntiReflexive.isSelected();
+	}
+	
+	public boolean isSelectedAntiSymmetric()
+	{
+		return cbxAntiSymmetric.isSelected();
+	}
+
+	public boolean isSelectedIntransitive()
+	{
+		return cbxNonTransitive.isSelected();
+	}
+	
+	public boolean isSelectedReflexive()
+	{
+		return cbxReflexive.isSelected();
+	}
+	
+	public boolean isSelectedSymmetric()
+	{
+		return cbxSymmetric.isSelected();
+	}
+	
+	public boolean isSelectedTransitive()
+	{
+		return cbxTransitive.isSelected();
 	}
 	
 	public TheFrame getTheFrame()
@@ -220,6 +260,4 @@ public class RBOSAntiPatternView extends JPanel {
 	{
 		btnGenerateOclSolution.addActionListener(actionListener);
 	}
-	
-		
 }

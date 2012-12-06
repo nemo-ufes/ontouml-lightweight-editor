@@ -36,7 +36,7 @@ public class OCLView extends JPanel {
 	private OCLModel oclmodel;
 	
 	private TheFrame frame;	
-	private TitleTextField titleTextField;
+	private TitleTextField tltxtfldConstraintsOcl;
 	private OCLEditorBar oclbar;
 	private OCLEditorPanel ocleditor;
 		
@@ -75,9 +75,9 @@ public class OCLView extends JPanel {
 		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		panel.setLayout(new BorderLayout(0, 0));
 				
-		titleTextField = new TitleTextField();
-		titleTextField.setText("OCL Domain Constraints");
-		panel.add(BorderLayout.NORTH,titleTextField);
+		tltxtfldConstraintsOcl = new TitleTextField();
+		tltxtfldConstraintsOcl.setText("Constraints - OCL");
+		panel.add(BorderLayout.NORTH,tltxtfldConstraintsOcl);
 		
 		oclbar = new OCLEditorBar();
 		oclbar.setBorder(new LineBorder(Color.LIGHT_GRAY));
