@@ -69,6 +69,10 @@ public class RWORAntiPattern extends Antipattern{
 	{ 
 		return ""; 
 	}
+	public String generateDisjointFromTablePredicate(ArrayList<ArrayList<Mediation>> exclusiveMatrix, OntoUMLParser parser, int cardinality)
+	{ 
+		return ""; 
+	}
 	
 	public String generateExclusivePredicate(OntoUMLParser parser, int cardinality){
 		String predicate, rules, predicateName, relatorName;

@@ -55,12 +55,12 @@ public class OntoUMLTreeBar extends JPanel {
 		btnVerify.setToolTipText("Verify Model Sintactically");
 		btnVerify.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-16x16.png")));
 		
-		btnShowUnique = new JButton("");
+		btnShowUnique = new JButton("Alias");
 		btnShowUnique.setToolTipText("Show Aliases");
-		btnShowUnique.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/visible-16x16.png")));
+		btnShowUnique.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/label-16x16.png")));
 		
-		btnCompleteSelect = new JButton("");
-		btnCompleteSelect.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-16x16.png")));
+		btnCompleteSelect = new JButton("Auto Selection");
+		btnCompleteSelect.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/autoselection-16x16.png")));
 		btnCompleteSelect.setToolTipText("Complete Selections");
 		btnCompleteSelect.addActionListener(new ActionListener() 
 		{
@@ -102,11 +102,11 @@ public class OntoUMLTreeBar extends JPanel {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnVerify, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnShowUnique, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnSaveAs, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+							.addComponent(btnShowUnique)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnCompleteSelect, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnSaveAs, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(btnCompleteSelect)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -116,10 +116,11 @@ public class OntoUMLTreeBar extends JPanel {
 					.addComponent(textPath, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(btnCompleteSelect, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+							.addComponent(btnShowUnique, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
 						.addComponent(btnVerify, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
 						.addComponent(btnOpen, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(btnCompleteSelect, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(btnShowUnique, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
 						.addComponent(btnSaveAs, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);

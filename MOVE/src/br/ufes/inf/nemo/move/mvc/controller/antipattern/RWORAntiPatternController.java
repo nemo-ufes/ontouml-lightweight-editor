@@ -86,7 +86,16 @@ public class RWORAntiPatternController {
 	    			); 
 	    		}
 	    		
-	    		if(rworView.isSelectedCustomizedExclusive())				
+	    		if(rworView.isSelectedDisjointFromTable())				
+	    		{
+	    			predicates += "\n\n"+rworModel.getRWORAntiPattern().generateDisjointFromTablePredicate(
+	    				rworView.getTableView().getMediationsMatrix(),
+	    				rworView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(), 
+	    				rworView.getScope()
+	    			); 
+	    		}
+	    		
+	    		if(rworView.isSelectedExclusiveFromTable())				
 	    		{
 	    			predicates += "\n\n"+rworModel.getRWORAntiPattern().generateMultipleExclusivePredicate(
 	    				rworView.getTableView().getMediationsMatrix(),
@@ -134,7 +143,7 @@ public class RWORAntiPatternController {
     		{
     			// nothing to do...
     		}    			    		
-    		if(rworView.isSelectedCustomizedExclusive())				
+    		if(rworView.isSelectedExclusiveFromTable())				
     		{
     			Integer size = rworView.getTableView().getRolesMatrix().size();
     			for(int i = 0; i< size; i++)
