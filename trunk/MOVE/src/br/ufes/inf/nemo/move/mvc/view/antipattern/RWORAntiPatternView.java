@@ -22,6 +22,7 @@ import javax.swing.border.TitledBorder;
 
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RWORAntiPatternModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
+import java.awt.GridLayout;
 
 /**
  * @author John Guerson
@@ -44,13 +45,14 @@ public class RWORAntiPatternView extends JPanel {
 	private JButton btnGenerateOclSolution;	
 	private JCheckBox cbxExclusive;
 	private JCheckBox cbxOverlapping;
-	private JCheckBox cbxCustomizedExclusive;	
+	private JCheckBox cbxExclusiveFromTable;	
 	private JSpinner spinScope;
 	private JLabel lblatLeast;
 	private JLabel lblRelationWithOverlapping;
 	private JLabel lblScope;
 	private JButton btnAdd;				
 	private JCheckBox cbxDisjoint;
+	private JCheckBox cbxDisjFromTable;
 	
 	/**
 	 * Constructor.
@@ -97,9 +99,13 @@ public class RWORAntiPatternView extends JPanel {
 		
 		btnGenerateOclSolution = new JButton("OCL Solution");		
 		btnPane.add(btnGenerateOclSolution);
+		checkPane.setLayout(new GridLayout(2, 3, 0, 0));
 		
 		cbxExclusive = new JCheckBox("Exclusive");
 		checkPane.add(cbxExclusive);
+		
+		cbxExclusiveFromTable = new JCheckBox("Exclusive from Table");
+		checkPane.add(cbxExclusiveFromTable);
 		
 		cbxOverlapping = new JCheckBox("Overlapping");
 		checkPane.add(cbxOverlapping);
@@ -107,8 +113,8 @@ public class RWORAntiPatternView extends JPanel {
 		cbxDisjoint = new JCheckBox("Disjoint");
 		checkPane.add(cbxDisjoint);
 		
-		cbxCustomizedExclusive = new JCheckBox("From Table");
-		checkPane.add(cbxCustomizedExclusive);
+		cbxDisjFromTable = new JCheckBox("Disjoint from Table");
+		checkPane.add(cbxDisjFromTable);
 		
 		tablePane = new JPanel();
 		tablePane.setBackground(Color.WHITE);
@@ -207,14 +213,19 @@ public class RWORAntiPatternView extends JPanel {
 		return cbxOverlapping.isSelected();
 	}
 
-	public boolean isSelectedCustomizedExclusive()
+	public boolean isSelectedExclusiveFromTable()
 	{
-		return cbxCustomizedExclusive.isSelected();
+		return cbxExclusiveFromTable.isSelected();
 	}
 	
 	public boolean isSelectedDisjoint()
 	{
 		return cbxDisjoint.isSelected();
+	}
+	
+	public boolean isSelectedDisjointFromTable()
+	{
+		return cbxDisjFromTable.isSelected();
 	}
 	
 	public Integer getScope()
