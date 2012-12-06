@@ -32,7 +32,7 @@ public class OntoUMLView extends JPanel {
 	private OntoUMLModel ontoumlModel;
 	
 	private TheFrame frame;	
-	private TitleTextField titleTextField;
+	private TitleTextField tltxtfldOntouml;
 	private OntoUMLTreeBar ontobar;
 	private TreeScrollPane treeScrollPane;
 	private CheckboxTree modeltree;
@@ -67,9 +67,9 @@ public class OntoUMLView extends JPanel {
 		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		panel.setLayout(new BorderLayout(0, 0));
 				
-		titleTextField = new TitleTextField();
-		titleTextField.setText("OntoUML Conceptual Model");
-		panel.add(BorderLayout.NORTH,titleTextField);
+		tltxtfldOntouml = new TitleTextField();
+		tltxtfldOntouml.setText("Conceptual Model - OntoUML");
+		panel.add(BorderLayout.NORTH,tltxtfldOntouml);
 		
 		ontobar = new OntoUMLTreeBar();
 		ontobar.btnShowUnique.setToolTipText("");
@@ -161,9 +161,9 @@ public class OntoUMLView extends JPanel {
 	 * 
 	 * @param actionListener
 	 */
-	public void addExportModelListener(ActionListener actionListener)
+	public void addSaveAsModelListener(ActionListener actionListener)
 	{
-		ontobar.btnExport.addActionListener(actionListener);
+		ontobar.btnSaveAs.addActionListener(actionListener);
 	}
 	/**
 	 * Add Default Selection Action Listener.

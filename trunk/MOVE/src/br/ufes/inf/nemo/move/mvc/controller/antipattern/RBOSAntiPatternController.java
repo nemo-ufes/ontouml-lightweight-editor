@@ -47,20 +47,55 @@ public class RBOSAntiPatternController {
 	    		
 	    		String predicates = new String();
 				
+	    		if(rbosView.isSelectedAntiSymmetric()) 
+	    		{
+	    			predicates += "\n\n"+rbosModel.getRBOSAntiPattern().generateAntisymmetricPredicate(
+	    				rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
+	    			);
+	    		}
+			
+	    		if(rbosView.isSelectedIntransitive()) 
+	    		{
+	    			predicates += "\n\n"+rbosModel.getRBOSAntiPattern().generateIntransitivePredicate(
+	    				rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
+	    			);
+	    		}	    		
+	    		
+	    		if(rbosView.isSelectedIrreflexive()) 
+	    		{
+	    			predicates += "\n\n"+rbosModel.getRBOSAntiPattern().generateIrreflexivePredicate(
+	    				rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
+	    			);
+	    		}
+			
 	    		if(rbosView.isSelectedReflexive()) 
 	    		{
 	    			predicates += "\n\n"+rbosModel.getRBOSAntiPattern().generateReflexivePredicate(
 	    				rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
 	    			);
 	    		}
-			
-	    		if(rbosView.isSelectedIrreflexive())				
+								
+	    		if(rbosView.isSelectedSymmetric()) 
 	    		{
-	    			predicates += "\n\n"+rbosModel.getRBOSAntiPattern().generateIrreflexivePredicate(
-	    					rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser() 
-	    			); 
+	    			predicates += "\n\n"+rbosModel.getRBOSAntiPattern().generateSymmetricPredicate(
+	    				rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
+	    			);
 	    		}
-					
+	    		
+	    		if(rbosView.isSelectedTransitive()) 
+	    		{
+	    			predicates += "\n\n"+rbosModel.getRBOSAntiPattern().generateTransitivePredicate(
+	    				rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
+	    			);
+	    		}
+	    							
+	    		if(rbosView.isSelectedDisjoint()) 
+	    		{
+	    			predicates += "\n\n"+rbosModel.getRBOSAntiPattern().generateDisjointPredicate(
+	    				rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
+	    			);
+	    		}
+	    		
 	    		rbosModel.getRBOSAntiPattern().setSelected(rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
 	    		
 	    		rbosView.getTheFrame().getManager().getAlloyModel().setAlloyModel(rbosView.getTheFrame().getManager().getOntoUMLModel(),rbosView.getTheFrame().getManager().getOntoUMLOptionModel());

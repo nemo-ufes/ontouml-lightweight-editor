@@ -73,6 +73,29 @@ public class RBOSAntiPattern extends Antipattern{
 				
 	}
 	
+	/*============================= TO DO =====================================*/
+	
+	public String generateAntisymmetricPredicate(OntoUMLParser parser)
+	{ 
+		return "";
+	}
+	public String generateIntransitivePredicate(OntoUMLParser parser)
+	{ 
+		return "";
+	}	
+	public String generateSymmetricPredicate(OntoUMLParser parser)
+	{ 
+		return "";
+	}
+	public String generateTransitivePredicate(OntoUMLParser parser)
+	{ 
+		return "";
+	}	
+	public String generateDisjointPredicate(OntoUMLParser parser)
+	{
+		return "";
+	}
+	
 	/*Generates an Alloy predicate that produces model instances in which the related elements are always different*/
 	public String generateIrreflexivePredicate(OntoUMLParser parser){
 		String predicate, rules, predicateName;

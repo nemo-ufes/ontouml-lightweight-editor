@@ -50,6 +50,7 @@ public class RWORAntiPatternView extends JPanel {
 	private JLabel lblRelationWithOverlapping;
 	private JLabel lblScope;
 	private JButton btnAdd;				
+	private JCheckBox cbxDisjoint;
 	
 	/**
 	 * Constructor.
@@ -97,14 +98,14 @@ public class RWORAntiPatternView extends JPanel {
 		btnGenerateOclSolution = new JButton("OCL Solution");		
 		btnPane.add(btnGenerateOclSolution);
 		
-		JLabel labelGeneratePredicate = new JLabel("Generate Predicate:");
-		checkPane.add(labelGeneratePredicate);
-		
 		cbxExclusive = new JCheckBox("Exclusive");
 		checkPane.add(cbxExclusive);
 		
 		cbxOverlapping = new JCheckBox("Overlapping");
 		checkPane.add(cbxOverlapping);
+		
+		cbxDisjoint = new JCheckBox("Disjoint");
+		checkPane.add(cbxDisjoint);
 		
 		cbxCustomizedExclusive = new JCheckBox("From Table");
 		checkPane.add(cbxCustomizedExclusive);
@@ -209,6 +210,11 @@ public class RWORAntiPatternView extends JPanel {
 	public boolean isSelectedCustomizedExclusive()
 	{
 		return cbxCustomizedExclusive.isSelected();
+	}
+	
+	public boolean isSelectedDisjoint()
+	{
+		return cbxDisjoint.isSelected();
 	}
 	
 	public Integer getScope()

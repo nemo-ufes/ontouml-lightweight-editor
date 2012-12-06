@@ -37,7 +37,7 @@ public class OntoUMLController {
 		ontoumlview.addLoadOntoUMLListener(new LoadOntoUMLListener());
 		ontoumlview.addVerifyModelListener(new VerifyModelListener());
 		ontoumlview.addShowUniqueNamesListener(new ShowUniqueNamesListener());
-		ontoumlview.addExportModelListener(new ExportModelActionListener());
+		ontoumlview.addSaveAsModelListener(new SaveAsModelActionListener());
 		
 		ontoumlview.addAllAncestorsSelectionListener(new AllAncestorsSelectionListener());
 		ontoumlview.addAllDescendantsSelectionListener(new AllDescendantsSelectionListener());
@@ -116,7 +116,7 @@ public class OntoUMLController {
 	 * 
 	 * @author John
 	 */
-	 class ExportModelActionListener implements ActionListener 
+	 class SaveAsModelActionListener implements ActionListener 
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {

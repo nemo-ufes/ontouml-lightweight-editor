@@ -77,7 +77,15 @@ public class RWORAntiPatternController {
 	    				rworView.getScope()
 	    			); 
 	    		}
-	    			    		
+	    			    	
+	    		if(rworView.isSelectedDisjoint())				
+	    		{
+	    			predicates += "\n\n"+rworModel.getRWORAntiPattern().generateDisjointPredicate(
+	    				rworView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(), 
+	    				rworView.getScope()
+	    			); 
+	    		}
+	    		
 	    		if(rworView.isSelectedCustomizedExclusive())				
 	    		{
 	    			predicates += "\n\n"+rworModel.getRWORAntiPattern().generateMultipleExclusivePredicate(
