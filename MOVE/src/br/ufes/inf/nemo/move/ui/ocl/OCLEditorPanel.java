@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.IOException;
 
 import javax.swing.JPanel;
 import javax.swing.ScrollPaneConstants;
@@ -14,9 +15,11 @@ import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.ShorthandCompletion;
 import org.fife.ui.autocomplete.TemplateCompletion;
+import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import br.ufes.inf.nemo.move.ui.TheFrame;
@@ -100,6 +103,17 @@ public class OCLEditorPanel extends JPanel {
 		setFont(textArea,new Font("Consolas", Font.PLAIN, 11));		
 		textArea.setCurrentLineHighlightColor(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
 		
+		Theme theme;
+		try {
+			theme = Theme.load(getClass().getResourceAsStream("/br/ufes/inf/nemo/move/ui/ocl/eclipse.xml"));
+			theme.apply(textArea);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}      
+	         
+	    OCLTokenMaker tm = new OCLTokenMaker();	    
+	    ((RSyntaxDocument)textArea.getDocument()).setSyntaxStyle(tm);
+	       
 		provider = createCompletionProvider();
 	     
 	    ac = new AutoCompletion(provider);
@@ -135,9 +149,10 @@ public class OCLEditorPanel extends JPanel {
        
        provider.addCompletion(new ShorthandCompletion(provider, "Context","context type\ninv : true","context declaration"));
        provider.addCompletion(new ShorthandCompletion(provider, "Property Context","context type::property : propertyType\nderive: null","derive property context declaration"));
-       String template = "for (int ${i} = 0; ${i} < ${array}.length; ${i}++) {\n\t${cursor}\n}";
+       String template = "for (int ${i} = 0; ${i} < ${array}.length; ${i}++) {\n\t${cursor}\n}";       
        Completion c = new TemplateCompletion(provider, "for", "for-loop", template);
        provider.addCompletion(c);
+       
        
        /*
        provider.addCompletion(new BasicCompletion(provider, "."));
