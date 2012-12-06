@@ -1,5 +1,5 @@
 /*
- * Generated on 12/6/12 8:57 PM
+ * Generated on 12/6/12 9:13 PM
  */
 package br.ufes.inf.nemo.move.ui.ocl;
 
@@ -217,7 +217,7 @@ IntegerLiteral			= ({Digit}+)
 HexLiteral			= (0x{HexDigit}+)
 FloatLiteral			= (({Digit}+)("."{Digit}+)?(e[+-]?{Digit}+)? | ({Digit}+)?("."{Digit}+)(e[+-]?{Digit}+)?)
 ErrorNumberFormat			= (({IntegerLiteral}|{HexLiteral}|{FloatLiteral}){NonSeparator}+)
-BooleanLiteral				= ("true"|"false")
+
 
 Separator					= ([\(\)\{\}\[\]])
 Separator2				= ([\;,.])
@@ -244,24 +244,58 @@ URL						= (((https?|f(tp|ile))"://"|"www.")({URLCharacters}{URLEndCharacter})?)
 <YYINITIAL> {
 
 	/* Keywords */
-	"context" |
+	"and" |
+"body" |
+"context" |
+"def" |
 "derive" |
+"else" |
+"endif" |
 "endpackage" |
-"import" |
+"false" |
+"if" |
+"implies" |
+"in" |
+"init" |
 "inv" |
+"invalid" |
+"let" |
+"not" |
+"null" |
+"or" |
 "package" |
-"self"		{ addToken(Token.RESERVED_WORD); }
+"post" |
+"pre" |
+"self" |
+"static" |
+"then" |
+"true" |
+"xor"		{ addToken(Token.RESERVED_WORD); }
 
 	/* Keywords 2 (just an optional set of keywords colored differently) */
 	/* No keywords 2 */
 
 	/* Data types */
-	/* No data types */
+	"Bag" |
+"Boolean" |
+"Collection" |
+"Integer" |
+"OclAny" |
+"OclInvalid" |
+"OclMessage" |
+"OclVoid" |
+"OrderedSet" |
+"Real" |
+"Sequence" |
+"Set" |
+"String" |
+"Tuple" |
+"UnlimitedNatural"		{ addToken(Token.DATA_TYPE); }
 
 	/* Functions */
 	/* No functions */
 
-	{BooleanLiteral}			{ addToken(Token.LITERAL_BOOLEAN); }
+	
 
 	{LineTerminator}				{ addNullToken(); return firstToken; }
 
