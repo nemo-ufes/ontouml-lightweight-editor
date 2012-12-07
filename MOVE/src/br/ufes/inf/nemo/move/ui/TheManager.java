@@ -204,11 +204,12 @@ public class TheManager {
 		
 		// show the elements that were added by the auto selection
 		String msg = new String();
+		if (added.size()>0) msg = "The following elements were include in selection:\n\n";
 		for(EObject o: added)
 		{
-			msg += ""+ontoumlmodel.getOntoUMLParser().getStringRepresentation(o)+" added.\n";
+			msg += ""+ontoumlmodel.getOntoUMLParser().getStringRepresentation(o)+".\n";
 		}
-		msg += "Selection Completed!";		
+		if (added.size()==0) msg += "No elements to include in selection.";		
 		
 		// update the Tree with the new selected elements...
 		selected.removeAll(added);

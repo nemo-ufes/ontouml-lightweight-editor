@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -48,41 +49,65 @@ public class TheFrame extends JFrame {
 	 */
 	public TheFrame() 
 	{
-		super();				
-		
-		setExtendedState(MAXIMIZED_BOTH);		
+		super();						
+			
 		getContentPane().setBackground(new Color(230, 230, 250));
-		getContentPane().setLayout(new BorderLayout(0, 0));		
+		getContentPane().setLayout(new BorderLayout(0, 0));
+		
 		menuBar = new TheMenuBar(this);
 		setJMenuBar(menuBar);		
-		toolBar = new TheToolBar(this);				
+		
+		toolBar = new TheToolBar(this);
+		
 		JPanel headpanel = new JPanel();
 		headpanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		headpanel.setLayout(new BorderLayout(0, 0));
-		headpanel.add(BorderLayout.NORTH,toolBar);				
-		getContentPane().add(BorderLayout.NORTH,headpanel);		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/window.png")));
-		setTitle("OntoUML Model Validation Environment - MOVE");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+		headpanel.add(BorderLayout.NORTH,toolBar);		
 		
+		getContentPane().add(BorderLayout.NORTH,headpanel);
+				
 		appmanager = new TheManager(this);
 		
 		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,appmanager.getOCLView(),appmanager.getAntiPatternListView());
 		innerSplitPane.setOneTouchExpandable(true);		
+		innerSplitPane.setDividerLocation(1.0);
+		
 		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,appmanager.getOntoUMLView(),innerSplitPane);
 		centerSplitPane.setOneTouchExpandable(true);		
+		centerSplitPane.setDividerLocation(0.50);
+		
 		console = new TheConsole();		
+		
 		mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,centerSplitPane,console);
 		mainSplitPane.setOneTouchExpandable(true);		
-		getContentPane().add(BorderLayout.CENTER,mainSplitPane);				
-		pack();		
+		mainSplitPane.setDividerLocation(1.0);	
 		
-		mainSplitPane.setDividerLocation(1.0);
-		centerSplitPane.setDividerLocation(0.50);
-		innerSplitPane.setDividerLocation(1.0);		
+		getContentPane().add(BorderLayout.CENTER,mainSplitPane);				
+					
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setExtendedState(MAXIMIZED_BOTH);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/window.png")));
+		setTitle("OntoUML Model Validation Environment - MOVE");
+	
+		pack();
+		
+		restoreDefaults();
 	}
 		
+	/** Restore default sizes of the split panes. */
+	private void restoreDefaults() 
+	{
+        SwingUtilities.invokeLater(new Runnable() 
+        {
+            @Override
+            public void run() 
+            {
+            	mainSplitPane.setDividerLocation(1.0);            	
+            	innerSplitPane.setDividerLocation(1.0);
+            }
+        });
+    }
+	
 	/** Get Manager. */
 	public TheManager getManager(){
 		return appmanager;

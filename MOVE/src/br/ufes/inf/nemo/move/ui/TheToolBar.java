@@ -12,6 +12,7 @@ import javax.swing.border.EtchedBorder;
 
 import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
+import br.ufes.inf.nemo.move.ui.dialog.AutoSelectionDialog;
 import br.ufes.inf.nemo.move.ui.dialog.OptionsDialog;
 import br.ufes.inf.nemo.move.util.ToolbarButton;
 
@@ -25,8 +26,10 @@ public class TheToolBar extends JToolBar {
 
 	private TheFrame frame;		
 	private ToolbarButton btnSearchForAntipatterns;	
-	private ToolbarButton btnShowHideConsole;
+	private ToolbarButton btnShowHideConsole;	
+	private ToolbarButton btnShowOrHideAntiPattern;
 	private ToolbarButton btnAlloyAnalyzer;
+	public ToolbarButton btnCompleteSelect;
 	
 	/**
 	 * Constructor.
@@ -64,16 +67,45 @@ public class TheToolBar extends JToolBar {
         toolBarSeparator1.setOrientation( SwingConstants.VERTICAL );  
         add( toolBarSeparator1 );        
        
-        createAlloyAnalyzerButton();	
+        createShowHideAntiPatternView();
+        
+        JSeparator toolBarSeparator0= new Separator();  
+        toolBarSeparator0.setVisible(false);
+        toolBarSeparator0.setOrientation( SwingConstants.VERTICAL );  
+        add( toolBarSeparator0 );
+        
+        createAutoSelectionButton();
+        
+        JSeparator toolBarSeparator2= new Separator();  
+        toolBarSeparator2.setVisible(false);
+        toolBarSeparator2.setOrientation( SwingConstants.VERTICAL );  
+        add( toolBarSeparator2 );
+        
+        createAntiPatternButton();		
 		
         JSeparator toolBarSeparator4 = new Separator();
         toolBarSeparator4.setVisible(false);
         toolBarSeparator4.setOrientation( SwingConstants.VERTICAL );  
         add( toolBarSeparator4 );
         
-		createAntiPatternButton();			
+        createAlloyAnalyzerButton();			
 	}		
 		
+	public void createAutoSelectionButton()
+	{
+		btnCompleteSelect = new ToolbarButton("Auto Selection","/resources/br/ufes/inf/nemo/move/autoselection-36x36.png");
+		btnCompleteSelect.setToolTipText("Complete Model Selection");
+		
+		btnCompleteSelect.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent event) 
+			{
+				AutoSelectionDialog.open(frame);
+			}
+		});				
+		add(btnCompleteSelect);
+	}
+	
 	public void createAlloyAnalyzerButton()
 	{
 		btnAlloyAnalyzer = new ToolbarButton("Launch Analyzer","/resources/br/ufes/inf/nemo/move/alloy-36x36.png");
@@ -97,7 +129,7 @@ public class TheToolBar extends JToolBar {
 		
 	public void createShowHideConsole ()
 	{
-		btnShowHideConsole = new ToolbarButton("Show Console","/resources/br/ufes/inf/nemo/move/display-36x36.png");
+		btnShowHideConsole = new ToolbarButton("Console","/resources/br/ufes/inf/nemo/move/display-36x36.png");
 		btnShowHideConsole.setToolTipText("Show/Hide Console");
 		btnShowHideConsole.setEnabled(true);
 		btnShowHideConsole.addActionListener(new ActionListener() 
@@ -109,7 +141,22 @@ public class TheToolBar extends JToolBar {
        	});
 		add(btnShowHideConsole);
 	}
-			
+	
+	public void createShowHideAntiPatternView ()
+	{
+		btnShowOrHideAntiPattern = new ToolbarButton("AntiPatterns","/resources/br/ufes/inf/nemo/move/panel-36x36.png");
+		btnShowOrHideAntiPattern.setToolTipText("Show/Hide AntiPatterns");
+		btnShowOrHideAntiPattern.setEnabled(true);
+		btnShowOrHideAntiPattern.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			frame.ShowOrHideAntiPatternView();
+       		}
+       	});
+		add(btnShowOrHideAntiPattern);
+	}
+	
 	public void createAntiPatternButton()
 	{
 		btnSearchForAntipatterns = new ToolbarButton("Search AntiPatterns","/resources/br/ufes/inf/nemo/move/search-36x36.png");		

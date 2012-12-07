@@ -17,8 +17,10 @@ import javax.swing.border.EmptyBorder;
 public class TreeScrollPane extends JScrollPane {
 
 	private static final long serialVersionUID = 7677939055645227028L;
-
+	
+	public JPanel northPanel; 
 	public JPanel treePanel;
+	public JPanel southPanel;
 	
 	public TreeScrollPane ()
 	{
@@ -31,11 +33,11 @@ public class TreeScrollPane extends JScrollPane {
 		setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);		
 		setViewportView(treePanel);
 					
-		JPanel southPanel = new JPanel();
+		southPanel = new JPanel();
 		southPanel.setBackground(Color.WHITE);
 		southPanel.setPreferredSize(new Dimension(300, 50));
 					
-		JPanel northPanel = new JPanel();
+		northPanel = new JPanel();
 		northPanel.setBackground(Color.WHITE);
 		northPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		northPanel.setPreferredSize(new Dimension(280, 10));
