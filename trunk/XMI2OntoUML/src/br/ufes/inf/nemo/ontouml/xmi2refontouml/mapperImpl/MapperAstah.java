@@ -189,7 +189,7 @@ public class MapperAstah implements Mapper {
 		
 		int n = tag.length;
 		if (n > 1) {
-			return getChildsByTagName(getChild(elem, tag[0]), Arrays.copyOfRange(tag, 1, n));
+			return getChildsByTagName(XMLDOMUtil.getChild(elem, tag[0]), Arrays.copyOfRange(tag, 1, n));
 		}
 		
 		List<Object> elemList = new ArrayList<Object>();
@@ -252,16 +252,6 @@ public class MapperAstah implements Mapper {
 		}
 		
 		return listGenSet;
-	}
-	
-	// Auxiliary function that returns the first direct child of @parent with name @name
-	public Element getChild(Element parent, String name) {
-		for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
-			if (child instanceof Element && name.equals(child.getNodeName())) {
-				return (Element) child;
-			}
-		}
-		return null;
 	}
 	
 	// Get the stereotype of the element node
@@ -337,7 +327,7 @@ public class MapperAstah implements Mapper {
     	}
     	
     	// The 'visibility' property is defined the same way in every element.
-    	Element visibility = getChild(elem, "UML:ModelElement.visibility");
+    	Element visibility = XMLDOMUtil.getChild(elem, "UML:ModelElement.visibility");
     	if (visibility != null) {
     		hashProp.put("visibility", visibility.getAttribute("xmi.value"));
     	}
@@ -349,7 +339,7 @@ public class MapperAstah implements Mapper {
     	// sobre uma extensão de UML. As propriedades de OntoUML são exemplos disso, assim como algumas
     	// propriedades que passaram a existir a partir da UML 1.5. Foi definido neste trabalho que 
     	// essas propriedades viriam na forma de tagged values, que é a forma de extensão que a UML fornece.
-    	Element taggedValue = getChild(elem, "UML:ModelElement.taggedValue");
+    	Element taggedValue = XMLDOMUtil.getChild(elem, "UML:ModelElement.taggedValue");
     	if (taggedValue != null) {
 	    	for (Node child = taggedValue.getFirstChild(); child != null; child = child.getNextSibling()) {
 				if (child instanceof Element) {
@@ -368,7 +358,7 @@ public class MapperAstah implements Mapper {
 		// AssociationEnd properties and Attribute properties (becomes RefOntoUML.Property)
 		if (elem.getNodeName().equals("UML:AssociationEnd") || elem.getNodeName().equals("UML:Attribute")) {
 			// Gets the 'upper' and 'lower' values
-			Element mult = getChild(elem, "UML:StructuralFeature.multiplicity");
+			Element mult = XMLDOMUtil.getChild(elem, "UML:StructuralFeature.multiplicity");
 			if (mult != null) {
 				Element range = (Element)mult.getElementsByTagName("UML:MultiplicityRange").item(0);
 				getCommonProperties(range, hashProp);
@@ -376,9 +366,9 @@ public class MapperAstah implements Mapper {
 			if (hashProp.containsKey("changeability") && hashProp.get("changeability").equals("frozen")) {
 				hashProp.put("isreadonly", "true");
 			}
-			Element initial = getChild(elem, "UML:Attribute.initialValue");
+			Element initial = XMLDOMUtil.getChild(elem, "UML:Attribute.initialValue");
 			if (initial == null) {
-				initial = getChild(elem, "UML:AssociationEnd.initialValue");
+				initial = XMLDOMUtil.getChild(elem, "UML:AssociationEnd.initialValue");
 			}
 			if (initial != null) {
 				NodeList body = initial.getElementsByTagName("UML:Expression.body");
@@ -387,9 +377,9 @@ public class MapperAstah implements Mapper {
 			
 			if (elem.getNodeName().equals("UML:AssociationEnd")) {
 				// Get the target, which becomes the 'type'
-				Element participant = getChild(elem, "UML:AssociationEnd.participant");
+				Element participant = XMLDOMUtil.getChild(elem, "UML:AssociationEnd.participant");
 				if (participant != null) {
-					Element type = getChild(participant, "UML:Classifier");
+					Element type = XMLDOMUtil.getChild(participant, "UML:Classifier");
 					if (type != null) {
 						hashProp.put("type", type.getAttribute("xmi.idref"));
 					}
@@ -399,9 +389,9 @@ public class MapperAstah implements Mapper {
 				}
 			} else {
 				// Get the 'type'
-				Element type = getChild(elem, "UML:StructuralFeature.type");
+				Element type = XMLDOMUtil.getChild(elem, "UML:StructuralFeature.type");
 				if (type != null) {
-					Element classf = getChild(type, "UML:Classifier");
+					Element classf = XMLDOMUtil.getChild(type, "UML:Classifier");
 					if (classf != null) {
 						hashProp.put("type", classf.getAttribute("xmi.idref"));
 					}
@@ -419,16 +409,16 @@ public class MapperAstah implements Mapper {
 		
     	// Generalization properties
 		else if (elem.getNodeName().equals("UML:Generalization")) {
-	    	Element parent = getChild(elem, "UML:Generalization.parent");
+	    	Element parent = XMLDOMUtil.getChild(elem, "UML:Generalization.parent");
 	    	if (parent != null) {
-		    	Element general = getChild(parent, "UML:GeneralizableElement");
+		    	Element general = XMLDOMUtil.getChild(parent, "UML:GeneralizableElement");
 		    	if (general != null) {
 		    		hashProp.put("general", general.getAttribute("xmi.idref"));
 		    	}
 	    	}
-	    	Element child = getChild(elem, "UML:Generalization.child");
+	    	Element child = XMLDOMUtil.getChild(elem, "UML:Generalization.child");
 	    	if (child != null) {
-		    	Element specific = getChild(child, "UML:GeneralizableElement");
+		    	Element specific = XMLDOMUtil.getChild(child, "UML:GeneralizableElement");
 		    	if (specific != null) {
 		    		hashProp.put("specific", specific.getAttribute("xmi.idref"));
 		    	}
@@ -439,7 +429,7 @@ public class MapperAstah implements Mapper {
 		else if (elem.getNodeName().equals("UML:Dependency")) {
 			List<String> clients = new ArrayList<String>();
 	    	List<String> suppliers = new ArrayList<String>();
-	    	Element client = getChild(elem, "UML:Dependency.client");
+	    	Element client = XMLDOMUtil.getChild(elem, "UML:Dependency.client");
 	    	if (client != null) {
 	    		for (Node child = client.getFirstChild(); child != null; child = child.getNextSibling()) {
 					if (child instanceof Element) {
@@ -448,7 +438,7 @@ public class MapperAstah implements Mapper {
 		    	}
 				hashProp.put("client", clients);
 	    	}
-	    	Element supplier = getChild(elem, "UML:Dependency.supplier");
+	    	Element supplier = XMLDOMUtil.getChild(elem, "UML:Dependency.supplier");
 	        if (supplier != null) {
 	        	for (Node child = supplier.getFirstChild(); child != null; child = child.getNextSibling()) {
 	    			if (child instanceof Element) {
@@ -462,7 +452,7 @@ public class MapperAstah implements Mapper {
 		// Comment properties
 		else if (elem.getNodeName().equals("UML:Comment")) {
 			List<String> annotElements = new ArrayList<String>();
-			Element annotElem = getChild(elem, "UML:Comment.annotatedElement");
+			Element annotElem = XMLDOMUtil.getChild(elem, "UML:Comment.annotatedElement");
 	    	if (annotElem != null) {
 	    		List<Element> annotatedElems = XMLDOMUtil.getElementChilds(annotElem);
 	    		for (Object annotRef : annotatedElems) {
@@ -496,7 +486,7 @@ public class MapperAstah implements Mapper {
 		List<String> genIdList = new ArrayList<String>();
 		
 		// Busca as generalizações que fazem parte do GeneralizationSet
-		Element clients = getChild(elem, "JUDE:UPresentation.clients");
+		Element clients = XMLDOMUtil.getChild(elem, "JUDE:UPresentation.clients");
 		if (clients == null) {
 			return;
 		}
@@ -522,9 +512,9 @@ public class MapperAstah implements Mapper {
 			String genname = genelement.getAttribute("name");
 			// Se estiver no contraint
 			String constname = "";
-			Element constraint = getChild(genelement, "UML:ModelElement.constraint");
+			Element constraint = XMLDOMUtil.getChild(genelement, "UML:ModelElement.constraint");
 			if (constraint != null) {
-				constraint = getChild(constraint, "UML:Constraint");
+				constraint = XMLDOMUtil.getChild(constraint, "UML:Constraint");
 				constname = constraint.getAttribute("name");
 			}
 			
@@ -613,7 +603,7 @@ public class MapperAstah implements Mapper {
 		NodeList extensions = doc.getElementsByTagName("XMI.extension");
 		List<Object> diagramList = new ArrayList<Object>();
 		for (int i = 0 ; i < extensions.getLength(); i++) {
-			Element diagram = getChild((Element)extensions.item(i), "JUDE:Diagram");
+			Element diagram = XMLDOMUtil.getChild((Element)extensions.item(i), "JUDE:Diagram");
 			if (diagram != null) {
 				diagramList = getChildsByTagName((Element)extensions.item(i), DIAGRAM_TAG_PATH);
 			}
@@ -629,7 +619,7 @@ public class MapperAstah implements Mapper {
 		List<Object> diagElemList = getChildsByTagName((Element)diagram, DIAGCLA_TAG_PATH);
 		diagElemList.addAll(getChildsByTagName((Element)diagram, DIAGASS_TAG_PATH));
 		for (Object diagElem : diagElemList) {
-			Element semanticElement = getChild((Element)diagElem, "JUDE:UPresentation.semanticModel");
+			Element semanticElement = XMLDOMUtil.getChild((Element)diagElem, "JUDE:UPresentation.semanticModel");
 			diagElemIDList.add(((Element)semanticElement.getChildNodes().item(1)).getAttribute("xmi.idref"));
 		}
 		return diagElemIDList;

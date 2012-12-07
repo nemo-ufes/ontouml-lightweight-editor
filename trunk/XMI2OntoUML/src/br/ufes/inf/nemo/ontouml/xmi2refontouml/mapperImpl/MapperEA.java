@@ -38,6 +38,8 @@ public class MapperEA implements Mapper {
 	
 	Map<String, Element> stereotypes = new HashMap<String, Element>();
 	
+	List<String> nonUMLElement = new ArrayList<String>();
+	
 	public MapperEA(String inputPath) throws Exception {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         docBuilderFactory.setNamespaceAware(true);
@@ -74,6 +76,8 @@ public class MapperEA implements Mapper {
         setID(doc.getDocumentElement());
         
         createStereotypesMap();
+        
+        createNonUMLElementsList();
 	}
 	
     protected void setID(Element element) {
@@ -103,6 +107,22 @@ public class MapperEA implements Mapper {
     			}
     		}
     	}
+    }
+    
+    protected void createNonUMLElementsList()
+    {
+    	NodeList elements = doc.getElementsByTagName("elements");
+    	if (elements != null) {
+			for (Node child = elements.item(0).getFirstChild(); child != null; child = child.getNextSibling()) {
+	    		if (child instanceof Element) {
+	    			String type = ((Element)child).getAttributeNS(XMINS, "type");
+	    			if (type.equals("uml:UMLDiagram") || type.equals("uml:Text") || type.equals("uml:Boundary"))
+	    			{
+	    				nonUMLElement.add(((Element)child).getAttributeNS(XMINS, "idref"));
+	    			}
+	    		}
+			}
+		}
     }
 
 	@Override
@@ -167,7 +187,14 @@ public class MapperEA implements Mapper {
 				}
 				break;
 			case CLASS:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.CLASS, this);
+				List<Element> classListAux = XMLDOMUtil.getElementChildsByType(elem, ElementType.CLASS, this);
+				for (Element classElem : classListAux)
+				{
+					if (!nonUMLElement.contains(getID(classElem)))
+					{
+						elemList.add(classElem);
+					}
+				}
 				elemList.addAll(XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATIONCLASS, this));
 				break;
 			case COMMENT:
@@ -208,8 +235,8 @@ public class MapperEA implements Mapper {
 				break;
 			case PROPERTY:
 				if (getType(elem) == ElementType.ASSOCIATIONCLASS) {
-					List<Element> elemListAux = XMLDOMUtil.getElementChildsByType(elem, ElementType.PROPERTY, this);
-					for (Object o : elemListAux) {
+					List<Element> propListAux = XMLDOMUtil.getElementChildsByType(elem, ElementType.PROPERTY, this);
+					for (Object o : propListAux) {
 						Element e = (Element) o;
 						if (elem.hasAttribute("relator")) {
 							if (e.hasAttribute("association") &&
@@ -420,7 +447,16 @@ public class MapperEA implements Mapper {
 		List<Element> diagramList = new ArrayList<Element>();
 		NodeList diagrams = doc.getElementsByTagName("diagrams");
 		if (diagrams != null) {
-			diagramList = XMLDOMUtil.getElementChilds((Element)diagrams.item(0));
+			for (Node child = diagrams.item(0).getFirstChild(); child != null; child = child.getNextSibling()) {
+	    		if (child instanceof Element) {
+	    			Element properties = XMLDOMUtil.getChild((Element)child, "properties");
+	    			if (!properties.getAttribute("type").equals("Package") &&
+	    					!properties.getAttribute("type").equals("Custom"))
+	    			{
+	    				diagramList.add((Element)child);
+	    			}
+	    		}
+			}
 		}
 		Object[] diagramArray = diagramList.toArray();
 		Arrays.sort(diagramArray, new EAComparator());
@@ -442,10 +478,14 @@ public class MapperEA implements Mapper {
 				}
 				ElementType type = getType(getElementById(((Element)diagElem).getAttribute("subject")));
 				if (type == ElementType.CLASS ||
-						type == ElementType.ASSOCIATION ||
-						type == ElementType.ASSOCIATIONCLASS) {
-					
+						type == ElementType.ASSOCIATION)
+				{
 					diagElemIDList.add(((Element)diagElem).getAttribute("subject"));
+				}
+				else if (type == ElementType.ASSOCIATIONCLASS)
+				{
+					diagElemIDList.add(((Element)diagElem).getAttribute("subject"));
+					diagElemIDList.add("derivation" + ((Element)diagElem).getAttribute("subject"));
 				}
 			}
 		}
