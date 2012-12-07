@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import RefOntoUML.Derivation;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.RefOntoCreator.RefOntoUMLException;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.ElementType;
 
@@ -200,6 +201,10 @@ public class Mediator {
     	for (Entry<String, RefOntoUML.Element> entry : elemMap.entrySet()) {
     		RefOntoUML.Element modelElem = entry.getValue();
     		String id = entry.getKey();
+    		if (modelElem instanceof Derivation)
+    		{
+    			continue;
+    		}
     		Object domElem = mapper.getElementById(id);
     		// Get the properties of the element (the ones defined in the metamodel)
         	Map<String, Object> hashProp = mapper.getProperties(domElem);
@@ -402,6 +407,8 @@ public class Mediator {
     	if (relatorID != null && relatorID != "") {
     		RefOntoUML.Derivation der = (RefOntoUML.Derivation) refcreator.createAssociation("Derivation");
     		RefOntoUML.Relator relator = (RefOntoUML.Relator) elemMap.get(relatorID);
+    		
+    		elemMap.put("derivation"+relatorID, der);
     		
         	Map<String, Object> hashProp = new HashMap<String, Object>();
 //        	hashProp.put("name", "Derivation_" + material.getName() + "_" + relator.getName());

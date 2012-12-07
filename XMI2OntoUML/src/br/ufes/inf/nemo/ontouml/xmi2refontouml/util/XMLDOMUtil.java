@@ -55,4 +55,13 @@ public class XMLDOMUtil {
 		return elemList;
 	}
 	
+	public static Element getChild(Element parent, String name) {
+		for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
+			if (child instanceof Element && name.equals(child.getNodeName())) {
+				return (Element) child;
+			}
+		}
+		return null;
+	}
+	
 }

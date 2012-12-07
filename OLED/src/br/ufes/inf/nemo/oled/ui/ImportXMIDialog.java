@@ -69,18 +69,6 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	CheckboxTree modelChckTree, diagrChckTree;
 	DiagramManager diagManager;
 	Model model;
-
-//	public static void main(String[] args) {
-//		JFrame frame = new JFrame();
-//		ImportXMIFrame inst = new ImportXMIFrame();
-//		JDesktopPane jdp = new JDesktopPane();
-//		jdp.add(inst);
-//		jdp.setPreferredSize(inst.getPreferredSize());
-//		frame.setContentPane(jdp);
-//		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//		frame.pack();
-//		frame.setVisible(true);
-//	}
 	
 	public ImportXMIDialog(JFrame frame, File file, DiagramManager diagManager, boolean modal) throws Exception {
 		super(frame, modal);
@@ -205,7 +193,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 							"in the active tree. Please select at least one Element");
 					return;
 				} else {
-					RefOntoUMLUtil.Filter(modelChckTree);
+					this.model = RefOntoUMLUtil.Filter(modelChckTree);
 				}
 				break;
 			case 1:
@@ -214,7 +202,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 							"in the active tree. Please select at least one Element");
 					return;
 				} else {
-					RefOntoUMLUtil.Filter(diagrChckTree);
+					this.model = RefOntoUMLUtil.Filter(diagrChckTree);
 				}
 				break;
 			}
