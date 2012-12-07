@@ -180,15 +180,6 @@ public class OCLView extends JPanel {
 	}
 	
 	/**
-	 * Add Help OCL Action Listener.
-	 * @param actionListener
-	 */
-	public void addHelpOCLListener(ActionListener actionListener) 
-	{
-		oclbar.btnHelp.addActionListener(actionListener);
-	}
-	
-	/**
 	 * Get the main frame application.
 	 * 
 	 * @return

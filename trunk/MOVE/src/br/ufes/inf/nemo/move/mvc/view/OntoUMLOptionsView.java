@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.move.mvc.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,11 +19,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLOptionsModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import java.awt.FlowLayout;
-import javax.swing.border.EmptyBorder;
 
 /**
  * 
@@ -196,27 +196,20 @@ public class OntoUMLOptionsView extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		add(titlePanel, BorderLayout.NORTH);
 		
-		JLabel lblModel = new JLabel("Model Options : ");
-		lblModel.setFont(new Font("Tahoma", Font.BOLD, 11));
-		
 		GroupLayout gl_titlePanel = new GroupLayout(titlePanel);
 		gl_titlePanel.setHorizontalGroup(
 			gl_titlePanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_titlePanel.createSequentialGroup()
-					.addGap(26)
-					.addComponent(lblModel)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(25)
 					.addComponent(lblEnforceAxioms)
-					.addContainerGap(443, Short.MAX_VALUE))
+					.addContainerGap(488, Short.MAX_VALUE))
 		);
 		gl_titlePanel.setVerticalGroup(
 			gl_titlePanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_titlePanel.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGroup(gl_titlePanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblModel)
-						.addComponent(lblEnforceAxioms))
-					.addContainerGap())
+				.addGroup(Alignment.LEADING, gl_titlePanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblEnforceAxioms)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		titlePanel.setLayout(gl_titlePanel);
 		add(scrollPane);

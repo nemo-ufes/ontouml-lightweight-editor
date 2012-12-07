@@ -127,6 +127,29 @@ public class TheFrame extends JFrame {
 	}
 	
 	/**
+	 * Show Or Hide OCL View...
+	 */
+	public void ShowOrHideOCLView()
+	{
+		int location = innerSplitPane.getDividerLocation();
+		int minLocation = innerSplitPane.getMinimumDividerLocation();
+		if(location > minLocation)
+	    {
+			innerSplitPane.setDividerLocation(0.0);	
+	    }
+	    else
+	    {
+	      	innerSplitPane.setDividerLocation(1.00);
+	    }
+	}
+	
+	/** Show OCL View */
+	public void ShowOCLView() { innerSplitPane.setDividerLocation(0.50); }
+	
+	/** Hide OCL View */
+	public void HideOCLView() { innerSplitPane.setDividerLocation(0.0); }
+	
+	/**
 	 * Show Or Hide AntiPAttern View...
 	 */
 	public void ShowOrHideAntiPatternView()

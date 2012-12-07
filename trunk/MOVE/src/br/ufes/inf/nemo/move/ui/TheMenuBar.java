@@ -19,7 +19,6 @@ public class TheMenuBar extends JMenuBar {
 	private static final long serialVersionUID = 1L;
 		
 	private TheFrame frame;	
-	private JMenu mnFile;
 	private JMenuItem mntmAbout; 
 	
 	/**
@@ -40,9 +39,6 @@ public class TheMenuBar extends JMenuBar {
 	public TheMenuBar()
 	{	
 		super();
-		
-		mnFile = new JMenu("File");
-		add(mnFile);
 		
 		JMenu mnHelp = new JMenu("Help");
 		add(mnHelp);
