@@ -361,6 +361,7 @@ public class AntiPatternListDialog extends JDialog {
 			);
 			
 			frame.getManager().setAntiPatternListModel(antipatternListModel);			
+			frame.ShowAntiPatternView();
 		}		 
 		
 		}catch(Exception e){

@@ -136,8 +136,8 @@ public class OptionsDialog extends JDialog {
 		tabbedPane = new JTabbedPane();		
 		tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		tabbedPane.setBackground(UIManager.getColor("Panel.background"));
-		tabbedPane.add(ontoumlOptView,"OntoUML");
-		tabbedPane.add(oclOptView,"OCL");
+		tabbedPane.add(ontoumlOptView,"Conceptual Model - OntoUML");
+		tabbedPane.add(oclOptView,"Constraints - OCL");
 		
 		getContentPane().setLayout(new BorderLayout(0, 0));		
 		getContentPane().add(btnpanel, BorderLayout.SOUTH);		

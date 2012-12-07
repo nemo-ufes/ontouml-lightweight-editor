@@ -2,22 +2,13 @@ package br.ufes.inf.nemo.move.mvc.view.antipattern.list;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-
-
-
-
-
-
 
 import br.ufes.inf.nemo.move.mvc.controller.antipattern.ACAntiPatternController;
 import br.ufes.inf.nemo.move.mvc.controller.antipattern.IAAntiPatternController;
@@ -39,6 +30,7 @@ import br.ufes.inf.nemo.move.mvc.view.antipattern.RSAntiPatternView;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RWORAntiPatternView;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.STRAntiPatternView;
 import br.ufes.inf.nemo.move.ui.TheFrame;
+import br.ufes.inf.nemo.move.util.TitleTextField;
 
 /**
  * @author John Guerson
@@ -51,7 +43,7 @@ public class AntiPatternListView extends JPanel {
 	private AntiPatternListModel antipatternListModel;
 	private TheFrame frame;
 	
-	private JTextField txtAntipatterns;
+	private TitleTextField txtAntipatterns;
 	private JTabbedPane tabbedPane;
 	private JPanel acTabPanel;
 	private JPanel strTabPanel;
@@ -80,14 +72,8 @@ public class AntiPatternListView extends JPanel {
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 		
-		txtAntipatterns = new JTextField();
+		txtAntipatterns = new TitleTextField();
 		txtAntipatterns.setText("AntiPatterns");
-		txtAntipatterns.setHorizontalAlignment(SwingConstants.CENTER);
-		txtAntipatterns.setForeground(Color.WHITE);
-		txtAntipatterns.setFont(new Font("Tahoma", Font.BOLD, 11));
-		txtAntipatterns.setEditable(false);
-		txtAntipatterns.setColumns(10);
-		txtAntipatterns.setBackground(Color.BLACK);
 		
 		tabbedPane = new JTabbedPane();		
 		tabbedPane.setBackground(UIManager.getColor("Panel.background"));

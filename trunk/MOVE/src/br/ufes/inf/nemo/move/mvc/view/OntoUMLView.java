@@ -165,56 +165,7 @@ public class OntoUMLView extends JPanel {
 	{
 		ontobar.btnSaveAs.addActionListener(actionListener);
 	}
-	/**
-	 * Add Default Selection Action Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addDefaultSelectionListener(ActionListener actionListener) 
-	{
-		ontobar.menuItemDefault.addActionListener(actionListener);
-	}
 
-	/**
-	 * Add All Ancestors Selection Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addAllAncestorsSelectionListener(ActionListener actionListener) 
-	{
-		ontobar.menuItemAllAncestors.addActionListener(actionListener);
-	}
-	
-	/**
-	 * Add All Descendants Selection Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addAllDescendantsSelectionListener(ActionListener actionListener) 
-	{
-		ontobar.menuItemAllDescendants.addActionListener(actionListener);
-	}	
-	
-	/**
-	 * Add SOrtal Ancestors Action Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addSortalAncestorsSelectionListener(ActionListener actionListener) 
-	{
-		ontobar.menuItemSortalAncestors.addActionListener(actionListener);
-	}	
-	
-	/**
-	 * Add Complete Hierarchy Action Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addCompleteHierarchySelectionListener(ActionListener actionListener) 
-	{
-		ontobar.menuItemCompletehierarchy.addActionListener(actionListener);
-	}		
-	
 	/**
 	 * Get OntoUML Path Location.
 	 */

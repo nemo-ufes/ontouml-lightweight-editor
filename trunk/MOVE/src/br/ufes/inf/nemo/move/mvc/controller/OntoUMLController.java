@@ -4,14 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
-import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 
 /**
@@ -37,13 +35,7 @@ public class OntoUMLController {
 		ontoumlview.addLoadOntoUMLListener(new LoadOntoUMLListener());
 		ontoumlview.addVerifyModelListener(new VerifyModelListener());
 		ontoumlview.addShowUniqueNamesListener(new ShowUniqueNamesListener());
-		ontoumlview.addSaveAsModelListener(new SaveAsModelActionListener());
-		
-		ontoumlview.addAllAncestorsSelectionListener(new AllAncestorsSelectionListener());
-		ontoumlview.addAllDescendantsSelectionListener(new AllDescendantsSelectionListener());
-		ontoumlview.addDefaultSelectionListener(new DefaultSelectionListener());
-		ontoumlview.addSortalAncestorsSelectionListener(new SortalAncestorsSelectionListener());
-		ontoumlview.addCompleteHierarchySelectionListener(new CompleteHierarchySelectionListener());		
+		ontoumlview.addSaveAsModelListener(new SaveAsModelActionListener());			
 	}	
 	
 	/**
@@ -125,105 +117,5 @@ public class OntoUMLController {
 	    	String path = ontoumlview.saveOntoUMLPathLocation();
 	    	if(path!=null)ResourceUtil.saveReferenceOntoUML(path, ontoumlview.getTheFrame().getManager().getOntoUMLModel().getOntoUMLModelInstance());
 	    }
-	 }	 
-	 
-	 /**
-	 * All Ancestors Selection Action Listener.
-	 * 
-	 * @author John
-	 */
-	 class AllAncestorsSelectionListener implements ActionListener 
-	 {
-	    public void actionPerformed(ActionEvent e) 
-	    {
-	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
-	    	
-	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.ALL_ANCESTORS);
-   				    	
-    		JOptionPane.showMessageDialog(
-    			ontoumlview.getTheFrame(),msg,"All Ancestors",JOptionPane.INFORMATION_MESSAGE,
-    			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
-    		);   		
-	    }
-	 }	 
-	 
-	 /**
-	 * All Descendants Selection Action Listener.
-	 * 
-	 * @author John
-	 */
-	 class AllDescendantsSelectionListener implements ActionListener 
-	 {
-	    public void actionPerformed(ActionEvent e) 
-	    {
-	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
-	    	
-	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.ALL_DESCENDANTS);
-   				    	
-    		JOptionPane.showMessageDialog(
-    			ontoumlview.getTheFrame(),msg,"All Descendants",JOptionPane.INFORMATION_MESSAGE,
-    			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
-    		);   		
-	    }
-	 }	
-	 
-	 /**
-	 * Default Selection Action Listener.
-	 * 
-	 * @author John
-	 */
-	 class DefaultSelectionListener implements ActionListener 
-	 {
-	    public void actionPerformed(ActionEvent e) 
-	    {
-	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
-	    	
-	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.NO_HIERARCHY);
-   				    	
-    		JOptionPane.showMessageDialog(
-    			ontoumlview.getTheFrame(),msg,"Dependencies",JOptionPane.INFORMATION_MESSAGE,
-    			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
-    		);   		
-	    }
-	 }			 
-	 
-	 /**
-	 * Substance Sortal Ancestors Selection Action Listener.
-	 * 
-	 * @author John
-	 */
-	 class SortalAncestorsSelectionListener implements ActionListener 
-	 {
-	    public void actionPerformed(ActionEvent e) 
-	    {
-	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
-	    	
-	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.SORTAL_ANCESTORS);
-   				    	
-    		JOptionPane.showMessageDialog(
-    			ontoumlview.getTheFrame(),msg," Ancestors until a Substance Sortal",JOptionPane.INFORMATION_MESSAGE,
-    			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
-    		);   		
-	    }
-	 }	
-	 
-	 /**
-	 * Complete all hierarchy {all acnestors and descendants} Selection Action Listener.
-	 * 
-	 * @author John
-	 */
-	 class CompleteHierarchySelectionListener implements ActionListener 
-	 {
-	    public void actionPerformed(ActionEvent e) 
-	    {
-	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
-	    	
-	    	String msg = ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.COMPLETE_HIERARCHY);
-   				    	
-    		JOptionPane.showMessageDialog(
-    			ontoumlview.getTheFrame(),msg,"All Ancestors and Descendants",JOptionPane.INFORMATION_MESSAGE,
-    			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/selection-36x36.png"))
-    		);   		
-	    }
-	 }			 
+	 }	 		 
 }
