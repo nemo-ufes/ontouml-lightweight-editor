@@ -12,7 +12,7 @@ import javax.swing.border.EtchedBorder;
 
 import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
-import br.ufes.inf.nemo.move.ui.dialog.AutoSelectionDialog;
+import br.ufes.inf.nemo.move.ui.dialog.CompleteSelectionDialog;
 import br.ufes.inf.nemo.move.ui.dialog.OptionsDialog;
 import br.ufes.inf.nemo.move.util.ToolbarButton;
 
@@ -28,6 +28,7 @@ public class TheToolBar extends JToolBar {
 	private ToolbarButton btnSearchForAntipatterns;	
 	private ToolbarButton btnShowHideConsole;	
 	private ToolbarButton btnShowOrHideAntiPattern;
+	private ToolbarButton btnShowOrHideOCL;
 	private ToolbarButton btnAlloyAnalyzer;
 	public ToolbarButton btnCompleteSelect;
 	
@@ -67,6 +68,13 @@ public class TheToolBar extends JToolBar {
         toolBarSeparator1.setOrientation( SwingConstants.VERTICAL );  
         add( toolBarSeparator1 );        
        
+        createShowHideOCLView();
+        
+        JSeparator toolBarSeparator3 = new Separator();  
+        toolBarSeparator3.setVisible(false);
+        toolBarSeparator3.setOrientation( SwingConstants.VERTICAL );  
+        add( toolBarSeparator3 );  
+        
         createShowHideAntiPatternView();
         
         JSeparator toolBarSeparator0= new Separator();  
@@ -93,14 +101,14 @@ public class TheToolBar extends JToolBar {
 		
 	public void createAutoSelectionButton()
 	{
-		btnCompleteSelect = new ToolbarButton("Auto Selection","/resources/br/ufes/inf/nemo/move/autoselection-36x36.png");
+		btnCompleteSelect = new ToolbarButton("Complete Selection","/resources/br/ufes/inf/nemo/move/autoselection-36x36.png");
 		btnCompleteSelect.setToolTipText("Complete Model Selection");
 		
 		btnCompleteSelect.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent event) 
 			{
-				AutoSelectionDialog.open(frame);
+				CompleteSelectionDialog.open(frame);
 			}
 		});				
 		add(btnCompleteSelect);
@@ -155,6 +163,21 @@ public class TheToolBar extends JToolBar {
        		}
        	});
 		add(btnShowOrHideAntiPattern);
+	}
+	
+	public void createShowHideOCLView ()
+	{
+		btnShowOrHideOCL = new ToolbarButton("Constraints","/resources/br/ufes/inf/nemo/move/edit-36x36.png");
+		btnShowOrHideOCL.setToolTipText("Show/Hide OCL");
+		btnShowOrHideOCL.setEnabled(true);
+		btnShowOrHideOCL.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			frame.ShowOrHideOCLView();
+       		}
+       	});
+		add(btnShowOrHideOCL);
 	}
 	
 	public void createAntiPatternButton()

@@ -17,15 +17,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import org.eclipse.uml2.uml.Constraint;
 
 import br.ufes.inf.nemo.move.mvc.model.OCLOptionsModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.util.SingleConstraintPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.Font;
 
 /**
  * 
@@ -48,7 +46,6 @@ public class OCLOptionsView extends JPanel {
 	private JButton btnDisableAll;
 	private JButton btnEnableAll;
 	private JLabel lblYouCanAlso;
-	private JLabel lblConstraints;
 	
 	/**
 	 * Creates a View from a OCL Options Model and the main Frame of the application.
@@ -172,28 +169,21 @@ public class OCLOptionsView extends JPanel {
 		
 		add(introPanel,BorderLayout.NORTH);
 		
-		lblYouCanAlso = new JLabel("You can also check and simulate constraints against the model.");
+		lblYouCanAlso = new JLabel("You can also check and simulate constraints...");
 		lblYouCanAlso.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		lblConstraints = new JLabel("Constraints Options : ");
-		lblConstraints.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GroupLayout gl_introPanel = new GroupLayout(introPanel);
 		gl_introPanel.setHorizontalGroup(
 			gl_introPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_introPanel.createSequentialGroup()
-					.addGap(20)
-					.addComponent(lblConstraints)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(18)
 					.addComponent(lblYouCanAlso)
-					.addContainerGap(205, Short.MAX_VALUE))
+					.addContainerGap(272, Short.MAX_VALUE))
 		);
 		gl_introPanel.setVerticalGroup(
 			gl_introPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_introPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_introPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblYouCanAlso)
-						.addComponent(lblConstraints))
+					.addComponent(lblYouCanAlso)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		introPanel.setLayout(gl_introPanel);

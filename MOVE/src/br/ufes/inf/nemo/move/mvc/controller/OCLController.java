@@ -37,7 +37,6 @@ public class OCLController {
 		oclview.addOpenOCLListener(new OpenOCLLListener());		
 		oclview.addSaveOCLListener(new SaveOCLListener());		
 		oclview.addNewOCLListener(new NewOCLListener());
-		oclview.addHelpOCLListener(new HelpOCLListener());	
 		oclview.addParseOCLListener(new ParseOCLListener());	
 	}
 	

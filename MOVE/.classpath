@@ -24,7 +24,7 @@
 	<classpathentry kind="lib" path="lib/alloy4.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2UML"/>
 	<classpathentry kind="lib" path="/Common/lib/checkboxtree/lablib-checkboxtree-3.3.jar" sourcepath="/Common/lib/checkboxtree/lablib-checkboxtree-3.3-sources.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/textarea/autocomplete.jar" sourcepath="/Common/lib/textarea/autocomplete_2.0.4_Source.zip"/>
+	<classpathentry kind="lib" path="/Common/lib/textarea/autocomplete.jar" sourcepath="/Common/lib/textarea/autocomplete_2.0.5_Source.zip"/>
 	<classpathentry kind="lib" path="/Common/lib/textarea/rstaui.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/textarea/rsyntaxtextarea.jar"/>
 	<classpathentry kind="output" path="bin"/>
