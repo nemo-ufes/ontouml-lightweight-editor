@@ -113,7 +113,8 @@ public class OCLEditorPanel extends JPanel {
 	    OCLTokenMaker tm = new OCLTokenMaker();	    
 	    ((RSyntaxDocument)textArea.getDocument()).setSyntaxStyle(tm);
 	       
-		provider = createCompletionProvider();
+	    OCLCompletionProvider provider = new OCLCompletionProvider();
+		addOCLCompletions(provider);
 
 	    ac = new AutoCompletion(provider);
       	ac.install(textArea);
@@ -143,24 +144,24 @@ public class OCLEditorPanel extends JPanel {
      * 
      * @return The completion provider.
      */
-    private CompletionProvider createCompletionProvider() {
-
-       OCLCompletionProvider provider = new OCLCompletionProvider();
-       
+    private CompletionProvider addOCLCompletions(OCLCompletionProvider provider) 
+    {  
        provider.addCompletion(new ShorthandCompletion(provider, "Context","context type\ninv : true","context declaration"));
        provider.addCompletion(new ShorthandCompletion(provider, "Property Context","context type::property : propertyType\nderive: null","derive property context declaration"));
-       String template = "for (int ${i} = 0; ${i} < ${array}.length; ${i}++) {\n\t${cursor}\n}";       
-       TemplateCompletion c = new TemplateCompletion(provider, "for", "for-loop", template);
-       provider.addCompletion(c);
        
+       provider.addCompletion(new ShorthandCompletion(provider, "oclIsKindOf","oclIsKindOf(Classifier)","Evaluates to true if the type of self conforms to t. That is, self is of type t or a subtype of t."));
        
+       String template =
+    		      "for (int ${i} = 0; ${i} < ${array}.length; ${i}++) {\n\t${cursor}\n}";
+       provider.addCompletion(new TemplateCompletion(provider, "for", "for-loop", template));
+    		   
        /*
-       provider.addCompletion(new BasicCompletion(provider, "."));
-       provider.addCompletion(new BasicCompletion(provider, "->"));
-       provider.addCompletion(new BasicCompletion(provider, "::"));
+       provider.addCompletion(new ShorthandCompletion(provider, "."));
+       provider.addCompletion(new ShorthandCompletion(provider, "->"));
+       provider.addCompletion(new ShorthandCompletion(provider, "::"));
        
-       provider.addCompletion(new BasicCompletion(provider, "=","True if self is the same object as object2. Infix operator."));
-       provider.addCompletion(new BasicCompletion(provider, "<>","True if self is a different object from object2. Infix operator."));
+       provider.addCompletion(new ShorthandCompletion(provider, "=","True if self is the same object as object2. Infix operator."));
+       provider.addCompletion(new ShorthandCompletion(provider, "<>","True if self is a different object from object2. Infix operator."));
        
        provider.addCompletion(new BasicCompletion(provider, "or","True if either self or b is true."));
        provider.addCompletion(new BasicCompletion(provider, "and","True if both b1 and b are true."));
@@ -168,7 +169,7 @@ public class OCLEditorPanel extends JPanel {
        provider.addCompletion(new BasicCompletion(provider, "implies","True if self is false, or if self is true and b is true."));
        provider.addCompletion(new BasicCompletion(provider, "xor","True if either self or b is true, but not both."));
        
-       //provider.addCompletion(new BasicCompletion(provider, "oclIsKindOf","Evaluates to true if the type of self conforms to t. That is, self is of type t or a subtype of t."));
+       //
        provider.addCompletion(new BasicCompletion(provider, "oclIsTypeOf","Evaluates to true if self is of the type t but not a subtype of t"));
        provider.addCompletion(new BasicCompletion(provider, "oclIsUndefined()","Evaluates to true if the self is equal to invalid or equal to null."));
        

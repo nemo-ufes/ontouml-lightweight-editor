@@ -22,6 +22,7 @@ public class OCLOptions {
 	 * 
 	 * @param constraints
 	 */
+	@SuppressWarnings("unchecked")
 	public OCLOptions(OCLParser oclparser)
 	{
 		this();

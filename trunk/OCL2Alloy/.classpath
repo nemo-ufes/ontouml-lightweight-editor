@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.uml_4.0.0.v20120611-1210.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Common"/>
+	<classpathentry kind="lib" path="/Common/lib/lpg.runtime.java_2.0.17.v201004271640.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

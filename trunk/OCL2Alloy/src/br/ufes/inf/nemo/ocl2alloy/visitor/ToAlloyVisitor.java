@@ -537,6 +537,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 	}
 	    
     /** Visits Constraint. */	
+	@SuppressWarnings("unchecked")
 	@Override
     public String visitConstraint(Constraint constraint) 
     {
