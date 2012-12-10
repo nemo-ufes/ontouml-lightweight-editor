@@ -11,9 +11,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.OCLInput;
 import org.eclipse.ocl.ParserException;
+import org.eclipse.ocl.cst.CSTNode;
+import org.eclipse.ocl.parser.OCLAnalyzer;
 import org.eclipse.ocl.uml.UMLEnvironmentFactory;
 import org.eclipse.uml2.uml.Constraint;
 
+import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 
@@ -27,22 +30,17 @@ public class OCLParser {
 	
 	public org.eclipse.ocl.uml.UMLEnvironment umlenv;
 	
-    public org.eclipse.ocl.utilities.UMLReflection <
-    	org.eclipse.uml2.uml.Package,
-    	org.eclipse.uml2.uml.Classifier,
-    	org.eclipse.uml2.uml.Operation,
-    	org.eclipse.uml2.uml.Property,
-    	org.eclipse.uml2.uml.EnumerationLiteral,
-    	org.eclipse.uml2.uml.Parameter,
-    	org.eclipse.uml2.uml.State,
-    	org.eclipse.uml2.uml.CallOperationAction,
-    	org.eclipse.uml2.uml.SendSignalAction,
-    	org.eclipse.uml2.uml.Constraint
-    > umlreflection;
+    @SuppressWarnings("rawtypes")
+	public org.eclipse.ocl.utilities.UMLReflection umlreflection;
     
     public Resource umlResource;    
         
     public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> umlHashMap;
+    
+    @SuppressWarnings("rawtypes")
+	public OCLAnalyzer analyzer;
+    
+    public CSTNode cstree;
     
     public String logDetails = "";
     
@@ -72,7 +70,7 @@ public class OCLParser {
      * @param umlPath
      */
 
-    public OCLParser (String oclConstraints, OntoUMLParser refparser, String umlPath) throws ParserException
+    public OCLParser (String oclConstraints, OntoUMLParser refparser, String umlPath) throws ParserException,Exception
     {	
     	if (refparser==null) return;
     	if (umlPath==null) return;
@@ -92,10 +90,18 @@ public class OCLParser {
 		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
 		umlenv = envFactory.createEnvironment();		
 		org.eclipse.ocl.uml.OCL myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
-		myOCL.setParseTracingEnabled(true);		
+		myOCL.setParseTracingEnabled(true);
+		
+		analyzer = myOCL.createAnalyzer(oclConstraints);
+		cstree = analyzer.parseConcreteSyntax();
+		
+		if (cstree!=null && cstree.getStartToken().toString().equals("context")) 
+		{
+			String msg ="You need to specify your constraints inside a package declaration. \n\npackage PackageName\n...\nYour constraints\n...\nendpackage";
+			throw new Exception(msg);
+		}
 		
 		OCLInput document = new OCLInput(oclConstraints);		
-		
 		umlconstraintsList = myOCL.parse(document);
 		umlreflection = umlenv.getUMLReflection();	
     }
@@ -108,9 +114,10 @@ public class OCLParser {
      * @throws IOException
      * @throws ParserException
      */
-    public OCLParser (String oclAbsolutePath, String refAbsolutePath) throws IOException,ParserException
+    public OCLParser (String oclAbsolutePath, String refAbsolutePath) throws IOException,ParserException,Exception
 	{ 			
-		umlResource = OntoUML2UML.Transformation(new OntoUMLParser(refAbsolutePath),refAbsolutePath.replace(".refontouml" , ".uml"));							
+    	OntoUMLParser refparser = new OntoUMLParser(refAbsolutePath);
+		umlResource = OntoUML2UML.Transformation(refparser,refAbsolutePath.replace(".refontouml" , ".uml"));							
 				
 		umlHashMap = OntoUML2UML.transformer.mydealer.mymap;
 		
@@ -128,6 +135,15 @@ public class OCLParser {
 		umlenv = envFactory.createEnvironment();		
 		org.eclipse.ocl.uml.OCL myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
 		myOCL.setParseTracingEnabled(true);
+				
+		analyzer = myOCL.createAnalyzer(FileUtil.readFile(oclAbsolutePath));
+		cstree = analyzer.parseConcreteSyntax();
+		
+		if (cstree!=null && cstree.getStartToken().toString().equals("context")) 
+		{
+			String msg ="You need to specify your constraints inside a package declaration. \n\npackage PackageName\n...\nYour constraints\n...\nendpackage";
+			throw new Exception(msg);
+		}
 		
 		InputStream input = new FileInputStream(oclAbsolutePath);
 		org.eclipse.ocl.OCLInput document = new org.eclipse.ocl.OCLInput(input);	
@@ -156,21 +172,16 @@ public class OCLParser {
     	return umlResource;
     }
     
-    public  org.eclipse.ocl.utilities.UMLReflection <
-			org.eclipse.uml2.uml.Package,
-			org.eclipse.uml2.uml.Classifier,
-			org.eclipse.uml2.uml.Operation,
-			org.eclipse.uml2.uml.Property,
-			org.eclipse.uml2.uml.EnumerationLiteral,
-			org.eclipse.uml2.uml.Parameter,
-			org.eclipse.uml2.uml.State,
-			org.eclipse.uml2.uml.CallOperationAction,
-			org.eclipse.uml2.uml.SendSignalAction,
-			org.eclipse.uml2.uml.Constraint > 
-    getUMLReflection()
+    @SuppressWarnings("rawtypes")
+	public  org.eclipse.ocl.utilities.UMLReflection getUMLReflection()
 	{
 		return umlreflection;
 	}
+    
+    public CSTNode getCSTree()
+    {
+    	return cstree;
+    }
     
     /**
      * Test.
@@ -186,6 +197,9 @@ public class OCLParser {
 		
 		} catch (IOException | ParserException e) {			
 			e.printStackTrace();
+		} catch(Exception e){
+			e.printStackTrace();
 		}
     }    
+   
 }

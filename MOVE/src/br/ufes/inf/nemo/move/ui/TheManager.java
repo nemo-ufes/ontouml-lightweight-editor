@@ -284,7 +284,7 @@ public class TheManager {
 			
 			// set OCL Parser from the OCL COnstraints in OCL View.
 			oclmodel.setParser(oclview.parseConstraints());			
-			
+									
 			// set OCL Options from the OCL Parser.
 			oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));
 			
@@ -320,7 +320,14 @@ public class TheManager {
 				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
 			);					
 			e3.printStackTrace();
+		}catch(Exception e4){
+			JOptionPane.showMessageDialog(					
+				oclview.getTheFrame(),e4.getMessage(),"Error",JOptionPane.ERROR_MESSAGE,
+				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
+			);				
+			return;
 		}
+		
 	}
 
 	/**
