@@ -3,6 +3,8 @@ package ontouml2text.core;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.EList;
+
 import RefOntoUML.*;
 import RefOntoUML.Class;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -10,58 +12,92 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class Writer {
 	
+	/**
+	 * The class that parses the model to obtain information
+	 */
 	OntoUMLParser ontoParser;
 
 	public Writer (OntoUMLParser ontoParser)
 	{
 		this.ontoParser = ontoParser;
 	}
+	
+	public String runDescriptionGeneration()
+	{
+		String modelDescr = new String();
+		
+		Set<Classifier> classfSet = ontoParser.getAllInstances(Classifier.class);
+		
+		for (Classifier classf : classfSet)
+		{
+			if (classf instanceof Class || classf instanceof DataType)
+			{
+				String singleElemDescr = classf.getName();
+				
+				singleElemDescr += processGeneralizations(classf);
+				
+				if (classf.getGeneralization().size() > 0 && classf.getAttribute().size() > 0)
+				{
+					singleElemDescr += Phrases.andVerb().substring(0, 2);
+				}
+				
+				singleElemDescr += processAttributes(classf) + ". ";
+				
+				modelDescr += singleElemDescr + "\n";
+			}
+		}
+		
+		return modelDescr;
+	}
 
-	public String processGeneralizations ()
+	private String processGeneralizations (Classifier classf)
 	{
 		String genDescr = new String();
+			
+		EList<Generalization> genList = classf.getGeneralization();
 		
-		Set<Generalization> genSet = ontoParser.getAllInstances(Generalization.class);
-		
-		for (Generalization gen : genSet)
+		if (genList.size() > 0)
 		{
-			genDescr += gen.getSpecific().getName() + " é subtipo de " + gen.getGeneral().getName() + "\n";
+			genDescr += Phrases.subtypesVerb();
+			String delim = "";
+			int i = 1;
+			
+			for (Generalization gen : genList)
+			{
+				genDescr += delim + gen.getGeneral().getName();
+				delim = ", ";
+				i++;
+				if (i == genList.size())
+				{
+					delim = Phrases.andVerb();
+				}
+			}
 		}
 		
 		return genDescr;
 	}
 	
-	public String processAttributes ()
+	private String processAttributes (Classifier classf)
 	{
 		String attDescr = new String();
+			
+		EList<Property> attList = classf.getAttribute();
 		
-		Set<PackageableElement> pelSet = ontoParser.getAllInstances(PackageableElement.class);
-		
-		for (PackageableElement pel : pelSet)
+		if (attList.size() > 0)
 		{
-			if (pel instanceof Class || pel instanceof DataType)
+			attDescr = Phrases.ownsVerb();
+			String delim = "";
+			int i = 1;
+			
+			for (Property prop : attList)
 			{
-				Classifier classf = (Classifier) pel;
-				
-				String singAttDescr = classf.getName() + " possui ";
-				String delim = "";
-				int i = 1;
-				
-				for (Property prop : classf.getAttribute())
+				String mult = Phrases.processMultiplicity(prop);
+				attDescr += delim + mult + " " + prop.getName();
+				delim = ", ";
+				i++;
+				if (i == classf.getAttribute().size())
 				{
-					String mult = processMultiplicity(prop);
-					singAttDescr += delim + mult + " " + prop.getName();
-					delim = ", ";
-					i++;
-					if (i == classf.getAttribute().size())
-					{
-						delim = " e ";
-					}
-				}
-				
-				if (delim != "")
-				{
-					attDescr += singAttDescr + "\n";
+					delim = Phrases.andVerb();
 				}
 			}
 		}
@@ -88,13 +124,13 @@ public class Writer {
 				String verb, mult1, mult2;
 				if (assoc.getName() == "" || assoc.getName() == null)
 				{
-					verb = processVerb(assoc);
+					verb = Phrases.processVerb(assoc);
 				}
 				else
 					verb = " " + assoc.getName() + " ";
 				
-				mult1 = processMultiplicity(assoc.getMemberEnd().get(0));
-				mult2 = processMultiplicity(assoc.getMemberEnd().get(1));
+				mult1 = Phrases.processMultiplicity(assoc.getMemberEnd().get(0));
+				mult2 = Phrases.processMultiplicity(assoc.getMemberEnd().get(1));
 				String singAssocDescr = mult1 + " " + assoc.getMemberEnd().get(0).getType().getName() + verb +
 						mult2 + " " + assoc.getMemberEnd().get(1).getType().getName() + "\n";
 				String singAssocDescr2 = mult2 + " " + assoc.getMemberEnd().get(1).getType().getName() + verb +
@@ -116,69 +152,6 @@ public class Writer {
 		}
 		
 		return assocDescr;
-	}
-	
-	private String processVerb(Association assoc)
-	{
-		if (assoc instanceof Mediation)
-		{
-			return " media ";
-		}
-		else if (assoc instanceof Characterization)
-		{
-			return " caracteriza ";
-		}
-		else if (assoc instanceof Derivation)
-		{
-			return " deriva ";
-		}
-		else if (assoc instanceof componentOf)
-		{
-			return " é composto de ";
-		}
-		else if (assoc instanceof memberOf)
-		{
-			return " é membro de ";
-		}
-		else if (assoc instanceof subQuantityOf)
-		{
-			return " é sub-quantity de ";
-		}
-		else if (assoc instanceof subCollectionOf)
-		{
-			return " é sub-collection de ";
-		}
-		else 
-			return " ";
-	}
-	
-	private String processMultiplicity (Property prop)
-	{
-		String mult = new String();
-		if (prop.getLower() == 1 && prop.getUpper() == 1)
-		{
-			mult += "um";
-		}
-		else if (prop.getLower() == 1 && prop.getUpper() == -1)
-		{
-			mult += "no mínimo um";
-		}
-		else if (prop.getLower() == 0 && prop.getUpper() == 1)
-		{
-			mult += "no máximo um";
-		}
-		else if (prop.getLower() == 0 && prop.getUpper() == -1)
-		{
-			mult += "zero ou mais";
-		}
-		else if (prop.getLower() == -1 && prop.getUpper() == -1)
-		{
-			mult += "zero ou mais";
-		}
-		else
-			mult += "muitos";
-		
-		return mult;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
 
+
 /**
  * This enumeration class is auxiliary to get 
  * all the elements that can be instantiated in 

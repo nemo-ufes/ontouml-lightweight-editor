@@ -9,10 +9,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -23,29 +20,18 @@ import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import org.eclipse.emf.common.util.BasicEList.UnmodifiableEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mapper;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
 
 import RefOntoUML.Association;
-import RefOntoUML.Classifier;
-import RefOntoUML.Comment;
-import RefOntoUML.Dependency;
 import RefOntoUML.Element;
-import RefOntoUML.Generalization;
-import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Model;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
-import RefOntoUML.Property;
 
 
 public class RefOntoUMLUtil {
@@ -184,200 +170,132 @@ public class RefOntoUMLUtil {
     	return (Model) copier.get(rootObject.getElement());
 	}
 	
-	/**
-	 * Removes the selected elements from the Model and from the Tree.
-	 * @param modelTree the tree containing the Model that will be filtered.
-	 */	
-	public static void Filter2(CheckboxTree modelTree) {
-		List<EObject> uncheckedNodes = new ArrayList<EObject>();
-		List<EObject> checkedNodes = new ArrayList<EObject>();
-    	TreePath[] treepathList = modelTree.getCheckingPaths();
-    	
-    	for (TreePath treepath : treepathList) {
-    		checkedNodes.add(((ChckBoxTreeNodeElem)((DefaultMutableTreeNode)
-    				treepath.getLastPathComponent()).getUserObject()).getElement());
-    	}
-    	
-    	DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelTree.getModel().getRoot();
-    	ChckBoxTreeNodeElem rootObject = (ChckBoxTreeNodeElem) root.getUserObject();
-
-    	long start = System.nanoTime();
-    	filterModel(rootObject.getElement(), checkedNodes, uncheckedNodes);
-    	System.out.println(System.nanoTime() - start);
-    	
-//    	long start = System.nanoTime();
-//    	OntoUMLParser ontoParser = new OntoUMLParser((Model)rootObject.getElement());
-//    	Set<PackageableElement> pelList = ontoParser.getPackageableElements();
-//    	for (PackageableElement pel : pelList)
-//    	{
-//    		Package parent = (Package) pel.eContainer();
-//    		if (pel instanceof GeneralizationSet ||
-//    				parent == null)
-//    		{
-//    			continue;
-//    		}
-//    		if (!checkedNodes.contains(pel))
-//    		{
-//    			uncheckedNodes.add(pel);
-//        		EcoreUtil.remove(pel);
-//        	}
-//    		if (parent.getPackagedElement().size() == 0)
-//    		{
-//    			uncheckedNodes.add(parent);
-//    			EcoreUtil.remove(parent);
-//    		}
-//    	}
-//    	System.out.println(System.nanoTime() - start);
-    	
-    	for (EObject eObject : uncheckedNodes) {
-    		delete(eObject, rootObject.getElement());
-    	}
-    	
-//    	Map<EObject, Collection<EStructuralFeature.Setting>> usages;
-//    	usages = EcoreUtil.UnresolvedProxyCrossReferencer.find(rootObject.getElement());
+//	/**
+//	 * Removes the selected elements from the Model and from the Tree.
+//	 * @param modelTree the tree containing the Model that will be filtered.
+//	 */	
+//	public static void Filter2(CheckboxTree modelTree) {
+//		List<EObject> uncheckedNodes = new ArrayList<EObject>();
+//		List<EObject> checkedNodes = new ArrayList<EObject>();
+//    	TreePath[] treepathList = modelTree.getCheckingPaths();
 //    	
-//    	while (usages.size() != 0)
-//    	{
-//	    	for (Map.Entry<EObject, Collection<EStructuralFeature.Setting>> entry : usages.entrySet()) {
-//		        EObject deletedEObject = entry.getKey();
-//		        Collection<EStructuralFeature.Setting> settings = entry.getValue();
-//		        for (EStructuralFeature.Setting setting : settings) {
-//	//	        	if (!eObjects.contains(setting.getEObject()) && setting.getEStructuralFeature().isChangeable()) {
-//		        	  
-//		        		if (setting.getEObject() instanceof Generalization ||
-//			    			  setting.getEObject() instanceof Dependency) {
-//		        			EcoreUtil.remove(setting.getEObject());
-//			    		  
-//		        		} else if (setting.getEObject() instanceof GeneralizationSet) {
-//		        			EcoreUtil.remove(setting, deletedEObject);
-//		        			if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
-//		        				EcoreUtil.remove(setting.getEObject());
-//		        			}
-//			    		  
-//		        		} else if (setting.getEObject() instanceof Property) {
-//		        			if (setting.getEObject().eContainer() instanceof Association) {
-//		        				EcoreUtil.remove(setting.getEObject().eContainer());
-//		        			} else {
-//		        				EcoreUtil.remove(setting.getEObject());
-//		        			}
-//			    		  
-//		        		} else if (setting.getEObject() instanceof Comment) {
-//		        			EcoreUtil.remove(setting, deletedEObject);
-//		        			if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
-//		        				EcoreUtil.remove(setting.getEObject());
-//		        			}
-//			    		  
-//		        		} else if (!(setting instanceof UnmodifiableEList)) {
-//		        			EcoreUtil.remove(setting, deletedEObject);
-//		        		}
-//	//	        	}
-//		        }
-//		    }
+//    	for (TreePath treepath : treepathList) {
+//    		checkedNodes.add(((ChckBoxTreeNodeElem)((DefaultMutableTreeNode)
+//    				treepath.getLastPathComponent()).getUserObject()).getElement());
 //    	}
-    }
-	
-	public static void filterModel(EObject element, List<EObject> checkedElements,
-			List<EObject> uncheckedElements) {
-    	
-    	if (element == null || !(element instanceof Classifier || element instanceof Package)) {
-    		return;
-    	}
-    	
-    	Object[] elemArray = element.eContents().toArray();
-		for (Object obj : elemArray) {
-			filterModel((EObject)obj, checkedElements, uncheckedElements);
-		}
-    	
-    	if (!checkedElements.contains(element)) {
-    		if (element instanceof Package) {
-    			if (((Package) element).getPackagedElement().size() == 0) {
-    				uncheckedElements.add(element);
-    				EcoreUtil.remove(element);
-    			}
-    		} else {
-    			uncheckedElements.add(element);
-    			EcoreUtil.remove(element);
-    		}
-    	}
-    }
-	
-	/**
-	   * Deletes the object from its {@link EObject#eResource containing} resource 
-	   * and/or its {@link EObject#eContainer containing} object
-	   * as well as from any other feature that references it 
-	   * within the enclosing root object. Function was adapted
-	   * from EcoreUtil.
-	   * @param eObject the object to delete.
-	   */
-	public static void delete(EObject eObject, EObject rootEObject) {
-	    Set<EObject> eObjects = new HashSet<EObject>();
-	    Set<EObject> crossResourceEObjects = new HashSet<EObject>();
-	    
-	    eObjects.add(eObject);
-	    for (@SuppressWarnings("unchecked") TreeIterator<InternalEObject> j = 
-	    		(TreeIterator<InternalEObject>)(TreeIterator<?>)eObject.eAllContents();  j.hasNext(); ) {
-	    	InternalEObject childEObject = j.next();
-	        if (childEObject.eDirectResource() != null) {
-	        	System.out.println("0" + childEObject);
-	        	crossResourceEObjects.add(childEObject);
-	        }
-	        else {
-	        	System.out.println("1" + childEObject);
-	        	eObjects.add(childEObject);
-	        }
-	    }
-	    
-	    System.out.println(eObject);
-	    System.out.println(eObjects.size());
-	    System.out.println(eObjects);
-	    System.out.println();
-
-	    Map<EObject, Collection<EStructuralFeature.Setting>> usages;
-	    usages = EcoreUtil.UsageCrossReferencer.findAll(eObjects, rootEObject);
-
-	    for (Map.Entry<EObject, Collection<EStructuralFeature.Setting>> entry : usages.entrySet()) {
-	        EObject deletedEObject = entry.getKey();
-	        Collection<EStructuralFeature.Setting> settings = entry.getValue();
-	        for (EStructuralFeature.Setting setting : settings) {
-	        	if (!eObjects.contains(setting.getEObject()) && setting.getEStructuralFeature().isChangeable()) {
-	        	  
-	        		if (setting.getEObject() instanceof Generalization ||
-		    			  setting.getEObject() instanceof Dependency) {
-	        			delete(setting.getEObject(), rootEObject);
-		    		  
-	        		} else if (setting.getEObject() instanceof GeneralizationSet) {
-	        			EcoreUtil.remove(setting, deletedEObject);
-	        			if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
-	        				EcoreUtil.remove(setting.getEObject());
-	        			}
-		    		  
-	        		} else if (setting.getEObject() instanceof Property) {
-	        			if (setting.getEObject().eContainer() instanceof Association) {
-	        				delete(setting.getEObject().eContainer(), rootEObject);
-	        			} else {
-	        				delete(setting.getEObject(), rootEObject);
-	        			}
-		    		  
-	        		} else if (setting.getEObject() instanceof Comment) {
-	        			EcoreUtil.remove(setting, deletedEObject);
-	        			if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
-	        				delete (setting.getEObject(), rootEObject);
-	        			}
-		    		  
-	        		} else if (!(setting instanceof UnmodifiableEList)) {
-	        			EcoreUtil.remove(setting, deletedEObject);
-	        		}
-	        	}
-	        }
-	    }
-	      
-//	    EcoreUtil.remove(eObject);
-
-	    for (EObject crossResourceEObject : crossResourceEObjects) {
-	    	EcoreUtil.remove(crossResourceEObject.eContainer(), 
-	    			crossResourceEObject.eContainmentFeature(), crossResourceEObject);
-	    }
-	}
+//    	
+//    	DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelTree.getModel().getRoot();
+//    	ChckBoxTreeNodeElem rootObject = (ChckBoxTreeNodeElem) root.getUserObject();
+//
+//    	long start = System.nanoTime();
+//    	filterModel(rootObject.getElement(), checkedNodes, uncheckedNodes);
+//    	System.out.println(System.nanoTime() - start);
+//    	
+//    	for (EObject eObject : uncheckedNodes) {
+//    		delete(eObject, rootObject.getElement());
+//    	}
+//    }
+//	
+//	public static void filterModel(EObject element, List<EObject> checkedElements,
+//			List<EObject> uncheckedElements) {
+//    	
+//    	if (element == null || !(element instanceof Classifier || element instanceof Package)) {
+//    		return;
+//    	}
+//    	
+//    	Object[] elemArray = element.eContents().toArray();
+//		for (Object obj : elemArray) {
+//			filterModel((EObject)obj, checkedElements, uncheckedElements);
+//		}
+//    	
+//    	if (!checkedElements.contains(element)) {
+//    		if (element instanceof Package) {
+//    			if (((Package) element).getPackagedElement().size() == 0) {
+//    				uncheckedElements.add(element);
+//    				EcoreUtil.remove(element);
+//    			}
+//    		} else {
+//    			uncheckedElements.add(element);
+//    			EcoreUtil.remove(element);
+//    		}
+//    	}
+//    }
+//	
+//	/**
+//	   * Deletes the object from its {@link EObject#eResource containing} resource 
+//	   * and/or its {@link EObject#eContainer containing} object
+//	   * as well as from any other feature that references it 
+//	   * within the enclosing root object. Function was adapted
+//	   * from EcoreUtil.
+//	   * @param eObject the object to delete.
+//	   */
+//	public static void delete(EObject eObject, EObject rootEObject) {
+//	    Set<EObject> eObjects = new HashSet<EObject>();
+//	    Set<EObject> crossResourceEObjects = new HashSet<EObject>();
+//	    
+//	    eObjects.add(eObject);
+//	    for (@SuppressWarnings("unchecked") TreeIterator<InternalEObject> j = 
+//	    		(TreeIterator<InternalEObject>)(TreeIterator<?>)eObject.eAllContents();  j.hasNext(); ) {
+//	    	InternalEObject childEObject = j.next();
+//	        if (childEObject.eDirectResource() != null) {
+//	        	System.out.println("0" + childEObject);
+//	        	crossResourceEObjects.add(childEObject);
+//	        }
+//	        else {
+//	        	System.out.println("1" + childEObject);
+//	        	eObjects.add(childEObject);
+//	        }
+//	    }
+//	    
+//	    System.out.println(eObject);
+//	    System.out.println(eObjects.size());
+//	    System.out.println(eObjects);
+//	    System.out.println();
+//
+//	    Map<EObject, Collection<EStructuralFeature.Setting>> usages;
+//	    usages = EcoreUtil.UsageCrossReferencer.findAll(eObjects, rootEObject);
+//
+//	    for (Map.Entry<EObject, Collection<EStructuralFeature.Setting>> entry : usages.entrySet()) {
+//	        EObject deletedEObject = entry.getKey();
+//	        Collection<EStructuralFeature.Setting> settings = entry.getValue();
+//	        for (EStructuralFeature.Setting setting : settings) {
+//	        	if (!eObjects.contains(setting.getEObject()) && setting.getEStructuralFeature().isChangeable()) {
+//	        	  
+//	        		if (setting.getEObject() instanceof Generalization ||
+//		    			  setting.getEObject() instanceof Dependency) {
+//	        			delete(setting.getEObject(), rootEObject);
+//		    		  
+//	        		} else if (setting.getEObject() instanceof GeneralizationSet) {
+//	        			EcoreUtil.remove(setting, deletedEObject);
+//	        			if (((GeneralizationSet)setting.getEObject()).getGeneralization().size() == 0) {
+//	        				EcoreUtil.remove(setting.getEObject());
+//	        			}
+//		    		  
+//	        		} else if (setting.getEObject() instanceof Property) {
+//	        			if (setting.getEObject().eContainer() instanceof Association) {
+//	        				delete(setting.getEObject().eContainer(), rootEObject);
+//	        			} else {
+//	        				delete(setting.getEObject(), rootEObject);
+//	        			}
+//		    		  
+//	        		} else if (setting.getEObject() instanceof Comment) {
+//	        			EcoreUtil.remove(setting, deletedEObject);
+//	        			if (((Comment)setting.getEObject()).getAnnotatedElement().size() == 0) {
+//	        				delete (setting.getEObject(), rootEObject);
+//	        			}
+//		    		  
+//	        		} else if (!(setting instanceof UnmodifiableEList)) {
+//	        			EcoreUtil.remove(setting, deletedEObject);
+//	        		}
+//	        	}
+//	        }
+//	    }
+//
+//	    for (EObject crossResourceEObject : crossResourceEObjects) {
+//	    	EcoreUtil.remove(crossResourceEObject.eContainer(), 
+//	    			crossResourceEObject.eContainmentFeature(), crossResourceEObject);
+//	    }
+//	}
     
     static class OntoUMLTreeCellRenderer implements CheckboxTreeCellRenderer {
 
