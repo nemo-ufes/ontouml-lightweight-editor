@@ -72,58 +72,64 @@ public class MapperEA implements Mapper {
         		}
         	}
         }
-
-        setID(doc.getDocumentElement());
         
-        createStereotypesMap();
-        
-        createNonUMLElementsList();
+        preProcessXMI(doc.getDocumentElement());
 	}
 	
-    protected void setID(Element element) {
-    	List<Element> childList = XMLDOMUtil.getElementChilds(element);
-	    for (Element child : childList) {
-    		if (child.hasAttributeNS(XMINS, "id") &&
-    			doc.getElementById(child.getAttributeNS(XMINS, "id")) == null) {
-    			child.setIdAttributeNS(XMINS, "id", true);
-    		}
-    		setID(child);
+	private void preProcessXMI(Element element)
+	{
+		List<Element> childList = XMLDOMUtil.getElementChilds(element);
+	    for (Element child : childList)
+	    {
+    		setID1(child);
+    		
+    		populateStereotypesMap(child);
+    		
+    		populateNonUMLElementsList(child);
+    		
+    		preProcessXMI(child);
 	    }
-    }
-    
-    protected void createStereotypesMap() {
-    	NodeList stereotypeList = doc.getElementsByTagNameNS(OntoUML, "*");
-    	if (stereotypeList.getLength() != 0) {
-    		for (int i=0; i < stereotypeList.getLength(); i++) {
-    			Element stereotypeElem = (Element) stereotypeList.item(i);
-    			
-    			if (stereotypeElem.hasAttribute("base_Class")) {
-    				stereotypes.put(stereotypeElem.getAttribute("base_Class"),
-    						stereotypeElem);
-    			}
-    			if (stereotypeElem.hasAttribute("base_Association")) {
-    				stereotypes.put(stereotypeElem.getAttribute("base_Association"),
-    						stereotypeElem);
-    			}
-    		}
+	}
+	
+	private void setID1(Element element)
+	{
+		if (element.hasAttributeNS(XMINS, "id") && 
+				doc.getElementById(element.getAttributeNS(XMINS, "id")) == null)
+    	{
+			element.setIdAttributeNS(XMINS, "id", true);
     	}
-    }
-    
-    protected void createNonUMLElementsList()
-    {
-    	NodeList elements = doc.getElementsByTagName("elements");
-    	if (elements != null) {
-			for (Node child = elements.item(0).getFirstChild(); child != null; child = child.getNextSibling()) {
-	    		if (child instanceof Element) {
-	    			String type = ((Element)child).getAttributeNS(XMINS, "type");
-	    			if (type.equals("uml:UMLDiagram") || type.equals("uml:Text") || type.equals("uml:Boundary"))
-	    			{
-	    				nonUMLElement.add(((Element)child).getAttributeNS(XMINS, "idref"));
-	    			}
-	    		}
+	}
+	
+	private void populateStereotypesMap(Element element)
+	{
+		if (element.getNamespaceURI() == null)
+		{
+			return;
+		}
+		if (element.getNamespaceURI().equals(OntoUML))
+		{
+			if (element.hasAttribute("base_Class"))
+			{
+				stereotypes.put(element.getAttribute("base_Class"), element);
+			}
+			if (element.hasAttribute("base_Association"))
+			{
+				stereotypes.put(element.getAttribute("base_Association"), element);
 			}
 		}
-    }
+	}
+	
+	private void populateNonUMLElementsList(Element element)
+	{
+		if (element.getNodeName().equals("element") && element.hasAttributeNS(XMINS, "idref"))
+		{
+			String type = element.getAttributeNS(XMINS, "type");
+			if (type.equals("uml:UMLDiagram") || type.equals("uml:Text") || type.equals("uml:Boundary"))
+			{
+				nonUMLElement.add(element.getAttributeNS(XMINS, "idref"));
+			}
+		}
+	}
 
 	@Override
 	public Object getModelElement() {
@@ -198,7 +204,8 @@ public class MapperEA implements Mapper {
 				elemList.addAll(XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATIONCLASS, this));
 				break;
 			case COMMENT:
-				if (getType(elem) != ElementType.COMMENT) {
+				if (getType(elem) != ElementType.COMMENT)
+				{
 					createDescriptionNode(elem);
 				}
 				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.COMMENT, this);

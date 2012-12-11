@@ -12,11 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import RefOntoUML.Association;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import java.awt.GridLayout;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.JLabel;
 
@@ -98,28 +95,28 @@ public class OntoUML2TextDialog extends JDialog implements ActionListener {
 		{
 			Writer writer = new Writer(ontoParser);
 			String modelDescr = new String();
-			modelDescr += writer.processGeneralizations();
+			modelDescr += writer.runDescriptionGeneration();
 			
-			Map<Association,Integer> assocMap = new HashMap<Association,Integer>();
-			for (SingleAssociationPanel assocPanel : assocPane.getAssocPanelList())
-			{
-				if (assocPanel.isSelectedBoth())
-				{
-					assocMap.put(assocPanel.getAssociation(), 2);
-				}
-				else if (assocPanel.isSelectedST())
-				{
-					assocMap.put(assocPanel.getAssociation(), 0);
-				}
-				else if (assocPanel.isSelectedTS())
-				{
-					assocMap.put(assocPanel.getAssociation(), 1);
-				}
-			}
-			
-			modelDescr += writer.processAssociations(assocMap);
-			
-			modelDescr += writer.processAttributes();
+//			Map<Association,Integer> assocMap = new HashMap<Association,Integer>();
+//			for (SingleAssociationPanel assocPanel : assocPane.getAssocPanelList())
+//			{
+//				if (assocPanel.isSelectedBoth())
+//				{
+//					assocMap.put(assocPanel.getAssociation(), 2);
+//				}
+//				else if (assocPanel.isSelectedST())
+//				{
+//					assocMap.put(assocPanel.getAssociation(), 0);
+//				}
+//				else if (assocPanel.isSelectedTS())
+//				{
+//					assocMap.put(assocPanel.getAssociation(), 1);
+//				}
+//			}
+//			
+//			modelDescr += writer.processAssociations(assocMap);
+//			
+//			modelDescr += writer.processAttributes();
 			
 			System.out.println(modelDescr);
 		}
