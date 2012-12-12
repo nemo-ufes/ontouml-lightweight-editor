@@ -17,10 +17,14 @@ package edu.mit.csail.sdg.alloy4viz;
  * 
  */
 
+import static edu.mit.csail.sdg.alloy4.OurUtil.menu;
+import static edu.mit.csail.sdg.alloy4.OurUtil.menuItem;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -36,36 +40,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.prefs.Preferences;
+
 import javax.swing.Box;
 import javax.swing.Icon;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
+
 import edu.mit.csail.sdg.alloy4.Computer;
 import edu.mit.csail.sdg.alloy4.ConstList;
 import edu.mit.csail.sdg.alloy4.OurBorder;
 import edu.mit.csail.sdg.alloy4.OurCheckbox;
 import edu.mit.csail.sdg.alloy4.OurConsole;
 import edu.mit.csail.sdg.alloy4.OurDialog;
+import edu.mit.csail.sdg.alloy4.OurUtil;
 import edu.mit.csail.sdg.alloy4.Runner;
 import edu.mit.csail.sdg.alloy4.Util;
-import edu.mit.csail.sdg.alloy4.OurUtil;
-import edu.mit.csail.sdg.alloy4.Version;
 import edu.mit.csail.sdg.alloy4.Util.IntPref;
 import edu.mit.csail.sdg.alloy4.Util.StringPref;
+import edu.mit.csail.sdg.alloy4.Version;
 import edu.mit.csail.sdg.alloy4graph.GraphViewer;
-import static edu.mit.csail.sdg.alloy4.OurUtil.menu;
-import static edu.mit.csail.sdg.alloy4.OurUtil.menuItem;
 
 /** GUI main window for the visualizer.
  *
@@ -313,7 +317,7 @@ public final class VizGUICustom implements ComponentListener {
     * <p> Note: if standalone==false and xmlFileName.length()==0, then we will initially hide the window.
     */
    public VizGUICustom(boolean standalone, String xmlFileName, JMenu windowmenu) {
-      this(standalone, xmlFileName, windowmenu, null, null,"");
+      this(standalone, xmlFileName, windowmenu, null, null);
    }
 
    /** Creates a new visualization GUI window; this method can only be called by the AWT event thread.
@@ -325,8 +329,8 @@ public final class VizGUICustom implements ComponentListener {
     *
     * <p> Note: if standalone==false and xmlFileName.length()==0, then we will initially hide the window.
     */
-   public VizGUICustom(boolean standalone, String xmlFileName, JMenu windowmenu, Computer enumerator, Computer evaluator,String theme) {
-      this(standalone, xmlFileName, windowmenu, enumerator, evaluator, true, theme);
+   public VizGUICustom(boolean standalone, String xmlFileName, JMenu windowmenu, Computer enumerator, Computer evaluator) {
+      this(standalone, xmlFileName, windowmenu, enumerator, evaluator, true);
    }
 
    /** Creates a new visualization GUI window; this method can only be called by the AWT event thread.
@@ -339,7 +343,7 @@ public final class VizGUICustom implements ComponentListener {
     *
     * <p> Note: if standalone==false and xmlFileName.length()==0 and makeWindow==true, then we will initially hide the window.
     */
-   public VizGUICustom(boolean standalone, String xmlFileName, JMenu windowmenu, Computer enumerator, Computer evaluator, boolean makeWindow, String theme) 
+   public VizGUICustom(boolean standalone, String xmlFileName, JMenu windowmenu, Computer enumerator, Computer evaluator, boolean makeWindow) 
    {
       this.enumerator = enumerator;
       this.standalone = standalone;
@@ -446,8 +450,10 @@ public final class VizGUICustom implements ComponentListener {
          try { wrap=true; frame.addWindowListener(doClose()); } finally { wrap=false; }
          frame.addComponentListener(this);
       }
-      if (xmlFileName.length()>0) doLoadInstance(xmlFileName);      
-          
+      if (xmlFileName.length()>0) doLoadInstance(xmlFileName);  
+      
+      // add nemo icon...
+      frame.setIconImage(Toolkit.getDefaultToolkit().getImage(VizGUICustom.class.getResource("/resources/br/ufes/inf/nemo/move/atom-48x48.png")));          
    }
 
    /** Invoked when the Visualizationwindow is resized. */

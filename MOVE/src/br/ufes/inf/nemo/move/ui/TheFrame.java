@@ -5,11 +5,17 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+
+import br.ufes.inf.nemo.move.utilities.Extractor;
+
+import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
  * @author John Guerson
@@ -26,6 +32,7 @@ public class TheFrame extends JFrame {
 	private JSplitPane innerSplitPane;	
 	private JSplitPane centerSplitPane;	
 	private TheManager appmanager;	
+	private SimpleGUICustom analyzer;
 		
 	/**
 	 * Constructor.
@@ -88,10 +95,24 @@ public class TheFrame extends JFrame {
 		setExtendedState(MAXIMIZED_BOTH);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/window.png")));
 		setTitle("OntoUML Model Validation Environment - MOVE");
+					
+		try {			
+			Extractor.alloyAnalyzerJAR();
+		} catch (IOException e) {			
+			e.printStackTrace();
+		}
 	
-		pack();
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() 
+	        {
+	        	String[] args = {""};
+	        	analyzer = new SimpleGUICustom(args,false,"");
+	        }
+		});
 		
-		restoreDefaults();
+		pack();		
+		restoreDefaults();		
+		showFrame();
 	}
 		
 	/** Restore default sizes of the split panes. */
@@ -107,6 +128,12 @@ public class TheFrame extends JFrame {
             }
         });
     }
+	
+	/** Get Alloy Analyzer.  */
+	public SimpleGUICustom getAlloyAnalyzer()
+	{
+		return analyzer;
+	}
 	
 	/** Get Manager. */
 	public TheManager getManager(){
@@ -201,4 +228,67 @@ public class TheFrame extends JFrame {
 		mainSplitPane.setDividerLocation(1.00); 
 	}
 	
+	/**
+	 * Shoe Error Message Dialog.
+	 * 
+	 * @param title
+	 * @param message
+	 */
+	public void showErrorMessageDialog(String title, String message)
+	{
+		JOptionPane.showMessageDialog(
+			this,message,title,JOptionPane.ERROR_MESSAGE,
+			new ImageIcon(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
+		);	
+	}
+	
+	/**
+	 * Show Warning Message Dialog.
+	 * 
+	 * @param title
+	 * @param message
+	 */
+	public void showWarningMessageDialog(String title, String message)
+	{
+		JOptionPane.showMessageDialog(
+			this,message,title,JOptionPane.WARNING_MESSAGE,
+			new ImageIcon(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/warning-36x36.png"))
+		);	
+	}
+	
+	/**
+	 * Show Successful Message Dialog.
+	 * 
+	 * @param title
+	 * @param message
+	 */
+	public void showSuccessfulMessageDialog(String title, String message)
+	{
+		JOptionPane.showMessageDialog(
+			this,message,title,JOptionPane.INFORMATION_MESSAGE,
+			new ImageIcon(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/check-36x36.png"))
+		);
+	}
+	
+	/**
+	 * Show Information Message Dialog.
+	 * 
+	 * @param title
+	 * @param message
+	 */
+	public void showInformationMessageDialog(String title, String message)
+	{
+		JOptionPane.showMessageDialog(
+			this,message,title,JOptionPane.INFORMATION_MESSAGE
+		);
+	}
+	
+	/** Make the frame visible, non-iconized, and focused. */
+    public void showFrame() 
+    {
+      setVisible(true);
+      setExtendedState(getExtendedState() & ~JFrame.ICONIFIED);
+      requestFocus();
+      toFront();
+    }
 }

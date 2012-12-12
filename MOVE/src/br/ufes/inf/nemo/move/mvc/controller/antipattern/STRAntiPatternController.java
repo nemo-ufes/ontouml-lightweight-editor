@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.STRAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.STRAntiPatternView;
 
@@ -96,10 +95,10 @@ public class STRAntiPatternController {
 	    		strView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
 	    		
 	    		String content = FileUtil.readFile(strView.getTheFrame().getManager().getAlloyModel().getAlloyPath());
-	    		String alsPath = AlloyModel.alsOutDirectory+strView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$STR"+strModel.getId()+".als";	
+	    		String alsPath = strView.getTheFrame().getManager().getAlloyModel().getDirectory()+strView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$STR"+strModel.getId()+".als";	
 	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		strView.getTheFrame().getManager().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	
+	    		strView.getTheFrame().getManager().doOpeningAlloy(true,-1);	
     		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(strView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

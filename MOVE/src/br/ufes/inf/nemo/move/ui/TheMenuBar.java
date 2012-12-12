@@ -20,6 +20,7 @@ public class TheMenuBar extends JMenuBar {
 		
 	private TheFrame frame;	
 	private JMenuItem mntmAbout; 
+	private JMenuItem mntmLicenses;
 	
 	/**
 	 * Constructor.
@@ -46,6 +47,9 @@ public class TheMenuBar extends JMenuBar {
 		mntmAbout = new JMenuItem("About MOVE");
 		mnHelp.add(mntmAbout);
 		
+		mntmLicenses = new JMenuItem("Licenses");
+		mnHelp.add(mntmLicenses);
+		
 		addActionListeners();
 	}
 	
@@ -61,5 +65,15 @@ public class TheMenuBar extends JMenuBar {
        			AboutDialog.open(frame);
        		}
 		});
+		mntmLicenses.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			
+       		}
+		});
+		
 	}
+	
+	
 }

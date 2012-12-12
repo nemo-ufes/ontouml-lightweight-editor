@@ -10,9 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.ScrollPaneConstants;
 
 import org.fife.ui.autocomplete.AutoCompletion;
-import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.autocomplete.ShorthandCompletion;
 import org.fife.ui.autocomplete.TemplateCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -22,8 +20,8 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.util.ColorPalette;
-import br.ufes.inf.nemo.move.util.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.move.utilities.ColorPalette;
+import br.ufes.inf.nemo.move.utilities.ColorPalette.ThemeColor;
 
 /**
  * @author John Guerson
@@ -35,7 +33,8 @@ public class OCLEditorPanel extends JPanel {
 	
 	public TheFrame frame;
 	public RSyntaxTextArea textArea;
-	public CompletionProvider provider;
+	public OCLTokenMaker tokenMaker;
+	public DefaultCompletionProvider provider;
 	public AutoCompletion ac;
 	public RTextScrollPane scrollPane;
 	
@@ -88,6 +87,23 @@ public class OCLEditorPanel extends JPanel {
 	   this.frame = frame;
    }
    
+   /**
+    * Set Eclipse Theme on text area.
+    * 
+    * @param textArea
+    * @param xmlPath
+    */
+   public void setTheme(RSyntaxTextArea textArea, String xmlPath)
+   {
+	   Theme theme;
+		try {
+			theme = Theme.load(getClass().getResourceAsStream(xmlPath));
+			theme.apply(textArea);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}   
+   }
+   
 	/**
 	 * Constructor.
 	 */
@@ -98,36 +114,30 @@ public class OCLEditorPanel extends JPanel {
 	    textArea.setAntiAliasingEnabled(true);
 	    textArea.setCodeFoldingEnabled(false);
 		textArea.setForeground(Color.BLACK);
-		textArea.setBackground(new Color(255, 255, 255));		
+		textArea.setBackground(new Color(255, 255, 255));				
+		textArea.setCurrentLineHighlightColor(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));		
 		setFont(textArea,new Font("Consolas", Font.PLAIN, 11));		
-		textArea.setCurrentLineHighlightColor(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
-		
-		Theme theme;
-		try {
-			theme = Theme.load(getClass().getResourceAsStream("/br/ufes/inf/nemo/move/ui/ocl/eclipse.xml"));
-			theme.apply(textArea);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}      
-	         
-	    OCLTokenMaker tm = new OCLTokenMaker();	    
-	    ((RSyntaxDocument)textArea.getDocument()).setSyntaxStyle(tm);
+		setTheme(textArea,"/br/ufes/inf/nemo/move/ui/ocl/eclipse.xml");
+			         
+		tokenMaker = new OCLTokenMaker();	    
+	    ((RSyntaxDocument)textArea.getDocument()).setSyntaxStyle(tokenMaker);
 	       
-	    OCLCompletionProvider provider = new OCLCompletionProvider();
-		addOCLCompletions(provider);
+	    provider = new DefaultCompletionProvider();
+	    provider.addCompletion(new TemplateCompletion(provider, "for", "for-loop", "for (int ${i} = 0s"));
 
-	    ac = new AutoCompletion(provider);
-      	ac.install(textArea);
-      	ac.getShowDescWindow();
+	    ac = new AutoCompletion(provider);      	
+	    ac.install(textArea);
+	    ac.setAutoActivationEnabled(true);
+      	ac.setShowDescWindow(true);      	
       	setLayout(new BorderLayout(0, 0));
-
+      	
       	scrollPane = new RTextScrollPane(textArea);
       	scrollPane.getGutter().setLineNumberColor(Color.GRAY);
       	scrollPane.getTextArea().setRows(5);
       	scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
       	
       	setPreferredSize(new Dimension(400, 100));
-      	add(scrollPane);      	      	
+      	add(scrollPane); 
 	}
 	    
 	public class OCLCompletionProvider extends DefaultCompletionProvider
@@ -136,24 +146,25 @@ public class OCLEditorPanel extends JPanel {
 		protected boolean isValidChar(char ch) 
 		{
 			return super.isValidChar(ch) || ch=='.' || ch==':'|| ch=='-';
-		}
+		}		
 	}
-	
+			
     /**
      * Create a simple provider that adds some related completions.
      * 
      * @return The completion provider.
      */
-    private CompletionProvider addOCLCompletions(OCLCompletionProvider provider) 
-    {  
-       provider.addCompletion(new ShorthandCompletion(provider, "Context","context type\ninv : true","context declaration"));
-       provider.addCompletion(new ShorthandCompletion(provider, "Property Context","context type::property : propertyType\nderive: null","derive property context declaration"));
+    //private void addOCLCompletions() 
+    //{  
+       //provider.addCompletion(new ShorthandCompletion(provider, "Context","context type\ninv : true","context declaration"));
+      // provider.addCompletion(new ShorthandCompletion(provider, "Property Context","context type::property : propertyType\nderive: null","derive property context declaration"));
        
-       provider.addCompletion(new ShorthandCompletion(provider, "oclIsKindOf","oclIsKindOf(Classifier)","Evaluates to true if the type of self conforms to t. That is, self is of type t or a subtype of t."));
+       //provider.addCompletion(new ShorthandCompletion(provider, "oclIsKindOf","oclIsKindOf(","Evaluates to true if the type of self conforms to t. That is, self is of type t or a subtype of t."));
        
-       String template =
-    		      "for (int ${i} = 0; ${i} < ${array}.length; ${i}++) {\n\t${cursor}\n}";
-       provider.addCompletion(new TemplateCompletion(provider, "for", "for-loop", template));
+      // String template =
+    	//	   "for (int ${i} = 0; ${i} &lt; ${array}.length; ${i}++) {${cursor}";
+    			   //
+       //provider.addCompletion(new TemplateCompletion(provider, "for", "for-loop", "for (int ${i} = 0; ${i} &lt; ${array}.length; ${i}++) {${cursor}"));
     		   
        /*
        provider.addCompletion(new ShorthandCompletion(provider, "."));
@@ -219,8 +230,7 @@ public class OCLEditorPanel extends JPanel {
        provider.addCompletion(new BasicCompletion(provider, "let x = in "));
        
        provider.addCompletion(new BasicCompletion(provider, "if then else "));
-       */
-       return provider;
-    }
+       */       
+  //  }
 
 }

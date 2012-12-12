@@ -12,8 +12,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.OCLOptionsModel;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLOptionsModel;
 import br.ufes.inf.nemo.move.mvc.view.OCLOptionsView;
@@ -21,7 +21,6 @@ import br.ufes.inf.nemo.move.mvc.view.OntoUMLOptionsView;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.ocl2alloy.options.OCLOptions;
 import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
-import javax.swing.border.EmptyBorder;
 
 /**
  * @author John Guerson
@@ -162,9 +161,14 @@ public class OptionsDialog extends JDialog {
 		
     	dispose();
     	
-    	frame.getManager().TransformsOntoUMLIntoAlloy();
-    	frame.getManager().TransformsOCLIntoAlloy();
-    	frame.getManager().OpenAlloyModelWithAnalyzer(frame.getManager().getAlloyModel().getAlloyPath(),AlloyModel.alsOutDirectory);	 
+    	frame.getManager().doOntoUMLToAlloy();
+    	
+    	frame.getManager().doOCLToAlloy();
+    	
+    	if (ontoumlOptions.openAnalyzer)
+    		frame.getManager().doOpeningAlloy(true,-1);
+    	else
+    		frame.getManager().doOpeningAlloy(false,0);
 	}
 	
 	public TheFrame getTheFrame()

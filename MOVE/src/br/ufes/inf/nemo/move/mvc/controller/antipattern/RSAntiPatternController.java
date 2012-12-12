@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RSAntiPatternView;
 
@@ -82,10 +81,10 @@ public class RSAntiPatternController {
 	    		rsView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
 	    		
 	    		String content = FileUtil.readFile(rsView.getTheFrame().getManager().getAlloyModel().getAlloyPath());
-	    		String alsPath = AlloyModel.alsOutDirectory+rsView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$RS"+rsModel.getId()+".als";	
+	    		String alsPath = rsView.getTheFrame().getManager().getAlloyModel().getDirectory()+rsView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$RS"+rsModel.getId()+".als";	
 	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		rsView.getTheFrame().getManager().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	
+	    		rsView.getTheFrame().getManager().doOpeningAlloy(true,-1);	
 	    		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(rsView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

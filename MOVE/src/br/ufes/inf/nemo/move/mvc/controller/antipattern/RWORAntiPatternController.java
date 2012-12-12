@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RWORAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RWORAntiPatternView;
 
@@ -110,10 +109,10 @@ public class RWORAntiPatternController {
 	    		rworView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
 	    		
 	    		String content = FileUtil.readFile(rworView.getTheFrame().getManager().getAlloyModel().getAlloyPath());
-	    		String alsPath = AlloyModel.alsOutDirectory+rworView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$RWOR"+rworModel.getId()+".als";	
+	    		String alsPath = rworView.getTheFrame().getManager().getAlloyModel().getDirectory()+rworView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$RWOR"+rworModel.getId()+".als";	
 	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		rworView.getTheFrame().getManager().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	
+	    		rworView.getTheFrame().getManager().doOpeningAlloy(true,-1);	
     		
 	    	}catch(Exception exception){
 	    		JOptionPane.showMessageDialog(rworView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

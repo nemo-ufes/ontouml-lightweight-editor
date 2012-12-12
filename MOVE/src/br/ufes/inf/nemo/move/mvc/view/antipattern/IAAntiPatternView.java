@@ -22,7 +22,7 @@ import javax.swing.border.TitledBorder;
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.IAAntiPatternModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.util.CheckBoxListScrollPane;
+import br.ufes.inf.nemo.move.ui.util.CheckBoxListScrollPane;
 
 /**
  * @author John Guerson
