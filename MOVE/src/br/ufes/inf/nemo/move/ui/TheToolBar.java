@@ -166,7 +166,7 @@ public class TheToolBar extends JToolBar {
        		{
        			if(frame.getManager().getOntoUMLModel().getOntoUMLParser()==null)
        			{	       			
-       				frame.showInformationMessageDialog("Show Instances","First you need to load your the Model"); 
+       				frame.showInformationMessageDialog("Show Instances","First you need to load your Model"); 
     				       				
        			}else{ 
        				

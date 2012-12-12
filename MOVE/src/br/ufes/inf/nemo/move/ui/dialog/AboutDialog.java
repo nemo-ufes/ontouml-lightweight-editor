@@ -78,7 +78,7 @@ public class AboutDialog extends JDialog {
 		lblVersion.setFont(new Font("Tahoma", Font.ITALIC, 11));
 		lblVersion.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		lblNewLabel_2 = new JLabel("November 23 2012 , Brazil");
+		lblNewLabel_2 = new JLabel("December 12 2012 , Brazil");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(

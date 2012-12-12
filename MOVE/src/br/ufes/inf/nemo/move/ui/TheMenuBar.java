@@ -8,6 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import br.ufes.inf.nemo.move.ui.dialog.AboutDialog;
+import br.ufes.inf.nemo.move.ui.dialog.LicensesDialog;
 
 
 /**
@@ -44,10 +45,10 @@ public class TheMenuBar extends JMenuBar {
 		JMenu mnHelp = new JMenu("Help");
 		add(mnHelp);
 		
-		mntmAbout = new JMenuItem("About MOVE");
+		mntmAbout = new JMenuItem("About MOVE...");
 		mnHelp.add(mntmAbout);
 		
-		mntmLicenses = new JMenuItem("Licenses");
+		mntmLicenses = new JMenuItem("Copyright Licenses");
 		mnHelp.add(mntmLicenses);
 		
 		addActionListeners();
@@ -69,7 +70,7 @@ public class TheMenuBar extends JMenuBar {
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			
+       			LicensesDialog.open(frame);
        		}
 		});
 		
