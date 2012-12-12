@@ -82,7 +82,7 @@ public class OntoUMLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {	    	
-	    	ontoumlview.getTheFrame().getConsole().write(ontoumlview.getTheFrame().getManager().verifyModel());	    	
+	    	ontoumlview.getTheFrame().getConsole().write(ontoumlview.getTheFrame().getManager().doModelVerification());	    	
 	    	
 	    	ontoumlview.getTheFrame().ShowConsole();
 	    }
@@ -113,7 +113,7 @@ public class OntoUMLController {
 	    public void actionPerformed(ActionEvent e) 
 	    {
 	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
-	    	ontoumlview.getTheFrame().getManager().UpdateSelection(OntoUMLParser.NO_HIERARCHY);
+	    	ontoumlview.getTheFrame().getManager().doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
 	    	String path = ontoumlview.saveOntoUMLPathLocation();
 	    	if(path!=null)ResourceUtil.saveReferenceOntoUML(path, ontoumlview.getTheFrame().getManager().getOntoUMLModel().getOntoUMLModelInstance());
 	    }

@@ -17,13 +17,13 @@ import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 public class AlloyModel {
 
 	/** Absolute directory path of alloy specification. */
-	public static String alsOutDirectory = AlloyModel.class.getProtectionDomain().getCodeSource().getLocation().getPath();	
+	public String alsOutDirectory;	
 	
 	/** File name of alloy specification. */
-	private String alsmodelName = "OUTPUT";	
+	private String alsmodelName;	
 	
 	/** Absolute path of alloy specification. */
-	private String alsPath = AlloyModel.class.getProtectionDomain().getCodeSource().getLocation().getPath()+alsmodelName+".als";	
+	private String alsPath;	
 	
 	/** Content of alloy specification. */	
 	private String content = new String();
@@ -142,5 +142,8 @@ public class AlloyModel {
 	
 	/** Get content of alloy specification. */
 	public String getContent() { return content; }
+	
+	/** Get the Destination Directory of this model. */
+	public String getDirectory() { return alsOutDirectory; }
 	
 }

@@ -15,8 +15,8 @@ import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeBar;
-import br.ufes.inf.nemo.move.util.TitleTextField;
-import br.ufes.inf.nemo.move.util.TreeScrollPane;
+import br.ufes.inf.nemo.move.ui.util.TitleTextField;
+import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
 
 /**
  * This class represents a View for OntoUML Model.

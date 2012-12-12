@@ -10,11 +10,10 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
-import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
-import br.ufes.inf.nemo.move.ui.dialog.CompleteSelectionDialog;
+import br.ufes.inf.nemo.move.ui.dialog.AutoCompletionDialog;
 import br.ufes.inf.nemo.move.ui.dialog.OptionsDialog;
-import br.ufes.inf.nemo.move.util.ToolbarButton;
+import br.ufes.inf.nemo.move.ui.util.ToolbarButton;
 
 /**
  * @author John Guerson
@@ -30,7 +29,8 @@ public class TheToolBar extends JToolBar {
 	private ToolbarButton btnShowOrHideAntiPattern;
 	private ToolbarButton btnShowOrHideOCL;
 	private ToolbarButton btnAlloyAnalyzer;
-	public ToolbarButton btnCompleteSelect;
+	private ToolbarButton btnCompleteSelect;
+	private ToolbarButton btnShowInstances;
 	
 	/**
 	 * Constructor.
@@ -96,19 +96,33 @@ public class TheToolBar extends JToolBar {
         toolBarSeparator4.setOrientation( SwingConstants.VERTICAL );  
         add( toolBarSeparator4 );
         
-        createAlloyAnalyzerButton();			
+        createAlloyAnalyzerButton();	
+
+        JSeparator toolBarSeparator5 = new Separator();
+        toolBarSeparator5.setVisible(false);
+        toolBarSeparator5.setOrientation( SwingConstants.VERTICAL );  
+        add( toolBarSeparator5 );
+        
+        createShowInstances();
 	}		
 		
 	public void createAutoSelectionButton()
 	{
-		btnCompleteSelect = new ToolbarButton("Complete Selection","/resources/br/ufes/inf/nemo/move/autoselection-36x36.png");
-		btnCompleteSelect.setToolTipText("Complete Model Selection");
+		btnCompleteSelect = new ToolbarButton("Auto Completion","/resources/br/ufes/inf/nemo/move/completion-36x36.png");
+		btnCompleteSelect.setToolTipText("");
 		
 		btnCompleteSelect.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent event) 
 			{
-				CompleteSelectionDialog.open(frame);
+				if(frame.getManager().getOntoUMLModel().getOntoUMLParser()==null)
+       			{	       			
+       				frame.showInformationMessageDialog("Auto Completion","First you need to load your Model"); 
+       				
+       			}else{
+       				
+       				AutoCompletionDialog.open(frame);
+       			}
 			}
 		});				
 		add(btnCompleteSelect);
@@ -117,7 +131,7 @@ public class TheToolBar extends JToolBar {
 	public void createAlloyAnalyzerButton()
 	{
 		btnAlloyAnalyzer = new ToolbarButton("Launch Analyzer","/resources/br/ufes/inf/nemo/move/alloy-36x36.png");
-		btnAlloyAnalyzer.setToolTipText("Run Validation With Analyzer");
+		btnAlloyAnalyzer.setToolTipText("");
 		btnAlloyAnalyzer.setEnabled(true);
 		btnAlloyAnalyzer.addActionListener(new ActionListener() 
 		{
@@ -125,14 +139,47 @@ public class TheToolBar extends JToolBar {
        		{
        			if(frame.getManager().getOntoUMLModel().getOntoUMLParser()==null)
        			{	       			
-       				frame.getManager().OpenAlloyModelWithAnalyzer(frame.getManager().getAlloyModel().getAlloyPath(),AlloyModel.alsOutDirectory);
-       			}else{ 
-       				frame.getManager().ParseOCL(false);       				
+       				frame.showInformationMessageDialog("Launch Analyzer","First you need to load your Model"); 
+       				
+       			}else{
+       				
+       				frame.getManager().ParseOCL(false);
+       				
+       				//FIXME
+       				frame.getManager().getOntoUMLOptionModel().getOptions().openAnalyzer=true;
+       				
        				OptionsDialog.open(frame.getManager().getOntoUMLOptionModel(),frame.getManager().getOCLOptionModel(),frame);       				
        			}
        		}
        	});
 		add(btnAlloyAnalyzer);
+	}
+	
+	public void createShowInstances()
+	{
+		btnShowInstances = new ToolbarButton("Show Instances","/resources/br/ufes/inf/nemo/move/atom-36x36.png");
+		btnShowInstances.setToolTipText("");
+		btnShowInstances.setEnabled(true);
+		btnShowInstances.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			if(frame.getManager().getOntoUMLModel().getOntoUMLParser()==null)
+       			{	       			
+       				frame.showInformationMessageDialog("Show Instances","First you need to load your the Model"); 
+    				       				
+       			}else{ 
+       				
+       				frame.getManager().ParseOCL(false);
+       				
+       				//FIXME
+       				frame.getManager().getOntoUMLOptionModel().getOptions().openAnalyzer=false;
+       				
+       				OptionsDialog.open(frame.getManager().getOntoUMLOptionModel(),frame.getManager().getOCLOptionModel(),frame);       				
+       			}
+       		}
+       	});
+		add(btnShowInstances);
 	}
 		
 	public void createShowHideConsole ()
@@ -188,7 +235,11 @@ public class TheToolBar extends JToolBar {
 		{
 			public void actionPerformed(ActionEvent event) 
 			{
-				if (frame.getManager().getOntoUMLModel().getOntoUMLParser()==null) { frame.getConsole().write("First you need to load the Model"); return; }
+				if (frame.getManager().getOntoUMLModel().getOntoUMLParser()==null) 
+				{ 
+					frame.showInformationMessageDialog("Search AntiPatterns","First you need to load your Model"); 
+					return; 
+				}
 				
 				try {
 					

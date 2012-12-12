@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.move.mvc.model.AlloyModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RBOSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RBOSAntiPatternView;
 
@@ -102,10 +101,10 @@ public class RBOSAntiPatternController {
 	    		rbosView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
 	    		
 	    		String content = FileUtil.readFile(rbosView.getTheFrame().getManager().getAlloyModel().getAlloyPath());
-	    		String alsPath = AlloyModel.alsOutDirectory+rbosView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$RBOS"+rbosModel.getId()+".als";	
+	    		String alsPath = rbosView.getTheFrame().getManager().getAlloyModel().getDirectory()+rbosView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$RBOS"+rbosModel.getId()+".als";	
 	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		rbosView.getTheFrame().getManager().OpenAlloyModelWithAnalyzer(alsPath,AlloyModel.alsOutDirectory);	 
+	    		rbosView.getTheFrame().getManager().doOpeningAlloy(true,-1); 
 	    		 		
 	    		
 	    	}catch(Exception exception){

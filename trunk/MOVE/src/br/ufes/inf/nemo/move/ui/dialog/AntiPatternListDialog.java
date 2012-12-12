@@ -268,7 +268,7 @@ public class AntiPatternListDialog extends JDialog {
 		ArrayList<RWORAntiPatternModel> rworListModel = new ArrayList<RWORAntiPatternModel>();				
 		ArrayList<IAAntiPatternModel> iaListModel = new ArrayList<IAAntiPatternModel>();
 		
-		frame.getManager().UpdateSelection(OntoUMLParser.NO_HIERARCHY);
+		frame.getManager().doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
 		
 		OntoUMLParser parser = frame.getManager().getOntoUMLModel().getOntoUMLParser();
 		if (parser.getElements() == null) return;

@@ -23,7 +23,7 @@ import org.eclipse.uml2.uml.Constraint;
 
 import br.ufes.inf.nemo.move.mvc.model.OCLOptionsModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.util.SingleConstraintPanel;
+import br.ufes.inf.nemo.move.ui.util.SingleConstraintPanel;
 
 /**
  * 

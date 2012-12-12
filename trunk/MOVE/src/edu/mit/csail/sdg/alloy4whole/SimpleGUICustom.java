@@ -130,8 +130,6 @@ import edu.mit.csail.sdg.alloy4compiler.translator.A4SolutionReader;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Tuple;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4TupleSet;
 import edu.mit.csail.sdg.alloy4viz.VizGUICustom;
-import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
-import edu.mit.csail.sdg.alloy4whole.SwingLogPanelCustom;
 import edu.mit.csail.sdg.alloy4whole.SimpleReporterCustom.SimpleCallback1;
 import edu.mit.csail.sdg.alloy4whole.SimpleReporterCustom.SimpleTask1;
 import edu.mit.csail.sdg.alloy4whole.SimpleReporterCustom.SimpleTask2;
@@ -278,7 +276,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     //===================================================================================================//
 
     /** The JFrame for the main window. */
-    private JFrame frame;
+    public JFrame frame;
 
     /** The JFrame for the visualizer window. */
     private VizGUICustom viz;
@@ -364,6 +362,14 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     /** If true, that means the event handlers should return a Runner encapsulating them, rather than perform the actual work. */
     private boolean wrap = false;
 
+    //===================================================================================================//
+    
+    /** frame is visible. */
+    public boolean isVisible=true;
+    
+    /** theme path. */
+    public String themePath="";
+        
     //====== helper methods =================================================//
 
     /** Inserts "filename" into the "recently opened file list". */
@@ -687,13 +693,13 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method performs File->New. */
-    private Runner doNew() {
+    public Runner doNew() {
         if (!wrap) { text.newtab(null); notifyChange(); doShow(); }
         return wrapMe();
     }
 
     /** This method performs File->Open. */
-    private Runner doOpen() {
+    public Runner doOpen() {
         if (wrap) return wrapMe();
         File file=OurDialog.askFile(true, null, ".als", ".als files");
         if (file!=null) {
@@ -704,7 +710,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method performs File->OpenBuiltinModels. */
-    private Runner doBuiltin() {
+    public Runner doBuiltin() {
         if (wrap) return wrapMe();
         File file=OurDialog.askFile(true, alloyHome() + fs + "models", ".als", ".als files");
         if (file!=null) {
@@ -714,19 +720,19 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method performs File->ReloadAll. */
-    private Runner doReloadAll() {
+    public Runner doReloadAll() {
         if (!wrap) text.reloadAll();
         return wrapMe();
     }
 
     /** This method performs File->ClearRecentFiles. */
-    private Runner doClearRecent() {
+    public Runner doClearRecent() {
         if (!wrap) { Model0.set(""); Model1.set(""); Model2.set(""); Model3.set(""); }
         return wrapMe();
     }
 
     /** This method performs File->Save. */
-    private Runner doSave() {
+    public Runner doSave() {
         if (!wrap) {
            String ans = text.save(false);
            if (ans==null) return null;
@@ -738,7 +744,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method performs File->SaveAs. */
-    private Runner doSaveAs() {
+    public Runner doSaveAs() {
         if (!wrap) {
            String ans = text.save(true);
            if (ans==null) return null;
@@ -750,7 +756,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method clears the temporary files and then reinitialize the temporary directory. */
-    private Runner doClearTemp() {
+    public Runner doClearTemp() {
         if (!wrap) {
            clearTemporarySpace();
            copyFromJAR();
@@ -762,13 +768,13 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method performs File->Close. */
-    private Runner doClose() {
+    public Runner doClose() {
         if (!wrap) text.close();
         return wrapMe();
     }
 
     /** This method performs File->Quit. */
-    private Runner doQuit() {
+    public Runner doQuit() {
         if (!wrap) if (text.closeAll()) {
             try { WorkerEngineCustom.stop(); } finally {  }
         }
@@ -808,37 +814,37 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method performs Edit->Undo. */
-    private Runner doUndo() {
+    public Runner doUndo() {
         if (!wrap) text.get().undo();
         return wrapMe();
     }
 
     /** This method performs Edit->Redo. */
-    private Runner doRedo() {
+    public Runner doRedo() {
         if (!wrap) text.get().redo();
         return wrapMe();
     }
 
     /** This method performs Edit->Copy. */
-    private Runner doCopy() {
+    public Runner doCopy() {
         if (!wrap) { if (lastFocusIsOnEditor) text.get().copy(); else log.copy(); }
         return wrapMe();
     }
 
     /** This method performs Edit->Cut. */
-    private Runner doCut() {
+    public Runner doCut() {
         if (!wrap && lastFocusIsOnEditor) text.get().cut();
         return wrapMe();
     }
 
     /** This method performs Edit->Paste. */
-    private Runner doPaste() {
+    public Runner doPaste() {
         if (!wrap && lastFocusIsOnEditor) text.get().paste();
         return wrapMe();
     }
 
     /** This method performs Edit->Find. */
-    private Runner doFind() {
+    public Runner doFind() {
         if (wrap) return wrapMe();
         JTextField x = OurUtil.textfield(lastFind,30);
         x.selectAll();
@@ -856,7 +862,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method performs Edit->FindNext. */
-    private Runner doFindNext() {
+    public Runner doFindNext() {
         if (wrap) return wrapMe();
         if (lastFind.length()==0) return null;
         OurSyntaxWidget t = text.get();
@@ -875,7 +881,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method performs Edit->Goto. */
-    private Runner doGoto() {
+    public Runner doGoto() {
         if (wrap) return wrapMe();
         JTextField y = OurUtil.textfield("", 10);
         JTextField x = OurUtil.textfield("", 10);
@@ -902,19 +908,19 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method performs Edit->GotoPrevFile. */
-    private Runner doGotoPrevFile() {
+    public Runner doGotoPrevFile() {
         if (wrap) return wrapMe(); else {text.prev(); return null;}
     }
 
     /** This method performs Edit->GotoNextFile. */
-    private Runner doGotoNextFile() {
+    public Runner doGotoNextFile() {
         if (wrap) return wrapMe(); else {text.next(); return null;}
     }
 
     //===============================================================================================================//
 
     /** This method refreshes the "run" menu. */
-    private Runner doRefreshRun() {    	
+    public Runner doRefreshRun() {    	
         if (wrap) return wrapMe();
         KeyStroke ac = KeyStroke.getKeyStroke(VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
         try {
@@ -982,7 +988,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method executes a particular RUN or CHECK command. */
-    private Runner doRun(Integer commandIndex) {
+    public Runner doRun(Integer commandIndex) {
     	
         if (wrap) return wrapMe(commandIndex);
         final int index = commandIndex;
@@ -1043,6 +1049,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
             log.flush();
             doStop(2);
         }
+        // load the custom theme...
         if ((!themePath.isEmpty()) && (themePath != null)) viz.loadThemeFile(themePath);
         return null;
     }
@@ -1068,7 +1075,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method executes the latest command. */
-    private Runner doExecuteLatest() {
+    public Runner doExecuteLatest() {
         if (wrap) return wrapMe();
         doRefreshRun();
         OurUtil.enableAll(runmenu);
@@ -1081,7 +1088,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method displays the parse tree. */
-    private Runner doShowParseTree() {
+    public Runner doShowParseTree() {
         if (wrap) return wrapMe();
         doRefreshRun();
         OurUtil.enableAll(runmenu);
@@ -1180,10 +1187,13 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method bring this window to the foreground. */
-    private Runner doShow() {
-        if (wrap) return wrapMe();
-        OurUtil.show(frame);
-        text.get().requestFocusInWindow();
+    public Runner doShow() {
+        if (isVisible)
+        {
+        	if (wrap) return wrapMe();
+        	OurUtil.show(frame);
+        	text.get().requestFocusInWindow();
+        }
         return null;
     }
 
@@ -1587,7 +1597,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** This method opens a particular file. */
-    private Runner doOpenFile(String arg) {
+    public Runner doOpenFile(String arg) {
         if (wrap) return wrapMe(arg);
         String f=Util.canon(arg);
         if (!text.newtab(f)) return null;
@@ -1602,7 +1612,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     private final Computer enumerator = new Computer() {
         public String compute(Object input) {        	
             final String arg = (String)input;
-            OurUtil.show(frame);
+            if(isVisible) OurUtil.show(frame);
             if (WorkerEngineCustom.isBusy())
                 throw new RuntimeException("Alloy4 is currently executing a SAT solver command. Please wait until that command has finished.");            
             SimpleCallback1 cb = new SimpleCallback1(SimpleGUICustom.this, viz, log, Verbosity.get().ordinal(), latestAlloyVersionName, latestAlloyVersion);
@@ -1703,9 +1713,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
         }
     };
 
-	private static String themePath;
-
-    /** Returns true iff the output says "s SATISFIABLE" (while ignoring comment lines and value lines) */
+	/** Returns true iff the output says "s SATISFIABLE" (while ignoring comment lines and value lines) */
     private static boolean isSat(String output) {
         int i=0, n=output.length();
         // skip COMMENT lines and VALUE lines
@@ -1718,26 +1726,9 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     //====== Main Method ====================================================//
-
-    /** Main method that launches the program; this method might be called by an arbitrary thread. */
-    public static void main(final String[] args) throws Exception {    	
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() 
-            { 
-            	if (args.length>1){
-            		themePath = args[1];
-            		new SimpleGUICustom(args);
-            	}else{
-            		try {
-						SimpleGUI.main(args);
-					} catch (Exception e) {						
-						e.printStackTrace();
-					}
-            	}            	 
-            }
-        });
-    }
-
+    
+    //.....
+    
     //====== Constructor ====================================================//
 
     private static boolean loadLibrary(String library) {
@@ -1753,11 +1744,26 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     private static final WorkerEngineCustom.WorkerTask dummyTask = new WorkerEngineCustom.WorkerTask() {
         private static final long serialVersionUID = 0;
         public void run(WorkerCallback out) { }
-    };
-
+    };       
+    
+    /** Set this Frame Visible */
+    public void setVisible(boolean visible)
+    {
+    	isVisible = visible;
+    	if (visible) doShow();
+    }
+    
+    public void setTheme(String theme)
+    {
+    	themePath = theme;
+    }
+    
     /** The constructor; this method will be called by the AWT event thread, using the "invokeLater" method. */
-    private SimpleGUICustom (final String[] args) {
-
+    public SimpleGUICustom (final String[] args, final boolean visible, final String themepath) {
+   	
+    	isVisible = visible;
+    	if(themepath!=null) themePath = themepath;
+    	
         // Register an exception handler for uncaught exceptions
         MailBug.setup();
 
@@ -1798,7 +1804,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
         }
         frame.setSize(width,height);
         frame.setLocation(x,y);
-        frame.setVisible(true);
+        frame.setVisible(isVisible);
         frame.setTitle("Alloy Analyzer "+Version.version()+" loading... please wait...");
         final int windowWidth = width;
         // We intentionally call setVisible(true) first before settings the "please wait" title,
@@ -1828,11 +1834,13 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
                 callback(null);
             }
         };
-        c.callback(null);
+        c.callback(null);        
     }
 
     private void finishInit(String[] args, List<Integer> initialAllowedMemorySizes, int width) {
 
+    	frame.setIconImage(Toolkit.getDefaultToolkit().getImage(SimpleGUICustom.class.getResource("/resources/br/ufes/inf/nemo/move/alloy-16x16.png")));
+    	
         // Add the listeners
         try {
             wrap = true;
@@ -1888,7 +1896,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
         }
 
         // Pre-load the visualizer
-        viz = new VizGUICustom(false, "", windowmenu2, enumerator, evaluator,themePath);
+        viz = new VizGUICustom(false, "", windowmenu2, enumerator, evaluator);        
         viz.doSetFontSize(FontSize.get());        
 
         // Create the toolbar
@@ -2015,7 +2023,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
         // Open the given file, if a filename is given in the command line
         for(String f:args) if (f.toLowerCase(Locale.US).endsWith(".als")) {
             File file = new File(f);
-            if (file.exists() && file.isFile()) doOpenFile(file.getPath());
+            if (file.exists() && file.isFile()) doOpenFile(file.getPath());            
         }
         
         // Update the title and status bar

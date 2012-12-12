@@ -30,7 +30,7 @@ import br.ufes.inf.nemo.move.mvc.view.antipattern.RSAntiPatternView;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RWORAntiPatternView;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.STRAntiPatternView;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.util.TitleTextField;
+import br.ufes.inf.nemo.move.ui.util.TitleTextField;
 
 /**
  * @author John Guerson

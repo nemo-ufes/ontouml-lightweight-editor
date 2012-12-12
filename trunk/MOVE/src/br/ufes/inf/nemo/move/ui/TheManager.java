@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
+import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
 import br.ufes.inf.nemo.move.mvc.controller.OCLController;
@@ -27,12 +25,8 @@ import br.ufes.inf.nemo.move.mvc.model.antipattern.list.AntiPatternListModel;
 import br.ufes.inf.nemo.move.mvc.view.OCLView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.list.AntiPatternListView;
-import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
-import br.ufes.inf.nemo.move.util.AlloyJARExtractor;
 import br.ufes.inf.nemo.ocl2alloy.options.OCLOptions;
-import edu.mit.csail.sdg.alloy4whole.SimpleGUI;
-import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
  * This class represents a Manager to Models, View and Controllers of the main frame application.
@@ -68,8 +62,10 @@ public class TheManager {
 	public void setManager (TheFrame frame, RefOntoUML.Package model, String oclConstraints, String alsPath) throws IOException
 	{
 		ontoumlmodel.setOntoUML(model);
-    	umlmodel.setUMLModel(alsPath.replace(".als",".uml"));    	
-    	alloymodel.setAlloyModel(alsPath);    	
+		
+		alloymodel.setAlloyModel(alsPath);
+		umlmodel.setUMLModel(alsPath.replace(".als",".uml"));    	
+    	
 		ontoumlview.setPath(ontoumlmodel.getOntoUMLPath(),ontoumlmodel.getOntoUMLModelInstance());
     	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance(),ontoumlmodel.getOntoUMLParser());    	
     	ontoumlview.validate();
@@ -124,6 +120,17 @@ public class TheManager {
 		new AntiPatternListController(antipatternmodel, antipatternview);
 	}
 	
+	/**
+	 * Set AntiPattern List Model.
+	 * 
+	 * @param antipatternListModel
+	 */
+	public void setAntiPatternListModel(AntiPatternListModel antipatternListModel) 
+	{ 
+		this.antipatternmodel = antipatternListModel; 
+		this.antipatternview.setAntiPatternListModel(antipatternListModel);		
+	}	
+	
 	/** Get AntiPattern Model */
 	public AntiPatternListModel getAntiPatternListModel() { 
 		return antipatternmodel; 
@@ -151,8 +158,7 @@ public class TheManager {
 	/** Get Option Model */
 	public OCLOptionsModel getOCLOptionModel() { 
 		return oclOptModel; 
-	}	
-	
+	}		
 	/** Get AntiPattern View */
 	public AntiPatternListView getAntiPatternListView() { 
 		return antipatternview; 
@@ -167,42 +173,50 @@ public class TheManager {
 	}
 	
 	/**
-	 * Verify Model Syntactically.
+	 * Model Verification.
 	 * 
 	 * @return
 	 */
-	public String verifyModel()
-	{		
+	public String doModelVerification()
+	{
 		String log = new String();		
-		if (ontoumlmodel.getOntoUMLParser()==null) return "First you need to load the Model. ";
+		if (ontoumlmodel.getOntoUMLParser()==null) 
+		{
+			frame.showInformationMessageDialog("Verify Model", "First you need to load your Model !");
+			return "";
+		}		
 		
-		// update the selection of the OntoUML Model from the Tree.		
-		UpdateSelection(OntoUMLParser.NO_HIERARCHY);
+		// do auto selection completion.
+		doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
 		
-		// verify model syntactically.
+		// verify model
 		log = SyntacticVerificator.verify(ontoumlmodel.getOntoUMLModelInstance());
 		
 		return log;
 	}
 	
 	/**
-	 * Update the selection of the OntoUML Model from the Tree.
+	 * Do Auto Selection Completion.
 	 * 
 	 * @param option
 	 * @return
 	 */
-	public String UpdateSelection(int option)
+	public String doAutoSelectionCompletion(int option)
 	{		
-		// get selected elements of the Tree
+		if (ontoumlmodel.getOntoUMLParser()==null || ontoumlview.getModelTree()==null) 
+		{
+			frame.showInformationMessageDialog("Verify Model", "First you need to load your Model !");
+			return "";
+		}	
+		
+		// get elements from the tree
 		List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());
 		
-		// select only this elements in the OntoUMLModel
+		// get added elements from the auto selection completion
 		ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);		
-		
-		// select new elements result of auto selection of dependencies...
 		List<EObject> added = ontoumlmodel.getOntoUMLParser().autoSelectDependencies(option,false);
 		
-		// show the elements that were added by the auto selection
+		// show wich elements were added to selection
 		String msg = new String();
 		if (added.size()>0) msg = "The following elements were include in selection:\n\n";
 		for(EObject o: added)
@@ -211,217 +225,183 @@ public class TheManager {
 		}
 		if (added.size()==0) msg += "No elements to include in selection.";		
 		
-		// update the Tree with the new selected elements...
+		// update tree adding the elements...
 		selected.removeAll(added);
 		selected.addAll(added);
 		OntoUMLCheckBoxTree.checkElements(selected, true, ontoumlview.getModelTree());		
     	ontoumlview.getModelTree().updateUI();	
     	
-    	// create a new package from selected elements in the OntoUML Model.
+    	// create a new model package from selected elements in the model.
     	ontoumlmodel.setOntoUMLPackage(ontoumlmodel.getOntoUMLParser().createPackageFromSelections(new Copier()));
 		
     	return msg;
 	}
 
 	/**
-	 * Transforms OntoUML Model into Alloy.
+	 * Do OntoUML Model Transformation into Alloy.
 	 */
-	public void TransformsOntoUMLIntoAlloy()
+	public void doOntoUMLToAlloy()
 	{
-		try {						
-			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;
+		if (ontoumlmodel.getOntoUMLParser()==null) 
+		{
+			frame.showInformationMessageDialog("OntoUML to Alloy", "First you need to load your Model !");
+			return ;
+		}
+		
+		// do auto selection completion.
+		doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY); 
+		
+		// warning: no substance sortal.
+		if (ontoumlmodel.getOntoUMLParser().getAllInstances(SubstanceSortal.class).isEmpty() && ontoumlOptModel.getOptions().identityPrinciple) 
+		{
+			ontoumlOptModel.getOptions().identityPrinciple=false;
+			String msg = "No Substance Sortals in the model.\nThe Identity Principle Axiom should not be enforced. This option was unchecked.\n ";
+			frame.showWarningMessageDialog("No Substance Sortal",msg);
+		}
+		
+		try {			
 			
-			// update the selection of the OntoUML Model from the Tree.	
-			UpdateSelection(OntoUMLParser.NO_HIERARCHY); 
-			
-			// Transforms OntoUML Model into Alloy according to the OntoUML Model Options.
-			alloymodel.setAlloyModel(ontoumlmodel,ontoumlOptModel);
+			// here the model is transformed into alloy according to the options...
+			alloymodel.setAlloyModel(ontoumlmodel,ontoumlOptModel);			
 			
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(frame,e.getLocalizedMessage(),"Error - Transforming OntoUML into Alloy",JOptionPane.ERROR_MESSAGE);					
+			frame.showErrorMessageDialog("OntoUML to Alloy",e.getLocalizedMessage());					
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Transforms OntoUML Model into UML. 
+	 * Do OntoUML Model Transformation into UML.
 	 */
-	public void TransformsOntoUMLIntoUML()
+	public void doOntoUMLToUML()
 	{
+		if (ontoumlmodel.getOntoUMLParser()==null) 
+		{
+			frame.showInformationMessageDialog("OntoUML to UML", "First you need to load your Model !");
+			return ;
+		}
+		
+		// do auto selection completion.
+		doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY); 
+			
+		// UML model path.
+		String umlPath = ontoumlmodel.getOntoUMLPath().replace(".refontouml",".uml");
+		
 		try{
-			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;
 			
-			// update the selection of the OntoUML Model from the Tree.	
-			UpdateSelection(OntoUMLParser.NO_HIERARCHY); 			
-			
-			// UML Model will be saved in the same path as the OntoUML Model.
-			String umlPath = ontoumlmodel.getOntoUMLPath().replace(".refontouml",".uml");
-			
-			// Transforms OntoUML Model into UML
+			// here the model is transformed into UML...
 			umlmodel.setUMLModel(umlPath,ontoumlmodel.getOntoUMLParser());			
-			
-			// print details of the transformation in application console.
-			//frame.getConsole().write(umlmodel.getDetails());
-			
+									
 		}catch (Exception e) {			
-			JOptionPane.showMessageDialog(frame,e.getLocalizedMessage(),"Error - Transforming OntoUML into UML",JOptionPane.ERROR_MESSAGE);					
+			frame.showErrorMessageDialog("OntoUML to UML",e.getLocalizedMessage());					
 			e.printStackTrace();
 		}
 	}
 		
 	/**
-	 * Parse OCL COnstraints from OCL View according the OntoUML Model Tree.
+	 * Parse Constraints from the View according the model tree.
 	 * 
 	 * @param showSuccesfullyMessage
 	 */
 	public void ParseOCL(boolean showSuccesfullyMessage)
 	{
-		try {			
-			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;
-			
-			// update the selection of the OntoUML Model from the Tree.	
-			UpdateSelection(OntoUMLParser.NO_HIERARCHY); 
-			
-			// set OCL Parser from the OCL COnstraints in OCL View.
+		if (ontoumlmodel.getOntoUMLParser()==null) 
+		{
+			frame.showInformationMessageDialog("Parse OCL", "First you need to load your Model !");
+			return ;
+		}
+		
+		// do auto selection completion.
+		doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY); 
+		
+		try {
+		
+			// set parser from the editor view.
 			oclmodel.setParser(oclview.parseConstraints());			
-									
-			// set OCL Options from the OCL Parser.
+						
+			// set options from the parser.
 			oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));
-			
-			// print details of the parser in application console.
-			// frame.getConsole().write(oclmodel.getOCLParser().getDetails());			
-			
+
 			// show Message
-			if(showSuccesfullyMessage)
-			{
-				JOptionPane.showMessageDialog(
-					oclview.getTheFrame(),"Your Constraints are Syntactically Correct !\n","Parse",JOptionPane.INFORMATION_MESSAGE,
-					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-36x36.png"))
-				);
-			}
-			
+			String msg =  "Your Constraints are Syntactically Correct !\n";
+			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parse Constraints",msg);
+						
     	}catch(SemanticException e2){
-			JOptionPane.showMessageDialog(
-				oclview.getTheFrame(),e2.getMessage(),"Semantic",JOptionPane.ERROR_MESSAGE,
-				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
-			);					
+    		frame.showErrorMessageDialog("Semantic", e2.getMessage());    		
 			e2.printStackTrace();	
 			
     	}catch(ParserException e1){
-				JOptionPane.showMessageDialog(
-					oclview.getTheFrame(),e1.getMessage(),"Parse",JOptionPane.ERROR_MESSAGE,
-					new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
-				);					
+    		frame.showErrorMessageDialog("Parse", e1.getMessage());    			
 			e1.printStackTrace();    	
 			
 		}catch(IOException e3){
-			JOptionPane.showMessageDialog(
-				oclview.getTheFrame(),e3.getMessage(),"IO",JOptionPane.ERROR_MESSAGE,
-				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
-			);					
+			frame.showErrorMessageDialog("IO", e3.getMessage());						
 			e3.printStackTrace();
+			
 		}catch(Exception e4){
-			JOptionPane.showMessageDialog(					
-				oclview.getTheFrame(),e4.getMessage(),"Error",JOptionPane.ERROR_MESSAGE,
-				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
-			);				
-			return;
+			frame.showErrorMessageDialog("Error", e4.getMessage());			
+			e4.printStackTrace();
 		}
 		
 	}
 
 	/**
-	 * Transforms OCL Constraints into Alloy According the OCL Options Model.
+	 * Do OCL Constraints Transformation into Alloy.
 	 */
-	public void TransformsOCLIntoAlloy()
+	public void doOCLToAlloy()
 	{
-		try {			
-			if (ontoumlmodel.getOntoUMLModelInstance()==null) return;			
-			if (oclmodel.getOCLParser()==null) return;			
-			
-			//console.write(oclmodel.getOCLParser().getDetails());
-			
-			// Transforms OCL COnstraints into Alloy according to the OCL Options.
+		if (ontoumlmodel.getOntoUMLParser()==null) 
+		{
+			frame.showInformationMessageDialog("OCL to Alloy", "First you need to load your Model !");
+			return ;
+		}
+		if (oclmodel.getOCLParser()==null) 
+		{
+			frame.showInformationMessageDialog("OCL to Alloy", "First you need to parse the Constraints !");
+			return ;
+		}
+		
+		try {						
+						
+			// here the constraints are transformed into Alloy...
 			String logMessage = alloymodel.addConstraints(ontoumlmodel, oclmodel,oclOptModel);			
 			
-			// show Transformation Warnings messages.
+			// show warnings 
 			if (!logMessage.isEmpty() && logMessage!=null)
 			{
-				JOptionPane.showMessageDialog(frame,logMessage,"Warning",JOptionPane.WARNING_MESSAGE);					
+				frame.showWarningMessageDialog("OCL to Alloy",logMessage);					
 			}
 			
 		} catch (Exception e) {			
-			JOptionPane.showMessageDialog(frame,e.getLocalizedMessage(),"Error - Transforming OCL into Alloy",JOptionPane.ERROR_MESSAGE);					
+			frame.showErrorMessageDialog("OCL to Alloy",e.getLocalizedMessage());					
 			e.printStackTrace();
 		}
 	}
-		
+
 	/**
-	 * Open Alloy Model with Alloy Analyzer application...
+	 * Do Opening Alloy Analyzer
 	 * 
 	 * @param alsPath
 	 * @param alsOutDirectory
 	 */
-	public void OpenAlloyModelWithAnalyzer (String alsPath, String alsOutDirectory) 
+	public void doOpeningAlloy (boolean showAnalyzer, int cmdIndexToExecute) 
 	{		
-		if (alsPath.isEmpty() || alsPath==null)
-		{
-			try {				
-				// extract JAR file to file system.
-				AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", alsOutDirectory);				
-				
-				// open standalone...
-				String[] argsAnalyzer = { "","" };
-				argsAnalyzer[0] = alsPath;
-				SimpleGUI.main(argsAnalyzer);
-				
-			} catch (Exception e) {			
-				JOptionPane.showMessageDialog(frame,e.getLocalizedMessage(),"Error - Launching Analyzer",JOptionPane.ERROR_MESSAGE);					
-				e.printStackTrace();
-			}			
-		}else{
-			try {						
-				if (ontoumlOptModel.getOptions().openAnalyzer)
-				{
-					// extract JAR file to file system.
-					AlloyJARExtractor.extractAlloyJaRTo("alloy4.2.jar", alsOutDirectory);					
-					
-					// open custom...
-					String[] argsAnalyzer = { "","" };
-					argsAnalyzer[0] = alsPath;
-					argsAnalyzer[1] = alsOutDirectory + "standart_theme.thm"	;					
-					SimpleGUICustom.main(argsAnalyzer);
-				}
-				
-			} catch (Exception e) {			
-				JOptionPane.showMessageDialog(frame,e.getLocalizedMessage(),"Error - Opening Alloy With Analyzer",JOptionPane.ERROR_MESSAGE);					
-				e.printStackTrace();
-			}	
-		}
-	}
-	
-	/**
-	 * Set AntiPattern List Model.
-	 * 
-	 * @param antipatternListModel
-	 */
-	public void setAntiPatternListModel(AntiPatternListModel antipatternListModel) 
-	{ 
-		this.antipatternmodel = antipatternListModel; 
-		this.antipatternview.setAntiPatternListModel(antipatternListModel);		
-	}
+		if (alloymodel.getAlloyPath().isEmpty() || alloymodel.getAlloyPath()==null) return;
+		
+		try {
+
+			frame.getAlloyAnalyzer().setTheme(alloymodel.getDirectory() + "standart_theme.thm");
 			
-	
-	/*===========================================================================*/
-	// run verifier...
-	/*OntoUMLVerifier verifier = new OntoUMLVerifier(refmodel);
-	verifier.initialize();			
-	// no substance sortal warning...
-	if (!verifier.haveSubstanceSortal && opt.identityPrinciple) 
-	{
-		opt.identityPrinciple=false;
-		enforcepanel.cbxIdentityPrinciple.setSelected(false);
-		JOptionPane.showMessageDialog(this, "No Substance Sortals in the model.\n\nThe Identity Principle Axiom should not be enforced."
-				+"\nThis option was unchecked by default.\n ", "Warning",JOptionPane.WARNING_MESSAGE);
-	}*/
+			frame.getAlloyAnalyzer().setVisible(showAnalyzer);
+			
+			frame.getAlloyAnalyzer().doOpenFile(alloymodel.getAlloyPath());
+    	    
+			if (cmdIndexToExecute>=0)frame.getAlloyAnalyzer().doRun(cmdIndexToExecute);
+			
+		} catch (Exception e) {			
+			frame.showErrorMessageDialog("Open Alloy Analyzer",e.getLocalizedMessage());					
+			e.printStackTrace();
+		}	
+		
+	}		
 }
