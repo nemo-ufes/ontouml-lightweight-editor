@@ -3,8 +3,6 @@ package br.ufes.inf.nemo.move.mvc.controller.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JOptionPane;
-
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RBOSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RBOSAntiPatternView;
@@ -108,7 +106,7 @@ public class RBOSAntiPatternController {
 	    		 		
 	    		
 	    	}catch(Exception exception){
-	    		JOptionPane.showMessageDialog(rbosView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+	    		rbosView.getTheFrame().showErrorMessageDialog("RBOS : Execute With Analyzer",exception.getMessage());
 	    	}
 	    	
 	    }

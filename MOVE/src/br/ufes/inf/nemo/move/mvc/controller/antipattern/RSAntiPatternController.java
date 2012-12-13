@@ -3,8 +3,6 @@ package br.ufes.inf.nemo.move.mvc.controller.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JOptionPane;
-
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RSAntiPatternView;
@@ -87,7 +85,7 @@ public class RSAntiPatternController {
 	    		rsView.getTheFrame().getManager().doOpeningAlloy(true,-1);	
 	    		
 	    	}catch(Exception exception){
-	    		JOptionPane.showMessageDialog(rsView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+	    		rsView.getTheFrame().showErrorMessageDialog("RS : Execute With Analyzer",exception.getMessage());
 	    	}
 	    	
 	    }
@@ -138,7 +136,7 @@ public class RSAntiPatternController {
 	    		rsView.getTheFrame().ShowConsole();
     		
 		    }catch(Exception exception){
-	    		JOptionPane.showMessageDialog(rsView.getTheFrame(),exception.getMessage(),"Error - RS AntiPattern ",JOptionPane.ERROR_MESSAGE);
+		    	rsView.getTheFrame().showErrorMessageDialog("RS : Generate OCL",exception.getMessage());
 	    	}
 	    }
 	}	

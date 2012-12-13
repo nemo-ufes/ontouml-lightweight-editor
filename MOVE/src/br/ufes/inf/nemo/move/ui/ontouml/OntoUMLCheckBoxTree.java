@@ -199,7 +199,7 @@ public class OntoUMLCheckBoxTree {
     			
     		}
     		
-    		label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/move/ontouml/"+elementType.toLowerCase()+".png")));
+    		label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icon/ontouml/"+elementType.toLowerCase()+".png")));
     		
     		if (selected){
     			label.setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));

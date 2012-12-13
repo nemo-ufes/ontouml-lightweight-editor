@@ -36,18 +36,18 @@ public class OntoUMLTreeBar extends JPanel {
 		
 		btnOpen = new JButton("");
 		btnOpen.setToolTipText("Open OntoUML Model");
-		btnOpen.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/open-16x16.png")));
+		btnOpen.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/icon/open-16x16.png")));
 		
 		btnVerify = new JButton("");
 		btnVerify.setToolTipText("Verify Model Sintactically");
-		btnVerify.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-16x16.png")));
+		btnVerify.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/icon/check-16x16.png")));
 		
 		btnShowUnique = new JButton("");
 		btnShowUnique.setToolTipText("Show Aliases");
-		btnShowUnique.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/label-16x16.png")));
+		btnShowUnique.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/icon/label-16x16.png")));
 				
 		btnSaveAs = new JButton("");
-		btnSaveAs.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/br/ufes/inf/nemo/move/save-16x16.png")));
+		btnSaveAs.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/icon/save-16x16.png")));
 		btnSaveAs.setToolTipText("Save Model ");
 		
 		GroupLayout groupLayout = new GroupLayout(this);

@@ -4,13 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.OCLModel;
 import br.ufes.inf.nemo.move.mvc.view.OCLView;
-import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
 
 /**
  * This class represents a Controller between OCL Model and OCL View.
@@ -65,7 +63,7 @@ public class OCLController {
 	    	
 	    	} catch (IOException exception) {				
 	    		String msg = "An error ocurred while loading the model.\n"+exception.getMessage();
-	    		JOptionPane.showMessageDialog(oclview,msg,"Error",JOptionPane.ERROR_MESSAGE);
+	    		oclview.getTheFrame().showErrorMessageDialog("Open OCL",msg);
 	    		exception.printStackTrace();
 	    	}
 	    }
@@ -108,6 +106,7 @@ public class OCLController {
 	    	if (oclview.getOCLPath()==null || oclview.getOCLPath().isEmpty())
 	    	{
 	    		try{
+	    			
 	    			String path = oclview.saveOCLPathLocation();	    		
 	    			if (path==null) return;		
 		      		    					      	
@@ -118,46 +117,28 @@ public class OCLController {
 	    			
 	    			oclview.setPath(path,oclview.getConstraints());
 	    			
-	    		}catch(IOException exception)
-	    		{
+	    		}catch(IOException exception){
+	    			
 	    			String msg = "An error ocurred while saving the model.\n"+exception.getMessage();
-	    			JOptionPane.showMessageDialog(
-		       			oclview.getTheFrame(),msg,"IO",JOptionPane.ERROR_MESSAGE,
-		       			new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
-		       		);
+	    			oclview.getTheFrame().showErrorMessageDialog("IO",msg);		       			
 	    			exception.printStackTrace();
 	    		}
 		      			      	
 	    	}else{
 	    		try{
+	    			
 	    			oclmodel.setConstraints(oclview.getConstraints(),"CONTENT");
 	    			oclmodel.setOCLPath(oclview.getOCLPath());
 	    			
 	    			FileUtil.copyStringToFile(oclview.getConstraints(), oclview.getOCLPath());
 	    			
-	    		}catch(IOException exception)
-	    		{
+	    		}catch(IOException exception){
+	    			
 	    			String msg = "An error ocurred while saving the model.\n"+exception.getMessage();
-	    			JOptionPane.showMessageDialog(
-	       				oclview.getTheFrame(),msg,"IO",JOptionPane.ERROR_MESSAGE,
-	       				new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
-	       			);
+	    			oclview.getTheFrame().showErrorMessageDialog("IO",msg);	       			
 	    			exception.printStackTrace();
 	    		}		      		
 	    	}	    	
-	    }
-	 }
-	 
-	 /**
-	 * Help OCL Action Listener.
-	 * 
-	 * @author John
-	 */
-	 class HelpOCLListener implements ActionListener 
-	 {
-	    public void actionPerformed(ActionEvent e) 
-	    {
-		    	
 	    }
 	 }
 	 
@@ -169,13 +150,7 @@ public class OCLController {
 	 class ParseOCLListener implements ActionListener 
 	 {
 	    public void actionPerformed(ActionEvent e) 
-	    {
-	    	if (oclview.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()==null)
-	    	{ 
-	    		oclview.getTheFrame().getConsole().write("First you need to load the Model"); 
-	    		return; 
-	    	}
-	    
+	    { 
     		oclview.getTheFrame().getManager().ParseOCL(true);
 	    }
 	 }	 
