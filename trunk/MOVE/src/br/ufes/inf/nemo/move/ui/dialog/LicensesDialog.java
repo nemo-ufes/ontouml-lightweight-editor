@@ -4,9 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import java.awt.Toolkit;
 
 /**
  * This Dialog is used to displays the Copyright Licenses.
@@ -76,7 +77,7 @@ public class LicensesDialog extends JDialog {
 	public LicensesDialog ()
 	{		
 		choices = new JComboBox();
-		choices.setModel(new DefaultComboBoxModel(new String[] {"Alloy", "Kodkod", "JavaCup", "SAT4J", "ZChaff", "MiniSat","AutoComplete","RSyntaxTextArea"}));
+		choices.setModel(new DefaultComboBoxModel(new String[] {"MOVE","Alloy", "Kodkod", "JavaCup", "SAT4J", "ZChaff", "MiniSat","AutoComplete","RSyntaxTextArea"}));
 		choices.setPreferredSize(new Dimension(150, 20));
 		choices.addActionListener(new ActionListener() 
 		{
@@ -122,10 +123,11 @@ public class LicensesDialog extends JDialog {
 		getContentPane().add(choicesPanel, BorderLayout.NORTH);
 		getContentPane().add(buttonsPanel, BorderLayout.SOUTH);		
 		
-		setTitle("Copyright Licenses");
+		setTitle("Licenses");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setPreferredSize(new Dimension(600, 400));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(LicensesDialog.class.getResource("/resources/br/ufes/inf/nemo/move/copyright-48x48.png")));
+		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
+		setIconImage(icon);
 		
 		choices.setSelectedIndex(0);		
 		setLicense((String)choices.getSelectedItem());
@@ -146,8 +148,9 @@ public class LicensesDialog extends JDialog {
 	{		
 		try{
 			
-			InputStream is = LicensesDialog.class.getClassLoader().getResourceAsStream("\\resources\\licenses\\"+ value + ".txt");
-			if(is == null) is = new FileInputStream("/resources/licenses/"+ value + ".txt");
+			InputStream is = LicensesDialog.class.getClassLoader().getResourceAsStream("resources/licenses/"+ value + ".txt");
+			if(is == null) 
+				is = new FileInputStream("src/resources/licenses/"+ value + ".txt");
 			
 			String result = new String();
 			byte[] src = new byte[1024];
