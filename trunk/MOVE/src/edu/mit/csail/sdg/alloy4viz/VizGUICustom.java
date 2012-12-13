@@ -453,7 +453,7 @@ public final class VizGUICustom implements ComponentListener {
       if (xmlFileName.length()>0) doLoadInstance(xmlFileName);  
       
       // add nemo icon...
-      frame.setIconImage(Toolkit.getDefaultToolkit().getImage(VizGUICustom.class.getResource("/resources/br/ufes/inf/nemo/move/atom-48x48.png")));          
+      frame.setIconImage(Toolkit.getDefaultToolkit().getImage(VizGUICustom.class.getResource("/resources/icon/atom-48x48.png")));          
    }
 
    /** Invoked when the Visualizationwindow is resized. */

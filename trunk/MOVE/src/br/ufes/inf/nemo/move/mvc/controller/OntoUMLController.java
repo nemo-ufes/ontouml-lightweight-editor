@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
-
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
@@ -66,9 +64,11 @@ public class OntoUMLController {
 	    	
 	    	ontoumlview.getTheFrame().getManager().getAlloyModel().setAlloyModel(path.replace(".refontouml",".als"));
 	    		    		    					
-	    	} catch (IOException exception) {				
+	    	} catch (IOException exception) {
+	    		
 	    		String msg = "An error ocurred while loading the model.\n"+exception.getMessage();
-	    		JOptionPane.showMessageDialog(ontoumlview,msg,"Error",JOptionPane.ERROR_MESSAGE);
+	    		ontoumlview.getTheFrame().showErrorMessageDialog("Open OntoUML",msg);
+	    		exception.printStackTrace();
 	    	}
 	    }
 	 }   
@@ -97,8 +97,14 @@ public class OntoUMLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
-	    	((OntoUMLCheckBoxTree.OntoUMLTreeCellRenderer)ontoumlview.getModelTree().getCellRenderer()).showOrHideUniqueName();	    	
+	    	if(ontoumlview.getModelTree()==null)
+   			{	       			
+	    		ontoumlview.getTheFrame().showInformationMessageDialog("Show Aliases","First you need to load your Model");
+	    		return;			       				
+   			}	    	
+	    	
+	    	((OntoUMLCheckBoxTree.OntoUMLTreeCellRenderer)ontoumlview.getModelTree().getCellRenderer()).showOrHideUniqueName();
+	    	
 	    	ontoumlview.getModelTree().updateUI();
 	    }
 	 }	 
@@ -112,9 +118,15 @@ public class OntoUMLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	if (ontoumlview.getModelTree()==null) { ontoumlview.getTheFrame().getConsole().write("First you need to load the Model"); return; }
+	    	if(ontoumlview.getModelTree()==null)
+   			{	       			
+	    		ontoumlview.getTheFrame().showInformationMessageDialog("Save As","First you need to load your Model");
+	    		return;			       				
+   			}
 	    	ontoumlview.getTheFrame().getManager().doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
+	    	
 	    	String path = ontoumlview.saveOntoUMLPathLocation();
+	    	
 	    	if(path!=null)ResourceUtil.saveReferenceOntoUML(path, ontoumlview.getTheFrame().getManager().getOntoUMLModel().getOntoUMLModelInstance());
 	    }
 	 }	 		 

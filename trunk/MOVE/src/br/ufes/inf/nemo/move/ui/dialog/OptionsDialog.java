@@ -98,7 +98,7 @@ public class OptionsDialog extends JDialog {
 	public OptionsDialog() 
 	{
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(OptionsDialog.class.getResource("/resources/br/ufes/inf/nemo/move/options.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(OptionsDialog.class.getResource("/resources/icon/options.png")));
 		setTitle("Options");
 		setSize(new Dimension(611, 349));
 		

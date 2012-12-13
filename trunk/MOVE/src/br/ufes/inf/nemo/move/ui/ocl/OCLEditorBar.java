@@ -37,19 +37,19 @@ public class OCLEditorBar extends JPanel {
 		
 		btnOpen = new JButton("");
 		btnOpen.setToolTipText("Open Constraints from Document");
-		btnOpen.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/open-16x16.png")));
+		btnOpen.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/icon/open-16x16.png")));
 		
 		btnSave = new JButton("");
 		btnSave.setToolTipText("Save Constraints to Document");
-		btnSave.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/save-16x16.png")));
+		btnSave.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/icon/save-16x16.png")));
 		
 		btnNew = new JButton("");
 		btnNew.setToolTipText("New OCL Document");
-		btnNew.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/doc-16x16.png")));
+		btnNew.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/icon/doc-16x16.png")));
 		
 		btnParse = new JButton("");
 		btnParse.setToolTipText("Parse Constraints against OntoUML Model");
-		btnParse.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/br/ufes/inf/nemo/move/check-16x16.png")));
+		btnParse.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/icon/check-16x16.png")));
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(

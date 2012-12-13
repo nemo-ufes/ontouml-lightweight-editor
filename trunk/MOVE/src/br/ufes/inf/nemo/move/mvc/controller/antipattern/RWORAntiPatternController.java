@@ -3,8 +3,6 @@ package br.ufes.inf.nemo.move.mvc.controller.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JOptionPane;
-
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RWORAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RWORAntiPatternView;
@@ -115,7 +113,7 @@ public class RWORAntiPatternController {
 	    		rworView.getTheFrame().getManager().doOpeningAlloy(true,-1);	
     		
 	    	}catch(Exception exception){
-	    		JOptionPane.showMessageDialog(rworView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+	    		rworView.getTheFrame().showErrorMessageDialog("RWOR : Execute With Analyzer",exception.getMessage());
 	    	}	    	
 	    }
 	}

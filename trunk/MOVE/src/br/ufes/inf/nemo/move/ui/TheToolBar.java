@@ -108,7 +108,7 @@ public class TheToolBar extends JToolBar {
 		
 	public void createAutoSelectionButton()
 	{
-		btnCompleteSelect = new ToolbarButton("Auto Completion","/resources/br/ufes/inf/nemo/move/completion-36x36.png");
+		btnCompleteSelect = new ToolbarButton("Auto Completion","/resources/icon/completion-36x36.png");
 		btnCompleteSelect.setToolTipText("");
 		
 		btnCompleteSelect.addActionListener(new ActionListener() 
@@ -130,7 +130,7 @@ public class TheToolBar extends JToolBar {
 	
 	public void createAlloyAnalyzerButton()
 	{
-		btnAlloyAnalyzer = new ToolbarButton("Show Analyzer","/resources/br/ufes/inf/nemo/move/alloy-36x36.png");
+		btnAlloyAnalyzer = new ToolbarButton("Show Analyzer","/resources/icon/alloy-36x36.png");
 		btnAlloyAnalyzer.setToolTipText("");
 		btnAlloyAnalyzer.setEnabled(true);
 		btnAlloyAnalyzer.addActionListener(new ActionListener() 
@@ -157,7 +157,7 @@ public class TheToolBar extends JToolBar {
 	
 	public void createShowInstances()
 	{
-		btnShowInstances = new ToolbarButton("Show Instances","/resources/br/ufes/inf/nemo/move/atom-36x36.png");
+		btnShowInstances = new ToolbarButton("Show Instances","/resources/icon/atom-36x36.png");
 		btnShowInstances.setToolTipText("");
 		btnShowInstances.setEnabled(true);
 		btnShowInstances.addActionListener(new ActionListener() 
@@ -184,7 +184,7 @@ public class TheToolBar extends JToolBar {
 		
 	public void createShowHideConsole ()
 	{
-		btnShowHideConsole = new ToolbarButton("Console","/resources/br/ufes/inf/nemo/move/display-36x36.png");
+		btnShowHideConsole = new ToolbarButton("Console","/resources/icon/display-36x36.png");
 		btnShowHideConsole.setToolTipText("Show/Hide Console");
 		btnShowHideConsole.setEnabled(true);
 		btnShowHideConsole.addActionListener(new ActionListener() 
@@ -199,7 +199,7 @@ public class TheToolBar extends JToolBar {
 	
 	public void createShowHideAntiPatternView ()
 	{
-		btnShowOrHideAntiPattern = new ToolbarButton("AntiPatterns","/resources/br/ufes/inf/nemo/move/panel-36X36.png");
+		btnShowOrHideAntiPattern = new ToolbarButton("AntiPatterns","/resources/icon/panel-36X36.png");
 		btnShowOrHideAntiPattern.setToolTipText("Show/Hide AntiPatterns");
 		btnShowOrHideAntiPattern.setEnabled(true);
 		btnShowOrHideAntiPattern.addActionListener(new ActionListener() 
@@ -214,7 +214,7 @@ public class TheToolBar extends JToolBar {
 	
 	public void createShowHideOCLView ()
 	{
-		btnShowOrHideOCL = new ToolbarButton("Constraints","/resources/br/ufes/inf/nemo/move/edit-36x36.png");
+		btnShowOrHideOCL = new ToolbarButton("Constraints","/resources/icon/edit-36x36.png");
 		btnShowOrHideOCL.setToolTipText("Show/Hide OCL");
 		btnShowOrHideOCL.setEnabled(true);
 		btnShowOrHideOCL.addActionListener(new ActionListener() 
@@ -229,7 +229,7 @@ public class TheToolBar extends JToolBar {
 	
 	public void createAntiPatternButton()
 	{
-		btnSearchForAntipatterns = new ToolbarButton("Search AntiPatterns","/resources/br/ufes/inf/nemo/move/search-36x36.png");		
+		btnSearchForAntipatterns = new ToolbarButton("Search AntiPatterns","/resources/icon/search-36x36.png");		
 		btnSearchForAntipatterns.setToolTipText("Search for AntiPatterns");
 		btnSearchForAntipatterns.addActionListener(new ActionListener() 
 		{

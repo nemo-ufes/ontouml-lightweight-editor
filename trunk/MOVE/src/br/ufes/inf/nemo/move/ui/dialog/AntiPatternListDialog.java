@@ -99,7 +99,7 @@ public class AntiPatternListDialog extends JDialog {
 	 */
 	public AntiPatternListDialog() 
 	{
-		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/move/search-24x24.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/icon/search-24x24.png")));
 		setTitle("Search AntiPatterns");
 		setBounds(100, 100, 332, 256);
 		

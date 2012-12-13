@@ -3,8 +3,6 @@ package br.ufes.inf.nemo.move.mvc.controller.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JOptionPane;
-
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.ACAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.ACAntiPatternView;
@@ -74,7 +72,7 @@ public class ACAntiPatternController {
 	    		acView.getTheFrame().getManager().doOpeningAlloy(true,-1);
 	    		
 	    	}catch(Exception exception){
-	    		JOptionPane.showMessageDialog(acView.getTheFrame(),exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+	    		acView.getTheFrame().showErrorMessageDialog("AC : Execute With Analyzer",exception.getMessage());
 	    	}
 	    	
 	    }

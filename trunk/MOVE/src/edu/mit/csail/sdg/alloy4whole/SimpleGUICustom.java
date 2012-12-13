@@ -1839,7 +1839,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
 
     private void finishInit(String[] args, List<Integer> initialAllowedMemorySizes, int width) {
 
-    	frame.setIconImage(Toolkit.getDefaultToolkit().getImage(SimpleGUICustom.class.getResource("/resources/br/ufes/inf/nemo/move/alloy-16x16.png")));
+    	frame.setIconImage(Toolkit.getDefaultToolkit().getImage(SimpleGUICustom.class.getResource("/resources/icon/alloy-16x16.png")));
     	
         // Add the listeners
         try {

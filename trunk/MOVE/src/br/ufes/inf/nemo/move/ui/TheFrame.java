@@ -93,7 +93,7 @@ public class TheFrame extends JFrame {
 					
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setExtendedState(MAXIMIZED_BOTH);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/window.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/icon/window.png")));
 		setTitle("OntoUML Model Validation Environment - MOVE");
 					
 		try {			
@@ -238,7 +238,7 @@ public class TheFrame extends JFrame {
 	{
 		JOptionPane.showMessageDialog(
 			this,message,title,JOptionPane.ERROR_MESSAGE,
-			new ImageIcon(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/delete-36x36.png"))
+			new ImageIcon(TheFrame.class.getResource("/resources/icon/delete-36x36.png"))
 		);	
 	}
 	
@@ -252,7 +252,7 @@ public class TheFrame extends JFrame {
 	{
 		JOptionPane.showMessageDialog(
 			this,message,title,JOptionPane.WARNING_MESSAGE,
-			new ImageIcon(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/warning-36x36.png"))
+			new ImageIcon(TheFrame.class.getResource("/resources/icon/warning-36x36.png"))
 		);	
 	}
 	
@@ -266,7 +266,7 @@ public class TheFrame extends JFrame {
 	{
 		JOptionPane.showMessageDialog(
 			this,message,title,JOptionPane.INFORMATION_MESSAGE,
-			new ImageIcon(TheFrame.class.getResource("/resources/br/ufes/inf/nemo/move/check-36x36.png"))
+			new ImageIcon(TheFrame.class.getResource("/resources/icon/check-36x36.png"))
 		);
 	}
 	
