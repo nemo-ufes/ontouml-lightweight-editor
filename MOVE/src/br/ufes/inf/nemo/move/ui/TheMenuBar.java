@@ -48,7 +48,7 @@ public class TheMenuBar extends JMenuBar {
 		mntmAbout = new JMenuItem("About MOVE...");
 		mnHelp.add(mntmAbout);
 		
-		mntmLicenses = new JMenuItem("Copyright Licenses");
+		mntmLicenses = new JMenuItem("See Copyrights");
 		mnHelp.add(mntmLicenses);
 		
 		addActionListeners();

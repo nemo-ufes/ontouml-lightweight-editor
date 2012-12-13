@@ -130,7 +130,7 @@ public class TheToolBar extends JToolBar {
 	
 	public void createAlloyAnalyzerButton()
 	{
-		btnAlloyAnalyzer = new ToolbarButton("Launch Analyzer","/resources/br/ufes/inf/nemo/move/alloy-36x36.png");
+		btnAlloyAnalyzer = new ToolbarButton("Show Analyzer","/resources/br/ufes/inf/nemo/move/alloy-36x36.png");
 		btnAlloyAnalyzer.setToolTipText("");
 		btnAlloyAnalyzer.setEnabled(true);
 		btnAlloyAnalyzer.addActionListener(new ActionListener() 
@@ -199,7 +199,7 @@ public class TheToolBar extends JToolBar {
 	
 	public void createShowHideAntiPatternView ()
 	{
-		btnShowOrHideAntiPattern = new ToolbarButton("AntiPatterns","/resources/br/ufes/inf/nemo/move/panel-36x36.png");
+		btnShowOrHideAntiPattern = new ToolbarButton("AntiPatterns","/resources/br/ufes/inf/nemo/move/panel-36X36.png");
 		btnShowOrHideAntiPattern.setToolTipText("Show/Hide AntiPatterns");
 		btnShowOrHideAntiPattern.setEnabled(true);
 		btnShowOrHideAntiPattern.addActionListener(new ActionListener() 

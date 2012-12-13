@@ -21,7 +21,8 @@ public class Extractor {
 		
 		// Copy "alloy4.2.jar" 
 		InputStream is = Extractor.class.getClassLoader().getResourceAsStream("alloy4.2.jar");
-		if(is == null) is = new FileInputStream("lib/"+"alloy4.2.jar");	
+		if(is == null) 
+			is = new FileInputStream("lib/"+"alloy4.2.jar");	
 		
 		OutputStream out = new FileOutputStream(alloyJarFile);
 				
