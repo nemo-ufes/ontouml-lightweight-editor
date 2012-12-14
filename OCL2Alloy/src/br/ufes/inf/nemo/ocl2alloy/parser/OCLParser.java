@@ -195,7 +195,9 @@ public class OCLParser {
     		
     		new OCLParser(oclPath, refpath);
 		
-		} catch (IOException | ParserException e) {			
+		} catch (IOException e) {			
+			e.printStackTrace();
+		} catch(ParserException e){
 			e.printStackTrace();
 		} catch(Exception e){
 			e.printStackTrace();
