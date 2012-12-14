@@ -44,7 +44,7 @@ public class AntiPatternIdentifier {
 		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Tuple<Association, Association>> query_result;
-		ArrayList<RSAntiPattern> result = new ArrayList<>();
+		ArrayList<RSAntiPattern> result = new ArrayList<RSAntiPattern>();
 		
 		query_result = (Collection<Tuple<Association, Association>>)OCLQueryExecuter.executeQuery(RS_OCLQuery, (EClassifier)model.eClass(), model);
 		
@@ -72,7 +72,7 @@ public class AntiPatternIdentifier {
 		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Association> query_result;
-		ArrayList<STRAntiPattern> result = new ArrayList<>();
+		ArrayList<STRAntiPattern> result = new ArrayList<STRAntiPattern>();
 		
 		query_result = (Collection<Association>) OCLQueryExecuter.executeQuery(STR_OCLQuery, (EClassifier)model.eClass(), model);
 		
@@ -97,7 +97,7 @@ public class AntiPatternIdentifier {
 		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Association> query_result;
-		ArrayList<RBOSAntiPattern> result = new ArrayList<>();
+		ArrayList<RBOSAntiPattern> result = new ArrayList<RBOSAntiPattern>();
 		
 		query_result = (Collection<Association>)OCLQueryExecuter.executeQuery(RBOS_OCLQuery, (EClassifier)model.eClass(), model);
 		
@@ -180,7 +180,7 @@ public class AntiPatternIdentifier {
 		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Relator> query_result;
-		ArrayList<RWORAntiPattern> result = new ArrayList<>();
+		ArrayList<RWORAntiPattern> result = new ArrayList<RWORAntiPattern>();
 		
 		query_result = (Collection<Relator>)OCLQueryExecuter.executeQuery(RWOROCLQuery, (EClassifier)model.eClass(), model);
 		
@@ -204,7 +204,7 @@ public class AntiPatternIdentifier {
 		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Association> query_result;
-		ArrayList<IAAntiPattern> result = new ArrayList<>();
+		ArrayList<IAAntiPattern> result = new ArrayList<IAAntiPattern>();
 		
 		query_result = (Collection<Association>)OCLQueryExecuter.executeQuery(IA_OCLQuery, (EClassifier)model.eClass(), model);
 		
@@ -220,9 +220,11 @@ public class AntiPatternIdentifier {
 		
 		int aux[][]; 
 		int nodei[], nodej[];
-		ArrayList<RefOntoUML.Class> classes = new ArrayList<>(),  cycle;
-		ArrayList<Relationship> relationships = new ArrayList<>(), cycle_ass;
-		ArrayList<ACAntiPattern> result = new ArrayList<>();
+		ArrayList<RefOntoUML.Class> classes = new ArrayList<RefOntoUML.Class>();
+		ArrayList<RefOntoUML.Class> cycle = new ArrayList<RefOntoUML.Class>();
+		ArrayList<Relationship> relationships = new ArrayList<Relationship>();
+		ArrayList<Relationship> cycle_ass = new ArrayList<Relationship>();
+		ArrayList<ACAntiPattern> result = new ArrayList<ACAntiPattern>();
 		
 		aux = OntoUML2Graph.buildGraph(parser, classes, relationships, false, false);
 		nodei = aux[0];
@@ -235,8 +237,8 @@ public class AntiPatternIdentifier {
 		
 		for (int i=1; i<=fundcycle[0][0]; i++) { 
 			
-			cycle = new ArrayList<>();
-			cycle_ass = new ArrayList<>();
+			cycle = new ArrayList<RefOntoUML.Class>();
+			cycle_ass = new ArrayList<Relationship>();
 			
 			for (int j=1; j<=fundcycle[i][0]; j++)
 				cycle.add(classes.get(fundcycle[i][j]));

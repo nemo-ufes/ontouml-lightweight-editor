@@ -148,7 +148,7 @@ public class IAAntiPattern extends Antipattern{
 	public String generateAllImpreciseAbstractionPredicates(OntoUMLParser parser) {
 		String predicates="", rules, predicateName;
 		Combination comb1;
-		ArrayList<Object> saida = new ArrayList<>();
+		ArrayList<Object> saida = new ArrayList<Object>();
 		
 		String associationName, sourceName, targetName;
 		ArrayList<String> sourceChildrenName, targetChildrenName;
@@ -156,12 +156,12 @@ public class IAAntiPattern extends Antipattern{
 		sourceName = parser.getAlias(this.source);
 		targetName = parser.getAlias(this.target);
 		
-		sourceChildrenName = new ArrayList<>();
+		sourceChildrenName = new ArrayList<String>();
 		for (Classifier c : this.sourceChildren) {
 			sourceChildrenName.add(parser.getAlias(c));
 		}
 		
-		targetChildrenName = new ArrayList<>();
+		targetChildrenName = new ArrayList<String>();
 		for (Classifier c : this.targetChildren) {
 			targetChildrenName.add(parser.getAlias(c));
 		}
@@ -241,13 +241,13 @@ public class IAAntiPattern extends Antipattern{
 		
 		this.source = (Classifier) SourceTargetAssociation.getSourceAlloy(association);
 		
-		this.sourceChildren = new ArrayList<>();
+		this.sourceChildren = new ArrayList<Classifier>();
 		this.sourceChildren.addAll(source.allChildren());
 		//this.sourceChildren.addAll(source.children());
 		
 		this.target = (Classifier) SourceTargetAssociation.getTargetAlloy(association);
 		
-		this.targetChildren = new ArrayList<>();
+		this.targetChildren = new ArrayList<Classifier>();
 		/*If the method get all the children, the number of combinations will be too big*/
 		this.targetChildren.addAll(target.allChildren());
 		//this.targetChildren.addAll(target.children());
