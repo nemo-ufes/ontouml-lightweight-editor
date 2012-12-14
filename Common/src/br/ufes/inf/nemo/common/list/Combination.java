@@ -77,7 +77,7 @@ public class Combination {
 	public <T> ArrayList<T> next() {
         int input_index, i;
 
-        ArrayList<T> output = new ArrayList<>();
+        ArrayList<T> output = new ArrayList<T>();
 
         input_index = 0;
         i = 1;
