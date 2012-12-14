@@ -174,17 +174,17 @@ public class OCLEditorPanel extends JPanel {
     	provider.setAutoActivationRules(false, "->");
     	
     	//package declaration
-    	OCLShorthandCompletion c = new OCLShorthandCompletion(provider, "Package","package PackageName\n\n\nendpackage","package declaration");
+    	OCLShorthandCompletion c = new OCLShorthandCompletion(provider, "package","package PackageName\n\n\nendpackage",null);
     	c.setSummary("package PackageName<br>...<br>endpackage");
     	provider.addCompletion(c);    	
     	
     	//context declaration
-    	c = new OCLShorthandCompletion(provider, "Context","context type\ninv : true","context declaration");
+    	c = new OCLShorthandCompletion(provider, "context","context type\ninv : true",null);
     	c.setSummary("context type<br> inv invariantname: true<br>");
     	provider.addCompletion(c);    	
 
     	//property context declaration
-    	c = new OCLShorthandCompletion(provider, "Property Context","context type::property : propertyType\nderive: null","derive property context declaration");
+    	c = new OCLShorthandCompletion(provider, "property","context type::property : propertyType\nderive: null",null);
     	c.setSummary("context type::property : propertyType<br>derive: null");
     	provider.addCompletion(c);    	
 
@@ -254,9 +254,9 @@ public class OCLEditorPanel extends JPanel {
     	provider.addCompletion(c);
 
     	//-
-    	c = new OCLShorthandCompletion(provider, "-","-",null);
-    	c.setSummary("-(s: Set(T))<br><br>The elements of self, which are not in s.");
-    	provider.addCompletion(c);
+    	//c = new OCLShorthandCompletion(provider, "-","-",null);
+    	//c.setSummary("-(s: Set(T))<br><br>The elements of self, which are not in s.");
+    	//provider.addCompletion(c);
 
     	//including
     	c = new OCLShorthandCompletion(provider, "including","including",null);
@@ -273,11 +273,6 @@ public class OCLEditorPanel extends JPanel {
     	c.setSummary("symmetricDifference(s: Set(T))<br><br>The sets containing all the elements that are in self or s, but not in both.");
     	provider.addCompletion(c);
         
-    	//allInstances()
-    	c = new OCLShorthandCompletion(provider, "allInstances","allInstances()",null);
-    	c.setSummary("allInstances()<br><br> All instances of self.");
-    	provider.addCompletion(c);
-    	
     	//allInstances()
     	c = new OCLShorthandCompletion(provider, "allInstances","allInstances()",null);
     	c.setSummary("allInstances()<br><br> All instances of self.");
@@ -300,44 +295,118 @@ public class OCLEditorPanel extends JPanel {
 
         //<>
     	c = new OCLShorthandCompletion(provider, "<>","<>",null);
-    	c.setSummary("<><br><br>True if self is a different object from object2. Infix operator.");
+    	c.setSummary("self <> object<br><br>True if self is a different object from object. Infix operator.");
     	provider.addCompletion(c);
     	
         //=
     	c = new OCLShorthandCompletion(provider, "=","=",null);
-    	c.setSummary("=<br><br>True if self is the same object as object2. Infix operator.");
+    	c.setSummary("self = object<br><br>True if self is the same object as object. Infix operator.");
     	provider.addCompletion(c);    	
 
-       
-       //provider.addCompletion(new ShorthandCompletion(provider, "."));
-       /*provider.addCompletion(new ShorthandCompletion(provider, "->"));
-       provider.addCompletion(new ShorthandCompletion(provider, "::"));       
-              
-       provider.addCompletion(new BasicCompletion(provider, "or","True if either self or b is true."));
-       provider.addCompletion(new BasicCompletion(provider, "and","True if both b1 and b are true."));
-       provider.addCompletion(new BasicCompletion(provider, "not","True if self is false."));
-       provider.addCompletion(new BasicCompletion(provider, "implies","True if self is false, or if self is true and b is true."));
-       provider.addCompletion(new BasicCompletion(provider, "xor","True if either self or b is true, but not both."));
-       provider.addCompletion(new BasicCompletion(provider, "<","True if self is less than i."));
-       provider.addCompletion(new BasicCompletion(provider, ">","True if self is greater than i."));
-       provider.addCompletion(new BasicCompletion(provider, "<=","True if self is less than or equal to i."));
-       provider.addCompletion(new BasicCompletion(provider, ">=","True if self is greater than or equal to i."));       
-       provider.addCompletion(new BasicCompletion(provider, "-","The negative value of self."));
-       provider.addCompletion(new BasicCompletion(provider, "-","The value of the subtraction of i from self."));
-       provider.addCompletion(new BasicCompletion(provider, "+","The value of the addition of self and i."));
-      
-       provider.addCompletion(new BasicCompletion(provider, "exists"));
-       provider.addCompletion(new BasicCompletion(provider, "forAll"));
-       provider.addCompletion(new BasicCompletion(provider, "one"));
-       provider.addCompletion(new BasicCompletion(provider, "select"));
-       provider.addCompletion(new BasicCompletion(provider, "reject"));
-       provider.addCompletion(new BasicCompletion(provider, "isUnique"));
-       provider.addCompletion(new BasicCompletion(provider, "collect"));
-       
-       provider.addCompletion(new BasicCompletion(provider, "let x = in "));
-       
-       provider.addCompletion(new BasicCompletion(provider, "if then else "));
-       */       
+    	//or
+    	c = new OCLShorthandCompletion(provider, "or","or",null);
+    	c.setSummary("self or b<br><br>True if either self or b is true.");
+    	provider.addCompletion(c); 
+    	
+    	//and
+    	c = new OCLShorthandCompletion(provider, "and","and",null);
+    	c.setSummary("self and b<br><br>True if both self and b are true.");
+    	provider.addCompletion(c); 
+
+    	//not
+    	c = new OCLShorthandCompletion(provider, "not","not",null);
+    	c.setSummary("not self<br><br>True if self is false.");
+    	provider.addCompletion(c);
+    	
+    	//implies
+    	c = new OCLShorthandCompletion(provider, "implies","implies",null);
+    	c.setSummary("self implies b<br><br>True if self is false, or if self is true and b is true.");
+    	provider.addCompletion(c);
+    	
+    	//xor
+    	c = new OCLShorthandCompletion(provider, "xor","xor",null);
+    	c.setSummary("self xor b<br><br>True if either self or b is true, but not both.");
+    	provider.addCompletion(c);
+    	
+    	//exists
+    	c = new OCLShorthandCompletion(provider, "exists","exists",null);
+    	c.setSummary("exists(x: Type | expression)");
+    	provider.addCompletion(c);
+
+    	//forAll
+    	c = new OCLShorthandCompletion(provider, "forAll","forAll",null);
+    	c.setSummary("forAll(x: Type | expression)");
+    	provider.addCompletion(c);
+    	
+    	//one
+    	c = new OCLShorthandCompletion(provider, "one","one",null);
+    	c.setSummary("one(x: Type | expression)");
+    	provider.addCompletion(c);
+    	
+    	//select
+    	c = new OCLShorthandCompletion(provider, "select","select",null);
+    	c.setSummary("select(x: Type | expression)");
+    	provider.addCompletion(c);
+    	
+    	//reject
+    	c = new OCLShorthandCompletion(provider, "reject","reject",null);
+    	c.setSummary("reject(x: Type | expression)");
+    	provider.addCompletion(c);
+    	
+    	//isUnique
+    	c = new OCLShorthandCompletion(provider, "isUnique","isUnique",null);
+    	c.setSummary("isUnique(x: Type | expression)");
+    	provider.addCompletion(c);
+    	
+    	//collect
+    	c = new OCLShorthandCompletion(provider, "collect","collect",null);
+    	c.setSummary("collect(x: Type | expression)");
+    	provider.addCompletion(c);
+    	
+    	//let x = in
+    	c = new OCLShorthandCompletion(provider, "let","let x = \nin ",null);
+    	c.setSummary("let x = expr <br>in expr");
+    	provider.addCompletion(c);
+    	
+    	//if then else
+    	c = new OCLShorthandCompletion(provider, "if","if then <br>else",null);
+    	c.setSummary("if expr then expr <br> else expr");
+    	provider.addCompletion(c);
+    	
+    	//>
+    	//c = new OCLShorthandCompletion(provider, ">",">",null);
+    	//c.setSummary("self > i<br><br>True if self is greater than i.");
+    	//provider.addCompletion(c);
+
+    	//<
+    	//c = new OCLShorthandCompletion(provider, "<","<",null);
+    	//c.setSummary("self < i<br><br>True if self is less than i.");
+    	//provider.addCompletion(c);
+    	
+    	//<=
+    	//c = new OCLShorthandCompletion(provider, "<=","<=",null);
+    	//c.setSummary("self <= i<br><br>True if self is less than or equal to i.");
+    	//provider.addCompletion(c);
+
+    	//>=
+    	//c = new OCLShorthandCompletion(provider, ">=",">=",null);
+    	//c.setSummary("self >= i<br><br>True if self is greater than or equal to i.");
+    	//provider.addCompletion(c);
+
+    	//-
+    	//c = new OCLShorthandCompletion(provider, "-","-",null);
+    	//c.setSummary("- self <br><br>The negative value of self.");
+    	//provider.addCompletion(c);
+    	
+    	//-
+    	//c = new OCLShorthandCompletion(provider, "-","-",null);
+    	//c.setSummary("self - i<br><br>The value of the subtraction of i from self.");
+    	//provider.addCompletion(c);
+    	
+    	//+
+    	//c = new OCLShorthandCompletion(provider, "+","+",null);
+    	//c.setSummary("self + i<br><br>The value of the addition of self and i.");
+    	//provider.addCompletion(c);
     }
 
 }
