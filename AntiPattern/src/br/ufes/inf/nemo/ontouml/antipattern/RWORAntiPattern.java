@@ -76,7 +76,7 @@ public class RWORAntiPattern extends Antipattern{
 	
 	public String generateExclusivePredicate(OntoUMLParser parser, int cardinality){
 		String predicate, rules, predicateName, relatorName;
-		ArrayList<Object> saida, mediations = new ArrayList<>();
+		ArrayList<Object> saida, mediations = new ArrayList<Object>();
 		Combination comb1;
 							
 		relatorName=parser.getAlias(relator);
@@ -111,7 +111,7 @@ public class RWORAntiPattern extends Antipattern{
 	
 	public String generateOverlappingPredicate(OntoUMLParser parser, int cardinality){
 		String predicate, rules, predicateName, relatorName;
-		ArrayList<Object> saida, mediations = new ArrayList<>();
+		ArrayList<Object> saida, mediations = new ArrayList<Object>();
 		Combination comb1;
 							
 		relatorName=parser.getAlias(relator);
@@ -247,10 +247,10 @@ public class RWORAntiPattern extends Antipattern{
 		ArrayList<Mediation> mediations = new ArrayList<Mediation>();
 		
 		/*List that will be used to identify the common supertype*/
-		ArrayList<Classifier> mediatedTypesAllParents = new ArrayList<>();
+		ArrayList<Classifier> mediatedTypesAllParents = new ArrayList<Classifier>();
 		
 		/*ArrayList which will contain the relator that was the foundation of the anti-pattern with all its supertypes*/
-		ArrayList<Classifier> allRelators = new ArrayList<>();
+		ArrayList<Classifier> allRelators = new ArrayList<Classifier>();
 		Relator aux;
 		
 		if(relator==null)
@@ -277,7 +277,7 @@ public class RWORAntiPattern extends Antipattern{
 		if(mediations.size()<2)
 			throw new Exception("The input relator does not have enough mediations to characterize the Anti-Pattern");
 		
-		this.mediations = new HashMap<>();
+		this.mediations = new HashMap<Mediation, Classifier>();
 		
 		//Adds all supertypes to the ArrayList
 		for (Mediation med : mediations)
