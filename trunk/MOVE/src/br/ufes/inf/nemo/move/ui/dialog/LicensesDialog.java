@@ -57,25 +57,19 @@ public class LicensesDialog extends JDialog {
 			e.printStackTrace();
 		}
 	}
-	
+		
 	/**
 	 * Creates a License Dialog from the main frame application.
 	 * 
 	 * @param frame
 	 */
-	public LicensesDialog(TheFrame frame)
-	{
-		this();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public LicensesDialog (TheFrame frame)
+	{	
+		super(frame);
 		
 		this.frame = frame;
-	}
-	
-	/**
-	 * Create a Dialog.
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public LicensesDialog ()
-	{		
+		
 		choices = new JComboBox();
 		choices.setModel(new DefaultComboBoxModel(new String[] {"MOVE","Alloy", "Kodkod", "JavaCup", "SAT4J", "ZChaff", "MiniSat","AutoComplete","RSyntaxTextArea"}));
 		choices.setPreferredSize(new Dimension(150, 20));

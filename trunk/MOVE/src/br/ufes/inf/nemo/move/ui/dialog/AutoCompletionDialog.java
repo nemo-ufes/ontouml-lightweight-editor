@@ -60,18 +60,6 @@ public class AutoCompletionDialog extends JDialog {
 	}
 	
 	/**
-	 * Create the dialog from the main frame application.
-	 * 
-	 * @param frame
-	 */
-	public AutoCompletionDialog(TheFrame frame)
-	{
-		this();
-		
-		this.frame = frame;
-	}
-
-	/**
 	 * Auto Selection Action performed.
 	 * 
 	 * @param event
@@ -128,8 +116,12 @@ public class AutoCompletionDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public AutoCompletionDialog() 
+	public AutoCompletionDialog(TheFrame frame) 
 	{
+		super(frame);
+		
+		this.frame = frame;
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AutoCompletionDialog.class.getResource("/resources/icon/completion-36x36.png")));
 		setTitle("Auto Completion");
 		setBounds(100, 100, 270, 258);

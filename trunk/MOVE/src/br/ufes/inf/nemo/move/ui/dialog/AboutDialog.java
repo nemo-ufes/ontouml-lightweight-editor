@@ -43,7 +43,7 @@ public class AboutDialog extends JDialog {
 	{
 		try {
 			
-			AboutDialog dialog = new AboutDialog();
+			AboutDialog dialog = new AboutDialog(frame);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 			dialog.setLocationRelativeTo(frame);
@@ -52,12 +52,14 @@ public class AboutDialog extends JDialog {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Create the dialog.
 	 */
-	public AboutDialog() 
+	public AboutDialog(TheFrame frame) 
 	{
+		super(frame);
+		
 		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
 		setIconImage(icon);
 		setTitle("About Model Validation Environment");
@@ -98,7 +100,7 @@ public class AboutDialog extends JDialog {
 		lblOntology = new JLabel("Ontology & Conceptual Modeling Research Group (NEMO)");
 		lblOntology.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		lblForMoreInformation = new JLabel("http://nemo.inf.ufes.br");
+		lblForMoreInformation = new JLabel("nemo.inf.ufes.br");
 		lblForMoreInformation.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JLabel lblAuthors = new JLabel("Author(s):");

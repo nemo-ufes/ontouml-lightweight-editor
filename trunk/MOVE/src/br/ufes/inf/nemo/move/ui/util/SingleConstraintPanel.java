@@ -48,7 +48,7 @@ public class SingleConstraintPanel extends JPanel {
 		this();
 		
 		this.constraint = ct;
-		txtConstraintName.setText("<<"+ctType+">>  "+ct.getName());
+		txtConstraintName.setText(""+ctType+"  "+ct.getName());
 	}
 	
 	/**
