@@ -67,13 +67,12 @@ public class OptionsDialog extends JDialog {
 	 */
 	public OptionsDialog(OntoUMLOptionsModel ontoumlOptModel, OCLOptionsModel oclOptModel, TheFrame frame)
 	{
-		this();
+		this(frame);
 		
 		this.ontoumlOptModel = ontoumlOptModel;		
 		this.oclOptModel = oclOptModel;
 		this.frame = frame;		
-		
-		setLocationRelativeTo(frame);			
+					
 		setOptionDialog(ontoumlOptModel,oclOptModel);
 	}
 	
@@ -95,8 +94,10 @@ public class OptionsDialog extends JDialog {
 	/**
 	 * Constructor
 	 */
-	public OptionsDialog() 
+	public OptionsDialog(TheFrame frame) 
 	{
+		super(frame);
+		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(OptionsDialog.class.getResource("/resources/icon/options.png")));
 		setTitle("Options");

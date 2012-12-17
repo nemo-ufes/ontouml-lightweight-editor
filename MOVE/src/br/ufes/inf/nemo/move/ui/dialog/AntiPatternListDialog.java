@@ -82,23 +82,16 @@ public class AntiPatternListDialog extends JDialog {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * Create the Dialog
-	 * 
-	 * @param parent
-	 */
-	public AntiPatternListDialog(TheFrame parent)
-	{
-		this();
-		frame = parent;
-	}
-	
+		
 	/**
 	 * Create the dialog.
 	 */
-	public AntiPatternListDialog() 
+	public AntiPatternListDialog(TheFrame frame) 
 	{
+		super(frame);
+		
+		this.frame = frame;
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/icon/search-24x24.png")));
 		setTitle("Search AntiPatterns");
 		setBounds(100, 100, 332, 256);
