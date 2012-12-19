@@ -450,23 +450,33 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer();
-		if(isAbstract)
-			result.append("abstract ");
-		if(getRelation().size() > 1)
-			result.append("sig "+name+" {\n");
-		else
-			result.append("sig "+name+" {");
+		
+		if(isAbstract) result.append("abstract ");
+		
+		//if(multiplicity != null) result.append(multiplicity.getName().toLowerCase()+" ");
+		
+		result.append("sig "+name);
+		
+		if (getInheritance()!=null)
+		{
+			if(getInheritance().isIsExtension()) result.append(" extends "+getInheritance().getSupertype());
+			if(getInheritance().isIsSubset()) result.append(" in "+getInheritance().getSupertype());
+		}
+		
+		if(getRelation().size() > 1) result.append(" {\n");		
+		else result.append(" {");
+		
 		for(Declaration decl : getRelation())
 		{
-			if(decl.equals(relation.get(relation.size()-1)))
-				result.append("\t"+decl+"\n");
-			else
-				result.append("\t"+decl+",\n");
+			if(decl.equals(relation.get(relation.size()-1))) result.append("\t"+decl+"\n");
+			else result.append("\t"+decl+",\n");
 		}
+		
 		result.append("}");
-		if(getBlock() == null) result.append("\n"); 
-		if(getBlock() != null)
-			result.append("{\n"+getBlock()+"}\n");
+		
+		if(getBlock() == null) result.append("\n");
+		
+		if(getBlock() != null) result.append("{\n"+getBlock()+"}\n");
 		
 		return result.toString();
 	}
