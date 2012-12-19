@@ -389,11 +389,7 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 

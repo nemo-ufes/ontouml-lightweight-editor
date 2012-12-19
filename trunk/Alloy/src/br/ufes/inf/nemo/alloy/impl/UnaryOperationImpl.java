@@ -223,11 +223,6 @@ public class UnaryOperationImpl extends ExpressionImpl implements UnaryOperation
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 		StringBuffer result = new StringBuffer();

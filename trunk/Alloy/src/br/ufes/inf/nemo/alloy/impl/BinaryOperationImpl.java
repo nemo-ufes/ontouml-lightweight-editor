@@ -289,11 +289,6 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 

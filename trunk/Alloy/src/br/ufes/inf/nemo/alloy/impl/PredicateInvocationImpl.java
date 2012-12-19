@@ -202,11 +202,6 @@ public class PredicateInvocationImpl extends ExpressionImpl implements Predicate
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String toString() {
 		StringBuffer result = new StringBuffer();
 		

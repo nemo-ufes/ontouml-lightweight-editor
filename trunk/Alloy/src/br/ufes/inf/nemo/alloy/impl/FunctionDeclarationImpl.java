@@ -336,11 +336,6 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String toString() {
 		String param = "";
 		if(getParameter().size()>0) {

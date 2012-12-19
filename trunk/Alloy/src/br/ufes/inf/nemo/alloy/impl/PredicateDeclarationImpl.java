@@ -270,11 +270,6 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String toString() {
 		StringBuffer result = new StringBuffer();
 		result.append(" (path: ");

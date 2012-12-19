@@ -194,11 +194,6 @@ public class ExternalReferenceImpl extends ExpressionImpl implements ExternalRef
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 

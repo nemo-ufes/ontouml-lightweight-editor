@@ -142,11 +142,6 @@ public class SignatureReferenceImpl extends ExpressionImpl implements SignatureR
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String toString() {
 		
 		return getSignature();

@@ -203,11 +203,6 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
