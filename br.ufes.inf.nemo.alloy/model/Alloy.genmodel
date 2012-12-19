@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/br.ufes.inf.nemo.alloy/src" modelPluginID="br.ufes.inf.nemo.alloy"
+    modelName="Alloy" importerID="org.eclipse.emf.importer.ecore" copyrightFields="false">
+  <foreignModel>Alloy.ecore</foreignModel>
+  <genPackages prefix="Alloy" basePackage="br.ufes.inf.nemo" resource="XMI" disposableProviderFactory="true"
+      ecorePackage="Alloy.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Alloy.ecore#//Multiplicity">
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Multiplicity/some"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Multiplicity/one"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Multiplicity/lone"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Multiplicity/set"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Alloy.ecore#//BinaryOperator">
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//BinaryOperator/difference"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//BinaryOperator/intersection"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//BinaryOperator/join"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//BinaryOperator/union"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//BinaryOperator/domainRestriction"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//BinaryOperator/rangeRestriction"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//BinaryOperator/relationalOverride"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//BinaryOperator/iff"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//BinaryOperator/or"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//BinaryOperator/and"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//BinaryOperator/boxJoin"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Alloy.ecore#//UnaryOperator">
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//UnaryOperator/transposition"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//UnaryOperator/transitivityClosure"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//UnaryOperator/reflexiveTransityClosure"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//UnaryOperator/not"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//UnaryOperator/no"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//UnaryOperator/set"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//UnaryOperator/some"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//UnaryOperator/lone"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//UnaryOperator/one"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//UnaryOperator/cardinality"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Alloy.ecore#//CompareOperator">
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//CompareOperator/subset"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//CompareOperator/equal"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//CompareOperator/lessThan"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//CompareOperator/greaterThen"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//CompareOperator/lessEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//CompareOperator/greaterEqual"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Alloy.ecore#//Constant">
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Constant/none"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Constant/univ"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Constant/iden"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Alloy.ecore#//Quantificator">
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Quantificator/all"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Quantificator/sum"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Quantificator/no"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Quantificator/some"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Quantificator/lone"/>
+      <genEnumLiterals ecoreEnumLiteral="Alloy.ecore#//Quantificator/one"/>
+    </genEnums>
+    <genClasses ecoreClass="Alloy.ecore#//AlloyModule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//AlloyModule/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//AlloyModule/path"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//AlloyModule/parameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//AlloyModule/paragraph"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//AlloyModule/imports"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//ParametrizedModule"/>
+    <genClasses ecoreClass="Alloy.ecore#//SignatureParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//SignatureParameter/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//ImporterModule"/>
+    <genClasses ecoreClass="Alloy.ecore#//ModuleImportation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//ModuleImportation/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//ModuleImportation/alias"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//ModuleImportation/path"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//ModuleImportation/parameters"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//Paragraph">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//Paragraph/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Alloy.ecore#//SignatureDeclaration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//SignatureDeclaration/isAbstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//SignatureDeclaration/multiplicity"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//SignatureDeclaration/relation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//SignatureDeclaration/block"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//SignatureDeclaration/exists"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//SignatureDeclaration/inheritance"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//FactDeclaration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//FactDeclaration/block"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//FunctionDeclaration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//FunctionDeclaration/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//FunctionDeclaration/path"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//FunctionDeclaration/parameter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//FunctionDeclaration/type"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//PredicateDeclaration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//PredicateDeclaration/block"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//PredicateDeclaration/path"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//PredicateDeclaration/parameter"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//AssertionDeclaration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//AssertionDeclaration/block"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Alloy.ecore#//CommandDeclaration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//CommandDeclaration/scope"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Alloy.ecore#//CommandDeclaration/block"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Alloy.ecore#//CommandDeclaration/assertion"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Alloy.ecore#//CommandDeclaration/predicate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//CommandDeclaration/isRun"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//CommandDeclaration/isCheck"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//Inheritance">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//Inheritance/supertype"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//Inheritance/isSubset"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//Inheritance/isExtension"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Alloy.ecore#//ScopeSpecification"/>
+    <genClasses ecoreClass="Alloy.ecore#//GenericScope">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//GenericScope/scopeable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//GenericScope/scopeSize"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//DetailedScope">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//DetailedScope/scopeable"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//Scopeable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//Scopeable/scopeSize"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//Scopeable/isExactly"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//Scopeable/signature"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Alloy.ecore#//Expression"/>
+    <genClasses ecoreClass="Alloy.ecore#//Declaration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//Declaration/isDisjoint"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//Declaration/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//Declaration/variable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//Declaration/multiplicity"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//SignatureReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//SignatureReference/signature"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//Block">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//Block/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//BinaryOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//BinaryOperation/leftExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//BinaryOperation/rightExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//BinaryOperation/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//UnaryOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//UnaryOperation/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//UnaryOperation/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//LetDeclaration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//LetDeclaration/equalExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//LetDeclaration/block"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//LetDeclaration/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Alloy.ecore#//LetDeclaration/barExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//LetDeclaration/hasBlock"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//LetDeclaration/hasExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//CompareOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//CompareOperation/leftExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//CompareOperation/rightExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//CompareOperation/operator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//CompareOperation/negation"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//VariableReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//VariableReference/prefixAt"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//VariableReference/variable"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//ArrowOperation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//ArrowOperation/leftMultiplicity"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//ArrowOperation/rightMultiplicity"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//ArrowOperation/leftExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//ArrowOperation/rightExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//ConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//ConstantExpression/constant"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//ExternalReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//ExternalReference/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//ExternalReference/path"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//ComprehensionExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//ComprehensionExpression/declaration"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//ComprehensionExpression/block"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//ComprehensionExpression/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//ComprehensionExpression/hasBlock"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//ComprehensionExpression/hasExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//FunctionInvocation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//FunctionInvocation/parameter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//FunctionInvocation/function"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//PredicateInvocation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//PredicateInvocation/parameter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//PredicateInvocation/predicate"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//DisjointExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//DisjointExpression/set"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//ImpliesOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//ImpliesOperation/else"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//ImpliesOperation/implication"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//ImpliesOperation/condition"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//QuantificationExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//QuantificationExpression/quantificator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//QuantificationExpression/declaration"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//QuantificationExpression/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Alloy.ecore#//QuantificationExpression/block"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//Variable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//Variable/name"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Alloy.ecore#//Variable/declaration"/>
+    </genClasses>
+    <genClasses ecoreClass="Alloy.ecore#//EnumDeclaration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Alloy.ecore#//EnumDeclaration/literals"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
