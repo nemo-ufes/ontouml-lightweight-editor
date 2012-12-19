@@ -9,7 +9,7 @@ import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.BinaryOperation;
 import br.ufes.inf.nemo.alloy.DisjointExpression;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
+import br.ufes.inf.nemo.ontouml2alloy.util.AlloyUtil;
 
 public class TTopLevelRule {
 	
@@ -85,14 +85,14 @@ public class TTopLevelRule {
 				if (exprList.size()>1) 
 				{
 					// create a union(+) operation for the exprList
-					BinaryOperation bo = AlloyAPI.createUnionExpression(factory, exprList);
+					BinaryOperation bo = AlloyUtil.createUnionExpression(factory, exprList);
 					paramList.add(bo.toString());					
 				}else{
 					paramList.add(ontoparser.getAlias(singleList.get(1)));					
 				}						
 				
 				//add Top Level Disjoint Expression Rule to to the List
-				result.add( AlloyAPI.createDisjointExpression(factory,paramList) );				
+				result.add( AlloyUtil.createDisjointExpression(factory,paramList) );				
 			}			
 		}
 		return result;

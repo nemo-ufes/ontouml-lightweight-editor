@@ -22,24 +22,23 @@ package br.ufes.inf.nemo.ontouml2alloy.transformer;
 
 import java.util.ArrayList;
 
+import org.eclipse.emf.ecore.EObject;
+
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Characterization;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
-import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
-import RefOntoUML.Generalization;
-import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Mode;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
-import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
+import RefOntoUML.SubstanceSortal;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.ArrowOperation;
@@ -59,365 +58,170 @@ import br.ufes.inf.nemo.alloy.UnaryOperator;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TAbstractClauseRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TDerivationRule;
-import br.ufes.inf.nemo.ontouml2alloy.rules.TGeneralizationRule;
-import br.ufes.inf.nemo.ontouml2alloy.rules.TGeneralizationSetRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TRelatorRule;
-import br.ufes.inf.nemo.ontouml2alloy.rules.TTopLevelRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TWeakSupplementationRule;
+import br.ufes.inf.nemo.ontouml2alloy.util.AlloyUtil;
 
 /**
- *	This class is used to transform every element of the model into alloy. 
- *	First, is created an alloy module skeleton as a base for transformation.
- *  Then, every element of the model is transformed. (i.e. Classifiers, Generalizations, 
- *  GenearlizationSets and Associations). 
- *  
  * 	@authors Tiago Sales, John Guerson and Lucas Thom
  */
 
 public class Transformer extends BaseTransformer {
 		
-	/** 
-	 *  Provide the ontouml model elements.
-	 *  It is also used for associate the elements of the ontouml model 
-	 *  with their modified names (i.e. without special characters: #, !, @, $, %, and etc...). 
-	 */
-	public OntoUMLParser ontoparser;
-			
-	/**
-	 * Alloy Factory Instance.
-	 */
-	public AlloyFactory factory;
-	
-	/**
-	 * Transformation Options.
-	 */
-	public OntoUMLOptions options;
+	/** List containing all the facts for relator's rule. */
+	private ArrayList<FactDeclaration> relatorConstraintFactList = new ArrayList<FactDeclaration>();
+
+	/** List containing all the facts for weak supplementation's rule. */
+	private ArrayList<FactDeclaration> weakSupplementationFactList = new ArrayList<FactDeclaration>();
 		
 	/**
 	 * Constructor().
 	 */
 	public Transformer (OntoUMLParser parser, AlloyFactory factory, OntoUMLOptions opt)
 	{		
-		super(parser,factory);
-		
-		this.ontoparser = parser;		
-		
-		this.factory = factory;
-		
-		this.options = opt;		
+		super(parser,factory,opt);		
 	}
 			
-	/* =========================================================================================================*/
-	
-	// initialized by transformClassifier()
-	
-	/** List containing all the facts for relator's rule. */
-	private ArrayList<FactDeclaration> relatorConstraintFactList = new ArrayList<FactDeclaration>();
-
-	/** List containing all the facts for weak supplementation's rule. */
-	private ArrayList<FactDeclaration> weakSupplementationFactList = new ArrayList<FactDeclaration>();
+	/**
+	 * Transforms Classifiers.
+	 */
+	@SuppressWarnings("unchecked")
+	public void transformClassifier(Classifier c) 
+	{
+		/* ObjectClassName: set exists:>Object,
+		 */
+		if(c instanceof ObjectClass)
+		{
+			Declaration decl = AlloyUtil.createDeclaration(factory,exists,ontoparser.getAlias(c), sigObject.getName());			
+			if (decl!=null) world.getRelation().add(decl);			
+		}
+			
+		/* fact weak_supplementation_constraint { all w: World | all x: w.<RigidSortalName> | # ( x.(w.meronymicName1)+ x.(w.meronymicName2) + ...) >= 2 }
+		 */
+		if ((c instanceof RigidSortalClass) && (options.weakSupplementationConstraint))
+		{				
+			FactDeclaration fact = TWeakSupplementationRule.createFactDeclaration(ontoparser, factory, c);				
+			if (fact!=null) weakSupplementationFactList.add(fact);		
+		}
+		
+		/* PropertyName: set exists:>Property,
+		 */
+		if(c instanceof MomentClass)
+		{			
+			Declaration decl = AlloyUtil.createDeclaration(factory,exists,ontoparser.getAlias(c),sigProperty.getName());			
+			world.getRelation().add(decl);
+		}
+		
+		/* fact relator_constraint { all w: World | all x: w.<RelatorName> | # ( x.(w.<associationName1>)+ x.(w.<associationName2>) + ...) >= 2 }
+		 */
+		if ((c instanceof Relator) && (options.relatorConstraint))
+		{			
+			FactDeclaration fact = TRelatorRule.createFactDeclaration(ontoparser, factory, (Relator)c);			
+			if (fact!= null) relatorConstraintFactList.add(fact);
+		}		
+						
+		/* abstract_father = concrete_child1 + concrete_child2 + concrete_child3 + ...
+		 */
+		if (c.isIsAbstract()) 
+		{
+			CompareOperation co = TAbstractClauseRule.createCompareOperation(ontoparser, factory, c);			
+			if (co!=null) world.getBlock().getExpression().add(co);			
+		}
+	}
 	
 	/**
-	 * Creates final additions to alloy code.
+	 * Transforms Attributes
+	 */
+	@SuppressWarnings("unchecked")
+	public void transformAttribute(Classifier c, Property attr)
+	{		
+		ArrowOperation aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(c),0,-1,ontoparser.getAlias(attr.getType()),attr.getLower(),attr.getUpper());		
+		Declaration decl = AlloyUtil.createDeclaration(factory, ontoparser.getAlias(attr), aOp);		
+		if (decl!=null) world.getRelation().add(decl);
+	}
+		
+	/**
+	 * Final additions.
 	 */
 	@SuppressWarnings("unchecked")
 	public void finalAdditions()
-	{		
-		// top level object classes rule
-		ArrayList<Classifier> topObjectClassList = new ArrayList<Classifier>();
-		topObjectClassList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.ObjectClass.class));
-		
-		if(topObjectClassList.size() > 1)
+	{	
+		/* exists:>Object in subsortalNamesList[0] + subsortalNamesList[1] + ...
+		 */
+		ArrayList<EObject> subsSortalList = new ArrayList<EObject>();
+		subsSortalList.addAll(ontoparser.getAllInstances(SubstanceSortal.class));
+		if(options.identityPrinciple && subsSortalList.size() > 0)
 		{
-			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topObjectClassList);			
-			for (DisjointExpression disj : rulesList) 
-			{ 
-				world.getBlock().getExpression().add(disj); 
-			}
+			AlloyUtil.createExistsCompareOperationInWorld(factory, exists, world, sigObject, ontoparser.getAlias(subsSortalList));
 		}
 		
-		// top level moment classes rule
-		ArrayList<Classifier> topMomentClassList = new ArrayList<Classifier>();
-		topMomentClassList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.MomentClass.class));
-		
-		if(topMomentClassList.size() > 1)
-		{
-			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topMomentClassList);			
-			for (DisjointExpression disj : rulesList) 
-			{ 
-				world.getBlock().getExpression().add(disj); 
-			}
-		}
-		
-		// top level dataType rule
-		ArrayList<Classifier> topDataTypeList = new ArrayList<Classifier>();
-		topDataTypeList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.DataType.class));
-		
-		if(topDataTypeList.size() > 1)
-		{
-			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topDataTypeList);			
-			for (DisjointExpression disj : rulesList) 
-			{ 
-				world.getBlock().getExpression().add(disj); 
-			}
-		}
-				
-		if(options.identityPrinciple && subsortalDisjNamesList.size() > 0) 
-			
-			// exists:>Object in subsortalNamesList[0] + subsortalNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigObject, subsortalDisjNamesList);
-		
-		if(!options.identityPrinciple && objectNamesList.size() > 0)
-			
-			// exists:>Object in objectNamesList[0] + objectNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigObject,objectNamesList);
-		
-		if(propertyNamesList.size() > 0) 
-		
-			// exists:>Property in propertyNamesList[0] + propertyNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigProperty, propertyNamesList);
-		
-		if(datatypeNamesList.size() > 0) 
-		
-			// exists:>DataType in datatypeNamesList[0] + datatypeNamesList[1] + ...
-			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigDatatype, datatypeNamesList);
-		
-		// disj[ DisjNamesList[0], DisjNamesList[1], ... ],
-		
-		DisjointExpression disj = AlloyAPI.createDisjointExpression(factory, subsortalDisjNamesList);	
+		/* disj[ SubSortalNamesList[0], SubSortalNamesList[1], ... ],
+		 */
+		DisjointExpression disj = AlloyUtil.createDisjointExpression(factory, ontoparser.getAlias(subsSortalList));	
 		if (disj!=null) world.getBlock().getExpression().add(disj);
 		
-		// not needed anymore....
-		//AlloyAPI.createDisjointExpressionInWorld(factory, world, datatypeDisjNamesList);
+		/* exists:>Object in objectNamesList[0] + objectNamesList[1] + ...
+		 */
+		ArrayList<EObject> objectClassesList = new ArrayList<EObject>();
+		objectClassesList.addAll(ontoparser.getAllInstances(ObjectClass.class));		
+		if(!options.identityPrinciple && objectClassesList.size() > 0)
+		{
+			AlloyUtil.createExistsCompareOperationInWorld(factory, exists, world, sigObject, ontoparser.getAlias(objectClassesList));
+		}
 		
-		// not needed anymore....
-		//AlloyAPI.createDisjointExpressionInWorld(factory, world, propertyDisjNamesList);		
+		/* exists:>Property in propertyNamesList[0] + propertyNamesList[1] + ...
+		 */
+		ArrayList<EObject> momentClassesList = new ArrayList<EObject>();
+		momentClassesList.addAll(ontoparser.getAllInstances(MomentClass.class));		
+		if(momentClassesList.size() > 0)
+		{
+			AlloyUtil.createExistsCompareOperationInWorld(factory, exists, world, sigProperty, ontoparser.getAlias(momentClassesList));
+		}
 		
-		// fact relator_constraint { } 
-		
+		/* fact datatypes_facts {...}
+		 */
+		if (datatypes_facts.getBlock().getExpression().size()>0)
+		{
+			module.getParagraph().add(datatypes_facts);
+		}
+			
+		/* fact relator_constraint {...}
+		 */
 		for (FactDeclaration f: relatorConstraintFactList)
 		{
 			module.getParagraph().add(f);
 		}
 
-		// fact weak_supplementation { }
-		
+		/* fact weak_supplementation {...}
+		 */
 		for (FactDeclaration f: weakSupplementationFactList)
 		{
 			module.getParagraph().add(f);
 		}
 						
-		// fun visible : World some -> some univ {	exists }
-		
-		AlloyAPI.createVisibleFunction(factory, module, world, exists);
-
-		// fact all_rigid_classes { rigidity[...] }
-		
-		createAllRigidClassesFacts();	
-		
-		// fact all_antirigid_classes { antirigidity[...] }
-		
-		if (options.antiRigidity) createAllAntiRigidClassesFacts();
-		
-		//  run { } for 10 but 3 World
-		
-		AlloyAPI.createDefaultRunComand(factory, module);			
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * 	Creates " all_rigid_classes" Fact Declaration in Alloy.
-	 *  
-	 *  fact all_rigid_classes { ... }			
-	 */
-	@SuppressWarnings("unchecked")
-	private void createAllRigidClassesFacts() 
-	{
-		ArrayList<Classifier> rigidElementsList = new ArrayList<Classifier>();
-		rigidElementsList.addAll(ontoparser.getRigidClasses());
-		
-		if(rigidElementsList.size()>0)
-		{						
-			for(Classifier rigid :rigidElementsList)
-			{				
-				if(rigid instanceof ObjectClass)
-				{	
-					// rigidity[ rigidClassName, Object, exists]
-					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigObject, exists, ontoparser.getAlias(rigid));
-					all_rigid_classes.getBlock().getExpression().add(pI);
-				}	
-				if(rigid instanceof MomentClass)
-				{
-					// rigidity[ rigidClassName, Property, exists]
-					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigProperty, exists, ontoparser.getAlias(rigid));
-					all_rigid_classes.getBlock().getExpression().add(pI);
-				}
-				if(rigid instanceof DataType && !(rigid instanceof PrimitiveType))
-				{
-					// rigidity[ rigidClassName, DataType, exists]
-					
-					PredicateInvocation pI = AlloyAPI.createRigidityInvocation(factory, sigDatatype, exists, ontoparser.getAlias(rigid));
-					all_rigid_classes.getBlock().getExpression().add(pI);
-				}				
-			}			
-			module.getParagraph().add(all_rigid_classes);
-		}
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * 	Creates " all_antirigid_classes" Fact Declaration in Alloy.
-	 *  
-	 *  fact all_antirigid_classes { ... }			
-	 */
-	@SuppressWarnings("unchecked")
-	private void createAllAntiRigidClassesFacts() 
-	{
-		ArrayList<Classifier> antirigidElementsList = new ArrayList<Classifier>();
-		antirigidElementsList.addAll(ontoparser.getAntiRigidClasses());
-		
-		if(antirigidElementsList.size()>0)
-		{						
-			for(Classifier antirigid : antirigidElementsList)
-			{
-				if(antirigid instanceof ObjectClass)
-				{	
-					// antirigidity[ antirigidClassName, Object, exists]
-					
-					PredicateInvocation pI = AlloyAPI.createAntiRigidityInvocation(factory,sigObject, exists, ontoparser.getAlias(antirigid));
-					
-					all_antirigid_classes.getBlock().getExpression().add(pI);
-				}					
-			}			
-			module.getParagraph().add(all_antirigid_classes);
-		}
-	}
-	
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * Transforms OntoUML Classifiers.
-	 */
-	@SuppressWarnings("unchecked")
-	public void transformClassifier(Classifier c) 
-	{
-		if(c instanceof ObjectClass)
-		{
-			// ObjectClassName: set exists:>Object,
-			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c), sigObject.getName());				
-			
-			if (decl!=null) world.getRelation().add(decl);			
-
-			if ((c instanceof RigidSortalClass) && (options.weakSupplementationConstraint))
-			{				
-				// all w: World | all x: w.<RigidSortalName> | # ( x.(w.meronymicName1)+ x.(w.meronymicName2) + ...) >= 2
-						
-				FactDeclaration fact = TWeakSupplementationRule.createFactDeclaration(ontoparser, factory, c);
+		/* fun visible : World some -> some univ {	exists }
+		 */
+		AlloyUtil.createVisibleFunction(factory, module, world, exists);
 				
-				if (fact!=null) weakSupplementationFactList.add(fact);					
-			}
-		}
-		
-		if(c instanceof DataType && !(c instanceof PrimitiveType))
-		{			
-			// DataTypeName: set exists:>DataType,
-			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c), sigDatatype.getName());	
-			
-			if (decl!=null) world.getRelation().add(decl);									
-		}
-		
-		if(c instanceof MomentClass)
-		{
-			// PropertyName: set exists:>Property,
-			
-			Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c),sigProperty.getName());
-			
-			world.getRelation().add(decl);
-			
-			if ((c instanceof Relator) && (options.relatorConstraint))
-			{
-				// all w: World | all x: w.<RelatorName> | # ( x.(w.<associationName1>)+ x.(w.<associationName2>) + ...) >= 2
-				
-				FactDeclaration fact = TRelatorRule.createFactDeclaration(ontoparser, factory, (Relator)c);				
-				
-				if (fact!= null) relatorConstraintFactList.add(fact);
-			}									
-		}
-		
-		if (c.isIsAbstract()) 
-		{
-			// abstract_father = concrete_child1 + concrete_child2 + concrete_child3 + ...
-			
-			CompareOperation co = TAbstractClauseRule.createCompareOperation(ontoparser, factory, c);
-			
-			if (co!=null) world.getBlock().getExpression().add(co);			
-		}
+		/*  run { } for 10 but 3 World
+		 */
+		AlloyUtil.createDefaultRunComand(factory, module);			
 	}
 	
-	/* =========================================================================================================*/
-	
 	/**
-	 * Transforms OntoUML Generalizations.
-	 */
-	@SuppressWarnings("unchecked")
-	public void transformGeneralizations(Generalization g) 
-	{
-		// child in father
-		
-		CompareOperation co = TGeneralizationRule.createCompareOperation(ontoparser, factory, g);
-		
-		if (co!=null) world.getBlock().getExpression().add(co);
-	}
-				
-	/* =========================================================================================================*/
-	
-	/**
-	 * Transforms OntoUML Generalizations Sets.
-	 */
-	@SuppressWarnings("unchecked")
-	public void transformGeneralizationSets(GeneralizationSet gs) 
-	{
-		if(gs.isIsCovering())
-		{
-			// Father = Child1 + Child2 + Child3 + ...
-			
-			CompareOperation co = TGeneralizationSetRule.createCompleteCompareOperation(ontoparser, factory, gs);
-			
-			if (co!=null) world.getBlock().getExpression().add(co);			
-		}
-		if(gs.isIsDisjoint())
-		{
-			// disj[Child1, Child2, Child3,...]
-			
-			DisjointExpression disj = TGeneralizationSetRule.createDisjointExpression(ontoparser, factory, gs);
-						
-			if (disj!=null) world.getBlock().getExpression().add(disj);
-		}
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * Transforms OntoUML Derivation Associations into Alloy.
+	 * Transforms Derivation.
 	 */
 	@SuppressWarnings("unchecked")
 	public void transformDerivations(Derivation d)
 	{
 		PredicateInvocation pI = TDerivationRule.createPredicateInvocation(ontoparser, factory, d);		
-		if (pI!=null) derivations.getBlock().getExpression().add(pI);		
+		if (pI!=null) derivations.getBlock().getExpression().add(pI);
+		module.getParagraph().add(derivations);
 	}
-	
+		
 	/* =========================================================================================================*/
 	
 	/**
@@ -467,7 +271,8 @@ public class Transformer extends BaseTransformer {
 			transformAssociationsEnds(ass,source,target);		
 		
 		uOp.setExpression(aOp);
-		world.getRelation().add(decl);
+		world.getRelation().add(decl);	
+		
 	}
 
 	/* =========================================================================================================*/
@@ -487,7 +292,7 @@ public class Transformer extends BaseTransformer {
 			String assocName = ontoparser.getAlias(ass);
 			
 			FunctionDeclaration fun = 
-					AlloyAPI.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);
+					AlloyUtil.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);
 												
 			module.getParagraph().add(fun);			
 		}
@@ -502,7 +307,7 @@ public class Transformer extends BaseTransformer {
 			String assocName = ontoparser.getAlias(ass);
 			
 			FunctionDeclaration fun = 
-					AlloyAPI.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);
+					AlloyUtil.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);
 												
 			module.getParagraph().add(fun);			
 		}	
@@ -540,14 +345,14 @@ public class Transformer extends BaseTransformer {
 		if(ass instanceof subQuantityOf)
 		{
 			PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
 			
 			association_properties.getBlock().getExpression().add(pI);
 			
 			if(ass.sourceEnd().isIsReadOnly() || ass.isIsInseparable() || ass.isIsImmutableWhole())
 			{
 				PredicateInvocation pIS = 
-						AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
+						AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
 				
 				association_properties.getBlock().getExpression().add(pIS);
 			}
@@ -557,7 +362,7 @@ public class Transformer extends BaseTransformer {
 			if(ass.targetEnd().isIsReadOnly() || ass.isIsEssential() || ass.isIsImmutablePart())
 			{
 				PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
 				
 				association_properties.getBlock().getExpression().add(pI);
 			}
@@ -565,7 +370,7 @@ public class Transformer extends BaseTransformer {
 			if(ass.sourceEnd().isIsReadOnly() || ass.isIsInseparable() || ass.isIsImmutableWhole())
 			{
 				PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
 				
 				association_properties.getBlock().getExpression().add(pI);
 			}
@@ -575,7 +380,7 @@ public class Transformer extends BaseTransformer {
 		aOp.setRightExpression(target);
 		
 		// Set Cardinalities
-		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
+		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ontoparser.getAlias(ass));
 	}
 	
 	/* =========================================================================================================*/
@@ -613,14 +418,14 @@ public class Transformer extends BaseTransformer {
 		}
 		
 		PredicateInvocation pI = 
-				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
+				AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
 		
 		association_properties.getBlock().getExpression().add(pI);
 		
 		if(isSourceReadOnly)
 		{
 			PredicateInvocation pIS = 
-				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
+				AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
 			
 			association_properties.getBlock().getExpression().add(pIS);
 		}
@@ -629,7 +434,7 @@ public class Transformer extends BaseTransformer {
 		aOp.setRightExpression(target);
 		
 		// Set Cardinalities
-		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
+		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ontoparser.getAlias(ass));
 	}
 	
 	/* =========================================================================================================*/
@@ -667,14 +472,14 @@ public class Transformer extends BaseTransformer {
 		}
 		
 		PredicateInvocation pI = 
-				AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
+				AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
 		
 		association_properties.getBlock().getExpression().add(pI);
 		
 		if(isSourceReadOnly)
 		{
 			PredicateInvocation pIS = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
 			
 			association_properties.getBlock().getExpression().add(pIS);
 		}
@@ -683,7 +488,7 @@ public class Transformer extends BaseTransformer {
 		aOp.setRightExpression(target);
 		
 		// Set Cardinalities
-		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
+		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ontoparser.getAlias(ass));
 	}
 	
 	/* =========================================================================================================*/
@@ -726,7 +531,7 @@ public class Transformer extends BaseTransformer {
 		if(isTargetReadOnly)
 		{
 			PredicateInvocation pI = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_target", source.getVariable(), ontoparser.getAlias(ass));
 			
 			association_properties.getBlock().getExpression().add(pI);			
 		}
@@ -734,7 +539,7 @@ public class Transformer extends BaseTransformer {
 		if(isSourceReadOnly)
 		{
 			PredicateInvocation pIS = 
-					AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
+					AlloyUtil.createImmutablePredicateInvocation(factory, "immutable_source", target.getVariable(), ontoparser.getAlias(ass));
 			
 			association_properties.getBlock().getExpression().add(pIS);			
 		}
@@ -743,7 +548,7 @@ public class Transformer extends BaseTransformer {
 		aOp.setRightExpression(target);
 		
 		// Set Cardinalities
-		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ass);
+		setCardinalities(aOp, lowerSource, upperSource, lowerTarget,upperTarget,source,target,ontoparser.getAlias(ass));
 	}
 	
 	/* =========================================================================================================*/
@@ -754,7 +559,7 @@ public class Transformer extends BaseTransformer {
 	 */
 	@SuppressWarnings("unchecked")
 	private void setCardinalities(ArrowOperation aOp, int lowerSource, int upperSource, int lowerTarget, int upperTarget, 
-	VariableReference source, VariableReference target, Association ass) 
+	VariableReference source, VariableReference target, String assocName) 
 	{
 		// Source Cardinality
 		if(lowerSource == 1 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.ONE_LITERAL);		
@@ -785,10 +590,10 @@ public class Transformer extends BaseTransformer {
 		if (lowerSource > 1)
 		{
 			BinaryOperation binJoin = 
-					AlloyAPI.createBinaryOperation(factory, ontoparser.getAlias(ass), BinaryOperator.JOIN_LITERAL, "x");
+					AlloyUtil.createBinaryOperation(factory, assocName, BinaryOperator.JOIN_LITERAL, "x");
 			
 			QuantificationExpression qe =					
-				AlloyAPI.createQuantificationExpression(factory, target, binJoin, CompareOperator.GREATER_EQUAL_LITERAL, lowerSource);
+				AlloyUtil.createQuantificationExpression(factory, target, binJoin, CompareOperator.GREATER_EQUAL_LITERAL, lowerSource);
 			
 			world.getBlock().getExpression().add(qe);
 		}
@@ -796,10 +601,10 @@ public class Transformer extends BaseTransformer {
 		if (upperSource > 1 && upperSource != -1) 
 		{
 			BinaryOperation binJoin = 
-				AlloyAPI.createBinaryOperation(factory,ontoparser.getAlias(ass), BinaryOperator.JOIN_LITERAL,"x");
+				AlloyUtil.createBinaryOperation(factory,assocName, BinaryOperator.JOIN_LITERAL,"x");
 			
 			QuantificationExpression qe =					
-				AlloyAPI.createQuantificationExpression(factory, target, binJoin, CompareOperator.LESS_EQUAL_LITERAL, upperSource);
+				AlloyUtil.createQuantificationExpression(factory, target, binJoin, CompareOperator.LESS_EQUAL_LITERAL, upperSource);
 				
 			world.getBlock().getExpression().add(qe);
 		}
@@ -807,10 +612,10 @@ public class Transformer extends BaseTransformer {
 		if (lowerTarget > 1) 
 		{
 			BinaryOperation binJoin = 
-					AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,ontoparser.getAlias(ass));
+					AlloyUtil.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,assocName);
 			
 			QuantificationExpression qe =					
-				AlloyAPI.createQuantificationExpression(factory, source, binJoin, CompareOperator.GREATER_EQUAL_LITERAL, lowerTarget);
+				AlloyUtil.createQuantificationExpression(factory, source, binJoin, CompareOperator.GREATER_EQUAL_LITERAL, lowerTarget);
 				
 			world.getBlock().getExpression().add(qe);
 		}
@@ -818,10 +623,10 @@ public class Transformer extends BaseTransformer {
 		if (upperTarget > 1 && upperTarget != -1) 
 		{
 			BinaryOperation binJoin = 
-					AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,ontoparser.getAlias(ass));			
+					AlloyUtil.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,assocName);			
 			
 			QuantificationExpression qe =					
-				AlloyAPI.createQuantificationExpression(factory, source, binJoin, CompareOperator.LESS_EQUAL_LITERAL, upperTarget);
+				AlloyUtil.createQuantificationExpression(factory, source, binJoin, CompareOperator.LESS_EQUAL_LITERAL, upperTarget);
 				
 			world.getBlock().getExpression().add(qe);		
 		}
