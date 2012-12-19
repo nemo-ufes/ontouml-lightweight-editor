@@ -1,24 +1,4 @@
-package br.ufes.inf.nemo.ontouml2alloy.api;
-
-/**
- * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
- *
- * This file is part of OntoUML2Alloy (OntoUML to Alloy Transformation).
- *
- * OntoUML2Alloy is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * OntoUML2Alloy is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OntoUML2Alloy; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+package br.ufes.inf.nemo.ontouml2alloy.util;
 
 import java.util.ArrayList;
 
@@ -36,6 +16,7 @@ import br.ufes.inf.nemo.alloy.Expression;
 import br.ufes.inf.nemo.alloy.FunctionDeclaration;
 import br.ufes.inf.nemo.alloy.GenericScope;
 import br.ufes.inf.nemo.alloy.ModuleImportation;
+import br.ufes.inf.nemo.alloy.Multiplicity;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
 import br.ufes.inf.nemo.alloy.Quantificator;
@@ -47,18 +28,81 @@ import br.ufes.inf.nemo.alloy.UnaryOperator;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
 
+
 /**
  * This class is used to provide useful methods of manipulating the Alloy model Instances.
  * 
  * 	@authors Tiago Sales, John Guerson and Lucas Thom
  *
  */
-public class AlloyAPI {
+public class AlloyUtil {
 
+	/* =========================================================================================================*/
+	
 	/**
-	 * Creates Alloy Signature World: 
+	 * Create a Declaration. e.g. name : set ArrowOperation.
 	 * 
-	 * abstract sig World {}
+	 * @param factory
+	 * @param name
+	 * @param aOp
+	 * @return
+	 */
+	public static Declaration createDeclaration(AlloyFactory factory,String name, ArrowOperation aOp)
+	{
+		Declaration decl = factory.createDeclaration();
+		UnaryOperation uOp = factory.createUnaryOperation();
+		decl.setExpression(uOp);				
+		uOp.setOperator(UnaryOperator.SET_LITERAL);		
+		Variable var = factory.createVariable();
+		var.setName(name);
+		var.setDeclaration(decl);		
+		uOp.setExpression(aOp);
+		return decl;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Creates an Arrow Operation. e.g. sourceName lower/upper -> targetName lower/upper.
+	 * 
+	 * @param factory
+	 * @param sourceName
+	 * @param lowerSource
+	 * @param upperSource
+	 * @param targetName
+	 * @param lowerTarget
+	 * @param upperTarget
+	 * @return
+	 */
+	public static ArrowOperation createArrowOperation(AlloyFactory factory, String sourceName, int lowerSource, int upperSource, String targetName, int lowerTarget, int upperTarget)
+	{
+		ArrowOperation aOp = factory.createArrowOperation();
+		VariableReference source = factory.createVariableReference();
+		VariableReference target = factory.createVariableReference();
+		source.setVariable(sourceName);
+		target.setVariable(targetName);
+		//source
+		if(lowerSource == 1 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.ONE_LITERAL);		
+		else if(lowerSource == 0 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.LONE_LITERAL);
+		else if(lowerSource >= 1) aOp.setLeftMultiplicity(Multiplicity.SOME_LITERAL);
+	    else aOp.setLeftMultiplicity(Multiplicity.SET_LITERAL);		
+		//target
+		if(lowerTarget == 1 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.ONE_LITERAL);
+		else if(lowerTarget == 0 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.LONE_LITERAL);
+		else if(lowerTarget >= 1) aOp.setRightMultiplicity(Multiplicity.SOME_LITERAL);
+		else aOp.setRightMultiplicity(Multiplicity.SET_LITERAL);			
+		aOp.setLeftExpression(source);
+		aOp.setRightExpression(target);
+		return aOp;
+	}
+	
+	/* =========================================================================================================*/
+	
+	/**
+	 * Creates Alloy Signature World. e.g. abstract sig World {}.
+	 * 
+	 * @param factory
+	 * @return
 	 */
 	public static SignatureDeclaration createSigWorld(AlloyFactory factory)
 	{
@@ -73,50 +117,34 @@ public class AlloyAPI {
 	/* =========================================================================================================*/
 	
 	/**
-	 * Creates Module Import
+	 * Creates Module Import. e.g. open world_structure[World]
 	 * 
-	 * open world_structure[World]
-	 * open ontological_propertis[World]
+	 * @param factory
+	 * @param modulename
+	 * @param path
+	 * @param param
+	 * @return
 	 */
 	public static ModuleImportation createModuleImport (AlloyFactory factory, String modulename, String path, SignatureDeclaration param)
 	{
 		ModuleImportation mi = factory.createModuleImportation();		
 		mi.setName(modulename);
 		mi.setPath(path);
-		if(param!=null)
-			mi.getParameters().add(param.getName());
+		if(param!=null) mi.getParameters().add(param.getName());
 		return mi;		
 	}	
 	
 	/* =========================================================================================================*/
 	
 	/**
-	 * Creates default Signatures.
-	 * 
-	 * sig Object{}
-	 * sig Property{} 
-	 * sig DataType{}
-	 * ...
-	 */
-	public static void createDefaultSignatures(AlloyFactory factory, AlloyModule module, ArrayList<String> defaultSignatures) 
-	{		
-		for(String sigElement : defaultSignatures)
-		{
-			SignatureDeclaration sigDecl = factory.createSignatureDeclaration();
-			sigDecl.setName(sigElement);			
-			module.getParagraph().add(sigDecl);
-		}
-	}
-	
-	/* =========================================================================================================*/
-	
-	/**
-	 * Creates exists Variable with Declaration.
-	 * 
-	 * exists: some Object + Property + DataType +...,
+	 * Creates exists Declaration. e.g. exists: some Object + Property + ..., .
+	 * 	 
+	 * @param factory
+	 * @param defaultSignatures
+	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static Variable createExistsVariableDeclaration(AlloyFactory factory, ArrayList<String> defaultSignatures)
+	public static Variable createExistsDeclaration(AlloyFactory factory, ArrayList<String> defaultSignatures)
 	{
 		Variable exists = factory.createVariable();
 		exists.setName("exists");
@@ -129,14 +157,16 @@ public class AlloyAPI {
 		declaration.setExpression(uOp);
 		return exists;
 	}
-	
+
 	/* =========================================================================================================*/
 	
 	/**
-	 * Creates an union expression between default signatures.
-	 * 
-	 * Object + Property + DataType +...
-	 */	 
+	 * Creates an union expression between default signatures. e.g. Object + Property + ... .
+	 * 	 
+	 * @param factory
+	 * @param defaultSignatures
+	 * @return
+	 */
 	public static Expression createDefaultSignaturesUnionExpression(AlloyFactory factory, ArrayList<String> defaultSignatures) 
 	{
 		int cont = 1;		
@@ -183,9 +213,12 @@ public class AlloyAPI {
 	/* =========================================================================================================*/
 	
 	/**
-	 * Creates the "linear_existence" predicate invocation.
+	 * Creates the "linear_existence" predicate invocation. e.g. all_elements_exists[Object+Property,exists]
 	 * 
-	 * all_elements_exists[Object+Property+DataType,exists]
+	 * @param factory
+	 * @param exists
+	 * @param defaultSignatures
+	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createAllElementsExistsInvocation(AlloyFactory factory, Variable exists, ArrayList<String> defaultSignatures)
@@ -198,13 +231,15 @@ public class AlloyAPI {
 		pI.getParameter().add(vr);
 		return pI;
 	}
-	
+		
 	/* =========================================================================================================*/
 	
 	/**
-	 * Creates the "linear_existence" predicate invocation.
+	 * Creates the "linear_existence" predicate invocation. e.g. linear_existence[exists].
 	 * 
-	 * linear_existence[exists]
+	 * @param factory
+	 * @param exists
+	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createLinearExistenceInvocation(AlloyFactory factory, Variable exists)
@@ -220,9 +255,12 @@ public class AlloyAPI {
 	/* =========================================================================================================*/
 	
 	/**
-	 * Creates "always_exists" predicate invocation.
+	 * Creates "always_exists" predicate invocation. e.g.  always_exists[DataType,exists] .
 	 * 
-	 * always_exists[DataType,exists]
+	 * @param factory
+	 * @param exists
+	 * @param sigDatatype
+	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createAlwaysExistsInvocation(AlloyFactory factory, Variable exists, SignatureDeclaration sigDatatype)
@@ -241,10 +279,13 @@ public class AlloyAPI {
 	/* =========================================================================================================*/
 	
 	/**
-	 * Creates a specific Declaration in Alloy:
+	 * Creates Declaration. e.g. variableName: set exists:>typeName,
 	 * 
-	 * variableName: set exists:>typeName,
-	 *  
+	 * @param factory
+	 * @param exists
+	 * @param variableName
+	 * @param typeName
+	 * @return
 	 */
 	public static Declaration createDeclaration (AlloyFactory factory, Variable exists, String variableName, String typeName)
 	{
@@ -270,9 +311,12 @@ public class AlloyAPI {
 	/* =========================================================================================================*/
 	
 	/**
-	 *	Creates a specific Declaration in Alloy.
-	 *
-	 *  x: World.name
+	 * Creates a specific Declaration in Alloy. e.g. x: World.name
+	 * 
+	 * @param factory
+	 * @param world
+	 * @param name
+	 * @return
 	 */
 	public static Declaration createDeclaration (AlloyFactory factory,SignatureDeclaration world, String name)
 	{	
@@ -414,9 +458,9 @@ public class AlloyAPI {
 	public static QuantificationExpression createQuantificationExpression(AlloyFactory factory, ArrayList<String> associationNames, String typeName)
 	{
 		// all w: World
-		QuantificationExpression qeWorld = AlloyAPI.createQuantificationExpression(factory,Quantificator.ALL_LITERAL,"w","World");	
+		QuantificationExpression qeWorld = AlloyUtil.createQuantificationExpression(factory,Quantificator.ALL_LITERAL,"w","World");	
 		// all x: w.name
-		QuantificationExpression qe = AlloyAPI.createQuantificationExpression(factory,Quantificator.ALL_LITERAL,"x","w",typeName);
+		QuantificationExpression qe = AlloyUtil.createQuantificationExpression(factory,Quantificator.ALL_LITERAL,"x","w",typeName);
 		qeWorld.setExpression(qe);
 
 		// # (...) >= 2
@@ -438,7 +482,7 @@ public class AlloyAPI {
 			if(associationNames.size() == 1)
 			{	
 				// x.(w.name)
-				bo = AlloyAPI.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyAPI.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
+				bo = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
 				uOp.setExpression(bo);
 				break;
 			}
@@ -446,7 +490,7 @@ public class AlloyAPI {
 			{
 				bo.setOperator(BinaryOperator.UNION_LITERAL);
 				// x.(w.name)
-				bo2 = AlloyAPI.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyAPI.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name)); 				
+				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name)); 				
 				bo.setLeftExpression(bo2);				
 				uOp.setExpression(bo);
 			}
@@ -455,14 +499,14 @@ public class AlloyAPI {
 				bo.setRightExpression(factory.createBinaryOperation());
 				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);	
 				// x.(w.name)
-				bo2 = AlloyAPI.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyAPI.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
+				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
 				((BinaryOperation)bo.getRightExpression()).setLeftExpression(bo2);				
 				bo = ((BinaryOperation)bo.getRightExpression());
 			}
 			if(cont == associationNames.size())
 			{
 				// x.(w.name)
-				bo2 = AlloyAPI.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyAPI.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
+				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
 				bo.setRightExpression(bo2);
 			}
 			cont++;

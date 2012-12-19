@@ -30,11 +30,14 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import RefOntoUML.Association;
+import RefOntoUML.Class;
 import RefOntoUML.Classifier;
+import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
-import RefOntoUML.Generalization;
-import RefOntoUML.GeneralizationSet;
+import RefOntoUML.Enumeration;
 import RefOntoUML.PackageableElement;
+import RefOntoUML.PrimitiveType;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyPackage;
 import br.ufes.inf.nemo.alloy.impl.AlloyPackageImpl;
@@ -123,24 +126,22 @@ public class OntoUML2Alloy {
 		
 		transformer = new Transformer(ontoparser, factory, opt);		
 		
-		// Classifiers
 		for (PackageableElement pe : ontoparser.getAllInstances(PackageableElement.class))
 		{			
 			if (pe instanceof Classifier) 
+			{
+				// Classifier
+				transformer.transformClassifier( (Classifier)pe );		
 				
-				transformer.transformClassifier( (Classifier)pe );			
-		}
-				
-		// Generalizations
-		for (Generalization gen : ontoparser.getAllInstances(Generalization.class))
-		{			
-			transformer.transformGeneralizations(gen);
-		}
-		
-		// GeneralizationSets
-		for (GeneralizationSet gs : ontoparser.getAllInstances(GeneralizationSet.class))
-		{			
-			transformer.transformGeneralizationSets(gs);			
+				// Attributes
+				if( (pe instanceof Class) || ((pe instanceof DataType) && !(pe instanceof PrimitiveType) &&!(pe instanceof Enumeration)) )
+				{
+					for(Property attr: ((Classifier)pe).getAttribute())
+					{
+						if (!(attr.getType() instanceof PrimitiveType)) transformer.transformAttribute((Classifier)pe, attr);
+					}
+				}
+			}
 		}
 		
 		// Associations

@@ -5,7 +5,7 @@ import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
+import br.ufes.inf.nemo.ontouml2alloy.util.AlloyUtil;
 
 public class TGeneralizationRule {
 
@@ -18,6 +18,6 @@ public class TGeneralizationRule {
 	 */	
 	public static CompareOperation createCompareOperation (OntoUMLParser ontoparser, AlloyFactory factory,Generalization g)
 	{
-		return AlloyAPI.createCompareOperation(factory, ontoparser.getAlias(g.getSpecific()), CompareOperator.SUBSET_LITERAL, ontoparser.getAlias(g.getGeneral()));
+		return AlloyUtil.createCompareOperation(factory, ontoparser.getAlias(g.getSpecific()), CompareOperator.SUBSET_LITERAL, ontoparser.getAlias(g.getGeneral()));
 	}
 }

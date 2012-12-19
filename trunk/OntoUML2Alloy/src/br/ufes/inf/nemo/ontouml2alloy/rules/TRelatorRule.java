@@ -10,7 +10,7 @@ import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2alloy.api.AlloyAPI;
+import br.ufes.inf.nemo.ontouml2alloy.util.AlloyUtil;
 
 public class TRelatorRule {
 
@@ -45,7 +45,7 @@ public class TRelatorRule {
 		if(associationNames.size()>0)
 		{			
 			//all w: World | all x: w.<typeName> | # ( x.(w.assciationName1)+ x.(w.associationName2) + ...) >= 2
-			QuantificationExpression q = AlloyAPI.createQuantificationExpression(factory,associationNames, ontoparser.getAlias(c));
+			QuantificationExpression q = AlloyUtil.createQuantificationExpression(factory,associationNames, ontoparser.getAlias(c));
 			
 			// create fact from q
 			FactDeclaration RelatorRuleFact = factory.createFactDeclaration();
