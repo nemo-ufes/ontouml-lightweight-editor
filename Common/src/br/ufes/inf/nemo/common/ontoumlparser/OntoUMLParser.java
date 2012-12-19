@@ -18,6 +18,8 @@ import RefOntoUML.Category;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
+import RefOntoUML.Enumeration;
+import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Mediation;
@@ -141,17 +143,24 @@ public class OntoUMLParser {
 	{
 		ParsingElement e;
 		
-		//Class
-		if(pe instanceof Class)
+		//Class and DataType
+		if(pe instanceof Class || ((pe instanceof DataType)&&!(pe instanceof PrimitiveType)&&!(pe instanceof Enumeration)) )
 		{
 			e = new ParsingElement(pe, true, h2.treatName(pe));
 			this.elementsHash.put(pe,e);
 			
 			//Generalization
-			for (Generalization g : ((Class)pe).getGeneralization()) 
+			for (Generalization g : ((Classifier)pe).getGeneralization()) 
 			{
 				e = new ParsingElement(g, true, "");
 				this.elementsHash.put(g,e);
+			}
+			
+			//Attributes
+			for(Property p: ((Classifier)pe).getAttribute())
+			{
+				e = new ParsingElement(p, true, h2.treatName(p));
+				this.elementsHash.put(p,e);
 			}
 		}
 		//Association
@@ -169,8 +178,22 @@ public class OntoUMLParser {
 			
 			e = new ParsingElement(property1, true, h2.treatName(property1));
 			this.elementsHash.put(property1,e);
-		
-		} else {
+							
+		}
+		//Enumeration
+		else if (pe instanceof Enumeration)
+		{
+			e = new ParsingElement(pe, true, h2.treatName(pe));
+			this.elementsHash.put(pe,e);
+			
+			//Enumeration Literals
+			for(EnumerationLiteral p: ((Enumeration)pe).getOwnedLiteral())
+			{
+				e = new ParsingElement(p, true, h2.treatName(p));
+				this.elementsHash.put(p,e);
+			}
+			
+		}else {
 			e = new ParsingElement(pe, true, h2.treatName(pe));
 			this.elementsHash.put(pe,e);			
 		}
