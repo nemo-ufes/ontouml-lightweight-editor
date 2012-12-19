@@ -52,14 +52,11 @@ public class BaseTransformer {
 	/** Alloy World Field exists. */
 	public Variable exists;	
 
-	/** Alloy datatypes constraints */
-	public FactDeclaration datatypes_facts; 
-	
+
+	public FactDeclaration dataTypeCompletenessFact;	
 	public ArrayList<FactDeclaration> genSetFactList = new ArrayList<FactDeclaration>();
 	public ArrayList<FactDeclaration> genFactList = new ArrayList<FactDeclaration>();
-	
-	/** Alloy Top Level Data Types Disjointness Rules Fact Declarations. */
-	public FactDeclaration toplevel_datatype_disj_fact;
+	public FactDeclaration dataTypeTopLevelFact;
 	
 	/** Alloy additional_facts Declaration */
 	public FactDeclaration additional_facts;
@@ -225,27 +222,7 @@ public class BaseTransformer {
 			derivations.setName("derivations");
 			derivations.setBlock(factory.createBlock());			
 		}
-		
-		/* fact datatypes_facts {...}
-		 */
-		{			
-			datatypes_facts = factory.createFactDeclaration();
-			datatypes_facts.setName("datatypes_facts");
-			datatypes_facts.setBlock(factory.createBlock());
-			populateDataTypeFactDeclaration();
-			if (datatypes_facts.getBlock().getExpression().size()>0) module.getParagraph().add(datatypes_facts);
-		}
-
-		/* fact  topLevelDataTypesDisjointnes {...}
-		 */
-		{			
-			toplevel_datatype_disj_fact = factory.createFactDeclaration();
-			toplevel_datatype_disj_fact.setName("topLevelDataTypesDisjointnes");
-			toplevel_datatype_disj_fact.setBlock(factory.createBlock());
-			populateTopLevelDataTypeDisjointnessRules();
-			if (toplevel_datatype_disj_fact.getBlock().getExpression().size()>0) module.getParagraph().add(toplevel_datatype_disj_fact);
-		}
-		
+				
 		/* fact all_rigid_classes {...}
 		 */
 		{
@@ -269,13 +246,8 @@ public class BaseTransformer {
 			}
 		}		
 		
-		/* abstract World {
-		 * 
-		 * }{
-		 *    disj[TopLevelObjects]
-		 *    disj[TopLevelProperties]    
-		 * }
-		 */
+		populateDataTypeCompletenessRule();		
+		populateWithTopLevelDataTypeDisjointnessRules();
 		populateWithTopLevelDisjointnessRules();		
 		populateWithGeneralizationRules();
 		populateWithGeneralizationSetRules();
@@ -335,41 +307,53 @@ public class BaseTransformer {
 	}
 	
 	/**
-	 * Populate Data types facts Declaration.
+	 * Populate Data Type Completeness Rule.
 	 */
 	@SuppressWarnings("unchecked")
-	protected void populateDataTypeFactDeclaration()
+	protected void populateDataTypeCompletenessRule()
 	{
 		ArrayList<EObject> dataTypeList = new ArrayList<EObject>();
 		dataTypeList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.DataType.class));
 		dataTypeList.removeAll(ontoparser.getTopLevelInstances(RefOntoUML.Enumeration.class));
 		dataTypeList.removeAll(ontoparser.getTopLevelInstances(RefOntoUML.PrimitiveType.class));				
 		
+		dataTypeCompletenessFact = factory.createFactDeclaration();
+		dataTypeCompletenessFact.setName("dataTypeCompleteness");
+		dataTypeCompletenessFact.setBlock(factory.createBlock());
+
 		if (dataTypeList.size()>0)
 		{
 			CompareOperation cOp = AlloyUtil.createCompareOperation( factory, sigDatatype.getName(), CompareOperator.EQUAL_LITERAL, 
 			AlloyUtil.createUnionExpression(factory, ontoparser.getAlias(dataTypeList)).toString());		
-			datatypes_facts.getBlock().getExpression().add(cOp);
-		}
+			dataTypeCompletenessFact.getBlock().getExpression().add(cOp);
+			
+			module.getParagraph().add(dataTypeCompletenessFact);
+		}		
 	}
 
 	/**
 	 * 	Populates Top Level DataTypes Disjointness Rules.
 	 */
 	@SuppressWarnings("unchecked")
-	protected void populateTopLevelDataTypeDisjointnessRules()
+	protected void populateWithTopLevelDataTypeDisjointnessRules()
 	{
 		ArrayList<Classifier> topDataTypeList = new ArrayList<Classifier>();
 		topDataTypeList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.DataType.class));	
 		topDataTypeList.removeAll(ontoparser.getTopLevelInstances(RefOntoUML.Enumeration.class));
 		topDataTypeList.removeAll(ontoparser.getTopLevelInstances(RefOntoUML.PrimitiveType.class));
+		
+		dataTypeTopLevelFact = factory.createFactDeclaration();
+		dataTypeTopLevelFact.setName("topLevelDataTypesDisjointnes");
+		dataTypeTopLevelFact.setBlock(factory.createBlock());
+				
 		if(topDataTypeList.size() > 1)
 		{
 			ArrayList<DisjointExpression> rulesList = TTopLevelRule.createTopLevelDisjointRules(ontoparser, factory, topDataTypeList);			
 			for (DisjointExpression disj : rulesList) 
 			{
-				toplevel_datatype_disj_fact.getBlock().getExpression().add(disj); 
+				dataTypeTopLevelFact.getBlock().getExpression().add(disj); 
 			}
+			module.getParagraph().add(dataTypeTopLevelFact);
 		}
 	}
 	

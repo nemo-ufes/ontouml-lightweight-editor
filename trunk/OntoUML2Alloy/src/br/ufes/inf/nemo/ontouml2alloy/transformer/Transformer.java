@@ -181,12 +181,6 @@ public class Transformer extends BaseTransformer {
 			AlloyUtil.createExistsCompareOperationInWorld(factory, exists, world, sigProperty, ontoparser.getAlias(momentClassesList));
 		}
 		
-		/* fact datatypes_facts {...}
-		 */
-		if (datatypes_facts.getBlock().getExpression().size()>0)
-		{
-			module.getParagraph().add(datatypes_facts);
-		}
 			
 		/* fact relator_constraint {...}
 		 */
