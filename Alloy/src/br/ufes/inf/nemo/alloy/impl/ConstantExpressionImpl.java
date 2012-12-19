@@ -143,11 +143,6 @@ public class ConstantExpressionImpl extends ExpressionImpl implements ConstantEx
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 

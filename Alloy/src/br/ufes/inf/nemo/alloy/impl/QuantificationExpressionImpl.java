@@ -337,11 +337,6 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String toString() {
 		StringBuffer result = new StringBuffer();
 		

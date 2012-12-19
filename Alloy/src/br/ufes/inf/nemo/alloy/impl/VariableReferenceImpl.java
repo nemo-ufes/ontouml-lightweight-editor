@@ -194,11 +194,6 @@ public class VariableReferenceImpl extends ExpressionImpl implements VariableRef
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String toString() {
 		
 		return getVariable();

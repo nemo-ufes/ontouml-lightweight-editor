@@ -459,11 +459,7 @@ public class CommandDeclarationImpl extends ParagraphImpl implements CommandDecl
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+
 	public String toString() {
 		StringBuffer result = new StringBuffer();
 		
