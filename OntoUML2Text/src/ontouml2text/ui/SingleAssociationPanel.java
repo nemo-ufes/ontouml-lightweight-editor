@@ -1,16 +1,16 @@
 package ontouml2text.ui;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import RefOntoUML.Association;
-import javax.swing.JCheckBox;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.GridLayout;
+
+import RefOntoUML.Association;
 
 public class SingleAssociationPanel extends JPanel {
 
@@ -47,7 +47,7 @@ public class SingleAssociationPanel extends JPanel {
 	
 	private void initGUI()
 	{
-		setPreferredSize(new Dimension(600, 65));
+		setPreferredSize(new Dimension(500, 65));
 		setLayout(new GridLayout(0, 2, 0, 0));
 		
 		JPanel rPanel = new JPanel();
@@ -148,18 +148,17 @@ public class SingleAssociationPanel extends JPanel {
 		clearTS();
 	}
 	
-	public boolean isSelectedST()
+	public int getSelectedDirection()
 	{
-		return chckbxST.isSelected();
-	}
-	
-	public boolean isSelectedTS()
-	{
-		return chckbxTS.isSelected();
-	}
-	
-	public boolean isSelectedBoth()
-	{
-		return isSelectedST() && isSelectedTS();
+		if (chckbxST.isSelected() && !chckbxTS.isSelected())
+		{
+			return 1;
+		}
+		else if (!chckbxST.isSelected() && chckbxTS.isSelected())
+		{
+			return -1;
+		}
+		else
+			return 0;
 	}
 }

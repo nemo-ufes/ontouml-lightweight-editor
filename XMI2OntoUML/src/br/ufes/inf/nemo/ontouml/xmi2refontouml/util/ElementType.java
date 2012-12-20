@@ -15,6 +15,7 @@ package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
 
 public enum ElementType {
 	
+	ANNOTATION,
 	ASSOCIATION,
 	ASSOCIATIONCLASS,
 	CLASS,
@@ -31,8 +32,12 @@ public enum ElementType {
     PROPERTY;
     
     public static ElementType get(String type) 
-    {    	
-		if (type.equalsIgnoreCase("association")) 
+    {
+    	if (type.equalsIgnoreCase("annotation")) 
+		{
+			return ElementType.ANNOTATION;
+		}
+    	else if (type.equalsIgnoreCase("association")) 
 		{
 			return ElementType.ASSOCIATION;
 		}

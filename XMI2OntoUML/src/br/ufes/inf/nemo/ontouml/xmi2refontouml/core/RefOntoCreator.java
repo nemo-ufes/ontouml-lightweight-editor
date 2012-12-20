@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import br.ufes.inf.nemo.common.resource.RefOntoUMLResourceFactoryImpl;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.OntoUMLError;
 
 import RefOntoUML.*;
 import RefOntoUML.impl.*;
@@ -470,17 +470,7 @@ public class RefOntoCreator {
 			mel.setLowerValue(lower);
 			
 		} else {
-			Mediator.warningLog += "Warning: Property '" + hashProp.get("name") + "' multiplicity undefined.\n";
-			String warningPath = hashProp.get("name") + "\n";
-			for (EObject aux = mel.eContainer(); aux != null; aux = aux.eContainer()) {
-				if (aux instanceof NamedElement && ((NamedElement) aux).getName() != null) {
-					warningPath = ((NamedElement) aux).getName() + " -> " + warningPath;
-					
-				} else {
-					warningPath = "<" + aux.eClass().getName() + "> -> " + warningPath;
-				}
-			}
-			Mediator.warningLog += "Property of: " + warningPath + "\n";
+			Mediator.warningLog += OntoUMLError.undefinedMultiplicityError((Property)mel);
 		}
 		
 		mel.setIsOrdered(Boolean.parseBoolean((String)hashProp.get("isordered")));
@@ -498,7 +488,12 @@ public class RefOntoCreator {
 	}
 	
 	public void dealComment (RefOntoUML.Comment com, Map<String, Object> hashProp) {
-		com.setBody((String)hashProp.get("body"));
+		if (hashProp.get("body") != null)
+		{
+			com.setBody((String)hashProp.get("body"));
+		}
+		else
+			com.setBody("");
 		
 		for (Object annotatedElement : (List<?>)hashProp.get("annotatedelement")) {
 			com.getAnnotatedElement().add((Element)annotatedElement);
@@ -542,6 +537,10 @@ public class RefOntoCreator {
 	
 	public void addComment(RefOntoUML.Element elem, RefOntoUML.Comment comment) {
 		elem.getOwnedComment().add(comment);
+	}
+	
+	public void addAnnotation(RefOntoUML.Element elem, String annot) {
+		elem.createEAnnotation(annot);
 	}
 	
 	public void setName(RefOntoUML.NamedElement nelem, String name) {

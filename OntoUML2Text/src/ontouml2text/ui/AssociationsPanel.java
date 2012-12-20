@@ -1,17 +1,19 @@
 package ontouml2text.ui;
 
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import RefOntoUML.Association;
 import RefOntoUML.PackageableElement;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 
 public class AssociationsPanel extends JScrollPane {
 
@@ -64,5 +66,16 @@ public class AssociationsPanel extends JScrollPane {
 	{
 		return singleAssocList;
 	}
-
+	
+	public Map<Association, Integer> getAssDirectionMap()
+	{
+		Map<Association, Integer> directionsMap = new HashMap<Association, Integer>();
+		
+		for (SingleAssociationPanel assocPanel : singleAssocList)
+		{
+			directionsMap.put(assocPanel.getAssociation(), assocPanel.getSelectedDirection());
+		}
+		
+		return directionsMap;
+	}
 }
