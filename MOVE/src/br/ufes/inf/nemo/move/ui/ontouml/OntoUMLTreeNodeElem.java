@@ -84,6 +84,12 @@ public class OntoUMLTreeNodeElem {
 		    RefOntoUML.GeneralizationSet genset = (RefOntoUML.GeneralizationSet)element;
 		    
 		    String result = new String();
+		    System.out.println("GenSet: "+genset);
+		    for (Generalization g : genset.getGeneralization()) {
+		    	System.out.println(g);
+			}
+		    System.out.println("Parent: " + genset.parent());
+		    System.out.println("----------------");
 		    result += type + " " + name + " / "+(genset.getGeneralization().get(0).getGeneral()).getName()+" { ";
 		    
 		    EList<Generalization> genlist = ((RefOntoUML.GeneralizationSet)element).getGeneralization();		    
@@ -99,6 +105,9 @@ public class OntoUMLTreeNodeElem {
 		
 		if (element instanceof RefOntoUML.Property)
 		{
+			System.out.println("Property: "+element);
+			System.out.println("P Type: "+((RefOntoUML.Property)element).getType());
+			
 			String TypeName = ((RefOntoUML.Property)element).getType().getName();
 			String name = ((RefOntoUML.Property)element).getName();
 			Integer lower = ((RefOntoUML.Property)element).getLower();

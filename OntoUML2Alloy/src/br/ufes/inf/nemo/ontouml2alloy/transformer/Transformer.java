@@ -145,9 +145,21 @@ public class Transformer extends BaseTransformer {
 		
 		if (attr.getType() instanceof PrimitiveType)
 		{
-			if (attr.getType().getName().equals("int")) target = "Int";
-			if (attr.getType().getName().equals("Boolean")) target = "Bool";
-			aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(c),0,-1,target,attr.getLower(),attr.getUpper());
+			if (attr.getType().getName().equals("int"))
+			{
+				target = "Int";
+				aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(c),0,-1,target,attr.getLower(),attr.getUpper());
+			}
+			else if (attr.getType().getName().equals("Boolean")) 
+			{
+				target = "Bool";
+				aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(c),0,-1,target,attr.getLower(),attr.getUpper());
+			}
+			else if (attr.getType().getName().equals("string"))
+			{
+				target = "string";
+				aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(c),0,-1,target,attr.getLower(),attr.getUpper());
+			}			
 			
 		}else{
 			

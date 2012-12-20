@@ -18,7 +18,7 @@ public class Extractor {
 		String destFolderPath = Extractor.class.getProtectionDomain().getCodeSource().getLocation().getPath();		
 		File alloyJarFile = new File(destFolderPath + "alloy4.2.jar");
 		if (alloyJarFile.exists()) return alloyJarFile.getAbsolutePath();
-		
+				
 		// Copy "alloy4.2.jar" 
 		InputStream is = Extractor.class.getClassLoader().getResourceAsStream("alloy4.2.jar");
 		if(is == null) 
