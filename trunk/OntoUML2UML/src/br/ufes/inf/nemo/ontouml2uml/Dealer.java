@@ -185,6 +185,11 @@ public class Dealer {
         /* print out */
         outln("UML:Class :: name="+c2.getName()+", visibility="+c2.getVisibility().getName()+", isAbstract="+c2.isAbstract());        
         
+    }	
+	
+	/** Attibutes. */	
+	public void DealAttribute (RefOntoUML.Class c1, org.eclipse.uml2.uml.Class c2)
+    {	      
         /* Attributes */
         org.eclipse.uml2.uml.Property p2;
         for (RefOntoUML.Property p1 : c1.getAttribute())
@@ -204,7 +209,29 @@ public class Dealer {
         }         
 
     }
-			
+	
+	/** Attibutes. */	
+	public void DealAttribute (RefOntoUML.DataType c1, org.eclipse.uml2.uml.DataType c2)
+    {		
+        /* Attributes */
+        org.eclipse.uml2.uml.Property p2;
+        for (RefOntoUML.Property p1 : c1.getAttribute())
+        {
+            p2 = myfactory.createProperty();
+            DealProperty(p1, p2);       
+            
+            /* Modified Name */
+            //p2.setNameExpression(p2.createNameExpression(refmapper.getName(p1), p2.getType()));
+            
+            /* print out */
+            outln("UML:Property :: "+"name="+p2.getName()+", isDerived="+p2.isDerived()+", lower="+p2.getLower()+", upper="+p2.getUpper()+
+            ", type="+p2.getType().getName()+", aggregationkind="+p2.getAggregation().getName()+", visibility="+p2.getVisibility().getName()+            
+            ", isLeaf="+p2.isLeaf()+", isStatic="+p2.isStatic()+", isReadOnly="+p2.isReadOnly());
+            
+            c2.getOwnedAttributes().add(p2);
+        }         
+    }
+	
 	/* ============================================================================*/
 	
 	private org.eclipse.uml2.uml.AggregationKind getAggregationKind (RefOntoUML.Property p1)

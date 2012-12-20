@@ -48,7 +48,10 @@ public class Transformation {
         TransformingEnumerations();        
         TransformingDataTypes();
         
-        TransformingClasses();        
+        TransformingClasses();  
+        
+        TransformingAttributes();
+        
         TransformingAssociations();        
         TransformingGeneralizations();        
         TransformingGeneralizationSets();
@@ -116,6 +119,31 @@ public class Transformation {
 	          		org.eclipse.uml2.uml.Class umlclass = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createClass();  
 	           		mydealer.DealClass( (RefOntoUML.Class) elem, umlclass);	           			           		
 	                umlmodel.getPackagedElements().add(umlclass);
+	            }
+	        }
+		}			        
+	}
+	
+    /**
+     * Transforming Attributes. 
+     */
+	public void TransformingAttributes ()
+	{
+		for (EObject obj: packagesMap.keySet())
+		{
+			RefOntoUML.Package refmodel = (RefOntoUML.Package)obj;
+			
+			for (EObject elem : refmodel.eContents())
+	        {        	
+	            if (elem instanceof RefOntoUML.Class && refparser.isSelected(elem))
+	            {
+	            	org.eclipse.uml2.uml.Class umlclass = (org.eclipse.uml2.uml.Class)mydealer.GetElement((RefOntoUML.Class)elem);
+	           		mydealer.DealAttribute( (RefOntoUML.Class) elem, umlclass);	                
+	            }
+	            if (elem instanceof RefOntoUML.DataType && refparser.isSelected(elem) && (!(elem instanceof RefOntoUML.Enumeration)) && (!(elem instanceof RefOntoUML.PrimitiveType)))
+	            {
+	            	org.eclipse.uml2.uml.DataType umlclass = (org.eclipse.uml2.uml.DataType)mydealer.GetElement((RefOntoUML.DataType)elem);
+	           		mydealer.DealAttribute( (RefOntoUML.DataType) elem, umlclass);	                
 	            }
 	        }
 		}			        

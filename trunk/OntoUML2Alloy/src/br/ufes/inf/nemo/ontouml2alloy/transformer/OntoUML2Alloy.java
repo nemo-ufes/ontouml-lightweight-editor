@@ -131,16 +131,7 @@ public class OntoUML2Alloy {
 			if (pe instanceof Classifier) 
 			{
 				// Classifier
-				transformer.transformClassifier( (Classifier)pe );		
-				
-				// Attributes
-				if( (pe instanceof Class) || ((pe instanceof DataType) && !(pe instanceof PrimitiveType) &&!(pe instanceof Enumeration)) )
-				{
-					for(Property attr: ((Classifier)pe).getAttribute())
-					{
-						transformer.transformAttribute((Classifier)pe, attr);
-					}
-				}
+				transformer.transformClassifier( (Classifier)pe );			
 			}
 		}
 		
@@ -153,6 +144,8 @@ public class OntoUML2Alloy {
 				transformer.transformAssociations(a);
 		}
 				
+		transformer.populateWithAttributeRules();
+		
 		transformer.finalAdditions();
 		
 		createAlsResource();
