@@ -36,7 +36,7 @@ public class EnumDeclarationImpl extends ParagraphImpl implements EnumDeclaratio
 	 * @ordered
 	 */
 	@SuppressWarnings("rawtypes")
-	protected EList literals;
+	protected EList<String> literals;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -52,6 +52,7 @@ public class EnumDeclarationImpl extends ParagraphImpl implements EnumDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.ENUM_DECLARATION;
 	}
@@ -62,9 +63,9 @@ public class EnumDeclarationImpl extends ParagraphImpl implements EnumDeclaratio
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public EList getLiterals() {
+	public EList<String> getLiterals() {
 		if (literals == null) {
-			literals = new EDataTypeUniqueEList(String.class, this, AlloyPackage.ENUM_DECLARATION__LITERALS);
+			literals = new EDataTypeUniqueEList<String>(String.class, this, AlloyPackage.ENUM_DECLARATION__LITERALS);
 		}
 		return literals;
 	}
@@ -74,6 +75,7 @@ public class EnumDeclarationImpl extends ParagraphImpl implements EnumDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.ENUM_DECLARATION__LITERALS:
@@ -88,11 +90,12 @@ public class EnumDeclarationImpl extends ParagraphImpl implements EnumDeclaratio
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.ENUM_DECLARATION__LITERALS:
 				getLiterals().clear();
-				getLiterals().addAll((Collection)newValue);
+				getLiterals().addAll((Collection<? extends String>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -103,6 +106,7 @@ public class EnumDeclarationImpl extends ParagraphImpl implements EnumDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.ENUM_DECLARATION__LITERALS:
@@ -117,6 +121,7 @@ public class EnumDeclarationImpl extends ParagraphImpl implements EnumDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.ENUM_DECLARATION__LITERALS:

@@ -7,7 +7,6 @@
 package br.ufes.inf.nemo.alloy;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -94,7 +93,7 @@ public interface AlloyModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parameters</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getAlloyModule_Parameters()
-	 * @model type="alloy.SignatureParameter" containment="true" required="true"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	EList<SignatureParameter> getParameters();
@@ -110,7 +109,7 @@ public interface AlloyModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Paragraph</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getAlloyModule_Paragraph()
-	 * @model type="alloy.Paragraph" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<Paragraph> getParagraph();
@@ -126,10 +125,9 @@ public interface AlloyModule extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Imports</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getAlloyModule_Imports()
-	 * @model type="alloy.ModuleImportation" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
-	EList getImports();
+	EList<ModuleImportation> getImports();
 
 } // AlloyModule

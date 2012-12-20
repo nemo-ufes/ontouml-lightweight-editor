@@ -36,6 +36,7 @@ public class ImporterModuleImpl extends AlloyModuleImpl implements ImporterModul
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.IMPORTER_MODULE;
 	}

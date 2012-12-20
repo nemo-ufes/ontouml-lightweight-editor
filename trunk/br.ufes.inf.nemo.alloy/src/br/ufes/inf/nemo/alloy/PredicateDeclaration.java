@@ -90,10 +90,10 @@ public interface PredicateDeclaration extends Paragraph {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parameter</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getPredicateDeclaration_Parameter()
-	 * @model type="alloy.Declaration" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	@SuppressWarnings("rawtypes")
-	EList getParameter();
+	EList<Declaration> getParameter();
 
 } // PredicateDeclaration

@@ -95,7 +95,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * @ordered
 	 */
 	@SuppressWarnings("rawtypes")
-	protected EList parameters;
+	protected EList<SignatureParameter> parameters;
 
 	/**
 	 * The cached value of the '{@link #getParagraph() <em>Paragraph</em>}' containment reference list.
@@ -131,6 +131,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.ALLOY_MODULE;
 	}
@@ -183,9 +184,9 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public EList getParameters() {
+	public EList<SignatureParameter> getParameters() {
 		if (parameters == null) {
-			parameters = new EObjectContainmentEList(SignatureParameter.class, this, AlloyPackage.ALLOY_MODULE__PARAMETERS);
+			parameters = new EObjectContainmentEList<SignatureParameter>(SignatureParameter.class, this, AlloyPackage.ALLOY_MODULE__PARAMETERS);
 		}
 		return parameters;
 	}
@@ -196,9 +197,9 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public EList getParagraph() {
+	public EList<Paragraph> getParagraph() {
 		if (paragraph == null) {
-			paragraph = new EObjectContainmentEList(Paragraph.class, this, AlloyPackage.ALLOY_MODULE__PARAGRAPH);
+			paragraph = new EObjectContainmentEList<Paragraph>(Paragraph.class, this, AlloyPackage.ALLOY_MODULE__PARAGRAPH);
 		}
 		return paragraph;
 	}
@@ -209,9 +210,9 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public EList getImports() {
+	public EList<ModuleImportation> getImports() {
 		if (imports == null) {
-			imports = new EObjectContainmentEList(ModuleImportation.class, this, AlloyPackage.ALLOY_MODULE__IMPORTS);
+			imports = new EObjectContainmentEList<ModuleImportation>(ModuleImportation.class, this, AlloyPackage.ALLOY_MODULE__IMPORTS);
 		}
 		return imports;
 	}
@@ -221,6 +222,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.ALLOY_MODULE__PARAMETERS:
@@ -238,6 +240,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.ALLOY_MODULE__NAME:
@@ -260,6 +263,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.ALLOY_MODULE__NAME:
@@ -270,15 +274,15 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 				return;
 			case AlloyPackage.ALLOY_MODULE__PARAMETERS:
 				getParameters().clear();
-				getParameters().addAll((Collection)newValue);
+				getParameters().addAll((Collection<? extends SignatureParameter>)newValue);
 				return;
 			case AlloyPackage.ALLOY_MODULE__PARAGRAPH:
 				getParagraph().clear();
-				getParagraph().addAll((Collection)newValue);
+				getParagraph().addAll((Collection<? extends Paragraph>)newValue);
 				return;
 			case AlloyPackage.ALLOY_MODULE__IMPORTS:
 				getImports().clear();
-				getImports().addAll((Collection)newValue);
+				getImports().addAll((Collection<? extends ModuleImportation>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -289,6 +293,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.ALLOY_MODULE__NAME:
@@ -315,6 +320,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.ALLOY_MODULE__NAME:

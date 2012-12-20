@@ -54,7 +54,7 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * @ordered
 	 */
 	@SuppressWarnings("rawtypes")
-	protected EList declaration;
+	protected EList<Declaration> declaration;
 
 	/**
 	 * The cached value of the '{@link #getBlock() <em>Block</em>}' containment reference.
@@ -130,6 +130,7 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.COMPREHENSION_EXPRESSION;
 	}
@@ -140,9 +141,9 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public EList getDeclaration() {
+	public EList<Declaration> getDeclaration() {
 		if (declaration == null) {
-			declaration = new EObjectContainmentEList(Declaration.class, this, AlloyPackage.COMPREHENSION_EXPRESSION__DECLARATION);
+			declaration = new EObjectContainmentEList<Declaration>(Declaration.class, this, AlloyPackage.COMPREHENSION_EXPRESSION__DECLARATION);
 		}
 		return declaration;
 	}
@@ -280,11 +281,12 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.COMPREHENSION_EXPRESSION__DECLARATION:
-				return ((InternalEList)getDeclaration()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getDeclaration()).basicRemove(otherEnd, msgs);
 			case AlloyPackage.COMPREHENSION_EXPRESSION__BLOCK:
 				return basicSetBlock(null, msgs);
 			case AlloyPackage.COMPREHENSION_EXPRESSION__EXPRESSION:
@@ -298,6 +300,7 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.COMPREHENSION_EXPRESSION__DECLARATION:
@@ -307,9 +310,9 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 			case AlloyPackage.COMPREHENSION_EXPRESSION__EXPRESSION:
 				return getExpression();
 			case AlloyPackage.COMPREHENSION_EXPRESSION__HAS_BLOCK:
-				return isHasBlock() ? Boolean.TRUE : Boolean.FALSE;
+				return isHasBlock();
 			case AlloyPackage.COMPREHENSION_EXPRESSION__HAS_EXPRESSION:
-				return isHasExpression() ? Boolean.TRUE : Boolean.FALSE;
+				return isHasExpression();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -320,11 +323,12 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.COMPREHENSION_EXPRESSION__DECLARATION:
 				getDeclaration().clear();
-				getDeclaration().addAll((Collection)newValue);
+				getDeclaration().addAll((Collection<? extends Declaration>)newValue);
 				return;
 			case AlloyPackage.COMPREHENSION_EXPRESSION__BLOCK:
 				setBlock((Block)newValue);
@@ -333,10 +337,10 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 				setExpression((Expression)newValue);
 				return;
 			case AlloyPackage.COMPREHENSION_EXPRESSION__HAS_BLOCK:
-				setHasBlock(((Boolean)newValue).booleanValue());
+				setHasBlock((Boolean)newValue);
 				return;
 			case AlloyPackage.COMPREHENSION_EXPRESSION__HAS_EXPRESSION:
-				setHasExpression(((Boolean)newValue).booleanValue());
+				setHasExpression((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -347,6 +351,7 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.COMPREHENSION_EXPRESSION__DECLARATION:
@@ -373,6 +378,7 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.COMPREHENSION_EXPRESSION__DECLARATION:

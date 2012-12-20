@@ -63,7 +63,7 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 	 * @generated
 	 * @ordered
 	 */
-	protected static final BinaryOperator OPERATOR_EDEFAULT = BinaryOperator.DIFFERENCE_LITERAL;
+	protected static final BinaryOperator OPERATOR_EDEFAULT = BinaryOperator.DIFFERENCE;
 
 	/**
 	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
@@ -89,6 +89,7 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.BINARY_OPERATION;
 	}
@@ -205,6 +206,7 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.BINARY_OPERATION__LEFT_EXPRESSION:
@@ -220,6 +222,7 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.BINARY_OPERATION__LEFT_EXPRESSION:
@@ -237,6 +240,7 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.BINARY_OPERATION__LEFT_EXPRESSION:
@@ -257,6 +261,7 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.BINARY_OPERATION__LEFT_EXPRESSION:
@@ -277,6 +282,7 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.BINARY_OPERATION__LEFT_EXPRESSION:
@@ -296,12 +302,12 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 		
 		// case of: (x.y).z
 		if (getLeftExpression() instanceof BinaryOperation && !(getRightExpression() instanceof BinaryOperation) && 
-	       ((BinaryOperation)getLeftExpression()).getOperator().equals(BinaryOperator.JOIN_LITERAL)) {
+	       ((BinaryOperation)getLeftExpression()).getOperator().equals(BinaryOperator.JOIN)) {
 				result.append("("+getLeftExpression()+")" + operator + getRightExpression());
 		}
 		// case of: x.(y.z)
 		else if (getRightExpression() instanceof BinaryOperation && !(getLeftExpression() instanceof BinaryOperation) && 
-				((BinaryOperation)getRightExpression()).getOperator().equals(BinaryOperator.JOIN_LITERAL)) {
+				((BinaryOperation)getRightExpression()).getOperator().equals(BinaryOperator.JOIN)) {
 				result.append(""+getLeftExpression() + operator + "("+getRightExpression()+")");			
 		}
 		// otherwise no precedence

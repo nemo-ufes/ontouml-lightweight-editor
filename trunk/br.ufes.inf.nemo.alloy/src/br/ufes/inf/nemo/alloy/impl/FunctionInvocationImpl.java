@@ -49,7 +49,7 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * @ordered
 	 */
 	@SuppressWarnings("rawtypes")
-	protected EList parameter;
+	protected EList<Expression> parameter;
 
 	/**
 	 * The default value of the '{@link #getFunction() <em>Function</em>}' attribute.
@@ -85,6 +85,7 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.FUNCTION_INVOCATION;
 	}
@@ -95,9 +96,9 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public EList getParameter() {
+	public EList<Expression> getParameter() {
 		if (parameter == null) {
-			parameter = new EObjectContainmentEList(Expression.class, this, AlloyPackage.FUNCTION_INVOCATION__PARAMETER);
+			parameter = new EObjectContainmentEList<Expression>(Expression.class, this, AlloyPackage.FUNCTION_INVOCATION__PARAMETER);
 		}
 		return parameter;
 	}
@@ -128,11 +129,12 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.FUNCTION_INVOCATION__PARAMETER:
-				return ((InternalEList)getParameter()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getParameter()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -142,6 +144,7 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.FUNCTION_INVOCATION__PARAMETER:
@@ -158,11 +161,12 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.FUNCTION_INVOCATION__PARAMETER:
 				getParameter().clear();
-				getParameter().addAll((Collection)newValue);
+				getParameter().addAll((Collection<? extends Expression>)newValue);
 				return;
 			case AlloyPackage.FUNCTION_INVOCATION__FUNCTION:
 				setFunction((String)newValue);
@@ -176,6 +180,7 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.FUNCTION_INVOCATION__PARAMETER:
@@ -193,6 +198,7 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.FUNCTION_INVOCATION__PARAMETER:

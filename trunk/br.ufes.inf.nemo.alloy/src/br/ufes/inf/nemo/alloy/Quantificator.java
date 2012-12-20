@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.emf.common.util.AbstractEnumerator;
+import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +21,62 @@ import org.eclipse.emf.common.util.AbstractEnumerator;
  * @model
  * @generated
  */
-public final class Quantificator extends AbstractEnumerator {
+public enum Quantificator implements Enumerator
+{
+	/**
+	 * The '<em><b>All</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #ALL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	ALL(6, "all", "all"),
+	/**
+	 * The '<em><b>Sum</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #SUM_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	SUM(1, "sum", "sum"),
+	/**
+	 * The '<em><b>No</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #NO_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	NO(2, "no", "no"),
+	/**
+	 * The '<em><b>Some</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #SOME_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	SOME(3, "some", "some"),
+	/**
+	 * The '<em><b>Lone</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #LONE_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	LONE(4, "lone", "lone"),
+	/**
+	 * The '<em><b>One</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #ONE_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	ONE(5, "one", "one");
 	/**
 	 * The '<em><b>All</b></em>' literal value.
 	 * <!-- begin-user-doc -->
@@ -30,12 +85,12 @@ public final class Quantificator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #ALL_LITERAL
+	 * @see #ALL
 	 * @model name="all"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ALL = 6;
+	public static final int ALL_VALUE = 6;
 
 	/**
 	 * The '<em><b>Sum</b></em>' literal value.
@@ -45,12 +100,12 @@ public final class Quantificator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #SUM_LITERAL
+	 * @see #SUM
 	 * @model name="sum"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SUM = 1;
+	public static final int SUM_VALUE = 1;
 
 	/**
 	 * The '<em><b>No</b></em>' literal value.
@@ -60,12 +115,12 @@ public final class Quantificator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #NO_LITERAL
+	 * @see #NO
 	 * @model name="no"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NO = 2;
+	public static final int NO_VALUE = 2;
 
 	/**
 	 * The '<em><b>Some</b></em>' literal value.
@@ -75,12 +130,12 @@ public final class Quantificator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #SOME_LITERAL
+	 * @see #SOME
 	 * @model name="some"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SOME = 3;
+	public static final int SOME_VALUE = 3;
 
 	/**
 	 * The '<em><b>Lone</b></em>' literal value.
@@ -90,12 +145,12 @@ public final class Quantificator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #LONE_LITERAL
+	 * @see #LONE
 	 * @model name="lone"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int LONE = 4;
+	public static final int LONE_VALUE = 4;
 
 	/**
 	 * The '<em><b>One</b></em>' literal value.
@@ -105,72 +160,12 @@ public final class Quantificator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #ONE_LITERAL
+	 * @see #ONE
 	 * @model name="one"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE = 5;
-
-	/**
-	 * The '<em><b>All</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #ALL
-	 * @generated
-	 * @ordered
-	 */
-	public static final Quantificator ALL_LITERAL = new Quantificator(ALL, "all", "all");
-
-	/**
-	 * The '<em><b>Sum</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #SUM
-	 * @generated
-	 * @ordered
-	 */
-	public static final Quantificator SUM_LITERAL = new Quantificator(SUM, "sum", "sum");
-
-	/**
-	 * The '<em><b>No</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #NO
-	 * @generated
-	 * @ordered
-	 */
-	public static final Quantificator NO_LITERAL = new Quantificator(NO, "no", "no");
-
-	/**
-	 * The '<em><b>Some</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #SOME
-	 * @generated
-	 * @ordered
-	 */
-	public static final Quantificator SOME_LITERAL = new Quantificator(SOME, "some", "some");
-
-	/**
-	 * The '<em><b>Lone</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #LONE
-	 * @generated
-	 * @ordered
-	 */
-	public static final Quantificator LONE_LITERAL = new Quantificator(LONE, "lone", "lone");
-
-	/**
-	 * The '<em><b>One</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #ONE
-	 * @generated
-	 * @ordered
-	 */
-	public static final Quantificator ONE_LITERAL = new Quantificator(ONE, "one", "one");
+	public static final int ONE_VALUE = 5;
 
 	/**
 	 * An array of all the '<em><b>Quantificator</b></em>' enumerators.
@@ -180,12 +175,12 @@ public final class Quantificator extends AbstractEnumerator {
 	 */
 	private static final Quantificator[] VALUES_ARRAY =
 		new Quantificator[] {
-			ALL_LITERAL,
-			SUM_LITERAL,
-			NO_LITERAL,
-			SOME_LITERAL,
-			LONE_LITERAL,
-			ONE_LITERAL,
+			ALL,
+			SUM,
+			NO,
+			SOME,
+			LONE,
+			ONE,
 		};
 
 	/**
@@ -195,7 +190,7 @@ public final class Quantificator extends AbstractEnumerator {
 	 * @generated
 	 */
 	@SuppressWarnings("rawtypes")
-	public static final List VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<Quantificator> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
 	 * Returns the '<em><b>Quantificator</b></em>' literal with the specified literal value.
@@ -237,15 +232,36 @@ public final class Quantificator extends AbstractEnumerator {
 	 */
 	public static Quantificator get(int value) {
 		switch (value) {
-			case ALL: return ALL_LITERAL;
-			case SUM: return SUM_LITERAL;
-			case NO: return NO_LITERAL;
-			case SOME: return SOME_LITERAL;
-			case LONE: return LONE_LITERAL;
-			case ONE: return ONE_LITERAL;
+			case ALL_VALUE: return ALL;
+			case SUM_VALUE: return SUM;
+			case NO_VALUE: return NO;
+			case SOME_VALUE: return SOME;
+			case LONE_VALUE: return LONE;
+			case ONE_VALUE: return ONE;
 		}
 		return null;
 	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final int value;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String name;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String literal;
 
 	/**
 	 * Only this class can construct instances.
@@ -254,7 +270,46 @@ public final class Quantificator extends AbstractEnumerator {
 	 * @generated
 	 */
 	private Quantificator(int value, String name, String literal) {
-		super(value, name, literal);
+		this.value = value;
+		this.name = name;
+		this.literal = literal;
 	}
 
-} //Quantificator
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getValue() {
+	  return value;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+	  return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getLiteral() {
+	  return literal;
+	}
+
+	/**
+	 * Returns the literal value of the enumerator, which is its string representation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		return literal;
+	}
+}

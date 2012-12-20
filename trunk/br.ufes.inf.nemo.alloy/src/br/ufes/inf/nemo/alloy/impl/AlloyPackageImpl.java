@@ -677,17 +677,8 @@ public class AlloyPackageImpl extends EPackageImpl implements AlloyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getFunctionDeclaration_Expression() {
-		return (EReference)functionDeclarationEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getFunctionDeclaration_Path() {
-		return (EAttribute)functionDeclarationEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)functionDeclarationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -696,7 +687,7 @@ public class AlloyPackageImpl extends EPackageImpl implements AlloyPackage {
 	 * @generated
 	 */
 	public EReference getFunctionDeclaration_Parameter() {
-		return (EReference)functionDeclarationEClass.getEStructuralFeatures().get(2);
+		return (EReference)functionDeclarationEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -705,6 +696,15 @@ public class AlloyPackageImpl extends EPackageImpl implements AlloyPackage {
 	 * @generated
 	 */
 	public EReference getFunctionDeclaration_Type() {
+		return (EReference)functionDeclarationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getFunctionDeclaration_Block() {
 		return (EReference)functionDeclarationEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -1698,10 +1698,10 @@ public class AlloyPackageImpl extends EPackageImpl implements AlloyPackage {
 		createEReference(factDeclarationEClass, FACT_DECLARATION__BLOCK);
 
 		functionDeclarationEClass = createEClass(FUNCTION_DECLARATION);
-		createEReference(functionDeclarationEClass, FUNCTION_DECLARATION__EXPRESSION);
 		createEAttribute(functionDeclarationEClass, FUNCTION_DECLARATION__PATH);
 		createEReference(functionDeclarationEClass, FUNCTION_DECLARATION__PARAMETER);
 		createEReference(functionDeclarationEClass, FUNCTION_DECLARATION__TYPE);
+		createEReference(functionDeclarationEClass, FUNCTION_DECLARATION__BLOCK);
 
 		predicateDeclarationEClass = createEClass(PREDICATE_DECLARATION);
 		createEReference(predicateDeclarationEClass, PREDICATE_DECLARATION__BLOCK);
@@ -1860,6 +1860,10 @@ public class AlloyPackageImpl extends EPackageImpl implements AlloyPackage {
 		setNsPrefix(eNS_PREFIX);
 		setNsURI(eNS_URI);
 
+		// Create type parameters
+
+		// Set bounds for type parameters
+
 		// Add supertypes to classes
 		parametrizedModuleEClass.getESuperTypes().add(this.getAlloyModule());
 		importerModuleEClass.getESuperTypes().add(this.getAlloyModule());
@@ -1924,10 +1928,10 @@ public class AlloyPackageImpl extends EPackageImpl implements AlloyPackage {
 		initEReference(getFactDeclaration_Block(), this.getBlock(), null, "block", null, 1, 1, FactDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(functionDeclarationEClass, FunctionDeclaration.class, "FunctionDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getFunctionDeclaration_Expression(), this.getExpression(), null, "expression", null, 1, 1, FunctionDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getFunctionDeclaration_Path(), ecorePackage.getEString(), "path", null, 0, 1, FunctionDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getFunctionDeclaration_Parameter(), this.getDeclaration(), null, "parameter", null, 0, -1, FunctionDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getFunctionDeclaration_Type(), this.getExpression(), null, "type", null, 1, 1, FunctionDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getFunctionDeclaration_Block(), this.getBlock(), null, "block", null, 1, 1, FunctionDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(predicateDeclarationEClass, PredicateDeclaration.class, "PredicateDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPredicateDeclaration_Block(), this.getBlock(), null, "block", null, 1, 1, PredicateDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2056,56 +2060,56 @@ public class AlloyPackageImpl extends EPackageImpl implements AlloyPackage {
 
 		// Initialize enums and add enum literals
 		initEEnum(multiplicityEEnum, Multiplicity.class, "Multiplicity");
-		addEEnumLiteral(multiplicityEEnum, Multiplicity.SOME_LITERAL);
-		addEEnumLiteral(multiplicityEEnum, Multiplicity.ONE_LITERAL);
-		addEEnumLiteral(multiplicityEEnum, Multiplicity.LONE_LITERAL);
-		addEEnumLiteral(multiplicityEEnum, Multiplicity.SET_LITERAL);
+		addEEnumLiteral(multiplicityEEnum, Multiplicity.SOME);
+		addEEnumLiteral(multiplicityEEnum, Multiplicity.ONE);
+		addEEnumLiteral(multiplicityEEnum, Multiplicity.LONE);
+		addEEnumLiteral(multiplicityEEnum, Multiplicity.SET);
 
 		initEEnum(binaryOperatorEEnum, BinaryOperator.class, "BinaryOperator");
-		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.DIFFERENCE_LITERAL);
-		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.INTERSECTION_LITERAL);
-		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.JOIN_LITERAL);
-		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.UNION_LITERAL);
-		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.DOMAIN_RESTRICTION_LITERAL);
-		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.RANGE_RESTRICTION_LITERAL);
-		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.RELATIONAL_OVERRIDE_LITERAL);
-		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.IFF_LITERAL);
-		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.OR_LITERAL);
-		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.AND_LITERAL);
-		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.BOX_JOIN_LITERAL);
+		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.DIFFERENCE);
+		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.INTERSECTION);
+		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.JOIN);
+		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.UNION);
+		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.DOMAIN_RESTRICTION);
+		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.RANGE_RESTRICTION);
+		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.RELATIONAL_OVERRIDE);
+		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.IFF);
+		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.OR);
+		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.AND);
+		addEEnumLiteral(binaryOperatorEEnum, BinaryOperator.BOX_JOIN);
 
 		initEEnum(unaryOperatorEEnum, UnaryOperator.class, "UnaryOperator");
-		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.TRANSPOSITION_LITERAL);
-		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.TRANSITIVITY_CLOSURE_LITERAL);
-		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.REFLEXIVE_TRANSITY_CLOSURE_LITERAL);
-		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.NOT_LITERAL);
-		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.NO_LITERAL);
-		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.SET_LITERAL);
-		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.SOME_LITERAL);
-		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.LONE_LITERAL);
-		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.ONE_LITERAL);
-		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.CARDINALITY_LITERAL);
+		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.TRANSPOSITION);
+		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.TRANSITIVITY_CLOSURE);
+		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.REFLEXIVE_TRANSITY_CLOSURE);
+		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.NOT);
+		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.NO);
+		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.SET);
+		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.SOME);
+		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.LONE);
+		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.ONE);
+		addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.CARDINALITY);
 
 		initEEnum(compareOperatorEEnum, CompareOperator.class, "CompareOperator");
-		addEEnumLiteral(compareOperatorEEnum, CompareOperator.SUBSET_LITERAL);
-		addEEnumLiteral(compareOperatorEEnum, CompareOperator.EQUAL_LITERAL);
-		addEEnumLiteral(compareOperatorEEnum, CompareOperator.LESS_THAN_LITERAL);
-		addEEnumLiteral(compareOperatorEEnum, CompareOperator.GREATER_THEN_LITERAL);
-		addEEnumLiteral(compareOperatorEEnum, CompareOperator.LESS_EQUAL_LITERAL);
-		addEEnumLiteral(compareOperatorEEnum, CompareOperator.GREATER_EQUAL_LITERAL);
+		addEEnumLiteral(compareOperatorEEnum, CompareOperator.SUBSET);
+		addEEnumLiteral(compareOperatorEEnum, CompareOperator.EQUAL);
+		addEEnumLiteral(compareOperatorEEnum, CompareOperator.LESS_THAN);
+		addEEnumLiteral(compareOperatorEEnum, CompareOperator.GREATER_THEN);
+		addEEnumLiteral(compareOperatorEEnum, CompareOperator.LESS_EQUAL);
+		addEEnumLiteral(compareOperatorEEnum, CompareOperator.GREATER_EQUAL);
 
 		initEEnum(constantEEnum, Constant.class, "Constant");
-		addEEnumLiteral(constantEEnum, Constant.NONE_LITERAL);
-		addEEnumLiteral(constantEEnum, Constant.UNIV_LITERAL);
-		addEEnumLiteral(constantEEnum, Constant.IDEN_LITERAL);
+		addEEnumLiteral(constantEEnum, Constant.NONE);
+		addEEnumLiteral(constantEEnum, Constant.UNIV);
+		addEEnumLiteral(constantEEnum, Constant.IDEN);
 
 		initEEnum(quantificatorEEnum, Quantificator.class, "Quantificator");
-		addEEnumLiteral(quantificatorEEnum, Quantificator.ALL_LITERAL);
-		addEEnumLiteral(quantificatorEEnum, Quantificator.SUM_LITERAL);
-		addEEnumLiteral(quantificatorEEnum, Quantificator.NO_LITERAL);
-		addEEnumLiteral(quantificatorEEnum, Quantificator.SOME_LITERAL);
-		addEEnumLiteral(quantificatorEEnum, Quantificator.LONE_LITERAL);
-		addEEnumLiteral(quantificatorEEnum, Quantificator.ONE_LITERAL);
+		addEEnumLiteral(quantificatorEEnum, Quantificator.ALL);
+		addEEnumLiteral(quantificatorEEnum, Quantificator.SUM);
+		addEEnumLiteral(quantificatorEEnum, Quantificator.NO);
+		addEEnumLiteral(quantificatorEEnum, Quantificator.SOME);
+		addEEnumLiteral(quantificatorEEnum, Quantificator.LONE);
+		addEEnumLiteral(quantificatorEEnum, Quantificator.ONE);
 
 		// Create resource
 		createResource(eNS_URI);

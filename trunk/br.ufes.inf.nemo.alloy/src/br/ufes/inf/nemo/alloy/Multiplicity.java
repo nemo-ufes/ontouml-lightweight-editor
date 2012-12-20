@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.emf.common.util.AbstractEnumerator;
+import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +21,44 @@ import org.eclipse.emf.common.util.AbstractEnumerator;
  * @model
  * @generated
  */
-public final class Multiplicity extends AbstractEnumerator {
+public enum Multiplicity implements Enumerator
+{
+	/**
+	 * The '<em><b>Some</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #SOME_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	SOME(4, "some", "some"),
+	/**
+	 * The '<em><b>One</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #ONE_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	ONE(1, "one", "one"),
+	/**
+	 * The '<em><b>Lone</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #LONE_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	LONE(2, "lone", "lone"),
+	/**
+	 * The '<em><b>Set</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #SET_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	SET(3, "set", "set");
 	/**
 	 * The '<em><b>Some</b></em>' literal value.
 	 * <!-- begin-user-doc -->
@@ -30,12 +67,12 @@ public final class Multiplicity extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #SOME_LITERAL
+	 * @see #SOME
 	 * @model name="some"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SOME = 4;
+	public static final int SOME_VALUE = 4;
 
 	/**
 	 * The '<em><b>One</b></em>' literal value.
@@ -45,12 +82,12 @@ public final class Multiplicity extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #ONE_LITERAL
+	 * @see #ONE
 	 * @model name="one"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE = 1;
+	public static final int ONE_VALUE = 1;
 
 	/**
 	 * The '<em><b>Lone</b></em>' literal value.
@@ -60,12 +97,12 @@ public final class Multiplicity extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #LONE_LITERAL
+	 * @see #LONE
 	 * @model name="lone"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int LONE = 2;
+	public static final int LONE_VALUE = 2;
 
 	/**
 	 * The '<em><b>Set</b></em>' literal value.
@@ -75,52 +112,12 @@ public final class Multiplicity extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #SET_LITERAL
+	 * @see #SET
 	 * @model name="set"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SET = 3;
-
-	/**
-	 * The '<em><b>Some</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #SOME
-	 * @generated
-	 * @ordered
-	 */
-	public static final Multiplicity SOME_LITERAL = new Multiplicity(SOME, "some", "some");
-
-	/**
-	 * The '<em><b>One</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #ONE
-	 * @generated
-	 * @ordered
-	 */
-	public static final Multiplicity ONE_LITERAL = new Multiplicity(ONE, "one", "one");
-
-	/**
-	 * The '<em><b>Lone</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #LONE
-	 * @generated
-	 * @ordered
-	 */
-	public static final Multiplicity LONE_LITERAL = new Multiplicity(LONE, "lone", "lone");
-
-	/**
-	 * The '<em><b>Set</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #SET
-	 * @generated
-	 * @ordered
-	 */
-	public static final Multiplicity SET_LITERAL = new Multiplicity(SET, "set", "set");
+	public static final int SET_VALUE = 3;
 
 	/**
 	 * An array of all the '<em><b>Multiplicity</b></em>' enumerators.
@@ -130,10 +127,10 @@ public final class Multiplicity extends AbstractEnumerator {
 	 */
 	private static final Multiplicity[] VALUES_ARRAY =
 		new Multiplicity[] {
-			SOME_LITERAL,
-			ONE_LITERAL,
-			LONE_LITERAL,
-			SET_LITERAL,
+			SOME,
+			ONE,
+			LONE,
+			SET,
 		};
 
 	/**
@@ -143,7 +140,7 @@ public final class Multiplicity extends AbstractEnumerator {
 	 * @generated
 	 */
 	@SuppressWarnings("rawtypes")
-	public static final List VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<Multiplicity> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
 	 * Returns the '<em><b>Multiplicity</b></em>' literal with the specified literal value.
@@ -185,13 +182,34 @@ public final class Multiplicity extends AbstractEnumerator {
 	 */
 	public static Multiplicity get(int value) {
 		switch (value) {
-			case SOME: return SOME_LITERAL;
-			case ONE: return ONE_LITERAL;
-			case LONE: return LONE_LITERAL;
-			case SET: return SET_LITERAL;
+			case SOME_VALUE: return SOME;
+			case ONE_VALUE: return ONE;
+			case LONE_VALUE: return LONE;
+			case SET_VALUE: return SET;
 		}
 		return null;
 	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final int value;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String name;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String literal;
 
 	/**
 	 * Only this class can construct instances.
@@ -200,7 +218,46 @@ public final class Multiplicity extends AbstractEnumerator {
 	 * @generated
 	 */
 	private Multiplicity(int value, String name, String literal) {
-		super(value, name, literal);
+		this.value = value;
+		this.name = name;
+		this.literal = literal;
 	}
 
-} //Multiplicity
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getValue() {
+	  return value;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+	  return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getLiteral() {
+	  return literal;
+	}
+
+	/**
+	 * Returns the literal value of the enumerator, which is its string representation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		return literal;
+	}
+}

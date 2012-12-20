@@ -210,11 +210,10 @@ public class Transformer extends BaseTransformer {
 		{
 			module.getParagraph().add(f);
 		}
-						
 		/* fun visible : World some -> some univ {	exists }
 		 */
-		AlloyUtil.createVisibleFunction(factory, module, world, exists);
-				
+		AlloyUtil.createVisibleFunction(factory, module, world, exists);			
+						
 		/*  run { } for 10 but 3 World
 		 */
 		AlloyUtil.createDefaultRunComand(factory, module);			
@@ -247,7 +246,7 @@ public class Transformer extends BaseTransformer {
 		VariableReference target = factory.createVariableReference();
 		VariableReference association = factory.createVariableReference();
 		
-		uOp.setOperator(UnaryOperator.SET_LITERAL);
+		uOp.setOperator(UnaryOperator.SET);
 		var.setName(ontoparser.getAlias(ass)); 
 		var.setDeclaration(decl);
 		
@@ -587,26 +586,26 @@ public class Transformer extends BaseTransformer {
 	VariableReference source, VariableReference target, String assocName) 
 	{
 		// Source Cardinality
-		if(lowerSource == 1 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.ONE_LITERAL);		
+		if(lowerSource == 1 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.ONE);		
 		else 
 		{
-			if(lowerSource == 0 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.LONE_LITERAL);
+			if(lowerSource == 0 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.LONE);
 			else
 			{
-				if(lowerSource >= 1) aOp.setLeftMultiplicity(Multiplicity.SOME_LITERAL);
-				else aOp.setLeftMultiplicity(Multiplicity.SET_LITERAL);
+				if(lowerSource >= 1) aOp.setLeftMultiplicity(Multiplicity.SOME);
+				else aOp.setLeftMultiplicity(Multiplicity.SET);
 			}
 		}
 		
 		// Target Cardinality
-		if(lowerTarget == 1 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.ONE_LITERAL);
+		if(lowerTarget == 1 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.ONE);
 		else
 		{
-			if(lowerTarget == 0 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.LONE_LITERAL);
+			if(lowerTarget == 0 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.LONE);
 			else
 			{
-				if(lowerTarget >= 1) aOp.setRightMultiplicity(Multiplicity.SOME_LITERAL);
-				else aOp.setRightMultiplicity(Multiplicity.SET_LITERAL);
+				if(lowerTarget >= 1) aOp.setRightMultiplicity(Multiplicity.SOME);
+				else aOp.setRightMultiplicity(Multiplicity.SET);
 			}
 		}
 		
@@ -615,10 +614,10 @@ public class Transformer extends BaseTransformer {
 		if (lowerSource > 1)
 		{
 			BinaryOperation binJoin = 
-					AlloyUtil.createBinaryOperation(factory, assocName, BinaryOperator.JOIN_LITERAL, "x");
+					AlloyUtil.createBinaryOperation(factory, assocName, BinaryOperator.JOIN, "x");
 			
 			QuantificationExpression qe =					
-				AlloyUtil.createQuantificationExpression(factory, target, binJoin, CompareOperator.GREATER_EQUAL_LITERAL, lowerSource);
+				AlloyUtil.createQuantificationExpression(factory, target, binJoin, CompareOperator.GREATER_EQUAL, lowerSource);
 			
 			world.getBlock().getExpression().add(qe);
 		}
@@ -626,10 +625,10 @@ public class Transformer extends BaseTransformer {
 		if (upperSource > 1 && upperSource != -1) 
 		{
 			BinaryOperation binJoin = 
-				AlloyUtil.createBinaryOperation(factory,assocName, BinaryOperator.JOIN_LITERAL,"x");
+				AlloyUtil.createBinaryOperation(factory,assocName, BinaryOperator.JOIN,"x");
 			
 			QuantificationExpression qe =					
-				AlloyUtil.createQuantificationExpression(factory, target, binJoin, CompareOperator.LESS_EQUAL_LITERAL, upperSource);
+				AlloyUtil.createQuantificationExpression(factory, target, binJoin, CompareOperator.LESS_EQUAL, upperSource);
 				
 			world.getBlock().getExpression().add(qe);
 		}
@@ -637,10 +636,10 @@ public class Transformer extends BaseTransformer {
 		if (lowerTarget > 1) 
 		{
 			BinaryOperation binJoin = 
-					AlloyUtil.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,assocName);
+					AlloyUtil.createBinaryOperation(factory,"x", BinaryOperator.JOIN,assocName);
 			
 			QuantificationExpression qe =					
-				AlloyUtil.createQuantificationExpression(factory, source, binJoin, CompareOperator.GREATER_EQUAL_LITERAL, lowerTarget);
+				AlloyUtil.createQuantificationExpression(factory, source, binJoin, CompareOperator.GREATER_EQUAL, lowerTarget);
 				
 			world.getBlock().getExpression().add(qe);
 		}
@@ -648,10 +647,10 @@ public class Transformer extends BaseTransformer {
 		if (upperTarget > 1 && upperTarget != -1) 
 		{
 			BinaryOperation binJoin = 
-					AlloyUtil.createBinaryOperation(factory,"x", BinaryOperator.JOIN_LITERAL,assocName);			
+					AlloyUtil.createBinaryOperation(factory,"x", BinaryOperator.JOIN,assocName);			
 			
 			QuantificationExpression qe =					
-				AlloyUtil.createQuantificationExpression(factory, source, binJoin, CompareOperator.LESS_EQUAL_LITERAL, upperTarget);
+				AlloyUtil.createQuantificationExpression(factory, source, binJoin, CompareOperator.LESS_EQUAL, upperTarget);
 				
 			world.getBlock().getExpression().add(qe);		
 		}

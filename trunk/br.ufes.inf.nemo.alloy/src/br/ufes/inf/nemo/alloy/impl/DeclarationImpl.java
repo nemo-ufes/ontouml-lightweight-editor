@@ -93,7 +93,7 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Multiplicity MULTIPLICITY_EDEFAULT = Multiplicity.SOME_LITERAL;
+	protected static final Multiplicity MULTIPLICITY_EDEFAULT = Multiplicity.SOME;
 
 	/**
 	 * The cached value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
@@ -119,6 +119,7 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.DECLARATION;
 	}
@@ -193,9 +194,9 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public EList getVariable() {
+	public EList<Variable> getVariable() {
 		if (variable == null) {
-			variable = new EObjectContainmentWithInverseEList(Variable.class, this, AlloyPackage.DECLARATION__VARIABLE, AlloyPackage.VARIABLE__DECLARATION);
+			variable = new EObjectContainmentWithInverseEList<Variable>(Variable.class, this, AlloyPackage.DECLARATION__VARIABLE, AlloyPackage.VARIABLE__DECLARATION);
 		}
 		return variable;
 	}
@@ -227,10 +228,11 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.DECLARATION__VARIABLE:
-				return ((InternalEList)getVariable()).basicAdd(otherEnd, msgs);
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getVariable()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -240,13 +242,14 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.DECLARATION__EXPRESSION:
 				return basicSetExpression(null, msgs);
 			case AlloyPackage.DECLARATION__VARIABLE:
-				return ((InternalEList)getVariable()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getVariable()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -256,10 +259,11 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.DECLARATION__IS_DISJOINT:
-				return isIsDisjoint() ? Boolean.TRUE : Boolean.FALSE;
+				return isIsDisjoint();
 			case AlloyPackage.DECLARATION__EXPRESSION:
 				return getExpression();
 			case AlloyPackage.DECLARATION__VARIABLE:
@@ -276,17 +280,18 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.DECLARATION__IS_DISJOINT:
-				setIsDisjoint(((Boolean)newValue).booleanValue());
+				setIsDisjoint((Boolean)newValue);
 				return;
 			case AlloyPackage.DECLARATION__EXPRESSION:
 				setExpression((Expression)newValue);
 				return;
 			case AlloyPackage.DECLARATION__VARIABLE:
 				getVariable().clear();
-				getVariable().addAll((Collection)newValue);
+				getVariable().addAll((Collection<? extends Variable>)newValue);
 				return;
 			case AlloyPackage.DECLARATION__MULTIPLICITY:
 				setMultiplicity((Multiplicity)newValue);
@@ -300,6 +305,7 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.DECLARATION__IS_DISJOINT:
@@ -323,6 +329,7 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.DECLARATION__IS_DISJOINT:

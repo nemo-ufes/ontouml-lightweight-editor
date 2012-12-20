@@ -43,7 +43,7 @@ public class TGeneralizationSetRule {
 	public static CompareOperation createCompleteCompareOperation (OntoUMLParser ontoparser, AlloyFactory factory, GeneralizationSet gs)
 	{
 		CompareOperation co = factory.createCompareOperation();
-		co.setOperator(CompareOperator.EQUAL_LITERAL);
+		co.setOperator(CompareOperator.EQUAL);
 		
 		VariableReference vr = factory.createVariableReference();
 		vr.setVariable(ontoparser.getAlias(gs.getGeneralization().get(0).getGeneral()));
@@ -65,7 +65,7 @@ public class TGeneralizationSetRule {
 			}
 			if(cont == 1)
 			{
-				bo.setOperator(BinaryOperator.UNION_LITERAL);
+				bo.setOperator(BinaryOperator.UNION);
 				vr = factory.createVariableReference();
 				vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
 				bo.setLeftExpression(vr);
@@ -76,7 +76,7 @@ public class TGeneralizationSetRule {
 				vr = factory.createVariableReference();
 				vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
 				bo.setRightExpression(factory.createBinaryOperation());
-				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
+				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION);
 				((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
 				bo = ((BinaryOperation)bo.getRightExpression());
 			}

@@ -35,7 +35,6 @@ public interface EnumDeclaration extends Paragraph {
 	 * @model required="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
-	EList getLiterals();
+	EList<String> getLiterals();
 
 } // EnumDeclaration

@@ -7,6 +7,7 @@
 package br.ufes.inf.nemo.alloy.impl;
 
 import br.ufes.inf.nemo.alloy.AlloyPackage;
+import br.ufes.inf.nemo.alloy.Block;
 import br.ufes.inf.nemo.alloy.Declaration;
 import br.ufes.inf.nemo.alloy.Expression;
 import br.ufes.inf.nemo.alloy.FunctionDeclaration;
@@ -33,26 +34,16 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link br.ufes.inf.nemo.alloy.impl.FunctionDeclarationImpl#getExpression <em>Expression</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.alloy.impl.FunctionDeclarationImpl#getPath <em>Path</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.alloy.impl.FunctionDeclarationImpl#getParameter <em>Parameter</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.alloy.impl.FunctionDeclarationImpl#getType <em>Type</em>}</li>
+ *   <li>{@link br.ufes.inf.nemo.alloy.impl.FunctionDeclarationImpl#getBlock <em>Block</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDeclaration {
-	/**
-	 * The cached value of the '{@link #getExpression() <em>Expression</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getExpression()
-	 * @generated
-	 * @ordered
-	 */
-	protected Expression expression;
-
 	/**
 	 * The default value of the '{@link #getPath() <em>Path</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -81,8 +72,7 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * @generated
 	 * @ordered
 	 */
-	@SuppressWarnings("rawtypes")
-	protected EList parameter;
+	protected EList<Declaration> parameter;
 
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
@@ -93,6 +83,16 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * @ordered
 	 */
 	protected Expression type;
+
+	/**
+	 * The cached value of the '{@link #getBlock() <em>Block</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBlock()
+	 * @generated
+	 * @ordered
+	 */
+	protected Block block;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -108,51 +108,9 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.FUNCTION_DECLARATION;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Expression getExpression() {
-		return expression;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetExpression(Expression newExpression, NotificationChain msgs) {
-		Expression oldExpression = expression;
-		expression = newExpression;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AlloyPackage.FUNCTION_DECLARATION__EXPRESSION, oldExpression, newExpression);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setExpression(Expression newExpression) {
-		if (newExpression != expression) {
-			NotificationChain msgs = null;
-			if (expression != null)
-				msgs = ((InternalEObject)expression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AlloyPackage.FUNCTION_DECLARATION__EXPRESSION, null, msgs);
-			if (newExpression != null)
-				msgs = ((InternalEObject)newExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AlloyPackage.FUNCTION_DECLARATION__EXPRESSION, null, msgs);
-			msgs = basicSetExpression(newExpression, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AlloyPackage.FUNCTION_DECLARATION__EXPRESSION, newExpression, newExpression));
 	}
 
 	/**
@@ -181,10 +139,9 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public EList getParameter() {
+	public EList<Declaration> getParameter() {
 		if (parameter == null) {
-			parameter = new EObjectContainmentEList(Declaration.class, this, AlloyPackage.FUNCTION_DECLARATION__PARAMETER);
+			parameter = new EObjectContainmentEList<Declaration>(Declaration.class, this, AlloyPackage.FUNCTION_DECLARATION__PARAMETER);
 		}
 		return parameter;
 	}
@@ -237,15 +194,58 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
+	public Block getBlock() {
+		return block;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetBlock(Block newBlock, NotificationChain msgs) {
+		Block oldBlock = block;
+		block = newBlock;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AlloyPackage.FUNCTION_DECLARATION__BLOCK, oldBlock, newBlock);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setBlock(Block newBlock) {
+		if (newBlock != block) {
+			NotificationChain msgs = null;
+			if (block != null)
+				msgs = ((InternalEObject)block).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AlloyPackage.FUNCTION_DECLARATION__BLOCK, null, msgs);
+			if (newBlock != null)
+				msgs = ((InternalEObject)newBlock).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AlloyPackage.FUNCTION_DECLARATION__BLOCK, null, msgs);
+			msgs = basicSetBlock(newBlock, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AlloyPackage.FUNCTION_DECLARATION__BLOCK, newBlock, newBlock));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case AlloyPackage.FUNCTION_DECLARATION__EXPRESSION:
-				return basicSetExpression(null, msgs);
 			case AlloyPackage.FUNCTION_DECLARATION__PARAMETER:
-				return ((InternalEList)getParameter()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getParameter()).basicRemove(otherEnd, msgs);
 			case AlloyPackage.FUNCTION_DECLARATION__TYPE:
 				return basicSetType(null, msgs);
+			case AlloyPackage.FUNCTION_DECLARATION__BLOCK:
+				return basicSetBlock(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -255,16 +255,17 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AlloyPackage.FUNCTION_DECLARATION__EXPRESSION:
-				return getExpression();
 			case AlloyPackage.FUNCTION_DECLARATION__PATH:
 				return getPath();
 			case AlloyPackage.FUNCTION_DECLARATION__PARAMETER:
 				return getParameter();
 			case AlloyPackage.FUNCTION_DECLARATION__TYPE:
 				return getType();
+			case AlloyPackage.FUNCTION_DECLARATION__BLOCK:
+				return getBlock();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -274,21 +275,22 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AlloyPackage.FUNCTION_DECLARATION__EXPRESSION:
-				setExpression((Expression)newValue);
-				return;
 			case AlloyPackage.FUNCTION_DECLARATION__PATH:
 				setPath((String)newValue);
 				return;
 			case AlloyPackage.FUNCTION_DECLARATION__PARAMETER:
 				getParameter().clear();
-				getParameter().addAll((Collection)newValue);
+				getParameter().addAll((Collection<? extends Declaration>)newValue);
 				return;
 			case AlloyPackage.FUNCTION_DECLARATION__TYPE:
 				setType((Expression)newValue);
+				return;
+			case AlloyPackage.FUNCTION_DECLARATION__BLOCK:
+				setBlock((Block)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -299,11 +301,9 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AlloyPackage.FUNCTION_DECLARATION__EXPRESSION:
-				setExpression((Expression)null);
-				return;
 			case AlloyPackage.FUNCTION_DECLARATION__PATH:
 				setPath(PATH_EDEFAULT);
 				return;
@@ -312,6 +312,9 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 				return;
 			case AlloyPackage.FUNCTION_DECLARATION__TYPE:
 				setType((Expression)null);
+				return;
+			case AlloyPackage.FUNCTION_DECLARATION__BLOCK:
+				setBlock((Block)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -322,21 +325,24 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AlloyPackage.FUNCTION_DECLARATION__EXPRESSION:
-				return expression != null;
 			case AlloyPackage.FUNCTION_DECLARATION__PATH:
 				return PATH_EDEFAULT == null ? path != null : !PATH_EDEFAULT.equals(path);
 			case AlloyPackage.FUNCTION_DECLARATION__PARAMETER:
 				return parameter != null && !parameter.isEmpty();
 			case AlloyPackage.FUNCTION_DECLARATION__TYPE:
 				return type != null;
+			case AlloyPackage.FUNCTION_DECLARATION__BLOCK:
+				return block != null;
 		}
 		return super.eIsSet(featureID);
 	}
 
-	public String toString() {
+	public String toString() 
+	{
+		StringBuffer result = new StringBuffer(); 
 		String param = "";
 		if(getParameter().size()>0) {
 			param = " [";
@@ -349,10 +355,16 @@ public class FunctionDeclarationImpl extends ParagraphImpl implements FunctionDe
 			}
 			param = param + "]";
 		}
-		if(getExpression() != null)
-			return "fun "+name+param+" : "+getType() +" {\n\t"+getExpression()+"\n}\n";
-		else
-			return "fun "+name+param+" : "+getType() +" {}\n";
+		
+		result.append("fun "+name+param+" : "+getType() +" {");
+				
+		for (Expression e : getBlock().getExpression()) 
+		{
+			result.append("\n\t"+e);
+		}
+		result.append("\n}\n");
+		
+		return result.toString();		
 	}
 
 } //FunctionDeclarationImpl

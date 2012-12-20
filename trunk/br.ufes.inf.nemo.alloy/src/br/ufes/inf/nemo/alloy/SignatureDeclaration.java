@@ -96,11 +96,11 @@ public interface SignatureDeclaration extends Paragraph {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Relation</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getSignatureDeclaration_Relation()
-	 * @model type="alloy.Declaration" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	@SuppressWarnings("rawtypes")
-	EList getRelation();
+	EList<Declaration> getRelation();
 
 	/**
 	 * Returns the value of the '<em><b>Block</b></em>' containment reference.

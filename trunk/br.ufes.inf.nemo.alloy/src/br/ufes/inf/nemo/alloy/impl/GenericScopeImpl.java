@@ -49,7 +49,7 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * @ordered
 	 */
 	@SuppressWarnings("rawtypes")
-	protected EList scopeable;
+	protected EList<Scopeable> scopeable;
 
 	/**
 	 * The default value of the '{@link #getScopeSize() <em>Scope Size</em>}' attribute.
@@ -85,6 +85,7 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.GENERIC_SCOPE;
 	}
@@ -95,9 +96,9 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public EList getScopeable() {
+	public EList<Scopeable> getScopeable() {
 		if (scopeable == null) {
-			scopeable = new EObjectContainmentEList(Scopeable.class, this, AlloyPackage.GENERIC_SCOPE__SCOPEABLE);
+			scopeable = new EObjectContainmentEList<Scopeable>(Scopeable.class, this, AlloyPackage.GENERIC_SCOPE__SCOPEABLE);
 		}
 		return scopeable;
 	}
@@ -128,11 +129,12 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.GENERIC_SCOPE__SCOPEABLE:
-				return ((InternalEList)getScopeable()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getScopeable()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -142,12 +144,13 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.GENERIC_SCOPE__SCOPEABLE:
 				return getScopeable();
 			case AlloyPackage.GENERIC_SCOPE__SCOPE_SIZE:
-				return new Integer(getScopeSize());
+				return getScopeSize();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -158,14 +161,15 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.GENERIC_SCOPE__SCOPEABLE:
 				getScopeable().clear();
-				getScopeable().addAll((Collection)newValue);
+				getScopeable().addAll((Collection<? extends Scopeable>)newValue);
 				return;
 			case AlloyPackage.GENERIC_SCOPE__SCOPE_SIZE:
-				setScopeSize(((Integer)newValue).intValue());
+				setScopeSize((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -176,6 +180,7 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.GENERIC_SCOPE__SCOPEABLE:
@@ -193,6 +198,7 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.GENERIC_SCOPE__SCOPEABLE:

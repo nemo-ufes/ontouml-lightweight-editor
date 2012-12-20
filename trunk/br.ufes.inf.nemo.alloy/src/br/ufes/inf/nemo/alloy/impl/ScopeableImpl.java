@@ -106,6 +106,7 @@ public class ScopeableImpl extends EObjectImpl implements Scopeable {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.SCOPEABLE;
 	}
@@ -178,12 +179,13 @@ public class ScopeableImpl extends EObjectImpl implements Scopeable {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.SCOPEABLE__SCOPE_SIZE:
-				return new Integer(getScopeSize());
+				return getScopeSize();
 			case AlloyPackage.SCOPEABLE__IS_EXACTLY:
-				return isIsExactly() ? Boolean.TRUE : Boolean.FALSE;
+				return isIsExactly();
 			case AlloyPackage.SCOPEABLE__SIGNATURE:
 				return getSignature();
 		}
@@ -195,13 +197,14 @@ public class ScopeableImpl extends EObjectImpl implements Scopeable {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.SCOPEABLE__SCOPE_SIZE:
-				setScopeSize(((Integer)newValue).intValue());
+				setScopeSize((Integer)newValue);
 				return;
 			case AlloyPackage.SCOPEABLE__IS_EXACTLY:
-				setIsExactly(((Boolean)newValue).booleanValue());
+				setIsExactly((Boolean)newValue);
 				return;
 			case AlloyPackage.SCOPEABLE__SIGNATURE:
 				setSignature((String)newValue);
@@ -215,6 +218,7 @@ public class ScopeableImpl extends EObjectImpl implements Scopeable {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.SCOPEABLE__SCOPE_SIZE:
@@ -235,6 +239,7 @@ public class ScopeableImpl extends EObjectImpl implements Scopeable {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.SCOPEABLE__SCOPE_SIZE:

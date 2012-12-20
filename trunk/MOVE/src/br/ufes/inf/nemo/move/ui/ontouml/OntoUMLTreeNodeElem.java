@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.move.ui.ontouml;
 import java.text.Normalizer;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
@@ -15,7 +16,7 @@ import RefOntoUML.NamedElement;
 
 public class OntoUMLTreeNodeElem {
 	
-	private Element element;
+	private EObject element;
 	private String name;
 	private String type;
 	private String uniqueName="";
@@ -23,18 +24,18 @@ public class OntoUMLTreeNodeElem {
 	/** 
 	 * Create a CheckBox Tree Node Element from Element.
 	 * 
-	 * @param element
+	 * @param refElement
 	 */
-	public OntoUMLTreeNodeElem (Element element, String uniqueName) 
+	public OntoUMLTreeNodeElem (EObject refElement, String uniqueName) 
 	{
-		this.element = element;
+		this.element = refElement;
 		
-		if (element instanceof NamedElement) 
+		if (refElement instanceof NamedElement) 
 		{
-			this.name = ((NamedElement)element).getName();
+			this.name = ((NamedElement)refElement).getName();
 		}
 		
-		type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+		type = refElement.getClass().toString().replaceAll("class RefOntoUML.impl.","");
 	    type = type.replaceAll("Impl","");
 	    type = Normalizer.normalize(type, Normalizer.Form.NFD);	
 	    
@@ -121,7 +122,7 @@ public class OntoUMLTreeNodeElem {
 	/**
 	 * Get Element.
 	 */
-	public Element getElement() 
+	public EObject getElement() 
 	{
 		return element;
 	}	

@@ -53,7 +53,7 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Quantificator QUANTIFICATOR_EDEFAULT = Quantificator.ALL_LITERAL;
+	protected static final Quantificator QUANTIFICATOR_EDEFAULT = Quantificator.ALL;
 
 	/**
 	 * The cached value of the '{@link #getQuantificator() <em>Quantificator</em>}' attribute.
@@ -109,6 +109,7 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.QUANTIFICATION_EXPRESSION;
 	}
@@ -142,7 +143,7 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EList<Declaration> getDeclaration() {
 		if (declaration == null) {
-			declaration = new EObjectContainmentEList(Declaration.class, this, AlloyPackage.QUANTIFICATION_EXPRESSION__DECLARATION);
+			declaration = new EObjectContainmentEList<Declaration>(Declaration.class, this, AlloyPackage.QUANTIFICATION_EXPRESSION__DECLARATION);
 		}
 		return declaration;
 	}
@@ -238,11 +239,12 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.QUANTIFICATION_EXPRESSION__DECLARATION:
-				return ((InternalEList)getDeclaration()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getDeclaration()).basicRemove(otherEnd, msgs);
 			case AlloyPackage.QUANTIFICATION_EXPRESSION__EXPRESSION:
 				return basicSetExpression(null, msgs);
 			case AlloyPackage.QUANTIFICATION_EXPRESSION__BLOCK:
@@ -256,6 +258,7 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.QUANTIFICATION_EXPRESSION__QUANTIFICATOR:
@@ -276,6 +279,7 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.QUANTIFICATION_EXPRESSION__QUANTIFICATOR:
@@ -283,7 +287,7 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 				return;
 			case AlloyPackage.QUANTIFICATION_EXPRESSION__DECLARATION:
 				getDeclaration().clear();
-				getDeclaration().addAll((Collection)newValue);
+				getDeclaration().addAll((Collection<? extends Declaration>)newValue);
 				return;
 			case AlloyPackage.QUANTIFICATION_EXPRESSION__EXPRESSION:
 				setExpression((Expression)newValue);
@@ -300,6 +304,7 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.QUANTIFICATION_EXPRESSION__QUANTIFICATOR:
@@ -323,6 +328,7 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.QUANTIFICATION_EXPRESSION__QUANTIFICATOR:

@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.emf.common.util.AbstractEnumerator;
+import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +21,62 @@ import org.eclipse.emf.common.util.AbstractEnumerator;
  * @model
  * @generated
  */
-public final class CompareOperator extends AbstractEnumerator {
+public enum CompareOperator implements Enumerator
+{
+	/**
+	 * The '<em><b>Subset</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #SUBSET_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	SUBSET(6, "subset", "in"),
+	/**
+	 * The '<em><b>Equal</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #EQUAL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	EQUAL(1, "equal", "="),
+	/**
+	 * The '<em><b>Less Than</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #LESS_THAN_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	LESS_THAN(2, "lessThan", "<"),
+	/**
+	 * The '<em><b>Greater Then</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #GREATER_THEN_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	GREATER_THEN(3, "greaterThen", ">"),
+	/**
+	 * The '<em><b>Less Equal</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #LESS_EQUAL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	LESS_EQUAL(4, "lessEqual", "=<"),
+	/**
+	 * The '<em><b>Greater Equal</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #GREATER_EQUAL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	GREATER_EQUAL(5, "greaterEqual", ">=");
 	/**
 	 * The '<em><b>Subset</b></em>' literal value.
 	 * <!-- begin-user-doc -->
@@ -30,12 +85,12 @@ public final class CompareOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #SUBSET_LITERAL
+	 * @see #SUBSET
 	 * @model name="subset" literal="in"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SUBSET = 6;
+	public static final int SUBSET_VALUE = 6;
 
 	/**
 	 * The '<em><b>Equal</b></em>' literal value.
@@ -45,12 +100,12 @@ public final class CompareOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #EQUAL_LITERAL
+	 * @see #EQUAL
 	 * @model name="equal" literal="="
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EQUAL = 1;
+	public static final int EQUAL_VALUE = 1;
 
 	/**
 	 * The '<em><b>Less Than</b></em>' literal value.
@@ -60,12 +115,12 @@ public final class CompareOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #LESS_THAN_LITERAL
+	 * @see #LESS_THAN
 	 * @model name="lessThan" literal="<"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int LESS_THAN = 2;
+	public static final int LESS_THAN_VALUE = 2;
 
 	/**
 	 * The '<em><b>Greater Then</b></em>' literal value.
@@ -75,12 +130,12 @@ public final class CompareOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #GREATER_THEN_LITERAL
+	 * @see #GREATER_THEN
 	 * @model name="greaterThen" literal=">"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int GREATER_THEN = 3;
+	public static final int GREATER_THEN_VALUE = 3;
 
 	/**
 	 * The '<em><b>Less Equal</b></em>' literal value.
@@ -90,12 +145,12 @@ public final class CompareOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #LESS_EQUAL_LITERAL
+	 * @see #LESS_EQUAL
 	 * @model name="lessEqual" literal="=<"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int LESS_EQUAL = 4;
+	public static final int LESS_EQUAL_VALUE = 4;
 
 	/**
 	 * The '<em><b>Greater Equal</b></em>' literal value.
@@ -105,72 +160,12 @@ public final class CompareOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #GREATER_EQUAL_LITERAL
+	 * @see #GREATER_EQUAL
 	 * @model name="greaterEqual" literal=">="
 	 * @generated
 	 * @ordered
 	 */
-	public static final int GREATER_EQUAL = 5;
-
-	/**
-	 * The '<em><b>Subset</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #SUBSET
-	 * @generated
-	 * @ordered
-	 */
-	public static final CompareOperator SUBSET_LITERAL = new CompareOperator(SUBSET, "subset", "in");
-
-	/**
-	 * The '<em><b>Equal</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #EQUAL
-	 * @generated
-	 * @ordered
-	 */
-	public static final CompareOperator EQUAL_LITERAL = new CompareOperator(EQUAL, "equal", "=");
-
-	/**
-	 * The '<em><b>Less Than</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #LESS_THAN
-	 * @generated
-	 * @ordered
-	 */
-	public static final CompareOperator LESS_THAN_LITERAL = new CompareOperator(LESS_THAN, "lessThan", "<");
-
-	/**
-	 * The '<em><b>Greater Then</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #GREATER_THEN
-	 * @generated
-	 * @ordered
-	 */
-	public static final CompareOperator GREATER_THEN_LITERAL = new CompareOperator(GREATER_THEN, "greaterThen", ">");
-
-	/**
-	 * The '<em><b>Less Equal</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #LESS_EQUAL
-	 * @generated
-	 * @ordered
-	 */
-	public static final CompareOperator LESS_EQUAL_LITERAL = new CompareOperator(LESS_EQUAL, "lessEqual", "=<");
-
-	/**
-	 * The '<em><b>Greater Equal</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #GREATER_EQUAL
-	 * @generated
-	 * @ordered
-	 */
-	public static final CompareOperator GREATER_EQUAL_LITERAL = new CompareOperator(GREATER_EQUAL, "greaterEqual", ">=");
+	public static final int GREATER_EQUAL_VALUE = 5;
 
 	/**
 	 * An array of all the '<em><b>Compare Operator</b></em>' enumerators.
@@ -180,12 +175,12 @@ public final class CompareOperator extends AbstractEnumerator {
 	 */
 	private static final CompareOperator[] VALUES_ARRAY =
 		new CompareOperator[] {
-			SUBSET_LITERAL,
-			EQUAL_LITERAL,
-			LESS_THAN_LITERAL,
-			GREATER_THEN_LITERAL,
-			LESS_EQUAL_LITERAL,
-			GREATER_EQUAL_LITERAL,
+			SUBSET,
+			EQUAL,
+			LESS_THAN,
+			GREATER_THEN,
+			LESS_EQUAL,
+			GREATER_EQUAL,
 		};
 
 	/**
@@ -194,8 +189,7 @@ public final class CompareOperator extends AbstractEnumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
-	public static final List VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<CompareOperator> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
 	 * Returns the '<em><b>Compare Operator</b></em>' literal with the specified literal value.
@@ -237,15 +231,36 @@ public final class CompareOperator extends AbstractEnumerator {
 	 */
 	public static CompareOperator get(int value) {
 		switch (value) {
-			case SUBSET: return SUBSET_LITERAL;
-			case EQUAL: return EQUAL_LITERAL;
-			case LESS_THAN: return LESS_THAN_LITERAL;
-			case GREATER_THEN: return GREATER_THEN_LITERAL;
-			case LESS_EQUAL: return LESS_EQUAL_LITERAL;
-			case GREATER_EQUAL: return GREATER_EQUAL_LITERAL;
+			case SUBSET_VALUE: return SUBSET;
+			case EQUAL_VALUE: return EQUAL;
+			case LESS_THAN_VALUE: return LESS_THAN;
+			case GREATER_THEN_VALUE: return GREATER_THEN;
+			case LESS_EQUAL_VALUE: return LESS_EQUAL;
+			case GREATER_EQUAL_VALUE: return GREATER_EQUAL;
 		}
 		return null;
 	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final int value;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String name;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String literal;
 
 	/**
 	 * Only this class can construct instances.
@@ -254,7 +269,46 @@ public final class CompareOperator extends AbstractEnumerator {
 	 * @generated
 	 */
 	private CompareOperator(int value, String name, String literal) {
-		super(value, name, literal);
+		this.value = value;
+		this.name = name;
+		this.literal = literal;
 	}
 
-} //CompareOperator
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getValue() {
+	  return value;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+	  return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getLiteral() {
+	  return literal;
+	}
+
+	/**
+	 * Returns the literal value of the enumerator, which is its string representation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		return literal;
+	}
+}

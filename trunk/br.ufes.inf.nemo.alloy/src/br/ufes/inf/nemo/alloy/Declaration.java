@@ -95,11 +95,10 @@ public interface Declaration extends EObject {
 	 * @return the value of the '<em>Variable</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getDeclaration_Variable()
 	 * @see br.ufes.inf.nemo.alloy.Variable#getDeclaration
-	 * @model type="alloy.Variable" opposite="declaration" containment="true" required="true"
+	 * @model opposite="declaration" containment="true" required="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
-	EList getVariable();
+	EList<Variable> getVariable();
 
 	/**
 	 * Returns the value of the '<em><b>Multiplicity</b></em>' attribute.

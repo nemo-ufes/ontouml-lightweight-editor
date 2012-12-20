@@ -78,6 +78,7 @@ public class ImpliesOperationImpl extends ExpressionImpl implements ImpliesOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.IMPLIES_OPERATION;
 	}
@@ -216,6 +217,7 @@ public class ImpliesOperationImpl extends ExpressionImpl implements ImpliesOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.IMPLIES_OPERATION__ELSE:
@@ -233,6 +235,7 @@ public class ImpliesOperationImpl extends ExpressionImpl implements ImpliesOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.IMPLIES_OPERATION__ELSE:
@@ -250,6 +253,7 @@ public class ImpliesOperationImpl extends ExpressionImpl implements ImpliesOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.IMPLIES_OPERATION__ELSE:
@@ -270,6 +274,7 @@ public class ImpliesOperationImpl extends ExpressionImpl implements ImpliesOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.IMPLIES_OPERATION__ELSE:
@@ -290,6 +295,7 @@ public class ImpliesOperationImpl extends ExpressionImpl implements ImpliesOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.IMPLIES_OPERATION__ELSE:

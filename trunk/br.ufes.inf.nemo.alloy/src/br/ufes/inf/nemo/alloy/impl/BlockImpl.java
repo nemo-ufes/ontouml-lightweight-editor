@@ -47,7 +47,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * @ordered
 	 */
 	@SuppressWarnings("rawtypes")
-	protected EList expression;
+	protected EList<Expression> expression;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -63,6 +63,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.BLOCK;
 	}
@@ -75,7 +76,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EList<Expression> getExpression() {
 		if (expression == null) {
-			expression = new EObjectContainmentEList(Expression.class, this, AlloyPackage.BLOCK__EXPRESSION);
+			expression = new EObjectContainmentEList<Expression>(Expression.class, this, AlloyPackage.BLOCK__EXPRESSION);
 		}
 		return expression;
 	}
@@ -85,11 +86,12 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.BLOCK__EXPRESSION:
-				return ((InternalEList)getExpression()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getExpression()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -99,6 +101,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.BLOCK__EXPRESSION:
@@ -113,11 +116,12 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.BLOCK__EXPRESSION:
 				getExpression().clear();
-				getExpression().addAll((Collection)newValue);
+				getExpression().addAll((Collection<? extends Expression>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -128,6 +132,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.BLOCK__EXPRESSION:
@@ -142,6 +147,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.BLOCK__EXPRESSION:

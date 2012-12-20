@@ -502,22 +502,13 @@ public interface AlloyPackage extends EPackage {
 	int FUNCTION_DECLARATION__NAME = PARAGRAPH__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FUNCTION_DECLARATION__EXPRESSION = PARAGRAPH_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Path</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FUNCTION_DECLARATION__PATH = PARAGRAPH_FEATURE_COUNT + 1;
+	int FUNCTION_DECLARATION__PATH = PARAGRAPH_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Parameter</b></em>' containment reference list.
@@ -526,7 +517,7 @@ public interface AlloyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FUNCTION_DECLARATION__PARAMETER = PARAGRAPH_FEATURE_COUNT + 2;
+	int FUNCTION_DECLARATION__PARAMETER = PARAGRAPH_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -535,7 +526,16 @@ public interface AlloyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FUNCTION_DECLARATION__TYPE = PARAGRAPH_FEATURE_COUNT + 3;
+	int FUNCTION_DECLARATION__TYPE = PARAGRAPH_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Block</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FUNCTION_DECLARATION__BLOCK = PARAGRAPH_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Function Declaration</em>' class.
@@ -2085,17 +2085,6 @@ public interface AlloyPackage extends EPackage {
 	EClass getFunctionDeclaration();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link br.ufes.inf.nemo.alloy.FunctionDeclaration#getExpression <em>Expression</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Expression</em>'.
-	 * @see br.ufes.inf.nemo.alloy.FunctionDeclaration#getExpression()
-	 * @see #getFunctionDeclaration()
-	 * @generated
-	 */
-	EReference getFunctionDeclaration_Expression();
-
-	/**
 	 * Returns the meta object for the attribute '{@link br.ufes.inf.nemo.alloy.FunctionDeclaration#getPath <em>Path</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2127,6 +2116,17 @@ public interface AlloyPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getFunctionDeclaration_Type();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link br.ufes.inf.nemo.alloy.FunctionDeclaration#getBlock <em>Block</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Block</em>'.
+	 * @see br.ufes.inf.nemo.alloy.FunctionDeclaration#getBlock()
+	 * @see #getFunctionDeclaration()
+	 * @generated
+	 */
+	EReference getFunctionDeclaration_Block();
 
 	/**
 	 * Returns the meta object for class '{@link br.ufes.inf.nemo.alloy.PredicateDeclaration <em>Predicate Declaration</em>}'.
@@ -3484,14 +3484,6 @@ public interface AlloyPackage extends EPackage {
 		EClass FUNCTION_DECLARATION = eINSTANCE.getFunctionDeclaration();
 
 		/**
-		 * The meta object literal for the '<em><b>Expression</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference FUNCTION_DECLARATION__EXPRESSION = eINSTANCE.getFunctionDeclaration_Expression();
-
-		/**
 		 * The meta object literal for the '<em><b>Path</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3514,6 +3506,14 @@ public interface AlloyPackage extends EPackage {
 		 * @generated
 		 */
 		EReference FUNCTION_DECLARATION__TYPE = eINSTANCE.getFunctionDeclaration_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Block</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference FUNCTION_DECLARATION__BLOCK = eINSTANCE.getFunctionDeclaration_Block();
 
 		/**
 		 * The meta object literal for the '{@link br.ufes.inf.nemo.alloy.impl.PredicateDeclarationImpl <em>Predicate Declaration</em>}' class.

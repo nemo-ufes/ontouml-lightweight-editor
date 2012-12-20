@@ -36,10 +36,9 @@ public interface DetailedScope extends ScopeSpecification {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Scopeable</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getDetailedScope_Scopeable()
-	 * @model type="alloy.Scopeable" containment="true" required="true"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
-	EList getScopeable();
+	EList<Scopeable> getScopeable();
 
 } // DetailedScope

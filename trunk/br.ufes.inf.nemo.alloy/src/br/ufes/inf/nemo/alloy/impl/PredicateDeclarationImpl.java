@@ -81,7 +81,7 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * @ordered
 	 */
 	@SuppressWarnings("rawtypes")
-	protected EList parameter;
+	protected EList<Declaration> parameter;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -97,6 +97,7 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.PREDICATE_DECLARATION;
 	}
@@ -171,9 +172,9 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public EList getParameter() {
+	public EList<Declaration> getParameter() {
 		if (parameter == null) {
-			parameter = new EObjectContainmentEList(Declaration.class, this, AlloyPackage.PREDICATE_DECLARATION__PARAMETER);
+			parameter = new EObjectContainmentEList<Declaration>(Declaration.class, this, AlloyPackage.PREDICATE_DECLARATION__PARAMETER);
 		}
 		return parameter;
 	}
@@ -183,13 +184,14 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_DECLARATION__BLOCK:
 				return basicSetBlock(null, msgs);
 			case AlloyPackage.PREDICATE_DECLARATION__PARAMETER:
-				return ((InternalEList)getParameter()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getParameter()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -199,6 +201,7 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_DECLARATION__BLOCK:
@@ -217,6 +220,7 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_DECLARATION__BLOCK:
@@ -227,7 +231,7 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 				return;
 			case AlloyPackage.PREDICATE_DECLARATION__PARAMETER:
 				getParameter().clear();
-				getParameter().addAll((Collection)newValue);
+				getParameter().addAll((Collection<? extends Declaration>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -238,6 +242,7 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_DECLARATION__BLOCK:
@@ -258,6 +263,7 @@ public class PredicateDeclarationImpl extends ParagraphImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_DECLARATION__BLOCK:

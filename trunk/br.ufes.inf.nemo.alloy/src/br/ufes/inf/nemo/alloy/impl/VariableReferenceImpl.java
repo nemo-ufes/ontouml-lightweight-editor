@@ -84,6 +84,7 @@ public class VariableReferenceImpl extends ExpressionImpl implements VariableRef
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.VARIABLE_REFERENCE;
 	}
@@ -135,10 +136,11 @@ public class VariableReferenceImpl extends ExpressionImpl implements VariableRef
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.VARIABLE_REFERENCE__PREFIX_AT:
-				return isPrefixAt() ? Boolean.TRUE : Boolean.FALSE;
+				return isPrefixAt();
 			case AlloyPackage.VARIABLE_REFERENCE__VARIABLE:
 				return getVariable();
 		}
@@ -150,10 +152,11 @@ public class VariableReferenceImpl extends ExpressionImpl implements VariableRef
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.VARIABLE_REFERENCE__PREFIX_AT:
-				setPrefixAt(((Boolean)newValue).booleanValue());
+				setPrefixAt((Boolean)newValue);
 				return;
 			case AlloyPackage.VARIABLE_REFERENCE__VARIABLE:
 				setVariable((String)newValue);
@@ -167,6 +170,7 @@ public class VariableReferenceImpl extends ExpressionImpl implements VariableRef
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.VARIABLE_REFERENCE__PREFIX_AT:
@@ -184,6 +188,7 @@ public class VariableReferenceImpl extends ExpressionImpl implements VariableRef
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.VARIABLE_REFERENCE__PREFIX_AT:
