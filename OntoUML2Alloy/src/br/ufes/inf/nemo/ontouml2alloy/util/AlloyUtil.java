@@ -766,15 +766,22 @@ public class AlloyUtil {
 		FunctionDeclaration fun = factory.createFunctionDeclaration();
 		fun.setName(functionName);
 		
-		// set World.returnName
+		// set returnName
 		UnaryOperation uOp = factory.createUnaryOperation();
 		uOp.setOperator(UnaryOperator.SET_LITERAL);		
-		BinaryOperation bOp = createBinaryOperation(factory, world.getName(), BinaryOperator.JOIN_LITERAL, returnName);		
-		uOp.setExpression(bOp);
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(returnName);				
+		uOp.setExpression(vr);
 		fun.setType(uOp);
 	
-		// x: World.paramName
-		Declaration decl = createDeclaration(factory, world, paramName);
+		// x: paramName
+		Declaration decl = factory.createDeclaration();				
+		Variable var = factory.createVariable();
+		var.setName("x");
+		var.setDeclaration(decl);	
+		vr = factory.createVariableReference();
+		vr.setVariable(paramName);
+		decl.setExpression(vr);		
 		fun.getParameter().add(decl);
 	
 		// w: World
@@ -782,14 +789,17 @@ public class AlloyUtil {
 		fun.getParameter().add(decl);
 		
 		// w.assocName
-		bOp = createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,assocName);
+		BinaryOperation bOp = createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,assocName);
 			
 		// x.(w.assocName)  or  (w.assocName).x
-		VariableReference vr = factory.createVariableReference();
-		vr.setVariable("x");	
+		vr = factory.createVariableReference();
+		vr.setVariable("x");
 		BinaryOperation bOp2 = factory.createBinaryOperation();
 		bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
-		if(returnName == target.getVariable())
+		
+		if(returnName.contains(world.getName())) returnName = returnName.replace("World.", "");
+				
+		if(returnName.equals(target.getVariable()))
 		{
 			bOp2.setLeftExpression(vr);
 			bOp2.setRightExpression(bOp);

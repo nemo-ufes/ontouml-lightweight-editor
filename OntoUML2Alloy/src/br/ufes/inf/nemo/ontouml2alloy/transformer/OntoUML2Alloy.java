@@ -138,7 +138,7 @@ public class OntoUML2Alloy {
 				{
 					for(Property attr: ((Classifier)pe).getAttribute())
 					{
-						if (!(attr.getType() instanceof PrimitiveType)) transformer.transformAttribute((Classifier)pe, attr);
+						transformer.transformAttribute((Classifier)pe, attr);
 					}
 				}
 			}

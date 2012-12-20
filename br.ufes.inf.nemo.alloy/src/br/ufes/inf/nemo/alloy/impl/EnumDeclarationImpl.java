@@ -135,7 +135,7 @@ public class EnumDeclarationImpl extends ParagraphImpl implements EnumDeclaratio
 		int i=1;
 		for(Object s : getLiterals())
 		{
-			if (i<getLiterals().size()) result.append((String)s+",");
+			if (i<getLiterals().size()) result.append((String)s+", ");
 			else if (i==getLiterals().size()) result.append((String)s); 
 			i++;
 		}
