@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
 import RefOntoUML.Enumeration;
@@ -13,6 +14,7 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.PrimitiveType;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyModule;
 import br.ufes.inf.nemo.alloy.Block;
@@ -21,10 +23,12 @@ import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.DisjointExpression;
 import br.ufes.inf.nemo.alloy.EnumDeclaration;
 import br.ufes.inf.nemo.alloy.FactDeclaration;
+import br.ufes.inf.nemo.alloy.FunctionDeclaration;
 import br.ufes.inf.nemo.alloy.ModuleImportation;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.SignatureDeclaration;
 import br.ufes.inf.nemo.alloy.Variable;
+import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TGeneralizationRule;
@@ -62,6 +66,12 @@ public class BaseTransformer {
 	
 	public FactDeclaration dataTypeTopLevelFact;
 	
+	public FunctionDeclaration dataTypeVisibilityFun;
+	
+	public FunctionDeclaration enumerationVisibilityFun;
+	
+	public FunctionDeclaration primitiveTypeVisibilityFun;
+	
 	public ArrayList<FactDeclaration> rigidityFactList = new ArrayList<FactDeclaration>();;
 	
 	public ArrayList<FactDeclaration> antirigidityFactList = new ArrayList<FactDeclaration>();;
@@ -87,7 +97,7 @@ public class BaseTransformer {
 		module = factory.createAlloyModule();
 		module.setName(ontoparser.getModelName());				
 	
-		/* abstract sig World {} 
+		/* abstract sig World {}
 		 */		
 		world = AlloyUtil.createSigWorld(factory);
 				
@@ -191,6 +201,7 @@ public class BaseTransformer {
 			derivations.setBlock(factory.createBlock());			
 		}
 		
+		populateWithDataTypeVisibilityRule();
 		populateWihAdditionalRules();
 		populateWithRigidityRules();
 		populateWithAntiRigidityRules();
@@ -313,11 +324,11 @@ public class BaseTransformer {
 		{
 			if (dataTypeList.size()==1)
 			{
-				CompareOperation cOp = AlloyUtil.createCompareOperation( factory, sigDatatype.getName(), CompareOperator.EQUAL_LITERAL, ontoparser.getAlias(dataTypeList.get(0)));
+				CompareOperation cOp = AlloyUtil.createCompareOperation( factory, sigDatatype.getName(), CompareOperator.EQUAL, ontoparser.getAlias(dataTypeList.get(0)));
 				dataTypeCompletenessFact.getBlock().getExpression().add(cOp);
 			}else{
 						
-				CompareOperation cOp = AlloyUtil.createCompareOperation( factory, sigDatatype.getName(), CompareOperator.EQUAL_LITERAL, 
+				CompareOperation cOp = AlloyUtil.createCompareOperation( factory, sigDatatype.getName(), CompareOperator.EQUAL, 
 				AlloyUtil.createUnionExpression(factory, ontoparser.getAlias(dataTypeList)).toString());
 				dataTypeCompletenessFact.getBlock().getExpression().add(cOp);
 			}	
@@ -453,5 +464,89 @@ public class BaseTransformer {
 			}
 		}
 		for(FactDeclaration fact: genSetFactList) module.getParagraph().add(fact);
+	}
+	
+	/**
+	 * 	Populates With DataTypes Visibility Rule.
+	 */
+	protected void populateWithDataTypeVisibilityRule()
+	{		
+		dataTypeVisibilityFun = AlloyUtil.createVisibilityFunction("dataTypeVisibility", factory, world);
+		primitiveTypeVisibilityFun = AlloyUtil.createVisibilityFunction("primitiveTypeVisibility", factory, world);		
+		enumerationVisibilityFun = AlloyUtil.createVisibilityFunction("enumerationVisibility", factory, world);	
+		
+		ArrayList<PredicateInvocation> enumPredList = new ArrayList<PredicateInvocation>();
+		ArrayList<PredicateInvocation> dataTypePredList = new ArrayList<PredicateInvocation>();
+		ArrayList<PredicateInvocation> primitivePredList = new ArrayList<PredicateInvocation>();
+		
+		for(Association assoc: ontoparser.getAllInstances(Association.class))
+		{
+			RefOntoUML.Type sourceType = assoc.getMemberEnd().get(0).getType();
+			RefOntoUML.Type targetType =assoc.getMemberEnd().get(1).getType();			
+			String paramName = ontoparser.getAlias(assoc);
+			
+			if (sourceType instanceof DataType)
+			{
+				PredicateInvocation pI = factory.createPredicateInvocation();
+				pI.setPredicate("select12");
+				VariableReference vr = factory.createVariableReference();
+				vr.setVariable(paramName);
+				pI.getParameter().add(vr);
+				
+				if (sourceType instanceof Enumeration) { enumPredList.add(pI); enumerationVisibilityFun.getBlock().getExpression().add(pI); }
+				else if (sourceType instanceof PrimitiveType) { primitivePredList.add(pI); primitiveTypeVisibilityFun.getBlock().getExpression().add(pI); }
+				else { dataTypePredList.add(pI); dataTypeVisibilityFun.getBlock().getExpression().add(pI); } 
+				
+			}
+			if (targetType instanceof DataType)
+			{
+				PredicateInvocation pI = factory.createPredicateInvocation();
+				pI.setPredicate("select13");
+				VariableReference vr = factory.createVariableReference();
+				vr.setVariable(paramName);
+				pI.getParameter().add(vr);
+				
+				if (targetType instanceof Enumeration) { enumPredList.add(pI); enumerationVisibilityFun.getBlock().getExpression().add(pI); }
+				else if (targetType instanceof PrimitiveType) { primitivePredList.add(pI); primitiveTypeVisibilityFun.getBlock().getExpression().add(pI); }
+				else { dataTypePredList.add(pI); dataTypeVisibilityFun.getBlock().getExpression().add(pI); } 
+			}			
+		}				
+		
+		for(Property p: ontoparser.getAttributes())
+		{			
+			RefOntoUML.Type sourceType = (RefOntoUML.Type)p.eContainer();
+			RefOntoUML.Type targetType = p.getType();			
+			String paramName = ontoparser.getAlias(p);
+			
+			if (sourceType instanceof DataType)
+			{
+				PredicateInvocation pI = factory.createPredicateInvocation();
+				pI.setPredicate("select12");
+				VariableReference vr = factory.createVariableReference();
+				vr.setVariable(paramName);
+				pI.getParameter().add(vr);
+				
+				if (sourceType instanceof Enumeration) { enumPredList.add(pI); enumerationVisibilityFun.getBlock().getExpression().add(pI); }
+				else if (sourceType instanceof PrimitiveType) { primitivePredList.add(pI); primitiveTypeVisibilityFun.getBlock().getExpression().add(pI); }
+				else { dataTypePredList.add(pI); dataTypeVisibilityFun.getBlock().getExpression().add(pI); } 
+				
+			}
+			if (targetType instanceof DataType)
+			{
+				PredicateInvocation pI = factory.createPredicateInvocation();
+				pI.setPredicate("select13");
+				VariableReference vr = factory.createVariableReference();
+				vr.setVariable(paramName);
+				pI.getParameter().add(vr);
+				
+				if (targetType instanceof Enumeration) { enumPredList.add(pI); enumerationVisibilityFun.getBlock().getExpression().add(pI); }
+				else if (targetType instanceof PrimitiveType) { primitivePredList.add(pI); primitiveTypeVisibilityFun.getBlock().getExpression().add(pI); }
+				else { dataTypePredList.add(pI); dataTypeVisibilityFun.getBlock().getExpression().add(pI); } 
+			}			
+		}		
+		
+		if(enumPredList.size()>0) module.getParagraph().add(enumerationVisibilityFun);		
+		if(primitivePredList.size()>0) module.getParagraph().add(primitiveTypeVisibilityFun);
+		if(dataTypePredList.size()>0) module.getParagraph().add(dataTypeVisibilityFun);
 	}
 }

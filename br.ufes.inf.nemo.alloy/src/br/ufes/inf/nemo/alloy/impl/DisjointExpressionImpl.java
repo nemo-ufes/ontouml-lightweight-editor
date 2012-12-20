@@ -45,7 +45,7 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	 * @ordered
 	 */
 	@SuppressWarnings("rawtypes")
-	protected EList set;
+	protected EList<Expression> set;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -61,6 +61,7 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.DISJOINT_EXPRESSION;
 	}
@@ -73,7 +74,7 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EList<Expression> getSet() {
 		if (set == null) {
-			set = new EObjectContainmentEList(Expression.class, this, AlloyPackage.DISJOINT_EXPRESSION__SET);
+			set = new EObjectContainmentEList<Expression>(Expression.class, this, AlloyPackage.DISJOINT_EXPRESSION__SET);
 		}
 		return set;
 	}
@@ -83,11 +84,12 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.DISJOINT_EXPRESSION__SET:
-				return ((InternalEList)getSet()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getSet()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -97,6 +99,7 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.DISJOINT_EXPRESSION__SET:
@@ -111,11 +114,12 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.DISJOINT_EXPRESSION__SET:
 				getSet().clear();
-				getSet().addAll((Collection)newValue);
+				getSet().addAll((Collection<? extends Expression>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -126,6 +130,7 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.DISJOINT_EXPRESSION__SET:
@@ -140,6 +145,7 @@ public class DisjointExpressionImpl extends ExpressionImpl implements DisjointEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.DISJOINT_EXPRESSION__SET:

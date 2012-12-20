@@ -36,10 +36,9 @@ public interface DisjointExpression extends Expression {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Set</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getDisjointExpression_Set()
-	 * @model type="alloy.Expression" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
-	EList getSet();
+	EList<Expression> getSet();
 
 } // DisjointExpression

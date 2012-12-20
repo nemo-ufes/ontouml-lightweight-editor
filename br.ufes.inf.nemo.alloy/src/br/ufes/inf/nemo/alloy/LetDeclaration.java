@@ -97,7 +97,7 @@ public interface LetDeclaration extends Expression {
 	 * @generated
 	 */
 	@SuppressWarnings("rawtypes")
-	EList getName();
+	EList<String> getName();
 
 	/**
 	 * Returns the value of the '<em><b>Bar Expression</b></em>' reference.

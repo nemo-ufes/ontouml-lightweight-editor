@@ -64,7 +64,7 @@ public class CompareOperationImpl extends ExpressionImpl implements CompareOpera
 	 * @generated
 	 * @ordered
 	 */
-	protected static final CompareOperator OPERATOR_EDEFAULT = CompareOperator.SUBSET_LITERAL;
+	protected static final CompareOperator OPERATOR_EDEFAULT = CompareOperator.SUBSET;
 
 	/**
 	 * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
@@ -110,6 +110,7 @@ public class CompareOperationImpl extends ExpressionImpl implements CompareOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.COMPARE_OPERATION;
 	}
@@ -247,6 +248,7 @@ public class CompareOperationImpl extends ExpressionImpl implements CompareOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.COMPARE_OPERATION__LEFT_EXPRESSION:
@@ -262,6 +264,7 @@ public class CompareOperationImpl extends ExpressionImpl implements CompareOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.COMPARE_OPERATION__LEFT_EXPRESSION:
@@ -271,7 +274,7 @@ public class CompareOperationImpl extends ExpressionImpl implements CompareOpera
 			case AlloyPackage.COMPARE_OPERATION__OPERATOR:
 				return getOperator();
 			case AlloyPackage.COMPARE_OPERATION__NEGATION:
-				return isNegation() ? Boolean.TRUE : Boolean.FALSE;
+				return isNegation();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -281,6 +284,7 @@ public class CompareOperationImpl extends ExpressionImpl implements CompareOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.COMPARE_OPERATION__LEFT_EXPRESSION:
@@ -293,7 +297,7 @@ public class CompareOperationImpl extends ExpressionImpl implements CompareOpera
 				setOperator((CompareOperator)newValue);
 				return;
 			case AlloyPackage.COMPARE_OPERATION__NEGATION:
-				setNegation(((Boolean)newValue).booleanValue());
+				setNegation((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -304,6 +308,7 @@ public class CompareOperationImpl extends ExpressionImpl implements CompareOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.COMPARE_OPERATION__LEFT_EXPRESSION:
@@ -327,6 +332,7 @@ public class CompareOperationImpl extends ExpressionImpl implements CompareOpera
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.COMPARE_OPERATION__LEFT_EXPRESSION:

@@ -75,7 +75,7 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Multiplicity MULTIPLICITY_EDEFAULT = Multiplicity.SOME_LITERAL;
+	protected static final Multiplicity MULTIPLICITY_EDEFAULT = Multiplicity.SOME;
 
 	/**
 	 * The cached value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
@@ -151,6 +151,7 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.SIGNATURE_DECLARATION;
 	}
@@ -205,7 +206,7 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EList<Declaration> getRelation() {
 		if (relation == null) {
-			relation = new EObjectContainmentEList(Declaration.class, this, AlloyPackage.SIGNATURE_DECLARATION__RELATION);
+			relation = new EObjectContainmentEList<Declaration>(Declaration.class, this, AlloyPackage.SIGNATURE_DECLARATION__RELATION);
 		}
 		return relation;
 	}
@@ -322,11 +323,12 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_DECLARATION__RELATION:
-				return ((InternalEList)getRelation()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getRelation()).basicRemove(otherEnd, msgs);
 			case AlloyPackage.SIGNATURE_DECLARATION__BLOCK:
 				return basicSetBlock(null, msgs);
 			case AlloyPackage.SIGNATURE_DECLARATION__INHERITANCE:
@@ -340,10 +342,11 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_DECLARATION__IS_ABSTRACT:
-				return isIsAbstract() ? Boolean.TRUE : Boolean.FALSE;
+				return isIsAbstract();
 			case AlloyPackage.SIGNATURE_DECLARATION__MULTIPLICITY:
 				return getMultiplicity();
 			case AlloyPackage.SIGNATURE_DECLARATION__RELATION:
@@ -351,7 +354,7 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 			case AlloyPackage.SIGNATURE_DECLARATION__BLOCK:
 				return getBlock();
 			case AlloyPackage.SIGNATURE_DECLARATION__EXISTS:
-				return isExists() ? Boolean.TRUE : Boolean.FALSE;
+				return isExists();
 			case AlloyPackage.SIGNATURE_DECLARATION__INHERITANCE:
 				return getInheritance();
 		}
@@ -364,23 +367,24 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_DECLARATION__IS_ABSTRACT:
-				setIsAbstract(((Boolean)newValue).booleanValue());
+				setIsAbstract((Boolean)newValue);
 				return;
 			case AlloyPackage.SIGNATURE_DECLARATION__MULTIPLICITY:
 				setMultiplicity((Multiplicity)newValue);
 				return;
 			case AlloyPackage.SIGNATURE_DECLARATION__RELATION:
 				getRelation().clear();
-				getRelation().addAll((Collection)newValue);
+				getRelation().addAll((Collection<? extends Declaration>)newValue);
 				return;
 			case AlloyPackage.SIGNATURE_DECLARATION__BLOCK:
 				setBlock((Block)newValue);
 				return;
 			case AlloyPackage.SIGNATURE_DECLARATION__EXISTS:
-				setExists(((Boolean)newValue).booleanValue());
+				setExists((Boolean)newValue);
 				return;
 			case AlloyPackage.SIGNATURE_DECLARATION__INHERITANCE:
 				setInheritance((Inheritance)newValue);
@@ -394,6 +398,7 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_DECLARATION__IS_ABSTRACT:
@@ -423,6 +428,7 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_DECLARATION__IS_ABSTRACT:

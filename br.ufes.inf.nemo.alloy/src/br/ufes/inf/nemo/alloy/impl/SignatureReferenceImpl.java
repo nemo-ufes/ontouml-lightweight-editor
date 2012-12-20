@@ -63,6 +63,7 @@ public class SignatureReferenceImpl extends ExpressionImpl implements SignatureR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.SIGNATURE_REFERENCE;
 	}
@@ -93,6 +94,7 @@ public class SignatureReferenceImpl extends ExpressionImpl implements SignatureR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_REFERENCE__SIGNATURE:
@@ -106,6 +108,7 @@ public class SignatureReferenceImpl extends ExpressionImpl implements SignatureR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_REFERENCE__SIGNATURE:
@@ -120,6 +123,7 @@ public class SignatureReferenceImpl extends ExpressionImpl implements SignatureR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_REFERENCE__SIGNATURE:
@@ -134,6 +138,7 @@ public class SignatureReferenceImpl extends ExpressionImpl implements SignatureR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_REFERENCE__SIGNATURE:

@@ -68,7 +68,7 @@ public class OntoUMLCheckBoxTree {
 	/**
 	 * Auxiliary function. It runs the Elements from the model creating the tree nodes.
 	 */	
-	private static void drawTree(DefaultMutableTreeNode parent, RefOntoUML.Element refElement,TreeCheckingModel checkingModel,CheckboxTree modelTree, OntoUMLParser refparser) 
+	private static void drawTree(DefaultMutableTreeNode parent, EObject refElement,TreeCheckingModel checkingModel,CheckboxTree modelTree, OntoUMLParser refparser) 
 	{
 		/* Model */
 		if (refElement instanceof RefOntoUML.Model) 
@@ -97,17 +97,16 @@ public class OntoUMLCheckBoxTree {
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement,refparser.getAlias((RefOntoUML.Classifier)refElement)));			
 			parent.add(newNode);			
 			//modelTree.collapsePath(new TreePath(newNode.getPath()));
-			
+						
 			for(Generalization gen: ((RefOntoUML.Classifier)refElement).getGeneralization())
 			{
 				drawTree(newNode, (RefOntoUML.Element) gen,checkingModel,modelTree,refparser);					
 			}
 			
-			if (refElement instanceof RefOntoUML.Association)
+			for (EObject o: refElement.eContents())
 			{
-				drawTree(newNode, ((RefOntoUML.Association) refElement).getMemberEnd().get(0),checkingModel,modelTree,refparser);
-				drawTree(newNode, ((RefOntoUML.Association) refElement).getMemberEnd().get(1),checkingModel,modelTree,refparser);
-			}
+				drawTree(newNode,o,checkingModel,modelTree,refparser);
+			}			
 			
 		/* Generalization */
 		} else if (refElement instanceof RefOntoUML.Generalization)
@@ -175,7 +174,7 @@ public class OntoUMLCheckBoxTree {
     		String elementType;
     		
     		OntoUMLTreeNodeElem treeNodeElem = ((OntoUMLTreeNodeElem)((DefaultMutableTreeNode)value).getUserObject());
-    		RefOntoUML.Element element = treeNodeElem.getElement();
+    		EObject element = treeNodeElem.getElement();
     		    		    		
     		if (element != null) {
     			elementType = element.getClass().toString().replace("class " +"RefOntoUML.impl.", "").replace("Impl", "");

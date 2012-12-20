@@ -38,10 +38,9 @@ public interface Block extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Expression</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getBlock_Expression()
-	 * @model type="alloy.Expression" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
-	EList getExpression();
+	EList<Expression> getExpression();
 
 } // Block

@@ -106,6 +106,7 @@ public class InheritanceImpl extends EObjectImpl implements Inheritance {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.INHERITANCE;
 	}
@@ -178,14 +179,15 @@ public class InheritanceImpl extends EObjectImpl implements Inheritance {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.INHERITANCE__SUPERTYPE:
 				return getSupertype();
 			case AlloyPackage.INHERITANCE__IS_SUBSET:
-				return isIsSubset() ? Boolean.TRUE : Boolean.FALSE;
+				return isIsSubset();
 			case AlloyPackage.INHERITANCE__IS_EXTENSION:
-				return isIsExtension() ? Boolean.TRUE : Boolean.FALSE;
+				return isIsExtension();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -195,16 +197,17 @@ public class InheritanceImpl extends EObjectImpl implements Inheritance {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.INHERITANCE__SUPERTYPE:
 				setSupertype((String)newValue);
 				return;
 			case AlloyPackage.INHERITANCE__IS_SUBSET:
-				setIsSubset(((Boolean)newValue).booleanValue());
+				setIsSubset((Boolean)newValue);
 				return;
 			case AlloyPackage.INHERITANCE__IS_EXTENSION:
-				setIsExtension(((Boolean)newValue).booleanValue());
+				setIsExtension((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -215,6 +218,7 @@ public class InheritanceImpl extends EObjectImpl implements Inheritance {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.INHERITANCE__SUPERTYPE:
@@ -235,6 +239,7 @@ public class InheritanceImpl extends EObjectImpl implements Inheritance {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.INHERITANCE__SUPERTYPE:

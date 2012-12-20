@@ -38,7 +38,7 @@ public class ConstantExpressionImpl extends ExpressionImpl implements ConstantEx
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Constant CONSTANT_EDEFAULT = Constant.NONE_LITERAL;
+	protected static final Constant CONSTANT_EDEFAULT = Constant.NONE;
 
 	/**
 	 * The cached value of the '{@link #getConstant() <em>Constant</em>}' attribute.
@@ -64,6 +64,7 @@ public class ConstantExpressionImpl extends ExpressionImpl implements ConstantEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.CONSTANT_EXPRESSION;
 	}
@@ -94,6 +95,7 @@ public class ConstantExpressionImpl extends ExpressionImpl implements ConstantEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.CONSTANT_EXPRESSION__CONSTANT:
@@ -107,6 +109,7 @@ public class ConstantExpressionImpl extends ExpressionImpl implements ConstantEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.CONSTANT_EXPRESSION__CONSTANT:
@@ -121,6 +124,7 @@ public class ConstantExpressionImpl extends ExpressionImpl implements ConstantEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.CONSTANT_EXPRESSION__CONSTANT:
@@ -135,6 +139,7 @@ public class ConstantExpressionImpl extends ExpressionImpl implements ConstantEx
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.CONSTANT_EXPRESSION__CONSTANT:

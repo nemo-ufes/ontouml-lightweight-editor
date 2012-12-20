@@ -16,10 +16,10 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link br.ufes.inf.nemo.alloy.FunctionDeclaration#getExpression <em>Expression</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.alloy.FunctionDeclaration#getPath <em>Path</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.alloy.FunctionDeclaration#getParameter <em>Parameter</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.alloy.FunctionDeclaration#getType <em>Type</em>}</li>
+ *   <li>{@link br.ufes.inf.nemo.alloy.FunctionDeclaration#getBlock <em>Block</em>}</li>
  * </ul>
  * </p>
  *
@@ -28,32 +28,6 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface FunctionDeclaration extends Paragraph {
-	/**
-	 * Returns the value of the '<em><b>Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Expression</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Expression</em>' containment reference.
-	 * @see #setExpression(Expression)
-	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getFunctionDeclaration_Expression()
-	 * @model containment="true" required="true"
-	 * @generated
-	 */
-	Expression getExpression();
-
-	/**
-	 * Sets the value of the '{@link br.ufes.inf.nemo.alloy.FunctionDeclaration#getExpression <em>Expression</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Expression</em>' containment reference.
-	 * @see #getExpression()
-	 * @generated
-	 */
-	void setExpression(Expression value);
-
 	/**
 	 * Returns the value of the '<em><b>Path</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -91,11 +65,10 @@ public interface FunctionDeclaration extends Paragraph {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parameter</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getFunctionDeclaration_Parameter()
-	 * @model type="alloy.Declaration" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
-	EList getParameter();
+	EList<Declaration> getParameter();
 
 	/**
 	 * Returns the value of the '<em><b>Type</b></em>' containment reference.
@@ -122,5 +95,31 @@ public interface FunctionDeclaration extends Paragraph {
 	 * @generated
 	 */
 	void setType(Expression value);
+
+	/**
+	 * Returns the value of the '<em><b>Block</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Block</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Block</em>' containment reference.
+	 * @see #setBlock(Block)
+	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getFunctionDeclaration_Block()
+	 * @model containment="true" required="true"
+	 * @generated
+	 */
+	Block getBlock();
+
+	/**
+	 * Sets the value of the '{@link br.ufes.inf.nemo.alloy.FunctionDeclaration#getBlock <em>Block</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Block</em>' containment reference.
+	 * @see #getBlock()
+	 * @generated
+	 */
+	void setBlock(Block value);
 
 } // FunctionDeclaration

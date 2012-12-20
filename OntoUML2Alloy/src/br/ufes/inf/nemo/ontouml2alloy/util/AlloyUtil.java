@@ -52,7 +52,7 @@ public class AlloyUtil {
 		Declaration decl = factory.createDeclaration();
 		UnaryOperation uOp = factory.createUnaryOperation();
 		decl.setExpression(uOp);				
-		uOp.setOperator(UnaryOperator.SET_LITERAL);		
+		uOp.setOperator(UnaryOperator.SET);		
 		Variable var = factory.createVariable();
 		var.setName(name);
 		var.setDeclaration(decl);		
@@ -82,15 +82,15 @@ public class AlloyUtil {
 		source.setVariable(sourceName);
 		target.setVariable(targetName);
 		//source
-		if(lowerSource == 1 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.ONE_LITERAL);		
-		else if(lowerSource == 0 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.LONE_LITERAL);
-		else if(lowerSource >= 1) aOp.setLeftMultiplicity(Multiplicity.SOME_LITERAL);
-	    else aOp.setLeftMultiplicity(Multiplicity.SET_LITERAL);		
+		if(lowerSource == 1 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.ONE);		
+		else if(lowerSource == 0 && upperSource == 1) aOp.setLeftMultiplicity(Multiplicity.LONE);
+		else if(lowerSource >= 1) aOp.setLeftMultiplicity(Multiplicity.SOME);
+	    else aOp.setLeftMultiplicity(Multiplicity.SET);		
 		//target
-		if(lowerTarget == 1 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.ONE_LITERAL);
-		else if(lowerTarget == 0 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.LONE_LITERAL);
-		else if(lowerTarget >= 1) aOp.setRightMultiplicity(Multiplicity.SOME_LITERAL);
-		else aOp.setRightMultiplicity(Multiplicity.SET_LITERAL);			
+		if(lowerTarget == 1 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.ONE);
+		else if(lowerTarget == 0 && upperTarget == 1) aOp.setRightMultiplicity(Multiplicity.LONE);
+		else if(lowerTarget >= 1) aOp.setRightMultiplicity(Multiplicity.SOME);
+		else aOp.setRightMultiplicity(Multiplicity.SET);			
 		aOp.setLeftExpression(source);
 		aOp.setRightExpression(target);
 		return aOp;
@@ -152,7 +152,7 @@ public class AlloyUtil {
 		declaration.getVariable().add(exists);
 		exists.setDeclaration(declaration);
 		UnaryOperation uOp = factory.createUnaryOperation();
-		uOp.setOperator(UnaryOperator.SOME_LITERAL);	
+		uOp.setOperator(UnaryOperator.SOME);	
 		uOp.setExpression( createDefaultSignaturesUnionExpression(factory,defaultSignatures) );	
 		declaration.setExpression(uOp);
 		return exists;
@@ -185,7 +185,7 @@ public class AlloyUtil {
 					SignatureReference sr = factory.createSignatureReference();
 					sr.setSignature(sigElement);
 					bo = factory.createBinaryOperation();
-					bo.setOperator(BinaryOperator.UNION_LITERAL);
+					bo.setOperator(BinaryOperator.UNION);
 					bo.setLeftExpression(sr);
 					exp = bo;
 				}
@@ -194,7 +194,7 @@ public class AlloyUtil {
 					SignatureReference sr = factory.createSignatureReference();
 					sr.setSignature(sigElement);
 					bo.setRightExpression(factory.createBinaryOperation());
-					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
+					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION);
 					((BinaryOperation)bo.getRightExpression()).setLeftExpression(sr);
 					bo = ((BinaryOperation)bo.getRightExpression());
 				}
@@ -299,9 +299,9 @@ public class AlloyUtil {
 		vr.setVariable(exists.getName());		
 		var.setName(variableName);
 		var.setDeclaration(decl);		
-		uOp.setOperator(UnaryOperator.SET_LITERAL);
+		uOp.setOperator(UnaryOperator.SET);
 		uOp.setExpression(bo);		
-		bo.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
+		bo.setOperator(BinaryOperator.RANGE_RESTRICTION);
 		bo.setLeftExpression(vr);
 		bo.setRightExpression(sr);		
 		decl.setExpression(uOp);	
@@ -329,7 +329,7 @@ public class AlloyUtil {
 		VariableReference vr2 = factory.createVariableReference();
 		vr.setVariable(world.getName());
 		vr2.setVariable(name);
-		bOp.setOperator(BinaryOperator.JOIN_LITERAL);
+		bOp.setOperator(BinaryOperator.JOIN);
 		bOp.setLeftExpression(vr);
 		bOp.setRightExpression(vr2);
 		decl.setExpression(bOp);
@@ -398,7 +398,7 @@ public class AlloyUtil {
 		Variable varx = factory.createVariable();
 		varx.setName(variableName1);
 		varx.setDeclaration(decl);
-		BinaryOperation bo = createBinaryOperation(factory,variableName2,BinaryOperator.JOIN_LITERAL,typeName);		
+		BinaryOperation bo = createBinaryOperation(factory,variableName2,BinaryOperator.JOIN,typeName);		
 		decl.setExpression(bo);
 		qe.getDeclaration().add(decl);
 		return qe;
@@ -458,16 +458,16 @@ public class AlloyUtil {
 	public static QuantificationExpression createQuantificationExpression(AlloyFactory factory, ArrayList<String> associationNames, String typeName)
 	{
 		// all w: World
-		QuantificationExpression qeWorld = AlloyUtil.createQuantificationExpression(factory,Quantificator.ALL_LITERAL,"w","World");	
+		QuantificationExpression qeWorld = AlloyUtil.createQuantificationExpression(factory,Quantificator.ALL,"w","World");	
 		// all x: w.name
-		QuantificationExpression qe = AlloyUtil.createQuantificationExpression(factory,Quantificator.ALL_LITERAL,"x","w",typeName);
+		QuantificationExpression qe = AlloyUtil.createQuantificationExpression(factory,Quantificator.ALL,"x","w",typeName);
 		qeWorld.setExpression(qe);
 
 		// # (...) >= 2
 		CompareOperation co = factory.createCompareOperation();
-		co.setOperator(CompareOperator.GREATER_EQUAL_LITERAL);		
+		co.setOperator(CompareOperator.GREATER_EQUAL);		
 		UnaryOperation uOp = factory.createUnaryOperation();		
-		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);		
+		uOp.setOperator(UnaryOperator.CARDINALITY);		
 		co.setLeftExpression(uOp);
 		VariableReference vr = factory.createVariableReference();
 		vr.setVariable("2");
@@ -482,31 +482,31 @@ public class AlloyUtil {
 			if(associationNames.size() == 1)
 			{	
 				// x.(w.name)
-				bo = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
+				bo = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN,name));				
 				uOp.setExpression(bo);
 				break;
 			}
 			if(cont == 1)
 			{
-				bo.setOperator(BinaryOperator.UNION_LITERAL);
+				bo.setOperator(BinaryOperator.UNION);
 				// x.(w.name)
-				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name)); 				
+				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN,name)); 				
 				bo.setLeftExpression(bo2);				
 				uOp.setExpression(bo);
 			}
 			if(cont > 1 && cont != associationNames.size())
 			{				
 				bo.setRightExpression(factory.createBinaryOperation());
-				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);	
+				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION);	
 				// x.(w.name)
-				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
+				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN,name));				
 				((BinaryOperation)bo.getRightExpression()).setLeftExpression(bo2);				
 				bo = ((BinaryOperation)bo.getRightExpression());
 			}
 			if(cont == associationNames.size())
 			{
 				// x.(w.name)
-				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN_LITERAL, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,name));				
+				bo2 = AlloyUtil.createBinaryOperation(factory,"x",BinaryOperator.JOIN, AlloyUtil.createBinaryOperation(factory,"w",BinaryOperator.JOIN,name));				
 				bo.setRightExpression(bo2);
 			}
 			cont++;
@@ -527,7 +527,7 @@ public class AlloyUtil {
 	{
 		FunctionDeclaration fun = factory.createFunctionDeclaration();
 		fun.setName("visible");
-	
+		fun.setBlock(factory.createBlock());
 		VariableReference vr;
 		ArrowOperation aOp = factory.createArrowOperation();
 		SignatureReference sr;
@@ -542,10 +542,35 @@ public class AlloyUtil {
 		fun.setType(aOp);
 		vr = factory.createVariableReference();
 		vr.setVariable(exists.getName());
-		fun.setExpression(vr);
+		fun.getBlock().getExpression().add(vr);
 		
 		module.getParagraph().add(fun);
 	}
+	
+	/**
+	 * Creates a Visibility Function without a Expression. e.g.  fun funName : World -> univ { } 
+	 * 
+	 * @param funName
+	 * @param factory
+	 * @param world
+	 * @return
+	 */
+	public static FunctionDeclaration createVisibilityFunction (String funName, AlloyFactory factory, SignatureDeclaration world)
+	{
+		FunctionDeclaration fun = factory.createFunctionDeclaration();
+		fun.setName(funName);		
+		fun.setBlock(factory.createBlock());	
+		ArrowOperation aOp = factory.createArrowOperation();		
+		SignatureReference sr = factory.createSignatureReference();
+		sr.setSignature(world.getName());
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable("univ");	
+		aOp.setLeftExpression(sr);
+		aOp.setRightExpression(vr);	
+		fun.setType(aOp);
+		return fun;
+	}
+	
 	
 	/* =========================================================================================================*/
 	
@@ -585,10 +610,10 @@ public class AlloyUtil {
 	public static void createExistsCompareOperationInWorld(AlloyFactory factory, Variable exists, SignatureDeclaration world, SignatureDeclaration defaultsig, ArrayList<String> NamesList) 
 	{		
 		CompareOperation co = factory.createCompareOperation();
-		co.setOperator(CompareOperator.SUBSET_LITERAL);
+		co.setOperator(CompareOperator.SUBSET);
 		
 		BinaryOperation bOp = factory.createBinaryOperation();
-		bOp.setOperator(BinaryOperator.RANGE_RESTRICTION_LITERAL);
+		bOp.setOperator(BinaryOperator.RANGE_RESTRICTION);
 		
 		VariableReference vr = factory.createVariableReference();
 		vr.setVariable(exists.getName());
@@ -613,7 +638,7 @@ public class AlloyUtil {
 			if(cont == 1 && NamesList.size() != 1)
 			{
 				bo = factory.createBinaryOperation();
-				bo.setOperator(BinaryOperator.UNION_LITERAL);
+				bo.setOperator(BinaryOperator.UNION);
 				vr = factory.createVariableReference();
 				vr.setVariable(subs);
 				bo.setLeftExpression(vr);
@@ -624,7 +649,7 @@ public class AlloyUtil {
 				vr = factory.createVariableReference();
 				vr.setVariable(subs);
 				bo.setRightExpression(factory.createBinaryOperation());
-				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
+				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION);
 				((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
 				bo = ((BinaryOperation)bo.getRightExpression());
 			}
@@ -765,10 +790,11 @@ public class AlloyUtil {
 	{
 		FunctionDeclaration fun = factory.createFunctionDeclaration();
 		fun.setName(functionName);
+		fun.setBlock(factory.createBlock());
 		
 		// set returnName
 		UnaryOperation uOp = factory.createUnaryOperation();
-		uOp.setOperator(UnaryOperator.SET_LITERAL);		
+		uOp.setOperator(UnaryOperator.SET);		
 		VariableReference vr = factory.createVariableReference();
 		vr.setVariable(returnName);				
 		uOp.setExpression(vr);
@@ -789,13 +815,13 @@ public class AlloyUtil {
 		fun.getParameter().add(decl);
 		
 		// w.assocName
-		BinaryOperation bOp = createBinaryOperation(factory,"w",BinaryOperator.JOIN_LITERAL,assocName);
+		BinaryOperation bOp = createBinaryOperation(factory,"w",BinaryOperator.JOIN,assocName);
 			
 		// x.(w.assocName)  or  (w.assocName).x
 		vr = factory.createVariableReference();
 		vr.setVariable("x");
 		BinaryOperation bOp2 = factory.createBinaryOperation();
-		bOp2.setOperator(BinaryOperator.JOIN_LITERAL);
+		bOp2.setOperator(BinaryOperator.JOIN);
 		
 		if(returnName.contains(world.getName())) returnName = returnName.replace("World.", "");
 				
@@ -810,7 +836,7 @@ public class AlloyUtil {
 			bOp2.setRightExpression(vr);
 		}	
 		
-		fun.setExpression(bOp2);
+		fun.getBlock().getExpression().add(bOp2);
 		
 		return fun;
 	}
@@ -849,12 +875,12 @@ public class AlloyUtil {
 	 */
 	public static QuantificationExpression createQuantificationExpression (AlloyFactory factory, VariableReference type, BinaryOperation binOperation, CompareOperator CompOperator, int value)
 	{
-		QuantificationExpression qe = createQuantificationExpression(factory, Quantificator.ALL_LITERAL, "x", type.getVariable());
+		QuantificationExpression qe = createQuantificationExpression(factory, Quantificator.ALL, "x", type.getVariable());
 					
 		CompareOperation co = factory.createCompareOperation();		
 
 		UnaryOperation uOp = factory.createUnaryOperation();		
-		uOp.setOperator(UnaryOperator.CARDINALITY_LITERAL);
+		uOp.setOperator(UnaryOperator.CARDINALITY);
 		uOp.setExpression(binOperation);		
 		co.setLeftExpression(uOp);
 		
@@ -885,7 +911,7 @@ public class AlloyUtil {
 			}
 			if(cont == 1)
 			{
-				bo.setOperator(BinaryOperator.UNION_LITERAL);
+				bo.setOperator(BinaryOperator.UNION);
 				VariableReference vr = factory.createVariableReference();
 				vr.setVariable(str);
 				bo.setLeftExpression(vr);				
@@ -894,7 +920,7 @@ public class AlloyUtil {
 			{
 				bo.setRightExpression(factory.createBinaryOperation());
 												
-				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
+				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION);
 				VariableReference vr = factory.createVariableReference();
 				vr.setVariable(str);
 				((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);

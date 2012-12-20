@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.emf.common.util.AbstractEnumerator;
+import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +21,107 @@ import org.eclipse.emf.common.util.AbstractEnumerator;
  * @model
  * @generated
  */
-public final class BinaryOperator extends AbstractEnumerator {
+public enum BinaryOperator implements Enumerator
+{
+	/**
+	 * The '<em><b>Difference</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #DIFFERENCE_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	DIFFERENCE(1, "difference", "-"),
+	/**
+	 * The '<em><b>Intersection</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #INTERSECTION_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	INTERSECTION(2, "intersection", "&"),
+	/**
+	 * The '<em><b>Join</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #JOIN_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	JOIN(3, "join", "."),
+	/**
+	 * The '<em><b>Union</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #UNION_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	UNION(4, "union", "+"),
+	/**
+	 * The '<em><b>Domain Restriction</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #DOMAIN_RESTRICTION_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	DOMAIN_RESTRICTION(5, "domainRestriction", "<:"),
+	/**
+	 * The '<em><b>Range Restriction</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #RANGE_RESTRICTION_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	RANGE_RESTRICTION(6, "rangeRestriction", ":>"),
+	/**
+	 * The '<em><b>Relational Override</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #RELATIONAL_OVERRIDE_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	RELATIONAL_OVERRIDE(7, "relationalOverride", "++"),
+	/**
+	 * The '<em><b>Iff</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #IFF_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	IFF(8, "iff", "iff"),
+	/**
+	 * The '<em><b>Or</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #OR_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	OR(9, "or", "or"),
+	/**
+	 * The '<em><b>And</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #AND_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	AND(10, "and", "and"),
+	/**
+	 * The '<em><b>Box Join</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #BOX_JOIN_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	BOX_JOIN(11, "boxJoin", "[]");
 	/**
 	 * The '<em><b>Difference</b></em>' literal value.
 	 * <!-- begin-user-doc -->
@@ -30,12 +130,12 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #DIFFERENCE_LITERAL
+	 * @see #DIFFERENCE
 	 * @model name="difference" literal="-"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int DIFFERENCE = 1;
+	public static final int DIFFERENCE_VALUE = 1;
 
 	/**
 	 * The '<em><b>Intersection</b></em>' literal value.
@@ -45,12 +145,12 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #INTERSECTION_LITERAL
+	 * @see #INTERSECTION
 	 * @model name="intersection" literal="&"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int INTERSECTION = 2;
+	public static final int INTERSECTION_VALUE = 2;
 
 	/**
 	 * The '<em><b>Join</b></em>' literal value.
@@ -60,12 +160,12 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #JOIN_LITERAL
+	 * @see #JOIN
 	 * @model name="join" literal="."
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN = 3;
+	public static final int JOIN_VALUE = 3;
 
 	/**
 	 * The '<em><b>Union</b></em>' literal value.
@@ -75,12 +175,12 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #UNION_LITERAL
+	 * @see #UNION
 	 * @model name="union" literal="+"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int UNION = 4;
+	public static final int UNION_VALUE = 4;
 
 	/**
 	 * The '<em><b>Domain Restriction</b></em>' literal value.
@@ -90,12 +190,12 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #DOMAIN_RESTRICTION_LITERAL
+	 * @see #DOMAIN_RESTRICTION
 	 * @model name="domainRestriction" literal="<:"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int DOMAIN_RESTRICTION = 5;
+	public static final int DOMAIN_RESTRICTION_VALUE = 5;
 
 	/**
 	 * The '<em><b>Range Restriction</b></em>' literal value.
@@ -105,12 +205,12 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #RANGE_RESTRICTION_LITERAL
+	 * @see #RANGE_RESTRICTION
 	 * @model name="rangeRestriction" literal=":>"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int RANGE_RESTRICTION = 6;
+	public static final int RANGE_RESTRICTION_VALUE = 6;
 
 	/**
 	 * The '<em><b>Relational Override</b></em>' literal value.
@@ -120,12 +220,12 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #RELATIONAL_OVERRIDE_LITERAL
+	 * @see #RELATIONAL_OVERRIDE
 	 * @model name="relationalOverride" literal="++"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int RELATIONAL_OVERRIDE = 7;
+	public static final int RELATIONAL_OVERRIDE_VALUE = 7;
 
 	/**
 	 * The '<em><b>Iff</b></em>' literal value.
@@ -135,12 +235,12 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #IFF_LITERAL
+	 * @see #IFF
 	 * @model name="iff"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IFF = 8;
+	public static final int IFF_VALUE = 8;
 
 	/**
 	 * The '<em><b>Or</b></em>' literal value.
@@ -150,12 +250,12 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #OR_LITERAL
+	 * @see #OR
 	 * @model name="or"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int OR = 9;
+	public static final int OR_VALUE = 9;
 
 	/**
 	 * The '<em><b>And</b></em>' literal value.
@@ -165,12 +265,12 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #AND_LITERAL
+	 * @see #AND
 	 * @model name="and"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int AND = 10;
+	public static final int AND_VALUE = 10;
 
 	/**
 	 * The '<em><b>Box Join</b></em>' literal value.
@@ -180,122 +280,12 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #BOX_JOIN_LITERAL
+	 * @see #BOX_JOIN
 	 * @model name="boxJoin" literal="[]"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int BOX_JOIN = 11;
-
-	/**
-	 * The '<em><b>Difference</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #DIFFERENCE
-	 * @generated
-	 * @ordered
-	 */
-	public static final BinaryOperator DIFFERENCE_LITERAL = new BinaryOperator(DIFFERENCE, "difference", "-");
-
-	/**
-	 * The '<em><b>Intersection</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #INTERSECTION
-	 * @generated
-	 * @ordered
-	 */
-	public static final BinaryOperator INTERSECTION_LITERAL = new BinaryOperator(INTERSECTION, "intersection", "&");
-
-	/**
-	 * The '<em><b>Join</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #JOIN
-	 * @generated
-	 * @ordered
-	 */
-	public static final BinaryOperator JOIN_LITERAL = new BinaryOperator(JOIN, "join", ".");
-
-	/**
-	 * The '<em><b>Union</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #UNION
-	 * @generated
-	 * @ordered
-	 */
-	public static final BinaryOperator UNION_LITERAL = new BinaryOperator(UNION, "union", "+");
-
-	/**
-	 * The '<em><b>Domain Restriction</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #DOMAIN_RESTRICTION
-	 * @generated
-	 * @ordered
-	 */
-	public static final BinaryOperator DOMAIN_RESTRICTION_LITERAL = new BinaryOperator(DOMAIN_RESTRICTION, "domainRestriction", "<:");
-
-	/**
-	 * The '<em><b>Range Restriction</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #RANGE_RESTRICTION
-	 * @generated
-	 * @ordered
-	 */
-	public static final BinaryOperator RANGE_RESTRICTION_LITERAL = new BinaryOperator(RANGE_RESTRICTION, "rangeRestriction", ":>");
-
-	/**
-	 * The '<em><b>Relational Override</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #RELATIONAL_OVERRIDE
-	 * @generated
-	 * @ordered
-	 */
-	public static final BinaryOperator RELATIONAL_OVERRIDE_LITERAL = new BinaryOperator(RELATIONAL_OVERRIDE, "relationalOverride", "++");
-
-	/**
-	 * The '<em><b>Iff</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #IFF
-	 * @generated
-	 * @ordered
-	 */
-	public static final BinaryOperator IFF_LITERAL = new BinaryOperator(IFF, "iff", "iff");
-
-	/**
-	 * The '<em><b>Or</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #OR
-	 * @generated
-	 * @ordered
-	 */
-	public static final BinaryOperator OR_LITERAL = new BinaryOperator(OR, "or", "or");
-
-	/**
-	 * The '<em><b>And</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #AND
-	 * @generated
-	 * @ordered
-	 */
-	public static final BinaryOperator AND_LITERAL = new BinaryOperator(AND, "and", "and");
-
-	/**
-	 * The '<em><b>Box Join</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #BOX_JOIN
-	 * @generated
-	 * @ordered
-	 */
-	public static final BinaryOperator BOX_JOIN_LITERAL = new BinaryOperator(BOX_JOIN, "boxJoin", "[]");
+	public static final int BOX_JOIN_VALUE = 11;
 
 	/**
 	 * An array of all the '<em><b>Binary Operator</b></em>' enumerators.
@@ -305,17 +295,17 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 */
 	private static final BinaryOperator[] VALUES_ARRAY =
 		new BinaryOperator[] {
-			DIFFERENCE_LITERAL,
-			INTERSECTION_LITERAL,
-			JOIN_LITERAL,
-			UNION_LITERAL,
-			DOMAIN_RESTRICTION_LITERAL,
-			RANGE_RESTRICTION_LITERAL,
-			RELATIONAL_OVERRIDE_LITERAL,
-			IFF_LITERAL,
-			OR_LITERAL,
-			AND_LITERAL,
-			BOX_JOIN_LITERAL,
+			DIFFERENCE,
+			INTERSECTION,
+			JOIN,
+			UNION,
+			DOMAIN_RESTRICTION,
+			RANGE_RESTRICTION,
+			RELATIONAL_OVERRIDE,
+			IFF,
+			OR,
+			AND,
+			BOX_JOIN,
 		};
 
 	/**
@@ -324,8 +314,7 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
-	public static final List VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<BinaryOperator> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
 	 * Returns the '<em><b>Binary Operator</b></em>' literal with the specified literal value.
@@ -367,20 +356,41 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 */
 	public static BinaryOperator get(int value) {
 		switch (value) {
-			case DIFFERENCE: return DIFFERENCE_LITERAL;
-			case INTERSECTION: return INTERSECTION_LITERAL;
-			case JOIN: return JOIN_LITERAL;
-			case UNION: return UNION_LITERAL;
-			case DOMAIN_RESTRICTION: return DOMAIN_RESTRICTION_LITERAL;
-			case RANGE_RESTRICTION: return RANGE_RESTRICTION_LITERAL;
-			case RELATIONAL_OVERRIDE: return RELATIONAL_OVERRIDE_LITERAL;
-			case IFF: return IFF_LITERAL;
-			case OR: return OR_LITERAL;
-			case AND: return AND_LITERAL;
-			case BOX_JOIN: return BOX_JOIN_LITERAL;
+			case DIFFERENCE_VALUE: return DIFFERENCE;
+			case INTERSECTION_VALUE: return INTERSECTION;
+			case JOIN_VALUE: return JOIN;
+			case UNION_VALUE: return UNION;
+			case DOMAIN_RESTRICTION_VALUE: return DOMAIN_RESTRICTION;
+			case RANGE_RESTRICTION_VALUE: return RANGE_RESTRICTION;
+			case RELATIONAL_OVERRIDE_VALUE: return RELATIONAL_OVERRIDE;
+			case IFF_VALUE: return IFF;
+			case OR_VALUE: return OR;
+			case AND_VALUE: return AND;
+			case BOX_JOIN_VALUE: return BOX_JOIN;
 		}
 		return null;
 	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final int value;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String name;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String literal;
 
 	/**
 	 * Only this class can construct instances.
@@ -389,7 +399,46 @@ public final class BinaryOperator extends AbstractEnumerator {
 	 * @generated
 	 */
 	private BinaryOperator(int value, String name, String literal) {
-		super(value, name, literal);
+		this.value = value;
+		this.name = name;
+		this.literal = literal;
 	}
 
-} //BinaryOperator
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getValue() {
+	  return value;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+	  return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getLiteral() {
+	  return literal;
+	}
+
+	/**
+	 * Returns the literal value of the enumerator, which is its string representation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		return literal;
+	}
+}

@@ -158,7 +158,7 @@ public class OntoUMLParser {
 			
 			//Attributes
 			for(Property p: ((Classifier)pe).getAttribute())
-			{
+			{				
 				e = new ParsingElement(p, true, h2.treatName(p));
 				this.elementsHash.put(p,e);
 			}
@@ -298,7 +298,7 @@ public class OntoUMLParser {
 		
 		for (ParsingElement pe : elementsHash.values()) 
 		{
-			if(pe.getSelected()) list.add(pe.getElement());
+			if(pe.getSelected()) { list.add(pe.getElement()); }
 		}
 		
 		return list;
@@ -393,6 +393,17 @@ public class OntoUMLParser {
 		{
 			if((obj instanceof Role) || (obj instanceof RoleMixin) || (obj instanceof Phase))				
 			list.add((Class)obj);			
+		}		
+		return list;
+	}
+	
+	public Set<Property> getAttributes()
+	{
+		Set<Property> list = new HashSet<Property>();		
+		for (EObject obj : getElements())
+		{			
+			if( (obj instanceof Property) && ((Property)obj).getAssociation()==null )				
+				list.add((Property)obj);			
 		}		
 		return list;
 	}
@@ -573,6 +584,8 @@ public class OntoUMLParser {
 			if(isSelected(gen))	if (gen.getGeneral() instanceof Relator) getAllMediations((Relator)gen.getGeneral(),result);			
 		}
 	}
+	
+	
 	
 	/**
 	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete

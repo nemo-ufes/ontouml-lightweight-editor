@@ -73,7 +73,7 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 	 * @ordered
 	 */
 	@SuppressWarnings("rawtypes")
-	protected EList name;
+	protected EList<String> name;
 
 	/**
 	 * The cached value of the '{@link #getBarExpression() <em>Bar Expression</em>}' reference.
@@ -139,6 +139,7 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.LET_DECLARATION;
 	}
@@ -235,9 +236,9 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public EList getName() {
+	public EList<String> getName() {
 		if (name == null) {
-			name = new EDataTypeUniqueEList(String.class, this, AlloyPackage.LET_DECLARATION__NAME);
+			name = new EDataTypeUniqueEList<String>(String.class, this, AlloyPackage.LET_DECLARATION__NAME);
 		}
 		return name;
 	}
@@ -327,6 +328,7 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.LET_DECLARATION__EQUAL_EXPRESSION:
@@ -342,6 +344,7 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.LET_DECLARATION__EQUAL_EXPRESSION:
@@ -354,9 +357,9 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 				if (resolve) return getBarExpression();
 				return basicGetBarExpression();
 			case AlloyPackage.LET_DECLARATION__HAS_BLOCK:
-				return isHasBlock() ? Boolean.TRUE : Boolean.FALSE;
+				return isHasBlock();
 			case AlloyPackage.LET_DECLARATION__HAS_EXPRESSION:
-				return isHasExpression() ? Boolean.TRUE : Boolean.FALSE;
+				return isHasExpression();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -367,6 +370,7 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.LET_DECLARATION__EQUAL_EXPRESSION:
@@ -377,16 +381,16 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 				return;
 			case AlloyPackage.LET_DECLARATION__NAME:
 				getName().clear();
-				getName().addAll((Collection)newValue);
+				getName().addAll((Collection<? extends String>)newValue);
 				return;
 			case AlloyPackage.LET_DECLARATION__BAR_EXPRESSION:
 				setBarExpression((Expression)newValue);
 				return;
 			case AlloyPackage.LET_DECLARATION__HAS_BLOCK:
-				setHasBlock(((Boolean)newValue).booleanValue());
+				setHasBlock((Boolean)newValue);
 				return;
 			case AlloyPackage.LET_DECLARATION__HAS_EXPRESSION:
-				setHasExpression(((Boolean)newValue).booleanValue());
+				setHasExpression((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -397,6 +401,7 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.LET_DECLARATION__EQUAL_EXPRESSION:
@@ -426,6 +431,7 @@ public class LetDeclarationImpl extends ExpressionImpl implements LetDeclaration
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.LET_DECLARATION__EQUAL_EXPRESSION:

@@ -52,6 +52,7 @@ public class AlloyAdapterFactory extends AdapterFactoryImpl {
 	 * @return whether this factory is applicable for the type of the object.
 	 * @generated
 	 */
+	@Override
 	public boolean isFactoryForType(Object object) {
 		if (object == modelPackage) {
 			return true;
@@ -68,117 +69,158 @@ public class AlloyAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected AlloySwitch modelSwitch =
-		new AlloySwitch() {
-			public Object caseAlloyModule(AlloyModule object) {
+	protected AlloySwitch<Adapter> modelSwitch =
+		new AlloySwitch<Adapter>() {
+			@Override
+			public Adapter caseAlloyModule(AlloyModule object) {
 				return createAlloyModuleAdapter();
 			}
-			public Object caseParametrizedModule(ParametrizedModule object) {
+			@Override
+			public Adapter caseParametrizedModule(ParametrizedModule object) {
 				return createParametrizedModuleAdapter();
 			}
-			public Object caseSignatureParameter(SignatureParameter object) {
+			@Override
+			public Adapter caseSignatureParameter(SignatureParameter object) {
 				return createSignatureParameterAdapter();
 			}
-			public Object caseImporterModule(ImporterModule object) {
+			@Override
+			public Adapter caseImporterModule(ImporterModule object) {
 				return createImporterModuleAdapter();
 			}
-			public Object caseModuleImportation(ModuleImportation object) {
+			@Override
+			public Adapter caseModuleImportation(ModuleImportation object) {
 				return createModuleImportationAdapter();
 			}
-			public Object caseParagraph(Paragraph object) {
+			@Override
+			public Adapter caseParagraph(Paragraph object) {
 				return createParagraphAdapter();
 			}
-			public Object caseSignatureDeclaration(SignatureDeclaration object) {
+			@Override
+			public Adapter caseSignatureDeclaration(SignatureDeclaration object) {
 				return createSignatureDeclarationAdapter();
 			}
-			public Object caseFactDeclaration(FactDeclaration object) {
+			@Override
+			public Adapter caseFactDeclaration(FactDeclaration object) {
 				return createFactDeclarationAdapter();
 			}
-			public Object caseFunctionDeclaration(FunctionDeclaration object) {
+			@Override
+			public Adapter caseFunctionDeclaration(FunctionDeclaration object) {
 				return createFunctionDeclarationAdapter();
 			}
-			public Object casePredicateDeclaration(PredicateDeclaration object) {
+			@Override
+			public Adapter casePredicateDeclaration(PredicateDeclaration object) {
 				return createPredicateDeclarationAdapter();
 			}
-			public Object caseAssertionDeclaration(AssertionDeclaration object) {
+			@Override
+			public Adapter caseAssertionDeclaration(AssertionDeclaration object) {
 				return createAssertionDeclarationAdapter();
 			}
-			public Object caseCommandDeclaration(CommandDeclaration object) {
+			@Override
+			public Adapter caseCommandDeclaration(CommandDeclaration object) {
 				return createCommandDeclarationAdapter();
 			}
-			public Object caseInheritance(Inheritance object) {
+			@Override
+			public Adapter caseInheritance(Inheritance object) {
 				return createInheritanceAdapter();
 			}
-			public Object caseScopeSpecification(ScopeSpecification object) {
+			@Override
+			public Adapter caseScopeSpecification(ScopeSpecification object) {
 				return createScopeSpecificationAdapter();
 			}
-			public Object caseGenericScope(GenericScope object) {
+			@Override
+			public Adapter caseGenericScope(GenericScope object) {
 				return createGenericScopeAdapter();
 			}
-			public Object caseDetailedScope(DetailedScope object) {
+			@Override
+			public Adapter caseDetailedScope(DetailedScope object) {
 				return createDetailedScopeAdapter();
 			}
-			public Object caseScopeable(Scopeable object) {
+			@Override
+			public Adapter caseScopeable(Scopeable object) {
 				return createScopeableAdapter();
 			}
-			public Object caseExpression(Expression object) {
+			@Override
+			public Adapter caseExpression(Expression object) {
 				return createExpressionAdapter();
 			}
-			public Object caseDeclaration(Declaration object) {
+			@Override
+			public Adapter caseDeclaration(Declaration object) {
 				return createDeclarationAdapter();
 			}
-			public Object caseSignatureReference(SignatureReference object) {
+			@Override
+			public Adapter caseSignatureReference(SignatureReference object) {
 				return createSignatureReferenceAdapter();
 			}
-			public Object caseBlock(Block object) {
+			@Override
+			public Adapter caseBlock(Block object) {
 				return createBlockAdapter();
 			}
-			public Object caseBinaryOperation(BinaryOperation object) {
+			@Override
+			public Adapter caseBinaryOperation(BinaryOperation object) {
 				return createBinaryOperationAdapter();
 			}
-			public Object caseUnaryOperation(UnaryOperation object) {
+			@Override
+			public Adapter caseUnaryOperation(UnaryOperation object) {
 				return createUnaryOperationAdapter();
 			}
-			public Object caseLetDeclaration(LetDeclaration object) {
+			@Override
+			public Adapter caseLetDeclaration(LetDeclaration object) {
 				return createLetDeclarationAdapter();
 			}
-			public Object caseCompareOperation(CompareOperation object) {
+			@Override
+			public Adapter caseCompareOperation(CompareOperation object) {
 				return createCompareOperationAdapter();
 			}
-			public Object caseVariableReference(VariableReference object) {
+			@Override
+			public Adapter caseVariableReference(VariableReference object) {
 				return createVariableReferenceAdapter();
 			}
-			public Object caseArrowOperation(ArrowOperation object) {
+			@Override
+			public Adapter caseArrowOperation(ArrowOperation object) {
 				return createArrowOperationAdapter();
 			}
-			public Object caseConstantExpression(ConstantExpression object) {
+			@Override
+			public Adapter caseConstantExpression(ConstantExpression object) {
 				return createConstantExpressionAdapter();
 			}
-			public Object caseExternalReference(ExternalReference object) {
+			@Override
+			public Adapter caseExternalReference(ExternalReference object) {
 				return createExternalReferenceAdapter();
 			}
-			public Object caseComprehensionExpression(ComprehensionExpression object) {
+			@Override
+			public Adapter caseComprehensionExpression(ComprehensionExpression object) {
 				return createComprehensionExpressionAdapter();
 			}
-			public Object caseFunctionInvocation(FunctionInvocation object) {
+			@Override
+			public Adapter caseFunctionInvocation(FunctionInvocation object) {
 				return createFunctionInvocationAdapter();
 			}
-			public Object casePredicateInvocation(PredicateInvocation object) {
+			@Override
+			public Adapter casePredicateInvocation(PredicateInvocation object) {
 				return createPredicateInvocationAdapter();
 			}
-			public Object caseDisjointExpression(DisjointExpression object) {
+			@Override
+			public Adapter caseDisjointExpression(DisjointExpression object) {
 				return createDisjointExpressionAdapter();
 			}
-			public Object caseImpliesOperation(ImpliesOperation object) {
+			@Override
+			public Adapter caseImpliesOperation(ImpliesOperation object) {
 				return createImpliesOperationAdapter();
 			}
-			public Object caseQuantificationExpression(QuantificationExpression object) {
+			@Override
+			public Adapter caseQuantificationExpression(QuantificationExpression object) {
 				return createQuantificationExpressionAdapter();
 			}
-			public Object caseVariable(Variable object) {
+			@Override
+			public Adapter caseVariable(Variable object) {
 				return createVariableAdapter();
 			}
-			public Object defaultCase(EObject object) {
+			@Override
+			public Adapter caseEnumDeclaration(EnumDeclaration object) {
+				return createEnumDeclarationAdapter();
+			}
+			@Override
+			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
 		};
@@ -191,8 +233,9 @@ public class AlloyAdapterFactory extends AdapterFactoryImpl {
 	 * @return the adapter for the <code>target</code>.
 	 * @generated
 	 */
+	@Override
 	public Adapter createAdapter(Notifier target) {
-		return (Adapter)modelSwitch.doSwitch((EObject)target);
+		return modelSwitch.doSwitch((EObject)target);
 	}
 
 
@@ -697,6 +740,20 @@ public class AlloyAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createVariableAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.alloy.EnumDeclaration <em>Enum Declaration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.alloy.EnumDeclaration
+	 * @generated
+	 */
+	public Adapter createEnumDeclarationAdapter() {
 		return null;
 	}
 

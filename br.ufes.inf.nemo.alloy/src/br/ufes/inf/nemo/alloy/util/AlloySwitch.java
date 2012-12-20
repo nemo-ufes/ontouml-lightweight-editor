@@ -12,6 +12,8 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.util.Switch;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +28,7 @@ import org.eclipse.emf.ecore.EObject;
  * @see br.ufes.inf.nemo.alloy.AlloyPackage
  * @generated
  */
-public class AlloySwitch {
+public class AlloySwitch<T> extends Switch<T> {
 	/**
 	 * The cached model package
 	 * <!-- begin-user-doc -->
@@ -48,14 +50,16 @@ public class AlloySwitch {
 	}
 
 	/**
-	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
+	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the first non-null result returned by a <code>caseXXX</code> call.
+	 * @parameter ePackage the package in question.
+	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
-	public Object doSwitch(EObject theEObject) {
-		return doSwitch(theEObject.eClass(), theEObject);
+	@Override
+	protected boolean isSwitchFor(EPackage ePackage) {
+		return ePackage == modelPackage;
 	}
 
 	/**
@@ -65,267 +69,254 @@ public class AlloySwitch {
 	 * @return the first non-null result returned by a <code>caseXXX</code> call.
 	 * @generated
 	 */
-	protected Object doSwitch(EClass theEClass, EObject theEObject) {
-		if (theEClass.eContainer() == modelPackage) {
-			return doSwitch(theEClass.getClassifierID(), theEObject);
-		}
-		else {
-			@SuppressWarnings("rawtypes")
-			List eSuperTypes = theEClass.getESuperTypes();
-			return
-				eSuperTypes.isEmpty() ?
-					defaultCase(theEObject) :
-					doSwitch((EClass)eSuperTypes.get(0), theEObject);
-		}
-	}
-
-	/**
-	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the first non-null result returned by a <code>caseXXX</code> call.
-	 * @generated
-	 */
-	protected Object doSwitch(int classifierID, EObject theEObject) {
+	@Override
+	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
 			case AlloyPackage.ALLOY_MODULE: {
 				AlloyModule alloyModule = (AlloyModule)theEObject;
-				Object result = caseAlloyModule(alloyModule);
+				T result = caseAlloyModule(alloyModule);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.PARAMETRIZED_MODULE: {
 				ParametrizedModule parametrizedModule = (ParametrizedModule)theEObject;
-				Object result = caseParametrizedModule(parametrizedModule);
+				T result = caseParametrizedModule(parametrizedModule);
 				if (result == null) result = caseAlloyModule(parametrizedModule);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.SIGNATURE_PARAMETER: {
 				SignatureParameter signatureParameter = (SignatureParameter)theEObject;
-				Object result = caseSignatureParameter(signatureParameter);
+				T result = caseSignatureParameter(signatureParameter);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.IMPORTER_MODULE: {
 				ImporterModule importerModule = (ImporterModule)theEObject;
-				Object result = caseImporterModule(importerModule);
+				T result = caseImporterModule(importerModule);
 				if (result == null) result = caseAlloyModule(importerModule);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.MODULE_IMPORTATION: {
 				ModuleImportation moduleImportation = (ModuleImportation)theEObject;
-				Object result = caseModuleImportation(moduleImportation);
+				T result = caseModuleImportation(moduleImportation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.PARAGRAPH: {
 				Paragraph paragraph = (Paragraph)theEObject;
-				Object result = caseParagraph(paragraph);
+				T result = caseParagraph(paragraph);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.SIGNATURE_DECLARATION: {
 				SignatureDeclaration signatureDeclaration = (SignatureDeclaration)theEObject;
-				Object result = caseSignatureDeclaration(signatureDeclaration);
+				T result = caseSignatureDeclaration(signatureDeclaration);
 				if (result == null) result = caseParagraph(signatureDeclaration);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.FACT_DECLARATION: {
 				FactDeclaration factDeclaration = (FactDeclaration)theEObject;
-				Object result = caseFactDeclaration(factDeclaration);
+				T result = caseFactDeclaration(factDeclaration);
 				if (result == null) result = caseParagraph(factDeclaration);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.FUNCTION_DECLARATION: {
 				FunctionDeclaration functionDeclaration = (FunctionDeclaration)theEObject;
-				Object result = caseFunctionDeclaration(functionDeclaration);
+				T result = caseFunctionDeclaration(functionDeclaration);
 				if (result == null) result = caseParagraph(functionDeclaration);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.PREDICATE_DECLARATION: {
 				PredicateDeclaration predicateDeclaration = (PredicateDeclaration)theEObject;
-				Object result = casePredicateDeclaration(predicateDeclaration);
+				T result = casePredicateDeclaration(predicateDeclaration);
 				if (result == null) result = caseParagraph(predicateDeclaration);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.ASSERTION_DECLARATION: {
 				AssertionDeclaration assertionDeclaration = (AssertionDeclaration)theEObject;
-				Object result = caseAssertionDeclaration(assertionDeclaration);
+				T result = caseAssertionDeclaration(assertionDeclaration);
 				if (result == null) result = caseParagraph(assertionDeclaration);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.COMMAND_DECLARATION: {
 				CommandDeclaration commandDeclaration = (CommandDeclaration)theEObject;
-				Object result = caseCommandDeclaration(commandDeclaration);
+				T result = caseCommandDeclaration(commandDeclaration);
 				if (result == null) result = caseParagraph(commandDeclaration);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.INHERITANCE: {
 				Inheritance inheritance = (Inheritance)theEObject;
-				Object result = caseInheritance(inheritance);
+				T result = caseInheritance(inheritance);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.SCOPE_SPECIFICATION: {
 				ScopeSpecification scopeSpecification = (ScopeSpecification)theEObject;
-				Object result = caseScopeSpecification(scopeSpecification);
+				T result = caseScopeSpecification(scopeSpecification);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.GENERIC_SCOPE: {
 				GenericScope genericScope = (GenericScope)theEObject;
-				Object result = caseGenericScope(genericScope);
+				T result = caseGenericScope(genericScope);
 				if (result == null) result = caseScopeSpecification(genericScope);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.DETAILED_SCOPE: {
 				DetailedScope detailedScope = (DetailedScope)theEObject;
-				Object result = caseDetailedScope(detailedScope);
+				T result = caseDetailedScope(detailedScope);
 				if (result == null) result = caseScopeSpecification(detailedScope);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.SCOPEABLE: {
 				Scopeable scopeable = (Scopeable)theEObject;
-				Object result = caseScopeable(scopeable);
+				T result = caseScopeable(scopeable);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.EXPRESSION: {
 				Expression expression = (Expression)theEObject;
-				Object result = caseExpression(expression);
+				T result = caseExpression(expression);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.DECLARATION: {
 				Declaration declaration = (Declaration)theEObject;
-				Object result = caseDeclaration(declaration);
+				T result = caseDeclaration(declaration);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.SIGNATURE_REFERENCE: {
 				SignatureReference signatureReference = (SignatureReference)theEObject;
-				Object result = caseSignatureReference(signatureReference);
+				T result = caseSignatureReference(signatureReference);
 				if (result == null) result = caseExpression(signatureReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.BLOCK: {
 				Block block = (Block)theEObject;
-				Object result = caseBlock(block);
+				T result = caseBlock(block);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.BINARY_OPERATION: {
 				BinaryOperation binaryOperation = (BinaryOperation)theEObject;
-				Object result = caseBinaryOperation(binaryOperation);
+				T result = caseBinaryOperation(binaryOperation);
 				if (result == null) result = caseExpression(binaryOperation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.UNARY_OPERATION: {
 				UnaryOperation unaryOperation = (UnaryOperation)theEObject;
-				Object result = caseUnaryOperation(unaryOperation);
+				T result = caseUnaryOperation(unaryOperation);
 				if (result == null) result = caseExpression(unaryOperation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.LET_DECLARATION: {
 				LetDeclaration letDeclaration = (LetDeclaration)theEObject;
-				Object result = caseLetDeclaration(letDeclaration);
+				T result = caseLetDeclaration(letDeclaration);
 				if (result == null) result = caseExpression(letDeclaration);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.COMPARE_OPERATION: {
 				CompareOperation compareOperation = (CompareOperation)theEObject;
-				Object result = caseCompareOperation(compareOperation);
+				T result = caseCompareOperation(compareOperation);
 				if (result == null) result = caseExpression(compareOperation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.VARIABLE_REFERENCE: {
 				VariableReference variableReference = (VariableReference)theEObject;
-				Object result = caseVariableReference(variableReference);
+				T result = caseVariableReference(variableReference);
 				if (result == null) result = caseExpression(variableReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.ARROW_OPERATION: {
 				ArrowOperation arrowOperation = (ArrowOperation)theEObject;
-				Object result = caseArrowOperation(arrowOperation);
+				T result = caseArrowOperation(arrowOperation);
 				if (result == null) result = caseExpression(arrowOperation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.CONSTANT_EXPRESSION: {
 				ConstantExpression constantExpression = (ConstantExpression)theEObject;
-				Object result = caseConstantExpression(constantExpression);
+				T result = caseConstantExpression(constantExpression);
 				if (result == null) result = caseExpression(constantExpression);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.EXTERNAL_REFERENCE: {
 				ExternalReference externalReference = (ExternalReference)theEObject;
-				Object result = caseExternalReference(externalReference);
+				T result = caseExternalReference(externalReference);
 				if (result == null) result = caseExpression(externalReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.COMPREHENSION_EXPRESSION: {
 				ComprehensionExpression comprehensionExpression = (ComprehensionExpression)theEObject;
-				Object result = caseComprehensionExpression(comprehensionExpression);
+				T result = caseComprehensionExpression(comprehensionExpression);
 				if (result == null) result = caseExpression(comprehensionExpression);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.FUNCTION_INVOCATION: {
 				FunctionInvocation functionInvocation = (FunctionInvocation)theEObject;
-				Object result = caseFunctionInvocation(functionInvocation);
+				T result = caseFunctionInvocation(functionInvocation);
 				if (result == null) result = caseExpression(functionInvocation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.PREDICATE_INVOCATION: {
 				PredicateInvocation predicateInvocation = (PredicateInvocation)theEObject;
-				Object result = casePredicateInvocation(predicateInvocation);
+				T result = casePredicateInvocation(predicateInvocation);
 				if (result == null) result = caseExpression(predicateInvocation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.DISJOINT_EXPRESSION: {
 				DisjointExpression disjointExpression = (DisjointExpression)theEObject;
-				Object result = caseDisjointExpression(disjointExpression);
+				T result = caseDisjointExpression(disjointExpression);
 				if (result == null) result = caseExpression(disjointExpression);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.IMPLIES_OPERATION: {
 				ImpliesOperation impliesOperation = (ImpliesOperation)theEObject;
-				Object result = caseImpliesOperation(impliesOperation);
+				T result = caseImpliesOperation(impliesOperation);
 				if (result == null) result = caseExpression(impliesOperation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.QUANTIFICATION_EXPRESSION: {
 				QuantificationExpression quantificationExpression = (QuantificationExpression)theEObject;
-				Object result = caseQuantificationExpression(quantificationExpression);
+				T result = caseQuantificationExpression(quantificationExpression);
 				if (result == null) result = caseExpression(quantificationExpression);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AlloyPackage.VARIABLE: {
 				Variable variable = (Variable)theEObject;
-				Object result = caseVariable(variable);
+				T result = caseVariable(variable);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AlloyPackage.ENUM_DECLARATION: {
+				EnumDeclaration enumDeclaration = (EnumDeclaration)theEObject;
+				T result = caseEnumDeclaration(enumDeclaration);
+				if (result == null) result = caseParagraph(enumDeclaration);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -344,7 +335,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseAlloyModule(AlloyModule object) {
+	public T caseAlloyModule(AlloyModule object) {
 		return null;
 	}
 
@@ -359,7 +350,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseParametrizedModule(ParametrizedModule object) {
+	public T caseParametrizedModule(ParametrizedModule object) {
 		return null;
 	}
 
@@ -374,7 +365,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseSignatureParameter(SignatureParameter object) {
+	public T caseSignatureParameter(SignatureParameter object) {
 		return null;
 	}
 
@@ -389,7 +380,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseImporterModule(ImporterModule object) {
+	public T caseImporterModule(ImporterModule object) {
 		return null;
 	}
 
@@ -404,7 +395,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseModuleImportation(ModuleImportation object) {
+	public T caseModuleImportation(ModuleImportation object) {
 		return null;
 	}
 
@@ -419,7 +410,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseParagraph(Paragraph object) {
+	public T caseParagraph(Paragraph object) {
 		return null;
 	}
 
@@ -434,7 +425,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseSignatureDeclaration(SignatureDeclaration object) {
+	public T caseSignatureDeclaration(SignatureDeclaration object) {
 		return null;
 	}
 
@@ -449,7 +440,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseFactDeclaration(FactDeclaration object) {
+	public T caseFactDeclaration(FactDeclaration object) {
 		return null;
 	}
 
@@ -464,7 +455,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseFunctionDeclaration(FunctionDeclaration object) {
+	public T caseFunctionDeclaration(FunctionDeclaration object) {
 		return null;
 	}
 
@@ -479,7 +470,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object casePredicateDeclaration(PredicateDeclaration object) {
+	public T casePredicateDeclaration(PredicateDeclaration object) {
 		return null;
 	}
 
@@ -494,7 +485,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseAssertionDeclaration(AssertionDeclaration object) {
+	public T caseAssertionDeclaration(AssertionDeclaration object) {
 		return null;
 	}
 
@@ -509,7 +500,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseCommandDeclaration(CommandDeclaration object) {
+	public T caseCommandDeclaration(CommandDeclaration object) {
 		return null;
 	}
 
@@ -524,7 +515,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseInheritance(Inheritance object) {
+	public T caseInheritance(Inheritance object) {
 		return null;
 	}
 
@@ -539,7 +530,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseScopeSpecification(ScopeSpecification object) {
+	public T caseScopeSpecification(ScopeSpecification object) {
 		return null;
 	}
 
@@ -554,7 +545,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseGenericScope(GenericScope object) {
+	public T caseGenericScope(GenericScope object) {
 		return null;
 	}
 
@@ -569,7 +560,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseDetailedScope(DetailedScope object) {
+	public T caseDetailedScope(DetailedScope object) {
 		return null;
 	}
 
@@ -584,7 +575,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseScopeable(Scopeable object) {
+	public T caseScopeable(Scopeable object) {
 		return null;
 	}
 
@@ -599,7 +590,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseExpression(Expression object) {
+	public T caseExpression(Expression object) {
 		return null;
 	}
 
@@ -614,7 +605,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseDeclaration(Declaration object) {
+	public T caseDeclaration(Declaration object) {
 		return null;
 	}
 
@@ -629,7 +620,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseSignatureReference(SignatureReference object) {
+	public T caseSignatureReference(SignatureReference object) {
 		return null;
 	}
 
@@ -644,7 +635,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseBlock(Block object) {
+	public T caseBlock(Block object) {
 		return null;
 	}
 
@@ -659,7 +650,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseBinaryOperation(BinaryOperation object) {
+	public T caseBinaryOperation(BinaryOperation object) {
 		return null;
 	}
 
@@ -674,7 +665,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseUnaryOperation(UnaryOperation object) {
+	public T caseUnaryOperation(UnaryOperation object) {
 		return null;
 	}
 
@@ -689,7 +680,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseLetDeclaration(LetDeclaration object) {
+	public T caseLetDeclaration(LetDeclaration object) {
 		return null;
 	}
 
@@ -704,7 +695,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseCompareOperation(CompareOperation object) {
+	public T caseCompareOperation(CompareOperation object) {
 		return null;
 	}
 
@@ -719,7 +710,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseVariableReference(VariableReference object) {
+	public T caseVariableReference(VariableReference object) {
 		return null;
 	}
 
@@ -734,7 +725,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseArrowOperation(ArrowOperation object) {
+	public T caseArrowOperation(ArrowOperation object) {
 		return null;
 	}
 
@@ -749,7 +740,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseConstantExpression(ConstantExpression object) {
+	public T caseConstantExpression(ConstantExpression object) {
 		return null;
 	}
 
@@ -764,7 +755,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseExternalReference(ExternalReference object) {
+	public T caseExternalReference(ExternalReference object) {
 		return null;
 	}
 
@@ -779,7 +770,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseComprehensionExpression(ComprehensionExpression object) {
+	public T caseComprehensionExpression(ComprehensionExpression object) {
 		return null;
 	}
 
@@ -794,7 +785,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseFunctionInvocation(FunctionInvocation object) {
+	public T caseFunctionInvocation(FunctionInvocation object) {
 		return null;
 	}
 
@@ -809,7 +800,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object casePredicateInvocation(PredicateInvocation object) {
+	public T casePredicateInvocation(PredicateInvocation object) {
 		return null;
 	}
 
@@ -824,7 +815,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseDisjointExpression(DisjointExpression object) {
+	public T caseDisjointExpression(DisjointExpression object) {
 		return null;
 	}
 
@@ -839,7 +830,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseImpliesOperation(ImpliesOperation object) {
+	public T caseImpliesOperation(ImpliesOperation object) {
 		return null;
 	}
 
@@ -854,7 +845,7 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseQuantificationExpression(QuantificationExpression object) {
+	public T caseQuantificationExpression(QuantificationExpression object) {
 		return null;
 	}
 
@@ -869,7 +860,22 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public Object caseVariable(Variable object) {
+	public T caseVariable(Variable object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Enum Declaration</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Enum Declaration</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEnumDeclaration(EnumDeclaration object) {
 		return null;
 	}
 
@@ -884,7 +890,8 @@ public class AlloySwitch {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
-	public Object defaultCase(EObject object) {
+	@Override
+	public T defaultCase(EObject object) {
 		return null;
 	}
 

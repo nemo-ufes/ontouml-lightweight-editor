@@ -44,7 +44,7 @@ public class ArrowOperationImpl extends ExpressionImpl implements ArrowOperation
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Multiplicity LEFT_MULTIPLICITY_EDEFAULT = Multiplicity.SOME_LITERAL;
+	protected static final Multiplicity LEFT_MULTIPLICITY_EDEFAULT = Multiplicity.SOME;
 
 	/**
 	 * The cached value of the '{@link #getLeftMultiplicity() <em>Left Multiplicity</em>}' attribute.
@@ -64,7 +64,7 @@ public class ArrowOperationImpl extends ExpressionImpl implements ArrowOperation
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Multiplicity RIGHT_MULTIPLICITY_EDEFAULT = Multiplicity.SOME_LITERAL;
+	protected static final Multiplicity RIGHT_MULTIPLICITY_EDEFAULT = Multiplicity.SOME;
 
 	/**
 	 * The cached value of the '{@link #getRightMultiplicity() <em>Right Multiplicity</em>}' attribute.
@@ -110,6 +110,7 @@ public class ArrowOperationImpl extends ExpressionImpl implements ArrowOperation
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.ARROW_OPERATION;
 	}
@@ -247,6 +248,7 @@ public class ArrowOperationImpl extends ExpressionImpl implements ArrowOperation
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.ARROW_OPERATION__LEFT_EXPRESSION:
@@ -262,6 +264,7 @@ public class ArrowOperationImpl extends ExpressionImpl implements ArrowOperation
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.ARROW_OPERATION__LEFT_MULTIPLICITY:
@@ -281,6 +284,7 @@ public class ArrowOperationImpl extends ExpressionImpl implements ArrowOperation
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.ARROW_OPERATION__LEFT_MULTIPLICITY:
@@ -304,6 +308,7 @@ public class ArrowOperationImpl extends ExpressionImpl implements ArrowOperation
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.ARROW_OPERATION__LEFT_MULTIPLICITY:
@@ -327,6 +332,7 @@ public class ArrowOperationImpl extends ExpressionImpl implements ArrowOperation
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.ARROW_OPERATION__LEFT_MULTIPLICITY:

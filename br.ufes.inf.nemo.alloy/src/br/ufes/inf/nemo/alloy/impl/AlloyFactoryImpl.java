@@ -58,6 +58,7 @@ public class AlloyFactoryImpl extends EFactoryImpl implements AlloyFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case AlloyPackage.ALLOY_MODULE: return createAlloyModule();
@@ -105,6 +106,7 @@ public class AlloyFactoryImpl extends EFactoryImpl implements AlloyFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
 			case AlloyPackage.MULTIPLICITY:
@@ -129,6 +131,7 @@ public class AlloyFactoryImpl extends EFactoryImpl implements AlloyFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
 			case AlloyPackage.MULTIPLICITY:
@@ -633,6 +636,7 @@ public class AlloyFactoryImpl extends EFactoryImpl implements AlloyFactory {
 	 * @deprecated
 	 * @generated
 	 */
+	@Deprecated
 	public static AlloyPackage getPackage() {
 		return AlloyPackage.eINSTANCE;
 	}

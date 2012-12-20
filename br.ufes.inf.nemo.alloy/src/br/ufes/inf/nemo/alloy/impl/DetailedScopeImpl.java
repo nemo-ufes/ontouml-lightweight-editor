@@ -45,7 +45,7 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * @ordered
 	 */
 	@SuppressWarnings("rawtypes")
-	protected EList scopeable;
+	protected EList<Scopeable> scopeable;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -61,6 +61,7 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.DETAILED_SCOPE;
 	}
@@ -71,9 +72,9 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public EList getScopeable() {
+	public EList<Scopeable> getScopeable() {
 		if (scopeable == null) {
-			scopeable = new EObjectContainmentEList(Scopeable.class, this, AlloyPackage.DETAILED_SCOPE__SCOPEABLE);
+			scopeable = new EObjectContainmentEList<Scopeable>(Scopeable.class, this, AlloyPackage.DETAILED_SCOPE__SCOPEABLE);
 		}
 		return scopeable;
 	}
@@ -83,11 +84,12 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.DETAILED_SCOPE__SCOPEABLE:
-				return ((InternalEList)getScopeable()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getScopeable()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -97,6 +99,7 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.DETAILED_SCOPE__SCOPEABLE:
@@ -111,11 +114,12 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.DETAILED_SCOPE__SCOPEABLE:
 				getScopeable().clear();
-				getScopeable().addAll((Collection)newValue);
+				getScopeable().addAll((Collection<? extends Scopeable>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -126,6 +130,7 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.DETAILED_SCOPE__SCOPEABLE:
@@ -140,6 +145,7 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.DETAILED_SCOPE__SCOPEABLE:

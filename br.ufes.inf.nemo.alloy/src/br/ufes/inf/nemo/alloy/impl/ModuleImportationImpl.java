@@ -123,6 +123,7 @@ public class ModuleImportationImpl extends EObjectImpl implements ModuleImportat
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.MODULE_IMPORTATION;
 	}
@@ -198,7 +199,7 @@ public class ModuleImportationImpl extends EObjectImpl implements ModuleImportat
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EList<String> getParameters() {
 		if (parameters == null) {
-			parameters = new EDataTypeUniqueEList(String.class, this, AlloyPackage.MODULE_IMPORTATION__PARAMETERS);
+			parameters = new EDataTypeUniqueEList<String>(String.class, this, AlloyPackage.MODULE_IMPORTATION__PARAMETERS);
 		}
 		return parameters;
 	}
@@ -208,6 +209,7 @@ public class ModuleImportationImpl extends EObjectImpl implements ModuleImportat
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.MODULE_IMPORTATION__NAME:
@@ -228,6 +230,7 @@ public class ModuleImportationImpl extends EObjectImpl implements ModuleImportat
 	 * @generated
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.MODULE_IMPORTATION__NAME:
@@ -241,7 +244,7 @@ public class ModuleImportationImpl extends EObjectImpl implements ModuleImportat
 				return;
 			case AlloyPackage.MODULE_IMPORTATION__PARAMETERS:
 				getParameters().clear();
-				getParameters().addAll((Collection)newValue);
+				getParameters().addAll((Collection<? extends String>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -252,6 +255,7 @@ public class ModuleImportationImpl extends EObjectImpl implements ModuleImportat
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.MODULE_IMPORTATION__NAME:
@@ -275,6 +279,7 @@ public class ModuleImportationImpl extends EObjectImpl implements ModuleImportat
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.MODULE_IMPORTATION__NAME:

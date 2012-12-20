@@ -36,6 +36,7 @@ public class ParametrizedModuleImpl extends AlloyModuleImpl implements Parametri
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.PARAMETRIZED_MODULE;
 	}

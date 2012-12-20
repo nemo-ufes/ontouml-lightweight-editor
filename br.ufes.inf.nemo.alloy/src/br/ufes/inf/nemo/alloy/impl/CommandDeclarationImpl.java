@@ -136,6 +136,7 @@ public class CommandDeclarationImpl extends ParagraphImpl implements CommandDecl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.COMMAND_DECLARATION;
 	}
@@ -344,6 +345,7 @@ public class CommandDeclarationImpl extends ParagraphImpl implements CommandDecl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.COMMAND_DECLARATION__SCOPE:
@@ -357,6 +359,7 @@ public class CommandDeclarationImpl extends ParagraphImpl implements CommandDecl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.COMMAND_DECLARATION__SCOPE:
@@ -371,9 +374,9 @@ public class CommandDeclarationImpl extends ParagraphImpl implements CommandDecl
 				if (resolve) return getPredicate();
 				return basicGetPredicate();
 			case AlloyPackage.COMMAND_DECLARATION__IS_RUN:
-				return isIsRun() ? Boolean.TRUE : Boolean.FALSE;
+				return isIsRun();
 			case AlloyPackage.COMMAND_DECLARATION__IS_CHECK:
-				return isIsCheck() ? Boolean.TRUE : Boolean.FALSE;
+				return isIsCheck();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -383,6 +386,7 @@ public class CommandDeclarationImpl extends ParagraphImpl implements CommandDecl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.COMMAND_DECLARATION__SCOPE:
@@ -398,10 +402,10 @@ public class CommandDeclarationImpl extends ParagraphImpl implements CommandDecl
 				setPredicate((PredicateDeclaration)newValue);
 				return;
 			case AlloyPackage.COMMAND_DECLARATION__IS_RUN:
-				setIsRun(((Boolean)newValue).booleanValue());
+				setIsRun((Boolean)newValue);
 				return;
 			case AlloyPackage.COMMAND_DECLARATION__IS_CHECK:
-				setIsCheck(((Boolean)newValue).booleanValue());
+				setIsCheck((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -412,6 +416,7 @@ public class CommandDeclarationImpl extends ParagraphImpl implements CommandDecl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.COMMAND_DECLARATION__SCOPE:
@@ -441,6 +446,7 @@ public class CommandDeclarationImpl extends ParagraphImpl implements CommandDecl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.COMMAND_DECLARATION__SCOPE:

@@ -84,6 +84,7 @@ public class PredicateInvocationImpl extends ExpressionImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.PREDICATE_INVOCATION;
 	}
@@ -96,7 +97,7 @@ public class PredicateInvocationImpl extends ExpressionImpl implements Predicate
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public EList<Expression> getParameter() {
 		if (parameter == null) {
-			parameter = new EObjectContainmentEList(Expression.class, this, AlloyPackage.PREDICATE_INVOCATION__PARAMETER);
+			parameter = new EObjectContainmentEList<Expression>(Expression.class, this, AlloyPackage.PREDICATE_INVOCATION__PARAMETER);
 		}
 		return parameter;
 	}
@@ -127,11 +128,12 @@ public class PredicateInvocationImpl extends ExpressionImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_INVOCATION__PARAMETER:
-				return ((InternalEList)getParameter()).basicRemove(otherEnd, msgs);
+				return ((InternalEList<?>)getParameter()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -141,6 +143,7 @@ public class PredicateInvocationImpl extends ExpressionImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_INVOCATION__PARAMETER:
@@ -157,11 +160,12 @@ public class PredicateInvocationImpl extends ExpressionImpl implements Predicate
 	 * @generated
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_INVOCATION__PARAMETER:
 				getParameter().clear();
-				getParameter().addAll((Collection)newValue);
+				getParameter().addAll((Collection<? extends Expression>)newValue);
 				return;
 			case AlloyPackage.PREDICATE_INVOCATION__PREDICATE:
 				setPredicate((String)newValue);
@@ -175,6 +179,7 @@ public class PredicateInvocationImpl extends ExpressionImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_INVOCATION__PARAMETER:
@@ -192,6 +197,7 @@ public class PredicateInvocationImpl extends ExpressionImpl implements Predicate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.PREDICATE_INVOCATION__PARAMETER:

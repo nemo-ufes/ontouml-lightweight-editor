@@ -30,7 +30,7 @@ public class TAbstractClauseRule {
 			BinaryOperation bo = factory.createBinaryOperation();
 			
 			CompareOperation co = factory.createCompareOperation();
-			co.setOperator(CompareOperator.EQUAL_LITERAL);
+			co.setOperator(CompareOperator.EQUAL);
 			
 			VariableReference vr = factory.createVariableReference();
 			vr.setVariable(ontoparser.getAlias(c));
@@ -49,7 +49,7 @@ public class TAbstractClauseRule {
 				}
 				if(cont == 1)
 				{
-					bo.setOperator(BinaryOperator.UNION_LITERAL);
+					bo.setOperator(BinaryOperator.UNION);
 					vr = factory.createVariableReference();
 					vr.setVariable(ontoparser.getAlias(classifier));
 					bo.setLeftExpression(vr);
@@ -60,7 +60,7 @@ public class TAbstractClauseRule {
 					vr = factory.createVariableReference();
 					vr.setVariable(ontoparser.getAlias(classifier));
 					bo.setRightExpression(factory.createBinaryOperation());
-					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION_LITERAL);
+					((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION);
 					((BinaryOperation)bo.getRightExpression()).setLeftExpression(vr);
 					bo = ((BinaryOperation)bo.getRightExpression());
 				}

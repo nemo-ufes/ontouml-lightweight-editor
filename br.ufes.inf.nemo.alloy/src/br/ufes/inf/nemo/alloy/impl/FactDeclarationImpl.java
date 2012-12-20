@@ -56,6 +56,7 @@ public class FactDeclarationImpl extends ParagraphImpl implements FactDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.FACT_DECLARATION;
 	}
@@ -108,6 +109,7 @@ public class FactDeclarationImpl extends ParagraphImpl implements FactDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.FACT_DECLARATION__BLOCK:
@@ -121,6 +123,7 @@ public class FactDeclarationImpl extends ParagraphImpl implements FactDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AlloyPackage.FACT_DECLARATION__BLOCK:
@@ -134,6 +137,7 @@ public class FactDeclarationImpl extends ParagraphImpl implements FactDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AlloyPackage.FACT_DECLARATION__BLOCK:
@@ -148,6 +152,7 @@ public class FactDeclarationImpl extends ParagraphImpl implements FactDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.FACT_DECLARATION__BLOCK:
@@ -162,6 +167,7 @@ public class FactDeclarationImpl extends ParagraphImpl implements FactDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AlloyPackage.FACT_DECLARATION__BLOCK:

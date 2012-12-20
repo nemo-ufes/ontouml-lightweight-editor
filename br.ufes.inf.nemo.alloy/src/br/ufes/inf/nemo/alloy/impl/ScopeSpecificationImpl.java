@@ -37,6 +37,7 @@ public abstract class ScopeSpecificationImpl extends EObjectImpl implements Scop
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	protected EClass eStaticClass() {
 		return AlloyPackage.Literals.SCOPE_SPECIFICATION;
 	}

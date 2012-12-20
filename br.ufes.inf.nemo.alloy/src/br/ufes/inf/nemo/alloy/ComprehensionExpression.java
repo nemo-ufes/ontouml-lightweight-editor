@@ -40,11 +40,11 @@ public interface ComprehensionExpression extends Expression {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Declaration</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getComprehensionExpression_Declaration()
-	 * @model type="alloy.Declaration" containment="true" required="true"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
-	EList getDeclaration();
+	
+	EList<Declaration> getDeclaration();
 
 	/**
 	 * Returns the value of the '<em><b>Block</b></em>' containment reference.

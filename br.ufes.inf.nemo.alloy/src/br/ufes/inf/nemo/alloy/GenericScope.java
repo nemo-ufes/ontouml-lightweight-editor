@@ -37,11 +37,10 @@ public interface GenericScope extends ScopeSpecification {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Scopeable</em>' containment reference list.
 	 * @see br.ufes.inf.nemo.alloy.AlloyPackage#getGenericScope_Scopeable()
-	 * @model type="alloy.Scopeable" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
-	EList getScopeable();
+	EList<Scopeable> getScopeable();
 
 	/**
 	 * Returns the value of the '<em><b>Scope Size</b></em>' attribute.
