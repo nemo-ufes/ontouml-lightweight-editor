@@ -24,7 +24,12 @@ public class Phrases {
 	
 	public static String subtypesVerb()
 	{
-		return " é subtipo de ";
+		return " é um tipo de ";
+	}
+	
+	public static String supertypesVerb()
+	{
+		return "Pode ser ";
 	}
 
 	public static String processVerb(Association assoc)
@@ -58,7 +63,7 @@ public class Phrases {
 			return " é sub-collection de ";
 		}
 		else 
-			return " ";
+			return " tem ";
 	}
 	
 	public static String processMultiplicity (Property prop)
@@ -66,15 +71,15 @@ public class Phrases {
 		String mult = new String();
 		if (prop.getLower() == 1 && prop.getUpper() == 1)
 		{
-			mult += "um";
+			mult += "um(a)";
 		}
 		else if (prop.getLower() == 1 && prop.getUpper() == -1)
 		{
-			mult += "no mínimo um";
+			mult += "no mínimo um(a)";
 		}
 		else if (prop.getLower() == 0 && prop.getUpper() == 1)
 		{
-			mult += "no máximo um";
+			mult += "no máximo um(a)";
 		}
 		else if (prop.getLower() == 0 && prop.getUpper() == -1)
 		{
@@ -85,7 +90,7 @@ public class Phrases {
 			mult += "zero ou mais";
 		}
 		else
-			mult += "muitos";
+			mult += "muitos(as)";
 		
 		return mult;
 	}

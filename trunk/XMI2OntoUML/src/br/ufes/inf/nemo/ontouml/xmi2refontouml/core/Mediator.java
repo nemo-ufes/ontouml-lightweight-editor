@@ -139,17 +139,6 @@ public class Mediator {
     		case ASSOCIATION:
 				stereotype = mapper.getStereotype(element);
     			elem1 = refcreator.createAssociation(stereotype);
-    			
-//    			if (elem1 == null) {
-//    				List<Object> listProp = mapper.getElements(element, ElementType.PROPERTY);
-//    				errorPath = "Ends: ";
-//    		    	for (Object e : listProp) {
-//    		    		Map<String, Object> hashProp = mapper.getProperties(e);
-//    		    		errorPath += mapper.getName(mapper.getElementById((String)hashProp.get("type"))) + ", ";
-//    		    	}
-//    		    	errorPath = mapper.getName(element) + "\n" + errorPath;
-//    				break;
-//    			}
     			doClassifier(element, (RefOntoUML.Classifier)elem1);
     			break;
     			
@@ -172,17 +161,23 @@ public class Mediator {
 				break;
     	}
     	
-    	//Every Element can have a Comment
     	if (elem1 != null) {
     		String name = mapper.getName(element);
         	if (elem1 instanceof RefOntoUML.NamedElement) {
         		refcreator.setName((RefOntoUML.NamedElement)elem1, name);
         	}
         	
+        	//Every Element can have a Comment
 	    	List<Object> listComment = mapper.getElements(element, ElementType.COMMENT);
 	        for (Object e : listComment) {
 		        RefOntoUML.Comment comment1 = (RefOntoUML.Comment) createElement(e, ElementType.COMMENT);
 		        refcreator.addComment(elem1, comment1);
+	        }
+	        //Ecore specific element for saving arbitrary information
+	        List<Object> listAnnotations = mapper.getElements(element, ElementType.ANNOTATION);
+	        for (Object e : listAnnotations) {
+	        	String annot = (String) e;
+		        refcreator.addAnnotation(elem1, annot);
 	        }
 	        if (mapper.getID(element) == "") {
 	        	String error = "XMI file is invalid. Element with no ID found.\n" +

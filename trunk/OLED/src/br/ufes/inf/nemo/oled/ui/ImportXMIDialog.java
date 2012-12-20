@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -64,19 +65,44 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	private JTabbedPane treeTabbedPane;
 	private JLabel lblDetails, lblTitle;
 	private Component horizontalStrut;
+	private LoadingPane glassPane;
 	
 	Mediator transfManager;
+	File file;
 	CheckboxTree modelChckTree, diagrChckTree;
 	DiagramManager diagManager;
 	Model model;
 	
-	public ImportXMIDialog(JFrame frame, File file, DiagramManager diagManager, boolean modal) throws Exception {
+	public ImportXMIDialog(JFrame frame, File file, DiagramManager diagMngr, boolean modal) {
 		super(frame, modal);
 		
-		initVariables(file);
-		this.diagManager = diagManager;
-        
-        initGUI();
+		this.diagManager = diagMngr;
+		this.glassPane = new LoadingPane();
+		frame.setGlassPane(glassPane);
+		frame.validate();
+		this.file = file;
+		
+		SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                glassPane.start();
+	            Thread performer = new Thread(new Runnable() {
+	                public void run() {
+	                	try {
+							initVariables();
+		                	glassPane.stop();
+						} catch (Exception e) {
+							ErrorInfo info = new ErrorInfo("Error", "Parsing not done.",
+				        			null, "category", e, Level.SEVERE, null);
+				        	JXErrorPane.showDialog(diagManager, info);
+				        	System.out.println(e.getMessage());
+				        	e.printStackTrace();
+						}
+	                	initGUI();
+	                }
+	            }, "Performer");
+	            performer.start();
+            }
+        });
 	}
 	
 	private void initGUI() {
@@ -143,17 +169,21 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 					importButton.addActionListener(this);
 				}
 			}
+			
+			setVisible(true);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void initVariables(File file) throws Exception {
+	private void initVariables() throws Exception {
 		
 		Mediator transfManager = new Mediator();
 		transfManager.READ_FILE_ADDRESS = file.getAbsolutePath();
 		transfManager.SAVE_FILE_ADDRESS = file.getAbsolutePath().split("\\.")[0] + ".refontouml";
-        RefOntoUML.Model model = transfManager.parse();
+		
+		model = transfManager.parse();
         
         if (Mediator.warningLog != "") {
         	//TODO essa lib que usei tem muita coisa desnecessária, talvez fosse melhor copiar o source
@@ -178,7 +208,6 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
         	this.diagrChckTree = diagramTree;
         	
             this.transfManager = transfManager;
-            this.model = model;
             
         } 
 	}

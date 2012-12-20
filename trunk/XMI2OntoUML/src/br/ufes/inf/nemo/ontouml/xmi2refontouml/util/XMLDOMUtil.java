@@ -64,4 +64,9 @@ public class XMLDOMUtil {
 		return null;
 	}
 	
+	public static void removeElement(Node elem)
+	{
+		elem.getParentNode().removeChild(elem);
+	}
+	
 }

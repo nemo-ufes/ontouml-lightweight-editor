@@ -39,7 +39,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -58,8 +57,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.provider.IDisposable;
-import org.jdesktop.swingx.JXErrorPane;
-import org.jdesktop.swingx.error.ErrorInfo;
 
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
@@ -421,22 +418,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			if (fileChooser.getFileFilter() == filter) {
-				try {
-					File file = fileChooser.getSelectedFile();
-
-		            ImportXMIDialog inst = new ImportXMIDialog(frame, file, this, true);
-		            inst.setLocationRelativeTo(frame);
-		        	inst.setVisible(true);
-		            
-		        	frame.getToolManager().setSelectedIndex(1);
-		        	
-				} catch (Exception ex) {
-					ErrorInfo info = new ErrorInfo("Error", "Parsing not done.",
-		        			null, "category", ex, Level.SEVERE, null);
-		        	JXErrorPane.showDialog(this, info);
-		        	System.out.println(ex.getMessage());
-		        	ex.printStackTrace();
-				}
+				File file = fileChooser.getSelectedFile();
+				
+				ImportXMIDialog inst = new ImportXMIDialog(frame, file, this, true);
+	            inst.setLocationRelativeTo(frame);
+	            
+//		    	frame.getToolManager().setSelectedIndex(1);
 			}
         }
 	}
@@ -840,7 +827,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void generateText() {
 		
 		UmlProject project = getCurrentEditor().getProject();
-		OperationResult result = TextDescriptionHelper.generateText(project.getModel(), project.getTempDir(), frame);
+		OperationResult result = TextDescriptionHelper.generateText(project.getModel(), frame);
 		
 		if(result.getResultType() != ResultType.ERROR)
 		{

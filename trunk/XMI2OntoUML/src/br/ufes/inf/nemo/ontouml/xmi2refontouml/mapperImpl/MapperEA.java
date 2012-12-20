@@ -38,7 +38,7 @@ public class MapperEA implements Mapper {
 	
 	Map<String, Element> stereotypes = new HashMap<String, Element>();
 	
-	List<String> nonUMLElement = new ArrayList<String>();
+//	List<String> nonUMLElement = new ArrayList<String>();
 	
 	public MapperEA(String inputPath) throws Exception {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -81,17 +81,19 @@ public class MapperEA implements Mapper {
 		List<Element> childList = XMLDOMUtil.getElementChilds(element);
 	    for (Element child : childList)
 	    {
-    		setID1(child);
+    		setID(child);
     		
     		populateStereotypesMap(child);
     		
-    		populateNonUMLElementsList(child);
+    		removeNonUMLElements(child);
+    		
+    		separateAssociationClass(child);
     		
     		preProcessXMI(child);
 	    }
 	}
 	
-	private void setID1(Element element)
+	private void setID(Element element)
 	{
 		if (element.hasAttributeNS(XMINS, "id") && 
 				doc.getElementById(element.getAttributeNS(XMINS, "id")) == null)
@@ -119,15 +121,68 @@ public class MapperEA implements Mapper {
 		}
 	}
 	
-	private void populateNonUMLElementsList(Element element)
+//	private void populateNonUMLElementsList(Element element)
+//	{
+//		if (element.getNodeName().equals("element") && element.hasAttributeNS(XMINS, "idref"))
+//		{
+//			String type = element.getAttributeNS(XMINS, "type");
+//			if (type.equals("uml:UMLDiagram") || type.equals("uml:Text") || type.equals("uml:Boundary"))
+//			{
+//				nonUMLElement.add(element.getAttributeNS(XMINS, "idref"));
+//			}
+//		}
+//	}
+	
+	private void removeNonUMLElements(Element element)
 	{
 		if (element.getNodeName().equals("element") && element.hasAttributeNS(XMINS, "idref"))
 		{
 			String type = element.getAttributeNS(XMINS, "type");
 			if (type.equals("uml:UMLDiagram") || type.equals("uml:Text") || type.equals("uml:Boundary"))
 			{
-				nonUMLElement.add(element.getAttributeNS(XMINS, "idref"));
+				XMLDOMUtil.removeElement(doc.getElementById(element.getAttributeNS(XMINS, "idref")));
 			}
+		}
+	}
+	
+	private void separateAssociationClass(Element element)
+	{
+		if (element.getNodeName().equals("extendedProperties") && element.hasAttribute("associationclass"))
+		{
+			Element assocClassElem = doc.getElementById(element.getAttribute("associationclass"));
+			Element assocClassElemClone = (Element) assocClassElem.cloneNode(true);
+			assocClassElem.getParentNode().appendChild(assocClassElemClone);
+			
+			//process Class part
+			assocClassElem.setAttributeNS(XMINS, "type", "uml:Class");
+			for (Element childElem : XMLDOMUtil.getElementChilds(assocClassElem))
+			{
+				if (childElem.getNodeName().equals("memberEnd") || childElem.getNodeName().equals("ownedEnd"))
+				{
+					XMLDOMUtil.removeElement(childElem);
+				}
+			}
+			
+			//Process Association part
+			assocClassElemClone.setAttributeNS(XMINS, "type", "uml:Association");
+			assocClassElemClone.setAttributeNS(XMINS, "id", 
+					((Element)element.getParentNode()).getAttributeNS(XMINS, "idref"));
+			assocClassElemClone.setAttribute("name", ((Element)element.getParentNode()).getAttribute("name"));
+			assocClassElemClone.setAttribute("relator", assocClassElem.getAttributeNS(XMINS, "id"));
+			for (Element childElem : XMLDOMUtil.getElementChilds(assocClassElemClone))
+			{
+				if (childElem.getNodeName().equals("ownedAttribute"))
+				{
+					XMLDOMUtil.removeElement(childElem);
+				}
+				else if (childElem.hasAttributeNS(XMINS, "id"))
+				{
+					childElem.setIdAttributeNS(XMINS, "id", true);
+				}
+			}
+			
+			assocClassElem.setIdAttributeNS(XMINS, "id", true);
+			assocClassElemClone.setIdAttributeNS(XMINS, "id", true);
 		}
 	}
 
@@ -151,9 +206,9 @@ public class MapperEA implements Mapper {
 					ElementType.get(type) == ElementType.ASSOCIATION) {
 				stereotype = "";
 				
-			} else if (ElementType.get(type) == ElementType.ASSOCIATIONCLASS) {
-				stereotype = "relator";
-				
+//			} else if (ElementType.get(type) == ElementType.ASSOCIATIONCLASS) {
+//				stereotype = "relator";
+//				
 			} else {
 				stereotype = type;
 			}
@@ -168,40 +223,53 @@ public class MapperEA implements Mapper {
 		Element elem = (Element) element;
 		
 		switch (type) {
-			case ASSOCIATION:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATION, this);
-				List<Element> assoClassList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATIONCLASS, this);
-				for (Object assocClass : assoClassList) {
-					Element assocClassElem = (Element) assocClass;
-					Element assocClassElemClone = (Element) assocClassElem.cloneNode(true);
-					NodeList extendedProp = doc.getElementsByTagName("extendedProperties");
-					for (int i = 0; i < extendedProp.getLength(); i++) {
-						if (((Element)extendedProp.item(i)).hasAttribute("associationclass") &&
-								((Element)extendedProp.item(i)).getAttribute("associationclass").equals(assocClassElem.getAttributeNS(XMINS, "id"))) {
-							assocClassElemClone.setAttribute("relator", 
-									assocClassElem.getAttributeNS(XMINS, "id"));
-							assocClassElemClone.setAttributeNS(XMINS, "id", 
-									((Element)extendedProp.item(i).getParentNode()).getAttributeNS(XMINS, "idref"));
-							assocClassElemClone.setAttribute("name", 
-									((Element)extendedProp.item(i).getParentNode()).getAttribute("name"));
-							assocClassElem.getParentNode().appendChild(assocClassElemClone);
-							assocClassElem.setIdAttributeNS(XMINS, "id", true);
-							assocClassElemClone.setIdAttributeNS(XMINS, "id", true);
-						}
-					}
-					elemList.add(assocClassElemClone);
+			case ANNOTATION:
+				if (getType(elem) == ElementType.ASSOCIATION)
+				{
+					return Arrays.asList(getAnnotations(elem).toArray());
 				}
 				break;
+			case ASSOCIATION:
+				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATION, this);
+//				List<Element> assoClassList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATIONCLASS, this);
+//				for (Object assocClass : assoClassList) {
+//					Element assocClassElem = (Element) assocClass;
+//					if (assocClassElem.hasAttribute("relator"))
+//					{
+//						elemList.add(assocClassElem);
+//					}
+//				}
+				break;
 			case CLASS:
-				List<Element> classListAux = XMLDOMUtil.getElementChildsByType(elem, ElementType.CLASS, this);
-				for (Element classElem : classListAux)
-				{
-					if (!nonUMLElement.contains(getID(classElem)))
-					{
-						elemList.add(classElem);
-					}
-				}
-				elemList.addAll(XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATIONCLASS, this));
+				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.CLASS, this);
+//				for (Element classElem : classListAux)
+//				{
+//					if (!nonUMLElement.contains(getID(classElem)))
+//					{
+//						elemList.add(classElem);
+//					}
+//				}
+//				assoClassList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATIONCLASS, this);
+//				for (Object assocClass : assoClassList) {
+//					Element assocClassElem = (Element) assocClass;
+//					Element assocClassElemClone = (Element) assocClassElem.cloneNode(true);
+//					NodeList extendedProp = doc.getElementsByTagName("extendedProperties");
+//					for (int i = 0; i < extendedProp.getLength(); i++) {
+//						if (((Element)extendedProp.item(i)).hasAttribute("associationclass") &&
+//								((Element)extendedProp.item(i)).getAttribute("associationclass").equals(assocClassElem.getAttributeNS(XMINS, "id"))) {
+//							assocClassElemClone.setAttribute("relator", 
+//									assocClassElem.getAttributeNS(XMINS, "id"));
+//							assocClassElemClone.setAttributeNS(XMINS, "id", 
+//									((Element)extendedProp.item(i).getParentNode()).getAttributeNS(XMINS, "idref"));
+//							assocClassElemClone.setAttribute("name", 
+//									((Element)extendedProp.item(i).getParentNode()).getAttribute("name"));
+//							assocClassElem.getParentNode().appendChild(assocClassElemClone);
+//							assocClassElem.setIdAttributeNS(XMINS, "id", true);
+//							assocClassElemClone.setIdAttributeNS(XMINS, "id", true);
+//						}
+//					}
+//					elemList.add(assocClassElem);
+//				}
 				break;
 			case COMMENT:
 				if (getType(elem) != ElementType.COMMENT)
@@ -223,7 +291,9 @@ public class MapperEA implements Mapper {
 				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ENUMLITERAL, this);
 				break;
 			case GENERALIZATION:
-				if (getType(elem) != ElementType.ASSOCIATIONCLASS || !elem.hasAttribute("relator")) {
+//				if (getType(elem) != ElementType.ASSOCIATIONCLASS || !elem.hasAttribute("relator")) {
+				if (getType(elem) != ElementType.ASSOCIATION)
+				{
 					elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.GENERALIZATION, this);
 				}
 				break;
@@ -241,30 +311,35 @@ public class MapperEA implements Mapper {
 				elemList.addAll(XMLDOMUtil.getElementChildsByType(elem, ElementType.PRIMITIVE, this));
 				break;
 			case PROPERTY:
-				if (getType(elem) == ElementType.ASSOCIATIONCLASS) {
-					List<Element> propListAux = XMLDOMUtil.getElementChildsByType(elem, ElementType.PROPERTY, this);
-					for (Object o : propListAux) {
-						Element e = (Element) o;
-						if (elem.hasAttribute("relator")) {
-							if (e.hasAttribute("association") &&
-									e.getAttribute("association").equals(elem.getAttribute("relator"))) {
-								elemList.add(e);
-							}
-						}
-						else if (!e.hasAttribute("association") ||
-								!e.getAttribute("association").equals(elem.getAttributeNS(XMINS, "id"))) {
-								elemList.add(e);
-						}
-					}
-				} else {
+//				if (getType(elem) == ElementType.ASSOCIATIONCLASS) {
+//					List<Element> propListAux = XMLDOMUtil.getElementChildsByType(elem, ElementType.PROPERTY, this);
+//					for (Object o : propListAux) {
+//						Element e = (Element) o;
+//						if (elem.hasAttribute("relator")) {
+//							if (e.hasAttribute("association") &&
+//									e.getAttribute("association").equals(elem.getAttribute("relator"))) {
+//								elemList.add(e);
+//							}
+//						}
+//						else if (!e.hasAttribute("association") ||
+//								!e.getAttribute("association").equals(elem.getAttributeNS(XMINS, "id"))) {
+//								elemList.add(e);
+//						}
+//					}
+//				} else {
 					elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.PROPERTY, this);
-				}
+//				}
 				break;
 			default:
 				break;
 		}
 		
 		return Arrays.asList(elemList.toArray());
+	}
+	
+	private List<String> getAnnotations(Element elem)
+	{
+		return new ArrayList<String>();
 	}
 	
 	private List<Element> getPrimitives() {
@@ -289,9 +364,9 @@ public class MapperEA implements Mapper {
 		if (elements != null) {
 			List<Element> elemList = XMLDOMUtil.getElementChilds(elements);
 	
-			for (Object element : elemList) {
-				Element properties = XMLDOMUtil.getFirstAppearanceOf((Element)element, "properties");
-				if (((Element)element).getAttributeNS(XMINS, "idref").equals(elem.getAttributeNS(XMINS, "id")) &&
+			for (Element element : elemList) {
+				Element properties = XMLDOMUtil.getFirstAppearanceOf(element, "properties");
+				if (element.getAttributeNS(XMINS, "idref").equals(elem.getAttributeNS(XMINS, "id")) &&
 						properties != null &&
 						properties.getAttribute("documentation") != "") {
 					
@@ -299,7 +374,7 @@ public class MapperEA implements Mapper {
 					description.setAttributeNS(XMINS, "id", elem.getAttributeNS(XMINS, "id") + "_description");
 					description.setIdAttributeNS(XMINS, "id", true);
 					description.setAttributeNS(XMINS, "type", "uml:Comment");
-					description.setAttribute("body", properties.getAttribute("documentation"));
+					description.setAttribute("body", "Definition="+properties.getAttribute("documentation"));
 					elem.appendChild(description);
 					
 				}
@@ -346,7 +421,9 @@ public class MapperEA implements Mapper {
             	}
         	}
         	
-    	} else if (getType(elem) == ElementType.ASSOCIATION || getType(elem) == ElementType.ASSOCIATIONCLASS) {
+//    	} else if (getType(elem) == ElementType.ASSOCIATION || getType(elem) == ElementType.ASSOCIATIONCLASS) {
+    	} else if (getType(elem) == ElementType.ASSOCIATION)
+    	{
     		List<Element> memberEndsAux = XMLDOMUtil.getElementChildsByTagName(elem, "memberEnd");
     		List<String> memberEnds = new ArrayList<String>();
     		for (Element memberEnd : memberEndsAux) {
@@ -442,11 +519,12 @@ public class MapperEA implements Mapper {
 
 	@Override
 	public String getRelatorfromMaterial(Object element) {
-		Element elem = (Element) element;
-		if (getType(elem) == ElementType.ASSOCIATIONCLASS) {
-			return elem.getAttribute("relator");
-		}
-		return null;
+//		Element elem = (Element) element;
+//		if (getType(elem) == ElementType.ASSOCIATIONCLASS) {
+//			return elem.getAttribute("relator");
+//		}
+//		return null;
+		return ((Element)element).getAttribute("relator");
 	}
 
 	@Override
@@ -483,17 +561,22 @@ public class MapperEA implements Mapper {
 							"in diagram " + ((Element)((Element)diagram).getElementsByTagName
 							("properties").item(0)).getAttribute("name") + " found.");
 				}
-				ElementType type = getType(getElementById(((Element)diagElem).getAttribute("subject")));
+				Element elem = doc.getElementById(((Element)diagElem).getAttribute("subject"));
+				ElementType type = getType(elem);
 				if (type == ElementType.CLASS ||
 						type == ElementType.ASSOCIATION)
 				{
 					diagElemIDList.add(((Element)diagElem).getAttribute("subject"));
+					if (elem.hasAttribute("relator"))
+					{
+						diagElemIDList.add("derivation" + elem.getAttribute("relator"));
+					}
 				}
-				else if (type == ElementType.ASSOCIATIONCLASS)
-				{
-					diagElemIDList.add(((Element)diagElem).getAttribute("subject"));
-					diagElemIDList.add("derivation" + ((Element)diagElem).getAttribute("subject"));
-				}
+//				else if (type == ElementType.ASSOCIATIONCLASS)
+//				{
+//					diagElemIDList.add(((Element)diagElem).getAttribute("subject"));
+//					diagElemIDList.add("derivation" + ((Element)diagElem).getAttribute("subject"));
+//				}
 			}
 		}
 		
