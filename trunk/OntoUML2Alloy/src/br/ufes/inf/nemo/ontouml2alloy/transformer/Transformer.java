@@ -29,12 +29,14 @@ import RefOntoUML.Association;
 import RefOntoUML.Characterization;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
+import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Mode;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
+import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
@@ -138,7 +140,20 @@ public class Transformer extends BaseTransformer {
 	@SuppressWarnings("unchecked")
 	public void transformAttribute(Classifier c, Property attr)
 	{		
-		ArrowOperation aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(c),0,-1,ontoparser.getAlias(attr.getType()),attr.getLower(),attr.getUpper());		
+		String target = new String();
+		ArrowOperation aOp  = factory.createArrowOperation();
+		
+		if (attr.getType() instanceof PrimitiveType)
+		{
+			if (attr.getType().getName().equals("int")) target = "Int";
+			if (attr.getType().getName().equals("Boolean")) target = "Bool";
+			aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(c),0,-1,target,attr.getLower(),attr.getUpper());
+			
+		}else{
+			
+			aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(c),0,-1,ontoparser.getAlias(attr.getType()),attr.getLower(),attr.getUpper());
+		}
+				
 		Declaration decl = AlloyUtil.createDeclaration(factory, ontoparser.getAlias(attr), aOp);		
 		if (decl!=null) world.getRelation().add(decl);
 	}
@@ -280,10 +295,18 @@ public class Transformer extends BaseTransformer {
 			
 		if(ass.getMemberEnd().get(0).getName().compareTo("") != 0)	
 		{
+			RefOntoUML.Type paramType = ass.getMemberEnd().get(1).getType();
+			RefOntoUML.Type returnType = ass.getMemberEnd().get(0).getType();
+			
 			String functionName = ontoparser.getAlias(ass.getMemberEnd().get(0));			
-			String returnName = ontoparser.getAlias(ass.getMemberEnd().get(0).getType());			
-			String paramName = ontoparser.getAlias(ass.getMemberEnd().get(1).getType());			
+			String returnName = new String();
+			returnName = ontoparser.getAlias(returnType);			
+			String paramName = new String();
+			paramName = ontoparser.getAlias(paramType);			
 			String assocName = ontoparser.getAlias(ass);
+			
+			if (!(paramType instanceof DataType)) paramName="World."+ontoparser.getAlias(paramType);
+			if (!(returnType instanceof DataType)) returnName="World."+ontoparser.getAlias(returnType);
 			
 			FunctionDeclaration fun = 
 					AlloyUtil.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);
@@ -295,10 +318,18 @@ public class Transformer extends BaseTransformer {
 			
 		if(ass.getMemberEnd().get(1).getName().compareTo("") != 0)
 		{
+			RefOntoUML.Type paramType = ass.getMemberEnd().get(0).getType();
+			RefOntoUML.Type returnType = ass.getMemberEnd().get(1).getType();
+			
 			String functionName = ontoparser.getAlias(ass.getMemberEnd().get(1));			
-			String returnName = ontoparser.getAlias(ass.getMemberEnd().get(1).getType());			
-			String paramName = ontoparser.getAlias(ass.getMemberEnd().get(0).getType());			
+			String returnName = new String();
+			returnName = ontoparser.getAlias(returnType);			
+			String paramName = new String();
+			paramName = ontoparser.getAlias(paramType);
 			String assocName = ontoparser.getAlias(ass);
+			
+			if (!(paramType instanceof DataType)) paramName="World."+ontoparser.getAlias(paramType);
+			if (!(returnType instanceof DataType)) returnName="World."+ontoparser.getAlias(returnType);
 			
 			FunctionDeclaration fun = 
 					AlloyUtil.createFunctionDeclaration(factory, world, target, functionName, paramName, returnName, assocName);

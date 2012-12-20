@@ -34,59 +34,45 @@ import br.ufes.inf.nemo.ontouml2alloy.util.AlloyUtil;
 
 public class BaseTransformer {
 	
-	/** OntoUML Parser. */
 	public OntoUMLParser ontoparser;
 
-	/** Transformation Options. */
 	public OntoUMLOptions options;
-	
-	/** Alloy Factory Instance.  */
+
 	public AlloyFactory factory;	
 	
-	/** Alloy Module. */
 	public AlloyModule module;
 	
-	/** Alloy Signature World. */
 	public SignatureDeclaration world;
 	
-	/** Alloy World Field exists. */
 	public Variable exists;	
 
-
-	public FactDeclaration dataTypeCompletenessFact;	
-	public ArrayList<FactDeclaration> genSetFactList = new ArrayList<FactDeclaration>();
-	public ArrayList<FactDeclaration> genFactList = new ArrayList<FactDeclaration>();
-	public FactDeclaration dataTypeTopLevelFact;
-	
-	/** Alloy additional_facts Declaration */
-	public FactDeclaration additional_facts;
-	
-	/** Alloy association_properties Fact Declaration. */
-	public FactDeclaration association_properties;
-
-	/** Alloy derivation Fact Declaration. */
-	public FactDeclaration derivations;
-	
-	/** Alloy all_antirigid_classes Fact Declaration. */
-	public FactDeclaration all_antirigid_classes;
-
-	/** Alloy all_rigid_classes Fact Declaration. */
-	public FactDeclaration all_rigid_classes;
-	
-	/** Alloy Default Signature : sig Object{}. */
 	public SignatureDeclaration sigObject;
 	
-	/** Alloy Default Signature : sig Property{}. */
 	public SignatureDeclaration sigProperty;
 	
-	/** Alloy Default Signature : sig DataType{}. */
 	public SignatureDeclaration sigDatatype;
 	
-	/** List of DataTypes Signatures. e.g. sig datatype in DataType {} .*/
 	public ArrayList<SignatureDeclaration> dataTypesSignatures = new ArrayList<SignatureDeclaration>();	
 	
-	/** List of Enumeration Signatures. e.g. enum enumeration { literals } .*/
 	public ArrayList<EnumDeclaration> enumerationSignatures = new ArrayList<EnumDeclaration>();
+	
+	public FactDeclaration additionalFact;
+	
+	public FactDeclaration dataTypeCompletenessFact;
+	
+	public FactDeclaration dataTypeTopLevelFact;
+	
+	public ArrayList<FactDeclaration> rigidityFactList = new ArrayList<FactDeclaration>();;
+	
+	public ArrayList<FactDeclaration> antirigidityFactList = new ArrayList<FactDeclaration>();;
+	
+	public ArrayList<FactDeclaration> genSetFactList = new ArrayList<FactDeclaration>();
+	
+	public ArrayList<FactDeclaration> genFactList = new ArrayList<FactDeclaration>();
+			
+	public FactDeclaration association_properties;
+	
+	public FactDeclaration derivations;	
 
 	/** 
 	 * Constructor
@@ -113,9 +99,11 @@ public class BaseTransformer {
 		ModuleImportation mi1 = AlloyUtil.createModuleImport(factory,"world_structure","", world);		
 		ModuleImportation mi2 = AlloyUtil.createModuleImport(factory,"ontological_properties","", world);
 		ModuleImportation mi3 = AlloyUtil.createModuleImport(factory,"relation","util", null);
+		ModuleImportation mi4 = AlloyUtil.createModuleImport(factory,"boolean","util", null);
 		module.getImports().add(mi1);
 		module.getImports().add(mi2);
 		module.getImports().add(mi3);
+		module.getImports().add(mi4);
 			
 		/* sig Object{}
 		 */
@@ -186,27 +174,7 @@ public class BaseTransformer {
 			world.getRelation().add(exists.getDeclaration());			
 		}
 		module.getParagraph().add(world);
-				
-		/* fact additional_facts {...}
-		 */
-		{
-			additional_facts = factory.createFactDeclaration();
-			additional_facts.setName("additional_facts");
-			Block block = factory.createBlock();
-			additional_facts.setBlock(block);
-			
-			PredicateInvocation pI = AlloyUtil.createLinearExistenceInvocation(factory,exists);
-			if (pI!=null) block.getExpression().add(pI);			
-
-			ArrayList<String> existsSignatures = new ArrayList<String>();
-			if(sigObject!=null) existsSignatures.add(sigObject.getName());
-			if(sigProperty!=null) existsSignatures.add(sigProperty.getName());
-			PredicateInvocation pI2 = AlloyUtil.createAllElementsExistsInvocation(factory,exists,existsSignatures);
-			if (pI!=null) block.getExpression().add(pI2);
-		
-			module.getParagraph().add(additional_facts);
-		}
-		
+						
 		/* fact association_properties {}
 		 */
 		{
@@ -222,30 +190,10 @@ public class BaseTransformer {
 			derivations.setName("derivations");
 			derivations.setBlock(factory.createBlock());			
 		}
-				
-		/* fact all_rigid_classes {...}
-		 */
-		{
-			all_rigid_classes = factory.createFactDeclaration();		
-			all_rigid_classes.setName("all_rigid_classes");
-			all_rigid_classes.setBlock(factory.createBlock());	
-			populateAllRigidFactDeclaration();
-			if (all_rigid_classes.getBlock().getExpression().size()>0) module.getParagraph().add(all_rigid_classes);
-		}
 		
-		/* fact all_antirigid_classes {...}
-		 */
-		{
-			all_antirigid_classes = factory.createFactDeclaration();
-			all_antirigid_classes.setName("all_antirigid_classes");
-			all_antirigid_classes.setBlock(factory.createBlock());			
-			if (options.antiRigidity) 
-			{
-				populateAntiRigidFactDeclaration();
-				if (all_antirigid_classes.getBlock().getExpression().size()>0)  module.getParagraph().add(all_antirigid_classes);
-			}
-		}		
-		
+		populateWihAdditionalRules();
+		populateWithRigidityRules();
+		populateWithAntiRigidityRules();
 		populateDataTypeCompletenessRule();		
 		populateWithTopLevelDataTypeDisjointnessRules();
 		populateWithTopLevelDisjointnessRules();		
@@ -254,60 +202,100 @@ public class BaseTransformer {
 	}
 	
 	/**
-	 * 	Populate all_rigid_classes Fact Declaration.
+	 * 	Populates With Additional Rules.
 	 */
 	@SuppressWarnings("unchecked")
-	protected void populateAllRigidFactDeclaration() 
+	protected void populateWihAdditionalRules()
+	{
+		additionalFact = factory.createFactDeclaration();
+		additionalFact.setName("additionalFacts");
+		Block block = factory.createBlock();
+		additionalFact.setBlock(block);
+		
+		PredicateInvocation pI = AlloyUtil.createLinearExistenceInvocation(factory,exists);
+		if (pI!=null) block.getExpression().add(pI);			
+
+		ArrayList<String> existsSignatures = new ArrayList<String>();
+		if(sigObject!=null) existsSignatures.add(sigObject.getName());
+		if(sigProperty!=null) existsSignatures.add(sigProperty.getName());
+		
+		PredicateInvocation pI2 = AlloyUtil.createAllElementsExistsInvocation(factory,exists,existsSignatures);
+		if (pI!=null) block.getExpression().add(pI2);
+	
+		module.getParagraph().add(additionalFact);
+	}
+	
+	/**
+	 * 	Populates With Rigidity Rules.
+	 */
+	@SuppressWarnings("unchecked")
+	protected void populateWithRigidityRules() 
 	{
 		ArrayList<Classifier> rigidElementsList = new ArrayList<Classifier>();
-		rigidElementsList.addAll(ontoparser.getRigidClasses());		
+		rigidElementsList.addAll(ontoparser.getRigidClasses());	
+		
 		if(rigidElementsList.size()>0)
 		{
 			for(Classifier rigid :rigidElementsList)
-			{	
+			{				
 				/* ObjectClass
 				 */
 				if(rigid instanceof ObjectClass)
 				{
+					FactDeclaration rigidityFact = factory.createFactDeclaration();		
+					rigidityFact.setName("rigidity");
+					rigidityFact.setBlock(factory.createBlock());
 					PredicateInvocation pI = AlloyUtil.createRigidityInvocation(factory, sigObject, exists, ontoparser.getAlias(rigid));
-					all_rigid_classes.getBlock().getExpression().add(pI);
+					rigidityFact.getBlock().getExpression().add(pI);
+					rigidityFactList.add(rigidityFact);
 				}
 				/* MomentClass
 				 */
 				if(rigid instanceof MomentClass)
 				{
+					FactDeclaration rigidityFact = factory.createFactDeclaration();		
+					rigidityFact.setName("rigidity");
+					rigidityFact.setBlock(factory.createBlock());
 					PredicateInvocation pI = AlloyUtil.createRigidityInvocation(factory, sigProperty, exists, ontoparser.getAlias(rigid));
-					all_rigid_classes.getBlock().getExpression().add(pI);
-				}							
+					rigidityFact.getBlock().getExpression().add(pI);
+					rigidityFactList.add(rigidityFact);
+				}				
 			}			
 		}
+		for(FactDeclaration fact: rigidityFactList) module.getParagraph().add(fact);
 	}
 	
 	/**
-	 * 	Populate all_antirigid_classes Fact Declaration.
+	 * 	Populates With Anti Rigidity Rules.
 	 */
 	@SuppressWarnings("unchecked")
-	protected void populateAntiRigidFactDeclaration() 
+	protected void populateWithAntiRigidityRules() 
 	{
 		ArrayList<Classifier> antirigidElementsList = new ArrayList<Classifier>();
-		antirigidElementsList.addAll(ontoparser.getAntiRigidClasses());		
-		if(antirigidElementsList.size()>0)
+		antirigidElementsList.addAll(ontoparser.getAntiRigidClasses());
+						
+		if(antirigidElementsList.size()>0 && options.antiRigidity)
 		{						
 			for(Classifier antirigid : antirigidElementsList)
-			{
+			{				
 				/* ObjectClass
 				 */
 				if(antirigid instanceof ObjectClass)
 				{
+					FactDeclaration antirigidityFact = factory.createFactDeclaration();
+					antirigidityFact.setName("antirigidity");
+					antirigidityFact.setBlock(factory.createBlock());
 					PredicateInvocation pI = AlloyUtil.createAntiRigidityInvocation(factory,sigObject, exists, ontoparser.getAlias(antirigid));					
-					all_antirigid_classes.getBlock().getExpression().add(pI);
-				}
+					antirigidityFact.getBlock().getExpression().add(pI);
+					antirigidityFactList.add(antirigidityFact);
+				}				
 			}			
 		}
+		for(FactDeclaration fact: antirigidityFactList) module.getParagraph().add(fact);
 	}
 	
 	/**
-	 * Populate Data Type Completeness Rule.
+	 * Populates With Data Type Completeness Rule.
 	 */
 	@SuppressWarnings("unchecked")
 	protected void populateDataTypeCompletenessRule()
@@ -316,23 +304,30 @@ public class BaseTransformer {
 		dataTypeList.addAll(ontoparser.getTopLevelInstances(RefOntoUML.DataType.class));
 		dataTypeList.removeAll(ontoparser.getTopLevelInstances(RefOntoUML.Enumeration.class));
 		dataTypeList.removeAll(ontoparser.getTopLevelInstances(RefOntoUML.PrimitiveType.class));				
-		
+
 		dataTypeCompletenessFact = factory.createFactDeclaration();
 		dataTypeCompletenessFact.setName("dataTypeCompleteness");
 		dataTypeCompletenessFact.setBlock(factory.createBlock());
 
 		if (dataTypeList.size()>0)
 		{
-			CompareOperation cOp = AlloyUtil.createCompareOperation( factory, sigDatatype.getName(), CompareOperator.EQUAL_LITERAL, 
-			AlloyUtil.createUnionExpression(factory, ontoparser.getAlias(dataTypeList)).toString());		
-			dataTypeCompletenessFact.getBlock().getExpression().add(cOp);
+			if (dataTypeList.size()==1)
+			{
+				CompareOperation cOp = AlloyUtil.createCompareOperation( factory, sigDatatype.getName(), CompareOperator.EQUAL_LITERAL, ontoparser.getAlias(dataTypeList.get(0)));
+				dataTypeCompletenessFact.getBlock().getExpression().add(cOp);
+			}else{
+						
+				CompareOperation cOp = AlloyUtil.createCompareOperation( factory, sigDatatype.getName(), CompareOperator.EQUAL_LITERAL, 
+				AlloyUtil.createUnionExpression(factory, ontoparser.getAlias(dataTypeList)).toString());
+				dataTypeCompletenessFact.getBlock().getExpression().add(cOp);
+			}	
 			
 			module.getParagraph().add(dataTypeCompletenessFact);
 		}		
 	}
 
 	/**
-	 * 	Populates Top Level DataTypes Disjointness Rules.
+	 * 	Populates With Top Level DataTypes Disjointness Rules.
 	 */
 	@SuppressWarnings("unchecked")
 	protected void populateWithTopLevelDataTypeDisjointnessRules()
@@ -358,7 +353,7 @@ public class BaseTransformer {
 	}
 	
 	/**
-	 * 	Populates Top Level Rules Disjointness Rules..
+	 * 	Populates With  Top Level Rules Disjointness Rules..
 	 */
 	@SuppressWarnings("unchecked")
 	protected void populateWithTopLevelDisjointnessRules()
@@ -389,7 +384,7 @@ public class BaseTransformer {
 	}
 	
 	/**
-	 * 	Populates Generalization Rules.
+	 * 	Populates With Generalization Rules.
 	 */
 	@SuppressWarnings("unchecked")
 	protected void populateWithGeneralizationRules()
@@ -425,7 +420,7 @@ public class BaseTransformer {
 	}
 	
 	/**
-	 * 	Populates Generalization Set Rules.
+	 * 	Populates With Generalization Set Rules.
 	 */
 	@SuppressWarnings("unchecked")
 	protected void populateWithGeneralizationSetRules()
@@ -448,8 +443,10 @@ public class BaseTransformer {
 			{
 				//DataTypes
 				if (co!=null) genSetFact.getBlock().getExpression().add(co); 
-				if (disj!=null) genSetFact.getBlock().getExpression().add(disj);				
-			}else {				
+				if (disj!=null) genSetFact.getBlock().getExpression().add(disj);	
+				
+			}else {		
+				
 				//Classes
 				genSetFact.getBlock().getExpression().add(co);
 				genSetFact.getBlock().getExpression().add(disj);
