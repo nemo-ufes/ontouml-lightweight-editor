@@ -28,19 +28,33 @@ public class OntoUML2UML {
 	public static void main(String[] args)
 	{
 		try {
-			String path = "C:\\Users\\John\\SVNs\\SVN-OLED\\OntoUML2UML\\model\\project.refontouml";
-			Transformation(new OntoUMLParser(path),path.replace(".refontouml", ".uml" ));
+			String path = "C:\\Users\\John\\SVNs\\SVN-OLED\\OntoUML2UML\\model\\teste.refontouml";
+			Transformation(new OntoUMLParser(path),path.replace(".refontouml", ".uml" ),true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static Resource Transformation (OntoUMLParser refparser, String umlPath)
+	public static Resource Transformation (RefOntoUML.Package refmodel, String umlPath, boolean ignorePackageHierarchy)
 	{
 		logDetails="";
 		Resource umlResource = null;
 		
-		transformer = new Transformation(refparser);			  
+		OntoUMLParser refparser = new OntoUMLParser(refmodel);
+		
+		transformer = new Transformation(refparser,ignorePackageHierarchy);			  
+		org.eclipse.uml2.uml.Package umlmodel = transformer.Transform();	
+   		   
+		umlResource = saveUML(umlPath,umlmodel);		   
+		return umlResource;
+	}
+	
+	public static Resource Transformation (OntoUMLParser refparser, String umlPath, boolean ignorePackageHierarchy)
+	{
+		logDetails="";
+		Resource umlResource = null;
+		
+		transformer = new Transformation(refparser,ignorePackageHierarchy);			  
 		org.eclipse.uml2.uml.Package umlmodel = transformer.Transform();	
    		   
 		umlResource = saveUML(umlPath,umlmodel);		   
