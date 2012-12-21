@@ -135,7 +135,7 @@ public class OCLParser {
 		umlenv = envFactory.createEnvironment();		
 		org.eclipse.ocl.uml.OCL myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
 		myOCL.setParseTracingEnabled(true);
-				
+
 		analyzer = myOCL.createAnalyzer(FileUtil.readFile(oclAbsolutePath));
 		cstree = analyzer.parseConcreteSyntax();
 		

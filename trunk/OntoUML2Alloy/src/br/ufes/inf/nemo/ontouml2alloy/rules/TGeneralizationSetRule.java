@@ -46,21 +46,20 @@ public class TGeneralizationSetRule {
 		co.setOperator(CompareOperator.EQUAL);
 		
 		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(ontoparser.getAlias(gs.getGeneralization().get(0).getGeneral()));
+		
+		vr.setVariable(ontoparser.getAlias(gs.parent()));
 		
 		co.setLeftExpression(vr);
 		
-		int cont = 1;
+		int cont = 1;		
 		BinaryOperation bo = factory.createBinaryOperation();
-		for(Generalization gen : gs.getGeneralization())
+		for(Generalization gen : ontoparser.retainSelected(gs.getGeneralization()))
 		{
-			if (ontoparser.isSelected(gen))
-			{
-			if(gs.getGeneralization().size() == 1)
+			if(ontoparser.retainSelected(gs.getGeneralization()).size() == 1)
 			{
 				VariableReference vr1 = factory.createVariableReference();
-				vr1.setVariable(ontoparser.getAlias(gen.getSpecific()));					
-				co.setRightExpression(vr);				
+				vr1.setVariable(ontoparser.getAlias(gen.getSpecific()));				
+				co.setRightExpression(vr1);				
 				break;
 			}
 			if(cont == 1)
@@ -70,7 +69,7 @@ public class TGeneralizationSetRule {
 				vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
 				bo.setLeftExpression(vr);
 				co.setRightExpression(bo);
-			}
+			}			
 			if(cont > 1 && cont != gs.getGeneralization().size())
 			{
 				vr = factory.createVariableReference();
@@ -88,7 +87,6 @@ public class TGeneralizationSetRule {
 			}			
 			cont++;
 			}
-		}
 		return co;
 	}
 }
