@@ -97,6 +97,11 @@ public class AlloyModel {
 		content = OntoUML2Alloy.Transformation(ontoumlmodel.getOntoUMLParser(), alsPath, optmodel.getOptions());		
 	}
 	
+	public void setContent(String content) throws IOException
+	{ 
+		this.content = content; FileUtil.copyStringToFile(content, alsPath); 
+	}	
+	
 	/**
 	 * This method basically initialize the path of alloy model, i.e. without any content.
 	 * 
@@ -142,6 +147,7 @@ public class AlloyModel {
 	
 	/** Get content of alloy specification. */
 	public String getContent() { return content; }
+	
 	
 	/** Get the Destination Directory of this model. */
 	public String getDirectory() { return alsOutDirectory; }
