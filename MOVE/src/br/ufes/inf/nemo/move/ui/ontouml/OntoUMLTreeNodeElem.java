@@ -84,28 +84,29 @@ public class OntoUMLTreeNodeElem {
 		    
 		    String result = new String();
 		    
-		    if (genset.parent()!=null) result += type + " " + name + " / "+(genset.parent()).getName()+" { ";
+		    result += type + " " + name + " / ";
 		    
-		    EList<Generalization> genlist = ((RefOntoUML.GeneralizationSet)element).getGeneralization();		    
-		    int i=1;
-		    for(Generalization gen: genlist)
-		    {
-		    	if (gen.getSpecific()!=null)
-		    	{
-		    		if(i < genlist.size()) result += gen.getSpecific().getName()+", ";
-		    		else result += gen.getSpecific().getName() ;
-		    	}
-		    	i++;
+		    if (genset.parent()!=null){
+		    	result += (genset.parent()).getName()+" { ";
+			    EList<Generalization> genlist = ((RefOntoUML.GeneralizationSet)element).getGeneralization();		    
+			    int i=1;
+			    for(Generalization gen: genlist)
+			    {
+			    	if (gen.getSpecific()!=null)
+			    	{
+			    		if(i < genlist.size()) result += gen.getSpecific().getName()+", ";
+			    		else result += gen.getSpecific().getName() ;
+			    	}
+			    	i++;
+			    }
+			    result += " } ";
 		    }
-		    result += " } ";
 		    return result;		    
 		}
 		
 		if (element instanceof RefOntoUML.Property)
 		{
-			System.out.println("Property: "+element);
-			System.out.println("P Type: "+((RefOntoUML.Property)element).getType());
-			
+						
 			String TypeName = ((RefOntoUML.Property)element).getType().getName();
 			String name = ((RefOntoUML.Property)element).getName();
 			Integer lower = ((RefOntoUML.Property)element).getLower();
