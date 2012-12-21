@@ -96,7 +96,6 @@ public class RSAntiPatternController {
 	    		// set alloy model from ontoUML transformation
 	    		manager.getAlloyModel().setAlloyModel(manager.getOntoUMLModel(),manager.getOntoUMLOptionModel());	    		
 	    		String content = manager.getAlloyModel().getContent();
-	    		System.out.println(content);
 	    		
 	    		// add predicates to alloy content
 	    		content = content+"\n"+predicates;	    		
