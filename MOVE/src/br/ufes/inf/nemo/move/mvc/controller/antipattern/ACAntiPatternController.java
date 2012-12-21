@@ -3,9 +3,9 @@ package br.ufes.inf.nemo.move.mvc.controller.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.ACAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.ACAntiPatternView;
+import br.ufes.inf.nemo.move.ui.TheManager;
 
 /**
  * @author John Guerson
@@ -60,16 +60,35 @@ public class ACAntiPatternController {
 	    			); 
 	    		}
 				
-	    		acModel.getACAntiPattern().setSelected(acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
-
-	    		acView.getTheFrame().getManager().getAlloyModel().setAlloyModel(acView.getTheFrame().getManager().getOntoUMLModel(),acView.getTheFrame().getManager().getOntoUMLOptionModel());
-	    		acView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
-	    				
-	    		String content = FileUtil.readFile(acView.getTheFrame().getManager().getAlloyModel().getAlloyPath());	    		
-	    		String alsPath = acView.getTheFrame().getManager().getAlloyModel().getDirectory()+acView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$AC"+acModel.getId()+".als";
-	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
+	    		/* Execute... TODO : JOHN, PLEASE, FIXE MEEE SOON !!!!!!!! */
 	    		
+	    		/*=======================================================*/
+	    		
+	    		TheManager manager = acView.getTheFrame().getManager();
+	    		
+	    		//set parser...
+	    		acModel.getACAntiPattern().setSelected(manager.getOntoUMLModel().getOntoUMLParser());
+	    		
+	    		// identity principle
+	    		manager.getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		
+	    		// set alloy path
+	    		String alsPath = manager.getAlloyModel().getDirectory()+manager.getAlloyModel().getAlloyModelName()+"$AC"+acModel.getId()+".als";	    		
+	    		manager.getAlloyModel().setAlloyModel(alsPath);
+	    		
+	    		// set alloy model from ontoUML transformation
+	    		manager.getAlloyModel().setAlloyModel(manager.getOntoUMLModel(),manager.getOntoUMLOptionModel());	    		
+	    		String content = manager.getAlloyModel().getContent();
+	    		System.out.println(content);
+	    		
+	    		// add predicates to alloy content
+	    		content = content+"\n"+predicates;	    		
+	    		manager.getAlloyModel().setContent(content);
+	    		
+	    		// open alloy model
 	    		acView.getTheFrame().getManager().doOpeningAlloy(true,-1);
+	    			    		
+	    		/*=======================================================*/
 	    		
 	    	}catch(Exception exception){
 	    		acView.getTheFrame().showErrorMessageDialog("AC : Execute With Analyzer",exception.getMessage());
