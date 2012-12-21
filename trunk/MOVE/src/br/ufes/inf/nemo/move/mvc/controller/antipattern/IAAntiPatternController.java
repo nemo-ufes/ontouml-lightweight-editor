@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.IAAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.IAAntiPatternView;
+import br.ufes.inf.nemo.move.ui.TheManager;
 
 /**
  * @author John Guerson
@@ -59,7 +60,7 @@ public class IAAntiPatternController {
 	    			); 
 	    		}
 								
-	    		iaModel.getIAAntiPattern().setSelected(iaView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
+	    		/*iaModel.getIAAntiPattern().setSelected(iaView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
 	    		
 	    		iaView.getTheFrame().getManager().getAlloyModel().setAlloyModel(iaView.getTheFrame().getManager().getOntoUMLModel(),iaView.getTheFrame().getManager().getOntoUMLOptionModel());
 	    		iaView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
@@ -68,7 +69,40 @@ public class IAAntiPatternController {
 	    		String alsPath = iaView.getTheFrame().getManager().getAlloyModel().getDirectory()+iaView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$IA"+iaModel.getId()+".als";	
 	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
 			
-	    		iaView.getTheFrame().getManager().doOpeningAlloy(true,-1);	    		
+	    		iaView.getTheFrame().getManager().doOpeningAlloy(true,-1);	  */
+	    		
+	    		/* Execute... TODO : JOHN, PLEASE, FIXE MEEE SOON !!!!!!!! */
+	    		
+	    		/*=======================================================*/
+	    		
+	    		TheManager manager = iaView.getTheFrame().getManager();
+	    		
+	    		//set parser...
+	    		iaModel.getIAAntiPattern().setSelected(manager.getOntoUMLModel().getOntoUMLParser());
+	    		
+	    		// set options to false, because the simulated model is partial
+	    		manager.getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		manager.getOntoUMLOptionModel().getOptions().relatorConstraint = false;
+	    		manager.getOntoUMLOptionModel().getOptions().weakSupplementationConstraint = false;
+	    		manager.getOntoUMLOptionModel().getOptions().antiRigidity = false;
+	    		
+	    		// set alloy path
+	    		String alsPath = manager.getAlloyModel().getDirectory()+manager.getAlloyModel().getAlloyModelName()+"$AC"+iaModel.getId()+".als";	    		
+	    		manager.getAlloyModel().setAlloyModel(alsPath);
+	    		
+	    		// set alloy model from ontoUML transformation
+	    		manager.getAlloyModel().setAlloyModel(manager.getOntoUMLModel(),manager.getOntoUMLOptionModel());	    		
+	    		String content = manager.getAlloyModel().getContent();
+	    		System.out.println(content);
+	    		
+	    		// add predicates to alloy content
+	    		content = content+"\n"+predicates;	    		
+	    		manager.getAlloyModel().setContent(content);
+	    		
+	    		// open alloy model
+	    		iaView.getTheFrame().getManager().doOpeningAlloy(true,-1);
+	    			    		
+	    		/*=======================================================*/
 	    		
 	    	}catch(Exception exception){
 	    		iaView.getTheFrame().showErrorMessageDialog("IA : Execute With Analyzer",exception.getMessage());

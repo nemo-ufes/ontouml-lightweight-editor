@@ -69,8 +69,11 @@ public class ACAntiPatternController {
 	    		//set parser...
 	    		acModel.getACAntiPattern().setSelected(manager.getOntoUMLModel().getOntoUMLParser());
 	    		
-	    		// identity principle
+	    		// set options to false, because the simulated model is partial
 	    		manager.getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		manager.getOntoUMLOptionModel().getOptions().relatorConstraint = false;
+	    		manager.getOntoUMLOptionModel().getOptions().weakSupplementationConstraint = false;
+	    		manager.getOntoUMLOptionModel().getOptions().antiRigidity = false;
 	    		
 	    		// set alloy path
 	    		String alsPath = manager.getAlloyModel().getDirectory()+manager.getAlloyModel().getAlloyModelName()+"$AC"+acModel.getId()+".als";	    		

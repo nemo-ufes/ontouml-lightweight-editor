@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RSAntiPatternView;
+import br.ufes.inf.nemo.move.ui.TheManager;
 
 /**
  * @author John Guerson
@@ -73,16 +74,38 @@ public class RSAntiPatternController {
 	    			); 
 	    		}
 				
-	    		rsModel.getRSAntiPattern().setSelected(rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
+	    		/* Execute... TODO : JOHN, PLEASE, FIXE MEEE SOON !!!!!!!! */
 	    		
-	    		rsView.getTheFrame().getManager().getAlloyModel().setAlloyModel(rsView.getTheFrame().getManager().getOntoUMLModel(),rsView.getTheFrame().getManager().getOntoUMLOptionModel());
-	    		rsView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		/*=======================================================*/
 	    		
-	    		String content = FileUtil.readFile(rsView.getTheFrame().getManager().getAlloyModel().getAlloyPath());
-	    		String alsPath = rsView.getTheFrame().getManager().getAlloyModel().getDirectory()+rsView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$RS"+rsModel.getId()+".als";	
-	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
-			
-	    		rsView.getTheFrame().getManager().doOpeningAlloy(true,-1);	
+	    		TheManager manager = rsView.getTheFrame().getManager();
+	    		
+	    		//set parser...
+	    		rsModel.getRSAntiPattern().setSelected(manager.getOntoUMLModel().getOntoUMLParser());
+	    		
+	    		// set options to false, because the simulated model is partial
+	    		manager.getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		manager.getOntoUMLOptionModel().getOptions().relatorConstraint = false;
+	    		manager.getOntoUMLOptionModel().getOptions().weakSupplementationConstraint = false;
+	    		manager.getOntoUMLOptionModel().getOptions().antiRigidity = false;
+	    		
+	    		// set alloy path
+	    		String alsPath = manager.getAlloyModel().getDirectory()+manager.getAlloyModel().getAlloyModelName()+"$AC"+rsModel.getId()+".als";	    		
+	    		manager.getAlloyModel().setAlloyModel(alsPath);
+	    		
+	    		// set alloy model from ontoUML transformation
+	    		manager.getAlloyModel().setAlloyModel(manager.getOntoUMLModel(),manager.getOntoUMLOptionModel());	    		
+	    		String content = manager.getAlloyModel().getContent();
+	    		System.out.println(content);
+	    		
+	    		// add predicates to alloy content
+	    		content = content+"\n"+predicates;	    		
+	    		manager.getAlloyModel().setContent(content);
+	    		
+	    		// open alloy model
+	    		rsView.getTheFrame().getManager().doOpeningAlloy(true,-1);
+	    			    		
+	    		/*=======================================================*/
 	    		
 	    	}catch(Exception exception){
 	    		rsView.getTheFrame().showErrorMessageDialog("RS : Execute With Analyzer",exception.getMessage());
