@@ -39,8 +39,7 @@ public class OCLQueryExecuter {
 	    Query<EClassifier, EClass, EObject> eval;
 	    query = helper.createQuery(oclQuery); 
 	    eval = ocl.createQuery(query);
-	    
-	    System.out.println(eval.evaluate(model));
+	    	    
 	    return eval.evaluate(model);
 	}
 }

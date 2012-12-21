@@ -35,7 +35,7 @@ public class ACAntiPattern extends Antipattern{
 		
 		a = (Association)this.cycleRelationship.get(0);
 		
-		invName += "_"+a.getName().trim();
+		invName += "_"+a.getName();
 		
 		if (a.getMemberEnd().get(0).getType().equals(this.cycle.get(0))) {
 			rule += parser.getAlias(a.getMemberEnd().get(1));
@@ -52,7 +52,7 @@ public class ACAntiPattern extends Antipattern{
 			 
 			if(r instanceof Association){
 				
-				invName+= "_"+((Association)r).getName().trim();
+				invName+= "_"+((Association)r).getName();
 				
 				if( ((Association)r).getMemberEnd().get(0).getType().equals(last_target)) {
 					rule += "."+parser.getAlias(((Association)r).getMemberEnd().get(1));

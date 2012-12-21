@@ -74,7 +74,7 @@ public class RSAntiPattern extends Antipattern{
 		else
 			throw new Exception("The method 'RSAntiPattern::generateOcl' requires that a valid type of predicate is provided");
 		
-		invName += "_"+specific.getName().trim()+"_"+general.getName().trim();
+		invName += "_"+specific.getName()+"_"+general.getName();
 		
 		return 	"context "+contextName+"\n"+
 				"inv "+invName+" : "+invRule;
