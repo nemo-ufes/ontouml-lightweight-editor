@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.RBOSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.view.antipattern.RBOSAntiPatternView;
+import br.ufes.inf.nemo.move.ui.TheManager;
 
 /**
  * @author John Guerson
@@ -93,16 +94,38 @@ public class RBOSAntiPatternController {
 	    			);
 	    		}
 	    		
-	    		rbosModel.getRBOSAntiPattern().setSelected(rbosView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());
+	    		/* Execute... TODO : JOHN, PLEASE, FIXE MEEE SOON !!!!!!!! */
 	    		
-	    		rbosView.getTheFrame().getManager().getAlloyModel().setAlloyModel(rbosView.getTheFrame().getManager().getOntoUMLModel(),rbosView.getTheFrame().getManager().getOntoUMLOptionModel());
-	    		rbosView.getTheFrame().getManager().getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		/*=======================================================*/
 	    		
-	    		String content = FileUtil.readFile(rbosView.getTheFrame().getManager().getAlloyModel().getAlloyPath());
-	    		String alsPath = rbosView.getTheFrame().getManager().getAlloyModel().getDirectory()+rbosView.getTheFrame().getManager().getAlloyModel().getAlloyModelName()+"$RBOS"+rbosModel.getId()+".als";	
-	    		FileUtil.copyStringToFile(content+"\n"+predicates, alsPath);
-			
-	    		rbosView.getTheFrame().getManager().doOpeningAlloy(true,-1); 
+	    		TheManager manager = rbosView.getTheFrame().getManager();
+	    		
+	    		//set parser...
+	    		rbosModel.getRBOSAntiPattern().setSelected(manager.getOntoUMLModel().getOntoUMLParser());
+	    		
+	    		// set options to false, because the simulated model is partial
+	    		manager.getOntoUMLOptionModel().getOptions().identityPrinciple = false;
+	    		manager.getOntoUMLOptionModel().getOptions().relatorConstraint = false;
+	    		manager.getOntoUMLOptionModel().getOptions().weakSupplementationConstraint = false;
+	    		manager.getOntoUMLOptionModel().getOptions().antiRigidity = false;
+	    		
+	    		// set alloy path
+	    		String alsPath = manager.getAlloyModel().getDirectory()+manager.getAlloyModel().getAlloyModelName()+"$AC"+rbosModel.getId()+".als";	    		
+	    		manager.getAlloyModel().setAlloyModel(alsPath);
+	    		
+	    		// set alloy model from ontoUML transformation
+	    		manager.getAlloyModel().setAlloyModel(manager.getOntoUMLModel(),manager.getOntoUMLOptionModel());	    		
+	    		String content = manager.getAlloyModel().getContent();
+	    		System.out.println(content);
+	    		
+	    		// add predicates to alloy content
+	    		content = content+"\n"+predicates;	    		
+	    		manager.getAlloyModel().setContent(content);
+	    		
+	    		// open alloy model
+	    		rbosView.getTheFrame().getManager().doOpeningAlloy(true,-1);
+	    			    		
+	    		/*=======================================================*/
 	    		 		
 	    		
 	    	}catch(Exception exception){

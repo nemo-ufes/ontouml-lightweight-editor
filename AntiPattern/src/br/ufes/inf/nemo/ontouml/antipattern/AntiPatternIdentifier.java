@@ -33,7 +33,7 @@ public class AntiPatternIdentifier {
 	}
 	
 	/*OCL query for the identification of the Relation Specialization AntiPattern*/
-	private static String RS_OCLQuery = "Association.allInstances()->product(Association.allInstances())->collect( x | Tuple {a1:Association = x.first, a2:Association = x.second})->select( x | x.a1<>x.a2 and ( ( x.a1.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->including(x.a1.ownedEnd.type->at(1).oclAsType(Classifier))->includes(x.a2.ownedEnd.type->at(1).oclAsType(Classifier)) and x.a1.ownedEnd.type->at(2).oclAsType(Classifier).allParents()->including(x.a1.ownedEnd.type->at(2).oclAsType(Classifier))->includes(x.a2.ownedEnd.type->at(2).oclAsType(Classifier)) ) or ( x.a1.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->including(x.a1.ownedEnd.type->at(1).oclAsType(Classifier))->includes(x.a2.ownedEnd.type->at(2).oclAsType(Classifier)) and x.a1.ownedEnd.type->at(2).oclAsType(Classifier).allParents()->including(x.a1.ownedEnd.type->at(2).oclAsType(Classifier))->includes(x.a2.ownedEnd.type->at(1).oclAsType(Classifier)) )) )";
+	private static String RS_OCLQuery = "Association.allInstances()->product(Association.allInstances())->collect( x | Tuple {a1:Association = x.first, a2:Association = x.second})->select( x | x.a1<>x.a2 and ( ( x.a1.memberEnd.type->at(1).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(1).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(1).oclAsType(Classifier)) and x.a1.memberEnd.type->at(2).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(2).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(2).oclAsType(Classifier)) ) or ( x.a1.memberEnd.type->at(1).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(1).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(2).oclAsType(Classifier)) and x.a1.memberEnd.type->at(2).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(2).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(1).oclAsType(Classifier)) )) )";
 	
 	/*Returns all the Relation Specialization AntiPatterns in the input model m*/ 
 	@SuppressWarnings("unchecked")
@@ -61,7 +61,7 @@ public class AntiPatternIdentifier {
 	}
 	
 	/*OCL query for the identification of the Self-Type Relationship AntiPattern*/
-	private static String STR_OCLQuery = "Association.allInstances()->select(x:Association | x.ownedEnd.type->forAll(y1,y2:Type | y1=y2))";
+	private static String STR_OCLQuery = "Association.allInstances()->select(x:Association | x.memberEnd.type->forAll(y1,y2:Type | y1=y2))";
 	
 	/*Returns all the Self-Type Relationship AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
@@ -78,15 +78,18 @@ public class AntiPatternIdentifier {
 		
 		for (Association a : query_result) {
 			Association original = (Association) AntiPatternIdentifier.getOriginal(a, copier);
-			result.add(new STRAntiPattern(original));
+			
+			System.out.println(parser.getStringRepresentation(original));
+			System.out.println(a);
+			//result.add(new STRAntiPattern(original));
 		}
 		
 		return result;
 	}
 	
 	/*OCL query for the identification of the Relation Between Overlapping Subtypes AntiPattern*/
-	//private static String RBOS_OCLQuery = "Association.allInstances()-> select(x:Association | x.ownedEnd.type->at(1)<>x.ownedEnd.type->at(2) and ( (x.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->includes(x.ownedEnd.type->at(2))) or (x.ownedEnd.type->at(2).oclAsType(Classifier).allParents()->includes(x.ownedEnd.type->at(1))) or (x.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->intersection(x.ownedEnd.type->at(2).oclAsType(Classifier).allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(x.ownedEnd.type->at(1)) or g1.specific=x.ownedEnd.type->at(1)) and (g2.specific.allChildren()->includes(x.ownedEnd.type->at(2)) or g2.specific=x.ownedEnd.type->at(2))))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
-	private static String RBOS_OCLQuery = "Association.allInstances()-> select(x:Association | x.ownedEnd.type->at(1)<>x.ownedEnd.type->at(2) and ( (x.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->includes(x.ownedEnd.type->at(2).oclAsType(Classifier)) or (x.ownedEnd.type->at(2).oclAsType(Classifier)).allParents()->includes(x.ownedEnd.type->at(1).oclAsType(Classifier))) or (x.ownedEnd.type->at(1).oclAsType(Classifier).allParents()->intersection(x.ownedEnd.type->at(2).oclAsType(Classifier).allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(x.ownedEnd.type->at(1).oclAsType(Classifier)) or g1.specific=x.ownedEnd.type->at(1)) and (g2.specific.allChildren()->includes(x.ownedEnd.type->at(2).oclAsType(Classifier)) or g2.specific=x.ownedEnd.type->at(2))))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
+	//private static String RBOS_OCLQuery = "Association.allInstances()-> select(x:Association | x.memberEnd.type->at(1)<>x.memberEnd.type->at(2) and ( (x.memberEnd.type->at(1).oclAsType(Classifier).allParents()->includes(x.memberEnd.type->at(2))) or (x.memberEnd.type->at(2).oclAsType(Classifier).allParents()->includes(x.memberEnd.type->at(1))) or (x.memberEnd.type->at(1).oclAsType(Classifier).allParents()->intersection(x.memberEnd.type->at(2).oclAsType(Classifier).allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(x.memberEnd.type->at(1)) or g1.specific=x.memberEnd.type->at(1)) and (g2.specific.allChildren()->includes(x.memberEnd.type->at(2)) or g2.specific=x.memberEnd.type->at(2))))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
+	private static String RBOS_OCLQuery = "Association.allInstances()-> select(x:Association | x.memberEnd.type->at(1)<>x.memberEnd.type->at(2) and ( (x.memberEnd.type->at(1).oclAsType(Classifier).allParents()->includes(x.memberEnd.type->at(2).oclAsType(Classifier)) or (x.memberEnd.type->at(2).oclAsType(Classifier)).allParents()->includes(x.memberEnd.type->at(1).oclAsType(Classifier))) or (x.memberEnd.type->at(1).oclAsType(Classifier).allParents()->intersection(x.memberEnd.type->at(2).oclAsType(Classifier).allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(x.memberEnd.type->at(1).oclAsType(Classifier)) or g1.specific=x.memberEnd.type->at(1)) and (g2.specific.allChildren()->includes(x.memberEnd.type->at(2).oclAsType(Classifier)) or g2.specific=x.memberEnd.type->at(2))))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
 	
 	/*Returns all the Relation Between Overlapping Subtypes AntiPatterns in the input model m*/
 	@SuppressWarnings("unchecked")
