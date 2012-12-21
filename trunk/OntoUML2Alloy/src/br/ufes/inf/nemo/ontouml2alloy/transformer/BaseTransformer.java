@@ -497,29 +497,32 @@ public class BaseTransformer {
 	{
 		for(GeneralizationSet gs: ontoparser.getAllInstances(GeneralizationSet.class))
 		{
-			CompareOperation co = factory.createCompareOperation();
-			DisjointExpression disj = factory.createDisjointExpression();
-					
-			if(gs.isIsCovering())  co = TGeneralizationSetRule.createCompleteCompareOperation(ontoparser, factory, gs);		
-			if(gs.isIsDisjoint()) disj =  TGeneralizationSetRule.createDisjointExpression(ontoparser, factory, gs);			
-			
-			FactDeclaration genSetFact = factory.createFactDeclaration();		
-			genSetFact.setName("generalizationSet");
-			genSetFact.setBlock(factory.createBlock());	
-			genSetFact.getBlock().getExpression().add(co);
-			genSetFactList.add(genSetFact);
-			
-			if (gs.getGeneralization().get(0).getGeneral() instanceof DataType)
-			{
-				//DataTypes
-				if (co!=null) genSetFact.getBlock().getExpression().add(co); 
-				if (disj!=null && disj.getSet().size()>0) genSetFact.getBlock().getExpression().add(disj);	
+			if (ontoparser.retainSelected(gs.getGeneralization()).size()>0) 
+			{			
+				CompareOperation co = factory.createCompareOperation();
+				DisjointExpression disj = factory.createDisjointExpression();
+						
+				if(gs.isIsCovering())  co = TGeneralizationSetRule.createCompleteCompareOperation(ontoparser, factory, gs);		
+				if(gs.isIsDisjoint()) disj =  TGeneralizationSetRule.createDisjointExpression(ontoparser, factory, gs);			
 				
-			}else {		
+				FactDeclaration genSetFact = factory.createFactDeclaration();		
+				genSetFact.setName("generalizationSet");
+				genSetFact.setBlock(factory.createBlock());	
+				genSetFact.getBlock().getExpression().add(co);
+				genSetFactList.add(genSetFact);
+			
+				if (gs.parent() instanceof DataType)
+				{
+					//DataTypes
+					if (co!=null) genSetFact.getBlock().getExpression().add(co); 
+					if (disj!=null && disj.getSet().size()>0) genSetFact.getBlock().getExpression().add(disj);	
 				
-				//Classes
-				if (co!=null)genSetFact.getBlock().getExpression().add(co);
-				if (disj!=null && disj.getSet().size()>0) genSetFact.getBlock().getExpression().add(disj);
+				}else {		
+				
+					//Classes
+					if (co!=null)genSetFact.getBlock().getExpression().add(co);
+					if (disj!=null && disj.getSet().size()>0) genSetFact.getBlock().getExpression().add(disj);
+				}
 			}
 		}
 		for(FactDeclaration fact: genSetFactList) module.getParagraph().add(fact);
