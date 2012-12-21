@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.logging.Level;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -66,6 +67,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	private JLabel lblDetails, lblTitle;
 	private Component horizontalStrut;
 	private LoadingPane glassPane;
+	private JCheckBox verfInconsistency;
 	
 	Mediator transfManager;
 	File file;
@@ -77,7 +79,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		super(frame, modal);
 		
 		this.diagManager = diagMngr;
-		this.glassPane = new LoadingPane();
+		this.glassPane = new LoadingPane("Importing File", 14, 0.5f);
 		frame.setGlassPane(glassPane);
 		frame.validate();
 		this.file = file;
@@ -163,6 +165,11 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 					infoPane.setEditable(false);
 				}
 				{
+					verfInconsistency = new JCheckBox();
+					panel.add(verfInconsistency);
+					verfInconsistency.setText("Verify inconsistencies when importing");
+				}
+				{
 					importButton = new JButton();
 					panel.add(importButton);
 					importButton.setText("Import Model");
@@ -237,6 +244,16 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 			}
 			modelChckTree.clearChecking();
 			diagrChckTree.clearChecking();
+			
+			if (verfInconsistency.isSelected())
+			{
+				String inconsistencyLog = RefOntoUMLUtil.verifyInconsistency(this.model);
+				if (inconsistencyLog != "") {
+		        	ErrorInfo info = new ErrorInfo("Warning", "Inconsistencies found",
+		        			null, "category", new Exception(inconsistencyLog), Level.WARNING, null);
+		        	JXErrorPane.showDialog(diagManager, info);
+		    	}
+			}
 		
 			UmlProject project = new UmlProject(this.model);
 			StructureDiagram diagram = new StructureDiagram(project);

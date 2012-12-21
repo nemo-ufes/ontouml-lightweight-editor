@@ -23,6 +23,7 @@ import javax.swing.tree.TreePath;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mapper;
 import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
 
@@ -32,6 +33,7 @@ import RefOntoUML.Model;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
+import RefOntoUML.Property;
 
 
 public class RefOntoUMLUtil {
@@ -228,6 +230,22 @@ public class RefOntoUMLUtil {
     	   	button.setSelected(checked);
     	   	return panel;
     	}
+    }
+    
+    public static String verifyInconsistency(Package pack)
+    {
+    	String log = "";
+    	
+    	OntoUMLParser parser = new OntoUMLParser(pack);
+    	for (Property prop : parser.getAllInstances(Property.class))
+    	{
+    		if (prop.getType() == null)
+    		{
+    			log += OntoUMLError.undefinedTypeError(prop);
+    		}
+    	}
+    	
+    	return log;
     }
 	
 }
