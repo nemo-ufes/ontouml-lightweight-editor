@@ -94,6 +94,10 @@ public class RefOntoCreator {
 	
 	public RefOntoUML.Model createModel() {
 		Model model = factory.createModel();
+		addPackagedElement(model, INTEGER_PRIMITIVE);
+		addPackagedElement(model, BOOLEAN_PRIMITIVE);
+		addPackagedElement(model, STRING_PRIMITIVE);
+		addPackagedElement(model, UNLIMITED_NATURAL_PRIMITIVE);
 		resource.getContents().add(model);
 		return model;
 	}
@@ -279,7 +283,9 @@ public class RefOntoCreator {
 	}
 	
 	public void dealDataType(RefOntoUML.DataType dt, Map<String, Object> hashProp) {
-		dealClassifier(dt, hashProp);
+		if (!dt.equals(INTEGER_PRIMITIVE) && !dt.equals(BOOLEAN_PRIMITIVE) && 
+				!dt.equals(STRING_PRIMITIVE) && !dt.equals(UNLIMITED_NATURAL_PRIMITIVE))
+			dealClassifier(dt, hashProp);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -435,7 +441,13 @@ public class RefOntoCreator {
 	}
 	
 	public void dealTypedElement (RefOntoUML.TypedElement tel, Map<String, Object> hashProp) {
-		tel.setType((Type)hashProp.get("type"));
+		if (hashProp.get("type") != null)
+		{
+			tel.setType((Type)hashProp.get("type"));
+		}
+		else
+			Mediator.warningLog += OntoUMLError.undefinedTypeError(tel);
+		
 		dealNamedElement(tel, hashProp);
 	}
 	
@@ -470,7 +482,7 @@ public class RefOntoCreator {
 			mel.setLowerValue(lower);
 			
 		} else {
-			Mediator.warningLog += OntoUMLError.undefinedMultiplicityError((Property)mel);
+			Mediator.warningLog += OntoUMLError.undefinedMultiplicityError(mel);
 		}
 		
 		mel.setIsOrdered(Boolean.parseBoolean((String)hashProp.get("isordered")));

@@ -95,10 +95,21 @@ public class MapperEA implements Mapper {
 	
 	private void setID(Element element)
 	{
-		if (element.hasAttributeNS(XMINS, "id") && 
-				doc.getElementById(element.getAttributeNS(XMINS, "id")) == null)
-    	{
-			element.setIdAttributeNS(XMINS, "id", true);
+		if (element.hasAttributeNS(XMINS, "id"))
+		{
+			if (doc.getElementById(element.getAttributeNS(XMINS, "id")) == null)
+				element.setIdAttributeNS(XMINS, "id", true);
+			
+			// Threats the case when EA exports twice the same Class, one with 'name' and one without
+			else
+			{
+				Element e = doc.getElementById(element.getAttributeNS(XMINS, "id"));
+				if (!e.hasAttribute("name") && element.hasAttribute("name"))
+				{
+					e.setAttribute("name", element.getAttribute("name"));
+					XMLDOMUtil.removeElement(element);
+				}
+			}
     	}
 	}
 	
@@ -411,7 +422,10 @@ public class MapperEA implements Mapper {
     		List<Element> childList = XMLDOMUtil.getElementChilds(elem);
         	for (Element childElem : childList) {
         		if (childElem.getNodeName().equals("type")) {
-            		hashProp.put("type", childElem.getAttributeNS(XMINS, "idref"));
+        			if (childElem.hasAttribute("href"))
+        				hashProp.put("type", childElem.getAttribute("href").split("#")[1]);
+        			else
+        				hashProp.put("type", childElem.getAttributeNS(XMINS, "idref"));
             	} else if (childElem.getNodeName().equals("lowerValue")) {
             		hashProp.put("lower", childElem.getAttribute("value"));
             	} else if (childElem.getNodeName().equals("upperValue")) {

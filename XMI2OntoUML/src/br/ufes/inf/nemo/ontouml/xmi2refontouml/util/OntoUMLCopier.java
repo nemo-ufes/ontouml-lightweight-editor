@@ -118,9 +118,20 @@ public class OntoUMLCopier extends Copier
 						for (EObject eObj : source)
 						{
 							PackageableElement PE = (PackageableElement) eObj;
-							if (objectsToCopy.contains(PE) || PE instanceof GeneralizationSet)
+							if (objectsToCopy.contains(PE))
 							{
 								target.add(copy(eObj));
+							}
+							else if (PE instanceof GeneralizationSet)
+							{
+								for (Generalization gen : ((GeneralizationSet) PE).getGeneralization())
+								{
+									if (objectsToCopy.contains(gen.getGeneral()) && objectsToCopy.contains(gen.getSpecific()))
+									{
+										target.add(copy(eObj));
+										break;
+									}
+								}
 							}
 						}
 					}
@@ -128,8 +139,8 @@ public class OntoUMLCopier extends Copier
 					{
 						for (EObject eObj : source)
 						{
-							Generalization Gen = (Generalization) eObj;
-							if (objectsToCopy.contains(Gen.getGeneral()) && objectsToCopy.contains(Gen.getSpecific()))
+							Generalization gen = (Generalization) eObj;
+							if (objectsToCopy.contains(gen.getGeneral()) && objectsToCopy.contains(gen.getSpecific()))
 							{
 								target.add(copy(eObj));
 							}

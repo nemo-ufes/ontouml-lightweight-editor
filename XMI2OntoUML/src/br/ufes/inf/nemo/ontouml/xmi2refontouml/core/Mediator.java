@@ -99,13 +99,13 @@ public class Mediator {
     			break;
     			
     		case PRIMITIVE:
-    			if (mapper.getName(element).equals("int") || mapper.getName(element).equals("integer")) {
+    			if (mapper.getName(element).equalsIgnoreCase("int") || mapper.getName(element).equalsIgnoreCase("integer")) {
     				elem1 = RefOntoCreator.INTEGER_PRIMITIVE;
-            	} else if (mapper.getName(element).equals("bool") || mapper.getName(element).equals("boolean")) {
+            	} else if (mapper.getName(element).equalsIgnoreCase("bool") || mapper.getName(element).equalsIgnoreCase("boolean")) {
             		elem1 = RefOntoCreator.BOOLEAN_PRIMITIVE;
-            	} else if (mapper.getName(element).equals("str") || mapper.getName(element).equals("string")) {
+            	} else if (mapper.getName(element).equalsIgnoreCase("str") || mapper.getName(element).equalsIgnoreCase("string") || mapper.getName(element).equalsIgnoreCase("char")) {
             		elem1 = RefOntoCreator.STRING_PRIMITIVE;
-            	} else if (mapper.getName(element).contains("unlimited")) {
+            	} else if (mapper.getName(element).contains("unlimited") || mapper.getName(element).equalsIgnoreCase("float")) {
             		elem1 = RefOntoCreator.UNLIMITED_NATURAL_PRIMITIVE;
             	} else {
             		elem1 = refcreator.createPrimitiveType();
@@ -353,7 +353,28 @@ public class Mediator {
     protected void doProperty (Map<String, Object> hashProp) {
     	
     	// Gets the RefOntoUML.Element that is the 'type' of the property
-		hashProp.put("type", elemMap.get(hashProp.get("type")));
+    	if (hashProp.get("type") == null)
+    	{
+    		return;
+    	}
+    	else if (hashProp.get("type").equals("Integer"))
+    	{
+    		hashProp.put("type", RefOntoCreator.INTEGER_PRIMITIVE);
+    	}
+    	else if (hashProp.get("type").equals("String"))
+    	{
+    		hashProp.put("type", RefOntoCreator.STRING_PRIMITIVE);
+    	}
+    	else if (hashProp.get("type").equals("Boolean"))
+    	{
+    		hashProp.put("type", RefOntoCreator.BOOLEAN_PRIMITIVE);
+    	}
+    	else if (hashProp.get("type").equals("UnlimitedNatural"))
+    	{
+    		hashProp.put("type", RefOntoCreator.UNLIMITED_NATURAL_PRIMITIVE);
+    	}
+    	else
+    		hashProp.put("type", elemMap.get(hashProp.get("type")));
     }
     
     protected void doGeneralization (Map<String, Object> hashProp) {
