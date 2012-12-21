@@ -79,9 +79,7 @@ public class AntiPatternIdentifier {
 		for (Association a : query_result) {
 			Association original = (Association) AntiPatternIdentifier.getOriginal(a, copier);
 			
-			System.out.println(parser.getStringRepresentation(original));
-			System.out.println(a);
-			//result.add(new STRAntiPattern(original));
+			result.add(new STRAntiPattern(original));
 		}
 		
 		return result;

@@ -5,7 +5,6 @@ import java.text.Normalizer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
-import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
@@ -84,22 +83,21 @@ public class OntoUMLTreeNodeElem {
 		    RefOntoUML.GeneralizationSet genset = (RefOntoUML.GeneralizationSet)element;
 		    
 		    String result = new String();
-		    System.out.println("GenSet: "+genset);
-		    for (Generalization g : genset.getGeneralization()) {
-		    	System.out.println(g);
-			}
-		    System.out.println("Parent: " + genset.parent());
-		    System.out.println("----------------");
-		    result += type + " " + name + " / "+(genset.getGeneralization().get(0).getGeneral()).getName()+" { ";
+		    
+		    if (genset.parent()!=null) result += type + " " + name + " / "+(genset.parent()).getName()+" { ";
 		    
 		    EList<Generalization> genlist = ((RefOntoUML.GeneralizationSet)element).getGeneralization();		    
 		    int i=1;
 		    for(Generalization gen: genlist)
 		    {
-		    	if(i < genlist.size()) result += gen.getSpecific().getName()+", ";
-		    	else result += gen.getSpecific().getName() + " } ";
+		    	if (gen.getSpecific()!=null)
+		    	{
+		    		if(i < genlist.size()) result += gen.getSpecific().getName()+", ";
+		    		else result += gen.getSpecific().getName() ;
+		    	}
 		    	i++;
 		    }
+		    result += " } ";
 		    return result;		    
 		}
 		
