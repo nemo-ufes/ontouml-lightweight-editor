@@ -159,6 +159,7 @@ public class RSAntiPatternController {
     		
 		    }catch(Exception exception){
 		    	rsView.getTheFrame().showErrorMessageDialog("RS : Generate OCL",exception.getMessage());
+		    	exception.printStackTrace();
 	    	}
 	    }
 	}	

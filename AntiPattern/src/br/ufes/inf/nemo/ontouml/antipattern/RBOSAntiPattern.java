@@ -62,14 +62,14 @@ public class RBOSAntiPattern extends Antipattern{
 		String aet_name = parser.getAlias(association.getMemberEnd().get(1));		
 		
 		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
-				"inv transitive_" + association.getName().trim() + " : self."+aet_name+"->asSet()->includesAll(self."+aet_name+"."+aet_name+"->asSet())";				
+				"inv transitive_" + association.getName() + " : self."+aet_name+"->asSet()->includesAll(self."+aet_name+"."+aet_name+"->asSet())";				
 	}
 	
 	public String generateIntransitiveOcl(OntoUMLParser parser){
 		String aet_name = parser.getAlias(association.getMemberEnd().get(1));		
 		
 		return 	"context "+parser.getAlias(association.getMemberEnd().get(0).getType())+"\n"+
-				"inv intransitive_"+association.getName().trim()+ " : self."+aet_name+"->asSet()->excludesAll(self."+aet_name+"."+aet_name+"->asSet())";
+				"inv intransitive_"+association.getName()+ " : self."+aet_name+"->asSet()->excludesAll(self."+aet_name+"."+aet_name+"->asSet())";
 				
 	}
 	
