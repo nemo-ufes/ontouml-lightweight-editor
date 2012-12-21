@@ -11,17 +11,21 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
  */
 
 public class Transformation {
-
+	
 	public Dealer mydealer;	 
 	public HashMap <RefOntoUML.Package,org.eclipse.uml2.uml.Package> packagesMap;			
 	public OntoUMLParser refparser;
+	public org.eclipse.uml2.uml.Package umlmodel; 
+	boolean ignorePackageHierarchy = false;
+	
 	
 	/** 
 	 * Constructor 
 	 */
-	public Transformation(OntoUMLParser refparser)  
+	public Transformation(OntoUMLParser refparser, boolean ignorePackageHierarchy)  
     { 
 		this.refparser = refparser;
+		this.ignorePackageHierarchy = ignorePackageHierarchy;
     	mydealer = new Dealer();  
     	packagesMap = new HashMap<RefOntoUML.Package,org.eclipse.uml2.uml.Package>(); 
     }
@@ -33,7 +37,7 @@ public class Transformation {
     {           
 		Dealer.outln("Transforming OntoUML model...");
 		
-        org.eclipse.uml2.uml.Package umlmodel = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createModel();
+        umlmodel = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createModel();
                 
         mydealer.DealNamedElement((RefOntoUML.NamedElement) refparser.getModel(), (org.eclipse.uml2.uml.NamedElement) umlmodel);
         mydealer.RelateElements((RefOntoUML.Element) refparser.getModel(), (org.eclipse.uml2.uml.Element) umlmodel);
@@ -72,7 +76,9 @@ public class Transformation {
             {
             	org.eclipse.uml2.uml.Package umlpackage = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createPackage();
         		mydealer.DealPackage( (RefOntoUML.Package)obj,umlpackage);            	            		
-        		umlmodel.getPackagedElements().add(umlpackage); 
+        		
+        		if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(umlpackage); 
+        		
         		packagesMap.put((RefOntoUML.Package)obj, umlpackage);
         		TransformingPackages((RefOntoUML.Package)obj,umlpackage);        						            	
             }
@@ -118,7 +124,9 @@ public class Transformation {
 	            {
 	          		org.eclipse.uml2.uml.Class umlclass = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createClass();  
 	           		mydealer.DealClass( (RefOntoUML.Class) elem, umlclass);	           			           		
-	                umlmodel.getPackagedElements().add(umlclass);
+	           		
+	           		if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(umlclass);
+	           		else this.umlmodel.getPackagedElements().add(umlclass);
 	            }
 	        }
 		}			        
@@ -164,7 +172,9 @@ public class Transformation {
 				if (elem instanceof RefOntoUML.PrimitiveType && refparser.isSelected(elem))
 	            {
 	                 org.eclipse.uml2.uml.PrimitiveType dt2 = mydealer.DealPrimitiveType ((RefOntoUML.PrimitiveType) elem);	                 	                 		           		
-	                 umlmodel.getPackagedElements().add(dt2);                               
+	                 
+	                 if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(dt2);
+		           	 else this.umlmodel.getPackagedElements().add(dt2);	                                                
 	            }
 	        }
 		}
@@ -185,7 +195,9 @@ public class Transformation {
 				if (elem instanceof RefOntoUML.Enumeration && refparser.isSelected(elem)) 
 	            {
 	                 org.eclipse.uml2.uml.Enumeration dt2 = mydealer.DealEnumeration ((RefOntoUML.Enumeration) elem);
-	                 umlmodel.getPackagedElements().add(dt2);                               
+	                 
+	                 if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(dt2);
+		           	 else this.umlmodel.getPackagedElements().add(dt2);                              
 	            }
 	        }
 		}
@@ -206,7 +218,9 @@ public class Transformation {
 				if ((elem instanceof RefOntoUML.DataType) && !(elem instanceof RefOntoUML.PrimitiveType) && !(elem instanceof RefOntoUML.Enumeration) && refparser.isSelected(elem))  
 	            {
 	                 org.eclipse.uml2.uml.DataType dt2 = mydealer.DealDataType ((RefOntoUML.DataType) elem);
-	                 umlmodel.getPackagedElements().add(dt2);                               
+	                 
+	                 if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(dt2);
+		           	 else this.umlmodel.getPackagedElements().add(dt2);                               
 	            }
 	        }
 		}
@@ -227,12 +241,16 @@ public class Transformation {
 				if(elem instanceof RefOntoUML.Derivation && refparser.isSelected(elem))
 				{
 					org.eclipse.uml2.uml.Association assoc = mydealer.DealAssociation ((RefOntoUML.Association) elem);
-					umlmodel.getPackagedElements().add(assoc);
+					
+					if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(assoc);
+		           	else this.umlmodel.getPackagedElements().add(assoc);					
 					
 				} else if( elem instanceof RefOntoUML.Association && refparser.isSelected(elem))
 				{        		
 					org.eclipse.uml2.uml.Association assoc = mydealer.DealAssociation ((RefOntoUML.Association) elem);
-					umlmodel.getPackagedElements().add(assoc);        		
+					
+					if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(assoc);
+		           	else this.umlmodel.getPackagedElements().add(assoc);        		
 				}
 	        }
         }
@@ -276,7 +294,9 @@ public class Transformation {
 				if (elem instanceof RefOntoUML.GeneralizationSet && refparser.isSelected(elem))
 				{
 					org.eclipse.uml2.uml.GeneralizationSet gs2 = mydealer.DealGeneralizationSet ((RefOntoUML.GeneralizationSet) elem);        
-					umlmodel.getPackagedElements().add(gs2);
+					
+					if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(gs2);
+		           	else this.umlmodel.getPackagedElements().add(gs2);					
 				}
 	        }
 		}

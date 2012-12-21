@@ -87,7 +87,7 @@ public class UMLModel {
 	 */
 	public void setUMLModel(String umlPath, OntoUMLParser refparser)
 	{
-		umlResource = OntoUML2UML.Transformation(refparser,umlPath);
+		umlResource = OntoUML2UML.Transformation(refparser,umlPath,true);
 		
 		logDetails = OntoUML2UML.logDetails;
 		

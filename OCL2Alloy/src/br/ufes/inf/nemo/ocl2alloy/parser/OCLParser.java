@@ -75,7 +75,7 @@ public class OCLParser {
     	if (refparser==null) return;
     	if (umlPath==null) return;
     	
-    	umlResource = OntoUML2UML.Transformation(refparser,umlPath);		
+    	umlResource = OntoUML2UML.Transformation(refparser,umlPath,true);		
     	umlHashMap = OntoUML2UML.transformer.mydealer.mymap;
     	logDetails = OntoUML2UML.logDetails;
     	
@@ -117,7 +117,7 @@ public class OCLParser {
     public OCLParser (String oclAbsolutePath, String refAbsolutePath) throws IOException,ParserException,Exception
 	{ 			
     	OntoUMLParser refparser = new OntoUMLParser(refAbsolutePath);
-		umlResource = OntoUML2UML.Transformation(refparser,refAbsolutePath.replace(".refontouml" , ".uml"));							
+		umlResource = OntoUML2UML.Transformation(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),true);							
 				
 		umlHashMap = OntoUML2UML.transformer.mydealer.mymap;
 		
@@ -188,8 +188,8 @@ public class OCLParser {
      */
     public static void main (String[] args)
     {    	
-    	String refpath = "C:\\Users\\John\\SVNs\\SVN-OLED\\OCL2Alloy\\model\\project.refontouml";
-    	String oclPath = "C:\\Users\\John\\SVNs\\SVN-OLED\\OCL2Alloy\\model\\project.ocl";
+    	String refpath = "C:\\Users\\John\\SVNs\\SVN-OLED\\OCL2Alloy\\model\\teste.refontouml";
+    	String oclPath = "C:\\Users\\John\\SVNs\\SVN-OLED\\OCL2Alloy\\model\\teste.ocl";
     	
     	try {
     		

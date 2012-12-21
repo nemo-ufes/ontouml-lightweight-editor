@@ -43,21 +43,21 @@ public class Dealer {
 	/** Method for output. */
     public static void outln(String output) 
     {
-    	//System.out.println(output);
+    	System.out.println(output);
     	OntoUML2UML.logDetails += output+"\n";
     }
 
 	/** Method for output. */
     public static void out(String output) 
     {
-    	//System.out.print(output);
+    	System.out.print(output);
     	OntoUML2UML.logDetails += output;
     }
     
     /** Method for err output. */
     public static void err(String error) 
     {
-        //System.err.println(error);
+        System.err.println(error);
         OntoUML2UML.logDetails += error+"\n";
     }
 	
