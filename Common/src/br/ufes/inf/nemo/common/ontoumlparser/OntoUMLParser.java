@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -198,6 +199,22 @@ public class OntoUMLParser {
 			this.elementsHash.put(pe,e);			
 		}
 		
+	}
+	
+	/**
+	 * Get OntoUML Element from a alias name.
+	 * 
+	 * @param alias
+	 * @return
+	 */
+	public EObject getElement(String alias)
+	{	 
+		for (Entry<EObject,ParsingElement> entry : elementsHash.entrySet()) 
+        {
+            String name = ((ParsingElement)entry.getValue()).getAlias(); 
+            if (alias.equals(name)) return entry.getKey();            
+        }
+        return null;	    
 	}
 	
 	/**
@@ -487,7 +504,7 @@ public class OntoUMLParser {
 	/**
 	 * Get all instances of a given class in the OntoUMLParser 
 	 * 
-	 * @param type: class from the OntoUML metamodel. use ´class_name´.class
+	 * @param type: class from the OntoUML metamodel. use ï¿½class_nameï¿½.class
 	 * @return all instances of the type in the parameter 
 	 */
 	@SuppressWarnings("unchecked")
