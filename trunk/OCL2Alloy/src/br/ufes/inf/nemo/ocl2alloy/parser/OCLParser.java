@@ -61,7 +61,7 @@ public class OCLParser {
         }
         return null;
     }
-    
+        
     /**
      * Constructor.
      * 
@@ -86,7 +86,8 @@ public class OCLParser {
 		org.eclipse.uml2.uml.Package umlmodel = (org.eclipse.uml2.uml.Package) umlResource.getContents().get(0);
 		umlResource.getResourceSet().getPackageRegistry().put(null,umlmodel);			
 		org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());
-						
+		
+		
 		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
 		umlenv = envFactory.createEnvironment();		
 		org.eclipse.ocl.uml.OCL myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
@@ -130,7 +131,7 @@ public class OCLParser {
 		org.eclipse.uml2.uml.Package umlmodel = (org.eclipse.uml2.uml.Package) umlResource.getContents().get(0);		
 		umlResource.getResourceSet().getPackageRegistry().put(null,umlmodel);		
 		org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());
-						
+				
 		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
 		umlenv = envFactory.createEnvironment();		
 		org.eclipse.ocl.uml.OCL myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);

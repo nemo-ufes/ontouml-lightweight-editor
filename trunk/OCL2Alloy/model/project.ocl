@@ -6,6 +6,9 @@ import 'platform:/resource/OCL2Alloy/model/project.uml'
 
 package project
 
+context Enrollment
+inv : self.idq <= 0
+
 -- integrity rule in OCL (1)
 context University
 inv one_enrollment_per_student :

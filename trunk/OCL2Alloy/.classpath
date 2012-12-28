@@ -5,7 +5,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/OntoUML2UML"/>
 	<classpathentry kind="lib" path="/Common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl_3.2.0.v20120611-1210.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl_3.2.0.v20120611-1210.jar" sourcepath="C:/Eclipse Modeling Juno 4.2 SR1/plugins/org.eclipse.ocl.source_3.2.1.v20120917-1739.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.common_1.0.0.v20120516-1543.jar"/>
