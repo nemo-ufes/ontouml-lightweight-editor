@@ -1,12 +1,13 @@
 package br.ufes.inf.nemo.ocl2alloy.visitor;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.EObject;
-
 import org.eclipse.ocl.expressions.BooleanLiteralExp;
 import org.eclipse.ocl.expressions.CollectionItem;
 import org.eclipse.ocl.expressions.CollectionKind;
@@ -28,9 +29,7 @@ import org.eclipse.ocl.expressions.TypeExp;
 import org.eclipse.ocl.expressions.UnlimitedNaturalLiteralExp;
 import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.expressions.VariableExp;
-
 import org.eclipse.ocl.utilities.ExpressionInOCL;
-
 import org.eclipse.uml2.uml.CallOperationAction;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Constraint;
@@ -42,13 +41,11 @@ import org.eclipse.uml2.uml.SendSignalAction;
 import org.eclipse.uml2.uml.State;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-
 import br.ufes.inf.nemo.ocl2alloy.exception.IteratorException;
 import br.ufes.inf.nemo.ocl2alloy.exception.LiteralException;
 import br.ufes.inf.nemo.ocl2alloy.exception.OperationException;
 import br.ufes.inf.nemo.ocl2alloy.exception.StereotypeException;
 import br.ufes.inf.nemo.ocl2alloy.exception.TypeException;
-
 import br.ufes.inf.nemo.ocl2alloy.parser.OCLParser;
 
 /**
@@ -100,6 +97,26 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 		this.refparser = refparser;
 	}    
     
+    /** 
+     *  Specifically for the operation oclIsTypeOf(type: Classifier).
+     *  Get all the sub types of the type Classifier. 
+     */    
+    private ArrayList<String> getSubTypes(String alias)
+    {    	
+    	EObject type = refparser.getElement(alias);
+    	
+    	Set<RefOntoUML.Classifier> setChildren = refparser.getChildren((RefOntoUML.Classifier)type);
+    	
+    	ArrayList<RefOntoUML.Classifier> listChildren = new ArrayList<RefOntoUML.Classifier>();
+    	listChildren.addAll(setChildren);
+    	
+    	ArrayList<String> subtypes = new ArrayList<String>();    	
+    	for(RefOntoUML.Classifier child: listChildren)
+    	{
+    		subtypes.add(refparser.getAlias(child));
+    	}   	    	
+    	return subtypes;
+    }
     
     /**
      * Visits the OperationCallExp. 
@@ -112,7 +129,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
     	Operation oper = operCallExp.getReferredOperation();		
 		String typename = oper.getType().getName();
 		String name = oper.getName();
-		
+				
 		// correct use of collect. 
 		if(name.equals("asSet")) { 
 			if (collect_used==true && is_next_oper==true) { 
@@ -126,6 +143,9 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 				throw new TypeException("Bag","The \"asSet()\" operation should be used after collect iterator."); 
 		}
 		
+		// Bool type in Alloy need this...
+		if (sourceResult.equals("True") || sourceResult.equals("False")) sourceResult = "isTrue["+sourceResult+"]";
+		
 		if(name.equals("allInstances")) { return sourceResult; }
 		
 		if(name.equals("size")) { return "("+"#" + sourceResult+ ")"; }		
@@ -133,7 +153,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 		if(name.equals("notEmpty")) { return "("+"some " + sourceResult+ ")"; }		
 		if(name.equals("not")) { return "("+"not " + sourceResult+ ")"; }		
 		if(name.equals("oclIsUndefined")) { return "("+"#" + sourceResult + " = 0"+ ")"; }				
-		if(name.equals("abs")) { return "("+"abs[" + sourceResult + "]"; }
+		if(name.equals("abs")) { return "abs[" + sourceResult + "]"; }
 		
 		if(name.equals("asSet")) { return sourceResult; }
 		
@@ -141,15 +161,18 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 		{
 			java.util.Iterator<String> iter = argumentResults.iterator();	
 			
-			if(!iter.hasNext()) { return "("+"negate[" + sourceResult +"]"+ ")"; }
+			if(!iter.hasNext()) { return "negate[" + sourceResult +"]"; }
 			else if( iter.hasNext() && typename.equals("Set(T)")) { return "("+sourceResult + " - " + iter.next()+ ")"; }
-			else if( iter.hasNext() && typename.equals("Real")){ return "("+sourceResult+").minus["+iter.next()+"]"+ ")"; }
+			else if( iter.hasNext() && typename.equals("Real")){ return "("+sourceResult+").minus["+iter.next()+"]"; }
 		}
 		
 		// arguments
         for (java.util.Iterator<String> iter = argumentResults.iterator(); iter.hasNext();) 
         {
 			String argument = iter.next();
+			
+			// Bool type in Alloy need this...
+			if (argument.equals("True") || argument.equals("False")) argument = "isTrue["+argument+"]";
 			
 			if(name.equals("intersection")) { return "("+sourceResult + " & " + argument+")"; }			
 			if(name.equals("union")) { return "("+sourceResult + " + " + argument+")"; }						
@@ -158,10 +181,26 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 			if(name.equals("includes")) { return "("+argument + " in " + sourceResult+")"; }			
 			if(name.equals("excludes")) { return "("+argument + " !in " + sourceResult+")"; }			
 			if(name.equals("includesAll")) { return "("+argument + " in " + sourceResult+")"; }
-			if(name.equals("excludesAll")) { return "("+argument + " !in " + sourceResult+")"; }			
+			if(name.equals("excludesAll")) { return "("+"#"+argument + " & " + sourceResult+" = 0)"; }			
 			if(name.equals("=")) { return "("+sourceResult + " = " + argument+")"; }			
 			if(name.equals("<>")) { return "("+sourceResult + " != " + argument+")"; }			
-			if(name.equals("oclIsKindOf"))	{ return "("+sourceResult + " in " + argument+")"; }			
+			if(name.equals("oclIsKindOf"))	{ return "("+sourceResult + " in " + argument+")"; }
+			
+			if(name.equals("oclIsTypeOf"))	
+			{ 
+				String code = "("+" ("+sourceResult + " in " + argument+")";
+				if (argument.contains("w.")) argument = argument.replace("w.", "");				
+				ArrayList<String> subtypes = getSubTypes(argument);
+				if (subtypes.size()>0) 
+				{
+					code += " and # "+ sourceResult + " & (";				
+					int i = 1;
+					for(String subtype: subtypes) { if (i<subtypes.size()) code += "w."+subtype+" + "; else if (i==subtypes.size()) code += "w."+subtype; i++;}
+					code += ") = 0"+")";
+				}
+				return code;
+			}			
+			
 			if(name.equals("<")) { return "("+sourceResult + " < " + argument + ")"; }			
 			if(name.equals(">")) { return "("+sourceResult + " > " + argument + ")"; }			
 			if(name.equals("<=")) { return "("+sourceResult + " <= " + argument + ")"; }			
@@ -169,25 +208,26 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 			if(name.equals("and")) { return "("+sourceResult + " and " + argument+")"; }			
 			if(name.equals("or")) { return "("+sourceResult + " or " + argument+")"; }			
 			if(name.equals("implies")) { return "("+sourceResult + " implies " + argument+")"; }
-			if(name.equals("xor")) { return "("+"!("+sourceResult + " == " + argument+")"+")"; }
-			if(name.equals("max")) { return "(" + sourceResult + ").max[" + argument + "]"; }			
-			if(name.equals("min")) { return "(" + sourceResult + ").min[" + argument + "]"; }
+			if(name.equals("xor")) { return "("+"("+sourceResult +" or "+argument+ ")"+" and not "+"("+sourceResult+" and "+ argument+")"+")"; }
+			if(name.equals("max")) { return "max["+sourceResult +","+ argument + "]"; }
+			if(name.equals("min")) { return "min["+sourceResult +"," + argument + "]"; }
 			if(name.equals("+")) { return "(" + sourceResult +").plus["+argument+"]"; }
+			if(name.equals("*")) { return "(" + sourceResult +").mul["+argument+"]"; }
 			if(name.equals("symmetricDifference")) { return "("+"("+sourceResult + " + " + argument+") - ("+sourceResult + " & " + argument+")"+")"; }	        	
-			
+						
 			if (iter.hasNext()) ;  // no more arguments 
         }
-       	
-		if(name.equals("xor")) 
-			throw new OperationException("xor","We only support the boolean operations: and, or, not, implies.");
-        if(name.equals("*")) 
-        	throw new OperationException("*","We only support the integer operations: +, -, max(), min(), abs().");
+       			
+        //if(name.equals("oclIsTypeOf")) 
+//        	throw new OperationException("oclIsTypeOf()","We do not support this object operation. Should me more of a description here...");
+        if(name.equals("oclAsType")) 
+        	throw new OperationException("oclAsType()","We do not support this operation. Should me more of a descrition here...");
         if(name.equals("/")) 
-        	throw new OperationException("/","We only support the integer operations: +, -, max(), min(), abs().");
+        	throw new OperationException("/","We only support the integer operations: +, -, *, max(), min(), abs().");
         if(name.equals("div")) 
-        	throw new OperationException("div","We only support the integer operations: +, -, max(), min(), abs().");
+        	throw new OperationException("div","We only support the integer operations: +, -, *, max(), min(), abs().");
         if(name.equals("mod")) 
-        	throw new OperationException("mod","We only support the integer operations: +, -, max(), min(), abs().");
+        	throw new OperationException("mod","We only support the integer operations: +, -, *, max(), min(), abs().");
         if(name.equals("toString")) 
         	throw new OperationException("toString()","The type String is not supported.");
         if(name.equals("asOrderedSet"))	
@@ -207,13 +247,9 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
         if(name.equals("product")) 
         	throw new OperationException("product()","The type Tuple is not supported");        
         if(name.equals("count"))
-        	throw new OperationException("count()","We do not support this operation. Not possible of iterate over the collection.");
+        	throw new OperationException("count()","We do not support this operation. It is not possible to iterate over collections.");
         if(name.equals("sum")) 
         	throw new OperationException("sum()","We do not support this operation because it only applies to numeric(Integer) types.");        
-        if(name.equals("oclIsTypeOf"))	
-        	throw new OperationException("oclIsTypeOf()","We do not support this object operation. ");        
-        if(name.equals("oclType")) 
-        	throw new OperationException("oclType()","We do not upport this object operation.");
                
         return result;
 	}
@@ -226,7 +262,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
     	String name = icallExp.getName();    	
     	String var = new String();    	
     	    	
-		// O iterador collect deverá sempre ser usado em conjunto com a operação asSet() porque collect retorna tipo Bag
+		// O iterador collect deverï¿½ sempre ser usado em conjunto com a operaï¿½ï¿½o asSet() porque collect retorna tipo Bag
     	if(name.equals("collect")) { 
     		collect_used=true; is_next_oper=true; 
     	} else { 
@@ -274,7 +310,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
         
         if(name.equals("collect")) 
         {        	
-        	// Substitue a variável x por sourceResult na expressão bodyResult
+        	// Substitue a variï¿½vel x por sourceResult na expressï¿½o bodyResult
         	
         	String sb = substitutes(var,bodyResult,sourceResult);        	
         	result.append(sb);        	
@@ -283,25 +319,24 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
         {
         	result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" != ");        	
 
-        	// Substitue a variável x por x' na expressão bodyResult 
+        	// Substitue a variavel x por x' na expressï¿½o bodyResult 
 
         	String sb = substitutes(var,bodyResult,var+"'");        	
         	result.append(sb);        	
         }        
                 
+        if(name.equals("any")) 
+        	throw new IteratorException("any()","We do not support this iterator. Problems arise when trying to return the type of an element of the collection");
         if(name.equals("sortedBy")) 
         	throw new IteratorException("sortedBy()","The type OrderedSet is not supported.");        
-        if(name.equals("any")) 
-        	throw new IteratorException("any()","We do not support this iterator. Problems arise when trying to return the type of an element of the collection"); 
         if(name.equals("collectNested")) 
         	throw new IteratorException("collectNested()","We do not support nested collections and the type Bag.");
-       
        
      	return result.toString();    	       
     }    	    
     
     /** 
-     *  Substitue var por sourceResult na expressão bodyResult 
+     *  Substitue var por sourceResult na expressï¿½o bodyResult 
      *  This method was used for Iterators: isUnique() and collect()
      */    
     public String substitutes (String var, String bodyResult, String sourceResult)
@@ -334,7 +369,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
     public String handleIterateExp(IterateExp<Classifier,Parameter> callExp, String sourceResult,    
     List<String> variableResults,String resultResult, String bodyResult) 
     {
-    	throw new OperationException("iterate()","Not possible of iterate over the collection.");		
+    	throw new OperationException("iterate()","It it not possible to iterate over collections.");		
 	}
     
     /** Visits PropertyCallExp. */
@@ -371,7 +406,10 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
     	RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(classifier);
     	String nameClassifier = refparser.getAlias(ontoClassifier);
 	
-		return "w." + nameClassifier;
+    	if (ontoClassifier instanceof RefOntoUML.DataType)
+    		return "" + nameClassifier;
+    	else
+    		return "w." + nameClassifier;
 	}
 	
     /** Visits VariableExp. */	
@@ -473,8 +511,8 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
     /** Visits EnumLiteralExp. */
 	@Override
     public String visitEnumLiteralExp(EnumLiteralExp<Classifier,EnumerationLiteral> el) 
-	{
-		throw new LiteralException("Enum");
+	{		
+		return el.getReferredEnumLiteral().toString();		
 	}
 	
 	/** Visits ItegerLiteralExp. */	
@@ -512,7 +550,10 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 	@Override
     public String visitBooleanLiteralExp(BooleanLiteralExp<Classifier> bl) 
 	{
-		throw new LiteralException("Boolean");
+		if (bl.getBooleanSymbol() == null) return null;
+		if (bl.getBooleanSymbol().toString().equals("true")) return "True";
+		if (bl.getBooleanSymbol().toString().equals("false")) return "False";
+		return null;
 	}
 	
 	/** Visits NullLiteralExp (Since OCL 3.1). */	
@@ -561,19 +602,21 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                 	
                 	result.append("inv_"+constraint.getName()).append(" {\n");            
                 	
-                	if(stereo_invariant.equals("SIMULATION")) result.append("\tall w: World | all self: ");
-                	else if(stereo_invariant.equals("ASSERTION")) result.append("\tall w: World | all self: ");
-                	else result.append("\tall w: World | all self: ");
-                	
-                	// get name Classifier
-                	RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(classifier);
-                	String nameClassifier = refparser.getAlias(ontoClassifier);
-                			
-                	result.append("w."+nameClassifier+" | ");
-                	
                     org.eclipse.ocl.uml.ExpressionInOCL expr = (org.eclipse.ocl.uml.ExpressionInOCL) constraint.getSpecification();
-                            			
-                    result.append(visit(expr)); 
+                    String exprResult = visit(expr);
+                    
+               		if(stereo_invariant.equals("SIMULATION")) result.append("\tall w: World | ");
+                   	else if(stereo_invariant.equals("ASSERTION")) result.append("\tall w: World | ");
+                   	else result.append("\tall w: World | ");
+                		
+               		RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(classifier);
+               		String nameClassifier = refparser.getAlias(ontoClassifier);
+              	 	result.append("all self: w."+nameClassifier+" | ");
+                	
+                    if (expr.getBodyExpression().toString().equals("true")) result.append("isTrue["+exprResult+"]");
+                    else if (expr.getBodyExpression().toString().equals("false")) result.append("isTrue["+exprResult+"]");
+                    else result.append(exprResult); 
+                    
                     result.append("\n}\n\n");                 
                     
                     if(stereo_invariant.equals("SIMULATION")) result.append("run "+"inv_"+constraint.getName()+" for 10 but 3 World, 7 Int\n\n");
