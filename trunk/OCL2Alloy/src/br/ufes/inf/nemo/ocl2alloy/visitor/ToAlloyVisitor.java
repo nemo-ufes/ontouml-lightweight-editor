@@ -402,6 +402,9 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 	{		
 		Classifier classifier = t.getReferredType();
 		
+		if (classifier instanceof org.eclipse.ocl.uml.AnyType) return "univ";
+		if (classifier instanceof org.eclipse.ocl.uml.VoidType) return "none";
+				
 		// get Classifier Name
     	RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(classifier);
     	String nameClassifier = refparser.getAlias(ontoClassifier);
