@@ -169,7 +169,7 @@ public class OCLOptionsView extends JPanel {
 		
 		add(introPanel,BorderLayout.NORTH);
 		
-		lblYouCanAlso = new JLabel("You can also check and simulate constraints...");
+		lblYouCanAlso = new JLabel("You can also check and simulate rules...");
 		lblYouCanAlso.setHorizontalAlignment(SwingConstants.CENTER);
 		GroupLayout gl_introPanel = new GroupLayout(introPanel);
 		gl_introPanel.setHorizontalGroup(

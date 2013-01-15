@@ -139,6 +139,8 @@ public class Dealer {
         org.eclipse.uml2.uml.Type t2 = (org.eclipse.uml2.uml.Type) GetElement(p1.getType());
         p2.setType(t2);              
         
+        //if (p2.getName().isEmpty() || p2.getName()==null) p2.setName(t2.getName().toLowerCase());
+        
         /* aggregation */
         RefOntoUML.AggregationKind ak1 = p1.getAggregation();
             
@@ -200,7 +202,10 @@ public class Dealer {
             ", isLeaf="+p2.isLeaf()+", isStatic="+p2.isStatic()+", isReadOnly="+p2.isReadOnly());
             
             c2.getOwnedAttributes().add(p2);
+            
+            RelateElements(p1, p2);
         }
+        
     }
 	
 	/** DataType Attributes. */	
@@ -219,6 +224,8 @@ public class Dealer {
             ", isLeaf="+p2.isLeaf()+", isStatic="+p2.isStatic()+", isReadOnly="+p2.isReadOnly());
             
             c2.getOwnedAttributes().add(p2);
+            
+            RelateElements(p1, p2);
         }         
     }
 	
@@ -364,7 +371,7 @@ public class Dealer {
              
          /* print out */                          
          outln("UML:PrimitiveType :: name="+dt2.getName()+", visibility="+dt2.getVisibility().getName()+", isAbstract="+dt2.isAbstract());             
-          
+                  
          return dt2;
      }
      

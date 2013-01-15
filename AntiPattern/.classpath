@@ -13,9 +13,9 @@
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.query_1.2.100.v200903190031.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.query.ocl_2.0.0.v20091215-1624.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl_3.2.0.v20120611-1210.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.common_1.0.0.v20120516-1543.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.ecore_3.2.0.v20120522-1637.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.osgi_3.8.0.v20120529-1548.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl_3.3.0.v20121218-1022.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.common_1.1.0.v20121102-1658.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.ecore_3.2.100.v20121109-1114.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

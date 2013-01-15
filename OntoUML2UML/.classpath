@@ -5,7 +5,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Common"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.core.runtime_3.8.0.v20120521-2346.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.common_1.0.0.v20120516-1543.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.osgi_3.8.0.v20120529-1548.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.mapping.ecore2xml_2.7.0.v20120608-0554.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.uml2_4.0.0.v20120604-0919.jar"/>
@@ -19,5 +18,6 @@
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.common_1.1.0.v20121102-1658.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
