@@ -16,9 +16,6 @@
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl_3.2.0.v20120611-1210.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.common_1.0.0.v20120516-1543.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.uml_4.0.0.v20120611-1210.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.osgi_3.8.0.v20120529-1548.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
 	<classpathentry kind="lib" path="lib/alloy4.2.jar"/>
@@ -28,5 +25,8 @@
 	<classpathentry kind="lib" path="/Common/lib/textarea/rstaui.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/textarea/rsyntaxtextarea.jar"/>
 	<classpathentry kind="lib" path="/Common/lib/lpg.runtime.java_2.0.17.v201004271640.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl_3.3.0.v20121218-1022.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.common_1.1.0.v20121102-1658.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.uml_4.0.100.v20121218-1022.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

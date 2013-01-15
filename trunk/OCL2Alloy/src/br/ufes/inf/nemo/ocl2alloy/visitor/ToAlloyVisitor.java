@@ -156,6 +156,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 		if(name.equals("abs")) { return "abs[" + sourceResult + "]"; }
 		
 		if(name.equals("asSet")) { return sourceResult; }
+		if(name.equals("oclAsType")) { return sourceResult; }
 		
 		if(name.equals("-")) 
 		{
@@ -219,9 +220,9 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
         }
        			
         //if(name.equals("oclIsTypeOf")) 
-//        	throw new OperationException("oclIsTypeOf()","We do not support this object operation. Should me more of a description here...");
-        if(name.equals("oclAsType")) 
-        	throw new OperationException("oclAsType()","We do not support this operation. Should me more of a descrition here...");
+        //	throw new OperationException("oclIsTypeOf()","We do not support this object operation. Should me more of a description here...");
+        //if(name.equals("oclAsType")) 
+        //	throw new OperationException("oclAsType()","We do not support this operation. Should me more of a descrition here...");
         if(name.equals("/")) 
         	throw new OperationException("/","We only support the integer operations: +, -, *, max(), min(), abs().");
         if(name.equals("div")) 
@@ -387,12 +388,15 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 		// no qualifier		
 		if (!qualifierResults.isEmpty()) { }
 		
-		// get Property Name
-    	RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getKeyByValue(property);
+		// get Property Name		
+    	RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getKeyByValue(property);    	
     	String nameProperty = refparser.getAlias(ontoProperty);
     	
-		result.append(sourceResult + "." + nameProperty+ "[w]");
-				
+    	if (property.getAssociation()!=null)
+    		result.append(sourceResult + "." + nameProperty+ "[w]");
+    	else
+    		result.append(sourceResult + ".(w." + nameProperty+ ")");
+    	
 		return result.toString();
 	}        			
     
@@ -404,6 +408,10 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 		
 		if (classifier instanceof org.eclipse.ocl.uml.AnyType) return "univ";
 		if (classifier instanceof org.eclipse.ocl.uml.VoidType) return "none";
+		if (classifier instanceof org.eclipse.ocl.uml.PrimitiveType) 
+		{
+			if (classifier.getName().equals("Integer")) return "Int";
+		}
 				
 		// get Classifier Name
     	RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(classifier);
@@ -667,8 +675,16 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                 		typename = type_property;
                 	}
                 	
-                	org.eclipse.uml2.uml.Type src_type = property.getAssociation().getMemberEnds().get(0).getType();
-                	org.eclipse.uml2.uml.Type tgt_type = property.getAssociation().getMemberEnds().get(1).getType();
+                	org.eclipse.uml2.uml.Type src_type;
+                	org.eclipse.uml2.uml.Type tgt_type;
+                	
+                	if (property.getAssociation()!=null){ // derive an assoc end...
+                		src_type = property.getAssociation().getMemberEnds().get(0).getType();
+                		tgt_type = property.getAssociation().getMemberEnds().get(1).getType();
+                	}else{ // derive an attribute...
+                		src_type = (org.eclipse.uml2.uml.Type)property.getOwner();
+                		tgt_type = property.getType();
+                	}
                 	
                 	// get Source Type Name
                 	RefOntoUML.PackageableElement sourceType = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(src_type);
@@ -682,7 +698,11 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                 	if(typename.equals(src_name)) result.append("w."+tgt_name+" | ");                	
                 	if(typename.equals(tgt_name)) result.append("w."+src_name+" | ");
                 	                	
-                	result.append("self."+name_property+"[w] = ");
+                	if(property.getAssociation()!=null){
+                		result.append("self."+name_property+"[w] = ");
+                	}else{
+                		result.append("self.(w."+name_property+") = ");
+                	}
                 	
                 	org.eclipse.ocl.uml.ExpressionInOCL expr = (org.eclipse.ocl.uml.ExpressionInOCL) constraint.getSpecification();
                     result.append(visit(expr));

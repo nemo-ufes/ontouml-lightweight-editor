@@ -51,7 +51,7 @@ public class OCLParser {
      * @return
      */
     public RefOntoUML.Element getKeyByValue(org.eclipse.uml2.uml.Element value) 
-    {
+    {    	
         for (Entry<RefOntoUML.Element,org.eclipse.uml2.uml.Element> entry : umlHashMap.entrySet()) 
         {
             if (value.equals(entry.getValue())) 
