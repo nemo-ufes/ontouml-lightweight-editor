@@ -90,7 +90,6 @@ public class Transformer extends BaseTransformer {
 	/**
 	 * Transforms Classifiers.
 	 */
-	@SuppressWarnings("unchecked")
 	public void transformClassifier(Classifier c) 
 	{
 		/* ObjectClassName: set exists:>Object,
@@ -137,7 +136,6 @@ public class Transformer extends BaseTransformer {
 	/**
 	 * Transforms Attributes
 	 */
-	@SuppressWarnings("unchecked")
 	public void transformAttribute(Classifier c, Property attr)
 	{		
 		String target = new String();
@@ -173,7 +171,6 @@ public class Transformer extends BaseTransformer {
 	/**
 	 * Final additions.
 	 */
-	@SuppressWarnings("unchecked")
 	public void finalAdditions()
 	{	
 		/* exists:>Object in subsortalNamesList[0] + subsortalNamesList[1] + ...
@@ -234,7 +231,6 @@ public class Transformer extends BaseTransformer {
 	/**
 	 * Transforms Derivation.
 	 */
-	@SuppressWarnings("unchecked")
 	public void transformDerivations(Derivation d)
 	{
 		PredicateInvocation pI = TDerivationRule.createPredicateInvocation(ontoparser, factory, d);		
@@ -247,7 +243,6 @@ public class Transformer extends BaseTransformer {
 	/**
 	 * Transforms OntoUML Associations into Alloy. 
 	 */
-	@SuppressWarnings("unchecked")
 	public void transformAssociations(Association ass) 
 	{
 		Variable var = factory.createVariable();		
@@ -355,7 +350,6 @@ public class Transformer extends BaseTransformer {
 	 * Transforms Meronymic Association into Alloy.
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	private void transformMeronymicAssociation(Meronymic ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
 	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
@@ -425,7 +419,6 @@ public class Transformer extends BaseTransformer {
 	 * Transforms Mediation Association into Alloy.
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	private void transformMediationAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
 	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
@@ -479,7 +472,6 @@ public class Transformer extends BaseTransformer {
 	 * Transforms Characterization Association into Alloy.
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	private void transformCharacterizationAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
 	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
@@ -532,7 +524,6 @@ public class Transformer extends BaseTransformer {
 	/** 
 	 * Transforms Formal, Material and DataTypeRelationships into Alloy.
 	 */
-	@SuppressWarnings("unchecked")
 	private void transformOtherAssociation(Association ass, VariableReference source, VariableReference target, ArrowOperation aOp) 
 	{
 		int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;
@@ -593,7 +584,6 @@ public class Transformer extends BaseTransformer {
 	 * Set cardinalities of the Arrow Operations according to OntoUML Associations.
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	private void setCardinalities(ArrowOperation aOp, int lowerSource, int upperSource, int lowerTarget, int upperTarget, 
 	VariableReference source, VariableReference target, String assocName) 
 	{

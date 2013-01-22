@@ -19,7 +19,6 @@ public class TWeakSupplementationRule {
   	 *
   	 * all w: World | all x: w.<RigidSortalName> | # ( x.(w.meronymicName1)+ x.(w.meronymicName2) + ...) >= 2
 	 */
-	@SuppressWarnings("unchecked")
 	public static FactDeclaration createFactDeclaration(OntoUMLParser ontoparser, AlloyFactory factory, Classifier c) 
 	{
 		if (c.isIsAbstract()) { return null; }

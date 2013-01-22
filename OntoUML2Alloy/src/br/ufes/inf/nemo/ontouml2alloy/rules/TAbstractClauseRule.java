@@ -20,23 +20,23 @@ public class TAbstractClauseRule {
 	 * between abstract father(Classifiers) and his concrete childs.
 	 * 
 	 * "abstract_father = concrete_child1 + concrete_child2 + concrete_child3 + ..." 
-	 */
+	 * 
+	 * @param ontoparser: OntoUML Parser
+	 * @param factory: Alloy Factory
+	 * @param c: OntoUML.Classifier
+	 * @return
+	 */ 
 	public static CompareOperation createCompareOperation(OntoUMLParser ontoparser, AlloyFactory factory, Classifier c) 
 	{		
-		Set<Classifier> concretes = ontoparser.getAllConcreteChildren(c);
-						
+		Set<Classifier> concretes = ontoparser.getAllConcreteChildren(c);						
 		if(concretes.size() > 0)
 		{
-			BinaryOperation bo = factory.createBinaryOperation();
-			
+			BinaryOperation bo = factory.createBinaryOperation();			
 			CompareOperation co = factory.createCompareOperation();
-			co.setOperator(CompareOperator.EQUAL);
-			
+			co.setOperator(CompareOperator.EQUAL);			
 			VariableReference vr = factory.createVariableReference();
-			vr.setVariable(ontoparser.getAlias(c));
-			
-			co.setLeftExpression(vr);
-			
+			vr.setVariable(ontoparser.getAlias(c));			
+			co.setLeftExpression(vr);			
 			int cont = 1;
 			for(Classifier classifier : concretes)
 			{
@@ -75,5 +75,4 @@ public class TAbstractClauseRule {
 			return co;			
 		}
 		return null;
-	}	
-}
+	}	}

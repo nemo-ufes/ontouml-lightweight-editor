@@ -99,7 +99,6 @@ public interface SignatureDeclaration extends Paragraph {
 	 * @model containment="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
 	EList<Declaration> getRelation();
 
 	/**

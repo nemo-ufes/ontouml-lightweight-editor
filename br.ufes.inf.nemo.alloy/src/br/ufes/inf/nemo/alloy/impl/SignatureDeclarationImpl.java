@@ -203,7 +203,7 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ })
 	public EList<Declaration> getRelation() {
 		if (relation == null) {
 			relation = new EObjectContainmentEList<Declaration>(Declaration.class, this, AlloyPackage.SIGNATURE_DECLARATION__RELATION);
@@ -324,7 +324,6 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * @generated
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.SIGNATURE_DECLARATION__RELATION:
@@ -366,7 +365,7 @@ public class SignatureDeclarationImpl extends ParagraphImpl implements Signature
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {

@@ -93,7 +93,6 @@ public interface PredicateDeclaration extends Paragraph {
 	 * @model containment="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
 	EList<Declaration> getParameter();
 
 } // PredicateDeclaration

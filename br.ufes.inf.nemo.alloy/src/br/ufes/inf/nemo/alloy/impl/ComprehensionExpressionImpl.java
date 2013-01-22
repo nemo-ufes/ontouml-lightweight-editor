@@ -53,7 +53,6 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * @generated
 	 * @ordered
 	 */
-	@SuppressWarnings("rawtypes")
 	protected EList<Declaration> declaration;
 
 	/**
@@ -140,7 +139,6 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EList<Declaration> getDeclaration() {
 		if (declaration == null) {
 			declaration = new EObjectContainmentEList<Declaration>(Declaration.class, this, AlloyPackage.COMPREHENSION_EXPRESSION__DECLARATION);
@@ -282,7 +280,6 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * @generated
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.COMPREHENSION_EXPRESSION__DECLARATION:
@@ -322,7 +319,7 @@ public class ComprehensionExpressionImpl extends ExpressionImpl implements Compr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {

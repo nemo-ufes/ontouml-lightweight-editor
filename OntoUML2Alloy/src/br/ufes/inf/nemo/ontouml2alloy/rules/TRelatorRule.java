@@ -20,7 +20,6 @@ public class TRelatorRule {
 	 * 
 	 * all w: World | all x: w.<RelatorName> | # ( x.(w.<associationName1>)+ x.(w.<associationName2>) + ...) >= 2
 	 */
-	@SuppressWarnings("unchecked")
 	public static FactDeclaration createFactDeclaration(OntoUMLParser ontoparser, AlloyFactory factory, Relator c) 
 	{
 		if (c.isIsAbstract()) return null;

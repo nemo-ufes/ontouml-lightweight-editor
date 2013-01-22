@@ -193,7 +193,7 @@ public class DeclarationImpl extends EObjectImpl implements Declaration {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ })
 	public EList<Variable> getVariable() {
 		if (variable == null) {
 			variable = new EObjectContainmentWithInverseEList<Variable>(Variable.class, this, AlloyPackage.DECLARATION__VARIABLE, AlloyPackage.VARIABLE__DECLARATION);

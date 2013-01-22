@@ -46,7 +46,6 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * @generated
 	 * @ordered
 	 */
-	@SuppressWarnings("rawtypes")
 	protected EList<Expression> expression;
 
 	/**
@@ -73,7 +72,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ })
 	public EList<Expression> getExpression() {
 		if (expression == null) {
 			expression = new EObjectContainmentEList<Expression>(Expression.class, this, AlloyPackage.BLOCK__EXPRESSION);
@@ -87,7 +86,6 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * @generated
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.BLOCK__EXPRESSION:
@@ -115,7 +113,7 @@ public class BlockImpl extends EObjectImpl implements Block {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {

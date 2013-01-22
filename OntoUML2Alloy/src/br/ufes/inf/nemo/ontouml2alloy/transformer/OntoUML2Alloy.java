@@ -30,14 +30,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import RefOntoUML.Association;
-import RefOntoUML.Class;
 import RefOntoUML.Classifier;
-import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
-import RefOntoUML.Enumeration;
 import RefOntoUML.PackageableElement;
-import RefOntoUML.PrimitiveType;
-import RefOntoUML.Property;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyPackage;
 import br.ufes.inf.nemo.alloy.impl.AlloyPackageImpl;

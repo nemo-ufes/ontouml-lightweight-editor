@@ -40,7 +40,6 @@ public interface PredicateInvocation extends Expression {
 	 * @model containment="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
 	EList<Expression> getParameter();
 
 	/**

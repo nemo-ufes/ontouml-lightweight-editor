@@ -81,9 +81,12 @@ public class OntoUMLController {
 	 class VerifyModelListener implements ActionListener 
 	 {
 	    public void actionPerformed(ActionEvent e) 
-	    {	    	
-	    	ontoumlview.getTheFrame().getConsole().write(ontoumlview.getTheFrame().getManager().doModelVerification());	    	
-	    	
+	    {
+	    	ontoumlview.getTheFrame().getConsole().write(ontoumlview.getTheFrame().getManager().doModelDiagnostic());
+	    	if (ontoumlview.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser().items == 0)
+	    	{	    	
+	    	   	ontoumlview.getTheFrame().getConsole().write(ontoumlview.getTheFrame().getManager().doModelVerification());	    	
+	    	}
 	    	ontoumlview.getTheFrame().ShowConsole();
 	    }
 	 }

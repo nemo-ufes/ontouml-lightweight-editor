@@ -6,14 +6,48 @@
  */
 package br.ufes.inf.nemo.alloy.util;
 
-import br.ufes.inf.nemo.alloy.*;
-
-import java.util.List;
-
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+
+import br.ufes.inf.nemo.alloy.AlloyModule;
+import br.ufes.inf.nemo.alloy.AlloyPackage;
+import br.ufes.inf.nemo.alloy.ArrowOperation;
+import br.ufes.inf.nemo.alloy.AssertionDeclaration;
+import br.ufes.inf.nemo.alloy.BinaryOperation;
+import br.ufes.inf.nemo.alloy.Block;
+import br.ufes.inf.nemo.alloy.CommandDeclaration;
+import br.ufes.inf.nemo.alloy.CompareOperation;
+import br.ufes.inf.nemo.alloy.ComprehensionExpression;
+import br.ufes.inf.nemo.alloy.ConstantExpression;
+import br.ufes.inf.nemo.alloy.Declaration;
+import br.ufes.inf.nemo.alloy.DetailedScope;
+import br.ufes.inf.nemo.alloy.DisjointExpression;
+import br.ufes.inf.nemo.alloy.EnumDeclaration;
+import br.ufes.inf.nemo.alloy.Expression;
+import br.ufes.inf.nemo.alloy.ExternalReference;
+import br.ufes.inf.nemo.alloy.FactDeclaration;
+import br.ufes.inf.nemo.alloy.FunctionDeclaration;
+import br.ufes.inf.nemo.alloy.FunctionInvocation;
+import br.ufes.inf.nemo.alloy.GenericScope;
+import br.ufes.inf.nemo.alloy.ImpliesOperation;
+import br.ufes.inf.nemo.alloy.ImporterModule;
+import br.ufes.inf.nemo.alloy.Inheritance;
+import br.ufes.inf.nemo.alloy.LetDeclaration;
+import br.ufes.inf.nemo.alloy.ModuleImportation;
+import br.ufes.inf.nemo.alloy.Paragraph;
+import br.ufes.inf.nemo.alloy.ParametrizedModule;
+import br.ufes.inf.nemo.alloy.PredicateDeclaration;
+import br.ufes.inf.nemo.alloy.PredicateInvocation;
+import br.ufes.inf.nemo.alloy.QuantificationExpression;
+import br.ufes.inf.nemo.alloy.ScopeSpecification;
+import br.ufes.inf.nemo.alloy.Scopeable;
+import br.ufes.inf.nemo.alloy.SignatureDeclaration;
+import br.ufes.inf.nemo.alloy.SignatureParameter;
+import br.ufes.inf.nemo.alloy.SignatureReference;
+import br.ufes.inf.nemo.alloy.UnaryOperation;
+import br.ufes.inf.nemo.alloy.Variable;
+import br.ufes.inf.nemo.alloy.VariableReference;
 
 /**
  * <!-- begin-user-doc -->

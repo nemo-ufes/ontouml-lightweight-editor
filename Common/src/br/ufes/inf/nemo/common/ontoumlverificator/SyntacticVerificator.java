@@ -22,9 +22,7 @@ public class SyntacticVerificator {
 	public static String verify(RefOntoUML.Package refmodel)
 	{		
 		String result = new String();
-		
-		if (refmodel==null) return "First you need to provide the OntoUML Conceptual Model.";
-		
+						
 		Diagnostician validator = Diagnostician.INSTANCE;
 
 		Map<Object, Object> context = new HashMap<Object, Object>();

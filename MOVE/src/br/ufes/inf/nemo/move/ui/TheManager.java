@@ -172,6 +172,24 @@ public class TheManager {
 		return oclview; 
 	}
 	
+	public String doModelDiagnostic()
+	{
+		String log = new String();		
+		if (ontoumlmodel.getOntoUMLParser()==null) 
+		{
+			frame.showInformationMessageDialog("Verify Model", "First you need to load your Model !");
+			return "";
+		}		
+		
+		// do auto selection completion.
+		doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
+		
+		// diagnose model
+		log = ontoumlmodel.getOntoUMLParser().getDiagnostic();
+						
+		return log;
+	}
+	
 	/**
 	 * Model Verification.
 	 * 

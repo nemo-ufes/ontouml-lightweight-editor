@@ -94,7 +94,6 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * @generated
 	 * @ordered
 	 */
-	@SuppressWarnings("rawtypes")
 	protected EList<SignatureParameter> parameters;
 
 	/**
@@ -183,7 +182,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ })
 	public EList<SignatureParameter> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList<SignatureParameter>(SignatureParameter.class, this, AlloyPackage.ALLOY_MODULE__PARAMETERS);
@@ -196,7 +195,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ })
 	public EList<Paragraph> getParagraph() {
 		if (paragraph == null) {
 			paragraph = new EObjectContainmentEList<Paragraph>(Paragraph.class, this, AlloyPackage.ALLOY_MODULE__PARAGRAPH);
@@ -209,7 +208,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ })
 	public EList<ModuleImportation> getImports() {
 		if (imports == null) {
 			imports = new EObjectContainmentEList<ModuleImportation>(ModuleImportation.class, this, AlloyPackage.ALLOY_MODULE__IMPORTS);
@@ -262,7 +261,7 @@ public class AlloyModuleImpl extends EObjectImpl implements AlloyModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
