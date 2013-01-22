@@ -1,25 +1,5 @@
 package br.ufes.inf.nemo.ontouml2alloy.util;
 
-/**
- * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
- *
- * This file is part of OntoUML2Alloy (OntoUML to Alloy Transformation).
- *
- * OntoUML2Alloy is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * OntoUML2Alloy is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OntoUML2Alloy; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
-
 import java.io.File;
 import java.io.IOException;
 
@@ -49,6 +29,10 @@ public class AlloyThemeFile {
 			
 			"<node>"+ "\n" +
 			"	<type name=\"Int\"/>" + "\n" +
+			"   <type name=\"boolean/Bool\"/> " + "\n" + 
+			"   <type name=\"boolean/False\"/> " + "\n" +
+			"   <type name=\"boolean/True\"/> " + "\n" +
+			"   <type name=\"ordering/Ord\"/> " + "\n" +
 			"	<type name=\"String\"/>" + "\n" + 
 			"	<type name=\"World\"/>" + "\n" +
 			"	<type name=\"seq/Int\"/>" + "\n" +
@@ -72,7 +56,7 @@ public class AlloyThemeFile {
 			"</node>" + "\n\n" +
 
 			"<node showlabel=\"no\">" + "\n" +
-			"	<set name=\"$all_elements_exists_w\" type=\"univ\"/>" + "\n" +
+			"	<set name=\"$all_elements_exists_w\" type=\"univ\"/>" + "\n" +			
 			"   <set name=\"$antirigidity_x\" type=\"univ\"/> " +
 			"   <set name=\"$antirigidity_x&apos;\" type=\"univ\"/> " + 
 			"	<set name=\"exists\" type=\"DataType\"/>" + "\n" +
@@ -89,8 +73,16 @@ public class AlloyThemeFile {
 
 			"<node visible=\"yes\" showlabel=\"no\">" + "\n" +
 			"	<set name=\"$visible\" type=\"univ\"/>" + "\n" +
+			"   <set name=\"$dataTypeVisibility\" type=\"univ\"/> "  + "\n" +
+			"   <set name=\"$enumerationVisibility\" type=\"univ\"/> " + "\n" +
+			"   <set name=\"$primitiveTypeVisibility\" type=\"univ\"/>" + "\n" +
 			"</node>" + "\n\n" +
 
+			"<edge visible=\"no\" attribute=\"yes\"> " + "\n" +
+			//"   <relation name=\"idade\"> <type name=\"Object\"/> <type name=\"Int\"/> </relation> " + "\n" +
+			//"   <relation name=\"naturalidade\"> <type name=\"Object\"/> <type name=\"Estado\"/> </relation> " + "\n" +
+			"</edge>" + "\n" +
+			
 			"</view>" + "\n\n" +
 
 			"</alloy>" + "\n\n";

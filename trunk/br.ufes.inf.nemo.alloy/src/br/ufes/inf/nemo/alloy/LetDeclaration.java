@@ -96,7 +96,6 @@ public interface LetDeclaration extends Expression {
 	 * @model required="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
 	EList<String> getName();
 
 	/**

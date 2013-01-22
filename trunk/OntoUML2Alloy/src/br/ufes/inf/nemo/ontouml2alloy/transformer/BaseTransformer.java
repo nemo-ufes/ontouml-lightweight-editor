@@ -91,7 +91,6 @@ public class BaseTransformer {
 	/** 
 	 * Constructor
 	 */
-	@SuppressWarnings("unchecked")
 	public BaseTransformer (OntoUMLParser ontoparser, AlloyFactory factory, OntoUMLOptions options)
 	{
 		this.ontoparser = ontoparser;		
@@ -221,15 +220,31 @@ public class BaseTransformer {
 			derivations.setName("derivations");
 			derivations.setBlock(factory.createBlock());			
 		}
-			
+		
+		populate();
+	}
+	
+	/** 
+	 * Populate...
+	 */
+	public void populate()
+	{	
 		populateWithDataTypeVisibilityRule();
+		
 		populateWihAdditionalRules();
+		
 		populateWithRigidityRules();
+		
 		populateWithAntiRigidityRules();
-		populateDataTypeCompletenessRule();		
+		
+		populateDataTypeCompletenessRule();	
+		
 		populateWithTopLevelDataTypeDisjointnessRules();
+		
 		populateWithTopLevelDisjointnessRules();		
+		
 		populateWithGeneralizationRules();
+		
 		populateWithGeneralizationSetRules();
 	}
 	
@@ -239,42 +254,43 @@ public class BaseTransformer {
 	protected void populateWithAttributeRules()
 	{
 		for(Property attr: ontoparser.getAttributes())		
-		{
-			String target = new String();
-			ArrowOperation aOp  = factory.createArrowOperation();
-		
-			if (attr.getType() instanceof PrimitiveType)
+		{			
+			if (attr.getType().getName()!=null) 
 			{
-				if (attr.getType().getName().equals("int"))
+				String target = new String();
+				ArrowOperation aOp  = factory.createArrowOperation();
+				if (attr.getType() instanceof PrimitiveType)
 				{
-					target = "Int";
-					aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
-				}
-				else if (attr.getType().getName().equals("Boolean")) 
-				{
-					target = "Bool";
-					aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
-				}
-				else if (attr.getType().getName().equals("string"))
-				{
-					target = "string";
-					aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
-				}			
-				
-			}else{
-				
-				aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,ontoparser.getAlias(attr.getType()),attr.getLower(),attr.getUpper());
-			}
+					if (attr.getType().getName().equals("int"))
+					{
+						target = "Int";
+						aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
+					}
+					else if (attr.getType().getName().equals("Boolean")) 
+					{
+						target = "Bool";
+						aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
+					}
+					else if (attr.getType().getName().equals("string"))
+					{
+						target = "string";
+						aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
+					}			
 					
-			Declaration decl = AlloyUtil.createDeclaration(factory, ontoparser.getAlias(attr), aOp);		
-			if (decl!=null) world.getRelation().add(decl);
+				}else{
+					
+					aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,ontoparser.getAlias(attr.getType()),attr.getLower(),attr.getUpper());
+				}
+						
+				Declaration decl = AlloyUtil.createDeclaration(factory, ontoparser.getAlias(attr), aOp);		
+				if (decl!=null) world.getRelation().add(decl);
+			}
 		}		
 	}
 	
 	/**
 	 * 	Populates With Additional Rules.
 	 */
-	@SuppressWarnings("unchecked")
 	protected void populateWihAdditionalRules()
 	{
 		additionalFact = factory.createFactDeclaration();
@@ -298,7 +314,6 @@ public class BaseTransformer {
 	/**
 	 * 	Populates With Rigidity Rules.
 	 */
-	@SuppressWarnings("unchecked")
 	protected void populateWithRigidityRules() 
 	{
 		ArrayList<Classifier> rigidElementsList = new ArrayList<Classifier>();
@@ -338,7 +353,6 @@ public class BaseTransformer {
 	/**
 	 * 	Populates With Anti Rigidity Rules.
 	 */
-	@SuppressWarnings("unchecked")
 	protected void populateWithAntiRigidityRules() 
 	{
 		ArrayList<Classifier> antirigidElementsList = new ArrayList<Classifier>();
@@ -367,7 +381,6 @@ public class BaseTransformer {
 	/**
 	 * Populates With Data Type Completeness Rule.
 	 */
-	@SuppressWarnings("unchecked")
 	protected void populateDataTypeCompletenessRule()
 	{
 		ArrayList<EObject> dataTypeList = new ArrayList<EObject>();
@@ -399,7 +412,6 @@ public class BaseTransformer {
 	/**
 	 * 	Populates With Top Level DataTypes Disjointness Rules.
 	 */
-	@SuppressWarnings("unchecked")
 	protected void populateWithTopLevelDataTypeDisjointnessRules()
 	{
 		ArrayList<Classifier> topDataTypeList = new ArrayList<Classifier>();
@@ -425,7 +437,6 @@ public class BaseTransformer {
 	/**
 	 * 	Populates With  Top Level Rules Disjointness Rules..
 	 */
-	@SuppressWarnings("unchecked")
 	protected void populateWithTopLevelDisjointnessRules()
 	{
 		// ObjectClass		 
@@ -456,7 +467,6 @@ public class BaseTransformer {
 	/**
 	 * 	Populates With Generalization Rules.
 	 */
-	@SuppressWarnings("unchecked")
 	protected void populateWithGeneralizationRules()
 	{
 		for(Generalization g: ontoparser.getAllInstances(Generalization.class))
@@ -492,36 +502,30 @@ public class BaseTransformer {
 	/**
 	 * 	Populates With Generalization Set Rules.
 	 */
-	@SuppressWarnings("unchecked")
 	protected void populateWithGeneralizationSetRules()
 	{
 		for(GeneralizationSet gs: ontoparser.getAllInstances(GeneralizationSet.class))
 		{
 			if (ontoparser.retainSelected(gs.getGeneralization()).size()>0) 
-			{			
-				CompareOperation co = factory.createCompareOperation();
-				DisjointExpression disj = factory.createDisjointExpression();
-						
-				if(gs.isIsCovering())  co = TGeneralizationSetRule.createCompleteCompareOperation(ontoparser, factory, gs);		
-				if(gs.isIsDisjoint()) disj =  TGeneralizationSetRule.createDisjointExpression(ontoparser, factory, gs);			
-				
-				FactDeclaration genSetFact = factory.createFactDeclaration();		
-				genSetFact.setName("generalizationSet");
-				genSetFact.setBlock(factory.createBlock());	
-				genSetFact.getBlock().getExpression().add(co);
-				genSetFactList.add(genSetFact);
-			
-				if (gs.parent() instanceof DataType)
+			{				
+				if(gs.isIsCovering() || gs.isIsDisjoint())
 				{
-					//DataTypes
-					if (co!=null) genSetFact.getBlock().getExpression().add(co); 
-					if (disj!=null && disj.getSet().size()>0) genSetFact.getBlock().getExpression().add(disj);	
+					FactDeclaration genSetFact = factory.createFactDeclaration();		
+					genSetFact.setName("generalizationSet");
+					genSetFact.setBlock(factory.createBlock());				
+					genSetFactList.add(genSetFact);				
 				
-				}else {		
-				
-					//Classes
-					if (co!=null)genSetFact.getBlock().getExpression().add(co);
-					if (disj!=null && disj.getSet().size()>0) genSetFact.getBlock().getExpression().add(disj);
+					if(gs.isIsCovering())  
+					{
+						CompareOperation co = TGeneralizationSetRule.createCompleteCompareOperation(ontoparser, factory, gs);
+						if (co!=null) genSetFact.getBlock().getExpression().add(co); 
+					}
+					
+					if(gs.isIsDisjoint())
+					{
+						DisjointExpression disj =  TGeneralizationSetRule.createDisjointExpression(ontoparser, factory, gs);
+						if (disj!=null && disj.getSet().size()>1) genSetFact.getBlock().getExpression().add(disj);	
+					}				
 				}
 			}
 		}
@@ -547,7 +551,7 @@ public class BaseTransformer {
 			RefOntoUML.Type targetType =assoc.getMemberEnd().get(1).getType();			
 			String paramName = ontoparser.getAlias(assoc);
 			
-			if (sourceType instanceof DataType)
+			if ( (sourceType != null) && (sourceType instanceof DataType) )
 			{
 				PredicateInvocation pI = factory.createPredicateInvocation();
 				pI.setPredicate("select12");
@@ -555,12 +559,12 @@ public class BaseTransformer {
 				vr.setVariable(paramName);
 				pI.getParameter().add(vr);
 				
-				if (sourceType instanceof Enumeration) { enumPredList.add(pI.toString()); }//enumerationVisibilityFun.getBlock().getExpression().add(pI); }
-				else if (sourceType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); }//primitiveTypeVisibilityFun.getBlock().getExpression().add(pI); }
-				else { dataTypePredList.add(pI.toString()); }//dataTypeVisibilityFun.getBlock().getExpression().add(pI); } 
+				if (sourceType instanceof Enumeration) { enumPredList.add(pI.toString()); }
+				else if (sourceType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); }
+				else { dataTypePredList.add(pI.toString()); } 
 				
 			}
-			if (targetType instanceof DataType)
+			if ( (targetType != null) && (targetType instanceof DataType) )
 			{
 				PredicateInvocation pI = factory.createPredicateInvocation();
 				pI.setPredicate("select13");
@@ -568,9 +572,9 @@ public class BaseTransformer {
 				vr.setVariable(paramName);
 				pI.getParameter().add(vr);
 				
-				if (targetType instanceof Enumeration) { enumPredList.add(pI.toString()); } //enumerationVisibilityFun.getBlock().getExpression().add(pI); }
-				else if (targetType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); } //primitiveTypeVisibilityFun.getBlock().getExpression().add(pI); }
-				else { dataTypePredList.add(pI.toString()); } //dataTypeVisibilityFun.getBlock().getExpression().add(pI); } 
+				if (targetType instanceof Enumeration) { enumPredList.add(pI.toString()); } 
+				else if (targetType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); } 
+				else { dataTypePredList.add(pI.toString()); }  
 			}			
 		}				
 		
@@ -580,7 +584,9 @@ public class BaseTransformer {
 			RefOntoUML.Type targetType = p.getType();			
 			String paramName = ontoparser.getAlias(p);
 			
-			if (sourceType instanceof DataType)
+			System.out.println(targetType);
+			
+			if ( (sourceType != null) && (sourceType instanceof DataType) )
 			{
 				PredicateInvocation pI = factory.createPredicateInvocation();
 				pI.setPredicate("select12");
@@ -588,12 +594,12 @@ public class BaseTransformer {
 				vr.setVariable(paramName);
 				pI.getParameter().add(vr);
 				
-				if (sourceType instanceof Enumeration) { enumPredList.add(pI.toString()); }// enumerationVisibilityFun.getBlock().getExpression().add(pI); }
-				else if (sourceType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); }//primitiveTypeVisibilityFun.getBlock().getExpression().add(pI); }
-				else { dataTypePredList.add(pI.toString()); }//dataTypeVisibilityFun.getBlock().getExpression().add(pI); } 
+				if (sourceType instanceof Enumeration) { enumPredList.add(pI.toString()); }
+				else if (sourceType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); }
+				else { dataTypePredList.add(pI.toString()); } 
 				
 			}
-			if (targetType instanceof DataType)
+			if ( (targetType != null) && (targetType instanceof DataType) )
 			{
 				PredicateInvocation pI = factory.createPredicateInvocation();
 				pI.setPredicate("select13");
@@ -601,19 +607,19 @@ public class BaseTransformer {
 				vr.setVariable(paramName);
 				pI.getParameter().add(vr);
 				
-				if (targetType instanceof Enumeration) { enumPredList.add(pI.toString()); }//enumerationVisibilityFun.getBlock().getExpression().add(pI); }
-				else if (targetType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); }//primitiveTypeVisibilityFun.getBlock().getExpression().add(pI); }
-				else { dataTypePredList.add(pI.toString()); }//dataTypeVisibilityFun.getBlock().getExpression().add(pI); } 
+				if (targetType instanceof Enumeration) { enumPredList.add(pI.toString()); }
+				else if (targetType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); }
+				else { dataTypePredList.add(pI.toString()); } 
 			}			
 		}	
 		
 		if(enumPredList.size()>0) 
-		{ 
+		{ 			
 			enumerationVisibilityFun.getBlock().getExpression().add(AlloyUtil.createUnionExpression(factory, enumPredList));
 			module.getParagraph().add(enumerationVisibilityFun); 
 		}		
 		if(primitivePredList.size()>0) 
-		{
+		{			
 			primitiveTypeVisibilityFun.getBlock().getExpression().add(AlloyUtil.createUnionExpression(factory, primitivePredList));
 			module.getParagraph().add(primitiveTypeVisibilityFun);
 		}

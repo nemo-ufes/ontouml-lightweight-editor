@@ -189,7 +189,6 @@ public enum Quantificator implements Enumerator
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
 	public static final List<Quantificator> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**

@@ -71,7 +71,6 @@ public interface QuantificationExpression extends Expression {
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
 	EList<Declaration> getDeclaration();
 
 	/**

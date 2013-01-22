@@ -17,12 +17,15 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 public class TDerivationRule {
 
 	/**
-	 *	Create Derivation Predicate Invocation
+	 * 	Create Derivation Predicate Invocation
 	 *
 	 *  derivation[MaterialName,MediationName1,MediationName2];
-	 *  
+	 * 
+	 * @param ontoparser: OntoUML Parser
+	 * @param factory: Alloy Factory
+	 * @param d: OntoUML.Derivation
+	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createPredicateInvocation (OntoUMLParser ontoparser, AlloyFactory factory, Derivation d)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();

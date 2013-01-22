@@ -122,6 +122,12 @@ public class ParsingElement {
 			return type+" "+TypeName+" ("+PropertyName+")"+" ["+lowerString+","+upperString+"]";			
 		}
 		
+		if (element instanceof RefOntoUML.Package && !(element instanceof RefOntoUML.Model))
+		{
+			if (name ==null) name = ""; 
+			return type + " " + name;
+		}
+		
 		if (name == null || name.equals("")) 
 		{	    
 		    return type + " "+name;			

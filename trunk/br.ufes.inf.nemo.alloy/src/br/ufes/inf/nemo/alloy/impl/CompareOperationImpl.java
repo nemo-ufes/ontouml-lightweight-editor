@@ -348,11 +348,23 @@ public class CompareOperationImpl extends ExpressionImpl implements CompareOpera
 	}
 
 
-	public String toString() {
+	public String toString() 
+	{
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer();
-		result.append(getLeftExpression() + " " + operator + " " + getRightExpression()+"");
+		
+		if (operator == OPERATOR_EDEFAULT && rightExpression==null) 
+		{
+			result.append(""+getLeftExpression());
+		}else if (operator == OPERATOR_EDEFAULT && leftExpression==null) 
+		{
+			result.append(""+getRightExpression());
+		}else{
+		
+			result.append(getLeftExpression() + " " + operator + " " + getRightExpression()+"");
+		}
+		
 		return result.toString();
 	}
 

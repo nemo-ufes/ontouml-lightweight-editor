@@ -295,26 +295,36 @@ public class BinaryOperationImpl extends ExpressionImpl implements BinaryOperati
 		return super.eIsSet(featureID);
 	}
 
-	public String toString() {
+	public String toString() 
+	{
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer();
 		
-		// case of: (x.y).z
-		if (getLeftExpression() instanceof BinaryOperation && !(getRightExpression() instanceof BinaryOperation) && 
-	       ((BinaryOperation)getLeftExpression()).getOperator().equals(BinaryOperator.JOIN)) {
-				result.append("("+getLeftExpression()+")" + operator + getRightExpression());
+		if (operator == OPERATOR_EDEFAULT && rightExpression==null) 
+		{
+			result.append(""+getLeftExpression());
+		}else if (operator == OPERATOR_EDEFAULT && leftExpression==null) 
+		{
+			result.append(""+getRightExpression());
+		}else{
+			
+			// case of: (x.y).z
+			if (getLeftExpression() instanceof BinaryOperation && !(getRightExpression() instanceof BinaryOperation) && 
+		       ((BinaryOperation)getLeftExpression()).getOperator().equals(BinaryOperator.JOIN)) {
+					result.append("("+getLeftExpression()+")" + operator + getRightExpression());
+			}
+			// case of: x.(y.z)
+			else if (getRightExpression() instanceof BinaryOperation && !(getLeftExpression() instanceof BinaryOperation) && 
+					((BinaryOperation)getRightExpression()).getOperator().equals(BinaryOperator.JOIN)) {
+					result.append(""+getLeftExpression() + operator + "("+getRightExpression()+")");			
+			}
+			// otherwise no precedence
+			else {
+				result.append(""+getLeftExpression() + operator + getRightExpression());
+			}
+			
 		}
-		// case of: x.(y.z)
-		else if (getRightExpression() instanceof BinaryOperation && !(getLeftExpression() instanceof BinaryOperation) && 
-				((BinaryOperation)getRightExpression()).getOperator().equals(BinaryOperator.JOIN)) {
-				result.append(""+getLeftExpression() + operator + "("+getRightExpression()+")");			
-		}
-		// otherwise no precedence
-		else {
-			result.append(""+getLeftExpression() + operator + getRightExpression());
-		}
-		
 		return result.toString();
 	}
 

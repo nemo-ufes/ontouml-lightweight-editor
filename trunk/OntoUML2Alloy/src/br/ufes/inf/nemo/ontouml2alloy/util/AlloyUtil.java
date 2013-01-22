@@ -143,7 +143,6 @@ public class AlloyUtil {
 	 * @param defaultSignatures
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static Variable createExistsDeclaration(AlloyFactory factory, ArrayList<String> defaultSignatures)
 	{
 		Variable exists = factory.createVariable();
@@ -220,7 +219,6 @@ public class AlloyUtil {
 	 * @param defaultSignatures
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createAllElementsExistsInvocation(AlloyFactory factory, Variable exists, ArrayList<String> defaultSignatures)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();	
@@ -241,7 +239,6 @@ public class AlloyUtil {
 	 * @param exists
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createLinearExistenceInvocation(AlloyFactory factory, Variable exists)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();
@@ -262,7 +259,6 @@ public class AlloyUtil {
 	 * @param sigDatatype
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createAlwaysExistsInvocation(AlloyFactory factory, Variable exists, SignatureDeclaration sigDatatype)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();
@@ -364,7 +360,6 @@ public class AlloyUtil {
 	 * 
 	 * For Example = "all w: World".
 	 */	 
-	@SuppressWarnings("unchecked")
 	public static QuantificationExpression createQuantificationExpression(AlloyFactory factory, Quantificator quantificator, String variableName, String typeName)
 	{
 		QuantificationExpression qe = factory.createQuantificationExpression();
@@ -389,7 +384,6 @@ public class AlloyUtil {
 	 *  
 	 * For Example: "all x: w.Enrollment".
 	 */	 
-	@SuppressWarnings("unchecked")
 	public static QuantificationExpression createQuantificationExpression(AlloyFactory factory, Quantificator quantificator, String variableName1, String variableName2, String typeName)
 	{
 		QuantificationExpression qe = factory.createQuantificationExpression();
@@ -580,7 +574,6 @@ public class AlloyUtil {
 	 * 	disj[ DisjNamesList[0], DisjNamesList[1], ... ],
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	public static DisjointExpression createDisjointExpression (AlloyFactory factory, ArrayList<String> DisjNamesList)
 	{
 		DisjointExpression disj = null;
@@ -606,7 +599,6 @@ public class AlloyUtil {
 	 * 
 	 *  exists:> defaultsig in NamesList[0] + NamesList[1] + ...
 	 */
-	@SuppressWarnings("unchecked")
 	public static void createExistsCompareOperationInWorld(AlloyFactory factory, Variable exists, SignatureDeclaration world, SignatureDeclaration defaultsig, ArrayList<String> NamesList) 
 	{		
 		CompareOperation co = factory.createCompareOperation();
@@ -671,7 +663,6 @@ public class AlloyUtil {
 	 *
 	 *	 run { } for 10 but 3 World,7Int
 	 */
-	@SuppressWarnings("unchecked")
 	public static void createDefaultRunComand(AlloyFactory factory, AlloyModule module) 
 	{
 		CommandDeclaration run = factory.createCommandDeclaration();
@@ -704,7 +695,6 @@ public class AlloyUtil {
 	 * rigidity[rigidClassName,defaultsig,exists]
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createRigidityInvocation (AlloyFactory factory, SignatureDeclaration defaultsig, Variable exists, String rigidClassName)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();
@@ -729,7 +719,6 @@ public class AlloyUtil {
 	 * antirigidity[antirigidClassName,Object,exists]
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createAntiRigidityInvocation (AlloyFactory factory, SignatureDeclaration Object, Variable exists, String antirigidClassName)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();
@@ -785,7 +774,6 @@ public class AlloyUtil {
 	 * }
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	public static FunctionDeclaration createFunctionDeclaration (AlloyFactory factory, SignatureDeclaration world, VariableReference target, String functionName, String paramName, String returnName, String assocName )
 	{
 		FunctionDeclaration fun = factory.createFunctionDeclaration();
@@ -852,7 +840,6 @@ public class AlloyUtil {
 	 *  For Example: immutable_target[Integer,dt]
 	 *
 	 */
-	@SuppressWarnings("unchecked")
 	public static PredicateInvocation createImmutablePredicateInvocation (AlloyFactory factory, String predName, String typeName, String assocName)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();
@@ -906,7 +893,10 @@ public class AlloyUtil {
 		for(String str : list)
 		{
 			if(list.size() == 1) 
-			{				
+			{	
+				VariableReference vr = factory.createVariableReference();
+				vr.setVariable(str);
+				bo.setLeftExpression(vr);
 				break;
 			}
 			if(cont == 1)

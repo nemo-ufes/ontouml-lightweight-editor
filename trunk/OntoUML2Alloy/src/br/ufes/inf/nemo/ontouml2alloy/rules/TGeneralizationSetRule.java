@@ -19,7 +19,6 @@ public class TGeneralizationSetRule {
 	 * 
 	 *  disj[Child1, Child2, Child3,...]
 	 */
-	@SuppressWarnings("unchecked")
 	public static DisjointExpression createDisjointExpression (OntoUMLParser ontoparser, AlloyFactory factory, GeneralizationSet gs)
 	{
 		DisjointExpression disj = factory.createDisjointExpression();
@@ -42,22 +41,19 @@ public class TGeneralizationSetRule {
 	 */
 	public static CompareOperation createCompleteCompareOperation (OntoUMLParser ontoparser, AlloyFactory factory, GeneralizationSet gs)
 	{
+		if (ontoparser.retainSelected(gs.getGeneralization()).size() == 0) return null;		
 		CompareOperation co = factory.createCompareOperation();
-		co.setOperator(CompareOperator.EQUAL);
-		
-		VariableReference vr = factory.createVariableReference();
-		
-		vr.setVariable(ontoparser.getAlias(gs.parent()));
-		
-		co.setLeftExpression(vr);
-		
+		co.setOperator(CompareOperator.EQUAL);		
+		VariableReference vr = factory.createVariableReference();		
+		vr.setVariable(ontoparser.getAlias(gs.parent()));		
+		co.setLeftExpression(vr);		
 		int cont = 1;		
 		BinaryOperation bo = factory.createBinaryOperation();
 		for(Generalization gen : ontoparser.retainSelected(gs.getGeneralization()))
 		{
 			if(ontoparser.retainSelected(gs.getGeneralization()).size() == 1)
 			{
-				VariableReference vr1 = factory.createVariableReference();
+				VariableReference vr1 = factory.createVariableReference();					
 				vr1.setVariable(ontoparser.getAlias(gen.getSpecific()));				
 				co.setRightExpression(vr1);				
 				break;
@@ -65,14 +61,14 @@ public class TGeneralizationSetRule {
 			if(cont == 1)
 			{
 				bo.setOperator(BinaryOperator.UNION);
-				vr = factory.createVariableReference();
+				vr = factory.createVariableReference();				
 				vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
 				bo.setLeftExpression(vr);
 				co.setRightExpression(bo);
 			}			
 			if(cont > 1 && cont != gs.getGeneralization().size())
 			{
-				vr = factory.createVariableReference();
+				vr = factory.createVariableReference();				
 				vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
 				bo.setRightExpression(factory.createBinaryOperation());
 				((BinaryOperation)bo.getRightExpression()).setOperator(BinaryOperator.UNION);
@@ -81,12 +77,12 @@ public class TGeneralizationSetRule {
 			}
 			if(cont == gs.getGeneralization().size())
 			{
-				vr = factory.createVariableReference();
+				vr = factory.createVariableReference();				
 				vr.setVariable(ontoparser.getAlias(gen.getSpecific()));
 				bo.setRightExpression(vr);
 			}			
 			cont++;
-			}
+		}
 		return co;
 	}
 }
