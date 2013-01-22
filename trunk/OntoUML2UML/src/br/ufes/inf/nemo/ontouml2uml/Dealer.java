@@ -9,11 +9,34 @@ import java.util.Map.Entry;
 
 public class Dealer {
 		
-	/** Creates UML Objects */	
 	public org.eclipse.uml2.uml.UMLFactory myfactory;
 	
-    /** Maps RefOntoUML Elements to UML Elements (auxiliar for Properties, Generalizations and GeneralizationSets) */  	 
     public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> mymap;
+ 
+    /** Constructor. */
+	public Dealer()
+    {
+		myfactory = org.eclipse.uml2.uml.UMLFactory.eINSTANCE;
+        mymap = new HashMap<RefOntoUML.Element, org.eclipse.uml2.uml.Element>();
+    }
+	
+	public static void outln(String output) 
+    {
+    	System.out.println(output);
+    	OntoUML2UML.logDetails += output+"\n";
+    }
+	
+    public static void out(String output) 
+    {
+    	System.out.print(output);
+    	OntoUML2UML.logDetails += output;
+    }
+        
+    public static void err(String error) 
+    {
+        System.err.println(error);
+        OntoUML2UML.logDetails += error+"\n";
+    }
     
     /**
      * Get key By Value.
@@ -31,35 +54,7 @@ public class Dealer {
             }
         }
         return null;
-    }
-    
-    /** Constructor. */
-	public Dealer()
-    {
-		myfactory = org.eclipse.uml2.uml.UMLFactory.eINSTANCE;
-        mymap = new HashMap<RefOntoUML.Element, org.eclipse.uml2.uml.Element>();
-    }
-	
-	/** Method for output. */
-    public static void outln(String output) 
-    {
-    	System.out.println(output);
-    	OntoUML2UML.logDetails += output+"\n";
-    }
-
-	/** Method for output. */
-    public static void out(String output) 
-    {
-    	System.out.print(output);
-    	OntoUML2UML.logDetails += output;
-    }
-    
-    /** Method for err output. */
-    public static void err(String error) 
-    {
-        System.err.println(error);
-        OntoUML2UML.logDetails += error+"\n";
-    }
+    }       
 	   
     /**
      * Relate Elemnts.
@@ -83,13 +78,14 @@ public class Dealer {
         return mymap.get(e1);
     }	
         
-    /** Named Element. */
+    /** 
+     * Named Element (name & visibility).
+     * 
+     */
 	public void DealNamedElement (RefOntoUML.NamedElement ne1, org.eclipse.uml2.uml.NamedElement ne2)
-    {    	
-    	/* name */
+    {    	    	
         ne2.setName(ne1.getName());        
-        
-    	/* visibility */
+            	
         RefOntoUML.VisibilityKind vk1 = ne1.getVisibility();
         
         if (vk1.getValue() == RefOntoUML.VisibilityKind.PUBLIC_VALUE)
@@ -110,38 +106,30 @@ public class Dealer {
         }                
     }
     
-	/** Property. */	
+	/** 
+	 * Property. 
+	 */	
 	public void DealProperty (RefOntoUML.Property p1, org.eclipse.uml2.uml.Property p2)
     {            
         DealNamedElement (p1, p2);
-        /* isLeaf (RedefinableElement) */
-        p2.setIsLeaf(p1.isIsLeaf());        
-                
-        /* isStatic (Feature) */
-        p2.setIsStatic(p1.isIsStatic());        
-        
-        /* isReadOnly (StructuralFeature) */
-        p2.setIsReadOnly(p1.isIsReadOnly());                      
-        
-        /* isDerived */
+               
+        p2.setIsLeaf(p1.isIsLeaf());                
+        p2.setIsStatic(p1.isIsStatic());       
+        p2.setIsReadOnly(p1.isIsReadOnly());        
         p2.setIsDerived(p1.isIsDerived());
-        
-        /* lower, upper (MultiplicityElement) */            
+                            
         org.eclipse.uml2.uml.LiteralInteger lowerValue = myfactory.createLiteralInteger();
         org.eclipse.uml2.uml.LiteralUnlimitedNatural upperValue = myfactory.createLiteralUnlimitedNatural();
         lowerValue.setValue(p1.getLower());
-        upperValue.setValue(p1.getUpper()); 
-            
+        upperValue.setValue(p1.getUpper());            
         p2.setLowerValue(lowerValue);
         p2.setUpperValue(upperValue);
-                
-        /* Type (TypedElement) */
+        
         org.eclipse.uml2.uml.Type t2 = (org.eclipse.uml2.uml.Type) GetElement(p1.getType());
         p2.setType(t2);              
         
         //if (p2.getName().isEmpty() || p2.getName()==null) p2.setName(t2.getName().toLowerCase());
         
-        /* aggregation */
         RefOntoUML.AggregationKind ak1 = p1.getAggregation();
             
         if (ak1.getValue() == RefOntoUML.AggregationKind.NONE_VALUE)
@@ -158,47 +146,60 @@ public class Dealer {
         }        
     }
 	
-	/** Classifier. */	
+	/** 
+	 * Classifier. 
+	 */	
 	public void DealClassifier (RefOntoUML.Classifier c1, org.eclipse.uml2.uml.Classifier c2)
     {
-        DealNamedElement (c1, c2);
-        /* Important for Generalization, Property */
-        RelateElements (c1, c2);        
-        /* Is Abstract */
+        DealNamedElement (c1, c2);       
+        RelateElements (c1, c2);
+        
         c2.setIsAbstract(c1.isIsAbstract());        
     }
 			
-	/** Package */
+	/** 
+	 * Package 
+	 */
 	public void DealPackage( RefOntoUML.Package p1, org.eclipse.uml2.uml.Package p2)
 	{
 		DealNamedElement(p1, p2);
-		outln("UML:Package :: name="+p2.getName()+", visibility="+p2.getVisibility().getName());
 		RelateElements(p1,p2);
+		
+		outln("UML:Package :: name="+p2.getName()+", visibility="+p2.getVisibility().getName());		
 	}
 			
-	/** Class. */	
+	/** 
+	 * Class. 
+	 */	
 	public void DealClass (RefOntoUML.Class c1, org.eclipse.uml2.uml.Class c2)
     {		
-        DealClassifier (c1, c2);
-           		   		
-        /* print out */
+        DealClassifier (c1, c2);           		   		
+       
         outln("UML:Class :: name="+c2.getName()+", visibility="+c2.getVisibility().getName()+", isAbstract="+c2.isAbstract());        
         
     }	
 	
-	/** Class Attributes. */	
+	/** 
+	 * Class Attributes. 
+	 */	
 	public void DealAttribute (RefOntoUML.Class c1, org.eclipse.uml2.uml.Class c2)
-    {	      
-        /* Attributes */
+    {	             
         org.eclipse.uml2.uml.Property p2;
         for (RefOntoUML.Property p1 : c1.getAttribute())
         {
             p2 = myfactory.createProperty();
             DealProperty(p1, p2);       
 
-            /* print out */
+            String typeName = new String();
+            String aggregationName = new String();
+            String visibilityName = new String();
+            
+            if (p2.getType()==null) typeName = "null"; else typeName = p2.getType().getName();
+            if (p2.getAggregation()==null) aggregationName = "null"; else aggregationName = p2.getAggregation().getName();
+            if (p2.getVisibility()==null) visibilityName = "null"; else visibilityName = p2.getVisibility().getName();
+            
             outln("UML:Property :: "+"name="+p2.getName()+", isDerived="+p2.isDerived()+", lower="+p2.getLower()+", upper="+p2.getUpper()+
-            ", type="+p2.getType().getName()+", aggregationkind="+p2.getAggregation().getName()+", visibility="+p2.getVisibility().getName()+            
+            ", type="+typeName+", aggregationkind="+aggregationName+", visibility="+visibilityName+            
             ", isLeaf="+p2.isLeaf()+", isStatic="+p2.isStatic()+", isReadOnly="+p2.isReadOnly());
             
             c2.getOwnedAttributes().add(p2);
@@ -208,19 +209,27 @@ public class Dealer {
         
     }
 	
-	/** DataType Attributes. */	
+	/** 
+	 * DataType Attributes. 
+	 */	
 	public void DealAttribute (RefOntoUML.DataType c1, org.eclipse.uml2.uml.DataType c2)
-    {		
-        /* Attributes */
+    {	
         org.eclipse.uml2.uml.Property p2;
         for (RefOntoUML.Property p1 : c1.getAttribute())
         {
             p2 = myfactory.createProperty();
             DealProperty(p1, p2);       
             
-            /* print out */
+            String typeName = new String();
+            String aggregationName = new String();
+            String visibilityName = new String();
+            
+            if (p2.getType()==null) typeName = "null"; else typeName = p2.getType().getName();
+            if (p2.getAggregation()==null) aggregationName = "null"; else aggregationName = p2.getAggregation().getName();
+            if (p2.getVisibility()==null) visibilityName = "null"; else visibilityName = p2.getVisibility().getName();
+            
             outln("UML:Property :: "+"name="+p2.getName()+", isDerived="+p2.isDerived()+", lower="+p2.getLower()+", upper="+p2.getUpper()+
-            ", type="+p2.getType().getName()+", aggregationkind="+p2.getAggregation().getName()+", visibility="+p2.getVisibility().getName()+            
+            ", type="+typeName+", aggregationkind="+aggregationName+", visibility="+visibilityName+            
             ", isLeaf="+p2.isLeaf()+", isStatic="+p2.isStatic()+", isReadOnly="+p2.isReadOnly());
             
             c2.getOwnedAttributes().add(p2);
@@ -229,7 +238,9 @@ public class Dealer {
         }         
     }
 	
-	/** Get Aggregation Kind */
+	/** 
+	 * Get Aggregation Kind Method.
+	 */
 	private org.eclipse.uml2.uml.AggregationKind getAggregationKind (RefOntoUML.Property p1)
     {
     	RefOntoUML.AggregationKind ak1 = p1.getAggregation();
@@ -248,18 +259,16 @@ public class Dealer {
     	}
     	return null;
     }
-			
-	/** Association. */	
+		
+	/** 
+	 * Association. 
+	 */	
 	public org.eclipse.uml2.uml.Association DealAssociation (RefOntoUML.Association a1)
     {
-		org.eclipse.uml2.uml.Association a2 = createAssociation(a1);
-		
-        DealClassifier(a1, a2);
-        
-        /* isDerived */
+		org.eclipse.uml2.uml.Association a2 = createAssociation(a1);		
+        DealClassifier(a1, a2);        
         a2.setIsDerived(a1.isIsDerived());        
         
-        /* print out */
         outln("UML:Association :: name="+a2.getName()+", visibility="+a2.getVisibility().getName()+", isAbstract="+a2.isAbstract()+
         ", isDerived="+a2.isDerived());
       
@@ -272,19 +281,21 @@ public class Dealer {
             
             DealNamedElement (p1, p2);
             
-            /* isLeaf (RedefinableElement) */
-            p2.setIsLeaf(p1.isIsLeaf());        
-                    
-            /* isStatic (Feature) */
-            p2.setIsStatic(p1.isIsStatic());        
-            
-            /* isReadOnly (StructuralFeature) */
-            p2.setIsReadOnly(p1.isIsReadOnly());                      
-            
-            /* isDerived */
+            p2.setIsLeaf(p1.isIsLeaf());                    
+            p2.setIsStatic(p1.isIsStatic());            
+            p2.setIsReadOnly(p1.isIsReadOnly());            
             p2.setIsDerived(p1.isIsDerived());
+                       
+            String typeName = new String();
+            String aggregationName = new String();
+            String visibilityName = new String();
+            
+            if (p2.getType()==null) typeName = "null"; else typeName = p2.getType().getName();
+            if (p2.getAggregation()==null) aggregationName = "null"; else aggregationName = p2.getAggregation().getName();
+            if (p2.getVisibility()==null) visibilityName = "null"; else visibilityName = p2.getVisibility().getName();
+            
             outln("UML:Property :: "+"name="+p2.getName()+", isDerived="+p2.isDerived()+", lower="+p2.getLower()+", upper="+p2.getUpper()+
-            ", type="+p2.getType().getName()+", aggregationkind="+p2.getAggregation().getName()+", visibility="+p2.getVisibility().getName()+            
+            ", type="+typeName+", aggregationkind="+aggregationName+", visibility="+visibilityName+            
             ", isLeaf="+p2.isLeaf()+", isStatic="+p2.isStatic()+", isReadOnly="+p2.isReadOnly());            
             
             RelateElements(p1, p2);
@@ -293,7 +304,9 @@ public class Dealer {
         return a2;
     }
 
-	/** create Association. */	
+	/** 
+	 * Create Association Method. 
+	 */	
 	public org.eclipse.uml2.uml.Association createAssociation (RefOntoUML.Association a1)	
     {
     	RefOntoUML.Property src = a1.getMemberEnd().get(0);
@@ -331,7 +344,9 @@ public class Dealer {
     	return a2;
     }
 	
-	/** Generalization. */	
+	/** 
+	 * Generalization. 
+	 */	
 	public void DealGeneralization (RefOntoUML.Generalization gen1)
     {	
         org.eclipse.uml2.uml.Generalization gen2 = myfactory.createGeneralization();
@@ -358,36 +373,42 @@ public class Dealer {
         RelateElements (gen1, gen2);
      }
 	
-	 /** Process the Generalizations of this Classifier. */	
+	 /** 
+	  * Process the Generalizations of this Classifier. 
+	  */	
      public void ProcessGeneralizations (RefOntoUML.Generalization gen)
      {        
         DealGeneralization (gen);               
      }
       
-     /** PrimitiveType. */     
+     /** 
+      * PrimitiveType. 
+      */     
      public org.eclipse.uml2.uml.PrimitiveType DealPrimitiveType (RefOntoUML.PrimitiveType dt1,	org.eclipse.uml2.uml.PrimitiveType dt2)
      {                
          DealClassifier (dt1, dt2);
-             
-         /* print out */                          
+                                     
          outln("UML:PrimitiveType :: name="+dt2.getName()+", visibility="+dt2.getVisibility().getName()+", isAbstract="+dt2.isAbstract());             
                   
          return dt2;
      }
      
-     /** Enumeration. */     
+     /** 
+      * Enumeration. 
+      */     
      public org.eclipse.uml2.uml.Enumeration DealEnumeration (RefOntoUML.Enumeration dt1,org.eclipse.uml2.uml.Enumeration dt2)
      {    	 
          DealClassifier (dt1, dt2);
-             
-         /* print out */                          
+                                             
          outln("UML:Enumeration :: name="+dt2.getName()+", visibility="+dt2.getVisibility().getName()+", isAbstract="+dt2.isAbstract());             
           
          return dt2;
      }
      
      
-     /** DataType. */     
+     /** 
+      * DataType. 
+      */     
      public org.eclipse.uml2.uml.DataType DealDataType (RefOntoUML.DataType dt1)
      {
          org.eclipse.uml2.uml.DataType dt2 = null;
@@ -395,21 +416,21 @@ public class Dealer {
          dt2 = myfactory.createDataType();                          
            
          DealClassifier (dt1, dt2);
-       	 
-         /* print out */                          
+       	                         
          outln("UML:DataType :: name="+dt2.getName()+", visibility="+dt2.getVisibility().getName()+", isAbstract="+dt2.isAbstract());
              
          return dt2;
      }
      
-     /** GeneralizationSet. */     
+     /** 
+      * GeneralizationSet. 
+      */     
      public org.eclipse.uml2.uml.GeneralizationSet DealGeneralizationSet (RefOntoUML.GeneralizationSet gs1)
      {        
         org.eclipse.uml2.uml.GeneralizationSet gs2 = myfactory.createGeneralizationSet();
              
         DealNamedElement(gs1, gs2);
-                             
-        /* print out */
+                   
         out("UML:GeneralizationSet :: ");
         		
         /* Add all the generalizations */
@@ -438,7 +459,9 @@ public class Dealer {
         return gs2;
      }
 	
-     /** Dependency. */     
+     /** 
+      * Dependency. 
+      */     
      public org.eclipse.uml2.uml.Dependency DealDependency (RefOntoUML.Dependency d1)
      {             
         org.eclipse.uml2.uml.Dependency d2 = myfactory.createDependency();
@@ -466,44 +489,5 @@ public class Dealer {
              
         return d2;
      }
-     
-     /* ============================================================================*/
-     
-     /** Comment. */
-     /*public void DealComment (RefOntoUML.Comment c1, org.eclipse.uml2.uml.Comment c2)
-     {             
-        // body 
-    	if (c1.isSetBody()) 
-    	{    		
-    		c2.setBody(c1.getBody());
-    	}    	
-        // annotatedElements
-        for (RefOntoUML.Element a1 : c1.getAnnotatedElement())
-        {        	        	
-        	org.eclipse.uml2.uml.Element a2 = GetElement(a1);        	
-        
-        	c2.getAnnotatedElements().add(a2);        
-        }             
-        RelateElements (c1, c2);
-     } */    
-     
-     /* ============================================================================*/
-     
-     /** Process RefOntoUML Comments of this Element */
-     /*public void ProcessComments (RefOntoUML.Element e1)
-     {
-    	 org.eclipse.uml2.uml.Element e2 = GetElement (e1);
-         
-         // ownedComment
-    	 org.eclipse.uml2.uml.Comment c2;
-         for (RefOntoUML.Comment c1 : e1.getOwnedComment())
-         {
-             c2 = myfactory.createComment();             
-             DealComment (c1, c2);
-             
-             if (e2!=null) e2.getOwnedComments().add(c2);                          
-         }
-     }*/
-    
 }
 
