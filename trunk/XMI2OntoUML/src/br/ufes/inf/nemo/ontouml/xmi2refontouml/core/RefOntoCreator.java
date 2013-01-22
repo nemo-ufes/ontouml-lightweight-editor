@@ -94,10 +94,10 @@ public class RefOntoCreator {
 	
 	public RefOntoUML.Model createModel() {
 		Model model = factory.createModel();
-		addPackagedElement(model, INTEGER_PRIMITIVE);
-		addPackagedElement(model, BOOLEAN_PRIMITIVE);
-		addPackagedElement(model, STRING_PRIMITIVE);
-		addPackagedElement(model, UNLIMITED_NATURAL_PRIMITIVE);
+		model.getPackagedElement().add(INTEGER_PRIMITIVE);
+		model.getPackagedElement().add(BOOLEAN_PRIMITIVE);
+		model.getPackagedElement().add(STRING_PRIMITIVE);
+		model.getPackagedElement().add(UNLIMITED_NATURAL_PRIMITIVE);
 		resource.getContents().add(model);
 		return model;
 	}

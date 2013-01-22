@@ -107,6 +107,11 @@ public class MapperEA implements Mapper {
 				if (!e.hasAttribute("name") && element.hasAttribute("name"))
 				{
 					e.setAttribute("name", element.getAttribute("name"));
+					for (Element child : XMLDOMUtil.getElementChilds(element))
+					{
+						e.appendChild(child);
+						setID(child);
+					}
 					XMLDOMUtil.removeElement(element);
 				}
 			}
@@ -182,7 +187,8 @@ public class MapperEA implements Mapper {
 			assocClassElemClone.setAttribute("relator", assocClassElem.getAttributeNS(XMINS, "id"));
 			for (Element childElem : XMLDOMUtil.getElementChilds(assocClassElemClone))
 			{
-				if (childElem.getNodeName().equals("ownedAttribute"))
+				if (childElem.getNodeName().equals("ownedAttribute") || 
+						childElem.getNodeName().equals("generalization"))
 				{
 					XMLDOMUtil.removeElement(childElem);
 				}
