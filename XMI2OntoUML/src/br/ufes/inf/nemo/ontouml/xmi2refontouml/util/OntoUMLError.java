@@ -1,6 +1,10 @@
 package br.ufes.inf.nemo.ontouml.xmi2refontouml.util;
 
+import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import br.ufes.inf.nemo.common.resource.TypeName;
 import RefOntoUML.MultiplicityElement;
@@ -120,5 +124,66 @@ public class OntoUMLError extends Throwable {
 		}
 		
 		return path;
+	}
+	
+	public static String wrongStereotype(Element stelem)
+	{
+		String error = new String(), elementType, source="", target="";
+		String profile = stelem.getNodeName().split(":")[0];
+		String stereotype = stelem.getNodeName().split(":")[1];
+		Document doc = stelem.getOwnerDocument();
+		Element elem;
+		
+		if (stelem.hasAttribute("base_Class"))
+		{
+			elementType = "Class";
+			elem = doc.getElementById(stelem.getAttribute("base_Class"));
+		}
+		else if (stelem.hasAttribute("base_Association"))
+		{
+			elementType = "Association";
+			elem = doc.getElementById(stelem.getAttribute("base_Association"));
+			List<Element> memberEnds = XMLDOMUtil.getElementChildsByTagName(elem, "memberEnd");
+    		Element memberPrp = doc.getElementById(memberEnds.get(0).getAttribute("xmi:idref"));
+    		Element memberTyp = XMLDOMUtil.getFirstAppearanceOf(memberPrp, "type");
+    		source = doc.getElementById(memberTyp.getAttribute("xmi:idref")).getAttribute("name");
+    		memberPrp = doc.getElementById(memberEnds.get(1).getAttribute("xmi:idref"));
+    		memberTyp = XMLDOMUtil.getFirstAppearanceOf(memberPrp, "type");
+    		target = doc.getElementById(memberTyp.getAttribute("xmi:idref")).getAttribute("name");
+		}
+		else if (stelem.hasAttribute("base_Property"))
+		{
+			elementType = "Property";
+			elem = doc.getElementById(stelem.getAttribute("base_Property"));
+		}
+		else if (stelem.hasAttribute("base_Generalization"))
+		{
+			elementType = "Generalization";
+			elem = doc.getElementById(stelem.getAttribute("base_Generalization"));
+			source = ((Element)elem.getParentNode()).getAttribute("name");
+		}
+		else
+		{
+			System.out.println(stelem.getNamespaceURI());
+			System.out.println(stelem);
+			return "";
+		}
+
+		error += "Warning: The stereotype of "+elementType+" '"+elem.getAttribute("name")+"' is wrong within OntoUML.\n";
+		if (elementType.equals("Association"))
+			error += "Source: "+source+"  Target: "+target+"\n";
+		if (elementType.equals("Generalization"))
+			error += "Specific: "+source+"\n";
+		
+		error += "Stereotype is '"+stereotype+"' and is defined in the '"+profile+"' profile.\n";
+		String path = elem.getAttribute("name");
+		while (elem.getParentNode().getNodeName() == "packagedElement")
+		{
+			elem = (Element) elem.getParentNode();
+			path = elem.getAttribute("name")+"->"+path;
+		}
+		error += "Path: "+path+"\n\n";
+		
+		return error;
 	}
 }

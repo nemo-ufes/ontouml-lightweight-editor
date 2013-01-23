@@ -35,14 +35,16 @@ public class Mediator {
 	public Mapper mapper;
 	// Instância da classe que cria os objetos RefOntoUML
     private RefOntoCreator refcreator = new RefOntoCreator();
-//    // Auxiliary string to stack the path of the element with error
-//    private String errorPath = "";
+
     public static String errorLog = "";
     public static String warningLog = "";
     
     public void initialize() throws Exception {
         //Call the factory to read the Document and decide which Mapper
         //to create, depending on the program/exporter of the XMI
+    	errorLog = "";
+    	warningLog = "";
+    	
     	MapperFactory mapperFactory = new MapperFactory();
     	mapper = mapperFactory.createMapper(new File(READ_FILE_ADDRESS));
     	if (mapper == null) {
@@ -52,10 +54,6 @@ public class Mediator {
     	
     	//Resets the element map
     	elemMap = new HashMap<String, RefOntoUML.Element>();
-    	
-    	errorLog = "";
-//    	errorPath = "";
-    	warningLog = "";
     }
     
     public void save() {
@@ -297,10 +295,6 @@ public class Mediator {
 				
         	} catch (RefOntoUMLException refe) {
         		errorLog = refe.getError();
-//        		errorPath = mapper.getName(domParent) + " -> " + mapper.getName(e);
-//        		for (EObject eObj = pack.eContainer(); eObj != null; eObj = eObj.eContainer()) {
-//        			errorPath = ((RefOntoUML.Package)eObj).getName() + " -> " + errorPath;
-//        		}
         		errorLog += "Path of the element with error: " + mapper.getPath(e) + "\n";
         		if (mapper.getType(e) == ElementType.ASSOCIATION) {
         			List<Object> listProp = mapper.getElements(e, ElementType.PROPERTY);

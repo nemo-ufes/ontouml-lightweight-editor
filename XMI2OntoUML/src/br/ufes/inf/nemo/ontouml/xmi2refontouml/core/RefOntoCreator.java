@@ -156,12 +156,14 @@ public class RefOntoCreator {
     	else if (stereotype.equalsIgnoreCase("rolemixin")) {
     		newclass = factory.createRoleMixin();
     	}
-    	else if (stereotype.equalsIgnoreCase("")) {
+//    	else if (stereotype.equalsIgnoreCase("")) {
+    	else
+    	{
     		newclass = factory.createClass();
     	}
-    	else {
-    		throw new RefOntoUMLException("Class stereotype '" + stereotype + "' not supported." + "\n");
-    	}
+//    	else {
+//    		throw new RefOntoUMLException("Class stereotype '" + stereotype + "' not supported." + "\n");
+//    	}
 		
 		return newclass;
 	}
@@ -197,12 +199,14 @@ public class RefOntoCreator {
 		else if (stereotype.equalsIgnoreCase("subquantityof")) {
     		newassoc = factory.createsubQuantityOf();
     	}
-		else if (stereotype.equalsIgnoreCase("") || stereotype.equalsIgnoreCase("datatyperelationship")) {
+//		else if (stereotype.equalsIgnoreCase("") || stereotype.equalsIgnoreCase("datatyperelationship")) {
+		else
+		{
 			newassoc = factory.createAssociation();
 		}
-		else {
-			throw new RefOntoUMLException("Association stereotype '" + stereotype + "' not supported.\n");
-		}
+//		else {
+//			throw new RefOntoUMLException("Association stereotype '" + stereotype + "' not supported.\n");
+//		}
 		
 		return newassoc;
 	}
