@@ -54,7 +54,9 @@ public class MapperFactory {
 			" does not exist or could not be oppened." + "\n";
 			
 		} catch (Exception e) {
-			Mediator.errorLog += e.getMessage() + "\n";
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+//			Mediator.errorLog += e.getMessage() + "\n";
 		
 		}
 		
