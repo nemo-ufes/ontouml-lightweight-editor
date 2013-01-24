@@ -90,6 +90,10 @@ public class OCLView extends JPanel {
 		add(BorderLayout.CENTER,ocleditor);		
 	}
 	
+	public OCLEditorPanel getOcleditor() {
+		return ocleditor;
+	}
+
 	/**
 	 * Set Path View from a absolute path and the ocl model content.
 	 * 

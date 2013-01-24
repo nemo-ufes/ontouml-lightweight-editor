@@ -118,8 +118,7 @@ public class ACAntiPatternController {
 			if(openCycle) openCycleConstraint = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().OPEN, acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());		
 			if(closedCycle) closedCycleConstraint = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().CLOSED, acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());		
 					
-			acView.getTheFrame().getConsole().write(openCycleConstraint+"\n\n"+closedCycleConstraint);
-			acView.getTheFrame().ShowConsole();
+			acView.getTheFrame().getManager().getOCLView().getOcleditor().addText(openCycleConstraint+closedCycleConstraint);
 	    }
 	}
 	
