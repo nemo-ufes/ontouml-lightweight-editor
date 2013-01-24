@@ -174,8 +174,7 @@ public class RWORAntiPatternController {
     			}
     			
     		}    		
-    		rworView.getTheFrame().getConsole().write(constraints);
-    		rworView.getTheFrame().ShowConsole();
+    		rworView.getTheFrame().getManager().getOCLView().getOcleditor().addText(constraints);
 	    }
 	}
 }

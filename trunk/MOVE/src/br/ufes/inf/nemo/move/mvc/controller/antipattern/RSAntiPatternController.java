@@ -154,8 +154,8 @@ public class RSAntiPatternController {
 	    				rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
 	    			)+"\n\n"; 
 	    		}    		
-	    		rsView.getTheFrame().getConsole().write(constraints);
-	    		rsView.getTheFrame().ShowConsole();
+
+	    		rsView.getTheFrame().getManager().getOCLView().getOcleditor().addText(constraints);
     		
 		    }catch(Exception exception){
 		    	rsView.getTheFrame().showErrorMessageDialog("RS : Generate OCL",exception.getMessage());

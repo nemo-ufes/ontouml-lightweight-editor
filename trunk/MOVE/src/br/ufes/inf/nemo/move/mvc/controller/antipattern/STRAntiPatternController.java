@@ -174,8 +174,7 @@ public class STRAntiPatternController {
     					strView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
     	    			);
     		}    		
-    		strView.getTheFrame().getConsole().write(constraints);
-    		strView.getTheFrame().ShowConsole();
+    		strView.getTheFrame().getManager().getOCLView().getOcleditor().addText(constraints);
 	    }
 	}	
 }

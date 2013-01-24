@@ -112,13 +112,15 @@ public class ACAntiPatternController {
 			Boolean openCycle = acView.isSelectedOpenCycle();
 			Boolean closedCycle = acView.isSelectedClosedCycle();
 
-			String openCycleConstraint = new String();
-			String closedCycleConstraint = new String();
+			String constraints = new String();
+			
 					
-			if(openCycle) openCycleConstraint = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().OPEN, acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());		
-			if(closedCycle) closedCycleConstraint = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().CLOSED, acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser());		
-					
-			acView.getTheFrame().getManager().getOCLView().getOcleditor().addText(openCycleConstraint+closedCycleConstraint);
+			if(openCycle) 
+				constraints = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().OPEN, acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser())+"\n\n";		
+			if(closedCycle)
+				constraints += acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().CLOSED, acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser())+"\n\n";		
+							
+			acView.getTheFrame().getManager().getOCLView().getOcleditor().addText(constraints);
 	    }
 	}
 	
