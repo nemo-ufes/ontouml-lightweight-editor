@@ -158,10 +158,18 @@ public class OCLEditorPanel extends JPanel {
 	/**
 	 * Get Text.
 	 */
-	public void getText()
+	public String getText()
 	{
-		textArea.getText();
+		return textArea.getText();
 	}	
+	
+	/**
+	 * Add text to the OCL Editor
+	 */
+	public void addText(String text){
+		setText(getText()+text);
+	}
+	
 	
     /**
      * Create a simple provider that adds some related completions.
