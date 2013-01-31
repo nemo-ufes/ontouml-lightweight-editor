@@ -73,7 +73,7 @@ public class ACAntiPattern extends Antipattern{
 		else
 			return null;
 			
-		String result = "context "+ typeName + "\n"+
+		String result = "context _'"+ typeName + "'\n"+
 						"inv "+invName+ " : " + rule;
 				
 		return result;

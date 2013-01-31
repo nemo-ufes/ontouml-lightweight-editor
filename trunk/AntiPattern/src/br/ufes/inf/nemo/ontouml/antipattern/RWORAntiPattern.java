@@ -36,8 +36,19 @@ public class RWORAntiPattern extends Antipattern{
 	    return null;
 	}
 		
+	/*=============================== TO DO ==================================*/
+	
+	public String generateDisjointPredicate(OntoUMLParser parser, int cardinality)
+	{ 
+		return ""; 
+	}
+	public String generateDisjointFromTablePredicate(ArrayList<ArrayList<Mediation>> exclusiveMatrix, OntoUMLParser parser, int cardinality)
+	{ 
+		return ""; 
+	}
+	
 	public String generateExclusiveOcl(ArrayList<Classifier> disjointTypes, OntoUMLParser parser){
-		String result = "context "+relator.getName()+"\n"+
+		String result = "context _'"+relator.getName()+"'\n"+
 						"inv: ";
 		if (disjointTypes.size()<2)
 			return null;
@@ -63,15 +74,41 @@ public class RWORAntiPattern extends Antipattern{
 		return result;
 	}
 	
-	/*=============================== TO DO ==================================*/
-	
-	public String generateDisjointPredicate(OntoUMLParser parser, int cardinality)
-	{ 
-		return ""; 
-	}
-	public String generateDisjointFromTablePredicate(ArrayList<ArrayList<Mediation>> exclusiveMatrix, OntoUMLParser parser, int cardinality)
-	{ 
-		return ""; 
+	public String generateExclusiveOCLInvariant (ArrayList<ArrayList<Mediation>> exclusiveMatrix, OntoUMLParser parser, int cardinality){
+		String invariant="", rules, invariantName, relatorName;
+		Combination comb1;
+		ArrayList<Mediation> output;
+		
+		relatorName=parser.getAlias(relator);
+		
+		invariantName = "MultipleExclusiveRole_"+relatorName;
+		rules = "#"+relatorName+">="+cardinality;
+		
+		for (ArrayList<Mediation> exclusiveList : exclusiveMatrix){
+			if (this.mediations.keySet().containsAll(exclusiveList) && exclusiveList.size()>=2) {
+				
+				comb1 = new Combination(exclusiveList, 2);
+				
+				invariantName+="__";
+				for (Mediation med : exclusiveList)
+					invariantName+="_"+med.getMemberEnd().get(1).getType().getName();
+				
+				rules += "\n\tall w:World | all x:w."+relatorName+" | ";
+				while(comb1.hasNext()){
+					output = comb1.next();
+					rules+="#(x.(w."+parser.getAlias(output.get(0))+") & x.(w."+parser.getAlias(output.get(1))+")) = 0";
+					
+					if(comb1.hasNext())
+	            		rules += " and ";
+				}
+			}
+		}
+			
+		invariant = "context _'"+this.getRelator().getName()+"'\n"+
+					"inv '"+invariantName+"' :";
+		
+		return invariant;
+		
 	}
 	
 	public String generateExclusivePredicate(OntoUMLParser parser, int cardinality){

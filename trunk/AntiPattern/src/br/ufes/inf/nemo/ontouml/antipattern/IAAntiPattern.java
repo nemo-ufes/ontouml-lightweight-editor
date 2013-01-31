@@ -26,7 +26,7 @@ public class IAAntiPattern extends Antipattern{
 		String result;
 		String aet_name = parser.getAlias(association.getMemberEnd().get(1));
 		
-		result = "context "+source.getName()+"\n"+
+		result = "context _'"+source.getName()+"'\n"+
 				 "inv: ";	
 		
 		if(subtypes!=null && subtypes.size()>0 && targetChildren.containsAll(subtypes)){
@@ -48,7 +48,7 @@ public class IAAntiPattern extends Antipattern{
 		String result;
 		String aes_name = parser.getAlias(association.getMemberEnd().get(0));
 		
-		result = "context "+target.getName()+"\n"+
+		result = "context _'"+target.getName()+"'\n"+
 				 "inv: ";	
 		
 		if(subtypes!=null && subtypes.size()>0 && sourceChildren.containsAll(subtypes)){
