@@ -76,7 +76,7 @@ public class RSAntiPattern extends Antipattern{
 		
 		invName += "_"+specific.getName()+"_"+general.getName();
 		
-		return 	"context "+contextName+"\n"+
+		return 	"context _'"+contextName+"'\n"+
 				"inv "+invName+" : "+invRule;
 		
 	}
