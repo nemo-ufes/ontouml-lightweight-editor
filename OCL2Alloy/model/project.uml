@@ -57,7 +57,7 @@
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dbD1eS58EeKVLvS3AchAnw" value="1"/>
     </ownedAttribute>
     <ownedAttribute xmi:id="_EMw2ME_AEeKKmb35FRVPUA" name="idq" type="_3nYzMFBFEeKP4PDBu6inCw">
-      <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_yBimcE_AEeKKmb35FRVPUA"/>
+      <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_yBimcE_AEeKKmb35FRVPUA" value="2"/>
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_dbD1ei58EeKVLvS3AchAnw" name="study" isDerived="true" memberEnd="_dbD1Zy58EeKVLvS3AchAnw _dbD1Xy58EeKVLvS3AchAnw"/>

@@ -56,7 +56,7 @@ public class OCL2Alloy {
 				
 			}catch(IteratorException e){
 				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";
-				succeeds=false; 
+				succeeds=false;
 				
 			}catch(LiteralException e){
 				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";;
