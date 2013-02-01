@@ -342,22 +342,22 @@ public class TheManager {
 
 			// show Message
 			String msg =  "Your Constraints are Syntactically Correct !\n";
-			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parse Constraints",msg);
+			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing Constraints",msg);
 						
     	}catch(SemanticException e2){
-    		frame.showErrorMessageDialog("Semantic", e2.getMessage());    		
+    		frame.showErrorMessageDialog("OCL Semantic Error",  "OCL Parser : "+e2.getMessage());    		
 			e2.printStackTrace();	
 			
     	}catch(ParserException e1){
-    		frame.showErrorMessageDialog("Parse", e1.getMessage());    			
+    		frame.showErrorMessageDialog("OCL Parser Error", "OCL Parser : "+e1.getMessage());    			
 			e1.printStackTrace();    	
 			
 		}catch(IOException e3){
-			frame.showErrorMessageDialog("IO", e3.getMessage());						
+			frame.showErrorMessageDialog("IO Error", e3.getMessage());						
 			e3.printStackTrace();
 			
 		}catch(Exception e4){
-			frame.showErrorMessageDialog("Error", e4.getMessage());			
+			frame.showErrorMessageDialog("Unexpected Error", e4.getMessage());			
 			e4.printStackTrace();
 		}
 		
