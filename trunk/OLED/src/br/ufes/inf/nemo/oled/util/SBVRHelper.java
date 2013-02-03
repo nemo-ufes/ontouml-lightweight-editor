@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Collections;
 
-import refontouml2sbvr.core.OntoUML2SBVR;
 
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
+import br.ufes.inf.nemo.ontouml2sbvr.core.OntoUML2SBVR;
 
 /**
  * Helper class for dealing with model transformation to SBVR

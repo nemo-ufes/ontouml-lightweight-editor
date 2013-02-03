@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.move.mvc.model.antipattern;
 
-import br.ufes.inf.nemo.ontouml.antipattern.IAAntiPattern;
+import br.ufes.inf.nemo.antipattern.IAAntiPattern;
 
 /**
  * 

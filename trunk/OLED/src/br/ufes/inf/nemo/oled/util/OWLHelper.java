@@ -1,12 +1,12 @@
 package br.ufes.inf.nemo.oled.util;
 
-import refontouml2simpleowl.OntoUML2SimpleOWL;
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.OWLStructure;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.tree.TreeProcessor;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.verbose.FileManager;
+import br.ufes.inf.nemo.ontouml2simpleowl.OntoUML2SimpleOWL;
 
 public class OWLHelper {
 

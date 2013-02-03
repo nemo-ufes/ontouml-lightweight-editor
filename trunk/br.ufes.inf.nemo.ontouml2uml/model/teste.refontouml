@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_BecBAErZEeKSWO8uaDV21g" name="EA_Model" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_BecoEErZEeKSWO8uaDV21g" name="int" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_BecoEUrZEeKSWO8uaDV21g" name="string" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_BecoEkrZEeKSWO8uaDV21g" name="char" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_BecoE0rZEeKSWO8uaDV21g" name="Dom&#xed;nios" visibility="public">
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_BecoFErZEeKSWO8uaDV21g" name="Datatypes" visibility="public">
+      <ownedComment xmi:id="_BecoFUrZEeKSWO8uaDV21g" body="Valor original do ativo menos valor depreciado.">
+        <annotatedElement xsi:type="RefOntoUML:Phase" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-3IBBUrYEeKSWO8uaDV21g"/>
+      </ownedComment>
+      <ownedComment xmi:id="_BecoFkrZEeKSWO8uaDV21g" body="Valor depreciado &#xe9; o produto entre tempo de vida e a taxa de deprecia&#xe7;&#xe3;o.">
+        <annotatedElement xsi:type="RefOntoUML:Phase" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-3IBBUrYEeKSWO8uaDV21g"/>
+      </ownedComment>
+      <ownedComment xmi:id="_BecoF0rZEeKSWO8uaDV21g" body="Valor amortizado &#xe9; o produto entre tempo de vida e a taxa de amortiza&#xe7;&#xe3;o.">
+        <annotatedElement xsi:type="RefOntoUML:Phase" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-3IBAErYEeKSWO8uaDV21g"/>
+      </ownedComment>
+      <packagedElement xsi:type="RefOntoUML:DataType" xmi:id="_BecoGErZEeKSWO8uaDV21g" name="Valor Monet&#xe1;rio" visibility="public">
+        <ownedAttribute xmi:id="_BecoGUrZEeKSWO8uaDV21g" name="moeda" visibility="private" type="_BecoEErZEeKSWO8uaDV21g">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecoGkrZEeKSWO8uaDV21g" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecoG0rZEeKSWO8uaDV21g" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_BecoHErZEeKSWO8uaDV21g" name="quantia" visibility="private" type="_BecoEErZEeKSWO8uaDV21g">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecoHUrZEeKSWO8uaDV21g" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecoHkrZEeKSWO8uaDV21g" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_BecoH0rZEeKSWO8uaDV21g" visibility="public" memberEnd="_BecoIErZEeKSWO8uaDV21g _BecoI0rZEeKSWO8uaDV21g">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_BecoIErZEeKSWO8uaDV21g" visibility="private" type="_BecoZErZEeKSWO8uaDV21g" isReadOnly="true" association="_BecoH0rZEeKSWO8uaDV21g">
+          <name xsi:nil="true"/>
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecoIUrZEeKSWO8uaDV21g" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecoIkrZEeKSWO8uaDV21g"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_BecoI0rZEeKSWO8uaDV21g" name="recurso financeiro" visibility="private" type="_BecoGErZEeKSWO8uaDV21g" isReadOnly="true" association="_BecoH0rZEeKSWO8uaDV21g">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecoJErZEeKSWO8uaDV21g" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecoJUrZEeKSWO8uaDV21g" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_BecoJkrZEeKSWO8uaDV21g" name="Fiscaliza&#xe7;&#xe3;o" visibility="public">
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_BecoJ0rZEeKSWO8uaDV21g" name="Gerais" visibility="public">
+        <ownedComment xmi:id="_BecoKErZEeKSWO8uaDV21g" body="O Coordenador de Fiscaliza&#xe7;&#xe3;o Composta coordena toda Fiscaliza&#xe7;&#xe3;o Composta que tem como componente pelo menos uma Fiscaliza&#xe7;&#xe3;o em Equipe liderada por este Coordenador de Fiscaliza&#xe7;&#xe3;o Composta." annotatedElement="_BecoOkrZEeKSWO8uaDV21g"/>
+        <ownedComment xmi:id="_BecoKUrZEeKSWO8uaDV21g" body="&quot;fiscaliza diretamente&quot; e &quot;fiscaliza indiretamente&quot; sao subtipos de &quot;fiscaliza&quot;">
+          <annotatedElement xsi:type="RefOntoUML:Mediation" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2tJ4ErYEeKSWO8uaDV21g"/>
+          <annotatedElement xsi:type="RefOntoUML:MaterialAssociation" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2tJ9UrYEeKSWO8uaDV21g"/>
+          <annotatedElement xsi:type="RefOntoUML:MaterialAssociation" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2tJ7ErYEeKSWO8uaDV21g"/>
+        </ownedComment>
+        <ownedComment xmi:id="_BecoKkrZEeKSWO8uaDV21g" body="Duas equipes compostas pelos mesmos indiv&#xed;duos s&#xe3;o a mesma equipe." annotatedElement="_BecoVkrZEeKSWO8uaDV21g"/>
+        <ownedComment xmi:id="_BecoK0rZEeKSWO8uaDV21g" body="O momento de fim &#xe9; inferido a partir do momento de in&#xed;cio e da dura&#xe7;&#xe3;o." annotatedElement="_BecoZErZEeKSWO8uaDV21g"/>
+        <ownedComment xmi:id="_BecoLErZEeKSWO8uaDV21g" body="Um Auto de Infra&#xe7;&#xe3;o &#xe9; emitido apenas em Fiscaliza&#xe7;&#xf5;es desse tipo.">
+          <annotatedElement xsi:type="RefOntoUML:Relator" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2si0krYEeKSWO8uaDV21g"/>
+        </ownedComment>
+        <ownedComment xmi:id="_BecoLUrZEeKSWO8uaDV21g" body="Toda fiscaliza&#xe7;&#xe3;o &#xe9;, al&#xe9;m de Apurativa ou Preventiva, Orientativa. Isto &#xe9;, possui como objetivo a orienta&#xe7;&#xe3;o quanto &#xe0;s normas vigentes.">
+          <annotatedElement xsi:type="RefOntoUML:Generalization" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2si6krYEeKSWO8uaDV21g"/>
+        </ownedComment>
+        <ownedComment xmi:id="_BecoLkrZEeKSWO8uaDV21g" body="Esta classe n&#xe3;o aparece no novo modelo. Remover?"/>
+        <ownedComment xmi:id="_BecoL0rZEeKSWO8uaDV21g" body="O &quot;Objetivo Padr&#xe3;o&quot; de uma Fiscaliza&#xe7;&#xe3;o &#xe9; fiscalizar tudo (realizar fiscaliza&#xe7;&#xf5;es de todos os tipos).">
+          <annotatedElement xsi:type="RefOntoUML:Mode" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2tJxUrYEeKSWO8uaDV21g"/>
+        </ownedComment>
+        <ownedComment xmi:id="_BecoMErZEeKSWO8uaDV21g" body="Se a regularidade de uma Fiscaliza&#xe7;&#xe3;o de Rotina for igual a di&#xe1;ria ent&#xe3;o est&#xe1; &#xe9; do tipo Fiscaliza&#xe7;&#xe3;o Constante. Se for diferente ent&#xe3;o &#xe9; uma Fiscaliza&#xe7;&#xe3;o Peri&#xf3;dica.">
+          <annotatedElement xsi:type="RefOntoUML:Relator" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2si5UrYEeKSWO8uaDV21g"/>
+          <annotatedElement xsi:type="RefOntoUML:Relator" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2si1UrYEeKSWO8uaDV21g"/>
+        </ownedComment>
+        <ownedComment xmi:id="_BecoMUrZEeKSWO8uaDV21g" body="Um Fiscal em Fiscaliza&#xe7;&#xe3;o Individual s&#xf3; realiza mais de uma Fiscaliza&#xe7;&#xe3;o Individual caso estas possuam o mesmo local." annotatedElement="_BecoXkrZEeKSWO8uaDV21g _BecoaUrZEeKSWO8uaDV21g"/>
+        <ownedComment xmi:id="_BecoMkrZEeKSWO8uaDV21g" body="Vai at&#xe9; hora s&#xf3;."/>
+        <ownedComment xmi:id="_BecoM0rZEeKSWO8uaDV21g" body="subtipo" annotatedElement="_BecoeErZEeKSWO8uaDV21g _Becoh0rZEeKSWO8uaDV21g"/>
+        <ownedComment xmi:id="_BecoNErZEeKSWO8uaDV21g" body="A Fiscaliza&#xe7;&#xe3;o Indireta hoje ocorre s&#xf3; para passageiros, por&#xe9;m essa restri&#xe7;&#xe3;o n&#xe3;o foi aqui criada pois n&#xe3;o reflete o futuro da ag&#xea;ncia.&#xA;&#xA;Uma Comunica&#xe7;&#xe3;o de Infra&#xe7;&#xe3;o &#xe9; emitida para este caso (na verdade o termo definido pela Res. 442 &#xe9; a Notifica&#xe7;&#xe3;o de Infra&#xe7;&#xe3;o).">
+          <annotatedElement xsi:type="RefOntoUML:Relator" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2si3krYEeKSWO8uaDV21g"/>
+        </ownedComment>
+        <ownedComment xmi:id="_BecoNUrZEeKSWO8uaDV21g" body="Em rela&#xe7;&#xe3;o aos objetivos, todas as fiscaliza&#xe7;&#xf5;es j&#xe1; s&#xe3;o ao menos Orientativas. Deste modo n&#xe3;o h&#xe1; necessidade de representa&#xe7;&#xe3;o de &quot;Fiscaliza&#xe7;&#xe3;o Orientativa.&quot;" annotatedElement="_BecoZErZEeKSWO8uaDV21g"/>
+        <ownedComment xmi:id="_BecoNkrZEeKSWO8uaDV21g" body="Confus&#xe3;o entre abordagem e fiscaliza&#xe7;&#xe3;o">
+          <annotatedElement xsi:type="RefOntoUML:Relator" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2rUwErYEeKSWO8uaDV21g"/>
+          <annotatedElement xsi:type="RefOntoUML:MaterialAssociation" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2tJ9UrYEeKSWO8uaDV21g"/>
+        </ownedComment>
+        <ownedComment xmi:id="_BecoN0rZEeKSWO8uaDV21g" body="Os locais s&#xe3;o os locais das fiscaliza&#xe7;&#xf5;es simples que &quot;comp&#xf5;em&quot; esta fiscaliza&#xe7;&#xe3;o." annotatedElement="_BecoUErZEeKSWO8uaDV21g"/>
+        <ownedComment xmi:id="_BecoOErZEeKSWO8uaDV21g" body="O Fiscal L&#xed;der de Equipe lidera todas as Equipes Simples de Fiscaliza&#xe7;&#xe3;o que ele comp&#xf5;e." annotatedElement="_BecoSErZEeKSWO8uaDV21g"/>
+        <ownedComment xmi:id="_BecoOUrZEeKSWO8uaDV21g" body="Uma Equipe de Fiscaliza&#xe7;&#xe3;o Composta realiza toda Fiscaliza&#xe7;&#xe3;o Composta que tem como componente pelo menos uma das Fiscaliza&#xe7;&#xf5;es em Equipe que esta Equipe de Fiscaliza&#xe7;&#xe3;o Composta fiscaliza.">
+          <annotatedElement xsi:type="RefOntoUML:Role" href="#_BecoQErZEeKSWO8uaDV21g"/>
+          <annotatedElement xsi:type="RefOntoUML:Association" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-2tJ1ErYEeKSWO8uaDV21g"/>
+        </ownedComment>
+        <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_BecoOkrZEeKSWO8uaDV21g" name="Coordenador de Fiscaliza&#xe7;&#xe3;o Composta" visibility="public">
+          <ownedComment xmi:id="_BecoO0rZEeKSWO8uaDV21g" body="Definition=&#xc9; o lider que al&#xe9;m de coordenar sua equipe tamb&#xe9;m coordena uma fiscaliza&#xe7;&#xe3;o realizada por um conjunto de equipes.&#xA;&#xA;Sin&#xf4;nimo(s):&#xA;&#xA;Refer&#xea;ncia: Entrevista do projeto MGIC."/>
+          <generalization xmi:id="_BecoPErZEeKSWO8uaDV21g" general="_BecoSErZEeKSWO8uaDV21g"/>
+          <ownedAttribute xmi:id="_BecoPUrZEeKSWO8uaDV21g" visibility="public" type="_BecoQErZEeKSWO8uaDV21g" aggregation="composite" association="_BecoeErZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecoPkrZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecoP0rZEeKSWO8uaDV21g" value="1"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_BecoQErZEeKSWO8uaDV21g" name="Equipe Componente de Fiscaliza&#xe7;&#xe3;o Composta" visibility="public">
+          <generalization xmi:id="_BecoQUrZEeKSWO8uaDV21g" general="_BecoVkrZEeKSWO8uaDV21g"/>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_BecoQkrZEeKSWO8uaDV21g" name="Fiscal Integrante de Equipe" visibility="public">
+          <ownedComment xmi:id="_BecoQ0rZEeKSWO8uaDV21g" body="Definition=Fiscal que participa como subordinado em uma equipe de Fiscaliza&#xe7;&#xe3;o.&#xA;&#xA;Sin&#xf4;nimo(s): &#xA;&#xA;Refer&#xea;ncia: Curso de Forma&#xe7;&#xe3;o de Especialistas em Transportes Terrestres."/>
+          <generalization xmi:id="_BecoRErZEeKSWO8uaDV21g" general="_BecoTkrZEeKSWO8uaDV21g" generalizationSet="_BeconUrZEeKSWO8uaDV21g"/>
+          <ownedAttribute xmi:id="_BecoRUrZEeKSWO8uaDV21g" visibility="public" type="_BecoVkrZEeKSWO8uaDV21g" aggregation="composite" association="_Becog0rZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecoRkrZEeKSWO8uaDV21g" value="-1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecoR0rZEeKSWO8uaDV21g" value="1"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_BecoSErZEeKSWO8uaDV21g" name="Fiscal L&#xed;der de Equipe" visibility="public">
+          <ownedComment xmi:id="_BecoSUrZEeKSWO8uaDV21g" body="Definition=Fiscal que lidera uma equipe de fiscaliza&#xe7;&#xe3;o.&#xA;&#xA;&#xA;Sin&#xf4;nimo(s):&#xA;&#xA;Refer&#xea;ncia: Entrevista do projeto MGIC."/>
+          <generalization xmi:id="_BecoSkrZEeKSWO8uaDV21g" general="_BecoTkrZEeKSWO8uaDV21g" generalizationSet="_BeconUrZEeKSWO8uaDV21g"/>
+          <ownedAttribute xmi:id="_BecoS0rZEeKSWO8uaDV21g" visibility="public" type="_BecoVkrZEeKSWO8uaDV21g" aggregation="composite" association="_Becoh0rZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecoTErZEeKSWO8uaDV21g" value="-1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecoTUrZEeKSWO8uaDV21g" value="1"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_BecoTkrZEeKSWO8uaDV21g" name="Fiscal Participante de Equipe" visibility="public">
+          <generalization xmi:id="_BecoT0rZEeKSWO8uaDV21g" general="_BecoYUrZEeKSWO8uaDV21g" generalizationSet="_BeconkrZEeKSWO8uaDV21g"/>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_BecoUErZEeKSWO8uaDV21g" name="Fiscaliza&#xe7;&#xe3;o em Equipe Composta" visibility="public">
+          <ownedComment xmi:id="_BecoUUrZEeKSWO8uaDV21g" body="Definition=Fiscaliza&#xe7;&#xe3;o que &#xe9; realizada por duas ou mais equipes em conjunto.&#xA;&#xA;Sin&#xf4;nimo(s):&#xA;&#xA;Refer&#xea;ncia: Curso de Forma&#xe7;&#xe3;o de Especialistas em Transportes Terrestres."/>
+          <generalization xmi:id="_BecoUkrZEeKSWO8uaDV21g" general="_BecoZErZEeKSWO8uaDV21g"/>
+          <ownedAttribute xmi:id="_BecoU0rZEeKSWO8uaDV21g" name="local" visibility="private" type="_BecoEUrZEeKSWO8uaDV21g" isDerived="true">
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecoVErZEeKSWO8uaDV21g" value="-1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecoVUrZEeKSWO8uaDV21g" value="2"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_BecoVkrZEeKSWO8uaDV21g" name="Equipe Simples de Fiscaliza&#xe7;&#xe3;o" visibility="public">
+          <ownedComment xmi:id="_BecoV0rZEeKSWO8uaDV21g" body="Definition=Grupo de pessoas que em conjunto realizam uma fiscaliza&#xe7;&#xe3;o.&#xA;&#xA;Sin&#xf4;nimo(s):&#xA;&#xA;Refer&#xea;ncia: Entrevista do projeto MGIC."/>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_BecoWErZEeKSWO8uaDV21g" name="Fiscal Conveniado" visibility="public">
+          <ownedComment xmi:id="_BecoWUrZEeKSWO8uaDV21g" body="Definition=Pessoa que atua como fiscal em uma fiscaliza&#xe7;&#xe3;o sendo vinculado a uma empresa conveniada mas n&#xe3;o est&#xe1; diretamente a ANTT.&#xA;&#xA;Sin&#xf4;nimo(s):&#xA;&#xA;Refer&#xea;ncia:"/>
+          <generalization xmi:id="_BecoWkrZEeKSWO8uaDV21g" general="_BecoYUrZEeKSWO8uaDV21g" generalizationSet="_BecooUrZEeKSWO8uaDV21g"/>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_BecoW0rZEeKSWO8uaDV21g" name="Fiscal da ANTT" visibility="public">
+          <ownedComment xmi:id="_BecoXErZEeKSWO8uaDV21g" body="Definition=Pessoa que atua como fiscal em uma fiscaliza&#xe7;&#xe3;o sendo vinculado diretamente a ANTT.&#xA;&#xA;Sin&#xf4;nimo(s):&#xA;&#xA;Refer&#xea;ncia:"/>
+          <generalization xmi:id="_BecoXUrZEeKSWO8uaDV21g" general="_BecoYUrZEeKSWO8uaDV21g" generalizationSet="_BecooUrZEeKSWO8uaDV21g"/>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_BecoXkrZEeKSWO8uaDV21g" name="Fiscal em Fiscaliza&#xe7;&#xe3;o Individual" visibility="public">
+          <ownedComment xmi:id="_BecoX0rZEeKSWO8uaDV21g" body="Definition=&#xc9; a pessoa que atua em uma fiscaliza&#xe7;&#xe3;o individual.&#xA;&#xA;Sin&#xf4;nimo(s):&#xA;&#xA;Refer&#xea;ncia: Entrevista do projeto MGIC.&#xA;&#xA;"/>
+          <generalization xmi:id="_BecoYErZEeKSWO8uaDV21g" general="_BecoYUrZEeKSWO8uaDV21g" generalizationSet="_BeconkrZEeKSWO8uaDV21g"/>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_BecoYUrZEeKSWO8uaDV21g" name="Fiscal" visibility="public">
+          <ownedComment xmi:id="_BecoYkrZEeKSWO8uaDV21g" body="Definition=Colaborador que de fato realiza fiscaliza&#xe7;&#xe3;o. &#xA;&#xA;Sin&#xf4;nimo(s): &#xA;&#xA;Refer&#xea;ncia:"/>
+          <generalization xmi:id="_BecoY0rZEeKSWO8uaDV21g" general="_BedPJErZEeKSWO8uaDV21g"/>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_BecoZErZEeKSWO8uaDV21g" name="Fiscaliza&#xe7;&#xe3;o" visibility="public">
+          <ownedComment xmi:id="_BecoZUrZEeKSWO8uaDV21g" body="Definition=A fiscaliza&#xe7;&#xe3;o &#xe9; a inspe&#xe7;&#xe3;o sistem&#xe1;tica de medi&#xe7;&#xe3;o e compara&#xe7;&#xe3;o de objetos ou fen&#xf4;menos para verifica&#xe7;&#xe3;o do cumprimento de condi&#xe7;&#xf5;es preestabelecidas.&#xA;&#xA;Sin&#xf4;nimo(s): Execu&#xe7;&#xe3;o de Fiscaliza&#xe7;&#xe3;o.&#xA;&#xA;Refer&#xea;ncia: Curso de Forma&#xe7;&#xe3;o de Especialistas em Transportes Terrestres."/>
+          <ownedAttribute xmi:id="_BecoZkrZEeKSWO8uaDV21g" name="per&#xed;odo" visibility="private" type="_BecoEErZEeKSWO8uaDV21g">
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecoZ0rZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecoaErZEeKSWO8uaDV21g" value="1"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_BecoaUrZEeKSWO8uaDV21g" name="Fiscaliza&#xe7;&#xe3;o Individual" visibility="public">
+          <ownedComment xmi:id="_BecoakrZEeKSWO8uaDV21g" body="Definition=Fiscaliza&#xe7;&#xe3;o realizada por apenas uma pessoa.&#xA;&#xA;Sin&#xf4;nimo(s):&#xA;&#xA;Refer&#xea;ncia: Entrevista do projeto MGIC."/>
+          <generalization xmi:id="_Becoa0rZEeKSWO8uaDV21g" general="_BecoZErZEeKSWO8uaDV21g" generalizationSet="_BecopkrZEeKSWO8uaDV21g"/>
+          <ownedAttribute xmi:id="_BecobErZEeKSWO8uaDV21g" name="local" visibility="private" type="_BecoEUrZEeKSWO8uaDV21g">
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecobUrZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecobkrZEeKSWO8uaDV21g" value="1"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_Becob0rZEeKSWO8uaDV21g" name="Fiscaliza&#xe7;&#xe3;o em Equipe Simples" visibility="public">
+          <ownedComment xmi:id="_BecocErZEeKSWO8uaDV21g" body="Definition=Fiscaliza&#xe7;&#xe3;o que &#xe9; realizada por uma equipe de pessoas.&#xA;&#xA;Sin&#xf4;nimo(s):&#xA;&#xA;Refer&#xea;ncia: Entrevista do projeto MGIC."/>
+          <generalization xmi:id="_BecocUrZEeKSWO8uaDV21g" general="_BecoZErZEeKSWO8uaDV21g" generalizationSet="_BecopkrZEeKSWO8uaDV21g"/>
+          <ownedAttribute xmi:id="_BecockrZEeKSWO8uaDV21g" name="local" visibility="private" type="_BecoEUrZEeKSWO8uaDV21g">
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_Becoc0rZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecodErZEeKSWO8uaDV21g" value="1"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_BecodUrZEeKSWO8uaDV21g" visibility="public" type="_BecoUErZEeKSWO8uaDV21g" aggregation="composite" association="_Becoi0rZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecodkrZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_Becod0rZEeKSWO8uaDV21g" value="1"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_BecoeErZEeKSWO8uaDV21g" visibility="public" memberEnd="_BecoPUrZEeKSWO8uaDV21g _BecoeUrZEeKSWO8uaDV21g">
+          <name xsi:nil="true"/>
+          <ownedEnd xmi:id="_BecoeUrZEeKSWO8uaDV21g" visibility="public" type="_BecoOkrZEeKSWO8uaDV21g" association="_BecoeErZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecoekrZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_Becoe0rZEeKSWO8uaDV21g"/>
+          </ownedEnd>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_BecofErZEeKSWO8uaDV21g" name="realiza" visibility="public" memberEnd="_BecofUrZEeKSWO8uaDV21g _BecogErZEeKSWO8uaDV21g">
+          <ownedEnd xmi:id="_BecofUrZEeKSWO8uaDV21g" visibility="public" type="_BecoUErZEeKSWO8uaDV21g" association="_BecofErZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecofkrZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_Becof0rZEeKSWO8uaDV21g" value="1"/>
+          </ownedEnd>
+          <ownedEnd xmi:id="_BecogErZEeKSWO8uaDV21g" visibility="public" type="_BecoQErZEeKSWO8uaDV21g" isReadOnly="true" association="_BecofErZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecogUrZEeKSWO8uaDV21g" value="-1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecogkrZEeKSWO8uaDV21g" value="2"/>
+          </ownedEnd>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_Becog0rZEeKSWO8uaDV21g" visibility="public" memberEnd="_BecoRUrZEeKSWO8uaDV21g _BecohErZEeKSWO8uaDV21g">
+          <name xsi:nil="true"/>
+          <ownedEnd xmi:id="_BecohErZEeKSWO8uaDV21g" visibility="public" type="_BecoQkrZEeKSWO8uaDV21g" association="_Becog0rZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecohUrZEeKSWO8uaDV21g" value="-1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecohkrZEeKSWO8uaDV21g" value="1"/>
+          </ownedEnd>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_Becoh0rZEeKSWO8uaDV21g" visibility="public" memberEnd="_BecoS0rZEeKSWO8uaDV21g _BecoiErZEeKSWO8uaDV21g">
+          <name xsi:nil="true"/>
+          <ownedEnd xmi:id="_BecoiErZEeKSWO8uaDV21g" visibility="public" type="_BecoSErZEeKSWO8uaDV21g" association="_Becoh0rZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecoiUrZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecoikrZEeKSWO8uaDV21g" value="1"/>
+          </ownedEnd>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_Becoi0rZEeKSWO8uaDV21g" visibility="public" memberEnd="_BecodUrZEeKSWO8uaDV21g _BecojErZEeKSWO8uaDV21g">
+          <name xsi:nil="true"/>
+          <ownedEnd xmi:id="_BecojErZEeKSWO8uaDV21g" visibility="public" type="_Becob0rZEeKSWO8uaDV21g" association="_Becoi0rZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecojUrZEeKSWO8uaDV21g" value="-1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecojkrZEeKSWO8uaDV21g" value="2"/>
+          </ownedEnd>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_Becoj0rZEeKSWO8uaDV21g" name="realiza" visibility="public" memberEnd="_BecokErZEeKSWO8uaDV21g _Becok0rZEeKSWO8uaDV21g">
+          <ownedEnd xmi:id="_BecokErZEeKSWO8uaDV21g" visibility="private" type="_Becob0rZEeKSWO8uaDV21g" association="_Becoj0rZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecokUrZEeKSWO8uaDV21g" value="-1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecokkrZEeKSWO8uaDV21g" value="1"/>
+          </ownedEnd>
+          <ownedEnd xmi:id="_Becok0rZEeKSWO8uaDV21g" visibility="private" type="_BecoVkrZEeKSWO8uaDV21g" isReadOnly="true" association="_Becoj0rZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecolErZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecolUrZEeKSWO8uaDV21g" value="1"/>
+          </ownedEnd>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_BecolkrZEeKSWO8uaDV21g" name="participa em" visibility="public" memberEnd="_Becol0rZEeKSWO8uaDV21g _BecomkrZEeKSWO8uaDV21g">
+          <ownedEnd xmi:id="_Becol0rZEeKSWO8uaDV21g" visibility="public" type="_BecoaUrZEeKSWO8uaDV21g" association="_BecolkrZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BecomErZEeKSWO8uaDV21g" value="-1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BecomUrZEeKSWO8uaDV21g" value="1"/>
+          </ownedEnd>
+          <ownedEnd xmi:id="_BecomkrZEeKSWO8uaDV21g" visibility="public" type="_BecoXkrZEeKSWO8uaDV21g" isReadOnly="true" association="_BecolkrZEeKSWO8uaDV21g">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_Becom0rZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BeconErZEeKSWO8uaDV21g" value="1"/>
+          </ownedEnd>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_BeconUrZEeKSWO8uaDV21g" name="fiscal" visibility="public" isCovering="true" generalization="_BecoRErZEeKSWO8uaDV21g _BecoSkrZEeKSWO8uaDV21g"/>
+        <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_BeconkrZEeKSWO8uaDV21g" name="participa&#xe7;&#xe3;o em fiscaliza&#xe7;&#xe3;o" visibility="public" isCovering="true" generalization="_BecoT0rZEeKSWO8uaDV21g _BecoYErZEeKSWO8uaDV21g"/>
+       
+        <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_BecooUrZEeKSWO8uaDV21g" name="fiscal" visibility="public" isCovering="true" isDisjoint="true" generalization="_BecoWkrZEeKSWO8uaDV21g _BecoXUrZEeKSWO8uaDV21g"/>
+       
+        <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_BecopkrZEeKSWO8uaDV21g" name="integrantes" visibility="public" isCovering="true" isDisjoint="true" generalization="_Becoa0rZEeKSWO8uaDV21g _BecocUrZEeKSWO8uaDV21g"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_Becop0rZEeKSWO8uaDV21g" name="Tipos de Pessoa" visibility="public">
+      <ownedComment xmi:id="_BedPIErZEeKSWO8uaDV21g" body="Existem tamb&#xe9;m v&#xe1;rios tipos de Agente (pol&#xed;tico, administrativo...). Esse conceito est&#xe1; muito geral.">
+        <annotatedElement xsi:type="RefOntoUML:Generalization" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-3LED0rYEeKSWO8uaDV21g"/>
+      </ownedComment>
+      <ownedComment xmi:id="_BedPIUrZEeKSWO8uaDV21g" body="O &#xfa;nico prestador de servi&#xe7;o &#xe9; a concession&#xe1;ria?">
+        <annotatedElement xsi:type="RefOntoUML:Mixin" href="C:\Users\Tiago\Desktop\ontologia-antt.refontouml#_-3FkoErYEeKSWO8uaDV21g"/>
+      </ownedComment>
+      <ownedComment xmi:id="_BedPIkrZEeKSWO8uaDV21g" body="Unidade Regional e Poder P&#xfa;blico s&#xe3;o conceitos que eu achei mas que s&#xe3;o vagos. Unidade Regional est&#xe1; no modelo de fiscaliza&#xe7;&#xe3;o e n&#xe3;o herda de nenhum tipo de pessoa (Mas talvez nem deva mesmo), e Poder p&#xfa;blico est&#xe1; no modelo de Obra em concess&#xe3;o, mas &#xe9; prov&#xe1;vel que deva ser melhor especificado."/>
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_BedPI0rZEeKSWO8uaDV21g" name="Pessoa F&#xed;sica" visibility="public">
+        <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_BedPJErZEeKSWO8uaDV21g" name="Pessoa F&#xed;sica" visibility="public">
+          <ownedAttribute xmi:id="_BedPJUrZEeKSWO8uaDV21g" name="CPF" visibility="private" type="_BecoEErZEeKSWO8uaDV21g">
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BedPJkrZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BedPJ0rZEeKSWO8uaDV21g" value="1"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_BedPKErZEeKSWO8uaDV21g" name="RG" visibility="private" type="_BecoEErZEeKSWO8uaDV21g">
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_BedPKUrZEeKSWO8uaDV21g" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_BedPKkrZEeKSWO8uaDV21g" value="1"/>
+          </ownedAttribute>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <viewpoint xsi:nil="true"/>
+</RefOntoUML:Model>
