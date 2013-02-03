@@ -2,11 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="/Common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/owlapi-bin.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/owlapi-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

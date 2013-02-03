@@ -10,20 +10,20 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.xmi2ontouml"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.move"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2text"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore.change_2.8.0.v20120606-0717.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore.edit_2.8.0.v20120608-0554.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.edit_2.8.0.v20120608-0554.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/br.ufes.inf.nemo.ontouml.refontouml.edit_1.0.0.201209061023.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/checkboxtree/lablib-checkboxtree-3.3.jar" sourcepath="/Common/lib/checkboxtree/lablib-checkboxtree-3.3-sources.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/lpg.runtime.java_2.0.17.v201004271640.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl_3.3.0.v20121218-1022.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.common_1.1.0.v20121102-1658.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.ecore_3.2.100.v20121109-1114.jar"/>
-	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.edit_3.2.100.v20121219-1103.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/checkboxtree/lablib-checkboxtree-3.3.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.refontouml.edit_1.0.0.201209061023.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/lpg.runtime.java_2.0.17.v201004271640.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore.change_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore.edit_2.8.0.v20120608-0554.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.edit_2.8.0.v20120608-0554.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl_3.3.0.v20121218-1022.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.common_1.1.0.v20121102-1658.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.ecore_3.2.100.v20121109-1114.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.edit_3.2.100.v20121219-1103.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

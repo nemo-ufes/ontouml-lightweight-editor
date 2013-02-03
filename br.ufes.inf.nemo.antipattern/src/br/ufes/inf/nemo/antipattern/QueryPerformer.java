@@ -27,7 +27,7 @@ public class QueryPerformer {
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/alocação de recursos.refontouml").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOS_regular_and_inverted.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
