@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.move.mvc.model.antipattern;
 
-import br.ufes.inf.nemo.ontouml.antipattern.RSAntiPattern;
+import br.ufes.inf.nemo.antipattern.RSAntiPattern;
 
 /**
  * This class represents a RS AntiPattern Model.

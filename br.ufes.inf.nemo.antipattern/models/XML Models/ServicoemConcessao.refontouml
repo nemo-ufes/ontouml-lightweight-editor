@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_2sJt8Sp9EeK0C49juP9Cvw" name="EA_Model" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_2soPECp9EeK0C49juP9Cvw" name="Data Completa" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3cuPQCp9EeK0C49juP9Cvw" name="Dom&#xed;nios" visibility="public">
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3cuPQSp9EeK0C49juP9Cvw" name="Compra" visibility="public">
+      <ownedComment xmi:id="_3cu2UCp9EeK0C49juP9Cvw" body="TESTE 14/09/2012"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3czHxSp9EeK0C49juP9Cvw" name="Datatypes" visibility="public"/>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c1kJip9EeK0C49juP9Cvw" name="Fiscaliza&#xe7;&#xe3;o" visibility="public">
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c1kJyp9EeK0C49juP9Cvw" name="Fiscaliza&#xe7;&#xf5;es de Servi&#xe7;os de Transportes Terrestres" visibility="public">
+        <ownedComment xmi:id="_3c1kKCp9EeK0C49juP9Cvw" body="Um fiscal de &#xd3;rg&#xe3;o Conveniado pode estar alocado em uma fiscaliza&#xe7;&#xe3;o Conjunta e em uma de &#xd3;rg&#xe3;o Conveniado ao mesmo tempo. Por exemplo: a conveniada faz estadual que &#xe9; s&#xf3; dele e n&#xe3;o da ANTT. Mas onibus interestadual faz em conjunto com a ANTT."/>
+        <ownedComment xmi:id="_3c1kKSp9EeK0C49juP9Cvw" body="A antiga Fiscaliza&#xe7;&#xe3;o T&#xe9;cnico Operacional, atual Fiscaliza&#xe7;&#xe3;o de Grandes Empresas, n&#xe3;o foi aqui modelada pois n&#xe3;o h&#xe1; ainda concesenso sobre como esta se dar&#xe1;."/>
+        <ownedComment xmi:id="_3c1kKyp9EeK0C49juP9Cvw" body="A responsabilidade &#xe9; de quem monta a fiscaliza&#xe7;&#xe3;o. Uma fiscaliza&#xe7;&#xe3;o da ANTT, por exemplo, pode ter fiscais de &#xf3;rg&#xe3;os conveniados tamb&#xe9;m."/>
+        <ownedComment xmi:id="_3c1kLyp9EeK0C49juP9Cvw" body="Verificar se o CO Tem&#xe1;tico &#xe9; realmente Eventual ou se sempre &#xe9; programado."/>
+        <ownedComment xmi:id="_3c1kMSp9EeK0C49juP9Cvw" body="Em uma Fiscaliza&#xe7;&#xe3;o da ANTT deve haver ao menos um Fiscal da ANTT. Em uma Fiscaliza&#xe7;&#xe3;o Conjunta deve haver ao menos um fiscal da ANTT e ao menos um Fiscal de &#xd3;rg&#xe3;o Conveniado."/>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c1kOSp9EeK0C49juP9Cvw" name="Fiscaliza&#xe7;&#xf5;es Espec&#xed;ficas" visibility="public">
+          <ownedComment xmi:id="_3c1kOip9EeK0C49juP9Cvw" body="&#xc9; conhecido que a verifica&#xe7;&#xe3;o de excesso de peso para carga l&#xed;quida s&#xf3; &#xe9; verificada por documenta&#xe7;&#xe3;o, nunca por equipamento. Essa restri&#xe7;&#xe3;o se faz necess&#xe1;ria neste modelo. &#xA;&#xA;Como o conceito de carga e de seu transporte ser&#xe1; modelado apenas na SUCAR, a restri&#xe7;&#xe3;o aqui apresentada ser&#xe1; criada no momento de modelagem dessa superintend&#xea;ncia."/>
+          <ownedComment xmi:id="_3c1kPyp9EeK0C49juP9Cvw" body="Tamb&#xe9;m &#xe9; conhecido que a fiscaliza&#xe7;&#xe3;o de Excesso de Peso nunca ocorre em fiscaliza&#xe7;&#xf5;es em empresas. Por&#xe9;m, como j&#xe1; apontado, a fiscaliza&#xe7;&#xe3;o em empresas n&#xe3;o &#xe9; aqui modelado devido a aus&#xea;ncia atual de normatiza&#xe7;&#xe3;o dessa pr&#xe1;tica."/>
+          <ownedComment xmi:id="_3c1kQSp9EeK0C49juP9Cvw">
+            <body xsi:nil="true"/>
+          </ownedComment>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c2LLip9EeK0C49juP9Cvw" name="Tipos de Fiscaliza&#xe7;&#xf5;es Diretas" visibility="public">
+          <ownedComment xmi:id="_3c2LMSp9EeK0C49juP9Cvw" body="Uma fiscaliza&#xe7;&#xe3;o especial pode ocorrer em qualquer local, inclusive em postos fixos."/>
+          <ownedComment xmi:id="_3c2LNCp9EeK0C49juP9Cvw" body="Fiscaliza&#xe7;&#xe3;o por Den&#xfa;ncia s&#xf3; existe no contexto de Terminal com PFA? Me parece que deveria ser mais abrangente.&#xA;&#xA;Em &quot;19 Fiscaliza&#xe7;&#xe3;o.pdf&quot;, p&#xe1;gina 19, fala do conceito de Fiscaliza&#xe7;&#xe3;o Especial que &#xe9; a fiscaliza&#xe7;&#xe3;o motivada por Den&#xfa;ncia ou Ordem Judicial."/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c3ZRSp9EeK0C49juP9Cvw" name="Gerais" visibility="public">
+        <ownedComment xmi:id="_3c3ZTSp9EeK0C49juP9Cvw" body="Esta classe n&#xe3;o aparece no novo modelo. Remover?"/>
+        <ownedComment xmi:id="_3c3ZUip9EeK0C49juP9Cvw" body="Vai at&#xe9; hora s&#xf3;."/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c5OYCp9EeK0C49juP9Cvw" name="Im&#xf3;vel" visibility="public">
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c5OYSp9EeK0C49juP9Cvw" name="&#xc1;rea" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c5Ohip9EeK0C49juP9Cvw" name="Registro de Im&#xf3;vel" visibility="public"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c5OpSp9EeK0C49juP9Cvw" name="Infra&#xe7;&#xe3;o" visibility="public">
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c5Opip9EeK0C49juP9Cvw" name="Autua&#xe7;&#xe3;o" visibility="public">
+        <ownedComment xmi:id="_3c5Opyp9EeK0C49juP9Cvw" body="&quot;atua em&quot; definido no modelo de Fiscaliza&#xe7;&#xe3;o."/>
+        <ownedComment xmi:id="_3c5Orip9EeK0C49juP9Cvw" body="Com essa altera&#xe7;&#xe3;o possivelmente deveremos modificar a generaliza&#xe7;&#xe3;o presente no modelo."/>
+        <ownedComment xmi:id="_3c5Oryp9EeK0C49juP9Cvw" body="A COESP criou internamente o instrumento Comunica&#xe7;&#xe3;o de Infra&#xe7;&#xe3;o, sem base em nenhuma resolu&#xe7;&#xe3;o, para solucionar o problema apontado. &#xA;&#xA;J&#xe1; a SUINF elaborou uma resolu&#xe7;&#xe3;o que possibilita a utiliza&#xe7;&#xe3;o de Notifica&#xe7;&#xe3;o de Infra&#xe7;&#xe3;o nesses casos, mas essa resolu&#xe7;&#xe3;o &#xe9; espec&#xed;fica para as atividades da pr&#xf3;pria Superintend&#xea;ncia."/>
+        <ownedComment xmi:id="_3c51cip9EeK0C49juP9Cvw" body="O conceito de Fiscaliza&#xe7;&#xe3;o ser&#xe1; mais bem detalhado ap&#xf3;s levantamento de informa&#xe7;&#xe3;o em outras unidades organizacaionais que realizam atividades de fiscaliza&#xe7;&#xe3;o como, por exemplo, a SUFIS."/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c6crSp9EeK0C49juP9Cvw" name="Gerais" visibility="public">
+        <ownedComment xmi:id="_3c6crip9EeK0C49juP9Cvw" body="Uma Penalidade Aplicada pode ter associada a ela mais de um tipo de Penalidade Prevista. A Penalidade Aplicada &#xe9; baseada em apenas um dos tipos da Penalidade Prevista a qual ela &#xe9; associada. Por exemplo, a Prevista possui os tipos X e Y ent&#xe3;o a Aplicada deve ser do tipo X ou (xor) do tipo Y."/>
+        <ownedComment xmi:id="_3c6csCp9EeK0C49juP9Cvw" body="Apesar de uma Medida Administrativa (MA) Aplicada poder ter associada a ela mais de um tipo de MA Prevista, a MA Aplicada &#xe9; baseada em apenas um dos tipos da MA Prevista. Por exemplo, a Prevista possui os tipos X e Y ent&#xe3;o a Aplicada deve ser do tipo X ou (xor) do tipo Y."/>
+        <ownedComment xmi:id="_3c6csSp9EeK0C49juP9Cvw" body="Ao ser desenvolvido outros modelos devemos colocar com o que cada Medida Administrativa est&#xe1; associada."/>
+        <ownedComment xmi:id="_3c6ctSp9EeK0C49juP9Cvw" body="Ao ser desenvolvido outros modelos devemos colocar com o que cada penalidade est&#xe1; associada."/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c7DlCp9EeK0C49juP9Cvw" name="Infra&#xe7;&#xe3;o Praticada" visibility="public">
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c7DlSp9EeK0C49juP9Cvw" name="Complementares" visibility="public">
+          <ownedComment xmi:id="_3c7DoSp9EeK0C49juP9Cvw" body="Refer&#xea;ncia: &#xA;-Resolu&#xe7;&#xe3;o N&#xba; 2689.&#xA;-Tal&#xe3;o de TRO da ANTT"/>
+          <ownedComment xmi:id="_3c7Doyp9EeK0C49juP9Cvw" body="Verificar na SUPAS se pode ter pessoa f&#xed;sica"/>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c7q5ip9EeK0C49juP9Cvw" name="Principais" visibility="public">
+          <ownedComment xmi:id="_3c7q7yp9EeK0C49juP9Cvw" body="Nem todas as Penalidades de Multas originam PA Simplificado, algumas originam PA Ordin&#xe1;rio."/>
+          <ownedComment xmi:id="_3c7q8Cp9EeK0C49juP9Cvw" body="N&#xe3;o retirado visibilidade de atributos e opera&#xe7;&#xf5;es porque o bug do Astah n&#xe3;o deixa."/>
+          <ownedComment xmi:id="_3c7q8yp9EeK0C49juP9Cvw" body="Uma medida administrativa pode existir sem que seja criada uma autua&#xe7;&#xe3;o. Nesse caso poderia ou n&#xe3;o gerar uma autua&#xe7;&#xe3;o tanto de Lavratura quanto por CI. Por&#xe9;m tamb&#xe9;m poderia n&#xe3;o criar nada. Exemplo de reter CRNTRC para verificar se &#xe9; falsa.&#xA;&#xA;Verificar essa informa&#xe7;&#xe3;o."/>
+          <ownedComment xmi:id="_3c7q9Sp9EeK0C49juP9Cvw" body="Segundo a Resolu&#xe7;&#xe3;o 442: &#xA;&#xA;&quot;Art. 9&#xba; Ocorrendo pluralidade de infra&#xe7;&#xf5;es, cometidas por um mesmo infrator, a ANTT poder&#xe1;, a seu exclusivo crit&#xe9;rio, instaurar um ou v&#xe1;rios processos distintos, considerando, dentre outros fatores, a natureza das ocorr&#xea;ncias e as penalidades cab&#xed;veis.&quot;&#xA;&#xA;Por&#xe9;m, hoje em dia, n&#xe3;o se faz mais dessa forma. De acordo com as informa&#xe7;&#xf5;es colhidas na entrevista, &#xe9; desej&#xe1;vel a representa&#xe7;&#xe3;o de uma rela&#xe7;&#xe3;o direta de uma Infra&#xe7;&#xe3;o Praticada com um Documento de Instaura&#xe7;&#xe3;o e com um &#xfa;nico PAAIAP."/>
+          <ownedComment xmi:id="_3c7q9yp9EeK0C49juP9Cvw" body="Com intuito de simplifica&#xe7;&#xe3;o, optou-se por manter nas notas as mesmas siglas utilizadas no modelo. &#xA;&#xA;Siglas que aparecem nas notas deste diagrama e que n&#xe3;o aparece no modelo s&#xe3;o:&#xA;&#xA;CONTRAM = Conselho Nacional de Tr&#xe2;nsito&#xA;CTB = C&#xf3;digo de Tr&#xe2;nsito Brasileiro&#xA;PTB = Peso Total Bruno"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c842Cp9EeK0C49juP9Cvw" name="Infra&#xe7;&#xe3;o Prevista" visibility="public">
+        <ownedComment xmi:id="_3c843Sp9EeK0C49juP9Cvw" body="Talvez criar um relacionamento derivado dizendo que a Medida Administrativa &#xe9; definda em Contrato, Ato legal ou regulamentar. Mas verificar."/>
+        <ownedComment xmi:id="_3c843yp9EeK0C49juP9Cvw" body="Verificar a necessidade de entrar Infra&#xe7;&#xe3;o de Edital. R. 442, Art. 23., V"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c85ISp9EeK0C49juP9Cvw" name="Infraestrutura de Transportes" visibility="public">
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c85JCp9EeK0C49juP9Cvw" name="Infraestrutura Rodovi&#xe1;ria" visibility="public">
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c85JSp9EeK0C49juP9Cvw" name="Acidente" visibility="public"/>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c9gAip9EeK0C49juP9Cvw" name="Atendimento Rodovi&#xe1;rio" visibility="public"/>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c9gUCp9EeK0C49juP9Cvw" name="Defeitos" visibility="public"/>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c-t8Cp9EeK0C49juP9Cvw" name="Edifica&#xe7;&#xe3;o Rodovi&#xe1;ria" visibility="public">
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c-t8Sp9EeK0C49juP9Cvw" name="Posto de Pesagem" visibility="public"/>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c-uMCp9EeK0C49juP9Cvw" name="Pra&#xe7;a de Ped&#xe1;gio" visibility="public"/>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c_VWip9EeK0C49juP9Cvw" name="Interse&#xe7;&#xe3;o" visibility="public"/>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c_8Myp9EeK0C49juP9Cvw" name="Obra de Arte" visibility="public">
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c_8NCp9EeK0C49juP9Cvw" name="Obra de Arte Corrente" visibility="public"/>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c_8Wyp9EeK0C49juP9Cvw" name="Obra de Arte Especial" visibility="public">
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3c_8XCp9EeK0C49juP9Cvw" name="Ponte" visibility="public"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dAjSyp9EeK0C49juP9Cvw" name="Sinaliza&#xe7;&#xe3;o" visibility="public"/>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dBKTip9EeK0C49juP9Cvw" name="Trecho Rodovi&#xe1;rio F&#xed;sico" visibility="public">
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dBKUCp9EeK0C49juP9Cvw" name="Componente Trecho F&#xed;sico" visibility="public"/>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dBxeyp9EeK0C49juP9Cvw" name="Ve&#xed;culo" visibility="public">
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dBxfSp9EeK0C49juP9Cvw" name="Ve&#xed;culo Rodovi&#xe1;rio" visibility="public">
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dBxfip9EeK0C49juP9Cvw" name="Ve&#xed;culo de Suporte" visibility="public"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dBx9ip9EeK0C49juP9Cvw" name="Via de Tr&#xe2;nsito Rodovi&#xe1;rio" visibility="public">
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dBx-Cp9EeK0C49juP9Cvw" name="Rodovia" visibility="public"/>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dCY0Cp9EeK0C49juP9Cvw" name="Legisla&#xe7;&#xe3;o" visibility="public">
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dCY0Sp9EeK0C49juP9Cvw" name="Atos Normativos" visibility="public">
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dCY0ip9EeK0C49juP9Cvw" name="Estrutura de Atos Normativos" visibility="public">
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dCY0yp9EeK0C49juP9Cvw" name="Agrupamento e Composi&#xe7;&#xe3;o" visibility="public">
+            <ownedComment xmi:id="_3dCY1Cp9EeK0C49juP9Cvw" body="Todo Elemento de Agrupamento &#xe9; composto de Elementos Componentes de Atos Normativos de um mesmo Ato Normativo."/>
+            <ownedComment xmi:id="_3dCY1ip9EeK0C49juP9Cvw" body="O diagrama Composi&#xe7;&#xf5;es Derivadas foi criado com o prop&#xf3;sito de formalizar as regras para este fato."/>
+            <ownedComment xmi:id="_3dCY1yp9EeK0C49juP9Cvw" body="Por exemplo, uma Parte &#xe9; composta de Livros de um mesmo Ato Normativo, e n&#xe3;o de um Livro de um Ato e outro Livro de outro Ato."/>
+            <ownedComment xmi:id="_3dCY4Cp9EeK0C49juP9Cvw" body="O escopo deste modelo &#xe9; um dos que apresentam mais problemas no Manual de Reda&#xe7;&#xe3;o da Presid&#xea;ncia da Rep&#xfa;blica. Ele define, por exemplo, que Cap&#xed;tulos s&#xe3;o agregados de Se&#xe7;&#xf5;es, por&#xe9;m nem sempre isso &#xe9; verdade. A regra &#xe9; que deve existir ao menos um cap&#xed;tulo que agregue se&#xe7;&#xf5;es e assim podem existir outros cap&#xed;tulos que n&#xe3;o agregam. Por&#xe9;m na pr&#xe1;tica isso n&#xe3;o &#xe9; respeitado. &#xA;&#xA;Optou-se por deixar o modelo o mais aberto poss&#xed;vel para que, em um momento futuro, a ANTT fa&#xe7;a as op&#xe7;&#xf5;es dela para o que &#xe9; v&#xe1;lido ou n&#xe3;o. Nesse momento considerar inv&#xe1;lidos v&#xe1;rios atos normativos, alguns de grande relev&#xe2;ncia para as atua&#xe7;&#xf5;es da agencia, poderia causar transtornos."/>
+          </packagedElement>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dC_iip9EeK0C49juP9Cvw" name="Atos e Artigos" visibility="public"/>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dC_8yp9EeK0C49juP9Cvw" name="Geral" visibility="public"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dDAESp9EeK0C49juP9Cvw" name="Gest&#xe3;o de Atos Normativos" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dDmhyp9EeK0C49juP9Cvw" name="Marco Regulat&#xf3;rio" visibility="public"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dDmuSp9EeK0C49juP9Cvw" name="Outorga" visibility="public">
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dDmxCp9EeK0C49juP9Cvw" name="Concess&#xe3;o" visibility="public">
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dDmxip9EeK0C49juP9Cvw" name="Concess&#xe3;o Rodovi&#xe1;ria*" visibility="public">
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dDmySp9EeK0C49juP9Cvw" name="Conv&#xea;nio em Concess&#xe3;o Rodovi&#xe1;ria*" visibility="public">
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dDmyyp9EeK0C49juP9Cvw" name="Conv&#xea;nio de Aquisi&#xe7;&#xe3;o" visibility="public"/>
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dDnXSp9EeK0C49juP9Cvw" name="Conv&#xea;nio de Realiza&#xe7;&#xe3;o de Obra" visibility="public"/>
+          </packagedElement>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dDnfip9EeK0C49juP9Cvw" name="Extin&#xe7;&#xe3;o de Concess&#xe3;o*" visibility="public"/>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dENmip9EeK0C49juP9Cvw" name="Faixa de Dom&#xed;nio Utilizada*" visibility="public"/>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dEN7ip9EeK0C49juP9Cvw" name="Financeiro Concess&#xe3;o*" visibility="public">
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dEN8Sp9EeK0C49juP9Cvw" name="Receita da Concess&#xe3;o" visibility="public">
+              <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dEOByp9EeK0C49juP9Cvw" name="Receita Rodovi&#xe1;ria Extraordin&#xe1;ria" visibility="public"/>
+            </packagedElement>
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dEOJyp9EeK0C49juP9Cvw" name="Tarifa B&#xe1;sica de Ped&#xe1;gio" visibility="public"/>
+          </packagedElement>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dEOdCp9EeK0C49juP9Cvw" name="Garantia de Execu&#xe7;&#xe3;o*" visibility="public"/>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dE06Sp9EeK0C49juP9Cvw" name="Licen&#xe7;a Ambiental*" visibility="public"/>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dE0_yp9EeK0C49juP9Cvw" name="Manifesta&#xe7;&#xe3;o de Usu&#xe1;rio de Rodovia*" visibility="public">
+            <ownedComment xmi:id="_3dE1ASp9EeK0C49juP9Cvw" body="Deve ser integrado com modelos da ouvidoria."/>
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dE1Ayp9EeK0C49juP9Cvw" name="Forma de Contato de Manifesta&#xe7;&#xe3;o" visibility="public"/>
+          </packagedElement>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dE1WSp9EeK0C49juP9Cvw" name="Obra em Concess&#xe3;o*" visibility="public"/>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dFb8ip9EeK0C49juP9Cvw" name="PER*" visibility="public">
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dFb8yp9EeK0C49juP9Cvw" name="PER Revisado" visibility="public">
+              <ownedComment xmi:id="_3dFb9Cp9EeK0C49juP9Cvw" body="Rela&#xe7;&#xe3;o entre PER Revisado e Item do PER Revisado &#xe9; derivada da rela&#xe7;&#xe3;o entre PER e Item do PER"/>
+            </packagedElement>
+          </packagedElement>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dFcWSp9EeK0C49juP9Cvw" name="Seguro em Concess&#xe3;o*" visibility="public"/>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dFciCp9EeK0C49juP9Cvw" name="Servi&#xe7;o em Concess&#xe3;o*" visibility="public">
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dFciSp9EeK0C49juP9Cvw" name="Tipo de Servi&#xe7;o em Concess&#xe3;o" visibility="public"/>
+            <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_3dFcnSp9EeK0C49juP9Cvw" name="Execu&#xe7;&#xe3;o de Servi&#xe7;o em Rodovia Programado" visibility="public">
+              <generalization xmi:id="_3dFcnip9EeK0C49juP9Cvw" general="_3dFcpip9EeK0C49juP9Cvw"/>
+            </packagedElement>
+            <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_3dFcnyp9EeK0C49juP9Cvw" name="Servi&#xe7;o Executado em Concess&#xe3;o Rodovi&#xe1;ria " visibility="public">
+              <generalization xmi:id="_3dFcoCp9EeK0C49juP9Cvw" general="_3dGDtSp9EeK0C49juP9Cvw"/>
+              <generalization xmi:id="_3dFcoSp9EeK0C49juP9Cvw" general="_3dFcoip9EeK0C49juP9Cvw"/>
+            </packagedElement>
+            <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_3dFcoip9EeK0C49juP9Cvw" name="Servi&#xe7;o em Concess&#xe3;o Rodovi&#xe1;ria" visibility="public">
+              <generalization xmi:id="_3dFcoyp9EeK0C49juP9Cvw" general="_3dGDsSp9EeK0C49juP9Cvw"/>
+            </packagedElement>
+            <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_3dFcpCp9EeK0C49juP9Cvw" name="Trecho Rodovi&#xe1;rio Concedido com Servi&#xe7;o" visibility="public">
+              <generalization xmi:id="_3dFcpSp9EeK0C49juP9Cvw" general="_3dFcwyp9EeK0C49juP9Cvw"/>
+            </packagedElement>
+            <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_3dFcpip9EeK0C49juP9Cvw" name="Execu&#xe7;&#xe3;o de Servi&#xe7;o em Rodovia" visibility="public">
+              <generalization xmi:id="_3dFcpyp9EeK0C49juP9Cvw" general="_3dGDqSp9EeK0C49juP9Cvw"/>
+            </packagedElement>
+            <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_3dFcqCp9EeK0C49juP9Cvw" name="&#xe9; de" visibility="public" memberEnd="_3dFcqip9EeK0C49juP9Cvw _3dFcqSp9EeK0C49juP9Cvw">
+              <ownedEnd xmi:id="_3dFcqSp9EeK0C49juP9Cvw" visibility="private" type="_3dFcnyp9EeK0C49juP9Cvw" association="_3dFcqCp9EeK0C49juP9Cvw">
+                <name xsi:nil="true"/>
+                <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3fjg2ip9EeK0C49juP9Cvw" value="-1"/>
+                <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3fjg2yp9EeK0C49juP9Cvw" value="1"/>
+              </ownedEnd>
+              <ownedEnd xmi:id="_3dFcqip9EeK0C49juP9Cvw" visibility="private" type="_3dFcpip9EeK0C49juP9Cvw" association="_3dFcqCp9EeK0C49juP9Cvw">
+                <name xsi:nil="true"/>
+                <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3f77Uip9EeK0C49juP9Cvw" value="-1"/>
+                <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3f77Uyp9EeK0C49juP9Cvw" value="1"/>
+              </ownedEnd>
+            </packagedElement>
+            <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_3dFcqyp9EeK0C49juP9Cvw" name="feito em" visibility="public" memberEnd="_3dFcrSp9EeK0C49juP9Cvw _3dFcrCp9EeK0C49juP9Cvw">
+              <ownedEnd xmi:id="_3dFcrCp9EeK0C49juP9Cvw" visibility="private" type="_3dFcpCp9EeK0C49juP9Cvw" association="_3dFcqyp9EeK0C49juP9Cvw">
+                <name xsi:nil="true"/>
+                <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3f9wiCp9EeK0C49juP9Cvw" value="-1"/>
+                <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3f9wiSp9EeK0C49juP9Cvw" value="1"/>
+              </ownedEnd>
+              <ownedEnd xmi:id="_3dFcrSp9EeK0C49juP9Cvw" visibility="private" type="_3dFcpip9EeK0C49juP9Cvw" association="_3dFcqyp9EeK0C49juP9Cvw">
+                <name xsi:nil="true"/>
+                <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3d57CCp9EeK0C49juP9Cvw" value="-1"/>
+                <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3d57CSp9EeK0C49juP9Cvw" value="1"/>
+              </ownedEnd>
+            </packagedElement>
+            <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_3dFcrip9EeK0C49juP9Cvw" name="respons&#xe1;vel por" visibility="public" memberEnd="_3dFcsCp9EeK0C49juP9Cvw _3dFcryp9EeK0C49juP9Cvw">
+              <ownedEnd xmi:id="_3dFcryp9EeK0C49juP9Cvw" visibility="public" type="_3dIfRSp9EeK0C49juP9Cvw" association="_3dFcrip9EeK0C49juP9Cvw">
+                <name xsi:nil="true"/>
+                <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3gAMwip9EeK0C49juP9Cvw" value="1"/>
+                <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3gAMwyp9EeK0C49juP9Cvw" value="1"/>
+              </ownedEnd>
+              <ownedEnd xmi:id="_3dFcsCp9EeK0C49juP9Cvw" visibility="public" type="_3dFcoip9EeK0C49juP9Cvw" association="_3dFcrip9EeK0C49juP9Cvw">
+                <name xsi:nil="true"/>
+                <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3e9D4Sp9EeK0C49juP9Cvw" value="-1"/>
+                <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3e9D4ip9EeK0C49juP9Cvw" value="1"/>
+              </ownedEnd>
+            </packagedElement>
+            <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_3dFcsSp9EeK0C49juP9Cvw" name="/ realizado em" visibility="public" memberEnd="_3dFcsip9EeK0C49juP9Cvw _3dFcsyp9EeK0C49juP9Cvw">
+              <ownedEnd xmi:id="_3dFcsip9EeK0C49juP9Cvw" visibility="private" type="_3dFcpCp9EeK0C49juP9Cvw" association="_3dFcsSp9EeK0C49juP9Cvw">
+                <name xsi:nil="true"/>
+                <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3f_ltCp9EeK0C49juP9Cvw" value="-1"/>
+                <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3f_ltSp9EeK0C49juP9Cvw" value="1"/>
+              </ownedEnd>
+              <ownedEnd xmi:id="_3dFcsyp9EeK0C49juP9Cvw" visibility="private" type="_3dFcnyp9EeK0C49juP9Cvw" association="_3dFcsSp9EeK0C49juP9Cvw">
+                <name xsi:nil="true"/>
+                <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3fq1mCp9EeK0C49juP9Cvw" value="-1"/>
+                <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3fq1mSp9EeK0C49juP9Cvw" value="1"/>
+              </ownedEnd>
+            </packagedElement>
+          </packagedElement>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dFcuyp9EeK0C49juP9Cvw" name="Trecho de Concess&#xe3;o*" visibility="public">
+            <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_3dFcwyp9EeK0C49juP9Cvw" name="Trecho Rodovi&#xe1;rio Concedido" visibility="public"/>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGDoSp9EeK0C49juP9Cvw" name="Produto e Servi&#xe7;o" visibility="public">
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGDoyp9EeK0C49juP9Cvw" name="Servi&#xe7;o" visibility="public">
+        <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_3dGDqSp9EeK0C49juP9Cvw" name="Execu&#xe7;&#xe3;o de Servi&#xe7;o" visibility="public"/>
+        <packagedElement xsi:type="RefOntoUML:Mixin" xmi:id="_3dGDrCp9EeK0C49juP9Cvw" name="Provedor de Servi&#xe7;o" visibility="public" isAbstract="true"/>
+        <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_3dGDsSp9EeK0C49juP9Cvw" name="Servi&#xe7;o" visibility="public"/>
+        <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_3dGDtSp9EeK0C49juP9Cvw" name="Servi&#xe7;o Executado" visibility="public">
+          <generalization xmi:id="_3dGDtip9EeK0C49juP9Cvw" general="_3dGDsSp9EeK0C49juP9Cvw"/>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_3dGDwCp9EeK0C49juP9Cvw" name="relativo a" visibility="public" memberEnd="_3dGDwip9EeK0C49juP9Cvw _3dGDwSp9EeK0C49juP9Cvw">
+          <ownedEnd xmi:id="_3dGDwSp9EeK0C49juP9Cvw" visibility="private" type="_3dGDtSp9EeK0C49juP9Cvw" association="_3dGDwCp9EeK0C49juP9Cvw">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3fmkJCp9EeK0C49juP9Cvw" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3fmkJSp9EeK0C49juP9Cvw" value="1"/>
+          </ownedEnd>
+          <ownedEnd xmi:id="_3dGDwip9EeK0C49juP9Cvw" visibility="private" type="_3dGDqSp9EeK0C49juP9Cvw" association="_3dGDwCp9EeK0C49juP9Cvw">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3ewPlip9EeK0C49juP9Cvw" value="-1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3ewPlyp9EeK0C49juP9Cvw" value="1"/>
+          </ownedEnd>
+        </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_3dGDxip9EeK0C49juP9Cvw" name="prov&#xea;" visibility="public" memberEnd="_3dGDyCp9EeK0C49juP9Cvw _3dGDxyp9EeK0C49juP9Cvw">
+          <ownedEnd xmi:id="_3dGDxyp9EeK0C49juP9Cvw" visibility="private" type="_3dGDsSp9EeK0C49juP9Cvw" association="_3dGDxip9EeK0C49juP9Cvw">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3do1TCp9EeK0C49juP9Cvw" value="-1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3do1TSp9EeK0C49juP9Cvw" value="1"/>
+          </ownedEnd>
+          <ownedEnd xmi:id="_3dGDyCp9EeK0C49juP9Cvw" visibility="private" type="_3dGDrCp9EeK0C49juP9Cvw" association="_3dGDxip9EeK0C49juP9Cvw">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3do1RCp9EeK0C49juP9Cvw" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3do1RSp9EeK0C49juP9Cvw" value="1"/>
+          </ownedEnd>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGD2Cp9EeK0C49juP9Cvw" name="Tipos de Pessoa" visibility="public">
+      <ownedComment xmi:id="_3dGpwCp9EeK0C49juP9Cvw" body="O &#xfa;nico prestador de servi&#xe7;o &#xe9; a concession&#xe1;ria?" annotatedElement="_3dGDrCp9EeK0C49juP9Cvw"/>
+      <ownedComment xmi:id="_3dGpwSp9EeK0C49juP9Cvw" body="Unidade Regional e Poder P&#xfa;blico s&#xe3;o conceitos que eu achei mas que s&#xe3;o vagos. Unidade Regional est&#xe1; no modelo de fiscaliza&#xe7;&#xe3;o e n&#xe3;o herda de nenhum tipo de pessoa (Mas talvez nem deva mesmo), e Poder p&#xfa;blico est&#xe1; no modelo de Obra em concess&#xe3;o, mas &#xe9; prov&#xe1;vel que deva ser melhor especificado."/>
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGpwip9EeK0C49juP9Cvw" name="Pessoa F&#xed;sica" visibility="public">
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGpwyp9EeK0C49juP9Cvw" name="Parentesco" visibility="public">
+          <ownedComment xmi:id="_3dGpyip9EeK0C49juP9Cvw" body="Art. 1.591. S&#xe3;o parentes em linha reta as pessoas que est&#xe3;o umas para com as outras na rela&#xe7;&#xe3;o de ascendentes e descendentes.&#xA;&#xA;Art. 1.592. S&#xe3;o parentes em linha colateral ou transversal, at&#xe9; o quarto grau, as pessoas provenientes de um s&#xf3; tronco, sem descenderem uma da outra.&#xA;&#xA;Art. 1.593. O parentesco &#xe9; natural ou civil, conforme resulte de consang&#xfc;inidade ou outra origem."/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGqgyp9EeK0C49juP9Cvw" name="Pessoa Jur&#xed;dica" visibility="public">
+        <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGqhCp9EeK0C49juP9Cvw" name="Empresa" visibility="public">
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGqhSp9EeK0C49juP9Cvw" name="Aspectos Financeiros de Empresa" visibility="public">
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGqhip9EeK0C49juP9Cvw" name="Patrim&#xf4;nio" visibility="public">
+              <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGqhyp9EeK0C49juP9Cvw" name="Aquisi&#xe7;&#xe3;o" visibility="public">
+                <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGqiip9EeK0C49juP9Cvw" name="Arrendamento" visibility="public"/>
+                <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGqzCp9EeK0C49juP9Cvw" name="Compra" visibility="public"/>
+                <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGq7Cp9EeK0C49juP9Cvw" name="Constru&#xe7;&#xe3;o" visibility="public"/>
+              </packagedElement>
+              <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGrBip9EeK0C49juP9Cvw" name="Ativo Permanente" visibility="public">
+                <ownedComment xmi:id="_3dGrCCp9EeK0C49juP9Cvw" body="p/ Tiago:&#xA;Verificar essas generaliza&#xe7;&#xf5;es"/>
+                <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dGrCSp9EeK0C49juP9Cvw" name="Bem Dur&#xe1;vel" visibility="public"/>
+                <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dHQ9ip9EeK0C49juP9Cvw" name="Im&#xf3;vel Cont&#xe1;bil" visibility="public"/>
+              </packagedElement>
+            </packagedElement>
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dH4Kyp9EeK0C49juP9Cvw" name="Resultado" visibility="public">
+              <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dH4LCp9EeK0C49juP9Cvw" name="Imposto" visibility="public"/>
+              <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dH4Zyp9EeK0C49juP9Cvw" name="Receita" visibility="public"/>
+            </packagedElement>
+          </packagedElement>
+          <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dH4zyp9EeK0C49juP9Cvw" name="Tipos de Empresa" visibility="public">
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dH40Cp9EeK0C49juP9Cvw" name="Empresa Regulada" visibility="public">
+              <ownedComment xmi:id="_3dH40Sp9EeK0C49juP9Cvw" body="Concession&#xe1;ria de TT foi exclu&#xed;do."/>
+              <ownedComment xmi:id="_3dH41Cp9EeK0C49juP9Cvw" body="Este diagrama foi feito em torno da classe Concession&#xe1;ria de TT, mas esse conceito foi exclu&#xed;do."/>
+            </packagedElement>
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dH43yp9EeK0C49juP9Cvw" name="Gerais" visibility="public"/>
+            <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dH5Bip9EeK0C49juP9Cvw" name="Tipo Geral de Empresa" visibility="public"/>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_3dIfRSp9EeK0C49juP9Cvw" name="Concession&#xe1;ria Rodovi&#xe1;ria" visibility="public">
+        <generalization xmi:id="_3dIfRyp9EeK0C49juP9Cvw" general="_3dGDrCp9EeK0C49juP9Cvw"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dIfcSp9EeK0C49juP9Cvw" name="Transporte (RASCUNHO)" visibility="public">
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dIfcip9EeK0C49juP9Cvw" name="Carga (RASCUNHO)" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_3dIfsCp9EeK0C49juP9Cvw" name="Passageiro (RASCUNHO)" visibility="public">
+        <ownedComment xmi:id="_3dIfuip9EeK0C49juP9Cvw" body="Este diagrama ainda precisa ser integrado com os modelos de outorga e tipos de empresa."/>
+        <ownedComment xmi:id="_3dIfuyp9EeK0C49juP9Cvw" body="Resolu&#xe7;&#xe3;o da ANTT 1166 Art. 22. &#xA;&#xA;&quot;Fretamento tur&#xed;stico e fretamento eventual &#xe9; o servi&#xe7;o prestado por empresas detentoras de Certificado de Registro para Fretamento -CRF, em circuito fechado, em car&#xe1;ter ocasional, com rela&#xe7;&#xe3;o de passageiros transportados e emiss&#xe3;o de nota fiscal, por viagem, com pr&#xe9;via autoriza&#xe7;&#xe3;o da ANTT.&quot;"/>
+        <ownedComment xmi:id="_3dIfwSp9EeK0C49juP9Cvw" body="Resolu&#xe7;&#xe3;o da ANTT 1166 Art. 16.&#xA;&#xA;&quot;Fretamento cont&#xed;nuo &#xe9; o servi&#xe7;o de transporte prestado por empresa detentora do Certificado de Registro para Fretamento &#x2013; CRF, com contrato firmado entre a empresa e seu contratante, em circuito fechado, por per&#xed;odo determinado, com itiner&#xe1;rio, quantidade de viagens, freq&#xfc;&#xea;ncia e hor&#xe1;rios pr&#xe9;-estabelecidos, com rela&#xe7;&#xe3;o fechada de passageiros, com pr&#xe9;via autoriza&#xe7;&#xe3;o da ANTT, ...&quot;"/>
+        <ownedComment xmi:id="_3dIfwyp9EeK0C49juP9Cvw" body="Resolu&#xe7;&#xe3;o da ANTT 1166 Art. 23. &#xa7;2&#xba; O Sistema de Autoriza&#xe7;&#xe3;o de Viagem somente permitir&#xe1; a emiss&#xe3;o de nova autoriza&#xe7;&#xe3;o, para o mesmo &#xf4;nibus, depois de transcorrido o tempo de libera&#xe7;&#xe3;o do ve&#xed;culo, que ser&#xe1; obtido por meio da soma dos seguintes tempos:&#xA;&#xA;Como/onde modelar este atributo?"/>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <viewpoint xsi:nil="true"/>
+</RefOntoUML:Model>

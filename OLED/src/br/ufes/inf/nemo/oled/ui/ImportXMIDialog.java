@@ -33,9 +33,10 @@ import org.jdesktop.swingx.error.ErrorInfo;
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
-import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
-import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.ChckBoxTreeNodeElem;
-import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.RefOntoUMLUtil;
+import br.ufes.inf.nemo.xmi2refontouml.core.Mediator;
+import br.ufes.inf.nemo.xmi2refontouml.util.ChckBoxTreeNodeElem;
+import br.ufes.inf.nemo.xmi2refontouml.util.RefOntoUMLUtil;
+
 import javax.swing.JLabel;
 import java.awt.Component;
 import javax.swing.Box;

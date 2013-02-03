@@ -18,6 +18,13 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import br.ufes.inf.nemo.antipattern.ACAntiPattern;
+import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
+import br.ufes.inf.nemo.antipattern.IAAntiPattern;
+import br.ufes.inf.nemo.antipattern.RBOSAntiPattern;
+import br.ufes.inf.nemo.antipattern.RSAntiPattern;
+import br.ufes.inf.nemo.antipattern.RWORAntiPattern;
+import br.ufes.inf.nemo.antipattern.STRAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.ACAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.IAAntiPatternModel;
@@ -28,13 +35,6 @@ import br.ufes.inf.nemo.move.mvc.model.antipattern.STRAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.antipattern.list.AntiPatternListModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 
-import br.ufes.inf.nemo.ontouml.antipattern.ACAntiPattern;
-import br.ufes.inf.nemo.ontouml.antipattern.AntiPatternIdentifier;
-import br.ufes.inf.nemo.ontouml.antipattern.IAAntiPattern;
-import br.ufes.inf.nemo.ontouml.antipattern.RBOSAntiPattern;
-import br.ufes.inf.nemo.ontouml.antipattern.RSAntiPattern;
-import br.ufes.inf.nemo.ontouml.antipattern.RWORAntiPattern;
-import br.ufes.inf.nemo.ontouml.antipattern.STRAntiPattern;
 
 /**
  * @author John Guerson

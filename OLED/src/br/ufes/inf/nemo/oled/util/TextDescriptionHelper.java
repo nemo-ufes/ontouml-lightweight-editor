@@ -2,10 +2,10 @@ package br.ufes.inf.nemo.oled.util;
 
 import javax.swing.JFrame;
 
-import ontouml2text.ui.Options;
 
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
+import br.ufes.inf.nemo.ontouml2text.ui.Options;
 
 public class TextDescriptionHelper {
 	
