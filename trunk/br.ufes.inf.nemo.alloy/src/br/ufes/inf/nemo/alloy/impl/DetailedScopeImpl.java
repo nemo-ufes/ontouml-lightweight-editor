@@ -44,7 +44,6 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * @generated
 	 * @ordered
 	 */
-	@SuppressWarnings("rawtypes")
 	protected EList<Scopeable> scopeable;
 
 	/**
@@ -71,7 +70,7 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ })
 	public EList<Scopeable> getScopeable() {
 		if (scopeable == null) {
 			scopeable = new EObjectContainmentEList<Scopeable>(Scopeable.class, this, AlloyPackage.DETAILED_SCOPE__SCOPEABLE);
