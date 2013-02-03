@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_X-4k4G4UEeKww-vwk7uLzA" name="Model">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_YGbXUG4UEeKww-vwk7uLzA" name="x" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_Y_uW0G4UEeKww-vwk7uLzA" name="" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Package" name="p">
+    <packagedElement xsi:type="RefOntoUML:Kind" name="" visibility="public"/>
+    <packagedElement xsi:type="RefOntoUML:Kind" name="x"/>
+    <packagedElement xsi:type="RefOntoUML:Class"/>
+    <packagedElement xsi:type="RefOntoUML:Association"/>
+    <packagedElement xsi:type="RefOntoUML:Quantity" name="inv"/>
+    <packagedElement xsi:type="RefOntoUML:componentOf">
+      <ownedEnd/>
+    </packagedElement>
+  </packagedElement>
+</RefOntoUML:Model>

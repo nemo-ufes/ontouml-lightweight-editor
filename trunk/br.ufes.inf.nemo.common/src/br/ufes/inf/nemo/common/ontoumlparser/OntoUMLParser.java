@@ -65,7 +65,6 @@ public class OntoUMLParser {
 	/** Options for complete element selections in the model (transformation purposes). */
 	public static int NO_HIERARCHY = 0, SORTAL_ANCESTORS = 1, ALL_ANCESTORS = 2, ALL_DESCENDANTS = 3, COMPLETE_HIERARCHY = 4;
 		
-	public int items = 0;
 	
 	/**
 	 * This constructor creates a parser from a root ontoUML Package.
@@ -172,15 +171,20 @@ public class OntoUMLParser {
 			e = new ParsingElement(pe, true, h2.treatName(pe));
 			this.elementsHash.put(pe,e);
 			
-			//Property
-			Property property0 = ((Association)pe).getMemberEnd().get(0);				
-			Property property1 = ((Association)pe).getMemberEnd().get(1);
-
-			e = new ParsingElement(property0, true, h2.treatName(property0));
-			this.elementsHash.put(property0,e);
+			//Property			
+			if(((Association)pe).getMemberEnd().size()>=1)
+			{
+				Property property0 = ((Association)pe).getMemberEnd().get(0);							
+				e = new ParsingElement(property0, true, h2.treatName(property0));
+				this.elementsHash.put(property0,e);
+			}
 			
-			e = new ParsingElement(property1, true, h2.treatName(property1));
-			this.elementsHash.put(property1,e);
+			if(((Association)pe).getMemberEnd().size()>=2)
+			{
+				Property property1 = ((Association)pe).getMemberEnd().get(1);
+				e = new ParsingElement(property1, true, h2.treatName(property1));
+				this.elementsHash.put(property1,e);
+			}
 							
 		}
 		//Enumeration
@@ -928,30 +932,4 @@ public class OntoUMLParser {
 		for(int i = 0; i<delete_list.size(); i++) EcoreUtil.remove(delete_list.get(i));
 	}
 	
-	public String getDiagnostic()
-	{		
-		StringBuffer result = new StringBuffer();
-		items = 0;
-		
-		for (RefOntoUML.Class c : getAllInstances(RefOntoUML.Class.class))
-		{
-			if (! ((c instanceof RefOntoUML.ObjectClass) || (c instanceof RefOntoUML.MomentClass)) )
-			{
-				items++;
-				result.append("Class not stereotyped : "+c.getName()+"\n");
-			}
-		}
-		
-		for (RefOntoUML.Association a : getAllInstances(RefOntoUML.Association.class))
-		{
-			if (! ((a instanceof RefOntoUML.DirectedBinaryAssociation) || (a instanceof RefOntoUML.FormalAssociation) || (a instanceof RefOntoUML.MaterialAssociation)) )
-			{
-				items++;
-				result.append("Association not stereotyped : "+a.getName()+"\n");
-			}
-		}
-		
-		result.append(items+" item(s) found.\n");
-		return result.toString();
-	}
 }
