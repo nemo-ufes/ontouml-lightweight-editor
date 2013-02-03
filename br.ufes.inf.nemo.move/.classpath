@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Common">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Common/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2alloy"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.antipattern"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ocl2alloy"/>
+	<classpathentry kind="lib" path="/Common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.core.runtime_3.8.0.v20120521-2346.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.osgi_3.8.0.v20120529-1548.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="lib/alloy4.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2uml"/>
+	<classpathentry kind="lib" path="/Common/lib/checkboxtree/lablib-checkboxtree-3.3.jar" sourcepath="/Common/lib/checkboxtree/lablib-checkboxtree-3.3-sources.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/textarea/autocomplete.jar" sourcepath="/Common/lib/textarea/autocomplete_2.0.5_Source.zip"/>
+	<classpathentry kind="lib" path="/Common/lib/textarea/rstaui.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/textarea/rsyntaxtextarea.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/lpg.runtime.java_2.0.17.v201004271640.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl_3.3.0.v20121218-1022.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.common_1.1.0.v20121102-1658.jar"/>
+	<classpathentry kind="lib" path="/Common/lib/org.eclipse.ocl.uml_4.0.100.v20121218-1022.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
