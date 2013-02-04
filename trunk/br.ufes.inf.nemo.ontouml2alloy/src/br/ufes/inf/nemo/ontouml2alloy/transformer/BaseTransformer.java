@@ -584,8 +584,6 @@ public class BaseTransformer {
 			RefOntoUML.Type targetType = p.getType();			
 			String paramName = ontoparser.getAlias(p);
 			
-			System.out.println(targetType);
-			
 			if ( (sourceType != null) && (sourceType instanceof DataType) )
 			{
 				PredicateInvocation pI = factory.createPredicateInvocation();

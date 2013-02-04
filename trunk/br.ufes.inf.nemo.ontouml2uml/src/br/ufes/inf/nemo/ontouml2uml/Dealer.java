@@ -266,6 +266,7 @@ public class Dealer {
 	public org.eclipse.uml2.uml.Association DealAssociation (RefOntoUML.Association a1)
     {
 		org.eclipse.uml2.uml.Association a2 = createAssociation(a1);		
+        if(a2==null) return null;
         DealClassifier(a1, a2);        
         a2.setIsDerived(a1.isIsDerived());        
         
@@ -309,39 +310,43 @@ public class Dealer {
 	 */	
 	public org.eclipse.uml2.uml.Association createAssociation (RefOntoUML.Association a1)	
     {
-    	RefOntoUML.Property src = a1.getMemberEnd().get(0);
-		RefOntoUML.Property tgt = a1.getMemberEnd().get(1);
-		RefOntoUML.Type source = src.getType();
-		RefOntoUML.Type target = tgt.getType();		
+		if (a1.getMemberEnd().size()==2)
+		{
+			RefOntoUML.Property src = a1.getMemberEnd().get(0);
+			RefOntoUML.Property tgt = a1.getMemberEnd().get(1);
+			RefOntoUML.Type source = src.getType();
+			RefOntoUML.Type target = tgt.getType();		
 		
-		// inverse
-		org.eclipse.uml2.uml.Type sourceClass= (org.eclipse.uml2.uml.Type) GetElement(target);
-		org.eclipse.uml2.uml.Type targetClass = (org.eclipse.uml2.uml.Type)GetElement(source);	
+			// 	inverse
+			org.eclipse.uml2.uml.Type sourceClass= (org.eclipse.uml2.uml.Type) GetElement(target);
+			org.eclipse.uml2.uml.Type targetClass = (org.eclipse.uml2.uml.Type)GetElement(source);	
 		
-    	boolean end1IsNavigable = true; //src.isNavigable();
-    	boolean end2IsNavigable = true; //tgt.isNavigable();
+			boolean end1IsNavigable = true; //src.isNavigable();
+			boolean end2IsNavigable = true; //tgt.isNavigable();
     	
-    	String end1Name = src.getName();
-    	String end2Name = tgt.getName();
+			String end1Name = src.getName();
+			String end2Name = tgt.getName();
     	
-    	int end1Lower = src.getLower();
-    	int end2Lower = tgt.getLower();
-    	int end1Upper = src.getUpper();
-    	int end2Upper = tgt.getUpper();    	
+			int end1Lower = src.getLower();
+			int end2Lower = tgt.getLower();
+			int end1Upper = src.getUpper();
+			int end2Upper = tgt.getUpper();    	
     	
-    	if((end2Upper==-1) && (end2Lower==-1)) { end2Lower = 0;}
-    	if((end1Upper==-1) && (end1Lower==-1)) { end1Lower = 0;}
+			if((end2Upper==-1) && (end2Lower==-1)) { end2Lower = 0;}
+			if((end1Upper==-1) && (end1Lower==-1)) { end1Lower = 0;}
     	
-    	org.eclipse.uml2.uml.AggregationKind ag1 = getAggregationKind(src);
-    	org.eclipse.uml2.uml.AggregationKind ag2 = getAggregationKind(tgt);
+			org.eclipse.uml2.uml.AggregationKind ag1 = getAggregationKind(src);
+			org.eclipse.uml2.uml.AggregationKind ag2 = getAggregationKind(tgt);
     	
-    	/* create association */
-    	org.eclipse.uml2.uml.Association a2 = sourceClass.createAssociation(
-    		end1IsNavigable, ag1, end1Name, end1Lower, end1Upper, targetClass, 
-    		end2IsNavigable, ag2, end2Name, end2Lower, end2Upper
-    	);        
+			/* create association */
+			org.eclipse.uml2.uml.Association a2 = sourceClass.createAssociation(
+					end1IsNavigable, ag1, end1Name, end1Lower, end1Upper, targetClass, 
+					end2IsNavigable, ag2, end2Name, end2Lower, end2Upper
+			);        
    		
-    	return a2;
+			return a2;
+		}
+		return null;
     }
 	
 	/** 
