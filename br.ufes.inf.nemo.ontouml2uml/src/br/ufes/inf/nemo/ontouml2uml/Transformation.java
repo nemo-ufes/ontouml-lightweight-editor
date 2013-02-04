@@ -250,17 +250,21 @@ public class Transformation {
 	        {        	
 				if(elem instanceof RefOntoUML.Derivation && refparser.isSelected(elem))
 				{
-					org.eclipse.uml2.uml.Association assoc = mydealer.DealAssociation ((RefOntoUML.Association) elem);
-					
-					if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(assoc);
-		           	else this.umlRootModel.getPackagedElements().add(assoc);					
+					org.eclipse.uml2.uml.Association assoc = mydealer.DealAssociation ((RefOntoUML.Association) elem);					
+					if(assoc!=null)
+					{
+						if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(assoc);
+						else this.umlRootModel.getPackagedElements().add(assoc);
+					}
 					
 				} else if( elem instanceof RefOntoUML.Association && refparser.isSelected(elem))
 				{        		
 					org.eclipse.uml2.uml.Association assoc = mydealer.DealAssociation ((RefOntoUML.Association) elem);
-					
-					if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(assoc);
-		           	else this.umlRootModel.getPackagedElements().add(assoc);        		
+					if(assoc!=null)
+					{
+						if (!ignorePackageHierarchy ) umlmodel.getPackagedElements().add(assoc);
+						else this.umlRootModel.getPackagedElements().add(assoc);
+					}
 				}
 	        }
         }

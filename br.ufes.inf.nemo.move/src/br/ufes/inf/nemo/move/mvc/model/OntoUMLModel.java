@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.move.mvc.model;
 import java.io.IOException;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
@@ -88,6 +89,8 @@ public class OntoUMLModel {
 	
 	/** Get ontoUML model instance (root Package or Model). */
 	public RefOntoUML.Package getOntoUMLModelInstance () { return refmodel; }
+	
+	public RefOntoUML.Package getOntoUMLModelInstanceFromSelection() { return refparser.createPackageFromSelections(new Copier()); }
 	
 	/** Get ontoUML Parser. */
 	public OntoUMLParser getOntoUMLParser () { return refparser; }

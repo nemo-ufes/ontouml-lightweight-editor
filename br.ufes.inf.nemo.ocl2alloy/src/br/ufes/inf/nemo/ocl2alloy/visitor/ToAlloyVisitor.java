@@ -156,8 +156,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 		if(name.equals("abs")) { return "abs[" + sourceResult + "]"; }
 		
 		if(name.equals("asSet")) { return sourceResult; }
-		if(name.equals("oclAsType")) { return sourceResult; }
-		
+				
 		if(name.equals("-")) 
 		{
 			java.util.Iterator<String> iter = argumentResults.iterator();	
@@ -221,8 +220,8 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
        			
         //if(name.equals("oclIsTypeOf")) 
         //	throw new OperationException("oclIsTypeOf()","We do not support this object operation. Should me more of a description here...");
-        //if(name.equals("oclAsType")) 
-        //	throw new OperationException("oclAsType()","We do not support this operation. Should me more of a descrition here...");
+        if(name.equals("oclAsType")) 
+        	throw new OperationException("oclAsType()","We do not support this operation because may return an invalid value which alloy does not support.");
         if(name.equals("/")) 
         	throw new OperationException("/","We only support the integer operations: +, -, *, max(), min(), abs().");
         if(name.equals("div")) 
@@ -276,8 +275,8 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
         if(name.equals("one")) result.append("#{ ");
         if(name.equals("select")) result.append("{ ");
         if(name.equals("reject")) result.append("{ ");        
-        if(name.equals("isUnique")) result.append("all disj ");                
-        
+        if(name.equals("isUnique")) result.append("all disj ");  
+               
         // arguments
         for( java.util.Iterator<String> iter = variableResults.iterator(); iter.hasNext();) 
         {        	     
@@ -325,6 +324,11 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
         	String sb = substitutes(var,bodyResult,var+"'");        	
         	result.append(sb);        	
         }        
+        if(name.equals("closure")) 
+        {
+        	String sb = substitutes(var,bodyResult,sourceResult);
+        	result.append(sb);
+        }
                 
         if(name.equals("any")) 
         	throw new IteratorException("any()","We do not support this iterator. Problems arise when trying to return the type of an element of the collection");

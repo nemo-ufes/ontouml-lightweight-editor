@@ -665,19 +665,26 @@ public class OntoUMLParser {
 			}
 			if(obj instanceof Association) 
 			{
-				Association a = (Association)obj;				
-				Type source = a.getMemberEnd().get(0).getType();
-				Type target = a.getMemberEnd().get(1).getType();
-				//source
-				if(!isSelected(source) && !objectsToAdd.contains(source))
+				Association a = (Association)obj;	
+				if (a.getMemberEnd().size()>=1)
 				{
-					objectsToAdd.add(source);					
+					Type source = a.getMemberEnd().get(0).getType();
+					//source
+					if(!isSelected(source) && !objectsToAdd.contains(source))
+					{
+						objectsToAdd.add(source);					
+					}
 				}
-				//target
-				if(!isSelected(target) && !objectsToAdd.contains(target))
-				{
-					objectsToAdd.add(target);					
-				}								
+				
+				if (a.getMemberEnd().size()>=2)
+				{				
+					//	target
+					Type target = a.getMemberEnd().get(1).getType();
+					if(!isSelected(target) && !objectsToAdd.contains(target))
+					{
+						objectsToAdd.add(target);					
+					}
+				}
 			}			
 		}
 		
