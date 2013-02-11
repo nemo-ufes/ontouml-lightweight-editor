@@ -95,9 +95,9 @@ public class OCL2Alloy {
 				
 		ToAlloyVisitor myVisitor = new ToAlloyVisitor(oclparser,refparser);
 						
-		if(stereo.equals("FACT")) myVisitor.stereo_invariant="FACT";		
-		if(stereo.equals("SIMULATION")) myVisitor.stereo_invariant="SIMULATION";		
-		if(stereo.equals("ASSERTION")) myVisitor.stereo_invariant="ASSERTION";
+		if(stereo.equals("RESTRIC")) myVisitor.stereo_invariant="RESTRICT";		
+		if(stereo.equals("SIMULATE")) myVisitor.stereo_invariant="SIMULATE";		
+		if(stereo.equals("CHECK")) myVisitor.stereo_invariant="CHECK";
 		
 		/*
 		 * Tests:

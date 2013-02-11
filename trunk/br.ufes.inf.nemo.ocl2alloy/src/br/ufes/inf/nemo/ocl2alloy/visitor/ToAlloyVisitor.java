@@ -74,9 +74,9 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
     
     /**
      * Invariants can be transformed into facts, predicates(simulation) and assertions.
-     * {"FACT","SIMULATION","ASSERTION"}.
+     * {"RESTRICT","SIMULATE","CHECK"}.
      */
-    public String stereo_invariant = "FACT";  
+    public String stereo_invariant = "RESTRICT";  
 
     /**
      * Used to verify if asSet() is being used after the collect() iterator.
@@ -156,7 +156,8 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 		if(name.equals("abs")) { return "abs[" + sourceResult + "]"; }
 		
 		if(name.equals("asSet")) { return sourceResult; }
-				
+		if(name.equals("oclAsType")) { return sourceResult; }
+		
 		if(name.equals("-")) 
 		{
 			java.util.Iterator<String> iter = argumentResults.iterator();	
@@ -220,8 +221,8 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
        			
         //if(name.equals("oclIsTypeOf")) 
         //	throw new OperationException("oclIsTypeOf()","We do not support this object operation. Should me more of a description here...");
-        if(name.equals("oclAsType")) 
-        	throw new OperationException("oclAsType()","We do not support this operation because may return an invalid value which alloy does not support.");
+        //if(name.equals("oclAsType")) 
+        //	throw new OperationException("oclAsType()","We do not support this operation because may return an invalid value which alloy does not support.");
         if(name.equals("/")) 
         	throw new OperationException("/","We only support the integer operations: +, -, *, max(), min(), abs().");
         if(name.equals("div")) 
@@ -611,8 +612,8 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                 {
                 	Classifier classifier = (Classifier)elem;
 
-                	if(stereo_invariant.equals("ASSERTION")) result.append("assert ");
-                	else if(stereo_invariant.equals("SIMULATION")) result.append("pred ");
+                	if(stereo_invariant.equals("CHECK")) result.append("assert ");
+                	else if(stereo_invariant.equals("SIMULATE")) result.append("pred ");
                 	else result.append("fact ");
                 	
                 	result.append("inv_"+constraint.getName()).append(" {\n");            
@@ -620,8 +621,8 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                     org.eclipse.ocl.uml.ExpressionInOCL expr = (org.eclipse.ocl.uml.ExpressionInOCL) constraint.getSpecification();
                     String exprResult = visit(expr);
                     
-               		if(stereo_invariant.equals("SIMULATION")) result.append("\tall w: World | ");
-                   	else if(stereo_invariant.equals("ASSERTION")) result.append("\tall w: World | ");
+               		if(stereo_invariant.equals("SIMULATE")) result.append("\tall w: World | ");
+                   	else if(stereo_invariant.equals("CHECK")) result.append("\tall w: World | ");
                    	else result.append("\tall w: World | ");
                 		
                		RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(classifier);
@@ -634,8 +635,8 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                     
                     result.append("\n}\n\n");                 
                     
-                    if(stereo_invariant.equals("SIMULATION")) result.append("run "+"inv_"+constraint.getName()+" for 10 but 3 World, 7 Int\n\n");
-                    else if(stereo_invariant.equals("ASSERTION")) result.append("check "+"inv_"+constraint.getName()+" for 10 but 3 World, 7 Int\n\n");
+                    if(stereo_invariant.equals("SIMULATE")) result.append("run "+"inv_"+constraint.getName()+" for 10 but 3 World, 7 Int\n\n");
+                    else if(stereo_invariant.equals("CHECK")) result.append("check "+"inv_"+constraint.getName()+" for 10 but 3 World, 7 Int\n\n");
                 	
                 } 
                 else if (oclparser.getUMLReflection().isOperation(elem)); 
@@ -663,8 +664,8 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                 	RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getKeyByValue(property.getType());
                 	String type_property = refparser.getAlias(ontoClassifier);
                 	                	
-                	if(stereo_invariant.equals("ASSERTION")) result.append("assert ");
-                	else if(stereo_invariant.equals("SIMULATION")) result.append("pred ");
+                	if(stereo_invariant.equals("CHECK")) result.append("assert ");
+                	else if(stereo_invariant.equals("SIMULATE")) result.append("pred ");
                 	else result.append("fact ");
                 	
                 	result.append("derive_"+count_derivation).append(" {\n");                	
@@ -713,8 +714,8 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
                 	
                 	result.append("\n}\n\n");
                 	
-                	if(stereo_invariant.equals("SIMULATION")) result.append("run "+"derive_"+""+count_derivation+" for 10 but 3 World, 7 Int\n\n");
-                    else if(stereo_invariant.equals("ASSERTION")) result.append("check "+"derive_"+""+count_derivation+" for 10 but 3 World, 7 Int\n\n");
+                	if(stereo_invariant.equals("SIMULATE")) result.append("run "+"derive_"+""+count_derivation+" for 10 but 3 World, 7 Int\n\n");
+                    else if(stereo_invariant.equals("CHECK")) result.append("check "+"derive_"+""+count_derivation+" for 10 but 3 World, 7 Int\n\n");
                 	
                 }                
                 else if (oclparser.getUMLReflection().isClassifier(elem));
