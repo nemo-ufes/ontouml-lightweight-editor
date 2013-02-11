@@ -33,7 +33,7 @@ public class OCLOptions {
 		{
 			constraintsList.add(ct);
 			constraintType.add(oclparser.getUMLReflection().getStereotype(ct));
-			transformationType.add("FACT");
+			transformationType.add("RESTRICT");
 			commandScope.add(10);
 		}		
 	}

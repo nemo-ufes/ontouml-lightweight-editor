@@ -90,7 +90,7 @@ public class OptionsDialog extends JDialog {
 		validate();
 		repaint();
 	}
-
+	
 	/**
 	 * Constructor
 	 */
@@ -137,7 +137,7 @@ public class OptionsDialog extends JDialog {
 		tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		tabbedPane.setBackground(UIManager.getColor("Panel.background"));
 		tabbedPane.add(ontoumlOptView,"OntoUML Conceptual Model");
-		tabbedPane.add(oclOptView,"OCL Rules");
+		tabbedPane.add(oclOptView,"OCL Domain Rules");
 		
 		getContentPane().setLayout(new BorderLayout(0, 0));		
 		getContentPane().add(btnpanel, BorderLayout.SOUTH);		

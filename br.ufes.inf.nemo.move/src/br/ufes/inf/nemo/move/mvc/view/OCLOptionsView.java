@@ -107,7 +107,7 @@ public class OCLOptionsView extends JPanel {
 	}
 	
 	/**
-	 * Get a list of Transformation Types from Options View. i.e. if it is "FACT","SIMULATION" OR "ASSERTION"
+	 * Get a list of Transformation Types from Options View. i.e. if it is "RESTRICT","SIMULATE" OR "CHECK"
 	 * 
 	 * @return
 	 */
