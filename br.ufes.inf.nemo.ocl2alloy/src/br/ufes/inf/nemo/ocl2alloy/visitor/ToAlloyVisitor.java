@@ -186,6 +186,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 			if(name.equals("=")) { return "("+sourceResult + " = " + argument+")"; }			
 			if(name.equals("<>")) { return "("+sourceResult + " != " + argument+")"; }			
 			if(name.equals("oclIsKindOf"))	{ return "("+sourceResult + " in " + argument+")"; }
+			if(name.equals("oclAsType")) { return "("+sourceResult + ":>"+argument+")"; }
 			
 			if(name.equals("oclIsTypeOf"))	
 			{ 
