@@ -1,6 +1,6 @@
 
 -- # Configuration Line : Do not change this... 
-import 'platform:/resource/OCL2Alloy/model/project.uml'
+import 'platform:/resource/br.ufes.inf.nemo.ocl2alloy/model/project.uml'
 
 -- # Write your constraints below... Press Ctrl+Space too see the options.
 
