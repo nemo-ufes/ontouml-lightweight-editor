@@ -13,6 +13,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
+import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
@@ -122,32 +123,32 @@ public class BaseTransformer {
 			
 		/* sig Object{}
 		 */
-		if (ontoparser.getAllInstances(ObjectClass.class).size()>0)
-		{						
+		//if (ontoparser.getAllInstances(ObjectClass.class).size()>0)
+		//{						
 			sigObject = factory.createSignatureDeclaration();
 			sigObject.setName("Object");
 			module.getParagraph().add(sigObject);
-		}
+		//}
 		
 		/* sig Property{}
 		 */
-		if (ontoparser.getAllInstances(MomentClass.class).size()>0)
-		{	
+		//if (ontoparser.getAllInstances(MomentClass.class).size()>0)
+		//{	
 			sigProperty = factory.createSignatureDeclaration();
 			sigProperty.setName("Property");
 			module.getParagraph().add(sigProperty);			
-		}
+		//}
 		
 		/* sig DataType{}
 		 */
-		if (ontoparser.getAllInstances(DataType.class).size()>0)
-		{			
+		//if (ontoparser.getAllInstances(DataType.class).size()>0)
+		//{			
 			sigDatatype = factory.createSignatureDeclaration();
 			sigDatatype.setName("DataType");			
 			module.getParagraph().add(sigDatatype);
-		}
+		//}
 		
-		/* sig string {}
+		/* sig String {}
 		 */
 		if (ontoparser.getAllInstances(PrimitiveType.class).size()>0)
 		{
@@ -162,7 +163,7 @@ public class BaseTransformer {
 			}
 		}
 		
-		/* sig datatype in DataType {}
+		/* sig Datatype in DataType {}
 		 */
 		for(DataType dt: ontoparser.getAllInstances(DataType.class))
 		{
@@ -178,7 +179,7 @@ public class BaseTransformer {
 			}
 		}
 		
-		/* sig enum { literals }
+		/* sig Enum { Literals }
 		 */ 
 		for (Enumeration e: ontoparser.getAllInstances(Enumeration.class))
 		{
@@ -198,10 +199,17 @@ public class BaseTransformer {
 		 */
 		{
 			ArrayList<String> existsSignatures = new ArrayList<String>();
-			if(sigObject!=null) existsSignatures.add(sigObject.getName());
-			if(sigProperty!=null) existsSignatures.add(sigProperty.getName());
-			exists = AlloyUtil.createExistsDeclaration(factory,existsSignatures);
-			world.getRelation().add(exists.getDeclaration());			
+						
+			if(ontoparser.getAllInstances(ObjectClass.class).size()>0)
+				existsSignatures.add(sigObject.getName());
+			if(ontoparser.getAllInstances(MomentClass.class).size()>0)
+				existsSignatures.add(sigProperty.getName());				
+			
+			if (existsSignatures.size() > 0)
+			{
+				exists = AlloyUtil.createExistsDeclaration(factory,existsSignatures);			
+				world.getRelation().add(exists.getDeclaration());
+			}	
 		}
 		module.getParagraph().add(world);
 						
@@ -221,33 +229,24 @@ public class BaseTransformer {
 			derivations.setBlock(factory.createBlock());			
 		}
 		
-		populate();
-	}
-	
-	/** 
-	 * Populate...
-	 */
-	public void populate()
-	{	
-		populateWithDataTypeVisibilityRule();
+		if(ontoparser.getAllInstances(RefOntoUML.Class.class).size()==0 &&
+		   ontoparser.getAllInstances(RefOntoUML.DataType.class).size()==0) 
+		return;
 		
-		populateWihAdditionalRules();
-		
+		if(ontoparser.getAllInstances(RefOntoUML.Class.class).size()>0)
+			populateWihAdditionalRules();			
+				
 		populateWithRigidityRules();
-		
 		populateWithAntiRigidityRules();
-		
-		populateDataTypeCompletenessRule();	
-		
-		populateWithTopLevelDataTypeDisjointnessRules();
-		
-		populateWithTopLevelDisjointnessRules();		
-		
-		populateWithGeneralizationRules();
-		
+		populateWithGeneralizationRules();			
 		populateWithGeneralizationSetRules();
+		populateWithDataTypeVisibilityRule();		
+		populateDataTypeCompletenessRule();		
+		populateWithTopLevelDataTypeDisjointnessRules();
+		populateWithTopLevelDisjointnessRules();		
+				
 	}
-	
+		
 	/**
 	 * Populates With Attributes Rules.
 	 */

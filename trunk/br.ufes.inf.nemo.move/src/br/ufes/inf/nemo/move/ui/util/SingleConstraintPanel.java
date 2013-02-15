@@ -1,7 +1,10 @@
 package br.ufes.inf.nemo.move.ui.util;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -19,8 +22,6 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
 import org.eclipse.uml2.uml.Constraint;
-
-import java.awt.Color;
 
 /**
  * @author John Guerson
@@ -49,9 +50,10 @@ public class SingleConstraintPanel extends JPanel {
 		
 		this.constraint = ct;
 		if (ct.getName()==null) txtConstraintName.setText(""+ctType);
-		else txtConstraintName.setText(""+ctType+"  "+ct.getName());				
+		else txtConstraintName.setText(""+ctType+"  "+ct.getName());
+		
 	}
-	
+		
 	/**
 	 * Create the panel.
 	 */
@@ -113,6 +115,6 @@ public class SingleConstraintPanel extends JPanel {
 							.addComponent(spinCommandScope, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(54, Short.MAX_VALUE))
 		);
-		setLayout(gl_panel);	
+		setLayout(gl_panel);		
 	}
 }

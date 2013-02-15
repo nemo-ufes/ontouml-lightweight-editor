@@ -82,7 +82,8 @@ public class OCLOptionsView extends JPanel {
 		
 		for(Constraint ct : oclOptModel.getOCLOptions().getConstraintList())
 		{
-			SingleConstraintPanel singleConstraint = new SingleConstraintPanel(ct,oclOptModel.getOCLOptions().getConstraintType(ct));						
+			SingleConstraintPanel singleConstraint = new SingleConstraintPanel(ct,oclOptModel.getOCLOptions().getConstraintType(ct));
+						
 			singleConstraintsListPanel.add(singleConstraint);
 			ctpanel.add(singleConstraint);
 		}		
@@ -220,7 +221,7 @@ public class OCLOptionsView extends JPanel {
 		btnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		btnPanel.add(btnEnableAll);
 		btnPanel.add(btnDisableAll);
-	}
+	}			
 	
 	/**
 	 * Get the main Frame of Application.

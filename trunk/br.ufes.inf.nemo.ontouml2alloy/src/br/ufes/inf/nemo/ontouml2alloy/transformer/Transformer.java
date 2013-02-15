@@ -184,8 +184,11 @@ public class Transformer extends BaseTransformer {
 		
 		/* disj[ SubSortalNamesList[0], SubSortalNamesList[1], ... ],
 		 */
-		DisjointExpression disj = AlloyUtil.createDisjointExpression(factory, ontoparser.getAlias(subsSortalList));	
-		if (disj!=null) world.getBlock().getExpression().add(disj);
+		if (subsSortalList.size()>1)
+		{
+			DisjointExpression disj = AlloyUtil.createDisjointExpression(factory, ontoparser.getAlias(subsSortalList));	
+			if (disj!=null) world.getBlock().getExpression().add(disj);
+		}
 		
 		/* exists:>Object in objectNamesList[0] + objectNamesList[1] + ...
 		 */
@@ -204,8 +207,7 @@ public class Transformer extends BaseTransformer {
 		{
 			AlloyUtil.createExistsCompareOperationInWorld(factory, exists, world, sigProperty, ontoparser.getAlias(momentClassesList));
 		}
-		
-			
+					
 		/* fact relator_constraint {...}
 		 */
 		for (FactDeclaration f: relatorConstraintFactList)
@@ -221,7 +223,10 @@ public class Transformer extends BaseTransformer {
 		}
 		/* fun visible : World some -> some univ {	exists }
 		 */
-		AlloyUtil.createVisibleFunction(factory, module, world, exists);			
+		if(ontoparser.getAllInstances(RefOntoUML.Class.class).size()>0)
+		{
+			AlloyUtil.createVisibleFunction(factory, module, world, exists);
+		}
 						
 		/*  run { } for 10 but 3 World
 		 */
