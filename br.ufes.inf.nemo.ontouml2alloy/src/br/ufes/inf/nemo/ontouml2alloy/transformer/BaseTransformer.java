@@ -71,11 +71,10 @@ public class BaseTransformer {
 	
 	public FactDeclaration dataTypeTopLevelFact;
 	
-	public FunctionDeclaration dataTypeVisibilityFun;
-	
-	public FunctionDeclaration enumerationVisibilityFun;
-	
-	public FunctionDeclaration primitiveTypeVisibilityFun;
+	public FunctionDeclaration visibiliyFun;
+	//public FunctionDeclaration dataTypeVisibilityFun;	
+	//public FunctionDeclaration enumerationVisibilityFun;
+	//public FunctionDeclaration primitiveTypeVisibilityFun;
 	
 	public ArrayList<FactDeclaration> rigidityFactList = new ArrayList<FactDeclaration>();;
 	
@@ -217,7 +216,7 @@ public class BaseTransformer {
 		 */
 		{
 			association_properties = factory.createFactDeclaration();
-			association_properties.setName("association_properties");
+			association_properties.setName("associationProperties");
 			association_properties.setBlock(factory.createBlock());			
 		}
 		
@@ -240,7 +239,7 @@ public class BaseTransformer {
 		populateWithAntiRigidityRules();
 		populateWithGeneralizationRules();			
 		populateWithGeneralizationSetRules();
-		populateWithDataTypeVisibilityRule();		
+		populateWithVisibilityRule();		
 		populateDataTypeCompletenessRule();		
 		populateWithTopLevelDataTypeDisjointnessRules();
 		populateWithTopLevelDisjointnessRules();		
@@ -534,15 +533,18 @@ public class BaseTransformer {
 	/**
 	 * 	Populates With DataTypes Visibility Rule.
 	 */
-	protected void populateWithDataTypeVisibilityRule()
+	protected void populateWithVisibilityRule()
 	{		
-		dataTypeVisibilityFun = AlloyUtil.createVisibilityFunction("dataTypeVisibility", factory, world);
-		primitiveTypeVisibilityFun = AlloyUtil.createVisibilityFunction("primitiveTypeVisibility", factory, world);		
-		enumerationVisibilityFun = AlloyUtil.createVisibilityFunction("enumerationVisibility", factory, world);	
+		//dataTypeVisibilityFun = AlloyUtil.createVisibilityFunction("dataTypeVisibility", factory, world);
+		//primitiveTypeVisibilityFun = AlloyUtil.createVisibilityFunction("primitiveTypeVisibility", factory, world);		
+		//enumerationVisibilityFun = AlloyUtil.createVisibilityFunction("enumerationVisibility", factory, world);	
+		visibiliyFun = AlloyUtil.createVisibilityFunction("visible", factory, world);
 		
-		ArrayList<String> enumPredList = new ArrayList<String>();
-		ArrayList<String> dataTypePredList = new ArrayList<String>();
-		ArrayList<String> primitivePredList = new ArrayList<String>();
+		//ArrayList<String> enumPredList = new ArrayList<String>();
+		//ArrayList<String> dataTypePredList = new ArrayList<String>();
+		//ArrayList<String> primitivePredList = new ArrayList<String>();
+		ArrayList<String> visibilityList  = new ArrayList<String>();
+		visibilityList.add("exists");
 		
 		for(Association assoc: ontoparser.getAllInstances(Association.class))
 		{
@@ -558,9 +560,9 @@ public class BaseTransformer {
 				vr.setVariable(paramName);
 				pI.getParameter().add(vr);
 				
-				if (sourceType instanceof Enumeration) { enumPredList.add(pI.toString()); }
-				else if (sourceType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); }
-				else { dataTypePredList.add(pI.toString()); } 
+				if (sourceType instanceof Enumeration) { visibilityList.add(pI.toString()); }
+				else if (sourceType instanceof PrimitiveType) { visibilityList.add(pI.toString()); }
+				else { visibilityList.add(pI.toString()); } 
 				
 			}
 			if ( (targetType != null) && (targetType instanceof DataType) )
@@ -571,9 +573,9 @@ public class BaseTransformer {
 				vr.setVariable(paramName);
 				pI.getParameter().add(vr);
 				
-				if (targetType instanceof Enumeration) { enumPredList.add(pI.toString()); } 
-				else if (targetType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); } 
-				else { dataTypePredList.add(pI.toString()); }  
+				if (targetType instanceof Enumeration) { visibilityList.add(pI.toString()); } 
+				else if (targetType instanceof PrimitiveType) { visibilityList.add(pI.toString()); } 
+				else { visibilityList.add(pI.toString()); }  
 			}			
 		}				
 		
@@ -591,9 +593,9 @@ public class BaseTransformer {
 				vr.setVariable(paramName);
 				pI.getParameter().add(vr);
 				
-				if (sourceType instanceof Enumeration) { enumPredList.add(pI.toString()); }
-				else if (sourceType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); }
-				else { dataTypePredList.add(pI.toString()); } 
+				if (sourceType instanceof Enumeration) { visibilityList.add(pI.toString()); }
+				else if (sourceType instanceof PrimitiveType) { visibilityList.add(pI.toString()); }
+				else { visibilityList.add(pI.toString()); } 
 				
 			}
 			if ( (targetType != null) && (targetType instanceof DataType) )
@@ -604,26 +606,26 @@ public class BaseTransformer {
 				vr.setVariable(paramName);
 				pI.getParameter().add(vr);
 				
-				if (targetType instanceof Enumeration) { enumPredList.add(pI.toString()); }
-				else if (targetType instanceof PrimitiveType) { primitivePredList.add(pI.toString()); }
-				else { dataTypePredList.add(pI.toString()); } 
+				if (targetType instanceof Enumeration) { visibilityList.add(pI.toString()); }
+				else if (targetType instanceof PrimitiveType) { visibilityList.add(pI.toString()); }
+				else { visibilityList.add(pI.toString()); } 
 			}			
 		}	
 		
-		if(enumPredList.size()>0) 
+		if(visibilityList.size()>0) 
 		{ 			
-			enumerationVisibilityFun.getBlock().getExpression().add(AlloyUtil.createUnionExpression(factory, enumPredList));
-			module.getParagraph().add(enumerationVisibilityFun); 
+			visibiliyFun.getBlock().getExpression().add(AlloyUtil.createUnionExpression(factory, visibilityList));
+			module.getParagraph().add(visibiliyFun); 
 		}		
-		if(primitivePredList.size()>0) 
-		{			
-			primitiveTypeVisibilityFun.getBlock().getExpression().add(AlloyUtil.createUnionExpression(factory, primitivePredList));
-			module.getParagraph().add(primitiveTypeVisibilityFun);
-		}
-		if(dataTypePredList.size()>0) 
-		{
-			dataTypeVisibilityFun.getBlock().getExpression().add(AlloyUtil.createUnionExpression(factory, dataTypePredList));
-			module.getParagraph().add(dataTypeVisibilityFun);
-		}
+		//if(primitivePredList.size()>0) 
+		//{			
+		//	primitiveTypeVisibilityFun.getBlock().getExpression().add(AlloyUtil.createUnionExpression(factory, primitivePredList));
+		//	module.getParagraph().add(primitiveTypeVisibilityFun);
+		//}
+		//if(dataTypePredList.size()>0) 
+		//{
+		//	dataTypeVisibilityFun.getBlock().getExpression().add(AlloyUtil.createUnionExpression(factory, dataTypePredList));
+		//	module.getParagraph().add(dataTypeVisibilityFun);
+		//}
 	}
 }
