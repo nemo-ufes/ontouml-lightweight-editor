@@ -221,12 +221,17 @@ public class Transformer extends BaseTransformer {
 		{
 			module.getParagraph().add(f);
 		}
-		/* fun visible : World some -> some univ {	exists }
-		 */
-		if(ontoparser.getAllInstances(RefOntoUML.Class.class).size()>0)
+		if(association_properties.getBlock().getExpression().size()>0)
 		{
-			AlloyUtil.createVisibleFunction(factory, module, world, exists);
+			module.getParagraph().add(association_properties);
 		}
+		/* DEPRECATED HERE...
+		 * fun visible : World some -> some univ {	exists }
+		 */
+		//if(ontoparser.getAllInstances(RefOntoUML.Class.class).size()>0)
+		//{
+		//	AlloyUtil.createVisibleFunction(factory, module, world, exists);
+		//}
 						
 		/*  run { } for 10 but 3 World
 		 */

@@ -47,7 +47,7 @@ public class TWeakSupplementationRule {
 			
 			// create fact from q
 			FactDeclaration WeakSupplementationFact = factory.createFactDeclaration();
-			WeakSupplementationFact.setName("weak_supplementation_"+ontoparser.getAlias(c));
+			WeakSupplementationFact.setName("weakSupplementationConstraint");
 			WeakSupplementationFact.setBlock(factory.createBlock());			
 			WeakSupplementationFact.getBlock().getExpression().add(q);			
 			

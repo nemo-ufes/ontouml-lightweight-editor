@@ -48,7 +48,7 @@ public class TRelatorRule {
 			
 			// create fact from q
 			FactDeclaration RelatorRuleFact = factory.createFactDeclaration();
-			RelatorRuleFact.setName("relator_constraint_"+ontoparser.getAlias(c));
+			RelatorRuleFact.setName("relatorConstraint");
 			RelatorRuleFact.setBlock(factory.createBlock());			
 			RelatorRuleFact.getBlock().getExpression().add(q);
 			
