@@ -35,20 +35,20 @@ public class OCLEditorBar extends JPanel {
 		
 		setPreferredSize(new Dimension(360, 80));
 		
-		btnOpen = new JButton("");
-		btnOpen.setToolTipText("Open Constraints from Document");
+		btnOpen = new JButton("Open");
+		btnOpen.setToolTipText("Open OCL textual Document (*.ocl)");
 		btnOpen.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/icon/open-16x16.png")));
 		
-		btnSave = new JButton("");
-		btnSave.setToolTipText("Save Constraints to Document");
+		btnSave = new JButton("Save");
+		btnSave.setToolTipText("Save Rules to the OCL Textual Document (*.ocl)");
 		btnSave.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/icon/save-16x16.png")));
 		
-		btnNew = new JButton("");
-		btnNew.setToolTipText("New OCL Document");
+		btnNew = new JButton("New");
+		btnNew.setToolTipText("New OCL Textual Document (*.ocl)");
 		btnNew.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/icon/doc-16x16.png")));
 		
-		btnParse = new JButton("");
-		btnParse.setToolTipText("Parse Constraints against OntoUML Model");
+		btnParse = new JButton("Parse");
+		btnParse.setToolTipText("Verify Syntactically the Domain Rules ");
 		btnParse.setIcon(new ImageIcon(OCLEditorBar.class.getResource("/resources/icon/check-16x16.png")));
 		
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -56,15 +56,15 @@ public class OCLEditorBar extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnNew, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addComponent(btnNew, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnOpen, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnOpen)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnSave)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnParse, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
+							.addComponent(btnParse, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE))
 						.addComponent(textPath, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE))
 					.addContainerGap())
 		);
@@ -74,11 +74,12 @@ public class OCLEditorBar extends JPanel {
 					.addContainerGap()
 					.addComponent(textPath, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnOpen, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(btnNew, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(btnSave, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(btnParse, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnNew, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE, false)
+							.addComponent(btnParse, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnOpen, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		

@@ -84,7 +84,6 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * @generated
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.DETAILED_SCOPE__SCOPEABLE:
@@ -112,7 +111,7 @@ public class DetailedScopeImpl extends ScopeSpecificationImpl implements Detaile
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {

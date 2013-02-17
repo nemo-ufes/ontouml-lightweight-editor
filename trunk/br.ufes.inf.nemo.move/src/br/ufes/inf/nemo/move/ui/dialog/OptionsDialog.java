@@ -101,7 +101,7 @@ public class OptionsDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(OptionsDialog.class.getResource("/resources/icon/options.png")));
 		setTitle("Options");
-		setSize(new Dimension(611, 349));
+		setSize(new Dimension(611, 400));
 		
 		btnOk = new JButton("OK");	
 		btnOk.setPreferredSize(new Dimension(100, 25));
@@ -141,7 +141,7 @@ public class OptionsDialog extends JDialog {
 		
 		getContentPane().setLayout(new BorderLayout(0, 0));		
 		getContentPane().add(btnpanel, BorderLayout.SOUTH);		
-		getContentPane().add(tabbedPane, BorderLayout.WEST);				
+		getContentPane().add(tabbedPane, BorderLayout.CENTER);				
 	}
 			
 	public void OkActionPerformed(ActionEvent event)
@@ -150,8 +150,7 @@ public class OptionsDialog extends JDialog {
 		ontoumlOptions.antiRigidity = ontoumlOptView.isSelectedAntirigidity(); 
 		ontoumlOptions.identityPrinciple = ontoumlOptView.isSelectedIdentityPrinciple();
 		ontoumlOptions.weakSupplementationConstraint = ontoumlOptView.isSelectedWeakSupplementation();
-		ontoumlOptions.relatorConstraint = ontoumlOptView.isSelectedRelatorConstraint();
-		ontoumlOptions.openAnalyzer = ontoumlOptView.isSelectedOpenAnalyzer();	    	
+		ontoumlOptions.relatorConstraint = ontoumlOptView.isSelectedRelatorConstraint();			    	
 		ontoumlOptModel.setOptions(ontoumlOptions);
 		
 		OCLOptions oclOptions = new OCLOptions(frame.getManager().getOCLModel().getOCLParser());		

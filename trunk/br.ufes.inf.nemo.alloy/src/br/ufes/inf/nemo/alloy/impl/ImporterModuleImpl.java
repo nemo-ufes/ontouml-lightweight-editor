@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-@SuppressWarnings("unchecked")
 public class ImporterModuleImpl extends AlloyModuleImpl implements ImporterModule {
 	/**
 	 * <!-- begin-user-doc -->

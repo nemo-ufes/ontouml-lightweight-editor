@@ -129,7 +129,6 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * @generated
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.GENERIC_SCOPE__SCOPEABLE:
@@ -159,7 +158,7 @@ public class GenericScopeImpl extends ScopeSpecificationImpl implements GenericS
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {

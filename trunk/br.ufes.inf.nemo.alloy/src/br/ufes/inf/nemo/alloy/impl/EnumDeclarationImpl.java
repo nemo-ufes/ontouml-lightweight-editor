@@ -35,7 +35,6 @@ public class EnumDeclarationImpl extends ParagraphImpl implements EnumDeclaratio
 	 * @generated
 	 * @ordered
 	 */
-	@SuppressWarnings("rawtypes")
 	protected EList<String> literals;
 
 	/**
@@ -62,7 +61,7 @@ public class EnumDeclarationImpl extends ParagraphImpl implements EnumDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ })
 	public EList<String> getLiterals() {
 		if (literals == null) {
 			literals = new EDataTypeUniqueEList<String>(String.class, this, AlloyPackage.ENUM_DECLARATION__LITERALS);
@@ -89,7 +88,7 @@ public class EnumDeclarationImpl extends ParagraphImpl implements EnumDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {

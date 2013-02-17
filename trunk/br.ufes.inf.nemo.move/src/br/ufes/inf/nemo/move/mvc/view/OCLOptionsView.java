@@ -1,9 +1,7 @@
 package br.ufes.inf.nemo.move.mvc.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,8 +13,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import org.eclipse.uml2.uml.Constraint;
@@ -165,20 +165,20 @@ public class OCLOptionsView extends JPanel {
 		btnPanel.setPreferredSize(new Dimension(591, 40));
 		
 		JPanel introPanel = new JPanel();
-		introPanel.setBackground(Color.WHITE);
+		introPanel.setBackground(UIManager.getColor("Panel.background"));
 		introPanel.setPreferredSize(new Dimension(591, 30));
 		
 		add(introPanel,BorderLayout.NORTH);
 		
 		lblYouCanAlso = new JLabel("You can also check and simulate rules...");
-		lblYouCanAlso.setHorizontalAlignment(SwingConstants.CENTER);
+		lblYouCanAlso.setHorizontalAlignment(SwingConstants.LEFT);
 		GroupLayout gl_introPanel = new GroupLayout(introPanel);
 		gl_introPanel.setHorizontalGroup(
 			gl_introPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_introPanel.createSequentialGroup()
 					.addGap(18)
-					.addComponent(lblYouCanAlso)
-					.addContainerGap(272, Short.MAX_VALUE))
+					.addComponent(lblYouCanAlso, GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		gl_introPanel.setVerticalGroup(
 			gl_introPanel.createParallelGroup(Alignment.LEADING)
@@ -218,9 +218,25 @@ public class OCLOptionsView extends JPanel {
 				}
 			}
 		});
-		btnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-		btnPanel.add(btnEnableAll);
-		btnPanel.add(btnDisableAll);
+		GroupLayout gl_btnPanel = new GroupLayout(btnPanel);
+		gl_btnPanel.setHorizontalGroup(
+			gl_btnPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_btnPanel.createSequentialGroup()
+					.addGap(19)
+					.addComponent(btnEnableAll, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnDisableAll, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(366))
+		);
+		gl_btnPanel.setVerticalGroup(
+			gl_btnPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_btnPanel.createSequentialGroup()
+					.addGap(5)
+					.addGroup(gl_btnPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnEnableAll, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnDisableAll, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+		);
+		btnPanel.setLayout(gl_btnPanel);
 	}			
 	
 	/**

@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-@SuppressWarnings("unchecked")
 public class ParametrizedModuleImpl extends AlloyModuleImpl implements ParametrizedModule {
 	/**
 	 * <!-- begin-user-doc -->
