@@ -178,7 +178,7 @@ public class TheManager {
 		String log = new String();		
 		if (ontoumlmodel.getOntoUMLParser()==null) 
 		{
-			frame.showInformationMessageDialog("Verify Model", "First you need to load your Model !");
+			frame.showInformationMessageDialog("Diagnostic", "First you need to load your Model !");
 			return "";
 		}		
 		

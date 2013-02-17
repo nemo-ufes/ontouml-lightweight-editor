@@ -10,10 +10,10 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
@@ -51,7 +51,7 @@ public class OntoUMLOptionsView extends JPanel {
 	private JButton btnDetailsWeakSupp;	
 	private JButton btnDetailsIdentity;	
 	private JButton btnDetailsAntiRigidity;	
-	private JEditorPane textArea;
+	private JTextArea textArea;
 	private String detailsRelator;
 	private String detailsWeakSupp;
 	private String detailsIdentity;
@@ -157,45 +157,47 @@ public class OntoUMLOptionsView extends JPanel {
 		cbxIdentityPrinciple.setBackground(UIManager.getColor("Panel.background"));
 		cbxAntirigidity = new JCheckBox("Antirigidity");
 		cbxAntirigidity.setBackground(UIManager.getColor("Panel.background"));
-						
+							
 		detailsRelator = new String();				
-		detailsRelator = "<b>Description</b><br>Relator Constraint.<br><br>"+
-		"This rule enforces that the concrete relators " +
-		"mediate at least two distinct entities.<br><br>"+
-		"Uncheck this box if you have at least one relator " +
-		"that the sum of its mediation's cardinality at the " +
-		"target side is less than 2.<br><br>";
+		detailsRelator = "Relator Constraint.\n\n"+
+		"This rule enforces that the concrete relators \n" +
+		"mediate at least two distinct entities.\n\n"+
+		"Uncheck this box if you have at least one relator \n" +
+		"that the sum of its mediation's cardinality at the \n" +
+		"target side is less than 2.\n\n";
 		
 		detailsWeakSupp = new String();				
-		detailsWeakSupp = "<b>Description</b><br>Weak Supplementation Constraint.<br><br>"+
-		"This rule enforces that each whole has at least " +
-		"two disjoint parts.<br><br>"+
-		"Uncheck this box if there's a meronymic relation "+ 
-		"where the part side has minimum cardinality less "+
-		"than 2.<br><br>";	
+		detailsWeakSupp = "Weak Supplementation Constraint.\n\n"+
+		"This rule enforces that each whole has at least \n" +
+		"two disjoint parts.\n\n"+
+		"Uncheck this box if there's a meronymic relation \n"+ 
+		"where the part side has minimum cardinality less \n"+
+		"than 2.\n\n";	
 		
 		detailsIdentity = new String();				
-		detailsIdentity = "<b>Description</b><br>Identity Principle.<br><br>"+
-		"This rule enforces that all objects have an "+
-		"identity principle.<br><br>"+
-		"Uncheck this box if you have at least one element "+
-		"without identity principle i.e. an element that "+
-		"has no kind, quantity or collective as its supertype.<br><br>";	
+		detailsIdentity = "Identity Principle.\n\n"+
+		"This rule enforces that all objects have an \n"+
+		"identity principle.\n\n"+
+		"Uncheck this box if you have at least one element \n"+
+		"without identity principle i.e. an element that \n"+
+		"has no kind, quantity or collective as its supertype.\n\n";	
 		
 		detailsAntirigidity = new String();				
-		detailsAntirigidity = "<b>Description</b><br>Anti-Rigidity.<br><br>"+
-		"This rule enforces the anti-rigidity axiom."+
-		"Check this box if you always want to visualize " +
-		"objects instantiating an anti-rigid type "+
-		"in a World and not instantiating it in another "+
-		"World.<br><br>"+
+		detailsAntirigidity = "Anti-Rigidity.\n\n"+
+		"This rule enforces the anti-rigidity axiom.\n"+
+		"Check this box if you always want to visualize \n" +
+		"objects instantiating an anti-rigid type \n"+
+		"in a World and not instantiating it in another \n"+
+		"World.\n\n"+
 		"Note: if you enforce this axiom you need to simulate " +
-		"the model with at least two Worlds.<br>";	
+		"the model with at least two Worlds.\n\n";	
 		
-		textArea = new JEditorPane("text/html",detailsRelator);
-		textArea.setFont(new Font("Arial", Font.PLAIN, 11));
+		textArea = new JTextArea(detailsRelator);
+		textArea.setFont(new Font("Arial", Font.PLAIN, 12));
 		textArea.setEditable(false);
 		textArea.setCaretPosition(0);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
 		
 		JScrollPane scrollPane2 = new JScrollPane();		
 		scrollPane2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -221,8 +223,7 @@ public class OntoUMLOptionsView extends JPanel {
 				textArea.setText(detailsWeakSupp);		
 				textArea.setCaretPosition(0);								
 			}
-		});
-		 
+		});		 
 				 
 		btnDetailsIdentity = new JButton("->");		
 		btnDetailsIdentity.addActionListener(new ActionListener() 
@@ -248,20 +249,26 @@ public class OntoUMLOptionsView extends JPanel {
 		gl_cbxPanel.setHorizontalGroup(
 			gl_cbxPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_cbxPanel.createSequentialGroup()
-					.addGap(21)
-					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(cbxAntirigidity, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(cbxIdentityPrinciple, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_cbxPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(cbxRelatorConstraint, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(cbxWeakSupplementation, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addContainerGap()
 					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnDetailsRelator)
-						.addComponent(btnDetailsWeakSupp)
-						.addComponent(btnDetailsIdentity)
-						.addComponent(btnDetailsAntiRigidity))
-					.addGap(271))
+						.addComponent(cbxRelatorConstraint, GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+						.addComponent(cbxWeakSupplementation, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(cbxIdentityPrinciple, GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+						.addComponent(cbxAntirigidity, GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_cbxPanel.createSequentialGroup()
+							.addComponent(btnDetailsRelator)
+							.addContainerGap())
+						.addGroup(gl_cbxPanel.createSequentialGroup()
+							.addComponent(btnDetailsWeakSupp)
+							.addContainerGap())
+						.addGroup(gl_cbxPanel.createSequentialGroup()
+							.addComponent(btnDetailsIdentity)
+							.addContainerGap())
+						.addGroup(gl_cbxPanel.createSequentialGroup()
+							.addComponent(btnDetailsAntiRigidity)
+							.addContainerGap())))
 		);
 		gl_cbxPanel.setVerticalGroup(
 			gl_cbxPanel.createParallelGroup(Alignment.LEADING)
@@ -293,9 +300,9 @@ public class OntoUMLOptionsView extends JPanel {
 		GroupLayout gl_titlePanel = new GroupLayout(titlePanel);
 		gl_titlePanel.setHorizontalGroup(
 			gl_titlePanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_titlePanel.createSequentialGroup()
-					.addGap(25)
-					.addComponent(lblEnforceAxioms, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+				.addGroup(Alignment.TRAILING, gl_titlePanel.createSequentialGroup()
+					.addContainerGap(18, Short.MAX_VALUE)
+					.addComponent(lblEnforceAxioms, GroupLayout.PREFERRED_SIZE, 563, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		gl_titlePanel.setVerticalGroup(
@@ -313,19 +320,19 @@ public class OntoUMLOptionsView extends JPanel {
 		gl_btnPanel.setHorizontalGroup(
 			gl_btnPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_btnPanel.createSequentialGroup()
-					.addGap(43)
+					.addGap(18)
 					.addComponent(btnEnableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnDisableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(342))
+					.addGap(367))
 		);
 		gl_btnPanel.setVerticalGroup(
 			gl_btnPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_btnPanel.createSequentialGroup()
 					.addGap(5)
 					.addGroup(gl_btnPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnDisableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnEnableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(btnEnableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnDisableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 		);
 		btnPanel.setLayout(gl_btnPanel);
 	}
