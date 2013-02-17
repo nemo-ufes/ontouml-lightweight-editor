@@ -94,7 +94,7 @@ public class TheFrame extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setExtendedState(MAXIMIZED_BOTH);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/icon/window.png")));
-		setTitle("OntoUML Model Validation Environment - MOVE");
+		setTitle("Model Validation Environment - MOVE");
 					
 		try {			
 			Extractor.alloyAnalyzerJAR();
@@ -109,10 +109,11 @@ public class TheFrame extends JFrame {
 	        	analyzer = new SimpleGUICustom(args,false,"");
 	        }
 		});
+					
+		restoreDefaults();
+		pack();	
 		
-		pack();		
-		restoreDefaults();		
-		showFrame();
+		showFrame();		
 	}
 		
 	/** Restore default sizes of the split panes. */

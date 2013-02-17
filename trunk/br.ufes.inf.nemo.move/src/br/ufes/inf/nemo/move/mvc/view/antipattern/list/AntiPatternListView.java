@@ -73,7 +73,7 @@ public class AntiPatternListView extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		txtAntipatterns = new TitleTextField();
-		txtAntipatterns.setText("AntiPatterns");
+		txtAntipatterns.setText("AntiPattern");
 		
 		tabbedPane = new JTabbedPane();		
 		tabbedPane.setBackground(UIManager.getColor("Panel.background"));

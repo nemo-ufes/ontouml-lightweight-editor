@@ -86,7 +86,7 @@ public class AboutDialog extends JDialog {
 		CenterPanel.setPreferredSize(new Dimension(150, 190));
 		getContentPane().add(CenterPanel, BorderLayout.CENTER);
 		
-		labeTitle = new JLabel("Model Validation Environment 0.2");		
+		labeTitle = new JLabel("Model Validation Environment (MOVE)");		
 		labeTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		labelAuthorTiago = new JLabel("Tiago Prince Sales");
 		labelAuthorTiago.setHorizontalAlignment(SwingConstants.CENTER);

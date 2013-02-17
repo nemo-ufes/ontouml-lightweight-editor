@@ -76,7 +76,7 @@ public class OCLView extends JPanel {
 		panel.setLayout(new BorderLayout(0, 0));
 				
 		tltxtfldConstraintsOcl = new TitleTextField();
-		tltxtfldConstraintsOcl.setText("Constraints - OCL");
+		tltxtfldConstraintsOcl.setText("OCL - Domain Rules");
 		panel.add(BorderLayout.NORTH,tltxtfldConstraintsOcl);
 		
 		oclbar = new OCLEditorBar();

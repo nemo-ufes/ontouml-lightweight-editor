@@ -36,7 +36,7 @@ public class TheToolBar extends JToolBar {
 	private JSeparator toolBarSeparator0;
 	private JSeparator toolBarSeparator2;
 	private JSeparator toolBarSeparator4;
-	private JSeparator toolBarSeparator5;
+	//private JSeparator toolBarSeparator5;
 	
 	/**
 	 * Constructor.
@@ -104,18 +104,18 @@ public class TheToolBar extends JToolBar {
         
         createAlloyAnalyzerButton();	
 
-        toolBarSeparator5 = new Separator();
-        toolBarSeparator5.setVisible(false);
-        toolBarSeparator5.setOrientation( SwingConstants.VERTICAL );  
-        add( toolBarSeparator5 );
+        //toolBarSeparator5 = new Separator();
+        //toolBarSeparator5.setVisible(false);
+        //toolBarSeparator5.setOrientation( SwingConstants.VERTICAL );  
+        //add( toolBarSeparator5 );
         
-        createShowInstances();
+        //createShowInstances();
 	}		
 		
 	public void createAutoSelectionButton()
 	{
 		btnCompleteSelect = new ToolbarButton("Auto Completion","/resources/icon/completion-36x36.png");
-		btnCompleteSelect.setToolTipText("");
+		btnCompleteSelect.setToolTipText("Automatically select elements of the model");
 		
 		btnCompleteSelect.addActionListener(new ActionListener() 
 		{
@@ -137,7 +137,8 @@ public class TheToolBar extends JToolBar {
 	public void createAlloyAnalyzerButton()
 	{
 		btnAlloyAnalyzer = new ToolbarButton("Show Analyzer","/resources/icon/alloy-36x36.png");
-		btnAlloyAnalyzer.setToolTipText("");
+		btnAlloyAnalyzer.setText("Analyzer Tool");
+		btnAlloyAnalyzer.setToolTipText("Validating with Alloy's tool");
 		btnAlloyAnalyzer.setEnabled(true);
 		btnAlloyAnalyzer.addActionListener(new ActionListener() 
 		{
@@ -151,7 +152,6 @@ public class TheToolBar extends JToolBar {
        				
        				frame.getManager().ParseOCL(false);
        				
-       				//FIXME
        				frame.getManager().getOntoUMLOptionModel().getOptions().openAnalyzer=true;
        				
        				OptionsDialog.open(frame.getManager().getOntoUMLOptionModel(),frame.getManager().getOCLOptionModel(),frame);       				
@@ -165,7 +165,7 @@ public class TheToolBar extends JToolBar {
 	{
 		btnShowInstances = new ToolbarButton("Show Instances","/resources/icon/atom-36x36.png");
 		btnShowInstances.setToolTipText("");
-		btnShowInstances.setEnabled(true);
+		btnShowInstances.setEnabled(false);
 		btnShowInstances.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -178,7 +178,6 @@ public class TheToolBar extends JToolBar {
        				
        				frame.getManager().ParseOCL(false);
        				
-       				//FIXME
        				frame.getManager().getOntoUMLOptionModel().getOptions().openAnalyzer=false;
        				
        				OptionsDialog.open(frame.getManager().getOntoUMLOptionModel(),frame.getManager().getOCLOptionModel(),frame);       				
@@ -206,7 +205,7 @@ public class TheToolBar extends JToolBar {
 	public void createShowHideAntiPatternView ()
 	{
 		btnShowOrHideAntiPattern = new ToolbarButton("AntiPatterns","/resources/icon/panel-36X36.png");
-		btnShowOrHideAntiPattern.setToolTipText("Show/Hide AntiPatterns");
+		btnShowOrHideAntiPattern.setToolTipText("Show/Hide AntiPatterns Tab");
 		btnShowOrHideAntiPattern.setEnabled(true);
 		btnShowOrHideAntiPattern.addActionListener(new ActionListener() 
 		{
@@ -221,7 +220,7 @@ public class TheToolBar extends JToolBar {
 	public void createShowHideOCLView ()
 	{
 		btnShowOrHideOCL = new ToolbarButton("Constraints","/resources/icon/edit-36x36.png");
-		btnShowOrHideOCL.setToolTipText("Show/Hide OCL");
+		btnShowOrHideOCL.setToolTipText("Show/Hide OCL Tab");
 		btnShowOrHideOCL.setEnabled(true);
 		btnShowOrHideOCL.addActionListener(new ActionListener() 
 		{
@@ -235,15 +234,16 @@ public class TheToolBar extends JToolBar {
 	
 	public void createAntiPatternButton()
 	{
-		btnSearchForAntipatterns = new ToolbarButton("Search AntiPatterns","/resources/icon/search-36x36.png");		
-		btnSearchForAntipatterns.setToolTipText("Search for AntiPatterns");
+		btnSearchForAntipatterns = new ToolbarButton("Detect AntiPatterns","/resources/icon/antipattern-36x36.png");		
+		btnSearchForAntipatterns.setText("Detect AntiPatterns");
+		btnSearchForAntipatterns.setToolTipText("Search for model antipatterns");
 		btnSearchForAntipatterns.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent event) 
 			{
 				if (frame.getManager().getOntoUMLModel().getOntoUMLParser()==null) 
 				{ 
-					frame.showInformationMessageDialog("Search AntiPatterns","First you need to load your Model"); 
+					frame.showInformationMessageDialog("Detect AntiPatterns","First you need to load your Model"); 
 					return; 
 				}
 				

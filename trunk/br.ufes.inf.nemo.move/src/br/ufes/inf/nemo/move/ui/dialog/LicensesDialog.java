@@ -123,7 +123,7 @@ public class LicensesDialog extends JDialog {
 		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
 		setIconImage(icon);
 		
-		choices.setSelectedIndex(0);		
+		choices.setSelectedIndex(1);		
 		setLicense((String)choices.getSelectedItem());
 		
 		repaint();
