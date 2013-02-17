@@ -98,7 +98,7 @@ public class ProblemVerificator {
 			diagnostic += "-----------------------------------\nElement Path: "+getPath(c)+"\n\n";
 			
 			i++;
-			System.out.print(diagnostic);
+			
 			if (items>0) result += diagnostic;
 			
 		}

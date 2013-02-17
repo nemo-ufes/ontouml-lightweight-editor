@@ -68,7 +68,7 @@ public class OntoUMLView extends JPanel {
 		panel.setLayout(new BorderLayout(0, 0));
 				
 		tltxtfldOntouml = new TitleTextField();
-		tltxtfldOntouml.setText("Conceptual Model - OntoUML");
+		tltxtfldOntouml.setText("OntoUML - Ontology-based Conceptual Model");
 		panel.add(BorderLayout.NORTH,tltxtfldOntouml);
 		
 		ontobar = new OntoUMLTreeBar();
