@@ -48,7 +48,6 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * @generated
 	 * @ordered
 	 */
-	@SuppressWarnings("rawtypes")
 	protected EList<Expression> parameter;
 
 	/**
@@ -95,7 +94,7 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ })
 	public EList<Expression> getParameter() {
 		if (parameter == null) {
 			parameter = new EObjectContainmentEList<Expression>(Expression.class, this, AlloyPackage.FUNCTION_INVOCATION__PARAMETER);
@@ -130,7 +129,6 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * @generated
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.FUNCTION_INVOCATION__PARAMETER:
@@ -160,7 +158,7 @@ public class FunctionInvocationImpl extends ExpressionImpl implements FunctionIn
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {

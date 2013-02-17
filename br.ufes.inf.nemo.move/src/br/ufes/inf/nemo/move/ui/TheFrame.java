@@ -109,10 +109,10 @@ public class TheFrame extends JFrame {
 	        	analyzer = new SimpleGUICustom(args,false,"");
 	        }
 		});
-					
-		restoreDefaults();
-		pack();	
 		
+		pack();
+		restoreDefaults();
+				
 		showFrame();		
 	}
 		

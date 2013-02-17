@@ -137,8 +137,8 @@ public class TheToolBar extends JToolBar {
 	public void createAlloyAnalyzerButton()
 	{
 		btnAlloyAnalyzer = new ToolbarButton("Show Analyzer","/resources/icon/alloy-36x36.png");
-		btnAlloyAnalyzer.setText("Analyzer Tool");
-		btnAlloyAnalyzer.setToolTipText("Validating with Alloy's tool");
+		btnAlloyAnalyzer.setText("Validate with Analyzer");
+		btnAlloyAnalyzer.setToolTipText("Transforming models and rules to Alloy");
 		btnAlloyAnalyzer.setEnabled(true);
 		btnAlloyAnalyzer.addActionListener(new ActionListener() 
 		{
@@ -205,6 +205,7 @@ public class TheToolBar extends JToolBar {
 	public void createShowHideAntiPatternView ()
 	{
 		btnShowOrHideAntiPattern = new ToolbarButton("AntiPatterns","/resources/icon/panel-36X36.png");
+		btnShowOrHideAntiPattern.setText("AntiPattern");
 		btnShowOrHideAntiPattern.setToolTipText("Show/Hide AntiPatterns Tab");
 		btnShowOrHideAntiPattern.setEnabled(true);
 		btnShowOrHideAntiPattern.addActionListener(new ActionListener() 
@@ -220,6 +221,7 @@ public class TheToolBar extends JToolBar {
 	public void createShowHideOCLView ()
 	{
 		btnShowOrHideOCL = new ToolbarButton("Constraints","/resources/icon/edit-36x36.png");
+		btnShowOrHideOCL.setText("Rules ");
 		btnShowOrHideOCL.setToolTipText("Show/Hide OCL Tab");
 		btnShowOrHideOCL.setEnabled(true);
 		btnShowOrHideOCL.addActionListener(new ActionListener() 

@@ -140,7 +140,7 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ })
 	public EList<Declaration> getDeclaration() {
 		if (declaration == null) {
 			declaration = new EObjectContainmentEList<Declaration>(Declaration.class, this, AlloyPackage.QUANTIFICATION_EXPRESSION__DECLARATION);
@@ -240,7 +240,6 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	 * @generated
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AlloyPackage.QUANTIFICATION_EXPRESSION__DECLARATION:
@@ -278,7 +277,7 @@ public class QuantificationExpressionImpl extends ExpressionImpl implements Quan
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {

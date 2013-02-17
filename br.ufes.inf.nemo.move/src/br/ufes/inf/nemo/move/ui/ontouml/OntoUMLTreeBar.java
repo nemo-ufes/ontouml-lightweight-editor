@@ -32,23 +32,23 @@ public class OntoUMLTreeBar extends JPanel {
 		textPath.setEditable(false);
 		textPath.setColumns(10);
 		
-		setPreferredSize(new Dimension(360, 80));
+		setPreferredSize(new Dimension(376, 80));
 		
-		btnOpen = new JButton("");
-		btnOpen.setToolTipText("Open OntoUML Model");
+		btnOpen = new JButton("Open");
+		btnOpen.setToolTipText("Open OntoUML Model (*.refontouml)");
 		btnOpen.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/icon/open-16x16.png")));
 		
-		btnVerify = new JButton("");
-		btnVerify.setToolTipText("Verify Model Sintactically");
-		btnVerify.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/icon/check-16x16.png")));
+		btnVerify = new JButton("Diagnostic");
+		btnVerify.setToolTipText("See some problems found in your model");
+		btnVerify.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/icon/diagnostic-16x16.png")));
 		
-		btnShowUnique = new JButton("");
-		btnShowUnique.setToolTipText("Show Aliases");
-		btnShowUnique.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/icon/label-16x16.png")));
+		btnShowUnique = new JButton("Aliases");
+		btnShowUnique.setToolTipText("Show Generated Aliases");
+		btnShowUnique.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/icon/label2-16x16.png")));
 				
-		btnSaveAs = new JButton("");
+		btnSaveAs = new JButton("Save");
 		btnSaveAs.setIcon(new ImageIcon(OntoUMLTreeBar.class.getResource("/resources/icon/save-16x16.png")));
-		btnSaveAs.setToolTipText("Save Model ");
+		btnSaveAs.setToolTipText("Save OntoUML Model (*.refontouml)");
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -58,13 +58,13 @@ public class OntoUMLTreeBar extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(textPath, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnOpen, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnOpen)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnSaveAs, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnSaveAs)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnVerify, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnVerify)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnShowUnique, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(btnShowUnique, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -73,11 +73,12 @@ public class OntoUMLTreeBar extends JPanel {
 					.addContainerGap()
 					.addComponent(textPath, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnOpen, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(btnSaveAs, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(btnVerify, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-						.addComponent(btnShowUnique, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnShowUnique, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE, false)
+							.addComponent(btnOpen, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnSaveAs, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnVerify, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		setLayout(groupLayout);

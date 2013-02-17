@@ -13,7 +13,6 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
-import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
