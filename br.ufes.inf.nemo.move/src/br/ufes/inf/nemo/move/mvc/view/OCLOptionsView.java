@@ -24,6 +24,7 @@ import org.eclipse.uml2.uml.Constraint;
 import br.ufes.inf.nemo.move.mvc.model.OCLOptionsModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.util.SingleConstraintPanel;
+import java.awt.Font;
 
 /**
  * 
@@ -171,6 +172,7 @@ public class OCLOptionsView extends JPanel {
 		add(introPanel,BorderLayout.NORTH);
 		
 		lblYouCanAlso = new JLabel("You can also check and simulate rules...");
+		lblYouCanAlso.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblYouCanAlso.setHorizontalAlignment(SwingConstants.LEFT);
 		GroupLayout gl_introPanel = new GroupLayout(introPanel);
 		gl_introPanel.setHorizontalGroup(

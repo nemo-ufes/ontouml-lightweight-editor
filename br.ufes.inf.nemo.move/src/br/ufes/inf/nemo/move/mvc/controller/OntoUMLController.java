@@ -122,7 +122,7 @@ public class OntoUMLController {
 	    {
 	    	if(ontoumlview.getModelTree()==null)
    			{	       			
-	    		ontoumlview.getTheFrame().showInformationMessageDialog("Save As","First you need to load your Model");
+	    		ontoumlview.getTheFrame().showInformationMessageDialog("Save","First you need to load your Model");
 	    		return;			       				
    			}
 	    	ontoumlview.getTheFrame().getManager().doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
