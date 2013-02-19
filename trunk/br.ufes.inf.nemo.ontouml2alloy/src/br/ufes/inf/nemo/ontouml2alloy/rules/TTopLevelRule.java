@@ -65,7 +65,7 @@ public class TTopLevelRule {
 				
 		// create a union (+) String expression for every singleList 
 		// starting at the second element
-				
+		
 		for (ArrayList<Classifier> singleList : listsHashMap.keySet())
 		{
 			if (listsHashMap.get(singleList)==0)
@@ -87,9 +87,11 @@ public class TTopLevelRule {
 					// create a union(+) operation for the exprList
 					BinaryOperation bo = AlloyUtil.createUnionExpression(factory, exprList);
 					paramList.add(bo.toString());					
-				}else{
+				}else if (exprList.size()==1){
 					paramList.add(ontoparser.getAlias(singleList.get(1)));					
-				}						
+				}else {
+					return result;
+				}
 				
 				//add Top Level Disjoint Expression Rule to to the List
 				result.add( AlloyUtil.createDisjointExpression(factory,paramList) );				
