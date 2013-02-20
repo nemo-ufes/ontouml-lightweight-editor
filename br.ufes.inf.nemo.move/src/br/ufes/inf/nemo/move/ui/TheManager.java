@@ -343,8 +343,8 @@ public class TheManager {
 			oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));
 
 			// show Message
-			String msg =  "Your Constraints are Syntactically Correct !\n";
-			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing Constraints",msg);
+			String msg =  "Your Rules are Syntactically Correct !\n";
+			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing Domain Rules",msg);
 						
     	}catch(SemanticException e2){
     		frame.showErrorMessageDialog("OCL Semantic Error",  "OCL Parser : "+e2.getMessage());    		
