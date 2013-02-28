@@ -7,7 +7,7 @@
 
   _Available from_: https://ontouml-lightweight-editor.googlecode.com/files/ontoumlMDG.xml
  
-  * Copy the file *ontoumlPatterns.xml* to the folder _ModelPatterns_ at EA home, usually _C:\Program Files\Sparx Systems\EA\ModelPatterns_.
+  * Copy the file *ontoumlPatterns.xml* to the folder _ModelPatterns _ at EA home, usually _C:\Program Files\Sparx Systems\EA\ModelPatterns _.
 
  _Available from_: https://ontouml-lightweight-editor.googlecode.com/files/ontoumlPatterns.xml
 
