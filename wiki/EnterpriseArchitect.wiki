@@ -3,10 +3,10 @@
 
 == Installing OntoUML ==
 
-  * Copy the file *ontoumlMDG.xml* to the folder _"MDGTechnologies"_ at EA home, usually _C:\Program Files\Sparx Systems\EA\MDGTechnologies_.
+  * Copy the file *ontoumlMDG.xml* to the folder _MDGTechnologies_ at EA home, usually _C:\Program Files\Sparx Systems\EA\MDGTechnologies_.
   _Available from_: https://ontouml-lightweight-editor.googlecode.com/files/ontoumlPatterns.xml
 
-  * Copy the file *ontoumlPatterns.xml* to the folder _"ModelPatterns"_ at EA home, usually _C:\Program Files\Sparx Systems\EA\ModelPatterns_.
+  * Copy the file *ontoumlPatterns.xml* to the folder _ModelPatterns_ at EA home, usually _C:\Program Files\Sparx Systems\EA\ModelPatterns_.
 
   _Available from_: https://ontouml-lightweight-editor.googlecode.com/files/ontoumlMDG.xml
 
