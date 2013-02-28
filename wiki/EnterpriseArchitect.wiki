@@ -26,3 +26,7 @@
 == Activating the Toolbox ==
 
   * To activate the OntoUML Toolbox, if is not already activated, go to _Toolbox -> More Tools -> OntoUML_.
+
+== Exporting as XMI ==
+
+  * To export the model in an EA format: _Right Click on the Package/View -> Import/Export -> Export Package to XMI file_.
