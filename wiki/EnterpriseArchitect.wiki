@@ -4,11 +4,12 @@
 == Installing OntoUML ==
 
   * Copy the file *ontoumlMDG.xml* to the folder _MDGTechnologies_ at EA home, usually _C:\Program Files\Sparx Systems\EA\MDGTechnologies_.
-  _Available from_: https://ontouml-lightweight-editor.googlecode.com/files/ontoumlPatterns.xml
-
-  * Copy the file *ontoumlPatterns.xml* to the folder _ModelPatterns_ at EA home, usually _C:\Program Files\Sparx Systems\EA\ModelPatterns_.
 
   _Available from_: https://ontouml-lightweight-editor.googlecode.com/files/ontoumlMDG.xml
+ 
+  * Copy the file *ontoumlPatterns.xml* to the folder _ModelPatterns_ at EA home, usually _C:\Program Files\Sparx Systems\EA\ModelPatterns_.
+
+ _Available from_: https://ontouml-lightweight-editor.googlecode.com/files/ontoumlPatterns.xml
 
   * Start the Enterprise Architect EA
 
@@ -30,6 +31,6 @@
 
   * To activate the OntoUML Toolbox, if is not already activated, go to _Toolbox -> More Tools -> OntoUML_.
 
-== Exporting the OntoUML model as XMI file ==
+== Exporting the OntoUML model as a XMI file ==
 
   * To export the model in an EA format: _Right Click on the Package/View -> Import/Export -> Export Package to XMI file_.
