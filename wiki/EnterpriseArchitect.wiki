@@ -23,10 +23,10 @@
 
   * To create OntoUML diagrams, just click into a folder in the Project Browser and do: _Right Click on the Package/Folder -> Add -> Add Diagram… -> OntoUML_.
 
-== Activating the Toolbox ==
+== Activating the OntoUML Toolbox ==
 
   * To activate the OntoUML Toolbox, if is not already activated, go to _Toolbox -> More Tools -> OntoUML_.
 
-== Exporting as XMI ==
+== Exporting the OntoUML model as XMI file ==
 
   * To export the model in an EA format: _Right Click on the Package/View -> Import/Export -> Export Package to XMI file_.
