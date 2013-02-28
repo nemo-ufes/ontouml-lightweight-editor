@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Explains how to install, access and create OntoUML diagrams using Enterprise Architect EA.
 #labels OntoUML,EnterpriseArchitect,EA
 
 = Installing OntoUML =
@@ -26,5 +26,3 @@
 = Activating the Toolbox =
 
   * To activate the OntoUML Toolbox, if is not already activated, go to _Toolbox -> More Tools -> OntoUML_.
-
-
