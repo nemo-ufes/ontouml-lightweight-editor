@@ -1,0 +1,30 @@
+#summary One-sentence summary of this page.
+#labels OntoUML,EnterpriseArchitect,EA
+
+= Installing OntoUML =
+
+  * Copy the file *ontoumlMDG.xml* to the folder _MDGTechnologies_ at EA home, usually _C:\Program Files\Sparx Systems\EA\MDGTechnologies_.
+
+  * Copy the file *ontoumlPatterns.xml* to the folder _ModelPatterns_ at EA home, usually _C:\Program Files\Sparx Systems\EA\ModelPatterns_.
+
+  * Start the Enterprise Architect EA
+
+= Accessing OntoUML =
+
+  * Choose _new Project_.
+
+  * When the Model Wizard prompts, select the option _OntoUML_ under _Technology_.
+
+  * Check the option _OntoUML_ under _Name_.
+ 
+  * If the option _OntoUML_ does not appear in the Model Wizard windows, go to: _Settings -> MDG Technologies_, locate _OntoUML_, select the checkbox, and later click _OK_.
+
+= Creating OntoUML Diagrams =
+
+  * To create OntoUML diagrams, just click into a folder in the Project Browser and do: _Right Click on the Package/Folder -> Add -> Add Diagram… -> OntoUML_.
+
+= Activating the Toolbox =
+
+  * To activate the OntoUML Toolbox, if is not already activated, go to _Toolbox -> More Tools -> OntoUML_.
+
+
