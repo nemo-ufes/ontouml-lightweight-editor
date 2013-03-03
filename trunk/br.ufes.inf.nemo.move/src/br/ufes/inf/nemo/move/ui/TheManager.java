@@ -327,7 +327,7 @@ public class TheManager {
 	{
 		if (ontoumlmodel.getOntoUMLParser()==null) 
 		{
-			frame.showInformationMessageDialog("Parse OCL", "First you need to load your Model !");
+			frame.showInformationMessageDialog("Parse OCL", "First you need to open the Model.");
 			return ;
 		}
 		
@@ -343,8 +343,8 @@ public class TheManager {
 			oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));
 
 			// show Message
-			String msg =  "Your Rules are Syntactically Correct !\n";
-			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing Domain Rules",msg);
+			String msg =  "Rules are syntactically correct.\n";
+			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing OCL",msg);
 						
     	}catch(SemanticException e2){
     		frame.showErrorMessageDialog("OCL Semantic Error",  "OCL Parser : "+e2.getMessage());    		
