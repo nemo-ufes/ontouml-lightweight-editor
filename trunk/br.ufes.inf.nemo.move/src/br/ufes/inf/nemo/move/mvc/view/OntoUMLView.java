@@ -15,8 +15,8 @@ import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeBar;
-import br.ufes.inf.nemo.move.ui.util.TitleTextField;
 import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
+import java.awt.Color;
 
 /**
  * This class represents a View for OntoUML Model.
@@ -32,7 +32,6 @@ public class OntoUMLView extends JPanel {
 	private OntoUMLModel ontoumlModel;
 	
 	private TheFrame frame;	
-	private TitleTextField tltxtfldOntouml;
 	private OntoUMLTreeBar ontobar;
 	private TreeScrollPane treeScrollPane;
 	private CheckboxTree modeltree;
@@ -61,15 +60,12 @@ public class OntoUMLView extends JPanel {
 	 */
 	public OntoUMLView() 
 	{
+		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		panel.setLayout(new BorderLayout(0, 0));
-				
-		tltxtfldOntouml = new TitleTextField();
-		tltxtfldOntouml.setText("OntoUML - Ontology-based Conceptual Model");
-		panel.add(BorderLayout.NORTH,tltxtfldOntouml);
 		
 		ontobar = new OntoUMLTreeBar();
 		ontobar.btnShowUnique.setToolTipText("");

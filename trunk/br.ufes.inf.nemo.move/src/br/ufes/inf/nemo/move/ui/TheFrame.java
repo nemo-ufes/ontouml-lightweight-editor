@@ -10,7 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.move.utilities.Extractor;
@@ -31,6 +33,8 @@ public class TheFrame extends JFrame {
 	private JSplitPane mainSplitPane;
 	private JSplitPane innerSplitPane;	
 	private JSplitPane centerSplitPane;	
+	private JTabbedPane ontoumlTabbedPane;
+	private JTabbedPane oclTabbedPane;
 	private TheManager appmanager;	
 	private SimpleGUICustom analyzer;
 		
@@ -75,19 +79,33 @@ public class TheFrame extends JFrame {
 				
 		appmanager = new TheManager(this);
 		
-		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,appmanager.getOCLView(),appmanager.getAntiPatternListView());
+		oclTabbedPane = new JTabbedPane();
+		oclTabbedPane.setBorder(null);
+		oclTabbedPane.add(appmanager.getOCLView());	
+		oclTabbedPane.setTitleAt(0,"Simple OCL Editor");
+		oclTabbedPane.setBackground(UIManager.getColor("Panel.background"));
+		
+		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclTabbedPane,appmanager.getAntiPatternListView());
 		innerSplitPane.setOneTouchExpandable(true);		
 		innerSplitPane.setDividerLocation(1.0);
+		innerSplitPane.setBorder(null);
 		
-		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,appmanager.getOntoUMLView(),innerSplitPane);
+		ontoumlTabbedPane = new JTabbedPane();
+		ontoumlTabbedPane.setBorder(null);
+		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
+		ontoumlTabbedPane.setTitleAt(0,"OntoUML Model");
+		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));
+		
+		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlTabbedPane,innerSplitPane);
 		centerSplitPane.setOneTouchExpandable(true);		
 		centerSplitPane.setDividerLocation(0.50);
-		
+		centerSplitPane.setBorder(null);
 		console = new TheConsole();		
 		
 		mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,centerSplitPane,console);
 		mainSplitPane.setOneTouchExpandable(true);		
 		mainSplitPane.setDividerLocation(1.0);	
+		mainSplitPane.setBorder(null);
 		
 		getContentPane().add(BorderLayout.CENTER,mainSplitPane);				
 					

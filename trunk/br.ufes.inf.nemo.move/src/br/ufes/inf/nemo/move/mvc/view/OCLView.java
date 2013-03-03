@@ -14,11 +14,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.eclipse.ocl.ParserException;
 
 import br.ufes.inf.nemo.move.mvc.model.OCLModel;
-
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
 import br.ufes.inf.nemo.move.ui.ocl.OCLEditorPanel;
-import br.ufes.inf.nemo.move.ui.util.TitleTextField;
 import br.ufes.inf.nemo.ocl2alloy.parser.OCLParser;
 
 /**
@@ -36,7 +34,6 @@ public class OCLView extends JPanel {
 	private OCLModel oclmodel;
 	
 	private TheFrame frame;	
-	private TitleTextField tltxtfldConstraintsOcl;
 	private OCLEditorBar oclbar;
 	private OCLEditorPanel ocleditor;
 		
@@ -74,10 +71,6 @@ public class OCLView extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		panel.setLayout(new BorderLayout(0, 0));
-				
-		tltxtfldConstraintsOcl = new TitleTextField();
-		tltxtfldConstraintsOcl.setText("OCL - Domain Rules");
-		panel.add(BorderLayout.NORTH,tltxtfldConstraintsOcl);
 		
 		oclbar = new OCLEditorBar();
 		oclbar.setBorder(new LineBorder(Color.LIGHT_GRAY));
