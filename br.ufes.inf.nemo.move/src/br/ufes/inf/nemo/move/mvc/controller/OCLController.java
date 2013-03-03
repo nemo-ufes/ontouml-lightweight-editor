@@ -115,8 +115,8 @@ public class OCLController {
 	    			
 	    			FileUtil.copyStringToFile(oclview.getConstraints(), path);
 	    			
-	    			oclview.setPath(path,oclview.getConstraints());
-	    			
+	    			oclview.setPath(path,oclview.getConstraints());	    			
+	    	    	
 	    		}catch(IOException exception){
 	    			
 	    			String msg = "An error ocurred while saving the model.\n"+exception.getMessage();
