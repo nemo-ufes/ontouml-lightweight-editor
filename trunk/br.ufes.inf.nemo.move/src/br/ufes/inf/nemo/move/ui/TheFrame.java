@@ -82,7 +82,7 @@ public class TheFrame extends JFrame {
 		oclTabbedPane = new JTabbedPane();
 		oclTabbedPane.setBorder(null);
 		oclTabbedPane.add(appmanager.getOCLView());	
-		oclTabbedPane.setTitleAt(0,"Simple OCL Editor");
+		oclTabbedPane.setTitleAt(0,"OCL Simple Editor");
 		oclTabbedPane.setBackground(UIManager.getColor("Panel.background"));
 		
 		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclTabbedPane,appmanager.getAntiPatternListView());
