@@ -13,6 +13,74 @@
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation">
+        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociationInv"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind11"/>
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind21"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1 -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1">
+        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1Inv"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1"/>
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind4"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1Inv -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1Inv">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind4"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2 -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2">
+        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2Inv"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind2"/>
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind3"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2Inv -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2Inv">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind2"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind3"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociationInv -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociationInv">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind11"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind21"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
     // Classes
     //
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +91,12 @@
 
     <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1 -->
 
-    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1"/>
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1">
+        <owl:disjointUnionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind11"/>
+            <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind21"/>
+        </owl:disjointUnionOf>
+    </owl:Class>
     
 
 
@@ -39,9 +112,33 @@
     
 
 
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind11 -->
+
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind11">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1"/>
+                    <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind2"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1"/>
+    </owl:Class>
+    
+
+
     <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2 -->
 
     <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind21 -->
+
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind21">
+        <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1"/>
+    </owl:Class>
     
 
 
@@ -53,37 +150,50 @@
 
     <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role1 -->
 
-    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role1"/>
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role1">
+        <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind21"/>
+    </owl:Class>
     
 
 
     <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role2 -->
 
-    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role2"/>
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role2">
+        <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Collective1"/>
+    </owl:Class>
     
 
 
     <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1 -->
 
-    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1"/>
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1">
+        <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind11"/>
+    </owl:Class>
     
 
 
     <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind2 -->
 
-    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind2"/>
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind2">
+        <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind11"/>
+    </owl:Class>
     
 
 
     <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind3 -->
 
-    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind3"/>
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind3">
+        <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind21"/>
+        <owl:disjointWith rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind4"/>
+    </owl:Class>
     
 
 
     <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind4 -->
 
-    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind4"/>
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind4">
+        <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind21"/>
+    </owl:Class>
 </rdf:RDF>
 
 

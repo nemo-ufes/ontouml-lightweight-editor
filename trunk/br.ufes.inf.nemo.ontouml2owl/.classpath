@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
 	<classpathentry kind="lib" path="lib/owlapi-distribution-3.4.3-bin.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
