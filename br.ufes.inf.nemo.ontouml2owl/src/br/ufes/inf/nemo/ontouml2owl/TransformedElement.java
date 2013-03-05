@@ -3,18 +3,19 @@ package br.ufes.inf.nemo.ontouml2owl;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLObject;
 
+import RefOntoUML.Element;
 import RefOntoUML.PackageableElement;
 
 public class TransformedElement {
-	private PackageableElement sourceElement;
+	private Element sourceElement;
 	private OWLObject targetElement;
 	
-	public void set( PackageableElement s, OWLObject t){
+	public void set( Element s, OWLObject t){
 		this.sourceElement = s;
 		this.targetElement = t;
 	}
 	
-	public PackageableElement getSource() {
+	public Element getSource() {
 		return this.sourceElement;
 	}
 	
