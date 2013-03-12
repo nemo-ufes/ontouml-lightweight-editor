@@ -17,7 +17,6 @@ import br.ufes.inf.nemo.xmi2refontouml.mapperImpl.MapperAstah;
 import br.ufes.inf.nemo.xmi2refontouml.mapperImpl.MapperEA;
 
 
-
 public class MapperFactory {
 	
 	//private final String XMI_NS = "http://schema.omg.org/spec/XMI/2.1";
