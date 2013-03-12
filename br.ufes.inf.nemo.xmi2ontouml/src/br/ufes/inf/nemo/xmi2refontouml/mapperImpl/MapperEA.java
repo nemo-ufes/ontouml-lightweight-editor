@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.xmi2refontouml.mapperImpl;
+package br.ufes.inf.nemo.ontouml.xmi2refontouml.mapperImpl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,11 +17,11 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import br.ufes.inf.nemo.xmi2refontouml.core.Mapper;
-import br.ufes.inf.nemo.xmi2refontouml.core.Mediator;
-import br.ufes.inf.nemo.xmi2refontouml.util.ElementType;
-import br.ufes.inf.nemo.xmi2refontouml.util.OntoUMLError;
-import br.ufes.inf.nemo.xmi2refontouml.util.XMLDOMUtil;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mapper;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.core.Mediator;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.ElementType;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.OntoUMLError;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.XMLDOMUtil;
 
 
 public class MapperEA implements Mapper {
@@ -38,6 +38,8 @@ public class MapperEA implements Mapper {
 	Document doc;
 	
 	Map<String, Element> stereotypes = new HashMap<String, Element>();
+	
+	List<String> ignoredElements = new ArrayList<String>();
 	
 	public MapperEA(String inputPath) throws Exception {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -148,6 +150,10 @@ public class MapperEA implements Mapper {
 			if (type.equals("uml:UMLDiagram") || type.equals("uml:Text") || type.equals("uml:Boundary"))
 			{
 				XMLDOMUtil.removeElement(doc.getElementById(element.getAttributeNS(XMINS, "idref")));
+				if (!ignoredElements.contains(element.getAttributeNS(XMINS, "idref")))
+				{
+					ignoredElements.add(element.getAttributeNS(XMINS, "idref"));
+				}
 			}
 		}
 	}
@@ -188,6 +194,10 @@ public class MapperEA implements Mapper {
 					childElem.setIdAttributeNS(XMINS, "id", true);
 				}
 			}
+			//For EA version 10, since it does not export the stereotype of the AssociationClass' Association
+			Element new_st = doc.createElementNS(OntoUML, "Material");
+			new_st.setAttribute("base_Association", assocClassElemClone.getAttributeNS(XMINS, "id"));
+			stereotypes.put(assocClassElemClone.getAttributeNS(XMINS, "id"), new_st);
 			
 			assocClassElem.setIdAttributeNS(XMINS, "id", true);
 			assocClassElemClone.setIdAttributeNS(XMINS, "id", true);
@@ -349,7 +359,7 @@ public class MapperEA implements Mapper {
     		NamedNodeMap tagList = stereotypeElem.getAttributes();
     		if (tagList.getLength() > 1) {
     			for (int i = 0; i < tagList.getLength(); i++) {
-    				hashProp.put(tagList.item(i).getNodeName(),
+    				hashProp.put(tagList.item(i).getNodeName().toLowerCase(),
     						tagList.item(i).getNodeValue());
     			}
     		}
@@ -508,6 +518,8 @@ public class MapperEA implements Mapper {
 			List<Element> diagElemList = XMLDOMUtil.getElementChilds(elements);
 	
 			for (Object diagElem : diagElemList) {
+				if (this.ignoredElements.contains(((Element)diagElem).getAttribute("subject")))
+					continue;
 				if (getElementById(((Element)diagElem).getAttribute("subject")) == null) {
 					throw new Exception("XMI file is invalid. Reference to a inexistent element " +
 							"in diagram " + ((Element)((Element)diagram).getElementsByTagName

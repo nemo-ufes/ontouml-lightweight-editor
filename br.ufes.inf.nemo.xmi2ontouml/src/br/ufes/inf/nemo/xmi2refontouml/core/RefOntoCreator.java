@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.xmi2refontouml.core;
+package br.ufes.inf.nemo.ontouml.xmi2refontouml.core;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import br.ufes.inf.nemo.common.resource.RefOntoUMLResourceFactoryImpl;
-import br.ufes.inf.nemo.xmi2refontouml.util.OntoUMLError;
+import br.ufes.inf.nemo.ontouml.xmi2refontouml.util.OntoUMLError;
 
 import RefOntoUML.*;
 import RefOntoUML.impl.*;
