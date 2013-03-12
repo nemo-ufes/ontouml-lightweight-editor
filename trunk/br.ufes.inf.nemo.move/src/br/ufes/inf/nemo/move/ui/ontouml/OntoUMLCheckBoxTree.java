@@ -95,9 +95,46 @@ public class OntoUMLCheckBoxTree {
 		} else if (refElement instanceof RefOntoUML.Classifier)		
 		{
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement,refparser.getAlias((RefOntoUML.Classifier)refElement)));			
-			parent.add(newNode);			
+			parent.add(newNode);
+			
+			// isAbstract
+			boolean isAbstract = ((RefOntoUML.Classifier)refElement).isIsAbstract();			
+			DefaultMutableTreeNode atrNode = new DefaultMutableTreeNode(new String("isAbstract = "+isAbstract));			
+			newNode.add(atrNode);	
+			checkingModel.setPathEnabled(new TreePath(atrNode.getPath()),false);
+			
+			if (refElement instanceof RefOntoUML.Collective)
+			{
+				// isExtensional
+				boolean isExtensional = ((RefOntoUML.Collective)refElement).isIsExtensional();			
+				DefaultMutableTreeNode exNode = new DefaultMutableTreeNode(new String("isExtensional = "+isExtensional));			
+				newNode.add(exNode);	
+				checkingModel.setPathEnabled(new TreePath(exNode.getPath()),false);
+			}
+			
+			if (refElement instanceof RefOntoUML.Meronymic)
+			{
+				// isEssential
+				boolean isEssential = ((RefOntoUML.Meronymic)refElement).isIsEssential();			
+				DefaultMutableTreeNode essNode = new DefaultMutableTreeNode(new String("isEssential = "+isEssential));			
+				newNode.add(essNode);	
+				checkingModel.setPathEnabled(new TreePath(essNode.getPath()),false);
+				
+				// isInseparable
+				boolean isInseparable = ((RefOntoUML.Meronymic)refElement).isIsInseparable();			
+				DefaultMutableTreeNode insNode = new DefaultMutableTreeNode(new String("isInseparable = "+isInseparable));			
+				newNode.add(insNode);	
+				checkingModel.setPathEnabled(new TreePath(insNode.getPath()),false);
+				
+				// isShareable
+				boolean isShareable = ((RefOntoUML.Meronymic)refElement).isIsShareable();			
+				DefaultMutableTreeNode shNode = new DefaultMutableTreeNode(new String("isShareable = "+isShareable));			
+				newNode.add(shNode);	
+				checkingModel.setPathEnabled(new TreePath(shNode.getPath()),false);
+			}
+			
 			//modelTree.collapsePath(new TreePath(newNode.getPath()));
-						
+			
 			for(Generalization gen: ((RefOntoUML.Classifier)refElement).getGeneralization())
 			{
 				drawTree(newNode, (RefOntoUML.Element) gen,checkingModel,modelTree,refparser);					
@@ -124,7 +161,7 @@ public class OntoUMLCheckBoxTree {
 		}else if (refElement instanceof RefOntoUML.Property)
 		{
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLTreeNodeElem(refElement,refparser.getAlias((RefOntoUML.Property)refElement)));			
-			parent.add(newNode);		
+			parent.add(newNode);
 			checkingModel.setPathEnabled(new TreePath(newNode.getPath()),false);
 		}
 	}
@@ -172,34 +209,41 @@ public class OntoUMLCheckBoxTree {
     	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) 
     	{    		
     		String elementType;
+    		OntoUMLTreeNodeElem treeNodeElem = null;    		
     		
-    		OntoUMLTreeNodeElem treeNodeElem = ((OntoUMLTreeNodeElem)((DefaultMutableTreeNode)value).getUserObject());
-    		EObject element = treeNodeElem.getElement();
-    		    		    		
-    		if (element != null) {
-    			elementType = element.getClass().toString().replace("class " +"RefOntoUML.impl.", "").replace("Impl", "");
-    		} else
-    			elementType = "ERROR";
-    	    		
+    		if( ((DefaultMutableTreeNode)value).getUserObject() instanceof OntoUMLTreeNodeElem ){
+    			
+    			treeNodeElem = ((OntoUMLTreeNodeElem)((DefaultMutableTreeNode)value).getUserObject());
+    			
+    			EObject element = treeNodeElem.getElement();
+    			
+        		if (element != null) {
+        			elementType = element.getClass().toString().replace("class " +"RefOntoUML.impl.", "").replace("Impl", "");
+        		} else
+        			elementType = "ERROR";
+        		
+        		if (showUniqueName)
+        		{
+        			if(element instanceof Generalization) uniqueName.setText("");
+        			else if(element instanceof GeneralizationSet) uniqueName.setText("");
+        			else if(element instanceof Package) uniqueName.setText("");
+        			else if(element instanceof Classifier) uniqueName.setText(" ("+treeNodeElem.getUniqueName()+")");
+        			else if(element instanceof Association) uniqueName.setText(" ("+treeNodeElem.getUniqueName()+")");
+        			else if(element instanceof Property) uniqueName.setText(" ("+treeNodeElem.getUniqueName()+")");      			
+        		} else {
+        			uniqueName.setText("");        			
+        		}
+        		
+        		label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icon/ontouml/"+elementType.toLowerCase()+".png")));
+        		
+    		}else{
+    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icon/ontouml/"+"attribute"+".png")));
+    		}    		
+    	    
     		label.setText(value.toString());
     		    		
-    		uniqueName.setForeground(Color.gray);
-    		
-    		if (showUniqueName)
-    		{
-    			if(element instanceof Generalization) uniqueName.setText("");
-    			else if(element instanceof GeneralizationSet) uniqueName.setText("");
-    			else if(element instanceof Package) uniqueName.setText("");
-    			else if(element instanceof Classifier) uniqueName.setText(" ("+treeNodeElem.getUniqueName()+")");
-    			else if(element instanceof Association) uniqueName.setText(" ("+treeNodeElem.getUniqueName()+")");
-    			else if(element instanceof Property) uniqueName.setText(" ("+treeNodeElem.getUniqueName()+")");      			
-    		} else {
-    			uniqueName.setText("");
-    			
-    		}
-    		
-    		label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icon/ontouml/"+elementType.toLowerCase()+".png")));
-    		
+    		uniqueName.setForeground(Color.gray);    		 		
+   		    		
     		if (selected){
     			label.setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
     			//label.setBackground(UIManager.getColor("Tree.selectionBackground"));
@@ -210,7 +254,7 @@ public class OntoUMLCheckBoxTree {
     		    		
     		TreeCheckingModel checkingModel = ((CheckboxTree)tree).getCheckingModel();
     	   	TreePath path = tree.getPathForRow(row);
-    	   	    	   	   	   	
+    	   	
     	   	boolean enabled = checkingModel.isPathEnabled(path);
     	   	boolean checked = checkingModel.isPathChecked(path);
     	   	boolean grayed = checkingModel.isPathGreyed(path);
@@ -243,9 +287,13 @@ public class OntoUMLCheckBoxTree {
 	    	
 	    for (TreePath treepath : treepathList) 
 	    {
-	    	checkedNodes.add(((OntoUMLTreeNodeElem)((DefaultMutableTreeNode)treepath.getLastPathComponent()).getUserObject()).getElement());
+	    	if (((DefaultMutableTreeNode)treepath.getLastPathComponent()).getUserObject() instanceof OntoUMLTreeNodeElem){
+	    		checkedNodes.add(((OntoUMLTreeNodeElem)((DefaultMutableTreeNode)treepath.getLastPathComponent()).getUserObject()).getElement());
+	    	}else{
+	    		
+	    	}	    	
 	    }
-	    	
+	
 	    DefaultMutableTreeNode root = (DefaultMutableTreeNode) modeltree.getModel().getRoot();
 		OntoUMLTreeNodeElem rootObject = (OntoUMLTreeNodeElem) root.getUserObject();
 	    	    
@@ -263,9 +311,12 @@ public class OntoUMLCheckBoxTree {
 	 */
 	@SuppressWarnings({ "rawtypes", "unused" })
 	public static void checkNode(DefaultMutableTreeNode node, boolean safe,CheckboxTree modeltree)
-	{
+	{		
 		EObject childObject;		
 		modeltree.addCheckingPath(new TreePath(node.getPath()));		
+		
+		if (node.getUserObject() instanceof OntoUMLTreeNodeElem == false) return;
+		
 		EObject obj = ((OntoUMLTreeNodeElem)node.getUserObject()).getElement();
 		
 		//unselected children only if was different than Association
@@ -273,11 +324,14 @@ public class OntoUMLCheckBoxTree {
     	{
 			Enumeration e = node.breadthFirstEnumeration();
 			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)e.nextElement();		
-						
+			
 			while (e.hasMoreElements()) 
 	    	{
 				childNode = (DefaultMutableTreeNode)e.nextElement();
-				childObject = ((OntoUMLTreeNodeElem)childNode.getUserObject()).getElement();
+				if (childNode.getUserObject() instanceof OntoUMLTreeNodeElem)
+		    	{
+					childObject = ((OntoUMLTreeNodeElem)childNode.getUserObject()).getElement();				
+		    	}	
 				modeltree.getCheckingModel().removeCheckingPath(new TreePath(childNode.getPath()));				
 			}
     	}
@@ -292,8 +346,7 @@ public class OntoUMLCheckBoxTree {
 	@SuppressWarnings("rawtypes")
 	public static void checkElements(List<EObject> elements, boolean safe, CheckboxTree modeltree) 
 	{
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) modeltree.getModel().getRoot();
-	    
+		DefaultMutableTreeNode root = (DefaultMutableTreeNode) modeltree.getModel().getRoot();	   
 		List<EObject> alreadyChecked = getCheckedElements(modeltree);		
 	    
 		alreadyChecked.removeAll(elements);
@@ -303,13 +356,26 @@ public class OntoUMLCheckBoxTree {
 	    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)e.nextElement();
 	    while (e.hasMoreElements()) 
 	    {
+	    	if (node.getUserObject() instanceof OntoUMLTreeNodeElem)
+	    	{
+	    		EObject obj = ((OntoUMLTreeNodeElem)node.getUserObject()).getElement();
+	    		if (alreadyChecked.contains(obj)) { checkNode(node,true,modeltree); }	    			
+	    	}else if(node.getUserObject() instanceof String)
+	    	{
+	    		checkNode(node,true,modeltree);	
+	    	}
+	    		
+	    	node = (DefaultMutableTreeNode)e.nextElement();	    
+	    }
+	    if (node.getUserObject() instanceof OntoUMLTreeNodeElem)
+    	{
+	    	//last element
 	    	EObject obj = ((OntoUMLTreeNodeElem)node.getUserObject()).getElement();
 	    	if (alreadyChecked.contains(obj)) { checkNode(node,true,modeltree); }
-	    	node = (DefaultMutableTreeNode)e.nextElement();	    	
-	    }
-	    //last element
-	    EObject obj = ((OntoUMLTreeNodeElem)node.getUserObject()).getElement();
-	    if (alreadyChecked.contains(obj)) { checkNode(node,true,modeltree); }
+    	}else if(node.getUserObject() instanceof String)
+    	{
+    		checkNode(node,true,modeltree);	
+    	}    	
 	}	
 	 
 	/**
