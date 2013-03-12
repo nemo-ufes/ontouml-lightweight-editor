@@ -247,10 +247,12 @@ public class TheManager {
 		
 		// update tree adding the elements...
 		selected.removeAll(added);
-		selected.addAll(added);
+		selected.addAll(added);		
+		
 		OntoUMLCheckBoxTree.checkElements(selected, true, ontoumlview.getModelTree());		
-    	ontoumlview.getModelTree().updateUI();	
-    	
+			
+    	ontoumlview.getModelTree().updateUI();    	
+		
     	// create a new model package from selected elements in the model.
     	ontoumlmodel.setOntoUMLPackage(ontoumlmodel.getOntoUMLParser().createPackageFromSelections(new Copier()));
 		

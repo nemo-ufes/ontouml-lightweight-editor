@@ -18,7 +18,7 @@ public class OntoUMLTreeNodeElem {
 	private EObject element;
 	private String name;
 	private String type;
-	private String uniqueName="";
+	private String uniqueName="";	
 	
 	/** 
 	 * Create a CheckBox Tree Node Element from Element.
@@ -40,7 +40,7 @@ public class OntoUMLTreeNodeElem {
 	    
 	    this.uniqueName= uniqueName; 
 	}
-	
+		
 	/**
 	 * Create a CheckBox Tree Node Element from Name.
 	 * 
