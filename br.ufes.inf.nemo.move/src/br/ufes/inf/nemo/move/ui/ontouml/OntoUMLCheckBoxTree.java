@@ -30,8 +30,8 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.move.utilities.ColorPalette;
-import br.ufes.inf.nemo.move.utilities.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.move.ui.util.ColorPalette;
+import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
 
 /**
  * @author John Guerson

@@ -30,7 +30,7 @@ import java.io.PrintStream;
 import java.io.Serializable;
 import java.lang.Thread.UncaughtExceptionHandler;
 
-import br.ufes.inf.nemo.move.utilities.Extractor;
+import br.ufes.inf.nemo.move.ui.util.Extractor;
 
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.Util;

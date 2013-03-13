@@ -26,13 +26,13 @@ import br.ufes.inf.nemo.antipattern.RSAntiPattern;
 import br.ufes.inf.nemo.antipattern.RWORAntiPattern;
 import br.ufes.inf.nemo.antipattern.STRAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.move.mvc.model.antipattern.ACAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.antipattern.IAAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.antipattern.RBOSAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.antipattern.RSAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.antipattern.RWORAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.antipattern.STRAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.antipattern.list.AntiPatternListModel;
+import br.ufes.inf.nemo.move.mvc.model.ACAntiPatternModel;
+import br.ufes.inf.nemo.move.mvc.model.AntiPatternListModel;
+import br.ufes.inf.nemo.move.mvc.model.IAAntiPatternModel;
+import br.ufes.inf.nemo.move.mvc.model.RBOSAntiPatternModel;
+import br.ufes.inf.nemo.move.mvc.model.RSAntiPatternModel;
+import br.ufes.inf.nemo.move.mvc.model.RWORAntiPatternModel;
+import br.ufes.inf.nemo.move.mvc.model.STRAntiPatternModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 
 

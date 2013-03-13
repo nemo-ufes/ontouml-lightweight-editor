@@ -4,9 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
 import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
@@ -31,11 +29,11 @@ public class TheToolBar extends JToolBar {
 	private ToolbarButton btnAlloyAnalyzer;
 	private ToolbarButton btnCompleteSelect;
 	private ToolbarButton btnShowInstances;
-	private JSeparator toolBarSeparator1;
-	private JSeparator toolBarSeparator3;
-	private JSeparator toolBarSeparator0;
-	private JSeparator toolBarSeparator2;
-	private JSeparator toolBarSeparator4;
+	//private JSeparator toolBarSeparator1;
+	//private JSeparator toolBarSeparator3;
+	//private JSeparator toolBarSeparator0;
+	//private JSeparator toolBarSeparator2;
+	//private JSeparator toolBarSeparator4;
 	//private JSeparator toolBarSeparator5;
 	
 	/**
@@ -69,38 +67,38 @@ public class TheToolBar extends JToolBar {
 	{		
 		createShowHideConsole();
 		
-        toolBarSeparator1 = new Separator();
-        toolBarSeparator1.setVisible(false);
-        toolBarSeparator1.setOrientation( SwingConstants.VERTICAL );  
-        add(toolBarSeparator1);        
+        //toolBarSeparator1 = new Separator();
+        //toolBarSeparator1.setVisible(false);
+        //toolBarSeparator1.setOrientation( SwingConstants.VERTICAL );  
+        //add(toolBarSeparator1);        
        
         createShowHideOCLView();
         
-         toolBarSeparator3 = new Separator();  
-        toolBarSeparator3.setVisible(false);
-        toolBarSeparator3.setOrientation( SwingConstants.VERTICAL );  
-        add(toolBarSeparator3);  
+        //toolBarSeparator3 = new Separator();  
+        //toolBarSeparator3.setVisible(false);
+        //toolBarSeparator3.setOrientation( SwingConstants.VERTICAL );  
+        //add(toolBarSeparator3);  
         
         createShowHideAntiPatternView();
         
-        toolBarSeparator0= new Separator();  
-        toolBarSeparator0.setVisible(false);
-        toolBarSeparator0.setOrientation( SwingConstants.VERTICAL );  
-        add(toolBarSeparator0);
+        //toolBarSeparator0= new Separator();  
+        //toolBarSeparator0.setVisible(false);
+        //toolBarSeparator0.setOrientation( SwingConstants.VERTICAL );  
+       // add(toolBarSeparator0);
         
         createAutoSelectionButton();
         
-        toolBarSeparator2= new Separator();  
-        toolBarSeparator2.setVisible(false);
-        toolBarSeparator2.setOrientation( SwingConstants.VERTICAL );  
-        add(toolBarSeparator2);
+        //toolBarSeparator2= new Separator();  
+       // toolBarSeparator2.setVisible(false);
+        //toolBarSeparator2.setOrientation( SwingConstants.VERTICAL );  
+        //add(toolBarSeparator2);
         
         createAntiPatternButton();		
 		
-        toolBarSeparator4 = new Separator();
-        toolBarSeparator4.setVisible(false);
-        toolBarSeparator4.setOrientation( SwingConstants.VERTICAL );  
-        add(toolBarSeparator4);
+       // toolBarSeparator4 = new Separator();
+       // toolBarSeparator4.setVisible(false);
+       // toolBarSeparator4.setOrientation( SwingConstants.VERTICAL );  
+       // add(toolBarSeparator4);
         
         createAlloyAnalyzerButton();	
 
