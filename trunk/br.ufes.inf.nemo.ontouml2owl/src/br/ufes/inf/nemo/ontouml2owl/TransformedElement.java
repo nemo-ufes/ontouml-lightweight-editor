@@ -10,6 +10,10 @@ public class TransformedElement {
 	private Element sourceElement;
 	private OWLObject targetElement;
 	
+	public void TransformedElement(){
+		
+	}
+	
 	public void set( Element s, OWLObject t){
 		this.sourceElement = s;
 		this.targetElement = t;
