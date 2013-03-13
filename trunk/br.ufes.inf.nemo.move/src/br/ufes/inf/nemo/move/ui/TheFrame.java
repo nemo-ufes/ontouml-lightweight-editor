@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.move.utilities.Extractor;
+import br.ufes.inf.nemo.move.ui.util.Extractor;
 
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 

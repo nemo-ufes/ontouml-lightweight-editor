@@ -10,8 +10,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.move.utilities.ColorPalette;
-import br.ufes.inf.nemo.move.utilities.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.move.ui.util.ColorPalette;
+import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
 
 /**
  * @author John Guerson

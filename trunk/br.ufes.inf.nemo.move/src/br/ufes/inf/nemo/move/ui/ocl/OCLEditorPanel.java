@@ -18,8 +18,8 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.utilities.ColorPalette;
-import br.ufes.inf.nemo.move.utilities.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.move.ui.util.ColorPalette;
+import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
 
 /**
  * @author John Guerson

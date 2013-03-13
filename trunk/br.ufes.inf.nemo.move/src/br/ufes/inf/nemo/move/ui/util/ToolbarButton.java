@@ -8,8 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import br.ufes.inf.nemo.move.utilities.ColorPalette;
-import br.ufes.inf.nemo.move.utilities.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
 
 /**
  * @author John Guerson
