@@ -26,6 +26,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
+import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.Element;
 import RefOntoUML.FormalAssociation;
@@ -34,6 +35,7 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Kind;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class Main {
@@ -97,6 +99,19 @@ public class Main {
 			
 			for ( FormalAssociation ont_formal : p.getAllInstances(FormalAssociation.class)){
 				transformFormal(ont_formal);
+			}
+			
+			for ( Property ont_attribute : p.getAllInstances(Property.class)) {
+				Association ass = ont_attribute.getAssociation();
+				Type t = (Type) ont_attribute.eContainer();
+				if ( ass == null )
+				{
+					//Property other = ont_attribute.getOtherEnd();
+					System.out.println(t.toString());
+					System.out.println(ont_attribute.getType().toString());
+					//System.out.println(other.getType().toString());
+				}
+				
 			}
 			
 			manager.saveOntology(ontology);
