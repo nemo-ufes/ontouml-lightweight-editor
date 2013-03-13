@@ -218,8 +218,8 @@ public class TheToolBar extends JToolBar {
 	
 	public void createShowHideOCLView ()
 	{
-		btnShowOrHideOCL = new ToolbarButton("Constraints","/resources/icon/edit-36x36.png");
-		btnShowOrHideOCL.setText("Rules ");
+		btnShowOrHideOCL = new ToolbarButton("OCL Simple Editor","/resources/icon/edit-36x36.png");
+		btnShowOrHideOCL.setText("OCL Simple Editor");
 		btnShowOrHideOCL.setToolTipText("Show/Hide OCL Tab");
 		btnShowOrHideOCL.setEnabled(true);
 		btnShowOrHideOCL.addActionListener(new ActionListener() 

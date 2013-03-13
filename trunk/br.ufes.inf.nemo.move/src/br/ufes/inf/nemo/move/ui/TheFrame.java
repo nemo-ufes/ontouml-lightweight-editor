@@ -16,7 +16,6 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.move.ui.util.Extractor;
-
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
@@ -84,6 +83,7 @@ public class TheFrame extends JFrame {
 		oclTabbedPane.add(appmanager.getOCLView());	
 		oclTabbedPane.setTitleAt(0,"OCL Simple Editor");
 		oclTabbedPane.setBackground(UIManager.getColor("Panel.background"));
+		oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-16x16.png")));
 		
 		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclTabbedPane,appmanager.getAntiPatternListView());
 		innerSplitPane.setOneTouchExpandable(true);		
@@ -95,7 +95,7 @@ public class TheFrame extends JFrame {
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
 		ontoumlTabbedPane.setTitleAt(0,"OntoUML Model");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));
-		
+				
 		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlTabbedPane,innerSplitPane);
 		centerSplitPane.setOneTouchExpandable(true);		
 		centerSplitPane.setDividerLocation(0.50);
