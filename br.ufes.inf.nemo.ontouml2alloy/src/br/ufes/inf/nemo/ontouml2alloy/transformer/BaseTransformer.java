@@ -155,7 +155,7 @@ public class BaseTransformer {
 				if (p.getName().compareToIgnoreCase("string")==0)
 				{
 					sigString = factory.createSignatureDeclaration();
-					sigString.setName("string");					
+					sigString.setName("String_");					
 					module.getParagraph().add(sigString);					
 				}				
 			}
@@ -258,19 +258,19 @@ public class BaseTransformer {
 				ArrowOperation aOp  = factory.createArrowOperation();
 				if (attr.getType() instanceof PrimitiveType)
 				{
-					if (attr.getType().getName().equals("int"))
+					if (attr.getType().getName().compareToIgnoreCase("int")==0)
 					{
 						target = "Int";
 						aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
 					}
-					else if (attr.getType().getName().equals("Boolean")) 
+					else if (attr.getType().getName().compareToIgnoreCase("Boolean")==0) 
 					{
 						target = "Bool";
 						aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
 					}
-					else if (attr.getType().getName().equals("string"))
+					else if (attr.getType().getName().compareToIgnoreCase("String")==0)
 					{
-						target = "string";
+						target = "String_";
 						aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
 					}			
 					
