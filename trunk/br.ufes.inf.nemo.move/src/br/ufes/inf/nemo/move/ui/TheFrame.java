@@ -95,12 +95,12 @@ public class TheFrame extends JFrame {
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
 		ontoumlTabbedPane.setTitleAt(0,"OntoUML Model");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));
-				
+								
 		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlTabbedPane,innerSplitPane);
 		centerSplitPane.setOneTouchExpandable(true);		
 		centerSplitPane.setDividerLocation(0.50);
 		centerSplitPane.setBorder(null);
-		console = new TheConsole();		
+		console = new TheConsole();	
 		
 		mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,centerSplitPane,console);
 		mainSplitPane.setOneTouchExpandable(true);		
