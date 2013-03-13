@@ -3,20 +3,22 @@ package br.ufes.inf.nemo.move.mvc.view;
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElemTabbedPane;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeBar;
 import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
-import java.awt.Color;
 
 /**
  * This class represents a View for OntoUML Model.
@@ -33,8 +35,12 @@ public class OntoUMLView extends JPanel {
 	
 	private TheFrame frame;	
 	private OntoUMLTreeBar ontobar;
-	private TreeScrollPane treeScrollPane;
+	private TreeScrollPane ontotree;
 	private CheckboxTree modeltree;
+		
+	private JSplitPane ontoumlSplitPane;
+	private JPanel modelpanel;
+	private OntoUMLElemTabbedPane elempanel;
 	
 	/** 
 	 * Creates a View from a OntoUML model and the main frame application.
@@ -50,6 +56,7 @@ public class OntoUMLView extends JPanel {
 		
 		setPath(ontoumlModel.getOntoUMLPath(),ontoumlModel.getOntoUMLModelInstance());
 		setModelTree(ontoumlModel.getOntoUMLModelInstance(),ontoumlModel.getOntoUMLParser());
+				
 		
 		validate();
 		repaint();
@@ -63,19 +70,25 @@ public class OntoUMLView extends JPanel {
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
-		panel.setLayout(new BorderLayout(0, 0));
+		modelpanel = new JPanel();
+		modelpanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		modelpanel.setLayout(new BorderLayout(0, 0));
 		
-		ontobar = new OntoUMLTreeBar();
-		ontobar.btnShowUnique.setToolTipText("");
-		ontobar.setToolTipText("Show Aliases");
-		panel.add(BorderLayout.CENTER,ontobar);
+		elempanel= new OntoUMLElemTabbedPane();
+				
+		ontobar = new OntoUMLTreeBar();		
 		
-		add(BorderLayout.NORTH,panel);
+		modelpanel.add(BorderLayout.NORTH,ontobar);
 		
-		treeScrollPane = new TreeScrollPane();
-		add(BorderLayout.CENTER,treeScrollPane);
+		ontotree = new TreeScrollPane();
+		modelpanel.add(BorderLayout.CENTER,ontotree);
+										
+		ontoumlSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,modelpanel,elempanel);
+		ontoumlSplitPane.setOneTouchExpandable(true);		
+		ontoumlSplitPane.setDividerLocation(0.5);
+		ontoumlSplitPane.setBorder(null);
+				
+		add(ontoumlSplitPane);
 	}
 		
 	/**
@@ -88,11 +101,11 @@ public class OntoUMLView extends JPanel {
 	{	
 		if (refmodel!=null)
 		{
-			if(modeltree!=null) treeScrollPane.treePanel.remove(modeltree);			
+			if(modeltree!=null) ontotree.treePanel.remove(modeltree);			
 			modeltree = OntoUMLCheckBoxTree.createCheckBoxTree(refmodel,refparser);					
-			treeScrollPane.treePanel.add(BorderLayout.CENTER,modeltree);
-			treeScrollPane.validate();
-			treeScrollPane.repaint();
+			ontotree.treePanel.add(BorderLayout.CENTER,modeltree);
+			ontotree.validate();
+			ontotree.repaint();
 		}
 	}
 		
