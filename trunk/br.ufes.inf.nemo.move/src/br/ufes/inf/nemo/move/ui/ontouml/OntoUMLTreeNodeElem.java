@@ -56,6 +56,11 @@ public class OntoUMLTreeNodeElem {
 		return uniqueName;
 	}
 	
+	public String getTypeName()
+	{
+		return type;
+	}
+	
 	/**
 	 * To String.
 	 */
@@ -133,6 +138,10 @@ public class OntoUMLTreeNodeElem {
 		return "<"+name+">";
 	}
 	
+	public String getName()
+	{
+		return name;
+	}
 	/**
 	 * Get Element.
 	 */

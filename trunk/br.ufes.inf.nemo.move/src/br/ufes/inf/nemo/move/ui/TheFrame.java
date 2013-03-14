@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.move.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
 
@@ -87,24 +88,22 @@ public class TheFrame extends JFrame {
 		
 		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclTabbedPane,appmanager.getAntiPatternListView());
 		innerSplitPane.setOneTouchExpandable(true);		
-		innerSplitPane.setDividerLocation(1.0);
 		innerSplitPane.setBorder(null);
 		
 		ontoumlTabbedPane = new JTabbedPane();
 		ontoumlTabbedPane.setBorder(null);
+		ontoumlTabbedPane.setPreferredSize(new Dimension(400,600));
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
 		ontoumlTabbedPane.setTitleAt(0,"OntoUML Model");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));
 								
 		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlTabbedPane,innerSplitPane);
 		centerSplitPane.setOneTouchExpandable(true);		
-		centerSplitPane.setDividerLocation(0.50);
 		centerSplitPane.setBorder(null);
 		console = new TheConsole();	
 		
 		mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,centerSplitPane,console);
-		mainSplitPane.setOneTouchExpandable(true);		
-		mainSplitPane.setDividerLocation(1.0);	
+		mainSplitPane.setOneTouchExpandable(true);			
 		mainSplitPane.setBorder(null);
 		
 		getContentPane().add(BorderLayout.CENTER,mainSplitPane);				
@@ -135,15 +134,15 @@ public class TheFrame extends JFrame {
 	}
 		
 	/** Restore default sizes of the split panes. */
-	private void restoreDefaults() 
+	public void restoreDefaults() 
 	{
         SwingUtilities.invokeLater(new Runnable() 
         {
             @Override
             public void run() 
-            {
+            {            	
             	mainSplitPane.setDividerLocation(1.0);            	
-            	innerSplitPane.setDividerLocation(1.0);
+            	innerSplitPane.setDividerLocation(1.0);            	
             }
         });
     }

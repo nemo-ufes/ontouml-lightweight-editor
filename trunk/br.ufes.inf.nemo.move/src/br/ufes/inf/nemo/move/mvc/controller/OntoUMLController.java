@@ -35,7 +35,7 @@ public class OntoUMLController {
 		ontoumlview.addShowUniqueNamesListener(new ShowUniqueNamesListener());
 		ontoumlview.addSaveAsModelListener(new SaveAsModelActionListener());			
 	}	
-	
+			
 	/**
 	 * Load OntoUML Action Listener.
 	 * 
