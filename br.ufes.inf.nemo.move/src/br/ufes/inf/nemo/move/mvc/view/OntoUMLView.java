@@ -4,20 +4,30 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElemTabbedPane;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElemTabbedPane;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeBar;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeNodeElem;
 import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
 
 /**
@@ -37,10 +47,17 @@ public class OntoUMLView extends JPanel {
 	private OntoUMLTreeBar ontobar;
 	private TreeScrollPane ontotree;
 	private CheckboxTree modeltree;
-		
+	private JScrollPane scrollPane;
+	
 	private JSplitPane ontoumlSplitPane;
 	private JPanel modelpanel;
 	private OntoUMLElemTabbedPane elempanel;
+	private JLabel lblNoSelection;
+			
+	public OntoUMLElemTabbedPane getElementPanel()
+	{
+		return elempanel;
+	}
 	
 	/** 
 	 * Creates a View from a OntoUML model and the main frame application.
@@ -57,11 +74,10 @@ public class OntoUMLView extends JPanel {
 		setPath(ontoumlModel.getOntoUMLPath(),ontoumlModel.getOntoUMLModelInstance());
 		setModelTree(ontoumlModel.getOntoUMLModelInstance(),ontoumlModel.getOntoUMLParser());
 				
-		
 		validate();
 		repaint();
 	}
-
+	
 	/**
 	 * Creates an Empty View for OntoUML Model.
 	 */
@@ -73,22 +89,50 @@ public class OntoUMLView extends JPanel {
 		modelpanel = new JPanel();
 		modelpanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		modelpanel.setLayout(new BorderLayout(0, 0));
-		
-		elempanel= new OntoUMLElemTabbedPane();
-				
+		modelpanel.setPreferredSize(new Dimension(400, 500));
+					
 		ontobar = new OntoUMLTreeBar();		
 		
 		modelpanel.add(BorderLayout.NORTH,ontobar);
 		
 		ontotree = new TreeScrollPane();
 		modelpanel.add(BorderLayout.CENTER,ontotree);
-										
-		ontoumlSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,modelpanel,elempanel);
-		ontoumlSplitPane.setOneTouchExpandable(true);		
-		ontoumlSplitPane.setDividerLocation(0.5);
-		ontoumlSplitPane.setBorder(null);
+		
+		JPanel tempPanel = new JPanel();
+		tempPanel.setPreferredSize(new Dimension(400, 100));
+		
+		lblNoSelection = new JLabel("No Selection");
+		lblNoSelection.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		GroupLayout gl_tempPanel = new GroupLayout(tempPanel);
+		gl_tempPanel.setHorizontalGroup(
+			gl_tempPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_tempPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblNoSelection, GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_tempPanel.setVerticalGroup(
+			gl_tempPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_tempPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblNoSelection)
+					.addContainerGap(190, Short.MAX_VALUE))
+		);
+		tempPanel.setLayout(gl_tempPanel);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setPreferredSize(new java.awt.Dimension(400, 360));
+		scrollPane.setViewportView(tempPanel);
+		
+		ontoumlSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,modelpanel,scrollPane);						
 				
-		add(ontoumlSplitPane);
+		ontoumlSplitPane.setOneTouchExpandable(true);		
+		ontoumlSplitPane.setBorder(null);		
+		
+		add(ontoumlSplitPane);	
+		
+		
 	}
 		
 	/**
@@ -101,14 +145,40 @@ public class OntoUMLView extends JPanel {
 	{	
 		if (refmodel!=null)
 		{
-			if(modeltree!=null) ontotree.treePanel.remove(modeltree);			
+			if(modeltree!=null) ontotree.treePanel.remove(modeltree);	
+						
 			modeltree = OntoUMLCheckBoxTree.createCheckBoxTree(refmodel,refparser);					
+			
+			if (modeltree!=null){
+				elempanel= new OntoUMLElemTabbedPane();				
+				addTreeListener(new ModelTreeListener());
+				scrollPane.setViewportView(elempanel);
+				ontoumlSplitPane.setRightComponent(scrollPane);
+				ontoumlSplitPane.setDividerLocation(0.50);
+			}
+			
 			ontotree.treePanel.add(BorderLayout.CENTER,modeltree);
 			ontotree.validate();
 			ontotree.repaint();
 		}
 	}
 		
+	class ModelTreeListener implements TreeSelectionListener 
+	 {
+		 @Override
+			public void valueChanged(TreeSelectionEvent e) 
+			{
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+				OntoUMLTreeNodeElem chckNode = (OntoUMLTreeNodeElem) node.getUserObject();							
+				elempanel.setData(chckNode);
+				if (chckNode.getElement() instanceof RefOntoUML.Class) elempanel.setSelectedIndex(0);
+				else if (chckNode.getElement() instanceof RefOntoUML.DataType) elempanel.setSelectedIndex(0);
+				else if(chckNode.getElement() instanceof RefOntoUML.Association) elempanel.setSelectedIndex(1); 
+				else if(chckNode.getElement() instanceof RefOntoUML.GeneralizationSet)elempanel.setSelectedIndex(2);
+				else if(chckNode.getElement() instanceof RefOntoUML.Property)elempanel.setSelectedIndex(3); 
+			}
+	 }
+	
 	/** 
 	 * Get the Check Box Model Tree. 
 	 */
@@ -163,6 +233,11 @@ public class OntoUMLView extends JPanel {
 	public void addShowUniqueNamesListener(ActionListener actionListener) 
 	{
 		ontobar.btnShowUnique.addActionListener(actionListener);
+	}	
+			
+	public void addTreeListener(TreeSelectionListener selectionListener)
+	{
+		modeltree.addTreeSelectionListener(selectionListener);
 	}
 	
 	/**
@@ -220,4 +295,5 @@ public class OntoUMLView extends JPanel {
 		}
 		return null;
 	}
+
 }
