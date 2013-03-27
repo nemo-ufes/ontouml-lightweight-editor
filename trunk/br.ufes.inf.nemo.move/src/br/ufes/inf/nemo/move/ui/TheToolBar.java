@@ -3,15 +3,17 @@ package br.ufes.inf.nemo.move.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
 import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
 import br.ufes.inf.nemo.move.ui.dialog.AutoCompletionDialog;
 import br.ufes.inf.nemo.move.ui.dialog.OptionsDialog;
-import br.ufes.inf.nemo.move.ui.util.ToolbarButton;
 
 /**
  * @author John Guerson
@@ -22,19 +24,13 @@ public class TheToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 
 	private TheFrame frame;		
-	private ToolbarButton btnSearchForAntipatterns;	
-	private ToolbarButton btnShowHideConsole;	
-	private ToolbarButton btnShowOrHideAntiPattern;
-	private ToolbarButton btnShowOrHideOCL;
-	private ToolbarButton btnAlloyAnalyzer;
-	private ToolbarButton btnCompleteSelect;
-	private ToolbarButton btnShowInstances;
-	//private JSeparator toolBarSeparator1;
-	//private JSeparator toolBarSeparator3;
-	//private JSeparator toolBarSeparator0;
-	//private JSeparator toolBarSeparator2;
-	//private JSeparator toolBarSeparator4;
-	//private JSeparator toolBarSeparator5;
+	private JButton btnSearchForAntipatterns;	
+	private JButton btnShowHideConsole;	
+	private JButton btnShowOrHideAntiPattern;
+	private JButton btnShowOrHideOCL;
+	private JButton btnAlloyAnalyzer;
+	private JButton btnCompleteSelect;
+	private JButton btnShowInstances;
 	
 	/**
 	 * Constructor.
@@ -65,56 +61,22 @@ public class TheToolBar extends JToolBar {
 	 */
 	public void createButtons()
 	{		
-		createShowHideConsole();
-		
-        //toolBarSeparator1 = new Separator();
-        //toolBarSeparator1.setVisible(false);
-        //toolBarSeparator1.setOrientation( SwingConstants.VERTICAL );  
-        //add(toolBarSeparator1);        
-       
+		createShowHideConsole();		
         createShowHideOCLView();
-        
-        //toolBarSeparator3 = new Separator();  
-        //toolBarSeparator3.setVisible(false);
-        //toolBarSeparator3.setOrientation( SwingConstants.VERTICAL );  
-        //add(toolBarSeparator3);  
-        
         createShowHideAntiPatternView();
-        
-        //toolBarSeparator0= new Separator();  
-        //toolBarSeparator0.setVisible(false);
-        //toolBarSeparator0.setOrientation( SwingConstants.VERTICAL );  
-       // add(toolBarSeparator0);
-        
         createAutoSelectionButton();
-        
-        //toolBarSeparator2= new Separator();  
-       // toolBarSeparator2.setVisible(false);
-        //toolBarSeparator2.setOrientation( SwingConstants.VERTICAL );  
-        //add(toolBarSeparator2);
-        
         createAntiPatternButton();		
-		
-       // toolBarSeparator4 = new Separator();
-       // toolBarSeparator4.setVisible(false);
-       // toolBarSeparator4.setOrientation( SwingConstants.VERTICAL );  
-       // add(toolBarSeparator4);
-        
-        createAlloyAnalyzerButton();	
-
-        //toolBarSeparator5 = new Separator();
-        //toolBarSeparator5.setVisible(false);
-        //toolBarSeparator5.setOrientation( SwingConstants.VERTICAL );  
-        //add( toolBarSeparator5 );
-        
-        //createShowInstances();
+        createAlloyAnalyzerButton();
 	}		
 		
 	public void createAutoSelectionButton()
 	{
-		btnCompleteSelect = new ToolbarButton("Auto Completion","/resources/icon/completion-36x36.png");
+		btnCompleteSelect = new JButton();
+		btnCompleteSelect.setText("Auto Completion");
+		btnCompleteSelect.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/completion-36x36.png")));
 		btnCompleteSelect.setToolTipText("Automatically select elements of the model");
-		
+		btnCompleteSelect.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnCompleteSelect.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnCompleteSelect.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent event) 
@@ -134,10 +96,13 @@ public class TheToolBar extends JToolBar {
 	
 	public void createAlloyAnalyzerButton()
 	{
-		btnAlloyAnalyzer = new ToolbarButton("Show Analyzer","/resources/icon/alloy-36x36.png");
-		btnAlloyAnalyzer.setText("Validate with Analyzer");
+		btnAlloyAnalyzer = new JButton();
 		btnAlloyAnalyzer.setToolTipText("Transforming models and rules to Alloy");
+		btnAlloyAnalyzer.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/alloy-36x36.png")));
+		btnAlloyAnalyzer.setText("Run Analyzer");		
 		btnAlloyAnalyzer.setEnabled(true);
+		btnAlloyAnalyzer.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnAlloyAnalyzer.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnAlloyAnalyzer.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -161,9 +126,13 @@ public class TheToolBar extends JToolBar {
 	
 	public void createShowInstances()
 	{
-		btnShowInstances = new ToolbarButton("Show Instances","/resources/icon/atom-36x36.png");
+		btnShowInstances = new JButton();
+		btnShowInstances.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/atom-36x36.png")));
+		btnShowInstances.setText("Show Instances");	
 		btnShowInstances.setToolTipText("");
 		btnShowInstances.setEnabled(false);
+		btnShowInstances.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnShowInstances.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnShowInstances.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -187,9 +156,13 @@ public class TheToolBar extends JToolBar {
 		
 	public void createShowHideConsole ()
 	{
-		btnShowHideConsole = new ToolbarButton("Console","/resources/icon/display-36x36.png");
+		btnShowHideConsole = new JButton();
+		btnShowHideConsole.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/display-36x36.png")));
+		btnShowHideConsole.setText("Console");	
 		btnShowHideConsole.setToolTipText("Show/Hide Console");
 		btnShowHideConsole.setEnabled(true);
+		btnShowHideConsole.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnShowHideConsole.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnShowHideConsole.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -202,10 +175,13 @@ public class TheToolBar extends JToolBar {
 	
 	public void createShowHideAntiPatternView ()
 	{
-		btnShowOrHideAntiPattern = new ToolbarButton("AntiPatterns","/resources/icon/panel-36X36.png");
+		btnShowOrHideAntiPattern = new JButton();
+		btnShowOrHideAntiPattern.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/panel-36X36.png")));
 		btnShowOrHideAntiPattern.setText("AntiPattern");
 		btnShowOrHideAntiPattern.setToolTipText("Show/Hide AntiPatterns Tab");
 		btnShowOrHideAntiPattern.setEnabled(true);
+		btnShowOrHideAntiPattern.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnShowOrHideAntiPattern.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnShowOrHideAntiPattern.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -218,10 +194,13 @@ public class TheToolBar extends JToolBar {
 	
 	public void createShowHideOCLView ()
 	{
-		btnShowOrHideOCL = new ToolbarButton("OCL Simple Editor","/resources/icon/edit-36x36.png");
+		btnShowOrHideOCL = new JButton();
+		btnShowOrHideOCL.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/edit-36x36.png")));
 		btnShowOrHideOCL.setText("OCL Simple Editor");
 		btnShowOrHideOCL.setToolTipText("Show/Hide OCL Tab");
 		btnShowOrHideOCL.setEnabled(true);
+		btnShowOrHideOCL.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnShowOrHideOCL.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnShowOrHideOCL.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -234,9 +213,12 @@ public class TheToolBar extends JToolBar {
 	
 	public void createAntiPatternButton()
 	{
-		btnSearchForAntipatterns = new ToolbarButton("Detect AntiPatterns","/resources/icon/antipattern-36x36.png");		
+		btnSearchForAntipatterns = new JButton();		
 		btnSearchForAntipatterns.setText("Detect AntiPatterns");
+		btnSearchForAntipatterns.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/antipattern-36x36.png")));
 		btnSearchForAntipatterns.setToolTipText("Search for model antipatterns");
+		btnSearchForAntipatterns.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnSearchForAntipatterns.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnSearchForAntipatterns.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent event) 
