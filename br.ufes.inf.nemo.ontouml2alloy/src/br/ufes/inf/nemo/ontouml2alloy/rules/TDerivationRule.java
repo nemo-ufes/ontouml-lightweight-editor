@@ -65,11 +65,11 @@ public class TDerivationRule {
 	
 		VariableReference mediation1 = factory.createVariableReference();
 		VariableReference mediation2 = factory.createVariableReference();
-	
+			
 		// Get Mediations
 		ArrayList<Mediation> mediations = new ArrayList<Mediation>();
 		ontoparser.getAllMediations(derRelator,mediations);
-			
+				
 		// Get the two first mediations related with source and target of the material relation
 		int cont1=1;
 		for (Mediation med: mediations)

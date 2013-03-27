@@ -89,7 +89,7 @@ public class OntoUMLView extends JPanel {
 		modelpanel = new JPanel();
 		modelpanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		modelpanel.setLayout(new BorderLayout(0, 0));
-		modelpanel.setPreferredSize(new Dimension(400, 500));
+		modelpanel.setPreferredSize(new Dimension(400, 543));
 					
 		ontobar = new OntoUMLTreeBar();		
 		
@@ -99,7 +99,7 @@ public class OntoUMLView extends JPanel {
 		modelpanel.add(BorderLayout.CENTER,ontotree);
 		
 		JPanel tempPanel = new JPanel();
-		tempPanel.setPreferredSize(new Dimension(400, 100));
+		tempPanel.setPreferredSize(new Dimension(400, 150));
 		
 		lblNoSelection = new JLabel("No Selection");
 		lblNoSelection.setHorizontalAlignment(SwingConstants.CENTER);
@@ -122,7 +122,7 @@ public class OntoUMLView extends JPanel {
 		tempPanel.setLayout(gl_tempPanel);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new java.awt.Dimension(400, 360));
+		scrollPane.setPreferredSize(new Dimension(400, 170));
 		scrollPane.setViewportView(tempPanel);
 		
 		ontoumlSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,modelpanel,scrollPane);						
@@ -130,7 +130,7 @@ public class OntoUMLView extends JPanel {
 		ontoumlSplitPane.setOneTouchExpandable(true);		
 		ontoumlSplitPane.setBorder(null);		
 		
-		add(ontoumlSplitPane);	
+		add(ontoumlSplitPane, BorderLayout.SOUTH);	
 		
 		
 	}
