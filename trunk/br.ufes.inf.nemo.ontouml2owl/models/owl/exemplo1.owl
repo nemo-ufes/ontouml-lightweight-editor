@@ -13,6 +13,29 @@
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- xsd:String -->
+
+    <rdfs:Datatype rdf:about="xsd:String"/>
+    
+
+
+    <!-- xsd:int -->
+
+    <rdfs:Datatype rdf:about="xsd:int"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
     // Object Properties
     //
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -21,60 +44,204 @@
     
 
 
-    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation -->
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType12Category1 -->
 
-    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation">
-        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociationInv"/>
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType12Category1">
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1"/>
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType1"/>
+        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType12Category1Inv"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType12Category1Inv -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType12Category1Inv">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType1"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind12Kind2 -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind12Kind2">
         <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind1"/>
+        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind12Kind2Inv"/>
         <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1 -->
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind12Kind2Inv -->
 
-    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1">
-        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1Inv"/>
-        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1"/>
-        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind4"/>
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind12Kind2Inv">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind1"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1Inv -->
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Relator1 -->
 
-    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1Inv">
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Relator1">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Relator1"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role1"/>
+        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Relator1Inv"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Relator1Inv -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Relator1Inv">
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Relator1"/>
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role1"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Role2 -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Role2">
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role1"/>
+        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Role2Inv"/>
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role2"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Role2Inv -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Role2Inv">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role1"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role2"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role22Relator1 -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role22Relator1">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Relator1"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role2"/>
+        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role22Relator1Inv"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role22Relator1Inv -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role22Relator1Inv">
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Relator1"/>
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role2"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective52Collective1 -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective52Collective1">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Collective1"/>
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective5"/>
+        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective52Collective1Inv"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective52Collective1Inv -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective52Collective1Inv">
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Collective1"/>
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective5"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind12Subkind4 -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind12Subkind4">
+        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1"/>
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind4"/>
+        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind12Subkind4Inv"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind12Subkind4Inv -->
+
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind12Subkind4Inv">
         <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1"/>
         <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind4"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2 -->
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind22Subkind2 -->
 
-    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2">
-        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2Inv"/>
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind22Subkind2">
         <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind2"/>
         <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind3"/>
+        <owl:inverseOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind22Subkind2Inv"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2Inv -->
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind22Subkind2Inv -->
 
-    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2Inv">
+    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind22Subkind2Inv">
         <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind2"/>
         <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind3"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociationInv -->
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
 
-    <owl:ObjectProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociationInv">
-        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind1"/>
-        <rdfs:range rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
-    </owl:ObjectProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr1 -->
+
+    <owl:DatatypeProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr1">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
+        <rdfs:range rdf:resource="xsd:int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr2 -->
+
+    <owl:DatatypeProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr2">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
+        <rdfs:range rdf:resource="xsd:String"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr3 -->
+
+    <owl:DatatypeProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr3">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
+        <rdfs:range rdf:resource="xsd:int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr4 -->
+
+    <owl:DatatypeProperty rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr4">
+        <rdfs:domain rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
+        <rdfs:range rdf:resource="xsd:int"/>
+    </owl:DatatypeProperty>
     
 
 
@@ -89,9 +256,22 @@
     
 
 
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Boolean -->
+
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Boolean"/>
+    
+
+
     <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1 -->
 
     <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType12Category1Inv"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType1"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <owl:disjointUnionOf rdf:parseType="Collection">
             <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind1"/>
             <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
@@ -102,7 +282,28 @@
 
     <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Collective1 -->
 
-    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Collective1"/>
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Collective1">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective52Collective1"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective5"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">5</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective52Collective1"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective5"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">5</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType1 -->
+
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType1"/>
     
 
 
@@ -120,14 +321,14 @@
         <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociationInv"/>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind12Kind2Inv"/>
                 <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
                 <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociationInv"/>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind12Kind2Inv"/>
                 <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
                 <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
             </owl:Restriction>
@@ -142,16 +343,58 @@
         <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation"/>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind12Kind2"/>
                 <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind1"/>
                 <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation"/>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr2"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="xsd:String"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr2"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onDataRange rdf:resource="xsd:String"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind12Kind2"/>
                 <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind1"/>
                 <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr1"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="xsd:int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr4"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onDataRange rdf:resource="xsd:int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr3"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">5</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="xsd:int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#attr3"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onDataRange rdf:resource="xsd:int"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -160,7 +403,36 @@
 
     <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Relator1 -->
 
-    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Relator1"/>
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Relator1">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Relator1"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role1"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role22Relator1"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role2"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role22Relator1"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role2"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Relator1"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role1"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
     
 
 
@@ -168,6 +440,20 @@
 
     <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role1">
         <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Role2Inv"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role2"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Relator1Inv"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Relator1"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -176,6 +462,41 @@
 
     <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role2">
         <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Collective1"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role22Relator1Inv"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Relator1"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role12Role2"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Role1"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective5 -->
+
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective5">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective52Collective1Inv"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Collective1"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective52Collective1Inv"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Collective1"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -186,16 +507,16 @@
         <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind1"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1Inv"/>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind12Subkind4Inv"/>
                 <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind4"/>
-                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">4</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1Inv"/>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind12Subkind4Inv"/>
                 <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind4"/>
-                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">4</owl:maxQualifiedCardinality>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -208,16 +529,16 @@
         <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind1"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2Inv"/>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind22Subkind2Inv"/>
                 <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind3"/>
-                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2Inv"/>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind22Subkind2Inv"/>
                 <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind3"/>
-                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -230,14 +551,14 @@
         <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2"/>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind22Subkind2"/>
                 <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind2"/>
                 <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation2"/>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind22Subkind2"/>
                 <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind2"/>
                 <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
@@ -253,19 +574,62 @@
         <rdfs:subClassOf rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Kind2"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1"/>
-                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1"/>
-                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:maxQualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#FormalAssociation1"/>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind12Subkind4"/>
                 <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1"/>
                 <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Subkind12Subkind4"/>
+                <owl:onClass rdf:resource="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubKind1"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#UnlimitedNatural -->
+
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#UnlimitedNatural"/>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#char -->
+
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#char"/>
+    
+
+
+    <!-- http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#int -->
+
+    <owl:Class rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#int"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Boolean"/>
+            <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Category1"/>
+            <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Collective1"/>
+            <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#DataType1"/>
+            <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#Relator1"/>
+            <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#SubCollective5"/>
+            <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#UnlimitedNatural"/>
+            <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#char"/>
+            <rdf:Description rdf:about="http://br.ufes.inf.nemo.ontouml2owl/exemplos/exemplo1#int"/>
+        </owl:members>
+    </rdf:Description>
 </rdf:RDF>
 
 
