@@ -26,7 +26,7 @@ import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElemTabbedPane;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeBar;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLBar;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeNodeElem;
 import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
 
@@ -44,7 +44,7 @@ public class OntoUMLView extends JPanel {
 	private OntoUMLModel ontoumlModel;
 	
 	private TheFrame frame;	
-	private OntoUMLTreeBar ontobar;
+	private OntoUMLBar ontobar;
 	private TreeScrollPane ontotree;
 	private CheckboxTree modeltree;
 	private JScrollPane scrollPane;
@@ -91,7 +91,7 @@ public class OntoUMLView extends JPanel {
 		modelpanel.setLayout(new BorderLayout(0, 0));
 		modelpanel.setPreferredSize(new Dimension(400, 543));
 					
-		ontobar = new OntoUMLTreeBar();		
+		ontobar = new OntoUMLBar();		
 		
 		modelpanel.add(BorderLayout.NORTH,ontobar);
 		
