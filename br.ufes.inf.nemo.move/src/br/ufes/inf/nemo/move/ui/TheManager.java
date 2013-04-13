@@ -11,7 +11,7 @@ import org.eclipse.ocl.SemanticException;
 
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.ontoumlverificator.ProblemVerificator;
+import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
 import br.ufes.inf.nemo.move.mvc.controller.AntiPatternListController;
 import br.ufes.inf.nemo.move.mvc.controller.OCLController;
@@ -186,7 +186,7 @@ public class TheManager {
 		doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
 		
 		// diagnose model
-		ProblemVerificator verificator = new ProblemVerificator();
+		ModelDiagnostician verificator = new ModelDiagnostician();
 		log = verificator.getDiagnostic(ontoumlmodel.getOntoUMLParser());
 						
 		return log;

@@ -3,12 +3,14 @@ package br.ufes.inf.nemo.move.ui.ocl;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.border.EmptyBorder;
 
 /**
  * @author John Guerson
@@ -24,10 +26,12 @@ public class OCLEditorBar extends JPanel {
 	public JButton btnNew;
 	public JButton btnParse;
 	private JPanel panel;
+	private JPanel westPanel;
+	private JPanel EastPanel;
 	
 	public OCLEditorBar() 
 	{
-		setBorder(null);
+		setBorder(new EmptyBorder(0, 0, 0, 0));
 		textPath = new JTextField();
 		textPath.setToolTipText("");
 		textPath.setBackground(Color.WHITE);
@@ -36,6 +40,10 @@ public class OCLEditorBar extends JPanel {
 		setPreferredSize(new Dimension(360, 61));
 		
 		JToolBar toolBar = new JToolBar();
+		FlowLayout fl_toolBar = new FlowLayout(FlowLayout.LEFT);
+		fl_toolBar.setVgap(1);
+		fl_toolBar.setHgap(3);
+		toolBar.setLayout(fl_toolBar);
 		
 		btnNew = new JButton("New");
 		btnNew.setFocusable(false);
@@ -66,5 +74,11 @@ public class OCLEditorBar extends JPanel {
 		
 		panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
+		
+		westPanel = new JPanel();
+		add(westPanel, BorderLayout.WEST);
+		
+		EastPanel = new JPanel();
+		add(EastPanel, BorderLayout.EAST);
 	}	
 }

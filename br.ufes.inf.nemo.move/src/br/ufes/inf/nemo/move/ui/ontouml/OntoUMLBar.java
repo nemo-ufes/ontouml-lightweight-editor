@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.move.ui.ontouml;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -39,6 +40,10 @@ public class OntoUMLBar extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		toolBar = new JToolBar();
+		FlowLayout fl_toolBar = new FlowLayout(FlowLayout.LEFT);
+		fl_toolBar.setVgap(1);
+		fl_toolBar.setHgap(3);
+		toolBar.setLayout(fl_toolBar);
 		
 		btnOpen = new JButton("Open");
 		btnOpen.setFocusable(false);
@@ -52,13 +57,13 @@ public class OntoUMLBar extends JPanel {
 		btnSaveAs.setIcon(new ImageIcon(OntoUMLBar.class.getResource("/resources/icon/save-16x16.png")));
 		btnSaveAs.setToolTipText("Save OntoUML Model (*.refontouml)");
 		
-		btnVerify = new JButton("Diagnostic");
+		btnVerify = new JButton("Diagnose");
 		btnVerify.setFocusable(false);
 		toolBar.add(btnVerify);
 		btnVerify.setToolTipText("See some problems found in your model");
 		btnVerify.setIcon(new ImageIcon(OntoUMLBar.class.getResource("/resources/icon/diagnostic-16x16.png")));
 		
-		btnShowUnique = new JButton("Aliases");
+		btnShowUnique = new JButton("Show aliases");
 		btnShowUnique.setFocusable(false);
 		toolBar.add(btnShowUnique);
 		btnShowUnique.setToolTipText("Show Generated Aliases");

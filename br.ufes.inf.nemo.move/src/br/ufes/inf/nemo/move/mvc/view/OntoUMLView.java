@@ -130,7 +130,7 @@ public class OntoUMLView extends JPanel {
 		ontoumlSplitPane.setOneTouchExpandable(true);		
 		ontoumlSplitPane.setBorder(null);		
 		
-		add(ontoumlSplitPane, BorderLayout.SOUTH);	
+		add(ontoumlSplitPane, BorderLayout.NORTH);	
 		
 		
 	}
