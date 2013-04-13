@@ -92,6 +92,7 @@ public class OntoUMLView extends JPanel {
 		modelpanel.setPreferredSize(new Dimension(400, 543));
 					
 		ontobar = new OntoUMLBar();		
+		ontobar.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		modelpanel.add(BorderLayout.NORTH,ontobar);
 		
