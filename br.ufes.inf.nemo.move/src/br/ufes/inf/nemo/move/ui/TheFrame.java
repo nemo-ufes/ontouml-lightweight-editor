@@ -39,7 +39,8 @@ public class TheFrame extends JFrame {
 	private JTabbedPane consoleTabbedPane;
 	private TheManager appmanager;	
 	private SimpleGUICustom analyzer;
-		
+	private TheStatus statusBar;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -128,6 +129,9 @@ public class TheFrame extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/icon/window.png")));
 		setTitle("Model Validation Environment - MOVE");
 					
+		statusBar = new TheStatus();
+		getContentPane().add(BorderLayout.SOUTH,statusBar);
+		
 		try {			
 			Extractor.alloyAnalyzerJAR();
 		} catch (IOException e) {			
@@ -255,7 +259,7 @@ public class TheFrame extends JFrame {
 	
 	/** Show Console */
 	public void ShowConsole() { 
-		centerSplitPane.setDividerLocation(0.50); 
+		centerSplitPane.setDividerLocation(0.65); 
 	}
 	/** Hide Console */
 	public void HideConsole() { 

@@ -27,6 +27,8 @@ public class OntoUMLBar extends JPanel {
 	public JButton btnSaveAs;
 	private JToolBar toolBar;
 	private JPanel panel;
+	private JPanel westPanel;
+	private JPanel eastPanel;
 	
 	public OntoUMLBar() 
 	{
@@ -73,6 +75,12 @@ public class OntoUMLBar extends JPanel {
 		
 		panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
+		
+		westPanel = new JPanel();
+		add(westPanel, BorderLayout.WEST);
+		
+		eastPanel = new JPanel();
+		add(eastPanel, BorderLayout.EAST);
 							
 	}	
 }
