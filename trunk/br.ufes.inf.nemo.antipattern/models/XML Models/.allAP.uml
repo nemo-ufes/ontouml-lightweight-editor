@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_Mt-oUHRqEeKhVLd84SUgmQ" name="EA_Model">
+  <packagedElement xmi:type="uml:Package" xmi:id="_Mt-oUXRqEeKhVLd84SUgmQ" name="example">
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt-oUnRqEeKhVLd84SUgmQ" name="Captain">
+      <generalization xmi:id="_Mt-oU3RqEeKhVLd84SUgmQ" general="_Mt_Pg3RqEeKhVLd84SUgmQ" generalizationSet="_Mt_2jnRqEeKhVLd84SUgmQ"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt-oVHRqEeKhVLd84SUgmQ" name="Child">
+      <generalization xmi:id="_Mt-oVXRqEeKhVLd84SUgmQ" general="_Mt_PfHRqEeKhVLd84SUgmQ"/>
+      <ownedAttribute xmi:id="_Mt-oVnRqEeKhVLd84SUgmQ" name="parent" visibility="public" type="_Mt_Pd3RqEeKhVLd84SUgmQ" association="_Mt_2hnRqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt-oV3RqEeKhVLd84SUgmQ"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt-oWHRqEeKhVLd84SUgmQ" value="2"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt-oWXRqEeKhVLd84SUgmQ" name="Crime Investigation">
+      <ownedAttribute xmi:id="_Mt-oWnRqEeKhVLd84SUgmQ" name="leader" visibility="public" type="_Mt_PcHRqEeKhVLd84SUgmQ" isReadOnly="true" association="_Mt_2h3RqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt-oW3RqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt-oXHRqEeKhVLd84SUgmQ" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_Mt_PYHRqEeKhVLd84SUgmQ" name="suspect" visibility="public" type="_Mt_2eXRqEeKhVLd84SUgmQ" isReadOnly="true" association="_Mt_2iHRqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_PYXRqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_PYnRqEeKhVLd84SUgmQ" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_Mt_PY3RqEeKhVLd84SUgmQ" name="witness" visibility="public" type="_Mt_2fnRqEeKhVLd84SUgmQ" isReadOnly="true" association="_Mt_2iXRqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_PZHRqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_PZXRqEeKhVLd84SUgmQ" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_Mt_PZnRqEeKhVLd84SUgmQ" name="investigator" visibility="public" type="_Mt_Pg3RqEeKhVLd84SUgmQ" isReadOnly="true" association="_Mt_2inRqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_PZ3RqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_PaHRqEeKhVLd84SUgmQ" value="*"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt_PaXRqEeKhVLd84SUgmQ" name="Interrogation">
+      <ownedAttribute xmi:id="_Mt_PanRqEeKhVLd84SUgmQ" name="witness" visibility="public" type="_Mt_2fnRqEeKhVLd84SUgmQ" isReadOnly="true" association="_Mt_2i3RqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_Pa3RqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_PbHRqEeKhVLd84SUgmQ" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_Mt_PbXRqEeKhVLd84SUgmQ" name="interrogator" visibility="public" type="_Mt_Pg3RqEeKhVLd84SUgmQ" isReadOnly="true" association="_Mt_2jHRqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_PbnRqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_Pb3RqEeKhVLd84SUgmQ" value="*"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt_PcHRqEeKhVLd84SUgmQ" name="Lead Investigator">
+      <generalization xmi:id="_Mt_PcXRqEeKhVLd84SUgmQ" general="_Mt_Pg3RqEeKhVLd84SUgmQ"/>
+      <ownedAttribute xmi:id="_Mt_PcnRqEeKhVLd84SUgmQ" name="inv" visibility="public" type="_Mt-oWXRqEeKhVLd84SUgmQ" association="_Mt_2h3RqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_Pc3RqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_PdHRqEeKhVLd84SUgmQ" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt_PdXRqEeKhVLd84SUgmQ" name="Officer">
+      <generalization xmi:id="_Mt_PdnRqEeKhVLd84SUgmQ" general="_Mt_Pg3RqEeKhVLd84SUgmQ" generalizationSet="_Mt_2jnRqEeKhVLd84SUgmQ"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt_Pd3RqEeKhVLd84SUgmQ" name="Parent">
+      <generalization xmi:id="_Mt_PeHRqEeKhVLd84SUgmQ" general="_Mt_PfHRqEeKhVLd84SUgmQ"/>
+      <ownedAttribute xmi:id="_Mt_PeXRqEeKhVLd84SUgmQ" name="child" visibility="public" type="_Mt-oVHRqEeKhVLd84SUgmQ" association="_Mt_2hnRqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_PenRqEeKhVLd84SUgmQ"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_Pe3RqEeKhVLd84SUgmQ" value="*"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt_PfHRqEeKhVLd84SUgmQ" name="Person">
+      <ownedAttribute xmi:id="_Mt_PfXRqEeKhVLd84SUgmQ" visibility="public" type="_Mt_PfHRqEeKhVLd84SUgmQ" association="_Mt_2jXRqEeKhVLd84SUgmQ">
+        <name xsi:nil="true"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_PfnRqEeKhVLd84SUgmQ"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_Pf3RqEeKhVLd84SUgmQ" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_Mt_PgHRqEeKhVLd84SUgmQ" visibility="public" type="_Mt_PfHRqEeKhVLd84SUgmQ" association="_Mt_2jXRqEeKhVLd84SUgmQ">
+        <name xsi:nil="true"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_PgXRqEeKhVLd84SUgmQ"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_PgnRqEeKhVLd84SUgmQ" value="*"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt_Pg3RqEeKhVLd84SUgmQ" name="Policeman">
+      <generalization xmi:id="_Mt_2cHRqEeKhVLd84SUgmQ" general="_Mt_PfHRqEeKhVLd84SUgmQ"/>
+      <ownedAttribute xmi:id="_Mt_2cXRqEeKhVLd84SUgmQ" name="inv" visibility="public" type="_Mt-oWXRqEeKhVLd84SUgmQ" association="_Mt_2inRqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_2cnRqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_2c3RqEeKhVLd84SUgmQ" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_Mt_2dHRqEeKhVLd84SUgmQ" name="interrogation" visibility="public" type="_Mt_PaXRqEeKhVLd84SUgmQ" association="_Mt_2jHRqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_2dXRqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_2dnRqEeKhVLd84SUgmQ" value="*"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt_2d3RqEeKhVLd84SUgmQ" name="Sargeant">
+      <generalization xmi:id="_Mt_2eHRqEeKhVLd84SUgmQ" general="_Mt_Pg3RqEeKhVLd84SUgmQ" generalizationSet="_Mt_2jnRqEeKhVLd84SUgmQ"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt_2eXRqEeKhVLd84SUgmQ" name="Suspect">
+      <generalization xmi:id="_Mt_2enRqEeKhVLd84SUgmQ" general="_Mt_PfHRqEeKhVLd84SUgmQ"/>
+      <ownedAttribute xmi:id="_Mt_2e3RqEeKhVLd84SUgmQ" name="inv" visibility="public" type="_Mt-oWXRqEeKhVLd84SUgmQ" association="_Mt_2iHRqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_2fHRqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_2fXRqEeKhVLd84SUgmQ" value="*"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt_2fnRqEeKhVLd84SUgmQ" name="Witness">
+      <generalization xmi:id="_Mt_2f3RqEeKhVLd84SUgmQ" general="_Mt_PfHRqEeKhVLd84SUgmQ"/>
+      <ownedAttribute xmi:id="_Mt_2gHRqEeKhVLd84SUgmQ" name="inv" visibility="public" type="_Mt-oWXRqEeKhVLd84SUgmQ" association="_Mt_2iXRqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_2gXRqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_2gnRqEeKhVLd84SUgmQ" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_Mt_2g3RqEeKhVLd84SUgmQ" name="interrogation" visibility="public" type="_Mt_PaXRqEeKhVLd84SUgmQ" association="_Mt_2i3RqEeKhVLd84SUgmQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mt_2hHRqEeKhVLd84SUgmQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mt_2hXRqEeKhVLd84SUgmQ" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Mt_2hnRqEeKhVLd84SUgmQ" name="parentOf" isDerived="true" memberEnd="_Mt-oVnRqEeKhVLd84SUgmQ _Mt_PeXRqEeKhVLd84SUgmQ"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Mt_2h3RqEeKhVLd84SUgmQ" name="responsibleFor" memberEnd="_Mt_PcnRqEeKhVLd84SUgmQ _Mt-oWnRqEeKhVLd84SUgmQ"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Mt_2iHRqEeKhVLd84SUgmQ" name="investigates" memberEnd="_Mt_2e3RqEeKhVLd84SUgmQ _Mt_PYHRqEeKhVLd84SUgmQ"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Mt_2iXRqEeKhVLd84SUgmQ" name="relatedTo" memberEnd="_Mt_2gHRqEeKhVLd84SUgmQ _Mt_PY3RqEeKhVLd84SUgmQ"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Mt_2inRqEeKhVLd84SUgmQ" name="participatesIn" memberEnd="_Mt_2cXRqEeKhVLd84SUgmQ _Mt_PZnRqEeKhVLd84SUgmQ"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Mt_2i3RqEeKhVLd84SUgmQ" name="targetOf" memberEnd="_Mt_2g3RqEeKhVLd84SUgmQ _Mt_PanRqEeKhVLd84SUgmQ"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Mt_2jHRqEeKhVLd84SUgmQ" name="conducts" memberEnd="_Mt_2dHRqEeKhVLd84SUgmQ _Mt_PbXRqEeKhVLd84SUgmQ"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Mt_2jXRqEeKhVLd84SUgmQ" name="knows" isDerived="true" memberEnd="_Mt_PfXRqEeKhVLd84SUgmQ _Mt_PgHRqEeKhVLd84SUgmQ"/>
+    <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_Mt_2jnRqEeKhVLd84SUgmQ" name="gs" isCovering="true" isDisjoint="true" generalization="_Mt-oU3RqEeKhVLd84SUgmQ _Mt_PdnRqEeKhVLd84SUgmQ _Mt_2eHRqEeKhVLd84SUgmQ"/>
+  </packagedElement>
+</uml:Model>

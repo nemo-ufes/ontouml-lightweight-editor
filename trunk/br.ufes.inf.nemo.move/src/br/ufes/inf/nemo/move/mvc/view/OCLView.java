@@ -8,7 +8,6 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.eclipse.ocl.ParserException;
@@ -65,6 +64,7 @@ public class OCLView extends JPanel {
 	 */
 	public OCLView() 
 	{
+		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 		
@@ -73,7 +73,7 @@ public class OCLView extends JPanel {
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		oclbar = new OCLEditorBar();
-		oclbar.setBorder(new LineBorder(Color.LIGHT_GRAY));
+		oclbar.setBorder(new EmptyBorder(0, 0, 0, 0));
 		panel.add(BorderLayout.CENTER,oclbar);
 		
 		add(BorderLayout.NORTH,panel);	

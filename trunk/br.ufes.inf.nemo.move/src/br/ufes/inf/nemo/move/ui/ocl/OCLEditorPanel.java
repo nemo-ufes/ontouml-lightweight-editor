@@ -20,6 +20,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
+import javax.swing.border.EmptyBorder;
 
 /**
  * @author John Guerson
@@ -112,6 +113,7 @@ public class OCLEditorPanel extends JPanel {
 	 */
 	public OCLEditorPanel ()
 	{
+		setBorder(new EmptyBorder(0, 0, 0, 0));
 		initializeTextArea();
 			         
 		tokenMaker = new OCLTokenMaker();	    

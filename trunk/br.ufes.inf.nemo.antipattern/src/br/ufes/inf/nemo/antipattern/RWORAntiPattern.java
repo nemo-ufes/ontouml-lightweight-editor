@@ -75,6 +75,7 @@ public class RWORAntiPattern extends Antipattern{
 	}
 	
 	public String generateExclusiveOCLInvariant (ArrayList<ArrayList<Mediation>> exclusiveMatrix, OntoUMLParser parser, int cardinality){
+		@SuppressWarnings("unused")
 		String invariant="", rules, invariantName, relatorName;
 		Combination comb1;
 		ArrayList<Mediation> output;

@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.move.ui.util.Extractor;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
+import java.awt.Font;
 
 /**
  * @author John Guerson
@@ -35,6 +36,7 @@ public class TheFrame extends JFrame {
 	private JSplitPane centerSplitPane;	
 	private JTabbedPane ontoumlTabbedPane;
 	private JTabbedPane oclTabbedPane;
+	private JTabbedPane consoleTabbedPane;
 	private TheManager appmanager;	
 	private SimpleGUICustom analyzer;
 		
@@ -80,11 +82,13 @@ public class TheFrame extends JFrame {
 		appmanager = new TheManager(this);
 		
 		oclTabbedPane = new JTabbedPane();
-		oclTabbedPane.setBorder(null);
+		oclTabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		oclTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		oclTabbedPane.add(appmanager.getOCLView());	
 		oclTabbedPane.setTitleAt(0,"OCL Simple Editor");
 		oclTabbedPane.setBackground(UIManager.getColor("Panel.background"));
 		oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-16x16.png")));
+		oclTabbedPane.setBorder(null);
 		
 		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclTabbedPane,appmanager.getAntiPatternListView());
 		innerSplitPane.setOneTouchExpandable(true);		
@@ -92,17 +96,28 @@ public class TheFrame extends JFrame {
 		
 		ontoumlTabbedPane = new JTabbedPane();
 		ontoumlTabbedPane.setBorder(null);
+		ontoumlTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		ontoumlTabbedPane.setPreferredSize(new Dimension(400,600));
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
 		ontoumlTabbedPane.setTitleAt(0,"OntoUML Model");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));
-								
-		centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlTabbedPane,innerSplitPane);
+		
+		console = new TheConsole(this);	
+
+		consoleTabbedPane = new JTabbedPane();
+		consoleTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		consoleTabbedPane.setBorder(null);
+		consoleTabbedPane.setPreferredSize(new Dimension(400,600));
+		consoleTabbedPane.add(console);	
+		consoleTabbedPane.setTitleAt(0,"Console");
+		consoleTabbedPane.setBackground(UIManager.getColor("Panel.background"));
+		consoleTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/display-16x16.png")));
+		
+		centerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,innerSplitPane,consoleTabbedPane);
 		centerSplitPane.setOneTouchExpandable(true);		
 		centerSplitPane.setBorder(null);
-		console = new TheConsole();	
-		
-		mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,centerSplitPane,console);
+				
+		mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlTabbedPane,centerSplitPane);
 		mainSplitPane.setOneTouchExpandable(true);			
 		mainSplitPane.setBorder(null);
 		
@@ -141,8 +156,9 @@ public class TheFrame extends JFrame {
             @Override
             public void run() 
             {            	
-            	mainSplitPane.setDividerLocation(1.0);            	
-            	innerSplitPane.setDividerLocation(1.0);            	
+            	//mainSplitPane.setDividerLocation(0.35);
+            	innerSplitPane.setDividerLocation(1.00);
+            	centerSplitPane.setDividerLocation(0.65);            	
             }
         });
     }
@@ -225,25 +241,25 @@ public class TheFrame extends JFrame {
 	 */
 	public void ShowOrHideConsole()
 	{
-		int location = mainSplitPane.getDividerLocation();
-		int maxLocation = mainSplitPane.getMaximumDividerLocation();
+		int location = centerSplitPane.getDividerLocation();
+		int maxLocation = centerSplitPane.getMaximumDividerLocation();
 		if(location < maxLocation)
 	    {
-			mainSplitPane.setDividerLocation(1.0);	
+			centerSplitPane.setDividerLocation(1.00);	
 	    }
 	    else
 	    {
-	      	mainSplitPane.setDividerLocation(0.60);
+	    	centerSplitPane.setDividerLocation(0.65);
 	    }
 	}	
 	
 	/** Show Console */
 	public void ShowConsole() { 
-		mainSplitPane.setDividerLocation(0.70); 
+		centerSplitPane.setDividerLocation(0.50); 
 	}
 	/** Hide Console */
 	public void HideConsole() { 
-		mainSplitPane.setDividerLocation(1.00); 
+		centerSplitPane.setDividerLocation(1.00); 
 	}
 	
 	/**
