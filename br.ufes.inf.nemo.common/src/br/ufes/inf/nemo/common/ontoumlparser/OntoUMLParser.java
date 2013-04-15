@@ -373,7 +373,7 @@ public class OntoUMLParser {
 	 * 
 	 * @return
 	 */
-	public Set<Generalization> getGeneralizations(Classifier c)
+	public Set<Generalization> getSpecializations(Classifier c)
 	{
 		Set<Generalization> list = new HashSet<Generalization>();		
 		for (EObject obj : getElements()) 
