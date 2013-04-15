@@ -23,12 +23,12 @@ public class SingleAssociationPanel extends JPanel {
 	private JLabel name, source, target;
 	JCheckBox chckbxST, chckbxTS;
 	
-	public SingleAssociationPanel ()
+	public SingleAssociationPanel()
 	{
 		initGUI();
 	}
 	
-	public SingleAssociationPanel (Association assoc)
+	public SingleAssociationPanel(Association assoc)
 	{
 		setAssociation(assoc);
 		
@@ -53,7 +53,8 @@ public class SingleAssociationPanel extends JPanel {
 		JPanel rPanel = new JPanel();
 		rPanel.setPreferredSize(new Dimension(250, 65));
 		{
-			name = new JLabel("Association " + assoc.getName());
+			name = new JLabel(assoc.getClass().toString().replace("class RefOntoUML.impl.", "").replace("Impl", "")
+					+ " " + assoc.getName());
 			source = new JLabel("Source: " + assoc.getMemberEnd().get(0).getType().getName());
 			chckbxST = new JCheckBox("Use Source -> Target");
 		}

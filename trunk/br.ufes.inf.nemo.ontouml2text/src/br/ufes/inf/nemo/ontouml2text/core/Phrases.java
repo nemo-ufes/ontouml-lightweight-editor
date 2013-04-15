@@ -14,56 +14,56 @@ public class Phrases {
 	
 	public static String ownsVerb()
 	{
-		return " possui ";
+		return "possui";
 	}
 	
 	public static String andVerb()
 	{
-		return " e ";
+		return "e";
 	}
 	
 	public static String subtypesVerb()
 	{
-		return " é um tipo de ";
+		return "é um tipo de";
 	}
 	
 	public static String supertypesVerb()
 	{
-		return "Pode ser ";
+		return "pode ser";
 	}
 
 	public static String processVerb(Association assoc)
 	{
 		if (assoc instanceof Mediation)
 		{
-			return " media ";
+			return "media";
 		}
 		else if (assoc instanceof Characterization)
 		{
-			return " caracteriza ";
+			return "caracteriza";
 		}
 		else if (assoc instanceof Derivation)
 		{
-			return " deriva ";
+			return "deriva";
 		}
 		else if (assoc instanceof componentOf)
 		{
-			return " é composto de ";
+			return "é composto de";
 		}
 		else if (assoc instanceof memberOf)
 		{
-			return " é membro de ";
+			return "é membro de";
 		}
 		else if (assoc instanceof subQuantityOf)
 		{
-			return " é sub-quantity de ";
+			return "é sub-quantity de";
 		}
 		else if (assoc instanceof subCollectionOf)
 		{
-			return " é sub-collection de ";
+			return "é sub-collection de";
 		}
 		else 
-			return " tem ";
+			return "tem";
 	}
 	
 	public static String processMultiplicity (Property prop)
