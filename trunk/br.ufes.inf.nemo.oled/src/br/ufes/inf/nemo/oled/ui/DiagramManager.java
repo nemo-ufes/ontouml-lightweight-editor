@@ -833,20 +833,23 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		{
 			getCurrentWrapper().showOutputText(result.toString(), true, true); 
 			
-			TextEditor textViz = (TextEditor) getEditorForProject(project, EditorNature.TEXT);
-			
-			if(textViz == null)
+			if (!result.getData()[0].equals("CSV"))
 			{
-				textViz = new TextEditor(project);
+				TextEditor textViz = (TextEditor) getEditorForProject(project, EditorNature.TEXT);
 				
-				//TODO Localize this;
-				add("Text Description Generated", textViz);
+				if(textViz == null)
+				{
+					textViz = new TextEditor(project);
+					
+					//TODO Localize this;
+					add("Text Description Generated", textViz);
+				}
+				else
+				{
+					setSelectedComponent(textViz);
+				}
+				textViz.setText((String) result.getData()[0]);
 			}
-			else
-			{
-				setSelectedComponent(textViz);
-			}
-			textViz.setText((String) result.getData()[0]);
 
 		}
 		else

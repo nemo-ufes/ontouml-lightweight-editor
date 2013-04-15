@@ -1,19 +1,20 @@
 package br.ufes.inf.nemo.oled.util;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
-
 
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
-import br.ufes.inf.nemo.ontouml2text.ui.Options;
+import br.ufes.inf.nemo.ontouml2text.ui.MainWindow;
 
 public class TextDescriptionHelper {
 	
-	private static Options writer;
+	private static JDialog writer;
 	
 	public static OperationResult generateText(final Model refmodel, JFrame frame)
 	{
-		writer = new Options(frame, refmodel);
+		MainWindow mainWindow = new MainWindow(frame, refmodel);
+		writer = mainWindow.getAppDialog();
 	   	writer.setLocationRelativeTo(frame);
 	   	writer.setVisible(true);
 	   	
@@ -21,30 +22,11 @@ public class TextDescriptionHelper {
 	   	
 	   	try
 		{
-			String textOutput = writer.getModelDescription();
+			String textOutput = mainWindow.getModelDescription();
 		
 			if(textOutput != null && textOutput.length() > 0)
 			{
-				if (textOutput.equals("CSS"))
-				{
-					return new OperationResult(ResultType.SUCESS, "CSS generated successfully.", null);
-				}
-				else
-	//			if(fileOutput && filePath != null)
-	//			{
-	//				String owlFileName = ConfigurationHelper.canon(filePath);
-	//			    	
-	//				// Writing transformed model into owl file
-	//				FileManager fileManager = new FileManager(owlFileName);
-	//				fileManager.write(owlOutput);
-	//				fileManager.done();
-	//				
-	//				return new OperationResult(ResultType.SUCESS, "OWL generated successfully", new Object[] { owlFileName });
-	//			}
-	//			else
-	//			{
-					return new OperationResult(ResultType.SUCESS, "Model description generated successfully.", new Object[] { textOutput });
-	//			}
+				return new OperationResult(ResultType.SUCESS, "Model description generated successfully.", new Object[] { textOutput });
 			}
 			else
 			{
