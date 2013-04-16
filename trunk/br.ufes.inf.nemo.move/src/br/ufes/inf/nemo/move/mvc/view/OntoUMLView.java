@@ -4,17 +4,10 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionListener;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -27,7 +20,6 @@ import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
 import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLBar;
 import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLCheckBoxTree;
-import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLElemTabbedPane;
 import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLTreeNodeElem;
 
 /**
@@ -47,17 +39,6 @@ public class OntoUMLView extends JPanel {
 	private OntoUMLBar ontobar;
 	private TreeScrollPane ontotree;
 	private CheckboxTree modeltree;
-	private JScrollPane scrollPane;
-	
-	private JSplitPane ontoumlSplitPane;
-	private JPanel modelpanel;
-	private OntoUMLElemTabbedPane elempanel;
-	private JLabel lblNoSelection;
-			
-	public OntoUMLElemTabbedPane getElementPanel()
-	{
-		return elempanel;
-	}
 	
 	/** 
 	 * Creates a View from a OntoUML model and the main frame application.
@@ -85,53 +66,15 @@ public class OntoUMLView extends JPanel {
 	{
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
-		
-		modelpanel = new JPanel();
-		modelpanel.setBorder(new EmptyBorder(0, 0, 0, 0));
-		modelpanel.setLayout(new BorderLayout(0, 0));
-		modelpanel.setPreferredSize(new Dimension(400, 543));
 					
 		ontobar = new OntoUMLBar();		
 		ontobar.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
-		modelpanel.add(BorderLayout.NORTH,ontobar);
+		add(BorderLayout.NORTH,ontobar);
 		
 		ontotree = new TreeScrollPane();
-		modelpanel.add(BorderLayout.CENTER,ontotree);
+		add(BorderLayout.CENTER,ontotree);		
 		
-		JPanel tempPanel = new JPanel();
-		tempPanel.setPreferredSize(new Dimension(400, 150));
-		
-		lblNoSelection = new JLabel("No Selection");
-		lblNoSelection.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		GroupLayout gl_tempPanel = new GroupLayout(tempPanel);
-		gl_tempPanel.setHorizontalGroup(
-			gl_tempPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_tempPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNoSelection, GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		gl_tempPanel.setVerticalGroup(
-			gl_tempPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_tempPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNoSelection)
-					.addContainerGap(190, Short.MAX_VALUE))
-		);
-		tempPanel.setLayout(gl_tempPanel);
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new Dimension(400, 170));
-		scrollPane.setViewportView(tempPanel);
-		
-		ontoumlSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,modelpanel,scrollPane);						
-				
-		ontoumlSplitPane.setOneTouchExpandable(true);		
-		ontoumlSplitPane.setBorder(null);		
-		
-		add(ontoumlSplitPane, BorderLayout.NORTH);
 	}
 		
 	/**
@@ -148,12 +91,8 @@ public class OntoUMLView extends JPanel {
 						
 			modeltree = OntoUMLCheckBoxTree.createCheckBoxTree(refmodel,refparser);					
 			
-			if (modeltree!=null){
-				elempanel= new OntoUMLElemTabbedPane();				
-				addTreeListener(new ModelTreeListener());
-				scrollPane.setViewportView(elempanel);
-				ontoumlSplitPane.setRightComponent(scrollPane);
-				ontoumlSplitPane.setDividerLocation(0.50);
+			if (modeltree!=null){						
+				addTreeListener(new ModelTreeListener());				
 			}
 			
 			ontotree.treePanel.add(BorderLayout.CENTER,modeltree);
@@ -171,14 +110,7 @@ public class OntoUMLView extends JPanel {
 				OntoUMLTreeNodeElem chckNode = (OntoUMLTreeNodeElem) node.getUserObject();							
 				
 				frame.getProperties().setData(chckNode);
-				//if (chckNode.getElement() instanceof RefOntoUML.Class) ClassPropertyDialog.open(chckNode);
-												
-				if (chckNode.getElement() instanceof RefOntoUML.Class) { elempanel.setData(chckNode); elempanel.setSelectedIndex(0); }
-				else if (chckNode.getElement() instanceof RefOntoUML.DataType) { elempanel.setData(chckNode); elempanel.setSelectedIndex(0); }
-				else if(chckNode.getElement() instanceof RefOntoUML.Association) { elempanel.setData(chckNode); elempanel.setSelectedIndex(1); } 
-				else if(chckNode.getElement() instanceof RefOntoUML.GeneralizationSet) { elempanel.setData(chckNode); elempanel.setSelectedIndex(2); }
-				else if(chckNode.getElement() instanceof RefOntoUML.Property) { elempanel.setData(chckNode); elempanel.setSelectedIndex(3); } 
-				
+				frame.focusOnProperties();
 			}
 	 }
 	

@@ -87,7 +87,7 @@ public class OntoUMLController {
 	    	//ontoumlview.getTheFrame().getConsole().write(ontoumlview.getTheFrame().getManager().doModelVerification());	    	
 	    	ontoumlview.getTheFrame().getConsole().goToInitialPosition();
 	    	ontoumlview.getTheFrame().ShowConsole();
-	    	
+	    	ontoumlview.getTheFrame().focusOnConsole();	    	
 	    }
 	 }
 	 	 
