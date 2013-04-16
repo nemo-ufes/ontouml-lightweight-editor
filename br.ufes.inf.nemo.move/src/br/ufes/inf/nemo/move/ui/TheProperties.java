@@ -10,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import RefOntoUML.AggregationKind;
 import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLTreeNodeElem;
 
 /**
@@ -32,23 +33,14 @@ public class TheProperties extends JPanel {
 		this.frame = frame;
 	}
 	
-	/**
-	 * Set data
-	 * 
-	 * @param elem
-	 */
-	public void setData(OntoUMLTreeNodeElem elem)
-	{		
-		// set Class data
-		if (elem.getElement() instanceof RefOntoUML.Class || elem.getElement() instanceof RefOntoUML.DataType)
+	public void setClassAndDataTypeData(OntoUMLTreeNodeElem elem)
+	{
+		RefOntoUML.Classifier c = (RefOntoUML.Classifier)elem.getElement();
+		String isExtensional = "";
+		if (c instanceof RefOntoUML.Collective)
 		{
-			RefOntoUML.Classifier c = (RefOntoUML.Classifier)elem.getElement();
-			String isExtensional = "";
-			if (c instanceof RefOntoUML.Collective)
-			{
-				RefOntoUML.Collective col = (RefOntoUML.Collective)c;
-				if(col.isIsExtensional()) isExtensional="true"; else isExtensional="false";
-			}
+			RefOntoUML.Collective col = (RefOntoUML.Collective)c;
+			if(col.isIsExtensional()) isExtensional="true"; else isExtensional="false";
 			Object[][] data = {
 			{"    Name", " "+c.getName()},			
 			{"    Type", " "+elem.getTypeName()},
@@ -56,15 +48,158 @@ public class TheProperties extends JPanel {
 			{"    Abstract", " "+c.isIsAbstract()},
 			{"    Extensional", " "+isExtensional},
 			};
-	
 			String[] columnNames = {"Property","Value"};
 			tablemodel = new PropertyTableModel(columnNames,data);
-			table.setModel(tablemodel);
-			table.repaint();
-			table.validate();
-		}				 
+		}else{
+			Object[][] data = {
+			{"    Name", " "+c.getName()},			
+			{"    Type", " "+elem.getTypeName()},
+			{"    Alias", " "+elem.getUniqueName()},
+			{"    Abstract", " "+c.isIsAbstract()},
+			};
+			String[] columnNames = {"Property","Value"};
+			tablemodel = new PropertyTableModel(columnNames,data);
+		}			
+		table.setModel(tablemodel);
+		table.repaint();
+		table.validate();		
 	}
 	
+	public void setAssociationData(OntoUMLTreeNodeElem elem)
+	{
+		RefOntoUML.Association c = (RefOntoUML.Association)elem.getElement();
+		String essential = new String();
+		String inseparable = new String();
+		String shareable = new String();
+		String immutablePart = new String();
+		String immutableWhole = new String();
+		
+		if (c instanceof RefOntoUML.Meronymic)
+		{
+			RefOntoUML.Meronymic m = (RefOntoUML.Meronymic)c;
+			if(m.isIsEssential()) essential="true"; else essential="false";
+			if(m.isIsInseparable()) inseparable="true"; else inseparable="false";
+			if(m.isIsShareable()) shareable="true"; else shareable="false";
+			if(m.isIsImmutablePart()) immutablePart="true"; else immutablePart="false";
+			if(m.isIsImmutableWhole()) immutableWhole="true"; else immutableWhole="false";
+
+			Object[][] data = {
+			{"    Name", " "+c.getName()},			
+			{"    Type", " "+elem.getTypeName()},
+			{"    Alias", " "+elem.getUniqueName()},
+			{"    Abstract", " "+c.isIsAbstract()},
+			{"    Derived", " "+c.isIsDerived()},			
+			{"    Essential", " "+essential},
+			{"    Inseparable", " "+inseparable},
+			{"    Shareable", " "+shareable},
+			{"    ImmutablePart", " "+immutablePart},
+			{"    ImmutableWhole", " "+immutableWhole},
+			};		
+			String[] columnNames = {"Property","Value"};
+			tablemodel = new PropertyTableModel(columnNames,data);
+		}else{
+			Object[][] data = {
+			{"    Name", " "+c.getName()},			
+			{"    Type", " "+elem.getTypeName()},
+			{"    Alias", " "+elem.getUniqueName()},
+			{"    Abstract", " "+c.isIsAbstract()},
+			{"    Derived", " "+c.isIsDerived()},
+			};		
+			String[] columnNames = {"Property","Value"};
+			tablemodel = new PropertyTableModel(columnNames,data);
+			
+		}
+		table.setModel(tablemodel);
+		table.repaint();
+		table.validate();
+	}
+	
+	public void setPropertyData(OntoUMLTreeNodeElem elem)
+	{
+		String readOnly = new String();
+		String aggregationKind = new String();
+		
+		RefOntoUML.Property c = (RefOntoUML.Property)elem.getElement();
+
+		if(c.isIsReadOnly()) readOnly = "true"; else readOnly = "false";
+		
+		if(c.getAggregation().equals(AggregationKind.COMPOSITE)) aggregationKind="composite";
+		else if(c.getAggregation().equals(AggregationKind.SHARED)) aggregationKind="shared";
+		else if(c.getAggregation().equals(AggregationKind.NONE)) aggregationKind="none";
+		
+		Object[][] data = {
+		{"    Name", " "+c.getName()},			
+		{"    Type", " "+((RefOntoUML.Property)elem.getElement()).getType().getName()},
+		{"    Alias", " "+elem.getUniqueName()},
+		{"    Upper", " "+(new Integer(c.getUpper())).toString()},
+		{"    Lower", " "+(new Integer(c.getLower())).toString()},
+		{"    Read Only", " "+readOnly},
+		{"    Aggregation Kind", " "+aggregationKind},		
+		};		
+		String[] columnNames = {"Property","Value"};
+		tablemodel = new PropertyTableModel(columnNames,data);
+		
+		table.setModel(tablemodel);
+		table.repaint();
+		table.validate();
+	}	
+	
+	public void setGeneralizationSetData(OntoUMLTreeNodeElem elem)
+	{
+		RefOntoUML.GeneralizationSet c = (RefOntoUML.GeneralizationSet)elem.getElement();
+		String covering = new String();
+		String disjoint = new String();
+				
+		if(c.isIsCovering()) covering="true"; else covering="false";
+		if(c.isIsDisjoint()) disjoint="true"; else disjoint="false";
+		
+		/*ArrayList<String> generalizations = new ArrayList<String>(); 
+		for(RefOntoUML.Generalization g: c.getGeneralization()){
+			if (g.getGeneral()!=null && g.getSpecific()!=null)
+			{
+				generalizations.add(" "+g.getGeneral().getName()+" -> "+g.getSpecific().getName()+" ");
+			}
+		}
+		genSetGeneralizationsCombo.setModel(new DefaultComboBoxModel(generalizations.toArray()));*/
+		
+		Object[][] data = {
+		{"    Name", " "+elem.getName()},			
+		{"    Type", " "+elem.getTypeName()},		
+		{"    Covering", " "+covering},
+		{"    Disjoint", " "+disjoint},				
+		};		
+		String[] columnNames = {"Property","Value"};
+		tablemodel = new PropertyTableModel(columnNames,data);
+		
+		table.setModel(tablemodel);
+		table.repaint();
+		table.validate();
+	}
+	
+	/**
+	 * Set data
+	 * 
+	 * @param elem
+	 */
+	public void setData(OntoUMLTreeNodeElem elem)
+	{		
+		if (elem.getElement() instanceof RefOntoUML.Class || elem.getElement() instanceof RefOntoUML.DataType)
+		{
+			setClassAndDataTypeData(elem);
+		}		
+		if (elem.getElement() instanceof RefOntoUML.Association)
+		{
+			setAssociationData(elem);
+		}
+		if (elem.getElement() instanceof RefOntoUML.Property)
+		{
+			setPropertyData(elem);
+		}
+		if (elem.getElement() instanceof RefOntoUML.GeneralizationSet)
+		{
+			setGeneralizationSetData(elem);
+		}		
+	}	
 		
 	/**
 	 * Constructor.
@@ -80,13 +215,20 @@ public class TheProperties extends JPanel {
         Object[][] data = {};
         
 		table = new JTable(data,columnNames);
-		table.setPreferredScrollableViewportSize(new Dimension(500, 70));		
+		table.setBorder(new EmptyBorder(0, 0, 0, 0));
+		table.setPreferredScrollableViewportSize(new Dimension(500, 150));		
 		table.setFillsViewportHeight(true);
-		        
+		
 		scrollpane = new JScrollPane(table);
 		add(scrollpane);
 	}
 		
+	/**
+	 * My own TableModel...
+	 * 
+	 * @author John
+	 *
+	 */
 	class PropertyTableModel extends AbstractTableModel 
 	{
 		private static final long serialVersionUID = 1L;
