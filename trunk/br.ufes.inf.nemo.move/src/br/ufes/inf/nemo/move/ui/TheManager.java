@@ -26,7 +26,7 @@ import br.ufes.inf.nemo.move.mvc.model.UMLModel;
 import br.ufes.inf.nemo.move.mvc.view.AntiPatternListView;
 import br.ufes.inf.nemo.move.mvc.view.OCLView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
+import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.ocl2alloy.options.OCLOptions;
 
 /**

@@ -1,4 +1,6 @@
 package br.ufes.inf.nemo.move.ui;
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 
 
@@ -13,7 +15,7 @@ public class TheStatus extends JPanel {
 	 * Create the panel.
 	 */
 	public TheStatus() {
-
+		setPreferredSize(new Dimension(450, 30));
 	}
 
 }

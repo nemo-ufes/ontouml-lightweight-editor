@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.move.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -26,8 +27,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.move.ui.util.ColorPalette;
-import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
 
 /**
  * @author John Guerson
@@ -68,7 +67,8 @@ public class TheConsole extends JPanel {
 	 */
 	public TheConsole() 
 	{
-		setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
+		setBackground(Color.WHITE);
+		//setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		output = new JTextArea();
@@ -78,8 +78,8 @@ public class TheConsole extends JPanel {
 		output.setMargin(new Insets(6, 6, 6, 6));
 		output.setLineWrap(true);
 		output.setWrapStyleWord(true);
-		//output.setBackground(Color.WHITE);
-		output.setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
+		output.setBackground(Color.WHITE);
+		//output.setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
 				
 		scrollpane = new JScrollPane();
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);

@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
+import br.ufes.inf.nemo.move.util.oclview.OCLEditorBar;
 
 /**
  * 
