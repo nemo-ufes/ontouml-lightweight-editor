@@ -159,7 +159,7 @@ public class TheToolBar extends JToolBar {
 		btnShowHideConsole = new JButton();
 		btnShowHideConsole.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/display-36x36.png")));
 		btnShowHideConsole.setText("Console");	
-		btnShowHideConsole.setToolTipText("Show/Hide Console");
+		btnShowHideConsole.setToolTipText("Show/Hide Console View");
 		btnShowHideConsole.setEnabled(true);
 		btnShowHideConsole.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnShowHideConsole.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -177,8 +177,8 @@ public class TheToolBar extends JToolBar {
 	{
 		btnShowOrHideAntiPattern = new JButton();
 		btnShowOrHideAntiPattern.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/panel-36X36.png")));
-		btnShowOrHideAntiPattern.setText("AntiPattern");
-		btnShowOrHideAntiPattern.setToolTipText("Show/Hide AntiPatterns Tab");
+		btnShowOrHideAntiPattern.setText("AntiPattern Manager");
+		btnShowOrHideAntiPattern.setToolTipText("Show/Hide AntiPattern Manager View");
 		btnShowOrHideAntiPattern.setEnabled(true);
 		btnShowOrHideAntiPattern.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnShowOrHideAntiPattern.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -197,7 +197,7 @@ public class TheToolBar extends JToolBar {
 		btnShowOrHideOCL = new JButton();
 		btnShowOrHideOCL.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/edit-36x36.png")));
 		btnShowOrHideOCL.setText("OCL Simple Editor");
-		btnShowOrHideOCL.setToolTipText("Show/Hide OCL Tab");
+		btnShowOrHideOCL.setToolTipText("Show/Hide OCL Editor View");
 		btnShowOrHideOCL.setEnabled(true);
 		btnShowOrHideOCL.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnShowOrHideOCL.setHorizontalTextPosition(SwingConstants.CENTER);

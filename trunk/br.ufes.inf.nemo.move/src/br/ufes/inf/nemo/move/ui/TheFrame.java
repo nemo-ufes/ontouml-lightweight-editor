@@ -40,6 +40,7 @@ public class TheFrame extends JFrame {
 	private TheManager appmanager;	
 	private SimpleGUICustom analyzer;
 	private TheStatus statusBar;
+	private TheProperties properties;
 	
 	/**
 	 * Constructor.
@@ -100,21 +101,27 @@ public class TheFrame extends JFrame {
 		ontoumlTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		ontoumlTabbedPane.setPreferredSize(new Dimension(400,600));
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
-		ontoumlTabbedPane.setTitleAt(0,"OntoUML Model");
+		ontoumlTabbedPane.setTitleAt(0,"OntoUML Explorer");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));
 		ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/hierarchy-16x16.png")));
 		
 		console = new TheConsole(this);	
-
+		properties = new TheProperties(this);
+		
 		consoleTabbedPane = new JTabbedPane();
 		consoleTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		consoleTabbedPane.setBorder(null);
 		consoleTabbedPane.setPreferredSize(new Dimension(400,600));
+		consoleTabbedPane.setBackground(UIManager.getColor("Panel.background"));
+		
 		consoleTabbedPane.add(console);	
 		consoleTabbedPane.setTitleAt(0,"Console");
-		consoleTabbedPane.setBackground(UIManager.getColor("Panel.background"));
 		consoleTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/display-16x16.png")));
 		
+		consoleTabbedPane.add(properties);	
+		consoleTabbedPane.setTitleAt(1,"Properties");
+		consoleTabbedPane.setIconAt(1,new ImageIcon(TheFrame.class.getResource("/resources/icon/table-16x16.png")));		
+				
 		centerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,innerSplitPane,consoleTabbedPane);
 		centerSplitPane.setOneTouchExpandable(true);		
 		centerSplitPane.setBorder(null);
@@ -182,6 +189,9 @@ public class TheFrame extends JFrame {
 	/** Get Console Panel. */
 	public TheConsole getConsole() { 
 		return console; 
+	}
+	public TheProperties getProperties(){
+		return properties;
 	}
 	/** Get Tool Bar */
 	public TheToolBar getToolBar() { 
