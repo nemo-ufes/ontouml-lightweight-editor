@@ -24,11 +24,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElemTabbedPane;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLBar;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeNodeElem;
 import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
+import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLBar;
+import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLCheckBoxTree;
+import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLElemTabbedPane;
+import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLTreeNodeElem;
 
 /**
  * This class represents a View for OntoUML Model.
@@ -171,12 +171,15 @@ public class OntoUMLView extends JPanel {
 			{
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 				OntoUMLTreeNodeElem chckNode = (OntoUMLTreeNodeElem) node.getUserObject();							
-				elempanel.setData(chckNode);
-				if (chckNode.getElement() instanceof RefOntoUML.Class) elempanel.setSelectedIndex(0);
-				else if (chckNode.getElement() instanceof RefOntoUML.DataType) elempanel.setSelectedIndex(0);
-				else if(chckNode.getElement() instanceof RefOntoUML.Association) elempanel.setSelectedIndex(1); 
-				else if(chckNode.getElement() instanceof RefOntoUML.GeneralizationSet)elempanel.setSelectedIndex(2);
-				else if(chckNode.getElement() instanceof RefOntoUML.Property)elempanel.setSelectedIndex(3); 
+				
+				//if (chckNode.getElement() instanceof RefOntoUML.Class) ClassPropertyDialog.open(chckNode);
+												
+				if (chckNode.getElement() instanceof RefOntoUML.Class) { elempanel.setData(chckNode); elempanel.setSelectedIndex(0); }
+				else if (chckNode.getElement() instanceof RefOntoUML.DataType) { elempanel.setData(chckNode); elempanel.setSelectedIndex(0); }
+				else if(chckNode.getElement() instanceof RefOntoUML.Association) { elempanel.setData(chckNode); elempanel.setSelectedIndex(1); } 
+				else if(chckNode.getElement() instanceof RefOntoUML.GeneralizationSet) { elempanel.setData(chckNode); elempanel.setSelectedIndex(2); }
+				else if(chckNode.getElement() instanceof RefOntoUML.Property) { elempanel.setData(chckNode); elempanel.setSelectedIndex(3); } 
+				
 			}
 	 }
 	

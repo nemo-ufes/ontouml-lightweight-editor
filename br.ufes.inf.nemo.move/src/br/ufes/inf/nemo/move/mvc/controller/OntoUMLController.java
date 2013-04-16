@@ -8,7 +8,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
+import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLCheckBoxTree;
 
 /**
  * @author John Guerson

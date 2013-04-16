@@ -14,8 +14,8 @@ import org.eclipse.ocl.ParserException;
 
 import br.ufes.inf.nemo.move.mvc.model.OCLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.ui.ocl.OCLEditorBar;
-import br.ufes.inf.nemo.move.ui.ocl.OCLEditorPanel;
+import br.ufes.inf.nemo.move.util.oclview.OCLEditorBar;
+import br.ufes.inf.nemo.move.util.oclview.OCLEditorPanel;
 import br.ufes.inf.nemo.ocl2alloy.parser.OCLParser;
 
 /**

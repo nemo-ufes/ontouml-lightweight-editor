@@ -102,6 +102,7 @@ public class TheFrame extends JFrame {
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
 		ontoumlTabbedPane.setTitleAt(0,"OntoUML Model");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));
+		ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/hierarchy-16x16.png")));
 		
 		console = new TheConsole(this);	
 
