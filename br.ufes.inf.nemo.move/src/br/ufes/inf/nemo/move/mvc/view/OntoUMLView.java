@@ -131,9 +131,7 @@ public class OntoUMLView extends JPanel {
 		ontoumlSplitPane.setOneTouchExpandable(true);		
 		ontoumlSplitPane.setBorder(null);		
 		
-		add(ontoumlSplitPane, BorderLayout.NORTH);	
-		
-		
+		add(ontoumlSplitPane, BorderLayout.NORTH);
 	}
 		
 	/**
@@ -172,6 +170,7 @@ public class OntoUMLView extends JPanel {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 				OntoUMLTreeNodeElem chckNode = (OntoUMLTreeNodeElem) node.getUserObject();							
 				
+				frame.getProperties().setData(chckNode);
 				//if (chckNode.getElement() instanceof RefOntoUML.Class) ClassPropertyDialog.open(chckNode);
 												
 				if (chckNode.getElement() instanceof RefOntoUML.Class) { elempanel.setData(chckNode); elempanel.setSelectedIndex(0); }
