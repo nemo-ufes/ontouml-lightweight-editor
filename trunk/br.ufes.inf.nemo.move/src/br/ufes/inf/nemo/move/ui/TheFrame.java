@@ -41,6 +41,7 @@ public class TheFrame extends JFrame {
 	private SimpleGUICustom analyzer;
 	private TheStatus statusBar;
 	private TheProperties properties;
+	private TheWarnings warnings;
 	
 	/**
 	 * Constructor.
@@ -101,12 +102,13 @@ public class TheFrame extends JFrame {
 		ontoumlTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		ontoumlTabbedPane.setPreferredSize(new Dimension(400,600));
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
-		ontoumlTabbedPane.setTitleAt(0,"OntoUML Package Explorer");
+		ontoumlTabbedPane.setTitleAt(0,"OntoUML Explorer");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));
 		ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/hierarchy-16x16.png")));
 		
 		console = new TheConsole(this);	
 		properties = new TheProperties(this);
+		warnings = new TheWarnings(this);
 		
 		consoleTabbedPane = new JTabbedPane();
 		consoleTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -122,6 +124,10 @@ public class TheFrame extends JFrame {
 		consoleTabbedPane.setTitleAt(1,"Properties");
 		consoleTabbedPane.setIconAt(1,new ImageIcon(TheFrame.class.getResource("/resources/icon/table-16x16.png")));		
 				
+		consoleTabbedPane.add(warnings);	
+		consoleTabbedPane.setTitleAt(2,"Warnings");
+		consoleTabbedPane.setIconAt(2,new ImageIcon(TheFrame.class.getResource("/resources/icon/warning-16x16.png")));
+		
 		centerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,innerSplitPane,consoleTabbedPane);
 		centerSplitPane.setOneTouchExpandable(true);		
 		centerSplitPane.setBorder(null);
@@ -202,6 +208,9 @@ public class TheFrame extends JFrame {
 	}
 	public TheProperties getProperties(){
 		return properties;
+	}
+	public TheWarnings getWarnings(){
+		return warnings;
 	}
 	/** Get Tool Bar */
 	public TheToolBar getToolBar() { 

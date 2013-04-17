@@ -7,10 +7,13 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
 import RefOntoUML.AggregationKind;
+import br.ufes.inf.nemo.move.ui.util.ColorPalette;
+import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLTreeNodeElem;
 
 /**
@@ -214,16 +217,27 @@ public class TheProperties extends JPanel {
 		String[] columnNames = {"Property","Value"};
         Object[][] data = {};
         
-		table = new JTable(data,columnNames);
+        scrollpane = new JScrollPane();		
+	    scrollpane.setPreferredSize(new Dimension(100,70));
+		scrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		table = new JTable(data,columnNames);		
+		scrollpane.setViewportView(table);
+		
 		table.setBorder(new EmptyBorder(0, 0, 0, 0));
 		table.setPreferredScrollableViewportSize(new Dimension(500, 150));		
 		table.setFillsViewportHeight(true);
-		
-		scrollpane = new JScrollPane(table);
-		add(scrollpane);
+		table.setGridColor(Color.LIGHT_GRAY);		
+	    table.setSelectionBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHT));
+	    table.setSelectionForeground(Color.BLACK);
+	    table.setFocusable(false);
+	    					
+		add(scrollpane,BorderLayout.CENTER);				
 	}
 		
 	/**
+	 * 
 	 * My own TableModel...
 	 * 
 	 * @author John
