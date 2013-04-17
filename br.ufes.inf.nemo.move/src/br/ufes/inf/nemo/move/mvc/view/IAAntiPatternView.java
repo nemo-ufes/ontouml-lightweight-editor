@@ -23,6 +23,7 @@ import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.move.mvc.model.IAAntiPatternModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.util.CheckBoxListScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * @author John Guerson
@@ -157,7 +158,9 @@ public class IAAntiPatternView extends JPanel {
 		cbxTargetCustom = new JCheckBox("Target Custom");
 		
 		checkListSource = new CheckBoxListScrollPane();		
+		checkListSource.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		checkListTarget = new CheckBoxListScrollPane();
+		checkListTarget.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
 		GroupLayout gl_cbxPanel = new GroupLayout(cbxPanel);
 		gl_cbxPanel.setHorizontalGroup(

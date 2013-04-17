@@ -187,8 +187,12 @@ public class TheManager {
 		
 		// diagnose model
 		ModelDiagnostician verificator = new ModelDiagnostician();
-		log = verificator.getDiagnostic(ontoumlmodel.getOntoUMLParser());
-						
+		log += verificator.getWarnings(ontoumlmodel.getOntoUMLParser());
+		log += verificator.getErrors(ontoumlmodel.getOntoUMLParser());
+		
+		//test with tab warnings...
+		frame.getWarnings().setData(verificator.getWarningsMatrixFormat(ontoumlmodel.getOntoUMLParser()));
+		
 		return log;
 	}
 	

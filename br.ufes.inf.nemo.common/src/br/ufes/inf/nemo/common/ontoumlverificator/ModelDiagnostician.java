@@ -38,11 +38,17 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class ModelDiagnostician {
 
+	private int warnings = 0;
+	private int errors = 0;
+	
+	public int getErrors() {return errors;}
+	public int getWarnings() {return warnings;}
+	
 	public static void main(String args[])
 	{	
 		ModelDiagnostician pv = new ModelDiagnostician();		
 		try {
-			System.out.println(pv.getDiagnostic(new OntoUMLParser("src/br/ufes/inf/nemo/common/ontoumlverificator/NameTest.refontouml")));
+			System.out.println(pv.getWarnings(new OntoUMLParser("src/br/ufes/inf/nemo/common/ontoumlverificator/NameTest.refontouml")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}			
@@ -66,6 +72,20 @@ public class ModelDiagnostician {
 		else return c.getName();
 	}
 	
+	public String getElement (RefOntoUML.PackageableElement c)
+	{
+		return ""+c.getClass().getSimpleName().replace("Impl", "")+" "+getName(c);		
+	}
+	
+	public String getPath (EObject e)
+	{
+		String path = "";				
+		if (e.eContainer()!=null) path += getPath((e.eContainer()))+" ::";
+		path += " "+e.getClass().getSimpleName().replace("Impl", "")+" ";		
+		path += getName(((NamedElement)e))+"";		
+		return path;
+	}
+	
 	/**
 	 * Get Description (Element type, name and path).
 	 */
@@ -86,33 +106,18 @@ public class ModelDiagnostician {
 		"   Path: "+getPath(p)+"\n"+"\n";		
 	}
 	
-	/**
-	 * Get Diagnostic of a OntoUML Model...
-	 * 
-	 * @param ontoparser
-	 * @return
-	 */
-	public String getDiagnostic (OntoUMLParser ontoparser)
-	{		
-		String warnings = new String();
-		int wcount=0;
+	public String getErrors (OntoUMLParser ontoparser)
+	{
 		String errors = new String();
 		int ecount=0;
-	
-		// ------------------------
 		
-		ArrayList<String> unnamedList = new ArrayList<String>();
 		ArrayList<String> stereotypeList = new ArrayList<String>();
 		ArrayList<String> oclkeywordList = new ArrayList<String>();
 		
 		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
 		{			
 			if (!(c instanceof RefOntoUML.Generalization) && !(c instanceof RefOntoUML.GeneralizationSet))
-			{
-				if (c.getName()==null || c.getName().trim().isEmpty()) 
-				{ 				
-					unnamedList.add(getDescription(c));				
-				}					
+			{								
 				if (!isValidStereotype(c)) 
 				{ 				
 					stereotypeList.add(getDescription(c));				
@@ -124,13 +129,6 @@ public class ModelDiagnostician {
 			}
 		}
 		
-		if (unnamedList.size()>0) 
-		{
-			wcount++;
-			warnings += "#"+wcount+" Warning: Unnamed elements.\n\n"; 
-			for(String str: unnamedList) { warnings += str; } 
-			warnings+="--------------------------------------------------\n\n";
-		}
 		if (stereotypeList.size()>0) 
 		{
 			ecount++;
@@ -148,42 +146,6 @@ public class ModelDiagnostician {
 		
 		// ------------------------
 		
-		ArrayList< ArrayList<PackageableElement>> duplicatedNames = new ArrayList< ArrayList<PackageableElement>>();
-		
-		boolean dontAdd;		
-		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
-		{		
-			ArrayList<RefOntoUML.PackageableElement> duplicatedNamesList = getDuplicatedNamesList(c,ontoparser);
-			if (duplicatedNamesList.size()>1) 
-			{
-				dontAdd = false;
-				for(ArrayList<RefOntoUML.PackageableElement> list: duplicatedNames)
-				{
-					if (list.containsAll(duplicatedNamesList) && (list.size() >= duplicatedNamesList.size()))
-					{
-						dontAdd = true; 
-					}
-				}
-				if (!dontAdd) duplicatedNames.add(duplicatedNamesList);				
-			}
-		}
-		if(duplicatedNames.size()>0)
-		{
-			wcount++;
-			warnings += "#"+wcount+" Warning:  Elements names duplicated.\n\n"; 
-			for(ArrayList<RefOntoUML.PackageableElement> list: duplicatedNames) 
-			{ 
-				for (RefOntoUML.PackageableElement e: list)
-				{
-					warnings += "   Path: "+getPath(e)+"\n";
-				}
-				warnings+="\n";
-			}			
-			warnings+="--------------------------------------------------\n\n";
-		}
-		
-		// ------------------------
-		
 		ArrayList<String> abstractList = new ArrayList<String>();
 		for(RefOntoUML.Type c: ontoparser.getAllInstances(RefOntoUML.Type.class))
 		{			
@@ -196,10 +158,10 @@ public class ModelDiagnostician {
 		{
 			ecount++;
 			errors += "#"+ecount+" Error: Categories, mixins and roleMixins must be abstract.\n\n"; 
-			for(String str: unnamedList) { errors += str; } 
+			for(String str: abstractList) { errors += str; } 
 			errors+="--------------------------------------------------\n\n";
 		}
-			
+		
 		// ------------------------
 		
 		ArrayList<String> nullTypeList = new ArrayList<String>();
@@ -325,25 +287,178 @@ public class ModelDiagnostician {
 			errors+="--------------------------------------------------\n\n";
 		}		
 		
-		// -------------------- 
-		
-		String result = new String();
-		result += "Diagnostic successfully completed... ";
+		String result = new String();		
 		
 		if (ecount>0) {			
 			result += "\n\nThe following error(s) were found:\n\n";
 			result += "--------------------------------------------------\n\n";
 			result += errors;
+		}else{
+			result += "No error was found. ";
+		}
+		return result;
+	}	
+	
+	/**
+	 * Get Warnings in a Matrix format
+	 * 
+	 * @param ontoparser
+	 * @return
+	 */
+	public ArrayList<ArrayList<String>> getWarningsMatrixFormat (OntoUMLParser ontoparser)
+	{
+		ArrayList<ArrayList<String>> items = new ArrayList<ArrayList<String>>();
+		warnings = 0;
+		
+		// # Warning : Unnamed Element
+		
+		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
+		{			
+			if (!(c instanceof RefOntoUML.Generalization) && !(c instanceof RefOntoUML.GeneralizationSet))
+			{
+				if (c.getName()==null || c.getName().trim().isEmpty()) 
+				{ 				
+					ArrayList<String> line = new ArrayList<String>();
+					warnings++;
+					line.add(warnings+". Unnamed element");
+					line.add(getElement(c));
+					line.add(getPath(c));
+					items.add(line);					
+				}				
+			}
+		}
+
+		// # Warning : Duplicated name
+		
+		ArrayList< ArrayList<PackageableElement>> duplicatedNames = new ArrayList< ArrayList<PackageableElement>>();
+		
+		boolean dontAdd;		
+		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
+		{		
+			ArrayList<RefOntoUML.PackageableElement> duplicatedNamesList = getDuplicatedNamesList(c,ontoparser);
+			if (duplicatedNamesList.size()>1) 
+			{
+				dontAdd = false;
+				for(ArrayList<RefOntoUML.PackageableElement> list: duplicatedNames)
+				{
+					if (list.containsAll(duplicatedNamesList) && (list.size() >= duplicatedNamesList.size()))
+					{
+						dontAdd = true; 
+					}
+				}
+				if (!dontAdd) duplicatedNames.add(duplicatedNamesList);				
+			}
 		}		
+		if(duplicatedNames.size()>0)
+		{				 
+			for(ArrayList<RefOntoUML.PackageableElement> list: duplicatedNames) 
+			{ 
+				ArrayList<String> line = new ArrayList<String>();
+				warnings++;
+				line.add(warnings+". Duplicated name");
+				int count=1;					
+				for (RefOntoUML.PackageableElement e: list)
+				{
+					if(count==1){
+						line.add(getElement(e));
+						line.add(getPath(e));
+						items.add(line);
+					}else if (count<=list.size()) {
+						ArrayList<String> row = new ArrayList<String>();
+						row.add("");
+						row.add(getElement(e));
+						row.add(getPath(e));
+						items.add(row);
+					}						
+					count++;
+				}					
+			}				
+		}			
+		
+		return items;				
+	}
+	
+	/**
+	 * Get Warnings as String text...
+	 * 
+	 * @param ontoparser
+	 * @return
+	 */
+	public String getWarnings (OntoUMLParser ontoparser)
+	{		
+		String warnings = new String();
+		int wcount=0;
+		
+		// # Warning : Unnamed Element		
+		
+		ArrayList<String> unnamedList = new ArrayList<String>();		
+		
+		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
+		{			
+			if (!(c instanceof RefOntoUML.Generalization) && !(c instanceof RefOntoUML.GeneralizationSet))
+			{
+				if (c.getName()==null || c.getName().trim().isEmpty()) 
+				{ 				
+					unnamedList.add(getDescription(c));				
+				}				
+				
+			}
+		}
+		
+		if (unnamedList.size()>0) 
+		{
+			wcount++;
+			warnings += "#"+wcount+" Warning: Unnamed elements.\n\n"; 
+			for(String str: unnamedList) { warnings += str; } 
+			warnings+="--------------------------------------------------\n\n";
+		}		
+		
+		// # Warning : Duplicated name
+		
+		ArrayList< ArrayList<PackageableElement>> duplicatedNames = new ArrayList< ArrayList<PackageableElement>>();
+		
+		boolean dontAdd;		
+		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
+		{		
+			ArrayList<RefOntoUML.PackageableElement> duplicatedNamesList = getDuplicatedNamesList(c,ontoparser);
+			if (duplicatedNamesList.size()>1) 
+			{
+				dontAdd = false;
+				for(ArrayList<RefOntoUML.PackageableElement> list: duplicatedNames)
+				{
+					if (list.containsAll(duplicatedNamesList) && (list.size() >= duplicatedNamesList.size()))
+					{
+						dontAdd = true; 
+					}
+				}
+				if (!dontAdd) duplicatedNames.add(duplicatedNamesList);				
+			}
+		}
+		if(duplicatedNames.size()>0)
+		{
+			wcount++;
+			warnings += "#"+wcount+" Warning:  Elements names duplicated.\n\n"; 
+			for(ArrayList<RefOntoUML.PackageableElement> list: duplicatedNames) 
+			{ 
+				for (RefOntoUML.PackageableElement e: list)
+				{
+					warnings += "   Path: "+getPath(e)+"\n";
+				}
+				warnings+="\n";
+			}			
+			warnings+="--------------------------------------------------\n\n";
+		}
+				
+		// -------------------- 
+		
+		String result = new String();		
 		
 		if (wcount>0) {
 			result += "\n\nThe following warning(s) were found:\n\n";
 			result += "--------------------------------------------------\n\n";
 			result += warnings;
-		}
-		
-		if (ecount==0 && wcount==0) {
-			result += "the model is okay!\n";
+		}else{
+			result += "No warning was found.";
 		}
 		
 		return result;
@@ -436,25 +551,5 @@ public class ModelDiagnostician {
 	public void renameNamedElementFromAlias (NamedElement e, OntoUMLParser ontoparser)
 	{
 		e.setName(ontoparser.getAlias(e));
-	}
-	
-	/**
-	 * Get a path from a model element.
-	 * 
-	 * @param e
-	 * @return
-	 */
-	public String getPath (EObject e)
-	{
-		String path = "";
-				
-		if (e.eContainer()!=null) 
-			path += getPath((e.eContainer()))+" ::";
-
-		path += " <"+e.getClass().getSimpleName().replace("Impl", "")+"> ";
-		
-		path += getName(((NamedElement)e))+"";
-		
-		return path;
 	}
 }
