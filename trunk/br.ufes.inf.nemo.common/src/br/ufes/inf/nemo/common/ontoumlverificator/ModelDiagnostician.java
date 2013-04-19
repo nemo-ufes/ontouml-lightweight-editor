@@ -16,7 +16,6 @@ import RefOntoUML.FormalAssociation;
 import RefOntoUML.Kind;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
-import RefOntoUML.Meronymic;
 import RefOntoUML.Mixin;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Mode;
@@ -48,7 +47,7 @@ public class ModelDiagnostician {
 	{	
 		ModelDiagnostician pv = new ModelDiagnostician();		
 		try {
-			System.out.println(pv.getWarnings(new OntoUMLParser("src/br/ufes/inf/nemo/common/ontoumlverificator/NameTest.refontouml")));
+			System.out.println(pv.getWarningsMatrixFormat(new OntoUMLParser("src/br/ufes/inf/nemo/common/ontoumlverificator/NameTest.refontouml")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}			
@@ -77,227 +76,196 @@ public class ModelDiagnostician {
 		return ""+c.getClass().getSimpleName().replace("Impl", "")+" "+getName(c);		
 	}
 	
+	public String getElement (RefOntoUML.Property c)
+	{
+		return ""+c.getClass().getSimpleName().replace("Impl", "")+" "+getName(c);		
+	}	
+	
 	public String getPath (EObject e)
 	{
 		String path = "";				
-		if (e.eContainer()!=null) path += getPath((e.eContainer()))+" ::";
-		path += " "+e.getClass().getSimpleName().replace("Impl", "")+" ";		
+		if (e.eContainer()!=null) path += getPath((e.eContainer()))+" ::";				
 		path += getName(((NamedElement)e))+"";		
 		return path;
-	}
+	}	
 	
 	/**
-	 * Get Description (Element type, name and path).
+	 * Get Errors in a Matrix format
+	 * 
+	 * @param ontoparser
+	 * @return
 	 */
-	public String getDescription (RefOntoUML.PackageableElement c)
+	public ArrayList<ArrayList<String>> getErrorsMatrixFormat (OntoUMLParser ontoparser)
 	{
-		return 
-		"   Element: <"+c.getClass().getSimpleName().replace("Impl", "")+"> "+getName(c) + "\n"+
-		"   Path: "+getPath(c)+"\n"+"\n";		
-	}
+		ArrayList<ArrayList<String>> items = new ArrayList<ArrayList<String>>();
+		errors = 0;
 		
-	/**
-	 * Get Description (Element type, name and path).
-	 */
-	public String getDescription (RefOntoUML.Property p)
-	{
-		return 
-		"   Association End: <"+p.getClass().getSimpleName().replace("Impl", "")+"> "+getName(p) + "\n"+
-		"   Path: "+getPath(p)+"\n"+"\n";		
-	}
-	
-	public String getErrors (OntoUMLParser ontoparser)
-	{
-		String errors = new String();
-		int ecount=0;
-		
-		ArrayList<String> stereotypeList = new ArrayList<String>();
-		ArrayList<String> oclkeywordList = new ArrayList<String>();
-		
+		// # Error : Invalid stereotype
 		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
 		{			
 			if (!(c instanceof RefOntoUML.Generalization) && !(c instanceof RefOntoUML.GeneralizationSet))
 			{								
 				if (!isValidStereotype(c)) 
 				{ 				
-					stereotypeList.add(getDescription(c));				
-				}
-				if (isOCLkeyword(c.getName())) 
-				{ 				
-					oclkeywordList.add(getDescription(c));				
-				}	
+					ArrayList<String> line = new ArrayList<String>();
+					errors++;
+					if (errors<10) line.add("0"+errors+". Invalid stereotype");
+					else line.add(errors+". Invalid stereotype");
+					line.add(getElement(c));
+					line.add(getPath(c));
+					items.add(line);	
+				}				
 			}
 		}
 		
-		if (stereotypeList.size()>0) 
-		{
-			ecount++;
-			errors += "#"+ecount+" Error: Elements stereotype not supported.\n\n" ;
-			for(String str: stereotypeList) { errors += str; } 
-			errors+="--------------------------------------------------\n\n";
-		}	
-		if (oclkeywordList.size()>0) 
-		{
-			ecount++;
-			errors += "#"+ecount+" Error: Elements names are OCL keywords.\n\n";
-			for(String str: oclkeywordList) { errors += str; }
-			errors+="--------------------------------------------------\n\n";
-		}
+		// # Error : Name contains an OCL keyword
+		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
+		{	
+			if (!(c instanceof RefOntoUML.Generalization) && !(c instanceof RefOntoUML.GeneralizationSet))
+			{
+				if (isOCLkeyword(c.getName())) 
+				{ 				
+					ArrayList<String> line = new ArrayList<String>();
+					errors++;
+					if (errors<10) line.add("0"+errors+". Name contains an OCL keyword");
+					else line.add(errors+". Name contains an OCL keyword");
+					line.add(getElement(c));
+					line.add(getPath(c));
+					items.add(line);
+				}	
+			}
+		}		
 		
-		// ------------------------
-		
-		ArrayList<String> abstractList = new ArrayList<String>();
+		// # Error : Mixin not abstract
 		for(RefOntoUML.Type c: ontoparser.getAllInstances(RefOntoUML.Type.class))
 		{			
 			if((c instanceof MixinClass) && (((MixinClass)c).isIsAbstract()== false)) 
 			{ 				 
-				abstractList.add(getDescription(c));
+				ArrayList<String> line = new ArrayList<String>();
+				errors++;
+				if (errors<10) line.add("0"+errors+". Mixin not abstract");
+				else line.add(errors+". Mixin not abstract");
+				line.add(getElement(c));
+				line.add(getPath(c));
+				items.add(line);
 			}				
 		}		
-		if (abstractList.size()>0) 
-		{
-			ecount++;
-			errors += "#"+ecount+" Error: Categories, mixins and roleMixins must be abstract.\n\n"; 
-			for(String str: abstractList) { errors += str; } 
-			errors+="--------------------------------------------------\n\n";
-		}
 		
-		// ------------------------
-		
-		ArrayList<String> nullTypeList = new ArrayList<String>();
-		
+		// # Error : Association end type is null
 		for(RefOntoUML.Property p: ontoparser.getAllInstances(RefOntoUML.Property.class))		
 		{			
-			if (p.getType()==null) nullTypeList.add(getDescription(p));
+			if (p.getType()==null){
+				ArrayList<String> line = new ArrayList<String>();
+				errors++;
+				if (errors<10) line.add("0"+errors+". Association end type is null");
+				else line.add(errors+". Association end type is null");
+				line.add(getElement(p));
+				line.add(getPath(p));
+				items.add(line);
+			}
 		}
-		if(nullTypeList.size()>0)
-		{
-			ecount++;
-			errors += "#"+ecount+" Error: Association end type is null.\n\n" ;
-			for(String str: nullTypeList) { errors += str; } 
-			errors+="--------------------------------------------------\n\n";
-		}	
 		
-		// ------------------------
-		
-		ArrayList<String> twoEndList = new ArrayList<String>();
-		ArrayList<String> srcMedList = new ArrayList<String>();
-		ArrayList<String> tgtMedList = new ArrayList<String>();
-		ArrayList<String> srcMerList = new ArrayList<String>();
-		ArrayList<String> tgtMerList = new ArrayList<String>();
-		ArrayList<String> srcChrList = new ArrayList<String>();
-		ArrayList<String> tgtChrList = new ArrayList<String>();
-		
+		// # Error : Association hasn't two association ends.
 		for(RefOntoUML.Association c: ontoparser.getAllInstances(RefOntoUML.Association.class))
 		{			
 			if(c.getMemberEnd().size()!=2)			
 			{ 
-				twoEndList.add(getDescription(c));			
+				ArrayList<String> line = new ArrayList<String>();
+				errors++;
+				if (errors<10) line.add("0"+errors+". Association has not two association ends");
+				else line.add(errors+". Association has not two association ends");
+				line.add(getElement(c));
+				line.add(getPath(c));
+				items.add(line);							
 			}
-			if(c instanceof Mediation)
-			{
-				Mediation m = (Mediation) c;				
-				if(!(m.relator() instanceof Relator))
-				{ 					
-					srcMedList.add(getDescription(c));
-				}				
-				if(m.mediatedEnd().isIsReadOnly()==false)
-				{
-					tgtMedList.add(getDescription(c));
-				}
-			}
-			if(c instanceof Meronymic)
-			{
-				Meronymic m = (Meronymic)c;				
-				if(m.getMemberEnd().size()==2)
-				{
-					if(m.wholeEnd().getAggregation().equals(AggregationKind.NONE)) 
-					{
-						srcMerList.add(getDescription(c));
-					}				
-					if(!m.partEnd().getAggregation().equals(AggregationKind.NONE)) 
-					{
-						tgtMerList.add(getDescription(c));
-					}
-				}				
-			}			
-			if(c instanceof Characterization)
-			{
-				Characterization m = (Characterization) c;				
-				if(m.getMemberEnd().size()==2)
-				{
-					if(!(m.mode() instanceof Mode))
-					{
-						srcChrList.add(getDescription(c));
-					}				
-					if(((Characterization) c).characterizedEnd().isIsReadOnly()==false)
-					{
-						tgtChrList.add(getDescription(c));
-					}
-				}
-			}			
 		}
-		if(twoEndList.size()>0)
-		{
-			ecount++;
-			errors += "#"+ecount+" Error: Association hasn't two association ends.\n\n" ;
-			for(String str: twoEndList) { errors += str; } 
-			errors+="--------------------------------------------------\n\n";
+		
+		// # Error : Source end type is not a Relator
+		// # Error : Mediated end is not read only
+		for(RefOntoUML.Mediation m: ontoparser.getAllInstances(RefOntoUML.Mediation.class))
+		{						
+			if(!(m.relator() instanceof Relator))
+			{ 					
+				ArrayList<String> line = new ArrayList<String>();
+				errors++;
+				if (errors<10) line.add("0"+errors+". Source end type must be a Relator");
+				else line.add(errors+". Source end type must be a Relator");
+				line.add(getElement(m));
+				line.add(getPath(m));
+				items.add(line);
+			}				
+			if(m.mediatedEnd().isIsReadOnly()==false)
+			{
+				ArrayList<String> line = new ArrayList<String>();
+				errors++;
+				if (errors<10) line.add("0"+errors+". Mediated end must be read only");
+				else line.add(errors+". Mediated end must be read only");
+				line.add(getElement(m));
+				line.add(getPath(m));
+				items.add(line);
+			}
+		}
+		
+		// # Error : Whole must have aggregation kind equal to Composite or Shared.
+		// # Error : Part must have aggregation kind equal to None. 
+		for(RefOntoUML.Meronymic m: ontoparser.getAllInstances(RefOntoUML.Meronymic.class))
+		{					
+			if(m.getMemberEnd().size()==2)
+			{
+				if(m.wholeEnd().getAggregation().equals(AggregationKind.NONE)) 
+				{
+					ArrayList<String> line = new ArrayList<String>();
+					errors++;
+					if (errors<10) line.add("0"+errors+". Whole must have aggregation kind equal to composite or shared");
+					else line.add(errors+". Whole must have aggregation kind equal to composite or shared");
+					line.add(getElement(m));
+					line.add(getPath(m));
+					items.add(line);
+				}				
+				if(!m.partEnd().getAggregation().equals(AggregationKind.NONE)) 
+				{
+					ArrayList<String> line = new ArrayList<String>();
+					errors++;
+					if (errors<10) line.add("0"+errors+". Part must have aggregation kind equal to none");
+					else line.add(errors+". Part must have aggregation kind equal to none");
+					line.add(getElement(m));
+					line.add(getPath(m));
+					items.add(line);
+				}
+			}				
 		}	
-		if(srcMedList.size()>0)
-		{
-			ecount++;
-			errors += "#"+ecount+" Error: Source end type of mediation must be a Relator.\n\n" ;
-			for(String str: srcMedList) { errors += str; } 
-			errors+="--------------------------------------------------\n\n";
-		}
-		if(tgtMedList.size()>0)
-		{
-			ecount++;
-			errors += "#"+ecount+" Error: Mediated end of mediation must be Read Only. \n\n" ;
-			for(String str: tgtMedList) { errors += str; } 
-			errors+="--------------------------------------------------\n\n";
-		}			
-		if(srcMerList.size()>0)
-		{
-			ecount++;
-			errors += "#"+ecount+" Error: Whole must have aggregation kind equal to Composite or Shared.\n\n" ;
-			for(String str: srcMerList) { errors += str; } 
-			errors+="--------------------------------------------------\n\n";
-		}
-		if(tgtMerList.size()>0)
-		{
-			ecount++;
-			errors += "#"+ecount+" Error: Part must have aggregation kind equal to None. \n\n" ;
-			for(String str: tgtMerList) { errors += str; } 
-			errors+="--------------------------------------------------\n\n";
-		}
-		if(srcChrList.size()>0)
-		{
-			ecount++;
-			errors += "#"+ecount+" Error: Source end type of characterization must be a Mode.\n\n" ;
-			for(String str: srcChrList) { errors += str; } 
-			errors+="--------------------------------------------------\n\n";
-		}
-		if(tgtChrList.size()>0)
-		{
-			ecount++;
-			errors += "#"+ecount+" Error: Characterized end of characterization must be Read Only.\n\n" ;
-			for(String str: tgtChrList) { errors += str; } 
-			errors+="--------------------------------------------------\n\n";
-		}		
 		
-		String result = new String();		
+		// # Error : Source end type of characterization must be a Mode.
+		// # Error : Characterized end of characterization must be read only.
+		for(RefOntoUML.Characterization m: ontoparser.getAllInstances(RefOntoUML.Characterization.class))
+		{						
+			if(m.getMemberEnd().size()==2)
+			{
+				if(!(m.mode() instanceof Mode))
+				{
+					ArrayList<String> line = new ArrayList<String>();
+					errors++;
+					if (errors<10) line.add("0"+errors+". Source end type of characterization must be a Mode");
+					else line.add(errors+". Source end type of characterization must be a Mode");
+					line.add(getElement(m));
+					line.add(getPath(m));
+					items.add(line);
+				}				
+				if(m.characterizedEnd().isIsReadOnly()==false)
+				{
+					ArrayList<String> line = new ArrayList<String>();
+					errors++;
+					if (errors<10) line.add("0"+errors+". Characterized end of characterization must be read only");
+					else line.add(errors+". Characterized end of characterization must be read only");
+					line.add(getElement(m));
+					line.add(getPath(m));
+					items.add(line);
+				}
+			}
+		}	
 		
-		if (ecount>0) {			
-			result += "\n\nThe following error(s) were found:\n\n";
-			result += "--------------------------------------------------\n\n";
-			result += errors;
-		}else{
-			result += "No error was found. ";
-		}
-		return result;
-	}	
+		return items;
+	}
 	
 	/**
 	 * Get Warnings in a Matrix format
@@ -320,7 +288,8 @@ public class ModelDiagnostician {
 				{ 				
 					ArrayList<String> line = new ArrayList<String>();
 					warnings++;
-					line.add(warnings+". Unnamed element");
+					if (warnings<10) line.add("0"+warnings+". Unnamed element");
+					else line.add(warnings+". Unnamed element");
 					line.add(getElement(c));
 					line.add(getPath(c));
 					items.add(line);					
@@ -355,7 +324,8 @@ public class ModelDiagnostician {
 			{ 
 				ArrayList<String> line = new ArrayList<String>();
 				warnings++;
-				line.add(warnings+". Duplicated name");
+				if (warnings<10) line.add("0"+warnings+". Name conflict");
+				else line.add(warnings+". Name conflict");
 				int count=1;					
 				for (RefOntoUML.PackageableElement e: list)
 				{
@@ -376,93 +346,6 @@ public class ModelDiagnostician {
 		}			
 		
 		return items;				
-	}
-	
-	/**
-	 * Get Warnings as String text...
-	 * 
-	 * @param ontoparser
-	 * @return
-	 */
-	public String getWarnings (OntoUMLParser ontoparser)
-	{		
-		String warnings = new String();
-		int wcount=0;
-		
-		// # Warning : Unnamed Element		
-		
-		ArrayList<String> unnamedList = new ArrayList<String>();		
-		
-		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
-		{			
-			if (!(c instanceof RefOntoUML.Generalization) && !(c instanceof RefOntoUML.GeneralizationSet))
-			{
-				if (c.getName()==null || c.getName().trim().isEmpty()) 
-				{ 				
-					unnamedList.add(getDescription(c));				
-				}				
-				
-			}
-		}
-		
-		if (unnamedList.size()>0) 
-		{
-			wcount++;
-			warnings += "#"+wcount+" Warning: Unnamed elements.\n\n"; 
-			for(String str: unnamedList) { warnings += str; } 
-			warnings+="--------------------------------------------------\n\n";
-		}		
-		
-		// # Warning : Duplicated name
-		
-		ArrayList< ArrayList<PackageableElement>> duplicatedNames = new ArrayList< ArrayList<PackageableElement>>();
-		
-		boolean dontAdd;		
-		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
-		{		
-			ArrayList<RefOntoUML.PackageableElement> duplicatedNamesList = getDuplicatedNamesList(c,ontoparser);
-			if (duplicatedNamesList.size()>1) 
-			{
-				dontAdd = false;
-				for(ArrayList<RefOntoUML.PackageableElement> list: duplicatedNames)
-				{
-					if (list.containsAll(duplicatedNamesList) && (list.size() >= duplicatedNamesList.size()))
-					{
-						dontAdd = true; 
-					}
-				}
-				if (!dontAdd) duplicatedNames.add(duplicatedNamesList);				
-			}
-		}
-		if(duplicatedNames.size()>0)
-		{
-			wcount++;
-			warnings += "#"+wcount+" Warning:  Elements names duplicated.\n\n"; 
-			for(ArrayList<RefOntoUML.PackageableElement> list: duplicatedNames) 
-			{ 
-				for (RefOntoUML.PackageableElement e: list)
-				{
-					warnings += "   Path: "+getPath(e)+"\n";
-				}
-				warnings+="\n";
-			}			
-			warnings+="--------------------------------------------------\n\n";
-		}
-				
-		// -------------------- 
-		
-		String result = new String();		
-		
-		if (wcount>0) {
-			result += "\n\nThe following warning(s) were found:\n\n";
-			result += "--------------------------------------------------\n\n";
-			result += warnings;
-		}else{
-			result += "No warning was found.";
-		}
-		
-		return result;
-				
 	}
 	
 	/**

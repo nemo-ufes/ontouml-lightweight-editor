@@ -173,27 +173,31 @@ public class TheManager {
 		return oclview; 
 	}
 	
-	public String doModelDiagnostic()
+	public void doModelDiagnostic()
 	{
-		String log = new String();		
 		if (ontoumlmodel.getOntoUMLParser()==null) 
 		{
-			frame.showInformationMessageDialog("Diagnostic", "First you need to load your Model !");
-			return "";
+			frame.showInformationMessageDialog("Diagnostic", "First you need to open a model!");
 		}		
 		
 		// do auto selection completion.
 		doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
 		
-		// diagnose model
-		ModelDiagnostician verificator = new ModelDiagnostician();
-		log += verificator.getWarnings(ontoumlmodel.getOntoUMLParser());
-		log += verificator.getErrors(ontoumlmodel.getOntoUMLParser());
+		// Warnings showed
+    	ModelDiagnostician verificator = new ModelDiagnostician();
+		frame.getWarnings().setData(
+			verificator.getWarningsMatrixFormat(ontoumlmodel.getOntoUMLParser()),
+			verificator.getWarnings()
+		);
+		if (verificator.getWarnings()>0) frame.focusOnWarnings();
 		
-		//test with tab warnings...
-		frame.getWarnings().setData(verificator.getWarningsMatrixFormat(ontoumlmodel.getOntoUMLParser()));
+		// Errors showed	    	
+		frame.getErrors().setData(
+			verificator.getErrorsMatrixFormat(ontoumlmodel.getOntoUMLParser()),
+			verificator.getErrors()
+		);
+		if (verificator.getErrors()>0) frame.focusOnErrors();
 		
-		return log;
 	}
 	
 	/**
