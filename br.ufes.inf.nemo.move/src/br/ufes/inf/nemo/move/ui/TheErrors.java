@@ -31,7 +31,7 @@ import java.awt.event.ActionEvent;
  * @author John Guerson
  */
 
-public class TheWarnings extends JPanel {
+public class TheErrors extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,12 +40,12 @@ public class TheWarnings extends JPanel {
 	private JScrollPane scrollpane;
 	private JTable table;
 	private WarningTableModel tablemodel;
-	private JLabel warningMessage;
+	private JLabel errorMessage;
 	private JButton saveButton;
 	private Component rigidArea;
 	private String content;
 	
-	public TheWarnings(TheFrame frame)
+	public TheErrors(TheFrame frame)
 	{
 		this();
 		this.frame = frame;
@@ -56,13 +56,13 @@ public class TheWarnings extends JPanel {
 	 * 
 	 * @param elem
 	 */
-	public void setData(ArrayList<ArrayList<String>> matrix, int warnings)
+	public void setData(ArrayList<ArrayList<String>> matrix, int errors)
 	{
 		int rows=matrix.size();
 		
-		warningMessage.setText("    "+warnings+" warnings.");
-		warningMessage.repaint();
-		warningMessage.validate();
+		errorMessage.setText("    "+errors+" errors.");
+		errorMessage.repaint();
+		errorMessage.validate();
 		
 		String[][] data = new String[rows][3];
 		
@@ -85,6 +85,9 @@ public class TheWarnings extends JPanel {
 		table.validate();
 		
 		content = tablemodel.getData();
+		
+		repaint();
+		validate();
 	}	
 	
 	public String getContent()
@@ -95,7 +98,7 @@ public class TheWarnings extends JPanel {
 	/**
 	 * Constructor.
 	 */
-	public TheWarnings() 
+	public TheErrors() 
 	{
 		setBackground(Color.WHITE);
 		setBackground(Color.WHITE);
@@ -142,12 +145,12 @@ public class TheWarnings extends JPanel {
 			}
 		});
 		saveButton.setFocusable(false);
-		saveButton.setIcon(new ImageIcon(TheWarnings.class.getResource("/resources/icon/export-16x16.png")));
+		saveButton.setIcon(new ImageIcon(TheErrors.class.getResource("/resources/icon/export-16x16.png")));
 		toolBar.add(saveButton);
 		
-		warningMessage = new JLabel("    0 warnings.");
-		warningMessage.setPreferredSize(new Dimension(100, 25));
-		toolBar.add(warningMessage);		
+		errorMessage = new JLabel("    0 errors.");
+		errorMessage.setPreferredSize(new Dimension(100, 25));
+		toolBar.add(errorMessage);		
 	}
 		
 	/**
@@ -183,7 +186,7 @@ public class TheWarnings extends JPanel {
 		try {
 			
 			FileUtil.copyStringToFile(
-				frame.getCurrentDateAndTime()+" - "+ warningMessage.getText().trim()+"\n"+
+				frame.getCurrentDateAndTime()+" - "+ errorMessage.getText().trim()+"\n"+
 				"------------------------------------------------------------"+"\n"+
 				content, 
 				path

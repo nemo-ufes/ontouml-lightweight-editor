@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.move.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -9,10 +10,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -43,24 +42,15 @@ public class TheConsole extends JPanel {
 	
 	private TheFrame frame;
 	private JLabel lbldate;
+	private Component rigidArea;
 	
 	public TheConsole(TheFrame frame)
 	{
 		this();
 		this.frame = frame;
-	}
-	
-	public String getCurrentDateAndTime()
-	{
-		String result = new String();
-	   
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-	    //get current date time with Date()
-	    Date date = new Date();
-	    result += dateFormat.format(date);
-	 			   
-	    return result;
-	}
+		
+		lbldate.setText("  "+frame.getCurrentDateAndTime()+"  ");
+	}	
 	
 	/**
 	 * Constructor.
@@ -90,14 +80,16 @@ public class TheConsole extends JPanel {
 		add(scrollpane);
 		
 		JToolBar toolBar = new JToolBar();
+		toolBar.setFloatable(false);
 		scrollpane.setColumnHeaderView(toolBar);
 		FlowLayout fl_toolBar = new FlowLayout(FlowLayout.LEFT);
 		fl_toolBar.setVgap(1);
 		fl_toolBar.setHgap(3);
 		toolBar.setLayout(fl_toolBar);
 		
-		btnSave = new JButton("Save");
-		btnSave.setIcon(new ImageIcon(TheConsole.class.getResource("/resources/icon/save-16x16.png")));
+		btnSave = new JButton();
+		btnSave.setToolTipText("export to a txt file");
+		btnSave.setIcon(new ImageIcon(TheConsole.class.getResource("/resources/icon/export-16x16.png")));
 		
 		btnSave.addActionListener(new ActionListener() 
 		{
@@ -107,7 +99,8 @@ public class TheConsole extends JPanel {
 			}
 		});
 								
-		btnClear = new JButton("Clear");
+		btnClear = new JButton();
+		btnClear.setToolTipText("clear console");
 		btnClear.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
@@ -116,14 +109,18 @@ public class TheConsole extends JPanel {
 			}
 		});
 		
+		rigidArea = Box.createRigidArea(new Dimension(15, 20));
+		rigidArea.setEnabled(false);
+		toolBar.add(rigidArea);
+				
+		btnSave.setFocusable(false);
+		toolBar.add(btnSave);
+		
 		btnClear.setIcon(new ImageIcon(TheConsole.class.getResource("/resources/icon/clear-16x16.png")));
 		btnClear.setFocusable(false);
 		toolBar.add(btnClear);
 		
-		btnSave.setFocusable(false);
-		toolBar.add(btnSave);
-		
-		lbldate = new JLabel(" ["+getCurrentDateAndTime()+"]");
+		lbldate = new JLabel("  ");
 		lbldate.setHorizontalAlignment(SwingConstants.LEFT);
 		lbldate.setPreferredSize(new Dimension(330, 15));
 		toolBar.add(lbldate);
@@ -136,7 +133,7 @@ public class TheConsole extends JPanel {
 	public String saveTxtLocation()
 	{
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Save");
+		fileChooser.setDialogTitle("Export");
 		FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("Text Document (*.txt)", "txt");
 		fileChooser.addChoosableFileFilter(txtFilter);
 		fileChooser.setFileFilter(txtFilter);
@@ -178,7 +175,7 @@ public class TheConsole extends JPanel {
 	public void clear()
 	{
 		output.setText("");
-		lbldate.setText(" ["+getCurrentDateAndTime()+"]");
+		lbldate.setText("  "+frame.getCurrentDateAndTime()+"  ");
 		lbldate.repaint();
 		lbldate.validate();
 	}
@@ -186,7 +183,7 @@ public class TheConsole extends JPanel {
 	public void append(String text)
 	{		
 		output.setText("\n"+output.getText() + text);
-		lbldate.setText(" ["+getCurrentDateAndTime()+"]");
+		lbldate.setText("  "+frame.getCurrentDateAndTime()+"  ");
 		lbldate.repaint();
 		lbldate.validate();
 	}
@@ -194,7 +191,7 @@ public class TheConsole extends JPanel {
 	public void write(String text)
 	{		
 		output.setText("\n"+text);
-		lbldate.setText(" ["+getCurrentDateAndTime()+"]");
+		lbldate.setText("  "+frame.getCurrentDateAndTime()+"  ");
 		lbldate.repaint();
 		lbldate.validate();
 	}

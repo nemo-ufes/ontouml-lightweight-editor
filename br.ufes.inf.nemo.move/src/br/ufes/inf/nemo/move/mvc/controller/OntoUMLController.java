@@ -58,10 +58,8 @@ public class OntoUMLController {
 	    	ontoumlview.validate();
 	    	ontoumlview.repaint();
 	    	
-	    	ontoumlview.getTheFrame().getManager().getAntiPatternListView().Clear();
-	    	
-	    	ontoumlview.getTheFrame().getManager().getUMLModel().setUMLModel(path.replace(".refontouml",".uml"));
-	    	
+	    	ontoumlview.getTheFrame().getManager().getAntiPatternListView().Clear();	    	
+	    	ontoumlview.getTheFrame().getManager().getUMLModel().setUMLModel(path.replace(".refontouml",".uml"));	    	
 	    	ontoumlview.getTheFrame().getManager().getAlloyModel().setAlloyModel(path.replace(".refontouml",".als"));
 	    		    		    					
 	    	} catch (IOException exception) {
@@ -69,7 +67,9 @@ public class OntoUMLController {
 	    		String msg = "An error ocurred while loading the model.\n"+exception.getMessage();
 	    		ontoumlview.getTheFrame().showErrorMessageDialog("Open OntoUML",msg);
 	    		exception.printStackTrace();
-	    	}
+	    	}	    	
+	    	
+	    	ontoumlview.getTheFrame().getManager().doModelDiagnostic();	   
 	    }
 	 }   
 	 
@@ -82,12 +82,7 @@ public class OntoUMLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	ontoumlview.getTheFrame().getConsole().write(ontoumlview.getTheFrame().getManager().doModelDiagnostic());
-	    	
-	    	//ontoumlview.getTheFrame().getConsole().write(ontoumlview.getTheFrame().getManager().doModelVerification());	    	
-	    	ontoumlview.getTheFrame().getConsole().goToInitialPosition();
-	    	ontoumlview.getTheFrame().ShowConsole();
-	    	ontoumlview.getTheFrame().focusOnConsole();	    	
+	    	ontoumlview.getTheFrame().getManager().doModelDiagnostic();	    	
 	    }
 	 }
 	 	 

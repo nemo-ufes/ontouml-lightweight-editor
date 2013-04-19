@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -36,12 +39,13 @@ public class TheFrame extends JFrame {
 	private JSplitPane centerSplitPane;	
 	private JTabbedPane ontoumlTabbedPane;
 	private JTabbedPane oclTabbedPane;
-	private JTabbedPane consoleTabbedPane;
+	private JTabbedPane infoTabbedPane;
 	private TheManager appmanager;	
 	private SimpleGUICustom analyzer;
 	private TheStatus statusBar;
 	private TheProperties properties;
 	private TheWarnings warnings;
+	private TheErrors errors;
 	
 	/**
 	 * Constructor.
@@ -109,26 +113,31 @@ public class TheFrame extends JFrame {
 		console = new TheConsole(this);	
 		properties = new TheProperties(this);
 		warnings = new TheWarnings(this);
+		errors = new TheErrors(this);
 		
-		consoleTabbedPane = new JTabbedPane();
-		consoleTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		consoleTabbedPane.setBorder(null);
-		consoleTabbedPane.setPreferredSize(new Dimension(400,600));
-		consoleTabbedPane.setBackground(UIManager.getColor("Panel.background"));
-		
-		consoleTabbedPane.add(console);	
-		consoleTabbedPane.setTitleAt(0,"Console");
-		consoleTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/display-16x16.png")));
-		
-		consoleTabbedPane.add(properties);	
-		consoleTabbedPane.setTitleAt(1,"Properties");
-		consoleTabbedPane.setIconAt(1,new ImageIcon(TheFrame.class.getResource("/resources/icon/table-16x16.png")));		
+		infoTabbedPane = new JTabbedPane();
+		infoTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		infoTabbedPane.setBorder(null);
+		infoTabbedPane.setPreferredSize(new Dimension(400,600));
+		infoTabbedPane.setBackground(UIManager.getColor("Panel.background"));
+					
+		infoTabbedPane.add(properties);	
+		infoTabbedPane.setTitleAt(0," Properties ");
+		infoTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/table-16x16.png")));		
 				
-		consoleTabbedPane.add(warnings);	
-		consoleTabbedPane.setTitleAt(2,"Warnings");
-		consoleTabbedPane.setIconAt(2,new ImageIcon(TheFrame.class.getResource("/resources/icon/warning-16x16.png")));
+		infoTabbedPane.add(warnings);	
+		infoTabbedPane.setTitleAt(1," Warnings ");
+		infoTabbedPane.setIconAt(1,new ImageIcon(TheFrame.class.getResource("/resources/icon/warning-16x16.png")));
+
+		infoTabbedPane.add(errors);	
+		infoTabbedPane.setTitleAt(2," Errors ");
+		infoTabbedPane.setIconAt(2,new ImageIcon(TheFrame.class.getResource("/resources/icon/error-16x16.png")));
 		
-		centerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,innerSplitPane,consoleTabbedPane);
+		infoTabbedPane.add(console);	
+		infoTabbedPane.setTitleAt(3," Console ");
+		infoTabbedPane.setIconAt(3,new ImageIcon(TheFrame.class.getResource("/resources/icon/display-16x16.png")));
+		
+		centerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,innerSplitPane,infoTabbedPane);
 		centerSplitPane.setOneTouchExpandable(true);		
 		centerSplitPane.setBorder(null);
 				
@@ -181,6 +190,18 @@ public class TheFrame extends JFrame {
         });
     }
 	
+	public String getCurrentDateAndTime()
+	{
+		String result = new String();
+	   
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+	    //get current date time with Date()
+	    Date date = new Date();
+	    result += dateFormat.format(date);
+	 			   
+	    return result;
+	}
+	
 	/** Get Alloy Analyzer.  */
 	public SimpleGUICustom getAlloyAnalyzer()
 	{
@@ -194,12 +215,22 @@ public class TheFrame extends JFrame {
 	
 	public void focusOnConsole()
 	{
-		consoleTabbedPane.setSelectedIndex(0);
+		infoTabbedPane.setSelectedIndex(3);
+	}
+	
+	public void focusOnWarnings()
+	{
+		infoTabbedPane.setSelectedIndex(1);
+	}
+	
+	public void focusOnErrors()
+	{
+		infoTabbedPane.setSelectedIndex(2);
 	}
 	
 	public void focusOnProperties()
 	{
-		consoleTabbedPane.setSelectedIndex(1);
+		infoTabbedPane.setSelectedIndex(0);
 	}
 	
 	/** Get Console Panel. */
@@ -211,6 +242,9 @@ public class TheFrame extends JFrame {
 	}
 	public TheWarnings getWarnings(){
 		return warnings;
+	}
+	public TheErrors getErrors(){
+		return errors;
 	}
 	/** Get Tool Bar */
 	public TheToolBar getToolBar() { 
