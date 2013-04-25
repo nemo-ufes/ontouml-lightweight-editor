@@ -50,7 +50,7 @@ public class TheManager {
 	private OntoUMLOptionsModel ontoumlOptModel;
 	private OCLOptionsModel oclOptModel;
 	private AlloyModel alloymodel;
-			
+	
 	/**
 	 * Set Manager from OntoUML Package, String COnstraints and Alloy Path.
 	 * 
@@ -70,7 +70,9 @@ public class TheManager {
 		ontoumlview.setPath(ontoumlmodel.getOntoUMLPath(),ontoumlmodel.getOntoUMLModelInstance());
     	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance(),ontoumlmodel.getOntoUMLParser());    	
     	ontoumlview.validate();
-    	ontoumlview.repaint();    	
+    	ontoumlview.repaint();    
+    	
+    	doModelDiagnostic();
 	}	
 	
 	/**
@@ -196,7 +198,7 @@ public class TheManager {
 			verificator.getErrorsMatrixFormat(ontoumlmodel.getOntoUMLParser()),
 			verificator.getErrors()
 		);
-		if (verificator.getErrors()>0) frame.focusOnErrors();
+		if (verificator.getErrors()>0) {  frame.focusOnErrors(); }
 		
 	}
 	
@@ -353,7 +355,7 @@ public class TheManager {
 			oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));
 
 			// show Message
-			String msg =  "Rules are syntactically correct.\n";
+			String msg =  "Constraints are syntactically correct.\n";
 			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing OCL",msg);
 						
     	}catch(SemanticException e2){

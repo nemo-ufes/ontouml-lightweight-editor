@@ -11,6 +11,7 @@ import org.eclipse.ocl.util.Tuple;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
+import RefOntoUML.Mediation;
 import RefOntoUML.Package;
 import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
@@ -22,7 +23,8 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class AntiPatternIdentifier {
 	
-	public static EObject getOriginal(EObject copy, Copier copier){
+	public static EObject getOriginal(EObject copy, Copier copier)
+	{
 		
 		for (EObject element : copier.keySet()) {
 			if(copier.get(element).equals(copy))
@@ -32,10 +34,22 @@ public class AntiPatternIdentifier {
 		return null;
 	}
 	
-	/*OCL query for the identification of the Relation Specialization AntiPattern*/
+	/**
+	 * # QUERY : RS ANTIPATTERN
+	 *  
+	 * OCL query for the identification of the Relation Specialization AntiPattern.
+	 */
 	private static String RS_OCLQuery = "Association.allInstances()->product(Association.allInstances())->collect( x | Tuple {a1:Association = x.first, a2:Association = x.second})->select( x | x.a1<>x.a2 and ( ( x.a1.memberEnd.type->at(1).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(1).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(1).oclAsType(Classifier)) and x.a1.memberEnd.type->at(2).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(2).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(2).oclAsType(Classifier)) ) or ( x.a1.memberEnd.type->at(1).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(1).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(2).oclAsType(Classifier)) and x.a1.memberEnd.type->at(2).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(2).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(1).oclAsType(Classifier)) )) )";
 	
-	/*Returns all the Relation Specialization AntiPatterns in the input model m*/ 
+	/**
+	 * # IDENTIFY : RS ANTIPATTERN 
+	 * 
+	 * Returns all the Relation Specialization AntiPatterns in the input model m.
+	 *  
+	 * @param parser
+	 * @return
+	 * @throws Exception
+	 */
 	@SuppressWarnings("unchecked")
 	public static ArrayList<RSAntiPattern> identifyRS(OntoUMLParser parser) throws Exception 
 	{
@@ -60,10 +74,23 @@ public class AntiPatternIdentifier {
 		return result;
 	}
 	
-	/*OCL query for the identification of the Self-Type Relationship AntiPattern*/
+	/**
+	 * # QUERY : STR ANTIPATTERN
+	 * 
+	 * OCL query for the identification of the Self-Type Relationship AntiPattern.
+	 */
 	private static String STR_OCLQuery = "Association.allInstances()->select(x:Association | x.memberEnd.type->forAll(y1,y2:Type | y1=y2))";
 	
-	/*Returns all the Self-Type Relationship AntiPatterns in the input model m*/
+	
+	/**
+	 * # IDENTIFY : STR ANTIPATTERN
+	 * 
+	 * Returns all the Self-Type Relationship AntiPatterns in the input model m.
+	 * 
+	 * @param parser
+	 * @return
+	 * @throws Exception
+	 */
 	@SuppressWarnings("unchecked")
 	public static ArrayList<STRAntiPattern> identifySTR (OntoUMLParser parser) throws Exception
 	{
@@ -84,12 +111,25 @@ public class AntiPatternIdentifier {
 		
 		return result;
 	}
-	
-	/*OCL query for the identification of the Relation Between Overlapping Subtypes AntiPattern*/
-	//private static String RBOS_OCLQuery = "Association.allInstances()-> select(x:Association | x.memberEnd.type->at(1)<>x.memberEnd.type->at(2) and ( (x.memberEnd.type->at(1).oclAsType(Classifier).allParents()->includes(x.memberEnd.type->at(2))) or (x.memberEnd.type->at(2).oclAsType(Classifier).allParents()->includes(x.memberEnd.type->at(1))) or (x.memberEnd.type->at(1).oclAsType(Classifier).allParents()->intersection(x.memberEnd.type->at(2).oclAsType(Classifier).allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(x.memberEnd.type->at(1)) or g1.specific=x.memberEnd.type->at(1)) and (g2.specific.allChildren()->includes(x.memberEnd.type->at(2)) or g2.specific=x.memberEnd.type->at(2))))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
+		
+	/**
+	 * # QUERY : RBOS ANTIPATTERN
+	 * 
+	 * OCL query for the identification of the Relation Between Overlapping Subtypes AntiPattern.
+	 */
 	private static String RBOS_OCLQuery = "Association.allInstances()-> select(x:Association | x.memberEnd.type->at(1)<>x.memberEnd.type->at(2) and ( (x.memberEnd.type->at(1).oclAsType(Classifier).allParents()->includes(x.memberEnd.type->at(2).oclAsType(Classifier)) or (x.memberEnd.type->at(2).oclAsType(Classifier)).allParents()->includes(x.memberEnd.type->at(1).oclAsType(Classifier))) or (x.memberEnd.type->at(1).oclAsType(Classifier).allParents()->intersection(x.memberEnd.type->at(2).oclAsType(Classifier).allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(x.memberEnd.type->at(1).oclAsType(Classifier)) or g1.specific=x.memberEnd.type->at(1)) and (g2.specific.allChildren()->includes(x.memberEnd.type->at(2).oclAsType(Classifier)) or g2.specific=x.memberEnd.type->at(2))))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
+	//private static String RBOS_OCLQuery = "Association.allInstances()-> select(x:Association | x.memberEnd.type->at(1)<>x.memberEnd.type->at(2) and ( (x.memberEnd.type->at(1).oclAsType(Classifier).allParents()->includes(x.memberEnd.type->at(2))) or (x.memberEnd.type->at(2).oclAsType(Classifier).allParents()->includes(x.memberEnd.type->at(1))) or (x.memberEnd.type->at(1).oclAsType(Classifier).allParents()->intersection(x.memberEnd.type->at(2).oclAsType(Classifier).allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(x.memberEnd.type->at(1)) or g1.specific=x.memberEnd.type->at(1)) and (g2.specific.allChildren()->includes(x.memberEnd.type->at(2)) or g2.specific=x.memberEnd.type->at(2))))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
 	
-	/*Returns all the Relation Between Overlapping Subtypes AntiPatterns in the input model m*/
+	
+	/**
+	 * # IDENTIFY : RBOS ANTIPATTERN
+	 * 
+	 * Returns all the Relation Between Overlapping Subtypes AntiPatterns in the input model m.
+	 * 
+	 * @param parser
+	 * @return
+	 * @throws Exception
+	 */
 	@SuppressWarnings("unchecked")
 	public static ArrayList<RBOSAntiPattern> identifyRBOS (OntoUMLParser parser) throws Exception 
 	{
@@ -110,11 +150,24 @@ public class AntiPatternIdentifier {
 		return result;
 	}
 	
-	/*TODO This query uses the mediations() operation defined in the metamodel, which does not take into account the inverted ones, i.e. mediations with the target as the relator*/ 
-	/*OCL query for the identification of the Relator With Overlapping Roles AntiPattern*/
-	//public static String RWOROCLQuery = "Relator.allInstances()->select(r:Relator | r.oclAsType(Classifier).isAbstract=false and ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()>2 or ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()=2 and ( r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(1).mediatedEnd().lower>1 or r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(2).mediatedEnd().lower>1))) and r.allParents()->including(r).oclAsType(Relator).mediated()->exists(t1,t2:Classifier | t1<>t2 and ( (t1.allParents()->includes(t2)) or  (t2.allParents()->includes(t1)) or ( t1.allParents()->intersection(t2.allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(t1) or g1.specific=t1) and (g2.specific.allChildren()->includes(t2) or g2.specific=t2)))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false)))))";
+	/*
+	 * TODO 
+	 * This query uses the mediations() operation defined in the metamodel, which does not take into account the inverted ones, 
+	 * i.e. mediations with the target as the relator
+	 * 
+	 */ 
+	
+	/**
+	 * # QUERY : RWOR ANTIPATTERN
+	 * 
+	 * OCL query for the identification of the Relator With Overlapping Roles AntiPattern.
+	 */
 	public static String RWOROCLQuery = "Relator.allInstances()->select(r:Relator | r.oclAsType(Classifier).isAbstract=false and ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()>2 or ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()=2 and (( r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(1).mediatedEnd().upper+r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(2).mediatedEnd().upper)>2 or r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(1).mediatedEnd().upper=-1 or r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(2).mediatedEnd().upper=-1))) and r.allParents()->including(r).oclAsType(Relator).mediated()->exists(t1,t2:Classifier | t1<>t2 and t1.allParents()->excludes(t2) and t2.allParents()->excludes(t1) and ( t1.allParents()->intersection(t2.allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(t1) or g1.specific=t1) and (g2.specific.allChildren()->includes(t2) or g2.specific=t2)))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false))))";
-	/*	Relator.allInstances()->
+	//public static String RWOROCLQuery = "Relator.allInstances()->select(r:Relator | r.oclAsType(Classifier).isAbstract=false and ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()>2 or ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()=2 and ( r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(1).mediatedEnd().lower>1 or r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(2).mediatedEnd().lower>1))) and r.allParents()->including(r).oclAsType(Relator).mediated()->exists(t1,t2:Classifier | t1<>t2 and ( (t1.allParents()->includes(t2)) or  (t2.allParents()->includes(t1)) or ( t1.allParents()->intersection(t2.allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(t1) or g1.specific=t1) and (g2.specific.allChildren()->includes(t2) or g2.specific=t2)))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false)))))";
+	
+	/*	
+
+	Relator.allInstances()->
 	Relator.allInstances()->
 	select(r:Relator | 
 			r.oclAsType(Classifier).isAbstract=false 
@@ -172,7 +225,15 @@ public class AntiPatternIdentifier {
 	)
 	 */
 		
-	/*Returns all the Relator With Overlapping Roles AntiPatterns in the input model m*/
+	/**
+	 * # IDENTIFY : RWOR ANTIPATTERN
+	 * 
+	 * Returns all the Relator With Overlapping Roles AntiPatterns in the input model m.
+	 * 
+	 * @param parser
+	 * @return
+	 * @throws Exception
+	 */
 	@SuppressWarnings("unchecked")
 	public static ArrayList<RWORAntiPattern> identifyRWOR (OntoUMLParser parser) throws Exception
 	{
@@ -193,10 +254,22 @@ public class AntiPatternIdentifier {
 		return result;
 	}
 	
-	/*OCL query for the identification of the Relator With Overlapping Roles AntiPattern*/
+	/**
+	 * # QUERY : IA ANTIPATTERN
+	 * 
+	 * OCL query for the identification of the Relator With Overlapping Roles AntiPattern.
+	 */
 	private static String IA_OCLQuery = "Association.allInstances()->select(x:Association | (x.memberEnd.type->at(1).oclAsType(Classifier).allChildren()->size()>1 and (x.memberEnd->at(1).upper=-1 or x.memberEnd->at(1).upper>1)) or (x.memberEnd.type->at(2).oclAsType(Classifier).allChildren()->size()>1 and (x.memberEnd->at(2).upper=-1 or x.memberEnd->at(2).upper>1)))";
 	
-	/*Returns all the Imprecise Abstraction AntiPatterns in the input model m*/
+	/**
+	 * # IDENTIFY : IA ANTIPATTERN
+	 * 
+	 * Returns all the Imprecise Abstraction AntiPatterns in the input model m.
+	 * 
+	 * @param parser
+	 * @return
+	 * @throws Exception
+	 */
 	@SuppressWarnings("unchecked")
 	public static ArrayList<IAAntiPattern> identifyIA(OntoUMLParser parser) throws Exception 
 	{
@@ -217,6 +290,12 @@ public class AntiPatternIdentifier {
 		return result;
 	}
 	
+	/**
+	 *  # IDENTIFY : AC ANTIPATTERN
+	 *  
+	 * @param parser
+	 * @return
+	 */
 	public static ArrayList<ACAntiPattern> identifyAC(OntoUMLParser parser){
 		
 		int aux[][]; 
@@ -285,7 +364,39 @@ public class AntiPatternIdentifier {
 	}
 	
 	
-	
-	
+	/**
+	 * # QUERY : RWRT ANTIPATTERN
+	 * 
+	 * OCL query for the identification of the Relator With Rigid Types AntiPattern.
+	 */
+	private static String RWRT_OCLQuery = "Mediation.allInstances()->select(m:Mediation | m.memberEnd->at(2).type.oclIsKindOf(RigidSortalClass) or m.memberEnd->at(1).type.oclIsKindOf(RigidSortalClass) or m.memberEnd->at(2).type.oclIsKindOf(RigidMixinClass) or m.memberEnd->at(1).type.oclIsKindOf(RigidMixinClass))";
+
+	/**
+	 * # IDENTIFY : RWRT ANTIPATTERN
+	 * 
+	 * Returns all the Relator With Rigid Types AntiPatterns in the input model m.
+	 * 
+	 * @param parser
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public static ArrayList<RWRTAntiPattern> identifyRWRT (OntoUMLParser parser) throws Exception 
+	{
+		Copier copier = new Copier();
+		
+		Package model = parser.createPackageFromSelections(copier);
+		
+		Collection<Mediation> query_result;				
+		query_result = (Collection<Mediation>)OCLQueryExecuter.executeQuery(RWRT_OCLQuery, (EClassifier)model.eClass(), model);
+		
+		ArrayList<RWRTAntiPattern> result = new ArrayList<RWRTAntiPattern>();
+		for (Mediation a : query_result) {
+			Mediation original = (Mediation) AntiPatternIdentifier.getOriginal(a, copier);
+			result.add(new RWRTAntiPattern(original));
+		}
+		
+		return result;
+	}
 	
 }
