@@ -18,8 +18,11 @@ import RefOntoUML.RefOntoUMLPackage;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class QueryPerformer {
+	
 	public static void main(String[] args) throws Exception {
+		
 		ResourceSet resourceSet = new ResourceSetImpl();
+		
 		// Register the default resource factory -- only needed for stand-alone!
 		@SuppressWarnings("unused")
 		RefOntoUMLPackage refMetaPack = RefOntoUMLPackage.eINSTANCE;
@@ -41,11 +44,24 @@ public class QueryPerformer {
 		
 		OntoUMLParser parser = new OntoUMLParser(m);
 		
-		
-		
-		
 		try {
 		    	    
+			ArrayList<RWRTAntiPattern> result00 = AntiPatternIdentifier.identifyRWRT(parser);
+		    System.out.println("#Relator with Rigid Type Antipatterns: "+result00.size()+"\n");
+		    
+		    for (RWRTAntiPattern str : result00) {
+		    	System.out.println(str+"\n");
+		    	/*System.out.println(str.generateTransitivePredicate(4,mapper));
+		    	System.out.println(str.generateIntransitivePredicate(4,mapper));
+		    	System.out.println(str.generateReflexivePredicate(4,mapper));
+		    	System.out.println(str.generateIrreflexivePredicate(4,mapper));
+		    	System.out.println(str.generateSymmetricPredicate(4,mapper));
+		    	System.out.println(str.generateAntisymmetricPredicate(4,mapper));*/
+		    	
+		    }
+		    System.out.println("**************************************************************");
+		    
+		    
 		    ArrayList<STRAntiPattern> result = AntiPatternIdentifier.identifySTR(parser);
 		    System.out.println("#SelfTypeRelationship Antipatterns: "+result.size()+"\n");
 		    

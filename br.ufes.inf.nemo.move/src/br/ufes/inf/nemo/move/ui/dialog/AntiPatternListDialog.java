@@ -24,6 +24,7 @@ import br.ufes.inf.nemo.antipattern.IAAntiPattern;
 import br.ufes.inf.nemo.antipattern.RBOSAntiPattern;
 import br.ufes.inf.nemo.antipattern.RSAntiPattern;
 import br.ufes.inf.nemo.antipattern.RWORAntiPattern;
+import br.ufes.inf.nemo.antipattern.RWRTAntiPattern;
 import br.ufes.inf.nemo.antipattern.STRAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.ACAntiPatternModel;
@@ -32,6 +33,7 @@ import br.ufes.inf.nemo.move.mvc.model.IAAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.RBOSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.RSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.RWORAntiPatternModel;
+import br.ufes.inf.nemo.move.mvc.model.RWRTAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.STRAntiPatternModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 
@@ -53,6 +55,7 @@ public class AntiPatternListDialog extends JDialog {
 	private JCheckBox cbxRBOS;
 	private JCheckBox cbxAC;
 	private JCheckBox cbxRS;
+	private JCheckBox cbxRWRT;
 	private JButton identifyButton;
 		
 	/** 
@@ -64,6 +67,7 @@ public class AntiPatternListDialog extends JDialog {
 	public Boolean IAisSelected() { return cbxIA.isSelected(); }
 	public Boolean RSisSelected() { return cbxRS.isSelected(); }
 	public Boolean RWORisSelected() { return cbxRWOR.isSelected(); }
+	public Boolean RWRTisSelected() { return cbxRWRT.isSelected(); }
 		
 	/**
 	 * Open the Dialog.
@@ -94,7 +98,7 @@ public class AntiPatternListDialog extends JDialog {
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/icon/antipattern-24x24.png")));
 		setTitle("Detect AntiPatterns");
-		setBounds(100, 100, 332, 256);
+		setBounds(100, 100, 332, 276);
 		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -119,19 +123,23 @@ public class AntiPatternListDialog extends JDialog {
 		cbxRS = new JCheckBox("RS : Relation Specialization");
 		cbxRS.setBackground(UIManager.getColor("Panel.background"));
 		
+		cbxRWRT = new JCheckBox("RWRT : Relator With Rigid Types");
+		cbxRWRT.setBackground(UIManager.getColor("Panel.background"));
+		
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGap(17)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(cbxRWRT)
 						.addComponent(cbxRS, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbxAC, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbxRBOS, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbxRWOR, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbxSTR, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbxIA, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(150, Short.MAX_VALUE))
+					.addContainerGap(32, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -148,8 +156,10 @@ public class AntiPatternListDialog extends JDialog {
 					.addComponent(cbxAC)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cbxRS)
-					.addContainerGap(33, Short.MAX_VALUE))
-		);		
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxRWRT)
+					.addContainerGap(9, Short.MAX_VALUE))
+		);
 		contentPanel.setLayout(gl_contentPanel);
 		
 		JPanel buttonPane = new JPanel();
@@ -199,6 +209,7 @@ public class AntiPatternListDialog extends JDialog {
        			if (!IAisSelected()) cbxIA.setSelected(true);
        			if (!RSisSelected()) cbxRS.setSelected(true);
        			if (!RWORisSelected()) cbxRWOR.setSelected(true);
+       			if (!RWRTisSelected()) cbxRWRT.setSelected(true);
        		}
        	});
 	}
@@ -222,6 +233,7 @@ public class AntiPatternListDialog extends JDialog {
        			if (IAisSelected()) cbxIA.setSelected(false);
        			if (RSisSelected()) cbxRS.setSelected(false);
        			if (RWORisSelected()) cbxRWOR.setSelected(false);
+       			if (RWRTisSelected()) cbxRWRT.setSelected(false);
        		}
        	});
 	}
@@ -260,6 +272,7 @@ public class AntiPatternListDialog extends JDialog {
 		ArrayList<STRAntiPatternModel> strListModel = new ArrayList<STRAntiPatternModel>();
 		ArrayList<RWORAntiPatternModel> rworListModel = new ArrayList<RWORAntiPatternModel>();				
 		ArrayList<IAAntiPatternModel> iaListModel = new ArrayList<IAAntiPatternModel>();
+		ArrayList<RWRTAntiPatternModel> rwrtListModel = new ArrayList<RWRTAntiPatternModel>();
 		
 		frame.getManager().doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
 		
@@ -332,7 +345,17 @@ public class AntiPatternListDialog extends JDialog {
 				iaListModel.add(iaModel);
 			}	
 		}
-		
+		if (RWRTisSelected()) 
+		{
+			int id=1;
+			for(RWRTAntiPattern rwrt: AntiPatternIdentifier.identifyRWRT(parser)) 
+			{
+				RWRTAntiPatternModel rwrtModel = new RWRTAntiPatternModel(rwrt);
+				rwrtModel.setId(id++);	
+			
+				rwrtListModel.add(rwrtModel);
+			}	
+		}
 		
 		String result = new String();
 		
@@ -342,7 +365,8 @@ public class AntiPatternListDialog extends JDialog {
 		if (strListModel.size()>0) result += "STR AntiPattern : "+strListModel.size()+" items found.\n";
 		if (rworListModel.size()>0) result += "RWOR AntiPattern : "+rworListModel.size()+" items found.\n";
 		if (iaListModel.size()>0) result += "IA AntiPattern : "+iaListModel.size()+" items found.\n";
-				
+		if (rwrtListModel.size()>0) result += "RWRT AntiPattern : "+rwrtListModel.size()+" items found.\n";
+		
 		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No AntiPatterns Found.","Detect AntiPatterns",JOptionPane.INFORMATION_MESSAGE); 
 		else 
 		{			

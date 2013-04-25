@@ -154,7 +154,8 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 		if(name.equals("not")) { return "("+"not " + sourceResult+ ")"; }		
 		if(name.equals("oclIsUndefined")) { return "("+"#" + sourceResult + " = 0"+ ")"; }				
 		if(name.equals("abs")) { return "abs[" + sourceResult + "]"; }
-		
+        if(name.equals("sum")) { return "(sum " + sourceResult + ")"; }
+        
 		if(name.equals("asSet")) { return sourceResult; }
 		if(name.equals("oclAsType")) { return sourceResult; }
 		
@@ -182,7 +183,9 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 			if(name.equals("includes")) { return "("+argument + " in " + sourceResult+")"; }			
 			if(name.equals("excludes")) { return "("+argument + " !in " + sourceResult+")"; }			
 			if(name.equals("includesAll")) { return "("+argument + " in " + sourceResult+")"; }
-			if(name.equals("excludesAll")) { return "("+"#"+argument + " & " + sourceResult+" = 0)"; }			
+			if(name.equals("excludesAll")) { return "("+"#"+argument + " & " + sourceResult+" = 0)"; }
+			if(name.equals("product")) { return "("+sourceResult + " -> " + argument+")"; }
+			
 			if(name.equals("=")) { return "("+sourceResult + " = " + argument+")"; }			
 			if(name.equals("<>")) { return "("+sourceResult + " != " + argument+")"; }			
 			if(name.equals("oclIsKindOf"))	{ return "("+sourceResult + " in " + argument+")"; }
@@ -220,10 +223,6 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
 			if (iter.hasNext()) ;  // no more arguments 
         }
        			
-        //if(name.equals("oclIsTypeOf")) 
-        //	throw new OperationException("oclIsTypeOf()","We do not support this object operation. Should me more of a description here...");
-        //if(name.equals("oclAsType")) 
-        //	throw new OperationException("oclAsType()","We do not support this operation because may return an invalid value which alloy does not support.");
         if(name.equals("/")) 
         	throw new OperationException("/","We only support the integer operations: +, -, *, max(), min(), abs().");
         if(name.equals("div")) 
@@ -249,9 +248,7 @@ public class ToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <S
         if(name.equals("product")) 
         	throw new OperationException("product()","The type Tuple is not supported");        
         if(name.equals("count"))
-        	throw new OperationException("count()","We do not support this operation. It is not possible to iterate over collections.");
-        if(name.equals("sum")) 
-        	throw new OperationException("sum()","We do not support this operation because it only applies to numeric(Integer) types.");        
+        	throw new OperationException("count()","We do not support this operation. It is not possible to iterate over collections.");        
                
         return result;
 	}
