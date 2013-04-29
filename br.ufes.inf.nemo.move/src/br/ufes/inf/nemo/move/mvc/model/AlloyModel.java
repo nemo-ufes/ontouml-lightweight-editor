@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.ocl2alloy.transformer.OCL2Alloy;
+import br.ufes.inf.nemo.ocl2alloy.OCL2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
 
 /**

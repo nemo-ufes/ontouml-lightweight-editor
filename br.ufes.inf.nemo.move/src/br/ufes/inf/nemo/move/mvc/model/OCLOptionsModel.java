@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.move.mvc.model;
 
-import br.ufes.inf.nemo.ocl2alloy.options.OCLOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
 
 /**
  * 
