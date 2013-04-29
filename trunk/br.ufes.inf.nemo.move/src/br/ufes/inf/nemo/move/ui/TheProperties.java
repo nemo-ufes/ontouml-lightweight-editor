@@ -179,6 +179,42 @@ public class TheProperties extends JPanel {
 		table.validate();
 	}
 	
+	public void setGeneralizationData(OntoUMLTreeNodeElem elem)
+	{
+		RefOntoUML.Generalization c = (RefOntoUML.Generalization)elem.getElement();
+		String general = new String();
+		String specific = new String();
+		
+		if (c.getGeneral()!=null) general = c.getGeneral().getName();
+		if (c.getSpecific()!=null) specific = c.getSpecific().getName();
+		
+		Object[][] data = {
+		{"    Name", " "+elem.getName()},			
+		{"    Type", " "+elem.getTypeName()},		
+		{"    General", " "+general},
+		{"    Specific", " "+specific},				
+		};		
+		String[] columnNames = {"Property","Value"};
+		tablemodel = new PropertyTableModel(columnNames,data);
+		
+		table.setModel(tablemodel);
+		table.repaint();
+		table.validate();
+	}
+	
+	public void setPackageData(OntoUMLTreeNodeElem elem)
+	{
+		Object[][] data = {
+		{"    Name", " "+elem.getName()},			
+		};		
+		String[] columnNames = {"Property","Value"};
+		tablemodel = new PropertyTableModel(columnNames,data);
+		
+		table.setModel(tablemodel);
+		table.repaint();
+		table.validate();
+	}
+	
 	/**
 	 * Set data
 	 * 
@@ -201,7 +237,15 @@ public class TheProperties extends JPanel {
 		if (elem.getElement() instanceof RefOntoUML.GeneralizationSet)
 		{
 			setGeneralizationSetData(elem);
-		}		
+		}
+		if (elem.getElement() instanceof RefOntoUML.Generalization)
+		{
+			setGeneralizationData(elem);
+		}	
+		if (elem.getElement() instanceof RefOntoUML.Package)
+		{
+			setPackageData(elem);
+		}
 	}	
 		
 	/**

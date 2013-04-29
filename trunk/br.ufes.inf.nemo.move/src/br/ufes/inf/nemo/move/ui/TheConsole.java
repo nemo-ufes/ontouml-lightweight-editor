@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.move.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -11,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -42,7 +40,6 @@ public class TheConsole extends JPanel {
 	
 	private TheFrame frame;
 	private JLabel lbldate;
-	private Component rigidArea;
 	
 	public TheConsole(TheFrame frame)
 	{
@@ -108,10 +105,6 @@ public class TheConsole extends JPanel {
 				clear();
 			}
 		});
-		
-		rigidArea = Box.createRigidArea(new Dimension(15, 20));
-		rigidArea.setEnabled(false);
-		toolBar.add(rigidArea);
 				
 		btnSave.setFocusable(false);
 		toolBar.add(btnSave);

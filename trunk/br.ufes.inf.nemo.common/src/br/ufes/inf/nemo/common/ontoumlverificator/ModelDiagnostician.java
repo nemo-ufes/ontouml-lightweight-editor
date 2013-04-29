@@ -23,6 +23,7 @@ import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Phase;
+import RefOntoUML.PrimitiveType;
 import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
@@ -121,7 +122,7 @@ public class ModelDiagnostician {
 		// # Error : Name contains an OCL keyword
 		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
 		{	
-			if (!(c instanceof RefOntoUML.Generalization) && !(c instanceof RefOntoUML.GeneralizationSet))
+			if(!(c instanceof PrimitiveType))
 			{
 				if (isOCLkeyword(c.getName())) 
 				{ 				
@@ -134,7 +135,20 @@ public class ModelDiagnostician {
 					items.add(line);
 				}	
 			}
-		}		
+		}
+		for(RefOntoUML.Property c: ontoparser.getAllInstances(RefOntoUML.Property.class))
+		{	
+			if (isOCLkeyword(c.getName())) 
+			{ 				
+				ArrayList<String> line = new ArrayList<String>();
+				errors++;
+				if (errors<10) line.add("0"+errors+". Name contains an OCL keyword");
+				else line.add(errors+". Name contains an OCL keyword");
+				line.add(getElement(c));
+				line.add(getPath(c));
+				items.add(line);
+			}
+		}
 		
 		// # Error : Mixin not abstract
 		for(RefOntoUML.Type c: ontoparser.getAllInstances(RefOntoUML.Type.class))
@@ -383,7 +397,7 @@ public class ModelDiagnostician {
 			e instanceof Mixin || e instanceof RoleMixin || e instanceof Role || e instanceof Phase || e instanceof Relator ||
 			e instanceof Mode || e instanceof DataType || e instanceof MaterialAssociation || e instanceof FormalAssociation || 
 			e instanceof Mediation || e instanceof Characterization || e instanceof Derivation || e instanceof RefOntoUML.Package || e instanceof Model ||
-			e instanceof componentOf || e instanceof memberOf || e instanceof subCollectionOf || e instanceof subQuantityOf
+			e instanceof componentOf || e instanceof memberOf || e instanceof subCollectionOf || e instanceof subQuantityOf || e instanceof Association
 		) return true;
 			
 		if (e instanceof Association)
