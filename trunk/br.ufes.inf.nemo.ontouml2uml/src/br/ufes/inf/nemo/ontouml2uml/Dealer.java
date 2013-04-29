@@ -9,11 +9,12 @@ import java.util.Map.Entry;
 
 public class Dealer {
 		
-	public org.eclipse.uml2.uml.UMLFactory myfactory;
-	
+	public org.eclipse.uml2.uml.UMLFactory myfactory;	
     public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> mymap;
  
-    /** Constructor. */
+    /** 
+     * Constructor. 
+     */
 	public Dealer()
     {
 		myfactory = org.eclipse.uml2.uml.UMLFactory.eINSTANCE;
