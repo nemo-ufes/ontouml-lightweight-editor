@@ -27,7 +27,7 @@ import br.ufes.inf.nemo.move.mvc.view.AntiPatternListView;
 import br.ufes.inf.nemo.move.mvc.view.OCLView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
 import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLCheckBoxTree;
-import br.ufes.inf.nemo.ocl2alloy.options.OCLOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
 
 /**
  * This class represents a Manager to Models, View and Controllers of the main frame application.

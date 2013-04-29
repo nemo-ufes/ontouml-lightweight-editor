@@ -19,7 +19,7 @@ import br.ufes.inf.nemo.move.mvc.model.OntoUMLOptionsModel;
 import br.ufes.inf.nemo.move.mvc.view.OCLOptionsView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLOptionsView;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.ocl2alloy.options.OCLOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
 import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
 
 /**

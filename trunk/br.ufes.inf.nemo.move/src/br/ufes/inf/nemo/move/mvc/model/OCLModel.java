@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.move.mvc.model;
 import java.io.IOException;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.ocl2alloy.parser.OCLParser;
+import br.ufes.inf.nemo.ocl2alloy.OCLParser;
 
 /**
  * This class represents an OCL Model.
