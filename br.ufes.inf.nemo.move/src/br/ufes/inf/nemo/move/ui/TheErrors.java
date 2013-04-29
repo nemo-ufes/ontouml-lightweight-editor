@@ -3,13 +3,19 @@ package br.ufes.inf.nemo.move.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -18,14 +24,6 @@ import javax.swing.table.AbstractTableModel;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
-import javax.swing.JToolBar;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import java.awt.Component;
-import javax.swing.Box;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 /**
  * @author John Guerson
@@ -42,7 +40,6 @@ public class TheErrors extends JPanel {
 	private WarningTableModel tablemodel;
 	private JLabel errorMessage;
 	private JButton saveButton;
-	private Component rigidArea;
 	private String content;
 	
 	public TheErrors(TheFrame frame)
@@ -60,7 +57,7 @@ public class TheErrors extends JPanel {
 	{
 		int rows=matrix.size();
 		
-		errorMessage.setText("    "+errors+" errors.");
+		errorMessage.setText("    ("+errors+" errors)");
 		errorMessage.repaint();
 		errorMessage.validate();
 		
@@ -130,10 +127,6 @@ public class TheErrors extends JPanel {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		add(toolBar, BorderLayout.NORTH);
-		
-		rigidArea = Box.createRigidArea(new Dimension(15, 20));
-		rigidArea.setEnabled(false);
-		toolBar.add(rigidArea);
 				
 		saveButton = new JButton("");
 		saveButton.setToolTipText("export to a txt file");
@@ -148,7 +141,7 @@ public class TheErrors extends JPanel {
 		saveButton.setIcon(new ImageIcon(TheErrors.class.getResource("/resources/icon/export-16x16.png")));
 		toolBar.add(saveButton);
 		
-		errorMessage = new JLabel("    0 errors.");
+		errorMessage = new JLabel("    (0 errors)");
 		errorMessage.setPreferredSize(new Dimension(100, 25));
 		toolBar.add(errorMessage);		
 	}
