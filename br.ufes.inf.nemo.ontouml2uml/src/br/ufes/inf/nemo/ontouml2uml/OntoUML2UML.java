@@ -22,7 +22,7 @@ public class OntoUML2UML {
 	public static String logDetails = new String();
 	
 	/**
-	 * Test.
+	 * Testing...
 	 * @param args
 	 */
 	public static void main(String[] args)
@@ -35,6 +35,14 @@ public class OntoUML2UML {
 		}
 	}
 	
+	/**
+	 * Makes the transformation from OntoUML to UML.
+	 * 
+	 * @param refmodel
+	 * @param umlPath
+	 * @param ignorePackageHierarchy
+	 * @return
+	 */
 	public static Resource Transformation (RefOntoUML.Package refmodel, String umlPath, boolean ignorePackageHierarchy)
 	{
 		logDetails="";
@@ -49,6 +57,14 @@ public class OntoUML2UML {
 		return umlResource;
 	}
 	
+	/**
+	 * Makes the transformation from OntoUML to UML.
+	 * 
+	 * @param refparser
+	 * @param umlPath
+	 * @param ignorePackageHierarchy
+	 * @return
+	 */
 	public static Resource Transformation (OntoUMLParser refparser, String umlPath, boolean ignorePackageHierarchy)
 	{
 		logDetails="";
@@ -61,9 +77,13 @@ public class OntoUML2UML {
 		return umlResource;
 	}
 		
-	/** 
-	 * Save UML Model to a Resource 
-	 */	
+	/**
+	 * Auxiliar Method to save the UML Model to a Resource.
+	 * 
+	 * @param umlpath
+	 * @param umlmodel
+	 * @return
+	 */
 	public static Resource saveUML (String umlpath, org.eclipse.uml2.uml.Package umlmodel) 
 	{
 		ResourceSet rset = new ResourceSetImpl();
