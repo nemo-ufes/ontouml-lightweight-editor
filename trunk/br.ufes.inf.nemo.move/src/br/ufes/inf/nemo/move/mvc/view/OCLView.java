@@ -55,9 +55,9 @@ public class OCLView extends JPanel {
 		setPath(oclmodel.getOCLPath(),oclmodel.getOCLString());		
 		setConstraints(oclmodel.getOCLString());
 		
-		//ocleditor.setText("-- Write your constraints below... Press Ctrl+Space too see the options.\n\n");
+		ocleditor.setText("-- Write your constraints below... Press Ctrl+Space too see the options.\n\n");
 		ocleditor.setParent(frame);
-		
+
 		validate();
 		repaint();
 	}
@@ -141,7 +141,7 @@ public class OCLView extends JPanel {
 	 * 
 	 * @return
 	 */
-	public String getOCLPath() { return oclbar.textPath.getText(); }
+	public String getOCLPath() { return oclbar.textPath.getText().trim(); }
 		
 	/**
 	 * Add Open OCL Document Action Listener.
