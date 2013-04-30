@@ -7,7 +7,6 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.ocl.ParserException;
-import org.eclipse.ocl.SemanticException;
 
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -358,20 +357,20 @@ public class TheManager {
 			String msg =  "Constraints are syntactically correct.\n";
 			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing OCL",msg);
 						
-    	}catch(SemanticException e2){
-    		frame.showErrorMessageDialog("OCL Semantic Error",  "OCL Parser : "+e2.getMessage());    		
-			e2.printStackTrace();	
+    	//}catch(SemanticException e2){
+    	//	frame.showErrorMessageDialog("OCL Semantic Error",  "OCL Parser : "+e2.getLocalizedMessage());    		
+		//	e2.printStackTrace();	
 			
     	}catch(ParserException e1){
-    		frame.showErrorMessageDialog("OCL Parser Error", "OCL Parser : "+e1.getMessage());    			
+    		frame.showErrorMessageDialog("OCL Parser Error", "OCL Parser : "+e1.getLocalizedMessage());    			
 			e1.printStackTrace();    	
 			
 		}catch(IOException e3){
-			frame.showErrorMessageDialog("IO Error", e3.getMessage());						
+			frame.showErrorMessageDialog("IO Error", e3.getLocalizedMessage());						
 			e3.printStackTrace();
 			
 		}catch(Exception e4){
-			frame.showErrorMessageDialog("Unexpected Error", e4.getMessage());			
+			frame.showErrorMessageDialog("Unexpected Error", e4.getLocalizedMessage());			
 			e4.printStackTrace();
 		}
 		

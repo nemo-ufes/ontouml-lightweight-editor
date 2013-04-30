@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.move.mvc.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
@@ -14,8 +15,9 @@ import org.eclipse.ocl.ParserException;
 
 import br.ufes.inf.nemo.move.mvc.model.OCLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.util.oclview.OCLEditorBar;
-import br.ufes.inf.nemo.move.util.oclview.OCLEditorPanel;
+import br.ufes.inf.nemo.move.ui.ocl.OCLEditorPanel;
+import br.ufes.inf.nemo.move.ui.ocl.OCLPathBar;
+import br.ufes.inf.nemo.move.ui.ocl.OCLToolBar;
 import br.ufes.inf.nemo.ocl2alloy.OCLParser;
 
 /**
@@ -33,8 +35,9 @@ public class OCLView extends JPanel {
 	private OCLModel oclmodel;
 	
 	private TheFrame frame;	
-	private OCLEditorBar oclbar;
+	private OCLPathBar oclbar;
 	private OCLEditorPanel ocleditor;
+	private OCLToolBar ocltoolbar;
 		
 	/**
 	 * Creates a View for OCL Model and the main frame of Application.
@@ -72,15 +75,19 @@ public class OCLView extends JPanel {
 		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		panel.setLayout(new BorderLayout(0, 0));
 		
-		oclbar = new OCLEditorBar();
-		oclbar.setBorder(new EmptyBorder(0, 0, 0, 0));
+		oclbar = new OCLPathBar();		
 		panel.add(BorderLayout.CENTER,oclbar);
 		
 		add(BorderLayout.NORTH,panel);	
 
 		ocleditor = new OCLEditorPanel();
+		ocltoolbar = new OCLToolBar();
+		ocltoolbar.setFloatable(false);
+		ocltoolbar.setPreferredSize(new Dimension(25, 10));
 		
-		add(BorderLayout.CENTER,ocleditor);		
+		add(BorderLayout.CENTER,ocleditor);	
+		add(BorderLayout.WEST,ocltoolbar);
+		
 	}
 	
 	public OCLEditorPanel getOcleditor() {
@@ -96,9 +103,9 @@ public class OCLView extends JPanel {
 	public void setPath(String path, String oclmodel)
 	{
 		if (path==null && oclmodel !=null)
-			oclbar.textPath.setText("Loaded...");
+			oclbar.textPath.setText("  Loaded...");
 		else if (path!=null)
-			oclbar.textPath.setText(path);
+			oclbar.textPath.setText("  "+path);
 	}	
 	
 	/**
@@ -143,7 +150,7 @@ public class OCLView extends JPanel {
 	 */
 	public void addOpenOCLListener(ActionListener actionListener) 
 	{
-		oclbar.btnOpen.addActionListener(actionListener);
+		ocltoolbar.btnOpen.addActionListener(actionListener);
 	}
 	
 	/**
@@ -153,7 +160,7 @@ public class OCLView extends JPanel {
 	 */
 	public void addSaveOCLListener(ActionListener actionListener) 
 	{
-		oclbar.btnSave.addActionListener(actionListener);
+		ocltoolbar.btnSave.addActionListener(actionListener);
 	}
 	
 	/**
@@ -163,7 +170,7 @@ public class OCLView extends JPanel {
 	 */
 	public void addNewOCLListener(ActionListener actionListener) 
 	{
-		oclbar.btnNew.addActionListener(actionListener);
+		ocltoolbar.btnNew.addActionListener(actionListener);
 	}
 	
 	/**
@@ -173,7 +180,7 @@ public class OCLView extends JPanel {
 	 */
 	public void addParseOCLListener(ActionListener actionListener) 
 	{
-		oclbar.btnParse.addActionListener(actionListener);
+		ocltoolbar.btnParse.addActionListener(actionListener);
 	}
 	
 	/**

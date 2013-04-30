@@ -84,7 +84,7 @@ public class OCLParser {
 		umlenv = envFactory.createEnvironment();		
 		org.eclipse.ocl.uml.OCL myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
 		myOCL.setParseTracingEnabled(true);
-		
+
 		analyzer = myOCL.createAnalyzer(oclConstraints);
 		cstree = analyzer.parseConcreteSyntax();
 		
@@ -97,6 +97,7 @@ public class OCLParser {
 		
 		OCLInput document = new OCLInput(oclConstraints);		
 		umlconstraintsList = myOCL.parse(document);
+
 		umlreflection = umlenv.getUMLReflection();	
     }
     
