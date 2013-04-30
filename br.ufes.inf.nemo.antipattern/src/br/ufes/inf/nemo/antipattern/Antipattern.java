@@ -4,6 +4,10 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public abstract class Antipattern {
 	
-	/*sets the elements to be transformed to alloy on the provided parser*/
+	/**
+	 * Sets the elements to be transformed to alloy on the provided parser
+	 * 
+	 * @param parser
+	 */
 	public abstract void setSelected(OntoUMLParser parser);
 }

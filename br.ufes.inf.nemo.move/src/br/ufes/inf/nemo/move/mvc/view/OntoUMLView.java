@@ -4,6 +4,7 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFileChooser;
@@ -18,8 +19,9 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
-import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLBar;
 import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLCheckBoxTree;
+import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLPathBar;
+import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLToolBar;
 import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLTreeNodeElem;
 
 /**
@@ -36,7 +38,8 @@ public class OntoUMLView extends JPanel {
 	private OntoUMLModel ontoumlModel;
 	
 	private TheFrame frame;	
-	private OntoUMLBar ontobar;
+	private OntoUMLPathBar ontobar;
+	private OntoUMLToolBar ontotoolbar;
 	private TreeScrollPane ontotree;
 	private CheckboxTree modeltree;
 	
@@ -67,10 +70,14 @@ public class OntoUMLView extends JPanel {
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 					
-		ontobar = new OntoUMLBar();		
+		ontobar = new OntoUMLPathBar();		
 		ontobar.setBorder(new EmptyBorder(0, 0, 0, 0));
+				
+		ontotoolbar = new OntoUMLToolBar();
+		ontotoolbar.setPreferredSize(new Dimension(40,10));
 		
 		add(BorderLayout.NORTH,ontobar);
+		add(BorderLayout.WEST,ontotoolbar);
 		
 		ontotree = new TreeScrollPane();
 		add(BorderLayout.CENTER,ontotree);		
@@ -128,9 +135,9 @@ public class OntoUMLView extends JPanel {
 	public void setPath(String path, RefOntoUML.Package refmodel)
 	{
 		if (path==null && refmodel!=null)
-			ontobar.textPath.setText("Loaded...");
+			ontobar.textPath.setText("  Loaded...");
 		else if (path!= null && refmodel !=null)
-			ontobar.textPath.setText(path);
+			ontobar.textPath.setText("  "+path);
 	}
 	
 	/** 
@@ -147,7 +154,7 @@ public class OntoUMLView extends JPanel {
 	 */
 	public void addLoadOntoUMLListener(ActionListener actionListener) 
 	{
-		ontobar.btnOpen.addActionListener(actionListener);
+		ontotoolbar.btnOpen.addActionListener(actionListener);
 	}	    
 	
 	/**
@@ -157,7 +164,7 @@ public class OntoUMLView extends JPanel {
 	 */
 	public void addVerifyModelListener(ActionListener actionListener) 
 	{
-		ontobar.btnVerify.addActionListener(actionListener);
+		ontotoolbar.btnVerify.addActionListener(actionListener);
 	}	
 	
 	/**
@@ -167,7 +174,7 @@ public class OntoUMLView extends JPanel {
 	 */
 	public void addShowUniqueNamesListener(ActionListener actionListener) 
 	{
-		ontobar.btnShowUnique.addActionListener(actionListener);
+		ontotoolbar.btnShowUnique.addActionListener(actionListener);
 	}	
 			
 	public void addTreeListener(TreeSelectionListener selectionListener)
@@ -182,7 +189,7 @@ public class OntoUMLView extends JPanel {
 	 */
 	public void addSaveAsModelListener(ActionListener actionListener)
 	{
-		ontobar.btnSaveAs.addActionListener(actionListener);
+		ontotoolbar.btnSaveAs.addActionListener(actionListener);
 	}
 
 	/**

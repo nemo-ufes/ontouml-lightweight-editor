@@ -70,8 +70,8 @@ public class OCLEditorPanel extends JPanel {
 		textArea.setForeground(Color.BLACK);
 		textArea.setBackground(new Color(255, 255, 255));				
 		setTheme(textArea,"/br/ufes/inf/nemo/move/ui/ocl/EclipseTheme.xml");
-		textArea.setCurrentLineHighlightColor(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));	
-			         
+		textArea.setCurrentLineHighlightColor(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));		
+						
 		tokenMaker = new OCLTokenMaker();	    
 	    ((RSyntaxDocument)textArea.getDocument()).setSyntaxStyle(tokenMaker);
 	    
@@ -88,7 +88,7 @@ public class OCLEditorPanel extends JPanel {
       	
       	setLayout(new BorderLayout(0, 0));
       			
-      	scrollPane = new RTextScrollPane(textArea);      
+      	scrollPane = new RTextScrollPane(textArea);
       	scrollPane.setIconRowHeaderEnabled(true);
       	scrollPane.getGutter().setLineNumberColor(Color.GRAY);
       	scrollPane.getTextArea().setRows(5);
@@ -97,6 +97,7 @@ public class OCLEditorPanel extends JPanel {
     	
       	setPreferredSize(new Dimension(400, 100));
       	add(scrollPane); 
+      	
 	}   
 	
     /**

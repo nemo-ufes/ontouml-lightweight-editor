@@ -326,13 +326,24 @@ public class OCLToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor
         	result.append(sb);        	
         }
         if(name.equals("closure")) 
-        {
-
-        	String sb = sourceResult+".^("+bodyResult+")";
-        	result.append(sb);
-        	//String sb = substitutes(var,bodyResult,sourceResult);
-        	//System.out.println("sbClosure"+sb);
-        	//result.append(sb);        	
+        {        	
+        	String assocAlias = new String();
+        	String propertyAlias = new String();
+        	
+        	String aux1 = new String(bodyResult);
+        	propertyAlias = aux1.replace(var+".", "");
+        	propertyAlias = propertyAlias.replace("[w]", "");
+        	        	
+        	EObject obj = refparser.getElement(propertyAlias);
+        	
+        	if (obj instanceof RefOntoUML.Property) 
+        	{
+        		EObject container = obj.eContainer();
+            	assocAlias = refparser.getAlias(container);	
+        	}        	
+        	
+        	String strFinal = sourceResult+".^(w."+assocAlias+")";        	
+        	result.append(strFinal);
         }
                 
         if(name.equals("any")) 
@@ -346,8 +357,43 @@ public class OCLToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor
      	return result.toString();    	       
     }    	    
     
+	/** 
+     *  Substitute "var." por "sourceResult.^" na expressao "bodyResult" 
+     *  This method was used for Iterators: isUnique() and collect()
+     */    
+    public String substitutes4closure (String var, String bodyResult, String sourceResult)
+    {
+    	return bodyResult.replaceAll(var+".", sourceResult+".^");
+    	/*Pattern p = Pattern.compile(var+".");
+    	Matcher m = p.matcher(bodyResult);
+    	StringBuffer sb = new StringBuffer();
+    	while (m.find()) 
+    	{ 
+    		int indexBegin = m.start()-1;
+    		int indexEnd = m.end()+1;
+    		if(indexBegin < 0) indexBegin = 0;
+    		if(indexEnd > bodyResult.length()) indexEnd = bodyResult.length();
+    		String regex1 = "[.\t-()=<>:+]"+var+"[.\t-()=<>:+]";
+    		String regex2 = var+"[.\t-()=<>:+]";
+    		String regex3 = "[.\t-()=<>:+]"+var;
+    		if(
+    		   Pattern.matches(regex1,bodyResult.subSequence(indexBegin, indexEnd)) || 
+    		   Pattern.matches(regex2,bodyResult.subSequence(indexBegin, indexEnd))	||
+    		   Pattern.matches(regex3,bodyResult.subSequence(indexBegin, indexEnd))  
+    		){
+    		   m.appendReplacement(sb, sourceResult+".^");  
+    		   System.out.println("\n sbAppend = "+sb);
+    		}
+    	}    	
+    	System.out.println("\n sbTail = "+sb);
+    	m.appendTail(sb);
+    	String result = sb.toString();
+    	m.reset();
+    	return result;*/
+    }
+    
     /** 
-     *  Substitue var por sourceResult na express�o bodyResult 
+     *  Substitute "var" por "sourceResult" na expressao "bodyResult" 
      *  This method was used for Iterators: isUnique() and collect()
      */    
     public String substitutes (String var, String bodyResult, String sourceResult)
@@ -635,7 +681,9 @@ public class OCLToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor
                 		
                		RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getOntoUMLElement(classifier);
                		String nameClassifier = refparser.getAlias(ontoClassifier);
-              	 	result.append("all self: w."+nameClassifier+" | ");
+              	 	
+               		if (ontoClassifier instanceof RefOntoUML.DataType) result.append("all self: "+nameClassifier+" | "); 
+               		else result.append("all self: w."+nameClassifier+" | ");
                 	
                     if (expr.getBodyExpression().toString().equals("true")) result.append("isTrue["+exprResult+"]");
                     else if (expr.getBodyExpression().toString().equals("false")) result.append("isTrue["+exprResult+"]");

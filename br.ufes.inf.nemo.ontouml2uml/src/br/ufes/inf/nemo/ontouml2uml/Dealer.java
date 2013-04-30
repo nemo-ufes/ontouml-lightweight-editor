@@ -23,19 +23,19 @@ public class Dealer {
 	
 	public static void outln(String output) 
     {
-    	System.out.println(output);
+    	//System.out.println(output);
     	OntoUML2UML.logDetails += output+"\n";
     }
 	
     public static void out(String output) 
     {
-    	System.out.print(output);
+    	//System.out.print(output);
     	OntoUML2UML.logDetails += output;
     }
         
     public static void err(String error) 
     {
-        System.err.println(error);
+        //System.err.println(error);
         OntoUML2UML.logDetails += error+"\n";
     }
     
