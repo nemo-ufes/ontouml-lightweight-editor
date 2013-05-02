@@ -30,7 +30,8 @@ public class QueryPerformer {
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.refontouml").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.refontouml").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/AntiPatterns.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOS_regular_and_inverted.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
@@ -46,6 +47,21 @@ public class QueryPerformer {
 		
 		try {
 		    	    
+			ArrayList<TRIAntiPattern> result01 = AntiPatternIdentifier.identifyTRI(parser);
+		    System.out.println("#Twin Relator Instances Antipatterns: "+result01.size()+"\n");
+		    
+		    for (TRIAntiPattern str : result01) {
+		    	System.out.println(str+"\n");
+		    	/*System.out.println(str.generateTransitivePredicate(4,mapper));
+		    	System.out.println(str.generateIntransitivePredicate(4,mapper));
+		    	System.out.println(str.generateReflexivePredicate(4,mapper));
+		    	System.out.println(str.generateIrreflexivePredicate(4,mapper));
+		    	System.out.println(str.generateSymmetricPredicate(4,mapper));
+		    	System.out.println(str.generateAntisymmetricPredicate(4,mapper));*/
+		    	
+		    }
+		    System.out.println("**************************************************************");
+		    
 			ArrayList<RWRTAntiPattern> result00 = AntiPatternIdentifier.identifyRWRT(parser);
 		    System.out.println("#Relator with Rigid Type Antipatterns: "+result00.size()+"\n");
 		    

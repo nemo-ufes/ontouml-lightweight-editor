@@ -19,11 +19,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLPathBar;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLToolBar;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeNodeElem;
 import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
-import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLCheckBoxTree;
-import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLPathBar;
-import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLToolBar;
-import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLTreeNodeElem;
 import javax.swing.border.MatteBorder;
 
 /**

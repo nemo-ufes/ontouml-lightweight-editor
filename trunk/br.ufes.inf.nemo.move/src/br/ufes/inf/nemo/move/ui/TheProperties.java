@@ -12,9 +12,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
 import RefOntoUML.AggregationKind;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeNodeElem;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
-import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLTreeNodeElem;
 
 /**
  * @author John Guerson

@@ -399,4 +399,39 @@ public class AntiPatternIdentifier {
 		return result;
 	}
 	
+	/**
+	 * # QUERY : TRI ANTIPATTERN
+	 * 
+	 * OCL query for the identification of the Twin Relator Instances AntiPattern.
+	 */
+	private static String TRI_OCLQuery = "Relator.allInstances()->select(r: Relator | r.mediations()->select(m:Mediation|m.relatorEnd().upper=-1)->size()>=2)";
+
+	/**
+	 * # IDENTIFY : TRI ANTIPATTERN
+	 * 
+	 * Returns all the Twin Relator Instances AntiPatterns in the input model m.
+	 * 
+	 * @param parser
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public static ArrayList<TRIAntiPattern> identifyTRI (OntoUMLParser parser) throws Exception 
+	{
+		Copier copier = new Copier();
+		
+		Package model = parser.createPackageFromSelections(copier);
+		
+		Collection<Relator> query_result;				
+		query_result = (Collection<Relator>)OCLQueryExecuter.executeQuery(TRI_OCLQuery, (EClassifier)model.eClass(), model);
+		
+		ArrayList<TRIAntiPattern> result = new ArrayList<TRIAntiPattern>();
+		for (Relator a : query_result) {
+			Relator original = (Relator) AntiPatternIdentifier.getOriginal(a, copier);
+			result.add(new TRIAntiPattern(original,parser));
+		}
+		
+		return result;
+	}
+	
 }
