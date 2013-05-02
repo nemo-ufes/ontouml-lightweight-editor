@@ -106,7 +106,7 @@ public class TheFrame extends JFrame {
 		ontoumlTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		ontoumlTabbedPane.setPreferredSize(new Dimension(400,600));
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
-		ontoumlTabbedPane.setTitleAt(0,"OntoUML Model");
+		ontoumlTabbedPane.setTitleAt(0,"Package Explorer");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));		
 		ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/hierarchy-16x16.png")));
 		
