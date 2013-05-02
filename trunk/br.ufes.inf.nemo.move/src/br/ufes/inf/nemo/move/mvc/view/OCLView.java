@@ -60,7 +60,7 @@ public class OCLView extends JPanel {
 		setPath(oclmodel.getOCLPath(),oclmodel.getOCLString());		
 		setConstraints(oclmodel.getOCLString());
 		
-		ocleditor.setText("-- Write your constraints below... Press Ctrl+Space too see the options.\n\n");
+		ocleditor.setText("\n-- Write your constraints below... \n-- Press Ctrl+Space too see the options.\n\n");
 		ocleditor.setParent(frame);
 
 		validate();

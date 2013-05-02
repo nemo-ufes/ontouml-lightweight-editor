@@ -1,7 +1,7 @@
 package br.ufes.inf.nemo.move.ui.dialog;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,6 +57,8 @@ public class AntiPatternListDialog extends JDialog {
 	private JCheckBox cbxRS;
 	private JCheckBox cbxRWRT;
 	private JButton identifyButton;
+	private JPanel northPanel;
+	private JButton cancelButton;
 		
 	/** 
 	 * Check if AntiPattern is selected.
@@ -96,9 +98,9 @@ public class AntiPatternListDialog extends JDialog {
 		
 		this.frame = frame;
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/icon/antipattern-24x24.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/icon/search-red-24x24.png")));
 		setTitle("Detect AntiPatterns");
-		setBounds(100, 100, 332, 276);
+		setBounds(100, 100, 332, 290);
 		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -137,14 +139,13 @@ public class AntiPatternListDialog extends JDialog {
 						.addComponent(cbxAC, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbxRBOS, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbxRWOR, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxSTR, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxIA, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE))
+						.addComponent(cbxIA, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxSTR, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(32, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(25)
 					.addComponent(cbxSTR)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cbxIA)
@@ -158,47 +159,79 @@ public class AntiPatternListDialog extends JDialog {
 					.addComponent(cbxRS)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cbxRWRT)
-					.addContainerGap(9, Short.MAX_VALUE))
+					.addContainerGap(39, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		
 		JPanel buttonPane = new JPanel();
-		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
+		buttonPane.setPreferredSize(new Dimension(60, 40));
 		
 		createIdentifyButton(buttonPane);
 		createEnableallButton(buttonPane);
 		createDisableallButton(buttonPane);
 		createCancelButton(buttonPane);		
-	}
-	
-	/**
-	 * Create a Identify Button.
-	 * @param buttonPane
-	 */
-	public void createIdentifyButton(JPanel buttonPane)
-	{
-		identifyButton = new JButton("Detect");
-		buttonPane.add(identifyButton);		
+		GroupLayout gl_buttonPane = new GroupLayout(buttonPane);
+		gl_buttonPane.setHorizontalGroup(
+			gl_buttonPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_buttonPane.createSequentialGroup()
+					.addGap(65)
+					.addComponent(identifyButton, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+					.addGap(67))
+		);
+		gl_buttonPane.setVerticalGroup(
+			gl_buttonPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_buttonPane.createSequentialGroup()
+					.addGap(5)
+					.addGroup(gl_buttonPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(identifyButton)
+						.addComponent(cancelButton)))
+		);
+		buttonPane.setLayout(gl_buttonPane);
 		
-		identifyButton.addActionListener(new ActionListener() 
+		northPanel = new JPanel();
+		northPanel.setPreferredSize(new Dimension(60, 40));
+		
+		getContentPane().add(northPanel, BorderLayout.NORTH);
+		JButton btnEnableall = new JButton("Enable All");
+		JButton btnDisableall = new JButton("Disable All");
+		GroupLayout gl_northPanel = new GroupLayout(northPanel);
+		gl_northPanel.setHorizontalGroup(
+			gl_northPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_northPanel.createSequentialGroup()
+					.addGap(24)
+					.addComponent(btnEnableall)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnDisableall)
+					.addGap(126))
+		);
+		gl_northPanel.setVerticalGroup(
+			gl_northPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_northPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_northPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnEnableall)
+						.addComponent(btnDisableall))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		northPanel.setLayout(gl_northPanel);
+		
+		btnDisableall.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			IdentifyButtonActionPerformed(event);
+       			if (ACisSelected()) cbxAC.setSelected(false);
+       			if (STRisSelected()) cbxSTR.setSelected(false);
+       			if (RBOSisSelected()) cbxRBOS.setSelected(false);
+       			if (IAisSelected()) cbxIA.setSelected(false);
+       			if (RSisSelected()) cbxRS.setSelected(false);
+       			if (RWORisSelected()) cbxRWOR.setSelected(false);
+       			if (RWRTisSelected()) cbxRWRT.setSelected(false);
        		}
        	});
-	}
 		
-	/**
-	 * Create a EnableAll Button.
-	 * @param buttonPane
-	 */
-	public void createEnableallButton (JPanel buttonPane)
-	{
-		JButton btnEnableall = new JButton("Enable All");
-		buttonPane.add(btnEnableall);
-				
 		btnEnableall.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
@@ -215,27 +248,36 @@ public class AntiPatternListDialog extends JDialog {
 	}
 	
 	/**
+	 * Create a Identify Button.
+	 * @param buttonPane
+	 */
+	public void createIdentifyButton(JPanel buttonPane)
+	{
+		identifyButton = new JButton("Detect");
+		
+		identifyButton.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			IdentifyButtonActionPerformed(event);
+       		}
+       	});
+	}
+		
+	/**
+	 * Create a EnableAll Button.
+	 * @param buttonPane
+	 */
+	public void createEnableallButton (JPanel buttonPane)
+	{
+	}
+	
+	/**
 	 * Create a DisableAll Button.
 	 * @param buttonPane
 	 */
 	public void createDisableallButton (JPanel buttonPane)
 	{
-		JButton btnDisableall = new JButton("Disable All");
-		buttonPane.add(btnDisableall);
-		
-		btnDisableall.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			if (ACisSelected()) cbxAC.setSelected(false);
-       			if (STRisSelected()) cbxSTR.setSelected(false);
-       			if (RBOSisSelected()) cbxRBOS.setSelected(false);
-       			if (IAisSelected()) cbxIA.setSelected(false);
-       			if (RSisSelected()) cbxRS.setSelected(false);
-       			if (RWORisSelected()) cbxRWOR.setSelected(false);
-       			if (RWRTisSelected()) cbxRWRT.setSelected(false);
-       		}
-       	});
 	}
 	
 	/**
@@ -245,8 +287,7 @@ public class AntiPatternListDialog extends JDialog {
 	 */
 	public void createCancelButton (JPanel buttonPane)
 	{
-		JButton cancelButton = new JButton("Cancel");		
-		buttonPane.add(cancelButton);		
+		cancelButton = new JButton("Cancel");
 		
 		cancelButton.addActionListener(new ActionListener() 
 		{

@@ -24,7 +24,6 @@ import br.ufes.inf.nemo.move.mvc.model.RSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.RWORAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.STRAntiPatternModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.ui.util.TitleTextField;
 
 /**
  * @author John Guerson
@@ -36,8 +35,6 @@ public class AntiPatternListView extends JPanel {
 
 	private AntiPatternListModel antipatternListModel;
 	private TheFrame frame;
-	
-	private TitleTextField txtAntipatterns;
 	private JTabbedPane tabbedPane;
 	private JPanel acTabPanel;
 	private JPanel strTabPanel;
@@ -63,16 +60,13 @@ public class AntiPatternListView extends JPanel {
 	 */
 	public AntiPatternListView() 
 	{
+		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 		
-		txtAntipatterns = new TitleTextField();
-		txtAntipatterns.setText("AntiPattern");
-		
 		tabbedPane = new JTabbedPane();		
+		tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		tabbedPane.setBackground(UIManager.getColor("Panel.background"));
-		
-		add(txtAntipatterns, BorderLayout.NORTH);
 		add(tabbedPane, BorderLayout.CENTER);		
 	}
 	

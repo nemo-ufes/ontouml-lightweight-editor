@@ -61,12 +61,12 @@ public class TheToolBar extends JToolBar {
 	 */
 	public void createButtons()
 	{		
-		createShowHideConsole();		
-        createShowHideOCLView();
-        createAutoSelectionButton();
-        createShowHideAntiPatternView();       
-        createAntiPatternButton();		
+		createShowHideConsole();                  
+		createShowHideOCLView();
+		createShowHideAntiPatternView();		
+		createAutoSelectionButton();        
         createAlloyAnalyzerButton();
+        createAntiPatternButton();  
 	}		
 		
 	public void createAutoSelectionButton()
@@ -83,7 +83,7 @@ public class TheToolBar extends JToolBar {
 			{
 				if(frame.getManager().getOntoUMLModel().getOntoUMLParser()==null)
        			{	       			
-       				frame.showInformationMessageDialog("Auto Completion","First you need to load your Model"); 
+       				frame.showInformationMessageDialog("Auto Completion","First you need to open an OntoUML Model"); 
        				
        			}else{
        				
@@ -97,7 +97,7 @@ public class TheToolBar extends JToolBar {
 	public void createAlloyAnalyzerButton()
 	{
 		btnAlloyAnalyzer = new JButton();
-		btnAlloyAnalyzer.setToolTipText("Transforming models and rules to Alloy");
+		btnAlloyAnalyzer.setToolTipText("Transforms model and constraints into Alloy");
 		btnAlloyAnalyzer.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/alloy-36x36.png")));
 		btnAlloyAnalyzer.setText("Alloy Analyzer");		
 		btnAlloyAnalyzer.setEnabled(true);
@@ -109,7 +109,7 @@ public class TheToolBar extends JToolBar {
        		{
        			if(frame.getManager().getOntoUMLModel().getOntoUMLParser()==null)
        			{	       			
-       				frame.showInformationMessageDialog("Launch Analyzer","First you need to load your Model"); 
+       				frame.showInformationMessageDialog("Alloy Analyzer","First you need to open an OntoUML Model"); 
        				
        			}else{
        				
@@ -139,7 +139,7 @@ public class TheToolBar extends JToolBar {
        		{
        			if(frame.getManager().getOntoUMLModel().getOntoUMLParser()==null)
        			{	       			
-       				frame.showInformationMessageDialog("Show Instances","First you need to load your Model"); 
+       				frame.showInformationMessageDialog("Show Instances","First you need to open an OntoUML Model"); 
     				       				
        			}else{ 
        				
@@ -159,7 +159,7 @@ public class TheToolBar extends JToolBar {
 		btnShowHideConsole = new JButton();
 		btnShowHideConsole.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/display-36x36.png")));
 		btnShowHideConsole.setText("Console");	
-		btnShowHideConsole.setToolTipText("Show/Hide Console View");
+		btnShowHideConsole.setToolTipText("Show/Hide console view");
 		btnShowHideConsole.setEnabled(true);
 		btnShowHideConsole.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnShowHideConsole.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -176,9 +176,9 @@ public class TheToolBar extends JToolBar {
 	public void createShowHideAntiPatternView ()
 	{
 		btnShowOrHideAntiPattern = new JButton();
-		btnShowOrHideAntiPattern.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/panel-36X36.png")));
+		btnShowOrHideAntiPattern.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/search-red-36x36.png")));
 		btnShowOrHideAntiPattern.setText("AntiPattern Manager");
-		btnShowOrHideAntiPattern.setToolTipText("Show/Hide AntiPattern Manager View");
+		btnShowOrHideAntiPattern.setToolTipText("Show/Hide antipattern manager view");
 		btnShowOrHideAntiPattern.setEnabled(true);
 		btnShowOrHideAntiPattern.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnShowOrHideAntiPattern.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -197,7 +197,7 @@ public class TheToolBar extends JToolBar {
 		btnShowOrHideOCL = new JButton();
 		btnShowOrHideOCL.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/edit-36x36.png")));
 		btnShowOrHideOCL.setText("OCL Editor");
-		btnShowOrHideOCL.setToolTipText("Show/Hide OCL Editor View");
+		btnShowOrHideOCL.setToolTipText("Show/Hide OCL editor view");
 		btnShowOrHideOCL.setEnabled(true);
 		btnShowOrHideOCL.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnShowOrHideOCL.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -214,9 +214,9 @@ public class TheToolBar extends JToolBar {
 	public void createAntiPatternButton()
 	{
 		btnSearchForAntipatterns = new JButton();		
-		btnSearchForAntipatterns.setText("Detect AntiPatterns");
-		btnSearchForAntipatterns.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/antipattern-36x36.png")));
-		btnSearchForAntipatterns.setToolTipText("Search for model antipatterns");
+		btnSearchForAntipatterns.setText("Find AntiPatterns");
+		btnSearchForAntipatterns.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/play-red-36x36.png")));
+		btnSearchForAntipatterns.setToolTipText("Find model antipatterns");
 		btnSearchForAntipatterns.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnSearchForAntipatterns.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnSearchForAntipatterns.addActionListener(new ActionListener() 
@@ -225,7 +225,7 @@ public class TheToolBar extends JToolBar {
 			{
 				if (frame.getManager().getOntoUMLModel().getOntoUMLParser()==null) 
 				{ 
-					frame.showInformationMessageDialog("Detect AntiPatterns","First you need to load your Model"); 
+					frame.showInformationMessageDialog("Find AntiPatterns","First you need to open an OntoUML Model"); 
 					return; 
 				}
 				
