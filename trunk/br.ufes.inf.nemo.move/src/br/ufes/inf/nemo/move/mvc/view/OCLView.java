@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
@@ -19,6 +20,8 @@ import br.ufes.inf.nemo.move.ui.ocl.OCLEditorPanel;
 import br.ufes.inf.nemo.move.ui.ocl.OCLPathBar;
 import br.ufes.inf.nemo.move.ui.ocl.OCLToolBar;
 import br.ufes.inf.nemo.ocl2alloy.OCLParser;
+import javax.swing.border.MatteBorder;
+import javax.swing.UIManager;
 
 /**
  * 
@@ -38,6 +41,8 @@ public class OCLView extends JPanel {
 	private OCLPathBar oclbar;
 	private OCLEditorPanel ocleditor;
 	private OCLToolBar ocltoolbar;
+	private JPanel panel_1;
+	private String completePath;
 		
 	/**
 	 * Creates a View for OCL Model and the main frame of Application.
@@ -67,26 +72,33 @@ public class OCLView extends JPanel {
 	 */
 	public OCLView() 
 	{
-		setBorder(new EmptyBorder(0, 0, 0, 0));
+		setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(128, 128, 128)));
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		panel.setLayout(new BorderLayout(0, 0));
+		panel.setPreferredSize(new Dimension(40, 50));
 		
 		oclbar = new OCLPathBar();		
-		panel.add(BorderLayout.CENTER,oclbar);
-		
-		add(BorderLayout.NORTH,panel);	
-
-		ocleditor = new OCLEditorPanel();
-		ocltoolbar = new OCLToolBar();
-		ocltoolbar.setFloatable(false);
+		ocltoolbar = new OCLToolBar();		
 		ocltoolbar.setPreferredSize(new Dimension(25, 10));
 		
-		add(BorderLayout.CENTER,ocleditor);	
-		add(BorderLayout.WEST,ocltoolbar);
+		panel.add(BorderLayout.NORTH,oclbar);
+		panel.add(BorderLayout.CENTER,ocltoolbar);
+		
+		add(BorderLayout.NORTH,panel);	
+		
+		panel_1 = new JPanel();
+		panel_1.setBackground(UIManager.getColor("Panel.background"));
+		panel_1.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(128, 128, 128)));
+		panel_1.setPreferredSize(new Dimension(16, 20));
+		
+		panel.add(panel_1, BorderLayout.WEST);
+		
+		ocleditor = new OCLEditorPanel();
+		add(BorderLayout.CENTER,ocleditor);
 		
 	}
 	
@@ -104,8 +116,10 @@ public class OCLView extends JPanel {
 	{
 		if (path==null && oclmodel !=null)
 			oclbar.textPath.setText("  Loaded...");
-		else if (path!=null)
-			oclbar.textPath.setText("  "+path);
+		else if (path!=null){
+			completePath = path;
+			oclbar.textPath.setText("  "+path.substring(path.lastIndexOf(File.separator)+1, path.length()));
+		}
 	}	
 	
 	/**
@@ -141,7 +155,7 @@ public class OCLView extends JPanel {
 	 * 
 	 * @return
 	 */
-	public String getOCLPath() { return oclbar.textPath.getText().trim(); }
+	public String getPath() { return completePath; }
 		
 	/**
 	 * Add Open OCL Document Action Listener.

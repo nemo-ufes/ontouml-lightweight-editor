@@ -103,7 +103,7 @@ public class OCLController {
 	 {
 	    public void actionPerformed(ActionEvent e) 
 	    {
-	    	if (oclview.getOCLPath()==null || oclview.getOCLPath().isEmpty())
+	    	if (oclview.getPath()==null || oclview.getPath().isEmpty())
 	    	{
 	    		try{
 	    			
@@ -128,9 +128,9 @@ public class OCLController {
 	    		try{
 	    			
 	    			oclmodel.setConstraints(oclview.getConstraints(),"CONTENT");
-	    			oclmodel.setOCLPath(oclview.getOCLPath());
+	    			oclmodel.setOCLPath(oclview.getPath());
 	    			
-	    			FileUtil.copyStringToFile(oclview.getConstraints(), oclview.getOCLPath());
+	    			FileUtil.copyStringToFile(oclview.getConstraints(), oclview.getPath());
 	    			
 	    		}catch(IOException exception){
 	    			

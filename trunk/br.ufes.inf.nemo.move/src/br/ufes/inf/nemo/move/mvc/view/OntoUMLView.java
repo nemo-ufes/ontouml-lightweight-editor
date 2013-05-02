@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -23,6 +24,7 @@ import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLPathBar;
 import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLToolBar;
 import br.ufes.inf.nemo.move.util.ontoumlview.OntoUMLTreeNodeElem;
+import javax.swing.border.MatteBorder;
 
 /**
  * This class represents a View for OntoUML Model.
@@ -42,6 +44,8 @@ public class OntoUMLView extends JPanel {
 	private OntoUMLToolBar ontotoolbar;
 	private TreeScrollPane ontotree;
 	private CheckboxTree modeltree;
+	private JPanel panel_1;
+	private JPanel panel_2;
 	
 	/** 
 	 * Creates a View from a OntoUML model and the main frame application.
@@ -67,20 +71,36 @@ public class OntoUMLView extends JPanel {
 	 */
 	public OntoUMLView() 
 	{
+		setBorder(new MatteBorder(1, 0, 0, 0, (Color) Color.GRAY));
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 					
+		JPanel panel = new JPanel();
+		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		panel.setLayout(new BorderLayout(0, 0));
+		panel.setPreferredSize(new Dimension(40, 50));
+		
 		ontobar = new OntoUMLPathBar();		
-		ontobar.setBorder(new EmptyBorder(0, 0, 0, 0));
-				
+						
 		ontotoolbar = new OntoUMLToolBar();
 		ontotoolbar.setPreferredSize(new Dimension(40,10));
 		
-		add(BorderLayout.NORTH,ontobar);
-		add(BorderLayout.WEST,ontotoolbar);
+		panel.add(BorderLayout.NORTH,ontobar);
+		panel.add(BorderLayout.CENTER,ontotoolbar);
+		
+		add(BorderLayout.NORTH,panel);
+		
+		panel_2 = new JPanel();
+		panel_2.setBorder(new MatteBorder(0, 0, 0, 1, (Color) Color.GRAY));
+		panel_2.setPreferredSize(new Dimension(16, 30));
+		panel.add(panel_2, BorderLayout.WEST);
 		
 		ontotree = new TreeScrollPane();
 		add(BorderLayout.CENTER,ontotree);		
+		
+		panel_1 = new JPanel();		
+		panel_1.setPreferredSize(new Dimension(15,30));
+		add(panel_1, BorderLayout.WEST);
 		
 	}
 		
@@ -136,8 +156,9 @@ public class OntoUMLView extends JPanel {
 	{
 		if (path==null && refmodel!=null)
 			ontobar.textPath.setText("  Loaded...");
-		else if (path!= null && refmodel !=null)
-			ontobar.textPath.setText("  "+path);
+		else if (path!= null && refmodel !=null){
+			ontobar.textPath.setText("  "+path.substring(path.lastIndexOf(File.separator)+1, path.length()));
+		}
 	}
 	
 	/** 
