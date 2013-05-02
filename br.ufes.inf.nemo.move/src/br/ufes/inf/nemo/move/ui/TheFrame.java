@@ -39,6 +39,7 @@ public class TheFrame extends JFrame {
 	private JSplitPane centerSplitPane;	
 	private JTabbedPane ontoumlTabbedPane;
 	private JTabbedPane oclTabbedPane;
+	private JTabbedPane antipatternPane;
 	private JTabbedPane infoTabbedPane;
 	private TheManager appmanager;	
 	private SimpleGUICustom analyzer;
@@ -97,7 +98,16 @@ public class TheFrame extends JFrame {
 		oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-16x16.png")));
 		oclTabbedPane.setBorder(null);
 		
-		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclTabbedPane,appmanager.getAntiPatternListView());
+		antipatternPane = new JTabbedPane();
+		antipatternPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		antipatternPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		antipatternPane.add(appmanager.getAntiPatternListView());	
+		antipatternPane.setTitleAt(0,"AntiPattern Manager");
+		antipatternPane.setBackground(UIManager.getColor("Panel.background"));
+		antipatternPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/search-red-16x16.png")));
+		antipatternPane.setBorder(null);
+		
+		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclTabbedPane,antipatternPane);
 		innerSplitPane.setOneTouchExpandable(true);		
 		innerSplitPane.setBorder(null);
 		
@@ -106,9 +116,9 @@ public class TheFrame extends JFrame {
 		ontoumlTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		ontoumlTabbedPane.setPreferredSize(new Dimension(400,600));
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
-		ontoumlTabbedPane.setTitleAt(0,"Package Explorer");
+		ontoumlTabbedPane.setTitleAt(0,"OntoUML Model");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));		
-		ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/hierarchy-16x16.png")));
+		//ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/hierarchy-16x16.png")));
 		
 		console = new TheConsole(this);	
 		properties = new TheProperties(this);
