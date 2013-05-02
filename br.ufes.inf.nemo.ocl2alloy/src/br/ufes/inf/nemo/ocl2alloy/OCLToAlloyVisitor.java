@@ -682,8 +682,12 @@ public class OCLToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor
                		RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getOntoUMLElement(classifier);
                		String nameClassifier = refparser.getAlias(ontoClassifier);
               	 	
-               		if (ontoClassifier instanceof RefOntoUML.DataType) result.append("all self: "+nameClassifier+" | "); 
-               		else result.append("all self: w."+nameClassifier+" | ");
+               		if (expr.getBodyExpression().toString().contains("self")){
+               			if (ontoClassifier instanceof RefOntoUML.DataType) result.append("all self: "+nameClassifier+" | "); 
+               			else result.append("all self: w."+nameClassifier+" | ");
+               		}else {
+               			// nothing to do...
+               		}
                 	
                     if (expr.getBodyExpression().toString().equals("true")) result.append("isTrue["+exprResult+"]");
                     else if (expr.getBodyExpression().toString().equals("false")) result.append("isTrue["+exprResult+"]");
