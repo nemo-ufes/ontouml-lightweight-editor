@@ -1,9 +1,11 @@
 package br.ufes.inf.nemo.move.util.ontoumlview;
 
+import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
 
 /**
  * @author John Guerson
@@ -20,9 +22,12 @@ public class OntoUMLToolBar extends JToolBar {
 	
 	public OntoUMLToolBar() 
 	{
+		setBackground(Color.WHITE);
 		setFloatable(false);
-		setOrientation(SwingConstants.VERTICAL);
+		setPreferredSize(new Dimension(30,50));
+		
 		btnOpen = new JButton("");
+		btnOpen.setBackground(Color.WHITE);
 		btnOpen.setFocusable(false);
 		add(btnOpen);
 		
@@ -30,6 +35,7 @@ public class OntoUMLToolBar extends JToolBar {
 		btnOpen.setIcon(new ImageIcon(OntoUMLToolBar.class.getResource("/resources/icon/open-16x16.png")));
 		
 		btnSaveAs = new JButton("");
+		btnSaveAs.setBackground(Color.WHITE);
 		btnSaveAs.setFocusable(false);
 		
 		add(btnSaveAs);
@@ -37,6 +43,7 @@ public class OntoUMLToolBar extends JToolBar {
 		btnSaveAs.setToolTipText("Save OntoUML Model (*.refontouml)");
 		
 		btnVerify = new JButton("");
+		btnVerify.setBackground(Color.WHITE);
 		btnVerify.setFocusable(false);
 		
 		add(btnVerify);
@@ -44,6 +51,7 @@ public class OntoUMLToolBar extends JToolBar {
 		btnVerify.setIcon(new ImageIcon(OntoUMLToolBar.class.getResource("/resources/icon/diagnostic-16x16.png")));
 		
 		btnShowUnique = new JButton("");
+		btnShowUnique.setBackground(Color.WHITE);
 		btnShowUnique.setFocusable(false);
 		
 		add(btnShowUnique);

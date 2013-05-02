@@ -1,11 +1,12 @@
 package br.ufes.inf.nemo.move.ui.ocl;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 
 /**
  * @author John Guerson
@@ -22,10 +23,12 @@ public class OCLToolBar extends JToolBar {
 	
 	public OCLToolBar() 
 	{
-		setOrientation(SwingConstants.VERTICAL);
-		setPreferredSize(new Dimension(30, 10));
+		setBackground(Color.WHITE);
+		setPreferredSize(new Dimension(30, 50));
+		setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.GRAY));
 		
 		btnNew = new JButton("");
+		btnNew.setBackground(Color.WHITE);
 		btnNew.setFocusable(false);
 		add(btnNew);
 		
@@ -33,6 +36,7 @@ public class OCLToolBar extends JToolBar {
 		btnNew.setIcon(new ImageIcon(OCLToolBar.class.getResource("/resources/icon/doc-16x16.png")));
 		
 		btnOpen = new JButton("");
+		btnOpen.setBackground(Color.WHITE);
 		btnOpen.setFocusable(false);
 		
 		add(btnOpen);
@@ -40,6 +44,7 @@ public class OCLToolBar extends JToolBar {
 		btnOpen.setIcon(new ImageIcon(OCLToolBar.class.getResource("/resources/icon/open-16x16.png")));
 		
 		btnSave = new JButton("");
+		btnSave.setBackground(Color.WHITE);
 		btnSave.setFocusable(false);
 		
 		add(btnSave);
@@ -47,6 +52,7 @@ public class OCLToolBar extends JToolBar {
 		btnSave.setIcon(new ImageIcon(OCLToolBar.class.getResource("/resources/icon/save-16x16.png")));
 		
 		btnParse = new JButton("");
+		btnParse.setBackground(Color.WHITE);
 		btnParse.setFocusable(false);
 		
 		add(btnParse);
