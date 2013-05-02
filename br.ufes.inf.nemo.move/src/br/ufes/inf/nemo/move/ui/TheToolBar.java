@@ -63,8 +63,8 @@ public class TheToolBar extends JToolBar {
 	{		
 		createShowHideConsole();		
         createShowHideOCLView();
-        createShowHideAntiPatternView();
         createAutoSelectionButton();
+        createShowHideAntiPatternView();       
         createAntiPatternButton();		
         createAlloyAnalyzerButton();
 	}		
@@ -99,7 +99,7 @@ public class TheToolBar extends JToolBar {
 		btnAlloyAnalyzer = new JButton();
 		btnAlloyAnalyzer.setToolTipText("Transforming models and rules to Alloy");
 		btnAlloyAnalyzer.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/alloy-36x36.png")));
-		btnAlloyAnalyzer.setText("Run Analyzer");		
+		btnAlloyAnalyzer.setText("Alloy Analyzer");		
 		btnAlloyAnalyzer.setEnabled(true);
 		btnAlloyAnalyzer.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnAlloyAnalyzer.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -196,7 +196,7 @@ public class TheToolBar extends JToolBar {
 	{
 		btnShowOrHideOCL = new JButton();
 		btnShowOrHideOCL.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/edit-36x36.png")));
-		btnShowOrHideOCL.setText("OCL Simple Editor");
+		btnShowOrHideOCL.setText("OCL Editor");
 		btnShowOrHideOCL.setToolTipText("Show/Hide OCL Editor View");
 		btnShowOrHideOCL.setEnabled(true);
 		btnShowOrHideOCL.setVerticalTextPosition(SwingConstants.BOTTOM);
