@@ -1,15 +1,19 @@
 package br.ufes.inf.nemo.move.ui;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.border.EtchedBorder;
+import javax.swing.border.MatteBorder;
 
 import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
 import br.ufes.inf.nemo.move.ui.dialog.AutoCompletionDialog;
@@ -31,6 +35,7 @@ public class TheToolBar extends JToolBar {
 	private JButton btnAlloyAnalyzer;
 	private JButton btnCompleteSelect;
 	private JButton btnShowInstances;
+	private Component rigidArea;
 	
 	/**
 	 * Constructor.
@@ -50,9 +55,14 @@ public class TheToolBar extends JToolBar {
 	public TheToolBar() 
 	{
 		super();
-		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));		
+		setFloatable(false);
+		
+		setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(192, 192, 192)));		
 		setBackground(UIManager.getColor("ToolBar.dockingBackground"));
 		
+		rigidArea = Box.createRigidArea(new Dimension(10, 20));
+		add(rigidArea);
+				
 		createButtons();
 	}
 	
@@ -169,7 +179,7 @@ public class TheToolBar extends JToolBar {
        		{
        			frame.ShowOrHideConsole();
        		}
-       	});
+       	});	
 		add(btnShowHideConsole);
 	}
 	

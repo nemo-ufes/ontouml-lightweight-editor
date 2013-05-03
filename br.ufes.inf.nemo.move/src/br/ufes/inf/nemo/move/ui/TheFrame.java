@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.move.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -21,7 +22,6 @@ import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.move.ui.util.Extractor;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
-import java.awt.Font;
 
 /**
  * @author John Guerson
@@ -74,7 +74,7 @@ public class TheFrame extends JFrame {
 			
 		getContentPane().setBackground(new Color(230, 230, 250));
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		
+
 		menuBar = new TheMenuBar(this);
 		setJMenuBar(menuBar);		
 		
@@ -95,7 +95,7 @@ public class TheFrame extends JFrame {
 		oclTabbedPane.add(appmanager.getOCLView());	
 		oclTabbedPane.setTitleAt(0,"OCL Editor");
 		oclTabbedPane.setBackground(UIManager.getColor("Panel.background"));
-		oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-16x16.png")));
+		//oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-16x16.png")));
 		oclTabbedPane.setBorder(null);
 		
 		antipatternPane = new JTabbedPane();
@@ -116,9 +116,9 @@ public class TheFrame extends JFrame {
 		ontoumlTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		ontoumlTabbedPane.setPreferredSize(new Dimension(400,600));
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
-		ontoumlTabbedPane.setTitleAt(0,"OntoUML Model");
+		ontoumlTabbedPane.setTitleAt(0,"OntoUML Explorer");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));		
-		//ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/hierarchy-16x16.png")));
+		//ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/diagram-16x16.jpg")));
 		
 		console = new TheConsole(this);	
 		properties = new TheProperties(this);
@@ -155,8 +155,14 @@ public class TheFrame extends JFrame {
 		mainSplitPane.setOneTouchExpandable(true);			
 		mainSplitPane.setBorder(null);
 		
+		JPanel eastPane = new JPanel();
+		getContentPane().add(BorderLayout.EAST,eastPane);
+		
+		JPanel westPane = new JPanel();
+		getContentPane().add(BorderLayout.WEST,westPane);
+		
 		getContentPane().add(BorderLayout.CENTER,mainSplitPane);				
-					
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setExtendedState(MAXIMIZED_BOTH);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/icon/window.png")));
@@ -263,6 +269,9 @@ public class TheFrame extends JFrame {
 	/** Get Menu Bar */
 	public TheMenuBar getTheMenuBar() { 
 		return menuBar; 
+	}
+	public TheStatus getTheStatusBar() {
+		return statusBar;
 	}
 	
 	/**

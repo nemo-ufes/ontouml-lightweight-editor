@@ -4,12 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.eclipse.ocl.ParserException;
@@ -17,11 +17,8 @@ import org.eclipse.ocl.ParserException;
 import br.ufes.inf.nemo.move.mvc.model.OCLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.ocl.OCLEditorPanel;
-import br.ufes.inf.nemo.move.ui.ocl.OCLPathBar;
 import br.ufes.inf.nemo.move.ui.ocl.OCLToolBar;
 import br.ufes.inf.nemo.ocl2alloy.OCLParser;
-import javax.swing.border.MatteBorder;
-import javax.swing.UIManager;
 
 /**
  * 
@@ -38,11 +35,11 @@ public class OCLView extends JPanel {
 	private OCLModel oclmodel;
 	
 	private TheFrame frame;	
-	private OCLPathBar oclbar;
 	private OCLEditorPanel ocleditor;
 	private OCLToolBar ocltoolbar;
-	private JPanel panel_1;
 	private String completePath;
+	private String openLastPath;
+	private String saveLastPath;
 		
 	/**
 	 * Creates a View for OCL Model and the main frame of Application.
@@ -79,23 +76,12 @@ public class OCLView extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		panel.setLayout(new BorderLayout(0, 0));
-		panel.setPreferredSize(new Dimension(40, 50));
-		
-		oclbar = new OCLPathBar();		
+		panel.setPreferredSize(new Dimension(40, 30));
 		ocltoolbar = new OCLToolBar();		
 		ocltoolbar.setPreferredSize(new Dimension(25, 10));
-		
-		panel.add(BorderLayout.NORTH,oclbar);
 		panel.add(BorderLayout.CENTER,ocltoolbar);
 		
-		add(BorderLayout.NORTH,panel);	
-		
-		panel_1 = new JPanel();
-		panel_1.setBackground(UIManager.getColor("Panel.background"));
-		panel_1.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(128, 128, 128)));
-		panel_1.setPreferredSize(new Dimension(16, 20));
-		
-		panel.add(panel_1, BorderLayout.WEST);
+		add(BorderLayout.NORTH,panel);
 		
 		ocleditor = new OCLEditorPanel();
 		add(BorderLayout.CENTER,ocleditor);
@@ -114,11 +100,11 @@ public class OCLView extends JPanel {
 	 */
 	public void setPath(String path, String oclmodel)
 	{
-		if (path==null && oclmodel !=null)
-			oclbar.textPath.setText("  Loaded...");
-		else if (path!=null){
+		if (path==null && oclmodel !=null){
+			//oclbar.textPath.setText("  Location:  Loaded...");
+		}else if (path!=null){
 			completePath = path;
-			oclbar.textPath.setText("  "+path.substring(path.lastIndexOf(File.separator)+1, path.length()));
+			//oclbar.textPath.setText("  Location:  "+path);
 		}
 	}	
 	
@@ -214,7 +200,7 @@ public class OCLView extends JPanel {
 	 */
 	public String openOCLPathLocation()
 	{
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileChooser = new JFileChooser(openLastPath);
 		fileChooser.setDialogTitle("Open OCL");
 		FileNameExtensionFilter oclFilter = new FileNameExtensionFilter("OCL Constraints (*.ocl)", "ocl");
 		fileChooser.addChoosableFileFilter(oclFilter);
@@ -224,6 +210,7 @@ public class OCLView extends JPanel {
 		{
 			if (fileChooser.getFileFilter() == oclFilter) 
 			{
+				openLastPath = fileChooser.getSelectedFile().getPath();
 				return fileChooser.getSelectedFile().getPath();
 			}
 		}
@@ -237,7 +224,7 @@ public class OCLView extends JPanel {
 	 */
 	public String saveOCLPathLocation()
 	{
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileChooser = new JFileChooser(saveLastPath);
 		fileChooser.setDialogTitle("Save OCL");
 		FileNameExtensionFilter oclFilter = new FileNameExtensionFilter("OCL Constraints (*.ocl)", "ocl");
 		fileChooser.addChoosableFileFilter(oclFilter);
@@ -248,10 +235,13 @@ public class OCLView extends JPanel {
 			if (fileChooser.getFileFilter() == oclFilter) 
 			{
 				String path = fileChooser.getSelectedFile().getPath();
-				if (path.contains(".ocl"))
+				if (path.contains(".ocl")){
+					saveLastPath = fileChooser.getSelectedFile().getPath();				
 					return fileChooser.getSelectedFile().getPath();
-				else
+				} else {
+					saveLastPath = fileChooser.getSelectedFile().getPath()+".ocl";
 					return fileChooser.getSelectedFile().getPath()+".ocl";
+				}
 			}
 		}
 		return null;
