@@ -1,18 +1,11 @@
 package br.ufes.inf.nemo.move.mvc.model;
 
-import br.ufes.inf.nemo.antipattern.RWRTAntiPattern;
+import br.ufes.inf.nemo.antipattern.MRBSAntiPattern;
 
-/**
- * 
- * This class represents a RWRT AntiPattern Model.
- * 
- * @author John Guerson
- */
+public class MRBSAntiPatternModel {
 
-public class RWRTAntiPatternModel {
-	
-	/** RWRT AntiPattern. */	
-	private RWRTAntiPattern rwrt;
+	/** MRBS AntiPattern. */	
+	private MRBSAntiPattern mrbs;
 	
 	/** Unique ID. */
 	private Integer uniqueId = new Integer(0);
@@ -20,21 +13,21 @@ public class RWRTAntiPatternModel {
 	/**
 	 * Constructor.
 	 * 
-	 * @param rwrt
+	 * @param mrbs
 	 */
-	public RWRTAntiPatternModel (RWRTAntiPattern rwrt)
+	public MRBSAntiPatternModel (MRBSAntiPattern mrbs)
 	{
-		this.rwrt = rwrt;
+		this.mrbs = mrbs;
 	}
 
 	/**
-	 * Get RWRT AntiPattern.
+	 * Get MRBS AntiPattern.
 	 * 
 	 * @return
 	 */
-	public RWRTAntiPattern getRWRTAntiPattern()
+	public MRBSAntiPattern getMRBSAntiPattern()
 	{
-		return rwrt;
+		return mrbs;
 	}
 	
 	/**
@@ -64,5 +57,5 @@ public class RWRTAntiPatternModel {
 	{
 		this.uniqueId = uniqueId;
 	}
-}
 
+}
