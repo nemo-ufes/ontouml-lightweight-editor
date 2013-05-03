@@ -2,6 +2,13 @@ package br.ufes.inf.nemo.move.mvc.model;
 
 import br.ufes.inf.nemo.antipattern.TRIAntiPattern;
 
+/**
+ * 
+ * This class represents a TRI AntiPattern Model.
+ * 
+ * @author John Guerson
+ */
+
 public class TRIAntiPatternModel {
 
 	/** TRI AntiPattern. */	
@@ -13,7 +20,7 @@ public class TRIAntiPatternModel {
 	/**
 	 * Constructor.
 	 * 
-	 * @param ac
+	 * @param tri
 	 */
 	public TRIAntiPatternModel (TRIAntiPattern tri)
 	{
