@@ -26,11 +26,11 @@ public class OCLPathBar extends JPanel {
 		setBackground(Color.WHITE);
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		textPath = new JTextField();
-		textPath.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		textPath.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		textPath.setToolTipText("");
-		textPath.setBackground(Color.WHITE);
+		textPath.setBackground(UIManager.getColor("Panel.background"));
 		textPath.setEditable(false);
-		textPath.setBorder(new MatteBorder(1, 0, 1, 0, (Color) new Color(128, 128, 128)));
+		textPath.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(128, 128, 128)));
 		textPath.setColumns(10);		
 		setPreferredSize(new Dimension(360, 25));
 		setLayout(new BorderLayout(0, 0));
