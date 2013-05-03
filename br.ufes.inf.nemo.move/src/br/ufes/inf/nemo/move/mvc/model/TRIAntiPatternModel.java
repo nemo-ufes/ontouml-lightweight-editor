@@ -1,18 +1,11 @@
 package br.ufes.inf.nemo.move.mvc.model;
 
-import br.ufes.inf.nemo.antipattern.RWRTAntiPattern;
+import br.ufes.inf.nemo.antipattern.TRIAntiPattern;
 
-/**
- * 
- * This class represents a AC AntiPattern Model.
- * 
- * @author John Guerson
- */
+public class TRIAntiPatternModel {
 
-public class RWRTAntiPatternModel {
-	
-	/** RWRT AntiPattern. */	
-	private RWRTAntiPattern rwrt;
+	/** TRI AntiPattern. */	
+	private TRIAntiPattern tri;
 	
 	/** Unique ID. */
 	private Integer uniqueId = new Integer(0);
@@ -22,19 +15,19 @@ public class RWRTAntiPatternModel {
 	 * 
 	 * @param ac
 	 */
-	public RWRTAntiPatternModel (RWRTAntiPattern rwrt)
+	public TRIAntiPatternModel (TRIAntiPattern tri)
 	{
-		this.rwrt = rwrt;
+		this.tri = tri;
 	}
 
 	/**
-	 * Get RWRT AntiPattern.
+	 * Get TRI AntiPattern.
 	 * 
 	 * @return
 	 */
-	public RWRTAntiPattern getRWRTAntiPattern()
+	public TRIAntiPattern getTRIAntiPattern()
 	{
-		return rwrt;
+		return tri;
 	}
 	
 	/**
@@ -64,5 +57,5 @@ public class RWRTAntiPatternModel {
 	{
 		this.uniqueId = uniqueId;
 	}
-}
 
+}

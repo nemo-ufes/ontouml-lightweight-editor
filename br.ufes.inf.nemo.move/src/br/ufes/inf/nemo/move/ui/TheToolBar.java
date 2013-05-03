@@ -73,10 +73,19 @@ public class TheToolBar extends JToolBar {
 	{		
 		createShowHideConsole();                  
 		createShowHideOCLView();
-		createShowHideAntiPatternView();		
-		createAutoSelectionButton();        
-        createAlloyAnalyzerButton();
-        createAntiPatternButton();  
+		createShowHideAntiPatternView();
+		
+		//JSeparator toolbarSeparator1 = new JToolBar.Separator();
+		//toolbarSeparator1.setOrientation(SwingConstants.VERTICAL);
+		//add(toolbarSeparator1);
+		
+		createAutoSelectionButton();
+		
+		//JSeparator toolbarSeparator2 = new JToolBar.Separator();
+		//toolbarSeparator2.setOrientation(SwingConstants.VERTICAL);
+		//add(toolbarSeparator2);
+		
+        createAlloyAnalyzerButton();        
 	}		
 		
 	public void createAutoSelectionButton()
@@ -205,7 +214,7 @@ public class TheToolBar extends JToolBar {
 	public void createShowHideOCLView ()
 	{
 		btnShowOrHideOCL = new JButton();
-		btnShowOrHideOCL.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/edit-36x36.png")));
+		btnShowOrHideOCL.setIcon(new ImageIcon(TheToolBar.class.getResource("/resources/icon/edit-ocl-36x36.png")));
 		btnShowOrHideOCL.setText("OCL Editor");
 		btnShowOrHideOCL.setToolTipText("Show/Hide OCL editor view");
 		btnShowOrHideOCL.setEnabled(true);
