@@ -35,14 +35,14 @@ public class OntoUMLToolBar extends JToolBar {
 		btnOpen = new JButton("");
 		btnOpen.setBackground(Color.WHITE);
 		btnOpen.setFocusable(false);
-		btnOpen.setToolTipText("Open OntoUML Model (*.refontouml)");
+		btnOpen.setToolTipText("Open OntoUML model (*.refontouml)");
 		btnOpen.setIcon(new ImageIcon(OntoUMLToolBar.class.getResource("/resources/icon/open-16x16.png")));
 			
 		btnSaveAs = new JButton("");
 		btnSaveAs.setBackground(Color.WHITE);
 		btnSaveAs.setFocusable(false);
 		btnSaveAs.setIcon(new ImageIcon(OntoUMLToolBar.class.getResource("/resources/icon/save-16x16.png")));
-		btnSaveAs.setToolTipText("Save OntoUML Model (*.refontouml)");
+		btnSaveAs.setToolTipText("Save OntoUML model (*.refontouml)");
 		
 		JSeparator toolbarSeparator1 = new JToolBar.Separator();
 		toolbarSeparator1.setOrientation(SwingConstants.VERTICAL);
@@ -50,7 +50,7 @@ public class OntoUMLToolBar extends JToolBar {
 		btnVerify = new JButton("");
 		btnVerify.setBackground(Color.WHITE);
 		btnVerify.setFocusable(false);
-		btnVerify.setToolTipText("See some problems found in your model");
+		btnVerify.setToolTipText("Detect errors and warnings in your model");
 		btnVerify.setIcon(new ImageIcon(OntoUMLToolBar.class.getResource("/resources/icon/diagnostic-16x16.png")));
 				
 		JSeparator toolbarSeparator2 = new JToolBar.Separator();
@@ -59,7 +59,7 @@ public class OntoUMLToolBar extends JToolBar {
 		btnShowUnique = new JButton("");
 		btnShowUnique.setBackground(Color.WHITE);
 		btnShowUnique.setFocusable(false);
-		btnShowUnique.setToolTipText("Show Generated Aliases");
+		btnShowUnique.setToolTipText("Show generated aliases");
 		btnShowUnique.setIcon(new ImageIcon(OntoUMLToolBar.class.getResource("/resources/icon/label2-16x16.png")));		
 				
 		add(btnOpen);

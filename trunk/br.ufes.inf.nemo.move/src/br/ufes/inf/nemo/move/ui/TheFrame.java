@@ -95,7 +95,7 @@ public class TheFrame extends JFrame {
 		oclTabbedPane.add(appmanager.getOCLView());	
 		oclTabbedPane.setTitleAt(0,"OCL Editor");
 		oclTabbedPane.setBackground(UIManager.getColor("Panel.background"));
-		//oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-16x16.png")));
+		oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-ocl-16x16.png")));
 		oclTabbedPane.setBorder(null);
 		
 		antipatternPane = new JTabbedPane();
@@ -118,7 +118,7 @@ public class TheFrame extends JFrame {
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
 		ontoumlTabbedPane.setTitleAt(0,"OntoUML Explorer");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));		
-		//ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/diagram-16x16.jpg")));
+		//ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/model-16x16.jpg")));
 		
 		console = new TheConsole(this);	
 		properties = new TheProperties(this);

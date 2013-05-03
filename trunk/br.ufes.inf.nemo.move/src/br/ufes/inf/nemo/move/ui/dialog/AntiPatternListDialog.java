@@ -26,6 +26,7 @@ import br.ufes.inf.nemo.antipattern.RSAntiPattern;
 import br.ufes.inf.nemo.antipattern.RWORAntiPattern;
 import br.ufes.inf.nemo.antipattern.RWRTAntiPattern;
 import br.ufes.inf.nemo.antipattern.STRAntiPattern;
+import br.ufes.inf.nemo.antipattern.TRIAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.ACAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.AntiPatternListModel;
@@ -35,7 +36,9 @@ import br.ufes.inf.nemo.move.mvc.model.RSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.RWORAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.RWRTAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.STRAntiPatternModel;
+import br.ufes.inf.nemo.move.mvc.model.TRIAntiPatternModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
+import java.awt.SystemColor;
 
 
 /**
@@ -56,8 +59,8 @@ public class AntiPatternListDialog extends JDialog {
 	private JCheckBox cbxAC;
 	private JCheckBox cbxRS;
 	private JCheckBox cbxRWRT;
+	private JCheckBox cbxTRI;
 	private JButton identifyButton;
-	private JPanel northPanel;
 	private JButton cancelButton;
 		
 	/** 
@@ -70,6 +73,7 @@ public class AntiPatternListDialog extends JDialog {
 	public Boolean RSisSelected() { return cbxRS.isSelected(); }
 	public Boolean RWORisSelected() { return cbxRWOR.isSelected(); }
 	public Boolean RWRTisSelected() { return cbxRWRT.isSelected(); }
+	public Boolean TRIisSelected() { return cbxTRI.isSelected(); }
 		
 	/**
 	 * Open the Dialog.
@@ -99,8 +103,8 @@ public class AntiPatternListDialog extends JDialog {
 		this.frame = frame;
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/icon/search-red-24x24.png")));
-		setTitle("Detect AntiPatterns");
-		setBounds(100, 100, 332, 290);
+		setTitle("Run AntiPatterns Manager");
+		setBounds(100, 100, 332, 326);
 		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -128,24 +132,29 @@ public class AntiPatternListDialog extends JDialog {
 		cbxRWRT = new JCheckBox("RWRT : Relator With Rigid Types");
 		cbxRWRT.setBackground(UIManager.getColor("Panel.background"));
 		
+		cbxTRI = new JCheckBox("TRI : Twin Relator Instances");
+		cbxTRI.setBackground(SystemColor.menu);
+		
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGap(17)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxRWRT)
-						.addComponent(cbxRS, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxAC, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxRBOS, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxRWOR, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxSTR, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbxIA, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxSTR, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE))
+						.addComponent(cbxRWOR, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxRBOS, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxAC, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxRS, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxRWRT)
+						.addComponent(cbxTRI, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(32, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPanel.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+					.addContainerGap(18, Short.MAX_VALUE)
 					.addComponent(cbxSTR)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cbxIA)
@@ -159,78 +168,21 @@ public class AntiPatternListDialog extends JDialog {
 					.addComponent(cbxRS)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cbxRWRT)
-					.addContainerGap(39, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxTRI)
+					.addContainerGap())
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		
 		JPanel buttonPane = new JPanel();
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-		buttonPane.setPreferredSize(new Dimension(60, 40));
+		buttonPane.setPreferredSize(new Dimension(60, 70));
 		
 		createIdentifyButton(buttonPane);
 		createEnableallButton(buttonPane);
 		createDisableallButton(buttonPane);
 		createCancelButton(buttonPane);		
-		GroupLayout gl_buttonPane = new GroupLayout(buttonPane);
-		gl_buttonPane.setHorizontalGroup(
-			gl_buttonPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_buttonPane.createSequentialGroup()
-					.addGap(65)
-					.addComponent(identifyButton, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
-					.addGap(67))
-		);
-		gl_buttonPane.setVerticalGroup(
-			gl_buttonPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_buttonPane.createSequentialGroup()
-					.addGap(5)
-					.addGroup(gl_buttonPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(identifyButton)
-						.addComponent(cancelButton)))
-		);
-		buttonPane.setLayout(gl_buttonPane);
-		
-		northPanel = new JPanel();
-		northPanel.setPreferredSize(new Dimension(60, 40));
-		
-		getContentPane().add(northPanel, BorderLayout.NORTH);
 		JButton btnEnableall = new JButton("Enable All");
-		JButton btnDisableall = new JButton("Disable All");
-		GroupLayout gl_northPanel = new GroupLayout(northPanel);
-		gl_northPanel.setHorizontalGroup(
-			gl_northPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_northPanel.createSequentialGroup()
-					.addGap(24)
-					.addComponent(btnEnableall)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnDisableall)
-					.addGap(126))
-		);
-		gl_northPanel.setVerticalGroup(
-			gl_northPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_northPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_northPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnEnableall)
-						.addComponent(btnDisableall))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		northPanel.setLayout(gl_northPanel);
-		
-		btnDisableall.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			if (ACisSelected()) cbxAC.setSelected(false);
-       			if (STRisSelected()) cbxSTR.setSelected(false);
-       			if (RBOSisSelected()) cbxRBOS.setSelected(false);
-       			if (IAisSelected()) cbxIA.setSelected(false);
-       			if (RSisSelected()) cbxRS.setSelected(false);
-       			if (RWORisSelected()) cbxRWOR.setSelected(false);
-       			if (RWRTisSelected()) cbxRWRT.setSelected(false);
-       		}
-       	});
 		
 		btnEnableall.addActionListener(new ActionListener() 
 		{
@@ -243,8 +195,53 @@ public class AntiPatternListDialog extends JDialog {
        			if (!RSisSelected()) cbxRS.setSelected(true);
        			if (!RWORisSelected()) cbxRWOR.setSelected(true);
        			if (!RWRTisSelected()) cbxRWRT.setSelected(true);
+       			if (!TRIisSelected()) cbxTRI.setSelected(true);
        		}
        	});
+		JButton btnDisableall = new JButton("Disable All");
+		
+		btnDisableall.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			if (ACisSelected()) cbxAC.setSelected(false);
+       			if (STRisSelected()) cbxSTR.setSelected(false);
+       			if (RBOSisSelected()) cbxRBOS.setSelected(false);
+       			if (IAisSelected()) cbxIA.setSelected(false);
+       			if (RSisSelected()) cbxRS.setSelected(false);
+       			if (RWORisSelected()) cbxRWOR.setSelected(false);
+       			if (RWRTisSelected()) cbxRWRT.setSelected(false);
+       			if (TRIisSelected()) cbxTRI.setSelected(false);
+       		}
+       	});
+		GroupLayout gl_buttonPane = new GroupLayout(buttonPane);
+		gl_buttonPane.setHorizontalGroup(
+			gl_buttonPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_buttonPane.createSequentialGroup()
+					.addGap(69)
+					.addGroup(gl_buttonPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnEnableall, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
+						.addComponent(identifyButton, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_buttonPane.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(cancelButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnDisableall, GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
+					.addContainerGap(57, Short.MAX_VALUE))
+		);
+		gl_buttonPane.setVerticalGroup(
+			gl_buttonPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_buttonPane.createSequentialGroup()
+					.addGap(5)
+					.addGroup(gl_buttonPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnDisableall)
+						.addComponent(btnEnableall))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_buttonPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cancelButton)
+						.addComponent(identifyButton))
+					.addContainerGap())
+		);
+		buttonPane.setLayout(gl_buttonPane);
 	}
 	
 	/**
@@ -253,7 +250,7 @@ public class AntiPatternListDialog extends JDialog {
 	 */
 	public void createIdentifyButton(JPanel buttonPane)
 	{
-		identifyButton = new JButton("Detect");
+		identifyButton = new JButton("Run");
 		
 		identifyButton.addActionListener(new ActionListener() 
 		{
@@ -314,6 +311,7 @@ public class AntiPatternListDialog extends JDialog {
 		ArrayList<RWORAntiPatternModel> rworListModel = new ArrayList<RWORAntiPatternModel>();				
 		ArrayList<IAAntiPatternModel> iaListModel = new ArrayList<IAAntiPatternModel>();
 		ArrayList<RWRTAntiPatternModel> rwrtListModel = new ArrayList<RWRTAntiPatternModel>();
+		ArrayList<TRIAntiPatternModel> triListModel = new ArrayList<TRIAntiPatternModel>();
 		
 		frame.getManager().doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
 		
@@ -397,6 +395,17 @@ public class AntiPatternListDialog extends JDialog {
 				rwrtListModel.add(rwrtModel);
 			}	
 		}
+		if (TRIisSelected()) 
+		{
+			int id=1;
+			for(TRIAntiPattern tri: AntiPatternIdentifier.identifyTRI(parser)) 
+			{
+				TRIAntiPatternModel triModel = new TRIAntiPatternModel(tri);
+				triModel.setId(id++);	
+			
+				triListModel.add(triModel);
+			}	
+		}
 		
 		String result = new String();
 		
@@ -407,11 +416,12 @@ public class AntiPatternListDialog extends JDialog {
 		if (rworListModel.size()>0) result += "RWOR AntiPattern : "+rworListModel.size()+" items found.\n";
 		if (iaListModel.size()>0) result += "IA AntiPattern : "+iaListModel.size()+" items found.\n";
 		if (rwrtListModel.size()>0) result += "RWRT AntiPattern : "+rwrtListModel.size()+" items found.\n";
+		if (triListModel.size()>0) result += "TRI AntiPattern : "+triListModel.size()+" items found.\n";
 		
-		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No AntiPatterns Found.","Detect AntiPatterns",JOptionPane.INFORMATION_MESSAGE); 
+		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No antipatterns found.","Run AntiPatterns Manager",JOptionPane.INFORMATION_MESSAGE); 
 		else 
 		{			
-			JOptionPane.showMessageDialog(this,result,"Detect AntiPatterns",JOptionPane.INFORMATION_MESSAGE);			
+			JOptionPane.showMessageDialog(this,result,"Run AntiPatterns Manager",JOptionPane.INFORMATION_MESSAGE);			
 			
 			AntiPatternListModel antipatternListModel = new AntiPatternListModel
 			(
