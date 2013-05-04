@@ -9,13 +9,14 @@ import RefOntoUML.Mediation;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.Type;
+import RefOntoUML.util.RefOntoUMLAdapterFactory;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class TRIAntiPattern extends Antipattern {
 	
 	private Relator relator;
-	private ArrayList<Mediation> mediations;
-	private ArrayList<Property> mediatedProperties;
+	private ArrayList<Mediation> mediations, problematic_mediations;
+	private ArrayList<Property> mediatedProperties, problematic_mediatedProperties;
 	
 	public Relator getRelator(){
 		return relator;
@@ -63,7 +64,9 @@ public class TRIAntiPattern extends Antipattern {
 			
 		this.relator = (Relator) relator;
 		
-		mediations = new ArrayList<Mediation>();		
+		mediations = new ArrayList<Mediation>();
+		problematic_mediations = new ArrayList<Mediation>();
+		
 		refparser.getAllMediations(this.relator, mediations);
 		
 		for(Mediation mediation: mediations){
@@ -78,7 +81,19 @@ public class TRIAntiPattern extends Antipattern {
 		}
 		
 		mediatedProperties = new ArrayList<Property>();
-		for(Mediation m: mediations) mediatedProperties.add(m.mediatedEnd());
+		problematic_mediatedProperties = new ArrayList<Property>();
+		
+		for(Mediation m: mediations) {
+			mediatedProperties.add(refparser.getMediatedEnd(m));
+			
+			if(refparser.getRelatorEnd(m).getUpper()==-1 || refparser.getRelatorEnd(m).getUpper()>1){
+				problematic_mediatedProperties.add(refparser.getMediatedEnd(m));
+				problematic_mediations.add(m);
+			}
+		}
+		
+		if (problematic_mediations.size()<2)
+			throw new Exception("The relator does not characterize the TRI antipattern!");
 	}
 	
 	/**
@@ -96,5 +111,68 @@ public class TRIAntiPattern extends Antipattern {
 		}		
 		
 		return result;
-	}	
+	}
+	
+	public String explanation(OntoUMLParser parser) throws Exception{
+		String expl = 	"The relator \'"+relator.getName()+"\' mediates "+mediations.size()+" types: ";
+						
+		for (int i = 0; i < mediatedProperties.size(); i++) {
+			if (i==mediatedProperties.size()-1)
+				expl += " and ";
+			else if (i!=0)
+				expl += ", ";
+			
+			expl+="'"+mediatedProperties.get(i).getType().getName()+"'";
+		}
+		
+		expl += ".\n";
+		
+		if(mediations.size()==problematic_mediations.size())
+			expl+="All";
+		else
+			expl += "Exactly "+problematic_mediations.size();
+		
+		expl += " of them are connected to '"+relator.getName()+"\' through mediations which have an upper bound multiplicity in the '"+relator.getName()+"\' side greater than one. They are:";
+		
+		for (Mediation m : problematic_mediations) {
+			expl+="\n"+(parser.getMediated(m).getName())+" ";
+			
+			Property relatorEnd = parser.getRelatorEnd(m);
+			Property mediatedEnd = parser.getMediatedEnd(m);
+			
+			if (mediatedEnd.getLower()==-1)
+				expl+="0";
+			else expl+= mediatedEnd.getLower();
+			
+			expl+="..";
+			
+			if (mediatedEnd.getUpper()==-1)
+				expl+="*";
+			else expl+= mediatedEnd.getUpper();
+			
+			expl+=" "+m.getName()+" ";
+			
+			if (relatorEnd.getLower()==-1)
+				expl+="0";
+			else expl+= relatorEnd.getLower();
+			
+			expl+="..";
+			
+			if (relatorEnd.getUpper()==-1)
+				expl+="*";
+			else expl+= relatorEnd.getUpper();
+		
+			expl += " "+relator.getName();
+		}
+			
+		return expl;
+	}
+	
+	/*
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 	
+	 */
 }

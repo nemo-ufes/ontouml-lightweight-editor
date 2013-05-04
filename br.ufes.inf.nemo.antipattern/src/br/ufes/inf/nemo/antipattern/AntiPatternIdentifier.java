@@ -365,13 +365,34 @@ public class AntiPatternIdentifier {
 	}
 	
 	/** OCL query for TRI AntiPattern. */
-	private static String TRI_OCLQuery = "Relator.allInstances()->select(r: Relator | r.mediations()->select(m:Mediation|m.relatorEnd().upper=-1)->size()>=2)";
+	//private static String TRI_OCLQuery = "Relator.allInstances()->select(r: Relator | r.mediations()->select(m:Mediation|m.relatorEnd().upper=-1 or m.relatorEnd().upper>1)->size()>=2)";
+	
+	private static String TRI_OCLQuery = "Relator.allInstances()->select(r: Relator | Mediation.allInstances()->select(m:Mediation | (m.sourceEnd().type=r and (m.sourceEnd().upper=-1 or m.sourceEnd().upper>1)) or (m.targetEnd().type=r and (m.targetEnd().upper=-1 or m.targetEnd().upper>1) and not m.sourceEnd().type.oclIsKindOf(Relator)))->size()>=2)";
+	
+	/*Relator.allInstances()->
+		select(r: Relator | Mediation.allInstances()->
+								select(m:Mediation | 
+									(m.sourceEnd().type=r and (m.sourceEnd().upper=-1 or m.sourceEnd().upper>1))
+									or 
+									(m.targetEnd().type=r and (m.targetEnd().upper=-1 or m.targetEnd().upper>1) and not m.sourceEnd().type.oclIsKindOf(Relator))
+								)->size()>=2
+	)
+	 */
 
 	/*
 	 * TODO 
 	 * This query for TRI AntiPattern uses the mediations() operation defined in the metamodel, 
 	 * which does not take into account the inverted ones, 
 	 * i.e. mediations with the target as the relator.
+	 * 
+	 * Problem is on relatorEnd() and mediatedEnd()
+	 * Implementations should be:
+	 * 
+	 * relatorEnd(): if self.memberEnd.type->one(t:Type| not t.oclIsKindOf(Relator)) then self.memberEnd->any(p:Property | p.type.oclIsKindOf(Relator)) else self.sourceEnd() endif
+	 * mediatedEnd(): if self.memberEnd.type->one(t:Type| not t.oclIsKindOf(Relator)) then self.memberEnd->any(p:Property | not p.type.oclIsKindOf(Relator)) else self.targetEnd() endif
+	 * 
+	 * For now, let's keep the implementation and verify these inconsistencies on syntax time. 
+	 *
 	 */
 	
 	/**
