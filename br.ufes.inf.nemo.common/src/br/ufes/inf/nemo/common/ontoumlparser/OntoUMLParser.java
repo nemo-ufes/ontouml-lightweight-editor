@@ -583,25 +583,15 @@ public class OntoUMLParser {
 	 * 
 	 * @param r
 	 * @param result
+	 * @throws Exception 
 	 */
-	public void getAllMediations(Relator r,ArrayList<Mediation> result)
+	public void getAllMediations(Relator r,ArrayList<Mediation> result) throws Exception
 	{
-		for(EObject obj : getElements())
-		{
-			if(obj instanceof Mediation)
-			{				
-				for( Property p : ((Mediation)obj).getMemberEnd())
-				{
-					if (p.getType() instanceof Relator)
-					{
-						if (isSelected(p.getType()) && p.getType().equals(r))
-						{
-							result.add((Mediation)obj);							
-						}
-					}
-				}
-			}			
+		for (Mediation m : getAllInstances(Mediation.class)) {
+			if(getRelator(m).equals(r))
+				result.add(m);
 		}
+		
 		for(Generalization gen : r.getGeneralization())
 		{						
 			if(isSelected(gen))	if (gen.getGeneral() instanceof Relator) getAllMediations((Relator)gen.getGeneral(),result);			
@@ -937,6 +927,36 @@ public class OntoUMLParser {
 			}		
 		}		
 		for(int i = 0; i<delete_list.size(); i++) EcoreUtil.remove(delete_list.get(i));
+	}
+	
+	/*TODO: Temos algum método que pega o lado do relator corretamente?? Caso tenhamos, remover o método criado abaixo. Criado pois mediations podem vir erradas ou invertidas*/
+	
+	public Property getRelatorEnd (Mediation m) throws Exception{
+		
+		if (m.sourceEnd().getType() instanceof Relator)
+			return m.sourceEnd();
+		else if (m.targetEnd().getType() instanceof Relator)
+			return m.targetEnd();
+		else
+			throw new Exception("Mediation is not connected to any Relator! No way to return the Relator element. The model is invalid.");
+	}
+	
+	public Property getMediatedEnd (Mediation m) throws Exception{
+		
+		if (m.sourceEnd().getType() instanceof Relator)
+			return m.targetEnd();
+		else if (m.targetEnd().getType() instanceof Relator)
+			return m.sourceEnd();
+		else
+			throw new Exception("Mediation is not connected to any Relator! No way to return the mediated element. The model is invalid.");
+	}
+	
+	public Relator getRelator(Mediation m) throws Exception{
+		return (Relator) getRelatorEnd(m).getType();
+	}
+	
+	public RefOntoUML.Type getMediated(Mediation m) throws Exception{
+		return getMediatedEnd(m).getType();
 	}
 	
 }
