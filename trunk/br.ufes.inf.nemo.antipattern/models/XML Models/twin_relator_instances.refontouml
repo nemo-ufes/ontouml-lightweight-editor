@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_5q-VwLTFEeKxMa_IL8NGuw" name="EA_Model" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_5q-VwbTFEeKxMa_IL8NGuw" name="Integer"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_5q-VwrTFEeKxMa_IL8NGuw" name="Boolean"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_5q-Vw7TFEeKxMa_IL8NGuw" name="String"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_5q-VxLTFEeKxMa_IL8NGuw" name="Unlimited Natural"/>
+  <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_5q-VxbTFEeKxMa_IL8NGuw" name="Model" visibility="public">
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_5q-VxrTFEeKxMa_IL8NGuw" name="Twin Relator Instances" visibility="public">
+      <ownedComment xmi:id="_5q-Vx7TFEeKxMa_IL8NGuw" body="It is not possible for an instance 'x' of Book to be related twice to the same instance 'y' of author. The same as ORM internal Uniqueness Constraint.&#xA;&#xA;The following OCL constraints are necessary in OntoUML&#xA;&#xA;context _'Book'&#xA;inv : self.authorship-&amp;gt;isUnique(author)&#xA;context _'Author'&#xA;inv : self.authorship-&amp;gt;isUnique(book)"/>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_5q-VyLTFEeKxMa_IL8NGuw" name="Author" visibility="public">
+        <generalization xmi:id="_5q-VybTFEeKxMa_IL8NGuw" general="_5q-VzbTFEeKxMa_IL8NGuw"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_5q-VyrTFEeKxMa_IL8NGuw" name="Book" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_5q-Vy7TFEeKxMa_IL8NGuw" name="Dog" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_5q-VzLTFEeKxMa_IL8NGuw" name="Ownership" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_5q-VzbTFEeKxMa_IL8NGuw" name="Person" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_5q-VzrTFEeKxMa_IL8NGuw" name="Person" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_5q-Vz7TFEeKxMa_IL8NGuw" name="Person" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_5q-V0LTFEeKxMa_IL8NGuw" name="PhDStudent" visibility="public">
+        <generalization xmi:id="_5q-80LTFEeKxMa_IL8NGuw" general="_5q-Vz7TFEeKxMa_IL8NGuw"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_5q-80bTFEeKxMa_IL8NGuw" name="Publication" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_5q-80rTFEeKxMa_IL8NGuw" name="PublishingHouse" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_5q-807TFEeKxMa_IL8NGuw" name="ResearchUniversity" visibility="public">
+        <generalization xmi:id="_5q-81LTFEeKxMa_IL8NGuw" general="_5q-82LTFEeKxMa_IL8NGuw"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_5q-81bTFEeKxMa_IL8NGuw" name="Supervision" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_5q-81rTFEeKxMa_IL8NGuw" name="Supervisor" visibility="public">
+        <generalization xmi:id="_5q-817TFEeKxMa_IL8NGuw" general="_5q-Vz7TFEeKxMa_IL8NGuw"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_5q-82LTFEeKxMa_IL8NGuw" name="University" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_5q-82bTFEeKxMa_IL8NGuw" visibility="public" memberEnd="_5q-82rTFEeKxMa_IL8NGuw _5q-83bTFEeKxMa_IL8NGuw">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_5q-82rTFEeKxMa_IL8NGuw" name="publication" visibility="public" type="_5q-80bTFEeKxMa_IL8NGuw" association="_5q-82bTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-827TFEeKxMa_IL8NGuw" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-83LTFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_5q-83bTFEeKxMa_IL8NGuw" name="author" visibility="public" type="_5q-VyLTFEeKxMa_IL8NGuw" isReadOnly="true" association="_5q-82bTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-83rTFEeKxMa_IL8NGuw" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-837TFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_5q-84LTFEeKxMa_IL8NGuw" visibility="public" memberEnd="_5q-84bTFEeKxMa_IL8NGuw _5q-85LTFEeKxMa_IL8NGuw">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_5q-84bTFEeKxMa_IL8NGuw" name="publication" visibility="public" type="_5q-80bTFEeKxMa_IL8NGuw" association="_5q-84LTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-84rTFEeKxMa_IL8NGuw" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-847TFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_5q-85LTFEeKxMa_IL8NGuw" name="book" visibility="public" type="_5q-VyrTFEeKxMa_IL8NGuw" isReadOnly="true" association="_5q-84LTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-85bTFEeKxMa_IL8NGuw" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-85rTFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_5q-857TFEeKxMa_IL8NGuw" visibility="public" memberEnd="_5q-86LTFEeKxMa_IL8NGuw _5q-867TFEeKxMa_IL8NGuw">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_5q-86LTFEeKxMa_IL8NGuw" name="ownership" visibility="public" type="_5q-VzLTFEeKxMa_IL8NGuw" association="_5q-857TFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-86bTFEeKxMa_IL8NGuw" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-86rTFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_5q-867TFEeKxMa_IL8NGuw" name="pet" visibility="public" type="_5q-Vy7TFEeKxMa_IL8NGuw" isReadOnly="true" association="_5q-857TFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-87LTFEeKxMa_IL8NGuw" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-87bTFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_5q-87rTFEeKxMa_IL8NGuw" visibility="public" memberEnd="_5q-88rTFEeKxMa_IL8NGuw _5q-877TFEeKxMa_IL8NGuw">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_5q-88rTFEeKxMa_IL8NGuw" name="ownership" visibility="public" type="_5q-VzLTFEeKxMa_IL8NGuw" association="_5q-87rTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-887TFEeKxMa_IL8NGuw" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-89LTFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_5q-877TFEeKxMa_IL8NGuw" name="owner" visibility="public" type="_5q-VzrTFEeKxMa_IL8NGuw" isReadOnly="true" association="_5q-87rTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-88LTFEeKxMa_IL8NGuw" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-88bTFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_5q-89bTFEeKxMa_IL8NGuw" visibility="public" memberEnd="_5q-89rTFEeKxMa_IL8NGuw _5q-8-bTFEeKxMa_IL8NGuw">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_5q-89rTFEeKxMa_IL8NGuw" name="supervision" visibility="public" type="_5q-81bTFEeKxMa_IL8NGuw" association="_5q-89bTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-897TFEeKxMa_IL8NGuw" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-8-LTFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_5q-8-bTFEeKxMa_IL8NGuw" name="student" visibility="public" type="_5q-V0LTFEeKxMa_IL8NGuw" isReadOnly="true" association="_5q-89bTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-8-rTFEeKxMa_IL8NGuw" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-8-7TFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_5q-8_LTFEeKxMa_IL8NGuw" visibility="public" memberEnd="_5q-9ALTFEeKxMa_IL8NGuw _5q-8_bTFEeKxMa_IL8NGuw">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_5q-8_bTFEeKxMa_IL8NGuw" name="ph" visibility="public" type="_5q-80rTFEeKxMa_IL8NGuw" isReadOnly="true" association="_5q-8_LTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-8_rTFEeKxMa_IL8NGuw" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-8_7TFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_5q-9ALTFEeKxMa_IL8NGuw" name="publication" visibility="public" type="_5q-80bTFEeKxMa_IL8NGuw" association="_5q-8_LTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-9AbTFEeKxMa_IL8NGuw" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q-9ArTFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_5q-9A7TFEeKxMa_IL8NGuw" visibility="public" memberEnd="_5q-9BLTFEeKxMa_IL8NGuw _5q_j4bTFEeKxMa_IL8NGuw">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_5q-9BLTFEeKxMa_IL8NGuw" name="supervision" visibility="public" type="_5q-81bTFEeKxMa_IL8NGuw" association="_5q-9A7TFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q-9BbTFEeKxMa_IL8NGuw" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q_j4LTFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_5q_j4bTFEeKxMa_IL8NGuw" name="university" visibility="public" type="_5q-807TFEeKxMa_IL8NGuw" isReadOnly="true" association="_5q-9A7TFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q_j4rTFEeKxMa_IL8NGuw" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q_j47TFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_5q_j5LTFEeKxMa_IL8NGuw" visibility="public" memberEnd="_5q_j6LTFEeKxMa_IL8NGuw _5q_j5bTFEeKxMa_IL8NGuw">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_5q_j5bTFEeKxMa_IL8NGuw" name="supervisor" visibility="public" type="_5q-81rTFEeKxMa_IL8NGuw" isReadOnly="true" association="_5q_j5LTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q_j5rTFEeKxMa_IL8NGuw" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q_j57TFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_5q_j6LTFEeKxMa_IL8NGuw" name="supervision" visibility="public" type="_5q-81bTFEeKxMa_IL8NGuw" association="_5q_j5LTFEeKxMa_IL8NGuw">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_5q_j6bTFEeKxMa_IL8NGuw" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_5q_j6rTFEeKxMa_IL8NGuw" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <viewpoint xsi:nil="true"/>
+</RefOntoUML:Model>
