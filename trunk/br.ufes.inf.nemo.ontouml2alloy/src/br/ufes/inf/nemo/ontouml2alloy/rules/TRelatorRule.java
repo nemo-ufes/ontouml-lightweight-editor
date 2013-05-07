@@ -31,7 +31,11 @@ public class TRelatorRule {
 		
 		// get all 'c' mediations				
 		ArrayList<Mediation> mediations = new ArrayList<Mediation>();
-		ontoparser.getAllMediations(c, mediations);
+		try {
+			ontoparser.getAllMediations(c, mediations);
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
 				
 		// get all c mediations names
 		ArrayList<EObject> eobjects = new ArrayList<EObject>();

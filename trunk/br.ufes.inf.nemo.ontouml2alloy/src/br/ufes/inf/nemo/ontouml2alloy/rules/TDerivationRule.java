@@ -68,7 +68,11 @@ public class TDerivationRule {
 			
 		// Get Mediations
 		ArrayList<Mediation> mediations = new ArrayList<Mediation>();
-		ontoparser.getAllMediations(derRelator,mediations);
+		try {
+			ontoparser.getAllMediations(derRelator,mediations);
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
 				
 		// Get the two first mediations related with source and target of the material relation
 		int cont1=1;
