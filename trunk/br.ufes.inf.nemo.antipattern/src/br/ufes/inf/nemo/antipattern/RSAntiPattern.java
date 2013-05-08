@@ -58,7 +58,7 @@ public class RSAntiPattern extends Antipattern{
 		
 		if(type==SUBSET){
 			invName = "subset";
-			invRule = "self."+aeg_name+"->includesAll(self."+aes_name+")";
+			invRule = "self."+aeg_name+"->includesAll(self."+aes_name+"->asSet())";
 		}
 		else if (type==REDEFINE){
 			invName = "redefine";
@@ -66,11 +66,11 @@ public class RSAntiPattern extends Antipattern{
 		}
 		else if (type==DISJOINT){
 			invName = "disjoint";
-			invRule = "self."+aeg_name+"->excludesAll(self."+aes_name+")";
+			invRule = "self."+aeg_name+"->excludesAll(self."+aes_name+"->asSet())";
 		}
 		else if (type==NONSUBSET){
 			invName = "nonSubset";
-			invRule = "not (self."+aeg_name+"->includesAll(self."+aes_name+"))";
+			invRule = "not (self."+aeg_name+"->includesAll(self."+aes_name+"->asSet()))";
 		}
 		else
 			throw new Exception("The method 'RSAntiPattern::generateOcl' requires that a valid type of predicate is provided");
