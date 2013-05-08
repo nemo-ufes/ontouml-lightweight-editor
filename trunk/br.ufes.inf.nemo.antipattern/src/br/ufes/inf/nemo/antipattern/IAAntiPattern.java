@@ -20,17 +20,19 @@ public class IAAntiPattern extends Antipattern{
 	public IAAntiPattern(Association a) throws Exception {
 		this.setAssociation(a);
 	}
-	
 	 
-	public String generateTargetOcl(ArrayList<Classifier> subtypes, OntoUMLParser parser){
+	public String generateTargetOcl(ArrayList<Classifier> subtypes, OntoUMLParser parser)
+	{
 		String result;
-		String aet_name = parser.getAlias(association.getMemberEnd().get(1));
+		String aet_name = association.getMemberEnd().get(1).getName();
 		
 		result = "context _'"+source.getName()+"'\n"+
 				 "inv: ";	
 		
-		if(subtypes!=null && subtypes.size()>0 && targetChildren.containsAll(subtypes)){
-			for (int n=0;n<subtypes.size();n++){
+		if(subtypes!=null && subtypes.size()>0 && targetChildren.containsAll(subtypes))
+		{
+			for (int n=0;n<subtypes.size();n++)
+			{
 				result += "self."+aet_name+"->intersection("+subtypes.get(n).getName()+".allInstances())->size()>0";
 				if (n<subtypes.size()-1)
             		result += " and ";
@@ -44,9 +46,10 @@ public class IAAntiPattern extends Antipattern{
 		
 	}
 	
-	public String generateSourceOcl(ArrayList<Classifier> subtypes, OntoUMLParser parser){
+	public String generateSourceOcl(ArrayList<Classifier> subtypes, OntoUMLParser parser)
+	{
 		String result;
-		String aes_name = parser.getAlias(association.getMemberEnd().get(0));
+		String aes_name = association.getMemberEnd().get(0).getName();
 		
 		result = "context _'"+target.getName()+"'\n"+
 				 "inv: ";	

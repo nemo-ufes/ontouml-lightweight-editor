@@ -26,7 +26,7 @@ public class ACAntiPattern extends Antipattern{
 				
 		typeName = this.cycle.get(0).getName();
 				
-		rule = 	"self.";
+		rule = 	"\n    self.";
 		
 		String invName = new String();
 		
@@ -38,11 +38,11 @@ public class ACAntiPattern extends Antipattern{
 		invName += "_"+a.getName();
 		
 		if (a.getMemberEnd().get(0).getType().equals(this.cycle.get(0))) {
-			rule += parser.getAlias(a.getMemberEnd().get(1));
+			rule += a.getMemberEnd().get(1).getName();
 			last_target = a.getMemberEnd().get(1).getType();
 		}
 		else{ 
-			rule += parser.getAlias(a.getMemberEnd().get(0));
+			rule += a.getMemberEnd().get(0).getName();
 			last_target = a.getMemberEnd().get(0).getType();
 		}
 			
@@ -55,11 +55,11 @@ public class ACAntiPattern extends Antipattern{
 				invName+= "_"+((Association)r).getName();
 				
 				if( ((Association)r).getMemberEnd().get(0).getType().equals(last_target)) {
-					rule += "."+parser.getAlias(((Association)r).getMemberEnd().get(1));
+					rule += "."+((Association)r).getMemberEnd().get(1).getName();
 					last_target =((Association)r).getMemberEnd().get(1).getType();
 				}
 				else {
-					rule += "."+parser.getAlias(((Association)r).getMemberEnd().get(0));
+					rule += "."+((Association)r).getMemberEnd().get(0).getName();
 					last_target =((Association)r).getMemberEnd().get(0).getType();
 				}
 					
@@ -67,7 +67,7 @@ public class ACAntiPattern extends Antipattern{
 		}
 		
 		if(type==CLOSED)
-			rule += " = self";
+			rule += "->asSet() = self->asSet()";
 		else if(type==OPEN)
 			rule += "->excludes(self)";
 		else

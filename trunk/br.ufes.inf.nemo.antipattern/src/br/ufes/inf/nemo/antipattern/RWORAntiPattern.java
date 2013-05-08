@@ -53,23 +53,33 @@ public class RWORAntiPattern extends Antipattern{
 		if (disjointTypes.size()<2)
 			return null;
 		
-		for (Mediation mediation : this.mediations.keySet()) {
+		for (Mediation mediation : this.mediations.keySet()) 
+		{
 			if(mediation.getMemberEnd().get(0).getType().equals(disjointTypes.get(0)))
-				result+="self."+parser.getAlias(mediation.getMemberEnd().get(0));
+				result+="self."+mediation.getMemberEnd().get(0).getName()+".oclAsType("+
+				supertype.getName()+")->asSet()";
+				
 			if(mediation.getMemberEnd().get(1).getType().equals(disjointTypes.get(0)))
-				result+="self."+parser.getAlias(mediation.getMemberEnd().get(1));
+				result+="self."+mediation.getMemberEnd().get(1).getName()+".oclAsType("+
+				supertype.getName()+")->asSet()";
 		}
 		System.out.println(disjointTypes.size());
-		for (int i = 1; i<disjointTypes.size(); i++){
+		
+		for (int i = 1; i<disjointTypes.size(); i++)
+		{
 			Classifier classifier = disjointTypes.get(i);
-			for (Mediation mediation : this.mediations.keySet()) {
+			for (Mediation mediation : this.mediations.keySet()) 
+			{
 				if(mediation.getMemberEnd().get(0).getType().equals(classifier))
-					result+="->intersection(self."+parser.getAlias(mediation.getMemberEnd().get(0))+")";
+					result+="->intersection(self."+mediation.getMemberEnd().get(0).getName()+".oclAsType("+
+					supertype.getName()+")->asSet())";				
+				
 				if(mediation.getMemberEnd().get(1).getType().equals(classifier))
-					result+="->intersection(self."+parser.getAlias(mediation.getMemberEnd().get(1))+")";
+					result+="->intersection(self."+mediation.getMemberEnd().get(1).getName()+".oclAsType("+
+					supertype.getName()+")->asSet())";
 			}
 		}
-		result += "->size=0";
+		result += "->size()=0";
 		
 		return result;
 	}
@@ -82,7 +92,7 @@ public class RWORAntiPattern extends Antipattern{
 		
 		relatorName=parser.getAlias(relator);
 		
-		invariantName = "MultipleExclusiveRole_"+relatorName;
+		invariantName = "MultipleExclusiveRole_"+relator.getName();
 		rules = "#"+relatorName+">="+cardinality;
 		
 		for (ArrayList<Mediation> exclusiveList : exclusiveMatrix){
