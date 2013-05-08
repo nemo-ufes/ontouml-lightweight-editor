@@ -127,28 +127,28 @@ public class RSAntiPatternController {
 				
 	    		if(rsView.isSelectedDisjoint()) 
 	    		{
-	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
+	    			constraints += ""+rsModel.getRSAntiPattern().generateOcl(
 	    				rsModel.getRSAntiPattern().DISJOINT,
 	    				rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
 	    			)+"\n\n";
 	    		}			
 	    		if(rsView.isSelectedNonSubsetting())				
 	    		{
-	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
+	    			constraints += ""+rsModel.getRSAntiPattern().generateOcl(
 	    				rsModel.getRSAntiPattern().NONSUBSET,
 	    				rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
 	    			)+"\n\n"; 
 	    		}	    		
 	    		if(rsView.isSelectedRedefinition()) 
 	    		{
-	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
+	    			constraints += ""+rsModel.getRSAntiPattern().generateOcl(
 	    				rsModel.getRSAntiPattern().REDEFINE,
 	    				rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
 	    			)+"\n\n";
 	    		}			
 	    		if(rsView.isSelectedSubType())				
 	    		{
-	    			constraints += "\n\n"+rsModel.getRSAntiPattern().generateOcl(
+	    			constraints += ""+rsModel.getRSAntiPattern().generateOcl(
 	    				rsModel.getRSAntiPattern().SUBSET,
 	    				rsView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser()
 	    			)+"\n\n"; 

@@ -44,13 +44,14 @@ public class RSAntiPattern extends Antipattern{
 		Classifier generalSource = (Classifier) general.getMemberEnd().get(0).getType();
 		//Classifier generalTarget = (Classifier) general.getMemberEnd().get(1).getType();
 		
-		if (specificSource.equals(generalSource) || specificSource.allParents().contains(generalSource)){
-			aes_name = parser.getAlias(specific.getMemberEnd().get(1));
-			aeg_name = parser.getAlias(general.getMemberEnd().get(1));
+		if (specificSource.equals(generalSource) || specificSource.allParents().contains(generalSource))
+		{
+			aes_name = specific.getMemberEnd().get(1).getName();
+			aeg_name = general.getMemberEnd().get(1).getName();
 		}
 		else {
-			aes_name = parser.getAlias(specific.getMemberEnd().get(1));
-			aeg_name = parser.getAlias(general.getMemberEnd().get(0));
+			aes_name = specific.getMemberEnd().get(1).getName();
+			aeg_name = general.getMemberEnd().get(0).getName();
 		}
 		
 		contextName = specific.getMemberEnd().get(0).getType().getName();
@@ -77,7 +78,7 @@ public class RSAntiPattern extends Antipattern{
 		invName += "_"+specific.getName()+"_"+general.getName();
 		
 		return 	"context _'"+contextName+"'\n"+
-				"inv "+invName+" : "+invRule;
+				"inv "+invName+" : \n    "+invRule;
 		
 	}
 	
