@@ -37,9 +37,9 @@ public class RWRTAntiPattern extends Antipattern {
 	 * @param parser
 	 * @throws Exception
 	 */
-	public RWRTAntiPattern(Mediation mediation) throws Exception 
+	public RWRTAntiPattern(Mediation mediation, OntoUMLParser parser) throws Exception 
 	{
-		this.setMediation(mediation);
+		this.setMediation(mediation, parser);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class RWRTAntiPattern extends Antipattern {
 	 * @param mediation
 	 * @throws Exception
 	 */
-	public void setMediation (Mediation mediation) throws Exception {
+	public void setMediation (Mediation mediation, OntoUMLParser parser) throws Exception {
 		
 		if(mediation==null)
 			throw new NullPointerException("Association is null");
@@ -75,8 +75,8 @@ public class RWRTAntiPattern extends Antipattern {
 			throw new Exception("Target type undefined or null");
 		
 		this.mediation = mediation;
-		this.relator = (Relator) mediation.relator();		
-		this.rigidtype= (Classifier) SourceTargetAssociation.getTargetAlloy(mediation);	
+		this.relator = parser.getRelator(mediation);		
+		this.rigidtype= (Classifier) parser.getMediated(mediation);	
 	}
 	
 	/**

@@ -10,4 +10,5 @@ public abstract class Antipattern {
 	 * @param parser
 	 */
 	public abstract void setSelected(OntoUMLParser parser);
+	
 }
