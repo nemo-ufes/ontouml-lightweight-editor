@@ -16,6 +16,7 @@ import RefOntoUML.Package;
 import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.Type;
+import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontouml2graph.GraphAlgo;
 import br.ufes.inf.nemo.common.ontouml2graph.OntoUML2Graph;
@@ -359,7 +360,7 @@ public class AntiPatternIdentifier {
 		for (Mediation a : query_result) 
 		{
 			Mediation original = (Mediation) AntiPatternIdentifier.getOriginal(a, copier);
-			result.add(new RWRTAntiPattern(original));
+			result.add(new RWRTAntiPattern(original, parser));
 		}		
 		return result;
 	}

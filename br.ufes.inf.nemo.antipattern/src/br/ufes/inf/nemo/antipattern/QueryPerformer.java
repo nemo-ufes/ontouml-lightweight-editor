@@ -13,8 +13,10 @@ import org.eclipse.ocl.ParserException;
 
 import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Model;
+import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
+import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class QueryPerformer {
@@ -53,7 +55,20 @@ public class QueryPerformer {
 		    
 		    for (TRIAntiPattern tri : result01) {
 		    	//System.out.println(tri+"\n");
-		    	System.out.println(tri.explanation(parser)+"\n");
+		    	System.out.println(tri.explanation(parser)+"\n\n");
+		    	
+		    	System.out.println(tri.duplicateInstantiationPattern.description()+"\n\n");
+		    	
+		    	ArrayList<InstantiationPatternParameter> ippList = new ArrayList<>();
+		    	ippList.add(new InstantiationPatternParameter(tri.getRelator(), 2));
+		    	
+		    	for (Property p : tri.getProblematicMediatedProperties()) {
+					ippList.add(new InstantiationPatternParameter(p,1)); 
+				}
+		    	
+		    	System.out.println(tri.duplicateInstantiationPattern.predicate(ippList)+"\n\n");
+		    	System.out.println(tri.distinctInstantiationPatter.predicate(ippList)+"\n\n");
+		    	//System.out.println(tri.explanation(parser)+"\n");
 		    	/*System.out.println(str.generateTransitivePredicate(4,mapper));
 		    	System.out.println(str.generateIntransitivePredicate(4,mapper));
 		    	System.out.println(str.generateReflexivePredicate(4,mapper));
