@@ -587,15 +587,33 @@ public class OntoUMLParser {
 	 */
 	public void getAllMediations(Relator r,ArrayList<Mediation> result) throws Exception
 	{
+		result.addAll(getRelatorsMediations(r));
+		
+		for(Generalization gen : r.getGeneralization())
+		{						
+			if(isSelected(gen))	
+				if (gen.getGeneral() instanceof Relator) 
+					getAllMediations((Relator)gen.getGeneral(),result);			
+		}
+	}
+	
+	/**
+	 * Get all Mediations that have as a source the Relator 'r' or one of its Super Types.
+	 * 
+	 * @param r
+	 * @param result
+	 * @throws Exception 
+	 */
+	public ArrayList<Mediation> getRelatorsMediations(Relator r) throws Exception
+	{
+		ArrayList<Mediation> result = new ArrayList<Mediation>();
+		
 		for (Mediation m : getAllInstances(Mediation.class)) {
 			if(getRelator(m).equals(r))
 				result.add(m);
 		}
 		
-		for(Generalization gen : r.getGeneralization())
-		{						
-			if(isSelected(gen))	if (gen.getGeneral() instanceof Relator) getAllMediations((Relator)gen.getGeneral(),result);			
-		}
+		return result;
 	}
 	
 	

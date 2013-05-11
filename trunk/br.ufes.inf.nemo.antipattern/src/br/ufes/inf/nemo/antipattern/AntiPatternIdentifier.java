@@ -16,6 +16,7 @@ import RefOntoUML.Package;
 import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.Type;
+import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
 import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontouml2graph.GraphAlgo;
@@ -337,8 +338,20 @@ public class AntiPatternIdentifier {
 	
 	
 	/** OCL query for RWRT AntiPattern. */
-	private static String RWRT_OCLQuery = "Mediation.allInstances()->select(m:Mediation | m.memberEnd->at(2).type.oclIsKindOf(RigidSortalClass) or m.memberEnd->at(1).type.oclIsKindOf(RigidSortalClass) or m.memberEnd->at(2).type.oclIsKindOf(RigidMixinClass) or m.memberEnd->at(1).type.oclIsKindOf(RigidMixinClass))";
+	private static String RWRT_OCLQuery = "Relator.allInstances()->select(r: Relator | r.isAbstract=false and Mediation.allInstances()->select(m:Mediation | (m.sourceEnd().type=r and m.sourceEnd().lower>0 and (m.targetEnd().type.oclIsKindOf(RigidSortalClass) or m.targetEnd().type.oclIsKindOf(RigidMixinClass)) ) or (m.targetEnd().type=r and m.targetEnd().lower>0 and (m.sourceEnd().type.oclIsKindOf(RigidSortalClass) or m.sourceEnd().type.oclIsKindOf(RigidMixinClass))) )->size()>=1 )";
 
+	/*
+	Relator.allInstances()->
+		select(r: Relator | r.isAbstract=false and Mediation.allInstances()->
+								select(m:Mediation | 
+									(m.sourceEnd().type=r and m.sourceEnd().lower>0 and (m.targetEnd().type.oclIsKindOf(RigidSortalClass) or m.targetEnd().type.oclIsKindOf(RigidMixinClass)) )
+									or 
+									(m.targetEnd().type=r and m.targetEnd().lower>0 and (m.sourceEnd().type.oclIsKindOf(RigidSortalClass) or m.sourceEnd().type.oclIsKindOf(RigidMixinClass)))
+								)->size()>=1
+				)
+	)
+	*/
+	
 	/**
 	 * Identify RWRT AntiPattern (Relator With Rigid Types).
 	 * 
@@ -353,13 +366,13 @@ public class AntiPatternIdentifier {
 		
 		Package model = parser.createPackageFromSelections(copier);
 		
-		Collection<Mediation> query_result;				
-		query_result = (Collection<Mediation>)OCLQueryExecuter.executeQuery(RWRT_OCLQuery, (EClassifier)model.eClass(), model);
+		Collection<Relator> query_result;				
+		query_result = (Collection<Relator>)OCLQueryExecuter.executeQuery(RWRT_OCLQuery, (EClassifier)model.eClass(), model);
 		
 		ArrayList<RWRTAntiPattern> result = new ArrayList<RWRTAntiPattern>();
-		for (Mediation a : query_result) 
+		for (Relator a : query_result) 
 		{
-			Mediation original = (Mediation) AntiPatternIdentifier.getOriginal(a, copier);
+			Relator original = (Relator) AntiPatternIdentifier.getOriginal(a, copier);
 			result.add(new RWRTAntiPattern(original, parser));
 		}		
 		return result;
@@ -368,16 +381,25 @@ public class AntiPatternIdentifier {
 	/** OCL query for TRI AntiPattern. */
 	//private static String TRI_OCLQuery = "Relator.allInstances()->select(r: Relator | r.mediations()->select(m:Mediation|m.relatorEnd().upper=-1 or m.relatorEnd().upper>1)->size()>=2)";
 	
-	private static String TRI_OCLQuery = "Relator.allInstances()->select(r: Relator | Mediation.allInstances()->select(m:Mediation | (m.sourceEnd().type=r and (m.sourceEnd().upper=-1 or m.sourceEnd().upper>1)) or (m.targetEnd().type=r and (m.targetEnd().upper=-1 or m.targetEnd().upper>1) and not m.sourceEnd().type.oclIsKindOf(Relator)))->size()>=2)";
+	private static String TRI_OCLQuery = 
+			"Relator.allInstances()->"+
+			"select(r: Relator | r.isAbstract=false and Mediation.allInstances()->"+
+			"					select(m:Mediation | "+
+			"						((m.sourceEnd().type=r or m.sourceEnd().type.oclAsType(Classifier).allParents()->includes(r)) and (m.sourceEnd().upper=-1 or m.sourceEnd().upper>1))"+
+			"						or "+
+			"						((m.targetEnd().type=r or m.targetEnd().type.oclAsType(Classifier).allParents()->includes(r)) and (m.targetEnd().upper=-1 or m.targetEnd().upper>1) and not m.sourceEnd().type.oclIsKindOf(Relator))"+
+			"					)->size()>=2"+
+			")";
 	
-	/*Relator.allInstances()->
-		select(r: Relator | Mediation.allInstances()->
+	/*
+	 	Relator.allInstances()->
+			select(r: Relator | r.isAbstract=false and Mediation.allInstances()->
 								select(m:Mediation | 
-									(m.sourceEnd().type=r and (m.sourceEnd().upper=-1 or m.sourceEnd().upper>1))
+									((m.sourceEnd().type=r or m.sourceEnd().type.oclAsType(Classifier).allParents()->includes(r)) and (m.sourceEnd().upper=-1 or m.sourceEnd().upper>1))
 									or 
-									(m.targetEnd().type=r and (m.targetEnd().upper=-1 or m.targetEnd().upper>1) and not m.sourceEnd().type.oclIsKindOf(Relator))
+									((m.targetEnd().type=r or m.targetEnd().type.oclAsType(Classifier).allParents()->includes(r)) and (m.targetEnd().upper=-1 or m.targetEnd().upper>1) and not m.sourceEnd().type.oclIsKindOf(Relator))
 								)->size()>=2
-	)
+			)
 	 */
 
 	/*

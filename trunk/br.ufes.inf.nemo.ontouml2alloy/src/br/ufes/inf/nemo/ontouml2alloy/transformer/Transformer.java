@@ -89,8 +89,9 @@ public class Transformer extends BaseTransformer {
 			
 	/**
 	 * Transforms Classifiers.
+	 * @throws Exception 
 	 */
-	public void transformClassifier(Classifier c) 
+	public void transformClassifier(Classifier c) throws Exception 
 	{
 		/* ObjectClassName: set exists:>Object,
 		 */
@@ -240,8 +241,9 @@ public class Transformer extends BaseTransformer {
 	
 	/**
 	 * Transforms Derivation.
+	 * @throws Exception 
 	 */
-	public void transformDerivations(Derivation d)
+	public void transformDerivations(Derivation d) throws Exception
 	{
 		PredicateInvocation pI = TDerivationRule.createPredicateInvocation(ontoparser, factory, d);		
 		if (pI!=null) derivations.getBlock().getExpression().add(pI);

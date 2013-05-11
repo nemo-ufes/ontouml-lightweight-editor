@@ -26,6 +26,7 @@ public final class Main {
 			"false");
 			System.setProperty("com.apple.mrj.application.apple.menu.about.name",
 			"MOVE");
+			
 		}
 		
 		//Needed for the embedded SWT Browser in Linux systems

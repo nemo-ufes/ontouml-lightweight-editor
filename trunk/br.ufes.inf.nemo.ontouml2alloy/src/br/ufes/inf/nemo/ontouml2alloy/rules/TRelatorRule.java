@@ -19,8 +19,9 @@ public class TRelatorRule {
 	 * Create Relator Constraint Fact Declaration in Alloy.
 	 * 
 	 * all w: World | all x: w.<RelatorName> | # ( x.(w.<associationName1>)+ x.(w.<associationName2>) + ...) >= 2
+	 * @throws Exception 
 	 */
-	public static FactDeclaration createFactDeclaration(OntoUMLParser ontoparser, AlloyFactory factory, Relator c) 
+	public static FactDeclaration createFactDeclaration(OntoUMLParser ontoparser, AlloyFactory factory, Relator c) throws Exception 
 	{
 		if (c.isIsAbstract()) return null;
 		

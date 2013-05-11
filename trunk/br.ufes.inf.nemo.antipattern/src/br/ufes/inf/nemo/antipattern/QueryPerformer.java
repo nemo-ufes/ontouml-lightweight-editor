@@ -16,6 +16,7 @@ import RefOntoUML.Model;
 import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
+import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
 import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
@@ -50,7 +51,7 @@ public class QueryPerformer {
 		
 		try {
 		    	    
-			ArrayList<TRIAntiPattern> result01 = AntiPatternIdentifier.identifyTRI(parser);
+			/*ArrayList<TRIAntiPattern> result01 = AntiPatternIdentifier.identifyTRI(parser);
 		    System.out.println("#Twin Relator Instances Antipatterns: "+result01.size()+"\n");
 		    
 		    for (TRIAntiPattern tri : result01) {
@@ -69,31 +70,20 @@ public class QueryPerformer {
 		    	System.out.println(tri.duplicateInstantiationPattern.predicate(ippList)+"\n\n");
 		    	System.out.println(tri.distinctInstantiationPatter.predicate(ippList)+"\n\n");
 		    	//System.out.println(tri.explanation(parser)+"\n");
-		    	/*System.out.println(str.generateTransitivePredicate(4,mapper));
-		    	System.out.println(str.generateIntransitivePredicate(4,mapper));
-		    	System.out.println(str.generateReflexivePredicate(4,mapper));
-		    	System.out.println(str.generateIrreflexivePredicate(4,mapper));
-		    	System.out.println(str.generateSymmetricPredicate(4,mapper));
-		    	System.out.println(str.generateAntisymmetricPredicate(4,mapper));*/
-		    	
-		    }
+		    		    	
+		    }*/
 		    System.out.println("**************************************************************");
 		    
-		    /*
+		    
 			ArrayList<RWRTAntiPattern> result00 = AntiPatternIdentifier.identifyRWRT(parser);
 		    System.out.println("#Relator with Rigid Type Antipatterns: "+result00.size()+"\n");
 		    
 		    for (RWRTAntiPattern str : result00) {
 		    	System.out.println(str+"\n");
-		    	/*System.out.println(str.generateTransitivePredicate(4,mapper));
-		    	System.out.println(str.generateIntransitivePredicate(4,mapper));
-		    	System.out.println(str.generateReflexivePredicate(4,mapper));
-		    	System.out.println(str.generateIrreflexivePredicate(4,mapper));
-		    	System.out.println(str.generateSymmetricPredicate(4,mapper));
-		    	System.out.println(str.generateAntisymmetricPredicate(4,mapper));
+		    	
 		    	
 		    }
-		    System.out.println("**************************************************************");*/
+		    System.out.println("**************************************************************");
 		    
 		    /*
 		    ArrayList<STRAntiPattern> result = AntiPatternIdentifier.identifySTR(parser);
