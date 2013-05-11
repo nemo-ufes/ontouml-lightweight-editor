@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.move.mvc.model;
 
-import br.ufes.inf.nemo.antipattern.TRIAntiPattern;
+import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 
 /**
  * 

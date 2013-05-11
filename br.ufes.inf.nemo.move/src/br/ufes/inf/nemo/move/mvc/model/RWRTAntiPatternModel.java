@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.move.mvc.model;
 
-import br.ufes.inf.nemo.antipattern.RWRTAntiPattern;
+import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
 
 /**
  * 

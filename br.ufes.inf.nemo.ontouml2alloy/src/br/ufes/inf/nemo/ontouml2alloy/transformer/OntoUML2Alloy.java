@@ -113,7 +113,7 @@ public class OntoUML2Alloy {
 		return transformer.module.toString();
 	}	
 	
-	private static void start(OntoUMLParser refparser, OntoUMLOptions opt)
+	private static void start(OntoUMLParser refparser, OntoUMLOptions opt) throws Exception
 	{
 		ontoparser = refparser;
 		

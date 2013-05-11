@@ -25,8 +25,9 @@ public class TDerivationRule {
 	 * @param factory: Alloy Factory
 	 * @param d: OntoUML.Derivation
 	 * @return
+	 * @throws Exception 
 	 */
-	public static PredicateInvocation createPredicateInvocation (OntoUMLParser ontoparser, AlloyFactory factory, Derivation d)
+	public static PredicateInvocation createPredicateInvocation (OntoUMLParser ontoparser, AlloyFactory factory, Derivation d) throws Exception
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();
 		pI.setPredicate("derivation");
