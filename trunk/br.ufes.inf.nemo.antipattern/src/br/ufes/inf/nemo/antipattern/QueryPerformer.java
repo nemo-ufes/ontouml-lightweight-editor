@@ -12,12 +12,16 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.ocl.ParserException;
 
 import RefOntoUML.AntiRigidSortalClass;
+import RefOntoUML.Association;
+import RefOntoUML.DataType;
 import RefOntoUML.Model;
 import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
 import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
+import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class QueryPerformer {
@@ -34,7 +38,7 @@ public class QueryPerformer {
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.refontouml").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/twin_relator_instances.refontouml").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/Georreferenciamento.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/twin_test.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOS_regular_and_inverted.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
@@ -50,7 +54,33 @@ public class QueryPerformer {
 		OntoUMLParser parser = new OntoUMLParser(m);
 		
 		try {
-		    	    
+			int i = 0;
+			System.out.println("|||||||||||||||||||||||||||||||||||||||||");
+			for (Association a : parser.getAllInstances(Association.class)) {
+				Type t1,t2;
+				
+				t1 = a.getMemberEnd().get(0).getType();
+				t2 = a.getMemberEnd().get(1).getType();
+				
+				if(!(t1 instanceof DataType) && !( t2 instanceof DataType) && !(t1.equals(t2)) ){
+				String name, predicate_rule, predicate;
+				
+				name = "overlaps"+parser.getAlias(t1)+parser.getAlias(t2)+i;
+				
+				predicate_rule = "some w:World | some w."+parser.getAlias(t1)+" & w."+parser.getAlias(t2);
+				
+				predicate = AlloyConstructor.AlloyParagraph(name, predicate_rule, AlloyConstructor.PRED);
+				predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
+				
+				System.out.println(predicate+"\n");
+				
+				i++;
+				}
+				
+				
+			}
+			System.out.println("|||||||||||||||||||||||||||||||||||||||||");
+			
 			/*ArrayList<TRIAntiPattern> result01 = AntiPatternIdentifier.identifyTRI(parser);
 		    System.out.println("#Twin Relator Instances Antipatterns: "+result01.size()+"\n");
 		    
@@ -89,8 +119,14 @@ public class QueryPerformer {
 				} 	
 		    	
 		    	System.out.println(rwrt.changingInstantiationPattern.predicate(ippList, parser));
+		    	System.out.println(rwrt.creationalInstantiationPattern.predicate(ippList, parser));
 		    	
+		    	ippList.remove(0);
 		    	
+		    	System.out.println(rwrt.changingInstantiationPattern.description(ippList));
+		    	System.out.println(rwrt.creationalInstantiationPattern.description(ippList));
+		    	
+		    	System.out.println("=========================================================");
 		    }
 		    System.out.println("**************************************************************");
 		    
