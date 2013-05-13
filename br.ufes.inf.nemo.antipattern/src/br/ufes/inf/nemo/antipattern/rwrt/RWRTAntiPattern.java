@@ -23,6 +23,8 @@ public class RWRTAntiPattern extends Antipattern {
 	private Relator relator;
 	private ArrayList<Mediation> allMediations, rigidMediations;
 	private ArrayList<Property> allMediatedProperties, rigidMediatedProperties;
+	public CreationalRelator cretationalInstantiationPattern;
+	public ChangingRelator changingInstantiationPattern;
 	
 	
 	public ArrayList<Mediation> getAllMediations() {
@@ -48,6 +50,8 @@ public class RWRTAntiPattern extends Antipattern {
 	public RWRTAntiPattern(Relator relator, OntoUMLParser parser) throws Exception 
 	{
 		this.setRelator(relator, parser);
+		this.changingInstantiationPattern = new ChangingRelator(this);
+				
 	}
 
 	/**
@@ -114,5 +118,56 @@ public class RWRTAntiPattern extends Antipattern {
 		}
 		
 		return result;
-	}	
+	}
+	
+	public static String generalDescription (){
+		
+		return 	"The Relator With Rigid Types (RWRT) antipattern is characterized by a relator which mediates"+	
+				"at least one rigid type (sortal or non-sortal).";
+	}
+	
+	public String explanation() {
+	
+		String expl = "";
+		
+		expl += "The relator type "+this.relator.getName()+" mediates "+this.rigidMediatedProperties.size()+" rigid type(s):";
+		
+		for (int i = 0; i < rigidMediatedProperties.size(); i++) {
+			Property p = rigidMediatedProperties.get(i);
+			
+			if(i>0 && i!= rigidMediatedProperties.size()-1)
+				expl += ",";
+			
+			else if (i == rigidMediatedProperties.size()-1)
+				expl += " and";
+			
+			expl += " "+p.getType().getName();
+			
+		}
+		
+		return expl;
+	}
 }
+
+
+/*
+ 
+(IP1): Throughout the lifecycle of individuals of the types {RIGID}, the instance(s) of the relator {RELATOR} they are mediated by CHANGE.
+ 
+(IP2): Throughout the lifecycle of individuals of the types {RIGID}, the instance(s) of the relator {RELATOR} they are mediated by ARE THE SAME.
+
+if (IP1) is possible, then the model is correct.
+else, i.e. if (IP1) is not a valid instantiation of the model, then there can only be instantiations of (IP2). 
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+*/

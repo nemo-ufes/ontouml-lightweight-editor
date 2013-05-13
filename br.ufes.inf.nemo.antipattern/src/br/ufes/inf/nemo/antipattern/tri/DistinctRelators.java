@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.InstantiationPattern;
 import br.ufes.inf.nemo.antipattern.InstantiationPatternParameter;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class DistinctRelators extends InstantiationPattern{
 	TRIAntiPattern tri;
@@ -18,7 +19,7 @@ public class DistinctRelators extends InstantiationPattern{
 	}
 	
 	@Override
-	public String predicate(ArrayList<InstantiationPatternParameter> parameter) throws Exception {
+	public String predicate(ArrayList<InstantiationPatternParameter> parameter, OntoUMLParser parser) throws Exception {
 			 
 		String relatorName = "_'"+tri.getRelator().getName()+"'";
 		String oclConstraint = "";
