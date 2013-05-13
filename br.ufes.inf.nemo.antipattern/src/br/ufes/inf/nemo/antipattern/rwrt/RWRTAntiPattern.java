@@ -5,17 +5,12 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
-import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.Antipattern;
-import br.ufes.inf.nemo.antipattern.tri.DistinctRelators;
-import br.ufes.inf.nemo.antipattern.tri.DuplicateRelators;
-import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RWRTAntiPattern extends Antipattern {
@@ -23,7 +18,7 @@ public class RWRTAntiPattern extends Antipattern {
 	private Relator relator;
 	private ArrayList<Mediation> allMediations, rigidMediations;
 	private ArrayList<Property> allMediatedProperties, rigidMediatedProperties;
-	public CreationalRelator cretationalInstantiationPattern;
+	public CreationalRelator creationalInstantiationPattern;
 	public ChangingRelator changingInstantiationPattern;
 	
 	
@@ -51,6 +46,7 @@ public class RWRTAntiPattern extends Antipattern {
 	{
 		this.setRelator(relator, parser);
 		this.changingInstantiationPattern = new ChangingRelator(this);
+		this.creationalInstantiationPattern = new CreationalRelator(this);
 				
 	}
 

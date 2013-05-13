@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.antipattern.rwrt;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import RefOntoUML.Mediation;
 import RefOntoUML.Property;
@@ -21,6 +20,32 @@ public class ChangingRelator extends InstantiationPattern{
 		this.worldNumber = 2;
 	}
 	
+	public String description(ArrayList<InstantiationPatternParameter> parameter) throws Exception{
+		String descr = "Throughout the lifecycle of individuals of the type(s)";
+		int i =0;
+		
+		for (InstantiationPatternParameter ipp : parameter) {
+			
+			if (ipp.getElement() instanceof Property) {
+				Property p = (Property) ipp.getElement();
+				
+				if(i>=1&&i<parameter.size()-1)
+					descr += ",";
+				if(i==parameter.size()-1)
+					descr += " and";
+				
+				descr += " "+p.getType().getName();
+				
+				i++;
+			}
+			else throw new Exception("Incompatible parameter type for generating description of ChangingRelator Instantiation Pattern");
+		}
+		descr += ", the instance(s) of the relator "+rwrt.getRelator().getName()+" which mediates them CHANGE.";
+
+		return descr;
+	}
+	
+	/*TODO: Before executing this query, make sure to change in each AssociationEnd, isReadOnly=fale; After running the transformation, change back to original.*/
 	@Override
 	public String predicate(ArrayList<InstantiationPatternParameter> parameter, OntoUMLParser parser) throws Exception {
 		
@@ -64,15 +89,28 @@ public class ChangingRelator extends InstantiationPattern{
 				predicate_rules += " implies b."+parser.getAlias(parser.getRelatorEnd((Mediation)p.getAssociation()))+"[w1]!=b."+parser.getAlias(parser.getRelatorEnd((Mediation)p.getAssociation()))+"[w2]";
 			}
 		}
-		
-		
-		
-		
+				
 		predicate = AlloyConstructor.AlloyParagraph(name, predicate_rules, AlloyConstructor.PRED);
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", Integer.toString(worldNumber), AlloyConstructor.PRED)+"\n";
 		
 		return predicate;
 		
+	}
+	
+	public void forbiddanceConstraint(ArrayList<InstantiationPatternParameter> parameter) throws Exception {
+		
+		for (InstantiationPatternParameter ipp : parameter) {
+			
+			if(ipp.getElement() instanceof Property){
+				Property p = (Property) ipp.getElement();
+				p.setIsReadOnly(true);
+				
+				/*TODO: The interface should generate a pop-up saying that the model has been modified.*/
+			}
+			
+			else
+				throw new Exception("Parameter problem in forbiddance constraint generation of Changing Relator antipattern");
+		}
 	}
 
 }
