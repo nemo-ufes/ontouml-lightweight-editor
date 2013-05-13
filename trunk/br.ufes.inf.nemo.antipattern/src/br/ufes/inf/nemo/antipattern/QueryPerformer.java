@@ -78,8 +78,17 @@ public class QueryPerformer {
 			ArrayList<RWRTAntiPattern> result00 = AntiPatternIdentifier.identifyRWRT(parser);
 		    System.out.println("#Relator with Rigid Type Antipatterns: "+result00.size()+"\n");
 		    
-		    for (RWRTAntiPattern str : result00) {
-		    	System.out.println(str+"\n");
+		    for (RWRTAntiPattern rwrt : result00) {
+		    	System.out.println(rwrt.explanation()+"\n");
+		    	
+		    	ArrayList<InstantiationPatternParameter> ippList = new ArrayList<>();
+		    	ippList.add(new InstantiationPatternParameter(rwrt.getRelator(), 2));
+		    	
+		    	for (Property p : rwrt.getRigidMediatedProperties()) {
+					ippList.add(new InstantiationPatternParameter(p,3)); 
+				} 	
+		    	
+		    	System.out.println(rwrt.changingInstantiationPattern.predicate(ippList, parser));
 		    	
 		    	
 		    }
