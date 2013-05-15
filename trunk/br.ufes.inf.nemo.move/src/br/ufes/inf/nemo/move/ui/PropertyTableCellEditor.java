@@ -3,6 +3,8 @@ package br.ufes.inf.nemo.move.ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
@@ -15,7 +17,7 @@ import javax.swing.table.TableCellEditor;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElem;
 
-public class PropertyTableCellEditor extends AbstractCellEditor implements TableCellEditor 
+public class PropertyTableCellEditor extends AbstractCellEditor implements TableCellEditor
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -37,19 +39,32 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
         return null;
     }
 
+    public class CustomComparator implements Comparator<OntoUMLElem> 
+    {
+        @Override
+        public int compare(OntoUMLElem o1, OntoUMLElem o2) {
+            return o1.toString().compareToIgnoreCase(o2.toString());
+        }
+    }
+    
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) 
     {
-        if (value instanceof String || value instanceof Integer) {
+    	if (value==null){
+    		
+    		editor = new DefaultCellEditor(new JTextField());
+    		
+    	} else if (value instanceof String || value instanceof Integer) {
+        	
             editor = new DefaultCellEditor(new JTextField());
             
-        } else if (value instanceof Boolean || value == null) {
+        } else if (value instanceof Boolean) {
         	
         	JComboBox comboBox = new JComboBox();
 	    	comboBox.setFocusable(false);
 	    	comboBox.setBackground(Color.WHITE);
-        	comboBox.setModel(new DefaultComboBoxModel(new Boolean[] {null, Boolean.FALSE, Boolean.TRUE}));
+        	comboBox.setModel(new DefaultComboBoxModel(new Boolean[] {Boolean.FALSE, Boolean.TRUE}));
             editor = new DefaultCellEditor(comboBox);            
         
 	    } else if (value instanceof OntoUMLElem) {
@@ -67,6 +82,7 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
 	    			else list.add(new OntoUMLElem(t,""));
 	    		}	    			
 	    	}
+	    	Collections.sort(list,new CustomComparator());
 	    	comboBox.setModel(new DefaultComboBoxModel(list.toArray()));	    	
 	        editor = new DefaultCellEditor(comboBox);
 	    	
@@ -84,5 +100,5 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
 	    }
 
         return editor.getTableCellEditorComponent(table, value, isSelected, row, column);
-    }
+    }   
 }	

@@ -11,8 +11,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.AbstractTableModel;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElem;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
@@ -21,23 +26,31 @@ import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
  * @author John Guerson
  */
 
-public class TheProperties extends JPanel {
+public class TheProperties extends JPanel implements TableModelListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private JScrollPane scrollpane;
+	
 	private TheFrame frame;
-	private JTable table;
+	private OntoUMLParser refparser;
+	private OntoUMLCheckBoxTree modeltree;	
+	private JTable table;	
 	private PropertyTableModel tablemodel;
+	private DefaultMutableTreeNode node;
+	private OntoUMLElem element;
 	
 	public TheProperties(TheFrame frame)
 	{
 		this();
 		this.frame = frame;
+		this.refparser = frame.getManager().getOntoUMLModel().getOntoUMLParser();
+		this.modeltree = frame.getManager().getOntoUMLView().getModelTree();
 	}
 	
 	public void setClassAndDataTypeData(OntoUMLElem elem)
 	{
+		element = elem;
 		RefOntoUML.Classifier c = (RefOntoUML.Classifier)elem.getElement();
 		if (c instanceof RefOntoUML.Collective)
 		{
@@ -60,6 +73,8 @@ public class TheProperties extends JPanel {
 		}			
 		table.setModel(tablemodel);
 
+		table.getModel().addTableModelListener(this);
+		
 		// edit table on the single click
 	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
 	    singleclick.setClickCountToStart(1);	
@@ -73,6 +88,7 @@ public class TheProperties extends JPanel {
 	
 	public void setAssociationData(OntoUMLElem elem)
 	{
+		element = elem;
 		RefOntoUML.Association c = (RefOntoUML.Association)elem.getElement();
 		
 		if (c instanceof RefOntoUML.Meronymic)
@@ -103,6 +119,8 @@ public class TheProperties extends JPanel {
 		}
 		table.setModel(tablemodel);
 		
+		table.getModel().addTableModelListener(this);
+		
 		// edit table on the single click
 	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
 	    singleclick.setClickCountToStart(1);	
@@ -116,6 +134,7 @@ public class TheProperties extends JPanel {
 	
 	public void setPropertyData(OntoUMLElem elem)
 	{		
+		element = elem;
 		RefOntoUML.Property c = (RefOntoUML.Property)elem.getElement();
 		
 		Object[][] data = {
@@ -131,9 +150,11 @@ public class TheProperties extends JPanel {
 		
 		table.setModel(tablemodel);
 		
+		table.getModel().addTableModelListener(this);
+		
 		// edit table on the single click
 	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
-	    singleclick.setClickCountToStart(1);	
+	    singleclick.setClickCountToStart(1);
         table.setDefaultEditor(table.getColumnClass(1), singleclick);
         
         table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
@@ -144,6 +165,7 @@ public class TheProperties extends JPanel {
 	
 	public void setGeneralizationSetData(OntoUMLElem elem)
 	{
+		element = elem;
 		RefOntoUML.GeneralizationSet c = (RefOntoUML.GeneralizationSet)elem.getElement();
 		
 		/*ArrayList<String> generalizations = new ArrayList<String>(); 
@@ -165,6 +187,8 @@ public class TheProperties extends JPanel {
 		
 		table.setModel(tablemodel);
 		
+		table.getModel().addTableModelListener(this);
+		
 		// edit table on the single click
 	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
 	    singleclick.setClickCountToStart(1);	
@@ -178,6 +202,7 @@ public class TheProperties extends JPanel {
 	
 	public void setGeneralizationData(OntoUMLElem elem)
 	{
+		element = elem;
 		RefOntoUML.Generalization c = (RefOntoUML.Generalization)elem.getElement();
 
 		Object[][] data = {
@@ -189,6 +214,8 @@ public class TheProperties extends JPanel {
 		tablemodel = new PropertyTableModel(columnNames,data);
 		
 		table.setModel(tablemodel);
+		
+		table.getModel().addTableModelListener(this);
 		
 		// edit table on the single click
 	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
@@ -203,6 +230,7 @@ public class TheProperties extends JPanel {
 	
 	public void setPackageData(OntoUMLElem elem)
 	{
+		element = elem;
 		Object[][] data = {
 		{"    Name", elem.getName()},			
 		};		
@@ -210,6 +238,8 @@ public class TheProperties extends JPanel {
 		tablemodel = new PropertyTableModel(columnNames,data);
 		
 		table.setModel(tablemodel);
+		
+		table.getModel().addTableModelListener(this);
 		
 		// edit table on the single click
 	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
@@ -227,8 +257,11 @@ public class TheProperties extends JPanel {
 	 * 
 	 * @param elem
 	 */
-	public void setData(OntoUMLElem elem)
+	public void setData(DefaultMutableTreeNode node)
 	{		
+		this.node = node;
+		OntoUMLElem elem = (OntoUMLElem) node.getUserObject();
+		
 		if (elem.getElement() instanceof RefOntoUML.Class || elem.getElement() instanceof RefOntoUML.DataType)
 		{
 			setClassAndDataTypeData(elem);
@@ -282,97 +315,32 @@ public class TheProperties extends JPanel {
 		table.setGridColor(Color.LIGHT_GRAY);		
 	    table.setSelectionBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHT));
 	    table.setSelectionForeground(Color.BLACK);
-	    table.setFocusable(false);
-	        
+	    table.setFocusable(false);	    
+	    
 		add(scrollpane,BorderLayout.CENTER);				
-	}
-		
-	/**
-	 * 
-	 * My own TableModel...
-	 * 
-	 * @author John
-	 *
-	 */
-	class PropertyTableModel extends AbstractTableModel 
+	}		
+	
+	@Override
+	public void tableChanged(TableModelEvent e) 
 	{
-		private static final long serialVersionUID = 1L;
-		
-		public PropertyTableModel(String[] columnNames, Object[][] data)
-		{
-			this.columnNames=columnNames;
-			this.data=data;
-		}
-		
-		private String[] columnNames = {"Property","Value"};
-        private Object[][] data = {};
- 
-        public int getColumnCount() {
-            return columnNames.length;
-        }
- 
-        public int getRowCount() {
-            return data.length;
-        }
- 
-        public String getColumnName(int col) {
-            return columnNames[col];
-        }
- 
-        public Object getValueAt(int row, int col) {
-            return data[row][col];
-        }
- 
-        /*
-         * JTable uses this method to determine the default renderer/
-         * editor for each cell.  If we didn't implement this method,
-         * then the last column would contain text ("true"/"false"),
-         * rather than a check box.
-         */
-        @SuppressWarnings({ "unchecked", "rawtypes" })
-		public Class getColumnClass(int c) {
-            return getValueAt(0, c).getClass();
-        }
- 
-        /*
-         * Don't need to implement this method unless your table's
-         * editable.
-         */
-        public boolean isCellEditable(int row, int col) {
-            //Note that the data/cell address is constant,
-            //no matter where the cell appears on screen.
-            if (col <= 0) {
-                return false;
-            } else {
-                return true;
-            }
-        }
- 
-        /*
-         * Don't need to implement this method unless your table's
-         * data can change.
-         */
-        public void setValueAt(Object value, int row, int col) 
-        { 
-            data[row][col] = value;
-            fireTableCellUpdated(row, col); 
-        }
- 
-        @SuppressWarnings("unused")
-		private void printDebugData() 
-        {
-            int numRows = getRowCount();
-            int numCols = getColumnCount();
- 
-            for (int i=0; i < numRows; i++) {
-                System.out.print("    row " + i + ":");
-                for (int j=0; j < numCols; j++) {
-                    System.out.print("  " + data[i][j]);
-                }
-                System.out.println();
-            }
-            System.out.println("--------------------------");
-        }
-    }
+ 		 int row = e.getFirstRow();
+	     int column = e.getColumn();
+	     TableModel model = (TableModel)e.getSource();
+	     //String columnName = model.getColumnName(column);
+	     Object data = model.getValueAt(row, column);
+	     // Do something with the data...
+	     System.out.println(data);
+
+	     if(element instanceof RefOntoUML.Class){
+	    	 if( ((String)model.getValueAt(row, 0)).equals("Name") ) 
+	    	 {
+	    		 ((RefOntoUML.Class) element).setName((String)data);
+	    		 System.out.println(element);
+	    		 modeltree.updateUI();
+	    	 }	    	 
+	     }
+	     
+	     //update the Tree from the OntoUMLParser... or update only the node...
+	}
 	
 }
