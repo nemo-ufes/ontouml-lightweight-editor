@@ -22,7 +22,7 @@ import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLToolBar;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeNodeElem;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElem;
 import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
 
 /**
@@ -113,7 +113,7 @@ public class OntoUMLView extends JPanel {
 			public void valueChanged(TreeSelectionEvent e) 
 			{
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-				OntoUMLTreeNodeElem chckNode = (OntoUMLTreeNodeElem) node.getUserObject();							
+				OntoUMLElem chckNode = (OntoUMLElem) node.getUserObject();							
 				
 				frame.getProperties().setData(chckNode);
 				frame.focusOnProperties();

@@ -4,15 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import RefOntoUML.AggregationKind;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLTreeNodeElem;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElem;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
 
@@ -25,7 +26,6 @@ public class TheProperties extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private JScrollPane scrollpane;
-	@SuppressWarnings("unused")
 	private TheFrame frame;
 	private JTable table;
 	private PropertyTableModel tablemodel;
@@ -36,125 +36,115 @@ public class TheProperties extends JPanel {
 		this.frame = frame;
 	}
 	
-	public void setClassAndDataTypeData(OntoUMLTreeNodeElem elem)
+	public void setClassAndDataTypeData(OntoUMLElem elem)
 	{
 		RefOntoUML.Classifier c = (RefOntoUML.Classifier)elem.getElement();
-		String isExtensional = "";
 		if (c instanceof RefOntoUML.Collective)
 		{
 			RefOntoUML.Collective col = (RefOntoUML.Collective)c;
-			if(col.isIsExtensional()) isExtensional="true"; else isExtensional="false";
+			
 			Object[][] data = {
-			{"    Name", " "+c.getName()},			
-			{"    Type", " "+elem.getTypeName()},
-			{"    Alias", " "+elem.getUniqueName()},
-			{"    Abstract", " "+c.isIsAbstract()},
-			{"    Extensional", " "+isExtensional},
+			{"    Name", c.getName()},			
+			{"    Abstract", c.isIsAbstract()},
+			{"    Extensional", col.isIsExtensional()},
 			};
 			String[] columnNames = {"Property","Value"};
 			tablemodel = new PropertyTableModel(columnNames,data);
 		}else{
 			Object[][] data = {
-			{"    Name", " "+c.getName()},			
-			{"    Type", " "+elem.getTypeName()},
-			{"    Alias", " "+elem.getUniqueName()},
-			{"    Abstract", " "+c.isIsAbstract()},
+			{"    Name", c.getName()},			
+			{"    Abstract", c.isIsAbstract()},
 			};
 			String[] columnNames = {"Property","Value"};
 			tablemodel = new PropertyTableModel(columnNames,data);
 		}			
 		table.setModel(tablemodel);
+
+		// edit table on the single click
+	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
+	    singleclick.setClickCountToStart(1);	
+        table.setDefaultEditor(table.getColumnClass(1), singleclick);
+        
+        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
+        
 		table.repaint();
 		table.validate();		
 	}
 	
-	public void setAssociationData(OntoUMLTreeNodeElem elem)
+	public void setAssociationData(OntoUMLElem elem)
 	{
 		RefOntoUML.Association c = (RefOntoUML.Association)elem.getElement();
-		String essential = new String();
-		String inseparable = new String();
-		String shareable = new String();
-		String immutablePart = new String();
-		String immutableWhole = new String();
 		
 		if (c instanceof RefOntoUML.Meronymic)
 		{
-			RefOntoUML.Meronymic m = (RefOntoUML.Meronymic)c;
-			if(m.isIsEssential()) essential="true"; else essential="false";
-			if(m.isIsInseparable()) inseparable="true"; else inseparable="false";
-			if(m.isIsShareable()) shareable="true"; else shareable="false";
-			if(m.isIsImmutablePart()) immutablePart="true"; else immutablePart="false";
-			if(m.isIsImmutableWhole()) immutableWhole="true"; else immutableWhole="false";
+			RefOntoUML.Meronymic m = (RefOntoUML.Meronymic)c;			
 
 			Object[][] data = {
-			{"    Name", " "+c.getName()},			
-			{"    Type", " "+elem.getTypeName()},
-			{"    Alias", " "+elem.getUniqueName()},
-			{"    Abstract", " "+c.isIsAbstract()},
-			{"    Derived", " "+c.isIsDerived()},			
-			{"    Essential", " "+essential},
-			{"    Inseparable", " "+inseparable},
-			{"    Shareable", " "+shareable},
-			{"    ImmutablePart", " "+immutablePart},
-			{"    ImmutableWhole", " "+immutableWhole},
+			{"    Name", c.getName()},			
+			{"    Abstract", c.isIsAbstract()},
+			{"    Derived", c.isIsDerived()},			
+			{"    Essential", m.isIsEssential()},
+			{"    Inseparable", m.isIsInseparable()},
+			{"    Shareable", m.isIsShareable()},
+			{"    ImmutablePart", m.isIsImmutablePart()},
+			{"    ImmutableWhole", m.isIsImmutableWhole()},
 			};		
 			String[] columnNames = {"Property","Value"};
 			tablemodel = new PropertyTableModel(columnNames,data);
 		}else{
 			Object[][] data = {
-			{"    Name", " "+c.getName()},			
-			{"    Type", " "+elem.getTypeName()},
-			{"    Alias", " "+elem.getUniqueName()},
-			{"    Abstract", " "+c.isIsAbstract()},
-			{"    Derived", " "+c.isIsDerived()},
+			{"    Name", c.getName()},			
+			{"    Abstract", c.isIsAbstract()},
+			{"    Derived", c.isIsDerived()},
 			};		
 			String[] columnNames = {"Property","Value"};
 			tablemodel = new PropertyTableModel(columnNames,data);
 			
 		}
 		table.setModel(tablemodel);
+		
+		// edit table on the single click
+	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
+	    singleclick.setClickCountToStart(1);	
+        table.setDefaultEditor(table.getColumnClass(1), singleclick);
+        
+        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
+        
 		table.repaint();
 		table.validate();
 	}
 	
-	public void setPropertyData(OntoUMLTreeNodeElem elem)
-	{
-		String readOnly = new String();
-		String aggregationKind = new String();
-		
+	public void setPropertyData(OntoUMLElem elem)
+	{		
 		RefOntoUML.Property c = (RefOntoUML.Property)elem.getElement();
-
-		if(c.isIsReadOnly()) readOnly = "true"; else readOnly = "false";
-		
-		if(c.getAggregation().equals(AggregationKind.COMPOSITE)) aggregationKind="composite";
-		else if(c.getAggregation().equals(AggregationKind.SHARED)) aggregationKind="shared";
-		else if(c.getAggregation().equals(AggregationKind.NONE)) aggregationKind="none";
 		
 		Object[][] data = {
-		{"    Name", " "+c.getName()},			
-		{"    Type", " "+((RefOntoUML.Property)elem.getElement()).getType().getName()},
-		{"    Alias", " "+elem.getUniqueName()},
-		{"    Upper", " "+(new Integer(c.getUpper())).toString()},
-		{"    Lower", " "+(new Integer(c.getLower())).toString()},
-		{"    Read Only", " "+readOnly},
-		{"    Aggregation Kind", " "+aggregationKind},		
+		{"    Name", c.getName()},			
+		{"    Type", new OntoUMLElem(((RefOntoUML.Property)elem.getElement()).getType(),"")},
+		{"    Upper", (new Integer(c.getUpper()))},
+		{"    Lower", (new Integer(c.getLower()))},
+		{"    Read Only", c.isIsReadOnly()},
+		{"    Aggregation Kind", c.getAggregation()},		
 		};		
 		String[] columnNames = {"Property","Value"};
 		tablemodel = new PropertyTableModel(columnNames,data);
 		
 		table.setModel(tablemodel);
+		
+		// edit table on the single click
+	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
+	    singleclick.setClickCountToStart(1);	
+        table.setDefaultEditor(table.getColumnClass(1), singleclick);
+        
+        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
+        
 		table.repaint();
 		table.validate();
 	}	
 	
-	public void setGeneralizationSetData(OntoUMLTreeNodeElem elem)
+	public void setGeneralizationSetData(OntoUMLElem elem)
 	{
 		RefOntoUML.GeneralizationSet c = (RefOntoUML.GeneralizationSet)elem.getElement();
-		String covering = new String();
-		String disjoint = new String();
-				
-		if(c.isIsCovering()) covering="true"; else covering="false";
-		if(c.isIsDisjoint()) disjoint="true"; else disjoint="false";
 		
 		/*ArrayList<String> generalizations = new ArrayList<String>(); 
 		for(RefOntoUML.Generalization g: c.getGeneralization()){
@@ -166,51 +156,68 @@ public class TheProperties extends JPanel {
 		genSetGeneralizationsCombo.setModel(new DefaultComboBoxModel(generalizations.toArray()));*/
 		
 		Object[][] data = {
-		{"    Name", " "+elem.getName()},			
-		{"    Type", " "+elem.getTypeName()},		
-		{"    Covering", " "+covering},
-		{"    Disjoint", " "+disjoint},				
+		{"    Name", elem.getName()},				
+		{"    Covering", c.isIsCovering()},
+		{"    Disjoint", c.isIsDisjoint()},				
 		};		
 		String[] columnNames = {"Property","Value"};
 		tablemodel = new PropertyTableModel(columnNames,data);
 		
 		table.setModel(tablemodel);
+		
+		// edit table on the single click
+	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
+	    singleclick.setClickCountToStart(1);	
+        table.setDefaultEditor(table.getColumnClass(1), singleclick);
+        
+        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
+        
 		table.repaint();
 		table.validate();
 	}
 	
-	public void setGeneralizationData(OntoUMLTreeNodeElem elem)
+	public void setGeneralizationData(OntoUMLElem elem)
 	{
 		RefOntoUML.Generalization c = (RefOntoUML.Generalization)elem.getElement();
-		String general = new String();
-		String specific = new String();
-		
-		if (c.getGeneral()!=null) general = c.getGeneral().getName();
-		if (c.getSpecific()!=null) specific = c.getSpecific().getName();
-		
+
 		Object[][] data = {
-		{"    Name", " "+elem.getName()},			
-		{"    Type", " "+elem.getTypeName()},		
-		{"    General", " "+general},
-		{"    Specific", " "+specific},				
+		{"    Name", elem.getName()},			
+		{"    General", new OntoUMLElem(c.getGeneral(),"")},
+		{"    Specific", new OntoUMLElem(c.getSpecific(),"")},				
 		};		
 		String[] columnNames = {"Property","Value"};
 		tablemodel = new PropertyTableModel(columnNames,data);
 		
 		table.setModel(tablemodel);
+		
+		// edit table on the single click
+	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
+	    singleclick.setClickCountToStart(1);	
+        table.setDefaultEditor(table.getColumnClass(1), singleclick);
+        
+        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
+        
 		table.repaint();
 		table.validate();
 	}
 	
-	public void setPackageData(OntoUMLTreeNodeElem elem)
+	public void setPackageData(OntoUMLElem elem)
 	{
 		Object[][] data = {
-		{"    Name", " "+elem.getName()},			
+		{"    Name", elem.getName()},			
 		};		
 		String[] columnNames = {"Property","Value"};
 		tablemodel = new PropertyTableModel(columnNames,data);
 		
 		table.setModel(tablemodel);
+		
+		// edit table on the single click
+	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
+	    singleclick.setClickCountToStart(1);	
+        table.setDefaultEditor(table.getColumnClass(1), singleclick);
+        
+        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
+        
 		table.repaint();
 		table.validate();
 	}
@@ -220,7 +227,7 @@ public class TheProperties extends JPanel {
 	 * 
 	 * @param elem
 	 */
-	public void setData(OntoUMLTreeNodeElem elem)
+	public void setData(OntoUMLElem elem)
 	{		
 		if (elem.getElement() instanceof RefOntoUML.Class || elem.getElement() instanceof RefOntoUML.DataType)
 		{
@@ -276,7 +283,7 @@ public class TheProperties extends JPanel {
 	    table.setSelectionBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHT));
 	    table.setSelectionForeground(Color.BLACK);
 	    table.setFocusable(false);
-	    					
+	        
 		add(scrollpane,BorderLayout.CENTER);				
 	}
 		
@@ -333,8 +340,8 @@ public class TheProperties extends JPanel {
          */
         public boolean isCellEditable(int row, int col) {
             //Note that the data/cell address is constant,
-            //no matter where the cell appears onscreen.
-            if (col < 2) {
+            //no matter where the cell appears on screen.
+            if (col <= 0) {
                 return false;
             } else {
                 return true;
@@ -367,4 +374,5 @@ public class TheProperties extends JPanel {
             System.out.println("--------------------------");
         }
     }
+	
 }
