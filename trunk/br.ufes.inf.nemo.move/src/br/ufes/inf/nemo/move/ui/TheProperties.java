@@ -43,9 +43,7 @@ public class TheProperties extends JPanel implements TableModelListener {
 	public TheProperties(TheFrame frame)
 	{
 		this();
-		this.frame = frame;
-		this.refparser = frame.getManager().getOntoUMLModel().getOntoUMLParser();
-		this.modeltree = frame.getManager().getOntoUMLView().getModelTree();
+		this.frame = frame;		
 	}
 	
 	public void setClassAndDataTypeData(OntoUMLElem elem)
@@ -72,7 +70,7 @@ public class TheProperties extends JPanel implements TableModelListener {
 			tablemodel = new PropertyTableModel(columnNames,data);
 		}			
 		table.setModel(tablemodel);
-
+		
 		table.getModel().addTableModelListener(this);
 		
 		// edit table on the single click
@@ -260,6 +258,9 @@ public class TheProperties extends JPanel implements TableModelListener {
 	public void setData(DefaultMutableTreeNode node)
 	{		
 		this.node = node;
+		this.refparser = frame.getManager().getOntoUMLModel().getOntoUMLParser();
+		this.modeltree = frame.getManager().getOntoUMLView().getModelTree();
+		
 		OntoUMLElem elem = (OntoUMLElem) node.getUserObject();
 		
 		if (elem.getElement() instanceof RefOntoUML.Class || elem.getElement() instanceof RefOntoUML.DataType)
@@ -329,13 +330,12 @@ public class TheProperties extends JPanel implements TableModelListener {
 	     //String columnName = model.getColumnName(column);
 	     Object data = model.getValueAt(row, column);
 	     // Do something with the data...
-	     System.out.println(data);
-
-	     if(element instanceof RefOntoUML.Class){
-	    	 if( ((String)model.getValueAt(row, 0)).equals("Name") ) 
-	    	 {
-	    		 ((RefOntoUML.Class) element).setName((String)data);
-	    		 System.out.println(element);
+	     
+	     if(element.getElement() instanceof RefOntoUML.Class)
+	     {	    	 
+	    	 if( ((String)model.getValueAt(row, 0)).trim().equals("Name") ) 
+	    	 {	    		 
+	    		 ((RefOntoUML.Class) element.getElement()).setName((String)data);	    		 
 	    		 modeltree.updateUI();
 	    	 }	    	 
 	     }
