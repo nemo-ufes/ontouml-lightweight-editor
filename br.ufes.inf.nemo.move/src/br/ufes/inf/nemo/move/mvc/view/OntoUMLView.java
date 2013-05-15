@@ -1,7 +1,5 @@
 package br.ufes.inf.nemo.move.mvc.view;
 
-import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,8 +19,8 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLToolBar;
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElem;
+import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLToolBar;
 import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
 
 /**
@@ -41,7 +39,7 @@ public class OntoUMLView extends JPanel {
 	private TheFrame frame;	
 	private OntoUMLToolBar ontotoolbar;
 	private TreeScrollPane ontotree;
-	private CheckboxTree modeltree;
+	private OntoUMLCheckBoxTree modeltree;
 	private String openLastPath = new String();
 	private String saveLastPath = new String();
 	
@@ -95,7 +93,7 @@ public class OntoUMLView extends JPanel {
 		{
 			if(modeltree!=null) ontotree.treePanel.remove(modeltree);	
 						
-			modeltree = OntoUMLCheckBoxTree.createCheckBoxTree(refmodel,refparser);					
+			modeltree = new OntoUMLCheckBoxTree(new DefaultMutableTreeNode(new OntoUMLElem(refmodel,"")),refmodel,refparser);					
 			
 			if (modeltree!=null){						
 				addTreeListener(new ModelTreeListener());				
@@ -113,9 +111,9 @@ public class OntoUMLView extends JPanel {
 			public void valueChanged(TreeSelectionEvent e) 
 			{
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-				OntoUMLElem chckNode = (OntoUMLElem) node.getUserObject();							
+				//OntoUMLElem chckNode = (OntoUMLElem) node.getUserObject();							
 				
-				frame.getProperties().setData(chckNode);
+				frame.getProperties().setData(node);
 				frame.focusOnProperties();
 			}
 	 }
@@ -123,7 +121,7 @@ public class OntoUMLView extends JPanel {
 	/** 
 	 * Get the Check Box Model Tree. 
 	 */
-	public CheckboxTree getModelTree() { return modeltree; }
+	public OntoUMLCheckBoxTree getModelTree() { return modeltree; }
 	
 	/** 
 	 * Set Path View from a absolute Path and a OntoUML Package Model.

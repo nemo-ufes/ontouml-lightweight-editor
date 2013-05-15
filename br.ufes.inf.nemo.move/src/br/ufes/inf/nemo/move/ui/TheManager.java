@@ -25,7 +25,6 @@ import br.ufes.inf.nemo.move.mvc.model.UMLModel;
 import br.ufes.inf.nemo.move.mvc.view.AntiPatternListView;
 import br.ufes.inf.nemo.move.mvc.view.OCLView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
 
 /**
@@ -240,7 +239,7 @@ public class TheManager {
 		}	
 		
 		// get elements from the tree
-		List<EObject> selected = OntoUMLCheckBoxTree.getCheckedElements(ontoumlview.getModelTree());
+		List<EObject> selected = ontoumlview.getModelTree().getCheckedElements();
 		
 		// get added elements from the auto selection completion
 		ontoumlmodel.getOntoUMLParser().selectThisElements((ArrayList<EObject>)selected,true);		
@@ -259,7 +258,7 @@ public class TheManager {
 		selected.removeAll(added);
 		selected.addAll(added);		
 		
-		OntoUMLCheckBoxTree.checkElements(selected, true, ontoumlview.getModelTree());		
+		ontoumlview.getModelTree().checkElements(selected, true);		
 			
     	ontoumlview.getModelTree().updateUI();    	
 		
