@@ -62,8 +62,10 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
 	    	
 	    	for(RefOntoUML.Type t: refparser.getAllInstances(RefOntoUML.Type.class))
 	    	{
-	    		if(t instanceof RefOntoUML.Class || t instanceof RefOntoUML.DataType)
-	    			list.add(new OntoUMLElem(t,""));
+	    		if(t instanceof RefOntoUML.Class || t instanceof RefOntoUML.DataType){
+	    			if (t.equals(((OntoUMLElem) value).getElement())) list.add((OntoUMLElem)value);
+	    			else list.add(new OntoUMLElem(t,""));
+	    		}	    			
 	    	}
 	    	comboBox.setModel(new DefaultComboBoxModel(list.toArray()));	    	
 	        editor = new DefaultCellEditor(comboBox);
@@ -73,8 +75,11 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
 	    	JComboBox comboBox = new JComboBox();
 	    	comboBox.setFocusable(false);
 	    	comboBox.setBackground(Color.WHITE);		    			    	
-	    	comboBox.setModel(new DefaultComboBoxModel(new RefOntoUML.AggregationKind[] {RefOntoUML.AggregationKind.NONE, 
-	    		RefOntoUML.AggregationKind.SHARED, RefOntoUML.AggregationKind.COMPOSITE}));
+	    	comboBox.setModel(new DefaultComboBoxModel(new RefOntoUML.AggregationKind[] {
+	    		RefOntoUML.AggregationKind.NONE, 
+	    		RefOntoUML.AggregationKind.SHARED, 
+	    		RefOntoUML.AggregationKind.COMPOSITE})
+	    	);
 	        editor = new DefaultCellEditor(comboBox);
 	    }
 
