@@ -62,7 +62,8 @@ public class OntoUMLCheckBoxTree extends CheckboxTree {
 		drawTree(rootNode, refmodel,checkingModel, refparser);	
 		
 		addCheckingPath(new TreePath(rootNode.getPath()));		
-		expandPath(new TreePath(rootNode.getPath()));	
+		expandPath(new TreePath(rootNode.getPath()));
+	
 	}	
 	
 	/**
