@@ -199,7 +199,10 @@ public class OntoUMLCheckBoxTree extends CheckboxTree {
         			uniqueName.setText("");        			
         		}
         		
-        		label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icon/ontouml/"+elementType.toLowerCase()+".png")));
+    		    if (elementType.toLowerCase().equals("property"))
+        			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icon/ontouml/property.gif")));
+        		else
+        			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icon/ontouml/"+elementType.toLowerCase()+".png")));
         		
     		}else{
     			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icon/ontouml/"+"attribute"+".png")));
