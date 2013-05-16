@@ -50,10 +50,9 @@ import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
-import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.draw.DrawingContextImpl;
 import br.ufes.inf.nemo.oled.draw.Label;
-import br.ufes.inf.nemo.oled.draw.MoveNodeOperation;
+import br.ufes.inf.nemo.oled.draw.MoveOperation;
 import br.ufes.inf.nemo.oled.draw.MultiLineLabel;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.draw.NodeChangeListener;
@@ -61,6 +60,7 @@ import br.ufes.inf.nemo.oled.draw.RectilinearConnection;
 import br.ufes.inf.nemo.oled.draw.Scaling;
 import br.ufes.inf.nemo.oled.draw.SimpleConnection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
+import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
@@ -615,7 +615,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		creationHandler.setElementType(elementType);
 		editorMode = creationHandler;
 	}
-
+	
 	/**
 	 * Switches the editor into connection creation mode.
 	 * @param relationType the RelationType to create
@@ -914,7 +914,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/**
 	 * {@inheritDoc}
 	 */
-	public void moveElements(MoveNodeOperation[] moveOperations) {
+	public void moveElements(MoveOperation[] moveOperations) {
 		MoveElementCommand cmd = new MoveElementCommand(this, moveOperations);
 		execute(cmd);
 	}

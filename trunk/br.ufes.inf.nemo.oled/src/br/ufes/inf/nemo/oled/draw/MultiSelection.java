@@ -118,8 +118,10 @@ public class MultiSelection implements Selection {
 	          transx, transy);
 	      }
 	    }
+	    
 	    //FIXME Problem while moving groups of elements
-	    editor.moveElements(moveOperations.toArray(new MoveNodeOperation[0]));
+	    editor.moveElements(moveOperations.toArray(new MoveOperation[0]));
+ 
 	    updateDimensions();
 	}
     isDragging = false;
