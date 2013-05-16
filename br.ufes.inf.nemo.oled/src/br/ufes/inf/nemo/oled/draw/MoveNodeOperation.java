@@ -20,9 +20,6 @@
 package br.ufes.inf.nemo.oled.draw;
 
 import java.awt.geom.Point2D;
-import javax.swing.undo.AbstractUndoableEdit;
-
-import br.ufes.inf.nemo.oled.util.Command;
 
 
 /**
@@ -31,8 +28,7 @@ import br.ufes.inf.nemo.oled.util.Command;
  * @author Wei-ju Wu
  * @version 1.0
  */
-public class MoveNodeOperation extends AbstractUndoableEdit
-implements Command {
+public class MoveNodeOperation extends MoveOperation {
 
 	private static final long serialVersionUID = -3369271938444554896L;
 	private Node node;

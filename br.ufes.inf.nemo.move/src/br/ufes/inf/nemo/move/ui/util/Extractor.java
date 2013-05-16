@@ -6,17 +6,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLDecoder;
 
 /**
  * @author John Guerson
+ *  
  */
 
 public class Extractor {
 
 	public static String alloyAnalyzerJAR() throws IOException
 	{
-		String destFolderPath = Extractor.class.getProtectionDomain().getCodeSource().getLocation().getPath();		
-		File alloyJarFile = new File(destFolderPath + "alloy4.2.jar");
+		//Tony's Edit: Made these changes to correct an error while copying the alloy file to folders with space " " in the path.
+		String destFolderPath = Extractor.class.getProtectionDomain().getCodeSource().getLocation().getPath();	
+		destFolderPath += "alloy4.2.jar";
+		String alloyPath = URLDecoder.decode(destFolderPath, "UTF-8");
+		
+		File alloyJarFile = new File(alloyPath);
 		if (alloyJarFile.exists()) return alloyJarFile.getAbsolutePath();
 				
 		// Copy "alloy4.2.jar" 

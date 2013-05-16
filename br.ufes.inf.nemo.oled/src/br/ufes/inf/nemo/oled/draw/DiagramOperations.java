@@ -37,7 +37,7 @@ public interface DiagramOperations {
    * Moves the specified allElements using a list of Commands.
    * @param moveOperations the move operations
    */
-  void moveElements(MoveNodeOperation[] moveOperations);
+  void moveElements(MoveOperation[] moveOperations);
 
   /**
    * Resizes the specified element and moves it in one step.

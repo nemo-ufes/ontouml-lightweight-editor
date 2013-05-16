@@ -22,9 +22,6 @@ package br.ufes.inf.nemo.oled.draw;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.undo.AbstractUndoableEdit;
-
-import br.ufes.inf.nemo.oled.util.Command;
 
 
 /**
@@ -33,8 +30,7 @@ import br.ufes.inf.nemo.oled.util.Command;
  * @author Wei-ju Wu
  * @version 1.0
  */
-public class TranslateConnectionOperation extends AbstractUndoableEdit
-implements Command {
+public class TranslateConnectionOperation extends MoveOperation {
 
 	private static final long serialVersionUID = 6842161064107530968L;
 	private Connection connection;
@@ -81,5 +77,9 @@ implements Command {
 	 */
 	public void redo() {
 		run();
+	}
+	
+	public Connection getConnection() {
+		return connection;
 	}
 }

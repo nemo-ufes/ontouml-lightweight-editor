@@ -24,6 +24,8 @@ import java.util.List;
 
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.MoveNodeOperation;
+import br.ufes.inf.nemo.oled.draw.MoveOperation;
+import br.ufes.inf.nemo.oled.draw.TranslateConnectionOperation;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
@@ -40,16 +42,16 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.Notificatio
 public class MoveElementCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = 2523534899493234371L;
-	private MoveNodeOperation[] moveOperations;
+	private MoveOperation[] moveOperations;
 
 	/**
 	 * Constructor.
 	 * @param aNotification the notification
 	 * @param aMoveOperations the move operations
 	 */
-	public MoveElementCommand(DiagramNotification aNotification, final MoveNodeOperation[] aMoveOperations) {
+	public MoveElementCommand(DiagramNotification aNotification, final MoveOperation[] aMoveOperations) {
 		this.notification = aNotification;
-		moveOperations = new MoveNodeOperation[aMoveOperations.length];
+		moveOperations = new MoveOperation[aMoveOperations.length];
 		for (int i = 0; i < aMoveOperations.length; i++) {
 			moveOperations[i] = aMoveOperations[i];
 		}
@@ -62,9 +64,12 @@ public class MoveElementCommand extends BaseDiagramCommand {
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		
-		for (MoveNodeOperation moveOperation : moveOperations) {
+		for (MoveOperation moveOperation : moveOperations) {
 			moveOperation.run();
-			elements.add(moveOperation.getNode());
+			if(moveOperation instanceof MoveNodeOperation)
+				elements.add(((MoveNodeOperation)moveOperation).getNode());
+			else if(moveOperation instanceof TranslateConnectionOperation)
+				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
 		}
 		
 		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
@@ -80,9 +85,12 @@ public class MoveElementCommand extends BaseDiagramCommand {
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		
-		for (MoveNodeOperation moveOperation : moveOperations) {
+		for (MoveOperation moveOperation : moveOperations) {
 			moveOperation.undo();
-			elements.add(moveOperation.getNode());
+			if(moveOperation instanceof MoveNodeOperation)
+				elements.add(((MoveNodeOperation)moveOperation).getNode());
+			else if(moveOperation instanceof TranslateConnectionOperation)
+				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
 		}
 		
 		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.UNDO);
@@ -100,9 +108,12 @@ public class MoveElementCommand extends BaseDiagramCommand {
 	
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		
-		for (MoveNodeOperation moveOperation : moveOperations) {
+		for (MoveOperation moveOperation : moveOperations) {
 			moveOperation.redo();
-			elements.add(moveOperation.getNode());
+			if(moveOperation instanceof MoveNodeOperation)
+				elements.add(((MoveNodeOperation)moveOperation).getNode());
+			else if(moveOperation instanceof TranslateConnectionOperation)
+				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
 		}
 		
 		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.REDO);

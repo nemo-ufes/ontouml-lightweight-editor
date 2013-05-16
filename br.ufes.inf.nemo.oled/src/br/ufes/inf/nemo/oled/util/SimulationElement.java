@@ -14,10 +14,10 @@ public class SimulationElement implements Serializable
 	private boolean simulate;
 	private String elementUUID;
 	private String name;
-	private PackageableElement element;
 	private DotColor color;
 	private DotShape shape;
 	private DotStyle style;
+	private transient PackageableElement element;
 	
 	public boolean isSimulate() {
 		return simulate;
