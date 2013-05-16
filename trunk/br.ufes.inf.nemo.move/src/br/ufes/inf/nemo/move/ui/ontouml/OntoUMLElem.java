@@ -70,7 +70,7 @@ public class OntoUMLElem {
 		if (element instanceof Model)
 		{
 			if (name ==null) name = ""; 
-			return type + " " + name;
+			return type + " " + ((NamedElement)element).getName();
 		}
 		
 		if (element instanceof Generalization)
@@ -80,7 +80,7 @@ public class OntoUMLElem {
 		
 		if (element instanceof RefOntoUML.Classifier)
 		{
-			return type +" "+ name;
+			return type +" "+ ((NamedElement)element).getName();
 		}
 		
 		if (element instanceof RefOntoUML.GeneralizationSet)
@@ -89,10 +89,10 @@ public class OntoUMLElem {
 		    
 		    String result = new String();
 		    
-		    result += type + " " + name + " / ";
-		    
+		    result += "Generalization Set" + " " + ((NamedElement)element).getName() + " ";
+		   
 		    if (genset.parent()!=null){
-		    	result += (genset.parent()).getName()+" { ";
+		    	result += (genset.parent()).getName()+"{ ";
 			    EList<Generalization> genlist = ((RefOntoUML.GeneralizationSet)element).getGeneralization();		    
 			    int i=1;
 			    for(Generalization gen: genlist)
@@ -110,8 +110,7 @@ public class OntoUMLElem {
 		}
 		
 		if (element instanceof RefOntoUML.Property)
-		{
-						
+		{						
 			String TypeName = ((RefOntoUML.Property)element).getType().getName();
 			String name = ((RefOntoUML.Property)element).getName();
 			Integer lower = ((RefOntoUML.Property)element).getLower();
@@ -127,7 +126,7 @@ public class OntoUMLElem {
 		if (element instanceof RefOntoUML.Package && !(element instanceof RefOntoUML.Model))
 		{
 			if (name ==null) name = ""; 
-			return type + " " + name;
+			return type + " " + ((NamedElement)element).getName();
 		}
 		
 		if (name == null || name.equals("")) 

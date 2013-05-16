@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -96,7 +98,8 @@ public class OntoUMLView extends JPanel {
 			modeltree = new OntoUMLCheckBoxTree(new DefaultMutableTreeNode(new OntoUMLElem(refmodel,"")),refmodel,refparser);					
 			
 			if (modeltree!=null){						
-				addTreeListener(new ModelTreeListener());				
+				addTreeSelectionListener(new OntoUMLTreeSelectionListener());	
+				addTreeModelListener(new OntoUMLTreeModelListener());
 			}
 			
 			ontotree.treePanel.add(BorderLayout.CENTER,modeltree);
@@ -105,23 +108,55 @@ public class OntoUMLView extends JPanel {
 		}
 	}
 		
-	class ModelTreeListener implements TreeSelectionListener 
+	class OntoUMLTreeSelectionListener implements TreeSelectionListener 
 	 {
 		 @Override
 			public void valueChanged(TreeSelectionEvent e) 
 			{
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-				//OntoUMLElem chckNode = (OntoUMLElem) node.getUserObject();							
-				
 				frame.getProperties().setData(node);
 				frame.focusOnProperties();
 			}
 	 }
 	
+	class OntoUMLTreeModelListener implements TreeModelListener 
+	 {
+		//listen for changes in the model (including check box toggles)
+		@Override
+		public void treeNodesChanged(final TreeModelEvent e) {
+			System.out.println(System.currentTimeMillis() + ": nodes changed");
+		}
+
+		@Override
+		public void treeNodesInserted(final TreeModelEvent e) {
+			System.out.println(System.currentTimeMillis() + ": nodes inserted");
+		}
+
+		@Override
+		public void treeNodesRemoved(final TreeModelEvent e) {
+			System.out.println(System.currentTimeMillis() + ": nodes removed");
+		}
+
+		@Override
+		public void treeStructureChanged(final TreeModelEvent e) {
+			System.out.println(System.currentTimeMillis() + ": structure changed");
+		}
+	 }
+		
 	/** 
 	 * Get the Check Box Model Tree. 
 	 */
 	public OntoUMLCheckBoxTree getModelTree() { return modeltree; }
+	
+	/**
+	 * Refresh the Model Tree.
+	 */
+	public void refreshModelTree()
+	{
+		modeltree.updateUI();		
+		ontotree.validate();
+		ontotree.repaint();
+	}
 	
 	/** 
 	 * Set Path View from a absolute Path and a OntoUML Package Model.
@@ -175,9 +210,14 @@ public class OntoUMLView extends JPanel {
 		ontotoolbar.btnShowUnique.addActionListener(actionListener);
 	}	
 			
-	public void addTreeListener(TreeSelectionListener selectionListener)
+	public void addTreeSelectionListener(OntoUMLTreeSelectionListener selectionListener)
 	{
 		modeltree.addTreeSelectionListener(selectionListener);
+	}
+	
+	public void addTreeModelListener(OntoUMLTreeModelListener modeListener)
+	{
+		modeltree.getModel().addTreeModelListener(modeListener);
 	}
 	
 	/**

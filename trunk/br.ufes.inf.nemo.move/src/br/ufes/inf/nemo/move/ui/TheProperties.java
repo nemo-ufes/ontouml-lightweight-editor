@@ -16,8 +16,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
+import org.eclipse.emf.ecore.EObject;
+
 import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElem;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
@@ -33,12 +33,9 @@ public class TheProperties extends JPanel implements TableModelListener {
 	private JScrollPane scrollpane;
 	
 	private TheFrame frame;
-	private OntoUMLParser refparser;
-	private OntoUMLCheckBoxTree modeltree;	
 	private JTable table;	
 	private PropertyTableModel tablemodel;
 	private DefaultMutableTreeNode node;
-	private OntoUMLElem element;
 	
 	public TheProperties(TheFrame frame)
 	{
@@ -46,126 +43,82 @@ public class TheProperties extends JPanel implements TableModelListener {
 		this.frame = frame;		
 	}
 	
-	public void setClassAndDataTypeData(OntoUMLElem elem)
+	private PropertyTableModel createCollectiveTableModel (RefOntoUML.Collective c)
 	{
-		element = elem;
-		RefOntoUML.Classifier c = (RefOntoUML.Classifier)elem.getElement();
-		if (c instanceof RefOntoUML.Collective)
-		{
-			RefOntoUML.Collective col = (RefOntoUML.Collective)c;
-			
-			Object[][] data = {
-			{"    Name", c.getName()},			
-			{"    Abstract", c.isIsAbstract()},
-			{"    Extensional", col.isIsExtensional()},
-			};
-			String[] columnNames = {"Property","Value"};
-			tablemodel = new PropertyTableModel(columnNames,data);
-		}else{
-			Object[][] data = {
-			{"    Name", c.getName()},			
-			{"    Abstract", c.isIsAbstract()},
-			};
-			String[] columnNames = {"Property","Value"};
-			tablemodel = new PropertyTableModel(columnNames,data);
-		}			
-		table.setModel(tablemodel);
-		
-		table.getModel().addTableModelListener(this);
-		
-		// edit table on the single click
-	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
-	    singleclick.setClickCountToStart(1);	
-        table.setDefaultEditor(table.getColumnClass(1), singleclick);
-        
-        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
-        
-		table.repaint();
-		table.validate();		
-	}
-	
-	public void setAssociationData(OntoUMLElem elem)
-	{
-		element = elem;
-		RefOntoUML.Association c = (RefOntoUML.Association)elem.getElement();
-		
-		if (c instanceof RefOntoUML.Meronymic)
-		{
-			RefOntoUML.Meronymic m = (RefOntoUML.Meronymic)c;			
-
-			Object[][] data = {
-			{"    Name", c.getName()},			
-			{"    Abstract", c.isIsAbstract()},
-			{"    Derived", c.isIsDerived()},			
-			{"    Essential", m.isIsEssential()},
-			{"    Inseparable", m.isIsInseparable()},
-			{"    Shareable", m.isIsShareable()},
-			{"    ImmutablePart", m.isIsImmutablePart()},
-			{"    ImmutableWhole", m.isIsImmutableWhole()},
-			};		
-			String[] columnNames = {"Property","Value"};
-			tablemodel = new PropertyTableModel(columnNames,data);
-		}else{
-			Object[][] data = {
-			{"    Name", c.getName()},			
-			{"    Abstract", c.isIsAbstract()},
-			{"    Derived", c.isIsDerived()},
-			};		
-			String[] columnNames = {"Property","Value"};
-			tablemodel = new PropertyTableModel(columnNames,data);
-			
-		}
-		table.setModel(tablemodel);
-		
-		table.getModel().addTableModelListener(this);
-		
-		// edit table on the single click
-	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
-	    singleclick.setClickCountToStart(1);	
-        table.setDefaultEditor(table.getColumnClass(1), singleclick);
-        
-        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
-        
-		table.repaint();
-		table.validate();
-	}
-	
-	public void setPropertyData(OntoUMLElem elem)
-	{		
-		element = elem;
-		RefOntoUML.Property c = (RefOntoUML.Property)elem.getElement();
-		
 		Object[][] data = {
 		{"    Name", c.getName()},			
-		{"    Type", new OntoUMLElem(((RefOntoUML.Property)elem.getElement()).getType(),"")},
-		{"    Upper", (new Integer(c.getUpper()))},
-		{"    Lower", (new Integer(c.getLower()))},
-		{"    Read Only", c.isIsReadOnly()},
-		{"    Aggregation Kind", c.getAggregation()},		
+		{"    Abstract", c.isIsAbstract()},
+		{"    Extensional", c.isIsExtensional()},
+		};
+		String[] columnNames = {"Property","Value"};
+		tablemodel = new PropertyTableModel(columnNames,data);
+		return tablemodel;
+	}
+	
+	private PropertyTableModel createClassAndDataTypeTableModel (RefOntoUML.Classifier c)
+	{
+		Object[][] data = {
+		{"    Name", c.getName()},			
+		{"    Abstract", c.isIsAbstract()},		
+		};
+		String[] columnNames = {"Property","Value"};
+		tablemodel = new PropertyTableModel(columnNames,data);
+		return tablemodel;
+	}	
+	
+	private PropertyTableModel createAssociationTableModel (RefOntoUML.Association c)
+	{
+		Object[][] data = {
+		{"    Name", c.getName()},			
+		{"    Abstract", c.isIsAbstract()},
+		{"    Derived", c.isIsDerived()},
 		};		
 		String[] columnNames = {"Property","Value"};
 		tablemodel = new PropertyTableModel(columnNames,data);
-		
-		table.setModel(tablemodel);
-		
-		table.getModel().addTableModelListener(this);
-		
-		// edit table on the single click
-	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
-	    singleclick.setClickCountToStart(1);
-        table.setDefaultEditor(table.getColumnClass(1), singleclick);
-        
-        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
-        
-		table.repaint();
-		table.validate();
-	}	
+		return tablemodel;
+	}
 	
-	public void setGeneralizationSetData(OntoUMLElem elem)
+	private PropertyTableModel createMeronymicTableModel (RefOntoUML.Meronymic m)
 	{
-		element = elem;
-		RefOntoUML.GeneralizationSet c = (RefOntoUML.GeneralizationSet)elem.getElement();
-		
+		Object[][] data = {
+		{"    Name", m.getName()},			
+		{"    Abstract", m.isIsAbstract()},
+		{"    Derived", m.isIsDerived()},			
+		{"    Essential", m.isIsEssential()},
+		{"    Inseparable", m.isIsInseparable()},
+		{"    Shareable", m.isIsShareable()},
+		{"    ImmutablePart", m.isIsImmutablePart()},
+		{"    ImmutableWhole", m.isIsImmutableWhole()},
+		};		
+		String[] columnNames = {"Property","Value"};
+		tablemodel = new PropertyTableModel(columnNames,data);
+		return tablemodel;
+	}
+	
+	private PropertyTableModel createPropertyTableModel (RefOntoUML.Property p)
+	{
+		Object[][] data = {
+		{"    Name", p.getName()},			
+		{"    Type", new OntoUMLElem(p.getType(),"")},
+		{"    Upper", (new Integer(p.getUpper()))},
+		{"    Lower", (new Integer(p.getLower()))},
+		{"    Read Only", p.isIsReadOnly()},
+		{"    Aggregation Kind", p.getAggregation()},		
+		};		
+		String[] columnNames = {"Property","Value"};
+		tablemodel = new PropertyTableModel(columnNames,data);
+		return tablemodel;
+	}
+	
+	private PropertyTableModel createGeneralizationSetTableModel (RefOntoUML.GeneralizationSet p)
+	{
+		Object[][] data = {
+		{"    Name", p.getName()},				
+		{"    Covering", p.isIsCovering()},
+		{"    Disjoint", p.isIsDisjoint()},		
+		};		
+		String[] columnNames = {"Property","Value"};
+		tablemodel = new PropertyTableModel(columnNames,data);		
 		/*ArrayList<String> generalizations = new ArrayList<String>(); 
 		for(RefOntoUML.Generalization g: c.getGeneralization()){
 			if (g.getGeneral()!=null && g.getSpecific()!=null)
@@ -174,17 +127,32 @@ public class TheProperties extends JPanel implements TableModelListener {
 			}
 		}
 		genSetGeneralizationsCombo.setModel(new DefaultComboBoxModel(generalizations.toArray()));*/
-		
+		return tablemodel;
+	}
+	
+	private PropertyTableModel createGeneralizationTableModel (RefOntoUML.Generalization p)
+	{
 		Object[][] data = {
-		{"    Name", elem.getName()},				
-		{"    Covering", c.isIsCovering()},
-		{"    Disjoint", c.isIsDisjoint()},				
+		{"    General", new OntoUMLElem(p.getGeneral(),"")},
+		//{"    Specific", new OntoUMLElem(p.getSpecific(),"")},				
 		};		
 		String[] columnNames = {"Property","Value"};
 		tablemodel = new PropertyTableModel(columnNames,data);
-		
-		table.setModel(tablemodel);
-		
+		return tablemodel;
+	}
+	
+	private PropertyTableModel createPackageTableModel (RefOntoUML.Package p)
+	{
+		Object[][] data = {
+		{"    Name", p.getName()},			
+		};		
+		String[] columnNames = {"Property","Value"};
+		tablemodel = new PropertyTableModel(columnNames,data);
+		return tablemodel;
+	}
+	
+	private void configureTable ()
+	{
 		table.getModel().addTableModelListener(this);
 		
 		// edit table on the single click
@@ -195,59 +163,69 @@ public class TheProperties extends JPanel implements TableModelListener {
         table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
         
 		table.repaint();
-		table.validate();
+		table.validate();	
+	}
+	
+	public void setClassAndDataTypeData(OntoUMLElem elem)
+	{
+		RefOntoUML.Classifier c = (RefOntoUML.Classifier)elem.getElement();
+		
+		if (c instanceof RefOntoUML.Collective) tablemodel = createCollectiveTableModel((RefOntoUML.Collective)c);	
+		else tablemodel = createClassAndDataTypeTableModel(c);				
+		
+		table.setModel(tablemodel);
+		configureTable();			
+	}
+	
+	public void setAssociationData(OntoUMLElem elem)
+	{
+		RefOntoUML.Association c = (RefOntoUML.Association)elem.getElement();
+		
+		if (c instanceof RefOntoUML.Meronymic) tablemodel = createMeronymicTableModel((RefOntoUML.Meronymic)c);
+		else tablemodel = createAssociationTableModel(c);
+			
+		table.setModel(tablemodel);		
+		configureTable();
+	}
+	
+	public void setPropertyData(OntoUMLElem elem)
+	{		
+		RefOntoUML.Property c = (RefOntoUML.Property)elem.getElement();		
+		
+		tablemodel = createPropertyTableModel(c);
+		
+		table.setModel(tablemodel);		
+		configureTable();
+	}	
+	
+	public void setGeneralizationSetData(OntoUMLElem elem)
+	{
+		RefOntoUML.GeneralizationSet c = (RefOntoUML.GeneralizationSet)elem.getElement();
+
+		tablemodel = createGeneralizationSetTableModel(c);
+		
+		table.setModel(tablemodel);		
+		configureTable();
 	}
 	
 	public void setGeneralizationData(OntoUMLElem elem)
 	{
-		element = elem;
 		RefOntoUML.Generalization c = (RefOntoUML.Generalization)elem.getElement();
 
-		Object[][] data = {
-		{"    Name", elem.getName()},			
-		{"    General", new OntoUMLElem(c.getGeneral(),"")},
-		{"    Specific", new OntoUMLElem(c.getSpecific(),"")},				
-		};		
-		String[] columnNames = {"Property","Value"};
-		tablemodel = new PropertyTableModel(columnNames,data);
+		tablemodel = createGeneralizationTableModel(c);
 		
-		table.setModel(tablemodel);
-		
-		table.getModel().addTableModelListener(this);
-		
-		// edit table on the single click
-	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
-	    singleclick.setClickCountToStart(1);	
-        table.setDefaultEditor(table.getColumnClass(1), singleclick);
-        
-        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
-        
-		table.repaint();
-		table.validate();
+		table.setModel(tablemodel);		
+		configureTable();
 	}
 	
 	public void setPackageData(OntoUMLElem elem)
 	{
-		element = elem;
-		Object[][] data = {
-		{"    Name", elem.getName()},			
-		};		
-		String[] columnNames = {"Property","Value"};
-		tablemodel = new PropertyTableModel(columnNames,data);
+		RefOntoUML.Package p = (RefOntoUML.Package)elem.getElement();
 		
-		table.setModel(tablemodel);
+		tablemodel = createPackageTableModel(p);
 		
-		table.getModel().addTableModelListener(this);
-		
-		// edit table on the single click
-	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
-	    singleclick.setClickCountToStart(1);	
-        table.setDefaultEditor(table.getColumnClass(1), singleclick);
-        
-        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(frame));
-        
-		table.repaint();
-		table.validate();
+		table.setModel(tablemodel);		
+		configureTable();
 	}
 	
 	/**
@@ -258,8 +236,6 @@ public class TheProperties extends JPanel implements TableModelListener {
 	public void setData(DefaultMutableTreeNode node)
 	{		
 		this.node = node;
-		this.refparser = frame.getManager().getOntoUMLModel().getOntoUMLParser();
-		this.modeltree = frame.getManager().getOntoUMLView().getModelTree();
 		
 		OntoUMLElem elem = (OntoUMLElem) node.getUserObject();
 		
@@ -328,19 +304,82 @@ public class TheProperties extends JPanel implements TableModelListener {
 	     int column = e.getColumn();
 	     TableModel model = (TableModel)e.getSource();
 	     //String columnName = model.getColumnName(column);
-	     Object data = model.getValueAt(row, column);
-	     // Do something with the data...
+	     String property = ((String)model.getValueAt(row, 0)).trim();
+	     Object value = model.getValueAt(row, column);
+	     EObject elem = ((OntoUMLElem)node.getUserObject()).getElement();	     
 	     
-	     if(element.getElement() instanceof RefOntoUML.Class)
-	     {	    	 
-	    	 if( ((String)model.getValueAt(row, 0)).trim().equals("Name") ) 
-	    	 {	    		 
-	    		 ((RefOntoUML.Class) element.getElement()).setName((String)data);	    		 
-	    		 modeltree.updateUI();
-	    	 }	    	 
+	     // Do something with the value... modifying the correspondent OntoUML elem
+
+	     if(elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType)
+	     {
+	    	 if(property.equals("Name")) ((RefOntoUML.Classifier)elem).setName((String)value);
+	    	 if(property.equals("Abstract")) ((RefOntoUML.Classifier)elem).setIsAbstract((Boolean)value);
+	    	 
+	    	 if(elem instanceof RefOntoUML.Collective){
+	    		 if(property.equals("Extensional"))((RefOntoUML.Collective)elem).setIsExtensional((Boolean)value);
+	    	 }
 	     }
 	     
-	     //update the Tree from the OntoUMLParser... or update only the node...
+	     if(elem instanceof RefOntoUML.Association)
+	     {
+	    	 if(property.equals("Name")) ((RefOntoUML.Association)elem).setName((String)value);
+	    	 if(property.equals("Abstract")) ((RefOntoUML.Association)elem).setIsAbstract((Boolean)value);
+	    	 if(property.equals("Derived")) ((RefOntoUML.Association)elem).setIsDerived((Boolean)value);
+	    	 
+	    	 if(elem instanceof RefOntoUML.Meronymic){
+	    		 if(property.equals("Essential"))((RefOntoUML.Meronymic)elem).setIsEssential((Boolean)value);
+	    		 if(property.equals("Inseparable"))((RefOntoUML.Meronymic)elem).setIsInseparable((Boolean)value);
+	    		 if(property.equals("Shareable"))((RefOntoUML.Meronymic)elem).setIsShareable((Boolean)value);
+	    		 if(property.equals("ImmutablePart"))((RefOntoUML.Meronymic)elem).setIsImmutablePart((Boolean)value);
+	    		 if(property.equals("ImmutableWhole"))((RefOntoUML.Meronymic)elem).setIsImmutableWhole((Boolean)value);
+	    	 }
+	     }
+	     
+	     if(elem instanceof RefOntoUML.Property)
+	     {
+	    	 if(property.equals("Name")) ((RefOntoUML.Property)elem).setName((String)value);
+	    	 if(property.equals("Type")) ((RefOntoUML.Property)elem).setType((RefOntoUML.Type)((OntoUMLElem)value).getElement());	    	 
+	    	 
+	    	 RefOntoUML.RefOntoUMLFactory factory = RefOntoUML.RefOntoUMLFactory.eINSTANCE;         
+	    	 if(property.equals("Upper")) {
+		         RefOntoUML.LiteralUnlimitedNatural upperValue = factory.createLiteralUnlimitedNatural();		         
+		         Integer IntValue = Integer.parseInt((String)value);
+		         if (IntValue<-1) IntValue = -1;
+		         upperValue.setValue(IntValue);
+		         ((RefOntoUML.Property)elem).setUpperValue(upperValue);	    		 
+	    	 }
+	    	 if(property.equals("Lower")) {
+		         RefOntoUML.LiteralInteger lowerValue = factory.createLiteralInteger();		         
+		         Integer IntValue = Integer.parseInt((String)value);
+		         if (IntValue<-1) IntValue = -1;
+		         lowerValue.setValue(IntValue);
+		         ((RefOntoUML.Property)elem).setLowerValue(lowerValue);    		 
+	    	 }
+	    	 
+	    	 if(property.equals("Read Only")) ((RefOntoUML.Property)elem).setIsReadOnly((Boolean)value);
+	    	 if(property.equals("Aggregation Kind")) ((RefOntoUML.Property)elem).setAggregation((RefOntoUML.AggregationKind)value);			
+	     }
+	     
+	     if(elem instanceof RefOntoUML.GeneralizationSet)
+	     {
+	    	 if(property.equals("Name")) ((RefOntoUML.GeneralizationSet)elem).setName((String)value);
+	    	 if(property.equals("Covering")) ((RefOntoUML.GeneralizationSet)elem).setIsCovering((Boolean)value);
+	    	 if(property.equals("Disjoint")) ((RefOntoUML.GeneralizationSet)elem).setIsDisjoint((Boolean)value);
+	     }
+
+	     if(elem instanceof RefOntoUML.Generalization)
+	     {
+	    	 if(property.equals("General")) ((RefOntoUML.Generalization)elem).setGeneral((RefOntoUML.Classifier)((OntoUMLElem)value).getElement());
+	    	 //if(property.equals("Specific")) ((RefOntoUML.Generalization)elem).setSpecific((RefOntoUML.Classifier)((OntoUMLElem)value).getElement());
+	     }
+	     
+	     if(elem instanceof RefOntoUML.Package)
+	     {
+	    	 if(property.equals("Name")) ((RefOntoUML.Package)elem).setName((String)value);
+	     }
+	     
+	     //update the Tree 
+	     frame.getManager().getOntoUMLView().refreshModelTree();
 	}
 	
 }
