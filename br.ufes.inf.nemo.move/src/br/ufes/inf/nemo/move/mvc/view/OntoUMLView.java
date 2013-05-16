@@ -167,9 +167,9 @@ public class OntoUMLView extends JPanel {
 	public void setPath(String path, RefOntoUML.Package refmodel)
 	{
 		if (path==null && refmodel!=null){
-			frame.getTheStatusBar().setText("  Location:  Loaded...");
+			//frame.getTheStatusBar().setText("  Location:  Loaded...");
 		}else if (path!= null && refmodel !=null){
-			frame.getTheStatusBar().setText("  Location:  "+path);
+			//frame.getTheStatusBar().setText("  Location:  "+path);
 		}
 	}
 	

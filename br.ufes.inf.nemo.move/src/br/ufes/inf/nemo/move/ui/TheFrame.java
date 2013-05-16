@@ -35,11 +35,11 @@ public class TheFrame extends JFrame {
 	private TheMenuBar menuBar;	
 	private TheConsole console;	
 	private JSplitPane mainSplitPane;
-	private JSplitPane innerSplitPane;	
+	//private JSplitPane innerSplitPane;	
 	private JSplitPane centerSplitPane;	
 	private JTabbedPane ontoumlTabbedPane;
 	private JTabbedPane oclTabbedPane;
-	private JTabbedPane antipatternPane;
+	//private JTabbedPane antipatternPane;
 	private JTabbedPane infoTabbedPane;
 	private TheManager appmanager;	
 	private SimpleGUICustom analyzer;
@@ -91,26 +91,33 @@ public class TheFrame extends JFrame {
 		
 		oclTabbedPane = new JTabbedPane();
 		oclTabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-		oclTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		oclTabbedPane.add(appmanager.getOCLView());	
-		oclTabbedPane.setTitleAt(0,"OCL Editor");
+		oclTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));		
 		oclTabbedPane.setBackground(UIManager.getColor("Panel.background"));
-		oclTabbedPane.setBackgroundAt(0,UIManager.getColor("Panel.background"));
-		oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-ocl-16x16.png")));
 		oclTabbedPane.setBorder(null);
 		
-		antipatternPane = new JTabbedPane();
+		oclTabbedPane.add(appmanager.getOCLView());	
+		oclTabbedPane.setTitleAt(0,"OCL Editor");
+		oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-ocl-16x16.png")));
+		oclTabbedPane.setBackgroundAt(0,UIManager.getColor("Panel.background"));		
+		
+		oclTabbedPane.add(appmanager.getAntiPatternListView());	
+		oclTabbedPane.setTitleAt(1,"AntiPattern Manager");
+		oclTabbedPane.setIconAt(1,new ImageIcon(TheFrame.class.getResource("/resources/icon/search-red-16x16.png")));
+		oclTabbedPane.setBackgroundAt(1,UIManager.getColor("Panel.background"));
+		
+		/*antipatternPane = new JTabbedPane();
 		antipatternPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		antipatternPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		antipatternPane.add(appmanager.getAntiPatternListView());	
 		antipatternPane.setTitleAt(0,"AntiPattern Manager");
 		antipatternPane.setBackground(UIManager.getColor("Panel.background"));
 		antipatternPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/search-red-16x16.png")));
-		antipatternPane.setBorder(null);
+		antipatternPane.setBorder(null);*/
 		
-		innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclTabbedPane,antipatternPane);
+		/*innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,oclTabbedPane,antipatternPane);
 		innerSplitPane.setOneTouchExpandable(true);		
 		innerSplitPane.setBorder(null);
+		innerSplitPane.setDividerSize(7);*/
 		
 		ontoumlTabbedPane = new JTabbedPane();
 		ontoumlTabbedPane.setBorder(null);
@@ -149,13 +156,15 @@ public class TheFrame extends JFrame {
 		infoTabbedPane.setTitleAt(3," Console ");
 		infoTabbedPane.setIconAt(3,new ImageIcon(TheFrame.class.getResource("/resources/icon/display-16x16.png")));
 		
-		centerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,innerSplitPane,infoTabbedPane);
+		centerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,oclTabbedPane,infoTabbedPane);
 		centerSplitPane.setOneTouchExpandable(true);		
 		centerSplitPane.setBorder(null);
-				
+		centerSplitPane.setDividerSize(7);
+		
 		mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,ontoumlTabbedPane,centerSplitPane);
-		mainSplitPane.setOneTouchExpandable(true);			
+		mainSplitPane.setOneTouchExpandable(true);
 		mainSplitPane.setBorder(null);
+		mainSplitPane.setDividerSize(7);
 		
 		JPanel eastPane = new JPanel();
 		getContentPane().add(BorderLayout.EAST,eastPane);
@@ -202,7 +211,7 @@ public class TheFrame extends JFrame {
             public void run() 
             {            	
             	//mainSplitPane.setDividerLocation(0.35);
-            	innerSplitPane.setDividerLocation(1.00);
+            	//innerSplitPane.setDividerLocation(1.00);
             	centerSplitPane.setDividerLocation(0.65);            	
             }
         });
@@ -281,7 +290,8 @@ public class TheFrame extends JFrame {
 	 */
 	public void ShowOrHideOCLView()
 	{
-		int location = innerSplitPane.getDividerLocation();
+		oclTabbedPane.setSelectedIndex(0);
+		/*int location = innerSplitPane.getDividerLocation();
 		int minLocation = innerSplitPane.getMinimumDividerLocation();
 		if(location > minLocation)
 	    {
@@ -290,21 +300,28 @@ public class TheFrame extends JFrame {
 	    else
 	    {
 	      	innerSplitPane.setDividerLocation(1.00);
-	    }
+	    }*/
 	}
 	
 	/** Show OCL View */
-	public void ShowOCLView() { innerSplitPane.setDividerLocation(0.50); }
+	public void ShowOCLView() {
+		oclTabbedPane.setSelectedIndex(0); 
+		//innerSplitPane.setDividerLocation(0.50); 
+	}
 	
 	/** Hide OCL View */
-	public void HideOCLView() { innerSplitPane.setDividerLocation(0.0); }
+	public void HideOCLView() { 
+		oclTabbedPane.setSelectedIndex(0); 
+		//innerSplitPane.setDividerLocation(0.0); 
+	}
 	
 	/**
 	 * Show Or Hide AntiPAttern View...
 	 */
 	public void ShowOrHideAntiPatternView()
 	{
-		int location = innerSplitPane.getDividerLocation();
+		oclTabbedPane.setSelectedIndex(1);
+		/*int location = innerSplitPane.getDividerLocation();
 		int maxLocation = innerSplitPane.getMaximumDividerLocation();
 		if(location < maxLocation)
 	    {
@@ -313,16 +330,18 @@ public class TheFrame extends JFrame {
 	    else
 	    {
 	      	innerSplitPane.setDividerLocation(0.50);
-	    }
+	    }*/
 	}
 	
 	/** Show AntiPattern View */
 	public void ShowAntiPatternView() { 
-		innerSplitPane.setDividerLocation(0.50); 
+		//innerSplitPane.setDividerLocation(0.50);
+		oclTabbedPane.setSelectedIndex(1);
 	}
 	/** Hide AntiPattern View */
 	public void HideAntiPatternView() { 
-		innerSplitPane.setDividerLocation(1.00); 
+		//innerSplitPane.setDividerLocation(1.00);
+		oclTabbedPane.setSelectedIndex(1);
 	}
 	
 	/**
