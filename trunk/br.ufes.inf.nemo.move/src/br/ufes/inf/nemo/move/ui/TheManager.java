@@ -4,14 +4,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.ocl.ParserException;
 
 import RefOntoUML.SubstanceSortal;
+import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
+import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.move.mvc.controller.AntiPatternListController;
 import br.ufes.inf.nemo.move.mvc.controller.OCLController;
 import br.ufes.inf.nemo.move.mvc.controller.OntoUMLController;
@@ -25,6 +29,8 @@ import br.ufes.inf.nemo.move.mvc.model.UMLModel;
 import br.ufes.inf.nemo.move.mvc.view.AntiPatternListView;
 import br.ufes.inf.nemo.move.mvc.view.OCLView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
+import br.ufes.inf.nemo.move.tree.ontouml.OntoUMLCheckBoxTree;
+import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
 import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
 
 /**
@@ -115,10 +121,14 @@ public class TheManager {
 	 * Create Controllers Layer - MVC Design Pattern
 	 */
 	public void createControllers()
-	{
-		new OntoUMLController(ontoumlview,ontoumlmodel);		
+	{				
 		new OCLController(oclview,oclmodel);
 		new AntiPatternListController(antipatternmodel, antipatternview);
+	}
+	
+	public void createOntoUMLController()
+	{
+		new OntoUMLController(ontoumlview,ontoumlmodel);
 	}
 	
 	/**
@@ -334,7 +344,7 @@ public class TheManager {
 	 * 
 	 * @param showSuccesfullyMessage
 	 */
-	public void ParseOCL(boolean showSuccesfullyMessage)
+	public void doParseOCL(boolean showSuccesfullyMessage)
 	{
 		if (ontoumlmodel.getOntoUMLParser()==null) 
 		{
@@ -434,5 +444,157 @@ public class TheManager {
 			e.printStackTrace();
 		}	
 		
-	}		
+	}
+	
+	public void doOpenOntoUML ()
+	{
+		try{
+	     	
+      	String path = FileChoosers.getOntoUMLPathLocation(frame,ontoumlmodel.getOntoUMLPath());
+    				
+      	if (path==null) return;
+      	
+    	ontoumlmodel.setOntoUML(path);
+    					
+    	ontoumlview.setPath(ontoumlmodel.getOntoUMLPath(),ontoumlmodel.getOntoUMLModelInstance());
+    	ontoumlview.setModelTree(ontoumlmodel.getOntoUMLModelInstance(),ontoumlmodel.getOntoUMLParser());	    		
+    	ontoumlview.validate();
+    	ontoumlview.repaint();
+    	
+    	ontoumlview.getTheFrame().getManager().getAntiPatternListView().Clear();	    	
+    	umlmodel.setUMLModel(path.replace(".refontouml",".uml"));	    	
+    	alloymodel.setAlloyModel(path.replace(".refontouml",".als"));
+    		    		    					
+    	} catch (IOException exception) {
+    		
+    		String msg = "An error ocurred while loading the model.\n"+exception.getMessage();
+    		ontoumlview.getTheFrame().showErrorMessageDialog("Open OntoUML",msg);
+    		exception.printStackTrace();
+    	}	    	
+    	
+    	ontoumlview.getTheFrame().getManager().doModelDiagnostic();	
+	}
+	
+	public void doGenerateAliases ()
+	{
+		if(ontoumlview.getModelTree()==null)
+			{	       			
+    		ontoumlview.getTheFrame().showInformationMessageDialog("Show Aliases","First you need to load your Model");
+    		return;			       				
+			}	    	
+    	
+    	((OntoUMLCheckBoxTree.OntoUMLTreeCellRenderer)ontoumlview.getModelTree().getCellRenderer()).showOrHideUniqueName();
+    	
+    	ontoumlview.getModelTree().updateUI();
+    }
+	
+	public void doSaveOntoUML ()
+	{
+		if(ontoumlview.getModelTree()==null)
+		{	       			
+    		ontoumlview.getTheFrame().showInformationMessageDialog("Save","First you need to load your Model");
+    		return;			       				
+		}
+    	ontoumlview.getTheFrame().getManager().doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
+    	
+    	String path = FileChoosers.saveOntoUMLPathLocation(frame,ontoumlmodel.getOntoUMLPath());
+    	
+    	if(path!=null)ResourceUtil.saveReferenceOntoUML(path, ontoumlview.getTheFrame().getManager().getOntoUMLModel().getOntoUMLModelInstance());		
+	}
+	
+	public void doOpenOCL () 
+	{
+    	try{
+     	
+      	String path = FileChoosers.openOCLPathLocation(frame,oclmodel.getOCLPath());
+    		
+      	if (path==null) return;
+      	
+      	oclmodel.setConstraints(path,"PATH");
+			
+      	oclview.setPath(oclmodel.getOCLPath(),oclmodel.getOCLString());	      			
+      	oclview.setConstraints(oclmodel.getOCLString());
+      	
+      	oclview.validate();
+      	oclview.repaint();
+    	
+    	} catch (IOException exception) {				
+    		String msg = "An error ocurred while loading the model.\n"+exception.getMessage();
+    		oclview.getTheFrame().showErrorMessageDialog("Open OCL",msg);
+    		exception.printStackTrace();
+    	}		
+	}
+	
+	public void doNewOCL () 
+	{
+		boolean option = JOptionPane.showConfirmDialog(
+    			oclview.getTheFrame(),
+    			"Do you really want to create a new OCL Document?\n",
+    			"New OCL Document",
+    			JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    	
+    	if (option)
+    	{
+    		oclmodel.clearModel();
+    	
+    		oclview.setPath(oclmodel.getOCLPath(), oclmodel.getOCLString());
+    		oclview.setConstraints(oclmodel.getOCLString());
+    	}
+	}
+	
+	public void doSaveOCL ()
+	{
+		if (oclview.getPath()==null || oclview.getPath().isEmpty())
+    	{
+    		try{
+    			
+    			String path = FileChoosers.saveOCLPathLocation(frame,oclmodel.getOCLPath());	    		
+    			if (path==null) return;		
+	      		    					      	
+    			oclmodel.setConstraints(oclview.getConstraints(),"CONTENT");
+    			oclmodel.setOCLPath(path);
+    			
+    			FileUtil.copyStringToFile(oclview.getConstraints(), path);
+    			
+    			oclview.setPath(path,oclview.getConstraints());	    			
+    	    	
+    		}catch(IOException exception){
+    			
+    			String msg = "An error ocurred while saving the model.\n"+exception.getMessage();
+    			oclview.getTheFrame().showErrorMessageDialog("IO",msg);		       			
+    			exception.printStackTrace();
+    		}
+	      			      	
+    	}else{
+    		try{
+    			
+    			oclmodel.setConstraints(oclview.getConstraints(),"CONTENT");
+    			oclmodel.setOCLPath(oclview.getPath());
+    			
+    			FileUtil.copyStringToFile(oclview.getConstraints(), oclview.getPath());
+    			
+    		}catch(IOException exception){
+    			
+    			String msg = "An error ocurred while saving the model.\n"+exception.getMessage();
+    			oclview.getTheFrame().showErrorMessageDialog("IO",msg);	       			
+    			exception.printStackTrace();
+    		}		      		
+    	}
+	}
+	
+	public void doSearchAntiPatterns ()
+	{
+    	if (frame.getManager().getOntoUMLModel().getOntoUMLParser()==null) 
+    	{ 
+    		frame.showInformationMessageDialog("Search AntiPatterns"," You need to open a Model!"); 
+    		return; 
+    	}    	
+    	try {    		
+    		AntiPatternListDialog.open(frame);    		
+    	}catch(Exception x){
+    		JOptionPane.showMessageDialog(frame,x.getLocalizedMessage(),"Error",JOptionPane.ERROR_MESSAGE);					
+    		x.printStackTrace();
+    	}
+	}
+	
 }

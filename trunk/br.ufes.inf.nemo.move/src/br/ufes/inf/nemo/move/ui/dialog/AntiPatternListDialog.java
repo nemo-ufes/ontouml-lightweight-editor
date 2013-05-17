@@ -109,8 +109,8 @@ public class AntiPatternListDialog extends JDialog {
 		
 		this.frame = frame;
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/icon/search-red-24x24.png")));
-		setTitle("Run AntiPatterns Manager");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/icon/search-16x16.png")));
+		setTitle("AntiPatterns Manager - Searching");
 		setBounds(100, 100, 332, 377);
 		
 		getContentPane().setLayout(new BorderLayout());
@@ -275,7 +275,7 @@ public class AntiPatternListDialog extends JDialog {
 	 */
 	public void createIdentifyButton(JPanel buttonPane)
 	{
-		identifyButton = new JButton("Detect");
+		identifyButton = new JButton("Search");
 		
 		identifyButton.addActionListener(new ActionListener() 
 		{
@@ -469,10 +469,10 @@ public class AntiPatternListDialog extends JDialog {
 		if (mrbsListModel.size()>0) result += "MRBS AntiPattern : "+mrbsListModel.size()+" items found.\n";
 		if (ssrListModel.size()>0) result += "SSR AntiPattern : "+ssrListModel.size()+" items found.\n";
 		
-		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No antipatterns found.","Run AntiPatterns Manager",JOptionPane.INFORMATION_MESSAGE); 
+		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No antipatterns found.","AntiPatterns Manager - Searching",JOptionPane.INFORMATION_MESSAGE); 
 		else 
 		{			
-			JOptionPane.showMessageDialog(this,result,"Run AntiPatterns Manager",JOptionPane.INFORMATION_MESSAGE);			
+			JOptionPane.showMessageDialog(this,result,"AntiPatterns Manager - Searching",JOptionPane.INFORMATION_MESSAGE);			
 			
 			AntiPatternListModel antipatternListModel = new AntiPatternListModel
 			(

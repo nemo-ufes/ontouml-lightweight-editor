@@ -2,22 +2,16 @@ package br.ufes.inf.nemo.move.mvc.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.eclipse.ocl.ParserException;
 
+import br.ufes.inf.nemo.move.editor.ocl.OCLEditorPanel;
 import br.ufes.inf.nemo.move.mvc.model.OCLModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.ui.ocl.OCLEditorPanel;
-import br.ufes.inf.nemo.move.ui.ocl.OCLToolBar;
 import br.ufes.inf.nemo.ocl2alloy.OCLParser;
 
 /**
@@ -36,10 +30,7 @@ public class OCLView extends JPanel {
 	
 	private TheFrame frame;	
 	private OCLEditorPanel ocleditor;
-	private OCLToolBar ocltoolbar;
 	private String completePath;
-	private String openLastPath;
-	private String saveLastPath;
 		
 	/**
 	 * Creates a View for OCL Model and the main frame of Application.
@@ -69,23 +60,13 @@ public class OCLView extends JPanel {
 	 */
 	public OCLView() 
 	{
-		setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(128, 128, 128)));
+		setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(128, 128, 128)));
+		
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
-		
-		JPanel panel = new JPanel();
-		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
-		panel.setLayout(new BorderLayout(0, 0));
-		panel.setPreferredSize(new Dimension(40, 30));
-		ocltoolbar = new OCLToolBar();		
-		ocltoolbar.setPreferredSize(new Dimension(25, 10));
-		panel.add(BorderLayout.CENTER,ocltoolbar);
-		
-		add(BorderLayout.NORTH,panel);
-		
+
 		ocleditor = new OCLEditorPanel();
-		add(BorderLayout.CENTER,ocleditor);
-		
+		add(BorderLayout.CENTER,ocleditor);		
 	}
 	
 	public OCLEditorPanel getOcleditor() {
@@ -144,46 +125,6 @@ public class OCLView extends JPanel {
 	public String getPath() { return completePath; }
 		
 	/**
-	 * Add Open OCL Document Action Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addOpenOCLListener(ActionListener actionListener) 
-	{
-		ocltoolbar.btnOpen.addActionListener(actionListener);
-	}
-	
-	/**
-	 * Add Save OCL Document Action Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addSaveOCLListener(ActionListener actionListener) 
-	{
-		ocltoolbar.btnSave.addActionListener(actionListener);
-	}
-	
-	/**
-	 * Add New OCL Document Action Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addNewOCLListener(ActionListener actionListener) 
-	{
-		ocltoolbar.btnNew.addActionListener(actionListener);
-	}
-	
-	/**
-	 * Add Parse OCL Constraints Action Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addParseOCLListener(ActionListener actionListener) 
-	{
-		ocltoolbar.btnParse.addActionListener(actionListener);
-	}
-	
-	/**
 	 * Get the main frame application.
 	 * 
 	 * @return
@@ -192,58 +133,5 @@ public class OCLView extends JPanel {
 	{
 		return frame;
 	}
-	
-	/**
-	 * Open OCL Path Location.
-	 * 
-	 * @return
-	 */
-	public String openOCLPathLocation()
-	{
-		JFileChooser fileChooser = new JFileChooser(openLastPath);
-		fileChooser.setDialogTitle("Open OCL");
-		FileNameExtensionFilter oclFilter = new FileNameExtensionFilter("OCL Constraints (*.ocl)", "ocl");
-		fileChooser.addChoosableFileFilter(oclFilter);
-		fileChooser.setFileFilter(oclFilter);
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
-		{
-			if (fileChooser.getFileFilter() == oclFilter) 
-			{
-				openLastPath = fileChooser.getSelectedFile().getPath();
-				return fileChooser.getSelectedFile().getPath();
-			}
-		}
-		return null;
-	}	
-	
-	/**
-	 * Save OCL Path Location.
-	 * 
-	 * @return
-	 */
-	public String saveOCLPathLocation()
-	{
-		JFileChooser fileChooser = new JFileChooser(saveLastPath);
-		fileChooser.setDialogTitle("Save OCL");
-		FileNameExtensionFilter oclFilter = new FileNameExtensionFilter("OCL Constraints (*.ocl)", "ocl");
-		fileChooser.addChoosableFileFilter(oclFilter);
-		fileChooser.setFileFilter(oclFilter);
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) 
-		{
-			if (fileChooser.getFileFilter() == oclFilter) 
-			{
-				String path = fileChooser.getSelectedFile().getPath();
-				if (path.contains(".ocl")){
-					saveLastPath = fileChooser.getSelectedFile().getPath();				
-					return fileChooser.getSelectedFile().getPath();
-				} else {
-					saveLastPath = fileChooser.getSelectedFile().getPath()+".ocl";
-					return fileChooser.getSelectedFile().getPath()+".ocl";
-				}
-			}
-		}
-		return null;
-	}	
+
 }

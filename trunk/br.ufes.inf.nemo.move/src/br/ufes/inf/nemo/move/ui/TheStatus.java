@@ -28,7 +28,7 @@ public class TheStatus extends JPanel {
 	 */
 	public TheStatus() {
 		
-		setPreferredSize(new Dimension(450, 38));
+		setPreferredSize(new Dimension(450, 25));
 		
 		label = new JLabel("");
 		label.setHorizontalAlignment(SwingConstants.LEFT);
@@ -49,9 +49,6 @@ public class TheStatus extends JPanel {
 					.addComponent(label, GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
 					.addContainerGap())
 		);
-		setLayout(groupLayout);
-		
-		
+		setLayout(groupLayout);		
 	}
-
 }

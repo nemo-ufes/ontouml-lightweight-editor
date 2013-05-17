@@ -25,5 +25,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.common_1.1.0.v20121102-1658.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.ecore_3.2.100.v20121109-1114.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.edit_3.2.100.v20121219-1103.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/flamingo/flamingo-7.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
