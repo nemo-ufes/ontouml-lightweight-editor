@@ -132,7 +132,7 @@ public class TheToolBar extends JToolBar {
        				
        			}else{
        				
-       				frame.getManager().ParseOCL(false);
+       				frame.getManager().doParseOCL(false);
        				
        				frame.getManager().getOntoUMLOptionModel().getOptions().openAnalyzer=true;
        				
@@ -162,7 +162,7 @@ public class TheToolBar extends JToolBar {
     				       				
        			}else{ 
        				
-       				frame.getManager().ParseOCL(false);
+       				frame.getManager().doParseOCL(false);
        				
        				frame.getManager().getOntoUMLOptionModel().getOptions().openAnalyzer=false;
        				

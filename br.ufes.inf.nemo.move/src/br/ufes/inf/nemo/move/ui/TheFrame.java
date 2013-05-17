@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -13,13 +15,25 @@ import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
+import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
+import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
+import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenu;
+import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryFooter;
+import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary;
+import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
+
+import br.ufes.inf.nemo.move.ribbons.AntiPatternRibbonBand;
+import br.ufes.inf.nemo.move.ribbons.OCLRibbonBand;
+import br.ufes.inf.nemo.move.ribbons.OntoUMLRibbonBand;
+import br.ufes.inf.nemo.move.ribbons.SimulationRibbonBand;
 import br.ufes.inf.nemo.move.ui.util.Extractor;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
@@ -27,13 +41,13 @@ import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
  * @author John Guerson
  */
 
-public class TheFrame extends JFrame {
+public class TheFrame extends JRibbonFrame {
 
 	private static final long serialVersionUID = 1L;
 		
 	private TheToolBar toolBar;	
 	private TheMenuBar menuBar;	
-	private TheConsole console;	
+	private TheLog console;	
 	private JSplitPane mainSplitPane;
 	//private JSplitPane innerSplitPane;	
 	private JSplitPane centerSplitPane;	
@@ -44,7 +58,7 @@ public class TheFrame extends JFrame {
 	private TheManager appmanager;	
 	private SimpleGUICustom analyzer;
 	private TheStatus statusBar;
-	private TheProperties properties;
+	private TheProperties properties	;
 	private TheWarnings warnings;
 	private TheErrors errors;
 	
@@ -64,29 +78,54 @@ public class TheFrame extends JFrame {
 		
     	setDefaultCloseOperation(DISPOSE_ON_CLOSE);		
 	}	
+
+	private static ResizableIcon getResizableIconFromResource(String resource) 
+	{
+		return ImageWrapperResizableIcon.getIcon(TheFrame.class.getClassLoader().getResource(resource), new Dimension(36,36));
+	}
 	
-	/**
+	/** 
 	 * Constructor.
 	 */
 	public TheFrame() 
 	{
-		super();						
-			
+		super();
 		getContentPane().setBackground(new Color(230, 230, 250));
-		getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		RibbonTask ontoumlTask = new RibbonTask("OntoUML", new OntoUMLRibbonBand(this,"Model",null));		
+		getRibbon().addTask(ontoumlTask);
+		
+		RibbonTask oclTask = new RibbonTask("OCL", new OCLRibbonBand(this,"Constraints",null));		
+		getRibbon().addTask(oclTask);
+		
+		RibbonTask alloyTask = new RibbonTask("Simulation", new SimulationRibbonBand(this,"Alloy",null));		
+		getRibbon().addTask(alloyTask);
 
-		menuBar = new TheMenuBar(this);
-		setJMenuBar(menuBar);		
+		RibbonTask antiPatternTask = new RibbonTask("AntiPattern", new AntiPatternRibbonBand(this,"Manager",null));		
+		getRibbon().addTask(antiPatternTask);
 		
-		toolBar = new TheToolBar(this);
+		getRibbon().setApplicationIcon(getResizableIconFromResource("resources/icon/window.png"));
+
+		RibbonApplicationMenu menu = new RibbonApplicationMenu();		
+		menu.addMenuEntry(new RibbonApplicationMenuEntryPrimary(null,"Help",null,CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION));
+		menu.addFooterEntry(new RibbonApplicationMenuEntryFooter(null,"About",null));
+		menu.addMenuSeparator();
+		getRibbon().setApplicationMenu(menu);
 		
-		JPanel headpanel = new JPanel();
-		headpanel.setBorder(new EmptyBorder(0, 0, 0, 0));
-		headpanel.setLayout(new BorderLayout(0, 0));
-		headpanel.add(BorderLayout.NORTH,toolBar);		
+		//getContentPane().setLayout(new BorderLayout(0, 0));
+		//
+		//menuBar = new TheMenuBar(this);		
+		//setJMenuBar(menuBar);
+		//
+		//toolBar = new TheToolBar(this);
+		//
+		//JPanel headpanel = new JPanel();
+		//headpanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		//headpanel.setLayout(new BorderLayout(0, 0));
+		//headpanel.add(BorderLayout.NORTH,toolBar);		
+		//
+		//getContentPane().add(BorderLayout.NORTH,headpanel);
 		
-		getContentPane().add(BorderLayout.NORTH,headpanel);
-				
 		appmanager = new TheManager(this);
 		
 		oclTabbedPane = new JTabbedPane();
@@ -102,9 +141,9 @@ public class TheFrame extends JFrame {
 		
 		oclTabbedPane.add(appmanager.getAntiPatternListView());	
 		oclTabbedPane.setTitleAt(1,"AntiPattern Manager");
-		oclTabbedPane.setIconAt(1,new ImageIcon(TheFrame.class.getResource("/resources/icon/search-red-16x16.png")));
+		oclTabbedPane.setIconAt(1,new ImageIcon(TheFrame.class.getResource("/resources/icon/search-16x16.png")));
 		oclTabbedPane.setBackgroundAt(1,UIManager.getColor("Panel.background"));
-		
+
 		/*antipatternPane = new JTabbedPane();
 		antipatternPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		antipatternPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -118,18 +157,18 @@ public class TheFrame extends JFrame {
 		innerSplitPane.setOneTouchExpandable(true);		
 		innerSplitPane.setBorder(null);
 		innerSplitPane.setDividerSize(7);*/
-		
+
 		ontoumlTabbedPane = new JTabbedPane();
 		ontoumlTabbedPane.setBorder(null);
 		ontoumlTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		ontoumlTabbedPane.setPreferredSize(new Dimension(400,600));
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
-		ontoumlTabbedPane.setTitleAt(0,"Model");
+		ontoumlTabbedPane.setTitleAt(0,"Model Tree");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));		
-		ontoumlTabbedPane.setBackgroundAt(0,UIManager.getColor("Panel.background"));
+		ontoumlTabbedPane.setBackgroundAt(0,UIManager.getColor("Panel.background"));		
 		//ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/model-16x16.jpg")));
 		
-		console = new TheConsole(this);	
+		console = new TheLog(this);	
 		properties = new TheProperties(this);
 		warnings = new TheWarnings(this);
 		errors = new TheErrors(this);
@@ -153,7 +192,7 @@ public class TheFrame extends JFrame {
 		infoTabbedPane.setIconAt(2,new ImageIcon(TheFrame.class.getResource("/resources/icon/error-16x16.png")));
 		
 		infoTabbedPane.add(console);	
-		infoTabbedPane.setTitleAt(3," Console ");
+		infoTabbedPane.setTitleAt(3," Log ");
 		infoTabbedPane.setIconAt(3,new ImageIcon(TheFrame.class.getResource("/resources/icon/display-16x16.png")));
 		
 		centerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,oclTabbedPane,infoTabbedPane);
@@ -166,16 +205,12 @@ public class TheFrame extends JFrame {
 		mainSplitPane.setBorder(null);
 		mainSplitPane.setDividerSize(7);
 		
-		JPanel eastPane = new JPanel();
-		getContentPane().add(BorderLayout.EAST,eastPane);
-		
-		JPanel westPane = new JPanel();
-		getContentPane().add(BorderLayout.WEST,westPane);
-		
 		getContentPane().add(BorderLayout.CENTER,mainSplitPane);				
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setExtendedState(MAXIMIZED_BOTH);
+		Rectangle r = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		setPreferredSize(new Dimension(r.width,r.height));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/icon/window.png")));
 		setTitle("Model Validation Environment - MOVE");
 					
@@ -261,7 +296,7 @@ public class TheFrame extends JFrame {
 	}
 	
 	/** Get Console Panel. */
-	public TheConsole getConsole() { 
+	public TheLog getConsole() { 
 		return console; 
 	}
 	public TheProperties getProperties(){

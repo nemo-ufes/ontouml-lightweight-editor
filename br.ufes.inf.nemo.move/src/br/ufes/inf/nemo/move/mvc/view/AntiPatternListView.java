@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.move.mvc.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,7 +24,6 @@ import br.ufes.inf.nemo.move.mvc.model.RSAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.RWORAntiPatternModel;
 import br.ufes.inf.nemo.move.mvc.model.STRAntiPatternModel;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.ui.antipattern.AntiPatternToolBar;
 
 /**
  * @author John Guerson
@@ -36,8 +34,7 @@ public class AntiPatternListView extends JPanel {
 	private static final long serialVersionUID = -4983514772261169354L;
 
 	private AntiPatternListModel antipatternListModel;
-	private TheFrame frame;
-	private AntiPatternToolBar antiPatternToolBar; 
+	private TheFrame frame;	 
 	private JTabbedPane tabbedPane;
 	private JPanel acTabPanel;
 	private JPanel strTabPanel;
@@ -71,9 +68,6 @@ public class AntiPatternListView extends JPanel {
 		tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		tabbedPane.setBackground(UIManager.getColor("Panel.background"));
 		add(tabbedPane, BorderLayout.CENTER);		
-		
-		antiPatternToolBar = new AntiPatternToolBar();
-		add(antiPatternToolBar, BorderLayout.NORTH);
 	}
 	
 	public TheFrame getTheFrame()
@@ -127,16 +121,6 @@ public class AntiPatternListView extends JPanel {
 		tabbedPane.setTitleAt(tabbedPane.indexOfComponent(acScrollPane),"AC: Association Cycle");
 	}	
 
-	/**
-	 * Add Run AntiPatterns Manager Action Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addRunAntiPaternsManagerListener(ActionListener actionListener) 
-	{
-		antiPatternToolBar.btnRun.addActionListener(actionListener);
-	}
-	
 	/** 
 	 * Create Empty RBOS Tab Panel. 
 	 */

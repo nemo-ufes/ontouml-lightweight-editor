@@ -75,7 +75,6 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -1774,7 +1773,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
             System.setProperty("com.apple.mrj.application.live-resize","true");
             System.setProperty("com.apple.macos.useScreenMenuBar","true");
             System.setProperty("apple.laf.useScreenMenuBar","true");
-            try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); } catch (Throwable e) { }
+            //try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); } catch (Throwable e) { }
         }
 
         // Figure out the desired x, y, width, and height

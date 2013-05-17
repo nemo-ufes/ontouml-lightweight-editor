@@ -18,7 +18,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.eclipse.emf.ecore.EObject;
 
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElem;
+import br.ufes.inf.nemo.move.tree.ontouml.OntoUMLElem;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette;
 import br.ufes.inf.nemo.move.ui.util.ColorPalette.ThemeColor;
 

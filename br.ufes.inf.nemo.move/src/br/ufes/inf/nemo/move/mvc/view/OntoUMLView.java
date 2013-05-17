@@ -2,27 +2,20 @@ package br.ufes.inf.nemo.move.mvc.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionListener;
 
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.move.mvc.model.OntoUMLModel;
+import br.ufes.inf.nemo.move.tree.ontouml.OntoUMLCheckBoxTree;
+import br.ufes.inf.nemo.move.tree.ontouml.OntoUMLElem;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLCheckBoxTree;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLElem;
-import br.ufes.inf.nemo.move.ui.ontouml.OntoUMLToolBar;
 import br.ufes.inf.nemo.move.ui.util.TreeScrollPane;
 
 /**
@@ -39,11 +32,8 @@ public class OntoUMLView extends JPanel {
 	private OntoUMLModel ontoumlModel;
 	
 	private TheFrame frame;	
-	private OntoUMLToolBar ontotoolbar;
 	private TreeScrollPane ontotree;
 	private OntoUMLCheckBoxTree modeltree;
-	private String openLastPath = new String();
-	private String saveLastPath = new String();
 	
 	/** 
 	 * Creates a View from a OntoUML model and the main frame application.
@@ -69,18 +59,13 @@ public class OntoUMLView extends JPanel {
 	 */
 	public OntoUMLView() 
 	{
-		setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(128, 128, 128)));
+		setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(128, 128, 128)));
 		setBackground(UIManager.getColor("Panel.background"));
 		setLayout(new BorderLayout(0, 0));
 		
 		ontotree = new TreeScrollPane();
 		ontotree.setBorder(new EmptyBorder(0, 0, 0, 0));
 		add(BorderLayout.CENTER,ontotree);
-		
-		ontotoolbar = new OntoUMLToolBar();
-		add(ontotoolbar, BorderLayout.NORTH);		
-		ontotoolbar.setPreferredSize(new Dimension(40, 30));
-		
 	}
 		
 	/**
@@ -97,52 +82,14 @@ public class OntoUMLView extends JPanel {
 						
 			modeltree = new OntoUMLCheckBoxTree(new DefaultMutableTreeNode(new OntoUMLElem(refmodel,"")),refmodel,refparser);					
 			
-			if (modeltree!=null){						
-				addTreeSelectionListener(new OntoUMLTreeSelectionListener());	
-				addTreeModelListener(new OntoUMLTreeModelListener());
-			}
+			frame.getManager().createOntoUMLController();
 			
 			ontotree.treePanel.add(BorderLayout.CENTER,modeltree);
 			ontotree.validate();
 			ontotree.repaint();
 		}
 	}
-		
-	class OntoUMLTreeSelectionListener implements TreeSelectionListener 
-	 {
-		 @Override
-			public void valueChanged(TreeSelectionEvent e) 
-			{
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-				frame.getProperties().setData(node);
-				frame.focusOnProperties();
-			}
-	 }
 	
-	class OntoUMLTreeModelListener implements TreeModelListener 
-	 {
-		//listen for changes in the model (including check box toggles)
-		@Override
-		public void treeNodesChanged(final TreeModelEvent e) {
-			System.out.println(System.currentTimeMillis() + ": nodes changed");
-		}
-
-		@Override
-		public void treeNodesInserted(final TreeModelEvent e) {
-			System.out.println(System.currentTimeMillis() + ": nodes inserted");
-		}
-
-		@Override
-		public void treeNodesRemoved(final TreeModelEvent e) {
-			System.out.println(System.currentTimeMillis() + ": nodes removed");
-		}
-
-		@Override
-		public void treeStructureChanged(final TreeModelEvent e) {
-			System.out.println(System.currentTimeMillis() + ": structure changed");
-		}
-	 }
-		
 	/** 
 	 * Get the Check Box Model Tree. 
 	 */
@@ -178,106 +125,20 @@ public class OntoUMLView extends JPanel {
 	 * 
 	 * @return
 	 */
-	public TheFrame getTheFrame() { return frame; }
-	
-	/**
-	 * Add Load OntoUML Action listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addLoadOntoUMLListener(ActionListener actionListener) 
-	{
-		ontotoolbar.btnOpen.addActionListener(actionListener);
-	}	    
-	
-	/**
-	 * Add Verify Model Action Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addVerifyModelListener(ActionListener actionListener) 
-	{
-		ontotoolbar.btnVerify.addActionListener(actionListener);
+	public TheFrame getTheFrame() 
+	{ 
+		return frame; 
 	}	
 	
-	/**
-	 * Add Show Unique Names Action Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addShowUniqueNamesListener(ActionListener actionListener) 
-	{
-		ontotoolbar.btnShowUnique.addActionListener(actionListener);
-	}	
-			
-	public void addTreeSelectionListener(OntoUMLTreeSelectionListener selectionListener)
+	public void addTreeSelectionListener(TreeSelectionListener selectionListener)
 	{
 		modeltree.addTreeSelectionListener(selectionListener);
 	}
 	
-	public void addTreeModelListener(OntoUMLTreeModelListener modeListener)
+	public void addTreeModelListener(TreeModelListener modeListener)
 	{
 		modeltree.getModel().addTreeModelListener(modeListener);
 	}
 	
-	/**
-	 * Export Model Action Listener.
-	 * 
-	 * @param actionListener
-	 */
-	public void addSaveAsModelListener(ActionListener actionListener)
-	{
-		ontotoolbar.btnSaveAs.addActionListener(actionListener);
-	}
-
-	/**
-	 * Get OntoUML Path Location.
-	 */
-	public String getOntoUMLPathLocation()
-	{
-		JFileChooser fileChooser = new JFileChooser(openLastPath);
-		fileChooser.setDialogTitle("Open OntoUML");
-		FileNameExtensionFilter ontoumlFilter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
-		fileChooser.addChoosableFileFilter(ontoumlFilter);		
-		fileChooser.setFileFilter(ontoumlFilter);
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
-		{
-			if (fileChooser.getFileFilter() == ontoumlFilter) 
-			{
-				openLastPath = fileChooser.getSelectedFile().getPath();
-				return fileChooser.getSelectedFile().getPath();
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Save OntoUML Path Location.
-	 */
-	public String saveOntoUMLPathLocation()
-	{
-		JFileChooser fileChooser = new JFileChooser(saveLastPath);
-		fileChooser.setDialogTitle("Save OntoUML");
-		FileNameExtensionFilter ontoumlFilter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
-		fileChooser.addChoosableFileFilter(ontoumlFilter);
-		fileChooser.setFileFilter(ontoumlFilter);
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) 
-		{
-			if (fileChooser.getFileFilter() == ontoumlFilter) 
-			{
-				String path = fileChooser.getSelectedFile().getPath();				
-				if (path.contains(".refontouml")){
-					saveLastPath = fileChooser.getSelectedFile().getPath();
-					return fileChooser.getSelectedFile().getPath();
-				} else {
-					saveLastPath = fileChooser.getSelectedFile().getPath()+".refontouml";
-					return fileChooser.getSelectedFile().getPath()+".refontouml";
-				}
-			}
-		}
-		return null;
-	}
 
 }

@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.move;
 
 import java.awt.EventQueue;
 
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import br.ufes.inf.nemo.move.ui.TheFrame;
@@ -36,7 +37,9 @@ public final class Main {
 		{
 			public void run() {
 				try {
+					
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					//useSubstanceLAF();
 					
 					TheFrame frame = new TheFrame();
 					frame.setVisible(true);
@@ -48,4 +51,24 @@ public final class Main {
 			}
 		});
 	}
+	
+	public static void useSubstanceLAF() {
+        try {
+
+            JFrame.setDefaultLookAndFeelDecorated(true);
+            //UIManager.setLookAndFeel(new SubstanceBusinessBlackSteelLookAndFeel());
+            
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        try {
+
+            JFrame.setDefaultLookAndFeelDecorated(true);
+            //UIManager.setLookAndFeel(new SubstanceBusinessBlackSteelLookAndFeel());            
+            
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+    }
 }
