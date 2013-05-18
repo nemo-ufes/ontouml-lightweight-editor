@@ -450,7 +450,7 @@ public class TheManager {
 	{
 		try{
 	     	
-      	String path = FileChoosers.getOntoUMLPathLocation(frame,ontoumlmodel.getOntoUMLPath());
+      	String path = FileChoosersUtil.getOntoUMLPathLocation(frame,ontoumlmodel.getOntoUMLPath());
     				
       	if (path==null) return;
       	
@@ -475,7 +475,7 @@ public class TheManager {
     	ontoumlview.getTheFrame().getManager().doModelDiagnostic();	
 	}
 	
-	public void doGenerateAliases ()
+	public void doShowOrHideAliases ()
 	{
 		if(ontoumlview.getModelTree()==null)
 			{	       			
@@ -497,7 +497,7 @@ public class TheManager {
 		}
     	ontoumlview.getTheFrame().getManager().doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
     	
-    	String path = FileChoosers.saveOntoUMLPathLocation(frame,ontoumlmodel.getOntoUMLPath());
+    	String path = FileChoosersUtil.saveOntoUMLPathLocation(frame,ontoumlmodel.getOntoUMLPath());
     	
     	if(path!=null)ResourceUtil.saveReferenceOntoUML(path, ontoumlview.getTheFrame().getManager().getOntoUMLModel().getOntoUMLModelInstance());		
 	}
@@ -506,7 +506,7 @@ public class TheManager {
 	{
     	try{
      	
-      	String path = FileChoosers.openOCLPathLocation(frame,oclmodel.getOCLPath());
+      	String path = FileChoosersUtil.openOCLPathLocation(frame,oclmodel.getOCLPath());
     		
       	if (path==null) return;
       	
@@ -548,7 +548,7 @@ public class TheManager {
     	{
     		try{
     			
-    			String path = FileChoosers.saveOCLPathLocation(frame,oclmodel.getOCLPath());	    		
+    			String path = FileChoosersUtil.saveOCLPathLocation(frame,oclmodel.getOCLPath());	    		
     			if (path==null) return;		
 	      		    					      	
     			oclmodel.setConstraints(oclview.getConstraints(),"CONTENT");

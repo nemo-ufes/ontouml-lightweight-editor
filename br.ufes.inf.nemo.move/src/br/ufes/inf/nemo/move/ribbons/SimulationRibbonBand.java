@@ -23,6 +23,7 @@ public class SimulationRibbonBand extends JRibbonBand {
 	
 	private TheFrame frame;
 	private JCommandButton analyzerButton;
+	private JCommandButton searchButton;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public SimulationRibbonBand(TheFrame frame, String title, ResizableIcon icon) 
@@ -30,10 +31,12 @@ public class SimulationRibbonBand extends JRibbonBand {
 		super(title, icon);
 		
 		this.frame = frame;		
-		
-		analyzerButton = new JCommandButton("Analyzer",getResizableIconFromResource("resources/icon/alloy-36x36.png"));
+				
+		analyzerButton = new JCommandButton("Open Analyzer",getResizableIconFromResource("resources/icon/alloy-36x36.png"));
+		searchButton = new JCommandButton("Detect AntiPatterns",getResizableIconFromResource("resources/icon/search-36x36.png"));
 		
 		addCommandButton(analyzerButton, RibbonElementPriority.TOP);
+		addCommandButton(searchButton, RibbonElementPriority.MEDIUM);
 		
 		setResizePolicies((List) Arrays.asList(
 				new CoreRibbonResizePolicies.None(getControlPanel()),
@@ -41,6 +44,7 @@ public class SimulationRibbonBand extends JRibbonBand {
 		setPreferredSize(new Dimension(400, 90));
 		
 		analyzerButton.addActionListener(new AlloyAnalyzerListener());
+		searchButton.addActionListener(new SearchAntiPatternListener());
 	}
 	
 	private static ResizableIcon getResizableIconFromResource(String resource) 
@@ -63,6 +67,17 @@ public class SimulationRibbonBand extends JRibbonBand {
    				frame.getManager().getOntoUMLOptionModel().getOptions().openAnalyzer=true;   				
    				OptionsDialog.open(frame.getManager().getOntoUMLOptionModel(),frame.getManager().getOCLOptionModel(),frame);       				
    			}
+	    }
+	 }
+	 
+	/**
+	 * Search AntiPattern Action Listener.
+	 */
+	 class SearchAntiPatternListener implements ActionListener 
+	 {
+	    public void actionPerformed(ActionEvent e) 
+	    {
+	    	frame.getManager().doSearchAntiPatterns();
 	    }
 	 }
 }

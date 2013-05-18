@@ -21,18 +21,17 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
+import org.pushingpixels.flamingo.api.common.JCommandButton;
+import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
-import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenu;
-import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryFooter;
-import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary;
 import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 
-import br.ufes.inf.nemo.move.ribbons.AntiPatternRibbonBand;
-import br.ufes.inf.nemo.move.ribbons.OCLRibbonBand;
-import br.ufes.inf.nemo.move.ribbons.OntoUMLRibbonBand;
+import br.ufes.inf.nemo.move.ribbons.ConstraintsEditionRibbonBand;
+import br.ufes.inf.nemo.move.ribbons.ModelDiagnosisRibbonBand;
+import br.ufes.inf.nemo.move.ribbons.ModelEditionRibbonBand;
+import br.ufes.inf.nemo.move.ribbons.ModelOtherRibbonBand;
 import br.ufes.inf.nemo.move.ribbons.SimulationRibbonBand;
 import br.ufes.inf.nemo.move.ui.util.Extractor;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
@@ -47,7 +46,7 @@ public class TheFrame extends JRibbonFrame {
 		
 	private TheToolBar toolBar;	
 	private TheMenuBar menuBar;	
-	private TheLog console;	
+	private LogPanel console;	
 	private JSplitPane mainSplitPane;
 	//private JSplitPane innerSplitPane;	
 	private JSplitPane centerSplitPane;	
@@ -57,10 +56,10 @@ public class TheFrame extends JRibbonFrame {
 	private JTabbedPane infoTabbedPane;
 	private TheManager appmanager;	
 	private SimpleGUICustom analyzer;
-	private TheStatus statusBar;
-	private TheProperties properties	;
-	private TheWarnings warnings;
-	private TheErrors errors;
+	private StatusPanel statusBar;
+	private PropertyTablePanel properties	;
+	private WarningTablePanel warnings;
+	private ErrorTablePanel errors;
 	
 	/**
 	 * Constructor.
@@ -89,28 +88,57 @@ public class TheFrame extends JRibbonFrame {
 	 */
 	public TheFrame() 
 	{
-		super();
+		super();		
 		getContentPane().setBackground(new Color(230, 230, 250));
 		
-		RibbonTask ontoumlTask = new RibbonTask("OntoUML", new OntoUMLRibbonBand(this,"Model",null));		
+		RibbonTask ontoumlTask = new RibbonTask(
+			"OntoUML",
+			new ModelEditionRibbonBand(this,"Basic Edition",null),
+			new ModelDiagnosisRibbonBand(this,"Diagnosis",null),
+			new ModelOtherRibbonBand(this,"Other",null)			
+		);
 		getRibbon().addTask(ontoumlTask);
 		
-		RibbonTask oclTask = new RibbonTask("OCL", new OCLRibbonBand(this,"Constraints",null));		
+		RibbonTask oclTask = new RibbonTask(
+			"OCL", 
+			new ConstraintsEditionRibbonBand(this,"Basic Edition",null)
+		);
 		getRibbon().addTask(oclTask);
 		
-		RibbonTask alloyTask = new RibbonTask("Simulation", new SimulationRibbonBand(this,"Alloy",null));		
+		RibbonTask alloyTask = new RibbonTask(
+			"Simulation", 
+			new SimulationRibbonBand(this,"Analyzer/Manager",null)
+		);
 		getRibbon().addTask(alloyTask);
-
-		RibbonTask antiPatternTask = new RibbonTask("AntiPattern", new AntiPatternRibbonBand(this,"Manager",null));		
-		getRibbon().addTask(antiPatternTask);
 		
-		getRibbon().setApplicationIcon(getResizableIconFromResource("resources/icon/window.png"));
+		getRibbon().setApplicationIcon(getResizableIconFromResource("resources/icon/window-black.png"));
 
-		RibbonApplicationMenu menu = new RibbonApplicationMenu();		
-		menu.addMenuEntry(new RibbonApplicationMenuEntryPrimary(null,"Help",null,CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION));
-		menu.addFooterEntry(new RibbonApplicationMenuEntryFooter(null,"About",null));
-		menu.addMenuSeparator();
-		getRibbon().setApplicationMenu(menu);
+		/*RibbonContextualTaskGroup  contextualGroup = new RibbonContextualTaskGroup(
+				"Grupo1", 
+				ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST),
+				ontoumlTask, oclTask,alloyTask,antiPatternTask);
+		this.getRibbon().addContextualTaskGroup(contextualGroup);*/
+		
+		JCommandButton AboutButton = new JCommandButton("About",
+				getResizableIconFromResource("resources/icon/info-36x36.png"));
+		String title = "About";
+		String description = "See more about this application, the authors, version and etc.";
+		AboutButton.setPopupRichTooltip(new RichTooltip(title, description));
+
+		JCommandButton LicensesButton = new JCommandButton("Licenses",
+				getResizableIconFromResource("resources/icon/copyright-36x36.png"));
+		title = "Licenses";
+		description = "See the copyright licenses embedded with this application.";
+		LicensesButton.setPopupRichTooltip(new RichTooltip(title, description));
+						
+		this.getRibbon().addTaskbarComponent(AboutButton);
+		this.getRibbon().addTaskbarComponent(LicensesButton);
+		
+		//RibbonApplicationMenu menu = new RibbonApplicationMenu();		
+		//menu.addMenuEntry(new RibbonApplicationMenuEntryPrimary(null,"Help",null,CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION));
+		//menu.addFooterEntry(new RibbonApplicationMenuEntryFooter(null,"Close",null));
+		//menu.addMenuSeparator();		
+		//getRibbon().setApplicationMenu(menu);
 		
 		//getContentPane().setLayout(new BorderLayout(0, 0));
 		//
@@ -133,17 +161,20 @@ public class TheFrame extends JRibbonFrame {
 		oclTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));		
 		oclTabbedPane.setBackground(UIManager.getColor("Panel.background"));
 		oclTabbedPane.setBorder(null);
-		
+		oclTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+				
 		oclTabbedPane.add(appmanager.getOCLView());	
 		oclTabbedPane.setTitleAt(0,"OCL Editor");
 		oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-ocl-16x16.png")));
 		oclTabbedPane.setBackgroundAt(0,UIManager.getColor("Panel.background"));		
+		oclTabbedPane.setTabComponentAt(0,new ButtonTabComponent(oclTabbedPane));
 		
 		oclTabbedPane.add(appmanager.getAntiPatternListView());	
 		oclTabbedPane.setTitleAt(1,"AntiPattern Manager");
 		oclTabbedPane.setIconAt(1,new ImageIcon(TheFrame.class.getResource("/resources/icon/search-16x16.png")));
 		oclTabbedPane.setBackgroundAt(1,UIManager.getColor("Panel.background"));
-
+		oclTabbedPane.setTabComponentAt(1,new ButtonTabComponent(oclTabbedPane));
+		
 		/*antipatternPane = new JTabbedPane();
 		antipatternPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		antipatternPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -168,10 +199,10 @@ public class TheFrame extends JRibbonFrame {
 		ontoumlTabbedPane.setBackgroundAt(0,UIManager.getColor("Panel.background"));		
 		//ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/model-16x16.jpg")));
 		
-		console = new TheLog(this);	
-		properties = new TheProperties(this);
-		warnings = new TheWarnings(this);
-		errors = new TheErrors(this);
+		console = new LogPanel(this);	
+		properties = new PropertyTablePanel(this);
+		warnings = new WarningTablePanel(this);
+		errors = new ErrorTablePanel(this);
 		
 		infoTabbedPane = new JTabbedPane();
 		infoTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -214,7 +245,7 @@ public class TheFrame extends JRibbonFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/icon/window.png")));
 		setTitle("Model Validation Environment - MOVE");
 					
-		statusBar = new TheStatus();
+		statusBar = new StatusPanel();
 		getContentPane().add(BorderLayout.SOUTH,statusBar);
 		
 		try {			
@@ -296,16 +327,16 @@ public class TheFrame extends JRibbonFrame {
 	}
 	
 	/** Get Console Panel. */
-	public TheLog getConsole() { 
+	public LogPanel getConsole() { 
 		return console; 
 	}
-	public TheProperties getProperties(){
+	public PropertyTablePanel getProperties(){
 		return properties;
 	}
-	public TheWarnings getWarnings(){
+	public WarningTablePanel getWarnings(){
 		return warnings;
 	}
-	public TheErrors getErrors(){
+	public ErrorTablePanel getErrors(){
 		return errors;
 	}
 	/** Get Tool Bar */
@@ -316,7 +347,7 @@ public class TheFrame extends JRibbonFrame {
 	public TheMenuBar getTheMenuBar() { 
 		return menuBar; 
 	}
-	public TheStatus getTheStatusBar() {
+	public StatusPanel getTheStatusBar() {
 		return statusBar;
 	}
 	
