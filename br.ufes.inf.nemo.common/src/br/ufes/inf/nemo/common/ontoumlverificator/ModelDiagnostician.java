@@ -110,8 +110,7 @@ public class ModelDiagnostician {
 				{ 				
 					ArrayList<String> line = new ArrayList<String>();
 					errors++;
-					if (errors<10) line.add("0"+errors+". Invalid stereotype");
-					else line.add(errors+". Invalid stereotype");
+					line.add(String.format("%02d", errors)+". Invalid stereotype");					
 					line.add(getElement(c));
 					line.add(getPath(c));
 					items.add(line);	
@@ -128,8 +127,7 @@ public class ModelDiagnostician {
 				{ 				
 					ArrayList<String> line = new ArrayList<String>();
 					errors++;
-					if (errors<10) line.add("0"+errors+". Name contains an OCL keyword");
-					else line.add(errors+". Name contains an OCL keyword");
+					line.add(String.format("%02d", errors)+". Name contains an OCL keyword");					
 					line.add(getElement(c));
 					line.add(getPath(c));
 					items.add(line);
@@ -142,8 +140,7 @@ public class ModelDiagnostician {
 			{ 				
 				ArrayList<String> line = new ArrayList<String>();
 				errors++;
-				if (errors<10) line.add("0"+errors+". Name contains an OCL keyword");
-				else line.add(errors+". Name contains an OCL keyword");
+				line.add(String.format("%02d", errors)+". Name contains an OCL keyword");				
 				line.add(getElement(c));
 				line.add(getPath(c));
 				items.add(line);
@@ -157,8 +154,7 @@ public class ModelDiagnostician {
 			{ 				 
 				ArrayList<String> line = new ArrayList<String>();
 				errors++;
-				if (errors<10) line.add("0"+errors+". Mixin not abstract");
-				else line.add(errors+". Mixin not abstract");
+				line.add(String.format("%02d", errors)+". Mixin not abstract");				
 				line.add(getElement(c));
 				line.add(getPath(c));
 				items.add(line);
@@ -171,8 +167,7 @@ public class ModelDiagnostician {
 			if (p.getType()==null){
 				ArrayList<String> line = new ArrayList<String>();
 				errors++;
-				if (errors<10) line.add("0"+errors+". Association end type is null");
-				else line.add(errors+". Association end type is null");
+				line.add(String.format("%02d", errors)+". Association end type is null");				
 				line.add(getElement(p));
 				line.add(getPath(p));
 				items.add(line);
@@ -186,8 +181,7 @@ public class ModelDiagnostician {
 			{ 
 				ArrayList<String> line = new ArrayList<String>();
 				errors++;
-				if (errors<10) line.add("0"+errors+". Association has not two association ends");
-				else line.add(errors+". Association has not two association ends");
+				line.add(String.format("%02d", errors)+". Association has not two association ends");				
 				line.add(getElement(c));
 				line.add(getPath(c));
 				items.add(line);							
@@ -202,8 +196,7 @@ public class ModelDiagnostician {
 			{ 					
 				ArrayList<String> line = new ArrayList<String>();
 				errors++;
-				if (errors<10) line.add("0"+errors+". Source end type must be a Relator");
-				else line.add(errors+". Source end type must be a Relator");
+				line.add(String.format("%02d", errors)+". Source end type must be a Relator");				
 				line.add(getElement(m));
 				line.add(getPath(m));
 				items.add(line);
@@ -212,8 +205,7 @@ public class ModelDiagnostician {
 			{
 				ArrayList<String> line = new ArrayList<String>();
 				errors++;
-				if (errors<10) line.add("0"+errors+". Mediated end must be read only");
-				else line.add(errors+". Mediated end must be read only");
+				line.add(String.format("%02d", errors)+". Mediated end must be read only");				
 				line.add(getElement(m));
 				line.add(getPath(m));
 				items.add(line);
@@ -230,8 +222,7 @@ public class ModelDiagnostician {
 				{
 					ArrayList<String> line = new ArrayList<String>();
 					errors++;
-					if (errors<10) line.add("0"+errors+". Whole must have aggregation kind equal to composite or shared");
-					else line.add(errors+". Whole must have aggregation kind equal to composite or shared");
+					line.add(String.format("%02d", errors)+". Whole must have aggregation kind equal to composite or shared");					
 					line.add(getElement(m));
 					line.add(getPath(m));
 					items.add(line);
@@ -240,8 +231,7 @@ public class ModelDiagnostician {
 				{
 					ArrayList<String> line = new ArrayList<String>();
 					errors++;
-					if (errors<10) line.add("0"+errors+". Part must have aggregation kind equal to none");
-					else line.add(errors+". Part must have aggregation kind equal to none");
+					line.add(String.format("%02d", errors)+". Part must have aggregation kind equal to none");					
 					line.add(getElement(m));
 					line.add(getPath(m));
 					items.add(line);
@@ -259,8 +249,7 @@ public class ModelDiagnostician {
 				{
 					ArrayList<String> line = new ArrayList<String>();
 					errors++;
-					if (errors<10) line.add("0"+errors+". Source end type of characterization must be a Mode");
-					else line.add(errors+". Source end type of characterization must be a Mode");
+					line.add(String.format("%02d", errors)+". Source end type of characterization must be a Mode");					
 					line.add(getElement(m));
 					line.add(getPath(m));
 					items.add(line);
@@ -269,8 +258,7 @@ public class ModelDiagnostician {
 				{
 					ArrayList<String> line = new ArrayList<String>();
 					errors++;
-					if (errors<10) line.add("0"+errors+". Characterized end of characterization must be read only");
-					else line.add(errors+". Characterized end of characterization must be read only");
+					line.add(String.format("%02d", errors)+". Characterized end of characterization must be read only");					
 					line.add(getElement(m));
 					line.add(getPath(m));
 					items.add(line);
@@ -294,12 +282,11 @@ public class ModelDiagnostician {
 		
 		// # Warning : Elements Without Identity
 		
-		for (RefOntoUML.Classifier c: ontoparser.getElementsWithoutIdentity())
+		for (RefOntoUML.Classifier c: ontoparser.getElementsWithIdentityMissing())
 		{
 			ArrayList<String> line = new ArrayList<String>();
 			warnings++;
-			if (warnings<10) line.add("0"+warnings+". Element without identity");
-			else line.add(warnings+". Element without identity");
+			line.add(String.format("%02d", warnings)+". Element does not inherited identity principle");			
 			line.add(getElement(c));
 			line.add(getPath(c));
 			items.add(line);
@@ -315,8 +302,7 @@ public class ModelDiagnostician {
 				{ 				
 					ArrayList<String> line = new ArrayList<String>();
 					warnings++;
-					if (warnings<10) line.add("0"+warnings+". Unnamed element");
-					else line.add(warnings+". Unnamed element");
+					line.add(String.format("%02d", warnings)+". Unnamed element");					
 					line.add(getElement(c));
 					line.add(getPath(c));
 					items.add(line);					
@@ -351,8 +337,7 @@ public class ModelDiagnostician {
 			{ 
 				ArrayList<String> line = new ArrayList<String>();
 				warnings++;
-				if (warnings<10) line.add("0"+warnings+". Name conflict");
-				else line.add(warnings+". Name conflict");
+				line.add(String.format("%02d", warnings)+". Name conflict");				
 				int count=1;					
 				for (RefOntoUML.PackageableElement e: list)
 				{

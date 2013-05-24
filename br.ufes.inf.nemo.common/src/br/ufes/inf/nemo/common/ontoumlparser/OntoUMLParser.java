@@ -981,12 +981,11 @@ public class OntoUMLParser {
 	
 	/**
 	 * All the model types that does not have an identity. This method will return all the sortals
-	 * that does not have a Substance Sortal as its ancestors and all the Mixins that does not have
-	 * a Substance Sortal as its descendants.
+	 * that does not have a Substance Sortal as its ancestors.
 	 * 
 	 * @return
 	 */
-	public ArrayList<RefOntoUML.Classifier> getElementsWithoutIdentity ()
+	public ArrayList<RefOntoUML.Classifier> getElementsWithIdentityMissing ()
 	{
 		ArrayList<RefOntoUML.Classifier> list = new ArrayList<RefOntoUML.Classifier>();
 		boolean hasIdentity;
@@ -999,13 +998,12 @@ public class OntoUMLParser {
 				if (!hasIdentity) { list.add(c); }
 			}			
 			
-			hasIdentity=false;
+			/*hasIdentity=false;
 			if (c instanceof RefOntoUML.Category || c instanceof RefOntoUML.RoleMixin || c instanceof RefOntoUML.Mixin)
 			{
 				for (Classifier s: getAllChildren(c)) if (s instanceof RefOntoUML.SubstanceSortal) hasIdentity=true;
 				if (!hasIdentity) { list.add(c); }
-			}
-			
+			}*/			
 		}
 		return list;
 	}

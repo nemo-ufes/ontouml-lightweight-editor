@@ -45,6 +45,11 @@ public class WarningTablePanel extends JPanel {
 		this.frame = frame;
 	}
 	
+	public void selectRow (int row)
+	{
+		table.setRowSelectionInterval(row, row);
+	}
+	
 	/**
 	 * Set data
 	 * 

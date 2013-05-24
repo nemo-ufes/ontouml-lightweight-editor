@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -159,31 +160,38 @@ public class OptionsDialog extends JDialog {
     	oclOptions.setCommandScope(oclOptView.getScopesListSelected());    			
 		oclOptions.setConstraintList(oclOptView.getConstraintListSelected());
     	oclOptModel.setOCLOptions(oclOptions);
-		
+		  
+    	String message = new String(); int i=1;
     	
-    	//print warning from the options configuration....    	
-    	String message = 
-    		"1. "+ontoumlOptions.getIdentityValidityMessage(frame.getManager().getOntoUMLModel().getOntoUMLParser())+"\n\n"+
-    		"2. "+ontoumlOptions.getAntirigityValidityMessage()+"\n\n";
-    	String finalquestion = "If you are already aware of this, please click in Yes to continue..."+"\n\n";
-    	boolean option = JOptionPane.showConfirmDialog(
-    			this, message+finalquestion, "Please, Read This...",
-    			JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;		
+    	String text = ontoumlOptions.getIdentityValidityMessage(frame.getManager().getOntoUMLModel().getOntoUMLParser());
+    	if (!text.isEmpty())  { message = "W"+String.format("%02d", i)+". "+text+"\n\n"; i++; }
+    	    	
+    	text = ontoumlOptions.getAntirigityValidityMessage();
+    	if (!text.isEmpty())  { message = "W"+String.format("%02d", i)+". "+text+"\n\n"; i++; }    	
     	
-    	// do the action in the case of continuation...
-    	if (option)
+    	String finalquestion = "Do you want to continue?"+"\n\n";
+    	
+    	if (!text.isEmpty())
     	{
-    		dispose();
+			// open warning dialog...
+			boolean option = JOptionPane.showConfirmDialog(
+					this, message+finalquestion, "Please, Read This...",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE,
+					new ImageIcon(OptionsDialog.class.getResource("/resources/icon/warning-36x36.png"))
+			) == JOptionPane.YES_OPTION;		
+    	
+			if (option)
+			{
+		    	// do the action in the case of continuation...
+				dispose();			
+				frame.getManager().doSimulation();
+			}
+    	}else{
     		
-    		frame.getManager().doOntoUMLToAlloy();
-        	
-        	frame.getManager().doOCLToAlloy();
-        	
-        	if (ontoumlOptions.openAnalyzer)
-        		frame.getManager().doOpeningAlloy(true,-1);
-        	else
-        		frame.getManager().doOpeningAlloy(false,0);		
-    	}	
+    		dispose();
+    		frame.getManager().doSimulation();
+    	}
     	
 	}
 	

@@ -32,8 +32,8 @@ public class ModelOtherRibbonBand extends JRibbonBand {
 		
 		this.frame = frame;
 		
-		autoCompletionButton = new JCommandButton("Auto Complete",getResizableIconFromResource("resources/icon/completion-36x36.png"));		
-		showAliasButton = new JCommandButton("Show Aliases",getResizableIconFromResource("resources/icon/label-36x36.png"));	
+		autoCompletionButton = new JCommandButton("Complete",getResizableIconFromResource("resources/icon/completion-36x36.png"));		
+		showAliasButton = new JCommandButton("Aliases",getResizableIconFromResource("resources/icon/label-36x36.png"));	
 	
 		addCommandButton(autoCompletionButton, RibbonElementPriority.TOP);
 		addCommandButton(showAliasButton, RibbonElementPriority.MEDIUM);

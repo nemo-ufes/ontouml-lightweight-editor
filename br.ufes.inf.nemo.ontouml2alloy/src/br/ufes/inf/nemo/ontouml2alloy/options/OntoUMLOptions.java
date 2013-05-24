@@ -11,12 +11,7 @@ public class OntoUMLOptions {
 	public boolean identityPrinciple = true;	
 	public boolean antiRigidity = false;	
 	public boolean openAnalyzer = true;
-	
-	public OntoUMLOptions()	
-	{
-	
-	}	
-	
+		
 	/**
 	 * This method checks if the Identity Principle option was checked and
 	 * return model elements that does not have any identity (inherited by its ancestors or provided by its descendants).
@@ -28,7 +23,7 @@ public class OntoUMLOptions {
 	public ArrayList<RefOntoUML.Classifier> getIdentityValidityElements(OntoUMLParser refparser)
 	{
 		ArrayList<RefOntoUML.Classifier> elemsWithoutIndentity = new ArrayList<RefOntoUML.Classifier>();		
-		elemsWithoutIndentity = refparser.getElementsWithoutIdentity();
+		elemsWithoutIndentity = refparser.getElementsWithIdentityMissing();
 		if (identityPrinciple && !elemsWithoutIndentity.isEmpty())
 		{
 			return elemsWithoutIndentity;
@@ -44,10 +39,9 @@ public class OntoUMLOptions {
 		if (!elemsWithoutIndentity.isEmpty())
 		{
 			result += 
-				"Checking the Identity Principle you are ensuring that every " + "\n"+
-				"element of your model inherited/has an identity. If not, please uncheck it.";
-				
-		}		
+				"There are classes in your model that does not inherit an identity principle from substance sortals." + "\n"+
+				"Please, fix the problem or if you want to continue to run the simulation uncheck the Identity option.";				
+		}
 		return result;
 	}
 	
@@ -57,8 +51,8 @@ public class OntoUMLOptions {
 		if (antiRigidity)
 		{
 			result += 
-				"Checking the Anti-rigidity you are ensuring that the simulation" + "\n" +
-				"will always occur withat least two (2) Worlds.";
+				"Checking the Anti-rigidity option you are ensuring that by running the simulation" + "\n" +
+				"you will always simulate the model with at least two (2) Worlds.";
 		}
 		return result;
 	}

@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -239,9 +237,9 @@ public class TheFrame extends JRibbonFrame {
 		getContentPane().add(BorderLayout.CENTER,mainSplitPane);				
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setExtendedState(MAXIMIZED_BOTH);
-		Rectangle r = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-		setPreferredSize(new Dimension(r.width,r.height));
+		//setExtendedState(MAXIMIZED_BOTH);
+		//Rectangle r = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		//setPreferredSize(new Dimension(r.width,r.height));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TheFrame.class.getResource("/resources/icon/window.png")));
 		setTitle("Model Validation Environment - MOVE");
 					
@@ -495,9 +493,11 @@ public class TheFrame extends JRibbonFrame {
 	/** Make the frame visible, non-iconized, and focused. */
     public void showFrame() 
     {
-      setVisible(true);
-      setExtendedState(getExtendedState() & ~JFrame.ICONIFIED);
-      requestFocus();
-      toFront();
+    	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    	setExtendedState(JFrame.MAXIMIZED_BOTH);
+    	setSize(screenSize);
+        setVisible(true);        
+        requestFocus();
+        toFront();
     }
 }

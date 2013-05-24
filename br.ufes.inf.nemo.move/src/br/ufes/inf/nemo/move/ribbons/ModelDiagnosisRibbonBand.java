@@ -30,8 +30,8 @@ public class ModelDiagnosisRibbonBand extends JRibbonBand {
 		
 		this.frame = frame;
 
-		diagnoseButton = new JCommandButton("Find Problems", getResizableIconFromResource("resources/icon/diagnostic-36x36.png"));
-		verifyButton = new JCommandButton("Verify Syntax", getResizableIconFromResource("resources/icon/check-36x36.png"));
+		diagnoseButton = new JCommandButton("Problems", getResizableIconFromResource("resources/icon/diagnostic-36x36.png"));
+		verifyButton = new JCommandButton("Syntax", getResizableIconFromResource("resources/icon/check-36x36.png"));
 			
 		addCommandButton(diagnoseButton, RibbonElementPriority.TOP);		
 		addCommandButton(verifyButton, RibbonElementPriority.MEDIUM);
