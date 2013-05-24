@@ -292,6 +292,19 @@ public class ModelDiagnostician {
 		ArrayList<ArrayList<String>> items = new ArrayList<ArrayList<String>>();
 		warnings = 0;
 		
+		// # Warning : Elements Without Identity
+		
+		for (RefOntoUML.Classifier c: ontoparser.getElementsWithoutIdentity())
+		{
+			ArrayList<String> line = new ArrayList<String>();
+			warnings++;
+			if (warnings<10) line.add("0"+warnings+". Element without identity");
+			else line.add(warnings+". Element without identity");
+			line.add(getElement(c));
+			line.add(getPath(c));
+			items.add(line);
+		}
+		
 		// # Warning : Unnamed Element
 		
 		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
