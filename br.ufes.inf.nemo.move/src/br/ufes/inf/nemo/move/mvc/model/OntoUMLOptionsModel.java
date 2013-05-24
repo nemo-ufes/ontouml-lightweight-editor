@@ -13,7 +13,7 @@ public class OntoUMLOptionsModel {
 	
 	/** OntoUML model options */
 	private OntoUMLOptions option;
-	
+		
 	/**
 	 * Constructor.
 	 * 
@@ -28,7 +28,7 @@ public class OntoUMLOptionsModel {
 	 * Constructor.
 	 */
 	public OntoUMLOptionsModel ()
-	{
+	{	
 		this.option = new OntoUMLOptions();
 	}
 		

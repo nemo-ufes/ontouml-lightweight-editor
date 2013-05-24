@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
@@ -159,16 +160,31 @@ public class OptionsDialog extends JDialog {
 		oclOptions.setConstraintList(oclOptView.getConstraintListSelected());
     	oclOptModel.setOCLOptions(oclOptions);
 		
-    	dispose();
     	
-    	frame.getManager().doOntoUMLToAlloy();
+    	//print warning from the options configuration....    	
+    	String message = 
+    		"1. "+ontoumlOptions.getIdentityValidityMessage(frame.getManager().getOntoUMLModel().getOntoUMLParser())+"\n\n"+
+    		"2. "+ontoumlOptions.getAntirigityValidityMessage()+"\n\n";
+    	String finalquestion = "If you are already aware of this, please click in Yes to continue..."+"\n\n";
+    	boolean option = JOptionPane.showConfirmDialog(
+    			this, message+finalquestion, "Please, Read This...",
+    			JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;		
     	
-    	frame.getManager().doOCLToAlloy();
+    	// do the action in the case of continuation...
+    	if (option)
+    	{
+    		dispose();
+    		
+    		frame.getManager().doOntoUMLToAlloy();
+        	
+        	frame.getManager().doOCLToAlloy();
+        	
+        	if (ontoumlOptions.openAnalyzer)
+        		frame.getManager().doOpeningAlloy(true,-1);
+        	else
+        		frame.getManager().doOpeningAlloy(false,0);		
+    	}	
     	
-    	if (ontoumlOptions.openAnalyzer)
-    		frame.getManager().doOpeningAlloy(true,-1);
-    	else
-    		frame.getManager().doOpeningAlloy(false,0);
 	}
 	
 	public TheFrame getTheFrame()

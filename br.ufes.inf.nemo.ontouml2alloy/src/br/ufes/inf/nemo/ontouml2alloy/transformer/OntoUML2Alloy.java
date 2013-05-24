@@ -83,8 +83,6 @@ public class OntoUML2Alloy {
 	 * 
 	 * @param refmodel : The root of .refontouml model (RefOntoUML.Model).
 	 * @param alloyPath: The absolute path of alloy model.
-	 * @param RelatorRuleFlag: True if the relator constraint should be transformed. 
-	 * @param WeakSupplementationRuleFlag:  True if the weak supplementation rule should be transformed.
 	 * 
 	 * @return
 	 * @throws Exception
@@ -112,6 +110,7 @@ public class OntoUML2Alloy {
 		
 		return transformer.module.toString();
 	}	
+	
 	
 	private static void start(OntoUMLParser refparser, OntoUMLOptions opt) throws Exception
 	{

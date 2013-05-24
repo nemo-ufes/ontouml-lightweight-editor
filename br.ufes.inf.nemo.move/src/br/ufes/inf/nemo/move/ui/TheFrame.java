@@ -491,6 +491,7 @@ public class TheFrame extends JRibbonFrame {
 		);
 	}
 	
+	
 	/** Make the frame visible, non-iconized, and focused. */
     public void showFrame() 
     {
