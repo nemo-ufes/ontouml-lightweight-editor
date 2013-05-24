@@ -32,8 +32,8 @@ public class SimulationRibbonBand extends JRibbonBand {
 		
 		this.frame = frame;		
 				
-		analyzerButton = new JCommandButton("Open Analyzer",getResizableIconFromResource("resources/icon/alloy-36x36.png"));
-		searchButton = new JCommandButton("Detect AntiPatterns",getResizableIconFromResource("resources/icon/search-36x36.png"));
+		analyzerButton = new JCommandButton("Simulate",getResizableIconFromResource("resources/icon/alloy-36x36.png"));
+		searchButton = new JCommandButton("AntiPatterns",getResizableIconFromResource("resources/icon/search-36x36.png"));
 		
 		addCommandButton(analyzerButton, RibbonElementPriority.TOP);
 		addCommandButton(searchButton, RibbonElementPriority.MEDIUM);

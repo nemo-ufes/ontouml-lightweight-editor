@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.ocl.ParserException;
 
-import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
@@ -207,7 +206,7 @@ public class TheManager {
 			verificator.getErrorsMatrixFormat(ontoumlmodel.getOntoUMLParser()),
 			verificator.getErrors()
 		);
-		if (verificator.getErrors()>0) {  frame.focusOnErrors(); }
+		if (verificator.getErrors()>0) {  frame.getErrors().selectRow(0); frame.focusOnErrors(); }
 		
 	}
 	
@@ -291,14 +290,6 @@ public class TheManager {
 		
 		// do auto selection completion.
 		doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY); 
-		
-		// warning: no substance sortal.
-		if (ontoumlmodel.getOntoUMLParser().getAllInstances(SubstanceSortal.class).isEmpty() && ontoumlOptModel.getOptions().identityPrinciple) 
-		{
-			ontoumlOptModel.getOptions().identityPrinciple=false;
-			String msg = "No Substance Sortals in the model.\nThe Identity Principle Axiom should not be enforced. This option was unchecked.\n ";
-			frame.showWarningMessageDialog("No Substance Sortal",msg);
-		}
 		
 		try {			
 			
@@ -595,6 +586,18 @@ public class TheManager {
     		JOptionPane.showMessageDialog(frame,x.getLocalizedMessage(),"Error",JOptionPane.ERROR_MESSAGE);					
     		x.printStackTrace();
     	}
+	}
+	
+	public void doSimulation()
+	{
+		frame.getManager().doOntoUMLToAlloy();
+    	
+    	frame.getManager().doOCLToAlloy();
+    	
+    	if (ontoumlOptModel.getOptions().openAnalyzer)
+    		frame.getManager().doOpeningAlloy(true,-1);
+    	else
+    		frame.getManager().doOpeningAlloy(false,0);		
 	}
 	
 }
