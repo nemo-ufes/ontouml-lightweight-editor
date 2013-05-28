@@ -22,10 +22,10 @@ public class ReadXML {
     private Document doc;
     private Node pos;
     
-    public ReadXML(String filePath) throws ParserConfigurationException, SAXException, IOException {
+    public ReadXML(File file) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        doc = dBuilder.parse(new File(filePath));
+        doc = dBuilder.parse(file.getAbsolutePath());
         doc.getDocumentElement().normalize();
         pos = doc.getFirstChild();
     }

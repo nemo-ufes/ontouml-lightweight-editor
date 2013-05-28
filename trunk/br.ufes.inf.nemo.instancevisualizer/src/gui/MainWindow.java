@@ -1,13 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
-import obj.Atom;
-import obj.Field;
-import obj.ReadXML;
-import obj.Sig;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.common.resource.TypeName;
+import obj.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -17,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
+import obj.XMLFile;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.*;
 import org.graphstream.ui.swingViewer.View;
@@ -26,6 +22,8 @@ import org.xml.sax.SAXException;
 import org.graphstream.ui.graphicGraph.*;
 import org.graphstream.ui.swingViewer.ViewerListener;
 import org.graphstream.ui.swingViewer.ViewerPipe;
+import org.eclipse.emf.*;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  *
@@ -39,6 +37,7 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow(org.graphstream.graph.Graph graph) {
         super();
 
+        worldCounter = -1;
         //viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_SWING_THREAD);
         log = "";
         /*
@@ -54,8 +53,8 @@ public class MainWindow extends javax.swing.JFrame {
 
         initComponents();
         //scrollPane1.add(view);
-        layoutCheckBox.setSelected(true);
-        worldComboBox.addItem("Show all worlds");
+
+        //worldComboBox.addItem("Show all worlds");
     }
 
     /**
@@ -67,82 +66,22 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        loadButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        layoutCheckBox = new javax.swing.JCheckBox();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        logArea = new javax.swing.JTextArea();
-        worldComboBox = new javax.swing.JComboBox();
-        zoomPlusButton = new javax.swing.JButton();
-        zoomMinusButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         previousWorldButton = new javax.swing.JButton();
         nextWorldButton = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        openMenuItem = new javax.swing.JMenuItem();
+        fitItemMenu = new javax.swing.JMenu();
+        zoomPlusMenuItem = new javax.swing.JMenuItem();
+        zoomMinusMenuItem = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        layoutMenuItem = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        loadButton.setText("Load XML");
-        loadButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadButtonActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Exit");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        layoutCheckBox.setText("Auto Layout");
-        layoutCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                layoutCheckBoxActionPerformed(evt);
-            }
-        });
-
-        logArea.setColumns(20);
-        logArea.setRows(5);
-        jScrollPane1.setViewportView(logArea);
-
-        worldComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] {}));
-        worldComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                worldComboBoxActionPerformed(evt);
-            }
-        });
-
-        zoomPlusButton.setText("Zoom +");
-        zoomPlusButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                zoomPlusButtonActionPerformed(evt);
-            }
-        });
-
-        zoomMinusButton.setText("Zoom -");
-        zoomMinusButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                zoomMinusButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Attribute");
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("To Viewer");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         previousWorldButton.setText("<<");
         previousWorldButton.addActionListener(new java.awt.event.ActionListener() {
@@ -158,6 +97,70 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("Add welcome stuff here...\nIn the mean time, you can use this text field as a memo!\nIt's completely editable!");
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jTabbedPane1.addTab("Welcome", jScrollPane1);
+
+        fileMenu.setText("File");
+
+        openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        openMenuItem.setText("Open XML...");
+        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(openMenuItem);
+
+        jMenuBar1.add(fileMenu);
+
+        fitItemMenu.setText("View");
+
+        zoomPlusMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_EQUALS, 0));
+        zoomPlusMenuItem.setText("Zoom +");
+        zoomPlusMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zoomPlusMenuItemActionPerformed(evt);
+            }
+        });
+        fitItemMenu.add(zoomPlusMenuItem);
+
+        zoomMinusMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, 0));
+        zoomMinusMenuItem.setText("Zoom -");
+        zoomMinusMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zoomMinusMenuItemActionPerformed(evt);
+            }
+        });
+        fitItemMenu.add(zoomMinusMenuItem);
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, 0));
+        jMenuItem1.setText("Fit");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        fitItemMenu.add(jMenuItem1);
+        fitItemMenu.add(jSeparator1);
+
+        layoutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, 0));
+        layoutMenuItem.setSelected(true);
+        layoutMenuItem.setText("Enable/Disable Auto-Layout");
+        layoutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                layoutMenuItemActionPerformed(evt);
+            }
+        });
+        fitItemMenu.add(layoutMenuItem);
+
+        jMenuBar1.add(fitItemMenu);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -165,452 +168,146 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(layoutCheckBox)
-                                .addGap(18, 18, 18)
-                                .addComponent(zoomPlusButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(loadButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(previousWorldButton)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(zoomMinusButton)
-                            .addComponent(worldComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(nextWorldButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2)))))
+                        .addComponent(previousWorldButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(nextWorldButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(loadButton)
-                    .addComponent(jButton2)
-                    .addComponent(worldComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
                     .addComponent(previousWorldButton)
                     .addComponent(nextWorldButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(layoutCheckBox)
-                    .addComponent(zoomPlusButton)
-                    .addComponent(zoomMinusButton)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-        // TODO add your handling code here:
-        JFileChooser fc = new JFileChooser();
-        fc.setCurrentDirectory(new File("./"));
-        fc.setFileFilter(new FileNameExtensionFilter("XML instances", "xml"));
-        int returnVal = fc.showOpenDialog(MainWindow.this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-                xmlFile = fc.getSelectedFile();
-                //This is where a real application would open the file.
-                log = log.concat("opened " + xmlFile.getAbsolutePath() + "\n");
-                logArea.setText(log);
-            
-            } else {
-                
-            }
-        try {                
-            parseXML(xmlFile.getAbsolutePath());
-            graph = showAllWorlds();
-            viewer = graph.display();
-            viewer.enableAutoLayout();
-            viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
-            view = viewer.getDefaultView();
-            
-            layoutCheckBox.setSelected(true);
-        } catch (    ParserConfigurationException | SAXException | IOException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }//GEN-LAST:event_loadButtonActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void layoutCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layoutCheckBoxActionPerformed
-        // TODO add your handling code here:
-        if(layoutCheckBox.isSelected()) {
-            viewer.enableAutoLayout();
-        }else{
-            viewer.disableAutoLayout();
-        }
-    }//GEN-LAST:event_layoutCheckBoxActionPerformed
-
-    private void zoomPlusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomPlusButtonActionPerformed
-        // TODO add your handling code here:
-        view.getCamera().setViewPercent(view.getCamera().getViewPercent() - 0.1);
-    }//GEN-LAST:event_zoomPlusButtonActionPerformed
-
-    private void zoomMinusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomMinusButtonActionPerformed
-        // TODO add your handling code here:
-        view.getCamera().setViewPercent(view.getCamera().getViewPercent() + 0.1);
-    }//GEN-LAST:event_zoomMinusButtonActionPerformed
-
-    private void worldComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_worldComboBoxActionPerformed
-        // TODO add your handling code here:
-        if(worldComboBox.getSelectedIndex() == 0) {
-            try {
-                
-            } catch(Exception e) {
-                
-            }
-        }else{
-            viewer.close();
-            
-            graph = showSelectedWorld();
-            viewer = graph.display();
-            viewer.enableAutoLayout();
-            viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
-            view = viewer.getDefaultView();
-        }
-    }//GEN-LAST:event_worldComboBoxActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-        
-        graph.addAttribute("ui.stylesheet", "node {\n"
-                + jTextField1.getText() + ";\n"
-                + "}\n");
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        view.requestFocus();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void previousWorldButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousWorldButtonActionPerformed
         // TODO add your handling code here:
+        /*
         System.out.println(worldComboBox.getSelectedIndex());
         if(worldComboBox.getSelectedIndex() == 0) {
             addLog("Reached world list limit");
         } else {
-            worldComboBox.setSelectedIndex(worldComboBox.getSelectedIndex() - 1);
+            //worldComboBox.setSelectedIndex(worldComboBox.getSelectedIndex() - 1);
+        }
+        * */
+        if(jTabbedPane1.getSelectedIndex() != 0) {
+            jTabbedPane1.setSelectedIndex(jTabbedPane1.getSelectedIndex() - 1);
         }
     }//GEN-LAST:event_previousWorldButtonActionPerformed
 
     private void nextWorldButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextWorldButtonActionPerformed
         // TODO add your handling code here:
-        if(worldComboBox.getSelectedIndex() + 1 == worldComboBox.getItemCount()) {
-            addLog("Reached world list limit");
-        } else {
-            worldComboBox.setSelectedIndex(worldComboBox.getSelectedIndex() + 1);
+        //if(worldComboBox.getSelectedIndex() + 1 == worldComboBox.getItemCount()) {
+            //addLog("Reached world list limit");
+        //} else {
+            //worldComboBox.setSelectedIndex(worldComboBox.getSelectedIndex() + 1);
+        if(jTabbedPane1.getSelectedIndex() == worldCounter+1) {
+                System.out.println(xmlFile.getWorldList().get(worldCounter).getLabel());
+                xGraph.setGraphToSelectedWorld(xmlFile.getWorldList().get(worldCounter));
+                //xGraph.getView().add(jMenuBar1);
+                jTabbedPane1.add(xGraph.showGraph());
+                jTabbedPane1.setTitleAt(jTabbedPane1.getSelectedIndex() + 1, xmlFile.getWorldList().get(worldCounter).getLabel());
+                worldCounter++;
         }
+        jTabbedPane1.setSelectedIndex(jTabbedPane1.getSelectedIndex() + 1);
+            
+        //}
     }//GEN-LAST:event_nextWorldButtonActionPerformed
 
-    public org.graphstream.graph.Graph showAllWorlds() {
-        int i, j, k;
-        org.graphstream.graph.Node node;
-        Graph graph = new MultiGraph("I can see dead pixels");
-        ArrayList<ArrayList<String>> aux2;
-        ArrayList<String> aux3;
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fc = new JFileChooser();
+        fc.setCurrentDirectory(new File("./"));
+        fc.setFileFilter(new FileNameExtensionFilter("XML instances", "xml"));
+        int returnVal = fc.showOpenDialog(MainWindow.this);
         
-        for(i=0; i<atomList.size(); i++) {
-                if('w' == atomList.get(i).getLabel().charAt(0)) {
-                    System.out.println("qwoficnwe9in");
-                    graph.addNode(atomList.get(i).getLabel());
-                    graph.getNode(atomList.get(i).getLabel()).addAttribute("ui.label", atomList.get(i).getLabel());
-                    worldComboBox.addItem(atomList.get(i).getLabel());
-                }
-        }
-        
-        for(i=0; i<fieldList.size(); i++) {
-            if(0 == fieldList.get(i).getLabel().compareTo("next")) {
-                aux2 = fieldList.get(i).getTuples();
-                for(j=0; j<aux2.size(); j++) {
-                    aux3 = aux2.get(j);
-                    for(k=0; k<aux3.size() - 1; k++) {
-                        try {
-                        System.out.println(aux3.get(k));
-                        System.out.println(aux3.get(k+1));
-                        graph.addEdge(aux3.get(k).concat(fieldList.get(i).getLabel().concat(aux3.get(k+1))), aux3.get(k), aux3.get(k+1), true);
-                        graph.getEdge(aux3.get(k).concat(fieldList.get(i).getLabel().concat(aux3.get(k+1)))).addAttribute("ui.label", fieldList.get(i).getLabel());
-                        } catch (Exception e) {
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            try {
+                xmlFile = new XMLFile(fc.getSelectedFile());
+                String fileNameWithoutExt = fc.getSelectedFile().getName().replaceFirst("[.][^.]+$", "");
+                String refontoPath = fc.getSelectedFile().getParent() + "\\" + fileNameWithoutExt + ".refontouml";
+                File refontoFile = new File(refontoPath);
+                System.out.println(refontoFile.getAbsolutePath());
+                OntoUMLParser onto = null;
+                
+                if(refontoFile.exists()) {
+                	onto = new OntoUMLParser(refontoPath);
+                    /*
+                    EObject eo = onto.getElement("Passenger");
+                    String estereotipo = TypeName.getTypeName(eo);
+                    System.out.println(estereotipo);
+                    */
+                    xGraph = new XGraph(xmlFile, onto, 0);
+                    xGraph.setGraphToAllWorlds();
+                    xGraph.showGraph();
 
-                        }
+                    if(jTabbedPane1.getTabCount() > 1) {
+                        java.awt.Component c = jTabbedPane1.getTabComponentAt(0);
+                        System.out.println(jTabbedPane1.getComponentCount());
+                        jTabbedPane1.removeAll();
+                        jTabbedPane1.addTab("Welcome", c);
+                        System.out.println(jTabbedPane1.getComponentCount());
                     }
+                    jTabbedPane1.add(xGraph.getView());
+                    jTabbedPane1.setSelectedIndex(1);
+                    //jTabbedPane1.setTitleAt(1, fc.getSelectedFile().getName());
+                    jTabbedPane1.setTitleAt(1, "All Worlds");
+                    worldCounter = 0;
+                }else{
+                	System.out.println(".refontouml NOT FOUND... You need it on the same directory of the .xml.");
                 }
+            } catch (    ParserConfigurationException | SAXException | IOException ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        
-        graph.addAttribute("ui.antialias");
-        
-        graph.addAttribute("ui.stylesheet", "graph {\n" +
-"}\n" +
-"node {\n" +
-"    size: 50px, 50px;\n" +
-"    shape: box;\n" +
-"    fill-color: rgba(255,255,255,255);\n" +
-"    text-size: 14;\n" +
-"    stroke-mode: plain;\n" +
-"    stroke-color: black;\n" +
-"    size-mode: fit;\n" +
-"}\n" +
-"edge {\n" +
-"    fill-color: #222;\n" +
-"    arrow-size: 8px, 8px;\n" +
-"}" +
-"node#A {\n" +
-"    fill-color: blue;\n" +
-"}\n" +
-"node:clicked {\n" +
-"    fill-color: red;\n" +
-"}");   
-        
-        
-        return graph;
-    }
-
-    public org.graphstream.graph.Graph showSelectedWorld() {
-        int i, j, k;
-        org.graphstream.graph.Node node;
-        obj.Field exists = null;
-        Graph graph = new MultiGraph("I can see dead pixels");
-        ArrayList<ArrayList<String>> aux2;
-        ArrayList<String> aux3;
-        /*
-        for(i=0; i<atomList.size(); i++) {
-                if('w' == atomList.get(i).getLabel().charAt(0)) {
-                    System.out.println("qwoficnwe9in");
-                    graph.addNode(atomList.get(i).getLabel());
-                    graph.getNode(atomList.get(i).getLabel()).addAttribute("ui.label", atomList.get(i).getLabel());
-                    worldComboBox.addItem(atomList.get(i).getLabel());
-                }
-        }
-        */
-        //graph.setAutoCreate(true);
-        for(i=0; i<fieldList.size(); i++) {
-            if(fieldList.get(i).getLabel().equals("exists")) {
-                exists = fieldList.remove(i);
-            }
-        }
-        
-        for(i=0; i<exists.getTuples().size(); i++) {
-            if(exists.getTuples().get(i).get(0).equals((String) worldComboBox.getSelectedItem())) {
-                graph.addNode(exists.getTuples().get(i).get(1));
-                graph.getNode(exists.getTuples().get(i).get(1)).addAttribute("ui.label", exists.getTuples().get(i).get(1));
-            }
-        }
-        
-         for(i=0; i<fieldList.size(); i++) {
-            if(fieldList.get(i).getTuples().get(0).size() > 2) { 
-                aux2 = fieldList.get(i).getTuples();
-                for(j=0; j<aux2.size(); j++) {
-                    aux3 = aux2.get(j);
-                    if(aux3.get(0).equals((String) worldComboBox.getSelectedItem())) {
-                        for(k=1; k<aux3.size() - 1; k++) {
-                            try {
-                            System.out.println(aux3.get(k));
-                            System.out.println(aux3.get(k+1));
-                            graph.addEdge(aux3.get(k).concat(fieldList.get(i).getLabel().concat(aux3.get(k+1))), aux3.get(k), aux3.get(k+1), true);
-                            graph.getEdge(aux3.get(k).concat(fieldList.get(i).getLabel().concat(aux3.get(k+1)))).addAttribute("ui.label", fieldList.get(i).getLabel());
-                            } catch (Exception e) {
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        /*
-        for(i=0; i<fieldList.size(); i++) {
-                aux2 = fieldList.get(i).getTuples();
-                for(j=0; j<aux2.size(); j++) {
-                    aux3 = aux2.get(j);
-                    if(aux3.get(0).equals((String) worldComboBox.getSelectedItem())) {
-                        for(k=0; k<aux3.size() - 1; k++) {
-                            try {
-                                System.out.println("oweifheroigherbhgerth");
-                                System.out.println(aux3.get(k));
-                                System.out.println(aux3.get(k+1));
-                                graph.addNode(aux3.get(k));
-                                graph.addNode(aux3.get(k+1));
-                                graph.getNode(aux3.get(k)).addAttribute("ui.label", aux3.get(k));
-                                graph.getNode(aux3.get(k+1)).addAttribute("ui.label", aux3.get(k));
-                                graph.addEdge(aux3.get(k).concat(fieldList.get(i).getLabel().concat(aux3.get(k+1))), aux3.get(k), aux3.get(k+1), true);
-                                graph.getEdge(aux3.get(k).concat(fieldList.get(i).getLabel().concat(aux3.get(k+1)))).addAttribute("ui.label", fieldList.get(i).getLabel());
-                            } catch (Exception e) {
-
-                            }
-                        }
-                    }
-                }
-        }
-        */
-        fieldList.add(exists);
-        
-        graph.addAttribute("ui.antialias");
-        
-        graph.addAttribute("ui.stylesheet", "graph {\n" +
-"}\n" +
-"node {\n" +
-"    size: 50px, 50px;\n" +
-"    shape: box;\n" +
-"    fill-color: rgba(255,255,255,255);\n" +
-"    text-size: 14;\n" +
-"    stroke-mode: plain;\n" +
-"    stroke-color: black;\n" +
-"    size-mode: fit;\n" +
-"}\n" +
-"edge {\n" +
-"    fill-color: #222;\n" +
-"    arrow-size: 8px, 8px;\n" +
-"}" +
-"node#A {\n" +
-"    fill-color: blue;\n" +
-"}\n" +
-"node:clicked {\n" +
-"    fill-color: red;\n" +
-"}");   
-        
-        
-        return graph;
-    }
-
-    public org.graphstream.graph.Graph showAll() {
-        int i, j, k;
-        Graph graph = new MultiGraph("I can see dead pixels");
-        ArrayList<ArrayList<String>> aux2;
-        ArrayList<String> aux3;
-        System.out.println(atomList.size());
-        
-        for(i=0; i<atomList.size(); i++) {
-            System.out.println("FOI2");
-            graph.addNode(atomList.get(i).getLabel());
-            graph.getNode(i).addAttribute("ui.label", atomList.get(i).getLabel());
-
-        }
-        
-        for(i=0; i<fieldList.size(); i++) {
-            aux2 = fieldList.get(i).getTuples();
-            for(j=0; j<aux2.size(); j++) {
-                aux3 = aux2.get(j);
-                for(k=0; k<aux3.size() - 1; k++) {
-                    try {
-                    System.out.println(aux3.get(k));
-                    System.out.println(aux3.get(k+1));
-                    graph.addEdge(aux3.get(k).concat(fieldList.get(i).getLabel().concat(aux3.get(k+1))), aux3.get(k), aux3.get(k+1));
-                    graph.getEdge(aux3.get(k).concat(fieldList.get(i).getLabel().concat(aux3.get(k+1)))).addAttribute("ui.label", fieldList.get(i).getLabel());
-                    } catch (Exception e) {
-                        
-                    }
-                }
-            }
-        }
-        
-        graph.addAttribute("ui.antialias");
-        
-        graph.addAttribute("ui.stylesheet", "graph {\n" +
-"}\n" +
-"node {\n" +
-"    size: 50px, 50px;\n" +
-"    shape: box;\n" +
-"    fill-color: green;\n" +
-"    stroke-mode: plain;\n" +
-"    stroke-color: yellow;\n" +
-"    size-mode: fit;\n" +
-"}\n" +
-"node#A {\n" +
-"    fill-color: blue;\n" +
-"}\n" +
-"node:clicked {\n" +
-"    fill-color: red;\n" +
-"}");   
-        
-        return graph;
-    }
-
-    public void parseXML(String filePath) throws ParserConfigurationException, SAXException, IOException {
-        System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-        
-        integers = new ArrayList();
-        skolemList = new ArrayList();
-        
-        atomList = new ArrayList();
-        sigList = new ArrayList();
-        fieldList = new ArrayList();
-        
-        int i, j, k;
-        
-        ReadXML xml = new ReadXML(filePath);
-        //System.out.println(xml.getPos().getNodeName());
-        
-        Sig sig;
-        Field field;
-        
-        NodeList sigl = xml.getDoc().getElementsByTagName("sig");
-        NodeList atoml;
-        NodeList fieldl = xml.getDoc().getElementsByTagName("field");
-        //System.out.println(fieldl.item(0));
-        org.w3c.dom.Element aux;
-        
-        for(i=0; i<sigl.getLength(); i++) {
-            System.out.println("NUM");
-            aux = (org.w3c.dom.Element) sigl.item(i);
-            sig = new Sig(aux);
-            atoml = aux.getElementsByTagName("atom");
-            
-            sigList.add(sig);
-            
-            
-            for(j=0; j<atoml.getLength(); j++) {
-                aux = (org.w3c.dom.Element) atoml.item(j);
-                //System.out.println(atoml.getLength());
-                atomList.add(new Atom(aux, sig));
-                System.out.println(aux.getAttribute("label"));
-            }
-        }
-        
-        for(i=0; i<fieldl.getLength(); i++) {
-            System.out.println("NUM2");
-            fieldList.add(new Field((org.w3c.dom.Element) fieldl.item(i), atomList));
-        }
-        
-        System.out.println("");
-        System.out.println("");
-        for(i=0; i<fieldList.get(0).getTuples().size(); i++) {
-            for(j=0; j<fieldList.get(0).getTuples().get(i).size(); j++) {
-                System.out.println(fieldList.get(0).getTuples().get(i).get(j));
-            }
-            System.out.println("");
             
         }
-        System.out.println("");
-        System.out.println("");
         
-    }
-    
+    }//GEN-LAST:event_openMenuItemActionPerformed
+
+    private void zoomPlusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomPlusMenuItemActionPerformed
+        // TODO add your handling code here:
+        xGraph.getView().getCamera().setViewPercent(xGraph.getView().getCamera().getViewPercent() - 0.1);
+    }//GEN-LAST:event_zoomPlusMenuItemActionPerformed
+
+    private void zoomMinusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomMinusMenuItemActionPerformed
+        // TODO add your handling code here:
+        xGraph.getView().getCamera().setViewPercent(xGraph.getView().getCamera().getViewPercent() + 0.1);
+    }//GEN-LAST:event_zoomMinusMenuItemActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        xGraph.getViewer().enableAutoLayout();
+        xGraph.getView().getCamera().resetView();
+        if(!layoutMenuItem.isSelected()) {
+            xGraph.getViewer().disableAutoLayout();
+        }
+        
+        //xGraph.getView().getCamera().setAutoFitView(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void layoutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layoutMenuItemActionPerformed
+        // TODO add your handling code here:
+        if(layoutMenuItem.isSelected()) {
+            xGraph.getViewer().enableAutoLayout();
+        }else{
+            xGraph.getViewer().disableAutoLayout();
+        }
+    }//GEN-LAST:event_layoutMenuItemActionPerformed
+
+    /*
     public void addLog(String info) {
         logArea.setText(logArea.getText() + "\n" + info);
     }
+    */
     
     /**
      * @param args the command line arguments
@@ -623,7 +320,7 @@ public class MainWindow extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -648,30 +345,26 @@ public class MainWindow extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenu fitItemMenu;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JCheckBox layoutCheckBox;
-    private javax.swing.JButton loadButton;
-    private javax.swing.JTextArea logArea;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JCheckBoxMenuItem layoutMenuItem;
     private javax.swing.JButton nextWorldButton;
+    private javax.swing.JMenuItem openMenuItem;
+    //private javax.swing.JMenuItem openRefMenuItem;
     private javax.swing.JButton previousWorldButton;
-    private javax.swing.JComboBox worldComboBox;
-    private javax.swing.JButton zoomMinusButton;
-    private javax.swing.JButton zoomPlusButton;
+    private javax.swing.JMenuItem zoomMinusMenuItem;
+    private javax.swing.JMenuItem zoomPlusMenuItem;
     // End of variables declaration//GEN-END:variables
-    private File xmlFile;
-    private Graph graph;
-    private Viewer viewer;
-    private View view;
+    private XMLFile xmlFile;
+    private XGraph xGraph;
+    
+    private int worldCounter;
     private String log;
     
-    private ArrayList<Integer> integers;
-    private ArrayList skolemList;    
-    private ArrayList<Atom> atomList;
-    private ArrayList<Sig> sigList;
-    private ArrayList<Field> fieldList;
-    protected boolean loop;
 }

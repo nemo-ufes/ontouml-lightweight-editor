@@ -15,9 +15,11 @@ public class Sig {
     private String label;
     
     public Sig(org.w3c.dom.Element node) {
+        /*
         if("sig".compareTo(node.getNodeName()) != 0) {
             System.out.println("NOT A SIG");
         }
+        */
         if("yes".compareTo(node.getAttribute("builtin")) == 0) {
             builtin = true;
         }else{
@@ -33,6 +35,48 @@ public class Sig {
         label = node.getAttribute("label");
     }
 
+    public boolean isObejct() {
+        if(getLabel().equals("this/Object")) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public boolean isProperty() {
+        if(getLabel().equals("this/Property")) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public boolean isDataType() {
+        if(getLabel().equals("this/DataType")) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public boolean isWorld() {
+        if(getLabel().length() > 14) {
+            //System.out.println(atomList.get(i).getLabel().substring(0, 15));
+            if(getLabel().substring(0, 15).equals("world_structure")) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isObject() {
+        if(getLabel().equals("this/Object")) {
+            //System.out.println(atomList.get(i).getLabel().substring(0, 15));
+            return true;
+        }
+        return false;
+    }
+    
     public boolean isBuiltin() {
         return builtin;
     }
