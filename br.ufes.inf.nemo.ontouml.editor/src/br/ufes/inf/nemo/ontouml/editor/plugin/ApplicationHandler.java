@@ -1,11 +1,12 @@
 package br.ufes.inf.nemo.ontouml.editor.plugin;
 
-import br.ufes.inf.nemo.ontouml.editor.adapter.ElementAdapter;
+import org.eclipse.emf.ecore.EObject;
+
 import br.ufes.inf.nemo.ontouml.editor.struct.Project;
 
 public interface ApplicationHandler {
 	
-	ElementAdapter getSelectedElement();
+	EObject getSelectedElement();
 	
 	Project getSelectedProject();
 	

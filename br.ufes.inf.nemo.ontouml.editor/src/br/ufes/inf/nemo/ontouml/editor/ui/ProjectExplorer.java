@@ -3,20 +3,20 @@ package br.ufes.inf.nemo.ontouml.editor.ui;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.tree.TreeModel;
 
 import br.ufes.inf.nemo.ontouml.editor.plugin.ApplicationHandler;
 import br.ufes.inf.nemo.ontouml.editor.plugin.Tool;
 import br.ufes.inf.nemo.ontouml.editor.struct.Project;
 import br.ufes.inf.nemo.ontouml.editor.struct.ProjectEvent;
 import br.ufes.inf.nemo.ontouml.editor.struct.ProjectListener;
-import br.ufes.inf.nemo.ontouml.editor.ui.model.ProjectExplorerTreeModel;
 
 @SuppressWarnings("serial")
 public class ProjectExplorer extends JScrollPane implements Tool, ProjectListener {
 
 	private ApplicationHandler handler;
 	private JTree tree;
-	private ProjectExplorerTreeModel treeModel;
+	private TreeModel treeModel;
 	
 	public ProjectExplorer()
 	{
@@ -43,7 +43,7 @@ public class ProjectExplorer extends JScrollPane implements Tool, ProjectListene
 	public void notifyEvent(ProjectEvent projectEvent) {
 		Project project = handler.getSelectedProject();
 		project.addProjectListener(this);
-		treeModel = new ProjectExplorerTreeModel(project);
+		//treeModel = new BaseTreeModel(project);
 		//treeModel.updateData();
 	}
 }

@@ -4,12 +4,12 @@ import java.io.InputStream;
 
 import br.ufes.inf.nemo.ontouml.editor.struct.Artifact;
 
-public class ArtifactImpl implements Artifact {
+public class BaseArtifactImpl implements Artifact {
 
 	private String fileName;
 	private InputStream inputStream;
 	
-	public ArtifactImpl(String fileName, InputStream inputStream) {
+	public BaseArtifactImpl(String fileName, InputStream inputStream) {
 		this.fileName = fileName;
 		this.inputStream = inputStream;
 	}
