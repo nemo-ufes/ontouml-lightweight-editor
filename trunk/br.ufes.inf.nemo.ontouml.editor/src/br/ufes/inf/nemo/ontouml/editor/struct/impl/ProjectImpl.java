@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ufes.inf.nemo.ontouml.editor.adapter.ModelAdapter;
+import org.eclipse.emf.ecore.EObject;
+
 import br.ufes.inf.nemo.ontouml.editor.struct.Artifact;
 import br.ufes.inf.nemo.ontouml.editor.struct.Project;
 import br.ufes.inf.nemo.ontouml.editor.struct.ProjectEvent;
@@ -15,14 +16,6 @@ public class ProjectImpl implements Project {
 	private transient List<Artifact> artifacts = new ArrayList<Artifact>();
 	private List<ProjectListener> listeners; 
 	
-	public ModelAdapter getModel() {
-		return null;
-	}
-
-	public void setModel(ModelAdapter modelAdapter) {
-
-	}
-
 	public void addArtifact(Artifact artifact) {
 		artifacts.add(artifact);
 		notifyLisneters("ARTIFACT_ADDED", artifact);
@@ -37,10 +30,18 @@ public class ProjectImpl implements Project {
 		notifyLisneters("ARTIFACT_REMOVED", artifact);
 	}
 
-	public void removeAllArtifact() {
+	public void removeAllArtifacts() {
 
 	}
 
+	public EObject getModel() {
+		return null;
+	}
+
+	public void setModel(EObject model) {
+		
+	}
+	
 	public File getProjectFile() {
 		return null;
 	}

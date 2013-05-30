@@ -14,16 +14,17 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.ontouml.editor.adapter.ElementAdapter;
+import net.xeoh.plugins.base.PluginManager;
+import net.xeoh.plugins.base.util.PluginManagerUtil;
+
+import org.eclipse.emf.ecore.EObject;
+
 import br.ufes.inf.nemo.ontouml.editor.plugin.Action;
 import br.ufes.inf.nemo.ontouml.editor.plugin.ApplicationHandler;
 import br.ufes.inf.nemo.ontouml.editor.struct.Project;
 import br.ufes.inf.nemo.ontouml.editor.struct.impl.ProjectManager;
 import br.ufes.inf.nemo.ontouml.editor.util.Logger;
 import br.ufes.inf.nemo.ontouml.editor.util.Resources;
-
-import net.xeoh.plugins.base.PluginManager;
-import net.xeoh.plugins.base.util.PluginManagerUtil;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements CommandListener, ApplicationHandler {
@@ -252,7 +253,7 @@ public class MainFrame extends JFrame implements CommandListener, ApplicationHan
 		Runtime.getRuntime().exit(0);
 	}
 
-	public ElementAdapter getSelectedElement() {
+	public EObject getSelectedElement() {
 		return null;
 	}
 

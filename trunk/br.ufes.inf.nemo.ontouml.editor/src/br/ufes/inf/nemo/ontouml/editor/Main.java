@@ -23,7 +23,7 @@ public class Main {
 		if (System.getProperty("mrj.version") != null) {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 			System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode", "false");
-			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "OLED");
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "OntoUML Editor");
 		}
 		
 		//Needed for the embedded SWT Browser in Linux systems
