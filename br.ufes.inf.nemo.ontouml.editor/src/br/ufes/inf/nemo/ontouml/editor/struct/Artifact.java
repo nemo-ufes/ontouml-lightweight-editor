@@ -1,14 +1,12 @@
 package br.ufes.inf.nemo.ontouml.editor.struct;
 
-import java.io.InputStream;
-
 public interface Artifact {
 
 	String getFileName();
 	
 	void setFileName(String fileName);
 	
-	InputStream getInputStream();
+	Object getObject();
 	
-	void setInputStream(InputStream inputStream);
+	void setObject(Object object);
 }

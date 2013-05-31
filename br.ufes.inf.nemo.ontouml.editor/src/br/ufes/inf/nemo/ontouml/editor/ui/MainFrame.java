@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import br.ufes.inf.nemo.ontouml.editor.plugin.Action;
 import br.ufes.inf.nemo.ontouml.editor.plugin.ApplicationHandler;
+import br.ufes.inf.nemo.ontouml.editor.plugin.EditorFactory;
 import br.ufes.inf.nemo.ontouml.editor.struct.Project;
 import br.ufes.inf.nemo.ontouml.editor.struct.impl.ProjectManager;
 import br.ufes.inf.nemo.ontouml.editor.util.Logger;
@@ -37,9 +38,10 @@ public class MainFrame extends JFrame implements CommandListener, ApplicationHan
 	private EditorManager editorManager;
 	private PluginManager pluginManager;
 	private ProjectManager projectManager;
-	//private OutputPanel outputPanel;
 	private JSplitPane mainSplitPane;
 	private JPanel contentPane;
+	private Map<String, String> supportedArtifacts;
+	private Map<String, EditorFactory> editorFactories;
 		
 	/**
 	 * Create the frame.
@@ -48,7 +50,10 @@ public class MainFrame extends JFrame implements CommandListener, ApplicationHan
 		super();
 		
 		this.pluginManager = pluginManager;
-		projectManager = new ProjectManager();
+		projectManager = new ProjectManager(this);
+		
+		editorFactories = new HashMap<String, EditorFactory>();
+		supportedArtifacts = new HashMap<String, String>();
 		
 		initGUI();
 		initSelectorMap();
@@ -62,14 +67,11 @@ public class MainFrame extends JFrame implements CommandListener, ApplicationHan
 			setTitle(Resources.getString("mainframe.title"));
 			setIconImage(Resources.getImage("mainframe.icon"));
 			setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-			Dimension size = new Dimension(1000, 648);
 			Dimension minimumSize = new Dimension(700, 650);
-			//Dimension size = new Dimension(500, 500);
-			//Dimension minimumSize = size;
-			setSize(size);
-			setPreferredSize(size);
+			setSize(minimumSize);
+			setPreferredSize(minimumSize);
 			setMinimumSize(minimumSize);
-			//setExtendedState(JFrame.MAXIMIZED_BOTH);
+			setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		}
 		{
 			//Layout configuration
@@ -87,8 +89,8 @@ public class MainFrame extends JFrame implements CommandListener, ApplicationHan
 		{
 			//Install MainToolbar
 			mainToolBar = new MainToolbar();
-			mainToolBar.addCommandListener(this);
-			//mainToolBar.addCommandListener(diagramManager.getEditorDispatcher());
+			mainToolBar.addCommandListener(this); //Listen to main commands
+			//mainToolBar.addCommandListener(diagramManager.getEditorDispatcher()); //Listen to editor commands
 			contentPane.add(mainToolBar, BorderLayout.NORTH);
 		}
 		{
@@ -152,16 +154,21 @@ public class MainFrame extends JFrame implements CommandListener, ApplicationHan
 		
 		//Install plugins here
 		PluginManagerUtil pmu = new PluginManagerUtil(pluginManager);
-		
-//		for (Tool tool : pmu.getPlugins(Tool.class)) {
-//			
-//		}
+				
+		for (EditorFactory editorFactory : pmu.getPlugins(EditorFactory.class)) {
+			editorFactories.put(editorFactory.getSupportedArtifactExtension(), editorFactory);
+			supportedArtifacts.put(editorFactory.getSupportedArtifactDesciption(), editorFactory.getSupportedArtifactExtension());
+		}
 		
 		for (Action action : pmu.getPlugins(Action.class)) {
 			action.registerApplicationHandler(this);
 			mainToolBar.add(action.getToolbarButton());
 		}
-
+	}
+	
+	public Map<String, String> getSupportedArtifacts()
+	{
+		return supportedArtifacts;
 	}
 	
 	private void initSelectorMap() {
