@@ -280,4 +280,9 @@ public class MainFrame extends JFrame implements CommandListener, ApplicationHan
 		mainStatusPanel.showStatus(status);
 	}
 
+	public void registerProject(Project project) {
+		project.addProjectListener(toolManager.getExplorer());
+		toolManager.getExplorer().setProject(project);
+	}
+
 }

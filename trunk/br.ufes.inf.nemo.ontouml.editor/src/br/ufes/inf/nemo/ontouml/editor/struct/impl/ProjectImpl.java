@@ -60,7 +60,7 @@ public class ProjectImpl implements Project {
 		for (Artifact artifact : artifacts) {
 			if(artifact instanceof ModelArtifact)
 			{
-				((ModelArtifact)artifact).getModel();
+				return ((ModelArtifact)artifact).getModel();
 			}
 		}
 		return null;

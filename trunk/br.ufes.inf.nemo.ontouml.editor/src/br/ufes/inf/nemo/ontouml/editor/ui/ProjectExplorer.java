@@ -2,21 +2,25 @@ package br.ufes.inf.nemo.ontouml.editor.ui;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import javax.swing.JTree;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import org.eclipse.emf.ecore.EObject;
 
 import br.ufes.inf.nemo.ontouml.editor.plugin.ApplicationHandler;
 import br.ufes.inf.nemo.ontouml.editor.plugin.Tool;
 import br.ufes.inf.nemo.ontouml.editor.struct.Project;
 import br.ufes.inf.nemo.ontouml.editor.struct.ProjectEvent;
 import br.ufes.inf.nemo.ontouml.editor.struct.ProjectListener;
+import br.ufes.inf.nemo.ontouml.editor.ui.model.OntoReferenceElement;
+import br.ufes.inf.nemo.ontouml.editor.ui.model.ProjectTree;
 
 @SuppressWarnings("serial")
 public class ProjectExplorer extends JScrollPane implements Tool, ProjectListener {
 
 	private ApplicationHandler handler;
-	private JTree tree;
-	//private TreeModel treeModel;
-	
+	private ProjectTree tree;
+		
 	public ProjectExplorer()
 	{
 		super();
@@ -26,9 +30,15 @@ public class ProjectExplorer extends JScrollPane implements Tool, ProjectListene
 	private void initGUI()
 	{
 		{
-			tree = new JTree();
-		    add(tree);
+			setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		}
+	}
+	
+	public void refreshTree() {
+		tree.updateUI();		
+		validate();
+		repaint();
 	}
 	
 	public JComponent getUIComponent() {
@@ -39,10 +49,26 @@ public class ProjectExplorer extends JScrollPane implements Tool, ProjectListene
 		this.handler = handler;
 	}
 
-	public void notifyEvent(ProjectEvent projectEvent) {
+	public void setProject(Project project)
+	{
+		if (tree!=null) remove(tree);
+		
+		EObject model = project.getModel();
+		OntoReferenceElement rootElem = new OntoReferenceElement(model);
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode(rootElem);
+		
+		tree = new ProjectTree(root,1);
+		
+		setViewportView(tree);
+		
+		refreshTree();
+	}
+	
+	public void notifyEvent(ProjectEvent projectEvent) 
+	{
 		Project project = handler.getSelectedProject();
 		project.addProjectListener(this);
-		//treeModel = new BaseTreeModel(project);
-		//treeModel.updateData();
+				
+		setProject(project);
 	}
 }
