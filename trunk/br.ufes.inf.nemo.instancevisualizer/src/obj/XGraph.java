@@ -4,6 +4,7 @@
  */
 package obj;
 
+import java.awt.Dimension;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,14 +25,18 @@ import br.ufes.inf.nemo.common.resource.TypeName;
  */
 public class XGraph {
     private XMLFile xmlFile;
-    private Graph graph;
+    private Graph worldGraph;
+    private Graph selectedGraph;
     private Viewer viewer;
     private View view;
+    private Viewer viewer1;
+    private View view1;
     OntoUMLParser ontoUmlParser;
     
     public XGraph(XMLFile xmlGraph, OntoUMLParser onto, int mode) throws ParserConfigurationException, SAXException, IOException {
         xmlFile = xmlGraph;
-        graph = null;
+        worldGraph = null;
+        selectedGraph = null;
         viewer = null;
         view = null;
         ontoUmlParser = onto;
@@ -131,7 +136,7 @@ public class XGraph {
 "    fill-color: red;\n" +
 "}");   
 
-        this.graph = graph;
+        this.worldGraph = graph;
         return graph;
     }
 
@@ -283,7 +288,7 @@ public class XGraph {
 "    fill-color: red;\n" +
 "}");   
         
-        this.graph = graph;
+        this.selectedGraph = graph;
         return graph;
     }
 /*
@@ -341,14 +346,32 @@ public class XGraph {
     }
 */
     
-    public View showGraph() {
+    public View showWorldGraph() {
         //viewer = graph.display(true);
         //viewer.enableAutoLayout();
         //viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
-        viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+        viewer1 = new Viewer(worldGraph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+        viewer1.enableAutoLayout();
+// ...
+        view1 = viewer1.addDefaultView(false);   // false indicates "no JFrame".
+// ...
+        
+        //view = viewer.getDefaultView();
+        //view.disable();
+        //view = viewer.getDefaultView();
+        return view1;
+    }
+    
+    public View showSelectedGraph() {
+        //viewer = graph.display(true);
+        //viewer.enableAutoLayout();
+        //viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
+        viewer = new Viewer(selectedGraph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         viewer.enableAutoLayout();
 // ...
         view = viewer.addDefaultView(false);   // false indicates "no JFrame".
+        //view.setMinimumSize(new Dimension(600, 600));
+        //view.setPreferredSize(new Dimension(600, 600));
 // ...
         
         //view = viewer.getDefaultView();
@@ -365,12 +388,20 @@ public class XGraph {
         this.xmlFile = xmlFile;
     }
 
-    public Graph getGraph() {
-        return graph;
+    public Graph getSelectedGraph() {
+        return selectedGraph;
     }
 
-    public void setGraph(Graph graph) {
-        this.graph = graph;
+    public void setSelectedGraph(Graph selectedGraph) {
+        this.selectedGraph = selectedGraph;
+    }
+    
+    public Graph getWorldGraph() {
+        return worldGraph;
+    }
+
+    public void setWorldGraph(Graph worldGraph) {
+        this.worldGraph = worldGraph;
     }
 
     public Viewer getViewer() {
@@ -380,6 +411,14 @@ public class XGraph {
     public void setViewer(Viewer viewer) {
         this.viewer = viewer;
     }
+    
+    public Viewer getViewer1() {
+        return viewer1;
+    }
+
+    public void setViewer1(Viewer viewer1) {
+        this.viewer1 = viewer1;
+    }
 
     public View getView() {
         return view;
@@ -387,6 +426,14 @@ public class XGraph {
 
     public void setView(View view) {
         this.view = view;
+    }
+    
+    public View getView1() {
+        return view1;
+    }
+
+    public void setView1(View view1) {
+        this.view1 = view1;
     }
     
 }
