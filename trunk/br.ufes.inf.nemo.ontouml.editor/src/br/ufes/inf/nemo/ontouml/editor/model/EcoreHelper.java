@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.util.DiagnosticChain;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -40,6 +41,14 @@ public class EcoreHelper {
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 		
 		initialized = true;
+	}
+	
+	public static Resource createResource() {
+		if (!initialized) {
+			initializeHelper();
+		}
+		Resource resource = resourceSet.createResource(URI.createFileURI(""));
+		return resource;
 	}
 	
 	public static boolean validate(EObject eobject, DiagnosticChain diagnostics,

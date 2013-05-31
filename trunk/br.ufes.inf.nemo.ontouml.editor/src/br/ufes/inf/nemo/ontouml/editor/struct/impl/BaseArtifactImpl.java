@@ -1,17 +1,16 @@
 package br.ufes.inf.nemo.ontouml.editor.struct.impl;
 
-import java.io.InputStream;
-
 import br.ufes.inf.nemo.ontouml.editor.struct.Artifact;
 
 public class BaseArtifactImpl implements Artifact {
 
 	private String fileName;
-	private InputStream inputStream;
+	private Object object;
 	
-	public BaseArtifactImpl(String fileName, InputStream inputStream) {
+	public BaseArtifactImpl(String fileName, Object object) {
+		super();
 		this.fileName = fileName;
-		this.inputStream = inputStream;
+		this.object = object;
 	}
 
 	public String getFileName() {
@@ -22,11 +21,12 @@ public class BaseArtifactImpl implements Artifact {
 		this.fileName = fileName;
 	}
 
-	public InputStream getInputStream() {
-		return inputStream;
+	public Object getObject() {
+		return object;
 	}
 
-	public void setInputStream(InputStream inputStream) {
-		this.inputStream = inputStream;
+	public void setObject(Object object) {
+		this.object = object;
 	}
+		
 }

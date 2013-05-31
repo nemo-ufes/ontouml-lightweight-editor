@@ -6,7 +6,11 @@ import java.util.Properties;
 public enum Settings {
 	
 	USER_LOCALE("USER_LOCALE", "en-US"),
-
+	
+	MODEL_DEFAULT_FILE("MODEL_DEFAULT_FILE", "model.xmi"),
+	
+	PROJECT_DEFAULT_FILE("PROJECT_DEFAULT_FILE","project.onto"),
+	
 	RECENT_PROJECT_1("RECENT_PROJECT_1", ""),
 	
 	RECENT_PROJECT_2("RECENT_PROJECT_2", ""),

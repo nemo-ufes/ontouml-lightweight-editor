@@ -23,5 +23,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.ecore_3.2.100.v20121109-1114.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.edit_3.2.100.v20121219-1103.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.uml_4.0.100.v20121218-1022.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/lpg.runtime.java_2.0.17.v201004271640.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

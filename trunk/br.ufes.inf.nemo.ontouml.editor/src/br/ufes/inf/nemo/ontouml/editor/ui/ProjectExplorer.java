@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.ontouml.editor.ui;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.tree.TreeModel;
 
 import br.ufes.inf.nemo.ontouml.editor.plugin.ApplicationHandler;
 import br.ufes.inf.nemo.ontouml.editor.plugin.Tool;
@@ -16,7 +15,7 @@ public class ProjectExplorer extends JScrollPane implements Tool, ProjectListene
 
 	private ApplicationHandler handler;
 	private JTree tree;
-	private TreeModel treeModel;
+	//private TreeModel treeModel;
 	
 	public ProjectExplorer()
 	{

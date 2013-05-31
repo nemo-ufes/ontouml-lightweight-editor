@@ -5,16 +5,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
+import RefOntoUML.Model;
+import RefOntoUML.RefOntoUMLFactory;
+import br.ufes.inf.nemo.ontouml.editor.model.EcoreHelper;
 import br.ufes.inf.nemo.ontouml.editor.struct.Artifact;
 import br.ufes.inf.nemo.ontouml.editor.struct.Project;
 import br.ufes.inf.nemo.ontouml.editor.struct.ProjectEvent;
 import br.ufes.inf.nemo.ontouml.editor.struct.ProjectListener;
+import br.ufes.inf.nemo.ontouml.editor.util.Settings;
 
 public class ProjectImpl implements Project {
 
-	private transient List<Artifact> artifacts = new ArrayList<Artifact>();
-	private List<ProjectListener> listeners; 
+	private List<Artifact> artifacts = new ArrayList<Artifact>();
+	private List<ProjectListener> listeners = new ArrayList<ProjectListener>(); 
+	private File file;
+	private boolean saveNeeded = true;
+
+	public ProjectImpl()
+	{
+		Resource resource = EcoreHelper.createResource();
+		ModelArtifact artifact = new ModelArtifact(Settings.MODEL_DEFAULT_FILE.getValue(), resource);
+		
+		Model model = RefOntoUMLFactory.eINSTANCE.createModel();
+		model.setName("New RefOntoUML Model");
+		artifact.setModel(model);
+		
+		artifacts.add(artifact);
+	}
 	
 	public void addArtifact(Artifact artifact) {
 		artifacts.add(artifact);
@@ -22,7 +41,7 @@ public class ProjectImpl implements Project {
 	}
 
 	public List<Artifact> getAllArtifacts() {
-		return null;
+		return artifacts;
 	}
 
 	public void removeArtifact(Artifact artifact) {
@@ -30,24 +49,39 @@ public class ProjectImpl implements Project {
 		notifyLisneters("ARTIFACT_REMOVED", artifact);
 	}
 
+	//TODO ver se é necessário
 	public void removeAllArtifacts() {
-
+		Artifact[] removed = (Artifact[]) artifacts.toArray();
+		artifacts.clear();
+		notifyLisneters("ARTIFACT_REMOVED", removed);
 	}
 
 	public EObject getModel() {
+		for (Artifact artifact : artifacts) {
+			if(artifact instanceof ModelArtifact)
+			{
+				((ModelArtifact)artifact).getModel();
+			}
+		}
 		return null;
 	}
 
 	public void setModel(EObject model) {
-		
+		for (Artifact artifact : artifacts) {
+			if(artifact instanceof ModelArtifact)
+			{
+				((ModelArtifact)artifact).setModel(model);
+				notifyLisneters("ARTIFACT_CHANGED", artifact);
+			}
+		}
 	}
 	
 	public File getProjectFile() {
-		return null;
+		return file;
 	}
 
 	public void setProjectFile(File file) {
-
+		this.file = file;
 	}
 
 	public void setArtifacts(List<Artifact> artifacts) {
@@ -72,5 +106,15 @@ public class ProjectImpl implements Project {
 		for (ProjectListener listener : listeners) {
 			listener.notifyEvent(projectEvent);
 		}
+		
+		saveNeeded = true;
+	}
+
+	public boolean isSaveNeeded() {
+		return saveNeeded;
+	}
+	
+	public void setSaveNeeded(boolean saveNeeded) {
+		this.saveNeeded = saveNeeded;
 	}
 }
