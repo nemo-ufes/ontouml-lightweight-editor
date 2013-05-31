@@ -25,6 +25,7 @@ public class ProjectManager {
  	public void newProject()
 	{
 		currentProject = new ProjectImpl();
+		frame.registerProject(currentProject);
 		frame.showStatus(Resources.getString("status.created"));
 	}
 	
