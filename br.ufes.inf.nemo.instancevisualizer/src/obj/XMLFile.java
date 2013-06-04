@@ -107,8 +107,8 @@ public class XMLFile {
     }
     
     public ArrayList<String> getAtomTypeOnWorld(String atomLabel, String worldLabel) {
-        ArrayList<String> stringList = new ArrayList();
-        int i, j, k;
+        ArrayList<String> stringList = new ArrayList();	// The list of types. One atom can have multiple types.
+        int i, j, k;	// Auxiliary Variables
         for(i=2; i<fieldList.size(); i++) {
             if(!fieldList.get(i).getTuples().isEmpty()) {
                 if(fieldList.get(i).getTuple(0).size() == 2) {

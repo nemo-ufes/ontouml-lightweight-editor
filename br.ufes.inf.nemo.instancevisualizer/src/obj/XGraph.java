@@ -12,6 +12,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.Viewer;
+import org.graphstream.ui.swingViewer.ViewerPipe;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -33,6 +34,7 @@ public class XGraph {
     private View view1;
     OntoUMLParser ontoUmlParser;
     
+    
     public XGraph(XMLFile xmlGraph, OntoUMLParser onto, int mode) throws ParserConfigurationException, SAXException, IOException {
         xmlFile = xmlGraph;
         worldGraph = null;
@@ -53,6 +55,7 @@ public class XGraph {
         Graph graph = new MultiGraph("I can see dead pixels");
         ArrayList<ArrayList<Atom>> tuplesList;
         ArrayList<Atom> tuple;
+        
         
         // Getting only world atoms. Their label have a length higher than 14. Substring prior to index 15 is "world_structure"
         for(i=0; i<atomList.size(); i++) {
@@ -155,12 +158,10 @@ public class XGraph {
         int i, j, k;
         org.graphstream.graph.Node node;
         obj.Field exists = null;
-        Graph graph = new MultiGraph("I can see dead pixels");
+        Graph graph = new MultiGraph(world.getLabel());
         ArrayList<ArrayList<Atom>> tuplesList;
         ArrayList<Atom> tuple;
-        graph.addAttribute("ui.stylesheet", "graph {\n" +
-"    padding: 200px;\n" +
-"}\n");
+        
         /*
         for(i=0; i<atomList.size(); i++) {
                 if('w' == atomList.get(i).getLabel().charAt(0)) {
@@ -184,6 +185,7 @@ public class XGraph {
                 ArrayList<String> stringList = xmlFile.getAtomTypeOnWorld(exists.getTuples().get(i).get(1).getLabel(), world.getLabel());
                 String typeName = "<";
                 for(j=0; j<stringList.size(); j++) {
+                	System.out.println("TYPE: " + stringList.get(j));
                     typeName = typeName + stringList.get(j);
                     typeName = typeName + " (" + TypeName.getTypeName(ontoUmlParser.getElement(stringList.get(j))) + ")";
                     if(j + 1 != stringList.size()) {
@@ -286,7 +288,7 @@ public class XGraph {
 */
 "node:clicked {\n" +
 "    fill-color: red;\n" +
-"}");   
+"}");
         
         this.selectedGraph = graph;
         return graph;
@@ -435,5 +437,7 @@ public class XGraph {
     public void setView1(View view1) {
         this.view1 = view1;
     }
+    
+    
     
 }
