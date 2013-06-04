@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 import java.awt.Dimension;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class MainWindow extends JFrame {
 
@@ -72,6 +73,9 @@ public class MainWindow extends JFrame {
 	public MainWindow() throws InterruptedException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 640+320, 360+180);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
 		
 		setMinimumSize(new Dimension(960, 540));
 		
@@ -84,84 +88,9 @@ public class MainWindow extends JFrame {
 		JMenuItem mntmOpen = new JMenuItem("Open .xml/.refontouml...");
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fc = new JFileChooser();
-		        fc.setCurrentDirectory(new File("./"));
-		        fc.setFileFilter(new FileNameExtensionFilter("XML instances", "xml"));
-		        int returnVal = fc.showOpenDialog(MainWindow.this);
-		        
-		        if (returnVal == JFileChooser.APPROVE_OPTION) {
-		            try {
-		                xmlFile = new XMLFile(fc.getSelectedFile());
-		                String fileNameWithoutExt = fc.getSelectedFile().getName().replaceFirst("[.][^.]+$", "");
-		                String refontoPath = fc.getSelectedFile().getParent() + "\\" + fileNameWithoutExt + ".refontouml";
-		                File refontoFile = new File(refontoPath);
-		                System.out.println(refontoFile.getAbsolutePath());
-		                OntoUMLParser onto = null;
-		                
-		                if(refontoFile.exists()) {
-		                	onto = new OntoUMLParser(refontoPath);
-		                    /*
-		                    EObject eo = onto.getElement("Passenger");
-		                    String estereotipo = TypeName.getTypeName(eo);
-		                    System.out.println(estereotipo);
-		                    */
-		                    xGraph = new XGraph(xmlFile, onto, 0);
-		                    xGraph.setGraphToSelectedWorld(xGraph.getXmlFile().findAtom("world_structure/CurrentWorld$0"));
-		                    remove(scrollPane);
-		                    scrollPane = new JScrollPane(xGraph.showSelectedGraph());
-		                    
-		                    remove(scrollPane_1);
-		                    xGraph.setGraphToAllWorlds();
-		                    scrollPane_1 = new JScrollPane(xGraph.showWorldGraph());
-
-		                    GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		            		gl_contentPane.setHorizontalGroup(
-		            			gl_contentPane.createParallelGroup(Alignment.LEADING)
-		            				.addGroup(gl_contentPane.createSequentialGroup()
-		            					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
-		            					.addGap(8)
-		            					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
-		            		);
-		            		gl_contentPane.setVerticalGroup(
-		            			gl_contentPane.createParallelGroup(Alignment.LEADING)
-		            				.addGroup(gl_contentPane.createSequentialGroup()
-		            					.addGap(5)
-		            					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-		            						.addGroup(gl_contentPane.createSequentialGroup()
-		            							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-		            							.addGap(172))
-		            						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)))
-		            		);
-		            		contentPane.setLayout(gl_contentPane);
-		            		
-		            		//new Clicks(xGraph);
-		            		
-		                    //xGraph.showGraph();
-		                    //scrollPane.getcont.add(xGraph.showGraph());
-
-		                    /*
-		                    if(tabbedPane.getTabCount() > 1) {
-		                        java.awt.Component c = tabbedPane.getTabComponentAt(0);
-		                        System.out.println(tabbedPane.getComponentCount());
-		                        tabbedPane.removeAll();
-		                        tabbedPane.addTab("Welcome", c);
-		                        System.out.println(tabbedPane.getComponentCount());
-		                    }
-		                    //getContentPane().add(xGraph.getView());
-		                    panel_1.add(xGraph.getView());
-		                    //tabbedPane.add(xGraph.getView());
-		                     * 
-		                    //tabbedPane.setSelectedIndex(1);
-		                    */
-		                    //tabbedPane.setTitleAt(1, "All Worlds");
-		                    worldCounter = 0;
-		                }else{
-		                	System.out.println(".refontouml NOT FOUND... You need it on the same directory of the .xml.");
-		                }
-		            } catch (    ParserConfigurationException | SAXException | IOException ex) {
-		                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-		            }
-		        }
+				callOpenXML();
+				System.out.println(xGraph);
+				setScrollPanes();
 			}
 		});
 		mnFile.add(mntmOpen);
@@ -193,37 +122,45 @@ public class MainWindow extends JFrame {
 		
 		JCheckBoxMenuItem chckbxmntmNewCheckItem = new JCheckBoxMenuItem("Auto Layout");
 		mnView.add(chckbxmntmNewCheckItem);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 944, Short.MAX_VALUE)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 480, Short.MAX_VALUE)
+		);
+		getContentPane().setLayout(groupLayout);
 		
 		scrollPane = new JScrollPane();
 		
 		scrollPane_1 = new JScrollPane();
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
-					.addGap(8)
-					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+		GroupLayout groupLayout_1 = new GroupLayout(getContentPane());
+		groupLayout_1.setHorizontalGroup(
+			groupLayout_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+					.addContainerGap())
 		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(5)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-							.addGap(172))
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)))
+		groupLayout_1.setVerticalGroup(
+			groupLayout_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout_1.createSequentialGroup()
+							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+							.addGap(199))
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE))
+					.addContainerGap())
 		);
-		contentPane.setLayout(gl_contentPane);
-		
-		//new Clicks(xGraph);
+		getContentPane().setLayout(groupLayout_1);
 		
 	}
-	
+	/*
 	public MainWindow(XGraph xGraphVar) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 640+320, 360+180);
@@ -239,84 +176,7 @@ public class MainWindow extends JFrame {
 		JMenuItem mntmOpen = new JMenuItem("Open .xml/.refontouml...");
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fc = new JFileChooser();
-		        fc.setCurrentDirectory(new File("./"));
-		        fc.setFileFilter(new FileNameExtensionFilter("XML instances", "xml"));
-		        int returnVal = fc.showOpenDialog(MainWindow.this);
-		        
-		        if (returnVal == JFileChooser.APPROVE_OPTION) {
-		            try {
-		                xmlFile = new XMLFile(fc.getSelectedFile());
-		                String fileNameWithoutExt = fc.getSelectedFile().getName().replaceFirst("[.][^.]+$", "");
-		                String refontoPath = fc.getSelectedFile().getParent() + "\\" + fileNameWithoutExt + ".refontouml";
-		                File refontoFile = new File(refontoPath);
-		                System.out.println(refontoFile.getAbsolutePath());
-		                OntoUMLParser onto = null;
-		                
-		                if(refontoFile.exists()) {
-		                	onto = new OntoUMLParser(refontoPath);
-		                    /*
-		                    EObject eo = onto.getElement("Passenger");
-		                    String estereotipo = TypeName.getTypeName(eo);
-		                    System.out.println(estereotipo);
-		                    */
-		                    xGraph = new XGraph(xmlFile, onto, 0);
-		                    xGraph.setGraphToSelectedWorld(xGraph.getXmlFile().findAtom("world_structure/CurrentWorld$0"));
-		                    remove(scrollPane);
-		                    scrollPane = new JScrollPane(xGraph.showSelectedGraph());
-		                    
-		                    remove(scrollPane_1);
-		                    xGraph.setGraphToAllWorlds();
-		                    scrollPane_1 = new JScrollPane(xGraph.showWorldGraph());
-
-		                    GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		            		gl_contentPane.setHorizontalGroup(
-		            			gl_contentPane.createParallelGroup(Alignment.LEADING)
-		            				.addGroup(gl_contentPane.createSequentialGroup()
-		            					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
-		            					.addGap(8)
-		            					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
-		            		);
-		            		gl_contentPane.setVerticalGroup(
-		            			gl_contentPane.createParallelGroup(Alignment.LEADING)
-		            				.addGroup(gl_contentPane.createSequentialGroup()
-		            					.addGap(5)
-		            					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-		            						.addGroup(gl_contentPane.createSequentialGroup()
-		            							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-		            							.addGap(172))
-		            						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)))
-		            		);
-		            		contentPane.setLayout(gl_contentPane);
-		            		
-		            		//new Clicks(xGraph);
-		            		
-		                    //xGraph.showGraph();
-		                    //scrollPane.getcont.add(xGraph.showGraph());
-
-		                    /*
-		                    if(tabbedPane.getTabCount() > 1) {
-		                        java.awt.Component c = tabbedPane.getTabComponentAt(0);
-		                        System.out.println(tabbedPane.getComponentCount());
-		                        tabbedPane.removeAll();
-		                        tabbedPane.addTab("Welcome", c);
-		                        System.out.println(tabbedPane.getComponentCount());
-		                    }
-		                    //getContentPane().add(xGraph.getView());
-		                    panel_1.add(xGraph.getView());
-		                    //tabbedPane.add(xGraph.getView());
-		                     * 
-		                    //tabbedPane.setSelectedIndex(1);
-		                    */
-		                    //tabbedPane.setTitleAt(1, "All Worlds");
-		                    worldCounter = 0;
-		                }else{
-		                	System.out.println(".refontouml NOT FOUND... You need it on the same directory of the .xml.");
-		                }
-		            } catch (    ParserConfigurationException | SAXException | IOException ex) {
-		                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-		            }
-		        }
+				callOpenXML();
 			}
 		});
 		mnFile.add(mntmOpen);
@@ -353,8 +213,8 @@ public class MainWindow extends JFrame {
 		setContentPane(contentPane);
 		
 		scrollPane = new JScrollPane(xGraphVar.showSelectedGraph());
-		
 		scrollPane_1 = new JScrollPane(xGraphVar.showWorldGraph());
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -377,7 +237,90 @@ public class MainWindow extends JFrame {
 		
 		//new Clicks(xGraph);
 	}
+*/
+
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+	public void setScrollPane(JScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
+	}
+
+	public JScrollPane getScrollPane_1() {
+		return scrollPane_1;
+	}
+
+	public void setScrollPane_1(JScrollPane scrollPane_1) {
+		this.scrollPane_1 = scrollPane_1;
+	}
+
+	public XGraph getxGraph() {
+		return xGraph;
+	}
+
+	public void setxGraph(XGraph xGraph) {
+		this.xGraph = xGraph;
+	}
+
+	public XMLFile getXmlFile() {
+		return xmlFile;
+	}
+
+	public void setXmlFile(XMLFile xmlFile) {
+		this.xmlFile = xmlFile;
+	}
+
+
+
+	public void setContentPane(JPanel contentPane) {
+		this.contentPane = contentPane;
+	}
 	
+	public void setScrollPanes() {
+		//remove(this.scrollPane_1);
+		//remove(this.scrollPane);
+		scrollPane.getViewport().removeAll();
+		scrollPane_1.getViewport().removeAll();
+		scrollPane.getViewport().add(xGraph.showSelectedGraph());
+		scrollPane_1.getViewport().add(xGraph.showWorldGraph());
+        //scrollPane = new JScrollPane(xGraph.showSelectedGraph());
+        
+        //scrollPane_1 = new JScrollPane(xGraph.showWorldGraph());
+/*
+        GroupLayout groupLayout_1 = new GroupLayout(getContentPane());
+		groupLayout_1.setHorizontalGroup(
+			groupLayout_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		groupLayout_1.setVerticalGroup(
+			groupLayout_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout_1.createSequentialGroup()
+							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+							.addGap(199))
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		getContentPane().setLayout(groupLayout_1);
+		*/
+	}
 	
+	public void setScrollPanes1() {
+		scrollPane.getViewport().removeAll();
+		//scrollPane_1.getViewport().removeAll();
+		scrollPane.getViewport().add(xGraph.showSelectedGraph());
+		//scrollPane_1.getViewport().add(xGraph.showWorldGraph());
+	}
 	
+	public void callOpenXML() {
+		new OpenXML(this, false);
+	}
 }
