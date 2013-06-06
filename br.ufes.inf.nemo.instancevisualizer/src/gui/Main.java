@@ -30,6 +30,7 @@ public class Main implements ViewerListener {
     protected boolean loop = true;
  
     public static void main(String args[]) throws HeadlessException, InterruptedException {
+    	System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
         new Main();
     }
     
@@ -40,7 +41,6 @@ public class Main implements ViewerListener {
     	
     	mainWindow.setScrollPanes();
 
-    	
         //Viewer viewer = graphl.display();
  
         // The default action when closing the view is to quit
@@ -88,6 +88,7 @@ public class Main implements ViewerListener {
  
     public void buttonReleased(String id) {
         System.out.println("Button released on node "+id);
+        mainWindow.getChckbxmntmNewCheckItem().setSelected(true);
         mainWindow.getxGraph().setSelectedGraph(mainWindow.getxGraph().setGraphToSelectedWorld(mainWindow.getXmlFile().findAtom(id)));
         mainWindow.getxGraph().showSelectedGraph();
         mainWindow.setScrollPanes1();

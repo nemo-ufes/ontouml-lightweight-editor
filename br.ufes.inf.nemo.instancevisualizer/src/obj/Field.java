@@ -7,25 +7,28 @@ import org.w3c.dom.NodeList;
  * @author Mauricio
  */
 public class Field extends Sig {
-    private ArrayList<ArrayList<Atom>> tuples;
+	
+    private ArrayList<ArrayList<String>> tuples;
+    private ArrayList<ArrayList<Integer>> types;
     
     public Field(org.w3c.dom.Element node, ArrayList<Atom> atomList) {
         super(node);
         tuples = new ArrayList();
-        /*
-        if("field".compareTo(node.getNodeName()) != 0) {
-            System.out.println("NOT A FIELD");
-        }else{
-            System.out.println("    IT'S A FIELD");
-        }
-        */
+        types = new ArrayList();
+        
         int i, j, k;
-        ArrayList<Atom> tuple;
+        ArrayList<String> tuple;
+        ArrayList<Integer> type;
         org.w3c.dom.Element xmlTuple;
+        org.w3c.dom.Element xmlTypes;
+        org.w3c.dom.Element xmlTypeTuple;
         NodeList xmlAtomList;
-        String aux4;
+        NodeList xmlTypeList;
+        String attrLabel;
+        int attrID;
         Atom atom;
         NodeList tupleList = node.getElementsByTagName("tuple");
+        NodeList typesList = node.getElementsByTagName("types");
         
         System.out.println(getLabel());
         for(i=0; i<tupleList.getLength(); i++) {
@@ -37,10 +40,10 @@ public class Field extends Sig {
             for(j=0; j<xmlAtomList.getLength(); j++) {
                 //System.out.println("CONTA");
                 xmlTuple = (org.w3c.dom.Element) xmlAtomList.item(j);
-                aux4 = xmlTuple.getAttribute("label");
-                atom = findAtom(atomList, aux4);
-                tuple.add(atom);
-                System.out.println("        " + atom.getLabel());
+                attrLabel = xmlTuple.getAttribute("label");
+                //atom = findAtom(atomList, attrLabel);
+                tuple.add(attrLabel);
+                //System.out.println("        " + atom.getLabel());
                 /*
                 //System.out.println("    ".concat(aux2.getAttribute("label")));
                 for(k=0; k<atomList.size(); k++) {
@@ -52,6 +55,21 @@ public class Field extends Sig {
             }
             tuples.add(tuple);
         }
+        
+        for(i=0; i<typesList.getLength(); i++) {
+        	type = new ArrayList();
+            xmlTypes = (org.w3c.dom.Element) typesList.item(i);
+            xmlTypeList = xmlTypes.getElementsByTagName("type");
+            System.out.println("    types:");
+            for(j=0; j<xmlTypeList.getLength(); j++) {
+                xmlTuple = (org.w3c.dom.Element) xmlTypeList.item(j);
+                attrID = Integer.parseInt(xmlTuple.getAttribute("ID"));
+                type.add(attrID);
+                //System.out.println("        " + attrID);
+            }
+            types.add(type);
+        }
+        
     }
     
     public final Atom findAtom(ArrayList<Atom> atomList, String label) {
@@ -64,12 +82,12 @@ public class Field extends Sig {
         return null;
     }
     
-    public ArrayList<Atom> getExistingAtomsByWorld(Atom world) {
+    public ArrayList<String> getExistingAtomsByWorld(Atom world) {
         if(!getLabel().equals("exists") || world.isWorld()) {
             System.out.println("This field is not a 'exist' field OR Given atom is not a world atom");
             return null;
         }
-        ArrayList<Atom> atomList = new ArrayList();
+        ArrayList<String> atomList = new ArrayList();
         int i, j, k;
         for(i=0; i<getTuples().size(); i++) {
             if(getTuple(i).get(0).equals(world)) {
@@ -79,7 +97,7 @@ public class Field extends Sig {
         return atomList;
     }
 
-    public ArrayList<Atom> getTuple(int i) {
+    public ArrayList<String> getTuple(int i) {
         try {
             return tuples.get(i);
         } catch (Exception e) {
@@ -88,12 +106,20 @@ public class Field extends Sig {
         return null;
     }
     
-    public ArrayList<ArrayList<Atom>> getTuples() {
+    public ArrayList<ArrayList<String>> getTuples() {
         return tuples;
     }
 
-    public void setTuples(ArrayList<ArrayList<Atom>> tuples) {
+    public void setTuples(ArrayList<ArrayList<String>> tuples) {
         this.tuples = tuples;
     }
-     
+
+	public ArrayList<ArrayList<Integer>> getTypes() {
+		return types;
+	}
+
+	public void setTypes(ArrayList<ArrayList<Integer>> types) {
+		this.types = types;
+	}
+    
 }

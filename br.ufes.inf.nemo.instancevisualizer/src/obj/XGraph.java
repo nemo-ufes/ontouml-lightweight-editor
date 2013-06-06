@@ -53,8 +53,8 @@ public class XGraph {
         int i, j, k;
         org.graphstream.graph.Node node;
         Graph graph = new MultiGraph("I can see dead pixels");
-        ArrayList<ArrayList<Atom>> tuplesList;
-        ArrayList<Atom> tuple;
+        ArrayList<ArrayList<String>> tuplesList;
+        ArrayList<String> tuple;
         
         
         // Getting only world atoms. Their label have a length higher than 14. Substring prior to index 15 is "world_structure"
@@ -84,7 +84,8 @@ public class XGraph {
                             System.out.println("THIS IS NOT POSSIBLE!");
                             System.exit(1);
                     }
-                    graph.getNode(atomList.get(i).getLabel()).addAttribute("ui.label", atomList.get(i).getLabel());
+                    graph.getNode(atomList.get(i).getLabel()).addAttribute("ui.style", "text-alignment: at-left;");
+                    graph.getNode(atomList.get(i).getLabel()).addAttribute("ui.label", atomList.get(i).getLabel().substring(16).replace("$", ": ").concat("  "));
                     //graph.getNode(atomList.get(i).getLabel()).addAttribute("ui.size", atomList.get(i).getLabel());
                 }
             }
@@ -98,11 +99,11 @@ public class XGraph {
                     tuple = tuplesList.get(j);
                     for(k=0; k<tuple.size() - 1; k++) {
                         try {
-                            String edgeName = tuple.get(k).getLabel() + "_" + tuple.get(k+1);
+                            String edgeName = tuple.get(k) + "_" + tuple.get(k+1);
                             //edgeName = edgeName.concat(tuple.get(k+1).getLabel());
                             System.out.println(tuple.get(k));
                             System.out.println(tuple.get(k+1));
-                            graph.addEdge(edgeName, tuple.get(k).getLabel(), tuple.get(k+1).getLabel(), true).addAttribute("ui.label", fieldList.get(i).getLabel());
+                            graph.addEdge(edgeName, tuple.get(k), tuple.get(k+1), true).addAttribute("ui.label", fieldList.get(i).getLabel());
                             //graph.getEdge(edgeName).addAttribute("ui.label", fieldList.get(i).getLabel());
                         } catch (Exception e) {
 
@@ -117,34 +118,38 @@ public class XGraph {
         graph.addAttribute("ui.stylesheet", "graph {\n" +
 "padding: 90px;\n" +
 "}\n" +
+"node { size-mode: normal; text-size: 12; text-background-mode: plain; text-alignment: at-left; size: 8px, 8px; fill-color: black; stroke-mode: plain; size-mode: fit; stroke-width: 3px; stroke-color: #333; } edge { shape: blob; size: 10px; }");
+/*
 "node {\n" +
-"    size: 250px, 50px;\n" +
-"    shape: circle;\n" +
+"    size: 250px, 100px;\n" +
+"    shape: freeplane;\n" +
 //"    fill-color: rgba(255,255,255,255);\n" +
-"    text-size: 14;\n" +
-"    stroke-mode: plain;\n" +
-"    stroke-color: black;\n" +
+"    text-size: 12;\n" +
+"    stroke-mode: none;\n" +
+//"    stroke-color: black;\n" +
 "    size-mode: normal;\n" +
-"    fill-mode: dyn-plain;\n" +
+//"    fill-mode: image-scaled;\n" +
+//"    fill-image: url('./resources/cloud.gif');\n" +
 "fill-color: red, green, blue, yellow, white;\n" +
 "}\n" +
 "edge {\n" +
 "    fill-color: #222;\n" +
 "    arrow-size: 8px, 8px;\n" +
-"}" +
-"node#A {\n" +
-"    fill-color: blue;\n" +
 "}\n" +
 "node:clicked {\n" +
-"    fill-color: red;\n" +
+//"    fill-mode: image-scaled;\n" +
+//"    fill-image: url('./resources/cloud_red.gif');\n" +
 "}");   
-
+*/
         this.worldGraph = graph;
         return graph;
     }
 
     
-    
+	/**
+	   * Testing javadoc!
+	   * @param world the atom that represents the world
+	   */
     public org.graphstream.graph.Graph setGraphToSelectedWorld(Atom world) {
         ArrayList<Skolem> skolemList = xmlFile.getSkolemList();
         ArrayList<Atom> atomList = xmlFile.getAtomList();
@@ -159,20 +164,11 @@ public class XGraph {
         org.graphstream.graph.Node node;
         obj.Field exists = null;
         Graph graph = new MultiGraph(world.getLabel());
-        ArrayList<ArrayList<Atom>> tuplesList;
-        ArrayList<Atom> tuple;
+        ArrayList<ArrayList<String>> tuplesList;
+        ArrayList<String> tuple;
+        ArrayList<ArrayList<Integer>> typesList;
+        ArrayList<Integer> types;
         
-        /*
-        for(i=0; i<atomList.size(); i++) {
-                if('w' == atomList.get(i).getLabel().charAt(0)) {
-                    System.out.println("qwoficnwe9in");
-                    graph.addNode(atomList.get(i).getLabel());
-                    graph.getNode(atomList.get(i).getLabel()).addAttribute("ui.label", atomList.get(i).getLabel());
-                    worldComboBox.addItem(atomList.get(i).getLabel());
-                }
-        }
-        */
-        //graph.setAutoCreate(true);
         for(i=0; i<fieldList.size(); i++) {
             if(fieldList.get(i).getLabel().equals("exists")) {
                 exists = fieldList.remove(i);
@@ -181,8 +177,8 @@ public class XGraph {
         }
         
         for(i=0; i<exists.getTuples().size(); i++) {
-            if(exists.getTuples().get(i).get(0).equals(world)) {
-                ArrayList<String> stringList = xmlFile.getAtomTypeOnWorld(exists.getTuples().get(i).get(1).getLabel(), world.getLabel());
+            if(world.hasLabel(exists.getTuples().get(i).get(0))) {
+                ArrayList<String> stringList = xmlFile.getAtomTypeOnWorld(exists.getTuples().get(i).get(1), world.getLabel());
                 String typeName = "<";
                 for(j=0; j<stringList.size(); j++) {
                 	System.out.println("TYPE: " + stringList.get(j));
@@ -193,39 +189,45 @@ public class XGraph {
                     }
                 }
                 typeName = typeName + ">";
-                graph.addNode(exists.getTuples().get(i).get(1).getLabel()).addAttribute("ui.label", exists.getTuples().get(i).get(1).getLabel() + typeName);
-                if(exists.getTuples().get(i).get(1).isObject()) {
-                    //graph.getNode(exists.getTuples().get(i).get(1).getLabel()).addAttribute("ui.style", "shape: circle;\n");
-                    //graph.getNode(exists.getTuples().get(i).get(1).getLabel()).addAttribute("ui.size", "60");
-                    graph.getNode(exists.getTuples().get(i).get(1).getLabel()).addAttribute("ui.stylesheet", "node#"+exists.getTuples().get(i).get(1).getLabel()+"{\n   size: 200px, 50px;\n}\n");
-                    graph.getNode(exists.getTuples().get(i).get(1).getLabel()).addAttribute("ui.style", "shape: circle;\n");
+                
+                //System.out.println("COMECOU " + exists.getTuples().get(i).get(1));
+                graph.addNode(exists.getTuples().get(i).get(1)).addAttribute("ui.label", exists.getTuples().get(i).get(1) + typeName);
+                graph.getNode(exists.getTuples().get(i).get(1)).addAttribute("layout.weight", 0);
+                if(xmlFile.findAtom(exists.getTuples().get(i).get(1)).isObject()) {
+                    graph.getNode(exists.getTuples().get(i).get(1)).addAttribute("ui.style", "shape: circle; size: 300px, 50px;");
                 }
-                if(exists.getTuples().get(i).get(1).isProperty()) {
-                    graph.getNode(exists.getTuples().get(i).get(1).getLabel()).addAttribute("ui.style", "shape: box;\n");
-                    graph.getNode(exists.getTuples().get(i).get(1).getLabel()).addAttribute("ui.size", "90");
+                if(xmlFile.findAtom(exists.getTuples().get(i).get(1)).isProperty()) {
+                    graph.getNode(exists.getTuples().get(i).get(1)).addAttribute("ui.style", "shape: box; size: 90px;");
                 }
-                if(exists.getTuples().get(i).get(1).isDataType()) {
-                    graph.getNode(exists.getTuples().get(i).get(1).getLabel()).addAttribute("ui.style", "shape: diamond;\n");
-                    graph.getNode(exists.getTuples().get(i).get(1).getLabel()).addAttribute("ui.size", "90");
+                if(xmlFile.findAtom(exists.getTuples().get(i).get(1)).isDataType()) {
+                    graph.getNode(exists.getTuples().get(i).get(1)).addAttribute("ui.style", "shape: diamond; size: 90px;");
                 }
                 
             }
         }
         
         for(i=0; i<fieldList.size(); i++) {
+        	typesList = fieldList.get(i).getTypes();
             if(!fieldList.get(i).getTuples().isEmpty()) {
-                System.out.println(fieldList.get(i).getTuples().get(0).get(0).getLabel());
-                if(fieldList.get(i).getTuples().get(0).size() > 2) { 
+                System.out.println(fieldList.get(i).getTuples().get(0).get(0));
+                if(fieldList.get(i).getTuples().get(0).size() > 2) {	// relation field has 3 atoms; 
                     tuplesList = fieldList.get(i).getTuples();
                     for(j=0; j<tuplesList.size(); j++) {
                         tuple = tuplesList.get(j);
-                        if(tuple.get(0).equals(world)) {
+                        if(world.hasLabel(tuple.get(0))) {
                             for(k=1; k<tuple.size() - 1; k++) {
                                 try {
-                                    String edgeName = tuple.get(k).getLabel() + "_" + tuple.get(k+1);
-                                    System.out.println(tuple.get(k));
-                                    System.out.println(tuple.get(k+1));
-                                    graph.addEdge(edgeName, tuple.get(k).getLabel(), tuple.get(k+1).getLabel(), true).addAttribute("ui.label", fieldList.get(i).getLabel());
+                                    String edgeName = tuple.get(k) + "_" + tuple.get(k+1);
+                                    if(xmlFile.findSigById(typesList.get(0).get(k+1)).isBuiltin()) {
+                                    	graph.addNode(tuple.get(k+1)).addAttribute("ui.label", tuple.get(k+1));
+                                    	graph.getNode(tuple.get(k+1)).addAttribute("ui.style", "shape: circle; size: 10px; fill-color: black; size-mode: normal; text-alignment: at-left;");
+                                    	graph.getNode(tuple.get(k+1)).addAttribute("layout.weight", 0);
+                                    	graph.getNode(tuple.get(k+1)).addAttribute("xyz", 1000, 1000, 10000);
+                                    	graph.addEdge(edgeName, tuple.get(k), tuple.get(k+1), true).addAttribute("ui.label", fieldList.get(i).getLabel());
+                                    }else{
+                                    	graph.addEdge(edgeName, tuple.get(k), tuple.get(k+1), true).addAttribute("ui.label", fieldList.get(i).getLabel());
+                                    }
+                                    graph.getEdge(edgeName).addAttribute("layout.weight", 200);
                                 } catch (Exception e) {
 
                                 }
@@ -233,45 +235,26 @@ public class XGraph {
                         }
                     }
                 }
+            }else{
+            	if(fieldList.get(i).getTypes().get(0).size() > 2) {
+            		
+            	}
             }
         }
-        /*
-        for(i=0; i<fieldList.size(); i++) {
-                tuplesList = fieldList.get(i).getTuples();
-                for(j=0; j<tuplesList.size(); j++) {
-                    tuple = tuplesList.get(j);
-                    if(tuple.get(0).equals((String) worldComboBox.getSelectedItem())) {
-                        for(k=0; k<tuple.size() - 1; k++) {
-                            try {
-                                System.out.println("oweifheroigherbhgerth");
-                                System.out.println(tuple.get(k));
-                                System.out.println(tuple.get(k+1));
-                                graph.addNode(tuple.get(k));
-                                graph.addNode(tuple.get(k+1));
-                                graph.getNode(tuple.get(k)).addAttribute("ui.label", tuple.get(k));
-                                graph.getNode(tuple.get(k+1)).addAttribute("ui.label", tuple.get(k));
-                                graph.addEdge(tuple.get(k).concat(fieldList.get(i).getLabel().concat(tuple.get(k+1))), tuple.get(k), tuple.get(k+1), true);
-                                graph.getEdge(tuple.get(k).concat(fieldList.get(i).getLabel().concat(tuple.get(k+1)))).addAttribute("ui.label", fieldList.get(i).getLabel());
-                            } catch (Exception e) {
-
-                            }
-                        }
-                    }
-                }
-        }
-        */
+        
         fieldList.add(exists);
         
         graph.addAttribute("ui.antialias");
-        
+        graph.addAttribute("ui.quality");
+        graph.addAttribute("layout.quality", 4);
         graph.addAttribute("ui.stylesheet", "graph {\n" +
-//"    padding: 50px\n" +
+"    padding: 150px, 50px, 0px;\n" +
 "}\n" +
 "node {\n" +
-"    size: 600px, 50px;\n" +
+//"    size: 300px, 50px;\n" +
 //"    shape: box;\n" +
 "    fill-color: rgba(255,255,255,255);\n" +
-"    text-size: 14;\n" +
+"    text-size: 12;\n" +
 //"    text-mode: truncated;\n" +
 "    stroke-mode: plain;\n" +
 "    stroke-color: black;\n" +
@@ -293,60 +276,6 @@ public class XGraph {
         this.selectedGraph = graph;
         return graph;
     }
-/*
-    public org.graphstream.graph.Graph showAll() {
-        int i, j, k;
-        Graph graph = new MultiGraph("I can see dead pixels");
-        ArrayList<ArrayList<String>> tuplesList;
-        ArrayList<String> tuple;
-        System.out.println(atomList.size());
-        
-        for(i=0; i<atomList.size(); i++) {
-            System.out.println("FOI2");
-            graph.addNode(atomList.get(i).getLabel());
-            graph.getNode(i).addAttribute("ui.label", atomList.get(i).getLabel());
-
-        }
-        
-        for(i=0; i<fieldList.size(); i++) {
-            tuplesList = fieldList.get(i).getTuples();
-            for(j=0; j<tuplesList.size(); j++) {
-                tuple = tuplesList.get(j);
-                for(k=0; k<tuple.size() - 1; k++) {
-                    try {
-                    System.out.println(tuple.get(k));
-                    System.out.println(tuple.get(k+1));
-                    graph.addEdge(tuple.get(k).concat(fieldList.get(i).getLabel().concat(tuple.get(k+1))), tuple.get(k), tuple.get(k+1));
-                    graph.getEdge(tuple.get(k).concat(fieldList.get(i).getLabel().concat(tuple.get(k+1)))).addAttribute("ui.label", fieldList.get(i).getLabel());
-                    } catch (Exception e) {
-                        
-                    }
-                }
-            }
-        }
-        
-        graph.addAttribute("ui.antialias");
-        
-        graph.addAttribute("ui.stylesheet", "graph {\n" +
-"}\n" +
-"node {\n" +
-"    size: 50px, 50px;\n" +
-"    shape: box;\n" +
-"    fill-color: green;\n" +
-"    stroke-mode: plain;\n" +
-"    stroke-color: yellow;\n" +
-"    size-mode: fit;\n" +
-"}\n" +
-"node#A {\n" +
-"    fill-color: blue;\n" +
-"}\n" +
-"node:clicked {\n" +
-"    fill-color: red;\n" +
-"}");   
-        
-        return graph;
-    }
-*/
     
     public View showWorldGraph() {
         //viewer = graph.display(true);
