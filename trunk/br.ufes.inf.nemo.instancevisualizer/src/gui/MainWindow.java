@@ -46,12 +46,15 @@ public class MainWindow extends JFrame {
 	private int worldCounter;
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
+	private JCheckBoxMenuItem chckbxmntmNewCheckItem;
 	
 
 	/**
 	 * Launch the application.
 	 */
+	/*
 	public static void main(String[] args) {
+		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -65,7 +68,7 @@ public class MainWindow extends JFrame {
 		});
 		
 	}
-
+*/
 	/**
 	 * Create the frame.
 	 * @throws InterruptedException 
@@ -99,6 +102,7 @@ public class MainWindow extends JFrame {
 		menuBar.add(mnView);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Zoom +");
+		mntmNewMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_EQUALS, 0));
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -109,8 +113,10 @@ public class MainWindow extends JFrame {
 		mnView.add(mntmNewMenuItem);
 		
 		JMenuItem mntmZoom = new JMenuItem("Zoom -");
+		mntmZoom.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, 0));
 		mntmZoom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				Camera cam = xGraph.getView().getCamera();
 				cam.setViewPercent(cam.getViewPercent() + 0.1);
 			}
@@ -120,8 +126,30 @@ public class MainWindow extends JFrame {
 		JSeparator separator = new JSeparator();
 		mnView.add(separator);
 		
-		JCheckBoxMenuItem chckbxmntmNewCheckItem = new JCheckBoxMenuItem("Auto Layout");
+		chckbxmntmNewCheckItem = new JCheckBoxMenuItem("Auto Layout");
+		chckbxmntmNewCheckItem.setSelected(true);
+		chckbxmntmNewCheckItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, 0));
+		chckbxmntmNewCheckItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(chckbxmntmNewCheckItem.isSelected()) {
+					xGraph.getViewer().enableAutoLayout();
+				}else{
+					xGraph.getViewer().disableAutoLayout();
+				}
+			}
+		});
 		mnView.add(chckbxmntmNewCheckItem);
+		
+		JMenu mnAttributes = new JMenu("Attributes");
+		menuBar.add(mnAttributes);
+		
+		JMenuItem mntmChangeLabels = new JMenuItem("Change Labels");
+		mntmChangeLabels.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ChangeLabelWindow(xGraph).setVisible(true);
+			}
+		});
+		mnAttributes.add(mntmChangeLabels);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -271,7 +299,13 @@ public class MainWindow extends JFrame {
 		this.xmlFile = xmlFile;
 	}
 
+	public JCheckBoxMenuItem getChckbxmntmNewCheckItem() {
+		return chckbxmntmNewCheckItem;
+	}
 
+	public void setChckbxmntmNewCheckItem(JCheckBoxMenuItem chckbxmntmNewCheckItem) {
+		this.chckbxmntmNewCheckItem = chckbxmntmNewCheckItem;
+	}
 
 	public void setContentPane(JPanel contentPane) {
 		this.contentPane = contentPane;
@@ -282,8 +316,8 @@ public class MainWindow extends JFrame {
 		//remove(this.scrollPane);
 		scrollPane.getViewport().removeAll();
 		scrollPane_1.getViewport().removeAll();
-		scrollPane.getViewport().add(xGraph.showSelectedGraph());
-		scrollPane_1.getViewport().add(xGraph.showWorldGraph());
+		scrollPane.setViewportView(xGraph.showSelectedGraph());
+		scrollPane_1.setViewportView(xGraph.showWorldGraph());
         //scrollPane = new JScrollPane(xGraph.showSelectedGraph());
         
         //scrollPane_1 = new JScrollPane(xGraph.showWorldGraph());
@@ -315,8 +349,7 @@ public class MainWindow extends JFrame {
 	
 	public void setScrollPanes1() {
 		scrollPane.getViewport().removeAll();
-		//scrollPane_1.getViewport().removeAll();
-		scrollPane.getViewport().add(xGraph.showSelectedGraph());
+		scrollPane.setViewportView(xGraph.showSelectedGraph());
 		//scrollPane_1.getViewport().add(xGraph.showWorldGraph());
 	}
 	

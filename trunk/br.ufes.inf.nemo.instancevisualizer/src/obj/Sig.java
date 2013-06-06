@@ -10,16 +10,12 @@ import org.w3c.dom.*;
 public class Sig {
     private boolean builtin;
     private int id;
-    private int parentID;
+    private int parentId;
     private Sig parentSig;
     private String label;
     
     public Sig(org.w3c.dom.Element node) {
-        /*
-        if("sig".compareTo(node.getNodeName()) != 0) {
-            System.out.println("NOT A SIG");
-        }
-        */
+        
         if("yes".compareTo(node.getAttribute("builtin")) == 0) {
             builtin = true;
         }else{
@@ -28,11 +24,13 @@ public class Sig {
         id = Integer.parseInt(node.getAttribute("ID"));
         String aux = node.getAttribute("parentID");
         if(aux.isEmpty()) {
-            parentID = -1;
+            parentId = -1;
         }else{
-            parentID = Integer.parseInt(node.getAttribute("parentID"));
+            parentId = Integer.parseInt(node.getAttribute("parentID"));
         }
         label = node.getAttribute("label");
+        
+        parentSig = null;
     }
 
     public boolean isObejct() {
@@ -93,12 +91,12 @@ public class Sig {
         this.id = id;
     }
 
-    public int getParentID() {
-        return parentID;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setParentID(int parentID) {
-        this.parentID = parentID;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public Sig getParentSig() {

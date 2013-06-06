@@ -26,7 +26,6 @@ public class XMLFile {
     private ArrayList<Atom> dataTypeList;
     
     public XMLFile(java.io.File file) throws ParserConfigurationException, SAXException, IOException {
-        System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
         
         // Initialization of parameters
         skolemList = new ArrayList();
@@ -50,7 +49,7 @@ public class XMLFile {
         
         // Getting elements from .xml file
         NodeList sigl = xml.getDoc().getElementsByTagName("sig");
-        NodeList atoml;
+        NodeList atoml;	// This one will change on each sig
         NodeList fieldl = xml.getDoc().getElementsByTagName("field");
         
         // Getting sigs
@@ -83,33 +82,50 @@ public class XMLFile {
             fieldList.add(new Field((org.w3c.dom.Element) fieldl.item(i), atomList));
         }
         
-        for(i=2; i<fieldList.size(); i++) {
-            if(!fieldList.get(i).getTuples().isEmpty()) {
-                if(fieldList.get(i).getTuple(0).size() > 2) {
-                    
-                }
-            }
+        // Getting parent ids:
+        for(i=0; i<sigList.size(); i++){
+        	for(j=0; j<sigList.size(); j++){
+        		if(sigList.get(i).getParentId() == sigList.get(j).getId()) {
+        			sigList.get(i).setParentSig(sigList.get(j));
+        			break;
+        		}
+        	}
+        	if(sigList.get(i).getParentSig() != null) {
+    			break;
+    		}
+        	for(j=0; j<fieldList.size(); j++){
+        		if(sigList.get(i).getParentId() == fieldList.get(j).getId()) {
+        			sigList.get(i).setParentSig(fieldList.get(j));
+        			break;
+        		}
+        	}
         }
-        /*
-        System.out.println("");
-        System.out.println("");
         
-        for(i=0; i<fieldList.get(0).getTuples().size(); i++) {
-            for(j=0; j<fieldList.get(0).getTuples().get(i).size(); j++) {
-                System.out.println(fieldList.get(0).getTuples().get(i).get(j));
-            }
-            System.out.println("");
-            
+        for(i=0; i<fieldList.size(); i++){
+        	for(j=0; j<fieldList.size(); j++){
+        		if(fieldList.get(i).getParentId() == sigList.get(j).getId()) {
+        			fieldList.get(i).setParentSig(sigList.get(j));
+        			break;
+        		}
+        	}
+        	if(fieldList.get(i).getParentSig() != null) {
+    			break;
+    		}
+        	for(j=0; j<fieldList.size(); j++){
+        		if(fieldList.get(i).getParentId() == fieldList.get(j).getId()) {
+        			fieldList.get(i).setParentSig(fieldList.get(j));
+        			break;
+        		}
+        	}
         }
-        System.out.println("");
-        System.out.println("");
-        */
+        
     }
     
     public ArrayList<String> getAtomTypeOnWorld(String atomLabel, String worldLabel) {
         ArrayList<String> stringList = new ArrayList();	// The list of types. One atom can have multiple types.
-        int i, j, k;	// Auxiliary Variables
-        for(i=2; i<fieldList.size(); i++) {
+        int i, j, k;
+        for(i=0; i<fieldList.size(); i++) {
+        	System.out.println("FIELD NAME: " + fieldList.get(i).getLabel());
             if(!fieldList.get(i).getTuples().isEmpty()) {
                 if(fieldList.get(i).getTuple(0).size() == 2) {
                     System.out.println("FOI");
@@ -117,8 +133,8 @@ public class XMLFile {
                         System.out.println("FOI2");
                         //for(k=0; k<fieldList.get(i).getTuple(j).size(); k++) {
                             System.out.println("FOI3");
-                            if(fieldList.get(i).getTuple(j).get(0).hasLabel(worldLabel)
-                                    && fieldList.get(i).getTuple(j).get(1).hasLabel(atomLabel)) {
+                            if(fieldList.get(i).getTuple(j).get(0).equals(worldLabel)
+                                    && fieldList.get(i).getTuple(j).get(1).equals(atomLabel)) {
                                 stringList.add(fieldList.get(i).getLabel());
                             }
                         //}
@@ -134,6 +150,16 @@ public class XMLFile {
         for(i=0; i<atomList.size(); i++) {
             if(atomList.get(i).getLabel().equals(label)) {
                 return atomList.get(i);
+            }
+        }
+        return null;
+    }
+    
+    public Sig findSigById(int id) {
+        int i;
+        for(i=0; i<sigList.size(); i++) {
+            if(sigList.get(i).getId() == id) {
+                return sigList.get(i);
             }
         }
         return null;
