@@ -272,6 +272,11 @@ public class BaseTransformer {
 					{
 						target = "String_";
 						aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
+					}
+					else if (attr.getType().getName().compareToIgnoreCase("char")==0)
+					{
+						target = "String_";
+						aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
 					}			
 					
 				}else{
