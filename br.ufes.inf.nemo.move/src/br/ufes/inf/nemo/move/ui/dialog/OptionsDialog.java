@@ -185,6 +185,7 @@ public class OptionsDialog extends JDialog {
 			{
 		    	// do the action in the case of continuation...
 				dispose();			
+				
 				frame.getManager().doSimulation();
 			}
     	}else{
