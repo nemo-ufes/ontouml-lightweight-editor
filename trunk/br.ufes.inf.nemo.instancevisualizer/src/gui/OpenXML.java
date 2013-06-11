@@ -17,12 +17,13 @@ import obj.*;
 
 public class OpenXML {
 	private JFileChooser fc;
+	int returnVal;
 	
 	public OpenXML(MainWindow mainWindow, boolean exitIfCancel) {
 		 fc = new JFileChooser();
 		 fc.setCurrentDirectory(new java.io.File("./"));
 		 fc.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("XML instances", "xml"));
-		 int returnVal = fc.showOpenDialog(null);
+		 returnVal = fc.showOpenDialog(null);
 		    
 		 if (returnVal == JFileChooser.APPROVE_OPTION) {
 			 try {
@@ -54,6 +55,7 @@ public class OpenXML {
 			 if(exitIfCancel) {
 				 System.exit(0);
 			 }
+			 
 		 }
 	}
 }
