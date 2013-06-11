@@ -97,11 +97,12 @@ public class Mediator {
     			break;
     			
     		case PRIMITIVE:
-    			if (mapper.getName(element).equalsIgnoreCase("int") || mapper.getName(element).equalsIgnoreCase("integer")) {
+    			//System.out.println("Debug: criando primitive name = " + mapper.getName(element));
+    			if (mapper.getName(element).contains("int")) {
     				elem1 = RefOntoCreator.INTEGER_PRIMITIVE;
-            	} else if (mapper.getName(element).equalsIgnoreCase("bool") || mapper.getName(element).equalsIgnoreCase("boolean")) {
+            	} else if (mapper.getName(element).contains("bool")) {
             		elem1 = RefOntoCreator.BOOLEAN_PRIMITIVE;
-            	} else if (mapper.getName(element).equalsIgnoreCase("str") || mapper.getName(element).equalsIgnoreCase("string") || mapper.getName(element).equalsIgnoreCase("char")) {
+            	} else if (mapper.getName(element).contains("str") || mapper.getName(element).equalsIgnoreCase("char")) {
             		elem1 = RefOntoCreator.STRING_PRIMITIVE;
             	} else if (mapper.getName(element).contains("unlimited") || mapper.getName(element).equalsIgnoreCase("float")) {
             		elem1 = RefOntoCreator.UNLIMITED_NATURAL_PRIMITIVE;
@@ -161,7 +162,7 @@ public class Mediator {
     	
     	if (elem1 != null) {
     		String name = mapper.getName(element);
-        	if (elem1 instanceof RefOntoUML.NamedElement) {
+        	if (elem1 instanceof RefOntoUML.NamedElement && !(elem1 instanceof RefOntoUML.PrimitiveType)) {
         		refcreator.setName((RefOntoUML.NamedElement)elem1, name);
         	}
         	
