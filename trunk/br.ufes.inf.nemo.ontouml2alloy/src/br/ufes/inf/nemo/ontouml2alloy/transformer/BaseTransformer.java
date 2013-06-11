@@ -60,6 +60,8 @@ public class BaseTransformer {
 	
 	public SignatureDeclaration sigString;
 	
+	public SignatureDeclaration sigChar;
+	
 	public ArrayList<SignatureDeclaration> dataTypesSignatures = new ArrayList<SignatureDeclaration>();	
 	
 	public ArrayList<EnumDeclaration> enumerationSignatures = new ArrayList<EnumDeclaration>();
@@ -157,6 +159,21 @@ public class BaseTransformer {
 					sigString = factory.createSignatureDeclaration();
 					sigString.setName("String_");					
 					module.getParagraph().add(sigString);					
+				}				
+			}
+		}
+		
+		/* sig Char {}
+		 */
+		if (ontoparser.getAllInstances(PrimitiveType.class).size()>0)
+		{
+			for(PrimitiveType p: ontoparser.getAllInstances(PrimitiveType.class))
+			{
+				if (p.getName().compareToIgnoreCase("char")==0)
+				{
+					sigChar = factory.createSignatureDeclaration();
+					sigChar.setName("Char");					
+					module.getParagraph().add(sigChar);					
 				}				
 			}
 		}
@@ -275,7 +292,7 @@ public class BaseTransformer {
 					}
 					else if (attr.getType().getName().compareToIgnoreCase("char")==0)
 					{
-						target = "String_";
+						target = "Char";
 						aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
 					}			
 					
