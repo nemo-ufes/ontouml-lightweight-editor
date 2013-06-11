@@ -25,73 +25,137 @@ import org.xml.sax.SAXException;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class Main implements ViewerListener {
+public class Main {
 	private MainWindow mainWindow;
     protected boolean loop = true;
+    protected boolean mode;	//true - worlds; false - selected world;
+    private ViewerPipe fromViewer;
+    private ViewerPipe fromViewer2;
  
     public static void main(String args[]) throws HeadlessException, InterruptedException {
     	System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-        new Main();
+        new Main(true);
     }
     
-    public Main() throws HeadlessException, InterruptedException {
-    	mainWindow = new MainWindow();
-    	new OpenXML(mainWindow, true);
+    public Main(boolean closeIfCancel) throws HeadlessException, InterruptedException {
+    	mode = false;
+    	mainWindow = new MainWindow(this);
+    	new OpenXML(mainWindow, closeIfCancel);
     	mainWindow.setVisible(true);
     	
     	mainWindow.setScrollPanes();
 
         //Viewer viewer = graphl.display();
  
-        // The default action when closing the view is to quit
-        // the program.
         //viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
- 
-        // We connect back the viewer to the graph,
-        // the graph becomes a sink for the viewer.
-        // We also install us as a viewer listener to
-        // intercept the graphic events.
     	
-    	Graph graph = mainWindow.getxGraph().getWorldGraph();
+        
     	
-        ViewerPipe fromViewer = new BlockingViewerPipe(mainWindow.getxGraph().getViewer1());
-        fromViewer.addViewerListener(this);
+    	fromViewer = new BlockingViewerPipe(mainWindow.getxGraph().getViewer1());
+    	fromViewer = mainWindow.getxGraph().getViewer1().newViewerPipe();
+        fromViewer.addViewerListener(new ViewerListener(){
+        	public void viewClosed(String id) {
+                //loop = false;
+            }
+        	
+            public void buttonPushed(String id) {
+                System.out.println("Button pushed on node "+id);
+            }
+         
+            public void buttonReleased(String id) {
+                System.out.println("Button released on node "+id);
+                mainWindow.getxGraph().getViewer1().disableAutoLayout();
+                
+                mainWindow.getxGraph().getWorldGraph().getNode(id).addAttribute("ui.style", "fill-color: green;");
+                //mainWindow.getChckbxmntmNewCheckItem().setSelected(true);
+                //mainWindow.getxGraph().setSelectedGraph(mainWindow.getxGraph().setGraphToSelectedWorld(mainWindow.getXmlFile().findAtom(id)));
+                mainWindow.getxGraph().changeSelectedWorld(mainWindow.getXmlFile().findAtom(id));
+                //mainWindow.getxGraph().showSelectedGraph();
+                //mainWindow.setScrollPanes();
+                //fromViewer2 = mainWindow.getxGraph().getViewer().newViewerPipe();
+                //fromViewer2 = new BlockingViewerPipe(mainWindow.getxGraph().getViewer());
+                
+                System.out.println("FFEZ");
+                
+                //mainWindow.getxGraph().showSelectedGraph();
+                //mainWindow.setScrollPanes1();
+                
+                
+            }
+        });
         //fromViewer.addSink(graph);
         
-        // Then we need a loop to wait for events.
-        // In this loop we will need to call the
-        // pump() method to copy back events that have
-        // already occurred in the viewer thread inside
-        // our thread.
         
-        //mainWindow.getxGraph().getWorldGraph().removeNode("world_structure/CurrentWorld$0");
-        //mainWindow.getxGraph().getWorldGraph().addNode("world_structure/CurrentWorld$0");
+        fromViewer2 = mainWindow.getxGraph().getViewer().newViewerPipe();
+        //fromViewer2 = new BlockingViewerPipe(mainWindow.getxGraph().getViewer());
+        fromViewer2.addViewerListener(new ViewerListener() {
+        	public void buttonPushed(String id) {
+        		// TODO Auto-generated method stub
+        		System.out.println(id);
+        		mainWindow.changeTableId(id);
+        		mainWindow.changeTableLabel(mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label").toString());
+        	}
+        	public void buttonReleased(String id) {
+        		// TODO Auto-generated method stub
+        		System.out.println(id);
+        	}
+        	public void viewClosed(String viewName) {
+        		// TODO Auto-generated method stub
+        		
+        	}
+        });
         
-        fromViewer.pump();
         while(loop) {
+        	Thread.sleep(100);
+        	//System.out.println("PUMPING");
+        	if(mode) {
         		fromViewer.pump();
-        		System.out.println("Pumping ...");
-            // here your simulation code.
-            // You do not necessarily need to use a loop, this is only an example.
-            // as long as you call pump() before using the graph. pump() is non
-            // blocking.
+        	}else{        		
+        		fromViewer2.pump();
+        	}
         }
-    }
- 
-    public void viewClosed(String id) {
-        loop = false;
-    }
- 
-    public void buttonPushed(String id) {
-        System.out.println("Button pushed on node "+id);
-    }
- 
-    public void buttonReleased(String id) {
-        System.out.println("Button released on node "+id);
-        mainWindow.getChckbxmntmNewCheckItem().setSelected(true);
-        mainWindow.getxGraph().setSelectedGraph(mainWindow.getxGraph().setGraphToSelectedWorld(mainWindow.getXmlFile().findAtom(id)));
-        mainWindow.getxGraph().showSelectedGraph();
-        mainWindow.setScrollPanes1();
         
     }
+    /*
+    public void callWorldLoop() {
+    	while(loop) {
+    		fromViewer.pump();
+    		//fromViewer2.pump();
+    		//System.out.println("Pumping ...");
+    	}
+    }
+    
+    public void callSelectedWorldLoop() {
+    	while(loop) {
+    		fromViewer.pump();
+    		//fromViewer2.pump();
+    		//System.out.println("Pumping ...");
+    	}
+    }
+    */
+    public void stopActiveLoop() {
+    	setLoop(false);
+    	setLoop(true);
+    }
+
+	public boolean isLoop() {
+		return loop;
+	}
+
+	public void setLoop(boolean loop) {
+		this.loop = loop;
+	}
+
+	public boolean isMode() {
+		return mode;
+	}
+
+	public void setMode(boolean mode) {
+		this.mode = mode;
+	}
+	
+	public boolean getMode() {
+		return this.mode;
+	}
+	
 }

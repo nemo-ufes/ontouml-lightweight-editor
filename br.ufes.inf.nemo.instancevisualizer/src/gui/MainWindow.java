@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -36,10 +37,17 @@ import java.awt.Dimension;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainWindow extends JFrame {
 
 	//protected boolean loop = true;
+	private Main main;
 	private JPanel contentPane;
 	private XMLFile xmlFile;
 	private XGraph xGraph;
@@ -47,6 +55,9 @@ public class MainWindow extends JFrame {
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
 	private JCheckBoxMenuItem chckbxmntmNewCheckItem;
+	private Dimension d1, d2;
+	private JTable table;
+	private boolean mode;
 	
 
 	/**
@@ -73,7 +84,9 @@ public class MainWindow extends JFrame {
 	 * Create the frame.
 	 * @throws InterruptedException 
 	 */
-	public MainWindow() throws InterruptedException {
+	public MainWindow(Main mainVar) throws InterruptedException {
+		mode = false;
+		main = mainVar;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 640+320, 360+180);
 		contentPane = new JPanel();
@@ -91,9 +104,17 @@ public class MainWindow extends JFrame {
 		JMenuItem mntmOpen = new JMenuItem("Open .xml/.refontouml...");
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				/*
 				callOpenXML();
 				System.out.println(xGraph);
 				setScrollPanes();
+				*/
+				try {
+					new Main(false);
+				} catch (HeadlessException | InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		mnFile.add(mntmOpen);
@@ -128,7 +149,7 @@ public class MainWindow extends JFrame {
 		
 		chckbxmntmNewCheckItem = new JCheckBoxMenuItem("Auto Layout");
 		chckbxmntmNewCheckItem.setSelected(true);
-		chckbxmntmNewCheckItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, 0));
+		chckbxmntmNewCheckItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, 0));
 		chckbxmntmNewCheckItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(chckbxmntmNewCheckItem.isSelected()) {
@@ -140,38 +161,57 @@ public class MainWindow extends JFrame {
 		});
 		mnView.add(chckbxmntmNewCheckItem);
 		
+		JMenuItem mntmHideunhideWorldMap = new JMenuItem("Hide/Unhide World Map");
+		mntmHideunhideWorldMap.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, 0));
+		mntmHideunhideWorldMap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				d1 = scrollPane_1.getSize();
+				d2 = scrollPane.getSize();
+				d2.setSize(d1.getWidth() + d2.getWidth(), d2.getHeight());
+				//scrollPane_1.setSize(0, 0);
+				scrollPane.setSize(d2);
+				scrollPane_1.setSize(0, 0);
+				setScrollPanes();
+			}
+		});
+		mnView.add(mntmHideunhideWorldMap);
+		
 		JMenu mnAttributes = new JMenu("Attributes");
 		menuBar.add(mnAttributes);
 		
 		JMenuItem mntmChangeLabels = new JMenuItem("Change Labels");
 		mntmChangeLabels.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ChangeLabelWindow(xGraph).setVisible(true);
+				new ChangeLabelWindow(xGraph, table).setVisible(true);
 			}
 		});
 		mnAttributes.add(mntmChangeLabels);
-		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 944, Short.MAX_VALUE)
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 480, Short.MAX_VALUE)
-		);
-		getContentPane().setLayout(groupLayout);
 		
 		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 389, 469);
 		
 		scrollPane_1 = new JScrollPane();
+		
+		scrollPane_1.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				System.out.println("FOCUSs");
+			}
+		});
+		scrollPane_1.setBounds(742, 11, 192, 192);
+		getContentPane().setLayout(null);
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GroupLayout groupLayout_1 = new GroupLayout(getContentPane());
 		groupLayout_1.setHorizontalGroup(
 			groupLayout_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout_1.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout_1.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(tabbedPane)
+						.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		groupLayout_1.setVerticalGroup(
@@ -180,12 +220,59 @@ public class MainWindow extends JFrame {
 					.addContainerGap()
 					.addGroup(groupLayout_1.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout_1.createSequentialGroup()
-							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
-							.addGap(199))
+							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
 						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE))
 					.addContainerGap())
 		);
+		
+		table = new JTable();
+		table.setModel(new javax.swing.table.DefaultTableModel(
+	            new Object [][]{},
+	            new Object [] {}
+	        ){
+	            public boolean isCellEditable(int row, int column) {
+	                return false;
+	            }
+	        });
+		javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) table.getModel();
+		model.addColumn(null, new Object[]{
+				"<html><b>ID</b></html>",
+                "<html><b>LABEL</b></html>",
+                "* * *",
+                "<html><b>STEREOTYPES</b></html>"
+            });
+		model.addColumn(null, new Object[]{
+				"",
+                "",
+                "* * *",
+                "<html><b>TYPES</b></html>"
+            });
+		
+		class LastRowBold extends javax.swing.table.DefaultTableCellRenderer {  
+			   public java.awt.Component getTableCellRendererComponent(JTable table, 
+					   Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				   javax.swing.JLabel parent = (javax.swing.JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);  
+				   if(column == 0)
+					   parent.setFont(parent.getFont().deriveFont(java.awt.Font.BOLD));
+				   if(row == 1)
+					   parent.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+				   if(row == 3 || row <= 1)
+					   parent.setHorizontalAlignment(javax.swing.JLabel.LEFT);
+				   return parent;
+			   }
+		}
+		
+		table.setDefaultRenderer(Object.class, new LastRowBold());
+		
+		tabbedPane.addTab("Properties", null, table, null);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		tabbedPane.addTab("Legend", null, scrollPane_2, null);
 		getContentPane().setLayout(groupLayout_1);
+		getContentPane().add(scrollPane);
+		getContentPane().add(scrollPane_1);
 		
 	}
 	/*
@@ -311,6 +398,10 @@ public class MainWindow extends JFrame {
 		this.contentPane = contentPane;
 	}
 	
+	public boolean getMode() {
+		return mode;
+	}
+	
 	public void setScrollPanes() {
 		//remove(this.scrollPane_1);
 		//remove(this.scrollPane);
@@ -318,6 +409,25 @@ public class MainWindow extends JFrame {
 		scrollPane_1.getViewport().removeAll();
 		scrollPane.setViewportView(xGraph.showSelectedGraph());
 		scrollPane_1.setViewportView(xGraph.showWorldGraph());
+		
+		scrollPane.getViewport().getComponent(0).addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				mode = false;
+				main.setMode(false);
+				System.out.println(main.getMode());
+			}
+		});
+		
+		scrollPane_1.getViewport().getComponent(0).addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				mode = true;
+				main.setMode(true);
+				System.out.println(main.getMode());
+			}
+		});
+		
         //scrollPane = new JScrollPane(xGraph.showSelectedGraph());
         
         //scrollPane_1 = new JScrollPane(xGraph.showWorldGraph());
@@ -351,6 +461,14 @@ public class MainWindow extends JFrame {
 		scrollPane.getViewport().removeAll();
 		scrollPane.setViewportView(xGraph.showSelectedGraph());
 		//scrollPane_1.getViewport().add(xGraph.showWorldGraph());
+	}
+	
+	public void changeTableLabel(String label) {
+		table.setValueAt(label, 1, 1);
+	}
+	
+	public void changeTableId(String id) {
+		table.setValueAt(id, 0, 1);
 	}
 	
 	public void callOpenXML() {
