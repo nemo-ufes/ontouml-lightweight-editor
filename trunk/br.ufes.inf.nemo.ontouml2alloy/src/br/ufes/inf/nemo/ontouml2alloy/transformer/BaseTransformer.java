@@ -275,7 +275,7 @@ public class BaseTransformer {
 				ArrowOperation aOp  = factory.createArrowOperation();
 				if (attr.getType() instanceof PrimitiveType)
 				{
-					if (attr.getType().getName().compareToIgnoreCase("int")==0)
+					if (attr.getType().getName().compareToIgnoreCase("int")==0 || attr.getType().getName().compareToIgnoreCase("integer")==0)
 					{
 						target = "Int";
 						aOp = AlloyUtil.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,target,attr.getLower(),attr.getUpper());
