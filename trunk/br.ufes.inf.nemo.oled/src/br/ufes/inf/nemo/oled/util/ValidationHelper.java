@@ -60,7 +60,7 @@ public class ValidationHelper {
 			}	
 		}
 		
-		sb.append(MessageFormat.format("Model validated in {0} ms, {1} error(s) found", (validationEndMilis - validationStartMilis),  diag.getChildren().size()));
+		sb.append(MessageFormat.format("Model verified in {0} ms, {1} error(s) found", (validationEndMilis - validationStartMilis),  diag.getChildren().size()));
 		return new OperationResult(valid ? ResultType.SUCESS : ResultType.ERROR, sb.toString(), new Object[] { errorsMap });		
 	}
 	
