@@ -3,6 +3,8 @@ package gui;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.ParserConfigurationException;
 
 import obj.*;
@@ -24,6 +27,7 @@ import org.graphstream.ui.swingViewer.ViewerPipe;
 import org.xml.sax.SAXException;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.common.resource.TypeName;
 
 public class Main {
 	private MainWindow mainWindow;
@@ -31,6 +35,7 @@ public class Main {
     protected boolean mode;	//true - worlds; false - selected world;
     private ViewerPipe fromViewer;
     private ViewerPipe fromViewer2;
+    String selectedWorld = "world_structure/CurrentWorld$0";
  
     public static void main(String args[]) throws HeadlessException, InterruptedException {
     	System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
@@ -45,13 +50,7 @@ public class Main {
     	
     	mainWindow.setScrollPanes();
 
-        //Viewer viewer = graphl.display();
- 
-        //viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
-    	
-        
-    	
-    	fromViewer = new BlockingViewerPipe(mainWindow.getxGraph().getViewer1());
+    	//fromViewer = new BlockingViewerPipe(mainWindow.getxGraph().getViewer1());
     	fromViewer = mainWindow.getxGraph().getViewer1().newViewerPipe();
         fromViewer.addViewerListener(new ViewerListener(){
         	public void viewClosed(String id) {
@@ -64,22 +63,16 @@ public class Main {
          
             public void buttonReleased(String id) {
                 System.out.println("Button released on node "+id);
+                selectedWorld = id;
                 mainWindow.getxGraph().getViewer1().disableAutoLayout();
                 
+                Iterator iter = mainWindow.getxGraph().getWorldGraph().getNodeIterator();
+                while(iter.hasNext()) {
+                	org.graphstream.graph.Node nodeAux = (org.graphstream.graph.Node) iter.next();
+                	nodeAux.addAttribute("ui.style", "fill-color: white;");
+                }
                 mainWindow.getxGraph().getWorldGraph().getNode(id).addAttribute("ui.style", "fill-color: green;");
-                //mainWindow.getChckbxmntmNewCheckItem().setSelected(true);
-                //mainWindow.getxGraph().setSelectedGraph(mainWindow.getxGraph().setGraphToSelectedWorld(mainWindow.getXmlFile().findAtom(id)));
                 mainWindow.getxGraph().changeSelectedWorld(mainWindow.getXmlFile().findAtom(id));
-                //mainWindow.getxGraph().showSelectedGraph();
-                //mainWindow.setScrollPanes();
-                //fromViewer2 = mainWindow.getxGraph().getViewer().newViewerPipe();
-                //fromViewer2 = new BlockingViewerPipe(mainWindow.getxGraph().getViewer());
-                
-                System.out.println("FFEZ");
-                
-                //mainWindow.getxGraph().showSelectedGraph();
-                //mainWindow.setScrollPanes1();
-                
                 
             }
         });
@@ -90,10 +83,24 @@ public class Main {
         //fromViewer2 = new BlockingViewerPipe(mainWindow.getxGraph().getViewer());
         fromViewer2.addViewerListener(new ViewerListener() {
         	public void buttonPushed(String id) {
-        		// TODO Auto-generated method stub
+        		int i;
         		System.out.println(id);
         		mainWindow.changeTableId(id);
         		mainWindow.changeTableLabel(mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label").toString());
+        		
+        		DefaultTableModel model = (DefaultTableModel) mainWindow.getTable().getModel();
+        		
+        		while(model.getRowCount() != 4) {
+        			model.removeRow(4);
+        		}
+        		
+        		ArrayList<String> typeList = mainWindow.getxGraph().getXmlFile().getAtomTypeOnWorld(id, selectedWorld);
+        		
+        		for(i=0; i<typeList.size(); i++) {
+        			String stereoType = TypeName.getTypeName(mainWindow.getxGraph().getOntoUmlParser().getElement(typeList.get(i)));
+            		model.addRow(new Object[]{stereoType, typeList.get(i)});
+        		}
+        		mainWindow.getTable().setModel(model);
         	}
         	public void buttonReleased(String id) {
         		// TODO Auto-generated method stub
@@ -116,28 +123,7 @@ public class Main {
         }
         
     }
-    /*
-    public void callWorldLoop() {
-    	while(loop) {
-    		fromViewer.pump();
-    		//fromViewer2.pump();
-    		//System.out.println("Pumping ...");
-    	}
-    }
     
-    public void callSelectedWorldLoop() {
-    	while(loop) {
-    		fromViewer.pump();
-    		//fromViewer2.pump();
-    		//System.out.println("Pumping ...");
-    	}
-    }
-    */
-    public void stopActiveLoop() {
-    	setLoop(false);
-    	setLoop(true);
-    }
-
 	public boolean isLoop() {
 		return loop;
 	}
