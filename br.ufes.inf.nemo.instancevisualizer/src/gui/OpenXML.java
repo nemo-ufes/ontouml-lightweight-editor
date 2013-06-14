@@ -41,8 +41,8 @@ public class OpenXML {
 					 xGraph = new XGraph(xmlFile, onto, 0);
 					 mainWindow.setxGraph(xGraph);
 					 mainWindow.setXmlFile(xmlFile);
-					 mainWindow.getxGraph().setGraphToSelectedWorld(mainWindow.getxGraph().getXmlFile().findAtom("world_structure/CurrentWorld$0"));
-					 mainWindow.getxGraph().setGraphToAllWorlds();
+					 mainWindow.getxGraph().createSelectedWorld();
+					 mainWindow.getxGraph().createWorldMap();
 					 
 				 }else{
 					 System.out.println(".refontouml NOT FOUND... You need it on the same directory of the .xml.");

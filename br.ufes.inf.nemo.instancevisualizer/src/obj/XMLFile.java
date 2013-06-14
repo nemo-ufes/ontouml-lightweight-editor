@@ -125,16 +125,17 @@ public class XMLFile {
         ArrayList<String> stringList = new ArrayList();	// The list of types. One atom can have multiple types.
         int i, j, k;
         for(i=0; i<fieldList.size(); i++) {
-        	System.out.println("FIELD NAME: " + fieldList.get(i).getLabel());
+        	//System.out.println("FIELD NAME: " + fieldList.get(i).getLabel());
             if(!fieldList.get(i).getTuples().isEmpty()) {
                 if(fieldList.get(i).getTuple(0).size() == 2) {
-                    System.out.println("FOI");
+                    //System.out.println("FOI");
                     for(j=0; j<fieldList.get(i).getTuples().size(); j++) {
-                        System.out.println("FOI2");
+                        //System.out.println("FOI2");
                         //for(k=0; k<fieldList.get(i).getTuple(j).size(); k++) {
-                            System.out.println("FOI3");
+                            //System.out.println("FOI3");
                             if(fieldList.get(i).getTuple(j).get(0).equals(worldLabel)
-                                    && fieldList.get(i).getTuple(j).get(1).equals(atomLabel)) {
+                                    && fieldList.get(i).getTuple(j).get(1).equals(atomLabel)
+                                    	&& !fieldList.get(i).getLabel().equals("exists")) {
                                 stringList.add(fieldList.get(i).getLabel());
                             }
                         //}
