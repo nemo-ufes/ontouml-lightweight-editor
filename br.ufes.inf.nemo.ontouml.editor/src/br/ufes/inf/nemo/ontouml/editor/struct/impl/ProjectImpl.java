@@ -29,7 +29,7 @@ public class ProjectImpl implements Project {
 		ModelArtifact artifact = new ModelArtifact(Settings.MODEL_DEFAULT_FILE.getValue(), resource);
 		
 		Model model = RefOntoUMLFactory.eINSTANCE.createModel();
-		model.setName("New RefOntoUML Model");
+		model.setName("MyRoot");
 		artifact.setModel(model);
 		
 		artifacts.add(artifact);
