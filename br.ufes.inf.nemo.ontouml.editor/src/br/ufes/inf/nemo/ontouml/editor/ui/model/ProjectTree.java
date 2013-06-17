@@ -3,8 +3,12 @@ package br.ufes.inf.nemo.ontouml.editor.ui.model;
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 
+import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
@@ -63,7 +67,32 @@ public class ProjectTree extends CheckboxTree {
 		addCheckingPath(new TreePath(rootNode.getPath()));		
 		expandPath(new TreePath(rootNode.getPath()));
 		
-		addMouseListener(new ToolboxPopupMenuListener());
+		/** Right Click Mouse Listener */
+		addMouseListener(new MouseAdapter()
+	    {
+	        public void mousePressed ( MouseEvent e )
+	        {	        	
+	            if (SwingUtilities.isRightMouseButton(e))
+	            {
+	            	TreePath path = getPathForLocation ( e.getX (), e.getY () );
+	                Rectangle pathBounds = getUI().getPathBounds(ProjectTree.this, path);
+	                if (pathBounds != null && pathBounds.contains(e.getX (),e.getY()))
+	                {	                	
+	                	doPopup(e);
+	                }
+	            }
+	        }
+	    });		
+	}
+	
+	/**
+	 * Show the Popup Menu
+	 */
+	public void doPopup (MouseEvent e)
+	{
+		TreePath path = getPathForLocation(e.getX(), e.getY());
+		ToolboxPopupMenu menu = new ToolboxPopupMenu();
+	    menu.show(e.getComponent(), e.getX(), e.getY());	
 	}
 	
 	/** 
@@ -152,11 +181,12 @@ public class ProjectTree extends CheckboxTree {
 				OntoPrimeElement elem = new OntoPrimeElement(e);
 				
 				// new node
-				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(elem);
+				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(elem);				
 				parent.add(newNode);
 				
 				drawTree(newNode, checkingModel);
 			}
 		}	
-	}	
+	}
+		
 }

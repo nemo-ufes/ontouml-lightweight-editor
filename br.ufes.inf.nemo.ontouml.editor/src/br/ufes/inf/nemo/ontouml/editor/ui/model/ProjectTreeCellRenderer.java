@@ -31,7 +31,7 @@ public class ProjectTreeCellRenderer implements CheckboxTreeCellRenderer {
 	{
 		super();    		
 		label.setFocusable(true);
-		label.setOpaque(true);		  		 
+		label.setOpaque(true);		
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.add(BorderLayout.WEST,checkbox);
 		panel.add(BorderLayout.CENTER,label);		    		
