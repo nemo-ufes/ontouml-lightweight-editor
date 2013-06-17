@@ -36,8 +36,8 @@ public class OntoReferenceElement extends ElementAdapter {
 		if (element instanceof Generalization)
 		{			
 			RefOntoUML.Classifier c = ((Generalization)element).getGeneral();			
-			if (c!=null) return "<<"+type +">> " + c.getName();
-			else return "<<"+type+">> " + "null";
+			if (c!=null) return ""+type +" " + c.getName();
+			else return ""+type+" " + "null";
 		}	
 		
 		else if (element instanceof GeneralizationSet)
@@ -45,7 +45,7 @@ public class OntoReferenceElement extends ElementAdapter {
 			String result = new String();
 		    RefOntoUML.GeneralizationSet genset = (RefOntoUML.GeneralizationSet)element;		    
 		    		    
-		    result += "<<"+type + ">> " + name + " ";
+		    result += ""+type + " " + name + " ";
 		   
 		    if (genset.parent()!=null)
 		    {
@@ -77,11 +77,11 @@ public class OntoReferenceElement extends ElementAdapter {
 			if (lower == -1) lowerString = "*";
 			if (upper == -1) upperString = "*";
 						 
-			return "<<"+type+">> "+TypeName+" ("+name+")"+" ["+lowerString+","+upperString+"]";			
+			return ""+type+" "+TypeName+" ("+name+")"+" ["+lowerString+","+upperString+"]";			
 		}
 		
 		else {
-			return "<<"+type+">> "+name;			    
+			return ""+type+" "+name;			    
 		}		
 	}	
 }

@@ -61,7 +61,9 @@ public class ProjectTree extends CheckboxTree {
 		setShowsRootHandles(true);
 		
 		addCheckingPath(new TreePath(rootNode.getPath()));		
-		expandPath(new TreePath(rootNode.getPath()));		
+		expandPath(new TreePath(rootNode.getPath()));
+		
+		addMouseListener(new ToolboxPopupMenuListener());
 	}
 	
 	/** 
@@ -156,5 +158,5 @@ public class ProjectTree extends CheckboxTree {
 				drawTree(newNode, checkingModel);
 			}
 		}	
-	}
+	}	
 }

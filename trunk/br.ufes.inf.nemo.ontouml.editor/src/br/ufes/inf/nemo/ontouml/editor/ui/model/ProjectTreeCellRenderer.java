@@ -52,12 +52,19 @@ public class ProjectTreeCellRenderer implements CheckboxTreeCellRenderer {
 	   	boolean grayed = checkingModel.isPathGreyed(path);	
 	   	
 	   	checkbox.setEnabled(enabled);	   	    
-	   	
-	   	if (grayed) {
-	   		label.setForeground(Color.lightGray);
-	   	} else {
-	   		label.setForeground(Color.black);
-	   	}	   	    	   	
+
+	   	if (selected){
+			label.setBackground(UIManager.getColor("Tree.selectionBackground"));
+			label.setForeground(Color.white);
+		}else{
+			label.setBackground(UIManager.getColor("Tree.textBackground"));
+			
+			if (grayed) {
+		   		label.setForeground(Color.lightGray);
+		   	} else {
+		   		label.setForeground(Color.black);
+		   	}	   	
+		}
 	   	
 	   	checkbox.setSelected(checked);
 	   	
