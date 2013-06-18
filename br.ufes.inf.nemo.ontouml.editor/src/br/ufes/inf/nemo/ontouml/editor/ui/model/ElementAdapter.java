@@ -35,7 +35,7 @@ public abstract class ElementAdapter {
     
     public String toString()
     {    	
-    	return "<<"+type+">> "+getName();
+    	return ""+type+" "+getName();
     }
     
     public abstract String getName ();

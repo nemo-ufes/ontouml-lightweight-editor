@@ -7,19 +7,25 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.UIManager;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 public class ProjectTreeCellRenderer implements CheckboxTreeCellRenderer {
 
    	public JCheckBox checkbox = new JCheckBox();
-   	public JPanel panel = new JPanel();
-   	public JLabel label = new JLabel();    	
+   	public JPanel panel = new JPanel();   	
+   	public JLabel opensymLabel = new JLabel();    	
+   	public JLabel closesymLabel = new JLabel();
+   	public JLabel typeLabel = new JLabel();
+   	public JPanel stereotypePanel = new JPanel();
+   	public JLabel nameLabel = new JLabel();
     	
 	@Override
 	public boolean isOnHotspot(int x, int y) 
@@ -30,11 +36,29 @@ public class ProjectTreeCellRenderer implements CheckboxTreeCellRenderer {
 	public ProjectTreeCellRenderer() 
 	{
 		super();    		
-		label.setFocusable(true);
-		label.setOpaque(true);		
+		
+		opensymLabel.setFocusable(true);
+		opensymLabel.setOpaque(true);
+		opensymLabel.setText(" <<");
+		opensymLabel.setFont(new Font("Tempus Sans ITC", Font.PLAIN, 12));
+		closesymLabel.setFocusable(true);
+		closesymLabel.setOpaque(true);
+		closesymLabel.setText(">> ");
+		closesymLabel.setFont(new Font("Tempus Sans ITC", Font.PLAIN, 12));
+		typeLabel.setFocusable(true);
+		typeLabel.setOpaque(true);	
+		stereotypePanel = new JPanel();
+		stereotypePanel.setLayout(new BorderLayout(0, 0));
+		stereotypePanel.add(BorderLayout.WEST,opensymLabel);
+		stereotypePanel.add(BorderLayout.CENTER,typeLabel);
+		stereotypePanel.add(BorderLayout.EAST,closesymLabel);
+		
+		nameLabel.setFocusable(true);
+		nameLabel.setOpaque(true);		
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.add(BorderLayout.WEST,checkbox);
-		panel.add(BorderLayout.CENTER,label);		    		
+		panel.add(BorderLayout.CENTER,stereotypePanel);
+		panel.add(BorderLayout.EAST,nameLabel);
 		checkbox.setBackground(UIManager.getColor("Tree.textBackground"));    		
 		panel.setBackground(UIManager.getColor("Tree.textBackground"));		    		
 	}
@@ -42,7 +66,17 @@ public class ProjectTreeCellRenderer implements CheckboxTreeCellRenderer {
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) 
 	{		
-		label.setText(value.toString());	
+		Object object = ((DefaultMutableTreeNode)value).getUserObject();
+		if (object instanceof OntoReferenceElement)
+		{		
+			typeLabel.setText(((ElementAdapter)object).getType());
+			nameLabel.setText(((OntoReferenceElement)object).getName());
+		}
+		else if (object instanceof OntoPrimeElement)
+		{
+			typeLabel.setText(((ElementAdapter)object).getType());
+			nameLabel.setText(((OntoPrimeElement)object).getName());
+		}
 		
 		TreeCheckingModel checkingModel = ((CheckboxTree)tree).getCheckingModel();
 	   	TreePath path = tree.getPathForRow(row);	   	
@@ -54,15 +88,30 @@ public class ProjectTreeCellRenderer implements CheckboxTreeCellRenderer {
 	   	checkbox.setEnabled(enabled);	   	    
 
 	   	if (selected){
-			label.setBackground(UIManager.getColor("Tree.selectionBackground"));
-			label.setForeground(Color.white);
+			opensymLabel.setBackground(UIManager.getColor("Tree.selectionBackground"));
+			opensymLabel.setForeground(Color.white);
+			closesymLabel.setBackground(UIManager.getColor("Tree.selectionBackground"));
+			closesymLabel.setForeground(Color.white);
+			typeLabel.setBackground(UIManager.getColor("Tree.selectionBackground"));
+			typeLabel.setForeground(Color.white);
+			nameLabel.setBackground(UIManager.getColor("Tree.selectionBackground"));
+			nameLabel.setForeground(Color.white);
 		}else{
-			label.setBackground(UIManager.getColor("Tree.textBackground"));
+			opensymLabel.setBackground(UIManager.getColor("Tree.textBackground"));
+			closesymLabel.setBackground(UIManager.getColor("Tree.textBackground"));
+			typeLabel.setBackground(UIManager.getColor("Tree.textBackground"));
+			nameLabel.setBackground(UIManager.getColor("Tree.textBackground"));
 			
 			if (grayed) {
-		   		label.setForeground(Color.lightGray);
+				opensymLabel.setForeground(Color.lightGray);
+				closesymLabel.setForeground(Color.lightGray);
+				typeLabel.setForeground(Color.lightGray);
+				nameLabel.setForeground(Color.lightGray);
 		   	} else {
-		   		label.setForeground(Color.black);
+		   		opensymLabel.setForeground(Color.black);
+		   		closesymLabel.setForeground(Color.black);
+				typeLabel.setForeground(Color.black);
+				nameLabel.setForeground(Color.black);
 		   	}	   	
 		}
 	   	

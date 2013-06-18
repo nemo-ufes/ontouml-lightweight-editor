@@ -25,7 +25,7 @@ public class OntoPrimeElement extends ElementAdapter {
 	@Override
 	public String getName() 
 	{
-		return null;
+		return "#Unimplemented";
 	}
 
 }
