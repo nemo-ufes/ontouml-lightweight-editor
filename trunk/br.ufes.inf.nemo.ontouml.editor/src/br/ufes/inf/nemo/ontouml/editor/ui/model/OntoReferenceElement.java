@@ -16,11 +16,13 @@ import RefOntoUML.NamedElement;
 public class OntoReferenceElement extends ElementAdapter {
 
 	String name;
+	String customInfo;
 	
 	public OntoReferenceElement(EObject eo) 
 	{
 		super(eo);		
 		name = getName();
+		customInfo = getCustomInfo();
 	}
 	
 	@Override
@@ -30,23 +32,17 @@ public class OntoReferenceElement extends ElementAdapter {
 		else return "#Unnamed"; 
 	}	
 	
-	@Override
-	public String toString()
-	{	
+	public String getCustomInfo()
+	{
 		if (element instanceof Generalization)
-		{			
+		{
 			RefOntoUML.Classifier c = ((Generalization)element).getGeneral();			
-			if (c!=null) return ""+type +" " + c.getName();
-			else return ""+type+" " + "null";
-		}	
-		
+			if (c!=null) return c.getName();
+		}
 		else if (element instanceof GeneralizationSet)
 		{	
 			String result = new String();
-		    RefOntoUML.GeneralizationSet genset = (RefOntoUML.GeneralizationSet)element;		    
-		    		    
-		    result += ""+type + " " + name + " ";
-		   
+		    RefOntoUML.GeneralizationSet genset = (RefOntoUML.GeneralizationSet)element;
 		    if (genset.parent()!=null)
 		    {
 		    	result += (genset.parent()).getName()+"{ ";
@@ -64,8 +60,7 @@ public class OntoReferenceElement extends ElementAdapter {
 			    result += " } ";
 		    }
 		    return result;		    
-		}	
-		
+		}
 		else if (element instanceof RefOntoUML.Property)
 		{						
 			String TypeName = ((RefOntoUML.Property)element).getType().getName();
@@ -75,13 +70,21 @@ public class OntoReferenceElement extends ElementAdapter {
 			String lowerString = lower.toString();
 			String upperString = upper.toString();
 			if (lower == -1) lowerString = "*";
-			if (upper == -1) upperString = "*";
-						 
-			return ""+type+" "+TypeName+" ("+name+")"+" ["+lowerString+","+upperString+"]";			
+			if (upper == -1) upperString = "*";						 
+			return TypeName+" ("+name+")"+" ["+lowerString+","+upperString+"]";
+			
 		}
-		
-		else {
-			return ""+type+" "+name;			    
+		return "";		
+	}
+	
+	@Override
+	public String toString()
+	{
+		if (element instanceof RefOntoUML.Property || element instanceof Generalization)
+		{						 
+			return type+" "+customInfo;			
+		} else {
+			return type+" "+name + " " +customInfo;			    
 		}		
 	}	
 }
