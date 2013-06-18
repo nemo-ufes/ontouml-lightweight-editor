@@ -4,6 +4,7 @@ import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +20,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import obj.*;
 
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.swingViewer.Viewer;
 import org.graphstream.ui.swingViewer.ViewerListener;
@@ -85,22 +88,25 @@ public class Main {
         	public void buttonPushed(String id) {
         		int i;
         		System.out.println(id);
-        		mainWindow.changeTableId(id);
-        		mainWindow.changeTableLabel(mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label").toString());
+        		//mainWindow.changeTableId(id);
+        		//mainWindow.changeTableLabel(mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label").toString());
         		
-        		DefaultTableModel model = (DefaultTableModel) mainWindow.getTable().getModel();
+        		//DefaultTableModel model = (DefaultTableModel) mainWindow.getTable().getModel();
         		
-        		while(model.getRowCount() != 4) {
-        			model.removeRow(4);
-        		}
+        		//while(model.getRowCount() != 4) {
+        		//	model.removeRow(4);
+        		//}
         		
         		ArrayList<String> typeList = mainWindow.getxGraph().getXmlFile().getAtomTypeOnWorld(id, selectedWorld);
         		
         		for(i=0; i<typeList.size(); i++) {
         			String stereoType = TypeName.getTypeName(mainWindow.getxGraph().getOntoUmlParser().getElement(typeList.get(i)));
-            		model.addRow(new Object[]{stereoType, typeList.get(i)});
+        			System.out.println(stereoType + " - - " + typeList.get(i));
         		}
-        		mainWindow.getTable().setModel(model);
+        		//	String stereoType = TypeName.getTypeName(mainWindow.getxGraph().getOntoUmlParser().getElement(typeList.get(i)));
+            	//	model.addRow(new Object[]{stereoType, typeList.get(i)});
+        		//}
+        		//mainWindow.getTable().setModel(model);
         	}
         	public void buttonReleased(String id) {
         		// TODO Auto-generated method stub
@@ -114,6 +120,24 @@ public class Main {
         
         while(loop) {
         	Thread.sleep(100);
+        	/*
+        	Collection<Node> nodeList = mainWindow.getxGraph().getSelectedGraph().getNodeSet();
+    		Collection<Edge> edgeList = mainWindow.getxGraph().getSelectedGraph().getEdgeSet();
+    		Iterator node = nodeList.iterator();
+    		Iterator edge = edgeList.iterator();
+    		while(node.hasNext()) {
+    			//Node n = node.next();
+    			Node nodem = (Node) node.next();
+    			nodem.addAttribute("layout.weight", -1);
+    		}
+    		while(edge.hasNext()) {
+    			//Node n = node.next();
+    			Edge edgem = (Edge) edge.next();
+    			edgem.addAttribute("layout.weight", 20);
+    		}
+    		*/
+        	//mainWindow.getxGraph().getSelectedGraph().
+        	//mainWindow.getxGraph().getView().getCamera().setAutoFitView(true);
         	//System.out.println("PUMPING");
         	if(mode) {
         		fromViewer.pump();

@@ -132,20 +132,6 @@ public class MainWindow extends JFrame {
 		JSeparator separator = new JSeparator();
 		mnView.add(separator);
 		
-		chckbxmntmNewCheckItem = new JCheckBoxMenuItem("Auto Layout");
-		chckbxmntmNewCheckItem.setSelected(true);
-		chckbxmntmNewCheckItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, 0));
-		chckbxmntmNewCheckItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(chckbxmntmNewCheckItem.isSelected()) {
-					xGraph.getViewer().enableAutoLayout();
-				}else{
-					xGraph.getViewer().disableAutoLayout();
-				}
-			}
-		});
-		mnView.add(chckbxmntmNewCheckItem);
-		
 		JMenuItem mntmHideunhideWorldMap = new JMenuItem("Hide World Map");
 		//mntmHideunhideWorldMap.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, 0));
 		mntmHideunhideWorldMap.addActionListener(new ActionListener() {
@@ -163,16 +149,39 @@ public class MainWindow extends JFrame {
 		});
 		mnView.add(mntmHideunhideWorldMap);
 		
-		JMenu mnAttributes = new JMenu("Attributes");
-		menuBar.add(mnAttributes);
+		JMenu mnLayout = new JMenu("Attributes");
+		menuBar.add(mnLayout);
 		
-		JMenuItem mntmChangeLabels = new JMenuItem("Change Labels");
-		mntmChangeLabels.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new ChangeLabelWindow(xGraph, table).setVisible(true);
+		chckbxmntmNewCheckItem = new JCheckBoxMenuItem("Enable Auto-Layout");
+		mnLayout.add(chckbxmntmNewCheckItem);
+		chckbxmntmNewCheckItem.setSelected(true);
+		chckbxmntmNewCheckItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, 0));
+		chckbxmntmNewCheckItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(chckbxmntmNewCheckItem.isSelected()) {
+					xGraph.getViewer().enableAutoLayout();
+				}else{
+					xGraph.getViewer().disableAutoLayout();
+				}
 			}
 		});
-		mnAttributes.add(mntmChangeLabels);
+		
+		JMenuItem mntmChangeAutolayout = new JMenuItem("Change Auto-Layout");
+		mnLayout.add(mntmChangeAutolayout);
+		
+		JMenuItem mntmChangeWeights = new JMenuItem("Change Weights");
+		mntmChangeWeights.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new ChangeWeightsWindow(xGraph, table).setVisible(true);
+			}
+		});
+		mnLayout.add(mntmChangeWeights);
+		
+		JSeparator separator_1 = new JSeparator();
+		mnLayout.add(separator_1);
+		
+		JMenuItem mntmGraphAttributes = new JMenuItem("Graph Attributes...");
+		mnLayout.add(mntmGraphAttributes);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 11, 389, 469);
@@ -191,26 +200,26 @@ public class MainWindow extends JFrame {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GroupLayout groupLayout_1 = new GroupLayout(getContentPane());
 		groupLayout_1.setHorizontalGroup(
-			groupLayout_1.createParallelGroup(Alignment.LEADING)
+			groupLayout_1.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout_1.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout_1.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(tabbedPane)
-						.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+					.addGroup(groupLayout_1.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE)
+						.addGroup(groupLayout_1.createSequentialGroup()
+							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 823, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout_1.setVerticalGroup(
-			groupLayout_1.createParallelGroup(Alignment.LEADING)
+			groupLayout_1.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout_1.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout_1.createSequentialGroup()
-							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout_1.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(tabbedPane)
+						.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		

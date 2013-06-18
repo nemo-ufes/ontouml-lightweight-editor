@@ -7,8 +7,16 @@ package obj;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.xml.parsers.ParserConfigurationException;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import RefOntoUML.Classifier;
+import RefOntoUML.provider.RefOntoUMLEditPlugin;
+import br.ufes.inf.nemo.common.ontoumlparser.*;
+import br.ufes.inf.nemo.common.resource.*;
 
 /**
  *
@@ -25,7 +33,9 @@ public class XMLFile {
     private ArrayList<Atom> propertyList;
     private ArrayList<Atom> dataTypeList;
     
-    public XMLFile(java.io.File file) throws ParserConfigurationException, SAXException, IOException {
+    private OntoUMLParser ontoUmlParser;
+    
+    public XMLFile(java.io.File file, OntoUMLParser onto) throws ParserConfigurationException, SAXException, IOException {
         
         // Initialization of parameters
         skolemList = new ArrayList();
@@ -37,6 +47,8 @@ public class XMLFile {
         objectList = new ArrayList();
         propertyList = new ArrayList();
         dataTypeList = new ArrayList();
+        
+        ontoUmlParser = onto;
         
         //integers = new ArrayList();
         
@@ -146,6 +158,31 @@ public class XMLFile {
         return stringList;
     }
     
+    public ArrayList<Classifier> getAtomClassifiersOnWorld(String atomLabel, String worldLabel) {
+        ArrayList<Classifier> classifList = new ArrayList();	// The list of types. One atom can have multiple types.
+        int i, j, k;
+        for(i=0; i<fieldList.size(); i++) {
+        	//System.out.println("FIELD NAME: " + fieldList.get(i).getLabel());
+            if(!fieldList.get(i).getTuples().isEmpty()) {
+                if(fieldList.get(i).getTuple(0).size() == 2) {
+                    //System.out.println("FOI");
+                    for(j=0; j<fieldList.get(i).getTuples().size(); j++) {
+                        //System.out.println("FOI2");
+                        //for(k=0; k<fieldList.get(i).getTuple(j).size(); k++) {
+                            //System.out.println("FOI3");
+                            if(fieldList.get(i).getTuple(j).get(0).equals(worldLabel)
+                                    && fieldList.get(i).getTuple(j).get(1).equals(atomLabel)
+                                    	&& !fieldList.get(i).getLabel().equals("exists")) {
+                                classifList.add((Classifier) ontoUmlParser.getElement(fieldList.get(i).getLabel()));
+                            }
+                        //}
+                    }
+                }
+            }
+        }
+        return classifList;
+    }
+    
     public Atom findAtom(String label) {
         int i;
         for(i=0; i<atomList.size(); i++) {
@@ -166,6 +203,58 @@ public class XMLFile {
         return null;
     }
 
+    public Classifier getAtomMainType(String atomLabel, String worldLabel) {
+    	ArrayList<Classifier> classifList = getAtomClassifiersOnWorld(atomLabel, worldLabel);
+    	for(int i=0; i<classifList.size(); i++) {
+        	String type = TypeName.getTypeName(classifList.get(i));
+        	if(type.matches("Kind|Quantity|Collective")) {
+        		return classifList.get(i);
+        	}
+        }
+    	/*
+    	(Classifier) ontoUmlParser.getElement(typeList.get(i));
+    	System.out.println(ontoUmlParser.getAllParents(la).toString());
+    	*/
+    	
+    	ArrayList<Classifier> candidates = new ArrayList(); 
+    	
+    	for(int i=0; i<classifList.size(); i++) {
+    		Classifier classif = classifList.get(i);
+    		if(classif.allParents().isEmpty()) {
+    			candidates.add(classif);
+    		}
+    	}
+    	return candidates.get(0);
+    }
+    
+    public ArrayList<Classifier> getAtomSecondayTypes(String atomLabel, String worldLabel) {
+    	ArrayList<Classifier> classifList = getAtomClassifiersOnWorld(atomLabel, worldLabel);
+    	classifList.remove(getAtomMainType(atomLabel, worldLabel));
+    	ArrayList<Classifier> secondaries = new ArrayList();
+    	
+    	ArrayList<Classifier> classList = new ArrayList();
+    	for(int i=0; i<classifList.size(); i++) {
+    		Classifier classif = classifList.get(i);
+    		if(!interscedes(classif.allChildren(), classifList)) {
+    			secondaries.add(classif);
+    		}
+    	}
+    	return secondaries;
+    }
+    
+    private static boolean interscedes(EList x, ArrayList y) {
+		for(int i=0; i<x.size(); i++) {
+			if(y.contains(x.get(i))) {
+				return true;
+			}
+		}
+    	return false;
+    }
+    
+    public ArrayList<String> getTypeParents(String type) {
+    	return null;
+    }
+    
     public ArrayList<Atom> getAtomList() {
         return atomList;
     }

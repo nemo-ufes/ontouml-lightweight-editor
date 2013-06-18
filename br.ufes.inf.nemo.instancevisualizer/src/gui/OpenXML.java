@@ -29,7 +29,6 @@ public class OpenXML {
 			 try {
 				 XMLFile xmlFile;
 				 XGraph xGraph;
-				 xmlFile = new XMLFile(fc.getSelectedFile());
 				 String fileNameWithoutExt = fc.getSelectedFile().getName().replaceFirst("[.][^.]+$", "");
 				 String refontoPath = fc.getSelectedFile().getParent() + "\\" + fileNameWithoutExt + ".refontouml";
 				 File refontoFile = new File(refontoPath);
@@ -38,6 +37,7 @@ public class OpenXML {
 		            
 				 if(refontoFile.exists()) {
 					 onto = new OntoUMLParser(refontoPath);
+					 xmlFile = new XMLFile(fc.getSelectedFile(), onto);
 					 xGraph = new XGraph(xmlFile, onto, 0);
 					 mainWindow.setxGraph(xGraph);
 					 mainWindow.setXmlFile(xmlFile);
