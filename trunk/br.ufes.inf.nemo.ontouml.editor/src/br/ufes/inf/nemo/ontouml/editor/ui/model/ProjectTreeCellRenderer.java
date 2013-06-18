@@ -17,6 +17,8 @@ import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import br.ufes.inf.nemo.ontouml.editor.util.Resources;
+
 public class ProjectTreeCellRenderer implements CheckboxTreeCellRenderer {
 
    	public JCheckBox checkbox = new JCheckBox();
@@ -67,15 +69,25 @@ public class ProjectTreeCellRenderer implements CheckboxTreeCellRenderer {
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) 
 	{		
 		Object object = ((DefaultMutableTreeNode)value).getUserObject();
+		ElementAdapter elemAdapt = ((ElementAdapter)object);
 		if (object instanceof OntoReferenceElement)
 		{		
-			typeLabel.setText(((ElementAdapter)object).getType());
-			nameLabel.setText(((OntoReferenceElement)object).getName()+" "+((OntoReferenceElement)object).getCustomInfo());
+			OntoReferenceElement ontoElem = (OntoReferenceElement)elemAdapt;
+			
+			typeLabel.setText(elemAdapt.getType());
+			nameLabel.setText(ontoElem.getName()+" "+ontoElem.getCustomInfo());
+			
+			if (ontoElem.getType().equals("Package") || ontoElem.getType().equals("Model")) 
+			{
+				opensymLabel.setIcon(Resources.getIcon("tree.package.icon"));
+			}
 		}
 		else if (object instanceof OntoPrimeElement)
 		{
-			typeLabel.setText(((ElementAdapter)object).getType());
-			nameLabel.setText(((OntoPrimeElement)object).getName());
+			OntoPrimeElement ontoElem = (OntoPrimeElement)elemAdapt;
+			
+			typeLabel.setText(elemAdapt.getType());
+			nameLabel.setText(ontoElem.getName());
 		}
 		
 		TreeCheckingModel checkingModel = ((CheckboxTree)tree).getCheckingModel();
@@ -85,9 +97,10 @@ public class ProjectTreeCellRenderer implements CheckboxTreeCellRenderer {
 	   	boolean checked = checkingModel.isPathChecked(path);
 	   	boolean grayed = checkingModel.isPathGreyed(path);	
 	   	
-	   	checkbox.setEnabled(enabled);	   	    
-
-	   	if (selected){
+	   	checkbox.setEnabled(enabled);  	    
+	   	
+	   	if (selected)
+	   	{
 			opensymLabel.setBackground(UIManager.getColor("Tree.selectionBackground"));
 			opensymLabel.setForeground(Color.white);
 			closesymLabel.setBackground(UIManager.getColor("Tree.selectionBackground"));
@@ -96,7 +109,9 @@ public class ProjectTreeCellRenderer implements CheckboxTreeCellRenderer {
 			typeLabel.setForeground(Color.white);
 			nameLabel.setBackground(UIManager.getColor("Tree.selectionBackground"));
 			nameLabel.setForeground(Color.white);
+			
 		}else{
+			
 			opensymLabel.setBackground(UIManager.getColor("Tree.textBackground"));
 			closesymLabel.setBackground(UIManager.getColor("Tree.textBackground"));
 			typeLabel.setBackground(UIManager.getColor("Tree.textBackground"));
