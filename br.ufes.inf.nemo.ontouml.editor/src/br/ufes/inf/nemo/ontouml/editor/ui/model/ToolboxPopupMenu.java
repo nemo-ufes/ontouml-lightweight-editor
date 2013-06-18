@@ -7,6 +7,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
 
 	private static final long serialVersionUID = 1L;
 	
+	JMenuItem packageItem = new JMenuItem("Package");
 	JMenuItem kindItem = new JMenuItem("Kind");
 	JMenuItem collectiveItem  = new JMenuItem("Collective");
 	JMenuItem quantityItem = new JMenuItem("Quantity");
@@ -17,8 +18,8 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	JMenuItem rolemixinItem = new JMenuItem("RoleMixin");
 	JMenuItem mixinItem = new JMenuItem("Mixin");	
 	JMenuItem relatorItem = new JMenuItem("Relator");
-	JMenuItem modeItem = new JMenuItem("Mode");
-	
+	JMenuItem modeItem = new JMenuItem("Mode");	
+	JMenuItem genItem = new JMenuItem("Generalization");
 	JMenuItem mediationItem = new JMenuItem("Mediation");	
 	JMenuItem materialItem = new JMenuItem("Material");
 	JMenuItem formalItem = new JMenuItem("Formal");
@@ -28,33 +29,41 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	JMenuItem characterizationtem = new JMenuItem("Characterization");
 	JMenuItem subquantityOfItem = new JMenuItem("SubQuantityOf");
 	JMenuItem subcollectionOfItem = new JMenuItem("SubCollectionOf");
-	JMenuItem derivationItem = new JMenuItem("Derivation");
+	JMenuItem derivationItem = new JMenuItem("Derivation");	
+	JMenuItem genSetItem = new JMenuItem("Generalization Set");
 	
     public ToolboxPopupMenu()
     {        
-        add(kindItem);
+    	add(packageItem);    	
+    	addSeparator();        
+    	add(kindItem);
         add(collectiveItem);
         add(quantityItem);
-        add(subkindItem);
+        add(subkindItem);        
+        addSeparator();        
         add(roleItem);
-        add(phaseItem);
+        add(phaseItem);        
+        addSeparator();        
         add(categoryItem);        
         add(rolemixinItem);
-        add(mixinItem);
+        add(mixinItem);        
+        addSeparator();        
         add(relatorItem);
-        add(modeItem);
-        
+        add(modeItem);        
+        addSeparator();        
+        add(genItem);
+        add(genSetItem);        
         addSeparator();
-        
+        add(componentOfItem);        
+        add(memberOfItem);
+        add(subquantityOfItem);
+        add(subcollectionOfItem);    
+        addSeparator();                
         add(materialItem);
         add(mediationItem);        
         add(derivationItem);
         add(formalItem);                
-        add(componentOfItem);        
-        add(memberOfItem);
-        add(subquantityOfItem);
-        add(subcollectionOfItem);        
         add(characterizationtem);
-        add(associationItem);
+        add(associationItem);                
     }	
 }
