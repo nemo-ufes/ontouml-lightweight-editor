@@ -70,7 +70,7 @@ public class ProjectTreeCellRenderer implements CheckboxTreeCellRenderer {
 		if (object instanceof OntoReferenceElement)
 		{		
 			typeLabel.setText(((ElementAdapter)object).getType());
-			nameLabel.setText(((OntoReferenceElement)object).getName());
+			nameLabel.setText(((OntoReferenceElement)object).getName()+" "+((OntoReferenceElement)object).getCustomInfo());
 		}
 		else if (object instanceof OntoPrimeElement)
 		{
