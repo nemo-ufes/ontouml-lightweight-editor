@@ -60,9 +60,7 @@ public class MainWindow extends JFrame {
 	private JScrollPane scrollPane_1;
 	private JCheckBoxMenuItem chckbxmntmNewCheckItem;
 	private Dimension d1, d2;
-	private JTable table;
 	private boolean mode;
-	private JTabbedPane tabbedPane;
 	
 	/**
 	 * Create the frame.
@@ -131,7 +129,7 @@ public class MainWindow extends JFrame {
 		
 		JSeparator separator = new JSeparator();
 		mnView.add(separator);
-		
+		/*
 		JMenuItem mntmHideunhideWorldMap = new JMenuItem("Hide World Map");
 		//mntmHideunhideWorldMap.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, 0));
 		mntmHideunhideWorldMap.addActionListener(new ActionListener() {
@@ -142,13 +140,12 @@ public class MainWindow extends JFrame {
 				//scrollPane_1.setSize(0, 0);
 				scrollPane.setSize(d2);
 				scrollPane_1.setSize(0, 0);
-				tabbedPane.setSize(0, 0);
 				scrollPane.setViewportView(xGraph.getView());
 				//setScrollPanesNoR();
 			}
 		});
 		mnView.add(mntmHideunhideWorldMap);
-		
+		*/
 		JMenu mnLayout = new JMenu("Attributes");
 		menuBar.add(mnLayout);
 		
@@ -172,7 +169,7 @@ public class MainWindow extends JFrame {
 		JMenuItem mntmChangeWeights = new JMenuItem("Change Weights");
 		mntmChangeWeights.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new ChangeWeightsWindow(xGraph, table).setVisible(true);
+				new ChangeWeightsWindow(xGraph).setVisible(true);
 			}
 		});
 		mnLayout.add(mntmChangeWeights);
@@ -195,20 +192,16 @@ public class MainWindow extends JFrame {
 			}
 		});
 		scrollPane_1.setBounds(742, 11, 192, 192);
-		getContentPane().setLayout(null);
 		
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		getContentPane().setLayout(null);
 		GroupLayout groupLayout_1 = new GroupLayout(getContentPane());
 		groupLayout_1.setHorizontalGroup(
 			groupLayout_1.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout_1.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout_1.createParallelGroup(Alignment.TRAILING)
-						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE)
-						.addGroup(groupLayout_1.createSequentialGroup()
-							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 823, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(scrollPane_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE)
+						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		groupLayout_1.setVerticalGroup(
@@ -217,49 +210,9 @@ public class MainWindow extends JFrame {
 					.addContainerGap()
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout_1.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(tabbedPane)
-						.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
+					.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
-		
-		table = new JTable();
-		
-		table.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				//if(arg0.getKeyCode() == arg0.VK_ENTER){
-					xGraph.getSelectedGraph().getNode(table.getValueAt(0, 1).toString()).addAttribute("ui.label", table.getValueAt(1, 1).toString());
-				//}
-			}
-		});
-		
-		table.setModel(new javax.swing.table.DefaultTableModel(
-	            new Object [][]{},
-	            new Object [] {}
-	        ){
-	            public boolean isCellEditable(int row, int column) {
-	            	if(row==1 && column==1) {
-	            		return true;
-	            	}else{
-	            		return false;
-	            	}
-	            }
-	        });
-		
-		javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) table.getModel();
-		model.addColumn(null, new Object[]{
-				"<html><b>ID</b></html>",
-                "<html><b>LABEL</b></html>",
-                "* * *",
-                "<html><b>STEREOTYPES</b></html>"
-            });
-		model.addColumn(null, new Object[]{
-				"",
-                "",
-                "* * *",
-                "<html><b>TYPES</b></html>"
-            });
 		
 		class LastRowBold extends javax.swing.table.DefaultTableCellRenderer {  
 			   public java.awt.Component getTableCellRendererComponent(JTable table, 
@@ -274,13 +227,6 @@ public class MainWindow extends JFrame {
 				   return parent;
 			   }
 		}
-		
-		table.setDefaultRenderer(Object.class, new LastRowBold());
-		
-		tabbedPane.addTab("Properties", null, table, null);
-		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		tabbedPane.addTab("Legend", null, scrollPane_2, null);
 		getContentPane().setLayout(groupLayout_1);
 		getContentPane().add(scrollPane);
 		getContentPane().add(scrollPane_1);
@@ -333,14 +279,6 @@ public class MainWindow extends JFrame {
 	
 	public boolean getMode() {
 		return mode;
-	}
-	
-	public JTable getTable() {
-		return table;
-	}
-
-	public void setTable(JTable table) {
-		this.table = table;
 	}
 
 	public void setScrollPanes() {
@@ -409,14 +347,6 @@ public class MainWindow extends JFrame {
 		scrollPane.getViewport().removeAll();
 		scrollPane.setViewportView(xGraph.showSelectedGraph());
 		//scrollPane_1.getViewport().add(xGraph.showWorldGraph());
-	}
-	
-	public void changeTableLabel(String label) {
-		table.setValueAt(label, 1, 1);
-	}
-	
-	public void changeTableId(String id) {
-		table.setValueAt(id, 0, 1);
 	}
 	
 	public void callOpenXML() {

@@ -175,13 +175,12 @@ public class XGraph {
         ArrayList<ArrayList<String>> tuplesList;
         ArrayList<String> tuple;
         ArrayList<ArrayList<Integer>> typesList;
-        String edgeType = "";
         
         // Creating nodes - we need the "exists" tuples:
         for(i=0; i<fieldList.size(); i++) {
         	if(fieldList.get(i).getLabel().equals("exists")) {
         		obj.Field exists = fieldList.get(i);
-        		
+        		// After we find the "exists" field, we don't need to search anymore
 		        for(i=0; i<exists.getTuples().size(); i++) {
 		            if(exists.getTuple(i).get(0).equals("world_structure/CurrentWorld$0")) {	// The first world to display is the current world.
 		            	String atomLabel = exists.getTuple(i).get(1);
@@ -203,14 +202,15 @@ public class XGraph {
 		                
 		                ArrayList<Classifier> secList = xmlFile.getAtomSecondayTypes(atomLabel, "world_structure/CurrentWorld$0"); 
 		                for(j=0; j<secList.size(); j++) {
-	                    		org.graphstream.graph.Node sat = graph.addNode(atomLabel + "$" + j);
-	                    		org.graphstream.graph.Edge orbit = graph.addEdge("orbit" + "$" + edgeId, atomLabel, atomLabel + "$" + j, false);
-	                    		edgeId++;
+		                		String satLabel = atomLabel + "_sat$" + j;
+		                		String orbitLabel = atomLabel + "_orbit$" + j;
+	                    		org.graphstream.graph.Node sat = graph.addNode(atomLabel + "_sat$" + j);
+	                    		org.graphstream.graph.Edge orbit = graph.addEdge(atomLabel + "_orbit$" + j, atomLabel, satLabel, false);
 	                    		//sat.addAttribute("ui.label", TypeName.getTypeName(ontoUmlParser.getElement(typeList.get(j))));
-	                    		orbit.addAttribute("layout.weight", 1);
-	                    		orbit.addAttribute("ui.style", "fill-color: rgba(0,0,0,0);");
 	                    		sat.addAttribute("ui.style", "text-background-mode: plain; text-background-color: rgba(255,255,255,192); size: 12px; stroke-mode: none; fill-mode: image-scaled; fill-image: url('./resources/Heart-icon.png');");
 	                    		sat.addAttribute("z", 1);
+	                    		orbit.addAttribute("layout.weight", 1);
+	                    		orbit.addAttribute("ui.style", "fill-color: rgba(0,0,0,0);");
 	                    }
 		                
 		                /*
@@ -259,27 +259,32 @@ public class XGraph {
                         tuple = tuplesList.get(j);
                         if("world_structure/CurrentWorld$0".equals(tuple.get(0))) {
                         	if(!xmlFile.findSigById(typesList.get(0).get(2)).isBuiltin()) {
-                                try {
-                                	edgeType = TypeName.getTypeName(ontoUmlParser.getElement(fieldList.get(i).getLabel()));
+                                //try {
+                                	//String edgeType = TypeName.getTypeName(ontoUmlParser.getElement(fieldList.get(i).getLabel()));
                                 	String edgeName = fieldList.get(i).getLabel() + "$" + edgeId;
-                                	System.out.println("NAME: " + edgeName);
+                                	edgeId++;
                                 	
-                                	org.graphstream.graph.Node satOutcoming = graph.addNode(tuple.get(1) + "$" + edgeId);
+                                	String satOutcomingLabel = tuple.get(1) + "_satOut$" + edgeId;
+                                	org.graphstream.graph.Node satOutcoming = graph.addNode(satOutcomingLabel);
                                 	satOutcoming.addAttribute("ui.style", "fill-color: green;");
                                 	edgeId++;
-		                    		org.graphstream.graph.Edge orbitOutcoming = graph.addEdge("orbit" + "$" + edgeId, tuple.get(1), tuple.get(1) + "$" + (edgeId-1), false);
+                                	
+                                	String satIncomingLabel = tuple.get(2) + "_satIn$" + edgeId;
+                                	org.graphstream.graph.Node satIncoming = graph.addNode(satIncomingLabel);
+		                    		satIncoming.addAttribute("ui.style", "fill-color: green;");
+		                    		edgeId++;
+		                    		
+		                    		org.graphstream.graph.Edge orbitOutcoming = graph.addEdge(tuple.get(1) + "_orbitOut" + "$" + edgeId, tuple.get(1), satOutcomingLabel, false);
 		                    		orbitOutcoming.addAttribute("layout.weight", 1);
 		                    		orbitOutcoming.addAttribute("ui.style", "fill-color: rgba(0,0,0,0);");
 		                    		edgeId++;
-		                    		org.graphstream.graph.Node satIncoming = graph.addNode(tuple.get(2) + "$" + edgeId);
-		                    		satIncoming.addAttribute("ui.style", "fill-color: green;");
-		                    		edgeId++;
-		                    		org.graphstream.graph.Edge orbitIncoming = graph.addEdge("orbit" + "$" + edgeId, tuple.get(2), tuple.get(2) + "$" + (edgeId-1), false);
+		                    		
+		                    		org.graphstream.graph.Edge orbitIncoming = graph.addEdge(tuple.get(2) + "_orbitIn" + "$" + edgeId, tuple.get(2), satIncomingLabel, false);
 		                    		orbitIncoming.addAttribute("ui.style", "fill-color: rgba(0,0,0,0);");
 		                    		orbitIncoming.addAttribute("layout.weight", 1);
 		                    		edgeId++;
 		                    		
-		                    		graph.addEdge(edgeName, tuple.get(1) + "$" + (edgeId-4), tuple.get(2) + "$" + (edgeId-2), true).addAttribute("layout.weight", 10);
+		                    		graph.addEdge(edgeName, satOutcomingLabel, satIncomingLabel, true).addAttribute("layout.weight", 10);
                                 	/*
                                 	edgeType = TypeName.getTypeName(ontoUmlParser.getElement(fieldList.get(i).getLabel()));
                                 	String edgeName = fieldList.get(i).getLabel() + "$" + edgeId;//"[" + tuple.get(1) + "->" + tuple.get(2) + "]";
@@ -299,9 +304,9 @@ public class XGraph {
                                     	//graph.addEdge(edgeName, tuple.get(1), tuple.get(2), true).addAttribute("layout.weight", 5);//.addAttribute("ui.label", fieldList.get(i).getLabel() + " (" + edgeType + ")");
                                     //}
                                     //graph.getEdge(edgeName).addAttribute("layout.weight", 2);
-                                } catch (Exception e) {
+                                //} catch (Exception e) {
 
-                                }
+                                //}
                         	}
                         }
                     }
@@ -630,6 +635,30 @@ public class XGraph {
 
 	public void setOntoUmlParser(OntoUMLParser ontoUmlParser) {
 		this.ontoUmlParser = ontoUmlParser;
+	}
+
+	public ArrayList<String> getAllTypes() {
+		return allTypes;
+	}
+
+	public void setAllTypes(ArrayList<String> allTypes) {
+		this.allTypes = allTypes;
+	}
+
+	public ArrayList<String> getTypeImages() {
+		return typeImages;
+	}
+
+	public void setTypeImages(ArrayList<String> typeImages) {
+		this.typeImages = typeImages;
+	}
+
+	public ArrayList<Integer> getTypeAmount() {
+		return typeAmount;
+	}
+
+	public void setTypeAmount(ArrayList<Integer> typeAmount) {
+		this.typeAmount = typeAmount;
 	}
     
     

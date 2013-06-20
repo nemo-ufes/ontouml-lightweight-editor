@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.HeadlessException;
+import java.awt.MouseInfo;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,24 +97,32 @@ public class Main {
         		//while(model.getRowCount() != 4) {
         		//	model.removeRow(4);
         		//}
-        		
         		ArrayList<String> typeList = mainWindow.getxGraph().getXmlFile().getAtomTypeOnWorld(id, selectedWorld);
-        		
         		for(i=0; i<typeList.size(); i++) {
         			String stereoType = TypeName.getTypeName(mainWindow.getxGraph().getOntoUmlParser().getElement(typeList.get(i)));
         			System.out.println(stereoType + " - - " + typeList.get(i));
         		}
+        		
+        		
         		//	String stereoType = TypeName.getTypeName(mainWindow.getxGraph().getOntoUmlParser().getElement(typeList.get(i)));
             	//	model.addRow(new Object[]{stereoType, typeList.get(i)});
         		//}
         		//mainWindow.getTable().setModel(model);
         	}
         	public void buttonReleased(String id) {
-        		// TODO Auto-generated method stub
-        		System.out.println(id);
+        		if(!id.contains("sat")) {
+	        		Node nodePressed = mainWindow.getxGraph().getSelectedGraph().getNode(id);
+	        		ArrayList<String> typeList = mainWindow.getxGraph().getXmlFile().getAtomTypeOnWorld(id, selectedWorld);
+	        		OntoUMLParser ontoUmlParser = mainWindow.getxGraph().getOntoUmlParser();
+	        		XMLFile xmlFile = mainWindow.getxGraph().getXmlFile();
+	        		int indexOfImage = mainWindow.getxGraph().getAllTypes().indexOf(xmlFile.getAtomMainType(id, selectedWorld).getName());
+	        		String imagePath = mainWindow.getxGraph().getTypeImages().get(indexOfImage);
+	        		new PropertiesWindow(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y, imagePath, nodePressed, typeList, ontoUmlParser).setVisible(true);
+        		}else{
+        			System.out.println("not a valid node to display properties");
+        		}
         	}
         	public void viewClosed(String viewName) {
-        		// TODO Auto-generated method stub
         		
         	}
         });
@@ -139,6 +148,7 @@ public class Main {
         	//mainWindow.getxGraph().getSelectedGraph().
         	//mainWindow.getxGraph().getView().getCamera().setAutoFitView(true);
         	//System.out.println("PUMPING");
+        	//mainWindow.getScrollPane_1().requestFocusInWindow();
         	if(mode) {
         		fromViewer.pump();
         	}else{        		
