@@ -36,13 +36,13 @@ public class ChangeWeightsWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ChangeWeightsWindow(XGraph xGraphVar, JTable tableVar) {
+	public ChangeWeightsWindow(XGraph xGraphVar) {
 		setAlwaysOnTop(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 247, 198);
 		xGraph = xGraphVar;
-		table = tableVar;
+		//table = tableVar;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
