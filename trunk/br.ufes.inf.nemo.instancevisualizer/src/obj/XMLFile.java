@@ -242,6 +242,36 @@ public class XMLFile {
     	return secondaries;
     }
     
+    /**
+     * Get the list of DataTypes/PrimitiveTypes related to an atom on a given world.
+     * @param atomLabel the atom's label.
+     * @param worldLabel the world's label.
+     * @return an ArrayList<String> with the first element being the relation name and the rest being its values
+     */
+    public ArrayList<String> getDataTypesOnWorld(String atomLabel, String worldLabel) {
+    	ArrayList<String> stringList = new ArrayList();	// The list of types. One atom can have multiple types.
+        int i, j, k;
+        for(i=0; i<fieldList.size(); i++) {
+            if(!fieldList.get(i).getTuples().isEmpty() &&
+            		fieldList.get(i).getTuple(0).size() == 3 && 
+            			findSigById(fieldList.get(i).getTypes().get(0).get(2)).isBuiltin()) {
+            	System.out.println("FOI");
+            	stringList.add(fieldList.get(i).getLabel());
+            	for(j=0; j<fieldList.get(i).getTuples().size(); j++) {
+            		if(fieldList.get(i).getTuple(j).get(0).equals(worldLabel)
+            				&& fieldList.get(i).getTuple(j).get(1).equals(atomLabel)
+            					&& !fieldList.get(i).getLabel().equals("exists")) {
+            			System.out.println("STRLIST:"+fieldList.get(i).getTuple(j).get(2));
+            			stringList.add(fieldList.get(i).getTuple(j).get(2));
+            		}
+                        //}
+                    //}
+                }
+            }
+        }
+        return stringList;
+    }
+    
     private static boolean interscedes(EList x, ArrayList y) {
 		for(int i=0; i<x.size(); i++) {
 			if(y.contains(x.get(i))) {

@@ -34,14 +34,13 @@ public class OpenXML {
 				 File refontoFile = new File(refontoPath);
 				 System.out.println(refontoFile.getAbsolutePath());
 				 OntoUMLParser onto = null;
-		            
 				 if(refontoFile.exists()) {
 					 onto = new OntoUMLParser(refontoPath);
 					 xmlFile = new XMLFile(fc.getSelectedFile(), onto);
 					 xGraph = new XGraph(xmlFile, onto, 0);
 					 mainWindow.setxGraph(xGraph);
 					 mainWindow.setXmlFile(xmlFile);
-					 mainWindow.getxGraph().createSelectedWorld();
+					 mainWindow.getxGraph().createSelectedWorld("world_structure/CurrentWorld$0");
 					 mainWindow.getxGraph().createWorldMap();
 					 
 				 }else{

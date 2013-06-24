@@ -68,6 +68,7 @@ public class MainWindow extends JFrame {
 	 * @throws InterruptedException 
 	 */
 	public MainWindow(Main mainVar) throws InterruptedException {
+		setTitle("Instance Visualizer");
 		mode = false;
 		main = mainVar;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,6 +78,8 @@ public class MainWindow extends JFrame {
 		setContentPane(contentPane);
 		
 		setMinimumSize(new Dimension(960, 540));
+		
+		setExtendedState(MAXIMIZED_BOTH);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -231,6 +234,7 @@ public class MainWindow extends JFrame {
 		getContentPane().add(scrollPane);
 		getContentPane().add(scrollPane_1);
 		
+		
 	}
 
 	public JScrollPane getScrollPane() {
@@ -289,6 +293,8 @@ public class MainWindow extends JFrame {
 		
 		scrollPane.setViewportView(xGraph.showSelectedGraph());
 		scrollPane_1.setViewportView(xGraph.showWorldGraph());
+		
+		new LegendWindow(xGraph).setVisible(true);
 		
 		scrollPane.getViewport().getComponent(0).addMouseListener(new MouseAdapter() {
 			@Override

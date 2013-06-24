@@ -76,7 +76,7 @@ public class Main {
                 	nodeAux.addAttribute("ui.style", "fill-color: white;");
                 }
                 mainWindow.getxGraph().getWorldGraph().getNode(id).addAttribute("ui.style", "fill-color: green;");
-                mainWindow.getxGraph().changeSelectedWorld(mainWindow.getXmlFile().findAtom(id));
+                mainWindow.getxGraph().changeSelectedWorld(id);
                 
             }
         });
@@ -117,7 +117,7 @@ public class Main {
 	        		XMLFile xmlFile = mainWindow.getxGraph().getXmlFile();
 	        		int indexOfImage = mainWindow.getxGraph().getAllTypes().indexOf(xmlFile.getAtomMainType(id, selectedWorld).getName());
 	        		String imagePath = mainWindow.getxGraph().getTypeImages().get(indexOfImage);
-	        		new PropertiesWindow(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y, imagePath, nodePressed, typeList, ontoUmlParser).setVisible(true);
+	        		new PropertiesWindow(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y, imagePath, nodePressed, mainWindow.getXmlFile(), ontoUmlParser, selectedWorld).setVisible(true);
         		}else{
         			System.out.println("not a valid node to display properties");
         		}
@@ -126,7 +126,7 @@ public class Main {
         		
         	}
         });
-        
+		
         while(loop) {
         	Thread.sleep(100);
         	/*
