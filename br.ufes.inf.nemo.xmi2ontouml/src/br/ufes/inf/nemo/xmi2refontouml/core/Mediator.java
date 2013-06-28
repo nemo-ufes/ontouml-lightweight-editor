@@ -97,15 +97,25 @@ public class Mediator {
     			break;
     			
     		case PRIMITIVE:
-    			//System.out.println("Debug: criando primitive name = " + mapper.getName(element));
-    			if (mapper.getName(element).contains("int")) {
+    			if (mapper.getName(element).equalsIgnoreCase("int") ||
+    					mapper.getName(element).equalsIgnoreCase("integer")) {
     				elem1 = RefOntoCreator.INTEGER_PRIMITIVE;
-            	} else if (mapper.getName(element).contains("bool")) {
+    				
+            	} else if (mapper.getName(element).equalsIgnoreCase("bool") ||
+            			mapper.getName(element).equalsIgnoreCase("boolean")) {
             		elem1 = RefOntoCreator.BOOLEAN_PRIMITIVE;
-            	} else if (mapper.getName(element).contains("str") || mapper.getName(element).equalsIgnoreCase("char")) {
+            		
+            	} else if (mapper.getName(element).equalsIgnoreCase("str") ||
+            			mapper.getName(element).equalsIgnoreCase("string") ||
+            			mapper.getName(element).equalsIgnoreCase("char") ||
+            			mapper.getName(element).equalsIgnoreCase("character")) {
             		elem1 = RefOntoCreator.STRING_PRIMITIVE;
-            	} else if (mapper.getName(element).contains("unlimited") || mapper.getName(element).equalsIgnoreCase("float")) {
+            		
+            	} else if (mapper.getName(element).equalsIgnoreCase("unlimited") ||
+            			mapper.getName(element).equalsIgnoreCase("float") ||
+            			mapper.getName(element).equalsIgnoreCase("real")) {
             		elem1 = RefOntoCreator.UNLIMITED_NATURAL_PRIMITIVE;
+            		
             	} else {
             		elem1 = refcreator.createPrimitiveType();
             	}
