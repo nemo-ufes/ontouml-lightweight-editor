@@ -528,7 +528,10 @@ public class MapperEA implements Mapper {
 				Element elem = doc.getElementById(((Element)diagElem).getAttribute("subject"));
 				ElementType type = getType(elem);
 				if (type == ElementType.CLASS ||
-						type == ElementType.ASSOCIATION)
+						type == ElementType.ASSOCIATION ||
+						type == ElementType.DATATYPE ||
+						type == ElementType.PRIMITIVE ||
+						type == ElementType.ENUMERATION)
 				{
 					diagElemIDList.add(((Element)diagElem).getAttribute("subject"));
 					if (elem.hasAttribute("relator"))

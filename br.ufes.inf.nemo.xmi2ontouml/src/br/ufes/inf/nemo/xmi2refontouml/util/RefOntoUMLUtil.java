@@ -28,6 +28,8 @@ import br.ufes.inf.nemo.xmi2refontouml.core.Mapper;
 import br.ufes.inf.nemo.xmi2refontouml.core.Mediator;
 
 import RefOntoUML.Association;
+import RefOntoUML.Class;
+import RefOntoUML.DataType;
 import RefOntoUML.Element;
 import RefOntoUML.Model;
 import RefOntoUML.Package;
@@ -139,26 +141,10 @@ public class RefOntoUMLUtil {
     		{
     			checkedNodes.add(element);
     		}
+    		
     		if (element instanceof PackageableElement)
     		{
-    			Package parent = (Package) element.eContainer();
-    			while (parent != null && !checkedNodes.contains(parent))
-    			{
-        			checkedNodes.add(parent);
-        			parent = (Package) parent.eContainer();
-        		}
-    			if (element instanceof Association)
-	    		{
-	    			Association assoc = (Association) element;
-	    			if (!checkedNodes.contains(assoc.getMemberEnd().get(0).getType()))
-	    			{
-	    				checkedNodes.add(assoc.getMemberEnd().get(0).getType());
-	    			}
-	    			if (!checkedNodes.contains(assoc.getMemberEnd().get(1).getType()))
-	    			{
-	    				checkedNodes.add(assoc.getMemberEnd().get(1).getType());
-	    			}
-	    		}
+    			addDependentElementsToList(element, checkedNodes);
     		}
     		
     	}
@@ -170,6 +156,59 @@ public class RefOntoUMLUtil {
     	copier.copy(rootObject.getElement());
     	copier.copyReferences();
     	return (Model) copier.get(rootObject.getElement());
+	}
+	
+	// Adds Elements not selected to the "not to exclude" list
+	public static void addDependentElementsToList(Element element, Collection<EObject> list)
+	{
+		// Adds every parent package
+		Package parent = (Package) element.eContainer();
+		while (parent != null && !list.contains(parent))
+		{
+			list.add(parent);
+			parent = (Package) parent.eContainer();
+		}
+		// Adds non selected classes participating in a selected association
+		if (element instanceof Association)
+		{
+			Association assoc = (Association) element;
+			if (!list.contains(assoc.getMemberEnd().get(0).getType()))
+			{
+				list.add(assoc.getMemberEnd().get(0).getType());
+				addDependentElementsToList(assoc.getMemberEnd().get(0).getType(), list);
+			}
+			if (!list.contains(assoc.getMemberEnd().get(1).getType()))
+			{
+				list.add(assoc.getMemberEnd().get(1).getType());
+				addDependentElementsToList(assoc.getMemberEnd().get(0).getType(), list);
+			}
+			return;
+		}
+		// Adds classes referenced by attributes as their types
+		else if (element instanceof Class)
+		{
+			Class cl = (Class) element;
+			for (Property att : cl.getOwnedAttribute())
+			{
+				if (!list.contains(att.getType()))
+				{
+					list.add(att.getType());
+					addDependentElementsToList(att.getType(), list);
+				}
+			}
+		}
+		else if (element instanceof DataType)
+		{
+			DataType dt = (DataType) element;
+			for (Property att : dt.getOwnedAttribute())
+			{
+				if (!list.contains(att.getType()))
+				{
+					list.add(att.getType());
+					addDependentElementsToList(att.getType(), list);
+				}
+			}
+		}
 	}
     
     static class OntoUMLTreeCellRenderer implements CheckboxTreeCellRenderer {
