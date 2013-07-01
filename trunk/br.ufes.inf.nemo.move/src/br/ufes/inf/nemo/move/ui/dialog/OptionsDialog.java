@@ -22,7 +22,7 @@ import br.ufes.inf.nemo.move.mvc.view.OCLOptionsView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLOptionsView;
 import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
-import br.ufes.inf.nemo.ontouml2alloy.options.OntoUMLOptions;
+import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
 
 /**
  * @author John Guerson
@@ -148,11 +148,11 @@ public class OptionsDialog extends JDialog {
 			
 	public void OkActionPerformed(ActionEvent event)
 	{
-		OntoUMLOptions ontoumlOptions = new OntoUMLOptions();
+		Onto2AlloyOptions ontoumlOptions = new Onto2AlloyOptions();
 		ontoumlOptions.antiRigidity = ontoumlOptView.isSelectedAntirigidity(); 
 		ontoumlOptions.identityPrinciple = ontoumlOptView.isSelectedIdentityPrinciple();
-		ontoumlOptions.weakSupplementationConstraint = ontoumlOptView.isSelectedWeakSupplementation();
-		ontoumlOptions.relatorConstraint = ontoumlOptView.isSelectedRelatorConstraint();			    	
+		ontoumlOptions.weakSupplementationAxiom = ontoumlOptView.isSelectedWeakSupplementation();
+		ontoumlOptions.relatorAxiom = ontoumlOptView.isSelectedRelatorConstraint();			    	
 		ontoumlOptModel.setOptions(ontoumlOptions);
 		
 		OCLOptions oclOptions = new OCLOptions(frame.getManager().getOCLModel().getOCLParser());		
@@ -161,21 +161,24 @@ public class OptionsDialog extends JDialog {
 		oclOptions.setConstraintList(oclOptView.getConstraintListSelected());
     	oclOptModel.setOCLOptions(oclOptions);
 		  
-    	String message = new String(); int i=1;
+    	String message = new String();
     	
-    	String text = ontoumlOptions.getIdentityValidityMessage(frame.getManager().getOntoUMLModel().getOntoUMLParser());
-    	if (!text.isEmpty())  { message = "W"+String.format("%02d", i)+". "+text+"\n\n"; i++; }
+    	String text1 = ontoumlOptions.getIdentityOptionMessage(frame.getManager().getOntoUMLModel().getOntoUMLParser());    	
+    	if (!text1.isEmpty())  { message += "|IDENTITY|"+"\n"+text1+"\n\n"; }
     	    	
-    	text = ontoumlOptions.getAntirigityValidityMessage();
-    	if (!text.isEmpty())  { message = "W"+String.format("%02d", i)+". "+text+"\n\n"; i++; }    	
+    	String text2 = ontoumlOptions.getAntirigityOptionMessage();
+    	if (!text2.isEmpty())  { message += "|ANTIRIGIDITY|"+"\n"+text2+"\n\n"; }    	
     	
+    	String text3 = ontoumlOptions.getRelatorOptionMessage(frame.getManager().getOntoUMLModel().getOntoUMLParser());
+    	if (!text3.isEmpty())  { message += "|RELATOR|"+"\n"+text3+"\n\n"; }
+    	    	
     	String finalquestion = "Do you want to continue?"+"\n\n";
     	
-    	if (!text.isEmpty())
+    	if (!message.isEmpty())
     	{
-			// open warning dialog...
+    		// open warning dialog...
 			boolean option = JOptionPane.showConfirmDialog(
-					this, message+finalquestion, "Please, Read This...",
+					this, message+finalquestion, "Please, Read This",
 					JOptionPane.YES_NO_OPTION,
 					JOptionPane.WARNING_MESSAGE,
 					new ImageIcon(OptionsDialog.class.getResource("/resources/icon/warning-36x36.png"))

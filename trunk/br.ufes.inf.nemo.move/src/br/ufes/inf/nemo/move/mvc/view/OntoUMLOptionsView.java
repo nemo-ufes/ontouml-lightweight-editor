@@ -82,8 +82,8 @@ public class OntoUMLOptionsView extends JPanel {
 	{
 		this.cbxAntirigidity.setSelected(optModel.getOptions().antiRigidity);
 		this.cbxIdentityPrinciple.setSelected(optModel.getOptions().identityPrinciple);
-		this.cbxRelatorConstraint.setSelected(optModel.getOptions().relatorConstraint);
-		this.cbxWeakSupplementation.setSelected(optModel.getOptions().weakSupplementationConstraint);		
+		this.cbxRelatorConstraint.setSelected(optModel.getOptions().relatorAxiom);
+		this.cbxWeakSupplementation.setSelected(optModel.getOptions().weakSupplementationAxiom);		
 		validate();
 		repaint();		
 	}
