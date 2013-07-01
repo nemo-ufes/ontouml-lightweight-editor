@@ -6,13 +6,27 @@ import java.io.IOException;
 import br.ufes.inf.nemo.common.file.FileUtil;
 
 /**
- *	This class is used to generate our standard Alloy theme File into destination directory path.
+ *	Generates our standard Alloy theme File into destination directory path.
  *  
- * 	@authors Tiago Sales, John Guerson and Lucas Thom
+ * 	@authors Tiago Prince, John Guerson and Lucas Thom
  */
 
 public class AlloyThemeFile {
 
+	/**
+	 * Generate "standart_theme.thm" into the directory path "dirPath".
+	 *  
+	 * @param dirPath
+	 * @throws IOException
+	 */
+	public static void generateAlloyThemeFile (String dirPath) throws IOException
+	{		
+		File themeFile = new File(dirPath + "standart_theme.thm");		
+		themeFile.deleteOnExit();		
+		FileUtil.copyStringToFile(standart_theme, dirPath + "standart_theme.thm");
+	}
+	
+	
 	/** Content of the alloy standard theme file. */	
 	public static String standart_theme = 
 			
@@ -85,19 +99,5 @@ public class AlloyThemeFile {
 			
 			"</view>" + "\n\n" +
 
-			"</alloy>" + "\n\n";
-		
-	/**
-	 * Generate "standart_theme.thm" into the directory path "dirPath".
-	 *  
-	 * @param dirPath
-	 * @throws IOException
-	 */
-	public static void generateAlloyThemeFile (String dirPath) throws IOException
-	{		
-		File themeFile = new File(dirPath + "standart_theme.thm");		
-		themeFile.deleteOnExit();		
-		FileUtil.copyStringToFile(standart_theme, dirPath + "standart_theme.thm");
-	}
-	
+			"</alloy>" + "\n\n";	
 }

@@ -1,37 +1,33 @@
 package br.ufes.inf.nemo.ontouml2alloy.util;
 
-/**
- * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
- *
- * This file is part of OntoUML2Alloy (OntoUML to Alloy Transformation).
- *
- * OntoUML2Alloy is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * OntoUML2Alloy is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OntoUML2Alloy; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
-
 import java.io.File;
 import java.io.IOException;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
 
 /**
- *	This class is used to generate our Alloy library Files into destination directory path.
+ *	Generates our Alloy library Files into destination directory path.
  *  
- * 	@authors Tiago Sales, John Guerson and Lucas Thom 
+ * 	@authors Tiago Prince, John Guerson and Lucas Thom 
  */
 
 public class AlloyLibraryFiles {
+
+	/**
+	 * Generate "world_structure.als" and "ontological_properties.als" into the directory path "dirPath".
+	 *  
+	 * @param dirPath
+	 * @throws IOException
+	 */
+	public static void generateLibraryFiles (String dirPath) throws IOException
+	{
+		File lib1File = new File(dirPath + "world_structure.als");
+		File lib2File = new File(dirPath + "ontological_properties.als");			
+		lib1File.deleteOnExit();
+		lib2File.deleteOnExit();				
+		FileUtil.copyStringToFile(world_structure, dirPath + "world_structure.als");
+		FileUtil.copyStringToFile(ontological_properties, dirPath + "ontological_properties.als");
+	}
 	
 	/** Content of the ontological properties library. */
 	public static String ontological_properties = 
@@ -114,23 +110,7 @@ public class AlloyLibraryFiles {
 			"check no_temporal_cicles for 10\n" +
 			"check no_joining_histories for 10\n" +
 			"check every_world_reach_the_current_world for 10\n" +
-			"check future_worlds_cannot_reach_the_current_world_by_the_future for 10\n";
-	
-	/**
-	 * Generate "world_structure.als" and "ontological_properties.als" into the directory path "dirPath".
-	 *  
-	 * @param dirPath
-	 * @throws IOException
-	 */
-	public static void generateLibraryFiles (String dirPath) throws IOException
-	{
-		File lib1File = new File(dirPath + "world_structure.als");
-		File lib2File = new File(dirPath + "ontological_properties.als");			
-		lib1File.deleteOnExit();
-		lib2File.deleteOnExit();				
-		FileUtil.copyStringToFile(world_structure, dirPath + "world_structure.als");
-		FileUtil.copyStringToFile(ontological_properties, dirPath + "ontological_properties.als");
-	}
+			"check future_worlds_cannot_reach_the_current_world_by_the_future for 10\n";	
 }
 			
 	
