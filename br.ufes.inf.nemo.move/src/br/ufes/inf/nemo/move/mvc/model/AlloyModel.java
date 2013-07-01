@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.ocl2alloy.OCL2Alloy;
-import br.ufes.inf.nemo.ontouml2alloy.transformer.OntoUML2Alloy;
+import br.ufes.inf.nemo.ontouml2alloy.Onto2Alloy;
 
 /**
  * 
@@ -94,7 +94,8 @@ public class AlloyModel {
 	 */
 	public void setAlloyModel(OntoUMLModel ontoumlmodel, OntoUMLOptionsModel optmodel) throws Exception
 	{
-		content = OntoUML2Alloy.Transformation(ontoumlmodel.getOntoUMLParser(), alsPath, optmodel.getOptions());		
+		Onto2Alloy ontouml2alloy = new Onto2Alloy(ontoumlmodel.getOntoUMLParser(), alsPath, optmodel.getOptions());
+		content = ontouml2alloy.transform();		
 	}
 	
 	public void setContent(String content) throws IOException

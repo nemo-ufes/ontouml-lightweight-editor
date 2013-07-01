@@ -81,8 +81,8 @@ public class IAAntiPatternController {
 	    		
 	    		// set options to false, because the simulated model is partial
 	    		manager.getOntoUMLOptionModel().getOptions().identityPrinciple = false;
-	    		manager.getOntoUMLOptionModel().getOptions().relatorConstraint = false;
-	    		manager.getOntoUMLOptionModel().getOptions().weakSupplementationConstraint = false;
+	    		manager.getOntoUMLOptionModel().getOptions().relatorAxiom = false;
+	    		manager.getOntoUMLOptionModel().getOptions().weakSupplementationAxiom = false;
 	    		manager.getOntoUMLOptionModel().getOptions().antiRigidity = false;
 	    		
 	    		// set alloy path
