@@ -751,7 +751,7 @@ public class Transformer {
 	{
 		for (Property p: ontoparser.getAllInstances(Property.class))
 		{
-			if (p.getAssociation()!=null && !p.getName().isEmpty())
+			if (p.getAssociation()!=null && p.getName()!=null && !p.getName().isEmpty())
 			{
 				Association assoc = p.getAssociation();
 				RefOntoUML.Type type = p.getType();
