@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.move.mvc.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,7 +14,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
@@ -38,24 +38,23 @@ public class OntoUMLOptionsView extends JPanel {
 	private OntoUMLOptionsModel optModel;
 		
 	private TheFrame frame;
-	private JCheckBox cbxRelatorConstraint;
-	private JCheckBox cbxWeakSupplementation ;	
-	private JCheckBox cbxIdentityPrinciple ;
+	private JCheckBox cbxRelator;
+	private JCheckBox cbxWeak ;	
+	private JCheckBox cbxIdentity ;
 	private JCheckBox cbxAntirigidity;
 	private JLabel lblEnforceAxioms;
 	private JButton btnEnableall;
 	private JButton btnDisableall;
 	private JPanel btnPanel;
 	private JPanel titlePanel;
-	private JButton btnDetailsRelator;	
-	private JButton btnDetailsWeakSupp;	
-	private JButton btnDetailsIdentity;	
-	private JButton btnDetailsAntiRigidity;	
-	private JTextArea textArea;
-	private String detailsRelator;
-	private String detailsWeakSupp;
-	private String detailsIdentity;
-	private String detailsAntirigidity;
+	private JLabel lblDescriptionRelator;
+	private JLabel lblDescriptionWeak;
+	private JLabel lblDesciptionIdentity;
+	private JLabel lblDescriptionAntirigidity;
+	private JLabel lblSateRelator;
+	private JLabel lblStateWeak;
+	private JLabel lblStateIdentity;
+	private JLabel lblStateAntirigidity;
 	
 	/**
 	 * Creates a View from OntoUML Options Model and the main frame application.
@@ -81,9 +80,16 @@ public class OntoUMLOptionsView extends JPanel {
 	public void setOntoUMLOptionsView (OntoUMLOptionsModel optModel)
 	{
 		this.cbxAntirigidity.setSelected(optModel.getOptions().antiRigidity);
-		this.cbxIdentityPrinciple.setSelected(optModel.getOptions().identityPrinciple);
-		this.cbxRelatorConstraint.setSelected(optModel.getOptions().relatorAxiom);
-		this.cbxWeakSupplementation.setSelected(optModel.getOptions().weakSupplementationAxiom);		
+				
+		this.cbxIdentity.setSelected(optModel.getOptions().identityPrinciple);
+		if (!cbxIdentity.isSelected()) setStateIdentityPrinciple("(not recommended)");
+		
+		this.cbxRelator.setSelected(optModel.getOptions().relatorAxiom);
+		if (!cbxRelator.isSelected()) setStateRelatorConstraint("(not recommended)");
+		
+		this.cbxWeak.setSelected(optModel.getOptions().weakSupplementationAxiom);
+		if (!cbxWeak.isSelected()) setStateWeakSupplementation("(not recommended)");
+		
 		validate();
 		repaint();		
 	}
@@ -95,7 +101,7 @@ public class OntoUMLOptionsView extends JPanel {
 	{
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setBackground(UIManager.getColor("Panel.background"));
-		setPreferredSize(new Dimension(591, 280));
+		setPreferredSize(new Dimension(591, 293));
 		setSize(new Dimension(186, 228));				
 
 		JPanel cbxPanel = new JPanel();
@@ -116,7 +122,7 @@ public class OntoUMLOptionsView extends JPanel {
 		titlePanel = new JPanel();
 		titlePanel.setBackground(UIManager.getColor("Panel.background"));
 		titlePanel.setPreferredSize(new Dimension(100, 30));
-		lblEnforceAxioms = new JLabel("Enforce Axioms.");
+		lblEnforceAxioms = new JLabel("AXIOMS");
 		lblEnforceAxioms.setBackground(UIManager.getColor("Label.background"));
 		lblEnforceAxioms.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEnforceAxioms.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -132,9 +138,9 @@ public class OntoUMLOptionsView extends JPanel {
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				cbxAntirigidity.setSelected(false);
-				cbxIdentityPrinciple.setSelected(false);
-				cbxRelatorConstraint.setSelected(false);
-				cbxWeakSupplementation.setSelected(false);
+				cbxIdentity.setSelected(false);
+				cbxRelator.setSelected(false);
+				cbxWeak.setSelected(false);
 			}
 		});
 			
@@ -143,107 +149,44 @@ public class OntoUMLOptionsView extends JPanel {
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				cbxAntirigidity.setSelected(true);
-				cbxIdentityPrinciple.setSelected(true);
-				cbxRelatorConstraint.setSelected(true);
-				cbxWeakSupplementation.setSelected(true);
+				cbxIdentity.setSelected(true);
+				cbxRelator.setSelected(true);
+				cbxWeak.setSelected(true);
 			}
 		});
 		
-		cbxRelatorConstraint = new JCheckBox("Relator Constraint");
-		cbxRelatorConstraint.setBackground(UIManager.getColor("Panel.background"));
-		cbxWeakSupplementation = new JCheckBox("Weak Supplementation Constraint");
-		cbxWeakSupplementation.setBackground(UIManager.getColor("Panel.background"));
-		cbxIdentityPrinciple = new JCheckBox("Identity Principle");
-		cbxIdentityPrinciple.setBackground(UIManager.getColor("Panel.background"));
-		cbxAntirigidity = new JCheckBox("Antirigidity");
+		cbxRelator = new JCheckBox("Enforce Relator Constraint");
+		cbxRelator.setBackground(UIManager.getColor("Panel.background"));
+		cbxWeak = new JCheckBox("Enforce Weak Supplementation");
+		cbxWeak.setBackground(UIManager.getColor("Panel.background"));
+		cbxIdentity = new JCheckBox("Enforce Identity Principle");
+		cbxIdentity.setBackground(UIManager.getColor("Panel.background"));
+		cbxAntirigidity = new JCheckBox("Enforce Antirigidity Visualization");
 		cbxAntirigidity.setBackground(UIManager.getColor("Panel.background"));
-							
-		detailsRelator = new String();				
-		detailsRelator = "Relator Constraint.\n\n"+
-		"This rule enforces that the concrete relators \n" +
-		"mediate at least two distinct entities.\n\n"+
-		"Uncheck this box if you have at least one relator \n" +
-		"that the sum of its mediation's cardinality at the \n" +
-		"target side is less than 2.\n\n";
+			
+		lblDescriptionRelator = new JLabel(">> Mark if all relators have the sum of its mediation's lower cardinality (at the target) greater or equal to 2.");
+		lblDescriptionRelator.setForeground(Color.BLUE);
 		
-		detailsWeakSupp = new String();				
-		detailsWeakSupp = "Weak Supplementation Constraint.\n\n"+
-		"This rule enforces that each whole has at least \n" +
-		"two disjoint parts.\n\n"+
-		"Uncheck this box if there's a meronymic relation \n"+ 
-		"where the part side has minimum cardinality less \n"+
-		"than 2.\n\n";	
+		lblDescriptionWeak = new JLabel(">> Mark if all wholes have the sum of its part's lower cardinality greater or equal to 2.");
+		lblDescriptionWeak.setForeground(Color.BLUE);
 		
-		detailsIdentity = new String();				
-		detailsIdentity = "Identity Principle.\n\n"+
-		"This rule enforces that all objects have an \n"+
-		"identity principle.\n\n"+
-		"Uncheck this box if you have at least one element \n"+
-		"without identity principle i.e. an element that \n"+
-		"has no kind, quantity or collective as its supertype.\n\n";	
+		lblDesciptionIdentity = new JLabel(">> Mark if all elements have an identity principle.");
+		lblDesciptionIdentity.setForeground(Color.BLUE);
 		
-		detailsAntirigidity = new String();				
-		detailsAntirigidity = "Anti-Rigidity.\n\n"+
-		"This rule enforces the anti-rigidity axiom.\n"+
-		"Check this box if you always want to visualize \n" +
-		"objects instantiating an anti-rigid type \n"+
-		"in a World and not instantiating it in another \n"+
-		"World.\n\n"+
-		"Note: if you enforce this axiom you need to simulate " +
-		"the model with at least two Worlds.\n\n";	
+		lblDescriptionAntirigidity = new JLabel(">> Mark to visualize an instance of an anti-rigid type in a World and not an instance of it in another World.");
+		lblDescriptionAntirigidity.setForeground(Color.BLUE);
 		
-		textArea = new JTextArea(detailsRelator);
-		textArea.setFont(new Font("Arial", Font.PLAIN, 12));
-		textArea.setEditable(false);
-		textArea.setCaretPosition(0);
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
+		lblSateRelator = new JLabel("");
+		lblSateRelator.setForeground(Color.GRAY);
 		
-		JScrollPane scrollPane2 = new JScrollPane();		
-		scrollPane2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane2.setPreferredSize(new Dimension(100, 100));
-		scrollPane2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);		
-		scrollPane2.setViewportView(textArea);
+		lblStateWeak = new JLabel("");
+		lblStateWeak.setForeground(Color.GRAY);
 		
-		btnDetailsRelator = new JButton("->");	
-		btnDetailsRelator.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{							
-				textArea.setText(detailsRelator);		
-				textArea.setCaretPosition(0);
-			}
-		});
+		lblStateIdentity = new JLabel("");
+		lblStateIdentity.setForeground(Color.GRAY);
 		
-		btnDetailsWeakSupp = new JButton("->");	
-		btnDetailsWeakSupp.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{						
-				textArea.setText(detailsWeakSupp);		
-				textArea.setCaretPosition(0);								
-			}
-		});		 
-				 
-		btnDetailsIdentity = new JButton("->");		
-		btnDetailsIdentity.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{											
-				textArea.setText(detailsIdentity);		
-				textArea.setCaretPosition(0);					
-			}
-		});		
-		
-		btnDetailsAntiRigidity = new JButton("->");
-		btnDetailsAntiRigidity.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{							
-				textArea.setText(detailsAntirigidity);		
-				textArea.setCaretPosition(0);				
-			}
-		});
+		lblStateAntirigidity = new JLabel("");
+		lblStateAntirigidity.setForeground(Color.GRAY);
 		
 		GroupLayout gl_cbxPanel = new GroupLayout(cbxPanel);
 		gl_cbxPanel.setHorizontalGroup(
@@ -251,45 +194,56 @@ public class OntoUMLOptionsView extends JPanel {
 				.addGroup(gl_cbxPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxRelatorConstraint, GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-						.addComponent(cbxWeakSupplementation, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(cbxIdentityPrinciple, GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-						.addComponent(cbxAntirigidity, GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblDescriptionAntirigidity, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
 						.addGroup(gl_cbxPanel.createSequentialGroup()
-							.addComponent(btnDetailsRelator)
-							.addContainerGap())
+							.addComponent(cbxIdentity, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblStateIdentity, GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE))
+						.addComponent(lblDescriptionRelator, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
 						.addGroup(gl_cbxPanel.createSequentialGroup()
-							.addComponent(btnDetailsWeakSupp)
-							.addContainerGap())
+							.addComponent(cbxRelator, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblSateRelator, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE))
+						.addComponent(lblDescriptionWeak, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+						.addComponent(lblDesciptionIdentity, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
 						.addGroup(gl_cbxPanel.createSequentialGroup()
-							.addComponent(btnDetailsIdentity)
-							.addContainerGap())
+							.addComponent(cbxWeak, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblStateWeak, GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE))
 						.addGroup(gl_cbxPanel.createSequentialGroup()
-							.addComponent(btnDetailsAntiRigidity)
-							.addContainerGap())))
+							.addComponent(cbxAntirigidity, GroupLayout.PREFERRED_SIZE, 190, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblStateAntirigidity, GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)))
+					.addContainerGap())
 		);
 		gl_cbxPanel.setVerticalGroup(
 			gl_cbxPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_cbxPanel.createSequentialGroup()
 					.addGap(9)
 					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cbxRelatorConstraint)
-						.addComponent(btnDetailsRelator))
+						.addComponent(cbxRelator, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSateRelator, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblDescriptionRelator)
+					.addGap(13)
+					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxWeak, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblStateWeak, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblDescriptionWeak)
+					.addGap(11)
+					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxIdentity, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblStateIdentity, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblDesciptionIdentity)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cbxWeakSupplementation)
-						.addComponent(btnDetailsWeakSupp))
+						.addComponent(cbxAntirigidity, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblStateAntirigidity, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cbxIdentityPrinciple)
-						.addComponent(btnDetailsIdentity))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_cbxPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cbxAntirigidity)
-						.addComponent(btnDetailsAntiRigidity))
-					.addGap(50))
+					.addComponent(lblDescriptionAntirigidity)
+					.addGap(20))
 		);
 		
 		cbxPanel.setLayout(gl_cbxPanel);
@@ -313,8 +267,7 @@ public class OntoUMLOptionsView extends JPanel {
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		titlePanel.setLayout(gl_titlePanel);
-		add(scrollPane,BorderLayout.WEST);
-		add(scrollPane2,BorderLayout.CENTER);
+		add(scrollPane,BorderLayout.CENTER);
 		add(btnPanel, BorderLayout.SOUTH);
 		GroupLayout gl_btnPanel = new GroupLayout(btnPanel);
 		gl_btnPanel.setHorizontalGroup(
@@ -337,19 +290,39 @@ public class OntoUMLOptionsView extends JPanel {
 		btnPanel.setLayout(gl_btnPanel);
 	}
 	
+	public void setStateRelatorConstraint(String text) 
+	{
+		this.lblSateRelator.setText(text);
+	}
+
+	public void setStateWeakSupplementation(String text)
+	{
+		this.lblStateWeak.setText(text);
+	}
+
+	public void setStateIdentityPrinciple(String text)
+	{
+		this.lblStateIdentity.setText(text);
+	}
+
+	public void setStateAntirigidity(String text)
+	{
+		this.lblStateAntirigidity.setText(text);
+	}
+	
 	/**
 	 * Is Selected Relator Constraint Option.
 	 * 
 	 * @return
 	 */	
-	public boolean isSelectedRelatorConstraint() { return cbxRelatorConstraint.isSelected(); }
+	public boolean isSelectedRelatorConstraint() { return cbxRelator.isSelected(); }
 	
 	/**
 	 * Is Selected Weak Supplementation Option.
 	 * 
 	 * @return
 	 */
-	public boolean isSelectedWeakSupplementation() { return cbxWeakSupplementation.isSelected(); }
+	public boolean isSelectedWeakSupplementation() { return cbxWeak.isSelected(); }
 	
 	/**
 	 * Is Selected AntiRigidity Option.
@@ -363,7 +336,7 @@ public class OntoUMLOptionsView extends JPanel {
 	 * 
 	 * @return
 	 */
-	public boolean isSelectedIdentityPrinciple() { return cbxIdentityPrinciple.isSelected(); }
+	public boolean isSelectedIdentityPrinciple() { return cbxIdentity.isSelected(); }
 	
 	/**
 	 * Get the main frame application.

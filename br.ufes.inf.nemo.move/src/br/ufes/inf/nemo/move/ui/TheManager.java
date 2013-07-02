@@ -31,6 +31,7 @@ import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
 import br.ufes.inf.nemo.move.tree.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
 import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
+import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
 
 /**
  * This class represents a Manager to Models, View and Controllers of the main frame application.
@@ -199,15 +200,24 @@ public class TheManager {
 			verificator.getWarningsMatrixFormat(ontoumlmodel.getOntoUMLParser()),
 			verificator.getWarnings()
 		);
-		if (verificator.getWarnings()>0) frame.focusOnWarnings();
+		if (verificator.getWarnings()>0)
+		{
+			frame.getWarnings().selectRow(0);
+			frame.focusOnWarnings();			
+		}
 		
 		// Errors showed	    	
 		frame.getErrors().setData(
 			verificator.getErrorsMatrixFormat(ontoumlmodel.getOntoUMLParser()),
 			verificator.getErrors()
 		);
-		if (verificator.getErrors()>0) {  frame.getErrors().selectRow(0); frame.focusOnErrors(); }
+		if (verificator.getErrors()>0) 
+		{  
+			frame.getErrors().selectRow(0); frame.focusOnErrors(); 
+		}		
 		
+		if (verificator.getErrors()>0) frame.showErrorMessageDialog("Errors", "Hey! It seems that your model has some errors...\n\nPlease, fix them before continue.\n\n");		
+		else if (verificator.getWarnings()>0) frame.showWarningMessageDialog("Warnings", "Hey! It seems that your model has some warnings...\n\nPlease, be aware of them before continue.\n\n");
 	}
 	
 	/**
@@ -464,6 +474,19 @@ public class TheManager {
     	}	    	
     	
     	ontoumlview.getTheFrame().getManager().doModelDiagnostic();	
+    	
+    	// Guarantee accordance between the OntoUML model and Simulation options...
+    	ontoumlOptModel.setOptions(new Onto2AlloyOptions());
+    	
+    	if (!ontoumlmodel.getOntoUMLParser().getElementsWithIdentityMissing().isEmpty())
+    	ontoumlOptModel.getOptions().identityPrinciple = false;    		    	
+    	
+    	if (!ontoumlmodel.getOntoUMLParser().getRelatorsWithInvalidAxiom().isEmpty()) 
+        ontoumlOptModel.getOptions().relatorAxiom = false;
+    	
+    	if (!ontoumlmodel.getOntoUMLParser().getWholesWithInvalidWeakSupplementation().isEmpty()) 
+        ontoumlOptModel.getOptions().weakSupplementationAxiom = false;    	
+    	
 	}
 	
 	public void doShowOrHideAliases ()

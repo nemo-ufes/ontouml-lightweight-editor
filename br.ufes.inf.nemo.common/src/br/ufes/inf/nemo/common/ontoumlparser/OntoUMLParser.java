@@ -997,15 +997,56 @@ public class OntoUMLParser {
 				for (Classifier s: getAllParents(c)) if (s instanceof RefOntoUML.SubstanceSortal) hasIdentity=true;
 				if (!hasIdentity) { list.add(c); }
 			}			
-			
-			/*hasIdentity=false;
-			if (c instanceof RefOntoUML.Category || c instanceof RefOntoUML.RoleMixin || c instanceof RefOntoUML.Mixin)
-			{
-				for (Classifier s: getAllChildren(c)) if (s instanceof RefOntoUML.SubstanceSortal) hasIdentity=true;
-				if (!hasIdentity) { list.add(c); }
-			}*/			
 		}
 		return list;
+	}
+	
+	/**
+	 * Get the relators that have the sum of their mediations lower cardinality
+	 * less than 2. 
+	 */
+	public ArrayList<Relator> getRelatorsWithInvalidAxiom ()
+	{
+		ArrayList<Relator> relators = new ArrayList<Relator>();
+		for (Relator r: getAllInstances(Relator.class))
+		{
+			ArrayList<Mediation> mediations = new ArrayList<Mediation>();
+			try {  getAllMediations(r, mediations); } catch (Exception e) {e.printStackTrace();}					
+			
+			int sum=0;
+			for(Mediation m: mediations)
+			{
+				if (m.getMemberEnd().get(1).getUpper()==-1) sum += 2;
+				else sum += m.getMemberEnd().get(1).getUpper();
+			}
+			
+			if (sum <2) relators.add(r);
+		}
+		return relators;
+	}
+	
+	/**
+	 * Get wholes that have the sum of their parts lower cardinality
+	 * less than 2. 
+	 */
+	public ArrayList<RigidSortalClass> getWholesWithInvalidWeakSupplementation ()
+	{
+		ArrayList<RigidSortalClass> classifiers = new ArrayList<RigidSortalClass>();
+		for (RigidSortalClass r: getAllInstances(RigidSortalClass.class))
+		{
+			ArrayList<Meronymic> meronymics = new ArrayList<Meronymic>();
+			try {  getAllMeronymics(r, meronymics); } catch (Exception e) {e.printStackTrace();}					
+			
+			int sum=0;
+			for(Meronymic m: meronymics)
+			{
+				if (m.getMemberEnd().get(1).getUpper()==-1) sum += 2;
+				else sum += m.getMemberEnd().get(1).getUpper();
+			}
+			
+			if (sum <2 && meronymics.size()>=1) classifiers.add(r);
+		}
+		return classifiers;
 	}
 	
 }
