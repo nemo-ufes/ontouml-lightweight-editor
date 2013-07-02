@@ -142,7 +142,7 @@ public class WarningTablePanel extends JPanel {
 		
 		warningMessage = new JLabel("    (0 warnings)");
 		warningMessage.setPreferredSize(new Dimension(100, 25));
-		toolBar.add(warningMessage);		
+		//toolBar.add(warningMessage);		
 	}
 	
 	public void saveContentToTxtFile ()

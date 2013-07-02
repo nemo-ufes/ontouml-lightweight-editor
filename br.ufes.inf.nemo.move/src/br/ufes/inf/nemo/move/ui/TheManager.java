@@ -201,10 +201,11 @@ public class TheManager {
 			verificator.getWarnings()
 		);
 		if (verificator.getWarnings()>0)
-		{
+		{			
 			frame.getWarnings().selectRow(0);
+			frame.setTitleWarning(" Warnings ("+verificator.getWarnings()+")");
 			frame.focusOnWarnings();			
-		}
+		}else frame.setTitleWarning(" Warnings ");
 		
 		// Errors showed	    	
 		frame.getErrors().setData(
@@ -213,8 +214,10 @@ public class TheManager {
 		);
 		if (verificator.getErrors()>0) 
 		{  
-			frame.getErrors().selectRow(0); frame.focusOnErrors(); 
-		}		
+			frame.getErrors().selectRow(0); 
+			frame.setTitleErrors(" Errors ("+verificator.getErrors()+")");
+			frame.focusOnErrors(); 
+		} else frame.setTitleErrors(" Errors ");
 		
 		if (verificator.getErrors()>0) frame.showErrorMessageDialog("Errors", "Hey ! Your model has some Errors ...\nPlease, Fix them before continue.\n\n");		
 		else if (verificator.getWarnings()>0) frame.showWarningMessageDialog("Warnings", "Hey ! Your model has some Warnings ...\nPlease, Be Aware of them before continue.\n\n");

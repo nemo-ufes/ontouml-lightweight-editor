@@ -149,15 +149,15 @@ public class TheFrame extends JRibbonFrame {
 				
 		oclTabbedPane.add(appmanager.getOCLView());	
 		oclTabbedPane.setTitleAt(0,"OCL Simple Editor");
-		oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-ocl-16x16.png")));
+		//oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-ocl-16x16.png")));
 		oclTabbedPane.setBackgroundAt(0,UIManager.getColor("Panel.background"));		
-		oclTabbedPane.setTabComponentAt(0,new ButtonTabComponent(oclTabbedPane));
+		//oclTabbedPane.setTabComponentAt(0,new ButtonTabComponent(oclTabbedPane));
 		
 		oclTabbedPane.add(appmanager.getAntiPatternListView());	
 		oclTabbedPane.setTitleAt(1,"AntiPattern Manager");
-		oclTabbedPane.setIconAt(1,new ImageIcon(TheFrame.class.getResource("/resources/icon/search-16x16.png")));
+		//oclTabbedPane.setIconAt(1,new ImageIcon(TheFrame.class.getResource("/resources/icon/search-16x16.png")));
 		oclTabbedPane.setBackgroundAt(1,UIManager.getColor("Panel.background"));
-		oclTabbedPane.setTabComponentAt(1,new ButtonTabComponent(oclTabbedPane));
+		//oclTabbedPane.setTabComponentAt(1,new ButtonTabComponent(oclTabbedPane));
 		
 		/*antipatternPane = new JTabbedPane();
 		antipatternPane.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -308,6 +308,16 @@ public class TheFrame extends JRibbonFrame {
 	public void focusOnProperties()
 	{
 		infoTabbedPane.setSelectedIndex(0);
+	}
+	
+	public void setTitleWarning(String text)
+	{
+		infoTabbedPane.setTitleAt(1,text);
+	}
+	
+	public void setTitleErrors(String text)
+	{
+		infoTabbedPane.setTitleAt(2,text);
 	}
 	
 	/** Get Console Panel. */

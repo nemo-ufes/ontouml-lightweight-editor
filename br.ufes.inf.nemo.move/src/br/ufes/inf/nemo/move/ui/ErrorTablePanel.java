@@ -145,7 +145,7 @@ public class ErrorTablePanel extends JPanel {
 		
 		errorMessage = new JLabel("    (0 errors)");
 		errorMessage.setPreferredSize(new Dimension(100, 25));
-		toolBar.add(errorMessage);		
+		//toolBar.add(errorMessage);		
 	}
 	
 	public void saveContentToTxtFile ()
