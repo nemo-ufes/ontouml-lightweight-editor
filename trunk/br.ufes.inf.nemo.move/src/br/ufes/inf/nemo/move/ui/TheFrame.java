@@ -27,9 +27,7 @@ import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 
 import br.ufes.inf.nemo.move.ribbons.ConstraintsEditionRibbonBand;
-import br.ufes.inf.nemo.move.ribbons.ModelDiagnosisRibbonBand;
-import br.ufes.inf.nemo.move.ribbons.ModelEditionRibbonBand;
-import br.ufes.inf.nemo.move.ribbons.ModelOtherRibbonBand;
+import br.ufes.inf.nemo.move.ribbons.ModelRibbonBand;
 import br.ufes.inf.nemo.move.ribbons.SimulationRibbonBand;
 import br.ufes.inf.nemo.move.ui.util.Extractor;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
@@ -90,24 +88,12 @@ public class TheFrame extends JRibbonFrame {
 		getContentPane().setBackground(new Color(230, 230, 250));
 		
 		RibbonTask ontoumlTask = new RibbonTask(
-			"OntoUML",
-			new ModelEditionRibbonBand(this,"Basic Edition",null),
-			new ModelDiagnosisRibbonBand(this,"Diagnosis",null),
-			new ModelOtherRibbonBand(this,"Other",null)			
+			"Menu",
+			new ModelRibbonBand(this,"OntoUML Model",null),
+			new ConstraintsEditionRibbonBand(this,"OCL Constraints",null),
+			new SimulationRibbonBand(this,"Tools",null)
 		);
 		getRibbon().addTask(ontoumlTask);
-		
-		RibbonTask oclTask = new RibbonTask(
-			"OCL", 
-			new ConstraintsEditionRibbonBand(this,"Basic Edition",null)
-		);
-		getRibbon().addTask(oclTask);
-		
-		RibbonTask alloyTask = new RibbonTask(
-			"Simulation", 
-			new SimulationRibbonBand(this,"Analyzer/Manager",null)
-		);
-		getRibbon().addTask(alloyTask);
 		
 		getRibbon().setApplicationIcon(getResizableIconFromResource("resources/icon/window-black.png"));
 
@@ -162,7 +148,7 @@ public class TheFrame extends JRibbonFrame {
 		oclTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 				
 		oclTabbedPane.add(appmanager.getOCLView());	
-		oclTabbedPane.setTitleAt(0,"OCL Editor");
+		oclTabbedPane.setTitleAt(0,"OCL Simple Editor");
 		oclTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/edit-ocl-16x16.png")));
 		oclTabbedPane.setBackgroundAt(0,UIManager.getColor("Panel.background"));		
 		oclTabbedPane.setTabComponentAt(0,new ButtonTabComponent(oclTabbedPane));
@@ -192,7 +178,7 @@ public class TheFrame extends JRibbonFrame {
 		ontoumlTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		ontoumlTabbedPane.setPreferredSize(new Dimension(400,600));
 		ontoumlTabbedPane.add(appmanager.getOntoUMLView());	
-		ontoumlTabbedPane.setTitleAt(0,"Model Tree");
+		ontoumlTabbedPane.setTitleAt(0,"OntoUML Model Tree");
 		ontoumlTabbedPane.setBackground(UIManager.getColor("Panel.background"));		
 		ontoumlTabbedPane.setBackgroundAt(0,UIManager.getColor("Panel.background"));		
 		//ontoumlTabbedPane.setIconAt(0,new ImageIcon(TheFrame.class.getResource("/resources/icon/model-16x16.jpg")));

@@ -216,8 +216,8 @@ public class TheManager {
 			frame.getErrors().selectRow(0); frame.focusOnErrors(); 
 		}		
 		
-		if (verificator.getErrors()>0) frame.showErrorMessageDialog("Errors", "Hey! It seems that your model has some errors...\n\nPlease, fix them before continue.\n\n");		
-		else if (verificator.getWarnings()>0) frame.showWarningMessageDialog("Warnings", "Hey! It seems that your model has some warnings...\n\nPlease, be aware of them before continue.\n\n");
+		if (verificator.getErrors()>0) frame.showErrorMessageDialog("Errors", "Hey ! Your model has some Errors ...\nPlease, Fix them before continue.\n\n");		
+		else if (verificator.getWarnings()>0) frame.showWarningMessageDialog("Warnings", "Hey ! Your model has some Warnings ...\nPlease, Be Aware of them before continue.\n\n");
 	}
 	
 	/**
