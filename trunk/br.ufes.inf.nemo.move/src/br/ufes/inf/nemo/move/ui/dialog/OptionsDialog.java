@@ -66,6 +66,7 @@ public class OptionsDialog extends JDialog {
 	 * @param ontoumlOptModel
 	 * @param oclOptModel
 	 * @param frame
+	 * @wbp.parser.constructor
 	 */
 	public OptionsDialog(OntoUMLOptionsModel ontoumlOptModel, OCLOptionsModel oclOptModel, TheFrame frame)
 	{
@@ -138,8 +139,8 @@ public class OptionsDialog extends JDialog {
 		tabbedPane = new JTabbedPane();		
 		tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		tabbedPane.setBackground(UIManager.getColor("Panel.background"));
-		tabbedPane.add(ontoumlOptView,"OntoUML Conceptual Model");
-		tabbedPane.add(oclOptView,"OCL Domain Rules");
+		tabbedPane.add(ontoumlOptView,"OntoUML Model");
+		tabbedPane.add(oclOptView,"OCL Constraints");
 		
 		getContentPane().setLayout(new BorderLayout(0, 0));		
 		getContentPane().add(btnpanel, BorderLayout.SOUTH);		
@@ -162,15 +163,6 @@ public class OptionsDialog extends JDialog {
     	oclOptModel.setOCLOptions(oclOptions);
 		  
     	String message = new String();
-    	
-    	String text1 = ontoumlOptions.getIdentityOptionMessage(frame.getManager().getOntoUMLModel().getOntoUMLParser());    	
-    	if (!text1.isEmpty())  { message += "|IDENTITY|"+"\n"+text1+"\n\n"; }
-    	    	
-    	String text2 = ontoumlOptions.getAntirigityOptionMessage();
-    	if (!text2.isEmpty())  { message += "|ANTIRIGIDITY|"+"\n"+text2+"\n\n"; }    	
-    	
-    	String text3 = ontoumlOptions.getRelatorOptionMessage(frame.getManager().getOntoUMLModel().getOntoUMLParser());
-    	if (!text3.isEmpty())  { message += "|RELATOR|"+"\n"+text3+"\n\n"; }
     	    	
     	String finalquestion = "Do you want to continue?"+"\n\n";
     	
@@ -178,7 +170,7 @@ public class OptionsDialog extends JDialog {
     	{
     		// open warning dialog...
 			boolean option = JOptionPane.showConfirmDialog(
-					this, message+finalquestion, "Please, Read This",
+					this, message+finalquestion, "",
 					JOptionPane.YES_NO_OPTION,
 					JOptionPane.WARNING_MESSAGE,
 					new ImageIcon(OptionsDialog.class.getResource("/resources/icon/warning-36x36.png"))

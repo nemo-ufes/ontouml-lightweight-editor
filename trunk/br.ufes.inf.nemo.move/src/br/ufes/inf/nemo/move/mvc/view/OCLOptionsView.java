@@ -171,7 +171,7 @@ public class OCLOptionsView extends JPanel {
 		
 		add(introPanel,BorderLayout.NORTH);
 		
-		lblYouCanAlso = new JLabel("You can also check and simulate rules...");
+		lblYouCanAlso = new JLabel("CONSTRAINTS");
 		lblYouCanAlso.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblYouCanAlso.setHorizontalAlignment(SwingConstants.LEFT);
 		GroupLayout gl_introPanel = new GroupLayout(introPanel);

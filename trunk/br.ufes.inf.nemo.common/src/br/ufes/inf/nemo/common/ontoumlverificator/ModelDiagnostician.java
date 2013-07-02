@@ -280,6 +280,30 @@ public class ModelDiagnostician {
 		ArrayList<ArrayList<String>> items = new ArrayList<ArrayList<String>>();
 		warnings = 0;
 		
+		// # Warning : Relator with Invalid Axiom
+		
+		for (RefOntoUML.Relator c: ontoparser.getRelatorsWithInvalidAxiom())
+		{
+			ArrayList<String> line = new ArrayList<String>();
+			warnings++;
+			line.add(String.format("%02d", warnings)+". Relator is not in accordance with Cardinality Axiom");			
+			line.add(getElement(c));
+			line.add(getPath(c));
+			items.add(line);
+		}
+		
+		// # Warning : Whole with Invalid Axiom
+		
+		for (RefOntoUML.RigidSortalClass c: ontoparser.getWholesWithInvalidWeakSupplementation())
+		{
+			ArrayList<String> line = new ArrayList<String>();
+			warnings++;
+			line.add(String.format("%02d", warnings)+". Whole is not in conformance with Weak Supplementation Axiom");			
+			line.add(getElement(c));
+			line.add(getPath(c));
+			items.add(line);
+		}
+				
 		// # Warning : Elements Without Identity
 		
 		for (RefOntoUML.Classifier c: ontoparser.getElementsWithIdentityMissing())
@@ -291,7 +315,7 @@ public class ModelDiagnostician {
 			line.add(getPath(c));
 			items.add(line);
 		}
-		
+				
 		// # Warning : Unnamed Element
 		
 		for(RefOntoUML.PackageableElement c: ontoparser.getAllInstances(RefOntoUML.PackageableElement.class))
