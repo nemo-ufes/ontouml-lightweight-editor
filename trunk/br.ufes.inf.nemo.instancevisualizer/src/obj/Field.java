@@ -54,6 +54,15 @@ public class Field extends Sig {
                     */
             }
             tuples.add(tuple);
+            /*
+            System.out.println("		" + tuple.get(0));
+            System.out.println("		" + tuple.get(1));
+            try {
+            	System.out.println("		" + tuple.get(2));
+            } catch (Exception e) {
+            	
+            }
+            */
         }
         
         for(i=0; i<typesList.getLength(); i++) {

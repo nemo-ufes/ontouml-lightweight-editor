@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.GroupLayout;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -55,7 +56,7 @@ public class Main {
     	mainWindow.setScrollPanes();
 
     	//fromViewer = new BlockingViewerPipe(mainWindow.getxGraph().getViewer1());
-    	fromViewer = mainWindow.getxGraph().getViewer1().newViewerPipe();
+    	fromViewer = mainWindow.getxGraph().getWorldViewer().newViewerPipe();
         fromViewer.addViewerListener(new ViewerListener(){
         	public void viewClosed(String id) {
                 //loop = false;
@@ -68,7 +69,7 @@ public class Main {
             public void buttonReleased(String id) {
                 System.out.println("Button released on node "+id);
                 selectedWorld = id;
-                mainWindow.getxGraph().getViewer1().disableAutoLayout();
+                mainWindow.getxGraph().getWorldViewer().disableAutoLayout();
                 
                 Iterator iter = mainWindow.getxGraph().getWorldGraph().getNodeIterator();
                 while(iter.hasNext()) {
@@ -83,31 +84,17 @@ public class Main {
         //fromViewer.addSink(graph);
         
         
-        fromViewer2 = mainWindow.getxGraph().getViewer().newViewerPipe();
+        fromViewer2 = mainWindow.getxGraph().getSelectedViewer().newViewerPipe();
         //fromViewer2 = new BlockingViewerPipe(mainWindow.getxGraph().getViewer());
         fromViewer2.addViewerListener(new ViewerListener() {
         	public void buttonPushed(String id) {
         		int i;
         		System.out.println(id);
-        		//mainWindow.changeTableId(id);
-        		//mainWindow.changeTableLabel(mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label").toString());
-        		
-        		//DefaultTableModel model = (DefaultTableModel) mainWindow.getTable().getModel();
-        		
-        		//while(model.getRowCount() != 4) {
-        		//	model.removeRow(4);
-        		//}
         		ArrayList<String> typeList = mainWindow.getxGraph().getXmlFile().getAtomTypeOnWorld(id, selectedWorld);
         		for(i=0; i<typeList.size(); i++) {
         			String stereoType = TypeName.getTypeName(mainWindow.getxGraph().getOntoUmlParser().getElement(typeList.get(i)));
         			System.out.println(stereoType + " - - " + typeList.get(i));
         		}
-        		
-        		
-        		//	String stereoType = TypeName.getTypeName(mainWindow.getxGraph().getOntoUmlParser().getElement(typeList.get(i)));
-            	//	model.addRow(new Object[]{stereoType, typeList.get(i)});
-        		//}
-        		//mainWindow.getTable().setModel(model);
         	}
         	public void buttonReleased(String id) {
         		if(!id.contains("sat")) {
@@ -117,7 +104,21 @@ public class Main {
 	        		XMLFile xmlFile = mainWindow.getxGraph().getXmlFile();
 	        		int indexOfImage = mainWindow.getxGraph().getAllTypes().indexOf(xmlFile.getAtomMainType(id, selectedWorld).getName());
 	        		String imagePath = mainWindow.getxGraph().getTypeImages().get(indexOfImage);
-	        		new PropertiesWindow(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y, imagePath, nodePressed, mainWindow.getXmlFile(), ontoUmlParser, selectedWorld).setVisible(true);
+	        		if(mainWindow.isPopOut()) {
+	        			JDialog popOutWindow = new JDialog();
+	        			//popOutWindow.setTitle((String)mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label"));
+	        			popOutWindow.setContentPane(new PropertiesPanel(imagePath, nodePressed, mainWindow.getXmlFile(), ontoUmlParser, selectedWorld));
+	        			popOutWindow.setBounds(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y, 195, 238);
+	        			popOutWindow.setVisible(true);
+	        			popOutWindow.toFront();
+	        		}else{
+	        			if(!(mainWindow.getTabbedPane().getTabCount() == 1)) {
+	        				mainWindow.getTabbedPane().removeTabAt(1);
+	        			}
+	        			mainWindow.getTabbedPane().addTab((String) mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label"), null, new PropertiesPanel(imagePath, nodePressed, mainWindow.getXmlFile(), ontoUmlParser, selectedWorld), null);
+		        		mainWindow.getTabbedPane().setSelectedIndex(mainWindow.getTabbedPane().getTabCount()-1);
+	        		}
+	        		
         		}else{
         			System.out.println("not a valid node to display properties");
         		}
@@ -127,6 +128,8 @@ public class Main {
         	}
         });
 		
+        
+        
         while(loop) {
         	Thread.sleep(100);
         	/*

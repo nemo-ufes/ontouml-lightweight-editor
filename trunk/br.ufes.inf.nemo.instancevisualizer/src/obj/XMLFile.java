@@ -14,6 +14,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.Phase;
+import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
 import RefOntoUML.provider.RefOntoUMLEditPlugin;
 import br.ufes.inf.nemo.common.ontoumlparser.*;
 import br.ufes.inf.nemo.common.resource.*;
@@ -79,7 +82,9 @@ public class XMLFile {
                 //System.out.println(atoml.getLength());
                 Atom atom = new Atom(aux, sig);
                 System.out.println("    " + atom.getLabel());
-                atomList.add(atom);
+                if(!sig.isBuiltin()){
+                	atomList.add(atom);
+                }
                 if(sig.isWorld()) {
                     // Could be a world atom... if it is, adding it to worldList
                     worldList.add(atom);
@@ -235,7 +240,7 @@ public class XMLFile {
     	ArrayList<Classifier> classList = new ArrayList();
     	for(int i=0; i<classifList.size(); i++) {
     		Classifier classif = classifList.get(i);
-    		if(!interscedes(classif.allChildren(), classifList)) {
+    		if(!interscedes(classif.allChildren(), classifList) && (classif instanceof Role || classif instanceof Phase  || classif instanceof RoleMixin)) {
     			secondaries.add(classif);
     		}
     	}

@@ -1,8 +1,11 @@
 package gui;
 
+import java.awt.AWTException;
 import java.awt.EventQueue;
 import java.awt.HeadlessException;
+import java.awt.Robot;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -43,6 +46,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
@@ -61,6 +65,9 @@ public class MainWindow extends JFrame {
 	private JCheckBoxMenuItem chckbxmntmNewCheckItem;
 	private Dimension d1, d2;
 	private boolean mode;
+	private boolean popOut;
+	private JDialog popOutWindow;
+	private JTabbedPane tabbedPane;
 	
 	/**
 	 * Create the frame.
@@ -70,6 +77,8 @@ public class MainWindow extends JFrame {
 	public MainWindow(Main mainVar) throws InterruptedException {
 		setTitle("Instance Visualizer");
 		mode = false;
+		popOut = false;
+		popOutWindow = null;
 		main = mainVar;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 640+320, 360+180);
@@ -98,7 +107,7 @@ public class MainWindow extends JFrame {
 				try {
 					new Main(false);
 				} catch (HeadlessException | InterruptedException e) {
-					// TODO Auto-generated catch block
+					// Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -113,7 +122,7 @@ public class MainWindow extends JFrame {
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				Camera cam = xGraph.getView().getCamera();
+				Camera cam = xGraph.getSelectedView().getCamera();
 				cam.setViewPercent(cam.getViewPercent() - 0.1);
 			}
 		});
@@ -124,7 +133,7 @@ public class MainWindow extends JFrame {
 		mntmZoom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				Camera cam = xGraph.getView().getCamera();
+				Camera cam = xGraph.getSelectedView().getCamera();
 				cam.setViewPercent(cam.getViewPercent() + 0.1);
 			}
 		});
@@ -159,9 +168,9 @@ public class MainWindow extends JFrame {
 		chckbxmntmNewCheckItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(chckbxmntmNewCheckItem.isSelected()) {
-					xGraph.getViewer().enableAutoLayout();
+					xGraph.getSelectedViewer().enableAutoLayout();
 				}else{
-					xGraph.getViewer().disableAutoLayout();
+					xGraph.getSelectedViewer().disableAutoLayout();
 				}
 			}
 		});
@@ -177,6 +186,22 @@ public class MainWindow extends JFrame {
 		});
 		mnLayout.add(mntmChangeWeights);
 		
+		JMenuItem mntmDisablePopout = new JMenuItem("Disable Pop-out");
+		mntmDisablePopout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				removeTabbedPane();
+			}
+		});
+		
+		JMenuItem mntmEnablePopout = new JMenuItem("Enable Pop-out");
+		mntmEnablePopout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addTabbedPane();
+			}
+		});
+		mnLayout.add(mntmEnablePopout);
+		mnLayout.add(mntmDisablePopout);
+		
 		JSeparator separator_1 = new JSeparator();
 		mnLayout.add(separator_1);
 		
@@ -184,6 +209,41 @@ public class MainWindow extends JFrame {
 		mnLayout.add(mntmGraphAttributes);
 		
 		scrollPane = new JScrollPane();
+		/*
+		scrollPane.addMouseListener(new MouseAdapter() {
+			@Override
+			// TODO
+			public void mousePressed(MouseEvent arg0) {
+				try {
+					Robot r = new Robot();
+					if(arg0.getButton() == MouseEvent.BUTTON1) {
+						r.mousePress(InputEvent.BUTTON2_DOWN_MASK);
+					}else{
+						r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+					}
+					
+				} catch (AWTException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				try {
+					Robot r = new Robot();
+					if(arg0.getButton() == MouseEvent.BUTTON1) {
+						r.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
+					}else{
+						r.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+					}
+					
+				} catch (AWTException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		*/
 		scrollPane.setBounds(10, 11, 389, 469);
 		
 		scrollPane_1 = new JScrollPane();
@@ -197,23 +257,36 @@ public class MainWindow extends JFrame {
 		scrollPane_1.setBounds(742, 11, 192, 192);
 		
 		getContentPane().setLayout(null);
+		
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+		});
+		
 		GroupLayout groupLayout_1 = new GroupLayout(getContentPane());
 		groupLayout_1.setHorizontalGroup(
 			groupLayout_1.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout_1.createSequentialGroup()
 					.addContainerGap()
+					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout_1.createParallelGroup(Alignment.TRAILING)
-						.addComponent(scrollPane_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE)
-						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE))
+						.addComponent(scrollPane)
+						.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 746, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		groupLayout_1.setVerticalGroup(
-			groupLayout_1.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout_1.createSequentialGroup()
+			groupLayout_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, groupLayout_1.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+					.addGroup(groupLayout_1.createParallelGroup(Alignment.TRAILING)
+						.addComponent(tabbedPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+						.addGroup(groupLayout_1.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		
@@ -281,8 +354,20 @@ public class MainWindow extends JFrame {
 		this.contentPane = contentPane;
 	}
 	
+	public JTabbedPane getTabbedPane() {
+		return tabbedPane;
+	}
+
+	public void setTabbedPane(JTabbedPane tabbedPane) {
+		this.tabbedPane = tabbedPane;
+	}
+
 	public boolean getMode() {
 		return mode;
+	}
+	
+	public boolean isPopOut() {
+		return popOut;
 	}
 
 	public void setScrollPanes() {
@@ -294,13 +379,15 @@ public class MainWindow extends JFrame {
 		scrollPane.setViewportView(xGraph.showSelectedGraph());
 		scrollPane_1.setViewportView(xGraph.showWorldGraph());
 		
-		new LegendWindow(xGraph).setVisible(true);
+		//new LegendWindow(xGraph).setVisible(true);
+		getTabbedPane().addTab("Legend", null, new LegendPanel(xGraph), null);
 		
 		scrollPane.getViewport().getComponent(0).addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				mode = false;
 				main.setMode(false);
+				scrollPane.repaint();
 				System.out.println(main.getMode());
 			}
 		});
@@ -309,50 +396,95 @@ public class MainWindow extends JFrame {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				mode = true;
+				scrollPane_1.repaint();
 				main.setMode(true);
 				System.out.println(main.getMode());
 			}
 		});
-		
-        //scrollPane = new JScrollPane(xGraph.showSelectedGraph());
-        
-        //scrollPane_1 = new JScrollPane(xGraph.showWorldGraph());
-/*
-        GroupLayout groupLayout_1 = new GroupLayout(getContentPane());
-		groupLayout_1.setHorizontalGroup(
-			groupLayout_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout_1.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		groupLayout_1.setVerticalGroup(
-			groupLayout_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout_1.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout_1.createSequentialGroup()
-							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
-							.addGap(199))
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE))
-					.addContainerGap())
-		);
-		getContentPane().setLayout(groupLayout_1);
-		*/
 	}
 	
 	public void setScrollPanesNoR() {
 		scrollPane.getViewport().removeAll();
-		scrollPane.setViewportView(xGraph.getView());
-		scrollPane_1.setViewportView(xGraph.getView1());
+		scrollPane.setViewportView(xGraph.getSelectedView());
+		scrollPane_1.setViewportView(xGraph.getWorldView());
 	}
 	
 	public void setScrollPanes1() {
 		scrollPane.getViewport().removeAll();
 		scrollPane.setViewportView(xGraph.showSelectedGraph());
 		//scrollPane_1.getViewport().add(xGraph.showWorldGraph());
+	}
+	
+	public void removeTabbedPane() {
+		popOut = true;
+		GroupLayout groupLayout_1 = new GroupLayout(getContentPane());
+		groupLayout_1.setHorizontalGroup(
+			groupLayout_1.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 0, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout_1.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane)
+						.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 746, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		groupLayout_1.setVerticalGroup(
+			groupLayout_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, groupLayout_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout_1.createParallelGroup(Alignment.TRAILING)
+						.addComponent(tabbedPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+						.addGroup(groupLayout_1.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		getContentPane().setLayout(groupLayout_1);
+		
+		this.remove(tabbedPane);
+		popOutWindow = new JDialog(this);
+		popOutWindow.setTitle("Legend");
+		popOutWindow.add(new LegendPanel(xGraph));
+		popOutWindow.setVisible(true);
+		popOutWindow.toFront();
+		
+	}
+	
+	public void addTabbedPane() {
+		popOut = true;
+		
+		//popOutWindow.dispose();
+		//popOutWindow.setVisible(false);
+		//popOutWindow = null;
+		getContentPane().add(tabbedPane);
+		GroupLayout groupLayout_1 = new GroupLayout(getContentPane());
+		groupLayout_1.setHorizontalGroup(
+			groupLayout_1.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout_1.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane)
+						.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 746, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		groupLayout_1.setVerticalGroup(
+			groupLayout_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, groupLayout_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout_1.createParallelGroup(Alignment.TRAILING)
+						.addComponent(tabbedPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+						.addGroup(groupLayout_1.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		getContentPane().setLayout(groupLayout_1);
+		
 	}
 	
 	public void callOpenXML() {
