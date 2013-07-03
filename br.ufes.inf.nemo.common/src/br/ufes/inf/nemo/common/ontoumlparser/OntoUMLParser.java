@@ -26,6 +26,7 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.MomentClass;
+import RefOntoUML.NamedElement;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Phase;
@@ -61,6 +62,7 @@ public class OntoUMLParser {
 	 *  the useful information about the OntoUML Element. 
 	 */
 	private HashMap<EObject,ParsingElement> elementsHash;
+	private NameHandler nameHandler = new NameHandler();
 	
 	/** Options for complete element selections in the model (transformation purposes). */
 	public static int NO_HIERARCHY = 0, SORTAL_ANCESTORS = 1, ALL_ANCESTORS = 2, ALL_DESCENDANTS = 3, COMPLETE_HIERARCHY = 4;
@@ -79,9 +81,8 @@ public class OntoUMLParser {
 		
 		NameHandler h1 = new NameHandler();
 		this.refmodelname = h1.treatName(model);	
-		
-		NameHandler h2 = new NameHandler();
-		initElementsHashMap(model, h2);
+				
+		initElementsHashMap(model, nameHandler);
 	}
 		
 	/**
@@ -101,10 +102,19 @@ public class OntoUMLParser {
 		
 		NameHandler h1 = new NameHandler();
 		this.refmodelname = h1.treatName(model);
-		
-		NameHandler h2 = new NameHandler();
-		initElementsHashMap(model, h2);
+				
+		initElementsHashMap(model, nameHandler);
 	}	
+	
+	/**
+	 * Update OntoUML Parser. This is used when modification were made in the root Package of the model
+	 */
+	public void addElement(EObject obj)
+	{		
+		ParsingElement e = new ParsingElement(obj, true, nameHandler.treatName((NamedElement)obj));
+		this.elementsHash.put(obj,e);
+		elementsHash = new HashMap<EObject,ParsingElement>();		
+	}
 
 	/**
 	 * Get Root Model Package.
