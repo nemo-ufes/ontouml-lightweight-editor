@@ -6,7 +6,8 @@ import org.graphstream.ui.swingViewer.Viewer;
 import org.graphstream.ui.swingViewer.ViewerPipe;
 import org.miv.mbox.MBoxStandalone;
 
-public class BlockingViewerPipe extends ViewerPipe {
+public class BlockingViewerPipe {//extends ViewerPipe {
+	/*
 	public BlockingViewerPipe(Viewer viewer) {
 		super(String.format("viewer_%d", (int) (Math.random() * 10000)),
 				new BlockingThreadProxyPipe(viewer.getGraphicGraph(), false));
@@ -32,4 +33,5 @@ public class BlockingViewerPipe extends ViewerPipe {
 			super.pump();
 		}
 	}
+	*/
 }

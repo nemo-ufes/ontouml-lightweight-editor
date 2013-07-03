@@ -151,20 +151,111 @@ public class PropertiesWindow extends JFrame {
 		DefaultTableModel model_1 = (DefaultTableModel) table_1.getModel();
 		//model.addRow(new Object[]{"<html><b>Stereotype</b></html>", "<html><b>Type</b></html>"});
 		Iterator neighbors = node.getNeighborNodeIterator();
+		boolean gonnaBreak = false;
 		while(neighbors.hasNext()) {
-			Node n = (Node) neighbors.next();
-			if(n.getId().contains("satOut")) {
+			Node neighbor = (Node) neighbors.next();
+			if(!neighbor.getId().contains(node.getId() + "_sat$")) {
+				neighbor = node;
+				gonnaBreak = true;
+			}
+			
+			Iterator neighbors2 = neighbor.getEdgeIterator();
+			while(neighbors2.hasNext()) {
+				Edge edge = (Edge) neighbors2.next();
+				System.out.println(edge.getId());
+				if(edge.getNode0().equals(neighbor)) {	// edge outcoming
+					Node nodeOut = edge.getNode1();
+					if(nodeOut.getId().contains("_sat$")) {
+						Iterator findOrbit = nodeOut.getEdgeIterator();
+						Edge orbit = null;
+						while(findOrbit.hasNext()) {
+							orbit = (Edge) findOrbit.next();
+							if(orbit.getId().contains("_orbit$")) {
+								break;
+							}
+						}
+						nodeOut = orbit.getNode0();
+					}
+					model_1.addRow(new Object[]{edge.getId().substring(0, edge.getId().indexOf('$')), "<html><b>" + nodeOut.getAttribute("ui.label")+"</b></html>"});
+					
+				}else{	// edge incoming
+					Node nodeIn = edge.getNode0();
+					if(!nodeIn.equals(node)) {
+						if(nodeIn.getId().contains("_sat$")) {
+							Iterator findOrbit = nodeIn.getEdgeIterator();
+							Edge orbit = null;
+							while(findOrbit.hasNext()) {
+								orbit = (Edge) findOrbit.next();
+								if(orbit.getId().contains("_orbit$")) {
+									break;
+								}
+							}
+							nodeIn = orbit.getNode0();
+						}
+						model_1.addRow(new Object[]{"<html><b>"+nodeIn.getAttribute("ui.label")+"</b></html>", edge.getId().substring(0, edge.getId().indexOf('$'))});
+					}
+				}
+			}
+			if(gonnaBreak) {
+				break;
+			}
+				/*
+				if(out.isDirected() && !out.getId().contains("_orbit$")) {
+					System.out.println("edgeID: " + out.getId());
+					Node planet = out.getNode1();
+					if(planet.getId().contains("_sat$")) {
+						planet = planet.getEdge(0).getNode0();
+					}
+					System.out.println("planetID: " + planet.getId());
+					model_1.addRow(new Object[]{out.getId().substring(0, out.getId().indexOf('$')), "<html><b>" + planet.getAttribute("ui.label")+"</b></html>"});
+				}
+			}
+			*/
+			//System.out.println("n is:   " + n.getId() + "   " + n.getAttribute("ui.label"));
+			/*
+			Iterator outcoming = n.getEnteringEdgeIterator();
+			
+			while(outcoming.hasNext()) {
+				Edge out = (Edge) outcoming.next();
+				if(out.isDirected() && !out.getId().contains("_orbit$")) {
+					System.out.println("edgeID: " + out.getId());
+					Node planet = out.getNode1();
+					if(planet.getId().contains("_sat$")) {
+						planet = planet.getEdge(0).getNode0();
+					}
+					System.out.println("planetID: " + planet.getId());
+					model_1.addRow(new Object[]{out.getId().substring(0, out.getId().indexOf('$')), "<html><b>" + planet.getAttribute("ui.label")+"</b></html>"});
+				}
+			}
+			
+			Iterator incoming = n.getLeavingEdgeIterator();
+			while(incoming.hasNext()) {
+				Edge in = (Edge) incoming.next();
+				if(in.isDirected() && !in.getId().contains("_orbit$")) {
+					System.out.println("edgeID: " + in.getId());
+					Node planet = in.getNode0();
+					if(planet.getId().contains("_sat$")) {
+						planet = planet.getEdge(0).getNode0();
+					}
+					model_1.addRow(new Object[]{"<html><b>"+planet.getAttribute("ui.label")+"</b></html>", in.getId().substring(0, in.getId().indexOf('$'))});
+				}
+			}
+			*/
+			/*
+			if(n.getId().contains("_sat$")) {
 				Edge relation = n.getEdge(1);
 				Node planet = relation.getNode1().getEdge(1).getNode0();
 				System.out.println(planet);
 				model_1.addRow(new Object[]{relation.getId().substring(0, relation.getId().indexOf('$')), "<html><b>"+planet.getAttribute("ui.label")+"</b></html>"});
 			}
-			if(n.getId().contains("satIn")) {
+			if(n.getId().contains("_sat$")) {
 				Edge relation = n.getEdge(0);
 				Node planet = relation.getNode0().getEdge(0).getNode0();
 				System.out.println("NODE:"+relation.getNode0().getAttribute("ui.label"));
 				model_1.addRow(new Object[]{"<html><b>"+planet.getAttribute("ui.label")+"</b></html>", relation.getId().substring(0, relation.getId().indexOf('$'))});
 			}
+			*/
+			
 		}
 		table_1.setModel(model_1);
 		/*

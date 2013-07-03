@@ -45,12 +45,13 @@
 	<classpathentry kind="lib" path="C:/Users/Mauricio/workspace/br.ufes.inf.nemo.common/lib/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Mauricio/workspace/br.ufes.inf.nemo.common/lib/org.eclipse.uml2_4.0.0.v20120604-0919.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Mauricio/workspace/br.ufes.inf.nemo.common/lib/owlapi-bin.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GraphStream"/>
-	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-algo-1.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-algo-1.1.2-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-core-1.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-core-1.1.2-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-ui-1.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-ui-1.1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/openide-util-8.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/trove-3.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-algo-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-algo-1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-core-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-core-1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-ui-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-ui-1.2-javadoc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
