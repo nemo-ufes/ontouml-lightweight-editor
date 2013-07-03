@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.oled.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.io.File;
 
 import javax.swing.Box;
@@ -12,11 +13,17 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.move.PropertyTablePanel;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 
 /** 
@@ -25,9 +32,12 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 public class DiagramEditorWrapper extends JPanel implements Editor{
 
 	private static final long serialVersionUID = -1962960747434759099L;
-	private DiagramEditor editor;
-	private OutputPane outputPane = new OutputPane();
+	private DiagramEditor editor;	
 	private JSplitPane editorArea  = new JSplitPane();
+	
+	private JTabbedPane infoTabbedPane;
+	private PropertyTablePanel properties;
+	private OutputPane outputPane = new OutputPane();
 	
 	//TODO Remove me
 	private File projectFile;
@@ -35,7 +45,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	public DiagramEditorWrapper(DiagramEditor editor, DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		super(new BorderLayout());
-		this.editor = editor;
+		this.editor = editor;		
 		
 		DiagramEditorToolbar editorToolbar = new DiagramEditorToolbar();
 		JToolBar toolbar = editorToolbar.getToolbar();
@@ -55,9 +65,47 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
 		
-		editorArea.add(scrollpane, JSplitPane.TOP);
-		editorArea.add(outputPane, JSplitPane.BOTTOM);
+		properties = new PropertyTablePanel(editor.getProject());
 		
+		ModelTree.getTreeFor(editor.getProject()).addTreeSelectionListener(new OntoUMLTreeSelectionListener());
+		
+		infoTabbedPane = new JTabbedPane();
+		infoTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		infoTabbedPane.setBorder(null);
+		infoTabbedPane.setPreferredSize(new Dimension(400,600));
+		infoTabbedPane.setBackground(UIManager.getColor("Panel.background"));
+					
+		infoTabbedPane.add(properties);	
+		infoTabbedPane.setTitleAt(0," Properties ");
+		
+		infoTabbedPane.add(outputPane);	
+		infoTabbedPane.setTitleAt(1," Output ");
+		infoTabbedPane.setSelectedIndex(1);
+		
+		editorArea.add(scrollpane, JSplitPane.TOP);
+		editorArea.add(infoTabbedPane, JSplitPane.BOTTOM);
+		
+	}	
+	
+	class OntoUMLTreeSelectionListener implements TreeSelectionListener 
+	 {
+		 @Override
+			public void valueChanged(TreeSelectionEvent e) 
+			{
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+				
+				properties.setData(node);
+				focusOnProperties();
+			}
+	 }
+	
+	public PropertyTablePanel getProperties(){
+		return properties;
+	}
+	
+	public void focusOnProperties()
+	{
+		infoTabbedPane.setSelectedIndex(0);
 	}
 	
 	public void setDiagramEditor(DiagramEditor editor) {

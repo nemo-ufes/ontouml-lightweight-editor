@@ -109,7 +109,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		
 		//Adds the element to the diagram
 		parent.addChild(element);
-		element.setAbsolutePos(absx, absy);
+		element.setAbsolutePos(absx, absy);		
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);

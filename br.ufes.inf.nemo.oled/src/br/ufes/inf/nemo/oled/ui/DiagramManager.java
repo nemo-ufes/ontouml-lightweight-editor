@@ -169,6 +169,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					JOptionPane.showMessageDialog(this, ex.getMessage(),
 							getResourceString("error.readfile.title"),
 							JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
 				}
 			}
 		}
@@ -442,7 +443,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
 		final Component comp = this.add(diagram.getLabelText(), wrapper);
-
+		
 		diagram.addNameLabelChangeListener(new LabelChangeListener() {
 			/** {@inheritDoc} */
 			public void labelTextChanged(Label label) {
