@@ -39,6 +39,7 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Model;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.impl.GeneralizationSetImpl;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
@@ -60,7 +61,8 @@ public class UmlProject implements Serializable {
 	private transient String tempDir;
 	private List<UmlDiagram> diagrams = new ArrayList<UmlDiagram>();
 	private Properties properties;
-	
+	private OntoUMLParser ontoparser;
+			
 	public UmlProject() {
 		super();
 		properties = new Properties();
@@ -68,6 +70,7 @@ public class UmlProject implements Serializable {
 		Model model = ModelHelper.getFactory().createModel();
 		if(model.getName()==null || model.getName()=="") model.setName("Model");
 		resource.getContents().add(model);
+		ontoparser = new OntoUMLParser(model);
 		getEditingDomain();
 	}
 	
@@ -76,13 +79,19 @@ public class UmlProject implements Serializable {
 		properties = new Properties();
 		resource = ModelHelper.createResource();
 		resource.getContents().add(model);
+		ontoparser = new OntoUMLParser(model);
 		getEditingDomain();
+	}
+		
+	public OntoUMLParser getParser() {
+		return ontoparser;
 	}
 	
 	public void addDiagram(UmlDiagram diagram) {
 		diagrams.add(diagram);
 	}
 
+	
 	public List<? extends UmlDiagram> getDiagrams() {
 		return diagrams;
 	}
