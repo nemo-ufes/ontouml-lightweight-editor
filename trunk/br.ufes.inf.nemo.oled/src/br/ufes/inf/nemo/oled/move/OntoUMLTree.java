@@ -111,10 +111,13 @@ public class OntoUMLTree extends CheckboxTree {
 				drawTree(newNode, (RefOntoUML.Element) gen,checkingModel,refparser);					
 			}
 			
-			for (EObject o: refElement.eContents())
+			if (refElement instanceof RefOntoUML.Association)
 			{
-				drawTree(newNode,o,checkingModel,refparser);
-			}			
+				for (EObject o: refElement.eContents())
+				{
+					drawTree(newNode,o,checkingModel,refparser);
+				}			
+			}
 			
 		/* Generalization */
 		} else if (refElement instanceof RefOntoUML.Generalization)
@@ -132,7 +135,7 @@ public class OntoUMLTree extends CheckboxTree {
 		}else if (refElement instanceof RefOntoUML.Property)
 		{
 			String alias = new String();
-			if (refparser!=null) alias = refparser.getAlias((RefOntoUML.Classifier)refElement);
+			if (refparser!=null) alias = refparser.getAlias((RefOntoUML.Property)refElement);
 			else alias = "";
 			
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(refElement,alias));			

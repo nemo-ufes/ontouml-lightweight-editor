@@ -64,6 +64,7 @@ public class EditConnectionPointsCommand extends BaseDiagramCommand {
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(connection);
 		notification.notifyChange(elements, ChangeType.CONNECTION_POINT_EDITED, redo ? NotificationType.REDO : NotificationType.DO);
+
 	}
 
 	/**
