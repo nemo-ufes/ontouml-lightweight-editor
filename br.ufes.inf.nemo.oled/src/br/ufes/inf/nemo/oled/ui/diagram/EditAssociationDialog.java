@@ -29,6 +29,7 @@ import RefOntoUML.impl.MediationImpl;
 import RefOntoUML.impl.MeronymicImpl;
 import RefOntoUML.impl.subQuantityOfImpl;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
+import br.ufes.inf.nemo.oled.ui.ModelTree;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -130,6 +131,8 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 						public void actionPerformed(ActionEvent evt) {
 							if (validateInput()) {
 								transferDataToAssociation();
+								//update model tree
+								ModelTree.updateModelTree(diagramManager.getCurrentProject());
 								dispose();
 							}
 						}

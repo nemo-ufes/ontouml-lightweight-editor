@@ -26,18 +26,18 @@ public class ToolManager extends JTabbedPane {
 		//Assistent assistent = new Assistent();
 		//Assistent patternsPanel = new Assistent();
 				
-		this.add("ToolBox", palettes); //TODO Localize these
+		this.add("Elements", palettes); //TODO Localize these
 		this.add("Model", null);
 		//this.add("Assistent", assistent);
 		//this.add("Patterns", patternsPanel);
 	}
 
 	public void showModelTree(UmlProject project)
-	{
+	{		
 		ModelTree modelTree = ModelTree.getTreeFor(project);
 		this.setComponentAt(indexOfTab("Model"), modelTree);
+		validate();
 		repaint();
-		revalidate();
 	}
 	
 	public DiagramEditorCommandDispatcher getEditorDispatcher() {

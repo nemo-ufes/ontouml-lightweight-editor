@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.move.OntoUMLElement;
 import br.ufes.inf.nemo.oled.move.OntoUMLTree;
@@ -24,9 +25,11 @@ public class ModelTree extends JPanel {
 	//Keeps track of the trees instantiated in order to not re-instantite them 
 	private static Map<UmlProject, ModelTree> treeMap = new HashMap<UmlProject, ModelTree>();
 	
+	private JScrollPane scroll;
 	private OntoUMLTree tree; 
 	private UmlProject project;
-	
+	private OntoUMLParser refparser;
+		
 	private ModelTree(UmlProject project)
 	{
 		super(new BorderLayout());
@@ -36,10 +39,13 @@ public class ModelTree extends JPanel {
 		//buildTree(project);
 		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
-		tree = new OntoUMLTree(root,project.getModel(),project.getParser());
+		refparser = new OntoUMLParser(project.getModel());
+		tree = new OntoUMLTree(root,project.getModel(),refparser);
 		tree.setBorder(new EmptyBorder(2,2,2,2));
 		
-		JScrollPane scroll = new JScrollPane(tree);
+		scroll = new JScrollPane();
+		scroll.setViewportView(tree);
+		
 		add(scroll, BorderLayout.CENTER);		
 	}
 	
@@ -55,15 +61,61 @@ public class ModelTree extends JPanel {
 		return modelTree;
 	}
 	
+	public static OntoUMLParser getParserFor(UmlProject project) 
+	{		
+		return ModelTree.getTreeFor(project).refparser;
+	}
+	
 	/**
 	 * Refresh the Model Tree.
 	 */
 	public static void refreshModelTree(UmlProject project)
 	{
 		ModelTree modeltree = ModelTree.getTreeFor(project);
-		modeltree.getTree().updateUI();		
+		
+		modeltree.tree.updateUI();		
+		
 		modeltree.validate();
 		modeltree.repaint();		
+	}
+	
+	/**
+	 * Update the Model Tree
+	 */
+	public static void updateModelTree(UmlProject project)
+	{
+		ModelTree modeltree = ModelTree.getTreeFor(project);
+		
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
+		OntoUMLParser refparser = new OntoUMLParser(project.getModel());
+		
+		modeltree.setParser(refparser);
+		modeltree.setTree(new OntoUMLTree(root,project.getModel(),refparser));
+		
+		modeltree.validate();
+		modeltree.repaint();
+	}
+	
+	public void setTree(OntoUMLTree tree)
+	{
+		remove(scroll);
+		
+		this.tree = tree;
+		this.tree.setBorder(new EmptyBorder(2,2,2,2));
+		
+		scroll = new JScrollPane();
+		scroll.setViewportView(tree);
+		add(scroll, BorderLayout.CENTER);		
+		
+		scroll.validate();
+		scroll.repaint();
+		this.validate();
+		this.repaint();
+	}
+	
+	public void setParser(OntoUMLParser refparser)
+	{
+		this.refparser = refparser;
 	}
 	
 	public void addTreeSelectionListener(TreeSelectionListener selectionListener)
@@ -74,5 +126,9 @@ public class ModelTree extends JPanel {
 	public JTree getTree() 
 	{
 		return tree;
+	}
+
+	public UmlProject getProject() {
+		return project;
 	}
 }

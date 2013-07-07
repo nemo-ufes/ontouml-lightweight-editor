@@ -27,6 +27,7 @@ import RefOntoUML.PackageableElement;
 import RefOntoUML.impl.ConstraintxImpl;
 import RefOntoUML.impl.PropertyImpl;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
+import br.ufes.inf.nemo.oled.ui.ModelTree;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 
 
@@ -261,6 +262,8 @@ public class EditAnnotationDialog extends JDialog {
 	
 	private void okButtonActionPerformed(ActionEvent evt) {
 		transferDataToElement();
+		//update model tree
+		ModelTree.updateModelTree(diagramManager.getCurrentProject());
 		dispose();
 	}
 	

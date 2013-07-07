@@ -16,6 +16,7 @@ import javax.swing.table.TableCellEditor;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.ModelTree;
 
 public class PropertyTableCellEditor extends AbstractCellEditor implements TableCellEditor
 {
@@ -73,7 +74,7 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
 	    	comboBox.setFocusable(false);
 	    	comboBox.setBackground(Color.WHITE);
 	    	ArrayList<OntoUMLElement> list = new ArrayList<OntoUMLElement>();
-	    	OntoUMLParser refparser = project.getParser();
+	    	OntoUMLParser refparser = ModelTree.getParserFor(project);
 	    	
 	    	for(RefOntoUML.Type t: refparser.getAllInstances(RefOntoUML.Type.class))
 	    	{

@@ -8,6 +8,7 @@ import java.io.File;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -23,8 +24,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.move.ErrorTablePanel;
 import br.ufes.inf.nemo.oled.move.PropertyTablePanel;
+import br.ufes.inf.nemo.oled.move.WarningTablePanel;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.util.ApplicationResources;
+import br.ufes.inf.nemo.oled.util.IconLoader;
 
 /** 
  * Wrapper class for {@link DiagramEditor} responsible for providing toolbar and handling the model file.  
@@ -37,6 +42,8 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	
 	private JTabbedPane infoTabbedPane;
 	private PropertyTablePanel properties;
+	private ErrorTablePanel errors;
+	private WarningTablePanel warnings;
 	private OutputPane outputPane = new OutputPane();
 	
 	//TODO Remove me
@@ -65,7 +72,9 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
 		
-		properties = new PropertyTablePanel(editor.getProject());
+		properties = new PropertyTablePanel(editor.getProject());		
+		errors = new ErrorTablePanel(editor.getProject());
+		warnings = new WarningTablePanel(editor.getProject());
 		
 		ModelTree.getTreeFor(editor.getProject()).addTreeSelectionListener(new OntoUMLTreeSelectionListener());
 		
@@ -77,10 +86,20 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 					
 		infoTabbedPane.add(properties);	
 		infoTabbedPane.setTitleAt(0," Properties ");
+		infoTabbedPane.setIconAt(0,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/move/table-16x16.png")));
+		
+		infoTabbedPane.add(warnings);	
+		infoTabbedPane.setTitleAt(1," Warnings ");
+		infoTabbedPane.setIconAt(1,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/move/warning-16x16.png")));
+		
+		infoTabbedPane.add(errors);	
+		infoTabbedPane.setTitleAt(2," Errors ");
+		infoTabbedPane.setIconAt(2,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/move/error-16x16.png")));
 		
 		infoTabbedPane.add(outputPane);	
-		infoTabbedPane.setTitleAt(1," Output ");
-		infoTabbedPane.setSelectedIndex(1);
+		infoTabbedPane.setTitleAt(3," Output ");
+		infoTabbedPane.setSelectedIndex(3);
+		infoTabbedPane.setIconAt(3,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.showoutput.icon")));
 		
 		editorArea.add(scrollpane, JSplitPane.TOP);
 		editorArea.add(infoTabbedPane, JSplitPane.BOTTOM);
@@ -101,6 +120,18 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	
 	public PropertyTablePanel getProperties(){
 		return properties;
+	}
+
+	public WarningTablePanel getWarnings(){
+		return warnings;
+	}
+	
+	public ErrorTablePanel getErrors(){
+		return errors;
+	}
+	
+	private String getResourceString(String property) {
+	    return ApplicationResources.getInstance().getString(property);
 	}
 	
 	public void focusOnProperties()

@@ -31,6 +31,7 @@ import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.ModelTree;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
@@ -104,7 +105,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 			ClassElement classElement = (ClassElement) element;
 			
 			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), classElement.getClassifier());
-			project.getEditingDomain().getCommandStack().execute(cmd);
+			project.getEditingDomain().getCommandStack().execute(cmd);			
 		}
 		
 		//Adds the element to the diagram
@@ -114,5 +115,8 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
 		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
+		
+		//FIXME every modification creates a new tree
+		ModelTree.updateModelTree(project);		
 	}
 }
