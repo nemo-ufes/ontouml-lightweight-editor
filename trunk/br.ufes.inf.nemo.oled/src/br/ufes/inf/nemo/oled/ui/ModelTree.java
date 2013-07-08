@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -103,6 +104,8 @@ public class ModelTree extends JPanel {
 		this.tree = tree;
 		this.tree.setBorder(new EmptyBorder(2,2,2,2));
 		
+		this.addTreeSelectionListener(new OntoUMLTreeSelectionListener());
+		
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
 		add(scroll, BorderLayout.CENTER);		
@@ -112,6 +115,17 @@ public class ModelTree extends JPanel {
 		this.validate();
 		this.repaint();
 	}
+	
+	class OntoUMLTreeSelectionListener implements TreeSelectionListener 
+	 {
+		 @Override
+			public void valueChanged(TreeSelectionEvent e) 
+			{
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();				
+				DiagramEditorWrapper.getProperties().setData(node);
+				DiagramEditorWrapper.focusOnProperties();
+			}
+	 }
 	
 	public void setParser(OntoUMLParser refparser)
 	{

@@ -18,9 +18,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -40,10 +37,10 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	private DiagramEditor editor;	
 	private JSplitPane editorArea  = new JSplitPane();
 	
-	private JTabbedPane infoTabbedPane;
-	private PropertyTablePanel properties;
-	private ErrorTablePanel errors;
-	private WarningTablePanel warnings;
+	public static JTabbedPane infoTabbedPane;
+	public static PropertyTablePanel properties;
+	public static ErrorTablePanel errors;
+	public static WarningTablePanel warnings;
 	private OutputPane outputPane = new OutputPane();
 	
 	//TODO Remove me
@@ -76,8 +73,6 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		errors = new ErrorTablePanel(editor.getProject());
 		warnings = new WarningTablePanel(editor.getProject());
 		
-		ModelTree.getTreeFor(editor.getProject()).addTreeSelectionListener(new OntoUMLTreeSelectionListener());
-		
 		infoTabbedPane = new JTabbedPane();
 		infoTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		infoTabbedPane.setBorder(null);
@@ -106,27 +101,15 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		
 	}	
 	
-	class OntoUMLTreeSelectionListener implements TreeSelectionListener 
-	 {
-		 @Override
-			public void valueChanged(TreeSelectionEvent e) 
-			{
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-				
-				properties.setData(node);
-				focusOnProperties();
-			}
-	 }
-	
-	public PropertyTablePanel getProperties(){
+	public static PropertyTablePanel getProperties(){
 		return properties;
 	}
 
-	public WarningTablePanel getWarnings(){
+	public static WarningTablePanel getWarnings(){
 		return warnings;
 	}
 	
-	public ErrorTablePanel getErrors(){
+	public static ErrorTablePanel getErrors(){
 		return errors;
 	}
 	
@@ -134,7 +117,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	    return ApplicationResources.getInstance().getString(property);
 	}
 	
-	public void focusOnProperties()
+	public static void focusOnProperties()
 	{
 		infoTabbedPane.setSelectedIndex(0);
 	}
