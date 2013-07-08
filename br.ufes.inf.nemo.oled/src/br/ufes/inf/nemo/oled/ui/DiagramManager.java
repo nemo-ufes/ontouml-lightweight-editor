@@ -37,6 +37,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,11 +54,14 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.provider.IDisposable;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -82,11 +86,11 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.oled.util.OLEDResourceFactory;
 import br.ufes.inf.nemo.oled.util.OWLHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult;
-import br.ufes.inf.nemo.oled.util.TextDescriptionHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
 import br.ufes.inf.nemo.oled.util.SBVRHelper;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
+import br.ufes.inf.nemo.oled.util.TextDescriptionHelper;
 import br.ufes.inf.nemo.oled.util.ValidationHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType;
@@ -689,6 +693,97 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void showOutputPane() {
 		((DiagramEditorWrapper) this.getSelectedComponent()).showOrHideOutput();
+		DiagramEditorWrapper.focusOnOutput();
+	}
+		
+	/**
+	 * Search for errors and warnings 
+	 */
+	public void diagnose() 
+	{	
+		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
+		
+		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
+		
+		// do auto selection completion.
+		doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
+		
+    	ModelDiagnostician verificator = new ModelDiagnostician();
+    	
+    	// Warnings showed
+		DiagramEditorWrapper.getWarnings().setData(
+			verificator.getWarningsMatrixFormat(ModelTree.getParserFor(getCurrentProject())),
+			verificator.getWarnings()
+		);
+		if (verificator.getWarnings()>0)
+		{			
+			DiagramEditorWrapper.getWarnings().selectRow(0);
+			DiagramEditorWrapper.setTitleWarning(" Warnings ("+verificator.getWarnings()+")");
+			DiagramEditorWrapper.focusOnWarnings();			
+		}else ; DiagramEditorWrapper.setTitleWarning(" Warnings ");
+		
+		// Errors showed	    	
+		DiagramEditorWrapper.getErrors().setData(
+			verificator.getErrorsMatrixFormat(refparser),
+			verificator.getErrors()
+		);
+		if (verificator.getErrors()>0) 
+		{  
+			DiagramEditorWrapper.getErrors().selectRow(0); 
+			DiagramEditorWrapper.setTitleErrors(" Errors ("+verificator.getErrors()+")");
+			DiagramEditorWrapper.focusOnErrors(); 
+		} else ; DiagramEditorWrapper.setTitleErrors(" Errors ");
+		
+		/*if (verificator.getErrors()>0) 
+			frame.showErrorMessageDialog("Error", "Your model has errors. Please, Fix it before continue.\n");		
+		else if (verificator.getWarnings()>0) 
+			frame.showWarningMessageDialog("Warning", "Your model has warnings. Please, be aware before continue.\n");*/			
+	}
+		
+	/**
+	 * Do Auto Selection Completion.
+	 * 
+	 * @param option
+	 * @return
+	 */
+	public String doAutoSelectionCompletion(int option)
+	{		
+		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
+		ModelTree modeltree = ModelTree.getTreeFor(getCurrentProject());
+		if (refparser==null || modeltree.getTree()==null) 
+		{
+			//frame.showInformationMessageDialog("Verify Model", "First you need to load your Model !");
+			return "";
+		}	
+		
+		// get elements from the tree
+		List<EObject> selected = modeltree.getTree().getCheckedElements();
+		
+		// get added elements from the auto selection completion
+		refparser.selectThisElements((ArrayList<EObject>)selected,true);		
+		List<EObject> added = refparser.autoSelectDependencies(option,false);
+		
+		// show wich elements were added to selection
+		String msg = new String();
+		if (added.size()>0) msg = "The following elements were include in selection:\n\n";
+		for(EObject o: added)
+		{
+			msg += ""+refparser.getStringRepresentation(o)+".\n";
+		}
+		if (added.size()==0) msg += "No elements to include in selection.";		
+		
+		// update tree adding the elements...
+		selected.removeAll(added);
+		selected.addAll(added);		
+		
+		modeltree.getTree().checkElements(selected, true);		
+			
+		modeltree.getTree().updateUI();    	
+		
+    	// create a new model package from selected elements in the model.
+    	//ontoumlmodel.setOntoUMLPackage(ontoumlmodel.getOntoUMLParser().createPackageFromSelections(new Copier()));
+		
+    	return msg;
 	}
 	
 	/**

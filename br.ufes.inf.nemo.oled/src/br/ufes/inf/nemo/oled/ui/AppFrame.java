@@ -9,7 +9,9 @@ import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
@@ -312,6 +314,61 @@ public class AppFrame extends JFrame implements AppCommandListener {
 				mainToolBar.enableButton("REDO", false);
 			}
 		}
+	}
+	
+	/**
+	 * Shoe Error Message Dialog.
+	 * 
+	 * @param title
+	 * @param message
+	 */
+	public void showErrorMessageDialog(String title, String message)
+	{
+		JOptionPane.showMessageDialog(
+			this,message,title,JOptionPane.ERROR_MESSAGE,
+			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/move/delete-36x36.png"))
+		);	
+	}
+	
+	/**
+	 * Show Warning Message Dialog.
+	 * 
+	 * @param title
+	 * @param message
+	 */
+	public void showWarningMessageDialog(String title, String message)
+	{
+		JOptionPane.showMessageDialog(
+			this,message,title,JOptionPane.WARNING_MESSAGE,
+			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/move/warning-36x36.png"))
+		);	
+	}
+	
+	/**
+	 * Show Successful Message Dialog.
+	 * 
+	 * @param title
+	 * @param message
+	 */
+	public void showSuccessfulMessageDialog(String title, String message)
+	{
+		JOptionPane.showMessageDialog(
+			this,message,title,JOptionPane.INFORMATION_MESSAGE,
+			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/move/check-36x36.png"))
+		);
+	}
+	
+	/**
+	 * Show Information Message Dialog.
+	 * 
+	 * @param title
+	 * @param message
+	 */
+	public void showInformationMessageDialog(String title, String message)
+	{
+		JOptionPane.showMessageDialog(
+			this,message,title,JOptionPane.INFORMATION_MESSAGE
+		);
 	}
 
 	/**

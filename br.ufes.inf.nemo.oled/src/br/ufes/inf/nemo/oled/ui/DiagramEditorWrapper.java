@@ -41,7 +41,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	public static PropertyTablePanel properties;
 	public static ErrorTablePanel errors;
 	public static WarningTablePanel warnings;
-	private OutputPane outputPane = new OutputPane();
+	public static OutputPane outputPane;
 	
 	//TODO Remove me
 	private File projectFile;
@@ -72,6 +72,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		properties = new PropertyTablePanel(editor.getProject());		
 		errors = new ErrorTablePanel(editor.getProject());
 		warnings = new WarningTablePanel(editor.getProject());
+		outputPane = new OutputPane();
 		
 		infoTabbedPane = new JTabbedPane();
 		infoTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -105,8 +106,22 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		return properties;
 	}
 
+	public static OutputPane getOutput(){
+		return outputPane;
+	}
+	
 	public static WarningTablePanel getWarnings(){
 		return warnings;
+	}
+	
+	public static void setTitleWarning(String text)
+	{
+		infoTabbedPane.setTitleAt(1,text);
+	}
+	
+	public static void setTitleErrors(String text)
+	{
+		infoTabbedPane.setTitleAt(2,text);
 	}
 	
 	public static ErrorTablePanel getErrors(){
@@ -120,6 +135,21 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	public static void focusOnProperties()
 	{
 		infoTabbedPane.setSelectedIndex(0);
+	}
+	
+	public static void focusOnErrors()
+	{
+		infoTabbedPane.setSelectedIndex(2);
+	}
+	
+	public static void focusOnWarnings()
+	{
+		infoTabbedPane.setSelectedIndex(1);
+	}
+	
+	public static void focusOnOutput()
+	{
+		infoTabbedPane.setSelectedIndex(3);
 	}
 	
 	public void setDiagramEditor(DiagramEditor editor) {
