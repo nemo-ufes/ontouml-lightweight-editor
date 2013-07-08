@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -138,7 +137,7 @@ public class ModelTree extends JPanel {
 		tree.addTreeSelectionListener(selectionListener);
 	}	
 	
-	public JTree getTree() 
+	public OntoUMLTree getTree() 
 	{
 		return tree;
 	}

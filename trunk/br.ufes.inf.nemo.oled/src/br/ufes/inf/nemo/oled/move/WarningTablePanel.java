@@ -86,6 +86,7 @@ public class WarningTablePanel extends JPanel {
 		table.validate();
 		
 		content = tablemodel.getData();
+		
 	}	
 	
 	public String getContent()

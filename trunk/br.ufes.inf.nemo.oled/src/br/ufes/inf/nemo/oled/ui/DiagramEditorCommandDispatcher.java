@@ -241,6 +241,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("SHOW_OUTPUT", new MethodCall(
 					getClass().getMethod("showOutputPane")));
 			
+			selectorMap.put("DIAGNOSTIC", new MethodCall(
+					getClass().getMethod("diagnose")));
+			
 			selectorMap.put("VALIDATE_MODEL", new MethodCall(
 					getClass().getMethod("validateModel")));
 			
@@ -289,6 +292,11 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void showOutputPane()
 	{
 		manager.showOutputPane();
+	}
+	
+	public void diagnose()
+	{
+		manager.diagnose();
 	}
 	
 	public void validateModel() 

@@ -32,7 +32,7 @@ public class DiagramEditorToolbar implements ActionListener {
     //diagramOptionsGroup = new ButtonGroup();
     
     toolbar.add(createButton(validationGroup, "showoutput"));
-    //toolbar.add(createButton(validationGroup, "diagnostic"));
+    toolbar.add(createButton(validationGroup, "diagnostic"));
     //toolbar.add(createToggleButton(diagramOptionsGroup, "rectilinear"));
     //toolbar.add(createToggleButton(diagramOptionsGroup, "straight"));
     
