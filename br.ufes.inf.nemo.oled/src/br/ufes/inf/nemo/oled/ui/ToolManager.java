@@ -35,6 +35,7 @@ public class ToolManager extends JTabbedPane {
 	public void showModelTree(UmlProject project)
 	{		
 		ModelTree modelTree = ModelTree.getTreeFor(project);
+		
 		this.setComponentAt(indexOfTab("Model"), modelTree);
 		validate();
 		repaint();

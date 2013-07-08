@@ -43,6 +43,7 @@ public class ModelTree extends JPanel {
 		refparser = new OntoUMLParser(project.getModel());
 		tree = new OntoUMLTree(root,project.getModel(),refparser);
 		tree.setBorder(new EmptyBorder(2,2,2,2));
+		tree.addTreeSelectionListener(new OntoUMLTreeSelectionListener());
 		
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
