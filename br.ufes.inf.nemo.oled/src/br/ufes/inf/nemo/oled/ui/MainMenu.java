@@ -70,12 +70,12 @@ public class MainMenu implements ActionListener {
 		createMenuItem(fileMenu, "new");
 		createMenuItem(fileMenu, "open");
 		createMenuItem(fileMenu, "save");
-		createMenuItem(fileMenu, "saveas");
+		createMenuItem(fileMenu, "saveas");			
 		createMenuItem(fileMenu, "exportgfx");
-		createMenuItem(fileMenu, "exportowl");
+		createMenuItem(fileMenu, "importxmi");		
+		createMenuItem(fileMenu, "importecore");			
 		createMenuItem(fileMenu, "exportecore");
-		createMenuItem(fileMenu, "importecore");
-		createMenuItem(fileMenu, "importxmi");
+		//createMenuItem(fileMenu, "exportowl");
 		fileMenu.addSeparator();
 		createMenuItem(fileMenu, "quit");
 		

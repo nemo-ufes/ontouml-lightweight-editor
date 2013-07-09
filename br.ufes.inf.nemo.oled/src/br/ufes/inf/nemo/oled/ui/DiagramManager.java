@@ -94,6 +94,7 @@ import br.ufes.inf.nemo.oled.util.TextDescriptionHelper;
 import br.ufes.inf.nemo.oled.util.ValidationHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType;
+import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
@@ -710,20 +711,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}	
 	
 	/**
-	 * Search for errors and warnings 
+	 * Search for errors and warnings in the model
 	 */
 	public void diagnose() 
 	{	
 		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
 		
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
-		
-		// do auto selection completion.
+
 		doAutoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
 		
-    	ModelDiagnostician verificator = new ModelDiagnostician();
-    	
-    	// Warnings showed
+    	ModelDiagnostician verificator = new ModelDiagnostician();    	
 		DiagramEditorWrapper.getWarnings().setData(
 			verificator.getWarningsMatrixFormat(ModelTree.getParserFor(getCurrentProject())),
 			verificator.getWarnings()
@@ -733,9 +731,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			DiagramEditorWrapper.getWarnings().selectRow(0);
 			DiagramEditorWrapper.setTitleWarning(" Warnings ("+verificator.getWarnings()+")");
 			DiagramEditorWrapper.focusOnWarnings();			
-		}else ; DiagramEditorWrapper.setTitleWarning(" Warnings ");
-		
-		// Errors showed	    	
+		}else ; DiagramEditorWrapper.setTitleWarning(" Warnings ");    	
 		DiagramEditorWrapper.getErrors().setData(
 			verificator.getErrorsMatrixFormat(refparser),
 			verificator.getErrors()
@@ -754,26 +750,23 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 		
 	/**
-	 * auto complete selection
+	 * Auto complete selection in the model
 	 */
 	public static String doAutoCompleteSelection(int option, UmlProject project)
 	{		
 		OntoUMLParser refparser = ModelTree.getParserFor(project);
 		ModelTree modeltree = ModelTree.getTreeFor(project);
-		if (refparser==null || modeltree.getTree()==null) 
-		{
-			//frame.showInformationMessageDialog("Verify Model", "First you need to load your Model !");
-			return "";
-		}	
 		
-		// get elements from the tree
+		if (refparser==null) { return ""; }	
+		
+		// Get elements from the tree
 		List<EObject> selected = modeltree.getTree().getCheckedElements();
 		
-		// get added elements from the auto selection completion
+		// Get added elements from the auto selection completion
 		refparser.selectThisElements((ArrayList<EObject>)selected,true);		
 		List<EObject> added = refparser.autoSelectDependencies(option,false);
 		
-		// show which elements were added to selection
+		// Show which elements were added to selection
 		String msg = new String();
 		if (added.size()>0) msg = "The following elements were include in selection:\n\n";
 		for(EObject o: added)
@@ -782,19 +775,38 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		if (added.size()==0) msg += "No elements to include in selection.";		
 		
-		// update tree adding the elements...
+		// Update tree adding the elements...
 		selected.removeAll(added);
 		selected.addAll(added);		
 		
-		modeltree.getTree().checkElements(selected, true);		
-			
+		modeltree.getTree().checkElements(selected, true);			
 		modeltree.getTree().updateUI();    	
 		
-    	// create a new model package from selected elements in the model.
-    	//ontoumlmodel.setOntoUMLPackage(ontoumlmodel.getOntoUMLParser().createPackageFromSelections(new Copier()));
+    	// Create a new model package from selected elements in the model.
+    	// ontoumlmodel.setOntoUMLPackage(ontoumlmodel.getOntoUMLParser().createPackageFromSelections(new Copier()));
 		
     	return msg;
 	}
+	
+	/**
+	 * Transform model to Alloy
+	 */
+	public void TransformsOntoUMLtoAlloy(UmlProject project, Onto2AlloyOptions options)
+	{
+		OntoUMLParser refparser = ModelTree.getParserFor(project);
+		
+		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
+				
+		doAutoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
+		
+		try {			
+			ModelTree.getAlloySpecFor(project).setAlloyModel(refparser,options);
+			
+		} catch (Exception e) {
+			frame.showErrorMessageDialog("Transforming OntoUML into Alloy",e.getLocalizedMessage());					
+			e.printStackTrace();
+		}
+	}	
 	
 	/**
 	 * Shows model instances for a given Alloy Solution/Module. 
