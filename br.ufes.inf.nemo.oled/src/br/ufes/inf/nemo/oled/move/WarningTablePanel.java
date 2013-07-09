@@ -32,6 +32,7 @@ public class WarningTablePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	@SuppressWarnings("unused")
 	private UmlProject project;
 	
 	private JScrollPane scrollpane;

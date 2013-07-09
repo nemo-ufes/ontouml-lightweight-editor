@@ -76,6 +76,8 @@ public final class IconLoader {
 		DERIVATION, 
 		RULE, 
 		WINDOW, 
+		SHOW_OCLEDITOR,
+		AUTO_SELECTION,
 		PALETTE_OPEN, 
 		PALETTE_CLOSED, 
 		GENERATE_OWL_SETTINGS,
@@ -132,6 +134,8 @@ public final class IconLoader {
 		
 		urlMap.put(IconType.SHOW_OUTPUT, "resources/br/ufes/inf/nemo/oled/ui/output.png");
 		urlMap.put(IconType.DIAGNOSTIC, "resources/br/ufes/inf/nemo/oled/ui/diagnostic.png");
+		urlMap.put(IconType.SHOW_OCLEDITOR, "resources/br/ufes/inf/nemo/oled/ui/ocleditor.png");
+		urlMap.put(IconType.AUTO_SELECTION, "resources/br/ufes/inf/nemo/oled/ui/completion.png");
 		urlMap.put(IconType.VALIDATE, "resources/br/ufes/inf/nemo/oled/ui/validate.png");
 		urlMap.put(IconType.VERIFY_SETTINGS, "resources/br/ufes/inf/nemo/oled/ui/verifysettings.png");
 		urlMap.put(IconType.VERIFY, "resources/br/ufes/inf/nemo/oled/ui/verify.png");

@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
@@ -15,11 +14,11 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
+import br.ufes.inf.nemo.oled.editor.ocl.OCLEditorPanel;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.move.ErrorTablePanel;
 import br.ufes.inf.nemo.oled.move.PropertyTablePanel;
@@ -35,7 +34,8 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 
 	private static final long serialVersionUID = -1962960747434759099L;
 	private DiagramEditor editor;	
-	private JSplitPane editorArea  = new JSplitPane();
+	private JSplitPane editorArea  = new JSplitPane();	
+	private OCLEditorPanel ocleditor;
 	
 	public static JTabbedPane infoTabbedPane;
 	public static PropertyTablePanel properties;
@@ -63,8 +63,6 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		editorArea.setResizeWeight(1) ;
 		editorArea.setDividerLocation(1.0);
 		
-		this.add(editorArea, BorderLayout.CENTER);
-
 		JScrollPane scrollpane = new JScrollPane(editor);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
@@ -73,6 +71,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		errors = new ErrorTablePanel(editor.getProject());
 		warnings = new WarningTablePanel(editor.getProject());
 		outputPane = new OutputPane();
+		ocleditor = new OCLEditorPanel();
 		
 		infoTabbedPane = new JTabbedPane();
 		infoTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -93,13 +92,18 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		infoTabbedPane.setIconAt(2,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/move/error-16x16.png")));
 		
 		infoTabbedPane.add(outputPane);	
-		infoTabbedPane.setTitleAt(3," Output ");
-		infoTabbedPane.setSelectedIndex(3);
+		infoTabbedPane.setTitleAt(3," Output ");		
 		infoTabbedPane.setIconAt(3,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.showoutput.icon")));
 		
-		editorArea.add(scrollpane, JSplitPane.TOP);
-		editorArea.add(infoTabbedPane, JSplitPane.BOTTOM);
+		infoTabbedPane.add(ocleditor);	
+		infoTabbedPane.setTitleAt(4," OCL Editor ");
+		infoTabbedPane.setSelectedIndex(4);
+		infoTabbedPane.setIconAt(4,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.ocleditor.icon")));
 		
+		editorArea.add(scrollpane, JSplitPane.TOP);
+		editorArea.add(infoTabbedPane, JSplitPane.BOTTOM);		
+		
+		this.add(editorArea,BorderLayout.CENTER);		
 	}	
 	
 	public static PropertyTablePanel getProperties(){
@@ -152,6 +156,11 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		infoTabbedPane.setSelectedIndex(3);
 	}
 	
+	public static void focusOnOclEditor()
+	{
+		infoTabbedPane.setSelectedIndex(4);
+	}
+	
 	public void setDiagramEditor(DiagramEditor editor) {
 		this.editor = editor;
 	}
@@ -186,41 +195,6 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		return projectFile;
 	}
 
-	class OutputPane extends JPanel
-	{
-		private static final long serialVersionUID = -7066838889714939605L;
-		JTextPane output = new JTextPane();
-		
-		public OutputPane()
-		{
-			super();
-			
-			output.setEditable(false);
-			output.setBackground(new Color(0xF2FCAC));
-			output.setMinimumSize(new Dimension(0, 0));
-			
-			BorderLayout layout = new BorderLayout();
-			this.setLayout(layout);
-			
-			JScrollPane scrollpane = new JScrollPane(output);
-			scrollpane.getVerticalScrollBar().setUnitIncrement(10);
-			scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
-			
-			this.add(scrollpane, BorderLayout.CENTER);
-			this.setMinimumSize(new Dimension(0, 0));
-		}
-		
-		public void apped(String text)
-		{
-			output.setText(output.getText() + text);
-		}
-		
-		public void write(String text)
-		{
-			output.setText(text);
-		}
-	}
-	
 	class ProgressPane extends JPanel
 	{
 		private static final long serialVersionUID = -2139086725410223732L;
@@ -256,8 +230,9 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		int maxLocation = editorArea.getMaximumDividerLocation();
 		if(location >= maxLocation - 1) //1px bug
         {
-        	editorArea.setDividerLocation(0.83);
+			editorArea.setDividerLocation(0.75);
         }
+		focusOnOutput();
 	}
 	
 	public void showOrHideOutput() {
@@ -266,14 +241,28 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		int maxLocation = editorArea.getMaximumDividerLocation();
 		if(location < maxLocation)
         {
-        	editorArea.setDividerLocation(1.0);	
+			editorArea.setDividerLocation(1.0);	
         }
         else
         {
-        	editorArea.setDividerLocation(0.83);
+        	editorArea.setDividerLocation(0.75);
         }
 	}
 
+	public void showOrHideOclEditor() {
+		
+		int location = editorArea.getDividerLocation();
+		int maxLocation = editorArea.getMaximumDividerLocation();
+		if(location < maxLocation)
+        {
+			editorArea.setDividerLocation(1.0);	
+        }
+        else
+        {
+        	editorArea.setDividerLocation(0.75);
+        }
+	}
+	
 	@Override
 	public UmlProject getProject() {
 		return editor.getDiagram().getProject();

@@ -22,11 +22,11 @@ package br.ufes.inf.nemo.oled.ui;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import br.ufes.inf.nemo.oled.draw.Scaling;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
+import br.ufes.inf.nemo.oled.move.AutoCompletionDialog;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.MethodCall;
@@ -243,6 +243,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			
 			selectorMap.put("DIAGNOSTIC", new MethodCall(
 					getClass().getMethod("diagnose")));
+
+			selectorMap.put("SHOW_OCLEDITOR", new MethodCall(
+					getClass().getMethod("showOclEditor")));
+			
+			selectorMap.put("AUTO_SELECTION", new MethodCall(
+					getClass().getMethod("autoComplete")));
 			
 			selectorMap.put("VALIDATE_MODEL", new MethodCall(
 					getClass().getMethod("validateModel")));
@@ -297,6 +303,16 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void diagnose()
 	{
 		manager.diagnose();
+	}
+	
+	public void showOclEditor()
+	{
+		manager.showOclEditor();
+	}
+	
+	public void autoComplete()
+	{
+		AutoCompletionDialog.open(manager.getFrame(),manager.getCurrentProject());
 	}
 	
 	public void validateModel() 
