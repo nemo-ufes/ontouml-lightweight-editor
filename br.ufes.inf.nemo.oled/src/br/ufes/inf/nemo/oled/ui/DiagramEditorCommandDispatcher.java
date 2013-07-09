@@ -302,7 +302,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	
 	public void diagnose()
 	{
-		manager.diagnose();
+		manager.searchErrorsAndWarnings();
 	}
 	
 	public void showOclEditor()

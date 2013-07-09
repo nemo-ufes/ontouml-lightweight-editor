@@ -110,25 +110,32 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		return properties;
 	}
 
-	public static OutputPane getOutput(){
+	public OutputPane getOutput(){
 		return outputPane;
 	}
 	
-	public static WarningTablePanel getWarnings(){
+	public WarningTablePanel getWarnings(){
 		return warnings;
 	}
 	
-	public static void setTitleWarning(String text)
+	public void setTitleWarning(String text)
 	{
 		infoTabbedPane.setTitleAt(1,text);
 	}
 	
-	public static void setTitleErrors(String text)
+	public void setTitleErrors(String text)
 	{
 		infoTabbedPane.setTitleAt(2,text);
 	}
 	
-	public static ErrorTablePanel getErrors(){
+	/**
+	 * Get Constraints from the editor view.
+	 */
+	public String getConstraints() { 
+		return ocleditor.textArea.getText(); 
+	}
+	
+	public ErrorTablePanel getErrors(){
 		return errors;
 	}
 	
@@ -141,22 +148,22 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		infoTabbedPane.setSelectedIndex(0);
 	}
 	
-	public static void focusOnErrors()
+	public void focusOnErrors()
 	{
 		infoTabbedPane.setSelectedIndex(2);
 	}
 	
-	public static void focusOnWarnings()
+	public void focusOnWarnings()
 	{
 		infoTabbedPane.setSelectedIndex(1);
 	}
 	
-	public static void focusOnOutput()
+	public void focusOnOutput()
 	{
 		infoTabbedPane.setSelectedIndex(3);
 	}
 	
-	public static void focusOnOclEditor()
+	public void focusOnOclEditor()
 	{
 		infoTabbedPane.setSelectedIndex(4);
 	}
