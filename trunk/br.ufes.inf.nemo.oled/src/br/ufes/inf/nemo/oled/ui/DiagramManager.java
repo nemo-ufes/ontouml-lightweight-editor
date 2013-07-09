@@ -107,6 +107,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	private final AppFrame frame;
 	private DiagramEditorCommandDispatcher editorDispatcher;
 
+	public AppFrame getFrame()
+	{
+		return frame;
+	}
+	
 	/**
 	 * Constructor for the DiagramManager class.
 	 * @param frame the parent window {@link AppFrame}
@@ -695,7 +700,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		((DiagramEditorWrapper) this.getSelectedComponent()).showOrHideOutput();
 		DiagramEditorWrapper.focusOnOutput();
 	}
-		
+
+	/**
+	 * Shows or hides the ocl editor pane, in case the current editor is a DiagramEditor. 
+	 */
+	public void showOclEditor() {
+		((DiagramEditorWrapper) this.getSelectedComponent()).showOrHideOclEditor();
+		DiagramEditorWrapper.focusOnOclEditor();
+	}	
+	
 	/**
 	 * Search for errors and warnings 
 	 */
@@ -706,7 +719,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
 		
 		// do auto selection completion.
-		doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
+		doAutoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
 		
     	ModelDiagnostician verificator = new ModelDiagnostician();
     	
@@ -741,15 +754,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 		
 	/**
-	 * Do Auto Selection Completion.
-	 * 
-	 * @param option
-	 * @return
+	 * auto complete selection
 	 */
-	public String doAutoSelectionCompletion(int option)
+	public static String doAutoCompleteSelection(int option, UmlProject project)
 	{		
-		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
-		ModelTree modeltree = ModelTree.getTreeFor(getCurrentProject());
+		OntoUMLParser refparser = ModelTree.getParserFor(project);
+		ModelTree modeltree = ModelTree.getTreeFor(project);
 		if (refparser==null || modeltree.getTree()==null) 
 		{
 			//frame.showInformationMessageDialog("Verify Model", "First you need to load your Model !");
@@ -763,7 +773,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		refparser.selectThisElements((ArrayList<EObject>)selected,true);		
 		List<EObject> added = refparser.autoSelectDependencies(option,false);
 		
-		// show wich elements were added to selection
+		// show which elements were added to selection
 		String msg = new String();
 		if (added.size()>0) msg = "The following elements were include in selection:\n\n";
 		for(EObject o: added)
