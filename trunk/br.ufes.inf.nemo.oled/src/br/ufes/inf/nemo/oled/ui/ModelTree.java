@@ -13,6 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.move.AlloySpecification;
 import br.ufes.inf.nemo.oled.move.OntoUMLElement;
 import br.ufes.inf.nemo.oled.move.OntoUMLTree;
 
@@ -28,8 +29,10 @@ public class ModelTree extends JPanel {
 	private JScrollPane scroll;
 	private OntoUMLTree tree; 
 	private UmlProject project;
+	
 	private OntoUMLParser refparser;
-		
+	private AlloySpecification alloySpec;
+	
 	private ModelTree(UmlProject project)
 	{
 		super(new BorderLayout());
@@ -43,6 +46,8 @@ public class ModelTree extends JPanel {
 		tree = new OntoUMLTree(root,project.getModel(),refparser);
 		tree.setBorder(new EmptyBorder(2,2,2,2));
 		tree.addTreeSelectionListener(new OntoUMLTreeSelectionListener());
+		
+		alloySpec = new AlloySpecification(project.getTempDir()+"spec.als");
 		
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
@@ -65,6 +70,11 @@ public class ModelTree extends JPanel {
 	public static OntoUMLParser getParserFor(UmlProject project) 
 	{		
 		return ModelTree.getTreeFor(project).refparser;
+	}
+	
+	public static AlloySpecification getAlloySpecFor(UmlProject project) 
+	{		
+		return ModelTree.getTreeFor(project).alloySpec;
 	}
 	
 	/**
