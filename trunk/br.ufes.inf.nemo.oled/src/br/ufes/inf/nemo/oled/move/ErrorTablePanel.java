@@ -144,7 +144,7 @@ public class ErrorTablePanel extends JPanel {
 		});
 		saveButton.setFocusable(false);
 		saveButton.setIcon(new ImageIcon(ErrorTablePanel.class.getResource("/resources/icon/export-16x16.png")));
-		toolBar.add(saveButton);
+		//toolBar.add(saveButton);
 		
 		errorMessage = new JLabel("    (0 errors)");
 		errorMessage.setPreferredSize(new Dimension(100, 25));
