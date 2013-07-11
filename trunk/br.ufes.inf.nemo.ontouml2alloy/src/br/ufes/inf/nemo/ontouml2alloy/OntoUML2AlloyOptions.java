@@ -1,7 +1,7 @@
 package br.ufes.inf.nemo.ontouml2alloy;
 
 
-public class Onto2AlloyOptions {
+public class OntoUML2AlloyOptions {
 	
 	public boolean identityPrinciple = true;	
 	public boolean antiRigidity = false;

@@ -18,12 +18,12 @@ import br.ufes.inf.nemo.ontouml2alloy.transformer.Transformer;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyLibraryFiles;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyThemeFile;
 
-public class Onto2Alloy {
+public class OntoUML2Alloy {
 		
 	public OntoUMLParser ontoparser;
 	public AlloyFactory factory;
 	public Transformer transformer;
-	public Onto2AlloyOptions options;
+	public OntoUML2AlloyOptions options;
 	
 	public String dirPath;	
 	public String alsPath;	
@@ -32,7 +32,7 @@ public class Onto2Alloy {
 	/**
 	 * Constructor
 	 */
-	public Onto2Alloy (OntoUMLParser refparser, String alloyPath, Onto2AlloyOptions opt) 
+	public OntoUML2Alloy (OntoUMLParser refparser, String alloyPath, OntoUML2AlloyOptions opt) 
 	{
 		alsPath = alloyPath;
 		dirPath = alsPath.substring(0,alsPath.lastIndexOf(File.separator)+1);
