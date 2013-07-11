@@ -56,10 +56,10 @@ public class MainMenu implements ActionListener {
 		menubar = new JMenuBar();
 		createFileMenu();
 		createEditMenu();
-		createDiagramMenu();
-		createViewMenu();
+		createDiagramMenu();		
 		createImportMenu();
 		createExportMenu();
+		createViewMenu();
 		createHelpMenu();
 	}
 
@@ -94,7 +94,8 @@ public class MainMenu implements ActionListener {
 		menubar.add(importMenu);
 		
 		createMenuItem(importMenu, "importxmi");		
-		createMenuItem(importMenu, "importecore");		
+		createMenuItem(importMenu, "importecore");
+		importMenu.addSeparator();
 		createMenuItem(importMenu, "importocl");
 	}
 	
@@ -104,7 +105,8 @@ public class MainMenu implements ActionListener {
 		exportMenu.setText("Export");
 		menubar.add(exportMenu);
 		
-		createMenuItem(exportMenu, "exportecore");		
+		createMenuItem(exportMenu, "exportecore");
+		exportMenu.addSeparator();
 		createMenuItem(exportMenu, "exportocl");		
 	}
 

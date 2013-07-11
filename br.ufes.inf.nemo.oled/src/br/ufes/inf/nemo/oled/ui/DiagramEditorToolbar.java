@@ -30,15 +30,9 @@ public class DiagramEditorToolbar implements ActionListener {
   public DiagramEditorToolbar() {
     buttonGroup = new ButtonGroup();
     //diagramOptionsGroup = new ButtonGroup();
-    
-    //toolbar.add(createButton(buttonGroup, "showoutput"));
-    //toolbar.add(createButton(buttonGroup, "warnings"));
-    //toolbar.add(createButton(buttonGroup, "errors"));    
-    //toolbar.add(createButton(buttonGroup, "ocleditor"));
+        
     //toolbar.add(createToggleButton(diagramOptionsGroup, "rectilinear"));
     //toolbar.add(createToggleButton(diagramOptionsGroup, "straight"));
-    
-    toolbar.addSeparator(new Dimension(20, 25));    
     
     toolbar.add(createButton(buttonGroup, "autoselection"));    
     toolbar.add(createButton(buttonGroup, "parse"));    
@@ -60,6 +54,12 @@ public class DiagramEditorToolbar implements ActionListener {
     toolbar.add(createButton(buttonGroup, "generatesbvr"));
     toolbar.add(createButton(buttonGroup, "generatetext"));
     
+    toolbar.addSeparator(new Dimension(20, 25));
+    
+    toolbar.add(createButton(buttonGroup, "output"));
+    toolbar.add(createButton(buttonGroup, "warning"));
+    toolbar.add(createButton(buttonGroup, "error"));    
+    toolbar.add(createButton(buttonGroup, "ocleditor"));
     
   }
 

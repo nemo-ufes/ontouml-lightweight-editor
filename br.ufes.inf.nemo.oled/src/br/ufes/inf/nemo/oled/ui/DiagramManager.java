@@ -49,6 +49,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -73,6 +75,7 @@ import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
+import br.ufes.inf.nemo.oled.ui.antipattern.AntiPatternListPane;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
 import br.ufes.inf.nemo.oled.ui.commands.PngExporter;
 import br.ufes.inf.nemo.oled.ui.commands.ProjectReader;
@@ -84,23 +87,24 @@ import br.ufes.inf.nemo.oled.ui.diagram.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.diagram.SelectionListener;
 import br.ufes.inf.nemo.oled.ui.diagram.VerificationSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
+import br.ufes.inf.nemo.oled.util.AlloyHelper;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ColorPalette;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
+import br.ufes.inf.nemo.oled.util.FileChoosersUtil;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.oled.util.OLEDResourceFactory;
 import br.ufes.inf.nemo.oled.util.OWLHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
-import br.ufes.inf.nemo.oled.util.FileChoosersUtil;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
 import br.ufes.inf.nemo.oled.util.SBVRHelper;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
 import br.ufes.inf.nemo.oled.util.TextDescriptionHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
-import br.ufes.inf.nemo.oled.util.AlloyHelper;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType;
 import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
 import edu.mit.csail.sdg.alloy4.ConstMap;
@@ -113,7 +117,7 @@ import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 public class DiagramManager extends JTabbedPane implements SelectionListener, EditorStateListener, IDisposable {
 
 	private static final long serialVersionUID = 5019191384767258996L;
-	private final AppFrame frame;
+	public final AppFrame frame;
 	private DiagramEditorCommandDispatcher editorDispatcher;
 
 	public AppFrame getFrame()
@@ -136,8 +140,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				DiagramEditor editor = getCurrentDiagramEditor();
-				if(editor != null)
-					DiagramManager.this.frame.getToolManager().showModelTree(editor.getProject());		
+				if(editor != null){					
+					ModelTree.updateModelTree(getCurrentProject());
+				}
+					//DiagramManager.this.frame.getToolManager().showModelTree(editor.getProject());		
 				frame.updateMenuAndToolbars(editor);
 			}
 		});
@@ -928,9 +934,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/**
 	 * Open Alloy Analyzer
 	 */
-	public void openAlloyAnalyzer (boolean showAnalyzer, int cmdIndexToExecute) 
-	{		
-		AlloySpecification alloymodel = ModelTree.getAlloySpecFor(getCurrentProject());
+	public void openAlloyAnalyzer (AlloySpecification alloymodel, boolean showAnalyzer, int cmdIndexToExecute) 
+	{
 		if (alloymodel.getAlloyPath().isEmpty() || alloymodel.getAlloyPath()==null) return;
 		
 		try {
@@ -947,6 +952,30 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			frame.showErrorMessageDialog("Open Alloy Analyzer",e.getLocalizedMessage());					
 			e.printStackTrace();
 		}			
+	}
+
+	/**
+	 * Open AntiPattern Manager
+	 */
+	public void openAntiPatternManager() 
+	{
+		SwingUtilities.invokeLater(new Runnable() {
+			/**
+			 * {@inheritDoc}
+			 */
+			public void run() {
+				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());					
+					AntiPatternListPane antipatternApp = new AntiPatternListPane(ModelTree.getAntiPatternListFor(getCurrentProject()),frame);
+					antipatternApp.setAntiPatternListModel(ModelTree.getAntiPatternListFor(getCurrentProject()));
+					antipatternApp.setVisible(true);
+					antipatternApp.setLocationRelativeTo(frame);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
+		
 	}
 	
 	/**
@@ -985,8 +1014,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		transformsOntoUMLintoAlloy();		
 		transformsOCLintoAlloy();		
-		if (ModelTree.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) openAlloyAnalyzer(true, -1);
-		else openAlloyAnalyzer(false, 0);		
+		if (ModelTree.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) 
+			openAlloyAnalyzer(ModelTree.getAlloySpecFor(getCurrentProject()),true, -1);
+		else openAlloyAnalyzer(ModelTree.getAlloySpecFor(getCurrentProject()),false, 0);		
 	}
 	
 	/**
@@ -1358,5 +1388,4 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 	}
-
 }

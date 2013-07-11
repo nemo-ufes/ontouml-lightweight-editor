@@ -13,8 +13,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
-import br.ufes.inf.nemo.oled.antipattern.AntiPatternList;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
+import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
@@ -32,15 +32,16 @@ public class ModelTree extends JPanel {
 	
 	private OntoUMLTree tree; 
 	private UmlProject project;	
-	private OntoUMLParser refparser;
-	
+	private OntoUMLParser refparser;	
 	private AlloySpecification alloySpec;
 	private OCLDocument oclmodel;
+	private AntiPatternList antipatterns;	
 	private Onto2AlloyOptions refOptions;
 	private OCLOptions oclOptions;
-	private AntiPatternList antipatterns;
 	
-	private ModelTree(UmlProject project)
+	
+	
+	public ModelTree(UmlProject project)
 	{
 		super(new BorderLayout());
 		this.project = project;
@@ -53,7 +54,7 @@ public class ModelTree extends JPanel {
 		tree = new OntoUMLTree(root,project.getModel(),refparser);
 		tree.setBorder(new EmptyBorder(2,2,2,2));
 		tree.addTreeSelectionListener(new OntoUMLTreeSelectionListener());
-		
+				
 		alloySpec = new AlloySpecification(project.getTempDir()+"spec.als");
 		oclmodel = new OCLDocument();
 		oclOptions = new OCLOptions();
@@ -62,8 +63,8 @@ public class ModelTree extends JPanel {
 		
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
-		
-		add(scroll, BorderLayout.CENTER);		
+				
+		add(scroll, BorderLayout.CENTER);				
 	}
 	
 	public static ModelTree getTreeFor(UmlProject project) 
@@ -83,9 +84,19 @@ public class ModelTree extends JPanel {
 		return ModelTree.getTreeFor(project).refparser;
 	}
 	
+	public static void setParserFor(UmlProject project, OntoUMLParser refparser) 
+	{		
+		ModelTree.getTreeFor(project).refparser = refparser;
+	}
+	
 	public static AlloySpecification getAlloySpecFor(UmlProject project) 
 	{		
 		return ModelTree.getTreeFor(project).alloySpec;
+	}
+	
+	public static void setAlloySpecFor(UmlProject project, AlloySpecification alloySpec) 
+	{		
+		ModelTree.getTreeFor(project).alloySpec = alloySpec;
 	}
 	
 	public static OCLDocument getOCLModelFor(UmlProject project)

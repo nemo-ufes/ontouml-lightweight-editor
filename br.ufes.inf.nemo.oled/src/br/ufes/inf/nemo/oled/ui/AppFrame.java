@@ -15,14 +15,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
-import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
-
 import br.ufes.inf.nemo.move.ui.util.Extractor;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.MethodCall;
+import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 public class AppFrame extends JFrame implements AppCommandListener {
 
@@ -78,8 +77,24 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		
 		pack();
 		initSelectorMap();
+		
+		restoreDefaults();		
 	}
-
+	
+	/** Restore default sizes of the split panes. */
+	public void restoreDefaults() 
+	{
+        SwingUtilities.invokeLater(new Runnable() 
+        {
+            @Override
+            public void run() 
+            {            	
+            	//mainSplitPane.setDividerLocation(0.35);
+            	//innerSplitPane.setDividerLocation(1.00);            	            	
+            }
+        });
+    }
+	
 	/**
 	 * Adds the main menu.
 	 */
@@ -113,7 +128,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		mainArea.setDividerLocation(230);
 		mainArea.setDividerSize(7);
 		this.getContentPane().add(mainArea, BorderLayout.CENTER);
-
+		
 		diagramManager = new DiagramManager(this);
 		mainArea.add(diagramManager, JSplitPane.RIGHT);
 
@@ -121,7 +136,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		toolManager.setMinimumSize(new Dimension(230, 100));
 		mainArea.add(toolManager, JSplitPane.LEFT);
 		
-		diagramManager.addStartPanel();
+		diagramManager.addStartPanel();		
 	}
 
 	/**
@@ -353,7 +368,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	{
 		JOptionPane.showMessageDialog(
 			this,message,title,JOptionPane.ERROR_MESSAGE,
-			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/move/delete-36x36.png"))
+			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete-36x36.png"))
 		);	
 	}
 	
@@ -367,7 +382,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	{
 		JOptionPane.showMessageDialog(
 			this,message,title,JOptionPane.WARNING_MESSAGE,
-			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/move/warning-36x36.png"))
+			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/warning-36x36.png"))
 		);	
 	}
 	
@@ -381,7 +396,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	{
 		JOptionPane.showMessageDialog(
 			this,message,title,JOptionPane.INFORMATION_MESSAGE,
-			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/move/check-36x36.png"))
+			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/check-36x36.png"))
 		);
 	}
 	
