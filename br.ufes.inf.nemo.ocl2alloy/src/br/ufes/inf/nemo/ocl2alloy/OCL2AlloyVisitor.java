@@ -52,7 +52,7 @@ import br.ufes.inf.nemo.ocl2alloy.exception.StereotypeException;
  * @author John Guerson
  */
 
-public class OCLToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <String,Classifier,Operation,Property,EnumerationLiteral,Parameter,State,CallOperationAction,SendSignalAction,Constraint> 
+public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <String,Classifier,Operation,Property,EnumerationLiteral,Parameter,State,CallOperationAction,SendSignalAction,Constraint> 
 {	  
 
 	/**
@@ -89,7 +89,7 @@ public class OCLToAlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor
      * @param oclparser
      * @param refparser
      */
-    public OCLToAlloyVisitor (OCLParser oclparser,OntoUMLParser refparser) 
+    public OCL2AlloyVisitor (OCLParser oclparser,OntoUMLParser refparser) 
     {	
 		this.oclparser = oclparser;
 		this.refparser = refparser;

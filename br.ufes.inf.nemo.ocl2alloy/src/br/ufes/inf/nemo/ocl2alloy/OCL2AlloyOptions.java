@@ -9,7 +9,7 @@ import org.eclipse.uml2.uml.Constraint;
  * @author John Guerson
  */
 
-public class OCLOptions {
+public class OCL2AlloyOptions {
 
 	private ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();	
 	private ArrayList<String> constraintType = new ArrayList<String>();
@@ -22,7 +22,7 @@ public class OCLOptions {
 	 * @param constraints
 	 */
 	@SuppressWarnings("unchecked")
-	public OCLOptions(OCLParser oclparser)
+	public OCL2AlloyOptions(OCLParser oclparser)
 	{
 		this();
 		
@@ -40,7 +40,7 @@ public class OCLOptions {
 	/**
 	 * Constructor.
 	 */
-	public OCLOptions()
+	public OCL2AlloyOptions()
 	{
 		
 	}
