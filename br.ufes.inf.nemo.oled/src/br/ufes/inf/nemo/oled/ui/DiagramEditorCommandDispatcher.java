@@ -22,14 +22,20 @@ package br.ufes.inf.nemo.oled.ui;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
+import br.ufes.inf.nemo.oled.dialog.AboutDialog;
+import br.ufes.inf.nemo.oled.dialog.AutoCompletionDialog;
+import br.ufes.inf.nemo.oled.dialog.LicensesDialog;
+import br.ufes.inf.nemo.oled.dialog.SimulationOptionsDialog;
 import br.ufes.inf.nemo.oled.draw.Scaling;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
-import br.ufes.inf.nemo.oled.move.AutoCompletionDialog;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.MethodCall;
+import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
 
 /**
  * This class receives BaseEditor related AppCommands and dispatches them to
@@ -68,7 +74,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			
 			selectorMap.put("UNDO", new MethodCall(
 					DiagramEditor.class.getMethod("undo")));
-			
+						
 			selectorMap.put("REDRAW", new MethodCall(
 					DiagramEditor.class.getMethod("redraw")));
 			
@@ -238,20 +244,23 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("SNAP_TO_GRID", new MethodCall(
 					getClass().getMethod("snapToGrid")));
 			
-			selectorMap.put("SHOW_OUTPUT", new MethodCall(
-					getClass().getMethod("showOutputPane")));
+			selectorMap.put("ABOUT", new MethodCall(
+					getClass().getMethod("showAbout")));
 			
-			selectorMap.put("DIAGNOSTIC", new MethodCall(
-					getClass().getMethod("diagnose")));
-
-			selectorMap.put("SHOW_OCLEDITOR", new MethodCall(
-					getClass().getMethod("showOclEditor")));
+			selectorMap.put("COPYRIGHTS", new MethodCall(
+					getClass().getMethod("showCopyrights")));
+			
+			selectorMap.put("PARSE_OCL", new MethodCall(
+					getClass().getMethod("parseOCL")));
 			
 			selectorMap.put("AUTO_SELECTION", new MethodCall(
 					getClass().getMethod("autoComplete")));
 			
 			selectorMap.put("VALIDATE_MODEL", new MethodCall(
 					getClass().getMethod("validateModel")));
+			
+			selectorMap.put("GENERATE_ALLOY", new MethodCall(
+					getClass().getMethod("generatesAlloy")));
 			
 			selectorMap.put("VERIFY_SETTINGS", new MethodCall(
 					getClass().getMethod("verifySettings")));
@@ -274,6 +283,19 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("GENERATE_TEXT", new MethodCall(
 					getClass().getMethod("generateText")));
 			
+			selectorMap.put("ERROR", new MethodCall(
+					getClass().getMethod("searchErrors")));
+
+			selectorMap.put("WARNING", new MethodCall(
+					getClass().getMethod("searchWarnings")));
+			
+			selectorMap.put("OCLEDITOR", new MethodCall(
+					getClass().getMethod("showOclEditor")));
+			
+			selectorMap.put("OUTPUT", new MethodCall(
+					getClass().getMethod("showOutputPane")));
+
+			
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
 		}
@@ -295,14 +317,52 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		} 
 	}
 
+	public void generatesAlloy()
+	{	
+		manager.parseOCL(false);
+		OCLOptions oclOptions = ModelTree.getOCLOptionsFor(manager.getCurrentProject());
+		
+		OntoUMLParser refparser = ModelTree.getParserFor(manager.getCurrentProject());
+		Onto2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(manager.getCurrentProject());
+		
+		refOptions.openAnalyzer=true;    	
+    	if (!refparser.getElementsWithIdentityMissing().isEmpty()) refOptions.identityPrinciple = false;    		    	
+    	if (!refparser.getRelatorsWithInvalidAxiom().isEmpty()) refOptions.relatorAxiom = false;    	
+    	if (!refparser.getWholesWithInvalidWeakSupplementation().isEmpty()) refOptions.weakSupplementationAxiom = false;
+		
+		SimulationOptionsDialog.open(refOptions, oclOptions, manager.getFrame());
+	}
+	
+	public void parseOCL()
+	{
+		manager.parseOCL(true);		
+	}
+	
 	public void showOutputPane()
 	{
 		manager.showOutputPane();
 	}
+
+	public void showAbout()
+	{		
+		AboutDialog.open(manager.getFrame());
+	}
 	
-	public void diagnose()
+	public void showCopyrights()
+	{		
+		LicensesDialog.open(manager.getFrame());
+	}
+	
+	public void searchWarnings()
 	{
-		manager.searchErrorsAndWarnings();
+		manager.searchWarnings();
+		manager.getCurrentWrapper().focusOnWarnings();
+	}
+	
+	public void searchErrors()
+	{
+		manager.searchErrors();
+		manager.getCurrentWrapper().focusOnErrors();
 	}
 	
 	public void showOclEditor()
@@ -317,7 +377,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	
 	public void validateModel() 
 	{
-		manager.validateCurrentModel();
+		manager.verifyCurrentModel();
 	}
 	
 	public void verifySettings() 
@@ -327,7 +387,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	
 	public void verifyModel() 
 	{
-		manager.verifyCurrentModel();
+		manager.validateCurrentModel();
 	}
 	
 	public void verifyModelFile()

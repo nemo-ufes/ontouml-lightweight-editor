@@ -12,11 +12,11 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
+import br.ufes.inf.nemo.oled.model.AlloySpecification;
+import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.move.AlloySpecification;
-import br.ufes.inf.nemo.oled.move.OCLModel;
-import br.ufes.inf.nemo.oled.move.OntoUMLElement;
-import br.ufes.inf.nemo.oled.move.OntoUMLTree;
+import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
 
 
 //FIXME REDO this implementation
@@ -28,12 +28,15 @@ public class ModelTree extends JPanel {
 	private static Map<UmlProject, ModelTree> treeMap = new HashMap<UmlProject, ModelTree>();
 	
 	private JScrollPane scroll;
-	private OntoUMLTree tree; 
-	private UmlProject project;
 	
+	private OntoUMLTree tree; 
+	private UmlProject project;	
 	private OntoUMLParser refparser;
+	
 	private AlloySpecification alloySpec;
-	private OCLModel oclmodel;
+	private OCLDocument oclmodel;
+	private Onto2AlloyOptions refOptions;
+	private OCLOptions oclOptions;
 	
 	private ModelTree(UmlProject project)
 	{
@@ -50,7 +53,9 @@ public class ModelTree extends JPanel {
 		tree.addTreeSelectionListener(new OntoUMLTreeSelectionListener());
 		
 		alloySpec = new AlloySpecification(project.getTempDir()+"spec.als");
-		oclmodel = new OCLModel();
+		oclmodel = new OCLDocument();
+		oclOptions = new OCLOptions();
+		refOptions = new Onto2AlloyOptions();
 		
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
@@ -80,9 +85,29 @@ public class ModelTree extends JPanel {
 		return ModelTree.getTreeFor(project).alloySpec;
 	}
 	
-	public static OCLModel getOCLModelFor(UmlProject project)
+	public static OCLDocument getOCLModelFor(UmlProject project)
 	{
 		return ModelTree.getTreeFor(project).oclmodel;
+	}
+	
+	public static void setOCLOptionsFor(UmlProject project, OCLOptions oclOptions)
+	{
+		ModelTree.getTreeFor(project).oclOptions = oclOptions;
+	}
+	
+	public static OCLOptions getOCLOptionsFor(UmlProject project)
+	{
+		return ModelTree.getTreeFor(project).oclOptions;
+	}
+
+	public static Onto2AlloyOptions getOntoUMLOptionsFor(UmlProject project)
+	{
+		return ModelTree.getTreeFor(project).refOptions;
+	}
+
+	public static void setOntoUMLOptionsFor(UmlProject project, Onto2AlloyOptions refOptions)
+	{
+		ModelTree.getTreeFor(project).refOptions = refOptions;
 	}
 	
 	/**

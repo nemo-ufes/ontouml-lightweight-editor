@@ -59,11 +59,18 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.provider.IDisposable;
+import org.eclipse.ocl.ParserException;
+import org.eclipse.ocl.SemanticException;
 
+import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
+import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCLParser;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
+import br.ufes.inf.nemo.oled.model.AlloySpecification;
+import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
@@ -87,12 +94,13 @@ import br.ufes.inf.nemo.oled.util.OLEDResourceFactory;
 import br.ufes.inf.nemo.oled.util.OWLHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
+import br.ufes.inf.nemo.oled.util.FileChoosersUtil;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
 import br.ufes.inf.nemo.oled.util.SBVRHelper;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
 import br.ufes.inf.nemo.oled.util.TextDescriptionHelper;
-import br.ufes.inf.nemo.oled.util.ValidationHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
+import br.ufes.inf.nemo.oled.util.AlloyHelper;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType;
 import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
 import edu.mit.csail.sdg.alloy4.ConstMap;
@@ -371,6 +379,57 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 	}
+
+
+	/**
+	 * Exports a Complete OCL document
+	 */
+	public void exportOCL() 
+	{
+		try{
+			
+			OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());
+    			
+			String path = FileChoosersUtil.saveOCLPathLocation(frame,oclmodel.getOCLPath());	    		
+			if (path==null) return;		
+      		    					      	
+			oclmodel.setConstraints(getCurrentWrapper().getConstraints(),"CONTENT");
+			oclmodel.setOCLPath(path);
+			
+			FileUtil.copyStringToFile(getCurrentWrapper().getConstraints(), path);
+			
+		}catch(IOException exception){
+			
+			String msg = "An error ocurred while saving the constraints to an OCL document.\n"+exception.getMessage();
+			frame.showErrorMessageDialog("Saving OCL",msg);		       			
+			exception.printStackTrace();
+		}
+	}
+	
+
+	/**
+	 * Imports a Complete OCL document
+	 */
+	public void importOCL() 
+	{
+		try{
+	     	
+		OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());
+		
+      	String path = FileChoosersUtil.openOCLPathLocation(frame,oclmodel.getOCLPath());
+    		
+      	if (path==null) return;
+      	
+      	oclmodel.setConstraints(path,"PATH");
+      		      			
+      	getCurrentWrapper().setConstraints(oclmodel.getOCLString());
+
+    	} catch (IOException exception) {				
+    		String msg = "An error ocurred while opening the OCL document.\n"+exception.getMessage();
+    		frame.showErrorMessageDialog("Opening OCL",msg);
+    		exception.printStackTrace();
+    	}				
+	}
 	
 	/**
 	 * Imports an RefOntoUML model.
@@ -627,7 +686,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void validateCurrentModel() {
 		UmlProject project = getCurrentEditor().getProject();
-		OperationResult result = ValidationHelper.validateModel(project.getModel());
+		OperationResult result = VerificationHelper.verifyModel(project.getModel());
 		((DiagramEditorWrapper) this.getSelectedComponent()).showOutputText(result.toString(), true, true);
 	}
 
@@ -649,7 +708,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		StructureDiagram diagram = (StructureDiagram) getCurrentEditor().getDiagram();
 		
 		List<SimulationElement> simulationElements = diagram.getSimulationElements();
-		OperationResult result = VerificationHelper.verifyModel(project.getModel(), simulationElements, project.getTempDir());
+		OperationResult result = AlloyHelper.validateModel(project.getModel(), simulationElements, project.getTempDir());
 		
 		if(result.getResultType() != ResultType.ERROR)
 		{
@@ -676,7 +735,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		UmlProject project = getCurrentProject();
 		
 		List<SimulationElement> simulationElements = diagram.getSimulationElements();
-		OperationResult result = VerificationHelper.verifyModelFromAlloyFile(project.getTempDir());
+		OperationResult result = AlloyHelper.verifyModelFromAlloyFile(project.getTempDir());
 		
 		if(result.getResultType() != ResultType.ERROR)
 		{
@@ -693,33 +752,33 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			getCurrentWrapper().showOutputText(result.toString(), true, true); 
 		}
 	}
-	
+		
 	/**
 	 * Shows or hides the output pane, in case the current editor is a DiagramEditor. 
 	 */
-	public void showOutputPane() {
-		getCurrentWrapper().showOrHideOutput();
+	public void showOutputPane() 
+	{
 		getCurrentWrapper().focusOnOutput();
 	}
 
 	/**
 	 * Shows or hides the ocl editor pane, in case the current editor is a DiagramEditor. 
 	 */
-	public void showOclEditor() {
-		getCurrentWrapper().showOrHideOclEditor();
+	public void showOclEditor() 
+	{		
 		getCurrentWrapper().focusOnOclEditor();
 	}	
 	
 	/**
-	 * Search for errors and warnings in the model
+	 * Search for warnings in the model
 	 */
-	public void searchErrorsAndWarnings() 
+	public void searchWarnings() 
 	{	
 		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
 		
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
 
-		doAutoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
+		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
 		
     	ModelDiagnostician verificator = new ModelDiagnostician();    	
     	getCurrentWrapper().getWarnings().setData(
@@ -732,6 +791,23 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			getCurrentWrapper().setTitleWarning(" Warnings ("+verificator.getWarnings()+")");
 			getCurrentWrapper().focusOnWarnings();			
 		}else ; getCurrentWrapper().setTitleWarning(" Warnings ");    	
+		
+		/*if (verificator.getWarnings()>0) 
+			frame.showWarningMessageDialog("Warning", "Your model has warnings. Please, be aware before continue.\n");*/			
+	}
+
+	/**
+	 * Search for errors 
+	 */
+	public void searchErrors() 
+	{	
+		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
+		
+		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
+
+		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
+		
+    	ModelDiagnostician verificator = new ModelDiagnostician();    	
 		getCurrentWrapper().getErrors().setData(
 			verificator.getErrorsMatrixFormat(refparser),
 			verificator.getErrors()
@@ -744,15 +820,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		} else ; getCurrentWrapper().setTitleErrors(" Errors ");
 		
 		/*if (verificator.getErrors()>0) 
-			frame.showErrorMessageDialog("Error", "Your model has errors. Please, Fix it before continue.\n");		
-		else if (verificator.getWarnings()>0) 
-			frame.showWarningMessageDialog("Warning", "Your model has warnings. Please, be aware before continue.\n");*/			
+			frame.showErrorMessageDialog("Error", "Your model has errors. Please, Fix it before continue.\n");*/			
 	}
-		
+
 	/**
 	 * Auto complete selection in the model
 	 */
-	public static String doAutoCompleteSelection(int option, UmlProject project)
+	public static String autoCompleteSelection(int option, UmlProject project)
 	{		
 		OntoUMLParser refparser = ModelTree.getParserFor(project);
 		ModelTree modeltree = ModelTree.getTreeFor(project);
@@ -789,18 +863,61 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/**
+	 * Parse OCL constraints from OCL editor
+	 */
+	public void parseOCL(boolean showSuccesfullyMessage)
+	{
+		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());		
+		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }		
+		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
+		
+		try {
+			OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());			
+						
+			// set parser from the editor view.
+			oclmodel.setParser(
+				new OCLParser(getCurrentWrapper().getConstraints(),refparser,getCurrentProject().getTempDir()+"/spec.uml")
+			);			
+						
+			// set options from the parser
+			ModelTree.setOCLOptionsFor(getCurrentProject(), new OCLOptions(oclmodel.getOCLParser()));
+
+			// show Message
+			String msg =  "Constraints are syntactically correct.\n";
+			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing OCL",msg);
+						
+    	}catch(SemanticException e2){
+    		frame.showErrorMessageDialog("OCL Semantic Error",  "OCL Parser : "+e2.getLocalizedMessage());    		
+			e2.printStackTrace();	
+			
+    	}catch(ParserException e1){
+    		frame.showErrorMessageDialog("OCL Parsing Error", "OCL Parser: "+e1.getLocalizedMessage());    			
+			e1.printStackTrace();    	
+			
+		}catch(IOException e3){
+			frame.showErrorMessageDialog("IO Error", e3.getLocalizedMessage());						
+			e3.printStackTrace();
+			
+		}catch(Exception e4){
+			frame.showErrorMessageDialog("Unexpected Error", e4.getLocalizedMessage());			
+			e4.printStackTrace();
+		}		
+	}
+	
+	/**
 	 * Transform model to Alloy
 	 */
-	public void TransformsOntoUMLtoAlloy(Onto2AlloyOptions options)
+	public void transformsOntoUMLintoAlloy()
 	{
 		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
+		Onto2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(getCurrentProject());
 		
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
 				
-		doAutoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
+		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
 		
 		try {			
-			ModelTree.getAlloySpecFor(getCurrentProject()).setAlloyModel(refparser,options);
+			ModelTree.getAlloySpecFor(getCurrentProject()).setAlloyModel(refparser,refOptions);
 			
 		} catch (Exception e) {
 			frame.showErrorMessageDialog("Transforming OntoUML into Alloy",e.getLocalizedMessage());					
@@ -809,44 +926,69 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}	
 	
 	/**
-	 * Parse OCL constraints from OCL editor
+	 * Open Alloy Analyzer
 	 */
-	public void parseOCL(boolean showSuccesfullyMessage)
-	{
-		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());		
-		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }		
-		doAutoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
+	public void openAlloyAnalyzer (boolean showAnalyzer, int cmdIndexToExecute) 
+	{		
+		AlloySpecification alloymodel = ModelTree.getAlloySpecFor(getCurrentProject());
+		if (alloymodel.getAlloyPath().isEmpty() || alloymodel.getAlloyPath()==null) return;
 		
 		try {
 
-			// set parser from the editor view.
-			//ModelTree.getOCLModelFor(getCurrentProject()).setParser(new OCLParser(getCurrentWrapper().getConstraints(),refparser,frame.getManager().getUMLModel().getUMLPath());			
-						
-			// set options from the parser.
-			//oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));
-
-			// show Message
-			String msg =  "Constraints are syntactically correct.\n";
-			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing OCL",msg);
-						
-    	//}catch(SemanticException e2){
-    	//	frame.showErrorMessageDialog("OCL Semantic Error",  "OCL Parser : "+e2.getLocalizedMessage());    		
-		//	e2.printStackTrace();	
+			frame.getAlloyAnalyzer().setTheme(alloymodel.getDirectory() + "standart_theme.thm");
 			
-    	//}catch(ParserException e1){
-    	//	frame.showErrorMessageDialog("OCL Parsing Error", "OCL Parser: "+e1.getLocalizedMessage());    			
-		//	e1.printStackTrace();    	
+			frame.getAlloyAnalyzer().setVisible(showAnalyzer);
 			
-		//}catch(IOException e3){
-		//	frame.showErrorMessageDialog("IO Error", e3.getLocalizedMessage());						
-		//	e3.printStackTrace();
+			frame.getAlloyAnalyzer().doOpenFile(alloymodel.getAlloyPath());
+    	    
+			if (cmdIndexToExecute>=0)frame.getAlloyAnalyzer().doRun(cmdIndexToExecute);
 			
-		}catch(Exception e4){
-			frame.showErrorMessageDialog("Unexpected Error", e4.getLocalizedMessage());			
-			e4.printStackTrace();
-		}
-		
+		} catch (Exception e) {			
+			frame.showErrorMessageDialog("Open Alloy Analyzer",e.getLocalizedMessage());					
+			e.printStackTrace();
+		}			
 	}
+	
+	/**
+	 * Transform constraints to Alloy
+	 */
+	public void transformsOCLintoAlloy ()
+	{
+		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
+		OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());
+		OCLOptions oclOptions = ModelTree.getOCLOptionsFor(getCurrentProject());
+		AlloySpecification alloySpec = ModelTree.getAlloySpecFor(getCurrentProject());
+		
+		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
+		if (oclmodel.getOCLParser()==null) { frame.showErrorMessageDialog("Error","It seems that you do not have any OCL constraints."); return; }
+
+		try {						
+			// Here the constraints are transformed into Alloy...
+			String logMessage = alloySpec.addConstraints(refparser, oclmodel,oclOptions);			
+			
+			// show warnings 
+			if (!logMessage.isEmpty() && logMessage!=null)
+			{				
+				frame.showWarningMessageDialog("Transforming OCL into Alloy",logMessage);					
+			}
+			
+		} catch (Exception e) {			
+			frame.showErrorMessageDialog("Transforming OCL into Alloy",e.getLocalizedMessage());					
+			e.printStackTrace();
+		}		
+	}
+	
+	/**
+	 * Generates Alloy from OntoUML+OCL model
+	 */
+	public void generatesAlloy() 
+	{
+		transformsOntoUMLintoAlloy();		
+		transformsOCLintoAlloy();		
+		if (ModelTree.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) openAlloyAnalyzer(true, -1);
+		else openAlloyAnalyzer(false, 0);		
+	}
+	
 	/**
 	 * Shows model instances for a given Alloy Solution/Module. 
 	 */
@@ -1216,4 +1358,5 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 	}
+
 }

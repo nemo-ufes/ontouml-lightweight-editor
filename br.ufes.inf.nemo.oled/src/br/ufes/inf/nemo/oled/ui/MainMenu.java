@@ -56,7 +56,10 @@ public class MainMenu implements ActionListener {
 		menubar = new JMenuBar();
 		createFileMenu();
 		createEditMenu();
+		createDiagramMenu();
 		createViewMenu();
+		createImportMenu();
+		createExportMenu();
 		createHelpMenu();
 	}
 
@@ -70,16 +73,39 @@ public class MainMenu implements ActionListener {
 		createMenuItem(fileMenu, "new");
 		createMenuItem(fileMenu, "open");
 		createMenuItem(fileMenu, "save");
-		createMenuItem(fileMenu, "saveas");			
-		createMenuItem(fileMenu, "exportgfx");
-		createMenuItem(fileMenu, "importxmi");		
-		createMenuItem(fileMenu, "importecore");			
-		createMenuItem(fileMenu, "exportecore");
-		//createMenuItem(fileMenu, "exportowl");
+		createMenuItem(fileMenu, "saveas");
 		fileMenu.addSeparator();
 		createMenuItem(fileMenu, "quit");
+	}
+	
+	private void createDiagramMenu()
+	{
+		JMenu diagramMenu = createMenu("Diagram");
+		diagramMenu.setText("Diagram");
+		menubar.add(diagramMenu);
 		
-		//enableMenuItem("IMPORT_ECORE", false);
+		createMenuItem(diagramMenu, "exportgfx");
+	}
+	
+	private void createImportMenu()
+	{
+		JMenu importMenu = createMenu("Import");
+		importMenu.setText("Import");
+		menubar.add(importMenu);
+		
+		createMenuItem(importMenu, "importxmi");		
+		createMenuItem(importMenu, "importecore");		
+		createMenuItem(importMenu, "importocl");
+	}
+	
+	private void createExportMenu()
+	{
+		JMenu exportMenu = createMenu("Export");
+		exportMenu.setText("Export");
+		menubar.add(exportMenu);
+		
+		createMenuItem(exportMenu, "exportecore");		
+		createMenuItem(exportMenu, "exportocl");		
 	}
 
 	/**
@@ -140,6 +166,7 @@ public class MainMenu implements ActionListener {
 		JMenu helpMenu = createMenu("help");
 		menubar.add(helpMenu);
 		createMenuItem(helpMenu, "about");
+		createMenuItem(helpMenu, "copyrights");
 		createMenuItem(helpMenu, "helpcontents");
 	}
 

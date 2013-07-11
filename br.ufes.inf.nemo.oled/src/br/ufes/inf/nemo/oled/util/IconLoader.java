@@ -50,6 +50,10 @@ public final class IconLoader {
 		DELETE, 
 		UNDO, 
 		REDO, 
+		ERROR,
+		WARNING,
+		OUTPUT,
+		OCLEDITOR,
 		ABOUT, 
 		ANNOTATION, //CLEANUP
 		MOUSE_POINTER, 
@@ -63,20 +67,20 @@ public final class IconLoader {
 		COMPOSITION, 
 		INHERITANCE, 
 		NOTE, 
-		NOTE_CONNECTOR, 
-		SHOW_OUTPUT,
+		NOTE_CONNECTOR,		
 		DIAGNOSTIC,
 		VALIDATE, 
 		VERIFY_SETTINGS,
 		VERIFY, 
 		VERIFY_FILE,
+		GENERATE_ALLOY,
+		PARSE,
 		VIEW,
 		RECTILINEAR, 
 		STRAIGHT, 
 		DERIVATION, 
 		RULE, 
-		WINDOW, 
-		SHOW_OCLEDITOR,
+		WINDOW,		
 		AUTO_SELECTION,
 		PALETTE_OPEN, 
 		PALETTE_CLOSED, 
@@ -101,7 +105,9 @@ public final class IconLoader {
 		RED_LIGHT,
 		GREY_LIGHT,
 		ARROW_UP,
-		ARROW_DOWN
+		COPYRIGHTS,		
+		ARROW_DOWN,
+		ANTIPATTERN
 	}
 
 	private Map<IconType, String> urlMap = new HashMap<IconType, String>();
@@ -132,15 +138,21 @@ public final class IconLoader {
 		urlMap.put(IconType.DERIVATION, "resources/br/ufes/inf/nemo/oled/ui/derivation.png");
 		urlMap.put(IconType.RULE, "resources/br/ufes/inf/nemo/oled/ui/rule.png");
 		
-		urlMap.put(IconType.SHOW_OUTPUT, "resources/br/ufes/inf/nemo/oled/ui/output.png");
-		urlMap.put(IconType.DIAGNOSTIC, "resources/br/ufes/inf/nemo/oled/ui/diagnostic.png");
-		urlMap.put(IconType.SHOW_OCLEDITOR, "resources/br/ufes/inf/nemo/oled/ui/ocleditor.png");
-		urlMap.put(IconType.AUTO_SELECTION, "resources/br/ufes/inf/nemo/oled/ui/completion.png");
-		urlMap.put(IconType.VALIDATE, "resources/br/ufes/inf/nemo/oled/ui/validate.png");
+		urlMap.put(IconType.OUTPUT, "resources/br/ufes/inf/nemo/oled/ui/output.png");
+		urlMap.put(IconType.ERROR, "resources/br/ufes/inf/nemo/oled/ui/error.png");
+		urlMap.put(IconType.WARNING, "resources/br/ufes/inf/nemo/oled/ui/warning.png");
+		urlMap.put(IconType.OCLEDITOR, "resources/br/ufes/inf/nemo/oled/ui/ocleditor.png");
+		
+		urlMap.put(IconType.AUTO_SELECTION, "resources/br/ufes/inf/nemo/oled/ui/completion.png");		
+		urlMap.put(IconType.VALIDATE, "resources/br/ufes/inf/nemo/oled/ui/verify.png");		
 		urlMap.put(IconType.VERIFY_SETTINGS, "resources/br/ufes/inf/nemo/oled/ui/verifysettings.png");
-		urlMap.put(IconType.VERIFY, "resources/br/ufes/inf/nemo/oled/ui/verify.png");
-		urlMap.put(IconType.VERIFY_FILE, "resources/br/ufes/inf/nemo/oled/ui/verifyfile.png");
+		urlMap.put(IconType.VERIFY_FILE, "resources/br/ufes/inf/nemo/oled/ui/verifyfile.png");		
+		urlMap.put(IconType.VERIFY, "resources/br/ufes/inf/nemo/oled/ui/validate.png");
+		urlMap.put(IconType.PARSE, "resources/br/ufes/inf/nemo/oled/ui/check.png");
+		
 		urlMap.put(IconType.VIEW, "resources/br/ufes/inf/nemo/oled/ui/view.png");
+		urlMap.put(IconType.GENERATE_ALLOY, "resources/br/ufes/inf/nemo/oled/ui/alloy.png");
+		urlMap.put(IconType.ANTIPATTERN, "resources/br/ufes/inf/nemo/oled/ui/antipattern.png");
 		urlMap.put(IconType.GENERATE_OWL, "resources/br/ufes/inf/nemo/oled/ui/owl.png");
 		urlMap.put(IconType.GENERATE_OWL_SETTINGS, "resources/br/ufes/inf/nemo/oled/ui/owlsettings.png");
 		urlMap.put(IconType.GENERATE_SBVR, "resources/br/ufes/inf/nemo/oled/ui/sbvr.png");
@@ -164,6 +176,7 @@ public final class IconLoader {
 		urlMap.put(IconType.UNDO, "resources/br/ufes/inf/nemo/oled/ui/undo.png");
 		urlMap.put(IconType.REDO, "resources/br/ufes/inf/nemo/oled/ui/redo.png");
 		urlMap.put(IconType.ABOUT, "resources/br/ufes/inf/nemo/oled/ui/about.png");
+		urlMap.put(IconType.COPYRIGHTS, "resources/br/ufes/inf/nemo/oled/ui/copyrights.png");
 		
 		urlMap.put(IconType.IMPORT, "resources/br/ufes/inf/nemo/oled/ui/import.png");
 		urlMap.put(IconType.EXPORT, "resources/br/ufes/inf/nemo/oled/ui/export.png");
