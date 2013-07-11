@@ -3,9 +3,12 @@ package br.ufes.inf.nemo.oled.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ufes.inf.nemo.move.mvc.model.ACAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.view.ACAntiPatternView;
-import br.ufes.inf.nemo.move.ui.TheManager;
+import br.ufes.inf.nemo.antipattern.ACAntiPattern;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.oled.model.AlloySpecification;
+import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
 
 /**
  * @author John Guerson
@@ -13,8 +16,8 @@ import br.ufes.inf.nemo.move.ui.TheManager;
 
 public class ACAntiPatternController {
 
-	private ACAntiPatternView acView;
-	private ACAntiPatternModel acModel;
+	private ACAntiPatternPane acView;
+	private ACAntiPattern acModel;
 	
 	/**
 	 * Constructor.
@@ -22,7 +25,7 @@ public class ACAntiPatternController {
 	 * @param acView
 	 * @param acModel
 	 */
-	public ACAntiPatternController(ACAntiPatternView acView, ACAntiPatternModel acModel)
+	public ACAntiPatternController(ACAntiPatternPane acView, ACAntiPattern acModel)
 	{
 		this.acView = acView;
 		this.acModel = acModel;		
@@ -43,57 +46,56 @@ public class ACAntiPatternController {
 	    {			
 	    	try{
 	    		String predicates = new String();
-				
+	    		OntoUMLParser refparser = ModelTree.getParserFor(acView.getFrame().getDiagramManager().getCurrentProject());
+	    		UmlProject project = acView.getFrame().getDiagramManager().getCurrentProject();
+	    		
 	    		if(acView.isSelectedOpenCycle()) 
 	    		{
-	    			predicates += "\n\n"+acModel.getACAntiPattern().generatePredicate(
-	    				acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(),
-	    				acView.getScope(), acModel.getACAntiPattern().OPEN
+	    			predicates += "\n\n"+acModel.generatePredicate(
+	    				refparser, acView.getScope(), acModel.OPEN
 	    			);
 	    		}
 			
 	    		if(acView.isSelectedClosedCycle())				
 	    		{
-	    			predicates += "\n\n"+acModel.getACAntiPattern().generatePredicate(
-	    				acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser(), 
-	    				acView.getScope(), acModel.getACAntiPattern().CLOSED
+	    			predicates += "\n\n"+acModel.generatePredicate(
+	    				refparser, acView.getScope(), acModel.CLOSED
 	    			); 
 	    		}
 				
-	    		/* Execute... TODO : JOHN, PLEASE, FIXE MEEE SOON !!!!!!!! */
-	    		
 	    		/*=======================================================*/
 	    		
-	    		TheManager manager = acView.getTheFrame().getManager();
+	    		Onto2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(project);
+	    		AlloySpecification alloymodel = ModelTree.getAlloySpecFor(project);
 	    		
 	    		//set parser...
-	    		acModel.getACAntiPattern().setSelected(manager.getOntoUMLModel().getOntoUMLParser());
+	    		acModel.setSelected(refparser);
 	    		
 	    		// set options to false, because the simulated model is partial
-	    		manager.getOntoUMLOptionModel().getOptions().identityPrinciple = false;
-	    		manager.getOntoUMLOptionModel().getOptions().relatorAxiom = false;
-	    		manager.getOntoUMLOptionModel().getOptions().weakSupplementationAxiom = false;
-	    		manager.getOntoUMLOptionModel().getOptions().antiRigidity = false;
+	    		refOptions.identityPrinciple = false;
+	    		refOptions.relatorAxiom = false;
+	    		refOptions.weakSupplementationAxiom = false;
+	    		refOptions.antiRigidity = false;
 	    		
 	    		// set alloy path
-	    		String alsPath = manager.getAlloyModel().getDirectory()+manager.getAlloyModel().getAlloyModelName()+"$AC"+acModel.getId()+".als";	    		
-	    		manager.getAlloyModel().setAlloyModel(alsPath);
+	    		String alsPath = project.getTempDir()+"ac.als";	    		
+	    		alloymodel.setAlloyModel(alsPath);
 	    		
 	    		// set alloy model from ontoUML transformation
-	    		manager.getAlloyModel().setAlloyModel(manager.getOntoUMLModel(),manager.getOntoUMLOptionModel());	    		
-	    		String content = manager.getAlloyModel().getContent();
+	    		alloymodel.setAlloyModel(refparser,refOptions);	    		
+	    		String content = alloymodel.getContent();
 	    		
 	    		// add predicates to alloy content
 	    		content = content+"\n"+predicates;	    		
-	    		manager.getAlloyModel().setContent(content);
+	    		alloymodel.setContent(content);
 	    		
 	    		// open alloy model
-	    		acView.getTheFrame().getManager().doOpeningAlloy(true,-1);
+	    		acView.getFrame().getDiagramManager().openAlloyAnalyzer(true,-1);
 	    			    		
 	    		/*=======================================================*/
 	    		
 	    	}catch(Exception exception){
-	    		acView.getTheFrame().showErrorMessageDialog("AC : Execute With Analyzer",exception.getMessage());
+	    		acView.getFrame().showErrorMessageDialog("Executing AC AntiPattern",exception.getMessage());
 	    	}
 	    	
 	    }
@@ -114,13 +116,14 @@ public class ACAntiPatternController {
 
 			String constraints = new String();
 			
-					
+			OntoUMLParser refparser = ModelTree.getParserFor(acView.getFrame().getDiagramManager().getCurrentProject());
+			
 			if(openCycle) 
-				constraints = acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().OPEN, acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser())+"\n\n";		
+				constraints = acModel.generateCycleOcl(acModel.OPEN, refparser)+"\n\n";		
 			if(closedCycle)
-				constraints += acModel.getACAntiPattern().generateCycleOcl(acModel.getACAntiPattern().CLOSED, acView.getTheFrame().getManager().getOntoUMLModel().getOntoUMLParser())+"\n\n";		
+				constraints += acModel.generateCycleOcl(acModel.CLOSED, refparser)+"\n\n";		
 							
-			acView.getTheFrame().getManager().getOCLView().getOcleditor().addText(constraints);
+			acView.getFrame().getDiagramManager().getCurrentWrapper().addConstraints(constraints);
 	    }
 	}
 	

@@ -138,6 +138,12 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		ocleditor.repaint();
 	}
 	
+	public void addConstraints(String text) { 
+		ocleditor.textArea.append(text);
+		ocleditor.validate();
+		ocleditor.repaint();
+	}
+	
 	public ErrorTablePanel getErrors(){
 		return errors;
 	}
