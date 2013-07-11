@@ -1,71 +1,82 @@
 package br.ufes.inf.nemo.oled.util;
 
-import java.awt.EventQueue;
-import java.io.File;
-import java.util.List;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.swing.UIManager;
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
 
-import RefOntoUML.Model;
-import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 
+import RefOntoUML.Model;
+import RefOntoUML.PackageableElement;
+
+/**
+ * Helper class for dealing with model validation
+ * 
+ *   @author Antognoni Albuquerque
+ *   @version 1.0
+ */
 public class VerificationHelper {
 	
-   public static OperationResult verifyModel(final Model refmodel, List<SimulationElement> simulationElements, String tempDir)
-   {	   
-	   	String directoryPath	= ConfigurationHelper.getCanonPath(tempDir,"");	
+	/**
+	 * Validates the model sintatically, against the rules defined in the ecore metamodel. 
+	 * 
+	 * @param model
+	 * @return OperationResult the sintatical validation result
+	 */
+	public static OperationResult verifyModel(Model model)
+	{
+		Map<Object, Object> context = new HashMap<Object, Object>();
+		BasicDiagnostic diag = new BasicDiagnostic();
 
-	   	final String alsPath;
-	   	
-	   	if (refmodel.getName() == "" || refmodel.getName()== null)	   	
-	   		alsPath = directoryPath + File.separator + "Model"+".als";
-	   	else
-	   		alsPath = directoryPath + File.separator + refmodel.getName()+".als";
-	   	
-	   	Boolean succeeds = false;
-
-	   	String message = new String();
-	   	
-    	try	{    		
-    	
-    		EventQueue.invokeLater(new Runnable() 
-    		{
-    			public void run() {
-    				try {
-    					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-    					TheFrame frame = new TheFrame(refmodel,"",alsPath);
-    					frame.setVisible(true);
-    					frame.setLocationRelativeTo(null);
-    				
-    				} catch (Exception ex) {
-    					ex.printStackTrace();
-    				}	
-    			}
-    		});
-    	
-    		succeeds = true;
-    	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}    	
-    	
-    	if (succeeds) 
-    		return new OperationResult(ResultType.SUCESS, "Model Validation Environment called succesfully.", null );    	
-    	
-    	if (!succeeds) 
-    		return new OperationResult(ResultType.ERROR, "An Error ocurred while calling the Model Validation Environment \n"+message, null);
-    	    	
-    	return new OperationResult(ResultType.ERROR, "A problem has ocurred when verifying the model", null);
-	}
-	   
-	public static OperationResult verifyModelFromAlloyFile(String tempDir)
-	{    	    	
-		String alloyFileName = ConfigurationHelper.getCanonPath(tempDir, OLEDSettings.SIMULATION_DEFAULT_FILE.getValue());
-		File alloyFile = new File(alloyFileName);  	
-    	alloyFile.deleteOnExit();        	
-    	return new OperationResult(ResultType.ERROR, "Not Implemented yet.", null);		
+		long validationStartMilis = System.currentTimeMillis();
+		boolean valid = ModelHelper.validate(model, diag, context);
+		long validationEndMilis = System.currentTimeMillis();
+		
+		StringBuilder sb = new StringBuilder();		
+		Map<PackageableElement, String> errorsMap = new HashMap<PackageableElement, String>();
+		
+		if(!valid)
+		{
+			sb.append("The model is not valid sintatically. The following error(s) where found:\n\n");
+			
+			for (Diagnostic item : diag.getChildren()) {
+				
+				PackageableElement element = (PackageableElement) item.getData().get(0);
+				String errors = "";
+				
+				if(errorsMap.containsKey(element))
+				{
+					errors = errorsMap.get(element);
+				}
+				
+				String currentError = handleMessage(item.getMessage()) + "\n\n";
+				errors += currentError;
+				errorsMap.put(element, errors);
+				sb.append(ModelHelper.handleName(element) + " - " + currentError);
+				
+			}	
+		}
+		
+		sb.append(MessageFormat.format("Model verified in {0} ms, {1} error(s) found", (validationEndMilis - validationStartMilis),  diag.getChildren().size()));
+		return new OperationResult(valid ? ResultType.SUCESS : ResultType.ERROR, sb.toString(), new Object[] { errorsMap });		
 	}
 	
+	/**
+	 * Handles the error message, returning a more friendly message
+	 * @param message
+	 * @return String the friendly message
+	 */
+	public static String handleMessage(String message)
+	{
+		int constraintStart = message.indexOf("'");
+		int constraintEnd = message.indexOf("'", constraintStart + 1);
+		String constraint = message.substring(constraintStart + 1, constraintEnd);
+		String newMessage = VerificationResources.getInstance().getString(constraint);		
+		if(newMessage != null)
+			return newMessage;
+		return message;
+	}
 }

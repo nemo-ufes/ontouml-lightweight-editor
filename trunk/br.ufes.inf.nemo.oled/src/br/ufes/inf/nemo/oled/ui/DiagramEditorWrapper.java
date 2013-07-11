@@ -20,9 +20,6 @@ import javax.swing.UIManager;
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.editor.ocl.OCLEditorPanel;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.move.ErrorTablePanel;
-import br.ufes.inf.nemo.oled.move.PropertyTablePanel;
-import br.ufes.inf.nemo.oled.move.WarningTablePanel;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -81,24 +78,24 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 					
 		infoTabbedPane.add(properties);	
 		infoTabbedPane.setTitleAt(0," Properties ");
-		infoTabbedPane.setIconAt(0,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/move/table-16x16.png")));
+		infoTabbedPane.setIconAt(0,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/table.png")));
 		
 		infoTabbedPane.add(warnings);	
 		infoTabbedPane.setTitleAt(1," Warnings ");
-		infoTabbedPane.setIconAt(1,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/move/warning-16x16.png")));
+		infoTabbedPane.setIconAt(1,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/warning.png")));
 		
 		infoTabbedPane.add(errors);	
 		infoTabbedPane.setTitleAt(2," Errors ");
-		infoTabbedPane.setIconAt(2,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/move/error-16x16.png")));
+		infoTabbedPane.setIconAt(2,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/error.png")));
 		
 		infoTabbedPane.add(outputPane);	
 		infoTabbedPane.setTitleAt(3," Output ");		
-		infoTabbedPane.setIconAt(3,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.showoutput.icon")));
+		infoTabbedPane.setIconAt(3,IconLoader.getInstance().getIcon(getResourceString("maintoolbar.output.icon")));
 		
 		infoTabbedPane.add(ocleditor);	
 		infoTabbedPane.setTitleAt(4," OCL Editor ");
 		infoTabbedPane.setSelectedIndex(4);
-		infoTabbedPane.setIconAt(4,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.ocleditor.icon")));
+		infoTabbedPane.setIconAt(4,IconLoader.getInstance().getIcon(getResourceString("maintoolbar.ocleditor.icon")));
 		
 		editorArea.add(scrollpane, JSplitPane.TOP);
 		editorArea.add(infoTabbedPane, JSplitPane.BOTTOM);		
@@ -133,6 +130,12 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	 */
 	public String getConstraints() { 
 		return ocleditor.textArea.getText(); 
+	}
+	
+	public void setConstraints(String text) { 
+		ocleditor.textArea.setText(text);
+		ocleditor.validate();
+		ocleditor.repaint();
 	}
 	
 	public ErrorTablePanel getErrors(){

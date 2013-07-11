@@ -13,7 +13,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 
+import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
+
+import br.ufes.inf.nemo.move.ui.util.Extractor;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -29,6 +33,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	private transient DiagramManager diagramManager;
 	private transient StatusBar statusBar;
 	private transient Map<String, MethodCall> selectorMap = new HashMap<String, MethodCall>();
+	private transient SimpleGUICustom analyzer;
 
 	/**
 	 * Default constructor.
@@ -57,6 +62,20 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			}
 		});
 
+		// extract alloy jar file and open alloy
+		try {			
+			Extractor.alloyAnalyzerJAR();
+		} catch (IOException e) {			
+			e.printStackTrace();
+		}		
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() 
+	        {
+	        	String[] args = {""};
+	        	analyzer = new SimpleGUICustom(args,false,"");
+	        }
+		});
+		
 		pack();
 		initSelectorMap();
 	}
@@ -81,6 +100,10 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		this.getContentPane().add(mainToolBar.getToolbar(), BorderLayout.NORTH);
 	}
 
+	public DiagramManager getDiagramManager() {
+		return diagramManager;
+	}
+	
 	/**
 	 * Adds the main diagram manager (the tabbed pane which holds the diagrams)
 	 */
@@ -138,6 +161,10 @@ public class AppFrame extends JFrame implements AppCommandListener {
 					new MethodCall(DiagramManager.class.getMethod("importEcore")));
 			selectorMap.put("IMPORT_XMI",
 					new MethodCall(DiagramManager.class.getMethod("importXMI")));
+			selectorMap.put("EXPORT_OCL",
+					new MethodCall(DiagramManager.class.getMethod("exportOCL")));
+			selectorMap.put("IMPORT_OCL",
+					new MethodCall(DiagramManager.class.getMethod("importOCL")));
 			selectorMap.put("DELETE",
 					new MethodCall(DiagramManager.class.getMethod("delete")));
 			selectorMap.put("EDIT_SETTINGS", new MethodCall(getClass()
@@ -379,4 +406,11 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	{
 		statusBar.reportStatus(status);
 	}
+	
+	/** Get Alloy Analyzer.  */
+	public SimpleGUICustom getAlloyAnalyzer()
+	{
+		return analyzer;
+	}
+	
 }

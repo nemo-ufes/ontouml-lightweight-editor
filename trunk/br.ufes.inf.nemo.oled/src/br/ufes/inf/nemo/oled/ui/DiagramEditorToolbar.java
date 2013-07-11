@@ -24,32 +24,43 @@ public class DiagramEditorToolbar implements ActionListener {
   private JToolBar toolbar = new JToolBar();
   private List<AppCommandListener> listeners = new ArrayList<AppCommandListener>();
   private Map<String, AbstractButton> buttonMap = new HashMap<String, AbstractButton>();
-  private ButtonGroup validationGroup;
+  private ButtonGroup buttonGroup;
   //private ButtonGroup diagramOptionsGroup;
 
   public DiagramEditorToolbar() {
-    validationGroup = new ButtonGroup();
+    buttonGroup = new ButtonGroup();
     //diagramOptionsGroup = new ButtonGroup();
     
-    toolbar.add(createButton(validationGroup, "showoutput"));
-    toolbar.add(createButton(validationGroup, "diagnostic"));
-    toolbar.add(createButton(validationGroup, "autoselection"));
-    toolbar.add(createButton(validationGroup, "ocleditor"));
+    //toolbar.add(createButton(buttonGroup, "showoutput"));
+    //toolbar.add(createButton(buttonGroup, "warnings"));
+    //toolbar.add(createButton(buttonGroup, "errors"));    
+    //toolbar.add(createButton(buttonGroup, "ocleditor"));
     //toolbar.add(createToggleButton(diagramOptionsGroup, "rectilinear"));
     //toolbar.add(createToggleButton(diagramOptionsGroup, "straight"));
     
     toolbar.addSeparator(new Dimension(20, 25));    
-    toolbar.add(createButton(validationGroup, "validate"));
+    
+    toolbar.add(createButton(buttonGroup, "autoselection"));    
+    toolbar.add(createButton(buttonGroup, "parse"));    
+    toolbar.add(createButton(buttonGroup, "verify"));
     //toolbar.addSeparator(new Dimension(20, 25));
     //toolbar.add(createButton(validationGroup, "verifysettings")); 
-    toolbar.add(createButton(validationGroup, "verify")); 
+    
     toolbar.addSeparator(new Dimension(20, 25));
+    
     //toolbar.add(createButton(validationGroup, "verifyfile")); 
     //toolbar.addSeparator(new Dimension(20, 25));
-    toolbar.add(createButton(validationGroup, "generateowlsettings"));
-    toolbar.add(createButton(validationGroup, "generateowl"));
-    toolbar.add(createButton(validationGroup, "generatesbvr"));
-    toolbar.add(createButton(validationGroup, "generatetext"));
+    toolbar.add(createButton(buttonGroup, "generatealloy"));
+    toolbar.add(createButton(buttonGroup, "antipattern"));
+    
+    toolbar.addSeparator(new Dimension(20, 25));
+    
+    toolbar.add(createButton(buttonGroup, "generateowl"));
+    toolbar.add(createButton(buttonGroup, "generateowlsettings"));    
+    toolbar.add(createButton(buttonGroup, "generatesbvr"));
+    toolbar.add(createButton(buttonGroup, "generatetext"));
+    
+    
   }
 
   public void addCommandListener(AppCommandListener l) {

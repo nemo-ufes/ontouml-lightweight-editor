@@ -29,7 +29,7 @@ public class OutputPane extends JPanel
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
 		
 		this.add(scrollpane, BorderLayout.CENTER);
-		this.setMinimumSize(new Dimension(0, 0));
+		this.setMinimumSize(new Dimension(0, 0));		
 	}
 	
 	public void apped(String text)
