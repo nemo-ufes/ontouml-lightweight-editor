@@ -287,8 +287,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("GENERATE_TEXT", new MethodCall(
 					getClass().getMethod("generateText")));
 			
-			//======================
-			
 			selectorMap.put("ERROR", new MethodCall(
 					getClass().getMethod("searchErrors")));
 

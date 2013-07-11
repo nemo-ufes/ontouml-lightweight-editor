@@ -76,7 +76,7 @@ public class AutoCompletionDialog extends JDialog {
 		   	String msg = DiagramManager.autoCompleteSelection(OntoUMLParser.ALL_ANCESTORS,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
 	   			frame,msg,"All ancestors",JOptionPane.INFORMATION_MESSAGE,
-	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/icon/completion-36x36.png"))
+	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png"))
 	   		); 
 		}
 		if (rbAllAncestorsDescendants.isSelected())
@@ -85,7 +85,7 @@ public class AutoCompletionDialog extends JDialog {
 		   	String msg = DiagramManager.autoCompleteSelection(OntoUMLParser.COMPLETE_HIERARCHY,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
 	   			frame,msg,"All ancestors and descendants",JOptionPane.INFORMATION_MESSAGE,
-	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/icon/completion-36x36.png"))
+	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png"))
 	   		);        				
 		}
 		if (rbAllAncestorsUntil.isSelected())
@@ -94,7 +94,7 @@ public class AutoCompletionDialog extends JDialog {
 		   	String msg = DiagramManager.autoCompleteSelection(OntoUMLParser.SORTAL_ANCESTORS,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
 	   			frame,msg,"All ancestors until a Substance Sortal",JOptionPane.INFORMATION_MESSAGE,
-	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/icon/completion-36x36.png"))
+	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png"))
 	   		); 
 		}
 		if (rbAllDescendants.isSelected())
@@ -103,7 +103,7 @@ public class AutoCompletionDialog extends JDialog {
 		   	String msg = DiagramManager.autoCompleteSelection(OntoUMLParser.ALL_DESCENDANTS,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
 	   			frame,msg,"All descendants",JOptionPane.INFORMATION_MESSAGE,
-	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/icon/completion-36x36.png"))
+	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png"))
 	   		); 
 		}
 		if (rbMandatory.isSelected())
@@ -112,7 +112,7 @@ public class AutoCompletionDialog extends JDialog {
 		   	String msg = DiagramManager.autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
 	   			frame,msg,"Only mandatory dependencies",JOptionPane.INFORMATION_MESSAGE,
-	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/icon/completion-36x36.png"))
+	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png"))
 	   		); 
 		}
 	}
@@ -127,7 +127,7 @@ public class AutoCompletionDialog extends JDialog {
 		this.frame = frame;
 		this.project = project;
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(AutoCompletionDialog.class.getResource("/resources/icon/completion-36x36.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png")));
 		setTitle("Auto Completion");
 		setBounds(100, 100, 270, 258);
 		

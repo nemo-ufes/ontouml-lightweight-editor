@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,8 +21,8 @@ import javax.swing.border.EmptyBorder;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.util.ColorPalette;
-import br.ufes.inf.nemo.oled.util.FileChoosersUtil;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.oled.util.FileChoosersUtil;
 
 /**
  * @author John Guerson
@@ -142,7 +141,7 @@ public class WarningTablePanel extends JPanel {
 			}
 		});
 		saveButton.setFocusable(false);
-		saveButton.setIcon(new ImageIcon(WarningTablePanel.class.getResource("/resources/icon/export-16x16.png")));
+		//saveButton.setIcon(new ImageIcon(WarningTablePanel.class.getResource("/resources/icon/export-16x16.png")));
 		//toolBar.add(saveButton);
 		
 		warningMessage = new JLabel("    (0 warnings)");
