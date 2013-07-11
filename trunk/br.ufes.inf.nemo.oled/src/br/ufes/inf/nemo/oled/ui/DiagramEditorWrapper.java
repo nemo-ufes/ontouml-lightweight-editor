@@ -18,9 +18,9 @@ import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
-import br.ufes.inf.nemo.oled.editor.ocl.OCLEditorPanel;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.ui.editor.ocl.OCLEditorPanel;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 
@@ -31,14 +31,17 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 
 	private static final long serialVersionUID = -1962960747434759099L;
 	private DiagramEditor editor;	
-	private JSplitPane editorArea  = new JSplitPane();	
-	private OCLEditorPanel ocleditor;
+	public JSplitPane editorArea  = new JSplitPane();	
+	public JSplitPane mainEditorArea = new JSplitPane();
 	
 	public static JTabbedPane infoTabbedPane;
 	public static PropertyTablePanel properties;
 	public static ErrorTablePanel errors;
 	public static WarningTablePanel warnings;
 	public static OutputPane outputPane;
+	public static OCLEditorPanel ocleditor;
+	public static ModelTree modeltree;
+	public static ToolManager toolManager;
 	
 	//TODO Remove me
 	private File projectFile;
@@ -51,18 +54,24 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		DiagramEditorToolbar editorToolbar = new DiagramEditorToolbar();
 		JToolBar toolbar = editorToolbar.getToolbar();
 		editorToolbar.addCommandListener(editorDispatcher);
-		this.add(toolbar, BorderLayout.NORTH);
+		toolbar.setFloatable(false);
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout(0,0));
+		panel.add(toolbar, BorderLayout.SOUTH);
 		
 		editorArea.setContinuousLayout(true);
 		editorArea.setOneTouchExpandable(true);
 		editorArea.setDividerSize(7);
 		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		editorArea.setResizeWeight(1) ;
-		editorArea.setDividerLocation(1.0);
+		editorArea.setDividerLocation(0.75);
 		
 		JScrollPane scrollpane = new JScrollPane(editor);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
+		
+		panel.add(scrollpane);
 		
 		properties = new PropertyTablePanel(editor.getProject());		
 		errors = new ErrorTablePanel(editor.getProject());
@@ -90,17 +99,32 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		
 		infoTabbedPane.add(outputPane);	
 		infoTabbedPane.setTitleAt(3," Output ");		
-		infoTabbedPane.setIconAt(3,IconLoader.getInstance().getIcon(getResourceString("maintoolbar.output.icon")));
+		infoTabbedPane.setIconAt(3,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.output.icon")));
 		
 		infoTabbedPane.add(ocleditor);	
 		infoTabbedPane.setTitleAt(4," OCL Editor ");
 		infoTabbedPane.setSelectedIndex(4);
-		infoTabbedPane.setIconAt(4,IconLoader.getInstance().getIcon(getResourceString("maintoolbar.ocleditor.icon")));
+		infoTabbedPane.setIconAt(4,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.ocleditor.icon")));
 		
-		editorArea.add(scrollpane, JSplitPane.TOP);
-		editorArea.add(infoTabbedPane, JSplitPane.BOTTOM);		
+		infoTabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
 		
-		this.add(editorArea,BorderLayout.CENTER);		
+		modeltree = ModelTree.getTreeFor(getProject());
+		
+		editorArea.add(panel, JSplitPane.TOP);		
+		editorArea.add(infoTabbedPane,JSplitPane.BOTTOM);
+		
+		mainEditorArea.setContinuousLayout(true);
+		mainEditorArea.setOneTouchExpandable(true);
+		mainEditorArea.setDividerSize(7);
+		mainEditorArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		mainEditorArea.setResizeWeight(0) ;
+		//mainEditorArea.setDividerLocation(0.50);
+		
+		mainEditorArea.add(editorArea,JSplitPane.LEFT);
+		mainEditorArea.add(modeltree, JSplitPane.RIGHT);
+		
+		this.add(mainEditorArea,BorderLayout.CENTER);		
+		
 	}	
 	
 	public static PropertyTablePanel getProperties(){
@@ -113,6 +137,11 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	
 	public WarningTablePanel getWarnings(){
 		return warnings;
+	}
+	
+	public ModelTree getModelTree()
+	{
+		return modeltree;
 	}
 	
 	public void setTitleWarning(String text)

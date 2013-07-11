@@ -213,9 +213,9 @@ public class OntoUMLTree extends CheckboxTree {
         		}
         		
     		    if (elementType.toLowerCase().equals("property"))
-        			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/move/ontouml/property.gif")));
+        			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/property.gif")));
         		else
-        			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/move/ontouml/"+elementType.toLowerCase()+".png")));
+        			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/"+elementType.toLowerCase()+".png")));
         		
     		}else{
 

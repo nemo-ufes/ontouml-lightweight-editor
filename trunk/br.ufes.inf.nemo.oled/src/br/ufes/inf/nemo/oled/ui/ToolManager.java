@@ -2,8 +2,6 @@ package br.ufes.inf.nemo.oled.ui;
 
 import javax.swing.JTabbedPane;
 
-import br.ufes.inf.nemo.oled.model.UmlProject;
-
 public class ToolManager extends JTabbedPane {
 
 	private static final long serialVersionUID = 1752050268631906319L;
@@ -26,19 +24,9 @@ public class ToolManager extends JTabbedPane {
 		//Assistent assistent = new Assistent();
 		//Assistent patternsPanel = new Assistent();
 				
-		this.add("Elements", palettes); //TODO Localize these
-		this.add("Model", null);
+		this.add("Elements", palettes); //TODO Localize these		
 		//this.add("Assistent", assistent);
 		//this.add("Patterns", patternsPanel);
-	}
-
-	public void showModelTree(UmlProject project)
-	{		
-		ModelTree modelTree = ModelTree.getTreeFor(project);
-		
-		this.setComponentAt(indexOfTab("Model"), modelTree);
-		validate();
-		repaint();
 	}
 	
 	public DiagramEditorCommandDispatcher getEditorDispatcher() {

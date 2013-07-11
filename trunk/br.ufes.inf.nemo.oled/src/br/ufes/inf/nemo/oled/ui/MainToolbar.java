@@ -63,10 +63,6 @@ public class MainToolbar implements ActionListener {
 		createButton("undo");
 		createButton("redo");
 		toolbar.addSeparator();
-		createButton("error");
-		createButton("warning");
-		createButton("output");
-		createButton("ocleditor");
 		
 		enableButton("UNDO", false);
 		enableButton("REDO", false);
