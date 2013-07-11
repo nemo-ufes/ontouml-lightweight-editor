@@ -24,9 +24,6 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import br.ufes.inf.nemo.move.editor.ocl.OCLCellRenderer;
-import br.ufes.inf.nemo.move.editor.ocl.OCLShorthandCompletion;
-import br.ufes.inf.nemo.move.editor.ocl.OCLTokenMaker;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
