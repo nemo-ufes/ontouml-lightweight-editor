@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.eclipse.uml2.uml.Constraint;
 
-import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
 import javax.swing.JLabel;
 
 /**
@@ -34,7 +34,7 @@ public class OCL2AlloyOptionsPane extends JPanel {
 	private static final long serialVersionUID = 566520388850119106L;
 
 	@SuppressWarnings("unused")
-	private OCLOptions oclOptions;
+	private OCL2AlloyOptions oclOptions;
 	
 	private AppFrame frame;	
 	
@@ -45,7 +45,7 @@ public class OCL2AlloyOptionsPane extends JPanel {
 	private JButton btnEnableAll;
 	private JLabel lblChooseWhichConstraints;
 
-	public OCL2AlloyOptionsPane (OCLOptions oclOptions,AppFrame frame)
+	public OCL2AlloyOptionsPane (OCL2AlloyOptions oclOptions,AppFrame frame)
 	{		
 		this();
 	
@@ -55,7 +55,7 @@ public class OCL2AlloyOptionsPane extends JPanel {
 		setOCLOptionPane(oclOptions);
 	}
 	
-	public void setOCLOptionPane (OCLOptions oclOptions)
+	public void setOCLOptionPane (OCL2AlloyOptions oclOptions)
 	{
 		ctpanel.removeAll();
 		this.oclOptions = oclOptions;

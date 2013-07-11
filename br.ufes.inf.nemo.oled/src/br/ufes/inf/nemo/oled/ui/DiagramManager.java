@@ -67,7 +67,7 @@ import org.eclipse.ocl.SemanticException;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
-import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.ocl2alloy.OCLParser;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
@@ -106,7 +106,7 @@ import br.ufes.inf.nemo.oled.util.SimulationElement;
 import br.ufes.inf.nemo.oled.util.TextDescriptionHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType;
-import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
@@ -886,7 +886,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			);			
 						
 			// set options from the parser
-			ModelTree.setOCLOptionsFor(getCurrentProject(), new OCLOptions(oclmodel.getOCLParser()));
+			ModelTree.setOCLOptionsFor(getCurrentProject(), new OCL2AlloyOptions(oclmodel.getOCLParser()));
 
 			// show Message
 			String msg =  "Constraints are syntactically correct.\n";
@@ -916,7 +916,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void transformsOntoUMLintoAlloy()
 	{
 		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
-		Onto2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(getCurrentProject());
+		OntoUML2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(getCurrentProject());
 		
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
 				
@@ -985,7 +985,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
 		OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());
-		OCLOptions oclOptions = ModelTree.getOCLOptionsFor(getCurrentProject());
+		OCL2AlloyOptions oclOptions = ModelTree.getOCLOptionsFor(getCurrentProject());
 		AlloySpecification alloySpec = ModelTree.getAlloySpecFor(getCurrentProject());
 		
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }

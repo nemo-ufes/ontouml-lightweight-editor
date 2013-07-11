@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.move.mvc.model;
 
-import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
  * 
@@ -12,14 +12,14 @@ import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
 public class OntoUMLOptionsModel {
 	
 	/** OntoUML model options */
-	private Onto2AlloyOptions option;
+	private OntoUML2AlloyOptions option;
 		
 	/**
 	 * Constructor.
 	 * 
 	 * @param opt
 	 */
-	public OntoUMLOptionsModel (Onto2AlloyOptions opt)
+	public OntoUMLOptionsModel (OntoUML2AlloyOptions opt)
 	{
 		this.option = opt;
 	}
@@ -29,14 +29,14 @@ public class OntoUMLOptionsModel {
 	 */
 	public OntoUMLOptionsModel ()
 	{	
-		this.option = new Onto2AlloyOptions();
+		this.option = new OntoUML2AlloyOptions();
 	}
 		
 	/**
 	 * Get OntoUML Model Options.
 	 * @return
 	 */
-	public Onto2AlloyOptions getOptions()
+	public OntoUML2AlloyOptions getOptions()
 	{
 		return option;
 	}
@@ -46,7 +46,7 @@ public class OntoUMLOptionsModel {
 	 * 
 	 * @param opt
 	 */
-	public void setOptions(Onto2AlloyOptions opt)
+	public void setOptions(OntoUML2AlloyOptions opt)
 	{
 		this.option = opt;
 	}	

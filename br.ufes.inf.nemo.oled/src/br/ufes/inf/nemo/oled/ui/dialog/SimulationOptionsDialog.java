@@ -14,13 +14,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.ui.ModelTree;
 import br.ufes.inf.nemo.oled.ui.OCL2AlloyOptionsPane;
 import br.ufes.inf.nemo.oled.ui.OntoUML2AlloyOptionsPane;
-import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
  * @author John Guerson
@@ -42,7 +42,7 @@ public class SimulationOptionsDialog extends JDialog {
 	/**
 	 * Launch the Dialog.
 	 */
-	public static void open(Onto2AlloyOptions refOptions, OCLOptions oclOptions, AppFrame frame)
+	public static void open(OntoUML2AlloyOptions refOptions, OCL2AlloyOptions oclOptions, AppFrame frame)
 	{
 		try {
 			
@@ -64,7 +64,7 @@ public class SimulationOptionsDialog extends JDialog {
 	 * @param frame
 	 * @wbp.parser.constructor
 	 */
-	public SimulationOptionsDialog(Onto2AlloyOptions refOptions, OCLOptions oclOptions, AppFrame frame)
+	public SimulationOptionsDialog(OntoUML2AlloyOptions refOptions, OCL2AlloyOptions oclOptions, AppFrame frame)
 	{
 		this(frame);
 		this.frame = frame;		
@@ -78,7 +78,7 @@ public class SimulationOptionsDialog extends JDialog {
 	 * @param refOptions
 	 * @param oclOptions
 	 */
-	public void setOptionDialog (Onto2AlloyOptions refOptions, OCLOptions oclOptions)
+	public void setOptionDialog (OntoUML2AlloyOptions refOptions, OCL2AlloyOptions oclOptions)
 	{
 		ontoumlOptPane.setOntoUMLOptionsPane(refOptions);				
 		oclOptPane.setOCLOptionPane(oclOptions);
@@ -142,7 +142,7 @@ public class SimulationOptionsDialog extends JDialog {
 			
 	public void OkActionPerformed(ActionEvent event)
 	{
-		Onto2AlloyOptions ontoumlOptions = new Onto2AlloyOptions();
+		OntoUML2AlloyOptions ontoumlOptions = new OntoUML2AlloyOptions();
 		ontoumlOptions.antiRigidity = ontoumlOptPane.isSelectedAntirigidity(); 
 		ontoumlOptions.identityPrinciple = ontoumlOptPane.isSelectedIdentityPrinciple();
 		ontoumlOptions.weakSupplementationAxiom = ontoumlOptPane.isSelectedWeakSupplementation();
@@ -151,7 +151,7 @@ public class SimulationOptionsDialog extends JDialog {
 		ModelTree.setOntoUMLOptionsFor(frame.getDiagramManager().getCurrentProject(),ontoumlOptions);
 		
 		OCLDocument oclmodel = ModelTree.getOCLModelFor(frame.getDiagramManager().getCurrentProject());
-		OCLOptions oclOptions = new OCLOptions(oclmodel.getOCLParser());		
+		OCL2AlloyOptions oclOptions = new OCL2AlloyOptions(oclmodel.getOCLParser());		
 		oclOptions.setTransformationType(oclOptPane.getTransformationsTypesListSelected());
     	oclOptions.setCommandScope(oclOptPane.getScopesListSelected());    			
 		//oclOptions.setConstraintList(oclOptView.getConstraintListSelected());

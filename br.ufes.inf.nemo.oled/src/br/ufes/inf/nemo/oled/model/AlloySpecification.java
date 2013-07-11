@@ -6,9 +6,9 @@ import java.io.IOException;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2alloy.OCL2Alloy;
-import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
-import br.ufes.inf.nemo.ontouml2alloy.Onto2Alloy;
-import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
  * 
@@ -57,7 +57,7 @@ public class AlloySpecification {
 	 * 
 	 * @throws Exception
 	 */
-	public AlloySpecification(String alloyPath,OntoUMLParser refparser, Onto2AlloyOptions optmodel) throws Exception
+	public AlloySpecification(String alloyPath,OntoUMLParser refparser, OntoUML2AlloyOptions optmodel) throws Exception
 	{
 		this();
 		
@@ -80,7 +80,7 @@ public class AlloySpecification {
 	 * 
 	 * @throws Exception
 	 */
-	public void setAlloyModel(String alloyPath, OntoUMLParser refparser, Onto2AlloyOptions optmodel) throws Exception
+	public void setAlloyModel(String alloyPath, OntoUMLParser refparser, OntoUML2AlloyOptions optmodel) throws Exception
 	{
 		setAlloyModel(alloyPath);				
 		setAlloyModel(refparser,optmodel);	
@@ -95,9 +95,9 @@ public class AlloySpecification {
 	 * 
 	 * @throws Exception
 	 */
-	public void setAlloyModel(OntoUMLParser refparser, Onto2AlloyOptions ontoOptions) throws Exception
+	public void setAlloyModel(OntoUMLParser refparser, OntoUML2AlloyOptions ontoOptions) throws Exception
 	{
-		Onto2Alloy ontouml2alloy = new Onto2Alloy(refparser, alsPath, ontoOptions);
+		OntoUML2Alloy ontouml2alloy = new OntoUML2Alloy(refparser, alsPath, ontoOptions);
 		content = ontouml2alloy.transform();		
 	}
 	
@@ -128,7 +128,7 @@ public class AlloySpecification {
 	 * 
 	 * @return
 	 */
-	public String addConstraints(OntoUMLParser refparser, OCLDocument oclmodel, OCLOptions oclOptions) throws IOException
+	public String addConstraints(OntoUMLParser refparser, OCLDocument oclmodel, OCL2AlloyOptions oclOptions) throws IOException
 	{
 		String result = new String();
 		result = "\n";

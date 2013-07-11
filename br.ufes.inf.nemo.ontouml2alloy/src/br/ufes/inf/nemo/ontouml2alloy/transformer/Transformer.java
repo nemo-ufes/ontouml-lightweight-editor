@@ -39,7 +39,7 @@ import br.ufes.inf.nemo.alloy.SignatureDeclaration;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2alloy.rules.AbstractnessClassRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.CardinalityRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.DerivationRelationRule;
@@ -60,7 +60,7 @@ import br.ufes.inf.nemo.ontouml2alloy.util.AlloyAPI;
 public class Transformer {
 	
 	public OntoUMLParser ontoparser;
-	public Onto2AlloyOptions options;
+	public OntoUML2AlloyOptions options;
 	public AlloyFactory factory;	
 	public AlloyModule module;
 	
@@ -93,7 +93,7 @@ public class Transformer {
 	/**
 	 * Constructor
 	 */
-	public Transformer (OntoUMLParser ontoparser, AlloyFactory factory, Onto2AlloyOptions options)
+	public Transformer (OntoUMLParser ontoparser, AlloyFactory factory, OntoUML2AlloyOptions options)
 	{
 		this.ontoparser = ontoparser;		
 		this.factory = factory;	
@@ -714,31 +714,34 @@ public class Transformer {
 		association_properties.setBlock(factory.createBlock());
 				
 		for (Association assoc : ontoparser.getAllInstances(Association.class))
-		{		
-			Property Source = assoc.getMemberEnd().get(0);
-			Property Target = assoc.getMemberEnd().get(1);
-			boolean isSourceImmutable = false;
-			boolean isTargetImmutable = false;
-			
-			if (assoc instanceof Meronymic) 
-			{ 
-				Meronymic m = ((Meronymic)assoc);
-				if (m.isIsInseparable() || m.isIsImmutableWhole() || m.sourceEnd().isIsReadOnly()) isSourceImmutable = true;
-				if (m.isIsEssential() || m.isIsImmutablePart() || m.targetEnd().isIsReadOnly()) isTargetImmutable = true;
-			}
-			if(Source.isIsReadOnly()) isSourceImmutable = true;
-			if(Target.isIsReadOnly()) isTargetImmutable = true;
-			
-			if(isSourceImmutable) 
-			{				
-				PredicateInvocation pI =  AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", ontoparser.getAlias(Target.getType()), ontoparser.getAlias(assoc));				
-				association_properties.getBlock().getExpression().add(pI);
-			}
-			
-			if(isTargetImmutable)
-			{								
-				PredicateInvocation pI = AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", ontoparser.getAlias(Source.getType()), ontoparser.getAlias(assoc));			
-				association_properties.getBlock().getExpression().add(pI);
+		{	
+			if (!(assoc instanceof Derivation))
+			{
+				Property Source = assoc.getMemberEnd().get(0);
+				Property Target = assoc.getMemberEnd().get(1);
+				boolean isSourceImmutable = false;
+				boolean isTargetImmutable = false;
+				
+				if (assoc instanceof Meronymic) 
+				{ 
+					Meronymic m = ((Meronymic)assoc);
+					if (m.isIsInseparable() || m.isIsImmutableWhole() || m.sourceEnd().isIsReadOnly()) isSourceImmutable = true;
+					if (m.isIsEssential() || m.isIsImmutablePart() || m.targetEnd().isIsReadOnly()) isTargetImmutable = true;
+				}
+				if(Source.isIsReadOnly()) isSourceImmutable = true;
+				if(Target.isIsReadOnly()) isTargetImmutable = true;
+				
+				if(isSourceImmutable) 
+				{				
+					PredicateInvocation pI =  AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", ontoparser.getAlias(Target.getType()), ontoparser.getAlias(assoc));				
+					association_properties.getBlock().getExpression().add(pI);
+				}
+				
+				if(isTargetImmutable)
+				{								
+					PredicateInvocation pI = AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", ontoparser.getAlias(Source.getType()), ontoparser.getAlias(assoc));			
+					association_properties.getBlock().getExpression().add(pI);
+				}
 			}
 		}
 		module.getParagraph().add(association_properties);
