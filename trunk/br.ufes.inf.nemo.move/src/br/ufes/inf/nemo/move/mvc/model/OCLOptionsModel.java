@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.move.mvc.model;
 
-import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
 
 /**
  * 
@@ -12,14 +12,14 @@ import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
 public class OCLOptionsModel {
 
 	/** OCL COnstraint Options. */
-	private OCLOptions option;
+	private OCL2AlloyOptions option;
 	
 	/**
 	 * Constructor.
 	 * 
 	 * @param opt
 	 */
-	public OCLOptionsModel (OCLOptions opt)
+	public OCLOptionsModel (OCL2AlloyOptions opt)
 	{
 		this.option = opt;
 	}
@@ -29,7 +29,7 @@ public class OCLOptionsModel {
 	 */
 	public OCLOptionsModel ()
 	{
-		this.option = new OCLOptions();
+		this.option = new OCL2AlloyOptions();
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class OCLOptionsModel {
 	 * 
 	 * @return
 	 */
-	public OCLOptions getOCLOptions()
+	public OCL2AlloyOptions getOCLOptions()
 	{
 		return option;
 	}
@@ -47,7 +47,7 @@ public class OCLOptionsModel {
 	 * 
 	 * @param opt
 	 */
-	public void setOCLOptions(OCLOptions opt)
+	public void setOCLOptions(OCL2AlloyOptions opt)
 	{
 		this.option = opt;
 	}	

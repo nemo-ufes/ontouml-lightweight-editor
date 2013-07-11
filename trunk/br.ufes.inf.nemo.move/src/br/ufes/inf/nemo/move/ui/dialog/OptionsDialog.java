@@ -21,8 +21,8 @@ import br.ufes.inf.nemo.move.mvc.model.OntoUMLOptionsModel;
 import br.ufes.inf.nemo.move.mvc.view.OCLOptionsView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLOptionsView;
 import br.ufes.inf.nemo.move.ui.TheFrame;
-import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
-import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
  * @author John Guerson
@@ -149,14 +149,14 @@ public class OptionsDialog extends JDialog {
 			
 	public void OkActionPerformed(ActionEvent event)
 	{
-		Onto2AlloyOptions ontoumlOptions = new Onto2AlloyOptions();
+		OntoUML2AlloyOptions ontoumlOptions = new OntoUML2AlloyOptions();
 		ontoumlOptions.antiRigidity = ontoumlOptView.isSelectedAntirigidity(); 
 		ontoumlOptions.identityPrinciple = ontoumlOptView.isSelectedIdentityPrinciple();
 		ontoumlOptions.weakSupplementationAxiom = ontoumlOptView.isSelectedWeakSupplementation();
 		ontoumlOptions.relatorAxiom = ontoumlOptView.isSelectedRelatorConstraint();			    	
 		ontoumlOptModel.setOptions(ontoumlOptions);
 		
-		OCLOptions oclOptions = new OCLOptions(frame.getManager().getOCLModel().getOCLParser());		
+		OCL2AlloyOptions oclOptions = new OCL2AlloyOptions(frame.getManager().getOCLModel().getOCLParser());		
 		oclOptions.setTransformationType(oclOptView.getTransformationsTypesListSelected());
     	oclOptions.setCommandScope(oclOptView.getScopesListSelected());    			
 		oclOptions.setConstraintList(oclOptView.getConstraintListSelected());

@@ -30,8 +30,8 @@ import br.ufes.inf.nemo.move.mvc.view.OCLView;
 import br.ufes.inf.nemo.move.mvc.view.OntoUMLView;
 import br.ufes.inf.nemo.move.tree.ontouml.OntoUMLCheckBoxTree;
 import br.ufes.inf.nemo.move.ui.dialog.AntiPatternListDialog;
-import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
-import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
  * This class represents a Manager to Models, View and Controllers of the main frame application.
@@ -365,7 +365,7 @@ public class TheManager {
 			oclmodel.setParser(oclview.parseConstraints());			
 						
 			// set options from the parser.
-			oclOptModel.setOCLOptions(new OCLOptions(oclmodel.getOCLParser()));
+			oclOptModel.setOCLOptions(new OCL2AlloyOptions(oclmodel.getOCLParser()));
 
 			// show Message
 			String msg =  "Constraints are syntactically correct.\n";
@@ -479,7 +479,7 @@ public class TheManager {
     	ontoumlview.getTheFrame().getManager().doModelDiagnostic();	
     	
     	// Guarantee accordance between the OntoUML model and Simulation options...
-    	ontoumlOptModel.setOptions(new Onto2AlloyOptions());
+    	ontoumlOptModel.setOptions(new OntoUML2AlloyOptions());
     	
     	if (!ontoumlmodel.getOntoUMLParser().getElementsWithIdentityMissing().isEmpty())
     	ontoumlOptModel.getOptions().identityPrinciple = false;    		    	

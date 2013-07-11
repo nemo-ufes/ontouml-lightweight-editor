@@ -19,7 +19,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
  * 
@@ -33,7 +33,7 @@ public class OntoUML2AlloyOptionsPane extends JPanel {
 	private static final long serialVersionUID = 4762609414668205905L;
 		
 	@SuppressWarnings("unused")
-	private Onto2AlloyOptions refOptions;
+	private OntoUML2AlloyOptions refOptions;
 		
 	private AppFrame frame;
 	private JCheckBox cbxRelator;
@@ -60,7 +60,7 @@ public class OntoUML2AlloyOptionsPane extends JPanel {
 	 * @param optModel
 	 * @param frame
 	 */
-	public OntoUML2AlloyOptionsPane(Onto2AlloyOptions refOptions, AppFrame frame)
+	public OntoUML2AlloyOptionsPane(OntoUML2AlloyOptions refOptions, AppFrame frame)
 	{
 		this();
 		
@@ -73,7 +73,7 @@ public class OntoUML2AlloyOptionsPane extends JPanel {
 	/**
 	 * Set OntoUML Options Pane from OntoUML2Alloy Options.
 	 */
-	public void setOntoUMLOptionsPane (Onto2AlloyOptions refOptions)
+	public void setOntoUMLOptionsPane (OntoUML2AlloyOptions refOptions)
 	{
 		this.cbxAntirigidity.setSelected(refOptions.antiRigidity);
 				

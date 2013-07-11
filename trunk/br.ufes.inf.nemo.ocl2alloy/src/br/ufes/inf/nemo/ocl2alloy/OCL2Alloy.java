@@ -29,13 +29,13 @@ public class OCL2Alloy {
 	 * @param refparser
 	 * @return
 	 */
-	public static String Transformation (OCLParser oclparser, OCLOptions opt, OntoUMLParser refparser)
+	public static String Transformation (OCLParser oclparser, OCL2AlloyOptions opt, OntoUMLParser refparser)
 	{
 		String result = new String();			
 		log = new String();		
 		succeeds = false;
 		
-		OCLToAlloyVisitor myVisitor = new OCLToAlloyVisitor(oclparser,refparser);
+		OCL2AlloyVisitor myVisitor = new OCL2AlloyVisitor(oclparser,refparser);
 		
 		/*
 		 * Tests:
@@ -92,7 +92,7 @@ public class OCL2Alloy {
 		log = new String();		
 		succeeds = false;
 				
-		OCLToAlloyVisitor myVisitor = new OCLToAlloyVisitor(oclparser,refparser);
+		OCL2AlloyVisitor myVisitor = new OCL2AlloyVisitor(oclparser,refparser);
 						
 		if(stereo.equals("RESTRIC")) myVisitor.stereo_invariant="RESTRICT";		
 		if(stereo.equals("SIMULATE")) myVisitor.stereo_invariant="SIMULATE";		

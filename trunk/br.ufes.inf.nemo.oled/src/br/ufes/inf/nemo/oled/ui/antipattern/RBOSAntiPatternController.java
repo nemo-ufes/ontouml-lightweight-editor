@@ -8,7 +8,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.ModelTree;
-import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
  * @author John Guerson
@@ -48,7 +48,7 @@ public class RBOSAntiPatternController {
 	    		String predicates = new String();
 	    		OntoUMLParser refparser = ModelTree.getParserFor(rbosView.getFrame().getDiagramManager().getCurrentProject());
 	    		UmlProject project = rbosView.getFrame().getDiagramManager().getCurrentProject();
-	    		Onto2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(project);
+	    		OntoUML2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(project);
 	    		
 	    		if(rbosView.isSelectedAntiSymmetric()) 
 	    		{

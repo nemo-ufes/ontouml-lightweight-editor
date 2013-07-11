@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
+import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.draw.Scaling;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
@@ -36,7 +36,7 @@ import br.ufes.inf.nemo.oled.ui.dialog.LicensesDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.SimulationOptionsDialog;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.MethodCall;
-import br.ufes.inf.nemo.ontouml2alloy.Onto2AlloyOptions;
+import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
  * This class receives BaseEditor related AppCommands and dispatches them to
@@ -324,10 +324,10 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void generatesAlloy()
 	{	
 		manager.parseOCL(false);
-		OCLOptions oclOptions = ModelTree.getOCLOptionsFor(manager.getCurrentProject());
+		OCL2AlloyOptions oclOptions = ModelTree.getOCLOptionsFor(manager.getCurrentProject());
 		
 		OntoUMLParser refparser = ModelTree.getParserFor(manager.getCurrentProject());
-		Onto2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(manager.getCurrentProject());
+		OntoUML2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(manager.getCurrentProject());
 		
 		refOptions.openAnalyzer=true;    	
     	if (!refparser.getElementsWithIdentityMissing().isEmpty()) refOptions.identityPrinciple = false;    		    	
