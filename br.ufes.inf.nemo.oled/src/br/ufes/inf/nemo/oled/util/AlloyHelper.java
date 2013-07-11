@@ -1,19 +1,15 @@
 package br.ufes.inf.nemo.oled.util;
 
-import java.awt.EventQueue;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.UIManager;
-
 import RefOntoUML.Model;
-import br.ufes.inf.nemo.move.ui.TheFrame;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 
 public class AlloyHelper {
 	
    public static OperationResult validateModel(final Model refmodel, List<SimulationElement> simulationElements, String tempDir)
-   {	   
+   {/*	   
 	   	String directoryPath	= ConfigurationHelper.getCanonPath(tempDir,"");	
 
 	   	final String alsPath;
@@ -35,9 +31,9 @@ public class AlloyHelper {
     				try {
     					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-    					TheFrame frame = new TheFrame(refmodel,"",alsPath);
-    					frame.setVisible(true);
-    					frame.setLocationRelativeTo(null);
+    					//TheFrame frame = new TheFrame(refmodel,"",alsPath);
+    					//frame.setVisible(true);
+    					//frame.setLocationRelativeTo(null);
     				
     				} catch (Exception ex) {
     					ex.printStackTrace();
@@ -56,7 +52,7 @@ public class AlloyHelper {
     	
     	if (!succeeds) 
     		return new OperationResult(ResultType.ERROR, "An Error ocurred while calling the Model Validation Environment \n"+message, null);
-    	    	
+    	*/
     	return new OperationResult(ResultType.ERROR, "A problem has ocurred when verifying the model", null);
 	}
 	   

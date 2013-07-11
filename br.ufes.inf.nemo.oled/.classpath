@@ -8,7 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2sbvr"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2simpleowl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.xmi2ontouml"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.move"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2text"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/checkboxtree/lablib-checkboxtree-3.3.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>

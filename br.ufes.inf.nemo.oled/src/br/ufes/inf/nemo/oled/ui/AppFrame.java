@@ -15,8 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
-import br.ufes.inf.nemo.move.ui.util.Extractor;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.util.AlloyExtractorUtil;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -63,7 +63,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 
 		// extract alloy jar file and open alloy
 		try {			
-			Extractor.alloyAnalyzerJAR();
+			AlloyExtractorUtil.alloyAnalyzerJAR();
 		} catch (IOException e) {			
 			e.printStackTrace();
 		}		
