@@ -24,11 +24,12 @@ public class SSRAntiPattern extends Antipattern {
 	 * Select in the OntoUML model only those elements related with this antipattern...
 	 */
 	@Override
-	public void setSelected(OntoUMLParser parser) {
+	public OntoUMLParser setSelected(OntoUMLParser parser) {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
 		parser.selectThisElements(selection,true);
-		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);		
+		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
+		return parser;
 	}
 	
 	/**

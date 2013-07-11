@@ -289,7 +289,7 @@ public class RSAntiPattern extends Antipattern{
 	}
 	
 	@Override
-	public void setSelected(OntoUMLParser parser) {
+	public OntoUMLParser setSelected(OntoUMLParser parser) {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
 		selection.add(general);
@@ -301,5 +301,6 @@ public class RSAntiPattern extends Antipattern{
 		
 		parser.selectThisElements(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.ALL_ANCESTORS, false);
+		return parser;
 	}
 }
