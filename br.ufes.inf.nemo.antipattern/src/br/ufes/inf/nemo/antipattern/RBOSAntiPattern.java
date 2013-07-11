@@ -194,7 +194,7 @@ public class RBOSAntiPattern extends Antipattern{
 	}
 
 	@Override
-	public void setSelected(OntoUMLParser parser) {
+	public OntoUMLParser setSelected(OntoUMLParser parser) {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
 		selection.add(source);
@@ -203,6 +203,7 @@ public class RBOSAntiPattern extends Antipattern{
 		
 		parser.selectThisElements(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
+		return parser;
 		
 	}
 

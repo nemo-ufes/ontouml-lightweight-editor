@@ -309,7 +309,7 @@ public class IAAntiPattern extends Antipattern{
 
 
 	@Override
-	public void setSelected(OntoUMLParser parser) {
+	public OntoUMLParser setSelected(OntoUMLParser parser) {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
 		selection.add(association);
@@ -318,7 +318,7 @@ public class IAAntiPattern extends Antipattern{
 				
 		parser.selectThisElements(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
-		
+		return parser;
 	}
 
 }

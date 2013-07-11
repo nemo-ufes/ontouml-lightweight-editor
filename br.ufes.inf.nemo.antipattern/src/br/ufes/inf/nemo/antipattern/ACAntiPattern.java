@@ -199,7 +199,7 @@ public class ACAntiPattern extends Antipattern{
 	}
 
 	@Override
-	public void setSelected(OntoUMLParser parser) {
+	public OntoUMLParser setSelected(OntoUMLParser parser) {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
 		for (Class c : this.cycle)
@@ -209,7 +209,7 @@ public class ACAntiPattern extends Antipattern{
 		
 		parser.selectThisElements(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
-		
+		return parser;
 	}
 	
 	/*public String generateClosedCyclePredicate(OntoUMLParser mapper, int cardinality) {

@@ -216,7 +216,7 @@ public class STRAntiPattern extends Antipattern{
 	}
 
 	@Override
-	public void setSelected(OntoUMLParser parser) {
+	public OntoUMLParser setSelected(OntoUMLParser parser) {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
 		selection.add(type);
@@ -224,6 +224,7 @@ public class STRAntiPattern extends Antipattern{
 		
 		parser.selectThisElements(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY, false);
+		return parser;
 	}
 	
 

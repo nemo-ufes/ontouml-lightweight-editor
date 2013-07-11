@@ -9,7 +9,6 @@ import RefOntoUML.Mediation;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.Type;
-import RefOntoUML.util.RefOntoUMLAdapterFactory;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
@@ -59,7 +58,7 @@ public class TRIAntiPattern extends Antipattern {
 	 * Select in the OntoUML model only those elements related with this antipattern...
 	 */
 	@Override
-	public void setSelected(OntoUMLParser parser) {
+	public OntoUMLParser setSelected(OntoUMLParser parser) {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
 		selection.add(relator);
@@ -68,7 +67,8 @@ public class TRIAntiPattern extends Antipattern {
 		}
 		
 		parser.selectThisElements(selection,true);
-		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);		
+		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
+		return parser;
 	}
 	
 	/**
