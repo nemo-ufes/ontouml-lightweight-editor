@@ -30,19 +30,10 @@ import br.ufes.inf.nemo.antipattern.STRAntiPattern;
 import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
 import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.move.mvc.model.ACAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.AntiPatternListModel;
-import br.ufes.inf.nemo.move.mvc.model.IAAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.MRBSAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.RBOSAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.RSAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.RWORAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.RWRTAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.SSRAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.STRAntiPatternModel;
-import br.ufes.inf.nemo.move.mvc.model.TRIAntiPatternModel;
-import br.ufes.inf.nemo.move.ui.TheFrame;
-
+import br.ufes.inf.nemo.oled.antipattern.AntiPatternList;
+import br.ufes.inf.nemo.oled.ui.AppFrame;
+import br.ufes.inf.nemo.oled.ui.DiagramManager;
+import br.ufes.inf.nemo.oled.ui.ModelTree;
 
 /**
  * @author John Guerson
@@ -52,7 +43,7 @@ public class AntiPatternListDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 		
-	private TheFrame frame;
+	private AppFrame frame;
 	
 	private final JPanel contentPanel = new JPanel();	
 	private JCheckBox cbxSTR;
@@ -85,7 +76,7 @@ public class AntiPatternListDialog extends JDialog {
 	/**
 	 * Open the Dialog.
 	 */
-	public static void  open (TheFrame parent)
+	public static void  open (AppFrame parent)
 	{
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -103,7 +94,7 @@ public class AntiPatternListDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public AntiPatternListDialog(TheFrame frame) 
+	public AntiPatternListDialog(AppFrame frame) 
 	{
 		super(frame);
 		
@@ -329,130 +320,91 @@ public class AntiPatternListDialog extends JDialog {
 	{
 		try{
 		
-		ArrayList<ACAntiPatternModel> acListModel = new ArrayList<ACAntiPatternModel>();
-		ArrayList<RSAntiPatternModel> rsListModel = new ArrayList<RSAntiPatternModel>();
-		ArrayList<RBOSAntiPatternModel> rbosListModel = new ArrayList<RBOSAntiPatternModel>();				
-		ArrayList<STRAntiPatternModel> strListModel = new ArrayList<STRAntiPatternModel>();
-		ArrayList<RWORAntiPatternModel> rworListModel = new ArrayList<RWORAntiPatternModel>();				
-		ArrayList<IAAntiPatternModel> iaListModel = new ArrayList<IAAntiPatternModel>();
-		ArrayList<RWRTAntiPatternModel> rwrtListModel = new ArrayList<RWRTAntiPatternModel>();
-		ArrayList<TRIAntiPatternModel> triListModel = new ArrayList<TRIAntiPatternModel>();
-		ArrayList<MRBSAntiPatternModel> mrbsListModel = new ArrayList<MRBSAntiPatternModel>();
-		ArrayList<SSRAntiPatternModel> ssrListModel = new ArrayList<SSRAntiPatternModel>();
+		ArrayList<ACAntiPattern> acListModel = new ArrayList<ACAntiPattern>();
+		ArrayList<RSAntiPattern> rsListModel = new ArrayList<RSAntiPattern>();
+		ArrayList<RBOSAntiPattern> rbosListModel = new ArrayList<RBOSAntiPattern>();				
+		ArrayList<STRAntiPattern> strListModel = new ArrayList<STRAntiPattern>();
+		ArrayList<RWORAntiPattern> rworListModel = new ArrayList<RWORAntiPattern>();				
+		ArrayList<IAAntiPattern> iaListModel = new ArrayList<IAAntiPattern>();
+		ArrayList<RWRTAntiPattern> rwrtListModel = new ArrayList<RWRTAntiPattern>();
+		ArrayList<TRIAntiPattern> triListModel = new ArrayList<TRIAntiPattern>();
+		ArrayList<MRBSAntiPattern> mrbsListModel = new ArrayList<MRBSAntiPattern>();
+		ArrayList<SSRAntiPattern> ssrListModel = new ArrayList<SSRAntiPattern>();
 		
-		frame.getManager().doAutoSelectionCompletion(OntoUMLParser.NO_HIERARCHY);
+		DiagramManager.autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,frame.getDiagramManager().getCurrentProject());
 		
-		OntoUMLParser parser = frame.getManager().getOntoUMLModel().getOntoUMLParser();
+		OntoUMLParser parser = ModelTree.getParserFor(frame.getDiagramManager().getCurrentProject());
+		
 		if (parser.getElements() == null) return;
 		
 		if (ACisSelected()) 
-		{
-			int id=1;
+		{			
 			for(ACAntiPattern ac: AntiPatternIdentifier.identifyAC(parser)) 
-			{
-				ACAntiPatternModel acModel = new ACAntiPatternModel(ac);
-				acModel.setId(id++);				
-				
-				acListModel.add(acModel);
+			{				
+				acListModel.add(ac);
 			}
 		}
 		if (RSisSelected())	
-		{
-			int id=1;
+		{			
 			for(RSAntiPattern rs: AntiPatternIdentifier.identifyRS(parser)) 
-			{
-				RSAntiPatternModel rsModel = new RSAntiPatternModel(rs);
-				rsModel.setId(id++);	
-				
-				rsListModel.add(rsModel);
+			{				
+				rsListModel.add(rs);
 			}
 		}
 		if (RBOSisSelected()) 
-		{
-			int id=1;
+		{			
 			for(RBOSAntiPattern rbos: AntiPatternIdentifier.identifyRBOS(parser)) 
-			{
-				RBOSAntiPatternModel rbosModel = new RBOSAntiPatternModel(rbos);
-				rbosModel.setId(id++);	
-				
-				rbosListModel.add(rbosModel);
+			{				
+				rbosListModel.add(rbos);
 			}		
 		}				
 		if (STRisSelected()) 
-		{
-			int id=1;
+		{			
 			for(STRAntiPattern str: AntiPatternIdentifier.identifySTR(parser)) 
 			{
-				STRAntiPatternModel strModel = new STRAntiPatternModel(str);
-				strModel.setId(id++);	
-				
-				strListModel.add(strModel);
+				strListModel.add(str);
 			}	
 		}		
 		if (RWORisSelected()) 
-		{
-			int id=1;
+		{			
 			for(RWORAntiPattern rwor: AntiPatternIdentifier.identifyRWOR(parser)) 
 			{
-				RWORAntiPatternModel rworModel = new RWORAntiPatternModel(rwor);
-				rworModel.setId(id++);	
-			
-				rworListModel.add(rworModel);
+				rworListModel.add(rwor);
 			}	
 		}
 		if (IAisSelected()) 
-		{
-			int id=1;
+		{			
 			for(IAAntiPattern ia: AntiPatternIdentifier.identifyIA(parser)) 
 			{
-				IAAntiPatternModel iaModel = new IAAntiPatternModel(ia);
-				iaModel.setId(id++);	
-			
-				iaListModel.add(iaModel);
+				iaListModel.add(ia);
 			}	
 		}
 		if (RWRTisSelected()) 
-		{
-			int id=1;
+		{			
 			for(RWRTAntiPattern rwrt: AntiPatternIdentifier.identifyRWRT(parser)) 
 			{
-				RWRTAntiPatternModel rwrtModel = new RWRTAntiPatternModel(rwrt);
-				rwrtModel.setId(id++);	
-			
-				rwrtListModel.add(rwrtModel);
+				rwrtListModel.add(rwrt);
 			}	
 		}
 		if (TRIisSelected()) 
-		{
-			int id=1;
+		{			
 			for(TRIAntiPattern tri: AntiPatternIdentifier.identifyTRI(parser)) 
 			{
-				TRIAntiPatternModel triModel = new TRIAntiPatternModel(tri);
-				triModel.setId(id++);	
-			
-				triListModel.add(triModel);
+				triListModel.add(tri);
 			}	
 		}
 		if (MRBSisSelected()) 
-		{
-			int id=1;
+		{		
 			for(MRBSAntiPattern mrbs: AntiPatternIdentifier.identifyMRBS(parser)) 
 			{
-				MRBSAntiPatternModel mrbsModel = new MRBSAntiPatternModel(mrbs);
-				mrbsModel.setId(id++);	
-			
-				mrbsListModel.add(mrbsModel);
+				mrbsListModel.add(mrbs);
 			}	
 		}
 		if (SSRisSelected()) 
-		{
-			int id=1;
+		{			
 			for(SSRAntiPattern ssr: AntiPatternIdentifier.identifySSR(parser)) 
 			{
-				SSRAntiPatternModel ssrModel = new SSRAntiPatternModel(ssr);
-				ssrModel.setId(id++);	
-			
-				ssrListModel.add(ssrModel);
+				ssrListModel.add(ssr);
 			}	
 		}
 		
@@ -474,17 +426,19 @@ public class AntiPatternListDialog extends JDialog {
 		{
 			JOptionPane.showMessageDialog(this,result,"AntiPatterns Manager - Searching",JOptionPane.INFORMATION_MESSAGE);			
 			
-			AntiPatternListModel antipatternListModel = new AntiPatternListModel
+			AntiPatternList antipatternList = new AntiPatternList
 			(
 					acListModel,rbosListModel,strListModel,rsListModel,rworListModel,iaListModel
 			);
-			
-			frame.getManager().setAntiPatternListModel(antipatternListModel);			
-			frame.ShowAntiPatternView();
+
+			ModelTree.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
+
+			// FIX THIS TO CONTINNUE
+			//frame.ShowAntiPatternView();
 		}		 
 		
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(this,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this,e.getMessage(),"Managing AntiPattern",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 		

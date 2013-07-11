@@ -44,8 +44,8 @@ public class IAAntiPatternPane extends JPanel {
 	private JCheckBox cbxTargetCustom;
 	private HashMap<Classifier,JCheckBox> sourceSubtypesMap;
 	private HashMap<Classifier,JCheckBox> targetSubtypesMap;
-	private CheckBoxListScrollPane checkListSource;		
-	private CheckBoxListScrollPane checkListTarget;
+	private CheckListScrollPane checkListSource;		
+	private CheckListScrollPane checkListTarget;
 	private JLabel lblImpreciseAbstraction;
 	private JButton btnOclSolution;
 	private JButton btnExecuteWithAnalyzer;
@@ -157,9 +157,9 @@ public class IAAntiPatternPane extends JPanel {
 		cbxSourceCustom = new JCheckBox("Source Custom");		
 		cbxTargetCustom = new JCheckBox("Target Custom");
 		
-		checkListSource = new CheckBoxListScrollPane();		
+		checkListSource = new CheckListScrollPane();		
 		checkListSource.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		checkListTarget = new CheckBoxListScrollPane();
+		checkListTarget = new CheckListScrollPane();
 		checkListTarget.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
 		GroupLayout gl_cbxPanel = new GroupLayout(cbxPanel);
