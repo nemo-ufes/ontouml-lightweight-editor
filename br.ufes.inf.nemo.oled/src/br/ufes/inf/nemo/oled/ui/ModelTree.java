@@ -13,6 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
+import br.ufes.inf.nemo.oled.antipattern.AntiPatternList;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -37,6 +38,7 @@ public class ModelTree extends JPanel {
 	private OCLDocument oclmodel;
 	private Onto2AlloyOptions refOptions;
 	private OCLOptions oclOptions;
+	private AntiPatternList antipatterns;
 	
 	private ModelTree(UmlProject project)
 	{
@@ -56,6 +58,7 @@ public class ModelTree extends JPanel {
 		oclmodel = new OCLDocument();
 		oclOptions = new OCLOptions();
 		refOptions = new Onto2AlloyOptions();
+		antipatterns = new AntiPatternList();
 		
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
@@ -108,6 +111,16 @@ public class ModelTree extends JPanel {
 	public static void setOntoUMLOptionsFor(UmlProject project, Onto2AlloyOptions refOptions)
 	{
 		ModelTree.getTreeFor(project).refOptions = refOptions;
+	}
+	
+	public static AntiPatternList getAntiPatternListFor(UmlProject project)
+	{
+		return ModelTree.getTreeFor(project).antipatterns;
+	}
+
+	public static void setAntiPatternListFor(UmlProject project, AntiPatternList antipatterns)
+	{
+		ModelTree.getTreeFor(project).antipatterns = antipatterns;
 	}
 	
 	/**

@@ -25,6 +25,7 @@ import java.util.Map;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2alloy.OCLOptions;
 import br.ufes.inf.nemo.oled.dialog.AboutDialog;
+import br.ufes.inf.nemo.oled.dialog.AntiPatternListDialog;
 import br.ufes.inf.nemo.oled.dialog.AutoCompletionDialog;
 import br.ufes.inf.nemo.oled.dialog.LicensesDialog;
 import br.ufes.inf.nemo.oled.dialog.SimulationOptionsDialog;
@@ -262,6 +263,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("GENERATE_ALLOY", new MethodCall(
 					getClass().getMethod("generatesAlloy")));
 			
+			selectorMap.put("ANTIPATTERN", new MethodCall(
+					getClass().getMethod("manageAntiPatterns")));
+			
 			selectorMap.put("VERIFY_SETTINGS", new MethodCall(
 					getClass().getMethod("verifySettings")));
 			
@@ -282,6 +286,8 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			
 			selectorMap.put("GENERATE_TEXT", new MethodCall(
 					getClass().getMethod("generateText")));
+			
+			//======================
 			
 			selectorMap.put("ERROR", new MethodCall(
 					getClass().getMethod("searchErrors")));
@@ -331,6 +337,11 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
     	if (!refparser.getWholesWithInvalidWeakSupplementation().isEmpty()) refOptions.weakSupplementationAxiom = false;
 		
 		SimulationOptionsDialog.open(refOptions, oclOptions, manager.getFrame());
+	}
+	
+	public void manageAntiPatterns()
+	{
+		AntiPatternListDialog.open(manager.getFrame());		
 	}
 	
 	public void parseOCL()
