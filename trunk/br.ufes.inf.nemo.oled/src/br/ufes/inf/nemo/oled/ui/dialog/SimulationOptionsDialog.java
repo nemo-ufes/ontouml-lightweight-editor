@@ -95,7 +95,7 @@ public class SimulationOptionsDialog extends JDialog {
 		super(frame);
 		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(SimulationOptionsDialog.class.getResource("/resources/icon/options.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(SimulationOptionsDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/options.png")));
 		setTitle("Options");
 		setSize(new Dimension(611, 400));
 		

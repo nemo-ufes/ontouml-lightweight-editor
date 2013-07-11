@@ -62,8 +62,7 @@ public class MainToolbar implements ActionListener {
 		toolbar.addSeparator();
 		createButton("undo");
 		createButton("redo");
-		toolbar.addSeparator();
-		
+				
 		enableButton("UNDO", false);
 		enableButton("REDO", false);
 		enableButton("CUT", false);

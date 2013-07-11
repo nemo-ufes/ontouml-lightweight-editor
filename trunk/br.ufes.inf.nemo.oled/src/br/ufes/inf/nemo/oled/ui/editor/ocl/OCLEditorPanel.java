@@ -6,11 +6,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.BadLocationException;
 
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
@@ -67,7 +65,7 @@ public class OCLEditorPanel extends JPanel {
 	    textArea.setCodeFoldingEnabled(false);
 		textArea.setForeground(Color.BLACK);
 		textArea.setBackground(new Color(255, 255, 255));				
-		setTheme(textArea,"/br/ufes/inf/nemo/move/editor/ocl/EclipseTheme.xml");
+		setTheme(textArea,"/br/ufes/inf/nemo/oled/ui/editor/ocl/EclipseTheme.xml");
 		//textArea.setCurrentLineHighlightColor(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));		
 						
 		tokenMaker = new OCLTokenMaker();	    
@@ -150,13 +148,7 @@ public class OCLEditorPanel extends JPanel {
 	 */
 	public void addErrorTrackingIcon(int line)
 	{
-		Gutter gutter = scrollPane.getGutter();
-      	try {
-			gutter.addLineTrackingIcon(line, new ImageIcon(OCLEditorPanel.class.getResource("/resources/icon/ocl/error_obj.gif")));
-		} catch (BadLocationException e) {			
-			frame.showErrorMessageDialog("Bad Location - Editor's Line", e.getMessage());
-			e.printStackTrace();
-		}	
+			
 	}
 	
 	/**
