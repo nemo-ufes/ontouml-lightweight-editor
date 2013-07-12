@@ -379,23 +379,6 @@ public class OntoUMLParser {
 	}
 			
 	/**
-	 * This method gets all the OntoUML Generalizations that the Classifier c is the general classifier.
-	 * 
-	 * @return
-	 */
-	public Set<Generalization> getSpecializations(Classifier c)
-	{
-		Set<Generalization> list = new HashSet<Generalization>();		
-		for (EObject obj : getElements()) 
-		{
-			if(obj instanceof Generalization && ((Generalization)obj).getGeneral().equals(c)) 
-				
-			list.add((Generalization)obj);			
-		}		
-		return list;
-	}
-			
-	/**
 	 * This method gets rigid Classes of the model.
 	 * 
 	 * @return
