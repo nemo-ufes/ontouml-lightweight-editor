@@ -9,8 +9,8 @@ import org.eclipse.emf.common.util.Diagnostic;
 
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 
+import RefOntoUML.Element;
 import RefOntoUML.Model;
-import RefOntoUML.PackageableElement;
 
 /**
  * Helper class for dealing with model validation
@@ -36,7 +36,7 @@ public class VerificationHelper {
 		long validationEndMilis = System.currentTimeMillis();
 		
 		StringBuilder sb = new StringBuilder();		
-		Map<PackageableElement, String> errorsMap = new HashMap<PackageableElement, String>();
+		Map<Element, String> errorsMap = new HashMap<Element, String>();
 		
 		if(!valid)
 		{
@@ -44,7 +44,7 @@ public class VerificationHelper {
 			
 			for (Diagnostic item : diag.getChildren()) {
 				
-				PackageableElement element = (PackageableElement) item.getData().get(0);
+				Element element = (Element) item.getData().get(0);
 				String errors = "";
 				
 				if(errorsMap.containsKey(element))

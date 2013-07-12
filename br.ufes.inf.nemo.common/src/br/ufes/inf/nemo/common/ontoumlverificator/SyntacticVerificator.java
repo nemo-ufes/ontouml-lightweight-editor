@@ -28,9 +28,9 @@ public class SyntacticVerificator {
 		Map<Object, Object> context = new HashMap<Object, Object>();
 		BasicDiagnostic diag = new BasicDiagnostic();
 
-		// Returns true if the model is valid.
 		Map<PackageableElement, String> errorsMap = new HashMap<PackageableElement, String>();
 		
+		// Returns true if the model is valid.
 		if(!validator.validate(refmodel, diag, context))
 		{			
 			result+="The model is not valid syntactically. The following error(s) where found:\n\n";
