@@ -35,7 +35,7 @@ public class OCL2Alloy {
 		log = new String();		
 		succeeds = false;
 		
-		OCL2AlloyVisitor myVisitor = new OCL2AlloyVisitor(oclparser,refparser);
+		OCLVisitor myVisitor = new OCLVisitor(oclparser,refparser);
 		
 		/*
 		 * Tests:
@@ -48,7 +48,7 @@ public class OCL2Alloy {
 		{	
 			try{	
 		
-				myVisitor.stereo_invariant = opt.getTransformationType(ct);
+				myVisitor.stereotype = opt.getTransformationType(ct);
 				result += myVisitor.visitConstraint(ct);
 				succeeds = true;
 				
@@ -92,11 +92,11 @@ public class OCL2Alloy {
 		log = new String();		
 		succeeds = false;
 				
-		OCL2AlloyVisitor myVisitor = new OCL2AlloyVisitor(oclparser,refparser);
+		OCLVisitor myVisitor = new OCLVisitor(oclparser,refparser);
 						
-		if(stereo.equals("RESTRIC")) myVisitor.stereo_invariant="RESTRICT";		
-		if(stereo.equals("SIMULATE")) myVisitor.stereo_invariant="SIMULATE";		
-		if(stereo.equals("CHECK")) myVisitor.stereo_invariant="CHECK";
+		if(stereo.equals("RESTRIC")) myVisitor.stereotype="RESTRICT";		
+		if(stereo.equals("SIMULATE")) myVisitor.stereotype="SIMULATE";		
+		if(stereo.equals("CHECK")) myVisitor.stereotype="CHECK";
 		
 		/*
 		 * Tests:
