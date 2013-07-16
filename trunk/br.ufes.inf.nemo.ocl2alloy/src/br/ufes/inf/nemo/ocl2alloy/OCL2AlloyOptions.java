@@ -11,9 +11,12 @@ import org.eclipse.uml2.uml.Constraint;
 
 public class OCL2AlloyOptions {
 
-	private ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();	
+	private ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();
+	
 	private ArrayList<String> constraintType = new ArrayList<String>();
+	
 	private ArrayList<String> transformationType = new ArrayList<String>();
+	
 	private ArrayList<Integer> commandScope = new ArrayList<Integer>();	
 	
 	/**
@@ -32,7 +35,7 @@ public class OCL2AlloyOptions {
 		{
 			constraintsList.add(ct);
 			constraintType.add(oclparser.getUMLReflection().getStereotype(ct));
-			transformationType.add("RESTRICT");
+			transformationType.add("FACT");
 			commandScope.add(10);
 		}		
 	}
@@ -40,10 +43,7 @@ public class OCL2AlloyOptions {
 	/**
 	 * Constructor.
 	 */
-	public OCL2AlloyOptions()
-	{
-		
-	}
+	public OCL2AlloyOptions() {}
 	
 	/*
 	 * Getters... 

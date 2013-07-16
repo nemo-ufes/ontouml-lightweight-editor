@@ -3,14 +3,11 @@ package br.ufes.inf.nemo.ocl2alloy;
 import org.eclipse.uml2.uml.Constraint;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-
 import br.ufes.inf.nemo.ocl2alloy.exception.IteratorException;
 import br.ufes.inf.nemo.ocl2alloy.exception.LiteralException;
 import br.ufes.inf.nemo.ocl2alloy.exception.OperationException;
 import br.ufes.inf.nemo.ocl2alloy.exception.StereotypeException;
 import br.ufes.inf.nemo.ocl2alloy.exception.TypeException;
-
-
 
 /**
  * @author John Guerson
@@ -53,23 +50,23 @@ public class OCL2Alloy {
 				succeeds = true;
 				
 			}catch(IteratorException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";
+				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n";
 				succeeds=false;
 				
 			}catch(LiteralException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";;
+				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n";
 				succeeds=false; 
 				
 			}catch(OperationException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";;
+				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n";
 				succeeds=false; 
 				
 			}catch(StereotypeException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";;
+				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n";
 				succeeds=false; 
 				
 			}catch(TypeException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";;
+				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n";
 				succeeds=false; 
 			}			
 		}
@@ -94,7 +91,7 @@ public class OCL2Alloy {
 				
 		OCLVisitor myVisitor = new OCLVisitor(oclparser,refparser);
 						
-		if(stereo.equals("RESTRIC")) myVisitor.stereotype="RESTRICT";		
+		if(stereo.equals("FACT")) myVisitor.stereotype="FACT";		
 		if(stereo.equals("SIMULATE")) myVisitor.stereotype="SIMULATE";		
 		if(stereo.equals("CHECK")) myVisitor.stereotype="CHECK";
 		
@@ -112,27 +109,27 @@ public class OCL2Alloy {
 			succeeds = true;			
 						
 		}catch(IteratorException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";
+			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n";
 			succeeds=false; 
 			
 		}catch(LiteralException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";;
+			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n";
 			succeeds=false; 
 			
 		}catch(OperationException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";;
+			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n";
 			succeeds=false; 
 			
 		}catch(StereotypeException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";;
+			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n";
 			succeeds=false; 
 			
 		}catch(TypeException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"+"This Constraint was not transformed into Alloy.\n";;
+			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n";
 			succeeds=false; 
 		}
 		
-		if (succeeds) log += "\nThe transformation from OCL to Alloy was executed successfully.";
+		if (succeeds) log += "\nOCL2Alloy executed successfully.";
 		return result;
 	}
 }

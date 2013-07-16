@@ -64,7 +64,7 @@ public class SingleConstraintPane extends JPanel {
 		
 		comboTransformationType = new JComboBox();
 		comboTransformationType.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		comboTransformationType.setModel(new DefaultComboBoxModel(new String[] {"RESTRICT ", "SIMULATE", "CHECK"}));		
+		comboTransformationType.setModel(new DefaultComboBoxModel(new String[] {"FACT ", "SIMULATE", "CHECK"}));		
 				
 		txtConstraintName = new JTextField();
 		txtConstraintName.setBorder(new LineBorder(Color.LIGHT_GRAY));
