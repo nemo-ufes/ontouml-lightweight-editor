@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ontouml2uml;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -53,7 +54,7 @@ public class OntoUML2UML {
 		transformer = new Transformation(refparser,ignorePackageHierarchy);			  
 		org.eclipse.uml2.uml.Package umlmodel = transformer.Transform();	
    		   
-		umlResource = saveUML(umlPath,umlmodel);		   
+		umlResource = saveUML(umlPath,umlmodel,true);		   
 		return umlResource;
 	}
 	
@@ -73,7 +74,7 @@ public class OntoUML2UML {
 		transformer = new Transformation(refparser,ignorePackageHierarchy);			  
 		org.eclipse.uml2.uml.Package umlmodel = transformer.Transform();	
    		   
-		umlResource = saveUML(umlPath,umlmodel);		   
+		umlResource = saveUML(umlPath,umlmodel,true);		   
 		return umlResource;
 	}
 		
@@ -84,7 +85,7 @@ public class OntoUML2UML {
 	 * @param umlmodel
 	 * @return
 	 */
-	public static Resource saveUML (String umlpath, org.eclipse.uml2.uml.Package umlmodel) 
+	public static Resource saveUML (String umlpath, org.eclipse.uml2.uml.Package umlmodel, boolean deleteOnExit) 
 	{
 		ResourceSet rset = new ResourceSetImpl();
 		
@@ -100,6 +101,9 @@ public class OntoUML2UML {
 	    }catch(IOException e){
 	    	e.printStackTrace();
 	    }
+	    
+	    File file = new File(umlpath);
+	    file.deleteOnExit();
 	    
 	    return resource;		   	
 	}

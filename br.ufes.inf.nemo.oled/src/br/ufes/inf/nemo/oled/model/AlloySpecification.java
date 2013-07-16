@@ -98,7 +98,9 @@ public class AlloySpecification {
 	public void setAlloyModel(OntoUMLParser refparser, OntoUML2AlloyOptions ontoOptions) throws Exception
 	{
 		OntoUML2Alloy ontouml2alloy = new OntoUML2Alloy(refparser, alsPath, ontoOptions);
-		content = ontouml2alloy.transform();		
+		content = ontouml2alloy.transform();
+		File file = new File(alsPath);
+		file.deleteOnExit();
 	}
 	
 	public void setContent(String content) throws IOException
@@ -116,7 +118,7 @@ public class AlloySpecification {
 		this.alsPath = alloyPath;
 		
 		alsOutDirectory = alsPath.substring(0, alsPath.lastIndexOf(File.separator)+1);		
-		alsmodelName = alsPath.substring(alsPath.lastIndexOf(File.separator)+1,alsPath.length()).replace(".als","");		
+		alsmodelName = alsPath.substring(alsPath.lastIndexOf(File.separator)+1,alsPath.length()).replace(".als","");	
 	}
 	
 	/**
