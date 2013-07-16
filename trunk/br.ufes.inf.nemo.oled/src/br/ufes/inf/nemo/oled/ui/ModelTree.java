@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,9 +39,7 @@ public class ModelTree extends JPanel {
 	private AntiPatternList antipatterns;	
 	private OntoUML2AlloyOptions refOptions;
 	private OCL2AlloyOptions oclOptions;
-	
-	
-	
+		
 	public ModelTree(UmlProject project)
 	{
 		super(new BorderLayout());
@@ -54,8 +53,11 @@ public class ModelTree extends JPanel {
 		tree = new OntoUMLTree(root,project.getModel(),refparser);
 		tree.setBorder(new EmptyBorder(2,2,2,2));
 		tree.addTreeSelectionListener(new OntoUMLTreeSelectionListener());
-				
-		alloySpec = new AlloySpecification(project.getTempDir()+"spec.als");
+		
+		String name = ((RefOntoUML.Package)project.getResource().getContents().get(0)).getName();
+		if (name==null || name.isEmpty()) name = "model";
+		alloySpec = new AlloySpecification(project.getTempDir()+File.separator+name.toLowerCase()+".als");
+		
 		oclmodel = new OCLDocument();
 		oclOptions = new OCL2AlloyOptions();
 		refOptions = new OntoUML2AlloyOptions();

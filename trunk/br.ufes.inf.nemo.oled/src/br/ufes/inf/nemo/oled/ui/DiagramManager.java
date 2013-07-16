@@ -881,8 +881,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());			
 						
 			// set parser from the editor view.
-			oclmodel.setParser(
-				new OCLParser(getCurrentWrapper().getConstraints(),refparser,getCurrentProject().getTempDir()+"/spec.uml")
+			String name = ((RefOntoUML.Package)getCurrentProject().getResource().getContents().get(0)).getName();
+			if (name==null || name.isEmpty()) name = "model";
+			oclmodel.setParser(					
+				new OCLParser(getCurrentWrapper().getConstraints(),refparser,getCurrentProject().getTempDir()+File.separator+name.toLowerCase()+".uml")
 			);			
 						
 			// set options from the parser
