@@ -111,7 +111,7 @@ public class OntoUMLTree extends CheckboxTree {
 				drawTree(newNode, (RefOntoUML.Element) gen,checkingModel,refparser);					
 			}
 			
-			if (refElement instanceof RefOntoUML.Association)
+			if (refElement instanceof RefOntoUML.Association || refElement instanceof RefOntoUML.Class || refElement instanceof RefOntoUML.DataType)
 			{
 				for (EObject o: refElement.eContents())
 				{
