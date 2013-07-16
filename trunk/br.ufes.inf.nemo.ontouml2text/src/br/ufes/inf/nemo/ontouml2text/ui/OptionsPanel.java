@@ -20,12 +20,7 @@ public class OptionsPanel extends JPanel implements ActionListener, ItemListener
 	 */
 	private static final long serialVersionUID = 2698550872201019269L;
 	
-//	private JTextField filePath;
 	private JCheckBox definitionCheckBox, genCheckBox, specCheckBox, attCheckBox, assocCheckBox;
-//	private JCheckBox chckbxGenerateModelDescription;
-//	private JCheckBox chckbxExportModelDescription;
-//	private JButton selectPathBtn;
-//	private JTextField textField;
 
 	/**
 	 * Constructor
@@ -40,15 +35,6 @@ public class OptionsPanel extends JPanel implements ActionListener, ItemListener
 	 */
 	public void initGUI() {
 		setPreferredSize(new Dimension(500, 350));
-//		{
-//			filePath = new JTextField();
-//			filePath.setAlignmentY(Component.TOP_ALIGNMENT);
-//			filePath.setAlignmentX(Component.LEFT_ALIGNMENT);
-//			filePath.setColumns(10);
-//					
-//			selectPathBtn = new JButton("Select Path");
-//			selectPathBtn.addActionListener(this);
-//		}
 		{
 			definitionCheckBox = new JCheckBox("Include Classes Definitions");
 			definitionCheckBox.addItemListener(this);
@@ -73,19 +59,6 @@ public class OptionsPanel extends JPanel implements ActionListener, ItemListener
 			assocCheckBox.setSelected(true);
 			assocCheckBox.addItemListener(this);
 		}
-		
-//		chckbxGenerateModelDescription = new JCheckBox("Generate model description for the selected file");
-//		
-//		chckbxExportModelDescription = new JCheckBox("Export model description to file");
-//		
-//		textField = new JTextField();
-//		textField.setColumns(10);
-//		
-//		JButton btnNewButton = new JButton("Select Path");
-//		btnNewButton.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//			}
-//		});
 				
 		GroupLayout gl_mainOptions = new GroupLayout(this);
 		gl_mainOptions.setHorizontalGroup(
@@ -103,37 +76,25 @@ public class OptionsPanel extends JPanel implements ActionListener, ItemListener
 					.addContainerGap()
 					.addGroup(gl_mainOptions.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_mainOptions.createSequentialGroup()
-							//.addComponent(chckbxGenerateModelDescription)
 							.addContainerGap())
 						.addGroup(gl_mainOptions.createParallelGroup(Alignment.LEADING)
 							.addGroup(gl_mainOptions.createSequentialGroup()
-								//.addComponent(chckbxExportModelDescription)
 								.addContainerGap())
 							.addGroup(gl_mainOptions.createSequentialGroup()
 								.addGroup(gl_mainOptions.createParallelGroup(Alignment.TRAILING))
-									//.addComponent(textField, GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
-									//.addComponent(filePath, GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE))
 								.addGap(16)
 								.addGroup(gl_mainOptions.createParallelGroup(Alignment.LEADING))
-									//.addComponent(selectPathBtn, Alignment.TRAILING)
-									//.addComponent(btnNewButton, Alignment.TRAILING))
 								.addGap(18)))))
 		);
 		gl_mainOptions.setVerticalGroup(
 			gl_mainOptions.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_mainOptions.createSequentialGroup()
 					.addGap(8)
-					//.addComponent(chckbxGenerateModelDescription)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_mainOptions.createParallelGroup(Alignment.BASELINE))
-						//.addComponent(filePath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						//.addComponent(selectPathBtn))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					//.addComponent(chckbxExportModelDescription)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_mainOptions.createParallelGroup(Alignment.BASELINE))
-						//.addComponent(btnNewButton)
-						//.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(19)
 					.addComponent(definitionCheckBox)
 					.addPreferredGap(ComponentPlacement.UNRELATED)

@@ -64,7 +64,7 @@ public class Writer {
 				String singleElemDescr = format(classf.getName());
 				
 				List<Generalization> genList = classf.getGeneralization();
-				Set<Generalization> specList = ontoParser.getSpecializations(classf);
+				List<Classifier> specList = classf.children();
 				List<Property> attList = getAttributes(classf);
 				
 				//Processing Generalizations
@@ -99,9 +99,9 @@ public class Writer {
 					String delim = " ";
 					int i = 1;
 					
-					for (Generalization gen : specList)
+					for (Classifier spec : specList)
 					{
-						singleElemDescr += delim + format(gen.getSpecific().getName());
+						singleElemDescr += delim + format(spec.getName());
 						delim = ", ";
 						i++;
 						if (i == specList.size())

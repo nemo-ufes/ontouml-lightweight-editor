@@ -25,11 +25,11 @@ public class AssociationsPanel extends JPanel implements ActionListener {
 	 */
 	private static final long serialVersionUID = -7525012929100418024L;
 	
-	private List<SingleAssociationPanel> singleAssocList = new ArrayList<SingleAssociationPanel>();
-	
 	private JPanel allAssocPanel, buttonPane;
 	private JScrollPane assocScrollPane;
 	private JButton selectSTButton, selectTSButton, selectAllButton;
+	
+	private List<SingleAssociationPanel> singleAssocList = new ArrayList<SingleAssociationPanel>();
 	
 	public AssociationsPanel()
 	{
