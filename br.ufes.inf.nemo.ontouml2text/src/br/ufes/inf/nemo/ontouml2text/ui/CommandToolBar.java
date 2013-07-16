@@ -35,6 +35,10 @@ public class CommandToolBar extends JToolBar {
 		initGUI();
 	}
 	
+	/**
+	 * Constructor.
+	 * @param main The MainWindow in which the ToolBar will be contained
+	 */
 	public CommandToolBar(MainWindow main) 
 	{
 		this();
@@ -42,6 +46,9 @@ public class CommandToolBar extends JToolBar {
 		this.main = main;
 	}
 	
+	/**
+	 * Create the GUI elements.
+	 */
 	private void initGUI()
 	{
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));		
@@ -55,6 +62,9 @@ public class CommandToolBar extends JToolBar {
 		createGenerateCSVBtn();
 	}
 	
+	/**
+	 * Creates a Button for the "Generate Description" command and places it in the ToolBar.
+	 */
 	private void createGenerateDescriptionBtn()
 	{
 		generateDescrBtn = new ToolbarButton("","/resources/icon/import-36x36.png");
@@ -73,6 +83,9 @@ public class CommandToolBar extends JToolBar {
 		add(generateDescrBtn);
 	}
 	
+	/**
+	 * Creates a Button for the "Generate CSV File" command and places it in the ToolBar.
+	 */
 	private void createGenerateCSVBtn()
 	{
 		generateCSVBtn = new ToolbarButton("","/resources/icon/csv-36x36.png");
@@ -91,6 +104,12 @@ public class CommandToolBar extends JToolBar {
 		add(generateCSVBtn);
 	}
 	
+	/**
+	 * The Class represents the ToolBar buttons.
+	 *  
+	 * @author Vinicius
+	 *
+	 */
 	public class ToolbarButton extends JButton implements MouseListener {
 
 		private static final long serialVersionUID = 1L;
@@ -138,7 +157,6 @@ public class CommandToolBar extends JToolBar {
 		public void mouseReleased(MouseEvent e) {
 			
 		}
-		
-
 	}
+	
 }
