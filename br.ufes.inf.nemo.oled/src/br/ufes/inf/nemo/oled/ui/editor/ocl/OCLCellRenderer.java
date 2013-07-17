@@ -1,11 +1,5 @@
 package br.ufes.inf.nemo.oled.ui.editor.ocl;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JList;
 
 import org.fife.ui.autocomplete.Completion;
@@ -17,13 +11,13 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Icon operationIcon;	
+	//private Icon operationIcon;	
 
 	/**
 	 * Constructor.
 	 */
 	public OCLCellRenderer() {
-		operationIcon = getIcon("/resources/icon/ocl/methpub_obj.gif");
+		//operationIcon = getIcon("/resources/icon/ocl/methpub_obj.gif");
 		//functionIcon = getIcon("img/function.png");
 		//emptyIcon = new EmptyIcon(16);
 	}
@@ -36,7 +30,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 	 *        or a resource loadable by the current ClassLoader.
 	 * @return The icon.
 	 */
-	private Icon getIcon(String resource) {
+	/*private Icon getIcon(String resource) {
 		ClassLoader cl = getClass().getClassLoader();
 		URL url = cl.getResource(resource);
 		if (url==null) {
@@ -48,7 +42,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			}
 		}
 		return url!=null ? new ImageIcon(url) : null;
-	}
+	}*/
 
 
 	/**
@@ -58,7 +52,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 	protected void prepareForOtherCompletion(JList list,
 			Completion c, int index, boolean selected, boolean hasFocus) {
 		super.prepareForOtherCompletion(list, c, index, selected, hasFocus);
-		setIcon(operationIcon);
+		//setIcon(operationIcon);
 	}
 
 
@@ -72,7 +66,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 		super.prepareForVariableCompletion(list, vc, index, selected,
 										hasFocus);
 		//setIcon(variableIcon);
-		setIcon(operationIcon);
+		//setIcon(operationIcon);
 	}
 
 
@@ -86,7 +80,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 		super.prepareForFunctionCompletion(list, fc, index, selected,
 										hasFocus);
 		//setIcon(functionIcon);
-		setIcon(operationIcon);
+		//setIcon(operationIcon);
 	}
 
 

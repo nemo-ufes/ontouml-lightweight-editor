@@ -3,9 +3,6 @@ package br.ufes.inf.nemo.oled.ui.editor.ocl;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.ShorthandCompletion;
 
@@ -43,10 +40,10 @@ public class OCLShorthandCompletion extends ShorthandCompletion {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Icon getIcon() {
+	//public Icon getIcon() {
 		//return IconFactory.get().getIcon(IconFactory.TEMPLATE_ICON);
-		return new ImageIcon(OCLShorthandCompletion.class.getResource("/resources/icon/ocl/methpub_obj.gif"));
-	}
+	//	return null;//new ImageIcon(OCLShorthandCompletion.class.getResource("/resources/icon/ocl/methpub_obj.gif"));
+	//}
 
 	/**
 	 * {@inheritDoc}
