@@ -375,7 +375,7 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
 			
 			if(operName.equals("intersection")) { return "("+sourceResult + " & " + argument+")"; }	
 			
-			if(operName.equals("union")) { System.out.println("("+sourceResult + " + " + argument+")"); return "("+sourceResult + " + " + argument+")"; }	
+			if(operName.equals("union")) { return "("+sourceResult + " + " + argument+")"; }	
 			
 			if(operName.equals("including")) { return "("+sourceResult + " + " + argument+")"; }
 			
@@ -576,7 +576,7 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
     	
     	else if (property.getType().getName().compareToIgnoreCase("Boolean")==0) { result.append(sourceResult + " in w." + nameProperty+ "");}
     	
-    	else { System.out.println(sourceResult + ".(w." + nameProperty+ ")"); result.append(sourceResult + ".(w." + nameProperty+ ")"); }
+    	else { result.append(sourceResult + ".(w." + nameProperty+ ")"); }
     	
 		return result.toString();
 	}
