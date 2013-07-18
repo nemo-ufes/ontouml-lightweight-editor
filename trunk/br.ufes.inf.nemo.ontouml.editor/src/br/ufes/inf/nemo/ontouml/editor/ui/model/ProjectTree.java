@@ -90,7 +90,7 @@ public class ProjectTree extends CheckboxTree {
 	 */
 	public void doPopup (MouseEvent e)
 	{
-		TreePath path = getPathForLocation(e.getX(), e.getY());
+		/*TreePath path = */getPathForLocation(e.getX(), e.getY());
 		ToolboxPopupMenu menu = new ToolboxPopupMenu();
 	    menu.show(e.getComponent(), e.getX(), e.getY());	
 	}
