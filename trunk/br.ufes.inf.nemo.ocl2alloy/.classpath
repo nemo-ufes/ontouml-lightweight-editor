@@ -4,15 +4,18 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2uml"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.common"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/lpg.runtime.java_2.0.17.v201004271640.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl_3.3.0.v20121218-1022.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.common_1.1.0.v20121102-1658.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.ecore_3.2.100.v20121109-1114.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.uml_4.0.100.v20121218-1022.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/refontouml/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/lpg.runtime.java_2.0.17.v201004271640.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl_3.3.0.v20121218-1022.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.common_1.1.0.v20121102-1658.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.ecore_3.2.100.v20121109-1114.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.domain_3.2.0.v20120503-1141.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.pivot_3.2.1.v20120917-1012.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.uml_4.0.100.v20121218-1022.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.apache.log4j_1.2.15.v201012070815.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

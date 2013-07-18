@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import RefOntoUML.Element;
-import RefOntoUML.PackageableElement;
 
 public class TETable {
 	private LinkedList<TransformedElement> table = new LinkedList<TransformedElement>();

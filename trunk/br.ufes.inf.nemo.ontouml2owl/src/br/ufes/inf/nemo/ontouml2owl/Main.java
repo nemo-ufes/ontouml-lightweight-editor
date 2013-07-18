@@ -1,16 +1,10 @@
 package br.ufes.inf.nemo.ontouml2owl;
 
 import java.io.IOException;
-import java.util.AbstractSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.Set;
 
-import javax.xml.transform.ErrorListener;
-
-import org.coode.owlapi.rdfxml.parser.DataPropertyListItemTranslator;
 import org.eclipse.emf.common.util.EList;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -27,7 +21,6 @@ import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
-import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
 import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -45,13 +38,9 @@ import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
-import RefOntoUML.Element;
-import RefOntoUML.FormalAssociation;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import RefOntoUML.Kind;
 import RefOntoUML.Meronymic;
-import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
