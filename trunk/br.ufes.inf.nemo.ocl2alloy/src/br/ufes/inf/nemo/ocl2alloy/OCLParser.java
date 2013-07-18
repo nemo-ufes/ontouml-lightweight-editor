@@ -112,7 +112,7 @@ public class OCLParser {
     public OCLParser (String oclAbsolutePath, String refAbsolutePath) throws IOException,ParserException,Exception
 	{ 			
     	OntoUMLParser refparser = new OntoUMLParser(refAbsolutePath);
-		umlResource = OntoUML2UML.Transformation(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),true);							
+		umlResource = OntoUML2UML.Transformation(refparser,refAbsolutePath.replace(".refontouml" , ".uml"), true);							
 				
 		umlHashMap = OntoUML2UML.transformer.mydealer.mymap;
 		

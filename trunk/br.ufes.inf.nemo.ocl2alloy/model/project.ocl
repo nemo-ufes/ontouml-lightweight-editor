@@ -6,9 +6,6 @@ import 'platform:/resource/br.ufes.inf.nemo.ocl2alloy/model/project.uml'
 
 package project
 
-context Enrollment
-inv : self.idq <= 0
-
 -- integrity rule in OCL (1)
 context University
 inv one_enrollment_per_student :

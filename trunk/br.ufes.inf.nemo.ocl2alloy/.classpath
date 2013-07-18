@@ -17,5 +17,19 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.uml_4.0.100.v20121218-1022.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.apache.log4j_1.2.15.v201012070815.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.edit_2.8.0.v20120608-0554.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.xtext.completeocl_3.2.1.v20120917-1012.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.xtext.essentialocl_3.2.0.v20120606-1911.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.xtext.oclstdlib_3.2.1.v20120917-1012.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.xtext_2.3.1.v201208210947.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.xtext.base_3.2.1.v20120917-1012.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/com.google.inject_3.0.0.v201203062045.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/javax.inject_1.0.0.v20091030.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/com.google.guava_10.0.1.v201203051515.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.antlr.runtime_3.2.0.v201101311130.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.xtext.util_2.3.1.v201208210947.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.common_3.2.0.v20120411-1432.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.xtext.common.types_2.3.1.v201208210947.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.uml2.common_1.7.0.v20120604-0919.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

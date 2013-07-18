@@ -1018,7 +1018,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		transformsOCLintoAlloy();		
 		if (ModelTree.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) 
 			openAlloyAnalyzer(ModelTree.getAlloySpecFor(getCurrentProject()),true, -1);
-		else openAlloyAnalyzer(ModelTree.getAlloySpecFor(getCurrentProject()),false, 0);		
+		else openAlloyAnalyzer(ModelTree.getAlloySpecFor(getCurrentProject()),false, 0);	
+		String umlpath = ModelTree.getAlloySpecFor(getCurrentProject()).getAlloyPath().replace(".als", ".uml");
+		File umlfile = new File(umlpath);
+		umlfile.deleteOnExit();
 	}
 	
 	/**
