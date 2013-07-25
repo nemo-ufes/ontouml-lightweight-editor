@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ontouml2owl.victor;
+package br.ufes.inf.nemo.oled.ontouml2owl_swrl;
 
 import java.io.File;
 
@@ -67,9 +67,9 @@ public class OntoUML2OWL {
 
 	}
 
-	public static void main(String[] args) {
-		String ret = OntoUML2OWL.Transformation(intialize(new File("testeRelatorPattern.refontouml")), "http://abcd/ontology/");
-		System.out.println(ret);
-	}
+//	public static void main(String[] args) {
+//		String ret = OntoUML2OWL.Transformation(intialize(new File("testeRelatorPattern.refontouml")), "http://abcd/ontology/");
+//		System.out.println(ret);
+//	}
 
 }

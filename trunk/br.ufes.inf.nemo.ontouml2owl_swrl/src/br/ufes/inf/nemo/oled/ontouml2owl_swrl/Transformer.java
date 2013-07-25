@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ontouml2owl.victor;
+package br.ufes.inf.nemo.oled.ontouml2owl_swrl;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -222,7 +222,7 @@ public class Transformer {
 	 * Process the meronymics relation (componentOf, subCollectiveOf,
 	 * subQuantityOf and memberOf).
 	 * 
-	 * This method just create a relationships among meronymic association members.  
+	 * This method just create a relationship between meronymic association members.  
 	 * 
 	 * @param ass
 	 */
