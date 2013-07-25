@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="src/" kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry exported="true" kind="lib" path="D:/Victor-Nemo/workspace/ontouml2owl/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/Victor-Nemo/workspace/ontouml2owl/lib/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/Victor-Nemo/workspace/ontouml2owl/lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/Victor-Nemo/workspace/ontouml2owl/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/Victor-Nemo/workspace/ontouml2owl/lib/owlapi/owlapi-distribution-3.4.4-bin.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.common"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/com.google.guava_10.0.1.v201203051515.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/com.google.inject_3.0.0.v201203062045.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/javax.inject_1.0.0.v20091030.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/lpg.runtime.java_2.0.17.v201004271640.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.antlr.runtime_3.2.0.v201101311130.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.apache.log4j_1.2.15.v201012070815.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.core.jobs_3.5.200.v20120521-2346.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.core.runtime_3.8.0.v20120521-2346.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.ecore.change_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.ecore.edit_2.8.0.v20120608-0554.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.edit_2.8.0.v20120608-0554.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.mapping.ecore2xml_2.7.0.v20120608-0554.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.query_1.2.100.v200903190031.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.emf.query.ocl_2.0.0.v20091215-1624.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl_3.3.0.v20121218-1022.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.common_1.1.0.v20121102-1658.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.ecore_3.2.100.v20121109-1114.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.edit_3.2.100.v20121219-1103.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.common_3.2.0.v20120411-1432.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.domain_3.2.0.v20120503-1141.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.pivot_3.2.1.v20120917-1012.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.xtext.base_3.2.1.v20120917-1012.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.xtext.completeocl_3.2.1.v20120917-1012.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.xtext.essentialocl_3.2.0.v20120606-1911.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.examples.xtext.oclstdlib_3.2.1.v20120917-1012.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.uml_4.0.100.v20121218-1022.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.osgi_3.8.0.v20120529-1548.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.uml2_4.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.uml2.common_1.7.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.uml2.types_1.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.uml2.uml.profile.l2_1.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.uml2.uml.profile.l3_1.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.uml2.uml.resources_4.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.xtext_2.3.1.v201208210947.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.xtext.common.types_2.3.1.v201208210947.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.xtext.util_2.3.1.v201208210947.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
