@@ -386,6 +386,10 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 		simpleItem.setValue("SIMPLE");
 		simpleItem.setDescription(ApplicationResources.getInstance().getString("dialog.owlsettings.simple"));
 		
+		MappingTypeComboItem rulesItem = new MappingTypeComboItem();
+		rulesItem.setDisplayName("SWRL Rules");
+		rulesItem.setValue("RULES");
+				
 		MappingTypeComboItem reificationItem = new MappingTypeComboItem();
 		reificationItem.setDisplayName("Reification");
 		reificationItem.setValue("REIFICATION");
@@ -406,7 +410,7 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 		wormA2Item.setValue("WORM_VIEW_A2");
 		wormA2Item.setDescription(ApplicationResources.getInstance().getString("dialog.owlsettings.worm-view-a2"));
 		
-		return new DefaultComboBoxModel(new Object[] { simpleItem, reificationItem, wormA0Item, wormA1Item, wormA2Item });
+		return new DefaultComboBoxModel(new Object[] { simpleItem, rulesItem, reificationItem, wormA0Item, wormA1Item, wormA2Item });
 	}
 	
 	class MappingTypeComboItem
