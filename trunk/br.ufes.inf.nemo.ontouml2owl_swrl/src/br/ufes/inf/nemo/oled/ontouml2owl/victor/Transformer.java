@@ -1,11 +1,7 @@
 package br.ufes.inf.nemo.oled.ontouml2owl.victor;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,7 +35,6 @@ import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.SWRLAtom;
@@ -71,7 +66,7 @@ import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-//VICTOR
+
 public class Transformer {	
 	private String nameSpace;
 	private OntoUMLParser ontoParser;
@@ -83,7 +78,11 @@ public class Transformer {
 	private Set<DataType> _lstDataType;
 	private List<String> _lstDataTypeAttributes = new ArrayList<String>();
 
-
+	/**
+	 * Create a Transformer and use the nameSpace as the ontology URI
+	 * 
+	 * @param nameSpace
+	 */
 	public Transformer(String nameSpace) {
 		this.nameSpace = nameSpace+"#";
 
@@ -95,7 +94,13 @@ public class Transformer {
 			e.printStackTrace();
 		}	
 	}
-
+	
+	/**
+	 * Transform a RefOntoUML.Model to OWL
+	 * 
+	 * @param ecoreModel
+	 * @return a String with the OWL code
+	 */
 	public String transform(Model ecoreModel) {
 
 		ontoParser = new OntoUMLParser(ecoreModel);
@@ -170,12 +175,17 @@ public class Transformer {
 		return "";
 	}
 
+	/**
+	 * Process the RefOntoUML.FormalAssociation in model.
+	 * If the association doesn't have a name, a relation with the 
+	 * name formal.ClassSource.ClassSink is created.
+	 * Else, the name of the relation is used.
+	 * 
+	 * For the inverse relation, the prefix inv. is used.  
+	 * 
+	 * @param ass
+	 */
 	private void processFormalAssociation(FormalAssociation ass) {
-		//Cria-se a relação material
-		// caso tenha nome
-		//	 a relacao passa a ter este nome || inv.nome
-		// caso contrario
-		// 	 a relacao passa a ser material.classOrigem.classeDestino || inv.material.classOrigem.classeDestino
 		OWLObjectProperty prop;
 		if(ass.getName()==null || ass.getName().equals("")){
 			prop = factory.getOWLObjectProperty(IRI.create(nameSpace+"formal."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
@@ -208,6 +218,14 @@ public class Transformer {
 		}		
 	}
 
+	/**
+	 * Process the meronymics relation (componentOf, subCollectiveOf,
+	 * subQuantityOf and memberOf).
+	 * 
+	 * This method just create a relationships among meronymic association members.  
+	 * 
+	 * @param ass
+	 */
 	private void processMeronymic(Meronymic ass, String name) {
 		processRelations(ass,name,1,false);
 		processRelations(ass,"inv."+name,0,true);
@@ -788,7 +806,7 @@ public class Transformer {
 	 * @param relator
 	 * @return A list with the all MaterialAssociation from the Relator
 	 */
-	public List<MaterialAssociation> getRelatorMaterials(Relator r){
+	private List<MaterialAssociation> getRelatorMaterials(Relator r){
 		List<MaterialAssociation> lst = new ArrayList<>();
 		try {
 			MaterialAssociation m;
@@ -810,8 +828,7 @@ public class Transformer {
 		return lst;
 	}
 
-	public void createRelation_componentOf(){
-
+	private void createRelation_componentOf(){
 		OWLObjectProperty rel = factory.getOWLObjectProperty(IRI.create(nameSpace+"componentOf"));
 
 		OWLIrreflexiveObjectPropertyAxiom iopa = factory.getOWLIrreflexiveObjectPropertyAxiom(rel);//Irreflexive
@@ -854,9 +871,7 @@ public class Transformer {
 		manager.applyChange(new AddAxiom(ontology, rule));
 	}
 
-
-	//TODO colocar no ontoParser
-	public void processAnnotation(){
+	private void processAnnotation(){
 		for(PackageableElement p : ontoParser.getAllInstances(PackageableElement.class)){
 			if(p.getOwnedComment() != null && !p.getOwnedComment().isEmpty()){
 				if(p instanceof Class){
