@@ -38,5 +38,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.ocl.uml_4.0.100.v20121218-1022.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.osgi_3.8.0.v20120529-1548.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2owl_swrl"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
