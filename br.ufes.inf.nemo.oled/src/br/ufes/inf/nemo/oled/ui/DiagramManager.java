@@ -1070,7 +1070,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		MappingType mappingType = null;
 		if(!owlType.equals("SIMPLE"))
 			mappingType = MappingType.valueOf(owlType); 
-		
+				
 		OperationResult result = OWLHelper.generateOwl(project.getModel(), 
 				ProjectSettings.OWL_ONTOLOGY_IRI.getValue(project),
 				mappingType,
