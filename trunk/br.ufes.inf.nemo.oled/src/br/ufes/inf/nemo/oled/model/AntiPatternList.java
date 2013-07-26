@@ -7,7 +7,10 @@ import br.ufes.inf.nemo.antipattern.IAAntiPattern;
 import br.ufes.inf.nemo.antipattern.RBOSAntiPattern;
 import br.ufes.inf.nemo.antipattern.RSAntiPattern;
 import br.ufes.inf.nemo.antipattern.RWORAntiPattern;
+import br.ufes.inf.nemo.antipattern.SSRAntiPattern;
 import br.ufes.inf.nemo.antipattern.STRAntiPattern;
+import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
+import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 
 
 /**
@@ -25,6 +28,9 @@ public class AntiPatternList {
 	private ArrayList<RSAntiPattern> rsListModel = new ArrayList<RSAntiPattern>();
 	private ArrayList<RWORAntiPattern> rworListModel = new ArrayList<RWORAntiPattern>();	
 	private ArrayList<IAAntiPattern> iaListModel = new ArrayList<IAAntiPattern>();
+	private ArrayList<SSRAntiPattern> ssrListModel = new ArrayList<SSRAntiPattern>();
+	private ArrayList<RWRTAntiPattern> rwrtListModel = new ArrayList<RWRTAntiPattern>();
+	private ArrayList<TRIAntiPattern> triListModel = new ArrayList<TRIAntiPattern>();
 	
 	/**
 	 * Creates a AntiPattern Model List from a list of AntiPatterns Models.
@@ -38,7 +44,9 @@ public class AntiPatternList {
 	 */
 	public AntiPatternList (ArrayList<ACAntiPattern> acListModel, ArrayList<RBOSAntiPattern> rbosListModel,
 			ArrayList<STRAntiPattern> strListModel, ArrayList<RSAntiPattern> rsListModel,
-			ArrayList<RWORAntiPattern> rworListModel, ArrayList<IAAntiPattern> iaListModel
+			ArrayList<RWORAntiPattern> rworListModel, ArrayList<IAAntiPattern> iaListModel, 
+			ArrayList<SSRAntiPattern> ssrListModel, ArrayList<RWRTAntiPattern> rwrtListModel,
+			ArrayList<TRIAntiPattern> triListModel
 	)
 	{
 		this.acListModel = acListModel;
@@ -47,6 +55,9 @@ public class AntiPatternList {
 		this.rsListModel = rsListModel;	
 		this.rworListModel = rworListModel;
 		this.iaListModel = iaListModel;
+		this.ssrListModel = ssrListModel;
+		this.rwrtListModel = rwrtListModel;
+		this.triListModel = triListModel;
 	}
 
 	/**
@@ -107,6 +118,33 @@ public class AntiPatternList {
 	{
 		return iaListModel;
 	}	
+
+	/**
+	 * Get SSR AntiPattern Model List.
+	 * @return
+	 */
+	public ArrayList<SSRAntiPattern> getSSRListModel()
+	{
+		return ssrListModel;
+	}
+	
+	/**
+	 * Get RWRT AntiPattern Model List.
+	 * @return
+	 */
+	public ArrayList<RWRTAntiPattern> getRWRTListModel()
+	{
+		return rwrtListModel;
+	}
+	
+	/**
+	 * Get TRI AntiPattern Model List.
+	 * @return
+	 */
+	public ArrayList<TRIAntiPattern> getTRIListModel()
+	{
+		return triListModel;
+	}
 	
 	/**
 	 * Set AC AntiPattern Model List.
@@ -167,4 +205,35 @@ public class AntiPatternList {
 	{
 		this.iaListModel = iaListModel;
 	}
+	
+	/**
+	 * Set SSR AntiPattern Model List.
+	 * 
+	 * @param ssrListModel
+	 */
+	public void setSSRListModel(ArrayList<SSRAntiPattern> ssrListModel)
+	{
+		this.ssrListModel = ssrListModel;
+	}
+	
+	/**
+	 * Set RWRT AntiPattern Model List.
+	 * 
+	 * @param rwrtListModel
+	 */
+	public void setRWRTListModel(ArrayList<RWRTAntiPattern> rwrtListModel)
+	{
+		this.rwrtListModel = rwrtListModel;
+	}
+	
+	/**
+	 * Set TRI AntiPattern Model List.
+	 * 
+	 * @param triListModel
+	 */
+	public void setTRIListModel(ArrayList<TRIAntiPattern> triListModel)
+	{
+		this.triListModel = triListModel;
+	}
+	
 }

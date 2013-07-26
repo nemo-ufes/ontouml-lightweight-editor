@@ -101,7 +101,7 @@ public class AntiPatternListDialog extends JDialog {
 		this.frame = frame;
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/antipattern.png")));
-		setTitle("Detecting AntiPatterns");
+		setTitle("Detect AntiPatterns");
 		setBounds(100, 100, 332, 377);
 		
 		getContentPane().setLayout(new BorderLayout());
@@ -138,7 +138,6 @@ public class AntiPatternListDialog extends JDialog {
 		cbxMRBS.setBackground(UIManager.getColor("Panel.background"));
 		
 		cbxSSR = new JCheckBox("SSR : Super and Sub Relations");
-		cbxSSR.setEnabled(false);
 		cbxSSR.setBackground(UIManager.getColor("Panel.background"));
 		
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
@@ -428,7 +427,7 @@ public class AntiPatternListDialog extends JDialog {
 			
 			AntiPatternList antipatternList = new AntiPatternList
 			(
-					acListModel,rbosListModel,strListModel,rsListModel,rworListModel,iaListModel
+					acListModel,rbosListModel,strListModel,rsListModel,rworListModel,iaListModel,ssrListModel,rwrtListModel,triListModel
 			);
 
 			ModelTree.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);

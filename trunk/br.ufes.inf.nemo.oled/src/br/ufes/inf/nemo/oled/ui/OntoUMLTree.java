@@ -29,9 +29,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
-
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-
 import br.ufes.inf.nemo.oled.util.ColorPalette;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 
@@ -93,39 +91,14 @@ public class OntoUMLTree extends CheckboxTree {
 			{
 				drawTree(newNode, (RefOntoUML.Element) eobj,checkingModel,refparser);
 			}
-			
-		/* Classifier */
-		} else if (refElement instanceof RefOntoUML.Classifier)		
-		{
-			String alias = new String();
-			if (refparser!=null) alias = refparser.getAlias((RefOntoUML.Classifier)refElement);
-			else alias = "";
-			
-			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(refElement,alias));			
-			parent.add(newNode);					
-						
-			//modelTree.collapsePath(new TreePath(newNode.getPath()));
-			
-			for(Generalization gen: ((RefOntoUML.Classifier)refElement).getGeneralization())
-			{
-				drawTree(newNode, (RefOntoUML.Element) gen,checkingModel,refparser);					
-			}
-			
-			if (refElement instanceof RefOntoUML.Association || refElement instanceof RefOntoUML.Class || refElement instanceof RefOntoUML.DataType)
-			{
-				for (EObject o: refElement.eContents())
-				{
-					drawTree(newNode,o,checkingModel,refparser);
-				}			
-			}
-			
-		/* Generalization */
+		
+			/* Generalization */
 		} else if (refElement instanceof RefOntoUML.Generalization)
 		{
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(refElement,""));			
 			parent.add(newNode);			
 		
-		/* GeneralizationSet */
+			/* GeneralizationSet */
 		}else if (refElement instanceof RefOntoUML.GeneralizationSet)
 		{
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(refElement,""));			
@@ -140,8 +113,29 @@ public class OntoUMLTree extends CheckboxTree {
 			
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(refElement,alias));			
 			parent.add(newNode);
-			checkingModel.setPathEnabled(new TreePath(newNode.getPath()),false);
+			checkingModel.setPathEnabled(new TreePath(newNode.getPath()),false);		
+		
+		/* Classifier */
+		} else if (refElement instanceof RefOntoUML.Classifier)		
+		{
+			String alias = new String();
+			if (refparser!=null) alias = refparser.getAlias((RefOntoUML.Classifier)refElement);
+			else alias = "";
+			
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(refElement,alias));			
+			parent.add(newNode);					
+						
+			//modelTree.collapsePath(new TreePath(newNode.getPath()));
+						
+			if (refElement instanceof RefOntoUML.Association || refElement instanceof RefOntoUML.Class || refElement instanceof RefOntoUML.DataType)
+			{
+				for (EObject o: refElement.eContents())
+				{
+					drawTree(newNode,o,checkingModel,refparser);
+				}			
+			}		
 		}
+		
 	}
 	
 	/**
