@@ -29,33 +29,26 @@ public class DiagramEditorToolbar implements ActionListener {
 
   public DiagramEditorToolbar() {
     buttonGroup = new ButtonGroup();
-    //diagramOptionsGroup = new ButtonGroup();
-        
+            
     //toolbar.add(createToggleButton(diagramOptionsGroup, "rectilinear"));
     //toolbar.add(createToggleButton(diagramOptionsGroup, "straight"));
-    //toolbar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        
-    //toolbar.addSeparator(new Dimension(20, 25));
     //toolbar.add(createButton(validationGroup, "verifysettings")); 
-    
     //toolbar.add(createButton(validationGroup, "verifyfile")); 
-    //toolbar.addSeparator(new Dimension(20, 25));
-    
-    toolbar.add(createButton(buttonGroup, "autoselection"));    
-    toolbar.add(createButton(buttonGroup, "parse"));    
-    toolbar.add(createButton(buttonGroup, "verify"));
-    toolbar.add(createButton(buttonGroup, "antipattern"));
-    toolbar.add(createButton(buttonGroup, "deriverelations"));
-    
+
+    //toolbar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);    
     toolbar.addSeparator(new Dimension(20, 25));
-    
     toolbar.add(createButton(buttonGroup, "output"));
     toolbar.add(createButton(buttonGroup, "warning"));
     toolbar.add(createButton(buttonGroup, "error"));    
-    toolbar.add(createButton(buttonGroup, "ocleditor"));
-    
+    toolbar.add(createButton(buttonGroup, "ocleditor"));    
     toolbar.addSeparator(new Dimension(20, 25));
-    
+    toolbar.add(createButton(buttonGroup, "autoselection"));    
+    toolbar.add(createButton(buttonGroup, "parse"));    
+    toolbar.add(createButton(buttonGroup, "verify"));
+    toolbar.addSeparator(new Dimension(20, 25));
+    toolbar.add(createButton(buttonGroup, "antipattern"));
+    toolbar.add(createButton(buttonGroup, "deriverelations"));
+    toolbar.addSeparator(new Dimension(20, 25));
     toolbar.add(createButton(buttonGroup, "generatealloy"));
     toolbar.add(createButton(buttonGroup, "generateowl"));
     //toolbar.add(createButton(buttonGroup, "generateowlsettings"));    
