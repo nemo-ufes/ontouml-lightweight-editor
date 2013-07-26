@@ -299,6 +299,8 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("OUTPUT", new MethodCall(
 					getClass().getMethod("showOutputPane")));
 
+			selectorMap.put("DERIVERELATIONS", new MethodCall(
+					getClass().getMethod("deriveRelations")));
 			
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
@@ -392,6 +394,11 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void verifySettings() 
 	{
 		manager.verificationSettings();
+	}
+	
+	public void deriveRelations() 
+	{
+		manager.deriveRelations();
 	}
 	
 	public void verifyModel() 
