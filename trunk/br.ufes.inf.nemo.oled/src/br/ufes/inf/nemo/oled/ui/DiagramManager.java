@@ -64,7 +64,9 @@ import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
+import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.file.FileUtil;
+import br.ufes.inf.nemo.common.ontoumlparser.Derivator;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
@@ -841,11 +843,22 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
 		String result = new String();
 		
-		
-		result = "Component not implemented yet...";
+		Derivator d = new Derivator(refparser);
+		refparser = d.createComponentOfPatterns();
 			
 		ModelTree.setParserFor(getCurrentProject(), refparser);
 		ModelTree.updateModelTree(getCurrentProject());
+		
+		ArrayList<componentOf> generated = d.getGeneratedCompositions();
+		
+		if (generated.size()>0){
+			result = generated.size()+" associations were created through derivation...";
+			for (componentOf cp : generated) {
+				result += "\n\t"+refparser.getStringRepresentation(cp)+": "+cp.whole().getName() +" - "+cp.part().getName();
+			}
+		}
+		else result = "No association can be derived from the model!";
+		
 		getCurrentWrapper().showOutputText(result, true, true);
 	}
 
