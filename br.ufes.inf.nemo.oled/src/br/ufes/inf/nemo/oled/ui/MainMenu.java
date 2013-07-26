@@ -57,11 +57,11 @@ public class MainMenu implements ActionListener {
 		createFileMenu();
 		createEditMenu();
 		createDiagramMenu();
-		createViewMenu();
-		createImportMenu();
-		createExportMenu();
+		createViewMenu();		
 		createTransformationMenu();		
 		createHelpMenu();
+		createImportMenu();
+		createExportMenu();
 	}
 
 	private void createTransformationMenu()
