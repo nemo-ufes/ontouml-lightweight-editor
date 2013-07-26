@@ -758,7 +758,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			getCurrentWrapper().showOutputText(result.toString(), true, true); 
 		}
 	}
-
+		
+	// =============================================================================== 
+	// ===============================================================================
+	// ===============================================================================
+	
 	/**
 	 * Shows or hides the output pane, in case the current editor is a DiagramEditor. 
 	 */
@@ -837,12 +841,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
 		String result = new String();
 		
-		// ================================		
 		
 		result = "Component not implemented yet...";
-		
-		// =================================
-		
+			
 		ModelTree.setParserFor(getCurrentProject(), refparser);
 		ModelTree.updateModelTree(getCurrentProject());
 		getCurrentWrapper().showOutputText(result, true, true);
@@ -1043,6 +1044,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		umlfile.deleteOnExit();
 	}
 
+	// ===============================================================================
+	// ===============================================================================
+	// ===============================================================================
+	
 	/**
 	 * Shows model instances for a given Alloy Solution/Module. 
 	 */
