@@ -142,6 +142,19 @@
             <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IgZw5ugZEeKrHrsOEEXSbw" value="1"/>
           </ownedEnd>
         </packagedElement>
+        <packagedElement xsi:type="RefOntoUML:componentOf" visibility="public" memberEnd="//@packagedElement.4/@packagedElement.0/@packagedElement.0/@packagedElement.18/@ownedEnd.1 //@packagedElement.4/@packagedElement.0/@packagedElement.0/@packagedElement.18/@ownedEnd.0" isShareable="false" isEssential="true" isInseparable="true">
+          <name xsi:nil="true"/>
+          <ownedEnd visibility="public" type="_IgZwoegZEeKrHrsOEEXSbw" association="//@packagedElement.4/@packagedElement.0/@packagedElement.0/@packagedElement.18">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+          </ownedEnd>
+          <ownedEnd visibility="public" type="_IgZwmegZEeKrHrsOEEXSbw" aggregation="composite" association="//@packagedElement.4/@packagedElement.0/@packagedElement.0/@packagedElement.18">
+            <name xsi:nil="true"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+          </ownedEnd>
+        </packagedElement>
       </packagedElement>
       <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_IgZw5-gZEeKrHrsOEEXSbw" name="Bioelectric Phenomena" visibility="public">
         <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_IgZw6OgZEeKrHrsOEEXSbw" name="AVElectricalImpulse" visibility="public"/>
