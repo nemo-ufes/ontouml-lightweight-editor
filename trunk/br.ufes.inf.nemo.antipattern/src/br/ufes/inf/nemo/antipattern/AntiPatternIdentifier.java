@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
+import org.eclipse.ocl.ecore.TupleType;
 import org.eclipse.ocl.util.Tuple;
 
 import RefOntoUML.Association;
@@ -42,7 +43,27 @@ public class AntiPatternIdentifier {
 	}
 	
 	/** OCL query for RS AntiPattern. */
-	private static String RS_OCLQuery = "Association.allInstances()->product(Association.allInstances())->collect( x | Tuple {a1:Association = x.first, a2:Association = x.second})->select( x | x.a1<>x.a2 and ( ( x.a1.memberEnd.type->at(1).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(1).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(1).oclAsType(Classifier)) and x.a1.memberEnd.type->at(2).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(2).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(2).oclAsType(Classifier)) ) or ( x.a1.memberEnd.type->at(1).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(1).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(2).oclAsType(Classifier)) and x.a1.memberEnd.type->at(2).oclAsType(Classifier).allParents()->including(x.a1.memberEnd.type->at(2).oclAsType(Classifier))->includes(x.a2.memberEnd.type->at(1).oclAsType(Classifier)) )) )";
+	private static String RS_OCLQuery = "Association.allInstances()->product(Association.allInstances())->collect( x | Tuple {a1:Association = x.first, a2:Association = x.second, a1Source:Classifier = x.first.memberEnd.type->at(1).oclAsType(Classifier), a1Target:Classifier = x.first.memberEnd.type->at(2).oclAsType(Classifier)})->select( x | x.a1<>x.a2 and x.a1Source.allParents()->including(x.a1Source)->union(x.a1Target.allParents()->including(x.a1Target))->includesAll(x.a2.endType))->collect(x | Tuple { a1:Association = x.a1, a2:Association = x.a2})";
+	/*TODO: update RS_OCLQuery*/
+	/*Association.allInstances()->product(Association.allInstances())
+	->collect( x | Tuple {a1:Association = x.first, a2:Association = x.second, a1Source:Classifier = x.first.memberEnd.type->at(1).oclAsType(Classifier), a1Target:Classifier = x.first.memberEnd.type->at(2).oclAsType(Classifier), a2Source:Classifier = x.second.memberEnd.type->at(1).oclAsType(Classifier), a2Target:Classifier = x.second.memberEnd.type->at(2).oclAsType(Classifier)})
+		->select( x | 
+			x.a1<>x.a2 
+			and 
+			(
+				(
+					x.a1Source.allParents()->including(x.a1Source)->includes(x.a2Source) 
+					and 
+					x.a1Target.allParents()->including(x.a1Target)->includes(x.a2Target) 
+				)
+				or 
+				(
+					x.a1Source.allParents()->including(x.a1Source)->includes(x.a2Target) 
+					and 
+					x.a1Target.allParents()->including(x.a1Target)->includes(x.a2Source) 
+				)
+			)
+		)->collect(x | Tuple { a1:Association = x.a1, a2:Association = x.a2})*/
 	
 	/**
 	 * Identify RS AntiPattern (Relation Specialization).
@@ -148,7 +169,6 @@ public class AntiPatternIdentifier {
 	//public static String RWOROCLQuery = "Relator.allInstances()->select(r:Relator | r.oclAsType(Classifier).isAbstract=false and ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()>2 or ( r.allParents()->including(r).oclAsType(Relator).mediations()->size()=2 and ( r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(1).mediatedEnd().lower>1 or r.allParents()->including(r).oclAsType(Relator)->asSet().mediations()->asOrderedSet()->at(2).mediatedEnd().lower>1))) and r.allParents()->including(r).oclAsType(Relator).mediated()->exists(t1,t2:Classifier | t1<>t2 and ( (t1.allParents()->includes(t2)) or  (t2.allParents()->includes(t1)) or ( t1.allParents()->intersection(t2.allParents())->intersection(SubstanceSortal.allInstances())->size()>0 and GeneralizationSet.allInstances()->select(gs:GeneralizationSet | gs.generalization->exists(g1,g2:Generalization | g1<>g2 and (g1.specific.allChildren()->includes(t1) or g1.specific=t1) and (g2.specific.allChildren()->includes(t2) or g2.specific=t2)))->forAll(chosenGS:GeneralizationSet | chosenGS.isDisjoint=false)))))";
 	
 	/*
-	Relator.allInstances()->
 	Relator.allInstances()->
 	select(r:Relator | 
 			r.oclAsType(Classifier).isAbstract=false 
@@ -463,7 +483,17 @@ public class AntiPatternIdentifier {
 	}
 	
 	/** OCL query for SSR AntiPattern. */
-	private static String SSR_OCLQuery = "";
+	private static String SSR_OCLQuery = "Association.allInstances()->product(Association.allInstances())->collect( x | Tuple {	a1:Association = x.first, a1Source:Classifier = x.first.memberEnd.type->at(1).oclAsType(Classifier), a1Target:Classifier = x.first.memberEnd.type->at(2).oclAsType(Classifier), a2:Association = x.second})->select( x | x.a1<>x.a2 and ((x.a1.memberEnd->at(2).upper=-1 or x.a1.memberEnd->at(2).upper>1) and x.a1Target.allChildren()->including(x.a1Target)->includesAll(x.a2.endType)) or ((x.a1.memberEnd->at(1).upper=-1 or x.a1.memberEnd->at(1).upper>1) and x.a1Source.allChildren()->including(x.a1Source)->includesAll(x.a2.endType)))->collect(x | Tuple { a1:Association = x.a1, a2:Association = x.a2})";
+	
+	/*Association.allInstances()->product(Association.allInstances())->collect( x | 
+			Tuple {	a1:Association = x.first, a1Source:Classifier = x.first.memberEnd.type->at(1).oclAsType(Classifier), a1Target:Classifier = x.first.memberEnd.type->at(2).oclAsType(Classifier), a2:Association = x.second})
+			->select( x | 
+							x.a1<>x.a2 and 
+							((x.a1.memberEnd->at(2).upper=-1 or x.a1.memberEnd->at(2).upper>1) and x.a1Target.allChildren()->including(x.a1Target)->includesAll(x.a2.endType))
+							or
+							((x.a1.memberEnd->at(1).upper=-1 or x.a1.memberEnd->at(1).upper>1) and x.a1Source.allChildren()->including(x.a1Source)->includesAll(x.a2.endType))
+					)->collect(x | Tuple { a1:Association = x.a1, a2:Association = x.a2})
+	*/
 	
 	/**
 	 * Identify SSR AntiPattern (Super and Sub Relations).
@@ -475,10 +505,28 @@ public class AntiPatternIdentifier {
 	@SuppressWarnings("unchecked")
 	public static ArrayList<SSRAntiPattern> identifySSR (OntoUMLParser parser) throws Exception 
 	{		
+		Copier copier = new Copier();		
+		
+		Package model = parser.createPackageFromSelections(copier);
+		
+		Collection<Tuple<Association, Association>> query_result;
 		ArrayList<SSRAntiPattern> result = new ArrayList<SSRAntiPattern>();
 		
+		query_result = (Collection<Tuple<Association, Association>>)OCLQueryExecuter.executeQuery(SSR_OCLQuery, (EClassifier)model.eClass(), model);
+		
+		for (Tuple<Association, Association> t : query_result) 
+		{			
+			Association a1 = (Association) AntiPatternIdentifier.getOriginal((Association)t.getValue("a1"), copier);
+			Association a2 = (Association) AntiPatternIdentifier.getOriginal((Association)t.getValue("a2"), copier);			
+			SSRAntiPattern rs = new SSRAntiPattern(a1,a2); 
+			result.add(rs);
+		}		
 		return result;
 	}
+	
+	
+	
+	
 	
 	
 	

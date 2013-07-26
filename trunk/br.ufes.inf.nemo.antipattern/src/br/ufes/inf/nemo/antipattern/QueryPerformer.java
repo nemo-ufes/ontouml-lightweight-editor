@@ -1,8 +1,12 @@
 package br.ufes.inf.nemo.antipattern;
 
 import java.io.File;
+import java.nio.file.WatchEvent.Kind;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -13,16 +17,38 @@ import org.eclipse.ocl.ParserException;
 
 import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Association;
+import RefOntoUML.Class;
+import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
+import RefOntoUML.Derivation;
+import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
+import RefOntoUML.LiteralInteger;
+import RefOntoUML.LiteralUnlimitedNatural;
+import RefOntoUML.Meronymic;
+import RefOntoUML.MixinClass;
+import RefOntoUML.Mode;
 import RefOntoUML.Model;
+import RefOntoUML.MomentClass;
+import RefOntoUML.ObjectClass;
+import RefOntoUML.Package;
+import RefOntoUML.Phase;
 import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
+import RefOntoUML.Relator;
+import RefOntoUML.Role;
+import RefOntoUML.SortalClass;
+import RefOntoUML.SubKind;
+import RefOntoUML.SubstanceSortal;
 import RefOntoUML.Type;
+import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
 import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 public class QueryPerformer {
 	
@@ -38,7 +64,7 @@ public class QueryPerformer {
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.refontouml").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/Georreferenciamento.refontouml").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/Modelos/HeartElectrophisiology.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/twin_test.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOS_regular_and_inverted.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
@@ -52,8 +78,40 @@ public class QueryPerformer {
 		m = (Model) resource.getContents().get(0);
 		
 		OntoUMLParser parser = new OntoUMLParser(m);
+		System.out.println("Model loaded: "+ m.getName());
 		
 		try {
+			/*ArrayList<Association> associations = new ArrayList<>();
+			associations.addAll(parser.getAllInstances(Association.class));
+			associations.removeAll(parser.getAllInstances(Derivation.class));
+			
+			Combination combinationAssociations = new Combination(associations, 2);
+			ArrayList<Association> combination;
+			
+			while(combinationAssociations.hasNext()){
+				combination = combinationAssociations.next();
+				Classifier a1Source = (Classifier) combination.get(0).getMemberEnd().get(0).getType();
+				Classifier a1Target = (Classifier) combination.get(0).getMemberEnd().get(1).getType();
+				Classifier a2Source = (Classifier) combination.get(1).getMemberEnd().get(0).getType();
+				Classifier a2Target = (Classifier) combination.get(1).getMemberEnd().get(1).getType();
+				
+				if((overlap(a1Source,a2Source,parser) && overlap(a1Target,a2Target,parser)) || (overlap(a1Source,a2Target,parser) && overlap(a1Target,a2Source,parser))){
+					System.out.println(a1Source.getName() + " : " + combination.get(0).getName() + " : " + a1Target.getName());
+					System.out.println(a2Source.getName() + " : " + combination.get(1).getName() + " : " + a2Target.getName());
+					System.out.println("-----------");
+				}
+			}
+			
+			for (Class c1 : parser.getAllInstances(RefOntoUML.Class.class)) {
+				for (Class c2 : parser.getAllInstances(RefOntoUML.Class.class)) {
+					
+					String over = c1.getName() + " & " + c2.getName() + ": " + overlap(c1,c2,parser);
+					System.out.println(over);
+				}
+			}*/
+			
+			
+			/*
 			int i = 0;
 			System.out.println("|||||||||||||||||||||||||||||||||||||||||");
 			for (Association a : parser.getAllInstances(Association.class)) {
@@ -102,7 +160,7 @@ public class QueryPerformer {
 		    	//System.out.println(tri.explanation(parser)+"\n");
 		    		    	
 		    }*/
-		    System.out.println("**************************************************************");
+		   /* System.out.println("**************************************************************");
 		    
 		    
 			ArrayList<RWRTAntiPattern> result00 = AntiPatternIdentifier.identifyRWRT(parser);
@@ -207,29 +265,19 @@ public class QueryPerformer {
 		    	System.out.println(rs.generatePredicate(mapper, RSAntiPattern.NONSUBSET));
 		    	System.out.println(rs.generatePredicate(mapper, RSAntiPattern.DISJOINT));
 		    	System.out.println();
-		    }
-		    System.out.println("**************************************************************");*/
+		    }*/
+		    System.out.println("**************************************************************");
 		    
-		    /*ArrayList<IAAntiPattern> result5 = AntiPatternIdentifier.identifyIA(parser);
+		    ArrayList<SSRAntiPattern> result5 = AntiPatternIdentifier.identifySSR(parser);
 		    
-		    System.out.println("#Imprecise Abstractions Antipatterns: "+result5.size()+"\n");
-		    for (IAAntiPattern ia : result5){
-		    	System.out.println(ia+"\n");
-		    	//System.out.println(ia.generateTargetPredicate(ia.getTargetChildren(), mapper));
-		    	ArrayList<Classifier> subtypes = new ArrayList<>();
-		    	subtypes.addAll(ia.getSourceChildren());
-		    	
-		    	System.out.println(ia.generateSourceOcl(subtypes));
-		    	
-		    	subtypes = new ArrayList<>();
-		    	subtypes.addAll(ia.getTargetChildren());
-		    	
-		    	System.out.println(ia.generateTargetOcl(subtypes));
-		    	
-		    	//System.out.println(ia.generateSourcePredicate(subtypes, mapper));
-		    	//System.out.println(ia.generateImpreciseAbstractionPredicates(mapper));
+		    System.out.println("#SSR: "+result5.size()+"\n");
+		    
+		    for (SSRAntiPattern ssr : result5){
+		    
+		    	System.out.println(ssr+"\n");
+		    
 		    }
-		    System.out.println("**************************************************************");*/
+		    System.out.println("**************************************************************");
 		    
 		    /*
 		    ArrayList<ACAntiPattern> result6 = AntiPatternIdentifier.identifyAC(parser);
@@ -242,12 +290,45 @@ public class QueryPerformer {
 				System.out.println(ac.generatePredicate(parser, 2, ACAntiPattern.CLOSED));
 			}
 			*/
+		    
+		    for (RefOntoUML.Kind k : parser.getAllInstances(RefOntoUML.Kind.class)) {
+				
+				HashMap<Classifier,Meronymic> parts = new HashMap<>();
+				allParts(k, parts, parser);
+				
+				if (parts.size()!=0){
+					System.out.println("Whole: "+parser.getStringRepresentation(k));
+					
+					for (Classifier p : parts.keySet()) {
+						System.out.print("\tPart: "+parser.getStringRepresentation(p) + " - ");
+						
+						if(parts.get(p).whole().equals(k))
+							System.out.println("Direct Part");
+						else
+							System.out.println("Indirect Part");
+					}
+					System.out.println();
+					
+					createMeronymicPatternA(k,parts,parser,factory);
+					createMeronymicPatternB(k,parts,parser);
+					createMeronymicPatternC(k,parts,parser);
+					
+					System.out.println("***");
+					
+					
+					System.out.println("*************");
+				}
+				
+			}
 				    		    
-		} catch (ParserException e) {
+		} catch (Exception e) {
 		    // record failure to parse
 		    //valid = false;
 		    System.err.println(e.getLocalizedMessage());
 		}
+		
+		ResourceUtil.saveReferenceOntoUML("/Users/tiagoprince/Desktop/test.refontouml", m);
+		
 		
 		/*for (EObject k : parser.getAllInstances(AntiRigidSortalClass.class)) {
 			System.out.println(parser.getStringRepresentation(k));
@@ -255,4 +336,206 @@ public class QueryPerformer {
 		
         
 	}
+	
+	
+	public static boolean overlap(Classifier c1, Classifier c2, OntoUMLParser parser) throws Exception{
+	
+		//equal types always overlap
+		if (c1.equals(c2))
+			return true;
+		
+		//objects, moments and Datatypes never overlap
+		
+		char c1Type = ' ', c2Type = ' ';
+		
+		if (c1 instanceof ObjectClass)
+			c1Type = 'o';
+		else if (c1 instanceof MomentClass)
+			c1Type = 'm';
+		else if (c1 instanceof DataType)
+			c1Type = 'd';
+		else
+			return false;
+		
+		if (c2 instanceof ObjectClass)
+			c2Type = 'o';
+		else if (c2 instanceof MomentClass)
+			c2Type = 'm';
+		else if (c2 instanceof DataType)
+			c2Type = 'd';
+		else
+			return false;
+		
+		if(c1Type!=c2Type)
+			return false;
+		
+			
+		if (c1 instanceof ObjectClass && c2 instanceof MomentClass || c1 instanceof Object)
+			return false;
+		
+		//distinct substance sortal types (kinds, quantities, collectives) never overlap
+		if(c1 instanceof SubstanceSortal && c2 instanceof SubstanceSortal)
+			return false;
+		
+		//a relator never overlaps with a mode
+		if(c1 instanceof Relator && c2 instanceof Mode || c1 instanceof Mode && c2 instanceof Relator)
+			return false;
+		
+		
+		//in this point, c1 and c2 are both objectClasses, both Relators, or Both Modes.
+		//in all remainder combinations of stereotypes, if one type is an ancestor (direct or indirect supertype), the types overlap.
+		//c2 ascendant of c1
+		ArrayList<Classifier> c1Parents = new ArrayList<>();
+		c1Parents.addAll(c1.allParents());
+		if (c1Parents.contains(c2))
+			return true;
+		
+		//c1 ascendant of c2
+		ArrayList<Classifier> c2Parents = new ArrayList<>();
+		c2Parents.addAll(c2.allParents());
+		if (c2Parents.contains(c1))
+			return true;
+		
+		ArrayList<Classifier> commonParents = new ArrayList<>();
+		commonParents.addAll(c1Parents);
+		commonParents.retainAll(c2Parents);
+		
+		if(commonParents.size()==0)
+			return false;
+		
+		
+		if((c1 instanceof MomentClass && c2 instanceof MomentClass) || (c1 instanceof SortalClass && c2 instanceof SortalClass)) {
+			for (GeneralizationSet gs : parser.getAllInstances(GeneralizationSet.class)) {
+					
+					EList<Generalization> generalizations = gs.getGeneralization();
+					
+					if(generalizations.size()>0 && commonParents.contains(generalizations.get(0).getGeneral()))
+					{
+						for (Generalization g1 : generalizations) {
+							for (Generalization g2 : generalizations) {
+								if(!g1.equals(g2)){
+									if((g1.getSpecific().equals(c1) || g1.getSpecific().allChildren().contains(c1)) && (g2.getSpecific().equals(c2) || g2.getSpecific().allChildren().contains(c2)))
+										return false;
+								}
+							}
+						}
+					}
+			}
+				return true;
+			}
+		
+		return false;
+			
+	}
+	
+	
+	public static Class getIdentityProvider (Class c) throws Exception{
+		
+		if (c instanceof SubKind || c instanceof Role || c instanceof Phase){
+			ArrayList<Class> identityProviders = new ArrayList<>();
+			
+			for (Classifier parent : c.allParents()) {
+				if(parent instanceof SubstanceSortal)
+					identityProviders.add((Class) parent);
+			}
+			
+			if(identityProviders.size()==1)
+				return identityProviders.get(0);
+			else if (identityProviders.size()==0)
+				return null;
+			else
+				throw new Exception("Type "+c.getName()+" has two identity providers. Correct the model!");
+		}
+		
+		if (c instanceof SubstanceSortal)
+			return (SubstanceSortal) c;
+		
+		return null;
+		
+	}
+	
+	
+	
+	public static void allParts (Classifier whole, HashMap<Classifier,Meronymic> parts, OntoUMLParser parser){
+		
+		Set<Meronymic> meronymics = parser.getAllInstances(Meronymic.class);
+		
+		for (Meronymic m : meronymics) {
+			
+			if(m.whole().equals(whole)){
+				parts.put(m.part(), m);
+				allParts(m.part(), parts, parser);
+			}
+		}
+	}
+	
+	public static void createMeronymicPatternA(Classifier whole, HashMap<Classifier,Meronymic> explicitParts, OntoUMLParser parser, RefOntoUMLFactory factory) {
+	
+		for (Meronymic m : explicitParts.values()) {
+			//if not a direct part
+			if(!m.whole().equals(whole)){
+				
+				componentOf derivedComp = factory.createcomponentOf();
+				Property derivedPart = factory.createProperty();
+				Property derivedWhole = factory.createProperty();
+				LiteralInteger partLowerValue = factory.createLiteralInteger();
+		        LiteralUnlimitedNatural partUpperValue = factory.createLiteralUnlimitedNatural();
+		        LiteralInteger wholeLowerValue = factory.createLiteralInteger();
+		        LiteralUnlimitedNatural wholeUpperValue = factory.createLiteralUnlimitedNatural();
+				
+				derivedComp.setIsDerived(true);
+				derivedComp.setName("derived");
+				((Package) whole.eContainer()).getPackagedElement().add(derivedComp);
+				derivedComp.getOwnedEnd().add(derivedWhole);
+				derivedComp.getOwnedEnd().add(derivedPart);
+				
+				derivedPart.setType(m.part());
+				derivedPart.setIsDerived(true);
+				derivedPart.setName(m.part().getName().toLowerCase());
+				derivedPart.setLowerValue(partLowerValue);
+				derivedPart.setUpperValue(partUpperValue);
+				
+				derivedWhole.setType(whole);
+				derivedWhole.setIsDerived(true);
+				derivedWhole.setName(m.whole().getName().toLowerCase());
+				derivedWhole.setLowerValue(wholeLowerValue);
+				derivedWhole.setUpperValue(wholeUpperValue);
+				
+		        partLowerValue.setValue(0);
+		        partUpperValue.setValue(-1);
+		        
+		        wholeLowerValue.setValue(0);
+		        wholeUpperValue.setValue(-1);
+		        
+		        System.out.println("A - componentOf created! "+parser.getStringRepresentation(derivedComp));
+			}
+		}
+	
+	}
+	
+	public static void createMeronymicPatternB(Classifier whole, HashMap<Classifier,Meronymic> explicitParts, OntoUMLParser parser) {
+		
+		for (Classifier p : explicitParts.keySet()) {
+			
+			for (Classifier child : whole.allChildren()) {
+					System.out.println("B - componentOf created! whole: "+parser.getStringRepresentation(child)+", part: "+parser.getStringRepresentation(p));
+			}
+				
+		}
+	
+	}
+	
+	public static void createMeronymicPatternC(Classifier whole, HashMap<Classifier,Meronymic> explicitParts, OntoUMLParser parser) {
+		
+		for (Classifier p : explicitParts.keySet()) {
+			
+			for (Classifier child : p.allChildren()) {
+					System.out.println("C - componentOf created! whole: "+parser.getStringRepresentation(whole)+", part: "+parser.getStringRepresentation(child));
+			}
+				
+		}
+	
+	}
+	
+	
 }

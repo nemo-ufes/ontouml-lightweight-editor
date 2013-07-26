@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_qRiTgK2nEeKliecaOnJ2gg" name="EA_Model" visibility="public">
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_qRiTgK2nEeKliecaOnJ2gg" name="AntiPatterns" visibility="public">
   <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_qRiTga2nEeKliecaOnJ2gg" name="Integer"/>
   <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_qRiTgq2nEeKliecaOnJ2gg" name="Boolean"/>
   <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_qRiTg62nEeKliecaOnJ2gg" name="String"/>

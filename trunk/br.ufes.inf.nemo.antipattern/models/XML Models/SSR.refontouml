@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_tW644Oe3EeKqm7GG_DrqGw" name="EA_Model" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_tW644ee3EeKqm7GG_DrqGw" name="Integer"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_tW644ue3EeKqm7GG_DrqGw" name="Boolean"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_tW644-e3EeKqm7GG_DrqGw" name="String"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_tW645Oe3EeKqm7GG_DrqGw" name="Unlimited Natural"/>
+  <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_tW645ee3EeKqm7GG_DrqGw" name="Super and Sub Relations" visibility="public">
+    <ownedComment xmi:id="_tW645ue3EeKqm7GG_DrqGw" body="Se uma pessoa viaja a uma estrela, ent&#xe3;o ela tamb&#xe9;m viaja ao sistema da qual essa estrela faz parte, assim como a gal&#xe1;xia que cont&#xe9;m esse sistema.&#xA;&#xA;context _'Space Traveller'&#xA;inv : self.destination-&amp;gt;forAll( x : Galactic Object | x.oclIsKindOf(Star) implies self.destination-&amp;gt;asSet()-&amp;gt;includesAll(x.oclAsType(Star).system.oclAsType(GalacticObject)-&amp;gt;union(x.oclAsType(Star).system.galaxy.oclAsType(Galaxy))-&amp;gt;asSet())"/>
+    <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_tW645-e3EeKqm7GG_DrqGw" name="AdministrativeUnit" visibility="public"/>
+    <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_tW646Oe3EeKqm7GG_DrqGw" name="Galactic Object" visibility="public" isAbstract="true"/>
+    <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_tW646ee3EeKqm7GG_DrqGw" name="Galaxy" visibility="public">
+      <generalization xmi:id="_tW646ue3EeKqm7GG_DrqGw" general="_tW646Oe3EeKqm7GG_DrqGw"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_tW646-e3EeKqm7GG_DrqGw" name="Kind1" visibility="public"/>
+    <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_tW647Oe3EeKqm7GG_DrqGw" name="Kind2" visibility="public"/>
+    <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_tW647ee3EeKqm7GG_DrqGw" name="Person" visibility="public"/>
+    <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_tW647ue3EeKqm7GG_DrqGw" name="Planet" visibility="public">
+      <generalization xmi:id="_tW647-e3EeKqm7GG_DrqGw" general="_tW646Oe3EeKqm7GG_DrqGw"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_tW648Oe3EeKqm7GG_DrqGw" name="PublicOrganization" visibility="public"/>
+    <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_tW648ee3EeKqm7GG_DrqGw" name="Space Traveller" visibility="public">
+      <generalization xmi:id="_tW648ue3EeKqm7GG_DrqGw" general="_tW647ee3EeKqm7GG_DrqGw"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_tW648-e3EeKqm7GG_DrqGw" name="Star" visibility="public">
+      <generalization xmi:id="_tW649Oe3EeKqm7GG_DrqGw" general="_tW646Oe3EeKqm7GG_DrqGw"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_tW649ee3EeKqm7GG_DrqGw" name="SubKind1" visibility="public">
+      <generalization xmi:id="_tW649ue3EeKqm7GG_DrqGw" general="_tW647Oe3EeKqm7GG_DrqGw"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_tW649-e3EeKqm7GG_DrqGw" name="System" visibility="public">
+      <generalization xmi:id="_tW64-Oe3EeKqm7GG_DrqGw" general="_tW646Oe3EeKqm7GG_DrqGw"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_tW64-ee3EeKqm7GG_DrqGw" name="subordinatedTo" visibility="public" memberEnd="_tW64-ue3EeKqm7GG_DrqGw _tW64_ee3EeKqm7GG_DrqGw">
+      <ownedEnd xmi:id="_tW64-ue3EeKqm7GG_DrqGw" name="boss" visibility="public" type="_tW645-e3EeKqm7GG_DrqGw" association="_tW64-ee3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW64--e3EeKqm7GG_DrqGw" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW64_Oe3EeKqm7GG_DrqGw"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_tW64_ee3EeKqm7GG_DrqGw" name="employee" visibility="public" type="_tW645-e3EeKqm7GG_DrqGw" association="_tW64-ee3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW64_ue3EeKqm7GG_DrqGw" value="-1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW64_-e3EeKqm7GG_DrqGw"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_tW7f8Oe3EeKqm7GG_DrqGw" visibility="public" memberEnd="_tW7f8ee3EeKqm7GG_DrqGw _tW7f9Oe3EeKqm7GG_DrqGw">
+      <name xsi:nil="true"/>
+      <ownedEnd xmi:id="_tW7f8ee3EeKqm7GG_DrqGw" name="organization" visibility="public" type="_tW648Oe3EeKqm7GG_DrqGw" aggregation="composite" association="_tW7f8Oe3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7f8ue3EeKqm7GG_DrqGw" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7f8-e3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_tW7f9Oe3EeKqm7GG_DrqGw" name="unit" visibility="public" type="_tW645-e3EeKqm7GG_DrqGw" association="_tW7f8Oe3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7f9ee3EeKqm7GG_DrqGw" value="-1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7f9ue3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_tW7f9-e3EeKqm7GG_DrqGw" name="travels to" visibility="public" memberEnd="_tW7f-Oe3EeKqm7GG_DrqGw _tW7f--e3EeKqm7GG_DrqGw" isDerived="true">
+      <ownedEnd xmi:id="_tW7f-Oe3EeKqm7GG_DrqGw" name="traveler" visibility="public" type="_tW648ee3EeKqm7GG_DrqGw" association="_tW7f9-e3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7f-ee3EeKqm7GG_DrqGw" value="-1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7f-ue3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_tW7f--e3EeKqm7GG_DrqGw" name="destination" visibility="public" type="_tW646Oe3EeKqm7GG_DrqGw" association="_tW7f9-e3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7f_Oe3EeKqm7GG_DrqGw" value="-1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7f_ee3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:subCollectionOf" xmi:id="_tW7f_ue3EeKqm7GG_DrqGw" visibility="public" memberEnd="_tW7gAue3EeKqm7GG_DrqGw _tW7f_-e3EeKqm7GG_DrqGw">
+      <name xsi:nil="true"/>
+      <ownedEnd xmi:id="_tW7f_-e3EeKqm7GG_DrqGw" name="system" visibility="private" type="_tW649-e3EeKqm7GG_DrqGw" association="_tW7f_ue3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7gAOe3EeKqm7GG_DrqGw" value="-1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7gAee3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_tW7gAue3EeKqm7GG_DrqGw" name="galaxy" visibility="private" type="_tW646ee3EeKqm7GG_DrqGw" aggregation="composite" association="_tW7f_ue3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7gA-e3EeKqm7GG_DrqGw" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7gBOe3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_tW7gBee3EeKqm7GG_DrqGw" visibility="public" memberEnd="_tW7gBue3EeKqm7GG_DrqGw _tW7gCee3EeKqm7GG_DrqGw" isDerived="true">
+      <name xsi:nil="true"/>
+      <ownedEnd xmi:id="_tW7gBue3EeKqm7GG_DrqGw" name="kind2" visibility="public" type="_tW647Oe3EeKqm7GG_DrqGw" association="_tW7gBee3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7gB-e3EeKqm7GG_DrqGw" value="-1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7gCOe3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_tW7gCee3EeKqm7GG_DrqGw" name="kind1" visibility="public" type="_tW646-e3EeKqm7GG_DrqGw" association="_tW7gBee3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7gCue3EeKqm7GG_DrqGw" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7gC-e3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_tW7gDOe3EeKqm7GG_DrqGw" visibility="public" memberEnd="_tW7gDee3EeKqm7GG_DrqGw _tW7gEOe3EeKqm7GG_DrqGw" isDerived="true">
+      <name xsi:nil="true"/>
+      <ownedEnd xmi:id="_tW7gDee3EeKqm7GG_DrqGw" name="subkind1" visibility="public" type="_tW649ee3EeKqm7GG_DrqGw" association="_tW7gDOe3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7gDue3EeKqm7GG_DrqGw" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7gD-e3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_tW7gEOe3EeKqm7GG_DrqGw" name="kind2" visibility="public" type="_tW647Oe3EeKqm7GG_DrqGw" association="_tW7gDOe3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7gEee3EeKqm7GG_DrqGw" value="-1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7gEue3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_tW7gE-e3EeKqm7GG_DrqGw" visibility="public" memberEnd="_tW7gFOe3EeKqm7GG_DrqGw _tW7gF-e3EeKqm7GG_DrqGw">
+      <name xsi:nil="true"/>
+      <ownedEnd xmi:id="_tW7gFOe3EeKqm7GG_DrqGw" name="system" visibility="private" type="_tW649-e3EeKqm7GG_DrqGw" aggregation="composite" association="_tW7gE-e3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7gFee3EeKqm7GG_DrqGw" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7gFue3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_tW7gF-e3EeKqm7GG_DrqGw" name="planet" visibility="private" type="_tW647ue3EeKqm7GG_DrqGw" association="_tW7gE-e3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7gGOe3EeKqm7GG_DrqGw" value="-1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7gGee3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_tW7gGue3EeKqm7GG_DrqGw" visibility="public" memberEnd="_tW7gG-e3EeKqm7GG_DrqGw _tW7gHue3EeKqm7GG_DrqGw">
+      <name xsi:nil="true"/>
+      <ownedEnd xmi:id="_tW7gG-e3EeKqm7GG_DrqGw" name="system" visibility="private" type="_tW649-e3EeKqm7GG_DrqGw" aggregation="composite" association="_tW7gGue3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7gHOe3EeKqm7GG_DrqGw" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7gHee3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_tW7gHue3EeKqm7GG_DrqGw" name="star" visibility="private" type="_tW648-e3EeKqm7GG_DrqGw" association="_tW7gGue3EeKqm7GG_DrqGw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_tW7gH-e3EeKqm7GG_DrqGw" value="-1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_tW7gIOe3EeKqm7GG_DrqGw" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+  </packagedElement>
+  <viewpoint xsi:nil="true"/>
+</RefOntoUML:Model>
