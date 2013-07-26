@@ -1042,4 +1042,15 @@ public class OntoUMLParser {
 		return classifiers;
 	}
 	
+	public ArrayList<GeneralizationSet> getGeneralizationSet(Generalization g){
+		ArrayList<GeneralizationSet> genSets = new ArrayList<>();
+		
+		for (GeneralizationSet gs : getAllInstances(GeneralizationSet.class)) {
+			if(gs.getGeneralization().contains(g))
+				genSets.add(gs);
+		}
+		
+		return genSets;
+	}
+	
 }
