@@ -1,13 +1,11 @@
 package br.ufes.inf.nemo.common.ontoumlparser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Kind;
 import RefOntoUML.LiteralInteger;
 import RefOntoUML.LiteralUnlimitedNatural;
-import RefOntoUML.Meronymic;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
@@ -17,9 +15,15 @@ public class Derivator {
 
 	private OntoUMLParser parser;
 	private RefOntoUMLFactory factory;
-	private ArrayList<componentOf> componentOfList;
+	private ArrayList<componentOf> originalCompositions;
 	private ArrayList<Kind> kinds;
+	private ArrayList<componentOf> generatedCompositions;
 	
+	public ArrayList<componentOf> getGeneratedCompositions() {
+		return generatedCompositions;
+	}
+
+
 	public Derivator (OntoUMLParser parser){
 		this.parser = parser;
 		this.factory = RefOntoUMLFactory.eINSTANCE;
@@ -27,13 +31,15 @@ public class Derivator {
 		kinds = new ArrayList<>();
 		kinds.addAll(parser.getAllInstances(Kind.class));
 		
-		componentOfList = new ArrayList<>();
-		componentOfList.addAll(parser.getAllInstances(componentOf.class));
+		originalCompositions = new ArrayList<>();
+		originalCompositions.addAll(parser.getAllInstances(componentOf.class));
+		
+		generatedCompositions = new ArrayList<>();
 		
 	}
 	
 	
-	public void createComponentOfPatterns(){
+	public OntoUMLParser createComponentOfPatterns(){
 		
 		for (Kind k : kinds) {
 			
@@ -57,16 +63,12 @@ public class Derivator {
 				createComponentOfPatternA(parts);
 				createComponentOfPatternB(parts);
 				createComponentOfPatternC(parts);
-				
-				parser = new OntoUMLParser(parser.getModel());
-				
-				System.out.println("***");
-				
-				
-				System.out.println("*************");
-			}
-			
+			}	
 		}
+		if (generatedCompositions.size()>0)
+			return new OntoUMLParser(parser.getModel());
+		
+		return parser;
 	}
 	
 	//get the all direct and indirect parts of a given classifier;
@@ -74,7 +76,7 @@ public class Derivator {
 		
 		ArrayList<ArrayList<componentOf>> parts = new ArrayList<>();
 		
-		for (componentOf cp : componentOfList) {
+		for (componentOf cp : originalCompositions) {
 			if(cp.whole().equals(whole)){
 				
 				ArrayList<componentOf> newPath = new ArrayList<>();
@@ -148,7 +150,8 @@ public class Derivator {
 				if (!isFunctionalPartOf(whole, partChild)) {
 					componentOf comp = createComponentOf(whole, partChild);
 					((Package) whole.eContainer()).getPackagedElement().add(comp);
-			        System.out.println("C - componentOf created! "+ comp);
+					
+			        System.out.println("C - componentOf created! "+ comp.whole());
 				}	
 			}
 				
@@ -168,6 +171,8 @@ public class Derivator {
 		
 		comp.setIsDerived(true);
 		comp.setName("derived");
+		comp.getMemberEnd().add(wholeProperty);
+		comp.getMemberEnd().add(partProperty);
 		comp.getOwnedEnd().add(wholeProperty);
 		comp.getOwnedEnd().add(partProperty);
 		
@@ -189,13 +194,20 @@ public class Derivator {
         wholeLowerValue.setValue(0);
         wholeUpperValue.setValue(-1);
         
+        generatedCompositions.add(comp);
+        
         return comp;
 	}
 	
 	
 	private boolean isFunctionalPartOf (Classifier whole, Classifier part){
 		
-		for (componentOf cp : componentOfList){
+		for (componentOf cp : originalCompositions){
+			if (cp.whole().equals(whole) && cp.part().equals(part))
+				return true;
+		}
+		
+		for (componentOf cp : generatedCompositions){
 			if (cp.whole().equals(whole) && cp.part().equals(part))
 				return true;
 		}
