@@ -56,13 +56,29 @@ public class MainMenu implements ActionListener {
 		menubar = new JMenuBar();
 		createFileMenu();
 		createEditMenu();
-		createDiagramMenu();		
+		createDiagramMenu();
+		createViewMenu();
 		createImportMenu();
 		createExportMenu();
-		createViewMenu();
+		createTransformationMenu();		
 		createHelpMenu();
 	}
 
+	private void createTransformationMenu()
+	{
+		JMenu transformMenu = createMenu("transformation");
+		menubar.add(transformMenu);
+		
+		createMenuItem(transformMenu, "generatealloy");
+		transformMenu.addSeparator();
+		createMenuItem(transformMenu, "generateowl");
+		createMenuItem(transformMenu, "generateowlsettings");
+		transformMenu.addSeparator();
+		createMenuItem(transformMenu, "generatesbvr");
+		transformMenu.addSeparator();
+		createMenuItem(transformMenu, "generatetext");
+	}
+	
 	/**
 	 * Creates the File menu.
 	 */
