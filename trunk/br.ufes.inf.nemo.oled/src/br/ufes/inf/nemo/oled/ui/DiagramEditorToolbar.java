@@ -33,34 +33,33 @@ public class DiagramEditorToolbar implements ActionListener {
         
     //toolbar.add(createToggleButton(diagramOptionsGroup, "rectilinear"));
     //toolbar.add(createToggleButton(diagramOptionsGroup, "straight"));
-    
-    toolbar.add(createButton(buttonGroup, "autoselection"));    
-    toolbar.add(createButton(buttonGroup, "parse"));    
-    toolbar.add(createButton(buttonGroup, "verify"));
+    //toolbar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        
     //toolbar.addSeparator(new Dimension(20, 25));
     //toolbar.add(createButton(validationGroup, "verifysettings")); 
     
-    toolbar.addSeparator(new Dimension(20, 25));
-    
     //toolbar.add(createButton(validationGroup, "verifyfile")); 
     //toolbar.addSeparator(new Dimension(20, 25));
-    toolbar.add(createButton(buttonGroup, "generatealloy"));
-    toolbar.add(createButton(buttonGroup, "antipattern"));
-    
-    toolbar.addSeparator(new Dimension(20, 25));
-    
-    toolbar.add(createButton(buttonGroup, "generateowl"));
-    toolbar.add(createButton(buttonGroup, "generateowlsettings"));    
-    toolbar.add(createButton(buttonGroup, "generatesbvr"));
-    toolbar.add(createButton(buttonGroup, "generatetext"));
-    
-    toolbar.addSeparator(new Dimension(20, 25));
     
     toolbar.add(createButton(buttonGroup, "output"));
     toolbar.add(createButton(buttonGroup, "warning"));
     toolbar.add(createButton(buttonGroup, "error"));    
     toolbar.add(createButton(buttonGroup, "ocleditor"));
     
+    toolbar.addSeparator(new Dimension(20, 25));
+    
+    toolbar.add(createButton(buttonGroup, "autoselection"));    
+    toolbar.add(createButton(buttonGroup, "parse"));    
+    toolbar.add(createButton(buttonGroup, "verify"));
+    toolbar.add(createButton(buttonGroup, "antipattern"));
+    
+    toolbar.addSeparator(new Dimension(20, 25));
+    
+    toolbar.add(createButton(buttonGroup, "generatealloy"));
+    toolbar.add(createButton(buttonGroup, "generateowl"));
+    //toolbar.add(createButton(buttonGroup, "generateowlsettings"));    
+    toolbar.add(createButton(buttonGroup, "generatesbvr"));
+    toolbar.add(createButton(buttonGroup, "generatetext"));
   }
 
   public void addCommandListener(AppCommandListener l) {
