@@ -107,7 +107,8 @@ public final class IconLoader {
 		ARROW_UP,
 		COPYRIGHTS,		
 		ARROW_DOWN,
-		ANTIPATTERN
+		ANTIPATTERN,
+		DERIVERELATIONS,
 	}
 
 	private Map<IconType, String> urlMap = new HashMap<IconType, String>();
@@ -151,6 +152,7 @@ public final class IconLoader {
 		urlMap.put(IconType.PARSE, "resources/br/ufes/inf/nemo/oled/ui/check.png");
 		
 		urlMap.put(IconType.VIEW, "resources/br/ufes/inf/nemo/oled/ui/view.png");
+		urlMap.put(IconType.DERIVERELATIONS, "resources/br/ufes/inf/nemo/oled/ui/derive-relations.png");
 		urlMap.put(IconType.GENERATE_ALLOY, "resources/br/ufes/inf/nemo/oled/ui/alloy.png");
 		urlMap.put(IconType.ANTIPATTERN, "resources/br/ufes/inf/nemo/oled/ui/antipattern.png");
 		urlMap.put(IconType.GENERATE_OWL, "resources/br/ufes/inf/nemo/oled/ui/owl.png");

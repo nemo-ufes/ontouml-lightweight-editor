@@ -55,9 +55,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicButtonUI;
-import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
-
-
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -109,6 +106,7 @@ import br.ufes.inf.nemo.oled.util.SimulationElement;
 import br.ufes.inf.nemo.oled.util.TextDescriptionHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
+import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
@@ -828,7 +826,26 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		} else ; getCurrentWrapper().setTitleErrors(" Errors ");
 
 		/*if (verificator.getErrors()>0) 
-			frame.showErrorMessageDialog("Error", "Your model has errors. Please, Fix it before continue.\n");*/			
+		frame.showErrorMessageDialog("Error", "Your model has errors. Please, Fix it before continue.\n");*/			
+	}
+	
+	/** 
+	 * Generate derived relations of the model 
+	 */
+	public void deriveRelations() 
+	{
+		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
+		String result = new String();
+		
+		// ================================		
+		
+		result = "Component not implemented yet...";
+		
+		// =================================
+		
+		ModelTree.setParserFor(getCurrentProject(), refparser);
+		ModelTree.updateModelTree(getCurrentProject());
+		getCurrentWrapper().showOutputText(result, true, true);
 	}
 
 	/**
@@ -1396,4 +1413,5 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 	}
+
 }
