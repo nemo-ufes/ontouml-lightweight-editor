@@ -37,6 +37,7 @@
         <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_IgZwrOgZEeKrHrsOEEXSbw" name="RightVentricle" visibility="public">
           <generalization xmi:id="_IgZwregZEeKrHrsOEEXSbw" general="_IgZwpugZEeKrHrsOEEXSbw"/>
           <generalization xmi:id="_IgZwrugZEeKrHrsOEEXSbw" general="_IgZwmOgZEeKrHrsOEEXSbw"/>
+          <ownedAttribute name="test" type="_IgZwmOgZEeKrHrsOEEXSbw"/>
         </packagedElement>
         <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_IgZwr-gZEeKrHrsOEEXSbw" visibility="public" memberEnd="_IgZws-gZEeKrHrsOEEXSbw _IgZwsOgZEeKrHrsOEEXSbw" isShareable="false" isEssential="true" isInseparable="true">
           <name xsi:nil="true"/>
