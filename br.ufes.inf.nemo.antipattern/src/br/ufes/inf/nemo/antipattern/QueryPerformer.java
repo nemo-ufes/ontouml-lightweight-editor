@@ -47,6 +47,7 @@ import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
 import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.list.Combination;
+import br.ufes.inf.nemo.common.ontoumlparser.Derivator;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
@@ -266,7 +267,7 @@ public class QueryPerformer {
 		    	System.out.println(rs.generatePredicate(mapper, RSAntiPattern.DISJOINT));
 		    	System.out.println();
 		    }*/
-		    System.out.println("**************************************************************");
+		  /*  System.out.println("**************************************************************");
 		    
 		    ArrayList<SSRAntiPattern> result5 = AntiPatternIdentifier.identifySSR(parser);
 		    
@@ -291,40 +292,14 @@ public class QueryPerformer {
 			}
 			*/
 		    
-		    for (RefOntoUML.Kind k : parser.getAllInstances(RefOntoUML.Kind.class)) {
-				
-				HashMap<Classifier,Meronymic> parts = new HashMap<>();
-				allParts(k, parts, parser);
-				
-				if (parts.size()!=0){
-					System.out.println("Whole: "+parser.getStringRepresentation(k));
-					
-					for (Classifier p : parts.keySet()) {
-						System.out.print("\tPart: "+parser.getStringRepresentation(p) + " - ");
-						
-						if(parts.get(p).whole().equals(k))
-							System.out.println("Direct Part");
-						else
-							System.out.println("Indirect Part");
-					}
-					System.out.println();
-					
-					createMeronymicPatternA(k,parts,parser,factory);
-					createMeronymicPatternB(k,parts,parser);
-					createMeronymicPatternC(k,parts,parser);
-					
-					System.out.println("***");
-					
-					
-					System.out.println("*************");
-				}
-				
-			}
+		    Derivator d = new Derivator(parser);
+		    
+		    d.createComponentOfPatterns();
 				    		    
 		} catch (Exception e) {
 		    // record failure to parse
 		    //valid = false;
-		    System.err.println(e.getLocalizedMessage());
+			e.printStackTrace();
 		}
 		
 		ResourceUtil.saveReferenceOntoUML("/Users/tiagoprince/Desktop/test.refontouml", m);
@@ -452,89 +427,6 @@ public class QueryPerformer {
 		
 		return null;
 		
-	}
-	
-	
-	
-	public static void allParts (Classifier whole, HashMap<Classifier,Meronymic> parts, OntoUMLParser parser){
-		
-		Set<Meronymic> meronymics = parser.getAllInstances(Meronymic.class);
-		
-		for (Meronymic m : meronymics) {
-			
-			if(m.whole().equals(whole)){
-				parts.put(m.part(), m);
-				allParts(m.part(), parts, parser);
-			}
-		}
-	}
-	
-	public static void createMeronymicPatternA(Classifier whole, HashMap<Classifier,Meronymic> explicitParts, OntoUMLParser parser, RefOntoUMLFactory factory) {
-	
-		for (Meronymic m : explicitParts.values()) {
-			//if not a direct part
-			if(!m.whole().equals(whole)){
-				
-				componentOf derivedComp = factory.createcomponentOf();
-				Property derivedPart = factory.createProperty();
-				Property derivedWhole = factory.createProperty();
-				LiteralInteger partLowerValue = factory.createLiteralInteger();
-		        LiteralUnlimitedNatural partUpperValue = factory.createLiteralUnlimitedNatural();
-		        LiteralInteger wholeLowerValue = factory.createLiteralInteger();
-		        LiteralUnlimitedNatural wholeUpperValue = factory.createLiteralUnlimitedNatural();
-				
-				derivedComp.setIsDerived(true);
-				derivedComp.setName("derived");
-				((Package) whole.eContainer()).getPackagedElement().add(derivedComp);
-				derivedComp.getOwnedEnd().add(derivedWhole);
-				derivedComp.getOwnedEnd().add(derivedPart);
-				
-				derivedPart.setType(m.part());
-				derivedPart.setIsDerived(true);
-				derivedPart.setName(m.part().getName().toLowerCase());
-				derivedPart.setLowerValue(partLowerValue);
-				derivedPart.setUpperValue(partUpperValue);
-				
-				derivedWhole.setType(whole);
-				derivedWhole.setIsDerived(true);
-				derivedWhole.setName(m.whole().getName().toLowerCase());
-				derivedWhole.setLowerValue(wholeLowerValue);
-				derivedWhole.setUpperValue(wholeUpperValue);
-				
-		        partLowerValue.setValue(0);
-		        partUpperValue.setValue(-1);
-		        
-		        wholeLowerValue.setValue(0);
-		        wholeUpperValue.setValue(-1);
-		        
-		        System.out.println("A - componentOf created! "+parser.getStringRepresentation(derivedComp));
-			}
-		}
-	
-	}
-	
-	public static void createMeronymicPatternB(Classifier whole, HashMap<Classifier,Meronymic> explicitParts, OntoUMLParser parser) {
-		
-		for (Classifier p : explicitParts.keySet()) {
-			
-			for (Classifier child : whole.allChildren()) {
-					System.out.println("B - componentOf created! whole: "+parser.getStringRepresentation(child)+", part: "+parser.getStringRepresentation(p));
-			}
-				
-		}
-	
-	}
-	
-	public static void createMeronymicPatternC(Classifier whole, HashMap<Classifier,Meronymic> explicitParts, OntoUMLParser parser) {
-		
-		for (Classifier p : explicitParts.keySet()) {
-			
-			for (Classifier child : p.allChildren()) {
-					System.out.println("C - componentOf created! whole: "+parser.getStringRepresentation(whole)+", part: "+parser.getStringRepresentation(child));
-			}
-				
-		}
-	
 	}
 	
 	
