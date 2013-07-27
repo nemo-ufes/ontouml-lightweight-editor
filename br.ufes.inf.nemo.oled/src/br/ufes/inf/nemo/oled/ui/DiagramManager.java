@@ -850,11 +850,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ModelTree.updateModelTree(getCurrentProject());
 		
 		ArrayList<componentOf> generated = d.getGeneratedCompositions();
-		
+		/*TODO: WE NEED TO KEEP these inferred relations in memory, because if the model is changed, we must deleted all of them and derive them again.
+		 * 		- Figure out where to keep them.
+		 * 		- Implement the method
+		 * */
 		if (generated.size()>0){
 			result = generated.size()+" associations were created through derivation...";
 			for (componentOf cp : generated) {
-				result += "\n\t"+refparser.getStringRepresentation(cp)+": "+cp.whole().getName() +" - "+cp.part().getName();
+				result += "\n\t"+refparser.getStringRepresentation(cp);
 			}
 		}
 		else result = "No association can be derived from the model!";
