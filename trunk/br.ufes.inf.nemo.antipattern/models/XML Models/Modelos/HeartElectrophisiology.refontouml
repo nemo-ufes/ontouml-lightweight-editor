@@ -56,7 +56,7 @@
           <name xsi:nil="true"/>
           <ownedEnd xmi:id="_IgZwt-gZEeKrHrsOEEXSbw" visibility="public" type="_IgZwrOgZEeKrHrsOEEXSbw" association="_IgZwtugZEeKrHrsOEEXSbw">
             <name xsi:nil="true"/>
-            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IgZwuOgZEeKrHrsOEEXSbw" value="1"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IgZwuOgZEeKrHrsOEEXSbw" name="" value="-1"/>
             <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IgZwuegZEeKrHrsOEEXSbw" value="1"/>
           </ownedEnd>
           <ownedEnd xmi:id="_IgZwuugZEeKrHrsOEEXSbw" visibility="public" type="_IgZwmegZEeKrHrsOEEXSbw" aggregation="composite" association="_IgZwtugZEeKrHrsOEEXSbw">
@@ -83,7 +83,7 @@
           <ownedEnd xmi:id="_IgZwxegZEeKrHrsOEEXSbw" visibility="public" type="_IgZwqegZEeKrHrsOEEXSbw" association="_IgZwxOgZEeKrHrsOEEXSbw">
             <name xsi:nil="true"/>
             <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IgZwxugZEeKrHrsOEEXSbw" value="1"/>
-            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IgZwx-gZEeKrHrsOEEXSbw" value="1"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IgZwx-gZEeKrHrsOEEXSbw"/>
           </ownedEnd>
           <ownedEnd xmi:id="_IgZwyOgZEeKrHrsOEEXSbw" visibility="public" type="_IgZwmegZEeKrHrsOEEXSbw" aggregation="composite" association="_IgZwxOgZEeKrHrsOEEXSbw">
             <name xsi:nil="true"/>
@@ -113,8 +113,8 @@
           </ownedEnd>
           <ownedEnd xmi:id="_IgZw1ugZEeKrHrsOEEXSbw" visibility="public" type="_IgZwmegZEeKrHrsOEEXSbw" association="_IgZw0ugZEeKrHrsOEEXSbw">
             <name xsi:nil="true"/>
-            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IgZw1-gZEeKrHrsOEEXSbw" value="1"/>
-            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IgZw2OgZEeKrHrsOEEXSbw" value="1"/>
+            <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IgZw1-gZEeKrHrsOEEXSbw" value="3"/>
+            <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IgZw2OgZEeKrHrsOEEXSbw" value="2"/>
           </ownedEnd>
         </packagedElement>
         <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_IgZw2egZEeKrHrsOEEXSbw" visibility="public" memberEnd="_IgZw3egZEeKrHrsOEEXSbw _IgZw2ugZEeKrHrsOEEXSbw">
