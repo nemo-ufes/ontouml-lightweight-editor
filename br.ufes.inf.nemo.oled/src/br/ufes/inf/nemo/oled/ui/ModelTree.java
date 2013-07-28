@@ -16,6 +16,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
+import br.ufes.inf.nemo.oled.model.InferenceList;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
@@ -37,6 +38,7 @@ public class ModelTree extends JPanel {
 	private AlloySpecification alloySpec;
 	private OCLDocument oclmodel;
 	private AntiPatternList antipatterns;	
+	private InferenceList inferences;
 	private OntoUML2AlloyOptions refOptions;
 	private OCL2AlloyOptions oclOptions;
 		
@@ -62,6 +64,7 @@ public class ModelTree extends JPanel {
 		oclOptions = new OCL2AlloyOptions();
 		refOptions = new OntoUML2AlloyOptions();
 		antipatterns = new AntiPatternList();
+		inferences = new InferenceList();
 		
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
@@ -134,6 +137,14 @@ public class ModelTree extends JPanel {
 	public static void setAntiPatternListFor(UmlProject project, AntiPatternList antipatterns)
 	{
 		ModelTree.getTreeFor(project).antipatterns = antipatterns;
+	}
+	
+	public static InferenceList getInferences(UmlProject project) {
+		return ModelTree.getTreeFor(project).inferences;
+	}
+
+	public static void setDerivations(UmlProject project, InferenceList inferences) {
+		ModelTree.getTreeFor(project).inferences = inferences;
 	}
 	
 	/**

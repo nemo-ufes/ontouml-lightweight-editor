@@ -1,6 +1,15 @@
 package br.ufes.inf.nemo.common.ontoumlparser;
 
+/*
+ * This class infers componentOf relations from pre-defined structures presented in G. Guizzardi's paper
+ * entitled "The Problem of Transitivity of Part-Whole Relations in Conceptual Modeling Revisited"
+ * 
+ */
+
 import java.util.ArrayList;
+
+import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.ecore.EcoreFactory;
 
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Classifier;
@@ -12,48 +21,56 @@ import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.componentOf;
 
-public class Derivator {
+public class ComponentOfInference {
 
 	private OntoUMLParser parser;
 	private RefOntoUMLFactory factory;
-	private ArrayList<componentOf> originalCompositions;
+	private ArrayList<componentOf> compositions;
 	private ArrayList<Kind> kinds;
-	private ArrayList<componentOf> generatedCompositions;
+	private ArrayList<componentOf> inferredCompositions;
 	
-	public ArrayList<componentOf> getGeneratedCompositions() {
-		return generatedCompositions;
+	public ArrayList<componentOf> getInferredCompositions() {
+		return inferredCompositions;
 	}
 
 
-	public Derivator (OntoUMLParser parser){
+	public ComponentOfInference (OntoUMLParser parser){
 		this.parser = parser;
 		this.factory = RefOntoUMLFactory.eINSTANCE;
 		
 		kinds = new ArrayList<>();
 		kinds.addAll(parser.getAllInstances(Kind.class));
 		
-		originalCompositions = new ArrayList<>();
-		originalCompositions.addAll(parser.getAllInstances(componentOf.class));
+		compositions = new ArrayList<>();
+		compositions.addAll(parser.getAllInstances(componentOf.class));
 		
-		generatedCompositions = new ArrayList<>();
+		inferredCompositions = new ArrayList<>();
 		
 	}
 	
-	
-	public OntoUMLParser createComponentOfPatterns(){
+	public OntoUMLParser infer(){
+		ArrayList<componentOf> lastInferredCompositions;
 		
-		for (Kind k : kinds) {
+		do {
 			
-			ArrayList<ArrayList<componentOf>> parts;
-			parts = allParts(k,null);
+			lastInferredCompositions = new ArrayList<componentOf>();
 			
-			if (parts.size()!=0){
-				createComponentOfPatternA(parts);
-				createComponentOfPatternB(parts);
-				createComponentOfPatternC(parts);
-			}	
-		}
-		if (generatedCompositions.size()>0)
+			for (Kind k : kinds) {
+				
+				ArrayList<ArrayList<componentOf>> parts;
+				parts = allParts(k,null);
+				
+				if (parts.size()!=0){
+					lastInferredCompositions.addAll(inferPatternA(parts));
+					lastInferredCompositions.addAll(inferPatternB(parts));
+					lastInferredCompositions.addAll(inferPatternC(parts));
+				}	
+			}
+			
+			inferredCompositions.addAll(lastInferredCompositions);
+		} while (lastInferredCompositions.size()>0);
+		
+		if (inferredCompositions.size()>0)
 			return new OntoUMLParser(parser.getModel());
 		
 		return parser;
@@ -64,7 +81,7 @@ public class Derivator {
 		
 		ArrayList<ArrayList<componentOf>> parts = new ArrayList<>();
 		
-		for (componentOf cp : originalCompositions) {
+		for (componentOf cp : compositions) {
 			if(cp.whole().equals(whole)){
 				
 				ArrayList<componentOf> newPath = new ArrayList<>();
@@ -84,7 +101,9 @@ public class Derivator {
 	}
 	
 	//creates derived componentOf relations
-	private void createComponentOfPatternA(ArrayList<ArrayList<componentOf>> explicitParts) {
+	private ArrayList<componentOf> inferPatternA(ArrayList<ArrayList<componentOf>> explicitParts) {
+		
+		ArrayList<componentOf> inferredByPatternA = new ArrayList<>();
 		
 		Classifier whole = explicitParts.get(0).get(0).whole();
 		
@@ -94,17 +113,23 @@ public class Derivator {
 			
 			//if the current path from the whole to the part has more than one composition and there is no other which has one composition
 			//it creates a derived componentOf.
-			if(a.size()>1 && !isFunctionalPartOf(whole, part)) {
+			if(a.size()>1 && !isDirectFunctionalPartOf(whole, part)) {
 				
 				componentOf comp = assembleComponentOf(whole, part, a);
 				((Package) whole.eContainer()).getPackagedElement().add(comp);   
+				inferredByPatternA.add(comp);
+				compositions.add(comp);
+				
 			}
 		}
+		
+		return inferredByPatternA;
 	
 	}
 	
-	private void createComponentOfPatternB(ArrayList<ArrayList<componentOf>> explicitParts) {
+	private ArrayList<componentOf> inferPatternB(ArrayList<ArrayList<componentOf>> explicitParts) {
 		
+		ArrayList<componentOf> inferredByPatternB = new ArrayList<>();
 		Classifier whole = explicitParts.get(0).get(0).whole();
 		
 		for (ArrayList<componentOf> a : explicitParts) {
@@ -113,19 +138,22 @@ public class Derivator {
 			
 			for (Classifier wholeChild : whole.allChildren()) {
 				
-				if (!isFunctionalPartOf(wholeChild, part)) {
+				if (!isDirectFunctionalPartOf(wholeChild, part)) {
 					componentOf comp = assembleComponentOf(wholeChild, part, a);
 					((Package) whole.eContainer()).getPackagedElement().add(comp);
+					inferredByPatternB.add(comp);
+					compositions.add(comp);
 			 	}	
 				
-			}
-				
+			}	
 		}
+		return inferredByPatternB;
 	
 	}
 	
-	private void createComponentOfPatternC(ArrayList<ArrayList<componentOf>> explicitParts) {
+	private ArrayList<componentOf> inferPatternC(ArrayList<ArrayList<componentOf>> explicitParts) {
 		
+		ArrayList<componentOf> inferredByPatternC = new ArrayList<>();
 		Classifier whole = explicitParts.get(0).get(0).whole();
 		
 		for (ArrayList<componentOf> a : explicitParts) {
@@ -134,17 +162,20 @@ public class Derivator {
 		
 			for (Classifier partChild : part.allChildren()) {
 				
-				if (!isFunctionalPartOf(whole, partChild)) {
+				if (!isDirectFunctionalPartOf(whole, partChild)) {
 					componentOf comp = assembleComponentOf(whole, partChild, a);
 					((Package) whole.eContainer()).getPackagedElement().add(comp);
+					inferredByPatternC.add(comp);
+					compositions.add(comp);
 				}	
 			}
 				
 		}
+		return inferredByPatternC;
 	}
 	
 	//derives both ends cardinalities and meta-properties of the comp with regard to the provided path
-	private void deriveCompositionProperties (ArrayList<componentOf> path, componentOf comp){
+	private void inferMetaProperties (ArrayList<componentOf> path, componentOf comp){
 		
 		int partLower, partUpper, wholeLower, wholeUpper, size;
 		boolean isShareable, isEssential, isInseparable, isImmutableWhole, isImmutablePart, 
@@ -205,6 +236,17 @@ public class Derivator {
 			//System.out.println("lower: "+partLower+" upper: "+partUpper);
 		}
 		
+		//if pattern B, the lower value on the part side will always be 0
+		if (comp.part().allParents().contains(path.get(size-1).part())) {
+			partLower = 0;
+			
+		}
+		
+		//if pattern C, the lower value on the whole side will always be 0
+		if (comp.whole().allParents().contains(path.get(0).whole()))
+			wholeLower = 0;
+				
+		
 		((LiteralInteger) comp.partEnd().getLowerValue()).setValue(partLower);
 		((LiteralUnlimitedNatural) comp.partEnd().getUpperValue()).setValue(partUpper);
         comp.partEnd().setIsReadOnly(partIsReadOnly);
@@ -258,22 +300,85 @@ public class Derivator {
 		wholeProperty.setLowerValue(wholeLowerValue);
 		wholeProperty.setUpperValue(wholeUpperValue);
 		
-		deriveCompositionProperties(path, comp);
-
-        generatedCompositions.add(comp);
+		inferMetaProperties(path, comp);
+		
+		try {
+			comp.getEAnnotations().add(generateOCLDerivationRule(comp, path));
+		} catch (Exception e) {
+			/*TODO
+			 * Decide what to do when there is no name in the association ends in the paths used to generate
+			 * the ocl derivation rule 
+			 */
+			 System.out.println(e);
+			 
+		}
         
         return comp;
 	}
 	
-	
-	private boolean isFunctionalPartOf (Classifier whole, Classifier part){
+	private EAnnotation generateOCLDerivationRule (componentOf comp, ArrayList<componentOf> path) throws Exception{
 		
-		for (componentOf cp : originalCompositions){
+		String typeName, propertyName, propertyTypeName, expression, rule;
+		
+		EcoreFactory ecoreFactory = EcoreFactory.eINSTANCE;
+		EAnnotation annotation = ecoreFactory.createEAnnotation();
+		
+		/*
+		 * context Typename::propertyName: Type
+		 * derive: expression representing the initial value
+		 */
+		
+		typeName = comp.whole().getName(); 
+		propertyName = comp.partEnd().getName();
+		propertyTypeName = comp.part().getName();
+		
+		typeName = addQuotes(typeName);
+		propertyName = addQuotes(propertyName);
+		propertyTypeName = addQuotes(propertyTypeName);
+		
+		expression = "self";
+		
+				
+		//if pattern C, a upcast to the supertype is needed
+		if (comp.whole().allParents().contains(path.get(0).whole()))
+			expression += ".oclAsType("+addQuotes(path.get(0).whole().getName())+")";
+		
+		for (componentOf cp : path) {
+			String propertyInPathName = cp.partEnd().getName();
+		
+			if (propertyInPathName.trim() == null || propertyInPathName.trim()=="")
+				throw new Exception("In order to generate the OCL derivation, all association ends must be unambigously named");
+		
+			else
+				expression += "."+propertyInPathName;
+		}
+		
+
+		//if pattern B, a downcast is needed
+		if (comp.part().allParents().contains(path.get(path.size()-1).part()))
+			expression += "->selectByType("+propertyTypeName+")";
+		
+		rule = 	"context "+typeName+"::"+propertyName+" : "+propertyTypeName+"\n"+
+				"derive : "+expression;
+		/*TODO: Verify how to build an annotation properly. It will depend on how it is used in OLED.
+		 * */				
+		annotation.setSource(rule);
+		
+		return annotation;
+	}
+	
+	private String addQuotes (String name){
+		return "_'"+name+"'";
+	}
+	
+	private boolean isDirectFunctionalPartOf (Classifier whole, Classifier part){
+		
+		for (componentOf cp : compositions){
 			if (cp.whole().equals(whole) && cp.part().equals(part))
 				return true;
 		}
 		
-		for (componentOf cp : generatedCompositions){
+		for (componentOf cp : inferredCompositions){
 			if (cp.whole().equals(whole) && cp.part().equals(part))
 				return true;
 		}

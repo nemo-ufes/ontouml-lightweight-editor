@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_4kOZMPbpEeKOld9srukPVw" name="Model">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_4-ghcPbpEeKOld9srukPVw" name="Kind1" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_5UZ48PbpEeKOld9srukPVw" name="Kind2" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_5qihAPbpEeKOld9srukPVw" name="Kind3" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_6GgrUPbpEeKOld9srukPVw" name="SubKind1" visibility="public">
+    <generalization xmi:id="_7f_mwPbpEeKOld9srukPVw" general="_5qihAPbpEeKOld9srukPVw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_6axEEPbpEeKOld9srukPVw" name="SubKind2" visibility="public">
+    <generalization xmi:id="_76290PbpEeKOld9srukPVw" general="_6GgrUPbpEeKOld9srukPVw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_6ztvkPbpEeKOld9srukPVw" name="SubKind3" visibility="public">
+    <generalization xmi:id="_8VLiUPbpEeKOld9srukPVw" general="_4-ghcPbpEeKOld9srukPVw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_9DmHgPbpEeKOld9srukPVw" name="ComponentOf1" visibility="public" memberEnd="_9DmHgfbpEeKOld9srukPVw _9DmHhPbpEeKOld9srukPVw" navigableOwnedEnd="_9DmHgfbpEeKOld9srukPVw _9DmHhPbpEeKOld9srukPVw">
+    <ownedEnd xmi:id="_9DmHgfbpEeKOld9srukPVw" name="kind1" type="_4-ghcPbpEeKOld9srukPVw" aggregation="shared" association="_9DmHgPbpEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_-_-7sfbpEeKOld9srukPVw" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_-_-7sPbpEeKOld9srukPVw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_9DmHhPbpEeKOld9srukPVw" name="kind2" type="_5UZ48PbpEeKOld9srukPVw" association="_9DmHgPbpEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_-__iwPbpEeKOld9srukPVw" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_-_-7svbpEeKOld9srukPVw" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_9l8moPbpEeKOld9srukPVw" name="ComponentOf2" visibility="public" memberEnd="_9l9NsPbpEeKOld9srukPVw _9l9Ns_bpEeKOld9srukPVw" navigableOwnedEnd="_9l9NsPbpEeKOld9srukPVw _9l9Ns_bpEeKOld9srukPVw">
+    <ownedEnd xmi:id="_9l9NsPbpEeKOld9srukPVw" name="kind2" type="_5UZ48PbpEeKOld9srukPVw" aggregation="shared" association="_9l8moPbpEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_HfjJAfbqEeKOld9srukPVw" value="2"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_HfjJAPbqEeKOld9srukPVw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_9l9Ns_bpEeKOld9srukPVw" name="kind3" type="_5qihAPbpEeKOld9srukPVw" association="_9l8moPbpEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_HfjJA_bqEeKOld9srukPVw" value="5"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_HfjJAvbqEeKOld9srukPVw" value="3"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_IeHqEPbqEeKOld9srukPVw" name="derived_Kind1_Kind3" memberEnd="_IeHqEvbqEeKOld9srukPVw _IeHqFfbqEeKOld9srukPVw" isDerived="true">
+    <eAnnotations xmi:id="_IeHqEfbqEeKOld9srukPVw" source="context _'Kind1'::_'kind3' : _'Kind3'&#xA;derive : self.kind2.kind3"/>
+    <ownedEnd xmi:id="_IeHqEvbqEeKOld9srukPVw" name="kind1" type="_4-ghcPbpEeKOld9srukPVw" isDerived="true" aggregation="shared" association="_IeHqEPbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IeHqE_bqEeKOld9srukPVw" value="2"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IeHqFPbqEeKOld9srukPVw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_IeHqFfbqEeKOld9srukPVw" name="kind3" type="_5qihAPbpEeKOld9srukPVw" isDerived="true" association="_IeHqEPbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IeHqFvbqEeKOld9srukPVw" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IeHqF_bqEeKOld9srukPVw" value="6"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_IeSCIPbqEeKOld9srukPVw" name="derived_SubKind3_Kind2" memberEnd="_IeSpMfbqEeKOld9srukPVw _IeSpNPbqEeKOld9srukPVw" isDerived="true">
+    <eAnnotations xmi:id="_IeSpMPbqEeKOld9srukPVw" source="context _'SubKind3'::_'kind2' : _'Kind2'&#xA;derive : self.oclAsType(_'Kind1').kind2"/>
+    <ownedEnd xmi:id="_IeSpMfbqEeKOld9srukPVw" name="subkind3" type="_6ztvkPbpEeKOld9srukPVw" isDerived="true" aggregation="shared" association="_IeSCIPbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IeSpMvbqEeKOld9srukPVw" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IeSpM_bqEeKOld9srukPVw"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_IeSpNPbqEeKOld9srukPVw" name="kind2" type="_5UZ48PbpEeKOld9srukPVw" isDerived="true" association="_IeSCIPbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IeSpNfbqEeKOld9srukPVw" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IeSpNvbqEeKOld9srukPVw" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_IeYv0PbqEeKOld9srukPVw" name="derived_SubKind3_Kind3" memberEnd="_IeYv0vbqEeKOld9srukPVw _IeYv1fbqEeKOld9srukPVw" isDerived="true">
+    <eAnnotations xmi:id="_IeYv0fbqEeKOld9srukPVw" source="context _'SubKind3'::_'kind3' : _'Kind3'&#xA;derive : self.oclAsType(_'Kind1').kind2.kind3"/>
+    <ownedEnd xmi:id="_IeYv0vbqEeKOld9srukPVw" name="subkind3" type="_6ztvkPbpEeKOld9srukPVw" isDerived="true" aggregation="shared" association="_IeYv0PbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IeYv0_bqEeKOld9srukPVw" value="2"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IeYv1PbqEeKOld9srukPVw"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_IeYv1fbqEeKOld9srukPVw" name="kind3" type="_5qihAPbpEeKOld9srukPVw" isDerived="true" association="_IeYv0PbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IeYv1vbqEeKOld9srukPVw" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IeYv1_bqEeKOld9srukPVw" value="6"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_IelkIPbqEeKOld9srukPVw" name="derived_Kind1_SubKind2" memberEnd="_IemLMPbqEeKOld9srukPVw _IemLM_bqEeKOld9srukPVw" isDerived="true">
+    <eAnnotations xmi:id="_IelkIfbqEeKOld9srukPVw" source="context _'Kind1'::_'subkind2' : _'SubKind2'&#xA;derive : self.kind2.kind3->selectByType(_'SubKind2')"/>
+    <ownedEnd xmi:id="_IemLMPbqEeKOld9srukPVw" name="kind1" type="_4-ghcPbpEeKOld9srukPVw" isDerived="true" aggregation="shared" association="_IelkIPbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IemLMfbqEeKOld9srukPVw" value="2"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IemLMvbqEeKOld9srukPVw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_IemLM_bqEeKOld9srukPVw" name="subkind2" type="_6axEEPbpEeKOld9srukPVw" isDerived="true" association="_IelkIPbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IemLNPbqEeKOld9srukPVw" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IemLNfbqEeKOld9srukPVw"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_IerqwPbqEeKOld9srukPVw" name="derived_Kind1_SubKind1" memberEnd="_IerqwvbqEeKOld9srukPVw _IerqxfbqEeKOld9srukPVw" isDerived="true">
+    <eAnnotations xmi:id="_IerqwfbqEeKOld9srukPVw" source="context _'Kind1'::_'subkind1' : _'SubKind1'&#xA;derive : self.kind2.kind3->selectByType(_'SubKind1')"/>
+    <ownedEnd xmi:id="_IerqwvbqEeKOld9srukPVw" name="kind1" type="_4-ghcPbpEeKOld9srukPVw" isDerived="true" aggregation="shared" association="_IerqwPbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_Ierqw_bqEeKOld9srukPVw" value="2"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IerqxPbqEeKOld9srukPVw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_IerqxfbqEeKOld9srukPVw" name="subkind1" type="_6GgrUPbpEeKOld9srukPVw" isDerived="true" association="_IerqwPbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IerqxvbqEeKOld9srukPVw" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_Ierqx_bqEeKOld9srukPVw"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_Ie34APbqEeKOld9srukPVw" name="derived_Kind2_SubKind2" memberEnd="_Ie34AvbqEeKOld9srukPVw _Ie34BfbqEeKOld9srukPVw" isDerived="true">
+    <eAnnotations xmi:id="_Ie34AfbqEeKOld9srukPVw" source="context _'Kind2'::_'subkind2' : _'SubKind2'&#xA;derive : self.kind3->selectByType(_'SubKind2')"/>
+    <ownedEnd xmi:id="_Ie34AvbqEeKOld9srukPVw" name="kind2" type="_5UZ48PbpEeKOld9srukPVw" isDerived="true" aggregation="shared" association="_Ie34APbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_Ie34A_bqEeKOld9srukPVw" value="2"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_Ie34BPbqEeKOld9srukPVw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_Ie34BfbqEeKOld9srukPVw" name="subkind2" type="_6axEEPbpEeKOld9srukPVw" isDerived="true" association="_Ie34APbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_Ie34BvbqEeKOld9srukPVw" value="5"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_Ie34B_bqEeKOld9srukPVw"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_Ie7iYPbqEeKOld9srukPVw" name="derived_Kind2_SubKind1" memberEnd="_Ie7iYvbqEeKOld9srukPVw _Ie7iZfbqEeKOld9srukPVw" isDerived="true">
+    <eAnnotations xmi:id="_Ie7iYfbqEeKOld9srukPVw" source="context _'Kind2'::_'subkind1' : _'SubKind1'&#xA;derive : self.kind3->selectByType(_'SubKind1')"/>
+    <ownedEnd xmi:id="_Ie7iYvbqEeKOld9srukPVw" name="kind2" type="_5UZ48PbpEeKOld9srukPVw" isDerived="true" aggregation="shared" association="_Ie7iYPbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_Ie7iY_bqEeKOld9srukPVw" value="2"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_Ie7iZPbqEeKOld9srukPVw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_Ie7iZfbqEeKOld9srukPVw" name="subkind1" type="_6GgrUPbpEeKOld9srukPVw" isDerived="true" association="_Ie7iYPbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_Ie7iZvbqEeKOld9srukPVw" value="5"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_Ie7iZ_bqEeKOld9srukPVw"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_IfUj8PbqEeKOld9srukPVw" name="derived_SubKind3_SubKind2" memberEnd="_IfUj8vbqEeKOld9srukPVw _IfVLAvbqEeKOld9srukPVw" isDerived="true">
+    <eAnnotations xmi:id="_IfUj8fbqEeKOld9srukPVw" source="context _'SubKind3'::_'subkind2' : _'SubKind2'&#xA;derive : self.oclAsType(_'Kind1').kind2.subkind2"/>
+    <ownedEnd xmi:id="_IfUj8vbqEeKOld9srukPVw" name="subkind3" type="_6ztvkPbpEeKOld9srukPVw" isDerived="true" aggregation="shared" association="_IfUj8PbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IfVLAPbqEeKOld9srukPVw" value="2"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IfVLAfbqEeKOld9srukPVw"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_IfVLAvbqEeKOld9srukPVw" name="subkind2" type="_6axEEPbpEeKOld9srukPVw" isDerived="true" association="_IfUj8PbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IfVLA_bqEeKOld9srukPVw" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IfVLBPbqEeKOld9srukPVw"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_Ifdt4PbqEeKOld9srukPVw" name="derived_SubKind3_SubKind1" memberEnd="_Ifdt4vbqEeKOld9srukPVw _Ifdt5fbqEeKOld9srukPVw" isDerived="true">
+    <eAnnotations xmi:id="_Ifdt4fbqEeKOld9srukPVw" source="context _'SubKind3'::_'subkind1' : _'SubKind1'&#xA;derive : self.oclAsType(_'Kind1').kind2.subkind1"/>
+    <ownedEnd xmi:id="_Ifdt4vbqEeKOld9srukPVw" name="subkind3" type="_6ztvkPbpEeKOld9srukPVw" isDerived="true" aggregation="shared" association="_Ifdt4PbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_Ifdt4_bqEeKOld9srukPVw" value="2"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_Ifdt5PbqEeKOld9srukPVw"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_Ifdt5fbqEeKOld9srukPVw" name="subkind1" type="_6GgrUPbpEeKOld9srukPVw" isDerived="true" association="_Ifdt4PbqEeKOld9srukPVw">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_Ifdt5vbqEeKOld9srukPVw" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_Ifdt5_bqEeKOld9srukPVw"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Model>

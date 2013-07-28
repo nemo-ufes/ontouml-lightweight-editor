@@ -66,7 +66,7 @@ import org.eclipse.ocl.SemanticException;
 
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.common.ontoumlparser.Derivator;
+import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
@@ -843,24 +843,26 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
 		String result = new String();
 		
-		Derivator d = new Derivator(refparser);
-		refparser = d.createComponentOfPatterns();
+		ComponentOfInference d = new ComponentOfInference(refparser);
+		refparser = d.infer();
 			
 		ModelTree.setParserFor(getCurrentProject(), refparser);
 		ModelTree.updateModelTree(getCurrentProject());
 		
-		ArrayList<componentOf> generated = d.getGeneratedCompositions();
+		ArrayList<componentOf> generated = d.getInferredCompositions();
 		/*TODO: WE NEED TO KEEP these inferred relations in memory, because if the model is changed, we must deleted all of them and derive them again.
 		 * 		- Figure out where to keep them.
 		 * 		- Implement the method
 		 * */
 		if (generated.size()>0){
-			result = generated.size()+" associations were created through derivation...";
+			result = generated.size()+" associations were inferred from the model...";
 			for (componentOf cp : generated) {
 				result += "\n\t"+refparser.getStringRepresentation(cp);
 			}
 		}
-		else result = "No association can be derived from the model!";
+		else result = "No association can be inferred from the model!";
+		
+		ModelTree.getInferences(getCurrentProject()).addAll(generated);
 		
 		getCurrentWrapper().showOutputText(result, true, true);
 	}
