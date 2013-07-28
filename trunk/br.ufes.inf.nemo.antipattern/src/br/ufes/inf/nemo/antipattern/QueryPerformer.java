@@ -47,7 +47,7 @@ import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
 import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.list.Combination;
-import br.ufes.inf.nemo.common.ontoumlparser.Derivator;
+import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
@@ -64,8 +64,8 @@ public class QueryPerformer {
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
-		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.refontouml").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/Modelos/HeartElectrophisiology.refontouml").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/teste_comp_inference.refontouml").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/Modelos/HeartElectrophisiology.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/twin_test.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOS_regular_and_inverted.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
@@ -292,9 +292,44 @@ public class QueryPerformer {
 			}
 			*/
 		    
-		    Derivator d = new Derivator(parser);
+		    ComponentOfInference d = new ComponentOfInference(parser);
 		    
-		    d.createComponentOfPatterns();
+		    parser = d.infer();
+		    System.out.println("Inferred Compositions: "+d.getInferredCompositions().size());
+		    /*for (componentOf c : d.getInferredCompositions()) {
+				System.out.println(parser.getStringRepresentation(c));
+				
+				if(c.getEAnnotations().size()>0)
+					System.out.println(c.getEAnnotations().get(0).getSource());
+				
+				System.out.println("###################");
+			}
+		    
+		    System.out.println("***********");*/
+		    ComponentOfInference d2 = new ComponentOfInference(parser);
+		    
+		    parser = d2.infer();
+		    System.out.println("Inferred Compositions: "+d2.getInferredCompositions().size());
+		    
+		    for (componentOf cp1 : parser.getAllInstances(componentOf.class)) {
+		    	for (componentOf cp2 : parser.getAllInstances(componentOf.class)) {
+					if (!cp1.equals(cp2) && cp1.whole().equals(cp2.whole()) && cp1.part().equals(cp2.part())){
+						System.out.println("DUPLICATE COMPOSITION: ");
+						System.out.println("\t"+parser.getStringRepresentation(cp1) + " - W1: " +parser.getStringRepresentation(cp1.whole())+ ", P1: "+parser.getStringRepresentation(cp1.part()) );
+						System.out.println("\t"+parser.getStringRepresentation(cp2) + " - W2: " +parser.getStringRepresentation(cp2.whole())+ ", P2: "+parser.getStringRepresentation(cp2.part()) );
+					}
+				}	
+			}
+		    
+		    /*for (componentOf c : d2.getInferredCompositions()) {
+				System.out.println(parser.getStringRepresentation(c));
+				
+				if(c.getEAnnotations().size()>0)
+					System.out.println(c.getEAnnotations().get(0).getSource());
+				
+				System.out.println("----------------");
+			}*/
+		    
 				    		    
 		} catch (Exception e) {
 		    // record failure to parse
