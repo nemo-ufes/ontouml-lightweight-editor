@@ -118,8 +118,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		mainEditorArea.setDividerSize(7);
 		mainEditorArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		mainEditorArea.setResizeWeight(0) ;
-		//mainEditorArea.setDividerLocation(0.50);
-		
+				
 		mainEditorArea.add(editorArea,JSplitPane.LEFT);
 		mainEditorArea.add(modeltree, JSplitPane.RIGHT);
 		
