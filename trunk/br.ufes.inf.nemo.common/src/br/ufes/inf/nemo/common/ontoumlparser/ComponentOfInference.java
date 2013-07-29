@@ -50,7 +50,7 @@ public class ComponentOfInference {
 	
 	public OntoUMLParser infer(){
 		ArrayList<componentOf> lastInferredCompositions;
-		
+		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, true);
 		do {
 			
 			lastInferredCompositions = new ArrayList<componentOf>();
@@ -82,7 +82,7 @@ public class ComponentOfInference {
 		ArrayList<ArrayList<componentOf>> parts = new ArrayList<>();
 		
 		for (componentOf cp : compositions) {
-			if(cp.whole().equals(whole)){
+			if(cp.whole().equals(whole) && !loopInPath(cp, path) ){
 				
 				ArrayList<componentOf> newPath = new ArrayList<>();
 				
@@ -98,6 +98,39 @@ public class ComponentOfInference {
 		}
 		
 		return parts;
+	}
+	
+	boolean loopInPath (componentOf comp, ArrayList<componentOf> path) {
+		
+		Classifier partToBeAdded = comp.part();
+		Classifier wholeToBeAdded = comp.whole();
+		
+		//verify if the relation to be inserted in the path is a self-type relation
+		if (partToBeAdded.equals(wholeToBeAdded))
+			return true;
+		
+		/*TODO: Verify with Giancarlo if the patterns follow when there are parts which are subtype of others*/
+		//if (whole.allChildren().contains(part) || whole.allParents().contains(part))
+			//return true;
+		
+		if (path!=null){
+			for (int i = 0; i < path.size(); i++) {
+				componentOf compositionInPath = path.get(i);
+				
+				if (compositionInPath.getEndType().contains(partToBeAdded))
+					return true;
+				
+				if(i<path.size()-1 && compositionInPath.getEndType().contains(wholeToBeAdded))
+					return true;
+				
+					
+				if (compositionInPath.whole().allChildren().contains(partToBeAdded) || compositionInPath.whole().allParents().contains(partToBeAdded) || 
+						compositionInPath.part().allChildren().contains(partToBeAdded) || compositionInPath.part().allParents().contains(partToBeAdded))
+					return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	//creates derived componentOf relations
@@ -374,12 +407,12 @@ public class ComponentOfInference {
 	private boolean isDirectFunctionalPartOf (Classifier whole, Classifier part){
 		
 		for (componentOf cp : compositions){
-			if (cp.whole().equals(whole) && cp.part().equals(part))
+			if (cp.getEndType().contains(whole) && cp.getEndType().contains(part))
 				return true;
 		}
 		
 		for (componentOf cp : inferredCompositions){
-			if (cp.whole().equals(whole) && cp.part().equals(part))
+			if (cp.getEndType().contains(whole) && cp.getEndType().contains(part))
 				return true;
 		}
 						
