@@ -64,9 +64,13 @@ import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
+import RefOntoUML.Association;
+import RefOntoUML.Derivation;
+import RefOntoUML.MaterialAssociation;
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
+import br.ufes.inf.nemo.common.ontoumlparser.MaterialInference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
@@ -845,24 +849,48 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 		ComponentOfInference d = new ComponentOfInference(refparser);
 		refparser = d.infer();
+		
+		MaterialInference mi = new MaterialInference(refparser);
+		try {
+			refparser = mi.infer();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			
 		ModelTree.setParserFor(getCurrentProject(), refparser);
 		ModelTree.updateModelTree(getCurrentProject());
 		
-		ArrayList<componentOf> generated = d.getInferredCompositions();
+		ArrayList<componentOf> generatedCompositions = d.getInferredCompositions();
+		ArrayList<MaterialAssociation> generatedMaterials = mi.getInferredMaterials();
+		ArrayList<Derivation> generatedDerivations = mi.getInferredDerivations();
+		
+		ArrayList<Association> allGenerated = new ArrayList<>();
+		allGenerated.addAll(generatedCompositions);
+		allGenerated.addAll(generatedMaterials);
+		allGenerated.addAll(generatedDerivations);
+		
 		/*TODO: WE NEED TO KEEP these inferred relations in memory, because if the model is changed, we must deleted all of them and derive them again.
 		 * 		- Figure out where to keep them.
 		 * 		- Implement the method
 		 * */
-		if (generated.size()>0){
-			result = generated.size()+" associations were inferred from the model...";
-			for (componentOf cp : generated) {
-				result += "\n\t"+refparser.getStringRepresentation(cp);
+		
+		if (generatedCompositions.size()>0 || generatedMaterials.size()>0){
+			int size = generatedCompositions.size()+generatedDerivations.size()+generatedMaterials.size();
+			
+			result = 	"A total of "+size+" associations were inferred from the model:"+
+						"\n\t"+generatedCompositions.size()+" ComponentOf."+
+						"\n\t"+generatedMaterials.size()+" Materials."+
+						"\n\t"+generatedDerivations.size()+" Derivations."+
+						"\n\nDetails...";
+			
+			for (Association a : allGenerated) {
+				result += "\n\t"+refparser.getStringRepresentation(a);
 			}
 		}
 		else result = "No association can be inferred from the model!";
 		
-		ModelTree.getInferences(getCurrentProject()).addAll(generated);
+		ModelTree.getInferences(getCurrentProject()).addAll(generatedCompositions);
 		
 		getCurrentWrapper().showOutputText(result, true, true);
 	}
