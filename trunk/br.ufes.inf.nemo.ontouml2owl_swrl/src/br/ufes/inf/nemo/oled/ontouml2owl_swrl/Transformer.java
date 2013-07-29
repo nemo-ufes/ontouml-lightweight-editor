@@ -133,28 +133,28 @@ public class Transformer {
 			processFormalAssociation(src);
 
 		//Process Part-whole: componentOf
-		if(!ontoParser.getAllInstances(componentOf.class).isEmpty())
+		if(ontoParser.getAllInstances(componentOf.class).size() > 1)
 			createRelation_componentOf();
 		for(componentOf a : ontoParser.getAllInstances(componentOf.class)){
 			processMeronymic(a, "componentOf");
 		}	
 
 		//Process Part-whole: subCollectionOf 
-		if(!ontoParser.getAllInstances(subCollectionOf.class).isEmpty())
+		if(ontoParser.getAllInstances(subCollectionOf.class).size() > 1)
 			createRelation_subCollectionOf();
 		for(subCollectionOf a : ontoParser.getAllInstances(subCollectionOf.class)){
 			processMeronymic(a, "subCollectionOf");
 		}
 
 		//Process Part-whole: subQuantityOf 
-		if(!ontoParser.getAllInstances(subQuantityOf.class).isEmpty())
+		if(ontoParser.getAllInstances(subQuantityOf.class).size() > 1)
 			createRelation_subQuantityOf();
 		for(subQuantityOf a : ontoParser.getAllInstances(subQuantityOf.class)){
 			processMeronymic(a, "subQuantityOf");
 		}
 
 		//Process Part-whole: memberOf 
-		if(!ontoParser.getAllInstances(memberOf.class).isEmpty())
+		if(ontoParser.getAllInstances(memberOf.class).size() >= 1 && ontoParser.getAllInstances(subCollectionOf.class).size() >= 1)
 			createRelation_memberOf();
 		for(memberOf a : ontoParser.getAllInstances(memberOf.class)){
 			processMeronymic(a, "memberOf");
@@ -331,11 +331,11 @@ public class Transformer {
 		antecedent.add(diffXZ); //DifferentFrom(?x,?z)
 		antecedent.add(diffYZ); //DifferentFrom(?y,?z)
 		antecedent.add(diffYX); //DifferentFrom(?y,?z)
-		antecedent.add(factory.getSWRLObjectPropertyAtom(memberOf, varX, varY)); //memberOf(?x,?y)
-		antecedent.add(factory.getSWRLObjectPropertyAtom(subCollectionOf, varY, varZ)); //subCollectiveOf(?y,?z)
+		antecedent.add(factory.getSWRLObjectPropertyAtom(memberOf, varY, varX)); //memberOf(?x,?y)
+		antecedent.add(factory.getSWRLObjectPropertyAtom(subCollectionOf, varZ, varY)); //subCollectiveOf(?y,?z)
 
 		Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
-		consequent.add(factory.getSWRLObjectPropertyAtom(memberOf, varX, varZ)); //memberOf(?x,?z)
+		consequent.add(factory.getSWRLObjectPropertyAtom(memberOf, varZ, varX)); //memberOf(?x,?z)
 
 		SWRLRule rule = factory.getSWRLRule(antecedent,consequent);		
 		manager.applyChange(new AddAxiom(ontology, rule));		
@@ -603,10 +603,16 @@ public class Transformer {
 			OWLObjectMaxCardinality maxcard = factory.getOWLObjectMaxCardinality(upperCard, prop,dst);
 			sax = factory.getOWLSubClassOfAxiom(ori, maxcard);
 		}else{		
-			OWLObjectMinCardinality mincard = factory.getOWLObjectMinCardinality(lowerCard, prop,dst);
-			OWLObjectMaxCardinality maxcard = factory.getOWLObjectMaxCardinality(upperCard, prop,dst);
-			OWLObjectIntersectionOf oio =  factory.getOWLObjectIntersectionOf(maxcard,mincard);
-			ax = factory.getOWLEquivalentClassesAxiom(ori, oio);			
+			if(upperCard == -1){
+				OWLObjectMinCardinality mincard = factory.getOWLObjectMinCardinality(lowerCard, prop,dst);
+				ax = factory.getOWLEquivalentClassesAxiom(ori, mincard);	
+			}else{
+				OWLObjectMaxCardinality maxcard = factory.getOWLObjectMaxCardinality(upperCard, prop,dst);
+				OWLObjectMinCardinality mincard = factory.getOWLObjectMinCardinality(lowerCard, prop,dst);
+				OWLObjectIntersectionOf oio =  factory.getOWLObjectIntersectionOf(maxcard,mincard);
+				ax = factory.getOWLEquivalentClassesAxiom(ori, oio);
+			}
+						
 		}
 
 		if(ax != null){
@@ -726,9 +732,9 @@ public class Transformer {
 			processRelations(ass,"inv.mediation."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"),0,true);
 			return "mediation."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 		}else{
-			processRelations(ass,ass.getName(),1,false);
-			processRelations(ass,"inv."+ass.getName(),0,true);
-			return ass.getName();
+			processRelations(ass,ass.getName().replaceAll(" ", "_"),1,false);
+			processRelations(ass,"inv."+ass.getName().replaceAll(" ", "_"),0,true);
+			return ass.getName().replaceAll(" ", "_");
 		}
 	}
 
