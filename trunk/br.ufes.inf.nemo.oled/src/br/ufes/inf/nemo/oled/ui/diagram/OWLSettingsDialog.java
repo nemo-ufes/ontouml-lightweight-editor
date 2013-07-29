@@ -387,7 +387,7 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 		simpleItem.setDescription(ApplicationResources.getInstance().getString("dialog.owlsettings.simple"));
 		
 		MappingTypeComboItem rulesItem = new MappingTypeComboItem();
-		rulesItem.setDisplayName("SWRL Rules");
+		rulesItem.setDisplayName("OntoUML2OWL+SWRL");
 		rulesItem.setValue("RULES");
 				
 		MappingTypeComboItem reificationItem = new MappingTypeComboItem();
