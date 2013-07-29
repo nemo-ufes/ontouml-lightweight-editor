@@ -25,6 +25,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.LiteralInteger;
 import RefOntoUML.LiteralUnlimitedNatural;
+import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Mode;
@@ -48,6 +49,7 @@ import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
+import br.ufes.inf.nemo.common.ontoumlparser.MaterialInference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
@@ -63,9 +65,9 @@ public class QueryPerformer {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		// Get the URI of the model file.
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
-		//URI fileURI = URI.createFileURI(new File("models/XML Models/Surgery.xmi").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/teste_comp_inference.refontouml").getAbsolutePath());
-		//URI fileURI = URI.createFileURI(new File("models/XML Models/Modelos/HeartElectrophisiology.refontouml").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/RoaadTrafficAccident.refontouml").getAbsolutePath());
+		//URI fileURI = URI.createFileURI(new File("models/XML Models/teste_comp_inference.refontouml").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/Modelos/Biodiversity.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/twin_test.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOS_regular_and_inverted.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
@@ -289,23 +291,18 @@ public class QueryPerformer {
 				System.out.println(ac.generateCycleOcl(ACAntiPattern.OPEN));
 				System.out.println(ac.generatePredicate(parser, 2, ACAntiPattern.OPEN));
 				System.out.println(ac.generatePredicate(parser, 2, ACAntiPattern.CLOSED));
-			}
-			*/
+			}*/
+			
 		    
 		    ComponentOfInference d = new ComponentOfInference(parser);
 		    
 		    parser = d.infer();
 		    System.out.println("Inferred Compositions: "+d.getInferredCompositions().size());
-		    /*for (componentOf c : d.getInferredCompositions()) {
+		    for (componentOf c : d.getInferredCompositions()) {
 				System.out.println(parser.getStringRepresentation(c));
-				
-				if(c.getEAnnotations().size()>0)
-					System.out.println(c.getEAnnotations().get(0).getSource());
-				
-				System.out.println("###################");
 			}
-		    
-		    System.out.println("***********");*/
+		    /*
+		    System.out.println("***********");
 		    ComponentOfInference d2 = new ComponentOfInference(parser);
 		    
 		    parser = d2.infer();
@@ -329,7 +326,16 @@ public class QueryPerformer {
 				
 				System.out.println("----------------");
 			}*/
+		    MaterialInference mi = new MaterialInference(parser);
+		    parser = mi.infer();
 		    
+		    for (MaterialAssociation mat : mi.getInferredMaterials()) {
+		    
+		    	String saida = 	mat.getMemberEnd().get(0).getType().getName()+" ("+mat.getMemberEnd().get(0).getLower()+")..("+mat.getMemberEnd().get(0).getUpper()+") "+
+		    					"<Material> "+mat.getName()+
+		    					" ("+mat.getMemberEnd().get(1).getLower()+")..("+mat.getMemberEnd().get(1).getUpper()+") "+ mat.getMemberEnd().get(1).getType().getName();
+		    	System.out.println(saida);
+		    }
 				    		    
 		} catch (Exception e) {
 		    // record failure to parse
