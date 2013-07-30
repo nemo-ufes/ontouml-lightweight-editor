@@ -1,236 +1,236 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_MtfgIHRqEeKhVLd84SUgmQ" name="EA_Model">
-  <packagedElement xmi:type="uml:Package" xmi:id="_MtfgIXRqEeKhVLd84SUgmQ" name="Domínios">
-    <packagedElement xmi:type="uml:Package" xmi:id="_MtfgInRqEeKhVLd84SUgmQ" name="Compra"/>
-    <packagedElement xmi:type="uml:Package" xmi:id="_MtfgI3RqEeKhVLd84SUgmQ" name="Datatypes"/>
-    <packagedElement xmi:type="uml:Package" xmi:id="_MtfgJHRqEeKhVLd84SUgmQ" name="Fiscalização">
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtfgJXRqEeKhVLd84SUgmQ" name="Fiscalizações de Serviços de Transportes Terrestres">
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtfgJnRqEeKhVLd84SUgmQ" name="Fiscalizações Específicas"/>
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtfgJ3RqEeKhVLd84SUgmQ" name="Tipos de Fiscalizações Diretas"/>
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_6MH7QPYREeKG4ORtVGggCQ" name="EA_Model">
+  <packagedElement xmi:type="uml:Package" xmi:id="_6MH7QfYREeKG4ORtVGggCQ" name="Domínios">
+    <packagedElement xmi:type="uml:Package" xmi:id="_6MH7QvYREeKG4ORtVGggCQ" name="Compra"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6MH7Q_YREeKG4ORtVGggCQ" name="Datatypes"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6MH7RPYREeKG4ORtVGggCQ" name="Fiscalização">
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7RfYREeKG4ORtVGggCQ" name="Fiscalizações de Serviços de Transportes Terrestres">
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7RvYREeKG4ORtVGggCQ" name="Fiscalizações Específicas"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7R_YREeKG4ORtVGggCQ" name="Tipos de Fiscalizações Diretas"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtfgKHRqEeKhVLd84SUgmQ" name="Gerais"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7SPYREeKG4ORtVGggCQ" name="Gerais"/>
     </packagedElement>
-    <packagedElement xmi:type="uml:Package" xmi:id="_MtfgKXRqEeKhVLd84SUgmQ" name="Imóvel">
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtfgKnRqEeKhVLd84SUgmQ" name="Área"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtfgK3RqEeKhVLd84SUgmQ" name="Registro de Imóvel"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6MH7SfYREeKG4ORtVGggCQ" name="Imóvel">
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7SvYREeKG4ORtVGggCQ" name="Área"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7S_YREeKG4ORtVGggCQ" name="Registro de Imóvel"/>
     </packagedElement>
-    <packagedElement xmi:type="uml:Package" xmi:id="_MtgHMHRqEeKhVLd84SUgmQ" name="Infração">
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtgHMXRqEeKhVLd84SUgmQ" name="Autuação"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtgHMnRqEeKhVLd84SUgmQ" name="Gerais"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtgHM3RqEeKhVLd84SUgmQ" name="Infração Praticada">
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHNHRqEeKhVLd84SUgmQ" name="Complementares"/>
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHNXRqEeKhVLd84SUgmQ" name="Principais"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6MH7TPYREeKG4ORtVGggCQ" name="Infração">
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7TfYREeKG4ORtVGggCQ" name="Autuação"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7TvYREeKG4ORtVGggCQ" name="Gerais"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7T_YREeKG4ORtVGggCQ" name="Infração Praticada">
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7UPYREeKG4ORtVGggCQ" name="Complementares"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7UfYREeKG4ORtVGggCQ" name="Principais"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtgHNnRqEeKhVLd84SUgmQ" name="Infração Prevista"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7UvYREeKG4ORtVGggCQ" name="Infração Prevista"/>
     </packagedElement>
-    <packagedElement xmi:type="uml:Package" xmi:id="_MtgHN3RqEeKhVLd84SUgmQ" name="Infraestrutura de Transportes">
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtgHOHRqEeKhVLd84SUgmQ" name="Infraestrutura Rodoviária">
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHOXRqEeKhVLd84SUgmQ" name="Acidente"/>
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHOnRqEeKhVLd84SUgmQ" name="Atendimento Rodoviário"/>
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHO3RqEeKhVLd84SUgmQ" name="Defeitos"/>
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHPHRqEeKhVLd84SUgmQ" name="Edificação Rodoviária">
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtgHPXRqEeKhVLd84SUgmQ" name="Posto de Pesagem"/>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtgHPnRqEeKhVLd84SUgmQ" name="Praça de Pedágio"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6MH7U_YREeKG4ORtVGggCQ" name="Infraestrutura de Transportes">
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7VPYREeKG4ORtVGggCQ" name="Infraestrutura Rodoviária">
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7VfYREeKG4ORtVGggCQ" name="Acidente"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7VvYREeKG4ORtVGggCQ" name="Atendimento Rodoviário"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7V_YREeKG4ORtVGggCQ" name="Defeitos"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7WPYREeKG4ORtVGggCQ" name="Edificação Rodoviária">
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7WfYREeKG4ORtVGggCQ" name="Posto de Pesagem"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7WvYREeKG4ORtVGggCQ" name="Praça de Pedágio"/>
         </packagedElement>
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHP3RqEeKhVLd84SUgmQ" name="Interseção"/>
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHQHRqEeKhVLd84SUgmQ" name="Obra de Arte">
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtgHQXRqEeKhVLd84SUgmQ" name="Obra de Arte Corrente"/>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtgHQnRqEeKhVLd84SUgmQ" name="Obra de Arte Especial">
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtgHQ3RqEeKhVLd84SUgmQ" name="Ponte"/>
-          </packagedElement>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHRHRqEeKhVLd84SUgmQ" name="Sinalização"/>
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHRXRqEeKhVLd84SUgmQ" name="Trecho Rodoviário Físico">
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtgHRnRqEeKhVLd84SUgmQ" name="Componente Trecho Físico"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHR3RqEeKhVLd84SUgmQ" name="Veículo">
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtgHSHRqEeKhVLd84SUgmQ" name="Veículo Rodoviário">
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtgHSXRqEeKhVLd84SUgmQ" name="Veículo de Suporte"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7W_YREeKG4ORtVGggCQ" name="Interseção"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7XPYREeKG4ORtVGggCQ" name="Obra de Arte">
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7XfYREeKG4ORtVGggCQ" name="Obra de Arte Corrente"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7XvYREeKG4ORtVGggCQ" name="Obra de Arte Especial">
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MH7X_YREeKG4ORtVGggCQ" name="Ponte"/>
           </packagedElement>
         </packagedElement>
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtgHSnRqEeKhVLd84SUgmQ" name="Via de Trânsito Rodoviário">
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtgHS3RqEeKhVLd84SUgmQ" name="Rodovia"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7YPYREeKG4ORtVGggCQ" name="Sinalização"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7YfYREeKG4ORtVGggCQ" name="Trecho Rodoviário Físico">
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7YvYREeKG4ORtVGggCQ" name="Componente Trecho Físico"/>
         </packagedElement>
-      </packagedElement>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Package" xmi:id="_MtgHTHRqEeKhVLd84SUgmQ" name="Legislação">
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtgHTXRqEeKhVLd84SUgmQ" name="Atos Normativos">
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtguQHRqEeKhVLd84SUgmQ" name="Estrutura de Atos Normativos">
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguQXRqEeKhVLd84SUgmQ" name="Agrupamento e Composição"/>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguQnRqEeKhVLd84SUgmQ" name="Atos e Artigos"/>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguQ3RqEeKhVLd84SUgmQ" name="Geral"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7Y_YREeKG4ORtVGggCQ" name="Veículo">
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7ZPYREeKG4ORtVGggCQ" name="Veículo Rodoviário">
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MH7ZfYREeKG4ORtVGggCQ" name="Veículo de Suporte"/>
+          </packagedElement>
         </packagedElement>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtguRHRqEeKhVLd84SUgmQ" name="Gestão de Atos Normativos"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtguRXRqEeKhVLd84SUgmQ" name="Marco Regulatório"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Package" xmi:id="_MtguRnRqEeKhVLd84SUgmQ" name="Outorga">
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtguR3RqEeKhVLd84SUgmQ" name="Concessão">
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtguSHRqEeKhVLd84SUgmQ" name="Concessão Rodoviária*">
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguSXRqEeKhVLd84SUgmQ" name="Convênio em Concessão Rodoviária*">
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtguSnRqEeKhVLd84SUgmQ" name="Convênio de Aquisição"/>
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtguS3RqEeKhVLd84SUgmQ" name="Convênio de Realização de Obra"/>
-          </packagedElement>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguTHRqEeKhVLd84SUgmQ" name="Extinção de Concessão*"/>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguTXRqEeKhVLd84SUgmQ" name="Faixa de Domínio Utilizada*"/>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguTnRqEeKhVLd84SUgmQ" name="Financeiro Concessão*">
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtguT3RqEeKhVLd84SUgmQ" name="Receita da Concessão">
-              <packagedElement xmi:type="uml:Package" xmi:id="_MtguUHRqEeKhVLd84SUgmQ" name="Receita Rodoviária Extraordinária"/>
-            </packagedElement>
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtguUXRqEeKhVLd84SUgmQ" name="Tarifa Básica de Pedágio"/>
-          </packagedElement>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguUnRqEeKhVLd84SUgmQ" name="Garantia de Execução*"/>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguU3RqEeKhVLd84SUgmQ" name="Licença Ambiental*"/>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguVHRqEeKhVLd84SUgmQ" name="Manifestação de Usuário de Rodovia*">
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtguVXRqEeKhVLd84SUgmQ" name="Forma de Contato de Manifestação"/>
-          </packagedElement>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguVnRqEeKhVLd84SUgmQ" name="Obra em Concessão*"/>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguV3RqEeKhVLd84SUgmQ" name="PER*">
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtguWHRqEeKhVLd84SUgmQ" name="PER Revisado"/>
-          </packagedElement>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguWXRqEeKhVLd84SUgmQ" name="Seguro em Concessão*"/>
-          <packagedElement xmi:type="uml:Package" xmi:id="_MtguWnRqEeKhVLd84SUgmQ" name="Serviço em Concessão*">
-            <packagedElement xmi:type="uml:Package" xmi:id="_MthVUHRqEeKhVLd84SUgmQ" name="Tipo de Serviço em Concessão"/>
-            <packagedElement xmi:type="uml:Class" xmi:id="_MthVUXRqEeKhVLd84SUgmQ" name="Execução de Serviço em Rodovia Programado">
-              <generalization xmi:id="_MthVUnRqEeKhVLd84SUgmQ" general="_Mth8YXRqEeKhVLd84SUgmQ"/>
-            </packagedElement>
-            <packagedElement xmi:type="uml:Class" xmi:id="_MthVU3RqEeKhVLd84SUgmQ" name="Serviço Executado em Concessão Rodoviária ">
-              <generalization xmi:id="_MthVVHRqEeKhVLd84SUgmQ" general="_Mtijc3RqEeKhVLd84SUgmQ"/>
-              <generalization xmi:id="_MthVVXRqEeKhVLd84SUgmQ" general="_MthVXHRqEeKhVLd84SUgmQ"/>
-              <ownedAttribute xmi:id="_MthVVnRqEeKhVLd84SUgmQ" visibility="private" type="_Mth8YXRqEeKhVLd84SUgmQ" association="_Mth8aXRqEeKhVLd84SUgmQ">
-                <name xsi:nil="true"/>
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MthVV3RqEeKhVLd84SUgmQ" value="1"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MthVWHRqEeKhVLd84SUgmQ" value="*"/>
-              </ownedAttribute>
-              <ownedAttribute xmi:id="_MthVWXRqEeKhVLd84SUgmQ" visibility="private" type="_MthVYXRqEeKhVLd84SUgmQ" association="_Mth8bHRqEeKhVLd84SUgmQ">
-                <name xsi:nil="true"/>
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MthVWnRqEeKhVLd84SUgmQ" value="1"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MthVW3RqEeKhVLd84SUgmQ" value="*"/>
-              </ownedAttribute>
-            </packagedElement>
-            <packagedElement xmi:type="uml:Class" xmi:id="_MthVXHRqEeKhVLd84SUgmQ" name="Serviço em Concessão Rodoviária">
-              <generalization xmi:id="_MthVXXRqEeKhVLd84SUgmQ" general="_Mth8eXRqEeKhVLd84SUgmQ"/>
-              <ownedAttribute xmi:id="_MthVXnRqEeKhVLd84SUgmQ" visibility="public" type="_MtjKgHRqEeKhVLd84SUgmQ" association="_Mth8a3RqEeKhVLd84SUgmQ">
-                <name xsi:nil="true"/>
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MthVX3RqEeKhVLd84SUgmQ" value="1"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MthVYHRqEeKhVLd84SUgmQ" value="1"/>
-              </ownedAttribute>
-            </packagedElement>
-            <packagedElement xmi:type="uml:Class" xmi:id="_MthVYXRqEeKhVLd84SUgmQ" name="Trecho Rodoviário Concedido com Serviço">
-              <generalization xmi:id="_MthVYnRqEeKhVLd84SUgmQ" general="_Mth8bnRqEeKhVLd84SUgmQ"/>
-              <ownedAttribute xmi:id="_MthVY3RqEeKhVLd84SUgmQ" visibility="private" type="_Mth8YXRqEeKhVLd84SUgmQ" association="_Mth8anRqEeKhVLd84SUgmQ">
-                <name xsi:nil="true"/>
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MthVZHRqEeKhVLd84SUgmQ" value="1"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MthVZXRqEeKhVLd84SUgmQ" value="*"/>
-              </ownedAttribute>
-              <ownedAttribute xmi:id="_MthVZnRqEeKhVLd84SUgmQ" visibility="private" type="_MthVU3RqEeKhVLd84SUgmQ" association="_Mth8bHRqEeKhVLd84SUgmQ">
-                <name xsi:nil="true"/>
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MthVZ3RqEeKhVLd84SUgmQ" value="1"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mth8YHRqEeKhVLd84SUgmQ" value="*"/>
-              </ownedAttribute>
-            </packagedElement>
-            <packagedElement xmi:type="uml:Class" xmi:id="_Mth8YXRqEeKhVLd84SUgmQ" name="Execução de Serviço em Rodovia">
-              <generalization xmi:id="_Mth8YnRqEeKhVLd84SUgmQ" general="_Mth8cXRqEeKhVLd84SUgmQ"/>
-              <ownedAttribute xmi:id="_Mth8Y3RqEeKhVLd84SUgmQ" visibility="private" type="_MthVU3RqEeKhVLd84SUgmQ" association="_Mth8aXRqEeKhVLd84SUgmQ">
-                <name xsi:nil="true"/>
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mth8ZHRqEeKhVLd84SUgmQ" value="1"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mth8ZXRqEeKhVLd84SUgmQ" value="*"/>
-              </ownedAttribute>
-              <ownedAttribute xmi:id="_Mth8ZnRqEeKhVLd84SUgmQ" visibility="private" type="_MthVYXRqEeKhVLd84SUgmQ" association="_Mth8anRqEeKhVLd84SUgmQ">
-                <name xsi:nil="true"/>
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mth8Z3RqEeKhVLd84SUgmQ" value="1"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mth8aHRqEeKhVLd84SUgmQ" value="*"/>
-              </ownedAttribute>
-            </packagedElement>
-            <packagedElement xmi:type="uml:Association" xmi:id="_Mth8aXRqEeKhVLd84SUgmQ" name="é de" memberEnd="_MthVVnRqEeKhVLd84SUgmQ _Mth8Y3RqEeKhVLd84SUgmQ"/>
-            <packagedElement xmi:type="uml:Association" xmi:id="_Mth8anRqEeKhVLd84SUgmQ" name="feito em" memberEnd="_MthVY3RqEeKhVLd84SUgmQ _Mth8ZnRqEeKhVLd84SUgmQ"/>
-            <packagedElement xmi:type="uml:Association" xmi:id="_Mth8a3RqEeKhVLd84SUgmQ" name="responsável por" memberEnd="_MtjKgnRqEeKhVLd84SUgmQ _MthVXnRqEeKhVLd84SUgmQ"/>
-            <packagedElement xmi:type="uml:Association" xmi:id="_Mth8bHRqEeKhVLd84SUgmQ" name="/ realizado em" memberEnd="_MthVWXRqEeKhVLd84SUgmQ _MthVZnRqEeKhVLd84SUgmQ"/>
-          </packagedElement>
-          <packagedElement xmi:type="uml:Package" xmi:id="_Mth8bXRqEeKhVLd84SUgmQ" name="Trecho de Concessão*">
-            <packagedElement xmi:type="uml:Class" xmi:id="_Mth8bnRqEeKhVLd84SUgmQ" name="Trecho Rodoviário Concedido"/>
-          </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7ZvYREeKG4ORtVGggCQ" name="Via de Trânsito Rodoviário">
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7Z_YREeKG4ORtVGggCQ" name="Rodovia"/>
         </packagedElement>
       </packagedElement>
     </packagedElement>
-    <packagedElement xmi:type="uml:Package" xmi:id="_Mth8b3RqEeKhVLd84SUgmQ" name="Produto e Serviço">
-      <packagedElement xmi:type="uml:Package" xmi:id="_Mth8cHRqEeKhVLd84SUgmQ" name="Serviço">
-        <packagedElement xmi:type="uml:Class" xmi:id="_Mth8cXRqEeKhVLd84SUgmQ" name="Execução de Serviço">
-          <ownedAttribute xmi:id="_Mth8cnRqEeKhVLd84SUgmQ" visibility="private" type="_Mtijc3RqEeKhVLd84SUgmQ" association="_MtijeHRqEeKhVLd84SUgmQ">
+    <packagedElement xmi:type="uml:Package" xmi:id="_6MH7aPYREeKG4ORtVGggCQ" name="Legislação">
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7afYREeKG4ORtVGggCQ" name="Atos Normativos">
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7avYREeKG4ORtVGggCQ" name="Estrutura de Atos Normativos">
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7a_YREeKG4ORtVGggCQ" name="Agrupamento e Composição"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7bPYREeKG4ORtVGggCQ" name="Atos e Artigos"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7bfYREeKG4ORtVGggCQ" name="Geral"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7bvYREeKG4ORtVGggCQ" name="Gestão de Atos Normativos"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7b_YREeKG4ORtVGggCQ" name="Marco Regulatório"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6MH7cPYREeKG4ORtVGggCQ" name="Outorga">
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MH7cfYREeKG4ORtVGggCQ" name="Concessão">
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MH7cvYREeKG4ORtVGggCQ" name="Concessão Rodoviária*">
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7c_YREeKG4ORtVGggCQ" name="Convênio em Concessão Rodoviária*">
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MH7dPYREeKG4ORtVGggCQ" name="Convênio de Aquisição"/>
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MH7dfYREeKG4ORtVGggCQ" name="Convênio de Realização de Obra"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7dvYREeKG4ORtVGggCQ" name="Extinção de Concessão*"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7d_YREeKG4ORtVGggCQ" name="Faixa de Domínio Utilizada*"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MH7ePYREeKG4ORtVGggCQ" name="Financeiro Concessão*">
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MH7efYREeKG4ORtVGggCQ" name="Receita da Concessão">
+              <packagedElement xmi:type="uml:Package" xmi:id="_6MH7evYREeKG4ORtVGggCQ" name="Receita Rodoviária Extraordinária"/>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MIiUPYREeKG4ORtVGggCQ" name="Tarifa Básica de Pedágio"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MIiUfYREeKG4ORtVGggCQ" name="Garantia de Execução*"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MIiUvYREeKG4ORtVGggCQ" name="Licença Ambiental*"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MIiU_YREeKG4ORtVGggCQ" name="Manifestação de Usuário de Rodovia*">
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MIiVPYREeKG4ORtVGggCQ" name="Forma de Contato de Manifestação"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MIiVfYREeKG4ORtVGggCQ" name="Obra em Concessão*"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MIiVvYREeKG4ORtVGggCQ" name="PER*">
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MIiV_YREeKG4ORtVGggCQ" name="PER Revisado"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MIiWPYREeKG4ORtVGggCQ" name="Seguro em Concessão*"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MIiWfYREeKG4ORtVGggCQ" name="Serviço em Concessão*">
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MIiWvYREeKG4ORtVGggCQ" name="Tipo de Serviço em Concessão"/>
+            <packagedElement xmi:type="uml:Class" xmi:id="_6MIiW_YREeKG4ORtVGggCQ" name="Execução de Serviço em Rodovia Programado">
+              <generalization xmi:id="_6MIiXPYREeKG4ORtVGggCQ" general="_6MIic_YREeKG4ORtVGggCQ"/>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Class" xmi:id="_6MIiXfYREeKG4ORtVGggCQ" name="Serviço Executado em Concessão Rodoviária ">
+              <generalization xmi:id="_6MIiXvYREeKG4ORtVGggCQ" general="_6MIij_YREeKG4ORtVGggCQ"/>
+              <generalization xmi:id="_6MIiX_YREeKG4ORtVGggCQ" general="_6MIiZvYREeKG4ORtVGggCQ"/>
+              <ownedAttribute xmi:id="_6MIiYPYREeKG4ORtVGggCQ" visibility="private" type="_6MIic_YREeKG4ORtVGggCQ" association="_6MIie_YREeKG4ORtVGggCQ">
+                <name xsi:nil="true"/>
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIiYfYREeKG4ORtVGggCQ" value="1"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIiYvYREeKG4ORtVGggCQ" value="*"/>
+              </ownedAttribute>
+              <ownedAttribute xmi:id="_6MIiY_YREeKG4ORtVGggCQ" visibility="private" type="_6MIia_YREeKG4ORtVGggCQ" association="_6MIifvYREeKG4ORtVGggCQ">
+                <name xsi:nil="true"/>
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIiZPYREeKG4ORtVGggCQ" value="1"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIiZfYREeKG4ORtVGggCQ" value="*"/>
+              </ownedAttribute>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Class" xmi:id="_6MIiZvYREeKG4ORtVGggCQ" name="Serviço em Concessão Rodoviária">
+              <generalization xmi:id="_6MIiZ_YREeKG4ORtVGggCQ" general="_6MIii_YREeKG4ORtVGggCQ"/>
+              <ownedAttribute xmi:id="_6MIiaPYREeKG4ORtVGggCQ" visibility="public" type="_6MIiq_YREeKG4ORtVGggCQ" association="_6MIiffYREeKG4ORtVGggCQ">
+                <name xsi:nil="true"/>
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIiafYREeKG4ORtVGggCQ" value="1"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIiavYREeKG4ORtVGggCQ" value="1"/>
+              </ownedAttribute>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Class" xmi:id="_6MIia_YREeKG4ORtVGggCQ" name="Trecho Rodoviário Concedido com Serviço">
+              <generalization xmi:id="_6MIibPYREeKG4ORtVGggCQ" general="_6MIigPYREeKG4ORtVGggCQ"/>
+              <ownedAttribute xmi:id="_6MIibfYREeKG4ORtVGggCQ" visibility="private" type="_6MIic_YREeKG4ORtVGggCQ" association="_6MIifPYREeKG4ORtVGggCQ">
+                <name xsi:nil="true"/>
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIibvYREeKG4ORtVGggCQ" value="1"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIib_YREeKG4ORtVGggCQ" value="*"/>
+              </ownedAttribute>
+              <ownedAttribute xmi:id="_6MIicPYREeKG4ORtVGggCQ" visibility="private" type="_6MIiXfYREeKG4ORtVGggCQ" association="_6MIifvYREeKG4ORtVGggCQ">
+                <name xsi:nil="true"/>
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIicfYREeKG4ORtVGggCQ" value="1"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIicvYREeKG4ORtVGggCQ" value="*"/>
+              </ownedAttribute>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Class" xmi:id="_6MIic_YREeKG4ORtVGggCQ" name="Execução de Serviço em Rodovia">
+              <generalization xmi:id="_6MIidPYREeKG4ORtVGggCQ" general="_6MIig_YREeKG4ORtVGggCQ"/>
+              <ownedAttribute xmi:id="_6MIidfYREeKG4ORtVGggCQ" visibility="private" type="_6MIiXfYREeKG4ORtVGggCQ" association="_6MIie_YREeKG4ORtVGggCQ">
+                <name xsi:nil="true"/>
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIidvYREeKG4ORtVGggCQ" value="1"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIid_YREeKG4ORtVGggCQ" value="*"/>
+              </ownedAttribute>
+              <ownedAttribute xmi:id="_6MIiePYREeKG4ORtVGggCQ" visibility="private" type="_6MIia_YREeKG4ORtVGggCQ" association="_6MIifPYREeKG4ORtVGggCQ">
+                <name xsi:nil="true"/>
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIiefYREeKG4ORtVGggCQ" value="1"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIievYREeKG4ORtVGggCQ" value="*"/>
+              </ownedAttribute>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Association" xmi:id="_6MIie_YREeKG4ORtVGggCQ" name="é de" memberEnd="_6MIiYPYREeKG4ORtVGggCQ _6MIidfYREeKG4ORtVGggCQ"/>
+            <packagedElement xmi:type="uml:Association" xmi:id="_6MIifPYREeKG4ORtVGggCQ" name="feito em" memberEnd="_6MIibfYREeKG4ORtVGggCQ _6MIiePYREeKG4ORtVGggCQ"/>
+            <packagedElement xmi:type="uml:Association" xmi:id="_6MIiffYREeKG4ORtVGggCQ" name="responsável por" memberEnd="_6MIirfYREeKG4ORtVGggCQ _6MIiaPYREeKG4ORtVGggCQ"/>
+            <packagedElement xmi:type="uml:Association" xmi:id="_6MIifvYREeKG4ORtVGggCQ" name="/ realizado em" memberEnd="_6MIiY_YREeKG4ORtVGggCQ _6MIicPYREeKG4ORtVGggCQ"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MIif_YREeKG4ORtVGggCQ" name="Trecho de Concessão*">
+            <packagedElement xmi:type="uml:Class" xmi:id="_6MIigPYREeKG4ORtVGggCQ" name="Trecho Rodoviário Concedido"/>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6MIigfYREeKG4ORtVGggCQ" name="Produto e Serviço">
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MIigvYREeKG4ORtVGggCQ" name="Serviço">
+        <packagedElement xmi:type="uml:Class" xmi:id="_6MIig_YREeKG4ORtVGggCQ" name="Execução de Serviço">
+          <ownedAttribute xmi:id="_6MIihPYREeKG4ORtVGggCQ" visibility="private" type="_6MIij_YREeKG4ORtVGggCQ" association="_6MIilPYREeKG4ORtVGggCQ">
             <name xsi:nil="true"/>
-            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mth8c3RqEeKhVLd84SUgmQ" value="1"/>
-            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mth8dHRqEeKhVLd84SUgmQ" value="1"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIihfYREeKG4ORtVGggCQ" value="1"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIihvYREeKG4ORtVGggCQ" value="1"/>
           </ownedAttribute>
         </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_Mth8dXRqEeKhVLd84SUgmQ" name="Provedor de Serviço" isAbstract="true">
-          <ownedAttribute xmi:id="_Mth8dnRqEeKhVLd84SUgmQ" visibility="private" type="_Mth8eXRqEeKhVLd84SUgmQ" association="_MtijeXRqEeKhVLd84SUgmQ">
+        <packagedElement xmi:type="uml:Class" xmi:id="_6MIih_YREeKG4ORtVGggCQ" name="Provedor de Serviço" isAbstract="true">
+          <ownedAttribute xmi:id="_6MIiiPYREeKG4ORtVGggCQ" visibility="private" type="_6MIii_YREeKG4ORtVGggCQ" association="_6MIilfYREeKG4ORtVGggCQ">
             <name xsi:nil="true"/>
-            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Mth8d3RqEeKhVLd84SUgmQ" value="1"/>
-            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mth8eHRqEeKhVLd84SUgmQ" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIiifYREeKG4ORtVGggCQ" value="1"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIiivYREeKG4ORtVGggCQ" value="*"/>
           </ownedAttribute>
         </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_Mth8eXRqEeKhVLd84SUgmQ" name="Serviço">
-          <ownedAttribute xmi:id="_MtijcHRqEeKhVLd84SUgmQ" visibility="private" type="_Mth8dXRqEeKhVLd84SUgmQ" association="_MtijeXRqEeKhVLd84SUgmQ">
+        <packagedElement xmi:type="uml:Class" xmi:id="_6MIii_YREeKG4ORtVGggCQ" name="Serviço">
+          <ownedAttribute xmi:id="_6MIijPYREeKG4ORtVGggCQ" visibility="private" type="_6MIih_YREeKG4ORtVGggCQ" association="_6MIilfYREeKG4ORtVGggCQ">
             <name xsi:nil="true"/>
-            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MtijcXRqEeKhVLd84SUgmQ" value="1"/>
-            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MtijcnRqEeKhVLd84SUgmQ" value="1"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIijfYREeKG4ORtVGggCQ" value="1"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIijvYREeKG4ORtVGggCQ" value="1"/>
           </ownedAttribute>
         </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_Mtijc3RqEeKhVLd84SUgmQ" name="Serviço Executado">
-          <generalization xmi:id="_MtijdHRqEeKhVLd84SUgmQ" general="_Mth8eXRqEeKhVLd84SUgmQ"/>
-          <ownedAttribute xmi:id="_MtijdXRqEeKhVLd84SUgmQ" visibility="private" type="_Mth8cXRqEeKhVLd84SUgmQ" association="_MtijeHRqEeKhVLd84SUgmQ">
+        <packagedElement xmi:type="uml:Class" xmi:id="_6MIij_YREeKG4ORtVGggCQ" name="Serviço Executado">
+          <generalization xmi:id="_6MIikPYREeKG4ORtVGggCQ" general="_6MIii_YREeKG4ORtVGggCQ"/>
+          <ownedAttribute xmi:id="_6MIikfYREeKG4ORtVGggCQ" visibility="private" type="_6MIig_YREeKG4ORtVGggCQ" association="_6MIilPYREeKG4ORtVGggCQ">
             <name xsi:nil="true"/>
-            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MtijdnRqEeKhVLd84SUgmQ" value="1"/>
-            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Mtijd3RqEeKhVLd84SUgmQ" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIikvYREeKG4ORtVGggCQ" value="1"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIik_YREeKG4ORtVGggCQ" value="*"/>
           </ownedAttribute>
         </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_MtijeHRqEeKhVLd84SUgmQ" name="relativo a" memberEnd="_MtijdXRqEeKhVLd84SUgmQ _Mth8cnRqEeKhVLd84SUgmQ"/>
-        <packagedElement xmi:type="uml:Association" xmi:id="_MtijeXRqEeKhVLd84SUgmQ" name="provê" memberEnd="_MtijcHRqEeKhVLd84SUgmQ _Mth8dnRqEeKhVLd84SUgmQ"/>
+        <packagedElement xmi:type="uml:Association" xmi:id="_6MIilPYREeKG4ORtVGggCQ" name="relativo a" memberEnd="_6MIikfYREeKG4ORtVGggCQ _6MIihPYREeKG4ORtVGggCQ"/>
+        <packagedElement xmi:type="uml:Association" xmi:id="_6MIilfYREeKG4ORtVGggCQ" name="provê" memberEnd="_6MIijPYREeKG4ORtVGggCQ _6MIiiPYREeKG4ORtVGggCQ"/>
       </packagedElement>
     </packagedElement>
-    <packagedElement xmi:type="uml:Package" xmi:id="_MtijenRqEeKhVLd84SUgmQ" name="Tipos de Pessoa">
-      <packagedElement xmi:type="uml:Package" xmi:id="_Mtije3RqEeKhVLd84SUgmQ" name="Pessoa Física">
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtijfHRqEeKhVLd84SUgmQ" name="Parentesco"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6MIilvYREeKG4ORtVGggCQ" name="Tipos de Pessoa">
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MIil_YREeKG4ORtVGggCQ" name="Pessoa Física">
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MIimPYREeKG4ORtVGggCQ" name="Parentesco"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtijfXRqEeKhVLd84SUgmQ" name="Pessoa Jurídica">
-        <packagedElement xmi:type="uml:Package" xmi:id="_MtijfnRqEeKhVLd84SUgmQ" name="Empresa">
-          <packagedElement xmi:type="uml:Package" xmi:id="_Mtijf3RqEeKhVLd84SUgmQ" name="Aspectos Financeiros de Empresa">
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtijgHRqEeKhVLd84SUgmQ" name="Patrimônio">
-              <packagedElement xmi:type="uml:Package" xmi:id="_MtijgXRqEeKhVLd84SUgmQ" name="Aquisição">
-                <packagedElement xmi:type="uml:Package" xmi:id="_MtijgnRqEeKhVLd84SUgmQ" name="Arrendamento"/>
-                <packagedElement xmi:type="uml:Package" xmi:id="_Mtijg3RqEeKhVLd84SUgmQ" name="Compra"/>
-                <packagedElement xmi:type="uml:Package" xmi:id="_MtijhHRqEeKhVLd84SUgmQ" name="Construção"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MIimfYREeKG4ORtVGggCQ" name="Pessoa Jurídica">
+        <packagedElement xmi:type="uml:Package" xmi:id="_6MIimvYREeKG4ORtVGggCQ" name="Empresa">
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MIim_YREeKG4ORtVGggCQ" name="Aspectos Financeiros de Empresa">
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MIinPYREeKG4ORtVGggCQ" name="Patrimônio">
+              <packagedElement xmi:type="uml:Package" xmi:id="_6MIinfYREeKG4ORtVGggCQ" name="Aquisição">
+                <packagedElement xmi:type="uml:Package" xmi:id="_6MIinvYREeKG4ORtVGggCQ" name="Arrendamento"/>
+                <packagedElement xmi:type="uml:Package" xmi:id="_6MIin_YREeKG4ORtVGggCQ" name="Compra"/>
+                <packagedElement xmi:type="uml:Package" xmi:id="_6MIioPYREeKG4ORtVGggCQ" name="Construção"/>
               </packagedElement>
-              <packagedElement xmi:type="uml:Package" xmi:id="_MtijhXRqEeKhVLd84SUgmQ" name="Ativo Permanente">
-                <packagedElement xmi:type="uml:Package" xmi:id="_MtijhnRqEeKhVLd84SUgmQ" name="Bem Durável"/>
-                <packagedElement xmi:type="uml:Package" xmi:id="_Mtijh3RqEeKhVLd84SUgmQ" name="Imóvel Contábil"/>
+              <packagedElement xmi:type="uml:Package" xmi:id="_6MIiofYREeKG4ORtVGggCQ" name="Ativo Permanente">
+                <packagedElement xmi:type="uml:Package" xmi:id="_6MIiovYREeKG4ORtVGggCQ" name="Bem Durável"/>
+                <packagedElement xmi:type="uml:Package" xmi:id="_6MIio_YREeKG4ORtVGggCQ" name="Imóvel Contábil"/>
               </packagedElement>
             </packagedElement>
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtijiHRqEeKhVLd84SUgmQ" name="Resultado">
-              <packagedElement xmi:type="uml:Package" xmi:id="_MtijiXRqEeKhVLd84SUgmQ" name="Imposto"/>
-              <packagedElement xmi:type="uml:Package" xmi:id="_MtijinRqEeKhVLd84SUgmQ" name="Receita"/>
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MIipPYREeKG4ORtVGggCQ" name="Resultado">
+              <packagedElement xmi:type="uml:Package" xmi:id="_6MIipfYREeKG4ORtVGggCQ" name="Imposto"/>
+              <packagedElement xmi:type="uml:Package" xmi:id="_6MIipvYREeKG4ORtVGggCQ" name="Receita"/>
             </packagedElement>
           </packagedElement>
-          <packagedElement xmi:type="uml:Package" xmi:id="_Mtiji3RqEeKhVLd84SUgmQ" name="Tipos de Empresa">
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtijjHRqEeKhVLd84SUgmQ" name="Empresa Regulada"/>
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtijjXRqEeKhVLd84SUgmQ" name="Gerais"/>
-            <packagedElement xmi:type="uml:Package" xmi:id="_MtijjnRqEeKhVLd84SUgmQ" name="Tipo Geral de Empresa"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_6MIip_YREeKG4ORtVGggCQ" name="Tipos de Empresa">
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MIiqPYREeKG4ORtVGggCQ" name="Empresa Regulada"/>
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MIiqfYREeKG4ORtVGggCQ" name="Gerais"/>
+            <packagedElement xmi:type="uml:Package" xmi:id="_6MIiqvYREeKG4ORtVGggCQ" name="Tipo Geral de Empresa"/>
           </packagedElement>
         </packagedElement>
       </packagedElement>
-      <packagedElement xmi:type="uml:Class" xmi:id="_MtjKgHRqEeKhVLd84SUgmQ" name="Concessionária Rodoviária">
-        <generalization xmi:id="_MtjKgXRqEeKhVLd84SUgmQ" general="_Mth8dXRqEeKhVLd84SUgmQ"/>
-        <ownedAttribute xmi:id="_MtjKgnRqEeKhVLd84SUgmQ" visibility="public" type="_MthVXHRqEeKhVLd84SUgmQ" association="_Mth8a3RqEeKhVLd84SUgmQ">
+      <packagedElement xmi:type="uml:Class" xmi:id="_6MIiq_YREeKG4ORtVGggCQ" name="Concessionária Rodoviária">
+        <generalization xmi:id="_6MIirPYREeKG4ORtVGggCQ" general="_6MIih_YREeKG4ORtVGggCQ"/>
+        <ownedAttribute xmi:id="_6MIirfYREeKG4ORtVGggCQ" visibility="public" type="_6MIiZvYREeKG4ORtVGggCQ" association="_6MIiffYREeKG4ORtVGggCQ">
           <name xsi:nil="true"/>
-          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MtjKg3RqEeKhVLd84SUgmQ" value="1"/>
-          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MtjKhHRqEeKhVLd84SUgmQ" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6MIirvYREeKG4ORtVGggCQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6MIir_YREeKG4ORtVGggCQ" value="*"/>
         </ownedAttribute>
       </packagedElement>
     </packagedElement>
-    <packagedElement xmi:type="uml:Package" xmi:id="_MtjKhXRqEeKhVLd84SUgmQ" name="Transporte (RASCUNHO)">
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtjKhnRqEeKhVLd84SUgmQ" name="Carga (RASCUNHO)"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_MtjKh3RqEeKhVLd84SUgmQ" name="Passageiro (RASCUNHO)"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6MIisPYREeKG4ORtVGggCQ" name="Transporte (RASCUNHO)">
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MIisfYREeKG4ORtVGggCQ" name="Carga (RASCUNHO)"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_6MIisvYREeKG4ORtVGggCQ" name="Passageiro (RASCUNHO)"/>
     </packagedElement>
   </packagedElement>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_MtjKiHRqEeKhVLd84SUgmQ" name="Data Completa"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6MIis_YREeKG4ORtVGggCQ" name="Data Completa"/>
 </uml:Model>
