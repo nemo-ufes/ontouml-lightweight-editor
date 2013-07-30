@@ -113,6 +113,7 @@ public class WarningTablePanel extends JPanel {
 	    scrollpane.setPreferredSize(new Dimension(100,70));
 		scrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollpane.setBorder(new EmptyBorder(0,0,0,0));
 		
 		table = new JTable(data,columnNames);
 		scrollpane.setViewportView(table);

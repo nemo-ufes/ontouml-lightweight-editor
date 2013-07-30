@@ -65,7 +65,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		editorArea.setDividerSize(7);
 		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		editorArea.setResizeWeight(1) ;
-		editorArea.setDividerLocation(0.75);
+		editorArea.setDividerLocation(0.5);
 		
 		JScrollPane scrollpane = new JScrollPane(editor);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
@@ -109,6 +109,8 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		infoTabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
 		
 		modeltree = ModelTree.getTreeFor(getProject());
+		
+		infoTabbedPane.setPreferredSize(new Dimension(100,300));
 		
 		editorArea.add(panel, JSplitPane.TOP);		
 		editorArea.add(infoTabbedPane,JSplitPane.BOTTOM);
