@@ -1,203 +1,203 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Package xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_EKvnwG7fEeKOVqc3xulmaw" name="EA_Model">
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_EKvnwW7fEeKOVqc3xulmaw" name="int"/>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_EKvnwm7fEeKOVqc3xulmaw" name="string"/>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_EKvnw27fEeKOVqc3xulmaw" name="char"/>
-  <packagedElement xmi:type="uml:DataType" xmi:id="_EKvnxG7fEeKOVqc3xulmaw" name="Valor Monetário">
-    <ownedAttribute xmi:id="_EKvnxW7fEeKOVqc3xulmaw" name="moeda" visibility="private" type="_EKvnwW7fEeKOVqc3xulmaw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKvnxm7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKvnx27fEeKOVqc3xulmaw" value="1"/>
+<uml:Package xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_egxwUPlYEeK1i8Jba8r7Vw" name="EA_Model">
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_egxwUflYEeK1i8Jba8r7Vw" name="int"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_egxwUvlYEeK1i8Jba8r7Vw" name="string"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_egxwU_lYEeK1i8Jba8r7Vw" name="char"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_egxwVPlYEeK1i8Jba8r7Vw" name="Valor Monetário">
+    <ownedAttribute xmi:id="_egyXYPlYEeK1i8Jba8r7Vw" name="moeda" visibility="private" type="_egxwUflYEeK1i8Jba8r7Vw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXYflYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXYvlYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_EKvnyG7fEeKOVqc3xulmaw" name="quantia" visibility="private" type="_EKvnwW7fEeKOVqc3xulmaw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKvnyW7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKvnym7fEeKOVqc3xulmaw" value="1"/>
+    <ownedAttribute xmi:id="_egyXY_lYEeK1i8Jba8r7Vw" name="quantia" visibility="private" type="_egxwUflYEeK1i8Jba8r7Vw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXZPlYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXZflYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_EKvny27fEeKOVqc3xulmaw" visibility="private" type="_EKwO-G7fEeKOVqc3xulmaw" isReadOnly="true" association="_EKw1-G7fEeKOVqc3xulmaw">
+    <ownedAttribute xmi:id="_egyXZvlYEeK1i8Jba8r7Vw" visibility="private" type="_egy-hflYEeK1i8Jba8r7Vw" isReadOnly="true" association="_egy-qflYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKvnzG7fEeKOVqc3xulmaw"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKvnzW7fEeKOVqc3xulmaw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXZ_lYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXaPlYEeK1i8Jba8r7Vw"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKvnzm7fEeKOVqc3xulmaw" name="Coordenador de Fiscalização Composta">
-    <generalization xmi:id="_EKvnz27fEeKOVqc3xulmaw" general="_EKvn5m7fEeKOVqc3xulmaw"/>
-    <ownedAttribute xmi:id="_EKvn0G7fEeKOVqc3xulmaw" visibility="public" type="_EKvn1m7fEeKOVqc3xulmaw" aggregation="composite">
-      <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKvn0W7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKvn0m7fEeKOVqc3xulmaw" value="1"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_egyXaflYEeK1i8Jba8r7Vw" name="Pessoa Física">
+    <ownedAttribute xmi:id="_egyXavlYEeK1i8Jba8r7Vw" name="CPF" visibility="private" type="_egxwUflYEeK1i8Jba8r7Vw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXa_lYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXbPlYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_EKvn027fEeKOVqc3xulmaw" visibility="public" type="_EKvn1m7fEeKOVqc3xulmaw" aggregation="composite" association="_EKw18W7fEeKOVqc3xulmaw">
-      <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKvn1G7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKvn1W7fEeKOVqc3xulmaw" value="1"/>
+    <ownedAttribute xmi:id="_egyXbflYEeK1i8Jba8r7Vw" name="RG" visibility="private" type="_egxwUflYEeK1i8Jba8r7Vw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXbvlYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXb_lYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKvn1m7fEeKOVqc3xulmaw" name="Equipe Componente de Fiscalização Composta">
-    <generalization xmi:id="_EKvn127fEeKOVqc3xulmaw" general="_EKwO427fEeKOVqc3xulmaw"/>
-    <ownedAttribute xmi:id="_EKvn2G7fEeKOVqc3xulmaw" visibility="public" type="_EKvnzm7fEeKOVqc3xulmaw" association="_EKw18W7fEeKOVqc3xulmaw">
+  <packagedElement xmi:type="uml:Class" xmi:id="_egyXcPlYEeK1i8Jba8r7Vw" name="Coordenador de Fiscalização Composta">
+    <generalization xmi:id="_egyXcflYEeK1i8Jba8r7Vw" general="_egyXiPlYEeK1i8Jba8r7Vw"/>
+    <ownedAttribute xmi:id="_egyXcvlYEeK1i8Jba8r7Vw" visibility="public" type="_egyXePlYEeK1i8Jba8r7Vw" aggregation="composite">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKvn2W7fEeKOVqc3xulmaw"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKvn2m7fEeKOVqc3xulmaw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXc_lYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXdPlYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_EKvn227fEeKOVqc3xulmaw" visibility="public" type="_EKwO2G7fEeKOVqc3xulmaw" association="_EKw18m7fEeKOVqc3xulmaw">
+    <ownedAttribute xmi:id="_egyXdflYEeK1i8Jba8r7Vw" visibility="public" type="_egyXePlYEeK1i8Jba8r7Vw" aggregation="composite" association="_egy-ovlYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKvn3G7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKvn3W7fEeKOVqc3xulmaw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXdvlYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXd_lYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKvn3m7fEeKOVqc3xulmaw" name="Fiscal Integrante de Equipe">
-    <generalization xmi:id="_EKvn327fEeKOVqc3xulmaw" general="_EKwO1m7fEeKOVqc3xulmaw" generalizationSet="_EKw1-W7fEeKOVqc3xulmaw"/>
-    <ownedAttribute xmi:id="_EKvn4G7fEeKOVqc3xulmaw" visibility="public" type="_EKwO427fEeKOVqc3xulmaw" aggregation="composite">
+  <packagedElement xmi:type="uml:Class" xmi:id="_egyXePlYEeK1i8Jba8r7Vw" name="Equipe Componente de Fiscalização Composta">
+    <generalization xmi:id="_egyXeflYEeK1i8Jba8r7Vw" general="_egy-cPlYEeK1i8Jba8r7Vw"/>
+    <ownedAttribute xmi:id="_egyXevlYEeK1i8Jba8r7Vw" visibility="public" type="_egyXcPlYEeK1i8Jba8r7Vw" association="_egy-ovlYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKvn4W7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKvn4m7fEeKOVqc3xulmaw" value="*"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXe_lYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXfPlYEeK1i8Jba8r7Vw"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_EKvn427fEeKOVqc3xulmaw" visibility="public" type="_EKwO427fEeKOVqc3xulmaw" aggregation="composite" association="_EKw1827fEeKOVqc3xulmaw">
+    <ownedAttribute xmi:id="_egyXfflYEeK1i8Jba8r7Vw" visibility="public" type="_egyXkvlYEeK1i8Jba8r7Vw" association="_egy-o_lYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKvn5G7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKvn5W7fEeKOVqc3xulmaw" value="*"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXfvlYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXf_lYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKvn5m7fEeKOVqc3xulmaw" name="Fiscal Líder de Equipe">
-    <generalization xmi:id="_EKvn527fEeKOVqc3xulmaw" general="_EKwO1m7fEeKOVqc3xulmaw" generalizationSet="_EKw1-W7fEeKOVqc3xulmaw"/>
-    <ownedAttribute xmi:id="_EKwO0G7fEeKOVqc3xulmaw" visibility="public" type="_EKwO427fEeKOVqc3xulmaw" aggregation="composite">
+  <packagedElement xmi:type="uml:Class" xmi:id="_egyXgPlYEeK1i8Jba8r7Vw" name="Fiscal Integrante de Equipe">
+    <generalization xmi:id="_egyXgflYEeK1i8Jba8r7Vw" general="_egyXkPlYEeK1i8Jba8r7Vw" generalizationSet="_egy-qvlYEeK1i8Jba8r7Vw"/>
+    <ownedAttribute xmi:id="_egyXgvlYEeK1i8Jba8r7Vw" visibility="public" type="_egy-cPlYEeK1i8Jba8r7Vw" aggregation="composite">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwO0W7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwO0m7fEeKOVqc3xulmaw" value="*"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXg_lYEeK1i8Jba8r7Vw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXhPlYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_EKwO027fEeKOVqc3xulmaw" visibility="public" type="_EKwO427fEeKOVqc3xulmaw" aggregation="composite" association="_EKw19G7fEeKOVqc3xulmaw">
+    <ownedAttribute xmi:id="_egyXhflYEeK1i8Jba8r7Vw" visibility="public" type="_egy-cPlYEeK1i8Jba8r7Vw" aggregation="composite" association="_egy-pPlYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwO1G7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwO1W7fEeKOVqc3xulmaw" value="*"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXhvlYEeK1i8Jba8r7Vw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXh_lYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKwO1m7fEeKOVqc3xulmaw" name="Fiscal Participante de Equipe">
-    <generalization xmi:id="_EKwO127fEeKOVqc3xulmaw" general="_EKwO9m7fEeKOVqc3xulmaw" generalizationSet="_EKw1-m7fEeKOVqc3xulmaw"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKwO2G7fEeKOVqc3xulmaw" name="Fiscalização em Equipe Composta">
-    <generalization xmi:id="_EKwO2W7fEeKOVqc3xulmaw" general="_EKwO-G7fEeKOVqc3xulmaw"/>
-    <ownedAttribute xmi:id="_EKwO2m7fEeKOVqc3xulmaw" name="local" visibility="private" type="_EKvnwm7fEeKOVqc3xulmaw" isDerived="true">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwO227fEeKOVqc3xulmaw" value="2"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwO3G7fEeKOVqc3xulmaw" value="*"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_EKwO3W7fEeKOVqc3xulmaw" visibility="public" type="_EKvn1m7fEeKOVqc3xulmaw" isReadOnly="true" association="_EKw18m7fEeKOVqc3xulmaw">
+  <packagedElement xmi:type="uml:Class" xmi:id="_egyXiPlYEeK1i8Jba8r7Vw" name="Fiscal Líder de Equipe">
+    <generalization xmi:id="_egyXiflYEeK1i8Jba8r7Vw" general="_egyXkPlYEeK1i8Jba8r7Vw" generalizationSet="_egy-qvlYEeK1i8Jba8r7Vw"/>
+    <ownedAttribute xmi:id="_egyXivlYEeK1i8Jba8r7Vw" visibility="public" type="_egy-cPlYEeK1i8Jba8r7Vw" aggregation="composite">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwO3m7fEeKOVqc3xulmaw" value="2"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwO327fEeKOVqc3xulmaw" value="*"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXi_lYEeK1i8Jba8r7Vw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXjPlYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_EKwO4G7fEeKOVqc3xulmaw" visibility="public" type="_EKwPB27fEeKOVqc3xulmaw" association="_EKw19W7fEeKOVqc3xulmaw">
+    <ownedAttribute xmi:id="_egyXjflYEeK1i8Jba8r7Vw" visibility="public" type="_egy-cPlYEeK1i8Jba8r7Vw" aggregation="composite" association="_egy-pflYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwO4W7fEeKOVqc3xulmaw" value="2"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwO4m7fEeKOVqc3xulmaw" value="*"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXjvlYEeK1i8Jba8r7Vw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXj_lYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKwO427fEeKOVqc3xulmaw" name="Equipe Simples de Fiscalização">
-    <ownedAttribute xmi:id="_EKwO5G7fEeKOVqc3xulmaw" visibility="public" type="_EKvn3m7fEeKOVqc3xulmaw" association="_EKw1827fEeKOVqc3xulmaw">
+  <packagedElement xmi:type="uml:Class" xmi:id="_egyXkPlYEeK1i8Jba8r7Vw" name="Fiscal Participante de Equipe">
+    <generalization xmi:id="_egyXkflYEeK1i8Jba8r7Vw" general="_egy-g_lYEeK1i8Jba8r7Vw" generalizationSet="_egy-q_lYEeK1i8Jba8r7Vw"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_egyXkvlYEeK1i8Jba8r7Vw" name="Fiscalização em Equipe Composta">
+    <generalization xmi:id="_egyXk_lYEeK1i8Jba8r7Vw" general="_egy-hflYEeK1i8Jba8r7Vw"/>
+    <ownedAttribute xmi:id="_egyXlPlYEeK1i8Jba8r7Vw" name="local" visibility="private" type="_egxwUvlYEeK1i8Jba8r7Vw" isDerived="true">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXlflYEeK1i8Jba8r7Vw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXlvlYEeK1i8Jba8r7Vw" value="2"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_egyXl_lYEeK1i8Jba8r7Vw" visibility="public" type="_egyXePlYEeK1i8Jba8r7Vw" isReadOnly="true" association="_egy-o_lYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwO5W7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwO5m7fEeKOVqc3xulmaw" value="*"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXmPlYEeK1i8Jba8r7Vw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXmflYEeK1i8Jba8r7Vw" value="2"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_EKwO527fEeKOVqc3xulmaw" visibility="public" type="_EKvn5m7fEeKOVqc3xulmaw" association="_EKw19G7fEeKOVqc3xulmaw">
+    <ownedAttribute xmi:id="_egyXmvlYEeK1i8Jba8r7Vw" visibility="public" type="_egy-lPlYEeK1i8Jba8r7Vw" association="_egy-pvlYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwO6G7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwO6W7fEeKOVqc3xulmaw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egyXm_lYEeK1i8Jba8r7Vw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egyXnPlYEeK1i8Jba8r7Vw" value="2"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_EKwO6m7fEeKOVqc3xulmaw" visibility="private" type="_EKwPB27fEeKOVqc3xulmaw" association="_EKw19m7fEeKOVqc3xulmaw">
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_egy-cPlYEeK1i8Jba8r7Vw" name="Equipe Simples de Fiscalização">
+    <ownedAttribute xmi:id="_egy-cflYEeK1i8Jba8r7Vw" visibility="public" type="_egyXgPlYEeK1i8Jba8r7Vw" association="_egy-pPlYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwO627fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwO7G7fEeKOVqc3xulmaw" value="*"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-cvlYEeK1i8Jba8r7Vw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-c_lYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKwO7W7fEeKOVqc3xulmaw" name="Fiscal Conveniado">
-    <generalization xmi:id="_EKwO7m7fEeKOVqc3xulmaw" general="_EKwO9m7fEeKOVqc3xulmaw" generalizationSet="_EKw1-27fEeKOVqc3xulmaw"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKwO727fEeKOVqc3xulmaw" name="Fiscal da ANTT">
-    <generalization xmi:id="_EKwO8G7fEeKOVqc3xulmaw" general="_EKwO9m7fEeKOVqc3xulmaw" generalizationSet="_EKw1-27fEeKOVqc3xulmaw"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKwO8W7fEeKOVqc3xulmaw" name="Fiscal em Fiscalização Individual">
-    <generalization xmi:id="_EKwO8m7fEeKOVqc3xulmaw" general="_EKwO9m7fEeKOVqc3xulmaw" generalizationSet="_EKw1-m7fEeKOVqc3xulmaw"/>
-    <ownedAttribute xmi:id="_EKwO827fEeKOVqc3xulmaw" visibility="public" type="_EKwO_27fEeKOVqc3xulmaw" association="_EKw1927fEeKOVqc3xulmaw">
+    <ownedAttribute xmi:id="_egy-dPlYEeK1i8Jba8r7Vw" visibility="public" type="_egyXiPlYEeK1i8Jba8r7Vw" association="_egy-pflYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwO9G7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwO9W7fEeKOVqc3xulmaw" value="*"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-dflYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-dvlYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKwO9m7fEeKOVqc3xulmaw" name="Fiscal">
-    <generalization xmi:id="_EKwO927fEeKOVqc3xulmaw" general="_EKw16m7fEeKOVqc3xulmaw"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKwO-G7fEeKOVqc3xulmaw" name="Fiscalização">
-    <ownedAttribute xmi:id="_EKwO-W7fEeKOVqc3xulmaw" name="período" visibility="private" type="_EKvnwW7fEeKOVqc3xulmaw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwO-m7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwO-27fEeKOVqc3xulmaw" value="1"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_EKwO_G7fEeKOVqc3xulmaw" name="recurso financeiro" visibility="private" type="_EKvnxG7fEeKOVqc3xulmaw" isReadOnly="true" association="_EKw1-G7fEeKOVqc3xulmaw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwO_W7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwO_m7fEeKOVqc3xulmaw" value="*"/>
-    </ownedAttribute>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKwO_27fEeKOVqc3xulmaw" name="Fiscalização Individual">
-    <generalization xmi:id="_EKwPAG7fEeKOVqc3xulmaw" general="_EKwO-G7fEeKOVqc3xulmaw" generalizationSet="_EKw1_G7fEeKOVqc3xulmaw"/>
-    <ownedAttribute xmi:id="_EKwPAW7fEeKOVqc3xulmaw" name="local" visibility="private" type="_EKvnwm7fEeKOVqc3xulmaw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwPAm7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwPA27fEeKOVqc3xulmaw" value="1"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_EKwPBG7fEeKOVqc3xulmaw" visibility="public" type="_EKwO8W7fEeKOVqc3xulmaw" isReadOnly="true" association="_EKw1927fEeKOVqc3xulmaw">
+    <ownedAttribute xmi:id="_egy-d_lYEeK1i8Jba8r7Vw" visibility="private" type="_egy-lPlYEeK1i8Jba8r7Vw" association="_egy-p_lYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwPBW7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKwPBm7fEeKOVqc3xulmaw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-ePlYEeK1i8Jba8r7Vw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-eflYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKwPB27fEeKOVqc3xulmaw" name="Fiscalização em Equipe Simples">
-    <generalization xmi:id="_EKwPCG7fEeKOVqc3xulmaw" general="_EKwO-G7fEeKOVqc3xulmaw" generalizationSet="_EKw1_G7fEeKOVqc3xulmaw"/>
-    <ownedAttribute xmi:id="_EKwPCW7fEeKOVqc3xulmaw" name="local" visibility="private" type="_EKvnwm7fEeKOVqc3xulmaw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKwPCm7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKw14G7fEeKOVqc3xulmaw" value="1"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_EKw14W7fEeKOVqc3xulmaw" visibility="public" type="_EKwO2G7fEeKOVqc3xulmaw" aggregation="composite">
+  <packagedElement xmi:type="uml:Class" xmi:id="_egy-evlYEeK1i8Jba8r7Vw" name="Fiscal Conveniado">
+    <generalization xmi:id="_egy-e_lYEeK1i8Jba8r7Vw" general="_egy-g_lYEeK1i8Jba8r7Vw" generalizationSet="_egy-rPlYEeK1i8Jba8r7Vw"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_egy-fPlYEeK1i8Jba8r7Vw" name="Fiscal da ANTT">
+    <generalization xmi:id="_egy-fflYEeK1i8Jba8r7Vw" general="_egy-g_lYEeK1i8Jba8r7Vw" generalizationSet="_egy-rPlYEeK1i8Jba8r7Vw"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_egy-fvlYEeK1i8Jba8r7Vw" name="Fiscal em Fiscalização Individual">
+    <generalization xmi:id="_egy-f_lYEeK1i8Jba8r7Vw" general="_egy-g_lYEeK1i8Jba8r7Vw" generalizationSet="_egy-q_lYEeK1i8Jba8r7Vw"/>
+    <ownedAttribute xmi:id="_egy-gPlYEeK1i8Jba8r7Vw" visibility="public" type="_egy-jPlYEeK1i8Jba8r7Vw" association="_egy-qPlYEeK1i8Jba8r7Vw">
       <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKw14m7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKw1427fEeKOVqc3xulmaw" value="1"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_EKw15G7fEeKOVqc3xulmaw" visibility="public" type="_EKwO2G7fEeKOVqc3xulmaw" aggregation="composite" association="_EKw19W7fEeKOVqc3xulmaw">
-      <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKw15W7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKw15m7fEeKOVqc3xulmaw" value="1"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_EKw1527fEeKOVqc3xulmaw" visibility="private" type="_EKwO427fEeKOVqc3xulmaw" isReadOnly="true" association="_EKw19m7fEeKOVqc3xulmaw">
-      <name xsi:nil="true"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKw16G7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKw16W7fEeKOVqc3xulmaw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-gflYEeK1i8Jba8r7Vw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-gvlYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_EKw16m7fEeKOVqc3xulmaw" name="Pessoa Física">
-    <ownedAttribute xmi:id="_EKw1627fEeKOVqc3xulmaw" name="CPF" visibility="private" type="_EKvnwW7fEeKOVqc3xulmaw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKw17G7fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKw17W7fEeKOVqc3xulmaw" value="1"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_egy-g_lYEeK1i8Jba8r7Vw" name="Fiscal">
+    <generalization xmi:id="_egy-hPlYEeK1i8Jba8r7Vw" general="_egyXaflYEeK1i8Jba8r7Vw"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_egy-hflYEeK1i8Jba8r7Vw" name="Fiscalização">
+    <ownedAttribute xmi:id="_egy-hvlYEeK1i8Jba8r7Vw" name="período" visibility="private" type="_egxwUflYEeK1i8Jba8r7Vw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-h_lYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-iPlYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_EKw17m7fEeKOVqc3xulmaw" name="RG" visibility="private" type="_EKvnwW7fEeKOVqc3xulmaw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKw1727fEeKOVqc3xulmaw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKw18G7fEeKOVqc3xulmaw" value="1"/>
+    <ownedAttribute xmi:id="_egy-iflYEeK1i8Jba8r7Vw" name="recurso financeiro" visibility="private" type="_egxwVPlYEeK1i8Jba8r7Vw" isReadOnly="true" association="_egy-qflYEeK1i8Jba8r7Vw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-ivlYEeK1i8Jba8r7Vw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-i_lYEeK1i8Jba8r7Vw" value="1"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_EKw18W7fEeKOVqc3xulmaw" memberEnd="_EKvn027fEeKOVqc3xulmaw _EKvn2G7fEeKOVqc3xulmaw">
+  <packagedElement xmi:type="uml:Class" xmi:id="_egy-jPlYEeK1i8Jba8r7Vw" name="Fiscalização Individual">
+    <generalization xmi:id="_egy-jflYEeK1i8Jba8r7Vw" general="_egy-hflYEeK1i8Jba8r7Vw" generalizationSet="_egzlgPlYEeK1i8Jba8r7Vw"/>
+    <ownedAttribute xmi:id="_egy-jvlYEeK1i8Jba8r7Vw" name="local" visibility="private" type="_egxwUvlYEeK1i8Jba8r7Vw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-j_lYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-kPlYEeK1i8Jba8r7Vw" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_egy-kflYEeK1i8Jba8r7Vw" visibility="public" type="_egy-fvlYEeK1i8Jba8r7Vw" isReadOnly="true" association="_egy-qPlYEeK1i8Jba8r7Vw">
+      <name xsi:nil="true"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-kvlYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-k_lYEeK1i8Jba8r7Vw" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_egy-lPlYEeK1i8Jba8r7Vw" name="Fiscalização em Equipe Simples">
+    <generalization xmi:id="_egy-lflYEeK1i8Jba8r7Vw" general="_egy-hflYEeK1i8Jba8r7Vw" generalizationSet="_egzlgPlYEeK1i8Jba8r7Vw"/>
+    <ownedAttribute xmi:id="_egy-lvlYEeK1i8Jba8r7Vw" name="local" visibility="private" type="_egxwUvlYEeK1i8Jba8r7Vw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-l_lYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-mPlYEeK1i8Jba8r7Vw" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_egy-mflYEeK1i8Jba8r7Vw" visibility="public" type="_egyXkvlYEeK1i8Jba8r7Vw" aggregation="composite">
+      <name xsi:nil="true"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-mvlYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-m_lYEeK1i8Jba8r7Vw" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_egy-nPlYEeK1i8Jba8r7Vw" visibility="public" type="_egyXkvlYEeK1i8Jba8r7Vw" aggregation="composite" association="_egy-pvlYEeK1i8Jba8r7Vw">
+      <name xsi:nil="true"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-nflYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-nvlYEeK1i8Jba8r7Vw" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_egy-n_lYEeK1i8Jba8r7Vw" visibility="private" type="_egy-cPlYEeK1i8Jba8r7Vw" isReadOnly="true" association="_egy-p_lYEeK1i8Jba8r7Vw">
+      <name xsi:nil="true"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_egy-oPlYEeK1i8Jba8r7Vw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egy-oflYEeK1i8Jba8r7Vw" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_egy-ovlYEeK1i8Jba8r7Vw" memberEnd="_egyXdflYEeK1i8Jba8r7Vw _egyXevlYEeK1i8Jba8r7Vw">
     <name xsi:nil="true"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_EKw18m7fEeKOVqc3xulmaw" name="realiza" memberEnd="_EKvn227fEeKOVqc3xulmaw _EKwO3W7fEeKOVqc3xulmaw"/>
-  <packagedElement xmi:type="uml:Association" xmi:id="_EKw1827fEeKOVqc3xulmaw" memberEnd="_EKvn427fEeKOVqc3xulmaw _EKwO5G7fEeKOVqc3xulmaw">
+  <packagedElement xmi:type="uml:Association" xmi:id="_egy-o_lYEeK1i8Jba8r7Vw" name="realiza" memberEnd="_egyXfflYEeK1i8Jba8r7Vw _egyXl_lYEeK1i8Jba8r7Vw"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_egy-pPlYEeK1i8Jba8r7Vw" memberEnd="_egyXhflYEeK1i8Jba8r7Vw _egy-cflYEeK1i8Jba8r7Vw">
     <name xsi:nil="true"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_EKw19G7fEeKOVqc3xulmaw" memberEnd="_EKwO027fEeKOVqc3xulmaw _EKwO527fEeKOVqc3xulmaw">
+  <packagedElement xmi:type="uml:Association" xmi:id="_egy-pflYEeK1i8Jba8r7Vw" memberEnd="_egyXjflYEeK1i8Jba8r7Vw _egy-dPlYEeK1i8Jba8r7Vw">
     <name xsi:nil="true"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_EKw19W7fEeKOVqc3xulmaw" memberEnd="_EKw15G7fEeKOVqc3xulmaw _EKwO4G7fEeKOVqc3xulmaw">
+  <packagedElement xmi:type="uml:Association" xmi:id="_egy-pvlYEeK1i8Jba8r7Vw" memberEnd="_egy-nPlYEeK1i8Jba8r7Vw _egyXmvlYEeK1i8Jba8r7Vw">
     <name xsi:nil="true"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_EKw19m7fEeKOVqc3xulmaw" name="realiza" memberEnd="_EKwO6m7fEeKOVqc3xulmaw _EKw1527fEeKOVqc3xulmaw"/>
-  <packagedElement xmi:type="uml:Association" xmi:id="_EKw1927fEeKOVqc3xulmaw" name="participa em" memberEnd="_EKwO827fEeKOVqc3xulmaw _EKwPBG7fEeKOVqc3xulmaw"/>
-  <packagedElement xmi:type="uml:Association" xmi:id="_EKw1-G7fEeKOVqc3xulmaw" memberEnd="_EKvny27fEeKOVqc3xulmaw _EKwO_G7fEeKOVqc3xulmaw">
+  <packagedElement xmi:type="uml:Association" xmi:id="_egy-p_lYEeK1i8Jba8r7Vw" name="realiza" memberEnd="_egy-d_lYEeK1i8Jba8r7Vw _egy-n_lYEeK1i8Jba8r7Vw"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_egy-qPlYEeK1i8Jba8r7Vw" name="participa em" memberEnd="_egy-gPlYEeK1i8Jba8r7Vw _egy-kflYEeK1i8Jba8r7Vw"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_egy-qflYEeK1i8Jba8r7Vw" memberEnd="_egyXZvlYEeK1i8Jba8r7Vw _egy-iflYEeK1i8Jba8r7Vw">
     <name xsi:nil="true"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_EKw1-W7fEeKOVqc3xulmaw" name="fiscal" isCovering="true" generalization="_EKvn327fEeKOVqc3xulmaw _EKvn527fEeKOVqc3xulmaw"/>
-  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_EKw1-m7fEeKOVqc3xulmaw" name="participação em fiscalização" isCovering="true" generalization="_EKwO127fEeKOVqc3xulmaw _EKwO8m7fEeKOVqc3xulmaw"/>
-  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_EKw1-27fEeKOVqc3xulmaw" name="fiscal" isCovering="true" isDisjoint="true" generalization="_EKwO7m7fEeKOVqc3xulmaw _EKwO8G7fEeKOVqc3xulmaw"/>
-  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_EKw1_G7fEeKOVqc3xulmaw" name="integrantes" isCovering="true" isDisjoint="true" generalization="_EKwPAG7fEeKOVqc3xulmaw _EKwPCG7fEeKOVqc3xulmaw"/>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_egy-qvlYEeK1i8Jba8r7Vw" name="fiscal" isCovering="true" generalization="_egyXgflYEeK1i8Jba8r7Vw _egyXiflYEeK1i8Jba8r7Vw"/>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_egy-q_lYEeK1i8Jba8r7Vw" name="participação em fiscalização" isCovering="true" generalization="_egyXkflYEeK1i8Jba8r7Vw _egy-f_lYEeK1i8Jba8r7Vw"/>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_egy-rPlYEeK1i8Jba8r7Vw" name="fiscal" isCovering="true" isDisjoint="true" generalization="_egy-e_lYEeK1i8Jba8r7Vw _egy-fflYEeK1i8Jba8r7Vw"/>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_egzlgPlYEeK1i8Jba8r7Vw" name="integrantes" isCovering="true" isDisjoint="true" generalization="_egy-jflYEeK1i8Jba8r7Vw _egy-lflYEeK1i8Jba8r7Vw"/>
 </uml:Package>

@@ -30,8 +30,8 @@ public class OCLParser {
 	public org.eclipse.ocl.uml.UMLEnvironment umlenv;	
     public Resource umlResource;            
     public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> umlHashMap;       
-    public CSTNode cstree;    
     public String logDetails = new String();
+    public CSTNode cstree;    
     
     @SuppressWarnings("rawtypes") public org.eclipse.ocl.utilities.UMLReflection umlreflection;
 	@SuppressWarnings("rawtypes") public OCLAnalyzer analyzer;
@@ -79,22 +79,21 @@ public class OCLParser {
 		umlResource.getResourceSet().getPackageRegistry().put(null,umlmodel);			
 		org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());
 		
-		
 		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
 		umlenv = envFactory.createEnvironment();		
 		org.eclipse.ocl.uml.OCL myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
 		myOCL.setParseTracingEnabled(true);
-
+				
 		analyzer = myOCL.createAnalyzer(oclConstraints);
-		cstree = analyzer.parseConcreteSyntax();
-		
-		if (cstree!=null && cstree.getStartToken().toString().equals("context")) 
-		{
-		    oclConstraints = "package "+umlmodel.getName()+"\n\n"+oclConstraints+"\n endpackage\n\n";
-			//String msg ="You need to specify your constraints inside a package declaration. \n\npackage PackageName\n...\nYour constraints\n...\nendpackage";
-			//throw new Exception(msg);
-		}
-		
+        cstree = analyzer.parseConcreteSyntax();
+        
+        if (cstree!=null && cstree.getStartToken().toString().equals("context")) 
+        {
+            oclConstraints = "package "+"_'"+umlmodel.getName()+"'\n\n"+oclConstraints+"\n endpackage\n\n";
+                //String msg ="You need to specify your constraints inside a package declaration. \n\npackage PackageName\n...\nYour constraints\n...\nendpackage";
+                //throw new Exception(msg);
+        }
+        
 		OCLInput document = new OCLInput(oclConstraints);		
 		umlconstraintsList = myOCL.parse(document);
 
@@ -130,16 +129,16 @@ public class OCLParser {
 		umlenv = envFactory.createEnvironment();		
 		org.eclipse.ocl.uml.OCL myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
 		myOCL.setParseTracingEnabled(true);
-
-		analyzer = myOCL.createAnalyzer(FileUtil.readFile(oclAbsolutePath));
-		cstree = analyzer.parseConcreteSyntax();
-		
-		if (cstree!=null && cstree.getStartToken().toString().equals("context")) 
-		{
-			String msg ="You need to specify your constraints inside a package declaration. \n\npackage PackageName\n...\nYour constraints\n...\nendpackage";
-			throw new Exception(msg);
-		}
-		
+								
+		 analyzer = myOCL.createAnalyzer(FileUtil.readFile(oclAbsolutePath));
+         cstree = analyzer.parseConcreteSyntax();
+         
+         if (cstree!=null && cstree.getStartToken().toString().equals("context")) 
+         {
+                 String msg ="You need to specify your constraints inside a package declaration. \n\npackage PackageName\n...\nYour constraints\n...\nendpackage";
+                 throw new Exception(msg);
+         }
+         
 		InputStream input = new FileInputStream(oclAbsolutePath);
 		org.eclipse.ocl.OCLInput document = new org.eclipse.ocl.OCLInput(input);	
 			
@@ -157,14 +156,13 @@ public class OCLParser {
     @SuppressWarnings("rawtypes") public  org.eclipse.ocl.utilities.UMLReflection getUMLReflection() { return umlreflection; }    
     public CSTNode getCSTree() { return cstree; }
     
-    
     /**
      * Testing...
      */
     public static void main (String[] args)
     {    	
-    	String refpath = "C:\\Users\\John\\SVNs\\SVN-OLED\\OCL2Alloy\\model\\teste.refontouml";
-    	String oclPath = "C:\\Users\\John\\SVNs\\SVN-OLED\\OCL2Alloy\\model\\teste.ocl";
+    	String refpath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.ocl2alloy\\model\\project.refontouml";
+    	String oclPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.ocl2alloy\\model\\project.ocl";
     	
     	try {
     		
@@ -177,6 +175,8 @@ public class OCLParser {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
+    	
+    	System.out.println("OCL parsed");
     }    
    
 }
