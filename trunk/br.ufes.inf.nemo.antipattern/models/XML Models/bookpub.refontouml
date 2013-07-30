@@ -10,6 +10,7 @@
     </packagedElement>
     <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_UD7MCOWFEeKtGPQ7uP3aJA" name="Author" visibility="public">
       <generalization xmi:id="_UD7MCeWFEeKtGPQ7uP3aJA" general="_UD7MGOWFEeKtGPQ7uP3aJA"/>
+      <ownedAttribute name="attr" type="_UD7MNeWFEeKtGPQ7uP3aJA"/>
     </packagedElement>
     <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_UD7MCuWFEeKtGPQ7uP3aJA" name="Authorship" visibility="public"/>
     <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_UD7MC-WFEeKtGPQ7uP3aJA" name="Book" visibility="public">

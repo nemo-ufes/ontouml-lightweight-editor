@@ -1,33 +1,14 @@
 package br.ufes.inf.nemo.ocl2alloy;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.ocl.examples.domain.utilities.StandaloneProjectMap;
-import org.eclipse.ocl.examples.pivot.Constraint;
-import org.eclipse.ocl.examples.pivot.ExpressionInOCL;
-import org.eclipse.ocl.examples.pivot.OCL;
-import org.eclipse.ocl.examples.pivot.ParserException;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManagerResourceSetAdapter;
-import org.eclipse.ocl.examples.pivot.utilities.PivotEnvironmentFactory;
-
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 
 /**
+ * This class should use the new OCL Pivot Binding Implementation
+ * 
  * @author John Guerson
  */
 
 public class OCLPivotParser {
-	
+	/*
 	public OCL ocl;
 	public Resource pivotResource;
 	public Map<String,ExpressionInOCL> constraintMap;
@@ -102,12 +83,6 @@ public class OCLPivotParser {
     	return constraintList;
     }
     
-    /**
-	 * Convert a file name to an EMF URI
-	 * 
-	 * @param file
-	 * @return EMF URI
-	 */
 	public static URI getURI(File file) {
 		return URI.createFileURI(file.getAbsolutePath());
 	}
@@ -128,6 +103,6 @@ public class OCLPivotParser {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-    }    
+    }  */
    
 }
