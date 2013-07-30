@@ -538,7 +538,7 @@ public class RefOntoCreator {
         	((RefOntoUML.DataType)classf).getOwnedAttribute().add(prop);
 		}
 		else if (classf instanceof RefOntoUML.Association) {
-			((RefOntoUML.Association)classf).getOwnedEnd().add(prop);
+			((RefOntoUML.Association)classf).getOwnedEnd().add(prop);			
 			prop.setAssociation(((RefOntoUML.Association)classf));
 		}
 	}
