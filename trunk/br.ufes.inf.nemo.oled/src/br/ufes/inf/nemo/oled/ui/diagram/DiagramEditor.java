@@ -106,8 +106,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private static final double MARGIN_LEFT = 25;
 	private static final double MARGIN_RIGHT = 30;
 	private static final double MARGIN_BOTTOM = 30;
-	private static final double ADDSCROLL_HORIZONTAL = 800;
-	private static final double ADDSCROLL_VERTICAL = 600;
+	private static final double ADDSCROLL_HORIZONTAL = 0;
+	private static final double ADDSCROLL_VERTICAL = 0;
 	private transient DrawingContext drawingContext = new DrawingContextImpl();
 	private transient EditorMode editorMode;
 	private transient SelectionHandler selectionHandler;

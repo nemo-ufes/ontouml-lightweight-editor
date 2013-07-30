@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.border.EmptyBorder;
 
 public class OutputPane extends JPanel
 {
@@ -27,6 +28,7 @@ public class OutputPane extends JPanel
 		JScrollPane scrollpane = new JScrollPane(output);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
+		scrollpane.setBorder(new EmptyBorder(0,0,0,0));
 		
 		this.add(scrollpane, BorderLayout.CENTER);
 		this.setMinimumSize(new Dimension(0, 0));		

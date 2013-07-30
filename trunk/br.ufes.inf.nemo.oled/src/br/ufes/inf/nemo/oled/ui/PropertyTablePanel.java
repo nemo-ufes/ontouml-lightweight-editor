@@ -40,7 +40,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	public PropertyTablePanel(UmlProject project)
 	{
 		this();
-		this.project = project;		
+		this.project = project;	
 	}
 	
 	private PropertyTableModel createCollectiveTableModel (RefOntoUML.Collective c)
@@ -282,6 +282,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	    scrollpane.setPreferredSize(new Dimension(100,70));
 		scrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollpane.setBorder(new EmptyBorder(0,0,0,0));
 		
 		table = new JTable(data,columnNames);		
 		scrollpane.setViewportView(table);
