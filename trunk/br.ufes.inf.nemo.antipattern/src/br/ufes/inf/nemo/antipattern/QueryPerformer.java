@@ -17,16 +17,22 @@ import org.eclipse.ocl.ParserException;
 
 import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Association;
+import RefOntoUML.Category;
+import RefOntoUML.Characterization;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
+import RefOntoUML.Collective;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
+import RefOntoUML.FormalAssociation;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.LiteralInteger;
 import RefOntoUML.LiteralUnlimitedNatural;
 import RefOntoUML.MaterialAssociation;
+import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
+import RefOntoUML.Mixin;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Mode;
 import RefOntoUML.Model;
@@ -35,21 +41,27 @@ import RefOntoUML.ObjectClass;
 import RefOntoUML.Package;
 import RefOntoUML.Phase;
 import RefOntoUML.Property;
+import RefOntoUML.Quantity;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import RefOntoUML.Type;
 import RefOntoUML.componentOf;
+import RefOntoUML.memberOf;
+import RefOntoUML.subCollectionOf;
+import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
 import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
 import br.ufes.inf.nemo.common.ontoumlparser.MaterialInference;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
@@ -67,7 +79,7 @@ public class QueryPerformer {
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RoaadTrafficAccident.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/teste_comp_inference.refontouml").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/Modelos/Biodiversity.refontouml").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/XML Models/mgic.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/twin_test.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOS_regular_and_inverted.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
@@ -77,13 +89,21 @@ public class QueryPerformer {
 		// Print the contents of the resource to System.out. 
 		RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
 		Model m = factory.createModel();
+		System.out.println("Model loaded: "+ m.getName());
 		
 		m = (Model) resource.getContents().get(0);
 		
 		OntoUMLParser parser = new OntoUMLParser(m);
-		System.out.println("Model loaded: "+ m.getName());
+		System.out.println("Parser loaded: "+ m.getName());
 		
 		try {
+			
+			OntoUMLModelStatistic stat = new OntoUMLModelStatistic(parser);
+			stat.run();
+			
+			System.out.println(stat.allResults());
+			
+			
 			/*ArrayList<Association> associations = new ArrayList<>();
 			associations.addAll(parser.getAllInstances(Association.class));
 			associations.removeAll(parser.getAllInstances(Derivation.class));
@@ -293,14 +313,14 @@ public class QueryPerformer {
 				System.out.println(ac.generatePredicate(parser, 2, ACAntiPattern.CLOSED));
 			}*/
 			
-		    
+		    /*
 		    ComponentOfInference d = new ComponentOfInference(parser);
 		    
 		    parser = d.infer();
 		    System.out.println("Inferred Compositions: "+d.getInferredCompositions().size());
 		    for (componentOf c : d.getInferredCompositions()) {
 				System.out.println(parser.getStringRepresentation(c));
-			}
+			}*/
 		    /*
 		    System.out.println("***********");
 		    ComponentOfInference d2 = new ComponentOfInference(parser);
@@ -326,7 +346,7 @@ public class QueryPerformer {
 				
 				System.out.println("----------------");
 			}*/
-		    MaterialInference mi = new MaterialInference(parser);
+		  /*  MaterialInference mi = new MaterialInference(parser);
 		    parser = mi.infer();
 		    
 		    for (MaterialAssociation mat : mi.getInferredMaterials()) {
@@ -335,7 +355,11 @@ public class QueryPerformer {
 		    					"<Material> "+mat.getName()+
 		    					" ("+mat.getMemberEnd().get(1).getLower()+")..("+mat.getMemberEnd().get(1).getUpper()+") "+ mat.getMemberEnd().get(1).getType().getName();
 		    	System.out.println(saida);
-		    }
+		    }*/
+			
+		   
+		    
+		   
 				    		    
 		} catch (Exception e) {
 		    // record failure to parse
@@ -343,7 +367,7 @@ public class QueryPerformer {
 			e.printStackTrace();
 		}
 		
-		ResourceUtil.saveReferenceOntoUML("/Users/tiagoprince/Desktop/test.refontouml", m);
+	//	ResourceUtil.saveReferenceOntoUML("/Users/tiagoprince/Desktop/test.refontouml", m);
 		
 		
 		/*for (EObject k : parser.getAllInstances(AntiRigidSortalClass.class)) {
@@ -469,6 +493,8 @@ public class QueryPerformer {
 		return null;
 		
 	}
+	
+	
 	
 	
 }
