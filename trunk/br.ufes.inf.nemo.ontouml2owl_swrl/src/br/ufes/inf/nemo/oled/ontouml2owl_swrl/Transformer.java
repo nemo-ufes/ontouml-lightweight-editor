@@ -1,10 +1,12 @@
 package br.ufes.inf.nemo.oled.ontouml2owl_swrl;
 
 import java.io.ByteArrayOutputStream;
+import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
@@ -79,6 +81,10 @@ public class Transformer {
 	private Set<DataType> _lstDataType;
 	private List<String> _lstDataTypeAttributes = new ArrayList<String>();
 
+
+	//Usado para criar o disjoint dos dataproperties
+	private HashMap<OWLClass, String> _aux_hashClassToDataProperty = new HashMap();
+
 	/**
 	 * Create a Transformer and use the nameSpace as the ontology URI
 	 * 
@@ -95,7 +101,7 @@ public class Transformer {
 			e.printStackTrace();
 		}	
 	}
-	
+
 	/**
 	 * Transform a RefOntoUML.Model to OWL
 	 * 
@@ -112,6 +118,7 @@ public class Transformer {
 		for(RefOntoUML.Class src: ontoParser.getAllInstances(RefOntoUML.Class.class))
 			processClass(src);
 		processDataTypeStructured();
+		processDataTypeDisjoint();
 
 		//SubstanceSortal
 		//todos os substanceSortal sao diferentes entre si
@@ -128,7 +135,7 @@ public class Transformer {
 		//Material
 		for(MaterialAssociation src: ontoParser.getAllInstances(MaterialAssociation.class))
 			createMaterialAssociation(src);
-		
+
 		//Relator
 		for(Relator src: ontoParser.getAllInstances(Relator.class))
 			processRelator(src);
@@ -168,16 +175,30 @@ public class Transformer {
 		//Process Comments
 		processAnnotation();
 
+
 		try {	
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			manager.saveOntology(ontology, os);
-			String s = new String(os.toByteArray(),"ISO-8859-1");
+			//String s = new String(os.toByteArray(),"ISO-8859-1");
+			String s = new String(os.toByteArray(),"UTF-8");
 			return s;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "";
+	}
+
+	private void processDataTypeDisjoint() {
+		Set<OWLDataProperty> lst = new HashSet<OWLDataProperty>();
+		for (Map.Entry<OWLClass,String> entry : _aux_hashClassToDataProperty.entrySet()) {
+			for(String s:entry.getValue().split("@")){
+				lst.add(factory.getOWLDataProperty(IRI.create(s)));
+			}
+			if(lst.size()>1)
+				manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointDataPropertiesAxiom(lst)));
+			lst = new HashSet<OWLDataProperty>();
+		}		
 	}
 
 	/**
@@ -231,9 +252,14 @@ public class Transformer {
 	 * 
 	 * @param ass
 	 */
-	private void processMeronymic(Meronymic ass, String name) {
-		processRelationMeronymic(ass,name,1,false);
-		processRelationMeronymic(ass,"INV."+name,0,true);
+	private void processMeronymic(Meronymic ass, String propName) {
+		if(ass.getName()==null){
+			processRelationMeronymic(ass, propName, propName+"."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"), 1, false);
+			processRelationMeronymic(ass, "INV."+propName, "INV."+propName+"."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"), 0, true);
+		}else{
+			processRelationMeronymic(ass,propName,ass.getName().replaceAll(" ", "_"),1,false);
+			processRelationMeronymic(ass,"INV."+propName,"INV."+ass.getName().replaceAll(" ", "_"),0,true);
+		}
 	}
 
 	private void createRelation_subQuantityOf() {
@@ -378,17 +404,31 @@ public class Transformer {
 
 	private void processDataTypeStructured() {
 		for(String s:_lstDataTypeAttributes){
+			//Normative_Act#publication_date.day:Integer
+			//attribName = publication_date.day
+			//dtName = Normative_Act
+			//range = Integer
+
 			String attrbName = s.split(":")[0].split("#")[1];
 			String dtName = s.split(":")[0].split("#")[0];
 			String range = s.split(":")[1];
 
 			OWLDataProperty atributo = manager.getOWLDataFactory().getOWLDataProperty(IRI.create(nameSpace+dtName.replaceAll(" ", "_")+"."+attrbName));
-
 			OWLDatatype tipoAtributo = getDataTypeRange(range);		
-
+			manager.applyChange(new AddAxiom(ontology, factory.getOWLDataPropertyRangeAxiom(atributo, tipoAtributo)));
 			OWLClassExpression expression = manager.getOWLDataFactory().getOWLDataExactCardinality(1, atributo,tipoAtributo);
 
 			OWLClass owner = manager.getOWLDataFactory().getOWLClass(IRI.create(nameSpace+dtName.replaceAll(" ", "_")));
+
+			//set the father of this datatype
+			manager.applyChange(new AddAxiom(ontology, factory.getOWLDataPropertyDomainAxiom(atributo, owner)));
+
+			//usado para criar o disjoint dos dataproperties para a classe
+			if(_aux_hashClassToDataProperty.get(owner) == null){
+				_aux_hashClassToDataProperty.put(owner, "");	
+			}
+			_aux_hashClassToDataProperty.put(owner, _aux_hashClassToDataProperty.get(owner)+atributo.getIRI().toString()+"@");
+
 
 			OWLEquivalentClassesAxiom ax = manager.getOWLDataFactory().getOWLEquivalentClassesAxiom(owner,expression);
 
@@ -412,7 +452,7 @@ public class Transformer {
 				processDataTypeProperty(p);
 				dt_atual = aux;					
 			}else{
-				_lstDataTypeAttributes.add(dt_atual.replaceAll("@", "_")+p.getName()+":"+range);
+				_lstDataTypeAttributes.add(dt_atual.replaceAll("@", "_").substring(0,dt_atual.length()-1)+"."+p.getName().replaceAll(" ", "_")+":"+range);
 				_aux_tipoAtributo = dt;
 			}
 		}
@@ -445,7 +485,7 @@ public class Transformer {
 			OWLObjectProperty propMediation0 = factory.getOWLObjectProperty(IRI.create(nameSpace+mediation0));
 			OWLObjectProperty propMediation1 = factory.getOWLObjectProperty(IRI.create(nameSpace+mediation1));
 
-			OWLObjectProperty propMaterial = factory.getOWLObjectProperty(IRI.create(nameSpace+material.getName()));
+			OWLObjectProperty propMaterial = factory.getOWLObjectProperty(IRI.create(nameSpace+material.getName().replaceAll(" ", "_")));
 
 			//SWRL
 
@@ -614,7 +654,7 @@ public class Transformer {
 				OWLObjectIntersectionOf oio =  factory.getOWLObjectIntersectionOf(maxcard,mincard);
 				ax = factory.getOWLEquivalentClassesAxiom(ori, oio);
 			}
-						
+
 		}
 
 		if(ax != null){
@@ -625,7 +665,7 @@ public class Transformer {
 		}
 	}
 
-	private void processRelationMeronymic(Association src, String propName, int side, boolean inverse) {
+	private void processRelationMeronymic(Association src, String relName, String propName, int side, boolean inverse) {
 		int upperCard = src.getMemberEnd().get(side).getUpper();
 		int lowerCard = src.getMemberEnd().get(side).getLower();
 
@@ -633,12 +673,12 @@ public class Transformer {
 			return;
 		}
 
-		OWLObjectProperty propMom = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
-		OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName+"."+src.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+src.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
-		
+		OWLObjectProperty propMom = factory.getOWLObjectProperty(IRI.create(nameSpace+relName));
+		OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+
 		OWLSubObjectPropertyOfAxiom sopa = factory.getOWLSubObjectPropertyOfAxiom(prop,propMom);
 		manager.applyChange(new AddAxiom(ontology, sopa));
-		
+
 		OWLClass dst, ori;
 		if(!inverse){
 			dst = factory.getOWLClass(IRI.create(nameSpace+src.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
@@ -647,6 +687,11 @@ public class Transformer {
 			ori = factory.getOWLClass(IRI.create(nameSpace+src.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
 			dst = factory.getOWLClass(IRI.create(nameSpace+src.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")));
 		}
+
+
+		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(prop, ori)));
+		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyRangeAxiom(prop, dst)));
+
 
 		OWLEquivalentClassesAxiom ax = null;
 		OWLSubClassOfAxiom sax = null; 
@@ -670,7 +715,7 @@ public class Transformer {
 				OWLObjectIntersectionOf oio =  factory.getOWLObjectIntersectionOf(maxcard,mincard);
 				ax = factory.getOWLEquivalentClassesAxiom(ori, oio);
 			}
-						
+
 		}
 
 		if(ax != null){
@@ -681,8 +726,8 @@ public class Transformer {
 		}
 	}
 
-	
-	
+
+
 	private void processGeneralizationSet(GeneralizationSet src) {
 		if(!src.getGeneralization().isEmpty()){
 			if((src.isIsDisjoint() && src.isIsCovering()) || src.getGeneralization().get(0).getSpecific() instanceof Phase){
@@ -833,9 +878,9 @@ public class Transformer {
 			int upperCard = p.getUpper();
 			int lowerCard = p.getLower();
 
-			OWLDataProperty atributo = factory.getOWLDataProperty(IRI.create(nameSpace+src.getName().replaceAll(" ", "_")+"."+p.getName().replaceAll(" ", "_")));
 			OWLDatatype tipoAtributo = null;
 			OWLDataPropertyRangeAxiom set = null;
+
 			//Se o tipo nao for reconhecido cria o atributo com range literal
 			if(p.getType()== null){
 				tipoAtributo = factory.getOWLDatatype(OWL2Datatype.RDFS_LITERAL.getIRI());
@@ -843,23 +888,33 @@ public class Transformer {
 				String range = p.getType().getName().replaceAll(" ", "_");
 				tipoAtributo = getDataTypeRange(range);
 				if(tipoAtributo == null){
-					dt_atual = src.getName()+"#";
+					dt_atual = src.getName().replaceAll(" ", "_")+"#";
 					processDataTypeProperty(p);
 					dt_atual = "";
+
 					if(_aux_tipoAtributo == null){
 						//Se nao existe um tipo compativel em owl
 						tipoAtributo = factory.getOWLDatatype(OWL2Datatype.RDFS_LITERAL.getIRI());
 					}else{
-						//O _aux_tipoAtributo foi alterado pela função de recursão
-						tipoAtributo = factory.getOWLDatatype(_aux_tipoAtributo.getIRI());
+						continue;
 					}
 				}
 			}
+			OWLDataProperty atributo = factory.getOWLDataProperty(IRI.create(nameSpace+src.getName().replaceAll(" ", "_")+"."+p.getName().replaceAll(" ", "_")));
 
 			set = factory.getOWLDataPropertyRangeAxiom(atributo, tipoAtributo);
 			manager.applyChange(new AddAxiom(ontology, set));
 
 			OWLClass owner = factory.getOWLClass(IRI.create(nameSpace+src.getName().replaceAll(" ", "_")));
+			//set the father of this datatype
+			manager.applyChange(new AddAxiom(ontology, factory.getOWLDataPropertyDomainAxiom(atributo, owner)));
+
+			//usado para criar o disjoint dos dataproperties para a classe
+			if(_aux_hashClassToDataProperty.get(owner) == null){
+				_aux_hashClassToDataProperty.put(owner, "");	
+			}
+			_aux_hashClassToDataProperty.put(owner, _aux_hashClassToDataProperty.get(owner)+atributo.getIRI().toString()+"@");
+
 			OWLEquivalentClassesAxiom ax = null;
 
 			if(upperCard == 1 && lowerCard == 1){
@@ -959,14 +1014,20 @@ public class Transformer {
 			if(p.getOwnedComment() != null && !p.getOwnedComment().isEmpty()){
 				if(p instanceof Class){
 					for(RefOntoUML.Comment c : p.getOwnedComment()){
+						String comment = c.getBody().replaceAll("\\<[^>]*>","").replaceAll("\"", "");
+						comment = Normalizer.normalize(comment, Normalizer.Form.NFD);  
+						comment = comment.replaceAll("[^\\p{ASCII}]", "");  
 						OWLClass cls = factory.getOWLClass(IRI.create(nameSpace+p.getName().replaceAll(" ", "_")));
-						OWLAnnotation commentAnno = factory.getOWLAnnotation( factory.getRDFSComment(),  factory.getOWLLiteral(c.getBody(), "pt"));
+						OWLAnnotation commentAnno = factory.getOWLAnnotation( factory.getRDFSComment(),  factory.getOWLLiteral(comment, "pt"));
 						OWLAxiom ax = factory.getOWLAnnotationAssertionAxiom( cls.getIRI(), commentAnno);
 						manager.applyChange(new AddAxiom(ontology, ax));
 					}
 				}else{
 					for(RefOntoUML.Comment c : p.getOwnedComment()){
-						OWLAnnotation commentAnno = factory.getOWLAnnotation( factory.getRDFSComment(),  factory.getOWLLiteral(c.getBody(), "pt"));
+						String comment = c.getBody().replaceAll("\\<[^>]*>","").replaceAll("\"", "");
+						comment = Normalizer.normalize(comment, Normalizer.Form.NFD);  
+						comment = comment.replaceAll("[^\\p{ASCII}]", "");  
+						OWLAnnotation commentAnno = factory.getOWLAnnotation( factory.getRDFSComment(),  factory.getOWLLiteral(comment, "pt"));
 						OWLAxiom ax = factory.getOWLAnnotationAssertionAxiom( IRI.create(nameSpace.substring(0,nameSpace.length()-1)), commentAnno);
 						manager.applyChange(new AddAxiom(ontology, ax));
 					}
