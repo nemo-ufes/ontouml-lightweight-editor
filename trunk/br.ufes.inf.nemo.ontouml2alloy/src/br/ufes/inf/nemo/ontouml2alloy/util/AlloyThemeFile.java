@@ -70,7 +70,7 @@ public class AlloyThemeFile {
 			"</node>" + "\n\n" +
 
 			"<node showlabel=\"no\">" + "\n" +
-			"	<set name=\"$all_elements_exists_w\" type=\"univ\"/>" + "\n" +			
+			"	<set name=\"$possibly_exist_w\" type=\"univ\"/>" + "\n" +			
 			"   <set name=\"$antirigidity_x\" type=\"univ\"/> " +
 			"   <set name=\"$antirigidity_x&apos;\" type=\"univ\"/> " + 
 			"	<set name=\"exists\" type=\"DataType\"/>" + "\n" +
@@ -93,8 +93,7 @@ public class AlloyThemeFile {
 			"</node>" + "\n\n" +
 
 			"<edge visible=\"no\" attribute=\"yes\"> " + "\n" +
-			//"   <relation name=\"idade\"> <type name=\"Object\"/> <type name=\"Int\"/> </relation> " + "\n" +
-			//"   <relation name=\"naturalidade\"> <type name=\"Object\"/> <type name=\"Estado\"/> </relation> " + "\n" +
+			
 			"</edge>" + "\n" +
 			
 			"</view>" + "\n\n" +

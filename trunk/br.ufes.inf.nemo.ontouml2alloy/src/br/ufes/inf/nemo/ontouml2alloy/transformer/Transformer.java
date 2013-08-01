@@ -496,7 +496,7 @@ public class Transformer {
 		additionalFact.setBlock(block);		
 
 		// linear_existence[exists]
-		PredicateInvocation pI = AlloyAPI.createLinearExistenceInvocation(factory,exists);
+		PredicateInvocation pI = AlloyAPI.createContinuousExistenceInvocation(factory,exists);
 		
 		if (pI!=null) block.getExpression().add(pI);
 		ArrayList<String> existsSignatures = new ArrayList<String>();
@@ -504,7 +504,7 @@ public class Transformer {
 		if(sigProperty!=null) existsSignatures.add(sigProperty.getName());		
 		
 		// all_elements_exists[Object+Property,exists]
-		PredicateInvocation pI2 = AlloyAPI.createAllElementsExistsInvocation(factory,exists,existsSignatures);
+		PredicateInvocation pI2 = AlloyAPI.createPossiblyExistInvocation(factory,exists,existsSignatures);
 		
 		if (pI!=null) block.getExpression().add(pI2);	
 		module.getParagraph().add(additionalFact);

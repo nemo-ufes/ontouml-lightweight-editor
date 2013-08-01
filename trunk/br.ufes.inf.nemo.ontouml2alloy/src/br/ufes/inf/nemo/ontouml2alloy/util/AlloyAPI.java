@@ -167,12 +167,12 @@ public class AlloyAPI {
 	}
 
 	/**
-	 * Creates the "linear_existence" predicate invocation. e.g. all_elements_exists[Object+Property,exists]
+	 * Creates the "possibly_exist" predicate invocation. e.g. possibly_exist[Object+Property,exists]
 	 */
-	public static PredicateInvocation createAllElementsExistsInvocation(AlloyFactory factory, Variable exists, ArrayList<String> defaultSignatures)
+	public static PredicateInvocation createPossiblyExistInvocation(AlloyFactory factory, Variable exists, ArrayList<String> defaultSignatures)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();	
-		pI.setPredicate("all_elements_exists");
+		pI.setPredicate("possibly_exist");
 		pI.getParameter().add(createDefaultSignaturesUnionExpression(factory,defaultSignatures));
 		VariableReference vr = factory.createVariableReference();
 		vr.setVariable(exists.getName());
@@ -181,12 +181,12 @@ public class AlloyAPI {
 	}
 
 	/**
-	 * Creates the "linear_existence" predicate invocation. e.g. linear_existence[exists].
+	 * Creates the "continuous_existence" predicate invocation. e.g. continuous_existence[exists].
 	 */
-	public static PredicateInvocation createLinearExistenceInvocation(AlloyFactory factory, Variable exists)
+	public static PredicateInvocation createContinuousExistenceInvocation(AlloyFactory factory, Variable exists)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();
-		pI.setPredicate("linear_existence");
+		pI.setPredicate("continuous_existence");
 		VariableReference vr = factory.createVariableReference();
 		vr.setVariable(exists.getName());
 		pI.getParameter().add(vr);
@@ -194,12 +194,12 @@ public class AlloyAPI {
 	}	
 	
 	/**
-	 * Creates "always_exists" predicate invocation. e.g.  always_exists[DataType,exists] .
+	 * Creates "necessarily_exist" predicate invocation. e.g.  necessarily_exist[DataType,exists] .
 	 */
-	public static PredicateInvocation createAlwaysExistsInvocation(AlloyFactory factory, Variable exists, SignatureDeclaration sigDatatype)
+	public static PredicateInvocation createNecessarilyExistInvocation(AlloyFactory factory, Variable exists, SignatureDeclaration sigDatatype)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();
-		pI.setPredicate("always_exists");
+		pI.setPredicate("necessarily_exist");
 		SignatureReference srDataType = factory.createSignatureReference();
 		srDataType.setSignature(sigDatatype.getName());
 		pI.getParameter().add(srDataType);
