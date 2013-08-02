@@ -70,7 +70,7 @@ public class AlloyThemeFile {
 			"</node>" + "\n\n" +
 
 			"<node showlabel=\"no\">" + "\n" +
-			"	<set name=\"$possibly_exist_w\" type=\"univ\"/>" + "\n" +			
+			"	<set name=\"$elements_existence_w\" type=\"univ\"/>" + "\n" +			
 			"   <set name=\"$antirigidity_x\" type=\"univ\"/> " +
 			"   <set name=\"$antirigidity_x&apos;\" type=\"univ\"/> " + 
 			"	<set name=\"exists\" type=\"DataType\"/>" + "\n" +

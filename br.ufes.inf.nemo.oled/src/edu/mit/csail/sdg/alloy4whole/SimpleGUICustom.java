@@ -506,7 +506,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
            "models/util/boolean.als", "models/util/graph.als", "models/util/integer.als", "models/util/natural.als",
            "models/util/ordering.als", "models/util/relation.als", "models/util/seqrel.als", "models/util/sequence.als",
            "models/util/sequniv.als", "models/util/ternary.als", "models/util/time.als"
-           );
+           );       
         // Record the locations
         System.setProperty("alloy.theme0", alloyHome() + fs + "models");
         System.setProperty("alloy.home", alloyHome());
