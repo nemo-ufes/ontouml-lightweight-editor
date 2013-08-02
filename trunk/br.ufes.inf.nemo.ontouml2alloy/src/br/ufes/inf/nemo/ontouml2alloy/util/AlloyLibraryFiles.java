@@ -45,7 +45,7 @@ public class AlloyLibraryFiles {
 			"}\n\n" +
 			
 			"/*Predicate that states that all elements must exists in at least one world*/\n" +
-			"pred possibly_exist [elements:univ, exists: World->univ]{\n" +
+			"pred elements_existence [elements:univ, exists: World->univ]{\n" +
 			"\tall x: elements | some w: World | x in w.exists\n" +
 			"}\n\n" +
 			

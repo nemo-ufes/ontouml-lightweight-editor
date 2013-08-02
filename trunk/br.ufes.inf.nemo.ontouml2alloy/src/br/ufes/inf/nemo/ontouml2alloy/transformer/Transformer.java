@@ -504,7 +504,7 @@ public class Transformer {
 		if(sigProperty!=null) existsSignatures.add(sigProperty.getName());		
 		
 		// all_elements_exists[Object+Property,exists]
-		PredicateInvocation pI2 = AlloyAPI.createPossiblyExistInvocation(factory,exists,existsSignatures);
+		PredicateInvocation pI2 = AlloyAPI.createElementsExistenceInvocation(factory,exists,existsSignatures);
 		
 		if (pI!=null) block.getExpression().add(pI2);	
 		module.getParagraph().add(additionalFact);

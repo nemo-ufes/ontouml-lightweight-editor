@@ -167,12 +167,12 @@ public class AlloyAPI {
 	}
 
 	/**
-	 * Creates the "possibly_exist" predicate invocation. e.g. possibly_exist[Object+Property,exists]
+	 * Creates the "elements_existence" predicate invocation. e.g. elements_existence[Object+Property,exists]
 	 */
-	public static PredicateInvocation createPossiblyExistInvocation(AlloyFactory factory, Variable exists, ArrayList<String> defaultSignatures)
+	public static PredicateInvocation createElementsExistenceInvocation(AlloyFactory factory, Variable exists, ArrayList<String> defaultSignatures)
 	{
 		PredicateInvocation pI = factory.createPredicateInvocation();	
-		pI.setPredicate("possibly_exist");
+		pI.setPredicate("elements_existence");
 		pI.getParameter().add(createDefaultSignaturesUnionExpression(factory,defaultSignatures));
 		VariableReference vr = factory.createVariableReference();
 		vr.setVariable(exists.getName());

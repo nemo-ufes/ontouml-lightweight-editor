@@ -304,6 +304,7 @@ public class OntoUMLModelStatistic {
 		String typeName;
 		int size;
 		float percentageSupertype;
+		@SuppressWarnings("unused")
 		float percentageAllElements;
 		
 		public TypeDetail(String typeName, int typesize, int supertype, int all) {
