@@ -59,9 +59,9 @@ public class MainMenu implements ActionListener {
 		createDiagramMenu();
 		createViewMenu();		
 		createTransformationMenu();		
-		createHelpMenu();
 		createImportMenu();
 		createExportMenu();
+		createHelpMenu();
 	}
 
 	private void createTransformationMenu()
@@ -111,7 +111,6 @@ public class MainMenu implements ActionListener {
 		
 		createMenuItem(importMenu, "importxmi");		
 		createMenuItem(importMenu, "importecore");
-		importMenu.addSeparator();
 		createMenuItem(importMenu, "importocl");
 	}
 	
@@ -122,7 +121,6 @@ public class MainMenu implements ActionListener {
 		menubar.add(exportMenu);
 		
 		createMenuItem(exportMenu, "exportecore");
-		exportMenu.addSeparator();
 		createMenuItem(exportMenu, "exportocl");		
 	}
 
