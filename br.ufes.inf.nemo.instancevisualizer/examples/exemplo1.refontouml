@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_KQnCoN2UEeKvofhH12blqQ" name="EA_Model" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_KQnpsN2UEeKvofhH12blqQ" name="Integer"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_KQnpsd2UEeKvofhH12blqQ" name="Boolean"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_KQnpst2UEeKvofhH12blqQ" name="String"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_KQnps92UEeKvofhH12blqQ" name="Unlimited Natural"/>
+  <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_KQnptN2UEeKvofhH12blqQ" name="Model" visibility="public">
+    <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_KQnptd2UEeKvofhH12blqQ" name="exemplo" visibility="public">
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQnptt2UEeKvofhH12blqQ" name="Adolescente" visibility="public">
+        <generalization xmi:id="_KQnpt92UEeKvofhH12blqQ" general="_KQoQzN2UEeKvofhH12blqQ" generalizationSet="_KQo37N2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQnpuN2UEeKvofhH12blqQ" name="Adulto" visibility="public">
+        <generalization xmi:id="_KQnpud2UEeKvofhH12blqQ" general="_KQoQxt2UEeKvofhH12blqQ" generalizationSet="_KQo37d2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQnput2UEeKvofhH12blqQ" name="Beb&#xea;" visibility="public">
+        <generalization xmi:id="_KQnpu92UEeKvofhH12blqQ" general="_KQoQzN2UEeKvofhH12blqQ" generalizationSet="_KQo37N2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_KQnpvN2UEeKvofhH12blqQ" name="Calouro" visibility="public">
+        <generalization xmi:id="_KQnpvd2UEeKvofhH12blqQ" general="_KQnpzd2UEeKvofhH12blqQ" generalizationSet="_KQo37t2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQnpvt2UEeKvofhH12blqQ" name="Crian&#xe7;a" visibility="public">
+        <generalization xmi:id="_KQnpv92UEeKvofhH12blqQ" general="_KQoQzN2UEeKvofhH12blqQ" generalizationSet="_KQo37N2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQnpwN2UEeKvofhH12blqQ" name="Doente" visibility="public">
+        <generalization xmi:id="_KQnpwd2UEeKvofhH12blqQ" general="_KQoQ0t2UEeKvofhH12blqQ" generalizationSet="_KQo3792UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQnpwt2UEeKvofhH12blqQ" name="Doente Agudo" visibility="public">
+        <generalization xmi:id="_KQnpw92UEeKvofhH12blqQ" general="_KQnpwN2UEeKvofhH12blqQ" generalizationSet="_KQo38N2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQnpxN2UEeKvofhH12blqQ" name="Doente Cr&#xf4;nico" visibility="public">
+        <generalization xmi:id="_KQnpxd2UEeKvofhH12blqQ" general="_KQnpwN2UEeKvofhH12blqQ" generalizationSet="_KQo38N2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_KQnpxt2UEeKvofhH12blqQ" name="Doen&#xe7;a" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_KQnpx92UEeKvofhH12blqQ" name="Estudante" visibility="public">
+        <generalization xmi:id="_KQnpyN2UEeKvofhH12blqQ" general="_KQoQ3t2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_KQnpyd2UEeKvofhH12blqQ" name="Estudante Universit&#xe1;rio" visibility="public">
+        <generalization xmi:id="_KQnpyt2UEeKvofhH12blqQ" general="_KQnpx92UEeKvofhH12blqQ" generalizationSet="_KQo38d2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_KQnpy92UEeKvofhH12blqQ" name="Estudante de Ensino M&#xe9;dio" visibility="public">
+        <generalization xmi:id="_KQnpzN2UEeKvofhH12blqQ" general="_KQnpx92UEeKvofhH12blqQ" generalizationSet="_KQo38d2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_KQnpzd2UEeKvofhH12blqQ" name="Estudante de Gradua&#xe7;&#xe3;o" visibility="public">
+        <generalization xmi:id="_KQnpzt2UEeKvofhH12blqQ" general="_KQnpyd2UEeKvofhH12blqQ" generalizationSet="_KQo38t2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_KQnpz92UEeKvofhH12blqQ" name="Estudante de P&#xf3;s Gradua&#xe7;&#xe3;o" visibility="public">
+        <generalization xmi:id="_KQnp0N2UEeKvofhH12blqQ" general="_KQnpyd2UEeKvofhH12blqQ" generalizationSet="_KQo38t2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_KQnp0d2UEeKvofhH12blqQ" name="Homem" visibility="public">
+        <generalization xmi:id="_KQnp0t2UEeKvofhH12blqQ" general="_KQoQ0t2UEeKvofhH12blqQ" generalizationSet="_KQo3892UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQnp092UEeKvofhH12blqQ" name="Idoso" visibility="public">
+        <generalization xmi:id="_KQnp1N2UEeKvofhH12blqQ" general="_KQoQxt2UEeKvofhH12blqQ" generalizationSet="_KQo37d2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQnp1d2UEeKvofhH12blqQ" name="Institui&#xe7;&#xe3;o Ativa" visibility="public">
+        <generalization xmi:id="_KQnp1t2UEeKvofhH12blqQ" general="_KQoQwN2UEeKvofhH12blqQ" generalizationSet="_KQo39N2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQnp192UEeKvofhH12blqQ" name="Institui&#xe7;&#xe3;o Inativa" visibility="public">
+        <generalization xmi:id="_KQnp2N2UEeKvofhH12blqQ" general="_KQoQwN2UEeKvofhH12blqQ" generalizationSet="_KQo39N2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_KQnp2d2UEeKvofhH12blqQ" name="Institui&#xe7;&#xe3;o com Aluno" visibility="public">
+        <generalization xmi:id="_KQnp2t2UEeKvofhH12blqQ" general="_KQnp1d2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_KQoQwN2UEeKvofhH12blqQ" name="Institui&#xe7;&#xe3;o de Ensino" visibility="public">
+        <ownedAttribute xmi:id="_KQoQwd2UEeKvofhH12blqQ" name="cnpj" visibility="private" type="_KQnpst2UEeKvofhH12blqQ">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQoQwt2UEeKvofhH12blqQ" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQoQw92UEeKvofhH12blqQ" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQoQxN2UEeKvofhH12blqQ" name="Jovem" visibility="public">
+        <generalization xmi:id="_KQoQxd2UEeKvofhH12blqQ" general="_KQoQxt2UEeKvofhH12blqQ" generalizationSet="_KQo37d2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQoQxt2UEeKvofhH12blqQ" name="Maior" visibility="public">
+        <generalization xmi:id="_KQoQx92UEeKvofhH12blqQ" general="_KQoQ0t2UEeKvofhH12blqQ" generalizationSet="_KQo39d2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_KQoQyN2UEeKvofhH12blqQ" name="Matr&#xed;cula" visibility="public">
+        <ownedAttribute xmi:id="_KQoQyd2UEeKvofhH12blqQ" name="data" visibility="private" type="_KQnpsN2UEeKvofhH12blqQ">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQoQyt2UEeKvofhH12blqQ" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQoQy92UEeKvofhH12blqQ" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQoQzN2UEeKvofhH12blqQ" name="Menor" visibility="public">
+        <generalization xmi:id="_KQoQzd2UEeKvofhH12blqQ" general="_KQoQ0t2UEeKvofhH12blqQ" generalizationSet="_KQo39d2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQoQzt2UEeKvofhH12blqQ" name="Morto" visibility="public">
+        <generalization xmi:id="_KQoQz92UEeKvofhH12blqQ" general="_KQoQ0t2UEeKvofhH12blqQ" generalizationSet="_KQo39t2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_KQoQ0N2UEeKvofhH12blqQ" name="Mulher" visibility="public">
+        <generalization xmi:id="_KQoQ0d2UEeKvofhH12blqQ" general="_KQoQ0t2UEeKvofhH12blqQ" generalizationSet="_KQo3892UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_KQoQ0t2UEeKvofhH12blqQ" name="Pessoa" visibility="public">
+        <ownedAttribute xmi:id="_KQoQ092UEeKvofhH12blqQ" name="idade" visibility="private" type="_KQnpsN2UEeKvofhH12blqQ">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQoQ1N2UEeKvofhH12blqQ" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQoQ1d2UEeKvofhH12blqQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_KQoQ1t2UEeKvofhH12blqQ" name="nome" visibility="private" type="_KQnpst2UEeKvofhH12blqQ">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQoQ192UEeKvofhH12blqQ" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQoQ2N2UEeKvofhH12blqQ" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQoQ2d2UEeKvofhH12blqQ" name="Phase1" visibility="public"/>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQoQ2t2UEeKvofhH12blqQ" name="Saud&#xe1;vel" visibility="public">
+        <generalization xmi:id="_KQoQ292UEeKvofhH12blqQ" general="_KQoQ0t2UEeKvofhH12blqQ" generalizationSet="_KQo3792UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_KQoQ3N2UEeKvofhH12blqQ" name="Veterano" visibility="public">
+        <generalization xmi:id="_KQoQ3d2UEeKvofhH12blqQ" general="_KQnpzd2UEeKvofhH12blqQ" generalizationSet="_KQo37t2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_KQoQ3t2UEeKvofhH12blqQ" name="Vivo" visibility="public">
+        <generalization xmi:id="_KQoQ392UEeKvofhH12blqQ" general="_KQoQ0t2UEeKvofhH12blqQ" generalizationSet="_KQo39t2UEeKvofhH12blqQ"/>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_KQoQ4N2UEeKvofhH12blqQ" visibility="public" memberEnd="_KQoQ4d2UEeKvofhH12blqQ _KQoQ5N2UEeKvofhH12blqQ">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_KQoQ4d2UEeKvofhH12blqQ" visibility="public" type="_KQnpxt2UEeKvofhH12blqQ" association="_KQoQ4N2UEeKvofhH12blqQ">
+          <name xsi:nil="true"/>
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQoQ4t2UEeKvofhH12blqQ" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQoQ492UEeKvofhH12blqQ" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_KQoQ5N2UEeKvofhH12blqQ" visibility="public" type="_KQnpwN2UEeKvofhH12blqQ" isReadOnly="true" association="_KQoQ4N2UEeKvofhH12blqQ">
+          <name xsi:nil="true"/>
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQoQ5d2UEeKvofhH12blqQ" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQoQ5t2UEeKvofhH12blqQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_KQo30N2UEeKvofhH12blqQ" visibility="public" memberEnd="_KQo30d2UEeKvofhH12blqQ _KQo31N2UEeKvofhH12blqQ">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_KQo30d2UEeKvofhH12blqQ" name="matricula" visibility="public" type="_KQoQyN2UEeKvofhH12blqQ" association="_KQo30N2UEeKvofhH12blqQ">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQo30t2UEeKvofhH12blqQ" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQo3092UEeKvofhH12blqQ" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_KQo31N2UEeKvofhH12blqQ" name="estudante" visibility="public" type="_KQnpx92UEeKvofhH12blqQ" isReadOnly="true" association="_KQo30N2UEeKvofhH12blqQ">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQo31d2UEeKvofhH12blqQ" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQo31t2UEeKvofhH12blqQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_KQo3192UEeKvofhH12blqQ" visibility="public" memberEnd="_KQo32N2UEeKvofhH12blqQ _KQo3292UEeKvofhH12blqQ">
+        <name xsi:nil="true"/>
+        <ownedEnd xmi:id="_KQo32N2UEeKvofhH12blqQ" name="matricula" visibility="public" type="_KQoQyN2UEeKvofhH12blqQ" association="_KQo3192UEeKvofhH12blqQ">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQo32d2UEeKvofhH12blqQ" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQo32t2UEeKvofhH12blqQ" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_KQo3292UEeKvofhH12blqQ" name="instituicao" visibility="public" type="_KQnp2d2UEeKvofhH12blqQ" isReadOnly="true" association="_KQo3192UEeKvofhH12blqQ">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQo33N2UEeKvofhH12blqQ" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQo33d2UEeKvofhH12blqQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_KQo33t2UEeKvofhH12blqQ" name="" visibility="public" memberEnd="_KQo3392UEeKvofhH12blqQ _KQo34t2UEeKvofhH12blqQ" isDerived="true">
+        <ownedEnd xmi:id="_KQo3392UEeKvofhH12blqQ" name="instituicao" visibility="public" type="_KQnp2d2UEeKvofhH12blqQ" association="_KQo33t2UEeKvofhH12blqQ">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQo34N2UEeKvofhH12blqQ" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQo34d2UEeKvofhH12blqQ" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_KQo34t2UEeKvofhH12blqQ" name="estudante" visibility="public" type="_KQnpx92UEeKvofhH12blqQ" association="_KQo33t2UEeKvofhH12blqQ">
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQo3492UEeKvofhH12blqQ" value="-1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQo35N2UEeKvofhH12blqQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:Derivation" xmi:id="_KQo35d2UEeKvofhH12blqQ" memberEnd="_KQo35t2UEeKvofhH12blqQ _KQo36d2UEeKvofhH12blqQ">
+        <ownedEnd xmi:id="_KQo35t2UEeKvofhH12blqQ" visibility="public" type="_KQo33t2UEeKvofhH12blqQ" association="_KQo35d2UEeKvofhH12blqQ">
+          <name xsi:nil="true"/>
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQo3592UEeKvofhH12blqQ" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQo36N2UEeKvofhH12blqQ" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_KQo36d2UEeKvofhH12blqQ" visibility="public" type="_KQoQyN2UEeKvofhH12blqQ" isReadOnly="true" association="_KQo35d2UEeKvofhH12blqQ">
+          <name xsi:nil="true"/>
+          <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_KQo36t2UEeKvofhH12blqQ" value="1"/>
+          <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_KQo3692UEeKvofhH12blqQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_KQo37N2UEeKvofhH12blqQ" name="gs1" visibility="public" isCovering="true" isDisjoint="true" generalization="_KQnpt92UEeKvofhH12blqQ _KQnpu92UEeKvofhH12blqQ _KQnpv92UEeKvofhH12blqQ"/>
+      <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_KQo37d2UEeKvofhH12blqQ" name="gs2" visibility="public" isCovering="true" isDisjoint="true" generalization="_KQnpud2UEeKvofhH12blqQ _KQnp1N2UEeKvofhH12blqQ _KQoQxd2UEeKvofhH12blqQ"/>
+      <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_KQo37t2UEeKvofhH12blqQ" name="tempo" visibility="public" isCovering="true" isDisjoint="true" generalization="_KQnpvd2UEeKvofhH12blqQ _KQoQ3d2UEeKvofhH12blqQ"/>
+      <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_KQo3792UEeKvofhH12blqQ" name="saude" visibility="public" isCovering="true" isDisjoint="true" generalization="_KQnpwd2UEeKvofhH12blqQ _KQoQ292UEeKvofhH12blqQ"/>
+      <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_KQo38N2UEeKvofhH12blqQ" name="recorrencia" visibility="public" isCovering="true" generalization="_KQnpw92UEeKvofhH12blqQ _KQnpxd2UEeKvofhH12blqQ"/>
+      <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_KQo38d2UEeKvofhH12blqQ" name="nivel" visibility="public" isCovering="true" isDisjoint="true" generalization="_KQnpyt2UEeKvofhH12blqQ _KQnpzN2UEeKvofhH12blqQ"/>
+      <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_KQo38t2UEeKvofhH12blqQ" name="nivel2" visibility="public" isCovering="true" generalization="_KQnpzt2UEeKvofhH12blqQ _KQnp0N2UEeKvofhH12blqQ"/>
+      <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_KQo3892UEeKvofhH12blqQ" name="sexo" visibility="public" isCovering="true" isDisjoint="true" generalization="_KQnp0t2UEeKvofhH12blqQ _KQoQ0d2UEeKvofhH12blqQ"/>
+      <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_KQo39N2UEeKvofhH12blqQ" name="situacao" visibility="public" isCovering="true" isDisjoint="true" generalization="_KQnp1t2UEeKvofhH12blqQ _KQnp2N2UEeKvofhH12blqQ"/>
+      <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_KQo39d2UEeKvofhH12blqQ" name="idade" visibility="public" isCovering="true" isDisjoint="true" generalization="_KQoQx92UEeKvofhH12blqQ _KQoQzd2UEeKvofhH12blqQ"/>
+      <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_KQo39t2UEeKvofhH12blqQ" name="vida" visibility="public" isCovering="true" isDisjoint="true" generalization="_KQoQz92UEeKvofhH12blqQ _KQoQ392UEeKvofhH12blqQ"/>
+    </packagedElement>
+  </packagedElement>
+  <viewpoint xsi:nil="true"/>
+</RefOntoUML:Model>

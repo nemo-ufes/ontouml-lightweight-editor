@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.common"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/workspace/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.refontouml.edit_1.0.0.201209061023.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/workspace/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-algo-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-algo-1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-core-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-core-1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-ui-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mauricio/oled/br.ufes.inf.nemo.instancevisualizer/lib/gs-ui-1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.refontouml.edit_1.0.0.201209061023.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/lpg.runtime.java_2.0.17.v201004271640.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.core.jobs_3.5.200.v20120521-2346.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.core.runtime_3.8.0.v20120521-2346.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.common_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore.change_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore.edit_2.8.0.v20120608-0554.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.ecore.xmi_2.8.0.v20120606-0717.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.edit_2.8.0.v20120608-0554.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.mapping.ecore2xml_2.7.0.v20120608-0554.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.query_1.2.100.v200903190031.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.emf.query.ocl_2.0.0.v20091215-1624.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl_3.3.0.v20121218-1022.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.common_1.1.0.v20121102-1658.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.ecore_3.2.100.v20121109-1114.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.edit_3.2.100.v20121219-1103.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.ocl.uml_4.0.100.v20121218-1022.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.osgi_3.8.0.v20120529-1548.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.uml2_4.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.uml2.common_1.7.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.uml2.types_1.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.uml2.uml_4.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.uml2.uml.profile.l2_1.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.uml2.uml.profile.l3_1.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/org.eclipse.uml2.uml.resources_4.0.0.v20120604-0919.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/owlapi-bin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

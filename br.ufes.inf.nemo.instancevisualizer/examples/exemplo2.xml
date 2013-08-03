@@ -1,0 +1,665 @@
+<alloy builddate="2012-09-25 15:54 EDT">
+
+<instance bitwidth="7" maxseq="20" command="Run run$1 for 20 but 7 int, 1 World" filename="/private/var/folders/ph/8s67kn7928n94fvl2z0fdtb40000gn/T/oled_tmp/980200/EA_Model.als">
+
+<sig label="seq/Int" ID="0" parentID="1" builtin="yes">
+</sig>
+
+<sig label="Int" ID="1" parentID="2" builtin="yes">
+</sig>
+
+<sig label="String" ID="3" parentID="2" builtin="yes">
+</sig>
+
+<sig label="this/Object" ID="4" parentID="2">
+   <atom label="Object$0"/>
+   <atom label="Object$1"/>
+   <atom label="Object$2"/>
+   <atom label="Object$3"/>
+   <atom label="Object$4"/>
+   <atom label="Object$5"/>
+   <atom label="Object$6"/>
+   <atom label="Object$7"/>
+   <atom label="Object$8"/>
+   <atom label="Object$9"/>
+   <atom label="Object$10"/>
+   <atom label="Object$11"/>
+   <atom label="Object$12"/>
+   <atom label="Object$13"/>
+   <atom label="Object$14"/>
+   <atom label="Object$15"/>
+   <atom label="Object$16"/>
+   <atom label="Object$17"/>
+   <atom label="Object$18"/>
+   <atom label="Object$19"/>
+</sig>
+
+<sig label="this/Property" ID="5" parentID="2">
+   <atom label="Property$0"/>
+   <atom label="Property$1"/>
+   <atom label="Property$2"/>
+   <atom label="Property$3"/>
+   <atom label="Property$4"/>
+   <atom label="Property$5"/>
+   <atom label="Property$6"/>
+   <atom label="Property$7"/>
+   <atom label="Property$8"/>
+   <atom label="Property$9"/>
+   <atom label="Property$10"/>
+   <atom label="Property$11"/>
+   <atom label="Property$12"/>
+   <atom label="Property$13"/>
+   <atom label="Property$14"/>
+   <atom label="Property$15"/>
+   <atom label="Property$16"/>
+   <atom label="Property$17"/>
+   <atom label="Property$18"/>
+</sig>
+
+<sig label="this/DataType" ID="6" parentID="2">
+</sig>
+
+<sig label="this/String_" ID="7" parentID="2">
+   <atom label="String_$0"/>
+   <atom label="String_$1"/>
+   <atom label="String_$2"/>
+   <atom label="String_$3"/>
+   <atom label="String_$4"/>
+   <atom label="String_$5"/>
+   <atom label="String_$6"/>
+   <atom label="String_$7"/>
+   <atom label="String_$8"/>
+   <atom label="String_$9"/>
+   <atom label="String_$10"/>
+   <atom label="String_$11"/>
+   <atom label="String_$12"/>
+   <atom label="String_$13"/>
+   <atom label="String_$14"/>
+   <atom label="String_$15"/>
+   <atom label="String_$16"/>
+   <atom label="String_$17"/>
+   <atom label="String_$18"/>
+   <atom label="String_$19"/>
+</sig>
+
+<sig label="world_structure/CurrentWorld" ID="8" parentID="9" one="yes">
+   <atom label="world_structure/CurrentWorld$0"/>
+</sig>
+
+<sig label="world_structure/PastWorld" ID="10" parentID="9">
+</sig>
+
+<sig label="world_structure/FutureWorld" ID="11" parentID="9">
+</sig>
+
+<sig label="world_structure/CounterfactualWorld" ID="12" parentID="9">
+</sig>
+
+<sig label="world_structure/TemporalWorld" ID="9" parentID="13" abstract="yes" some="yes">
+</sig>
+
+<field label="next" ID="14" parentID="9">
+   <types> <type ID="13"/> <type ID="13"/> </types>
+</field>
+
+<sig label="this/World" ID="13" parentID="2" abstract="yes">
+</sig>
+
+<field label="exists" ID="15" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$0"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$1"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$2"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$3"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$4"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$5"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$6"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$7"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$8"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$9"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$10"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$11"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$12"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$0"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$1"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$2"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$3"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$4"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$5"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$6"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$7"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$8"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$9"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$10"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$11"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$12"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$18"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+   <types> <type ID="13"/> <type ID="5"/> </types>
+</field>
+
+<field label="Pessoa" ID="16" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$0"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="EstudantedeGraduacao" ID="17" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Adolescente" ID="18" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Veterano" ID="19" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Doenca" ID="20" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$18"/> </tuple>
+   <types> <type ID="13"/> <type ID="5"/> </types>
+</field>
+
+<field label="Matricula" ID="21" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$0"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$1"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$2"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$3"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$4"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$5"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$6"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$7"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$8"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$9"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$10"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$11"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$12"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$15"/> </tuple>
+   <types> <type ID="13"/> <type ID="5"/> </types>
+</field>
+
+<field label="InstituicaoAtiva" ID="22" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$2"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$3"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$4"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$5"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$6"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$7"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$8"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$9"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$10"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$11"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$12"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="InstituicaoInativa" ID="23" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$1"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Mulher" ID="24" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$0"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Estudante" ID="25" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Menor" ID="26" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Saudavel" ID="27" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$0"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Jovem" ID="28" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$0"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="InstituicaodeEnsino" ID="29" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$1"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$2"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$3"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$4"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$5"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$6"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$7"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$8"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$9"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$10"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$11"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$12"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Maior" ID="30" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$0"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="EstudantedeEnsinoMedio" ID="31" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="InstituicaocomAluno" ID="32" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$2"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$3"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$4"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$5"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$6"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$7"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$8"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$9"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$10"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$11"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$12"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="EstudantedePosGraduacao" ID="33" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="DoenteCronico" ID="34" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="EstudanteUniversitario" ID="35" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Vivo" ID="36" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Phase1" ID="37" parentID="13">
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Crianca" ID="38" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Homem" ID="39" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Morto" ID="40" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$0"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Calouro" ID="41" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Bebe" ID="42" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Adulto" ID="43" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="DoenteAgudo" ID="44" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Idoso" ID="45" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Doente" ID="46" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> </types>
+</field>
+
+<field label="Mediation" ID="47" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$0"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$1"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$2"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$3"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$4"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$5"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$6"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$7"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$8"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$9"/> <atom label="Object$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$10"/> <atom label="Object$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$11"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$12"/> <atom label="Object$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$13"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$14"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$15"/> <atom label="Object$16"/> </tuple>
+   <types> <type ID="13"/> <type ID="5"/> <type ID="4"/> </types>
+</field>
+
+<field label="Mediation1" ID="48" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$0"/> <atom label="Object$9"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$1"/> <atom label="Object$12"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$2"/> <atom label="Object$11"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$3"/> <atom label="Object$7"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$4"/> <atom label="Object$10"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$5"/> <atom label="Object$5"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$6"/> <atom label="Object$8"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$7"/> <atom label="Object$4"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$8"/> <atom label="Object$11"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$9"/> <atom label="Object$12"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$10"/> <atom label="Object$2"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$11"/> <atom label="Object$3"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$12"/> <atom label="Object$6"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$13"/> <atom label="Object$10"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$14"/> <atom label="Object$9"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$15"/> <atom label="Object$7"/> </tuple>
+   <types> <type ID="13"/> <type ID="5"/> <type ID="4"/> </types>
+</field>
+
+<field label="Characterization" ID="49" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$16"/> <atom label="Object$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$17"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$18"/> <atom label="Object$15"/> </tuple>
+   <types> <type ID="13"/> <type ID="5"/> <type ID="4"/> </types>
+</field>
+
+<field label="MaterialAssociation" ID="50" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$2"/> <atom label="Object$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$3"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$4"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$5"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$6"/> <atom label="Object$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$7"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$7"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$8"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$9"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$9"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$10"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$10"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$11"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$11"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$12"/> <atom label="Object$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$12"/> <atom label="Object$18"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> <type ID="4"/> </types>
+</field>
+
+<field label="data" ID="51" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$0"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$1"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$2"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$3"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$4"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$5"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$6"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$7"/> <atom label="58"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$8"/> <atom label="42"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$9"/> <atom label="59"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$10"/> <atom label="61"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$11"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$12"/> <atom label="61"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$13"/> <atom label="52"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$14"/> <atom label="62"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$15"/> <atom label="63"/> </tuple>
+   <types> <type ID="13"/> <type ID="5"/> <type ID="1"/> </types>
+</field>
+
+<field label="cnpj" ID="52" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$1"/> <atom label="String_$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$2"/> <atom label="String_$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$3"/> <atom label="String_$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$4"/> <atom label="String_$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$5"/> <atom label="String_$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$6"/> <atom label="String_$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$7"/> <atom label="String_$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$8"/> <atom label="String_$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$9"/> <atom label="String_$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$10"/> <atom label="String_$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$11"/> <atom label="String_$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$12"/> <atom label="String_$13"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> <type ID="7"/> </types>
+</field>
+
+<field label="nome" ID="53" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$0"/> <atom label="String_$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> <atom label="String_$8"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> <atom label="String_$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> <atom label="String_$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> <atom label="String_$6"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> <atom label="String_$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> <atom label="String_$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> <atom label="String_$19"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> <type ID="7"/> </types>
+</field>
+
+<field label="idade" ID="54" parentID="13">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$0"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> <atom label="61"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> <atom label="63"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> <atom label="63"/> </tuple>
+   <types> <type ID="13"/> <type ID="4"/> <type ID="1"/> </types>
+</field>
+
+<sig label="boolean/True" ID="55" parentID="56" one="yes">
+   <atom label="boolean/True$0"/>
+</sig>
+
+<sig label="boolean/False" ID="57" parentID="56" one="yes">
+   <atom label="boolean/False$0"/>
+</sig>
+
+<sig label="boolean/Bool" ID="56" parentID="2" abstract="yes">
+</sig>
+
+<sig label="univ" ID="2" builtin="yes">
+</sig>
+
+<skolem label="$all_elements_exists_w" ID="58">
+   <tuple> <atom label="Object$0"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$1"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$2"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$3"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$4"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$5"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$6"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$7"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$8"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$9"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$10"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$11"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$12"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$13"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$14"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$15"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$16"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$17"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$18"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Object$19"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$0"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$1"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$2"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$3"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$4"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$5"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$6"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$7"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$8"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$9"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$10"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$11"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$12"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$13"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$14"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$15"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$16"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$17"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <tuple> <atom label="Property$18"/> <atom label="world_structure/CurrentWorld$0"/> </tuple>
+   <types> <type ID="2"/> <type ID="13"/> </types>
+</skolem>
+
+<skolem label="$this/visible" ID="m0">
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$0"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$1"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$2"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$3"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$4"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$5"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$6"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$7"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$8"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$9"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$10"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$11"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$12"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Object$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$0"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$1"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$2"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$3"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$4"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$5"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$6"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$7"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$8"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$9"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$10"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$11"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$12"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="Property$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="String_$6"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="String_$8"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="String_$13"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="String_$14"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="String_$15"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="String_$16"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="String_$17"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="String_$18"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="String_$19"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="42"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="52"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="58"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="59"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="61"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="62"/> </tuple>
+   <tuple> <atom label="world_structure/CurrentWorld$0"/> <atom label="63"/> </tuple>
+   <types> <type ID="13"/> <type ID="2"/> </types>
+</skolem>
+
+</instance>
+
+<source filename="/private/var/folders/ph/8s67kn7928n94fvl2z0fdtb40000gn/T/oled_tmp/980200/EA_Model.als" content="module EA_Model&#x000a;&#x000a;open world_structure[World]&#x000a;open ontological_properties[World]&#x000a;open util/relation&#x000a;open util/boolean&#x000a;open util/ternary&#x000a;&#x000a;sig Object {}&#x000a;&#x000a;sig Property {}&#x000a;&#x000a;sig DataType {}&#x000a;&#x000a;sig String_ {}&#x000a;&#x000a;abstract sig World {&#x000a;&#x0009;exists: some Object+Property,&#x000a;&#x0009;Pessoa: set exists:&gt;Object,&#x000a;&#x0009;EstudantedeGraduacao: set exists:&gt;Object,&#x000a;&#x0009;Adolescente: set exists:&gt;Object,&#x000a;&#x0009;Veterano: set exists:&gt;Object,&#x000a;&#x0009;Doenca: set exists:&gt;Property,&#x000a;&#x0009;Matricula: set exists:&gt;Property,&#x000a;&#x0009;InstituicaoAtiva: set exists:&gt;Object,&#x000a;&#x0009;InstituicaoInativa: set exists:&gt;Object,&#x000a;&#x0009;Mulher: set exists:&gt;Object,&#x000a;&#x0009;Estudante: set exists:&gt;Object,&#x000a;&#x0009;Menor: set exists:&gt;Object,&#x000a;&#x0009;Saudavel: set exists:&gt;Object,&#x000a;&#x0009;Jovem: set exists:&gt;Object,&#x000a;&#x0009;InstituicaodeEnsino: set exists:&gt;Object,&#x000a;&#x0009;Maior: set exists:&gt;Object,&#x000a;&#x0009;EstudantedeEnsinoMedio: set exists:&gt;Object,&#x000a;&#x0009;InstituicaocomAluno: set exists:&gt;Object,&#x000a;&#x0009;EstudantedePosGraduacao: set exists:&gt;Object,&#x000a;&#x0009;DoenteCronico: set exists:&gt;Object,&#x000a;&#x0009;EstudanteUniversitario: set exists:&gt;Object,&#x000a;&#x0009;Vivo: set exists:&gt;Object,&#x000a;&#x0009;Phase1: set exists:&gt;Object,&#x000a;&#x0009;Crianca: set exists:&gt;Object,&#x000a;&#x0009;Homem: set exists:&gt;Object,&#x000a;&#x0009;Morto: set exists:&gt;Object,&#x000a;&#x0009;Calouro: set exists:&gt;Object,&#x000a;&#x0009;Bebe: set exists:&gt;Object,&#x000a;&#x0009;Adulto: set exists:&gt;Object,&#x000a;&#x0009;DoenteAgudo: set exists:&gt;Object,&#x000a;&#x0009;Idoso: set exists:&gt;Object,&#x000a;&#x0009;Doente: set exists:&gt;Object,&#x000a;&#x0009;Mediation: set Matricula some -&gt; one Estudante,&#x000a;&#x0009;Mediation1: set Matricula some -&gt; one InstituicaocomAluno,&#x000a;&#x0009;Characterization: set Doenca some -&gt; one Doente,&#x000a;&#x0009;MaterialAssociation: set InstituicaocomAluno some -&gt; some Estudante,&#x000a;&#x0009;data: set Matricula set -&gt; one Int,&#x000a;&#x0009;cnpj: set InstituicaodeEnsino set -&gt; one String_,&#x000a;&#x0009;nome: set Pessoa set -&gt; one String_,&#x000a;&#x0009;idade: set Pessoa set -&gt; one Int&#x000a;}{&#x000a;&#x0009;disj[Pessoa,InstituicaodeEnsino+Phase1]&#x000a;&#x0009;disj[InstituicaodeEnsino,Pessoa+Phase1]&#x000a;&#x0009;disj[Phase1,InstituicaodeEnsino+Pessoa]&#x000a;&#x0009;disj[Matricula,Doenca]&#x000a;&#x0009;disj[Doenca,Matricula]&#x000a;&#x0009;exists:&gt;Object in Pessoa+InstituicaodeEnsino&#x000a;&#x0009;disj[Pessoa,InstituicaodeEnsino]&#x000a;&#x0009;exists:&gt;Property in Doenca+Matricula&#x000a;}&#x000a;&#x000a;fact additionalFacts {&#x000a;&#x0009;linear_existence[exists]&#x000a;&#x0009;all_elements_exists[Object+Property,exists]&#x000a;}&#x000a;&#x000a;fact rigidity {&#x000a;&#x0009;rigidity[InstituicaodeEnsino,Object,exists]&#x000a;}&#x000a;&#x000a;fact rigidity {&#x000a;&#x0009;rigidity[Matricula,Property,exists]&#x000a;}&#x000a;&#x000a;fact rigidity {&#x000a;&#x0009;rigidity[Pessoa,Object,exists]&#x000a;}&#x000a;&#x000a;fact rigidity {&#x000a;&#x0009;rigidity[Homem,Object,exists]&#x000a;}&#x000a;&#x000a;fact rigidity {&#x000a;&#x0009;rigidity[Mulher,Object,exists]&#x000a;}&#x000a;&#x000a;fact rigidity {&#x000a;&#x0009;rigidity[Doenca,Property,exists]&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Morto in Pessoa&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Adolescente in Menor&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Bebe in Menor&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Doente in Pessoa&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Veterano in EstudantedeGraduacao&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;InstituicaoInativa in InstituicaodeEnsino&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Estudante in Vivo&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;InstituicaocomAluno in InstituicaoAtiva&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Mulher in Pessoa&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;InstituicaoAtiva in InstituicaodeEnsino&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Jovem in Maior&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Crianca in Menor&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;EstudantedePosGraduacao in EstudanteUniversitario&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Saudavel in Pessoa&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;DoenteAgudo in Doente&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Adulto in Maior&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Menor in Pessoa&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;EstudanteUniversitario in Estudante&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;EstudantedeEnsinoMedio in Estudante&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Vivo in Pessoa&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Idoso in Maior&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Calouro in EstudantedeGraduacao&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;EstudantedeGraduacao in EstudanteUniversitario&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;DoenteCronico in Doente&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Homem in Pessoa&#x000a;}&#x000a;&#x000a;fact generalization {&#x000a;&#x0009;Maior in Pessoa&#x000a;}&#x000a;&#x000a;fact generalizationSet {&#x000a;&#x0009;Maior = Adulto+Jovem+Idoso&#x000a;&#x0009;disj[Adulto,Idoso,Jovem]&#x000a;}&#x000a;&#x000a;fact generalizationSet {&#x000a;&#x0009;Doente = DoenteAgudo+DoenteCronico&#x000a;}&#x000a;&#x000a;fact generalizationSet {&#x000a;&#x0009;InstituicaodeEnsino = InstituicaoAtiva+InstituicaoInativa&#x000a;&#x0009;disj[InstituicaoAtiva,InstituicaoInativa]&#x000a;}&#x000a;&#x000a;fact generalizationSet {&#x000a;&#x0009;Pessoa = Doente+Saudavel&#x000a;&#x0009;disj[Doente,Saudavel]&#x000a;}&#x000a;&#x000a;fact generalizationSet {&#x000a;&#x0009;Pessoa = Mulher+Homem&#x000a;&#x0009;disj[Homem,Mulher]&#x000a;}&#x000a;&#x000a;fact generalizationSet {&#x000a;&#x0009;Pessoa = Morto+Vivo&#x000a;&#x0009;disj[Morto,Vivo]&#x000a;}&#x000a;&#x000a;fact generalizationSet {&#x000a;&#x0009;Menor = Bebe+Adolescente+Crianca&#x000a;&#x0009;disj[Adolescente,Bebe,Crianca]&#x000a;}&#x000a;&#x000a;fact generalizationSet {&#x000a;&#x0009;Pessoa = Menor+Maior&#x000a;&#x0009;disj[Maior,Menor]&#x000a;}&#x000a;&#x000a;fact generalizationSet {&#x000a;&#x0009;EstudanteUniversitario = EstudantedeGraduacao+EstudantedePosGraduacao&#x000a;}&#x000a;&#x000a;fact generalizationSet {&#x000a;&#x0009;EstudantedeGraduacao = Calouro+Veterano&#x000a;&#x0009;disj[Calouro,Veterano]&#x000a;}&#x000a;&#x000a;fact generalizationSet {&#x000a;&#x0009;Estudante = EstudanteUniversitario+EstudantedeEnsinoMedio&#x000a;&#x0009;disj[EstudanteUniversitario,EstudantedeEnsinoMedio]&#x000a;}&#x000a;&#x000a;fun visible : World some -&gt; some univ {&#x000a;&#x0009;exists+select13[data]+select13[cnpj]+select13[nome]+select13[idade]&#x000a;}&#x000a;&#x000a;fun matricula [x: World.Estudante,w: World] : set World.Matricula {&#x000a;&#x0009;(w.Mediation).x&#x000a;}&#x000a;&#x000a;fun estudante [x: World.Matricula,w: World] : set World.Estudante {&#x000a;&#x0009;x.(w.Mediation)&#x000a;}&#x000a;&#x000a;fun matricula1 [x: World.InstituicaocomAluno,w: World] : set World.Matricula {&#x000a;&#x0009;(w.Mediation1).x&#x000a;}&#x000a;&#x000a;fun instituicao [x: World.Matricula,w: World] : set World.InstituicaocomAluno {&#x000a;&#x0009;x.(w.Mediation1)&#x000a;}&#x000a;&#x000a;fact derivations {&#x000a;&#x0009;derivation[MaterialAssociation,Mediation,Mediation1]&#x000a;}&#x000a;&#x000a;fun instituicao1 [x: World.Estudante,w: World] : set World.InstituicaocomAluno {&#x000a;&#x0009;(w.MaterialAssociation).x&#x000a;}&#x000a;&#x000a;fun estudante1 [x: World.InstituicaocomAluno,w: World] : set World.Estudante {&#x000a;&#x0009;x.(w.MaterialAssociation)&#x000a;}&#x000a;&#x000a;fact relatorConstraint {&#x000a;&#x0009;all w: World | all x: w.Matricula | # (x.(w.Mediation1)+x.(w.Mediation)) &gt;= 2&#x000a;}&#x000a;&#x000a;fact associationProperties {&#x000a;&#x0009;immutable_target[Matricula,Mediation]&#x000a;&#x0009;immutable_target[Matricula,Mediation1]&#x000a;&#x0009;immutable_target[Doenca,Characterization]&#x000a;}&#x000a;&#x000a;run { &#x000a;&#x0009;#Pessoa&gt;0&#x000a;&#x0009;#EstudantedeGraduacao&gt;0&#x000a;&#x0009;#Adolescente&gt;0&#x000a;&#x0009;#Veterano&gt;0&#x000a;&#x0009;#Doenca&gt;0&#x000a;&#x0009;#Matricula&gt;0&#x000a;&#x0009;#InstituicaoAtiva&gt;0&#x000a;&#x0009;#InstituicaoInativa&gt;0&#x000a;&#x0009;#Mulher&gt;0&#x000a;&#x0009;#Estudante&gt;6&#x000a;&#x0009;#Menor&gt;0&#x000a;&#x0009;#Saudavel&gt;0&#x000a;&#x0009;#Jovem&gt;0&#x000a;&#x0009;#InstituicaodeEnsino&gt;0&#x000a;&#x0009;#Maior&gt;0&#x000a;&#x0009;#EstudantedeEnsinoMedio&gt;0&#x000a;&#x0009;#InstituicaocomAluno&gt;3&#x000a;&#x0009;#EstudantedePosGraduacao&gt;0&#x000a;&#x0009;#DoenteCronico&gt;0&#x000a;&#x0009;#EstudanteUniversitario&gt;0&#x000a;&#x0009;#Vivo&gt;0&#x000a;&#x0009;#Crianca&gt;0&#x000a;&#x0009;#Homem&gt;0&#x000a;&#x0009;#Morto&gt;0&#x000a;&#x0009;#Calouro&gt;0&#x000a;&#x0009;#Bebe&gt;0&#x000a;&#x0009;#Adulto&gt;0&#x000a;&#x0009;#DoenteAgudo&gt;0&#x000a;&#x0009;#Idoso&gt;0&#x000a;&#x0009;#Doente&gt;2&#x000a;&#x000a;&#x000a;&#x000a;} for 20 but 1 World, 7 int&#x000a;&#x000a;fact inv_null {&#x000a;&#x0009;all w: World | all self: w.Estudante | (all disj temp1,temp1&apos;: self.matricula[w] | temp1.instituicao[w] != temp1&apos;.instituicao[w])&#x000a;}&#x000a;&#x000a;&#x000a;"/>
+
+<source filename="/$alloy4$/models/util/integer.als" content="module util/integer&#x000a;&#x000a;/*&#x000a; * A collection of utility functions for using Integers in Alloy.&#x000a; * Note that integer overflows are silently truncated to the current bitwidth&#x000a; * using the 2&apos;s complement arithmetic, unless the &quot;forbid overfows&quot; option is&#x000a; * turned on, in which case only models that don&apos;t have any overflows are &#x000a; * analyzed. &#x000a; */&#x000a;&#x000a;fun add  [n1, n2: Int] : Int { this/plus[n1, n2] }&#x000a;fun plus [n1, n2: Int] : Int { n1 fun/add n2 }&#x000a;&#x000a;fun sub   [n1, n2: Int] : Int { this/minus[n1, n2] }&#x000a;fun minus [n1, n2: Int] : Int { n1 fun/sub n2 }&#x000a;&#x000a;fun mul [n1, n2: Int] : Int { n1 fun/mul n2 }&#x000a;&#x000a;/**&#x000a; * Performs the division with &quot;round to zero&quot; semantics, except the following 3 cases&#x000a; * 1) if a is 0, then it returns 0&#x000a; * 2) else if b is 0, then it returns 1 if a is negative and -1 if a is positive&#x000a; * 3) else if a is the smallest negative integer, and b is -1, then it returns a&#x000a; */&#x000a;fun div [n1, n2: Int] : Int { n1 fun/div n2 }&#x000a;&#x000a;/** answer is defined to be the unique integer that satisfies &quot;a = ((a/b)*b) + remainder&quot; */&#x000a;fun rem [n1, n2: Int] : Int { n1 fun/rem n2 }&#x000a;&#x000a;/** negate */&#x000a;fun negate [n: Int] : Int { 0 fun/sub n }&#x000a;&#x000a;/** equal to */&#x000a;pred eq [n1, n2: Int] { int[n1] = int[n2] }&#x000a;&#x000a;/** greater than */&#x000a;pred gt [n1, n2: Int] { n1 &gt; n2 }&#x000a;&#x000a;/** less then */&#x000a;pred lt [n1, n2: Int] { n1 &lt; n2 }&#x000a;&#x000a;/** greater than or equal */&#x000a;pred gte [n1, n2: Int] { n1 &gt;= n2 }&#x000a;&#x000a;/** less than or equal */&#x000a;pred lte [n1, n2: Int] { n1 &lt;= n2 }&#x000a;&#x000a;/** integer is zero */&#x000a;pred zero [n: Int] { n = 0 }&#x000a;&#x000a;/** positive */&#x000a;pred pos  [n: Int] { n &gt; 0 }&#x000a;&#x000a;/** negative */&#x000a;pred neg  [n: Int] { n &lt; 0 }&#x000a;&#x000a;/** non-positive */&#x000a;pred nonpos [n: Int] { n &lt;= 0 }&#x000a;&#x000a;/** non-negative */&#x000a;pred nonneg [n: Int] { n &gt;= 0 }&#x000a;&#x000a;/** signum (aka sign or sgn) */&#x000a;fun signum [n: Int] : Int { n&lt;0 =&gt; (0 fun/sub 1) else (n&gt;0 =&gt; 1 else 0) }&#x000a;&#x000a;/**&#x000a; * returns the ith element (zero-based) from the set s&#x000a; * in the ordering of &apos;next&apos;, which is a linear ordering&#x000a; * relation like that provided by util/ordering&#x000a; */&#x000a;fun int2elem[i: Int, next: univ-&gt;univ, s: set univ] : lone s {&#x000a;  {e: s | #^next.e = int i }&#x000a;}&#x000a;&#x000a;/**&#x000a; * returns the index of the element (zero-based) in the&#x000a; * ordering of next, which is a linear ordering relation&#x000a; * like that provided by util/ordering&#x000a; */&#x000a;fun elem2int[e: univ, next: univ-&gt;univ] : lone Int {&#x000a;  Int[#^next.e]&#x000a;}&#x000a;&#x000a;/** returns the largest integer in the current bitwidth */&#x000a;fun max:one Int { fun/max }&#x000a;&#x000a;/** returns the smallest integer in the current bitwidth */&#x000a;fun min:one Int { fun/min }&#x000a;&#x000a;/** maps each integer (except max) to the integer after it */&#x000a;fun next:Int-&gt;Int { fun/next }&#x000a;&#x000a;/** maps each integer (except min) to the integer before it */&#x000a;fun prev:Int-&gt;Int { ~next }&#x000a;&#x000a;/** given a set of integers, return the largest element */&#x000a;fun max [es: set Int]: lone Int { es - es.^prev }&#x000a;&#x000a;/** given a set of integers, return the smallest element */&#x000a;fun min [es: set Int]: lone Int { es - es.^next }&#x000a;&#x000a;/** given an integer, return all integers prior to it */&#x000a;fun prevs [e: Int]: set Int { e.^prev }&#x000a;&#x000a;/** given an integer, return all integers following it */&#x000a;fun nexts [e: Int]: set Int { e.^next }&#x000a;&#x000a;/** returns the larger of the two integers */&#x000a;fun larger [e1, e2: Int]: Int { let a=int[e1], b=int[e2] | (a&lt;b =&gt; b else a) }&#x000a;&#x000a;/** returns the smaller of the two integers */&#x000a;fun smaller [e1, e2: Int]: Int { let a=int[e1], b=int[e2] | (a&lt;b =&gt; a else b) }&#x000a;"/>
+
+<source filename="/private/var/folders/ph/8s67kn7928n94fvl2z0fdtb40000gn/T/oled_tmp/980200/world_structure.als" content="module world_structure[World]&#x000a;&#x000a;some abstract sig TemporalWorld extends World{&#x000a;&#x0009;next: set TemporalWorld -- Immediate next moments.&#x000a;}{&#x000a;&#x0009;this not in this.^(@next) -- There are no temporal cicles.&#x000a;&#x0009;lone ((@next).this) -- A world can be the immediate next momment of at maximum one world.&#x000a;}&#x000a;&#x000a;one sig CurrentWorld extends TemporalWorld {} {&#x000a;&#x0009;next in FutureWorld&#x000a;}&#x000a;&#x000a;sig PastWorld extends TemporalWorld {} {&#x000a;&#x0009;next in (PastWorld + CounterfactualWorld + CurrentWorld)&#x000a;&#x0009;CurrentWorld in this.^@next -- All past worlds can reach the current moment.&#x000a;}&#x000a;sig FutureWorld extends TemporalWorld {} {&#x000a;&#x0009;next in FutureWorld&#x000a;&#x0009;this in CurrentWorld.^@next -- All future worlds can be reached by the current moment.&#x000a;}&#x000a;&#x000a;sig CounterfactualWorld extends TemporalWorld {} {&#x000a;&#x0009;next in CounterfactualWorld&#x000a;&#x0009;this in PastWorld.^@next -- All past worlds can reach the counterfactual moment.&#x000a;}&#x000a;&#x000a;/*Objects can&apos;t die and come to life later*/&#x000a;pred linear_existence [exists: World-&gt;univ] {&#x000a;&#x0009;all w : World, x: (@next.w).exists | (x not in w.exists) =&gt; (x not in (( w. ^next).exists))&#x000a;}&#x000a;&#x000a;assert non_local_accessibility {&#x000a;&#x0009;no w: TemporalWorld | w in w.next&#x000a;}&#x000a;&#x000a;assert no_temporal_cicles {&#x000a;&#x0009;no w: TemporalWorld | w in w.^next&#x000a;}&#x000a;&#x000a;assert no_joining_histories {&#x000a;&#x0009;all w: TemporalWorld | #(next.w) &lt;= 1&#x000a;}&#x000a;&#x000a;assert every_world_reach_the_current_world {&#x000a;&#x0009;all w: TemporalWorld | CurrentWorld in w.^(next + ~next)&#x000a;}&#x000a;&#x000a;assert future_worlds_cannot_reach_the_current_world_by_the_future{&#x000a;&#x0009;no w: FutureWorld | CurrentWorld in w.^next&#x000a;}&#x000a;&#x000a;check non_local_accessibility for 10&#x000a;check no_temporal_cicles for 10&#x000a;check no_joining_histories for 10&#x000a;check every_world_reach_the_current_world for 10&#x000a;check future_worlds_cannot_reach_the_current_world_by_the_future for 10&#x000a;"/>
+
+<source filename="/private/var/folders/ph/8s67kn7928n94fvl2z0fdtb40000gn/T/oled_tmp/980200/ontological_properties.als" content="module ontological_properties[World]&#x000a;&#x000a;/*run this predicate to verify if there the class is actually anti-rigid. Parametrized the predicate with the class name.*/&#x000a;pred antirigidity[class:set univ -&gt; univ, class_type: univ, exists:univ-&gt;univ] {&#x000a;&#x0009;some x:class_type, disj w1,w2:World | x in w1.exists and x in w1.class and x in w2.exists and x not in w2.class&#x000a;}&#x000a;&#x000a;/*this predicate states that a class is rigid.*/&#x000a;pred rigidity[class: univ-&gt;univ,  class_type: univ, exists:univ-&gt;univ] {&#x000a;&#x0009;all w1:World,  p:univ | p in w1.exists and p in w1.class implies all w2:World | w1!=w2 and p in w2.exists implies p in w2.class&#x000a;}&#x000a;&#x000a;/*Predicate that states that all elements must exists in at least one world*/&#x000a;pred all_elements_exists [elements:univ, exists: World-&gt;univ]{&#x000a;&#x0009;all x: elements | some w: World | x in w.exists&#x000a;}&#x000a;&#x000a;/*classes that must exist in all worlds*/&#x000a;pred always_exists[class_type: set univ, exists: World-&gt;univ] {&#x000a;&#x0009;all w:World, x:class_type | x in w.exists&#x000a;}&#x000a;&#x000a;/*predicate to make the target association end is readOnly*/&#x000a;pred immutable_target [source_class:World-&gt;univ, assoc: univ-&gt;univ-&gt;univ]{&#x000a;&#x0009;all w1:World, x:univ |x in w1.source_class implies all w2:World | x in w2.source_class implies  x.(w1.assoc) = x.(w2.assoc)&#x000a;}&#x000a;&#x000a;/*predicate to make the target association end is readOnly*/&#x000a;pred immutable_source [target_class:World-&gt;univ, assoc: univ-&gt;univ-&gt;univ]{&#x000a;&#x0009;all w1:World, x:univ |x in w1.target_class implies all w2:World | x in w2.target_class implies (w1.assoc).x = (w2.assoc).x&#x000a;}&#x000a;&#x000a;/*states that the material relation is derived from the relator*/&#x000a;pred derivation [material: World-&gt;univ-&gt;univ, mediation1: World-&gt;univ-&gt;univ, mediation2: World-&gt;univ-&gt;univ] {&#x000a;&#x0009;all w:World | (w.material) = (~(w.mediation1)).(w.mediation2) or (w.material) = (~(w.mediation2)).(w.mediation1)&#x000a;}&#x000a;&#x000a;"/>
+
+<source filename="/$alloy4$/models/util/relation.als" content="module util/relation&#x000a;&#x000a;/*&#x000a; * Utilities for some common operations and constraints&#x000a; * on binary relations. The keyword &apos;univ&apos; represents the&#x000a; * top-level type, which all other types implicitly extend.&#x000a; * Therefore, all the functions and predicates in this model&#x000a; * may be applied to binary relations of any type.&#x000a; *&#x000a; * author: Greg Dennis&#x000a; */&#x000a;&#x000a;/** returns the domain of a binary relation */&#x000a;fun dom [r: univ-&gt;univ] : set (r.univ) { r.univ }&#x000a;&#x000a;/** returns the range of a binary relation */&#x000a;fun ran [r: univ-&gt;univ] : set (univ.r) { univ.r }&#x000a;&#x000a;/** r is total over the domain s */&#x000a;pred total [r: univ-&gt;univ, s: set univ] {&#x000a;  all x: s | some x.r&#x000a;}&#x000a;&#x000a;/** r is a partial function over the domain s */&#x000a;pred functional [r: univ-&gt;univ, s: set univ] {&#x000a;  all x: s | lone x.r&#x000a;}&#x000a;&#x000a;/** r is a total function over the domain s */&#x000a;pred function [r: univ-&gt;univ, s: set univ] {&#x000a;  all x: s | one x.r&#x000a;}&#x000a;&#x000a;/** r is surjective over the codomain s */&#x000a;pred surjective [r: univ-&gt;univ, s: set univ] {&#x000a;  all x: s | some r.x&#x000a;}&#x000a;&#x000a;/** r is injective */&#x000a;pred injective [r: univ-&gt;univ, s: set univ] {&#x000a;  all x: s | lone r.x&#x000a;}&#x000a;&#x000a;/** r is bijective over the codomain s */&#x000a;pred bijective[r: univ-&gt;univ, s: set univ] {&#x000a;  all x: s | one r.x&#x000a;}&#x000a;&#x000a;/** r is a bijection over the domain d and the codomain c */&#x000a;pred bijection[r: univ-&gt;univ, d, c: set univ] {&#x000a;  function[r, d] &amp;&amp; bijective[r, c]&#x000a;}&#x000a;&#x000a;/** r is reflexive over the set s */&#x000a;pred reflexive [r: univ -&gt; univ, s: set univ] {s&lt;:iden in r}&#x000a;&#x000a;/** r is irreflexive */&#x000a;pred irreflexive [r: univ -&gt; univ] {no iden &amp; r}&#x000a;&#x000a;/** r is symmetric */&#x000a;pred symmetric [r: univ -&gt; univ] {~r in r}&#x000a;&#x000a;/** r is anti-symmetric */&#x000a;pred antisymmetric [r: univ -&gt; univ] {~r &amp; r in iden}&#x000a;&#x000a;/** r is transitive */&#x000a;pred transitive [r: univ -&gt; univ] {r.r in r}&#x000a;&#x000a;/** r is acyclic over the set s */&#x000a;pred acyclic[r: univ-&gt;univ, s: set univ] {&#x000a;  all x: s | x !in x.^r&#x000a;}&#x000a;&#x000a;/** r is complete over the set s */&#x000a;pred complete[r: univ-&gt;univ, s: univ] {&#x000a;  all x,y:s | (x!=y =&gt; x-&gt;y in (r + ~r))&#x000a;}&#x000a;&#x000a;/** r is a preorder (or a quasi-order) over the set s */&#x000a;pred preorder [r: univ -&gt; univ, s: set univ] {&#x000a;  reflexive[r, s]&#x000a;  transitive[r]&#x000a;}&#x000a;&#x000a;/** r is an equivalence relation over the set s */&#x000a;pred equivalence [r: univ-&gt;univ, s: set univ] {&#x000a;  preorder[r, s]&#x000a;  symmetric[r]&#x000a;}&#x000a;&#x000a;/** r is a partial order over the set s */&#x000a;pred partialOrder [r: univ -&gt; univ, s: set univ] {&#x000a;  preorder[r, s]&#x000a;  antisymmetric[r]&#x000a;}&#x000a;&#x000a;/** r is a total order over the set s */&#x000a;pred totalOrder [r: univ -&gt; univ, s: set univ] {&#x000a;  partialOrder[r, s]&#x000a;  complete[r, s]&#x000a;}&#x000a;"/>
+
+<source filename="/$alloy4$/models/util/boolean.als" content="module util/boolean&#x000a;&#x000a;/*&#x000a; * Creates a Bool type with two singleton subtypes: True&#x000a; * and False. Provides common boolean operations.&#x000a; *&#x000a; * author: Greg Dennis&#x000a; */&#x000a;&#x000a;abstract sig Bool {}&#x000a;one sig True, False extends Bool {}&#x000a;&#x000a;pred isTrue[b: Bool] { b in True }&#x000a;&#x000a;pred isFalse[b: Bool] { b in False }&#x000a;&#x000a;fun Not[b: Bool] : Bool {&#x000a;  Bool - b&#x000a;}&#x000a;&#x000a;fun And[b1, b2: Bool] : Bool {&#x000a;  subset_[b1 + b2, True]&#x000a;}&#x000a;&#x000a;fun Or[b1, b2: Bool] : Bool {&#x000a;  subset_[True, b1 + b2]&#x000a;}&#x000a;&#x000a;fun Xor[b1, b2: Bool] : Bool {&#x000a;  subset_[Bool, b1 + b2]&#x000a;}&#x000a;&#x000a;fun Nand[b1, b2: Bool] : Bool {&#x000a;  subset_[False, b1 + b2]&#x000a;}&#x000a;&#x000a;fun Nor[b1, b2: Bool] : Bool {&#x000a;  subset_[b1 + b2, False]&#x000a;}&#x000a;&#x000a;fun subset_[s1, s2: set Bool] : Bool {&#x000a;  (s1 in s2) =&gt; True else False&#x000a;}&#x000a;"/>
+
+<source filename="/$alloy4$/models/util/ternary.als" content="module util/ternary&#x000a;&#x000a;/*&#x000a; * Utilities for some common operations and constraints&#x000a; * on ternary relations. The keyword &apos;univ&apos; represents the&#x000a; * top-level type, which all other types implicitly extend.&#x000a; * Therefore, all the functions and predicates in this model&#x000a; * may be applied to ternary relations of any type.&#x000a; *&#x000a; * author: Greg Dennis&#x000a; */&#x000a;&#x000a;/** returns the domain of a ternary relation */&#x000a;fun dom [r: univ-&gt;univ-&gt;univ] : set ((r.univ).univ) { (r.univ).univ }&#x000a;&#x000a;/** returns the range of a ternary relation */&#x000a;fun ran [r: univ-&gt;univ-&gt;univ] : set (univ.(univ.r)) { univ.(univ.r) }&#x000a;&#x000a;/** returns the &quot;middle range&quot; of a ternary relation */&#x000a;fun mid [r: univ-&gt;univ-&gt;univ] : set (univ.(r.univ)) { univ.(r.univ) }&#x000a;&#x000a;/** returns the first two columns of a ternary relation */&#x000a;fun select12 [r: univ-&gt;univ-&gt;univ] : r.univ {&#x000a;  r.univ&#x000a;}&#x000a;&#x000a;/** returns the first and last columns of a ternary relation */&#x000a;fun select13 [r: univ-&gt;univ-&gt;univ] : ((r.univ).univ) -&gt; (univ.(univ.r)) {&#x000a;  {x: (r.univ).univ, z: univ.(univ.r) | some (x.r).z}&#x000a;}&#x000a;&#x000a;/** returns the last two columns of a ternary relation */&#x000a;fun select23 [r: univ-&gt;univ-&gt;univ] : univ.r {&#x000a;  univ.r&#x000a;}&#x000a;&#x000a;/** flips the first two columns of a ternary relation */&#x000a;fun flip12 [r: univ-&gt;univ-&gt;univ] : (univ.(r.univ))-&gt;((r.univ).univ)-&gt;(univ.(univ.r)) {&#x000a;  {x: univ.(r.univ), y: (r.univ).univ, z: univ.(univ.r) | y-&gt;x-&gt;z in r}&#x000a;}&#x000a;&#x000a;/** flips the first and last columns of a ternary relation */&#x000a;fun flip13 [r: univ-&gt;univ-&gt;univ] : (univ.(univ.r))-&gt;(univ.(r.univ))-&gt;((r.univ).univ) {&#x000a;  {x: univ.(univ.r), y: univ.(r.univ), z: (r.univ).univ | z-&gt;y-&gt;x in r}&#x000a;}&#x000a;&#x000a;/** flips the last two columns of a ternary relation */&#x000a;fun flip23 [r: univ-&gt;univ-&gt;univ] : ((r.univ).univ)-&gt;(univ.(univ.r))-&gt;(univ.(r.univ)) {&#x000a;  {x: (r.univ).univ, y: univ.(univ.r), z: univ.(r.univ) | x-&gt;z-&gt;y in r}&#x000a;}&#x000a;"/>
+
+</alloy>
