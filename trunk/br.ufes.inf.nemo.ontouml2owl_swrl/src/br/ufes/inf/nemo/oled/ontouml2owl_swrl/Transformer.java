@@ -5,6 +5,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,9 +15,11 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
@@ -33,6 +36,7 @@ import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
 import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
 import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -43,6 +47,7 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLVariable;
+import org.semanticweb.owlapi.util.AxiomSubjectProvider;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import RefOntoUML.Association;
@@ -81,9 +86,13 @@ public class Transformer {
 	private Set<DataType> _lstDataType;
 	private List<String> _lstDataTypeAttributes = new ArrayList<String>();
 
+	private Set<OWLObjectProperty> _lstMaterialAssociations = new HashSet<OWLObjectProperty>();
+	private Set<OWLObjectProperty> _lstFormalAssociations = new HashSet<OWLObjectProperty>();
+	private Set<OWLObjectProperty> _lstMediationAssociations = new HashSet<OWLObjectProperty>();
+	private Set<OWLObjectProperty> _lstPartofAssociations = new HashSet<OWLObjectProperty>();
 
 	//Usado para criar o disjoint dos dataproperties
-	private HashMap<OWLClass, String> _aux_hashClassToDataProperty = new HashMap();
+	private HashMap<OWLClass, String> _aux_hashClassToDataProperty = new HashMap<OWLClass,String>();
 
 	/**
 	 * Create a Transformer and use the nameSpace as the ontology URI
@@ -172,8 +181,14 @@ public class Transformer {
 			processMeronymic(a, "memberOf");
 		}
 
+		//Process disjuntion of associations
+		processDisjointionOfAssociations();
+
 		//Process Comments
 		processAnnotation();
+
+		//Process Axioms
+		//processAxioms();
 
 
 		try {	
@@ -187,6 +202,44 @@ public class Transformer {
 			e.printStackTrace();
 		}
 		return "";
+	}
+
+	private void processDisjointionOfAssociations() {
+		Set<OWLObjectProperty> lst = new HashSet<OWLObjectProperty>();
+
+		lst.addAll(_lstPartofAssociations);
+		lst.addAll(_lstMaterialAssociations);
+		lst.addAll(_lstMediationAssociations);
+
+		for(OWLObjectProperty prop : _lstFormalAssociations){
+			lst.add(prop);
+			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(lst)));
+			lst.remove(lst.size()-1);
+		}
+
+		lst = new HashSet<OWLObjectProperty>();
+
+		lst.addAll(_lstPartofAssociations);
+		lst.addAll(_lstMaterialAssociations);
+		lst.addAll(_lstFormalAssociations);
+
+		for(OWLObjectProperty prop : _lstMediationAssociations){
+			lst.add(prop);
+			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(lst)));
+			lst.remove(lst.size()-1);
+		}	
+
+		lst = new HashSet<OWLObjectProperty>();
+
+		lst.addAll(_lstPartofAssociations);
+		lst.addAll(_lstFormalAssociations);
+		lst.addAll(_lstMediationAssociations);
+
+		for(OWLObjectProperty prop : _lstMaterialAssociations){
+			lst.add(prop);
+			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(lst)));
+			lst.remove(lst.size()-1);
+		}		
 	}
 
 	private void processDataTypeDisjoint() {
@@ -212,36 +265,85 @@ public class Transformer {
 	 * @param ass
 	 */
 	private void processFormalAssociation(FormalAssociation ass) {
-		OWLObjectProperty prop;
-		if(ass.getName()==null || ass.getName().equals("")){
-			prop = factory.getOWLObjectProperty(IRI.create(nameSpace+"formal."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
-		}else{
-			prop = factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName().replaceAll(" ", "_")));
-		}
-		OWLClass ori = factory.getOWLClass(IRI.create(nameSpace+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")));
-		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(prop, ori)));
+		/*
+		 * If the property has a name
+		 * 	use this name
+		 * else
+		 * 	create a property with the name TypeProperty.ClassSrc.ClassDst
+		 * If this name was used 
+		 * 	make this property subPropertyOf the mother property
+		 * */
 
+		OWLObjectProperty prop,invProp;
+		String propName;
+		if(ass.getName()==null){
+			propName = "formal."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
+		}else{
+			propName = ass.getName().replaceAll(" ", "_");
+		}
+
+		prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+		invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+propName));
+
+		if(_lstFormalAssociations.contains(prop)){
+			OWLObjectProperty topProp = prop;
+			OWLObjectProperty invTopProp = invProp;
+
+			//Get the new name from the prop
+			propName += "."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
+
+			//Set new props
+			prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+			invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+propName));
+
+			//Make the new props subPropertyOf the mother prop of them
+			manager.addAxiom(ontology, factory.getOWLSubObjectPropertyOfAxiom(prop, topProp));
+			manager.addAxiom(ontology, factory.getOWLSubObjectPropertyOfAxiom(invProp, invTopProp));
+		}else{
+			int cont = 0;
+			//Search for other instances of this formal
+			for(FormalAssociation fa:ontoParser.getAllInstances(FormalAssociation.class)){
+				if(ass.getName().equals(fa.getName())){
+					cont++;
+					if(cont >= 2)
+						break;
+				}
+			}
+			if(cont >= 2){
+				//If has some object with the equal name
+				_lstFormalAssociations.add(prop);
+				_lstFormalAssociations.add(invProp);
+				//set that the inverse property is the inverse of the property
+				manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
+				processFormalAssociation(ass);
+				return;
+			}
+		}
+
+		//source class of the relation
+		OWLClass ori = factory.getOWLClass(IRI.create(nameSpace+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")));		
+
+		//destination class of the relation
 		OWLClass dst = factory.getOWLClass(IRI.create(nameSpace+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
+
+		//Set domain and range from the property
+		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(prop, ori)));
 		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyRangeAxiom(prop, dst)));
 
-		OWLObjectProperty invProp;
-		if(ass.getName()==null || ass.getName().equals("")){
-			invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.formal."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
-		}else{
-			invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+ass.getName().replaceAll(" ", "_")));
-		}
+		//Set domain and range from the inverse property
 		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(invProp, dst)));
 		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyRangeAxiom(invProp, ori)));
 
+		//set that the inverse property is the inverse of the property
 		manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
 
-		if(ass.getName()==null || ass.getName().equals("")){
-			processRelations(ass,"formal."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"),1,false);
-			processRelations(ass,"INV.formal."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"),0,true);
-		}else{
-			processRelations(ass,ass.getName().replaceAll(" ", "_"),1,false);
-			processRelations(ass,"INV."+ass.getName().replaceAll(" ", "_"),0,true);
-		}		
+		//Process the cardinalities
+		processRelations(ass,propName,1,false);
+		processRelations(ass,"INV."+propName,0,true);
+
+		//Add from the global list of the mediations
+		_lstFormalAssociations.add(prop);
+		_lstFormalAssociations.add(invProp);
 	}
 
 	/**
@@ -263,6 +365,9 @@ public class Transformer {
 	}
 
 	private void createRelation_subQuantityOf() {
+		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"subQuantityOf")));
+		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.subQuantityOf")));
+
 		createRelationPartOf_SWRL("subQuantityOf");
 
 		OWLObjectProperty rel = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.subQuantityOf"));
@@ -310,6 +415,9 @@ public class Transformer {
 	}
 
 	private void createRelation_subCollectionOf() {
+		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"subCollectionOf")));
+		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.subCollectionOf")));
+
 		createRelationPartOf_SWRL("subCollectionOf");	
 
 		OWLObjectProperty rel = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.subCollectionOf"));
@@ -324,6 +432,9 @@ public class Transformer {
 	}
 
 	private void createRelation_memberOf() {
+		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"memberOf")));
+		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.memberOf")));
+
 		OWLObjectProperty memberOf = factory.getOWLObjectProperty(IRI.create(nameSpace+"memberOf"));
 		OWLObjectProperty subCollectionOf = factory.getOWLObjectProperty(IRI.create(nameSpace+"subCollectionOf"));
 
@@ -381,7 +492,6 @@ public class Transformer {
 			String mediation0 = null, mediation1 = null;
 			// Process MaterialAssociation
 			for(MaterialAssociation ma:lstMaterialAssociation){
-				//createMaterialAssociation(ma);
 				for(Mediation m : lstMediation){
 					//Verifica se a MaterialAssociation e a Mediation possuem a mesma classe de um lado
 					if(ma.getMemberEnd().get(0).getType().equals(m.getMemberEnd().get(0).getType()) 
@@ -577,41 +687,85 @@ public class Transformer {
 	}
 
 	private void createMaterialAssociation(MaterialAssociation ass) {
-		//Cria-se a relação material
-		// caso tenha nome
-		//	 a relacao passa a ter este nome || inv.nome
-		// caso contrario
-		// 	 a relacao passa a ser material.classOrigem.classeDestino || inv.material.classOrigem.classeDestino
-		OWLObjectProperty prop;
-		if(ass.getName()==null || ass.getName().equals("")){
-			prop = factory.getOWLObjectProperty(IRI.create(nameSpace+"material."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
-		}else{
-			prop = factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName().replaceAll(" ", "_")));
-		}
-		OWLClass ori = factory.getOWLClass(IRI.create(nameSpace+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")));
-		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(prop, ori)));
+		/*
+		 * If the property has a name
+		 * 	use this name
+		 * else
+		 * 	create a property with the name TypeProperty.ClassSrc.ClassDst
+		 * If this name was used 
+		 * 	make this property subPropertyOf the mother property
+		 * */
 
+		OWLObjectProperty prop,invProp;
+		String propName;
+		if(ass.getName()==null){
+			propName = "material."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
+		}else{
+			propName = ass.getName().replaceAll(" ", "_");
+		}
+
+		prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+		invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+propName));
+
+		if(_lstMaterialAssociations.contains(prop)){
+			OWLObjectProperty topProp = prop;
+			OWLObjectProperty invTopProp = invProp;
+
+			//Get the new name from the prop
+			propName += "."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
+
+			//Set new props
+			prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+			invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+propName));
+
+			//Make the new props subPropertyOf the mother prop of them
+			manager.addAxiom(ontology, factory.getOWLSubObjectPropertyOfAxiom(prop, topProp));
+			manager.addAxiom(ontology, factory.getOWLSubObjectPropertyOfAxiom(invProp, invTopProp));
+		}else{
+			int cont = 0;
+			//Search for other instances of this material
+			for(MaterialAssociation ma:ontoParser.getAllInstances(MaterialAssociation.class)){
+				if(ass.getName().equals(ma.getName())){
+					cont++;
+					if(cont >= 2)
+						break;
+				}
+			}
+			if(cont >= 2){
+				//If has some object with the equal name
+				_lstMaterialAssociations.add(prop);
+				_lstMaterialAssociations.add(invProp);
+				//set that the inverse property is the inverse of the property
+				manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
+				createMaterialAssociation(ass);
+				return;
+			}
+		}
+
+		//source class of the relation
+		OWLClass ori = factory.getOWLClass(IRI.create(nameSpace+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")));		
+
+		//destination class of the relation
 		OWLClass dst = factory.getOWLClass(IRI.create(nameSpace+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
+
+		//Set domain and range from the property
+		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(prop, ori)));
 		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyRangeAxiom(prop, dst)));
 
-		OWLObjectProperty invProp;
-		if(ass.getName()==null || ass.getName().equals("")){
-			invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.material."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
-		}else{
-			invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+ass.getName().replaceAll(" ", "_")));
-		}
+		//Set domain and range from the inverse property
 		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(invProp, dst)));
 		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyRangeAxiom(invProp, ori)));
 
+		//set that the inverse property is the inverse of the property
 		manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
 
-		if(ass.getName()==null || ass.getName().equals("")){
-			processRelations(ass,"material."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"),1,false);
-			processRelations(ass,"INV.material."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"),0,true);
-		}else{
-			processRelations(ass,ass.getName().replaceAll(" ", "_"),1,false);
-			processRelations(ass,"INV."+ass.getName().replaceAll(" ", "_"),0,true);
-		}
+		//Process the cardinalities
+		processRelations(ass,propName,1,false);
+		processRelations(ass,"INV."+propName,0,true);
+
+		//Add from the global list of the mediations
+		_lstMaterialAssociations.add(prop);
+		_lstMaterialAssociations.add(invProp);
 	}
 
 	private void processRelations(Association src, String propName, int side, boolean inverse) {
@@ -800,47 +954,86 @@ public class Transformer {
 
 
 	private String createMediationAssociation(Association ass) {
-		//Cria-se a relação mediation
-		// caso tenha nome
-		//	 a relacao passa a ter este nome || inv.nome
-		// caso contrario
-		// 	 a relacao passa a ser mediation.classOrigem.classeDestino || inv.mediation.classOrigem.classeDestino
+		/*
+		 * If the property has a name
+		 * 	use this name
+		 * else
+		 * 	create a property with the name TypeProperty.ClassSrc.ClassDst
+		 * If this name was used 
+		 * 	make this property subPropertyOf the mother property
+		 * */
 
-		OWLObjectProperty prop;
+		OWLObjectProperty prop,invProp;
+		String propName;
 		if(ass.getName()==null){
-			prop = factory.getOWLObjectProperty(IRI.create(nameSpace+"mediation."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
+			propName = "mediation."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 		}else{
-			prop = factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName().replaceAll(" ", "_")));
+			propName = ass.getName().replaceAll(" ", "_");
 		}
 
-		OWLClass ori = factory.getOWLClass(IRI.create(nameSpace+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")));
-		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(prop, ori)));
+		prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+		invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+propName));
 
+		if(_lstMediationAssociations.contains(prop)){
+			OWLObjectProperty topProp = prop;
+			OWLObjectProperty invTopProp = invProp;
+
+			//Get the new name from the prop
+			propName += "."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
+
+			//Set new props
+			prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+			invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+propName));
+
+			//Make the new props subPropertyOf the mother prop of them
+			manager.addAxiom(ontology, factory.getOWLSubObjectPropertyOfAxiom(prop, topProp));
+			manager.addAxiom(ontology, factory.getOWLSubObjectPropertyOfAxiom(invProp, invTopProp));
+		}else{
+			int cont = 0;
+			//Search for other instances of this mediation
+			for(Mediation ma:ontoParser.getAllInstances(Mediation.class)){
+				if(ass.getName().equals(ma.getName())){
+					cont++;
+					if(cont >= 2)
+						break;
+				}
+			}
+			if(cont >= 2){
+				//If has some object with the equal name
+				_lstMediationAssociations.add(prop);
+				_lstMediationAssociations.add(invProp);
+				//set that the inverse property is the inverse of the property
+				manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
+				return createMediationAssociation(ass);
+			}
+		}
+
+		//source class of the relation
+		OWLClass ori = factory.getOWLClass(IRI.create(nameSpace+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")));		
+
+		//destination class of the relation
 		OWLClass dst = factory.getOWLClass(IRI.create(nameSpace+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
+
+		//Set domain and range from the property
+		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(prop, ori)));
 		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyRangeAxiom(prop, dst)));
 
-		OWLObjectProperty invProp;
-		if(ass.getName()==null){
-			invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.mediation."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
-		}else{
-			invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+ass.getName().replaceAll(" ", "_")));
-		}
-
+		//Set domain and range from the inverse property
 		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(invProp, dst)));
 		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyRangeAxiom(invProp, ori)));
 
+		//set that the inverse property is the inverse of the property
 		manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
 
+		//Process the cardinalities
+		processRelations(ass,propName,1,false);
+		processRelations(ass,"INV."+propName,0,true);
 
-		if(ass.getName()==null){
-			processRelations(ass,"mediation."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"),1,false);
-			processRelations(ass,"INV.mediation."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"),0,true);
-			return "mediation."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
-		}else{
-			processRelations(ass,ass.getName().replaceAll(" ", "_"),1,false);
-			processRelations(ass,"INV."+ass.getName().replaceAll(" ", "_"),0,true);
-			return ass.getName().replaceAll(" ", "_");
-		}
+		//Add from the global list of the mediations
+		_lstMediationAssociations.add(prop);
+		_lstMediationAssociations.add(invProp);
+
+		return propName;
 	}
 
 	private OWLDatatype getDataTypeRange(String range){
@@ -856,8 +1049,6 @@ public class Transformer {
 			return factory.getOWLDatatype(OWL2Datatype.XSD_STRING.getIRI());
 		}else if(range.equalsIgnoreCase("normalized_string")){
 			return factory.getOWLDatatype(OWL2Datatype.XSD_NORMALIZED_STRING.getIRI());
-		}else if(range.equalsIgnoreCase("nmtoken")){
-			return factory.getOWLDatatype(OWL2Datatype.XSD_NMTOKEN.getIRI());
 		}else if(range.equalsIgnoreCase("boolean")){
 			return factory.getOWLDatatype(OWL2Datatype.XSD_BOOLEAN.getIRI());
 		}else if(range.equalsIgnoreCase("hex_binary")){
@@ -967,6 +1158,9 @@ public class Transformer {
 	}
 
 	private void createRelation_componentOf(){
+		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"componentOf")));
+		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.componentOf")));
+
 		OWLObjectProperty rel = factory.getOWLObjectProperty(IRI.create(nameSpace+"componentOf"));
 
 		OWLIrreflexiveObjectPropertyAxiom iopa = factory.getOWLIrreflexiveObjectPropertyAxiom(rel);//Irreflexive
@@ -1034,5 +1228,53 @@ public class Transformer {
 				}
 			}
 		}
+	}
+
+	private void processAxioms(){
+		Iterator<OWLAxiom> itr = ontology.getAxioms().iterator();
+
+
+
+		for(OWLClass c : ontology.getClassesInSignature()){
+			Set<OWLEquivalentClassesAxiom> eqClsLst = new HashSet<OWLEquivalentClassesAxiom>();
+			
+			for(OWLClassAxiom ax : ontology.getAxioms(c)){
+				if(ax instanceof OWLEquivalentClassesAxiom){
+					eqClsLst.add((OWLEquivalentClassesAxiom)ax);
+				}
+			}
+
+			for(OWLClassAxiom ax : ontology.getAxioms(c)){
+				if(ax instanceof OWLEquivalentClassesAxiom){
+					manager.removeAxiom(ontology, ax);
+				}
+			}
+			
+			
+			//manager.applyChange(new AddAxiom(ontology, factory.getOWLEquivalentClassesAxiom(eqClsLst)));
+
+		}
+
+
+
+
+
+		//		while(itr.hasNext()) {
+		//			OWLAxiom ax = itr.next();
+		//			if(ax instanceof OWLAnnotationAssertionAxiom){
+		//				continue;
+		//			}
+		//			
+		//			for(OWLClass cls : ax.getClassesInSignature()){
+		//				
+		//				
+		//				if(cls.toString().contains("Letter_")){
+		//					System.out.println("{Class: "+cls.toString());
+		//					System.out.println(ax.toString()+"}");
+		//				}
+		//			}
+		//			
+		//		}
+
 	}
 }
