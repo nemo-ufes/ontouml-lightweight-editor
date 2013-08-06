@@ -32,8 +32,10 @@ import org.eclipse.emf.edit.command.DeleteCommand;
 
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
+import br.ufes.inf.nemo.oled.ui.ModelTree;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
@@ -473,7 +475,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
  	private void okButtonActionPerformed(ActionEvent evt) {
  		if(needsSaveGenSet)
  		{
- 			saveButtonActionPerformed(evt);
+ 			//saveButtonActionPerformed(evt);
  		}
  		dispose();
 	}
@@ -572,7 +574,12 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
  	 	 		chooseGenSetCombo.setSelectedItem(genSet.getName());
  	 	 		populateAddGenSetCombo();
  	 	 		
- 	 	 		needsSaveGenSet = false;
+ 	 	 		needsSaveGenSet = false; 	
+ 	 	 		
+ 	 	 		// Guarantee that the GenSet is added to the parser in the current Project (UmlProject)
+ 	 	 		OntoUMLParser ontoparser = ModelTree.getParserFor(diagramManager.getCurrentProject());
+ 	 	 		ontoparser.addElement(genSet);
+ 	 	 		ModelTree.updateModelTree(diagramManager.getCurrentProject());
  	 		}
  	 		else
  	 		{
@@ -591,7 +598,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
  	 		chooseGenSetCombo.setSelectedItem(genSet.getName());
  	 		populateAddGenSetCombo();
  	 		
- 	 		needsSaveGenSet = false;
+ 	 		needsSaveGenSet = false; 	 		
  		}
 	}
 	
@@ -607,6 +614,11 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
 			
 			loadModelGeneralizationSets();
 			populateChooseGenSetCombo();
+			
+			// Guarantee that the GenSet is removed in the parser in the current Project (UmlProject)
+ 	 	 	OntoUMLParser ontoparser = ModelTree.getParserFor(diagramManager.getCurrentProject());
+ 	 	 	ontoparser.removeElement(genSet);
+ 	 	 	ModelTree.updateModelTree(diagramManager.getCurrentProject());
 		}
 	}
 	

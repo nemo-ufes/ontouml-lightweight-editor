@@ -116,15 +116,18 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), connection.getRelationship());
 				project.getEditingDomain().getCommandStack().execute(cmd);
 			}
-						
+			
 			//Removes the element from diagram
-			element.getParent().removeChild(element);
+			if(element instanceof BaseConnection || element instanceof ClassElement) {				
+				element.getParent().removeChild(element);
+				notification.notifyChange((List<DiagramElement>) elements, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);
+				
+				// FIXME every modification creates a new tree
+				ModelTree.updateModelTree(project);		
+			}
 		}
 		
-		notification.notifyChange((List<DiagramElement>) elements, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);
 		
-		//FIXME every modification creates a new tree
-		ModelTree.updateModelTree(project);		
 		
 		// 
 		

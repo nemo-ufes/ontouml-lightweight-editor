@@ -220,7 +220,7 @@ public class OntoUMLTree extends CheckboxTree {
     		uniqueName.setForeground(Color.gray);    		 		
    		    		
     		if (selected){
-    			label.setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
+    			label.setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHT));
     			//label.setBackground(UIManager.getColor("Tree.selectionBackground"));
     			//label.setBackground(UIManager.getColor("Tree.textBackground"));    			
     		}else{

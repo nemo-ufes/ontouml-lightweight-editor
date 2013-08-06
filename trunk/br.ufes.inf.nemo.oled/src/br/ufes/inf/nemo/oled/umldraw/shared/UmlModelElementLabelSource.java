@@ -23,6 +23,8 @@ import java.io.Serializable;
 
 import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
+import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
  * This class decorates an UmlProperty with the Label source interface.
@@ -33,14 +35,19 @@ import br.ufes.inf.nemo.oled.draw.LabelSource;
 public class UmlModelElementLabelSource implements LabelSource, Serializable {
 
   private static final long serialVersionUID = 8535923074605287093L;
-  private NamedElement namedElement;
-
+  private transient NamedElement namedElement;
+  private StructureDiagram diagram;
+  private String propertyUUID;
+  
   /**
    * Constructor.
    * @param aNamedElement aNamedElement
    */
-  public UmlModelElementLabelSource(NamedElement aNamedElement) {
+  public UmlModelElementLabelSource(StructureDiagram diagram, NamedElement aNamedElement) {
     namedElement = aNamedElement;
+    this.diagram = diagram;
+    propertyUUID = ModelHelper.getUUIDFromElement(namedElement);
+    
   }
 
   /**
@@ -48,13 +55,20 @@ public class UmlModelElementLabelSource implements LabelSource, Serializable {
    * @return the source named element
    */
   public NamedElement getNamedElement() {
+	//In case of deserialization, attempts to retrieve the element from model
+	if(namedElement == null && propertyUUID != null)
+	{		
+		namedElement = (NamedElement) ModelHelper.getElementByUUID(diagram.getModel(), propertyUUID);
+	}
+			
 	return namedElement;
   }
 
   /**
    * {@inheritDoc}
    */
-  public String getLabelText() { 
+  public String getLabelText() {
+	  getNamedElement();
 	  return UmlLabelFormatter.getLabelTextFor(namedElement);
   }
 

@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import org.eclipse.emf.ecore.EObject;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
@@ -168,11 +171,15 @@ public class ModelTree extends JPanel {
 		ModelTree modeltree = ModelTree.getTreeFor(project);
 		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
-		OntoUMLParser refparser = new OntoUMLParser(project.getModel());
+		OntoUMLParser refparser = new OntoUMLParser(project.getModel());		
+		ArrayList<EObject> selected = (ArrayList<EObject>)modeltree.getTree().getCheckedElements();
+		refparser.selectThisElements(selected, true);
 		
 		modeltree.setParser(refparser);
 		modeltree.setTree(new OntoUMLTree(root,project.getModel(),refparser));
-		
+		modeltree.getTree().checkElements(selected, true);			
+		modeltree.getTree().updateUI();    	
+				
 		modeltree.validate();
 		modeltree.repaint();
 	}
