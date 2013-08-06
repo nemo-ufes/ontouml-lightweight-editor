@@ -706,7 +706,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 			ClassImpl aclass = (ClassImpl) getClassifier(); 
 			for (Property property : aclass.getOwnedAttribute()) {
 				Label label = new SimpleLabel();
-				label.setSource(new UmlModelElementLabelSource(property));
+				label.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),property));
 				attributesCompartment.addLabel(label);
 			}
 		}
@@ -715,7 +715,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 			DataTypeImpl dataType = (DataTypeImpl) getClassifier();
 			for (Property property : dataType.getOwnedAttribute()) {
 				Label label = new SimpleLabel();
-				label.setSource(new UmlModelElementLabelSource(property));
+				label.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),property));
 				attributesCompartment.addLabel(label);
 			}	
 		}

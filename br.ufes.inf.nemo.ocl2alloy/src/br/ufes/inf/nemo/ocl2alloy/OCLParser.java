@@ -96,7 +96,7 @@ public class OCLParser {
         
 		OCLInput document = new OCLInput(oclConstraints);		
 		umlconstraintsList = myOCL.parse(document);
-
+		
 		umlreflection = umlenv.getUMLReflection();	
     }
     

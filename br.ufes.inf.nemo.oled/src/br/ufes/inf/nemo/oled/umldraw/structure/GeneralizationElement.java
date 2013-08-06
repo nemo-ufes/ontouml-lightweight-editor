@@ -114,7 +114,7 @@ public final class GeneralizationElement extends BaseConnection {
 		if(getGeneralization() != null)
 			if(getGeneralization().getGeneralizationSet().size() > 0)
 			{
-				nameLabel.setSource(new UmlModelElementLabelSource(getGeneralization().getGeneralizationSet().get(0)));
+				nameLabel.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),getGeneralization().getGeneralizationSet().get(0)));
 			}
 	}
 	
@@ -175,7 +175,7 @@ public final class GeneralizationElement extends BaseConnection {
 		
 		if(nameLabel.getSource() == null && getGeneralization().getGeneralizationSet().size() > 0)
 		{
-			nameLabel.setSource(new UmlModelElementLabelSource(getGeneralization().getGeneralizationSet().get(0)));
+			nameLabel.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),getGeneralization().getGeneralizationSet().get(0)));
 		}
 		
 		positionNameLabel(drawingContext);

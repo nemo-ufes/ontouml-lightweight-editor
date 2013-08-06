@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -107,7 +107,7 @@ public class OntoUMLParser {
 	}	
 	
 	/**
-	 * Update OntoUML Parser. This is used when modification were made in the root Package of the model
+	 * Should me more of a description here...
 	 */
 	public void addElement(EObject obj)
 	{		
@@ -116,6 +116,14 @@ public class OntoUMLParser {
 		elementsHash = new HashMap<EObject,ParsingElement>();		
 	}
 
+	/**
+	 * Should me more of a description here...
+	 */
+	public void removeElement(EObject obj)
+	{		
+		this.elementsHash.remove(obj);				
+	}
+	
 	/**
 	 * Get Root Model Package.
 	 */

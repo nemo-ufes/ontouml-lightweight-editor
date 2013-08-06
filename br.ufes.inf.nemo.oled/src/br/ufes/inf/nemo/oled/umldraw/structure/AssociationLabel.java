@@ -216,7 +216,7 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 			Generalization generalization = ((GeneralizationElement) association).getGeneralization();	
 			if(generalization.getGeneralizationSet().size() > 0)
 			{
-				typeLabel.setSource(new UmlModelElementLabelSource(generalization.getGeneralizationSet().get(0)));
+				typeLabel.setSource(new UmlModelElementLabelSource((StructureDiagram)association.getDiagram(),generalization.getGeneralizationSet().get(0)));
 				typeLabel.draw(drawingContext);
 			}
 		}
