@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.xmi2refontouml.core;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -312,8 +313,9 @@ public class RefOntoCreator {
     		// DO NOTHING
     	}
 
-		assoc1.getMemberEnd().add(((List<Property>) hashProp.get("memberend")).get(0));
+		assoc1.getMemberEnd().removeAll((Collection<?>) hashProp.get("memberend"));
 		assoc1.getMemberEnd().add(((List<Property>) hashProp.get("memberend")).get(1));
+		assoc1.getMemberEnd().add(((List<Property>) hashProp.get("memberend")).get(0));
 		
 		//Material Association is always derived
 		if(assoc1 instanceof MaterialAssociation) {
