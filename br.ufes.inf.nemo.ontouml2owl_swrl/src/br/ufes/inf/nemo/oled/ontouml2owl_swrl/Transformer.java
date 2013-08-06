@@ -182,13 +182,13 @@ public class Transformer {
 		}
 
 		//Process disjuntion of associations
-		processDisjointionOfAssociations();
+		//processDisjointionOfAssociations();
 
 		//Process Comments
 		processAnnotation();
 
 		//Process Axioms
-		//processAxioms();
+		//		processAxioms();
 
 
 		try {	
@@ -485,26 +485,45 @@ public class Transformer {
 	}
 
 	private void processRelator(Relator src) {
+
 		try {
 			//TODO MUDAR PARA O ONTOPARSER
 			List<MaterialAssociation> lstMaterialAssociation = this.getRelatorMaterials(src);
 			List<Mediation> lstMediation = ontoParser.getRelatorsMediations(src);
+			List<Mediation> auxLstMediation = new ArrayList<Mediation>();
 			String mediation0 = null, mediation1 = null;
+
 			// Process MaterialAssociation
 			for(MaterialAssociation ma:lstMaterialAssociation){
+				// clean the variables
+				mediation0 = null;
+				mediation1 = null;
 				for(Mediation m : lstMediation){
 					//Verifica se a MaterialAssociation e a Mediation possuem a mesma classe de um lado
 					if(ma.getMemberEnd().get(0).getType().equals(m.getMemberEnd().get(0).getType()) 
 							|| ma.getMemberEnd().get(0).getType().equals(m.getMemberEnd().get(1).getType())){
 						mediation0 = createMediationAssociation(m);
+						auxLstMediation.add(m);
 					}
 					if(ma.getMemberEnd().get(1).getType().equals(m.getMemberEnd().get(1).getType()) 
 							|| ma.getMemberEnd().get(1).getType().equals(m.getMemberEnd().get(1).getType())){
 						mediation1 = createMediationAssociation(m);
+						auxLstMediation.add(m);
 					}
 				}	
-				createSWRLforRelator(mediation0,mediation1, ma, src); 
+				if(mediation0 != null && mediation1 != null){
+					//create swrl for material with mediations
+					createSWRLforRelator(mediation0,mediation1, ma, src);
+				}
 			}
+			
+			//create mediations without material
+			for(Mediation m : lstMediation){
+				if(!auxLstMediation.contains(m))
+					createMediationAssociation(m);
+			}
+
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -971,6 +990,7 @@ public class Transformer {
 			propName = ass.getName().replaceAll(" ", "_");
 		}
 
+
 		prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
 		invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+propName));
 
@@ -992,7 +1012,13 @@ public class Transformer {
 			int cont = 0;
 			//Search for other instances of this mediation
 			for(Mediation ma:ontoParser.getAllInstances(Mediation.class)){
-				if(ass.getName().equals(ma.getName())){
+				String mediationName = "";
+				if(ma.getName() == null){
+					mediationName = "mediation."+ma.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ma.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
+				}else{
+					mediationName = ma.getName();
+				}
+				if(propName.equals(mediationName)){
 					cont++;
 					if(cont >= 2)
 						break;
@@ -1237,21 +1263,13 @@ public class Transformer {
 
 		for(OWLClass c : ontology.getClassesInSignature()){
 			Set<OWLEquivalentClassesAxiom> eqClsLst = new HashSet<OWLEquivalentClassesAxiom>();
-			
-			for(OWLClassAxiom ax : ontology.getAxioms(c)){
-				if(ax instanceof OWLEquivalentClassesAxiom){
+
+			for(OWLEquivalentClassesAxiom ax : ontology.getEquivalentClassesAxioms(c)){
 					eqClsLst.add((OWLEquivalentClassesAxiom)ax);
-				}
+					manager.removeAxiom(ontology, ax);
 			}
 
-			for(OWLClassAxiom ax : ontology.getAxioms(c)){
-				if(ax instanceof OWLEquivalentClassesAxiom){
-					manager.removeAxiom(ontology, ax);
-				}
-			}
-			
-			
-			//manager.applyChange(new AddAxiom(ontology, factory.getOWLEquivalentClassesAxiom(eqClsLst)));
+//			manager.applyChange(new AddAxiom(ontology, eqClsLst));
 
 		}
 
