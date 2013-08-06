@@ -67,9 +67,9 @@ public class OntoUML2OWL {
 
 	}
 
-//	public static void main(String[] args) {
-//		String ret = OntoUML2OWL.Transformation(intialize(new File("modelo.refontouml")), "http://abcd/ontology/");
-//		//System.out.println(ret);
-//	}
+	public static void main(String[] args) {
+		String ret = OntoUML2OWL.Transformation(intialize(new File("Teste.refontouml")), "http://abcd/ontology/");
+		//System.out.println(ret);
+	}
 
 }
