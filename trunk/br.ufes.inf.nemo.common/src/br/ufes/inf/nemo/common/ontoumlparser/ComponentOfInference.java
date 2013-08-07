@@ -82,7 +82,7 @@ public class ComponentOfInference {
 		ArrayList<ArrayList<componentOf>> parts = new ArrayList<>();
 		
 		for (componentOf cp : compositions) {
-			if(cp.whole().equals(whole) && !loopInPath(cp, path) ){
+			if(cp.whole().equals(whole) && !loopInPath(cp, path) && cp.partEnd().getLower()>0 && cp.wholeEnd().getLower()>0){
 				
 				ArrayList<componentOf> newPath = new ArrayList<>();
 				
