@@ -15,7 +15,6 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
-import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -28,15 +27,16 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLNaryClassAxiom;
 import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
 import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
 import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -47,10 +47,10 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLVariable;
-import org.semanticweb.owlapi.util.AxiomSubjectProvider;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import RefOntoUML.Association;
+import RefOntoUML.Characterization;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
@@ -90,6 +90,16 @@ public class Transformer {
 	private Set<OWLObjectProperty> _lstFormalAssociations = new HashSet<OWLObjectProperty>();
 	private Set<OWLObjectProperty> _lstMediationAssociations = new HashSet<OWLObjectProperty>();
 	private Set<OWLObjectProperty> _lstPartofAssociations = new HashSet<OWLObjectProperty>();
+	private Set<OWLObjectProperty> _lstCharacterizationAssociations = new HashSet<OWLObjectProperty>();
+
+	//For inverse property
+
+	//	private Set<OWLObjectProperty> _lstINVMaterialAssociations = new HashSet<OWLObjectProperty>();
+	//	private Set<OWLObjectProperty> _lstINVFormalAssociations = new HashSet<OWLObjectProperty>();
+	//	private Set<OWLObjectProperty> _lstINVMediationAssociations = new HashSet<OWLObjectProperty>();
+	//	private Set<OWLObjectProperty> _lstINVPartofAssociations = new HashSet<OWLObjectProperty>();
+	//	private Set<OWLObjectProperty> _lstINVCharacterizationAssociations = new HashSet<OWLObjectProperty>();
+
 
 	//Usado para criar o disjoint dos dataproperties
 	private HashMap<OWLClass, String> _aux_hashClassToDataProperty = new HashMap<OWLClass,String>();
@@ -145,6 +155,10 @@ public class Transformer {
 		for(MaterialAssociation src: ontoParser.getAllInstances(MaterialAssociation.class))
 			createMaterialAssociation(src);
 
+		//Material
+		for(Characterization src: ontoParser.getAllInstances(Characterization.class))
+			createCharacterizationAssociation(src);
+
 		//Relator
 		for(Relator src: ontoParser.getAllInstances(Relator.class))
 			processRelator(src);
@@ -188,7 +202,7 @@ public class Transformer {
 		processAnnotation();
 
 		//Process Axioms
-		//		processAxioms();
+		processAxioms();
 
 
 		try {	
@@ -204,42 +218,173 @@ public class Transformer {
 		return "";
 	}
 
-	private void processDisjointionOfAssociations() {
-		Set<OWLObjectProperty> lst = new HashSet<OWLObjectProperty>();
+	private void createCharacterizationAssociation(Characterization ass) {
+		/*
+		 * If the property has a name
+		 * 	use this name
+		 * else
+		 * 	create a property with the name TypeProperty.ClassSrc.ClassDst
+		 * If this name was used 
+		 * 	make this property subPropertyOf the mother property
+		 * */
 
-		lst.addAll(_lstPartofAssociations);
-		lst.addAll(_lstMaterialAssociations);
-		lst.addAll(_lstMediationAssociations);
-
-		for(OWLObjectProperty prop : _lstFormalAssociations){
-			lst.add(prop);
-			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(lst)));
-			lst.remove(lst.size()-1);
+		OWLObjectProperty prop,invProp;
+		String propName;
+		if(ass.getName()==null){
+			propName = "characterization."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
+		}else{
+			propName = ass.getName().replaceAll(" ", "_");
 		}
 
-		lst = new HashSet<OWLObjectProperty>();
+		prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+		invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+propName));
 
-		lst.addAll(_lstPartofAssociations);
-		lst.addAll(_lstMaterialAssociations);
-		lst.addAll(_lstFormalAssociations);
+		if(_lstCharacterizationAssociations.contains(prop)){
+			OWLObjectProperty topProp = prop;
+			OWLObjectProperty invTopProp = invProp;
 
-		for(OWLObjectProperty prop : _lstMediationAssociations){
-			lst.add(prop);
-			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(lst)));
-			lst.remove(lst.size()-1);
-		}	
+			//Get the new name from the prop
+			propName += "."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 
-		lst = new HashSet<OWLObjectProperty>();
+			//Set new props
+			prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+			invProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+propName));
 
-		lst.addAll(_lstPartofAssociations);
-		lst.addAll(_lstFormalAssociations);
-		lst.addAll(_lstMediationAssociations);
+			//Make the new props subPropertyOf the mother prop of them
+			manager.addAxiom(ontology, factory.getOWLSubObjectPropertyOfAxiom(prop, topProp));
+			manager.addAxiom(ontology, factory.getOWLSubObjectPropertyOfAxiom(invProp, invTopProp));
+		}else{
+			int cont = 0;
+			//Search for other instances of this material
+			for(Characterization c:ontoParser.getAllInstances(Characterization.class)){
+				String characterizationName = "";
+				if(c.getName() == null){
+					characterizationName = "characterization."+c.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+c.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
+				}else{
+					characterizationName = c.getName();
+				}
+				if(propName.equals(characterizationName)){
+					cont++;
+					if(cont >= 2)
+						break;
+				}
+			}
+			if(cont >= 2){
+				//If has some object with the equal name
+				_lstCharacterizationAssociations.add(prop);
 
-		for(OWLObjectProperty prop : _lstMaterialAssociations){
-			lst.add(prop);
-			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(lst)));
-			lst.remove(lst.size()-1);
-		}		
+				//Make the inverse property disjoint of the property
+				//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
+
+				//set that the inverse property is the inverse of the property
+				manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
+				createCharacterizationAssociation(ass);
+				return;
+			}
+		}
+
+		//source class of the relation
+		OWLClass ori = factory.getOWLClass(IRI.create(nameSpace+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")));		
+
+		//destination class of the relation
+		OWLClass dst = factory.getOWLClass(IRI.create(nameSpace+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_")));
+
+		//Set domain and range from the property
+		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(prop, ori)));
+		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyRangeAxiom(prop, dst)));
+
+		//Set domain and range from the inverse property
+		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyDomainAxiom(invProp, dst)));
+		manager.applyChange(new AddAxiom(ontology, factory.getOWLObjectPropertyRangeAxiom(invProp, ori)));
+
+		//set that the inverse property is the inverse of the property
+		manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
+
+		//Process the cardinalities
+		processRelations(ass,propName,1,false);
+		processRelations(ass,"INV."+propName,0,true);
+
+		//Add from the global list of the mediations
+		_lstCharacterizationAssociations.add(prop);
+
+		//Make the inverse property disjoint of the property
+		//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
+	}
+
+	private void processDisjointionOfAssociations() {
+//		Set<OWLObjectProperty> lst = new HashSet<OWLObjectProperty>();
+
+		//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(_lstPartofAssociations)));
+
+		//		lst.addAll(_lstPartofAssociations);
+		//		lst.addAll(_lstMaterialAssociations);
+		//		lst.addAll(_lstMediationAssociations);
+		//		lst.addAll(_lstCharacterizationAssociations);
+		//
+		//		//Make all Formal disjoints of the other associations
+		//		for(OWLObjectProperty prop : _lstFormalAssociations){
+		//			lst.add(prop);
+		//			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(lst)));
+		//			lst.remove(lst.size()-1);
+		//		}
+		//
+		//		lst = new HashSet<OWLObjectProperty>();
+		//
+		//		lst.addAll(_lstPartofAssociations);
+		//		lst.addAll(_lstMaterialAssociations);
+		//		lst.addAll(_lstFormalAssociations);
+		//		lst.addAll(_lstCharacterizationAssociations);
+		//
+		//
+		//		//Make all Mediations disjoints of the other associations
+		//		for(OWLObjectProperty prop : _lstMediationAssociations){
+		//			lst.add(prop);
+		//			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(lst)));
+		//			lst.remove(lst.size()-1);
+		//		}	
+		//
+		//		lst = new HashSet<OWLObjectProperty>();
+		//
+		//		lst.addAll(_lstPartofAssociations);
+		//		lst.addAll(_lstMediationAssociations);
+		//		lst.addAll(_lstFormalAssociations);
+		//		lst.addAll(_lstCharacterizationAssociations);
+		//
+		//		//Make all Material disjoints of the other associations
+		//		for(OWLObjectProperty prop : _lstMaterialAssociations){
+		//			lst.add(prop);
+		//			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(lst)));
+		//			lst.remove(lst.size()-1);
+		//		}	
+		//
+		//		lst = new HashSet<OWLObjectProperty>();
+		//
+		//		lst.addAll(_lstMaterialAssociations);
+		//		lst.addAll(_lstMediationAssociations);
+		//		lst.addAll(_lstFormalAssociations);
+		//		lst.addAll(_lstCharacterizationAssociations);
+		//
+		//
+		//		//Make all PartyOf disjoints of the other associations
+		//		for(OWLObjectProperty prop : _lstPartofAssociations){
+		//			lst.add(prop);
+		//			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(lst)));
+		//			lst.remove(lst.size()-1);
+		//		}	
+		//
+		//		lst = new HashSet<OWLObjectProperty>();
+		//
+		//		lst.addAll(_lstMaterialAssociations);
+		//		lst.addAll(_lstMediationAssociations);
+		//		lst.addAll(_lstFormalAssociations);
+		//		lst.addAll(_lstPartofAssociations);
+		//
+		//		//Make all Characterization disjoints of the other associations
+		//		for(OWLObjectProperty prop : _lstCharacterizationAssociations){
+		//			lst.add(prop);
+		//			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(lst)));
+		//			lst.remove(lst.size()-1);
+		//		}	
 	}
 
 	private void processDataTypeDisjoint() {
@@ -303,7 +448,13 @@ public class Transformer {
 			int cont = 0;
 			//Search for other instances of this formal
 			for(FormalAssociation fa:ontoParser.getAllInstances(FormalAssociation.class)){
-				if(ass.getName().equals(fa.getName())){
+				String formalName = "";
+				if(fa.getName() == null){
+					formalName = "formal."+fa.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+fa.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
+				}else{
+					formalName = fa.getName();
+				}
+				if(propName.equals(formalName)){
 					cont++;
 					if(cont >= 2)
 						break;
@@ -312,7 +463,10 @@ public class Transformer {
 			if(cont >= 2){
 				//If has some object with the equal name
 				_lstFormalAssociations.add(prop);
-				_lstFormalAssociations.add(invProp);
+
+				//Make the inverse property disjoint of the property
+				//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
+
 				//set that the inverse property is the inverse of the property
 				manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
 				processFormalAssociation(ass);
@@ -343,7 +497,9 @@ public class Transformer {
 
 		//Add from the global list of the mediations
 		_lstFormalAssociations.add(prop);
-		_lstFormalAssociations.add(invProp);
+
+		//Make the inverse property disjoint of the property
+		//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
 	}
 
 	/**
@@ -366,7 +522,9 @@ public class Transformer {
 
 	private void createRelation_subQuantityOf() {
 		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"subQuantityOf")));
-		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.subQuantityOf")));
+
+		//Make the inverse property disjoint of the property
+		//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(factory.getOWLObjectProperty(IRI.create(nameSpace+"subQuantityOf")),factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.subQuantityOf")))));
 
 		createRelationPartOf_SWRL("subQuantityOf");
 
@@ -416,7 +574,9 @@ public class Transformer {
 
 	private void createRelation_subCollectionOf() {
 		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"subCollectionOf")));
-		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.subCollectionOf")));
+
+		//Make the inverse property disjoint of the property
+		//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(factory.getOWLObjectProperty(IRI.create(nameSpace+"subCollectionOf")),factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.subCollectionOf")))));
 
 		createRelationPartOf_SWRL("subCollectionOf");	
 
@@ -433,7 +593,9 @@ public class Transformer {
 
 	private void createRelation_memberOf() {
 		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"memberOf")));
-		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.memberOf")));
+
+		//Make the inverse property disjoint of the property
+		//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(factory.getOWLObjectProperty(IRI.create(nameSpace+"memberOf")),factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.memberOf")))));
 
 		OWLObjectProperty memberOf = factory.getOWLObjectProperty(IRI.create(nameSpace+"memberOf"));
 		OWLObjectProperty subCollectionOf = factory.getOWLObjectProperty(IRI.create(nameSpace+"subCollectionOf"));
@@ -516,14 +678,14 @@ public class Transformer {
 					createSWRLforRelator(mediation0,mediation1, ma, src);
 				}
 			}
-			
+
 			//create mediations without material
 			for(Mediation m : lstMediation){
 				if(!auxLstMediation.contains(m))
 					createMediationAssociation(m);
 			}
 
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -670,8 +832,9 @@ public class Transformer {
 
 		//Every substancesortal are differents from every top level moment
 		for(MomentClass sm : setMoment){
-			if(sm.getGeneral().isEmpty()){			
+			if(sm.getGeneral().isEmpty()){
 				lst.add(factory.getOWLClass(IRI.create(nameSpace+sm.getName().replaceAll(" ", "_"))));
+				manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointClassesAxiom(lst)));
 				lst.remove(lst.size()-1);
 			}			
 		}
@@ -744,7 +907,13 @@ public class Transformer {
 			int cont = 0;
 			//Search for other instances of this material
 			for(MaterialAssociation ma:ontoParser.getAllInstances(MaterialAssociation.class)){
-				if(ass.getName().equals(ma.getName())){
+				String materialName = "";
+				if(ma.getName() == null){
+					materialName = "material."+ma.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ma.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
+				}else{
+					materialName = ma.getName();
+				}
+				if(propName.equals(materialName)){
 					cont++;
 					if(cont >= 2)
 						break;
@@ -753,7 +922,10 @@ public class Transformer {
 			if(cont >= 2){
 				//If has some object with the equal name
 				_lstMaterialAssociations.add(prop);
-				_lstMaterialAssociations.add(invProp);
+
+				//Make the inverse property disjoint of the property
+				//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
+
 				//set that the inverse property is the inverse of the property
 				manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
 				createMaterialAssociation(ass);
@@ -784,7 +956,9 @@ public class Transformer {
 
 		//Add from the global list of the mediations
 		_lstMaterialAssociations.add(prop);
-		_lstMaterialAssociations.add(invProp);
+
+		//Make the inverse property disjoint of the property
+		//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
 	}
 
 	private void processRelations(Association src, String propName, int side, boolean inverse) {
@@ -1027,7 +1201,10 @@ public class Transformer {
 			if(cont >= 2){
 				//If has some object with the equal name
 				_lstMediationAssociations.add(prop);
-				_lstMediationAssociations.add(invProp);
+
+				//Make the inverse property disjoint of the property
+				//				manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
+
 				//set that the inverse property is the inverse of the property
 				manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
 				return createMediationAssociation(ass);
@@ -1057,7 +1234,9 @@ public class Transformer {
 
 		//Add from the global list of the mediations
 		_lstMediationAssociations.add(prop);
-		_lstMediationAssociations.add(invProp);
+
+		//Make the inverse property disjoint of the property
+		//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
 
 		return propName;
 	}
@@ -1185,7 +1364,9 @@ public class Transformer {
 
 	private void createRelation_componentOf(){
 		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"componentOf")));
-		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.componentOf")));
+
+		//Make the inverse property disjoint of the property
+		//manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(factory.getOWLObjectProperty(IRI.create(nameSpace+"componentOf")),factory.getOWLObjectProperty(IRI.create(nameSpace+"INV.componentOf")))));
 
 		OWLObjectProperty rel = factory.getOWLObjectProperty(IRI.create(nameSpace+"componentOf"));
 
@@ -1257,42 +1438,35 @@ public class Transformer {
 	}
 
 	private void processAxioms(){
-		Iterator<OWLAxiom> itr = ontology.getAxioms().iterator();
-
-
-
 		for(OWLClass c : ontology.getClassesInSignature()){
-			Set<OWLEquivalentClassesAxiom> eqClsLst = new HashSet<OWLEquivalentClassesAxiom>();
 
-			for(OWLEquivalentClassesAxiom ax : ontology.getEquivalentClassesAxioms(c)){
-					eqClsLst.add((OWLEquivalentClassesAxiom)ax);
+			Set<OWLClassExpression> eqClsExpr = new HashSet<OWLClassExpression>();
+			Set<OWLClassExpression> dsjClsExpr = new HashSet<OWLClassExpression>();
+			
+			Set<OWLClassAxiom> setAxs = ontology.getAxioms(c);
+			Iterator<OWLClassAxiom> itr = setAxs.iterator();
+			
+			while(itr.hasNext()) {
+				OWLClassAxiom ax = itr.next();
+				if(ax instanceof OWLEquivalentClassesAxiom){
+					OWLNaryClassAxiom nax = (OWLNaryClassAxiom)ax;
+					eqClsExpr.addAll(nax.getClassExpressions());
 					manager.removeAxiom(ontology, ax);
+				} else if(ax instanceof OWLDisjointClassesAxiom){
+					OWLNaryClassAxiom nax = (OWLNaryClassAxiom)ax;
+					dsjClsExpr.addAll(nax.getClassExpressions());
+					manager.removeAxiom(ontology, ax);
+				}
 			}
 
-//			manager.applyChange(new AddAxiom(ontology, eqClsLst));
-
+			if(eqClsExpr.size() > 1){
+				OWLObjectIntersectionOf oi = factory.getOWLObjectIntersectionOf(eqClsExpr);
+				OWLEquivalentClassesAxiom eqAx = factory.getOWLEquivalentClassesAxiom(c, oi);
+				manager.applyChange(new AddAxiom(ontology, eqAx));
+			}
+			if(dsjClsExpr.size() > 1){
+				manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointClassesAxiom(dsjClsExpr)));
+			}
 		}
-
-
-
-
-
-		//		while(itr.hasNext()) {
-		//			OWLAxiom ax = itr.next();
-		//			if(ax instanceof OWLAnnotationAssertionAxiom){
-		//				continue;
-		//			}
-		//			
-		//			for(OWLClass cls : ax.getClassesInSignature()){
-		//				
-		//				
-		//				if(cls.toString().contains("Letter_")){
-		//					System.out.println("{Class: "+cls.toString());
-		//					System.out.println(ax.toString()+"}");
-		//				}
-		//			}
-		//			
-		//		}
-
 	}
 }
