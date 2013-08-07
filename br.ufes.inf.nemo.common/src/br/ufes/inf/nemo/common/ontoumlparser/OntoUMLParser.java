@@ -120,8 +120,9 @@ public class OntoUMLParser {
 	 * Should me more of a description here...
 	 */
 	public void removeElement(EObject obj)
-	{		
-		this.elementsHash.remove(obj);				
+	{	
+		this.elementsHash.remove(obj);
+		EcoreUtil.remove(obj);
 	}
 	
 	/**
