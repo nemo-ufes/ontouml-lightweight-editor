@@ -357,7 +357,7 @@ public class EditClassDialog extends JDialog {
 		if(classNameText.getText().trim().length() > 0)
 			classElement.getClassifier().setName(classNameText.getText().trim());
 		else
-			classElement.getClassifier().setName(null);
+			classElement.getClassifier().setName("");
 		
 		classElement.getClassifier().setIsAbstract(abstractCheck.isSelected());
 		
