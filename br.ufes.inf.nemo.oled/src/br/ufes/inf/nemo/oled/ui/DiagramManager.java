@@ -889,7 +889,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		else result = "No association can be inferred from the model!";
 		
-		ModelTree.getInferences(getCurrentProject()).addAll(generatedCompositions);
+		ModelTree.getInferences(getCurrentProject()).getInferredElements().addAll(allGenerated);
 		
 		getCurrentWrapper().showOutputText(result, true, true);
 	}

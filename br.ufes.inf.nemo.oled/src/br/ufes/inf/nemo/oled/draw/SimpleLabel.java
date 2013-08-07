@@ -91,7 +91,12 @@ public class SimpleLabel extends AbstractNode implements Label {
 	 */
 	public void recalculateSize(DrawingContext drawingContext) {
 		FontMetrics fm = drawingContext.getFontMetrics(fontType);
-		setSize(fm.stringWidth(getNameLabelText()), fm.getHeight());
+		
+		String text = getNameLabelText();
+		
+		if (text!=null) setSize(fm.stringWidth(text), fm.getHeight());
+		else setSize(0,fm.getHeight());
+		
 		valid = true;
 	}
 

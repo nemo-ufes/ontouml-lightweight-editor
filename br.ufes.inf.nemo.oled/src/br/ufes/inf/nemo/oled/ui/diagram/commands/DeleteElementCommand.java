@@ -25,6 +25,9 @@ import java.util.List;
 
 import org.eclipse.emf.edit.command.DeleteCommand;
 
+import RefOntoUML.Element;
+import RefOntoUML.NamedElement;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
@@ -93,11 +96,16 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	public void run() {
 
 		for (DiagramElement element : elements) {
+			
 			if (element instanceof Connection) {
 				detachConnectionFromNodes((Connection) element);
 			}
 			else if (element instanceof Node) {
-				detachNodeConnections((Node) element);
+				Collection<DiagramElement> detachedConnections = detachNodeConnections((Node) element);
+				
+				//Recursively calls the delete command for the detached connections
+				DeleteElementCommand delete = new DeleteElementCommand(notification, detachedConnections, project);
+				delete.run();
 			}
 			
 			//Removes the element from model
@@ -121,6 +129,29 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			if(element instanceof BaseConnection || element instanceof ClassElement) {				
 				element.getParent().removeChild(element);
 				notification.notifyChange((List<DiagramElement>) elements, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);
+				
+				
+				//FIXME -- Removes the inferred elements. After creating the visual objects, use the delete command.
+				
+				ArrayList<Element> inferred = ModelTree.getInferences(project).getInferredElements();
+				NamedElement removedElement = null;
+				
+				if(element instanceof BaseConnection) {
+					BaseConnection con = (BaseConnection) element;
+					removedElement = con.getClassifier();
+				}
+				
+				if(element instanceof ClassElement) {
+					ClassElement classElement = (ClassElement) element;
+					removedElement = classElement.getClassifier();
+				}
+					
+				inferred.remove(removedElement);
+				
+				OntoUMLParser parser = ModelTree.getParserFor(project);
+				for (Element e : inferred) {
+					parser.removeElement(e);
+				}
 				
 				// FIXME every modification creates a new tree
 				ModelTree.updateModelTree(project);		
@@ -171,8 +202,12 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * 
 	 * @param node
 	 *            the node that is removed
+	 * @return TODO
 	 */
-	private void detachNodeConnections(Node node) {
+	private Collection<DiagramElement> detachNodeConnections(Node node) {
+		ArrayList<DiagramElement> detachedConnections = new ArrayList<>();
+		detachedConnections.addAll(node.getConnections());
+		
 		for (Connection conn : node.getConnections()) {
 			if (conn.getNode1() != node)
 				conn.getNode1().removeConnection(conn);
@@ -180,6 +215,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				conn.getNode2().removeConnection(conn);
 			conn.getParent().removeChild(conn);
 		}
+		
+		return detachedConnections;
 	}
 
 	/**

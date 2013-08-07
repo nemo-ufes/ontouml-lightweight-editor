@@ -163,6 +163,23 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	    			}	
 	    		}
 	    		
+	    		String node1Name = node1Property.getType().getName();
+	    		
+	    		if(node1Name==null || node1Name.trim().isEmpty())
+	    			node1Name = "source";
+	    		else
+	    			node1Name = node1Name.trim().toLowerCase();
+	    		
+	    		String node2Name = node2Property.getType().getName();
+	    		
+	    		if(node2Name==null || node2Name.trim().isEmpty())
+	    			node2Name = "target";
+	    		else
+	    			node2Name = node2Name.trim().toLowerCase();
+	    		
+	    		node1Property.setName(node1Name);
+	    		node2Property.setName(node2Name);
+	    		
 	    		association.getOwnedEnd().add(node1Property);
 	    		association.getOwnedEnd().add(node2Property);
 	    		

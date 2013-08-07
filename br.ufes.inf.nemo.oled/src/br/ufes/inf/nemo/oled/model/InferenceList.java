@@ -2,29 +2,29 @@ package br.ufes.inf.nemo.oled.model;
 
 import java.util.ArrayList;
 
-import RefOntoUML.componentOf;
+import RefOntoUML.Element;
 
 public class InferenceList {
 
-	private ArrayList<componentOf> inferredComponentOf;
+	private ArrayList<Element> inferredElement;
 	
-	public InferenceList(ArrayList<componentOf> inferredComponentOf){
-		this.inferredComponentOf = inferredComponentOf;
+	public InferenceList(ArrayList<Element> inferredElements){
+		this.inferredElement = inferredElements;
 	}
 	
 	public InferenceList(){
-		this.inferredComponentOf = new ArrayList<>();
+		this.inferredElement = new ArrayList<>();
 	}
 
-	public ArrayList<componentOf> getInferredComponentOf() {
-		return inferredComponentOf;
+	public ArrayList<Element> getInferredElements() {
+		return inferredElement;
 	}
 
-	public void setDerivedCompositions(ArrayList<componentOf> inferredComponentOf) {
-		this.inferredComponentOf = inferredComponentOf;
+	public void setInferredElements(ArrayList<Element> inferredElements) {
+		this.inferredElement = inferredElements;
 	}
 	
-	public void addAll (ArrayList<componentOf> inferredComponentOf){
-		this.inferredComponentOf.addAll(inferredComponentOf);
+	public void addAll (ArrayList<Element> inferredElements){
+		this.inferredElement.addAll(inferredElements);
 	}
 }
