@@ -796,20 +796,23 @@ public class Transformer {
 	{
 		for(Association assoc: ontoparser.getAllInstances(Association.class))
 		{
-			VariableReference source = factory.createVariableReference();
-			VariableReference target = factory.createVariableReference();
-			int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;		
-			Property Source = assoc.getMemberEnd().get(0);
-			Property Target = assoc.getMemberEnd().get(1);
-			source.setVariable(ontoparser.getAlias(Source.getType()));				
-			lowerSource = Source.getLower();
-			upperSource = Source.getUpper();	
-			target.setVariable(ontoparser.getAlias(Target.getType()));				
-			lowerTarget = Target.getLower();				
-			upperTarget = Target.getUpper();				
-			ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);
-			Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(assoc), aOp);				
-			if (decl!=null) world.getRelation().add(decl);	
+			if (!(assoc instanceof Derivation))
+			{
+				VariableReference source = factory.createVariableReference();
+				VariableReference target = factory.createVariableReference();
+				int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;		
+				Property Source = assoc.getMemberEnd().get(0);
+				Property Target = assoc.getMemberEnd().get(1);
+				source.setVariable(ontoparser.getAlias(Source.getType()));				
+				lowerSource = Source.getLower();
+				upperSource = Source.getUpper();	
+				target.setVariable(ontoparser.getAlias(Target.getType()));				
+				lowerTarget = Target.getLower();				
+				upperTarget = Target.getUpper();				
+				ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);
+				Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(assoc), aOp);				
+				if (decl!=null) world.getRelation().add(decl);
+			}
 		}
 	}
 	
