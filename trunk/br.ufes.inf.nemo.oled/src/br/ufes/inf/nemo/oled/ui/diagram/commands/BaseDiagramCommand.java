@@ -15,4 +15,13 @@ public abstract class BaseDiagramCommand extends AbstractUndoableEdit implements
 	protected DiagramNotification notification;
 	protected boolean redo = false;
 	protected UmlProject project;
+	
+	public DiagramNotification getNotification() {
+		return notification;
+	}
+	
+	public UmlProject getProject() {
+		return project;
+	}
+	
 }

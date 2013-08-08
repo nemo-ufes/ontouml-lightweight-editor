@@ -427,7 +427,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			currentEditor = multilineEditor;
 		}
 		
-		//O problema está aqui. É necessário veirificar o modo do editor
+		//O problema estï¿½ aqui. ï¿½ necessï¿½rio veirificar o modo do editor
 		if (currentEditor != null && currentEditor.isVisible()) {
 			String text = currentEditor.getText();
 			Label label = currentEditor.getLabel();
@@ -740,6 +740,28 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * @param command the command to run
 	 */
 	public void execute(Command command) {
+		
+		//DeleteCommands may delete elements which must cascade the deletion to others. 
+		//It is the case for Classes and associations and generalizations connected to them.
+		if (command instanceof DeleteElementCommand){
+			
+			DeleteElementCommand delete = (DeleteElementCommand) command;
+			for (DiagramElement elem : delete.getElements()) {
+				
+				if(elem instanceof Node){
+					
+					Collection<DiagramElement> dependencies = new ArrayList<>();
+					dependencies.addAll(((Node)elem).getConnections());
+					
+					for (DiagramElement diagramElement : dependencies) {
+						Collection<DiagramElement> removeList = new ArrayList<>();
+						removeList.add(diagramElement);
+						execute(new DeleteElementCommand(delete.getNotification(), removeList, delete.getProject()));
+					}		
+				}
+			}
+		}
+		
 		UndoableEditEvent event = new UndoableEditEvent(this, command);
 		for (UndoableEditListener l : editListeners) {
 			l.undoableEditHappened(event);
@@ -750,6 +772,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		command.run();
 		
 		diagramManager.updateUI();
+		
 	}
 
 	/*

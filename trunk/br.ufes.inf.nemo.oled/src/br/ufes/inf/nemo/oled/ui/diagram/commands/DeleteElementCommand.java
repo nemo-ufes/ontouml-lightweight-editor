@@ -26,7 +26,6 @@ import java.util.List;
 import org.eclipse.emf.edit.command.DeleteCommand;
 
 import RefOntoUML.Element;
-import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.Connection;
@@ -90,6 +89,10 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		}
 	}
 
+	public Collection<DiagramElement> getElements() {
+		return elements;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -100,13 +103,12 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			if (element instanceof Connection) {
 				detachConnectionFromNodes((Connection) element);
 			}
-			else if (element instanceof Node) {
-				Collection<DiagramElement> detachedConnections = detachNodeConnections((Node) element);
-				
-				//Recursively calls the delete command for the detached connections
-				DeleteElementCommand delete = new DeleteElementCommand(notification, detachedConnections, project);
-				delete.run();
-			}
+			
+			//FIXME In the execute method whithin the DiagramEditor, previously to deleting a class, it deletes all the nodes connections.
+			// So this part of the code is no longer needed.
+			/*else if (element instanceof Node) {
+				detachNodeConnections((Node) element);
+			}*/
 			
 			//Removes the element from model
 			if(element instanceof ClassElement)
@@ -134,19 +136,6 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				//FIXME -- Removes the inferred elements. After creating the visual objects, use the delete command.
 				
 				ArrayList<Element> inferred = ModelTree.getInferences(project).getInferredElements();
-				NamedElement removedElement = null;
-				
-				if(element instanceof BaseConnection) {
-					BaseConnection con = (BaseConnection) element;
-					removedElement = con.getClassifier();
-				}
-				
-				if(element instanceof ClassElement) {
-					ClassElement classElement = (ClassElement) element;
-					removedElement = classElement.getClassifier();
-				}
-					
-				inferred.remove(removedElement);
 				
 				OntoUMLParser parser = ModelTree.getParserFor(project);
 				for (Element e : inferred) {
