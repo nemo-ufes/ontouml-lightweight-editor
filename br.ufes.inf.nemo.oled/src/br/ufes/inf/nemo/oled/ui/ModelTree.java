@@ -22,11 +22,12 @@ import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.model.InferenceList;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 
 //FIXME REDO this implementation
-public class ModelTree extends JPanel {
+public class ModelTree extends JPanel{
 
 	private static final long serialVersionUID = 5598591779372431118L;
 	
@@ -34,7 +35,6 @@ public class ModelTree extends JPanel {
 	private static Map<UmlProject, ModelTree> treeMap = new HashMap<UmlProject, ModelTree>();
 	
 	private JScrollPane scroll;
-	
 	private OntoUMLTree tree; 
 	private UmlProject project;	
 	private OntoUMLParser refparser;	
