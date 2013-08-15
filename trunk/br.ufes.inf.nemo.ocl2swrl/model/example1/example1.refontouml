@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_QLQ0YP4bEeKkZoau0Ibafg" name="EA_Model" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_QLQ0Yf4bEeKkZoau0Ibafg" name="Integer"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_QLQ0Yv4bEeKkZoau0Ibafg" name="String"/>
+  <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_QLQ0Y_4bEeKkZoau0Ibafg" name="OCL Example 1" visibility="public">
+    <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_QLQ0ZP4bEeKkZoau0Ibafg" name="Bike" visibility="public">
+      <generalization xmi:id="_QLQ0Zf4bEeKkZoau0Ibafg" general="_QLQ0b_4bEeKkZoau0Ibafg" generalizationSet="_QLQ0e_4bEeKkZoau0Ibafg"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_QLQ0Zv4bEeKkZoau0Ibafg" name="Car" visibility="public">
+      <generalization xmi:id="_QLQ0Z_4bEeKkZoau0Ibafg" general="_QLQ0b_4bEeKkZoau0Ibafg" generalizationSet="_QLQ0e_4bEeKkZoau0Ibafg"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_QLQ0aP4bEeKkZoau0Ibafg" name="Person" visibility="public">
+      <ownedAttribute xmi:id="_QLQ0af4bEeKkZoau0Ibafg" name="age" visibility="private" type="_QLQ0Yf4bEeKkZoau0Ibafg">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_QLQ0av4bEeKkZoau0Ibafg" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_QLQ0a_4bEeKkZoau0Ibafg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_QLQ0bP4bEeKkZoau0Ibafg" name="name" visibility="private" type="_QLQ0Yv4bEeKkZoau0Ibafg">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_QLQ0bf4bEeKkZoau0Ibafg" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_QLQ0bv4bEeKkZoau0Ibafg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_QLQ0b_4bEeKkZoau0Ibafg" name="Vehicle" visibility="public">
+      <ownedAttribute xmi:id="_QLQ0cP4bEeKkZoau0Ibafg" name="colour" visibility="private" type="_QLQ0c_4bEeKkZoau0Ibafg">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_QLQ0cf4bEeKkZoau0Ibafg" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_QLQ0cv4bEeKkZoau0Ibafg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Enumeration" xmi:id="_QLQ0c_4bEeKkZoau0Ibafg" name="Colour" visibility="public"/>
+    <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_QLQ0dP4bEeKkZoau0Ibafg" name="ownership" visibility="public" memberEnd="_QLQ0df4bEeKkZoau0Ibafg _QLQ0eP4bEeKkZoau0Ibafg">
+      <ownedEnd xmi:id="_QLQ0df4bEeKkZoau0Ibafg" name="fleet" visibility="public" type="_QLQ0b_4bEeKkZoau0Ibafg" association="_QLQ0dP4bEeKkZoau0Ibafg">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_QLQ0dv4bEeKkZoau0Ibafg" value="-1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_QLQ0d_4bEeKkZoau0Ibafg"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_QLQ0eP4bEeKkZoau0Ibafg" name="owner" visibility="public" type="_QLQ0aP4bEeKkZoau0Ibafg" association="_QLQ0dP4bEeKkZoau0Ibafg">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_QLQ0ef4bEeKkZoau0Ibafg" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_QLQ0ev4bEeKkZoau0Ibafg" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_QLQ0e_4bEeKkZoau0Ibafg" visibility="public" isCovering="true" isDisjoint="true" generalization="_QLQ0Zf4bEeKkZoau0Ibafg _QLQ0Z_4bEeKkZoau0Ibafg">
+      <name xsi:nil="true"/>
+    </packagedElement>
+  </packagedElement>
+  <viewpoint xsi:nil="true"/>
+</RefOntoUML:Model>

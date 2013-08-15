@@ -1,0 +1,13 @@
+
+package EA_Model
+
+context Car
+inv: self.owner.age >= 18
+
+context Person
+inv: self.fleet->size() <= 3
+
+context Person
+inv: self.fleet->forAll(v | v.colour = 1)
+
+endpackage
