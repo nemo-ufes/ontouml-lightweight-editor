@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Package xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_RPLiUAXYEeO0goEBqDD1wA" name="EA_Model">
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_RPLiUQXYEeO0goEBqDD1wA" name="Integer"/>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_RPLiUgXYEeO0goEBqDD1wA" name="String"/>
-  <packagedElement xmi:type="uml:Enumeration" xmi:id="_RPLiUwXYEeO0goEBqDD1wA" name="Colour"/>
-  <packagedElement xmi:type="uml:Class" xmi:id="_RPMJYAXYEeO0goEBqDD1wA" name="Bike">
-    <generalization xmi:id="_RPMJYQXYEeO0goEBqDD1wA" general="_RPMJbgXYEeO0goEBqDD1wA" generalizationSet="_RPMJdgXYEeO0goEBqDD1wA"/>
+<uml:Package xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_sD-g0AakEeONgvh8s5TAsw" name="EA_Model">
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_sD-g0QakEeONgvh8s5TAsw" name="Integer"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_sD-g0gakEeONgvh8s5TAsw" name="String"/>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_sD-g0wakEeONgvh8s5TAsw" name="Colour"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_sD-g1AakEeONgvh8s5TAsw" name="Bike">
+    <generalization xmi:id="_sD-g1QakEeONgvh8s5TAsw" general="_sD-g4gakEeONgvh8s5TAsw" generalizationSet="_sD-g6gakEeONgvh8s5TAsw"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_RPMJYgXYEeO0goEBqDD1wA" name="Car">
-    <generalization xmi:id="_RPMJYwXYEeO0goEBqDD1wA" general="_RPMJbgXYEeO0goEBqDD1wA" generalizationSet="_RPMJdgXYEeO0goEBqDD1wA"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_sD-g1gakEeONgvh8s5TAsw" name="Car">
+    <generalization xmi:id="_sD-g1wakEeONgvh8s5TAsw" general="_sD-g4gakEeONgvh8s5TAsw" generalizationSet="_sD-g6gakEeONgvh8s5TAsw"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_RPMJZAXYEeO0goEBqDD1wA" name="Person">
-    <ownedAttribute xmi:id="_RPMJZQXYEeO0goEBqDD1wA" name="age" visibility="private" type="_RPLiUQXYEeO0goEBqDD1wA">
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RPMJZgXYEeO0goEBqDD1wA" value="1"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RPMJZwXYEeO0goEBqDD1wA" value="1"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_sD-g2AakEeONgvh8s5TAsw" name="Person">
+    <ownedAttribute xmi:id="_sD-g2QakEeONgvh8s5TAsw" name="age" visibility="private" type="_sD-g0QakEeONgvh8s5TAsw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sD-g2gakEeONgvh8s5TAsw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sD-g2wakEeONgvh8s5TAsw" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_RPMJaAXYEeO0goEBqDD1wA" name="name" visibility="private" type="_RPLiUgXYEeO0goEBqDD1wA">
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RPMJaQXYEeO0goEBqDD1wA" value="1"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RPMJagXYEeO0goEBqDD1wA" value="1"/>
+    <ownedAttribute xmi:id="_sD-g3AakEeONgvh8s5TAsw" name="name" visibility="private" type="_sD-g0gakEeONgvh8s5TAsw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sD-g3QakEeONgvh8s5TAsw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sD-g3gakEeONgvh8s5TAsw" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_RPMJawXYEeO0goEBqDD1wA" name="fleet" visibility="public" type="_RPMJbgXYEeO0goEBqDD1wA" association="_RPMJdQXYEeO0goEBqDD1wA">
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RPMJbAXYEeO0goEBqDD1wA" value="*"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RPMJbQXYEeO0goEBqDD1wA"/>
-    </ownedAttribute>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_RPMJbgXYEeO0goEBqDD1wA" name="Vehicle">
-    <ownedAttribute xmi:id="_RPMJbwXYEeO0goEBqDD1wA" name="colour" visibility="private" type="_RPLiUwXYEeO0goEBqDD1wA">
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RPMJcAXYEeO0goEBqDD1wA" value="1"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RPMJcQXYEeO0goEBqDD1wA" value="1"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_RPMJcgXYEeO0goEBqDD1wA" name="owner" visibility="public" type="_RPMJZAXYEeO0goEBqDD1wA" association="_RPMJdQXYEeO0goEBqDD1wA">
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RPMJcwXYEeO0goEBqDD1wA" value="1"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RPMJdAXYEeO0goEBqDD1wA" value="1"/>
+    <ownedAttribute xmi:id="_sD-g3wakEeONgvh8s5TAsw" name="fleet" visibility="public" type="_sD-g4gakEeONgvh8s5TAsw" association="_sD-g6QakEeONgvh8s5TAsw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sD-g4AakEeONgvh8s5TAsw" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sD-g4QakEeONgvh8s5TAsw"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_RPMJdQXYEeO0goEBqDD1wA" name="ownership" memberEnd="_RPMJawXYEeO0goEBqDD1wA _RPMJcgXYEeO0goEBqDD1wA"/>
-  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_RPMJdgXYEeO0goEBqDD1wA" isCovering="true" isDisjoint="true" generalization="_RPMJYQXYEeO0goEBqDD1wA _RPMJYwXYEeO0goEBqDD1wA">
+  <packagedElement xmi:type="uml:Class" xmi:id="_sD-g4gakEeONgvh8s5TAsw" name="Vehicle">
+    <ownedAttribute xmi:id="_sD-g4wakEeONgvh8s5TAsw" name="colour" visibility="private" type="_sD-g0wakEeONgvh8s5TAsw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sD-g5AakEeONgvh8s5TAsw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sD-g5QakEeONgvh8s5TAsw" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_sD-g5gakEeONgvh8s5TAsw" name="owner" visibility="public" type="_sD-g2AakEeONgvh8s5TAsw" association="_sD-g6QakEeONgvh8s5TAsw">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sD-g5wakEeONgvh8s5TAsw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sD-g6AakEeONgvh8s5TAsw" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_sD-g6QakEeONgvh8s5TAsw" name="ownership" memberEnd="_sD-g3wakEeONgvh8s5TAsw _sD-g5gakEeONgvh8s5TAsw"/>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_sD-g6gakEeONgvh8s5TAsw" isCovering="true" isDisjoint="true" generalization="_sD-g1QakEeONgvh8s5TAsw _sD-g1wakEeONgvh8s5TAsw">
     <name xsi:nil="true"/>
   </packagedElement>
 </uml:Package>
