@@ -132,7 +132,7 @@ public class Transformer {
 
 		//Process the datatypes structured
 		processDataTypeStructured();
-		
+
 		//Make all datatypes from the same mother class, disjoints
 		processDataTypeDisjoint();
 
@@ -165,22 +165,34 @@ public class Transformer {
 			processFormalAssociation(src);
 
 		//Process Part-whole: componentOf
-		if(ontoParser.getAllInstances(componentOf.class).size() > 1)
+		if(ontoParser.getAllInstances(componentOf.class).size() > 1){
 			createRelation_componentOf();
+		}else if (ontoParser.getAllInstances(componentOf.class).size() == 1){
+			//used to make disjoint associations
+			_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"componentOf")));
+		}
 		for(componentOf a : ontoParser.getAllInstances(componentOf.class)){
 			processMeronymic(a, "componentOf");
 		}	
 
 		//Process Part-whole: subCollectionOf 
-		if(ontoParser.getAllInstances(subCollectionOf.class).size() > 1)
+		if(ontoParser.getAllInstances(subCollectionOf.class).size() > 1){
 			createRelation_subCollectionOf();
+		}else if (ontoParser.getAllInstances(subCollectionOf.class).size() == 1){
+			//used to make disjoint associations
+			_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"subCollectionOf")));
+		}
 		for(subCollectionOf a : ontoParser.getAllInstances(subCollectionOf.class)){
 			processMeronymic(a, "subCollectionOf");
 		}
 
 		//Process Part-whole: subQuantityOf 
-		if(ontoParser.getAllInstances(subQuantityOf.class).size() > 1)
+		if(ontoParser.getAllInstances(subQuantityOf.class).size() > 1){
 			createRelation_subQuantityOf();
+		}else if (ontoParser.getAllInstances(subQuantityOf.class).size() == 1){
+			//used to make disjoint associations
+			_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"subQuantityOf")));
+		}
 		for(subQuantityOf a : ontoParser.getAllInstances(subQuantityOf.class)){
 			processMeronymic(a, "subQuantityOf");
 		}
@@ -195,6 +207,9 @@ public class Transformer {
 				//create a relation without the swrl for the subcollectionof
 				createRelation_memberOf_withoutSubCollectionOf();
 			}
+		}else if (ontoParser.getAllInstances(memberOf.class).size() == 1){
+			//used to make disjoint associations
+			_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"memberOf")));
 		}
 		for(memberOf a : ontoParser.getAllInstances(memberOf.class)){
 			processMeronymic(a, "memberOf");
@@ -272,7 +287,7 @@ public class Transformer {
 		}
 
 		//Search for other instances of this formal
-		for(Mediation fa:ontoParser.getAllInstances(Mediation.class)){
+		for(Characterization fa:ontoParser.getAllInstances(Characterization.class)){
 			String formalName = "";
 			if(fa.getName() == null){
 				formalName = "characterization."+fa.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+fa.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
@@ -315,7 +330,10 @@ public class Transformer {
 		//Make the inverse property disjoint of the property
 		manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
 	}
-
+	/**
+	 * Make all associations with different stereotype different
+	 * @param 
+	 */
 	private void processDisjointionOfAssociations() {
 		//		Set<OWLObjectProperty> lst = new HashSet<OWLObjectProperty>();
 
@@ -431,7 +449,10 @@ public class Transformer {
 		//			lst.remove(lst.size()-1);
 		//		}	
 	}
-
+	/**
+	 * This belongs the recursion chain of the datatypes process
+	 * @param 
+	 */
 	private void processDataTypeDisjoint() {
 		Set<OWLDataProperty> lst = new HashSet<OWLDataProperty>();
 		for (Map.Entry<OWLClass,String> entry : _aux_hashClassToDataProperty.entrySet()) {
@@ -562,7 +583,10 @@ public class Transformer {
 		OWLInverseObjectPropertiesAxiom inv = factory.getOWLInverseObjectPropertiesAxiom(factory.getOWLObjectProperty(IRI.create(nameSpace+"subQuantityOf")), rel);
 		manager.applyChange(new AddAxiom(ontology, inv));
 	}
-
+	/**
+	 * Create a party of relation with his respectively swrl
+	 * @param the name of the partyof association
+	 */
 	private void createRelationPartOf_SWRL(String name){
 		OWLObjectProperty rel = factory.getOWLObjectProperty(IRI.create(nameSpace+name));
 
@@ -669,9 +693,13 @@ public class Transformer {
 		manager.applyChange(new AddAxiom(ontology, rule));		
 
 	}
-
+	/**
+	 * Create the relationship between the relator and his associations.
+	 * In this method creates the mediation associations that use the relator src
+	 * 
+	 * @param 
+	 */
 	private void processRelator(Relator src) {
-
 		try {
 			List<MaterialAssociation> lstMaterialAssociation = this.getRelatorMaterials(src);
 			List<Mediation> lstMediation = ontoParser.getRelatorsMediations(src);
@@ -746,7 +774,7 @@ public class Transformer {
 			manager.applyChange(new AddAxiom(ontology, ax));
 		}
 	}
-	
+
 	/**
 	 * Process the chain of the attributes
 	 * @param The actual datatype of the chain
@@ -778,7 +806,7 @@ public class Transformer {
 			}
 		}
 	}
-	
+
 	/**
 	 * Process the chain of the properties
 	 * @param The actual property of the chain
@@ -1089,7 +1117,6 @@ public class Transformer {
 				OWLObjectIntersectionOf oio =  factory.getOWLObjectIntersectionOf(maxcard,mincard);
 				ax = factory.getOWLEquivalentClassesAxiom(ori, oio);
 			}
-
 		}
 
 		if(ax != null){
@@ -1099,8 +1126,6 @@ public class Transformer {
 			manager.applyChange(new AddAxiom(ontology, sax));
 		}
 	}
-
-
 
 	private void processGeneralizationSet(GeneralizationSet src) {
 		if(!src.getGeneralization().isEmpty()){
@@ -1177,7 +1202,6 @@ public class Transformer {
 		}
 	}
 
-
 	private String createMediationAssociation(Association ass) {
 		/*
 		 * If the property has a name
@@ -1242,7 +1266,7 @@ public class Transformer {
 
 		return propName;
 	}
-	
+
 	/**
 	 * Return the OWLDatatype for the range.
 	 * If this is a unknown range, return null
