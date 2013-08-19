@@ -125,6 +125,27 @@ public class Transformer {
 		ontoParser = new OntoUMLParser(ecoreModel);
 		_lstDataType = ontoParser.getAllInstances(RefOntoUML.DataType.class);
 
+//		System.out.println(ontoParser.getAllInstances(RefOntoUML.Association.class).size());
+//		for(RefOntoUML.Association src: ontoParser.getAllInstances(RefOntoUML.Association.class))
+//			{
+//			if(src instanceof RefOntoUML.impl.MediationImpl)
+//				System.out.println("Mediation{ ");
+//			else if(src instanceof RefOntoUML.impl.MeronymicImpl)
+//				System.out.println("Meronymic{ ");
+//			else if(src instanceof RefOntoUML.impl.CharacterizationImpl)
+//				System.out.println("Characterization{ ");
+//			else if(src instanceof RefOntoUML.impl.DerivationImpl)
+//				System.out.println("Derivation{ ");
+//			else if(src instanceof RefOntoUML.impl.FormalAssociationImpl)
+//				System.out.println("Formal{ ");
+//			else if(src instanceof RefOntoUML.impl.MaterialAssociationImpl)
+//				System.out.println("Material{ ");
+//			System.out.println("RefOntoUML.Association: "+src.getName()+" v: "+src.getMemberEnd().get(0).getUpper()+" "+src.getMemberEnd().get(0).getType().getName());
+//			System.out.println("RefOntoUML.Association: "+src.getName()+" v: "+src.getMemberEnd().get(1).getUpper()+" "+src.getMemberEnd().get(1).getType().getName());
+//			System.out.println("}");
+//			}
+		
+		
 		//Class
 		//process each class of refontouml and their datatypes
 		for(RefOntoUML.Class src: ontoParser.getAllInstances(RefOntoUML.Class.class))
@@ -280,7 +301,7 @@ public class Transformer {
 
 		OWLObjectProperty prop,invProp;
 		String propName;
-		if(ass.getName()==null){
+		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
 			propName = "characterization."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 		}else{
 			propName = ass.getName().replaceAll(" ", "_");
@@ -289,7 +310,7 @@ public class Transformer {
 		//Search for other instances of this formal
 		for(Characterization fa:ontoParser.getAllInstances(Characterization.class)){
 			String formalName = "";
-			if(fa.getName() == null){
+			if(fa.getName() == null || fa.getName() == "" || fa.getName() == " "|| fa.getName().length() == 0){
 				formalName = "characterization."+fa.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+fa.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 			}else{
 				formalName = fa.getName().replaceAll(" ", "_");
@@ -487,7 +508,7 @@ public class Transformer {
 
 		OWLObjectProperty prop,invProp;
 		String propName;
-		if(ass.getName()==null){
+		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
 			propName = "formal."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 		}else{
 			propName = ass.getName().replaceAll(" ", "_");
@@ -496,7 +517,7 @@ public class Transformer {
 		//Search for other instances of this formal
 		for(FormalAssociation fa:ontoParser.getAllInstances(FormalAssociation.class)){
 			String formalName = "";
-			if(fa.getName() == null){
+			if(fa.getName() == null || fa.getName() == "" || fa.getName() == " "|| fa.getName().length() == 0){
 				formalName = "formal."+fa.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+fa.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 			}else{
 				formalName = fa.getName().replaceAll(" ", "_");
@@ -548,7 +569,7 @@ public class Transformer {
 	 */
 	private void processMeronymic(Meronymic ass, String propName) {
 		String prop = "", invProp = "";
-		if(ass.getName()==null){
+		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " "){
 			prop = propName+"."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"); 
 			invProp = "INV."+propName+"."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 		}else{
@@ -740,7 +761,11 @@ public class Transformer {
 		}
 
 	}
-
+	/**
+	 * After processed the datatype structureds in string, we create the owl objects
+	 * 
+	 * @param 
+	 */
 	private void processDataTypeStructured() {
 		for(String s:_lstDataTypeAttributes){
 			//Normative_Act#publication_date.day:Integer
@@ -782,7 +807,6 @@ public class Transformer {
 	//semi-globals variables, used in the context of the recursion chain
 	private String dt_atual = "";
 	private OWLDatatype _aux_tipoAtributo = null;
-
 	private void processDataTypeAttributo(DataType src) {
 		String range;
 		OWLDatatype dt = null;
@@ -826,7 +850,10 @@ public class Transformer {
 			}
 		}
 	}
-
+	/**
+	 * Create the swrl for an relator that have a material association between two of his mediations. 
+	 * @param 
+	 */
 	private void createSWRLforRelator(String mediation0, String mediation1, MaterialAssociation material, Relator relator) {
 		try {
 			OWLClass cA = factory.getOWLClass(IRI.create(nameSpace+material.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")));
@@ -844,7 +871,13 @@ public class Transformer {
 			OWLObjectProperty propMediation0 = factory.getOWLObjectProperty(IRI.create(nameSpace+mediation0));
 			OWLObjectProperty propMediation1 = factory.getOWLObjectProperty(IRI.create(nameSpace+mediation1));
 
-			OWLObjectProperty propMaterial = factory.getOWLObjectProperty(IRI.create(nameSpace+material.getName().replaceAll(" ", "_")));
+			String propName;
+			if(material.getName()==null || material.getName() == "" || material.getName() == " " || material.getName().length() == 0){
+				propName = "material."+material.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+material.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
+			}else{
+				propName = material.getName().replaceAll(" ", "_");
+			}
+			OWLObjectProperty propMaterial = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
 
 			//SWRL
 
@@ -884,7 +917,14 @@ public class Transformer {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * Grounded in the UFO's rules, we make:
+	 * - All the substancesortal are differents from each other
+	 * - Every substancesortal are differents from every top level moment
+	 * - Every Top level moment are differents from each other
+	 * - Every top level mixinclass is disjoint from every top level moment
+	 * @param 
+	 */
 	private void processDifferentsClass() {
 		Set<SubstanceSortal> setSortal = ontoParser.getAllInstances(SubstanceSortal.class);
 		Set<MomentClass> setMoment = ontoParser.getAllInstances(MomentClass.class);
@@ -941,7 +981,10 @@ public class Transformer {
 			}			
 		}
 	}
-
+	/**
+	 * Make the sons class subClassOf her father class 
+	 * @param 
+	 */
 	private void processGeneralization(Generalization src) {
 		OWLClass father = factory.getOWLClass(IRI.create(nameSpace+src.getGeneral().getName().replaceAll(" ", "_")));        
 		OWLClass ontSon = factory.getOWLClass(IRI.create(nameSpace+src.getSpecific().getName().replaceAll(" ", "_")));					
@@ -950,7 +993,11 @@ public class Transformer {
 		_lstOWLSubClassOfAxiom.add(factory.getOWLSubClassOfAxiom(ontSon,father));
 		manager.applyChange(new AddAxiom(ontology, axiom));	
 	}
-
+	/**
+	 * Create the material association like a OWLObjectProperty.
+	 * If the ass dosen't has a name. Her name will be material.ClassSrc.ClassDest
+	 * @param 
+	 */
 	private void createMaterialAssociation(MaterialAssociation ass) {
 		/*
 		 * If the property has a name
@@ -963,7 +1010,7 @@ public class Transformer {
 
 		OWLObjectProperty prop,invProp;
 		String propName;
-		if(ass.getName()==null){
+		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
 			propName = "material."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 		}else{
 			propName = ass.getName().replaceAll(" ", "_");
@@ -972,7 +1019,7 @@ public class Transformer {
 		//Search for other instances of this formal
 		for(MaterialAssociation fa:ontoParser.getAllInstances(MaterialAssociation.class)){
 			String formalName = "";
-			if(fa.getName() == null){
+			if(fa.getName() == null || fa.getName() == "" || fa.getName() == " " || fa.getName().length() == 0){
 				formalName = "material."+fa.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+fa.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 			}else{
 				formalName = fa.getName().replaceAll(" ", "_");
@@ -1013,7 +1060,12 @@ public class Transformer {
 		//Make the inverse property disjoint of the property
 		manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
 	}
-
+	/**
+	 * Create the cardinality for the association. 
+	 * The parameter side represents the side of the association src in turn.
+	 * The inverse parameter is a flag for inform if is the normal association or his inverse. 
+	 * @param 
+	 */
 	private void processRelations(Association src, String propName, int side, boolean inverse) {
 		int upperCard = src.getMemberEnd().get(side).getUpper();
 		int lowerCard = src.getMemberEnd().get(side).getLower();
@@ -1065,7 +1117,13 @@ public class Transformer {
 			manager.applyChange(new AddAxiom(ontology, sax));
 		}
 	}
-
+	/**
+	 * Create the cardinality for the association. 
+	 * The parameter side represents the side of the association src in turn.
+	 * The inverse parameter is a flag for inform if is the normal association or his inverse. 
+	 * This method put a meronymic association like a son of his father meronymic association
+	 * @param 
+	 */
 	private void processRelationMeronymic(Association src, String relName, String propName, int side, boolean inverse) {
 		int upperCard = src.getMemberEnd().get(side).getUpper();
 		int lowerCard = src.getMemberEnd().get(side).getLower();
@@ -1126,7 +1184,10 @@ public class Transformer {
 			manager.applyChange(new AddAxiom(ontology, sax));
 		}
 	}
-
+	/**
+	 * Process the generalizationset putting his stereotypes (disjoint and/or complete)
+	 * @param 
+	 */
 	private void processGeneralizationSet(GeneralizationSet src) {
 		if(!src.getGeneralization().isEmpty()){
 			if((src.isIsDisjoint() && src.isIsCovering()) || src.getGeneralization().get(0).getSpecific() instanceof Phase){
@@ -1144,7 +1205,10 @@ public class Transformer {
 			}		
 		}
 	}
-
+	/**
+	 * This method is called by the processGeneralizationSet setted with his boolean parameter disjoint and complete
+	 * @param 
+	 */
 	private void processGeneralization(EList<Generalization> genSet, boolean disjoint, boolean complete) {
 		Set<OWLClass> lst = new HashSet<OWLClass>();
 
@@ -1201,7 +1265,11 @@ public class Transformer {
 			createAttributes(src);
 		}
 	}
-
+	/**
+	 * Create the mediation association like a OWLObjectProperty.
+	 * If the ass dosen't has a name. Her name will be mediation.ClassSrc.ClassDest
+	 * @param 
+	 */
 	private String createMediationAssociation(Association ass) {
 		/*
 		 * If the property has a name
@@ -1214,7 +1282,7 @@ public class Transformer {
 
 		OWLObjectProperty prop,invProp;
 		String propName;
-		if(ass.getName()==null){
+		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
 			propName = "mediation."+ass.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ass.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 		}else{
 			propName = ass.getName().replaceAll(" ", "_");
@@ -1223,7 +1291,7 @@ public class Transformer {
 		//Search for other instances of this formal
 		for(Mediation fa:ontoParser.getAllInstances(Mediation.class)){
 			String formalName = "";
-			if(fa.getName() == null){
+			if(fa.getName() == null || fa.getName() == "" || fa.getName() == " "|| fa.getName().length() == 0){
 				formalName = "mediation."+fa.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+fa.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_");
 			}else{
 				formalName = fa.getName().replaceAll(" ", "_");
@@ -1401,7 +1469,10 @@ public class Transformer {
 		}
 		return lst;
 	}
-
+	/**
+	 * Create the SWRL for the componentOf relation
+	 * @param 
+	 */
 	private void createRelation_componentOf(){
 		_lstPartofAssociations.add(factory.getOWLObjectProperty(IRI.create(nameSpace+"componentOf")));
 
@@ -1449,7 +1520,11 @@ public class Transformer {
 		SWRLRule rule = factory.getSWRLRule(antecedent,consequent);		
 		manager.applyChange(new AddAxiom(ontology, rule));
 	}
-
+	/**
+	 * Create the annotation present in the RefOntoUML.
+	 * Create annotations for the ontology, class and dataproperty
+	 * @param 
+	 */
 	private void processAnnotation(){
 		for(PackageableElement p : ontoParser.getAllInstances(PackageableElement.class)){
 			if(p.getOwnedComment() != null && !p.getOwnedComment().isEmpty()){
@@ -1476,7 +1551,11 @@ public class Transformer {
 			}
 		}
 	}
-
+	/**
+	 * This is a pos-method.
+	 * It put all equivalentClass, disjointClass and subClassOf axioms from a class in just one axiom
+	 * @param 
+	 */
 	private void processAxioms(){
 		for(OWLClass c : ontology.getClassesInSignature()){
 
