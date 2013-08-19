@@ -69,7 +69,7 @@ public class OntoUML2OWL {
 	}
 
 	public static void main(String[] args) {
-		String ret = OntoUML2OWL.Transformation(intialize(new File("TesteWithRoles.refontouml")), "http://abcd/ontology/");
+		String ret = OntoUML2OWL.Transformation(intialize(new File("Fabiano.refontouml")), "http://abcd/ontology/");
 		File arquivo;   
 
 		arquivo = new File("arquivo.owl");  // Chamou e nomeou o arquivo txt.  
