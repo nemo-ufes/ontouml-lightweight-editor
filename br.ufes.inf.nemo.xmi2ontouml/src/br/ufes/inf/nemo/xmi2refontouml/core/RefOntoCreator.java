@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.xmi2refontouml.core;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -293,7 +292,6 @@ public class RefOntoCreator {
 			dealClassifier(dt, hashProp);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void dealAssociation(RefOntoUML.Association assoc1, Map<String, Object> hashProp) {
 		try {
 			// Specific properties of Meronymic associations.
@@ -312,10 +310,6 @@ public class RefOntoCreator {
     	} catch (ClassCastException e) {
     		// DO NOTHING
     	}
-
-		assoc1.getMemberEnd().removeAll((Collection<?>) hashProp.get("memberend"));
-		assoc1.getMemberEnd().add(((List<Property>) hashProp.get("memberend")).get(0));
-		assoc1.getMemberEnd().add(((List<Property>) hashProp.get("memberend")).get(1));
 		
 		//Material Association is always derived
 		if(assoc1 instanceof MaterialAssociation) {
@@ -391,26 +385,52 @@ public class RefOntoCreator {
 		dealStructFeature(prop1, hashProp);
 		
 		// Makes sure the Properties (memberEnds) are added in the correct order
-    	// to be in accordance to the RefOntoUML metamodel.
+    	// to be in accordance to the RefOntoUML metamodel
 		Association assoc1 = prop1.getAssociation();
-		if (assoc1 != null && assoc1.getMemberEnd().size() == 2 &&
-				assoc1.getMemberEnd().get(0).getType() != null && 
-				assoc1.getMemberEnd().get(1).getType() != null) {
-	    	List<Property> endList = assoc1.getMemberEnd();
-	    	if ((assoc1 instanceof Mediation && ((Property)endList.get(1)).getType() instanceof Relator) || 
-	    			(assoc1 instanceof Characterization && ((Property)endList.get(1)).getType() instanceof Mode) || 
-	    			(assoc1 instanceof Derivation && ((Property)endList.get(1)).getType() instanceof MaterialAssociation) ||
-	    			((Property)endList.get(1)).getAggregation() == AggregationKind.COMPOSITE ||
-	    			((Property)endList.get(1)).getAggregation() == AggregationKind.SHARED) {
-	    		if (endList.get(0).equals(prop1)) {
-	    			assoc1.getMemberEnd().remove(prop1);
-	    			assoc1.getMemberEnd().add(1, prop1);
-	    		} else {
-	    			assoc1.getMemberEnd().remove(prop1);
-    				assoc1.getMemberEnd().add(0, prop1);
-	    		}
-	    	}
+		if (assoc1 != null)
+		{
+			List<Property> memberEnds = assoc1.getMemberEnd();
+			if (memberEnds.size() == 2 && memberEnds.get(0).getType() != null && memberEnds.get(1).getType() != null)
+			{
+				if (!((assoc1 instanceof Mediation && memberEnds.get(0).getType() instanceof Relator) ||
+		    			(assoc1 instanceof Characterization && memberEnds.get(0).getType() instanceof Mode) ||
+		    			(assoc1 instanceof Derivation && memberEnds.get(0).getType() instanceof MaterialAssociation) ||
+		    			memberEnds.get(0).getAggregation() == AggregationKind.COMPOSITE ||
+		    			memberEnds.get(0).getAggregation() == AggregationKind.SHARED))
+				{
+					if (memberEnds.get(0) == prop1)
+					{
+						assoc1.getMemberEnd().remove(prop1);
+						assoc1.getMemberEnd().add(1, prop1);
+					} else
+					{
+						assoc1.getMemberEnd().remove(prop1);
+						assoc1.getMemberEnd().add(0, prop1);
+					}
+		    	}
+			}
 		}
+//		// Makes sure the Properties (memberEnds) are added in the correct order
+//    	// to be in accordance to the RefOntoUML metamodel.
+//		Association assoc1 = prop1.getAssociation();
+//		if (assoc1 != null && assoc1.getMemberEnd().size() == 2 &&
+//				assoc1.getMemberEnd().get(0).getType() != null && 
+//				assoc1.getMemberEnd().get(1).getType() != null) {
+//	    	List<Property> endList = assoc1.getMemberEnd();
+//	    	if ((assoc1 instanceof Mediation && ((Property)endList.get(1)).getType() instanceof Relator) || 
+//	    			(assoc1 instanceof Characterization && ((Property)endList.get(1)).getType() instanceof Mode) || 
+//	    			(assoc1 instanceof Derivation && ((Property)endList.get(1)).getType() instanceof MaterialAssociation) ||
+//	    			((Property)endList.get(1)).getAggregation() == AggregationKind.COMPOSITE ||
+//	    			((Property)endList.get(1)).getAggregation() == AggregationKind.SHARED) {
+//	    		if (endList.get(0).equals(prop1)) {
+//	    			assoc1.getMemberEnd().remove(prop1);
+//	    			assoc1.getMemberEnd().add(1, prop1);
+//	    		} else {
+//	    			assoc1.getMemberEnd().remove(prop1);
+//    				assoc1.getMemberEnd().add(0, prop1);
+//	    		}
+//	    	}
+//		}
 	}
 	
 	public void dealStructFeature (StructuralFeature stf, Map<String, Object> hashProp) {
