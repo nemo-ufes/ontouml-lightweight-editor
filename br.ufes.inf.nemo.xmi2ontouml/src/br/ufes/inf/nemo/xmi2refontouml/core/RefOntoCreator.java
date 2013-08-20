@@ -314,8 +314,8 @@ public class RefOntoCreator {
     	}
 
 		assoc1.getMemberEnd().removeAll((Collection<?>) hashProp.get("memberend"));
-		assoc1.getMemberEnd().add(((List<Property>) hashProp.get("memberend")).get(1));
 		assoc1.getMemberEnd().add(((List<Property>) hashProp.get("memberend")).get(0));
+		assoc1.getMemberEnd().add(((List<Property>) hashProp.get("memberend")).get(1));
 		
 		//Material Association is always derived
 		if(assoc1 instanceof MaterialAssociation) {
