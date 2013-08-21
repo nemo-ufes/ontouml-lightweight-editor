@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.uml.ExpressionInOCL;
+import org.eclipse.ocl.uml.impl.BooleanLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.IntegerLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
 import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
+import org.eclipse.ocl.uml.impl.StringLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.VariableExpImpl;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Constraint;
@@ -26,6 +30,7 @@ import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLBuiltInAtom;
 import org.semanticweb.owlapi.model.SWRLClassAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
+import org.semanticweb.owlapi.model.SWRLLiteralArgument;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
@@ -38,10 +43,25 @@ import br.ufes.inf.nemo.ocl2alloy.OCLParser;
 public class OCL2SWRL {
 	public static String log = new String();;		
 	public static Boolean succeeds = false;
+	private String nameSpace;
+	OCLParser oclParser;
+	OntoUMLParser refParser;
+	OWLOntologyManager manager;
+	OWLDataFactory factory;
+	OWLOntology ontology;
 	
-	public void Transformation (OCLParser oclParser, OntoUMLParser refParser, OWLOntologyManager manager, String nameSpace)	{
+	public OCL2SWRL(OCLParser oclParser, OntoUMLParser refParser, OWLOntologyManager manager, String nameSpace) {
+		this.nameSpace = nameSpace;
+		this.oclParser = oclParser;
+		this.refParser = refParser;
+		this.manager = manager;
+		this.factory = manager.getOWLDataFactory();
+		this.ontology = manager.getOntology(IRI.create(nameSpace.substring(0, nameSpace.length()-1)));
+	}
+	
+	public void Transformation ()	{
 		//for(Constraint ct: opt.getConstraintList())
-		for(Constraint ct: oclParser.getConstraints())
+		for(Constraint ct: this.oclParser.getConstraints())
 		{
 			ExpressionInOCL expr = (ExpressionInOCL) ct.getSpecification();
 			
@@ -50,7 +70,7 @@ public class OCL2SWRL {
 				OperationCallExpImpl bodyExpression = (OperationCallExpImpl) expr.getBodyExpression();
 				
 				//create SWRL rule for the expression
-				solveBodyExpression(manager, nameSpace, bodyExpression);
+				solveBodyExpression(bodyExpression);
 				/*
 				//pega o context
 				String context = expr.getContextVariable().getType().getName();
@@ -97,7 +117,7 @@ public class OCL2SWRL {
 		}
 	}
 	
-	public static void solveBodyExpression(OWLOntologyManager manager, String nameSpace, OperationCallExpImpl bodyExpression){
+	public void solveBodyExpression(OperationCallExpImpl bodyExpression){
 		//create antecedent and consequent atoms for the rule
 		Set<SWRLAtom> antecedent = new HashSet<SWRLAtom>();
 		Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
@@ -106,90 +126,127 @@ public class OCL2SWRL {
 		PropertyCallExpImpl bodyExpressionSource = (PropertyCallExpImpl)bodyExpression.getSource();
 		
 		//create antecedents e consequents for the body expression source
-		solveBodyExpressionSource(manager.getOWLDataFactory(), nameSpace, bodyExpressionSource, antecedent, consequent);
+		solveBodyExpressionSource(bodyExpressionSource, antecedent, consequent);
 		
 		//create antecedents e consequents for the body expression argument
-		solveBodyExpressionArgument(manager.getOWLDataFactory(), nameSpace, bodyExpression, antecedent, consequent);
+		solveBodyExpressionArgument(bodyExpression, antecedent, consequent);
 		
 		//create rule with the incremented antecedents and consequents
-		SWRLRule rule = manager.getOWLDataFactory().getSWRLRule(antecedent,consequent);
+		SWRLRule rule = this.manager.getOWLDataFactory().getSWRLRule(antecedent,consequent);
 		
 		//apply changes
-		manager.applyChange(new AddAxiom(manager.getOntology(IRI.create(nameSpace.substring(0, nameSpace.length()-1))), rule));
+		this.manager.applyChange(new AddAxiom(this.manager.getOntology(IRI.create(this.nameSpace.substring(0, this.nameSpace.length()-1))), rule));
 		
 		//System.out.println();
+		
 	}
 	
-	public static void solveBodyExpressionArgument(OWLDataFactory factory, String nameSpace, OperationCallExpImpl bodyExpression, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
+	public void solveBodyExpressionArgument(OperationCallExpImpl bodyExpression, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
 		PropertyCallExpImpl bodyExpressionSource = (PropertyCallExpImpl)bodyExpression.getSource();
 		ClassImpl conteinerClass = (ClassImpl)bodyExpressionSource.getReferredProperty().getOwner();
 		String referredOperationName = bodyExpression.getReferredOperation().getName();
-		
-		SWRLVariable varX = factory.getSWRLVariable(IRI.create(nameSpace+conteinerClass.getName()));
+		EList<OCLExpression<Classifier>> argument = bodyExpression.getArgument();
+		argument.get(0);
+		SWRLVariable varX = this.factory.getSWRLVariable(IRI.create(this.nameSpace+conteinerClass.getName()));
 		List<SWRLDArgument> args = new ArrayList<SWRLDArgument>();
-		SWRLVariable varY = factory.getSWRLVariable(IRI.create("18"));
+		//SWRLVariable varY = this.factory.getSWRLVariable(IRI.create("18"));
+		
+		SWRLLiteralArgument varY = null;
+		if(argument.get(0).getClass().equals(IntegerLiteralExpImpl.class)){
+			varY = this.factory.getSWRLLiteralArgument(this.factory.getOWLLiteral(((IntegerLiteralExpImpl)argument.get(0)).getIntegerSymbol()));
+		}else if(argument.get(0).getClass().equals(BooleanLiteralExpImpl.class)){
+			varY = this.factory.getSWRLLiteralArgument(this.factory.getOWLLiteral(((BooleanLiteralExpImpl)argument.get(0)).getBooleanSymbol()));
+		}else if(argument.get(0).getClass().equals(StringLiteralExpImpl.class)){
+			varY = factory.getSWRLLiteralArgument(factory.getOWLLiteral(((StringLiteralExpImpl)argument.get(0)).getStringSymbol()));
+		}/*else if(argument.get(0).getClass().equals(StringLiteralExpImpl.class)){
+			varY = factory.getSWRLLiteralArgument(factory.getOWLLiteral(((StringLiteralExpImpl)argument.get(0)).getStringSymbol()));
+		}*///verificar para double e float
+		
 		args.add(varX);
 		args.add(varY);
 		SWRLBuiltInAtom builtIn = null;
 		
 		switch (referredOperationName) {
 		case ">":
-			builtIn = factory.getSWRLBuiltInAtom(IRI.create("lessThanOrEqual"), args);
+			builtIn = this.factory.getSWRLBuiltInAtom(IRI.create("lessThanOrEqual"), args);
 			break;
 		case ">=":
-			builtIn = factory.getSWRLBuiltInAtom(IRI.create("lessThan"), args);
+			builtIn = this.factory.getSWRLBuiltInAtom(IRI.create("lessThan"), args);
 			break;
 		case "<":
-			builtIn = factory.getSWRLBuiltInAtom(IRI.create("greaterThanOrEqual"), args);
+			builtIn = this.factory.getSWRLBuiltInAtom(IRI.create("greaterThanOrEqual"), args);
 			break;
 		case "<=":
-			builtIn = factory.getSWRLBuiltInAtom(IRI.create("greaterThan"), args);
+			builtIn = this.factory.getSWRLBuiltInAtom(IRI.create("greaterThan"), args);
 			break;
 		}
 		
 		antecedent.add(builtIn);		
 	}
 	
-	public static void solveBodyExpressionSource(OWLDataFactory factory, String nameSpace, PropertyCallExpImpl bodyExpressionSource, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
+	public void solveBodyExpressionSource(PropertyCallExpImpl bodyExpressionSource, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
 		if(bodyExpressionSource.getSource().getClass().equals(PropertyCallExpImpl.class)){
-			solveBodyExpressionSource(factory, nameSpace, (PropertyCallExpImpl) bodyExpressionSource.getSource(), antecedent, consequent);
+			solveBodyExpressionSource((PropertyCallExpImpl) bodyExpressionSource.getSource(), antecedent, consequent);
 		}else if(bodyExpressionSource.getSource().getName().equals("self")){
+			//get the self variable
 			VariableExpImpl selfVar = (VariableExpImpl)bodyExpressionSource.getSource();
 			String selfName = selfVar.getReferredVariable().getType().getName();
-			SWRLVariable varX = factory.getSWRLVariable(IRI.create(nameSpace+selfName));
-			OWLObjectComplementOf complementOf = factory.getOWLObjectComplementOf(factory.getOWLClass(IRI.create(nameSpace+selfName)));
-			SWRLClassAtom atom = factory.getSWRLClassAtom(complementOf, varX);
+			
+			//create a swrl variable with the self name
+			SWRLVariable varX = this.factory.getSWRLVariable(IRI.create(this.nameSpace+selfName));
+			
+			//get the complement of the self
+			OWLObjectComplementOf complementOf = this.factory.getOWLObjectComplementOf(this.factory.getOWLClass(IRI.create(this.nameSpace+selfName)));
+			
+			//create a swrl atom that means swrlVariable isn't self
+			SWRLClassAtom atom = this.factory.getSWRLClassAtom(complementOf, varX);
 			consequent.add(atom);
 		}
 
 		if(bodyExpressionSource.getClass().equals(PropertyCallExpImpl.class)){
 			//object property
 			if(bodyExpressionSource.getReferredProperty().getAssociation() != null){
-				solveObjectProperty(factory, nameSpace, bodyExpressionSource, antecedent, consequent);
+				solveObjectProperty(bodyExpressionSource, antecedent, consequent);
 			}
 			//data property
 			if(bodyExpressionSource.getReferredProperty().getType().getClass().equals(PrimitiveTypeImpl.class)){
 				ClassImpl containerClass = (ClassImpl)bodyExpressionSource.getReferredProperty().getOwner();
 				
 				String variableName = containerClass.getName() + "." + bodyExpressionSource.getReferredProperty().getName();
-				OWLDataProperty variable = factory.getOWLDataProperty(IRI.create(nameSpace+variableName));
+				OWLDataProperty variable = this.factory.getOWLDataProperty(IRI.create(this.nameSpace+variableName));
 				
 				String nameVarX = containerClass.getName();
 				String nameVarY = bodyExpressionSource.getReferredProperty().getName();
 				
-				SWRLVariable varX = factory.getSWRLVariable(IRI.create(nameSpace+nameVarX));
-				SWRLVariable varY = factory.getSWRLVariable(IRI.create(nameSpace+nameVarY));
+				SWRLVariable varX = this.factory.getSWRLVariable(IRI.create(this.nameSpace+nameVarX));
+				SWRLVariable varY = this.factory.getSWRLVariable(IRI.create(this.nameSpace+nameVarY));
 				
-				antecedent.add(factory.getSWRLDifferentIndividualsAtom(varY, varX)); //DifferentFrom(?x,?z)
-				antecedent.add(factory.getSWRLDataPropertyAtom(variable, varX, varY)); //prop(?x,?Y)
+				antecedent.add(this.factory.getSWRLDifferentIndividualsAtom(varY, varX)); //DifferentFrom(?x,?z)
+				antecedent.add(this.factory.getSWRLDataPropertyAtom(variable, varX, varY)); //prop(?x,?Y)
 				System.out.println();
 			}
 		
 		}
 	}
 	
-	public static void solveObjectProperty(OWLDataFactory factory, String nameSpace, PropertyCallExpImpl bodyExpressionSource, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
-		OWLObjectProperty rel = factory.getOWLObjectProperty(IRI.create(nameSpace+bodyExpressionSource.getReferredProperty().getAssociation().getName()));
+	public void solveSelfVariable(PropertyCallExpImpl bodyExpressionSource, Set<SWRLAtom> atoms){
+		//get the self variable
+		VariableExpImpl selfVar = (VariableExpImpl)bodyExpressionSource.getSource();
+		String selfName = selfVar.getReferredVariable().getType().getName();
+		
+		//create a swrl variable with the self name
+		SWRLVariable varX = this.factory.getSWRLVariable(IRI.create(getNameSpace()+selfName));
+		
+		//get the complement of the self
+		OWLObjectComplementOf complementOf = this.factory.getOWLObjectComplementOf(this.factory.getOWLClass(IRI.create(getNameSpace()+selfName)));
+		
+		//create a swrl atom that means swrlVariable isn't self
+		SWRLClassAtom atom = this.factory.getSWRLClassAtom(complementOf, varX);
+		atoms.add(atom);
+	}
+	
+	public void solveObjectProperty(PropertyCallExpImpl bodyExpressionSource, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
+		OWLObjectProperty rel = this.factory.getOWLObjectProperty(IRI.create(this.nameSpace+bodyExpressionSource.getReferredProperty().getAssociation().getName()));
 		
 		String nameVarX = "";
 		String nameVarY = "";
@@ -235,17 +292,17 @@ public class OCL2SWRL {
 			}
 		}
 		
-		SWRLVariable varX = factory.getSWRLVariable(IRI.create(nameSpace+nameVarX));
-		SWRLVariable varY = factory.getSWRLVariable(IRI.create(nameSpace+nameVarY));
+		SWRLVariable varX = this.factory.getSWRLVariable(IRI.create(this.nameSpace+nameVarX));
+		SWRLVariable varY = this.factory.getSWRLVariable(IRI.create(this.nameSpace+nameVarY));
 		
-		antecedent.add(factory.getSWRLDifferentIndividualsAtom(varY, varX)); //DifferentFrom(?x,?z)
-		antecedent.add(factory.getSWRLObjectPropertyAtom(rel, varX, varY)); //prop(?x,?Y)
+		antecedent.add(this.factory.getSWRLDifferentIndividualsAtom(varY, varX)); //DifferentFrom(?x,?z)
+		antecedent.add(this.factory.getSWRLObjectPropertyAtom(rel, varX, varY)); //prop(?x,?Y)
 		//System.out.println();
 		//consequent.add(factory.getSWRLObjectPropertyAtom(rel, varX, varY)); //prop(?x,?z)
 	}
 		
 	//this function generates the relation name according to the ontology created in the OntoUML2OWL_SWRL transformation
-	public static String generatesRelationName(OWLOntology ontology, String nameSpace, Class contextClass, Association assoc){
+	public String generatesRelationName(Class contextClass, Association assoc){
 		//get the class range from the association
 		Type classRangeAssoc = assoc.getMemberEnd().get(1).getType();
 		
@@ -272,11 +329,19 @@ public class OCL2SWRL {
 		String relName = relNamePrefix + assoc.getName() + relNameSufix;
 		
 		//if the relation name sufixed doesn't exist, create the name only with prefix
-		if(!ontology.containsObjectPropertyInSignature(IRI.create(nameSpace+relName))){
+		if(!this.ontology.containsObjectPropertyInSignature(IRI.create(this.nameSpace+relName))){
 			relName = relNamePrefix + assoc.getName();
 		}		
 		
 		return relName;
+	}
+
+	public String getNameSpace() {
+		return this.nameSpace;
+	}
+
+	public void setNameSpace(String nameSpace) {
+		this.nameSpace = nameSpace;
 	}
 	
 /*	
