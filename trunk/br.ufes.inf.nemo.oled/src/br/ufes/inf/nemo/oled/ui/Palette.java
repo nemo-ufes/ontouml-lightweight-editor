@@ -84,6 +84,7 @@ public class Palette extends JPanel
 
 		Icon icon = IconLoader.getInstance().getIcon(getResourceString(prefix + ".icon"));
 		PaletteElement element = new PaletteElement(icon, caption, command, this);
+		if (name.equals("derivation")) element.setEnabled(false);
 		element.setToolTipText(getResourceString(prefix + ".tooltip"));
 
 		elementMap.put(name, element);
