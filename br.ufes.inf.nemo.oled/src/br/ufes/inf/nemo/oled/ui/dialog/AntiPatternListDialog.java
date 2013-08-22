@@ -138,6 +138,7 @@ public class AntiPatternListDialog extends JDialog {
 		cbxMRBS.setBackground(UIManager.getColor("Panel.background"));
 		
 		cbxSSR = new JCheckBox("SSR : Super and Sub Relations");
+		cbxSSR.setEnabled(false);
 		cbxSSR.setBackground(UIManager.getColor("Panel.background"));
 		
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
@@ -207,8 +208,8 @@ public class AntiPatternListDialog extends JDialog {
        			if (!RWORisSelected()) cbxRWOR.setSelected(true);
        			if (!RWRTisSelected()) cbxRWRT.setSelected(true);
        			if (!TRIisSelected()) cbxTRI.setSelected(true);
-       			if (!MRBSisSelected()) cbxMRBS.setSelected(true);
-       			if (!SSRisSelected()) cbxSSR.setSelected(true);
+       			if (!MRBSisSelected()) cbxMRBS.setSelected(false);
+       			if (!SSRisSelected()) cbxSSR.setSelected(false);
        		}
        	});
 		JButton btnDisableall = new JButton("Disable All");
