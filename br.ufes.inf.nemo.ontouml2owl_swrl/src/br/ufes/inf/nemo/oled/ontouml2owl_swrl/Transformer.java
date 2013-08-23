@@ -125,27 +125,6 @@ public class Transformer {
 		ontoParser = new OntoUMLParser(ecoreModel);
 		_lstDataType = ontoParser.getAllInstances(RefOntoUML.DataType.class);
 
-//		System.out.println(ontoParser.getAllInstances(RefOntoUML.Association.class).size());
-//		for(RefOntoUML.Association src: ontoParser.getAllInstances(RefOntoUML.Association.class))
-//			{
-//			if(src instanceof RefOntoUML.impl.MediationImpl)
-//				System.out.println("Mediation{ ");
-//			else if(src instanceof RefOntoUML.impl.MeronymicImpl)
-//				System.out.println("Meronymic{ ");
-//			else if(src instanceof RefOntoUML.impl.CharacterizationImpl)
-//				System.out.println("Characterization{ ");
-//			else if(src instanceof RefOntoUML.impl.DerivationImpl)
-//				System.out.println("Derivation{ ");
-//			else if(src instanceof RefOntoUML.impl.FormalAssociationImpl)
-//				System.out.println("Formal{ ");
-//			else if(src instanceof RefOntoUML.impl.MaterialAssociationImpl)
-//				System.out.println("Material{ ");
-//			System.out.println("RefOntoUML.Association: "+src.getName()+" v: "+src.getMemberEnd().get(0).getUpper()+" "+src.getMemberEnd().get(0).getType().getName());
-//			System.out.println("RefOntoUML.Association: "+src.getName()+" v: "+src.getMemberEnd().get(1).getUpper()+" "+src.getMemberEnd().get(1).getType().getName());
-//			System.out.println("}");
-//			}
-		
-		
 		//Class
 		//process each class of refontouml and their datatypes
 		for(RefOntoUML.Class src: ontoParser.getAllInstances(RefOntoUML.Class.class))
@@ -249,13 +228,21 @@ public class Transformer {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			manager.saveOntology(ontology, os);
 			//String s = new String(os.toByteArray(),"ISO-8859-1");
-			String s = new String(os.toByteArray(),"UTF-8");
-			return s;
+			String owl = new String(os.toByteArray(),"UTF-8");
+			//Process special characters
+			owl = processSpecialCharacter(owl);
+			return owl;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "";
 	}
+	private String processSpecialCharacter(String owl) {
+		owl = Normalizer.normalize(owl, Normalizer.Form.NFD);
+		owl = owl.replaceAll("[^\\p{ASCII}]", "");
+		return owl;
+	}
+
 	/**
 	 * Create the OWLObjectProperty memberOf and his swrl
 	 * @param 
@@ -812,21 +799,23 @@ public class Transformer {
 		OWLDatatype dt = null;
 		for(Property p:src.getAttribute()){
 			//for each dataype
-			range = p.getType().getName().replaceAll(" ", "_");
-			dt = getDataTypeRange(range);
-			if(dt == null){
-				//if the range is other class in the model
-				String aux = dt_atual;
-				//increase global datatype name, adding the name of the current datatype name and type
-				dt_atual += src.getName().replaceAll(" ", "_")+"@"+p.getName().replaceAll(" ", "_")+"@"+p.getType().getName().replaceAll(" ", "_")+"@";
-				//start the recursion
-				processDataTypeProperty(p);
-				//save the last name;
-				dt_atual = aux;					
-			}else{
-				//put the datatype in the global list of datatype
-				_lstDataTypeAttributes.add(dt_atual.replaceAll("@", "_").substring(0,dt_atual.length()-1)+"."+p.getName().replaceAll(" ", "_")+":"+range);
-				_aux_tipoAtributo = dt;
+			if(p!=null && p.getType() != null){
+				range = p.getType().getName().replaceAll(" ", "_");
+				dt = getDataTypeRange(range);
+				if(dt == null){
+					//if the range is other class in the model
+					String aux = dt_atual;
+					//increase global datatype name, adding the name of the current datatype name and type
+					dt_atual += src.getName().replaceAll(" ", "_")+"@"+p.getName().replaceAll(" ", "_")+"@"+p.getType().getName().replaceAll(" ", "_")+"@";
+					//start the recursion
+					processDataTypeProperty(p);
+					//save the last name;
+					dt_atual = aux;					
+				}else{
+					//put the datatype in the global list of datatype
+					_lstDataTypeAttributes.add(dt_atual.replaceAll("@", "_").substring(0,dt_atual.length()-1)+"."+p.getName().replaceAll(" ", "_")+":"+range);
+					_aux_tipoAtributo = dt;
+				}
 			}
 		}
 	}
