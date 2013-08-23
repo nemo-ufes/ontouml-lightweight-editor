@@ -68,19 +68,19 @@ public class OntoUML2OWL {
 
 	}
 
-	public static void main(String[] args) {
-		String ret = OntoUML2OWL.Transformation(intialize(new File("Fabiano.refontouml")), "http://abcd/ontology/");
-		File arquivo;   
-
-		arquivo = new File("arquivo.owl");  // Chamou e nomeou o arquivo txt.  
-		try{
-			FileOutputStream fos = new FileOutputStream(arquivo);  // Perceba que estamos instanciando uma classe aqui. A FileOutputStream. Pesquise sobre ela!  
-			fos.write(ret.getBytes());    
-			fos.close();  // Fecha o arquivo. Nunca esquecer disso.  
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		System.out.println("foi");
-	}
+//	public static void main(String[] args) {
+//		String ret = OntoUML2OWL.Transformation(intialize(new File("ModeloGrande.refontouml")), "http://abcd/ontology/");
+//		File arquivo;   
+//
+//		arquivo = new File("arquivo.owl");  // Chamou e nomeou o arquivo txt.  
+//		try{
+//			FileOutputStream fos = new FileOutputStream(arquivo);  // Perceba que estamos instanciando uma classe aqui. A FileOutputStream. Pesquise sobre ela!  
+//			fos.write(ret.getBytes());    
+//			fos.close();  // Fecha o arquivo. Nunca esquecer disso.  
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		System.out.println("foi");
+//	}
 
 }
