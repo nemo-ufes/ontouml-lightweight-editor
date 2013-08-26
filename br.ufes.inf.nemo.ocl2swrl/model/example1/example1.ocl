@@ -2,6 +2,12 @@
 package EA_Model
 
 context Car
+inv: self.owner.age >= 18+1-1
 inv: self.owner.age >= 18
+inv: self.owner.age >= 17+1
+inv: self.owner.age = self.owner.age-1+1
+inv: self.owner.age-1+1 = self.owner.age
+inv: self.owner.age-1+1 < self.owner.age + self.owner.age
+inv: self.owner.age <> 18
 
 endpackage
