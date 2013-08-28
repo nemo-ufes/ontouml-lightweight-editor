@@ -111,9 +111,7 @@ public class Mediator {
             			mapper.getName(element).equalsIgnoreCase("character")) {
             		elem1 = RefOntoCreator.STRING_PRIMITIVE;
             		
-            	} else if (mapper.getName(element).equalsIgnoreCase("unlimited") ||
-            			mapper.getName(element).equalsIgnoreCase("float") ||
-            			mapper.getName(element).equalsIgnoreCase("real")) {
+            	} else if (mapper.getName(element).equalsIgnoreCase("unlimited")) {
             		elem1 = RefOntoCreator.UNLIMITED_NATURAL_PRIMITIVE;
             		
             	} else {
