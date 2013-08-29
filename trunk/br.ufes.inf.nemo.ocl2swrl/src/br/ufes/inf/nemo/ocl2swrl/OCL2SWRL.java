@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.uml.ExpressionInOCL;
 import org.eclipse.ocl.uml.impl.BooleanLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.CallExpImpl;
 import org.eclipse.ocl.uml.impl.IntegerLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
 import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
@@ -18,6 +18,7 @@ import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.internal.impl.ClassImpl;
 import org.eclipse.uml2.uml.internal.impl.PrimitiveTypeImpl;
+import org.eclipse.uml2.uml.internal.impl.PropertyImpl;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -35,9 +36,6 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 
 import uk.ac.manchester.cs.owl.owlapi.SWRLLiteralArgumentImpl;
 import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
-import RefOntoUML.Association;
-import RefOntoUML.Class;
-import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2alloy.OCLParser;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonInitialized;
@@ -127,7 +125,7 @@ public class OCL2SWRL {
 		SWRLRule rule = this.manager.getOWLDataFactory().getSWRLRule(antecedent,consequent);
 		
 		//make different all created variables  
-		rule = makeAllVariablesDiff(rule);
+		//rule = makeAllVariablesDiff(rule);
 		
 		//apply changes in the owl manager
 		this.manager.applyChange(new AddAxiom(ontology, rule));
@@ -152,14 +150,15 @@ public class OCL2SWRL {
 			//this function is called to solve associations, class attributes and self variables
 			solveProperties((PropertyCallExpImpl) expression, antecedent, consequent);
 			
-			String varXName = ((PropertyCallExpImpl) expression).getReferredProperty().getName();
-			varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName));
+			String varZName = generateVarName(expression);
+			varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varZName));
 			
 			
 		}else if(expression.getClass().equals(VariableExpImpl.class)){//class property
 			//get the self variable
-			VariableExpImpl selfVar = (VariableExpImpl)expression;
-			String selfName = selfVar.getReferredVariable().getType().getName();
+			//VariableExpImpl selfVar = (VariableExpImpl)expression;
+			//String selfName = selfVar.getReferredVariable().getType().getName();
+			String selfName = generateVarName(expression);
 			
 			//create a swrl variable with the self name
 			varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+selfName));
@@ -177,24 +176,8 @@ public class OCL2SWRL {
 			//an argument list for the expression is created
 			List<SWRLDArgument> args = new ArrayList<SWRLDArgument>();
 			
-			String varXName = "";
-			String varYName = "";
-			
-			//generates a name to the varX (source) name
-			if(varX.getClass().equals(SWRLLiteralArgumentImpl.class)){
-				varXName = "_" + ((SWRLLiteralArgumentImpl)varX).getLiteral().getLiteral();
-			}else if(varX.getClass().equals(SWRLVariableImpl.class)){
-				IRI iri = (IRI)((SWRLVariableImpl)varX).getIRI();
-				varXName = iri.getFragment();
-			}
-			
-			//generates a name to the varY (argument) name
-			if(varY.getClass().equals(SWRLLiteralArgumentImpl.class)){
-				varYName = "_" + ((SWRLLiteralArgumentImpl)varY).getLiteral().getLiteral();
-			}else if(varY.getClass().equals(SWRLVariableImpl.class)){
-				IRI iri = (IRI)((SWRLVariableImpl)varY).getIRI();
-				varYName = iri.getFragment();
-			}
+			String varXName = generateVarName(varX);
+			String varYName = generateVarName(varY);
 			
 			//a built-in name and a name for the output variable is chosen according to the expression operation
 			String builtInName = "";
@@ -233,7 +216,7 @@ public class OCL2SWRL {
 		
 		return varZ;
 	}
-	
+	/*
 	//ADAPTAR FUNCAO SOLVE ASSOCIATION PARA FUNCIONAR RECURSIVAMENTE
 	private SWRLRule makeAllVariablesDiff(SWRLRule rule){
 		Set<SWRLVariable> setOfVariables = rule.getVariables();
@@ -253,7 +236,7 @@ public class OCL2SWRL {
 		
 		return outputRule;
 	}
-	
+	*/
 	//this function solves operations (logic) like (eg.: a>b or a<>b) and returns an variable equivalent to the operation
 	private void solveOperation(OperationCallExpImpl bodyExpression, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
 		OCLExpression<Classifier> source = bodyExpression.getSource();
@@ -324,12 +307,14 @@ public class OCL2SWRL {
 		ClassImpl containerClass = (ClassImpl)bodyExpressionSource.getReferredProperty().getOwner();
 		
 		//generate a variable name likes in the OntoUML2OWL_SWRL
-		String variableName = containerClass.getName() + "." + bodyExpressionSource.getReferredProperty().getName();
+		String variableName = containerClass.getName() + "." + bodyExpressionSource.getReferredProperty().getName();//aqui eh necessario chamar a funcao de criacao de nomes feita pelo victor
 		OWLDataProperty variable = this.factory.getOWLDataProperty(IRI.create(this.nameSpace+variableName));
 		
 		//generates variables involved in the attribute
-		String nameVarX = containerClass.getName();
-		String nameVarY = bodyExpressionSource.getReferredProperty().getName();
+		//String nameVarX = containerClass.getName();
+		String nameVarX = generateVarName(bodyExpressionSource.getSource());
+		//String nameVarY = bodyExpressionSource.getReferredProperty().getName();
+		String nameVarY = generateVarName(bodyExpressionSource);
 		
 		SWRLVariable varX = this.factory.getSWRLVariable(IRI.create(this.nameSpace+nameVarX));
 		SWRLVariable varY = this.factory.getSWRLVariable(IRI.create(this.nameSpace+nameVarY));
@@ -342,7 +327,8 @@ public class OCL2SWRL {
 	private void solveSelfVariable(PropertyCallExpImpl bodyExpressionSource, Set<SWRLAtom> consequent){
 		//get the self variable
 		VariableExpImpl selfVar = (VariableExpImpl)bodyExpressionSource.getSource();
-		String selfName = selfVar.getReferredVariable().getType().getName();
+		//String selfName = selfVar.getReferredVariable().getType().getName();
+		String selfName = generateVarName(selfVar);
 		
 		//create a swrl variable with the self name
 		SWRLVariable varX = this.factory.getSWRLVariable(IRI.create(this.nameSpace+selfName));
@@ -358,59 +344,26 @@ public class OCL2SWRL {
 	//this function solves associations (eg. self.owner)
 	private void solveAssociation(PropertyCallExpImpl bodyExpressionSource, Set<SWRLAtom> antecedent){
 		//get the relation
-		OWLObjectProperty rel = this.factory.getOWLObjectProperty(IRI.create(this.nameSpace+bodyExpressionSource.getReferredProperty().getAssociation().getName()));
+		OWLObjectProperty rel = this.factory.getOWLObjectProperty(IRI.create(this.nameSpace+bodyExpressionSource.getReferredProperty().getAssociation().getName()));//chamar a funcao de criacao de nomes feita pelo victor
 		
 		String nameVarX = "";
 		String nameVarY = "";
 		
-		if(bodyExpressionSource.getSource().getName().equals("self")){
-			VariableExpImpl selfVar = (VariableExpImpl)bodyExpressionSource.getSource();
-			ClassImpl classSelf = (ClassImpl)selfVar.getReferredVariable().getType();
-			
-			Boolean selfIsKindOfMember0 = false;
-			Boolean selfIsKindOfMember1 = false;
-			
-			//get the class member situated in the first association end
-			ClassImpl classMember0 = (ClassImpl)bodyExpressionSource.getReferredProperty().getAssociation().getMemberEnds().get(0).getType();
-			
-			//verify if self is the source class of the association 
-			if(!classSelf.equals(classMember0)){
-				EList<Classifier> selfParents = classSelf.allParents();
-				for (Classifier classifier : selfParents) {
-					ClassImpl parent = (ClassImpl)classifier;
-					if(parent.equals(classMember0)){
-						selfIsKindOfMember0 = true;
-					}
-				}
-			}
-			
-			//verify if self is the target class of the association
-			ClassImpl classMember1 = (ClassImpl)bodyExpressionSource.getReferredProperty().getAssociation().getMemberEnds().get(1).getType();
-			if(!classSelf.equals(classMember1)){
-				EList<Classifier> selfParents = classSelf.allParents();
-				for (Classifier classifier : selfParents) {
-					ClassImpl parent = (ClassImpl)classifier;
-					if(parent.equals(classMember1)){
-						selfIsKindOfMember1 = true;
-					}
-				}
-			}
-			
-			//if self is the source class of the association, the varX receives the self name
-			//otherwise, the varX receives the name of the source class
-			if(selfIsKindOfMember0){
-				nameVarX = classSelf.getName();
-			}else{
-				nameVarX = bodyExpressionSource.getReferredProperty().getAssociation().getMemberEnds().get(0).getType().getName();
-			}
-			
-			//if self is the target class of the association, the varX receives the self name
-			//otherwise, the varX receives the name of the target class
-			if(selfIsKindOfMember1){
-				nameVarY = classSelf.getName();
-			}else{
-				nameVarY = bodyExpressionSource.getReferredProperty().getAssociation().getMemberEnds().get(1).getType().getName();
-			}
+		OCLExpression<Classifier> source = bodyExpressionSource.getSource();
+		
+		if(bodyExpressionSource.getSource().getClass().equals(PropertyCallExpImpl.class)){
+			solveAssociation((PropertyCallExpImpl) source, antecedent);
+		}
+		
+		String assocEndName = bodyExpressionSource.getReferredProperty().getName();
+		String assocEndNameToCompare = bodyExpressionSource.getReferredProperty().getAssociation().getMemberEnds().get(0).getName();
+		
+		if(assocEndName.equals(assocEndNameToCompare)){
+			nameVarX = generateVarName(bodyExpressionSource);
+			nameVarY = generateVarName(source);
+		}else{
+			nameVarX = generateVarName(source);
+			nameVarY = generateVarName(bodyExpressionSource);
 		}
 		
 		//variables are created to the source and the target class
@@ -418,43 +371,34 @@ public class OCL2SWRL {
 		SWRLVariable varY = this.factory.getSWRLVariable(IRI.create(this.nameSpace+nameVarY));
 		
 		//the atoms are added to the antecedents atoms
-		//antecedent.add(this.factory.getSWRLDifferentIndividualsAtom(varY, varX)); //DifferentFrom(?x,?z)
+		//antecedent.add(this.factory.getSWRLDifferentIndividualsAtom(varX, varY)); //DifferentFrom(?x,?z)
 		antecedent.add(this.factory.getSWRLObjectPropertyAtom(rel, varX, varY)); //prop(?x,?Y)
 	}
 	
+	private String generateVarName(Object expression){
+		String varName = "";
 		
-	//this function generates the relation name according to the ontology created in the OntoUML2OWL_SWRL transformation
-	private String generatesRelationName(Class contextClass, Association assoc){
-		//get the class range from the association
-		Type classRangeAssoc = assoc.getMemberEnd().get(1).getType();
-		
-		//if the context class (or his parents) is the range of the association, create the prefix INV. (because this relation will be a inverse one)
-		String relNamePrefix = "";
-		if(classRangeAssoc.equals(contextClass)){
-			relNamePrefix += "INV.";
-		}else{
-			EList<RefOntoUML.Classifier> allParents = contextClass.allParents();
-			for (RefOntoUML.Classifier parent : allParents) {
-				if(parent.equals(contextClass)){
-					relNamePrefix += "INV.";
-				}
-			}
+		if(expression.getClass().equals(PropertyCallExpImpl.class)){
+			varName += generateVarName(((CallExpImpl) expression).getSource());
+			varName += ".";
+			varName += ((PropertyCallExpImpl) expression).getReferredProperty().getName();
+		}else if(expression.getClass().equals(VariableExpImpl.class)){
+			varName += ((VariableExpImpl) expression).getReferredVariable().getType().getName();
+		}else if(expression.getClass().equals(SWRLLiteralArgumentImpl.class)){
+			varName += "_" + ((SWRLLiteralArgumentImpl)expression).getLiteral().getLiteral();
+		}else if(expression.getClass().equals(SWRLVariableImpl.class)){
+			IRI iri = (IRI)((SWRLVariableImpl)expression).getIRI();
+			varName += iri.getFragment();
+		}else if(expression.getClass().equals(PropertyImpl.class)){
+			varName += generateVarName(((PropertyImpl) expression).getType());
+			varName += ".";
+			varName += ((PropertyImpl) expression).getName();
+			//varName += iri.getFragment();
+		}else if(expression.getClass().equals(ClassImpl.class)){
+			varName += ((ClassImpl) expression).getName();
+			//varName += iri.getFragment();
 		}
 		
-		//create a sufix like .DomainClassName.RangeClassName (for the cases that exists relations with the same name)
-		String relNameSufix = ".";
-		relNameSufix += assoc.getMemberEnd().get(0).getType().getName();
-		relNameSufix += ".";
-		relNameSufix += assoc.getMemberEnd().get(1).getType().getName();
-		
-		//create the relation name composed by prefix and sufix
-		String relName = relNamePrefix + assoc.getName() + relNameSufix;
-		
-		//if the relation name sufixed doesn't exist, create the name only with prefix
-		if(!this.ontology.containsObjectPropertyInSignature(IRI.create(this.nameSpace+relName))){
-			relName = relNamePrefix + assoc.getName();
-		}		
-		
-		return relName;
+		return varName;
 	}
 }
