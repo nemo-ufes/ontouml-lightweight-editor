@@ -8,7 +8,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.ocl.examples.pivot.Constraint;
 import org.eclipse.ocl.examples.pivot.OCL;
+import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
 import org.eclipse.ocl.examples.pivot.model.OCLstdlib;
+import org.eclipse.ocl.examples.pivot.uml.UML2Pivot;
 import org.eclipse.ocl.examples.pivot.utilities.PivotEnvironmentFactory;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
@@ -46,12 +48,19 @@ public class PivotOCLParser {
 	    org.eclipse.uml2.uml.Package umlmodel = (org.eclipse.uml2.uml.Package) umlResource.getContents().get(0);
 	    umlResource.getResourceSet().getPackageRegistry().put(null,umlmodel);
 		
+	    //=================================
+	    
+	    MetaModelManager metaModelManager = new MetaModelManager();
+	    UML2Pivot uml2Pivot = UML2Pivot.getAdapter(umlResource, metaModelManager);
+        org.eclipse.ocl.examples.pivot.Package pivotRoot = uml2Pivot.getPivotRoot();
+        Resource pivotResource = pivotRoot.eResource();
+        
 		//=============================
 
 		PivotEnvironmentFactory environmentFactory = new PivotEnvironmentFactory(
-			umlResource.getResourceSet().getPackageRegistry(), null);	    
+				pivotResource.getResourceSet().getPackageRegistry(), null);	    
 	    OCL ocl = OCL.newInstance(environmentFactory);	    
-	    Resource pivotResource = ocl.parse(oclURI);
+	    pivotResource = ocl.parse(oclURI);
 
 	    for(TreeIterator<EObject> tit = pivotResource.getAllContents(); tit.hasNext();){
 	    	EObject next = tit.next();
