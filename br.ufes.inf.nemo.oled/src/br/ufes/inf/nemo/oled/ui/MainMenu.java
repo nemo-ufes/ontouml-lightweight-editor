@@ -71,7 +71,7 @@ public class MainMenu implements ActionListener {
 		
 		createMenuItem(transformMenu, "generatealloy");
 		transformMenu.addSeparator();
-		createMenuItem(transformMenu, "generateowl");
+		//createMenuItem(transformMenu, "generateowl");
 		createMenuItem(transformMenu, "generateowlsettings");
 		transformMenu.addSeparator();
 		createMenuItem(transformMenu, "generatesbvr");

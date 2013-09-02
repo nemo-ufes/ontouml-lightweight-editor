@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -166,7 +167,7 @@ public class PaletteAccordion extends JPanel{
 		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.relations", "characterization");
 		palette.createElement("staticpalette.relations", "mediation");
-		palette.createElement("staticpalette.relations", "derivation");
+		//palette.createElement("staticpalette.relations", "derivation");
 		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.relations", "componentof");
 		palette.createElement("staticpalette.relations", "memberof");	
