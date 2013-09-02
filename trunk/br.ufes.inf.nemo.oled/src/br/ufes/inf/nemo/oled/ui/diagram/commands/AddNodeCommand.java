@@ -105,7 +105,8 @@ public class AddNodeCommand extends BaseDiagramCommand {
 			ClassElement classElement = (ClassElement) element;
 			
 			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), classElement.getClassifier());
-			project.getEditingDomain().getCommandStack().execute(cmd);			
+			project.getEditingDomain().getCommandStack().execute(cmd);
+			
 		}
 		
 		//Adds the element to the diagram

@@ -224,6 +224,7 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 								if(validadeSettings())
 								{
 									saveSettings();
+									getManager().generateOwl();
 						 			dispose();
 								}
 							}

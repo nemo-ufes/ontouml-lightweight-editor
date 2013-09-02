@@ -189,7 +189,7 @@ public class ModelHelper {
 	public static String getClassAsStereotype(EObject eObject) {
 		String ret = eObject.eClass().getName().toLowerCase()
 				.replace("association", "");
-		return "«" + ret + "»";
+		return "<<" + ret + ">>";
 	}
  
 	/**
