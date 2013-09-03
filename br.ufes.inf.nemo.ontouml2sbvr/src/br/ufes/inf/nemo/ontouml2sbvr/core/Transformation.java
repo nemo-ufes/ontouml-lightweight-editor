@@ -35,9 +35,67 @@ public class Transformation
 		myfile.Done();
 	}
 		
+//	public void Tree (Package p)
+//	{
+//		// Pre Process all classes
+//		for (PackageableElement pe : p.getPackagedElement())
+//		{			
+//			if (pe instanceof Class)
+//			{
+//				myprocessor.ProcessClass((Class) pe);
+//			}
+//		}
+//		
+//		// Process all associations
+//		for (PackageableElement pe : p.getPackagedElement())
+//		{			
+//			if (pe instanceof Association)
+//			{
+//				myprocessor.ProcessAssociation((Association) pe);
+//			}
+//		}
+//		
+//		// Set up the specialization tree
+//		myprocessor.ProcessNodes();
+//		
+//		// Deal the main nodes
+//		List<Node> mainNodes = myprocessor.getMainNodes();
+//		for (Node n : mainNodes)
+//		{
+//			myfile.DealNode(n, !myfile.serial);
+//		}
+//		
+//		// Deal the DataTypes
+//		for (PackageableElement pe : p.getPackagedElement())
+//		{			
+//			if (pe instanceof DataType)
+//			{
+//				myfile.DealDataType((DataType) pe);
+//			}
+//		}
+//		
+//		// Deal Association Roles
+//		for (Map.Entry<String, Classifier> entry : myprocessor.getAssociationRoles().entrySet())
+//		{
+//			myfile.DealAssociationRole(entry.getKey(), entry.getValue());
+//		}
+//	}
+
+
 	public void Tree (Package p)
 	{
 		// Pre Process all classes
+	
+		
+		for (PackageableElement pe : p.getPackagedElement())
+		{			
+			if (pe instanceof Package)
+			{
+				this.Tree((Package)pe);
+			}
+		}
+	
+		
 		for (PackageableElement pe : p.getPackagedElement())
 		{			
 			if (pe instanceof Class)
@@ -45,6 +103,8 @@ public class Transformation
 				myprocessor.ProcessClass((Class) pe);
 			}
 		}
+	
+		
 		
 		// Process all associations
 		for (PackageableElement pe : p.getPackagedElement())
@@ -79,5 +139,6 @@ public class Transformation
 		{
 			myfile.DealAssociationRole(entry.getKey(), entry.getValue());
 		}
+
 	}
 }
