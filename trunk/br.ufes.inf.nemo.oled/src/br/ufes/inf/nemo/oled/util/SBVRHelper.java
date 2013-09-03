@@ -24,7 +24,7 @@ public class SBVRHelper {
 		// the transformation directly from the model object
 		
 		String modelFileName = ConfigurationHelper.getCanonPath(tempDir, OLEDSettings.MODEL_DEFAULT_FILE.getValue());
-		
+		System.out.println(tempDir);
 		File modelFile = new File(modelFileName);  	
     	modelFile.deleteOnExit();
     	

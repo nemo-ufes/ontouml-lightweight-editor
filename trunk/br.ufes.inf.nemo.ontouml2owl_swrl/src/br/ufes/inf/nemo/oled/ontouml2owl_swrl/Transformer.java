@@ -975,6 +975,7 @@ public class Transformer {
 	 * @param 
 	 */
 	private void processGeneralization(Generalization src) {
+		//Verifica se é um datatype
 		OWLClass father = factory.getOWLClass(IRI.create(nameSpace+src.getGeneral().getName().replaceAll(" ", "_")));        
 		OWLClass ontSon = factory.getOWLClass(IRI.create(nameSpace+src.getSpecific().getName().replaceAll(" ", "_")));					
 

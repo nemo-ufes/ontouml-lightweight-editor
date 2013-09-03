@@ -1187,7 +1187,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void generateSbvr() {
 
 		UmlProject project = getCurrentProject();
-		OperationResult result = SBVRHelper.generateSBVR(project.getModel(), project.getTempDir());
+		
+		OperationResult result = SBVRHelper.generateSBVR((RefOntoUML.Model)ModelTree.getParserFor(project).getModel(), project.getTempDir());
+		//OperationResult result = SBVRHelper.generateSBVR(project.getModel(), project.getTempDir());
 
 		if(result.getResultType() != ResultType.ERROR)
 		{
