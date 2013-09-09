@@ -41,5 +41,7 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.xtext_2.3.1.v201208210947.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.xtext.common.types_2.3.1.v201208210947.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.xtext.util_2.3.1.v201208210947.jar"/>
+	<classpathentry kind="lib" path="lib/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.common"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
