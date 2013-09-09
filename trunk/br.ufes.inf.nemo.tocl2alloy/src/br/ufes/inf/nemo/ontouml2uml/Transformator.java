@@ -6,63 +6,53 @@ import org.eclipse.emf.ecore.EObject;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-/**
- * @author John Guerson
- */
 
-public class Transformation {
+public class Transformator {
 	
 	public OntoUMLParser refparser;	
 	boolean ignorePackageHierarchy = false;	
-	public Dealer mydealer;
+	public ElementConverter mydealer;
 	public HashMap <RefOntoUML.Package,org.eclipse.uml2.uml.Package> packagesMap;	
 	public org.eclipse.uml2.uml.Package umlRootModel;	
 	
-	/** 
-	 * Constructor. 
-	 */
-	public Transformation(OntoUMLParser refparser, boolean ignorePackageHierarchy)  
+	
+	public Transformator(OntoUMLParser refparser, boolean ignorePackageHierarchy)  
     { 
 		this.refparser = refparser;
 		this.ignorePackageHierarchy = ignorePackageHierarchy;
-    	mydealer = new Dealer();  
+    	mydealer = new ElementConverter();  
     	packagesMap = new HashMap<RefOntoUML.Package,org.eclipse.uml2.uml.Package>(); 
     }
-	
-	/**
-	 * Run the transformation to UML
-	 * 
-	 * @return
-	 */
-	public org.eclipse.uml2.uml.Package Transform ()
+		
+	public org.eclipse.uml2.uml.Package run ()
     {           
-		Dealer.outln("running ontouml2uml...");
+		ElementConverter.outln("Running ontouml2uml.");
 		
         umlRootModel = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createPackage();                
         mydealer.DealNamedElement((RefOntoUML.NamedElement) refparser.getModel(), (org.eclipse.uml2.uml.NamedElement) umlRootModel);
         mydealer.RelateElements((RefOntoUML.Element) refparser.getModel(), (org.eclipse.uml2.uml.Element) umlRootModel);        
         packagesMap.put(refparser.getModel(), umlRootModel);
                 
-        //Package
+
         TransformingPackages(refparser.getModel(),umlRootModel);   
-        //PrimitiveType
+
         TransformingPrimitiveTypes();        
-        //Enumeration
+
         TransformingEnumerations();        
-        //DataType
+
         TransformingDataTypes();        
-        //Class
+
         TransformingClasses();
-        //Attribute
+
         TransformingAttributes();        
-        //Association
+
         TransformingAssociations();        
-        //Generalization
+
         TransformingGeneralizations();        
-        //GeneralizationSet
+
         TransformingGeneralizationSets();
             
-        Dealer.outln("ontouml2uml executed.");
+        ElementConverter.outln("Ontouml2uml executed.");
         
         return umlRootModel;
     }
