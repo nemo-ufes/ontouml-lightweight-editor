@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="Imóvel" nsURI="http://nemo.inf.ufes.br/en/ontoumlsupport" nsPrefix="Imóvel">
+  <eClassifiers xsi:type="ecore:EClass" name="Data">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ano" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mês" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dia" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Data Completa">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ano" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mês" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dia" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hora" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minuto" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="segundo" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Classe de Bem Material"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Amortização Acumulada">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Depreciação Acumulada">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor depreciado" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Tipo de Ativo Depreciável">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taxa de depreciação" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="vida útil" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Tipo de Ativo Intangível">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="descrição" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taxa de amortização" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="vida útil" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parcela de Amortização">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="data de pagamento" lowerBound="1"
+        eType="#//Data"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Despesa de Juros">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="custo" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Capital de Terceiros">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor empréstimo" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor financiamento" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor arrendamento" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor debêntures" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="capital de terceiros" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Taxa de Juros">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="frequencia" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Capital Próprio">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="capital próprio total"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="capital social" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="adiantamento" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultado acumulado" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Reserva de Capital">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor reserva" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tipo reserva" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Custo Operacional">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Despesa Administrativa"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Despesa Não Operacional"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Despesa Operacional">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Receita da Atividade">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Receita Bruta" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Receita Líquida" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Resultado do Exercício">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Resultado Bruto" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Resultado Líquido" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="/ Patrimônio Líquido">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Hierarquia de Ato Normativo"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Tema"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Custo de Oportunidade"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Custo Mínimo Manutenção da FD"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Receita de Faixa de Domínio"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Tipo de Ocupação"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Engenheiro Responsável"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Gasto com Desapropriação"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Gasto com Licenciamento Ambiental">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Gasto com Obra">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valor" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Coordenada Geográfica">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="longitude" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="latitude" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="altitude" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Pontual"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Ponto%20Linear"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Ponto%20Espacial"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Condição Climática">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preciptação" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="temperatura" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="humidade" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pressão" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="neblina" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="direcao do vento" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="velocidade do vento" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Tráfego Acumulado">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="médio diário" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="médio anual" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="médio mensal" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Cor">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="saturação" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="brilho" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="contraste" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Neblina">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="km inicial" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="km final" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="horário inicial" lowerBound="1"
+        eType="#//Data%20Completa"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="horário final" lowerBound="1"
+        eType="#//Data%20Completa"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Categoria de Veículo Rodoviário"/>
+  <eClassifiers xsi:type="ecore:EClass" name="/Capital Votante"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Quota"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Intervalo de Tempo">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="anos" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="meses" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dias" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="horas" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minutos" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="segundos" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Valor Monetário">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="quantia" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="moeda" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Endereço">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="logradouro" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="número" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cep" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bairro" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cidade" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="estado" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="país" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Estado">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" upperBound="-1"
+        eType="#//Município"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" eType="#//País"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Município">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" eType="#//Estado"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Distrito"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="País">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" upperBound="-1"
+        eType="#//Estado"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Distrito">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" eType="#//Município"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Elemento Georreferenciado" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Elemento Linear" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="2" upperBound="-1"
+        eType="#//Ponto%20Linear"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Linear"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Linear"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Espacial"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Pontual"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Linear"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Linear"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Elemento Pontual" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Linear"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Espacial"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coordenada" lowerBound="1"
+        eType="#//Coordenada%20Geográfica"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Elemento Espacial" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="3" upperBound="-1"
+        eType="#//Ponto%20Espacial"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Espacial"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Espacial"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Espacial"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Espacial"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Linear"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Elemento%20Pontual"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Ponto Linear">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" eType="#//Elemento%20Linear"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" upperBound="-1"
+        eType="#//Ponto%20Linear"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" upperBound="-1"
+        eType="#//Ponto%20Linear"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coordenada" lowerBound="1"
+        eType="#//Coordenada%20Geográfica"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Ponto Espacial">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" eType="#//Elemento%20Espacial"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" upperBound="-1"
+        eType="#//Ponto%20Espacial"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" upperBound="-1"
+        eType="#//Ponto%20Espacial"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coordenada" lowerBound="1"
+        eType="#//Coordenada%20Geográfica"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Região Política" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Unidade de Conservação"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área Quilombola"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área da União"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área de Preservação Permanente"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área de Preservação Ambiental"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área Destinada a Reforma Agrária"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área Estadual"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área Indígena"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área Municipal"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área Privada"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área Pública" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Imóvel"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Área Livre"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Área Protegida"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Imóvel" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dimensão" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" eType="#//Certidão%20de%20Registro%20de%20Imóvel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" eType="#//Cartório"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" upperBound="-1" eType="#//Área"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Planta do Imóvel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" eType="#//Imóvel%20Edificado"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Certidão de Registro de Imóvel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" eType="#//Imóvel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" eType="#//Cartório"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Imóvel Edificado">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" upperBound="-1"
+        eType="#//Planta%20do%20Imóvel"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Terreno"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Cartório">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" upperBound="-1"
+        eType="#//Certidão%20de%20Registro%20de%20Imóvel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="" lowerBound="1" upperBound="-1"
+        eType="#//Imóvel"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Class10"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Class34"/>
+</ecore:EPackage>

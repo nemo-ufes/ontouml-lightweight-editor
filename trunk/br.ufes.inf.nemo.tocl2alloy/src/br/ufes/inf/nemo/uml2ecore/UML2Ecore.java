@@ -22,7 +22,7 @@ public class UML2Ecore {
 	{
 	    ResourceSet ecoreResourceSet = new ResourceSetImpl();
 	    URI ecoreURI = URI.createFileURI(ecorePath);
-		
+
 	    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
 	    ecoreResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
 	    ecoreResourceSet.getPackageRegistry().put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);

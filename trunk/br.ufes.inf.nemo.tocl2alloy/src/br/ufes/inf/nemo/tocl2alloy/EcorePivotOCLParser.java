@@ -31,7 +31,7 @@ public class EcorePivotOCLParser {
 		URI toclURI = URI.createFileURI(toclPath);
 		
 		 UML2Ecore.convertToEcore(umlPath,ecorePath);
-		 		 
+		 
 		 Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
 		 ResourceSet ecoreResourceSet = new ResourceSetImpl();
 		 ecoreResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
