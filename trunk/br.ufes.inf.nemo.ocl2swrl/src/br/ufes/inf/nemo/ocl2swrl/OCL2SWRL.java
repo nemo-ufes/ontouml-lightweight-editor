@@ -5,17 +5,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.impl.BasicEObjectImpl;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.uml.ExpressionInOCL;
 import org.eclipse.ocl.uml.impl.BooleanLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.CallExpImpl;
+import org.eclipse.ocl.uml.impl.CollectionItemImpl;
+import org.eclipse.ocl.uml.impl.CollectionLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.IntegerLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.IteratorExpImpl;
 import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
 import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
 import org.eclipse.ocl.uml.impl.StringLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.VariableExpImpl;
+import org.eclipse.ocl.uml.impl.VariableImpl;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Constraint;
+import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.internal.impl.ClassImpl;
 import org.eclipse.uml2.uml.internal.impl.PrimitiveTypeImpl;
 import org.eclipse.uml2.uml.internal.impl.PropertyImpl;
@@ -99,36 +105,38 @@ public class OCL2SWRL {
 
 		for(Constraint ct: this.oclParser.getConstraints())
 		{
-			ExpressionInOCL expr = (ExpressionInOCL) ct.getSpecification();
+			//create antecedent and consequent atoms for the rule
+			Set<SWRLAtom> antecedent = new HashSet<SWRLAtom>();
+			Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
 			
-			if(expr.getBodyExpression().getClass() == OperationCallExpImpl.class){
-				//get the body expression
-				OperationCallExpImpl bodyExpression = (OperationCallExpImpl) expr.getBodyExpression();
+			ExpressionInOCL expr = (ExpressionInOCL) ct.getSpecification();
+			OCLExpression<Classifier> bodyExpression = expr.getBodyExpression();
+			if(expr.getBodyExpression().getClass().equals(OperationCallExpImpl.class)){
+				//create antecedents for the body expression source and argument
+				solveOperation((OperationCallExpImpl) bodyExpression, antecedent, consequent);
 				
-				//create SWRL rule for the expression
-				solveBodyOperation(bodyExpression);				
+			}else if(expr.getBodyExpression().getClass().equals(IteratorExpImpl.class)){
+				solveIterator((IteratorExpImpl) bodyExpression, antecedent, consequent);
 			}
 				
+			//create a rule with the incremented antecedents and consequents
+			SWRLRule rule = this.manager.getOWLDataFactory().getSWRLRule(antecedent,consequent);
+			
+			//apply changes in the owl manager
+			this.manager.applyChange(new AddAxiom(ontology, rule));
 		}
 	}
 	
-	//this function solves a operation like (a < b)
-	private void solveBodyOperation(OperationCallExpImpl bodyExpression){
-		//create antecedent and consequent atoms for the rule
-		Set<SWRLAtom> antecedent = new HashSet<SWRLAtom>();
-		Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
+	private void solveIterator(IteratorExpImpl iterator, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent) {
+		OCLExpression<Classifier> source = ((CollectionItemImpl) ((CollectionLiteralExpImpl)iterator.getSource()).getPart().get(0)).getItem();
+		solveExpression(source, antecedent, consequent);
 		
-		//create antecedents for the body expression source and argument
-		solveOperation(bodyExpression, antecedent, consequent);
+		VariableImpl iteratorVar = (VariableImpl) iterator.getIterator().get(0);
+		solveVariable(iteratorVar, consequent);
 		
-		//create a rule with the incremented antecedents and consequents
-		SWRLRule rule = this.manager.getOWLDataFactory().getSWRLRule(antecedent,consequent);
-		
-		//make different all created variables  
-		//rule = makeAllVariablesDiff(rule);
-		
-		//apply changes in the owl manager
-		this.manager.applyChange(new AddAxiom(ontology, rule));
+		OperationCallExpImpl body = (OperationCallExpImpl)iterator.getBody();
+		solveOperation(body, antecedent, consequent);
+		System.out.println();
 	}
 	
 	//this function solves expressions (arithmetic) like (a*b+c*d) and returns an variable equivalent to the expression
@@ -167,51 +175,57 @@ public class OCL2SWRL {
 		}else if(expression.getClass().equals(OperationCallExpImpl.class)){//expression
 			//from a expression (eg.: a*b+c*d), get the source (a*b) and the argument (c*d)
 			OCLExpression<Classifier> srcExpression = ((OperationCallExpImpl) expression).getSource();
-			OCLExpression<Classifier> argExpression = ((OperationCallExpImpl) expression).getArgument().get(0);
 			
-			//call recursively the solveExpression to solve the source and the argument
-			SWRLDArgument varX = solveExpression(srcExpression, antecedent, consequent);
-			SWRLDArgument varY = solveExpression(argExpression, antecedent, consequent);
+			if(((OperationCallExpImpl) expression).getArgument().size() > 0){
+				OCLExpression<Classifier> argExpression = ((OperationCallExpImpl) expression).getArgument().get(0);
+				
+				//call recursively the solveExpression to solve the source and the argument
+				SWRLDArgument varX = solveExpression(srcExpression, antecedent, consequent);
+				SWRLDArgument varY = solveExpression(argExpression, antecedent, consequent);
+				
+				//an argument list for the expression is created
+				List<SWRLDArgument> args = new ArrayList<SWRLDArgument>();
+				
+				String varXName = generateVarName(varX);
+				String varYName = generateVarName(varY);
+				
+				//a built-in name and a name for the output variable is chosen according to the expression operation
+				String builtInName = "";
+				SWRLBuiltInAtom builtIn = null;
+				String refOperationName = ((OperationCallExpImpl) expression).getReferredOperation().getName();
+				switch (refOperationName) {
+				case "+":
+					varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_add_"+varYName));
+					builtInName = "add";
+					break;
+				case "-":
+					varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_sub_"+varYName));
+					builtInName = "subtract";
+					break;
+				case "*":
+					varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_mul_"+varYName));
+					builtInName = "multiply";
+					break;
+				case "/":
+					varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_div_"+varYName));
+					builtInName = "divide";
+					break;
+				}//fazer para ABS, MAX, MIN, -x
+				
+				//variables are inserted in the array of arguments 
+				args.add(varZ);
+				args.add(varX);
+				args.add(varY);
+				
+				//the built in is created
+				builtIn = this.factory.getSWRLBuiltInAtom(IRI.create(builtInName), args);
+				
+				//and added in the antecedent atoms
+				antecedent.add(builtIn);
+			}else{
+				Operation refOperation = ((OperationCallExpImpl) expression).getReferredOperation();
+			}
 			
-			//an argument list for the expression is created
-			List<SWRLDArgument> args = new ArrayList<SWRLDArgument>();
-			
-			String varXName = generateVarName(varX);
-			String varYName = generateVarName(varY);
-			
-			//a built-in name and a name for the output variable is chosen according to the expression operation
-			String builtInName = "";
-			SWRLBuiltInAtom builtIn = null;
-			String refOperationName = ((OperationCallExpImpl) expression).getReferredOperation().getName();
-			switch (refOperationName) {
-			case "+":
-				varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_add_"+varYName));
-				builtInName = "add";
-				break;
-			case "-":
-				varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_sub_"+varYName));
-				builtInName = "subtract";
-				break;
-			case "*":
-				varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_mul_"+varYName));
-				builtInName = "multiply";
-				break;
-			case "/":
-				varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_div_"+varYName));
-				builtInName = "divide";
-				break;
-			}//fazer para ABS, MAX, MIN, -x
-			
-			//variables are inserted in the array of arguments 
-			args.add(varZ);
-			args.add(varX);
-			args.add(varY);
-			
-			//the built in is created
-			builtIn = this.factory.getSWRLBuiltInAtom(IRI.create(builtInName), args);
-			
-			//and added in the antecedent atoms
-			antecedent.add(builtIn);
 		}
 		
 		return varZ;
@@ -240,8 +254,12 @@ public class OCL2SWRL {
 	//this function solves operations (logic) like (eg.: a>b or a<>b) and returns an variable equivalent to the operation
 	private void solveOperation(OperationCallExpImpl bodyExpression, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
 		OCLExpression<Classifier> source = bodyExpression.getSource();
-		OCLExpression<Classifier> argument = bodyExpression.getArgument().get(0);
 		
+		OCLExpression<Classifier> argument = null;
+		if(isComparisonOperation(bodyExpression)){
+			argument = bodyExpression.getArgument().get(0);
+		}
+				
 		//variables referents of the source and argument expressions are created
 		SWRLDArgument varX = solveExpression(source, antecedent, consequent);
 		SWRLDArgument varY = solveExpression(argument, antecedent, consequent);
@@ -286,7 +304,7 @@ public class OCL2SWRL {
 		if(bodyExpressionSource.getSource().getClass().equals(PropertyCallExpImpl.class)){
 			this.solveProperties((PropertyCallExpImpl) bodyExpressionSource.getSource(), antecedent, consequent);
 		}else if(bodyExpressionSource.getSource().getName().equals("self")){
-			this.solveSelfVariable(bodyExpressionSource, consequent);
+			this.solveVariable((BasicEObjectImpl) bodyExpressionSource.getSource(), consequent);
 		}
 
 		if(bodyExpressionSource.getClass().equals(PropertyCallExpImpl.class)){
@@ -324,11 +342,19 @@ public class OCL2SWRL {
 		antecedent.add(this.factory.getSWRLDataPropertyAtom(variable, varX, varY)); //prop(?x,?Y)
 	}
 	
-	private void solveSelfVariable(PropertyCallExpImpl bodyExpressionSource, Set<SWRLAtom> consequent){
-		//get the self variable
-		VariableExpImpl selfVar = (VariableExpImpl)bodyExpressionSource.getSource();
-		//String selfName = selfVar.getReferredVariable().getType().getName();
-		String selfName = generateVarName(selfVar);
+	//private void solveSelfVariable(PropertyCallExpImpl bodyExpressionSource, Set<SWRLAtom> consequent){
+	private void solveVariable(BasicEObjectImpl variable, Set<SWRLAtom> consequent){
+		String selfName = "";
+		if(variable.getClass().equals(VariableExpImpl.class)){
+			//get the self variable
+			//VariableExpImpl selfVar = (VariableExpImpl)bodyExpressionSource.getSource();
+			VariableExpImpl selfVar = (VariableExpImpl)variable;
+			
+			//String selfName = selfVar.getReferredVariable().getType().getName();
+			selfName = generateVarName(selfVar);
+		}else if(variable.getClass().equals(VariableImpl.class)){
+			selfName = generateVarName(variable);
+		}
 		
 		//create a swrl variable with the self name
 		SWRLVariable varX = this.factory.getSWRLVariable(IRI.create(this.nameSpace+selfName));
@@ -384,6 +410,8 @@ public class OCL2SWRL {
 			varName += ((PropertyCallExpImpl) expression).getReferredProperty().getName();
 		}else if(expression.getClass().equals(VariableExpImpl.class)){
 			varName += ((VariableExpImpl) expression).getReferredVariable().getType().getName();
+		}else if(expression.getClass().equals(VariableImpl.class)){
+			varName += ((VariableImpl) expression).getType().getName();
 		}else if(expression.getClass().equals(SWRLLiteralArgumentImpl.class)){
 			varName += "_" + ((SWRLLiteralArgumentImpl)expression).getLiteral().getLiteral();
 		}else if(expression.getClass().equals(SWRLVariableImpl.class)){
@@ -400,5 +428,23 @@ public class OCL2SWRL {
 		}
 		
 		return varName;
+	}
+	
+	private Boolean isComparisonOperation(OperationCallExpImpl bodyExpression){
+		Operation operation = bodyExpression.getReferredOperation();
+		String oprName = operation.getName();
+		if(oprName != null){
+			if(		oprName.equals(">") ||
+					oprName.equals(">=") ||
+					oprName.equals("<") ||
+					oprName.equals("<=") ||
+					oprName.equals("=") ||
+					oprName.equals("<>")
+				){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
