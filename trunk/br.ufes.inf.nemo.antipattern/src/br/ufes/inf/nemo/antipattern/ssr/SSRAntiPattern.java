@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern;
+package br.ufes.inf.nemo.antipattern.ssr;
 
 
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class SSRAntiPattern extends Antipattern {
