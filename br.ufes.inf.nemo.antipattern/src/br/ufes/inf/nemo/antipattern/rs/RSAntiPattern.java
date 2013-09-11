@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern;
+package br.ufes.inf.nemo.antipattern.rs;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;

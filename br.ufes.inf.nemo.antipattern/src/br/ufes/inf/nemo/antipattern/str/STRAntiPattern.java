@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern;
+package br.ufes.inf.nemo.antipattern.str;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
@@ -198,6 +199,8 @@ public class STRAntiPattern extends Antipattern{
 		
 		if (association == null)
 			throw new NullPointerException();
+		if (!(association instanceof Association))
+			throw new Exception("Provided object for STRAntiPattern creation is not an Association.");
 		/*Check if the provided association indeed characterizes a SelfType Relationship AntiPattern*/
 		else if (!association.getMemberEnd().get(0).getType().equals(association.getMemberEnd().get(1).getType()))
 			throw new Exception("Input association does not characterize a Self-Type Relationship AntiPattern");

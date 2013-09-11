@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern;
+package br.ufes.inf.nemo.antipattern.ac;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,7 @@ import RefOntoUML.Class;
 import RefOntoUML.Generalization;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
+import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
