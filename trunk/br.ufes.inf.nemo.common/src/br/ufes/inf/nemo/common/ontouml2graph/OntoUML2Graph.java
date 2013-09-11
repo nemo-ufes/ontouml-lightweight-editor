@@ -26,7 +26,8 @@ public class OntoUML2Graph {
 
 			if(element instanceof Association && !(element instanceof Derivation) && ( !(element instanceof MaterialAssociation) || incMat ) )
 			{
-				relationships.add((Relationship) element);
+				if (((Association) element).getMemberEnd().size()==2)
+					relationships.add((Relationship) element);
 			}
 		}
 		
@@ -43,8 +44,10 @@ public class OntoUML2Graph {
 			
 			if (r instanceof Association)
 			{
-				nodei[relationships.indexOf(r)] = classes.indexOf(((Association)r).getMemberEnd().get(0).getType());
-				nodej[relationships.indexOf(r)] = classes.indexOf(((Association)r).getMemberEnd().get(1).getType());
+				if (((Association) r).getMemberEnd().size()==2) {
+					nodei[relationships.indexOf(r)] = classes.indexOf(((Association)r).getMemberEnd().get(0).getType());
+					nodej[relationships.indexOf(r)] = classes.indexOf(((Association)r).getMemberEnd().get(1).getType());
+				}
 			}
 			if (r instanceof Generalization)
 			{
