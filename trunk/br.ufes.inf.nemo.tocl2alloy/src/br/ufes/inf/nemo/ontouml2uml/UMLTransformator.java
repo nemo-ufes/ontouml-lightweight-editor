@@ -32,14 +32,13 @@ public class UMLTransformator {
 	
 	public org.eclipse.uml2.uml.Package run ()
     {
-		UMLElementConverter.outln("running ontouml2uml...");
+		UMLElementConverter.outln("Running ontouml2uml...");
 		
         umlRootModel = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createPackage();                
         uconverter.DealNamedElement((RefOntoUML.NamedElement) refparser.getModel(), (org.eclipse.uml2.uml.NamedElement) umlRootModel);
         uconverter.RelateElements((RefOntoUML.Element) refparser.getModel(), (org.eclipse.uml2.uml.Element) umlRootModel);        
         packagesMap.put(refparser.getModel(), umlRootModel);
                 
-
         TransformingPackages(refparser.getModel(),umlRootModel);   
 
         TransformingPrimitiveTypes();        
@@ -58,17 +57,12 @@ public class UMLTransformator {
 
         TransformingGeneralizationSets();
             
-        UMLElementConverter.outln("ontouml2uml executed.");
+        UMLElementConverter.outln("Executed.");
         
         return umlRootModel;
     }
 		
-	/**
-	 * Transforming OntoUML Packages into UML Packages.
-	 * 
-	 * @param refmodel
-	 * @param umlmodel
-	 */
+	/** Packages */
     private void TransformingPackages (RefOntoUML.Package refmodel, org.eclipse.uml2.uml.Package umlmodel)
     {               
         for (EObject obj : refmodel.eContents())
@@ -92,9 +86,7 @@ public class UMLTransformator {
         }
 	}	
 	    	
-    /**
-     * Transforming OntoUML Classes into UML Classes.
-     */
+    /** Classes */
 	private void TransformingClasses ()
 	{
 		for (EObject obj: packagesMap.keySet())
@@ -124,9 +116,7 @@ public class UMLTransformator {
 		}			        
 	}
 	
-    /**
-     * Transforming ontoUML Attributes to UML Attributes. 
-     */
+    /** Attributes */
 	private void TransformingAttributes ()
 	{
 		for (EObject obj: packagesMap.keySet())
@@ -149,9 +139,7 @@ public class UMLTransformator {
 		}			        
 	}
 		
-	/**
-	 * Transforming OntoUML PrimitiveTypes to UML PrimitveTypes. 
-	 */
+	/** PrimitiveTypes */
 	private void TransformingPrimitiveTypes ()
 	{
 		for (EObject obj: packagesMap.keySet())
@@ -180,9 +168,7 @@ public class UMLTransformator {
 		}
 	}		
 	
-	/**
-	 * Transforming OntoUML Enumerations to UML Enumerations. 
-	 */
+	/** Enumerations */
 	private void TransformingEnumerations ()
 	{
 		for (EObject obj: packagesMap.keySet())
@@ -211,9 +197,7 @@ public class UMLTransformator {
 		}
 	}
 		
-	/** 
-	 * Transforming OntoUML DataTypes to UML DataTypes. 
-	 */
+	/** DataTypes */
 	private void TransformingDataTypes ()
 	{
 		for (EObject obj: packagesMap.keySet())
@@ -234,9 +218,7 @@ public class UMLTransformator {
 		}
 	}		
 		
-	/**
-	 * Transforming OntoUML Associations to UML Associations. 
-	 */
+	/** Association */
 	private void TransformingAssociations ()
 	{
 		for (EObject obj: packagesMap.keySet())
@@ -268,9 +250,7 @@ public class UMLTransformator {
         }
 	}	
 		
-	/**
-	 * Transforming OntoUML Generalizations to UML Generalizations. 
-	 */
+	/** Generalization */
 	private void TransformingGeneralizations ()
 	{
 		for (EObject obj: packagesMap.keySet())
@@ -290,9 +270,7 @@ public class UMLTransformator {
 		}
 	}		
 	
-	/**
-	 * Transforming OntoUML Generalization Sets to UML Generalizations. 
-	 */
+	/** Generalization Set */
 	private void TransformingGeneralizationSets ()
 	{
 		for (EObject obj: packagesMap.keySet())

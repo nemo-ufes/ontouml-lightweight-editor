@@ -16,12 +16,12 @@ public class OntoUML2Ecore {
 	
 	public static Resource convertToEcore (RefOntoUML.Package refmodel, String ecorePath)
 	{
-		return convertToEcore(refmodel, ecorePath, false, false);
+		return convertToEcore(refmodel, ecorePath, false, true);
 	}
 	
 	public static Resource convertToEcore (OntoUMLParser refparser, String ecorePath)
 	{
-		return convertToEcore(refparser, ecorePath, false, false);
+		return convertToEcore(refparser, ecorePath, false, true);
 	}
 	
 	public static Resource convertToEcore (RefOntoUML.Package refmodel, String ecorePath, boolean ignorePackageHierarchy, boolean ignoreDerivation)
@@ -64,7 +64,8 @@ public class OntoUML2Ecore {
 	public static void main(String[] args)
 	{
 		try {
-			String path = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.tocl2alloy\\model\\Imóvel.refontouml";
+			//String path = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.tocl2alloy\\model\\Imóvel.refontouml";
+			String path = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.tocl2alloy\\model\\project.refontouml";
 			
 			convertToEcore(new OntoUMLParser(path),path.replace(".refontouml", ".ecore" ),true,true);
 			

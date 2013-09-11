@@ -10,9 +10,12 @@
     <eOperations name="EOperation0"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="EAttribute0" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EClass1">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//EClass2"
-        containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EClass1" eSuperTypes="#//EClass0">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dois" eType="#//EClass2"
+        eOpposite="#//EClass2/um"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EClass2"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EClass2">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="um" eType="#//EClass1"
+        eOpposite="#//EClass1/dois"/>
+  </eClassifiers>
 </ecore:EPackage>

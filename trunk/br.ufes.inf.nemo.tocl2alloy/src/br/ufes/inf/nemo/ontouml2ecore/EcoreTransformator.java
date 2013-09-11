@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.ontouml2ecore;
 import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.ENamedElement;
@@ -38,7 +37,7 @@ public class EcoreTransformator {
 	
 	public EPackage run ()
     {
-		EcoreElementConverter.outln("running ontouml2ecore...");
+		EcoreElementConverter.outln("Running ontouml2ecore...");
 		
 		ecoreRootModel = org.eclipse.emf.ecore.EcoreFactory.eINSTANCE.createEPackage();   
 		
@@ -61,11 +60,9 @@ public class EcoreTransformator {
 
         TransformingAssociations();        
 
-        //TransformingGeneralizations();        
-
-        //TransformingGeneralizationSets();
+        TransformingGeneralizations();        
             
-        EcoreElementConverter.outln("ontouml2ecore executed.");
+        EcoreElementConverter.outln("Executed.");
         
         return ecoreRootModel;
     }
@@ -186,12 +183,12 @@ public class EcoreTransformator {
 			RefOntoUML.Package refmodel = (RefOntoUML.Package)obj;						
 	        
 			for (EObject elem : refmodel.eContents())
-	        {        	
+	        {
 				if(elem instanceof RefOntoUML.Derivation && refparser.isSelected(elem) && !ignoreDerivation)
 				{
 					econverter.convertEReference((RefOntoUML.Association) elem);					
 					
-				} else if( elem instanceof RefOntoUML.Association && refparser.isSelected(elem))
+				} else if( elem instanceof RefOntoUML.Association && !(elem instanceof RefOntoUML.Derivation) && refparser.isSelected(elem))
 				{        		
 					econverter.convertEReference ((RefOntoUML.Association)elem);
 				}
@@ -199,12 +196,10 @@ public class EcoreTransformator {
         }
 	}	
 		
-	/**
-	 * Transforming OntoUML Generalizations to UML Generalizations. 
-	 */
+	/** Generalizations */
 	private void TransformingGeneralizations ()
 	{
-		for (EObject obj: packagesMap.keySet())
+		for (EObject obj: epackagesMap.keySet())
 		{
 			RefOntoUML.Package refmodel = (RefOntoUML.Package)obj;						
 	        	
@@ -214,33 +209,10 @@ public class EcoreTransformator {
 				{               
 			        for (RefOntoUML.Generalization gen : ((RefOntoUML.Classifier)elem).getGeneralization())
 			        {
-			        	if (refparser.isSelected(gen)) converter.ProcessGeneralizations(gen);
+			        	if (refparser.isSelected(gen)) econverter.convertESupertTypes(gen);
 			        }
 				}
 	        }         	
-		}
-	}		
-	
-	/**
-	 * Transforming OntoUML Generalization Sets to UML Generalizations. 
-	 */
-	private void TransformingGeneralizationSets ()
-	{
-		for (EObject obj: packagesMap.keySet())
-		{
-			RefOntoUML.Package refmodel = (RefOntoUML.Package)obj;
-			org.eclipse.uml2.uml.Package umlmodel = packagesMap.get((RefOntoUML.Package)obj);			
-	        	
-			for (EObject elem : refmodel.eContents())
-	        {	            
-				if (elem instanceof RefOntoUML.GeneralizationSet && refparser.isSelected(elem))
-				{
-					org.eclipse.uml2.uml.GeneralizationSet gs2 = converter.DealGeneralizationSet ((RefOntoUML.GeneralizationSet) elem);        
-					
-					if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(gs2);
-		           	else this.umlRootModel.getPackagedElements().add(gs2);					
-				}
-	        }
 		}
 	}
 }
