@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.ocl2alloy;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -26,16 +27,8 @@ public class PivotOCLParser {
 	private String oclPath;
 	private HashMap <RefOntoUML.Element, EModelElement> emap;
 	private ArrayList<Constraint> constraintlist = new ArrayList<Constraint>();
-	
-	public HashMap <RefOntoUML.Element, EModelElement> getMap ()
-	{
-		return emap;
-	}
-	
-	public ArrayList<Constraint> getConstraints()
-	{
-		return constraintlist;
-	}
+	private RefOntoUML.Package refmodel;
+	private EPackage ecoremodel;
 	
 	private void setupOCL(ResourceSet resourceSet)
 	{	
@@ -56,7 +49,7 @@ public class PivotOCLParser {
 		oclPath = oclAbsolutePath;
 		
 		Resource refResource = OntoUMLUtil.readOntoUML(refAbsolutePath);
-		RefOntoUML.Package refmodel = (RefOntoUML.Package)refResource.getContents().get(0);
+		refmodel = (RefOntoUML.Package)refResource.getContents().get(0);
 		
 		// convert OntoUML to Ecore
 		Resource ecoreResource = OntoUML2Ecore.convertToEcore(refmodel, ecorePath);
@@ -68,11 +61,11 @@ public class PivotOCLParser {
 		emap = OntoUML2Ecore.getMap();
 		
 		// put Ecore in package registry lookup
-		EPackage ecoremodel = (EPackage) ecoreResource.getContents().get(0);
+		ecoremodel = (EPackage) ecoreResource.getContents().get(0);
 		ecoreResource.getResourceSet().getPackageRegistry().put(null,ecoremodel);
 		
 		environmentFactory = new PivotEnvironmentFactory(ecoreResource.getResourceSet().getPackageRegistry(), null);
-	    ocl = OCL.newInstance(environmentFactory);	   
+	    ocl = OCL.newInstance(environmentFactory);	    
    	}	    
 		 
 	/** Parse constraints */
@@ -90,8 +83,45 @@ public class PivotOCLParser {
 		    	 constraintlist.add(constraint);		    	 
 		     }
 		 }		 
+	}	
+
+	/** Get key on Map */
+	public RefOntoUML.Element getKey(EModelElement elem) 
+    {    	
+        for (Entry<RefOntoUML.Element,EModelElement> entry : emap.entrySet()) 
+        {
+            if (elem.equals(entry.getValue())) 
+            {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+	
+	public HashMap <RefOntoUML.Element, EModelElement> getMap ()
+	{
+		return emap;
 	}
 	
+	public ArrayList<Constraint> getConstraints()
+	{
+		return constraintlist;
+	}
+	
+	public RefOntoUML.Package getRefModel()
+	{
+		return refmodel;
+	}
+	
+	public EPackage getEcoreModel ()
+	{
+		return ecoremodel;
+	}
+	
+	public OCL getOCLFacade()
+	{
+		return ocl;
+	}
 	/** Run a Test */
 	public static void main (String[] args)
 	{				
