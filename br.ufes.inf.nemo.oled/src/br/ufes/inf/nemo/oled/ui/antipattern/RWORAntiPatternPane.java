@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import br.ufes.inf.nemo.antipattern.RWORAntiPattern;
+import br.ufes.inf.nemo.antipattern.rwor.RWORAntiPattern;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**

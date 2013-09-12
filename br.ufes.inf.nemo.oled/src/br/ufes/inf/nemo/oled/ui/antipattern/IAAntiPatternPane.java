@@ -21,7 +21,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.antipattern.IAAntiPattern;
+import br.ufes.inf.nemo.antipattern.ia.IAAntiPattern;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
