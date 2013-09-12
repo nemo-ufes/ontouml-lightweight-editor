@@ -12,12 +12,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.antipattern.ACAntiPattern;
-import br.ufes.inf.nemo.antipattern.IAAntiPattern;
-import br.ufes.inf.nemo.antipattern.RBOSAntiPattern;
-import br.ufes.inf.nemo.antipattern.RSAntiPattern;
-import br.ufes.inf.nemo.antipattern.RWORAntiPattern;
-import br.ufes.inf.nemo.antipattern.STRAntiPattern;
+import br.ufes.inf.nemo.antipattern.ac.ACAntiPattern;
+import br.ufes.inf.nemo.antipattern.ia.IAAntiPattern;
+import br.ufes.inf.nemo.antipattern.rbos.RBOSAntiPattern;
+import br.ufes.inf.nemo.antipattern.rs.RSAntiPattern;
+import br.ufes.inf.nemo.antipattern.rwor.RWORAntiPattern;
+import br.ufes.inf.nemo.antipattern.str.STRAntiPattern;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.util.IconLoader;

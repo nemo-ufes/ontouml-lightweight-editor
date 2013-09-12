@@ -10,7 +10,7 @@ import javax.swing.table.TableModel;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
-import br.ufes.inf.nemo.antipattern.RWORAntiPattern;
+import br.ufes.inf.nemo.antipattern.rwor.RWORAntiPattern;
 
 
 /**

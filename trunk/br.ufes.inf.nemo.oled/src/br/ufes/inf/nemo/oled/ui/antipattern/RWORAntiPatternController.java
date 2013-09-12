@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.oled.ui.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ufes.inf.nemo.antipattern.RWORAntiPattern;
+import br.ufes.inf.nemo.antipattern.rwor.RWORAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;

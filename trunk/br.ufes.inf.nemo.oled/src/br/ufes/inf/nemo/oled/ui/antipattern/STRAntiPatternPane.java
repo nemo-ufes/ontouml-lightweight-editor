@@ -19,7 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import br.ufes.inf.nemo.antipattern.STRAntiPattern;
+import br.ufes.inf.nemo.antipattern.str.STRAntiPattern;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
