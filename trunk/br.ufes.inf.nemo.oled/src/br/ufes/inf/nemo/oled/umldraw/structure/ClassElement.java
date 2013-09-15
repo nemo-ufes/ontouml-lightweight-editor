@@ -77,7 +77,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 	public static ClassElement getPrototype() {
 		return prototype;
 	}
-
+	
 	/**
 	 * Private constructor.
 	 */
