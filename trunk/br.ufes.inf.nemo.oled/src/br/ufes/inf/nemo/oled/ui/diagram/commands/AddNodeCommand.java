@@ -35,6 +35,7 @@ import br.ufes.inf.nemo.oled.ui.ModelTree;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 
 /**
@@ -107,6 +108,10 @@ public class AddNodeCommand extends BaseDiagramCommand {
 			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), classElement.getClassifier());
 			project.getEditingDomain().getCommandStack().execute(cmd);
 			
+			//Add mapping from the refontouml element to the diagram element
+			ModelHelper.addMapping(classElement.getClassifier(), classElement);
+			project.getEditingDomain().getCommandStack().execute(cmd);
+			
 		}
 		
 		//Adds the element to the diagram
@@ -117,7 +122,9 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		elements.add(element);
 		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
 		
+		
 		//FIXME every modification creates a new tree
+		ModelTree.getParserFor(project).addElement(((ClassElement)element).getClassifier());
 		ModelTree.updateModelTree(project);		
 	}
 }
