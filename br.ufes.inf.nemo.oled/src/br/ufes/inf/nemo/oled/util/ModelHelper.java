@@ -41,6 +41,7 @@ import RefOntoUML.impl.MeronymicImpl;
 import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.impl.RefOntoUMLPackageImpl;
 import RefOntoUML.provider.RefOntoUMLItemProviderAdapterFactory;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 
 public class ModelHelper {
@@ -51,6 +52,8 @@ public class ModelHelper {
 	private static ComposedAdapterFactory adapterFactory; // TODO Cleanup
 	private static AdapterFactoryEditingDomain editingDomain; // TODO Cleanup
 	private static boolean initialized = false;
+	
+	private static HashMap<Element,DiagramElement> mappings;
 
 	private ModelHelper() {
 	}
@@ -91,8 +94,36 @@ public class ModelHelper {
 		//validator.validate(factory.createClass());
 		
 		//validator2 = RefOntoUMLValidator.INSTANCE;
-				
+		
+		mappings = new HashMap<>();
+		
 		initialized = true;
+	}
+	
+	//Adds mapping from RefOntoUMLElement to DiagramElement (metamodel->concretemodel)
+	//Returns true if the element was successfully added;
+	public static boolean addMapping (Element element, DiagramElement diagramElement){
+		DiagramElement result;
+		if (!initialized)
+			initializeHelper();
+		
+		if (element==null || diagramElement==null)
+			return false;
+		
+		result = mappings.put(element, diagramElement);
+		
+		if (result!=null)
+			return true;
+		else
+			return false;
+	}
+	
+	public static DiagramElement getDiagramElement (Element element){
+		
+		if (!initialized)
+			initializeHelper();
+		
+		return mappings.get(element);
 	}
 
 	public static RefOntoUMLFactory getFactory() {
