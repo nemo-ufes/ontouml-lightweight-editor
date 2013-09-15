@@ -2,14 +2,14 @@ package br.ufes.inf.nemo.oled.model;
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.antipattern.ACAntiPattern;
-import br.ufes.inf.nemo.antipattern.IAAntiPattern;
-import br.ufes.inf.nemo.antipattern.RBOSAntiPattern;
-import br.ufes.inf.nemo.antipattern.RSAntiPattern;
-import br.ufes.inf.nemo.antipattern.RWORAntiPattern;
-import br.ufes.inf.nemo.antipattern.SSRAntiPattern;
-import br.ufes.inf.nemo.antipattern.STRAntiPattern;
+import br.ufes.inf.nemo.antipattern.ac.ACAntiPattern;
+import br.ufes.inf.nemo.antipattern.ia.IAAntiPattern;
+import br.ufes.inf.nemo.antipattern.rbos.RBOSAntiPattern;
+import br.ufes.inf.nemo.antipattern.rs.RSAntiPattern;
+import br.ufes.inf.nemo.antipattern.rwor.RWORAntiPattern;
 import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
+import br.ufes.inf.nemo.antipattern.ssr.SSRAntiPattern;
+import br.ufes.inf.nemo.antipattern.str.STRAntiPattern;
 import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 
 
