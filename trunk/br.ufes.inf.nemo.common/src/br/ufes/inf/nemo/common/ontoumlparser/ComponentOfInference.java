@@ -44,6 +44,11 @@ public class ComponentOfInference {
 		compositions = new ArrayList<>();
 		compositions.addAll(parser.getAllInstances(componentOf.class));
 		
+		for (componentOf c : compositions) {
+			System.out.println(parser.getStringRepresentation(c));
+		}
+		System.out.println("%%%%");
+		
 		inferredCompositions = new ArrayList<>();
 		
 	}
@@ -82,6 +87,7 @@ public class ComponentOfInference {
 		ArrayList<ArrayList<componentOf>> parts = new ArrayList<>();
 		
 		for (componentOf cp : compositions) {
+			
 			if(cp.whole().equals(whole) && !loopInPath(cp, path) && cp.partEnd().getLower()>0 && cp.wholeEnd().getLower()>0){
 				
 				ArrayList<componentOf> newPath = new ArrayList<>();

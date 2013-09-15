@@ -115,9 +115,6 @@ public class OntoUMLModelStatistic {
 				   
 					else if (c instanceof Relator)
 						relators.add((Relator) c);
-					
-					else
-						System.out.println(c);
 				}
 			   
 				else if (c instanceof Association){
@@ -148,15 +145,11 @@ public class OntoUMLModelStatistic {
 					else if (c instanceof subQuantityOf)
 						subQuantityOfs.add((subQuantityOf) c);
 					
-					else
-						System.out.println(c);
 				}
 			   
 				else if (c instanceof DataType)
 					datatypes.add((DataType) c);  
 				
-				else
-					System.out.println(c);
 			}
 	   }
 		

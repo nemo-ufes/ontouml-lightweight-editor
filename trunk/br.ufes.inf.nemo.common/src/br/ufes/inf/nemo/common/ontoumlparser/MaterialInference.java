@@ -107,11 +107,9 @@ public class MaterialInference {
 		Classifier source = (Classifier) parser.getMediated(m1);
 		Classifier target = (Classifier) parser.getMediated(m2);
 		
-		MaterialAssociation material = factory.createMaterialAssociation();
-		Derivation derivation = factory.createDerivation();
+		MaterialAssociation material = OntoUMLUtil.createMaterialAssociation(source, target);
+		Derivation derivation = OntoUMLUtil.createDerivation(source, target);
 		
-		createAssociationInternalStructure(source, target, material);
-		createAssociationInternalStructure(material, relator, derivation);
 		
 		material.setName(source.getName().trim()+"_"+target.getName().trim());
 		material.setIsDerived(true);
@@ -134,34 +132,7 @@ public class MaterialInference {
 		
 	}
 
-	private void createAssociationInternalStructure (Classifier source, Classifier target, Association a){
-		
-		Property sourceProperty = createProperty(source);
-		Property targetProperty = createProperty(target);
-		
-		a.getMemberEnd().add(sourceProperty);
-		a.getMemberEnd().add(targetProperty);
-		a.getOwnedEnd().add(sourceProperty);
-		a.getOwnedEnd().add(targetProperty);
-		
-	}
 	
-	private Property createProperty (Classifier type){
-		
-		Property p = factory.createProperty();
-		LiteralInteger lowerValue = factory.createLiteralInteger();
-        LiteralUnlimitedNatural upperValue = factory.createLiteralUnlimitedNatural();
-		String name = type.getName();
-		
-        if(name!=null) name = name.toLowerCase();
-        	
-        p.setName(name);
-        p.setType(type);
-		p.setLowerValue(lowerValue);
-		p.setUpperValue(upperValue);
-        
-        return p;
-	}
 	
 	private void inferMetaProperties (MaterialAssociation m, Mediation m1, Mediation m2, Derivation d) throws Exception {
 		

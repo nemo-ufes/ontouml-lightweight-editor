@@ -261,7 +261,11 @@ public class OntoUMLParser {
 	 */
 	public String getStringRepresentation(EObject elem)
 	{
-		return elementsHash.get(elem).toString();
+		ParsingElement parsingElem = elementsHash.get(elem);
+		
+		if (parsingElem == null)
+			return "Unknown Element";
+		else return parsingElem.toString();
 	}
 	
 	/**
@@ -736,7 +740,7 @@ public class OntoUMLParser {
 	/**
 	 * Auto Select Elements : Generalization.
 	 * 
-	 * In Generalizations, thei Generalizations Set must be selected.
+	 * In Generalizations, their Generalizations Set must be selected.
 	 * 
 	 * @return
 	 */
@@ -760,6 +764,40 @@ public class OntoUMLParser {
 		
 		return objectsToAdd;
 	}
+	
+	//Select all associations connected to the inputed classifiers
+	public ArrayList<EObject> autoSelectRelatedElements(ArrayList<Classifier> classifiers)
+	{
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
+		
+		for (Association a : getAllInstances(Association.class))
+		{
+			if (!isSelected(a))
+			{
+				//try clause added because the model may be inconsistent and generate exceptios.
+				try {
+					Type source = a.getMemberEnd().get(0).getType();
+					Type target = a.getMemberEnd().get(1).getType();
+					
+					if (!isSelected(source) && !objectsToAdd.contains(source) && !classifiers.contains(source))
+						objectsToAdd.add(source);
+					if (!isSelected(target) && !objectsToAdd.contains(target) && !classifiers.contains(target))
+						objectsToAdd.add(target);
+				}
+				//ignores association and unselect it.
+				catch (Exception e) {
+				
+					this.elementsHash.get(a).setSelected(false);
+				}
+			}
+		}
+		
+		// add this elements to selection...
+		selectThisElements(objectsToAdd,false);
+		
+		return objectsToAdd;
+	}
+	
 	
 	/**
 	 * Auto Select Elements: Generalization Set.
@@ -959,6 +997,7 @@ public class OntoUMLParser {
 			return m.targetEnd();
 		else
 			throw new Exception("Mediation is not connected to any Relator! No way to return the Relator element. The model is invalid.");
+		
 	}
 	
 	public Property getMediatedEnd (Mediation m) throws Exception
@@ -968,7 +1007,8 @@ public class OntoUMLParser {
 		else if (m.targetEnd().getType() instanceof Relator)
 			return m.sourceEnd();
 		else
-			throw new Exception("Mediation is not connected to any Relator! No way to return the mediated element. The model is invalid.");
+			return m.targetEnd();
+			//throw new Exception("Mediation is not connected to any Relator! No way to return the mediated element. The model is invalid.");
 	}
 	
 	public Relator getRelator(Mediation m) throws Exception
