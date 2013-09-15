@@ -15,6 +15,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
@@ -171,11 +172,23 @@ public class ModelTree extends JPanel{
 		ModelTree modeltree = ModelTree.getTreeFor(project);
 		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
-		OntoUMLParser refparser = new OntoUMLParser(project.getModel());		
+		OntoUMLParser refparser = new OntoUMLParser(project.getModel());
+		
 		ArrayList<EObject> selected = (ArrayList<EObject>)modeltree.getTree().getCheckedElements();
 		refparser.selectThisElements(selected, true);
 		
+		System.out.println("PRE: ");
+		for (Classifier pe : ModelTree.getParserFor(project).getAllInstances(Classifier.class)) {
+			System.out.println(refparser.getStringRepresentation(pe));
+		}
+		
 		modeltree.setParser(refparser);
+		
+		System.out.println("POS: ");
+		for (Classifier pe : ModelTree.getParserFor(project).getAllInstances(Classifier.class)) {
+			System.out.println(refparser.getStringRepresentation(pe));
+		}
+		
 		modeltree.setTree(new OntoUMLTree(root,project.getModel(),refparser));
 		modeltree.getTree().checkElements(selected, true);			
 		modeltree.getTree().updateUI();    	
