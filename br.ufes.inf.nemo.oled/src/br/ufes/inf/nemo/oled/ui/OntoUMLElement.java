@@ -110,8 +110,10 @@ public class OntoUMLElement {
 		}
 		
 		if (element instanceof RefOntoUML.Property)
-		{						
-			String TypeName = ((RefOntoUML.Property)element).getType().getName();
+		{		
+			String TypeName;
+			try{ TypeName = ((RefOntoUML.Property)element).getType().getName();}
+			catch (Exception e) { TypeName = ""; }
 			String name = ((RefOntoUML.Property)element).getName();
 			Integer lower = ((RefOntoUML.Property)element).getLower();
 			Integer upper = ((RefOntoUML.Property)element).getUpper();
