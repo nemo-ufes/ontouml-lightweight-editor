@@ -37,8 +37,14 @@ public class NameHandler {
                 
         if(name==null || name.equals("")){ 
         	if (element instanceof Property){
-        		if(element.eContainer() instanceof Association)
-        			name = ((Property)element).getType().getName().toLowerCase();
+        		if(element.eContainer() instanceof Association){
+        			try {
+        				name = ((Property)element).getType().getName().toLowerCase();
+        			}catch (Exception e){
+        				name = "attribute";
+        			}
+        			
+        		}
         		else
         			name = "attribute";
         	}
