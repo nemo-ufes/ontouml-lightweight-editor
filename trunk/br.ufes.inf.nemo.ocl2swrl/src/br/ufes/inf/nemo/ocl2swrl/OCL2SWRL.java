@@ -1,16 +1,20 @@
 package br.ufes.inf.nemo.ocl2swrl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.ocl.uml.impl.ExpressionInOCLImpl;
 import org.eclipse.uml2.uml.Constraint;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.SWRLAtom;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2alloy.OCLParser;
-import br.ufes.inf.nemo.ocl2swrl.OCLFactory.ExpressionInOCLImplFactory;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonInitialized;
+import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.ExpressionInOCLImplFactory;
 
 public class OCL2SWRL {
 	//public static String log = new String();;		
@@ -75,7 +79,10 @@ public class OCL2SWRL {
 			
 			ExpressionInOCLImplFactory exprFactory = new ExpressionInOCLImplFactory(expr);
 			
-			exprFactory.solve();
+			Set<SWRLAtom> antecedent = new HashSet<SWRLAtom>();
+			Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
+			
+			exprFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent);
 		}
 	}
 	
