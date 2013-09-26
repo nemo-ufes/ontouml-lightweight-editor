@@ -8,7 +8,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
-import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl.TypedElementImplFactory;
 
@@ -30,7 +29,7 @@ public class OCLExpressionImplFactory extends TypedElementImplFactory {
 	}
 	
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument) {
 		return null;
 		
 	}

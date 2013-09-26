@@ -2,14 +2,24 @@ package br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl;
 
 import java.util.Set;
 
+import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.uml.impl.ExpressionInOCLImpl;
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
+import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
+import org.semanticweb.owlapi.model.SWRLClassAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
+import org.semanticweb.owlapi.model.SWRLRule;
+import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl.NamedElementImplFactory;
 
@@ -33,12 +43,33 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 	}
 	
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument) {
 		ExpressionInOCLImpl expressionInOCLImpl = (ExpressionInOCLImpl) this.m_NamedElementImpl;
 		OCLExpressionImpl bodyExpression = (OCLExpressionImpl) expressionInOCLImpl.getBodyExpression();
 		
 		bodyExpressionFactory = (OCLExpressionImplFactory) NamedElementImplFactory.constructor(bodyExpression);
-		bodyExpressionFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent);
+		bodyExpressionFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null);
+		
+		Variable<Classifier, Parameter> contextVariable = expressionInOCLImpl.getContextVariable();
+		Classifier classContVar = contextVariable.getType();
+		//create a swrl variable with the self name
+		String contVarName = classContVar.getName();
+		
+		String iriName = nameSpace+contVarName;
+		IRI iri = IRI.create(iriName);
+		SWRLVariable var = factory.getSWRLVariable(iri);
+		OWLClass owlClass = factory.getOWLClass(iri);
+		//get the complement of the self
+		OWLObjectComplementOf complementOf = factory.getOWLObjectComplementOf(owlClass);
+		//create a swrl atom that means swrlVariable isn't self
+		SWRLClassAtom atom = factory.getSWRLClassAtom(complementOf, var);
+		consequent.add(atom);
+		
+		//create a rule with the incremented antecedents and consequents
+		SWRLRule rule = factory.getSWRLRule(antecedent,consequent);
+		
+		//apply changes in the owl manager
+		manager.applyChange(new AddAxiom(ontology, rule));
 		
 		return null;
 		

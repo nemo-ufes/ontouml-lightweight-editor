@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
+import org.semanticweb.owlapi.model.SWRLDArgument;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
@@ -31,10 +32,10 @@ public class VariableExpImplFactory extends OCLExpressionImplFactory {
 	}
 
 	@Override
-	public SWRLVariable solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument) {
 		VariableExpImpl variableExpImpl = (VariableExpImpl) this.m_NamedElementImpl;
 		//String varName = variableExpImpl.getReferredVariable().getType().getName();
-		String varName = Util.generateVarName(variableExpImpl.getReferredVariable().getType());
+		String varName = Util.generateVarName(variableExpImpl.getReferredVariable().getType(), null);
 		
 		SWRLVariable var = factory.getSWRLVariable(IRI.create(nameSpace+varName));
 		
