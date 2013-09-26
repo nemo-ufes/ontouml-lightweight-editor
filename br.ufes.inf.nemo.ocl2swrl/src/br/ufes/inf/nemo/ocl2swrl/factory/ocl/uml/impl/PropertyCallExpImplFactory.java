@@ -18,10 +18,10 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
+import org.semanticweb.owlapi.model.SWRLIArgument;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
-import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.PropertyFactory;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
 
 
@@ -33,8 +33,6 @@ import br.ufes.inf.nemo.ocl2swrl.util.Util;
  */
 public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 
-	PropertyFactory referredPropertyFactory;
-	
 	public PropertyCallExpImplFactory(NamedElementImpl m_NamedElementImpl){
 		super(m_NamedElementImpl);
 	}
@@ -44,27 +42,28 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 	}
 
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument) {
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
 		OCLExpressionImpl source = (OCLExpressionImpl) propertyCallExpImpl.getSource();
 		
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
-		SWRLVariable varX = (SWRLVariable) this.sourceFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent);
+		SWRLDArgument sourceVar = this.sourceFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null);
 		
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
 		Type propertyType = referredProperty.getType();
 		
+		SWRLDArgument outVar = null;
 		if(propertyType.getClass().equals(PrimitiveTypeImpl.class)){
-			solveClassAttribute(nameSpace, manager, factory, ontology, antecedent, consequent);
+			outVar = solveClassAttribute(nameSpace, manager, factory, ontology, antecedent, consequent, sourceVar);
 		}else if(propertyType.getClass().equals(ClassImpl.class)){
-			solveAssociation(nameSpace, manager, factory, ontology, antecedent, consequent);
+			outVar = solveAssociation(nameSpace, manager, factory, ontology, antecedent, consequent, sourceVar);
 		}
 		
 		System.out.println();
-		return null;
+		return outVar;
 	}
 	
-	public void solveAssociation(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
+	public SWRLDArgument solveAssociation(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument){
 		String nameVarX = "";
 		String nameVarY = "";
 		
@@ -82,11 +81,11 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		String assocEnd0Name = assocEnd0.getName();
 		
 		if(assocEndName.equals(assocEnd0Name)){
-			nameVarX = Util.generateVarName(referredProperty);
-			nameVarY = Util.generateVarName(source);
+			nameVarX = Util.generateVarName(source, referredArgument);
+			nameVarY = Util.generateVarName(referredProperty, referredArgument);
 		}else{
-			nameVarX = Util.generateVarName(source);
-			nameVarY = Util.generateVarName(referredProperty);
+			nameVarX = Util.generateVarName(referredProperty, referredArgument);
+			nameVarY = Util.generateVarName(source, referredArgument);
 		}
 		
 		//variables are created to the source and the target class
@@ -96,11 +95,16 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		//the atoms are added to the antecedents atoms
 		//antecedent.add(this.factory.getSWRLDifferentIndividualsAtom(varX, varY)); //DifferentFrom(?x,?z)
 		antecedent.add(factory.getSWRLObjectPropertyAtom(relation, varX, varY)); //prop(?x,?Y)
+		
+		if(assocEndName.equals(assocEnd0Name)){
+			return varY;
+		}else{
+			return varX;			
+		}
 	}
 	
-	public void solveClassAttribute(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
+	public SWRLDArgument solveClassAttribute(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument){
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
-		OCLExpressionImpl source = (OCLExpressionImpl) propertyCallExpImpl.getSource();
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
 		
 		ClassImpl owner = (ClassImpl)referredProperty.getOwner();
@@ -112,13 +116,12 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		OWLDataProperty attrDtProp = factory.getOWLDataProperty(iriAttr);
 		
 		//generates variables involved in the attribute
-		String classVarName = Util.generateVarName(source);
-		SWRLVariable classVar = factory.getSWRLVariable(IRI.create(nameSpace+classVarName));
-		
-		String attrVarName = Util.generateVarName(propertyCallExpImpl);
+		String attrVarName = Util.generateVarName(propertyCallExpImpl, referredArgument);
 		SWRLVariable attrVar = factory.getSWRLVariable(IRI.create(nameSpace+attrVarName));
 		
 		//add the atom to the antecedents atoms
-		antecedent.add(factory.getSWRLDataPropertyAtom(attrDtProp, classVar, attrVar)); //property(?x,?Y)
+		antecedent.add(factory.getSWRLDataPropertyAtom(attrDtProp, (SWRLIArgument) referredArgument, attrVar)); //property(?x,?Y)
+		
+		return attrVar;
 	}
 }

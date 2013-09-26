@@ -7,20 +7,38 @@ import org.eclipse.ocl.uml.impl.VariableImpl;
 import org.eclipse.uml2.uml.internal.impl.ClassImpl;
 import org.eclipse.uml2.uml.internal.impl.PropertyImpl;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.SWRLDArgument;
+import org.semanticweb.owlapi.model.SWRLLiteralArgument;
+import org.semanticweb.owlapi.model.SWRLVariable;
 
 import uk.ac.manchester.cs.owl.owlapi.SWRLLiteralArgumentImpl;
 import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
 
 public class Util {
-	public static String generateVarName(Object expression){
+	public static String generateVarName(Object expression, SWRLDArgument referredArgument){
 		String varName = "";
 		
+		if(referredArgument != null){
+			Class<? extends SWRLDArgument> c = referredArgument.getClass();
+			if(c.equals(SWRLVariableImpl.class)){
+				SWRLVariable var = (SWRLVariableImpl) referredArgument;
+				IRI iri = var.getIRI();
+				
+				varName += iri.getFragment();
+				
+				
+			}else if(c.equals(SWRLLiteralArgumentImpl.class)){
+				SWRLLiteralArgument arg = (SWRLLiteralArgumentImpl) referredArgument;
+				arg.getLiteral();
+			}
+		}
+		
 		if(expression.getClass().equals(PropertyCallExpImpl.class)){
-			varName += generateVarName(((CallExpImpl) expression).getSource());
+			//varName += generateVarName(((CallExpImpl) expression).getSource(), null);
 			varName += ".";
 			varName += ((PropertyCallExpImpl) expression).getReferredProperty().getName();
 		}else if(expression.getClass().equals(VariableExpImpl.class)){
-			varName += ((VariableExpImpl) expression).getReferredVariable().getType().getName();
+			//varName += ((VariableExpImpl) expression).getReferredVariable().getType().getName();
 		}else if(expression.getClass().equals(VariableImpl.class)){
 			varName += ((VariableImpl) expression).getType().getName();
 		}else if(expression.getClass().equals(SWRLLiteralArgumentImpl.class)){
@@ -29,7 +47,6 @@ public class Util {
 			IRI iri = (IRI)((SWRLVariableImpl)expression).getIRI();
 			varName += iri.getFragment();
 		}else if(expression.getClass().equals(PropertyImpl.class)){
-			varName += generateVarName(((PropertyImpl) expression).getType());
 			varName += ".";
 			varName += ((PropertyImpl) expression).getName();
 			//varName += iri.getFragment();

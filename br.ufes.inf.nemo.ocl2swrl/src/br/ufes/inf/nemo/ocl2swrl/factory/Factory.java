@@ -6,7 +6,6 @@ import org.eclipse.ocl.uml.impl.IntegerLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
 import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
 import org.eclipse.ocl.uml.impl.VariableExpImpl;
-import org.eclipse.uml2.uml.Property;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -19,11 +18,10 @@ import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.IntegerLiteralExpImplFacto
 import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.OperationCallExpImplFactory;
 import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.PropertyCallExpImplFactory;
 import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.VariableExpImplFactory;
-import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.PropertyFactory;
 
 
 public class Factory {
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument) {
 		throw new NonImplemented("solve()");
 	}
 	
@@ -35,8 +33,6 @@ public class Factory {
 			return new OperationCallExpImplFactory((OperationCallExpImpl) obj);
 		}else if(c.equals(VariableExpImpl.class)){
 			return new VariableExpImplFactory((VariableExpImpl) obj);
-		}else if(c.equals(Property.class)){
-			return new PropertyFactory((Property) obj);
 		}else if(c.equals(IntegerLiteralExpImpl.class)){
 			return new IntegerLiteralExpImplFactory((IntegerLiteralExpImpl) obj);
 		}else{
