@@ -1,6 +1,18 @@
 package br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl;
 
+import java.util.Set;
+
+import org.eclipse.ocl.uml.impl.TypeExpImpl;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.SWRLAtom;
+import org.semanticweb.owlapi.model.SWRLDArgument;
+import org.semanticweb.owlapi.model.SWRLVariable;
+
+import br.ufes.inf.nemo.ocl2swrl.util.Util;
 
 
 
@@ -19,4 +31,14 @@ public class TypeExpImplFactory extends OCLExpressionImplFactory {
 		super.finalize();
 	}
 
+	@Override
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument) {
+		TypeExpImpl typeExpImpl = (TypeExpImpl) this.m_NamedElementImpl;
+		
+		String varXName = Util.generateVarName(typeExpImpl, referredArgument);
+		
+		SWRLVariable varZ = factory.getSWRLVariable(IRI.create(nameSpace+varXName));
+		
+		return varZ;
+	}
 }

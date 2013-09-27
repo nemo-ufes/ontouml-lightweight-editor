@@ -59,7 +59,6 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 			outVar = solveAssociation(nameSpace, manager, factory, ontology, antecedent, consequent, sourceVar);
 		}
 		
-		System.out.println();
 		return outVar;
 	}
 	
