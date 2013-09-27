@@ -35,7 +35,7 @@ public class VariableExpImplFactory extends OCLExpressionImplFactory {
 	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument) {
 		VariableExpImpl variableExpImpl = (VariableExpImpl) this.m_NamedElementImpl;
 		//String varName = variableExpImpl.getReferredVariable().getType().getName();
-		String varName = Util.generateVarName(variableExpImpl.getReferredVariable().getType(), null);
+		String varName = Util.generateVarName(variableExpImpl.getReferredVariable().getType(), referredArgument);
 		
 		SWRLVariable var = factory.getSWRLVariable(IRI.create(nameSpace+varName));
 		

@@ -1,9 +1,6 @@
 package br.ufes.inf.nemo.ocl2swrl.util;
 
-import org.eclipse.ocl.uml.impl.CallExpImpl;
-import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
-import org.eclipse.ocl.uml.impl.VariableExpImpl;
-import org.eclipse.ocl.uml.impl.VariableImpl;
+import org.eclipse.ocl.uml.impl.*;
 import org.eclipse.uml2.uml.internal.impl.ClassImpl;
 import org.eclipse.uml2.uml.internal.impl.PropertyImpl;
 import org.semanticweb.owlapi.model.IRI;
@@ -50,8 +47,11 @@ public class Util {
 			varName += ".";
 			varName += ((PropertyImpl) expression).getName();
 			//varName += iri.getFragment();
-		}else if(expression.getClass().equals(ClassImpl.class)){
+		}else if(expression.getClass().equals(ClassImpl.class) && referredArgument == null){
 			varName += ((ClassImpl) expression).getName();
+			//varName += iri.getFragment();
+		}else if(expression.getClass().equals(TypeExpImpl.class)){
+			varName += ((TypeExpImpl) expression).getReferredType().getName();
 			//varName += iri.getFragment();
 		}
 		

@@ -10,7 +10,8 @@ import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
  * @created 24-set-2013 09:16:13
  */
 public class LoopExpImplFactory extends CallExpImplFactory {
-
+	public OCLExpressionImplFactory bodyFactory;
+	
 	public LoopExpImplFactory(NamedElementImpl m_NamedElementImpl){
 		super(m_NamedElementImpl);
 	}
