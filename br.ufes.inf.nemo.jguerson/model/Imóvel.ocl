@@ -1,0 +1,8 @@
+
+-- # Configuration Line : Do not change this... 
+import 'Imóvel.ecore'
+
+-- # Write your constraints below... Press Ctrl+Space too see the options.
+package _'Imóvel'
+endpackage
+
