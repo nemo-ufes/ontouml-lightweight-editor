@@ -44,6 +44,7 @@ import org.eclipse.ocl.examples.pivot.Operation;
 import org.eclipse.ocl.examples.pivot.OperationCallExp;
 import org.eclipse.ocl.examples.pivot.Parameter;
 import org.eclipse.ocl.examples.pivot.ParserException;
+import org.eclipse.ocl.examples.pivot.PivotConstants;
 import org.eclipse.ocl.examples.pivot.Precedence;
 import org.eclipse.ocl.examples.pivot.PrimitiveType;
 import org.eclipse.ocl.examples.pivot.Property;
@@ -241,7 +242,7 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 	@Override
 	public String visitConstraint (Constraint constraint)
 	{
-		Element context = constraint.getConstrainedElement().get(0);
+		Element context = constraint.getContext();
 		OCLExpression oclExpression = ((ExpressionInOCL)constraint.getSpecification()).getBodyExpression();		
 		String stereotype = PivotUtil.getStereotype(constraint); 				
 		constraint_count++;
@@ -439,7 +440,37 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 	@Override
 	public String visitProperty(@NonNull Property property)  { return null; }
 	@Override
-	public String visitPropertyCallExp(@NonNull PropertyCallExp pc)  { return null; }
+	public String visitPropertyCallExp(@NonNull PropertyCallExp pc)  
+	{
+		OCLExpression scrExpression = pc.getSource();
+		safeVisit(scrExpression);
+		Property property = pc.getReferredProperty();
+		
+		
+		/*// source is null when the property call expression is an
+        //    association class navigation qualifier
+        OCLExpression source = pc.getSource();
+		safeVisit(source);
+		Property property = pc.getReferredProperty();
+        Type sourceType = source != null ? source.getType() : null;
+		result.append(sourceType instanceof CollectionType
+				? PivotConstants.COLLECTION_NAVIGATION_OPERATOR
+				: PivotConstants.OBJECT_NAVIGATION_OPERATOR);
+		appendName(property);
+		appendAtPre(pc);
+        List<OCLExpression> qualifiers = pc.getQualifier();
+		if (!qualifiers.isEmpty()) {
+			append("["); //$NON-NLS-1$
+			String prefix = ""; //$NON-NLS-1$
+			for (OCLExpression qualifier : qualifiers) {
+				append(prefix);
+				safeVisit(qualifier);
+				prefix = ", "; //$NON-NLS-1$
+			}
+			append("]");
+		}*/
+		return null; 
+	}
 	@Override
 	public String visitRealLiteralExp(@NonNull RealLiteralExp rl)  { return null; }
 	@Override
@@ -510,7 +541,8 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 	{
 		// ecore model element of pivot
 		EModelElement eElem = oclparser.getMetamodelManager().getEcoreOfPivot(EModelElement.class, pivotElem);
-
+		System.out.println(pivotElem);
+		System.out.println(eElem);
 		for (Entry<RefOntoUML.Element,EModelElement> entry : oclparser.getOntoUML2EcoreMap().entrySet()) 
 	    {
 			// if the the ecore elements are equal..  
@@ -521,6 +553,7 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
         		{
         			String ecoreName = ((ENamedElement)eElem).getName().trim().toLowerCase();
         			String entryName = ((ENamedElement)entry.getValue()).getName().trim().toLowerCase();
+        			System.out.println(ecoreName +" = " + entryName);
         			if (ecoreName.equals(entryName)) return entry.getKey();
         		}
             }
@@ -531,8 +564,11 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
     /** Used for a Test */	
 	public static void main (String[]args)
 	 {		 				
-		 String oclPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\model\\project.ocl";
-		 String refPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\model\\project.refontouml";
+		 String oclPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\model\\RoadTrafficAccident.ocl";
+		 String refPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\model\\RoadTrafficAccident.refontouml";
+		 
+//		 String oclPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\model\\project.ocl";
+//		 String refPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\model\\project.refontouml";
 		 
 		 String tempPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\temp\\";
 			
