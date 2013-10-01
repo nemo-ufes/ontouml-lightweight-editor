@@ -30,9 +30,20 @@ public class IntegerLiteralExpImplFactory extends NumericLiteralExpImplFactory {
 	}
 
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		IntegerLiteralExpImpl integerLiteralExpImpl = (IntegerLiteralExpImpl)m_NamedElementImpl;
 		Integer integerSymbol = integerLiteralExpImpl.getIntegerSymbol();
+		OWLLiteral owlLiteral = factory.getOWLLiteral(integerSymbol);
+		SWRLLiteralArgument var = factory.getSWRLLiteralArgument(owlLiteral);
+		
+		return var;
+	}
+	
+	@Override
+	public SWRLDArgument solveNegativeNumber(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+		IntegerLiteralExpImpl integerLiteralExpImpl = (IntegerLiteralExpImpl)m_NamedElementImpl;
+		Integer integerSymbol = integerLiteralExpImpl.getIntegerSymbol();
+		integerSymbol *= (-1);
 		OWLLiteral owlLiteral = factory.getOWLLiteral(integerSymbol);
 		SWRLLiteralArgument var = factory.getSWRLLiteralArgument(owlLiteral);
 		

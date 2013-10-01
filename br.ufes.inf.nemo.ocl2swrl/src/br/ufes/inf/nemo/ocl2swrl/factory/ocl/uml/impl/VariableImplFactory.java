@@ -20,5 +20,4 @@ public class VariableImplFactory extends TypedElementImplFactory {
 	public void finalize() throws Throwable {
 		super.finalize();
 	}
-
 }

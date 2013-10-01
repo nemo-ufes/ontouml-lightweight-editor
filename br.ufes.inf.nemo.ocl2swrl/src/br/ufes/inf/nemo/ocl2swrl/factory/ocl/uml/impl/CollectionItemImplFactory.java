@@ -34,14 +34,14 @@ public class CollectionItemImplFactory extends CollectionLiteralPartImplFactory 
 	}
 
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		CollectionItemImpl collectionItemImpl = (CollectionItemImpl) this.m_NamedElementImpl;
 		
 		OCLExpressionImpl item = (OCLExpressionImpl)collectionItemImpl.getItem();
 		
 		this.itemFactory = (OCLExpressionImplFactory) Factory.constructor(item);
 		
-		SWRLDArgument varX = this.itemFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated);
+		SWRLDArgument varX = this.itemFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber);
 		
 		return varX;
 	}

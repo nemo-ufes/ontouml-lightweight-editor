@@ -82,7 +82,7 @@ public class OCL2SWRL {
 			Set<SWRLAtom> antecedent = new HashSet<SWRLAtom>();
 			Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
 			
-			exprFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, false, false);
+			exprFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, false, false, 1);
 		}
 	}
 	

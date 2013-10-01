@@ -30,8 +30,13 @@ import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.VariableExpImplFactory;
 
 public class Factory {
 	Boolean isBodyExpression = false;
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+	
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		throw new NonImplemented("solve()");
+	}
+	
+	public SWRLDArgument solveNegativeNumber(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+		throw new NonImplemented("solveNegativeNumber()");
 	}
 	
 	public static Object constructor(Object obj){
@@ -65,11 +70,27 @@ public class Factory {
 		return false;
 	}
 	
-	public Boolean IsBodyExpression() {
+	public Boolean isBodyExpression() {
 		return isBodyExpression;
 	}
 	
 	public void setIsBodyExpression(Boolean isBodyExpression) {
 		this.isBodyExpression = isBodyExpression;
+	}
+	
+	public Boolean isComparisonOperation(){
+		return false;
+	}
+	
+	public Boolean isArithmeticOperation(){
+		return false;
+	}
+	
+	public Boolean isKindOfOperation(){
+		return false;
+	}
+
+	public Boolean isUnique(){
+		return false;
 	}
 }
