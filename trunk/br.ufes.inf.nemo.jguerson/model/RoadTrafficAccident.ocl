@@ -1,7 +1,5 @@
 -- Write your constraints below... Press Ctrl+Space too see the options.
 
-import 'temp/RoadTrafficAccident.ecore'
-
 --fact
 context RoadTrafficAccident::fatalvictims:Integer
 derive: self.victims->select(d|d.oclIsKindOf(DeceasedPerson))->size()

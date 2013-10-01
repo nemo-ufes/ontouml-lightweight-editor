@@ -29,18 +29,19 @@
 	<classpathentry kind="lib" path="libs/kepler/org.eclipse.xtext_2.4.2.v201306120542.jar"/>
 	<classpathentry kind="lib" path="libs/kepler/org.eclipse.xtext.common.types_2.4.2.v201306120542.jar"/>
 	<classpathentry kind="lib" path="libs/kepler/org.eclipse.xtext.util_2.4.2.v201306120542.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/lpg.runtime.java_2.0.17.v201004271640.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl_3.3.100.v20130819-1305.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl.common_1.1.100.v20130628-1141.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl.ecore_3.3.100.v20130628-1141.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl.examples.common_3.3.0.v20130815-1842.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl.examples.domain_3.4.0.v20130815-1846.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl.examples.library_3.4.0.v20130815-1843.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl.examples.pivot_3.4.0.v20130815-1846.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl.examples.xtext.base_3.4.0.v20130815-2100.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl.examples.xtext.completeocl_3.4.0.v20130815-1843.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl.examples.xtext.essentialocl_3.4.0.v20130815-1843.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl.examples.xtext.oclinecore_3.4.0.v20130815-1843.jar"/>
-	<classpathentry kind="lib" path="libs/ocl4.2.0m1/org.eclipse.ocl.examples.xtext.oclstdlib_3.4.0.v20130815-1843.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/lpg.runtime.java_2.0.17.v201004271640.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl_3.3.0.v20130610-1317.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.common_1.1.0.v20130531-0544.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.ecore_3.3.0.v20130520-1222.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.common_3.2.100.v20130520-1503.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.domain_3.3.0.v20130523-1817.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.library_3.3.0.v20130523-1817.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.pivot_3.3.0.v20130609-2019.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.xtext.base_3.3.0.v20130523-1559.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.xtext.completeocl_3.3.0.v20130523-1559.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.xtext.essentialocl_3.3.0.v20130520-1503.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.xtext.oclinecore_3.3.0.v20130527-1543.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.xtext.oclstdlib_3.3.0.v20130523-1559.jar"/>
+	<classpathentry kind="lib" path="libs/kepler/org.eclipse.jdt.annotation_1.1.0.v20130513-1648.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

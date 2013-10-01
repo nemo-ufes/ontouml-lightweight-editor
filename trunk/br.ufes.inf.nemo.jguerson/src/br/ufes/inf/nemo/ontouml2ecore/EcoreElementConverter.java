@@ -88,13 +88,7 @@ public class EcoreElementConverter {
         	RefOntoUML.Type type = ((RefOntoUML.Property)ne1).getType();
         	if (type !=null) ne2.setName(type.getName().trim().toLowerCase());
         	else ne2.setName("");
-        }
-        
-        //add alias as an annotation
-        //EAnnotation ant = efactory.createEAnnotation();
-        //String value = etransformer.getOntoUMLParser().getAlias(ne1);
-        //anot.setSource("alias="+value);
-        //ne2.getEAnnotations().add(ant);
+        }      
     }
     
 	/** EClassifier */	
@@ -117,7 +111,7 @@ public class EcoreElementConverter {
 	public void convertEClass (RefOntoUML.Class c1, EClass c2)
     {		
 		convertEClassifier (c1, c2);           		   		
-       
+
 		c2.setAbstract(c1.isIsAbstract());
 		
         outln("Ecore:EClass :: name="+c2.getName()+", abstract="+c2.isAbstract());        
