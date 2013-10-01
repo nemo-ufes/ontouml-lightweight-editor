@@ -42,27 +42,27 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 	}
 
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
 		OCLExpressionImpl source = (OCLExpressionImpl) propertyCallExpImpl.getSource();
 		
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
-		SWRLDArgument sourceVar = this.sourceFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null);
+		SWRLDArgument sourceVar = this.sourceFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated);
 		
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
 		Type propertyType = referredProperty.getType();
 		
 		SWRLDArgument outVar = null;
 		if(propertyType.getClass().equals(PrimitiveTypeImpl.class)){
-			outVar = solveClassAttribute(nameSpace, manager, factory, ontology, antecedent, consequent, sourceVar);
+			outVar = solveClassAttribute(nameSpace, manager, factory, ontology, antecedent, consequent, sourceVar, oclConsequentShouldBeNegated, expressionIsNegated);
 		}else if(propertyType.getClass().equals(ClassImpl.class)){
-			outVar = solveAssociation(nameSpace, manager, factory, ontology, antecedent, consequent, sourceVar);
+			outVar = solveAssociation(nameSpace, manager, factory, ontology, antecedent, consequent, sourceVar, expressionIsNegated);
 		}
 		
 		return outVar;
 	}
 	
-	public SWRLDArgument solveAssociation(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument){
+	public SWRLDArgument solveAssociation(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean expressionIsNegated){
 		String nameVarX = "";
 		String nameVarY = "";
 		
@@ -102,7 +102,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		}
 	}
 	
-	public SWRLDArgument solveClassAttribute(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument){
+	public SWRLDArgument solveClassAttribute(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated){
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
 		

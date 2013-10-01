@@ -2,19 +2,35 @@ package br.ufes.inf.nemo.ocl2swrl.factory;
 
 import java.util.Set;
 
-import org.eclipse.ocl.uml.impl.*;
+import org.eclipse.ocl.uml.impl.CollectionItemImpl;
+import org.eclipse.ocl.uml.impl.CollectionLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.IntegerLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.IteratorExpImpl;
+import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
+import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
+import org.eclipse.ocl.uml.impl.TypeExpImpl;
+import org.eclipse.ocl.uml.impl.VariableExpImpl;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
 
-import br.ufes.inf.nemo.ocl2swrl.exceptions.*;
-import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.*;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
+import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.CollectionItemImplFactory;
+import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.CollectionLiteralExpImplFactory;
+import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.IntegerLiteralExpImplFactory;
+import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.IteratorExpImplFactory;
+import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.OperationCallExpImplFactory;
+import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.PropertyCallExpImplFactory;
+import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.TypeExpImplFactory;
+import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.VariableExpImplFactory;
 
 
 public class Factory {
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument) {
+	Boolean isBodyExpression = false;
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
 		throw new NonImplemented("solve()");
 	}
 	
@@ -39,5 +55,21 @@ public class Factory {
 		}else{
 			throw new NonSupported(c.getName());
 		}
+	}
+		
+	public Boolean isImpliesOperation(){
+		return false;
+	}
+	
+	public Boolean isNegatedOperation(){
+		return false;
+	}
+	
+	public Boolean IsBodyExpression() {
+		return isBodyExpression;
+	}
+	
+	public void setIsBodyExpression(Boolean isBodyExpression) {
+		this.isBodyExpression = isBodyExpression;
 	}
 }
