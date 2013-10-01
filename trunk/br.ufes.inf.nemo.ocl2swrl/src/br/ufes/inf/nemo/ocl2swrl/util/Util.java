@@ -55,6 +55,8 @@ public class Util {
 			//varName += iri.getFragment();
 		}
 		
+		varName = varName.replace(" ", "");
+		
 		return varName;
 	}
 }

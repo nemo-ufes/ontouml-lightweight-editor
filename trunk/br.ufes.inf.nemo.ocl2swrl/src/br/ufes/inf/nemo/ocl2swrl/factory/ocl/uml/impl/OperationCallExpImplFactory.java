@@ -22,8 +22,8 @@ import org.semanticweb.owlapi.model.SWRLBuiltInAtom;
 import org.semanticweb.owlapi.model.SWRLClassAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
 import org.semanticweb.owlapi.model.SWRLIArgument;
-import org.semanticweb.owlapi.model.SWRLVariable;
 
+import uk.ac.manchester.cs.owl.owlapi.SWRLLiteralArgumentImpl;
 import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
@@ -48,7 +48,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
 		Boolean operationNegated = false;
 		if(this.isNegatedOperation() && !expressionIsNegated){
@@ -65,25 +65,27 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		if(arguments.size()>0){
 			OCLExpressionImpl argument = (OCLExpressionImpl) operationCallExpImpl.getArgument().get(0);
 			this.argumentFactory = (OCLExpressionImplFactory) Factory.constructor(argument);
-			varY = this.argumentFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, operationNegated);
+			varY = this.argumentFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, operationNegated, repeatNumber);
 		}
 		
 		Boolean sourceOclConsequentShouldBeNegated = oclConsequentShouldBeNegated;
-		if(this.IsBodyExpression()){
+		if(this.isBodyExpression()){
 			sourceOclConsequentShouldBeNegated = false;
 		}
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
-		SWRLDArgument varX = this.sourceFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, sourceOclConsequentShouldBeNegated, operationNegated);
+		SWRLDArgument varX = this.sourceFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, sourceOclConsequentShouldBeNegated, operationNegated, repeatNumber);
 		
 		SWRLDArgument varZ = null;
-		if(isComparisonOperation(operationCallExpImpl)){
+		if(this.isComparisonOperation()){
 			varZ = solveComparison(nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, oclConsequentShouldBeNegated, operationNegated);
-		}else if(isImpliesOperation(operationCallExpImpl)){
-			
-		}else if(isArithmeticOperation(operationCallExpImpl)){
+		}else if(this.isImpliesOperation()){
+			//do nothing
+		}else if(this.isArithmeticOperation()){
 			varZ = solveArithmetic(nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, oclConsequentShouldBeNegated, operationNegated);
-		}else if(isKindOfOperation(operationCallExpImpl)){
+		}else if(this.isKindOfOperation()){
 			varZ = solveOCLIsKindOf(nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, oclConsequentShouldBeNegated, operationNegated);
+		}else{
+			varZ = varX;
 		}
 		
 		return varZ;
@@ -105,6 +107,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			break;
 		case "oclIsKindOf":
 		case "oclIsTypeOf":
+		case "oclAsType":
 			if((oclConsequentShouldBeNegated && !expressionIsNegated) || (!oclConsequentShouldBeNegated && expressionIsNegated)){
 				OWLObjectComplementOf complementOf = factory.getOWLObjectComplementOf(owlClass);
 				
@@ -164,6 +167,18 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	public SWRLDArgument solveArithmetic(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl;
 		String referredOperationName = operationCallExpImpl.getReferredOperation().getName();
+		SWRLDArgument varZ;
+		
+		if(referredArgY == null && referredOperationName.equals("-")){
+			if(referredArgX.getClass().equals(SWRLLiteralArgumentImpl.class)){
+				OCLExpression<?> literal = ((OperationCallExpImpl)m_NamedElementImpl).getSource();
+				NumericLiteralExpImplFactory numericFactory = (NumericLiteralExpImplFactory) Factory.constructor(literal);
+				
+				varZ = numericFactory.solveNegativeNumber(nameSpace, manager, factory, ontology, antecedent, consequent, referredArgX, false, false);
+				
+				return varZ;
+			}
+		}
 		
 		//an argument list for the expression is created
 		List<SWRLDArgument> args = new ArrayList<SWRLDArgument>();
@@ -177,24 +192,20 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 
 		switch (referredOperationName) {
 		case "+":
-			//varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_add_"+varYName));
 			builtInName = "add";
 			break;
 		case "-":
-			//varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_sub_"+varYName));
 			builtInName = "subtract";
 			break;
 		case "*":
-			//varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_mul_"+varYName));
 			builtInName = "multiply";
 			break;
 		case "/":
-			//varZ = this.factory.getSWRLVariable(IRI.create(this.nameSpace+varXName+"_div_"+varYName));
 			builtInName = "divide";
 			break;
 		}//fazer para ABS, MAX, MIN, -x
 		
-		SWRLVariable varZ = factory.getSWRLVariable(IRI.create(nameSpace+varXName+"_"+builtInName+varYName+"_"));
+		varZ = factory.getSWRLVariable(IRI.create(nameSpace+varXName+"_"+builtInName+varYName+"_"));
 		
 		//variables are inserted in the array of arguments 
 		args.add(varZ);
@@ -212,20 +223,9 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return varZ;
 	}
 	
-	private Boolean isImpliesOperation(OperationCallExpImpl operationCallExpImpl){
-		Operation operation = operationCallExpImpl.getReferredOperation();
-		String oprName = operation.getName();
-		if(oprName != null){
-			if(		oprName.equals("implies")
-				){
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	private Boolean isComparisonOperation(OperationCallExpImpl operationCallExpImpl){
+	@Override
+	public Boolean isComparisonOperation(){
+		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
 		Operation operation = operationCallExpImpl.getReferredOperation();
 		String oprName = operation.getName();
 		if(oprName != null){
@@ -243,8 +243,10 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return false;
 	}
 	
-	private Boolean isArithmeticOperation(OperationCallExpImpl bodyExpression){
-		Operation operation = bodyExpression.getReferredOperation();
+	@Override
+	public Boolean isArithmeticOperation(){
+		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
+		Operation operation = operationCallExpImpl.getReferredOperation();
 		String oprName = operation.getName();
 		if(oprName != null){
 			if(		oprName.equals("add") ||
@@ -263,11 +265,10 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return false;
 	}
 	
-	private Boolean isKindOfOperation(Object bodyExpression){
-		if(!bodyExpression.getClass().equals(OperationCallExpImpl.class)){
-			return false;
-		}
-		Operation operation = ((OperationCallExpImpl) bodyExpression).getReferredOperation();
+	@Override
+	public Boolean isKindOfOperation(){
+		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
+		Operation operation = operationCallExpImpl.getReferredOperation();
 		String oprName = operation.getName();
 		if(oprName != null){
 			if(		oprName.equals("oclIsKindOf") ||

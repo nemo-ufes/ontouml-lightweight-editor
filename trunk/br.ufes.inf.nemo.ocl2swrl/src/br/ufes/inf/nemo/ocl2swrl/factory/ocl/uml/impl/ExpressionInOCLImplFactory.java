@@ -43,7 +43,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 	}
 	
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		ExpressionInOCLImpl expressionInOCLImpl = (ExpressionInOCLImpl) this.m_NamedElementImpl;
 		OCLExpressionImpl bodyExpression = (OCLExpressionImpl) expressionInOCLImpl.getBodyExpression();
 		
@@ -53,7 +53,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			oclConsequentShouldBeNegated = true;
 		}
 		
-		bodyExpressionFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated);
+		bodyExpressionFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber);
 		
 		Variable<Classifier, Parameter> contextVariable = expressionInOCLImpl.getContextVariable();
 		Classifier classContVar = contextVariable.getType();
