@@ -31,7 +31,7 @@ public class BooleanLiteralExpImplFactory extends PrimitiveLiteralExpImplFactory
 	}
 
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
 		BooleanLiteralExpImpl booleanLiteralExpImpl = (BooleanLiteralExpImpl)m_NamedElementImpl;
 		Boolean booleanSymbol = booleanLiteralExpImpl.getBooleanSymbol();
 		OWLLiteral owlLiteral = factory.getOWLLiteral(booleanSymbol);

@@ -31,16 +31,16 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 	}
 
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument) {
+	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
 		IteratorExpImpl iteratorExpImpl = (IteratorExpImpl) this.m_NamedElementImpl; 
 		OCLExpressionImpl source = (OCLExpressionImpl) iteratorExpImpl.getSource();
 		OCLExpressionImpl body = (OCLExpressionImpl) iteratorExpImpl.getBody();
 		
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
-		SWRLDArgument varX = this.sourceFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null);
+		SWRLDArgument varX = this.sourceFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, false, expressionIsNegated);
 		
 		this.bodyFactory = (OCLExpressionImplFactory) Factory.constructor(body);
-		SWRLDArgument varY = this.bodyFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, varX); 
+		SWRLDArgument varY = this.bodyFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, varX, oclConsequentShouldBeNegated, expressionIsNegated); 
 		
 		return null;
 	}
