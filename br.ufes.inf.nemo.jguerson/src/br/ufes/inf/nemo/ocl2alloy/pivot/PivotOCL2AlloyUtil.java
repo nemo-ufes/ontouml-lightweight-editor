@@ -101,7 +101,7 @@ public class PivotOCL2AlloyUtil {
 	}
 
     /** It empties the original file content*/ 
-	public static void writeOverTheFile(String content, String FilePath) throws IOException
+	public static void writeFile(String content, String FilePath) throws IOException
 	{
 		FileWriter fstream = new FileWriter(FilePath);
 		BufferedWriter out = new BufferedWriter(fstream);
