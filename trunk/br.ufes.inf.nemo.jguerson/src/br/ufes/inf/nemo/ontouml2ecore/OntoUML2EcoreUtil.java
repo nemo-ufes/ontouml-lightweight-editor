@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -21,8 +22,8 @@ public class OntoUML2EcoreUtil {
 		URI ecoreURI = URI.createFileURI(ecorepath);
 		
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
-		//rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
-		//rset.getPackageRegistry().put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+		ecoreResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
+		ecoreResourceSet.getPackageRegistry().put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 
 		// enable extended metadata
 		final ExtendedMetaData extendedMetaData = new BasicExtendedMetaData(ecoreResourceSet	.getPackageRegistry());
@@ -43,10 +44,10 @@ public class OntoUML2EcoreUtil {
 	{	
 		ResourceSet ecoreResourceSet = new ResourceSetImpl();		
 		URI ecoreURI = URI.createFileURI(ecorePath);
-				
+		
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
-		//ecoreResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
-		//ecoreResourceSet.getPackageRegistry().put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+		ecoreResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
+		ecoreResourceSet.getPackageRegistry().put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 				
 		// enable extended metadata
 		final ExtendedMetaData extendedMetaData = new BasicExtendedMetaData(ecoreResourceSet	.getPackageRegistry());

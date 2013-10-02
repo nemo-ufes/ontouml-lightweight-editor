@@ -11,15 +11,17 @@ public class OntoUML2EcoreTests {
 	{
 		try {
 			
-			String path1 = "src/br/ufes/inf/nemo/ontouml2ecore/tests/models/Imóvel.refontouml";
+			// we have to use absolute paths. I don't know why.
+			
+			String path1 = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\src\\br\\ufes\\inf\\nemo\\ontouml2ecore\\tests\\models\\Imóvel.refontouml";
 			OntoUML2Ecore.convertToEcore(new OntoUMLParser(path1), path1.replace(".refontouml", ".ecore" ), true, true);
 			System.out.println(OntoUML2Ecore.getLog());
 			
-			String path2 = "src/br/ufes/inf/nemo/ontouml2ecore/tests/models/Project.refontouml";
+			String path2 = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\src\\br\\ufes\\inf\\nemo\\ontouml2ecore\\tests\\models\\project.refontouml";
 			OntoUML2Ecore.convertToEcore(new OntoUMLParser(path2),path2.replace(".refontouml", ".ecore" ), true, true);
 			System.out.println(OntoUML2Ecore.getLog());
 			
-			String path3 = "src/br/ufes/inf/nemo/ontouml2ecore/tests/models/RoadTrafficAccident.refontouml";
+			String path3 = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\src\\br\\ufes\\inf\\nemo\\ontouml2ecore\\tests\\models\\RoadTrafficAccident.refontouml";
 			OntoUML2Ecore.convertToEcore(new OntoUMLParser(path3),path3.replace(".refontouml", ".ecore" ), true, true);
 			System.out.println(OntoUML2Ecore.getLog());
 			

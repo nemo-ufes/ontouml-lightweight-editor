@@ -1,0 +1,8 @@
+import 'DefaultName.ecore'
+
+package defaultname
+
+context EClass0
+inv teste: self.oclAsType(EClass1).dois->oclIsUndefined()
+
+endpackage
