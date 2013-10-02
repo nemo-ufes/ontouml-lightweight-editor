@@ -65,7 +65,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		if(arguments.size()>0){
 			OCLExpressionImpl argument = (OCLExpressionImpl) operationCallExpImpl.getArgument().get(0);
 			this.argumentFactory = (OCLExpressionImplFactory) Factory.constructor(argument);
-			varY = this.argumentFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, operationNegated, repeatNumber);
+			varY = this.argumentFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, oclConsequentShouldBeNegated, operationNegated, repeatNumber);
 		}
 		
 		Boolean sourceOclConsequentShouldBeNegated = oclConsequentShouldBeNegated;
@@ -84,11 +84,36 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			varZ = solveArithmetic(nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, oclConsequentShouldBeNegated, operationNegated);
 		}else if(this.isKindOfOperation()){
 			varZ = solveOCLIsKindOf(nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, oclConsequentShouldBeNegated, operationNegated);
+		}else if(this.isEmpty()){
+			varZ = solveIsEmpty(nameSpace, manager, factory, ontology, antecedent, consequent, varX, referredArgument, oclConsequentShouldBeNegated, operationNegated);
+		}else if(this.notEmpty()){
+			varZ = solveNotEmpty(nameSpace, manager, factory, ontology, antecedent, consequent, varX, referredArgument, oclConsequentShouldBeNegated, operationNegated);
 		}else{
 			varZ = varX;
 		}
 		
 		return varZ;
+	}
+	
+	public SWRLDArgument solveIsEmpty(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+		IRI iri = ((SWRLVariableImpl) referredArgX).getIRI();
+		SWRLClassAtom atom = null;
+		OWLClass owlClass = factory.getOWLClass(iri);
+		atom = factory.getSWRLClassAtom(owlClass, (SWRLIArgument) referredArgY);
+		antecedent.add(atom);
+		
+		return null;
+	}
+	
+	public SWRLDArgument solveNotEmpty(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+		IRI iri = ((SWRLVariableImpl) referredArgX).getIRI();
+		SWRLClassAtom atom = null;
+		OWLClass owlClass = factory.getOWLClass(iri);
+		OWLObjectComplementOf complementOf = factory.getOWLObjectComplementOf(owlClass);
+		atom = factory.getSWRLClassAtom(complementOf, (SWRLIArgument) referredArgY);
+		antecedent.add(atom);
+		
+		return null;
 	}
 	
 	public SWRLDArgument solveOCLIsKindOf(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
@@ -136,28 +161,34 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		//a built-in name and a name for the output variable is chosen according to the operation
 		//note that the chosen operation is always the inverse of the used operation
 		//this happens to  create the restriction in SWRL when the rule isn't followed
-		SWRLBuiltInAtom builtIn = null;
+		String iriName = "";
 		switch (referredOperationName) {
 		case ">":
-			builtIn = factory.getSWRLBuiltInAtom(IRI.create("lessThanOrEqual"), args);
+			iriName = "lessThanOrEqual";
+			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("lessThanOrEqual"), args);
 			break;
 		case ">=":
-			builtIn = factory.getSWRLBuiltInAtom(IRI.create("lessThan"), args);
+			iriName = "lessThan";
+			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("lessThan"), args);
 			break;
 		case "<":
-			builtIn = factory.getSWRLBuiltInAtom(IRI.create("greaterThanOrEqual"), args);
+			iriName = "greaterThanOrEqual";
+			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("greaterThanOrEqual"), args);
 			break;
 		case "<=":
-			builtIn = factory.getSWRLBuiltInAtom(IRI.create("greaterThan"), args);
+			iriName = "greaterThan";
+			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("greaterThan"), args);
 			break;	
 		case "=":
-			builtIn = factory.getSWRLBuiltInAtom(IRI.create("notEqual"), args);
+			iriName = "notEqual";
+			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("notEqual"), args);
 			break;
 		case "<>":
-			builtIn = factory.getSWRLBuiltInAtom(IRI.create("equal"), args);
+			iriName = "equal";
+			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("equal"), args);
 			break;
 		}
-
+		SWRLBuiltInAtom builtIn = factory.getSWRLBuiltInAtom(IRI.create(iriName), args);
 		//the built-in is added to the antecedent atom
 		antecedent.add(builtIn);
 		
@@ -303,6 +334,36 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		String oprName = operation.getName();
 		if(oprName != null){
 			if(		oprName.equals("not")
+				){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public Boolean isEmpty() {
+		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
+		Operation operation = operationCallExpImpl.getReferredOperation();
+		String oprName = operation.getName();
+		if(oprName != null){
+			if(		oprName.equals("isEmpty")
+				){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public Boolean notEmpty() {
+		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
+		Operation operation = operationCallExpImpl.getReferredOperation();
+		String oprName = operation.getName();
+		if(oprName != null){
+			if(		oprName.equals("notEmpty")
 				){
 				return true;
 			}

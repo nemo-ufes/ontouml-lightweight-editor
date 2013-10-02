@@ -51,7 +51,7 @@ public class Util {
 			varName += ((ClassImpl) expression).getName();
 			//varName += iri.getFragment();
 		}else if(expression.getClass().equals(TypeExpImpl.class)){
-			varName += ((TypeExpImpl) expression).getReferredType().getName();
+			varName = ((TypeExpImpl) expression).getReferredType().getName();
 			//varName += iri.getFragment();
 		}
 		
