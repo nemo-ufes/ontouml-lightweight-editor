@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.ontouml2ecore;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EModelElement;
@@ -66,20 +65,6 @@ public class OntoUML2Ecore {
 	public static OntoUMLParser getOntoUMLParser()
 	{
 		return refparser;
-	}
-	
-	public static void main(String[] args)
-	{
-		try {
-			String path = "C:\\Users\\John\\SVNs\\SVN-OLED\\br.ufes.inf.nemo.jguerson\\model\\Imóvel.refontouml";
-//			String path = "C:\\Users\\John\\SVNs\\SVN-OLED\\br.ufes.inf.nemo.jguerson\\model\\project.refontouml";
-
-			convertToEcore(new OntoUMLParser(path),path.replace(".refontouml", ".ecore" ),true,true);
-			
-			System.out.println(getLog());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

@@ -165,7 +165,7 @@ public class KeplerToStringVisitor extends AbstractExtendingVisitor<String, Obje
 	/**
 	 * Initializes me.
 	 */
-	protected KeplerToStringVisitor() {
+	public KeplerToStringVisitor() {
         super(Object.class);						// Useless dummy object as context
 	}
 
