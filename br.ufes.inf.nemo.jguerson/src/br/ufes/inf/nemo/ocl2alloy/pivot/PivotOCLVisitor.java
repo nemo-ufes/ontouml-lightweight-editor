@@ -623,26 +623,123 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 	{
 		OCLExpression srcExpression = callExp.getSource();
 		Iteration iteration = callExp.getReferredIteration();
+		String iterExpName = iteration.getName();
 		OCLExpression bodyExpression = callExp.getBody();
 		safeVisit(srcExpression);
 		
-		
-		
-		
-		append("->");
-		appendName(iteration);
-		append("("); //$NON-NLS-1$
+		append("(");
+		if(iterExpName.equals("forAll")) append("all ");        
+        if(iterExpName.equals("exists")) append("some ");        
+        if(iterExpName.equals("one")) append("#{ ");        
+        if(iterExpName.equals("select")) append("{ ");        
+        if(iterExpName.equals("reject")) append("{ ");              
+        if(iterExpName.equals("isUnique")) append("all disj ");  
+        
 		boolean isFirst = true;
-		for (Variable variable : callExp.getIterator()) {
-			if (!isFirst) {
-				append(", ");
-			}
+		for (Variable variable : callExp.getIterator()) 
+		{
+			if (!isFirst) {	append(", "); }
             safeVisit(variable);
+            
+            if(iterExpName.equals("forAll")) result.append(string);
+        	
+        	if(iterExpName.equals("exists")) result.append(string);
+        	
+        	if(iterExpName.equals("one")) result.append(string);
+        	
+        	if(iterExpName.equals("select")) result.append(string);
+        	
+            if(iterExpName.equals("reject")) result.append(string);
+            
+            if(iterExpName.equals("collect")) var = string;
+            
+            if(iterExpName.equals("closure")) var = string;         
+            
+            if(iterExpName.equals("isUnique")){ var = string; result.append(var).append(",").append(var).append("'"); }   
 			isFirst = false;
 		}
 		append(" | ");
 		safeVisit(bodyExpression);
 		append(")");
+		
+		/*
+		               
+        // Iterator Arguments
+        for( java.util.Iterator<String> iter = variableResults.iterator(); iter.hasNext();) 
+        {        	     
+        	String string = iter.next();   
+        	        	        	
+        	if(iterName.equals("forAll")) result.append(string);
+        	
+        	if(iterName.equals("exists")) result.append(string);
+        	
+        	if(iterName.equals("one")) result.append(string);
+        	
+        	if(iterName.equals("select")) result.append(string);
+        	
+            if(iterName.equals("reject")) result.append(string);
+            
+            if(iterName.equals("collect")) var = string;
+            
+            if(iterName.equals("closure")) var = string;         
+            
+            if(iterName.equals("isUnique")){ var = string; result.append(var).append(",").append(var).append("'"); }            
+            
+            if (iter.hasNext()) result.append(",");
+        }
+        
+        if(iterName.equals("forAll")) result.append(": ").append(sourceResult).append(" | ").append(bodyResult);  
+        
+        if(iterName.equals("exists")) result.append(": ").append(sourceResult).append(" | ").append(bodyResult); 
+        
+        if(iterName.equals("one")) result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" } = 1");
+        
+        if(iterName.equals("reject")) result.append(": ").append(sourceResult).append(" | ").append("not ").append(bodyResult).append(" }"); 
+        
+        if(iterName.equals("select")) result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" }");
+        
+        if(iterName.equals("collect")) 
+        {        	
+        	String sb = substitute(var,bodyResult,sourceResult); //substitute variable "x" in expression "bodyResult" for "sourceResult"         	
+        	result.append(sb);        	
+        }
+        
+        if(iterName.equals("isUnique")) 
+        {
+        	result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" != ");
+        	String sb = substitute(var,bodyResult,var+"'");  //substitute variable "x" in expression "bodyResult" for "x'"        	
+        	result.append(sb);        	
+        }
+        
+        if(iterName.equals("closure")) 
+        {        	
+        	String assocAlias = new String();
+        	String propertyAlias = new String();
+        	
+        	String aux1 = new String(bodyResult);
+        	propertyAlias = aux1.replace(var+".", "");
+        	propertyAlias = propertyAlias.replace("[w]", "");
+        	        	
+        	EObject obj = refparser.getElement(propertyAlias);
+        	
+        	if (obj instanceof RefOntoUML.Property) 
+        	{
+        		EObject container = obj.eContainer();
+            	assocAlias = refparser.getAlias(container);	
+        	}        	
+        	
+        	String strFinal = sourceResult+".^(w."+assocAlias+")";        	
+        	result.append(strFinal);
+        }
+                
+        if(iterName.equals("any")) throw new IteratorException("any()","We do not support this iterator. Problems arise when trying to return the type of an element of the collection");
+        
+        if(iterName.equals("sortedBy")) throw new IteratorException("sortedBy()","The type OrderedSet is not supported.");
+        
+        if(iterName.equals("collectNested")) throw new IteratorException("collectNested()","We do not support nested collections and the type Bag.");
+       
+        result.append(")");
+     	return result.toString(); */
 		return null; 
 	}
 	@Override
