@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.ontouml2uml;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -58,16 +57,5 @@ public class OntoUML2UML {
 	public static String getLog ()
 	{
 		return log;
-	}
-	
-	public static void main(String[] args)
-	{
-		try {
-			String path = "model/Imóvel.refontouml";
-			convertToUML(new OntoUMLParser(path),path.replace(".refontouml", ".uml" ),true,true);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	}	
 }
