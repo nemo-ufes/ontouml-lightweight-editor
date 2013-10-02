@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.ocl2alloy.pivot;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -21,7 +20,6 @@ import org.eclipse.ocl.examples.pivot.AssociationClassCallExp;
 import org.eclipse.ocl.examples.pivot.BooleanLiteralExp;
 import org.eclipse.ocl.examples.pivot.CollectionItem;
 import org.eclipse.ocl.examples.pivot.CollectionLiteralExp;
-import org.eclipse.ocl.examples.pivot.CollectionLiteralPart;
 import org.eclipse.ocl.examples.pivot.CollectionRange;
 import org.eclipse.ocl.examples.pivot.CollectionType;
 import org.eclipse.ocl.examples.pivot.Constraint;
@@ -32,7 +30,6 @@ import org.eclipse.ocl.examples.pivot.ElementExtension;
 import org.eclipse.ocl.examples.pivot.EnumLiteralExp;
 import org.eclipse.ocl.examples.pivot.EnumerationLiteral;
 import org.eclipse.ocl.examples.pivot.ExpressionInOCL;
-import org.eclipse.ocl.examples.pivot.FeatureCallExp;
 import org.eclipse.ocl.examples.pivot.IfExp;
 import org.eclipse.ocl.examples.pivot.Import;
 import org.eclipse.ocl.examples.pivot.IntegerLiteralExp;
@@ -52,9 +49,6 @@ import org.eclipse.ocl.examples.pivot.OpaqueExpression;
 import org.eclipse.ocl.examples.pivot.Operation;
 import org.eclipse.ocl.examples.pivot.OperationCallExp;
 import org.eclipse.ocl.examples.pivot.Parameter;
-import org.eclipse.ocl.examples.pivot.ParserException;
-import org.eclipse.ocl.examples.pivot.PivotConstants;
-import org.eclipse.ocl.examples.pivot.PivotPackage;
 import org.eclipse.ocl.examples.pivot.Precedence;
 import org.eclipse.ocl.examples.pivot.PrimitiveType;
 import org.eclipse.ocl.examples.pivot.Property;
@@ -67,13 +61,11 @@ import org.eclipse.ocl.examples.pivot.TemplateBinding;
 import org.eclipse.ocl.examples.pivot.TemplateParameter;
 import org.eclipse.ocl.examples.pivot.TemplateParameterSubstitution;
 import org.eclipse.ocl.examples.pivot.TemplateSignature;
-import org.eclipse.ocl.examples.pivot.TemplateableElement;
 import org.eclipse.ocl.examples.pivot.TupleLiteralExp;
 import org.eclipse.ocl.examples.pivot.TupleLiteralPart;
 import org.eclipse.ocl.examples.pivot.TupleType;
 import org.eclipse.ocl.examples.pivot.Type;
 import org.eclipse.ocl.examples.pivot.TypeExp;
-import org.eclipse.ocl.examples.pivot.TypedElement;
 import org.eclipse.ocl.examples.pivot.UMLReflection;
 import org.eclipse.ocl.examples.pivot.UnlimitedNaturalLiteralExp;
 import org.eclipse.ocl.examples.pivot.UnspecifiedType;
@@ -88,12 +80,9 @@ import org.eclipse.ocl.examples.pivot.utilities.PivotUtil;
 public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		
 	private PivotOCLParser oclparser;
-	private PrettyPrintAlloyOption opt;		
-	private StringBuilder result = new StringBuilder();	 
+	private PrettyPrintAlloyOption opt;		 
 	private int constraint_count = 0;	
 	private static String NULL_PLACEHOLDER = "<null>";
-	
-	//=====================================================================================================
 	
 	public PivotOCLVisitor() 
 	{ 
@@ -114,14 +103,6 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		opt =  option;
 	}
 	
-	@Override
-	public String toString() 
-	{ 
-		return result.toString(); 
-	}
-	
-	//=====================================================================================================
-	
 	public String prettyPrintAlloy (Constraint element) 
 	{		 
 		opt =  new PrettyPrintAlloyOption(PrettyPrintAlloyOption.ConstraintType.FACT,10,1);
@@ -130,11 +111,10 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 	
 	public String prettyPrintAlloy (Constraint element, PrettyPrintAlloyOption option) 
 	{
-		this.opt = option;
-		this.result = new StringBuilder(); 
+		this.opt = option;		 
         try {
-        	safeVisit(element);
-            return this.toString();
+        	String result = safeVisit(element);
+            return result;
         } catch (Exception e) {
         	e.printStackTrace();
         	return toString() + " ... " + e.getClass().getName() + " - " + e.getLocalizedMessage();
@@ -145,24 +125,20 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 	{
 		if(constraints.size() > options.size()) throw new Exception("prettyPrintAlloy() : the number of constraints is greater than the number of options.");
 		try {			
-			int i=0;
-			for(Constraint ct: constraints) { this.opt = options.get(i); safeVisit(ct); i++; }			
-			return this.toString();			
+			int i=0; String result = new String();
+			for(Constraint ct: constraints) { this.opt = options.get(i); result += safeVisit(ct); i++; }			
+			return result;			
 		} catch (Exception e) {
         	e.printStackTrace();
         	return toString() + " ... " + e.getClass().getName() + " - " + e.getLocalizedMessage();
         }		
 	}
-
-	//=====================================================================================================
 	
-	/** Get Ecore element of Pivot */
 	public EModelElement getEcoreOfPivot (org.eclipse.ocl.examples.pivot.Element pivotElem)
 	{
 		return oclparser.getMetamodelManager().getEcoreOfPivot(EModelElement.class, pivotElem);
 	}
 	
-	/** Get OntoUML element of Ecore */
 	public RefOntoUML.Element getOntoUMLOfEcore (EModelElement eElem)
 	{
 		for (Entry<RefOntoUML.Element,EModelElement> entry : oclparser.getOntoUML2EcoreMap().entrySet()) 
@@ -188,8 +164,6 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		return null;
 	}
 	
-	//=====================================================================================================
-	
 	/** Get sub types of Classifier from its alias */
 	private ArrayList<String> getSubTypeList(String aliasClassifier)
     {    	
@@ -205,120 +179,45 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
     	return subtypes;
     }
 	
-	//=====================================================================================================
-	
-	protected void append(Number number)
+	protected String append(Number number)
 	{
-		if (number != null) result.append(number.toString());
-		else result.append(NULL_PLACEHOLDER);		
+		StringBuilder localResult = new StringBuilder();
+		if (number != null) localResult.append(number.toString());
+		else localResult.append(NULL_PLACEHOLDER);		
+		return localResult.toString();
 	}
 	
-	protected void append(String string) 
+	protected String append(String string) 
 	{
-		if (string != null) result.append(string);
-		else result.append(NULL_PLACEHOLDER);		
+		StringBuilder localResult = new StringBuilder();
+		if (string != null) localResult.append(string);
+		else localResult.append(NULL_PLACEHOLDER);		
+		return localResult.toString();
 	}
 	
-	protected void appendName(NamedElement object) 
+	protected String visitName(NamedElement object) 
 	{
-		if (object == null) result.append(NULL_PLACEHOLDER);
-		else result.append(object.getName());		
+		StringBuilder localResult = new StringBuilder();
+		if (object == null) localResult.append(NULL_PLACEHOLDER);
+		else localResult.append(object.getName());		
+		return localResult.toString();
 	}	
-					 	
-	protected void appendElementType(@Nullable TypedElement typedElement) 
+	
+	public String visitConstraintName (Constraint constraint)
 	{
-		if (typedElement == null) append(NULL_PLACEHOLDER);
-		else safeVisit(typedElement.getType());		
-	}
-	
-	protected void appendAtPre(FeatureCallExp mpc) {
-		if (mpc.isPre()) {
-			append("@pre"); //$NON-NLS-1$
-		}
-	}
-	
-	protected void appendType(Type type) {
-		if ((type != null)
-				 && (type.eClass() == PivotPackage.Literals.CLASS)	// i.e. by pass AnyType, PrimitiveType, ...
-				 && (type.eContainer() instanceof NamedElement)) {
-			appendQualifiedName((NamedElement) type.eContainer());
-			append("::");
-		}
-		appendName(type);
-	}
-
-	protected void appendQualifiedName(NamedElement parent, String separator, NamedElement child) {
-		if (parent != null) {
-			appendQualifiedName(parent);
-			append(separator);
-		}
-		appendName(child);
-	}
-	
-	protected void appendQualifiedName(@Nullable NamedElement object) 
-	{
-		if (object == null) result.append(NULL_PLACEHOLDER);		
-		else {
-			EObject container = object.eContainer();
-			if (!(container instanceof Root) && (container instanceof NamedElement) &&
-					(!(container.eContainer() instanceof Root) || !PivotConstants.OCL_NAME.equals(((NamedElement)container).getName()))) {
-				appendQualifiedName((NamedElement) container);
-				append("::"); 
-			}
-			appendName(object);
-			if (object instanceof TemplateableElement) {
-				TemplateableElement templateableElement = (TemplateableElement) object;
-				appendTemplateBindings(templateableElement.getTemplateBinding());
-				appendTemplateSignature(templateableElement.getOwnedTemplateSignature());
-			}
-		}
-	}
-	
-	protected void appendTemplateBindings(List<TemplateBinding> templateBindings) 
-	{
-		if (templateBindings.size() > 0) {
-			append("(");
-			String prefix = ""; 
-			for (TemplateBinding templateBinding : templateBindings) {
-				for (TemplateParameterSubstitution templateParameterSubstitution : templateBinding.getParameterSubstitution()) {
-					append(prefix);
-					safeVisit(templateParameterSubstitution.getActual());
-					prefix = ",";
-				}
-			}
-			append(")");
-		}
-	}
-	
-	protected void appendTemplateSignature(TemplateSignature templateSignature) 
-	{
-		if (templateSignature != null) {
-			List<TemplateParameter> templateParameters = templateSignature.getOwnedParameter();
-			if (!templateParameters.isEmpty()) {
-				append("(");
-				String prefix = ""; 
-				for (TemplateParameter templateParameter : templateParameters) {
-					append(prefix);
-					safeVisit(templateParameter.getParameteredElement());
-					prefix = ",";
-				}
-				append(")");
-			}
-		}
-	}
-	
-	public void appendConstraintName (Constraint constraint)
-	{
+		StringBuilder localResult = new StringBuilder();
 		if (constraint.getName()==null || constraint.getName().isEmpty())
 		{			
 			constraint.setName("constraint"+constraint_count);
-			result.append("constraint"+constraint_count);			
+			localResult.append("constraint"+constraint_count);			
 		}else 
-			result.append(constraint.getName());		
+			localResult.append(constraint.getName());
+		return localResult.toString();
 	}
 	
-	public void appendContext (Element context, String stereotype)
+	public String visitContext (Element context, String stereotype)
 	{
+		StringBuilder localResult = new StringBuilder();
 		EModelElement eContext = getEcoreOfPivot(context);
 		RefOntoUML.Element ontoContext = getOntoUMLOfEcore(eContext);
 		String aliasContext = oclparser.getOntoUMLParser().getAlias(ontoContext);
@@ -327,9 +226,9 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		{						
 			if (context instanceof Type)
 			{
-				result.append("all self: ");				
-				if (ontoContext instanceof RefOntoUML.DataType) result.append(aliasContext+" | "); 
-				else result.append("w."+aliasContext+" | ");
+				localResult.append("all self: ");				
+				if (ontoContext instanceof RefOntoUML.DataType) localResult.append(aliasContext+" | "); 
+				else localResult.append("w."+aliasContext+" | ");
 			}
 		} 
 		
@@ -362,20 +261,20 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		    	String tgt_name = oclparser.getOntoUMLParser().getAlias(tgt_type);
 		    	                	                	                	
 		   	    // this piece of code considers the direction...
-		    	if(typename.equals(src_name)) result.append("w."+tgt_name+" | ");                	
-		    	if(typename.equals(tgt_name)) result.append("w."+src_name+" | ");
+		    	if(typename.equals(src_name)) localResult.append("w."+tgt_name+" | ");                	
+		    	if(typename.equals(tgt_name)) localResult.append("w."+src_name+" | ");
 				                	
-		    	if(ontoProperty.getAssociation()!=null) result.append("self."+aliasContext+"[w] = ");
-		    	else result.append("self.(w."+aliasContext+") = ");
+		    	if(ontoProperty.getAssociation()!=null) localResult.append("self."+aliasContext+"[w] = ");
+		    	else localResult.append("self.(w."+aliasContext+") = ");
 			}
 		}		
+		return localResult.toString();
 	}
-	
-	//=====================================================================================================
 	
 	@Override
 	public String visitConstraint (Constraint constraint)
 	{
+		StringBuilder localResult = new StringBuilder();
 		Element context = constraint.getContext();
 		OCLExpression oclExpression = ((ExpressionInOCL)constraint.getSpecification()).getBodyExpression();		
 		String stereotype = PivotUtil.getStereotype(constraint); 				
@@ -383,26 +282,26 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		
 		if (UMLReflection.INVARIANT.equals(stereotype) || UMLReflection.DERIVATION.equals(stereotype))
 		{
-			if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.CHECK)) result.append("assert ");		
-			else if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.RUN)) result.append("pred ");		
-			else if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.FACT)) result.append("fact ");			
-			appendConstraintName(constraint);
-			result.append(" {\n").append("\tall w: World | ");						
+			if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.CHECK)) localResult.append("assert ");		
+			else if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.RUN)) localResult.append("pred ");		
+			else if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.FACT)) localResult.append("fact ");			
+			localResult.append(visitConstraintName(constraint));
+			localResult.append(" {\n").append("\tall w: World | ");						
 			if (oclExpression.toString().contains("self")) 
 			{
-				if (context instanceof Type) appendContext(context,stereotype);
-				else if (context instanceof Operation) appendContext(context,stereotype);
-				else if (context instanceof Property) appendContext(context,stereotype);
+				if (context instanceof Type) localResult.append(visitContext(context,stereotype));
+				else if (context instanceof Operation) localResult.append(visitContext(context,stereotype));
+				else if (context instanceof Property) localResult.append(visitContext(context,stereotype));
 			}								
-			result.append("\n\t");			
-			safeVisit(constraint.getSpecification());			
-		    result.append("\n}\n\n");
-		    if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.CHECK)) result.append("check ");		
-			else if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.RUN)) result.append("run ");		    
+			localResult.append("\n\t");			
+			localResult.append(safeVisit(constraint.getSpecification()));			
+			localResult.append("\n}\n\n");
+		    if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.CHECK)) localResult.append("check ");		
+			else if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.RUN)) localResult.append("run ");		    
 		    if (!opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.FACT))
 		    {
-		    	appendConstraintName(constraint);
-		    	result.append(" for "+opt.global_scope+" but "+opt.world_scope+" World, 7 Int\n\n");
+		    	localResult.append(visitConstraintName(constraint));
+		    	localResult.append(" for "+opt.global_scope+" but "+opt.world_scope+" World, 7 Int\n\n");
 		    }
 		}
 		if (UMLReflection.DEFINITION.equals(stereotype));		
@@ -411,211 +310,154 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		if (UMLReflection.PRECONDITION.equals(stereotype)); 
 		if (UMLReflection.POSTCONDITION.equals(stereotype)); 
 		
-		return null; 
+		return localResult.toString(); 
 	}	
 		
    	@Override
 	public String visitAnyType(@NonNull AnyType object) 
    	{   		
-   		return null; 
+   		return NULL_PLACEHOLDER; 
    	}
    	
 	@Override
 	public String visitAssociationClassCallExp(@NonNull AssociationClassCallExp ac) 
 	{		
-		return null;
+		return NULL_PLACEHOLDER;
 	}
 	
 	@Override
 	public String visitBooleanLiteralExp(@NonNull BooleanLiteralExp bl) 
 	{
-		if (Boolean.toString(bl.isBooleanSymbol()).equals("true")) append("no none");
-		if (Boolean.toString(bl.isBooleanSymbol()).equals("false")) append("some none");
-		return null; 
+		StringBuilder localResult = new StringBuilder();
+		if (Boolean.toString(bl.isBooleanSymbol()).equals("true")) localResult.append("no none");
+		if (Boolean.toString(bl.isBooleanSymbol()).equals("false")) localResult.append("some none");
+		return localResult.toString(); 
 	}
 	
 	@Override
 	public String visitClass(@NonNull org.eclipse.ocl.examples.pivot.Class cls) 
 	{		
+		StringBuilder localResult = new StringBuilder();
 		EClass eClass = (EClass)getEcoreOfPivot(cls);
-		RefOntoUML.Class ontoClass = (RefOntoUML.Class)getOntoUMLOfEcore(eClass);
-		String aliasOntoClass = oclparser.getOntoUMLParser().getAlias(ontoClass);		
-		append(aliasOntoClass);			
-		return null; 
+		RefOntoUML.Classifier ontoClassifier = (RefOntoUML.Classifier)getOntoUMLOfEcore(eClass);
+		String aliasOntoClassifier = oclparser.getOntoUMLParser().getAlias(ontoClassifier);		
+		if (ontoClassifier instanceof RefOntoUML.DataType) localResult.append(aliasOntoClassifier);
+		else localResult.append("w."+aliasOntoClassifier);			
+		return localResult.toString(); 
 	}
 	
 	@Override
 	public String visitCollectionItem(@NonNull CollectionItem item) 
 	{
-		safeVisit(item.getItem());  
-		return null; 
+		return safeVisit(item.getItem());		
 	}
-	
-	//=====================================================================================================
 	
 	@Override
 	public String visitCollectionLiteralExp(@NonNull CollectionLiteralExp cl) 
-	{
-		switch (cl.getKind()) {
-			case SET :
-				append("Set {");//$NON-NLS-1$
-				break;
-			case ORDERED_SET :
-				append("OrderedSet {");//$NON-NLS-1$
-				break;
-			case BAG :
-				append("Bag {");//$NON-NLS-1$
-				break;
-			case SEQUENCE :
-				append("Sequence {");//$NON-NLS-1$
-				break;
-			default :
-				append("Collection {");//$NON-NLS-1$
-				break;
-		}
-        boolean isFirst = true;
-		for (CollectionLiteralPart part : cl.getPart()) {
-			if (!isFirst) append(", ");			
-            safeVisit(part);
-			isFirst = false;
-		}
-		append("}");
-		return null; 
+	{		
+		return ""; 
 	}	
 	
 	@Override
 	public String visitCollectionRange(@NonNull CollectionRange range) 
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;
 	}
 		
 	@Override
 	public String visitCollectionType(@NonNull CollectionType object) 
 	{		
-		return null; 
+		return NULL_PLACEHOLDER; 
 	}
 	
 	@Override
 	public String visitConstructorExp(@NonNull ConstructorExp constructorExp) 
 	{		
-		return null; 
+		return NULL_PLACEHOLDER; 
 	}
 	
 	@Override
 	public String visitConstructorPart(@NonNull ConstructorPart part) 
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;
 	}
 	
 	@Override
 	public String visitElementExtension(@NonNull ElementExtension as) 
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;
 	}
 	
 	@Override
 	public String visitEnumLiteralExp(@NonNull EnumLiteralExp el) 
 	{
-		appendQualifiedName(el.getReferredEnumLiteral());
-		return null; 
+		return NULL_PLACEHOLDER;
 	}	
 	
 	@Override
 	public String visitEnumerationLiteral(@NonNull EnumerationLiteral el) 
 	{
-		appendQualifiedName(el.getEnumeration(), "::", el);
-		return null; 
+		return NULL_PLACEHOLDER; 
 	}	
 	
 	@Override
 	public String visitExpressionInOCL(@NonNull ExpressionInOCL expression) 
 	{
+		StringBuilder localResult = new StringBuilder();	
 		OCLExpression bodyExpression = expression.getBodyExpression();
-		if (bodyExpression != null) return safeVisit(bodyExpression);
-		else return PivotUtil.getBody(expression);		
+		if (bodyExpression != null) { localResult.append(safeVisit(bodyExpression)); }
+		return localResult.toString(); 		
 	}
 	
 	@Override 
 	public String visitIfExp(@NonNull IfExp ifExp) 
 	{
+		StringBuilder localResult = new StringBuilder();	
 		OCLExpression condExpression = ifExp.getCondition();
 		OCLExpression thenExpression = ifExp.getThenExpression();
 		OCLExpression elseExpression = ifExp.getElseExpression();				
-		safeVisit(condExpression); append(" implies "); safeVisit(thenExpression); append(" else "); safeVisit(elseExpression);		
-		return null; 
+		localResult.append(safeVisit(condExpression)); 
+		localResult.append(" implies "); 
+		localResult.append(safeVisit(thenExpression)); 
+		localResult.append(" else "); 
+		localResult.append(safeVisit(elseExpression));		
+		return localResult.toString(); 	
 	}
 	
 	@Override 
 	public @Nullable String visitImport(@NonNull Import object) 
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitIntegerLiteralExp(@NonNull IntegerLiteralExp il) 
 	{
-		append(il.getIntegerSymbol());
-		return null; 
+		return il.getIntegerSymbol().toString();		 
 	}
 	
 	@Override
 	public String visitInvalidLiteralExp(@NonNull InvalidLiteralExp il) 
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;   
 	}
 	
 	@Override
 	public String visitInvalidType(@NonNull InvalidType object)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;   
 	}
 	
 	@Override
 	public String visitIterateExp(@NonNull IterateExp callExp)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;   
 	}
 	
 	@Override
 	public String visitIteration(@NonNull Iteration iteration)  
-	{
-		appendQualifiedName(iteration.getOwningType(), ".", iteration);
-		appendTemplateBindings(iteration.getTemplateBinding());
-		appendTemplateSignature(iteration.getOwnedTemplateSignature());
-		append("(");
-		boolean isFirst = true;
-		for (Parameter parameter : iteration.getOwnedIterator()) {
-			if (!isFirst) {
-				append(", ");
-			}
-			appendElementType(parameter);
-			isFirst = false;
-		}
-		isFirst = true;
-		for (Parameter accumulator : iteration.getOwnedAccumulator()) {
-			if (!isFirst) {
-				append(", ");
-			}
-			else {
-				append("; ");
-			}
-			appendElementType(accumulator);
-			isFirst = false;
-		}
-		isFirst = true;
-		for (Parameter parameter : iteration.getOwnedParameter()) {
-			if (!isFirst) {
-				append(", ");
-			}
-			else {
-				append(" | ");
-			}
-			appendElementType(parameter);
-			isFirst = false;
-		}
-		append(") : ");
-		appendElementType(iteration);
-		return null; 
+	{		
+		return ""; 
 	}
 	
 	@Override
@@ -625,8 +467,7 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		Iteration iteration = callExp.getReferredIteration();
 		String iterExpName = iteration.getName();
 		OCLExpression bodyExpression = callExp.getBody();
-		safeVisit(srcExpression);
-		
+				
 		append("(");
 		if(iterExpName.equals("forAll")) append("all ");        
         if(iterExpName.equals("exists")) append("some ");        
@@ -638,27 +479,23 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		boolean isFirst = true;
 		for (Variable variable : callExp.getIterator()) 
 		{
-			if (!isFirst) {	append(", "); }
-            safeVisit(variable);
-            
-            if(iterExpName.equals("forAll")) result.append(string);
-        	
-        	if(iterExpName.equals("exists")) result.append(string);
-        	
-        	if(iterExpName.equals("one")) result.append(string);
-        	
-        	if(iterExpName.equals("select")) result.append(string);
-        	
-            if(iterExpName.equals("reject")) result.append(string);
-            
-            if(iterExpName.equals("collect")) var = string;
-            
-            if(iterExpName.equals("closure")) var = string;         
-            
-            if(iterExpName.equals("isUnique")){ var = string; result.append(var).append(",").append(var).append("'"); }   
+			if (!isFirst) {	append(", "); }                        
+            if(iterExpName.equals("forAll")) safeVisit(variable);        	
+        	if(iterExpName.equals("exists")) safeVisit(variable);        	
+        	if(iterExpName.equals("one")) safeVisit(variable);        	
+        	if(iterExpName.equals("select")) safeVisit(variable);        	
+            if(iterExpName.equals("reject")) safeVisit(variable);               
 			isFirst = false;
 		}
+		
+		if(iterExpName.equals("forAll")) { append(": "); safeVisit(srcExpression); append(" | "); safeVisit(bodyExpression);  }        
+        if(iterExpName.equals("exists")) { append(": "); safeVisit(srcExpression); append(" | "); safeVisit(bodyExpression); }        
+        if(iterExpName.equals("one")) { append(": "); safeVisit(srcExpression); append(" | "); safeVisit(bodyExpression); append(" } = 1"); }        
+        if(iterExpName.equals("reject")) { append(": "); safeVisit(srcExpression); append(" | "); append("not "); safeVisit(bodyExpression); append(" }"); }        
+        if(iterExpName.equals("select")) { append(": "); safeVisit(srcExpression); append(" | "); safeVisit(bodyExpression); append(" }"); }
+                        
 		append(" | ");
+		
 		safeVisit(bodyExpression);
 		append(")");
 		
@@ -742,156 +579,158 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
      	return result.toString(); */
 		return null; 
 	}
+	
 	@Override
 	public String visitLambdaType(@NonNull LambdaType lambda)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;   
 	}
 	
 	@Override
 	public String visitLetExp(@NonNull LetExp letExp)  
 	{
+		StringBuilder localResult = new StringBuilder();
 		Variable var = letExp.getVariable();
 		OCLExpression inExpression = letExp.getIn();		
-		append("let ");  safeVisit(var); append(" | "); safeVisit(inExpression);
-		return null; 
+		localResult.append("let ");  
+		localResult.append(safeVisit(var)); 
+		localResult.append(" | "); 
+		localResult.append(safeVisit(inExpression));
+		return localResult.toString(); 	 
 	}
 	
 	@Override
 	public String visitMessageExp(@NonNull MessageExp messageExp)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;   
 	}
 	
 	@Override
 	public String visitMetaclass(@NonNull Metaclass object)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;   
 	}
 	
 	@Override
 	public String visitNullLiteralExp(@NonNull NullLiteralExp il)  
 	{
-		append("none");
-		return null; 
+		return "none";
 	}
 	
 	@Override
 	public String visitOpaqueExpression(@NonNull OpaqueExpression object)  
-	{ 
-		String body = PivotUtil.getBody(object);
-		if (body != null) append(body);		
-		return null; 
+	{ 			
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitOperation(@NonNull Operation operation)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitOperationCallExp(@NonNull OperationCallExp oc)  
-	{ 		
+	{		
 		Operation oper = oc.getReferredOperation(); 
 		String operTypeResult = oper.getType().getName();
 		String operName = oper.getName();
 		OCLExpression srcExpression = oc.getSource();		
 		List<OCLExpression> arguments = oc.getArgument();
-		    	
-		if(operName.equals("allInstances")) { safeVisit(srcExpression); return null; }		
-		if(operName.equals("size")) {  append("(#"); safeVisit(srcExpression); append(")"); return null; }		
-		if(operName.equals("isEmpty")) {  append("(no "); safeVisit(srcExpression); append(")"); return null; }		
-		if(operName.equals("notEmpty")) {  append("(some "); safeVisit(srcExpression); append(")"); return null; }		
-		if(operName.equals("not")) {  append("(not "); safeVisit(srcExpression); append(")"); return null; }			
-		if(operName.equals("oclIsUndefined")) { append("(#"); safeVisit(srcExpression); append(" = 0)"); return null; }		
-		if(operName.equals("abs")) {  append("abs["); safeVisit(srcExpression); append("]"); return null; }		
-        if(operName.equals("sum")) {  append("(sum "); safeVisit(srcExpression); append(")"); return null; }        
-        if(operName.equals("asSet")) {  safeVisit(srcExpression); return null; }        
-		if(operName.equals("oclAsType")) { safeVisit(srcExpression); return null; }
+		String sourceResult = safeVisit(srcExpression);
+		
+		if(operName.equals("allInstances")) { return sourceResult; }		
+		if(operName.equals("size")) { return "("+"#" + sourceResult+ ")"; }		
+		if(operName.equals("isEmpty")) { return "("+"no " + sourceResult + ")"; }		
+		if(operName.equals("notEmpty")) { return "("+"some " + sourceResult+ ")"; }			
+		if(operName.equals("not")) { return "("+"not " + sourceResult+ ")"; }			
+		if(operName.equals("oclIsUndefined")) { return "("+"#" + sourceResult + " = 0"+ ")"; }			
+		if(operName.equals("abs")) { return "abs[" + sourceResult + "]"; }		
+        if(operName.equals("sum")) { return "(sum " + sourceResult + ")"; }        
+        if(operName.equals("asSet")) { return sourceResult; }        
+		if(operName.equals("oclAsType")) { return sourceResult; }	
 		
 		if(operName.equals("-")) 
 		{
-			java.util.Iterator<OCLExpression> iter = arguments.iterator();			
-			if(!iter.hasNext()) { append("negate["); safeVisit(srcExpression); append("]"); return null; }			
-			else if( iter.hasNext() && operTypeResult.equals("Set(T)")) { append("("); safeVisit(srcExpression); append(" - "); safeVisit(iter.next()); append(")"); return null; }			
-			else if( iter.hasNext() && operTypeResult.equals("Real")){ append("("); safeVisit(srcExpression); append(").minus["); safeVisit(iter.next()); append("]"); return null; }
+			java.util.Iterator<OCLExpression> iter = arguments.iterator();				
+			if(!iter.hasNext()) { return "negate[" + sourceResult +"]"; }			
+			else if( iter.hasNext() && operTypeResult.equals("Set(T)")) { return "("+sourceResult + " - " + safeVisit(iter.next())+ ")"; }			
+			else if( iter.hasNext() && operTypeResult.equals("Real")){ return "("+sourceResult+").minus["+safeVisit(iter.next())+"]"; }
 		}
 		
         for (java.util.Iterator<OCLExpression> iter = arguments.iterator(); iter.hasNext();) 
         {
         	OCLExpression argumentExpression = iter.next();        	
+        	String argument = safeVisit(argumentExpression);
         	
-			if(operName.equals("intersection")) { append("("); safeVisit(srcExpression); append(" & "); safeVisit(argumentExpression); append(")"); return null; }				
-			if(operName.equals("union")) { append("("); safeVisit(srcExpression); append(" + "); safeVisit(argumentExpression); append(")"); return null; }				
-			if(operName.equals("including")) { append("("); safeVisit(srcExpression); append(" + "); safeVisit(argumentExpression); append(")"); return null; }			
-			if(operName.equals("excluding")) { append("("); safeVisit(srcExpression); append(" - "); safeVisit(argumentExpression); append(")"); return null; }			
-			if(operName.equals("includes")) { append("("); safeVisit(argumentExpression);  append(" in "); safeVisit(srcExpression); append(")"); return null; }			
-			if(operName.equals("excludes")) { append("("); safeVisit(argumentExpression); append(" !in "); safeVisit(srcExpression); append(")"); return null; }				
-			if(operName.equals("includesAll")) { append("("); safeVisit(argumentExpression); append(" in "); safeVisit(srcExpression); append(")"); return null; }			
-			if(operName.equals("excludesAll")) { append("(#"); safeVisit(argumentExpression); append(" & "); safeVisit(srcExpression); append(" = 0)"); return null; }			
-			if(operName.equals("product")) { append("("); safeVisit(srcExpression); append(" -> "); safeVisit(argumentExpression); append(")"); return null; }			
-			if(operName.equals("=")) { append("("); safeVisit(srcExpression); append(" = "); safeVisit(argumentExpression); append(")"); return null; }				
-			if(operName.equals("<>")) { append("("); safeVisit(srcExpression); append(" != "); safeVisit(argumentExpression); append(")"); return null; }				
-			if(operName.equals("oclIsKindOf"))	{ append("("); safeVisit(srcExpression); append(" in "); safeVisit(argumentExpression); append(")"); return null; }			
-			if(operName.equals("oclAsType")) { safeVisit(srcExpression); return null; }			
-			
-			//if(operName.equals("oclIsTypeOf"))	{  result.append(generateOclIsTypeOfMapping(srcResult,argument)); }
-							
-			if(operName.equals("<")) { append("("); safeVisit(srcExpression); append(" < "); safeVisit(argumentExpression); append(")"); return null; }				
-			if(operName.equals(">")) { append("("); safeVisit(srcExpression); append(" > "); safeVisit(argumentExpression); append(")"); return null; }				
-			if(operName.equals("<=")) { append("("); safeVisit(srcExpression); append(" <= "); safeVisit(argumentExpression); append(")"); return null; }			
-			if(operName.equals(">=")) { append("("); safeVisit(srcExpression); append(" >= "); safeVisit(argumentExpression); append(")"); return null; }			
-			if(operName.equals("and")) { append("("); safeVisit(srcExpression); append(" and "); safeVisit(argumentExpression); append(")"); return null; }			
-			if(operName.equals("or")) { append("("); safeVisit(srcExpression); append(" or "); safeVisit(argumentExpression); append(")"); return null; }				
-			if(operName.equals("implies")) { append("("); safeVisit(srcExpression); append(" implies "); safeVisit(argumentExpression); append(")"); return null; }			
-			if(operName.equals("xor")) { append("(("); safeVisit(srcExpression); append(" or "); safeVisit(argumentExpression); append(") and not ("); safeVisit(srcExpression); append(" and "); safeVisit(argumentExpression); append("))"); return null; }			
-			if(operName.equals("max")) { append("max["); safeVisit(srcExpression); append(","); safeVisit(argumentExpression); append("]"); return null; }			
-			if(operName.equals("min")) { append("min["); safeVisit(srcExpression); append(","); safeVisit(argumentExpression); append("]"); return null; }			
-			if(operName.equals("+")) { append("("); safeVisit(srcExpression); append(").plus["); safeVisit(argumentExpression); append("]"); return null; }			
-			if(operName.equals("*")) { append("("); safeVisit(srcExpression); append(").mul["); safeVisit(argumentExpression); append("]"); return null; }			
-			if(operName.equals("symmetricDifference")) { append("(("); safeVisit(srcExpression); append(" + "); safeVisit(argumentExpression); append(") - ("); safeVisit(srcExpression); append(" & "); safeVisit(argumentExpression); append("))"); return null; }	        	
-						
+        	if(operName.equals("intersection")) { return "("+sourceResult + " & " + argument+")"; }			
+			if(operName.equals("union")) { return "("+sourceResult + " + " + argument+")"; }				
+			if(operName.equals("including")) { return "("+sourceResult + " + " + argument+")"; }			
+			if(operName.equals("excluding")) { return "("+sourceResult + " - " + argument+")"; }			
+			if(operName.equals("includes")) { return "("+argument + " in " + sourceResult+")"; }			
+			if(operName.equals("excludes")) { return "("+argument + " !in " + sourceResult+")"; }			
+			if(operName.equals("includesAll")) { return "("+argument + " in " + sourceResult+")"; }			
+			if(operName.equals("excludesAll")) { return "("+"#"+argument + " & " + sourceResult+" = 0)"; }			
+			if(operName.equals("product")) { return "("+sourceResult + " -> " + argument+")"; }			
+			if(operName.equals("=")) { return "("+sourceResult + " = " + argument+")"; }				
+			if(operName.equals("<>")) { return "("+sourceResult + " != " + argument+")"; }				
+			if(operName.equals("oclIsKindOf"))	{ return "("+sourceResult + " in " + argument+")"; }			
+			if(operName.equals("oclAsType")) { return ""+sourceResult+""; }			
+//			if(operName.equals("oclIsTypeOf"))	{  return generateOclIsTypeOfMapping(sourceResult,argument); }
+			if(operName.equals("<")) { return "("+sourceResult + " < " + argument + ")"; }
+			if(operName.equals(">")) { return "("+sourceResult + " > " + argument + ")"; }				
+			if(operName.equals("<=")) { return "("+sourceResult + " <= " + argument + ")"; }			
+			if(operName.equals(">=")) { return "("+sourceResult + " >= " + argument + ")"; }			
+			if(operName.equals("and")) { return "("+sourceResult + " and " + argument+")"; }			
+			if(operName.equals("or")) { return "("+sourceResult + " or " + argument+")"; }				
+			if(operName.equals("implies")) { return "("+sourceResult + " implies " + argument+")"; }			
+			if(operName.equals("xor")) { return "("+"("+sourceResult +" or "+argument+ ")"+" and not "+"("+sourceResult+" and "+ argument+")"+")"; }			
+			if(operName.equals("max")) { return "max["+sourceResult +","+ argument + "]"; }			
+			if(operName.equals("min")) { return "min["+sourceResult +"," + argument + "]"; }			
+			if(operName.equals("+")) { return "(" + sourceResult +").plus["+argument+"]"; }			
+			if(operName.equals("*")) { return "(" + sourceResult +").mul["+argument+"]"; }			
+			if(operName.equals("symmetricDifference")) { return "("+"("+sourceResult + " + " + argument+") - ("+sourceResult + " & " + argument+")"+")"; }	        	
+					
 			if (iter.hasNext()) ; // no more arguments 
         }		
         
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}	
 	
 	@Override
 	public String visitPackage(@NonNull org.eclipse.ocl.examples.pivot.Package pkg)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitParameter(@NonNull Parameter parameter)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitPrecedence(@NonNull Precedence precedence)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitPrimitiveType(@NonNull PrimitiveType object)  
 	{	
-		return null; 
+		return NULL_PLACEHOLDER; 
 	}
 	
 	@Override
 	public String visitProperty(@NonNull Property property)  
-	{ 
-		appendQualifiedName(property.getOwningType(), ".", property);
-		return null; 
+	{ 		
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitPropertyCallExp(@NonNull PropertyCallExp pc)  
 	{
+		StringBuilder localResult = new StringBuilder();
 		OCLExpression scrExpression = pc.getSource();
 		Property property = pc.getReferredProperty();		
 		EStructuralFeature eStructFeature = (EStructuralFeature) getEcoreOfPivot(property);
@@ -899,200 +738,157 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		String aliasOntoProperty = oclparser.getOntoUMLParser().getAlias(ontoProperty);		
 		if (eStructFeature instanceof EAttribute)
 		{
-			if (eStructFeature.getEType().isInstance(EcorePackage.eINSTANCE.getEBoolean())) { safeVisit(scrExpression); append("in w." + aliasOntoProperty); return null; } 
-			else { safeVisit(scrExpression); append(".(w."+aliasOntoProperty+")"); return null; }
+			if (eStructFeature.getEType().isInstance(EcorePackage.eINSTANCE.getEBoolean())) 
+			{ 
+				localResult.append(safeVisit(scrExpression)); 
+				localResult.append("in w." + aliasOntoProperty); 
+				return localResult.toString(); 
+			} 
+			else { 
+				localResult.append(safeVisit(scrExpression));
+				localResult.append(".(w."+aliasOntoProperty+")"); 
+				return localResult.toString();
+			}
 		} 
-		else if (eStructFeature instanceof EReference) { safeVisit(scrExpression); append("."+aliasOntoProperty+"[w]"); return null; }
+		else if (eStructFeature instanceof EReference) 
+		{ 
+			localResult.append(safeVisit(scrExpression)); 
+			localResult.append("."+aliasOntoProperty+"[w]"); 
+			return localResult.toString();
+		}
 		
 		List<OCLExpression> qualifiers = pc.getQualifier();
 		if (!qualifiers.isEmpty()) for (@SuppressWarnings("unused") OCLExpression qualifier : qualifiers) { }		
-		return null; 
+		return localResult.toString();		 
 	}
 	
 	@Override
 	public String visitRealLiteralExp(@NonNull RealLiteralExp rl)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitRoot(@NonNull Root root)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER; 
 	}
 	
 	@Override
 	public String visitStateExp(@NonNull StateExp s)  
 	{
-		return null; 
+		return NULL_PLACEHOLDER; 
 	}
 	
 	@Override
 	public String visitStringLiteralExp(@NonNull StringLiteralExp sl)  
 	{
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitTemplateBinding(@NonNull TemplateBinding object)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER; 
 	}
 	
 	@Override
 	public String visitTemplateParameter(@NonNull TemplateParameter object)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitTemplateParameterSubstitution(@NonNull TemplateParameterSubstitution object)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitTemplateSignature(@NonNull TemplateSignature object)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER; 
 	}
 	
 	@Override
 	public String visitTupleLiteralExp(@NonNull TupleLiteralExp literalExp)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER; 
 	}
 	
 	@Override
 	public String visitTupleLiteralPart(@NonNull TupleLiteralPart part)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitTupleType(@NonNull TupleType object)  
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitTypeExp(@NonNull TypeExp t) 
 	{
+		StringBuilder localResult = new StringBuilder();
 		Type type = t.getReferredType();
 		EClass eType = (EClass)getEcoreOfPivot(type);
 		RefOntoUML.Type ontoType = (RefOntoUML.Type)getOntoUMLOfEcore(eType);
 		String aliasOntoType = oclparser.getOntoUMLParser().getAlias(ontoType);		
-		append(aliasOntoType);		
-		return null; 
+		if (ontoType instanceof RefOntoUML.DataType) localResult.append(aliasOntoType);
+		else localResult.append("w."+aliasOntoType);
+		return localResult.toString(); 
 	}
 	
 	@Override
 	public String visitUnlimitedNaturalLiteralExp(@NonNull UnlimitedNaturalLiteralExp unl) 
 	{
-		append(unl.getUnlimitedNaturalSymbol());
-		return null; 
+		return unl.getUnlimitedNaturalSymbol().toString();		
 	}
 	
 	@Override
 	public String visitUnspecifiedType(@NonNull UnspecifiedType object) 
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitUnspecifiedValueExp(@NonNull UnspecifiedValueExp uv) 
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitVariable(@NonNull Variable variable) 
 	{
-		appendName(variable);
+		StringBuilder localResult = new StringBuilder();
+		localResult.append(visitName(variable));
 		Type type = variable.getType();
-		if (type != null) {
-			append(" : ");
-			appendElementType(variable);
-		}
+		if (type != null) {}
 		OCLExpression initExpression = variable.getInitExpression();
 		if (initExpression != null) {
-			append(" = ");
-			safeVisit(initExpression);
+			localResult.append(" = ");
+			localResult.append(safeVisit(initExpression));
 		}		
-		return null; 
+		return localResult.toString(); 
 	}
 	
 	@Override
 	public String visitVariableExp(@NonNull VariableExp v) 
 	{
-		appendName(v.getReferredVariable());
-		return null; 
+		return visitName(v.getReferredVariable());		
 	}
 	
 	@Override
 	public String visitVoidType(@NonNull VoidType object) 
 	{		
-		return null; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visiting(@NonNull Visitable visitable) 
 	{		
-		return null;
+		return NULL_PLACEHOLDER; 
 	}
-		
-    /** Used for a Test */	
-	public static void main (String[]args)
-	 {		 				
-//		 String oclPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\model\\RoadTrafficAccident.ocl";
-//		 String refPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\model\\RoadTrafficAccident.refontouml";
-		 
-		 String oclPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\model\\project.ocl";
-		 String refPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\model\\project.refontouml";
-		 
-		 String tempPath = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\temp\\";
-		 
-//		 String oclPath = "C:\\Users\\John\\SVNs\\SVN-OLED\\br.ufes.inf.nemo.jguerson\\model\\RoadTrafficAccident.ocl";
-//		 String refPath = "C:\\Users\\John\\SVNs\\SVN-OLED\\br.ufes.inf.nemo.jguerson\\model\\RoadTrafficAccident.refontouml";
-		 
-//		 String oclPath = "C:\\Users\\John\\SVNs\\SVN-OLED\\br.ufes.inf.nemo.jguerson\\model\\project.ocl";
-//		 String refPath = "C:\\Users\\John\\SVNs\\SVN-OLED\\br.ufes.inf.nemo.jguerson\\model\\project.refontouml";
-		 
-//		 String tempPath = "C:\\Users\\John\\SVNs\\SVN-OLED\\br.ufes.inf.nemo.jguerson\\temp\\";
-			
-		 try {
-			
-			PivotOCLParser parser = new PivotOCLParser(refPath,tempPath);
-			String oclContent = PivotOCL2AlloyUtil.readFile(oclPath);
-			parser.parse(oclContent);
-			
-			System.out.println("OCL parsed succesfully.");
-
-			PivotOCLVisitor visitor = new PivotOCLVisitor(parser);
-			
-			KeplerToStringVisitor keplerVisitor = new KeplerToStringVisitor();			
-			keplerVisitor.visitConstraint(parser.getConstraints().get(0));
-						
-			System.out.println(
-				visitor.prettyPrintAlloy(
-					parser.getConstraints(),
-					PrettyPrintAlloyOption.createListOfOptions(parser.getConstraints().size())
-				)
-			);
-						
-			System.out.println("OCL visited succesfully.");
-			
-		 } catch (IOException e) {
-			e.printStackTrace();
-			
-		 } catch (ParserException e) {
-			e.printStackTrace();
-		 
-		 } catch (Exception e) {
-			e.printStackTrace();
-		 }
-		
-		
-	}
-
-	}
+}
