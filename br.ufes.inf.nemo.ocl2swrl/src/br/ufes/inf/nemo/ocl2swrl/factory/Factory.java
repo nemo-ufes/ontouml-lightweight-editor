@@ -93,4 +93,12 @@ public class Factory {
 	public Boolean isUnique(){
 		return false;
 	}
+	
+	public Boolean isEmpty() {
+		return false;
+	}
+	
+	public Boolean notEmpty() {
+		return false;
+	}
 }

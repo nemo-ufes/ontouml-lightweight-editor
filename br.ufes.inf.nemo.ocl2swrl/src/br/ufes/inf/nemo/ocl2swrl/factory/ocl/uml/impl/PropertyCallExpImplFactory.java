@@ -94,7 +94,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		}
 		
 		if(repeatNumber>1){
-			nameVarX+=repeatNumber;
+			//nameVarX+=repeatNumber;
 			nameVarY+=repeatNumber;
 		}
 		

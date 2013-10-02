@@ -53,21 +53,22 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			oclConsequentShouldBeNegated = true;
 		}
 		
-		bodyExpressionFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber);
-		
 		Variable<Classifier, Parameter> contextVariable = expressionInOCLImpl.getContextVariable();
 		Classifier classContVar = contextVariable.getType();
+		
 		//create a swrl variable with the self name
 		String contVarName = classContVar.getName();
-		
 		String iriName = nameSpace+contVarName;
 		IRI iri = IRI.create(iriName);
-		SWRLVariable var = factory.getSWRLVariable(iri);
+		SWRLVariable contextVar = factory.getSWRLVariable(iri);
+		
+		bodyExpressionFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber);
+		
 		OWLClass owlClass = factory.getOWLClass(iri);
 		//get the complement of the self
 		OWLObjectComplementOf complementOf = factory.getOWLObjectComplementOf(owlClass);
 		//create a swrl atom that means swrlVariable isn't self
-		SWRLClassAtom atom = factory.getSWRLClassAtom(complementOf, var);
+		SWRLClassAtom atom = factory.getSWRLClassAtom(complementOf, contextVar);
 		consequent.add(atom);
 		
 		//create a rule with the incremented antecedents and consequents
