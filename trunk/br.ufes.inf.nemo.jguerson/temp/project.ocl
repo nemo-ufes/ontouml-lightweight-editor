@@ -1,7 +1,4 @@
-
--- # Configuration Line : Do not change this... 
 import 'project.ecore'
-
 -- # Write your constraints below... Press Ctrl+Space too see the options.
 
 package project
@@ -31,3 +28,5 @@ inv no_child_university :
     self.students->forAll( x:Student | not x.oclIsKindOf(Child) )
 
 endpackage
+
+
