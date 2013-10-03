@@ -59,6 +59,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		//create a swrl variable with the self name
 		String contVarName = classContVar.getName();
 		String iriName = nameSpace+contVarName;
+		iriName = iriName.replace(" ", "_");
 		IRI iri = IRI.create(iriName);
 		SWRLVariable contextVar = factory.getSWRLVariable(iri);
 		
