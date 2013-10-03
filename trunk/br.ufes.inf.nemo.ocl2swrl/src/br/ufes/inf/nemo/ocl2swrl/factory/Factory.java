@@ -2,30 +2,15 @@ package br.ufes.inf.nemo.ocl2swrl.factory;
 
 import java.util.Set;
 
-import org.eclipse.ocl.uml.impl.CollectionItemImpl;
-import org.eclipse.ocl.uml.impl.CollectionLiteralExpImpl;
-import org.eclipse.ocl.uml.impl.IntegerLiteralExpImpl;
-import org.eclipse.ocl.uml.impl.IteratorExpImpl;
-import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
-import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
-import org.eclipse.ocl.uml.impl.TypeExpImpl;
-import org.eclipse.ocl.uml.impl.VariableExpImpl;
+import org.eclipse.ocl.uml.impl.*;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
 
-import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
-import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
-import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.CollectionItemImplFactory;
-import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.CollectionLiteralExpImplFactory;
-import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.IntegerLiteralExpImplFactory;
-import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.IteratorExpImplFactory;
-import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.OperationCallExpImplFactory;
-import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.PropertyCallExpImplFactory;
-import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.TypeExpImplFactory;
-import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.VariableExpImplFactory;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.*;
+import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.*;
 
 
 public class Factory {
@@ -57,6 +42,8 @@ public class Factory {
 			return new CollectionLiteralExpImplFactory((CollectionLiteralExpImpl) obj);
 		}else if(c.equals(CollectionItemImpl.class)){
 			return new CollectionItemImplFactory((CollectionItemImpl) obj);
+		}else if(c.equals(BooleanLiteralExpImpl.class)){
+			return new BooleanLiteralExpImplFactory((BooleanLiteralExpImpl) obj);
 		}else{
 			throw new NonSupported(c.getName());
 		}
@@ -99,6 +86,10 @@ public class Factory {
 	}
 	
 	public Boolean notEmpty() {
+		return false;
+	}
+	
+	public Boolean isAbs() {
 		return false;
 	}
 }

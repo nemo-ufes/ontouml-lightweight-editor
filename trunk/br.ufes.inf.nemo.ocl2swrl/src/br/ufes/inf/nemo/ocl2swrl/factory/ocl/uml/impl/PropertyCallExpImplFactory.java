@@ -77,7 +77,13 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
 		
 		Association association = referredProperty.getAssociation();
-		String iriRelationName = nameSpace+association.getName();
+		String iriRelationName = nameSpace;
+		if(association.getName() == null){
+			//iriRelationName += 
+		}else{
+			iriRelationName += association.getName();
+		}
+		iriRelationName = iriRelationName.replace(" ", "_");
 		IRI iriRelation = IRI.create(iriRelationName);
 		OWLObjectProperty relation = factory.getOWLObjectProperty(iriRelation);
 		
@@ -86,11 +92,11 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		String assocEnd0Name = assocEnd0.getName();
 		
 		if(assocEndName.equals(assocEnd0Name)){
-			nameVarX = Util.generateVarName(source, referredArgument);
-			nameVarY = Util.generateVarName(referredProperty, referredArgument);
-		}else{
 			nameVarX = Util.generateVarName(referredProperty, referredArgument);
 			nameVarY = Util.generateVarName(source, referredArgument);
+		}else{
+			nameVarX = Util.generateVarName(source, referredArgument);
+			nameVarY = Util.generateVarName(referredProperty, referredArgument);
 		}
 		
 		if(repeatNumber>1){
@@ -122,6 +128,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		//generate a variable name likes in the OntoUML2OWL_SWRL
 		String attrName = owner.getName() + "." + referredProperty.getName();//aqui eh necessario chamar a funcao de criacao de nomes feita pelo victor
 		String iriAttrName = nameSpace+attrName;
+		iriAttrName = iriAttrName.replace(" ", "_");
 		IRI iriAttr = IRI.create(iriAttrName);
 		OWLDataProperty attrDtProp = factory.getOWLDataProperty(iriAttr);
 		

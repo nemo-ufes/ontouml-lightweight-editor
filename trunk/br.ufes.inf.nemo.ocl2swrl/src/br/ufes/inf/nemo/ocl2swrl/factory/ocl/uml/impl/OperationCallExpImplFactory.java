@@ -14,6 +14,7 @@ import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -22,6 +23,7 @@ import org.semanticweb.owlapi.model.SWRLBuiltInAtom;
 import org.semanticweb.owlapi.model.SWRLClassAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
 import org.semanticweb.owlapi.model.SWRLIArgument;
+import org.semanticweb.owlapi.model.SWRLVariable;
 
 import uk.ac.manchester.cs.owl.owlapi.SWRLLiteralArgumentImpl;
 import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
@@ -88,6 +90,8 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			varZ = solveIsEmpty(nameSpace, manager, factory, ontology, antecedent, consequent, varX, referredArgument, oclConsequentShouldBeNegated, operationNegated);
 		}else if(this.notEmpty()){
 			varZ = solveNotEmpty(nameSpace, manager, factory, ontology, antecedent, consequent, varX, referredArgument, oclConsequentShouldBeNegated, operationNegated);
+		}else if(this.isAbs()){
+			varZ = solveAbs(nameSpace, manager, factory, ontology, antecedent, consequent, varX, oclConsequentShouldBeNegated, operationNegated);
 		}else{
 			varZ = varX;
 		}
@@ -95,11 +99,32 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return varZ;
 	}
 	
+	public SWRLDArgument solveAbs(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+		String varName = "abs.";
+		if(referredArgX.getClass().equals(SWRLLiteralArgumentImpl.class)){
+			OWLLiteral literal = ((SWRLLiteralArgumentImpl)referredArgX).getLiteral();
+			varName += literal.getLiteral();
+		}else{
+			IRI iri = ((SWRLVariableImpl) referredArgX).getIRI();
+			varName += iri.getFragment();
+		}
+		
+		SWRLVariable varZ = factory.getSWRLVariable(IRI.create(nameSpace+varName));
+		
+		List<SWRLDArgument> args = new ArrayList<SWRLDArgument>();
+		args.add(referredArgX);
+		args.add(varZ);
+		SWRLBuiltInAtom builtIn = factory.getSWRLBuiltInAtom(IRI.create("abs"), args);
+		
+		antecedent.add(builtIn);
+		
+		return varZ;
+	}
+		
 	public SWRLDArgument solveIsEmpty(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
 		IRI iri = ((SWRLVariableImpl) referredArgX).getIRI();
-		SWRLClassAtom atom = null;
 		OWLClass owlClass = factory.getOWLClass(iri);
-		atom = factory.getSWRLClassAtom(owlClass, (SWRLIArgument) referredArgY);
+		SWRLClassAtom atom = factory.getSWRLClassAtom(owlClass, (SWRLIArgument) referredArgY);
 		antecedent.add(atom);
 		
 		return null;
@@ -303,7 +328,8 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		String oprName = operation.getName();
 		if(oprName != null){
 			if(		oprName.equals("oclIsKindOf") ||
-					oprName.equals("oclIsTypeOf")
+					oprName.equals("oclIsTypeOf") ||
+					oprName.equals("oclAsType")
 				){
 				return true;
 			}
@@ -364,6 +390,21 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		String oprName = operation.getName();
 		if(oprName != null){
 			if(		oprName.equals("notEmpty")
+				){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public Boolean isAbs() {
+		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
+		Operation operation = operationCallExpImpl.getReferredOperation();
+		String oprName = operation.getName();
+		if(oprName != null){
+			if(		oprName.equals("abs")
 				){
 				return true;
 			}
