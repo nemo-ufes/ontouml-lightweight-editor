@@ -124,8 +124,6 @@ public class PivotOCLUtil {
 	
 	public static String getStereotype(@NonNull Constraint object) {
 		EStructuralFeature eContainingFeature = object.eContainingFeature();
-		
-		System.out.println(eContainingFeature);
 		if (eContainingFeature == PivotPackage.Literals.TYPE__OWNED_INVARIANT) {
 			return UMLReflection.INVARIANT;
 		}

@@ -77,7 +77,6 @@ import org.eclipse.ocl.examples.pivot.VariableExp;
 import org.eclipse.ocl.examples.pivot.VoidType;
 import org.eclipse.ocl.examples.pivot.util.AbstractExtendingVisitor;
 import org.eclipse.ocl.examples.pivot.util.Visitable;
-import org.eclipse.ocl.examples.pivot.utilities.PivotUtil;
 
 import br.ufes.inf.nemo.ocl2alloy.pivot.exceptions.PivotConstraintException;
 import br.ufes.inf.nemo.ocl2alloy.pivot.exceptions.PivotIteratorException;
@@ -661,7 +660,7 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 	}
 	
 	@Override
-	public String visitMetaclass(@SuppressWarnings("rawtypes") @NonNull Metaclass object)  
+	public String visitMetaclass(@NonNull Metaclass object)  
 	{		
 		return NULL_PLACEHOLDER;   
 	}
