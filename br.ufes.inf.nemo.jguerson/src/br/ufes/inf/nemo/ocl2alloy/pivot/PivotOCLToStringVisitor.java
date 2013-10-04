@@ -842,7 +842,7 @@ public class PivotOCLToStringVisitor extends AbstractExtendingVisitor<String, Ob
 	}
 
 	@Override
-	public String visitMetaclass(@SuppressWarnings("rawtypes") @NonNull Metaclass object) {
+	public String visitMetaclass(@NonNull Metaclass object) {
 		appendName(object);
 		if (object.getTemplateBinding().size() > 0) {
 			appendTemplateBindings(object.getTemplateBinding());
