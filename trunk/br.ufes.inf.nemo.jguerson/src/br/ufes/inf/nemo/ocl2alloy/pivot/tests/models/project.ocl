@@ -28,3 +28,4 @@ inv no_child_university :
     self.students->forAll( x:Student | not x.oclIsKindOf(Child) )
 
 endpackage
+
