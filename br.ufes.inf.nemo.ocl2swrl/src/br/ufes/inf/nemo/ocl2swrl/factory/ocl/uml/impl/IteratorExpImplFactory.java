@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.model.SWRLDifferentIndividualsAtom;
 import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 
 
@@ -34,26 +35,26 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 	}
 
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
+	public SWRLDArgument solve(OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		IteratorExpImpl iteratorExpImpl = (IteratorExpImpl) this.m_NamedElementImpl; 
 		OCLExpressionImpl source = (OCLExpressionImpl) iteratorExpImpl.getSource();
 		OCLExpressionImpl body = (OCLExpressionImpl) iteratorExpImpl.getBody();
 		
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
-		SWRLDArgument varX = this.sourceFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, false, expressionIsNegated, repeatNumber);
+		SWRLDArgument varX = this.sourceFactory.solve(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, false, expressionIsNegated, repeatNumber);
 		
 		this.bodyFactory = (OCLExpressionImplFactory) Factory.constructor(body);
-		SWRLDArgument varY = this.bodyFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, varX, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber); 
+		SWRLDArgument varY = this.bodyFactory.solve(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber); 
 		
 		SWRLDArgument varZ = null;
 		if(this.isUnique()){
-			varZ = solveIsUnique(nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, false, false);
+			varZ = solveIsUnique(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, false, false);
 		}
 		
 		return varY;
 	}
 	
-	public SWRLDArgument solveIsUnique(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+	public SWRLDArgument solveIsUnique(OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
 		IteratorExpImpl iteratorExpImpl = (IteratorExpImpl) this.m_NamedElementImpl; 
 		OCLExpressionImpl source = (OCLExpressionImpl) iteratorExpImpl.getSource();
 		OCLExpressionImpl body = (OCLExpressionImpl) iteratorExpImpl.getBody();
@@ -61,10 +62,10 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		int repeatNumber = 2;
 		
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
-		SWRLDArgument varX = this.sourceFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, false, expressionIsNegated, repeatNumber);
+		SWRLDArgument varX = this.sourceFactory.solve(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, false, expressionIsNegated, repeatNumber);
 		
 		this.bodyFactory = (OCLExpressionImplFactory) Factory.constructor(body);
-		SWRLDArgument varY = this.bodyFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, varX, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber); 
+		SWRLDArgument varY = this.bodyFactory.solve(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber); 
 		
 		SWRLDifferentIndividualsAtom diff = factory.getSWRLDifferentIndividualsAtom((SWRLVariable)referredArgX, (SWRLVariable)varX);
 		antecedent.add(diff);
