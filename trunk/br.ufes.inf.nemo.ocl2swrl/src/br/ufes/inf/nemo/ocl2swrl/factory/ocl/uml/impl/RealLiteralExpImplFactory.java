@@ -12,6 +12,8 @@ import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
 import org.semanticweb.owlapi.model.SWRLLiteralArgument;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+
 
 
 /**
@@ -30,7 +32,7 @@ public class RealLiteralExpImplFactory extends NumericLiteralExpImplFactory {
 	}
 
 	@Override
-	public SWRLDArgument solve(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
+	public SWRLDArgument solve(OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		RealLiteralExpImpl realLiteralExpImpl = (RealLiteralExpImpl)m_NamedElementImpl;
 		Double realSymbol = realLiteralExpImpl.getRealSymbol();
 		OWLLiteral owlLiteral = factory.getOWLLiteral(realSymbol);
