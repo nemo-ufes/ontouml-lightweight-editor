@@ -79,10 +79,16 @@ import org.eclipse.ocl.examples.pivot.util.AbstractExtendingVisitor;
 import org.eclipse.ocl.examples.pivot.util.Visitable;
 import org.eclipse.ocl.examples.pivot.utilities.PivotUtil;
 
+import br.ufes.inf.nemo.ocl2alloy.pivot.exceptions.PivotConstraintException;
+import br.ufes.inf.nemo.ocl2alloy.pivot.exceptions.PivotIteratorException;
+import br.ufes.inf.nemo.ocl2alloy.pivot.exceptions.PivotLiteralException;
+import br.ufes.inf.nemo.ocl2alloy.pivot.exceptions.PivotOperationException;
+import br.ufes.inf.nemo.ocl2alloy.pivot.exceptions.PivotTypeException;
+
 public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Object> {
 		
 	private PivotOCLParser oclparser;
-	private PrettyPrintAlloyOption opt;		 
+	private PivotPrettyPrintAlloyOption opt;		 
 	private int constraint_count = 0;	
 	private static String NULL_PLACEHOLDER = "<null>";
 	
@@ -95,10 +101,10 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 	{
 		super(Object.class);
 		oclparser = parser;	
-		opt =  new PrettyPrintAlloyOption(PrettyPrintAlloyOption.ConstraintType.FACT,10,1);
+		opt =  new PivotPrettyPrintAlloyOption(PivotPrettyPrintAlloyOption.ConstraintType.FACT,10,1);
 	}
 	
-	public PivotOCLToAlloyVisitor(PivotOCLParser parser, PrettyPrintAlloyOption option)
+	public PivotOCLToAlloyVisitor(PivotOCLParser parser, PivotPrettyPrintAlloyOption option)
 	{
 		super(Object.class);
 		oclparser = parser;	
@@ -107,11 +113,11 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 	
 	public String prettyPrintAlloy (Constraint element) 
 	{		 
-		opt =  new PrettyPrintAlloyOption(PrettyPrintAlloyOption.ConstraintType.FACT,10,1);
+		opt =  new PivotPrettyPrintAlloyOption(PivotPrettyPrintAlloyOption.ConstraintType.FACT,10,1);
 		return prettyPrintAlloy(element,opt);
 	}
 	
-	public String prettyPrintAlloy (Constraint element, PrettyPrintAlloyOption option) 
+	public String prettyPrintAlloy (Constraint element, PivotPrettyPrintAlloyOption option) 
 	{
 		this.opt = option;		 
         try {
@@ -123,7 +129,7 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
         }
 	}	
 	
-	public String prettyPrintAlloy (ArrayList<Constraint> constraints, ArrayList<PrettyPrintAlloyOption> options) throws Exception
+	public String prettyPrintAlloy (ArrayList<Constraint> constraints, ArrayList<PivotPrettyPrintAlloyOption> options) throws Exception
 	{
 		if(constraints.size() > options.size()) throw new Exception("prettyPrintAlloy() : the number of constraints is greater than the number of options.");
 		try {			
@@ -286,7 +292,7 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 		EModelElement eContext = getEcoreOfPivot(context);
 		RefOntoUML.Element ontoContext = getOntoUMLOfEcore(eContext);
 		String aliasContext = oclparser.getOntoUMLParser().getAlias(ontoContext);
-		
+				
 		if (UMLReflection.INVARIANT.equals(stereotype)) 
 		{						
 			if (context instanceof Type)
@@ -342,14 +348,17 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 		StringBuilder localResult = new StringBuilder();
 		Element context = constraint.getContext();
 		OCLExpression oclExpression = ((ExpressionInOCL)constraint.getSpecification()).getBodyExpression();		
-		String stereotype = PivotUtil.getStereotype(constraint); 				
+			
+		//FIXME - bug found : always return "invariant"
+		String stereotype = PivotOCLUtil.getStereotype(constraint);
+				System.out.println(constraint);
 		constraint_count++;
-		
+				
 		if (UMLReflection.INVARIANT.equals(stereotype) || UMLReflection.DERIVATION.equals(stereotype))
 		{
-			if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.CHECK)) localResult.append("assert ");		
-			else if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.RUN)) localResult.append("pred ");		
-			else if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.FACT)) localResult.append("fact ");			
+			if(opt.ctype.equals(PivotPrettyPrintAlloyOption.ConstraintType.CHECK)) localResult.append("assert ");		
+			else if(opt.ctype.equals(PivotPrettyPrintAlloyOption.ConstraintType.RUN)) localResult.append("pred ");		
+			else if(opt.ctype.equals(PivotPrettyPrintAlloyOption.ConstraintType.FACT)) localResult.append("fact ");			
 			localResult.append(visitConstraintName(constraint));
 			localResult.append(" {\n").append("\tall w: World | ");						
 			if (oclExpression.toString().contains("self")) 
@@ -361,19 +370,20 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 			localResult.append("\n\t");			
 			localResult.append(safeVisit(constraint.getSpecification()));			
 			localResult.append("\n}\n\n");
-		    if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.CHECK)) localResult.append("check ");		
-			else if(opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.RUN)) localResult.append("run ");		    
-		    if (!opt.ctype.equals(PrettyPrintAlloyOption.ConstraintType.FACT))
+		    if(opt.ctype.equals(PivotPrettyPrintAlloyOption.ConstraintType.CHECK)) localResult.append("check ");		
+			else if(opt.ctype.equals(PivotPrettyPrintAlloyOption.ConstraintType.RUN)) localResult.append("run ");		    
+		    if (!opt.ctype.equals(PivotPrettyPrintAlloyOption.ConstraintType.FACT))
 		    {
 		    	localResult.append(visitConstraintName(constraint));
 		    	localResult.append(" for "+opt.global_scope+" but "+opt.world_scope+" World, 7 Int\n\n");
 		    }
 		}
-		if (UMLReflection.DEFINITION.equals(stereotype));		
-		if (UMLReflection.INITIAL.equals(stereotype));		
-		if (UMLReflection.BODY.equals(stereotype));
-		if (UMLReflection.PRECONDITION.equals(stereotype)); 
-		if (UMLReflection.POSTCONDITION.equals(stereotype)); 
+		
+		if (UMLReflection.DEFINITION.equals(stereotype)) throw new PivotConstraintException(stereotype,"No support for Definition Constraints in the mapping.");		
+		if (UMLReflection.INITIAL.equals(stereotype)) throw new PivotConstraintException(stereotype,"There is no need of Initial Constraints in OntoUML");		
+		if (UMLReflection.BODY.equals(stereotype)) throw new PivotConstraintException(stereotype,"Operations do not exist in OntoUML");
+		if (UMLReflection.PRECONDITION.equals(stereotype)) throw new PivotConstraintException(stereotype,"Pre Conditions and Operations do not exist in OntoUML"); 
+		if (UMLReflection.POSTCONDITION.equals(stereotype)) throw new PivotConstraintException(stereotype,"Post Conditions and Operations do not exist in OntoUML"); 
 		
 		return localResult.toString(); 
 	}	
@@ -504,19 +514,19 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 	@Override
 	public String visitInvalidLiteralExp(@NonNull InvalidLiteralExp il) 
 	{		
-		return NULL_PLACEHOLDER;   
+		throw new PivotLiteralException("Invalid","There is no invalid value in Alloy");	   
 	}
 	
 	@Override
 	public String visitInvalidType(@NonNull InvalidType object)  
 	{		
-		return NULL_PLACEHOLDER;   
+		throw new PivotTypeException("Invalid","There is no Invalid Type in Alloy");
 	}
 	
 	@Override
 	public String visitIterateExp(@NonNull IterateExp callExp)  
 	{		
-		return NULL_PLACEHOLDER;   
+		throw new PivotOperationException("iterate()","It is not possible to literally iterate over collections. Instead, use the OCL predefined iterators such as forAll(), exists(), etc.");	
 	}
 	
 	@Override
@@ -615,7 +625,13 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
         	String sb = replaceVarInBodyResult(varTemp,bodyResult,varTemp+"'");          	
         	localResult.append(sb);        	
         }
-        localResult.append(")");			               
+        localResult.append(")");		
+        
+        if(iterExpName.equals("any")) throw new PivotIteratorException("any()","It's not possible to get an specific element in an Alloy Set and return it.");        
+        if(iterExpName.equals("sortedBy")) throw new PivotIteratorException("sortedBy()","OrderedSet collections are not supported in Alloy.");        
+        if(iterExpName.equals("collectNested")) throw new PivotIteratorException("collectNested()","No suuport for nested colletion and Bags in Alloy. Use iterator collect() instead.");
+        if(iterExpName.equals("closure")) throw new PivotIteratorException("closure()","There is no mapping of this iterator to Alloy. Need to be done.");
+        
         return localResult.toString();
 	}
 	
@@ -645,7 +661,7 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 	}
 	
 	@Override
-	public String visitMetaclass(@NonNull Metaclass object)  
+	public String visitMetaclass(@SuppressWarnings("rawtypes") @NonNull Metaclass object)  
 	{		
 		return NULL_PLACEHOLDER;   
 	}
@@ -664,7 +680,7 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 	
 	@Override
 	public String visitOperation(@NonNull Operation operation)  
-	{		
+	{
 		return NULL_PLACEHOLDER;  
 	}
 	
@@ -732,6 +748,19 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 					
 			if (iter.hasNext()) ; // no more arguments 
         }		
+        
+        if(operName.equals("/")) throw new PivotOperationException("/","In Alloy, there is only support for integer operations such as +, -, *, max(), min() and abs().");        
+        if(operName.equals("div")) throw new PivotOperationException("div","In Alloy, there is only support for integer operations such as +, -, *, max(), min(), abs().");        
+        if(operName.equals("mod")) throw new PivotOperationException("mod","In Alloy, there is only support for integer operations such as +, -, *, max(), min(), abs().");        
+        if(operName.equals("toString")) throw new PivotOperationException("toString()","There is no support for the type String in Alloy");        
+        if(operName.equals("asOrderedSet")) throw new PivotOperationException("asOrderedSet()","OrderedSet collections are not supported in Alloy.");        
+        if(operName.equals("asSequence")) throw new PivotOperationException("asSequence()","Sequence collections are not supported in Alloy.");        
+        if(operName.equals("asBag")) throw new PivotOperationException("asBag()","Bag collections are not supported in Alloy.");        
+        if(operName.equals("oclIsInState")) throw new PivotOperationException("oclIsInState()","There is no state machine in OntoUML.");        
+        if(operName.equals("oclIsNew")) throw new PivotOperationException("oclIsNew()","Post conditions and Operations don't exist in OntoUML.");        
+        if(operName.equals("flatten")) throw new PivotOperationException("flatten()","Alloy does not support nested collections (sets), or in other words, high order relations.");        
+        if(operName.equals("oclIsInvalid"))	throw new PivotOperationException("oclIsInvalid()","No support in Alloy for the type Invalid.");        
+        if(operName.equals("count")) throw new PivotOperationException("count()","It is not possible to iterate over collections. Since all collections are Set, this would always return 1.");  
         
 		return NULL_PLACEHOLDER;  
 	}	
@@ -804,7 +833,7 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 	@Override
 	public String visitRealLiteralExp(@NonNull RealLiteralExp rl)  
 	{		
-		return NULL_PLACEHOLDER;  
+		throw new PivotLiteralException("Real","There is no real numbers (double, float, etc.) in Alloy. Only integers.");
 	}
 	
 	@Override
@@ -822,7 +851,7 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 	@Override
 	public String visitStringLiteralExp(@NonNull StringLiteralExp sl)  
 	{
-		return NULL_PLACEHOLDER;  
+		throw new PivotLiteralException("String","There is no string value in Alloy");
 	}
 	
 	@Override

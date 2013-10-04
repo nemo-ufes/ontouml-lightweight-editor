@@ -65,7 +65,7 @@ public class PivotOCLParser {
 	{
 		this.tempDirPath = tempDirPath;
 		this.ontoRoot = refRoot;
-		if (tempDirPath==null || tempDirPath.isEmpty())	this.tempDirPath = PivotOCL2AlloyUtil.getDefaultDirectoryPath()+File.separator;
+		if (tempDirPath==null || tempDirPath.isEmpty())	this.tempDirPath = PivotOCLUtil.getDefaultDirectoryPath()+File.separator;
 
 		if (refRoot.getName()==null || refRoot.getName().isEmpty()) refFile = "default.refontouml";
 		else refFile = refRoot.getName()+".refontouml";
@@ -91,6 +91,7 @@ public class PivotOCLParser {
 		metamodelManager = new MetaModelManager();
 		pivotEnvFactory = new PivotEnvironmentFactory(ecoreResource.getResourceSet().getPackageRegistry(), metamodelManager);
 	    ocl = OCL.newInstance(pivotEnvFactory);	
+	    
 	}
 			
 	/**
@@ -114,7 +115,7 @@ public class PivotOCLParser {
 			ecoreFile = refFile.replace(".refontouml",".ecore");
 			ecorePath = this.tempDirPath+ecoreFile;
 			
-			Resource refResource = PivotOCL2AlloyUtil.readOntoUML(refAbsPath);
+			Resource refResource = PivotOCLUtil.readOntoUML(refAbsPath);
 			ontoRoot = (RefOntoUML.Package)refResource.getContents().get(0);
 		
 			// convert OntoUML to Ecore
@@ -164,7 +165,7 @@ public class PivotOCLParser {
 		this.oclPath = ecorePath.replace(".ecore", ".ocl");
 		oclContent = processOCLContent(oclContent);
 		this.oclContent = oclContent;
-		PivotOCL2AlloyUtil.writeFile(this.oclContent, oclPath);
+		PivotOCLUtil.writeFile(this.oclContent, oclPath);
 		
 		URI oclURI = URI.createFileURI(oclPath);
 		 
@@ -189,9 +190,13 @@ public class PivotOCLParser {
 	 */
 	private String processOCLContent(String oclContent)
 	{		
-		if (!oclContent.contains("import"))
+		if (!oclContent.contains("import") && !oclContent.contains("package "))
 		{
-			oclContent = "import '"+ecoreFile+"'"+oclContent+"\n\n";			
+			oclContent = "import '"+ecoreFile+"'"+"\n\n"+"package _'"+ecoreRoot.getName()+"'"+"\n\n"+oclContent+"\n\nendpackage";			
+		}		
+		if (!oclContent.contains("import") && oclContent.contains("package ")) 
+		{
+			oclContent = "import '"+ecoreFile+"'"+"\n\n"+oclContent;
 		}		
 		return oclContent;
 	}
