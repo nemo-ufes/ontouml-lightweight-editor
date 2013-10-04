@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ontouml2ecore.tests;
 
+import java.io.File;
 import java.io.IOException;
 
 import br.ufes.inf.nemo.common.OntoUMLParser;
@@ -12,16 +13,16 @@ public class OntoUML2EcoreTests {
 		try {
 			
 			// we have to use absolute paths. I don't know why.
-			
-			String path1 = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\src\\br\\ufes\\inf\\nemo\\ontouml2ecore\\tests\\models\\Imóvel.refontouml";
+						
+			String path1 = new File("src/br/ufes/inf/nemo/ontouml2ecore/tests/models/Imóvel.refontouml").getAbsolutePath();
 			OntoUML2Ecore.convertToEcore(new OntoUMLParser(path1), path1.replace(".refontouml", ".ecore" ), true, true);
 			System.out.println(OntoUML2Ecore.getLog());
 			
-			String path2 = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\src\\br\\ufes\\inf\\nemo\\ontouml2ecore\\tests\\models\\project.refontouml";
+			String path2 = new File("src/br/ufes/inf/nemo/ontouml2ecore/tests/models/project.refontouml").getAbsolutePath();
 			OntoUML2Ecore.convertToEcore(new OntoUMLParser(path2),path2.replace(".refontouml", ".ecore" ), true, true);
 			System.out.println(OntoUML2Ecore.getLog());
 			
-			String path3 = "C:\\Users\\Guerson\\SVN\\OLED-SVN\\br.ufes.inf.nemo.jguerson\\src\\br\\ufes\\inf\\nemo\\ontouml2ecore\\tests\\models\\RoadTrafficAccident.refontouml";
+			String path3 = new File("src/br/ufes/inf/nemo/ontouml2ecore/tests/models/RoadTrafficAccident.refontouml").getAbsolutePath();
 			OntoUML2Ecore.convertToEcore(new OntoUMLParser(path3),path3.replace(".refontouml", ".ecore" ), true, true);
 			System.out.println(OntoUML2Ecore.getLog());
 			

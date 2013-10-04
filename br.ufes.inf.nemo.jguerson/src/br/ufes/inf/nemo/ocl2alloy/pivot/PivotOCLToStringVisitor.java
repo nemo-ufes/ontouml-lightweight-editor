@@ -108,12 +108,12 @@ import org.eclipse.ocl.examples.pivot.utilities.PivotUtil;
  * @author Christian W. Damus (cdamus)
  * @author Edward Willink (ewillink)
  */
-public class KeplerToStringVisitor extends AbstractExtendingVisitor<String, Object>
+public class PivotOCLToStringVisitor extends AbstractExtendingVisitor<String, Object>
 {	
-	private static final Logger logger = Logger.getLogger(KeplerToStringVisitor.class);
+	private static final Logger logger = Logger.getLogger(PivotOCLToStringVisitor.class);
 
 	public static interface Factory {
-		@NonNull KeplerToStringVisitor createToStringVisitor();
+		@NonNull PivotOCLToStringVisitor createToStringVisitor();
 		@NonNull EPackage getEPackage();
 	}
 	
@@ -123,7 +123,7 @@ public class KeplerToStringVisitor extends AbstractExtendingVisitor<String, Obje
 		factoryMap.put(factory.getEPackage(), factory);
 	}
 
-	public static @Nullable KeplerToStringVisitor create(@NonNull EObject eObject) {
+	public static @Nullable PivotOCLToStringVisitor create(@NonNull EObject eObject) {
 		EPackage ePackage = eObject.eClass().getEPackage();
 		Factory factory = factoryMap.get(ePackage);
 		if (factory != null) {
@@ -133,14 +133,14 @@ public class KeplerToStringVisitor extends AbstractExtendingVisitor<String, Obje
 		return null;
 	}
 
-	private static final class MyFactory implements KeplerToStringVisitor.Factory
+	private static final class MyFactory implements PivotOCLToStringVisitor.Factory
 	{
 		private MyFactory() {
-			KeplerToStringVisitor.addFactory(this);
+			PivotOCLToStringVisitor.addFactory(this);
 		}
 
-		public @NonNull KeplerToStringVisitor createToStringVisitor() {
-			return new KeplerToStringVisitor();
+		public @NonNull PivotOCLToStringVisitor createToStringVisitor() {
+			return new PivotOCLToStringVisitor();
 		}
 
 		public @NonNull EPackage getEPackage() {
@@ -150,7 +150,7 @@ public class KeplerToStringVisitor extends AbstractExtendingVisitor<String, Obje
 		}
 	}
 
-	public static @NonNull KeplerToStringVisitor.Factory FACTORY = new MyFactory();
+	public static @NonNull PivotOCLToStringVisitor.Factory FACTORY = new MyFactory();
 	
 	/**
 	 * Indicates where a required element in the AST was <code>null</code>, so
@@ -165,7 +165,7 @@ public class KeplerToStringVisitor extends AbstractExtendingVisitor<String, Obje
 	/**
 	 * Initializes me.
 	 */
-	public KeplerToStringVisitor() {
+	public PivotOCLToStringVisitor() {
         super(Object.class);						// Useless dummy object as context
 	}
 

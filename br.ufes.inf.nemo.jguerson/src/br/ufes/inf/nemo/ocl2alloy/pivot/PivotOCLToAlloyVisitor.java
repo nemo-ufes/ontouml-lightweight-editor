@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -77,26 +79,26 @@ import org.eclipse.ocl.examples.pivot.util.AbstractExtendingVisitor;
 import org.eclipse.ocl.examples.pivot.util.Visitable;
 import org.eclipse.ocl.examples.pivot.utilities.PivotUtil;
 
-public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
+public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Object> {
 		
 	private PivotOCLParser oclparser;
 	private PrettyPrintAlloyOption opt;		 
 	private int constraint_count = 0;	
 	private static String NULL_PLACEHOLDER = "<null>";
 	
-	public PivotOCLVisitor() 
+	public PivotOCLToAlloyVisitor() 
 	{ 
 		super(Object.class); 
 	}
 	
-	public PivotOCLVisitor(PivotOCLParser parser)
+	public PivotOCLToAlloyVisitor(PivotOCLParser parser)
 	{
 		super(Object.class);
 		oclparser = parser;	
 		opt =  new PrettyPrintAlloyOption(PrettyPrintAlloyOption.ConstraintType.FACT,10,1);
 	}
 	
-	public PivotOCLVisitor(PivotOCLParser parser, PrettyPrintAlloyOption option)
+	public PivotOCLToAlloyVisitor(PivotOCLParser parser, PrettyPrintAlloyOption option)
 	{
 		super(Object.class);
 		oclparser = parser;	
@@ -163,7 +165,7 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 	    }
 		return null;
 	}
-	
+		
 	/** Get sub types of Classifier from its alias */
 	private ArrayList<String> getSubTypeList(String aliasClassifier)
     {    	
@@ -179,6 +181,38 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
     	return subtypes;
     }
 	
+	/** 
+     *  Replace "var" for "sourceResult" in the expression "bodyResult" 
+     *  This method is used for iterators such as isUnique() and collect()
+     */    
+    private String replaceVarInBodyResult (String var, String bodyResult, String sourceResult)
+    {
+    	Pattern p = Pattern.compile(var);
+    	Matcher m = p.matcher(bodyResult);
+    	StringBuffer sb = new StringBuffer();
+    	while (m.find()) 
+    	{ 
+    		int indexBegin = m.start()-1;
+    		int indexEnd = m.end()+1;
+    		if(indexBegin < 0) indexBegin = 0;
+    		if(indexEnd > bodyResult.length()) indexEnd = bodyResult.length();
+    		String regex1 = "[.\t-()=<>:+]"+var+"[.\t-()=<>:+]";
+    		String regex2 = var+"[.\t-()=<>:+]";
+    		String regex3 = "[.\t-()=<>:+]"+var;
+    		if(
+    		   Pattern.matches(regex1,bodyResult.subSequence(indexBegin, indexEnd)) || 
+    		   Pattern.matches(regex2,bodyResult.subSequence(indexBegin, indexEnd))	||
+    		   Pattern.matches(regex3,bodyResult.subSequence(indexBegin, indexEnd))  
+    		){
+    		   m.appendReplacement(sb, sourceResult);    		   
+    		}
+    	}    	
+    	m.appendTail(sb);
+    	String result = sb.toString();
+    	m.reset();
+    	return result;
+    }
+    
 	protected String append(Number number)
 	{
 		StringBuilder localResult = new StringBuilder();
@@ -203,6 +237,17 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		return localResult.toString();
 	}	
 	
+	protected String visitTypeName(Type type)
+	{
+		StringBuilder localResult = new StringBuilder();
+		EClass eType = (EClass)getEcoreOfPivot(type);
+		RefOntoUML.Type ontoType = (RefOntoUML.Type)getOntoUMLOfEcore(eType);
+		String aliasOntoType = oclparser.getOntoUMLParser().getAlias(ontoType);		
+		if (ontoType instanceof RefOntoUML.DataType) localResult.append(aliasOntoType);
+		else localResult.append("w."+aliasOntoType);
+		return localResult.toString();
+	}
+	
 	public String visitConstraintName (Constraint constraint)
 	{
 		StringBuilder localResult = new StringBuilder();
@@ -212,6 +257,26 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 			localResult.append("constraint"+constraint_count);			
 		}else 
 			localResult.append(constraint.getName());
+		return localResult.toString();
+	}	
+	
+	protected String visitOclIsTypeOf (OCLExpression srcExpression, OCLExpression argExpression)
+	{
+		StringBuilder localResult = new StringBuilder();
+		String sourceResult = safeVisit(srcExpression);
+		String argument = safeVisit(argExpression);
+		String firstPart = "("+sourceResult + " in " + argument+")";
+		String secondPart = new String();
+		if (argument.contains("w.")) argument = argument.replace("w.", "");				
+		ArrayList<String> subtypes = getSubTypeList(argument);
+		if (subtypes.size()>0) 
+		{
+			secondPart = " and # "+ sourceResult + " & (";				
+			int i = 1;
+			for(String subtype: subtypes) { if (i<subtypes.size()) secondPart += "w."+subtype+" + "; else if (i==subtypes.size()) secondPart += "w."+subtype; i++;}
+			secondPart += ") = 0";
+		}
+		localResult.append("("+firstPart + secondPart+")");
 		return localResult.toString();
 	}
 	
@@ -355,7 +420,7 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 	@Override
 	public String visitCollectionLiteralExp(@NonNull CollectionLiteralExp cl) 
 	{		
-		return ""; 
+		return NULL_PLACEHOLDER;  
 	}	
 	
 	@Override
@@ -457,127 +522,101 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 	@Override
 	public String visitIteration(@NonNull Iteration iteration)  
 	{		
-		return ""; 
+		return NULL_PLACEHOLDER;  
 	}
 	
 	@Override
 	public String visitIteratorExp(@NonNull IteratorExp callExp)  
 	{
+		StringBuilder localResult = new StringBuilder(); 
 		OCLExpression srcExpression = callExp.getSource();
 		Iteration iteration = callExp.getReferredIteration();
 		String iterExpName = iteration.getName();
 		OCLExpression bodyExpression = callExp.getBody();
-				
-		append("(");
-		if(iterExpName.equals("forAll")) append("all ");        
-        if(iterExpName.equals("exists")) append("some ");        
-        if(iterExpName.equals("one")) append("#{ ");        
-        if(iterExpName.equals("select")) append("{ ");        
-        if(iterExpName.equals("reject")) append("{ ");              
-        if(iterExpName.equals("isUnique")) append("all disj ");  
+		String srcResult = safeVisit(srcExpression);
+		String bodyResult = safeVisit(bodyExpression);
+		
+		localResult.append("(");
+		if(iterExpName.equals("forAll")) localResult.append("all ");        
+        if(iterExpName.equals("exists")) localResult.append("some ");        
+        if(iterExpName.equals("one")) localResult.append("#{ ");        
+        if(iterExpName.equals("select")) localResult.append("{ ");        
+        if(iterExpName.equals("reject")) localResult.append("{ ");              
+        if(iterExpName.equals("isUnique")) localResult.append("all disj ");  
         
 		boolean isFirst = true;
+		String varTemp = new String();
 		for (Variable variable : callExp.getIterator()) 
 		{
-			if (!isFirst) {	append(", "); }                        
-            if(iterExpName.equals("forAll")) safeVisit(variable);        	
-        	if(iterExpName.equals("exists")) safeVisit(variable);        	
-        	if(iterExpName.equals("one")) safeVisit(variable);        	
-        	if(iterExpName.equals("select")) safeVisit(variable);        	
-            if(iterExpName.equals("reject")) safeVisit(variable);               
+			if (!isFirst) {	localResult.append(", "); }                        
+            if(iterExpName.equals("forAll")) localResult.append(safeVisit(variable));        	
+        	if(iterExpName.equals("exists")) localResult.append(safeVisit(variable));        	
+        	if(iterExpName.equals("one")) localResult.append(safeVisit(variable));        	
+        	if(iterExpName.equals("select")) localResult.append(safeVisit(variable));        	
+            if(iterExpName.equals("reject")) localResult.append(safeVisit(variable));
+            if(iterExpName.equals("collect")) varTemp = safeVisit(variable);                        
+            if(iterExpName.equals("isUnique"))
+            { 
+            	varTemp = safeVisit(variable); localResult.append(varTemp).append(",").append(varTemp).append("'"); 
+            }
 			isFirst = false;
 		}
 		
-		if(iterExpName.equals("forAll")) { append(": "); safeVisit(srcExpression); append(" | "); safeVisit(bodyExpression);  }        
-        if(iterExpName.equals("exists")) { append(": "); safeVisit(srcExpression); append(" | "); safeVisit(bodyExpression); }        
-        if(iterExpName.equals("one")) { append(": "); safeVisit(srcExpression); append(" | "); safeVisit(bodyExpression); append(" } = 1"); }        
-        if(iterExpName.equals("reject")) { append(": "); safeVisit(srcExpression); append(" | "); append("not "); safeVisit(bodyExpression); append(" }"); }        
-        if(iterExpName.equals("select")) { append(": "); safeVisit(srcExpression); append(" | "); safeVisit(bodyExpression); append(" }"); }
-                        
-		append(" | ");
-		
-		safeVisit(bodyExpression);
-		append(")");
-		
-		/*
-		               
-        // Iterator Arguments
-        for( java.util.Iterator<String> iter = variableResults.iterator(); iter.hasNext();) 
-        {        	     
-        	String string = iter.next();   
-        	        	        	
-        	if(iterName.equals("forAll")) result.append(string);
-        	
-        	if(iterName.equals("exists")) result.append(string);
-        	
-        	if(iterName.equals("one")) result.append(string);
-        	
-        	if(iterName.equals("select")) result.append(string);
-        	
-            if(iterName.equals("reject")) result.append(string);
-            
-            if(iterName.equals("collect")) var = string;
-            
-            if(iterName.equals("closure")) var = string;         
-            
-            if(iterName.equals("isUnique")){ var = string; result.append(var).append(",").append(var).append("'"); }            
-            
-            if (iter.hasNext()) result.append(",");
-        }
-        
-        if(iterName.equals("forAll")) result.append(": ").append(sourceResult).append(" | ").append(bodyResult);  
-        
-        if(iterName.equals("exists")) result.append(": ").append(sourceResult).append(" | ").append(bodyResult); 
-        
-        if(iterName.equals("one")) result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" } = 1");
-        
-        if(iterName.equals("reject")) result.append(": ").append(sourceResult).append(" | ").append("not ").append(bodyResult).append(" }"); 
-        
-        if(iterName.equals("select")) result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" }");
-        
-        if(iterName.equals("collect")) 
+		if(iterExpName.equals("forAll")) 
+		{ 
+			localResult.append(": "); 
+			localResult.append(srcResult); 
+			localResult.append(" | "); 
+			localResult.append(bodyResult);  
+		}        
+        if(iterExpName.equals("exists")) 
+        { 
+        	localResult.append(": "); 
+        	localResult.append(srcResult); 
+        	localResult.append(" | "); 
+        	localResult.append(bodyResult); 
+        }        
+        if(iterExpName.equals("one")) 
+        { 
+        	localResult.append(": "); 
+        	localResult.append(srcResult); 
+        	localResult.append(" | "); 
+        	localResult.append(bodyResult); 
+        	localResult.append(" } = 1"); 
+        }        
+        if(iterExpName.equals("reject")) 
+        { 
+        	localResult.append(": "); 
+        	localResult.append(srcResult); 
+        	localResult.append(" | "); 
+        	localResult.append("not "); 
+        	localResult.append(bodyResult); 
+        	localResult.append(" }"); 
+        }        
+        if(iterExpName.equals("select")) 
+        { 
+        	localResult.append(": "); 
+        	localResult.append(srcResult); 
+        	localResult.append(" | "); 
+        	localResult.append(bodyResult); 
+        	localResult.append(" }"); 
+        }         
+        if(iterExpName.equals("collect")) 
         {        	
-        	String sb = substitute(var,bodyResult,sourceResult); //substitute variable "x" in expression "bodyResult" for "sourceResult"         	
-        	result.append(sb);        	
+        	//replace variable "x" in expression "bodyResult" for "sourceResult"
+        	String subsExpression = replaceVarInBodyResult(varTemp,bodyResult,srcResult);          	
+        	localResult.append(subsExpression);        	
         }
         
-        if(iterName.equals("isUnique")) 
+        if(iterExpName.equals("isUnique")) 
         {
-        	result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" != ");
-        	String sb = substitute(var,bodyResult,var+"'");  //substitute variable "x" in expression "bodyResult" for "x'"        	
-        	result.append(sb);        	
+        	localResult.append(": ").append(srcResult).append(" | ").append(bodyResult).append(" != ");
+        	//replace variable "x" in expression "bodyResult" for "x'"
+        	String sb = replaceVarInBodyResult(varTemp,bodyResult,varTemp+"'");          	
+        	localResult.append(sb);        	
         }
-        
-        if(iterName.equals("closure")) 
-        {        	
-        	String assocAlias = new String();
-        	String propertyAlias = new String();
-        	
-        	String aux1 = new String(bodyResult);
-        	propertyAlias = aux1.replace(var+".", "");
-        	propertyAlias = propertyAlias.replace("[w]", "");
-        	        	
-        	EObject obj = refparser.getElement(propertyAlias);
-        	
-        	if (obj instanceof RefOntoUML.Property) 
-        	{
-        		EObject container = obj.eContainer();
-            	assocAlias = refparser.getAlias(container);	
-        	}        	
-        	
-        	String strFinal = sourceResult+".^(w."+assocAlias+")";        	
-        	result.append(strFinal);
-        }
-                
-        if(iterName.equals("any")) throw new IteratorException("any()","We do not support this iterator. Problems arise when trying to return the type of an element of the collection");
-        
-        if(iterName.equals("sortedBy")) throw new IteratorException("sortedBy()","The type OrderedSet is not supported.");
-        
-        if(iterName.equals("collectNested")) throw new IteratorException("collectNested()","We do not support nested collections and the type Bag.");
-       
-        result.append(")");
-     	return result.toString(); */
-		return null; 
+        localResult.append(")");			               
+        return localResult.toString();
 	}
 	
 	@Override
@@ -675,8 +714,8 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 			if(operName.equals("=")) { return "("+sourceResult + " = " + argument+")"; }				
 			if(operName.equals("<>")) { return "("+sourceResult + " != " + argument+")"; }				
 			if(operName.equals("oclIsKindOf"))	{ return "("+sourceResult + " in " + argument+")"; }			
-			if(operName.equals("oclAsType")) { return ""+sourceResult+""; }			
-//			if(operName.equals("oclIsTypeOf"))	{  return generateOclIsTypeOfMapping(sourceResult,argument); }
+			if(operName.equals("oclAsType")) { return sourceResult; }			
+			if(operName.equals("oclIsTypeOf"))	{  return visitOclIsTypeOf(srcExpression, argumentExpression); }
 			if(operName.equals("<")) { return "("+sourceResult + " < " + argument + ")"; }
 			if(operName.equals(">")) { return "("+sourceResult + " > " + argument + ")"; }				
 			if(operName.equals("<=")) { return "("+sourceResult + " <= " + argument + ")"; }			
@@ -833,11 +872,7 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 	{
 		StringBuilder localResult = new StringBuilder();
 		Type type = t.getReferredType();
-		EClass eType = (EClass)getEcoreOfPivot(type);
-		RefOntoUML.Type ontoType = (RefOntoUML.Type)getOntoUMLOfEcore(eType);
-		String aliasOntoType = oclparser.getOntoUMLParser().getAlias(ontoType);		
-		if (ontoType instanceof RefOntoUML.DataType) localResult.append(aliasOntoType);
-		else localResult.append("w."+aliasOntoType);
+		localResult.append(visitTypeName(type));
 		return localResult.toString(); 
 	}
 	
@@ -865,7 +900,10 @@ public class PivotOCLVisitor extends AbstractExtendingVisitor<String, Object> {
 		StringBuilder localResult = new StringBuilder();
 		localResult.append(visitName(variable));
 		Type type = variable.getType();
-		if (type != null) {}
+		if (type != null) {
+			//localResult.append(" : ");
+			//localResult.append(visitTypeName(type));
+		}
 		OCLExpression initExpression = variable.getInitExpression();
 		if (initExpression != null) {
 			localResult.append(" = ");
