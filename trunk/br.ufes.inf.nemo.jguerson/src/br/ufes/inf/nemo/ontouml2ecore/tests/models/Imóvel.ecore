@@ -125,12 +125,12 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="altitude" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ponto espacial" upperBound="-1"
-        eType="#//Ponto%20Espacial" eOpposite="#//Ponto%20Espacial/coordenada"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elemento pontual" upperBound="-1"
         eType="#//Elemento%20Pontual" eOpposite="#//Elemento%20Pontual/coordenada"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ponto linear" upperBound="-1"
         eType="#//Ponto%20Linear" eOpposite="#//Ponto%20Linear/coordenada"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ponto espacial" upperBound="-1"
+        eType="#//Ponto%20Espacial" eOpposite="#//Ponto%20Espacial/coordenada"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Condição Climática">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="preciptação" lowerBound="1"
@@ -206,8 +206,6 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="país" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Class10"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Class34"/>
   <eClassifiers xsi:type="ecore:EClass" name="Estado" eSuperTypes="#//Região%20Política">
     <eStructuralFeatures xsi:type="ecore:EReference" name="município" lowerBound="1"
         upperBound="-1" eType="#//Município" eOpposite="#//Município/estado"/>
@@ -280,14 +278,14 @@
         eType="#//Coordenada%20Geográfica" eOpposite="#//Coordenada%20Geográfica/ponto%20linear"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Ponto Espacial">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="coordenada" lowerBound="1"
-        eType="#//Coordenada%20Geográfica" eOpposite="#//Coordenada%20Geográfica/ponto%20espacial"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elemento espacial" lowerBound="1"
         eType="#//Elemento%20Espacial" containment="true" eOpposite="#//Elemento%20Espacial/ponto%20espacial"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ponto espacial" lowerBound="1"
         upperBound="-1" eType="#//Ponto%20Espacial" eOpposite="#//Ponto%20Espacial/ponto%20espacial.1"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ponto espacial" lowerBound="1"
         upperBound="-1" eType="#//Ponto%20Espacial" eOpposite="#//Ponto%20Espacial/ponto%20espacial"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coordenada" lowerBound="1"
+        eType="#//Coordenada%20Geográfica" eOpposite="#//Coordenada%20Geográfica/ponto%20espacial"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Região Política" abstract="true" eSuperTypes="#//Elemento%20Espacial"/>
   <eClassifiers xsi:type="ecore:EClass" name="Unidade de Conservação" eSuperTypes="#//Área%20de%20Preservação%20Ambiental"/>
@@ -307,6 +305,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Área Livre" eSuperTypes="#//Área"/>
   <eClassifiers xsi:type="ecore:EClass" name="Área Protegida" eSuperTypes="#//Área"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Class10"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Class34"/>
   <eClassifiers xsi:type="ecore:EClass" name="Imóvel" abstract="true" eSuperTypes="#//Elemento%20Espacial">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="dimensão" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
