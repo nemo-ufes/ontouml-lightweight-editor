@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.ExpressionInOCLImpl;
 import org.eclipse.uml2.uml.Constraint;
+import org.eclipse.uml2.uml.Element;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -75,14 +76,21 @@ public class OCL2SWRL {
 	public void Transformation ()	{
 		for(Constraint ct: this.oclParser.getConstraints())
 		{
+			@SuppressWarnings("unchecked")
+			String stereotype = this.oclParser.getUMLReflection().getStereotype(ct);
+			//org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype);
+			
 			ExpressionInOCLImpl expr = (ExpressionInOCLImpl) ct.getSpecification();
 			
 			ExpressionInOCLImplFactory exprFactory = new ExpressionInOCLImplFactory(expr);
+			if(ct.getConstrainedElements().size() > 0){
+				exprFactory.setElement(ct.getConstrainedElements().get(0));
+			}
 			
 			Set<SWRLAtom> antecedent = new HashSet<SWRLAtom>();
 			Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
 			
-			exprFactory.solve(nameSpace, manager, factory, ontology, antecedent, consequent, null, false, false, 1);
+			exprFactory.solve(stereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, false, false, 1);
 		}
 	}
 	

@@ -30,6 +30,10 @@ public class Util {
 			}
 		}
 		
+		if(expression == null){
+			return varName;
+		}
+		
 		if(expression.getClass().equals(PropertyCallExpImpl.class)){
 			//varName += generateVarName(((CallExpImpl) expression).getSource(), null);
 			varName += ".";

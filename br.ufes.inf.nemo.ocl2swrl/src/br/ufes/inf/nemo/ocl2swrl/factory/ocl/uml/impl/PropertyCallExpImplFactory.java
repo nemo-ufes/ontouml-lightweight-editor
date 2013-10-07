@@ -3,8 +3,6 @@ package br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
 import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
 import org.eclipse.uml2.uml.Association;
@@ -37,9 +35,15 @@ import br.ufes.inf.nemo.ocl2swrl.util.Util;
  * @created 24-set-2013 09:16:13
  */
 public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
-
+	Property property;
+	
 	public PropertyCallExpImplFactory(NamedElementImpl m_NamedElementImpl){
 		super(m_NamedElementImpl);
+	}
+	
+	public PropertyCallExpImplFactory(NamedElementImpl m_NamedElementImpl, Property property){
+		super(m_NamedElementImpl);
+		this.property =  property;
 	}
 	
 	public void finalize() throws Throwable {
@@ -47,13 +51,13 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 	}
 
 	@Override
-	public SWRLDArgument solve(OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
+	public SWRLDArgument solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
 		OCLExpressionImpl source = (OCLExpressionImpl) propertyCallExpImpl.getSource();
 		
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
 		int sourceRepeatNumber = 1;
-		SWRLDArgument sourceVar = this.sourceFactory.solve(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated, sourceRepeatNumber);
+		SWRLDArgument sourceVar = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated, sourceRepeatNumber);
 		
 		if(referredArgument != null){
 			sourceVar = referredArgument;
@@ -68,6 +72,14 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		}else if(propertyType.getClass().equals(ClassImpl.class)){
 			outVar = solveAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, sourceVar, expressionIsNegated, repeatNumber);
 		}
+		
+		return outVar;
+	}
+	
+	public SWRLDArgument solveProperty(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
+		SWRLDArgument outVar = null;
+		outVar = solvePropertyAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, expressionIsNegated, repeatNumber);
+		
 		
 		return outVar;
 	}
@@ -110,6 +122,48 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		//the atoms are added to the antecedents atoms
 		//antecedent.add(this.factory.getSWRLDifferentIndividualsAtom(varX, varY)); //DifferentFrom(?x,?z)
 		antecedent.add(factory.getSWRLObjectPropertyAtom(relation, varX, varY)); //prop(?x,?Y)
+		
+		if(assocEndName.equals(assocEnd0Name)){
+			return varY;
+		}else{
+			return varX;			
+		}
+	}
+	
+	public SWRLDArgument solvePropertyAssociation(OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean expressionIsNegated, int repeatNumber){
+		String nameVarX = "";
+		String nameVarY = "";
+		
+		Association association = property.getAssociation();
+		
+		String iriRelationName = nameSpace + generateAssociationName(refParser, association);;
+		IRI iriRelation = IRI.create(iriRelationName);
+		OWLObjectProperty relation = factory.getOWLObjectProperty(iriRelation);
+		
+		String assocEndName = property.getName();
+		Property assocEnd0 = association.getMemberEnds().get(0);
+		String assocEnd0Name = assocEnd0.getName();
+		
+		if(assocEndName.equals(assocEnd0Name)){
+			nameVarX = Util.generateVarName(referredArgument, null);
+			nameVarY = Util.generateVarName(property, referredArgument);
+		}else{
+			nameVarX = Util.generateVarName(property, referredArgument);
+			nameVarY = Util.generateVarName(referredArgument, null);
+		}
+		
+		if(repeatNumber>1){
+			//nameVarX+=repeatNumber;
+			nameVarY+=repeatNumber;
+		}
+		
+		//variables are created to the source and the target class
+		SWRLVariable varX = factory.getSWRLVariable(IRI.create(nameSpace+nameVarX));
+		SWRLVariable varY = factory.getSWRLVariable(IRI.create(nameSpace+nameVarY));
+		
+		//the atoms are added to the antecedents atoms
+		//antecedent.add(this.factory.getSWRLDifferentIndividualsAtom(varX, varY)); //DifferentFrom(?x,?z)
+		consequent.add(factory.getSWRLObjectPropertyAtom(relation, varX, varY)); //prop(?x,?Y)
 		
 		if(assocEndName.equals(assocEnd0Name)){
 			return varY;
@@ -194,7 +248,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		String propName = ontoUmlAssociation.getClass().getName();
 		propName = propName.replace("Impl", "");
 		propName = propName.replace("RefOntoUML.impl.", "");
-		String prop = "", invProp = "";
+		String prop = "";
 		if(ontoUmlAssociation.getName()==null || ontoUmlAssociation.getName() == "" || ontoUmlAssociation.getName() == " "){
 			prop = propName+"."+ontoUmlAssociation.getMemberEnd().get(0).getType().getName().replaceAll(" ", "_")+"."+ontoUmlAssociation.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"); 
 		}else{
