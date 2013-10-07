@@ -1,17 +1,23 @@
 package br.ufes.inf.nemo.common;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
@@ -40,7 +46,6 @@ import RefOntoUML.SubstanceSortal;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.NameHandler;
 import br.ufes.inf.nemo.common.ParsingElement;
-import br.ufes.inf.nemo.common.ResourceUtil;
 
 /** 
  * This class represents a parser for analyzing and keeping useful informations about ontoUML model. 
@@ -87,6 +92,23 @@ public class OntoUMLParser {
 		initElementsHashMap(model, nameHandler);
 	}
 		
+	public static Resource readOntoUML (String refontoumlpath) throws IOException
+	{
+		ResourceSet rset = new ResourceSetImpl();					
+			
+		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("refontouml",new XMIResourceFactoryImpl());
+		
+		rset.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI,	RefOntoUML.RefOntoUMLPackage.eINSTANCE);		
+		
+	    File file = new File(refontoumlpath);
+		URI fileURI = URI.createFileURI(file.getAbsolutePath());		
+		Resource resource = rset.createResource(fileURI);		
+		
+		resource.load(Collections.emptyMap());
+		
+		return resource;		
+	}
+	
 	/**
 	 * This constructor creates a parser from a absolute ontoUML file in file system.
 	 * 
@@ -95,7 +117,7 @@ public class OntoUMLParser {
 	 */
 	public OntoUMLParser(String refontoumlPath) throws IOException
 	{
-		Resource resource = ResourceUtil.loadReferenceOntoUML(refontoumlPath);
+		Resource resource = readOntoUML(refontoumlPath);
 		Package refmodel = (Package)resource.getContents().get(0);	
 		
 		this.model = refmodel;		

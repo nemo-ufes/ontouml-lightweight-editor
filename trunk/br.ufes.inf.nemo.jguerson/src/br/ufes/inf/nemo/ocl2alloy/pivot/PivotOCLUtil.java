@@ -10,11 +10,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -23,6 +25,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.ocl.examples.pivot.Constraint;
 import org.eclipse.ocl.examples.pivot.PivotPackage;
+import org.eclipse.ocl.examples.pivot.Property;
+import org.eclipse.ocl.examples.pivot.Type;
 import org.eclipse.ocl.examples.pivot.UMLReflection;
 
 public class PivotOCLUtil {
@@ -122,7 +126,8 @@ public class PivotOCLUtil {
 	    return fw.getDefaultDirectory().getAbsolutePath();
 	}	
 	
-	public static String getStereotype(@NonNull Constraint object) {
+	public static String getStereotype(@NonNull Constraint object) 
+	{		
 		EStructuralFeature eContainingFeature = object.eContainingFeature();
 		if (eContainingFeature == PivotPackage.Literals.TYPE__OWNED_INVARIANT) {
 			return UMLReflection.INVARIANT;
@@ -140,5 +145,14 @@ public class PivotOCLUtil {
 			return UMLReflection.DERIVATION;
 		}
 		return "";
+	}
+	
+	public static String getCustomStereotype(Constraint object)
+	{			
+		List<? extends EObject> constrained = object.getConstrainedElement();
+		EObject context = constrained.get(0);
+		if (context instanceof Type) return UMLReflection.INVARIANT;
+		else if (context instanceof Property) return UMLReflection.DERIVATION;
+		else return getStereotype(object);
 	}
 }

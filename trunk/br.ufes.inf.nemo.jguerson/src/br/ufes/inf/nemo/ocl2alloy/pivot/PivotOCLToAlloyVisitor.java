@@ -285,10 +285,10 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 		return localResult.toString();
 	}
 	
-	public String visitContext (Element context, String stereotype)
+	public String visitContext (EObject context, String stereotype)
 	{
 		StringBuilder localResult = new StringBuilder();
-		EModelElement eContext = getEcoreOfPivot(context);
+		EModelElement eContext = getEcoreOfPivot((Element)context);
 		RefOntoUML.Element ontoContext = getOntoUMLOfEcore(eContext);
 		String aliasContext = oclparser.getOntoUMLParser().getAlias(ontoContext);
 				
@@ -318,18 +318,18 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 				RefOntoUML.Property ontoProperty = (RefOntoUML.Property)ontoContext;			
 		    	RefOntoUML.Type src_type;
 		    	RefOntoUML.Type tgt_type;
-		    	
+
 		    	 // derive an assoc end or and attribute
 		    	if (ontoProperty.getAssociation()!=null){ 
 		    		src_type = ontoProperty.getAssociation().getMemberEnd().get(0).getType();
 		    		tgt_type = ontoProperty.getAssociation().getMemberEnd().get(1).getType();
 		    	}else {
-		    		src_type = (RefOntoUML.Type)ontoProperty.getOwner();
+		    		src_type = (RefOntoUML.Type)ontoProperty.eContainer();
 		    		tgt_type = ontoProperty.getType();
 		    	}
 		    	String src_name = oclparser.getOntoUMLParser().getAlias(src_type);                	
 		    	String tgt_name = oclparser.getOntoUMLParser().getAlias(tgt_type);
-		    	                	                	                	
+		    	
 		   	    // this piece of code considers the direction...
 		    	if(typename.equals(src_name)) localResult.append("w."+tgt_name+" | ");                	
 		    	if(typename.equals(tgt_name)) localResult.append("w."+src_name+" | ");
@@ -345,12 +345,10 @@ public class PivotOCLToAlloyVisitor extends AbstractExtendingVisitor<String, Obj
 	public String visitConstraint (Constraint constraint)
 	{
 		StringBuilder localResult = new StringBuilder();
-		Element context = constraint.getContext();
-		OCLExpression oclExpression = ((ExpressionInOCL)constraint.getSpecification()).getBodyExpression();		
-			
-		//FIXME - bug found : always return "invariant"
-		String stereotype = PivotOCLUtil.getStereotype(constraint);
-				System.out.println(constraint);
+		OCLExpression oclExpression = ((ExpressionInOCL)constraint.getSpecification()).getBodyExpression();				
+		List<? extends EObject> constrained = constraint.getConstrainedElement();
+		EObject context = constrained.get(0);				
+		String stereotype = PivotOCLUtil.getCustomStereotype(constraint);		
 		constraint_count++;
 				
 		if (UMLReflection.INVARIANT.equals(stereotype) || UMLReflection.DERIVATION.equals(stereotype))
