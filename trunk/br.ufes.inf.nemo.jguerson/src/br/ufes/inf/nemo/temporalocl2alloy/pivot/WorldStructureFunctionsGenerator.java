@@ -25,6 +25,10 @@ public class WorldStructureFunctionsGenerator {
 		"-- Returns the set of Worlds after w" + "\n" +	
 		"fun Latter [w: World] : set World { w.(^next) }"+ "\n\n" +
 
+		"-- Return the set of Worlds after w in a given Branch"+ "\n" +	
+		"fun Latter [w: World, branch: World] : set World { Between[w, branch]+branch }"+ "\n\n" +
+
+		
 		"-- Returns the set of Worlds between w1 and w2, where w1 happens before w2" + "\n" +	
 		"fun Between [w1,w2: World] : set World { (^next).w2 - (^next).w1 - w1}"+ "\n\n";
 	}

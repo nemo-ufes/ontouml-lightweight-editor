@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<alloy>
+
+<view>
+
+<defaultnode/>
+
+<defaultedge/>
+
+<node>
+   <type name="Int"/>
+   <type name="String"/>
+   <type name="World"/>
+   <type name="seq/Int"/>
+   <type name="world_structure/CounterfactualWorld"/>
+   <type name="world_structure/CurrentWorld"/>
+   <type name="world_structure/FutureWorld"/>
+   <type name="world_structure/PastWorld"/>
+   <type name="world_structure/TemporalWorld"/>
+   <set name="$Branch" type="World"/>
+   <set name="$Origin" type="World"/>
+</node>
+
+<node numberatoms="yes">
+   <type name="univ"/>
+</node>
+
+<node shape="Box" color="Yellow">
+   <type name="Object"/>
+</node>
+
+<node shape="Ellipse" color="Red">
+   <type name="Property"/>
+</node>
+
+<node shape="Hexagon" color="Gray">
+   <type name="DataType"/>
+</node>
+
+<edge visible="no">
+   <relation name="$alwaysBefore_b2"> <type name="World"/> <type name="World"/> </relation>
+   <relation name="$alwaysBefore_fw"> <type name="World"/> <type name="World"/> </relation>
+   <relation name="$alwaysBefore_self"> <type name="World"/> <type name="Object"/> </relation>
+   <relation name="$alwaysBefore_w"> <type name="World"/> <type name="World"/> </relation>
+   <relation name="$alwaysBefore_w2"> <type name="World"/> <type name="World"/> </relation>
+   <relation name="$elements_existence_w"> <type name="univ"/> <type name="World"/> </relation>
+   <relation name="$visible"> <type name="World"/> <type name="univ"/> </relation>
+   <relation name="Alive"> <type name="World"/> <type name="Object"/> </relation>
+   <relation name="Deceased"> <type name="World"/> <type name="Object"/> </relation>
+   <relation name="exists"> <type name="World"/> <type name="Object"/> </relation>
+   <relation name="Person"> <type name="World"/> <type name="Object"/> </relation>
+</edge>
+
+<edge visible="no" attribute="yes">
+   <relation name="Adult"> <type name="World"/> <type name="Object"/> </relation>
+   <relation name="Child"> <type name="World"/> <type name="Object"/> </relation>
+   <relation name="Teenager"> <type name="World"/> <type name="Object"/> </relation>
+</edge>
+
+</view>
+
+</alloy>
