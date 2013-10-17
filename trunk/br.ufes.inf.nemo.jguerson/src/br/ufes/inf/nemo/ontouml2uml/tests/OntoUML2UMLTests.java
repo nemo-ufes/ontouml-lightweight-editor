@@ -23,6 +23,10 @@ public class OntoUML2UMLTests {
 			OntoUML2UML.convertToUML(new OntoUMLParser(path3),path3.replace(".refontouml", ".uml" ), true, true);
 			System.out.println(OntoUML2UML.getLog());
 			
+			String path4 = "src/br/ufes/inf/nemo/ontouml2uml/tests/models/EnumTest.refontouml";
+			OntoUML2UML.convertToUML(new OntoUMLParser(path4),path4.replace(".refontouml", ".uml" ), true, true);
+			System.out.println(OntoUML2UML.getLog());
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
