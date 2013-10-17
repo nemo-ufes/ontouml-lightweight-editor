@@ -3,6 +3,8 @@ package br.ufes.inf.nemo.ontouml2uml;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.eclipse.uml2.uml.EnumerationLiteral;
+
 public class UMLElementConverter {
 		
 	public org.eclipse.uml2.uml.UMLFactory ufactory;	
@@ -389,6 +391,15 @@ public class UMLElementConverter {
                                              
          outln("UML:Enumeration :: name="+dt2.getName()+", visibility="+dt2.getVisibility().getName()+", isAbstract="+dt2.isAbstract());             
           
+         for (RefOntoUML.EnumerationLiteral ontoliteral: dt1.getOwnedLiteral())
+         {
+        	 EnumerationLiteral uliteral = ufactory.createEnumerationLiteral();
+        	 uliteral.setName(ontoliteral.getName());
+        	 dt2.getOwnedLiterals().add(uliteral);
+        	 
+        	 outln("UML:EnumerationLiteral :: name="+uliteral.getName());     
+         }
+         
          return dt2;
      }
      

@@ -28,7 +28,7 @@ public class OntoUML2UML {
 	public static void main(String[] args)
 	{
 		try {
-			String path = "model/teste.refontouml";
+			String path = "model/example1.refontouml";
 			Transformation(new OntoUMLParser(path),path.replace(".refontouml", ".uml" ),true);
 		} catch (IOException e) {
 			e.printStackTrace();
