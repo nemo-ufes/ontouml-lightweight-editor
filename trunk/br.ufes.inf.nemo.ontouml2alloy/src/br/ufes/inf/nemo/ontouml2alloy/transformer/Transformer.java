@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
+import RefOntoUML.Characterization;
 import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
@@ -12,7 +13,9 @@ import RefOntoUML.Enumeration;
 import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
+import RefOntoUML.Mode;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.PrimitiveType;
@@ -35,6 +38,7 @@ import br.ufes.inf.nemo.alloy.FunctionDeclaration;
 import br.ufes.inf.nemo.alloy.ModuleImportation;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
+import br.ufes.inf.nemo.alloy.Quantificator;
 import br.ufes.inf.nemo.alloy.SignatureDeclaration;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
@@ -89,6 +93,8 @@ public class Transformer {
 	public ArrayList<FactDeclaration> genFactList = new ArrayList<FactDeclaration>();
 	public ArrayList<FactDeclaration> relatorAxiomFactList = new ArrayList<FactDeclaration>();
 	public ArrayList<FactDeclaration> weakSupplementationAxiomFactList = new ArrayList<FactDeclaration>();
+	public ArrayList<FactDeclaration> meronymicAcyclicFactList = new ArrayList<FactDeclaration>();
+	public ArrayList<FactDeclaration> characterizationAcyclicFactList = new ArrayList<FactDeclaration>();
 	
 	/**
 	 * Constructor
@@ -355,6 +361,47 @@ public class Transformer {
 					module.getParagraph().add(fact);
 				}				
 			}
+		}
+		
+		// fact acyclicMeronymic { all w: World | acyclic [w.meronymicName, w.wholeName] }
+		for(RefOntoUML.Meronymic m: ontoparser.getAllInstances(RefOntoUML.Meronymic.class))
+		{
+			FactDeclaration meronymicAcyclicFact = factory.createFactDeclaration();
+			meronymicAcyclicFact.setName("acyclicMeronymic");
+			Block block = factory.createBlock();
+			meronymicAcyclicFact.setBlock(block);		
+			
+			QuantificationExpression qeWorld = AlloyAPI.createQuantificationExpression(factory,Quantificator.ALL,"w","World");
+			PredicateInvocation acyclicInvocation = AlloyAPI.createAcyclicInvocation(factory, ontoparser.getAlias(m), ontoparser.getAlias(m.getMemberEnd().get(0).getType()));
+			qeWorld.setExpression(acyclicInvocation);
+			meronymicAcyclicFact.getBlock().getExpression().add(qeWorld);
+			
+			weakSupplementationAxiomFactList.add(meronymicAcyclicFact);
+			module.getParagraph().add(meronymicAcyclicFact);
+		}
+		
+		// fact acyclicCharacterization { all w: World | acyclic [w.characterizationName, w.SourceName] }
+		for(RefOntoUML.Characterization c: ontoparser.getAllInstances(RefOntoUML.Characterization.class))
+		{
+			FactDeclaration characterizationAcyclicFact = factory.createFactDeclaration();
+			characterizationAcyclicFact.setName("acyclicCharacterization");
+			Block block = factory.createBlock();
+			characterizationAcyclicFact.setBlock(block);					
+			QuantificationExpression qeWorld = AlloyAPI.createQuantificationExpression(factory,Quantificator.ALL,"w","World");
+			
+			//treat cases in which characterization's target is a mode, that is, the relation is inverted
+			if((c.getMemberEnd().get(1).getType() instanceof Mode) && !(c.getMemberEnd().get(0).getType() instanceof Mode))
+			{
+				PredicateInvocation acyclicInvocation = AlloyAPI.createAcyclicInvocation(factory, ontoparser.getAlias(c), ontoparser.getAlias(c.getMemberEnd().get(1).getType()));
+				qeWorld.setExpression(acyclicInvocation);
+			}else{
+				PredicateInvocation acyclicInvocation = AlloyAPI.createAcyclicInvocation(factory, ontoparser.getAlias(c), ontoparser.getAlias(c.getMemberEnd().get(0).getType()));
+				qeWorld.setExpression(acyclicInvocation);
+			}			
+			characterizationAcyclicFact.getBlock().getExpression().add(qeWorld);
+			
+			characterizationAcyclicFactList.add(characterizationAcyclicFact);
+			module.getParagraph().add(characterizationAcyclicFact);
 		}
 		
 	}
@@ -717,20 +764,58 @@ public class Transformer {
 		{	
 			if (!(assoc instanceof Derivation))
 			{
-				Property Source = assoc.getMemberEnd().get(0);
-				Property Target = assoc.getMemberEnd().get(1);
+				Property Source = null;
+				Property Target = null;
 				boolean isSourceImmutable = false;
 				boolean isTargetImmutable = false;
 				
+				// invert sides if mediation's target is a relator
+				if (assoc instanceof Mediation)
+				{ 
+					if((assoc.getMemberEnd().get(1).getType() instanceof Relator) && !(assoc.getMemberEnd().get(0).getType() instanceof Relator))
+					{
+						Source = assoc.getMemberEnd().get(1);
+						Target = assoc.getMemberEnd().get(0);
+						isTargetImmutable = Source.isIsReadOnly();
+						isSourceImmutable = Target.isIsReadOnly();
+					}else{
+						Source = assoc.getMemberEnd().get(0);
+						Target = assoc.getMemberEnd().get(1);
+						isSourceImmutable = Source.isIsReadOnly();
+						isTargetImmutable = Target.isIsReadOnly();
+					}
+				
+				// invert sides if characterization's target is a mode
+				}else if (assoc instanceof Characterization)
+				{ 
+					if((assoc.getMemberEnd().get(1).getType() instanceof Mode) && !(assoc.getMemberEnd().get(0).getType() instanceof Mode))
+					{
+						Source = assoc.getMemberEnd().get(1);
+						Target = assoc.getMemberEnd().get(0);
+						isTargetImmutable = Source.isIsReadOnly();
+						isSourceImmutable = Target.isIsReadOnly();
+					}else{
+						Source = assoc.getMemberEnd().get(0);
+						Target = assoc.getMemberEnd().get(1);
+						isSourceImmutable = Source.isIsReadOnly();
+						isTargetImmutable = Target.isIsReadOnly();
+					}						
+				
+				// for other do not invert...	
+				} else{
+					Source = assoc.getMemberEnd().get(0);
+					Target = assoc.getMemberEnd().get(1);
+					isSourceImmutable = Source.isIsReadOnly();
+					isTargetImmutable = Target.isIsReadOnly();
+				}
+								
 				if (assoc instanceof Meronymic) 
 				{ 
 					Meronymic m = ((Meronymic)assoc);
 					if (m.isIsInseparable() || m.isIsImmutableWhole() || m.sourceEnd().isIsReadOnly()) isSourceImmutable = true;
 					if (m.isIsEssential() || m.isIsImmutablePart() || m.targetEnd().isIsReadOnly()) isTargetImmutable = true;
 				}
-				if(Source.isIsReadOnly()) isSourceImmutable = true;
-				if(Target.isIsReadOnly()) isTargetImmutable = true;
-				
+								
 				if(isSourceImmutable) 
 				{				
 					PredicateInvocation pI =  AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_source", ontoparser.getAlias(Target.getType()), ontoparser.getAlias(assoc));				
@@ -751,7 +836,7 @@ public class Transformer {
 	 * Populates With Association Ends.
 	 */
 	protected void populatesWithAssociationEnds()
-	{
+	{		
 		for (Property p: ontoparser.getAllInstances(Property.class))
 		{
 			if (p.getAssociation()!=null && p.getName()!=null && !p.getName().isEmpty())
@@ -770,7 +855,21 @@ public class Transformer {
 				String paramName = ontoparser.getAlias(otherType);			
 				if (!(otherType instanceof DataType)) paramName="World."+paramName;
 				String assocName = ontoparser.getAlias(assoc);
-							
+					
+				// invert sides if mediation's target is a relator
+				if (assoc instanceof Mediation)
+				{ 
+					if((assoc.getMemberEnd().get(1).getType() instanceof Relator) && !(assoc.getMemberEnd().get(0).getType() instanceof Relator))
+					{ String exchangeAux = returnName; returnName = paramName; paramName = exchangeAux; } 
+				}
+				
+				// invert sides if characterization's target is a mode
+				if (assoc instanceof Characterization)
+				{ 
+					if((assoc.getMemberEnd().get(1).getType() instanceof Mode) && !(assoc.getMemberEnd().get(0).getType() instanceof Mode))
+					{ String exchangeAux = returnName; returnName = paramName; paramName = exchangeAux; } 
+				}
+								
 				FunctionDeclaration fun = AlloyAPI.createFunctionDeclaration(factory, world, isSourceProperty, functionName, paramName, returnName, assocName);														
 				module.getParagraph().add(fun);				
 			}
@@ -784,8 +883,81 @@ public class Transformer {
 	{
 		for (Association assoc: ontoparser.getAllInstances(Association.class))
 		{
-			ArrayList<QuantificationExpression> qeList = CardinalityRule.createQuantificationExpressions(factory, ontoparser, assoc);
-			for (QuantificationExpression qe: qeList) world.getBlock().getExpression().add(qe);
+			if (!(assoc instanceof Derivation))
+			{
+				ArrayList<QuantificationExpression> qeList = CardinalityRule.createQuantificationExpressions(factory, ontoparser, assoc);
+				for (QuantificationExpression qe: qeList) world.getBlock().getExpression().add(qe);
+			}
+		}
+	}
+		
+	/**
+	 * Populates with Mediations
+	 */
+	protected void populatesWithMediations()
+	{
+		for(Mediation assoc: ontoparser.getAllInstances(Mediation.class))
+		{
+			VariableReference source = factory.createVariableReference();
+			VariableReference target = factory.createVariableReference();
+			int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;			
+			Property Source = assoc.getMemberEnd().get(0);
+			Property Target = assoc.getMemberEnd().get(1);
+			if((Target.getType() instanceof Relator) && !(Source.getType() instanceof Relator))
+			{
+				// invert sides
+				source.setVariable(ontoparser.getAlias(Target.getType()));
+				lowerSource = Target.getLower();
+				upperSource = Target.getUpper();
+				target.setVariable(ontoparser.getAlias(Source.getType()));				
+				lowerTarget = Source.getLower();				
+				upperTarget = Source.getUpper();
+			}else{
+				source.setVariable(ontoparser.getAlias(Source.getType()));				
+				lowerSource = Source.getLower();
+				upperSource = Source.getUpper();				
+				target.setVariable(ontoparser.getAlias(Target.getType()));				
+				lowerTarget = Target.getLower();				
+				upperTarget = Target.getUpper();
+			}
+			ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
+			Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(assoc), aOp);				
+			if (decl!=null) world.getRelation().add(decl);
+		}
+	}
+	
+	/**
+	 * Populates with Characterizations
+	 */
+	protected void populatesWithCharacterizations()
+	{
+		for(Characterization assoc: ontoparser.getAllInstances(Characterization.class))
+		{
+			VariableReference source = factory.createVariableReference();
+			VariableReference target = factory.createVariableReference();
+			int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;			
+			Property Source = assoc.getMemberEnd().get(0);
+			Property Target = assoc.getMemberEnd().get(1);
+			if((Target.getType() instanceof Mode) && !(Source.getType() instanceof Mode))
+			{
+				// invert sides
+				source.setVariable(ontoparser.getAlias(Target.getType()));
+				lowerSource = Target.getLower();
+				upperSource = Target.getUpper();
+				target.setVariable(ontoparser.getAlias(Source.getType()));				
+				lowerTarget = Source.getLower();				
+				upperTarget = Source.getUpper();
+			}else{
+				source.setVariable(ontoparser.getAlias(Source.getType()));				
+				lowerSource = Source.getLower();
+				upperSource = Source.getUpper();				
+				target.setVariable(ontoparser.getAlias(Target.getType()));				
+				lowerTarget = Target.getLower();				
+				upperTarget = Target.getUpper();
+			}
+			ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
+			Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(assoc), aOp);				
+			if (decl!=null) world.getRelation().add(decl);
 		}
 	}
 	
@@ -794,22 +966,25 @@ public class Transformer {
 	 */
 	protected void populatesWithAssociations()
 	{
+		populatesWithMediations();
+		populatesWithCharacterizations();
+		
 		for(Association assoc: ontoparser.getAllInstances(Association.class))
 		{
-			if (!(assoc instanceof Derivation))
+			if(!(assoc instanceof Mediation) && !(assoc instanceof Derivation) && !(assoc instanceof Characterization)) 
 			{
 				VariableReference source = factory.createVariableReference();
 				VariableReference target = factory.createVariableReference();
-				int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;		
+				int lowerSource=-1, upperSource=-1, lowerTarget=-1, upperTarget=-1;			
 				Property Source = assoc.getMemberEnd().get(0);
-				Property Target = assoc.getMemberEnd().get(1);
+				Property Target = assoc.getMemberEnd().get(1);				
 				source.setVariable(ontoparser.getAlias(Source.getType()));				
 				lowerSource = Source.getLower();
-				upperSource = Source.getUpper();	
+				upperSource = Source.getUpper();				
 				target.setVariable(ontoparser.getAlias(Target.getType()));				
 				lowerTarget = Target.getLower();				
-				upperTarget = Target.getUpper();				
-				ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);
+				upperTarget = Target.getUpper();							
+				ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
 				Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(assoc), aOp);				
 				if (decl!=null) world.getRelation().add(decl);
 			}

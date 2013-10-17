@@ -593,6 +593,23 @@ public class AlloyAPI {
 	}
 	
 	/**
+	 * Create an acyclic predicate invocation in Alloy
+	 * acyclic[w.meronymicName, w.wholeName] 
+	 */
+	public static PredicateInvocation createAcyclicInvocation (AlloyFactory factory, String meronymicName, String wholeName)
+	{
+		PredicateInvocation pI = factory.createPredicateInvocation();
+		pI.setPredicate("acyclic");
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable("w."+meronymicName);
+		pI.getParameter().add(vr);
+		vr = factory.createVariableReference();
+		vr.setVariable("w."+wholeName);
+		pI.getParameter().add(vr);		
+		return pI;	
+	}
+	
+	/**
 	 *  Creates a Compare Operation in Alloy.
 	 *  leftName CompareOperator rightName.
 	 *  For Example: child in father

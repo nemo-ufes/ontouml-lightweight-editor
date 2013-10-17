@@ -193,6 +193,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 *            the node that is removed
 	 * @return TODO
 	 */
+	@SuppressWarnings("unused")
 	private Collection<DiagramElement> detachNodeConnections(Node node) {
 		ArrayList<DiagramElement> detachedConnections = new ArrayList<>();
 		detachedConnections.addAll(node.getConnections());
