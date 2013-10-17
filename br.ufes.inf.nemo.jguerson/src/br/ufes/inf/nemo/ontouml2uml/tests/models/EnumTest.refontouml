@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_whcNcDcyEeOOx7clzCxPJw" name="EA_Model" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_whcNcTcyEeOOx7clzCxPJw" name="Integer"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_whcNcjcyEeOOx7clzCxPJw" name="Boolean"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_whcNczcyEeOOx7clzCxPJw" name="String"/>
+  <packagedElement xsi:type="RefOntoUML:Package" xmi:id="_whcNdDcyEeOOx7clzCxPJw" name="Vehicle - ownership" visibility="public">
+    <packagedElement xsi:type="RefOntoUML:PrimitiveType" xmi:id="_whcNdTcyEeOOx7clzCxPJw" name="Unlimited Natural"/>
+    <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_whcNdjcyEeOOx7clzCxPJw" name="Bike" visibility="public">
+      <generalization xmi:id="_whcNdzcyEeOOx7clzCxPJw" general="_whcNgzcyEeOOx7clzCxPJw" generalizationSet="_whc0iTcyEeOOx7clzCxPJw"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_whcNeDcyEeOOx7clzCxPJw" name="Car" visibility="public">
+      <generalization xmi:id="_whcNeTcyEeOOx7clzCxPJw" general="_whcNgzcyEeOOx7clzCxPJw" generalizationSet="_whc0iTcyEeOOx7clzCxPJw"/>
+      <ownedAttribute xmi:id="_whcNejcyEeOOx7clzCxPJw" name="colour" visibility="private" type="_whc0gDcyEeOOx7clzCxPJw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_whcNezcyEeOOx7clzCxPJw" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_whcNfDcyEeOOx7clzCxPJw" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_whcNfTcyEeOOx7clzCxPJw" name="Driver" visibility="public">
+      <generalization xmi:id="_whcNfjcyEeOOx7clzCxPJw" general="_whcNfzcyEeOOx7clzCxPJw"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_whcNfzcyEeOOx7clzCxPJw" name="Person" visibility="public">
+      <ownedAttribute xmi:id="_whcNgDcyEeOOx7clzCxPJw" name="age" visibility="private" type="_whcNcTcyEeOOx7clzCxPJw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_whcNgTcyEeOOx7clzCxPJw" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_whcNgjcyEeOOx7clzCxPJw" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_whcNgzcyEeOOx7clzCxPJw" name="Vehicle" visibility="public"/>
+    <packagedElement xsi:type="RefOntoUML:Enumeration" xmi:id="_whc0gDcyEeOOx7clzCxPJw" name="Colour" visibility="public">
+      <ownedLiteral xmi:id="_whc0gTcyEeOOx7clzCxPJw" name="black" visibility="public"/>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_whc0gjcyEeOOx7clzCxPJw" name="ownership" visibility="public" memberEnd="_whc0hjcyEeOOx7clzCxPJw _whc0gzcyEeOOx7clzCxPJw">
+      <ownedEnd xmi:id="_whc0gzcyEeOOx7clzCxPJw" name="fleet" visibility="public" type="_whcNgzcyEeOOx7clzCxPJw" association="_whc0gjcyEeOOx7clzCxPJw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_whc0hDcyEeOOx7clzCxPJw" value="-1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_whc0hTcyEeOOx7clzCxPJw"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_whc0hjcyEeOOx7clzCxPJw" name="owner" visibility="public" type="_whcNfzcyEeOOx7clzCxPJw" association="_whc0gjcyEeOOx7clzCxPJw">
+        <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_whc0hzcyEeOOx7clzCxPJw" value="1"/>
+        <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_whc0iDcyEeOOx7clzCxPJw" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_whc0iTcyEeOOx7clzCxPJw" visibility="public" isCovering="true" isDisjoint="true" generalization="_whcNdzcyEeOOx7clzCxPJw _whcNeTcyEeOOx7clzCxPJw">
+      <name xsi:nil="true"/>
+    </packagedElement>
+  </packagedElement>
+  <viewpoint xsi:nil="true"/>
+</RefOntoUML:Model>
