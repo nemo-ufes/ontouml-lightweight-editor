@@ -80,7 +80,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		
 		SWRLDArgument varZ = null;
 		if(this.isComparisonOperation()){
-			varZ = solveComparison(nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, oclConsequentShouldBeNegated, operationNegated);
+			varZ = solveComparison(ctStereotype, nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, oclConsequentShouldBeNegated, operationNegated);
 		}else if(this.isImpliesOperation()){
 			//do nothing
 		}else if(this.isArithmeticOperation()){
@@ -179,7 +179,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return null;
 	}
 	
-	public SWRLDArgument solveComparison(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+	public SWRLDArgument solveComparison(String ctStereotype, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl;
 		String referredOperationName = operationCallExpImpl.getReferredOperation().getName();
 		
@@ -194,28 +194,46 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		String iriName = "";
 		switch (referredOperationName) {
 		case ">":
-			iriName = "lessThanOrEqual";
-			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("lessThanOrEqual"), args);
+			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+				iriName = "lessThanOrEqual";
+			}else{
+				iriName = "greaterThan";
+			}			
 			break;
 		case ">=":
-			iriName = "lessThan";
-			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("lessThan"), args);
+			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+				iriName = "lessThan";
+			}else{
+				iriName = "greaterThanOrEqual";
+			}
 			break;
 		case "<":
-			iriName = "greaterThanOrEqual";
-			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("greaterThanOrEqual"), args);
+			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+				iriName = "greaterThanOrEqual";
+			}else{
+				iriName = "lessThan";
+			}
 			break;
 		case "<=":
-			iriName = "greaterThan";
-			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("greaterThan"), args);
+			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+				iriName = "greaterThan";
+			}else{
+				iriName = "lessThanOrEqual";
+			}
 			break;	
 		case "=":
-			iriName = "notEqual";
-			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("notEqual"), args);
+			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+				iriName = "notEqual";
+			}else{
+				iriName = "equal";
+			}
 			break;
 		case "<>":
-			iriName = "equal";
-			//builtIn = factory.getSWRLBuiltInAtom(IRI.create("equal"), args);
+			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+				iriName = "equal";
+			}else{
+				iriName = "notEqual";
+			}
 			break;
 		}
 		SWRLBuiltInAtom builtIn = factory.getSWRLBuiltInAtom(IRI.create(iriName), args);
