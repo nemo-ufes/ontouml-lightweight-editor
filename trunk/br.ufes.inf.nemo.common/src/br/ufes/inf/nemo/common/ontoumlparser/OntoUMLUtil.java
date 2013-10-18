@@ -125,9 +125,9 @@ public class OntoUMLUtil {
 		return subQuan;
 	}
 	
-	public static Derivation createDerivation (Classifier source, Classifier target){
+	public static Derivation createDerivation (Classifier source, Association target){
 		Derivation derivation = factory.createDerivation();
-		addAssociationEnds(derivation, source, target);
+		addAssociationEnds(derivation,source,target);
 		return derivation;
 	}
 	

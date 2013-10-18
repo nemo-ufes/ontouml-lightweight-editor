@@ -54,6 +54,26 @@ public class AlloyAPI {
 	}
 	
 	/**
+	 * Creates an Arrow Operation. e.g. sourceName -> midName -> targetName 
+	 */
+	public static ArrowOperation createArrowOperation(AlloyFactory factory, String sourceName, String midName, String targetName)
+	{
+		ArrowOperation aOp = factory.createArrowOperation();
+		ArrowOperation aOp2 = factory.createArrowOperation();
+		VariableReference source = factory.createVariableReference();
+		VariableReference target = factory.createVariableReference();
+		VariableReference mid = factory.createVariableReference();
+		source.setVariable(sourceName);
+		target.setVariable(targetName);	
+		mid.setVariable(midName);
+		aOp.setLeftExpression(source);
+		aOp2.setLeftExpression(mid);
+		aOp2.setRightExpression(target);
+		aOp.setRightExpression(aOp2);
+		return aOp;
+	}
+	
+	/**
 	 * Creates an Arrow Operation. e.g. sourceName lower/upper -> targetName lower/upper.
 	 */
 	public static ArrowOperation createArrowOperation(AlloyFactory factory, String sourceName, int lowerSource, int upperSource, String targetName, int lowerTarget, int upperTarget)
@@ -75,6 +95,52 @@ public class AlloyAPI {
 		else aOp.setRightMultiplicity(Multiplicity.SET);			
 		aOp.setLeftExpression(source);
 		aOp.setRightExpression(target);
+		return aOp;
+	}
+	
+
+	/**
+	 * Creates an Arrow Operation. e.g. sourceName lowerSrc/upperSrc -> upperSrc/lowerSrc midName lowerTgt/upperTgt -> targetName lowerTgt/upperTgt.
+	 */
+	public static ArrowOperation createArrowOperation(AlloyFactory factory, String sourceName, int lowerSrc, int upperSrc, 
+			String midName, int lowerMidSrc, int upperMidSrc, int lowerMidTgt, int upperMidTgt, String targetName, int lowerTgt, int upperTgt)
+	{
+		ArrowOperation aOp = factory.createArrowOperation();
+		ArrowOperation aOp2 = factory.createArrowOperation();
+		
+		VariableReference source = factory.createVariableReference();
+		VariableReference mid = factory.createVariableReference();
+		VariableReference target = factory.createVariableReference();
+		source.setVariable(sourceName);
+		mid.setVariable(midName);
+		target.setVariable(targetName);
+		
+		//source
+		if(lowerSrc == 1 && upperSrc == 1) aOp.setLeftMultiplicity(Multiplicity.ONE);		
+		else if(lowerSrc == 0 && upperSrc == 1) aOp.setLeftMultiplicity(Multiplicity.LONE);
+		else if(lowerSrc >= 1) aOp.setLeftMultiplicity(Multiplicity.SOME);
+	    else aOp.setLeftMultiplicity(Multiplicity.SET);	
+		//mid source
+		if(lowerMidSrc == 1 && upperMidSrc == 1) aOp.setRightMultiplicity(Multiplicity.ONE);		
+		else if(lowerMidSrc == 0 && upperMidSrc == 1) aOp.setRightMultiplicity(Multiplicity.LONE);
+		else if(lowerMidSrc >= 1) aOp.setRightMultiplicity(Multiplicity.SOME);
+	    else aOp.setRightMultiplicity(Multiplicity.SET);
+		aOp.setLeftExpression(source);
+				
+		//mid target
+		if(lowerMidTgt == 1 && upperMidTgt == 1) aOp2.setLeftMultiplicity(Multiplicity.ONE);		
+		else if(lowerMidTgt == 0 && upperMidTgt == 1) aOp2.setLeftMultiplicity(Multiplicity.LONE);
+		else if(lowerMidTgt >= 1) aOp2.setLeftMultiplicity(Multiplicity.SOME);
+	    else aOp2.setLeftMultiplicity(Multiplicity.SET);
+		//target
+		if(lowerTgt == 1 && upperTgt == 1) aOp2.setRightMultiplicity(Multiplicity.ONE);
+		else if(lowerTgt == 0 && upperTgt == 1) aOp2.setRightMultiplicity(Multiplicity.LONE);
+		else if(lowerTgt >= 1) aOp2.setRightMultiplicity(Multiplicity.SOME);
+		else aOp2.setRightMultiplicity(Multiplicity.SET);		
+		aOp2.setLeftExpression(mid);
+		aOp2.setRightExpression(target);
+
+		aOp.setRightExpression(aOp2);
 		return aOp;
 	}
 	
@@ -232,7 +298,28 @@ public class AlloyAPI {
 		decl.setExpression(uOp);	
 		return decl;
 	}
-
+	
+	/**
+	 * Creates a specific Declaration in Alloy. e.g. variableName: w.TypeName
+	 */
+	public static Declaration createDeclaration (AlloyFactory factory, String variableName, String TypeName)
+	{	
+		Declaration decl = factory.createDeclaration();
+		Variable var = factory.createVariable();
+		var.setName(variableName);
+		var.setDeclaration(decl);	
+		BinaryOperation bOp = factory.createBinaryOperation();
+		VariableReference vr = factory.createVariableReference();
+		VariableReference vr2 = factory.createVariableReference();
+		vr.setVariable("w");
+		vr2.setVariable(TypeName);
+		bOp.setOperator(BinaryOperator.JOIN);
+		bOp.setLeftExpression(vr);
+		bOp.setRightExpression(vr2);
+		decl.setExpression(bOp);
+		return decl;
+	}
+	
 	/**
 	 * Creates a specific Declaration in Alloy. e.g. x: World.name
 	 */
@@ -287,6 +374,51 @@ public class AlloyAPI {
 		vr.setVariable(typeName);
 		decl.setExpression(vr);
 		qe.getDeclaration().add(decl);
+		return qe;
+	}
+	
+	public static QuantificationExpression createQuantificationExpression(AlloyFactory factory, Quantificator quantificator, String variableName, String typeName, 
+			String variableName1, String typeName1, String variableName2, String typeName2, String variableName3, String typeName3)
+	{
+		QuantificationExpression qe = factory.createQuantificationExpression();
+		qe.setQuantificator(quantificator);		
+		
+		Declaration decl = factory.createDeclaration();		
+		Variable varbl = factory.createVariable();
+		varbl.setName(variableName);		
+		varbl.setDeclaration(decl);
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(typeName);		
+		decl.setExpression(vr);
+		
+		Declaration decl1 = factory.createDeclaration();
+		Variable varbl1 = factory.createVariable();
+		varbl1.setName(variableName1);		
+		varbl1.setDeclaration(decl1);
+		VariableReference vr1 = factory.createVariableReference();
+		vr1.setVariable(typeName1);
+		decl1.setExpression(vr1);
+		
+		Declaration decl2 = factory.createDeclaration();
+		Variable varbl2 = factory.createVariable();
+		varbl2.setName(variableName2);		
+		varbl2.setDeclaration(decl2);
+		VariableReference vr2 = factory.createVariableReference();
+		vr2.setVariable(typeName2);
+		decl2.setExpression(vr2);
+		
+		Declaration decl3 = factory.createDeclaration();
+		Variable varbl3 = factory.createVariable();
+		varbl3.setName(variableName3);		
+		varbl3.setDeclaration(decl3);
+		VariableReference vr3 = factory.createVariableReference();
+		vr3.setVariable(typeName3);
+		decl3.setExpression(vr3);
+		
+		qe.getDeclaration().add(decl);
+		qe.getDeclaration().add(decl1);
+		qe.getDeclaration().add(decl2);
+		qe.getDeclaration().add(decl3);
 		return qe;
 	}
 	
@@ -637,7 +769,7 @@ public class AlloyAPI {
 	 * 		(w.assocName).x
 	 * }
 	 */
-	public static FunctionDeclaration createFunctionDeclaration (AlloyFactory factory, SignatureDeclaration world, boolean isSourceProperty, String functionName, String paramName, String returnName, String assocName )
+	public static FunctionDeclaration createFunctionDeclaration (AlloyFactory factory, SignatureDeclaration world, boolean isSourceProperty, String functionName, String paramName, String returnName, String assocName, boolean isTernaryAssoc )
 	{
 		FunctionDeclaration fun = factory.createFunctionDeclaration();
 		fun.setName(functionName);
@@ -665,28 +797,40 @@ public class AlloyAPI {
 		decl = createDeclaration(factory,world);	
 		fun.getParameter().add(decl);
 		
-		// w.assocName
-		BinaryOperation bOp = createBinaryOperation(factory,"w",BinaryOperator.JOIN,assocName);
-			
-		// x.(w.assocName)  or  (w.assocName).x
+		// if is Ternary Relation (like Materials) then is a binary operation ... else this is a predicate invocation
+		BinaryOperation bOp = factory.createBinaryOperation();		
+		PredicateInvocation pI = factory.createPredicateInvocation();
+		
+		// select13[w.assocName] (for ternary association)
+		if (isTernaryAssoc) { 
+			pI = factory.createPredicateInvocation();
+			pI.setPredicate("select13");
+			VariableReference vrf = factory.createVariableReference();
+			vrf.setVariable("w."+assocName);
+			pI.getParameter().add(vrf);			
+		}
+		// w.assocName (for binary ones)
+		else bOp = createBinaryOperation(factory,"w",BinaryOperator.JOIN,assocName);
+				
 		vr = factory.createVariableReference();
 		vr.setVariable("x");
-		BinaryOperation bOp2 = factory.createBinaryOperation();
-		bOp2.setOperator(BinaryOperator.JOIN);
 		
-		if(returnName.contains(world.getName())) returnName = returnName.replace("World.", "");
-				
+		BinaryOperation bOp2 = factory.createBinaryOperation();				
 		if(!isSourceProperty)
 		{
-			bOp2.setLeftExpression(vr);
-			bOp2.setRightExpression(bOp);
+			// x.(w.assocName) or x.(select13[w.assocName])
+			if (!isTernaryAssoc) bOp2 = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN, "("+bOp.toString()+")");
+			else bOp2 = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN, "("+pI.toString()+")");
 		}
 		else
 		{
-			bOp2.setLeftExpression(bOp);
-			bOp2.setRightExpression(vr);
+			//  (w.assocName).x or (select13[w.assocName]).x
+			if (!isTernaryAssoc) bOp2 = createBinaryOperation(factory,"("+bOp.toString()+")",BinaryOperator.JOIN, vr.getVariable());
+			else bOp2 = createBinaryOperation(factory,"("+pI.toString()+")",BinaryOperator.JOIN, vr.getVariable());			
 		}	
 		
+		if(returnName.contains(world.getName())) returnName = returnName.replace("World.", "");
+						
 		fun.getBlock().getExpression().add(bOp2);
 		
 		return fun;

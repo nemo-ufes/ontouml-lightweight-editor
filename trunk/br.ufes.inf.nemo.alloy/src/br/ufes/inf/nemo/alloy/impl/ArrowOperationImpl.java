@@ -44,7 +44,7 @@ public class ArrowOperationImpl extends ExpressionImpl implements ArrowOperation
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Multiplicity LEFT_MULTIPLICITY_EDEFAULT = Multiplicity.SOME;
+	protected static final Multiplicity LEFT_MULTIPLICITY_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getLeftMultiplicity() <em>Left Multiplicity</em>}' attribute.
@@ -64,7 +64,7 @@ public class ArrowOperationImpl extends ExpressionImpl implements ArrowOperation
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Multiplicity RIGHT_MULTIPLICITY_EDEFAULT = Multiplicity.SOME;
+	protected static final Multiplicity RIGHT_MULTIPLICITY_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getRightMultiplicity() <em>Right Multiplicity</em>}' attribute.

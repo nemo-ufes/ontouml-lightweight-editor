@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ontouml2alloy.transformer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -13,6 +14,7 @@ import RefOntoUML.Enumeration;
 import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Mode;
@@ -26,6 +28,8 @@ import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyModule;
 import br.ufes.inf.nemo.alloy.ArrowOperation;
+import br.ufes.inf.nemo.alloy.BinaryOperation;
+import br.ufes.inf.nemo.alloy.BinaryOperator;
 import br.ufes.inf.nemo.alloy.Block;
 import br.ufes.inf.nemo.alloy.CommandDeclaration;
 import br.ufes.inf.nemo.alloy.CompareOperation;
@@ -46,7 +50,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2alloy.rules.AbstractnessClassRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.CardinalityRule;
-import br.ufes.inf.nemo.ontouml2alloy.rules.DerivationRelationRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.GeneralizationRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.GeneralizationSetRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.RelatorAxiomRule;
@@ -85,8 +88,7 @@ public class Transformer {
 	public FactDeclaration dataTypeCompletenessFact;	
 	public FactDeclaration dataTypeTopLevelFact;			
 	public FactDeclaration association_properties;	
-	public FactDeclaration derivations;	
-	
+		
 	public ArrayList<FactDeclaration> rigidityFactList = new ArrayList<FactDeclaration>();	
 	public ArrayList<FactDeclaration> antirigidityFactList = new ArrayList<FactDeclaration>();	
 	public ArrayList<FactDeclaration> genSetFactList = new ArrayList<FactDeclaration>();	
@@ -95,6 +97,7 @@ public class Transformer {
 	public ArrayList<FactDeclaration> weakSupplementationAxiomFactList = new ArrayList<FactDeclaration>();
 	public ArrayList<FactDeclaration> meronymicAcyclicFactList = new ArrayList<FactDeclaration>();
 	public ArrayList<FactDeclaration> characterizationAcyclicFactList = new ArrayList<FactDeclaration>();
+	public ArrayList<FactDeclaration> derivationRelationshipFactList = new ArrayList<FactDeclaration>();
 	
 	/**
 	 * Constructor
@@ -228,7 +231,6 @@ public class Transformer {
 		
 		populatesWithAssociationProperties();		
 		populatesWithAssociations();		
-		try { populatesWithDerivations(); } catch (Exception e1) { e1.printStackTrace(); }				
 		populatesWithAssociationEnds();		
 		populatesWithAssociationCardinalities();
 				
@@ -735,23 +737,6 @@ public class Transformer {
 	}
 	
 	/**
-	 * Populates With Derivations.
-	 */
-	protected void populatesWithDerivations() throws Exception
-	{		
-		derivations = factory.createFactDeclaration();		
-		derivations.setName("derivations");
-		derivations.setBlock(factory.createBlock());
-		
-		for (Derivation d: ontoparser.getAllInstances(Derivation.class))
-		{
-			PredicateInvocation pI = DerivationRelationRule.createPredicateInvocation(ontoparser, factory, d);		
-			if (pI!=null) derivations.getBlock().getExpression().add(pI);
-			module.getParagraph().add(derivations);
-		}
-	}
-	
-	/**
 	 * Populates With Read Only Properties.
 	 */
 	protected void populatesWithAssociationProperties()
@@ -839,7 +824,7 @@ public class Transformer {
 	{		
 		for (Property p: ontoparser.getAllInstances(Property.class))
 		{
-			if (p.getAssociation()!=null && p.getName()!=null && !p.getName().isEmpty())
+			if (p.getAssociation()!=null && p.getName()!=null && !p.getName().isEmpty() && !(p.getAssociation() instanceof Derivation))
 			{
 				Association assoc = p.getAssociation();
 				RefOntoUML.Type type = p.getType();
@@ -870,7 +855,10 @@ public class Transformer {
 					{ String exchangeAux = returnName; returnName = paramName; paramName = exchangeAux; } 
 				}
 								
-				FunctionDeclaration fun = AlloyAPI.createFunctionDeclaration(factory, world, isSourceProperty, functionName, paramName, returnName, assocName);														
+				boolean isTernaryRelation = false;
+				if (assoc instanceof MaterialAssociation) isTernaryRelation = true; 
+				
+				FunctionDeclaration fun = AlloyAPI.createFunctionDeclaration(factory, world, isSourceProperty, functionName, paramName, returnName, assocName, isTernaryRelation);				
 				module.getParagraph().add(fun);				
 			}
 		}
@@ -960,6 +948,155 @@ public class Transformer {
 			if (decl!=null) world.getRelation().add(decl);
 		}
 	}
+		
+	/**
+	 * Populates With Derivations
+	 */
+	protected void populatesWithDerivations()
+	{
+		for(Derivation d: ontoparser.getAllInstances(Derivation.class))
+		{
+			MaterialAssociation material = (MaterialAssociation) (d.getMemberEnd().get(0).getType() instanceof MaterialAssociation ? d.getMemberEnd().get(0).getType() : d.getMemberEnd().get(1).getType());
+			Relator relator = (Relator) (d.getMemberEnd().get(0).getType() instanceof Relator ? d.getMemberEnd().get(0).getType() : d.getMemberEnd().get(1).getType());
+			Property Source = material.getMemberEnd().get(0);
+			Property Target = material.getMemberEnd().get(1);
+			String SourceName = ontoparser.getAlias(Source.getType());
+			String TargetName = ontoparser.getAlias(Target.getType());
+			String RelatorName = ontoparser.getAlias(relator);
+			String MaterialName = ontoparser.getAlias(material);
+			
+			//found mediations
+			Mediation mediationSource = null;
+			Mediation mediationTarget = null;			
+			for (Mediation md: ontoparser.getAllInstances(Mediation.class))
+			{
+				RefOntoUML.Type src = md.getMemberEnd().get(0).getType();
+				RefOntoUML.Type tgt = md.getMemberEnd().get(1).getType();
+									
+				if(src.equals(relator) && tgt.equals(Source.getType())) { mediationSource = md; }				
+				else if(src.equals(relator) && tgt.equals(Target.getType())) { mediationTarget = md; }						
+					
+				// now, in the case where mediation is inverted
+				else if(src.equals(Target.getType()) && tgt.equals(relator)) { mediationTarget = md; }
+				else if(src.equals(Source.getType()) && tgt.equals(relator)) { mediationSource = md; }
+				
+			}
+			String mediationSourceName = (String) (mediationSource == null ? "null" : ontoparser.getAlias(mediationSource));
+			String mediationTargetName = (String) (mediationTarget == null ? "null" : ontoparser.getAlias(mediationTarget));
+			
+			// fact derivationRelationship { all w: World, x:w.Source, y:w.Target, r:w.Relator | (x->r->y) in w.Material iff ( x in r.(w.Mediation1) and y in r.(w.Mediation2) )  }		
+			FactDeclaration derivationRelationshipFact = factory.createFactDeclaration();
+			derivationRelationshipFact.setName("derivationRelationship");
+			Block block = factory.createBlock();
+			derivationRelationshipFact.setBlock(block);		
+			
+			QuantificationExpression qeWorld = AlloyAPI.createQuantificationExpression(factory,Quantificator.ALL,"w","World","x","w."+SourceName,"y","w."+TargetName,"r","w."+RelatorName);				
+			ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, "x", "r", "y");	
+			CompareOperation cOp = AlloyAPI.createCompareOperation(factory, aOp.toString(), CompareOperator.SUBSET, "w."+MaterialName);
+			CompareOperation cOp2 = AlloyAPI.createCompareOperation(factory, "x", CompareOperator.SUBSET, "r.(w."+mediationSourceName+")");
+			CompareOperation cOp3 = AlloyAPI.createCompareOperation(factory, "y", CompareOperator.SUBSET, "r.(w."+mediationTargetName+")");
+			BinaryOperation bOp2 = AlloyAPI.createBinaryOperation(factory, cOp2.toString()+" ", BinaryOperator.AND, " "+cOp3.toString());
+			BinaryOperation bOp = AlloyAPI.createBinaryOperation(factory,cOp.toString()+" ", BinaryOperator.IFF, " "+bOp2);
+			qeWorld.setExpression(bOp);
+			derivationRelationshipFact.getBlock().getExpression().add(qeWorld);
+			
+			derivationRelationshipFactList.add(derivationRelationshipFact);
+			module.getParagraph().add(derivationRelationshipFact);
+		}
+	}
+	
+	/**
+	 * Populates with Materials 
+	 */
+	protected void populatesWithMaterials()
+	{
+		HashMap<MaterialAssociation,Derivation> relationsMap = new HashMap<MaterialAssociation,Derivation>();
+		
+		// initialize the map with material associations and their derivations
+		for (Derivation d: ontoparser.getAllInstances(Derivation.class))
+		{
+			for(Property prop : d.getMemberEnd())
+			{
+				if(prop.getType() instanceof MaterialAssociation) relationsMap.put((MaterialAssociation)prop.getType(),d);
+			}
+		}
+		for (MaterialAssociation m: ontoparser.getAllInstances(MaterialAssociation.class))
+		{
+			if (!(relationsMap.containsKey(m))) relationsMap.put(m, null);
+		}
+		
+		// now transforms each material association of the map...
+		for (MaterialAssociation m: relationsMap.keySet())
+		{			
+			Property materialSourceProperty = m.getMemberEnd().get(0);
+			Property materialTargetProperty = m.getMemberEnd().get(1);
+			VariableReference source = factory.createVariableReference();
+			VariableReference target = factory.createVariableReference();
+			source.setVariable(ontoparser.getAlias(materialSourceProperty.getType()));
+			target.setVariable(ontoparser.getAlias(materialTargetProperty.getType()));
+			
+			// there's a derivation related to this material association
+			if (relationsMap.get(m) != null)
+			{
+				Derivation derivation = relationsMap.get(m);
+				Relator relator = (Relator) (derivation.getMemberEnd().get(0).getType() instanceof Relator ? derivation.getMemberEnd().get(0).getType() : derivation.getMemberEnd().get(1).getType());
+				
+				int lowerTgtMediationSource=-1; int upperTgtMediationSource=-1; 
+				int lowerSrcMediationSource=-1; int upperSrcMediationSource=-1;
+				int lowerTgtMediationTarget=-1; int upperTgtMediationTarget=-1; 
+				int lowerSrcMediationTarget=-1; int upperSrcMediationTarget=-1;		
+				
+				VariableReference relatorVarReference = factory.createVariableReference();
+				relatorVarReference.setVariable(ontoparser.getAlias(relator));
+				
+				for (Mediation md: ontoparser.getAllInstances(Mediation.class))
+				{
+					RefOntoUML.Type src = md.getMemberEnd().get(0).getType();
+					RefOntoUML.Type tgt = md.getMemberEnd().get(1).getType();
+										
+					if(src.equals(relator) && tgt.equals(materialSourceProperty.getType())) {											 
+						lowerSrcMediationSource = md.getMemberEnd().get(0).getLower(); upperSrcMediationSource = md.getMemberEnd().get(0).getUpper();
+						lowerTgtMediationSource = md.getMemberEnd().get(1).getLower(); upperTgtMediationSource = md.getMemberEnd().get(1).getUpper();
+					}										
+					else if(src.equals(relator) && tgt.equals(materialTargetProperty.getType())) {						
+						lowerSrcMediationTarget = md.getMemberEnd().get(0).getLower(); upperSrcMediationTarget = md.getMemberEnd().get(0).getUpper();
+						lowerTgtMediationTarget = md.getMemberEnd().get(1).getLower(); upperTgtMediationTarget = md.getMemberEnd().get(1).getUpper();
+					}
+					// now, in the case where mediation is inverted
+					else if(src.equals(materialTargetProperty.getType()) && tgt.equals(relator)) {						
+						lowerSrcMediationTarget = md.getMemberEnd().get(1).getLower(); upperSrcMediationTarget = md.getMemberEnd().get(1).getUpper();
+						lowerTgtMediationTarget = md.getMemberEnd().get(0).getLower(); upperTgtMediationTarget = md.getMemberEnd().get(0).getUpper();
+						
+					}
+					else if(src.equals(materialSourceProperty.getType()) && tgt.equals(relator)) {						
+						lowerSrcMediationSource = md.getMemberEnd().get(1).getLower(); upperSrcMediationSource = md.getMemberEnd().get(1).getUpper();
+						lowerTgtMediationSource = md.getMemberEnd().get(0).getLower(); upperTgtMediationSource = md.getMemberEnd().get(0).getUpper();
+					}
+				}
+
+				ArrowOperation aOp = AlloyAPI.createArrowOperation(
+					factory, 
+					source.getVariable(), lowerTgtMediationSource, upperTgtMediationSource, 
+					relatorVarReference.getVariable(), lowerSrcMediationSource, upperSrcMediationSource, lowerSrcMediationTarget,  upperSrcMediationTarget,
+				    target.getVariable(), lowerTgtMediationTarget, upperTgtMediationTarget
+				);			
+				Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(m), aOp);				
+				if (decl!=null) world.getRelation().add(decl);
+				
+			}
+			
+			// no derivation related to the material association
+			else {				
+				int lowerSource = materialSourceProperty.getLower();
+				int upperSource = materialSourceProperty.getUpper();								
+				int lowerTarget = materialTargetProperty.getLower();				
+				int upperTarget = materialTargetProperty.getUpper();
+				ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
+				Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(m), aOp);				
+				if (decl!=null) world.getRelation().add(decl);
+			}
+		}		
+	}
 	
 	/**
 	 * Populates With Associations
@@ -967,11 +1104,16 @@ public class Transformer {
 	protected void populatesWithAssociations()
 	{
 		populatesWithMediations();
+		
 		populatesWithCharacterizations();
+		
+		populatesWithMaterials();
+		
+		populatesWithDerivations();
 		
 		for(Association assoc: ontoparser.getAllInstances(Association.class))
 		{
-			if(!(assoc instanceof Mediation) && !(assoc instanceof Derivation) && !(assoc instanceof Characterization)) 
+			if(!(assoc instanceof Mediation) && !(assoc instanceof Derivation) && !(assoc instanceof Characterization) && !(assoc instanceof MaterialAssociation)) 
 			{
 				VariableReference source = factory.createVariableReference();
 				VariableReference target = factory.createVariableReference();

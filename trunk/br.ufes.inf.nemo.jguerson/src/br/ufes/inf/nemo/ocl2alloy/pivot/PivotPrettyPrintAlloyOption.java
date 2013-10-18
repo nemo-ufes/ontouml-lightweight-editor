@@ -10,10 +10,10 @@ public class PivotPrettyPrintAlloyOption {
 	public int world_scope;
 	
 	public PivotPrettyPrintAlloyOption (ConstraintType ctype, int global_scope, int world_scope)
-	{
+	{		
 		this.ctype = ctype;
 		this.global_scope = global_scope;
-		this.world_scope = world_scope;
+		this.world_scope = world_scope;		
 	}
 	
 	public static ArrayList<PivotPrettyPrintAlloyOption> createListOfOptions(int n)
@@ -22,7 +22,7 @@ public class PivotPrettyPrintAlloyOption {
 		for (int i=0;i<n;i++)
 		{
 			list.add(new PivotPrettyPrintAlloyOption(PivotPrettyPrintAlloyOption.ConstraintType.FACT,10,1));
-		}
+		}		
 		return list;
 	}
 }
