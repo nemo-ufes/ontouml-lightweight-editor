@@ -2,9 +2,6 @@ package br.ufes.inf.nemo.common.ontoumlparser;
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.common.list.Combination;
-
-import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Derivation;
 import RefOntoUML.LiteralInteger;
@@ -15,10 +12,12 @@ import RefOntoUML.Package;
 import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.Relator;
+import br.ufes.inf.nemo.common.list.Combination;
 
 public class MaterialInference {
 
 	private OntoUMLParser parser;
+	@SuppressWarnings("unused")
 	private RefOntoUMLFactory factory;
 	private ArrayList<MaterialAssociation> materials;
 	private ArrayList<Relator> relators;
@@ -108,9 +107,8 @@ public class MaterialInference {
 		Classifier target = (Classifier) parser.getMediated(m2);
 		
 		MaterialAssociation material = OntoUMLUtil.createMaterialAssociation(source, target);
-		Derivation derivation = OntoUMLUtil.createDerivation(source, target);
-		
-		
+		Derivation derivation = OntoUMLUtil.createDerivation(relator, material);
+				
 		material.setName(source.getName().trim()+"_"+target.getName().trim());
 		material.setIsDerived(true);
 		

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import RefOntoUML.Association;
 import RefOntoUML.Characterization;
+import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Mode;
 import RefOntoUML.Property;
@@ -65,32 +66,57 @@ public class CardinalityRule {
 		int upperSource = Source.getUpper();
 		int lowerTarget = Target.getLower();
 		int upperTarget = Target.getUpper();
+		BinaryOperation univBinJoin = factory.createBinaryOperation();
 		
 		if (lowerSource > 1)
 		{
-			BinaryOperation binJoin = AlloyAPI.createBinaryOperation(factory, ontoparser.getAlias(assoc), BinaryOperator.JOIN, "x");			
-			QuantificationExpression qe = AlloyAPI.createQuantificationExpression(factory, ontoparser.getAlias(Target.getType()), binJoin, CompareOperator.GREATER_EQUAL, lowerSource);
+			// Material association are ternary relations between mediaionts and the relator
+			if (assoc instanceof MaterialAssociation){			
+				BinaryOperation binJoin = AlloyAPI.createBinaryOperation(factory, ontoparser.getAlias(assoc), BinaryOperator.JOIN, "x");
+				univBinJoin = AlloyAPI.createBinaryOperation(factory, "("+binJoin.toString()+")", BinaryOperator.JOIN, "univ");
+			}else{
+				univBinJoin = AlloyAPI.createBinaryOperation(factory, ontoparser.getAlias(assoc), BinaryOperator.JOIN, "x");
+			}
+			QuantificationExpression qe = AlloyAPI.createQuantificationExpression(factory, ontoparser.getAlias(Target.getType()), univBinJoin, CompareOperator.GREATER_EQUAL, lowerSource);
 			if (qe!=null) qeList.add(qe);
 		}
 		
 		if (upperSource > 1 && upperSource != -1) 
 		{
-			BinaryOperation binJoin = AlloyAPI.createBinaryOperation(factory,ontoparser.getAlias(assoc), BinaryOperator.JOIN,"x");			
-			QuantificationExpression qe = AlloyAPI.createQuantificationExpression(factory, ontoparser.getAlias(Target.getType()), binJoin, CompareOperator.LESS_EQUAL, upperSource);				
+			// Material association are ternary relations between mediaionts and the relator
+			if (assoc instanceof MaterialAssociation){
+				BinaryOperation binJoin = AlloyAPI.createBinaryOperation(factory,ontoparser.getAlias(assoc), BinaryOperator.JOIN,"x");	
+				univBinJoin = AlloyAPI.createBinaryOperation(factory, "("+binJoin.toString()+")", BinaryOperator.JOIN, "univ");
+			}else{
+				univBinJoin =AlloyAPI.createBinaryOperation(factory,ontoparser.getAlias(assoc), BinaryOperator.JOIN,"x");	
+			}
+			QuantificationExpression qe = AlloyAPI.createQuantificationExpression(factory, ontoparser.getAlias(Target.getType()), univBinJoin, CompareOperator.LESS_EQUAL, upperSource);				
 			if (qe!=null) qeList.add(qe);
 		}
 		
 		if (lowerTarget > 1) 
 		{
-			BinaryOperation binJoin = AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN, ontoparser.getAlias(assoc));			
-			QuantificationExpression qe = AlloyAPI.createQuantificationExpression(factory, ontoparser.getAlias(Source.getType()), binJoin, CompareOperator.GREATER_EQUAL, lowerTarget);				
+			// Material association are ternary relations between mediaionts and the relator
+			if (assoc instanceof MaterialAssociation){
+				BinaryOperation binJoin = AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN, ontoparser.getAlias(assoc));	
+				univBinJoin = AlloyAPI.createBinaryOperation(factory, "univ", BinaryOperator.JOIN, "("+binJoin.toString()+")");
+			}else{
+				univBinJoin = AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN, ontoparser.getAlias(assoc));
+			}
+			QuantificationExpression qe = AlloyAPI.createQuantificationExpression(factory, ontoparser.getAlias(Source.getType()), univBinJoin, CompareOperator.GREATER_EQUAL, lowerTarget);				
 			if (qe!=null) qeList.add(qe);
 		}
 		
 		if (upperTarget > 1 && upperTarget != -1) 
 		{
-			BinaryOperation binJoin = AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN, ontoparser.getAlias(assoc));			
-			QuantificationExpression qe = AlloyAPI.createQuantificationExpression(factory, ontoparser.getAlias(Source.getType()), binJoin, CompareOperator.LESS_EQUAL, upperTarget);				
+			// Material association are ternary relations between mediaionts and the relator		
+			if (assoc instanceof MaterialAssociation){
+				BinaryOperation binJoin = AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN, ontoparser.getAlias(assoc));
+				univBinJoin = AlloyAPI.createBinaryOperation(factory, "univ", BinaryOperator.JOIN, "("+binJoin.toString()+")");
+			}else{
+				univBinJoin = AlloyAPI.createBinaryOperation(factory,"x", BinaryOperator.JOIN, ontoparser.getAlias(assoc));
+			}			
+			QuantificationExpression qe = AlloyAPI.createQuantificationExpression(factory, ontoparser.getAlias(Source.getType()), univBinJoin, CompareOperator.LESS_EQUAL, upperTarget);				
 			if (qe!=null) qeList.add(qe);		
 		}
 		return qeList;
