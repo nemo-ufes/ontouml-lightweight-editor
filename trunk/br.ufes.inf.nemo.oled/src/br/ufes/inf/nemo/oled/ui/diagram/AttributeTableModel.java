@@ -72,7 +72,9 @@ public class AttributeTableModel extends BaseTableModel {
 	public void addEmptyEntry() {
 		Property property = ModelHelper.getFactory().createProperty();
 		DataType type = null;		
-		if (isPrimitive) type = ModelHelper.getFactory().createPrimitiveType();
+		if (isPrimitive) type = 
+				ModelHelper.getFactory().createPrimitiveType();
+		
 		else type = ModelHelper.getFactory().createDataType();
 		type.setName("");
 		property.setType(type);

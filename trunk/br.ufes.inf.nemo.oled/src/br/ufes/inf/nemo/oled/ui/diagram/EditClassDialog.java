@@ -409,6 +409,8 @@ public class EditClassDialog extends JDialog {
 				
 				AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), property.getType());
 				project.getEditingDomain().getCommandStack().execute(cmd);
+				
+				modelDataTypes.put(property.getType().getName(),(DataType)property.getType());
 			}
 		}	
 	}
