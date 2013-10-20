@@ -79,6 +79,7 @@ public class Transformer {
 	public SignatureDeclaration sigDatatype;	
 	public SignatureDeclaration sigString;	
 	public SignatureDeclaration sigChar;	
+	public SignatureDeclaration sigReal;
 	
 	public ArrayList<SignatureDeclaration> dataTypesSignatures = new ArrayList<SignatureDeclaration>();	
 	public ArrayList<EnumDeclaration> enumerationSignatures = new ArrayList<EnumDeclaration>();
@@ -123,10 +124,12 @@ public class Transformer {
 		ModuleImportation mi2 = AlloyAPI.createModuleImport(factory,"ontological_properties","", world);
 		ModuleImportation mi3 = AlloyAPI.createModuleImport(factory,"relation","util", null);
 		ModuleImportation mi4 = AlloyAPI.createModuleImport(factory,"ternary","util", null);
+		ModuleImportation mi5 = AlloyAPI.createModuleImport(factory,"boolean","util", null);
 		module.getImports().add(mi1);
 		module.getImports().add(mi2);
 		module.getImports().add(mi3);		
 		module.getImports().add(mi4);
+		module.getImports().add(mi5);
 			
 		sigObject = factory.createSignatureDeclaration();
 		sigObject.setName("Object");
@@ -149,20 +152,19 @@ public class Transformer {
 					sigString = factory.createSignatureDeclaration();
 					sigString.setName("String_");					
 					module.getParagraph().add(sigString);					
-				}				
-			}
-		}
-		
-		if (ontoparser.getAllInstances(PrimitiveType.class).size()>0)
-		{
-			for(PrimitiveType p: ontoparser.getAllInstances(PrimitiveType.class))
-			{
+				}			
 				if (p.getName().compareToIgnoreCase("char")==0)
 				{
 					sigChar = factory.createSignatureDeclaration();
 					sigChar.setName("Char");					
 					module.getParagraph().add(sigChar);					
-				}				
+				}
+				if (p.getName().compareToIgnoreCase("real")==0)
+				{
+					sigReal = factory.createSignatureDeclaration();
+					sigReal.setName("Real");					
+					module.getParagraph().add(sigReal);					
+				}
 			}
 		}
 		
@@ -310,9 +312,18 @@ public class Transformer {
 						if (decl!=null) world.getRelation().add(decl);					
 					}
 					
+					// AttributeName: set ClassOwner -> Real,
+					else if (attr.getType().getName().compareToIgnoreCase("Real")==0)
+					{
+						ArrowOperation aOp  = factory.createArrowOperation();
+						aOp = AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,"Real",attr.getLower(),attr.getUpper());
+						Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);
+						if (decl!=null) world.getRelation().add(decl);					
+					}
+					
 					else if (attr.getType().getName().compareToIgnoreCase("Boolean")==0)
 					{
-					//  AttributeName: set exists:> Object,
+					    //  AttributeName: set exists:> Object,
 						if (attr.eContainer() instanceof ObjectClass)
 						{
 							Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(attr.eContainer()), sigObject.getName());

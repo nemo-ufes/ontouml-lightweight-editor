@@ -37,7 +37,6 @@ import RefOntoUML.Collective;
 import RefOntoUML.DataType;
 import RefOntoUML.Property;
 import RefOntoUML.impl.CollectiveImpl;
-import RefOntoUML.impl.DataTypeImpl;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.ui.ModelTree;
@@ -311,7 +310,7 @@ public class EditClassDialog extends JDialog {
 						
 		modelDataTypes = new HashMap<String, DataType>();
 		List<DataType> dataTypes = ModelHelper.getModelDataTypes(diagramManager.getCurrentEditor().getProject());
-		for (DataType item : dataTypes) {
+		for (DataType item : dataTypes) {			
 			modelDataTypes.put(item.getName(), item);
 		}
 		
@@ -322,7 +321,7 @@ public class EditClassDialog extends JDialog {
 		classNameText.setText(classElement.getClassifier().getName());
 		abstractCheck.setSelected(classElement.getClassifier().isIsAbstract());
 		
-		if(classElement.getClassifier() instanceof DataTypeImpl)
+		if(classElement.getClassifier() instanceof DataType)
 		{
 			DataType dataType = (DataType) classElement.getClassifier();
 			
@@ -369,16 +368,17 @@ public class EditClassDialog extends JDialog {
 		classElement.setShowAttributes(attributeVisibilityCheck.isSelected());
 		List<Property> classAttributes = attributesTableModel.getEntries();
 		for (Property property : classAttributes) {
+			
 			//If the property has name or type set
-			if(property.getName().trim().length() > 0 || property.getType().getName().trim().length() > 0)
-			{
+			if(!property.getName().isEmpty() || !property.getType().getName().isEmpty())
+			{				
 				DataType existingType = modelDataTypes.get(property.getType().getName().trim());
 				if(existingType != null)
 				{
 					property.setType(existingType);
 				}
 				
-				if(classElement.getClassifier() instanceof DataTypeImpl)
+				if(classElement.getClassifier() instanceof DataType)
 					((DataType)classElement.getClassifier()).getOwnedAttribute().add(property);
 				else
 				{
@@ -401,7 +401,7 @@ public class EditClassDialog extends JDialog {
 	private void addDataTypesToModel() {
 		List<Property> classAttributes = attributesTableModel.getEntries();
 		for (Property property : classAttributes) {
-			//Avoid the creation of duplicate types
+			//Avoid the creation of duplicate types			
 			if(modelDataTypes.keySet().contains(property.getType().getName().trim()) == false)
 			{
 				
