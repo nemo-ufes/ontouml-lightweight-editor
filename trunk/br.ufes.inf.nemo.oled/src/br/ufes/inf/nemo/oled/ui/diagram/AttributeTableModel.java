@@ -18,6 +18,7 @@ public class AttributeTableModel extends BaseTableModel {
 	private static final long serialVersionUID = 156864519388945910L;
 	//private Classifier owner;
 	private EList<Property> attributes;
+	public static boolean isPrimitive = true;
 	
 	public AttributeTableModel(Classifier owner)
 	{
@@ -70,7 +71,9 @@ public class AttributeTableModel extends BaseTableModel {
 	 */
 	public void addEmptyEntry() {
 		Property property = ModelHelper.getFactory().createProperty();
-		DataType type = ModelHelper.getFactory().createDataType();
+		DataType type = null;		
+		if (isPrimitive) type = ModelHelper.getFactory().createPrimitiveType();
+		else type = ModelHelper.getFactory().createDataType();
 		type.setName("");
 		property.setType(type);
 		property.setName("");
