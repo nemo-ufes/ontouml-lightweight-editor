@@ -306,7 +306,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/**
 	 * Open ToolBox Menu.
 	 */
-	public void openToolBoxMenu(MouseEvent e){		
+	public void openToolBoxMenu(MouseEvent e){	
+		if (getSelectedElements().size()>0) return;
 		ToolboxPopupMenu menu = new ToolboxPopupMenu(frame);
 	    menu.show(e.getComponent(), e.getX(), e.getY());	    	
 	}
