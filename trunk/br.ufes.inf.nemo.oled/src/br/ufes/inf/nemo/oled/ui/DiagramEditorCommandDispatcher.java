@@ -49,7 +49,8 @@ import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
  */
 public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
-	//private AppFrame frame;
+	@SuppressWarnings("unused")
+	private AppFrame frame;
 	private DiagramManager manager;
 	private Map<String, MethodCall> selectorMap = new HashMap<String, MethodCall>();
 
@@ -57,9 +58,10 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	 * Constructor.
 	 * @param aFrame the application frame
 	 */
-	public DiagramEditorCommandDispatcher(DiagramManager manager) {
+	public DiagramEditorCommandDispatcher(DiagramManager manager, AppFrame frame) {
 		this.manager = manager;
 		initSelectorMap();
+		this.frame = frame;
 	}
 
 	/**
