@@ -36,50 +36,50 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * 
 *
 * * Colocar IRI no modelo RefOntoUML
- * Implementar nova transformação para OWL
- * Implementar Salvar como na visualizaão do OWL? Mas sem fazer, desfazer.
+ * Implementar nova transformaï¿½ï¿½o para OWL
+ * Implementar Salvar como na visualizaï¿½o do OWL? Mas sem fazer, desfazer.
  * 
- * Permitir seleção para simulação somente de classes válidas sintaticamente
- * Descição do ultimo comando executado na barra de status
+ * Permitir seleï¿½ï¿½o para simulaï¿½ï¿½o somente de classes vï¿½lidas sintaticamente
+ * Desciï¿½ï¿½o do ultimo comando executado na barra de status
  *   
  * Criar elementos com propriedades default
  * 		Mediation com ends read only.
  * 
- * Implementar associação entre relações
+ * Implementar associaï¿½ï¿½o entre relaï¿½ï¿½es
  * Implantar o reposicionamento de labels
  * Permitir auto-relacionamentos
  * Funcionalidade Copiar/Colar
  * Tela Sobre (About) 
  * 
- * Botão para determinar o tipo da conexão Retilinear ou direta.
+ * Botï¿½o para determinar o tipo da conexï¿½o Retilinear ou direta.
  * Atualizar nome do aruivo na aba?
- * Atalho para criação de generalization set
- * 		Seleção de várias classes para gerar generalizations e generalization sets
- * 		Generalizations não criadas
+ * Atalho para criaï¿½ï¿½o de generalization set
+ * 		Seleï¿½ï¿½o de vï¿½rias classes para gerar generalizations e generalization sets
+ * 		Generalizations nï¿½o criadas
  * 
  * 
  *  
  * http://archive.eclipse.org/eclipse/downloads/drops/S-3.7RC4-201106030909/index.php#SWT
  * 
  * OK Implementar tema : Ver cinza e Trapezio
- * OK Tela para seleção de entidades na simulação e das cores no tema
- * OK Geração de tema  
- * OK Retornar texto na simulação, para ser exibido no output pane
- * OK Implementar o retorno OperationResult para validação
- * OK Integrar SBVR : ver deleteonexit pois os arquivos não estão apagando
- * OK Abrir geraçao de OWL no editor de Texto. 
+ * OK Tela para seleï¿½ï¿½o de entidades na simulaï¿½ï¿½o e das cores no tema
+ * OK Geraï¿½ï¿½o de tema  
+ * OK Retornar texto na simulaï¿½ï¿½o, para ser exibido no output pane
+ * OK Implementar o retorno OperationResult para validaï¿½ï¿½o
+ * OK Integrar SBVR : ver deleteonexit pois os arquivos nï¿½o estï¿½o apagando
+ * OK Abrir geraï¿½ao de OWL no editor de Texto. 
  * OK Implementar seeting com nome default do arquivo 
  * 
  * Antes do release
  * ======================================================
  * 
- * Revisão Geral do Códgio - Limpeza
- * Reestruturação da interface usando form layout.
- * Revisão Geral do Códgio - Documentação
- * Revisão Geral arquivo de captions
+ * Revisï¿½o Geral do Cï¿½dgio - Limpeza
+ * Reestruturaï¿½ï¿½o da interface usando form layout.
+ * Revisï¿½o Geral do Cï¿½dgio - Documentaï¿½ï¿½o
+ * Revisï¿½o Geral arquivo de captions
  * 
  * 
- * Sem previsão
+ * Sem previsï¿½o
  * ======================================================
  * 
  * Localization
@@ -89,53 +89,53 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  * ======================================================
  * 
  * - Aberto : Melhorar o tratamento de DataTypes ao inserir no modelo.
- * 			  Ele permitiu a duplicação de datatypes (mesmo nome e mesma id)
- * 			  Além disso, quando um datatype é inserido na janela de edição de classe
- * 			  Não aparece nas dropdowns a menos que seja apertado OK.
+ * 			  Ele permitiu a duplicaï¿½ï¿½o de datatypes (mesmo nome e mesma id)
+ * 			  Alï¿½m disso, quando um datatype ï¿½ inserido na janela de ediï¿½ï¿½o de classe
+ * 			  Nï¿½o aparece nas dropdowns a menos que seja apertado OK.
  * 
- * - Aberto : o temp dir do diagrama não está sendo excluído automaticamente
+ * - Aberto : o temp dir do diagrama nï¿½o estï¿½ sendo excluï¿½do automaticamente
  * 
- * - Aberto : Tratar a simulação quando a geração de alloy retorna vazia
+ * - Aberto : Tratar a simulaï¿½ï¿½o quando a geraï¿½ï¿½o de alloy retorna vazia
  * 
- * - Aberto : Nomes das associações não estão aparecendo
- * 		 	  Connection name labels não estão sendo renderizadas?
+ * - Aberto : Nomes das associaï¿½ï¿½es nï¿½o estï¿½o aparecendo
+ * 		 	  Connection name labels nï¿½o estï¿½o sendo renderizadas?
  * 
- * - Aberto : Redimensionamento do canvas não está respeitando a posição dos nodos
+ * - Aberto : Redimensionamento do canvas nï¿½o estï¿½ respeitando a posiï¿½ï¿½o dos nodos
  * 
- * - Aberto : Classes não estão redimensionando bem
- * 			: Só está acontecendo quando a opção snap to grid está habilitada
+ * - Aberto : Classes nï¿½o estï¿½o redimensionando bem
+ * 			: Sï¿½ estï¿½ acontecendo quando a opï¿½ï¿½o snap to grid estï¿½ habilitada
  * 
- * - Aberto : Ordenação dos atributos nas propriedades da classe não é respeitada  
+ * - Aberto : Ordenaï¿½ï¿½o dos atributos nas propriedades da classe nï¿½o ï¿½ respeitada  
  * 
- * - Aberto : Incluir os atributos das relações meronimicas na label da relação
+ * - Aberto : Incluir os atributos das relaï¿½ï¿½es meronimicas na label da relaï¿½ï¿½o
  * 
  * - Aberto : Habilitar o clique com shift para selecionar ou desselecionar o elemento
  * 
- * - Aberto : Ao fazer Undo/Redo algumas ações não tem efeito aparente - Ver linehandler
- * 			  Isso acontece pois o clique está sendo tratado como um comando de mover / redimensionar com nenhuma modificação.
- * 			  Como saber se o usuário está movendo, redimensionando ou selecionando os nodes? O SelectionHandler informará isso.
- * 		      Selecionando = node selecionado ou não posicao do click release igual posição inicial
- * 			  Movendo = node previamente selecionado, posicao do click release diferente da posição inicial
+ * - Aberto : Ao fazer Undo/Redo algumas aï¿½ï¿½es nï¿½o tem efeito aparente - Ver linehandler
+ * 			  Isso acontece pois o clique estï¿½ sendo tratado como um comando de mover / redimensionar com nenhuma modificaï¿½ï¿½o.
+ * 			  Como saber se o usuï¿½rio estï¿½ movendo, redimensionando ou selecionando os nodes? O SelectionHandler informarï¿½ isso.
+ * 		      Selecionando = node selecionado ou nï¿½o posicao do click release igual posiï¿½ï¿½o inicial
+ * 			  Movendo = node previamente selecionado, posicao do click release diferente da posiï¿½ï¿½o inicial
  * 			  Redimensionando = node previamente selecionado...
  * 
- * - Aberto : Transformação para Alloy não está gerando Quantity/SubQuantity
+ * - Aberto : Transformaï¿½ï¿½o para Alloy nï¿½o estï¿½ gerando Quantity/SubQuantity
  *
- * - OK : A A4Solution não está sendo gerada com o skolem $visible e 
- * 		: logo não está implementando a associação visible
- * - OK : Tratar os eventos de mudança nas abas do editor para atualizar o redo/undo
- * - OK : Setas do output pane não estão funcionando
- * - OK : Erro ao transferir dados na janela de edição de classe (invalid cast) 
- * - OK : Erro na geração de alloy (Bernardo) quando uma category (mixin) é supertipo
- * - OK : Generalizar idioma da janela de generalização
- * - OK : Implementar a opção abstract na janela de classe
- * - OK : Implantar novo sistema de serialização/desserialização baseado em Zip
+ * - OK : A A4Solution nï¿½o estï¿½ sendo gerada com o skolem $visible e 
+ * 		: logo nï¿½o estï¿½ implementando a associaï¿½ï¿½o visible
+ * - OK : Tratar os eventos de mudanï¿½a nas abas do editor para atualizar o redo/undo
+ * - OK : Setas do output pane nï¿½o estï¿½o funcionando
+ * - OK : Erro ao transferir dados na janela de ediï¿½ï¿½o de classe (invalid cast) 
+ * - OK : Erro na geraï¿½ï¿½o de alloy (Bernardo) quando uma category (mixin) ï¿½ supertipo
+ * - OK : Generalizar idioma da janela de generalizaï¿½ï¿½o
+ * - OK : Implementar a opï¿½ï¿½o abstract na janela de classe
+ * - OK : Implantar novo sistema de serializaï¿½ï¿½o/desserializaï¿½ï¿½o baseado em Zip
  * - OK : Remover {disjoint, complete} da label das generalizations
  * - OK : Renomear itens de menu para open project e save project
- * - OK : Redimensionar tamanho inicial da janela principal para acomodar resolções 1024x768
- * - OK : Undo/Redo para ações visuais como redimensionamento não estão funcionando bem
+ * - OK : Redimensionar tamanho inicial da janela principal para acomodar resolï¿½ï¿½es 1024x768
+ * - OK : Undo/Redo para aï¿½ï¿½es visuais como redimensionamento nï¿½o estï¿½o funcionando bem
  * 
  * 
- * Testar se o objeto pertence à interface:
+ * Testar se o objeto pertence ï¿½ interface:
  * Collection.class.isInstance(o)
  */
 
@@ -176,9 +176,9 @@ public final class Main {
 				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					UIManager.put("TabbedPane.focus", new Color(0, 0, 0, 0));
-					JFrame frame = new AppFrame();
+					JFrame frame = new AppFrame();					
+					frame.setLocationByPlatform(true);
 					frame.setVisible(true);
-					frame.setLocationRelativeTo(null);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}

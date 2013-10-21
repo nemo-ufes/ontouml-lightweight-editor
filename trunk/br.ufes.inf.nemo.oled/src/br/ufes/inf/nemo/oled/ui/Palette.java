@@ -48,7 +48,7 @@ public class Palette extends JPanel
 		content = new JPanel();
 		content.setPreferredSize(new Dimension(200, 600));
 		content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));	
-
+				
 		this.add(content, BorderLayout.CENTER);
 	}
 

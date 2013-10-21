@@ -24,7 +24,7 @@ public class ToolManager extends JTabbedPane {
 		//Assistent assistent = new Assistent();
 		//Assistent patternsPanel = new Assistent();
 				
-		this.add("Elements", palettes); //TODO Localize these		
+		this.add("Toolbox", palettes); //TODO Localize these		
 		//this.add("Assistent", assistent);
 		//this.add("Patterns", patternsPanel);
 	}
