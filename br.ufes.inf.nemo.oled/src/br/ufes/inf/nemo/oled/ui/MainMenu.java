@@ -202,7 +202,7 @@ public class MainMenu implements ActionListener {
 		menubar.add(helpMenu);
 		createMenuItem(helpMenu, "about");
 		createMenuItem(helpMenu, "copyrights");
-		createMenuItem(helpMenu, "helpcontents");
+		//createMenuItem(helpMenu, "helpcontents");
 	}
 
 	/**

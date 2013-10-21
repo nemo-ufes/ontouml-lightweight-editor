@@ -139,7 +139,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		super();
 		this.frame = frame;
 
-		editorDispatcher = new DiagramEditorCommandDispatcher(this);
+		editorDispatcher = new DiagramEditorCommandDispatcher(this,frame);
 
 		//When the user selects a tab show the model tree in the tool manager 
 		addChangeListener(new ChangeListener() {
@@ -425,6 +425,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		try{
 
+			if (getCurrentProject()==null) newProject();
+			
 			OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());
 
 			String path = FileChoosersUtil.openOCLPathLocation(frame,oclmodel.getOCLPath());
