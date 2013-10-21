@@ -1393,9 +1393,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			public void actionPerformed(ActionEvent e) {
 				if(((DiagramManager)manager).getCurrentDiagramEditor().isSaveNeeded())
 				{
-					if (JOptionPane.showConfirmDialog(((DiagramManager)manager).getFrame(), "Your project has been modified. Save changes?","Save Project", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-						((DiagramManager)manager).saveProjectAs();
-					}
+					int option = JOptionPane.showConfirmDialog(((DiagramManager)manager).getFrame(), "Your project has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
+					if (option== JOptionPane.YES_OPTION) {((DiagramManager)manager).saveProjectAs(); }
+					else if (option==JOptionPane.CANCEL_OPTION) { return; }
 				}
 				int i = pane.indexOfTabComponent(ClosableTab.this);
 				if (i != -1) {
