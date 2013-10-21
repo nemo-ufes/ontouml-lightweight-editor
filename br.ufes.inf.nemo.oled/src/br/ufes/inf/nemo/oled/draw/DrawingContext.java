@@ -181,6 +181,5 @@ public interface DrawingContext {
   void setStrokeType(StrokeType strokeType);
 	
   StrokeType getStrokeType();
-  
 	
 }

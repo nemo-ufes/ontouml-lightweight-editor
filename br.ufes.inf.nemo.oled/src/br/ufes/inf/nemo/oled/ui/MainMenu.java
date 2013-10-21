@@ -339,7 +339,7 @@ public class MainMenu implements ActionListener {
 	 *            the property name
 	 * @return the property value or null if not found
 	 */
-	private String getResourceString(String property) {
+	public static String getResourceString(String property) {
 		return ApplicationResources.getInstance().getString(property);
 	}
 
