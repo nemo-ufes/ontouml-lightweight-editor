@@ -24,6 +24,8 @@ import java.util.List;
 
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
+import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.ModelTree;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
@@ -45,10 +47,11 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 	 * @param aLabel the Label
 	 * @param aText the new text
 	 */
-	public SetLabelTextCommand(DiagramNotification aNotification, Label aLabel, String aText) {
+	public SetLabelTextCommand(DiagramNotification aNotification, Label aLabel, String aText,  UmlProject project) {
 		this.notification = aNotification;
 		label = aLabel;
 		text = aText;
+		this.project = project;
 		oldText = aLabel.getNameLabelText();
 	}
 
@@ -62,6 +65,8 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		elements.add(label);
 		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, redo ? NotificationType.REDO : NotificationType.DO);
 		
+		//FIXME every modification creates a new tree
+		ModelTree.updateModelTree(project);
 	}
 
 	/**
@@ -85,5 +90,6 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(label);
 		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, NotificationType.UNDO);
+					
 	}
 }

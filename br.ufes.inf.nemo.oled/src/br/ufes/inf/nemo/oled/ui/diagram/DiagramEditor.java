@@ -431,7 +431,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		if (currentEditor != null && currentEditor.isVisible()) {
 			String text = currentEditor.getText();
 			Label label = currentEditor.getLabel();
-			SetLabelTextCommand command = new SetLabelTextCommand(this, label, text);
+			SetLabelTextCommand command = new SetLabelTextCommand(this, label, text,diagramManager.getCurrentProject());
 			execute(command);
 			currentEditor.hideEditor();
 			repaint();
