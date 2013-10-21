@@ -1318,7 +1318,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 		private static final long serialVersionUID = -9007086475434456589L;
 		private final JTabbedPane pane;
-
 		/**
 		 * Constructor for the ClosableTab class.
 		 * @param pane the parent {@link JTabbedPane}
@@ -1349,7 +1348,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			//add more space between the label and the button
 			label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 			//tab button
-			JButton button = new TabButton();
+			JButton button = new TabButton(pane);
 			add(button);
 			//add more space to the top of the component
 			setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
@@ -1361,15 +1360,16 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		private class TabButton extends JButton implements ActionListener {
 
 			private static final long serialVersionUID = -3362039507300806289L;
-
+			private JTabbedPane manager;
+			
 			/**
 			 * Constructor for the TabButton class.
 			 * */
-			public TabButton() {
+			public TabButton(JTabbedPane manager) {
 				int size = 17;
 				setPreferredSize(new Dimension(size, size));
 				setToolTipText("Close this tab"); //TODO Localize this
-
+				this.manager = manager;
 				//Make the button looks the same for all Laf's
 				setUI(new BasicButtonUI());
 				//Make it transparent
@@ -1391,6 +1391,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			 * @param e the triggered {@link ActionEvent}
 			 * */
 			public void actionPerformed(ActionEvent e) {
+				if(((DiagramManager)manager).getCurrentDiagramEditor().isSaveNeeded())
+				{
+					if (JOptionPane.showConfirmDialog(((DiagramManager)manager).getFrame(), "Your project has been modified. Save changes?","Save Project", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+						((DiagramManager)manager).saveProjectAs();
+					}
+				}
 				int i = pane.indexOfTabComponent(ClosableTab.this);
 				if (i != -1) {
 
