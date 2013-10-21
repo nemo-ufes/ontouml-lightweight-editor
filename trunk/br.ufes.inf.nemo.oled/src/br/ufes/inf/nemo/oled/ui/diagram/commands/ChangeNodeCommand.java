@@ -157,6 +157,6 @@ public class ChangeNodeCommand extends BaseDiagramCommand {
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
-		notification.notifyChange(elements, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+		notification.notifyChange(elements, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);		
 	}
 }

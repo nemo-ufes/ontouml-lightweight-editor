@@ -59,8 +59,8 @@ public class MainMenu implements ActionListener {
 		createDiagramMenu();
 		createViewMenu();		
 		createTransformationMenu();		
-		createImportMenu();
-		createExportMenu();
+		//createImportMenu();
+		//createExportMenu();
 		createHelpMenu();
 	}
 
@@ -89,7 +89,24 @@ public class MainMenu implements ActionListener {
 		createMenuItem(fileMenu, "new");
 		createMenuItem(fileMenu, "open");
 		createMenuItem(fileMenu, "save");
-		createMenuItem(fileMenu, "saveas");
+		createMenuItem(fileMenu, "saveas");		
+		fileMenu.addSeparator();
+		
+		JMenu importMenu = createMenu("Import");
+		importMenu.setText("Import from");
+		fileMenu.add(importMenu);
+		
+		createMenuItem(importMenu, "importxmi");		
+		createMenuItem(importMenu, "importecore");
+		createMenuItem(importMenu, "importocl");
+		
+		JMenu exportMenu = createMenu("Export");
+		exportMenu.setText("Export to");
+		fileMenu.add(exportMenu);
+		
+		createMenuItem(exportMenu, "exportecore");
+		createMenuItem(exportMenu, "exportocl");
+		
 		fileMenu.addSeparator();
 		createMenuItem(fileMenu, "quit");
 	}
@@ -103,6 +120,7 @@ public class MainMenu implements ActionListener {
 		createMenuItem(diagramMenu, "exportgfx");
 	}
 	
+	@SuppressWarnings("unused")
 	private void createImportMenu()
 	{
 		JMenu importMenu = createMenu("Import");
@@ -114,6 +132,7 @@ public class MainMenu implements ActionListener {
 		createMenuItem(importMenu, "importocl");
 	}
 	
+	@SuppressWarnings("unused")
 	private void createExportMenu()
 	{
 		JMenu exportMenu = createMenu("Export");
