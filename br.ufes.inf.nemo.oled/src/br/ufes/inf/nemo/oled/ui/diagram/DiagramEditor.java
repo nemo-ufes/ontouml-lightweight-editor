@@ -59,6 +59,7 @@ import br.ufes.inf.nemo.oled.draw.MoveOperation;
 import br.ufes.inf.nemo.oled.draw.MultiLineLabel;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.draw.NodeChangeListener;
+import br.ufes.inf.nemo.oled.draw.NullElement;
 import br.ufes.inf.nemo.oled.draw.RectilinearConnection;
 import br.ufes.inf.nemo.oled.draw.Scaling;
 import br.ufes.inf.nemo.oled.draw.SimpleConnection;
@@ -306,10 +307,13 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/**
 	 * Open ToolBox Menu.
 	 */
-	public void openToolBoxMenu(MouseEvent e){	
-		if (getSelectedElements().size()>0) return;
-		ToolboxPopupMenu menu = new ToolboxPopupMenu(frame);
-	    menu.show(e.getComponent(), e.getX(), e.getY());	    	
+	public void openToolBoxMenu(MouseEvent e)
+	{		
+		DiagramElement elem = diagram.getChildAt(e.getX(), e.getY());		
+		if (elem instanceof NullElement){
+			ToolboxPopupMenu menu = new ToolboxPopupMenu(frame);
+		    menu.show(e.getComponent(), e.getX(), e.getY());
+		}
 	}
 
 	// *************************************************************************
