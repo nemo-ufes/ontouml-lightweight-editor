@@ -24,7 +24,6 @@ package br.ufes.inf.nemo.oled;
 
 import java.awt.Color;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -145,6 +144,7 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
  */
 public final class Main {
 	
+	public static AppFrame frame;
 	/**
 	 * Private constructor.
 	 */
@@ -175,15 +175,19 @@ public final class Main {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					UIManager.put("TabbedPane.focus", new Color(0, 0, 0, 0));
-					JFrame frame = new AppFrame();					
+					UIManager.put("TabbedPane.focus", new Color(0, 0, 0, 0));					
+					
+					frame = new AppFrame();					
+					frame.initializeAlloyAnalyzer();				
 					frame.setLocationByPlatform(true);
 					frame.setVisible(true);
+					
 				} catch (Exception ex) {
 					ex.printStackTrace();
-				}
+				}				
 			}
 		});
+		
 	}
 
 }

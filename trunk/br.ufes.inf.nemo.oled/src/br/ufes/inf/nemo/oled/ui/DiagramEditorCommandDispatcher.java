@@ -29,10 +29,8 @@ import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
-import br.ufes.inf.nemo.oled.ui.dialog.AboutDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.AntiPatternListDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.AutoCompletionDialog;
-import br.ufes.inf.nemo.oled.ui.dialog.LicensesDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.SimulationOptionsDialog;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.MethodCall;
@@ -247,12 +245,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("SNAP_TO_GRID", new MethodCall(
 					getClass().getMethod("snapToGrid")));
 			
-			selectorMap.put("ABOUT", new MethodCall(
-					getClass().getMethod("showAbout")));
-			
-			selectorMap.put("COPYRIGHTS", new MethodCall(
-					getClass().getMethod("showCopyrights")));
-			
 			selectorMap.put("PARSE_OCL", new MethodCall(
 					getClass().getMethod("parseOCL")));
 			
@@ -354,16 +346,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void showOutputPane()
 	{
 		manager.showOutputPane();
-	}
-
-	public void showAbout()
-	{		
-		AboutDialog.open(manager.getFrame());
-	}
-	
-	public void showCopyrights()
-	{		
-		LicensesDialog.open(manager.getFrame());
 	}
 	
 	public void searchWarnings()
