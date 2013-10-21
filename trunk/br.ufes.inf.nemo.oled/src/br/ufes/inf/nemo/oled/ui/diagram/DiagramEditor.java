@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -42,6 +43,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
@@ -50,6 +52,7 @@ import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
+import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.draw.DrawingContextImpl;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.MoveOperation;
@@ -60,7 +63,6 @@ import br.ufes.inf.nemo.oled.draw.RectilinearConnection;
 import br.ufes.inf.nemo.oled.draw.Scaling;
 import br.ufes.inf.nemo.oled.draw.SimpleConnection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
-import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
@@ -87,7 +89,6 @@ import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.Command;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
-
 
 /**
  * This class represents the diagram editor. It mainly acts as the
@@ -241,10 +242,21 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 		// BaseEditor listeners
 		captionEditor.addActionListener(this);
-
-		// install Escape and Delete KeyBinding
-		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"),
-		"cancelEditing");
+		
+		/** Right Click Mouse Listener */
+		addMouseListener(new MouseAdapter()
+	    {
+	        public void mousePressed ( MouseEvent e )
+	        {	        	
+	            if (SwingUtilities.isRightMouseButton(e))
+	            {	            	     	
+	            	openToolBoxMenu(e);	                
+	            }
+	        }
+	    });					
+				
+		// install Escape KeyBinding
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"),"cancelEditing");
 		getActionMap().put("cancelEditing", new AbstractAction() {
 
 			private static final long serialVersionUID = 4266982722845577768L;
@@ -252,25 +264,24 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			/** {@inheritDoc} */
 			public void actionPerformed(ActionEvent e) { cancelEditing(); }
 		});
-		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DELETE"),
-		"deleteSelection");
-		
+				
+		// install Delete KeyBinding
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DELETE"),"deleteSelection");		
 		getActionMap().put("deleteSelection", new AbstractAction() {
 			
 			private static final long serialVersionUID = -6375878624042384546L;
+			
+			/** {@inheritDoc} */
+			public void actionPerformed(ActionEvent e) { deleteSelection(); }
+		});				
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, InputEvent.META_MASK),"deleteSelection");
+		getActionMap().put("deleteSelection", new AbstractAction() {
+					
+			private static final long serialVersionUID = -6375878624042384546L;
+		
 			/** {@inheritDoc} */
 			public void actionPerformed(ActionEvent e) { deleteSelection(); }
 		});
-				
-		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(
-				   KeyEvent.VK_BACK_SPACE, InputEvent.META_MASK),
-				"deleteSelection");
-				getActionMap().put("deleteSelection", new AbstractAction() {
-					
-					private static final long serialVersionUID = -6375878624042384546L;
-					/** {@inheritDoc} */
-					public void actionPerformed(ActionEvent e) { deleteSelection(); }
-				});
 	}
 
 	/**
@@ -290,6 +301,14 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void deleteSelection() {
 		Collection<DiagramElement> elements = getSelectedElements();
 		execute(new DeleteElementCommand(this, elements, diagram.getProject()));
+	}
+	
+	/**
+	 * Open ToolBox Menu.
+	 */
+	public void openToolBoxMenu(MouseEvent e){		
+		ToolboxPopupMenu menu = new ToolboxPopupMenu(frame);
+	    menu.show(e.getComponent(), e.getX(), e.getY());	    	
 	}
 
 	// *************************************************************************
@@ -345,7 +364,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			background = Color.WHITE;
 		}
 		clearScreen(g, bounds, background);
-		drawingContext.setGraphics2D(g2d, bounds);	
+		drawingContext.setGraphics2D(g2d, bounds);				
 		diagram.draw(drawingContext);
 		// Draw user interface specific allElements (e.g. selections)
 		if (toScreen) {
@@ -491,7 +510,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void mouseMoved(MouseEvent e) {
 		EditorMouseEvent evt = convertMouseEvent(e);
 		editorMode.mouseMoved(evt);
-		notifyCoordinateListeners();
+		notifyCoordinateListeners();		
 	}
 
 	/**

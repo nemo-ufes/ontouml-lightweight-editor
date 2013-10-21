@@ -46,7 +46,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	//TODO Remove me
 	private File projectFile;
 	
-	public DiagramEditorWrapper(DiagramEditor editor, DiagramEditorCommandDispatcher editorDispatcher)
+	public DiagramEditorWrapper(final DiagramEditor editor, DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		super(new BorderLayout());
 		this.editor = editor;		
@@ -66,13 +66,13 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		editorArea.setResizeWeight(1) ;
 		editorArea.setDividerLocation(0.5);
-		
+						
 		JScrollPane scrollpane = new JScrollPane(editor);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
 		
 		panel.add(scrollpane);
-		
+						
 		properties = new PropertyTablePanel(editor.getProject());		
 		errors = new ErrorTablePanel(editor.getProject());
 		warnings = new WarningTablePanel(editor.getProject());

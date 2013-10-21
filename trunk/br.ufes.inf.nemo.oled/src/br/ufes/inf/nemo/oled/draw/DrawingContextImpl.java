@@ -238,5 +238,4 @@ public class DrawingContextImpl implements DrawingContext {
 	public StrokeType getStrokeType() {
 		return strokeType;
 	}
-
-}
+	}

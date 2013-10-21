@@ -158,6 +158,11 @@ public class Palette extends JPanel
 		return this.name;
 	}
 
+	public PaletteElement getPalleteElement(String name)
+	{
+		return elementMap.get(name);
+	}
+	
 	public JPanel getTitle() {
 		return title;
 	}
