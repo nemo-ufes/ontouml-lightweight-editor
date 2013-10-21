@@ -72,7 +72,7 @@ public class LicensesDialog extends JDialog {
 		this.frame = frame;
 		
 		choices = new JComboBox();
-		choices.setModel(new DefaultComboBoxModel(new String[] {"OLED","Alloy", "Kodkod", "JavaCup", "SAT4J", "ZChaff", "MiniSat","AutoComplete","RSyntaxTextArea"}));
+		choices.setModel(new DefaultComboBoxModel(new String[] {"Alloy", "Kodkod", "JavaCup", "SAT4J", "ZChaff", "MiniSat","AutoComplete","RSyntaxTextArea"}));
 		choices.setPreferredSize(new Dimension(150, 20));
 		choices.addActionListener(new ActionListener() 
 		{
@@ -83,7 +83,7 @@ public class LicensesDialog extends JDialog {
        		}
 		});		
 		
-		JLabel labelSee = new JLabel("See the copyright for: ");
+		JLabel labelSee = new JLabel("See copyrights: ");
 		
 		textArea = new JTextArea();
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
@@ -118,7 +118,7 @@ public class LicensesDialog extends JDialog {
 		getContentPane().add(choicesPanel, BorderLayout.NORTH);
 		getContentPane().add(buttonsPanel, BorderLayout.SOUTH);		
 		
-		setTitle("Licenses");
+		setTitle("Licenses for OLED");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setPreferredSize(new Dimension(600, 400));
 		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
@@ -147,17 +147,12 @@ public class LicensesDialog extends JDialog {
 			if(is == null) 
 				is = new FileInputStream("src/resources/licenses/"+ value + ".txt");
 			
-			String result = new String();
-			byte[] src = new byte[1024];
-			int read = 0;
-			while ((read = is.read(src)) != -1)
-			{
-				String str = new String(src, "UTF-8");
-				result+=str;
-			}
-			is.close();
+			StringBuffer result = new StringBuffer();
+			byte[] b = new byte[is.available()];
+			is.read(b);
+	        String text = new String(b);
 			
-			textArea.setText(result);
+			textArea.setText(text);
 			textArea.setCaretPosition(0);
 			
 		}catch(IOException e){

@@ -61,20 +61,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			}
 		});
 
-		// extract alloy jar file and open alloy
-		try {			
-			AlloyExtractorUtil.alloyAnalyzerJAR();
-		} catch (IOException e) {			
-			e.printStackTrace();
-		}		
-		SwingUtilities.invokeLater(new Runnable() {
-	        public void run() 
-	        {
-	        	String[] args = {""};
-	        	analyzer = new SimpleGUICustom(args,false,"");
-	        }
-		});
-		
 		pack();
 		initSelectorMap();
 		
@@ -95,11 +81,28 @@ public class AppFrame extends JFrame implements AppCommandListener {
         });
     }
 	
+	public void initializeAlloyAnalyzer()
+	{
+		// extract alloy jar file and open alloy
+		try {			
+			AlloyExtractorUtil.alloyAnalyzerJAR();
+		} catch (IOException e) {			
+			e.printStackTrace();
+		}		
+		SwingUtilities.invokeLater(new Runnable() {
+	        public void run() 
+	        {
+	        	String[] args = {""};
+	        	analyzer = new SimpleGUICustom(args,false,"");
+	        }
+		});
+	}
+	
 	/**
 	 * Adds the main menu.
 	 */
 	private void installMainMenu() {
-		mainMenu = new MainMenu();
+		mainMenu = new MainMenu(this);
 		mainMenu.addCommandListener(this);
 		mainMenu.addCommandListener(diagramManager.getEditorDispatcher());
 		setJMenuBar(mainMenu.getMenuBar());

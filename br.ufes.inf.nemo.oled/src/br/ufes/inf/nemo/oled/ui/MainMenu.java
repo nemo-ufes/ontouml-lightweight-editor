@@ -33,6 +33,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
+import br.ufes.inf.nemo.oled.ui.dialog.AboutDialog;
+import br.ufes.inf.nemo.oled.ui.dialog.LicensesDialog;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -48,11 +50,13 @@ public class MainMenu implements ActionListener {
 	private JMenuBar menubar;
 	private List<AppCommandListener> listeners = new ArrayList<AppCommandListener>();
 	private Map<String, JMenuItem> itemMap = new HashMap<String, JMenuItem>();
-
+	private AppFrame frame;
+	
 	/**
 	 * Creates a new instance of MainMenu.
 	 */
-	public MainMenu() {
+	public MainMenu(AppFrame frame) {
+		this.frame = frame;
 		menubar = new JMenuBar();
 		createFileMenu();
 		createEditMenu();
@@ -200,8 +204,24 @@ public class MainMenu implements ActionListener {
 	private void createHelpMenu() {
 		JMenu helpMenu = createMenu("help");
 		menubar.add(helpMenu);
-		createMenuItem(helpMenu, "about");
-		createMenuItem(helpMenu, "copyrights");
+		
+		JMenuItem aboutMenuItem = createMenuItem(helpMenu, "about");
+		aboutMenuItem.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			AboutDialog.open(frame);
+       		}
+		});
+		
+		JMenuItem copyrightMenuItem = createMenuItem(helpMenu, "copyrights");
+		copyrightMenuItem.addActionListener(new ActionListener() 
+		{
+       		public void actionPerformed(ActionEvent event) 
+       		{
+       			LicensesDialog.open(frame);
+       		}
+		});
 		//createMenuItem(helpMenu, "helpcontents");
 	}
 
