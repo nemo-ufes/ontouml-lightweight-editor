@@ -108,8 +108,8 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		
 		infoTabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
 		
-		modeltree = ModelTree.getTreeFor(getProject());
-		
+		modeltree = ModelTree.getTreeFor(editor.getManager().getFrame(),getProject());
+				
 		infoTabbedPane.setPreferredSize(new Dimension(100,300));
 		
 		editorArea.add(panel, JSplitPane.TOP);		
@@ -119,8 +119,12 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		mainEditorArea.setOneTouchExpandable(true);
 		mainEditorArea.setDividerSize(7);
 		mainEditorArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-		mainEditorArea.setResizeWeight(0) ;
-				
+		mainEditorArea.setResizeWeight(1) ;
+
+		Dimension minimumSize = new Dimension(0, 0);
+		editorArea.setMinimumSize(minimumSize);
+		modeltree.setMinimumSize(minimumSize);
+		
 		mainEditorArea.add(editorArea,JSplitPane.LEFT);
 		mainEditorArea.add(modeltree, JSplitPane.RIGHT);
 		

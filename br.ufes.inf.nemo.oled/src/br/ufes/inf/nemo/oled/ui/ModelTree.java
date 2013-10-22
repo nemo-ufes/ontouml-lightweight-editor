@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,18 +44,20 @@ public class ModelTree extends JPanel{
 	private InferenceList inferences;
 	private OntoUML2AlloyOptions refOptions;
 	private OCL2AlloyOptions oclOptions;
-		
-	public ModelTree(UmlProject project)
+	private static AppFrame frame;
+	
+	public ModelTree(AppFrame appframe, UmlProject project)
 	{
 		super(new BorderLayout());
 		this.project = project;
+		frame = appframe;
 		
 		//modelAdapter.addModelListener(this);
 		//buildTree(project);
 		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
 		refparser = new OntoUMLParser(project.getModel());
-		tree = new OntoUMLTree(root,project.getModel(),refparser);
+		tree = new OntoUMLTree(frame, root,project.getModel(),refparser);
 		tree.setBorder(new EmptyBorder(2,2,2,2));
 		tree.addTreeSelectionListener(new OntoUMLTreeSelectionListener());
 		
@@ -71,15 +74,18 @@ public class ModelTree extends JPanel{
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
 				
-		add(scroll, BorderLayout.CENTER);				
+		add(scroll, BorderLayout.CENTER);	
+		
+		scroll.setPreferredSize(new Dimension(250,500));
+		setPreferredSize(new Dimension(250,500));
 	}
 	
-	public static ModelTree getTreeFor(UmlProject project) 
+	public static ModelTree getTreeFor(AppFrame frame, UmlProject project) 
 	{
 		ModelTree modelTree = treeMap.get(project);
 		if(modelTree == null)
 		{
-			modelTree = new ModelTree(project);
+			modelTree = new ModelTree(frame, project);
 			treeMap.put(project, modelTree);
 		}
 		//System.out.println("Modelo selecionado: " + modelTree.getTree().getRowCount());
@@ -88,65 +94,65 @@ public class ModelTree extends JPanel{
 	
 	public static OntoUMLParser getParserFor(UmlProject project) 
 	{		
-		return ModelTree.getTreeFor(project).refparser;
+		return ModelTree.getTreeFor(frame, project).refparser;
 	}
 	
 	public static void setParserFor(UmlProject project, OntoUMLParser refparser) 
 	{		
-		ModelTree.getTreeFor(project).refparser = refparser;
+		ModelTree.getTreeFor(frame,project).refparser = refparser;
 	}
 	
 	public static AlloySpecification getAlloySpecFor(UmlProject project) 
 	{		
-		return ModelTree.getTreeFor(project).alloySpec;
+		return ModelTree.getTreeFor(frame,project).alloySpec;
 	}
 	
 	public static void setAlloySpecFor(UmlProject project, AlloySpecification alloySpec) 
 	{		
-		ModelTree.getTreeFor(project).alloySpec = alloySpec;
+		ModelTree.getTreeFor(frame,project).alloySpec = alloySpec;
 	}
 	
 	public static OCLDocument getOCLModelFor(UmlProject project)
 	{
-		return ModelTree.getTreeFor(project).oclmodel;
+		return ModelTree.getTreeFor(frame,project).oclmodel;
 	}
 	
 	public static void setOCLOptionsFor(UmlProject project, OCL2AlloyOptions oclOptions)
 	{
-		ModelTree.getTreeFor(project).oclOptions = oclOptions;
+		ModelTree.getTreeFor(frame,project).oclOptions = oclOptions;
 	}
 	
 	public static OCL2AlloyOptions getOCLOptionsFor(UmlProject project)
 	{
-		return ModelTree.getTreeFor(project).oclOptions;
+		return ModelTree.getTreeFor(frame,project).oclOptions;
 	}
 
 	public static OntoUML2AlloyOptions getOntoUMLOptionsFor(UmlProject project)
 	{
-		return ModelTree.getTreeFor(project).refOptions;
+		return ModelTree.getTreeFor(frame,project).refOptions;
 	}
 
 	public static void setOntoUMLOptionsFor(UmlProject project, OntoUML2AlloyOptions refOptions)
 	{
-		ModelTree.getTreeFor(project).refOptions = refOptions;
+		ModelTree.getTreeFor(frame,project).refOptions = refOptions;
 	}
 	
 	public static AntiPatternList getAntiPatternListFor(UmlProject project)
 	{
-		return ModelTree.getTreeFor(project).antipatterns;
+		return ModelTree.getTreeFor(frame,project).antipatterns;
 	}
 
 	public static void setAntiPatternListFor(UmlProject project, AntiPatternList antipatterns)
 	{
-		ModelTree.getTreeFor(project).antipatterns = antipatterns;
+		ModelTree.getTreeFor(frame,project).antipatterns = antipatterns;
 	}
 	
 	public static InferenceList getInferences(UmlProject project) {
-		return ModelTree.getTreeFor(project).inferences;
+		return ModelTree.getTreeFor(frame,project).inferences;
 	}
 
 	public static void setDerivations(UmlProject project, InferenceList inferences) {
-		ModelTree.getTreeFor(project).inferences = inferences;
+		ModelTree.getTreeFor(frame,project).inferences = inferences;
 	}
 	
 	/**
@@ -154,7 +160,7 @@ public class ModelTree extends JPanel{
 	 */
 	public static void refreshModelTree(UmlProject project)
 	{
-		ModelTree modeltree = ModelTree.getTreeFor(project);
+		ModelTree modeltree = ModelTree.getTreeFor(frame,project);
 		
 		modeltree.tree.updateUI();		
 		
@@ -167,7 +173,7 @@ public class ModelTree extends JPanel{
 	 */
 	public static void updateModelTree(UmlProject project)
 	{
-		ModelTree modeltree = ModelTree.getTreeFor(project);
+		ModelTree modeltree = ModelTree.getTreeFor(frame,project);
 		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
 		OntoUMLParser refparser = new OntoUMLParser(project.getModel());
@@ -177,7 +183,7 @@ public class ModelTree extends JPanel{
 		
 		modeltree.setParser(refparser);
 		
-		modeltree.setTree(new OntoUMLTree(root,project.getModel(),refparser));
+		modeltree.setTree(new OntoUMLTree(frame, root,project.getModel(),refparser));
 		modeltree.getTree().checkElements(selected, true);			
 		modeltree.getTree().updateUI();    	
 				

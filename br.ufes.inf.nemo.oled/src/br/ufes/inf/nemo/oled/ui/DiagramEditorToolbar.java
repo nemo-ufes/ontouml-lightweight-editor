@@ -42,7 +42,7 @@ public class DiagramEditorToolbar implements ActionListener {
     toolbar.add(createButton(buttonGroup, "error"));    
    // toolbar.add(createButton(buttonGroup, "ocleditor"));    
     toolbar.addSeparator(new Dimension(20, 25));
-    toolbar.add(createButton(buttonGroup, "autoselection"));    
+    //toolbar.add(createButton(buttonGroup, "autoselection"));    
     //toolbar.add(createButton(buttonGroup, "parse"));    
     toolbar.add(createButton(buttonGroup, "verify"));
     toolbar.addSeparator(new Dimension(20, 25));
