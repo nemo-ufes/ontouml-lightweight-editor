@@ -171,4 +171,7 @@ public class Palette extends JPanel
 		return content;
 	}
 	
+	public PaletteElement getSelectedElement(){
+		return selectedElement;
+	}
 }

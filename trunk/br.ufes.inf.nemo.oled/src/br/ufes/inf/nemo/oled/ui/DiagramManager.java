@@ -125,7 +125,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	private static final long serialVersionUID = 5019191384767258996L;
 	public final AppFrame frame;
 	private DiagramEditorCommandDispatcher editorDispatcher;
-
+	public String lastOpenPath = new String();
+	public String lastSavePath = new String();
+	
 	public AppFrame getFrame()
 	{
 		return frame;
@@ -177,7 +179,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void openProject() {
 		if (canOpen()) {
-			JFileChooser fileChooser = new JFileChooser();
+			JFileChooser fileChooser = new JFileChooser(lastOpenPath);
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
 			fileChooser.setDialogTitle(getResourceString("dialog.openmodel.title"));
 			fileChooser.addChoosableFileFilter(filter);
@@ -186,6 +188,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				try {
 					File file = fileChooser.getSelectedFile();
+					lastOpenPath = file.getAbsolutePath();
 					UmlProject model = (UmlProject) ProjectReader.getInstance().readProject(file);				
 					createEditor((StructureDiagram) model.getDiagrams().get(0));
 					setModelFile(file);
@@ -285,7 +288,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Saves the project with a file chooser.
 	 */
 	public void saveProjectAs() {
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileChooser = new JFileChooser(lastSavePath);
 		fileChooser.setDialogTitle(getResourceString("dialog.saveas.title"));
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
 		fileChooser.addChoosableFileFilter(filter);
@@ -294,6 +297,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 			setModelFile(saveProjectFile(fileChooser.getSelectedFile()));
 			//updateFrameTitle(); FIXME
+			File file = fileChooser.getSelectedFile();
+			lastSavePath = file.getAbsolutePath();
 		}
 	}
 
@@ -435,7 +440,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 			oclmodel.setConstraints(path,"PATH");
 
-			getCurrentWrapper().setConstraints(oclmodel.getOCLString());
+			getCurrentWrapper().addConstraints("\n"+oclmodel.getOCLString());
 
 		} catch (IOException exception) {				
 			String msg = "An error ocurred while opening the OCL document.\n"+exception.getMessage();

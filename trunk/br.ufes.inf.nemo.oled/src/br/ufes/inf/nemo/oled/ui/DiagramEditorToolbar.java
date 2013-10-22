@@ -37,13 +37,13 @@ public class DiagramEditorToolbar implements ActionListener {
 
     //toolbar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);    
     toolbar.addSeparator(new Dimension(20, 25));
-    toolbar.add(createButton(buttonGroup, "output"));
+    //toolbar.add(createButton(buttonGroup, "output"));
     toolbar.add(createButton(buttonGroup, "warning"));
     toolbar.add(createButton(buttonGroup, "error"));    
-    toolbar.add(createButton(buttonGroup, "ocleditor"));    
+   // toolbar.add(createButton(buttonGroup, "ocleditor"));    
     toolbar.addSeparator(new Dimension(20, 25));
     toolbar.add(createButton(buttonGroup, "autoselection"));    
-    toolbar.add(createButton(buttonGroup, "parse"));    
+    //toolbar.add(createButton(buttonGroup, "parse"));    
     toolbar.add(createButton(buttonGroup, "verify"));
     toolbar.addSeparator(new Dimension(20, 25));
     toolbar.add(createButton(buttonGroup, "antipattern"));

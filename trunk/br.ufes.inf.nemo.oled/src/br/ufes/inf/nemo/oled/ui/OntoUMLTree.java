@@ -7,6 +7,10 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -16,8 +20,11 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.eclipse.emf.common.util.EList;
@@ -36,6 +43,9 @@ import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 public class OntoUMLTree extends CheckboxTree {
 
 	private static final long serialVersionUID = 1L;
+	public DefaultMutableTreeNode rootNode;
+	private DefaultTreeModel treeModel;
+	private Toolkit toolkit = Toolkit.getDefaultToolkit();
 	
 	/**
 	 * Constructor.
@@ -52,6 +62,10 @@ public class OntoUMLTree extends CheckboxTree {
 	{
 		super(rootNode);
 		
+		this.rootNode = rootNode;
+		this.treeModel = new DefaultTreeModel(rootNode);
+		setModel(treeModel);
+		
 		getCheckingModel().setCheckingMode(TreeCheckingModel.CheckingMode.PROPAGATE);
 		
 		OntoUMLTreeCellRenderer ontoCellRenderer = new OntoUMLTreeCellRenderer();
@@ -63,9 +77,98 @@ public class OntoUMLTree extends CheckboxTree {
 		
 		addCheckingPath(new TreePath(rootNode.getPath()));		
 		expandPath(new TreePath(rootNode.getPath()));
+		
+		/** Right Click Mouse Listener */
+		addMouseListener(new MouseAdapter()
+	    {
+	        public void mouseClicked ( MouseEvent e )
+	        {	        	
+	            if (SwingUtilities.isRightMouseButton(e))
+	            {	            	
+	            	TreePath path = getPathForLocation ( e.getX (), e.getY () );
+	            	setSelectionPath(path);
+	                Rectangle pathBounds = getUI().getPathBounds(OntoUMLTree.this, path);
+	                if (pathBounds != null && pathBounds.contains(e.getX (),e.getY()))
+	                {	                	
+	                	doPopup(e,OntoUMLTree.this);
+	                }
+	            }
+	        }
+	    });	
 	
 	}	
 	
+	/** 
+	 * Remove all nodes except the root node. 
+	 */
+    public void clear() 
+    {
+        rootNode.removeAllChildren();
+        treeModel.reload();
+    }    
+    	
+	/**
+	 * Show the Popup Menu
+	 */
+	public void doPopup (MouseEvent e, OntoUMLTree tree)
+	{
+		/*TreePath path = */getPathForLocation(e.getX(), e.getY());
+		TreePopupMenu menu = new TreePopupMenu(tree);
+	    menu.show(e.getComponent(), e.getX(), e.getY());	
+	}
+	
+	 /** Remove the currently selected node. */
+    public void removeCurrentNode() 
+    {
+        TreePath currentSelection = getSelectionPath();
+        if (currentSelection != null) 
+        {
+            DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode)(currentSelection.getLastPathComponent());
+            MutableTreeNode parent = (MutableTreeNode)(currentNode.getParent());
+            if (parent != null) 
+            {
+                treeModel.removeNodeFromParent(currentNode);
+                return;
+            }
+        }  
+        // Either there was no selection, or the root was selected.
+        toolkit.beep();
+    }
+    
+    /** Add child to the currently selected node. */
+    public DefaultMutableTreeNode addObject(Object child) 
+    {
+        DefaultMutableTreeNode parentNode = null;
+        TreePath parentPath = getSelectionPath(); 
+        if (parentPath == null) 
+        {
+            parentNode = rootNode;
+        } else {
+            parentNode = (DefaultMutableTreeNode)(parentPath.getLastPathComponent());
+        } 
+        return addObject(parentNode, child, true);
+    }
+    
+    public DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent, Object child) 
+    {
+    	return addObject(parent, child, false);
+    }
+    
+    public DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent, Object child, boolean shouldBeVisible) 
+    {
+		DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(child);		
+		
+		if (parent == null) parent = rootNode;		
+		
+		//It is key to invoke this on the TreeModel, and NOT DefaultMutableTreeNode
+		treeModel.insertNodeInto(childNode, parent, parent.getChildCount());
+		
+		//Make sure the user can see the lovely new node.
+		if (shouldBeVisible) scrollPathToVisible(new TreePath(childNode.getPath()));
+		
+		return childNode;
+    }
+    
 	/**
 	 * Auxiliary function. It runs the Elements from the model creating the tree nodes.
 	 */	
@@ -222,6 +325,7 @@ public class OntoUMLTree extends CheckboxTree {
     		if (selected){
     			label.setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHT));
     			//label.setBackground(UIManager.getColor("Tree.selectionBackground"));
+    			//label.setForeground(UIManager.getColor(Color.WHITE));
     			//label.setBackground(UIManager.getColor("Tree.textBackground"));    			
     		}else{
     			label.setBackground(UIManager.getColor("Tree.textBackground"));    			

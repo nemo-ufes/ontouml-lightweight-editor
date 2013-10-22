@@ -77,7 +77,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		errors = new ErrorTablePanel(editor.getProject());
 		warnings = new WarningTablePanel(editor.getProject());
 		outputPane = new OutputPane();
-		ocleditor = new OCLEditorPanel();
+		ocleditor = new OCLEditorPanel(editor.getManager().getFrame());
 		
 		infoTabbedPane = new JTabbedPane();
 		infoTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));

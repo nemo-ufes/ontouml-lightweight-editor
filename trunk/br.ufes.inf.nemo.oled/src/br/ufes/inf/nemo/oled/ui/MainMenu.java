@@ -102,14 +102,14 @@ public class MainMenu implements ActionListener {
 		
 		createMenuItem(importMenu, "importxmi");		
 		createMenuItem(importMenu, "importecore");
-		createMenuItem(importMenu, "importocl");
+		//createMenuItem(importMenu, "importocl");
 		
 		JMenu exportMenu = createMenu("Export");
 		exportMenu.setText("Export to");
 		fileMenu.add(exportMenu);
 		
 		createMenuItem(exportMenu, "exportecore");
-		createMenuItem(exportMenu, "exportocl");
+		//createMenuItem(exportMenu, "exportocl");
 		
 		fileMenu.addSeparator();
 		createMenuItem(fileMenu, "quit");

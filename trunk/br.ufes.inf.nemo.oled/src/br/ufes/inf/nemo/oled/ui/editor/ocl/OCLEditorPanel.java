@@ -4,8 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
@@ -23,6 +27,7 @@ import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import br.ufes.inf.nemo.oled.ui.AppFrame;
+import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 
 /**
  * @author John Guerson
@@ -39,7 +44,9 @@ public class OCLEditorPanel extends JPanel {
 	public AutoCompletion ac;
 	public RTextScrollPane scrollPane;
 	public DefaultCompletionProvider provider;
-	
+	public JMenuItem saveMenuItem;
+	public JMenuItem openMenuItem;
+	public JMenuItem parserMenuItem;
    /**
     * Constructor
     * 
@@ -67,7 +74,34 @@ public class OCLEditorPanel extends JPanel {
 		textArea.setBackground(new Color(255, 255, 255));				
 		setTheme(textArea,"/br/ufes/inf/nemo/oled/ui/editor/ocl/EclipseTheme.xml");
 		//textArea.setCurrentLineHighlightColor(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));		
-						
+		
+		parserMenuItem = new JMenuItem("Parse",new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/check.png")));
+		
+		openMenuItem = new JMenuItem("Open OCL");
+		saveMenuItem = new JMenuItem("Save As...");
+		textArea.getPopupMenu().add(parserMenuItem);
+		textArea.getPopupMenu().add(openMenuItem);
+		textArea.getPopupMenu().add(saveMenuItem);
+				
+		saveMenuItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.getDiagramManager().exportOCL();
+			}
+		});
+		openMenuItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.getDiagramManager().importOCL();
+			}
+		});
+		parserMenuItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.getDiagramManager().parseOCL(true);
+			}
+		});
+		
 		tokenMaker = new OCLTokenMaker();	    
 	    ((RSyntaxDocument)textArea.getDocument()).setSyntaxStyle(tokenMaker);
 	    
