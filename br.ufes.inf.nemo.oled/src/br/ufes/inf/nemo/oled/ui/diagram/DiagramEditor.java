@@ -247,13 +247,14 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		/** Right Click Mouse Listener */
 		addMouseListener(new MouseAdapter()
 	    {
-	        public void mousePressed ( MouseEvent e )
-	        {	        	
-	            if (SwingUtilities.isRightMouseButton(e))
+			@Override
+			public void mouseClicked(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isRightMouseButton(e))
 	            {	            	     	
 	            	openToolBoxMenu(e);	                
 	            }
-	        }
+			}	       
 	    });					
 				
 		// install Escape KeyBinding
@@ -313,7 +314,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		if (elem instanceof NullElement){
 			ToolboxPopupMenu menu = new ToolboxPopupMenu(frame);
 		    menu.show(e.getComponent(), e.getX(), e.getY());
-		}
+		}		
 	}
 
 	// *************************************************************************
