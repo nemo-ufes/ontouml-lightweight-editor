@@ -384,7 +384,6 @@ public class MapperEA implements Mapper {
             	}
         	}
         	
-//    	} else if (getType(elem) == ElementType.ASSOCIATION || getType(elem) == ElementType.ASSOCIATIONCLASS) {
     	} else if (getType(elem) == ElementType.ASSOCIATION)
     	{
     		List<Element> memberEndsAux = XMLDOMUtil.getElementChildsByTagName(elem, "memberEnd");
