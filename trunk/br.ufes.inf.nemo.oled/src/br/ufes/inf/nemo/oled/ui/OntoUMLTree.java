@@ -46,6 +46,7 @@ public class OntoUMLTree extends CheckboxTree {
 	public DefaultMutableTreeNode rootNode;
 	private DefaultTreeModel treeModel;
 	private Toolkit toolkit = Toolkit.getDefaultToolkit();
+	public AppFrame frame;
 	
 	/**
 	 * Constructor.
@@ -58,10 +59,11 @@ public class OntoUMLTree extends CheckboxTree {
 	 * @param refmodel
 	 * @param refparser
 	 */
-	public OntoUMLTree (DefaultMutableTreeNode rootNode, RefOntoUML.Package refmodel, OntoUMLParser refparser)
+	public OntoUMLTree (AppFrame frame, DefaultMutableTreeNode rootNode, RefOntoUML.Package refmodel, OntoUMLParser refparser)
 	{
 		super(rootNode);
 		
+		this.frame = frame;
 		this.rootNode = rootNode;
 		this.treeModel = new DefaultTreeModel(rootNode);
 		setModel(treeModel);
@@ -113,7 +115,7 @@ public class OntoUMLTree extends CheckboxTree {
 	public void doPopup (MouseEvent e, OntoUMLTree tree)
 	{
 		/*TreePath path = */getPathForLocation(e.getX(), e.getY());
-		TreePopupMenu menu = new TreePopupMenu(tree);
+		TreePopupMenu menu = new TreePopupMenu(frame, tree);
 	    menu.show(e.getComponent(), e.getX(), e.getY());	
 	}
 	

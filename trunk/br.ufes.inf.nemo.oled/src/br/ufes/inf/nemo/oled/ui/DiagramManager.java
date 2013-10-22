@@ -904,10 +904,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/**
 	 * Auto complete selection in the model
 	 */
-	public static String autoCompleteSelection(int option, UmlProject project)
+	public String autoCompleteSelection(int option, UmlProject project)
 	{		
 		OntoUMLParser refparser = ModelTree.getParserFor(project);
-		ModelTree modeltree = ModelTree.getTreeFor(project);
+		ModelTree modeltree = ModelTree.getTreeFor(frame, project);
 
 		if (refparser==null) { return ""; }	
 

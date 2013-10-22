@@ -90,7 +90,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
         kindItem.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
-       		{
+       		{       			
        			frame.getToolManager().getOpenPalette().getPalleteElement("kind").setSelected(true);
        		}
 		});
