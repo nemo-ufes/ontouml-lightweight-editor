@@ -290,11 +290,14 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Cancels the current edit action.
 	 */
 	private void cancelEditing() {
+		
 		if (captionEditor.isVisible()) {
 			captionEditor.hideEditor();
 		}
 		editorMode.cancel();
 		redraw();
+		
+		//if (frame.getToolManager().getOpenPalette().getSelectedElement()!=null) frame.getToolManager().getOpenPalette().getSelectedElement().setSelected(false);
 	}
 
 	/**
