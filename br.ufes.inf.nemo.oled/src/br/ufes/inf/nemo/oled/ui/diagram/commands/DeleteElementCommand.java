@@ -100,6 +100,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 
 		for (DiagramElement element : elements) {
 			
+			
 			if (element instanceof Connection) {
 				detachConnectionFromNodes((Connection) element);
 			}
@@ -114,7 +115,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			if(element instanceof ClassElement)
 			{
 				ClassElement classElement = (ClassElement) element;
-			
+				
 				DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), classElement.getClassifier());
 				project.getEditingDomain().getCommandStack().execute(cmd);
 			}
@@ -122,7 +123,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			else if(element instanceof BaseConnection)
 			{
 				BaseConnection connection = (BaseConnection) element;
-			
+				
 				DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), connection.getRelationship());
 				project.getEditingDomain().getCommandStack().execute(cmd);
 			}

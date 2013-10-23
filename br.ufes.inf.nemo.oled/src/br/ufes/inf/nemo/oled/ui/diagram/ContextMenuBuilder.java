@@ -209,7 +209,7 @@ public class ContextMenuBuilder implements ActionListener {
 	 *            the menu item name
 	 * @return the JMenuItem
 	 */
-	private JMenuItem createMenuItem(JComponent menu, String name) {
+	public JMenuItem createMenuItem(JComponent menu, String name) {
 		String prefix = "menuitem." + name;
 		JMenuItem menuitem = new JMenuItem(getResourceString(prefix + ".name"));
 
