@@ -297,6 +297,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		editorMode.cancel();
 		redraw();
 		
+		// trying to cancel the drop action at the creation of an element in the diagram.. fail!
+		//selectionHandler.getSelection().cancelDragging();
 		//if (frame.getToolManager().getOpenPalette().getSelectedElement()!=null) frame.getToolManager().getOpenPalette().getSelectedElement().setSelected(false);
 	}
 

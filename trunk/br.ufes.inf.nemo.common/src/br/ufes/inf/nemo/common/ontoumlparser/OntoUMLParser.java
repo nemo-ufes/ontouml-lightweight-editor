@@ -32,6 +32,7 @@ import RefOntoUML.PackageableElement;
 import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
+import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
@@ -1102,4 +1103,23 @@ public class OntoUMLParser {
 		return genSets;
 	}
 	
+	/**
+	 *	Return all (selected and non selected) direct relationships (generalizations and associations) of the classifier c  
+	 */
+	public ArrayList<Relationship> getSelectedAndNonSelectedRelationshipsOf(EObject eObject)
+	{
+		ArrayList<Relationship> relations = new ArrayList<>();		
+		for (EObject a : elementsHash.keySet()) {
+			if (a instanceof Generalization){
+				Generalization g = (Generalization)a;
+				if(g.getGeneral().equals(eObject) || g.getSpecific().equals(eObject)) relations.add(g);						
+			}else if (a instanceof Association){
+				Association assoc = (Association)a;
+				RefOntoUML.Type Src = assoc.getMemberEnd().get(0).getType();
+				RefOntoUML.Type Tgt = assoc.getMemberEnd().get(1).getType();
+				if (Src !=null && Src.equals(eObject) || Tgt!=null && Tgt.equals(eObject)) relations.add(assoc);					
+			}
+		}
+		return relations;
+	}
 }

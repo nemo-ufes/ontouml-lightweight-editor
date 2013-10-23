@@ -15,16 +15,16 @@ public class TreePopupMenu extends JPopupMenu {
 	public JMenuItem deleteItem = new JMenuItem("Delete");
 	public JMenuItem autoCompleteItem = new JMenuItem("Complete selection...");
 	
-    public TreePopupMenu(final AppFrame frame, OntoUMLTree tree)
+    public TreePopupMenu(final AppFrame frame, final OntoUMLTree tree)
     {           	
     	if (((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).isRoot()){
 	    	add(autoCompleteItem);
-	    	//autoCompleteItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion.png")));
 	    	addSeparator();
 	    	
 	    	autoCompleteItem.addActionListener(new ActionListener() {				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					
 					frame.getDiagramManager().getEditorDispatcher().autoComplete();
 				}
 			});
@@ -32,6 +32,16 @@ public class TreePopupMenu extends JPopupMenu {
     	
     	add(deleteItem);
     	deleteItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete.png")));
-    	deleteItem.setEnabled(false);
+    	    	
+    	deleteItem.addActionListener(new ActionListener() {				
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				OntoUMLElement ontoElem = (OntoUMLElement) ((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).getUserObject();
+				frame.getDiagramManager().deleteElementOfProject((RefOntoUML.Element)ontoElem.getElement());				
+			}
+		});
     }
+    
+    
 }

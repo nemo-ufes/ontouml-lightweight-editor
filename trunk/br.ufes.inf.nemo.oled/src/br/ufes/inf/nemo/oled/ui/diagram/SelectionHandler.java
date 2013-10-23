@@ -71,6 +71,10 @@ public class SelectionHandler implements EditorMode {
 		selector.setDiagram(editor.getDiagram());
 	}
 
+	public Selection getSelection() {
+		return selection;
+	}
+
 	/**
 	 * Deselects all allElements.
 	 */
@@ -155,6 +159,10 @@ public class SelectionHandler implements EditorMode {
 				menu.show(editor, e.getMouseEvent().getX(), e.getMouseEvent().getY());
 			}
 		}
+	}
+
+	public ContextMenuBuilder getMenubuilder() {
+		return menubuilder;
 	}
 
 	/**
