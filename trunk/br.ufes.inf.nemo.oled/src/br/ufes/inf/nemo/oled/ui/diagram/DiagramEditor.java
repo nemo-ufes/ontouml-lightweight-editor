@@ -42,6 +42,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.UndoableEditEvent;
@@ -68,6 +69,8 @@ import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.modellingassistant.core.LogAssistant;
+import br.ufes.inf.nemo.oled.modellingassistant.core.ModellingAssistant;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.ui.BaseEditor;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
@@ -118,6 +121,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private transient List<UndoableEditListener> editListeners = new ArrayList<UndoableEditListener>();
 	private transient Scaling scaling = Scaling.SCALING_100;
 
+	private transient ModellingAssistant assistant;
+
+
 	/**
 	 * Reset the transient values for serialization.
 	 * @param stream an ObjectInputStream
@@ -125,7 +131,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * @throws ClassNotFoundException if class was not found
 	 */
 	private void readObject(ObjectInputStream stream)
-	throws IOException, ClassNotFoundException {
+			throws IOException, ClassNotFoundException {
 		initEditorMembers();
 	}
 
@@ -147,7 +153,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * used for debug output.
 	 */
 	private List<EditorStateListener> editorListeners =
-		new ArrayList<EditorStateListener>();
+			new ArrayList<EditorStateListener>();
 
 	/**
 	 * To edit the captions in the diagram.
@@ -166,7 +172,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private AppFrame frame;
 
 	private DiagramManager diagramManager;
-	
+
 	public DiagramManager getManager() {
 		return diagramManager;
 	}
@@ -192,6 +198,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		this.diagram.addNodeChangeListener(this);
 		initEditorMembers();
 
+		assistant = new ModellingAssistant(this);
+
 		// Make sure the this component has no layout diagramManager, is opaque and has
 		// no double buffer
 		setLayout(null);
@@ -213,7 +221,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	{
 		return diagram.getProject();
 	}
-	
+
 	/**
 	 * Adds an EditorStateListener.
 	 * @param l a listener
@@ -230,7 +238,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		setPreferredSize(new Dimension(
 				(int) (diagram.getSize().getWidth() + MARGIN_RIGHT + MARGIN_LEFT + ADDSCROLL_HORIZONTAL),
 				(int) (diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL)));
-		
+
 		invalidate();
 	}
 
@@ -270,7 +278,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		// install Delete KeyBinding
 		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DELETE"),"deleteSelection");		
 		getActionMap().put("deleteSelection", new AbstractAction() {
-			
+
 			private static final long serialVersionUID = -6375878624042384546L;
 			
 			/** {@inheritDoc} */
@@ -381,7 +389,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		if (toScreen) {
 			editorMode.draw(drawingContext);
 		}
-				
+
 		restoreRenderingHints(g2d);
 		diagram.setGridVisible(gridVisible);
 	}
@@ -456,7 +464,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		if (multilineEditor.isVisible()) {
 			currentEditor = multilineEditor;
 		}
-		
+
 		//O problema est� aqui. � necess�rio veirificar o modo do editor
 		if (currentEditor != null && currentEditor.isVisible()) {
 			String text = currentEditor.getText();
@@ -645,7 +653,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		creationHandler.setElementType(elementType);
 		editorMode = creationHandler;
 	}
-	
+
 	/**
 	 * Switches the editor into connection creation mode.
 	 * @param relationType the RelationType to create
@@ -770,19 +778,19 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * @param command the command to run
 	 */
 	public void execute(Command command) {
-		
+
 		//DeleteCommands may delete elements which must cascade the deletion to others. 
 		//It is the case for Classes and associations and generalizations connected to them.
 		if (command instanceof DeleteElementCommand){
-			
+
 			DeleteElementCommand delete = (DeleteElementCommand) command;
 			for (DiagramElement elem : delete.getElements()) {
-				
+
 				if(elem instanceof Node){
-					
+
 					Collection<DiagramElement> dependencies = new ArrayList<>();
 					dependencies.addAll(((Node)elem).getConnections());
-					
+
 					for (DiagramElement diagramElement : dependencies) {
 						Collection<DiagramElement> removeList = new ArrayList<>();
 						removeList.add(diagramElement);
@@ -791,18 +799,23 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 				}
 			}
 		}
-		
+
+
+
+		//
+
+
 		UndoableEditEvent event = new UndoableEditEvent(this, command);
 		for (UndoableEditListener l : editListeners) {
 			l.undoableEditHappened(event);
 		}
-		
+
 		// We need to run() after notifying the UndoManager in order to ensure
 		// correct menu behaviour
 		command.run();
-		
+
 		diagramManager.updateUI();
-		
+
 	}
 
 	/*
@@ -837,20 +850,20 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	// *************************************************************************
 	// ***** ModelNotification
 	// *********************************
-	
+
 	public void notifyChange(List<DiagramElement> elements, ChangeType changeType, NotificationType notificationType)
 	{
 		editorMode.stateChanged();
-		
+
 		for (EditorStateListener l : editorListeners) {
 			l.stateChanged(this, changeType);
 		}
-		
+
 		repaint();
-		
+
 		if(changeType == ChangeType.ELEMENTS_REMOVED || (changeType == ChangeType.ELEMENTS_ADDED && notificationType == NotificationType.UNDO))
 			selectionHandler.elementRemoved(elements);
-		
+
 		//In case of the three commands  
 		if(changeType == ChangeType.ELEMENTS_ADDED || changeType == ChangeType.ELEMENTS_REMOVED || changeType == ChangeType.LABEL_TEXT_SET || changeType == ChangeType.CONNECTION_NAVEGABILITY_SET)
 		{
@@ -858,63 +871,68 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 
 		diagram.setSaveNeeded(true);		
-		
+
 		showStatus(elements, changeType, notificationType);
+
+		assistant.notifyChange(elements, changeType, notificationType);
 	}
+
+
+
 
 	private void showStatus(List<DiagramElement> elements, ChangeType commandType, NotificationType notificationType)
 	{
-	
+
 		StringBuilder sb = new StringBuilder();
-		
+
 		if(notificationType == NotificationType.UNDO)
 		{
 			sb.append("undo");
 		}
-		
+
 		else if (notificationType == NotificationType.REDO)
 		{
 			sb.append("redo");
 		}
-		
+
 		switch (commandType) {
-			case ELEMENTS_ADDED: 
-				if(notificationType == NotificationType.DO) sb.append("added"); else sb.append(" add");
-				break;
-			case ELEMENTS_REMOVED:
-				if(notificationType == NotificationType.DO) sb.append("removed"); else sb.append(" remove");
-				break;
-			case ELEMENTS_MOVED:
-				if(notificationType == NotificationType.DO) sb.append("moved"); else sb.append(" move");
-				break;
-			case ELEMENTS_RESIZED:
-				if(notificationType == NotificationType.DO) sb.append("resized"); else sb.append(" resize");
-				break;
-			case CONNECTION_NAVEGABILITY_SET:
-				if(notificationType == NotificationType.DO) sb.append("navegability set"); else sb.append(" set navegability");
-				break;
-			case CONNECTION_TYPE_CONVERTED:
-				if(notificationType == NotificationType.DO) sb.append("connnection type changed"); else sb.append(" change connnection type");
-				break;
-			case CONNECTION_POINT_EDITED:
-				if(notificationType == NotificationType.DO) sb.append("connection point changed"); else sb.append(" change connnection point");
-				break;
-			case CONNECTION_POINTS_RESET:
-				if(notificationType == NotificationType.DO) sb.append("connection points reset"); else sb.append(" reset connection points");
-				break;
-			case LABEL_TEXT_SET:
-				if(notificationType == NotificationType.DO) sb.append("label text set"); else sb.append(" set label text");
-				break;
-			default:
-				break;	
+		case ELEMENTS_ADDED: 
+			if(notificationType == NotificationType.DO) sb.append("added"); else sb.append(" add");
+			break;
+		case ELEMENTS_REMOVED:
+			if(notificationType == NotificationType.DO) sb.append("removed"); else sb.append(" remove");
+			break;
+		case ELEMENTS_MOVED:
+			if(notificationType == NotificationType.DO) sb.append("moved"); else sb.append(" move");
+			break;
+		case ELEMENTS_RESIZED:
+			if(notificationType == NotificationType.DO) sb.append("resized"); else sb.append(" resize");
+			break;
+		case CONNECTION_NAVEGABILITY_SET:
+			if(notificationType == NotificationType.DO) sb.append("navegability set"); else sb.append(" set navegability");
+			break;
+		case CONNECTION_TYPE_CONVERTED:
+			if(notificationType == NotificationType.DO) sb.append("connnection type changed"); else sb.append(" change connnection type");
+			break;
+		case CONNECTION_POINT_EDITED:
+			if(notificationType == NotificationType.DO) sb.append("connection point changed"); else sb.append(" change connnection point");
+			break;
+		case CONNECTION_POINTS_RESET:
+			if(notificationType == NotificationType.DO) sb.append("connection points reset"); else sb.append(" reset connection points");
+			break;
+		case LABEL_TEXT_SET:
+			if(notificationType == NotificationType.DO) sb.append("label text set"); else sb.append(" set label text");
+			break;
+		default:
+			break;	
 		}
 
 		sb.append(" : ");
-		
+
 		for (int i = 0; i < elements.size(); i++) {
-			
+
 			DiagramElement element = elements.get(i);
-			
+
 			if(element instanceof ClassElement)
 				sb.append(ModelHelper.handleName(((ClassElement)element).getClassifier()) + (i < elements.size()-1 ? ", " : ""));
 			else if(element instanceof BaseConnection)
@@ -922,14 +940,17 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			else if (element instanceof SimpleLabel || element instanceof AssociationLabel)
 				sb.append(((Label) element).getSource().getLabelText());
 		}
-		
+
+		//For modelling assistant
+		LogAssistant.getInstance().addLogAction(capitalize(sb.toString()));
+
 		frame.showStatus(capitalize(sb.toString()));
 	}
-	
+
 	private String capitalize(String s) {
-        if (s.length() == 0) return s;
-        return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
-    }
+		if (s.length() == 0) return s;
+		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+	}
 
 
 	// *************************************************************************
@@ -1015,11 +1036,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void requestFocusInEditor() {
 		diagramManager.requestFocus();		
 	}
-	
+
 	public DiagramManager getDiagramManager() {
 		return diagramManager;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1027,7 +1048,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	{
 		return EditorNature.ONTOUML;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1039,7 +1060,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 	@Override
 	public void dispose() {
-		
-	}
 
+	}
 }

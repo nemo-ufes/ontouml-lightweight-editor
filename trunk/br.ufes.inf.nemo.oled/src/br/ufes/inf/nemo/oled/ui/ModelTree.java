@@ -23,6 +23,7 @@ import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.model.InferenceList;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.modellingassistant.core.ModellingAssistant;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 
@@ -70,6 +71,8 @@ public class ModelTree extends JPanel{
 		refOptions = new OntoUML2AlloyOptions();
 		antipatterns = new AntiPatternList();
 		inferences = new InferenceList();
+		
+		
 		
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
@@ -151,6 +154,7 @@ public class ModelTree extends JPanel{
 		return ModelTree.getTreeFor(frame,project).inferences;
 	}
 
+	
 	public static void setDerivations(UmlProject project, InferenceList inferences) {
 		ModelTree.getTreeFor(frame,project).inferences = inferences;
 	}

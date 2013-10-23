@@ -33,6 +33,9 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	private transient StatusBar statusBar;
 	private transient Map<String, MethodCall> selectorMap = new HashMap<String, MethodCall>();
 	private transient SimpleGUICustom analyzer;
+	
+	//For modelling assistant
+	private static transient AppFrame instance;
 
 	/**
 	 * Default constructor.
@@ -64,7 +67,10 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		pack();
 		initSelectorMap();
 		
-		restoreDefaults();		
+		restoreDefaults();
+		
+		//for modelling assistant
+		instance = this;
 	}
 	
 	/** Restore default sizes of the split panes. */
@@ -429,6 +435,15 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public SimpleGUICustom getAlloyAnalyzer()
 	{
 		return analyzer;
+	}
+	
+	/**
+	 * Return a current instance of AppFrame. 
+	 * It s used for Modelling Instance project.
+	 * @return current AppFrame instance 
+	 */
+	public static AppFrame getInstance(){
+		return instance;
 	}
 	
 }

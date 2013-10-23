@@ -47,7 +47,7 @@ public abstract class AbstractConnection implements Connection,
 	private CompositeNode parent;
 	private boolean isValid;
 	private boolean isDashed;
-	private List<Point2D> points;
+	private List<Point2D> points = new ArrayList<Point2D>();
 
 	/**
 	 * {@inheritDoc}
