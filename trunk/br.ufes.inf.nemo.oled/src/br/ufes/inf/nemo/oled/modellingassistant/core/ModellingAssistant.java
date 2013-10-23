@@ -2,26 +2,14 @@ package br.ufes.inf.nemo.oled.modellingassistant.core;
 
 import java.util.List;
 
-import RefOntoUML.Classifier;
-import RefOntoUML.NamedElement;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.model.ElementType;
-import br.ufes.inf.nemo.oled.model.RelationType;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
-import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
-import br.ufes.inf.nemo.oled.umldraw.shared.UmlDiagramElement;
-import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
-import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 public class ModellingAssistant implements DiagramNotification {
+	@SuppressWarnings("unused")
 	private ManagerDesignPatter managerdp = new ManagerDesignPatter();
+	@SuppressWarnings("unused")
 	private DiagramEditor editor;
 
 

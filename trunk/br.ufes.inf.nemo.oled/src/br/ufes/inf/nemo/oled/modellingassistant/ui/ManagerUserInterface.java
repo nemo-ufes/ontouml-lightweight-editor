@@ -4,7 +4,6 @@ import java.text.Normalizer;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import RefOntoUML.NamedElement;

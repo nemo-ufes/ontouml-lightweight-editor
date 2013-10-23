@@ -42,7 +42,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.swing.AbstractAction;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.UndoableEditEvent;

@@ -1,39 +1,19 @@
 package br.ufes.inf.nemo.oled.modellingassistant.core;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
-import org.eclipse.emf.edit.command.AddCommand;
-
-import RefOntoUML.Classifier;
 import RefOntoUML.NamedElement;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.draw.Node;
-import br.ufes.inf.nemo.oled.model.ElementType;
-import br.ufes.inf.nemo.oled.model.RelationType;
-import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.modellingassistant.ui.ManagerUserInterface;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
-import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
-import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
-import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
-import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
-import br.ufes.inf.nemo.oled.util.AppCommandListener;
 
 public class ManagerDesignPatter {
 	private ManagerUserInterface managerui = new ManagerUserInterface();
 	private static OntoUMLParser parser;
 	public RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
+	@SuppressWarnings("unused")
 	private static NamedElement currentClassifier;
 	private static ManagerDesignPatter instance = new ManagerDesignPatter();
 	

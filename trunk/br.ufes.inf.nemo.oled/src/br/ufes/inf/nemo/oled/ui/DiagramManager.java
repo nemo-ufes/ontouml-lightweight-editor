@@ -83,7 +83,6 @@ import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.modellingassistant.core.ModellingAssistant;
 import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.antipattern.AntiPatternListPane;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
