@@ -390,7 +390,8 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 		MappingTypeComboItem rulesItem = new MappingTypeComboItem();
 		rulesItem.setDisplayName("OntoUML2OWL+SWRL");
 		rulesItem.setValue("RULES");
-				
+		rulesItem.setDescription(ApplicationResources.getInstance().getString("dialog.owlsettings.ontouml2owl"));
+		
 		MappingTypeComboItem reificationItem = new MappingTypeComboItem();
 		reificationItem.setDisplayName("Reification");
 		reificationItem.setValue("REIFICATION");

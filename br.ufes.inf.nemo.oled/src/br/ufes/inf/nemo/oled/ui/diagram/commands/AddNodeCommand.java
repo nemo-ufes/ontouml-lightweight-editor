@@ -124,6 +124,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		
 		
 		//FIXME every modification creates a new tree
+		ModelTree.updateModelTree(project);		
 		ModelTree.getParserFor(project).addElement(((ClassElement)element).getClassifier());
 		ModelTree.updateModelTree(project);		
 	}

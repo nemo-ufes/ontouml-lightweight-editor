@@ -83,6 +83,7 @@ import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.modellingassistant.core.ModellingAssistant;
 import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.antipattern.AntiPatternListPane;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
@@ -148,7 +149,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public DiagramManager(final AppFrame frame) {
 		super();
 		this.frame = frame;
-
+		
 		editorDispatcher = new DiagramEditorCommandDispatcher(this,frame);
 
 		//When the user selects a tab show the model tree in the tool manager 
@@ -537,7 +538,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		editor.addEditorStateListener(this);
 		editor.addSelectionListener(this);
 		editor.addAppCommandListener(editorDispatcher);
-
+		
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
 		final Component comp = this.add(diagram.getLabelText(), wrapper);
