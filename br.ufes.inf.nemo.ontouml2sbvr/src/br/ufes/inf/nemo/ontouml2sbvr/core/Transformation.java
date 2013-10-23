@@ -34,7 +34,8 @@ public class Transformation
 		
 		myfile.Done();
 	}
-		
+// Esta é a versão originam. Foi alterada para fazer funcionar para Packages
+	// Victor Amorim e Vinicius Sobral
 //	public void Tree (Package p)
 //	{
 //		// Pre Process all classes
