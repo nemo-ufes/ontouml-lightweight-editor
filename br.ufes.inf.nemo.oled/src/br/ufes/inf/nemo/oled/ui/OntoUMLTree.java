@@ -155,6 +155,10 @@ public class OntoUMLTree extends CheckboxTree {
 		return childNode;
     }
     
+	public DefaultMutableTreeNode getRootNode() {
+		return rootNode;
+	}
+
 	/**
 	 * Auxiliary function. It runs the Elements from the model creating the tree nodes.
 	 */	
