@@ -132,6 +132,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	private DiagramEditorCommandDispatcher editorDispatcher;
 	public String lastOpenPath = new String();
 	public String lastSavePath = new String();
+	public String lastImportEAPath = new String();
+	public String lastImportEcorePath = new String();
+	public String lastExportEcorePath = new String();
 	
 	public AppFrame getFrame()
 	{
@@ -380,7 +383,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void exportEcore() {
 		if(getCurrentEditor() != null)
 		{
-			JFileChooser fileChooser = new JFileChooser();
+			JFileChooser fileChooser = new JFileChooser(lastExportEcorePath);
 			fileChooser.setDialogTitle(getResourceString("dialog.exportecore.title"));
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
 			fileChooser.addChoosableFileFilter(filter);
@@ -391,6 +394,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					try {						
 						EcoreExporter exporter = new EcoreExporter();
 						exporter.writeEcore(this, fileChooser.getSelectedFile(), getCurrentEditor().getProject());
+						lastExportEcorePath = fileChooser.getSelectedFile().getAbsolutePath();
 					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(this, ex.getMessage(),
 								getResourceString("dialog.exportecore.title"),
@@ -459,7 +463,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void importEcore() {
 
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileChooser = new JFileChooser(lastImportEcorePath);
 		fileChooser.setDialogTitle(getResourceString("dialog.saveas.title"));
 		fileChooser.setDialogTitle(getResourceString("dialog.importecore.title"));
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
@@ -489,6 +493,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					diagram.setSaveNeeded(true);
 					createEditor(diagram);					
 
+					lastImportEcorePath = fileChooser.getSelectedFile().getAbsolutePath();
+					
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(this, ex.getMessage(),
 							getResourceString("dialog.importecore.title"),
@@ -503,7 +509,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void importXMI() {
 
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileChooser = new JFileChooser(lastImportEAPath);
 		fileChooser.setDialogTitle(getResourceString("dialog.importxmi.title"));
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("XMI, XML (*.xmi, *.xml)", "xmi", "xml");
 		fileChooser.addChoosableFileFilter(filter);
@@ -512,7 +518,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			if (fileChooser.getFileFilter() == filter) {
 				File file = fileChooser.getSelectedFile();
-
+				lastImportEAPath = file.getAbsolutePath();
 				ImportXMIDialog inst = new ImportXMIDialog(frame, file, this, true);
 				inst.setLocationRelativeTo(frame);
 
@@ -802,10 +808,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				}
 			}
 			DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(frame.getDiagramManager().getCurrentProject().getEditingDomain(), elem);
-			getCurrentProject().getEditingDomain().getCommandStack().execute(cmd);		
-			
-			// FIXME every modification creates a new tree
-			ModelTree.updateModelTree(getCurrentProject());	
+			getCurrentProject().getEditingDomain().getCommandStack().execute(cmd);			
 		}
 	}
 	

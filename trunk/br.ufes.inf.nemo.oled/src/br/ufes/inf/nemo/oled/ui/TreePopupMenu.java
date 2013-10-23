@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 public class TreePopupMenu extends JPopupMenu {
  
@@ -35,10 +36,15 @@ public class TreePopupMenu extends JPopupMenu {
     	    	
     	deleteItem.addActionListener(new ActionListener() {				
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				
+			public void actionPerformed(ActionEvent e) {			
+												
 				OntoUMLElement ontoElem = (OntoUMLElement) ((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).getUserObject();
-				frame.getDiagramManager().deleteElementOfProject((RefOntoUML.Element)ontoElem.getElement());				
+				frame.getDiagramManager().deleteElementOfProject((RefOntoUML.Element)ontoElem.getElement());
+												
+				// FIXME every modification creates a new tree
+				ModelTree.updateModelTree(frame.getDiagramManager().getCurrentProject());
+				
+				tree.setSelectionPath(new TreePath(tree.getRootNode().getPath()));
 			}
 		});
     }
