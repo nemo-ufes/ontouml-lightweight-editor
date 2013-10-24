@@ -22,14 +22,29 @@ public class Phrases {
 		return "e";
 	}
 	
+	public static String orVerb()
+	{
+		return "ou";
+	}
+	
 	public static String subtypesVerb()
 	{
-		return "é um tipo de";
+		return "é";
 	}
 	
 	public static String supertypesVerb()
 	{
 		return "pode ser";
+	}
+	
+	public static String article()
+	{
+		return "um";
+	}
+	
+	public static String connector()
+	{
+		return "que";
 	}
 
 	public static String processVerb(Association assoc)
@@ -71,26 +86,26 @@ public class Phrases {
 		String mult = new String();
 		if (prop.getLower() == 1 && prop.getUpper() == 1)
 		{
-			mult += "um(a)";
+			mult += "um";
 		}
 		else if (prop.getLower() == 1 && prop.getUpper() == -1)
 		{
-			mult += "no mínimo um(a)";
+			mult += "pelo menos um"; //Algum
 		}
 		else if (prop.getLower() == 0 && prop.getUpper() == 1)
 		{
-			mult += "no máximo um(a)";
+			mult += "até um";
 		}
-		else if (prop.getLower() == 0 && prop.getUpper() == -1)
-		{
-			mult += "zero ou mais";
-		}
-		else if (prop.getLower() == -1 && prop.getUpper() == -1)
-		{
-			mult += "zero ou mais";
-		}
+//		else if (prop.getLower() == 0 && prop.getUpper() == -1)
+//		{
+//			mult += "zero ou mais";
+//		}
+//		else if (prop.getLower() == -1 && prop.getUpper() == -1)
+//		{
+//			mult += "zero ou mais";
+//		}
 		else
-			mult += "muitos(as)";
+			mult += "muitos";
 		
 		return mult;
 	}
