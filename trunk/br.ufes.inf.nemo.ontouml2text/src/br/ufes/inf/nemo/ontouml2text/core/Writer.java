@@ -2,11 +2,19 @@ package br.ufes.inf.nemo.ontouml2text.core;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import org.cogroo.analyzer.Analyzer;
+import org.cogroo.analyzer.ComponentFactory;
+import org.cogroo.checker.CheckDocument;
+import org.cogroo.checker.GrammarChecker;
+import org.cogroo.entities.Mistake;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
@@ -29,6 +37,8 @@ public class Writer {
 	 */
 	Map<Classifier, String[]> descrMap = new HashMap<Classifier, String[]>();
 	
+	GrammarChecker gc;
+	
 	/**
 	 * Creates a Writer from an already instantiated OntoUML Parser
 	 * @param ontoParser class that reads and interprets the model
@@ -36,6 +46,18 @@ public class Writer {
 	public Writer(OntoUMLParser ontoParser)
 	{
 		this.ontoParser = ontoParser;
+		//Rotina para verificar sintaxe
+		ComponentFactory factory = ComponentFactory.create(new Locale("pt", "BR"));
+		Analyzer pipe = factory.createPipe();
+		try {
+			gc = new GrammarChecker(pipe);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -61,7 +83,7 @@ public class Writer {
 		{
 			if (!(classf instanceof Association) && !(classf instanceof PrimitiveType))
 			{
-				String singleElemDescr = format(classf.getName());
+				String singleElemDescr = format(classf.getName()).substring(0,1).toUpperCase() + format(classf.getName()).substring(1);
 				
 				List<Generalization> genList = classf.getGeneralization();
 				List<Classifier> specList = classf.children();
@@ -76,13 +98,21 @@ public class Writer {
 					
 					for (Generalization gen : genList)
 					{
-						singleElemDescr += delim + format(gen.getGeneral().getName());
+						singleElemDescr += delim + Phrases.article() + " " + format(gen.getGeneral().getName());
 						delim = ", ";
 						i++;
 						if (i == genList.size())
 						{
 							delim = " " + Phrases.andVerb() + " "; //TODO Get from UI
 						}
+					}
+					CheckDocument document = new CheckDocument(singleElemDescr);
+					gc.analyze(document);
+					for (Mistake m : document.getMistakes())
+					{
+						if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
+						singleElemDescr = document.getText().substring(0, m.getStart()) + 
+								m.getSuggestions()[0] + document.getText().substring(m.getEnd());
 					}
 				}
 				
@@ -92,22 +122,30 @@ public class Writer {
 					if (genList.size() == 0 || !importGen)
 						singleElemDescr += " " + Phrases.supertypesVerb(); //TODO Get from UI
 					else
-						//TODO Se for começo de frase tem que colocar letra maiúscula
-						singleElemDescr += ". " + Phrases.supertypesVerb().substring(0,1).toUpperCase()+
-							Phrases.supertypesVerb().substring(1, Phrases.supertypesVerb().length()); //TODO Get from UI (connector gen/spec)
+						singleElemDescr += " " + Phrases.connector() + " " + Phrases.supertypesVerb(); //TODO Get from UI (connector gen/spec)
 							
 					String delim = " ";
 					int i = 1;
 					
 					for (Classifier spec : specList)
 					{
-						singleElemDescr += delim + format(spec.getName());
+						singleElemDescr += delim + Phrases.article() + " " + format(spec.getName());
 						delim = ", ";
 						i++;
 						if (i == specList.size())
 						{
-							delim = " " + Phrases.andVerb() + " "; //TODO Get from UI
+							delim = " " + Phrases.orVerb() + " "; //TODO Get from UI
 						}
+					}
+					CheckDocument document = new CheckDocument(singleElemDescr);
+					gc.analyze(document);
+					for (Mistake m : document.getMistakes())
+					{
+						System.out.println(document.getText());
+						System.out.println(m.getFullMessage());
+						if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
+						singleElemDescr = document.getText().substring(0, m.getStart()) + 
+								m.getSuggestions()[0] + document.getText().substring(m.getEnd());
 					}
 				}
 				
@@ -134,6 +172,14 @@ public class Writer {
 						{
 							delim = " " + Phrases.andVerb() + " "; //TODO Get from UI
 						}
+					}
+					CheckDocument document = new CheckDocument(singleElemDescr);
+					gc.analyze(document);
+					for (Mistake m : document.getMistakes())
+					{
+						if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
+						singleElemDescr = document.getText().substring(0, m.getStart()) + 
+								m.getSuggestions()[0] + document.getText().substring(m.getEnd());
 					}
 				}
 				
@@ -199,6 +245,24 @@ public class Writer {
 				String singAssocDescr2 = mult2.substring(0, 1).toUpperCase()+mult2.substring(1, mult2.length())
 						+" "+format(member1)+verb+mult1+" "+format(member0)+". ";
 				
+				CheckDocument document = new CheckDocument(singAssocDescr);
+				gc.analyze(document);
+				for (Mistake m : document.getMistakes())
+				{
+					if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
+					singAssocDescr = document.getText().substring(0, m.getStart()) + 
+							m.getSuggestions()[0] + document.getText().substring(m.getEnd());
+				}
+				
+				document.setText(singAssocDescr2);
+				gc.analyze(document);
+				for (Mistake m : document.getMistakes())
+				{
+					if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
+					singAssocDescr2 = document.getText().substring(0, m.getStart()) + 
+							m.getSuggestions()[0] + document.getText().substring(m.getEnd());
+				}
+				
 				if (i == 1)
 				{
 					assocDescr += singAssocDescr;
@@ -262,7 +326,7 @@ public class Writer {
 	
 	private String format(String name)
 	{
-		return name.replace("/", "").trim();
+		return name.replace("/", "").trim().toLowerCase();
 	}
 	
 	public String getTextDescription()
