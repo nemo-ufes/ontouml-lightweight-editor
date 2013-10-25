@@ -10,11 +10,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.cogroo.analyzer.Analyzer;
-import org.cogroo.analyzer.ComponentFactory;
-import org.cogroo.checker.CheckDocument;
-import org.cogroo.checker.GrammarChecker;
-import org.cogroo.entities.Mistake;
+//import org.cogroo.analyzer.Analyzer;
+//import org.cogroo.analyzer.ComponentFactory;
+//import org.cogroo.checker.CheckDocument;
+//import org.cogroo.checker.GrammarChecker;
+//import org.cogroo.entities.Mistake;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
@@ -37,7 +37,7 @@ public class Writer {
 	 */
 	Map<Classifier, String[]> descrMap = new HashMap<Classifier, String[]>();
 	
-	GrammarChecker gc;
+//	GrammarChecker gc;
 	
 	/**
 	 * Creates a Writer from an already instantiated OntoUML Parser
@@ -45,19 +45,19 @@ public class Writer {
 	 */
 	public Writer(OntoUMLParser ontoParser)
 	{
-		this.ontoParser = ontoParser;
-		//Rotina para verificar sintaxe
-		ComponentFactory factory = ComponentFactory.create(new Locale("pt", "BR"));
-		Analyzer pipe = factory.createPipe();
-		try {
-			gc = new GrammarChecker(pipe);
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		this.ontoParser = ontoParser;
+//		//Rotina para verificar sintaxe
+//		ComponentFactory factory = ComponentFactory.create(new Locale("pt", "BR"));
+//		Analyzer pipe = factory.createPipe();
+//		try {
+//			gc = new GrammarChecker(pipe);
+//		} catch (IllegalArgumentException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	/**
@@ -106,14 +106,14 @@ public class Writer {
 							delim = " " + Phrases.andVerb() + " "; //TODO Get from UI
 						}
 					}
-					CheckDocument document = new CheckDocument(singleElemDescr);
-					gc.analyze(document);
-					for (Mistake m : document.getMistakes())
-					{
-						if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
-						singleElemDescr = document.getText().substring(0, m.getStart()) + 
-								m.getSuggestions()[0] + document.getText().substring(m.getEnd());
-					}
+//					CheckDocument document = new CheckDocument(singleElemDescr);
+//					gc.analyze(document);
+//					for (Mistake m : document.getMistakes())
+//					{
+//						if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
+//						singleElemDescr = document.getText().substring(0, m.getStart()) + 
+//								m.getSuggestions()[0] + document.getText().substring(m.getEnd());
+//					}
 				}
 				
 				//Processing Specializations
@@ -137,16 +137,16 @@ public class Writer {
 							delim = " " + Phrases.orVerb() + " "; //TODO Get from UI
 						}
 					}
-					CheckDocument document = new CheckDocument(singleElemDescr);
-					gc.analyze(document);
-					for (Mistake m : document.getMistakes())
-					{
-						System.out.println(document.getText());
-						System.out.println(m.getFullMessage());
-						if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
-						singleElemDescr = document.getText().substring(0, m.getStart()) + 
-								m.getSuggestions()[0] + document.getText().substring(m.getEnd());
-					}
+//					CheckDocument document = new CheckDocument(singleElemDescr);
+//					gc.analyze(document);
+//					for (Mistake m : document.getMistakes())
+//					{
+//						System.out.println(document.getText());
+//						System.out.println(m.getFullMessage());
+//						if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
+//						singleElemDescr = document.getText().substring(0, m.getStart()) + 
+//								m.getSuggestions()[0] + document.getText().substring(m.getEnd());
+//					}
 				}
 				
 				//Process Attributes
@@ -173,14 +173,14 @@ public class Writer {
 							delim = " " + Phrases.andVerb() + " "; //TODO Get from UI
 						}
 					}
-					CheckDocument document = new CheckDocument(singleElemDescr);
-					gc.analyze(document);
-					for (Mistake m : document.getMistakes())
-					{
-						if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
-						singleElemDescr = document.getText().substring(0, m.getStart()) + 
-								m.getSuggestions()[0] + document.getText().substring(m.getEnd());
-					}
+//					CheckDocument document = new CheckDocument(singleElemDescr);
+//					gc.analyze(document);
+//					for (Mistake m : document.getMistakes())
+//					{
+//						if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
+//						singleElemDescr = document.getText().substring(0, m.getStart()) + 
+//								m.getSuggestions()[0] + document.getText().substring(m.getEnd());
+//					}
 				}
 				
 				singleElemDescr += ". ";
@@ -245,23 +245,23 @@ public class Writer {
 				String singAssocDescr2 = mult2.substring(0, 1).toUpperCase()+mult2.substring(1, mult2.length())
 						+" "+format(member1)+verb+mult1+" "+format(member0)+". ";
 				
-				CheckDocument document = new CheckDocument(singAssocDescr);
-				gc.analyze(document);
-				for (Mistake m : document.getMistakes())
-				{
-					if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
-					singAssocDescr = document.getText().substring(0, m.getStart()) + 
-							m.getSuggestions()[0] + document.getText().substring(m.getEnd());
-				}
-				
-				document.setText(singAssocDescr2);
-				gc.analyze(document);
-				for (Mistake m : document.getMistakes())
-				{
-					if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
-					singAssocDescr2 = document.getText().substring(0, m.getStart()) + 
-							m.getSuggestions()[0] + document.getText().substring(m.getEnd());
-				}
+//				CheckDocument document = new CheckDocument(singAssocDescr);
+//				gc.analyze(document);
+//				for (Mistake m : document.getMistakes())
+//				{
+//					if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
+//					singAssocDescr = document.getText().substring(0, m.getStart()) + 
+//							m.getSuggestions()[0] + document.getText().substring(m.getEnd());
+//				}
+//				
+//				document.setText(singAssocDescr2);
+//				gc.analyze(document);
+//				for (Mistake m : document.getMistakes())
+//				{
+//					if (m.getSuggestions().length > 1) System.out.println("Mais de uma sugestão para " + document.getText());
+//					singAssocDescr2 = document.getText().substring(0, m.getStart()) + 
+//							m.getSuggestions()[0] + document.getText().substring(m.getEnd());
+//				}
 				
 				if (i == 1)
 				{
