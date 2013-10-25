@@ -60,6 +60,11 @@ public class EditorMouseEvent {
       event.getX() / scaling.getScaleFactor();
   }
 
+  public boolean isScaling100()
+  {
+	  return scaling == Scaling.SCALING_100;	  
+  }
+  
   /**
    * Returns the y coordinate in the editor coordinate system.
    * @return the y coordinate

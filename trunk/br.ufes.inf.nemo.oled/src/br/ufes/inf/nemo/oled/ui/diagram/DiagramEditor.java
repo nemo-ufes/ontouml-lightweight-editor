@@ -20,16 +20,17 @@
 package br.ufes.inf.nemo.oled.ui.diagram;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -43,7 +44,6 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
@@ -119,7 +119,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private transient LineHandler lineHandler;
 	private transient List<UndoableEditListener> editListeners = new ArrayList<UndoableEditListener>();
 	private transient Scaling scaling = Scaling.SCALING_100;
-
+	
+	// this might be null when the application is started and the pointer still did not move or had the focus of the editor
+	private static MouseEvent currentPointerPosition;
+	
 	private transient ModellingAssistant assistant;
 
 
@@ -251,19 +254,29 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		// BaseEditor listeners
 		captionEditor.addActionListener(this);
 		
-		/** Right Click Mouse Listener */
-		addMouseListener(new MouseAdapter()
-	    {
-			@Override
-			public void mouseClicked(MouseEvent e) 
-			{			
-			    if (SwingUtilities.isRightMouseButton(e))
-	            {	            	     	
-	            	openToolBoxMenu(e);	                
-	            }
-			}	       
-	    });					
-				
+//		NOT NEEDED ANYMORE = RIGHT CLICK TOOLOB BOX MENU; THIS WILL OPEN A POPUP MENU WITH OTHER OPTIONS
+//		addMouseListener(new MouseAdapter()
+//	    {
+//			@Override
+//			public void mouseClicked(MouseEvent e) 
+//			{			
+//			    if (SwingUtilities.isRightMouseButton(e))
+//	            {	            	     	
+//	            	openToolBoxMenu(e);	                
+//	            }
+//			}	       
+//	    });					
+		
+		// install Scape KeyBinding
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(' '),"openToolBoxMenu");
+		getActionMap().put("openToolBoxMenu", new AbstractAction() {
+
+			private static final long serialVersionUID = 4266982722845577768L;
+
+			/** {@inheritDoc} */
+			public void actionPerformed(ActionEvent e) { openToolBoxMenu(); }
+		});
+		
 		// install Escape KeyBinding
 		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"),"cancelEditing");
 		getActionMap().put("cancelEditing", new AbstractAction() {
@@ -304,7 +317,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		editorMode.cancel();
 		redraw();
 		
-		// trying to cancel the drop action at the creation of an element in the diagram.. fail!
+		// FIXME trying to cancel the drop action at the creation of an element in the diagram.. fail!
 		//selectionHandler.getSelection().cancelDragging();
 		//if (frame.getToolManager().getOpenPalette().getSelectedElement()!=null) frame.getToolManager().getOpenPalette().getSelectedElement().setSelected(false);
 	}
@@ -320,13 +333,28 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/**
 	 * Open ToolBox Menu.
 	 */
+	public void openToolBoxMenu()
+	{
+		if (contains(new Point(currentPointerPosition.getXOnScreen(),currentPointerPosition.getYOnScreen())))
+		{
+			DiagramElement elem = diagram.getChildAt(currentPointerPosition.getX(), currentPointerPosition.getY());		
+			if (elem instanceof NullElement){
+				ToolboxPopupMenu menu = new ToolboxPopupMenu(frame);
+				menu.show((Component)diagramManager.getCurrentDiagramEditor(), (int)currentPointerPosition.getX(), (int) currentPointerPosition.getY());
+			}		
+		}
+	}
+	
+	/**
+	 * Open ToolBox Menu.
+	 */
 	public void openToolBoxMenu(MouseEvent e)
 	{		
 		DiagramElement elem = diagram.getChildAt(e.getX(), e.getY());		
 		if (elem instanceof NullElement){
 			ToolboxPopupMenu menu = new ToolboxPopupMenu(frame);
 		    menu.show(e.getComponent(), e.getX(), e.getY());
-		}		
+		}
 	}
 
 	// *************************************************************************
@@ -520,17 +548,21 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/**
 	 * {@inheritDoc}
 	 */
-	public void mouseEntered(MouseEvent e) { }
+	public void mouseEntered(MouseEvent e) {
+		EditorMouseEvent evt = convertMouseEvent(e);
+		currentPointerPosition = evt.getMouseEvent();
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void mouseMoved(MouseEvent e) {
 		EditorMouseEvent evt = convertMouseEvent(e);
+		currentPointerPosition = evt.getMouseEvent();
 		editorMode.mouseMoved(evt);
 		notifyCoordinateListeners();		
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
