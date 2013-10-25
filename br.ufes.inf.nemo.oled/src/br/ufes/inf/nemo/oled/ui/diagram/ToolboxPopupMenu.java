@@ -1,11 +1,12 @@
 package br.ufes.inf.nemo.oled.ui.diagram;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
@@ -87,159 +88,248 @@ public class ToolboxPopupMenu extends JPopupMenu {
         subcollectionOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/aggregation-c.png")));
         subquantityOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/aggregation-q.png")));
         
-        kindItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{       			
-       			frame.getToolManager().getOpenPalette().getPalleteElement("kind").setSelected(true);
+        kindItem.addMouseListener(new MouseAdapter()
+	    {
+    			@Override
+    			public void mousePressed(MouseEvent e) 
+    			{			
+    				System.out.println("ssdsd");
+    			    if (SwingUtilities.isLeftMouseButton(e))
+    	            {	            	     	
+    			    	frame.getToolManager().getOpenPalette().getPalleteElement("kind").setSelected(true);             
+    	            }
+    			}	       
+		});     
+        quantityItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("quantity").setSelected(true);
+	            }
        		}
 		});
-        quantityItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("quantity").setSelected(true);
+        collectiveItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("collective").setSelected(true);
+	            }
        		}
 		});
-        collectiveItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("collective").setSelected(true);
+        subkindItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("subkind").setSelected(true);
+	            }
        		}
 		});
-        subkindItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("subkind").setSelected(true);
+        phaseItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("phase").setSelected(true);
+	            }
        		}
 		});
-        phaseItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("phase").setSelected(true);
+        roleItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("role").setSelected(true);
+	            }
        		}
 		});
-        roleItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("role").setSelected(true);
+        categoryItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("category").setSelected(true);
+	            }
        		}
 		});
-        categoryItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("category").setSelected(true);
+        rolemixinItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("rolemixin").setSelected(true);
+	            }
        		}
 		});
-        rolemixinItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("rolemixin").setSelected(true);
+        mixinItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("mixin").setSelected(true);
+	            }
        		}
 		});
-        mixinItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("mixin").setSelected(true);
+        modeItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("mode").setSelected(true);
+	            }
        		}
 		});
-        modeItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("mode").setSelected(true);
+        relatorItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("relator").setSelected(true);
+	            }
        		}
 		});
-        relatorItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("relator").setSelected(true);
+        datatypeItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("datatype").setSelected(true);
+	            }
        		}
 		});
-        datatypeItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("datatype").setSelected(true);
+        genItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("generalization").setSelected(true);
+	            }
        		}
 		});
-        genItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("generalization").setSelected(true);
+        materialItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("material").setSelected(true);
+	            }
        		}
 		});
-        materialItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("material").setSelected(true);
+       formalItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("formal").setSelected(true);
+	            }
        		}
 		});
-       formalItem.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			frame.getToolManager().getOpenPalette().getPalleteElement("formal").setSelected(true);
-       		}
-		});
-       characterizationItem.addActionListener(new ActionListener() 
-		{
-      		public void actionPerformed(ActionEvent event) 
-      		{
-      			frame.getToolManager().getOpenPalette().getPalleteElement("characterization").setSelected(true);
+       characterizationItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("characterization").setSelected(true);
+	            }
       		}
 		});
-       mediationItem.addActionListener(new ActionListener() 
-		{
-     		public void actionPerformed(ActionEvent event) 
-     		{
-     			frame.getToolManager().getOpenPalette().getPalleteElement("mediation").setSelected(true);
+       mediationItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("mediation").setSelected(true);
+	            }
      		}
 		});
-       componentOfItem.addActionListener(new ActionListener() 
-		{
-    		public void actionPerformed(ActionEvent event) 
-    		{
-    			frame.getToolManager().getOpenPalette().getPalleteElement("componentof").setSelected(true);
+       componentOfItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("componentof").setSelected(true);
+	            }
     		}
 		});
-       memberOfItem.addActionListener(new ActionListener() 
-		{
-   		public void actionPerformed(ActionEvent event) 
-   		{
-   			frame.getToolManager().getOpenPalette().getPalleteElement("memberof").setSelected(true);
-   		}
+       memberOfItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("memberof").setSelected(true);	
+	            }
+			}
 		});
-       subcollectionOfItem.addActionListener(new ActionListener() 
-		{
-   		public void actionPerformed(ActionEvent event) 
-   		{
-   			frame.getToolManager().getOpenPalette().getPalleteElement("subcollectionof").setSelected(true);
-   		}
+       subcollectionOfItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("subcollectionof").setSelected(true);
+	            }
+			}
 		});
-       subquantityOfItem.addActionListener(new ActionListener() 
-		{
-   		public void actionPerformed(ActionEvent event) 
-   		{
-   			frame.getToolManager().getOpenPalette().getPalleteElement("subquantityof").setSelected(true);
-   		}
+       subquantityOfItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("subquantityof").setSelected(true);
+	            }
+			}
 		});
-       associationItem.addActionListener(new ActionListener() 
-		{
-   		public void actionPerformed(ActionEvent event) 
-   		{
-   			frame.getToolManager().getOpenPalette().getPalleteElement("association").setSelected(true);
-   		}
+       associationItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("association").setSelected(true);
+	            }
+			}
 		});        
     }	
     
