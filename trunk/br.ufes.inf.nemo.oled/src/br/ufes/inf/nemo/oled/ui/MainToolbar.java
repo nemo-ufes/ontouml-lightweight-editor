@@ -62,6 +62,9 @@ public class MainToolbar implements ActionListener {
 		toolbar.addSeparator();
 		createButton("undo");
 		createButton("redo");
+		toolbar.addSeparator();
+		createButton("warning");
+		createButton("error");
 		toolbar.addSeparator();		
 		createButton("generatealloy");
 		createButton("generateowlsettings");
@@ -69,6 +72,8 @@ public class MainToolbar implements ActionListener {
 		createButton("generatetext");
 		toolbar.addSeparator();
 		createButton("antipattern");
+		//toolbar.addSeparator();
+		//createButton("assistant");
 		
 		enableButton("UNDO", false);
 		enableButton("REDO", false);

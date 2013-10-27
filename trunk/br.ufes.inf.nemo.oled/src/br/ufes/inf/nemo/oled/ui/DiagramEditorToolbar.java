@@ -23,7 +23,8 @@ public class DiagramEditorToolbar implements ActionListener {
   private JToolBar toolbar = new JToolBar();
   private List<AppCommandListener> listeners = new ArrayList<AppCommandListener>();
   private Map<String, AbstractButton> buttonMap = new HashMap<String, AbstractButton>();
-  private ButtonGroup buttonGroup;
+  @SuppressWarnings("unused")
+private ButtonGroup buttonGroup;
   //private ButtonGroup diagramOptionsGroup;
 
   public DiagramEditorToolbar() {
@@ -37,8 +38,8 @@ public class DiagramEditorToolbar implements ActionListener {
     //toolbar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);    
 //    toolbar.addSeparator(new Dimension(20, 25));
     //toolbar.add(createButton(buttonGroup, "output"));
-    toolbar.add(createButton(buttonGroup, "warning"));
-    toolbar.add(createButton(buttonGroup, "error"));    
+//    toolbar.add(createButton(buttonGroup, "warning"));
+//    toolbar.add(createButton(buttonGroup, "error"));    
    // toolbar.add(createButton(buttonGroup, "ocleditor"));    
 //    toolbar.addSeparator(new Dimension(20, 25));
     //toolbar.add(createButton(buttonGroup, "autoselection"));    
@@ -104,7 +105,8 @@ private JToggleButton createToggleButton(ButtonGroup aButtonGroup,
     return button;
   }
   
-  private JButton createButton(ButtonGroup aButtonGroup, String name) {
+  @SuppressWarnings("unused")
+private JButton createButton(ButtonGroup aButtonGroup, String name) {
     String prefix = "editortoolbar." + name;
     String label = getResourceString(prefix + ".label");
     JButton button = new JButton(label,IconLoader.getInstance().getIcon(getResourceString(prefix + ".icon")));

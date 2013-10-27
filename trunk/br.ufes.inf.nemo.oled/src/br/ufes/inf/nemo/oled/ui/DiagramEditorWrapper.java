@@ -14,7 +14,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
@@ -52,14 +51,14 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		super(new BorderLayout());
 		this.editor = editor;		
 		
-		DiagramEditorToolbar editorToolbar = new DiagramEditorToolbar();
-		JToolBar toolbar = editorToolbar.getToolbar();
-		editorToolbar.addCommandListener(editorDispatcher);
-		toolbar.setFloatable(false);
-		
+//		DiagramEditorToolbar editorToolbar = new DiagramEditorToolbar();
+//		JToolBar toolbar = editorToolbar.getToolbar();
+//		editorToolbar.addCommandListener(editorDispatcher);
+//		toolbar.setFloatable(false);
+//		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout(0,0));
-		panel.add(toolbar, BorderLayout.SOUTH);
+//		panel.add(toolbar, BorderLayout.SOUTH);
 		
 		editorArea.setContinuousLayout(true);
 		editorArea.setOneTouchExpandable(true);
@@ -134,6 +133,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 				
 		this.add(mainEditorArea,BorderLayout.CENTER);		
 		
+		focusOnOutput();
 	}	
 	
 	public static PropertyTablePanel getProperties(){
