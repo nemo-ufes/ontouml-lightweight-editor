@@ -176,7 +176,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		StructureDiagram diagram = new StructureDiagram(project);
 		project.addDiagram(diagram);
 		//TODO Localize this
-		diagram.setLabelText("New Diagram");		
+		diagram.setLabelText("New Project");		
 		project.setSaveModelNeeded(true);
 		diagram.setSaveNeeded(true);
 		createEditor(diagram);

@@ -43,12 +43,7 @@ public class ComponentOfInference {
 		
 		compositions = new ArrayList<>();
 		compositions.addAll(parser.getAllInstances(componentOf.class));
-		
-		for (componentOf c : compositions) {
-			System.out.println(parser.getStringRepresentation(c));
-		}
-		System.out.println("%%%%");
-		
+				
 		inferredCompositions = new ArrayList<>();
 		
 	}
