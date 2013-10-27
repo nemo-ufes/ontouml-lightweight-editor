@@ -1,6 +1,8 @@
 package br.ufes.inf.nemo.ontouml2alloy.transformer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
@@ -244,25 +246,33 @@ public class Transformer {
 		module.getParagraph().add(cmd);				
 	}
 		
+	public class DeclarationComparator implements Comparator<Declaration> 
+	{
+	   @Override
+	   public int compare(Declaration o1, Declaration o2) {
+	      return o1.toString().compareToIgnoreCase(o2.toString());
+	   }
+	}
 	/** 
 	 * Populates With Classes 
 	 */
 	protected void populatesWithClasses()
 	{
+		ArrayList<Declaration> classesDeclaration = new ArrayList<Declaration>();
 		for(RefOntoUML.Class c: ontoparser.getAllInstances(RefOntoUML.Class.class))		
 		{			
 			// ObjectClassName: set exists:>Object,
 			if(c instanceof ObjectClass)
 			{
 				Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c), sigObject.getName());			
-				if (decl!=null) world.getRelation().add(decl);			
+				if (decl!=null) classesDeclaration.add(decl);			
 			}
 			
 			// PropertyName: set exists:>Property,			 
 			if(c instanceof MomentClass)
 			{			
 				Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c),sigProperty.getName());			
-				world.getRelation().add(decl);
+				if (decl!=null) classesDeclaration.add(decl);
 			}
 							
 			// Abstract_Father = Concrete_Child1 + Concrete_Child2 + Concrete_Child3 + ...			 
@@ -272,6 +282,10 @@ public class Transformer {
 				if (co!=null) world.getBlock().getExpression().add(co);			
 			}			
 		}
+		// Sort classes declarations in the signature world
+		Collections.sort(classesDeclaration, new DeclarationComparator());
+		
+		world.getRelation().addAll(classesDeclaration);
 	}
 	
 	/**
@@ -279,6 +293,7 @@ public class Transformer {
 	 */
 	protected void populatesWithAttributes()
 	{
+		ArrayList<Declaration> attributesDeclaration = new ArrayList<Declaration>();
 		for(Property attr: ontoparser.getAttributes())		
 		{			
 			if (attr.getType().getName()!=null) 
@@ -291,7 +306,7 @@ public class Transformer {
 						ArrowOperation aOp  = factory.createArrowOperation();
 						aOp = AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,"Int",attr.getLower(),attr.getUpper());
 						Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);	
-						if (decl!=null) world.getRelation().add(decl);					
+						if (decl!=null) attributesDeclaration.add(decl);					
 					}					
 					
 					// AttributeName: set ClassOwner -> String_,
@@ -300,7 +315,7 @@ public class Transformer {
 						ArrowOperation aOp  = factory.createArrowOperation();
 						aOp = AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,"String_",attr.getLower(),attr.getUpper());
 						Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);	
-						if (decl!=null) world.getRelation().add(decl);					
+						if (decl!=null) attributesDeclaration.add(decl);					
 					}
 					
 					// AttributeName: set ClassOwner -> Char,
@@ -309,7 +324,7 @@ public class Transformer {
 						ArrowOperation aOp  = factory.createArrowOperation();
 						aOp = AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,"Char",attr.getLower(),attr.getUpper());
 						Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);
-						if (decl!=null) world.getRelation().add(decl);					
+						if (decl!=null) attributesDeclaration.add(decl);					
 					}
 					
 					// AttributeName: set ClassOwner -> Real,
@@ -318,7 +333,7 @@ public class Transformer {
 						ArrowOperation aOp  = factory.createArrowOperation();
 						aOp = AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,"Real",attr.getLower(),attr.getUpper());
 						Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);
-						if (decl!=null) world.getRelation().add(decl);					
+						if (decl!=null) attributesDeclaration.add(decl);					
 					}
 					
 					else if (attr.getType().getName().compareToIgnoreCase("Boolean")==0)
@@ -327,13 +342,13 @@ public class Transformer {
 						if (attr.eContainer() instanceof ObjectClass)
 						{
 							Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(attr.eContainer()), sigObject.getName());
-							if (decl!=null) world.getRelation().add(decl);
+							if (decl!=null) attributesDeclaration.add(decl);
 						}
 						//  AttributeName: set exists:> Property,
 						else if (attr.eContainer() instanceof MomentClass)
 						{
 							Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(attr.eContainer()), sigProperty.getName());
-							if (decl!=null) world.getRelation().add(decl);
+							if (decl!=null) attributesDeclaration.add(decl);
 						}
 					}
 					
@@ -341,10 +356,14 @@ public class Transformer {
 					ArrowOperation aOp  = factory.createArrowOperation();
 					aOp = AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,ontoparser.getAlias(attr.getType()),attr.getLower(),attr.getUpper());
 					Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);
-					if (decl!=null) world.getRelation().add(decl);
+					if (decl!=null) attributesDeclaration.add(decl);
 				}
 			}
 		}
+		// Sort classes declarations in the signature world
+		Collections.sort(attributesDeclaration, new DeclarationComparator());
+		
+		world.getRelation().addAll(attributesDeclaration);
 	}		
 	
 	
@@ -892,8 +911,9 @@ public class Transformer {
 		
 	/**
 	 * Populates with Mediations
+	 * @return 
 	 */
-	protected void populatesWithMediations()
+	protected ArrayList<Declaration> populatesWithMediations(ArrayList<Declaration> associationsDeclaration)
 	{
 		for(Mediation assoc: ontoparser.getAllInstances(Mediation.class))
 		{
@@ -921,14 +941,16 @@ public class Transformer {
 			}
 			ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
 			Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(assoc), aOp);				
-			if (decl!=null) world.getRelation().add(decl);
+			if (decl!=null) associationsDeclaration.add(decl);
 		}
+		return associationsDeclaration;
 	}
 	
 	/**
 	 * Populates with Characterizations
+	 * @return 
 	 */
-	protected void populatesWithCharacterizations()
+	protected ArrayList<Declaration> populatesWithCharacterizations(ArrayList<Declaration> associationsDeclaration)
 	{
 		for(Characterization assoc: ontoparser.getAllInstances(Characterization.class))
 		{
@@ -956,8 +978,9 @@ public class Transformer {
 			}
 			ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
 			Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(assoc), aOp);				
-			if (decl!=null) world.getRelation().add(decl);
+			if (decl!=null) associationsDeclaration.add(decl);
 		}
+		return associationsDeclaration;
 	}
 		
 	/**
@@ -1018,8 +1041,9 @@ public class Transformer {
 	
 	/**
 	 * Populates with Materials 
+	 * @return 
 	 */
-	protected void populatesWithMaterials()
+	protected ArrayList<Declaration> populatesWithMaterials(ArrayList<Declaration> associationsDeclaration)
 	{
 		HashMap<MaterialAssociation,Derivation> relationsMap = new HashMap<MaterialAssociation,Derivation>();
 		
@@ -1092,7 +1116,7 @@ public class Transformer {
 				    target.getVariable(), lowerTgtMediationTarget, upperTgtMediationTarget
 				);			
 				Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(m), aOp);				
-				if (decl!=null) world.getRelation().add(decl);
+				if (decl!=null) associationsDeclaration.add(decl);
 				
 			}
 			
@@ -1104,9 +1128,10 @@ public class Transformer {
 				int upperTarget = materialTargetProperty.getUpper();
 				ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
 				Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(m), aOp);				
-				if (decl!=null) world.getRelation().add(decl);
+				if (decl!=null) associationsDeclaration.add(decl);
 			}
-		}		
+		}
+		return associationsDeclaration;
 	}
 	
 	/**
@@ -1114,11 +1139,13 @@ public class Transformer {
 	 */
 	protected void populatesWithAssociations()
 	{
-		populatesWithMediations();
+		ArrayList<Declaration> associationsDeclaration = new ArrayList<Declaration>();
 		
-		populatesWithCharacterizations();
+		associationsDeclaration = populatesWithMediations(associationsDeclaration);
 		
-		populatesWithMaterials();
+		associationsDeclaration = populatesWithCharacterizations(associationsDeclaration);
+		
+		associationsDeclaration = populatesWithMaterials(associationsDeclaration);
 		
 		populatesWithDerivations();
 		
@@ -1139,9 +1166,14 @@ public class Transformer {
 				upperTarget = Target.getUpper();							
 				ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
 				Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(assoc), aOp);				
-				if (decl!=null) world.getRelation().add(decl);
+				if (decl!=null) associationsDeclaration.add(decl);
 			}
 		}
+		// Sort associations declarations in the signature world
+		Collections.sort(associationsDeclaration, new DeclarationComparator());
+		
+		world.getRelation().addAll(associationsDeclaration);
+		
 	}
 	
 	/**
