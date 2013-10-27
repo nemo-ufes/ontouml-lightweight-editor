@@ -135,7 +135,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		JSplitPane mainArea = new JSplitPane();
 		mainArea.setOneTouchExpandable(true);
 		mainArea.setDividerLocation(230);
-		mainArea.setDividerSize(7);
+		mainArea.setDividerSize(10);
 		this.getContentPane().add(mainArea, BorderLayout.CENTER);
 		
 		diagramManager = new DiagramManager(this);

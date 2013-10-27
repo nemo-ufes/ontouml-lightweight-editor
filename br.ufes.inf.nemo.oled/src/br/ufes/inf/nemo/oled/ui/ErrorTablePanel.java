@@ -126,8 +126,7 @@ public class ErrorTablePanel extends JPanel {
 		table.setGridColor(Color.LIGHT_GRAY);		
 	    table.setSelectionBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHT));
 	    table.setSelectionForeground(Color.BLACK);
-	    table.setFocusable(false);
-	    					
+	    table.setFocusable(false);	    
 		add(scrollpane,BorderLayout.CENTER);
 		
 		JToolBar toolBar = new JToolBar();

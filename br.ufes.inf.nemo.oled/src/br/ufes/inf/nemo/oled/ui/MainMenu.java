@@ -21,6 +21,7 @@ package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,9 +91,15 @@ public class MainMenu implements ActionListener {
 		JMenu fileMenu = createMenu("file");
 		menubar.add(fileMenu);
 
-		createMenuItem(fileMenu, "new");
-		createMenuItem(fileMenu, "open");
-		createMenuItem(fileMenu, "save");
+		JMenuItem newItem = createMenuItem(fileMenu, "new");
+		newItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+		
+		JMenuItem openItem = createMenuItem(fileMenu, "open");
+		openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+		
+		JMenuItem saveItem = createMenuItem(fileMenu, "save");
+		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		
 		createMenuItem(fileMenu, "saveas");		
 		fileMenu.addSeparator();
 		
@@ -153,8 +160,12 @@ public class MainMenu implements ActionListener {
 	private void createEditMenu() {
 		JMenu editMenu = createMenu("edit");
 		menubar.add(editMenu);
-		createMenuItem(editMenu, "undo");
-		createMenuItem(editMenu, "redo");
+		JMenuItem undoItem = createMenuItem(editMenu, "undo");
+		undoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
+		
+		JMenuItem redoItem = createMenuItem(editMenu, "redo");
+		redoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
+		
 		editMenu.addSeparator();
 		/*
 		 * createMenuItem(editMenu, "cut"); createMenuItem(editMenu, "copy");
