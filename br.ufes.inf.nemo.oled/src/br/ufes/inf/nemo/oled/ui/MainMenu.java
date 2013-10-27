@@ -63,9 +63,7 @@ public class MainMenu implements ActionListener {
 		createEditMenu();
 		createDiagramMenu();
 		createViewMenu();		
-		createTransformationMenu();		
-		//createImportMenu();
-		//createExportMenu();
+		createTransformationMenu();
 		createHelpMenu();
 	}
 
@@ -88,6 +86,11 @@ public class MainMenu implements ActionListener {
 		
 		JMenuItem antipatternItem = createMenuItem(transformMenu, "antipattern");
 		antipatternItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.SHIFT_MASK));
+		
+		JMenuItem assistantItem = createCheckBoxMenuItem(transformMenu, "assistant");
+		assistantItem.setSelected(true);
+		assistantItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.SHIFT_MASK));
+		assistantItem.setEnabled(false);
 	}
 	
 	/**
@@ -115,14 +118,12 @@ public class MainMenu implements ActionListener {
 		
 		createMenuItem(importMenu, "importxmi");		
 		createMenuItem(importMenu, "importecore");
-		//createMenuItem(importMenu, "importocl");
 		
 		JMenu exportMenu = createMenu("Export");
 		exportMenu.setText("Export to");
 		fileMenu.add(exportMenu);
 		
 		createMenuItem(exportMenu, "exportecore");
-		//createMenuItem(exportMenu, "exportocl");
 		
 		fileMenu.addSeparator();
 		createMenuItem(fileMenu, "quit");
@@ -239,7 +240,6 @@ public class MainMenu implements ActionListener {
        			LicensesDialog.open(frame);
        		}
 		});
-		//createMenuItem(helpMenu, "helpcontents");
 	}
 
 	/**
