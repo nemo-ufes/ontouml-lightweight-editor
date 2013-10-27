@@ -45,14 +45,14 @@ public class DiagramEditorToolbar implements ActionListener {
     //toolbar.add(createButton(buttonGroup, "parse"));    
 //    toolbar.add(createButton(buttonGroup, "verify"));
 //    toolbar.addSeparator(new Dimension(20, 25));
-    toolbar.add(createButton(buttonGroup, "antipattern"));
+//    toolbar.add(createButton(buttonGroup, "antipattern"));
 //    toolbar.add(createButton(buttonGroup, "deriverelations"));
 //    toolbar.addSeparator(new Dimension(20, 25));
-    toolbar.add(createButton(buttonGroup, "generatealloy"));
+    //toolbar.add(createButton(buttonGroup, "generatealloy"));
     //toolbar.add(createButton(buttonGroup, "generateowl"));
-    toolbar.add(createButton(buttonGroup, "generateowlsettings"));    
-    toolbar.add(createButton(buttonGroup, "generatesbvr"));
-    toolbar.add(createButton(buttonGroup, "generatetext"));
+    //toolbar.add(createButton(buttonGroup, "generateowlsettings"));    
+    //toolbar.add(createButton(buttonGroup, "generatesbvr"));
+    //toolbar.add(createButton(buttonGroup, "generatetext"));
   }
 
   public void addCommandListener(AppCommandListener l) {

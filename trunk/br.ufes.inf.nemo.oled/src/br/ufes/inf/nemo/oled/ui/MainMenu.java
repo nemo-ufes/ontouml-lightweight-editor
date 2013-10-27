@@ -74,14 +74,20 @@ public class MainMenu implements ActionListener {
 		JMenu transformMenu = createMenu("transformation");
 		menubar.add(transformMenu);
 		
-		createMenuItem(transformMenu, "generatealloy");
-		transformMenu.addSeparator();
-		//createMenuItem(transformMenu, "generateowl");
-		createMenuItem(transformMenu, "generateowlsettings");
-		transformMenu.addSeparator();
-		createMenuItem(transformMenu, "generatesbvr");
-		transformMenu.addSeparator();
-		createMenuItem(transformMenu, "generatetext");
+		JMenuItem alloyItem = createMenuItem(transformMenu, "generatealloy");
+		alloyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.SHIFT_MASK));
+		
+		JMenuItem owlItem = createMenuItem(transformMenu, "generateowlsettings");
+		owlItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
+		
+		JMenuItem sbvrItem = createMenuItem(transformMenu, "generatesbvr");
+		sbvrItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.SHIFT_MASK));
+		
+		JMenuItem textItem = createMenuItem(transformMenu, "generatetext");
+		textItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.SHIFT_MASK));
+		
+		JMenuItem antipatternItem = createMenuItem(transformMenu, "antipattern");
+		antipatternItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.SHIFT_MASK));
 	}
 	
 	/**

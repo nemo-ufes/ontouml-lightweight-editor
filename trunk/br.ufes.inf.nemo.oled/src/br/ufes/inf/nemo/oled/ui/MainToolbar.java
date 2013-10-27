@@ -62,14 +62,21 @@ public class MainToolbar implements ActionListener {
 		toolbar.addSeparator();
 		createButton("undo");
 		createButton("redo");
-				
+		toolbar.addSeparator();		
+		createButton("generatealloy");
+		createButton("generateowlsettings");
+		createButton("generatesbvr");
+		createButton("generatetext");
+		toolbar.addSeparator();
+		createButton("antipattern");
+		
 		enableButton("UNDO", false);
 		enableButton("REDO", false);
 		enableButton("CUT", false);
 		enableButton("COPY", false);
 		enableButton("PASTE", false);
 		enableButton("DELETE", false);
-
+	
 		toolbar.setFloatable(false);
 	}
 
