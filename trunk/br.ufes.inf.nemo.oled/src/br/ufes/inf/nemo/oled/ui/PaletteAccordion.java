@@ -131,7 +131,7 @@ public class PaletteAccordion extends JPanel{
 
 	private void createStaticClassesPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
-		Palette palette =  new Palette(this, "OntoUML Elements");
+		Palette palette =  new Palette(this, "Elements");
 		palette.createElement("staticpalette.classes", "select");
 		//palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.classes", "kind");

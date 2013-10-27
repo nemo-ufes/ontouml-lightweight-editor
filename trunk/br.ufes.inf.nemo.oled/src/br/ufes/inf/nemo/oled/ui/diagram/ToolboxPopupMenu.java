@@ -92,8 +92,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	    {
     			@Override
     			public void mousePressed(MouseEvent e) 
-    			{			
-    				System.out.println("ssdsd");
+    			{    				
     			    if (SwingUtilities.isLeftMouseButton(e))
     	            {	            	     	
     			    	frame.getToolManager().getOpenPalette().getPalleteElement("kind").setSelected(true);             

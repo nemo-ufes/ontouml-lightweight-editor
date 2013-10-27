@@ -24,13 +24,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -44,6 +44,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
@@ -106,10 +107,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 	private static final long serialVersionUID = 4210158437374056534L;
 	// For now, we define the margins of the diagram as constants
-	private static final double MARGIN_TOP = 25;
-	private static final double MARGIN_LEFT = 25;
-	private static final double MARGIN_RIGHT = 30;
-	private static final double MARGIN_BOTTOM = 30;
+	private static final double MARGIN_TOP = 0;
+	private static final double MARGIN_LEFT = 0;
+	private static final double MARGIN_RIGHT = 0;
+	private static final double MARGIN_BOTTOM = 0;
 	private static final double ADDSCROLL_HORIZONTAL = 0;
 	private static final double ADDSCROLL_VERTICAL = 0;
 	private transient DrawingContext drawingContext = new DrawingContextImpl();
@@ -254,18 +255,18 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		// BaseEditor listeners
 		captionEditor.addActionListener(this);
 		
-//		NOT NEEDED ANYMORE = RIGHT CLICK TOOLOB BOX MENU; THIS WILL OPEN A POPUP MENU WITH OTHER OPTIONS
-//		addMouseListener(new MouseAdapter()
-//	    {
-//			@Override
-//			public void mouseClicked(MouseEvent e) 
-//			{			
-//			    if (SwingUtilities.isRightMouseButton(e))
-//	            {	            	     	
-//	            	openToolBoxMenu(e);	                
-//	            }
-//			}	       
-//	    });					
+		//Diagram PopupMenu
+		addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mouseClicked(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isRightMouseButton(e))
+	            {	            	     	
+			    	openDiagramPopupMenu(e);
+	            }
+			}	       
+	    });					
 		
 		// install Scape KeyBinding
 		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(' '),"openToolBoxMenu");
@@ -274,7 +275,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			private static final long serialVersionUID = 4266982722845577768L;
 
 			/** {@inheritDoc} */
-			public void actionPerformed(ActionEvent e) { openToolBoxMenu(); }
+			public void actionPerformed(ActionEvent e) { openToolBoxPopupMenu(); }
 		});
 		
 		// install Escape KeyBinding
@@ -331,29 +332,29 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	}
 	
 	/**
-	 * Open ToolBox Menu.
+	 * Open Diagram PopupMenu
 	 */
-	public void openToolBoxMenu()
+	public void openDiagramPopupMenu(MouseEvent e)
 	{
-		if (contains(new Point(currentPointerPosition.getXOnScreen(),currentPointerPosition.getYOnScreen())))
-		{
-			DiagramElement elem = diagram.getChildAt(currentPointerPosition.getX(), currentPointerPosition.getY());		
-			if (elem instanceof NullElement){
-				ToolboxPopupMenu menu = new ToolboxPopupMenu(frame);
-				menu.show((Component)diagramManager.getCurrentDiagramEditor(), (int)currentPointerPosition.getX(), (int) currentPointerPosition.getY());
-			}		
-		}
+		DiagramPopupMenu popup = new DiagramPopupMenu(frame);
+		popup.show(e.getComponent(),e.getX(),e.getY());
 	}
 	
 	/**
 	 * Open ToolBox Menu.
 	 */
-	public void openToolBoxMenu(MouseEvent e)
-	{		
-		DiagramElement elem = diagram.getChildAt(e.getX(), e.getY());		
+	public void openToolBoxPopupMenu()
+	{
+		if (currentPointerPosition==null) return;
+		int xp = currentPointerPosition.getX();
+		int yp = currentPointerPosition.getY();
+		if (xp <= diagram.getAbsoluteX1() || xp >= diagram.getAbsoluteX2()) return;
+		if (yp < diagram.getAbsoluteY1() || yp > diagram.getAbsoluteY2()) return;
+				
+		DiagramElement elem = diagram.getChildAt(currentPointerPosition.getX(), currentPointerPosition.getY());		
 		if (elem instanceof NullElement){
 			ToolboxPopupMenu menu = new ToolboxPopupMenu(frame);
-		    menu.show(e.getComponent(), e.getX(), e.getY());
+			menu.show((Component)diagramManager.getCurrentDiagramEditor(), (int)currentPointerPosition.getX(), (int) currentPointerPosition.getY());				
 		}
 	}
 
@@ -543,7 +544,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/**
 	 * {@inheritDoc}
 	 */
-	public void mouseExited(MouseEvent e) { }
+	public void mouseExited(MouseEvent e) { 
+		EditorMouseEvent evt = convertMouseEvent(e);
+		currentPointerPosition = evt.getMouseEvent();
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -559,6 +563,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void mouseMoved(MouseEvent e) {
 		EditorMouseEvent evt = convertMouseEvent(e);
 		currentPointerPosition = evt.getMouseEvent();
+		
 		editorMode.mouseMoved(evt);
 		notifyCoordinateListeners();		
 	}
@@ -566,8 +571,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/**
 	 * {@inheritDoc}
 	 */
-	public void mouseDragged(MouseEvent e) {
+	public void mouseDragged(MouseEvent e) {		
 		EditorMouseEvent evt = convertMouseEvent(e);
+		currentPointerPosition = evt.getMouseEvent();
 		editorMode.mouseDragged(evt);
 		notifyCoordinateListeners();
 	}

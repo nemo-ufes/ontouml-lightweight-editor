@@ -1,7 +1,6 @@
 
 package br.ufes.inf.nemo.oled.ui;
 
-import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,19 +35,19 @@ public class DiagramEditorToolbar implements ActionListener {
     //toolbar.add(createButton(validationGroup, "verifyfile")); 
 
     //toolbar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);    
-    toolbar.addSeparator(new Dimension(20, 25));
+//    toolbar.addSeparator(new Dimension(20, 25));
     //toolbar.add(createButton(buttonGroup, "output"));
     toolbar.add(createButton(buttonGroup, "warning"));
     toolbar.add(createButton(buttonGroup, "error"));    
    // toolbar.add(createButton(buttonGroup, "ocleditor"));    
-    toolbar.addSeparator(new Dimension(20, 25));
+//    toolbar.addSeparator(new Dimension(20, 25));
     //toolbar.add(createButton(buttonGroup, "autoselection"));    
     //toolbar.add(createButton(buttonGroup, "parse"));    
-    toolbar.add(createButton(buttonGroup, "verify"));
-    toolbar.addSeparator(new Dimension(20, 25));
+//    toolbar.add(createButton(buttonGroup, "verify"));
+//    toolbar.addSeparator(new Dimension(20, 25));
     toolbar.add(createButton(buttonGroup, "antipattern"));
-    toolbar.add(createButton(buttonGroup, "deriverelations"));
-    toolbar.addSeparator(new Dimension(20, 25));
+//    toolbar.add(createButton(buttonGroup, "deriverelations"));
+//    toolbar.addSeparator(new Dimension(20, 25));
     toolbar.add(createButton(buttonGroup, "generatealloy"));
     //toolbar.add(createButton(buttonGroup, "generateowl"));
     toolbar.add(createButton(buttonGroup, "generateowlsettings"));    

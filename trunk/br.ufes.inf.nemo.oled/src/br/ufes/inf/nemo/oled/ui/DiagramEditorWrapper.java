@@ -16,6 +16,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -62,7 +63,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		
 		editorArea.setContinuousLayout(true);
 		editorArea.setOneTouchExpandable(true);
-		editorArea.setDividerSize(7);
+		editorArea.setDividerSize(10);
 		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		editorArea.setResizeWeight(1) ;
 		editorArea.setDividerLocation(0.5);
@@ -70,9 +71,11 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		JScrollPane scrollpane = new JScrollPane(editor);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
+		scrollpane.setBorder(new EmptyBorder(0,0,0,0));
 		
 		panel.add(scrollpane);
-						
+		panel.setBorder(new EmptyBorder(0,0,0,0));
+		
 		properties = new PropertyTablePanel(editor.getProject());		
 		errors = new ErrorTablePanel(editor.getProject());
 		warnings = new WarningTablePanel(editor.getProject());
@@ -109,7 +112,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		infoTabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
 		
 		modeltree = ModelTree.getTreeFor(editor.getManager().getFrame(),getProject());
-				
+		
 		infoTabbedPane.setPreferredSize(new Dimension(100,300));
 		
 		editorArea.add(panel, JSplitPane.TOP);		
@@ -117,17 +120,18 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		
 		mainEditorArea.setContinuousLayout(true);
 		mainEditorArea.setOneTouchExpandable(true);
-		mainEditorArea.setDividerSize(7);
+		mainEditorArea.setDividerSize(10);
 		mainEditorArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-		mainEditorArea.setResizeWeight(1) ;
-
+		
 		Dimension minimumSize = new Dimension(0, 0);
+		Dimension preferredSize = new Dimension(0, 0);
 		editorArea.setMinimumSize(minimumSize);
 		modeltree.setMinimumSize(minimumSize);
-		
+		modeltree.setPreferredSize(preferredSize);
+				
 		mainEditorArea.add(editorArea,JSplitPane.LEFT);
 		mainEditorArea.add(modeltree, JSplitPane.RIGHT);
-		
+				
 		this.add(mainEditorArea,BorderLayout.CENTER);		
 		
 	}	
@@ -180,6 +184,10 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	
 	public ErrorTablePanel getErrors(){
 		return errors;
+	}
+	
+	public int getMainDividerLocation(){
+		return mainEditorArea.getDividerLocation();
 	}
 	
 	private String getResourceString(String property) {

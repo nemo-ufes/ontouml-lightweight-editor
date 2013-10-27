@@ -71,10 +71,10 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					DiagramEditor.class.getMethod("setSelectionMode")));
 			
 			selectorMap.put("REDO", new MethodCall(
-					DiagramEditor.class.getMethod("redo")));
+					getClass().getMethod("redo")));
 			
 			selectorMap.put("UNDO", new MethodCall(
-					DiagramEditor.class.getMethod("undo")));
+					getClass().getMethod("undo")));
 						
 			selectorMap.put("REDRAW", new MethodCall(
 					DiagramEditor.class.getMethod("redraw")));
@@ -336,6 +336,22 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void manageAntiPatterns()
 	{
 		AntiPatternListDialog.open(manager.getFrame());		
+	}
+	
+	public void undo()
+	{
+		manager.getCurrentDiagramEditor().undo();
+		
+		//This method recreates the tree
+		ModelTree.updateModelTree(manager.getCurrentProject());
+	}
+	
+	public void redo()
+	{
+		manager.getCurrentDiagramEditor().redo();
+		
+		//This method recreates the tree
+		ModelTree.updateModelTree(manager.getCurrentProject());
 	}
 	
 	public void parseOCL()

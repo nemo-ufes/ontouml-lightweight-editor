@@ -552,6 +552,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				DiagramManager.this.updateUI();
 			}
 		});
+		
+		searchErrors();
+		searchWarnings();
 	}
 
 	/**
