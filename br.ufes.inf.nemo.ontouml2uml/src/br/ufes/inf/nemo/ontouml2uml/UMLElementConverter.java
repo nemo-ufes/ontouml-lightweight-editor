@@ -7,49 +7,46 @@ import org.eclipse.uml2.uml.EnumerationLiteral;
 
 /**
  * @author John Guerson
+ *
  */
 
-public class Dealer {
+public class UMLElementConverter {
 		
-	public org.eclipse.uml2.uml.UMLFactory myfactory;	
-    public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> mymap;
+	public org.eclipse.uml2.uml.UMLFactory ufactory;	
+    public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap;
  
-    /** 
-     * Constructor. 
-     */
-	public Dealer()
+    
+	public UMLElementConverter()
     {
-		myfactory = org.eclipse.uml2.uml.UMLFactory.eINSTANCE;
-        mymap = new HashMap<RefOntoUML.Element, org.eclipse.uml2.uml.Element>();
+		ufactory = org.eclipse.uml2.uml.UMLFactory.eINSTANCE;
+        umap = new HashMap<RefOntoUML.Element, org.eclipse.uml2.uml.Element>();
     }
+	
+	public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> getMap()
+	{
+		return umap;
+	}
+	
 	
 	public static void outln(String output) 
     {
-    	//System.out.println(output);
-    	OntoUML2UML.logDetails += output+"\n";
+    	OntoUML2UML.log += output+"\n";
     }
 	
     public static void out(String output) 
     {
-    	//System.out.print(output);
-    	OntoUML2UML.logDetails += output;
+    	OntoUML2UML.log += output;
     }
         
     public static void err(String error) 
     {
-        //System.err.println(error);
-        OntoUML2UML.logDetails += error+"\n";
+        OntoUML2UML.log += error+"\n";
     }
     
-    /**
-     * Get key By Value.
-     * 
-     * @param value
-     * @return
-     */
+    
     public RefOntoUML.Element getKeyByValue(org.eclipse.uml2.uml.Element value) 
     {
-        for (Entry<RefOntoUML.Element,org.eclipse.uml2.uml.Element> entry : mymap.entrySet()) 
+        for (Entry<RefOntoUML.Element,org.eclipse.uml2.uml.Element> entry : umap.entrySet()) 
         {
             if (value.equals(entry.getValue())) 
             {
@@ -59,26 +56,15 @@ public class Dealer {
         return null;
     }       
 	   
-    /**
-     * Relate Elemnts.
-     * 
-     * @param c1
-     * @param c2
-     */
+    
     public void RelateElements (RefOntoUML.Element c1, org.eclipse.uml2.uml.Element c2)
     {
-        mymap.put(c1, c2);
+        umap.put(c1, c2);
     }
-
-    /**
-     * Get Element. 
-     * 
-     * @param e1
-     * @return
-     */
+   
     public org.eclipse.uml2.uml.Element GetElement (RefOntoUML.Element e1)
     {
-        return mymap.get(e1);
+        return umap.get(e1);
     }	
         
     /** 
@@ -121,8 +107,8 @@ public class Dealer {
         p2.setIsReadOnly(p1.isIsReadOnly());        
         p2.setIsDerived(p1.isIsDerived());
                             
-        org.eclipse.uml2.uml.LiteralInteger lowerValue = myfactory.createLiteralInteger();
-        org.eclipse.uml2.uml.LiteralUnlimitedNatural upperValue = myfactory.createLiteralUnlimitedNatural();
+        org.eclipse.uml2.uml.LiteralInteger lowerValue = ufactory.createLiteralInteger();
+        org.eclipse.uml2.uml.LiteralUnlimitedNatural upperValue = ufactory.createLiteralUnlimitedNatural();
         lowerValue.setValue(p1.getLower());
         upperValue.setValue(p1.getUpper());            
         p2.setLowerValue(lowerValue);
@@ -190,7 +176,7 @@ public class Dealer {
         org.eclipse.uml2.uml.Property p2;
         for (RefOntoUML.Property p1 : c1.getAttribute())
         {
-            p2 = myfactory.createProperty();
+            p2 = ufactory.createProperty();
             DealProperty(p1, p2);       
 
             String typeName = new String();
@@ -220,7 +206,7 @@ public class Dealer {
         org.eclipse.uml2.uml.Property p2;
         for (RefOntoUML.Property p1 : c1.getAttribute())
         {
-            p2 = myfactory.createProperty();
+            p2 = ufactory.createProperty();
             DealProperty(p1, p2);       
             
             String typeName = new String();
@@ -357,7 +343,7 @@ public class Dealer {
 	 */	
 	public void DealGeneralization (RefOntoUML.Generalization gen1)
     {	
-        org.eclipse.uml2.uml.Generalization gen2 = myfactory.createGeneralization();
+        org.eclipse.uml2.uml.Generalization gen2 = ufactory.createGeneralization();
             
         /* source (Specific) */
         RefOntoUML.Classifier e1 = (RefOntoUML.Classifier) gen1.getSpecific();
@@ -412,7 +398,7 @@ public class Dealer {
           
          for (RefOntoUML.EnumerationLiteral ontoliteral: dt1.getOwnedLiteral())
          {
-        	 EnumerationLiteral uliteral = myfactory.createEnumerationLiteral();
+        	 EnumerationLiteral uliteral = ufactory.createEnumerationLiteral();
         	 uliteral.setName(ontoliteral.getName());
         	 dt2.getOwnedLiterals().add(uliteral);
         	 
@@ -430,7 +416,7 @@ public class Dealer {
      {
          org.eclipse.uml2.uml.DataType dt2 = null;
            
-         dt2 = myfactory.createDataType();                          
+         dt2 = ufactory.createDataType();                          
            
          DealClassifier (dt1, dt2);
        	                         
@@ -444,7 +430,7 @@ public class Dealer {
       */     
      public org.eclipse.uml2.uml.GeneralizationSet DealGeneralizationSet (RefOntoUML.GeneralizationSet gs1)
      {        
-        org.eclipse.uml2.uml.GeneralizationSet gs2 = myfactory.createGeneralizationSet();
+        org.eclipse.uml2.uml.GeneralizationSet gs2 = ufactory.createGeneralizationSet();
              
         DealNamedElement(gs1, gs2);
                    
@@ -481,7 +467,7 @@ public class Dealer {
       */     
      public org.eclipse.uml2.uml.Dependency DealDependency (RefOntoUML.Dependency d1)
      {             
-        org.eclipse.uml2.uml.Dependency d2 = myfactory.createDependency();
+        org.eclipse.uml2.uml.Dependency d2 = ufactory.createDependency();
           
         DealNamedElement(d1, d2);
              

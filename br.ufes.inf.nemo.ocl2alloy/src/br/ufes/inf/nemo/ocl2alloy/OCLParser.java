@@ -67,9 +67,9 @@ public class OCLParser {
     	if (refparser==null) return;
     	if (umlPath==null) return;
     	
-    	umlResource = OntoUML2UML.Transformation(refparser,umlPath,true);		
-    	umlHashMap = OntoUML2UML.transformer.mydealer.mymap;
-    	logDetails = OntoUML2UML.logDetails;
+    	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,true,false);		
+    	umlHashMap = OntoUML2UML.getMap();
+    	logDetails = OntoUML2UML.getLog();
     	
     	// this line was added due to a bug of Eclipse :
     	// https://bugs.eclipse.org/bugs/show_bug.cgi?id=372258
@@ -111,12 +111,11 @@ public class OCLParser {
     public OCLParser (String oclAbsolutePath, String refAbsolutePath) throws IOException,ParserException,Exception
 	{ 			
     	OntoUMLParser refparser = new OntoUMLParser(refAbsolutePath);
-		umlResource = OntoUML2UML.Transformation(refparser,refAbsolutePath.replace(".refontouml" , ".uml"), true);							
+    	
+    	umlResource = OntoUML2UML.convertToUML(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),true,false);		
+    	umlHashMap = OntoUML2UML.getMap();
+    	logDetails = OntoUML2UML.getLog();
 				
-		umlHashMap = OntoUML2UML.transformer.mydealer.mymap;
-		
-		logDetails = OntoUML2UML.logDetails;
-		
 		// this line was added due to a bug of Eclipse :
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=372258
 		Environment.Registry.INSTANCE.registerEnvironment(new UMLEnvironmentFactory().createEnvironment());

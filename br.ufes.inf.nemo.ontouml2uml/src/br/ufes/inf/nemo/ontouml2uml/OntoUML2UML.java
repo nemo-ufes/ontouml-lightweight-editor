@@ -1,106 +1,64 @@
 package br.ufes.inf.nemo.ontouml2uml;
 
-import java.io.IOException;
-import java.util.Collections;
+import java.util.HashMap;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.resource.UMLResource;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /**
  * @author John Guerson
+ *
  */
-
 public class OntoUML2UML {
 		 	  
-	public static Transformation transformer;	
-	public static String logDetails = new String();
+	private static UMLTransformator utransformer;	
+	public static String log = new String();
 	
-	/**
-	 * Testing...
-	 * @param args
-	 */
-	public static void main(String[] args)
+	public static Resource convertToUML (RefOntoUML.Package refmodel, String umlPath)
 	{
-		try {
-			String path = "model/example1.refontouml";
-			Transformation(new OntoUMLParser(path),path.replace(".refontouml", ".uml" ),true);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		return convertToUML(refmodel, umlPath, false,false);
 	}
 	
-	/**
-	 * Makes the transformation from OntoUML to UML.
-	 * 
-	 * @param refmodel
-	 * @param umlPath
-	 * @param ignorePackageHierarchy
-	 * @return
-	 */
-	public static Resource Transformation (RefOntoUML.Package refmodel, String umlPath, boolean ignorePackageHierarchy)
+	public static Resource convertToUML (OntoUMLParser refparser, String umlPath)
 	{
-		logDetails="";
+		return convertToUML(refparser, umlPath, false,false);
+	}
+	
+	public static Resource convertToUML (RefOntoUML.Package refmodel, String umlPath, boolean ignorePackageHierarchy, boolean ignoreDerivation)
+	{
+		log="";
 		Resource umlResource = null;
 		
 		OntoUMLParser refparser = new OntoUMLParser(refmodel);
 		
-		transformer = new Transformation(refparser,ignorePackageHierarchy);			  
-		org.eclipse.uml2.uml.Package umlmodel = transformer.Transform();	
+		utransformer = new UMLTransformator(refparser,ignorePackageHierarchy, ignoreDerivation);			  
+		org.eclipse.uml2.uml.Package umlmodel = utransformer.run();	
    		   
-		umlResource = saveUML(umlPath,umlmodel);		   
+		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlmodel);		   
 		return umlResource;
 	}
 	
-	/**
-	 * Makes the transformation from OntoUML to UML.
-	 * 
-	 * @param refparser
-	 * @param umlPath
-	 * @param ignorePackageHierarchy
-	 * @return
-	 */
-	public static Resource Transformation (OntoUMLParser refparser, String umlPath, boolean ignorePackageHierarchy)
+	
+	public static Resource convertToUML (OntoUMLParser refparser, String umlPath, boolean ignorePackageHierarchy, boolean ignoreDerivation)
 	{
-		logDetails="";
+		log="";
 		Resource umlResource = null;
 		
-		transformer = new Transformation(refparser,ignorePackageHierarchy);			  
-		org.eclipse.uml2.uml.Package umlmodel = transformer.Transform();	
+		utransformer = new UMLTransformator(refparser,ignorePackageHierarchy,ignoreDerivation);			  
+		org.eclipse.uml2.uml.Package umlmodel = utransformer.run();	
    		   
-		umlResource = saveUML(umlPath,umlmodel);		   
+		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlmodel);		   
 		return umlResource;
-	}
-		
-	/**
-	 * Auxiliar Method to save the UML Model to a Resource.
-	 * 
-	 * @param umlpath
-	 * @param umlmodel
-	 * @return
-	 */
-	public static Resource saveUML (String umlpath, org.eclipse.uml2.uml.Package umlmodel) 
-	{
-		ResourceSet rset = new ResourceSetImpl();
-		
-		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);	
-		rset.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-    	
-		URI fileURI = URI.createFileURI(umlpath);    	
-	    Resource resource = rset.createResource(fileURI);    	
-	    resource.getContents().add(umlmodel);    	
+	}		
 	
-	    try{
-	    	resource.save(Collections.emptyMap());
-	    }catch(IOException e){
-	    	e.printStackTrace();
-	    }
-	    	    
-	    return resource;		   	
+	public static HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> getMap ()
+	{
+		return utransformer.getConverter().getMap();
 	}
+	
+	public static String getLog ()
+	{
+		return log;
+	}	
 }
