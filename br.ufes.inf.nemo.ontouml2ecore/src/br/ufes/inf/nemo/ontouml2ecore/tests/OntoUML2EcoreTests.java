@@ -6,6 +6,10 @@ import java.io.IOException;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2ecore.OntoUML2Ecore;
 
+/**
+ * @author John Guerson
+ */
+
 public class OntoUML2EcoreTests {
 	
 	public static void main(String[] args)

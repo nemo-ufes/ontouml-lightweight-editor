@@ -8,6 +8,10 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
+/**
+ * @author John Guerson
+ */
+
 public class OntoUML2Ecore {
 	  
 	private static EcoreTransformator etransformer;	
