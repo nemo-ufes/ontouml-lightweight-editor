@@ -11,6 +11,10 @@ import org.eclipse.emf.ecore.EPackage;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
+/**
+ * @author John Guerson
+ */
+
 public class EcoreTransformator {
 	
 	private OntoUMLParser refparser;

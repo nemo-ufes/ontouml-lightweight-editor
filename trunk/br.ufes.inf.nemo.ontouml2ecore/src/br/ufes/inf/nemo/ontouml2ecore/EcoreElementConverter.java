@@ -21,6 +21,10 @@ import org.eclipse.emf.ecore.EcorePackage;
 import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.PrimitiveType;
 
+/**
+ * @author John Guerson
+ */
+
 public class EcoreElementConverter {
 
 	public org.eclipse.emf.ecore.EcoreFactory efactory;	

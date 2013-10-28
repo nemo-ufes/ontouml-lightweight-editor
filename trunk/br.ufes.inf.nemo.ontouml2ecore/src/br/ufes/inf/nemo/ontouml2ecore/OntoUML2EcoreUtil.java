@@ -14,6 +14,10 @@ import org.eclipse.emf.ecore.util.ExtendedMetaData;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
+/**
+ * @author John Guerson
+ */
+
 public class OntoUML2EcoreUtil {
 
 	public static Resource saveEcore (String ecorepath, EPackage ecoremodel) 
