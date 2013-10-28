@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="project"
+    nsURI="http://project/1.0" nsPrefix="project">
+  <eClassifiers xsi:type="ecore:EClass" name="Integer">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enrollments" upperBound="-1"
+        eType="#//Enrollment" eOpposite="#//Enrollment/id"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Person"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Organization"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Child" eSuperTypes="#//Person"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Teenager" eSuperTypes="#//Person"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Adult" eSuperTypes="#//Person"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Student" eSuperTypes="#//Person">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="universities" lowerBound="1"
+        upperBound="-1" eType="#//University" eOpposite="#//University/students"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enrollments" lowerBound="1"
+        upperBound="-1" eType="#//Enrollment" eOpposite="#//Enrollment/student"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="University" eSuperTypes="#//Organization">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="students" lowerBound="1"
+        upperBound="-1" eType="#//Student" eOpposite="#//Student/universities"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enrollments" lowerBound="1"
+        upperBound="-1" eType="#//Enrollment" eOpposite="#//Enrollment/university"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Enrollment">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="university" lowerBound="1"
+        eType="#//University" eOpposite="#//University/enrollments"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="student" lowerBound="1"
+        eType="#//Student" eOpposite="#//Student/enrollments"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="id" lowerBound="1" eType="#//Integer"
+        eOpposite="#//Integer/enrollments"/>
+  </eClassifiers>
+</ecore:EPackage>
