@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Package xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_YIIXYD_REeOLM5aMsLqTWA" name="EA_Model">
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_YII-cD_REeOLM5aMsLqTWA" name="Unlimited Natural"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_YII-cT_REeOLM5aMsLqTWA" name="Integer"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_YII-cj_REeOLM5aMsLqTWA" name="Boolean"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_YII-cz_REeOLM5aMsLqTWA" name="String"/>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_YII-dD_REeOLM5aMsLqTWA" name="Colour">
+    <ownedLiteral xmi:id="_YII-dT_REeOLM5aMsLqTWA" name="black"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_YII-dj_REeOLM5aMsLqTWA" name="Bike">
+    <generalization xmi:id="_YII-dz_REeOLM5aMsLqTWA" general="_YIJlgD_REeOLM5aMsLqTWA" generalizationSet="_YIJlhT_REeOLM5aMsLqTWA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_YII-eD_REeOLM5aMsLqTWA" name="Car">
+    <generalization xmi:id="_YII-eT_REeOLM5aMsLqTWA" general="_YIJlgD_REeOLM5aMsLqTWA" generalizationSet="_YIJlhT_REeOLM5aMsLqTWA"/>
+    <ownedAttribute xmi:id="_YII-ej_REeOLM5aMsLqTWA" name="colour" visibility="private" type="_YII-dD_REeOLM5aMsLqTWA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YII-ez_REeOLM5aMsLqTWA" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YII-fD_REeOLM5aMsLqTWA" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_YII-fT_REeOLM5aMsLqTWA" name="Driver">
+    <generalization xmi:id="_YII-fj_REeOLM5aMsLqTWA" general="_YII-fz_REeOLM5aMsLqTWA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_YII-fz_REeOLM5aMsLqTWA" name="Person">
+    <ownedAttribute xmi:id="_YII-gD_REeOLM5aMsLqTWA" name="age" visibility="private" type="_YII-cT_REeOLM5aMsLqTWA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YII-gT_REeOLM5aMsLqTWA" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YII-gj_REeOLM5aMsLqTWA" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_YII-gz_REeOLM5aMsLqTWA" name="fleet" visibility="public" type="_YIJlgD_REeOLM5aMsLqTWA" association="_YIJlhD_REeOLM5aMsLqTWA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YII-hD_REeOLM5aMsLqTWA" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YII-hT_REeOLM5aMsLqTWA"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_YIJlgD_REeOLM5aMsLqTWA" name="Vehicle">
+    <ownedAttribute xmi:id="_YIJlgT_REeOLM5aMsLqTWA" name="owner" visibility="public" type="_YII-fz_REeOLM5aMsLqTWA" association="_YIJlhD_REeOLM5aMsLqTWA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YIJlgj_REeOLM5aMsLqTWA" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YIJlgz_REeOLM5aMsLqTWA" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_YIJlhD_REeOLM5aMsLqTWA" name="ownership" memberEnd="_YIJlgT_REeOLM5aMsLqTWA _YII-gz_REeOLM5aMsLqTWA"/>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_YIJlhT_REeOLM5aMsLqTWA" isCovering="true" isDisjoint="true" generalization="_YII-dz_REeOLM5aMsLqTWA _YII-eT_REeOLM5aMsLqTWA">
+    <name xsi:nil="true"/>
+  </packagedElement>
+</uml:Package>
