@@ -73,23 +73,23 @@ public class MainMenu implements ActionListener {
 		menubar.add(transformMenu);
 		
 		JMenuItem alloyItem = createMenuItem(transformMenu, "generatealloy");
-		alloyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.SHIFT_MASK));
+		alloyItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
 		
 		JMenuItem owlItem = createMenuItem(transformMenu, "generateowlsettings");
-		owlItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
+		owlItem.setAccelerator(KeyStroke.getKeyStroke("F2"));
 		
 		JMenuItem sbvrItem = createMenuItem(transformMenu, "generatesbvr");
-		sbvrItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.SHIFT_MASK));
+		sbvrItem.setAccelerator(KeyStroke.getKeyStroke("F3"));
 		
 		JMenuItem textItem = createMenuItem(transformMenu, "generatetext");
-		textItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.SHIFT_MASK));
+		textItem.setAccelerator(KeyStroke.getKeyStroke("F4"));
 		
 		JMenuItem antipatternItem = createMenuItem(transformMenu, "antipattern");
-		antipatternItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.SHIFT_MASK));
+		antipatternItem.setAccelerator(KeyStroke.getKeyStroke("F5"));
 		
 		JMenuItem assistantItem = createCheckBoxMenuItem(transformMenu, "assistant");
 		assistantItem.setSelected(true);
-		assistantItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.SHIFT_MASK));
+		assistantItem.setAccelerator(KeyStroke.getKeyStroke("F6"));
 		assistantItem.setEnabled(false);
 	}
 	
