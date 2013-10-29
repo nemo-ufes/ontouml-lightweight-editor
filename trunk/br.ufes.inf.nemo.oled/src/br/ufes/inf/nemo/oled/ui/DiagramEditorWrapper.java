@@ -59,14 +59,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout(0,0));
 //		panel.add(toolbar, BorderLayout.SOUTH);
-		
-		editorArea.setContinuousLayout(true);
-		editorArea.setOneTouchExpandable(true);
-		editorArea.setDividerSize(10);
-		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		editorArea.setResizeWeight(1) ;
-		editorArea.setDividerLocation(0.5);
-						
+										
 		JScrollPane scrollpane = new JScrollPane(editor);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
@@ -111,31 +104,40 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		
 		modeltree = ModelTree.getTreeFor(editor.getManager().getFrame(),getProject());
 		
-		infoTabbedPane.setPreferredSize(new Dimension(200,200));
-		
+		editorArea.setContinuousLayout(true);
+		editorArea.setOneTouchExpandable(true);
+		editorArea.setDividerSize(10);
+		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
+			
 		mainEditorArea.setContinuousLayout(true);
 		mainEditorArea.setOneTouchExpandable(true);
 		mainEditorArea.setDividerSize(10);
 		mainEditorArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-		mainEditorArea.setResizeWeight(1) ;
-		
-		Dimension minimumSize = new Dimension(0, 0);
-		editorArea.setMinimumSize(minimumSize);
-		modeltree.setMinimumSize(minimumSize);
-		infoTabbedPane.setMinimumSize(minimumSize);
-		panel.setMinimumSize(minimumSize);
-		scrollpane.setMinimumSize(minimumSize);
-		
+				
+		infoTabbedPane.setPreferredSize(new Dimension(200,200));
+		editor.getDiagram().setSize(GetScreenWorkingWidth()-483, GetScreenWorkingHeight()-301);
 		editorArea.add(panel, JSplitPane.TOP);		
-		editorArea.add(infoTabbedPane,JSplitPane.BOTTOM);									
+		editorArea.add(infoTabbedPane,JSplitPane.BOTTOM);		
+		editorArea.setDividerLocation(GetScreenWorkingHeight()-300);
+		
+		modeltree.setPreferredSize(new Dimension(250,250));
 		mainEditorArea.add(editorArea,JSplitPane.LEFT);
 		mainEditorArea.add(modeltree, JSplitPane.RIGHT);
-						
-		this.add(mainEditorArea,BorderLayout.CENTER);		
+		mainEditorArea.setDividerLocation(GetScreenWorkingWidth()-480);
 		
-		//editor.getDiagram().setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth()-460, java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight()-460);
+		this.add(mainEditorArea,BorderLayout.CENTER);		
+
 		focusOnOutput();
 	}	
+	
+	
+	public static int GetScreenWorkingWidth() {
+	    return java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
+	}
+
+	public static int GetScreenWorkingHeight() {
+	    return java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
+	}
 	
 	public static PropertyTablePanel getProperties(){
 		return properties;
