@@ -127,7 +127,9 @@ public class OCLEditorPanel extends JPanel {
       	scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
     	scrollPane.setBorder(null);
     	
-      	setPreferredSize(new Dimension(400, 100));
+    	textArea.setMinimumSize(new Dimension(0, 0));
+    	scrollPane.setMinimumSize(new Dimension(0, 0));
+ 	    setMinimumSize(new Dimension(0, 0));
       	add(scrollPane); 
       	
 	}   
