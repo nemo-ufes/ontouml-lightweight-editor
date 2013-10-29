@@ -279,7 +279,8 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
         Object[][] data = {};
         
         scrollpane = new JScrollPane();		
-	    scrollpane.setPreferredSize(new Dimension(100,70));
+        scrollpane.setMinimumSize(new Dimension(0, 0));
+	    setMinimumSize(new Dimension(0, 0));
 		scrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollpane.setBorder(new EmptyBorder(0,0,0,0));
@@ -288,7 +289,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 		scrollpane.setViewportView(table);
 		
 		table.setBorder(new EmptyBorder(0, 0, 0, 0));
-		table.setPreferredScrollableViewportSize(new Dimension(500, 150));		
+		//table.setPreferredScrollableViewportSize(new Dimension(500, 150));		
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.LIGHT_GRAY);		
 	    table.setSelectionBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHT));

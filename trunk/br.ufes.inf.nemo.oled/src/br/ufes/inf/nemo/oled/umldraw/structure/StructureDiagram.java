@@ -100,8 +100,8 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		NodeChangeListener, LabelSource, Diagram {
 
 	private static final long serialVersionUID = -874538211438595440L;
-	private static final int ADDITIONAL_SPACE_RIGHT = 30;
-	private static final int ADDITIONAL_SPACE_BOTTOM = 30;
+	private static final int ADDITIONAL_SPACE_RIGHT = 0;
+	private static final int ADDITIONAL_SPACE_BOTTOM = 0;
 	private transient boolean gridVisible = true, snapToGrid = true, saveNeeded = true;
 	private transient Collection<LabelChangeListener> nameChangeListeners = new ArrayList<LabelChangeListener>();
 	private transient Set<NodeChangeListener> nodeChangeListeners = new HashSet<NodeChangeListener>();

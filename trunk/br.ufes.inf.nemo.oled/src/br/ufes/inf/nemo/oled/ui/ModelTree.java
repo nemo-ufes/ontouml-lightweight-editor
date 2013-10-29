@@ -70,9 +70,7 @@ public class ModelTree extends JPanel{
 		refOptions = new OntoUML2AlloyOptions();
 		antipatterns = new AntiPatternList();
 		inferences = new InferenceList();
-		
-		
-		
+				
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
 				

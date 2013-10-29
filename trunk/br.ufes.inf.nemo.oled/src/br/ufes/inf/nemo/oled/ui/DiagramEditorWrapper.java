@@ -84,7 +84,6 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		infoTabbedPane = new JTabbedPane();
 		infoTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		infoTabbedPane.setBorder(null);
-		infoTabbedPane.setPreferredSize(new Dimension(400,600));
 		infoTabbedPane.setBackground(UIManager.getColor("Panel.background"));
 					
 		infoTabbedPane.add(properties);	
@@ -112,27 +111,29 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		
 		modeltree = ModelTree.getTreeFor(editor.getManager().getFrame(),getProject());
 		
-		infoTabbedPane.setPreferredSize(new Dimension(100,300));
-		
-		editorArea.add(panel, JSplitPane.TOP);		
-		editorArea.add(infoTabbedPane,JSplitPane.BOTTOM);
+		infoTabbedPane.setPreferredSize(new Dimension(200,200));
 		
 		mainEditorArea.setContinuousLayout(true);
 		mainEditorArea.setOneTouchExpandable(true);
 		mainEditorArea.setDividerSize(10);
 		mainEditorArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		mainEditorArea.setResizeWeight(1) ;
 		
 		Dimension minimumSize = new Dimension(0, 0);
-		Dimension preferredSize = new Dimension(0, 0);
 		editorArea.setMinimumSize(minimumSize);
 		modeltree.setMinimumSize(minimumSize);
-		modeltree.setPreferredSize(preferredSize);
-				
+		infoTabbedPane.setMinimumSize(minimumSize);
+		panel.setMinimumSize(minimumSize);
+		scrollpane.setMinimumSize(minimumSize);
+		
+		editorArea.add(panel, JSplitPane.TOP);		
+		editorArea.add(infoTabbedPane,JSplitPane.BOTTOM);									
 		mainEditorArea.add(editorArea,JSplitPane.LEFT);
 		mainEditorArea.add(modeltree, JSplitPane.RIGHT);
-				
+						
 		this.add(mainEditorArea,BorderLayout.CENTER);		
 		
+		//editor.getDiagram().setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth()-460, java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight()-460);
 		focusOnOutput();
 	}	
 	
