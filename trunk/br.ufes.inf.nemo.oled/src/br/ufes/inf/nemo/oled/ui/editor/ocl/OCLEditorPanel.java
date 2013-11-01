@@ -81,7 +81,7 @@ public class OCLEditorPanel extends JPanel {
 		
 		parserMenuItem = new JMenuItem("Parse",new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/check.png")));
 		
-		openMenuItem = new JMenuItem("Open OCL");
+		openMenuItem = new JMenuItem("Open");
 		saveMenuItem = new JMenuItem("Save As...");
 		textArea.getPopupMenu().add(parserMenuItem);
 		textArea.getPopupMenu().add(openMenuItem);

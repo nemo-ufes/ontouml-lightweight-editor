@@ -126,7 +126,8 @@ public class MainMenu implements ActionListener {
 		createMenuItem(exportMenu, "exportecore");
 		
 		fileMenu.addSeparator();
-		createMenuItem(fileMenu, "quit");
+		JMenuItem quitItem = createMenuItem(fileMenu, "quit");
+		quitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 	}
 	
 	private void createDiagramMenu()
