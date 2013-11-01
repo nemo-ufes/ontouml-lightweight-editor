@@ -174,12 +174,12 @@ public class MainMenu implements ActionListener {
 		JMenuItem redoItem = createMenuItem(editMenu, "redo");
 		redoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
 		
-		editMenu.addSeparator();
+		//editMenu.addSeparator();
 		/*
 		 * createMenuItem(editMenu, "cut"); createMenuItem(editMenu, "copy");
 		 * createMenuItem(editMenu, "paste");
 		 */
-		createMenuItem(editMenu, "delete");
+		//createMenuItem(editMenu, "delete");
 
 		// editMenu.addSeparator();
 		// createMenuItem(editMenu, "settings");
@@ -189,7 +189,7 @@ public class MainMenu implements ActionListener {
 		// enableMenuItem("CUT", false);
 		// enableMenuItem("COPY", false);
 		// enableMenuItem("PASTE", false);
-		enableMenuItem("DELETE", false);
+		//enableMenuItem("DELETE", false);
 	}
 
 	/**
