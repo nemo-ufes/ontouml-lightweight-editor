@@ -16,6 +16,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -32,8 +34,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	private static final long serialVersionUID = -1962960747434759099L;
 	private DiagramEditor editor;	
 	public JSplitPane editorArea  = new JSplitPane();	
-	public JSplitPane mainEditorArea = new JSplitPane();
-	
+	public JSplitPane mainEditorArea = new JSplitPane();	
 	public static JTabbedPane infoTabbedPane;
 	public static PropertyTablePanel properties;
 	public static ErrorTablePanel errors;
@@ -41,8 +42,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	public static OutputPane outputPane;
 	public static OCLEditorPanel ocleditor;
 	public static ModelTree modeltree;
-	public static ToolManager toolManager;
-	
+	public static ToolManager toolManager;	
 	//TODO Remove me
 	private File projectFile;
 	
@@ -51,14 +51,8 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		super(new BorderLayout());
 		this.editor = editor;		
 		
-//		DiagramEditorToolbar editorToolbar = new DiagramEditorToolbar();
-//		JToolBar toolbar = editorToolbar.getToolbar();
-//		editorToolbar.addCommandListener(editorDispatcher);
-//		toolbar.setFloatable(false);
-//		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout(0,0));
-//		panel.add(toolbar, BorderLayout.SOUTH);
 										
 		JScrollPane scrollpane = new JScrollPane(editor);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
@@ -73,6 +67,21 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		warnings = new WarningTablePanel(editor.getProject());
 		outputPane = new OutputPane();
 		ocleditor = new OCLEditorPanel(editor.getManager().getFrame());
+		
+		ocleditor.getTextArea().getDocument().addDocumentListener(new DocumentListener() {			
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+			}		
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+			}			
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				editor.getManager().getCurrentDiagramEditor().getDiagram().setSaveNeeded(true);
+				editor.getManager().getCurrentProject().setSaveModelNeeded(true);
+				editor.getManager().updateUI();
+			}
+		});
 		
 		infoTabbedPane = new JTabbedPane();
 		infoTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -130,7 +139,10 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		focusOnOutput();
 	}	
 	
-	
+	public OCLEditorPanel getOcleditor() {
+		return ocleditor;
+	}
+
 	public static int GetScreenWorkingWidth() {
 	    return java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
 	}

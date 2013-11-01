@@ -31,6 +31,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
+import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.util.OLEDSettings;
 
@@ -66,7 +67,7 @@ public final class ProjectWriter extends FileWriter {
 	 * @throws IOException
 	 *             if error occurred
 	 */
-	public File writeProject(Component comp, File file, UmlProject project) throws IOException {
+	public File writeProject(Component comp, File file, UmlProject project, OCLDocument oclDocument) throws IOException {
 
 		File outFile = getFileWithExtension(file);
 		FileOutputStream dest = new FileOutputStream(outFile);
@@ -87,6 +88,12 @@ public final class ProjectWriter extends FileWriter {
 		oos.flush();
 		out.closeEntry();
 		
+		//Save the OCL content in the editor inside the file
+		ZipEntry  constraintEntry = new ZipEntry(OLEDSettings.OCL_DEFAULT_FILE.getValue());
+		out.putNextEntry(constraintEntry);
+		out.write(oclDocument.getOCLString().getBytes());
+		out.closeEntry();
+		
 		//Flushes and closes the zip file
 		out.flush();
 		out.finish();
@@ -95,6 +102,8 @@ public final class ProjectWriter extends FileWriter {
 		return outFile;
 	}
 
+
+	
 	/**
 	 * {@inheritDoc}
 	 */

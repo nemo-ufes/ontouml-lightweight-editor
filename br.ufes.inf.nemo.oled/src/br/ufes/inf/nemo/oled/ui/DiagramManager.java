@@ -197,10 +197,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				try {
 					File file = fileChooser.getSelectedFile();
 					lastOpenPath = file.getAbsolutePath();
-					UmlProject model = (UmlProject) ProjectReader.getInstance().readProject(file);				
+					
+					UmlProject model = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);
+					
+					String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);					
+
 					createEditor((StructureDiagram) model.getDiagrams().get(0));
 					setModelFile(file);
 
+					getCurrentWrapper().getOcleditor().setText(constraints);
+					getCurrentWrapper().focusOnOclEditor();
+					
 					((StructureDiagram) model.getDiagrams().get(0)).setLabelText(file.getName().replace(".oled", ""));
 
 					ConfigurationHelper.addRecentProject(file.getCanonicalPath());
@@ -226,10 +233,16 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				if(startPanel != null)
 				{
 					File file = new File(startPanel.getSelectedRecentFile());
-					UmlProject model = (UmlProject) ProjectReader.getInstance().readProject(file);				
+					
+					UmlProject model = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);
+					String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);
+					
 					createEditor((StructureDiagram) model.getDiagrams().get(0));
 					setModelFile(file);
-
+										
+					getCurrentWrapper().getOcleditor().setText(constraints);
+					getCurrentWrapper().focusOnOclEditor();
+					
 					ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 					//updateFrameTitle(); FIXME
 				}
@@ -265,7 +278,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				file = new File(file.getCanonicalFile() + ".oled");
 			}
 
-			result = ProjectWriter.getInstance().writeProject(this, file, getCurrentEditor().getProject());
+			// copy OCL string content from the editor to the OCL Document related to the Project
+			OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());			
+			oclmodel.setConstraints(getCurrentWrapper().getConstraints(),"CONTENT");
+						
+			result = ProjectWriter.getInstance().writeProject(this, file, getCurrentEditor().getProject(), oclmodel);
+			
 			getCurrentDiagramEditor().clearUndoManager();
 			frame.updateMenuAndToolbars(getCurrentDiagramEditor());
 			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
