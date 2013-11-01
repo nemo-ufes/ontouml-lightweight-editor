@@ -122,7 +122,7 @@ public class BaseConnection implements UmlConnection, Adapter {
 		
 		if (relationship != null) {
 			relationship.eAdapters().add(this);
-			ontoUmlStereotype = ModelHelper.getClassAsStereotype(relationship);
+			ontoUmlStereotype = ModelHelper.getClassAsStereotype(relationship);			
 		}
 	}
 

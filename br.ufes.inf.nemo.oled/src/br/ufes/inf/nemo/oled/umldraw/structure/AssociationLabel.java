@@ -173,7 +173,7 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	public void draw(DrawingContext drawingContext) {
 
 		if (association instanceof AssociationElement) {
-			AssociationElement assocElement = (AssociationElement) association;
+			final AssociationElement assocElement = (AssociationElement) association;
 
 			if (assocElement.showOntoUmlStereotype()) {
 				// Classifier stereotype =
@@ -204,8 +204,22 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 				if(association.showOntoUmlStereotype())
 					typeLabel.draw(drawingContext);
 			}
+			
+			if (assocElement.showName() && getLabelText() != null) {								
+				
+				nameLabel.setSource(new LabelSource() {
 
-			if (assocElement.showName() && getLabelText() != null) {
+					private static final long serialVersionUID = -5187481263917156632L;
+
+					@Override
+					public void setLabelText(String aText) { }
+					
+					@Override
+					public String getLabelText() {
+						return assocElement.getAssociation().getName(); 
+					}
+				});
+				
 				nameLabel.draw(drawingContext);
 				drawDirection(drawingContext);
 			}

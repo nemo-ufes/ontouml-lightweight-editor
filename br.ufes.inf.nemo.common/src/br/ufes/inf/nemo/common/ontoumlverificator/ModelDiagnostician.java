@@ -310,7 +310,7 @@ public class ModelDiagnostician {
 		{
 			ArrayList<String> line = new ArrayList<String>();
 			warnings++;
-			line.add(String.format("%02d", warnings)+". Element does not inherited identity principle");			
+			line.add(String.format("%02d", warnings)+". Element does not inherit identity principle");			
 			line.add(getElement(c));
 			line.add(getPath(c));
 			items.add(line);

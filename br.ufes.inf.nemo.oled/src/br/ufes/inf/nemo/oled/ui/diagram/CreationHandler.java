@@ -107,7 +107,7 @@ public class CreationHandler implements EditorMode {
    */
   public void mouseReleased(EditorMouseEvent event) {
 	  
-	  System.out.println("released");
+	  
   }
 
   /**
