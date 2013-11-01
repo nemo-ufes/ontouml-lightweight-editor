@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.oled.model;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.ocl2alloy.OCLParser;
@@ -11,8 +12,10 @@ import br.ufes.inf.nemo.ocl2alloy.OCLParser;
  * @author John Guerson
  */
 
-public class OCLDocument {
+public class OCLDocument implements Serializable {
 		
+	private static final long serialVersionUID = 1L;
+
 	/** All OCL Constraints in one single String. This is our "model.*/
 	private String oclstring;
 	

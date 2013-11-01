@@ -47,6 +47,7 @@ public class OCLEditorPanel extends JPanel {
 	public JMenuItem saveMenuItem;
 	public JMenuItem openMenuItem;
 	public JMenuItem parserMenuItem;
+	
    /**
     * Constructor
     * 
@@ -59,6 +60,9 @@ public class OCLEditorPanel extends JPanel {
 	   this.frame = frame;
    }
  
+   public RSyntaxTextArea getTextArea(){
+	   return textArea;
+   }
 	/**
 	 * Constructor.
 	 */

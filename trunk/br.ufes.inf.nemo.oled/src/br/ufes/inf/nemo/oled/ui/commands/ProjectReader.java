@@ -23,8 +23,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -64,10 +66,14 @@ public final class ProjectReader extends FileHandler {
 	 *             if I/O error occurred
 	 * @throws ClassNotFoundException 
 	 */
-	public UmlProject readProject(File file) throws IOException, ClassNotFoundException {
+	@SuppressWarnings({ "resource" })
+	public ArrayList<Object> readProject(File file) throws IOException, ClassNotFoundException {
 		
-		boolean modelLoaded = false, projectLoaded = false;
+		// first element is UmlProject, the second the OCL String content.
+		ArrayList<Object> list = new ArrayList<Object>();
 		
+		boolean modelLoaded = false, projectLoaded = false, constraintLoaded = false;
+		String constraintContent = new String();
 		ZipFile inFile = new ZipFile(file);	
 		
 		//Read the model and the project file 
@@ -95,6 +101,13 @@ public final class ProjectReader extends FileHandler {
 				in.close();
 				projectLoaded = true;
 			}
+			else if (entry.getName().equals(OLEDSettings.OCL_DEFAULT_FILE.getValue()) && !constraintLoaded)
+			{
+				InputStream in = inFile.getInputStream(entry);
+				constraintContent = new Scanner(in).useDelimiter("\\A").next();			
+				in.close();
+				constraintLoaded = true;
+			}
 		}
 		
 		inFile.close();
@@ -103,8 +116,11 @@ public final class ProjectReader extends FileHandler {
 			throw new IOException("Project or model file not loaded.");
 		
 		project.setResource(resource);
-			
-		return project;
+		
+		list.add(project);
+		list.add(constraintContent);
+		
+		return list;
 	}
 
 	/**

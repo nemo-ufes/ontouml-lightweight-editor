@@ -10,6 +10,8 @@ public enum OLEDSettings {
 	
 	MODEL_DEFAULT_FILE("MODEL_DEFAULT_FILE", "model.refontouml"),
 	
+	OCL_DEFAULT_FILE("OCL_DEFAULT_FILE","constraints.ocl"),
+	
 	PROJECT_DEFAULT_FILE("PROJECT_DEFAULT_FILE","project.dat"),
 	
 	OWL_DEFAULT_FILE("OWL_DEFAULT_FILE", "model.owl"),
