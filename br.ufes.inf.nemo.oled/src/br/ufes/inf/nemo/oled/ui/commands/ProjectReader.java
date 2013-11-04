@@ -26,7 +26,6 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -66,7 +65,6 @@ public final class ProjectReader extends FileHandler {
 	 *             if I/O error occurred
 	 * @throws ClassNotFoundException 
 	 */
-	@SuppressWarnings({ "resource" })
 	public ArrayList<Object> readProject(File file) throws IOException, ClassNotFoundException {
 		
 		// first element is UmlProject, the second the OCL String content.
@@ -103,9 +101,13 @@ public final class ProjectReader extends FileHandler {
 			}
 			else if (entry.getName().equals(OLEDSettings.OCL_DEFAULT_FILE.getValue()) && !constraintLoaded)
 			{
-				InputStream in = inFile.getInputStream(entry);
-				constraintContent = new Scanner(in).useDelimiter("\\A").next();			
-				in.close();
+				InputStream is = inFile.getInputStream(entry);
+								
+				byte[] b = new byte[is.available()];
+				is.read(b);
+				constraintContent= new String(b);
+					
+				is.close();
 				constraintLoaded = true;
 			}
 		}
