@@ -14,7 +14,8 @@ public class TreePopupMenu extends JPopupMenu {
 	private static final long serialVersionUID = 1L;
 		
 	public JMenuItem deleteItem = new JMenuItem("Delete");
-	public JMenuItem autoCompleteItem = new JMenuItem("Complete selection...");
+	public JMenuItem autoCompleteItem = new JMenuItem("Complete Selection...");
+	public JMenuItem refreshItem = new JMenuItem("Refresh");
 	
     public TreePopupMenu(final AppFrame frame, final OntoUMLTree tree)
     {           	
@@ -30,6 +31,17 @@ public class TreePopupMenu extends JPopupMenu {
 				}
 			});
 	    }
+    	
+    	add(refreshItem);
+    	addSeparator();
+    	
+    	refreshItem.addActionListener(new ActionListener() {				
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//FIXME every modification creates a new tree
+				ModelTree.updateModelTree(frame.getDiagramManager().getCurrentProject());
+			}
+		});
     	
     	add(deleteItem);
     	deleteItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete.png")));

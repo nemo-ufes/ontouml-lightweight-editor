@@ -335,7 +335,7 @@ private void setupElementMaps() {
    * {@inheritDoc}
    */
   public UmlConnection createConnection(RelationType relationType, UmlNode node1, UmlNode node2) {
-    UmlConnection prototype = relationPrototypes.get(relationType);
+    UmlConnection prototype = relationPrototypes.get(relationType);    
     UmlConnection conn = null;
     if (prototype != null) {
       conn = (UmlConnection) prototype.clone();

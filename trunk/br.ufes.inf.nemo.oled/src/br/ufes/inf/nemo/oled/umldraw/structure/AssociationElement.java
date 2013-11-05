@@ -574,7 +574,7 @@ public final class AssociationElement extends BaseConnection {
 			labelWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getTypeLabelText());
 
 		// medium segment
-		List<Line2D> segments = getSegments();
+		List<Line2D> segments = getSegments();		
 		Line2D middlesegment = segments.get(segments.size() / 2);
 		int x = (int) (middlesegment.getX2() + middlesegment.getX1() - labelWidth) / 2;
 		int y = (int) (middlesegment.getY2() + middlesegment.getY1()) / 2;

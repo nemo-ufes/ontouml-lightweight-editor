@@ -46,9 +46,11 @@ import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.OntoUMLTree;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
@@ -219,6 +221,9 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
 		
 		//FIXME every modification creates a new tree
-		ModelTree.updateModelTree(project);		
+		ModelTree.getParserFor(project).addElement(((AssociationElement)element).getAssociation());
+		ModelTree.updateModelTree(project);
+		OntoUMLTree tree = ModelTree.getTreeFor(ModelTree.frame, project).getTree();
+		tree.selectThisElement(((AssociationElement)element).getAssociation());		
 	}
 }

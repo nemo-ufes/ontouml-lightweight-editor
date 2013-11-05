@@ -23,6 +23,7 @@
 package br.ufes.inf.nemo.oled;
 
 import java.awt.Color;
+import java.util.Locale;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -150,24 +151,35 @@ public final class Main {
 	 */
 	private Main() { }
 
+	/** Returns true iff running on Windows **/
+	public static boolean onWindows() {
+      return System.getProperty("os.name").toLowerCase(Locale.US).startsWith("windows");
+	};
+
+	/** Returns true iff running on Mac OS X. **/
+	public static boolean onMac() {
+      return System.getProperty("mrj.version")!=null || System.getProperty("os.name").toLowerCase(Locale.US).startsWith("mac ");
+	}	
+	   
 	/**  
 	 * The start method for this application.
 	 * @param args the command line parameters
 	 */
 	public static void main(String[] args) {
 
-		// Mac OS X settings
-		if (System.getProperty("mrj.version") != null) {
-			System.setProperty("apple.laf.useScreenMenuBar", "true");
-			System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode",
-			"false");
-			System.setProperty("com.apple.mrj.application.apple.menu.about.name",
-			"OLED");
-		}
-		
 		//Needed for the embedded SWT Browser in Linux systems
 		System.setProperty("sun.awt.xembedserver", "true");
 		
+		 // Enable better look-and-feel
+        if (onMac() || onWindows()) {
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "OLED ");
+            System.setProperty("com.apple.mrj.application.growbox.intrudes","true");
+            System.setProperty("com.apple.mrj.application.live-resize","true");
+            System.setProperty("com.apple.macos.useScreenMenuBar","true");
+            System.setProperty("apple.laf.useScreenMenuBar","true");
+            System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode","false");
+        }
+        
 		SwingUtilities.invokeLater(new Runnable() {
 			/**
 			 * {@inheritDoc}

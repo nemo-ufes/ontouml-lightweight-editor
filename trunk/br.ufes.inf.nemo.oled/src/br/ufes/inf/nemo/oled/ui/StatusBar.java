@@ -47,6 +47,13 @@ public class StatusBar extends JPanel implements StatusListener{
 		panel.add(barTextLabel);
 		panel.add(memBar);
 		
+		memBar.setMinimum(0);
+		memBar.setMaximum((int)Runtime.getRuntime().totalMemory());
+		memBar.setValue((int)(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+		memBar.setStringPainted(true);
+		memBar.setToolTipText(getMemString());	
+		barTextLabel.setText("Memory Usage:");
+		
 		memBar.setSize(new Dimension(50, 20));
 		add(panel, BorderLayout.EAST);
 						
