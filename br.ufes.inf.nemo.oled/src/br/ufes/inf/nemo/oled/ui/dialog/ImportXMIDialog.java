@@ -92,17 +92,20 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
                 glassPane.start();
 	            Thread performer = new Thread(new Runnable() {
 	                public void run() {
-	                	try {
+	                	try
+	                	{
 							initVariables();
-		                	glassPane.stop();
-						} catch (Exception e) {
+							initGUI();
+						} catch (Exception e)
+						{
 							ErrorInfo info = new ErrorInfo("Error", "Parsing not done.",
 				        			null, "category", e, Level.SEVERE, null);
 				        	JXErrorPane.showDialog(diagManager, info);
-				        	System.out.println(e.getMessage());
-				        	e.printStackTrace();
 						}
-	                	initGUI();
+	                	finally
+	                	{
+	                		glassPane.stop();
+	                	}
 	                }
 	            }, "Performer");
 	            performer.start();
@@ -196,7 +199,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		model = transfManager.parse();
         
         if (Mediator.warningLog != "") {
-        	//TODO essa lib que usei tem muita coisa desnecessária, talvez fosse melhor copiar o source
+        	//TODO essa lib que usei tem muita coisa desnecessï¿½ria, talvez fosse melhor copiar o source
         	ErrorInfo info = new ErrorInfo("Warning", "Parsing done with warnings",
         			null, "category", new Exception(Mediator.warningLog), Level.WARNING, null);
         	JXErrorPane.showDialog(diagManager, info);
