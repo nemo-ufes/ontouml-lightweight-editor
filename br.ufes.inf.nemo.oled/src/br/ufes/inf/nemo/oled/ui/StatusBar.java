@@ -76,7 +76,7 @@ public class StatusBar extends JPanel implements StatusListener{
 						memBar.setValue((int)(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 						memBar.setStringPainted(true);
 						memBar.setToolTipText(getMemString());	
-						barTextLabel.setText("Memory Usage - JavaVM:");
+						barTextLabel.setText("Memory Usage:");
 						//memLabel.setText(getMemString());
 					}
 				});
