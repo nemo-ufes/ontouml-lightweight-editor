@@ -15,6 +15,7 @@ public class StatusBar extends JPanel implements StatusListener{
 
 	private static final long serialVersionUID = -1470943434794934781L;
 	private JLabel statusLabel = new JLabel();
+	private JLabel barTextLabel = new JLabel();
 	//private JLabel coordLabel = new JLabel("    ");
 	//private JLabel memLabel = new JLabel("    ");
 	private JProgressBar memBar = new JProgressBar();
@@ -42,8 +43,12 @@ public class StatusBar extends JPanel implements StatusListener{
 		//this.add(coordLabel, BorderLayout.EAST);
 		//add(coordLabel, BorderLayout.WEST);
 		
+		JPanel panel = new JPanel();
+		panel.add(barTextLabel);
+		panel.add(memBar);
+		
 		memBar.setSize(new Dimension(50, 20));
-		add(memBar, BorderLayout.EAST);
+		add(panel, BorderLayout.EAST);
 						
 		scheduleMemTimer();
 		
@@ -69,7 +74,9 @@ public class StatusBar extends JPanel implements StatusListener{
 						memBar.setMinimum(0);
 						memBar.setMaximum((int)Runtime.getRuntime().totalMemory());
 						memBar.setValue((int)(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
-						memBar.setToolTipText(getMemString());
+						memBar.setStringPainted(true);
+						memBar.setToolTipText(getMemString());	
+						barTextLabel.setText("Memory Usage - JavaVM:");
 						//memLabel.setText(getMemString());
 					}
 				});
