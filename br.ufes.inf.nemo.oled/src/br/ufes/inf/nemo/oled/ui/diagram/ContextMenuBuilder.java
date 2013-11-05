@@ -122,16 +122,18 @@ public class ContextMenuBuilder implements ActionListener {
 	 */
 	private JPopupMenu createSingleConnectionContextMenu(Connection conn) {
 		JPopupMenu menu = new JPopupMenu();
+		createMenuItem(menu, "editproperties");
+		menu.addSeparator();
 		createMenuItem(menu, "resetpoints");
-		if (conn.isRectilinear()) {
+		//if (conn.isRectilinear()) {
 			createMenuItem(menu, "recttodirect");
-		} else {
+		//} else {
 			createMenuItem(menu, "directtorect");
-		}
+		//}
 		addNavigabilityMenu(menu, (UmlConnection) conn);
 		menu.addSeparator();
 		createMenuItem(menu, "delete");
-		addEditConnectionPropertiesMenu(menu, (UmlConnection) conn);
+		//addEditConnectionPropertiesMenu(menu, (UmlConnection) conn);
 		return menu;
 	}
 
@@ -171,6 +173,7 @@ public class ContextMenuBuilder implements ActionListener {
 	 * @param conn
 	 *            the connection
 	 */
+	@SuppressWarnings("unused")
 	private void addEditConnectionPropertiesMenu(JPopupMenu menu,
 			UmlConnection conn) {
 		if (conn instanceof AssociationElement) {

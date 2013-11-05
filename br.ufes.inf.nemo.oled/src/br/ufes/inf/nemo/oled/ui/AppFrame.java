@@ -99,7 +99,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	        public void run() 
 	        {
 	        	String[] args = {""};
-	        	analyzer = new SimpleGUICustom(args,false,"");
+	        	analyzer = new SimpleGUICustom(args,false,"");	        	
 	        }
 		});
 	}

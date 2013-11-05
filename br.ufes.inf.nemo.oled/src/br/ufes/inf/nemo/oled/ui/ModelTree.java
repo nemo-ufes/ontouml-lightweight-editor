@@ -44,7 +44,7 @@ public class ModelTree extends JPanel{
 	private InferenceList inferences;
 	private OntoUML2AlloyOptions refOptions;
 	private OCL2AlloyOptions oclOptions;
-	private static AppFrame frame;
+	public static AppFrame frame;
 	
 	public ModelTree(AppFrame appframe, UmlProject project)
 	{

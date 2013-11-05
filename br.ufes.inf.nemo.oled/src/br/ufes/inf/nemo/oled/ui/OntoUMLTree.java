@@ -77,7 +77,7 @@ public class OntoUMLTree extends CheckboxTree {
 	                if (pathBounds != null && pathBounds.contains(e.getX (),e.getY()))
 	                {	                	
 	                	doPopup(e,OntoUMLTree.this);
-	                }
+	                }	                
 	            }
 	        }
 	    });	
@@ -284,6 +284,24 @@ public class OntoUMLTree extends CheckboxTree {
 				getCheckingModel().removeCheckingPath(new TreePath(childNode.getPath()));				
 			}
     	}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public void selectThisElement(EObject element)
+	{
+		DefaultMutableTreeNode root = (DefaultMutableTreeNode) getModel().getRoot();
+		Enumeration e = root.breadthFirstEnumeration();
+	    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)e.nextElement();
+	    while (e.hasMoreElements()) 
+	    {
+	    	EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
+	    	if (obj.equals(element)) this.setSelectionPath(new TreePath(node.getPath()));
+	    		
+	    	node = (DefaultMutableTreeNode)e.nextElement();
+	    }
+	    //last element
+	    EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
+	    if (obj.equals(element)) this.setSelectionPath(new TreePath(node.getPath()));
 	}
 	
 	/**
