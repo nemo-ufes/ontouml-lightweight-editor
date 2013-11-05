@@ -96,8 +96,7 @@ public final class IconLoader {
 		HEAD_WELCOME,
 		NEW_PROJECT,
 		OPEN_PROJECT,
-		LEARN_ONTOUML,
-		COMMUNITY,
+		ISSUE_REPORT,		
 		NEXT,
 		PACKAGE,
 		ADD,
@@ -192,8 +191,7 @@ public final class IconLoader {
 		urlMap.put(IconType.HEAD_WELCOME, "resources/br/ufes/inf/nemo/oled/ui/headwelcome.png");
 		urlMap.put(IconType.NEW_PROJECT, "resources/br/ufes/inf/nemo/oled/ui/newproject.png");
 		urlMap.put(IconType.OPEN_PROJECT, "resources/br/ufes/inf/nemo/oled/ui/openproject.png");
-		urlMap.put(IconType.LEARN_ONTOUML, "resources/br/ufes/inf/nemo/oled/ui/learnontouml.png");
-		urlMap.put(IconType.COMMUNITY, "resources/br/ufes/inf/nemo/oled/ui/community.png");
+		urlMap.put(IconType.ISSUE_REPORT, "resources/br/ufes/inf/nemo/oled/ui/issue_report.png");		
 		urlMap.put(IconType.NEXT, "resources/br/ufes/inf/nemo/oled/ui/next.png");			
 		urlMap.put(IconType.PACKAGE, "resources/br/ufes/inf/nemo/oled/ui/package.png");
 		

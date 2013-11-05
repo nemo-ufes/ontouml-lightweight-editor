@@ -155,10 +155,10 @@ public class StartPanel extends JPanel implements Editor {
 						recentLabel.setText("Open Recent:");
 					}
 					{
-						learnOntoUMLButton = createStartButton("learnontouml");
+						learnOntoUMLButton = createStartButton("import");
 					}
 					{
-						communityButton = createStartButton("community");
+						communityButton = createStartButton("issuereport");
 					}
 					{
 						openProjectButton = createStartButton("openproject");

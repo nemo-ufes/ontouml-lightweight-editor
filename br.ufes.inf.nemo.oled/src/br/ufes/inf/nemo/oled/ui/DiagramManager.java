@@ -583,15 +583,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		StartPanel start = new StartPanel(frame);
 		this.add("Start", start);
 	}
-
-	public void openCommunity()
+	
+	public void openIssueReport()
 	{
-		openLinkWithBrowser("http://nemo.inf.ufes.br/");
-	}
-
-	public void openLearnOntoUML()
-	{
-		openLinkWithBrowser("http://nemo.inf.ufes.br/");
+		openLinkWithBrowser("https://code.google.com/p/ontouml-lightweight-editor/issues/list");
 	}
 
 	public void openLinkWithBrowser(String link)
