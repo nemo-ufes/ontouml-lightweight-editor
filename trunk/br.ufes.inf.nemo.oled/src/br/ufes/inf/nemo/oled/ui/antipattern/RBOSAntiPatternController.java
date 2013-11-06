@@ -157,7 +157,7 @@ public class RBOSAntiPatternController {
     			constraints += rbosModel.generateIrreflexiveOcl(refparser); 
     		}
     		
-    		rbosView.getFrame().getDiagramManager().getCurrentWrapper().addConstraints(constraints);
+    		rbosView.getFrame().getInfoManager().addConstraints(constraints);
 	    }
 	}	
 }

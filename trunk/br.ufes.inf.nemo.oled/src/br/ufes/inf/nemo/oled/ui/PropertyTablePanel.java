@@ -384,4 +384,8 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	     ProjectBrowser.refreshModelTree(project);
 	}
 	
+	public void setProject(UmlProject project)
+	{
+		this.project = project;
+	}
 }

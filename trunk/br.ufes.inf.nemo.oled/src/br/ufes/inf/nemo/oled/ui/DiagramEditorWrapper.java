@@ -1,30 +1,19 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.io.File;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
-import br.ufes.inf.nemo.oled.ui.editor.ocl.OCLEditorPanel;
-import br.ufes.inf.nemo.oled.util.ApplicationResources;
-import br.ufes.inf.nemo.oled.util.IconLoader;
 
 /** 
  * Wrapper class for {@link DiagramEditor} responsible for providing toolbar and handling the model file.  
@@ -32,16 +21,7 @@ import br.ufes.inf.nemo.oled.util.IconLoader;
 public class DiagramEditorWrapper extends JPanel implements Editor{
 
 	private static final long serialVersionUID = -1962960747434759099L;
-	private DiagramEditor editor;	
-	public JSplitPane editorArea  = new JSplitPane();	
-	public JSplitPane mainEditorArea = new JSplitPane();	
-	public static JTabbedPane infoTabbedPane;
-	public static PropertyTablePanel properties;
-	public static ErrorTablePanel errors;
-	public static WarningTablePanel warnings;
-	public static OutputPane outputPane;
-	public static OCLEditorPanel ocleditor;
-
+	private DiagramEditor editor;		
 	//TODO Remove me
 	private File projectFile;
 	
@@ -60,76 +40,10 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		
 		panel.add(scrollpane);
 		panel.setBorder(new EmptyBorder(0,0,0,0));
-		
-		properties = new PropertyTablePanel(editor.getProject());		
-		errors = new ErrorTablePanel(editor.getProject());
-		warnings = new WarningTablePanel(editor.getProject());
-		outputPane = new OutputPane();
-		ocleditor = new OCLEditorPanel(editor.getManager().getFrame());
-		
-		ocleditor.getTextArea().getDocument().addDocumentListener(new DocumentListener() {			
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-			}		
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-			}			
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				editor.getManager().getCurrentDiagramEditor().getDiagram().setSaveNeeded(true);
-				editor.getManager().getCurrentProject().setSaveModelNeeded(true);
-				editor.getManager().updateUI();
-			}
-		});
-		
-		infoTabbedPane = new JTabbedPane();
-		infoTabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		infoTabbedPane.setBorder(null);
-		infoTabbedPane.setBackground(UIManager.getColor("Panel.background"));
-					
-		infoTabbedPane.add(properties);	
-		infoTabbedPane.setTitleAt(0," Properties ");
-		infoTabbedPane.setIconAt(0,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/table.png")));
-		
-		infoTabbedPane.add(warnings);	
-		infoTabbedPane.setTitleAt(1," Warnings ");
-		infoTabbedPane.setIconAt(1,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/warning.png")));
-		
-		infoTabbedPane.add(errors);	
-		infoTabbedPane.setTitleAt(2," Errors ");
-		infoTabbedPane.setIconAt(2,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/error.png")));
-		
-		infoTabbedPane.add(outputPane);	
-		infoTabbedPane.setTitleAt(3," Output ");		
-		infoTabbedPane.setIconAt(3,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.output.icon")));
-		
-		infoTabbedPane.add(ocleditor);	
-		infoTabbedPane.setTitleAt(4," OCL Editor ");
-		infoTabbedPane.setSelectedIndex(4);
-		infoTabbedPane.setIconAt(4,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.ocleditor.icon")));
-		
-		infoTabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
 				
-		editorArea.setContinuousLayout(true);
-		editorArea.setOneTouchExpandable(true);
-		editorArea.setDividerSize(10);
-		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
-			
-		infoTabbedPane.setPreferredSize(new Dimension(200,200));
-		editor.getDiagram().setSize(GetScreenWorkingWidth()-483, GetScreenWorkingHeight()-301);
-		editorArea.add(panel, JSplitPane.TOP);		
-		editorArea.add(infoTabbedPane,JSplitPane.BOTTOM);		
-		editorArea.setDividerLocation(GetScreenWorkingHeight()-300);
-		
-		this.add(editorArea,BorderLayout.CENTER);		
-
-		focusOnOutput();
+		add(panel,BorderLayout.CENTER);		
 	}	
 	
-	public OCLEditorPanel getOcleditor() {
-		return ocleditor;
-	}
-
 	public static int GetScreenWorkingWidth() {
 	    return java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
 	}
@@ -137,85 +51,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	public static int GetScreenWorkingHeight() {
 	    return java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
 	}
-	
-	public static PropertyTablePanel getProperties(){
-		return properties;
-	}
-
-	public OutputPane getOutput(){
-		return outputPane;
-	}
-	
-	public WarningTablePanel getWarnings(){
-		return warnings;
-	}
 		
-	public void setTitleWarning(String text)
-	{
-		infoTabbedPane.setTitleAt(1,text);
-	}
-	
-	public void setTitleErrors(String text)
-	{
-		infoTabbedPane.setTitleAt(2,text);
-	}
-	
-	/**
-	 * Get Constraints from the editor view.
-	 */
-	public String getConstraints() { 
-		return ocleditor.textArea.getText(); 
-	}
-	
-	public void setConstraints(String text) { 
-		ocleditor.textArea.setText(text);
-		ocleditor.validate();
-		ocleditor.repaint();
-	}
-	
-	public void addConstraints(String text) { 
-		ocleditor.textArea.append(text);
-		ocleditor.validate();
-		ocleditor.repaint();
-	}
-	
-	public ErrorTablePanel getErrors(){
-		return errors;
-	}
-	
-	public int getMainDividerLocation(){
-		return mainEditorArea.getDividerLocation();
-	}
-	
-	private String getResourceString(String property) {
-	    return ApplicationResources.getInstance().getString(property);
-	}
-	
-	public static void focusOnProperties()
-	{
-		infoTabbedPane.setSelectedIndex(0);
-	}
-	
-	public void focusOnErrors()
-	{
-		infoTabbedPane.setSelectedIndex(2);
-	}
-	
-	public void focusOnWarnings()
-	{
-		infoTabbedPane.setSelectedIndex(1);
-	}
-	
-	public void focusOnOutput()
-	{
-		infoTabbedPane.setSelectedIndex(3);
-	}
-	
-	public void focusOnOclEditor()
-	{
-		infoTabbedPane.setSelectedIndex(4);
-	}
-	
 	public void setDiagramEditor(DiagramEditor editor) {
 		this.editor = editor;
 	}
@@ -224,23 +60,6 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		return editor;
 	}
 	
-	public void showOutputText(String text, boolean clear, boolean showOutput)
-	{		
-		if(clear)
-		{
-			outputPane.write(text);
-		}
-		else
-		{
-			outputPane.apped(text);
-		}
-		
-		if(showOutput)
-		{
-			outputPane.setVisible(true);
-			showOutput();
-		}
-	}
 	
 	public void setModelFile(File modelFile) {
 		this.projectFile = modelFile;
@@ -277,45 +96,6 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		{
 			output.setText(text);
 		}
-	}
-
-	private void showOutput()
-	{
-		int location = editorArea.getDividerLocation();
-		int maxLocation = editorArea.getMaximumDividerLocation();
-		if(location >= maxLocation - 1) //1px bug
-        {
-			editorArea.setDividerLocation(0.75);
-        }
-		focusOnOutput();
-	}
-	
-	public void showOrHideOutput() {
-		
-		int location = editorArea.getDividerLocation();
-		int maxLocation = editorArea.getMaximumDividerLocation();
-		if(location < maxLocation)
-        {
-			editorArea.setDividerLocation(1.0);	
-        }
-        else
-        {
-        	editorArea.setDividerLocation(0.75);
-        }
-	}
-
-	public void showOrHideOclEditor() {
-		
-		int location = editorArea.getDividerLocation();
-		int maxLocation = editorArea.getMaximumDividerLocation();
-		if(location < maxLocation)
-        {
-			editorArea.setDividerLocation(1.0);	
-        }
-        else
-        {
-        	editorArea.setDividerLocation(0.75);
-        }
 	}
 	
 	@Override

@@ -53,6 +53,11 @@ public class WarningTablePanel extends JPanel {
 		table.setRowSelectionInterval(row, row);
 	}
 	
+	public void setProject(UmlProject project)
+	{
+		this.project = project;
+	}
+	
 	/**
 	 * Set data
 	 * 

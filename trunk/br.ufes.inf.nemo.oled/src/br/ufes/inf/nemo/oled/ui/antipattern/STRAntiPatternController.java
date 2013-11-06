@@ -175,7 +175,7 @@ public class STRAntiPatternController {
     					refparser
     	    			);
     		}    		
-			strView.getFrame().getDiagramManager().getCurrentWrapper().addConstraints(constraints);
+			strView.getFrame().getInfoManager().addConstraints(constraints);
 	    }
 	}	
 }

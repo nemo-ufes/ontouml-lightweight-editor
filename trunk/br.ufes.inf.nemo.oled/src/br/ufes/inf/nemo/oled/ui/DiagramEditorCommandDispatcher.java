@@ -367,13 +367,13 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void searchWarnings()
 	{
 		manager.searchWarnings();
-		manager.getCurrentWrapper().focusOnWarnings();
+		manager.getFrame().focusOnWarnings();
 	}
 	
 	public void searchErrors()
 	{
 		manager.searchErrors();
-		manager.getCurrentWrapper().focusOnErrors();
+		manager.getFrame().focusOnErrors();
 	}
 	
 	public void showOclEditor()

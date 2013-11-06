@@ -26,13 +26,22 @@ import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 public class AppFrame extends JFrame implements AppCommandListener {
 
 	private static final long serialVersionUID = 3464348864344034246L;
+	
 	private transient MainMenu mainMenu;
 	private transient MainToolbar mainToolBar;
+	
 	private transient ToolManager toolManager;
 	private transient DiagramManager diagramManager;
 	private transient ProjectBrowser projectBrowser;
+	private transient InfoManager infoManager;
 	private transient StatusBar statusBar;
+	
+	private transient JSplitPane toolArea = new JSplitPane();
+	private transient JSplitPane browserArea = new JSplitPane();
+	private transient JSplitPane editorArea = new JSplitPane();
+	
 	private transient Map<String, MethodCall> selectorMap = new HashMap<String, MethodCall>();
+	
 	private transient SimpleGUICustom analyzer;
 	
 	//For modelling assistant
@@ -82,8 +91,9 @@ public class AppFrame extends JFrame implements AppCommandListener {
             @Override
             public void run() 
             {            	
-            	//mainSplitPane.setDividerLocation(0.35);
-            	//innerSplitPane.setDividerLocation(1.00);            	            	
+            	toolArea.setDividerLocation(230);        		
+        		editorArea.setDividerLocation(GetScreenWorkingHeight());
+        		browserArea.setDividerLocation(GetScreenWorkingWidth()-480);
             }
         });
     }
@@ -145,38 +155,42 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	/**
 	 * Adds the main diagram manager (the tabbed pane which holds the diagrams)
 	 */
-	private void installManagers() {
+	private void installManagers() {		
 		
-		JSplitPane diagramArea = new JSplitPane();
-		
-		diagramArea.setContinuousLayout(true);
-		diagramArea.setOneTouchExpandable(true);
-		diagramArea.setDividerSize(10);
-		diagramArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-		
-		JSplitPane toolArea = new JSplitPane();
-		toolArea.setOneTouchExpandable(true);
-		toolArea.setDividerLocation(230);
+		toolArea.setOneTouchExpandable(true);		
 		toolArea.setDividerSize(10);
-		this.getContentPane().add(toolArea, BorderLayout.CENTER);
+			
+		browserArea.setOneTouchExpandable(true);		
+		browserArea.setDividerSize(10);
+		browserArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		
+		editorArea.setOneTouchExpandable(true);		
+		editorArea.setDividerSize(10);
+		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
 		diagramManager = new DiagramManager(this);
-		
-		projectBrowser = new ProjectBrowser(diagramManager.getFrame(),null);	
-		projectBrowser.setPreferredSize(new Dimension(250,250));
-		
-		diagramArea.add(projectBrowser, JSplitPane.RIGHT);
-		diagramArea.add(diagramManager, JSplitPane.LEFT);
-		
-		diagramArea.setDividerLocation(GetScreenWorkingWidth()-480);
-		
-		toolArea.add(diagramArea, JSplitPane.RIGHT);
-
+		infoManager= new InfoManager(this, null);		
+		projectBrowser = new ProjectBrowser(diagramManager.getFrame(),null);
 		toolManager = new ToolManager(this, diagramManager.getEditorDispatcher());
+		
+		editorArea.add(diagramManager, JSplitPane.TOP);		
+		editorArea.add(infoManager,JSplitPane.BOTTOM);	
+		editorArea.setDividerLocation(GetScreenWorkingHeight());
+		
+		browserArea.add(editorArea, JSplitPane.LEFT);
+		browserArea.add(projectBrowser, JSplitPane.RIGHT);
+		browserArea.setDividerLocation(GetScreenWorkingWidth()-480);
+		
 		toolManager.setMinimumSize(new Dimension(230, 100));
 		toolArea.add(toolManager, JSplitPane.LEFT);
+		toolArea.add(browserArea, JSplitPane.RIGHT);
+		toolArea.setDividerLocation(230);
 		
+		getContentPane().add(toolArea, BorderLayout.CENTER);
+		
+		//to end...
 		diagramManager.addStartPanel();		
+		editorArea.setDividerLocation(0);
 	}
 
 	/**
@@ -316,6 +330,11 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		return true;
 	}
 
+	public InfoManager getInfoManager()
+	{
+		return infoManager;
+	}
+	
 	/**
 	 * Gets the application main menu.
 	 * 
@@ -366,7 +385,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		toolManager = null;
 		diagramManager = null;
 		statusBar = null;
-
+		infoManager = null;
+				
 		initSelectorMap();
 	}
 
@@ -476,5 +496,35 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public static AppFrame getInstance(){
 		return instance;
 	}
+
+	public void focusOnProperties()
+	{	
+		infoManager.setSelectedIndex(0);
+	}
 	
+	public void focusOnErrors()
+	{	
+		infoManager.setSelectedIndex(2);
+	}
+	
+	public void focusOnWarnings()
+	{	
+		infoManager.setSelectedIndex(1);
+	}
+	
+	public void focusOnOutput()
+	{	
+		infoManager.setSelectedIndex(3);
+	}
+	
+	public void focusOnOclEditor()
+	{		
+		infoManager.setSelectedIndex(4);		
+	}
+	
+	public void showInfoManager()
+	{
+		infoManager.setVisible(true);
+		editorArea.setDividerLocation(100);
+	}
 }

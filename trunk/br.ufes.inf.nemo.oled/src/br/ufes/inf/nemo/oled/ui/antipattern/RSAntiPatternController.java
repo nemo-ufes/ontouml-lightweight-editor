@@ -155,7 +155,7 @@ public class RSAntiPatternController {
 	    			)+"\n\n"; 
 	    		}    		
 
-	    		rsView.getFrame().getDiagramManager().getCurrentWrapper().addConstraints(constraints);
+	    		rsView.getFrame().getInfoManager().addConstraints(constraints);
     		
 		    }catch(Exception exception){
 		    	rsView.getFrame().showErrorMessageDialog("Solving RS AntiPattern",exception.getMessage());
