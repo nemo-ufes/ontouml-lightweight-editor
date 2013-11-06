@@ -7,7 +7,7 @@ import br.ufes.inf.nemo.antipattern.ia.IAAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
@@ -45,9 +45,9 @@ public class IAAntiPatternController {
 	    {			
 	    	try{
 	    		String predicates = new String();
-	    		OntoUMLParser refparser = ModelTree.getParserFor(iaView.getFrame().getDiagramManager().getCurrentProject());
+	    		OntoUMLParser refparser = ProjectBrowser.getParserFor(iaView.getFrame().getDiagramManager().getCurrentProject());
 	    		UmlProject project = iaView.getFrame().getDiagramManager().getCurrentProject();
-	    		OntoUML2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(project);
+	    		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(project);
 	    		
 	    		if(iaView.isSelectedSourceCustom()) 
 	    		{
@@ -120,7 +120,7 @@ public class IAAntiPatternController {
 	    {
 			String constraints = new String();
 			
-			OntoUMLParser refparser = ModelTree.getParserFor(iaView.getFrame().getDiagramManager().getCurrentProject());
+			OntoUMLParser refparser = ProjectBrowser.getParserFor(iaView.getFrame().getDiagramManager().getCurrentProject());
 			
     		if(iaView.isSelectedSourceCustom()) 
     		{

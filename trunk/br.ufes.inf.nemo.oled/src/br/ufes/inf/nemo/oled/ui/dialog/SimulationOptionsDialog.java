@@ -17,7 +17,7 @@ import javax.swing.border.EmptyBorder;
 import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.OCL2AlloyOptionsPane;
 import br.ufes.inf.nemo.oled.ui.OntoUML2AlloyOptionsPane;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
@@ -148,15 +148,15 @@ public class SimulationOptionsDialog extends JDialog {
 		ontoumlOptions.weakSupplementationAxiom = ontoumlOptPane.isSelectedWeakSupplementation();
 		ontoumlOptions.relatorAxiom = ontoumlOptPane.isSelectedRelatorConstraint();			    	
 		
-		ModelTree.setOntoUMLOptionsFor(frame.getDiagramManager().getCurrentProject(),ontoumlOptions);
+		ProjectBrowser.setOntoUMLOptionsFor(frame.getDiagramManager().getCurrentProject(),ontoumlOptions);
 		
-		OCLDocument oclmodel = ModelTree.getOCLModelFor(frame.getDiagramManager().getCurrentProject());
+		OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(frame.getDiagramManager().getCurrentProject());
 		OCL2AlloyOptions oclOptions = new OCL2AlloyOptions(oclmodel.getOCLParser());		
 		oclOptions.setTransformationType(oclOptPane.getTransformationsTypesListSelected());
     	oclOptions.setCommandScope(oclOptPane.getScopesListSelected());    			
 		//oclOptions.setConstraintList(oclOptView.getConstraintListSelected());
     	
-    	ModelTree.setOCLOptionsFor(frame.getDiagramManager().getCurrentProject(), oclOptions);
+    	ProjectBrowser.setOCLOptionsFor(frame.getDiagramManager().getCurrentProject(), oclOptions);
 		  
     	dispose();
     

@@ -130,6 +130,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	private static final long serialVersionUID = 5019191384767258996L;
 	public final AppFrame frame;
 	private DiagramEditorCommandDispatcher editorDispatcher;
+	
 	public String lastOpenPath = new String();
 	public String lastSavePath = new String();
 	public String lastImportEAPath = new String();
@@ -156,8 +157,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				DiagramEditor editor = getCurrentDiagramEditor();
-				if(editor != null){					
-					ModelTree.updateModelTree(getCurrentProject());
+				if(editor != null){
+					ProjectBrowser.updateModelTree(getCurrentProject());
 				}
 				//DiagramManager.this.frame.getToolManager().showModelTree(editor.getProject());		
 				frame.updateMenuAndToolbars(editor);
@@ -171,17 +172,31 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Creates a new project.
 	 */
 	public void newProject() {
-		//if (canCreateNewModel()) {
+		//if (canCreateNewModel()) {		
 		UmlProject project = new UmlProject();
+		frame.getProjectBrowser().setProject(project);
 		StructureDiagram diagram = new StructureDiagram(project);
 		project.addDiagram(diagram);
 		//TODO Localize this
-		diagram.setLabelText("New Project");		
+		diagram.setLabelText("New Diagram");		
 		project.setSaveModelNeeded(true);
 		diagram.setSaveNeeded(true);
 		createEditor(diagram);
 	}
 
+	/**
+	 * Creates a new diagram
+	 */
+	public void newDiagram()
+	{
+		StructureDiagram diagram = new StructureDiagram(getCurrentProject());
+		getCurrentProject().addDiagram(diagram);
+		diagram.setLabelText("New Diagram");		
+		getCurrentProject().setSaveModelNeeded(true);
+		diagram.setSaveNeeded(true);
+		createEditor(diagram);
+	}
+	
 	/**
 	 * Opens an existing project.
 	 */
@@ -279,7 +294,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 
 			// copy OCL string content from the editor to the OCL Document related to the Project
-			OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());			
+			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());			
 			oclmodel.setConstraints(getCurrentWrapper().getConstraints(),"CONTENT");
 						
 			result = ProjectWriter.getInstance().writeProject(this, file, getCurrentEditor().getProject(), oclmodel);
@@ -287,6 +302,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			getCurrentDiagramEditor().clearUndoManager();
 			frame.updateMenuAndToolbars(getCurrentDiagramEditor());
 			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
+			
+			setTitleAt(indexOfComponent(getCurrentWrapper()), file.getName().replace(".oled", ""));
+			updateUI();
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.savefile.title"), JOptionPane.ERROR_MESSAGE);
@@ -327,7 +346,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			lastSavePath = file.getAbsolutePath();
 		}
 	}
-
 
 	/**
 	 * Deletes the current selection.
@@ -431,7 +449,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		try{
 
-			OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());
+			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
 
 			String path = FileChoosersUtil.saveOCLPathLocation(frame,oclmodel.getOCLPath());	    		
 			if (path==null) return;		
@@ -459,7 +477,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 			if (getCurrentProject()==null) newProject();
 			
-			OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());
+			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
 
 			String path = FileChoosersUtil.openOCLPathLocation(frame,oclmodel.getOCLPath());
 
@@ -557,22 +575,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		editor.addAppCommandListener(editorDispatcher);
 		
 		//Add the diagram to the tabbed pane (this), through the wrapper
-		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
-		final Component comp = this.add(diagram.getLabelText(), wrapper);
-
+		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);			
+		final Component comp = add(diagram.getLabelText(), wrapper);
+		
 		diagram.addNameLabelChangeListener(new LabelChangeListener() {
 			/** {@inheritDoc} */
 			public void labelTextChanged(Label label) {
 
 				//TODO Write a command for this
 				DiagramManager.this.setTitleAt(DiagramManager.this.indexOfComponent(comp), label.getNameLabelText());
-
 				DiagramManager.this.updateUI();
 			}
-		});
-		
-		searchErrors();
-		searchWarnings();
+		});		
 	}
 
 	/**
@@ -816,7 +830,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if (elem instanceof RefOntoUML.Type)
 			{
 				//delete associations and generalizations of the element 
-				ArrayList<Relationship> relList = ModelTree.getParserFor(getCurrentProject()).getSelectedAndNonSelectedRelationshipsOf(elem);
+				ArrayList<Relationship> relList = ProjectBrowser.getParserFor(getCurrentProject()).getSelectedAndNonSelectedRelationshipsOf(elem);
 				for(Relationship rel: relList)
 				{							
 					DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(getCurrentProject().getEditingDomain(), rel);
@@ -853,7 +867,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void searchWarnings() 
 	{	
-		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
 
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
 
@@ -861,7 +875,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 		ModelDiagnostician verificator = new ModelDiagnostician();    	
 		getCurrentWrapper().getWarnings().setData(
-				verificator.getWarningsMatrixFormat(ModelTree.getParserFor(getCurrentProject())),
+				verificator.getWarningsMatrixFormat(ProjectBrowser.getParserFor(getCurrentProject())),
 				verificator.getWarnings()
 				);
 		if (verificator.getWarnings()>0)
@@ -880,7 +894,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void searchErrors() 
 	{	
-		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
 
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
 
@@ -907,7 +921,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void deriveRelations() 
 	{
-		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
 		String result = new String();
 		
 		ComponentOfInference d = new ComponentOfInference(refparser);
@@ -921,8 +935,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			e.printStackTrace();
 		}
 			
-		ModelTree.setParserFor(getCurrentProject(), refparser);
-		ModelTree.updateModelTree(getCurrentProject());
+		ProjectBrowser.setParserFor(getCurrentProject(), refparser);
+		ProjectBrowser.updateModelTree(getCurrentProject());
 		
 		ArrayList<componentOf> generatedCompositions = d.getInferredCompositions();
 		ArrayList<MaterialAssociation> generatedMaterials = mi.getInferredMaterials();
@@ -953,7 +967,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		else result = "No association can be inferred from the model!";
 		
-		ModelTree.getInferences(getCurrentProject()).getInferredElements().addAll(allGenerated);
+		ProjectBrowser.getInferences(getCurrentProject()).getInferredElements().addAll(allGenerated);
 		
 		getCurrentWrapper().showOutputText(result, true, true);
 	}
@@ -963,8 +977,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public String autoCompleteSelection(int option, UmlProject project)
 	{		
-		OntoUMLParser refparser = ModelTree.getParserFor(project);
-		ModelTree modeltree = ModelTree.getTreeFor(frame, project);
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(project);
+		ProjectBrowser modeltree = ProjectBrowser.getTreeFor(frame, project);
 
 		if (refparser==null) { return ""; }	
 
@@ -1002,12 +1016,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void parseOCL(boolean showSuccesfullyMessage)
 	{
-		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());		
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());		
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }		
 		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
 
 		try {
-			OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());			
+			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());			
 
 			// set parser from the editor view.
 			String name = ((RefOntoUML.Package)getCurrentProject().getResource().getContents().get(0)).getName();
@@ -1017,7 +1031,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					);			
 
 			// set options from the parser
-			ModelTree.setOCLOptionsFor(getCurrentProject(), new OCL2AlloyOptions(oclmodel.getOCLParser()));
+			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new OCL2AlloyOptions(oclmodel.getOCLParser()));
 
 			// show Message
 			String msg =  "Constraints are syntactically correct.\n";
@@ -1046,15 +1060,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void transformsOntoUMLintoAlloy()
 	{
-		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
-		OntoUML2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(getCurrentProject());
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
+		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
 
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
 
 		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
 
 		try {			
-			ModelTree.getAlloySpecFor(getCurrentProject()).setAlloyModel(refparser,refOptions);
+			ProjectBrowser.getAlloySpecFor(getCurrentProject()).setAlloyModel(refparser,refOptions);
 
 		} catch (Exception e) {
 			frame.showErrorMessageDialog("Transforming OntoUML into Alloy",e.getLocalizedMessage());					
@@ -1097,8 +1111,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			public void run() {
 				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());					
-					AntiPatternListPane antipatternApp = new AntiPatternListPane(ModelTree.getAntiPatternListFor(getCurrentProject()),frame);
-					antipatternApp.setAntiPatternListModel(ModelTree.getAntiPatternListFor(getCurrentProject()));
+					AntiPatternListPane antipatternApp = new AntiPatternListPane(ProjectBrowser.getAntiPatternListFor(getCurrentProject()),frame);
+					antipatternApp.setAntiPatternListModel(ProjectBrowser.getAntiPatternListFor(getCurrentProject()));
 					antipatternApp.setVisible(true);
 					antipatternApp.setLocationRelativeTo(frame);
 				} catch (Exception ex) {
@@ -1114,10 +1128,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void transformsOCLintoAlloy ()
 	{
-		OntoUMLParser refparser = ModelTree.getParserFor(getCurrentProject());
-		OCLDocument oclmodel = ModelTree.getOCLModelFor(getCurrentProject());
-		OCL2AlloyOptions oclOptions = ModelTree.getOCLOptionsFor(getCurrentProject());
-		AlloySpecification alloySpec = ModelTree.getAlloySpecFor(getCurrentProject());
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
+		OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
+		OCL2AlloyOptions oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
+		AlloySpecification alloySpec = ProjectBrowser.getAlloySpecFor(getCurrentProject());
 
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
 		if (oclmodel.getOCLParser()==null) { frame.showErrorMessageDialog("Error","It seems that you do not have any OCL constraints."); return; }
@@ -1145,10 +1159,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		transformsOntoUMLintoAlloy();		
 		transformsOCLintoAlloy();		
-		if (ModelTree.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) 
-			openAlloyAnalyzer(ModelTree.getAlloySpecFor(getCurrentProject()),true, -1);
-		else openAlloyAnalyzer(ModelTree.getAlloySpecFor(getCurrentProject()),false, 0);	
-		String umlpath = ModelTree.getAlloySpecFor(getCurrentProject()).getAlloyPath().replace(".als", ".uml");
+		if (ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) 
+			openAlloyAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),true, -1);
+		else openAlloyAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),false, 0);	
+		String umlpath = ProjectBrowser.getAlloySpecFor(getCurrentProject()).getAlloyPath().replace(".als", ".uml");
 		File umlfile = new File(umlpath);
 		umlfile.deleteOnExit();
 	}
@@ -1252,7 +1266,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 		UmlProject project = getCurrentProject();
 		
-		OperationResult result = SBVRHelper.generateSBVR((RefOntoUML.Model)ModelTree.getParserFor(project).getModel(), project.getTempDir());
+		OperationResult result = SBVRHelper.generateSBVR((RefOntoUML.Model)ProjectBrowser.getParserFor(project).getModel(), project.getTempDir());
 		//OperationResult result = SBVRHelper.generateSBVR(project.getModel(), project.getTempDir());
 
 		if(result.getResultType() != ResultType.ERROR)

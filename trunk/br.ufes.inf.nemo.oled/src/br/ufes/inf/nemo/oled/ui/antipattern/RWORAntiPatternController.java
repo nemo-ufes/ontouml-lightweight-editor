@@ -7,7 +7,7 @@ import br.ufes.inf.nemo.antipattern.rwor.RWORAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
@@ -61,9 +61,9 @@ public class RWORAntiPatternController {
 	    		rworView.getTableView();
 	    		
 	    		String predicates = new String();
-	    		OntoUMLParser refparser = ModelTree.getParserFor(rworView.getFrame().getDiagramManager().getCurrentProject());
+	    		OntoUMLParser refparser = ProjectBrowser.getParserFor(rworView.getFrame().getDiagramManager().getCurrentProject());
 	    		UmlProject project = rworView.getFrame().getDiagramManager().getCurrentProject();
-	    		OntoUML2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(project);	    		
+	    		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(project);	    		
 				
 	    		if(rworView.isSelectedExclusive()) 
 	    		{
@@ -116,7 +116,7 @@ public class RWORAntiPatternController {
 	    		refOptions.weakSupplementationAxiom = false;
 	    		refOptions.antiRigidity = false;
 	    		
-	    		AlloySpecification alloymodel = ModelTree.getAlloySpecFor(project);
+	    		AlloySpecification alloymodel = ProjectBrowser.getAlloySpecFor(project);
 	    		
 	    		// set alloy path
 	    		String alsPath = project.getTempDir()+"rwor.als";	    		
@@ -150,7 +150,7 @@ public class RWORAntiPatternController {
 	    {
 			String constraints = new String();
 						
-			OntoUMLParser refparser = ModelTree.getParserFor(rworView.getFrame().getDiagramManager().getCurrentProject());
+			OntoUMLParser refparser = ProjectBrowser.getParserFor(rworView.getFrame().getDiagramManager().getCurrentProject());
 			
     		if(rworView.isSelectedExclusive()) 
     		{

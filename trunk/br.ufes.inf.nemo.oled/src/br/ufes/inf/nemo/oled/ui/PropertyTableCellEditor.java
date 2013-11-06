@@ -73,7 +73,7 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
 	    	comboBox.setFocusable(false);
 	    	comboBox.setBackground(Color.WHITE);
 	    	ArrayList<OntoUMLElement> list = new ArrayList<OntoUMLElement>();
-	    	OntoUMLParser refparser = ModelTree.getParserFor(project);
+	    	OntoUMLParser refparser = ProjectBrowser.getParserFor(project);
 	    	
 	    	for(RefOntoUML.Type t: refparser.getAllInstances(RefOntoUML.Type.class))
 	    	{

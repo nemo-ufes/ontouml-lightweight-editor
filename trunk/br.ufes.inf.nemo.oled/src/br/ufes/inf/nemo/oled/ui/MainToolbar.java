@@ -52,6 +52,7 @@ public class MainToolbar implements ActionListener {
 	public MainToolbar() {
 		
 		createButton("new");
+		createButton("newdiagram");
 		createButton("open");
 		createButton("save");
 		toolbar.addSeparator();

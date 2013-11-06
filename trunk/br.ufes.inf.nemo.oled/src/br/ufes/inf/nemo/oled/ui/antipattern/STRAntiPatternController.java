@@ -7,7 +7,7 @@ import br.ufes.inf.nemo.antipattern.str.STRAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
@@ -47,9 +47,9 @@ public class STRAntiPatternController {
 	    		
 	    		String predicates = new String();
 				Integer cardinality = strView.getScope();
-				OntoUMLParser refparser = ModelTree.getParserFor(strView.getFrame().getDiagramManager().getCurrentProject());
+				OntoUMLParser refparser = ProjectBrowser.getParserFor(strView.getFrame().getDiagramManager().getCurrentProject());
 	    		UmlProject project = strView.getFrame().getDiagramManager().getCurrentProject();
-	    		OntoUML2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(project);
+	    		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(project);
 	    		
 	    		if(strView.isSelectedAntiSymmetric()) 
 	    		{
@@ -137,7 +137,7 @@ public class STRAntiPatternController {
 		public void actionPerformed(ActionEvent e) 
 	    {
 			String constraints = new String();
-			OntoUMLParser refparser = ModelTree.getParserFor(strView.getFrame().getDiagramManager().getCurrentProject());
+			OntoUMLParser refparser = ProjectBrowser.getParserFor(strView.getFrame().getDiagramManager().getCurrentProject());
 			
     		if(strView.isSelectedAntiSymmetric()) 
     		{
