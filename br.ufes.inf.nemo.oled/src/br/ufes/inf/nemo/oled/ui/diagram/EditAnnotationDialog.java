@@ -27,7 +27,7 @@ import RefOntoUML.PackageableElement;
 import RefOntoUML.impl.ConstraintxImpl;
 import RefOntoUML.impl.PropertyImpl;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 
 
@@ -242,12 +242,12 @@ public class EditAnnotationDialog extends JDialog {
 			Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(const1);
 			
 			if (!query.check(element))
-				System.out.println("Válido");
+				System.out.println("Vï¿½lido");
 			else
-				System.out.println("Válido");
+				System.out.println("Vï¿½lido");
 			
 		} catch (ParserException e) {
-			System.out.println("Inválido");
+			System.out.println("Invï¿½lido");
 		}
 	}
 	
@@ -263,7 +263,7 @@ public class EditAnnotationDialog extends JDialog {
 	private void okButtonActionPerformed(ActionEvent evt) {
 		transferDataToElement();
 		//update model tree
-		ModelTree.updateModelTree(diagramManager.getCurrentProject());
+		ProjectBrowser.updateModelTree(diagramManager.getCurrentProject());
 		dispose();
 	}
 	

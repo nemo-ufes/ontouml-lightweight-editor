@@ -32,7 +32,7 @@ import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 
 /**
  * @author John Guerson
@@ -332,7 +332,7 @@ public class AntiPatternListDialog extends JDialog {
 		
 		frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,frame.getDiagramManager().getCurrentProject());
 		
-		OntoUMLParser parser = ModelTree.getParserFor(frame.getDiagramManager().getCurrentProject());
+		OntoUMLParser parser = ProjectBrowser.getParserFor(frame.getDiagramManager().getCurrentProject());
 		
 		if (parser.getElements() == null) return;
 		
@@ -430,7 +430,7 @@ public class AntiPatternListDialog extends JDialog {
 					acListModel,rbosListModel,strListModel,rsListModel,rworListModel,iaListModel,ssrListModel,rwrtListModel,triListModel
 			);
 
-			ModelTree.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
+			ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
 
 			frame.getDiagramManager().openAntiPatternManager();
 		}		 

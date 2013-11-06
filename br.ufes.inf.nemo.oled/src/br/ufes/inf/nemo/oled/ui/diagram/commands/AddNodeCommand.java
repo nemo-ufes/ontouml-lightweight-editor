@@ -31,7 +31,7 @@ import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.OntoUMLTree;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
@@ -125,9 +125,9 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		
 		
 		//FIXME every modification creates a new tree				
-		ModelTree.getParserFor(project).addElement(((ClassElement)element).getClassifier());
-		ModelTree.updateModelTree(project);		
-		OntoUMLTree tree = ModelTree.getTreeFor(ModelTree.frame, project).getTree();
+		ProjectBrowser.getParserFor(project).addElement(((ClassElement)element).getClassifier());
+		ProjectBrowser.updateModelTree(project);		
+		OntoUMLTree tree = ProjectBrowser.getTreeFor(ProjectBrowser.frame, project).getTree();
 		tree.selectThisElement(((ClassElement)element).getClassifier());		
 	}
 }

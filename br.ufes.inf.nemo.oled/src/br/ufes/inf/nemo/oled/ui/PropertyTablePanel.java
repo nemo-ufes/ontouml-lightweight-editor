@@ -381,7 +381,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	     }
 	     
 	     //update the Tree 
-	     ModelTree.refreshModelTree(project);
+	     ProjectBrowser.refreshModelTree(project);
 	}
 	
 }

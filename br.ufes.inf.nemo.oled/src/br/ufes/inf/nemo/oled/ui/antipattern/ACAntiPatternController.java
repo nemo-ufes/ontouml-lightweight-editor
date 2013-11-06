@@ -7,7 +7,7 @@ import br.ufes.inf.nemo.antipattern.ac.ACAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
@@ -46,9 +46,9 @@ public class ACAntiPatternController {
 	    {			
 	    	try{
 	    		String predicates = new String();
-	    		OntoUMLParser refparser = ModelTree.getParserFor(acView.getFrame().getDiagramManager().getCurrentProject());
+	    		OntoUMLParser refparser = ProjectBrowser.getParserFor(acView.getFrame().getDiagramManager().getCurrentProject());
 	    		UmlProject project = acView.getFrame().getDiagramManager().getCurrentProject();
-	    		OntoUML2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(project);
+	    		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(project);
 	    			    		
 	    		if(acView.isSelectedOpenCycle()) 
 	    		{
@@ -86,8 +86,8 @@ public class ACAntiPatternController {
 	    		content = content+"\n"+predicates;	    		
 	    		alloymodel.setContent(content);
 	    		
-	    		ModelTree.setParserFor(project, refparser);
-	    		ModelTree.setOntoUMLOptionsFor(project, refOptions);	    		
+	    		ProjectBrowser.setParserFor(project, refparser);
+	    		ProjectBrowser.setOntoUMLOptionsFor(project, refOptions);	    		
 	    		
 	    		// open alloy model	    		
 	    		acView.getFrame().getDiagramManager().openAlloyAnalyzer(alloymodel,true,-1);
@@ -114,7 +114,7 @@ public class ACAntiPatternController {
 
 			String constraints = new String();
 			
-			OntoUMLParser refparser = ModelTree.getParserFor(acView.getFrame().getDiagramManager().getCurrentProject());
+			OntoUMLParser refparser = ProjectBrowser.getParserFor(acView.getFrame().getDiagramManager().getCurrentProject());
 			
 			if(openCycle) 
 				constraints = acModel.generateCycleOcl(acModel.OPEN, refparser)+"\n\n";		

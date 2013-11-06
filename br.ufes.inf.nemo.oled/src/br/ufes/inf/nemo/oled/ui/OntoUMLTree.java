@@ -75,7 +75,7 @@ public class OntoUMLTree extends CheckboxTree {
 	            	setSelectionPath(path);
 	                Rectangle pathBounds = getUI().getPathBounds(OntoUMLTree.this, path);
 	                if (pathBounds != null && pathBounds.contains(e.getX (),e.getY()))
-	                {	                	
+	                {
 	                	doPopup(e,OntoUMLTree.this);
 	                }	                
 	            }

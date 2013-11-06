@@ -7,7 +7,7 @@ import br.ufes.inf.nemo.antipattern.rbos.RBOSAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
@@ -46,9 +46,9 @@ public class RBOSAntiPatternController {
 	    	try{
 	    		
 	    		String predicates = new String();
-	    		OntoUMLParser refparser = ModelTree.getParserFor(rbosView.getFrame().getDiagramManager().getCurrentProject());
+	    		OntoUMLParser refparser = ProjectBrowser.getParserFor(rbosView.getFrame().getDiagramManager().getCurrentProject());
 	    		UmlProject project = rbosView.getFrame().getDiagramManager().getCurrentProject();
-	    		OntoUML2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(project);
+	    		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(project);
 	    		
 	    		if(rbosView.isSelectedAntiSymmetric()) 
 	    		{
@@ -143,7 +143,7 @@ public class RBOSAntiPatternController {
 	    {
 			String constraints = new String();
 			
-			OntoUMLParser refparser = ModelTree.getParserFor(rbosView.getFrame().getDiagramManager().getCurrentProject());
+			OntoUMLParser refparser = ProjectBrowser.getParserFor(rbosView.getFrame().getDiagramManager().getCurrentProject());
 			
     		if(rbosView.isSelectedReflexive()) 
     		{

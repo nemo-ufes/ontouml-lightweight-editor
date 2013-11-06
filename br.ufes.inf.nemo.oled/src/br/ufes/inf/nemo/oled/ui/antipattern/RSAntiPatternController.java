@@ -7,7 +7,7 @@ import br.ufes.inf.nemo.antipattern.rs.RSAntiPattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**
@@ -47,9 +47,9 @@ public class RSAntiPatternController {
 	    	try{
 	    		
 	    		String predicates = new String();
-	    		OntoUMLParser refparser = ModelTree.getParserFor(rsView.getFrame().getDiagramManager().getCurrentProject());
+	    		OntoUMLParser refparser = ProjectBrowser.getParserFor(rsView.getFrame().getDiagramManager().getCurrentProject());
 	    		UmlProject project = rsView.getFrame().getDiagramManager().getCurrentProject();
-	    		OntoUML2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(project);
+	    		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(project);
 	    		
 	    		if(rsView.isSelectedDisjoint()) 
 	    		{
@@ -124,7 +124,7 @@ public class RSAntiPatternController {
 	    {
 			try {
 				String constraints = new String();
-				OntoUMLParser refparser = ModelTree.getParserFor(rsView.getFrame().getDiagramManager().getCurrentProject());
+				OntoUMLParser refparser = ProjectBrowser.getParserFor(rsView.getFrame().getDiagramManager().getCurrentProject());
 				
 	    		if(rsView.isSelectedDisjoint()) 
 	    		{

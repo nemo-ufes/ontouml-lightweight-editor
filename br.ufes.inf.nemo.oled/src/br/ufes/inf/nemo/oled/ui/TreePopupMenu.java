@@ -39,7 +39,7 @@ public class TreePopupMenu extends JPopupMenu {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//FIXME every modification creates a new tree
-				ModelTree.updateModelTree(frame.getDiagramManager().getCurrentProject());
+				ProjectBrowser.updateModelTree(frame.getDiagramManager().getCurrentProject());
 			}
 		});
     	
@@ -54,7 +54,7 @@ public class TreePopupMenu extends JPopupMenu {
 				frame.getDiagramManager().deleteElementOfProject((RefOntoUML.Element)ontoElem.getElement());
 												
 				// FIXME every modification creates a new tree
-				ModelTree.updateModelTree(frame.getDiagramManager().getCurrentProject());
+				ProjectBrowser.updateModelTree(frame.getDiagramManager().getCurrentProject());
 				
 				tree.setSelectionPath(new TreePath(tree.getRootNode().getPath()));
 			}

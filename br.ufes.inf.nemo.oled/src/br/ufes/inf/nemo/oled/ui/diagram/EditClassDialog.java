@@ -39,7 +39,7 @@ import RefOntoUML.Property;
 import RefOntoUML.impl.CollectiveImpl;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -393,7 +393,7 @@ public class EditClassDialog extends JDialog {
 		addDataTypesToModel();
 		
 		//update model tree
-		ModelTree.updateModelTree(diagramManager.getCurrentProject());
+		ProjectBrowser.updateModelTree(diagramManager.getCurrentProject());
 		
 		dispose();
 	}

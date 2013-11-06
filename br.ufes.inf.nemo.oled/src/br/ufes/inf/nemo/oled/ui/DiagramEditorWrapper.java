@@ -41,8 +41,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	public static WarningTablePanel warnings;
 	public static OutputPane outputPane;
 	public static OCLEditorPanel ocleditor;
-	public static ModelTree modeltree;
-	public static ToolManager toolManager;	
+
 	//TODO Remove me
 	private File projectFile;
 	
@@ -110,31 +109,19 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		infoTabbedPane.setIconAt(4,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.ocleditor.icon")));
 		
 		infoTabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
-		
-		modeltree = ModelTree.getTreeFor(editor.getManager().getFrame(),getProject());
-		
+				
 		editorArea.setContinuousLayout(true);
 		editorArea.setOneTouchExpandable(true);
 		editorArea.setDividerSize(10);
 		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 			
-		mainEditorArea.setContinuousLayout(true);
-		mainEditorArea.setOneTouchExpandable(true);
-		mainEditorArea.setDividerSize(10);
-		mainEditorArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-				
 		infoTabbedPane.setPreferredSize(new Dimension(200,200));
 		editor.getDiagram().setSize(GetScreenWorkingWidth()-483, GetScreenWorkingHeight()-301);
 		editorArea.add(panel, JSplitPane.TOP);		
 		editorArea.add(infoTabbedPane,JSplitPane.BOTTOM);		
 		editorArea.setDividerLocation(GetScreenWorkingHeight()-300);
 		
-		modeltree.setPreferredSize(new Dimension(250,250));
-		mainEditorArea.add(editorArea,JSplitPane.LEFT);
-		mainEditorArea.add(modeltree, JSplitPane.RIGHT);
-		mainEditorArea.setDividerLocation(GetScreenWorkingWidth()-480);
-		
-		this.add(mainEditorArea,BorderLayout.CENTER);		
+		this.add(editorArea,BorderLayout.CENTER);		
 
 		focusOnOutput();
 	}	
@@ -162,12 +149,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	public WarningTablePanel getWarnings(){
 		return warnings;
 	}
-	
-	public ModelTree getModelTree()
-	{
-		return modeltree;
-	}
-	
+		
 	public void setTitleWarning(String text)
 	{
 		infoTabbedPane.setTitleAt(1,text);

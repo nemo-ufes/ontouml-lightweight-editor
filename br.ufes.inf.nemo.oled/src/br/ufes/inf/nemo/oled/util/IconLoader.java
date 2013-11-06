@@ -95,6 +95,7 @@ public final class IconLoader {
 		BACKGROUND_WELCOME,
 		HEAD_WELCOME,
 		NEW_PROJECT,
+		NEW_DIAGRAM,
 		OPEN_PROJECT,
 		ISSUE_REPORT,		
 		NEXT,
@@ -190,6 +191,7 @@ public final class IconLoader {
 		urlMap.put(IconType.BACKGROUND_WELCOME, "resources/br/ufes/inf/nemo/oled/ui/bgwelcome.png");
 		urlMap.put(IconType.HEAD_WELCOME, "resources/br/ufes/inf/nemo/oled/ui/headwelcome.png");
 		urlMap.put(IconType.NEW_PROJECT, "resources/br/ufes/inf/nemo/oled/ui/newproject.png");
+		urlMap.put(IconType.NEW_DIAGRAM, "resources/br/ufes/inf/nemo/oled/ui/new_diagram.png");
 		urlMap.put(IconType.OPEN_PROJECT, "resources/br/ufes/inf/nemo/oled/ui/openproject.png");
 		urlMap.put(IconType.ISSUE_REPORT, "resources/br/ufes/inf/nemo/oled/ui/issue_report.png");		
 		urlMap.put(IconType.NEXT, "resources/br/ufes/inf/nemo/oled/ui/next.png");			

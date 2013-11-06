@@ -32,7 +32,7 @@ import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
@@ -136,15 +136,15 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				
 				//FIXME -- Removes the inferred elements. After creating the visual objects, use the delete command.
 				
-				ArrayList<Element> inferred = ModelTree.getInferences(project).getInferredElements();
+				ArrayList<Element> inferred = ProjectBrowser.getInferences(project).getInferredElements();
 				
-				OntoUMLParser parser = ModelTree.getParserFor(project);
+				OntoUMLParser parser = ProjectBrowser.getParserFor(project);
 				for (Element e : inferred) {
 					parser.removeElement(e);
 				}
 				
 				// FIXME every modification creates a new tree
-				ModelTree.updateModelTree(project);		
+				ProjectBrowser.updateModelTree(project);		
 			}
 		}
 		

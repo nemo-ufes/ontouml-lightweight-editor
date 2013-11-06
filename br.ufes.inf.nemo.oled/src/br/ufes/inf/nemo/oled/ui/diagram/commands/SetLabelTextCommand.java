@@ -25,7 +25,7 @@ import java.util.List;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ModelTree;
+import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
@@ -66,7 +66,7 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, redo ? NotificationType.REDO : NotificationType.DO);
 		
 		//FIXME every modification creates a new tree
-		ModelTree.updateModelTree(project);
+		ProjectBrowser.updateModelTree(project);
 	}
 
 	/**

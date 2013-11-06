@@ -30,6 +30,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	private transient MainToolbar mainToolBar;
 	private transient ToolManager toolManager;
 	private transient DiagramManager diagramManager;
+	private transient ProjectBrowser projectBrowser;
 	private transient StatusBar statusBar;
 	private transient Map<String, MethodCall> selectorMap = new HashMap<String, MethodCall>();
 	private transient SimpleGUICustom analyzer;
@@ -128,22 +129,52 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		return diagramManager;
 	}
 	
+	public ProjectBrowser getProjectBrowser()
+	{
+		return projectBrowser;
+	}
+	
+	public static int GetScreenWorkingWidth() {
+	    return java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
+	}
+
+	public static int GetScreenWorkingHeight() {
+	    return java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
+	}
+	
 	/**
 	 * Adds the main diagram manager (the tabbed pane which holds the diagrams)
 	 */
 	private void installManagers() {
-		JSplitPane mainArea = new JSplitPane();
-		mainArea.setOneTouchExpandable(true);
-		mainArea.setDividerLocation(230);
-		mainArea.setDividerSize(10);
-		this.getContentPane().add(mainArea, BorderLayout.CENTER);
+		
+		JSplitPane diagramArea = new JSplitPane();
+		
+		diagramArea.setContinuousLayout(true);
+		diagramArea.setOneTouchExpandable(true);
+		diagramArea.setDividerSize(10);
+		diagramArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		
+		JSplitPane toolArea = new JSplitPane();
+		toolArea.setOneTouchExpandable(true);
+		toolArea.setDividerLocation(230);
+		toolArea.setDividerSize(10);
+		this.getContentPane().add(toolArea, BorderLayout.CENTER);
 		
 		diagramManager = new DiagramManager(this);
-		mainArea.add(diagramManager, JSplitPane.RIGHT);
+		
+		projectBrowser = new ProjectBrowser(diagramManager.getFrame(),null);	
+		projectBrowser.setPreferredSize(new Dimension(250,250));
+		
+		diagramArea.add(projectBrowser, JSplitPane.RIGHT);
+		diagramArea.add(diagramManager, JSplitPane.LEFT);
+		
+		diagramArea.setDividerLocation(GetScreenWorkingWidth()-480);
+		
+		toolArea.add(diagramArea, JSplitPane.RIGHT);
 
 		toolManager = new ToolManager(this, diagramManager.getEditorDispatcher());
 		toolManager.setMinimumSize(new Dimension(230, 100));
-		mainArea.add(toolManager, JSplitPane.LEFT);
+		toolArea.add(toolManager, JSplitPane.LEFT);
 		
 		diagramManager.addStartPanel();		
 	}
@@ -163,6 +194,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		try {
 			selectorMap.put("NEW_PROJECT",
 					new MethodCall(DiagramManager.class.getMethod("newProject")));
+			selectorMap.put("NEW_DIAGRAM",
+					new MethodCall(DiagramManager.class.getMethod("newDiagram")));
 			selectorMap.put("OPEN_PROJECT",
 					new MethodCall(DiagramManager.class.getMethod("openProject")));
 			selectorMap.put("OPEN_RECENT_PROJECT",

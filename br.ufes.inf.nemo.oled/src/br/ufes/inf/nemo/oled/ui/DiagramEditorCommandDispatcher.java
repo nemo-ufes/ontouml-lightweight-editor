@@ -320,10 +320,10 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void generatesAlloy()
 	{	
 		manager.parseOCL(false);
-		OCL2AlloyOptions oclOptions = ModelTree.getOCLOptionsFor(manager.getCurrentProject());
+		OCL2AlloyOptions oclOptions = ProjectBrowser.getOCLOptionsFor(manager.getCurrentProject());
 		
-		OntoUMLParser refparser = ModelTree.getParserFor(manager.getCurrentProject());
-		OntoUML2AlloyOptions refOptions = ModelTree.getOntoUMLOptionsFor(manager.getCurrentProject());
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(manager.getCurrentProject());
+		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(manager.getCurrentProject());
 		
 		refOptions.openAnalyzer=true;    	
     	if (!refparser.getElementsWithIdentityMissing().isEmpty()) refOptions.identityPrinciple = false;    		    	
@@ -343,7 +343,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		manager.getCurrentDiagramEditor().undo();
 		
 		//This method recreates the tree
-		ModelTree.updateModelTree(manager.getCurrentProject());
+		ProjectBrowser.updateModelTree(manager.getCurrentProject());
 	}
 	
 	public void redo()
@@ -351,7 +351,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		manager.getCurrentDiagramEditor().redo();
 		
 		//This method recreates the tree
-		ModelTree.updateModelTree(manager.getCurrentProject());
+		ProjectBrowser.updateModelTree(manager.getCurrentProject());
 	}
 	
 	public void parseOCL()
