@@ -106,8 +106,8 @@ public class MainMenu implements ActionListener {
 		JMenuItem openItem = createMenuItem(fileMenu, "open");
 		openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		
-		JMenuItem saveItem = createMenuItem(fileMenu, "save");
-		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		createMenuItem(fileMenu, "save");
+		//saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		
 		createMenuItem(fileMenu, "saveas");		
 		fileMenu.addSeparator();

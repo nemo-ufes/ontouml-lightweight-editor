@@ -134,7 +134,7 @@ public class IAAntiPatternController {
     			constraints += iaModel.generateTargetOcl(iaView.getTargetCustomClassifiers(), refparser); 
     		}    		
     		
-    		iaView.getFrame().getDiagramManager().getCurrentWrapper().addConstraints(constraints);
+    		iaView.getFrame().getInfoManager().addConstraints(constraints);
 	    }
 	}
 	

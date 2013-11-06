@@ -175,7 +175,7 @@ public class RWORAntiPatternController {
     			}
     			
     		}    		
-    		rworView.getFrame().getDiagramManager().getCurrentWrapper().addConstraints(constraints);
+    		rworView.getFrame().getInfoManager().addConstraints(constraints);
 	    }
 	}
 }

@@ -121,7 +121,7 @@ public class ACAntiPatternController {
 			if(closedCycle)
 				constraints += acModel.generateCycleOcl(acModel.CLOSED, refparser)+"\n\n";		
 							
-			acView.getFrame().getDiagramManager().getCurrentWrapper().addConstraints(constraints);
+			acView.getFrame().getInfoManager().addConstraints(constraints);
 	    }
 	}
 	

@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
@@ -25,8 +26,6 @@ import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
-
-//FIXME REDO this implementation
 public class ProjectBrowser extends JPanel{
 
 	private static final long serialVersionUID = 5598591779372431118L;
@@ -78,8 +77,6 @@ public class ProjectBrowser extends JPanel{
 		this.project = project;
 		frame = appframe;
 		
-		//modelAdapter.addModelListener(this);
-		//buildTree(project);
 		scroll = new JScrollPane();
 		
 		if (project!=null)
@@ -89,6 +86,12 @@ public class ProjectBrowser extends JPanel{
 				
 		add(scroll, BorderLayout.CENTER);	
 		
+		JPanel emptyTempPanel = new JPanel();
+		emptyTempPanel.setBackground(Color.WHITE);
+		emptyTempPanel.setBorder(new EmptyBorder(0,0, 0, 0));
+		scroll.setViewportView(emptyTempPanel);
+		
+		emptyTempPanel.setPreferredSize(new Dimension(250,250));
 		scroll.setPreferredSize(new Dimension(250,250));
 		setPreferredSize(new Dimension(250,250));
 	}
@@ -101,7 +104,6 @@ public class ProjectBrowser extends JPanel{
 			modelTree = new ProjectBrowser(frame, project);
 			treeMap.put(project, modelTree);			
 		}
-		//System.out.println("Modelo selecionado: " + modelTree.getTree().getRowCount());
 		return modelTree;
 	}
 	
@@ -230,8 +232,8 @@ public class ProjectBrowser extends JPanel{
 			public void valueChanged(TreeSelectionEvent e) 
 			{
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();				
-				DiagramEditorWrapper.getProperties().setData(node);
-				DiagramEditorWrapper.focusOnProperties();
+				InfoManager.getProperties().setData(node);
+				frame.focusOnProperties();
 			}
 	 }
 	
