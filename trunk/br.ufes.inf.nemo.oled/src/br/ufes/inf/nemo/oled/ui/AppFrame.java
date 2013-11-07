@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
@@ -90,10 +91,9 @@ public class AppFrame extends JFrame implements AppCommandListener {
         {
             @Override
             public void run() 
-            {            	
-            	toolArea.setDividerLocation(230);        		
+            {            	        		
         		editorArea.setDividerLocation(GetScreenWorkingHeight());
-        		browserArea.setDividerLocation(GetScreenWorkingWidth()-480);
+        		browserArea.setDividerLocation(GetScreenWorkingWidth()-258);
             }
         });
     }
@@ -157,18 +157,22 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 */
 	private void installManagers() {		
 		
+		toolArea.setContinuousLayout(true);
 		toolArea.setOneTouchExpandable(true);		
 		toolArea.setDividerSize(10);
 			
+		browserArea.setContinuousLayout(true);
 		browserArea.setOneTouchExpandable(true);		
 		browserArea.setDividerSize(10);
 		browserArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		
+		editorArea.setContinuousLayout(true);
 		editorArea.setOneTouchExpandable(true);		
 		editorArea.setDividerSize(10);
 		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
 		diagramManager = new DiagramManager(this);
+		diagramManager.setTabPlacement(JTabbedPane.BOTTOM);
 		infoManager= new InfoManager(this, null);		
 		projectBrowser = new ProjectBrowser(diagramManager.getFrame(),null);
 		toolManager = new ToolManager(this, diagramManager.getEditorDispatcher());
@@ -179,12 +183,14 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		
 		browserArea.add(editorArea, JSplitPane.LEFT);
 		browserArea.add(projectBrowser, JSplitPane.RIGHT);
-		browserArea.setDividerLocation(GetScreenWorkingWidth()-480);
+		projectBrowser.setMinimumSize(new Dimension(230,250));	
+		browserArea.setDividerLocation(GetScreenWorkingWidth()-250);
+		browserArea.setResizeWeight(1);
 		
-		toolManager.setMinimumSize(new Dimension(230, 100));
+		toolManager.setMinimumSize(new Dimension(0,0));		
 		toolArea.add(toolManager, JSplitPane.LEFT);
 		toolArea.add(browserArea, JSplitPane.RIGHT);
-		toolArea.setDividerLocation(230);
+		toolArea.setDividerLocation(0.0d);
 		
 		getContentPane().add(toolArea, BorderLayout.CENTER);
 		
@@ -212,6 +218,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 					new MethodCall(DiagramManager.class.getMethod("newDiagram")));
 			selectorMap.put("OPEN_PROJECT",
 					new MethodCall(DiagramManager.class.getMethod("openProject")));
+			selectorMap.put("CLOSE_PROJECT",
+					new MethodCall(DiagramManager.class.getMethod("closeProject")));
 			selectorMap.put("OPEN_RECENT_PROJECT",
 					new MethodCall(DiagramManager.class.getMethod("openRecentProject")));			
 			selectorMap.put("ISSUE_REPORT",
@@ -523,8 +531,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	}
 	
 	public void showInfoManager()
-	{
-		infoManager.setVisible(true);
-		editorArea.setDividerLocation(100);
+	{		
+		editorArea.setDividerLocation(GetScreenWorkingHeight()-243);
 	}
 }

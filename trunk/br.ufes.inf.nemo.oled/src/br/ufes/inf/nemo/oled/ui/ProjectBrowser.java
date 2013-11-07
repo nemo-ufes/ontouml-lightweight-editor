@@ -48,7 +48,7 @@ public class ProjectBrowser extends JPanel{
 	public void setProject(UmlProject project)
 	{
 		this.project = project;
-		
+
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
 		refparser = new OntoUMLParser(project.getModel());
 		tree = new OntoUMLTree(frame, root,project.getModel(),refparser);
@@ -71,6 +71,19 @@ public class ProjectBrowser extends JPanel{
 		updateUI();
 	}
 	
+	public void eraseProject()
+	{
+		this.project = null;
+		
+		JPanel emptyTempPanel = new JPanel();
+		emptyTempPanel.setBackground(Color.WHITE);
+		emptyTempPanel.setBorder(new EmptyBorder(0,0, 0, 0));
+		scroll.setViewportView(emptyTempPanel);
+		
+		emptyTempPanel.setPreferredSize(new Dimension(200,250));
+		
+		updateUI();
+	}
 	public ProjectBrowser(AppFrame appframe, UmlProject project)
 	{
 		super(new BorderLayout());
@@ -91,9 +104,9 @@ public class ProjectBrowser extends JPanel{
 		emptyTempPanel.setBorder(new EmptyBorder(0,0, 0, 0));
 		scroll.setViewportView(emptyTempPanel);
 		
-		emptyTempPanel.setPreferredSize(new Dimension(250,250));
-		scroll.setPreferredSize(new Dimension(250,250));
-		setPreferredSize(new Dimension(250,250));
+		emptyTempPanel.setPreferredSize(new Dimension(200,250));
+		scroll.setPreferredSize(new Dimension(200,250));
+		setPreferredSize(new Dimension(200,250));
 	}
 	
 	public static ProjectBrowser getTreeFor(AppFrame frame, UmlProject project) 

@@ -43,6 +43,11 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 		this.project = project;	
 	}
 	
+	public void reset()
+	{
+		table.removeAll();
+	}
+	
 	private PropertyTableModel createCollectiveTableModel (RefOntoUML.Collective c)
 	{
 		Object[][] data = {
@@ -263,8 +268,15 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 		{
 			setPackageData(elem);
 		}
+		
+		table.setRowSelectionInterval(0, 0);
 	}	
 		
+	public void setSelected(int row1, int row2)
+	{
+		table.setRowSelectionInterval(row1, row2);
+	}
+	
 	/**
 	 * Constructor.
 	 */
@@ -287,7 +299,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 		
 		table = new JTable(data,columnNames);		
 		scrollpane.setViewportView(table);
-		
+
 		table.setBorder(new EmptyBorder(0, 0, 0, 0));
 		//table.setPreferredScrollableViewportSize(new Dimension(500, 150));		
 		table.setFillsViewportHeight(true);
@@ -296,7 +308,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	    table.setSelectionForeground(Color.BLACK);
 	    table.setFocusable(false);	    
 	    
-		add(scrollpane,BorderLayout.CENTER);				
+		add(scrollpane,BorderLayout.CENTER);
 	}		
 	
 	@Override

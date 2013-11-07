@@ -85,6 +85,7 @@ import br.ufes.inf.nemo.oled.draw.NodeChangeListener;
 import br.ufes.inf.nemo.oled.draw.Selection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.umldraw.shared.DiagramSelection;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
@@ -165,7 +166,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	 */
 	public StructureDiagram(UmlProject project) {
 		initializeNameLabel();
-		setSize(900, 450);
+		setSize(AppFrame.GetScreenWorkingWidth()-230, AppFrame.GetScreenWorkingHeight());
 		this.project = project;
 		
 		simulationElements.add(getStateSimulationElement());
