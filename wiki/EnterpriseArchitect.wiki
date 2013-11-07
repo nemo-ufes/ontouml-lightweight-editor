@@ -3,6 +3,8 @@
 
 == Installing OntoUML ==
 
+  * Delete any version that you might have of OntoUML MDG Technology and of the OntoUML Template.
+
   * Copy the file *ontoumlMDG.xml* to the folder MDGTechnologies at EA home, usually C:\Program Files\Sparx Systems\EA\MDGTechnologies .
 
   _Available at_: https://ontouml-lightweight-editor.googlecode.com/files/ontoumlMDG.xml
