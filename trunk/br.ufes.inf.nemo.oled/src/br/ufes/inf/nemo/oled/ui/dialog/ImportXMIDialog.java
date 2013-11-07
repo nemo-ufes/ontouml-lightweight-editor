@@ -4,7 +4,7 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 
 import java.awt.BorderLayout;
-
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -12,15 +12,18 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.logging.Level;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
@@ -31,18 +34,11 @@ import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.error.ErrorInfo;
 
 import RefOntoUML.Model;
-import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.ui.LoadingPane;
-import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.xmi2refontouml.core.Mediator;
 import br.ufes.inf.nemo.xmi2refontouml.util.ChckBoxTreeNodeElem;
 import br.ufes.inf.nemo.xmi2refontouml.util.RefOntoUMLUtil;
-
-import javax.swing.JLabel;
-import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.SwingConstants;
 
 
 /**
@@ -259,16 +255,10 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		        			null, "category", new Exception(inconsistencyLog), Level.WARNING, null);
 		        	JXErrorPane.showDialog(diagManager, info);
 		    	}
-			}
-		
-			UmlProject project = new UmlProject(this.model);
-			StructureDiagram diagram = new StructureDiagram(project);
-			project.addDiagram(diagram);
-			diagram.setLabelText("Imported Diagram");		
-			project.setSaveModelNeeded(true);
-			diagram.setSaveNeeded(true);
-			diagManager.createEditor(diagram);
+			}			
 			this.dispose();
+			
+			diagManager.createProject(this.model);
 		}
 	}
 	
