@@ -42,7 +42,11 @@ public class InfoManager extends JTabbedPane {
 		errors.setProject(null);
 		warnings.setProject(null);
 		
-		//FIXME - Need to erase all the previous content in the tables !
+		properties.reset();
+		errors.reset();
+		warnings.reset();
+		outputPane.write("");
+		ocleditor.setText("");
 		
 		updateUI();
 	}
