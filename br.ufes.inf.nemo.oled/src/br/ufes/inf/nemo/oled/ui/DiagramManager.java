@@ -51,6 +51,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -131,6 +132,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	private static final long serialVersionUID = 5019191384767258996L;
 	public final AppFrame frame;
 	private DiagramEditorCommandDispatcher editorDispatcher;
+	private UmlProject currentProject;
 	
 	public String lastOpenPath = new String();
 	public String lastSavePath = new String();
@@ -165,16 +167,22 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		});
 
 		ModelHelper.initializeHelper();
+		
+		setBorder(new EmptyBorder(0,0,0,0));
 	}
 
 	/**
 	 * Creates a new project.
 	 */
 	public void newProject() {		
-		UmlProject project = new UmlProject();
-		frame.getProjectBrowser().setProject(project);
-		frame.getInfoManager().setProject(project);
-		newDiagram(project);
+		
+		closeProject();
+		
+		currentProject = new UmlProject();
+		frame.getProjectBrowser().setProject(currentProject);
+		frame.getInfoManager().setProject(currentProject);
+		newDiagram(currentProject);
+		frame.showInfoManager();
 	}
 
 	/**
@@ -182,7 +190,22 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void closeProject()
 	{
-		//TODO
+		for(int i=0;i<=getTabCount();i++)
+		{ 
+			removeTabAt(i); 
+		}
+		
+		frame.getProjectBrowser().eraseProject();
+		frame.getInfoManager().eraseProject();
+
+		eraseCurrentProject();
+		
+		updateUI();
+	}
+	
+	public void eraseCurrentProject()
+	{
+		currentProject=null;
 	}
 	
 	/**
@@ -250,15 +273,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			fileChooser.setAcceptAllFileFilterUsed(false);
 			if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				try {
+					
+					closeProject();
+					
 					File file = fileChooser.getSelectedFile();
 					lastOpenPath = file.getAbsolutePath();
 					
-					UmlProject project = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);					
+					currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);					
 					String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);
 					
-					frame.getProjectBrowser().setProject(project);
-					frame.getInfoManager().setProject(project);
-					for(UmlDiagram diagram: project.getDiagrams()) createEditor((StructureDiagram)diagram);
+					frame.getProjectBrowser().setProject(currentProject);
+					frame.getInfoManager().setProject(currentProject);
+					for(UmlDiagram diagram: currentProject.getDiagrams()) createEditor((StructureDiagram)diagram);
 
 					frame.getInfoManager().getOcleditor().setText(constraints);
 					frame.focusOnOclEditor();
@@ -267,6 +293,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 					
 					//updateFrameTitle(); FIXME
+					frame.showInfoManager();
 					
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(this, ex.getMessage(),
@@ -288,14 +315,16 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				StartPanel startPanel = (StartPanel) getCurrentEditor();
 				if(startPanel != null)
 				{
+					closeProject();
+					
 					File file = new File(startPanel.getSelectedRecentFile());
 					
-					UmlProject project = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);
+					currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);
 					String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);
 					
-					frame.getProjectBrowser().setProject(project);
-					frame.getInfoManager().setProject(project);
-					for(UmlDiagram diagram: project.getDiagrams()) createEditor((StructureDiagram)diagram);
+					frame.getProjectBrowser().setProject(currentProject);
+					frame.getInfoManager().setProject(currentProject);
+					for(UmlDiagram diagram: currentProject.getDiagrams()) createEditor((StructureDiagram)diagram);
 										
 					frame.getInfoManager().getOcleditor().setText(constraints);
 					frame.focusOnOclEditor();
@@ -304,6 +333,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 					
 					//updateFrameTitle(); FIXME
+					frame.showInfoManager();
 				}
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
@@ -341,11 +371,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());			
 			oclmodel.setConstraints(frame.getInfoManager().getConstraints(),"CONTENT");
 						
-			result = ProjectWriter.getInstance().writeProject(this, file, getCurrentEditor().getProject(), oclmodel);
+			result = ProjectWriter.getInstance().writeProject(this, file, getCurrentProject(), oclmodel);
 			
-			getCurrentDiagramEditor().clearUndoManager();
-			
-			frame.updateMenuAndToolbars(getCurrentDiagramEditor());
+			if (getCurrentDiagramEditor()!=null) {
+				getCurrentDiagramEditor().clearUndoManager();
+				frame.updateMenuAndToolbars(getCurrentDiagramEditor());
+			}
 			
 			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 						
@@ -614,7 +645,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void addStartPanel()
 	{
 		StartPanel start = new StartPanel(frame);
-		this.add("Start", start);
+		this.addNonClosable("Start", start);
 	}
 	
 	public void openIssueReport()
@@ -702,10 +733,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * @return {@link UmlProject} the project
 	 */
 	public UmlProject getCurrentProject() {
-		Editor editor = getCurrentDiagramEditor();
-		if(editor instanceof DiagramEditor)
-			return ((DiagramEditor)editor).getProject();
-		return null;
+//		Editor editor = getCurrentDiagramEditor();
+//		if(editor instanceof DiagramEditor)
+//			return ((DiagramEditor)editor).getProject();
+		return currentProject;
 	}
 
 	/**
@@ -736,7 +767,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * */
 	public File getProjectFile()
 	{
-		if(this.getSelectedIndex() != -1)
+		if((this.getSelectedIndex() != -1)&& !(this.getSelectedComponent() instanceof StartPanel))
 			return ((DiagramEditorWrapper) this.getSelectedComponent()).getModelFile();
 		return null;
 	}
@@ -747,7 +778,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * */
 	public void setModelFile(File modelFile)
 	{
-		if(this.getSelectedIndex() != -1)
+		if((this.getSelectedIndex() != -1)&& !(this.getSelectedComponent() instanceof StartPanel))
 			((DiagramEditorWrapper) this.getSelectedComponent()).setModelFile(modelFile);
 	}
 
@@ -1405,6 +1436,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		this.setSelectedIndex(this.getTabCount()-1);
 		return component;
 	}
+	
+	public Component addNonClosable(String text, Component component)
+	{
+		super.add(text, component);
+		this.setTabComponentAt(this.getTabCount()-1,null);
+		this.setSelectedIndex(this.getTabCount()-1);
+		return component;
+	}
 
 	/**
 	 * Internal class used to create closable tabs
@@ -1487,9 +1526,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			 * */
 			public void actionPerformed(ActionEvent e) {
 				if(((DiagramManager)manager).getCurrentProject() != null){
-					if(((DiagramManager)manager).getCurrentProject().isSaveModelNeeded()) 
+					if(((DiagramManager)manager).getCurrentDiagramEditor().isSaveNeeded()) 
 					{				
-						int option = JOptionPane.showConfirmDialog(((DiagramManager)manager).getFrame(), "Your project has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
+						int option = JOptionPane.showConfirmDialog(((DiagramManager)manager).getFrame(), "Your diagram has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
 						if (option== JOptionPane.YES_OPTION) {((DiagramManager)manager).saveProjectAs(); }
 						else if (option==JOptionPane.CANCEL_OPTION) { return; }
 					}

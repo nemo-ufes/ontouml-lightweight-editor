@@ -34,6 +34,19 @@ public class InfoManager extends JTabbedPane {
 		warnings.setProject(project);
 	}
 	
+	public void eraseProject()
+	{
+		this.project = null;
+		
+		properties.setProject(null);
+		errors.setProject(null);
+		warnings.setProject(null);
+		
+		//FIXME - Need to erase all the previous content in the tables !
+		
+		updateUI();
+	}
+	
 	public InfoManager (final AppFrame frame, final UmlProject project)
 	{
 		this.frame=frame;
