@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.ListIterator;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
@@ -22,10 +24,12 @@ import RefOntoUML.Meronymic;
 import RefOntoUML.Mode;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
+import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
+import RefOntoUML.SortalClass;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyModule;
@@ -264,8 +268,28 @@ public class Transformer {
 			// ObjectClassName: set exists:>Object,
 			if(c instanceof ObjectClass)
 			{
-				Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c), sigObject.getName());			
-				if (decl!=null) classesDeclaration.add(decl);			
+				// we now support Phases of Relators and Modes
+				if (c instanceof Phase)
+				{
+					EList<Classifier> parents = (EList<Classifier>) c.allParents();
+					boolean containObject=false; boolean containProperty = false;
+					for (Classifier classifier: parents) { if (classifier instanceof MomentClass) containProperty=true; else if (classifier instanceof SortalClass) containObject=true; }
+					if (containProperty && !containObject) 
+					{ 
+						//PhaseName: set exists:>Property,
+						Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c), sigProperty.getName());	
+						if (decl!=null) classesDeclaration.add(decl);
+					}else {
+						
+						//PhaseName: set exists:>Object,
+						Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c), sigObject.getName());			
+						if (decl!=null) classesDeclaration.add(decl);
+					}
+					
+				}else{ 
+					Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(c), sigObject.getName());			
+					if (decl!=null) classesDeclaration.add(decl);
+				}
 			}
 			
 			// PropertyName: set exists:>Property,			 
@@ -1201,7 +1225,20 @@ public class Transformer {
 		// exists:>Object in objectNamesList[0] +...+ objectNamesList[N]
 		 
 		ArrayList<EObject> objectClassesList = new ArrayList<EObject>();
-		objectClassesList.addAll(ontoparser.getAllInstances(ObjectClass.class));		
+		objectClassesList.addAll(ontoparser.getAllInstances(ObjectClass.class));
+		ListIterator<EObject> it = objectClassesList.listIterator();
+ 		// verify if the phase, which is a ObjectClass, have a Moment as ancestor. In this case, we are supporting phases of relators
+		// and the phase should not appear in this list, it need to be removed.
+		while(it.hasNext()) {
+			EObject obj = (EObject)it.next();
+			boolean containMoment = false;
+			boolean containSortal = false;
+			if (obj instanceof Phase){
+				EList<Classifier> parents = (EList<Classifier>)((Phase)obj).allParents();
+				for(Classifier c: parents) { if (c instanceof MomentClass) containMoment=true; else if (c instanceof SortalClass) containSortal=true; }
+				if (containMoment && !containSortal) it.remove();				
+			}
+		}
 		if(!options.identityPrinciple && objectClassesList.size() > 0)
 		{
 			AlloyAPI.createExistsCompareOperationInWorld(factory, exists, world, sigObject, ontoparser.getAlias(objectClassesList));
