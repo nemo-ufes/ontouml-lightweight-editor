@@ -25,6 +25,7 @@ public class PaletteAccordion extends JPanel{
 
 	private static final long serialVersionUID = 8265628368514182832L;
 
+	private AppFrame frame;
 	private Map<String, Palette> paletteMap = new LinkedHashMap<String, Palette>();
 	private String openPalette = null;
 	private JPanel openContent = null;
@@ -48,10 +49,15 @@ public class PaletteAccordion extends JPanel{
 	private static Border unselectedPaletteBorder = new LineBorder(ColorPalette.getInstance().getColor(ThemeColor.GREY_DARK), 1, true);
 	private static Color unselectedPaletteBackground = ColorPalette.getInstance().getColor(ThemeColor.GREY_LIGHT);
 		
-	public PaletteAccordion() {
+	public AppFrame getFrame()
+	{
+		return frame;
+	}
+	public PaletteAccordion(AppFrame frame) {
 
 		super();
-
+		this.frame = frame;
+		
 		this.setLayout(new BorderLayout());		
 		this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
@@ -171,10 +177,10 @@ public class PaletteAccordion extends JPanel{
 		
 		palette.addCommandListener(editorDispatcher);
 		
-		paletteMap.put("OntoUML Elements", palette);
+		paletteMap.put("Elements", palette);
 
 		if(openPalette == null)
-			openPalette = "OntoUML Elements";
+			openPalette = "Elements";
 	}
 
 	@SuppressWarnings("unused")

@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -116,7 +117,9 @@ public class Palette extends JPanel
 				selectedElement.setSelected(false);
 			}	
 		}
-
+		
+		parent.getFrame().getDiagramManager().getCurrentDiagramEditor().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
 		selectedElement = item;
 		parent.NotifySelection(item);
 		

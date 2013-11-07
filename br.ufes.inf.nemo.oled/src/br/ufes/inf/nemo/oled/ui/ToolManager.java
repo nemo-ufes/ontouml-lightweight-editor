@@ -19,7 +19,7 @@ public class ToolManager extends JTabbedPane {
 		
 		setFocusable(false);
 				
-		palettes = new PaletteAccordion();
+		palettes = new PaletteAccordion(frame);
 		palettes.createStaticStructurePalettes(editorDispatcher);
 		//Assistent assistent = new Assistent();
 		//Assistent patternsPanel = new Assistent();

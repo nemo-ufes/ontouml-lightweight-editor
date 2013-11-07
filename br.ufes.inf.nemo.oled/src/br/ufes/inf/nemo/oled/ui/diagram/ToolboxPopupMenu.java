@@ -320,7 +320,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
 			}
 		});
        associationItem.addMouseListener(new MouseAdapter()
-	    {
+	    {    	   
 			@Override
 			public void mousePressed(MouseEvent e) 
 			{			
