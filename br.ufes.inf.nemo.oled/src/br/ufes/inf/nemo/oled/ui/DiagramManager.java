@@ -257,12 +257,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void newDiagram()
 	{
-		StructureDiagram diagram = new StructureDiagram(getCurrentProject());
-		getCurrentProject().addDiagram(diagram);
-		diagram = askForDiagramName(diagram);		
-		getCurrentProject().setSaveModelNeeded(true);
-		diagram.setSaveNeeded(true);
-		createEditor(diagram);
+		if (currentProject!=null){
+			StructureDiagram diagram = new StructureDiagram(getCurrentProject());
+			getCurrentProject().addDiagram(diagram);
+			diagram = askForDiagramName(diagram);		
+			getCurrentProject().setSaveModelNeeded(true);
+			diagram.setSaveNeeded(true);
+			createEditor(diagram);
+		}
 	}
 	
 	/**
