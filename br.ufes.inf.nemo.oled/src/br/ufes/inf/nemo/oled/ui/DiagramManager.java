@@ -205,15 +205,16 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void closeProject()
 	{
-		for(int i=0;i<=getTabCount();i++)
-		{ 
-			removeTabAt(i); 
+		if (currentProject!=null){
+			
+			removeAll();
+			frame.getProjectBrowser().eraseProject();
+			frame.getInfoManager().eraseProject();
+			
+			eraseCurrentProject();
+			addStartPanel();
+			frame.hideInfoManager();
 		}
-		
-		frame.getProjectBrowser().eraseProject();
-		frame.getInfoManager().eraseProject();
-
-		eraseCurrentProject();
 		
 		updateUI();
 	}
@@ -231,17 +232,44 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		StructureDiagram diagram = new StructureDiagram(project);
 		project.addDiagram(diagram);
-		diagram.setLabelText("New Diagram");		
+		diagram = askForDiagramName(diagram);	
 		project.setSaveModelNeeded(true);
 		diagram.setSaveNeeded(true);
 		createEditor(diagram);
 	}
 
+	public StructureDiagram askForDiagramName(StructureDiagram diagram)
+	{
+		String s = (String)JOptionPane.showInputDialog(frame,
+	        "Please, provide a name for your diagram:\n",
+	        "New Diagram"	        
+	        ); 
+		if ((s != null) && (s.length() > 0)) {			
+			diagram.setLabelText(s);
+		}else {
+			diagram.setLabelText("New Diagram");
+		}
+		return diagram;
+	}
+	
+	/**
+	 * Creates a new diagram on the current Project
+	 */
+	public void newDiagram()
+	{
+		StructureDiagram diagram = new StructureDiagram(getCurrentProject());
+		getCurrentProject().addDiagram(diagram);
+		diagram = askForDiagramName(diagram);		
+		getCurrentProject().setSaveModelNeeded(true);
+		diagram.setSaveNeeded(true);
+		createEditor(diagram);
+	}
+	
 	/**
 	 * Creates an editor for a given Diagram.
 	 * @param diagram the diagram to be edited by the editor
 	 * */
-	public void createEditor(StructureDiagram diagram)
+	public DiagramEditor createEditor(StructureDiagram diagram)
 	{
 		DiagramEditor editor = new DiagramEditor(frame, this, diagram);
 		editor.addEditorStateListener(this);
@@ -260,21 +288,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				DiagramManager.this.updateUI();
 			}
 		});		
+		
+		return editor;
 	}
-	
-	/**
-	 * Creates a new diagram on the current Project
-	 */
-	public void newDiagram()
-	{
-		StructureDiagram diagram = new StructureDiagram(getCurrentProject());
-		getCurrentProject().addDiagram(diagram);
-		diagram.setLabelText("New Diagram");		
-		getCurrentProject().setSaveModelNeeded(true);
-		diagram.setSaveNeeded(true);
-		createEditor(diagram);
-	}
-	
+		
 	/**
 	 * Opens an existing project.
 	 */
@@ -408,8 +425,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Saves immediately if possible.
 	 */
 	public void saveProject() {
+		
 		if (getProjectFile() == null) {
-			saveProjectAs();
+			int option = saveProjectAs();
+			if (option!=JFileChooser.APPROVE_OPTION){
+				updateUI();
+				return;
+			}
 		} else {
 			saveProjectFile(getProjectFile());
 		}
@@ -423,19 +445,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/**
 	 * Saves the project with a file chooser.
 	 */
-	public void saveProjectAs() {
+	public int saveProjectAs() {
 		JFileChooser fileChooser = new JFileChooser(lastSavePath);
 		fileChooser.setDialogTitle(getResourceString("dialog.saveas.title"));
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
 		fileChooser.addChoosableFileFilter(filter);
 		fileChooser.setFileFilter(filter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+		int option = fileChooser.showSaveDialog(this);
+		if (option == JFileChooser.APPROVE_OPTION) {
 			setModelFile(saveProjectFile(fileChooser.getSelectedFile()));
 			//updateFrameTitle(); FIXME
 			File file = fileChooser.getSelectedFile();
-			lastSavePath = file.getAbsolutePath();
+			lastSavePath = file.getAbsolutePath();			
 		}
+		return option;
 	}
 
 	/**

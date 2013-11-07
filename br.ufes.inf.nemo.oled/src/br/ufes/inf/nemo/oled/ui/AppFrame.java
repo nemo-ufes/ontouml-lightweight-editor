@@ -98,6 +98,11 @@ public class AppFrame extends JFrame implements AppCommandListener {
         });
     }
 	
+	public void hideInfoManager()
+	{
+		editorArea.setDividerLocation(GetScreenWorkingHeight());
+	}
+	
 	public void initializeAlloyAnalyzer()
 	{
 		// extract alloy jar file and open alloy
