@@ -20,9 +20,6 @@ import javax.swing.tree.TreePath;
 
 import org.eclipse.emf.ecore.EObject;
 
-import br.ufes.inf.nemo.oled.util.ColorPalette;
-import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
-
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
@@ -108,22 +105,23 @@ public class OntoUMLTreeCellRenderer extends DefaultTreeCellRenderer implements 
 		}else{
 
 		}    		
-	    
-		label.setText(value.toString());
-		    		
+	    		    		
 		uniqueName.setForeground(Color.gray);    		 		
-		        				    
+
 		if (selected){    			
 			
-			label.setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHT));
-			label.setForeground(UIManager.getColor(Color.WHITE));
-			//label.setBackground(UIManager.getColor("Tree.selectionBackground"));
 			
+			label.setBackground(PaletteAccordion.getSelectedPaletteBackground());
+			
+			//label.setBorder(PaletteAccordion.getSelectedPaletteBorder());
+			//label.setBackground(UIManager.getColor("Tree.selectionBackground"));			
 			//label.setBackground(UIManager.getColor("Tree.textBackground"));    			
 		}else{
 			label.setBackground(UIManager.getColor("Tree.textBackground"));    			
 		}
-		    		
+		
+		label.setText(value.toString());
+		
 		TreeCheckingModel checkingModel = ((CheckboxTree)tree).getCheckingModel();
 	   	TreePath path = tree.getPathForRow(row);
 	   	
