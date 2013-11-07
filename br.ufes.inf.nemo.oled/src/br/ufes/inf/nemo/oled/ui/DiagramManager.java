@@ -186,6 +186,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/**
+	 * Create a new project from an existing Project
+	 * @param project
+	 */
+	public void createProject(RefOntoUML.Model model)
+	{
+		closeProject();
+		
+		currentProject = new UmlProject(model);
+		frame.getProjectBrowser().setProject(currentProject);
+		frame.getInfoManager().setProject(currentProject);
+		newDiagram(currentProject);
+		frame.showInfoManager();
+	}
+	
+	/**
 	 * Close Project
 	 */
 	public void closeProject()
