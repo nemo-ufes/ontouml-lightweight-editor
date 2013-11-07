@@ -210,7 +210,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			removeAll();
 			frame.getProjectBrowser().eraseProject();
 			frame.getInfoManager().eraseProject();
-			
+			frame.getStatusBar().clearStatus();			
 			eraseCurrentProject();
 			addStartPanel();
 			frame.hideInfoManager();

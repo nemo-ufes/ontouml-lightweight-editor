@@ -149,6 +149,11 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		return projectBrowser;
 	}
 	
+	public StatusBar getStatusBar()
+	{
+		return statusBar;		
+	}
+	
 	public static int GetScreenWorkingWidth() {
 	    return java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
 	}

@@ -45,7 +45,11 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	
 	public void reset()
 	{
-		table.removeAll();
+		Object[][] data = {};String[] columnNames = {};
+		tablemodel = new PropertyTableModel(columnNames,data);
+		table.setModel(tablemodel);	
+		table.repaint();
+		table.validate();		
 	}
 	
 	private PropertyTableModel createCollectiveTableModel (RefOntoUML.Collective c)

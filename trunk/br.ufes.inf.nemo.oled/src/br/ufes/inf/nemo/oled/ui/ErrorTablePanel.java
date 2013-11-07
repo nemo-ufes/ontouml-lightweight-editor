@@ -58,6 +58,15 @@ public class ErrorTablePanel extends JPanel {
 		this.project = project;
 	}
 	
+	public void reset()
+	{
+		Object[][] data = {};String[] columnNames = {};
+		tablemodel = new WarningTableModel(columnNames,data);
+		table.setModel(tablemodel);	
+		table.repaint();
+		table.validate();		
+	}
+	
 	/**
 	 * Set data
 	 * 

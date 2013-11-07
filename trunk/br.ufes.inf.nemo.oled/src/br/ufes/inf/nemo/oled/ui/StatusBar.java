@@ -25,6 +25,11 @@ public class StatusBar extends JPanel implements StatusListener{
 		return timer;
 	}
 
+	public void clearStatus()
+	{
+		statusLabel.setText("");
+	}
+	
 	public void setTimer(Timer timer) {
 		this.timer = timer;
 	}
