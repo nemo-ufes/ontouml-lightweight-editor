@@ -46,7 +46,7 @@ import RefOntoUML.impl.componentOfImpl;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.OntoUMLTree;
+import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
@@ -227,12 +227,12 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		if (element instanceof AssociationElement){
 			refElem = ((AssociationElement)element).getAssociation();
 			ProjectBrowser.getParserFor(project).addElement(refElem);
-			ProjectBrowser.updateModelTree(project);
-			OntoUMLTree tree = ProjectBrowser.getTreeFor(ProjectBrowser.frame, project).getTree();
-			tree.selectThisElement(refElem);
+			ProjectBrowser.rebuildTree(project);
+			ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
+			tree.selectModelElement(refElem);
 		}else if (element instanceof GeneralizationElement){
 			refElem = ((GeneralizationElement)element).getGeneralization();
-			ProjectBrowser.updateModelTree(project);
+			ProjectBrowser.rebuildTree(project);
 		}		
 	}
 }

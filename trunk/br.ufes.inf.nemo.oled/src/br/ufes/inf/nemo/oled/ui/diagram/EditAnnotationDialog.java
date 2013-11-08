@@ -263,7 +263,7 @@ public class EditAnnotationDialog extends JDialog {
 	private void okButtonActionPerformed(ActionEvent evt) {
 		transferDataToElement();
 		//update model tree
-		ProjectBrowser.updateModelTree(diagramManager.getCurrentProject());
+		ProjectBrowser.rebuildTree(diagramManager.getCurrentProject());
 		dispose();
 	}
 	

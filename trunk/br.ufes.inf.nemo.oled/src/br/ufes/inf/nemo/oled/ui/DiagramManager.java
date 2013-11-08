@@ -236,6 +236,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		project.setSaveModelNeeded(true);
 		diagram.setSaveNeeded(true);
 		createEditor(diagram);
+		ProjectBrowser.rebuildTree(project);
 	}
 
 	public StructureDiagram askForDiagramName(StructureDiagram diagram)
@@ -264,6 +265,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			getCurrentProject().setSaveModelNeeded(true);
 			diagram.setSaveNeeded(true);
 			createEditor(diagram);
+			ProjectBrowser.rebuildTree(getCurrentProject());
 		}
 	}
 	
@@ -1027,7 +1029,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 			
 		ProjectBrowser.setParserFor(getCurrentProject(), refparser);
-		ProjectBrowser.updateModelTree(getCurrentProject());
+		ProjectBrowser.rebuildTree(getCurrentProject());
 		
 		ArrayList<componentOf> generatedCompositions = d.getInferredCompositions();
 		ArrayList<MaterialAssociation> generatedMaterials = mi.getInferredMaterials();
@@ -1069,12 +1071,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public String autoCompleteSelection(int option, UmlProject project)
 	{		
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(project);
-		ProjectBrowser modeltree = ProjectBrowser.getTreeFor(frame, project);
+		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, project);
 
 		if (refparser==null) { return ""; }	
 
 		// Get elements from the tree
-		List<EObject> selected = modeltree.getTree().getCheckedElements();
+		List<EObject> selected = modeltree.getTree().getModelCheckedElements();
 
 		// Get added elements from the auto selection completion
 		refparser.selectThisElements((ArrayList<EObject>)selected,true);		
@@ -1093,7 +1095,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		selected.removeAll(added);
 		selected.addAll(added);		
 
-		modeltree.getTree().checkElements(selected, true);			
+		modeltree.getTree().checkModelElements(selected, true);			
 		modeltree.getTree().updateUI();    	
 
 		// Create a new model package from selected elements in the model.

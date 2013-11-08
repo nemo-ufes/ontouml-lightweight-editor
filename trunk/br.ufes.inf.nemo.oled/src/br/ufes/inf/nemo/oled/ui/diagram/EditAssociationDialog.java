@@ -132,7 +132,7 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 							if (validateInput()) {
 								transferDataToAssociation();
 								//update model tree
-								ProjectBrowser.updateModelTree(diagramManager.getCurrentProject());
+								ProjectBrowser.rebuildTree(diagramManager.getCurrentProject());
 								dispose();
 							}
 						}

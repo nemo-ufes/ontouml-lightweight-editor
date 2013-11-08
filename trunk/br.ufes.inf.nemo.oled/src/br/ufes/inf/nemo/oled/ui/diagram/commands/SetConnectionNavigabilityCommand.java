@@ -94,7 +94,7 @@ public class SetConnectionNavigabilityCommand extends BaseDiagramCommand {
 		notification.notifyChange(elements, ChangeType.CONNECTION_NAVEGABILITY_SET, redo ? NotificationType.REDO : NotificationType.DO);
 		
 		//FIXME every modification creates a new tree
-		ProjectBrowser.updateModelTree(project);		
+		ProjectBrowser.rebuildTree(project);		
 	}
 
 	/**

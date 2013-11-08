@@ -17,9 +17,10 @@ public class TreePopupMenu extends JPopupMenu {
 	public JMenuItem autoCompleteItem = new JMenuItem("Complete Selection...");
 	public JMenuItem refreshItem = new JMenuItem("Refresh");
 	
-    public TreePopupMenu(final AppFrame frame, final OntoUMLTree tree)
-    {           	
-    	if (((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).isRoot()){
+    public TreePopupMenu(final AppFrame frame, final ProjectTree tree)
+    {       
+    	DefaultMutableTreeNode node = ((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent());
+    	if (tree.getModelRootNode().equals(node)){
 	    	add(autoCompleteItem);
 	    	addSeparator();
 	    	
@@ -39,7 +40,7 @@ public class TreePopupMenu extends JPopupMenu {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//FIXME every modification creates a new tree
-				ProjectBrowser.updateModelTree(frame.getDiagramManager().getCurrentProject());
+				ProjectBrowser.rebuildTree(frame.getDiagramManager().getCurrentProject());
 			}
 		});
     	
@@ -54,9 +55,9 @@ public class TreePopupMenu extends JPopupMenu {
 				frame.getDiagramManager().deleteElementOfProject((RefOntoUML.Element)ontoElem.getElement());
 												
 				// FIXME every modification creates a new tree
-				ProjectBrowser.updateModelTree(frame.getDiagramManager().getCurrentProject());
+				ProjectBrowser.rebuildTree(frame.getDiagramManager().getCurrentProject());
 				
-				tree.setSelectionPath(new TreePath(tree.getRootNode().getPath()));
+				tree.setSelectionPath(new TreePath(tree.getModelRootNode().getPath()));
 			}
 		});
     }
