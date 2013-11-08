@@ -343,7 +343,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		manager.getCurrentDiagramEditor().undo();
 		
 		//This method recreates the tree
-		ProjectBrowser.updateModelTree(manager.getCurrentProject());
+		ProjectBrowser.rebuildTree(manager.getCurrentProject());
 	}
 	
 	public void redo()
@@ -351,7 +351,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		manager.getCurrentDiagramEditor().redo();
 		
 		//This method recreates the tree
-		ProjectBrowser.updateModelTree(manager.getCurrentProject());
+		ProjectBrowser.rebuildTree(manager.getCurrentProject());
 	}
 	
 	public void parseOCL()

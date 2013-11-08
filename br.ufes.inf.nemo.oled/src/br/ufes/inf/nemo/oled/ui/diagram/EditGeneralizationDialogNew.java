@@ -579,7 +579,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
  	 	 		// Guarantee that the GenSet is added to the parser in the current Project (UmlProject)
  	 	 		OntoUMLParser ontoparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
  	 	 		ontoparser.addElement(genSet);
- 	 	 		ProjectBrowser.updateModelTree(diagramManager.getCurrentProject());
+ 	 	 		ProjectBrowser.rebuildTree(diagramManager.getCurrentProject());
  	 		}
  	 		else
  	 		{
@@ -618,7 +618,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
 			// Guarantee that the GenSet is removed in the parser in the current Project (UmlProject)
  	 	 	OntoUMLParser ontoparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
  	 	 	ontoparser.removeElement(genSet);
- 	 	 	ProjectBrowser.updateModelTree(diagramManager.getCurrentProject());
+ 	 	 	ProjectBrowser.rebuildTree(diagramManager.getCurrentProject());
 		}
 	}
 	

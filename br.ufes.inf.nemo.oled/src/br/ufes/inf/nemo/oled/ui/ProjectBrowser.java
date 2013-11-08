@@ -34,7 +34,7 @@ public class ProjectBrowser extends JPanel{
 	private static Map<UmlProject, ProjectBrowser> treeMap = new HashMap<UmlProject, ProjectBrowser>();
 	
 	private JScrollPane scroll;
-	private OntoUMLTree tree; 
+	private ProjectTree tree; 
 	private UmlProject project;	
 	private OntoUMLParser refparser;	
 	private AlloySpecification alloySpec;
@@ -49,11 +49,11 @@ public class ProjectBrowser extends JPanel{
 	{
 		this.project = project;
 
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode(project);
 		refparser = new OntoUMLParser(project.getModel());
-		tree = new OntoUMLTree(frame, root,project.getModel(),refparser);
+		tree = new ProjectTree(frame, root,project,refparser);
 		tree.setBorder(new EmptyBorder(2,2,2,2));
-		tree.addTreeSelectionListener(new OntoUMLTreeSelectionListener());
+		tree.addTreeSelectionListener(new ProjectTreeSelectionListener());
 		
 		String name = ((RefOntoUML.Package)project.getResource().getContents().get(0)).getName();
 		if (name==null || name.isEmpty()) name = "model";
@@ -109,125 +109,124 @@ public class ProjectBrowser extends JPanel{
 		setPreferredSize(new Dimension(200,250));
 	}
 	
-	public static ProjectBrowser getTreeFor(AppFrame frame, UmlProject project) 
+	public static ProjectBrowser getProjectBrowserFor(AppFrame frame, UmlProject project) 
 	{
-		ProjectBrowser modelTree = treeMap.get(project);
-		if(modelTree == null)
+		ProjectBrowser browser = treeMap.get(project);
+		if(browser == null)
 		{
-			modelTree = new ProjectBrowser(frame, project);
-			treeMap.put(project, modelTree);			
+			browser = new ProjectBrowser(frame, project);
+			treeMap.put(project, browser);			
 		}
-		return modelTree;
+		return browser;
 	}
 	
 	public static OntoUMLParser getParserFor(UmlProject project) 
 	{		
-		return ProjectBrowser.getTreeFor(frame, project).refparser;
+		return ProjectBrowser.getProjectBrowserFor(frame, project).refparser;
 	}
 	
 	public static void setParserFor(UmlProject project, OntoUMLParser refparser) 
 	{		
-		ProjectBrowser.getTreeFor(frame,project).refparser = refparser;
+		ProjectBrowser.getProjectBrowserFor(frame,project).refparser = refparser;
 	}
 	
 	public static AlloySpecification getAlloySpecFor(UmlProject project) 
 	{		
-		return ProjectBrowser.getTreeFor(frame,project).alloySpec;
+		return ProjectBrowser.getProjectBrowserFor(frame,project).alloySpec;
 	}
 	
 	public static void setAlloySpecFor(UmlProject project, AlloySpecification alloySpec) 
 	{		
-		ProjectBrowser.getTreeFor(frame,project).alloySpec = alloySpec;
+		ProjectBrowser.getProjectBrowserFor(frame,project).alloySpec = alloySpec;
 	}
 	
 	public static OCLDocument getOCLModelFor(UmlProject project)
 	{
-		return ProjectBrowser.getTreeFor(frame,project).oclmodel;
+		return ProjectBrowser.getProjectBrowserFor(frame,project).oclmodel;
 	}
 	
 	public static void setOCLOptionsFor(UmlProject project, OCL2AlloyOptions oclOptions)
 	{
-		ProjectBrowser.getTreeFor(frame,project).oclOptions = oclOptions;
+		ProjectBrowser.getProjectBrowserFor(frame,project).oclOptions = oclOptions;
 	}
 	
 	public static OCL2AlloyOptions getOCLOptionsFor(UmlProject project)
 	{
-		return ProjectBrowser.getTreeFor(frame,project).oclOptions;
+		return ProjectBrowser.getProjectBrowserFor(frame,project).oclOptions;
 	}
 
 	public static OntoUML2AlloyOptions getOntoUMLOptionsFor(UmlProject project)
 	{
-		return ProjectBrowser.getTreeFor(frame,project).refOptions;
+		return ProjectBrowser.getProjectBrowserFor(frame,project).refOptions;
 	}
 
 	public static void setOntoUMLOptionsFor(UmlProject project, OntoUML2AlloyOptions refOptions)
 	{
-		ProjectBrowser.getTreeFor(frame,project).refOptions = refOptions;
+		ProjectBrowser.getProjectBrowserFor(frame,project).refOptions = refOptions;
 	}
 	
 	public static AntiPatternList getAntiPatternListFor(UmlProject project)
 	{
-		return ProjectBrowser.getTreeFor(frame,project).antipatterns;
+		return ProjectBrowser.getProjectBrowserFor(frame,project).antipatterns;
 	}
 
 	public static void setAntiPatternListFor(UmlProject project, AntiPatternList antipatterns)
 	{
-		ProjectBrowser.getTreeFor(frame,project).antipatterns = antipatterns;
+		ProjectBrowser.getProjectBrowserFor(frame,project).antipatterns = antipatterns;
 	}
 	
 	public static InferenceList getInferences(UmlProject project) {
-		return ProjectBrowser.getTreeFor(frame,project).inferences;
+		return ProjectBrowser.getProjectBrowserFor(frame,project).inferences;
 	}
 
 	
 	public static void setDerivations(UmlProject project, InferenceList inferences) {
-		ProjectBrowser.getTreeFor(frame,project).inferences = inferences;
+		ProjectBrowser.getProjectBrowserFor(frame,project).inferences = inferences;
 	}
 	
 	/**
-	 * Refresh the Model Tree.
+	 * Refresh the Project Browser.
 	 */
-	public static void refreshModelTree(UmlProject project)
+	public static void refreshTree(UmlProject project)
 	{
-		ProjectBrowser modeltree = ProjectBrowser.getTreeFor(frame,project);
+		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame,project);
 		
-		modeltree.tree.updateUI();		
+		browser.tree.updateUI();		
 		
-		modeltree.validate();
-		modeltree.repaint();		
+		browser.validate();
+		browser.repaint();		
 	}
 	
 	/**
-	 * Update the Model Tree
+	 * Update the Tree
 	 */
-	public static void updateModelTree(UmlProject project)
+	public static void rebuildTree(UmlProject project)
 	{
-		ProjectBrowser modeltree = ProjectBrowser.getTreeFor(frame,project);
-		
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
+		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame,project);
+				
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode(project);
 		OntoUMLParser refparser = new OntoUMLParser(project.getModel());
 		
-		ArrayList<EObject> selected = (ArrayList<EObject>)modeltree.getTree().getCheckedElements();
+		ArrayList<EObject> selected = (ArrayList<EObject>)browser.getTree().getModelCheckedElements();
 		refparser.selectThisElements(selected, true);
 		
-		modeltree.setParser(refparser);
-		
-		modeltree.setTree(new OntoUMLTree(frame, root,project.getModel(),refparser));
-		modeltree.getTree().checkElements(selected, true);			
-		modeltree.getTree().updateUI();    	
+		browser.setParser(refparser);		
+		browser.setTree(new ProjectTree(frame, root,project,refparser));
+		browser.getTree().checkModelElements(selected, true);			
+		browser.getTree().updateUI();    	
 				
-		modeltree.validate();
-		modeltree.repaint();
+		browser.validate();
+		browser.repaint();
 	}
 	
-	public void setTree(OntoUMLTree tree)
+	public void setTree(ProjectTree tree)
 	{
 		remove(scroll);
 		
 		this.tree = tree;
 		this.tree.setBorder(new EmptyBorder(2,2,2,2));
 		
-		this.addTreeSelectionListener(new OntoUMLTreeSelectionListener());
+		this.addTreeSelectionListener(new ProjectTreeSelectionListener());
 		
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
@@ -239,14 +238,16 @@ public class ProjectBrowser extends JPanel{
 		this.repaint();
 	}
 	
-	class OntoUMLTreeSelectionListener implements TreeSelectionListener 
+	class ProjectTreeSelectionListener implements TreeSelectionListener 
 	 {
 		 @Override
 			public void valueChanged(TreeSelectionEvent e) 
 			{
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();				
-				InfoManager.getProperties().setData(node);
-				frame.focusOnProperties();
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();	
+				if (node.getUserObject() instanceof OntoUMLElement){
+					InfoManager.getProperties().setData(node);
+					frame.focusOnProperties();
+				}
 			}
 	 }
 	
@@ -260,7 +261,7 @@ public class ProjectBrowser extends JPanel{
 		tree.addTreeSelectionListener(selectionListener);
 	}	
 	
-	public OntoUMLTree getTree() 
+	public ProjectTree getTree() 
 	{
 		return tree;
 	}

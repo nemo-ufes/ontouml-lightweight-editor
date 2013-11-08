@@ -84,6 +84,11 @@ public class UmlProject implements Serializable {
 		diagrams.add(diagram);
 	}
 
+	@Override
+	public String toString()
+	{
+		return "New Project";
+	}
 	
 	public List<? extends UmlDiagram> getDiagrams() {
 		return diagrams;

@@ -397,7 +397,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	     }
 	     
 	     //update the Tree 
-	     ProjectBrowser.refreshModelTree(project);
+	     ProjectBrowser.refreshTree(project);
 	}
 	
 	public void setProject(UmlProject project)

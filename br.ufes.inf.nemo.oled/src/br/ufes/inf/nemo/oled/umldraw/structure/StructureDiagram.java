@@ -206,6 +206,12 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		return elementFactory;
 	}
 	
+	@Override
+	public String toString()
+	{
+		return getLabelText();
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

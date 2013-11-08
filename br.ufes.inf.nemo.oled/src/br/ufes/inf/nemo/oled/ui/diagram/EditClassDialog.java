@@ -393,7 +393,7 @@ public class EditClassDialog extends JDialog {
 		addDataTypesToModel();
 		
 		//update model tree
-		ProjectBrowser.updateModelTree(diagramManager.getCurrentProject());
+		ProjectBrowser.rebuildTree(diagramManager.getCurrentProject());
 		
 		dispose();
 	}
