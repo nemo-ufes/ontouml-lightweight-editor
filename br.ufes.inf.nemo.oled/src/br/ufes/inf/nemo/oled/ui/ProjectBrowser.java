@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.model.InferenceList;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 public class ProjectBrowser extends JPanel{
@@ -84,6 +86,7 @@ public class ProjectBrowser extends JPanel{
 		
 		updateUI();
 	}
+	
 	public ProjectBrowser(AppFrame appframe, UmlProject project)
 	{
 		super(new BorderLayout());
@@ -240,15 +243,22 @@ public class ProjectBrowser extends JPanel{
 	
 	class ProjectTreeSelectionListener implements TreeSelectionListener 
 	 {
-		 @Override
-			public void valueChanged(TreeSelectionEvent e) 
-			{
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();	
-				if (node.getUserObject() instanceof OntoUMLElement){
-					InfoManager.getProperties().setData(node);
-					frame.focusOnProperties();
-				}
+		@Override
+		public void valueChanged(TreeSelectionEvent e) 
+		{
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();	
+			if (node.getUserObject() instanceof OntoUMLElement){
+				InfoManager.getProperties().setData(node);
+				frame.focusOnProperties();
+			}else if ((node.getUserObject() instanceof StructureDiagram) && !(((DefaultMutableTreeNode)node.getParent()).getUserObject() instanceof UmlProject)){
+				 StructureDiagram diagram = ((StructureDiagram)node.getUserObject());
+				 for(Component c: frame.getDiagramManager().getComponents()){
+					 if (c instanceof DiagramEditorWrapper){
+						 if (((DiagramEditorWrapper)c).getDiagram().equals(diagram)) frame.getDiagramManager().setSelectedComponent(c);
+					 }
+				 }
 			}
+		}		
 	 }
 	
 	public void setParser(OntoUMLParser refparser)
