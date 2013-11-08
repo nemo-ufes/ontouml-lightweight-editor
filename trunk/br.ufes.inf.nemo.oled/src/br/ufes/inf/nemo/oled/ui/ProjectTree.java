@@ -53,7 +53,7 @@ public class ProjectTree extends CheckboxTree {
 				
 		modelRootNode = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
 		StructureDiagram diagram = new StructureDiagram(project);
-		diagram.setName("Diagrams");
+		diagram.setName("Diagram");
 		diagramRootNode = new DefaultMutableTreeNode(diagram);
 		rootNode.add(diagramRootNode);
 		rootNode.add(modelRootNode);		
@@ -70,6 +70,8 @@ public class ProjectTree extends CheckboxTree {
 		
 		addCheckingPath(new TreePath(rootNode.getPath()));		
 		expandPath(new TreePath(rootNode.getPath()));
+		expandPath(new TreePath(diagramRootNode.getPath()));
+		expandPath(new TreePath(modelRootNode.getPath()));
 		
 		/** Right Click Mouse Listener */
 		addMouseListener(new MouseAdapter()

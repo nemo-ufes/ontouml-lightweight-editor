@@ -43,12 +43,15 @@ import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
@@ -283,7 +286,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);			
 		final Component comp = add(diagram.getLabelText(), wrapper);
-		
+						
 		diagram.addNameLabelChangeListener(new LabelChangeListener() {
 			/** {@inheritDoc} */
 			public void labelTextChanged(Label label) {
@@ -416,6 +419,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			
 			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 						
+			getCurrentProject().setName(file.getName().replace(".oled",""));
+			ProjectBrowser.refreshTree(getCurrentProject());
+			
 			updateUI();
 			
 		} catch (Exception ex) {
@@ -1521,6 +1527,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				}
 			};
 
+			//Includes Icon on the label						
+			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/diagram.png"));
+			label.setIcon(icon);
+			label.setIconTextGap(5);
+			label.setHorizontalTextPosition(SwingConstants.RIGHT);
+			
 			add(label);
 			//add more space between the label and the button
 			label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));

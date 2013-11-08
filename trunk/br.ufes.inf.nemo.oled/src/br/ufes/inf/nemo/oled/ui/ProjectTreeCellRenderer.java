@@ -20,6 +20,9 @@ import javax.swing.tree.TreePath;
 
 import org.eclipse.emf.ecore.EObject;
 
+import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
+
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
@@ -97,29 +100,46 @@ public class ProjectTreeCellRenderer extends DefaultTreeCellRenderer implements 
     			uniqueName.setText("");        			
     		}
     		
-		    if (elementType.toLowerCase().equals("property"))
-    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/property.gif")));
-    		else
-    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/"+elementType.toLowerCase()+".png")));
-    		
-		}else{
+    		if ((((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject()) instanceof UmlProject)
+    		{
+				label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/packageview.png")));
+				if (value.toString().contains("Package")) label.setText(value.toString().replaceFirst("Package ", ""));
+				if (value.toString().contains("Model")) label.setText(value.toString().replaceFirst("Model ", ""));
+    		}else{
+    			
+			    if (elementType.toLowerCase().equals("property"))
+	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/property.gif")));
+	    		else
+	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/"+elementType.toLowerCase()+".png")));
+			    label.setText(value.toString());
+    		}
+		}else if( ((DefaultMutableTreeNode)value).getUserObject() instanceof UmlProject ) 
+		{
+			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/new.png")));
+			expanded = true;
+			label.setText(value.toString());
+			
+		}else if( ((DefaultMutableTreeNode)value).getUserObject() instanceof StructureDiagram ) 
+		{
+			if ((((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject()) instanceof UmlProject)
+				label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/packageview.png")));				
+			else 
+				label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/diagram.png")));
+			expanded = true;
+			label.setText(value.toString());
+		}
 
-		}    		
-	    		    		
-		uniqueName.setForeground(Color.gray);    		 		
+		uniqueName.setForeground(Color.gray);
 
 		if (selected){    			
-			label.setBackground(PaletteAccordion.getSelectedPaletteBackground());
-			
+			label.setBackground(PaletteAccordion.getSelectedPaletteBackground());			
 			//label.setBorder(PaletteAccordion.getSelectedPaletteBorder());
 			//label.setBackground(UIManager.getColor("Tree.selectionBackground"));			
 			//label.setBackground(UIManager.getColor("Tree.textBackground"));    			
 		}else{
 			label.setBackground(UIManager.getColor("Tree.textBackground"));    			
 		}
-		
-		label.setText(value.toString());
-		
+				
 		TreeCheckingModel checkingModel = ((CheckboxTree)tree).getCheckingModel();
 	   	TreePath path = tree.getPathForRow(row);
 	   	

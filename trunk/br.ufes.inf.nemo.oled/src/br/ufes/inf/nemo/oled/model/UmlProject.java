@@ -60,6 +60,7 @@ public class UmlProject implements Serializable {
 	private transient String tempDir;
 	private List<UmlDiagram> diagrams = new ArrayList<UmlDiagram>();
 	private Properties properties;
+	private String name = new String();
 				
 	public UmlProject() {
 		super();
@@ -69,7 +70,7 @@ public class UmlProject implements Serializable {
 		if(model.getName()==null || model.getName()=="") model.setName("Model");
 		resource.getContents().add(model);		
 		getEditingDomain();
-		
+		name = "New Project";		
 	}
 	
 	public UmlProject(Model model) {
@@ -78,6 +79,7 @@ public class UmlProject implements Serializable {
 		resource = ModelHelper.createResource();
 		resource.getContents().add(model);		
 		getEditingDomain();
+		name = "New Project";
 	}
 	
 	public void addDiagram(UmlDiagram diagram) {
@@ -87,7 +89,17 @@ public class UmlProject implements Serializable {
 	@Override
 	public String toString()
 	{
-		return "New Project";
+		return "OLED Project";
+	}
+	
+	public void setName (String name)
+	{
+		this.name = name;
+	}
+	
+	public String getName ()
+	{
+		return name;
 	}
 	
 	public List<? extends UmlDiagram> getDiagrams() {
