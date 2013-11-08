@@ -229,7 +229,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			selectorMap.put("OPEN_PROJECT",
 					new MethodCall(DiagramManager.class.getMethod("openProject")));
 			selectorMap.put("CLOSE_PROJECT",
-					new MethodCall(DiagramManager.class.getMethod("closeProject")));
+					new MethodCall(DiagramManager.class.getMethod("closeCurrentProject")));
 			selectorMap.put("OPEN_RECENT_PROJECT",
 					new MethodCall(DiagramManager.class.getMethod("openRecentProject")));			
 			selectorMap.put("ISSUE_REPORT",
