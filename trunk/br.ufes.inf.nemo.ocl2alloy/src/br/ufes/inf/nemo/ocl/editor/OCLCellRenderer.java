@@ -10,6 +10,10 @@ import org.fife.ui.autocomplete.MarkupTagCompletion;
 import org.fife.ui.autocomplete.TemplateCompletion;
 import org.fife.ui.autocomplete.VariableCompletion;
 
+/**
+ * @author John Guerson
+ */
+
 public class OCLCellRenderer extends CompletionCellRenderer {
 
 	private static final long serialVersionUID = 1L;
@@ -94,9 +98,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("subtraction")
 		   ){
 			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/ocl_integer.gif")));
-		}
-
-		
+		}		
 	}
 
 	@Override
@@ -104,7 +106,6 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 	protected void prepareForMarkupTagCompletion(JList list,MarkupTagCompletion mc, int index, boolean selected,boolean hasFocus) 
 	{
 		super.prepareForMarkupTagCompletion(list, mc, index, selected, hasFocus);		
-		//setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/class.png")));
 	}
 	
 	/**
@@ -115,7 +116,6 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 	protected void prepareForOtherCompletion(JList list,Completion c, int index, boolean selected, boolean hasFocus) 
 	{
 		super.prepareForOtherCompletion(list, c, index, selected, hasFocus);		
-		//setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/class.png")));
 	}
 
 	/**
@@ -125,7 +125,6 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 	protected void prepareForVariableCompletion(JList list, VariableCompletion vc, int index, boolean selected, boolean hasFocus) 
 	{
 		super.prepareForVariableCompletion(list, vc, index, selected, hasFocus);		
-		//setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/class.png")));
 	}
 
 
@@ -136,7 +135,6 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 	protected void prepareForFunctionCompletion(JList list, FunctionCompletion fc, int index, boolean selected, boolean hasFocus) 
 	{
 		super.prepareForFunctionCompletion(list, fc, index, selected, hasFocus);		
-		//setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/class.png")));
 	}
 
 

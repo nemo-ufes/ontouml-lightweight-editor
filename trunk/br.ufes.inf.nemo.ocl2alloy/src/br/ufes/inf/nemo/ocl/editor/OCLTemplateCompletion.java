@@ -3,6 +3,10 @@ package br.ufes.inf.nemo.ocl.editor;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.TemplateCompletion;
 
+/**
+ * @author John Guerson
+ */
+
 public class OCLTemplateCompletion extends TemplateCompletion {
 
 	public OCLTemplateCompletion(CompletionProvider provider, String inputText,

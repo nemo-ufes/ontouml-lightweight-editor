@@ -41,6 +41,7 @@ import org.eclipse.uml2.uml.SendSignalAction;
 import org.eclipse.uml2.uml.State;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ocl.parser.OCLParser;
 import br.ufes.inf.nemo.ocl2alloy.exception.IteratorException;
 import br.ufes.inf.nemo.ocl2alloy.exception.LiteralException;
 import br.ufes.inf.nemo.ocl2alloy.exception.OperationException;
