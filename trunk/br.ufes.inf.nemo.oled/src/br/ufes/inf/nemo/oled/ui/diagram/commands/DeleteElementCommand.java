@@ -26,6 +26,8 @@ import java.util.List;
 import org.eclipse.emf.edit.command.DeleteCommand;
 
 import RefOntoUML.Element;
+import RefOntoUML.Property;
+import RefOntoUML.Relationship;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.Connection;
@@ -118,6 +120,9 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				
 				DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), classElement.getClassifier());
 				project.getEditingDomain().getCommandStack().execute(cmd);
+				
+				//Remove the element from the auto completion of the OCL editor
+				ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(classElement.getClassifier());				
 			}
 			
 			else if(element instanceof BaseConnection)
@@ -126,6 +131,15 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				
 				DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), connection.getRelationship());
 				project.getEditingDomain().getCommandStack().execute(cmd);
+				
+				//Remove the element from the auto completion of the OCL editor
+				Relationship rel = connection.getRelationship();
+				if (rel instanceof RefOntoUML.Association){
+					Property source = ((RefOntoUML.Association) rel).getMemberEnd().get(0);
+					Property target = ((RefOntoUML.Association) rel).getMemberEnd().get(1);					
+					ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(source);
+					ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(target);
+				}
 			}
 			
 			//Removes the element from diagram

@@ -9,10 +9,11 @@ import org.fife.ui.autocomplete.TemplateCompletion;
 
 public class OCLTemplateCompletion extends TemplateCompletion {
 
+	
 	public OCLTemplateCompletion(CompletionProvider provider, String inputText,
 			String definitionString, String template, String shortDescription, String summary) 
 	{
-		super(provider, inputText, definitionString, template, shortDescription,summary);
+		super(provider, inputText, definitionString, template, shortDescription,summary);		
 	}
 	
 	public OCLTemplateCompletion(CompletionProvider provider, String inputText,

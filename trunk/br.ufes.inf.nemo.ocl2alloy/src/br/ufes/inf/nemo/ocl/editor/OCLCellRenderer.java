@@ -31,7 +31,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("let-in")
 		   ){
 			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/ocl_constraint.gif")));
-		}
+		}else
 		
 		if (tc.getDefinitionString().equals("=")||
 			tc.getDefinitionString().equals("<>")||
@@ -42,7 +42,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("allInstances")
 		   ){
 			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/ocl_object.gif")));
-		}
+		}else
 		
 		if (tc.getDefinitionString().equals("forAll")||
 			tc.getDefinitionString().equals("exists")||
@@ -54,7 +54,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("one")
 		   ){
 			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/ocl_iterator.gif")));
-		}
+		}else
 		
 		if (tc.getDefinitionString().equals("size")||
 			tc.getDefinitionString().equals("isEmpty")||
@@ -74,7 +74,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("intersection")
 		   ){
 			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/ocl_collection.gif")));
-		}
+		}else
 		
 		if (tc.getDefinitionString().equals("or")||
 			tc.getDefinitionString().equals("and")||
@@ -83,7 +83,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("not")
 		   ){
 			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/ocl_boolean.gif")));
-		}
+		}else
 		
 		if (tc.getDefinitionString().equals(">")||
 			tc.getDefinitionString().equals("<=")||
@@ -98,7 +98,28 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("subtraction")
 		   ){
 			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/ocl_integer.gif")));
-		}		
+		}else
+		
+		if (tc.getDefinitionString().contains("Property")){
+			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/ocl_property.gif")));
+		}else
+		
+		if ((tc.getDefinitionString().contains("Kind"))||
+		   (tc.getDefinitionString().contains("SubKind"))||
+		   (tc.getDefinitionString().contains("Collective"))||
+		   (tc.getDefinitionString().contains("Quantity"))||
+		   (tc.getDefinitionString().contains("Role"))||
+		   (tc.getDefinitionString().contains("Phase"))||
+		   (tc.getDefinitionString().contains("Relator"))||
+		   (tc.getDefinitionString().contains("Mode"))||
+		   (tc.getDefinitionString().contains("Mixin"))||
+		   (tc.getDefinitionString().contains("RoleMixin"))||
+		   (tc.getDefinitionString().contains("Category"))||
+		   (tc.getDefinitionString().contains("DataType")))
+		{
+			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/ocl_class.png")));
+		}
+			
 	}
 
 	@Override

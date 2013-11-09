@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -14,10 +16,10 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentListener;
 
+import org.eclipse.emf.ecore.EObject;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.autocomplete.LanguageAwareCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -25,6 +27,9 @@ import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
+
+import RefOntoUML.Property;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /**
  * @author John Guerson
@@ -37,13 +42,14 @@ public class OCLEditorPanel extends JPanel {
 	public Component parent;
 	public RSyntaxTextArea textArea;
 	public OCLTokenMaker tokenMaker;	
-	public CompletionProvider parentProvider;
+	public CompletionProvider parentProvider;	
 	public AutoCompletion ac;
 	public RTextScrollPane scrollPane;
 	public DefaultCompletionProvider provider;
 	public JMenuItem saveMenuItem;
 	public JMenuItem openMenuItem;
 	public JMenuItem parserMenuItem;
+	public ArrayList<OCLTemplateCompletion> modelCompletionList = new ArrayList<OCLTemplateCompletion>();
 	
    /**
     * Constructor
@@ -65,6 +71,94 @@ public class OCLEditorPanel extends JPanel {
    {
 	   return textArea.getPopupMenu();
    }
+   
+   /**
+    * Constructor.
+    * @param refparser
+    */
+   public void addCompletions(OntoUMLParser refparser)
+   {   
+	   for(RefOntoUML.Class oc: refparser.getAllInstances(RefOntoUML.Class.class))
+	   {
+		   addCompletion(oc,refparser);
+	   }
+	   for(RefOntoUML.Property p: refparser.getAllInstances(RefOntoUML.Property.class))
+	   {
+		   if (p.getAssociation()==null) addCompletion(p, refparser);		   
+	   }
+	   for(RefOntoUML.Association p: refparser.getAllInstances(RefOntoUML.Association.class))
+	   {
+		   addCompletion(p,refparser);
+	   }
+   }
+   
+   public void addCompletion(RefOntoUML.Association p, OntoUMLParser refparser)
+   {
+	   Property source = p.getMemberEnd().get(0);
+	   Property target = p.getMemberEnd().get(1);
+	   
+	   if ((source.getName()!=null)&&!(source.getName().isEmpty()))
+	   {
+		   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+				source.getName(),source.toString(),
+				"_'"+source.getName()+"'",
+				target.getType().getName()+"->"+source.getType().getName(),
+				"Should be more of a description here...");		
+		    provider.addCompletion(c);
+		    modelCompletionList.add(c);
+	   }
+	   if ((target.getName()!=null)&&!(target.getName().isEmpty()))
+	   {
+		   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+				target.getName(),target.toString(),
+				"_'"+target.getName()+"'",
+				source.getType().getName()+"->"+target.getType().getName(),
+				"Should be more of a description here...");		
+		    provider.addCompletion(c);
+		    modelCompletionList.add(c);
+	   }
+   }   
+   
+   public void addCompletion(RefOntoUML.Property p, OntoUMLParser refparser)
+   {
+	   if ((p.getName()!=null)&&!(p.getName().isEmpty()))
+	   {
+		   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+				p.getName(),p.toString(),
+				"_'"+p.getName()+"'",
+				((RefOntoUML.Classifier)p.eContainer()).getName(),
+				"Should be more of a description here...");		
+		    provider.addCompletion(c);
+		    modelCompletionList.add(c);
+	   }
+   }   
+   
+   public void addCompletion(RefOntoUML.Class oc, OntoUMLParser refparser)
+   {
+	   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+			oc.getName(),oc.toString(),
+			"_'"+oc.getName()+"'",
+			refparser.getStereotype(oc),
+			"Should be more of a description here...");		
+	    provider.addCompletion(c);
+	    modelCompletionList.add(c);
+   }
+   
+   @SuppressWarnings("rawtypes")
+   public void removeCompletion(EObject elem)
+   {	   
+	   Iterator it = modelCompletionList.iterator();
+	   while(it.hasNext())
+	   {
+		   OCLTemplateCompletion tc = (OCLTemplateCompletion)it.next();
+		   if (tc.getDefinitionString().equals(elem.toString()))
+		   {
+			   it.remove();
+			   provider.removeCompletion(tc);
+		   }
+	   }
+   }
+      
 	/**
 	 * Constructor.
 	 */
@@ -84,17 +178,17 @@ public class OCLEditorPanel extends JPanel {
 		tokenMaker = new OCLTokenMaker();	    
 	    ((RSyntaxDocument)textArea.getDocument()).setSyntaxStyle(tokenMaker);
 	    
-	    CompletionProvider provider = createDefaultCompletionProvider();
+	    provider = createDefaultCompletionProvider();
 
-	    parentProvider = new LanguageAwareCompletionProvider(provider);
+	    //parentProvider = new LanguageAwareCompletionProvider(provider);
 	    
-	    ac = new AutoCompletion(parentProvider);   
+	    ac = new AutoCompletion(provider);   
 	    ac.setListCellRenderer(new OCLCellRenderer());	    
 		ac.setParameterAssistanceEnabled(true);
 	    ac.setAutoActivationEnabled(true);
       	ac.setShowDescWindow(true);      	
       	ac.install(textArea);
-      	
+
       	setLayout(new BorderLayout(0, 0));
       			
       	scrollPane = new RTextScrollPane(textArea);
@@ -218,7 +312,7 @@ public class OCLEditorPanel extends JPanel {
 	/**
 	 * Create Default Completion Provider
 	 */
-	public CompletionProvider createDefaultCompletionProvider ()
+	public DefaultCompletionProvider createDefaultCompletionProvider ()
 	{				
 		DefaultCompletionProvider provider = new DefaultCompletionProvider(); 
 		provider.setAutoActivationRules(true, ".");

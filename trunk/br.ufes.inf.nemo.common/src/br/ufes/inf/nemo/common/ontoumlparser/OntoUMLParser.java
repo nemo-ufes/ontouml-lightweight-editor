@@ -269,6 +269,15 @@ public class OntoUMLParser {
 		else return parsingElem.toString();
 	}
 	
+	public String getStereotype(EObject elem)
+	{
+		ParsingElement parsingElem = elementsHash.get(elem);
+		
+		if (parsingElem == null)
+			return "Unknown Element";
+		else return parsingElem.getType();
+	}
+	
 	/**
 	 * Get String Representation of All Elements in the model.
 	 * 
