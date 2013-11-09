@@ -148,7 +148,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		frame.getProjectBrowser().setProject(currentProject);
 		frame.getInfoManager().setProject(currentProject);
 		newDiagram(currentProject);
-		frame.showInfoManager();
+		frame.showInfoManager();		
+		frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 	}
 	
 	/**
@@ -300,6 +301,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				
 				frame.getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);
+				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 				for(UmlDiagram diagram: currentProject.getDiagrams()) createEditor((StructureDiagram)diagram);
 
 				frame.getInfoManager().getOcleditor().setText(constraints);
@@ -338,6 +340,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				
 				frame.getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);
+				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 				for(UmlDiagram diagram: currentProject.getDiagrams()) createEditor((StructureDiagram)diagram);
 									
 				frame.getInfoManager().getOcleditor().setText(constraints);

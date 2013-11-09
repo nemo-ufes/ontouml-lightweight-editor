@@ -27,6 +27,8 @@ public class ParsingElement {
 	/** Alias Name. */
 	private String alias = new String();
 	
+	private String type = new String();
+	
 	/**
 	 * Constructor.
 	 * 
@@ -39,11 +41,16 @@ public class ParsingElement {
 		this.element = element;
 		this.selected = selected;
 		this.alias = alias;
+		type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+	    type = type.replaceAll("Impl","");
+	    type = Normalizer.normalize(type, Normalizer.Form.NFD);	
 	}
 
 	/** Get OntoUML Element. */
 	public EObject getElement() { return element; }
 
+	public String getType(){ return type; }
+	
 	/** Set OntoUML Element. */
 	public void setElement(EObject element) { this.element = element; }
 
@@ -63,17 +70,12 @@ public class ParsingElement {
 	public String toString() 
 	{		
 		String name = new String();
-		String type = new String();
-		
+				
 		if (element instanceof NamedElement) 
 		{
 			name = ((NamedElement)element).getName();
 		}
 		
-		type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);	
-	    
 		if (element instanceof Model)
 		{
 			if (name ==null) name = ""; 

@@ -123,11 +123,14 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		elements.add(element);
 		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
 		
-		
-		//FIXME every modification creates a new tree				
-		ProjectBrowser.getParserFor(project).addElement(((ClassElement)element).getClassifier());
+		RefOntoUML.Classifier c = ((ClassElement)element).getClassifier();
+		//Update the Project Tree: FIXME every modification creates a new tree				
+		ProjectBrowser.getParserFor(project).addElement(c);
 		ProjectBrowser.rebuildTree(project);		
+		//Select the element in the Tree
 		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
-		tree.selectModelElement(((ClassElement)element).getClassifier());		
+		tree.selectModelElement(c);
+		//Include this element in the Auto Completion of OCL Editor
+		ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Class)c,ProjectBrowser.getParserFor(project));
 	}
 }

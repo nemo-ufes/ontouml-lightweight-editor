@@ -65,7 +65,7 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		elements.add(label);
 		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, redo ? NotificationType.REDO : NotificationType.DO);
 		
-		//FIXME every modification creates a new tree
+		//Update the Project Tree: FIXME every modification creates a new tree
 		ProjectBrowser.rebuildTree(project);
 	}
 

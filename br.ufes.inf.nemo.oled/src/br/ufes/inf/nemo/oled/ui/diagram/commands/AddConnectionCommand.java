@@ -223,14 +223,21 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
 		
 		EObject refElem=null;
-		//FIXME every modification creates a new tree
 		if (element instanceof AssociationElement){
+			
+			//Update the project tree: FIXME every modification creates a new tree
 			refElem = ((AssociationElement)element).getAssociation();
 			ProjectBrowser.getParserFor(project).addElement(refElem);
 			ProjectBrowser.rebuildTree(project);
+			//Select this element in the tree
 			ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
 			tree.selectModelElement(refElem);
+			//Include this element in the Auto Completion of OCL Editor
+			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Association)refElem,ProjectBrowser.getParserFor(project));
+			
 		}else if (element instanceof GeneralizationElement){
+			
+			//Update the project tree: FIXME every modification creates a new tree
 			refElem = ((GeneralizationElement)element).getGeneralization();
 			ProjectBrowser.rebuildTree(project);
 		}		
