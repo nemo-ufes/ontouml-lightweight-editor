@@ -1,15 +1,18 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import br.ufes.inf.nemo.ocl.editor.OCLEditorPanel;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.editor.ocl.OCLEditorPanel;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 
@@ -62,7 +65,7 @@ public class InfoManager extends JTabbedPane {
 		outputPane = new OutputPane();
 		ocleditor = new OCLEditorPanel(frame);
 		
-		ocleditor.getTextArea().getDocument().addDocumentListener(new DocumentListener() {			
+		ocleditor.addDocumentListener(new DocumentListener() {			
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
 			}		
@@ -74,6 +77,32 @@ public class InfoManager extends JTabbedPane {
 				/*InfoManager.this.frame.getDiagramManager().getCurrentDiagramEditor().getDiagram().setSaveNeeded(true);
 				InfoManager.this.project.setSaveModelNeeded(true);
 				InfoManager.this.frame.getDiagramManager().updateUI();*/
+			}
+		});
+		
+		JMenuItem parserMenuItem = new JMenuItem("Parse",new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/check.png")));
+		JMenuItem openMenuItem = new JMenuItem("Open");
+		JMenuItem saveMenuItem = new JMenuItem("Save As...");		
+		ocleditor.getPopupMenu().add(parserMenuItem);
+		ocleditor.getPopupMenu().add(openMenuItem);
+		ocleditor.getPopupMenu().add(saveMenuItem);
+				
+		saveMenuItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.getDiagramManager().exportOCL();
+			}
+		});
+		openMenuItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.getDiagramManager().importOCL();
+			}
+		});
+		parserMenuItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.getDiagramManager().parseOCL(true);
 			}
 		});
 		
@@ -105,7 +134,7 @@ public class InfoManager extends JTabbedPane {
 		setTabPlacement(JTabbedPane.BOTTOM);				
 	}
 	
-	public OCLEditorPanel getOcleditor() {
+	public br.ufes.inf.nemo.ocl.editor.OCLEditorPanel getOcleditor() {
 		return ocleditor;
 	}
 	
@@ -135,17 +164,17 @@ public class InfoManager extends JTabbedPane {
 	 * Get Constraints from the editor view.
 	 */
 	public String getConstraints() { 
-		return ocleditor.textArea.getText(); 
+		return ocleditor.getText(); 
 	}
 	
 	public void setConstraints(String text) { 
-		ocleditor.textArea.setText(text);
+		ocleditor.setText(text);
 		ocleditor.validate();
 		ocleditor.repaint();
 	}
 	
 	public void addConstraints(String text) { 
-		ocleditor.textArea.append(text);
+		ocleditor.addText(text);
 		ocleditor.validate();
 		ocleditor.repaint();
 	}

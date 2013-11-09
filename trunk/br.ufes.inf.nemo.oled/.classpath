@@ -12,8 +12,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/checkboxtree/lablib-checkboxtree-3.3.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/flamingo/flamingo-7.2.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.common"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/textarea/autocomplete.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/textarea/rsyntaxtextarea.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.alloy"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.antipattern"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ocl2alloy"/>
