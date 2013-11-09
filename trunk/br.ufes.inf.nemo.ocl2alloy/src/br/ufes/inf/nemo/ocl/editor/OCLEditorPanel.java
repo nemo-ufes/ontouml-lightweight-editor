@@ -78,7 +78,7 @@ public class OCLEditorPanel extends JPanel {
 	    textArea.setCodeFoldingEnabled(false);
 		textArea.setForeground(Color.BLACK);
 		textArea.setBackground(new Color(255, 255, 255));				
-		setTheme(textArea,"/br/ufes/inf/nemo/oled/ui/editor/ocl/EclipseTheme.xml");
+		setTheme(textArea,"/br/ufes/inf/nemo/ocl/editor/EclipseTheme.xml");
 		//textArea.setCurrentLineHighlightColor(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));		
 				
 		tokenMaker = new OCLTokenMaker();	    
@@ -220,245 +220,373 @@ public class OCLEditorPanel extends JPanel {
 	 */
 	public CompletionProvider createDefaultCompletionProvider ()
 	{				
-		DefaultCompletionProvider provider = new DefaultCompletionProvider();
+		DefaultCompletionProvider provider = new DefaultCompletionProvider(); 
+		provider.setAutoActivationRules(true, ".");
+		//provider.setAutoActivationRules(true, "->");
 		
-		provider.setAutoActivationRules(false, ".");
-		provider.setAutoActivationRules(false, "->");
-		
-		//package declaration
-		OCLShorthandCompletion c = new OCLShorthandCompletion(provider, "package","package PackageName\n\n\nendpackage",null);
-		c.setSummary("package PackageName<br>...<br>endpackage");
-		provider.addCompletion(c);    	
-		
-		//context declaration
-		c = new OCLShorthandCompletion(provider, "context","context type\ninv : true",null);
-		c.setSummary("context type<br> inv invariantname: true<br>");
-		provider.addCompletion(c);  
-		
-		//property context declaration
-		c = new OCLShorthandCompletion(provider, "property","context type::property : propertyType\nderive: null",null);
-		c.setSummary("context type::property : propertyType<br>derive: null");
-		provider.addCompletion(c);    	
-		
-		//oclIsKindOf
-		c = new OCLShorthandCompletion(provider, "oclIsKindOf","oclIsKindOf",null);
-		c.setSummary("oclIsKindOf(t: Classifier)<br><br>Evaluates to true if the type of self conforms to t. That is, self is of type t or a subtype of t.");
-		provider.addCompletion(c);    	
-		
-		//oclIsTypeOf
-		c = new OCLShorthandCompletion(provider, "oclIsTypeOf","oclIsTypeOf",null);
-		c.setSummary("oclIsTypeOf(t: Classifier)<br><br>Evaluates to true if self is of the type t but not a subtype of t.");
-		provider.addCompletion(c);    	
-		
-		//oclIsUndefined()
-		c = new OCLShorthandCompletion(provider, "oclIsUndefined","oclIsUndefined()",null);
-		c.setSummary("oclIsUndefined()<br><br>Evaluates to true if the self is equal to invalid or equal to null.");
-		provider.addCompletion(c);   
-		
-		//size()
-		c = new OCLShorthandCompletion(provider, "size","size()",null);
-		c.setSummary("size()<br><br>The number of elements in the collection self.");
-		provider.addCompletion(c);   
-		
-		//includesAll
-		c = new OCLShorthandCompletion(provider, "includesAll","includesAll",null);
-		c.setSummary("includesAll(c: Collection)<br><br>Does self contain all the elements of c ?");
+		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+			"package","package",
+			"package ${<Package>}\n\n${cursor}\nendpackage",
+			"Package",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//excludesAll
-		c = new OCLShorthandCompletion(provider, "excludesAll","excludesAll",null);
-		c.setSummary("excludesAll(c: Collection)<br><br>Does self contain none of  the elements of c ?");
+		c = new OCLTemplateCompletion(provider, 
+			"context","invariant",
+			"context ${<Type>}\ninv : ${cursor}\n",
+			"Invariant",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//excludes
-		c = new OCLShorthandCompletion(provider, "excludes","excludes",null);
-		c.setSummary("excludes(o: Object)<br><br>True if object o is not an element of self, false otherwise.");
-		provider.addCompletion(c);
-		
-		//includes
-		c = new OCLShorthandCompletion(provider, "includes","includes",null);
-		c.setSummary("includes(o: Object)<br><br>True if object is an element of self, false otherwise.");
-		provider.addCompletion(c);
-		
-		//isEmpty()
-		c = new OCLShorthandCompletion(provider, "isEmpty","isEmpty()",null);
-		c.setSummary("isEmpty()<br><br>Is self the empty collection ?");
-		provider.addCompletion(c);
-		
-		//notEmpty()
-		c = new OCLShorthandCompletion(provider, "notEmpty","notEmpty()",null);
-		c.setSummary("notEmpty()<br><br>Is self not the empty collection ?");
-		provider.addCompletion(c);
-		
-		//asSet()
-		c = new OCLShorthandCompletion(provider, "asSet","asSet()",null);
-		c.setSummary("asSet()<br><br>The Set containing all the elements from self, with duplicates removed.");
-		provider.addCompletion(c);
-		
-		//union
-		c = new OCLShorthandCompletion(provider, "union","union",null);
-		c.setSummary("union(s: Set(T))<br><br>The union of self and s.");
-		provider.addCompletion(c);
-		
-		//intersection
-		c = new OCLShorthandCompletion(provider, "intersection","intersection",null);
-		c.setSummary("intersection(s: Set(T))<br><br>The intersection of self and s (i.e., the set of all elements that are in both self and s).");
-		provider.addCompletion(c);
-		
-		//-
-		//c = new OCLShorthandCompletion(provider, "-","-",null);
-		//c.setSummary("-(s: Set(T))<br><br>The elements of self, which are not in s.");
-		//provider.addCompletion(c);
-		
-		//including
-		c = new OCLShorthandCompletion(provider, "including","including",null);
-		c.setSummary("including(o: Object)<br><br>The set containing all elements of self plus object.");
-		provider.addCompletion(c);
-		
-		//excluding
-		c = new OCLShorthandCompletion(provider, "excluding","excluding",null);
-		c.setSummary("excluding(o: Object)<br><br>The set containing all elements of self without object.");
-		provider.addCompletion(c);
-		
-		//symmetricDifference
-		c = new OCLShorthandCompletion(provider, "symmetricDifference","symmetricDifference",null);
-		c.setSummary("symmetricDifference(s: Set(T))<br><br>The sets containing all the elements that are in self or s, but not in both.");
-		provider.addCompletion(c);
-		
-		//allInstances()
-		c = new OCLShorthandCompletion(provider, "allInstances","allInstances()",null);
-		c.setSummary("allInstances()<br><br> All instances of self.");
-		provider.addCompletion(c);
-		
-		//max()
-		c = new OCLShorthandCompletion(provider, "max","max()",null);
-		c.setSummary("max()<br><br>The maximum of self an i.");
-		provider.addCompletion(c);
-		
-		//min()
-		c = new OCLShorthandCompletion(provider, "min","min()",null);
-		c.setSummary("min()<br><br>The minimum of self an i.");
-		provider.addCompletion(c);
-		        
-		//abs()
-		c = new OCLShorthandCompletion(provider, "abs","abs()",null);
-		c.setSummary("abs()<br><br>The absolute value of self.");
-		provider.addCompletion(c);
-		
-		//<>
-		c = new OCLShorthandCompletion(provider, "<>","<>",null);
-		c.setSummary("self <> object<br><br>True if self is a different object from object. Infix operator.");
-		provider.addCompletion(c);
-		
-		//=
-		c = new OCLShorthandCompletion(provider, "=","=",null);
-		c.setSummary("self = object<br><br>True if self is the same object as object. Infix operator.");
-		provider.addCompletion(c);    	
-		
-		//or
-		c = new OCLShorthandCompletion(provider, "or","or",null);
-		c.setSummary("self or b<br><br>True if either self or b is true.");
+		c = new OCLTemplateCompletion(provider, 
+			"context","derivation",
+			"context ${<Type>}::${<Property>}:${<propertyType>}\nderive : ${cursor}\n",
+			"Derivation",
+			"Should be more of a description here...");		
 		provider.addCompletion(c); 
-		
-		//and
-		c = new OCLShorthandCompletion(provider, "and","and",null);
-		c.setSummary("self and b<br><br>True if both self and b are true.");
-		provider.addCompletion(c); 
-		
-		//not
-		c = new OCLShorthandCompletion(provider, "not","not",null);
-		c.setSummary("not self<br><br>True if self is false.");
+
+		c = new OCLTemplateCompletion(provider, 
+			"oclIsKindOf()","oclIsKindOf",
+			"oclIsKindOf(${<Type>})${cursor}",
+			"OclAny",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"allInstances()","allInstances",
+			"allInstances()${cursor}",
+			"OclAny",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+			
+		c = new OCLTemplateCompletion(provider, 
+			"oclIsTypeOf()","oclIsTypeOf",
+			"oclIsTypeOf(${<Type>})${cursor}",
+			"OclAny",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"oclIsUndefined()","oclIsUndefined",
+			"oclIsUndefined()${cursor}",
+			"OclAny",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//implies
-		c = new OCLShorthandCompletion(provider, "implies","implies",null);
-		c.setSummary("self implies b<br><br>True if self is false, or if self is true and b is true.");
+		c = new OCLTemplateCompletion(provider, 
+			"oclAsType()","oclAsType",
+			"oclAsType(${<Type>})${cursor}",
+			"OclAny",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"size()","size",
+			"size()${cursor}",
+			"Set",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"includesAll()","includesAll",
+			"includesAll(${<Set(Type)>})${cursor}",
+			"Set",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"excludesAll()","excludesAll",
+			"excludesAll(${<Set(Type)>})${cursor}",
+			"Set",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//xor
-		c = new OCLShorthandCompletion(provider, "xor","xor",null);
-		c.setSummary("self xor b<br><br>True if either self or b is true, but not both.");
+		c = new OCLTemplateCompletion(provider, 
+			"includes()","includes",
+			"includes(${<object>})${cursor}",
+			"Set",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"excludes()","excludes",
+			"excludes(${<object>})${cursor}",
+			"Set",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//exists
-		c = new OCLShorthandCompletion(provider, "exists","exists",null);
-		c.setSummary("exists(x: Type | expression)");
+		c = new OCLTemplateCompletion(provider, 
+			"isEmpty()","isEmpty",
+			"isEmpty()${cursor}",
+			"Set",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//forAll
-		c = new OCLShorthandCompletion(provider, "forAll","forAll",null);
-		c.setSummary("forAll(x: Type | expression)");
+		c = new OCLTemplateCompletion(provider, 
+			"notEmpty()","notEmpty",
+			"notEmpty()${cursor}",
+			"Set",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//one
-		c = new OCLShorthandCompletion(provider, "one","one",null);
-		c.setSummary("one(x: Type | expression)");
+		c = new OCLTemplateCompletion(provider, 
+			"asSet()","asSet",
+			"asSet()${cursor}",
+			"Set",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"union()","union",
+			"union(${<Set(Type)>})${cursor}",
+			"Set",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//select
-		c = new OCLShorthandCompletion(provider, "select","select",null);
-		c.setSummary("select(x: Type | expression)");
+		c = new OCLTemplateCompletion(provider, 
+			"intersection()","intersection",
+			"intersection(${<Set(Type)>})${cursor}",
+			"Set",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"including()","including",
+			"including(${<object>})${cursor}",
+			"Set",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//reject
-		c = new OCLShorthandCompletion(provider, "reject","reject",null);
-		c.setSummary("reject(x: Type | expression)");
+		c = new OCLTemplateCompletion(provider, 
+			"excluding()","excluding",
+			"excluding(${<object>})${cursor}",
+			null,
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"symmetricDifference()","symmetricDifference",
+			"symmetricDifference(${<Set(Type)>})${cursor}",
+			"Set",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"sum()","sum",
+			"sum()${cursor}",
+			"Set",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//isUnique
-		c = new OCLShorthandCompletion(provider, "isUnique","isUnique",null);
-		c.setSummary("isUnique(x: Type | expression)");
+		c = new OCLTemplateCompletion(provider, 
+			"product()","product",
+			"product(${<Set(Type)>})${cursor}",
+			"Set",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"max()","max",
+			"max(${<Integer>})${cursor}",
+			"Integer",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+			
+		c = new OCLTemplateCompletion(provider, 
+			"min()","min",
+			"min(${<Integer>})${cursor}",
+			"Integer",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"abs()","abs",
+			"abs()${cursor}",
+			"Integer",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"-","difference",
+			"- ${<Set(Type)>} ${cursor}",
+			"Set Difference",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"or","or",
+			"or ${<OCLExpression>} ${cursor}",
+			"Boolean",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"and","and",
+			"and ${<OCLExpression>} ${cursor}",
+			"Boolean",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"not","not",
+			"not ${<OCLExpression>} ${cursor}",
+			"Boolean",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"implies","implies",
+			"implies ${<OCLExpression>} ${cursor}",
+			"Boolean",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"xor","xor",
+			"xor ${<OCLExpression>} ${cursor}",
+			"Boolean",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"exists()","exists",
+			"exists(${<x>} | ${<OCLExpression>})${cursor}",
+			"Iterator",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"forAll()","forAll",
+			"forAll(${<x>} | ${<OCLExpression>})${cursor}",
+			"Iterator",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"one()","one",
+			"one(${<x>} | ${<OCLExpression>})${cursor}",
+			"Iterator",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"select()","select",
+			"select(${<x>} | ${<OCLExpression>})${cursor}",
+			"Iterator",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"reject()","reject",
+			"reject(${<x>} | ${<OCLExpression>})${cursor}",
+			"Iterator",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//collect
-		c = new OCLShorthandCompletion(provider, "collect","collect",null);
-		c.setSummary("collect(x: Type | expression)");
+		c = new OCLTemplateCompletion(provider, 
+			"isUnique()","isUnique",
+			"isUnique(${<x>} | ${<OCLExpression>})${cursor}",
+			"Iterator",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"collect()","collect",
+			"collect(${<x>} | ${<OCLExpression>})${cursor}",
+			"Iterator",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);
+
+		c = new OCLTemplateCompletion(provider, 
+			"let-in","let-in",
+			"let ${<x>} = ${<OCLExpression>}\nin ${<OCLExpression>}${cursor}",
+			"Expression",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//let x = in
-		c = new OCLShorthandCompletion(provider, "let","let x = \nin ",null);
-		c.setSummary("let x = expr <br>in expr");
+		c = new OCLTemplateCompletion(provider, 
+			"if-then-else","if-then-else",
+			"is ${<OCLExpression>} then ${<OCLExpression>}\nelse ${<OCLExpression>}${cursor}",
+			"Expression",
+			"Should be more of a description here...");		
+		provider.addCompletion(c);			
+		
+		c = new OCLTemplateCompletion(provider, 
+			"closure()","closure",
+			"closure(${<x>} | ${<OCLExpression>})${cursor}",
+			"Iterator",
+			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
-		//if then else
-		c = new OCLShorthandCompletion(provider, "if","if then <br>else",null);
-		c.setSummary("if expr then expr <br> else expr");
-		provider.addCompletion(c);
+//		c = new OCLTemplateCompletion(provider, 
+//			">",">",
+//			"> ${<Integer>} ${cursor}",
+//			"Integer",
+//			"Should be more of a description here...");		
+//		provider.addCompletion(c);
+//
+//		c = new OCLTemplateCompletion(provider, 
+//			">=",">=",
+//			">= ${<Integer>} ${cursor}",
+//			"Integer",
+//			"Should be more of a description here...");		
+//		provider.addCompletion(c);
 		
-		//>
-		//c = new OCLShorthandCompletion(this, ">",">",null);
-		//c.setSummary("self > i<br><br>True if self is greater than i.");
-		//addCompletion(c);
+//		c = new OCLTemplateCompletion(provider, 
+//			"<=","<=",
+//			"<= ${<Integer>} ${cursor}",
+//			"Integer",
+//			"Should be more of a description here...");		
+//		provider.addCompletion(c);
+//		
+//		c = new OCLTemplateCompletion(provider, 
+//			"<","<",
+//			"< ${<Integer>} ${cursor}",
+//			"Integer",
+//			"Should be more of a description here...");		
+//		provider.addCompletion(c);
+
+//		c = new OCLTemplateCompletion(provider, 
+//			"-","negative",
+//			"- ${<Integer>} ${cursor}",
+//			"Negative Integer",
+//			"Should be more of a description here...");		
+//		provider.addCompletion(c);
 		
-		//<
-		//c = new OCLShorthandCompletion(this, "<","<",null);
-		//c.setSummary("self < i<br><br>True if self is less than i.");
-		//addCompletion(c);
-		
-		//<=
-		//c = new OCLShorthandCompletion(this, "<=","<=",null);
-		//c.setSummary("self <= i<br><br>True if self is less than or equal to i.");
-		//addCompletion(c);
-		
-		//>=
-		//c = new OCLShorthandCompletion(this, ">=",">=",null);
-		//c.setSummary("self >= i<br><br>True if self is greater than or equal to i.");
-		//addCompletion(c);
-		
-		//-
-		//c = new OCLShorthandCompletion(this, "-","-",null);
-		//c.setSummary("- self <br><br>The negative value of self.");
-		//addCompletion(c);
-		
-		//-
-		//c = new OCLShorthandCompletion(this, "-","-",null);
-		//c.setSummary("self - i<br><br>The value of the subtraction of i from self.");
-		//addCompletion(c);
-		
-		//+
-		//c = new OCLShorthandCompletion(this, "+","+",null);
-		//c.setSummary("self + i<br><br>The value of the addition of self and i.");
-		//addCompletion(c);*/
+//		c = new OCLTemplateCompletion(provider, 
+//			"-","subtraction",
+//			"- ${<Integer>} ${cursor}",
+//			"Integer Subtraction",
+//			"Should be more of a description here...");		
+//		provider.addCompletion(c);
+//
+//		c = new OCLTemplateCompletion(provider, 
+//			"+","+",
+//			"+ ${<Integer>} ${cursor}",
+//			"Integer",
+//			"Should be more of a description here...");		
+//		provider.addCompletion(c);
+//			
+//		c = new OCLTemplateCompletion(provider, 
+//			"*","*",
+//			"* ${<Integer>} ${cursor}",
+//			"Integer",
+//			"Should be more of a description here...");		
+//		provider.addCompletion(c);
+
+//		c = new OCLTemplateCompletion(provider, 
+//			"=","=",
+//			"= ${cursor}",
+//			"OclAny",
+//			"Should be more of a description here...");		
+//		provider.addCompletion(c); 
+
+//		c = new OCLTemplateCompletion(provider, 
+//			"<>","<>",
+//			"<> ${cursor}",
+//			"OclAny",
+//			"Should be more of a description here...");		
+//		provider.addCompletion(c);
 
 		return provider;
 	}
