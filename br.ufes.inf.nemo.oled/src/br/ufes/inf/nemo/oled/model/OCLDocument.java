@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.ocl2alloy.OCLParser;
+import br.ufes.inf.nemo.ocl.parser.OCLParser;
 
 /**
  * This class represents an OCL Model.

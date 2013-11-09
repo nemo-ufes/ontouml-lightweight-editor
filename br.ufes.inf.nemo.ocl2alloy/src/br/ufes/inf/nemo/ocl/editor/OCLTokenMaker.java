@@ -10,9 +10,8 @@ import javax.swing.text.Segment;
 
 import org.fife.ui.rsyntaxtextarea.*;
 
-
 /**
- * 
+ * @author John Guerson
  */
 
 public class OCLTokenMaker extends AbstractJFlexTokenMaker {

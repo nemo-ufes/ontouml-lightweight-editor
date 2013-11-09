@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.eclipse.uml2.uml.Constraint;
 
+import br.ufes.inf.nemo.ocl.parser.OCLParser;
+
 
 /**
  * @author John Guerson
