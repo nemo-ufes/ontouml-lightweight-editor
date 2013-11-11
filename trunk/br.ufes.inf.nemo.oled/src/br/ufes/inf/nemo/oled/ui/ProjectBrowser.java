@@ -248,8 +248,7 @@ public class ProjectBrowser extends JPanel{
 		{
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();	
 			if (node.getUserObject() instanceof OntoUMLElement){
-				InfoManager.getProperties().setData(node);
-				frame.focusOnProperties();
+				InfoManager.getProperties().setData(node);				
 			}else if ((node.getUserObject() instanceof StructureDiagram) && !(((DefaultMutableTreeNode)node.getParent()).getUserObject() instanceof UmlProject)){
 				 StructureDiagram diagram = ((StructureDiagram)node.getUserObject());
 				 for(Component c: frame.getDiagramManager().getComponents()){

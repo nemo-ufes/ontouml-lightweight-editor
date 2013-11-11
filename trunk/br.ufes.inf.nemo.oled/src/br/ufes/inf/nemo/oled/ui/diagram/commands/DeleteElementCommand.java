@@ -122,7 +122,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				project.getEditingDomain().getCommandStack().execute(cmd);
 				
 				//Remove the element from the auto completion of the OCL editor
-				ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(classElement.getClassifier());				
+				ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(classElement.getClassifier());
 			}
 			
 			else if(element instanceof BaseConnection)

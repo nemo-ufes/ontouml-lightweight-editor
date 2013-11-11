@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
+import org.fife.ui.autocomplete.LanguageAwareCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -89,7 +90,8 @@ public class OCLEditorPanel extends JPanel {
 	   for(RefOntoUML.Association p: refparser.getAllInstances(RefOntoUML.Association.class))
 	   {
 		   addCompletion(p,refparser);
-	   }
+	   }   
+	   
    }
    
    public void addCompletion(RefOntoUML.Association p, OntoUMLParser refparser)
@@ -99,49 +101,63 @@ public class OCLEditorPanel extends JPanel {
 	   
 	   if ((source.getName()!=null)&&!(source.getName().isEmpty()))
 	   {
+		   String type = source.getType().getName();
+		   String returnType = type;
+		   if ((source.getUpper()>1)||(source.getUpper()==-1)) returnType = "Set("+type+")";
+		   
 		   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
-				source.getName(),source.toString(),
+				source.getName(),source.toString().substring(0,source.toString().indexOf(" ")),
 				"_'"+source.getName()+"'",
-				target.getType().getName()+"->"+source.getType().getName(),
-				"Should be more of a description here...");		
+				returnType,
+				"<b>Should be more of a description here...</b>");		
 		    provider.addCompletion(c);
 		    modelCompletionList.add(c);
 	   }
 	   if ((target.getName()!=null)&&!(target.getName().isEmpty()))
 	   {
+		   String type = target.getType().getName();
+		   String returnType = type;
+		   if ((target.getUpper()>1)||(target.getUpper()==-1)) returnType = "Set("+type+")";
+		   
 		   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
-				target.getName(),target.toString(),
+				target.getName(),target.toString().substring(0,target.toString().indexOf(" ")),
 				"_'"+target.getName()+"'",
-				source.getType().getName()+"->"+target.getType().getName(),
-				"Should be more of a description here...");		
+				returnType,
+				"<b>Should be more of a description here...</b>");		
 		    provider.addCompletion(c);
 		    modelCompletionList.add(c);
 	   }
+	   
    }   
    
    public void addCompletion(RefOntoUML.Property p, OntoUMLParser refparser)
    {
 	   if ((p.getName()!=null)&&!(p.getName().isEmpty()))
-	   {
+	   {		   		   
+		   String type = p.getType().getName();
+		   String returnType = type;
+		   if ((p.getUpper()>1)||(p.getUpper()==-1)) returnType = "Set("+type+")";
+		   
 		   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
-				p.getName(),p.toString(),
+				p.getName(),p.toString().substring(0,p.toString().indexOf(" ")),
 				"_'"+p.getName()+"'",
-				((RefOntoUML.Classifier)p.eContainer()).getName(),
-				"Should be more of a description here...");		
+				returnType,
+				"<b>Should be more of a description here...</b>");		
 		    provider.addCompletion(c);
 		    modelCompletionList.add(c);
-	   }
+	   }	   
    }   
    
    public void addCompletion(RefOntoUML.Class oc, OntoUMLParser refparser)
-   {
+   {	   
+	   System.out.println(oc.toString().substring(0,oc.toString().indexOf(" ")));
 	   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
-			oc.getName(),oc.toString(),
+			oc.getName(),oc.toString().substring(0,oc.toString().indexOf(" ")),
 			"_'"+oc.getName()+"'",
-			refparser.getStereotype(oc),
-			"Should be more of a description here...");		
+			null,
+			"<b>Should be more of a description here...</b>");		
 	    provider.addCompletion(c);
-	    modelCompletionList.add(c);
+	    modelCompletionList.add(c);	
    }
    
    @SuppressWarnings("rawtypes")
@@ -151,14 +167,25 @@ public class OCLEditorPanel extends JPanel {
 	   while(it.hasNext())
 	   {
 		   OCLTemplateCompletion tc = (OCLTemplateCompletion)it.next();
-		   if (tc.getDefinitionString().equals(elem.toString()))
+		   if (tc.getDefinitionString().equals(elem.toString().substring(0,elem.toString().indexOf(" "))))
 		   {
 			   it.remove();
 			   provider.removeCompletion(tc);
 		   }
-	   }
+	   }	   
    }
       
+   public void createAutoComplete (CompletionProvider provider)
+   {
+	    ac = new AutoCompletion(provider);	    
+	    ac.setListCellRenderer(new OCLCellRenderer());	    
+		ac.setParameterAssistanceEnabled(true);
+	    ac.setAutoActivationEnabled(false);
+	    ac.setAutoCompleteSingleChoices(false);
+     	ac.setShowDescWindow(true);      	
+     	ac.install(textArea);
+   }
+   
 	/**
 	 * Constructor.
 	 */
@@ -173,23 +200,17 @@ public class OCLEditorPanel extends JPanel {
 		textArea.setForeground(Color.BLACK);
 		textArea.setBackground(new Color(255, 255, 255));				
 		setTheme(textArea,"/br/ufes/inf/nemo/ocl/editor/EclipseTheme.xml");
-		//textArea.setCurrentLineHighlightColor(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));		
-				
+						
 		tokenMaker = new OCLTokenMaker();	    
 	    ((RSyntaxDocument)textArea.getDocument()).setSyntaxStyle(tokenMaker);
 	    
 	    provider = createDefaultCompletionProvider();
 
-	    //parentProvider = new LanguageAwareCompletionProvider(provider);
+	    parentProvider = new LanguageAwareCompletionProvider(provider);
+	
+	    createAutoComplete(parentProvider);
 	    
-	    ac = new AutoCompletion(provider);   
-	    ac.setListCellRenderer(new OCLCellRenderer());	    
-		ac.setParameterAssistanceEnabled(true);
-	    ac.setAutoActivationEnabled(true);
-      	ac.setShowDescWindow(true);      	
-      	ac.install(textArea);
-
-      	setLayout(new BorderLayout(0, 0));
+	    setLayout(new BorderLayout(0, 0));
       			
       	scrollPane = new RTextScrollPane(textArea);
       	scrollPane.getGutter().setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -316,300 +337,293 @@ public class OCLEditorPanel extends JPanel {
 	{				
 		DefaultCompletionProvider provider = new DefaultCompletionProvider(); 
 		provider.setAutoActivationRules(true, ".");
-		//provider.setAutoActivationRules(true, "->");
 		
 		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
-			"package","package",
-			"package ${<Package>}\n\n${cursor}\nendpackage",
-			"Package",
-			"Should be more of a description here...");		
+			"invariant","invariant",
+			"context ${Type}\ninv : ${cursor}\n",
+			"Constraint",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 		
 		c = new OCLTemplateCompletion(provider, 
-			"context","invariant",
-			"context ${<Type>}\ninv : ${cursor}\n",
-			"Invariant",
-			"Should be more of a description here...");		
-		provider.addCompletion(c);
-		
-		c = new OCLTemplateCompletion(provider, 
-			"context","derivation",
-			"context ${<Type>}::${<Property>}:${<propertyType>}\nderive : ${cursor}\n",
-			"Derivation",
-			"Should be more of a description here...");		
+			"derivation","derivation",
+			"context ${Type}::${Property}:${propertyType}\nderive : ${cursor}\n",
+			"Constraint",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c); 
 
 		c = new OCLTemplateCompletion(provider, 
 			"oclIsKindOf()","oclIsKindOf",
-			"oclIsKindOf(${<Type>})${cursor}",
-			"OclAny",
-			"Should be more of a description here...");		
+			"oclIsKindOf(${Type})${cursor}",
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"allInstances()","allInstances",
 			"allInstances()${cursor}",
-			"OclAny",
-			"Should be more of a description here...");		
+			"Set(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 			
 		c = new OCLTemplateCompletion(provider, 
 			"oclIsTypeOf()","oclIsTypeOf",
-			"oclIsTypeOf(${<Type>})${cursor}",
-			"OclAny",
-			"Should be more of a description here...");		
+			"oclIsTypeOf(${Type})${cursor}",
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"oclIsUndefined()","oclIsUndefined",
 			"oclIsUndefined()${cursor}",
-			"OclAny",
-			"Should be more of a description here...");		
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 		
 		c = new OCLTemplateCompletion(provider, 
 			"oclAsType()","oclAsType",
-			"oclAsType(${<Type>})${cursor}",
-			"OclAny",
-			"Should be more of a description here...");		
+			"oclAsType(${Type})${cursor}",
+			"Classifier-Instance",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"size()","size",
 			"size()${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"Integer",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"includesAll()","includesAll",
-			"includesAll(${<Set(Type)>})${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"includesAll(${Set(Type)})${cursor}",
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"excludesAll()","excludesAll",
-			"excludesAll(${<Set(Type)>})${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"excludesAll(${Set(Type)})${cursor}",
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 		
 		c = new OCLTemplateCompletion(provider, 
 			"includes()","includes",
-			"includes(${<object>})${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"includes(${object})${cursor}",
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"excludes()","excludes",
-			"excludes(${<object>})${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"excludes(${object})${cursor}",
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 		
 		c = new OCLTemplateCompletion(provider, 
 			"isEmpty()","isEmpty",
 			"isEmpty()${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 		
 		c = new OCLTemplateCompletion(provider, 
 			"notEmpty()","notEmpty",
 			"notEmpty()${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 		
 		c = new OCLTemplateCompletion(provider, 
 			"asSet()","asSet",
 			"asSet()${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"union()","union",
-			"union(${<Set(Type)>})${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"union(${Set(Type)})${cursor}",
+			"Set(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 		
 		c = new OCLTemplateCompletion(provider, 
 			"intersection()","intersection",
-			"intersection(${<Set(Type)>})${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"intersection(${Set(Type)})${cursor}",
+			"Set(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"including()","including",
-			"including(${<object>})${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"including(${object})${cursor}",
+			"Set(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 		
 		c = new OCLTemplateCompletion(provider, 
 			"excluding()","excluding",
-			"excluding(${<object>})${cursor}",
-			null,
-			"Should be more of a description here...");		
+			"excluding(${object})${cursor}",
+			"Set(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"symmetricDifference()","symmetricDifference",
-			"symmetricDifference(${<Set(Type)>})${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"symmetricDifference(${Set(Type)})${cursor}",
+			"Set(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"sum()","sum",
 			"sum()${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"Integer",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 		
 		c = new OCLTemplateCompletion(provider, 
 			"product()","product",
-			"product(${<Set(Type)>})${cursor}",
-			"Set",
-			"Should be more of a description here...");		
+			"product(${Set(Type)})${cursor}",
+			"Set(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"max()","max",
-			"max(${<Integer>})${cursor}",
+			"max(${Integer})${cursor}",
 			"Integer",
-			"Should be more of a description here...");		
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 			
 		c = new OCLTemplateCompletion(provider, 
 			"min()","min",
-			"min(${<Integer>})${cursor}",
+			"min(${Integer})${cursor}",
 			"Integer",
-			"Should be more of a description here...");		
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"abs()","abs",
 			"abs()${cursor}",
 			"Integer",
-			"Should be more of a description here...");		
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"-","difference",
-			"- ${<Set(Type)>} ${cursor}",
-			"Set Difference",
-			"Should be more of a description here...");		
+			"- ${Set(Type)} ${cursor}",
+			"Set(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"or","or",
-			"or ${<OCLExpression>} ${cursor}",
+			"or ${OCLExpression} ${cursor}",
 			"Boolean",
-			"Should be more of a description here...");		
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"and","and",
-			"and ${<OCLExpression>} ${cursor}",
+			"and ${OCLExpression} ${cursor}",
 			"Boolean",
-			"Should be more of a description here...");		
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"not","not",
-			"not ${<OCLExpression>} ${cursor}",
+			"not ${OCLExpression} ${cursor}",
 			"Boolean",
-			"Should be more of a description here...");		
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"implies","implies",
-			"implies ${<OCLExpression>} ${cursor}",
+			"implies ${OCLExpression} ${cursor}",
 			"Boolean",
-			"Should be more of a description here...");		
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"xor","xor",
-			"xor ${<OCLExpression>} ${cursor}",
+			"xor ${OCLExpression} ${cursor}",
 			"Boolean",
-			"Should be more of a description here...");		
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"exists()","exists",
-			"exists(${<x>} | ${<OCLExpression>})${cursor}",
-			"Iterator",
-			"Should be more of a description here...");		
+			"exists(${x} | ${OCLExpression})${cursor}",
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"forAll()","forAll",
-			"forAll(${<x>} | ${<OCLExpression>})${cursor}",
-			"Iterator",
-			"Should be more of a description here...");		
+			"forAll(${x} | ${OCLExpression})${cursor}",
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"one()","one",
-			"one(${<x>} | ${<OCLExpression>})${cursor}",
-			"Iterator",
-			"Should be more of a description here...");		
+			"one(${x} | ${OCLExpression})${cursor}",
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"select()","select",
-			"select(${<x>} | ${<OCLExpression>})${cursor}",
-			"Iterator",
-			"Should be more of a description here...");		
+			"select(${x} | ${OCLExpression})${cursor}",
+			"Set(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"reject()","reject",
-			"reject(${<x>} | ${<OCLExpression>})${cursor}",
-			"Iterator",
-			"Should be more of a description here...");		
+			"reject(${x} | ${OCLExpression})${cursor}",
+			"Set(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 		
 		c = new OCLTemplateCompletion(provider, 
 			"isUnique()","isUnique",
-			"isUnique(${<x>} | ${<OCLExpression>})${cursor}",
-			"Iterator",
-			"Should be more of a description here...");		
+			"isUnique(${x} | ${OCLExpression})${cursor}",
+			"Boolean",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"collect()","collect",
-			"collect(${<x>} | ${<OCLExpression>})${cursor}",
-			"Iterator",
-			"Should be more of a description here...");		
+			"collect(${x} | ${OCLExpression})${cursor}",
+			"Bag(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 
 		c = new OCLTemplateCompletion(provider, 
 			"let-in","let-in",
-			"let ${<x>} = ${<OCLExpression>}\nin ${<OCLExpression>}${cursor}",
-			"Expression",
+			"let ${x} = ${OCLExpression}\nin ${OCLExpression}${cursor}",
+			"Boolean",
 			"Should be more of a description here...");		
 		provider.addCompletion(c);
 		
 		c = new OCLTemplateCompletion(provider, 
 			"if-then-else","if-then-else",
-			"is ${<OCLExpression>} then ${<OCLExpression>}\nelse ${<OCLExpression>}${cursor}",
-			"Expression",
-			"Should be more of a description here...");		
+			"is ${OCLExpression} then ${OCLExpression}\nelse ${OCLExpression}${cursor}",
+			"Boolean",
+			"<b>Should be more of a description here...</b>");
+		
 		provider.addCompletion(c);			
 		
 		c = new OCLTemplateCompletion(provider, 
 			"closure()","closure",
-			"closure(${<x>} | ${<OCLExpression>})${cursor}",
-			"Iterator",
-			"Should be more of a description here...");		
+			"closure(${x} | ${OCLExpression})${cursor}",
+			"Bag(Type)",
+			"<b>Should be more of a description here...</b>");		
 		provider.addCompletion(c);
 		
 //		c = new OCLTemplateCompletion(provider, 

@@ -22,12 +22,17 @@ package br.ufes.inf.nemo.oled.ui.diagram.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import RefOntoUML.Classifier;
+import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
+import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
+import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
+import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
 /**
  * This class represents a reversible operation that sets a Label to a new
@@ -41,6 +46,7 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 	private static final long serialVersionUID = 5701807952287882396L;
 	private Label label;
 	private String text, oldText;
+	private CompositeNode parent;
 
 	/**
 	 * Constructor.
@@ -53,20 +59,34 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		text = aText;
 		this.project = project;
 		oldText = aLabel.getNameLabelText();
+		if (aLabel.getParent()!=null) { parent = aLabel.getParent().getParent();} 
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void run() {
+		
 		label.setNameLabelText(text);
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(label);
 		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, redo ? NotificationType.REDO : NotificationType.DO);
 		
-		//Update the Project Tree: FIXME every modification creates a new tree
-		ProjectBrowser.rebuildTree(project);
+		ProjectBrowser.refreshTree(project);		
+			
+		if (parent instanceof ClassElement) {
+			Classifier element = (((ClassElement)parent).getClassifier());
+			//Then select the element in the Tree
+			ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
+			tree.selectModelElement(element);
+			//Remove the element from the auto completion of the OCL editor
+			ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(element);
+			//Include this element in the Auto Completion of OCL Editor
+			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Class)element,ProjectBrowser.getParserFor(project));
+		}else if (parent instanceof BaseConnection){
+			System.out.println(parent);
+		}
 	}
 
 	/**

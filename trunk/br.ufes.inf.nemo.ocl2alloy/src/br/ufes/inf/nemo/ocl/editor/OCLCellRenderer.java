@@ -24,8 +24,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 	{
 		super.prepareForTemplateCompletion(list, tc, index, selected, hasFocus);
 		
-		if (tc.getDefinitionString().equals("package")||
-			tc.getDefinitionString().equals("invariant")||
+		if (tc.getDefinitionString().equals("invariant")||
 			tc.getDefinitionString().equals("derivation")||
 			tc.getDefinitionString().equals("if-then-else")||
 			tc.getDefinitionString().equals("let-in")
