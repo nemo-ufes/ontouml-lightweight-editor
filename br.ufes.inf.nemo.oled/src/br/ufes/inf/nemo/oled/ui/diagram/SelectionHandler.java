@@ -109,7 +109,7 @@ public class SelectionHandler implements EditorMode {
 			Label label = element.getLabelAt(mx, my);
 			if (label != null && label.isEditable()) {
 				focusEditor = false;
-				editor.editLabel(label);
+				editor.editLabel(label);				
 			} else if (e.getClickCount() >= 2) {
 				editor.editProperties(element);
 			}

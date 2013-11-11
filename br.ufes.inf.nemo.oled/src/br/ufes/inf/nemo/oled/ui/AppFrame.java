@@ -544,4 +544,9 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	{		
 		editorArea.setDividerLocation(GetScreenWorkingHeight()-243);
 	}
+	
+	public boolean isFocusedOnOclEditor()
+	{
+		return infoManager.getSelectedIndex()==4;
+	}
 }

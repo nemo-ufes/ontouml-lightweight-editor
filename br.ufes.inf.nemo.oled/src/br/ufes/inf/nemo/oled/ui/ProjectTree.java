@@ -331,13 +331,19 @@ public class ProjectTree extends CheckboxTree {
 	    while (e.hasMoreElements()) 
 	    {
 	    	EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
-	    	if (obj.equals(element)) this.setSelectionPath(new TreePath(node.getPath()));
+	    	if (obj.equals(element)) { 
+	    		this.setSelectionPath(new TreePath(node.getPath()));
+	    		InfoManager.getProperties().setData(node);
+	    	}
 	    		
 	    	node = (DefaultMutableTreeNode)e.nextElement();
 	    }
 	    //last element
 	    EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
-	    if (obj.equals(element)) this.setSelectionPath(new TreePath(node.getPath()));
+	    if (obj.equals(element)){ 
+	    	this.setSelectionPath(new TreePath(node.getPath()));
+	    	InfoManager.getProperties().setData(node);
+	    }	    
 	}
 	
 	/**
