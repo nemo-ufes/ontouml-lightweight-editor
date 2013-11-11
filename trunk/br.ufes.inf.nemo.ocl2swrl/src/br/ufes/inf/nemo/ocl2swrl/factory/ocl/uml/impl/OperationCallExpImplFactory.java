@@ -66,9 +66,17 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		
 		SWRLDArgument varY = null;
 		if(arguments.size()>0){
+			if(operationCallExpImpl.getReferredOperation().getName().equals("includes"))
+			{
+				repeatNumber=2;
+			}
 			OCLExpressionImpl argument = (OCLExpressionImpl) operationCallExpImpl.getArgument().get(0);
 			this.argumentFactory = (OCLExpressionImplFactory) Factory.constructor(argument);
 			varY = this.argumentFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, oclConsequentShouldBeNegated, operationNegated, repeatNumber);
+			if(operationCallExpImpl.getReferredOperation().getName().equals("includes"))
+			{
+				repeatNumber=1;
+			}
 		}
 		
 		Boolean sourceOclConsequentShouldBeNegated = oclConsequentShouldBeNegated;
@@ -76,8 +84,9 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			sourceOclConsequentShouldBeNegated = false;
 		}
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
-		SWRLDArgument varX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, sourceOclConsequentShouldBeNegated, operationNegated, repeatNumber);
 		
+		SWRLDArgument varX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, sourceOclConsequentShouldBeNegated, operationNegated, repeatNumber);
+		 
 		SWRLDArgument varZ = null;
 		if(this.isComparisonOperation()){
 			varZ = solveComparison(ctStereotype, nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, oclConsequentShouldBeNegated, operationNegated);

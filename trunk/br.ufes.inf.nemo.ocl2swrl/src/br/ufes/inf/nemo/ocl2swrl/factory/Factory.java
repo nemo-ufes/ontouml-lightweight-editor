@@ -45,6 +45,8 @@ public class Factory {
 			return new CollectionItemImplFactory((CollectionItemImpl) obj);
 		}else if(c.equals(BooleanLiteralExpImpl.class)){
 			return new BooleanLiteralExpImplFactory((BooleanLiteralExpImpl) obj);
+		}else if(c.equals(EnumLiteralExpImpl.class)){
+			return new EnumLiteralExpImplFactory((EnumLiteralExpImpl) obj);
 		}else{
 			throw new NonSupported(c.getName());
 		}
