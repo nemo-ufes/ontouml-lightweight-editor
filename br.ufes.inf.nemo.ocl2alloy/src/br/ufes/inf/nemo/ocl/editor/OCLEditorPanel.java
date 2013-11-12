@@ -81,20 +81,20 @@ public class OCLEditorPanel extends JPanel {
    {   
 	   for(RefOntoUML.Class oc: refparser.getAllInstances(RefOntoUML.Class.class))
 	   {
-		   addCompletion(oc,refparser);
+		   addCompletion(oc);
 	   }
 	   for(RefOntoUML.Property p: refparser.getAllInstances(RefOntoUML.Property.class))
 	   {
-		   if (p.getAssociation()==null) addCompletion(p, refparser);		   
+		   if (p.getAssociation()==null) addCompletion(p);		   
 	   }
 	   for(RefOntoUML.Association p: refparser.getAllInstances(RefOntoUML.Association.class))
 	   {
-		   addCompletion(p,refparser);
+		   addCompletion(p);
 	   }   
 	   
    }
    
-   public void addCompletion(RefOntoUML.Association p, OntoUMLParser refparser)
+   public void addCompletion(RefOntoUML.Association p)
    {
 	   Property source = p.getMemberEnd().get(0);
 	   Property target = p.getMemberEnd().get(1);
@@ -130,7 +130,7 @@ public class OCLEditorPanel extends JPanel {
 	   
    }   
    
-   public void addCompletion(RefOntoUML.Property p, OntoUMLParser refparser)
+   public void addCompletion(RefOntoUML.Property p)
    {
 	   if ((p.getName()!=null)&&!(p.getName().isEmpty()))
 	   {		   		   
@@ -148,9 +148,8 @@ public class OCLEditorPanel extends JPanel {
 	   }	   
    }   
    
-   public void addCompletion(RefOntoUML.Class oc, OntoUMLParser refparser)
+   public void addCompletion(RefOntoUML.Class oc)
    {	   
-	   System.out.println(oc.toString().substring(0,oc.toString().indexOf(" ")));
 	   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
 			oc.getName(),oc.toString().substring(0,oc.toString().indexOf(" ")),
 			"_'"+oc.getName()+"'",
@@ -175,6 +174,14 @@ public class OCLEditorPanel extends JPanel {
 	   }	   
    }
       
+   public void updateCompletion(EObject elem)
+   {
+	   removeCompletion(elem);
+	   if (elem instanceof RefOntoUML.Class) addCompletion((RefOntoUML.Class)elem);
+	   else if (elem instanceof RefOntoUML.Association) addCompletion((RefOntoUML.Association)elem);
+	   else if (elem instanceof RefOntoUML.Property) addCompletion((RefOntoUML.Property)elem);
+   }
+   
    public void createAutoComplete (CompletionProvider provider)
    {
 	    ac = new AutoCompletion(provider);	    

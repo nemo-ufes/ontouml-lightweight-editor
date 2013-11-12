@@ -241,6 +241,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return editor;
 	}
 		
+	/**
+	 * Verifies if this diagram is already opened in a tab.
+	 * 
+	 * @param diagram
+	 * @return
+	 */
 	public boolean isDiagramOpened (StructureDiagram diagram)
 	{
 		for(Component c: getComponents()){
@@ -285,6 +291,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				
 				saveCurrentProjectToFile(file);
 				
+				frame.setTitle(file.getName()+" - OLED");
+				
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, ex.getMessage(),
 						getResourceString("error.readfile.title"),
@@ -326,7 +334,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 								
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 				
-				//updateFrameTitle(); FIXME
+				frame.setTitle(file.getName()+" - OLED");
 				frame.showInfoManager();
 				
 			} catch (Exception ex) {
@@ -365,7 +373,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 								
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 				
-				//updateFrameTitle(); FIXME
+				frame.setTitle(file.getName()+" - OLED");
 				frame.showInfoManager();
 			}
 		} catch (Exception ex) {
@@ -407,6 +415,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			getCurrentProject().setSaveModelNeeded(false);
 			for(UmlDiagram d: getCurrentProject().getDiagrams()) d.setSaveNeeded(false);
 			
+			frame.setTitle(file.getName()+" - OLED");
 			updateUI();
 			
 		} catch (Exception ex) {

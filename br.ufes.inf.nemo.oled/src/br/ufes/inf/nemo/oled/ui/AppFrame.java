@@ -119,7 +119,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	        }
 		});
 	}
-	
+
 	/**
 	 * Adds the main menu.
 	 */
