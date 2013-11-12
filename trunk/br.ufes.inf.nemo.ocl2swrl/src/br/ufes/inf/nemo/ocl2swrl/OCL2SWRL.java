@@ -12,8 +12,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2alloy.OCLParser;
+import br.ufes.inf.nemo.ocl.parser.OCLParser;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonInitialized;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.ExpressionInOCLImplFactory;
 
 public class OCL2SWRL {
@@ -77,6 +78,9 @@ public class OCL2SWRL {
 		{
 			@SuppressWarnings("unchecked")
 			String stereotype = this.oclParser.getUMLReflection().getStereotype(ct);
+			if(!org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype) || !org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(stereotype)){
+				throw new NonSupported(stereotype);
+			}
 			//org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype);
 			
 			ExpressionInOCLImpl expr = (ExpressionInOCLImpl) ct.getSpecification();
