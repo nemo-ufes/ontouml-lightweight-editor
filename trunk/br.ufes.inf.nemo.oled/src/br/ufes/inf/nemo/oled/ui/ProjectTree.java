@@ -120,8 +120,8 @@ public class ProjectTree extends CheckboxTree {
 	{
 		TreePath path = getPathForLocation(e.getX(), e.getY());
 		DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode)(path.getLastPathComponent());
-		if (currentNode.getUserObject() instanceof OntoUMLElement){
-			TreePopupMenu menu = new TreePopupMenu(frame, tree);
+		if ((currentNode.getUserObject() instanceof OntoUMLElement)||(currentNode.getUserObject() instanceof StructureDiagram)){
+			TreePopupMenu menu = new TreePopupMenu(frame, tree, currentNode.getUserObject());
 	    	menu.show(e.getComponent(), e.getX(), e.getY());
 		}
 	}

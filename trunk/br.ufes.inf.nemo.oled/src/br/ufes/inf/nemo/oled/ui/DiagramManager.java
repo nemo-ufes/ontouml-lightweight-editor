@@ -214,6 +214,16 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
+	public void deleteDiagram(StructureDiagram diagram)
+	{
+		getCurrentProject().getDiagrams().remove(diagram);
+		for(Component c: getComponents()){
+			if (c instanceof DiagramEditorWrapper){
+				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram)) remove(c);
+			}
+		}		
+	}
+	
 	/**
 	 * Creates an editor for a given Diagram.
 	 * @param diagram the diagram to be edited by the editor
