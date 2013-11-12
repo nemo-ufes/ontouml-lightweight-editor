@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ocl2swrl.factory;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.*;
@@ -17,11 +18,11 @@ import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.*;
 public class Factory {
 	Boolean isBodyExpression = false;
 	
-	public SWRLDArgument solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		throw new NonImplemented("solve()");
 	}
 	
-	public SWRLDArgument solveNegativeNumber(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+	public ArrayList<SWRLDArgument> solveNegativeNumber(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
 		throw new NonImplemented("solveNegativeNumber()");
 	}
 	
@@ -80,19 +81,27 @@ public class Factory {
 		return false;
 	}
 
-	public Boolean isUnique(){
+	public Boolean isUniqueIterator(){
 		return false;
 	}
 	
-	public Boolean isEmpty() {
+	public Boolean isIsEmptyOperation() {
 		return false;
 	}
 	
-	public Boolean notEmpty() {
+	public Boolean isNotEmptyOperation() {
 		return false;
 	}
 	
-	public Boolean isAbs() {
+	public Boolean isAbsOperation() {
+		return false;
+	}
+	
+	public Boolean isIncludesOperation() {
+		return false;
+	}
+	
+	public Boolean isExcludesOperation() {
 		return false;
 	}
 }

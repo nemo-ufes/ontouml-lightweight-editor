@@ -78,7 +78,7 @@ public class OCL2SWRL {
 		{
 			@SuppressWarnings("unchecked")
 			String stereotype = this.oclParser.getUMLReflection().getStereotype(ct);
-			if(!org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype) || !org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(stereotype)){
+			if(!org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype) && !org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(stereotype)){
 				throw new NonSupported(stereotype);
 			}
 			//org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype);

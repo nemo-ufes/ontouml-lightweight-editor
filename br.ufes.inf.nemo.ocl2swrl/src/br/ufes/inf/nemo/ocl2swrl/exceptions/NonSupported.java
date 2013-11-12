@@ -14,7 +14,7 @@ public class NonSupported extends java.lang.RuntimeException {
 	 */
 	public NonSupported(String argument) 
     {		
-		super("This transformation does not support '" + argument + ".");
+		super("This transformation does not support '" + argument + "'.");
     }
 	
 	private static final long serialVersionUID = 1L;

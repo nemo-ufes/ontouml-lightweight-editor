@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.RealLiteralExpImpl;
@@ -32,24 +33,30 @@ public class RealLiteralExpImplFactory extends NumericLiteralExpImplFactory {
 	}
 
 	@Override
-	public SWRLDArgument solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		RealLiteralExpImpl realLiteralExpImpl = (RealLiteralExpImpl)m_NamedElementImpl;
 		Double realSymbol = realLiteralExpImpl.getRealSymbol();
 		OWLLiteral owlLiteral = factory.getOWLLiteral(realSymbol);
 		SWRLLiteralArgument var = factory.getSWRLLiteralArgument(owlLiteral);
 		
-		return var;
+		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
+		retArgs.add(var);
+		
+		return retArgs;
 	}
 	
 	@Override
-	public SWRLDArgument solveNegativeNumber(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+	public ArrayList<SWRLDArgument> solveNegativeNumber(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
 		RealLiteralExpImpl realLiteralExpImpl = (RealLiteralExpImpl)m_NamedElementImpl;
 		Double realSymbol = realLiteralExpImpl.getRealSymbol();
 		realSymbol *= (-1);
 		OWLLiteral owlLiteral = factory.getOWLLiteral(realSymbol);
 		SWRLLiteralArgument var = factory.getSWRLLiteralArgument(owlLiteral);
 		
-		return var;
+		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
+		retArgs.add(var);
+		
+		return retArgs;
 	}
 
 }

@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.TypeExpImpl;
@@ -33,13 +34,16 @@ public class TypeExpImplFactory extends OCLExpressionImplFactory {
 	}
 
 	@Override
-	public SWRLDArgument solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		TypeExpImpl typeExpImpl = (TypeExpImpl) this.m_NamedElementImpl;
 		
 		String varXName = Util.generateVarName(typeExpImpl, referredArgument);
 		
 		SWRLVariable varZ = factory.getSWRLVariable(IRI.create(nameSpace+varXName));
 		
-		return varZ;
+		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
+		retArgs.add(varZ);
+		
+		return retArgs;
 	}
 }
