@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.VariableExpImpl;
@@ -33,13 +34,18 @@ public class VariableExpImplFactory extends OCLExpressionImplFactory {
 	}
 
 	@Override
-	public SWRLDArgument solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
 		VariableExpImpl variableExpImpl = (VariableExpImpl) this.m_NamedElementImpl;
 		//String varName = variableExpImpl.getReferredVariable().getType().getName();
 		String varName = Util.generateVarName(variableExpImpl.getReferredVariable().getType(), referredArgument);
-		
+		if(repeatNumber > 1){
+			varName += repeatNumber;
+		}
 		SWRLVariable var = factory.getSWRLVariable(IRI.create(nameSpace+varName));
 		
-		return var;
+		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
+		retArgs.add(var);
+		
+		return retArgs;
 	}
 }
