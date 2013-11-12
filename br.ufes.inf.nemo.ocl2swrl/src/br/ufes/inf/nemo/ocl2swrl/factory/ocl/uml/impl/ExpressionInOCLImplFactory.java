@@ -24,7 +24,6 @@ import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl.NamedElementImplFactory;
 
 
@@ -67,7 +66,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			oclConsequentShouldBeNegated = true;
 		}
 		
-		SWRLDArgument var = bodyExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber);
+		bodyExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber);
 		
 		Variable<Classifier, Parameter> contextVariable = expressionInOCLImpl.getContextVariable();
 		Classifier classContVar = contextVariable.getType();
