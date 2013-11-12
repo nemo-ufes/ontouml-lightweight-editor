@@ -233,7 +233,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
 			tree.selectModelElement(refElem);
 			//Include this element in the Auto Completion of OCL Editor
-			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Association)refElem,ProjectBrowser.getParserFor(project));
+			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Association)refElem);
 			
 		}else if (element instanceof GeneralizationElement){
 			

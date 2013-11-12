@@ -88,9 +88,20 @@ public class ProjectTree extends CheckboxTree {
 	                	doPopup(e,ProjectTree.this);
 	                }	                
 	            }
+	            if (e.getClickCount()==2 && SwingUtilities.isLeftMouseButton(e))
+	            {
+	            	TreePath path = getPathForLocation ( e.getX (), e.getY () );
+	            	DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode)(path.getLastPathComponent());
+	            	if (currentNode.getUserObject() instanceof StructureDiagram){
+	            		StructureDiagram diagram = (StructureDiagram)currentNode.getUserObject();
+	            		if (!ProjectTree.this.frame.getDiagramManager().isDiagramOpened(diagram)) {
+	            			// create the diagram visualization again
+	            			ProjectTree.this.frame.getDiagramManager().createEditor(diagram);
+	            		}
+	            	}
+	            }
 	        }
-	    });	
-	
+	    });		
 	}	
 	
 	/** 

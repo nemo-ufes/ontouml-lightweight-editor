@@ -227,20 +227,32 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);			
-		final Component comp = add(diagram.getLabelText(), wrapper);
+		add(diagram.getLabelText(), wrapper);
 						
 		diagram.addNameLabelChangeListener(new LabelChangeListener() {
 			/** {@inheritDoc} */
 			public void labelTextChanged(Label label) {
-				//TODO Write a command for this
-				DiagramManager.this.setTitleAt(DiagramManager.this.indexOfComponent(comp), label.getNameLabelText());
-				DiagramManager.this.updateUI();
+				// We do not need this anymore... the action is done in the Tab Button (ClosableTabPanel) class...
+				//DiagramManager.this.setTitleAt(DiagramManager.this.indexOfComponent(comp), label.getNameLabelText());
+				//DiagramManager.this.updateUI();
 			}
 		});		
 		
 		return editor;
 	}
 		
+	public boolean isDiagramOpened (StructureDiagram diagram)
+	{
+		for(Component c: getComponents()){
+			if (c instanceof DiagramEditorWrapper){
+				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * New project.
 	 */
