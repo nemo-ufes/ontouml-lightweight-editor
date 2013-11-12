@@ -80,12 +80,10 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 			//Then select the element in the Tree
 			ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
 			tree.selectModelElement(element);
-			//Remove the element from the auto completion of the OCL editor
-			ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(element);
-			//Include this element in the Auto Completion of OCL Editor
-			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Class)element,ProjectBrowser.getParserFor(project));
+			//Update the element from the auto completion of the OCL editor
+			ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(element);
 		}else if (parent instanceof BaseConnection){
-			System.out.println(parent);
+			
 		}
 	}
 
