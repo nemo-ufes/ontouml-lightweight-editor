@@ -67,8 +67,6 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			oclConsequentShouldBeNegated = true;
 		}
 		
-		bodyExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber);
-		
 		Variable<Classifier, Parameter> contextVariable = expressionInOCLImpl.getContextVariable();
 		Classifier classContVar = contextVariable.getType();
 		
@@ -78,6 +76,8 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		iriName = iriName.replace(" ", "_");
 		IRI iri = IRI.create(iriName);
 		SWRLVariable contextVar = factory.getSWRLVariable(iri);
+		
+		bodyExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber);
 		
 		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
 			OWLClass owlClass = factory.getOWLClass(iri);
