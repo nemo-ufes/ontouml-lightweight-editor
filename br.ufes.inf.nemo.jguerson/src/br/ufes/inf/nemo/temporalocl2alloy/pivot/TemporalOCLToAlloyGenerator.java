@@ -139,15 +139,15 @@ public class TemporalOCLToAlloyGenerator {
 		String result = new String();
 		
 		result += appendLine("all b: Branch | all w: World[b] | all self: "+C+" | ");
-		result += appendLine(Q+" and not "+R+" ");		
+		result += appendLine(Q+" and not "+R+" implies ");		
 		
 		if (isLastQ) result += appendLine("and (all lw: Latter[w] | not "+replace_w(Q,"lw")+") implies ");
 		
 		result += appendLine("{ all b2: Branch[w] | ");
-		result += appendLine("{ all w2: Latter[w,b2] | "+replace_w(P,"w2")+" } or ");
-		result += appendLine("{ all w2: Latter[w,b2] | not "+replace_w(R,"w2")+" } or");
-		result += appendLine("{ all w2: Latter[w,b2] | "+replace_w(R,"w2")+" and (all fw: Between[w,w2] | ");
-		result += appendLine("not "+replace_w(R,"fw")+") implies (all fw: Between[w,w2] | "+replace_w(P,"fw")+") }}");
+		result += appendLine("{ all w2: Latter[w,b2]+w | "+replace_w(P,"w2")+" } or ");
+		result += appendLine("{ all w2: Latter[w,b2]+w | not "+replace_w(R,"w2")+" } or");
+		result += appendLine("{ all w2: Latter[w,b2] | "+replace_w(R,"w2")+" implies (all fw: Between[w,w2]+w | ");
+		result += appendLine("not "+replace_w(R,"fw")+") and (all fw: Between[w,w2]+w | "+replace_w(P,"fw")+") }}");
 				
 		return result;
 	}
@@ -245,7 +245,7 @@ public class TemporalOCLToAlloyGenerator {
 	{
 		return
 		appendLine("all b: Branch | some w: World[b] | all self: "+C+" | ") +
-		appendLine("{ "+P+"}");
+		appendLine("{ some lw: Latter[w,b]+w |  "+replace_w(P,"lw")+" }");
 	}
 	
 	/**
