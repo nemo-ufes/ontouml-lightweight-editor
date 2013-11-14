@@ -8,32 +8,19 @@ public class TemporalOCLToAlloyTest {
 			
 			result += WorldStructureFunctionsGenerator.run();
 			
-			result += "pred"+" alwaysGlobally"+"{\n"+
-					  TemporalOCLToAlloyGenerator.alwaysGlobally("w.Person", "self in w.Child")+
-					  "}\n";
-			
-			result += "pred"+" alwaysBefore"+"{\n"+
-					  TemporalOCLToAlloyGenerator.alwaysBefore("w.Person", "self in w.Child", "self in w.Teenager")+
-					  "}\n";
-			
-			result += "pred"+" alwaysAfter"+"{\n"+
-					  TemporalOCLToAlloyGenerator.alwaysAfter("w.Person", "self in w.Adult", "self in w.Teenager")+
-					  "}\n";
-			
-			result += "pred"+" alwaysBetweenAnd"+"{\n"+
-					  TemporalOCLToAlloyGenerator.alwaysBetweenAnd("w.Person", "self in w.Teenager", "self in w.Child","self in w.Adult",false)+
-					  "}\n";
-			
-			result += "pred"+" alwaysAfterUnless"+"{\n"+
-					  TemporalOCLToAlloyGenerator.alwaysAfterUnless("w.Person", "self in w.Teenager", "self in w.Child","self in w.Adult",false)+
-					  "}\n\n";
-			
-			result += "run alwaysGlobally for 10 but 1 Object, 0 DataType, 7 Int, 7 World"+"\n";
-			result += "run alwaysBefore for 10 but 1 Object, 0 DataType, 7 Int, 7 World"+"\n";
-			result += "run alwaysAfter for 10 but 1 Object, 0 DataType, 7 Int, 7 World"+"\n";
-			result += "run alwaysBetweenAnd for 10 but 1 Object, 0 DataType, 7 Int, 7 World"+"\n";
-			result += "run alwaysAfterUnless for 10 but 1 Object, 0 DataType, 7 Int, 7 World"+"\n";
+			result += "fact"+" Offspring_Eventually"+"{\n"+
+					  TemporalOCLToAlloyGenerator.eventuallyGlobally("w.Person", "self in w.Offspring")
+			 	      +"\n}\n";
+			 
+			result += "pred"+" Offspring_Creation2"+"{\n"+
+					  TemporalOCLToAlloyGenerator.alwaysBetweenAnd("w.Person", "(self in w.Offspring)", "(self in w.Person and self !in (next.w).Person)", "(self in w.Offspring and self !in (next.w).Offspring)",false)
+					  +"\n}\n";
+					  
+			result += "fact {Offspring_Creation2}"+"\n";			
 						
+			result += "\ncheck { all b: Branch | all w:World[b] | all self: w.Person | self in w.Person and self !in (next.w).Person implies self in w.Offspring }\n"+
+					  "for 10 but 5 Object, 0 DataType, 7 Int, 7 World";
+			
 			System.out.println(result);			
 		}
 }
