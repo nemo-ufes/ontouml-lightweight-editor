@@ -34,6 +34,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.io.IOException;
@@ -103,7 +105,7 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
  * @author Wei-ju Wu
  * @version 1.0
  */
-public class DiagramEditor extends BaseEditor implements ActionListener, MouseListener, MouseMotionListener, DiagramNotification, DiagramOperations, NodeChangeListener {
+public class DiagramEditor extends BaseEditor implements ActionListener, MouseListener, MouseWheelListener, MouseMotionListener, DiagramNotification, DiagramOperations, NodeChangeListener {
 
 	private static final long serialVersionUID = 4210158437374056534L;
 	// For now, we define the margins of the diagram as constants
@@ -125,7 +127,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private static MouseEvent currentPointerPosition;
 	
 	private transient ModellingAssistant assistant;
-
 
 	/**
 	 * Reset the transient values for serialization.
@@ -232,6 +233,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void addEditorStateListener(EditorStateListener l) {
 		editorListeners.add(l);
 	}
+	
+	public int getScalingPercentual()
+	{
+		return (int)(scaling.getScaleFactor()*100/100);
+	}
 
 	/**
 	 * Adjusts this component's preferredSize attribute to the diagram's size.
@@ -251,7 +257,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private void installHandlers() {
 		addMouseListener(this);
 		addMouseMotionListener(this);
-
+		addMouseWheelListener(this);
+		
 		// BaseEditor listeners
 		captionEditor.addActionListener(this);
 		
@@ -383,7 +390,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		g.setClip(clipBounds);
 		paintComponent(g, clipBounds, false);
 	}
-
+		
 	/**
 	 * Paints this component with a specified bounds object.
 	 * @param g the graphics context
@@ -405,11 +412,19 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		Color background = Color.WHITE;
 		if (toScreen) {
 			// Scaling is only interesting if rendering to screen
-			scaleDiagram(g2d);
+			scaleDiagram(g2d);			
 		} else {
 			diagram.setGridVisible(false);
 			background = Color.WHITE;
 		}
+		// I believe the Zoom problem was solved with this two lines below...
+		int width = (int)(diagram.getSize().getWidth()+ MARGIN_RIGHT + MARGIN_LEFT + ADDSCROLL_HORIZONTAL);
+		int height = (int)(diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL);				
+		setSize(new Dimension((int)(width*scaling.getScaleFactor()),(int)(height*scaling.getScaleFactor())));		
+		bounds = new Rectangle((int)width,(int)height);
+		frame.getDiagramManager().getCurrentWrapper().getScrollPane().setPreferredSize(new Dimension(bounds.width,bounds.height));
+		frame.getDiagramManager().getCurrentWrapper().getScrollPane().validate();
+		
 		clearScreen(g, bounds, background);
 		drawingContext.setGraphics2D(g2d, bounds);				
 		diagram.draw(drawingContext);
@@ -417,9 +432,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		if (toScreen) {
 			editorMode.draw(drawingContext);
 		}
-
 		restoreRenderingHints(g2d);
-		diagram.setGridVisible(gridVisible);
+		diagram.setGridVisible(gridVisible);		
 	}
 
 	/**
@@ -466,7 +480,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 */
 	private void scaleDiagram(Graphics2D g2d) {
 		double scaleFactor = scaling.getScaleFactor();
-		g2d.scale(scaleFactor, scaleFactor);
+		g2d.scale(scaleFactor, scaleFactor);		
 	}
 
 	// ************************************************************************
@@ -532,7 +546,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * {@inheritDoc}
 	 */
 	public void mouseClicked(MouseEvent e) {
-		if (!stopEditing()) {
+		if (!stopEditing()) {			
 			editorMode.mouseClicked(convertMouseEvent(e));
 		}
 	}
@@ -562,8 +576,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 */
 	public void mouseMoved(MouseEvent e) {
 		EditorMouseEvent evt = convertMouseEvent(e);
-		currentPointerPosition = evt.getMouseEvent();
-		
+		currentPointerPosition = evt.getMouseEvent();		
 		editorMode.mouseMoved(evt);
 		notifyCoordinateListeners();		
 	}
@@ -671,9 +684,74 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 */
 	public void setScaling(Scaling aScaling) {
 		scaling = aScaling;
+		revalidate();
 		repaint();
 	}
 
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		if (e.isControlDown()){
+            if (e.getWheelRotation() < 0)
+            {
+            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) zoomIn();
+            }
+            if (e.getWheelRotation() > 0)
+            {
+            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) zoomOut();
+            }
+		}
+	}
+	
+	public void zoomOut()
+	{	
+		if (scaling.equals(Scaling.SCALING_150)) setScaling(Scaling.SCALING_145);
+		else if (scaling.equals(Scaling.SCALING_145)) setScaling(Scaling.SCALING_140);
+		else if (scaling.equals(Scaling.SCALING_140)) setScaling(Scaling.SCALING_135);
+		else if (scaling.equals(Scaling.SCALING_135)) setScaling(Scaling.SCALING_130);
+		else if (scaling.equals(Scaling.SCALING_130)) setScaling(Scaling.SCALING_125);
+		else if (scaling.equals(Scaling.SCALING_125)) setScaling(Scaling.SCALING_120);
+		else if (scaling.equals(Scaling.SCALING_120)) setScaling(Scaling.SCALING_115);
+		else if (scaling.equals(Scaling.SCALING_115)) setScaling(Scaling.SCALING_110);
+		else if (scaling.equals(Scaling.SCALING_110)) setScaling(Scaling.SCALING_105);
+		else if (scaling.equals(Scaling.SCALING_105)) setScaling(Scaling.SCALING_100);		
+		else if (scaling.equals(Scaling.SCALING_100)) setScaling(Scaling.SCALING_95);
+		else if (scaling.equals(Scaling.SCALING_95)) setScaling(Scaling.SCALING_90);
+		else if (scaling.equals(Scaling.SCALING_90)) setScaling(Scaling.SCALING_85);
+		else if (scaling.equals(Scaling.SCALING_85)) setScaling(Scaling.SCALING_80);
+		else if (scaling.equals(Scaling.SCALING_80)) setScaling(Scaling.SCALING_75);
+		else if (scaling.equals(Scaling.SCALING_75)) setScaling(Scaling.SCALING_70);
+		else if (scaling.equals(Scaling.SCALING_70)) setScaling(Scaling.SCALING_65);
+		else if (scaling.equals(Scaling.SCALING_65)) setScaling(Scaling.SCALING_60);
+		else if (scaling.equals(Scaling.SCALING_60)) setScaling(Scaling.SCALING_55);
+		else if (scaling.equals(Scaling.SCALING_55)) setScaling(Scaling.SCALING_50);
+		frame.getStatusBar().reportZoomPercentual(getScalingPercentual());
+	}
+	
+	public void zoomIn()
+	{	
+		if (scaling.equals(Scaling.SCALING_50)) setScaling(Scaling.SCALING_55);
+		else if (scaling.equals(Scaling.SCALING_55)) setScaling(Scaling.SCALING_60);
+		else if (scaling.equals(Scaling.SCALING_60)) setScaling(Scaling.SCALING_65);
+		else if (scaling.equals(Scaling.SCALING_65)) setScaling(Scaling.SCALING_70);
+		else if (scaling.equals(Scaling.SCALING_70)) setScaling(Scaling.SCALING_75);
+		else if (scaling.equals(Scaling.SCALING_75)) setScaling(Scaling.SCALING_80);
+		else if (scaling.equals(Scaling.SCALING_80)) setScaling(Scaling.SCALING_85);
+		else if (scaling.equals(Scaling.SCALING_85)) setScaling(Scaling.SCALING_90);
+		else if (scaling.equals(Scaling.SCALING_90)) setScaling(Scaling.SCALING_95);
+		else if (scaling.equals(Scaling.SCALING_95)) setScaling(Scaling.SCALING_100);
+		else if (scaling.equals(Scaling.SCALING_100)) setScaling(Scaling.SCALING_105);
+		else if (scaling.equals(Scaling.SCALING_105)) setScaling(Scaling.SCALING_110);
+		else if (scaling.equals(Scaling.SCALING_110)) setScaling(Scaling.SCALING_115);
+		else if (scaling.equals(Scaling.SCALING_115)) setScaling(Scaling.SCALING_120);		
+		else if (scaling.equals(Scaling.SCALING_120)) setScaling(Scaling.SCALING_125);
+		else if (scaling.equals(Scaling.SCALING_125)) setScaling(Scaling.SCALING_130);
+		else if (scaling.equals(Scaling.SCALING_130)) setScaling(Scaling.SCALING_135);
+		else if (scaling.equals(Scaling.SCALING_135)) setScaling(Scaling.SCALING_140);
+		else if (scaling.equals(Scaling.SCALING_140)) setScaling(Scaling.SCALING_145);
+		else if (scaling.equals(Scaling.SCALING_145)) setScaling(Scaling.SCALING_150);
+		frame.getStatusBar().reportZoomPercentual(getScalingPercentual());
+	}
+	
 	/**
 	 * Sets the editor into selection mode.
 	 */
@@ -914,9 +992,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		assistant.notifyChange(elements, changeType, notificationType);
 	}
 
-
-
-
 	private void showStatus(List<DiagramElement> elements, ChangeType commandType, NotificationType notificationType)
 	{
 
@@ -1099,4 +1174,5 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void dispose() {
 
 	}
+
 }
