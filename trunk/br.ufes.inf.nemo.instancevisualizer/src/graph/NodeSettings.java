@@ -17,7 +17,7 @@ public class NodeSettings {
 	public NodeSettings(String worldId, String nodeId, XMLFile xmlFile) {	//true - node; false - edge
 		this.worldId = worldId;
 		typeList = xmlFile.getAtomClassifiersTypeOnWorld(nodeId, worldId);
-		stereoTypeList = xmlFile.getAtomStereoTypesOnWorld(nodeId, worldId);;
+		stereoTypeList = xmlFile.getAtomStereoTypesOnWorld(nodeId, worldId);
 		dataTypeList = new ArrayList();
 		attrList = new ArrayList();
 		

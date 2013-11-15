@@ -1,5 +1,6 @@
 package gui;
 
+import graph.EdgeLegendManager;
 import graph.GraphManager;
 import graph.NodeLegendManager;
 import graph.NodeManager;
@@ -25,8 +26,9 @@ public class EdgeLegendPropertiesPanel extends JScrollPane {
 	private String typeName;
 	private GraphManager graphManager;
 	private JCheckBox chckbxVisible;
+	private String imagePath;
 	
-	public EdgeLegendPropertiesPanel(final String typeName, GraphManager graphManager) {
+	public EdgeLegendPropertiesPanel(final String typeName, String stereotype, GraphManager graphManager) {
 		super();
 		this.typeName = typeName;
 		this.graphManager = graphManager;
@@ -37,17 +39,21 @@ public class EdgeLegendPropertiesPanel extends JScrollPane {
 		JLabel label = new JLabel("");
 		label.setBounds(10, 11, 32, 32);
 		
-		String imagePath = graphManager.getEdgeManager().getEdgeLegendManager().getTypeImagePath(typeName);
+		//String imagePath = graphManager.getEdgeManager().getEdgeLegendManager().getEdgeStereotype(typeName);
+		EdgeLegendManager em = graphManager.getEdgeManager().getEdgeLegendManager();
+		imagePath = graphManager.getEdgeManager().getEdgeLegendManager().getEdgeStereotypeLegend(stereotype).getImagePath();
+		if(em.getEdgeTypeLegend(typeName).getImagePath() != null)
+			imagePath = em.getEdgeTypeLegend(typeName).getImagePath();
 		label.setIcon(new ImageIcon(imagePath));
 		
-		JLabel lblNewLabel = new JLabel(typeName + "«" + graphManager.getEdgeManager().getEdgeLegendManager().getStereoType(typeName) + "»");
+		JLabel lblNewLabel = new JLabel(typeName + "«" + graphManager.getXmlFile().getFieldStereotype(typeName) + "»");
 		lblNewLabel.setBounds(52, 20, 109, 14);
 		
 		JButton btnEditStyle = new JButton("Edit Style");
 		btnEditStyle.setBounds(10, 61, 88, 23);
 		btnEditStyle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new StyleWindow(getTypeName(), getGraphManager(), false);
+				new StyleWindow(imagePath, "tobeImplemented!");//Old(getTypeName(), getGraphManager(), false);
 			}
 		});
 		contentPane.setLayout(null);
@@ -91,5 +97,9 @@ public class EdgeLegendPropertiesPanel extends JScrollPane {
 
 	public GraphManager getGraphManager() {
 		return graphManager;
+	}
+	
+	public String getImagePath() {
+		return imagePath;
 	}
 }

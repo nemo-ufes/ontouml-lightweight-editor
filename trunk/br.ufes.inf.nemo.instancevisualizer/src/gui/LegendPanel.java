@@ -1,5 +1,6 @@
 package gui;
 import graph.EdgeLegendManager;
+import graph.EdgeTypeLegend;
 import graph.GraphManager;
 import graph.NodeLegendManager;
 import graph.NodeManager;
@@ -47,7 +48,6 @@ public class LegendPanel extends JPanel {
 		JPanel panel = new JPanel();
 
 		NodeLegendManager nodeLegendManager = graphManager.getLegendManager();
-		EdgeLegendManager edgeLegendManager = graphManager.getEdgeManager().getEdgeLegendManager();
 		int i, j;
 		for(i=0; i<nodeLegendManager.getListSize(); i++) {
 			JButton button = new JButton();
@@ -82,27 +82,32 @@ public class LegendPanel extends JPanel {
 			panel.add(button);
 		}
 		
-		for(j=0; j<edgeLegendManager.getListSize(); j++) {
+		EdgeLegendManager edgeLegendManager = graphManager.getEdgeManager().getEdgeLegendManager();
+		for(j=0; j<edgeLegendManager.getEdgeTypeListSize(); j++) {
+			EdgeTypeLegend edgeTypeLegend = edgeLegendManager.getEdgeTypeLegend(j);
 			JButton button = new JButton();
-			final String imagePath = edgeLegendManager.getTypeImage(j);
+			final String type = edgeTypeLegend.getType();
+			final String stereotype = graphManager.getXmlFile().getFieldStereotype(type);
+			//final String imagePath = edgeTypeLegend.getImagePath();
+			String imagePath = edgeLegendManager.getEdgeStereotypeLegend(stereotype).getImagePath();
+			if(edgeTypeLegend.getImagePath() != null)
+				imagePath = edgeTypeLegend.getImagePath();
 			button.setIcon(new ImageIcon(imagePath));
 			System.out.println(imagePath);
 			button.setBounds(8, 8+(32*(i) + 32*(j+1)), 32, 32);
-			
-			final String typeName = edgeLegendManager.getType(j);
 			
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if(!(getGraphManager().getMainWindow().getTabbedPane().getTabCount() == 1)) {
 						getGraphManager().getMainWindow().getTabbedPane().removeTabAt(1);
         			}
-					getGraphManager().getMainWindow().getTabbedPane().addTab(typeName, new EdgeLegendPropertiesPanel(typeName, getGraphManager()));
+					getGraphManager().getMainWindow().getTabbedPane().addTab(type, new EdgeLegendPropertiesPanel(type, stereotype, getGraphManager()));
 					getGraphManager().getMainWindow().getTabbedPane().setSelectedIndex(getGraphManager().getMainWindow().getTabbedPane().getTabCount()-1);
 					
 				}
 			});
 			
-			JLabel label = new JLabel(typeName + "«" + edgeLegendManager.getStereoType(typeName) + "»");
+			JLabel label = new JLabel(type + "«" + graphManager.getXmlFile().getFieldStereotype(type) + "»");
 			label.setBounds(48, 16+(32*(i) + 32*(j+1)), 256, 16);
 			
 			panel.add(label);

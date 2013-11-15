@@ -38,7 +38,7 @@ public class NodeLegendPropertiesPanel extends JScrollPane {
 		JLabel label = new JLabel("");
 		label.setBounds(10, 11, 32, 32);
 		
-		String imagePath = graphManager.getLegendManager().getTypeImagePath(typeName);
+		final String imagePath = graphManager.getLegendManager().getTypeImagePath(typeName);
 		label.setIcon(new ImageIcon(imagePath));
 		
 		JLabel lblNewLabel = new JLabel(typeName + "«" + graphManager.getLegendManager().getStereoType(typeName) + "»");
@@ -48,7 +48,7 @@ public class NodeLegendPropertiesPanel extends JScrollPane {
 		btnEditStyle.setBounds(10, 61, 88, 23);
 		btnEditStyle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new StyleWindow(getTypeName(), getGraphManager(), true);
+				new StyleWindow(imagePath, getGraphManager().getLegendManager().getTypeStyle(typeName), getTypeName(), getGraphManager());//(getTypeName(), getGraphManager(), true);
 			}
 		});
 		

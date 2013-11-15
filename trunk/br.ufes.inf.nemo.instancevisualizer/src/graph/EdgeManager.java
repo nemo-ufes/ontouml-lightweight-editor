@@ -21,8 +21,7 @@ public class EdgeManager {
 	public EdgeManager(XMLFile xmlFile, NodeManager nodeManager) {
 		
 		edgeList = new ArrayList();
-		
-		edgeLegendManager = new EdgeLegendManager();
+		edgeLegendManager = new EdgeLegendManager(xmlFile);
 		
 		ArrayList<Atom> atomList = xmlFile.getAtomList();
         ArrayList<Sig> sigList = xmlFile.getSigList();
@@ -40,12 +39,14 @@ public class EdgeManager {
         	typesList = fieldList.get(i).getTypes();
             if(!fieldList.get(i).getTuples().isEmpty()) {
                 if(fieldList.get(i).getTuples().get(0).size() > 2) {	// relation field has 3 atoms;
-                	if(!edgeLegendManager.getTypeList().contains(fieldList.get(i))) {
-                		String stereoTypeName = TypeName.getTypeName(xmlFile.getOntoUmlParser().getElement(fieldList.get(i).getLabel()));
-                		if(!stereoTypeName.equals("Unknown Type")) {
-                			edgeLegendManager.addType(fieldList.get(i).getLabel(), stereoTypeName, "plain");
+                	//if(!edgeLegendManager.getTypeList().contains(fieldList.get(i))) {
+                		String typeName = fieldList.get(i).getLabel();
+                		String stereotypeName = TypeName.getTypeName(xmlFile.getOntoUmlParser().getElement(typeName));
+                		if(!stereotypeName.equals("Unknown Type")) {
+                			edgeLegendManager.addDefaultLegendT(typeName);
+                			edgeLegendManager.addDefaultLegendS(stereotypeName);
                 		}
-                	}
+                	//}
                 	
                 	
                     tuplesList = fieldList.get(i).getTuples();

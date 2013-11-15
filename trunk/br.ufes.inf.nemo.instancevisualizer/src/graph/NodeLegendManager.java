@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JFileChooser;
+
 import xml.Atom;
 import xml.XMLFile;
 
@@ -20,6 +22,44 @@ public class NodeLegendManager {
     private ArrayList<String> typeStyles;
     
     private ArrayList<Integer> typeAmounts;
+    
+    public String saveToString() {
+    	String theme = "";
+    	int i;
+    	for(i=0; i<typeList.size(); i++) {
+    		System.out.println(typeList.get(i));
+    		System.out.println(stereoTypeList.get(i));
+    		System.out.println(prefixList.get(i));
+    		System.out.println(typeImages.get(i));
+    		System.out.println(typeStyles.get(i));
+    		System.out.println(typeAmounts.get(i).toString());
+    		theme += typeList.get(i) + "$" + stereoTypeList.get(i) + "$"
+    				+ prefixList.get(i) + "$" + typeImages.get(i) + "$"
+    				+ typeStyles.get(i) + "$" + typeAmounts.get(i).toString() + "$";
+    	}
+    	theme = i + "$" + theme;
+    	
+    	return theme;
+    }
+    
+    public void loadString(String theme) {
+    	typeList = new ArrayList();
+    	stereoTypeList = new ArrayList();
+    	prefixList = new ArrayList();
+        typeImages = new ArrayList();
+        typeStyles = new ArrayList();
+        typeAmounts = new ArrayList();
+    	String[] types = theme.split("[$]");
+    	System.out.println(Integer.parseInt(types[0].toString()));
+    	for(int i=0; i<Integer.parseInt(types[0]); i++) {
+    		typeList.add(types[i*6+1]);
+    		stereoTypeList.add(types[i*6+2]);
+    		prefixList.add(types[i*6+3]);
+    		typeImages.add(types[i*6+4]);
+    		typeStyles.add(types[i*6+5]);
+    		typeAmounts.add(Integer.parseInt(types[i*6+6]));
+    	}
+    }
     
     public NodeLegendManager(OntoUMLParser ontoUmlParser, XMLFile xmlFile) {
     	typeList = new ArrayList();
