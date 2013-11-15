@@ -236,7 +236,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	
 	public int getScalingPercentual()
 	{
-		return (int)(scaling.getScaleFactor()*100/100);
+		return (int)((scaling.getScaleFactor()*100)/100);
 	}
 
 	/**
@@ -683,7 +683,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * @param aScaling a Scaling object
 	 */
 	public void setScaling(Scaling aScaling) {
-		scaling = aScaling;
+		scaling = aScaling;		
+		frame.getStatusBar().reportZoomPercentual(aScaling.toString());
 		revalidate();
 		repaint();
 	}
@@ -703,8 +704,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	}
 	
 	public void zoomOut()
-	{	
-		if (scaling.equals(Scaling.SCALING_150)) setScaling(Scaling.SCALING_145);
+	{			
+		if (scaling.equals(Scaling.SCALING_150)) setScaling(Scaling.SCALING_145); 
 		else if (scaling.equals(Scaling.SCALING_145)) setScaling(Scaling.SCALING_140);
 		else if (scaling.equals(Scaling.SCALING_140)) setScaling(Scaling.SCALING_135);
 		else if (scaling.equals(Scaling.SCALING_135)) setScaling(Scaling.SCALING_130);
@@ -724,7 +725,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		else if (scaling.equals(Scaling.SCALING_65)) setScaling(Scaling.SCALING_60);
 		else if (scaling.equals(Scaling.SCALING_60)) setScaling(Scaling.SCALING_55);
 		else if (scaling.equals(Scaling.SCALING_55)) setScaling(Scaling.SCALING_50);
-		frame.getStatusBar().reportZoomPercentual(getScalingPercentual());
 	}
 	
 	public void zoomIn()
@@ -748,8 +748,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		else if (scaling.equals(Scaling.SCALING_130)) setScaling(Scaling.SCALING_135);
 		else if (scaling.equals(Scaling.SCALING_135)) setScaling(Scaling.SCALING_140);
 		else if (scaling.equals(Scaling.SCALING_140)) setScaling(Scaling.SCALING_145);
-		else if (scaling.equals(Scaling.SCALING_145)) setScaling(Scaling.SCALING_150);
-		frame.getStatusBar().reportZoomPercentual(getScalingPercentual());
+		else if (scaling.equals(Scaling.SCALING_145)) setScaling(Scaling.SCALING_150);		
 	}
 	
 	/**

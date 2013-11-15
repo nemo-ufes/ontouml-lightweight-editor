@@ -9,6 +9,13 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Color;
+import javax.swing.border.LineBorder;
 
 
 public class StatusBar extends JPanel implements StatusListener{
@@ -21,6 +28,7 @@ public class StatusBar extends JPanel implements StatusListener{
 	//private JLabel memLabel = new JLabel("    ");
 	private JProgressBar memBar = new JProgressBar();
 	private transient Timer timer = new Timer();	
+	private final JSeparator separator = new JSeparator();
 
 	public Timer getTimer() {
 		return timer;
@@ -42,7 +50,7 @@ public class StatusBar extends JPanel implements StatusListener{
 		setBorder(new EmptyBorder(3, 3, 3, 3));
 		
 		add(statusLabel, BorderLayout.CENTER);
-		
+		setPreferredSize(new Dimension(450,36));
 		//BorderLayout thisLayout = new BorderLayout();
 		//this.setLayout(thisLayout);
 		
@@ -53,9 +61,9 @@ public class StatusBar extends JPanel implements StatusListener{
 		zoomLabel.setText("Zoom: 100%");
 		
 		JPanel panel = new JPanel();
-		panel.add(zoomLabel);
-		panel.add(barTextLabel);
-		panel.add(memBar);		
+		panel.setBorder(new LineBorder(Color.LIGHT_GRAY));
+		separator.setForeground(Color.BLACK);
+		separator.setOrientation(SwingConstants.VERTICAL);
 				
 		memBar.setMinimum(0);
 		memBar.setMaximum((int)Runtime.getRuntime().totalMemory());
@@ -66,6 +74,35 @@ public class StatusBar extends JPanel implements StatusListener{
 		
 		memBar.setSize(new Dimension(50, 20));
 		add(panel, BorderLayout.EAST);
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(11)
+					.addComponent(zoomLabel)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(barTextLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+					.addGap(5)
+					.addComponent(memBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(5)
+							.addComponent(memBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(6)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(separator, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+								.addComponent(zoomLabel)
+								.addComponent(barTextLabel))))
+					.addContainerGap())
+		);
+		panel.setLayout(gl_panel);
 						
 		scheduleMemTimer();
 		
@@ -80,7 +117,7 @@ public class StatusBar extends JPanel implements StatusListener{
 		statusLabel.setText(status);
 	}
 	
-	public void reportZoomPercentual(int percentual)
+	public void reportZoomPercentual(String percentual)
 	{
 		zoomLabel.setText("Zoom: "+percentual+"%");
 	}
