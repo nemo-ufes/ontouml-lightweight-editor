@@ -1,5 +1,3 @@
-
-
 import gui.MainWindow;
 import gui.OpenXML;
 
@@ -7,7 +5,6 @@ import java.awt.HeadlessException;
 
 public class Main {
 	private MainWindow mainWindow;
-    //String selectedWorld = "world_structure/CurrentWorld$0";
  
     public static void main(String args[]) throws HeadlessException, InterruptedException {
     	System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.graphstream.graph.Graph;
 import org.xml.sax.SAXException;
 
 import xml.XMLFile;
@@ -37,6 +38,14 @@ public class OpenXML {
 					 XMLFile xmlFile = new XMLFile(fc.getSelectedFile(), ontoUmlParser);	// Creation of XMLFile object
 					 GraphManager graphManager = new GraphManager(xmlFile, ontoUmlParser, mainWindow);	// Creation of GraphManager
 					 mainWindow.setxGraph(graphManager);
+					 for(Graph g : graphManager.getGraphList()) {
+	                    if(g.getId().equals("world_structure/PastWorld$0")) {
+	                    	graphManager.setSelectedGraph(g);
+	                    	break;
+	                    }
+					 }
+	                 graphManager.setSelectedWorld("world_structure/PastWorld$0");
+	                 mainWindow.setScrollPanes1();
 				 }else{
 					 System.out.println(".refontouml NOT FOUND... You need it on the same directory of the .xml.");
 					 System.exit(1);

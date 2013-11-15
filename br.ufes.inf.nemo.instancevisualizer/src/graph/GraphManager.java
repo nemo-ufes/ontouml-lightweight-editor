@@ -39,16 +39,10 @@ public class GraphManager {
     private String selectedWorld;
     
     private Graph selectedGraph;
+    private ArrayList<Graph> graphList;
     private Viewer selectedViewer;
     private View selectedView;
     private SpringBox layout;
-    
-    private Graph rmGraph;
-    private Viewer rmViewer;
-    private View rmView;
-    private SpringBox rmLayout;
-    private ArrayList<String> quaList;
-    private String selectedRm;
     
     private NodeLegendManager nodeLegendManager;
     private NodeManager nodeManager;
@@ -64,17 +58,11 @@ public class GraphManager {
         worldView = null;
         selectedWorld = null;
         
-        selectedGraph = new MultiGraph("Selected World");
+        selectedGraph = null;//new MultiGraph("Selected World");
+        graphList = new ArrayList();
         selectedViewer = null;
         selectedView = null;
         layout = null;
-        
-        rmGraph = new MultiGraph("Material");
-        rmViewer = null;
-        rmView = null;
-        rmLayout = null;
-        quaList = new ArrayList();
-        selectedRm = null;
         
         nodeLegendManager = new NodeLegendManager(ontoUmlParser, xmlFile);
         nodeManager = new NodeManager(xmlFile, nodeLegendManager);
@@ -82,9 +70,18 @@ public class GraphManager {
         
         this.mainWindow = mainWindow;
         
-        createSelectedWorld("world_structure/CurrentWorld$0");
+        //createSelectedWorld("world_structure/PastWorld$0");
+        createSelectedWorldToList();
         createWorldMap();
-        createSelectedRm("world_structure/CurrentWorld$0");
+        for(Graph g : graphList) {
+        	if(g.getId() == "world_structure/PastWorld$0") {
+        		setSelectedGraph(g);
+        		break;
+        	}
+        }
+        setSelectedWorld("world_structure/PastWorld$0");
+        //mainWindow.setScrollPanes1();
+        
     }
     
     /**
@@ -204,6 +201,8 @@ public class GraphManager {
     				Attribute attr = attrs.next();
     				edge.addAttribute(attr.getName(), attr.getValue());
     			}
+    			String style = edgeManager.getEdgeLegendManager().getEdgeStereotypeLegend(e.getStereoTypeOnWorld(world)).getStyle();
+    			edge.addAttribute("ui.style", style);
     		}
     	}
     	
@@ -228,9 +227,77 @@ public class GraphManager {
 "}\n");
     }
     
+    public void createSelectedWorldToList() {
+    	ArrayList<Atom> worldList = xmlFile.getWorldList();
+    	ArrayList<String> worlds = new ArrayList();
+    	for(Atom w : worldList) {
+    		worlds.add(w.getLabel());
+    	}
+    	
+    	for(int j=0; j<worlds.size(); j++) {
+    		String world = worlds.get(j);
+    		System.out.println("WOWOWOWOW " + world);
+    		Graph graph = new MultiGraph(world);
+	    	for(int i=0; i<nodeManager.getNodeAmount(); i++) {
+	    		NodeM n = nodeManager.getNode(i);
+	    		if(n.existsInWorld(world)) {
+	    			Node node = graph.addNode(n.getId());
+	    			
+	    			String mainType = n.getMainType(world);//xmlFile.getAtomMainType(idList.get(i), selectedWorld).getName();
+	    			String attrib = nodeLegendManager.getTypeStyle(mainType);
+	    			node.addAttribute("ui.style", attrib);
+	    			
+	    			Iterator<Attribute> attrs = n.getAttributeIterator(world);
+	    			System.out.println("\nWORLD: " + world);
+	    			while(attrs.hasNext()) {
+	    				Attribute attr = attrs.next();
+	    				System.out.println(node.getId() + "Attr" + attr.getName() + attr.getValue());
+	    				node.addAttribute(attr.getName(), attr.getValue());
+	    			}
+	    			System.out.println("\n");
+	    		}
+	    	}
+	    	
+	    	for(int i=0; i<edgeManager.getEdgeAmount(); i++) {
+	    		EdgeM e = edgeManager.getEdge(i);
+	    		if(e.existsInWorld(world)) {
+	    			Edge edge = graph.addEdge(e.getId(), e.getNode0Id(), e.getNode1Id(), true);
+	    			Iterator<Attribute> attrs = e.getAttributeIterator(world);
+	    			while(attrs.hasNext()) {
+	    				Attribute attr = attrs.next();
+	    				edge.addAttribute(attr.getName(), attr.getValue());
+	    			}
+	    			String style = edgeManager.getEdgeLegendManager().getEdgeStereotypeLegend(e.getStereoTypeOnWorld(world)).getStyle();
+	    			edge.addAttribute("ui.style", style);
+	    		}
+	    	}
+	    	
+	    	graph.addAttribute("ui.antialias");
+	        graph.addAttribute("ui.quality");
+	        graph.addAttribute("layout.quality", 4);
+	        
+	        graph.addAttribute("ui.stylesheet", "graph {\n" +
+	"    padding: 100px, 100px, 0px;\n" +
+	"}\n" +
+	"node {\n" +
+	"    text-size: 12;\n" +
+	"	 text-alignment: under;\n" +
+	"    stroke-mode: plain;\n" +
+	"    stroke-color: black;\n" +
+	"    text-visibility-mode: under-zoom;\n" +
+	"    text-visibility: 0.5;\n" +
+	"}\n" +
+	"edge {\n" +
+	"    fill-color: black;\n" +
+	"	 arrow-shape: none;\n" +
+	"}\n");
+	        graphList.add(graph);
+	    }
+	}
+    
     public void changeSelectedWorldM(String world) {
     	//selectedViewer.disableAutoLayout();
-    	
+    	System.out.println(selectedWorld);
     	ArrayList<EdgeM> toRemove = edgeManager.edgesToKill(selectedWorld, world);
     	for(EdgeM e : toRemove) {
         	selectedGraph.removeEdge(e.getId());
@@ -308,7 +375,15 @@ public class GraphManager {
                     	nodeAux.addAttribute("ui.style", "fill-color: white;");
                     }
                     getWorldGraph().getNode(id).addAttribute("ui.style", "fill-color: green;");
-                    changeSelectedWorldM(id);
+                    //changeSelectedWorldM(id);
+                    for(Graph g : graphList) {
+                    	if(g.getId() == id) {
+                    		setSelectedGraph(g);
+                    		break;
+                    	}
+                    }
+                    setSelectedWorld(id);
+                    getMainWindow().setScrollPanes1();
         		} else {
         			element.addAttribute("ui.clicked");
         		}
@@ -387,6 +462,7 @@ public class GraphManager {
 	        			if(!(mainWindow.getTabbedPane().getTabCount() == 1)) {
 	        				mainWindow.getTabbedPane().removeTabAt(1);
 	        			}
+	        			System.out.println(mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label"));
 	        			mainWindow.getTabbedPane().addTab((String) mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label"), null, new PropertiesPanel(imagePath, nodePressed, xmlFile, ontoUmlParser, selectedWorld, nodeManager, edgeManager), null);
 		        		mainWindow.getTabbedPane().setSelectedIndex(mainWindow.getTabbedPane().getTabCount()-1);
 	        		}
@@ -403,190 +479,27 @@ public class GraphManager {
         return selectedView;
     }
     
-    public void createSelectedRm(String world) {
-    	selectedRm = world;
-    	for(int i=0; i<edgeManager.getEdgeAmount(); i++) {
-    		EdgeM e = edgeManager.getEdge(i);
-    		if(e.existsInWorld(world) && e.getStereoTypeOnWorld(selectedRm).matches("Material|Mediation")) {
-    			
-    			NodeM n = nodeManager.getNode(e.getNode0Id());
-    			Node node = rmGraph.getNode(n.getId());
-        		if(node == null)
-        			node = rmGraph.addNode(n.getId());
-        		if(n.getMainStereoType(world) != "Relator") {
-        			createQua(n);
-        		}
-        		
-        		String mainType = n.getMainType(world);//xmlFile.getAtomMainType(idList.get(i), selectedWorld).getName();
-        		String attrib = nodeLegendManager.getTypeStyle(mainType);
-        		node.addAttribute("ui.style", attrib);
-        		
-        		Iterator<Attribute> attrs = n.getAttributeIterator(world);
-        		
-        		while(attrs.hasNext()) {
-        			Attribute attr = attrs.next();
-        			node.addAttribute(attr.getName(), attr.getValue());
-        		}
-        		
-        		n = nodeManager.getNode(e.getNode1Id());
-        		node = rmGraph.getNode(n.getId());
-        		if(node == null)
-        			node = rmGraph.addNode(n.getId());
-        		if(n.getMainStereoType(world) != "Relator") {
-        			createQua(n);
-        		}
-        		
-        		mainType = n.getMainType(world);//xmlFile.getAtomMainType(idList.get(i), selectedWorld).getName();
-        		attrib = nodeLegendManager.getTypeStyle(mainType);
-        		node.addAttribute("ui.style", attrib);
-        		
-        		attrs = n.getAttributeIterator(world);
-        		while(attrs.hasNext()) {
-        			Attribute attr = attrs.next();
-        			node.addAttribute(attr.getName(), attr.getValue());
-        		}
-    			
-    			Edge edge = rmGraph.addEdge(e.getId(), e.getNode0Id(), e.getNode1Id(), true);
-    			attrs = e.getAttributeIterator(world);
-    			while(attrs.hasNext()) {
-    				Attribute attr = attrs.next();
-    				edge.addAttribute(attr.getName(), attr.getValue());
-    			}
-    		}
+    public void update() {
+    	for(Graph graph : graphList) {
+    		for(int i=0; i<nodeManager.getNodeAmount(); i++) {
+	    		NodeM n = nodeManager.getNode(i);
+	    		if(n.existsInWorld(graph.getId())) {
+	    			Node node = graph.getNode(n.getId());
+	    			
+	    			String mainType = n.getMainType(graph.getId());//xmlFile.getAtomMainType(idList.get(i), selectedWorld).getName();
+	    			String attrib = nodeLegendManager.getTypeStyle(mainType);
+	    			node.addAttribute("ui.style", attrib);
+	    			
+	    			Iterator<Attribute> attrs = n.getAttributeIterator(graph.getId());
+	    			while(attrs.hasNext()) {
+	    				Attribute attr = attrs.next();
+	    				System.out.println(node.getId() + "Attr" + attr.getName() + attr.getValue());
+	    				node.addAttribute(attr.getName(), attr.getValue());
+	    			}
+	    			System.out.println("\n");
+	    		}
+	    	}
     	}
-    	
-    	rmGraph.addAttribute("ui.antialias");
-        rmGraph.addAttribute("ui.quality");
-        rmGraph.addAttribute("layout.quality", 4);
-        
-        rmGraph.addAttribute("ui.stylesheet", "graph {\n" +
-"    padding: 100px, 100px, 0px;\n" +
-"}\n" +
-"node {\n" +
-"    text-size: 12;\n" +
-"	 text-alignment: under;\n" +
-"    stroke-mode: plain;\n" +
-"    stroke-color: black;\n" +
-"    text-visibility-mode: under-zoom;\n" +
-"    text-visibility: 0.5;\n" +
-"}\n" +
-"edge {\n" +
-"    fill-color: black;\n" +
-"	 arrow-shape: none;\n" +
-"}\n");
-    }
-    
-    public void createQua(NodeM n) {//, String relatorId) {
-    	Iterator<DataType> dts = n.getDataTypeIterator(selectedWorld);
-    	int i=0;
-		//while(dts.hasNext()) {
-			DataType dt = dts.next();
-			Node qua = rmGraph.getNode(n.getId()+"$"+"qua$"+i);
-			if(qua==null) {
-				qua = rmGraph.addNode(n.getId()+"$"+"qua$"+i);
-				qua.addAttribute("ui.label", dt.getValue());
-				Edge me = rmGraph.addEdge(n.getId()+"$"+"mainEdgeQua", n.getId(), qua.getId());
-				me.addAttribute("ui.style", "stroke-width: 0.2px; stroke-mode: dashes; text-alignment: along; text-background-mode: plain; text-background-color: rgba(255,255,255,128); text-size: 11;");
-				me.addAttribute("ui.label", dt.getName());
-				Iterator<NodeM> relators = n.getNeighborsOfStereoType("Relator", selectedRm, nodeManager, edgeManager).iterator();
-				while(relators.hasNext()) {
-					NodeM r = relators.next();
-					i++;
-					Edge er = rmGraph.addEdge(n.getId()+"$"+"edgeQua$"+i, qua.getId(), r.getId(), true);
-					er.addAttribute("ui.style", "arrow-shape: diamond;");// fill-color: white; stroke-color: black; stroke-mode: plain; stroke-width: 2;");
-				}
-				//rmGraph.addEdge(n.getId()+"$"+"edgeQua$"+i++, qua.getId(), relatorId);//.addAttribute("ui.style", "stroke-width: 0.2px; stroke-mode: dashes;");
-			}
-			i++;
-		//}
-    }
-    
-    public void changeSelectedRmLevel(int level) {
-    	switch(level) {
-	    	case 2:
-	    		updateEdgesStyleS(rmGraph, "Mediation", "visibility-mode: hidden;");
-	    		updateEdgesStyleS(rmGraph, "Material", "visibility-mode: normal;");
-	    		break;
-	    	case 1:
-	    		updateEdgesStyleS(rmGraph, "Material", "visibility-mode: hidden;");
-	    		updateEdgesStyleS(rmGraph, "Mediation", "visibility-mode: normal;");
-	    		break;
-	    	case 0:
-	    		//updateEdgesStyleS(rmGraph, "Material", "visibility-mode: hidden;");
-	    		updateEdgesStyleSS(rmGraph, "Mediation", "visibility-mode: hidden;");
-
-	    		break;
-	    	default:
-	    		System.out.println("NO!");
-	    		return;
-    	}
-    }
-    
-    
-    
-    public View showRmGraph() {
-    	
-        rmViewer = new Viewer(rmGraph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-        rmLayout = new SpringBox();
-        rmLayout.setForce(1);
-        rmLayout.setStabilizationLimit(0.09);
-        rmViewer.enableAutoLayout(rmLayout);
-        rmView = rmViewer.addDefaultView(false);   // false indicates "no JFrame".
-        rmView.getCamera().setViewPercent(1);
-        
-        DefaultMouseManager selectedManager = new DefaultMouseManager() {
-        	protected void mouseButtonPressOnElement(GraphicElement element, MouseEvent event) {
-        		view.freezeElement(element, true);
-        		if (event.getButton() != 3) {
-        			element.addAttribute("ui.selected");
-        		} else {
-        			element.addAttribute("ui.clicked");
-        		}
-        		
-        	}
-        	
-        	protected void elementMoving(GraphicElement element, MouseEvent event) {
-        		view.moveElementAtPx(element, event.getX(), event.getY());
-        	}
-        	
-        	protected void mouseButtonReleaseOffElement(GraphicElement element, MouseEvent event) {
-        		view.freezeElement(element, false);
-        		if (event.getButton() == 3) {
-        			element.removeAttribute("ui.clicked");
-        			
-        			String id = element.getId();
-        			Node nodePressed = mainWindow.getxGraph().getSelectedGraph().getNode(id);
-	        		ArrayList<String> typeList = mainWindow.getxGraph().getXmlFile().getAtomTypeOnWorld(id, selectedRm);
-	        		OntoUMLParser ontoUmlParser = xmlFile.getOntoUmlParser();
-	        		XMLFile xmlFile = mainWindow.getxGraph().getXmlFile();
-	        		//System.out.println("CLICKED ON " + id);
-	        		String mainTypeName = xmlFile.getAtomMainType(id, selectedRm).getName();
-	        		int indexOfImage = nodeLegendManager.getTypeIndex(mainTypeName);//.getTypeList().indexOf(xmlFile.getAtomMainType(id, selectedWorld).getName());
-	        		String imagePath = nodeLegendManager.getTypeImage(indexOfImage);
-	        		if(mainWindow.isPopOut()) {
-	        			JDialog popOutWindow = new JDialog();
-	        			//popOutWindow.setTitle((String)mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label"));
-	        			popOutWindow.setContentPane(new PropertiesPanel(imagePath, nodePressed, xmlFile, ontoUmlParser, selectedRm, nodeManager, edgeManager));
-	        			popOutWindow.setBounds(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y, 195, 238);
-	        			popOutWindow.setVisible(true);
-	        			popOutWindow.toFront();
-	        		}else{
-	        			if(!(mainWindow.getTabbedPane().getTabCount() == 1)) {
-	        				mainWindow.getTabbedPane().removeTabAt(1);
-	        			}
-	        			mainWindow.getTabbedPane().addTab((String) mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label"), null, new PropertiesPanel(imagePath, nodePressed, xmlFile, ontoUmlParser, selectedWorld, nodeManager, edgeManager), null);
-		        		mainWindow.getTabbedPane().setSelectedIndex(mainWindow.getTabbedPane().getTabCount()-1);
-	        		}
-	        		
-        		} else {
-        			
-        		}
-        	}
-        	
-        };
-        rmView.setMouseManager(selectedManager);
-    
-        return rmView;
     }
 
     public void updateNodesStyle(Graph selectedGraph, String typeName, String attrValue) {
@@ -681,11 +594,9 @@ public class GraphManager {
     
     public void updateEdgesStyleS(Graph selectedGraph, String stereoTypeName, String attrValue) {
     	Iterator<EdgeM> it = edgeManager.getEdgeIterator();
-    	
 		while(it.hasNext()) {
 			EdgeM edge = it.next();
 			
-			System.out.println("LALALALALA: " + edge.getStereoTypeOnWorld(selectedWorld));
 			if(edge.existsInWorld(selectedWorld) && stereoTypeName.equals(edge.getStereoTypeOnWorld(selectedWorld))) {
 				selectedGraph.getNode(edge.getNode0Id()).addAttribute("ui.style", attrValue);
 				selectedGraph.getNode(edge.getNode1Id()).addAttribute("ui.style", attrValue);
@@ -837,14 +748,13 @@ public class GraphManager {
 		this.edgeManager = edgeManager;
 	}
 
-	public Graph getRmGraph() {
-		return rmGraph;
+	public ArrayList<Graph> getGraphList() {
+		return graphList;
 	}
-	
-	public View getRmView() {
-		return rmView;
+
+	public void setGraphList(ArrayList<Graph> graphList) {
+		this.graphList = graphList;
 	}
-	
 	
 	
 }

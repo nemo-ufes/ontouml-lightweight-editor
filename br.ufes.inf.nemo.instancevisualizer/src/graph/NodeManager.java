@@ -14,21 +14,10 @@ import RefOntoUML.Classifier;
 
 public class NodeManager {
 	private ArrayList<NodeM> nodeList;
-	//private ArrayList<String> idList;
-	//private ArrayList<ArrayList<Integer>> existanceList;
-	//private ArrayList<ArrayList<String>> attrList;
-	//private ArrayList<ArrayList<String>> valueList;
-	
-	//private LegendManager legendManager;
 	
 	public NodeManager(XMLFile xmlFile, NodeLegendManager nodeLegendManager) {
 		nodeList = new ArrayList();
-		//worldList = new ArrayList();
-		//idList = new ArrayList();
-		//existanceList = new ArrayList();
-		//attrList = new ArrayList();
-		//valueList = new ArrayList();
-		
+
 		//this.legendManager = legendManager
 		ArrayList<String> alreadyAdded = new ArrayList();
 		ArrayList<Atom> atomList = xmlFile.getAtomList();
@@ -50,7 +39,11 @@ public class NodeManager {
 		        	String worldLabel = exists.getTuple(i).get(0);
 		        	String atomLabel = exists.getTuple(i).get(1);
 		        	
-		        	if(!alreadyAdded.contains(atomLabel)) {
+		        	if(alreadyAdded.contains(atomLabel)) {
+		        		NodeM nodeM = getNode(atomLabel);
+		        		String mainType = nodeM.getMainType(worldLabel);
+		        		nodeM.addAttribute(worldLabel, "ui.label", nodeLegendManager.createLabel(mainType));
+		        	}else{
 		        		alreadyAdded.add(atomLabel);
 		        		NodeM nodeM = new NodeM(atomLabel, xmlFile);
 			        	String mainType = nodeM.getMainType(worldLabel);
