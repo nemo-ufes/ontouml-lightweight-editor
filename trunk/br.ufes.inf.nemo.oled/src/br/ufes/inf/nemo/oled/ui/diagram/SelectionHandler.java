@@ -97,7 +97,7 @@ public class SelectionHandler implements EditorMode {
 		
 		boolean focusEditor = true;
 		double mx = e.getX(), my = e.getY();
-		
+
 		//System.out.println("Modifiers " + e.getMouseEvent().getMouseModifiersText(e.getMouseEvent().getModifiers()));
 		
 		// this is a pretty ugly cast, it is needed in order to use the getLabel()

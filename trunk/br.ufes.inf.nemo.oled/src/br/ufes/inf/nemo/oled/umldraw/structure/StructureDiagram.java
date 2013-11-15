@@ -165,10 +165,9 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	 * Constructor.
 	 */
 	public StructureDiagram(UmlProject project) {
-		initializeNameLabel();
-		setSize(AppFrame.GetScreenWorkingWidth()-230, AppFrame.GetScreenWorkingHeight());
+		initializeNameLabel();		
 		this.project = project;
-		
+		setSize(AppFrame.GetScreenWorkingWidth()-230, AppFrame.GetScreenWorkingHeight());
 		simulationElements.add(getStateSimulationElement());
 	}
 

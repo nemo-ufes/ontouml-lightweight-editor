@@ -16,6 +16,7 @@ public class StatusBar extends JPanel implements StatusListener{
 	private static final long serialVersionUID = -1470943434794934781L;
 	private JLabel statusLabel = new JLabel();
 	private JLabel barTextLabel = new JLabel();
+	private JLabel zoomLabel = new JLabel();
 	//private JLabel coordLabel = new JLabel("    ");
 	//private JLabel memLabel = new JLabel("    ");
 	private JProgressBar memBar = new JProgressBar();
@@ -48,10 +49,14 @@ public class StatusBar extends JPanel implements StatusListener{
 		//this.add(coordLabel, BorderLayout.EAST);
 		//add(coordLabel, BorderLayout.WEST);
 		
-		JPanel panel = new JPanel();
-		panel.add(barTextLabel);
-		panel.add(memBar);
+		zoomLabel = new JLabel();
+		zoomLabel.setText("Zoom: 100%");
 		
+		JPanel panel = new JPanel();
+		panel.add(zoomLabel);
+		panel.add(barTextLabel);
+		panel.add(memBar);		
+				
 		memBar.setMinimum(0);
 		memBar.setMaximum((int)Runtime.getRuntime().totalMemory());
 		memBar.setValue((int)(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
@@ -73,6 +78,11 @@ public class StatusBar extends JPanel implements StatusListener{
 	public void reportStatus(String status)
 	{
 		statusLabel.setText(status);
+	}
+	
+	public void reportZoomPercentual(int percentual)
+	{
+		zoomLabel.setText("Zoom: "+percentual+"%");
 	}
 	
 	/**

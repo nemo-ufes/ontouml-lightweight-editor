@@ -21,7 +21,8 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 public class DiagramEditorWrapper extends JPanel implements Editor{
 
 	private static final long serialVersionUID = -1962960747434759099L;
-	private DiagramEditor editor;		
+	private DiagramEditor editor;
+	private JScrollPane scrollpane;
 	//TODO Remove me
 	private File projectFile;
 	
@@ -33,16 +34,21 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout(0,0));
 										
-		JScrollPane scrollpane = new JScrollPane(editor);
+		scrollpane = new JScrollPane(editor);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
 		scrollpane.setBorder(new EmptyBorder(0,0,0,0));
-		
+				
 		panel.add(scrollpane);
 		panel.setBorder(new EmptyBorder(0,0,0,0));
 				
 		add(panel,BorderLayout.CENTER);		
 	}	
+	
+	public JScrollPane getScrollPane()
+	{
+		return scrollpane;
+	}
 	
 	public static int GetScreenWorkingWidth() {
 	    return java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;

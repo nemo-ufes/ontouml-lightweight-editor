@@ -57,7 +57,7 @@ public class EditorMouseEvent {
    */
   public double getX() {
     return scaling == Scaling.SCALING_100 ? event.getX() :
-      event.getX() / scaling.getScaleFactor();
+      event.getX()/scaling.getScaleFactor();
   }
 
   public boolean isScaling100()
@@ -71,7 +71,7 @@ public class EditorMouseEvent {
    */
   public double getY() {
     return scaling == Scaling.SCALING_100 ? event.getY() :
-      event.getY() / scaling.getScaleFactor();
+    	event.getY()/scaling.getScaleFactor();
   }
 
   /**

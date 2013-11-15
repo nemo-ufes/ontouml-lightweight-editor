@@ -94,6 +94,14 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("ZOOM_150", new MethodCall(
 					DiagramEditor.class.getMethod("setScaling", Scaling.class),
 					Scaling.SCALING_150));
+
+			selectorMap.put("ZOOM_IN", new MethodCall(
+					DiagramEditor.class.getMethod("zoomIn"))
+			);
+
+			selectorMap.put("ZOOM_OUT", new MethodCall(
+					DiagramEditor.class.getMethod("zoomOut"))
+			);
 			
 			selectorMap.put("BRING_TO_FRONT", new MethodCall(
 					DiagramEditor.class.getMethod("bringToFront")));
