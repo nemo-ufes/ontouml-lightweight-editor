@@ -89,5 +89,11 @@ public final class Scaling {
 	  else if (new Double(value).compareTo(new Double(1.50))==0) return SCALING_150;
 	  return SCALING_100;
   }
+  
+  public String toString()
+  {
+	  double value = (scaleFactor*10000)/100;	  
+	  return (new Double(value)).toString();
+  }
 }
 

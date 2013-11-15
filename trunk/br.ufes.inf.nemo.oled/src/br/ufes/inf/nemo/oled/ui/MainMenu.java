@@ -222,7 +222,9 @@ public class MainMenu implements ActionListener {
 		zoom100.setSelected(true);*/
 		 
 		JMenuItem zoomInItem = createMenuItem(viewMenu,"zoomin");
+		zoomInItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, ActionEvent.CTRL_MASK));
 		JMenuItem zoomOutItem = createMenuItem(viewMenu,"zoomout");
+		zoomOutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionEvent.CTRL_MASK));
 		viewMenu.add(zoomInItem);
 		viewMenu.add(zoomOutItem);
 		
