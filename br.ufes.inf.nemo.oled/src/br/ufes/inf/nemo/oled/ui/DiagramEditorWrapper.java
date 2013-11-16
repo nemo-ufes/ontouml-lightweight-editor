@@ -1,6 +1,8 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.File;
 
 import javax.swing.Box;
@@ -9,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
@@ -28,22 +31,35 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	
 	public DiagramEditorWrapper(final DiagramEditor editor, DiagramEditorCommandDispatcher editorDispatcher)
 	{
-		super(new BorderLayout());
+		super(new BorderLayout(0,0));
 		this.editor = editor;		
-		
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout(0,0));
-										
-		scrollpane = new JScrollPane(editor);
+												
+		scrollpane = new JScrollPane();
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
+		scrollpane.setWheelScrollingEnabled(true);
+		scrollpane.setViewportView(editor);
 		scrollpane.setBorder(new EmptyBorder(0,0,0,0));
 				
-		panel.add(scrollpane);
-		panel.setBorder(new EmptyBorder(0,0,0,0));
-				
-		add(panel,BorderLayout.CENTER);		
+		add(scrollpane);
+		setBorder(new EmptyBorder(0,0,0,0));
 	}	
+	
+	public void setViewportCenter(Point p) {
+	    JViewport vp = (JViewport) scrollpane.getViewport();
+	    Rectangle viewRect = vp.getViewRect();
+
+	    viewRect.x = p.x - viewRect.width / 2;
+	    viewRect.y = p.y - viewRect.height / 2;
+
+	    scrollpane.scrollRectToVisible(viewRect);
+	}
+	
+	public Point getViewportCenter() {
+	    JViewport vp = (JViewport) this.getParent();
+	    Point p = vp.getViewPosition();
+	    return new Point(p.x+vp.getWidth()/2,p.y+vp.getHeight()/2);
+	}
 	
 	public JScrollPane getScrollPane()
 	{

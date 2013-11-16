@@ -281,7 +281,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		fileChooser.setFileFilter(filter);
 		fileChooser.setSelectedFile(new File("*.oled"));
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+		if (fileChooser.showDialog(this,"OK") == JFileChooser.APPROVE_OPTION) {
 			try {			
 				closeCurrentProject();
 				

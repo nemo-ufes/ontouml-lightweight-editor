@@ -417,14 +417,14 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			diagram.setGridVisible(false);
 			background = Color.WHITE;
 		}
-		// I believe the Zoom problem was solved with this two lines below...
+
 		int width = (int)(diagram.getSize().getWidth()+ MARGIN_RIGHT + MARGIN_LEFT + ADDSCROLL_HORIZONTAL);
-		int height = (int)(diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL);				
-		setSize(new Dimension((int)(width*scaling.getScaleFactor()),(int)(height*scaling.getScaleFactor())));		
+		int height = (int)(diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL);
+		int newHeigth = (int)(height*scaling.getScaleFactor());
+		int newWidth = (int)(width*scaling.getScaleFactor());
+		setPreferredSize(new Dimension(newWidth, newHeigth));
+				
 		bounds = new Rectangle((int)width,(int)height);
-		frame.getDiagramManager().getCurrentWrapper().getScrollPane().setPreferredSize(new Dimension(bounds.width,bounds.height));
-		frame.getDiagramManager().getCurrentWrapper().getScrollPane().validate();
-		
 		clearScreen(g, bounds, background);
 		drawingContext.setGraphics2D(g2d, bounds);				
 		diagram.draw(drawingContext);
@@ -433,7 +433,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			editorMode.draw(drawingContext);
 		}
 		restoreRenderingHints(g2d);
-		diagram.setGridVisible(gridVisible);		
+		diagram.setGridVisible(gridVisible);
+		
+		revalidate();
+		repaint();
 	}
 
 	/**
