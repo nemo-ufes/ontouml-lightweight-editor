@@ -20,6 +20,7 @@
 package br.ufes.inf.nemo.oled.ui.diagram;
 
 import java.awt.Cursor;
+import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +56,7 @@ public class SelectionHandler implements EditorMode {
 	private Set<SelectionListener> listeners =
 		new HashSet<SelectionListener>();
 	private ContextMenuBuilder menubuilder = new ContextMenuBuilder();
-	//private Point2D startPoint = new Point2D.Double();
+	private Point2D startPoint = new Point2D.Double();
 	
 	/**
 	 * The selector for rubber band selection.
@@ -83,7 +84,7 @@ public class SelectionHandler implements EditorMode {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void mouseClicked(EditorMouseEvent e) {
+	public void mouseClicked(EditorMouseEvent e) {		
 		if (e.isMainButton()) {
 			handleSelectionOnMouseClicked(e);
 		}
@@ -103,6 +104,7 @@ public class SelectionHandler implements EditorMode {
 		// this is a pretty ugly cast, it is needed in order to use the getLabel()
 		// method which is not a base DiagramElement method
 		DiagramElement previousSelected = selection.getElement();
+		
 		DiagramElement element = editor.getDiagram().getChildAt(mx, my);
 				
 		if (element instanceof UmlDiagramElement && previousSelected == element) {
@@ -138,7 +140,7 @@ public class SelectionHandler implements EditorMode {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void mousePressed(EditorMouseEvent e) {
+	public void mousePressed(EditorMouseEvent e) {		
 		handleSelectionOnMousePress(e);
 		if (e.isPopupTrigger()) {
 			displayContextMenu(e);
@@ -215,7 +217,7 @@ public class SelectionHandler implements EditorMode {
 				selection = selector;
 			}
 			
-			//startPoint.setLocation(mx, my);
+			startPoint.setLocation(mx,my);
 			selection.startDragging(mx, my);
 		}
 	}
@@ -253,6 +255,7 @@ public class SelectionHandler implements EditorMode {
 	 */
 	public void mouseReleased(EditorMouseEvent e) {
 		handleSelectionOnMouseReleased(e);
+		
 		if (e.isPopupTrigger()) {
 			displayContextMenu(e);
 		}
@@ -302,6 +305,7 @@ public class SelectionHandler implements EditorMode {
 			}*/
 			
 			if (selection instanceof RubberbandSelector) {
+				
 				setRubberbandSelection((RubberbandSelector) selection);
 			}
 
@@ -345,7 +349,7 @@ public class SelectionHandler implements EditorMode {
 	 * {@inheritDoc}
 	 */
 	public void mouseDragged(EditorMouseEvent e) {
-		double mx = e.getX(), my = e.getY();
+		double mx = e.getX(), my = e.getY();		
 		if (selection.isDragging()) {
 			selection.updatePosition(mx, my);
 			editor.repaint();

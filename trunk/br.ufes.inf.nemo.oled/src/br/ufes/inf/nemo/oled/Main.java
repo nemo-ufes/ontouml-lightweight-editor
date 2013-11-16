@@ -178,6 +178,7 @@ public final class Main {
             System.setProperty("com.apple.macos.useScreenMenuBar","true");
             System.setProperty("apple.laf.useScreenMenuBar","true");
             System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode","false");
+            System.setProperty("apple.awt.fileDialogForDirectories", "true");
         }
         
 		SwingUtilities.invokeLater(new Runnable() {
