@@ -32,14 +32,14 @@ import RefOntoUML.Association;
 import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
+import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
+import br.ufes.inf.nemo.oled.draw.DrawingContext.StrokeType;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.draw.RectilinearConnection;
 import br.ufes.inf.nemo.oled.draw.SimpleArrowTip;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
-import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
-import br.ufes.inf.nemo.oled.draw.DrawingContext.StrokeType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 

@@ -48,6 +48,7 @@ import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
 import RefOntoUML.impl.AssociationImpl;
+import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.LineConnectMethod;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationType;
@@ -350,6 +351,25 @@ private void setupElementMaps() {
     return conn;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  public UmlConnection createConnection(RelationType relationType, UmlNode node1, UmlConnection c2) {
+    UmlConnection prototype = relationPrototypes.get(relationType);    
+    UmlConnection conn = null;
+    if (prototype != null) {
+      conn = (UmlConnection) prototype.clone();
+      bindConnection(conn, node1, c2);
+      if(conn.getRelationship() != null && conn.getRelationship() instanceof AssociationImpl)
+      {
+    	  Association association = (Association) conn.getRelationship();
+    	  association.setName(association.getName() + nextRelationCount(relationType));
+      }
+    }
+    
+    return conn;
+  }
+
   private String nextRelationCount(RelationType relationType)
   {
 	  int count = relationCounters.get(relationType);
@@ -377,5 +397,12 @@ private void setupElementMaps() {
     conn.setNode2(node2);
     node1.addConnection(conn);
     node2.addConnection(conn);
+  }
+  
+  private void bindConnection(UmlConnection conn, UmlNode node1, Connection c2) {
+	  conn.setNode1(node1);
+	  conn.setConnection2(c2);
+	  node1.addConnection(conn);
+	  c2.addConnection(conn);  
   }
 }

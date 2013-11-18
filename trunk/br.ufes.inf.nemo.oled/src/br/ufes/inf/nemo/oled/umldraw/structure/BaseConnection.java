@@ -23,6 +23,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -206,6 +207,22 @@ public class BaseConnection implements UmlConnection, Adapter {
 		connection.setNode2(aNode);
 	}
 
+	public void setConnection1(Connection c){
+		connection.setConnection1(c);
+	}
+	
+	public void setConnection2(Connection c){
+		connection.setConnection2(c);
+	}
+	
+	public Connection getConnection1(){
+		return connection.getConnection1();
+	}
+	
+	public Connection getConnection2(){
+		return connection.getConnection2();
+	}
+	
 	/**
 	 * Draws the connection.
 	 * 
@@ -476,4 +493,42 @@ public class BaseConnection implements UmlConnection, Adapter {
 	public String getRelationshipUUID() {
 		return relationshipUUID;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Collection<? extends Connection> getConnections() {
+		return connection.getConnections();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void addConnection(Connection conn) { connection.addConnection(conn); }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void removeConnection(Connection conn) { connection.removeConnection(conn); }
+
+	@Override
+	public double getAbsCenterX() {
+		return connection.getAbsCenterX();		
+	}
+
+	@Override
+	public double getAbsCenterY() {
+		return connection.getAbsCenterY();
+	}
+
+	@Override
+	public void calculateIntersection(Line2D line, Point2D intersectionPoint) {
+		connection.calculateIntersection(line, intersectionPoint);		
+	}
+
+	@Override
+	public boolean intersects(Line2D line) {
+		return connection.intersects(line);		
+	}
+
 }

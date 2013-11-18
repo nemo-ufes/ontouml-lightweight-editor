@@ -53,7 +53,7 @@ public final class RectilinearLineConnectMethod implements LineConnectMethod {
    * {@inheritDoc}
    */
   public void generateAndSetPointsToConnection(Connection conn,
-    Node sourceNode, Node targetNode, Point2D source, Point2D dest) {
+    Node sourceNode, Connection targetConnection, Point2D source, Point2D dest) {
     RectilinearLineBuilder linebuilder = RectilinearLineBuilder.getInstance();
     List<Point2D> points = linebuilder.calculateLineSegments(source, dest,
       Orientation.HORIZONTAL);
@@ -83,18 +83,62 @@ public final class RectilinearLineConnectMethod implements LineConnectMethod {
     if (points.size() > 2) {
       line.setLine(points.get(points.size() - 3),
                  points.get(points.size() - 2));
-      if (targetNode.intersects(line)) {
+      if (targetConnection.intersects(line)) {
         linepoints.remove(linepoints.size() - 1);
       } else {
         line.setLine(points.get(points.size() - 2),
                    points.get(points.size() - 1));
       }
     }
-    targetNode.calculateIntersection(line,
+    targetConnection.calculateIntersection(line,
       linepoints.get(linepoints.size() - 1));
     conn.setPoints(linepoints);
   }
 
+  //FIXME - problem in "conn.setPoints(linepoints)" method, return null...
+  public void generateAndSetPointsToConnection(Connection conn,
+	    Node sourceNode, Node targetNode, Point2D source, Point2D dest) {
+	    RectilinearLineBuilder linebuilder = RectilinearLineBuilder.getInstance();
+	    List<Point2D> points = linebuilder.calculateLineSegments(source, dest,
+	      Orientation.HORIZONTAL);
+	    List<Point2D> linepoints = new LinkedList<Point2D>();
+	    for (Point2D point : points) {
+	      linepoints.add(point);
+	    }
+	    // calculate intersections with the nodes
+	    Line2D line = new Line2D.Double();
+	    // first
+	    // check if we could start at the second segment
+	    if (points.size() > 2) {
+	      line.setLine(points.get(1), points.get(2));
+	    }
+
+	    // if not, start at the first segment
+	    if (points.size() > 2 && sourceNode.intersects(line)) {
+	      linepoints.remove(0);
+	    } else {
+	      line.setLine(points.get(0), points.get(1));
+	    }
+	    sourceNode.calculateIntersection(line, linepoints.get(0));
+
+	    // last
+	    // check if we could end at the segment before the last one if yes,
+	    // remove the last control point
+	    if (points.size() > 2) {
+	      line.setLine(points.get(points.size() - 3),
+	                 points.get(points.size() - 2));
+	      if (targetNode.intersects(line)) {
+	        linepoints.remove(linepoints.size() - 1);
+	      } else {
+	        line.setLine(points.get(points.size() - 2),
+	                   points.get(points.size() - 1));
+	      }
+	    }
+	    targetNode.calculateIntersection(line,
+	      linepoints.get(linepoints.size() - 1));
+	    conn.setPoints(linepoints);
+   }
+  
   /**
    * {@inheritDoc}
    */

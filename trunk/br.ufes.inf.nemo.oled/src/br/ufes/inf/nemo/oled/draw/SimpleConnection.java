@@ -125,4 +125,5 @@ public class SimpleConnection extends AbstractConnection {
     super.copyData(conn);
     resetPoints();
   }
+
 }

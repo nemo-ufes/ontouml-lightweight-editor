@@ -140,6 +140,21 @@ public class LineHandler implements EditorMode {
       AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) source.getClassifier(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject());
       editor.execute(command);
     }
+    
+    //=========== FIXME/TODO =================================================
+    //========================================================================
+
+    //Trying to permit connections from a UmlNode to a UmlCOnnection!
+//    if(source != null && target instanceof UmlConnection && target != source){
+//    	 UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlConnection) target);
+//         connectMethod.generateAndSetPointsToConnection(conn, source, (UmlConnection) target, anchor, tmpPos);         
+//         AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) source.getClassifier(), (Classifier) ((UmlConnection)target).getClassifier(), editor.getDiagram().getProject());
+//         editor.execute(command);
+//    }
+    
+    //========================================================================
+    //========================================================================
+    
     isDragging = false;
     editor.redraw();
   }

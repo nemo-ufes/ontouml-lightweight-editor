@@ -39,6 +39,9 @@ public interface LineConnectMethod {
    */
   void generateAndSetPointsToConnection(Connection conn,
     Node sourceNode, Node targetNode, Point2D source, Point2D dest);
+  
+  void generateAndSetPointsToConnection(Connection conn,
+		    Node sourceNode, Connection targetConnection, Point2D source, Point2D dest);
 
   /**
    * Draws the line segments according to the method between the two specified
