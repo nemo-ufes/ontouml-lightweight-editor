@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.util;
 
 import java.text.MessageFormat;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -126,6 +127,11 @@ public class ModelHelper {
 		return mappings.get(element);
 	}
 
+	public static Collection<DiagramElement> getAllDiagramElements()
+	{
+		return mappings.values();
+	}
+	
 	public static RefOntoUMLFactory getFactory() {
 		if (!initialized) {
 			initializeHelper();

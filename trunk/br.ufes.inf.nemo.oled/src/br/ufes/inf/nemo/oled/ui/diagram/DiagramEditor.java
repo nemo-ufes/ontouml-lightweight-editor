@@ -122,6 +122,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private transient LineHandler lineHandler;
 	private transient List<UndoableEditListener> editListeners = new ArrayList<UndoableEditListener>();
 	private transient Scaling scaling = Scaling.SCALING_100;
+	private double widthWithZoom;
+	private double heightWithZoom;
 	
 	// this might be null when the application is started and the pointer still did not move or had the focus of the editor
 	private static MouseEvent currentPointerPosition;
@@ -420,9 +422,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 		int width = (int)(diagram.getSize().getWidth()+ MARGIN_RIGHT + MARGIN_LEFT + ADDSCROLL_HORIZONTAL);
 		int height = (int)(diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL);
-		int newHeigth = (int)(height*scaling.getScaleFactor());
-		int newWidth = (int)(width*scaling.getScaleFactor());
-		setPreferredSize(new Dimension(newWidth, newHeigth));
+		heightWithZoom = (height*scaling.getScaleFactor());
+		widthWithZoom = (width*scaling.getScaleFactor());
+		setPreferredSize(new Dimension((int)widthWithZoom, (int)heightWithZoom));
 		
 		bounds = new Rectangle((int)width,(int)height);
 		clearScreen(g, bounds, background);
@@ -439,6 +441,16 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		repaint();
 	}
 
+	public double getWidthConsideringZoom()
+	{
+		return widthWithZoom*scaling.getScaleFactor();
+	}
+	
+	public double getHeightConsideringZoom()
+	{
+		return heightWithZoom*scaling.getScaleFactor();		
+	}
+	
 	/**
 	 * Sets the rendering hints used in the editor.
 	 * @param g2d the Graphics2D object
@@ -836,8 +848,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	}
 
 	public void selectAll()
-	{
-		
+	{		
+		selectionHandler.selectAll();
 	}
 	
 	/**

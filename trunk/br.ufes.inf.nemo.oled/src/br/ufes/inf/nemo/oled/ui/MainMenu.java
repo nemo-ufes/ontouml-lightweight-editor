@@ -147,7 +147,7 @@ public class MainMenu implements ActionListener {
 		
 		JMenuItem selectAllItem = createMenuItem(diagramMenu,"selectall");
 		selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
-		selectAllItem.setEnabled(false);
+//		selectAllItem.setEnabled(false);
 		
 		createMenuItem(diagramMenu,"exportgfx");
 	}
