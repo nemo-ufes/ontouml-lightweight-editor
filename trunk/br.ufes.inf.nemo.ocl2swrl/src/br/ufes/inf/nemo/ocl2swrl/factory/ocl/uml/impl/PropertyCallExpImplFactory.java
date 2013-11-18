@@ -52,14 +52,14 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 	}
 
 	@Override
-	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber) {
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
 		OCLExpressionImpl source = (OCLExpressionImpl) propertyCallExpImpl.getSource();
 		
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
 		//int sourceRepeatNumber = 1;
 		int sourceRepeatNumber = repeatNumber;
-		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, oclConsequentShouldBeNegated, expressionIsNegated, sourceRepeatNumber);
+		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, operatorNot, sourceRepeatNumber);
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//pega o ultimo
 		
 		if(referredArgument != null){
@@ -71,9 +71,9 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		
 		ArrayList<SWRLDArgument> retArgsY = null;
 		if(propertyType.getClass().equals(PrimitiveTypeImpl.class) || propertyType.getClass().equals(DataTypeImpl.class)){
-			retArgsY = solveClassAttribute(nameSpace, manager, factory, ontology, antecedent, consequent, varX, oclConsequentShouldBeNegated, expressionIsNegated,repeatNumber);
+			retArgsY = solveClassAttribute(nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot,repeatNumber);
 		}else if(propertyType.getClass().equals(ClassImpl.class)){
-			retArgsY = solveAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, expressionIsNegated, repeatNumber);
+			retArgsY = solveAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot, repeatNumber);
 		}
 		SWRLDArgument varY = retArgsY.get(retArgsY.size()-1);//pega o ultimo
 		
@@ -84,13 +84,13 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		return retArgsZ;
 	}
 	
-	public ArrayList<SWRLDArgument> solveProperty(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
-		ArrayList<SWRLDArgument> retArgs = solvePropertyAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, expressionIsNegated, repeatNumber);
+	public ArrayList<SWRLDArgument> solveProperty(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber) {
+		ArrayList<SWRLDArgument> retArgs = solvePropertyAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber);
 		
 		return retArgs;
 	}
 	
-	public ArrayList<SWRLDArgument> solveAssociation(OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean expressionIsNegated, int repeatNumber){
+	public ArrayList<SWRLDArgument> solveAssociation(OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber){
 		String nameVarX = "";
 		String nameVarY = "";
 		
@@ -140,7 +140,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		return retArgs;
 	}
 	
-	public ArrayList<SWRLDArgument> solvePropertyAssociation(OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean expressionIsNegated, int repeatNumber){
+	public ArrayList<SWRLDArgument> solvePropertyAssociation(OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber){
 		String nameVarX = "";
 		String nameVarY = "";
 		
@@ -186,7 +186,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		return retArgs;
 	}
 	
-	public ArrayList<SWRLDArgument> solveClassAttribute(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber){
+	public ArrayList<SWRLDArgument> solveClassAttribute(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber){
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
 		
