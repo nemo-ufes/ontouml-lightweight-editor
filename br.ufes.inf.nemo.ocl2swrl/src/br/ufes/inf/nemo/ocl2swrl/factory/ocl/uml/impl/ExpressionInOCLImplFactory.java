@@ -57,16 +57,17 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 	}
 	
 	@Override
-	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber) {
 		ExpressionInOCLImpl expressionInOCLImpl = (ExpressionInOCLImpl) this.m_NamedElementImpl;
 		OCLExpressionImpl bodyExpression = (OCLExpressionImpl) expressionInOCLImpl.getBodyExpression();
 		
 		bodyExpressionFactory = (OCLExpressionImplFactory) NamedElementImplFactory.constructor(bodyExpression);
 		bodyExpressionFactory.setIsBodyExpression(true);
+		/*
 		if(bodyExpressionFactory.isImpliesOperation()){
 			oclConsequentShouldBeNegated = true;
 		}
-		
+		*/
 		Variable<Classifier, Parameter> contextVariable = expressionInOCLImpl.getContextVariable();
 		Classifier classContVar = contextVariable.getType();
 		
@@ -77,7 +78,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		IRI iri = IRI.create(iriName);
 		SWRLVariable contextVar = factory.getSWRLVariable(iri);
 		
-		bodyExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber);
+		bodyExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, repeatNumber);
 		
 		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
 			OWLClass owlClass = factory.getOWLClass(iri);
@@ -90,7 +91,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			
 		}else if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
 			this.elementFactory = new PropertyCallExpImplFactory(m_NamedElementImpl, (Property) element);
-			this.elementFactory.solveProperty(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, oclConsequentShouldBeNegated, expressionIsNegated, 1);
+			this.elementFactory.solveProperty(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, 1);
 			
 		}
 		

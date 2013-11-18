@@ -36,23 +36,23 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 	}
 
 	@Override
-	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated, int repeatNumber) {
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber) {
 		IteratorExpImpl iteratorExpImpl = (IteratorExpImpl) this.m_NamedElementImpl; 
 		OCLExpressionImpl source = (OCLExpressionImpl) iteratorExpImpl.getSource();
 		OCLExpressionImpl body = (OCLExpressionImpl) iteratorExpImpl.getBody();
 		
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
-		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, false, expressionIsNegated, repeatNumber);
+		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, operatorNot, repeatNumber);
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//pega o ultimo
 		
 		this.bodyFactory = (OCLExpressionImplFactory) Factory.constructor(body);
-		ArrayList<SWRLDArgument> retArgsY = this.bodyFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber); 
+		ArrayList<SWRLDArgument> retArgsY = this.bodyFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot, repeatNumber); 
 		SWRLDArgument varY = retArgsY.get(retArgsY.size()-1);//pega o ultimo
 		
 		//SWRLDArgument varZ = null;
 		if(this.isUniqueIterator()){
 			//varZ = 
-			solveIsUnique(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, retArgsX, retArgsY, false, false);
+			solveIsUnique(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, retArgsX, retArgsY, false);
 		}
 		
 		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
@@ -61,7 +61,7 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		return retArgs;
 	}
 	
-	public ArrayList<SWRLDArgument> solveIsUnique(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean oclConsequentShouldBeNegated, Boolean expressionIsNegated) {
+	public ArrayList<SWRLDArgument> solveIsUnique(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean operatorNot) {
 		IteratorExpImpl iteratorExpImpl = (IteratorExpImpl) this.m_NamedElementImpl; 
 		OCLExpressionImpl source = (OCLExpressionImpl) iteratorExpImpl.getSource();
 		OCLExpressionImpl body = (OCLExpressionImpl) iteratorExpImpl.getBody();
@@ -73,12 +73,12 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		SWRLDArgument varY = referredArgsY.get(referredArgsY.size()-1);//pega o ultimo
 		
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
-		ArrayList<SWRLDArgument> retArgsX2 = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, false, expressionIsNegated, repeatNumber);
+		ArrayList<SWRLDArgument> retArgsX2 = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, operatorNot, repeatNumber);
 		SWRLDArgument varX2 = retArgsX2.get(retArgsX2.size()-1);//pega o ultimo
 		SWRLDArgument var0_2 = retArgsX2.get(0);
 		
 		this.bodyFactory = (OCLExpressionImplFactory) Factory.constructor(body);
-		ArrayList<SWRLDArgument> retArgsY2 = this.bodyFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX2, oclConsequentShouldBeNegated, expressionIsNegated, repeatNumber); 
+		ArrayList<SWRLDArgument> retArgsY2 = this.bodyFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX2, operatorNot, repeatNumber); 
 		SWRLDArgument varY2 = retArgsY2.get(retArgsY2.size()-1);//pega o ultimo
 		
 		SWRLSameIndividualAtom same0 = factory.getSWRLSameIndividualAtom((SWRLVariable)var0, (SWRLVariable)var0_2);
