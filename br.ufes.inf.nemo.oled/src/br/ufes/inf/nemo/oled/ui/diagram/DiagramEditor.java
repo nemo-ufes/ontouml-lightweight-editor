@@ -423,7 +423,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		int newHeigth = (int)(height*scaling.getScaleFactor());
 		int newWidth = (int)(width*scaling.getScaleFactor());
 		setPreferredSize(new Dimension(newWidth, newHeigth));
-				
+		
 		bounds = new Rectangle((int)width,(int)height);
 		clearScreen(g, bounds, background);
 		drawingContext.setGraphics2D(g2d, bounds);				
@@ -434,7 +434,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 		restoreRenderingHints(g2d);
 		diagram.setGridVisible(gridVisible);
-		
+			
 		revalidate();
 		repaint();
 	}

@@ -177,7 +177,7 @@ public class SelectionHandler implements EditorMode {
 		//selection = getSelection(mx, my);
 		Selection newSelection = getSelection(mx, my);
 		selection = newSelection;
-		
+				
 		/*if(e.getMouseEvent().isShiftDown())
 		{
 			if (selection instanceof NodeSelection)
@@ -215,6 +215,7 @@ public class SelectionHandler implements EditorMode {
 			
 			if (nothingSelected() && editor.getDiagram().contains(mx, my)) {
 				selection = selector;
+				selection.updatePosition(mx, my);
 			}
 			
 			startPoint.setLocation(mx,my);
@@ -268,9 +269,10 @@ public class SelectionHandler implements EditorMode {
 	private void handleSelectionOnMouseReleased(EditorMouseEvent e) {
 		
 		double mx = e.getX(), my = e.getY();
-		
+				
 		if (selection.isDragging()) {
-			
+
+			selection.updatePosition(mx, my);
 			selection.stopDragging(mx, my);
 			
 			//TODO implement select/unselect holding shift

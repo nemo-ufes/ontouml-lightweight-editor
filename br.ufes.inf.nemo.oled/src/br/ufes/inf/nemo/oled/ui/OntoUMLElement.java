@@ -33,11 +33,16 @@ public class OntoUMLElement {
 		{
 			this.name = ((NamedElement)refElement).getName();
 		}
+		if (refElement!=null){
+			type = refElement.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+		    type = type.replaceAll("Impl","");
+		    type = Normalizer.normalize(type, Normalizer.Form.NFD);	
+		}
+		if(refElement==null){
+			type = "null";
+			name = "null";			
+		}
 		
-		type = refElement.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);	
-	    
 	    this.uniqueName= uniqueName; 
 	}
 		
