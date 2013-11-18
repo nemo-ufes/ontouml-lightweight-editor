@@ -24,7 +24,6 @@ import java.util.Map;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
-import br.ufes.inf.nemo.oled.draw.Scaling;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
@@ -79,21 +78,21 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("REDRAW", new MethodCall(
 					DiagramEditor.class.getMethod("redraw")));
 			
-			selectorMap.put("ZOOM_50", new MethodCall(
-					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-					Scaling.SCALING_50));
-			
-			selectorMap.put("ZOOM_75", new MethodCall(
-					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-					Scaling.SCALING_75));
-			
-			selectorMap.put("ZOOM_100", new MethodCall(
-					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-					Scaling.SCALING_100));
-			
-			selectorMap.put("ZOOM_150", new MethodCall(
-					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-					Scaling.SCALING_150));
+//			selectorMap.put("ZOOM_50", new MethodCall(
+//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
+//					Scaling.SCALING_50));
+//			
+//			selectorMap.put("ZOOM_75", new MethodCall(
+//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
+//					Scaling.SCALING_75));
+//			
+//			selectorMap.put("ZOOM_100", new MethodCall(
+//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
+//					Scaling.SCALING_100));
+//			
+//			selectorMap.put("ZOOM_150", new MethodCall(
+//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
+//					Scaling.SCALING_150));
 
 			selectorMap.put("ZOOM_IN", new MethodCall(
 					DiagramEditor.class.getMethod("zoomIn"))
@@ -102,6 +101,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("ZOOM_OUT", new MethodCall(
 					DiagramEditor.class.getMethod("zoomOut"))
 			);
+			
+			selectorMap.put("SELECT_ALL", new MethodCall(
+					DiagramEditor.class.getMethod("selectAll")));
 			
 			selectorMap.put("BRING_TO_FRONT", new MethodCall(
 					DiagramEditor.class.getMethod("bringToFront")));

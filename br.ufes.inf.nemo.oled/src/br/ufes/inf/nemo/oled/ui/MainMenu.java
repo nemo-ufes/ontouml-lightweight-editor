@@ -73,7 +73,7 @@ public class MainMenu implements ActionListener {
 		menubar.add(transformMenu);
 		
 		JMenuItem alloyItem = createMenuItem(transformMenu, "generatealloy");
-		alloyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+		alloyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 		
 		JMenuItem owlItem = createMenuItem(transformMenu, "generateowlsettings");
 		owlItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
@@ -144,6 +144,10 @@ public class MainMenu implements ActionListener {
 		
 		JMenuItem newdiagramItem = createMenuItem(diagramMenu,"newdiagram");
 		newdiagramItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
+		
+		JMenuItem selectAllItem = createMenuItem(diagramMenu,"selectall");
+		selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+		selectAllItem.setEnabled(false);
 		
 		createMenuItem(diagramMenu,"exportgfx");
 	}

@@ -116,7 +116,7 @@ public class AboutDialog extends JDialog {
 		JLabel lblTiagoPrinceSales = new JLabel("Tiago Prince Sales - Alloy and AntiPatterns");
 		lblTiagoPrinceSales.setHorizontalAlignment(SwingConstants.LEFT);
 		
-		JLabel lblJohnGuerson = new JLabel("John Guerson - Alloy and OCL");
+		JLabel lblJohnGuerson = new JLabel("John Guerson - Co-Author");
 		lblJohnGuerson.setHorizontalAlignment(SwingConstants.LEFT);
 		labelAuthor1 = new JLabel("Antognoni Albuquerque - Author");
 		labelAuthor1.setForeground(Color.BLACK);
