@@ -120,6 +120,7 @@ public class LineHandler implements EditorMode {
     DiagramElement elem = editor.getDiagram().getChildAt(mx, my);
     if (isValidSource(elem)) {
       anchor.setLocation(mx, my); //TODO Change the anchor to the edge of the Diagram Element
+      tmpPos.setLocation(mx, my);
       isDragging = true;
       source = (UmlNode) elem;
     }
@@ -131,6 +132,7 @@ public class LineHandler implements EditorMode {
   public void mouseReleased(EditorMouseEvent event) {
     double mx = event.getX(), my = event.getY();
     DiagramElement target = editor.getDiagram().getChildAt(mx, my);
+    tmpPos.setLocation(mx, my);
     if (source != null && isValidTarget(target)) {
       UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlNode) target);
       connectMethod.generateAndSetPointsToConnection(conn, source, (UmlNode) target, anchor, tmpPos);
