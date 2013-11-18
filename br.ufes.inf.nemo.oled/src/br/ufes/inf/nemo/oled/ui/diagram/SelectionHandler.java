@@ -64,6 +64,23 @@ public class SelectionHandler implements EditorMode {
 	private RubberbandSelector selector = new RubberbandSelector();
 
 	/**
+	 * This should be done with MultiSelection instead of a RubberBand...
+	 * FIXME
+	 */
+	public void selectAll() 
+	{
+		selection = selector;
+		selection.updatePosition(0,0);
+		selection.startDragging(0,0);
+		selection.updatePosition(editor.getWidthConsideringZoom(), editor.getHeightConsideringZoom());
+		selection.stopDragging(editor.getWidthConsideringZoom(),  editor.getHeightConsideringZoom());
+		if (selection instanceof RubberbandSelector) setRubberbandSelection((RubberbandSelector) selection);
+		editor.redraw();
+		notifyListeners();
+		editor.requestFocusInEditor();
+	}
+	 
+	/**
 	 * Constructor.
 	 * @param anEditor the editor
 	 */
