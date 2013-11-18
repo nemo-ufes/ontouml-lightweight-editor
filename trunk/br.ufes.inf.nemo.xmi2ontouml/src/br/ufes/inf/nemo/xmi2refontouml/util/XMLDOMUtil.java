@@ -6,7 +6,7 @@ import java.util.List;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import br.ufes.inf.nemo.xmi2refontouml.core.Mapper;
+import br.ufes.inf.nemo.xmi2refontouml.mapper.Mapper;
 
 public class XMLDOMUtil {
 	

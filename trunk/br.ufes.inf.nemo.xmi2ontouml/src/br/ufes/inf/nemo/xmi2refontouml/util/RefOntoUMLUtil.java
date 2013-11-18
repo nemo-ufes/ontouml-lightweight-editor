@@ -23,10 +23,6 @@ import javax.swing.tree.TreePath;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.xmi2refontouml.core.Mapper;
-import br.ufes.inf.nemo.xmi2refontouml.core.Mediator;
-
 import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.DataType;
@@ -36,6 +32,9 @@ import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.xmi2refontouml.framework.XMI2RefElement;
+import br.ufes.inf.nemo.xmi2refontouml.mapper.Mapper;
 
 
 public class RefOntoUMLUtil {
@@ -115,7 +114,7 @@ public class RefOntoUMLUtil {
     		for (String id : elemIdList) {
     			try {
     				DefaultMutableTreeNode newElemNode = new DefaultMutableTreeNode(
-    					new ChckBoxTreeNodeElem(Mediator.elemMap.get(id)));
+    					new ChckBoxTreeNodeElem((Element) XMI2RefElement.getElemMap().get(id)));
     				newNode.add(newElemNode);
     			} catch (NullPointerException npe) {
     				continue;

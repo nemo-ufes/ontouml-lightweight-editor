@@ -1,11 +1,10 @@
-package br.ufes.inf.nemo.xmi2refontouml.mapperImpl;
+package br.ufes.inf.nemo.xmi2refontouml.mapper.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -19,8 +18,8 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import br.ufes.inf.nemo.xmi2refontouml.core.Mapper;
-import br.ufes.inf.nemo.xmi2refontouml.core.Mediator;
+import br.ufes.inf.nemo.xmi2ontouml.Creator;
+import br.ufes.inf.nemo.xmi2refontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2refontouml.util.ElementType;
 import br.ufes.inf.nemo.xmi2refontouml.util.XMLDOMUtil;
 
@@ -60,20 +59,20 @@ public class MapperAstah implements Mapper {
             setID(doc.getDocumentElement());
 	        
 		} catch (SAXParseException err) {
-            Mediator.errorLog += "** Parsing error" + ", line "
+            Creator.errorLog += "** Parsing error" + ", line "
                     + err.getLineNumber() + ", uri " + err.getSystemId();
-            Mediator.errorLog += " " + err.getMessage();
+            Creator.errorLog += " " + err.getMessage();
  
 		} catch (SAXException e) {
 			Exception x = e.getException();
-			Mediator.errorLog += ((x == null) ? e : x).getMessage();
+			Creator.errorLog += ((x == null) ? e : x).getMessage();
 			
 		} catch (IOException e) {
-			Mediator.errorLog += "File " + read_file_address + 
+			Creator.errorLog += "File " + read_file_address + 
 			" does not exist or could not be oppened.";
 			
 		} catch (ParserConfigurationException e) {
-			Mediator.errorLog += e.getMessage();
+			Creator.errorLog += e.getMessage();
 		}
 	}
 	
@@ -322,7 +321,7 @@ public class MapperAstah implements Mapper {
     		try {
 				hashProp.put("name", URLDecoder.decode((String)hashProp.get("name"), "UTF-8"));
 			} catch (UnsupportedEncodingException e) {
-				Mediator.warningLog += "Name could not be decoded in " + hashProp.get("name") + "\n";
+				Creator.warningLog += "Name could not be decoded in " + hashProp.get("name") + "\n";
 			}
     	}
     	
@@ -464,7 +463,7 @@ public class MapperAstah implements Mapper {
 		    	try {
 					hashProp.put("body", URLDecoder.decode((String)hashProp.get("body"), "UTF-8"));
 				} catch (UnsupportedEncodingException e) {
-					Mediator.warningLog += "Name could not be decoded in " + hashProp.get("name") + "\n";
+					Creator.warningLog += "Name could not be decoded in " + hashProp.get("name") + "\n";
 				}
 	    	}
 		}
@@ -539,7 +538,7 @@ public class MapperAstah implements Mapper {
     	try {
 			return URLDecoder.decode(((Element)elem).getAttribute("name"), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			Mediator.warningLog += "Name could not be decoded in " + ((Element)elem).getAttribute("name") + "\n";
+			Creator.warningLog += "Name could not be decoded in " + ((Element)elem).getAttribute("name") + "\n";
 		}
 		return "";
     }

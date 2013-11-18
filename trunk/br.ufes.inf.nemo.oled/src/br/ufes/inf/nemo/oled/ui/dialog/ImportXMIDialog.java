@@ -36,7 +36,7 @@ import org.jdesktop.swingx.error.ErrorInfo;
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.ui.LoadingPane;
-import br.ufes.inf.nemo.xmi2refontouml.core.Mediator;
+import br.ufes.inf.nemo.xmi2ontouml.Creator;
 import br.ufes.inf.nemo.xmi2refontouml.util.ChckBoxTreeNodeElem;
 import br.ufes.inf.nemo.xmi2refontouml.util.RefOntoUMLUtil;
 
@@ -68,7 +68,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	private LoadingPane glassPane;
 	private JCheckBox verfInconsistency;
 	
-	Mediator transfManager;
+	Creator transfManager;
 	File file;
 	CheckboxTree modelChckTree, diagrChckTree;
 	DiagramManager diagManager;
@@ -94,6 +94,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 							initGUI();
 						} catch (Exception e)
 						{
+							e.printStackTrace();
 							ErrorInfo info = new ErrorInfo("Error", "Parsing not done.",
 				        			null, "category", e, Level.SEVERE, null);
 				        	JXErrorPane.showDialog(diagManager, info);
@@ -188,16 +189,13 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	
 	private void initVariables() throws Exception {
 		
-		Mediator transfManager = new Mediator();
-		transfManager.READ_FILE_ADDRESS = file.getAbsolutePath();
-		transfManager.SAVE_FILE_ADDRESS = file.getAbsolutePath().split("\\.")[0] + ".refontouml";
-		
-		model = transfManager.parse();
+		Creator transfManager = new Creator();
+		model = transfManager.parse(file.getAbsolutePath());
         
-        if (Mediator.warningLog != "") {
+        if (Creator.warningLog != "") {
         	//TODO essa lib que usei tem muita coisa desnecess�ria, talvez fosse melhor copiar o source
         	ErrorInfo info = new ErrorInfo("Warning", "Parsing done with warnings",
-        			null, "category", new Exception(Mediator.warningLog), Level.WARNING, null);
+        			null, "category", new Exception(Creator.warningLog), Level.WARNING, null);
         	JXErrorPane.showDialog(diagManager, info);
     	}
         
