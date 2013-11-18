@@ -835,6 +835,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 	}
 
+	public void selectAll()
+	{
+		
+	}
+	
 	/**
 	 * Edits the current selection's properties.
 	 */

@@ -110,7 +110,8 @@ public final class IconLoader {
 		ARROW_DOWN,
 		ANTIPATTERN,
 		DERIVERELATIONS,
-		NEMO,
+		NEMO,		
+		DIRECT,
 	}
 
 	private Map<IconType, String> urlMap = new HashMap<IconType, String>();

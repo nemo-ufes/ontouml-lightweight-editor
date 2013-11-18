@@ -66,6 +66,7 @@ public class MainToolbar implements ActionListener {
 		toolbar.addSeparator();
 		createButton("warning");
 		createButton("error");
+		createButton("verify");
 		toolbar.addSeparator();		
 		createButton("generatealloy");
 		createButton("generateowlsettings");

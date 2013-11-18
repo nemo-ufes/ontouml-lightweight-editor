@@ -255,8 +255,7 @@ public class SelectionHandler implements EditorMode {
 	 * {@inheritDoc}
 	 */
 	public void mouseReleased(EditorMouseEvent e) {
-		handleSelectionOnMouseReleased(e);
-		
+		handleSelectionOnMouseReleased(e);		
 		if (e.isPopupTrigger()) {
 			displayContextMenu(e);
 		}

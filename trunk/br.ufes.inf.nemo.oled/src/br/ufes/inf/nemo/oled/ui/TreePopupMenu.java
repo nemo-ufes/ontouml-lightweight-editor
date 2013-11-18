@@ -18,6 +18,7 @@ public class TreePopupMenu extends JPopupMenu {
 	public JMenuItem deleteItem = new JMenuItem("Delete");
 	public JMenuItem autoCompleteItem = new JMenuItem("Complete Selection...");
 	public JMenuItem refreshItem = new JMenuItem("Refresh");
+	public JMenuItem addDiagramItem = new JMenuItem("Add Diagram");
 	
 	public Object element;
 	
@@ -49,6 +50,17 @@ public class TreePopupMenu extends JPopupMenu {
     			}
     		});
     	}    	
+    	
+    	//Add Diagram
+    	if(tree.getDiagramRootNode().equals(node)){
+    		add(addDiagramItem);
+    		addDiagramItem.addActionListener(new ActionListener() {				
+    			@Override
+    			public void actionPerformed(ActionEvent e) {
+    				frame.getDiagramManager().newDiagram();    				
+    			}
+    		});
+    	}
     	
     	// Delete 
     	if (!tree.getModelRootNode().equals(node) && !tree.getDiagramRootNode().equals(node) && !tree.getRootNode().equals(node)){    		
