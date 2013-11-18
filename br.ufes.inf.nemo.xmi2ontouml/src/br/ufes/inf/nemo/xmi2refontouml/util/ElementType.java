@@ -96,4 +96,70 @@ public enum ElementType {
 		else
 			return null;
 	}
+    
+    public static String name(ElementType type) 
+    {
+    	if (type.equals(ElementType.ANNOTATION)) 
+		{
+			return "Annotation";
+		}
+    	else if (type.equals(ElementType.ASSOCIATION)) 
+		{
+			return "Association";
+		}
+		else if (type.equals(ElementType.ASSOCIATIONCLASS)) 
+		{
+			return "AssociationClass";
+		} 
+		else if (type.equals(ElementType.CLASS)) 
+		{
+			return "Class";
+		} 
+		else if (type.equals(ElementType.COMMENT)) 
+		{
+			return "Comment";
+		} 
+		else if (type.equals(ElementType.DATATYPE)) 
+		{
+			return "DataType";
+		} 
+		else if (type.equals(ElementType.DEPENDENCY)) 
+		{
+			return "Dependency";
+		} 
+		else if (type.equals(ElementType.ENUMERATION)) 
+		{
+			return "Enumeration";
+		} 
+		else if (type.equals(ElementType.ENUMLITERAL)) 
+		{
+			return "EnumerationLiteral";
+		} 
+		else if (type.equals(ElementType.GENERALIZATION)) 
+		{
+			return "Generalization";
+		} 
+		else if (type.equals(ElementType.GENERALIZATIONSET)) 
+		{
+			return "GeneralizationSet";
+		} 
+		else if (type.equals(ElementType.MODEL)) 
+		{
+			return "Model";
+		} 
+		else if (type.equals(ElementType.PACKAGE)) 
+		{
+			return "Package";
+		} 
+		else if (type.equals(ElementType.PRIMITIVE)) 
+		{
+			return "PrimitiveType";
+		} 
+		else if (type.equals(ElementType.PROPERTY)) 
+		{
+			return "Property";
+		} 
+		else
+			return null;
+	}
 }

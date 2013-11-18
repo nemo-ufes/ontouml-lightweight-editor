@@ -70,7 +70,31 @@ public class OntoUMLError extends Throwable {
 		}
 		
 		error += "Warning: "+elementType+" '"+prop.getName()+"' has undefined multiplicity.\n";
-		error += "Owner: "+"<<"+TypeName.getTypeName(owner)+">> "+owner.getName()+" ("+prop.getType().getName()+")\n";
+//		error += "Owner: "+"<<"+TypeName.getTypeName(owner)+">> "+owner.getName()+" ("+prop.getType().getName()+")\n";
+		error += "Path: ";
+		
+		return error += getElementPath(prop)+"\n\n";
+	}
+	
+	public static String wrongMultiplicityFormat(MultiplicityElement multElem)
+	{
+		String error = new String(), elementType;
+		Classifier owner;
+		Property prop = (Property) multElem;
+		
+		if (prop.getAssociation() == null)
+		{
+			elementType = "Attribute";
+			owner = (Classifier)prop.eContainer();
+		}
+		else
+		{
+			elementType = "Association End";
+			owner = prop.getAssociation();
+		}
+		
+		error += "Warning: "+elementType+" '"+prop.getName()+"' has wrong multiplicity.\n";
+//		error += "Owner: "+"<<"+TypeName.getTypeName(owner)+">> "+owner.getName()+" ("+prop.getType().getName()+")\n";
 		error += "Path: ";
 		
 		return error += getElementPath(prop)+"\n\n";
@@ -164,8 +188,8 @@ public class OntoUMLError extends Throwable {
 		}
 		else
 		{
-			System.out.println(stelem.getNamespaceURI());
-			System.out.println(stelem);
+//			System.out.println(stelem.getNamespaceURI());
+//			System.out.println(stelem);
 			return "";
 		}
 

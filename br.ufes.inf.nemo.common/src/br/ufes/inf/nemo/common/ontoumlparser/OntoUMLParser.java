@@ -219,6 +219,12 @@ public class OntoUMLParser {
 				e = new ParsingElement(p, true, h2.treatName(p));
 				this.elementsHash.put(p,e);
 			}
+			//Enumeration can also have attributes
+			for(Property p: ((Enumeration)pe).getAttribute())
+			{
+				e = new ParsingElement(p, true, h2.treatName(p));
+				this.elementsHash.put(p,e);
+			}
 			
 		}else {
 			e = new ParsingElement(pe, true, h2.treatName(pe));

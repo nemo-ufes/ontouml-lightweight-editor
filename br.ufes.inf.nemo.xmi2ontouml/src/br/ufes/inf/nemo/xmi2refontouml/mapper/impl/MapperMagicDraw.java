@@ -1,9 +1,9 @@
-package br.ufes.inf.nemo.xmi2refontouml.mapperImpl;
+package br.ufes.inf.nemo.xmi2refontouml.mapper.impl;
 
 import java.util.List;
 import java.util.Map;
 
-import br.ufes.inf.nemo.xmi2refontouml.core.Mapper;
+import br.ufes.inf.nemo.xmi2refontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2refontouml.util.ElementType;
 
 public class MapperMagicDraw implements Mapper {

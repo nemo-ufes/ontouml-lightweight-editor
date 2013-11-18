@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.xmi2refontouml.core;
+package br.ufes.inf.nemo.xmi2refontouml.mapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,9 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import br.ufes.inf.nemo.xmi2refontouml.mapperImpl.MapperAstah;
-import br.ufes.inf.nemo.xmi2refontouml.mapperImpl.MapperEA;
+import br.ufes.inf.nemo.xmi2ontouml.Creator;
+import br.ufes.inf.nemo.xmi2refontouml.mapper.impl.MapperAstah;
+import br.ufes.inf.nemo.xmi2refontouml.mapper.impl.MapperEA;
 
 
 public class MapperFactory {
@@ -40,20 +41,20 @@ public class MapperFactory {
 			return identifyExporter(doc);
 			
 		} catch (SAXParseException err) {
-            Mediator.errorLog += "** Parsing error" + ", line "
+            Creator.errorLog += "** Parsing error" + ", line "
                     + err.getLineNumber() + ", uri " + err.getSystemId();
-            Mediator.errorLog += " " + err.getMessage() + "\n";
+            Creator.errorLog += " " + err.getMessage() + "\n";
  
 		} catch (SAXException e) {
 			Exception x = e.getException();
-			Mediator.errorLog += ((x == null) ? e : x).getMessage() + "\n";
+			Creator.errorLog += ((x == null) ? e : x).getMessage() + "\n";
 			
 		} catch (IOException e) {
-			Mediator.errorLog += "File " + file.getAbsolutePath() + 
+			Creator.errorLog += "File " + file.getAbsolutePath() + 
 			" does not exist or could not be oppened." + "\n";
 			
 		} catch (Exception e) {
-			Mediator.errorLog += e.getMessage() + "\n";
+			Creator.errorLog += e.getMessage() + "\n";
 			// For Debug
 			//System.out.println(e.getMessage());
 			//e.printStackTrace();

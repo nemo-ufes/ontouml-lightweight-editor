@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.xmi2refontouml.core;
+package br.ufes.inf.nemo.xmi2refontouml.mapper;
 
 import java.util.Map;
 import java.util.List;
