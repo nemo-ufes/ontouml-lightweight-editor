@@ -144,7 +144,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			else if(connection.getRelationship() instanceof AssociationImpl)
 			{
 				AssociationImpl association  = (AssociationImpl) connection.getRelationship();
-				
+												
 	    		Property node1Property, node2Property;
 	    		
 	    		node1Property = ModelHelper.getDefaultOwnedEnd(source, 1, 1);

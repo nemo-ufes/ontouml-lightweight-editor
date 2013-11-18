@@ -52,6 +52,9 @@ public interface DiagramElementFactory {
    */
   UmlConnection createConnection(RelationType relationType, UmlNode node1,
     UmlNode node2);
+  
+  UmlConnection createConnection(RelationType relationType, UmlNode node1,
+		    UmlConnection c2);
 
   /**
    * Asks the factory for the connect method of the specified RelationType.

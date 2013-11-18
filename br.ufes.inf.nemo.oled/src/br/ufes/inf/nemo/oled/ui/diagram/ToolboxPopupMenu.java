@@ -37,6 +37,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	JMenuItem characterizationItem = new JMenuItem("Characterization");
 	JMenuItem subquantityOfItem = new JMenuItem("SubQuantityOf");
 	JMenuItem subcollectionOfItem = new JMenuItem("SubCollectionOf");	
+	JMenuItem derivationItem = new JMenuItem("Derivation");
 	public AppFrame frame;
 	
     public ToolboxPopupMenu(final AppFrame frame)
@@ -64,6 +65,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
         add(subcollectionOfItem);
         add(subquantityOfItem);
         add(associationItem);
+        add(derivationItem);
         
         kindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
         quantityItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
@@ -87,6 +89,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
         memberOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/aggregation-m.png")));
         subcollectionOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/aggregation-c.png")));
         subquantityOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/aggregation-q.png")));
+        derivationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/derivation.png")));
         
         kindItem.addMouseListener(new MouseAdapter()
 	    {
@@ -329,7 +332,18 @@ public class ToolboxPopupMenu extends JPopupMenu {
 			    	frame.getToolManager().getOpenPalette().getPalleteElement("association").setSelected(true);
 	            }
 			}
-		});        
+		});
+       derivationItem.addMouseListener(new MouseAdapter()
+	    {    	   
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getOpenPalette().getPalleteElement("derivation").setSelected(true);
+	            }
+			}
+		});
     }	
     
     

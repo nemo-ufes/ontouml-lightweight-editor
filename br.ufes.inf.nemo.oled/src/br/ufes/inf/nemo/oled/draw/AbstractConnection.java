@@ -26,6 +26,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,11 +44,13 @@ public abstract class AbstractConnection implements Connection,
 
 	private static final long serialVersionUID = -1014584869536016852L;
 	private Node node1, node2;
+	private Connection connection1, connection2;
 	protected static final double DELTA = 3.0;
 	private CompositeNode parent;
 	private boolean isValid;
 	private boolean isDashed;
 	private List<Point2D> points = new ArrayList<Point2D>();
+	private List<Connection> connections = new ArrayList<Connection>();
 
 	/**
 	 * {@inheritDoc}
@@ -62,6 +65,7 @@ public abstract class AbstractConnection implements Connection,
 				for (Point2D point : points)
 					cloned.points.add((Point2D) point.clone());
 			}
+			cloned.connections = new ArrayList<Connection>();
 		} catch (CloneNotSupportedException ignore) {
 			ignore.printStackTrace();
 		}
@@ -113,6 +117,26 @@ public abstract class AbstractConnection implements Connection,
 			aNode.addNodeChangeListener(this);
 		}
 		node2 = aNode;
+	}	
+
+	@Override
+	public void setConnection2(Connection c) {
+		connection2 = c;		
+	}
+
+	@Override
+	public Connection getConnection2() {		
+		return connection2;
+	}
+
+	@Override
+	public void setConnection1(Connection c) {
+		connection1 = c;		
+	}
+
+	@Override
+	public Connection getConnection1() {
+		return connection1;
 	}
 
 	/**
@@ -203,6 +227,15 @@ public abstract class AbstractConnection implements Connection,
 		return false;
 	}
 
+	public boolean intersects(Line2D line) {
+		List<Line2D> segments = getSegments();
+		for (Line2D segment : segments) {
+			if (segment.intersectsLine(line))
+				return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -304,6 +337,20 @@ public abstract class AbstractConnection implements Connection,
 	/**
 	 * {@inheritDoc}
 	 */
+	public void calculateIntersection(Line2D line, Point2D intersectionPoint) 
+	{
+		for(Line2D seg: getSegments()){
+			if (line.intersectsLine(seg)) {
+				GeometryUtil.getInstance().computeLineIntersection(line, seg,
+						intersectionPoint);
+				return;
+			}
+		}		
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	public AffineTransform calculateRotationInEndPoint2() {
 		return calculateRotationTransform(getLastSegmentToNode2(),
 				getEndPoint2());
@@ -397,6 +444,14 @@ public abstract class AbstractConnection implements Connection,
 		return result;
 	}
 
+	public double getAbsCenterX() {
+		return (getSegments().get(0).getX1()+getSegments().get(0).getX2())/2;		
+	}
+
+	public double getAbsCenterY() {
+		return (getSegments().get(0).getY1()+getSegments().get(0).getY2())/2;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -445,6 +500,28 @@ public abstract class AbstractConnection implements Connection,
 		setNode1(conn.getNode1());
 		setNode2(conn.getNode2());
 	}
+	
+	// *************************************************************************
+	// ***** Connections
+	// ********************
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Collection<? extends Connection> getConnections() {
+		return connections;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void addConnection(Connection conn) { connections.add(conn); }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void removeConnection(Connection conn) { connections.remove(conn); }
+
 
 	// *************************************************************************
 	// ***** Nesting

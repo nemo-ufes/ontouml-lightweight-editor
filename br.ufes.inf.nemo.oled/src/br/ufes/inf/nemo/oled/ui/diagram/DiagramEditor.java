@@ -934,11 +934,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			}
 		}
 
-
-
-		//
-
-
 		UndoableEditEvent event = new UndoableEditEvent(this, command);
 		for (UndoableEditListener l : editListeners) {
 			l.undoableEditHappened(event);

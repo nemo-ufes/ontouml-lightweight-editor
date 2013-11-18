@@ -22,6 +22,7 @@ package br.ufes.inf.nemo.oled.draw;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -68,6 +69,14 @@ public interface Connection extends DiagramElement {
    */
   void setNode2(Node aNode);
 
+  void setConnection2(Connection c);
+  
+  Connection getConnection2();
+  
+  void setConnection1(Connection c);
+  
+  Connection getConnection1();
+  
   /**
    * Returns the connection points. The first and last point of the connection
    * represent the start and the end points.
@@ -81,6 +90,10 @@ public interface Connection extends DiagramElement {
    */
   List<Line2D> getSegments();
 
+  double getAbsCenterX(); 
+
+  double getAbsCenterY();
+  
   /**
    * Resets the connection points.
    */
@@ -132,6 +145,10 @@ public interface Connection extends DiagramElement {
    */
   AffineTransform calculateRotationInEndPoint2();
 
+  void calculateIntersection(Line2D line, Point2D intersectionPoint);
+  
+  boolean intersects(Line2D line);
+  
   /**
    * Returns the point that connects to node 1.
    * @return the point that connects to node 1
@@ -149,4 +166,22 @@ public interface Connection extends DiagramElement {
    * @return the LineConnectMethod
    */
   LineConnectMethod getConnectMethod();
+  
+  /**
+   * Returns the Connections this node has.
+   * @return this object's Connections
+   */
+  Collection<? extends Connection> getConnections();
+
+  /**
+   * Adds the specified connection to this node.
+   * @param conn the connection to add
+   */
+  void addConnection(Connection conn);
+
+  /**
+   * Removes the specified connection from this node.
+   * @param conn the connection to remove
+   */
+  void removeConnection(Connection conn);
 }
