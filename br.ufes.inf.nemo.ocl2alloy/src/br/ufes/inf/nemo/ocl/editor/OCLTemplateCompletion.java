@@ -14,6 +14,7 @@ public class OCLTemplateCompletion extends TemplateCompletion {
 			String definitionString, String template, String shortDescription, String summary) 
 	{
 		super(provider, inputText, definitionString, template, shortDescription,summary);		
+		
 	}
 	
 	public OCLTemplateCompletion(CompletionProvider provider, String inputText,
