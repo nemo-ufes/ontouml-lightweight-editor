@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.autocomplete.LanguageAwareCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -90,8 +89,7 @@ public class OCLEditorPanel extends JPanel {
 	   for(RefOntoUML.Association p: refparser.getAllInstances(RefOntoUML.Association.class))
 	   {
 		   addCompletion(p);
-	   }   
-	   
+	   }   	   
    }
    
    public void addCompletion(RefOntoUML.Association p)
@@ -99,7 +97,7 @@ public class OCLEditorPanel extends JPanel {
 	   Property source = p.getMemberEnd().get(0);
 	   Property target = p.getMemberEnd().get(1);
 	   
-	   if ((source.getName()!=null)&&!(source.getName().isEmpty()))
+	   if ((source.getName()!=null)&&!(source.getName().isEmpty())&&(source.getType()!=null))
 	   {
 		   String type = source.getType().getName();
 		   String returnType = type;
@@ -111,9 +109,10 @@ public class OCLEditorPanel extends JPanel {
 				returnType,
 				"<b>Should be more of a description here...</b>");		
 		    provider.addCompletion(c);
+		    
 		    modelCompletionList.add(c);
 	   }
-	   if ((target.getName()!=null)&&!(target.getName().isEmpty()))
+	   if ((target.getName()!=null)&&!(target.getName().isEmpty())&&(target.getType()!=null))
 	   {
 		   String type = target.getType().getName();
 		   String returnType = type;
@@ -132,7 +131,7 @@ public class OCLEditorPanel extends JPanel {
    
    public void addCompletion(RefOntoUML.Property p)
    {
-	   if ((p.getName()!=null)&&!(p.getName().isEmpty()))
+	   if ((p.getName()!=null)&&!(p.getName().isEmpty())&&(p.getType()!=null))
 	   {		   		   
 		   String type = p.getType().getName();
 		   String returnType = type;
@@ -148,7 +147,7 @@ public class OCLEditorPanel extends JPanel {
 	   }	   
    }   
    
-   public void addCompletion(RefOntoUML.Class oc)
+   public void addCompletion(RefOntoUML.Type oc)
    {	   
 	   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
 			oc.getName(),oc.toString().substring(0,oc.toString().indexOf(" ")),
@@ -189,7 +188,7 @@ public class OCLEditorPanel extends JPanel {
 		ac.setParameterAssistanceEnabled(true);
 	    ac.setAutoActivationEnabled(false);
 	    ac.setAutoCompleteSingleChoices(false);
-     	ac.setShowDescWindow(true);      	
+     	ac.setShowDescWindow(true);     	
      	ac.install(textArea);
    }
    
@@ -213,9 +212,9 @@ public class OCLEditorPanel extends JPanel {
 	    
 	    provider = createDefaultCompletionProvider();
 
-	    parentProvider = new LanguageAwareCompletionProvider(provider);
+	    //parentProvider = new LanguageAwareCompletionProvider(provider);
 	
-	    createAutoComplete(parentProvider);
+	    createAutoComplete(provider);
 	    
 	    setLayout(new BorderLayout(0, 0));
       			
