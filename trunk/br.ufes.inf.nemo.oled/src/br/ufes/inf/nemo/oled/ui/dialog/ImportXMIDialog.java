@@ -1,10 +1,8 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
-import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -12,22 +10,27 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.logging.Level;
 
-import javax.swing.Box;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.jdesktop.swingx.JXErrorPane;
@@ -35,240 +38,379 @@ import org.jdesktop.swingx.error.ErrorInfo;
 
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
-import br.ufes.inf.nemo.oled.ui.LoadingPane;
 import br.ufes.inf.nemo.xmi2ontouml.Creator;
-import br.ufes.inf.nemo.xmi2refontouml.util.ChckBoxTreeNodeElem;
-import br.ufes.inf.nemo.xmi2refontouml.util.RefOntoUMLUtil;
+import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefConstraint;
+import br.ufes.inf.nemo.xmi2ontouml.util.ChckBoxTreeNodeElem;
+import br.ufes.inf.nemo.xmi2ontouml.util.RefOntoUMLUtil;
+import javax.swing.Box;
+import java.awt.Component;
 
-
-/**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
-public class ImportXMIDialog extends JDialog implements ActionListener, TreeSelectionListener {
+public class ImportXMIDialog extends JDialog implements ActionListener, TreeSelectionListener
+{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5072745232874390321L;
-	private JScrollPane modelTreeScrollPane, diagrTreeScrollPane;
-	private JButton importButton;
-	private JTextArea infoPane;
-	private JPanel labelPane, panel;
-	private JTabbedPane treeTabbedPane;
-	private JLabel lblDetails, lblTitle;
-	private Component horizontalStrut;
-	private LoadingPane glassPane;
-	private JCheckBox verfInconsistency;
+	private static final long serialVersionUID = 2093867102692070258L;
+	private JTextField filePathField;
+	private JButton browseBtn, btnUseDefaultOptions, btnImport;
+	private JCheckBox chckbxImportConstraints, chckbxIgnoreUnknownStereotypes, 
+		chckbxCreateDefaultClassassociation, chckbxGenerateAEndsNames,
+		chckbxGenerateAssocNames, chckbxShowWarningLog;
+	private JTabbedPane mainTabbedPane;
+	private JScrollPane treeScrollPane;
+	private CheckboxTree[] trees;
+	private JRadioButton rdbtnFilterModelBy, rdbtnFilterModelBy_1;
+	private JTextArea objDescription;
 	
-	Creator transfManager;
-	File file;
-	CheckboxTree modelChckTree, diagrChckTree;
 	DiagramManager diagManager;
-	Model model;
 	
-	public ImportXMIDialog(JFrame frame, File file, DiagramManager diagMngr, boolean modal) {
-		super(frame, modal);
+	
+	public ImportXMIDialog(JFrame owner, boolean modal, DiagramManager diagManager)
+	{
+		super(owner, modal);
 		
-		this.diagManager = diagMngr;
-		this.glassPane = new LoadingPane("Importing File", 14, 0.5f);
-		frame.setGlassPane(glassPane);
-		frame.validate();
-		this.file = file;
+		this.diagManager = diagManager;
 		
-		SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                glassPane.start();
-	            Thread performer = new Thread(new Runnable() {
-	                public void run() {
-	                	try
-	                	{
-							initVariables();
-							initGUI();
-						} catch (Exception e)
+		initGUI();
+		setLocationRelativeTo(owner);
+		setVisible(true);
+	}
+	
+	private void initGUI()
+	{
+		setTitle("Import from XMI");
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+//		setPreferredSize(new Dimension(600, 500));
+		setBounds(new Rectangle(0, 0, 600, 500));
+		{
+			mainTabbedPane = new JTabbedPane();
+			JPanel treePanel = new JPanel();
+			JPanel optionsPanel = new JPanel();
+			mainTabbedPane.addTab("Options", optionsPanel);
+			mainTabbedPane.addTab("Trees", treePanel);
+			getContentPane().add(mainTabbedPane, BorderLayout.CENTER);
+			
+			{
+				JLabel lblFilePath = new JLabel("File Path");
+				filePathField = new JTextField();
+				filePathField.setColumns(60);
+				filePathField.setEditable(false);
+				browseBtn = new JButton("Browse");
+				browseBtn.addActionListener(this);
+				
+				JLabel lblConstraints = new JLabel("Constraints");
+				chckbxImportConstraints = new JCheckBox("Import Constraints");
+				chckbxImportConstraints.setSelected(true);
+				
+				JLabel lblElements = new JLabel("Elements");
+				chckbxIgnoreUnknownStereotypes = new JCheckBox("Ignore Unknown Stereotypes");
+				chckbxIgnoreUnknownStereotypes.addActionListener(this);
+				chckbxCreateDefaultClassassociation = new JCheckBox("Create default Class/Association elements for unknown stereotypes");
+				chckbxCreateDefaultClassassociation.setSelected(true);
+				chckbxCreateDefaultClassassociation.addActionListener(this);
+				
+				JLabel lblAutomation = new JLabel("Automation");
+				chckbxGenerateAssocNames = new JCheckBox("Auto generate names for unnamed Association Ends");
+				chckbxGenerateAEndsNames = new JCheckBox("Auto generate names for unnamed Associations");
+				
+				JLabel lblLogs = new JLabel("Logs");
+				chckbxShowWarningLog = new JCheckBox("Show Warnings Log");
+				chckbxShowWarningLog.setSelected(true);
+				
+				JSeparator separator = new JSeparator();
+				JSeparator separator_1 = new JSeparator();
+				JSeparator separator_2 = new JSeparator();
+				JSeparator separator_3 = new JSeparator();
+				btnUseDefaultOptions = new JButton("Use Default Options");
+				btnUseDefaultOptions.addActionListener(this);
+				
+				GroupLayout gl_optionsPanel = new GroupLayout(optionsPanel);
+				gl_optionsPanel.setHorizontalGroup(
+					gl_optionsPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_optionsPanel.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_optionsPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(chckbxGenerateAssocNames)
+								.addComponent(chckbxGenerateAEndsNames)
+								.addComponent(chckbxCreateDefaultClassassociation)
+								.addComponent(chckbxIgnoreUnknownStereotypes)
+								.addComponent(chckbxImportConstraints)
+								.addGroup(gl_optionsPanel.createSequentialGroup()
+									.addComponent(filePathField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addGap(12)
+									.addComponent(browseBtn))
+								.addComponent(lblFilePath)
+								.addGroup(gl_optionsPanel.createParallelGroup(Alignment.LEADING, false)
+									.addGroup(gl_optionsPanel.createSequentialGroup()
+										.addComponent(lblConstraints)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+									.addGroup(gl_optionsPanel.createSequentialGroup()
+										.addComponent(lblAutomation)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(separator_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+									.addGroup(gl_optionsPanel.createSequentialGroup()
+										.addComponent(lblElements)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, 508, GroupLayout.PREFERRED_SIZE))
+									.addComponent(chckbxShowWarningLog)
+									.addGroup(gl_optionsPanel.createSequentialGroup()
+										.addComponent(lblLogs)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(separator_3, GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)))
+								.addComponent(btnUseDefaultOptions))
+							.addContainerGap(4, Short.MAX_VALUE))
+				);
+				gl_optionsPanel.setVerticalGroup(
+					gl_optionsPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_optionsPanel.createSequentialGroup()
+							.addGap(9)
+							.addComponent(lblFilePath)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_optionsPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(filePathField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(browseBtn))
+							.addGap(18)
+							.addGroup(gl_optionsPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblConstraints)
+								.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(chckbxImportConstraints)
+							.addGap(18)
+							.addGroup(gl_optionsPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblElements)
+								.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(chckbxIgnoreUnknownStereotypes)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(chckbxCreateDefaultClassassociation)
+							.addGap(18)
+							.addGroup(gl_optionsPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblAutomation)
+								.addComponent(separator_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(chckbxGenerateAEndsNames)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(chckbxGenerateAssocNames)
+							.addGap(18)
+							.addGroup(gl_optionsPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblLogs)
+								.addComponent(separator_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(chckbxShowWarningLog)
+							.addGap(18)
+							.addComponent(btnUseDefaultOptions)
+							.addContainerGap(147, Short.MAX_VALUE))
+				);
+				optionsPanel.setLayout(gl_optionsPanel);
+			}
+			
+			{
+				treePanel.setLayout(new BorderLayout(0, 0));
+				
+				rdbtnFilterModelBy = new JRadioButton("Show package structure");
+				rdbtnFilterModelBy.addActionListener(this);
+				rdbtnFilterModelBy.setEnabled(false);
+				
+				rdbtnFilterModelBy_1 = new JRadioButton("Show diagrams");
+				rdbtnFilterModelBy_1.addActionListener(this);
+				rdbtnFilterModelBy_1.setEnabled(false);
+				
+				Box horizontalBox = Box.createHorizontalBox();
+				
+				Component horizontalGlue = Box.createHorizontalGlue();
+				horizontalBox.add(horizontalGlue);
+				horizontalBox.add(rdbtnFilterModelBy);
+				horizontalBox.add(rdbtnFilterModelBy_1);
+				treePanel.add(horizontalBox, BorderLayout.NORTH);
+				
+				Component horizontalGlue_1 = Box.createHorizontalGlue();
+				horizontalBox.add(horizontalGlue_1);
+				
+				treeScrollPane = new JScrollPane();
+				treeScrollPane.setPreferredSize(new Dimension(400, 300));
+				treeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+				treePanel.add(treeScrollPane, BorderLayout.CENTER);
+				
+				objDescription = new JTextArea();
+				objDescription.setSize(new Dimension(200,30));
+				objDescription.setOpaque(false);
+				objDescription.setEditable(false);
+				treePanel.add(objDescription, BorderLayout.SOUTH);
+			}
+			
+			Box importBox = Box.createHorizontalBox();
+			importBox.setPreferredSize(new Dimension(100,30));
+			Component horizontalGlue = Box.createHorizontalGlue();
+			importBox.add(horizontalGlue);
+			
+			btnImport = new JButton("Parse XMI");
+//			btnImport.setPreferredSize(new Dimension(81, 30));
+			btnImport.addActionListener(this);
+			importBox.add(btnImport);
+			
+			getContentPane().add(importBox, BorderLayout.SOUTH);
+			
+			Component horizontalGlue_1 = Box.createHorizontalGlue();
+			importBox.add(horizontalGlue_1);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if (e.getSource() == browseBtn)
+		{
+			// TODO tratar quando se dá browser em outro arquivo sendo que já tem um carregado
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Import XMI");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("XMI, XML (*.xmi, *.xml)", "xmi", "xml");
+			fileChooser.addChoosableFileFilter(filter);
+			fileChooser.setFileFilter(filter);
+			fileChooser.setAcceptAllFileFilterUsed(false);
+			if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+			{
+				if (fileChooser.getFileFilter() == filter)
+				{
+					File file = fileChooser.getSelectedFile();
+					filePathField.setText(file.getAbsolutePath());
+					trees = null;
+					btnImport.setText("Parse XMI");
+				}
+			}
+		}
+		else if (e.getSource() == btnUseDefaultOptions)
+		{
+			chckbxImportConstraints.setSelected(true);
+			chckbxIgnoreUnknownStereotypes.setSelected(false);
+			chckbxCreateDefaultClassassociation.setSelected(true);
+			chckbxGenerateAssocNames.setSelected(false);
+			chckbxGenerateAEndsNames.setSelected(false);
+			chckbxShowWarningLog.setSelected(true);
+		}
+		else if (e.getSource() == btnImport)
+		{
+			if (filePathField.getText().length() == 0)
+			{
+				JOptionPane.showMessageDialog(this, "Please select a file");
+			}
+			else if (trees == null)
+			{
+				try
+				{
+					Creator transfManager = new Creator();
+					Model model = transfManager.parse(filePathField.getText());
+					
+					if (model != null)
+					{
+						int opt = JOptionPane.showConfirmDialog(this, "Parsing complete. Do you wish to filter the model now?");
+						if (opt == 0)
 						{
-							e.printStackTrace();
-							ErrorInfo info = new ErrorInfo("Error", "Parsing not done.",
-				        			null, "category", e, Level.SEVERE, null);
-				        	JXErrorPane.showDialog(diagManager, info);
+							trees = transfManager.generateModelTrees(model, this);
+							
+							treeScrollPane.setViewportView(trees[0]);
+							treeScrollPane.validate();
+							treeScrollPane.repaint();
+							rdbtnFilterModelBy.setEnabled(true);
+							rdbtnFilterModelBy_1.setEnabled(true);
+							rdbtnFilterModelBy.setSelected(true);
+//							btnFilterModelAnd.setEnabled(true);
+							btnImport.setText("Filter and Import to OLED");
+							
+							mainTabbedPane.setSelectedIndex(1);
 						}
-	                	finally
-	                	{
-	                		glassPane.stop();
-	                	}
-	                }
-	            }, "Performer");
-	            performer.start();
-            }
-        });
-	}
-	
-	private void initGUI() {
-		try {
-			
-			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			setTitle("Import from XMI"); //TODO adicionar no arquivo de captions
-			setPreferredSize(new Dimension(800, 600));
-			setBounds(new Rectangle(0, 0, 800, 600));
-			{
-				labelPane = new JPanel();
-				labelPane.setPreferredSize(new Dimension(800, 40));
-				getContentPane().add(labelPane, BorderLayout.NORTH);
+						else if (opt == 1)
+						{
+							finalize(model);
+						}
+					}
+					else
+						throw new Exception("Modelo não foi importado.");
+				}
+				catch (Exception ex)
 				{
-					lblTitle = new JLabel("Select the classes to import");
-					lblTitle.setHorizontalTextPosition(SwingConstants.LEADING);
-					lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-					labelPane.add(lblTitle);
+					ex.printStackTrace();
 				}
 			}
+			else
 			{
-				treeTabbedPane = new JTabbedPane();
-				getContentPane().add(treeTabbedPane, BorderLayout.WEST);
+				Model model;
+				
+				CheckboxTree tree = (rdbtnFilterModelBy.isSelected() ? trees[0] : trees[1]);
+				
+				if (tree.getCheckingPaths().length == 0)
 				{
-					modelTreeScrollPane = new JScrollPane();
-					modelTreeScrollPane.setPreferredSize(new java.awt.Dimension(400, 360));
-					modelTreeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-					modelTreeScrollPane.setViewportView(modelChckTree);
+					JOptionPane.showMessageDialog(this, "No Element is selected " +
+							"in the active tree. Please select at least one Element");
 				}
+				else
 				{
-					diagrTreeScrollPane = new JScrollPane();
-					diagrTreeScrollPane.setPreferredSize(new java.awt.Dimension(400, 360));
-					diagrTreeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-					diagrTreeScrollPane.setViewportView(diagrChckTree);
-				}
-				treeTabbedPane.addTab("Model", modelTreeScrollPane);
-				treeTabbedPane.addTab("Diagram", diagrTreeScrollPane);
-			}
-			{
-				panel = new JPanel();
-				panel.setPreferredSize(new Dimension(370, 220));
-				getContentPane().add(panel, BorderLayout.EAST);
-				{
-					lblDetails = new JLabel("Details:");
-					lblDetails.setHorizontalTextPosition(SwingConstants.LEADING);
-					lblDetails.setHorizontalAlignment(SwingConstants.LEFT);
-					panel.add(lblDetails);
-				}
-				{
-					horizontalStrut = Box.createHorizontalStrut(20);
-					horizontalStrut.setPreferredSize(new Dimension(320, 0));
-					panel.add(horizontalStrut);
-				}
-				{
-					infoPane = new JTextArea();
-					panel.add(infoPane);
-					infoPane.setPreferredSize(new Dimension(370, 200));
-					infoPane.setEditable(false);
-				}
-				{
-					verfInconsistency = new JCheckBox();
-					panel.add(verfInconsistency);
-					verfInconsistency.setText("Verify inconsistencies when importing");
-				}
-				{
-					importButton = new JButton();
-					panel.add(importButton);
-					importButton.setText("Import Model");
-					importButton.addActionListener(this);
+					model = RefOntoUMLUtil.Filter(tree);
+					finalize(model);
 				}
 			}
+		}
+		else if (e.getSource() == rdbtnFilterModelBy)
+		{
+			rdbtnFilterModelBy.setSelected(true);
+			rdbtnFilterModelBy_1.setSelected(false);
 			
-			setVisible(true);
+			treeScrollPane.setViewportView(trees[0]);
+			treeScrollPane.validate();
+			treeScrollPane.repaint();
+		}
+		else if (e.getSource() == rdbtnFilterModelBy_1)
+		{
+			rdbtnFilterModelBy.setSelected(false);
+			rdbtnFilterModelBy_1.setSelected(true);
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+			treeScrollPane.setViewportView(trees[1]);
+			treeScrollPane.validate();
+			treeScrollPane.repaint();
+		}
+		else if (e.getSource() == chckbxIgnoreUnknownStereotypes)
+		{
+			if (chckbxIgnoreUnknownStereotypes.isSelected())
+				chckbxCreateDefaultClassassociation.setSelected(false);
+		}
+		else if (e.getSource() == chckbxCreateDefaultClassassociation)
+		{
+			if (chckbxCreateDefaultClassassociation.isSelected())
+				chckbxIgnoreUnknownStereotypes.setSelected(false);
 		}
 	}
 	
-	private void initVariables() throws Exception {
+	private void finalize(Model model)
+	{
+		diagManager.closeCurrentProject();
+		diagManager.createCurrentProject(model);
 		
-		Creator transfManager = new Creator();
-		model = transfManager.parse(file.getAbsolutePath());
-        
-        if (Creator.warningLog != "") {
-        	//TODO essa lib que usei tem muita coisa desnecess�ria, talvez fosse melhor copiar o source
-        	ErrorInfo info = new ErrorInfo("Warning", "Parsing done with warnings",
-        			null, "category", new Exception(Creator.warningLog), Level.WARNING, null);
-        	JXErrorPane.showDialog(diagManager, info);
-    	}
-        
-        if (model != null) {
-        	CheckboxTree modelTree = RefOntoUMLUtil.createSelectionTreeFromModel(model);
-        	modelTree.getCheckingModel().setCheckingMode(
-        			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
-        	modelTree.addTreeSelectionListener(this);
-        	
-        	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(transfManager.mapper, model);
-
-        	diagramTree.getCheckingModel().setCheckingMode(
-        			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
-        	diagramTree.addTreeSelectionListener(this);
-        	
-        	this.modelChckTree = modelTree;
-        	this.diagrChckTree = diagramTree;
-        	
-            this.transfManager = transfManager;
-            
-        } 
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == importButton) {
-			switch (treeTabbedPane.getSelectedIndex()) {
-			case 0:
-				if (modelChckTree.getCheckingPaths().length == 0) {
-					JOptionPane.showMessageDialog(this, "No Element is selected " +
-							"in the active tree. Please select at least one Element");
-					return;
-				} else {
-					this.model = RefOntoUMLUtil.Filter(modelChckTree);
-				}
-				break;
-			case 1:
-				if (diagrChckTree.getCheckingPaths().length == 0) {
-					JOptionPane.showMessageDialog(this, "No Element is selected " +
-							"in the active tree. Please select at least one Element");
-					return;
-				} else {
-					this.model = RefOntoUMLUtil.Filter(diagrChckTree);
-				}
-				break;
-			}
-			modelChckTree.clearChecking();
-			diagrChckTree.clearChecking();
-			
-			if (verfInconsistency.isSelected())
-			{
-				String inconsistencyLog = RefOntoUMLUtil.verifyInconsistency(this.model);
-				if (inconsistencyLog != "") {
-		        	ErrorInfo info = new ErrorInfo("Warning", "Inconsistencies found",
-		        			null, "category", new Exception(inconsistencyLog), Level.WARNING, null);
-		        	JXErrorPane.showDialog(diagManager, info);
-		    	}
-			}			
-			this.dispose();
-			
-			diagManager.closeCurrentProject();
-			diagManager.createCurrentProject(this.model);
-//			String oclContent = new String("Sobral");
-//			diagManager.getFrame().getInfoManager().getOcleditor().addText(oclContent);
+		if (chckbxShowWarningLog.isSelected())
+		{
+			String inconsistencyLog = RefOntoUMLUtil.verifyInconsistency(model);
+			if (inconsistencyLog != "") {
+	        	ErrorInfo info = new ErrorInfo("Warning", "Model imported with warnings",
+	        			null, "category", new Exception(inconsistencyLog), Level.WARNING, null);
+	        	JXErrorPane.showDialog(diagManager, info);
+	    	}
 		}
+		
+		if (chckbxImportConstraints.isSelected())
+		{
+			for (XMI2RefConstraint constr : XMI2RefConstraint.getConstraints())
+				diagManager.getFrame().getInfoManager().getOcleditor().addText(constr.getStringRepresentation()+"\n\n");
+		}
+		
+		this.dispose();
 	}
 	
 	@Override
-	public void valueChanged(TreeSelectionEvent e) {
+	public void valueChanged(TreeSelectionEvent e)
+	{
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 		ChckBoxTreeNodeElem chckNode = (ChckBoxTreeNodeElem) node.getUserObject();
 		String info = chckNode.getInfo();
-		infoPane.setText(info);
+		objDescription.setText(info);
 	}
 
 }

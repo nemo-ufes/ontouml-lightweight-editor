@@ -671,22 +671,23 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void importXMI()
 	{
-		JFileChooser fileChooser = new JFileChooser(lastImportEAPath);
-		fileChooser.setDialogTitle(getResourceString("dialog.importxmi.title"));
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("XMI, XML (*.xmi, *.xml)", "xmi", "xml");
-		fileChooser.addChoosableFileFilter(filter);
-		fileChooser.setFileFilter(filter);
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-		{
-			if (fileChooser.getFileFilter() == filter)
-			{
-				File file = fileChooser.getSelectedFile();
-				lastImportEAPath = file.getAbsolutePath();
-				ImportXMIDialog inst = new ImportXMIDialog(frame, file, this, true);
-				inst.setLocationRelativeTo(frame);
-			}
-		}
+//		JFileChooser fileChooser = new JFileChooser(lastImportEAPath);
+//		fileChooser.setDialogTitle(getResourceString("dialog.importxmi.title"));
+//		FileNameExtensionFilter filter = new FileNameExtensionFilter("XMI, XML (*.xmi, *.xml)", "xmi", "xml");
+//		fileChooser.addChoosableFileFilter(filter);
+//		fileChooser.setFileFilter(filter);
+//		fileChooser.setAcceptAllFileFilterUsed(false);
+//		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+//		{
+//			if (fileChooser.getFileFilter() == filter)
+//			{
+//				File file = fileChooser.getSelectedFile();
+//				lastImportEAPath = file.getAbsolutePath();
+//				ImportXMIDialog inst = new ImportXMIDialog(frame, file, this, true);
+//				inst.setLocationRelativeTo(frame);
+//			}
+//		}
+		new ImportXMIDialog(frame, true, this);
 	}
 
 	/**

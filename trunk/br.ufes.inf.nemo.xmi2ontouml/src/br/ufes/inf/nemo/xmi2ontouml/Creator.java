@@ -1,13 +1,20 @@
 package br.ufes.inf.nemo.xmi2ontouml;
 
+import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
+import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
+
 import java.io.File;
 import java.util.Map.Entry;
 
+import javax.swing.event.TreeSelectionListener;
+
+import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefElement;
+import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefModel;
+import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
+import br.ufes.inf.nemo.xmi2ontouml.mapper.MapperFactory;
+import br.ufes.inf.nemo.xmi2ontouml.util.RefOntoUMLUtil;
+
 import RefOntoUML.Model;
-import br.ufes.inf.nemo.xmi2refontouml.framework.XMI2RefElement;
-import br.ufes.inf.nemo.xmi2refontouml.framework.XMI2RefModel;
-import br.ufes.inf.nemo.xmi2refontouml.mapper.Mapper;
-import br.ufes.inf.nemo.xmi2refontouml.mapper.MapperFactory;
 
 
 public class Creator
@@ -34,7 +41,7 @@ public class Creator
     	}
     }
     
-    public Model parse(String Read_File_Address) throws Exception
+    public Model parse(String Read_File_Address)
     {
     	try
     	{
@@ -57,5 +64,20 @@ public class Creator
     		e.printStackTrace();
     	}
     	return null;
+    }
+    
+    public CheckboxTree[] generateModelTrees(Model model, TreeSelectionListener tsl) throws Exception
+    {
+    	CheckboxTree modelTree = RefOntoUMLUtil.createSelectionTreeFromModel(model);
+    	modelTree.getCheckingModel().setCheckingMode(
+    			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
+    	modelTree.addTreeSelectionListener(tsl);
+    	
+    	CheckboxTree diagramTree = RefOntoUMLUtil.createSelectionTreeByDiagram(mapper, model);
+    	diagramTree.getCheckingModel().setCheckingMode(
+    			TreeCheckingModel.CheckingMode.PROPAGATE_PRESERVING_UNCHECK);
+    	diagramTree.addTreeSelectionListener(tsl);
+    	
+    	return new CheckboxTree[]{modelTree, diagramTree};
     }
 }
