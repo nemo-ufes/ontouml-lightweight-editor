@@ -258,6 +258,8 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 			
 			diagManager.closeCurrentProject();
 			diagManager.createCurrentProject(this.model);
+//			String oclContent = new String("Sobral");
+//			diagManager.getFrame().getInfoManager().getOcleditor().addText(oclContent);
 		}
 	}
 	
