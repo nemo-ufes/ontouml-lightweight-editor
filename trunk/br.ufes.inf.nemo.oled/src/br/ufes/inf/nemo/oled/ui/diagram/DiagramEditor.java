@@ -21,6 +21,7 @@ package br.ufes.inf.nemo.oled.ui.diagram;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -320,16 +321,15 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Cancels the current edit action.
 	 */
 	private void cancelEditing() {
-		
+				
 		if (captionEditor.isVisible()) {
 			captionEditor.hideEditor();
 		}
 		editorMode.cancel();
 		redraw();
 		
-		// FIXME trying to cancel the drop action at the creation of an element in the diagram.. fail!
-		//selectionHandler.getSelection().cancelDragging();
-		//if (frame.getToolManager().getOpenPalette().getSelectedElement()!=null) frame.getToolManager().getOpenPalette().getSelectedElement().setSelected(false);
+		frame.getToolManager().getOpenPalette().getPalleteElement("select").setSelected(true);
+		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));		
 	}
 
 	/**

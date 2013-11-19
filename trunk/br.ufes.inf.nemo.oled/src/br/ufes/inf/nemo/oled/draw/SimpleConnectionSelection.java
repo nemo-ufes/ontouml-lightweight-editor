@@ -95,9 +95,16 @@ public class SimpleConnectionSelection extends ConnectionSelection {
     // Set the first and last point to the node centers
     editpoints.get(0).setLocation(getConnection().getNode1().getAbsCenterX(),
       getConnection().getNode1().getAbsCenterY());
-    editpoints.get(editpoints.size() - 1).setLocation(
-      getConnection().getNode2().getAbsCenterX(),
-      getConnection().getNode2().getAbsCenterY());
+    
+    if (getConnection().getNode2()!=null){
+    	editpoints.get(editpoints.size() - 1).setLocation(
+    		getConnection().getNode2().getAbsCenterX(),
+    		getConnection().getNode2().getAbsCenterY());
+    }else{
+    	editpoints.get(editpoints.size() - 1).setLocation(
+    		getConnection().getConnection2().getAbsCenterX(),
+    		getConnection().getConnection2().getAbsCenterY());
+    }
   }
 
   /**
@@ -139,8 +146,11 @@ public class SimpleConnectionSelection extends ConnectionSelection {
       editpoints.get(0));
     Line2D lastSegment = new Line2D.Double(editpoints.get(
       editpoints.size() - 2), editpoints.get(editpoints.size() - 1));
-    getConnection().getNode2().calculateIntersection(lastSegment,
-      editpoints.get(editpoints.size() - 1));
+    if (getConnection().getNode2()!=null){
+    	getConnection().getNode2().calculateIntersection(lastSegment, editpoints.get(editpoints.size() - 1));
+    }else{
+    	getConnection().getConnection2().calculateIntersection(lastSegment, editpoints.get(editpoints.size() - 1));
+    }
   }
 
   /**
