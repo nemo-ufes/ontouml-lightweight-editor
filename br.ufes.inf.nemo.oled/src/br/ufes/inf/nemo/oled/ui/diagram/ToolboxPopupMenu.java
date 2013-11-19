@@ -15,6 +15,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
 
 	private static final long serialVersionUID = 1L;
 	
+	JMenuItem pointerItem = new JMenuItem("Pointer");
 	JMenuItem kindItem = new JMenuItem("Kind");
 	JMenuItem collectiveItem  = new JMenuItem("Collective");
 	JMenuItem quantityItem = new JMenuItem("Quantity");
@@ -43,6 +44,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
     public ToolboxPopupMenu(final AppFrame frame)
     {        
     	this.frame = frame;
+    	add(pointerItem);
     	add(kindItem);
     	add(quantityItem);
     	add(collectiveItem);        
@@ -90,6 +92,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
         subcollectionOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/aggregation-c.png")));
         subquantityOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/aggregation-q.png")));
         derivationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/derivation.png")));
+        pointerItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/mousepointer.png")));
         
         kindItem.addMouseListener(new MouseAdapter()
 	    {
@@ -344,6 +347,17 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	            }
 			}
 		});
+       pointerItem.addMouseListener(new MouseAdapter()
+ 	    {    	   
+ 			@Override
+ 			public void mousePressed(MouseEvent e) 
+ 			{			
+ 			    if (SwingUtilities.isLeftMouseButton(e))
+ 	            {
+ 			    	frame.getToolManager().getOpenPalette().getPalleteElement("select").setSelected(true);
+ 	            }
+ 			}
+ 		});
     }	
     
     

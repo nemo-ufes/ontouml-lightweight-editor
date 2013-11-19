@@ -216,8 +216,12 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		for (Connection conn : node.getConnections()) {
 			if (conn.getNode1() != node)
 				conn.getNode1().removeConnection(conn);
-			if (conn.getNode2() != node)
-				conn.getNode2().removeConnection(conn);
+			if (conn.getNode2() != node){
+				if(conn.getNode2()!=null)
+					conn.getNode2().removeConnection(conn);
+				else 
+					conn.getConnection2().removeConnection(conn);
+			}
 			conn.getParent().removeChild(conn);
 		}
 		
@@ -236,8 +240,12 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		for (Connection conn : node.getConnections()) {
 			if (conn.getNode1() != node)
 				conn.getNode1().addConnection(conn);
-			if (conn.getNode2() != node)
-				conn.getNode2().addConnection(conn);
+			if (conn.getNode2() != node){
+				if (conn.getNode2()!=null)
+					conn.getNode2().addConnection(conn);
+				else 
+					conn.getConnection2().addConnection(conn);
+			}
 			conn.getParent().addChild(conn);
 		}
 	}
@@ -252,7 +260,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 */
 	private void detachConnectionFromNodes(Connection conn) {
 		conn.getNode1().removeConnection(conn);
-		conn.getNode2().removeConnection(conn);
+		if (conn.getNode2()!=null) conn.getNode2().removeConnection(conn);
+		else conn.getConnection2().removeConnection(conn);
 	}
 
 	/**
@@ -264,6 +273,9 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 */
 	private void reattachConnectionToNodes(Connection conn) {
 		conn.getNode1().addConnection(conn);
-		conn.getNode2().addConnection(conn);
+		if (conn.getNode2()!=null)
+			conn.getNode2().addConnection(conn);
+		else
+			conn.getConnection2().addConnection(conn);
 	}
 }

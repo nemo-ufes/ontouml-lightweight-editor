@@ -499,6 +499,8 @@ public abstract class AbstractConnection implements Connection,
 		setIsDashed(conn.isDashed());
 		setNode1(conn.getNode1());
 		setNode2(conn.getNode2());
+		setConnection1(conn.getConnection1());
+		setConnection2(conn.getConnection2());
 	}
 	
 	// *************************************************************************

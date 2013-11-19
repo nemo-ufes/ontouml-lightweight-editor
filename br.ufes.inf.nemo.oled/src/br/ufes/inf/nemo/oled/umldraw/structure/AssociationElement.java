@@ -31,14 +31,15 @@ import java.util.List;
 import RefOntoUML.Association;
 import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
+import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.draw.DrawingContext.StrokeType;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
 import br.ufes.inf.nemo.oled.draw.Node;
-import br.ufes.inf.nemo.oled.draw.RectilinearConnection;
 import br.ufes.inf.nemo.oled.draw.SimpleArrowTip;
+import br.ufes.inf.nemo.oled.draw.SimpleConnection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
@@ -84,7 +85,7 @@ public final class AssociationElement extends BaseConnection {
 	 * Constructor.
 	 */
 	private AssociationElement() {
-		setConnection(new RectilinearConnection());
+		setConnection(new SimpleConnection());
 		setupMultiplicityLabels();
 		setupRoleLabels();
 		setupNameLabel();
@@ -460,13 +461,19 @@ public final class AssociationElement extends BaseConnection {
 	private void drawLabels(DrawingContext drawingContext) {
 		if (showMultiplicities) {
 			positionLabel(multiplicity1Label, getNode1(), getEndPoint1(), drawingContext, false);
-			positionLabel(multiplicity2Label, getNode2(), getEndPoint2(), drawingContext, false);
+			if (getNode2()!=null)
+				positionLabel(multiplicity2Label, getNode2(), getEndPoint2(), drawingContext, false);
+			else
+				positionLabel(multiplicity2Label, getConnection2(), getEndPoint2(), drawingContext, false);
 			multiplicity1Label.draw(drawingContext);
 			multiplicity2Label.draw(drawingContext);
 		}
 		if (showRoles) {
 			positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
-			positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
+			if (getNode1()!=null)
+				positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
+			else
+				positionLabel(role2Label, getConnection2(), getEndPoint2(), drawingContext, true);
 			role1Label.draw(drawingContext);
 			role2Label.draw(drawingContext);
 		}
@@ -480,8 +487,13 @@ public final class AssociationElement extends BaseConnection {
 	 * @param node the node
 	 * @param endpoint the end point
 	 */
-	private void positionLabel(Label label, Node node, Point2D endpoint, DrawingContext drawingContext, boolean roleLabel) {
-		Direction direction = getPointDirection(node, endpoint);
+	private void positionLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext, boolean roleLabel) {
+		Direction direction=null;
+		if (endPointDiagramElement instanceof Node)
+			direction = getPointDirection((Node)endPointDiagramElement, endpoint);
+		else if (endPointDiagramElement instanceof Connection)
+			direction = getPointDirection((Connection)endPointDiagramElement, endpoint);
+				
 		double x = 0, y = 0, marging = 10, labelHeight = label.getSize().getHeight(), 
 			labelWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(label.getSource().getLabelText());
 				
@@ -564,6 +576,25 @@ public final class AssociationElement extends BaseConnection {
 		return Direction.SOUTH;
 	}
 
+	/**
+	 * Determines the direction the point is relative to the node.
+	 * @param c the node
+	 * @param point the point
+	 * @return the direction
+	 */
+	private Direction getPointDirection(Connection c, Point2D point) {
+		if (point.getX() >= c.getAbsCenterX()) {
+			return Direction.EAST;
+		}
+		if (point.getX() <= c.getAbsCenterX()) {
+			return Direction.WEST;
+		}
+		if (point.getY() <= c.getAbsCenterY()) {
+			return Direction.NORTH;
+		}
+		return Direction.SOUTH;
+	}
+	
 	/**
 	 * Sets the position for the name label.
 	 */
