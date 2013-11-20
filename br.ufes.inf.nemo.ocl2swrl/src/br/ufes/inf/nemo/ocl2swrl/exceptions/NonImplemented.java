@@ -14,7 +14,7 @@ public class NonImplemented extends java.lang.RuntimeException {
 	 */
 	public NonImplemented(String argument) 
     {		
-		super("The " + argument + " method is not implemented.");
+		super("The " + argument + " method is not implemented for .");
     }
 	
 	private static final long serialVersionUID = 1L;

@@ -30,6 +30,7 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 import uk.ac.manchester.cs.owl.owlapi.SWRLLiteralArgumentImpl;
 import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
 
@@ -45,7 +46,38 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	public OCLExpressionImplFactory argumentFactory;
 	
 	public OperationCallExpImplFactory(NamedElementImpl m_NamedElementImpl){
-		super(m_NamedElementImpl);	
+		super(m_NamedElementImpl);
+		
+		if(this.isUnsupported()){
+			OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl;
+			Operation operation = operationCallExpImpl.getReferredOperation();
+			String oprName = operation.getName();
+			throw new NonSupported(oprName);
+		}
+	}
+	
+	public Boolean isUnsupported(){
+		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl;
+		Operation operation = operationCallExpImpl.getReferredOperation();
+		String oprName = operation.getName();
+		
+		if(oprName == null){
+			return false;
+		}
+		
+		if(		oprName.equals("isEmpty") |
+				oprName.equals("notEmpty")|
+				oprName.equals("symmetricDifference")|
+				oprName.equals("product")|
+				oprName.equals("union")|
+				oprName.equals("and")|
+				oprName.equals("or")|
+				oprName.equals("xor")|
+				oprName.equals("oclIsUndefined")|
+				oprName.equals("allInstances")){
+			return true;
+		}
+		return false;
 	}
 	
 	public void finalize() throws Throwable {
@@ -53,7 +85,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 
 	@Override
-	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber) {
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) {
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
 		//Boolean operationNegated = false;
 		/*
@@ -63,6 +95,11 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			operationNegated = true;
 		}
 		*/
+		Boolean sourceIsLeftSideOfImplies = false;
+		if(this.isImpliesOperation()){
+			sourceIsLeftSideOfImplies = true;
+		}
+		
 		if(this.isNotOperation() && operatorNot == false){
 			operatorNot = true;
 		}
@@ -79,7 +116,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			
 			OCLExpressionImpl argument = (OCLExpressionImpl) operationCallExpImpl.getArgument().get(0);
 			this.argumentFactory = (OCLExpressionImplFactory) Factory.constructor(argument);
-			retArgsY = this.argumentFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber);
+			retArgsY = this.argumentFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, leftSideOfImplies);
 			varY = retArgsY.get(retArgsY.size()-1);//pega o ultimo
 			
 			if(this.isIncludesOperation() || this.isExcludesOperation()){
@@ -94,28 +131,28 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		*/
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
 		
-		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber);
+		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, sourceIsLeftSideOfImplies);
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//pega o ultimo
 		
 		ArrayList<SWRLDArgument> retArgsZ = null;
 		if(this.isComparisonOperation()){
-			retArgsZ = solveComparison(ctStereotype, nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, operatorNot);
+			retArgsZ = solveComparison(ctStereotype, nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, operatorNot, leftSideOfImplies);
 		}else if(this.isImpliesOperation()){
 			//do nothing
 		}else if(this.isArithmeticOperation()){
 			retArgsZ = solveArithmetic(nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, operatorNot);
 		}else if(this.isKindOfOperation()){
-			retArgsZ = solveOCLIsKindOf(ctStereotype, nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, operatorNot);
-		}else if(this.isIsEmptyOperation()){
+			retArgsZ = solveOCLIsKindOf(ctStereotype, nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, operatorNot, leftSideOfImplies);
+		}/*else if(this.isIsEmptyOperation()){
 			retArgsZ = solveIsEmpty(nameSpace, manager, factory, ontology, antecedent, consequent, varX, referredArgument, operatorNot);
 		}else if(this.isNotEmptyOperation()){
 			retArgsZ = solveNotEmpty(nameSpace, manager, factory, ontology, antecedent, consequent, varX, referredArgument, operatorNot);
-		}else if(this.isAbsOperation()){
+		}*/else if(this.isAbsOperation()){
 			retArgsZ = solveAbs(nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot);
 		}else if(this.isIncludesOperation()){
-			retArgsZ = solveIncludes(ctStereotype, factory, antecedent, consequent, retArgsX, retArgsY);
+			retArgsZ = solveIncludes(ctStereotype, factory, antecedent, consequent, retArgsX, retArgsY, leftSideOfImplies);
 		}else if(this.isExcludesOperation()){
-			retArgsZ = solveExcludes(ctStereotype, factory, antecedent, consequent, retArgsX, retArgsY);
+			retArgsZ = solveExcludes(ctStereotype, factory, antecedent, consequent, retArgsX, retArgsY, leftSideOfImplies);
 		}else{
 			retArgsZ = retArgsX;
 		}
@@ -131,17 +168,17 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return retArgsZ;
 	}
 	
-	public ArrayList<SWRLDArgument> solveIncludes(String ctStereotype, OWLDataFactory factory, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY) {
+	public ArrayList<SWRLDArgument> solveIncludes(String ctStereotype, OWLDataFactory factory, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean leftSideOfImplies) {
 		SWRLDArgument varX1 = referredArgsX.get(0);
 		SWRLDArgument varX2 = referredArgsX.get(1);
 		
 		SWRLDArgument varY1 = referredArgsY.get(0);
 		SWRLDArgument varY2 = referredArgsY.get(1);
 		
-		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && leftSideOfImplies == false){
 			SWRLDifferentIndividualsAtom diff = factory.getSWRLDifferentIndividualsAtom((SWRLVariable)varX1, (SWRLVariable)varY1);
 			antecedent.add(diff);
-		}else if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
+		}else{// if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
 			SWRLSameIndividualAtom same1 = factory.getSWRLSameIndividualAtom((SWRLVariable)varX1, (SWRLVariable)varY1);
 			antecedent.add(same1);
 		}
@@ -152,7 +189,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return null;
 	}
 	
-	public ArrayList<SWRLDArgument> solveExcludes(String ctStereotype, OWLDataFactory factory, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY) {
+	public ArrayList<SWRLDArgument> solveExcludes(String ctStereotype, OWLDataFactory factory, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean leftSideOfImplies) {
 		SWRLDArgument varX1 = referredArgsX.get(0);
 		SWRLDArgument varX2 = referredArgsX.get(1);
 		
@@ -162,10 +199,10 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		SWRLSameIndividualAtom same1 = factory.getSWRLSameIndividualAtom((SWRLVariable)varX1, (SWRLVariable)varY1);
 		antecedent.add(same1);
 		
-		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && leftSideOfImplies == false){
 			SWRLSameIndividualAtom same2 = factory.getSWRLSameIndividualAtom((SWRLVariable)varX2, (SWRLVariable)varY2);
 			antecedent.add(same2);
-		}else if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
+		}else{// if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
 			SWRLDifferentIndividualsAtom diff = factory.getSWRLDifferentIndividualsAtom((SWRLVariable)varX2, (SWRLVariable)varY2);
 			antecedent.add(diff);
 		}
@@ -220,7 +257,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return null;
 	}
 	
-	public ArrayList<SWRLDArgument> solveOCLIsKindOf(String ctStereotype, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean operatorNot) {
+	public ArrayList<SWRLDArgument> solveOCLIsKindOf(String ctStereotype, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean operatorNot, Boolean leftSideOfImplies) {
 		//OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl;
 		//String referredOperationName = operationCallExpImpl.getReferredOperation().getName();
 
@@ -229,7 +266,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		OWLClass owlClass = factory.getOWLClass(iri);
 		
 		Boolean creationOfComplementOf = false;
-		if(operatorNot == false && org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+		if(operatorNot == false && org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && leftSideOfImplies == false){
 			creationOfComplementOf = true;
 		}else if (operatorNot == true && org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
 			creationOfComplementOf = true;
@@ -263,7 +300,12 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return null;
 	}
 	
-	public ArrayList<SWRLDArgument> solveComparison(String ctStereotype, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean operatorNot) {
+	public ArrayList<SWRLDArgument> solveComparison(String ctStereotype, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean operatorNot, Boolean leftSideOfImplies) {
+		Boolean hasToBeInverted = false;
+		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && leftSideOfImplies == false){
+			hasToBeInverted = true;
+		}
+		
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl;
 		String referredOperationName = operationCallExpImpl.getReferredOperation().getName();
 		
@@ -278,42 +320,42 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		String iriName = "";
 		switch (referredOperationName) {
 		case ">":
-			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+			if(hasToBeInverted){
 				iriName = "lessThanOrEqual";
 			}else{
 				iriName = "greaterThan";
 			}			
 			break;
 		case ">=":
-			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+			if(hasToBeInverted){
 				iriName = "lessThan";
 			}else{
 				iriName = "greaterThanOrEqual";
 			}
 			break;
 		case "<":
-			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+			if(hasToBeInverted){
 				iriName = "greaterThanOrEqual";
 			}else{
 				iriName = "lessThan";
 			}
 			break;
 		case "<=":
-			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+			if(hasToBeInverted){
 				iriName = "greaterThan";
 			}else{
 				iriName = "lessThanOrEqual";
 			}
 			break;	
 		case "=":
-			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+			if(hasToBeInverted){
 				iriName = "notEqual";
 			}else{
 				iriName = "equal";
 			}
 			break;
 		case "<>":
-			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+			if(hasToBeInverted){
 				iriName = "equal";
 			}else{
 				iriName = "notEqual";
