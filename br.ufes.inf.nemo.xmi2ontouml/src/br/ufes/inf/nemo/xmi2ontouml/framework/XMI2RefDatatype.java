@@ -25,11 +25,11 @@ public class XMI2RefDatatype extends XMI2RefClassifier
 	@Override
 	protected void deal()
 	{
-		if (((DataType)RefOntoUMLElement).getName() != null &&
+		if (((DataType)RefOntoUMLElement).getName() == null || (
 				!((DataType)RefOntoUMLElement).getName().equals("Integer") &&
 				!((DataType)RefOntoUMLElement).getName().equals("Boolean") && 
 				!((DataType)RefOntoUMLElement).getName().equals("String") &&
-				!((DataType)RefOntoUMLElement).getName().equals("Unlimited Natural"))
+				!((DataType)RefOntoUMLElement).getName().equals("Unlimited Natural")))
 			super.deal();
 			
 	}

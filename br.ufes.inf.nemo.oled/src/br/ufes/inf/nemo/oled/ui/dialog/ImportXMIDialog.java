@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.oled.ui.dialog;
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -57,7 +58,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	private JCheckBox chckbxImportConstraints, chckbxIgnoreUnknownStereotypes, 
 		chckbxCreateDefaultClassassociation, chckbxGenerateAEndsNames,
 		chckbxGenerateAssocNames, chckbxShowWarningLog, chckbxIgnoreElementsWith,
-		chckbxSetFor;
+		chckbxGenerateCard;
 	private JTabbedPane mainTabbedPane;
 	private JScrollPane treeScrollPane;
 	private CheckboxTree[] trees;
@@ -116,18 +117,12 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				chckbxCreateDefaultClassassociation.addActionListener(this);
 				chckbxIgnoreElementsWith = new JCheckBox("Ignore Elements with error");
 				chckbxIgnoreElementsWith.setSelected(true);
-				chckbxIgnoreElementsWith.addActionListener(this);
 				
 				JLabel lblAutomation = new JLabel("Automation");
 				chckbxGenerateAssocNames = new JCheckBox("Auto generate names for unnamed Association Ends");
-				chckbxGenerateAssocNames.addActionListener(this);
-				chckbxGenerateAssocNames.setEnabled(false);
 				chckbxGenerateAEndsNames = new JCheckBox("Auto generate names for unnamed Associations");
-				chckbxGenerateAEndsNames.addActionListener(this);
-				chckbxGenerateAEndsNames.setEnabled(false);
-				chckbxSetFor = new JCheckBox("Set 1 for null cardinalities");
-				chckbxSetFor.addActionListener(this);
-				chckbxSetFor.setEnabled(false);
+				chckbxGenerateCard = new JCheckBox("Set 1 for null cardinalities");
+				chckbxGenerateCard.setSelected(true);
 				
 				JLabel lblLogs = new JLabel("Logs");
 				chckbxShowWarningLog = new JCheckBox("Show Warnings Log");
@@ -156,7 +151,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 								.addComponent(chckbxImportComments)
 								.addComponent(chckbxGenerateAEndsNames)
 								.addComponent(chckbxGenerateAssocNames)
-								.addComponent(chckbxSetFor)
+								.addComponent(chckbxGenerateCard)
 								.addComponent(chckbxCreateDefaultClassassociation)
 								.addComponent(chckbxIgnoreElementsWith)
 								.addComponent(chckbxIgnoreUnknownStereotypes)
@@ -216,7 +211,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(chckbxGenerateAssocNames)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(chckbxSetFor)
+							.addComponent(chckbxGenerateCard)
 							.addGap(18)
 							.addGroup(gl_optionsPanel.createParallelGroup(Alignment.TRAILING)
 								.addComponent(lblLogs)
@@ -316,7 +311,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 			chckbxIgnoreElementsWith.setSelected(true);
 			chckbxGenerateAssocNames.setSelected(false);
 			chckbxGenerateAEndsNames.setSelected(false);
-			chckbxSetFor.setSelected(false);
+			chckbxGenerateCard.setSelected(true);
 			chckbxShowWarningLog.setSelected(true);
 		}
 		else if (e.getSource() == btnImport)
@@ -329,9 +324,11 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 			{
 				try
 				{
+					setCursor(new Cursor(Cursor.WAIT_CURSOR));
 					Creator transfManager = new Creator();
 					Model model = transfManager.parse(filePathField.getText(), chckbxIgnoreUnknownStereotypes.isSelected(), 
-							chckbxCreateDefaultClassassociation.isSelected(), chckbxIgnoreElementsWith.isSelected());
+							chckbxCreateDefaultClassassociation.isSelected(), chckbxIgnoreElementsWith.isSelected(), 
+							chckbxGenerateAssocNames.isSelected(), chckbxGenerateAEndsNames.isSelected(), chckbxGenerateCard.isSelected());
 					
 					int opt = JOptionPane.showConfirmDialog(this, "Parsing complete. Do you wish to filter the model now?");
 					if (opt == 0)
@@ -364,6 +361,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 			}
 			else
 			{
+				setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				Model model;
 				
 				CheckboxTree tree = (rdbtnFilterModelBy.isSelected() ? trees[0] : trees[1]);
@@ -379,6 +377,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 					finalize(model);
 				}
 			}
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 		else if (e.getSource() == rdbtnFilterModelBy)
 		{

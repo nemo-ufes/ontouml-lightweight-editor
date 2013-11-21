@@ -498,6 +498,12 @@ public class MapperEA implements Mapper {
 		if (getType(elem) == ElementType.MODEL) {
 			return "Model_ID_"+elem.getAttribute("name");
 		}
+		else if (elem.getNodeName().equals("constraint"))
+			return (elem.getAttribute("name")+elem.getAttribute("description")).replace(" ", "_");
+		
+		else if (elem.getNodeName().equals("Constraint"))
+			return (elem.getAttribute("name")+elem.getAttribute("notes")).replace(" ", "_");
+		
 		return elem.getAttributeNS(XMINS, "id");
 	}
 
