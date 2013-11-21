@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.xmi2ontouml.framework;
 
 import java.util.List;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
@@ -31,11 +33,28 @@ public class XMI2RefGeneralizationSet extends XMI2RefNamedElement
 	@Override
 	public void dealReferences()
 	{
-    	for (Object gen : (List<?>)hashProp.get("generalization"))
-    	{
-    		// Only one of those properties must be set, since they are EOposite.
-    		((GeneralizationSet)RefOntoUMLElement).getGeneralization().add((Generalization)elemMap.get((String)gen));
-//			((Generalization)gen).getGeneralizationSet().add(((GeneralizationSet)RefOntoUMLElement));
+		try
+		{
+	    	for (Object gen : (List<?>)hashProp.get("generalization"))
+	    	{
+	    		// Only one of those properties must be set, since they are EOposite.
+	    		((GeneralizationSet)RefOntoUMLElement).getGeneralization().add((Generalization)elemMap.get((String)gen));
+//				((Generalization)gen).getGeneralizationSet().add(((GeneralizationSet)RefOntoUMLElement));
+			}
+		}
+		catch (NullPointerException | IllegalArgumentException e)
+		{
+			if (!ignoreErrorElements)
+				throw e;
+		}
+		finally
+		{
+			if (((GeneralizationSet)RefOntoUMLElement).getGeneralization().size() == 0 && ignoreErrorElements)
+	    	{
+				System.out.println("Debug: removing generalization set with no generalization ("+((GeneralizationSet)RefOntoUMLElement).getName()+")");
+	    		EcoreUtil.remove(RefOntoUMLElement);
+//	    		elemMap.remove(Mapper.getID(XMIElement));
+	    	}
 		}
 	}
 }

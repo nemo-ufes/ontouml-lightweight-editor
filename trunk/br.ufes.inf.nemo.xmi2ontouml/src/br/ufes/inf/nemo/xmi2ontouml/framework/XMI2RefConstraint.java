@@ -2,6 +2,9 @@ package br.ufes.inf.nemo.xmi2ontouml.framework;
 
 import java.util.List;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
+import RefOntoUML.Classifier;
 import RefOntoUML.Constraintx;
 import RefOntoUML.Element;
 import RefOntoUML.NamedElement;
@@ -18,7 +21,7 @@ public class XMI2RefConstraint extends XMI2RefNamedElement
 		
 		this.hashProp = Mapper.getProperties(XMIElement);
 		
-		constraints.add(this);
+		XMI2RefModel.getConstraints().add(this);
 		
 		commonTasks();
 	}
@@ -40,9 +43,24 @@ public class XMI2RefConstraint extends XMI2RefNamedElement
 	@Override
 	public void dealReferences()
 	{
-		for (Object constrainedElement : (List<?>)hashProp.get("constrainedelement"))
+		try
 		{
-			((Constraintx)RefOntoUMLElement).getConstrainedElement().add((Element)elemMap.get((String)constrainedElement));
+			for (Object constrainedElement : (List<?>)hashProp.get("constrainedelement"))
+			{
+				((Constraintx)RefOntoUMLElement).getConstrainedElement().add((Element)elemMap.get((String)constrainedElement));
+			}
+		}
+		catch (NullPointerException | IllegalArgumentException e)
+		{
+			//A constraintx should not produce an error
+		}
+		finally
+		{
+			if (((Constraintx)RefOntoUMLElement).getConstrainedElement().size() == 0)
+			{
+				System.out.println("Debug: removing constraint with error ("+((Constraintx)RefOntoUMLElement).getName()+" | Container: "+((Classifier)RefOntoUMLElement.eContainer()).getName()+")");
+				EcoreUtil.remove(RefOntoUMLElement);
+			}
 		}
 	}
 	
@@ -50,29 +68,40 @@ public class XMI2RefConstraint extends XMI2RefNamedElement
 	{
 		String rule = new String();
 		
-		String body = ((OpaqueExpression)((Constraintx)RefOntoUMLElement).getSpecification()).getBody().get(0);
+		String body = ((OpaqueExpression)((Constraintx)RefOntoUMLElement).getSpecification()).getBody().get(0)
+				.replace("<b>", "")
+				.replace("</b>", "")
+				.replace("&lt;", "<")
+				.replace("&gt;", ">")
+				.trim();
 		
-		if (!(body.startsWith("context")))
+		if (body.equals(""))
+			return "";
+		
+		if (((Constraintx)RefOntoUMLElement).getName() != null && ((Constraintx)RefOntoUMLElement).getName() != "")
+			rule += "--"+((Constraintx)RefOntoUMLElement).getName()+"\n";
+		
+		if (!(body.toLowerCase().startsWith("context")))
 		{
 			for (Element e : ((Constraintx)RefOntoUMLElement).getConstrainedElement())
 			{
 				if (e instanceof NamedElement && ((NamedElement) e).getName() != null && !((NamedElement) e).getName().isEmpty())
 				{
-					rule += "context "+((NamedElement)e).getName()+"\n";
+					rule += "context _'"+((NamedElement)e).getName().replace("/", "").trim()+"'\n";
 					break;
 				}
 				else
 					return "";
 			}
 			
-			if (body.startsWith("inv") || body.startsWith("derive"))
+			if (body.toLowerCase().startsWith("inv") || body.toLowerCase().startsWith("derive"))
 				rule += body;
 			else
-				rule += "inv "+((Constraintx)RefOntoUMLElement).getName()+": "+body;
+				rule += "inv: "+body;
 		}
 		else
-			rule = body;
+			rule += body;
 		
-		return rule;
+		return rule+"\n\n";
 	}
 }

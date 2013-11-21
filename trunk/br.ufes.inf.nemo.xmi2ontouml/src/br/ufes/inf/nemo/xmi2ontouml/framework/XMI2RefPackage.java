@@ -1,14 +1,12 @@
 package br.ufes.inf.nemo.xmi2ontouml.framework;
 
-import java.lang.reflect.InvocationTargetException;
-
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import br.ufes.inf.nemo.xmi2ontouml.Creator;
 import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
 
-public class XMI2RefPackage extends XMI2RefNamedElement
+public class XMI2RefPackage extends XMI2RefNamespace
 {
 	public XMI2RefPackage (Object XMIElement, Mapper mapper) throws Exception
 	{
@@ -68,42 +66,16 @@ public class XMI2RefPackage extends XMI2RefNamedElement
     	super.createSubElements();
 	}
 	
-	protected <T> void packageIterator(Class<T> type, ElementType elementType)
+	protected <T> void packageIterator(Class<T> type, ElementType elementType) throws Exception
 	{
 		for (Object elem : this.Mapper.getElements(XMIElement, elementType))
 		{
-        	try
-        	{
-				XMI2RefElement xmi2RefElem = (XMI2RefElement) type.getConstructor(Object.class, Mapper.class).newInstance(elem, Mapper);
+			XMI2RefElement xmi2RefElem = (XMI2RefElement) type.getConstructor(Object.class, Mapper.class).newInstance(elem, Mapper);
+			if (xmi2RefElem.RefOntoUMLElement != null)
+			{
 				PackageableElement refOntoElem = (PackageableElement) xmi2RefElem.RefOntoUMLElement;
 				((Package)RefOntoUMLElement).getPackagedElement().add(refOntoElem);
-				
-        	} catch (InstantiationException | IllegalAccessException | IllegalArgumentException |
-        			InvocationTargetException | SecurityException e)
-        	{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-				
-//        	} catch (RefOntoUMLException refe) {
-//        		errorLog = refe.getError();
-//        		errorLog += "Path of the element with error: " + mapper.getPath(e) + "\n";
-//        		if (mapper.getType(e) == ElementType.ASSOCIATION) {
-//        			List<Object> listProp = mapper.getElements(e, ElementType.PROPERTY);
-//    				String ends = "Ends: ";
-//    		    	for (Object p : listProp) {
-//    		    		Map<String, Object> hashProp = mapper.getProperties(p);
-//    		    		ends += mapper.getName(mapper.getElementById((String)hashProp.get("type"))) + ", ";
-//    		    	}
-//    		    	errorLog += ends;
-//        		}
-//            	Exception ex = new Exception(errorLog);
-//            	throw ex;
-//        	}
         }
     }
 }

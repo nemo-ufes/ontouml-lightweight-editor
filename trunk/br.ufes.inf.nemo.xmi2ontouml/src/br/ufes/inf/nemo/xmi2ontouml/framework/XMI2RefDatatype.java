@@ -47,8 +47,11 @@ public class XMI2RefDatatype extends XMI2RefClassifier
 		for (Object prop : this.Mapper.getElements(XMIElement, ElementType.PROPERTY))
 		{
 			XMI2RefProperty xmi2refprop = new XMI2RefProperty(prop, Mapper);
-//			listProperties.add(xmi2refprop);
-			((DataType)RefOntoUMLElement).getOwnedAttribute().add((Property)xmi2refprop.getRefOntoUMLElement());
+			if (xmi2refprop.RefOntoUMLElement != null)
+			{
+//				listProperties.add(xmi2refprop);
+				((DataType)RefOntoUMLElement).getOwnedAttribute().add((Property)xmi2refprop.getRefOntoUMLElement());
+			}
 		}
 		
 		super.createSubElements();

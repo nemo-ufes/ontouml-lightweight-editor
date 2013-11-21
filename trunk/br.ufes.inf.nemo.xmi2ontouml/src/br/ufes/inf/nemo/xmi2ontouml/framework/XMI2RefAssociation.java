@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.xmi2ontouml.framework;
 
 import java.util.List;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import RefOntoUML.Association;
 import RefOntoUML.Derivation;
 import RefOntoUML.LiteralInteger;
@@ -28,46 +30,56 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 		commonTasks();
 	}
 	
-	private Association solveStereotype(String stereotype)
+	private Association solveStereotype(String stereotype) throws Exception
 	{
-		Association newassoc = null;
+		if (stereotype.equalsIgnoreCase("characterization"))
+			return factory.createCharacterization();
+			
+		else if (stereotype.equalsIgnoreCase("componentof"))
+			return factory.createcomponentOf();
+			
+		else if (stereotype.equalsIgnoreCase("formal") || stereotype.equalsIgnoreCase("formalassociation"))
+			return factory.createFormalAssociation();
+			
+		else if (stereotype.equalsIgnoreCase("derivation"))
+			return factory.createDerivation();
+			
+		else if (stereotype.equalsIgnoreCase("material") || stereotype.equalsIgnoreCase("materialassociation"))
+			return factory.createMaterialAssociation();
+			
+		else if (stereotype.equalsIgnoreCase("mediation"))
+			return factory.createMediation();
+			
+		else if (stereotype.equalsIgnoreCase("memberof"))
+			return factory.creatememberOf();
+			
+		else if (stereotype.equalsIgnoreCase("subcollectionof"))
+			return factory.createsubCollectionOf();
+			
+		else if (stereotype.equalsIgnoreCase("subquantityof"))
+			return factory.createsubQuantityOf();
+			
+		else if (unknownStereotypeOpt == 0)
+    		return factory.createAssociation();
 		
-		if (stereotype.equalsIgnoreCase("characterization")) {
-			newassoc = factory.createCharacterization();
-    	}
-		else if (stereotype.equalsIgnoreCase("componentof")) {
-    		newassoc = factory.createcomponentOf();
-    	}
-		else if (stereotype.equalsIgnoreCase("formal") || stereotype.equalsIgnoreCase("formalassociation")) {
-    		newassoc = factory.createFormalAssociation();
-    	}
-		else if (stereotype.equalsIgnoreCase("derivation")) {
-    		newassoc = factory.createDerivation();
-    	}
-		else if (stereotype.equalsIgnoreCase("material") || stereotype.equalsIgnoreCase("materialassociation")) {
-    		newassoc = factory.createMaterialAssociation();
-    	}
-		else if (stereotype.equalsIgnoreCase("mediation")) {
-    		newassoc = factory.createMediation();
-    	}
-		else if (stereotype.equalsIgnoreCase("memberof")) {
-    		newassoc = factory.creatememberOf();
-    	}
-		else if (stereotype.equalsIgnoreCase("subcollectionof")) {
-    		newassoc = factory.createsubCollectionOf();
-    	}
-		else if (stereotype.equalsIgnoreCase("subquantityof")) {
-    		newassoc = factory.createsubQuantityOf();
-    	}
-		else
-		{
-			newassoc = factory.createAssociation();
-		}
+    	else if (unknownStereotypeOpt == 1)
+    		return null;
 		
-		return newassoc;
+    	else
+    	{//TODO colocar isso no ontoUML error e também gerar warning
+    		String error;
+    		
+    		if (stereotype == null || stereotype == "")
+    			error = "Stereotype undefined for class "+Mapper.getName(XMIElement);
+    		
+    		else
+    			error = "Unknown Stereotype '"+stereotype+"' found in class "+Mapper.getName(XMIElement);
+    		
+    		throw new Exception(error);
+    	}
 	}
 	
-	private void createDerivation()
+	private void createDerivation() throws Exception
 	{
 		String relatorID = Mapper.getRelatorfromMaterial(XMIElement);
 		
@@ -140,11 +152,28 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 	}
 	
 	@Override
-	public void dealReferences()
+	public void dealReferences() throws Exception
 	{
-    	for (Object memberEnd : (List<?>)hashProp.get("memberend"))
-    	{
-    		((Association)RefOntoUMLElement).getMemberEnd().add((Property)elemMap.get((String)memberEnd));
+		try
+		{
+	    	for (Object memberEnd : (List<?>)hashProp.get("memberend"))
+	    	{
+	    		((Association)RefOntoUMLElement).getMemberEnd().add((Property)elemMap.get((String)memberEnd));
+			}
+		}
+		catch (NullPointerException | IllegalArgumentException e)
+		{
+			if (!ignoreErrorElements)
+				throw e;
+		}
+		finally
+		{
+			if (((Association)RefOntoUMLElement).getMemberEnd().size() < 2 && ignoreErrorElements)
+	    	{
+				System.out.println("Debug: removing association with error ("+((Association)RefOntoUMLElement).getName()+")");
+	    		EcoreUtil.remove(RefOntoUMLElement);
+//	    		elemMap.remove(Mapper.getID(XMIElement));
+	    	}
 		}
     	
     	if (RefOntoUMLElement instanceof MaterialAssociation)
@@ -157,9 +186,12 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 		for (Object prop : this.Mapper.getElements(XMIElement, ElementType.PROPERTY))
 		{
 			XMI2RefProperty xmi2refprop = new XMI2RefProperty(prop, Mapper);
-//			listProperties.add(xmi2refprop);		
-			((Association)RefOntoUMLElement).getOwnedEnd().add((Property)xmi2refprop.getRefOntoUMLElement());
-			((Property)xmi2refprop.getRefOntoUMLElement()).setAssociation((Association)RefOntoUMLElement);
+			if (xmi2refprop.RefOntoUMLElement != null)
+			{
+	//			listProperties.add(xmi2refprop);		
+				((Association)RefOntoUMLElement).getOwnedEnd().add((Property)xmi2refprop.getRefOntoUMLElement());
+				((Property)xmi2refprop.getRefOntoUMLElement()).setAssociation((Association)RefOntoUMLElement);
+			}
 		}
 		
 		super.createSubElements();

@@ -13,7 +13,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import br.ufes.inf.nemo.xmi2ontouml.Creator;
 import br.ufes.inf.nemo.xmi2ontouml.mapper.impl.MapperAstah;
 import br.ufes.inf.nemo.xmi2ontouml.mapper.impl.MapperEA;
 
@@ -24,8 +23,8 @@ public class MapperFactory {
 	
 	private File xmiFile;
 	
-	public Mapper createMapper(File file) {
-		
+	public Mapper createMapper(File file) throws Exception
+	{
 		xmiFile = file;
 		
 		try {
@@ -40,33 +39,29 @@ public class MapperFactory {
 			
 			return identifyExporter(doc);
 			
-		} catch (SAXParseException err) {
-            Creator.errorLog += "** Parsing error" + ", line "
+		} catch (SAXParseException err)
+		{
+			String error = "** Parsing error" + ", line "
                     + err.getLineNumber() + ", uri " + err.getSystemId();
-            Creator.errorLog += " " + err.getMessage() + "\n";
+			error += " " + err.getMessage();
+			throw new Exception(error);
  
-		} catch (SAXException e) {
+		} catch (SAXException e)
+		{
 			Exception x = e.getException();
-			Creator.errorLog += ((x == null) ? e : x).getMessage() + "\n";
+			throw new Exception(((x == null) ? e : x).getMessage());
 			
-		} catch (IOException e) {
-			Creator.errorLog += "File " + file.getAbsolutePath() + 
-			" does not exist or could not be oppened." + "\n";
-			
-		} catch (Exception e) {
-			Creator.errorLog += e.getMessage() + "\n";
-			// For Debug
-			//System.out.println(e.getMessage());
-			//e.printStackTrace();
+		} catch (IOException e)
+		{
+			throw new Exception ("File " + file.getAbsolutePath() + 
+			" does not exist or could not be oppened.");
 		}
-		
-		return null;
 	}
 	
 	//Read the DOM Document and look for the program or the exporter
 	//of the XMI
-	private Mapper identifyExporter(Document doc) throws Exception {
-		
+	private Mapper identifyExporter(Document doc) throws Exception
+	{
 		Element root = doc.getDocumentElement();
 		NamedNodeMap nnm = root.getAttributes();
 		String version = "";
@@ -96,6 +91,5 @@ public class MapperFactory {
 		}
 
 		throw new Exception("Unsuported Exporter or XMI version");
-		
 	}
 }

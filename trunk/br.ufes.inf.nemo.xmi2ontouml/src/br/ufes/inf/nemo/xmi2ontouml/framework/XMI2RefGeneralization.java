@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.xmi2ontouml.framework;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
@@ -28,9 +30,26 @@ public class XMI2RefGeneralization extends XMI2RefElement
 	@Override
 	public void dealReferences()
 	{
-		// General and Specific are EOposites.
-		// Given that, it`s only necessary to define one of those properties.
-		((Generalization)RefOntoUMLElement).setGeneral((Classifier)elemMap.get((String)hashProp.get("general")));
-		//((Generalization)RefOntoUMLElement).setSpecific((Classifier)hashProp.get("specific"));
+		try
+		{
+			// General and Specific are EOposites.
+			// Given that, it`s only necessary to define one of those properties.
+			((Generalization)RefOntoUMLElement).setGeneral((Classifier)elemMap.get((String)hashProp.get("general")));
+			//((Generalization)RefOntoUMLElement).setSpecific((Classifier)hashProp.get("specific"));
+		}
+		catch (NullPointerException | IllegalArgumentException e)
+		{
+			if (!ignoreErrorElements)
+				throw e;
+		}
+		finally
+		{
+			if (((Generalization)RefOntoUMLElement).getGeneral() == null && ignoreErrorElements)
+			{
+				System.out.println("Debug: removing generalization with error (Container: "+((Classifier)RefOntoUMLElement.eContainer()).getName()+")");
+	    		EcoreUtil.remove(RefOntoUMLElement);
+//	    		elemMap.remove(Mapper.getID(XMIElement));
+	    	}
+		}
 	}
 }

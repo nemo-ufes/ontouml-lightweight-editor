@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.xmi2ontouml.framework;
 
 import java.util.List;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Characterization;
@@ -115,8 +117,7 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 	@Override
 	public void dealReferences()
 	{
-		// Gets the RefOntoUML.Element that is the 'type' of the property
-    	if (hashProp.get("type") == null)
+    	if (!(RefOntoUMLElement.eContainer() instanceof Association) && hashProp.get("type") == null)
     		Creator.warningLog += OntoUMLError.undefinedTypeError(((Property)RefOntoUMLElement));
     	
 //    	else if (hashProp.get("type").equals("Integer"))
@@ -133,7 +134,24 @@ public class XMI2RefProperty extends XMI2RefNamedElement
     	
     	else
     	{
-    		((Property)RefOntoUMLElement).setType((Type) elemMap.get((String)hashProp.get("type")));
+    		try
+    		{
+    			((Property)RefOntoUMLElement).setType((Type) elemMap.get((String)hashProp.get("type")));
+    		}
+    		catch (NullPointerException | IllegalArgumentException e)
+    		{
+    			if (!ignoreErrorElements)
+    				throw e;
+    		}
+    		finally
+    		{
+    			if (((Property)RefOntoUMLElement).getType() == null && RefOntoUMLElement.eContainer() instanceof Association && ignoreErrorElements)
+    			{
+    				System.out.println("Debug: removing property with error ("+((Property)RefOntoUMLElement).getName()+" | Container: "+RefOntoUMLElement.eContainer()+")");
+    	    		EcoreUtil.remove(RefOntoUMLElement);
+//    	    		elemMap.remove(Mapper.getID(XMIElement));
+    			}
+    		}
     	}
 	}
 }

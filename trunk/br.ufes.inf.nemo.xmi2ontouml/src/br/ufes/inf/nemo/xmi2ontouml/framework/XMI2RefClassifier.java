@@ -7,18 +7,16 @@ import RefOntoUML.Mixin;
 import RefOntoUML.RoleMixin;
 import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
 
-public abstract class XMI2RefClassifier extends XMI2RefNamedElement
-{
-//	protected List<XMI2RefProperty> listProperties;
-//	
-//	protected List<XMI2RefGeneralization> listGeneralizations;
-//	
-//	public XMI2RefClassifier()
-//	{
-//		this.listProperties = new ArrayList<XMI2RefProperty>();
-//		this.listGeneralizations = new ArrayList<XMI2RefGeneralization>();
-//	}
-	
+public abstract class XMI2RefClassifier extends XMI2RefNamespace
+{	
+	/**
+	 * Option variable to decide how to threat unknowns stereotypes.
+	 * 0 will create default Class/Association elements
+	 * 1 will ignore the element
+	 * Any other value will throw an exception and not produce the result model
+	 */
+	protected static int unknownStereotypeOpt = 0;
+
 	@Override
 	protected void deal()
 	{
@@ -42,10 +40,20 @@ public abstract class XMI2RefClassifier extends XMI2RefNamedElement
 		for (Object gen : this.Mapper.getElements(XMIElement, ElementType.GENERALIZATION))
 		{
 			XMI2RefGeneralization xmi2refgen = new XMI2RefGeneralization(gen, Mapper);
-//			listGeneralizations.add(xmi2refgen);
-			((Classifier)RefOntoUMLElement).getGeneralization().add((Generalization)xmi2refgen.getRefOntoUMLElement());
+			if (xmi2refgen.RefOntoUMLElement != null)
+			{
+				((Classifier)RefOntoUMLElement).getGeneralization().add((Generalization)xmi2refgen.getRefOntoUMLElement());
+			}
 		}
 		
 		super.createSubElements();
+	}
+	
+	public static int getUnknownStereotypeOpt() {
+		return unknownStereotypeOpt;
+	}
+
+	public static void setUnknownStereotypeOpt(int unknownStereotypeOpt) {
+		XMI2RefClassifier.unknownStereotypeOpt = unknownStereotypeOpt;
 	}
 }

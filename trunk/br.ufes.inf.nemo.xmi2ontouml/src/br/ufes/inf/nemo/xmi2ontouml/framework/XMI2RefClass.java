@@ -19,48 +19,59 @@ public class XMI2RefClass extends XMI2RefClassifier
 		commonTasks();
 	}
 	
-	private Class solveStereotype(String stereotype)
-	{
-		Class newclass = null;
+	private Class solveStereotype(String stereotype) throws Exception
+	{		
+		if (stereotype.equalsIgnoreCase("kind"))
+    		return factory.createKind();
 		
-		if (stereotype.equalsIgnoreCase("kind")) {
-    		newclass = factory.createKind();
-    	} 
-		else if (stereotype.equalsIgnoreCase("subkind")) {
-    		newclass = factory.createSubKind();
-    	} 
-    	else if (stereotype.equalsIgnoreCase("role")) {
-    		newclass = factory.createRole();
-    	} 
-    	else if (stereotype.equalsIgnoreCase("phase")) {
-    		newclass = factory.createPhase();
-    	}
-    	else if (stereotype.equalsIgnoreCase("category")) {
-    		newclass = factory.createCategory();
-    	}
-    	else if (stereotype.equalsIgnoreCase("collective")) {
-    		newclass = factory.createCollective();
-    	}
-    	else if (stereotype.equalsIgnoreCase("mixin")) {
-    		newclass = factory.createMixin();
-    	}
-    	else if (stereotype.equalsIgnoreCase("mode")) {
-    		newclass = factory.createMode();
-    	}
-    	else if (stereotype.equalsIgnoreCase("quantity")) {
-    		newclass = factory.createQuantity();
-    	}
-    	else if (stereotype.equalsIgnoreCase("relator")) {
-    		newclass = factory.createRelator();
-    	}
-    	else if (stereotype.equalsIgnoreCase("rolemixin")) {
-    		newclass = factory.createRoleMixin();
-    	}
-    	else {
-    		newclass = factory.createClass();
-    	}
+		else if (stereotype.equalsIgnoreCase("subkind"))
+    		return factory.createSubKind();
 		
-		return newclass;
+    	else if (stereotype.equalsIgnoreCase("role"))
+    		return factory.createRole();
+		
+    	else if (stereotype.equalsIgnoreCase("phase"))
+    		return factory.createPhase();
+		
+    	else if (stereotype.equalsIgnoreCase("category"))
+    		return factory.createCategory();
+		
+    	else if (stereotype.equalsIgnoreCase("collective"))
+    		return factory.createCollective();
+		
+    	else if (stereotype.equalsIgnoreCase("mixin"))
+    		return factory.createMixin();
+		
+    	else if (stereotype.equalsIgnoreCase("mode"))
+    		return factory.createMode();
+		
+    	else if (stereotype.equalsIgnoreCase("quantity"))
+    		return factory.createQuantity();
+		
+    	else if (stereotype.equalsIgnoreCase("relator"))
+    		return factory.createRelator();
+		
+    	else if (stereotype.equalsIgnoreCase("rolemixin"))
+    		return factory.createRoleMixin();
+		
+    	else if (unknownStereotypeOpt == 0)
+    		return factory.createClass();
+		
+    	else if (unknownStereotypeOpt == 1)
+    		return null;
+		
+    	else
+    	{//TODO colocar isso no ontoUML error e também gerar warning
+    		String error;
+    		
+    		if (stereotype == null || stereotype == "")
+    			error = "Stereotype undefined for class "+Mapper.getName(XMIElement);
+    		
+    		else
+    			error = "Unknown Stereotype '"+stereotype+"' found in class "+Mapper.getName(XMIElement);
+    		
+    		throw new Exception(error);
+    	}
 	}
 
 	@Override
@@ -89,8 +100,11 @@ public class XMI2RefClass extends XMI2RefClassifier
 		for (Object prop : this.Mapper.getElements(XMIElement, ElementType.PROPERTY))
 		{
 			XMI2RefProperty xmi2refprop = new XMI2RefProperty(prop, Mapper);
-//			listProperties.add(xmi2refprop);
-			((Class)RefOntoUMLElement).getOwnedAttribute().add((Property)xmi2refprop.getRefOntoUMLElement());
+			if (xmi2refprop.RefOntoUMLElement != null)
+			{
+//				listProperties.add(xmi2refprop);
+				((Class)RefOntoUMLElement).getOwnedAttribute().add((Property)xmi2refprop.getRefOntoUMLElement());
+			}
 		}
 		
 		super.createSubElements();

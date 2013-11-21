@@ -32,10 +32,26 @@ public class XMI2RefComment extends XMI2RefElement
 	@Override
 	public void dealReferences()
 	{
-		for (Object annotatedElement : (List<?>)hashProp.get("annotatedelement"))
+		try
 		{
-			((Comment)RefOntoUMLElement).getAnnotatedElement().add((Element)elemMap.get((String)annotatedElement));
+			for (Object annotatedElement : (List<?>)hashProp.get("annotatedelement"))
+			{
+				((Comment)RefOntoUMLElement).getAnnotatedElement().add((Element)elemMap.get((String)annotatedElement));
+			}
 		}
+		catch (NullPointerException | IllegalArgumentException e)
+		{
+			//A comment's annotated element should not produce an error
+		}
+//		finally
+//		{
+//			if (((Comment)RefOntoUMLElement).getAnnotatedElement().size() == 0)
+//			{
+//				System.out.println("Debug: removing comment with no annotated element");
+//				EcoreUtil.remove(RefOntoUMLElement);
+//				elemMap.remove(Mapper.getID(XMIElement));
+//			}
+//		}
 	}
 
 }

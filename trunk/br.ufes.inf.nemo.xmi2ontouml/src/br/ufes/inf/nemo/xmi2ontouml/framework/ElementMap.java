@@ -6,7 +6,6 @@ import RefOntoUML.Element;
 
 public class ElementMap extends HashMap<String, XMI2RefElement>
 {
-
 	/**
 	 * 
 	 */

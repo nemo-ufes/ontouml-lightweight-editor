@@ -40,6 +40,7 @@ import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.xmi2ontouml.Creator;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefConstraint;
+import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefModel;
 import br.ufes.inf.nemo.xmi2ontouml.util.ChckBoxTreeNodeElem;
 import br.ufes.inf.nemo.xmi2ontouml.util.RefOntoUMLUtil;
 import javax.swing.Box;
@@ -55,7 +56,8 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	private JButton browseBtn, btnUseDefaultOptions, btnImport;
 	private JCheckBox chckbxImportConstraints, chckbxIgnoreUnknownStereotypes, 
 		chckbxCreateDefaultClassassociation, chckbxGenerateAEndsNames,
-		chckbxGenerateAssocNames, chckbxShowWarningLog;
+		chckbxGenerateAssocNames, chckbxShowWarningLog, chckbxIgnoreElementsWith,
+		chckbxSetFor;
 	private JTabbedPane mainTabbedPane;
 	private JScrollPane treeScrollPane;
 	private CheckboxTree[] trees;
@@ -63,6 +65,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	private JTextArea objDescription;
 	
 	DiagramManager diagManager;
+	private JCheckBox chckbxImportComments;
 	
 	
 	public ImportXMIDialog(JFrame owner, boolean modal, DiagramManager diagManager)
@@ -81,7 +84,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		setTitle("Import from XMI");
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 //		setPreferredSize(new Dimension(600, 500));
-		setBounds(new Rectangle(0, 0, 600, 500));
+		setBounds(new Rectangle(0, 0, 600, 580));
 		{
 			mainTabbedPane = new JTabbedPane();
 			JPanel treePanel = new JPanel();
@@ -101,6 +104,9 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				JLabel lblConstraints = new JLabel("Constraints");
 				chckbxImportConstraints = new JCheckBox("Import Constraints");
 				chckbxImportConstraints.setSelected(true);
+				chckbxImportComments = new JCheckBox("Import Comments");
+				chckbxImportComments.setSelected(true);
+				chckbxImportComments.setEnabled(false);
 				
 				JLabel lblElements = new JLabel("Elements");
 				chckbxIgnoreUnknownStereotypes = new JCheckBox("Ignore Unknown Stereotypes");
@@ -108,10 +114,20 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				chckbxCreateDefaultClassassociation = new JCheckBox("Create default Class/Association elements for unknown stereotypes");
 				chckbxCreateDefaultClassassociation.setSelected(true);
 				chckbxCreateDefaultClassassociation.addActionListener(this);
+				chckbxIgnoreElementsWith = new JCheckBox("Ignore Elements with error");
+				chckbxIgnoreElementsWith.setSelected(true);
+				chckbxIgnoreElementsWith.addActionListener(this);
 				
 				JLabel lblAutomation = new JLabel("Automation");
 				chckbxGenerateAssocNames = new JCheckBox("Auto generate names for unnamed Association Ends");
+				chckbxGenerateAssocNames.addActionListener(this);
+				chckbxGenerateAssocNames.setEnabled(false);
 				chckbxGenerateAEndsNames = new JCheckBox("Auto generate names for unnamed Associations");
+				chckbxGenerateAEndsNames.addActionListener(this);
+				chckbxGenerateAEndsNames.setEnabled(false);
+				chckbxSetFor = new JCheckBox("Set 1 for null cardinalities");
+				chckbxSetFor.addActionListener(this);
+				chckbxSetFor.setEnabled(false);
 				
 				JLabel lblLogs = new JLabel("Logs");
 				chckbxShowWarningLog = new JCheckBox("Show Warnings Log");
@@ -121,45 +137,48 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				JSeparator separator_1 = new JSeparator();
 				JSeparator separator_2 = new JSeparator();
 				JSeparator separator_3 = new JSeparator();
+				
 				btnUseDefaultOptions = new JButton("Use Default Options");
 				btnUseDefaultOptions.addActionListener(this);
 				
 				GroupLayout gl_optionsPanel = new GroupLayout(optionsPanel);
 				gl_optionsPanel.setHorizontalGroup(
-					gl_optionsPanel.createParallelGroup(Alignment.LEADING)
+					gl_optionsPanel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_optionsPanel.createSequentialGroup()
 							.addContainerGap()
 							.addGroup(gl_optionsPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(chckbxGenerateAssocNames)
-								.addComponent(chckbxGenerateAEndsNames)
-								.addComponent(chckbxCreateDefaultClassassociation)
-								.addComponent(chckbxIgnoreUnknownStereotypes)
-								.addComponent(chckbxImportConstraints)
 								.addGroup(gl_optionsPanel.createSequentialGroup()
 									.addComponent(filePathField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addGap(12)
 									.addComponent(browseBtn))
 								.addComponent(lblFilePath)
-								.addGroup(gl_optionsPanel.createParallelGroup(Alignment.LEADING, false)
-									.addGroup(gl_optionsPanel.createSequentialGroup()
-										.addComponent(lblConstraints)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-									.addGroup(gl_optionsPanel.createSequentialGroup()
-										.addComponent(lblAutomation)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(separator_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-									.addGroup(gl_optionsPanel.createSequentialGroup()
-										.addComponent(lblElements)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, 508, GroupLayout.PREFERRED_SIZE))
-									.addComponent(chckbxShowWarningLog)
-									.addGroup(gl_optionsPanel.createSequentialGroup()
-										.addComponent(lblLogs)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(separator_3, GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)))
+								.addComponent(chckbxImportConstraints)
+								.addComponent(chckbxImportComments)
+								.addComponent(chckbxGenerateAEndsNames)
+								.addComponent(chckbxGenerateAssocNames)
+								.addComponent(chckbxSetFor)
+								.addComponent(chckbxCreateDefaultClassassociation)
+								.addComponent(chckbxIgnoreElementsWith)
+								.addComponent(chckbxIgnoreUnknownStereotypes)
+								.addComponent(chckbxShowWarningLog)
+								.addGroup(gl_optionsPanel.createSequentialGroup()
+									.addComponent(lblConstraints)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(separator, GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE))
+								.addGroup(gl_optionsPanel.createSequentialGroup()
+									.addComponent(lblElements)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(separator_2, GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE))
+								.addGroup(gl_optionsPanel.createSequentialGroup()
+									.addComponent(lblAutomation)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(separator_1, GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE))
+								.addGroup(gl_optionsPanel.createSequentialGroup()
+									.addComponent(lblLogs)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(separator_3, GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE))
 								.addComponent(btnUseDefaultOptions))
-							.addContainerGap(4, Short.MAX_VALUE))
+							.addGap(4))
 				);
 				gl_optionsPanel.setVerticalGroup(
 					gl_optionsPanel.createParallelGroup(Alignment.LEADING)
@@ -176,22 +195,28 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 								.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(chckbxImportConstraints)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(chckbxImportComments)
 							.addGap(18)
 							.addGroup(gl_optionsPanel.createParallelGroup(Alignment.TRAILING)
 								.addComponent(lblElements)
-								.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(separator_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(chckbxCreateDefaultClassassociation)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(chckbxIgnoreUnknownStereotypes)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(chckbxCreateDefaultClassassociation)
+							.addComponent(chckbxIgnoreElementsWith)
 							.addGap(18)
 							.addGroup(gl_optionsPanel.createParallelGroup(Alignment.TRAILING)
 								.addComponent(lblAutomation)
-								.addComponent(separator_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(chckbxGenerateAEndsNames)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(chckbxGenerateAssocNames)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(chckbxSetFor)
 							.addGap(18)
 							.addGroup(gl_optionsPanel.createParallelGroup(Alignment.TRAILING)
 								.addComponent(lblLogs)
@@ -200,7 +225,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 							.addComponent(chckbxShowWarningLog)
 							.addGap(18)
 							.addComponent(btnUseDefaultOptions)
-							.addContainerGap(147, Short.MAX_VALUE))
+							.addGap(28))
 				);
 				optionsPanel.setLayout(gl_optionsPanel);
 			}
@@ -261,7 +286,6 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	{
 		if (e.getSource() == browseBtn)
 		{
-			// TODO tratar quando se dá browser em outro arquivo sendo que já tem um carregado
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setDialogTitle("Import XMI");
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("XMI, XML (*.xmi, *.xml)", "xmi", "xml");
@@ -275,6 +299,11 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 					File file = fileChooser.getSelectedFile();
 					filePathField.setText(file.getAbsolutePath());
 					trees = null;
+					treeScrollPane.validate();
+					treeScrollPane.repaint();
+					rdbtnFilterModelBy.setEnabled(false);
+					rdbtnFilterModelBy_1.setEnabled(false);
+					rdbtnFilterModelBy.setSelected(true);
 					btnImport.setText("Parse XMI");
 				}
 			}
@@ -284,8 +313,10 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 			chckbxImportConstraints.setSelected(true);
 			chckbxIgnoreUnknownStereotypes.setSelected(false);
 			chckbxCreateDefaultClassassociation.setSelected(true);
+			chckbxIgnoreElementsWith.setSelected(true);
 			chckbxGenerateAssocNames.setSelected(false);
 			chckbxGenerateAEndsNames.setSelected(false);
+			chckbxSetFor.setSelected(false);
 			chckbxShowWarningLog.setSelected(true);
 		}
 		else if (e.getSource() == btnImport)
@@ -299,36 +330,35 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				try
 				{
 					Creator transfManager = new Creator();
-					Model model = transfManager.parse(filePathField.getText());
+					Model model = transfManager.parse(filePathField.getText(), chckbxIgnoreUnknownStereotypes.isSelected(), 
+							chckbxCreateDefaultClassassociation.isSelected(), chckbxIgnoreElementsWith.isSelected());
 					
-					if (model != null)
+					int opt = JOptionPane.showConfirmDialog(this, "Parsing complete. Do you wish to filter the model now?");
+					if (opt == 0)
 					{
-						int opt = JOptionPane.showConfirmDialog(this, "Parsing complete. Do you wish to filter the model now?");
-						if (opt == 0)
-						{
-							trees = transfManager.generateModelTrees(model, this);
-							
-							treeScrollPane.setViewportView(trees[0]);
-							treeScrollPane.validate();
-							treeScrollPane.repaint();
-							rdbtnFilterModelBy.setEnabled(true);
-							rdbtnFilterModelBy_1.setEnabled(true);
-							rdbtnFilterModelBy.setSelected(true);
+						trees = transfManager.generateModelTrees(model, this);
+						
+						treeScrollPane.setViewportView(trees[0]);
+						treeScrollPane.validate();
+						treeScrollPane.repaint();
+						rdbtnFilterModelBy.setEnabled(true);
+						rdbtnFilterModelBy_1.setEnabled(true);
+						rdbtnFilterModelBy.setSelected(true);
 //							btnFilterModelAnd.setEnabled(true);
-							btnImport.setText("Filter and Import to OLED");
-							
-							mainTabbedPane.setSelectedIndex(1);
-						}
-						else if (opt == 1)
-						{
-							finalize(model);
-						}
+						btnImport.setText("Filter and Import to OLED");
+						
+						mainTabbedPane.setSelectedIndex(1);
 					}
-					else
-						throw new Exception("Modelo não foi importado.");
+					else if (opt == 1)
+					{
+						finalize(model);
+					}
 				}
 				catch (Exception ex)
 				{
+					ErrorInfo info = new ErrorInfo("Error", "Model was not imported",
+		        			null, "category", ex, Level.SEVERE, null);
+		        	JXErrorPane.showDialog(diagManager, info);
 					ex.printStackTrace();
 				}
 			}
@@ -397,8 +427,8 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		
 		if (chckbxImportConstraints.isSelected())
 		{
-			for (XMI2RefConstraint constr : XMI2RefConstraint.getConstraints())
-				diagManager.getFrame().getInfoManager().getOcleditor().addText(constr.getStringRepresentation()+"\n\n");
+			for (XMI2RefConstraint constr : XMI2RefModel.getConstraints())
+				diagManager.getFrame().getInfoManager().getOcleditor().addText(constr.getStringRepresentation());
 		}
 		
 		this.dispose();
@@ -412,5 +442,4 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		String info = chckNode.getInfo();
 		objDescription.setText(info);
 	}
-
 }
