@@ -174,19 +174,25 @@ public class RefOntoUMLUtil {
 		if (element instanceof Association)
 		{
 			Association assoc = (Association) element;
-			if (assoc.getMemberEnd().get(0).getType() != null && 
-					!list.contains(assoc.getMemberEnd().get(0).getType()))
+			if (assoc.getMemberEnd().size() < 2 || assoc.getMemberEnd().get(0).getType() == null || assoc.getMemberEnd().get(1).getType() == null)
 			{
-				list.add(assoc.getMemberEnd().get(0).getType());
-				addDependentElementsToList(assoc.getMemberEnd().get(0).getType(), list);
+				System.out.println("Debug: removing association with error ("+assoc.getName()+")");
+				list.remove(assoc);
 			}
-			if (assoc.getMemberEnd().get(1).getType() != null && 
-					!list.contains(assoc.getMemberEnd().get(1).getType()))
+			
+			else
 			{
-				list.add(assoc.getMemberEnd().get(1).getType());
-				addDependentElementsToList(assoc.getMemberEnd().get(0).getType(), list);
+				if (!list.contains(assoc.getMemberEnd().get(0).getType()))
+				{
+					list.add(assoc.getMemberEnd().get(0).getType());
+					addDependentElementsToList(assoc.getMemberEnd().get(0).getType(), list);
+				}
+				if (!list.contains(assoc.getMemberEnd().get(1).getType()))
+				{
+					list.add(assoc.getMemberEnd().get(1).getType());
+					addDependentElementsToList(assoc.getMemberEnd().get(0).getType(), list);
+				}
 			}
-			return;
 		}
 		// Adds classes referenced by attributes as their types
 		else if (element instanceof Class)

@@ -1,20 +1,23 @@
 package br.ufes.inf.nemo.xmi2ontouml.mapper.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -46,7 +49,8 @@ public class MapperAstah implements Mapper {
 
 	Document doc;
 	
-	public MapperAstah(String read_file_address) {
+	public MapperAstah(String read_file_address) throws Exception
+	{
 		try {
 			// Creates an instance of the parser that will read the XMI
 	        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -58,21 +62,22 @@ public class MapperAstah implements Mapper {
 	        // Set the xmi.id to be the ID element
             setID(doc.getDocumentElement());
 	        
-		} catch (SAXParseException err) {
-            Creator.errorLog += "** Parsing error" + ", line "
+		} catch (SAXParseException err)
+		{
+			String error = "** Parsing error" + ", line "
                     + err.getLineNumber() + ", uri " + err.getSystemId();
-            Creator.errorLog += " " + err.getMessage();
+			error += " " + err.getMessage();
+			throw new Exception(error);
  
-		} catch (SAXException e) {
+		} catch (SAXException e)
+		{
 			Exception x = e.getException();
-			Creator.errorLog += ((x == null) ? e : x).getMessage();
+			throw new Exception(((x == null) ? e : x).getMessage());
 			
-		} catch (IOException e) {
-			Creator.errorLog += "File " + read_file_address + 
-			" does not exist or could not be oppened.";
-			
-		} catch (ParserConfigurationException e) {
-			Creator.errorLog += e.getMessage();
+		} catch (IOException e)
+		{
+			throw new Exception ("File " + read_file_address + 
+			" does not exist or could not be oppened.");
 		}
 	}
 	

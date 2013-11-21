@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.xmi2ontouml.framework;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import RefOntoUML.Model;
 import RefOntoUML.PrimitiveType;
@@ -12,6 +13,8 @@ public class XMI2RefModel extends XMI2RefPackage
 	public static final PrimitiveType BOOLEAN_PRIMITIVE = createBooleanPrimitive();
 	public static final PrimitiveType STRING_PRIMITIVE = createStringPrimitive();
 	public static final PrimitiveType UNLIMITED_NATURAL_PRIMITIVE = createUnlimitedNaturalPrimitive();
+	
+	protected static List<XMI2RefConstraint> constraints = new ArrayList<XMI2RefConstraint>();
 	
 	public XMI2RefModel (Object XMIElement, Mapper mapper) throws Exception
 	{
@@ -75,5 +78,10 @@ public class XMI2RefModel extends XMI2RefPackage
 		PrimitiveType unlnatural = factory.createPrimitiveType();
 		unlnatural.setName("Unlimited Natural");
 		return unlnatural;
+	}
+	
+	public static List<XMI2RefConstraint> getConstraints()
+	{
+		return constraints;
 	}
 }
