@@ -21,6 +21,10 @@ import br.ufes.inf.nemo.xmi2ontouml.util.OntoUMLError;
 
 public class XMI2RefProperty extends XMI2RefNamedElement
 {
+	protected static boolean autoGenerateNames = false;
+	
+	protected static boolean autoGenerateCardinality = true;
+	
 	public XMI2RefProperty (Object XMIElement, Mapper mapper) throws Exception
 	{
 		this.XMIElement = XMIElement;
@@ -87,15 +91,15 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 		property.setIsLeaf(Boolean.parseBoolean((String)hashProp.get("isleaf")));
 		
 		//Multiplicity Element properties
-		if (hashProp.get("lower") != null && hashProp.get("upper") != null)
-		{
+//		if (hashProp.get("lower") != null && hashProp.get("upper") != null)
+//		{
+			LiteralUnlimitedNatural upper = factory.createLiteralUnlimitedNatural();
+			RefOntoUML.LiteralInteger lower = factory.createLiteralInteger();
 			try
 			{
-				LiteralUnlimitedNatural upper = factory.createLiteralUnlimitedNatural();
 				upper.setValue((Integer.parseInt((String)hashProp.get("upper"))));
 				property.setUpperValue(upper);
 				
-				RefOntoUML.LiteralInteger lower = factory.createLiteralInteger();
 				if (hashProp.get("lower").equals("-1"))
 					lower.setValue(0);
 				else
@@ -105,9 +109,11 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 			catch (NumberFormatException nfe)
 			{
 				Creator.warningLog += OntoUMLError.wrongMultiplicityFormat(property);
+				
+				if (autoGenerateCardinality) { upper.setValue(1); lower.setValue(1); }
 			}
-		} else
-			Creator.warningLog += OntoUMLError.undefinedMultiplicityError(property);
+//		} else
+//			Creator.warningLog += OntoUMLError.undefinedMultiplicityError(property);
 		
 		property.setIsOrdered(Boolean.parseBoolean((String)hashProp.get("isordered")));
 		if (hashProp.containsKey("isunique"))
@@ -117,41 +123,44 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 	@Override
 	public void dealReferences()
 	{
-    	if (!(RefOntoUMLElement.eContainer() instanceof Association) && hashProp.get("type") == null)
-    		Creator.warningLog += OntoUMLError.undefinedTypeError(((Property)RefOntoUMLElement));
-    	
-//    	else if (hashProp.get("type").equals("Integer"))
-//    		((Property)RefOntoUMLElement).setType(RefOntoCreator.INTEGER_PRIMITIVE);
-//    	
-//    	else if (hashProp.get("type").equals("String"))
-//    		((Property)RefOntoUMLElement).setType(RefOntoCreator.STRING_PRIMITIVE);
-//    	
-//    	else if (hashProp.get("type").equals("Boolean"))
-//    		((Property)RefOntoUMLElement).setType(RefOntoCreator.BOOLEAN_PRIMITIVE);
-//    	
-//    	else if (hashProp.get("type").equals("UnlimitedNatural"))
-//    		((Property)RefOntoUMLElement).setType(RefOntoCreator.UNLIMITED_NATURAL_PRIMITIVE);
-    	
-    	else
-    	{
-    		try
-    		{
-    			((Property)RefOntoUMLElement).setType((Type) elemMap.get((String)hashProp.get("type")));
-    		}
-    		catch (NullPointerException | IllegalArgumentException e)
-    		{
-    			if (!ignoreErrorElements)
-    				throw e;
-    		}
-    		finally
-    		{
-    			if (((Property)RefOntoUMLElement).getType() == null && RefOntoUMLElement.eContainer() instanceof Association && ignoreErrorElements)
-    			{
-    				System.out.println("Debug: removing property with error ("+((Property)RefOntoUMLElement).getName()+" | Container: "+RefOntoUMLElement.eContainer()+")");
-    	    		EcoreUtil.remove(RefOntoUMLElement);
+		try
+		{
+			((Property)RefOntoUMLElement).setType((Type) elemMap.get((String)hashProp.get("type")));
+			
+			if (autoGenerateNames && (((Property)RefOntoUMLElement).getName() == null) || ((Property)RefOntoUMLElement).getName().equals(""))
+				((Property)RefOntoUMLElement).setName(((Property)RefOntoUMLElement).getType().getName().toLowerCase());
+		}
+		catch (NullPointerException | IllegalArgumentException e)
+		{
+			Creator.warningLog += OntoUMLError.undefinedTypeError(((Property)RefOntoUMLElement));
+			
+			if (!ignoreErrorElements)
+				throw e;
+		}
+		finally
+		{
+			if (((Property)RefOntoUMLElement).getType() == null && RefOntoUMLElement.eContainer() instanceof Association && ignoreErrorElements)
+			{
+				System.out.println("Debug: removing property with error ("+((Property)RefOntoUMLElement).getName()+" | Container: "+RefOntoUMLElement.eContainer()+")");
+	    		EcoreUtil.remove(RefOntoUMLElement);
 //    	    		elemMap.remove(Mapper.getID(XMIElement));
-    			}
-    		}
-    	}
+			}
+		}
+	}
+
+	public static boolean isAutoGenerateNames() {
+		return autoGenerateNames;
+	}
+
+	public static void setAutoGenerateNames(boolean autoGenerateNames) {
+		XMI2RefProperty.autoGenerateNames = autoGenerateNames;
+	}
+
+	public static boolean isAutoGenerateCardinality() {
+		return autoGenerateCardinality;
+	}
+
+	public static void setAutoGenerateCardinality(boolean autoGenerateCardinality) {
+		XMI2RefProperty.autoGenerateCardinality = autoGenerateCardinality;
 	}
 }

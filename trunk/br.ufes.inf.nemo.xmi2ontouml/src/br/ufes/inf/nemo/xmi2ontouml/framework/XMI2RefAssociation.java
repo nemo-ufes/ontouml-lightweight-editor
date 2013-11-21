@@ -19,6 +19,8 @@ import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
 
 public class XMI2RefAssociation extends XMI2RefClassifier
 {
+	protected static boolean autoGenerateNames = false;
+	
 	public XMI2RefAssociation (Object XMIElement, Mapper mapper) throws Exception
 	{
 		this.XMIElement = XMIElement;
@@ -156,10 +158,23 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 	{
 		try
 		{
+			if (Mapper.getID(XMIElement).equals("EAID_0DC25B31_42F2_4331_A5BA_C9718D2AF6D6"))
+	    	{
+	    		System.out.println("parar");
+	    	}
+			
 	    	for (Object memberEnd : (List<?>)hashProp.get("memberend"))
 	    	{
 	    		((Association)RefOntoUMLElement).getMemberEnd().add((Property)elemMap.get((String)memberEnd));
 			}
+	    	
+	    	Association assoc = (Association) RefOntoUMLElement;
+	    	String source = (assoc.getMemberEnd().get(0) != null ? assoc.getMemberEnd().get(0).getType().getName() : "");
+	    	String target = (assoc.getMemberEnd().get(1) != null ? assoc.getMemberEnd().get(1).getType().getName() : "");
+	    	
+	    	if (autoGenerateNames && (assoc.getName() == null || assoc.getName().equals("")))
+				assoc.setName("A_"+(source != null ? source.replace(" ", "") : "")+"_"+
+								   (target != null ? target.replace(" ", "") : ""));
 		}
 		catch (NullPointerException | IllegalArgumentException e)
 		{
@@ -195,5 +210,13 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 		}
 		
 		super.createSubElements();
+	}
+
+	public static boolean isAutoGenerateNames() {
+		return autoGenerateNames;
+	}
+
+	public static void setAutoGenerateNames(boolean autoGenerateNames) {
+		XMI2RefAssociation.autoGenerateNames = autoGenerateNames;
 	}
 }

@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.xmi2ontouml.framework;
 
 import java.util.Map;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import RefOntoUML.Comment;
 import RefOntoUML.Element;
 import RefOntoUML.RefOntoUMLFactory;
@@ -23,32 +25,30 @@ public abstract class XMI2RefElement
 	
 	protected Map<String, Object> hashProp;
 	
-	protected static boolean ignoreErrorElements;
+	protected static boolean ignoreErrorElements = true;
 	
 	protected void commonTasks() throws Exception
 	{
-		if (Mapper.getID(XMIElement) == "" && !(this instanceof XMI2RefConstraint))
+		if (!Mapper.getID(XMIElement).equals("") || this instanceof XMI2RefConstraint)
 		{
-        	String error = "Element with no ID found.\n" +
+			elemMap.put(Mapper.getID(XMIElement), this);
+			deal();
+			createSubElements();
+        }
+		else
+		{
+			String error = "Element with no ID found.\n" +
         			"Element Type: " + RefOntoUMLElement.getClass() + ".\n" +
         			"Element Name: " + hashProp.get("Name") + ".\n" +
         			"Element Path: " + Mapper.getPath(XMIElement)+".\n\n";
         	
-        	if (ignoreErrorElements)
-        	{
-        		System.out.println(error);
-        		Creator.warningLog += error;
-        		this.RefOntoUMLElement = null;
-        		return;
-        	}
-        	else
+        	if (!ignoreErrorElements)
         		throw new Exception(error);
-        }
-		else
-			elemMap.put(Mapper.getID(XMIElement), this);
-		
-		deal();
-		createSubElements();
+        	
+        	System.out.println("Debug: removing class without ID ("+hashProp.get("Name")+")");
+    		Creator.warningLog += error;
+    		EcoreUtil.remove(RefOntoUMLElement);
+		}
 	}
 	
 	protected abstract void deal();

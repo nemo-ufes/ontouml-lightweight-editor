@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import RefOntoUML.Classifier;
 import RefOntoUML.Constraintx;
 import RefOntoUML.Element;
 import RefOntoUML.NamedElement;
+import RefOntoUML.Namespace;
 import RefOntoUML.OpaqueExpression;
 import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 
@@ -58,7 +58,7 @@ public class XMI2RefConstraint extends XMI2RefNamedElement
 		{
 			if (((Constraintx)RefOntoUMLElement).getConstrainedElement().size() == 0)
 			{
-				System.out.println("Debug: removing constraint with error ("+((Constraintx)RefOntoUMLElement).getName()+" | Container: "+((Classifier)RefOntoUMLElement.eContainer()).getName()+")");
+				System.out.println("Debug: removing constraint with error ("+((Constraintx)RefOntoUMLElement).getName()+" | Container: "+((Namespace)RefOntoUMLElement.eContainer()).getName()+")");
 				EcoreUtil.remove(RefOntoUMLElement);
 			}
 		}
@@ -78,7 +78,7 @@ public class XMI2RefConstraint extends XMI2RefNamedElement
 		if (body.equals(""))
 			return "";
 		
-		if (((Constraintx)RefOntoUMLElement).getName() != null && ((Constraintx)RefOntoUMLElement).getName() != "")
+		if (((Constraintx)RefOntoUMLElement).getName() != null && !((Constraintx)RefOntoUMLElement).getName().equals(""))
 			rule += "--"+((Constraintx)RefOntoUMLElement).getName()+"\n";
 		
 		if (!(body.toLowerCase().startsWith("context")))
