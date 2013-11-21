@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.oled.ui.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ufes.inf.nemo.antipattern.ac.ACAntiPattern;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -17,7 +17,7 @@ import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 public class ACAntiPatternController {
 
 	private ACAntiPatternPane acView;
-	private ACAntiPattern acModel;
+	private AssCycAntipattern acModel;
 	
 	/**
 	 * Constructor.
@@ -25,7 +25,7 @@ public class ACAntiPatternController {
 	 * @param acView
 	 * @param acModel
 	 */
-	public ACAntiPatternController(ACAntiPatternPane acView, ACAntiPattern acModel)
+	public ACAntiPatternController(ACAntiPatternPane acView, AssCycAntipattern acModel)
 	{
 		this.acView = acView;
 		this.acModel = acModel;		

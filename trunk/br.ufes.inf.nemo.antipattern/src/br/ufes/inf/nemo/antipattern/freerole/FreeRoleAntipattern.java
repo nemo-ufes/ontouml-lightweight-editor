@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.urs;
+package br.ufes.inf.nemo.antipattern.freerole;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,27 +11,21 @@ import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Package;
-import RefOntoUML.Relator;
 import RefOntoUML.Role;
-import RefOntoUML.Type;
-import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.AntiPatternUtil;
 import br.ufes.inf.nemo.antipattern.Antipattern;
-import br.ufes.inf.nemo.antipattern.ac.ACAntiPattern;
-import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
 
 //Undefined Role Specialization
-public class URSAntiPattern extends Antipattern{
+public class FreeRoleAntipattern extends Antipattern{
 
 	private Role role;
 	private ArrayList<Mediation> roleMediations;
 	private HashMap<Role,ArrayList<Mediation>> subRolesHash;
 	private ArrayList<Role> undefinedRoles;
 	
-	public URSAntiPattern(Role role, OntoUMLParser parser) throws Exception {
+	public FreeRoleAntipattern(Role role, OntoUMLParser parser) throws Exception {
 		
 		this.role = role;
 		
@@ -101,9 +95,9 @@ public class URSAntiPattern extends Antipattern{
 										"				m.endType->includes(y))->size()=0)->size()>0 "+
 										"	)";
 	
-	public static ArrayList<URSAntiPattern> identify(OntoUMLParser parser) {
+	public static ArrayList<FreeRoleAntipattern> identify(OntoUMLParser parser) {
 	
-		ArrayList<URSAntiPattern> result = new ArrayList<URSAntiPattern>();
+		ArrayList<FreeRoleAntipattern> result = new ArrayList<FreeRoleAntipattern>();
 		
 		try {
 			Copier copier = new Copier();
@@ -117,10 +111,10 @@ public class URSAntiPattern extends Antipattern{
 			{
 				Role original = (Role) AntiPatternUtil.getOriginal(a, copier);
 				
-				URSAntiPattern urs;
+				FreeRoleAntipattern urs;
 				
 				try {
-					urs = new URSAntiPattern(original, parser);
+					urs = new FreeRoleAntipattern(original, parser);
 					result.add(urs);
 				} catch (Exception e) { }
 			}		

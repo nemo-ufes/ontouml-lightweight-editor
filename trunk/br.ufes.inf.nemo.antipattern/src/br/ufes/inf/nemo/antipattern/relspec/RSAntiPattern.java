@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.rs;
+package br.ufes.inf.nemo.antipattern.relspec;
 
 import java.util.ArrayList;
 

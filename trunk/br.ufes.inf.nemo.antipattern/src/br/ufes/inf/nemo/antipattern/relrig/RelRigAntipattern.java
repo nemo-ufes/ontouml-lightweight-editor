@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.rwrt;
+package br.ufes.inf.nemo.antipattern.relrig;
 
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import RefOntoUML.RigidSortalClass;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class RWRTAntiPattern extends Antipattern {
+public class RelRigAntipattern extends Antipattern {
 	
 	private Relator relator;
 	private ArrayList<Mediation> allMediations, rigidMediations;
@@ -42,7 +42,7 @@ public class RWRTAntiPattern extends Antipattern {
 		return relator;
 	}
 
-	public RWRTAntiPattern(Relator relator, OntoUMLParser parser) throws Exception 
+	public RelRigAntipattern(Relator relator, OntoUMLParser parser) throws Exception 
 	{
 		this.setRelator(relator, parser);
 		this.changingInstantiationPattern = new ChangingRelator(this);

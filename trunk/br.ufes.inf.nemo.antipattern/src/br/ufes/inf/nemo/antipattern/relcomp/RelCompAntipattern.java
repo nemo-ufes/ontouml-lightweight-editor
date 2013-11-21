@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.ssr;
+package br.ufes.inf.nemo.antipattern.relcomp;
 
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class SSRAntiPattern extends Antipattern {
+public class RelCompAntipattern extends Antipattern {
 	Association a1,a2;
 	Classifier a1Source, a1Target, a2Source, a2Target;
 		
@@ -20,7 +20,7 @@ public class SSRAntiPattern extends Antipattern {
 	 * @param parser
 	 * @throws Exception
 	 */
-	public SSRAntiPattern(Association a1, Association a2) throws Exception 
+	public RelCompAntipattern(Association a1, Association a2) throws Exception 
 	{
 		this.a1 = a1;
 		this.a2 = a2;

@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.str;
+package br.ufes.inf.nemo.antipattern.binover;
 
 import java.util.ArrayList;
 
@@ -11,12 +11,12 @@ import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Self-Type Relationship AntiPattern*/
-public class STRAntiPattern extends Antipattern{
+public class BinOverAntipattern extends Antipattern{
 	private Association association;
 	private Classifier type;
 	
 	
-	public STRAntiPattern (Association association) throws Exception{
+	public BinOverAntipattern (Association association) throws Exception{
 		this.setAssociation(association);
 		
 	}

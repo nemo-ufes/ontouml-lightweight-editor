@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.ia;
+package br.ufes.inf.nemo.antipattern.impabs;
 
 import java.util.ArrayList;
 
@@ -12,13 +12,13 @@ import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class IAAntiPattern extends Antipattern{
+public class ImpAbsAntipattern extends Antipattern{
 	private Association association;
 	private Classifier source, target;
 	
 	private ArrayList<Classifier> sourceChildren, targetChildren;
 	
-	public IAAntiPattern(Association a) throws Exception {
+	public ImpAbsAntipattern(Association a) throws Exception {
 		this.setAssociation(a);
 	}
 	 

@@ -12,12 +12,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.antipattern.ac.ACAntiPattern;
-import br.ufes.inf.nemo.antipattern.ia.IAAntiPattern;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
+import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
+import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
 import br.ufes.inf.nemo.antipattern.rbos.RBOSAntiPattern;
-import br.ufes.inf.nemo.antipattern.rs.RSAntiPattern;
-import br.ufes.inf.nemo.antipattern.rwor.RWORAntiPattern;
-import br.ufes.inf.nemo.antipattern.str.STRAntiPattern;
+import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
+import br.ufes.inf.nemo.antipattern.relspec.RSAntiPattern;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -206,7 +206,7 @@ public class AntiPatternListPane extends JFrame {
 	{
 		acTabPanel.setLayout(new GridLayout(antipatternList.getACListModel().size(), 1, 0, 0));
 		
-		for(ACAntiPattern acModel: antipatternList.getACListModel())
+		for(AssCycAntipattern acModel: antipatternList.getACListModel())
 		{
 			ACAntiPatternPane acView =  new ACAntiPatternPane(acModel, frame);
 			@SuppressWarnings("unused")
@@ -260,7 +260,7 @@ public class AntiPatternListPane extends JFrame {
 	{
 		strTabPanel.setLayout(new GridLayout(antipatternList.getSTRListModel().size(), 1, 0, 0));
 		
-		for(STRAntiPattern strModel: antipatternList.getSTRListModel())
+		for(BinOverAntipattern strModel: antipatternList.getSTRListModel())
 		{
 			STRAntiPatternPane strView =  new STRAntiPatternPane(strModel,frame);
 			@SuppressWarnings("unused")
@@ -278,7 +278,7 @@ public class AntiPatternListPane extends JFrame {
 	{
 		rworTabPanel.setLayout(new GridLayout(antipatternList.getRWORListModel().size(), 1, 0, 0));
 		
-		for(RWORAntiPattern rworModel: antipatternList.getRWORListModel())
+		for(RelOverAntipattern rworModel: antipatternList.getRWORListModel())
 		{
 			RWORAntiPatternPane rworView =  new RWORAntiPatternPane(rworModel,frame);	
 			@SuppressWarnings("unused")
@@ -298,7 +298,7 @@ public class AntiPatternListPane extends JFrame {
 	{
 		iaTabPanel.setLayout(new GridLayout(antipatternList.getIAListModel().size(), 1, 0, 0));
 		
-		for(IAAntiPattern iaModel: antipatternList.getIAListModel())
+		for(ImpAbsAntipattern iaModel: antipatternList.getIAListModel())
 		{
 			IAAntiPatternPane iaView =  new IAAntiPatternPane(iaModel,frame);
 			@SuppressWarnings("unused")

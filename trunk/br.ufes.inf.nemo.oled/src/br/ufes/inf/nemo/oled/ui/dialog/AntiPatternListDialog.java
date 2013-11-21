@@ -20,15 +20,15 @@ import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.MRBSAntiPattern;
-import br.ufes.inf.nemo.antipattern.ac.ACAntiPattern;
-import br.ufes.inf.nemo.antipattern.ia.IAAntiPattern;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
+import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
+import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
 import br.ufes.inf.nemo.antipattern.rbos.RBOSAntiPattern;
-import br.ufes.inf.nemo.antipattern.rs.RSAntiPattern;
-import br.ufes.inf.nemo.antipattern.rwor.RWORAntiPattern;
-import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
-import br.ufes.inf.nemo.antipattern.ssr.SSRAntiPattern;
-import br.ufes.inf.nemo.antipattern.str.STRAntiPattern;
-import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
+import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
+import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
+import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
+import br.ufes.inf.nemo.antipattern.relspec.RSAntiPattern;
+import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
@@ -319,16 +319,16 @@ public class AntiPatternListDialog extends JDialog {
 	{
 		try{
 		
-		ArrayList<ACAntiPattern> acListModel = new ArrayList<ACAntiPattern>();
+		ArrayList<AssCycAntipattern> acListModel = new ArrayList<AssCycAntipattern>();
 		ArrayList<RSAntiPattern> rsListModel = new ArrayList<RSAntiPattern>();
 		ArrayList<RBOSAntiPattern> rbosListModel = new ArrayList<RBOSAntiPattern>();				
-		ArrayList<STRAntiPattern> strListModel = new ArrayList<STRAntiPattern>();
-		ArrayList<RWORAntiPattern> rworListModel = new ArrayList<RWORAntiPattern>();				
-		ArrayList<IAAntiPattern> iaListModel = new ArrayList<IAAntiPattern>();
-		ArrayList<RWRTAntiPattern> rwrtListModel = new ArrayList<RWRTAntiPattern>();
-		ArrayList<TRIAntiPattern> triListModel = new ArrayList<TRIAntiPattern>();
+		ArrayList<BinOverAntipattern> strListModel = new ArrayList<BinOverAntipattern>();
+		ArrayList<RelOverAntipattern> rworListModel = new ArrayList<RelOverAntipattern>();				
+		ArrayList<ImpAbsAntipattern> iaListModel = new ArrayList<ImpAbsAntipattern>();
+		ArrayList<RelRigAntipattern> rwrtListModel = new ArrayList<RelRigAntipattern>();
+		ArrayList<RepRelAntipattern> triListModel = new ArrayList<RepRelAntipattern>();
 		ArrayList<MRBSAntiPattern> mrbsListModel = new ArrayList<MRBSAntiPattern>();
-		ArrayList<SSRAntiPattern> ssrListModel = new ArrayList<SSRAntiPattern>();
+		ArrayList<RelCompAntipattern> ssrListModel = new ArrayList<RelCompAntipattern>();
 		
 		frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,frame.getDiagramManager().getCurrentProject());
 		
@@ -338,7 +338,7 @@ public class AntiPatternListDialog extends JDialog {
 		
 		if (ACisSelected()) 
 		{			
-			for(ACAntiPattern ac: AntiPatternIdentifier.identifyAC(parser)) 
+			for(AssCycAntipattern ac: AntiPatternIdentifier.identifyAC(parser)) 
 			{				
 				acListModel.add(ac);
 			}
@@ -359,35 +359,35 @@ public class AntiPatternListDialog extends JDialog {
 		}				
 		if (STRisSelected()) 
 		{			
-			for(STRAntiPattern str: AntiPatternIdentifier.identifySTR(parser)) 
+			for(BinOverAntipattern str: AntiPatternIdentifier.identifySTR(parser)) 
 			{
 				strListModel.add(str);
 			}	
 		}		
 		if (RWORisSelected()) 
 		{			
-			for(RWORAntiPattern rwor: AntiPatternIdentifier.identifyRWOR(parser)) 
+			for(RelOverAntipattern rwor: AntiPatternIdentifier.identifyRWOR(parser)) 
 			{
 				rworListModel.add(rwor);
 			}	
 		}
 		if (IAisSelected()) 
 		{			
-			for(IAAntiPattern ia: AntiPatternIdentifier.identifyIA(parser)) 
+			for(ImpAbsAntipattern ia: AntiPatternIdentifier.identifyIA(parser)) 
 			{
 				iaListModel.add(ia);
 			}	
 		}
 		if (RWRTisSelected()) 
 		{			
-			for(RWRTAntiPattern rwrt: AntiPatternIdentifier.identifyRWRT(parser)) 
+			for(RelRigAntipattern rwrt: AntiPatternIdentifier.identifyRWRT(parser)) 
 			{
 				rwrtListModel.add(rwrt);
 			}	
 		}
 		if (TRIisSelected()) 
 		{			
-			for(TRIAntiPattern tri: AntiPatternIdentifier.identifyTRI(parser)) 
+			for(RepRelAntipattern tri: AntiPatternIdentifier.identifyTRI(parser)) 
 			{
 				triListModel.add(tri);
 			}	
@@ -401,7 +401,7 @@ public class AntiPatternListDialog extends JDialog {
 		}
 		if (SSRisSelected()) 
 		{			
-			for(SSRAntiPattern ssr: AntiPatternIdentifier.identifySSR(parser)) 
+			for(RelCompAntipattern ssr: AntiPatternIdentifier.identifySSR(parser)) 
 			{
 				ssrListModel.add(ssr);
 			}	

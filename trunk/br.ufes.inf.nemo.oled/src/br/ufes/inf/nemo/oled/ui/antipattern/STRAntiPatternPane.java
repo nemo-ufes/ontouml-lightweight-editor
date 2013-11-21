@@ -19,7 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import br.ufes.inf.nemo.antipattern.str.STRAntiPattern;
+import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
@@ -31,7 +31,7 @@ public class STRAntiPatternPane extends JPanel {
 	private static final long serialVersionUID = 497601694951872890L;
 
 	@SuppressWarnings("unused")
-	private STRAntiPattern strModel;
+	private BinOverAntipattern strModel;
 	
 	private AppFrame frame;
 	private JTextField txtType;	
@@ -56,7 +56,7 @@ public class STRAntiPatternPane extends JPanel {
 	 * @param strModel
 	 * @param frame
 	 */
-	public STRAntiPatternPane(STRAntiPattern strModel,AppFrame frame)
+	public STRAntiPatternPane(BinOverAntipattern strModel,AppFrame frame)
 	{
 		this();
 		

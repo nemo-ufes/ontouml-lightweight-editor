@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.ac;
+package br.ufes.inf.nemo.antipattern.asscyc;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Association Cycle Anti-Pattern*/
-public class ACAntiPattern extends Antipattern{
+public class AssCycAntipattern extends Antipattern{
 	ArrayList<Class> cycle;
 	ArrayList<Relationship> cycleRelationship;
 	public static int OPEN=0, CLOSED=1;
@@ -153,7 +153,7 @@ public class ACAntiPattern extends Antipattern{
 		
 	}
 	
-	public ACAntiPattern(ArrayList<Class> cycle, ArrayList<Relationship> cycleRelationship){
+	public AssCycAntipattern(ArrayList<Class> cycle, ArrayList<Relationship> cycleRelationship){
 		setCycle(cycle);
 		setCycleRelationship(cycleRelationship);
 	}

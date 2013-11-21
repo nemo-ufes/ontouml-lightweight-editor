@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.oled.ui.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ufes.inf.nemo.antipattern.str.STRAntiPattern;
+import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -17,7 +17,7 @@ import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 public class STRAntiPatternController {
 
 	private STRAntiPatternPane strView;
-	private STRAntiPattern strModel;
+	private BinOverAntipattern strModel;
 	
 	/**
 	 * Constructor.
@@ -25,7 +25,7 @@ public class STRAntiPatternController {
 	 * @param strView
 	 * @param strModel
 	 */
-	public STRAntiPatternController(STRAntiPatternPane strView, STRAntiPattern strModel)
+	public STRAntiPatternController(STRAntiPatternPane strView, BinOverAntipattern strModel)
 	{
 		this.strView = strView;
 		this.strModel = strModel;		
