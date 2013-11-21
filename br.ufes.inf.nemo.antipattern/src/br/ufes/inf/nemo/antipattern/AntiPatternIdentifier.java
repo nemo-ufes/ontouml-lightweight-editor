@@ -18,20 +18,20 @@ import RefOntoUML.Package;
 import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.Type;
-import br.ufes.inf.nemo.antipattern.ac.ACAntiPattern;
-import br.ufes.inf.nemo.antipattern.ia.IAAntiPattern;
+import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
+import br.ufes.inf.nemo.antipattern.gsrig.GSRigAntipattern;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
+import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
+import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
+import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
 import br.ufes.inf.nemo.antipattern.mm.MMAntiPattern;
-import br.ufes.inf.nemo.antipattern.mrd.MRDAntiPattern;
-import br.ufes.inf.nemo.antipattern.mrgs.MRGSAntiPattern;
+import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
 import br.ufes.inf.nemo.antipattern.rbos.RBOSAntiPattern;
-import br.ufes.inf.nemo.antipattern.rdp.RDPAntiPattern;
-import br.ufes.inf.nemo.antipattern.rs.RSAntiPattern;
-import br.ufes.inf.nemo.antipattern.rwor.RWORAntiPattern;
-import br.ufes.inf.nemo.antipattern.rwrt.RWRTAntiPattern;
-import br.ufes.inf.nemo.antipattern.ssr.SSRAntiPattern;
-import br.ufes.inf.nemo.antipattern.str.STRAntiPattern;
-import br.ufes.inf.nemo.antipattern.tri.TRIAntiPattern;
-import br.ufes.inf.nemo.antipattern.urs.URSAntiPattern;
+import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
+import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
+import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
+import br.ufes.inf.nemo.antipattern.relspec.RSAntiPattern;
+import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontouml2graph.GraphAlgo;
 import br.ufes.inf.nemo.common.ontouml2graph.OntoUML2Graph;
@@ -114,7 +114,7 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<STRAntiPattern> identifySTR (OntoUMLParser parser) throws Exception
+	public static ArrayList<BinOverAntipattern> identifySTR (OntoUMLParser parser) throws Exception
 	{
 		Copier copier = new Copier();
 		
@@ -128,12 +128,12 @@ public class AntiPatternIdentifier {
 		else if (o instanceof Association)
 			query_result.add((Association) o);
 		
-		ArrayList<STRAntiPattern> result = new ArrayList<STRAntiPattern>();
+		ArrayList<BinOverAntipattern> result = new ArrayList<BinOverAntipattern>();
 		for (Association a : query_result) 
 		{
 			try {
 			Association original = (Association) AntiPatternUtil.getOriginal(a, copier);			
-			result.add(new STRAntiPattern(original));
+			result.add(new BinOverAntipattern(original));
 			}
 			catch (Exception e){
 				
@@ -258,14 +258,14 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RWORAntiPattern> identifyRWOR (OntoUMLParser parser) throws Exception
+	public static ArrayList<RelOverAntipattern> identifyRWOR (OntoUMLParser parser) throws Exception
 	{
 		Copier copier = new Copier();
 		
 		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Relator> query_result;
-		ArrayList<RWORAntiPattern> result = new ArrayList<RWORAntiPattern>();
+		ArrayList<RelOverAntipattern> result = new ArrayList<RelOverAntipattern>();
 		
 		query_result = new ArrayList<>();
 		Object o = OCLQueryExecuter.executeQuery(RWOROCLQuery, (EClassifier)model.eClass(), model);
@@ -277,7 +277,7 @@ public class AntiPatternIdentifier {
 		
 		for (Relator r : query_result) {
 			Relator original = (Relator) AntiPatternUtil.getOriginal(r, copier);
-			result.add(new RWORAntiPattern(original, parser));
+			result.add(new RelOverAntipattern(original, parser));
 		}
 		
 		return result;
@@ -294,7 +294,7 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<IAAntiPattern> identifyIA(OntoUMLParser parser) throws Exception 
+	public static ArrayList<ImpAbsAntipattern> identifyIA(OntoUMLParser parser) throws Exception 
 	{
 		Copier copier = new Copier();
 		
@@ -308,10 +308,10 @@ public class AntiPatternIdentifier {
 		else if (o instanceof Association)
 			query_result.add((Association) o);
 		
-		ArrayList<IAAntiPattern> result = new ArrayList<IAAntiPattern>();
+		ArrayList<ImpAbsAntipattern> result = new ArrayList<ImpAbsAntipattern>();
 		for (Association a : query_result) {
 			Association original = (Association) AntiPatternUtil.getOriginal(a, copier);
-			result.add(new IAAntiPattern(original));
+			result.add(new ImpAbsAntipattern(original));
 		}
 		
 		return result;
@@ -323,7 +323,7 @@ public class AntiPatternIdentifier {
 	 * @param parser
 	 * @return
 	 */
-	public static ArrayList<ACAntiPattern> identifyAC(OntoUMLParser parser){
+	public static ArrayList<AssCycAntipattern> identifyAC(OntoUMLParser parser){
 		
 		int aux[][]; 
 		int nodei[], nodej[];
@@ -331,7 +331,7 @@ public class AntiPatternIdentifier {
 		ArrayList<RefOntoUML.Class> cycle = new ArrayList<RefOntoUML.Class>();
 		ArrayList<Relationship> relationships = new ArrayList<Relationship>();
 		ArrayList<Relationship> cycle_ass = new ArrayList<Relationship>();
-		ArrayList<ACAntiPattern> result = new ArrayList<ACAntiPattern>();
+		ArrayList<AssCycAntipattern> result = new ArrayList<AssCycAntipattern>();
 		
 		aux = OntoUML2Graph.buildGraph(parser, classes, relationships, false, false);
 		nodei = aux[0];
@@ -386,7 +386,7 @@ public class AntiPatternIdentifier {
 					
 			}
 			
-			result.add(new ACAntiPattern(cycle,cycle_ass));
+			result.add(new AssCycAntipattern(cycle,cycle_ass));
 		} 
 		
 		return result;
@@ -417,7 +417,7 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RWRTAntiPattern> identifyRWRT (OntoUMLParser parser) throws Exception
+	public static ArrayList<RelRigAntipattern> identifyRWRT (OntoUMLParser parser) throws Exception
 
 
 	{
@@ -433,14 +433,14 @@ public class AntiPatternIdentifier {
 		else if (o instanceof Relator)
 			query_result.add((Relator) o);
 		
-		ArrayList<RWRTAntiPattern> result = new ArrayList<RWRTAntiPattern>();
+		ArrayList<RelRigAntipattern> result = new ArrayList<RelRigAntipattern>();
 		for (Relator a : query_result) 
 		{
 			Relator original = (Relator) AntiPatternUtil.getOriginal(a, copier);
 			
-			RWRTAntiPattern rwrt;
+			RelRigAntipattern rwrt;
 			try {
-				rwrt = new RWRTAntiPattern(original, parser);
+				rwrt = new RelRigAntipattern(original, parser);
 				result.add(rwrt);
 			} catch (Exception e) {
 				
@@ -498,7 +498,7 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<TRIAntiPattern> identifyTRI (OntoUMLParser parser) throws Exception 
+	public static ArrayList<RepRelAntipattern> identifyTRI (OntoUMLParser parser) throws Exception 
 	{
 		Copier copier = new Copier();
 		
@@ -512,14 +512,14 @@ public class AntiPatternIdentifier {
 		else if (o instanceof Relator)
 			query_result.add((Relator) o);
 		
-		ArrayList<TRIAntiPattern> result = new ArrayList<TRIAntiPattern>();
+		ArrayList<RepRelAntipattern> result = new ArrayList<RepRelAntipattern>();
 		for (Relator a : query_result) 
 		{
 			Relator original = (Relator) AntiPatternUtil.getOriginal(a, copier);
 			
-			TRIAntiPattern tri;
+			RepRelAntipattern tri;
 			try {
-				tri = new TRIAntiPattern(original,parser);
+				tri = new RepRelAntipattern(original,parser);
 				result.add(tri);
 			} catch (Exception e) {
 
@@ -569,7 +569,7 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<SSRAntiPattern> identifySSR (OntoUMLParser parser) throws Exception 
+	public static ArrayList<RelCompAntipattern> identifySSR (OntoUMLParser parser) throws Exception 
 	{		
 		Copier copier = new Copier();		
 		
@@ -583,31 +583,31 @@ public class AntiPatternIdentifier {
 		else if (o instanceof Tuple)
 			query_result.add((Tuple<Association, Association>) o);
 		
-		ArrayList<SSRAntiPattern> result = new ArrayList<SSRAntiPattern>();
+		ArrayList<RelCompAntipattern> result = new ArrayList<RelCompAntipattern>();
 		for (Tuple<Association, Association> t : query_result) 
 		{			
 			Association a1 = (Association) AntiPatternUtil.getOriginal((Association)t.getValue("a1"), copier);
 			Association a2 = (Association) AntiPatternUtil.getOriginal((Association)t.getValue("a2"), copier);			
-			SSRAntiPattern rs = new SSRAntiPattern(a1,a2); 
+			RelCompAntipattern rs = new RelCompAntipattern(a1,a2); 
 			result.add(rs);
 		}		
 		return result;
 	}
 
-	public static ArrayList<URSAntiPattern> identifyURS(OntoUMLParser parser) {
-		return URSAntiPattern.identify(parser);
+	public static ArrayList<FreeRoleAntipattern> identifyURS(OntoUMLParser parser) {
+		return FreeRoleAntipattern.identify(parser);
 	}
 	
-	public static ArrayList<MRDAntiPattern> identifyMRD(OntoUMLParser parser) {
-		return MRDAntiPattern.identify(parser);
+	public static ArrayList<MultiDepAntipattern> identifyMRD(OntoUMLParser parser) {
+		return MultiDepAntipattern.identify(parser);
 	}
 	
-	public static ArrayList<MRGSAntiPattern> identifyMRGS(OntoUMLParser parser) {
-		return MRGSAntiPattern.identify(parser);
+	public static ArrayList<GSRigAntipattern> identifyMRGS(OntoUMLParser parser) {
+		return GSRigAntipattern.identify(parser);
 	}
 	
-	public static ArrayList<RDPAntiPattern> identifyRDP(OntoUMLParser parser) {
-		return RDPAntiPattern.identify(parser);
+	public static ArrayList<DepPhaseAntipattern> identifyRDP(OntoUMLParser parser) {
+		return DepPhaseAntipattern.identify(parser);
 	}
 	
 	public static ArrayList<MMAntiPattern> identifyMM(OntoUMLParser parser) {

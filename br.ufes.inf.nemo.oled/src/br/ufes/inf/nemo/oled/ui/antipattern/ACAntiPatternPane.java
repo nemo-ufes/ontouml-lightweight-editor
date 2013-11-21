@@ -19,7 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import br.ufes.inf.nemo.antipattern.ac.ACAntiPattern;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
@@ -31,7 +31,7 @@ public class ACAntiPatternPane extends JPanel {
 	private static final long serialVersionUID = 397547249389577827L;
 	
 	@SuppressWarnings("unused")
-	private ACAntiPattern ac;	
+	private AssCycAntipattern ac;	
 	
 	private AppFrame parent;	
 	private JTextPane txtClassCycle;	
@@ -49,7 +49,7 @@ public class ACAntiPatternPane extends JPanel {
 	 * @param ac
 	 * @param parent
 	 */
-	public ACAntiPatternPane (ACAntiPattern ac, AppFrame parent)
+	public ACAntiPatternPane (AssCycAntipattern ac, AppFrame parent)
 	{
 		this();
 		

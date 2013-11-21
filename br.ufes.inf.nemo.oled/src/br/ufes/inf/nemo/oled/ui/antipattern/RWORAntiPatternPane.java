@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import br.ufes.inf.nemo.antipattern.rwor.RWORAntiPattern;
+import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
@@ -33,7 +33,7 @@ public class RWORAntiPatternPane extends JPanel {
 	private static final long serialVersionUID = -462975341854464169L;
 
 	@SuppressWarnings("unused")
-	private RWORAntiPattern rwor;
+	private RelOverAntipattern rwor;
 		
 	private RoleTable table;	
 	
@@ -60,7 +60,7 @@ public class RWORAntiPatternPane extends JPanel {
 	 * @param rwor
 	 * @param parent
 	 */
-	public RWORAntiPatternPane(RWORAntiPattern rwor, AppFrame parent)
+	public RWORAntiPatternPane(RelOverAntipattern rwor, AppFrame parent)
 	{
 		this();
 		

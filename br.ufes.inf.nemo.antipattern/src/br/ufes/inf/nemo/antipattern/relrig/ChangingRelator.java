@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.rwrt;
+package br.ufes.inf.nemo.antipattern.relrig;
 
 import java.util.ArrayList;
 
@@ -12,9 +12,9 @@ import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class ChangingRelator extends InstantiationPattern{
-	RWRTAntiPattern rwrt;
+	RelRigAntipattern rwrt;
 	
-	public ChangingRelator (RWRTAntiPattern rwrt){
+	public ChangingRelator (RelRigAntipattern rwrt){
 		this.antipattern = rwrt;
 		this.rwrt = rwrt;
 		this.worldNumber = 2;

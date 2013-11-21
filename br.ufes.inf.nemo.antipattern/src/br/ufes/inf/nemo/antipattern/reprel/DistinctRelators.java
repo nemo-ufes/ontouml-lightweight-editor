@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.tri;
+package br.ufes.inf.nemo.antipattern.reprel;
 
 import java.util.ArrayList;
 
@@ -8,9 +8,9 @@ import br.ufes.inf.nemo.antipattern.InstantiationPatternParameter;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class DistinctRelators extends InstantiationPattern{
-	TRIAntiPattern tri;
+	RepRelAntipattern tri;
 	
-	public DistinctRelators(TRIAntiPattern tri){
+	public DistinctRelators(RepRelAntipattern tri){
 		
 		this.antipattern = tri;
 		this.tri = tri;

@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.rwor;
+package br.ufes.inf.nemo.antipattern.relover;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,12 +16,12 @@ import br.ufes.inf.nemo.common.list.ArrayListOperations;
 import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class RWORAntiPattern extends Antipattern{
+public class RelOverAntipattern extends Antipattern{
 	private Relator relator;
 	private Classifier supertype;
 	private HashMap<Mediation, Classifier> mediations;
 	
-	public RWORAntiPattern(Relator relator, OntoUMLParser parser) throws Exception {
+	public RelOverAntipattern(Relator relator, OntoUMLParser parser) throws Exception {
 		this.setRelator(relator, parser);
 	}
 	

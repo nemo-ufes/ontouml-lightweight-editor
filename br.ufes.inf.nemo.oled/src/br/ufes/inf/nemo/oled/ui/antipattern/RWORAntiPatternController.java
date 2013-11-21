@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.oled.ui.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ufes.inf.nemo.antipattern.rwor.RWORAntiPattern;
+import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -17,7 +17,7 @@ import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 public class RWORAntiPatternController {
 
 	private RWORAntiPatternPane rworView;
-	private RWORAntiPattern rworModel;
+	private RelOverAntipattern rworModel;
 	
 	/**
 	 * Constructor.
@@ -25,7 +25,7 @@ public class RWORAntiPatternController {
 	 * @param rworView
 	 * @param rworModel
 	 */
-	public RWORAntiPatternController(RWORAntiPatternPane rworView, RWORAntiPattern rworModel)
+	public RWORAntiPatternController(RWORAntiPatternPane rworView, RelOverAntipattern rworModel)
 	{
 		this.rworView = rworView;
 		this.rworModel =rworModel;		

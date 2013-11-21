@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.mrgs;
+package br.ufes.inf.nemo.antipattern.gsrig;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +21,7 @@ import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Mixed Rigidity in Generalization Set
-public class MRGSAntiPattern extends Antipattern{
+public class GSRigAntipattern extends Antipattern{
 
 	GeneralizationSet gs;
 	ArrayList<Classifier> specifics;
@@ -29,7 +29,7 @@ public class MRGSAntiPattern extends Antipattern{
 	ArrayList<Classifier> antiRigidSpecifics;
 	ArrayList<Classifier> semiRigidSpecifics;
 	
-	public MRGSAntiPattern(GeneralizationSet gs, OntoUMLParser parser) throws Exception {
+	public GSRigAntipattern(GeneralizationSet gs, OntoUMLParser parser) throws Exception {
 		
 		this.gs = gs;
 		this.specifics = new ArrayList<Classifier>();
@@ -88,9 +88,9 @@ public class MRGSAntiPattern extends Antipattern{
 										")";
 
 
-	public static ArrayList<MRGSAntiPattern> identify(OntoUMLParser parser) {
+	public static ArrayList<GSRigAntipattern> identify(OntoUMLParser parser) {
 		
-		ArrayList<MRGSAntiPattern> result = new ArrayList<MRGSAntiPattern>();
+		ArrayList<GSRigAntipattern> result = new ArrayList<GSRigAntipattern>();
 		
 		try {
 			Copier copier = new Copier();
@@ -104,10 +104,10 @@ public class MRGSAntiPattern extends Antipattern{
 			{
 				GeneralizationSet original = (GeneralizationSet) AntiPatternUtil.getOriginal(a, copier);
 				
-				MRGSAntiPattern mrgs;
+				GSRigAntipattern mrgs;
 				
 				try {
-					mrgs = new MRGSAntiPattern(original, parser);
+					mrgs = new GSRigAntipattern(original, parser);
 					result.add(mrgs);
 				} catch (Exception e) { }
 			}		

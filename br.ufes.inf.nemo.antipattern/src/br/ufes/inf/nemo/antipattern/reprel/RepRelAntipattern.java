@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.tri;
+package br.ufes.inf.nemo.antipattern.reprel;
 
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class TRIAntiPattern extends Antipattern {
+public class RepRelAntipattern extends Antipattern {
 	
 	private Relator relator;
 	private ArrayList<Mediation> mediations, problematicMediations;
@@ -47,7 +47,7 @@ public class TRIAntiPattern extends Antipattern {
 	 * @param parser
 	 * @throws Exception
 	 */
-	public TRIAntiPattern(Relator relator, OntoUMLParser refparser) throws Exception 
+	public RepRelAntipattern(Relator relator, OntoUMLParser refparser) throws Exception 
 	{
 		this.setRelator(relator,refparser);
 		duplicateInstantiationPattern = new DuplicateRelators(this);

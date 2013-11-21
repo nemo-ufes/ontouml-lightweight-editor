@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.rdp;
+package br.ufes.inf.nemo.antipattern.depphase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,12 +13,12 @@ import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Relationally Dependent Phase
-public class RDPAntiPattern extends Antipattern{
+public class DepPhaseAntipattern extends Antipattern{
 
 	Phase phase;
 	ArrayList<Mediation> dependencies;
 	
-	public RDPAntiPattern(Phase phase, ArrayList<Mediation> dependencies) throws Exception {
+	public DepPhaseAntipattern(Phase phase, ArrayList<Mediation> dependencies) throws Exception {
 		this.phase = phase;
 		
 		for (Mediation m : dependencies) {
@@ -44,9 +44,9 @@ public class RDPAntiPattern extends Antipattern{
 	}
 	
 	
-	public static ArrayList<RDPAntiPattern> identify(OntoUMLParser parser) {
+	public static ArrayList<DepPhaseAntipattern> identify(OntoUMLParser parser) {
 		
-		ArrayList<RDPAntiPattern> result = new ArrayList<RDPAntiPattern>();
+		ArrayList<DepPhaseAntipattern> result = new ArrayList<DepPhaseAntipattern>();
 		HashMap<Phase,ArrayList<Mediation>> hash = new HashMap<Phase, ArrayList<Mediation>>();
 		
 		try 
@@ -72,7 +72,7 @@ public class RDPAntiPattern extends Antipattern{
 			//foreach relationally dependent phase, creates an antipattern with all its dependencies.
 			for (Phase phase : hash.keySet()) {
 				try { 
-					RDPAntiPattern rdp = new RDPAntiPattern(phase, hash.get(phase));
+					DepPhaseAntipattern rdp = new DepPhaseAntipattern(phase, hash.get(phase));
 					result.add(rdp);
 				} catch (Exception e) {}
 				

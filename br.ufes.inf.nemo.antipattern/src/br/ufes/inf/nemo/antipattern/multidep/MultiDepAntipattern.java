@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.mrd;
+package br.ufes.inf.nemo.antipattern.multidep;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,13 +16,13 @@ import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-//Multi-Relational Dependency
-public class MRDAntiPattern extends Antipattern{
+//Multiple Relational Dependency
+public class MultiDepAntipattern extends Antipattern{
 
 	Classifier dependent;
 	ArrayList<Mediation> mediations;
 
-	public MRDAntiPattern (Classifier original, OntoUMLParser parser) throws Exception{
+	public MultiDepAntipattern (Classifier original, OntoUMLParser parser) throws Exception{
 		
 		this.dependent = original;
 		this.mediations = new ArrayList<Mediation>();
@@ -56,9 +56,9 @@ public class MRDAntiPattern extends Antipattern{
 	
 	private static String oclQuery = "ObjectClass.allInstances()->select(c:ObjectClass | Mediation.allInstances()->select(m:Mediation | m.endType->includes(c))->size()>=2)";
 
-	public static ArrayList<MRDAntiPattern> identify(OntoUMLParser parser) {
+	public static ArrayList<MultiDepAntipattern> identify(OntoUMLParser parser) {
 		
-		ArrayList<MRDAntiPattern> result = new ArrayList<MRDAntiPattern>();
+		ArrayList<MultiDepAntipattern> result = new ArrayList<MultiDepAntipattern>();
 		
 		try {
 			Copier copier = new Copier();
@@ -73,7 +73,7 @@ public class MRDAntiPattern extends Antipattern{
 				Classifier original = (Classifier) AntiPatternUtil.getOriginal(a, copier);
 				
 				try {
-					MRDAntiPattern mrd = new MRDAntiPattern(original, parser);
+					MultiDepAntipattern mrd = new MultiDepAntipattern(original, parser);
 					result.add(mrd);
 					
 				} catch (Exception e) { 

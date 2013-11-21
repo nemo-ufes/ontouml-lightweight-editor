@@ -21,7 +21,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.antipattern.ia.IAAntiPattern;
+import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
@@ -33,7 +33,7 @@ public class IAAntiPatternPane extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
-	private IAAntiPattern ia;
+	private ImpAbsAntipattern ia;
 	
 	private AppFrame parent;
 	
@@ -56,7 +56,7 @@ public class IAAntiPatternPane extends JPanel {
 	 * @param ia
 	 * @param parent
 	 */
-	public IAAntiPatternPane(IAAntiPattern ia,AppFrame parent)
+	public IAAntiPatternPane(ImpAbsAntipattern ia,AppFrame parent)
 	{
 		this();
 		

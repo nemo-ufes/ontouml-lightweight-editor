@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.rwrt;
+package br.ufes.inf.nemo.antipattern.relrig;
 
 import java.util.ArrayList;
 
@@ -13,9 +13,9 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class CreationalRelator extends InstantiationPattern{
 
-	RWRTAntiPattern rwrt;
+	RelRigAntipattern rwrt;
 	
-	public CreationalRelator(RWRTAntiPattern rwrt) {
+	public CreationalRelator(RelRigAntipattern rwrt) {
 		
 		this.antipattern = rwrt;
 		this.rwrt = rwrt;
