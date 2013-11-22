@@ -102,15 +102,15 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				browseBtn = new JButton("Browse");
 				browseBtn.addActionListener(this);
 				
-				JLabel lblConstraints = new JLabel("Constraints");
+				JLabel lblConstraints = new JLabel("Elements to Import");
 				chckbxImportConstraints = new JCheckBox("Import Constraints");
 				chckbxImportConstraints.setSelected(true);
 				chckbxImportComments = new JCheckBox("Import Comments");
 				chckbxImportComments.setSelected(true);
 				chckbxImportComments.setEnabled(false);
 				
-				JLabel lblElements = new JLabel("Elements");
-				chckbxIgnoreUnknownStereotypes = new JCheckBox("Ignore Unknown Stereotypes");
+				JLabel lblElements = new JLabel("Error Threatment");
+				chckbxIgnoreUnknownStereotypes = new JCheckBox("Ignore Elements with unknown stereotypes");
 				chckbxIgnoreUnknownStereotypes.addActionListener(this);
 				chckbxCreateDefaultClassassociation = new JCheckBox("Create default Class/Association elements for unknown stereotypes");
 				chckbxCreateDefaultClassassociation.setSelected(true);
