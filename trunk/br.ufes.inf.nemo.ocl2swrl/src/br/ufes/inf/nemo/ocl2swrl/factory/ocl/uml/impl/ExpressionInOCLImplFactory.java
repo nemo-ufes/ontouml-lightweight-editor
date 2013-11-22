@@ -26,6 +26,7 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl.NamedElementImplFactory;
+import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 
 
 
@@ -80,7 +81,17 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		
 		bodyExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, repeatNumber, leftSideOfImplies);
 		
-		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+		Boolean isTag = true;
+		try {
+			@SuppressWarnings("unused")
+			Tag tag = Tag.valueOf(ctStereotype);
+		} catch (Exception e) {
+			isTag = false;
+		}
+		
+		if(isTag){
+			
+		}else if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
 			OWLClass owlClass = factory.getOWLClass(iri);
 			//get the complement of the self
 			OWLObjectComplementOf complementOf = factory.getOWLObjectComplementOf(owlClass);
