@@ -26,6 +26,7 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
+import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
 
 
@@ -71,9 +72,9 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		
 		ArrayList<SWRLDArgument> retArgsY = null;
 		if(propertyType.getClass().equals(PrimitiveTypeImpl.class) || propertyType.getClass().equals(DataTypeImpl.class)){
-			retArgsY = solveClassAttribute(nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot,repeatNumber);
+			retArgsY = solveClassAttribute(ctStereotype, nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot, repeatNumber, leftSideOfImplies);
 		}else if(propertyType.getClass().equals(ClassImpl.class)){
-			retArgsY = solveAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot, repeatNumber);
+			retArgsY = solveAssociation(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot, repeatNumber, leftSideOfImplies);
 		}
 		SWRLDArgument varY = retArgsY.get(retArgsY.size()-1);//pega o ultimo
 		
@@ -90,7 +91,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		return retArgs;
 	}
 	
-	public ArrayList<SWRLDArgument> solveAssociation(OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber){
+	public ArrayList<SWRLDArgument> solveAssociation(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies){
 		String nameVarX = "";
 		String nameVarY = "";
 		
@@ -125,9 +126,13 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		SWRLVariable varX = factory.getSWRLVariable(IRI.create(nameSpace+nameVarX));
 		SWRLVariable varY = factory.getSWRLVariable(IRI.create(nameSpace+nameVarY));
 		
-		//the atoms are added to the antecedents atoms
 		//antecedent.add(this.factory.getSWRLDifferentIndividualsAtom(varX, varY)); //DifferentFrom(?x,?z)
-		antecedent.add(factory.getSWRLObjectPropertyAtom(relation, varX, varY)); //prop(?x,?Y)
+		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
+			consequent.add(factory.getSWRLObjectPropertyAtom(relation, varX, varY)); //prop(?x,?Y)
+		}else{
+			//the atoms are added to the antecedents atoms
+			antecedent.add(factory.getSWRLObjectPropertyAtom(relation, varX, varY)); //prop(?x,?Y)
+		}
 		
 		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
 		
@@ -186,7 +191,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		return retArgs;
 	}
 	
-	public ArrayList<SWRLDArgument> solveClassAttribute(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber){
+	public ArrayList<SWRLDArgument> solveClassAttribute(String ctStereotype, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies){
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
 		
@@ -209,7 +214,11 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		SWRLVariable attrVar = factory.getSWRLVariable(IRI.create(nameSpace+attrVarName));
 		
 		//add the atom to the antecedents atoms
-		antecedent.add(factory.getSWRLDataPropertyAtom(attrDtProp, (SWRLIArgument) referredArgument, attrVar)); //property(?x,?Y)
+		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
+			consequent.add(factory.getSWRLDataPropertyAtom(attrDtProp, (SWRLIArgument) referredArgument, attrVar)); //property(?x,?Y)
+		}else{
+			antecedent.add(factory.getSWRLDataPropertyAtom(attrDtProp, (SWRLIArgument) referredArgument, attrVar)); //property(?x,?Y)
+		}
 		
 		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
 		retArgs.add(attrVar);

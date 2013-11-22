@@ -18,6 +18,7 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
+import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 
 
 
@@ -104,19 +105,38 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		SWRLDArgument varY2 = retArgsY2.get(retArgsY2.size()-1);//pega o ultimo
 		
 		SWRLSameIndividualAtom same0 = factory.getSWRLSameIndividualAtom((SWRLVariable)var0, (SWRLVariable)var0_2);
-		antecedent.add(same0);
+		//antecedent.add(same0);
 		
-		SWRLDifferentIndividualsAtom diff = factory.getSWRLDifferentIndividualsAtom((SWRLVariable)varX, (SWRLVariable)varX2);
-		antecedent.add(diff);
-		
-		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && leftSideOfImplies == false){
-			SWRLSameIndividualAtom same = factory.getSWRLSameIndividualAtom((SWRLVariable)varY, (SWRLVariable)varY2);
-			antecedent.add(same);
-		}else{// if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
-			SWRLDifferentIndividualsAtom diff2 = factory.getSWRLDifferentIndividualsAtom((SWRLVariable)varY, (SWRLVariable)varY2);
-			antecedent.add(diff2);
+		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
+			consequent.add(same0);
+		}else{
+			antecedent.add(same0);
 		}
 		
+		SWRLDifferentIndividualsAtom diff = factory.getSWRLDifferentIndividualsAtom((SWRLVariable)varX, (SWRLVariable)varX2);
+		//antecedent.add(diff);
+		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
+			consequent.add(diff);
+		}else{
+			antecedent.add(diff);
+		}
+		
+		SWRLAtom atom = null;
+		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && leftSideOfImplies == false){
+			SWRLSameIndividualAtom same = factory.getSWRLSameIndividualAtom((SWRLVariable)varY, (SWRLVariable)varY2);
+			//antecedent.add(same);
+			atom = same;
+		}else{// if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
+			SWRLDifferentIndividualsAtom diff2 = factory.getSWRLDifferentIndividualsAtom((SWRLVariable)varY, (SWRLVariable)varY2);
+			//antecedent.add(diff2);
+			atom = diff2;
+		}
+		
+		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
+			consequent.add(atom);
+		}else{
+			antecedent.add(atom);
+		}
 		
 		return null;
 	}

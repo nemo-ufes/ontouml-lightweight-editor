@@ -160,7 +160,7 @@ public class OCLParser {
         if (cstree!=null && cstree.getStartToken().toString().equals("context")) 
         {
             String msg ="You need to specify your constraints inside a package declaration. \n\npackage PackageName\n...\nYour constraints\n...\nendpackage";
-            throw new Exception(msg);
+            //throw new Exception(msg);
         }
         
         oclContent = processOCLContent(oclContent);
