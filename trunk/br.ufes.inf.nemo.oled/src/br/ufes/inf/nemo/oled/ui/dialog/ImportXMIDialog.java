@@ -109,7 +109,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				chckbxImportComments.setSelected(true);
 				chckbxImportComments.setEnabled(false);
 				
-				JLabel lblElements = new JLabel("Error Threatment");
+				JLabel lblElements = new JLabel("Error Treatment");
 				chckbxIgnoreUnknownStereotypes = new JCheckBox("Ignore Elements with unknown stereotypes");
 				chckbxIgnoreUnknownStereotypes.addActionListener(this);
 				chckbxCreateDefaultClassassociation = new JCheckBox("Create default Class/Association elements for unknown stereotypes");
@@ -119,8 +119,8 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				chckbxIgnoreElementsWith.setSelected(true);
 				
 				JLabel lblAutomation = new JLabel("Automation");
-				chckbxGenerateAssocNames = new JCheckBox("Auto generate names for unnamed Association Ends");
-				chckbxGenerateAEndsNames = new JCheckBox("Auto generate names for unnamed Associations");
+				chckbxGenerateAEndsNames = new JCheckBox("Auto generate names for unnamed Association Ends");
+				chckbxGenerateAssocNames = new JCheckBox("Auto generate names for unnamed Associations");
 				chckbxGenerateCard = new JCheckBox("Set 1 for null cardinalities");
 				chckbxGenerateCard.setSelected(true);
 				
