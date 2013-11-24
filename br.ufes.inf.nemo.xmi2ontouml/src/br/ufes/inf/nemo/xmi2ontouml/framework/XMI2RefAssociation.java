@@ -115,6 +115,9 @@ public class XMI2RefAssociation extends XMI2RefClassifier
         	der.getOwnedEnd().add(prop2);
         	der.getMemberEnd().add(prop2);
         	
+        	if (autoGenerateNames)
+        		der.setName("A_"+prop1.getType().getName().replace(" ", "")+"_"+prop2.getType().getName().replace(" ", ""));
+        	
         	((Package)((MaterialAssociation)RefOntoUMLElement).eContainer()).getPackagedElement().add(der);
     	}
 	}
@@ -158,23 +161,17 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 	{
 		try
 		{
-			if (Mapper.getID(XMIElement).equals("EAID_0DC25B31_42F2_4331_A5BA_C9718D2AF6D6"))
-	    	{
-	    		System.out.println("parar");
-	    	}
-			
 	    	for (Object memberEnd : (List<?>)hashProp.get("memberend"))
 	    	{
 	    		((Association)RefOntoUMLElement).getMemberEnd().add((Property)elemMap.get((String)memberEnd));
 			}
 	    	
 	    	Association assoc = (Association) RefOntoUMLElement;
-	    	String source = (assoc.getMemberEnd().get(0) != null ? assoc.getMemberEnd().get(0).getType().getName() : "");
-	    	String target = (assoc.getMemberEnd().get(1) != null ? assoc.getMemberEnd().get(1).getType().getName() : "");
-	    	
-	    	if (autoGenerateNames && (assoc.getName() == null || assoc.getName().equals("")))
-				assoc.setName("A_"+(source != null ? source.replace(" ", "") : "")+"_"+
-								   (target != null ? target.replace(" ", "") : ""));
+	    	if (autoGenerateNames && (assoc.getName() == null || assoc.getName().equals("")) &&
+	    			assoc.getMemberEnd().get(0) != null && assoc.getMemberEnd().get(1) != null)
+	    	{
+	    		generateAutoName();
+	    	}
 		}
 		catch (NullPointerException | IllegalArgumentException e)
 		{
@@ -210,6 +207,34 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 		}
 		
 		super.createSubElements();
+	}
+	
+	private void generateAutoName() throws Exception
+	{
+		Association assoc = (Association) RefOntoUMLElement;
+		
+		//Treats the cases where the type of the property(ies) is(are) still not set
+		if (assoc.getMemberEnd().get(0).getType() == null)
+		{
+			for (XMI2RefElement xmi2refelement : elemMap.values())
+			{
+				if (xmi2refelement.RefOntoUMLElement.equals(assoc.getMemberEnd().get(0)))
+					xmi2refelement.dealReferences();
+			}
+		}
+		if (assoc.getMemberEnd().get(1).getType() == null)
+		{
+			for (XMI2RefElement xmi2refelement : elemMap.values())
+			{
+				if (xmi2refelement.RefOntoUMLElement.equals(assoc.getMemberEnd().get(1)))
+					xmi2refelement.dealReferences();
+			}
+		}
+		
+		String source = (assoc.getMemberEnd().get(0).getType().getName() != null ? assoc.getMemberEnd().get(0).getType().getName() : "");
+    	String target = (assoc.getMemberEnd().get(1).getType().getName() != null ? assoc.getMemberEnd().get(1).getType().getName() : "");
+		
+    	assoc.setName("A_"+source.replace(" ", "")+"_"+target.replace(" ", ""));
 	}
 
 	public static boolean isAutoGenerateNames() {
