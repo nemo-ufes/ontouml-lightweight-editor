@@ -91,10 +91,8 @@ public class OCL2SWRL {
 		try {
 			oclParser = new OCLParser(oclRules, this.refParser, "company.uml");
 		} catch (ParserException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		*/

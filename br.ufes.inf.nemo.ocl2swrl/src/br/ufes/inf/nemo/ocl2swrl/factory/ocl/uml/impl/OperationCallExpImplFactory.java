@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.ocl.expressions.OCLExpression;
+import org.eclipse.ocl.expressions.Variable;
+import org.eclipse.ocl.uml.impl.ExpressionInOCLImpl;
 import org.eclipse.ocl.uml.impl.IntegerLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.LiteralExpImpl;
 import org.eclipse.ocl.uml.impl.NumericLiteralExpImpl;
@@ -14,7 +16,9 @@ import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
 import org.eclipse.ocl.uml.impl.PrimitiveLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.RealLiteralExpImpl;
 import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
@@ -23,11 +27,13 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLObjectCardinalityRestriction;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLReflexiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
@@ -228,7 +234,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			}
 		}
 				
-		String referredOperation = operationCallExpImpl.getReferredOperation().toString();
+		String referredOperation = operationCallExpImpl.getReferredOperation().getName();
 		
 		if(referredOperation.equals("<")){
 			cardinality -= 1;
@@ -236,16 +242,27 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			cardinality += 1;
 		}
 		
+		OWLClass contextClass = this.getContextClass(nameSpace, factory);
+		OWLObjectCardinalityRestriction cardRest = null;
+		
 		switch(referredOperation){
 			case "<":
 			case "<=":
+				cardRest = factory.getOWLObjectMaxCardinality(cardinality, relation, contextClass);
 				break;
 			case ">":
 			case ">=":
+				cardRest = factory.getOWLObjectMinCardinality(cardinality, relation, contextClass);
 				break;
 			case "=":
+				cardRest = factory.getOWLObjectExactCardinality(cardinality, relation, contextClass);
 				break;
 		}
+		
+		OWLSubClassOfAxiom subClassOf = factory.getOWLSubClassOfAxiom(contextClass, cardRest);
+		manager.applyChange(new AddAxiom(ontology, subClassOf));
+		
+		Transformer transformer;
 		
 		//factory.getOWLSubClassOfAxiom(arg0, arg1)
 		//OWLSymmetricObjectPropertyAxiom symmetric = factory.getOWLSymmetricObjectPropertyAxiom(relation);
@@ -253,7 +270,34 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		//apply changes in the owl manager
 		//manager.applyChange(new AddAxiom(ontology, symmetric));
 				
-		System.out.println();
+		//System.out.println();
+	}
+	
+	public OWLClass getContextClass(String nameSpace, OWLDataFactory factory){
+		Element owner = this.m_NamedElementImpl.getOwner();
+		Variable<Classifier, Parameter> contextVariable = null;
+		Element context = null;
+		while(owner!=null){
+			if(owner.getClass().equals(ExpressionInOCLImpl.class)){
+				contextVariable = ((ExpressionInOCLImpl) owner).getContextVariable();
+				break;
+			}
+			
+			owner = owner.getOwner();
+						
+		}
+		
+		Classifier classContVar = contextVariable.getType();
+		
+		//create a swrl variable with the self name
+		String contVarName = classContVar.getName();
+		String iriName = nameSpace+contVarName;
+		iriName = iriName.replace(" ", "_");
+		IRI iri = IRI.create(iriName);
+		
+		OWLClass contextClass = factory.getOWLClass(iri);
+		
+		return contextClass;
 	}
 	
 	public void solveSymmetric(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology){
