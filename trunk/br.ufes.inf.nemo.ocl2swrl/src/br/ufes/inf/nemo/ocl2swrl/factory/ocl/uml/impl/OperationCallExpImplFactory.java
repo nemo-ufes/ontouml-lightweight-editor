@@ -6,18 +6,31 @@ import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.ocl.expressions.OCLExpression;
+import org.eclipse.ocl.uml.impl.IntegerLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.LiteralExpImpl;
+import org.eclipse.ocl.uml.impl.NumericLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
 import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
+import org.eclipse.ocl.uml.impl.PrimitiveLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.RealLiteralExpImpl;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
+import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLReflexiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLBuiltInAtom;
 import org.semanticweb.owlapi.model.SWRLClassAtom;
@@ -32,6 +45,7 @@ import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
+import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl.TypedElementImplFactory;
 import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
 
@@ -97,7 +111,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		}
 		*/
 		Boolean sourceIsLeftSideOfImplies = false;
-		if(this.isImpliesOperation()){
+		if(this.isImpliesOperation() || leftSideOfImplies == true){
 			sourceIsLeftSideOfImplies = true;
 		}
 		
@@ -136,7 +150,38 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//pega o ultimo
 		
 		ArrayList<SWRLDArgument> retArgsZ = null;
-		if(this.isComparisonOperation()){
+		if(ctStereotype.equals(Tag.Reflexive.toString())){
+			if(this.isIncludesOperation() || this.isExcludesOperation()){
+				solveReflexive(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
+			}
+			
+		}else if(ctStereotype.equals(Tag.Irreflexive.toString())){
+			if(this.isIncludesOperation() || this.isExcludesOperation()){
+				solveIrreflexive(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
+			}
+		}else if(ctStereotype.equals(Tag.Symmetric.toString())){
+			if(this.isIncludesOperation() || this.isExcludesOperation()){
+				solveSymmetric(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
+			}
+			
+		}else if(ctStereotype.equals(Tag.Asymmetric.toString())){
+			if(this.isIncludesOperation() || this.isExcludesOperation()){
+				solveAsymmetric(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
+			}
+		}else if(ctStereotype.equals(Tag.Transitive.toString())){
+			if(this.isIncludesOperation() || this.isExcludesOperation()){
+				solveTransitive(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
+			}
+		}else if(ctStereotype.equals(Tag.SubRelationOf.toString())){
+			if(this.isIncludesOperation() || this.isExcludesOperation()){
+				solveSubRelationOf(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
+			}
+		}else if(ctStereotype.equals(Tag.Cardinality.toString())){
+			if(this.isComparisonOperation()){
+				solveCardinality(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
+			}
+			
+		}else if(this.isComparisonOperation()){
 			retArgsZ = solveComparison(ctStereotype, nameSpace, manager, factory, ontology, antecedent, consequent, varX, varY, operatorNot, leftSideOfImplies);
 		}else if(this.isImpliesOperation()){
 			//do nothing
@@ -169,6 +214,139 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return retArgsZ;
 	}
 	
+	public void solveCardinality(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology){
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource());
+		
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		
+		int cardinality = 0;
+		if(operationCallExpImpl.getArgument().size()>0){
+			OCLExpression argument = operationCallExpImpl.getArgument().get(0);
+
+			if(argument.getClass().equals(IntegerLiteralExpImpl.class)){
+				cardinality = ((IntegerLiteralExpImpl) argument).getIntegerSymbol();
+			}
+		}
+				
+		String referredOperation = operationCallExpImpl.getReferredOperation().toString();
+		
+		if(referredOperation.equals("<")){
+			cardinality -= 1;
+		}else if(referredOperation.equals(">")){
+			cardinality += 1;
+		}
+		
+		switch(referredOperation){
+			case "<":
+			case "<=":
+				break;
+			case ">":
+			case ">=":
+				break;
+			case "=":
+				break;
+		}
+		
+		//factory.getOWLSubClassOfAxiom(arg0, arg1)
+		//OWLSymmetricObjectPropertyAxiom symmetric = factory.getOWLSymmetricObjectPropertyAxiom(relation);
+		
+		//apply changes in the owl manager
+		//manager.applyChange(new AddAxiom(ontology, symmetric));
+				
+		System.out.println();
+	}
+	
+	public void solveSymmetric(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology){
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource());
+		
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		
+		OWLSymmetricObjectPropertyAxiom symmetric = factory.getOWLSymmetricObjectPropertyAxiom(relation);
+		
+		//apply changes in the owl manager
+		manager.applyChange(new AddAxiom(ontology, symmetric));
+				
+		//System.out.println();
+	}
+	
+	public void solveAsymmetric(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology){
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource());
+		
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		
+		OWLAsymmetricObjectPropertyAxiom asymmetric = factory.getOWLAsymmetricObjectPropertyAxiom(relation);
+		
+		//apply changes in the owl manager
+		manager.applyChange(new AddAxiom(ontology, asymmetric));
+				
+		//System.out.println();
+	}
+	
+	public void solveReflexive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology){
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource());
+		
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		
+		OWLReflexiveObjectPropertyAxiom reflexive = factory.getOWLReflexiveObjectPropertyAxiom(relation);
+		
+		//apply changes in the owl manager
+		manager.applyChange(new AddAxiom(ontology, reflexive));
+				
+		//System.out.println();
+	}
+	
+	public void solveTransitive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology){
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource());
+		
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		
+		OWLTransitiveObjectPropertyAxiom transitive = factory.getOWLTransitiveObjectPropertyAxiom(relation);
+		
+		//apply changes in the owl manager
+		manager.applyChange(new AddAxiom(ontology, transitive));
+		
+		//System.out.println();
+	}
+	
+	public void solveSubRelationOf(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology){
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource());
+		
+		OWLObjectProperty relation1 = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		
+		if(operationCallExpImpl.getArgument().size()>0){
+			this.argumentFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getArgument().get(0));
+		}
+		
+		OWLObjectProperty relation2 = this.argumentFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		
+		OWLSubObjectPropertyOfAxiom subRelationOf = factory.getOWLSubObjectPropertyOfAxiom(relation2, relation1);
+		//apply changes in the owl manager
+		manager.applyChange(new AddAxiom(ontology, subRelationOf));
+				
+		//System.out.println();
+	}
+	
+	@Override
+	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) {
+		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource());
+		
+		return this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+	}
+	
+	public void solveIrreflexive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology){
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource());
+		
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		
+		OWLIrreflexiveObjectPropertyAxiom irreflexive = factory.getOWLIrreflexiveObjectPropertyAxiom(relation);
+		
+		//apply changes in the owl manager
+		manager.applyChange(new AddAxiom(ontology, irreflexive));
+				
+		//System.out.println();
+	}
+	
 	public ArrayList<SWRLDArgument> solveIncludes(String ctStereotype, OWLDataFactory factory, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean leftSideOfImplies) {
 		SWRLDArgument varX1 = referredArgsX.get(0);
 		SWRLDArgument varX2 = referredArgsX.get(1);
@@ -186,21 +364,24 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			//antecedent.add(same1);
 			atom = same1;
 		}
-		
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, atom);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(atom);
 		}else{
 			antecedent.add(atom);
 		}
-		
+		*/
 		SWRLSameIndividualAtom same2 = factory.getSWRLSameIndividualAtom((SWRLVariable)varX2, (SWRLVariable)varY2);
 		//antecedent.add(same2);
-		
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, same2);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(same2);
 		}else{
 			antecedent.add(same2);
 		}
+		*/
 		return null;
 	}
 	
@@ -213,13 +394,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		
 		SWRLSameIndividualAtom same1 = factory.getSWRLSameIndividualAtom((SWRLVariable)varX1, (SWRLVariable)varY1);
 		//antecedent.add(same1);
-		
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, same1);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(same1);
 		}else{
 			antecedent.add(same1);
 		}
-		
+		*/
 		SWRLAtom atom = null;
 		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && leftSideOfImplies == false){
 			SWRLSameIndividualAtom same2 = factory.getSWRLSameIndividualAtom((SWRLVariable)varX2, (SWRLVariable)varY2);
@@ -230,13 +412,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			//antecedent.add(diff);
 			atom = diff;
 		}
-		
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, atom);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(atom);
 		}else{
 			antecedent.add(atom);
 		}
-		
+		*/
 		return null;
 	}
 	
@@ -258,12 +441,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		SWRLBuiltInAtom builtIn = factory.getSWRLBuiltInAtom(IRI.create("abs"), args);
 		
 		//antecedent.add(builtIn);
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, builtIn);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(builtIn);
 		}else{
 			antecedent.add(builtIn);
 		}
-		
+		*/
 		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
 		retArgs.add(varZ);
 		
@@ -275,12 +460,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		OWLClass owlClass = factory.getOWLClass(iri);
 		SWRLClassAtom atom = factory.getSWRLClassAtom(owlClass, (SWRLIArgument) referredArgY);
 		//antecedent.add(atom);
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, atom);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(atom);
 		}else{
 			antecedent.add(atom);
 		}
-		
+		*/
 		return null;
 	}
 	
@@ -291,13 +478,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		OWLObjectComplementOf complementOf = factory.getOWLObjectComplementOf(owlClass);
 		atom = factory.getSWRLClassAtom(complementOf, (SWRLIArgument) referredArgY);
 		//antecedent.add(atom);
-		
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, atom);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(atom);
 		}else{
 			antecedent.add(atom);
 		}
-		
+		*/
 		return null;
 	}
 	
@@ -340,13 +528,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		}
 		*/
 		//antecedent.add(atom);
-
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, atom);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(atom);
 		}else{
 			antecedent.add(atom);
 		}
-		
+		*/
 		return null;
 	}
 	
@@ -415,13 +604,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		SWRLBuiltInAtom builtIn = factory.getSWRLBuiltInAtom(IRI.create(iriName), args);
 		//the built-in is added to the antecedent atom
 		//antecedent.add(builtIn);
-		
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, builtIn);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(builtIn);
 		}else{
 			antecedent.add(builtIn);
 		}
-		
+		*/
 		return null;
 	}
 	
@@ -481,12 +671,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			
 			//and added in the antecedent atoms
 			//antecedent.add(builtIn);
-			
+			this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, builtIn);
+			/*
 			if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 				consequent.add(builtIn);
 			}else{
 				antecedent.add(builtIn);
 			}
+			*/
 		}
 		
 		retArgs.add(varZ);

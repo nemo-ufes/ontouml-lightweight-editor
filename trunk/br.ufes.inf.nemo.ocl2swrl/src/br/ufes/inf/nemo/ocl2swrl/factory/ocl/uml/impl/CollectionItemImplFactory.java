@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.CollectionItemImpl;
+import org.eclipse.ocl.uml.impl.CollectionLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
@@ -14,6 +16,7 @@ import org.semanticweb.owlapi.model.SWRLDArgument;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
+import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl.TypedElementImplFactory;
 
 
 
@@ -46,5 +49,17 @@ public class CollectionItemImplFactory extends CollectionLiteralPartImplFactory 
 		ArrayList<SWRLDArgument> retArgsX = this.itemFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, operatorNot, repeatNumber, leftSideOfImplies);
 		
 		return retArgsX;
+	}
+	
+	@Override
+	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) {
+		
+		CollectionItemImpl collectionItemImpl = (CollectionItemImpl) this.m_NamedElementImpl;
+		OCLExpressionImpl item = (OCLExpressionImpl)collectionItemImpl.getItem();	
+		
+		this.itemFactory = (OCLExpressionImplFactory) Factory.constructor(item);
+		
+		return this.itemFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		
 	}
 }
