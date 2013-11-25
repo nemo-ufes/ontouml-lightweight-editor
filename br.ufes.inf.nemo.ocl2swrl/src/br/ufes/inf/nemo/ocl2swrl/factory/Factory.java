@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.*;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
@@ -13,10 +14,42 @@ import org.semanticweb.owlapi.model.SWRLDArgument;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.*;
 import br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl.*;
+import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 
 
 public class Factory {
 	Boolean isBodyExpression = false;
+	
+	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory){
+		return null;
+	}
+	
+	public void insertOnAntecedentOrConsequent(String ctStereotype, Boolean leftSideOfImplies, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLAtom atom){
+		if(ctStereotype.equals(Tag.Reflexive.toString()) || 
+				ctStereotype.equals(Tag.Irreflexive.toString()) || 
+				ctStereotype.equals(Tag.Symmetric.toString()) || 
+				ctStereotype.equals(Tag.Asymmetric.toString()) || 
+				ctStereotype.equals(Tag.Transitive.toString()) || 
+				ctStereotype.equals(Tag.SubRelationOf.toString()) || 
+				ctStereotype.equals(Tag.Cardinality.toString())){
+			return;
+		}
+		
+		if(hasToBeInsertedInConsequent(ctStereotype, leftSideOfImplies)){
+			consequent.add(atom);
+		}else{
+			antecedent.add(atom);
+		}
+	}
+	
+	public Boolean hasToBeInsertedInConsequent(String ctStereotype, Boolean leftSideOfImplies){
+		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+			return false;//invariants are inserted on antecedents, excepting when tags are used are override the ctStereotype
+		}else if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == true){
+			return false;//atoms in rules tagged as Derive are inserted on antecedents if they are on the left side of the operator Implies 
+		}
+		return true;
+	}
 	
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) {
 		throw new NonImplemented("solve()");

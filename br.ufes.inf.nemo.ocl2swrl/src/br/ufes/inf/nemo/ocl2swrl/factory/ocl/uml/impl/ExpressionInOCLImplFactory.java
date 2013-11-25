@@ -89,28 +89,30 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			isTag = false;
 		}
 		
-		if(isTag){
+		if(!isTag){
 			
-		}else if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
-			OWLClass owlClass = factory.getOWLClass(iri);
-			//get the complement of the self
-			OWLObjectComplementOf complementOf = factory.getOWLObjectComplementOf(owlClass);
-			//create a swrl atom that means swrlVariable isn't self
-			SWRLClassAtom atom = factory.getSWRLClassAtom(complementOf, contextVar);
-			consequent.add(atom);
+			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+				OWLClass owlClass = factory.getOWLClass(iri);
+				//get the complement of the self
+				OWLObjectComplementOf complementOf = factory.getOWLObjectComplementOf(owlClass);
+				//create a swrl atom that means swrlVariable isn't self
+				SWRLClassAtom atom = factory.getSWRLClassAtom(complementOf, contextVar);
+				consequent.add(atom);
+				
+				
+			}else if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
+				this.elementFactory = new PropertyCallExpImplFactory(m_NamedElementImpl, (Property) element);
+				this.elementFactory.solveProperty(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, 1);
+				
+			}
 			
 			
-		}else if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
-			this.elementFactory = new PropertyCallExpImplFactory(m_NamedElementImpl, (Property) element);
-			this.elementFactory.solveProperty(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, 1);
+			//create a rule with the incremented antecedents and consequents
+			SWRLRule rule = factory.getSWRLRule(antecedent,consequent);
 			
+			//apply changes in the owl manager
+			manager.applyChange(new AddAxiom(ontology, rule));
 		}
-		
-		//create a rule with the incremented antecedents and consequents
-		SWRLRule rule = factory.getSWRLRule(antecedent,consequent);
-		
-		//apply changes in the owl manager
-		manager.applyChange(new AddAxiom(ontology, rule));
 		
 		return null;		
 	}

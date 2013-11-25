@@ -21,7 +21,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
+import org.semanticweb.owlapi.model.SWRLDataPropertyAtom;
 import org.semanticweb.owlapi.model.SWRLIArgument;
+import org.semanticweb.owlapi.model.SWRLObjectPropertyAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -126,13 +128,18 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		SWRLVariable varX = factory.getSWRLVariable(IRI.create(nameSpace+nameVarX));
 		SWRLVariable varY = factory.getSWRLVariable(IRI.create(nameSpace+nameVarY));
 		
+		SWRLObjectPropertyAtom objPropAtom = null;
 		//antecedent.add(this.factory.getSWRLDifferentIndividualsAtom(varX, varY)); //DifferentFrom(?x,?z)
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
-			consequent.add(factory.getSWRLObjectPropertyAtom(relation, varX, varY)); //prop(?x,?Y)
+			objPropAtom = factory.getSWRLObjectPropertyAtom(relation, varX, varY);
+			//consequent.add(); //prop(?x,?Y)
 		}else{
+			objPropAtom = factory.getSWRLObjectPropertyAtom(relation, varX, varY);
 			//the atoms are added to the antecedents atoms
-			antecedent.add(factory.getSWRLObjectPropertyAtom(relation, varX, varY)); //prop(?x,?Y)
+			//antecedent.add(); //prop(?x,?Y)
 		}
+		
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, objPropAtom);
 		
 		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
 		
@@ -213,12 +220,17 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		
 		SWRLVariable attrVar = factory.getSWRLVariable(IRI.create(nameSpace+attrVarName));
 		
+		SWRLDataPropertyAtom dataPropAtom = null;
 		//add the atom to the antecedents atoms
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
-			consequent.add(factory.getSWRLDataPropertyAtom(attrDtProp, (SWRLIArgument) referredArgument, attrVar)); //property(?x,?Y)
+			dataPropAtom = factory.getSWRLDataPropertyAtom(attrDtProp, (SWRLIArgument) referredArgument, attrVar);
+			//consequent.add(); //property(?x,?Y)
 		}else{
-			antecedent.add(factory.getSWRLDataPropertyAtom(attrDtProp, (SWRLIArgument) referredArgument, attrVar)); //property(?x,?Y)
+			dataPropAtom = factory.getSWRLDataPropertyAtom(attrDtProp, (SWRLIArgument) referredArgument, attrVar);
+			//antecedent.add(); //property(?x,?Y)
 		}
+		
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, dataPropAtom);
 		
 		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
 		retArgs.add(attrVar);
@@ -226,7 +238,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		return retArgs;
 	}
 	
-	public RefOntoUML.Association getEquivalentOntoUmlAssociation(OntoUMLParser refParser, Association association){
+	public static RefOntoUML.Association getEquivalentOntoUmlAssociation(OntoUMLParser refParser, Association association){
 		String assocName = association.getName();
 		
 		Property assocMEnd0 = association.getMemberEnds().get(0);
@@ -269,7 +281,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		return null;
 	}
 	
-	public String generateAssociationName(OntoUMLParser refParser, Association association){
+	public static String generateAssociationName(OntoUMLParser refParser, Association association){
 		RefOntoUML.Association ontoUmlAssociation = getEquivalentOntoUmlAssociation(refParser, association);
 		String propName = ontoUmlAssociation.getClass().getName();
 		propName = propName.replace("Impl", "");
@@ -283,7 +295,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		return prop;
 	}
 	
-	public Boolean hasSameName(String assocName, String ontoUmlAssocName){
+	public static Boolean hasSameName(String assocName, String ontoUmlAssocName){
 		if(ontoUmlAssocName == null && assocName == null){
 			return true;
 		}else if(ontoUmlAssocName == null || assocName == null){
@@ -292,5 +304,17 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) {
+		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
+		Property referredProperty = propertyCallExpImpl.getReferredProperty();
+		Association association = referredProperty.getAssociation();
+		String iriRelationName = nameSpace + PropertyCallExpImplFactory.generateAssociationName(refParser, association);;
+		IRI iriRelation = IRI.create(iriRelationName);
+		OWLObjectProperty relation = factory.getOWLObjectProperty(iriRelation);
+		
+		return relation;
 	}
 }

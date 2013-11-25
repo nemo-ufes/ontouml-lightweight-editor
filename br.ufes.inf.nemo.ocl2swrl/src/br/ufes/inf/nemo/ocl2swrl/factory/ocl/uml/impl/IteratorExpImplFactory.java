@@ -107,20 +107,24 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		SWRLSameIndividualAtom same0 = factory.getSWRLSameIndividualAtom((SWRLVariable)var0, (SWRLVariable)var0_2);
 		//antecedent.add(same0);
 		
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, same0);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(same0);
 		}else{
 			antecedent.add(same0);
 		}
-		
+		*/
 		SWRLDifferentIndividualsAtom diff = factory.getSWRLDifferentIndividualsAtom((SWRLVariable)varX, (SWRLVariable)varX2);
 		//antecedent.add(diff);
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, diff);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(diff);
 		}else{
 			antecedent.add(diff);
 		}
-		
+		*/
 		SWRLAtom atom = null;
 		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && leftSideOfImplies == false){
 			SWRLSameIndividualAtom same = factory.getSWRLSameIndividualAtom((SWRLVariable)varY, (SWRLVariable)varY2);
@@ -131,13 +135,14 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 			//antecedent.add(diff2);
 			atom = diff2;
 		}
-		
+		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, atom);
+		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(atom);
 		}else{
 			antecedent.add(atom);
 		}
-		
+		*/
 		return null;
 	}
 	

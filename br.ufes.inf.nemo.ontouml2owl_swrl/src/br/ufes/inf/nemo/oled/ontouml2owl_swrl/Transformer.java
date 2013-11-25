@@ -73,6 +73,8 @@ import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ocl.parser.OCLParser;
+import br.ufes.inf.nemo.ocl2swrl.OCL2SWRL;
 
 public class Transformer {	
 	private String nameSpace;
@@ -120,7 +122,7 @@ public class Transformer {
 	 * @param ecoreModel
 	 * @return a String with the OWL code
 	 */
-	public String transform(Model ecoreModel) {
+	public String transform(Model ecoreModel, String oclRules) {
 
 		ontoParser = new OntoUMLParser(ecoreModel);
 		_lstDataType = ontoParser.getAllInstances(RefOntoUML.DataType.class);
@@ -223,6 +225,12 @@ public class Transformer {
 
 		//Process Axioms
 		processAxioms();
+		
+		if(oclRules != null){
+			OCL2SWRL ocl2swrl = new OCL2SWRL(oclRules, ontoParser, manager, nameSpace);
+			//OCL2SWRL ocl2swrl = new OCL2SWRL(oclParser, ontoParser, manager, nameSpace);
+			ocl2swrl.Transformation();
+		}
 
 		try {	
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -1543,55 +1551,64 @@ public class Transformer {
 	}
 	/**
 	 * This is a pos-method.
-	 * It put all equivalentClass, disjointClass and subClassOf axioms from a class in just one axiom
+	 * It put all equivalentClass, disjointClass and subClassOf axioms from a class in just one axiom for all classes
 	 * @param 
 	 */
 	private void processAxioms(){
 		for(OWLClass c : ontology.getClassesInSignature()){
 
-			Set<OWLClassExpression> eqClsExpr = new HashSet<OWLClassExpression>();
-			Set<OWLClassExpression> dsjClsExpr = new HashSet<OWLClassExpression>();
-			Set<OWLClassExpression> sbClsExpr = new HashSet<OWLClassExpression>();
+			processAxiom(c);
+		}
+	}
+	
+	/**
+	 * This is a pos-method.
+	 * It put all equivalentClass, disjointClass and subClassOf axioms from a class in just one axiom for only one class
+	 * @param 
+	 */
+	private void processAxiom(OWLClass c){
+		Set<OWLClassExpression> eqClsExpr = new HashSet<OWLClassExpression>();
+		Set<OWLClassExpression> dsjClsExpr = new HashSet<OWLClassExpression>();
+		Set<OWLClassExpression> sbClsExpr = new HashSet<OWLClassExpression>();
 
-			Set<OWLClassAxiom> setClsAxs = ontology.getAxioms(c);
-			Iterator<OWLClassAxiom> itr = setClsAxs.iterator();
+		Set<OWLClassAxiom> setClsAxs = ontology.getAxioms(c);
+		Iterator<OWLClassAxiom> itr = setClsAxs.iterator();
 
-			//Process EquivalentClassAxiom
-			while(itr.hasNext()) {
-				OWLClassAxiom ax = itr.next();
+		//Process EquivalentClassAxiom
+		while(itr.hasNext()) {
+			OWLClassAxiom ax = itr.next();
 
-				if(ax instanceof OWLEquivalentClassesAxiom){
-					OWLNaryClassAxiom nax = (OWLNaryClassAxiom)ax;
-					eqClsExpr.addAll(nax.getClassExpressions());
-					manager.removeAxiom(ontology, ax);
-				} 
-				if(ax instanceof OWLSubClassOfAxiom){
-					OWLSubClassOfAxiom sax = (OWLSubClassOfAxiom)ax;
-					sbClsExpr.add(sax.getSuperClass());
-					manager.removeAxiom(ontology, ax);	
-				}
+			if(ax instanceof OWLEquivalentClassesAxiom){
+				OWLNaryClassAxiom nax = (OWLNaryClassAxiom)ax;
+				eqClsExpr.addAll(nax.getClassExpressions());
+				manager.removeAxiom(ontology, ax);
+			} 
+			if(ax instanceof OWLSubClassOfAxiom){
+				OWLSubClassOfAxiom sax = (OWLSubClassOfAxiom)ax;
+				sbClsExpr.add(sax.getSuperClass());
+				manager.removeAxiom(ontology, ax);	
 			}
+		}
 
-			if(eqClsExpr.size() > 1){
-				eqClsExpr.remove(c);
-				OWLObjectIntersectionOf oi = factory.getOWLObjectIntersectionOf(eqClsExpr);
-				OWLEquivalentClassesAxiom eqAx = factory.getOWLEquivalentClassesAxiom(c, oi);
-				manager.applyChange(new AddAxiom(ontology, eqAx));
-			}
-			if(dsjClsExpr.size() > 1){
-				manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointClassesAxiom(dsjClsExpr)));
-			}
-			if(sbClsExpr.size() > 1){
-				OWLObjectIntersectionOf oi = factory.getOWLObjectIntersectionOf(sbClsExpr);
-				OWLSubClassOfAxiom sbAx = factory.getOWLSubClassOfAxiom(c, oi);
+		if(eqClsExpr.size() > 1){
+			eqClsExpr.remove(c);
+			OWLObjectIntersectionOf oi = factory.getOWLObjectIntersectionOf(eqClsExpr);
+			OWLEquivalentClassesAxiom eqAx = factory.getOWLEquivalentClassesAxiom(c, oi);
+			manager.applyChange(new AddAxiom(ontology, eqAx));
+		}
+		if(dsjClsExpr.size() > 1){
+			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointClassesAxiom(dsjClsExpr)));
+		}
+		if(sbClsExpr.size() > 1){
+			OWLObjectIntersectionOf oi = factory.getOWLObjectIntersectionOf(sbClsExpr);
+			OWLSubClassOfAxiom sbAx = factory.getOWLSubClassOfAxiom(c, oi);
+			manager.applyChange(new AddAxiom(ontology, sbAx));
+		}else{
+			Iterator<OWLClassExpression> i = sbClsExpr.iterator();
+			while(i.hasNext()) {
+				OWLClassExpression ax = i.next();
+				OWLSubClassOfAxiom sbAx = factory.getOWLSubClassOfAxiom(c, ax);
 				manager.applyChange(new AddAxiom(ontology, sbAx));
-			}else{
-				Iterator<OWLClassExpression> i = sbClsExpr.iterator();
-				while(i.hasNext()) {
-					OWLClassExpression ax = i.next();
-					OWLSubClassOfAxiom sbAx = factory.getOWLSubClassOfAxiom(c, ax);
-					manager.applyChange(new AddAxiom(ontology, sbAx));
-				}
 			}
 		}
 	}
