@@ -38,6 +38,12 @@ public class VariableExpImplFactory extends OCLExpressionImplFactory {
 		VariableExpImpl variableExpImpl = (VariableExpImpl) this.m_NamedElementImpl;
 		//String varName = variableExpImpl.getReferredVariable().getType().getName();
 		String varName = Util.generateVarName(variableExpImpl.getReferredVariable().getType(), referredArgument);
+		if(varName == null){
+			varName = variableExpImpl.getName();
+		}
+		if(varName.equals("")){
+			varName = variableExpImpl.getName();
+		}
 		if(repeatNumber > 1){
 			varName += repeatNumber;
 		}

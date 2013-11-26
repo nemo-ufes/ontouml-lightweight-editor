@@ -73,7 +73,6 @@ import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl.parser.OCLParser;
 import br.ufes.inf.nemo.ocl2swrl.OCL2SWRL;
 
 public class Transformer {	

@@ -9,6 +9,7 @@ import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.uml.impl.ExpressionInOCLImpl;
 import org.eclipse.ocl.uml.impl.IntegerLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.LetExpImpl;
 import org.eclipse.ocl.uml.impl.LiteralExpImpl;
 import org.eclipse.ocl.uml.impl.NumericLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
@@ -151,8 +152,11 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		}
 		*/
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
-		
-		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, sourceIsLeftSideOfImplies);
+		SWRLDArgument refArgAux = referredArgument;
+		if(isPartOfLetExp(source)){
+			refArgAux = null;
+		}
+		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, refArgAux, operatorNot, repeatNumber, sourceIsLeftSideOfImplies);
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//pega o ultimo
 		
 		ArrayList<SWRLDArgument> retArgsZ = null;
@@ -220,6 +224,19 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return retArgsZ;
 	}
 	
+	public Boolean isPartOfLetExp(OCLExpressionImpl expression){
+		OCLExpressionImpl test = expression;
+		
+		while(test != null){
+			if(test.getClass().equals(LetExpImpl.class)){
+				return true;
+			}
+			test = (OCLExpressionImpl) test.getOwner();
+		}
+			
+		return false;
+	}
+	
 	public void solveCardinality(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology){
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource());
 		
@@ -261,8 +278,6 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		
 		OWLSubClassOfAxiom subClassOf = factory.getOWLSubClassOfAxiom(contextClass, cardRest);
 		manager.applyChange(new AddAxiom(ontology, subClassOf));
-		
-		Transformer transformer;
 		
 		//factory.getOWLSubClassOfAxiom(arg0, arg1)
 		//OWLSymmetricObjectPropertyAxiom symmetric = factory.getOWLSymmetricObjectPropertyAxiom(relation);

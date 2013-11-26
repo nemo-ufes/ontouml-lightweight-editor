@@ -81,6 +81,10 @@ public class Factory {
 			return new BooleanLiteralExpImplFactory((BooleanLiteralExpImpl) obj);
 		}else if(c.equals(EnumLiteralExpImpl.class)){
 			return new EnumLiteralExpImplFactory((EnumLiteralExpImpl) obj);
+		}else if(c.equals(LetExpImpl.class)){
+			return new LetExpImplFactory((LetExpImpl) obj);
+		}else if(c.equals(VariableImpl.class)){
+			return new VariableImplFactory((VariableImpl) obj);
 		}else{
 			throw new NonSupported(c.getName());
 		}
