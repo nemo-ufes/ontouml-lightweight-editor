@@ -1322,11 +1322,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if(!owlType.equals("SIMPLE")){
 			mappingType = MappingType.valueOf(owlType); 
 		}
+		OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(frame.getDiagramManager().getCurrentProject());
+		String oclRules = oclmodel.getOCLString();
 		OperationResult result = OWLHelper.generateOwl(project.getModel(), 
 				ProjectSettings.OWL_ONTOLOGY_IRI.getValue(project),
 				mappingType,
 				ProjectSettings.OWL_GENERATE_FILE.getBoolValue(project),
-				ProjectSettings.OWL_FILE_PATH.getValue(project));
+				ProjectSettings.OWL_FILE_PATH.getValue(project),
+				oclRules);
 
 		//Model model, String ontologyIRI, String mappingType, boolean fileOutput, String filePath
 

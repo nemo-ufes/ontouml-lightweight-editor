@@ -20,10 +20,10 @@ public class OntoUML2OWL {
 	 * @return OWL ontology
 	 * @throws OWLOntologyCreationException
 	 */
-	public static String Transformation(Model ecoreModel, String nameSpace) {
+	public static String Transformation(Model ecoreModel, String nameSpace, String oclRules) {
 		try {			
 			Transformer transformer = new Transformer(nameSpace);
-			String transform = transformer.transform(ecoreModel);
+			String transform = transformer.transform(ecoreModel, oclRules);
 			return transform;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -39,11 +39,11 @@ public class OntoUML2OWL {
 	 * @return OWL ontology
 	 * @throws OWLOntologyCreationException
 	 */
-	public static String Transformation(File modelFile, String nameSpace) {
+	public static String Transformation(File modelFile, String nameSpace, String oclRules) {
 		try {			
 			Transformer transformer = new Transformer(nameSpace);
 			RefOntoUML.Model ecoreModel = intialize(modelFile);
-			String transform = transformer.transform(ecoreModel);
+			String transform = transformer.transform(ecoreModel, oclRules);
 			return transform;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -69,7 +69,8 @@ public class OntoUML2OWL {
 	}
 
 	public static void main(String[] args) {
-		String ret = OntoUML2OWL.Transformation(intialize(new File("TesteWithRoles.refontouml")), "http://abcd/ontology/");
+		String oclRules = "";
+		String ret = OntoUML2OWL.Transformation(intialize(new File("TesteWithRoles.refontouml")), "http://abcd/ontology/", oclRules);
 		File arquivo;   
 
 		arquivo = new File("arquivo.owl");  // Chamou e nomeou o arquivo txt.  

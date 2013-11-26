@@ -107,6 +107,10 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			}
 			
 			
+			
+		}
+		
+		if(antecedent.size()>0 || consequent.size()>0){
 			//create a rule with the incremented antecedents and consequents
 			SWRLRule rule = factory.getSWRLRule(antecedent,consequent);
 			
