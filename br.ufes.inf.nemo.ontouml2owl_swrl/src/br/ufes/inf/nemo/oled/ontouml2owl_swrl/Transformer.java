@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.ocl.ParserException;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
@@ -122,8 +123,10 @@ public class Transformer {
 	 * 
 	 * @param ecoreModel
 	 * @return a String with the OWL code
+	 * @throws Exception 
+	 * @throws ParserException 
 	 */
-	public String transform(Model ecoreModel, String oclRules) {
+	public String transform(Model ecoreModel, String oclRules) throws ParserException, Exception {
 
 		ontoParser = new OntoUMLParser(ecoreModel);
 		_lstDataType = ontoParser.getAllInstances(RefOntoUML.DataType.class);

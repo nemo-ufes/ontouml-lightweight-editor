@@ -29,6 +29,7 @@ public class OCL2SWRL {
 	private OWLOntologyManager manager = null;
 	private OWLDataFactory factory = null;
 	private OWLOntology ontology = null;
+	public String errors = "";
 	
 	//public OCL2SWRL(OCLParser oclParser, OntoUMLParser refParser, OWLOntologyManager manager, String nameSpace) {
 	public OCL2SWRL(String oclRules, OntoUMLParser refParser, OWLOntologyManager manager, String nameSpace) {	
@@ -85,7 +86,7 @@ public class OCL2SWRL {
 	
 	//this main function transform OCL constraints in SWRL rules
 	@SuppressWarnings("unchecked")
-	public void Transformation ()	{
+	public void Transformation () throws ParserException, Exception{
 		/*
 		OCLParser oclParser = null;
 		try {
@@ -134,16 +135,16 @@ public class OCL2SWRL {
 			blockBegin = blockEnd;
 			blockEnd = oclRules.indexOf("--@", blockBegin+3);
 			
-			OCLParser oclParser = null;
-			try {
-				oclParser = new OCLParser(strBlockOclConstraints, this.refParser, "temp.uml");
-			} catch (ParserException e) {
-				e.printStackTrace();
-				return;
+			//OCLParser oclParser = null;
+			//try {
+			OCLParser oclParser = new OCLParser(strBlockOclConstraints, this.refParser, "temp.uml");
+			/* catch (ParserException e) {
+				//e.printStackTrace();
+				return e.getMessage();
 			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
+				//e.printStackTrace();
+				return e.getMessage();
+			}*/
 			
 			for(Constraint ct: oclParser.getConstraints())
 			{
@@ -156,20 +157,21 @@ public class OCL2SWRL {
 				
 				if(stereotypeIsUnsupported(stereotype)){
 					throw new NonSupported(stereotype);
+				}else{
+					ExpressionInOCLImpl expr = (ExpressionInOCLImpl) ct.getSpecification();
+					
+					ExpressionInOCLImplFactory exprFactory = new ExpressionInOCLImplFactory(expr);
+					if(ct.getConstrainedElements().size() > 0){
+						exprFactory.setElement(ct.getConstrainedElements().get(0));
+					}
+					
+					Set<SWRLAtom> antecedent = new HashSet<SWRLAtom>();
+					Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
+					
+					exprFactory.solve(stereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, false, 1, false);
 				}
 				//org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype);
-				
-				ExpressionInOCLImpl expr = (ExpressionInOCLImpl) ct.getSpecification();
-				
-				ExpressionInOCLImplFactory exprFactory = new ExpressionInOCLImplFactory(expr);
-				if(ct.getConstrainedElements().size() > 0){
-					exprFactory.setElement(ct.getConstrainedElements().get(0));
-				}
-				
-				Set<SWRLAtom> antecedent = new HashSet<SWRLAtom>();
-				Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
-				
-				exprFactory.solve(stereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, false, 1, false);
+								
 			}
 		}
 	}

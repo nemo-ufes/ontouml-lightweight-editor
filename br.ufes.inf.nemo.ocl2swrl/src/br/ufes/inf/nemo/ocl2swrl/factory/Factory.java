@@ -19,6 +19,7 @@ import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 
 public class Factory {
 	Boolean isBodyExpression = false;
+	String errors = "";
 	
 	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory){
 		return null;
