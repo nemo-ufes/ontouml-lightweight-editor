@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import org.eclipse.emf.common.util.EList;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -226,9 +228,17 @@ public class Transformer {
 		processAxioms();
 		
 		if(oclRules != null){
-			OCL2SWRL ocl2swrl = new OCL2SWRL(oclRules, ontoParser, manager, nameSpace);
-			//OCL2SWRL ocl2swrl = new OCL2SWRL(oclParser, ontoParser, manager, nameSpace);
-			ocl2swrl.Transformation();
+			if(!oclRules.equals("")){
+				int dialogButton = JOptionPane.YES_NO_OPTION;
+				int result = JOptionPane.showConfirmDialog (null, "Do You Wish To Transform the OCL rules?","Warning",dialogButton);
+                
+                if(result == JOptionPane.YES_OPTION){
+                	OCL2SWRL ocl2swrl = new OCL2SWRL(oclRules, ontoParser, manager, nameSpace);
+        			//OCL2SWRL ocl2swrl = new OCL2SWRL(oclParser, ontoParser, manager, nameSpace);
+        			ocl2swrl.Transformation();
+                }
+			}
+			
 		}
 
 		try {	
