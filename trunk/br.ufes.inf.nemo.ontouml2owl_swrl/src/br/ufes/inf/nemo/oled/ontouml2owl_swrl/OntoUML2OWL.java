@@ -7,6 +7,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.ocl.ParserException;
 
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.common.resource.RefOntoUMLResourceFactoryImpl;
@@ -18,17 +19,19 @@ public class OntoUML2OWL {
 	 * @param model
 	 * @param ontologyIRI
 	 * @return OWL ontology
+	 * @throws Exception 
+	 * @throws ParserException 
 	 * @throws OWLOntologyCreationException
 	 */
-	public static String Transformation(Model ecoreModel, String nameSpace, String oclRules) {
-		try {			
+	public static String Transformation(Model ecoreModel, String nameSpace, String oclRules) throws ParserException, Exception {
+		//try {			
 			Transformer transformer = new Transformer(nameSpace);
 			String transform = transformer.transform(ecoreModel, oclRules);
 			return transform;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return "ERROR: " + ex.getMessage();
-		}
+		//} catch (Exception ex) {
+			//ex.printStackTrace();
+			//return "ERROR: " + ex.getMessage();
+		//}
 	}
 
 	/***
@@ -37,18 +40,20 @@ public class OntoUML2OWL {
 	 * @param modelFile
 	 * @param ontologyIRI
 	 * @return OWL ontology
+	 * @throws Exception 
+	 * @throws ParserException 
 	 * @throws OWLOntologyCreationException
 	 */
-	public static String Transformation(File modelFile, String nameSpace, String oclRules) {
-		try {			
+	public static String Transformation(File modelFile, String nameSpace, String oclRules) throws ParserException, Exception {
+		//try {			
 			Transformer transformer = new Transformer(nameSpace);
 			RefOntoUML.Model ecoreModel = intialize(modelFile);
 			String transform = transformer.transform(ecoreModel, oclRules);
 			return transform;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return "ERROR: " + ex.getMessage();
-		}
+		//} catch (Exception ex) {
+			//ex.printStackTrace();
+			//return "ERROR: " + ex.getMessage();
+		//}
 	}
 
 
@@ -70,7 +75,16 @@ public class OntoUML2OWL {
 
 	public static void main(String[] args) {
 		String oclRules = "";
-		String ret = OntoUML2OWL.Transformation(intialize(new File("TesteWithRoles.refontouml")), "http://abcd/ontology/", oclRules);
+		String ret = null;
+		try {
+			ret = OntoUML2OWL.Transformation(intialize(new File("TesteWithRoles.refontouml")), "http://abcd/ontology/", oclRules);
+		} catch (ParserException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		File arquivo;   
 
 		arquivo = new File("arquivo.owl");  // Chamou e nomeou o arquivo txt.  
