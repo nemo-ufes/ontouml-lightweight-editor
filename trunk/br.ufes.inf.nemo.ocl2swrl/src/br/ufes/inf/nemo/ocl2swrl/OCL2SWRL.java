@@ -170,12 +170,11 @@ public class OCL2SWRL {
 					try {
 						exprFactory.solve(stereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, false, 1, false);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						this.errors += e.getMessage() + "\n";
 					}
 				}
 				//org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype);
-								
+				//System.out.println(this.errors);				
 			}
 		}
 	}

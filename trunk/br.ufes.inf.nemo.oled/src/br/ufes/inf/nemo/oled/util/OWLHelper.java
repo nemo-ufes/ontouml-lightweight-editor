@@ -15,18 +15,20 @@ public class OWLHelper {
 	{
 		//System.out.println(ontologyIRI);
 		br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType mp = null;
+		String errors = "";
 		if(mappingType != null && !mappingType.equals(MappingType.RULES)){
 			mp = br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType.valueOf(mappingType.toString());
 		}
     	try
     	{
     		String owlOutput;
-    		
     		if(mappingType == null)
     		{
     			owlOutput = OntoUML2SimpleOWL.Transformation(model, ontologyIRI);
     		}else if(mappingType.equals(MappingType.RULES)){
-    			owlOutput = OntoUML2OWL.Transformation(model, ontologyIRI, oclRules);
+    			OntoUML2OWL ontoUML2OWL = new OntoUML2OWL();
+    			owlOutput = ontoUML2OWL.Transformation(model, ontologyIRI, oclRules);
+    			errors = ontoUML2OWL.errors;
     		}else
     		{
     			TreeProcessor tp = new TreeProcessor(model);
@@ -49,22 +51,22 @@ public class OWLHelper {
 					fileManager.write(owlOutput);
 					fileManager.done();
 					
-					return new OperationResult(ResultType.SUCESS, "OWL generated successfully", new Object[] { owlFileName });
+					return new OperationResult(ResultType.SUCESS, "OWL generated successfully" + errors, new Object[] { owlFileName });
 				}
 				else
 				{
-					return new OperationResult(ResultType.SUCESS, "OWL generated successfully", new Object[] { owlOutput });
+					return new OperationResult(ResultType.SUCESS, "OWL generated successfully" + errors, new Object[] { owlOutput });
 				}
     		}
     		else
     		{
-    			return new OperationResult(ResultType.ERROR, "No OWL generated", null);
+    			return new OperationResult(ResultType.ERROR, "No OWL generated" + errors, null);
     		}
     	}
     	catch (Exception ex)
     	{
-    		ex.printStackTrace();
-    		return new OperationResult(ResultType.ERROR, "Error while generating the OWL for the model. Details: " + ex.getMessage(), null);
+    		//ex.printStackTrace();
+    		return new OperationResult(ResultType.ERROR, "Error while generating the OWL for the model. Details: " + ex.getMessage() + errors, null);
     	}
 	}
 }

@@ -8,7 +8,7 @@ public class NonSupported extends Exception {
 
 	public NonSupported(String operator, String rule) 
     {		
-		super("This transformation does not support the operator or tag '" + operator + "' used in the rule:\n" + rule);
+		super("\nThe rule above was not translated because this transformation does not support the operator or tag '" + operator + "' used in the rule:\n" + rule);
     }
 	
 	

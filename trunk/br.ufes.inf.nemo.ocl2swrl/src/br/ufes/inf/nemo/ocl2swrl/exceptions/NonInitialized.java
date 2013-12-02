@@ -14,7 +14,7 @@ public class NonInitialized extends Exception {
 	 */
 	public NonInitialized(String argument) 
     {		
-		super("The necessary arguments was not passed to the OCL2SWRL constructor. Verify the '" + argument + "' argument used in the rule:\n");
+		super("\nThe necessary arguments was not passed to the OCL2SWRL constructor. Verify the '" + argument + "' argument used in the rule:\n");
     }
 	
 	private static final long serialVersionUID = 1L;

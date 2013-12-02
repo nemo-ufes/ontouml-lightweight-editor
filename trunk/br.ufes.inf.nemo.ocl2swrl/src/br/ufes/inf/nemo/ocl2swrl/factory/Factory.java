@@ -156,6 +156,10 @@ public class Factory {
 		while(!owner.getClass().equals(ExpressionInOCLImpl.class)){
 			owner = owner.getOwner();
 		}
-		return owner.toString();
+		String context = ((ExpressionInOCLImpl) owner).getContextVariable().toString();
+		
+		String body = ((ExpressionInOCLImpl) owner).getBodyExpression().toString();
+				
+		return context + "\n" + body;
 	}
 }
