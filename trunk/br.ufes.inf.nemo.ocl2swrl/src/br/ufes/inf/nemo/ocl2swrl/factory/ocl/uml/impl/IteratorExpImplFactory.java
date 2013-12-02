@@ -16,9 +16,9 @@ import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
-import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 
 
 
@@ -29,13 +29,14 @@ import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
  */
 public class IteratorExpImplFactory extends LoopExpImplFactory {
 
-	public IteratorExpImplFactory(NamedElementImpl m_NamedElementImpl){
+	public IteratorExpImplFactory(NamedElementImpl m_NamedElementImpl) throws NonImplemented, NonSupported{
 		super(m_NamedElementImpl);
 		
 		if(this.isUnsupported()){
 			IteratorExpImpl iteratorExpImpl = (IteratorExpImpl) this.m_NamedElementImpl; 
 			String name = iteratorExpImpl.getName();
-			throw new NonSupported(name);
+			String rule = getStrRule(this.m_NamedElementImpl);
+			throw new NonSupported(name, rule);
 		}
 	}
 	
@@ -59,16 +60,16 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 	}
 
 	@Override
-	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) {
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws NonImplemented, NonSupported {
 		IteratorExpImpl iteratorExpImpl = (IteratorExpImpl) this.m_NamedElementImpl; 
 		OCLExpressionImpl source = (OCLExpressionImpl) iteratorExpImpl.getSource();
 		OCLExpressionImpl body = (OCLExpressionImpl) iteratorExpImpl.getBody();
 		
-		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source, this.m_NamedElementImpl);
 		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, operatorNot, repeatNumber, leftSideOfImplies);
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//pega o ultimo
 		
-		this.bodyFactory = (OCLExpressionImplFactory) Factory.constructor(body);
+		this.bodyFactory = (OCLExpressionImplFactory) Factory.constructor(body, this.m_NamedElementImpl);
 		ArrayList<SWRLDArgument> retArgsY = this.bodyFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot, repeatNumber, leftSideOfImplies); 
 		SWRLDArgument varY = retArgsY.get(retArgsY.size()-1);//pega o ultimo
 		
@@ -84,7 +85,7 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		return retArgs;
 	}
 	
-	public ArrayList<SWRLDArgument> solveIsUnique(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean operatorNot, Boolean leftSideOfImplies) {
+	public ArrayList<SWRLDArgument> solveIsUnique(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean operatorNot, Boolean leftSideOfImplies) throws NonImplemented, NonSupported {
 		IteratorExpImpl iteratorExpImpl = (IteratorExpImpl) this.m_NamedElementImpl; 
 		OCLExpressionImpl source = (OCLExpressionImpl) iteratorExpImpl.getSource();
 		OCLExpressionImpl body = (OCLExpressionImpl) iteratorExpImpl.getBody();
@@ -95,12 +96,12 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		SWRLDArgument varX = referredArgsX.get(referredArgsX.size()-1);//pega o ultimo
 		SWRLDArgument varY = referredArgsY.get(referredArgsY.size()-1);//pega o ultimo
 		
-		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source);
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source, this.m_NamedElementImpl);
 		ArrayList<SWRLDArgument> retArgsX2 = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, operatorNot, repeatNumber, leftSideOfImplies);
 		SWRLDArgument varX2 = retArgsX2.get(retArgsX2.size()-1);//pega o ultimo
 		SWRLDArgument var0_2 = retArgsX2.get(0);
 		
-		this.bodyFactory = (OCLExpressionImplFactory) Factory.constructor(body);
+		this.bodyFactory = (OCLExpressionImplFactory) Factory.constructor(body, this.m_NamedElementImpl);
 		ArrayList<SWRLDArgument> retArgsY2 = this.bodyFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX2, operatorNot, repeatNumber, leftSideOfImplies); 
 		SWRLDArgument varY2 = retArgsY2.get(retArgsY2.size()-1);//pega o ultimo
 		

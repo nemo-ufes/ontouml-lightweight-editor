@@ -124,9 +124,10 @@ public class Transformer {
 	 * @param ecoreModel
 	 * @return a String with the OWL code
 	 * @throws Exception 
+	 * @throws Exception 
 	 * @throws ParserException 
 	 */
-	public String transform(Model ecoreModel, String oclRules) throws ParserException, Exception {
+	public String transform(Model ecoreModel, String oclRules) throws Exception{
 
 		ontoParser = new OntoUMLParser(ecoreModel);
 		_lstDataType = ontoParser.getAllInstances(RefOntoUML.DataType.class);

@@ -25,6 +25,8 @@ import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl.NamedElementImplFactory;
 import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 
@@ -58,11 +60,11 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 	}
 	
 	@Override
-	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) {
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws NonImplemented, NonSupported {
 		ExpressionInOCLImpl expressionInOCLImpl = (ExpressionInOCLImpl) this.m_NamedElementImpl;
 		OCLExpressionImpl bodyExpression = (OCLExpressionImpl) expressionInOCLImpl.getBodyExpression();
 		
-		bodyExpressionFactory = (OCLExpressionImplFactory) NamedElementImplFactory.constructor(bodyExpression);
+		bodyExpressionFactory = (OCLExpressionImplFactory) NamedElementImplFactory.constructor(bodyExpression, this.m_NamedElementImpl);
 		bodyExpressionFactory.setIsBodyExpression(true);
 		/*
 		if(bodyExpressionFactory.isImpliesOperation()){
@@ -81,14 +83,15 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		
 		bodyExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, repeatNumber, leftSideOfImplies);
 		
-		Boolean isTag = true;
+		Boolean isTag = Tag.isTag(ctStereotype);
+		/*Boolean isTag = true;
 		try {
 			@SuppressWarnings("unused")
 			Tag tag = Tag.valueOf(ctStereotype);
 		} catch (Exception e) {
 			isTag = false;
 		}
-		
+		*/
 		if(!isTag){
 			
 			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
@@ -105,9 +108,6 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 				this.elementFactory.solveProperty(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, 1);
 				
 			}
-			
-			
-			
 		}
 		
 		if(antecedent.size()>0 || consequent.size()>0){

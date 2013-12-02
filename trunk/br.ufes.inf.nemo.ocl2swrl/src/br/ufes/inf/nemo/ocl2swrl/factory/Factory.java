@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.*;
+import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -21,7 +23,7 @@ public class Factory {
 	Boolean isBodyExpression = false;
 	String errors = "";
 	
-	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory){
+	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws NonImplemented, NonSupported{
 		return null;
 	}
 	
@@ -52,15 +54,17 @@ public class Factory {
 		return true;
 	}
 	
-	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) {
-		throw new NonImplemented("solve()");
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws NonImplemented, NonSupported{
+		return null;
+		//throw new NonImplemented("solve()");
 	}
 	
-	public ArrayList<SWRLDArgument> solveNegativeNumber(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot) {
-		throw new NonImplemented("solveNegativeNumber()");
+	public ArrayList<SWRLDArgument> solveNegativeNumber(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot)  throws NonImplemented, NonSupported {
+		return null;
+		//throw new NonImplemented("solveNegativeNumber()");
 	}
 	
-	public static Object constructor(Object obj){
+	public static Factory constructor(Object obj, NamedElementImpl m_NamedElementImpl) throws NonImplemented, NonSupported{
 		Class<? extends Object> c = obj.getClass();
 		if(c.equals(PropertyCallExpImpl.class)){
 			return new PropertyCallExpImplFactory((PropertyCallExpImpl) obj);
@@ -87,7 +91,8 @@ public class Factory {
 		}else if(c.equals(VariableImpl.class)){
 			return new VariableImplFactory((VariableImpl) obj);
 		}else{
-			throw new NonSupported(c.getName());
+			String rule = Factory.getStrRule(m_NamedElementImpl);
+			throw new NonSupported(c.getName(), rule);
 		}
 	}
 		
@@ -141,5 +146,16 @@ public class Factory {
 	
 	public Boolean isExcludesOperation() {
 		return false;
+	}
+	
+	public static String getStrRule(NamedElementImpl m_NamedElementImpl) throws NonImplemented, NonSupported {
+		if(m_NamedElementImpl == null){
+			return "";
+		}
+		Element owner = m_NamedElementImpl.getOwner();
+		while(!owner.getClass().equals(ExpressionInOCLImpl.class)){
+			owner = owner.getOwner();
+		}
+		return owner.toString();
 	}
 }
