@@ -14,7 +14,7 @@ public class NonImplemented extends Exception {
 	 */
 	public NonImplemented(String argument, String rule) 
     {		
-		super("The " + argument + " method is not implemented to solve the rule:\n" + rule);
+		super("\nThe rule above was not translated because the " + argument + " method is not implemented to solve it:\n" + rule);
     }
 	
 	private static final long serialVersionUID = 1L;

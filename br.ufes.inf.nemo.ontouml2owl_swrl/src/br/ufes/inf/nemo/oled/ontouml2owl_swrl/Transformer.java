@@ -78,7 +78,8 @@ import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.OCL2SWRL;
 
-public class Transformer {	
+public class Transformer {
+	public String errors = "";
 	private String nameSpace;
 	private OntoUMLParser ontoParser;
 
@@ -240,6 +241,8 @@ public class Transformer {
                 	OCL2SWRL ocl2swrl = new OCL2SWRL(oclRules, ontoParser, manager, nameSpace);
         			//OCL2SWRL ocl2swrl = new OCL2SWRL(oclParser, ontoParser, manager, nameSpace);
         			ocl2swrl.Transformation();
+        			
+        			this.errors = ocl2swrl.errors;
                 }
 			}
 			

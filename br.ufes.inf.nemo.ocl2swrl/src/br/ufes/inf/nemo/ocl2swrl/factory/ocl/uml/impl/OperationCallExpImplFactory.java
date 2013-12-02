@@ -222,13 +222,18 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 	
 	public Boolean isPartOfLetExp(OCLExpressionImpl expression){
-		OCLExpressionImpl test = expression;
+		NamedElementImpl test = expression;
 		
 		while(test != null){
 			if(test.getClass().equals(LetExpImpl.class)){
 				return true;
 			}
-			test = (OCLExpressionImpl) test.getOwner();
+			if(test.getOwner().getClass().equals(NamedElementImpl.class)){
+				test = (NamedElementImpl) test.getOwner();
+			}else{
+				return false;
+			}
+			
 		}
 			
 		return false;

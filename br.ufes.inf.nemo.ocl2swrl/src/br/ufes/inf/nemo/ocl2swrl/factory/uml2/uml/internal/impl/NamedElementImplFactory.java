@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl;
 import java.util.ArrayList;
 import java.util.Set;
 
-import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -37,7 +36,7 @@ public class NamedElementImplFactory extends Factory {
 	
 	@Override
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws NonImplemented, NonSupported {
-		String rule = this.getStrRule(this.m_NamedElementImpl);
+		String rule = getStrRule(this.m_NamedElementImpl);
 		throw new NonImplemented("solve()", rule);
 	}
 	

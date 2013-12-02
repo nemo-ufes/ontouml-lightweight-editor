@@ -13,6 +13,7 @@ import RefOntoUML.Model;
 import br.ufes.inf.nemo.common.resource.RefOntoUMLResourceFactoryImpl;
 
 public class OntoUML2OWL {
+	public String errors = "";
 	/***
 	 * Transforms a RefOntoUML model into a OWL Ontology.
 	 * 
@@ -23,10 +24,11 @@ public class OntoUML2OWL {
 	 * @throws ParserException 
 	 * @throws OWLOntologyCreationException
 	 */
-	public static String Transformation(Model ecoreModel, String nameSpace, String oclRules) throws ParserException, Exception {
+	public String Transformation(Model ecoreModel, String nameSpace, String oclRules) throws ParserException, Exception {
 		//try {			
 			Transformer transformer = new Transformer(nameSpace);
 			String transform = transformer.transform(ecoreModel, oclRules);
+			this.errors = transformer.errors;
 			return transform;
 		//} catch (Exception ex) {
 			//ex.printStackTrace();
@@ -44,11 +46,12 @@ public class OntoUML2OWL {
 	 * @throws ParserException 
 	 * @throws OWLOntologyCreationException
 	 */
-	public static String Transformation(File modelFile, String nameSpace, String oclRules) throws ParserException, Exception {
+	public String Transformation(File modelFile, String nameSpace, String oclRules) throws ParserException, Exception {
 		//try {			
 			Transformer transformer = new Transformer(nameSpace);
 			RefOntoUML.Model ecoreModel = intialize(modelFile);
 			String transform = transformer.transform(ecoreModel, oclRules);
+			this.errors = transformer.errors;
 			return transform;
 		//} catch (Exception ex) {
 			//ex.printStackTrace();
@@ -77,7 +80,11 @@ public class OntoUML2OWL {
 		String oclRules = "";
 		String ret = null;
 		try {
-			ret = OntoUML2OWL.Transformation(intialize(new File("TesteWithRoles.refontouml")), "http://abcd/ontology/", oclRules);
+			OntoUML2OWL ontoUML2OWL = new OntoUML2OWL();
+			ret = ontoUML2OWL.Transformation(intialize(new File("TesteWithRoles.refontouml")), "http://abcd/ontology/", oclRules);
+			String errors = ontoUML2OWL.errors;
+			System.out.println(errors);
+			
 		} catch (ParserException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
