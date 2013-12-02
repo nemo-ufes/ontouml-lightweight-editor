@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.ocl2swrl;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.uml.impl.ExpressionInOCLImpl;
 import org.eclipse.uml2.uml.Constraint;
 import org.semanticweb.owlapi.model.IRI;
@@ -32,7 +31,7 @@ public class OCL2SWRL {
 	public String errors = "";
 	
 	//public OCL2SWRL(OCLParser oclParser, OntoUMLParser refParser, OWLOntologyManager manager, String nameSpace) {
-	public OCL2SWRL(String oclRules, OntoUMLParser refParser, OWLOntologyManager manager, String nameSpace) {	
+	public OCL2SWRL(String oclRules, OntoUMLParser refParser, OWLOntologyManager manager, String nameSpace) throws NonInitialized {	
 		this.nameSpace = nameSpace;
 		//this.oclParser = oclParser;
 		this.oclRules = oclRules;
@@ -50,7 +49,7 @@ public class OCL2SWRL {
 	}
 	
 	//this function verifies if all necessary attributes were initialized
-	private void verifyVariablesInitialization(){
+	private void verifyVariablesInitialization() throws NonInitialized{
 		if(this.nameSpace == null){
 			throw new NonInitialized("nameSpace");
 		}else if(this.nameSpace.equals("")){
@@ -86,7 +85,7 @@ public class OCL2SWRL {
 	
 	//this main function transform OCL constraints in SWRL rules
 	@SuppressWarnings("unchecked")
-	public void Transformation () throws ParserException, Exception{
+	public void Transformation () throws Exception{
 		/*
 		OCLParser oclParser = null;
 		try {
@@ -156,7 +155,7 @@ public class OCL2SWRL {
 				}
 				
 				if(stereotypeIsUnsupported(stereotype)){
-					throw new NonSupported(stereotype);
+					throw new NonSupported(stereotype, tag);
 				}else{
 					ExpressionInOCLImpl expr = (ExpressionInOCLImpl) ct.getSpecification();
 					
@@ -168,7 +167,12 @@ public class OCL2SWRL {
 					Set<SWRLAtom> antecedent = new HashSet<SWRLAtom>();
 					Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
 					
-					exprFactory.solve(stereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, false, 1, false);
+					try {
+						exprFactory.solve(stereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, false, 1, false);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				//org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype);
 								
@@ -177,14 +181,15 @@ public class OCL2SWRL {
 	}
 	
 	public Boolean stereotypeIsUnsupported(String stereotype){
-		Boolean isTag = true;
+		Boolean isTag = Tag.isTag(stereotype);
+		/*Boolean isTag = true;
 		try {
 			@SuppressWarnings("unused")
 			Tag tag = Tag.valueOf(stereotype);
 		} catch (Exception e) {
 			isTag = false;
 		}
-		
+		*/
 		if(isTag){
 			return false;
 		}
