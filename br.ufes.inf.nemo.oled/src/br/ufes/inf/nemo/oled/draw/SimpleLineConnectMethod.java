@@ -87,4 +87,18 @@ public final class SimpleLineConnectMethod implements LineConnectMethod {
     drawingContext.drawLine(source.getX(), source.getY(), dest.getX(),
       dest.getY());
   }
+
+	@Override
+	public void generateAndSetPointsToConnection(Connection conn,
+			Connection c1, Node node2, Point2D source, Point2D dest) {
+	    double x1 = c1.getAbsCenterX(), y1 = c1.getAbsCenterY();
+	    double x2 = node2.getAbsCenterX(), y2 = node2.getAbsCenterY();
+	    Line2D segment = new Line2D.Double(x1, y1, x2, y2);
+	    List<Point2D> points = new ArrayList<Point2D>();
+	    points.add(new Point2D.Double());
+	    points.add(new Point2D.Double());
+	    c1.calculateIntersection(segment, points.get(0));
+	    node2.calculateIntersection(segment, points.get(points.size() - 1));
+	    conn.setPoints(points);	
+	}
 }

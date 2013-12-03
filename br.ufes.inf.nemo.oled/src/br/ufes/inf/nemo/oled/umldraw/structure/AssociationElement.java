@@ -460,7 +460,10 @@ public final class AssociationElement extends BaseConnection {
 	 */
 	private void drawLabels(DrawingContext drawingContext) {
 		if (showMultiplicities) {
-			positionLabel(multiplicity1Label, getNode1(), getEndPoint1(), drawingContext, false);
+			if (getNode1()!=null)
+				positionLabel(multiplicity1Label, getNode1(), getEndPoint1(), drawingContext, false);
+			else
+				positionLabel(multiplicity1Label, getConnection1(), getEndPoint1(), drawingContext, false);
 			if (getNode2()!=null)
 				positionLabel(multiplicity2Label, getNode2(), getEndPoint2(), drawingContext, false);
 			else
@@ -469,8 +472,11 @@ public final class AssociationElement extends BaseConnection {
 			multiplicity2Label.draw(drawingContext);
 		}
 		if (showRoles) {
-			positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
 			if (getNode1()!=null)
+				positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
+			else
+				positionLabel(role1Label, getConnection1(), getEndPoint1(), drawingContext, true);
+			if (getNode2()!=null)
 				positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
 			else
 				positionLabel(role2Label, getConnection2(), getEndPoint2(), drawingContext, true);

@@ -350,6 +350,22 @@ private void setupElementMaps() {
     
     return conn;
   }
+  
+  @Override
+  public UmlConnection createConnection(RelationType relationType, UmlConnection c1, UmlNode node2) {
+	  UmlConnection prototype = relationPrototypes.get(relationType);    
+	    UmlConnection conn = null;
+	    if (prototype != null) {
+	      conn = (UmlConnection) prototype.clone();
+	      bindConnection(conn, c1, node2);
+	      if(conn.getRelationship() != null && conn.getRelationship() instanceof AssociationImpl)
+	      {
+	    	  Association association = (Association) conn.getRelationship();
+	    	  association.setName(association.getName() + nextRelationCount(relationType));
+	      }
+	    }	    
+	    return conn;
+  }
 
   /**
    * {@inheritDoc}
@@ -405,4 +421,12 @@ private void setupElementMaps() {
 	  node1.addConnection(conn);
 	  c2.addConnection(conn);  
   }
+  
+  private void bindConnection(UmlConnection conn, Connection c1, UmlNode node2) {
+	  conn.setNode2(node2);
+	  conn.setConnection1(c1);
+	  node2.addConnection(conn);
+	  c1.addConnection(conn);  
+  }
+
 }

@@ -215,7 +215,10 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		
 		for (Connection conn : node.getConnections()) {
 			if (conn.getNode1() != node)
-				conn.getNode1().removeConnection(conn);
+				if(conn.getNode1()!=null)
+					conn.getNode1().removeConnection(conn);
+				else
+					conn.getConnection1().removeConnection(conn);
 			if (conn.getNode2() != node){
 				if(conn.getNode2()!=null)
 					conn.getNode2().removeConnection(conn);
@@ -239,7 +242,10 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	private void reattachNodeConnections(Node node) {
 		for (Connection conn : node.getConnections()) {
 			if (conn.getNode1() != node)
-				conn.getNode1().addConnection(conn);
+				if (conn.getNode1()!=null)
+					conn.getNode1().addConnection(conn);
+				else
+					conn.getConnection1().addConnection(conn);
 			if (conn.getNode2() != node){
 				if (conn.getNode2()!=null)
 					conn.getNode2().addConnection(conn);
@@ -259,7 +265,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 *            the connection that is removed
 	 */
 	private void detachConnectionFromNodes(Connection conn) {
-		conn.getNode1().removeConnection(conn);
+		if (conn.getNode1()!=null) conn.getNode1().removeConnection(conn);
+		else conn.getConnection1().removeConnection(conn);
 		if (conn.getNode2()!=null) conn.getNode2().removeConnection(conn);
 		else conn.getConnection2().removeConnection(conn);
 	}
@@ -272,7 +279,10 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 *            the connection that is readded
 	 */
 	private void reattachConnectionToNodes(Connection conn) {
-		conn.getNode1().addConnection(conn);
+		if (conn.getNode1()!=null)
+			conn.getNode1().addConnection(conn);
+		else
+			conn.getConnection1().addConnection(conn);
 		if (conn.getNode2()!=null)
 			conn.getNode2().addConnection(conn);
 		else
