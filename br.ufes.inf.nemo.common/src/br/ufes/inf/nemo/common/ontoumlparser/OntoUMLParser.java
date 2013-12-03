@@ -19,10 +19,12 @@ import RefOntoUML.Category;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
+import RefOntoUML.Derivation;
 import RefOntoUML.Enumeration;
 import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.MomentClass;
@@ -1030,6 +1032,18 @@ public class OntoUMLParser {
 	public Relator getRelator(Mediation m) throws Exception
 	{
 		return (Relator) getRelatorEnd(m).getType();
+	}
+	
+	public Derivation getDerivation (MaterialAssociation material)
+	{
+		for (Derivation d: getAllInstances(Derivation.class))
+		{
+			for(Property prop : d.getMemberEnd())
+			{
+				if(prop.getType() instanceof MaterialAssociation) return (Derivation)prop.getType();
+			}
+		}
+		return null;
 	}
 	
 	public RefOntoUML.Type getMediated(Mediation m) throws Exception
