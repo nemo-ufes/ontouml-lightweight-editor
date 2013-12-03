@@ -909,10 +909,13 @@ public class Transformer {
 					{ String exchangeAux = returnName; returnName = paramName; paramName = exchangeAux; } 
 				}
 								
-				boolean isTernaryRelation = false;
-				if (assoc instanceof MaterialAssociation) isTernaryRelation = true; 
+				boolean materialIsTernary = false;				
+				if (assoc instanceof MaterialAssociation) { 
+					Derivation derivation = ontoparser.getDerivation((MaterialAssociation)assoc);
+					if (derivation !=null) materialIsTernary = true; 
+				} 
 				
-				FunctionDeclaration fun = AlloyAPI.createFunctionDeclaration(factory, world, isSourceProperty, functionName, paramName, returnName, assocName, isTernaryRelation);				
+				FunctionDeclaration fun = AlloyAPI.createFunctionDeclaration(factory, world, isSourceProperty, functionName, paramName, returnName, assocName, materialIsTernary);				
 				module.getParagraph().add(fun);				
 			}
 		}
