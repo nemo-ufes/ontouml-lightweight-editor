@@ -10,10 +10,10 @@ import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class RelRigAntipattern extends Antipattern {
+public class RelRigAntipattern extends AntipatternOccurrence {
 	
 	private Relator relator;
 	private ArrayList<Mediation> allMediations, rigidMediations;

@@ -2,6 +2,10 @@ package br.ufes.inf.nemo.antipattern;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -46,6 +50,80 @@ public class AntiPatternIdentifier {
 	 * @param copier
 	 * @return
 	 */
+	
+	
+	public static <T extends EObject> ArrayList<T> runOCLQuery (OntoUMLParser parser, String oclQuery, java.lang.Class<T> queryReturnType){
+		ArrayList<T> queryResult = new ArrayList<T>();
+		
+		Copier copier = new Copier();
+		
+		Package model = parser.createPackageFromSelections(copier);
+		
+		try {
+			Object o = OCLQueryExecuter.executeQuery(oclQuery, (EClassifier)model.eClass(), model);
+			
+			if (o instanceof Collection<?>){
+				
+				for (Object element : (Collection<?>) o ) {
+					
+					if(queryReturnType.isInstance(element) && element instanceof EObject){
+						
+						T original = (T) AntiPatternUtil.getOriginal((EObject)element, copier);			
+						queryResult.add(original);
+						
+					}
+				}
+			}
+			
+		} catch (ParserException e) {
+			System.out.println("Error in OCL query!\n"+e.getMessage());
+		}
+		
+		return queryResult;
+	}
+	
+	public static <T extends EObject, S extends EObject> Map<T,Set<S>> runOCLQuery (OntoUMLParser parser, 
+			String oclQuery, java.lang.Class<T> queryReturnType1, java.lang.Class<S> queryReturnType2, String tupleField1, String tupleField2){
+		
+		Map<T,Set<S>>  queryResult = new HashMap<T,Set<S>> ();
+		
+		Copier copier = new Copier();
+		
+		Package model = parser.createPackageFromSelections(copier);
+		
+		try {
+			Object o = OCLQueryExecuter.executeQuery(oclQuery, (EClassifier)model.eClass(), model);
+			
+			if (o instanceof Collection<?>){
+				
+				for (Object element : (Collection<?>) o ) {
+					
+					if (element instanceof Tuple){
+						
+						Tuple<T,Set<S>> tuple = (Tuple) element;
+						
+						if (queryReturnType1.isInstance(tuple.getValue(tupleField1))){
+							
+							T field1Original = (T) AntiPatternUtil.getOriginal((EObject)tuple.getValue(tupleField1), copier);
+							
+							Set<S> field2 = (Set<S>) tuple.getValue(tupleField2);
+							Set<S> field2Original = new HashSet<>();
+							for (S s : field2) {
+								field2Original.add((S) AntiPatternUtil.getOriginal((EObject)s, copier));
+							}
+									
+							queryResult.put(field1Original, field2Original);
+						}
+					}
+				}
+			}
+			
+		} catch (ParserException e) {
+			System.out.println("Error in OCL query!\n"+e.getMessage());
+		}
+		
+		return queryResult;
+	}
 	
 	
 	/** OCL query for RS AntiPattern. */

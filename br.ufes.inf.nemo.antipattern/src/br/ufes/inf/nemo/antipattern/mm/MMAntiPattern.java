@@ -16,13 +16,13 @@ import RefOntoUML.Package;
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
 import br.ufes.inf.nemo.antipattern.AntiPatternUtil;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Multiple Mediation
-public class MMAntiPattern extends Antipattern {
+public class MMAntiPattern extends AntipatternOccurrence {
 
 
 	private Relator supertype;

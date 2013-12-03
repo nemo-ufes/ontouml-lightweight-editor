@@ -6,13 +6,13 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class ImpAbsAntipattern extends Antipattern{
+public class ImpAbsAntipattern extends AntipatternOccurrence{
 	private Association association;
 	private Classifier source, target;
 	

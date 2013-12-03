@@ -13,12 +13,12 @@ import RefOntoUML.Mediation;
 import RefOntoUML.Package;
 import RefOntoUML.Role;
 import br.ufes.inf.nemo.antipattern.AntiPatternUtil;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Undefined Role Specialization
-public class FreeRoleAntipattern extends Antipattern{
+public class FreeRoleAntipattern extends AntipatternOccurrence{
 
 	private Role role;
 	private ArrayList<Mediation> roleMediations;

@@ -6,13 +6,13 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Relation Specialization*/
-public class RSAntiPattern extends Antipattern{
+public class RSAntiPattern extends AntipatternOccurrence{
 	private Association general;
 	private Association specific;
 	private Classifier generalSource;

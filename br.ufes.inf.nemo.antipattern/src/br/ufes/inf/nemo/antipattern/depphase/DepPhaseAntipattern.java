@@ -9,11 +9,11 @@ import RefOntoUML.Generalization;
 import RefOntoUML.Mediation;
 import RefOntoUML.Phase;
 import RefOntoUML.Type;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Relationally Dependent Phase
-public class DepPhaseAntipattern extends Antipattern{
+public class DepPhaseAntipattern extends AntipatternOccurrence{
 
 	Phase phase;
 	ArrayList<Mediation> dependencies;

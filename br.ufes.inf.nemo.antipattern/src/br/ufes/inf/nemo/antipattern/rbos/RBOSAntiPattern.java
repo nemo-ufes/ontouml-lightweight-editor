@@ -8,12 +8,12 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Type;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class RBOSAntiPattern extends Antipattern{
+public class RBOSAntiPattern extends AntipatternOccurrence{
 	private Classifier supertype;
 	private Classifier source;
 	private Classifier target;
