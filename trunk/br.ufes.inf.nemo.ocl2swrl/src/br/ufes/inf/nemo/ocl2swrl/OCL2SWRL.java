@@ -98,6 +98,9 @@ public class OCL2SWRL {
 		*/
 		int iPackage = oclRules.indexOf("package");
 		int endLinePackage = oclRules.indexOf("\n", iPackage);
+		
+		if(iPackage < 0 || endLinePackage < 0){iPackage=0;endLinePackage=0;}
+		
 		String strPackage = oclRules.substring(iPackage, endLinePackage);
 		oclRules = oclRules.replace(strPackage, "");
 		/*		
