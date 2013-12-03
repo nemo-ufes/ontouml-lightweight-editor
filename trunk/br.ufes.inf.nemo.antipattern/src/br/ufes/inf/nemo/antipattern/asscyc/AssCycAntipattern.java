@@ -9,13 +9,13 @@ import RefOntoUML.Class;
 import RefOntoUML.Generalization;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Association Cycle Anti-Pattern*/
-public class AssCycAntipattern extends Antipattern{
+public class AssCycAntipattern extends AntipatternOccurrence{
 	ArrayList<Class> cycle;
 	ArrayList<Relationship> cycleRelationship;
 	public static int OPEN=0, CLOSED=1;

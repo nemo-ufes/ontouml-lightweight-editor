@@ -6,12 +6,12 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Self-Type Relationship AntiPattern*/
-public class BinOverAntipattern extends Antipattern{
+public class BinOverAntipattern extends AntipatternOccurrence{
 	private Association association;
 	private Classifier type;
 	

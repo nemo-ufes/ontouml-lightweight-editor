@@ -7,10 +7,10 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class RelCompAntipattern extends Antipattern {
+public class RelCompAntipattern extends AntipatternOccurrence {
 	Association a1,a2;
 	Classifier a1Source, a1Target, a2Source, a2Target;
 		

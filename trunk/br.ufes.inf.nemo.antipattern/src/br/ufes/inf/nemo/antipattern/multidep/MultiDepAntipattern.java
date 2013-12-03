@@ -12,12 +12,12 @@ import RefOntoUML.Mediation;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.Package;
 import br.ufes.inf.nemo.antipattern.AntiPatternUtil;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Multiple Relational Dependency
-public class MultiDepAntipattern extends Antipattern{
+public class MultiDepAntipattern extends AntipatternOccurrence{
 
 	Classifier dependent;
 	ArrayList<Mediation> mediations;

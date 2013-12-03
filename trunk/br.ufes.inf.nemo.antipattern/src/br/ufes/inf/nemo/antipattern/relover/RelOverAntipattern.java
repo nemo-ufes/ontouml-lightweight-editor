@@ -10,13 +10,13 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Relator;
-import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.list.ArrayListOperations;
 import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class RelOverAntipattern extends Antipattern{
+public class RelOverAntipattern extends AntipatternOccurrence{
 	private Relator relator;
 	private Classifier supertype;
 	private HashMap<Mediation, Classifier> mediations;

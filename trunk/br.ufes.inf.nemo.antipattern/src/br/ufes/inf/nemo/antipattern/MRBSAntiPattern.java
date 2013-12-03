@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class MRBSAntiPattern extends Antipattern {
+public class MRBSAntiPattern extends AntipatternOccurrence {
 		
 	/**
 	 * Constructor

@@ -6,7 +6,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public abstract class InstantiationPattern {
 	protected int worldNumber;
-	protected Antipattern antipattern;
+	protected AntipatternOccurrence antipattern;
 	protected Boolean isPossible;
 	
 	/*Generates the natural language description of the instantiation pattern*/ 
