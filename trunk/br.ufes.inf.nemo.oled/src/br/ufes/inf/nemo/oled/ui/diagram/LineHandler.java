@@ -24,12 +24,10 @@ package br.ufes.inf.nemo.oled.ui.diagram;
 
 import java.awt.geom.Point2D;
 
-
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.LineConnectMethod;
-import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
@@ -47,7 +45,7 @@ public class LineHandler implements EditorMode {
   private DiagramEditor editor;
   private Point2D anchor = new Point2D.Double();
   private Point2D tmpPos = new Point2D.Double();
-  private UmlNode source;
+  private DiagramElement source;
   private boolean isDragging;
   private RelationType relationType;
   private LineConnectMethod connectMethod;
@@ -93,12 +91,12 @@ public class LineHandler implements EditorMode {
    * @param elem the target element
    * @return true if valid source, false otherwise
    */
-  private boolean isValidSource(DiagramElement elem) {
-	//FIXME Change this to allow self-relationships
-    return elem instanceof UmlNode &&
-        ((UmlNode) elem).acceptsConnection(relationType,
-           RelationEndType.SOURCE, null);
-  }
+//  private boolean isValidSource(DiagramElement elem) {
+//	//FIXME Change this to allow self-relationships
+////    return elem instanceof UmlNode &&
+////        ((UmlNode) elem).acceptsConnection(relationType,
+////           RelationEndType.SOURCE, null);
+//  }
 
   /**
    * Determines whether the specified element is a valid target for the
@@ -106,12 +104,11 @@ public class LineHandler implements EditorMode {
    * @param elem the target element
    * @return true if valid, false otherwise
    */
-  private boolean isValidTarget(DiagramElement elem) {
-    //FIXME Change this to allow self-relationships
-	  return elem instanceof UmlNode && elem != source &&
-      ((UmlNode) elem).acceptsConnection(relationType,
-          RelationEndType.TARGET, source);
-  }
+//  private boolean isValidTarget(DiagramElement elem) {
+//    //FIXME Change this to allow self-relationships
+//	  return elem instanceof UmlNode && elem != source &&
+//      ((UmlNode) elem).acceptsConnection(relationType, RelationEndType.TARGET, (UmlNodesource);
+//  }
 
   /**
    * {@inheritDoc}
@@ -119,38 +116,52 @@ public class LineHandler implements EditorMode {
   public void mousePressed(EditorMouseEvent event) {
     double mx = event.getX(), my = event.getY();
     DiagramElement elem = editor.getDiagram().getChildAt(mx, my);
-    if (isValidSource(elem)) {
+    if (elem!=null) {
       anchor.setLocation(mx, my); //TODO Change the anchor to the edge of the Diagram Element
       tmpPos.setLocation(mx, my);
       isDragging = true;
-      source = (UmlNode) elem;
+      if (elem instanceof UmlNode)
+    	  source = (UmlNode) elem;
+      else
+    	  source = (UmlConnection) elem;
     }
   }
 
   /**
    * {@inheritDoc}
+   * FIXME Allow Self-Relationships !
+   *
    */
   public void mouseReleased(EditorMouseEvent event) {
     double mx = event.getX(), my = event.getY();
-    DiagramElement target = editor.getDiagram().getChildAt(mx, my);
+    DiagramElement target = editor.getDiagram().getChildAt(mx, my);    
     tmpPos.setLocation(mx, my);
-    if (source != null && isValidTarget(target)) {
+   
+    // UmlNode ->(connectedTo) -> UmlNode
+    if (source != null && source instanceof UmlNode && target instanceof UmlNode && target != source) {
       UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlNode) target);
-      connectMethod.generateAndSetPointsToConnection(conn, source, (UmlNode) target, anchor, tmpPos);
-      
-      AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) source.getClassifier(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject());
+      connectMethod.generateAndSetPointsToConnection(conn, (UmlNode)source, (UmlNode) target, anchor, tmpPos);      
+      AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((UmlNode)source).getClassifier(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject());
       editor.execute(command);
     }
-    
-    //Trying to permit connections from a UmlNode to a UmlCOnnection!
-    //TODO
-    if(source != null && target instanceof UmlConnection && target != source){
-    	 UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlConnection) target);
-         connectMethod.generateAndSetPointsToConnection(conn, source, (UmlConnection) target, anchor, tmpPos);         
-         AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) source.getClassifier(), (Classifier) ((AssociationElement)target).getRelationship(), editor.getDiagram().getProject());
+        
+    // UmlNode ->(connectedTo) -> UmlConnection
+    if(source != null && source instanceof UmlNode && target instanceof UmlConnection && target != source){    	
+    	 UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlConnection) target);    	 
+         connectMethod.generateAndSetPointsToConnection(conn, (UmlNode)source, (UmlConnection) target, anchor, tmpPos);         
+         //invert sides if derivation is pushed from the umlnode relator
+         if (conn.getRelationship() instanceof RefOntoUML.Derivation) { 
+	         AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((AssociationElement)target).getRelationship(), (Classifier) ((UmlNode)source).getClassifier(), editor.getDiagram().getProject());
+	         editor.execute(command);
+         }
+    }
+    //UmlConnection ->(connectedTo) -> UmlNode
+    if(target!=null && target instanceof UmlNode && source instanceof UmlConnection && target != source){
+    	 UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlConnection) source, (UmlNode) target);
+         connectMethod.generateAndSetPointsToConnection(conn, (UmlConnection)source,  (UmlNode)target, anchor, tmpPos);         
+         AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((AssociationElement)source).getRelationship(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject());
          editor.execute(command);
     }
-    
     
     isDragging = false;
     editor.redraw();

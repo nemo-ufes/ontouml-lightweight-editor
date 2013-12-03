@@ -67,8 +67,11 @@ public class SimpleConnection extends AbstractConnection {
    */
   public void resetPoints() {
     setPoints(new ArrayList<Point2D>());
-    getPoints().add(new Point2D.Double(getNode1().getAbsCenterX(),
-      getNode1().getAbsCenterY()));
+    if(getNode1()!=null)
+    	getPoints().add(new Point2D.Double(getNode1().getAbsCenterX(), getNode1().getAbsCenterY()));
+    else
+    	getPoints().add(new Point2D.Double(getConnection1().getAbsCenterX(), getConnection1().getAbsCenterY()));
+    
     if(getNode2()!=null)
     	getPoints().add(new Point2D.Double(getNode2().getAbsCenterX(), getNode2().getAbsCenterY()));
     else
@@ -99,11 +102,19 @@ public class SimpleConnection extends AbstractConnection {
   /**
    * Connects the start point to Node 1.
    */
-  private void connectStartPointToNode1() {
-    double x = getNode1().getAbsCenterX(), y = getNode1().getAbsCenterY();
+  private void connectStartPointToNode1() {    
+    double x,y;
+	if (getNode1()!=null)
+    	{ x = getNode1().getAbsCenterX(); y = getNode1().getAbsCenterY();}
+    else
+    	{ x = getConnection1().getAbsCenterX(); y = getConnection1().getAbsCenterY();}    
     getPoints().get(0).setLocation(x, y);
     Line2D segment = getSegments().get(0);
-    getNode1().calculateIntersection(segment, getPoints().get(0));
+    if (getNode1()!=null)
+    	getNode1().calculateIntersection(segment, getPoints().get(0));
+    else
+    	getConnection1().calculateIntersection(segment, getPoints().get(0));
+    
   }
 
   /**
