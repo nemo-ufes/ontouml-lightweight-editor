@@ -1040,7 +1040,7 @@ public class OntoUMLParser {
 		{
 			for(Property prop : d.getMemberEnd())
 			{
-				if(prop.getType().equals(material)) return (Derivation)prop.getType();
+				if(prop.getType().equals(material)) return d;
 			}
 		}
 		return null;
