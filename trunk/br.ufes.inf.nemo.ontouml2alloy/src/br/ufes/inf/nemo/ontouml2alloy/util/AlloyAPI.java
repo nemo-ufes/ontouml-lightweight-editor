@@ -769,7 +769,7 @@ public class AlloyAPI {
 	 * 		(w.assocName).x
 	 * }
 	 */
-	public static FunctionDeclaration createFunctionDeclaration (AlloyFactory factory, SignatureDeclaration world, boolean isSourceProperty, String functionName, String paramName, String returnName, String assocName, boolean isTernaryAssoc )
+	public static FunctionDeclaration createFunctionDeclaration (AlloyFactory factory, SignatureDeclaration world, boolean isSourceProperty, String functionName, String paramName, String returnName, String assocName, boolean materialIsTernary )
 	{
 		FunctionDeclaration fun = factory.createFunctionDeclaration();
 		fun.setName(functionName);
@@ -802,7 +802,7 @@ public class AlloyAPI {
 		PredicateInvocation pI = factory.createPredicateInvocation();
 		
 		// select13[w.assocName] (for ternary association)
-		if (isTernaryAssoc) { 
+		if (materialIsTernary) { 
 			pI = factory.createPredicateInvocation();
 			pI.setPredicate("select13");
 			VariableReference vrf = factory.createVariableReference();
@@ -819,13 +819,13 @@ public class AlloyAPI {
 		if(!isSourceProperty)
 		{
 			// x.(w.assocName) or x.(select13[w.assocName])
-			if (!isTernaryAssoc) bOp2 = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN, "("+bOp.toString()+")");
+			if (!materialIsTernary) bOp2 = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN, "("+bOp.toString()+")");
 			else bOp2 = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN, "("+pI.toString()+")");
 		}
 		else
 		{
 			//  (w.assocName).x or (select13[w.assocName]).x
-			if (!isTernaryAssoc) bOp2 = createBinaryOperation(factory,"("+bOp.toString()+")",BinaryOperator.JOIN, vr.getVariable());
+			if (!materialIsTernary) bOp2 = createBinaryOperation(factory,"("+bOp.toString()+")",BinaryOperator.JOIN, vr.getVariable());
 			else bOp2 = createBinaryOperation(factory,"("+pI.toString()+")",BinaryOperator.JOIN, vr.getVariable());			
 		}	
 		
