@@ -168,17 +168,17 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	private void installManagers() {		
 		
 		toolArea.setContinuousLayout(true);
-		toolArea.setOneTouchExpandable(true);		
-		toolArea.setDividerSize(10);
+		toolArea.setOneTouchExpandable(false);		
+		toolArea.setDividerSize(5);
 			
 		browserArea.setContinuousLayout(true);
 		browserArea.setOneTouchExpandable(true);		
-		browserArea.setDividerSize(10);
+		browserArea.setDividerSize(7);
 		browserArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		
 		editorArea.setContinuousLayout(true);
-		editorArea.setOneTouchExpandable(true);		
-		editorArea.setDividerSize(10);
+		editorArea.setOneTouchExpandable(false);		
+		editorArea.setDividerSize(5);
 		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
 		diagramManager = new DiagramManager(this);
