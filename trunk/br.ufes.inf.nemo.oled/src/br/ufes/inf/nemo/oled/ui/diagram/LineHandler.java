@@ -34,6 +34,7 @@ import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 
 /**
  * This class is a handler for line shaped allElements.
@@ -141,19 +142,15 @@ public class LineHandler implements EditorMode {
       editor.execute(command);
     }
     
-    //=========== FIXME/TODO =================================================
-    //========================================================================
-
     //Trying to permit connections from a UmlNode to a UmlCOnnection!
-//    if(source != null && target instanceof UmlConnection && target != source){
-//    	 UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlConnection) target);
-//         connectMethod.generateAndSetPointsToConnection(conn, source, (UmlConnection) target, anchor, tmpPos);         
-//         AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) source.getClassifier(), (Classifier) ((UmlConnection)target).getClassifier(), editor.getDiagram().getProject());
-//         editor.execute(command);
-//    }
+    //TODO
+    if(source != null && target instanceof UmlConnection && target != source){
+    	 UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlConnection) target);
+         connectMethod.generateAndSetPointsToConnection(conn, source, (UmlConnection) target, anchor, tmpPos);         
+         AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) source.getClassifier(), (Classifier) ((AssociationElement)target).getRelationship(), editor.getDiagram().getProject());
+         editor.execute(command);
+    }
     
-    //========================================================================
-    //========================================================================
     
     isDragging = false;
     editor.redraw();

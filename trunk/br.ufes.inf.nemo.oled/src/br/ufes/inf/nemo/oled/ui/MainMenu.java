@@ -146,7 +146,7 @@ public class MainMenu implements ActionListener {
 		newdiagramItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
 		
 		JMenuItem selectAllItem = createMenuItem(diagramMenu,"selectall");
-		selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+		selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
 //		selectAllItem.setEnabled(false);
 		
 		createMenuItem(diagramMenu,"exportgfx");
