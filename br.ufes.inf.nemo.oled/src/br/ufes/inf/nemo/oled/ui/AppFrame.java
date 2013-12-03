@@ -15,13 +15,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
+import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.util.AlloyExtractorUtil;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.MethodCall;
+import edu.mit.csail.sdg.alloy4.OurBorder;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 public class AppFrame extends JFrame implements AppCommandListener {
@@ -130,6 +133,25 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		setJMenuBar(mainMenu.getMenuBar());
 	}
 
+	/**  
+	 * Makes the border of SplitPanes to look nicer on Mac OS X
+	 */
+	public void nicerSplitPanesOnMac()
+	{
+      if (Main.onMac() && (toolArea.getUI() instanceof BasicSplitPaneUI)) {
+          boolean h = (toolArea.getOrientation() != JSplitPane.HORIZONTAL_SPLIT);
+          ((BasicSplitPaneUI)(toolArea.getUI())).getDivider().setBorder(new OurBorder(h,h,h,h));
+       }
+      if (Main.onMac() && (browserArea.getUI() instanceof BasicSplitPaneUI)) {
+          boolean h = (browserArea.getOrientation() != JSplitPane.HORIZONTAL_SPLIT);
+          ((BasicSplitPaneUI)(browserArea.getUI())).getDivider().setBorder(new OurBorder(h,h,h,h));
+       }
+       if (Main.onMac() && (editorArea.getUI() instanceof BasicSplitPaneUI)) {
+           boolean h = (editorArea.getOrientation() != JSplitPane.HORIZONTAL_SPLIT);
+           ((BasicSplitPaneUI)(editorArea.getUI())).getDivider().setBorder(new OurBorder(h,h,h,h));
+        }
+	}
+	
 	/**
 	 * Adds the main toolbar
 	 */

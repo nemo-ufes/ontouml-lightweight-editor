@@ -68,7 +68,7 @@ public class MoveElementCommand extends BaseDiagramCommand {
 			moveOperation.run();
 			if(moveOperation instanceof MoveNodeOperation)
 				elements.add(((MoveNodeOperation)moveOperation).getNode());
-			else if(moveOperation instanceof TranslateConnectionOperation)
+			else if(moveOperation instanceof TranslateConnectionOperation)				
 				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
 		}
 		

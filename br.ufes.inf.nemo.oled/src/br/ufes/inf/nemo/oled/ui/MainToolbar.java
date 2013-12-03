@@ -114,7 +114,8 @@ public class MainToolbar implements ActionListener {
 		String command = getResourceString(prefix + ".command");
 		button.setActionCommand(command);
 		button.addActionListener(this);
-		button.setFocusable(false);
+		button.setBorderPainted(false);
+	    button.setFocusable(false);
 		buttonMap.put(command, button);
 		toolbar.add(button);
 		button.setToolTipText(getResourceString(prefix + ".tooltip"));
