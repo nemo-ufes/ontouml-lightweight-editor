@@ -452,11 +452,26 @@ public abstract class AbstractConnection implements Connection,
 	}
 
 	public double getAbsCenterX() {
-		return (getSegments().get(0).getX1()+getSegments().get(0).getX2())/2;		
+		boolean evenNumber = getSegments().size() % 2 == 0;
+		if (evenNumber) {
+			int index = getSegments().size()/2;
+			return (getSegments().get(index-1).getX1()+getSegments().get(index-1).getX2())/2;	
+		}else{
+			int index = (getSegments().size()/2)+1;
+			return (getSegments().get(index-1).getX1()+getSegments().get(index-1).getX2())/2;
+		}
+				
 	}
 
 	public double getAbsCenterY() {
-		return (getSegments().get(0).getY1()+getSegments().get(0).getY2())/2;
+		boolean evenNumber = getSegments().size() % 2 == 0;
+		if (evenNumber) {
+			int index = getSegments().size()/2;
+			return (getSegments().get(index-1).getY1()+getSegments().get(index-1).getY2())/2;	
+		}else{
+			int index = (getSegments().size()/2)+1;
+			return (getSegments().get(index-1).getY1()+getSegments().get(index-1).getY2())/2;
+		}		
 	}
 	
 	/**
