@@ -561,8 +561,14 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	@Override
 	public DiagramElement getChildAt(double x, double y) {
 		for (Connection conn : connections) {
-			if (conn.contains(x, y))
-				return conn;
+			if (conn.contains(x, y)) return conn;
+//			if (conn instanceof AssociationElement){
+//				if (((AssociationElement)conn).getNameLabel().contains(x, y)) return ((AssociationElement)conn).getNameLabel();
+//				if (((AssociationElement)conn).getMultiplicity1Label().contains(x, y)) return ((AssociationElement)conn).getMultiplicity1Label();
+//				if (((AssociationElement)conn).getMultiplicity2Label().contains(x, y)) return ((AssociationElement)conn).getMultiplicity2Label();
+//				if (((AssociationElement)conn).getRole1Label().contains(x, y)) return ((AssociationElement)conn).getRole1Label();
+//				if (((AssociationElement)conn).getRole2Label().contains(x, y)) return ((AssociationElement)conn).getRole2Label();
+//			}
 		}
 		return super.getChildAt(x, y);
 	}

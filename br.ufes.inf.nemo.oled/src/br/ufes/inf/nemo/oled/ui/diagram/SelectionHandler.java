@@ -55,7 +55,7 @@ public class SelectionHandler implements EditorMode {
 	private Selection selection = NullSelection.getInstance();
 	private Set<SelectionListener> listeners =
 		new HashSet<SelectionListener>();
-	private ContextMenuBuilder menubuilder = new ContextMenuBuilder();
+	private ContextMenusBuilder contextMenuBuilder = new ContextMenusBuilder();
 	private Point2D startPoint = new Point2D.Double();
 	
 	/**
@@ -123,8 +123,8 @@ public class SelectionHandler implements EditorMode {
 		DiagramElement previousSelected = selection.getElement();
 		
 		DiagramElement element = editor.getDiagram().getChildAt(mx, my);
-				
-		if (element instanceof UmlDiagramElement && previousSelected == element) {
+			
+		if (element instanceof UmlDiagramElement && previousSelected == element) {	
 			Label label = element.getLabelAt(mx, my);
 			if (label != null && label.isEditable()) {
 				focusEditor = false;
@@ -133,13 +133,13 @@ public class SelectionHandler implements EditorMode {
 				editor.editProperties(element);
 			}
 		}
-		
+						
 		else if (editor.getDiagram().getLabelAt(mx, my) != null) {
 			// Edit the diagram name
 			focusEditor = false;
 			editor.editLabel(editor.getDiagram().getLabelAt(mx, my));
 		} 
-		
+				
 		else {
 			if (element == NullElement.getInstance()) {
 				element = editor.getDiagram();
@@ -174,14 +174,14 @@ public class SelectionHandler implements EditorMode {
 		if (!nothingSelected()) {
 			if(selection.getElement() instanceof StructureDiagram == false)
 			{
-				JPopupMenu menu = menubuilder.createContextMenu(selection);
+				JPopupMenu menu = contextMenuBuilder.setContext(selection);
 				menu.show(editor, e.getMouseEvent().getX(), e.getMouseEvent().getY());
 			}
 		}
 	}
 
-	public ContextMenuBuilder getMenubuilder() {
-		return menubuilder;
+	public ContextMenusBuilder getMenubuilder() {
+		return contextMenuBuilder;
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class SelectionHandler implements EditorMode {
 		//selection = getSelection(mx, my);
 		Selection newSelection = getSelection(mx, my);
 		selection = newSelection;
-				
+		
 		/*if(e.getMouseEvent().isShiftDown())
 		{
 			if (selection instanceof NodeSelection)
@@ -447,6 +447,6 @@ public class SelectionHandler implements EditorMode {
 	 * @param l the AppCommandListener to add
 	 */
 	public void addAppCommandListener(AppCommandListener l) {
-		menubuilder.addAppCommandListener(l);
+		contextMenuBuilder.addAppCommandListener(l);
 	}
 }
