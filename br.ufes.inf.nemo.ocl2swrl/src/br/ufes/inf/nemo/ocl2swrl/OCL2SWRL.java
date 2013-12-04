@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.ocl2swrl;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.uml.impl.ExpressionInOCLImpl;
 import org.eclipse.uml2.uml.Constraint;
 import org.semanticweb.owlapi.model.IRI;
@@ -120,6 +121,8 @@ public class OCL2SWRL {
 		int blockBegin = 0;
 		int blockEnd = oclRules.indexOf("--@");
 		
+		int successfullyTransformedRules = 0;
+		int unsuccessfullyTransformedRules = 0;
 		while(true){
 			if(blockEnd < 0){
 				blockEnd = oclRules.length();
@@ -132,20 +135,21 @@ public class OCL2SWRL {
 			tag = tag.replace("--@", "");
 			tag = tag.replace("\n", "");
 			tag = tag.replace("\r", "");
+			tag = tag.replace(" ", "");
 			String strBlockOclConstraints = oclRules.substring(endOfTag, blockEnd);
 			
 			blockBegin = blockEnd;
 			blockEnd = oclRules.indexOf("--@", blockBegin+3);
 			
-			//OCLParser oclParser = null;
+			OCLParser oclParser = null;
 			//try {
-			OCLParser oclParser = new OCLParser(strBlockOclConstraints, this.refParser, "temp.uml");
-			/* catch (ParserException e) {
-				//e.printStackTrace();
-				return e.getMessage();
+				oclParser = new OCLParser(strBlockOclConstraints, this.refParser, "temp.uml");
+			/*}catch (ParserException e) {
+				e.printStackTrace();
+				//return e.getMessage();
 			} catch (Exception e) {
-				//e.printStackTrace();
-				return e.getMessage();
+				e.printStackTrace();
+				//return e.getMessage();
 			}*/
 			
 			for(Constraint ct: oclParser.getConstraints())
@@ -172,14 +176,19 @@ public class OCL2SWRL {
 					
 					try {
 						exprFactory.solve(stereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, false, 1, false);
-					} catch (Exception e) {
+						successfullyTransformedRules++;
+					}catch (Exception e) {
 						this.errors += e.getMessage() + "\n";
+						unsuccessfullyTransformedRules++;
 					}
 				}
 				//org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype);
 				//System.out.println(this.errors);				
 			}
 		}
+		
+		String successMessage = "\n" + successfullyTransformedRules + " rule(s) successfully transformed.\n" + unsuccessfullyTransformedRules + " rule(s) unsuccessfully transformed.\n\n"; 
+		this.errors = successMessage + this.errors;
 	}
 	
 	public Boolean stereotypeIsUnsupported(String stereotype){
