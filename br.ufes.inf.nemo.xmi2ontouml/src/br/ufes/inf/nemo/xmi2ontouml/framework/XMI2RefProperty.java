@@ -48,33 +48,6 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 		property.setDefault((String)hashProp.get("default"));
 		property.setAggregation(AggregationKind.get((String)hashProp.get("aggregation")));
 		
-		// Makes sure the Properties (memberEnds) are added in the correct order
-    	// to be in accordance to the RefOntoUML metamodel
-		Association association = property.getAssociation();
-		if (association != null)
-		{
-			List<Property> memberEnds = association.getMemberEnd();
-			if (memberEnds.size() == 2 && memberEnds.get(0).getType() != null && memberEnds.get(1).getType() != null)
-			{
-				if (!((association instanceof Mediation && memberEnds.get(0).getType() instanceof Relator) ||
-		    			(association instanceof Characterization && memberEnds.get(0).getType() instanceof Mode) ||
-		    			(association instanceof Derivation && memberEnds.get(0).getType() instanceof MaterialAssociation) ||
-		    			memberEnds.get(0).getAggregation() == AggregationKind.COMPOSITE ||
-		    			memberEnds.get(0).getAggregation() == AggregationKind.SHARED))
-				{
-					if (memberEnds.get(0) == property)
-					{
-						association.getMemberEnd().remove(property);
-						association.getMemberEnd().add(1, property);
-					} else
-					{
-						association.getMemberEnd().remove(property);
-						association.getMemberEnd().add(0, property);
-					}
-		    	}
-			}
-		}
-		
 		//Structural Feature properties
 		if ((property.eContainer() instanceof Mediation && !(elemMap.get(hashProp.get("type")) instanceof Relator)) ||
 				(property.eContainer() instanceof Characterization && !(elemMap.get(hashProp.get("type")) instanceof Mode)) ||
@@ -127,6 +100,34 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 		{
 			((Property)RefOntoUMLElement).setType((Type) elemMap.get((String)hashProp.get("type")));
 			
+			// Makes sure the Properties (memberEnds) are added in the correct order
+	    	// to be in accordance to the RefOntoUML metamodel
+			Property property = (Property) RefOntoUMLElement;
+			Association association = property.getAssociation();
+			if (association != null)
+			{
+				List<Property> memberEnds = association.getMemberEnd();
+				if (memberEnds.size() == 2 && memberEnds.get(0).getType() != null && memberEnds.get(1).getType() != null)
+				{
+					if ((association instanceof Mediation && !(memberEnds.get(0).getType() instanceof Relator)) ||
+			    			(association instanceof Characterization && !(memberEnds.get(0).getType() instanceof Mode)) ||
+			    			(association instanceof Derivation && !(memberEnds.get(0).getType() instanceof MaterialAssociation)) ||
+			    			memberEnds.get(1).getAggregation() == AggregationKind.COMPOSITE ||
+			    			memberEnds.get(1).getAggregation() == AggregationKind.SHARED)
+					{
+						if (memberEnds.get(0) == property)
+						{
+							association.getMemberEnd().remove(property);
+							association.getMemberEnd().add(1, property);
+						} else
+						{
+							association.getMemberEnd().remove(property);
+							association.getMemberEnd().add(0, property);
+						}
+			    	}
+				}
+			}
+			
 			if (autoGenerateNames && (((Property)RefOntoUMLElement).getName() == null) || ((Property)RefOntoUMLElement).getName().equals(""))
 				((Property)RefOntoUMLElement).setName(((Property)RefOntoUMLElement).getType().getName().toLowerCase());
 		}
@@ -143,7 +144,6 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 			{
 				System.out.println("Debug: removing property with error ("+((Property)RefOntoUMLElement).getName()+" | Container: "+RefOntoUMLElement.eContainer()+")");
 	    		EcoreUtil.remove(RefOntoUMLElement);
-//    	    		elemMap.remove(Mapper.getID(XMIElement));
 			}
 		}
 	}
