@@ -531,4 +531,24 @@ public class BaseConnection implements UmlConnection, Adapter {
 		return connection.intersects(line);		
 	}
 
+	@Override
+	public double getAbsoluteX2() {		
+		return connection.getAbsoluteX2();
+	}
+
+	@Override
+	public double getAbsoluteX1() {
+		return connection.getAbsoluteX1();
+	}
+
+	@Override
+	public double getAbsoluteY2() {
+		return connection.getAbsoluteY2();
+	}
+
+	@Override
+	public double getAbsoluteY1() {
+		return connection.getAbsoluteY1();
+	}
+
 }

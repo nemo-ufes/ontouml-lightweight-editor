@@ -63,9 +63,13 @@ public class RectilinearConnection extends AbstractConnection {
 	@Override
 	public void setPoints(List<Point2D> thePoints) {
 		super.setPoints(thePoints);
-		node1ConnectPoint = getPointInNodeCoordinates(getNode1(), thePoints.get(0));
-		node2ConnectPoint = getPointInNodeCoordinates(getNode2(),
-				thePoints.get(thePoints.size() - 1));
+		if(getNode1()!=null && getNode2()!=null){
+			node1ConnectPoint = getPointInNodeCoordinates(getNode1(), thePoints.get(0));
+			node2ConnectPoint = getPointInNodeCoordinates(getNode2(), thePoints.get(thePoints.size() - 1));
+		}else if(getNode1()==null && getNode2()!=null){
+			node1ConnectPoint = getPointInNodeCoordinates(getConnection1(), thePoints.get(0));
+			node2ConnectPoint = getPointInNodeCoordinates(getNode2(), thePoints.get(thePoints.size() - 1));
+		}			
 	}
 
 	/**
@@ -76,10 +80,13 @@ public class RectilinearConnection extends AbstractConnection {
 	 * @return the new Point2D object
 	 */
 	private Point2D getPointInNodeCoordinates(Node node, Point2D point) {
-		return new Point2D.Double(point.getX() - node.getAbsoluteX1(),
-				point.getY() - node.getAbsoluteY1());
+		return new Point2D.Double(point.getX() - node.getAbsoluteX1(), point.getY() - node.getAbsoluteY1());
 	}
 
+	private Point2D getPointInNodeCoordinates(Connection c, Point2D point) {
+		return new Point2D.Double(point.getX() - c.getAbsoluteX1(), point.getY() - c.getAbsoluteY1());
+	}
+	
 	/**
 	 * Returns a new point that represents the parameter point in absolute
 	 * coordinates.
@@ -88,8 +95,11 @@ public class RectilinearConnection extends AbstractConnection {
 	 * @return the new point
 	 */
 	private Point2D getPointInAbsoluteCoordinates(Node node, Point2D point) {
-		return new Point2D.Double(point.getX() + node.getAbsoluteX1(),
-				point.getY() + node.getAbsoluteY1());
+		return new Point2D.Double(point.getX() + node.getAbsoluteX1(), point.getY() + node.getAbsoluteY1());
+	}
+	
+	private Point2D getPointInAbsoluteCoordinates(Connection c, Point2D point) {
+		return new Point2D.Double(point.getX() + c.getAbsoluteX1(), point.getY() + c.getAbsoluteY1());
 	}
 
 	/**
@@ -119,12 +129,20 @@ public class RectilinearConnection extends AbstractConnection {
 		if (getPoints().size() <= 3) {
 			// If there are at most three connection points, simply recalculate the
 			// connection between the two nodes completely
-			setPoints(RectilinearLineBuilder.getInstance().calculateLineSegments(
-					getNode1(), getNode2()));
+			if(getNode1()!=null && getNode2()!=null)
+				setPoints(RectilinearLineBuilder.getInstance().calculateLineSegments(getNode1(), getNode2()));
+			else if (getNode1()==null && getNode2()!=null)
+				setPoints(RectilinearLineBuilder.getInstance().calculateLineSegments(getConnection1(), getNode2()));
+			
 		} else {
-			reattachConnectionPoint(getNode1(), node1ConnectPoint, 0, 1);
-			reattachConnectionPoint(getNode2(),
-					node2ConnectPoint, getPoints().size() - 1, getPoints().size() - 2);
+			if(getNode1()!=null && getNode2()!=null){
+				reattachConnectionPoint(getNode1(), node1ConnectPoint, 0, 1);
+				reattachConnectionPoint(getNode2(),	node2ConnectPoint, getPoints().size() - 1, getPoints().size() - 2);
+			}else if (getNode1()==null && getNode2()!=null){
+				reattachConnectionPoint(getConnection1(), node1ConnectPoint, 0, 1);
+				reattachConnectionPoint(getNode2(),	node2ConnectPoint, getPoints().size() - 1, getPoints().size() - 2);
+			}
+			
 			// TODO: If the node intersects a middle segment, reduce the segments
 		}
 
@@ -143,8 +161,7 @@ public class RectilinearConnection extends AbstractConnection {
 	 * @param indexAtNode the index of the point at the node
 	 * @param indexInner the inner point next ot the point at the node
 	 */
-	private void reattachConnectionPoint(Node node, Point2D nodeConnectPoint,
-			int indexAtNode, int indexInner) {
+	private void reattachConnectionPoint(Node node, Point2D nodeConnectPoint, int indexAtNode, int indexInner) {
 
 		if (wasPulledOff(node, nodeConnectPoint, getPoints().get(indexAtNode))) {
 			Point2D pointAtNode = getPoints().get(indexAtNode);
@@ -168,6 +185,29 @@ public class RectilinearConnection extends AbstractConnection {
 		}
 	}
 
+	private void reattachConnectionPoint(Connection c, Point2D nodeConnectPoint, int indexAtNode, int indexInner) {
+
+		if (wasPulledOff(c, nodeConnectPoint, getPoints().get(indexAtNode))) {
+			Point2D pointAtNode = getPoints().get(indexAtNode);
+			Point2D pointInner = getPoints().get(indexInner);
+			Point2D absConnectPoint = getPointInAbsoluteCoordinates(c,
+					nodeConnectPoint);
+			// sets the first segment in parallel
+			double diffx = 0, diffy = 0;
+			if (GeometryUtil.getInstance().getSegmentOrientation(pointAtNode,
+					pointInner) == Orientation.HORIZONTAL) {
+				// the segment can only be moved in y direction
+				diffy = absConnectPoint.getY() - pointAtNode.getY();
+			} else if (GeometryUtil.getInstance().getSegmentOrientation(
+					pointAtNode, pointInner) == Orientation.VERTICAL) {
+				// the segment can only be moved in x direction
+				diffx = absConnectPoint.getX() - pointAtNode.getX();
+			}
+			pointAtNode.setLocation(absConnectPoint);
+			pointInner.setLocation(pointInner.getX() + diffx,
+					pointInner.getY() + diffy);
+		}
+	}
 	/**
 	 * Determines whether the specified node was pulled of the segment at the
 	 * point indexes (segmentIndex, segmentIndex + 1).
@@ -184,13 +224,23 @@ public class RectilinearConnection extends AbstractConnection {
 						absConnectPoint.getY(), cmpPoint.getY());
 	}
 
+	private boolean wasPulledOff(Connection c, Point2D connectPoint,
+			Point2D cmpPoint) {
+		Point2D absConnectPoint = getPointInAbsoluteCoordinates(c, connectPoint);
+		return !GeometryUtil.getInstance().equals(absConnectPoint.getX(),
+				cmpPoint.getX()) || !GeometryUtil.getInstance().equals(
+						absConnectPoint.getY(), cmpPoint.getY());
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void copyData(Connection conn) {
 		super.copyData(conn);
-		setPoints(RectilinearLineBuilder.getInstance().calculateLineSegments(
-				getNode1(), getNode2()));
+		if ((conn.getNode1()!=null) && (conn.getNode2()!=null))
+			setPoints(RectilinearLineBuilder.getInstance().calculateLineSegments(getNode1(), getNode2()));
+		if ((conn.getNode1()==null) && (conn.getNode2()!=null))
+			setPoints(RectilinearLineBuilder.getInstance().calculateLineSegments(getConnection1(), getNode2()));		
 	}
 }

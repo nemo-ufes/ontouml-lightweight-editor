@@ -43,6 +43,7 @@ public abstract class AbstractConnection implements Connection,
 		NodeChangeListener {
 
 	private static final long serialVersionUID = -1014584869536016852L;
+	private Point2D origin = new Point2D.Double(0, 0);
 	private Node node1, node2;
 	private Connection connection1, connection2;
 	protected static final double DELTA = 3.0;
@@ -51,7 +52,12 @@ public abstract class AbstractConnection implements Connection,
 	private boolean isDashed;
 	private List<Point2D> points = new ArrayList<Point2D>();
 	private List<Connection> connections = new ArrayList<Connection>();
-
+	
+	/**
+	 * {@inheritDoc} Included by John
+	 */
+	public Point2D getOrigin() { return origin; }
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -60,6 +66,7 @@ public abstract class AbstractConnection implements Connection,
 		AbstractConnection cloned = null;
 		try {
 			cloned = (AbstractConnection) super.clone();
+			cloned.origin = (Point2D) origin.clone();
 			if (points != null) {
 				cloned.points = new LinkedList<Point2D>();
 				for (Point2D point : points)
@@ -450,6 +457,34 @@ public abstract class AbstractConnection implements Connection,
 
 	public double getAbsCenterY() {
 		return (getSegments().get(0).getY1()+getSegments().get(0).getY2())/2;
+	}
+	
+	/**
+	 * {@inheritDoc} (John) not sure this works for connection too, as for Nodes...
+	 */
+	public double getAbsoluteX1() {
+		return getSegments().get(0).getX1() + getOrigin().getX();
+	}
+
+	/**
+	 * {@inheritDoc} (John) not sure this works for connection too, as for Nodes...
+	 */
+	public double getAbsoluteY1() {
+		return getSegments().get(0).getY1() + getOrigin().getY();
+	}
+	
+	/**
+	 * {@inheritDoc} (John) not sure this works for connection too, as for Nodes...
+	 */
+	public double getAbsoluteX2() {
+		return getSegments().get(0).getX2();
+	}
+
+	/**
+	 * {@inheritDoc} (John) not sure this works for connection too, as for Nodes...
+	 */
+	public double getAbsoluteY2() {
+		return getSegments().get(0).getY2();
 	}
 	
 	/**

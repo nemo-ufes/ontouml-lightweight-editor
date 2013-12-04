@@ -115,7 +115,7 @@ public class MultiSelection implements Selection {
 	        addMoveNodeOperation(moveOperations, (Node) element, transx, transy);
 	      } else if (element instanceof Connection) {
 	        addTranslateConnectionOperations(moveOperations, (Connection) element,
-	          transx, transy);
+	          transx, transy);	        
 	      }
 	    }
 	    

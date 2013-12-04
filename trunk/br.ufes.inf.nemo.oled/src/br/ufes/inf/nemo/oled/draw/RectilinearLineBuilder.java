@@ -148,6 +148,28 @@ public final class RectilinearLineBuilder {
     }
   }
 
+  public List<Point2D> calculateLineSegments(Connection c1, Node node2) {
+    NodeDirection direction = getNodeDirection(c1, node2);
+    switch (direction) {
+      case WEST_EAST:
+        return createHorizontalLineSegment(c1, node2, true);
+      case EAST_WEST:
+        return createHorizontalLineSegment(c1, node2, false);
+      case NORTH_SOUTH:
+        return createVerticalLineSegment(c1, node2, true);
+      case SOUTH_NORTH:
+        return createVerticalLineSegment(c1, node2, false);
+      case SE_NW:
+        return calculateLineSegments(c1.getAbsoluteX1(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
+      case SW_NE:
+        return calculateLineSegments(c1.getAbsoluteX2(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
+      case NW_SE:
+        return calculateLineSegments(c1.getAbsoluteX2(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(),  Orientation.HORIZONTAL);
+      case NE_SW:
+      default:
+        return calculateLineSegments(c1.getAbsoluteX1(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(), Orientation.HORIZONTAL);
+    }
+  }
   /**
    * Creates a line segment that connects node1 and node2 with the
    * following properties:
@@ -174,6 +196,21 @@ public final class RectilinearLineBuilder {
     return result;
   }
 
+  private List<Point2D> createHorizontalLineSegment(Connection c1, Node node2,
+    boolean leftToRight) {
+    List<Point2D> result = new LinkedList<Point2D>();
+    double y = calculateOverlapMiddlePoint(c1.getAbsoluteY1(),
+    		c1.getAbsoluteY2(), node2.getAbsoluteY1(), node2.getAbsoluteY2());
+    if (leftToRight) {
+      result.add(new Point2D.Double(c1.getAbsoluteX2(), y));
+      result.add(new Point2D.Double(node2.getAbsoluteX1(), y));
+    } else {
+      result.add(new Point2D.Double(c1.getAbsoluteX1(), y));
+      result.add(new Point2D.Double(node2.getAbsoluteX2(), y));
+    }
+    return result;
+  }
+  
   /**
    * Creates a line segment that connects node1 and node2 with the
    * following properties:
@@ -199,7 +236,22 @@ public final class RectilinearLineBuilder {
     }
     return result;
   }
-
+  
+  private List<Point2D> createVerticalLineSegment(Connection c1, Node node2,
+   boolean topToBottom) {
+   List<Point2D> result = new LinkedList<Point2D>();
+   double x = calculateOverlapMiddlePoint(c1.getAbsoluteX1(),
+	 c1.getAbsoluteX2(), node2.getAbsoluteX1(), node2.getAbsoluteX2());
+   if (topToBottom) {
+     result.add(new Point2D.Double(x, c1.getAbsoluteY2()));
+     result.add(new Point2D.Double(x, node2.getAbsoluteY1()));
+   } else {
+     result.add(new Point2D.Double(x, c1.getAbsoluteY1()));
+     result.add(new Point2D.Double(x, node2.getAbsoluteY2()));
+   }
+   return result;
+  }
+  
   /**
    * Creates line segments where the target point is in NW or SW direction with
    * the specified first segment orientation.
@@ -282,6 +334,44 @@ public final class RectilinearLineBuilder {
     return NodeDirection.NE_SW;
   }
 
+  public NodeDirection getNodeDirection(Connection c1, Node node2) {
+    double node1x1 = c1.getAbsoluteX1(), node1y1 = c1.getAbsoluteY1();
+    double node1x2 = c1.getAbsoluteX2(), node1y2 = c1.getAbsoluteY2();
+    double node2x1 = node2.getAbsoluteX1(), node2y1 = node2.getAbsoluteY1();
+    double node2x2 = node2.getAbsoluteX2(), node2y2 = node2.getAbsoluteY2();
+
+    if (node2.getAbsCenterX() >= c1.getAbsCenterX() &&
+        rangesOverlap(node1y1, node1y2, node2y1, node2y2)) {
+      return NodeDirection.WEST_EAST;
+    }
+    if (c1.getAbsCenterX() > node2.getAbsCenterX() &&
+        rangesOverlap(node1y1, node1y2, node2y1, node2y2)) {
+      return NodeDirection.EAST_WEST;
+    }
+    if (node2.getAbsCenterY() >= c1.getAbsCenterY() &&
+        rangesOverlap(node1x1, node1x2, node2x1, node2x2)) {
+      return NodeDirection.NORTH_SOUTH;
+    }
+    if (c1.getAbsCenterY() > node2.getAbsCenterY() &&
+        rangesOverlap(node1x1, node1x2, node2x1, node2x2)) {
+      return NodeDirection.SOUTH_NORTH;
+    }
+
+    // the diagonal directions
+    if (node2.getAbsCenterX() > c1.getAbsCenterX() &&
+        node2.getAbsCenterY() > c1.getAbsCenterY()) {
+      return NodeDirection.NW_SE;
+    }
+    if (c1.getAbsCenterX() > node2.getAbsCenterX() &&
+    		c1.getAbsCenterY() > node2.getAbsCenterY()) {
+      return NodeDirection.SE_NW;
+    }
+    if (node2.getAbsCenterX() > c1.getAbsCenterX() &&
+        node2.getAbsCenterY() < c1.getAbsCenterY()) {
+      return NodeDirection.SW_NE;
+    }
+    return NodeDirection.NE_SW;
+  }
   /**
    * Returns true if the ranges r1 and r2 overlap.
    * Precondition: r1start <= r1end and r2start <= r2end
