@@ -23,6 +23,7 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -283,6 +284,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showDialog(this,"OK") == JFileChooser.APPROVE_OPTION) {
 			try {			
+				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				
 				closeCurrentProject();
 				
 				File file = fileChooser.getSelectedFile();	
@@ -309,7 +312,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 						JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
 			}
-		}		
+		}	
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 	
 	/**
@@ -325,6 +329,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			try {
+				
+				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				
 				closeCurrentProject();
 				
 				File file = fileChooser.getSelectedFile();
@@ -353,6 +360,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 						JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
 			}
+			
+			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}		
 	}
 
@@ -360,6 +369,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Opens an existing project.
 	 */
 	public void openRecentProject() {
+		
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		
 		try {
 			StartPanel startPanel = (StartPanel) getCurrentEditor();
@@ -389,6 +400,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
 		}		
+		
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
 	/**
@@ -398,6 +411,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * @return the file that was written
 	 */
 	private File saveCurrentProjectToFile(File file) {
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		
 		File result = null;
 		try {
 
@@ -427,6 +442,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			
 			frame.setTitle(file.getName()+" - OLED");
 			updateUI();
+			
+			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -635,6 +652,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			if (fileChooser.getFileFilter() == filter) {
 				try {
+					
+					getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					
 					ResourceSet resourceSet = new ResourceSetImpl();
 					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,new OLEDResourceFactory());
 					resourceSet.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI, RefOntoUML.RefOntoUMLPackage.eINSTANCE);
@@ -664,6 +684,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				}
 			}
 		}
+		
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
 	/**
@@ -847,9 +869,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Sintatically validate the current model (the model behind the current DiagramEditor).
 	 */
 	public void validateCurrentModel() {
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		
 		UmlProject project = getCurrentEditor().getProject();
 		OperationResult result = VerificationHelper.verifyModel(project.getModel());
 		frame.getInfoManager().showOutputText(result.toString(), true, true);
+				
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
 	/**
