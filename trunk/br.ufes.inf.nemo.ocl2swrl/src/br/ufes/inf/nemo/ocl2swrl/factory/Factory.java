@@ -28,13 +28,13 @@ public class Factory {
 	}
 	
 	public void insertOnAntecedentOrConsequent(String ctStereotype, Boolean leftSideOfImplies, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLAtom atom){
-		if(ctStereotype.equals(Tag.Reflexive.toString()) || 
-				ctStereotype.equals(Tag.Irreflexive.toString()) || 
-				ctStereotype.equals(Tag.Symmetric.toString()) || 
-				ctStereotype.equals(Tag.Asymmetric.toString()) || 
-				ctStereotype.equals(Tag.Transitive.toString()) || 
-				ctStereotype.equals(Tag.SubRelationOf.toString()) || 
-				ctStereotype.equals(Tag.Cardinality.toString())){
+		if(ctStereotype.equals(Tag.reflexive.toString()) || 
+				ctStereotype.equals(Tag.irreflexive.toString()) || 
+				ctStereotype.equals(Tag.symmetric.toString()) || 
+				ctStereotype.equals(Tag.asymmetric.toString()) || 
+				ctStereotype.equals(Tag.transitive.toString()) || 
+				ctStereotype.equals(Tag.subrelationof.toString()) || 
+				ctStereotype.equals(Tag.cardinality.toString())){
 			return;
 		}
 		
@@ -48,7 +48,7 @@ public class Factory {
 	public Boolean hasToBeInsertedInConsequent(String ctStereotype, Boolean leftSideOfImplies){
 		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
 			return false;//invariants are inserted on antecedents, excepting when tags are used are override the ctStereotype
-		}else if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == true){
+		}else if(ctStereotype.equals(Tag.derive.toString()) && leftSideOfImplies == true){
 			return false;//atoms in rules tagged as Derive are inserted on antecedents if they are on the left side of the operator Implies 
 		}
 		return true;

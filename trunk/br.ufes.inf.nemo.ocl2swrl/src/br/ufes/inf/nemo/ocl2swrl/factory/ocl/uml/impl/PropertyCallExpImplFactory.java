@@ -132,7 +132,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		
 		SWRLObjectPropertyAtom objPropAtom = null;
 		//antecedent.add(this.factory.getSWRLDifferentIndividualsAtom(varX, varY)); //DifferentFrom(?x,?z)
-		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
+		if(ctStereotype.equals(Tag.derive.toString()) && leftSideOfImplies == false){
 			objPropAtom = factory.getSWRLObjectPropertyAtom(relation, varX, varY);
 			//consequent.add(); //prop(?x,?Y)
 		}else{
@@ -224,7 +224,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		
 		SWRLDataPropertyAtom dataPropAtom = null;
 		//add the atom to the antecedents atoms
-		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
+		if(ctStereotype.equals(Tag.derive.toString()) && leftSideOfImplies == false){
 			dataPropAtom = factory.getSWRLDataPropertyAtom(attrDtProp, (SWRLIArgument) referredArgument, attrVar);
 			//consequent.add(); //property(?x,?Y)
 		}else{

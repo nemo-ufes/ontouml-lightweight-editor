@@ -157,33 +157,33 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//pega o ultimo
 		
 		ArrayList<SWRLDArgument> retArgsZ = null;
-		if(ctStereotype.equals(Tag.Reflexive.toString())){
+		if(ctStereotype.equals(Tag.reflexive.toString())){
 			if(this.isIncludesOperation() || this.isExcludesOperation()){
 				solveReflexive(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
 			}
 			
-		}else if(ctStereotype.equals(Tag.Irreflexive.toString())){
+		}else if(ctStereotype.equals(Tag.irreflexive.toString())){
 			if(this.isIncludesOperation() || this.isExcludesOperation()){
 				solveIrreflexive(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
 			}
-		}else if(ctStereotype.equals(Tag.Symmetric.toString())){
+		}else if(ctStereotype.equals(Tag.symmetric.toString())){
 			if(this.isIncludesOperation() || this.isExcludesOperation()){
 				solveSymmetric(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
 			}
 			
-		}else if(ctStereotype.equals(Tag.Asymmetric.toString())){
+		}else if(ctStereotype.equals(Tag.asymmetric.toString())){
 			if(this.isIncludesOperation() || this.isExcludesOperation()){
 				solveAsymmetric(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
 			}
-		}else if(ctStereotype.equals(Tag.Transitive.toString())){
+		}else if(ctStereotype.equals(Tag.transitive.toString())){
 			if(this.isIncludesOperation() || this.isExcludesOperation()){
 				solveTransitive(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
 			}
-		}else if(ctStereotype.equals(Tag.SubRelationOf.toString())){
+		}else if(ctStereotype.equals(Tag.subrelationof.toString())){
 			if(this.isIncludesOperation() || this.isExcludesOperation()){
 				solveSubRelationOf(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
 			}
-		}else if(ctStereotype.equals(Tag.Cardinality.toString())){
+		}else if(ctStereotype.equals(Tag.cardinality.toString())){
 			if(this.isComparisonOperation()){
 				solveCardinality(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
 			}
