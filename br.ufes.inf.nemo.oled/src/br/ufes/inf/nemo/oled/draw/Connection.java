@@ -94,6 +94,12 @@ public interface Connection extends DiagramElement {
 
   double getAbsCenterY();
   
+  // not sure this is also true connections (John)...
+  double getAbsoluteX2();  
+  double getAbsoluteX1();
+  double getAbsoluteY2();
+  double getAbsoluteY1();
+  
   /**
    * Resets the connection points.
    */

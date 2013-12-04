@@ -179,11 +179,15 @@ public class RectilinearConnectionSelection extends ConnectionSelection {
     double diffy) {
     // first or last point, which means connects to a node -> only one direction
     if (indexInConnection == 0) {
-      moveConstrained(indexInConnection, getConnection().getNode1(), diffx,
-        diffy);
+    	if(getConnection().getNode1()!=null)
+    		moveConstrained(indexInConnection, getConnection().getNode1(), diffx, diffy);
+    	else
+    		moveConstrained(indexInConnection, getConnection().getConnection1(), diffx, diffy);
     } else if (indexInConnection == getConnection().getPoints().size() - 1) {
-      moveConstrained(indexInConnection, getConnection().getNode2(), diffx,
-        diffy);
+    	if(getConnection().getNode2()!=null)
+    		moveConstrained(indexInConnection, getConnection().getNode2(), diffx, diffy);
+    	else
+    		moveConstrained(indexInConnection, getConnection().getConnection2(), diffx, diffy);
     } else {
       // unconstrained
       Point2D p = getConnection().getPoints().get(indexInConnection);
@@ -201,9 +205,8 @@ public class RectilinearConnectionSelection extends ConnectionSelection {
    * @param diffx the x amount to move
    * @param diffy the y amount to move
    */
-  private void moveConstrained(int indexInConnection, Node node, double diffx,
-    double diffy) {
-
+  private void moveConstrained(int indexInConnection, Node node, double diffx, double diffy) 
+  {
     double amountX = diffx, amountY = diffy;
     int mappedIndex = mapToEditPointIndex(indexInConnection);
     Point2D p = getConnection().getPoints().get(indexInConnection);
@@ -213,6 +216,23 @@ public class RectilinearConnectionSelection extends ConnectionSelection {
     }
     if (p.getY() == node.getAbsoluteY1() ||
         p.getY() == node.getAbsoluteY2()) {
+      amountY = 0;
+    }
+    editpoints.get(mappedIndex).setLocation(p.getX() + amountX,
+      p.getY() + amountY);
+  }
+
+  private void moveConstrained(int indexInConnection, Connection c, double diffx, double diffy) 
+  {
+    double amountX = diffx, amountY = diffy;
+    int mappedIndex = mapToEditPointIndex(indexInConnection);
+    Point2D p = getConnection().getPoints().get(indexInConnection);
+    if (p.getX() == c.getAbsoluteX1() ||
+        p.getX() == c.getAbsoluteX2()) {
+      amountX = 0;
+    }
+    if (p.getY() == c.getAbsoluteY1() ||
+        p.getY() == c.getAbsoluteY2()) {
       amountY = 0;
     }
     editpoints.get(mappedIndex).setLocation(p.getX() + amountX,
@@ -304,18 +324,30 @@ public class RectilinearConnectionSelection extends ConnectionSelection {
    * the node again.
    */
   private void restoreConnectionToNode() {
-    Node node1 = getConnection().getNode1();
-    Node node2 = getConnection().getNode2();
     Point2D p0 = editpoints.get(0);
     Point2D pn = editpoints.get(editpoints.size() - 1);
-    int outcode1 = outcode(node1.getAbsoluteBounds(), p0);
-    int outcode2 = outcode(node2.getAbsoluteBounds(), pn);
-    if (outcode1 != 0) {
-      insertConnectionPointToNode(node1, outcode1, 0);
-    }
-    if (outcode2 != 0) {
-      insertConnectionPointToNode(node2, outcode2,
-        getConnection().getPoints().size() - 1);
+    Node node1 = getConnection().getNode1();
+    Node node2 = getConnection().getNode2();
+    Connection c1 = getConnection().getConnection1();
+    if(node1!=null && node2 !=null){
+	    int outcode1 = outcode(node1.getAbsoluteBounds(), p0);
+	    int outcode2 = outcode(node2.getAbsoluteBounds(), pn);
+	    if (outcode1 != 0) {
+	      insertConnectionPointToNode(node1, outcode1, 0);
+	    }
+	    if (outcode2 != 0) {
+	      insertConnectionPointToNode(node2, outcode2, getConnection().getPoints().size() - 1);
+	    }
+	    
+    }else if (node1==null && node2!=null){
+    	int outcode1 = outcode(c1.getAbsoluteBounds(), p0);
+  	    int outcode2 = outcode(node2.getAbsoluteBounds(), pn);
+  	    if (outcode1 != 0) {
+  	      insertConnectionPointToNode(c1, outcode1, 0);
+  	    }
+  	    if (outcode2 != 0) {
+  	      insertConnectionPointToNode(node2, outcode2, getConnection().getPoints().size() - 1);
+  	    }
     }
   }
 
@@ -343,6 +375,24 @@ public class RectilinearConnectionSelection extends ConnectionSelection {
       addEditPoint(index, newpoint);
     }
   }
+  
+  private void insertConnectionPointToNode(Connection c, int outcode, int index) {
+    Point2D newpoint = new Point2D.Double();
+    Point2D segmentPoint = getConnection().getPoints().get(index);
+    if (outcode == Rectangle2D.OUT_BOTTOM) {
+      newpoint.setLocation(segmentPoint.getX(), c.getAbsoluteY2());
+      addEditPoint(index, newpoint);
+    } else if (outcode == Rectangle2D.OUT_TOP) {
+      newpoint.setLocation(segmentPoint.getX(), c.getAbsoluteY1());
+      addEditPoint(index, newpoint);
+    } else if (outcode == Rectangle2D.OUT_LEFT) {
+      newpoint.setLocation(c.getAbsoluteX1(), segmentPoint.getY());
+      addEditPoint(index, newpoint);
+    } else if (outcode == Rectangle2D.OUT_RIGHT) {
+      newpoint.setLocation(c.getAbsoluteX2(), segmentPoint.getY());
+      addEditPoint(index, newpoint);
+    }
+  }
 
   // ************************************************************************
   // ***** Melts in the points next to the outer points if possible
@@ -353,11 +403,14 @@ public class RectilinearConnectionSelection extends ConnectionSelection {
    * to the connection's nodes. "Melting in" means removing them.
    */
   private void meltinNextToOuterPoints() {
+	  
     Node node1 = getConnection().getNode1();
     Node node2 = getConnection().getNode2();
+    Connection c1 = getConnection().getConnection1();
+    
     if (editpoints.size() > 2) {
       // remove last point if possible
-      Point2D p = editpoints.get(editpoints.size() - 2);
+      Point2D p = editpoints.get(editpoints.size() - 2);      
       if (outcode(node2.getAbsoluteBounds(), p) == 0) {
         // see above
         removeEditPoint(editpoints.size() - 1);
@@ -366,9 +419,11 @@ public class RectilinearConnectionSelection extends ConnectionSelection {
     if (editpoints.size() > 2) {
       // remove point 0 if possible
       Point2D p = editpoints.get(1);
-      if (outcode(node1.getAbsoluteBounds(), p) == 0) {
-        removeEditPoint(0);
-      }
+      if(node1!=null){
+    	  if (outcode(node1.getAbsoluteBounds(), p) == 0) { removeEditPoint(0); }
+      }else {
+    	  if (outcode(c1.getAbsoluteBounds(), p) == 0) { removeEditPoint(0); }
+      }      
     }
   }
 

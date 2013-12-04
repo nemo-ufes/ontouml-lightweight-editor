@@ -28,6 +28,7 @@ import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.LineConnectMethod;
+import br.ufes.inf.nemo.oled.draw.NullElement;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
@@ -116,7 +117,7 @@ public class LineHandler implements EditorMode {
   public void mousePressed(EditorMouseEvent event) {
     double mx = event.getX(), my = event.getY();
     DiagramElement elem = editor.getDiagram().getChildAt(mx, my);
-    if (elem!=null) {
+    if (elem!=null && ! (elem instanceof NullElement)) {
       anchor.setLocation(mx, my); //TODO Change the anchor to the edge of the Diagram Element
       tmpPos.setLocation(mx, my);
       isDragging = true;
@@ -146,11 +147,11 @@ public class LineHandler implements EditorMode {
     }
         
     // UmlNode ->(connectedTo) -> UmlConnection
-    if(source != null && source instanceof UmlNode && target instanceof UmlConnection && target != source){    	
-    	 UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlConnection) target);    	 
-         connectMethod.generateAndSetPointsToConnection(conn, (UmlNode)source, (UmlConnection) target, anchor, tmpPos);         
-         //invert sides if derivation is pushed from the umlnode relator
-         if (conn.getRelationship() instanceof RefOntoUML.Derivation) { 
+    if(source != null && source instanceof UmlNode && target instanceof UmlConnection && target != source){    	 
+    	 //invert sides if derivation is pushed from the umlnode relator
+         if (relationType == RelationType.DERIVATION) { 
+    	     UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlConnection) target, (UmlNode) source);    	 
+             connectMethod.generateAndSetPointsToConnection(conn, (UmlConnection) target, (UmlNode)source, anchor, tmpPos);         
 	         AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((AssociationElement)target).getRelationship(), (Classifier) ((UmlNode)source).getClassifier(), editor.getDiagram().getProject());
 	         editor.execute(command);
          }

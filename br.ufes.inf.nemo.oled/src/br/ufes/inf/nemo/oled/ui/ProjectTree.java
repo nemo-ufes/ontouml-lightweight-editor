@@ -265,13 +265,20 @@ public class ProjectTree extends CheckboxTree {
 						
 			//modelTree.collapsePath(new TreePath(newNode.getPath()));
 						
-			if (object instanceof RefOntoUML.Association || object instanceof RefOntoUML.Class || object instanceof RefOntoUML.DataType)
+			if (object instanceof RefOntoUML.Class || object instanceof RefOntoUML.DataType)
 			{
 				for (EObject o: ((EObject)object).eContents())
 				{
 					drawModel(newNode,o,checkingModel,refparser);
 				}			
 			}		
+			
+			if (object instanceof RefOntoUML.Association){
+				for (RefOntoUML.Property o: ((RefOntoUML.Association)object).getMemberEnd())
+				{
+					drawModel(newNode,o,checkingModel,refparser);
+				}
+			}
 		}
 		
 	}
