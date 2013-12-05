@@ -92,7 +92,16 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			isTag = false;
 		}
 		*/
-		if(!isTag){
+		if(isTag){
+			String strRule = bodyExpression.toString();
+			int isImpliesOperation = strRule.indexOf("implies");
+			
+			if(ctStereotype.equals(Tag.derive.toString()) && isImpliesOperation < 0){
+				OWLClass owlClass = factory.getOWLClass(iri);
+				SWRLClassAtom atom = factory.getSWRLClassAtom(owlClass, contextVar);
+				antecedent.add(atom);
+			}
+		}else{
 			
 			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
 				OWLClass owlClass = factory.getOWLClass(iri);
