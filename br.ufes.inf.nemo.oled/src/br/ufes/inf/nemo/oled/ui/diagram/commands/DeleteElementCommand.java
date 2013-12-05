@@ -160,6 +160,10 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				// FIXME every modification creates a new tree
 				ProjectBrowser.rebuildTree(project);		
 			}
+			
+			//triggers the search for errors and warnings in the model
+			ProjectBrowser.frame.getDiagramManager().searchWarnings();
+			ProjectBrowser.frame.getDiagramManager().searchErrors();
 		}
 		
 		

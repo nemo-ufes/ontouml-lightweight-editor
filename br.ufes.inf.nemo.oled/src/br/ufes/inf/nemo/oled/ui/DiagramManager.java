@@ -354,6 +354,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.setTitle(file.getName()+" - OLED");
 				frame.showInfoManager();
 				
+				//triggers the search for errors and warnings in the model
+				searchWarnings();
+				searchErrors();
+				
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, ex.getMessage(),
 						getResourceString("error.readfile.title"),
@@ -396,6 +400,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				
 				frame.setTitle(file.getName()+" - OLED");
 				frame.showInfoManager();
+				
+				//triggers the search for errors and warnings in the model
+				searchWarnings();
+				searchErrors();
 			}
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);

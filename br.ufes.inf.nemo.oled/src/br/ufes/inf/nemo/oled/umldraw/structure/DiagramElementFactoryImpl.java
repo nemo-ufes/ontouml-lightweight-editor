@@ -233,6 +233,7 @@ private void setupElementMaps() {
     MaterialAssociation materialAssociation = factory.createMaterialAssociation();
     materialAssociation.setName("Material");
     materialAssociation.setVisibility(VisibilityKind.PUBLIC);
+    materialAssociation.setIsDerived(true);
     AssociationElement materialAssociationElement = (AssociationElement) AssociationElement.getPrototype().clone();
     materialAssociationElement.setRelationship(materialAssociation);
     materialAssociationElement.setAssociationType(RelationType.MATERIAL);
