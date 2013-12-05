@@ -139,16 +139,28 @@ public class LineHandler implements EditorMode {
     tmpPos.setLocation(mx, my);
    
     // UmlNode ->(connectedTo) -> UmlNode
-    if (source != null && source instanceof UmlNode && target instanceof UmlNode && target != source) {
-      UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlNode) target);
-      connectMethod.generateAndSetPointsToConnection(conn, (UmlNode)source, (UmlNode) target, anchor, tmpPos);      
-      AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((UmlNode)source).getClassifier(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject());
-      editor.execute(command);
+    if (source != null && source instanceof UmlNode && target instanceof UmlNode && target != source) 
+    {
+    	 //invert sides if characterization is pushed from a UmlNode that is not a Mode. It should be from a Mode.
+        if ((relationType == RelationType.CHARACTERIZATION && ! (((UmlNode)source).getClassifier() instanceof RefOntoUML.Mode)) ||  
+        	(relationType == RelationType.MEDIATION && ! (((UmlNode)source).getClassifier() instanceof RefOntoUML.Relator)))
+        {
+        	UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) target, (UmlNode) source);
+	  	    connectMethod.generateAndSetPointsToConnection(conn, (UmlNode) target, (UmlNode)source, anchor, tmpPos);      
+	  	    AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((UmlNode)target).getClassifier(), (Classifier) ((UmlNode)source).getClassifier(), editor.getDiagram().getProject());
+	  	    editor.execute(command);        	
+        }else{
+	        UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlNode) target);
+	        connectMethod.generateAndSetPointsToConnection(conn, (UmlNode)source, (UmlNode) target, anchor, tmpPos);      
+	        AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((UmlNode)source).getClassifier(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject());
+	        editor.execute(command);
+        }
     }
         
     // UmlNode ->(connectedTo) -> UmlConnection
-    if(source != null && source instanceof UmlNode && target instanceof UmlConnection && target != source){    	 
-    	 //invert sides if derivation is pushed from the umlnode relator
+    if(source != null && source instanceof UmlNode && target instanceof UmlConnection && target != source)
+    {    	 
+    	 //invert sides if derivation is pushed from the UmlNode (relator), it should be from the UmlConnection (material)
          if (relationType == RelationType.DERIVATION) { 
     	     UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlConnection) target, (UmlNode) source);    	 
              connectMethod.generateAndSetPointsToConnection(conn, (UmlConnection) target, (UmlNode)source, anchor, tmpPos);         
@@ -157,7 +169,8 @@ public class LineHandler implements EditorMode {
          }
     }
     //UmlConnection ->(connectedTo) -> UmlNode
-    if(target!=null && target instanceof UmlNode && source instanceof UmlConnection && target != source){
+    if(target!=null && target instanceof UmlNode && source instanceof UmlConnection && target != source)
+    {
     	 UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlConnection) source, (UmlNode) target);
          connectMethod.generateAndSetPointsToConnection(conn, (UmlConnection)source,  (UmlNode)target, anchor, tmpPos);         
          AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((AssociationElement)source).getRelationship(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject());

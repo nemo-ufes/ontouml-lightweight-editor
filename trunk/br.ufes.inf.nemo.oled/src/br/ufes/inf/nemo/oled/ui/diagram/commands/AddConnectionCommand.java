@@ -36,6 +36,7 @@ import RefOntoUML.Property;
 import RefOntoUML.impl.AssociationImpl;
 import RefOntoUML.impl.CharacterizationImpl;
 import RefOntoUML.impl.DataTypeImpl;
+import RefOntoUML.impl.DerivationImpl;
 import RefOntoUML.impl.DirectedBinaryAssociationImpl;
 import RefOntoUML.impl.FormalAssociationImpl;
 import RefOntoUML.impl.GeneralizationImpl;
@@ -196,7 +197,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	    			association.getNavigableOwnedEnd().add(node2Property);
 	    			
 	    			//If the association is Mediation or Characterization, set target readonly to help in validation
-	    			if(association instanceof MediationImpl || association instanceof CharacterizationImpl)
+	    			if(association instanceof MediationImpl || association instanceof CharacterizationImpl || association instanceof DerivationImpl)
 	    			{
 	    				node2Property.setIsReadOnly(true);
 	    			}
@@ -241,5 +242,9 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			refElem = ((GeneralizationElement)element).getGeneralization();
 			ProjectBrowser.rebuildTree(project);
 		}		
+		
+		//triggers the search for errors and warnings in the model
+		ProjectBrowser.frame.getDiagramManager().searchWarnings();
+		ProjectBrowser.frame.getDiagramManager().searchErrors();
 	}
 }
