@@ -112,7 +112,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		String assocEndName = referredProperty.getName();
 		Property assocEnd0 = association.getMemberEnds().get(0);
 		String assocEnd0Name = assocEnd0.getName();
-		
+		/*
 		if(assocEndName.equals(assocEnd0Name)){
 			nameVarX = Util.generateVarName(source, referredArgument);
 			nameVarY = Util.generateVarName(referredProperty, referredArgument);
@@ -120,7 +120,16 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 			nameVarX = Util.generateVarName(referredProperty, referredArgument);
 			nameVarY = Util.generateVarName(source, referredArgument);
 		}
-		
+		*/
+		//for an unknown reason, the source and target order (of associations inside of OntoUMLParser) changes when the application is running alone and when is running from OLED
+		//the correct order to be used into OLED is the one above
+		if(assocEndName.equals(assocEnd0Name)){
+			nameVarX = Util.generateVarName(referredProperty, referredArgument);
+			nameVarY = Util.generateVarName(source, referredArgument);
+		}else{
+			nameVarX = Util.generateVarName(source, referredArgument);
+			nameVarY = Util.generateVarName(referredProperty, referredArgument);
+		}
 		if(repeatNumber>1){
 			//nameVarX+=repeatNumber;
 			nameVarY+=repeatNumber;

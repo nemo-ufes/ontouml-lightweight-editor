@@ -136,6 +136,7 @@ public class OCL2SWRL {
 			tag = tag.replace("\n", "");
 			tag = tag.replace("\r", "");
 			tag = tag.replace(" ", "");
+			tag = tag.toLowerCase();
 			String strBlockOclConstraints = oclRules.substring(endOfTag, blockEnd);
 			
 			blockBegin = blockEnd;

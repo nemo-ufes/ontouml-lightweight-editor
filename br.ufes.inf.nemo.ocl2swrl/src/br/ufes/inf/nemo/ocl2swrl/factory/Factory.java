@@ -46,7 +46,7 @@ public class Factory {
 	}
 	
 	public Boolean hasToBeInsertedInConsequent(String ctStereotype, Boolean leftSideOfImplies){
-		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) || org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
 			return false;//invariants are inserted on antecedents, excepting when tags are used are override the ctStereotype
 		}else if(ctStereotype.equals(Tag.derive.toString()) && leftSideOfImplies == true){
 			return false;//atoms in rules tagged as Derive are inserted on antecedents if they are on the left side of the operator Implies 
