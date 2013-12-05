@@ -26,6 +26,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	private static final long serialVersionUID = -1962960747434759099L;
 	private DiagramEditor editor;
 	private JScrollPane scrollpane;
+		
 	//TODO Remove me
 	private File projectFile;
 	
@@ -33,14 +34,14 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	{
 		super(new BorderLayout(0,0));
 		this.editor = editor;		
-												
+		
 		scrollpane = new JScrollPane();
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
 		scrollpane.setWheelScrollingEnabled(true);
 		scrollpane.setViewportView(editor);
 		scrollpane.setBorder(new EmptyBorder(0,0,0,0));
-				
+		
 		add(scrollpane);
 		setBorder(new EmptyBorder(0,0,0,0));
 	}	
