@@ -112,7 +112,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	private static final long serialVersionUID = 5019191384767258996L;
 	public final AppFrame frame;
 	private DiagramEditorCommandDispatcher editorDispatcher;
-	
 	private UmlProject currentProject;
 	private File projectFile;
 	
@@ -237,7 +236,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		editor.addAppCommandListener(editorDispatcher);
 		
 		//Add the diagram to the tabbed pane (this), through the wrapper
-		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);			
+		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
 		add(diagram.getLabelText(), wrapper);
 						
 		diagram.addNameLabelChangeListener(new LabelChangeListener() {
@@ -305,6 +304,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				saveCurrentProjectToFile(file);
 				
 				frame.setTitle(file.getName()+" - OLED");
+				frame.showToolBox();
 				
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, ex.getMessage(),
@@ -353,6 +353,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				
 				frame.setTitle(file.getName()+" - OLED");
 				frame.showInfoManager();
+				frame.showToolBox();
 				
 				//triggers the search for errors and warnings in the model
 				searchWarnings();
@@ -400,6 +401,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				
 				frame.setTitle(file.getName()+" - OLED");
 				frame.showInfoManager();
+				frame.showToolBox();
 				
 				//triggers the search for errors and warnings in the model
 				searchWarnings();

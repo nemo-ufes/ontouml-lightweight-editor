@@ -209,7 +209,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		projectBrowser = new ProjectBrowser(diagramManager.getFrame(),null);
 		toolManager = new ToolManager(this, diagramManager.getEditorDispatcher());
 		
-		editorArea.add(diagramManager, JSplitPane.TOP);		
+		editorArea.add(toolArea, JSplitPane.TOP);		
 		editorArea.add(infoManager,JSplitPane.BOTTOM);	
 		editorArea.setDividerLocation(GetScreenWorkingHeight());
 		
@@ -221,10 +221,10 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		
 		toolManager.setMinimumSize(new Dimension(0,0));		
 		toolArea.add(toolManager, JSplitPane.LEFT);
-		toolArea.add(browserArea, JSplitPane.RIGHT);
+		toolArea.add(diagramManager, JSplitPane.RIGHT);
 		toolArea.setDividerLocation(0.0d);
 		
-		getContentPane().add(toolArea, BorderLayout.CENTER);
+		getContentPane().add(browserArea, BorderLayout.CENTER);
 		
 		//to end...
 		diagramManager.addStartPanel();		
@@ -289,6 +289,11 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		}
 	}
 
+	public void showToolBox()
+	{
+		toolArea.setDividerLocation(0.13d);
+	}
+	
 	/**
 	 * Handles the fired commands.
 	 * */
