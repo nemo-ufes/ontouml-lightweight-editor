@@ -356,7 +356,10 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 	{
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle(ApplicationResources.getInstance().getString("stdcaption.selectfile"));
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("OWL File (*.owl)", "owl"));
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("OWL File (*.owl)", "owl");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);
+		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = ConfigurationHelper.getFileWithExtension(fileChooser.getSelectedFile(), ".owl");
 			filePathText.setText(selectedFile.getAbsolutePath());
