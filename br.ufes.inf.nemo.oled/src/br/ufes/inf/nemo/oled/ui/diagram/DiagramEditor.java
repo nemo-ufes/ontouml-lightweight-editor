@@ -1000,8 +1000,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			selectionHandler.elementRemoved(elements);
 
 		//In case of the three commands  
-		if(changeType == ChangeType.ELEMENTS_ADDED || changeType == ChangeType.ELEMENTS_REMOVED || changeType == ChangeType.LABEL_TEXT_SET || changeType == ChangeType.CONNECTION_NAVEGABILITY_SET)
+		if(changeType == ChangeType.ELEMENTS_ADDED || changeType == ChangeType.ELEMENTS_REMOVED || changeType == ChangeType.LABEL_TEXT_SET || changeType == ChangeType.CONNECTION_NAVEGABILITY_SET 
+		  || changeType == ChangeType.ELEMENTS_MOVED)				 
 		{
+			frame.getMainToolBar().enableSaveButton(true);
 			getProject().setSaveModelNeeded(true);
 		}
 
