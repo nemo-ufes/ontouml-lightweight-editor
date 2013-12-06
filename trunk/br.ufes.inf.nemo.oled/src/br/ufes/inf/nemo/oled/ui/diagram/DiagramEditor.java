@@ -827,6 +827,12 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 	}
 
+	public void resetConnectionPoints(DiagramElement elem){
+		if (elem instanceof Connection) {
+			execute(new ResetConnectionPointsCommand(this, (Connection) elem));
+		}		
+	}
+	
 	/**
 	 * Brings the current selection to the front.
 	 */

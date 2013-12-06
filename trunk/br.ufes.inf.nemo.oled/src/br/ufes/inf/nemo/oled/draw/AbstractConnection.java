@@ -473,7 +473,7 @@ public abstract class AbstractConnection implements Connection,
 			return (getSegments().get(index-1).getY1()+getSegments().get(index-1).getY2())/2;
 		}		
 	}
-	
+		
 	/**
 	 * {@inheritDoc} (John) not sure this works for connection too, as for Nodes...
 	 */

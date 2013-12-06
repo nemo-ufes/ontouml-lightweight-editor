@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -20,6 +21,8 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
+	@SuppressWarnings("unused")
+	private UmlNode node;
 	
 	public SingleNodePopupMenu()
 	{
@@ -36,6 +39,11 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		
 		createMenuItem(this, "delete");		
 	}
+	
+	public void setNode (UmlNode node)
+	{
+		this.node = node;
+	}	
 	
 	/**
 	 * Adds the specified AppCommandListener.

@@ -178,6 +178,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			currentProject=null;
 			addStartPanel();
 			frame.hideInfoManager();
+			frame.hideToolBox();
 		}
 		
 		updateUI();
@@ -999,8 +1000,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void showOclEditor() 
 	{		
 		frame.focusOnOclEditor();
-	}	
-
+	}
+	
+	public void find() {
+	    String response = JOptionPane.showInputDialog(null,
+            "Type the text to be found:",
+            "Find",
+            JOptionPane.PLAIN_MESSAGE
+            );		
+	   if(response!=null){
+		   ProjectBrowser pbrowser = ProjectBrowser.getProjectBrowserFor(getFrame(), getCurrentProject());
+		   pbrowser.getTree().selectModelElement(response);		   
+	   }
+	}
+	
 	/**
 	 * Search for warnings in the model
 	 */
@@ -1549,4 +1562,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 	}
+
+
 }

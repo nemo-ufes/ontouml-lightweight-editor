@@ -181,11 +181,17 @@ public class MainMenu implements ActionListener {
 	private void createEditMenu() {
 		JMenu editMenu = createMenu("edit");
 		menubar.add(editMenu);
+		
 		JMenuItem undoItem = createMenuItem(editMenu, "undo");
 		undoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
 		
 		JMenuItem redoItem = createMenuItem(editMenu, "redo");
 		redoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
+		
+		editMenu.addSeparator();
+		
+		JMenuItem findItem = createMenuItem(editMenu, "find");
+		findItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
 		
 		//editMenu.addSeparator();
 		/*

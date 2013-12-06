@@ -22,10 +22,12 @@ package br.ufes.inf.nemo.oled.ui.diagram.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.MoveNodeOperation;
 import br.ufes.inf.nemo.oled.draw.MoveOperation;
 import br.ufes.inf.nemo.oled.draw.TranslateConnectionOperation;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
@@ -70,6 +72,15 @@ public class MoveElementCommand extends BaseDiagramCommand {
 				elements.add(((MoveNodeOperation)moveOperation).getNode());
 			else if(moveOperation instanceof TranslateConnectionOperation)				
 				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
+		}
+		
+		//move the connections related to every connection moved
+		//this should be done through the MoveOperation and not by reseting points
+		for(DiagramElement elem: elements){
+			if (elem instanceof Connection){
+				Connection con = (Connection)elem;
+				if(notification instanceof DiagramEditor) ((DiagramEditor)notification).resetConnectionPoints(con);
+			}
 		}
 		
 		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);

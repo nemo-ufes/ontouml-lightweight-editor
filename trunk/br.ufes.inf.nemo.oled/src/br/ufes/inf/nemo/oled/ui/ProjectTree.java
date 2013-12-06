@@ -366,6 +366,28 @@ public class ProjectTree extends CheckboxTree {
 	    }	    
 	}
 	
+	@SuppressWarnings("rawtypes")
+	public void selectModelElement(String elementName)
+	{		
+		Enumeration e = modelRootNode.breadthFirstEnumeration();
+	    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)e.nextElement();
+	    while (e.hasMoreElements()) 
+	    {
+	    	EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
+	    	if (((RefOntoUML.NamedElement)obj).getName().matches(elementName)) { 
+	    		this.setSelectionPath(new TreePath(node.getPath()));
+	    		InfoManager.getProperties().setData(node);
+	    	}
+	    		
+	    	node = (DefaultMutableTreeNode)e.nextElement();
+	    }
+	    //last element
+	    EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
+	    if (((RefOntoUML.NamedElement)obj).getName().matches(elementName)) { 
+	    	this.setSelectionPath(new TreePath(node.getPath()));
+	    	InfoManager.getProperties().setData(node);
+	    }	    
+	}
 	/**
 	 * Check this elements.
 	 * 

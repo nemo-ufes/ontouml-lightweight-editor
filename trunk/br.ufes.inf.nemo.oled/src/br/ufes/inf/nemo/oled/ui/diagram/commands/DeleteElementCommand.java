@@ -84,7 +84,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 */
 	public DeleteElementCommand(DiagramNotification aNotification, Collection<DiagramElement> theElements, UmlProject project) {
 		this.project = project;
-		this.notification = aNotification;
+		this.notification = aNotification;		
 		elements = theElements;
 		for (DiagramElement elem : elements) {
 			parentChildRelations.add(new ParentChildRelation(elem, elem.getParent()));
@@ -96,13 +96,13 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * deletion
+	 * @param elements
 	 */
-	public void run() {
-
-		for (DiagramElement element : elements) {
-			
-			
+	public void delete(Collection<DiagramElement> elements)
+	{
+		for (DiagramElement element : elements) 
+		{			
 			if (element instanceof Connection) {
 				detachConnectionFromNodes((Connection) element);
 			}
@@ -164,12 +164,23 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			//triggers the search for errors and warnings in the model
 			ProjectBrowser.frame.getDiagramManager().searchWarnings();
 			ProjectBrowser.frame.getDiagramManager().searchErrors();
+		}		
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void run() {
+
+		ArrayList<DiagramElement> bidingConnections = new ArrayList<DiagramElement>();
+				
+		for (DiagramElement elem : elements) 
+		{			
+			if (elem instanceof Connection) {  for (Connection c: ((Connection)elem).getConnections()) { bidingConnections.add(c); } }
 		}
-		
-		
-		
-		// 
-		
+				
+		delete(bidingConnections);
+		delete(elements);			
 	}
 
 	/**

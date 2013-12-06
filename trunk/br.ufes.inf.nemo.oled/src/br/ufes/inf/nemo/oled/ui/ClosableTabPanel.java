@@ -181,11 +181,13 @@ public class ClosableTabPanel extends JPanel {
 		 * */
 		public void actionPerformed(ActionEvent e) {
 			if(((DiagramManager)manager).getCurrentProject() != null){
-				if(((DiagramManager)manager).getCurrentDiagramEditor().isSaveNeeded()) 
-				{				
-					int option = JOptionPane.showConfirmDialog(((DiagramManager)manager).getFrame(), "Your diagram has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
-					if (option== JOptionPane.YES_OPTION) {((DiagramManager)manager).saveProject(); }
-					else if (option==JOptionPane.CANCEL_OPTION) { return; }
+				if (((DiagramManager)manager).getCurrentDiagramEditor() != null) {				
+					if(((DiagramManager)manager).getCurrentDiagramEditor().isSaveNeeded()) 
+					{				
+						int option = JOptionPane.showConfirmDialog(((DiagramManager)manager).getFrame(), "Your diagram has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
+						if (option== JOptionPane.YES_OPTION) {((DiagramManager)manager).saveProject(); }
+						else if (option==JOptionPane.CANCEL_OPTION) { return; }
+					}
 				}
 			}
 			int i = pane.indexOfTabComponent(ClosableTabPanel.this);
