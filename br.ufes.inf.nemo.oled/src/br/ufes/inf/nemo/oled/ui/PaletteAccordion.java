@@ -196,7 +196,7 @@ public class PaletteAccordion extends JPanel{
 		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.relations", "characterization");
 		palette.createElement("staticpalette.relations", "mediation");
-		//palette.createElement("staticpalette.relations", "derivation");
+		palette.createElement("staticpalette.relations", "derivation");
 		palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.relations", "componentof");
 		palette.createElement("staticpalette.relations", "memberof");	

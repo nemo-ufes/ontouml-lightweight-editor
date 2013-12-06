@@ -74,7 +74,10 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			
 			selectorMap.put("UNDO", new MethodCall(
 					getClass().getMethod("undo")));
-						
+				
+			selectorMap.put("FIND", new MethodCall(
+					getClass().getMethod("find")));
+			
 			selectorMap.put("REDRAW", new MethodCall(
 					DiagramEditor.class.getMethod("redraw")));
 			
@@ -362,6 +365,11 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		
 		//This method recreates the tree
 		ProjectBrowser.rebuildTree(manager.getCurrentProject());
+	}
+	
+	public void find()
+	{
+		manager.find();
 	}
 	
 	public void parseOCL()

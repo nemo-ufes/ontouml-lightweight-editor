@@ -142,8 +142,8 @@ public class LineHandler implements EditorMode {
     if (source != null && source instanceof UmlNode && target instanceof UmlNode && target != source) 
     {
     	 //invert sides if characterization is pushed from a UmlNode that is not a Mode. It should be from a Mode.
-        if ((relationType == RelationType.CHARACTERIZATION && ! (((UmlNode)source).getClassifier() instanceof RefOntoUML.Mode)) ||  
-        	(relationType == RelationType.MEDIATION && ! (((UmlNode)source).getClassifier() instanceof RefOntoUML.Relator)))
+        if ( (relationType == RelationType.CHARACTERIZATION && ! (((UmlNode)source).getClassifier() instanceof RefOntoUML.Mode) && (((UmlNode)target).getClassifier() instanceof RefOntoUML.Mode)) ||  
+        	 (relationType == RelationType.MEDIATION && ! (((UmlNode)source).getClassifier() instanceof RefOntoUML.Relator) && (((UmlNode)target).getClassifier() instanceof RefOntoUML.Relator)) )
         {
         	UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) target, (UmlNode) source);
 	  	    connectMethod.generateAndSetPointsToConnection(conn, (UmlNode) target, (UmlNode)source, anchor, tmpPos);      

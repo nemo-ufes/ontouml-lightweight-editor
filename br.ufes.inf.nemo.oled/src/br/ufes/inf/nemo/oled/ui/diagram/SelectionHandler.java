@@ -177,7 +177,7 @@ public class SelectionHandler implements EditorMode {
 				JPopupMenu menu = contextMenuBuilder.setContext(selection);
 				menu.show(editor, e.getMouseEvent().getX(), e.getMouseEvent().getY());
 			}
-		}
+		}	
 	}
 
 	public ContextMenusBuilder getMenubuilder() {

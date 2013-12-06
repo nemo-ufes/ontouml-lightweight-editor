@@ -54,6 +54,13 @@ public class TranslateConnectionOperation extends MoveOperation {
 	 * {@inheritDoc}
 	 */
 	public void run() {
+		translateConnection(connection);
+//		for(Connection c: connection.getConnections()){
+//			translateConnection(c);
+//		}
+	}
+
+	private void translateConnection(Connection connection){
 		originalPoints = new ArrayList<Point2D>();
 		List<Point2D> newPoints = new ArrayList<Point2D>();
 		for (Point2D point : connection.getPoints()) {
@@ -63,7 +70,7 @@ public class TranslateConnectionOperation extends MoveOperation {
 		}
 		connection.setPoints(newPoints);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */

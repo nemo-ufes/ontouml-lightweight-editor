@@ -11,6 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
+import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -19,6 +20,8 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 
 	private static final long serialVersionUID = 1L;
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
+	@SuppressWarnings("unused")
+	private Connection con;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -39,6 +42,11 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		createMenuItem(this, "delete");
 		//addEditConnectionPropertiesMenu(menu, (UmlConnection) conn);				
 	}
+	
+	public void setConnection(Connection con)
+	{
+		this.con = con;
+	}		
 	
 	/**
 	 * Adds the navigability setting menu.

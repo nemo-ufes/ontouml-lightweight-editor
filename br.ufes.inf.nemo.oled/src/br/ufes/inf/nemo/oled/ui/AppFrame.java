@@ -294,6 +294,11 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		toolArea.setDividerLocation(0.13d);
 	}
 	
+	public void hideToolBox()
+	{
+		toolArea.setDividerLocation(0.0d);
+	}
+	
 	/**
 	 * Handles the fired commands.
 	 * */

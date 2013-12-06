@@ -27,6 +27,7 @@ import br.ufes.inf.nemo.oled.ui.MultiSelectionPopupMenu;
 import br.ufes.inf.nemo.oled.ui.SingleConnectionPopupMenu;
 import br.ufes.inf.nemo.oled.ui.SingleNodePopupMenu;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlDiagramElement;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 
 /**
@@ -61,10 +62,16 @@ public class ContextMenusBuilder {
 		} else {
 			UmlDiagramElement elem = (UmlDiagramElement) selection.getElement();
 			if (elem instanceof Connection) {
+				singleConnectionPopup.setConnection((Connection)elem);
 				return singleConnectionPopup;
 			}
+			singleNodePopup.setNode((UmlNode)elem);
 			return singleNodePopup;
 		}
+	}
+	
+	public JPopupMenu setContext(UmlDiagramElement diagramElement) {
+		return null;
 	}
 	
 	/**
