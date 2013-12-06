@@ -156,10 +156,11 @@ public class OCL2SWRL {
 			for(Constraint ct: oclParser.getConstraints())
 			{
 				String stereotype = "";
-				if(!tag.equals("")){
+				stereotype = oclParser.getUMLReflection().getStereotype(ct);
+				if(!tag.equals("") && org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype)){
 					stereotype = tag;
 				}else{
-					stereotype = oclParser.getUMLReflection().getStereotype(ct);
+					//stereotype = oclParser.getUMLReflection().getStereotype(ct);
 				}
 				
 				if(stereotypeIsUnsupported(stereotype)){

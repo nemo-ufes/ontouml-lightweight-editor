@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
 import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
+import org.eclipse.ocl.uml.impl.VariableImpl;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Type;
@@ -29,6 +30,7 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.Ocl2SwrlException;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
@@ -57,7 +59,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 	}
 
 	@Override
-	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies)  throws NonImplemented, NonSupported{
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies)  throws Ocl2SwrlException{
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
 		OCLExpressionImpl source = (OCLExpressionImpl) propertyCallExpImpl.getSource();
 		
@@ -67,7 +69,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, operatorNot, sourceRepeatNumber, leftSideOfImplies);
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//pega o ultimo
 		
-		if(referredArgument != null){
+		if(referredArgument != null && !initiatedBySelf(source)){
 			varX = referredArgument;
 		}
 		
@@ -87,6 +89,25 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		retArgsZ.add(varY);
 		
 		return retArgsZ;
+	}
+	
+	public Boolean initiatedBySelf(OCLExpressionImpl source){
+		/*
+		while(source != null){
+			if(source.getClass().equals(VariableImpl.class)){
+				if((source).getName().equals("self")){
+					return true;
+				}
+			}
+			source = (OCLExpressionImpl)source.getSource();
+		}
+		*/
+		if(source.toString().indexOf("self")<0){
+			return false;
+		}else{
+			return true;
+		}
+		
 	}
 	
 	public ArrayList<SWRLDArgument> solveProperty(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber) {
@@ -155,11 +176,12 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
 		
 		if(assocEndName.equals(assocEnd0Name)){
-			retArgs.add(varY);
-		}else{
 			retArgs.add(varX);
+		}else{
+			retArgs.add(varY);//se der errado o retorno do VarX, sempre deve retornar VarY			
 		}
 		
+		//retArgs.add(varY);
 		return retArgs;
 	}
 	

@@ -4,7 +4,7 @@ package br.ufes.inf.nemo.ocl2swrl.exceptions;
  * @author John Guerson
  */
 
-public class NonInitialized extends Exception {
+public class NonInitialized extends Ocl2SwrlException {
 
 	/**
 	 * Constructor.

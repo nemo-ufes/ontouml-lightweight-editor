@@ -48,6 +48,8 @@ import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.Ocl2SwrlException;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.UnexpectedOperator;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
@@ -63,7 +65,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 
 	public OCLExpressionImplFactory argumentFactory;
 	
-	public OperationCallExpImplFactory(NamedElementImpl m_NamedElementImpl) throws NonImplemented, NonSupported{
+	public OperationCallExpImplFactory(NamedElementImpl m_NamedElementImpl) throws Ocl2SwrlException{
 		super(m_NamedElementImpl);
 		
 		if(this.isUnsupported()){
@@ -104,7 +106,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 
 	@Override
-	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies)  throws NonImplemented, NonSupported{
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies)  throws Ocl2SwrlException{
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
 		//Boolean operationNegated = false;
 		/*
@@ -157,7 +159,10 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//pega o ultimo
 		
 		ArrayList<SWRLDArgument> retArgsZ = null;
-		if(ctStereotype.equals(Tag.reflexive.toString())){
+		if(!ctStereotype.equals(Tag.cardinality.toString()) && this.isSizeOperation()){
+			throw new UnexpectedOperator(operationCallExpImpl.getReferredOperation().getName(), ctStereotype, getStrRule(operationCallExpImpl));
+			
+		}else if(ctStereotype.equals(Tag.reflexive.toString())){
 			if(this.isIncludesOperation() || this.isExcludesOperation()){
 				solveReflexive(operationCallExpImpl, refParser, nameSpace, manager, factory, ontology);
 			}
@@ -239,7 +244,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return false;
 	}
 	
-	public void solveCardinality(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws NonImplemented, NonSupported{
+	public void solveCardinality(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
@@ -317,7 +322,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return contextClass;
 	}
 	
-	public void solveSymmetric(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws NonImplemented, NonSupported{
+	public void solveSymmetric(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
@@ -330,7 +335,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		//System.out.println();
 	}
 	
-	public void solveAsymmetric(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws NonImplemented, NonSupported{
+	public void solveAsymmetric(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
@@ -343,7 +348,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		//System.out.println();
 	}
 	
-	public void solveReflexive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws NonImplemented, NonSupported{
+	public void solveReflexive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
@@ -356,7 +361,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		//System.out.println();
 	}
 	
-	public void solveTransitive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws NonImplemented, NonSupported{
+	public void solveTransitive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
@@ -369,7 +374,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		//System.out.println();
 	}
 	
-	public void solveSubRelationOf(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws NonImplemented, NonSupported{
+	public void solveSubRelationOf(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		OWLObjectProperty relation1 = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
@@ -388,14 +393,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 	
 	@Override
-	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory)  throws NonImplemented, NonSupported{
+	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory)  throws Ocl2SwrlException{
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		return this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
 	}
 	
-	public void solveIrreflexive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws NonImplemented, NonSupported{
+	public void solveIrreflexive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
@@ -676,7 +681,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		return null;
 	}
 	
-	public ArrayList<SWRLDArgument> solveArithmetic(String ctStereotype, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean operatorNot, Boolean leftSideOfImplies)  throws NonImplemented, NonSupported{
+	public ArrayList<SWRLDArgument> solveArithmetic(String ctStereotype, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean operatorNot, Boolean leftSideOfImplies)  throws Ocl2SwrlException{
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl;
 		String referredOperationName = operationCallExpImpl.getReferredOperation().getName();
 		SWRLDArgument varZ;
@@ -796,8 +801,8 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		String oprName = operation.getName();
 		if(oprName != null){
 			if(		oprName.equals("oclIsKindOf") ||
-					oprName.equals("oclIsTypeOf") ||
-					oprName.equals("oclAsType")
+					oprName.equals("oclIsTypeOf") //||
+					//oprName.equals("oclAsType")
 				){
 				return true;
 			}
@@ -813,6 +818,20 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		String oprName = operation.getName();
 		if(oprName != null){
 			if(		oprName.equals("implies")
+				){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	public Boolean isSizeOperation() {
+		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
+		Operation operation = operationCallExpImpl.getReferredOperation();
+		String oprName = operation.getName();
+		if(oprName != null){
+			if(		oprName.equals("size")
 				){
 				return true;
 			}

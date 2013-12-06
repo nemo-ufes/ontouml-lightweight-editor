@@ -23,7 +23,7 @@ public class Factory {
 	Boolean isBodyExpression = false;
 	String errors = "";
 	
-	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws NonImplemented, NonSupported{
+	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws Ocl2SwrlException{
 		return null;
 	}
 	
@@ -54,17 +54,17 @@ public class Factory {
 		return true;
 	}
 	
-	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws NonImplemented, NonSupported{
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws Ocl2SwrlException{
 		return null;
 		//throw new NonImplemented("solve()");
 	}
 	
-	public ArrayList<SWRLDArgument> solveNegativeNumber(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot)  throws NonImplemented, NonSupported {
+	public ArrayList<SWRLDArgument> solveNegativeNumber(String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot)  throws Ocl2SwrlException {
 		return null;
 		//throw new NonImplemented("solveNegativeNumber()");
 	}
 	
-	public static Factory constructor(Object obj, NamedElementImpl m_NamedElementImpl) throws NonImplemented, NonSupported{
+	public static Factory constructor(Object obj, NamedElementImpl m_NamedElementImpl) throws Ocl2SwrlException{
 		Class<? extends Object> c = obj.getClass();
 		if(c.equals(PropertyCallExpImpl.class)){
 			return new PropertyCallExpImplFactory((PropertyCallExpImpl) obj);
@@ -148,7 +148,7 @@ public class Factory {
 		return false;
 	}
 	
-	public static String getStrRule(NamedElementImpl m_NamedElementImpl) throws NonImplemented, NonSupported {
+	public static String getStrRule(NamedElementImpl m_NamedElementImpl) throws Ocl2SwrlException {
 		if(m_NamedElementImpl == null){
 			return "";
 		}
