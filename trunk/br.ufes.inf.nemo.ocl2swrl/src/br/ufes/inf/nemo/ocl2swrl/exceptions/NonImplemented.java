@@ -4,7 +4,7 @@ package br.ufes.inf.nemo.ocl2swrl.exceptions;
  * @author John Guerson
  */
 
-public class NonImplemented extends Exception {
+public class NonImplemented extends Ocl2SwrlException {
 
 	/**
 	 * Constructor.

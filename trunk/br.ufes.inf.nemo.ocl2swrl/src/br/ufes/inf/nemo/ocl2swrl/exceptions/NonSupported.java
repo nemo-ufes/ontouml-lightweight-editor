@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.ocl2swrl.exceptions;
 
-public class NonSupported extends Exception {
+public class NonSupported extends Ocl2SwrlException {
 	/**
 	 * 
 	 */

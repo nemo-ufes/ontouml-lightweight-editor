@@ -18,6 +18,7 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.Ocl2SwrlException;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 
 
@@ -29,7 +30,7 @@ import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
  */
 public class IteratorExpImplFactory extends LoopExpImplFactory {
 
-	public IteratorExpImplFactory(NamedElementImpl m_NamedElementImpl) throws NonImplemented, NonSupported{
+	public IteratorExpImplFactory(NamedElementImpl m_NamedElementImpl) throws Ocl2SwrlException{
 		super(m_NamedElementImpl);
 		
 		if(this.isUnsupported()){
@@ -60,7 +61,7 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 	}
 
 	@Override
-	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws NonImplemented, NonSupported {
+	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws Ocl2SwrlException{
 		IteratorExpImpl iteratorExpImpl = (IteratorExpImpl) this.m_NamedElementImpl; 
 		OCLExpressionImpl source = (OCLExpressionImpl) iteratorExpImpl.getSource();
 		OCLExpressionImpl body = (OCLExpressionImpl) iteratorExpImpl.getBody();
@@ -85,7 +86,7 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		return retArgs;
 	}
 	
-	public ArrayList<SWRLDArgument> solveIsUnique(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean operatorNot, Boolean leftSideOfImplies) throws NonImplemented, NonSupported {
+	public ArrayList<SWRLDArgument> solveIsUnique(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean operatorNot, Boolean leftSideOfImplies) throws Ocl2SwrlException{
 		IteratorExpImpl iteratorExpImpl = (IteratorExpImpl) this.m_NamedElementImpl; 
 		OCLExpressionImpl source = (OCLExpressionImpl) iteratorExpImpl.getSource();
 		OCLExpressionImpl body = (OCLExpressionImpl) iteratorExpImpl.getBody();
