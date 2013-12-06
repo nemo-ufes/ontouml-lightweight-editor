@@ -45,6 +45,7 @@ public class MainToolbar implements ActionListener {
 	private List<AppCommandListener> listeners =
 		new ArrayList<AppCommandListener>();
 	private Map<String, JButton> buttonMap = new HashMap<String, JButton>();
+	private JButton save;
 
 	/**
 	 * Constructor.
@@ -54,7 +55,7 @@ public class MainToolbar implements ActionListener {
 		createButton("new");
 		createButton("newdiagram");
 		createButton("open");
-		createButton("save");
+		save = createButton("save");
 		toolbar.addSeparator();
 		createButton("cut");
 		createButton("copy");
@@ -101,6 +102,11 @@ public class MainToolbar implements ActionListener {
 		listeners.add(l);
 	}
 
+	public void enableSaveButton(boolean value)
+	{
+		save.setEnabled(value);
+	}
+	
 	/**
 	 * Creates the button with the specified name.
 	 * @param name the resource name

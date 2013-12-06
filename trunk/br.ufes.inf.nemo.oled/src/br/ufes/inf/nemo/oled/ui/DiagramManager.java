@@ -194,6 +194,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		diagram.setLabelText("New Diagram");
 		project.addDiagram(diagram);
 		project.setSaveModelNeeded(true);
+		frame.getMainToolBar().enableSaveButton(true);
 		diagram.setSaveNeeded(true);
 		createEditor(diagram);
 		ProjectBrowser.rebuildTree(project);
@@ -209,6 +210,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			diagram.setLabelText("New Diagram");
 			getCurrentProject().addDiagram(diagram);
 			getCurrentProject().setSaveModelNeeded(true);
+			frame.getMainToolBar().enableSaveButton(true);
 			diagram.setSaveNeeded(true);
 			createEditor(diagram);
 			ProjectBrowser.rebuildTree(getCurrentProject());
@@ -356,6 +358,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.showInfoManager();
 				frame.showToolBox();
 				
+				getCurrentProject().setSaveModelNeeded(false);
+				frame.getMainToolBar().enableSaveButton(false);
+				
 				//triggers the search for errors and warnings in the model
 				searchWarnings();
 				searchErrors();
@@ -404,6 +409,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.showInfoManager();
 				frame.showToolBox();
 				
+				getCurrentProject().setSaveModelNeeded(false);
+				frame.getMainToolBar().enableSaveButton(false);
+				
 				//triggers the search for errors and warnings in the model
 				searchWarnings();
 				searchErrors();
@@ -449,6 +457,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			ProjectBrowser.refreshTree(getCurrentProject());
 			
 			getCurrentProject().setSaveModelNeeded(false);
+			frame.getMainToolBar().enableSaveButton(false);
+			
 			for(UmlDiagram d: getCurrentProject().getDiagrams()) d.setSaveNeeded(false);
 			
 			frame.setTitle(file.getName()+" - OLED");
@@ -684,6 +694,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 					project.setSaveModelNeeded(true);
 					diagram.setSaveNeeded(true);
+					frame.getMainToolBar().enableSaveButton(true);
 					createEditor(diagram);					
 
 					lastImportEcorePath = fileChooser.getSelectedFile().getAbsolutePath();
@@ -703,7 +714,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Imports a model from a XMI file.
 	 */
 	public void importXMI()
-	{
+	{		
 //		JFileChooser fileChooser = new JFileChooser(lastImportEAPath);
 //		fileChooser.setDialogTitle(getResourceString("dialog.importxmi.title"));
 //		FileNameExtensionFilter filter = new FileNameExtensionFilter("XMI, XML (*.xmi, *.xml)", "xmi", "xml");

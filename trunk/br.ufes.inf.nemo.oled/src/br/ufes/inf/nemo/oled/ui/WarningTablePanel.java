@@ -137,7 +137,7 @@ public class WarningTablePanel extends JPanel {
 		//table.setPreferredScrollableViewportSize(new Dimension(500, 150));		
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.LIGHT_GRAY);		
-	    table.setSelectionBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHT));
+	    table.setSelectionBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_MEDIUM));
 	    table.setSelectionForeground(Color.BLACK);
 	    table.setFocusable(false);
 	    					
