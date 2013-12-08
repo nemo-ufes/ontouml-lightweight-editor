@@ -39,6 +39,9 @@ public class OCLParser {
     @SuppressWarnings("rawtypes") public OCLAnalyzer analyzer;
     @SuppressWarnings("rawtypes") public org.eclipse.ocl.utilities.UMLReflection umlreflection;
 	
+    //OntoUml
+    public OntoUMLParser refparser;
+    
     //both
     public String logDetails = new String();
     
@@ -53,6 +56,53 @@ public class OCLParser {
 	public OCLParser (OntoUMLParser refparser, String tempDirPath, String backgroundModelName)
     {	
     	if (refparser==null) return;
+    	
+    	this.refparser = refparser;
+    	
+    	if (tempDirPath==null) tempDirPath="";
+    	
+    	String umlPath = new String();
+    	
+    	if (backgroundModelName.isEmpty() || backgroundModelName ==null) backgroundModelName = "model";
+    	
+    	if (tempDirPath.endsWith(File.separator)) umlPath += tempDirPath + backgroundModelName + ".uml";
+    	else umlPath += tempDirPath + File.separator + backgroundModelName + ".uml";
+    	
+    	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,true,false);		
+    	umlHashMap = OntoUML2UML.getMap();
+    	logDetails = OntoUML2UML.getLog();
+    	    	
+    	umlFile = umlPath.substring(umlPath.lastIndexOf(File.separator)+1);
+    	
+    	// this line was added due to a bug of Eclipse :
+    	// https://bugs.eclipse.org/bugs/show_bug.cgi?id=372258
+    	Environment.Registry.INSTANCE.registerEnvironment(new UMLEnvironmentFactory().createEnvironment());
+    			
+		umlRoot = (org.eclipse.uml2.uml.Package) umlResource.getContents().get(0);
+		umlResource.getResourceSet().getPackageRegistry().put(null,umlRoot);			
+		org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());
+		
+		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
+		umlenv = envFactory.createEnvironment();		
+		myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
+		myOCL.setParseTracingEnabled(true);
+		
+		umlreflection = umlenv.getUMLReflection();	
+    }
+	
+	 /**
+     * Constructor. 
+     * It uses a OntoUML2UML transformation behind the scenes to orchestrate the constraints parsing.
+     * 
+     * @param rootPackage: OntoUML root Package
+     * @param tempDirPath: Temporary Directory to store the background files needed fro parsing.
+     * @param backgroundModelName: A name for the UML background model to be generated behind the scenes. If Null or empty the name will be "model" by default.
+     */
+	public OCLParser (RefOntoUML.Package rootPackage, String tempDirPath, String backgroundModelName)
+    {	
+    	if (rootPackage==null) return;
+    	
+    	this.refparser = new OntoUMLParser(rootPackage);
     	
     	if (tempDirPath==null) tempDirPath="";
     	
@@ -92,7 +142,7 @@ public class OCLParser {
       */
     public OCLParser (String refAbsolutePath) throws IOException,ParserException,Exception
 	{ 			
-    	OntoUMLParser refparser = new OntoUMLParser(refAbsolutePath);
+    	this.refparser = new OntoUMLParser(refAbsolutePath);
     	
     	umlResource = OntoUML2UML.convertToUML(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),true,false);		
     	umlHashMap = OntoUML2UML.getMap();
@@ -116,7 +166,7 @@ public class OCLParser {
 			                
 		umlreflection = umlenv.getUMLReflection();
 	}
-        
+            
     /**
 	 * Parse Constraints from a File.
      */
@@ -188,8 +238,8 @@ public class OCLParser {
 	public String getDetails() { return logDetails; }	
     public Resource getUMLResource() { return umlResource; }    
     @SuppressWarnings("rawtypes") public  org.eclipse.ocl.utilities.UMLReflection getUMLReflection() { return umlreflection; }    
-    public CSTNode getCSTree() { return cstree; }  
-    
+    public CSTNode getCSTree() { return cstree; }      
+    public OntoUMLParser getOntoUMLParser() { return refparser; }
     
     @Deprecated
     public OCLParser (String oclConstraints, OntoUMLParser refparser, String umlPath) throws ParserException,Exception
@@ -215,8 +265,6 @@ public class OCLParser {
         if (cstree!=null && cstree.getStartToken().toString().equals("context")) 
         {
             oclConstraints = "package "+"_'"+umlRoot.getName()+"'\n\n"+oclConstraints+"\n endpackage\n\n";
-//          String msg ="You need to specify your constraints inside a package declaration. \n\npackage PackageName\n...\nYour constraints\n...\nendpackage";
-//          throw new Exception(msg);
         }                
         oclConstraints = processOCLContent(oclConstraints);        
         OCLInput document = new OCLInput(oclConstraints);               

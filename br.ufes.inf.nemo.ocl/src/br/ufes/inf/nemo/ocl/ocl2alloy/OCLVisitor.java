@@ -570,7 +570,8 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
 	private String generatePropertyMapping(Property property,  String sourceResult)
 	{
 		StringBuffer result = new StringBuffer();
-    	RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getOntoUMLElement(property);    	
+    	RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getOntoUMLElement(property);
+
     	String nameProperty = refparser.getAlias(ontoProperty);
     	
     	if (property.getAssociation()!=null) result.append(sourceResult + "." + nameProperty+ "[w]");

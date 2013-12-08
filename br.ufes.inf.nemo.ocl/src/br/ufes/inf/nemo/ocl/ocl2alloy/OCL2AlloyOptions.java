@@ -28,9 +28,7 @@ public class OCL2AlloyOptions {
 	 */
 	@SuppressWarnings("unchecked")
 	public OCL2AlloyOptions(OCLParser oclparser)
-	{
-		this();
-		
+	{		
 		if (oclparser==null) return;
 		
 		for(Constraint ct: oclparser.getConstraints())
@@ -41,12 +39,9 @@ public class OCL2AlloyOptions {
 			commandScope.add(10);
 		}		
 	}
-		
-	/**
-	 * Constructor.
-	 */
-	public OCL2AlloyOptions() {}
 	
+	public OCL2AlloyOptions() {}
+
 	/*
 	 * Getters... 
 	 */

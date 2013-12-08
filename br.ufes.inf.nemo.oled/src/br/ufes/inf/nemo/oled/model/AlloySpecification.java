@@ -135,7 +135,7 @@ public class AlloySpecification {
 		String result = new String();
 		result = "\n";
 		
-		result += OCL2Alloy.Transformation(oclmodel.getOCLParser(), oclOptions, refparser);
+		result += OCL2Alloy.convertToAlloy(oclmodel.getOCLParser(), oclOptions);
 		
 		FileUtil.writeToFile(result, alsPath);
 		
