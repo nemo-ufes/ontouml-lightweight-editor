@@ -14,7 +14,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.alloy"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.antipattern"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ocl2alloy"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ocl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2alloy"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2uml"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/refontouml/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>

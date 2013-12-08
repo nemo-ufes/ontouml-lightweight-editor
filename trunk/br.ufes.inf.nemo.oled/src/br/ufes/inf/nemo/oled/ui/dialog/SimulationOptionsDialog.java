@@ -14,7 +14,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
+import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;

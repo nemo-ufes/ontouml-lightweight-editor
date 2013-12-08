@@ -20,7 +20,7 @@ public class OntoUML2UMLTests {
 			System.out.println(OntoUML2UML.getLog());
 			
 			String path2 = "src/br/ufes/inf/nemo/ontouml2uml/tests/models/Project.refontouml";
-			OntoUML2UML.convertToUML(new OntoUMLParser(path2),path2.replace(".refontouml", ".uml" ), true, true);
+			OntoUML2UML.convertToUML(new OntoUMLParser(path2),path2.replace(".refontouml", ".uml" ), true, false);
 			System.out.println(OntoUML2UML.getLog());
 			
 			String path3 = "src/br/ufes/inf/nemo/ontouml2uml/tests/models/RoadTrafficAccident.refontouml";

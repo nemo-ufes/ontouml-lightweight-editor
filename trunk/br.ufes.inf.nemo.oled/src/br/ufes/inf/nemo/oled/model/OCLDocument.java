@@ -68,6 +68,7 @@ public class OCLDocument implements Serializable {
 	 * @param oclparser
 	 */
 	public void setParser(OCLParser oclparser) { this.oclparser = oclparser; }
+	public OCLParser getParser() { return oclparser; }
 	
 	/** Get OCL single String containing all Constraints. */
 	public String getOCLString() { return oclstring; }
