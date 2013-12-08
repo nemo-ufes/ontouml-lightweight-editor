@@ -63,6 +63,8 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
     
     public String stereotype = "FACT";  
 	
+    public String CustomLibraryOperations;
+    
     public OCLVisitor (OCLParser oclparser,OntoUMLParser refparser) 
     {	
 		this.oclparser = oclparser;
@@ -333,6 +335,11 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
    		return (visitable == null)? null : (String) visitable.accept(this);
    	}	
    	
+   	public String getCustomLibraryOperations()
+   	{
+   		return CustomLibraryOperations;
+   	}
+   	
    	private String generateOperationMapping (Operation oper, String sourceResult, java.util.List<String> argumentsResult)
 	{			
 		String operTypeResult = oper.getType().getName();
@@ -346,15 +353,25 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
 		
 		if(operName.equals("notEmpty")) { return "("+"some " + sourceResult+ ")"; }	
 		
-		if(operName.equals("not")) { return "("+"not " + sourceResult+ ")"; }	
+		if(operName.equals("not")) { return "("+"! " + sourceResult+ ")"; }	
 		
 		if(operName.equals("oclIsUndefined")) { return "("+"#" + sourceResult + " = 0"+ ")"; }	
 		
-		if(operName.equals("abs")) { return "abs[" + sourceResult + "]"; }
+		if(operName.equals("abs")) { 
+			CustomLibraryOperations += "fun abs [self: Int] : Int"+"\n"+
+									   "{ self < 0 implies self.negate else self }"+"\n\n";
+			return "abs[" + sourceResult + "]"; 
+		}
+		
+		if(operName.equals("floor")) { return sourceResult; }
+		
+		if(operName.equals("round")) { return sourceResult; }
 		
         if(operName.equals("sum")) { return "(sum " + sourceResult + ")"; }
         
         if(operName.equals("asSet")) { return sourceResult; }
+        
+        if(operName.equals("flatten")) { return sourceResult; }
         
 		if(operName.equals("oclAsType")) { return sourceResult; }
 		
@@ -368,7 +385,19 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
 			
 			else if( iter.hasNext() && operTypeResult.equals("Real")){ return "("+sourceResult+").minus["+iter.next()+"]"; }
 		}
-				
+		
+		if(operName.equals("max"))
+		{
+			java.util.Iterator<String> iter = argumentsResult.iterator();			
+			if(!iter.hasNext()) { return "{ i: "+sourceResult+" | all j: "+sourceResult+" | int[i] >= int[j] }"; }
+		}
+		
+		if(operName.equals("min"))
+		{
+			java.util.Iterator<String> iter = argumentsResult.iterator();			
+			if(!iter.hasNext()) { return "{ i: "+sourceResult+" | all j: "+sourceResult+" | int[i] <= int[j] }"; }
+		}
+		
 		// Operation arguments
         for (java.util.Iterator<String> iter = argumentsResult.iterator(); iter.hasNext();) 
         {
@@ -388,13 +417,15 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
 			
 			if(operName.equals("includesAll")) { return "("+argument + " in " + sourceResult+")"; }
 			
-			if(operName.equals("excludesAll")) { return "("+"#"+argument + " & " + sourceResult+" = 0)"; }
+			if(operName.equals("excludesAll")) { return "(no"+"("+argument + " & " + sourceResult+"))"; }
 			
 			if(operName.equals("product")) { return "("+sourceResult + " -> " + argument+")"; }
 			
 			if(operName.equals("=")) { return "("+sourceResult + " = " + argument+")"; }	
 			
 			if(operName.equals("<>")) { return "("+sourceResult + " != " + argument+")"; }	
+			
+			if(operName.equals("count")) { return "("+argument+ " in "+sourceResult+ " => 1 else 0)"; }
 			
 			if(operName.equals("oclIsKindOf"))	{ return "("+sourceResult + " in " + argument+")"; }
 			
@@ -410,32 +441,40 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
 			
 			if(operName.equals(">=")) { return "("+sourceResult + " >= " + argument + ")"; }
 			
-			if(operName.equals("and")) { return "("+sourceResult + " and " + argument+")"; }
+			if(operName.equals("and")) { return "("+sourceResult + " && " + argument+")"; }
 			
-			if(operName.equals("or")) { return "("+sourceResult + " or " + argument+")"; }	
+			if(operName.equals("or")) { return "("+sourceResult + " || " + argument+")"; }	
 			
-			if(operName.equals("implies")) { return "("+sourceResult + " implies " + argument+")"; }
+			if(operName.equals("implies")) { return "("+sourceResult + " => " + argument+")"; }
 			
-			if(operName.equals("xor")) { return "("+"("+sourceResult +" or "+argument+ ")"+" and not "+"("+sourceResult+" and "+ argument+")"+")"; }
+			if(operName.equals("xor")) { return "("+"("+sourceResult +" || "+argument+ ")"+" && !"+"("+sourceResult+" && "+ argument+")"+")"; }
 			
-			if(operName.equals("max")) { return "max["+sourceResult +","+ argument + "]"; }
+			if(operName.equals("max")) { 
+				CustomLibraryOperations += "fun max [self, i: Int] : Int"+"\n"+
+										   "{ let a = int[self], b = int[i] | a <= b implies b else a }"+"\n\n"; 
+				return "max["+sourceResult +","+ argument + "]"; 
+			}
 			
-			if(operName.equals("min")) { return "min["+sourceResult +"," + argument + "]"; }
+	        if(operName.equals("div")) { return "("+sourceResult +").div["+ argument + "]"; }
+	        
+			if(operName.equals("min")) {
+				CustomLibraryOperations += "fun min [self, i: Int] : Int"+"\n"+
+						   "{ let a = int[self], b = int[i] | a <= b implies a else b }"+"\n\n";
+				return "min["+sourceResult +"," + argument + "]"; 
+			}
 			
 			if(operName.equals("+")) { return "(" + sourceResult +").plus["+argument+"]"; }
 			
 			if(operName.equals("*")) { return "(" + sourceResult +").mul["+argument+"]"; }
 			
-			if(operName.equals("symmetricDifference")) { return "("+"("+sourceResult + " + " + argument+") - ("+sourceResult + " & " + argument+")"+")"; }	        	
+			if(operName.equals("symmetricDifference")) { return "("+"("+sourceResult + " - " + argument+") + ("+argument + " - " + sourceResult+")"+")"; }	        	
 						
 			if (iter.hasNext()) ; // no more arguments 
         }
        			
-        if(operName.equals("/")) throw new OperationException("/","We only support the integer operations: +, -, *, max(), min(), abs().");
+        if(operName.equals("/")) throw new OperationException("/","We only support the integer operations: +, -, *, max(), min(), abs(), div().");
         
-        if(operName.equals("div")) throw new OperationException("div","We only support the integer operations: +, -, *, max(), min(), abs().");
-        
-        if(operName.equals("mod")) throw new OperationException("mod","We only support the integer operations: +, -, *, max(), min(), abs().");
+        if(operName.equals("mod")) throw new OperationException("mod","We only support the integer operations: +, -, *, max(), min(), abs(), div().");
         
         if(operName.equals("toString")) throw new OperationException("toString()","The type String is not supported.");
         
@@ -449,11 +488,7 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
         
         if(operName.equals("oclIsNew")) throw new OperationException("oclIsNew()","Post conditions are not supported.");
         
-        if(operName.equals("flatten")) throw new OperationException("flatten()","We do not support nested collections.");
-        
         if(operName.equals("oclIsInvalid"))	throw new OperationException("oclIsInvalid()","The OclInvalid is not supported.");
-        
-        if(operName.equals("count")) throw new OperationException("count()","We do not support this operation. It is not possible to iterate over collections.");    
         
 		return "";
 	}
@@ -477,8 +512,10 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
         
         if(iterName.equals("reject")) result.append("{ ");      
         
-        if(iterName.equals("isUnique")) result.append("all disj ");  
+        if(iterName.equals("isUnique")) result.append("all ");  
                
+        if(iterName.equals("any")) result.append("{ ");
+        
         // Iterator Arguments
         for( java.util.Iterator<String> iter = variableResults.iterator(); iter.hasNext();) 
         {        	     
@@ -500,6 +537,8 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
             
             if(iterName.equals("isUnique")){ var = string; result.append(var).append(",").append(var).append("'"); }            
             
+            if(iterName.equals("any")) result.append(string);
+            
             if (iter.hasNext()) result.append(",");
         }
         
@@ -509,7 +548,7 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
         
         if(iterName.equals("one")) result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" } = 1");
         
-        if(iterName.equals("reject")) result.append(": ").append(sourceResult).append(" | ").append("not ").append(bodyResult).append(" }"); 
+        if(iterName.equals("reject")) result.append(": ").append(sourceResult).append(" | ").append("! ").append(bodyResult).append(" }"); 
         
         if(iterName.equals("select")) result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" }");
         
@@ -521,9 +560,15 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
         
         if(iterName.equals("isUnique")) 
         {
-        	result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" != ");
+        	result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" <=> ");
         	String sb = substitute(var,bodyResult,var+"'");  //substitute variable "x" in expression "bodyResult" for "x'"        	
-        	result.append(sb);        	
+        	result.append(sb);
+        	result.append(" => "+var+"="+var+"'");
+        }
+
+        if(iterName.equals("any")) 
+        {
+        	result.append(": "+sourceResult+" | "+bodyResult+" }");        	
         }
         
         if(iterName.equals("closure")) 
@@ -546,8 +591,6 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
         	String strFinal = sourceResult+".^(w."+assocAlias+")";        	
         	result.append(strFinal);
         }
-                
-        if(iterName.equals("any")) throw new IteratorException("any()","We do not support this iterator. Problems arise when trying to return the type of an element of the collection");
         
         if(iterName.equals("sortedBy")) throw new IteratorException("sortedBy()","The type OrderedSet is not supported.");
         
@@ -559,7 +602,7 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
    	
    	private String generateIfThenElseMapping(String conditionResult, String thenResult, String elseResult)
 	{
-		return conditionResult + " implies " + thenResult + " else " + elseResult;
+		return conditionResult + " => " + thenResult + " else " + elseResult;
 	}
 	
 	private String generateLetMapping(String variableResult, String inResult)

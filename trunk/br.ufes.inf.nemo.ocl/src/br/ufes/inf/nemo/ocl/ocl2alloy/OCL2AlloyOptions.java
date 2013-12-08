@@ -6,25 +6,22 @@ import org.eclipse.uml2.uml.Constraint;
 
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
 
-
 /**
  * @author John Guerson
  */
 
 public class OCL2AlloyOptions {
 
-	private ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();
-	
-	private ArrayList<String> constraintType = new ArrayList<String>();
-	
-	private ArrayList<String> transformationType = new ArrayList<String>();
-	
+	private ArrayList<Constraint> constraintsList = new ArrayList<Constraint>();	
+	private ArrayList<String> constraintType = new ArrayList<String>();	
+	private ArrayList<String> transformationType = new ArrayList<String>();	
 	private ArrayList<Integer> commandScope = new ArrayList<Integer>();	
 	
+	public OCL2AlloyOptions() {}
+	
 	/**
-	 * Constructor. Set default options from OCL parser.
-	 * 
-	 * @param constraints
+	 * Constructor.
+	 * Set default options from OCL parser that means all constraints are transformed to Allot facts.
 	 */
 	@SuppressWarnings("unchecked")
 	public OCL2AlloyOptions(OCLParser oclparser)
@@ -39,12 +36,8 @@ public class OCL2AlloyOptions {
 			commandScope.add(10);
 		}		
 	}
-	
-	public OCL2AlloyOptions() {}
-
-	/*
-	 * Getters... 
-	 */
+		
+	//Getters	 
 	public ArrayList<Constraint> getConstraintList () { return constraintsList;}	
 	public Integer getCommandScope(Constraint ct) { return commandScope.get(constraintsList.indexOf(ct)); }		
 	public String getTransformationType(Constraint ct) { return transformationType.get(constraintsList.indexOf(ct)); }	
@@ -52,9 +45,7 @@ public class OCL2AlloyOptions {
 	public String getConstraintType(Constraint ct) { return constraintType.get(constraintsList.indexOf(ct)); }	
 	public ArrayList<String> getConstraintType() { return constraintType; }
 	
-	/*
-	 * Setters...
-	 */
+	//Setters	 
 	public void setConstraintList(ArrayList<Constraint> constraintsList) { this.constraintsList = constraintsList; }	
 	public void setCommandScope(ArrayList<Integer> scopeList) { commandScope = scopeList; }	
 	public void setTransformationType(ArrayList<String> transformationTypeList) { this.transformationType = transformationTypeList; }
