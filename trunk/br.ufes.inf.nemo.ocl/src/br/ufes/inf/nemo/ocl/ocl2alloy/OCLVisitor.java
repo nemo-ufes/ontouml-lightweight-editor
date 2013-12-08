@@ -516,6 +516,8 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
                
         if(iterName.equals("any")) result.append("{ ");
         
+        if(iterName.equals("collect")) result.append("univ.{ ");
+        
         // Iterator Arguments
         for( java.util.Iterator<String> iter = variableResults.iterator(); iter.hasNext();) 
         {        	     
@@ -538,7 +540,7 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
             if(iterName.equals("isUnique")){ var = string; result.append(var).append(",").append(var).append("'"); }            
             
             if(iterName.equals("any")) result.append(string);
-            
+                        
             if (iter.hasNext()) result.append(",");
         }
         
@@ -553,9 +555,11 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
         if(iterName.equals("select")) result.append(": ").append(sourceResult).append(" | ").append(bodyResult).append(" }");
         
         if(iterName.equals("collect")) 
-        {        	
-        	String sb = substitute(var,bodyResult,sourceResult); //substitute variable "x" in expression "bodyResult" for "sourceResult"         	
-        	result.append(sb);        	
+        {
+        	result.append(var+": "+sourceResult+", res: "+bodyResult+" | no none }");
+        	// @Deprecated
+        	// String sb = substitute(var,bodyResult,sourceResult); //substitute variable "x" in expression "bodyResult" for "sourceResult"         	
+        	// result.append(sb);        	
         }
         
         if(iterName.equals("isUnique")) 
