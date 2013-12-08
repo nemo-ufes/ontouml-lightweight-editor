@@ -17,6 +17,9 @@ context University
 inv enrollments_has_unique_id: 
     self.enrollments->isUnique(x: Enrollment | x.id)
 
+context Enrollment
+inv teste: self.id->asSet()->max()
+
 -- invariant simulation in OCL
 context Student
 inv adult_three_enrolllment :
