@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2alloy.OCL2Alloy;
-import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
+import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2Alloy;
+import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 

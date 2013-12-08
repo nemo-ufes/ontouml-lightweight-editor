@@ -19,7 +19,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.eclipse.uml2.uml.Constraint;
 
-import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
+import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
+
 import javax.swing.JLabel;
 
 /**

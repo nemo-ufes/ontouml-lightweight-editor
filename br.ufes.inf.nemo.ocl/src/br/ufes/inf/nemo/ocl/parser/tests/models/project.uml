@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Package xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_HelH0ElsEeOrMYHEmmaPFg" name="project">
+  <packagedElement xmi:type="uml:DataType" xmi:id="_HelH0UlsEeOrMYHEmmaPFg" name="Integer">
+    <ownedAttribute xmi:id="_HelH0klsEeOrMYHEmmaPFg" name="enrollments" visibility="public" type="_Helu-ElsEeOrMYHEmmaPFg" association="_HemV-ElsEeOrMYHEmmaPFg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_HelH00lsEeOrMYHEmmaPFg" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_HelH1ElsEeOrMYHEmmaPFg"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Helu4ElsEeOrMYHEmmaPFg" name="Person"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Helu4UlsEeOrMYHEmmaPFg" name="Organization"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Helu4klsEeOrMYHEmmaPFg" name="Child">
+    <generalization xmi:id="_Helu40lsEeOrMYHEmmaPFg" general="_Helu4ElsEeOrMYHEmmaPFg" generalizationSet="_HemV-UlsEeOrMYHEmmaPFg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Helu5ElsEeOrMYHEmmaPFg" name="Teenager">
+    <generalization xmi:id="_Helu5UlsEeOrMYHEmmaPFg" general="_Helu4ElsEeOrMYHEmmaPFg" generalizationSet="_HemV-UlsEeOrMYHEmmaPFg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Helu5klsEeOrMYHEmmaPFg" name="Adult">
+    <generalization xmi:id="_Helu50lsEeOrMYHEmmaPFg" general="_Helu4ElsEeOrMYHEmmaPFg" generalizationSet="_HemV-UlsEeOrMYHEmmaPFg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Helu6ElsEeOrMYHEmmaPFg" name="Student">
+    <generalization xmi:id="_Helu6UlsEeOrMYHEmmaPFg" general="_Helu4ElsEeOrMYHEmmaPFg"/>
+    <ownedAttribute xmi:id="_Helu6klsEeOrMYHEmmaPFg" name="universities" visibility="public" type="_Helu8ElsEeOrMYHEmmaPFg" association="_HemV8UlsEeOrMYHEmmaPFg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Helu60lsEeOrMYHEmmaPFg" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Helu7ElsEeOrMYHEmmaPFg" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_Helu7UlsEeOrMYHEmmaPFg" name="enrollments" visibility="public" type="_Helu-ElsEeOrMYHEmmaPFg" association="_HemV90lsEeOrMYHEmmaPFg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Helu7klsEeOrMYHEmmaPFg" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Helu70lsEeOrMYHEmmaPFg" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Helu8ElsEeOrMYHEmmaPFg" name="University">
+    <generalization xmi:id="_Helu8UlsEeOrMYHEmmaPFg" general="_Helu4UlsEeOrMYHEmmaPFg"/>
+    <ownedAttribute xmi:id="_Helu8klsEeOrMYHEmmaPFg" name="students" visibility="public" type="_Helu6ElsEeOrMYHEmmaPFg" association="_HemV8UlsEeOrMYHEmmaPFg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Helu80lsEeOrMYHEmmaPFg" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Helu9ElsEeOrMYHEmmaPFg" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_Helu9UlsEeOrMYHEmmaPFg" name="enrollments" visibility="public" type="_Helu-ElsEeOrMYHEmmaPFg" association="_HemV9klsEeOrMYHEmmaPFg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Helu9klsEeOrMYHEmmaPFg" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Helu90lsEeOrMYHEmmaPFg" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Helu-ElsEeOrMYHEmmaPFg" name="Enrollment">
+    <ownedAttribute xmi:id="_Helu-UlsEeOrMYHEmmaPFg" name="" visibility="public" type="_HemV8UlsEeOrMYHEmmaPFg" association="_HemV8klsEeOrMYHEmmaPFg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Helu-klsEeOrMYHEmmaPFg" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Helu-0lsEeOrMYHEmmaPFg" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_Helu_ElsEeOrMYHEmmaPFg" name="university" visibility="public" type="_Helu8ElsEeOrMYHEmmaPFg" isReadOnly="true" association="_HemV9klsEeOrMYHEmmaPFg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Helu_UlsEeOrMYHEmmaPFg" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Helu_klsEeOrMYHEmmaPFg" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_Helu_0lsEeOrMYHEmmaPFg" name="student" visibility="public" type="_Helu6ElsEeOrMYHEmmaPFg" isReadOnly="true" association="_HemV90lsEeOrMYHEmmaPFg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_HelvAElsEeOrMYHEmmaPFg" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_HelvAUlsEeOrMYHEmmaPFg" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_HelvAklsEeOrMYHEmmaPFg" name="id" visibility="public" type="_HelH0UlsEeOrMYHEmmaPFg" isReadOnly="true" association="_HemV-ElsEeOrMYHEmmaPFg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_HelvA0lsEeOrMYHEmmaPFg" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_HemV8ElsEeOrMYHEmmaPFg" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_HemV8UlsEeOrMYHEmmaPFg" name="study" memberEnd="_Helu8klsEeOrMYHEmmaPFg _Helu6klsEeOrMYHEmmaPFg" isDerived="true"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_HemV8klsEeOrMYHEmmaPFg" name="drv" memberEnd="_Helu-UlsEeOrMYHEmmaPFg _HemV80lsEeOrMYHEmmaPFg" navigableOwnedEnd="_HemV80lsEeOrMYHEmmaPFg">
+    <ownedEnd xmi:id="_HemV80lsEeOrMYHEmmaPFg" name="" visibility="public" type="_Helu-ElsEeOrMYHEmmaPFg" isReadOnly="true" association="_HemV8klsEeOrMYHEmmaPFg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_HemV9ElsEeOrMYHEmmaPFg" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_HemV9UlsEeOrMYHEmmaPFg" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_HemV9klsEeOrMYHEmmaPFg" name="unv" memberEnd="_Helu9UlsEeOrMYHEmmaPFg _Helu_ElsEeOrMYHEmmaPFg"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_HemV90lsEeOrMYHEmmaPFg" name="std" memberEnd="_Helu7UlsEeOrMYHEmmaPFg _Helu_0lsEeOrMYHEmmaPFg"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_HemV-ElsEeOrMYHEmmaPFg" name="datatype" memberEnd="_HelH0klsEeOrMYHEmmaPFg _HelvAklsEeOrMYHEmmaPFg"/>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_HemV-UlsEeOrMYHEmmaPFg" name="" isCovering="true" isDisjoint="true" generalization="_Helu40lsEeOrMYHEmmaPFg _Helu5UlsEeOrMYHEmmaPFg _Helu50lsEeOrMYHEmmaPFg"/>
+</uml:Package>

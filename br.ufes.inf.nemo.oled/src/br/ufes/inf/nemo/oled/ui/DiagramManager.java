@@ -58,8 +58,8 @@ import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
 import br.ufes.inf.nemo.common.ontoumlparser.MaterialInference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
+import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
-import br.ufes.inf.nemo.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
@@ -1189,9 +1189,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			// set parser from the editor view.
 			String name = ((RefOntoUML.Package)getCurrentProject().getResource().getContents().get(0)).getName();
 			if (name==null || name.isEmpty()) name = "model";
-			oclmodel.setParser(					
-					new OCLParser(frame.getInfoManager().getConstraints(),refparser,getCurrentProject().getTempDir()+File.separator+name.toLowerCase()+".uml")
-					);			
+			oclmodel.setParser( new OCLParser(refparser,getCurrentProject().getTempDir()+File.separator,name.toLowerCase()));
+			
+			oclmodel.getParser().parse(frame.getInfoManager().getConstraints());
 
 			// set options from the parser
 			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new OCL2AlloyOptions(oclmodel.getOCLParser()));
@@ -1207,10 +1207,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}catch(ParserException e1){
 			frame.showErrorMessageDialog("OCL Parsing Error", "OCL Parser: "+e1.getLocalizedMessage());    			
 			e1.printStackTrace();    	
-
-		}catch(IOException e3){
-			frame.showErrorMessageDialog("IO Error", e3.getLocalizedMessage());						
-			e3.printStackTrace();
 
 		}catch(Exception e4){
 			frame.showErrorMessageDialog("Unexpected Error", e4.getLocalizedMessage());			
