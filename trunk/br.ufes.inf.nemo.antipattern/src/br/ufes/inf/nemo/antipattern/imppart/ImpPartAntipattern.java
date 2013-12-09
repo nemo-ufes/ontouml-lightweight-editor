@@ -3,21 +3,20 @@ package br.ufes.inf.nemo.antipattern.imppart;
 import java.util.ArrayList;
 
 import RefOntoUML.Package;
+import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
-import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class ImpPartAntipattern extends Antipattern {
+public class ImpPartAntipattern extends Antipattern<ImpPartOccurrence> {
 
 	public ImpPartAntipattern(OntoUMLParser parser) throws NullPointerException {
 		super(parser);
-		// TODO Auto-generated constructor stub
 	}
 
 	public ImpPartAntipattern(Package pack) throws NullPointerException {
-		super(pack);
-		// TODO Auto-generated constructor stub
+		this(new OntoUMLParser(pack));
 	}
 
 	private static final String oclQuery =	
@@ -34,15 +33,23 @@ public class ImpPartAntipattern extends Antipattern {
 	}
 	
 	@Override
-	public <T extends Antipattern> ArrayList<T> identify() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<ImpPartOccurrence> identify() {
+		ArrayList<Property> query_result;
+		
+		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, Property.class);
+		
+		for (Property partEnd : query_result) 
+		{
+			try {
+				super.occurrence.add(new ImpPartOccurrence(partEnd, super.parser));
+			} catch (Exception e) {
+				System.out.println(info.getAcronym()+": Could not create occurrence!");
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		return this.getOccurrences();
 	}
 
-	@Override
-	public <T extends Antipattern> ArrayList<T> getOccurrences() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 }
