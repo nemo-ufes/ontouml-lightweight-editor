@@ -2,272 +2,98 @@ package br.ufes.inf.nemo.antipattern.asscyc;
 
 import java.util.ArrayList;
 
-import org.eclipse.emf.ecore.EObject;
-
 import RefOntoUML.Association;
-import RefOntoUML.Class;
+import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
+import RefOntoUML.Package;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
-import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
-import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
+import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternInfo;
+import br.ufes.inf.nemo.common.ontouml2graph.GraphAlgo;
+import br.ufes.inf.nemo.common.ontouml2graph.OntoUML2Graph;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-/*Association Cycle Anti-Pattern*/
-public class AssCycAntipattern extends AntipatternOccurrence{
-	ArrayList<Class> cycle;
-	ArrayList<Relationship> cycleRelationship;
-	public static int OPEN=0, CLOSED=1;
-	
-	public String generateCycleOcl(int type, OntoUMLParser parser) {
-		String rule, typeName;
-		Association a;
-		Type last_target;
-				
-		typeName = this.cycle.get(0).getName();
-				
-		rule = 	"\n    self.";
-		
-		String invName = new String();
-		
-		if(type==OPEN) invName +=  "openCycle";
-		else invName +=  "closedCycle";			
-		
-		a = (Association)this.cycleRelationship.get(0);
-		
-		invName += "_"+a.getName();
-		
-		if (a.getMemberEnd().get(0).getType().equals(this.cycle.get(0))) {
-			rule += a.getMemberEnd().get(1).getName();
-			last_target = a.getMemberEnd().get(1).getType();
-		}
-		else{ 
-			rule += a.getMemberEnd().get(0).getName();
-			last_target = a.getMemberEnd().get(0).getType();
-		}
-			
-		
-		for (int i = 1; i<cycleRelationship.size();i++) {
-			Relationship r = cycleRelationship.get(i);
-			 
-			if(r instanceof Association){
-				
-				invName+= "_"+((Association)r).getName();
-				
-				if( ((Association)r).getMemberEnd().get(0).getType().equals(last_target)) {
-					rule += "."+((Association)r).getMemberEnd().get(1).getName();
-					last_target =((Association)r).getMemberEnd().get(1).getType();
-				}
-				else {
-					rule += "."+((Association)r).getMemberEnd().get(0).getName();
-					last_target =((Association)r).getMemberEnd().get(0).getType();
-				}
-					
-			}
-		}
-		
-		if(type==CLOSED)
-			rule += "->asSet() = self->asSet()";
-		else if(type==OPEN)
-			rule += "->excludes(self)";
-		else
-			return null;
-			
-		String result = "context _'"+ typeName + "'\n"+
-						"inv "+invName+ " : " + rule;
-				
-		return result;
-	}	
-	
-	public String generatePredicate(OntoUMLParser parser, int cardinality, int type) throws Exception {
-		String predicate, predicate_rules, name, function_name = "CycleAux", function_rules="", function_parameters="x:univ, w:World", function_return="univ";
-		String typeName;
-		Association a;
-		Type last_source, last_target, source, target;
-				
-		typeName = parser.getAlias(this.cycle.get(0));
-		
-		if(type==OPEN) {
-			name = "openCycle_"+typeName+"_"+parser.getAlias(cycle.get(1));
-			function_name = "open"+function_name;
-		}
-		else if(type==CLOSED) {
-			name = "closedCycle_"+typeName+"_"+parser.getAlias(cycle.get(1));
-			function_name = "closed"+function_name;
-		}
-		else
-			throw new Exception("There may only be open and closed cycles.");
-		
-		predicate_rules = 	"#"+typeName+">="+cardinality+"\n\t" +
-							"all w:World, x:w."+typeName+" | some "+function_name+"[x,w] ";
-		
-		
-		if (type==OPEN)
-			predicate_rules+="and no "+function_name+"[x,w] & x";
-		if(type==CLOSED)
-			predicate_rules+="implies "+function_name+"[x,w] = x";
-		
-		a = (Association)this.cycleRelationship.get(0);
-		last_source = SourceTargetAssociation.getSourceAlloy(a);
-		last_target = SourceTargetAssociation.getTargetAlloy(a);
-		
-		if (last_source.equals(this.cycle.get(0)))
-			function_rules += "(x.(w."+parser.getAlias(a)+"))";
-		
-		else {
-			function_rules += "((w."+parser.getAlias(a)+").x)";
-			last_target = SourceTargetAssociation.getSourceAlloy(a);
-			last_source = SourceTargetAssociation.getTargetAlloy(a);
-		}
-		
-		for (int i = 1; i<cycleRelationship.size();i++) {
-			Relationship r = cycleRelationship.get(i);
-			
-			if(r instanceof Association){
-				source = SourceTargetAssociation.getSourceAlloy((Association)r);
-				target = SourceTargetAssociation.getTargetAlloy((Association)r);
-				Association assoc = (Association)r;
-				
-				if( (source.equals(last_target)) ){
-					function_rules+=".(w."+parser.getAlias(assoc)+")";
-					last_source = source;
-					last_target = target;
-				}
-				else {
-					function_rules+=".(~(w."+parser.getAlias(assoc)+"))";
-					last_target = source;
-					last_source = target;
-				}
-				
-				name+="_"+parser.getAlias(last_target);
-				
-			}
-		}
-		
-		predicate = AlloyConstructor.AlloyFunction(function_name, function_rules, function_parameters, function_return)+"\n";
-		predicate += AlloyConstructor.AlloyParagraph(name, predicate_rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
-		
-		return predicate;
-		
+public class AssCycAntipattern extends Antipattern<AssCycOccurrence> {
+
+	public AssCycAntipattern(OntoUMLParser parser) throws NullPointerException {
+		super(parser);
+	}
+
+	public AssCycAntipattern(Package pack) throws NullPointerException {
+		this(new OntoUMLParser(pack));
 	}
 	
-	public AssCycAntipattern(ArrayList<Class> cycle, ArrayList<Relationship> cycleRelationship){
-		setCycle(cycle);
-		setCycleRelationship(cycleRelationship);
-	}
-	
-	public ArrayList<Class> getCycle() {
-		return cycle;
-	}
-	
-	private void setCycle(ArrayList<Class> cycle) {
-		this.cycle = cycle;
-	}
-	
-	public ArrayList<Relationship> getCycle_relationship() {
-		return cycleRelationship;
-	}
-	
-	private void setCycleRelationship(ArrayList<Relationship> cycleRelationships) {
-		this.cycleRelationship = cycleRelationships;
-	}
-	
-	@Override
-	public String toString() {
-		String result="";
-		int i=0;
-		for (Class a : cycle) {
-			result += a.getName();
-			
-			if(i<cycle.size()-1)
-				result+=", ";
-			
-			i++;
-		}
-		result+="\n";
-		for (Relationship r : cycleRelationship) {
-			if (r instanceof Association)
-				result += ((Association) r).getMemberEnd().get(0).getType().getName()+" - "+((Association) r).getName()+" - "+ ((Association) r).getMemberEnd().get(1).getType().getName()+"\n";
-			
-			if (r instanceof Generalization)
-				result += ((Generalization) r).getSpecific().getName()+" -> "+ ((Generalization) r).getGeneral().getName()+"\n";
-		}
+	private static final AntipatternInfo info = new AntipatternInfo("Association Cycle", 
+			"AssCyc", 
+			"This anti-pattern occurs when...",
+			null); 
 		
-		
-		return result;
+	public static AntipatternInfo getAntipatternInfo(){
+		return info;
 	}
 
 	@Override
-	public OntoUMLParser setSelected(OntoUMLParser parser) {
-		ArrayList<EObject> selection = new ArrayList<EObject>();
+	public ArrayList<AssCycOccurrence> identify() {
+			
+		int aux[][]; 
+		int nodei[], nodej[];
+		ArrayList<RefOntoUML.Class> classes = new ArrayList<RefOntoUML.Class>();
+		ArrayList<RefOntoUML.Class> cycle = new ArrayList<RefOntoUML.Class>();
+		ArrayList<Relationship> relationships = new ArrayList<Relationship>();
+		ArrayList<Relationship> cycle_ass = new ArrayList<Relationship>();
 		
-		for (Class c : this.cycle)
-			selection.add(c);
-		for (Relationship r : this.cycleRelationship)
-			selection.add(r);
+		aux = OntoUML2Graph.buildGraph(parser, classes, relationships, false, false);
+		nodei = aux[0];
+		nodej = aux[1];
 		
-		parser.selectThisElements(selection,true);
-		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
-		return parser;
-	}
-	
-	/*public String generateClosedCyclePredicate(OntoUMLParser mapper, int cardinality) {
-	String predicate, rules, name;
-	String typeName;
-	Association a;
-	Type last_source, last_target, source, target;
+		if (relationships.size()<=2) return super.getOccurrences();
+		
+		int fundcycle[][] = new int [relationships.size()-2][classes.size()];
+		GraphAlgo.fundamentalCycles(classes.size()-1, relationships.size()-1, nodei, nodej, fundcycle);
+		
+		for (int i=1; i<=fundcycle[0][0]; i++) { 
 			
-	typeName = mapper.getName(this.cycle.get(0));
-	
-	name = "closedCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
-	rules = "all w:World | #w." + typeName + ">=" + cardinality;
-	rules += "\n\tall w:World | all x:w."+typeName+" | ";
-	
-	a = (Association)this.cycleRelationship.get(0);
-	last_source = SourceTargetAssociation.getSourceAlloy(a);
-	last_target = SourceTargetAssociation.getTargetAlloy(a);
-	
-	if (last_source.equals(this.cycle.get(0)))
-		rules += "(x.(w."+mapper.getName(a)+"))";
-	
-	else {
-		rules += "((w."+mapper.getName(a)+").x)";
-		last_target = SourceTargetAssociation.getSourceAlloy(a);
-		last_source = SourceTargetAssociation.getTargetAlloy(a);
-	}
-	
-	for (int i = 1; i<cycleRelationship.size();i++) {
-		Relationship r = cycleRelationship.get(i);
-		 
-		if(r instanceof Association){
-			Association assoc = (Association)r;
-			source = SourceTargetAssociation.getSourceAlloy((Association)r);
-			target = SourceTargetAssociation.getTargetAlloy((Association)r);
-			r = (Association)r;
-			if( (source.equals(last_target)) ){
-				rules+=".(w."+mapper.getName(assoc)+")";
-				last_source = source;
-				last_target = target;
+			cycle = new ArrayList<RefOntoUML.Class>();
+			cycle_ass = new ArrayList<Relationship>();
+			
+			for (int j=1; j<=fundcycle[i][0]; j++)
+				cycle.add(classes.get(fundcycle[i][j]));
+			
+			for (int j = 0; j < cycle.size(); j++) {
+				
+				int pos1, pos2;
+				if(j<cycle.size()-1) {
+					pos1 = j;
+					pos2 = j+1;
+				}
+				else {
+					pos1=j;
+					pos2=0;
+				}
+				
+				for (Relationship r : relationships) {
+					if(r instanceof Association){
+						Type source, target;
+						if (((Association) r).getMemberEnd().size()==2) {
+							source = ((Association)r).getMemberEnd().get(0).getType();
+							target = ((Association)r).getMemberEnd().get(1).getType();
+							if( (source.equals(cycle.get(pos1)) && target.equals(cycle.get(pos2))) || (source.equals(cycle.get(pos2)) && target.equals(cycle.get(pos1))))
+								cycle_ass.add(r);
+						}
+					}
+					if (r instanceof Generalization){
+						Classifier general, specific;
+						general = ((Generalization)r).getGeneral();
+						specific = ((Generalization)r).getSpecific();
+						if ( (general.equals(cycle.get(pos1)) && specific.equals(cycle.get(pos2))) || (general.equals(cycle.get(pos2)) && specific.equals(cycle.get(pos1))) )
+							cycle_ass.add(r);
+					}	
+				}
 			}
-			else {
-				rules+=".(~(w."+mapper.getName(assoc)+"))";
-				last_target = source;
-				last_source = target;
-			}
-			
-			name+="_"+mapper.getName(last_target);
-			
+			super.occurrence.add(new AssCycOccurrence(cycle,cycle_ass,parser));
 		}
+		return super.getOccurrences();
 	}
-	
-	rules += " = x";
-	
-	predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-	predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
-	
-	return predicate;
-	
-}*/
+
 }
