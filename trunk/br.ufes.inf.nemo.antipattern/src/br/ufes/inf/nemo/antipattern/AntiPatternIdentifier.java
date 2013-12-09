@@ -11,31 +11,29 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.ocl.ParserException;
-import org.eclipse.ocl.ecore.TupleType;
 import org.eclipse.ocl.util.Tuple;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
-import RefOntoUML.Mediation;
 import RefOntoUML.Package;
 import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.Type;
-import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
-import br.ufes.inf.nemo.antipattern.gsrig.GSRigAntipattern;
-import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
-import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
-import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
-import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
-import br.ufes.inf.nemo.antipattern.mm.MMAntiPattern;
-import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
-import br.ufes.inf.nemo.antipattern.rbos.RBOSAntiPattern;
-import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
-import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
-import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
-import br.ufes.inf.nemo.antipattern.relspec.RSAntiPattern;
-import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
+import br.ufes.inf.nemo.antipattern.binover.BinOverVariation1Occurrence;
+import br.ufes.inf.nemo.antipattern.binover.BinOverVariation4Occurrence;
+import br.ufes.inf.nemo.antipattern.depphase.DepPhaseOccurrence;
+import br.ufes.inf.nemo.antipattern.experimental.MMAntiPattern;
+import br.ufes.inf.nemo.antipattern.experimental.MRBSAntiPattern;
+import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
+import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
+import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
+import br.ufes.inf.nemo.antipattern.relcomp.RelCompOccurrence;
+import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
+import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
 import br.ufes.inf.nemo.common.ontouml2graph.GraphAlgo;
 import br.ufes.inf.nemo.common.ontouml2graph.OntoUML2Graph;
@@ -43,52 +41,14 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class AntiPatternIdentifier {
 	
-	/**
-	 * Auxiliary method. Get original element. 
-	 * 
-	 * @param copy
-	 * @param copier
-	 * @return
-	 */
-	
-	
-	public static <T extends EObject> ArrayList<T> runOCLQuery (OntoUMLParser parser, String oclQuery, java.lang.Class<T> queryReturnType){
-		ArrayList<T> queryResult = new ArrayList<T>();
-		
-		Copier copier = new Copier();
-		
-		Package model = parser.createPackageFromSelections(copier);
-		
-		try {
-			Object o = OCLQueryExecuter.executeQuery(oclQuery, (EClassifier)model.eClass(), model);
-			
-			if (o instanceof Collection<?>){
-				
-				for (Object element : (Collection<?>) o ) {
-					
-					if(queryReturnType.isInstance(element) && element instanceof EObject){
-						
-						T original = (T) AntiPatternUtil.getOriginal((EObject)element, copier);			
-						queryResult.add(original);
-						
-					}
-				}
-			}
-			
-		} catch (ParserException e) {
-			System.out.println("Error in OCL query!\n"+e.getMessage());
-		}
-		
-		return queryResult;
-	}
-	
-	public static <T extends EObject, S extends EObject> Map<T,Set<S>> runOCLQuery (OntoUMLParser parser, 
+	public static <T extends EObject, S extends EObject> Map<T,ArrayList<S>> runOCLQuery (OntoUMLParser parser, 
 			String oclQuery, java.lang.Class<T> queryReturnType1, java.lang.Class<S> queryReturnType2, String tupleField1, String tupleField2){
 		
-		Map<T,Set<S>>  queryResult = new HashMap<T,Set<S>> ();
+		Map<T,ArrayList<S>>  queryResult = new HashMap<T,ArrayList<S>> ();
 		
 		Copier copier = new Copier();
 		
+		//create a new package, copying the selected elements
 		Package model = parser.createPackageFromSelections(copier);
 		
 		try {
@@ -107,7 +67,7 @@ public class AntiPatternIdentifier {
 							T field1Original = (T) AntiPatternUtil.getOriginal((EObject)tuple.getValue(tupleField1), copier);
 							
 							Set<S> field2 = (Set<S>) tuple.getValue(tupleField2);
-							Set<S> field2Original = new HashSet<>();
+							ArrayList<S> field2Original = new ArrayList<>();
 							for (S s : field2) {
 								field2Original.add((S) AntiPatternUtil.getOriginal((EObject)s, copier));
 							}
@@ -156,7 +116,7 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RSAntiPattern> identifyRS(OntoUMLParser parser) throws Exception 
+	public static ArrayList<RelSpecOccurrence> identifyRS(OntoUMLParser parser) throws Exception 
 	{
 		Copier copier = new Copier();		
 		
@@ -170,12 +130,12 @@ public class AntiPatternIdentifier {
 		else if (o instanceof Tuple)
 			query_result.add((Tuple<Association, Association>) o);
 				
-		ArrayList<RSAntiPattern> result = new ArrayList<RSAntiPattern>();
+		ArrayList<RelSpecOccurrence> result = new ArrayList<RelSpecOccurrence>();
 		for (Tuple<Association, Association> t : query_result) 
 		{			
 			Association a1 = (Association) AntiPatternUtil.getOriginal((Association)t.getValue("a1"), copier);
 			Association a2 = (Association) AntiPatternUtil.getOriginal((Association)t.getValue("a2"), copier);			
-			RSAntiPattern rs = new RSAntiPattern(a1,a2); 
+			RelSpecOccurrence rs = new RelSpecOccurrence(a1,a2, parser); 
 			result.add(rs);
 		}		
 		return result;
@@ -192,7 +152,7 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<BinOverAntipattern> identifySTR (OntoUMLParser parser) throws Exception
+	public static ArrayList<BinOverVariation1Occurrence> identifySTR (OntoUMLParser parser) throws Exception
 	{
 		Copier copier = new Copier();
 		
@@ -206,12 +166,12 @@ public class AntiPatternIdentifier {
 		else if (o instanceof Association)
 			query_result.add((Association) o);
 		
-		ArrayList<BinOverAntipattern> result = new ArrayList<BinOverAntipattern>();
+		ArrayList<BinOverVariation1Occurrence> result = new ArrayList<BinOverVariation1Occurrence>();
 		for (Association a : query_result) 
 		{
 			try {
 			Association original = (Association) AntiPatternUtil.getOriginal(a, copier);			
-			result.add(new BinOverAntipattern(original));
+			result.add(new BinOverVariation1Occurrence(original, parser));
 			}
 			catch (Exception e){
 				
@@ -233,14 +193,14 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RBOSAntiPattern> identifyRBOS (OntoUMLParser parser) throws Exception 
+	public static ArrayList<BinOverVariation4Occurrence> identifyRBOS (OntoUMLParser parser) throws Exception 
 	{
 		Copier copier = new Copier();
 		
 		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Association> query_result;
-		ArrayList<RBOSAntiPattern> result = new ArrayList<RBOSAntiPattern>();
+		ArrayList<BinOverVariation4Occurrence> result = new ArrayList<BinOverVariation4Occurrence>();
 		
 		query_result = new ArrayList<>();
 		Object o = OCLQueryExecuter.executeQuery(RBOS_OCLQuery, (EClassifier)model.eClass(), model);
@@ -253,7 +213,7 @@ public class AntiPatternIdentifier {
 		for (Association a : query_result) 
 		{
 			Association original = (Association) AntiPatternUtil.getOriginal(a, copier);
-			result.add(new RBOSAntiPattern(original));
+			result.add(new BinOverVariation4Occurrence(original, parser));
 		}		
 		return result;
 	}
@@ -335,15 +295,15 @@ public class AntiPatternIdentifier {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
-	public static ArrayList<RelOverAntipattern> identifyRWOR (OntoUMLParser parser) throws Exception
+	/*@SuppressWarnings("unchecked")
+	public static ArrayList<RelOverOccurrence> identifyRWOR (OntoUMLParser parser) throws Exception
 	{
 		Copier copier = new Copier();
 		
 		Package model = parser.createPackageFromSelections(copier);
 		
 		Collection<Relator> query_result;
-		ArrayList<RelOverAntipattern> result = new ArrayList<RelOverAntipattern>();
+		ArrayList<RelOverOccurrence> result = new ArrayList<RelOverOccurrence>();
 		
 		query_result = new ArrayList<>();
 		Object o = OCLQueryExecuter.executeQuery(RWOROCLQuery, (EClassifier)model.eClass(), model);
@@ -355,11 +315,11 @@ public class AntiPatternIdentifier {
 		
 		for (Relator r : query_result) {
 			Relator original = (Relator) AntiPatternUtil.getOriginal(r, copier);
-			result.add(new RelOverAntipattern(original, parser));
+			result.add(new RelOverOccurrence(original, parser));
 		}
 		
 		return result;
-	}
+	}*/
 	
 	/** OCL query for IA AntiPattern. */
 	private static String IA_OCLQuery = "Association.allInstances()->select(x:Association | (x.memberEnd.type->at(1).oclAsType(Classifier).allChildren()->size()>1 and (x.memberEnd->at(1).upper=-1 or x.memberEnd->at(1).upper>1)) or (x.memberEnd.type->at(2).oclAsType(Classifier).allChildren()->size()>1 and (x.memberEnd->at(2).upper=-1 or x.memberEnd->at(2).upper>1)))";
@@ -372,7 +332,7 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<ImpAbsAntipattern> identifyIA(OntoUMLParser parser) throws Exception 
+	public static ArrayList<ImpAbsOccurrence> identifyIA(OntoUMLParser parser) throws Exception 
 	{
 		Copier copier = new Copier();
 		
@@ -386,10 +346,10 @@ public class AntiPatternIdentifier {
 		else if (o instanceof Association)
 			query_result.add((Association) o);
 		
-		ArrayList<ImpAbsAntipattern> result = new ArrayList<ImpAbsAntipattern>();
+		ArrayList<ImpAbsOccurrence> result = new ArrayList<ImpAbsOccurrence>();
 		for (Association a : query_result) {
 			Association original = (Association) AntiPatternUtil.getOriginal(a, copier);
-			result.add(new ImpAbsAntipattern(original));
+			result.add(new ImpAbsOccurrence(original, parser));
 		}
 		
 		return result;
@@ -401,7 +361,7 @@ public class AntiPatternIdentifier {
 	 * @param parser
 	 * @return
 	 */
-	public static ArrayList<AssCycAntipattern> identifyAC(OntoUMLParser parser){
+	public static ArrayList<AssCycOccurrence> identifyAC(OntoUMLParser parser){
 		
 		int aux[][]; 
 		int nodei[], nodej[];
@@ -409,7 +369,7 @@ public class AntiPatternIdentifier {
 		ArrayList<RefOntoUML.Class> cycle = new ArrayList<RefOntoUML.Class>();
 		ArrayList<Relationship> relationships = new ArrayList<Relationship>();
 		ArrayList<Relationship> cycle_ass = new ArrayList<Relationship>();
-		ArrayList<AssCycAntipattern> result = new ArrayList<AssCycAntipattern>();
+		ArrayList<AssCycOccurrence> result = new ArrayList<AssCycOccurrence>();
 		
 		aux = OntoUML2Graph.buildGraph(parser, classes, relationships, false, false);
 		nodei = aux[0];
@@ -464,7 +424,7 @@ public class AntiPatternIdentifier {
 					
 			}
 			
-			result.add(new AssCycAntipattern(cycle,cycle_ass));
+			result.add(new AssCycOccurrence(cycle,cycle_ass,parser));
 		} 
 		
 		return result;
@@ -495,7 +455,7 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RelRigAntipattern> identifyRWRT (OntoUMLParser parser) throws Exception
+	public static ArrayList<RelRigOccurrence> identifyRWRT (OntoUMLParser parser) throws Exception
 
 
 	{
@@ -511,14 +471,14 @@ public class AntiPatternIdentifier {
 		else if (o instanceof Relator)
 			query_result.add((Relator) o);
 		
-		ArrayList<RelRigAntipattern> result = new ArrayList<RelRigAntipattern>();
+		ArrayList<RelRigOccurrence> result = new ArrayList<RelRigOccurrence>();
 		for (Relator a : query_result) 
 		{
 			Relator original = (Relator) AntiPatternUtil.getOriginal(a, copier);
 			
-			RelRigAntipattern rwrt;
+			RelRigOccurrence rwrt;
 			try {
-				rwrt = new RelRigAntipattern(original, parser);
+				rwrt = new RelRigOccurrence(original, parser);
 				result.add(rwrt);
 			} catch (Exception e) {
 				
@@ -576,7 +536,7 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RepRelAntipattern> identifyTRI (OntoUMLParser parser) throws Exception 
+	public static ArrayList<RepRelOccurrence> identifyTRI (OntoUMLParser parser) throws Exception 
 	{
 		Copier copier = new Copier();
 		
@@ -590,14 +550,14 @@ public class AntiPatternIdentifier {
 		else if (o instanceof Relator)
 			query_result.add((Relator) o);
 		
-		ArrayList<RepRelAntipattern> result = new ArrayList<RepRelAntipattern>();
+		ArrayList<RepRelOccurrence> result = new ArrayList<RepRelOccurrence>();
 		for (Relator a : query_result) 
 		{
 			Relator original = (Relator) AntiPatternUtil.getOriginal(a, copier);
 			
-			RepRelAntipattern tri;
+			RepRelOccurrence tri;
 			try {
-				tri = new RepRelAntipattern(original,parser);
+				tri = new RepRelOccurrence(original,parser);
 				result.add(tri);
 			} catch (Exception e) {
 
@@ -647,7 +607,7 @@ public class AntiPatternIdentifier {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<RelCompAntipattern> identifySSR (OntoUMLParser parser) throws Exception 
+	public static ArrayList<RelCompOccurrence> identifySSR (OntoUMLParser parser) throws Exception 
 	{		
 		Copier copier = new Copier();		
 		
@@ -661,38 +621,101 @@ public class AntiPatternIdentifier {
 		else if (o instanceof Tuple)
 			query_result.add((Tuple<Association, Association>) o);
 		
-		ArrayList<RelCompAntipattern> result = new ArrayList<RelCompAntipattern>();
+		ArrayList<RelCompOccurrence> result = new ArrayList<RelCompOccurrence>();
 		for (Tuple<Association, Association> t : query_result) 
 		{			
 			Association a1 = (Association) AntiPatternUtil.getOriginal((Association)t.getValue("a1"), copier);
 			Association a2 = (Association) AntiPatternUtil.getOriginal((Association)t.getValue("a2"), copier);			
-			RelCompAntipattern rs = new RelCompAntipattern(a1,a2); 
+			RelCompOccurrence rs = new RelCompOccurrence(a1,a2, parser); 
 			result.add(rs);
 		}		
 		return result;
 	}
 
-	public static ArrayList<FreeRoleAntipattern> identifyURS(OntoUMLParser parser) {
-		return FreeRoleAntipattern.identify(parser);
-	}
 	
-	public static ArrayList<MultiDepAntipattern> identifyMRD(OntoUMLParser parser) {
-		return MultiDepAntipattern.identify(parser);
-	}
-	
-	public static ArrayList<GSRigAntipattern> identifyMRGS(OntoUMLParser parser) {
+	/*public static ArrayList<GSRigAntipattern> identifyMRGS(OntoUMLParser parser) {
 		return GSRigAntipattern.identify(parser);
-	}
+	}*/
 	
-	public static ArrayList<DepPhaseAntipattern> identifyRDP(OntoUMLParser parser) {
-		return DepPhaseAntipattern.identify(parser);
-	}
-	
+		
 	public static ArrayList<MMAntiPattern> identifyMM(OntoUMLParser parser) {
 		return MMAntiPattern.identify(parser);
 	}
+
+	/**
+	 * Auxiliary method. Get original element. 
+	 * 
+	 * @param copy
+	 * @param copier
+	 * @return
+	 */
 	
 	
+	public static <T extends EObject> ArrayList<T> runOCLQuery (OntoUMLParser parser, String oclQuery, java.lang.Class<T> queryReturnType){
+		ArrayList<T> queryResult = new ArrayList<T>();
+		
+		Copier copier = new Copier();
+		
+		Package model = parser.createPackageFromSelections(copier);
+		
+		try {
+			Object o = OCLQueryExecuter.executeQuery(oclQuery, (EClassifier)model.eClass(), model);
+			
+			if (o instanceof Collection<?>){
+				
+				for (Object element : (Collection<?>) o ) {
+					
+					if(queryReturnType.isInstance(element) && element instanceof EObject){
+						
+						T original = (T) AntiPatternUtil.getOriginal((EObject)element, copier);			
+						queryResult.add(original);
+						
+					}
+				}
+			}
+			
+		} catch (ParserException e) {
+			System.out.println("Error in OCL query!\n"+e.getMessage());
+		}
+		
+		return queryResult;
+	}
 	
-	
+	public static <T extends EObject, S extends EObject> ArrayList<SimpleTuple<T,S>> runOCLQuerySimpleTuple (OntoUMLParser parser, 
+			String oclQuery, java.lang.Class<T> queryReturnType1, java.lang.Class<S> queryReturnType2, String tupleField1, String tupleField2){
+		
+		ArrayList<SimpleTuple<T,S>> queryResult = new ArrayList<SimpleTuple<T,S>>();
+		
+		Copier copier = new Copier();
+		
+		Package model = parser.createPackageFromSelections(copier);
+		
+		try {
+			Object o = OCLQueryExecuter.executeQuery(oclQuery, (EClassifier)model.eClass(), model);
+			
+			if (o instanceof Collection<?>){
+				
+				for (Object element : (Collection<?>) o ) {
+					
+					if (element instanceof Tuple){
+						
+						Tuple<T,S> tuple = (Tuple) element;
+					
+						if(queryReturnType1.isInstance(tuple.getValue(tupleField1)) && queryReturnType2.isInstance(tuple.getValue(tupleField2)) 
+								&& tuple.getValue(tupleField1) instanceof EObject && tuple.getValue(tupleField2) instanceof EObject){
+							
+							T original1 = (T) AntiPatternUtil.getOriginal((EObject)tuple.getValue(tupleField1), copier);
+							S original2 = (S) AntiPatternUtil.getOriginal((EObject)tuple.getValue(tupleField2), copier);
+													
+							queryResult.add(new SimpleTuple<T,S>(original1, original2));
+						}
+					}
+				}
+			}
+		}catch (ParserException e) {
+			System.out.println("Error in OCL query!\n"+e.getMessage());
+		}
+		
+		return queryResult;
+	}
 }
