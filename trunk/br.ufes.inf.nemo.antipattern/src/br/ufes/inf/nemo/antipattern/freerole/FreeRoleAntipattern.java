@@ -1,151 +1,91 @@
 package br.ufes.inf.nemo.antipattern.freerole;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
+import java.util.Map;
 
 import RefOntoUML.Classifier;
-import RefOntoUML.Mediation;
 import RefOntoUML.Package;
+import RefOntoUML.Property;
 import RefOntoUML.Role;
-import br.ufes.inf.nemo.antipattern.AntiPatternUtil;
-import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
+import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
+import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-//Undefined Role Specialization
-public class FreeRoleAntipattern extends AntipatternOccurrence{
+public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 
-	private Role role;
-	private ArrayList<Mediation> roleMediations;
-	private HashMap<Role,ArrayList<Mediation>> subRolesHash;
-	private ArrayList<Role> undefinedRoles;
+	public FreeRoleAntipattern(OntoUMLParser parser) throws NullPointerException {
+		super(parser);
+	}
 	
-	public FreeRoleAntipattern(Role role, OntoUMLParser parser) throws Exception {
+	public FreeRoleAntipattern(Package pack) throws NullPointerException {
+		this(new OntoUMLParser(pack));
+	}
+
+	private static final String oclQuery = 	
+		"let mediatedProperties : Bag (Property) = "+
+		"	Mediation.allInstances().memberEnd "+
+		"		->select( p: Property |  "+
+		"			not p.type.oclIsTypeOf(Relator) "+ // mediado não é um relator 
+		"			and  "+
+		"			p.type.oclAsType(Classifier).allParents()->forAll( parent : Classifier | not parent.oclIsTypeOf(Relator))) "+ // mediado não é subtipo de nenhum relator (e.g. phase de relator) 
+		"	in mediatedProperties "+ // expressão para agrupar mediados e as propriedades opostas conectas a relators
+		"		->collect( p : Property | Tuple { "+
+		"			mediated: Classifier=p.type.oclAsType(Classifier),  "+
+		"			relatorEnds: Set(Property)=mediatedProperties->select(p2 : Property | p.type=p2.type).opposite->asSet()} "+
+		"		)->asSet() "+
+		"		->select ( x |  "+
+		"			x.mediated.oclIsTypeOf(Role) "+ // mediado é um role
+		"			and "+
+		"			x.mediated.allChildren() "+
+		"			->exists( child: Classifier | "+ // existe pelo menos um subtipo do role que: 
+		"				child.oclIsTypeOf(Role) "+ // é instância de um role 
+		"				and  "+
+		"				mediatedProperties.type->excludes(child.oclAsType(Type)) "+  //não está conectado diretamente a nenhuma mediação
+		"				and "+
+		"				child.allParents() "+
+		"				->forAll( parent: Classifier |  "+
+		"					(parent<>x.mediated "+ // todos os demais pais não estão diretamente conectados a uma mediation 
+		"					and "+
+		"					x.mediated.allParents()->excludes(parent)) "+
+		"					implies "+
+		"					mediatedProperties.type->excludes(parent.oclAsType(Type)) "+ 
+		"				) "+
+		"			) "+ 
+		"		)";
+				
+				
+				
 		
-		this.role = role;
+	private static final AntipatternInfo info = new AntipatternInfo("Free Role Specialization", 
+			"FreeRole", 
+			"This anti-pattern identifies occurrences when a «role» type connected to a «relator» through a «mediation» association, " +
+			"is specialized in another «role» type, which in turn is not connected to an additional «mediation» association.",
+			oclQuery); 
 		
-		this.roleMediations = new ArrayList<Mediation>();
-		for (Mediation m : parser.getAllInstances(Mediation.class)) {
-			if (parser.getMediated(m).equals(role) && !roleMediations.contains(m))
-				roleMediations.add(m);
-		}
+	public static AntipatternInfo getAntipatternInfo(){
+		return info;
+	}
+	
+	@Override
+	public ArrayList<FreeRoleOccurrence> identify() {
+		Map<Classifier, ArrayList<Property>> query_result;
 		
-		if (roleMediations.size()==0)
-			throw new Exception("Role is not defined to characterize the antipattern!!");
-		
-		this.subRolesHash = new HashMap<Role, ArrayList<Mediation>>();
-		this.undefinedRoles = new ArrayList<Role>(); 
-		
-		for (Classifier child : parser.getAllChildren(role)) {
+		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, Classifier.class, Property.class, "mediated", "relatorEnds");
 			
-			if (child instanceof Role) {
-				
-				ArrayList<Mediation> subRoleMediations = new ArrayList<Mediation>();
-				
-				for (Mediation m : parser.getAllInstances(Mediation.class)) {
-					if (parser.getMediated(m).equals(child) && !subRoleMediations.contains(m))
-						subRoleMediations.add(m);
-				}
-				
-				this.subRolesHash.put((Role) child, subRoleMediations);
-				
-				if (subRoleMediations.size()==0)
-					this.undefinedRoles.add((Role) child);
-				
+		for (Classifier role : query_result.keySet()) 
+		{
+			try {
+				if (role instanceof Role){
+					FreeRoleOccurrence occurrence = new FreeRoleOccurrence((Role) role, query_result.get(role), this.parser);
+					super.occurrence.add(occurrence);
+				}else throw new Exception();
+			} catch (Exception e) {
+				System.out.println("FreeRole: Provided information does not characterize an occurrence of the anti-pattern!");
 			}
 		}
 		
-		if (this.undefinedRoles.size()==0)
-			throw new Exception("The are no undefined subroles!!");
-		
+		return this.getOccurrences();
 	}
 
-	@Override
-	public OntoUMLParser setSelected(OntoUMLParser parser) {
-		ArrayList<EObject> selection = new ArrayList<EObject>();
-		
-		selection.add(role);
-		selection.addAll(roleMediations);
-		
-		for (ArrayList<Mediation> subRoleMediations : subRolesHash.values()) {
-			selection.addAll(subRoleMediations);
-		}
-		
-		selection.addAll(subRolesHash.keySet());
-		
-		parser.selectThisElements(selection,true);
-		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
-
-		return parser;
-	}
-	
-	private static String oclQuery = 	"Role.allInstances()->select(x:Role | "+
-										"	Mediation.allInstances()->select(m:Mediation | " +
-										"		m.endType->includes(x))->size()>0 "+
-										"		and "+
-										"		x.allChildren()->select(y:Classifier| "+
-										"			y.oclIsTypeOf(Role) "+
-										"			and "+
-										"			Mediation.allInstances()->select(m:Mediation | " +
-										"				m.endType->includes(y))->size()=0)->size()>0 "+
-										"	)";
-	
-	public static ArrayList<FreeRoleAntipattern> identify(OntoUMLParser parser) {
-	
-		ArrayList<FreeRoleAntipattern> result = new ArrayList<FreeRoleAntipattern>();
-		
-		try {
-			Copier copier = new Copier();
-			Package model = parser.createPackageFromSelections(copier);
-			Collection<Role> query_result = new ArrayList<>();		
-			Object o = OCLQueryExecuter.executeQuery(oclQuery, (EClassifier)model.eClass(), model);
-			
-			query_result.addAll((Collection<Role>)o);
-			
-			for (Role a : query_result) 
-			{
-				Role original = (Role) AntiPatternUtil.getOriginal(a, copier);
-				
-				FreeRoleAntipattern urs;
-				
-				try {
-					urs = new FreeRoleAntipattern(original, parser);
-					result.add(urs);
-				} catch (Exception e) { }
-			}		
-			
-		} catch (Exception e) { }
-		
-		return result;
-		
-	}
-	
-	@Override
-	public String toString(){
-		
-		String result = "Defined Role: "+ role.getName()+"\n"+
-						"Relators: ";
-		
-		for (int i = 0; i < roleMediations.size(); i++) {
-			if(i>0)
-				result += ", ";
-			result += roleMediations.get(i).relator().getName();
-		}
-		
-		result+="\nUndefined: \n";
-		
-		for (Role undefinedRole : this.undefinedRoles) {
-			result += "\t"+undefinedRole.getName()+"\n";
-		}
-		
-		return result;
-		
-	}
 }
-
-

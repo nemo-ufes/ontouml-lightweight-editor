@@ -1,234 +1,111 @@
 package br.ufes.inf.nemo.antipattern.binover;
 
 import java.util.ArrayList;
-
-import org.eclipse.emf.ecore.EObject;
+import java.util.Set;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternInfo;
+import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-/*Self-Type Relationship AntiPattern*/
-public class BinOverAntipattern extends AntipatternOccurrence{
-	private Association association;
-	private Classifier type;
+public class BinOverAntipattern extends Antipattern<BinOverOccurrence> {
+
+	BinOverVariation1Antipattern var1;
+	BinOverVariation2Antipattern var2;
+	BinOverVariation3Antipattern var3;
+	BinOverVariation4Antipattern var4;
+	BinOverVariation5Antipattern var5;
+	BinOverVariation6Antipattern var6;
 	
-	
-	public BinOverAntipattern (Association association) throws Exception{
-		this.setAssociation(association);
+	public BinOverAntipattern(OntoUMLParser parser) throws NullPointerException {
+		super(parser);
+		
+		var1 = new BinOverVariation1Antipattern(parser);
+		var2 = new BinOverVariation2Antipattern(parser);
+		var3 = new BinOverVariation3Antipattern(parser);
+		var4 = new BinOverVariation4Antipattern(parser);
+		var5 = new BinOverVariation5Antipattern(parser);
+		var6 = new BinOverVariation6Antipattern(parser);
 		
 	}
 	
-	public String generateIrreflexiveOcl(OntoUMLParser parser)
-	{
-		String aet_name = association.getMemberEnd().get(1).getName();
+	private static final AntipatternInfo info = new AntipatternInfo("Binary Relation With Overlapping Ends", 
+			"BinOver", 
+			"This anti-pattern occurs when...",
+			null); 
 		
-		return 	"context _'"+association.getMemberEnd().get(0).getType().getName()+"'\n"+
-				"inv irreflexive_"+association.getName()+" : \n    not (self."+aet_name+"->includes(self))";
+	public static AntipatternInfo getAntipatternInfo(){
+		return info;
+	}
+
+	public ArrayList<BinOverOccurrence> identifyOCL() {
+		
+		this.occurrence.addAll(var1.identify());
+		this.occurrence.addAll(var4.identify());
+		this.occurrence.addAll(var5.identify());
+		this.occurrence.addAll(var6.identify());
+		
+		return super.getOccurrences();
 	}
 	
-	public String generateReflexiveOcl(OntoUMLParser parser)
-	{
-		String aet_name = association.getMemberEnd().get(1).getName();
+	@Override
+	public ArrayList<BinOverOccurrence> identify() {
 		
-		return 	"context _'"+association.getMemberEnd().get(0).getType().getName()+"'\n"+
-				"inv reflexive_"+association.getName()+" : \n    self."+aet_name+"->includes(self)";
-	}
-	
-	public String generateSymmetricOcl(OntoUMLParser parser)
-	{
-		String aet_name = association.getMemberEnd().get(1).getName();
-		String aes_name = association.getMemberEnd().get(0).getName();
+		Set<Association> allAssociations = parser.getAllInstances(Association.class);
 		
-		return 	"context _'"+association.getMemberEnd().get(0).getType().getName()+"'\n"+
-				"inv symmetric_"+association.getName()+"_source : \n    "+
-				"self."+aet_name+"->forAll(x : "+association.getMemberEnd().get(1).getType().getName()+" | x."+aes_name+"->includes(self))"+
-				
-				"\n\ncontext _'"+association.getMemberEnd().get(1).getType().getName()+"'\n"+
-				"inv symmetric_"+association.getName()+"_target : \n    "+
-				"self."+aes_name+"->forAll(x : "+association.getMemberEnd().get(0).getType().getName()+" | x."+aet_name+"->includes(self))";
-	}
-	
-	public String generateAntiSymmetricOcl(OntoUMLParser parser)
-	{
-		String aet_name = association.getMemberEnd().get(1).getName();
-		String aes_name = association.getMemberEnd().get(0).getName();
+		int i = 1, total=allAssociations.size();
 		
-		return 	"context _'"+association.getMemberEnd().get(0).getType().getName()+"'\n"+
-				"inv antisymmetric_"+association.getName()+"_source : \n    "+
-				"self."+aet_name+"->forAll(x : "+association.getMemberEnd().get(1).getType().getName()+" | !(x."+aes_name+"->includes(self)))"+
-				
-				"\n\ncontext _'"+association.getMemberEnd().get(1).getType().getName()+"'\n"+
-				"inv antisymmetric_"+association.getName()+"_target : \n    "+
-				"self."+aes_name+"->forAll(x : "+association.getMemberEnd().get(0).getType().getName()+" | !(x."+aet_name+"->includes(self)))";
-	}
-	
-	public String generateTransitiveOcl(OntoUMLParser parser)
-	{
-		String aet_name = association.getMemberEnd().get(1).getName();		
-		
-		return 	"context _'"+association.getMemberEnd().get(0).getType().getName()+"'\n"+
-				"inv transitive_" + association.getName() + " : \n    "+
-				"self."+aet_name+"->asSet()->includesAll(self."+aet_name+"."+aet_name+"->asSet())";				
-	}
-	
-	public String generateIntransitiveOcl(OntoUMLParser parser)
-	{
-		String aet_name = association.getMemberEnd().get(1).getName();		
-		
-		return 	"context _'"+association.getMemberEnd().get(0).getType().getName()+"'\n"+
-				"inv intransitive_"+association.getName()+ " : \n    "+
-				"self."+aet_name+"->asSet()->excludesAll(self."+aet_name+"."+aet_name+"->asSet())";
-				
-	}
-	
-	/*TODO criar as regras para transitive*/
-	
-	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is REFLEXIVE*/
-	public String generateReflexivePredicate (int cardinality, OntoUMLParser parser) {
-		String predicate, rules, name;
-		
-		String associationName, typeName;
-		associationName = parser.getAlias(this.association);
-		typeName = parser.getAlias(this.type);
-		
-		name = "reflexive_"+associationName;
-		rules = "#" + associationName + ">" + cardinality;
-		rules += "\n\tall w:World | reflexive[w."+ associationName +", w."+typeName+"]";
-		
-		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
-		
-		return predicate;
-	}
-	
-	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is IRREFLEXIVE*/
-	public String generateIrreflexivePredicate (int cardinality, OntoUMLParser parser){
-		String predicate, rules, name;
-		
-		String associationName;
-		associationName = parser.getAlias(this.association);
-		
-		name = "irreflexive_"+associationName;
-		
-		rules = "#" + associationName + ">" + cardinality; 
-		rules += "\n\tall w:World | irreflexive[w."+ associationName +"]";
-				
-		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n"; 
-    	
-    	return predicate;
-	}
-	
-	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is Transitive*/
-	public String generateTransitivePredicate (int cardinality, OntoUMLParser parser){
-		String predicate, rules, name;
-		
-		String associationName;
-		associationName = parser.getAlias(this.association);
-		name = "transitive_"+associationName;
-		
-		rules = "#" + associationName + ">" + cardinality; 
-		rules += "\n\tall w:World | transitive[w."+ associationName +"]";
-				
-		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n"; 
-    	
-    	return predicate;
-	}
-	
-	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is INTRANSITIVE*/
-	public String generateIntransitivePredicate (int cardinality, OntoUMLParser parser){
-		String predicate, rules, name;
-		
-		String associationName, typeName;
-		associationName = parser.getAlias(this.association);
-		typeName = parser.getAlias(this.type);
-		
-		name = "instransitive_"+associationName;
-		rules = "#" + associationName + ">" + cardinality; 
-		rules += "\n\tall w:World | all disj x,y,z: w."+ typeName +" | (y in x.(w."+ associationName +") and z in y.(w."+ associationName +") ) implies z not in x.(w."+ associationName +")";
-		
-		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n"; 
-		
-		return predicate;
-	}
-	
-	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is SYMMETRIC*/
-	public String generateSymmetricPredicate (int cardinality, OntoUMLParser parser){
-		String predicate, rules, name;
-		
-		String associationName;
-		associationName = parser.getAlias(this.association);
-		name = "symmetric_"+associationName;
-		
-		rules = "#" + associationName + ">" + cardinality; 
-		rules += "\n\tall w:World | symmetric[w."+ associationName +"]";
-				
-		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n"; 
-    	
-    	return predicate;
-	}
-	
-	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is ANTISYMMETRIC*/
-	public String generateAntisymmetricPredicate (int cardinality, OntoUMLParser parser){
-		String predicate, rules, name;
-		
-		String associationName;
-		associationName = parser.getAlias(this.association);
-		name = "antisymmetric_"+associationName;
-		rules = "#" + associationName + ">" + cardinality;
-		rules += "\n\tall w:World | antisymmetric[w."+ associationName +"]";
-		
-		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
+		for (Association a : allAssociations) {
+			i++;
+			System.out.println("("+i+" of "+total+") " +parser.getStringRepresentation(a)+": Analyzing...");
 			
-		return predicate;
+			Classifier source = (Classifier) a.getMemberEnd().get(0).getType();
+			Classifier target = (Classifier) a.getMemberEnd().get(1).getType();
+			
+//			System.out.println("Analyzing association: "+parser.getStringRepresentation(a));
+			if(OverlappingTypesIdentificator.isVariation1(source, target)) {
+//				System.out.println("V1 occurrence found!");
+				try { var1.getOccurrences().add(new BinOverVariation1Occurrence(a, parser));} 
+				catch (Exception e) { e.printStackTrace();}
+			}
+			else if(OverlappingTypesIdentificator.isVariation2(source, target)) {
+//				System.out.println("V2 occurrence found!");
+				try { var2.getOccurrences().add(new BinOverVariation2Occurrence(a, parser));} 
+				catch (Exception e) { e.printStackTrace();}
+			}
+			else if(OverlappingTypesIdentificator.isVariation3(source, target)) {
+//				System.out.println("V3 occurrence found!");
+				try { var3.getOccurrences().add(new BinOverVariation3Occurrence(a, parser));} 
+				catch (Exception e) { e.printStackTrace();}
+			}
+			else if(OverlappingTypesIdentificator.isVariation4(source, target)) {
+//				System.out.println("V4 occurrence found!");
+				try { var4.getOccurrences().add(new BinOverVariation4Occurrence(a, parser));} 
+				catch (Exception e) { e.printStackTrace();}
+			}
+			else if(OverlappingTypesIdentificator.isVariation5(source, target)) {
+//				System.out.println("V5 occurrence found!");
+				try { var5.getOccurrences().add(new BinOverVariation5Occurrence(a, parser));} 
+				catch (Exception e) { e.printStackTrace();}
+			}
+			else if(OverlappingTypesIdentificator.isVariation6(source, target)) {
+//				System.out.println("V6 occurrence found!");
+				try { var6.getOccurrences().add(new BinOverVariation6Occurrence(a, parser));} 
+				catch (Exception e) { e.printStackTrace();}
+			}
+			
+		}
+		
+		this.occurrence.addAll(var1.getOccurrences());
+		this.occurrence.addAll(var2.getOccurrences());
+		this.occurrence.addAll(var3.getOccurrences());
+		this.occurrence.addAll(var4.getOccurrences());
+		this.occurrence.addAll(var5.getOccurrences());
+		this.occurrence.addAll(var6.getOccurrences());
+		
+		return this.getOccurrences();
 	}
 	
-	public Association getAssociation() {
-		return association;
-	}
-
-	public void setAssociation(Association association) throws Exception {
-		
-		
-		if (association == null)
-			throw new NullPointerException();
-		if (!(association instanceof Association))
-			throw new Exception("Provided object for STRAntiPattern creation is not an Association.");
-		/*Check if the provided association indeed characterizes a SelfType Relationship AntiPattern*/
-		else if (!association.getMemberEnd().get(0).getType().equals(association.getMemberEnd().get(1).getType()))
-			throw new Exception("Input association does not characterize a Self-Type Relationship AntiPattern");
-		
-		this.association = association;
-		this.type = (Classifier) association.getMemberEnd().get(0).getType();
-	}
-
-	public Classifier getType() {
-		return type;
-	}
-	
-	@Override
-	public String toString() {
-		return type.getName()+" - "+association.getName();
-	}
-
-	@Override
-	public OntoUMLParser setSelected(OntoUMLParser parser) {
-		ArrayList<EObject> selection = new ArrayList<EObject>();
-		
-		selection.add(type);
-		selection.add(association);
-		
-		parser.selectThisElements(selection,true);
-		parser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY, false);
-		return parser;
-	}
-	
-
 }
