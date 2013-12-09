@@ -76,13 +76,13 @@ import br.ufes.inf.nemo.oled.ui.commands.ProjectWriter;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorMouseEvent;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorStateListener;
-import br.ufes.inf.nemo.oled.ui.diagram.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.diagram.SelectionListener;
-import br.ufes.inf.nemo.oled.ui.diagram.VerificationSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
+import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
+import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.AlloyHelper;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -306,7 +306,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				
 				saveCurrentProjectToFile(file);
 				
-				frame.setTitle(file.getName()+" - OLED");
+				frame.setTitle("OLED - "+file.getName()+"");
 				frame.showToolBox();
 				
 			} catch (Exception ex) {
@@ -354,7 +354,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 								
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 				
-				frame.setTitle(file.getName()+" - OLED");
+				frame.setTitle("OLED - "+file.getName()+"");
 				frame.showInfoManager();
 				frame.showToolBox();
 				
@@ -405,7 +405,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 								
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 				
-				frame.setTitle(file.getName()+" - OLED");
+				frame.setTitle("OLED - "+file.getName()+"");
 				frame.showInfoManager();
 				frame.showToolBox();
 				
@@ -461,7 +461,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			
 			for(UmlDiagram d: getCurrentProject().getDiagrams()) d.setSaveNeeded(false);
 			
-			frame.setTitle(file.getName()+" - OLED");
+			frame.setTitle("OLED - "+file.getName()+"");
 			updateUI();
 			
 			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));

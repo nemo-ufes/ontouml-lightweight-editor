@@ -23,9 +23,9 @@ import javax.swing.JPopupMenu;
 
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.Selection;
-import br.ufes.inf.nemo.oled.ui.MultiSelectionPopupMenu;
-import br.ufes.inf.nemo.oled.ui.SingleConnectionPopupMenu;
-import br.ufes.inf.nemo.oled.ui.SingleNodePopupMenu;
+import br.ufes.inf.nemo.oled.ui.popup.MultiSelectionPopupMenu;
+import br.ufes.inf.nemo.oled.ui.popup.SingleConnectionPopupMenu;
+import br.ufes.inf.nemo.oled.ui.popup.SingleNodePopupMenu;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlDiagramElement;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
