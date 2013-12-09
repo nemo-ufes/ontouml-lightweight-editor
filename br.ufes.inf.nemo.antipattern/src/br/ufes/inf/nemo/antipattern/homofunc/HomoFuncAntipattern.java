@@ -2,12 +2,14 @@ package br.ufes.inf.nemo.antipattern.homofunc;
 
 import java.util.ArrayList;
 
+import RefOntoUML.Association;
 import RefOntoUML.Package;
+import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class HomoFuncAntipattern extends Antipattern {
+public class HomoFuncAntipattern extends Antipattern<HomoFuncOccurrence> {
 
 	public HomoFuncAntipattern(OntoUMLParser parser) throws NullPointerException {
 		super(parser);
@@ -38,15 +40,23 @@ public class HomoFuncAntipattern extends Antipattern {
 	}
 	
 	@Override
-	public ArrayList<HomoFuncAntipattern> identify() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<HomoFuncOccurrence> identify() {
+		ArrayList<Association> query_result;
+		
+		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, Association.class);
+		
+		for (Association a : query_result) 
+		{
+			try {
+				
+				HomoFuncOccurrence occurrence = new HomoFuncOccurrence(a, super.parser);
+				super.occurrence.add(occurrence);
+			} catch (Exception e) {
+				System.out.println(info.getAcronym()+": Could not create occurrence!");
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		return this.getOccurrences();
 	}
-
-	@Override
-	public ArrayList<HomoFuncAntipattern> getOccurrences() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
