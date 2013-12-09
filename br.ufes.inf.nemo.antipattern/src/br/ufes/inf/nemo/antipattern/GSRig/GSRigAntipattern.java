@@ -1,141 +1,76 @@
-package br.ufes.inf.nemo.antipattern.gsrig;
+package br.ufes.inf.nemo.antipattern.GSRig;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
-
-import RefOntoUML.AntiRigidSortalClass;
-import RefOntoUML.Category;
-import RefOntoUML.Classifier;
-import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import RefOntoUML.Mixin;
 import RefOntoUML.Package;
-import RefOntoUML.RigidSortalClass;
-import RefOntoUML.RoleMixin;
-import br.ufes.inf.nemo.antipattern.AntiPatternUtil;
-import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
+import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
+import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-//Mixed Rigidity in Generalization Set
-public class GSRigAntipattern extends AntipatternOccurrence{
+public class GSRigAntipattern extends Antipattern<GSRigOccurrence> {
 
-	GeneralizationSet gs;
-	ArrayList<Classifier> specifics;
-	ArrayList<Classifier> rigidSpecifics;
-	ArrayList<Classifier> antiRigidSpecifics;
-	ArrayList<Classifier> semiRigidSpecifics;
+	public GSRigAntipattern(OntoUMLParser parser) throws NullPointerException {
+		super(parser);
+	}
 	
-	public GSRigAntipattern(GeneralizationSet gs, OntoUMLParser parser) throws Exception {
+	public GSRigAntipattern(Package pack) throws NullPointerException {
+		this(new OntoUMLParser(pack));
+	}
+
+	private static final String oclQuery = 	
+			"GeneralizationSet.allInstances()->select(gs:GeneralizationSet |"+
+			"	not gs.parent().oclIsTypeOf(Mixin)"+
+			"	and"+
+			"	("+
+			"		("+
+			"		gs.children()->exists(x | x.oclIsKindOf(RigidSortalClass) or x.oclIsKindOf(Category))"+ 
+			"		and "+
+			"		gs.children()->exists(x | x.oclIsKindOf(AntiRigidSortalClass) or x.oclIsKindOf(RoleMixin))"+
+			"		)"+
+			"		or"+
+			"		("+
+			"		gs.children()->exists(x | x.oclIsKindOf(RigidSortalClass) or x.oclIsKindOf(Category))"+ 
+			"		and "+
+			"		gs.children()->exists(x | x.oclIsKindOf(Mixin))"+
+			"		)"+
+			"		or"+
+			"		("+
+			"		gs.children()->exists(x | x.oclIsKindOf(Mixin))"+ 
+			"		and "+
+			"		gs.children()->exists(x | x.oclIsKindOf(AntiRigidSortalClass) or x.oclIsKindOf(RoleMixin))"+
+			"		)"+
+			"	)"+
+			")";				
+			
+	private static final AntipatternInfo info = new AntipatternInfo("Generalization Set with Mixed Rigidity", 
+			"GSRig", 
+			"A generalization set in which the common super-type is a rigid (stereotyped as  «kind», «quantity», «collective», «subkind» or «category») " +
+			"and there is at least one rigid subtype and at least one anti-rigid subtype. ",
+			oclQuery); 
 		
-		this.gs = gs;
-		this.specifics = new ArrayList<Classifier>();
-		this.rigidSpecifics = new ArrayList<Classifier>();
-		this.antiRigidSpecifics = new ArrayList<Classifier>();
-		this.semiRigidSpecifics = new ArrayList<Classifier>();
+	public static AntipatternInfo getAntipatternInfo(){
+		return info;
+	}
+	
+	@Override
+	public ArrayList<GSRigOccurrence> identify() {
+		ArrayList<GeneralizationSet> query_result;
 		
-		for (Generalization g : gs.getGeneralization()) {
-			if (parser.isSelected(g) && parser.isSelected(g.getSpecific())){
-				
-				Classifier specific = g.getSpecific();
-				
-				if (specific instanceof RigidSortalClass || specific instanceof Category )
-					rigidSpecifics.add(specific);
-				else if (specific instanceof AntiRigidSortalClass || specific instanceof RoleMixin)
-					antiRigidSpecifics.add(specific);
-				else if (specific instanceof Mixin)
-					semiRigidSpecifics.add(specific);
+		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, GeneralizationSet.class);
+		
+		for (GeneralizationSet gs : query_result) 
+		{
+			try {
+				GSRigOccurrence occurrence = new GSRigOccurrence(gs, super.parser);
+				super.occurrence.add(occurrence);
+			} catch (Exception e) {
+				System.out.println(info.getAcronym()+": Could not create occurrence!");
 			}
 		}
 		
-		if (rigidSpecifics.size()==0 && antiRigidSpecifics.size()==0)
-			throw new Exception("Only semi rigid specifics.");
-		if (rigidSpecifics.size()==0 && semiRigidSpecifics.size()==0)
-			throw new Exception("Only anti rigid specifics.");
-		if (semiRigidSpecifics.size()==0 && antiRigidSpecifics.size()==0)
-			throw new Exception("Only rigid specifics.");
-		
-		specifics.addAll(antiRigidSpecifics);
-		specifics.addAll(rigidSpecifics);
-		specifics.addAll(semiRigidSpecifics);
-	}
-
-	private static String oclQuery = 	"GeneralizationSet.allInstances()->select(gs:GeneralizationSet |"+
-										"	not gs.parent().oclIsTypeOf(Mixin)"+
-										"	and"+
-										"	("+
-										"		("+
-										"		gs.children()->exists(x | x.oclIsKindOf(RigidSortalClass) or x.oclIsKindOf(Category))"+ 
-										"		and "+
-										"		gs.children()->exists(x | x.oclIsKindOf(AntiRigidSortalClass) or x.oclIsKindOf(RoleMixin))"+
-										"		)"+
-										"		or"+
-										"		("+
-										"		gs.children()->exists(x | x.oclIsKindOf(RigidSortalClass) or x.oclIsKindOf(Category))"+ 
-										"		and "+
-										"		gs.children()->exists(x | x.oclIsKindOf(Mixin))"+
-										"		)"+
-										"		or"+
-										"		("+
-										"		gs.children()->exists(x | x.oclIsKindOf(Mixin))"+ 
-										"		and "+
-										"		gs.children()->exists(x | x.oclIsKindOf(AntiRigidSortalClass) or x.oclIsKindOf(RoleMixin))"+
-										"		)"+
-										"	)"+
-										")";
-
-
-	public static ArrayList<GSRigAntipattern> identify(OntoUMLParser parser) {
-		
-		ArrayList<GSRigAntipattern> result = new ArrayList<GSRigAntipattern>();
-		
-		try {
-			Copier copier = new Copier();
-			Package model = parser.createPackageFromSelections(copier);
-			Collection<GeneralizationSet> query_result = new ArrayList<>();		
-			Object o = OCLQueryExecuter.executeQuery(oclQuery, (EClassifier)model.eClass(), model);
-			
-			query_result.addAll((Collection<GeneralizationSet>)o);
-			
-			for (GeneralizationSet a : query_result) 
-			{
-				GeneralizationSet original = (GeneralizationSet) AntiPatternUtil.getOriginal(a, copier);
-				
-				GSRigAntipattern mrgs;
-				
-				try {
-					mrgs = new GSRigAntipattern(original, parser);
-					result.add(mrgs);
-				} catch (Exception e) { }
-			}		
-			
-		} catch (Exception e) { }
-		
-		return result;
-		
-	}
-	
-	@Override
-	public OntoUMLParser setSelected(OntoUMLParser parser) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public String toString(){
-		String result = "GenSet: "+gs.getName()+"\n"+
-						"General: "+gs.getGeneralization().get(0).getGeneral().getName()+"\n"+
-						"Specifics:";
-		
-		for (Generalization g : gs.getGeneralization()){
-			result += "\n\t"+g.getSpecific().getName();
-		}
-		
-		return result;
-		
-	}
+		return this.getOccurrences();
+	}	
 
 }
