@@ -2,23 +2,21 @@ package br.ufes.inf.nemo.antipattern.undefformal;
 
 import java.util.ArrayList;
 
+import RefOntoUML.FormalAssociation;
 import RefOntoUML.Package;
+import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
-import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class UndefFormalAntipattern extends Antipattern {
+public class UndefFormalAntipattern extends Antipattern<UndefFormalOccurrence> {
 
-	public UndefFormalAntipattern(OntoUMLParser parser)
-			throws NullPointerException {
+	public UndefFormalAntipattern(OntoUMLParser parser)	throws NullPointerException {
 		super(parser);
-		// TODO Auto-generated constructor stub
 	}
 
 	public UndefFormalAntipattern(Package pack) throws NullPointerException {
-		super(pack);
-		// TODO Auto-generated constructor stub
+		this(new OntoUMLParser(pack));
 	}
 	
 	private static final String oclQuery =	
@@ -45,15 +43,23 @@ public class UndefFormalAntipattern extends Antipattern {
 	}
 
 	@Override
-	public <T extends Antipattern> ArrayList<T> identify() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <T extends Antipattern> ArrayList<T> getOccurrences() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<UndefFormalOccurrence> identify() {
+		ArrayList<FormalAssociation> query_result;
+		
+		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, FormalAssociation.class);
+		
+		for (FormalAssociation formal : query_result) 
+		{
+			try {
+				UndefFormalOccurrence occurrence = new UndefFormalOccurrence(formal, super.parser);
+				super.occurrence.add(occurrence);
+			} catch (Exception e) {
+				System.out.println(info.getAcronym()+": Could not create occurrence!");
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		return this.getOccurrences();
 	}
 
 }
