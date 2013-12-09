@@ -1,100 +1,63 @@
 package br.ufes.inf.nemo.antipattern.depphase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
-import org.eclipse.emf.ecore.EObject;
-
-import RefOntoUML.Generalization;
-import RefOntoUML.Mediation;
+import RefOntoUML.Package;
 import RefOntoUML.Phase;
-import RefOntoUML.Type;
-import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
+import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-//Relationally Dependent Phase
-public class DepPhaseAntipattern extends AntipatternOccurrence{
-
-	Phase phase;
-	ArrayList<Mediation> dependencies;
+public class DepPhaseAntipattern extends Antipattern<DepPhaseOccurrence> {
 	
-	public DepPhaseAntipattern(Phase phase, ArrayList<Mediation> dependencies) throws Exception {
-		this.phase = phase;
-		
-		for (Mediation m : dependencies) {
-			if(!m.getEndType().contains(phase))
-				throw new Exception();
-		}
-		
-		this.dependencies = dependencies;
-		
+	public DepPhaseAntipattern(OntoUMLParser parser) throws NullPointerException {
+		super(parser);
 	}
 
+	public DepPhaseAntipattern(Package pack) throws NullPointerException {
+		this(new OntoUMLParser(pack));
+	}
+
+	private static final String oclQuery = 
+			"let mediatedPhase : Bag (Property) = Mediation.allInstances().memberEnd->select( p : Property | p.type.oclIsTypeOf(Phase)) "+
+			"in "+
+			"	mediatedPhase->collect ( p : Property | Tuple { "+ 
+			"		phase : Phase = p.type.oclAsType(Phase),  "+
+			"		relatorEnds : Set (Property) = mediatedPhase->select( p2 : Property | p2.type = p.type).opposite->asSet() }" +
+			"	)->asSet() ";
+	
+	private static final AntipatternInfo info = new AntipatternInfo("Relationally Dependent Phase", 
+			"DepPhase", 
+			"This anti-pattern occurs when a «phase» type connected to one or more «mediation» associations. ",
+			oclQuery); 
+		
+	public static AntipatternInfo getAntipatternInfo(){
+		return info;
+	}
+	
 	@Override
-	public OntoUMLParser setSelected(OntoUMLParser parser) {
-		ArrayList<EObject> selection = new ArrayList<EObject>();
+	public ArrayList<DepPhaseOccurrence> identify() {
 		
-		selection.add(phase);
-		selection.addAll(dependencies);
+		Map<Phase, ArrayList<Property>> query_result;
 		
-		parser.selectThisElements(selection,true);
-		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
-
-		return parser;
-	}
-	
-	
-	public static ArrayList<DepPhaseAntipattern> identify(OntoUMLParser parser) {
-		
-		ArrayList<DepPhaseAntipattern> result = new ArrayList<DepPhaseAntipattern>();
-		HashMap<Phase,ArrayList<Mediation>> hash = new HashMap<Phase, ArrayList<Mediation>>();
-		
-		try 
+		query_result = AntiPatternIdentifier.runOCLQuery(this.parser, DepPhaseAntipattern.oclQuery, Phase.class, Property.class, "phase", "relatorEnds");
+			
+		for (Phase phase : query_result.keySet()) 
 		{
-			//collect the phases and their dependencies, if any
-			for (Mediation m : parser.getAllInstances(Mediation.class)) 
-			{
+			try {
 				
-				Type mediated = parser.getMediated(m);
-							
-				if (mediated instanceof Phase){
-					ArrayList<Mediation> mediations = hash.get(mediated);
-					
-					if(mediations==null){
-						mediations = new ArrayList<Mediation>();
-						hash.put((Phase) mediated, mediations);
-					}
-					
-					mediations.add(m);
-				}
-			}
-			
-			//foreach relationally dependent phase, creates an antipattern with all its dependencies.
-			for (Phase phase : hash.keySet()) {
-				try { 
-					DepPhaseAntipattern rdp = new DepPhaseAntipattern(phase, hash.get(phase));
-					result.add(rdp);
-				} catch (Exception e) {}
+				DepPhaseOccurrence depPhase = new DepPhaseOccurrence(phase, query_result.get(phase), this.parser);
+				super.occurrence.add(depPhase);
 				
+			} catch (Exception e) {
+				System.out.println("DepPhase: Provided information does not characterize an occurrence of the anti-pattern!");
 			}
-			
-		} catch (Exception e) { }
-		
-		return result;
-		
-	}
-
-	@Override
-	public String toString(){
-		String result = "Phase: "+phase.getName()+"\n"+
-						"Dependencies:";
-		
-		for (Mediation m : dependencies){
-			result += "\n\t"+m.getName()+" - "+m.relator().getName();
 		}
 		
-		return result;
-		
-	}
-	
+		return this.getOccurrences();
+	}	
+
 }
