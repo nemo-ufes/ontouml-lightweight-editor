@@ -4,9 +4,11 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import RefOntoUML.Package;
 import java.util.ArrayList;
 
-public abstract class Antipattern {
+
+public abstract class Antipattern<T extends AntipatternOccurrence> {
 	
 	protected OntoUMLParser parser;
+	protected ArrayList<T> occurrence;
 		
 	/*basic constructors*/
 	public Antipattern (OntoUMLParser parser) throws NullPointerException{
@@ -14,6 +16,7 @@ public abstract class Antipattern {
 			throw new NullPointerException("Antipattern.java: Null OntoUML parser!");
 		
 		this.parser = parser;
+		occurrence = new ArrayList<T>();
 	}
 	
 	public Antipattern (Package pack) throws NullPointerException{
@@ -26,6 +29,8 @@ public abstract class Antipattern {
 		throw new IllegalStateException("Antipattern info hasn't been set up in the subclass");
 	}
 		
-	public abstract <T extends Antipattern> ArrayList<T> identify();
-	public abstract <T extends Antipattern> ArrayList<T> getOccurrences();
+	public abstract ArrayList<T> identify();
+	public ArrayList<T> getOccurrences(){
+		return occurrence;
+	}
 }
