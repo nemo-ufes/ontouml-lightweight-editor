@@ -12,17 +12,18 @@ import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Relation Specialization*/
-public class RSAntiPattern extends AntipatternOccurrence{
+public class RelSpecOccurrence extends AntipatternOccurrence{
 	private Association general;
 	private Association specific;
 	private Classifier generalSource;
 	private Classifier generalTarget;
 	private Classifier specificSource;
 	private Classifier specificTarget;
+	
 	public static int SUBSET = 1, REDEFINE = 2, NONSUBSET = 3, DISJOINT = 4;
 		
-	public RSAntiPattern (Association specific, Association general) throws Exception{
-						
+	public RelSpecOccurrence (Association specific, Association general, OntoUMLParser parser) throws Exception{
+		super(parser);
 		this.setGeneral(general);
 		this.setSpecific(specific);
 		
@@ -281,16 +282,19 @@ public class RSAntiPattern extends AntipatternOccurrence{
 	
 	@Override
 	public String toString() {
-		String result;
 		
-		result = "General: "+generalSource.getName()+" - "+general.getName()+" - "+generalTarget.getName()+"\n";
-		result += "Specific: "+specificSource.getName()+" - "+specific.getName()+" - "+specificTarget.getName();
-		
+		String result = "General: \n\t"+parser.getStringRepresentation(general.getMemberEnd().get(0).getType())+
+						" - "+parser.getStringRepresentation(general)+
+						" - "+parser.getStringRepresentation(general.getMemberEnd().get(1).getType())+"\n"+
+						"Specific: \n\t"+parser.getStringRepresentation(specific.getMemberEnd().get(0).getType())+
+						" - "+parser.getStringRepresentation(specific)+
+						" - "+parser.getStringRepresentation(specific.getMemberEnd().get(1).getType());
+				
 		return result;
 	}
 	
 	@Override
-	public OntoUMLParser setSelected(OntoUMLParser parser) {
+	public OntoUMLParser setSelected() {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
 		selection.add(general);

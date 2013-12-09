@@ -8,9 +8,9 @@ import br.ufes.inf.nemo.antipattern.InstantiationPatternParameter;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class DistinctRelators extends InstantiationPattern{
-	RepRelAntipattern tri;
+	RepRelOccurrence tri;
 	
-	public DistinctRelators(RepRelAntipattern tri){
+	public DistinctRelators(RepRelOccurrence tri){
 		
 		this.antipattern = tri;
 		this.tri = tri;

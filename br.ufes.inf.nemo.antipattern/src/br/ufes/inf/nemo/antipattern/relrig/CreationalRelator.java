@@ -13,9 +13,9 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class CreationalRelator extends InstantiationPattern{
 
-	RelRigAntipattern rwrt;
+	RelRigOccurrence rwrt;
 	
-	public CreationalRelator(RelRigAntipattern rwrt) {
+	public CreationalRelator(RelRigOccurrence rwrt) {
 		
 		this.antipattern = rwrt;
 		this.rwrt = rwrt;

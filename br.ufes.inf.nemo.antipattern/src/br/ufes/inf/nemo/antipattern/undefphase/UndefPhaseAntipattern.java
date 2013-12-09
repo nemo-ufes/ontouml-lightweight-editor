@@ -2,21 +2,21 @@ package br.ufes.inf.nemo.antipattern.undefphase;
 
 import java.util.ArrayList;
 
+import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Package;
+import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class UndefPhaseAntipattern extends Antipattern {
+public class UndefPhaseAntipattern extends Antipattern<UndefPhaseOccurrence> {
 
 	public UndefPhaseAntipattern(OntoUMLParser parser) throws NullPointerException {
 		super(parser);
-		// TODO Auto-generated constructor stub
 	}
 
 	public UndefPhaseAntipattern(Package pack) throws NullPointerException {
-		super(pack);
-		// TODO Auto-generated constructor stub
+		this(new OntoUMLParser(pack));
 	}
 
 private static final String oclQuery =	
@@ -46,15 +46,23 @@ private static final String oclQuery =
 	}
 	
 	@Override
-	public <T extends Antipattern> ArrayList<T> identify() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <T extends Antipattern> ArrayList<T> getOccurrences() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<UndefPhaseOccurrence> identify() {
+		ArrayList<GeneralizationSet> query_result;
+		
+		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, GeneralizationSet.class);
+		
+		for (GeneralizationSet gs : query_result) 
+		{
+			try {
+				UndefPhaseOccurrence occurrence = new UndefPhaseOccurrence(gs, super.parser);
+				super.occurrence.add(occurrence);
+			} catch (Exception e) {
+				System.out.println(info.getAcronym()+": Could not create occurrence!");
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		return this.getOccurrences();
 	}
 
 }
