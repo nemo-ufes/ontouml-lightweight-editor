@@ -53,7 +53,7 @@ public class OCL2Alloy {
 			}			
 		}
 		
-		if (!myVisitor.getCustomLibraryOperations().isEmpty() && myVisitor.getCustomLibraryOperations()!=null)
+		if (myVisitor.getCustomLibraryOperations()!=null && !myVisitor.getCustomLibraryOperations().isEmpty())
 			result += myVisitor.getCustomLibraryOperations();
 		
 		return result;
@@ -93,7 +93,7 @@ public class OCL2Alloy {
 			}			
 		}
 				
-		if (!myVisitor.getCustomLibraryOperations().isEmpty() && myVisitor.getCustomLibraryOperations()!=null)
+		if (myVisitor.getCustomLibraryOperations()!=null && !myVisitor.getCustomLibraryOperations().isEmpty())
 			result += myVisitor.getCustomLibraryOperations();
 		
 		return result;
@@ -148,7 +148,7 @@ public class OCL2Alloy {
 			succeeds=false; 
 		}
 				
-		if (!myVisitor.getCustomLibraryOperations().isEmpty() && myVisitor.getCustomLibraryOperations()!=null)
+		if (myVisitor.getCustomLibraryOperations()!=null && !myVisitor.getCustomLibraryOperations().isEmpty())
 			result += myVisitor.getCustomLibraryOperations();
 		
 		return result;

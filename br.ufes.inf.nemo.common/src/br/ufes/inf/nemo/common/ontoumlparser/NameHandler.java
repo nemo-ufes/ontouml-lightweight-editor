@@ -19,6 +19,15 @@ public class NameHandler {
 	 */
     public HashMap<String, WordCounter> namesHashMap = new HashMap<String, WordCounter>();
     
+    public boolean contains(String name){
+    	return namesHashMap.containsKey(name);
+    }
+    
+    public void remove(String name)
+    {
+    	namesHashMap.remove(name);
+    }
+    
     /** 
      * Remove special characters of the name and store the name into a hash map.
      * @param element TODO

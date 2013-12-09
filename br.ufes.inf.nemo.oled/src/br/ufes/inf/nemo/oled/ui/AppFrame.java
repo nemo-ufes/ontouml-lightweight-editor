@@ -204,8 +204,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		browserArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		
 		editorArea.setContinuousLayout(true);
-		editorArea.setOneTouchExpandable(false);		
-		editorArea.setDividerSize(5);
+		editorArea.setOneTouchExpandable(true);		
+		editorArea.setDividerSize(7);
 		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
 		diagramManager = new DiagramManager(this);
@@ -225,7 +225,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		browserArea.setResizeWeight(1);
 		
 		toolManager.setMinimumSize(new Dimension(0,0));		
-		toolArea.add(toolManager, JSplitPane.LEFT);
+		toolArea.add(toolManager.getPalleteAccordion(), JSplitPane.LEFT);
 		toolArea.add(diagramManager, JSplitPane.RIGHT);
 		toolArea.setDividerLocation(0.0d);
 		

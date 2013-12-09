@@ -44,12 +44,13 @@ import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 /** 
- * This class represents a parser for analyzing and keeping useful informations about ontoUML model. 
- * It associates an alias for every Element in the model, as well as if
+ * This class represents a parser for analyzing and keeping useful informations about the ontoUML model. 
+ * It associates an alias for every Element, as well as if
  * this Element is selected or not (useful for transformation purposes).
  * 
  * @author John Guerson
  * @author Thiago Sales
+ * @author Vinicius Sobral
  *
  */
 public class OntoUMLParser {
@@ -68,8 +69,7 @@ public class OntoUMLParser {
 	private NameHandler nameHandler = new NameHandler();
 	
 	/** Options for complete element selections in the model (transformation purposes). */
-	public static int NO_HIERARCHY = 0, SORTAL_ANCESTORS = 1, ALL_ANCESTORS = 2, ALL_DESCENDANTS = 3, COMPLETE_HIERARCHY = 4;
-		
+	public static int NO_HIERARCHY = 0, SORTAL_ANCESTORS = 1, ALL_ANCESTORS = 2, ALL_DESCENDANTS = 3, COMPLETE_HIERARCHY = 4;		
 	
 	/**
 	 * This constructor creates a parser from a root ontoUML Package.
@@ -110,7 +110,8 @@ public class OntoUMLParser {
 	}	
 	
 	/**
-	 * Should me more of a description here...
+	 * Add a new Element to this Parser. 
+	 * But note that this new element must already have been added in the Model (i.e., in the root Package or file in which this parser was created). 
 	 */
 	public void addElement(EObject obj)
 	{		
@@ -120,12 +121,27 @@ public class OntoUMLParser {
 	}
 
 	/**
-	 * Should me more of a description here...
+	 * Remove an Element from this Parser. 
+	 * But note that this element must already have been removed from the Model (i.e., in the root Package or file in which this parser was created).
 	 */
 	public void removeElement(EObject obj)
 	{	
-		this.elementsHash.remove(obj);
-		EcoreUtil.remove(obj);
+		ParsingElement e = elementsHash.get(obj);
+		if (e!=null) {
+			nameHandler.remove(e.getAlias());
+			this.elementsHash.remove(obj);
+			EcoreUtil.remove(obj);
+		}
+	}
+	
+	public void updateElement(EObject obj)
+	{
+		ParsingElement e = elementsHash.get(obj);
+		if (e!=null) {
+			nameHandler.remove(e.getAlias());		
+			String alias = nameHandler.treatName((NamedElement)obj);
+			e.setAlias(alias);
+		}
 	}
 	
 	/**

@@ -75,13 +75,19 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		
 		ProjectBrowser.refreshTree(project);		
 			
-		if (parent instanceof ClassElement) {
+		if (parent instanceof ClassElement) 
+		{
 			Classifier element = (((ClassElement)parent).getClassifier());
-			//Then select the element in the Tree
+			
+			//Select the element in the Tree
 			ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
 			tree.selectModelElement(element);
+			
 			//Update the element from the auto completion of the OCL editor
-			ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(element);
+			//Update OntoUML Parser
+			ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(element);			
+			ProjectBrowser.getParserFor(project).updateElement(element);
+			
 		}else if (parent instanceof BaseConnection){
 			
 		}
