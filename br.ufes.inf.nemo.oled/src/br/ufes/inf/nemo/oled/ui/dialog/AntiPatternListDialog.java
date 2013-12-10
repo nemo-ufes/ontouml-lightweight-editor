@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -41,6 +42,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
+import javax.swing.JLabel;
 
 /**
  * @author John Guerson
@@ -131,8 +133,8 @@ public class AntiPatternListDialog extends JDialog {
 		this.frame = frame;
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/antipattern.png")));
-		setTitle("Detect AntiPatterns");
-		setBounds(100, 100, 332, 377);
+		setTitle("Anti-Pattern Detection");
+		setBounds(100, 100, 332, 629);
 		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -199,8 +201,7 @@ public class AntiPatternListDialog extends JDialog {
 		cbxWholeOver = new JCheckBox(WholeOverAntipattern.getAntipatternInfo().getAcronym()+" : "+WholeOverAntipattern.getAntipatternInfo().getName());
 		cbxWholeOver.setBackground(UIManager.getColor("Panel.background"));
 		
-		
-		
+		JLabel lblChooseWhichAntipattern = new JLabel("Choose which anti-pattern do you want to detect:");
 		
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
@@ -208,32 +209,35 @@ public class AntiPatternListDialog extends JDialog {
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGap(17)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-							.addComponent(cbxAssCyc)
-							.addComponent(cbxBinOver)
-							.addComponent(cbxDepPhase)
-							.addComponent(cbxFreeRole)
-							.addComponent(cbxGSRig)
-							.addComponent(cbxHetColl)
-							.addComponent(cbxHomoFunc)
-							.addComponent(cbxImpAbs)
-							.addComponent(cbxImpPart)
-							.addComponent(cbxMixIden)
-							.addComponent(cbxMixRig)
-							.addComponent(cbxMultiDep)
-							.addComponent(cbxRelComp)
-							.addComponent(cbxRelOver)
-							.addComponent(cbxRelRig)
-							.addComponent(cbxRelSpec)
-							.addComponent(cbxRepRel)
-							.addComponent(cbxUndefFormal)
-							.addComponent(cbxUndefPhase)
-							.addComponent(cbxWholeOver))
-					.addContainerGap(32, Short.MAX_VALUE))
+						.addComponent(cbxRelOver, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxRelRig, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxWholeOver, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxUndefPhase, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxUndefFormal, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxRepRel, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxRelSpec, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxRelComp, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxMultiDep, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxMixRig, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxMixIden, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxImpPart, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxImpAbs, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxHomoFunc, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxHetColl, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxGSRig, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxFreeRole, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxDepPhase, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxBinOver, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(cbxAssCyc, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+						.addComponent(lblChooseWhichAntipattern, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(17)
+					.addGap(21)
+					.addComponent(lblChooseWhichAntipattern)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(cbxAssCyc)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cbxBinOver)
@@ -273,8 +277,7 @@ public class AntiPatternListDialog extends JDialog {
 					.addComponent(cbxUndefPhase)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cbxWholeOver)
-					.addPreferredGap(ComponentPlacement.RELATED)
-				.addContainerGap(33, Short.MAX_VALUE))
+					.addGap(0, 0, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		
@@ -432,6 +435,8 @@ public class AntiPatternListDialog extends JDialog {
 	{
 		try{
 			
+			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+						
 			OntoUMLParser parser = ProjectBrowser.getParserFor(frame.getDiagramManager().getCurrentProject());
 		
 			 AssCycAntipattern assCyc = new AssCycAntipattern(parser); 	
@@ -541,12 +546,13 @@ public class AntiPatternListDialog extends JDialog {
 		if (undefFormal.getOccurrences().size()>0) result += UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefFormal.getOccurrences().size()+" items found.\n";
 		if (undefPhase.getOccurrences().size()>0) result += UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefPhase.getOccurrences().size()+" items found.\n";
 		if (wholeOver.getOccurrences().size()>0) result += WholeOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
-
 		
-		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No antipatterns found.","Detecting AntiPatterns",JOptionPane.INFORMATION_MESSAGE); 
+		frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		
+		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No anti-patterns found.","Managing AntiPatterns",JOptionPane.INFORMATION_MESSAGE); 
 		else 
 		{
-			JOptionPane.showMessageDialog(this,result,"Detecting AntiPatterns",JOptionPane.INFORMATION_MESSAGE);			
+			JOptionPane.showMessageDialog(this,result,"Managing Anti-Patterns",JOptionPane.INFORMATION_MESSAGE);			
 			
 			AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, impPart, mixIden,
 																	mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver	);
@@ -557,7 +563,7 @@ public class AntiPatternListDialog extends JDialog {
 		}		 
 		
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(this,e.getMessage(),"Managing AntiPattern",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this,e.getMessage(),"Managing Anti-Pattern",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 		
