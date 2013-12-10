@@ -1,16 +1,11 @@
 package br.ufes.inf.nemo.ocl2swrl.exceptions;
 
-/**
- * @author John Guerson
- */
-
 public class NonInitialized extends Ocl2SwrlException {
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param type
-	 * @param details
+	 * @param argument - contains the uninitialized argument 
 	 */
 	public NonInitialized(String argument) 
     {		
