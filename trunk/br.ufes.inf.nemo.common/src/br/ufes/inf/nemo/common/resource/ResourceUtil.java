@@ -47,8 +47,10 @@ public class ResourceUtil {
 		
 		rset.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI,	RefOntoUML.RefOntoUMLPackage.eINSTANCE);
     	
-		URI fileURI = URI.createFileURI(refontoumlpath);    	
+		URI fileURI = URI.createFileURI(refontoumlpath);    
+		
 	    final Resource resource = rset.createResource(fileURI);    	
+	    
 	    resource.getContents().add(refmodel);    	
 	
 	    try{
@@ -59,6 +61,9 @@ public class ResourceUtil {
 	    
 	    return resource;		   	
 	}
+	
+	
+	
 
 	
 }
