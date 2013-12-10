@@ -16,8 +16,6 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
 
-
-
 /**
  * @author fredd_000
  * @version 1.0
@@ -29,10 +27,6 @@ public class VariableExpImplFactory extends OCLExpressionImplFactory {
 		super(m_NamedElementImpl);
 	}
 	
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-
 	@Override
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) {
 		VariableExpImpl variableExpImpl = (VariableExpImpl) this.m_NamedElementImpl;

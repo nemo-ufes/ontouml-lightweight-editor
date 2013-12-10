@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
 import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
-import org.eclipse.ocl.uml.impl.VariableImpl;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Type;
@@ -28,14 +27,10 @@ import org.semanticweb.owlapi.model.SWRLObjectPropertyAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
-import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.Ocl2SwrlException;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
-
-
 
 /**
  * @author fredd_000
@@ -52,10 +47,6 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 	public PropertyCallExpImplFactory(NamedElementImpl m_NamedElementImpl, Property property){
 		super(m_NamedElementImpl);
 		this.property =  property;
-	}
-	
-	public void finalize() throws Throwable {
-		super.finalize();
 	}
 
 	@Override
