@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -19,34 +17,23 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
-import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
-import br.ufes.inf.nemo.antipattern.binover.BinOverVariation1Occurrence;
-import br.ufes.inf.nemo.antipattern.binover.BinOverVariation4Occurrence;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
-import br.ufes.inf.nemo.antipattern.experimental.MRBSAntiPattern;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
-import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
 import br.ufes.inf.nemo.antipattern.imppart.ImpPartAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
-import br.ufes.inf.nemo.antipattern.relcomp.RelCompOccurrence;
 import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
-import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
-import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
-import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
-import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalAntipattern;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
@@ -240,7 +227,7 @@ public class AntiPatternListDialog extends JDialog {
 							.addComponent(cbxRepRel)
 							.addComponent(cbxUndefFormal)
 							.addComponent(cbxUndefPhase)
-							.addComponent(cbxWholeOver)
+							.addComponent(cbxWholeOver))
 					.addContainerGap(32, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
