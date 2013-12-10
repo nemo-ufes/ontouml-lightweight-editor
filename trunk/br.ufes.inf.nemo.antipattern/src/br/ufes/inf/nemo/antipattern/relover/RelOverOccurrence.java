@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.antipattern.relover;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -12,10 +13,13 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Mediation;
 import RefOntoUML.Mixin;
+import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RoleMixin;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelOverOccurrence extends AntipatternOccurrence{
@@ -25,10 +29,10 @@ public class RelOverOccurrence extends AntipatternOccurrence{
 	private ArrayList<Property> allMediatedEnds;
 	private HashMap<Classifier, ArrayList<Property>> commonSupertypes; //contains the common supertypes and the mediatedEnds connected to the respective subtypes 
 	
-	/*//TODO: REMOVE
+
 	private HashMap<Mediation, Classifier> mediations;
 	private Classifier supertype;
-	*/
+	
 	
 	public RelOverOccurrence(Classifier relator, ArrayList<Property> mediatedEnds, OntoUMLParser parser) throws Exception {
 		super(parser);
@@ -37,8 +41,13 @@ public class RelOverOccurrence extends AntipatternOccurrence{
 		
 		this.relator=relator;
 		this.allMediatedEnds=mediatedEnds;
+		this.mediations = new HashMap<>();
 		
-		//fillSupertypesHash();
+		for (Property p : mediatedEnds) {
+			mediations.put((Mediation)p.getAssociation(), (Classifier)p.getType());
+		}
+		
+		fillSupertypesHash();
 		
 	}
 	
@@ -67,6 +76,9 @@ public class RelOverOccurrence extends AntipatternOccurrence{
 				}
 			}
 		}
+		
+		if (commonSupertypes.keySet().toArray()[0]!=null)
+			supertype = (Classifier) commonSupertypes.keySet().toArray()[0];
 	}
 	
 	private ArrayList<Classifier> getCommonOverlappingSupertypes (Classifier c1, Classifier c2){
@@ -221,7 +233,7 @@ public class RelOverOccurrence extends AntipatternOccurrence{
 		
 	}
 	
-	
+	*/
 	public Mediation getKeyByValue(Classifier value) 
 	{
 	    for (Entry<Mediation,Classifier> entry : mediations.entrySet()) 
@@ -241,7 +253,7 @@ public class RelOverOccurrence extends AntipatternOccurrence{
 	
 	public HashMap<Mediation, Classifier> getMediations() {
 		return mediations;
-	}*/
+	}
 	
 	public Classifier getRelator() {
 		return relator;
@@ -297,7 +309,7 @@ public class RelOverOccurrence extends AntipatternOccurrence{
 	}
 		
 	/*=============================== TO DO ==================================*/
-	/*
+	
 	public String generateDisjointPredicate(OntoUMLParser parser, int cardinality)
 	{ 
 		return ""; 
@@ -488,6 +500,6 @@ public class RelOverOccurrence extends AntipatternOccurrence{
 		return predicate;
 		
 	}
-	*/
+	
 	
 }
