@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.oled.ui.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
+import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -14,10 +14,10 @@ import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
  * @author John Guerson
  */
 
-public class RWORAntiPatternController {
+public class RelOverAntiPatternController {
 
-	private RWORAntiPatternPane rworView;
-	private RelOverAntipattern rworModel;
+	private RelOverAntiPatternPane rworView;
+	private RelOverOccurrence rworModel;
 	
 	/**
 	 * Constructor.
@@ -25,7 +25,7 @@ public class RWORAntiPatternController {
 	 * @param rworView
 	 * @param rworModel
 	 */
-	public RWORAntiPatternController(RWORAntiPatternPane rworView, RelOverAntipattern rworModel)
+	public RelOverAntiPatternController(RelOverAntiPatternPane rworView, RelOverOccurrence rworModel)
 	{
 		this.rworView = rworView;
 		this.rworModel =rworModel;		
@@ -108,7 +108,7 @@ public class RWORAntiPatternController {
 	    		}	    		
 	    		
 	    		//set parser...
-	    		rworModel.setSelected(refparser);
+	    		rworModel.setSelected();
 	    		
 	    		// set options to false, because the simulated model is partial
 	    		refOptions.identityPrinciple = false;

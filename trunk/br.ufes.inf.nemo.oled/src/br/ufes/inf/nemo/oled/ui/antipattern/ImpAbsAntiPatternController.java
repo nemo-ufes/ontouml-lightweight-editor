@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.oled.ui.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
+import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -14,10 +14,10 @@ import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
  * @author John Guerson
  */
 
-public class IAAntiPatternController {
+public class ImpAbsAntiPatternController {
 	
-	private IAAntiPatternPane iaView;
-	private ImpAbsAntipattern iaModel;
+	private ImpAbsAntiPatternPane iaView;
+	private ImpAbsOccurrence iaModel;
 	
 	/**
 	 * Constructor.
@@ -25,7 +25,7 @@ public class IAAntiPatternController {
 	 * @param iaView
 	 * @param iaModel
 	 */
-	public IAAntiPatternController(IAAntiPatternPane iaView, ImpAbsAntipattern iaModel)
+	public ImpAbsAntiPatternController(ImpAbsAntiPatternPane iaView, ImpAbsOccurrence iaModel)
 	{
 		this.iaView = iaView;
 		this.iaModel = iaModel;
@@ -77,7 +77,7 @@ public class IAAntiPatternController {
 	    		iaView.getTheFrame().getManager().doOpeningAlloy(true,-1);	  */
 	    		
 	    		//set parser...
-	    		iaModel.setSelected(refparser);
+	    		iaModel.setSelected();
 	    		
 	    		// set options to false, because the simulated model is partial
 	    		refOptions.identityPrinciple = false;

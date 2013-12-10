@@ -17,19 +17,19 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import br.ufes.inf.nemo.antipattern.relspec.RSAntiPattern;
+import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
  * @author John Guerson
  */
 
-public class RSAntiPatternPane extends JPanel {
+public class RelSpecAntiPatternPane extends JPanel {
 
 	private static final long serialVersionUID = -7777729413155242695L;
 
 	@SuppressWarnings("unused")
-	private RSAntiPattern rs;
+	private RelSpecOccurrence rs;
 	
 	private AppFrame frame;
 	private JTextField textGeneralSource;
@@ -53,7 +53,7 @@ public class RSAntiPatternPane extends JPanel {
 	 * @param rs
 	 * @param parent
 	 */
-	public RSAntiPatternPane(RSAntiPattern rs, AppFrame parent) 
+	public RelSpecAntiPatternPane(RelSpecOccurrence rs, AppFrame parent) 
 	{
 		this();
 		
@@ -73,7 +73,7 @@ public class RSAntiPatternPane extends JPanel {
 	/**
 	 * Constructor.
 	 */
-	public RSAntiPatternPane() 
+	public RelSpecAntiPatternPane() 
 	{
 		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128)), "", TitledBorder.RIGHT, TitledBorder.BELOW_TOP, null, new Color(255, 0, 0)));
 		setPreferredSize(new Dimension(330, 414));

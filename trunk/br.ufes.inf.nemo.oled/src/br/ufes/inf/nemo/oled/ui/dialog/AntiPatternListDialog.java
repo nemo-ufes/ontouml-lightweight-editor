@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -19,16 +20,36 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
-import br.ufes.inf.nemo.antipattern.MRBSAntiPattern;
+import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
+import br.ufes.inf.nemo.antipattern.binover.BinOverVariation1Occurrence;
+import br.ufes.inf.nemo.antipattern.binover.BinOverVariation4Occurrence;
+import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
+import br.ufes.inf.nemo.antipattern.experimental.MRBSAntiPattern;
+import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
+import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
+import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
-import br.ufes.inf.nemo.antipattern.rbos.RBOSAntiPattern;
+import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
+import br.ufes.inf.nemo.antipattern.imppart.ImpPartAntipattern;
+import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
+import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
+import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
+import br.ufes.inf.nemo.antipattern.relcomp.RelCompOccurrence;
 import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
+import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
-import br.ufes.inf.nemo.antipattern.relspec.RSAntiPattern;
+import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
+import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
+import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
+import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalAntipattern;
+import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
+import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
@@ -45,32 +66,55 @@ public class AntiPatternListDialog extends JDialog {
 	private AppFrame frame;
 	
 	private final JPanel contentPanel = new JPanel();	
-	private JCheckBox cbxSTR;
-	private JCheckBox cbxIA;
-	private JCheckBox cbxRWOR;
-	private JCheckBox cbxRBOS;
-	private JCheckBox cbxAC;
-	private JCheckBox cbxRS;
-	private JCheckBox cbxRWRT;
-	private JCheckBox cbxTRI;
+	
+	private JCheckBox cbxAssCyc;
+	private JCheckBox cbxBinOver;
+	private JCheckBox cbxDepPhase;
+	private JCheckBox cbxFreeRole;
+	private JCheckBox cbxGSRig;
+	private JCheckBox cbxHetColl;
+	private JCheckBox cbxHomoFunc;
+	private JCheckBox cbxImpAbs;
+	private JCheckBox cbxImpPart;
+	private JCheckBox cbxMixIden;
+	private JCheckBox cbxMixRig;
+	private JCheckBox cbxMultiDep;
+	private JCheckBox cbxRelComp;
+	private JCheckBox cbxRelOver;
+	private JCheckBox cbxRelRig;
+	private JCheckBox cbxRelSpec;
+	private JCheckBox cbxRepRel;
+	private JCheckBox cbxUndefFormal;
+	private JCheckBox cbxUndefPhase;
+	private JCheckBox cbxWholeOver;
+	
 	private JButton identifyButton;
 	private JButton cancelButton;
-	private JCheckBox cbxMRBS;
-	private JCheckBox cbxSSR;
 		
 	/** 
 	 * Check if AntiPattern is selected.
 	 */
-	public Boolean ACisSelected() { return cbxAC.isSelected(); }	
-	public Boolean STRisSelected() { return cbxSTR.isSelected(); }
-	public Boolean RBOSisSelected() { return cbxRBOS.isSelected(); }
-	public Boolean IAisSelected() { return cbxIA.isSelected(); }
-	public Boolean RSisSelected() { return cbxRS.isSelected(); }
-	public Boolean RWORisSelected() { return cbxRWOR.isSelected(); }
-	public Boolean RWRTisSelected() { return cbxRWRT.isSelected(); }
-	public Boolean TRIisSelected() { return cbxTRI.isSelected(); }
-	public Boolean MRBSisSelected() { return cbxMRBS.isSelected(); }
-	public Boolean SSRisSelected() { return cbxSSR.isSelected(); }
+	public Boolean AssCycisSelected() { return cbxAssCyc.isSelected(); }
+	public Boolean BinOverisSelected() { return cbxBinOver.isSelected(); }
+	public Boolean DepPhaseisSelected() { return cbxDepPhase.isSelected(); }
+	public Boolean FreeRoleisSelected() { return cbxFreeRole.isSelected(); }
+	public Boolean GSRigisSelected() { return cbxGSRig.isSelected(); }
+	public Boolean HetCollisSelected() { return cbxHetColl.isSelected(); }
+	public Boolean HomoFuncisSelected() { return cbxHomoFunc.isSelected(); }
+	public Boolean ImpAbsisSelected() { return cbxImpAbs.isSelected(); }
+	public Boolean ImpPartisSelected() { return cbxImpPart.isSelected(); }
+	public Boolean MixIdenisSelected() { return cbxMixIden.isSelected(); }
+	public Boolean MixRigisSelected() { return cbxMixRig.isSelected(); }
+	public Boolean MultiDepisSelected() { return cbxMultiDep.isSelected(); }
+	public Boolean RelCompisSelected() { return cbxRelComp.isSelected(); }
+	public Boolean RelOverisSelected() { return cbxRelOver.isSelected(); }
+	public Boolean RelRigisSelected() { return cbxRelRig.isSelected(); }
+	public Boolean RelSpecisSelected() { return cbxRelSpec.isSelected(); }
+	public Boolean RepRelisSelected() { return cbxRepRel.isSelected(); }
+	public Boolean UndefFormalisSelected() { return cbxUndefFormal.isSelected(); }
+	public Boolean UndefPhaseisSelected() { return cbxUndefPhase.isSelected(); }
+	public Boolean WholeOverisSelected() { return cbxWholeOver.isSelected(); }
+	
 		
 	/**
 	 * Open the Dialog.
@@ -108,37 +152,68 @@ public class AntiPatternListDialog extends JDialog {
 		
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		cbxSTR = new JCheckBox("STR : Self-Type Relationship");
-		cbxSTR.setBackground(UIManager.getColor("Panel.background"));
+		cbxAssCyc = new JCheckBox(AssCycAntipattern.getAntipatternInfo().getAcronym()+" : "+AssCycAntipattern.getAntipatternInfo().getName());
+		cbxAssCyc.setBackground(UIManager.getColor("Panel.background"));
 		
-		cbxIA = new JCheckBox("IA : Imprecise Abstraction");
-		cbxIA.setBackground(UIManager.getColor("Panel.background"));
+		cbxBinOver = new JCheckBox(BinOverAntipattern.getAntipatternInfo().getAcronym()+" : "+BinOverAntipattern.getAntipatternInfo().getName());
+		cbxBinOver.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxDepPhase = new JCheckBox(DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" : "+DepPhaseAntipattern.getAntipatternInfo().getName());
+		cbxDepPhase.setBackground(UIManager.getColor("Panel.background"));
 		
-		cbxRWOR = new JCheckBox("RWOR : Relator With Overlapping Roles");
-		cbxRWOR.setBackground(UIManager.getColor("Panel.background"));
+		cbxFreeRole = new JCheckBox(FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" : "+FreeRoleAntipattern.getAntipatternInfo().getName());
+		cbxFreeRole.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxGSRig = new JCheckBox(GSRigAntipattern.getAntipatternInfo().getAcronym()+" : "+GSRigAntipattern.getAntipatternInfo().getName());
+		cbxGSRig.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxHetColl = new JCheckBox(HetCollAntipattern.getAntipatternInfo().getAcronym()+" : "+HetCollAntipattern.getAntipatternInfo().getName());
+		cbxHetColl.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxHomoFunc = new JCheckBox(HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" : "+HomoFuncAntipattern.getAntipatternInfo().getName());
+		cbxHomoFunc.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxImpAbs = new JCheckBox(ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" : "+ImpAbsAntipattern.getAntipatternInfo().getName());
+		cbxImpAbs.setBackground(UIManager.getColor("Panel.background"));
 		
-		cbxRBOS = new JCheckBox("RBOS : Relation Between Overlapping SubTypes");
-		cbxRBOS.setBackground(UIManager.getColor("Panel.background"));
+		cbxImpPart = new JCheckBox(ImpPartAntipattern.getAntipatternInfo().getAcronym()+" : "+ImpPartAntipattern.getAntipatternInfo().getName());
+		cbxImpPart.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxMixIden = new JCheckBox(MixIdenAntipattern.getAntipatternInfo().getAcronym()+" : "+MixIdenAntipattern.getAntipatternInfo().getName());
+		cbxMixIden.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxMixRig = new JCheckBox(MixRigAntipattern.getAntipatternInfo().getAcronym()+" : "+MixRigAntipattern.getAntipatternInfo().getName());
+		cbxMixRig.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxMultiDep = new JCheckBox(MultiDepAntipattern.getAntipatternInfo().getAcronym()+" : "+MultiDepAntipattern.getAntipatternInfo().getName());
+		cbxMultiDep.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxRelComp = new JCheckBox(RelCompAntipattern.getAntipatternInfo().getAcronym()+" : "+RelCompAntipattern.getAntipatternInfo().getName());
+		cbxRelComp.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxRelOver = new JCheckBox(RelOverAntipattern.getAntipatternInfo().getAcronym()+" : "+RelOverAntipattern.getAntipatternInfo().getName());
+		cbxRelOver.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxRelRig = new JCheckBox(RelRigAntipattern.getAntipatternInfo().getAcronym()+" : "+RelRigAntipattern.getAntipatternInfo().getName());
+		cbxRelRig.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxRelSpec = new JCheckBox(RelSpecAntipattern.getAntipatternInfo().getAcronym()+" : "+RelSpecAntipattern.getAntipatternInfo().getName());
+		cbxRelSpec.setBackground(UIManager.getColor("Panel.background"));
+
+		cbxRepRel = new JCheckBox(RepRelAntipattern.getAntipatternInfo().getAcronym()+" : "+RepRelAntipattern.getAntipatternInfo().getName());
+		cbxRepRel.setBackground(UIManager.getColor("Panel.background"));
 		
-		cbxAC = new JCheckBox("AC : Association Cycle");
-		cbxAC.setBackground(UIManager.getColor("Panel.background"));
+		cbxUndefFormal = new JCheckBox(UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" : "+UndefFormalAntipattern.getAntipatternInfo().getName());
+		cbxUndefFormal.setBackground(UIManager.getColor("Panel.background"));
 		
-		cbxRS = new JCheckBox("RS : Relation Specialization");
-		cbxRS.setBackground(UIManager.getColor("Panel.background"));
+		cbxUndefPhase = new JCheckBox(UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" : "+UndefPhaseAntipattern.getAntipatternInfo().getName());
+		cbxUndefPhase.setBackground(UIManager.getColor("Panel.background"));
 		
-		cbxRWRT = new JCheckBox("RWRT : Relator With Rigid Types");
-		cbxRWRT.setBackground(UIManager.getColor("Panel.background"));
+		cbxWholeOver = new JCheckBox(WholeOverAntipattern.getAntipatternInfo().getAcronym()+" : "+WholeOverAntipattern.getAntipatternInfo().getName());
+		cbxWholeOver.setBackground(UIManager.getColor("Panel.background"));
 		
-		cbxTRI = new JCheckBox("TRI : Twin Relator Instances");
-		cbxTRI.setBackground(UIManager.getColor("Panel.background"));
 		
-		cbxMRBS = new JCheckBox("MRBS : Multiple Relators Between Sortals");
-		cbxMRBS.setEnabled(false);
-		cbxMRBS.setBackground(UIManager.getColor("Panel.background"));
 		
-		cbxSSR = new JCheckBox("SSR : Super and Sub Relations");
-		cbxSSR.setEnabled(false);
-		cbxSSR.setBackground(UIManager.getColor("Panel.background"));
 		
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
@@ -146,42 +221,73 @@ public class AntiPatternListDialog extends JDialog {
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGap(17)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxSSR)
-						.addComponent(cbxMRBS)
-						.addComponent(cbxSTR, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxIA, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxRWOR, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxRBOS, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxAC, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxRS, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxRWRT)
-						.addComponent(cbxTRI, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
+							.addComponent(cbxAssCyc)
+							.addComponent(cbxBinOver)
+							.addComponent(cbxDepPhase)
+							.addComponent(cbxFreeRole)
+							.addComponent(cbxGSRig)
+							.addComponent(cbxHetColl)
+							.addComponent(cbxHomoFunc)
+							.addComponent(cbxImpAbs)
+							.addComponent(cbxImpPart)
+							.addComponent(cbxMixIden)
+							.addComponent(cbxMixRig)
+							.addComponent(cbxMultiDep)
+							.addComponent(cbxRelComp)
+							.addComponent(cbxRelOver)
+							.addComponent(cbxRelRig)
+							.addComponent(cbxRelSpec)
+							.addComponent(cbxRepRel)
+							.addComponent(cbxUndefFormal)
+							.addComponent(cbxUndefPhase)
+							.addComponent(cbxWholeOver)
 					.addContainerGap(32, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGap(17)
-					.addComponent(cbxSTR)
+					.addComponent(cbxAssCyc)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxIA)
+					.addComponent(cbxBinOver)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxRWOR)
+					.addComponent(cbxDepPhase)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxRBOS)
+					.addComponent(cbxFreeRole)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxAC)
+					.addComponent(cbxGSRig)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxRS)
+					.addComponent(cbxHetColl)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxRWRT)
+					.addComponent(cbxHomoFunc)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxTRI)
+					.addComponent(cbxImpAbs)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxMRBS)
+					.addComponent(cbxImpPart)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxSSR)
-					.addContainerGap(33, Short.MAX_VALUE))
+					.addComponent(cbxMixIden)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxMixRig)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxMultiDep)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxRelComp)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxRelOver)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxRelRig)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxRelSpec)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxRepRel)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxUndefFormal)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxUndefPhase)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cbxWholeOver)
+					.addPreferredGap(ComponentPlacement.RELATED)
+				.addContainerGap(33, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		
@@ -199,16 +305,26 @@ public class AntiPatternListDialog extends JDialog {
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			if (!ACisSelected()) cbxAC.setSelected(true);
-       			if (!STRisSelected()) cbxSTR.setSelected(true);
-       			if (!RBOSisSelected()) cbxRBOS.setSelected(true);
-       			if (!IAisSelected()) cbxIA.setSelected(true);
-       			if (!RSisSelected()) cbxRS.setSelected(true);
-       			if (!RWORisSelected()) cbxRWOR.setSelected(true);
-       			if (!RWRTisSelected()) cbxRWRT.setSelected(true);
-       			if (!TRIisSelected()) cbxTRI.setSelected(true);
-       			if (!MRBSisSelected()) cbxMRBS.setSelected(false);
-       			if (!SSRisSelected()) cbxSSR.setSelected(false);
+       			if (!AssCycisSelected()) cbxAssCyc.setSelected(true);
+       			if (!BinOverisSelected()) cbxBinOver.setSelected(true);
+       			if (!DepPhaseisSelected()) cbxDepPhase.setSelected(true);
+       			if (!FreeRoleisSelected()) cbxFreeRole.setSelected(true);
+       			if (!GSRigisSelected()) cbxGSRig.setSelected(true);
+       			if (!HetCollisSelected()) cbxHetColl.setSelected(true);
+       			if (!HomoFuncisSelected()) cbxHomoFunc.setSelected(true);
+       			if (!ImpAbsisSelected()) cbxImpAbs.setSelected(true);
+       			if (!ImpPartisSelected()) cbxImpPart.setSelected(true);
+       			if (!MixIdenisSelected()) cbxMixIden.setSelected(true);
+       			if (!MixRigisSelected()) cbxMixRig.setSelected(true);
+       			if (!MultiDepisSelected()) cbxMultiDep.setSelected(true);
+       			if (!RelCompisSelected()) cbxRelComp.setSelected(true);
+       			if (!RelOverisSelected()) cbxRelOver.setSelected(true);
+       			if (!RelRigisSelected()) cbxRelRig.setSelected(true);
+       			if (!RelSpecisSelected()) cbxRelSpec.setSelected(true);
+       			if (!RepRelisSelected()) cbxRepRel.setSelected(true);
+       			if (!UndefFormalisSelected()) cbxUndefFormal.setSelected(true);
+       			if (!UndefPhaseisSelected()) cbxUndefPhase.setSelected(true);
+       			if (!WholeOverisSelected()) cbxWholeOver.setSelected(true);
        		}
        	});
 		JButton btnDisableall = new JButton("Disable All");
@@ -217,16 +333,26 @@ public class AntiPatternListDialog extends JDialog {
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			if (ACisSelected()) cbxAC.setSelected(false);
-       			if (STRisSelected()) cbxSTR.setSelected(false);
-       			if (RBOSisSelected()) cbxRBOS.setSelected(false);
-       			if (IAisSelected()) cbxIA.setSelected(false);
-       			if (RSisSelected()) cbxRS.setSelected(false);
-       			if (RWORisSelected()) cbxRWOR.setSelected(false);
-       			if (RWRTisSelected()) cbxRWRT.setSelected(false);
-       			if (TRIisSelected()) cbxTRI.setSelected(false);
-       			if (MRBSisSelected()) cbxMRBS.setSelected(false);
-       			if (SSRisSelected()) cbxSSR.setSelected(false);
+       			if (AssCycisSelected()) cbxAssCyc.setSelected(false);
+       			if (BinOverisSelected()) cbxBinOver.setSelected(false);
+       			if (DepPhaseisSelected()) cbxDepPhase.setSelected(false);
+       			if (FreeRoleisSelected()) cbxFreeRole.setSelected(false);
+       			if (GSRigisSelected()) cbxGSRig.setSelected(false);
+       			if (HetCollisSelected()) cbxHetColl.setSelected(false);
+       			if (HomoFuncisSelected()) cbxHomoFunc.setSelected(false);
+       			if (ImpAbsisSelected()) cbxImpAbs.setSelected(false);
+       			if (ImpPartisSelected()) cbxImpPart.setSelected(false);
+       			if (MixIdenisSelected()) cbxMixIden.setSelected(false);
+       			if (MixRigisSelected()) cbxMixRig.setSelected(false);
+       			if (MultiDepisSelected()) cbxMultiDep.setSelected(false);
+       			if (RelCompisSelected()) cbxRelComp.setSelected(false);
+       			if (RelOverisSelected()) cbxRelOver.setSelected(false);
+       			if (RelRigisSelected()) cbxRelRig.setSelected(false);
+       			if (RelSpecisSelected()) cbxRelSpec.setSelected(false);
+       			if (RepRelisSelected()) cbxRepRel.setSelected(false);
+       			if (UndefFormalisSelected()) cbxUndefFormal.setSelected(false);
+       			if (UndefPhaseisSelected()) cbxUndefPhase.setSelected(false);
+       			if (WholeOverisSelected()) cbxWholeOver.setSelected(false);
        		}
        	});
 		GroupLayout gl_buttonPane = new GroupLayout(buttonPane);
@@ -318,117 +444,125 @@ public class AntiPatternListDialog extends JDialog {
 	public void IdentifyButtonActionPerformed(ActionEvent event)
 	{
 		try{
+			
+			OntoUMLParser parser = ProjectBrowser.getParserFor(frame.getDiagramManager().getCurrentProject());
 		
-		ArrayList<AssCycAntipattern> acListModel = new ArrayList<AssCycAntipattern>();
-		ArrayList<RSAntiPattern> rsListModel = new ArrayList<RSAntiPattern>();
-		ArrayList<RBOSAntiPattern> rbosListModel = new ArrayList<RBOSAntiPattern>();				
-		ArrayList<BinOverAntipattern> strListModel = new ArrayList<BinOverAntipattern>();
-		ArrayList<RelOverAntipattern> rworListModel = new ArrayList<RelOverAntipattern>();				
-		ArrayList<ImpAbsAntipattern> iaListModel = new ArrayList<ImpAbsAntipattern>();
-		ArrayList<RelRigAntipattern> rwrtListModel = new ArrayList<RelRigAntipattern>();
-		ArrayList<RepRelAntipattern> triListModel = new ArrayList<RepRelAntipattern>();
-		ArrayList<MRBSAntiPattern> mrbsListModel = new ArrayList<MRBSAntiPattern>();
-		ArrayList<RelCompAntipattern> ssrListModel = new ArrayList<RelCompAntipattern>();
+			 AssCycAntipattern assCyc = new AssCycAntipattern(parser); 	
+			 BinOverAntipattern binOver = new BinOverAntipattern(parser);		
+			 DepPhaseAntipattern depPhase = new DepPhaseAntipattern(parser);
+			 FreeRoleAntipattern freeRole = new FreeRoleAntipattern(parser);
+			 GSRigAntipattern gsRig = new GSRigAntipattern(parser);
+			 HetCollAntipattern hetColl = new HetCollAntipattern(parser);
+			 HomoFuncAntipattern homoFunc = new HomoFuncAntipattern(parser);
+			 ImpAbsAntipattern impAbs = new ImpAbsAntipattern(parser);
+			 ImpPartAntipattern impPart = new ImpPartAntipattern(parser);
+			 MixIdenAntipattern mixIden = new MixIdenAntipattern(parser);
+			 MixRigAntipattern mixRig = new MixRigAntipattern(parser);
+			 MultiDepAntipattern multiDep = new MultiDepAntipattern(parser);
+			 RelCompAntipattern relComp = new RelCompAntipattern(parser);
+			 RelOverAntipattern relOver = new RelOverAntipattern(parser);
+			 RelRigAntipattern relRig = new RelRigAntipattern(parser);
+			 RelSpecAntipattern relSpec = new RelSpecAntipattern(parser);
+			 RepRelAntipattern repRel = new RepRelAntipattern(parser);
+			 UndefFormalAntipattern undefFormal = new UndefFormalAntipattern(parser);
+			 UndefPhaseAntipattern undefPhase = new UndefPhaseAntipattern(parser);
+			 WholeOverAntipattern wholeOver = new WholeOverAntipattern(parser);	
 		
-		frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,frame.getDiagramManager().getCurrentProject());
-		
-		OntoUMLParser parser = ProjectBrowser.getParserFor(frame.getDiagramManager().getCurrentProject());
-		
-		if (parser.getElements() == null) return;
-		
-		if (ACisSelected()) 
-		{			
-			for(AssCycAntipattern ac: AntiPatternIdentifier.identifyAC(parser)) 
-			{				
-				acListModel.add(ac);
-			}
-		}
-		if (RSisSelected())	
-		{			
-			for(RSAntiPattern rs: AntiPatternIdentifier.identifyRS(parser)) 
-			{				
-				rsListModel.add(rs);
-			}
-		}
-		if (RBOSisSelected()) 
-		{			
-			for(RBOSAntiPattern rbos: AntiPatternIdentifier.identifyRBOS(parser)) 
-			{				
-				rbosListModel.add(rbos);
-			}		
-		}				
-		if (STRisSelected()) 
-		{			
-			for(BinOverAntipattern str: AntiPatternIdentifier.identifySTR(parser)) 
-			{
-				strListModel.add(str);
-			}	
-		}		
-		if (RWORisSelected()) 
-		{			
-			for(RelOverAntipattern rwor: AntiPatternIdentifier.identifyRWOR(parser)) 
-			{
-				rworListModel.add(rwor);
-			}	
-		}
-		if (IAisSelected()) 
-		{			
-			for(ImpAbsAntipattern ia: AntiPatternIdentifier.identifyIA(parser)) 
-			{
-				iaListModel.add(ia);
-			}	
-		}
-		if (RWRTisSelected()) 
-		{			
-			for(RelRigAntipattern rwrt: AntiPatternIdentifier.identifyRWRT(parser)) 
-			{
-				rwrtListModel.add(rwrt);
-			}	
-		}
-		if (TRIisSelected()) 
-		{			
-			for(RepRelAntipattern tri: AntiPatternIdentifier.identifyTRI(parser)) 
-			{
-				triListModel.add(tri);
-			}	
-		}
-		if (MRBSisSelected()) 
-		{		
-			for(MRBSAntiPattern mrbs: AntiPatternIdentifier.identifyMRBS(parser)) 
-			{
-				mrbsListModel.add(mrbs);
-			}	
-		}
-		if (SSRisSelected()) 
-		{			
-			for(RelCompAntipattern ssr: AntiPatternIdentifier.identifySSR(parser)) 
-			{
-				ssrListModel.add(ssr);
-			}	
-		}
-		
+			 frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,frame.getDiagramManager().getCurrentProject());
+			
+			if (parser.getElements() == null) return;
+			
+			if (AssCycisSelected()) 
+				assCyc.identify();
+			
+			if (BinOverisSelected())	
+				binOver.identify();
+			
+			if (DepPhaseisSelected())	
+				depPhase.identify();
+			
+			if (FreeRoleisSelected())	
+				freeRole.identify();
+			
+			if (GSRigisSelected())	
+				gsRig.identify();
+			
+			if (HetCollisSelected())	
+				hetColl.identify();
+			
+			if (HomoFuncisSelected())	
+				homoFunc.identify();
+			
+			if (ImpAbsisSelected())	
+				impAbs.identify();
+			
+			if (ImpPartisSelected())	
+				impPart.identify();
+			
+			if (MixIdenisSelected())	
+				mixIden.identify();
+			
+			if (MixRigisSelected())	
+				mixRig.identify();
+			
+			if (MultiDepisSelected())	
+				relSpec.identify();
+			
+			if (RelCompisSelected())	
+				relComp.identify();
+			
+			if (RelOverisSelected())	
+				relOver.identify();
+			
+			if (RelRigisSelected())	
+				relRig.identify();
+			
+			if (RelSpecisSelected())	
+				relSpec.identify();
+			
+			if (RepRelisSelected())	
+				repRel.identify();
+			
+			if (UndefFormalisSelected())	
+				undefFormal.identify();
+			
+			if (UndefPhaseisSelected())	
+				undefPhase.identify();
+			
+			if (WholeOverisSelected())	
+				wholeOver.identify();
+			
 		String result = new String();
 		
-		if (acListModel.size()>0) result += "AC AntiPattern : "+acListModel.size()+" items found.\n";
-		if (rsListModel.size()>0) result += "RS AntiPattern : "+rsListModel.size()+" items found.\n";
-		if (rbosListModel.size()>0) result += "RBOS AntiPattern : "+rbosListModel.size()+" items found.\n";
-		if (strListModel.size()>0) result += "STR AntiPattern : "+strListModel.size()+" items found.\n";
-		if (rworListModel.size()>0) result += "RWOR AntiPattern : "+rworListModel.size()+" items found.\n";
-		if (iaListModel.size()>0) result += "IA AntiPattern : "+iaListModel.size()+" items found.\n";
-		if (rwrtListModel.size()>0) result += "RWRT AntiPattern : "+rwrtListModel.size()+" items found.\n";
-		if (triListModel.size()>0) result += "TRI AntiPattern : "+triListModel.size()+" items found.\n";
-		if (mrbsListModel.size()>0) result += "MRBS AntiPattern : "+mrbsListModel.size()+" items found.\n";
-		if (ssrListModel.size()>0) result += "SSR AntiPattern : "+ssrListModel.size()+" items found.\n";
+		if (assCyc.getOccurrences().size()>0) result += AssCycAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+assCyc.getOccurrences().size()+" items found.\n";
+		if (binOver.getOccurrences().size()>0) result += BinOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+binOver.getOccurrences().size()+" items found.\n";
+		if (depPhase.getOccurrences().size()>0) result += DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+depPhase.getOccurrences().size()+" items found.\n";
+		if (freeRole.getOccurrences().size()>0) result += FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+freeRole.getOccurrences().size()+" items found.\n";
+		if (gsRig.getOccurrences().size()>0) result += GSRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+gsRig.getOccurrences().size()+" items found.\n";
+		if (hetColl.getOccurrences().size()>0) result += HetCollAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+hetColl.getOccurrences().size()+" items found.\n";
+		if (homoFunc.getOccurrences().size()>0) result += HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+homoFunc.getOccurrences().size()+" items found.\n";
+		if (impAbs.getOccurrences().size()>0) result += ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impAbs.getOccurrences().size()+" items found.\n";
+		if (impPart.getOccurrences().size()>0) result += ImpPartAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impPart.getOccurrences().size()+" items found.\n";
+		if (mixIden.getOccurrences().size()>0) result += MixIdenAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixIden.getOccurrences().size()+" items found.\n";
+		if (mixRig.getOccurrences().size()>0) result += MixRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixRig.getOccurrences().size()+" items found.\n";
+		if (multiDep.getOccurrences().size()>0) result += MultiDepAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multiDep.getOccurrences().size()+" items found.\n";
+		if (relComp.getOccurrences().size()>0) result += RelCompAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relComp.getOccurrences().size()+" items found.\n";
+		if (relOver.getOccurrences().size()>0) result += RelOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relOver.getOccurrences().size()+" items found.\n";
+		if (relRig.getOccurrences().size()>0) result += RelRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relRig.getOccurrences().size()+" items found.\n";
+		if (relSpec.getOccurrences().size()>0) result += RelSpecAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relSpec.getOccurrences().size()+" items found.\n";
+		if (repRel.getOccurrences().size()>0) result += RepRelAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+repRel.getOccurrences().size()+" items found.\n";
+		if (undefFormal.getOccurrences().size()>0) result += UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefFormal.getOccurrences().size()+" items found.\n";
+		if (undefPhase.getOccurrences().size()>0) result += UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefPhase.getOccurrences().size()+" items found.\n";
+		if (wholeOver.getOccurrences().size()>0) result += WholeOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
+
 		
 		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No antipatterns found.","Detecting AntiPatterns",JOptionPane.INFORMATION_MESSAGE); 
 		else 
 		{
 			JOptionPane.showMessageDialog(this,result,"Detecting AntiPatterns",JOptionPane.INFORMATION_MESSAGE);			
 			
-			AntiPatternList antipatternList = new AntiPatternList
-			(
-					acListModel,rbosListModel,strListModel,rsListModel,rworListModel,iaListModel,ssrListModel,rwrtListModel,triListModel
-			);
+			AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, impPart, mixIden,
+																	mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver	);
 
 			ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
 

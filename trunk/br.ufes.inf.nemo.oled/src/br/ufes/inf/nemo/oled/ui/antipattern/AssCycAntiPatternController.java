@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.oled.ui.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -14,24 +14,24 @@ import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
  * @author John Guerson
  */
 
-public class ACAntiPatternController {
+public class AssCycAntiPatternController {
 
-	private ACAntiPatternPane acView;
-	private AssCycAntipattern acModel;
+	private AssCycAntiPatternPane assCycView;
+	private AssCycOccurrence assCycModel;
 	
 	/**
 	 * Constructor.
 	 * 
-	 * @param acView
+	 * @param assCycView
 	 * @param acModel
 	 */
-	public ACAntiPatternController(ACAntiPatternPane acView, AssCycAntipattern acModel)
+	public AssCycAntiPatternController(AssCycAntiPatternPane assCycView, AssCycOccurrence acModel)
 	{
-		this.acView = acView;
-		this.acModel = acModel;		
+		this.assCycView = assCycView;
+		this.assCycModel = acModel;		
 		
-		acView.addExecuteWithAnalzyerListener(new ExecuteWithAnalzyerListener());
-		acView.addOCLSolutionListener(new OCLSolutionListener());
+		assCycView.addExecuteWithAnalzyerListener(new ExecuteWithAnalzyerListener());
+		assCycView.addOCLSolutionListener(new OCLSolutionListener());
 	}
 		
 	/**
@@ -46,26 +46,26 @@ public class ACAntiPatternController {
 	    {			
 	    	try{
 	    		String predicates = new String();
-	    		OntoUMLParser refparser = ProjectBrowser.getParserFor(acView.getFrame().getDiagramManager().getCurrentProject());
-	    		UmlProject project = acView.getFrame().getDiagramManager().getCurrentProject();
+	    		OntoUMLParser refparser = ProjectBrowser.getParserFor(assCycView.getFrame().getDiagramManager().getCurrentProject());
+	    		UmlProject project = assCycView.getFrame().getDiagramManager().getCurrentProject();
 	    		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(project);
 	    			    		
-	    		if(acView.isSelectedOpenCycle()) 
+	    		if(assCycView.isSelectedOpenCycle()) 
 	    		{
-	    			predicates += "\n\n"+acModel.generatePredicate(
-	    				refparser, acView.getScope(), acModel.OPEN
+	    			predicates += "\n\n"+assCycModel.generatePredicate(
+	    				refparser, assCycView.getScope(), assCycModel.OPEN
 	    			);
 	    		}
 			
-	    		if(acView.isSelectedClosedCycle())				
+	    		if(assCycView.isSelectedClosedCycle())				
 	    		{
-	    			predicates += "\n\n"+acModel.generatePredicate(
-	    				refparser, acView.getScope(), acModel.CLOSED
+	    			predicates += "\n\n"+assCycModel.generatePredicate(
+	    				refparser, assCycView.getScope(), assCycModel.CLOSED
 	    			); 
 	    		}
 				
 	    		//set parser...
-	    		refparser= acModel.setSelected(refparser);
+	    		refparser= assCycModel.setSelected();
 	    			    		
 	    		// set options to false, because the simulated model is partial
 	    		refOptions.identityPrinciple = false;
@@ -90,10 +90,10 @@ public class ACAntiPatternController {
 	    		ProjectBrowser.setOntoUMLOptionsFor(project, refOptions);	    		
 	    		
 	    		// open alloy model	    		
-	    		acView.getFrame().getDiagramManager().openAlloyAnalyzer(alloymodel,true,-1);
+	    		assCycView.getFrame().getDiagramManager().openAlloyAnalyzer(alloymodel,true,-1);
 	    		
 	    	}catch(Exception exception){
-	    		acView.getFrame().showErrorMessageDialog("Executing AC AntiPattern",exception.getMessage());
+	    		assCycView.getFrame().showErrorMessageDialog("Executing AC AntiPattern",exception.getMessage());
 	    	}
 	    	
 	    }
@@ -109,19 +109,19 @@ public class ACAntiPatternController {
 		@SuppressWarnings("static-access")
 		public void actionPerformed(ActionEvent e) 
 	    {
-			Boolean openCycle = acView.isSelectedOpenCycle();
-			Boolean closedCycle = acView.isSelectedClosedCycle();
+			Boolean openCycle = assCycView.isSelectedOpenCycle();
+			Boolean closedCycle = assCycView.isSelectedClosedCycle();
 
 			String constraints = new String();
 			
-			OntoUMLParser refparser = ProjectBrowser.getParserFor(acView.getFrame().getDiagramManager().getCurrentProject());
+			OntoUMLParser refparser = ProjectBrowser.getParserFor(assCycView.getFrame().getDiagramManager().getCurrentProject());
 			
 			if(openCycle) 
-				constraints = acModel.generateCycleOcl(acModel.OPEN, refparser)+"\n\n";		
+				constraints = assCycModel.generateCycleOcl(assCycModel.OPEN, refparser)+"\n\n";		
 			if(closedCycle)
-				constraints += acModel.generateCycleOcl(acModel.CLOSED, refparser)+"\n\n";		
+				constraints += assCycModel.generateCycleOcl(assCycModel.CLOSED, refparser)+"\n\n";		
 							
-			acView.getFrame().getInfoManager().addConstraints(constraints);
+			assCycView.getFrame().getInfoManager().addConstraints(constraints);
 	    }
 	}
 	

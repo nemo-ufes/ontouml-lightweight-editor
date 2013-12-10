@@ -12,12 +12,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
-import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
-import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
-import br.ufes.inf.nemo.antipattern.rbos.RBOSAntiPattern;
-import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
-import br.ufes.inf.nemo.antipattern.relspec.RSAntiPattern;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
+import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
+import br.ufes.inf.nemo.antipattern.binover.BinOverVariation1Occurrence;
+import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
+import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
+import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -36,7 +36,6 @@ public class AntiPatternListPane extends JFrame {
 	private JTabbedPane tabbedPane;
 	private JPanel acTabPanel;
 	private JPanel strTabPanel;
-	private JPanel rbosTabPanel;
 	private JPanel rsTabPanel;
 	private JPanel rworTabPanel;
 	private JPanel iaTabPanel;
@@ -89,12 +88,28 @@ public class AntiPatternListPane extends JFrame {
 		
 		if (antipatternList != null)
 		{
-			if (antipatternList.getACListModel().size()>0)	{ createACTabPanel();	initializeACTabPanel(); }			
-			if (antipatternList.getRBOSListModel().size()>0) {	createRBOSTabPanel(); initializeRBOSTabPanel(); }
-			if (antipatternList.getRSListModel().size()>0) { createRSTabPanel(); initializeRSTabPanel(); }
-			if (antipatternList.getSTRListModel().size()>0) { createSTRTabPanel(); initializeSTRTabPanel(); }
-			if (antipatternList.getRWORListModel().size()>0) { createRWORTabPanel(); initializeRWORTabPanel(); }
-			if (antipatternList.getIAListModel().size()>0) { createIATabPanel(); initializeIATabPanel(); }
+			if (antipatternList.getAssCyc().getOccurrences().size()>0)	{ 
+				createACTabPanel();	
+				initializeACTabPanel(); 
+			}
+			
+			if (antipatternList.getRelSpec().getOccurrences().size()>0) { 
+				createRSTabPanel(); 
+				initializeRSTabPanel(); 
+			}
+			
+			if (antipatternList.getBinOver().getOccurrences().size()>0) { 
+				createSTRTabPanel(); 
+				initializeSTRTabPanel(); 
+			}
+			if (antipatternList.getRelOver().getOccurrences().size()>0) { 
+				createRWORTabPanel(); 
+				initializeRWORTabPanel(); 
+			}
+			if (antipatternList.getImpAbs().getOccurrences().size()>0) { 
+				createIATabPanel(); 
+				initializeIATabPanel(); 
+			}
 		}
 	}
 	
@@ -123,21 +138,6 @@ public class AntiPatternListPane extends JFrame {
 		tabbedPane.add(acScrollPane);	
 		tabbedPane.setTitleAt(tabbedPane.indexOfComponent(acScrollPane),"AC: Association Cycle");
 	}	
-
-	/** 
-	 * Create Empty RBOS Tab Panel. 
-	 */
-	private void createRBOSTabPanel()
-	{
-		rbosTabPanel = new JPanel();		
-		JScrollPane rbosScrollPane = new JScrollPane();
-		rbosScrollPane.getVerticalScrollBar().setUnitIncrement(10);
-		rbosScrollPane.getHorizontalScrollBar().setUnitIncrement(10);
-		rbosScrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-		rbosScrollPane.setViewportView(rbosTabPanel);		
-		tabbedPane.add(rbosScrollPane);		
-		tabbedPane.setTitleAt(tabbedPane.indexOfComponent(rbosScrollPane),"RBOS: Relation Between Overlapping SubTypes");
-	}
 	
 	/** 
 	 * Create Empty RS Tab Panel. 
@@ -204,13 +204,13 @@ public class AntiPatternListPane extends JFrame {
 	 */
 	private void initializeACTabPanel()
 	{
-		acTabPanel.setLayout(new GridLayout(antipatternList.getACListModel().size(), 1, 0, 0));
+		acTabPanel.setLayout(new GridLayout(antipatternList.getAssCyc().getOccurrences().size(), 1, 0, 0));
 		
-		for(AssCycAntipattern acModel: antipatternList.getACListModel())
+		for(AssCycOccurrence acModel: antipatternList.getAssCyc().getOccurrences())
 		{
-			ACAntiPatternPane acView =  new ACAntiPatternPane(acModel, frame);
+			AssCycAntiPatternPane acView =  new AssCycAntiPatternPane(acModel, frame);
 			@SuppressWarnings("unused")
-			ACAntiPatternController acController = new ACAntiPatternController(acView,acModel);
+			AssCycAntiPatternController acController = new AssCycAntiPatternController(acView,acModel);
 			acTabPanel.add(acView);
 		}
 		acTabPanel.validate();
@@ -218,35 +218,17 @@ public class AntiPatternListPane extends JFrame {
 	}
 	
 	/** 
-	 * Initialize RBOS Tab Panel from Anti Pattern List Model. 
-	 */
-	private void initializeRBOSTabPanel()
-	{
-		rbosTabPanel.setLayout(new GridLayout(antipatternList.getRBOSListModel().size(), 1, 0, 0));
-		
-		for(RBOSAntiPattern rbosModel: antipatternList.getRBOSListModel())
-		{
-			RBOSAntiPatternPane rbosView =  new RBOSAntiPatternPane(rbosModel,frame);
-			@SuppressWarnings("unused")
-			RBOSAntiPatternController rbosController = new RBOSAntiPatternController(rbosView,rbosModel);
-			rbosTabPanel.add(rbosView);
-		}
-		rbosTabPanel.validate();
-		rbosTabPanel.repaint();
-	}
-	
-	/** 
 	 * Initialize RS Tab Panel from Anti Pattern List Model.
 	 */
 	private void initializeRSTabPanel()
 	{
-		rsTabPanel.setLayout(new GridLayout(antipatternList.getRSListModel().size(), 1, 0, 0));
+		rsTabPanel.setLayout(new GridLayout(antipatternList.getRelSpec().getOccurrences().size(), 1, 0, 0));
 		
-		for(RSAntiPattern rsModel: antipatternList.getRSListModel())
+		for(RelSpecOccurrence rsModel: antipatternList.getRelSpec().getOccurrences())
 		{
-			RSAntiPatternPane rsView =  new RSAntiPatternPane(rsModel,frame);		
+			RelSpecAntiPatternPane rsView =  new RelSpecAntiPatternPane(rsModel,frame);		
 			@SuppressWarnings("unused")
-			RSAntiPatternController rsController = new RSAntiPatternController(rsView,rsModel);
+			RelSpecAntiPatternController rsController = new RelSpecAntiPatternController(rsView,rsModel);
 			rsTabPanel.add(rsView);						
 		}
 		rsTabPanel.validate();
@@ -258,14 +240,16 @@ public class AntiPatternListPane extends JFrame {
 	 */
 	private void initializeSTRTabPanel()
 	{
-		strTabPanel.setLayout(new GridLayout(antipatternList.getSTRListModel().size(), 1, 0, 0));
+		strTabPanel.setLayout(new GridLayout(antipatternList.getBinOver().getOccurrences().size(), 1, 0, 0));
 		
-		for(BinOverAntipattern strModel: antipatternList.getSTRListModel())
+		for(BinOverOccurrence strModel: antipatternList.getBinOver().getOccurrences())
 		{
-			STRAntiPatternPane strView =  new STRAntiPatternPane(strModel,frame);
-			@SuppressWarnings("unused")
-			STRAntiPatternController strController = new STRAntiPatternController(strView,strModel);
-			strTabPanel.add(strView);			
+			if(strModel instanceof BinOverVariation1Occurrence){
+				BinOverAntiPatternPane strView =  new BinOverAntiPatternPane((BinOverVariation1Occurrence) strModel,frame);
+				@SuppressWarnings("unused")
+				BinOverAntiPatternController strController = new BinOverAntiPatternController(strView,(BinOverVariation1Occurrence) strModel);
+				strTabPanel.add(strView);
+			}
 		}
 		strTabPanel.validate();
 		strTabPanel.repaint();
@@ -276,13 +260,13 @@ public class AntiPatternListPane extends JFrame {
 	 */
 	public void initializeRWORTabPanel()
 	{
-		rworTabPanel.setLayout(new GridLayout(antipatternList.getRWORListModel().size(), 1, 0, 0));
+		rworTabPanel.setLayout(new GridLayout(antipatternList.getRelOver().getOccurrences().size(), 1, 0, 0));
 		
-		for(RelOverAntipattern rworModel: antipatternList.getRWORListModel())
+		for(RelOverOccurrence rworModel: antipatternList.getRelOver().getOccurrences())
 		{
-			RWORAntiPatternPane rworView =  new RWORAntiPatternPane(rworModel,frame);	
+			RelOverAntiPatternPane rworView =  new RelOverAntiPatternPane(rworModel,frame);	
 			@SuppressWarnings("unused")
-			RWORAntiPatternController rworController = new RWORAntiPatternController(rworView,rworModel);
+			RelOverAntiPatternController rworController = new RelOverAntiPatternController(rworView,rworModel);
 			rworTabPanel.add(rworView);					
 		}
 		
@@ -296,13 +280,13 @@ public class AntiPatternListPane extends JFrame {
 	 */
 	public void initializeIATabPanel()
 	{
-		iaTabPanel.setLayout(new GridLayout(antipatternList.getIAListModel().size(), 1, 0, 0));
+		iaTabPanel.setLayout(new GridLayout(antipatternList.getImpAbs().getOccurrences().size(), 1, 0, 0));
 		
-		for(ImpAbsAntipattern iaModel: antipatternList.getIAListModel())
+		for(ImpAbsOccurrence iaModel: antipatternList.getImpAbs().getOccurrences())
 		{
-			IAAntiPatternPane iaView =  new IAAntiPatternPane(iaModel,frame);
+			ImpAbsAntiPatternPane iaView =  new ImpAbsAntiPatternPane(iaModel,frame);
 			@SuppressWarnings("unused")
-			IAAntiPatternController iaController = new IAAntiPatternController(iaView,iaModel);
+			ImpAbsAntiPatternController iaController = new ImpAbsAntiPatternController(iaView,iaModel);
 			iaTabPanel.add(iaView);			
 		}
 		iaTabPanel.validate();

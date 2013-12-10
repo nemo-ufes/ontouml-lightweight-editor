@@ -19,19 +19,19 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
+import br.ufes.inf.nemo.antipattern.binover.BinOverVariation1Occurrence;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
  * @author John Guerson
  */
 
-public class STRAntiPatternPane extends JPanel {
+public class BinOverAntiPatternPane extends JPanel {
 
 	private static final long serialVersionUID = 497601694951872890L;
 
 	@SuppressWarnings("unused")
-	private BinOverAntipattern strModel;
+	private BinOverVariation1Occurrence strModel;
 	
 	private AppFrame frame;
 	private JTextField txtType;	
@@ -56,7 +56,7 @@ public class STRAntiPatternPane extends JPanel {
 	 * @param strModel
 	 * @param frame
 	 */
-	public STRAntiPatternPane(BinOverAntipattern strModel,AppFrame frame)
+	public BinOverAntiPatternPane(BinOverVariation1Occurrence strModel,AppFrame frame)
 	{
 		this();
 		
@@ -74,7 +74,7 @@ public class STRAntiPatternPane extends JPanel {
 	/**
 	 * Constructor.
 	 */
-	public STRAntiPatternPane() 
+	public BinOverAntiPatternPane() 
 	{
 		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128)), "", TitledBorder.RIGHT, TitledBorder.BELOW_TOP, null, new Color(255, 0, 0)));
 		setPreferredSize(new Dimension(330, 305));
