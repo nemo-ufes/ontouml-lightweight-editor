@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.oled.ui.antipattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ufes.inf.nemo.antipattern.relspec.RSAntiPattern;
+import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -14,10 +14,10 @@ import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
  * @author John Guerson
  */
 
-public class RSAntiPatternController {
+public class RelSpecAntiPatternController {
 
-	private RSAntiPatternPane rsView;
-	private RSAntiPattern rsModel;
+	private RelSpecAntiPatternPane rsView;
+	private RelSpecOccurrence rsModel;
 	
 	/**
 	 * Constructor.
@@ -25,7 +25,7 @@ public class RSAntiPatternController {
 	 * @param rsView
 	 * @param rsModel
 	 */
-	public RSAntiPatternController(RSAntiPatternPane rsView, RSAntiPattern rsModel)
+	public RelSpecAntiPatternController(RelSpecAntiPatternPane rsView, RelSpecOccurrence rsModel)
 	{
 		this.rsView = rsView;
 		this.rsModel = rsModel;		
@@ -80,7 +80,7 @@ public class RSAntiPatternController {
 	    		}
 				
 	    		//set parser...
-	    		rsModel.setSelected(refparser);
+	    		rsModel.setSelected();
 	    		
 	    		// set options to false, because the simulated model is partial
 	    		refOptions.identityPrinciple = false;

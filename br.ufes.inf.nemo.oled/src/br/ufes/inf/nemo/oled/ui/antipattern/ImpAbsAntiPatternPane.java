@@ -21,19 +21,19 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
+import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
  * @author John Guerson
  */
 
-public class IAAntiPatternPane extends JPanel {
+public class ImpAbsAntiPatternPane extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
-	private ImpAbsAntipattern ia;
+	private ImpAbsOccurrence ia;
 	
 	private AppFrame parent;
 	
@@ -56,7 +56,7 @@ public class IAAntiPatternPane extends JPanel {
 	 * @param ia
 	 * @param parent
 	 */
-	public IAAntiPatternPane(ImpAbsAntipattern ia,AppFrame parent)
+	public ImpAbsAntiPatternPane(ImpAbsOccurrence ia,AppFrame parent)
 	{
 		this();
 		
@@ -103,7 +103,7 @@ public class IAAntiPatternPane extends JPanel {
 	/**
 	 * Constructor.
 	 */
-	public IAAntiPatternPane() 
+	public ImpAbsAntiPatternPane() 
 	{
 		setPreferredSize(new Dimension(390, 449));	
 		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128)), "", TitledBorder.RIGHT, TitledBorder.BELOW_TOP, null, Color.BLACK));

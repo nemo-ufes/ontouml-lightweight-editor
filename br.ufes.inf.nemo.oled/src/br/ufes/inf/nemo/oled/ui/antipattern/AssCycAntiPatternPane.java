@@ -19,19 +19,19 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
  * @author John Guerson
  */
 
-public class ACAntiPatternPane extends JPanel {
+public class AssCycAntiPatternPane extends JPanel {
 
 	private static final long serialVersionUID = 397547249389577827L;
 	
 	@SuppressWarnings("unused")
-	private AssCycAntipattern ac;	
+	private AssCycOccurrence assCyc;	
 	
 	private AppFrame parent;	
 	private JTextPane txtClassCycle;	
@@ -46,36 +46,36 @@ public class ACAntiPatternPane extends JPanel {
 	/**
 	 * Constructor.
 	 * 
-	 * @param ac
+	 * @param assCyc
 	 * @param parent
 	 */
-	public ACAntiPatternPane (AssCycAntipattern ac, AppFrame parent)
+	public AssCycAntiPatternPane (AssCycOccurrence assCyc, AppFrame parent)
 	{
 		this();
 		
-		this.ac = ac;
+		this.assCyc = assCyc;
 		this.parent = parent; 
 		
 		int i=0;
 		String resultBuffer= new String();
 		resultBuffer += "  ";
-		for (RefOntoUML.Class c : ac.getCycle())
+		for (RefOntoUML.Class c : assCyc.getCycle())
 		{			
-			if (i != ac.getCycle().size()) resultBuffer += c.getName()+"->";			
-			if(i==ac.getCycle().size()-1) resultBuffer += ac.getCycle().get(0).getName();
+			if (i != assCyc.getCycle().size()) resultBuffer += c.getName()+"->";			
+			if(i==assCyc.getCycle().size()-1) resultBuffer += assCyc.getCycle().get(0).getName();
 			i++;
 		}
 		txtClassCycle.setText(resultBuffer);
 			
 		lblClassCycle.setText("Class Cycle");
 			
-		lblScope.setText("\""+ac.getCycle().get(0).getName()+"\""+" Scope:");
+		lblScope.setText("\""+assCyc.getCycle().get(0).getName()+"\""+" Scope:");
 	}		
 	
 	/**
 	 * Constructor.
 	 */
-	public ACAntiPatternPane() 
+	public AssCycAntiPatternPane() 
 	{
 		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128)), "", TitledBorder.RIGHT, TitledBorder.BELOW_TOP, null, new Color(255, 0, 0)));
 		setPreferredSize(new Dimension(330, 246));

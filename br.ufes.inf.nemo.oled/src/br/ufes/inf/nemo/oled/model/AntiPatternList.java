@@ -1,16 +1,25 @@
 package br.ufes.inf.nemo.oled.model;
 
-import java.util.ArrayList;
-
+import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
+import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
+import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
+import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
+import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
-import br.ufes.inf.nemo.antipattern.rbos.RBOSAntiPattern;
+import br.ufes.inf.nemo.antipattern.imppart.ImpPartAntipattern;
+import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
+import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
+import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
 import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
-import br.ufes.inf.nemo.antipattern.relspec.RSAntiPattern;
+import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
+import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalAntipattern;
+import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
+import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 
 
 /**
@@ -22,218 +31,178 @@ import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
 
 public class AntiPatternList {
 	
-	private ArrayList<AssCycAntipattern> acListModel = new ArrayList<AssCycAntipattern>();	
-	private ArrayList<RBOSAntiPattern> rbosListModel = new ArrayList<RBOSAntiPattern>();	
-	private ArrayList<BinOverAntipattern> strListModel = new ArrayList<BinOverAntipattern>();	
-	private ArrayList<RSAntiPattern> rsListModel = new ArrayList<RSAntiPattern>();
-	private ArrayList<RelOverAntipattern> rworListModel = new ArrayList<RelOverAntipattern>();	
-	private ArrayList<ImpAbsAntipattern> iaListModel = new ArrayList<ImpAbsAntipattern>();
-	private ArrayList<RelCompAntipattern> ssrListModel = new ArrayList<RelCompAntipattern>();
-	private ArrayList<RelRigAntipattern> rwrtListModel = new ArrayList<RelRigAntipattern>();
-	private ArrayList<RepRelAntipattern> triListModel = new ArrayList<RepRelAntipattern>();
+	private AssCycAntipattern assCyc; 	
+	private BinOverAntipattern binOver;		
+	private DepPhaseAntipattern depPhase;
+	private FreeRoleAntipattern freeRole;
+	private GSRigAntipattern gsRig;
+	private HetCollAntipattern hetColl;
+	private HomoFuncAntipattern homoFunc;
+	private ImpAbsAntipattern impAbs;
+	private ImpPartAntipattern impPart;
+	private MixIdenAntipattern mixIden;
+	private MixRigAntipattern mixRig;
+	private MultiDepAntipattern multiDep;
+	private RelCompAntipattern relComp;
+	private RelOverAntipattern relOver;
+	private RelRigAntipattern relRig;
+	private RelSpecAntipattern relSpec;
+	private RepRelAntipattern repRel;
+	private UndefFormalAntipattern undefFormal;
+	private UndefPhaseAntipattern undefPhase;
+	private WholeOverAntipattern wholeOver;
 	
-	/**
-	 * Creates a AntiPattern Model List from a list of AntiPatterns Models.
-	 * 
-	 * @param acListModel
-	 * @param rbosListModel
-	 * @param strListModel
-	 * @param rsListModel
-	 * @param rworListModel
-	 * @param iaListModel
-	 */
-	public AntiPatternList (ArrayList<AssCycAntipattern> acListModel, ArrayList<RBOSAntiPattern> rbosListModel,
-			ArrayList<BinOverAntipattern> strListModel, ArrayList<RSAntiPattern> rsListModel,
-			ArrayList<RelOverAntipattern> rworListModel, ArrayList<ImpAbsAntipattern> iaListModel, 
-			ArrayList<RelCompAntipattern> ssrListModel, ArrayList<RelRigAntipattern> rwrtListModel,
-			ArrayList<RepRelAntipattern> triListModel
-	)
-	{
-		this.acListModel = acListModel;
-		this.rbosListModel = rbosListModel;
-		this.strListModel = strListModel;
-		this.rsListModel = rsListModel;	
-		this.rworListModel = rworListModel;
-		this.iaListModel = iaListModel;
-		this.ssrListModel = ssrListModel;
-		this.rwrtListModel = rwrtListModel;
-		this.triListModel = triListModel;
+	public AssCycAntipattern getAssCyc() {
+		return assCyc;
 	}
+	public AntiPatternList(AssCycAntipattern assCyc,
+			BinOverAntipattern binOver, DepPhaseAntipattern depPhase, FreeRoleAntipattern freeRole, GSRigAntipattern gsRig,
+			HetCollAntipattern hetColl, HomoFuncAntipattern homoFunc, ImpAbsAntipattern impAbs, ImpPartAntipattern impPart,
+			MixIdenAntipattern mixIden, MixRigAntipattern mixRig, MultiDepAntipattern multiDep, RelCompAntipattern relComp,
+			RelOverAntipattern relOver, RelRigAntipattern relRig, RelSpecAntipattern relSpec, RepRelAntipattern repRel,
+			UndefFormalAntipattern undefFormal, UndefPhaseAntipattern undefPhase, WholeOverAntipattern wholeOver) {
 
-	/**
-	 * Creates an Empty AntiPattern Model List.
-	 */
-	public AntiPatternList() { }	
-	
-	/**
-	 * Get AC AntiPattern Model List.
-	 * @return
-	 */
-	public ArrayList<AssCycAntipattern> getACListModel() 
-	{
-		return acListModel;
+		this.assCyc = assCyc;
+		this.binOver = binOver;
+		this.depPhase = depPhase;
+		this.freeRole = freeRole;
+		this.gsRig = gsRig;
+		this.hetColl = hetColl;
+		this.homoFunc = homoFunc;
+		this.impAbs = impAbs;
+		this.impPart = impPart;
+		this.mixIden = mixIden;
+		this.mixRig = mixRig;
+		this.multiDep = multiDep;
+		this.relComp = relComp;
+		this.relOver = relOver;
+		this.relRig = relRig;
+		this.relSpec = relSpec;
+		this.repRel = repRel;
+		this.undefFormal = undefFormal;
+		this.undefPhase = undefPhase;
+		this.wholeOver = wholeOver;
 	}
 	
-	/**
-	 * Get RBOS AntiPattern Model List.
-	 * @return
-	 */
-	public ArrayList<RBOSAntiPattern> getRBOSListModel()
-	{
-		return rbosListModel;
+	public void setAssCyc(AssCycAntipattern assCyc) {
+		this.assCyc = assCyc;
 	}
 	
-	/**
-	 * Get STR AntiPattern Model List.
-	 * @return
-	 */
-	public ArrayList<BinOverAntipattern> getSTRListModel()
-	{
-		return strListModel;
+	public BinOverAntipattern getBinOver() {
+		return binOver;
+	}
+	public void setBinOver(BinOverAntipattern binOver) {
+		this.binOver = binOver;
+	}
+	public DepPhaseAntipattern getDepPhase() {
+		return depPhase;
+	}
+	public void setDepPhase(DepPhaseAntipattern depPhase) {
+		this.depPhase = depPhase;
+	}
+	public FreeRoleAntipattern getFreeRole() {
+		return freeRole;
+	}
+	public void setFreeRole(FreeRoleAntipattern freeRole) {
+		this.freeRole = freeRole;
+	}
+	public GSRigAntipattern getGsRig() {
+		return gsRig;
+	}
+	public void setGsRig(GSRigAntipattern gsRig) {
+		this.gsRig = gsRig;
+	}
+	public HetCollAntipattern getHetColl() {
+		return hetColl;
+	}
+	public void setHetColl(HetCollAntipattern hetColl) {
+		this.hetColl = hetColl;
+	}
+	public HomoFuncAntipattern getHomoFunc() {
+		return homoFunc;
+	}
+	public void setHomoFunc(HomoFuncAntipattern homoFunc) {
+		this.homoFunc = homoFunc;
+	}
+	public ImpAbsAntipattern getImpAbs() {
+		return impAbs;
+	}
+	public void setImpAbs(ImpAbsAntipattern impAbs) {
+		this.impAbs = impAbs;
+	}
+	public ImpPartAntipattern getImpPart() {
+		return impPart;
+	}
+	public void setImpPart(ImpPartAntipattern impPart) {
+		this.impPart = impPart;
+	}
+	public MixIdenAntipattern getMixIden() {
+		return mixIden;
+	}
+	public void setMixIden(MixIdenAntipattern mixIden) {
+		this.mixIden = mixIden;
+	}
+	public MixRigAntipattern getMixRig() {
+		return mixRig;
+	}
+	public void setMixRig(MixRigAntipattern mixRig) {
+		this.mixRig = mixRig;
+	}
+	public MultiDepAntipattern getMultiDep() {
+		return multiDep;
+	}
+	public void setMultiDep(MultiDepAntipattern multiDep) {
+		this.multiDep = multiDep;
+	}
+	public RelCompAntipattern getRelComp() {
+		return relComp;
+	}
+	public void setRelComp(RelCompAntipattern relComp) {
+		this.relComp = relComp;
+	}
+	public RelOverAntipattern getRelOver() {
+		return relOver;
+	}
+	public void setRelOver(RelOverAntipattern relOver) {
+		this.relOver = relOver;
+	}
+	public RelRigAntipattern getRelRig() {
+		return relRig;
+	}
+	public void setRelRig(RelRigAntipattern relRig) {
+		this.relRig = relRig;
+	}
+	public RelSpecAntipattern getRelSpec() {
+		return relSpec;
+	}
+	public void setRelSpec(RelSpecAntipattern relSpec) {
+		this.relSpec = relSpec;
+	}
+	public RepRelAntipattern getRepRel() {
+		return repRel;
+	}
+	public void setRepRel(RepRelAntipattern repRel) {
+		this.repRel = repRel;
+	}
+	public UndefFormalAntipattern getUndefFormal() {
+		return undefFormal;
+	}
+	public void setUndefFormal(UndefFormalAntipattern undefFormal) {
+		this.undefFormal = undefFormal;
+	}
+	public UndefPhaseAntipattern getUndefPhase() {
+		return undefPhase;
+	}
+	public void setUndefPhase(UndefPhaseAntipattern undefPhase) {
+		this.undefPhase = undefPhase;
+	}
+	public WholeOverAntipattern getWholeOver() {
+		return wholeOver;
+	}
+	public void setWholeOver(WholeOverAntipattern wholeOver) {
+		this.wholeOver = wholeOver;
 	}
 	
-	/**
-	 * Get RS AntiPattern model List.
-	 * @return
-	 */
-	public ArrayList<RSAntiPattern> getRSListModel()
-	{
-		return rsListModel;
-	}
 	
-	/**
-	 * Get RWOR AntiPattern model List.
-	 * @return
-	 */
-	public ArrayList<RelOverAntipattern> getRWORListModel()
-	{
-		return rworListModel;
-	}
-	
-	/**
-	 * Get IA AntiPattern Model List.
-	 * @return
-	 */
-	public ArrayList<ImpAbsAntipattern> getIAListModel()
-	{
-		return iaListModel;
-	}	
-
-	/**
-	 * Get SSR AntiPattern Model List.
-	 * @return
-	 */
-	public ArrayList<RelCompAntipattern> getSSRListModel()
-	{
-		return ssrListModel;
-	}
-	
-	/**
-	 * Get RWRT AntiPattern Model List.
-	 * @return
-	 */
-	public ArrayList<RelRigAntipattern> getRWRTListModel()
-	{
-		return rwrtListModel;
-	}
-	
-	/**
-	 * Get TRI AntiPattern Model List.
-	 * @return
-	 */
-	public ArrayList<RepRelAntipattern> getTRIListModel()
-	{
-		return triListModel;
-	}
-	
-	/**
-	 * Set AC AntiPattern Model List.
-	 * 
-	 * @param acListModel
-	 */
-	public void setACListModel(ArrayList<AssCycAntipattern> acListModel)
-	{
-		this.acListModel = acListModel;
-	}
-	
-	/**
-	 * Set RBOS AntiPattern Model List.
-	 * 
-	 * @param rbosListModel
-	 */
-	public void setRBOSListModel(ArrayList<RBOSAntiPattern> rbosListModel)
-	{
-		this.rbosListModel = rbosListModel;
-	}
-	
-	/**
-	 * Set STR AntiPAttern Model List.
-	 * 
-	 * @param strListModel
-	 */
-	public void setSTRListModel(ArrayList<BinOverAntipattern>  strListModel)
-	{
-		this.strListModel = strListModel;
-	}
-	
-	/**
-	 * Set RS AntiPAttern Model List.
-	 * 
-	 * @param rsListModel
-	 */
-	public void setRSListModel(ArrayList<RSAntiPattern> rsListModel)
-	{
-		this.rsListModel = rsListModel;
-	}
-	
-	/**
-	 * Set RWOR AntiPattern Model List.
-	 * 
-	 * @param rworListModel
-	 */
-	public void setRWORListModel(ArrayList<RelOverAntipattern> rworListModel)
-	{
-		this.rworListModel = rworListModel;
-	}
-	
-	/**
-	 * Set IA AntiPattern Model List.
-	 * 
-	 * @param iaListModel
-	 */
-	public void setIAListModel(ArrayList<ImpAbsAntipattern> iaListModel)
-	{
-		this.iaListModel = iaListModel;
-	}
-	
-	/**
-	 * Set SSR AntiPattern Model List.
-	 * 
-	 * @param ssrListModel
-	 */
-	public void setSSRListModel(ArrayList<RelCompAntipattern> ssrListModel)
-	{
-		this.ssrListModel = ssrListModel;
-	}
-	
-	/**
-	 * Set RWRT AntiPattern Model List.
-	 * 
-	 * @param rwrtListModel
-	 */
-	public void setRWRTListModel(ArrayList<RelRigAntipattern> rwrtListModel)
-	{
-		this.rwrtListModel = rwrtListModel;
-	}
-	
-	/**
-	 * Set TRI AntiPattern Model List.
-	 * 
-	 * @param triListModel
-	 */
-	public void setTRIListModel(ArrayList<RepRelAntipattern> triListModel)
-	{
-		this.triListModel = triListModel;
-	}
 	
 }

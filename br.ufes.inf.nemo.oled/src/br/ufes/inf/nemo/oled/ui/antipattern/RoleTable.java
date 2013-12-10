@@ -10,7 +10,7 @@ import javax.swing.table.TableModel;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
-import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
+import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 
 
 /**
@@ -21,7 +21,7 @@ public class RoleTable extends JTable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private RelOverAntipattern rwor;
+	private RelOverOccurrence rwor;
 	
 	private ArrayList<Classifier> rolesArrayList = new ArrayList<Classifier>();	
 	
@@ -50,11 +50,11 @@ public class RoleTable extends JTable {
 	 * 
 	 * @param rwor
 	 */
-	public void setRWORAntiPatternModel(RelOverAntipattern rwor)
+	public void setRWORAntiPatternModel(RelOverOccurrence rwor)
 	{
 		this.rwor = rwor;	
 		
-		setRolesTableModel(rwor.getMediations().values());
+		setRolesTableModel(rwor.getMediatedTypes());
 	}
 	
 	/**

@@ -21,19 +21,19 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
+import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /**
  * @author John Guerson
  */
 
-public class RWORAntiPatternPane extends JPanel {
+public class RelOverAntiPatternPane extends JPanel {
 
 	private static final long serialVersionUID = -462975341854464169L;
 
 	@SuppressWarnings("unused")
-	private RelOverAntipattern rwor;
+	private RelOverOccurrence rwor;
 		
 	private RoleTable table;	
 	
@@ -60,7 +60,7 @@ public class RWORAntiPatternPane extends JPanel {
 	 * @param rwor
 	 * @param parent
 	 */
-	public RWORAntiPatternPane(RelOverAntipattern rwor, AppFrame parent)
+	public RelOverAntiPatternPane(RelOverOccurrence rwor, AppFrame parent)
 	{
 		this();
 		
@@ -79,7 +79,7 @@ public class RWORAntiPatternPane extends JPanel {
 	/**
 	 * Constructor.
 	 */
-	public RWORAntiPatternPane() 
+	public RelOverAntiPatternPane() 
 	{
 		setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128)), "", TitledBorder.RIGHT, TitledBorder.BELOW_TOP, null, new Color(255, 0, 0)));
 		
