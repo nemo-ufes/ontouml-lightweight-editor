@@ -15,8 +15,4 @@ public class PackageableElementImplFactory extends NamedElementImplFactory {
 		super(m_NamedElementImpl);
 	}
 
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-
 }

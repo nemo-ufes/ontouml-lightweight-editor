@@ -14,9 +14,5 @@ public class TypedElementImplFactory extends NamedElementImplFactory {
 	public TypedElementImplFactory(NamedElementImpl m_NamedElementImpl){
 		super(m_NamedElementImpl);	
 	}
-	
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
 
 }

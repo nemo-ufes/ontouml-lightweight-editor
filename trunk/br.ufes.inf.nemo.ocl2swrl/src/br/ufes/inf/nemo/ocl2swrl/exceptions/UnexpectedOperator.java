@@ -5,8 +5,9 @@ public class UnexpectedOperator extends Ocl2SwrlException {
 	/**
 	 * Constructor.
 	 * 
-	 * @param type
-	 * @param details
+	 * @param operator -  contains the name of the unexpected operator
+	 * @param tag - contains the name of the tag that doesn't uses the operator 
+	 * @param rule - contains the rule
 	 */
 	public UnexpectedOperator(String operator, String tag, String rule) 
     {		
