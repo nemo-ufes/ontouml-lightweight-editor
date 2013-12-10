@@ -84,6 +84,9 @@ public class AntiPatternList {
 		this.wholeOver = wholeOver;
 	}
 	
+	public AntiPatternList() {
+		// TODO Auto-generated constructor stub
+	}
 	public void setAssCyc(AssCycAntipattern assCyc) {
 		this.assCyc = assCyc;
 	}
