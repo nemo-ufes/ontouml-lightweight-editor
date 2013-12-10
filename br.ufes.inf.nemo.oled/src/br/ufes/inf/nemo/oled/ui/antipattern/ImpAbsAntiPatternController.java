@@ -16,22 +16,22 @@ import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 public class ImpAbsAntiPatternController {
 	
-	private ImpAbsAntiPatternPane iaView;
-	private ImpAbsOccurrence iaModel;
+	private ImpAbsAntiPatternPane impAbsView;
+	private ImpAbsOccurrence impAbsModel;
 	
 	/**
 	 * Constructor.
 	 * 
-	 * @param iaView
-	 * @param iaModel
+	 * @param impAbsView
+	 * @param impAbsModel
 	 */
-	public ImpAbsAntiPatternController(ImpAbsAntiPatternPane iaView, ImpAbsOccurrence iaModel)
+	public ImpAbsAntiPatternController(ImpAbsAntiPatternPane impAbsView, ImpAbsOccurrence impAbsModel)
 	{
-		this.iaView = iaView;
-		this.iaModel = iaModel;
+		this.impAbsView = impAbsView;
+		this.impAbsModel = impAbsModel;
 			
-		iaView.addExecuteWithAnalzyerListener(new ExecuteWithAnalzyerListener());
-		iaView.addOCLSolutionListener(new OCLSolutionListener());
+		impAbsView.addExecuteWithAnalzyerListener(new ExecuteWithAnalzyerListener());
+		impAbsView.addOCLSolutionListener(new OCLSolutionListener());
 	}
 	
 	/**
@@ -45,22 +45,22 @@ public class ImpAbsAntiPatternController {
 	    {			
 	    	try{
 	    		String predicates = new String();
-	    		OntoUMLParser refparser = ProjectBrowser.getParserFor(iaView.getFrame().getDiagramManager().getCurrentProject());
-	    		UmlProject project = iaView.getFrame().getDiagramManager().getCurrentProject();
+	    		OntoUMLParser refparser = ProjectBrowser.getParserFor(impAbsView.getFrame().getDiagramManager().getCurrentProject());
+	    		UmlProject project = impAbsView.getFrame().getDiagramManager().getCurrentProject();
 	    		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(project);
 	    		
-	    		if(iaView.isSelectedSourceCustom()) 
+	    		if(impAbsView.isSelectedSourceCustom()) 
 	    		{
-	    			predicates += "\n\n"+iaModel.generateSourcePredicate(
-	    				iaView.getSourceCustomClassifiers(),
+	    			predicates += "\n\n"+impAbsModel.generateSourcePredicate(
+	    				impAbsView.getSourceCustomClassifiers(),
 	    				refparser	    				
 	    			);
 	    		}
 			
-	    		if(iaView.isSelectedTargetCustom())				
+	    		if(impAbsView.isSelectedTargetCustom())				
 	    		{
-	    			predicates += "\n\n"+iaModel.generateTargetPredicate(
-	    				iaView.getTargetCustomClassifiers(),
+	    			predicates += "\n\n"+impAbsModel.generateTargetPredicate(
+	    				impAbsView.getTargetCustomClassifiers(),
 	    				refparser	    			
 	    			); 
 	    		}
@@ -77,7 +77,7 @@ public class ImpAbsAntiPatternController {
 	    		iaView.getTheFrame().getManager().doOpeningAlloy(true,-1);	  */
 	    		
 	    		//set parser...
-	    		iaModel.setSelected();
+	    		impAbsModel.setSelected();
 	    		
 	    		// set options to false, because the simulated model is partial
 	    		refOptions.identityPrinciple = false;
@@ -100,10 +100,10 @@ public class ImpAbsAntiPatternController {
 	    		alloymodel.setContent(content);
 	    		
 	    		// open alloy model
-	    		iaView.getFrame().getDiagramManager().openAlloyAnalyzer(alloymodel,true,-1);
+	    		impAbsView.getFrame().getDiagramManager().openAlloyAnalyzer(alloymodel,true,-1);
 	    		
 	    	}catch(Exception exception){
-	    		iaView.getFrame().showErrorMessageDialog("Executing IA AntiPattern",exception.getMessage());
+	    		impAbsView.getFrame().showErrorMessageDialog("Executing IA AntiPattern",exception.getMessage());
 	    	}
 	    	
 	    }
@@ -120,21 +120,21 @@ public class ImpAbsAntiPatternController {
 	    {
 			String constraints = new String();
 			
-			OntoUMLParser refparser = ProjectBrowser.getParserFor(iaView.getFrame().getDiagramManager().getCurrentProject());
+			OntoUMLParser refparser = ProjectBrowser.getParserFor(impAbsView.getFrame().getDiagramManager().getCurrentProject());
 			
-    		if(iaView.isSelectedSourceCustom()) 
+    		if(impAbsView.isSelectedSourceCustom()) 
     		{
-    			constraints += iaModel.generateSourceOcl(iaView.getSourceCustomClassifiers(), refparser);
+    			constraints += impAbsModel.generateSourceOcl(impAbsView.getSourceCustomClassifiers(), refparser);
     		}
 		
-    		if(iaView.isSelectedTargetCustom())				
+    		if(impAbsView.isSelectedTargetCustom())				
     		{
-    			if(iaView.isSelectedSourceCustom())
+    			if(impAbsView.isSelectedSourceCustom())
     				constraints += "\n\n";
-    			constraints += iaModel.generateTargetOcl(iaView.getTargetCustomClassifiers(), refparser); 
+    			constraints += impAbsModel.generateTargetOcl(impAbsView.getTargetCustomClassifiers(), refparser); 
     		}    		
     		
-    		iaView.getFrame().getInfoManager().addConstraints(constraints);
+    		impAbsView.getFrame().getInfoManager().addConstraints(constraints);
 	    }
 	}
 	
