@@ -621,15 +621,15 @@ public class OntoUMLParser {
 	/**
 	 * Get all Mediations that have as a source the Relator 'r' or one of its Super Types.
 	 * 
-	 * @param r
+	 * @param relator
 	 * @param result
 	 * @throws Exception 
 	 */
-	public void getAllMediations(Relator r,ArrayList<Mediation> result) throws Exception
+	public void getAllMediations(Classifier relator, ArrayList<Mediation> result) throws Exception
 	{
-		result.addAll(getRelatorsMediations(r));
+		result.addAll(getRelatorsMediations(relator));
 		
-		for(Generalization gen : r.getGeneralization())
+		for(Generalization gen : relator.getGeneralization())
 		{						
 			if(isSelected(gen))	
 				if (gen.getGeneral() instanceof Relator) 
@@ -640,16 +640,16 @@ public class OntoUMLParser {
 	/**
 	 * Get all Mediations that have as a source the Relator 'r' or one of its Super Types.
 	 * 
-	 * @param r
+	 * @param relator
 	 * @param result
 	 * @throws Exception 
 	 */
-	public ArrayList<Mediation> getRelatorsMediations(Relator r) throws Exception
+	public ArrayList<Mediation> getRelatorsMediations(Classifier relator) throws Exception
 	{
 		ArrayList<Mediation> result = new ArrayList<Mediation>();
 		
 		for (Mediation m : getAllInstances(Mediation.class)) {
-			if(getRelator(m).equals(r))
+			if(getRelator(m).equals(relator))
 				result.add(m);
 		}
 		
@@ -1023,31 +1023,35 @@ public class OntoUMLParser {
 	
 	/*TODO: Temos algum método que pega o lado do relator corretamente?? Caso tenhamos, remover o método criado abaixo. Criado pois mediations podem vir erradas ou invertidas*/
 	
-	public Property getRelatorEnd (Mediation m) throws Exception
+	public Property getRelatorEnd (Mediation m)
 	{		
 		if (m.sourceEnd().getType() instanceof Relator)
 			return m.sourceEnd();
 		else if (m.targetEnd().getType() instanceof Relator)
 			return m.targetEnd();
-		else
-			throw new Exception("Mediation is not connected to any Relator! No way to return the Relator element. The model is invalid.");
+		else {
+			for (Classifier c : ((Classifier)m.sourceEnd().getType()).allParents()) {
+				if (c instanceof Relator)
+					return m.sourceEnd();
+			}
+			for (Classifier c : ((Classifier)m.targetEnd().getType()).allParents()) {
+				if (c instanceof Relator)
+					return m.targetEnd();
+			}
+		}
+		
+		return m.sourceEnd();
 		
 	}
 	
-	public Property getMediatedEnd (Mediation m) throws Exception
+	public Property getMediatedEnd (Mediation m)
 	{		
-		if (m.sourceEnd().getType() instanceof Relator)
-			return m.targetEnd();
-		else if (m.targetEnd().getType() instanceof Relator)
-			return m.sourceEnd();
-		else
-			return m.targetEnd();
-			//throw new Exception("Mediation is not connected to any Relator! No way to return the mediated element. The model is invalid.");
+		return getRelatorEnd(m).getOpposite();
 	}
 	
-	public Relator getRelator(Mediation m) throws Exception
+	public Classifier getRelator(Mediation m) throws Exception
 	{
-		return (Relator) getRelatorEnd(m).getType();
+		return (Classifier) getRelatorEnd(m).getType();
 	}
 	
 	public Derivation getDerivation (MaterialAssociation material)
@@ -1062,9 +1066,9 @@ public class OntoUMLParser {
 		return null;
 	}
 	
-	public RefOntoUML.Type getMediated(Mediation m) throws Exception
+	public Classifier getMediated(Mediation m) throws Exception
 	{		
-		return getMediatedEnd(m).getType();
+		return (Classifier) getMediatedEnd(m).getType();
 	}
 	
 	/**
