@@ -20,8 +20,6 @@ import br.ufes.inf.nemo.ocl2swrl.exceptions.Ocl2SwrlException;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl.TypedElementImplFactory;
 
-
-
 /**
  * @author fredd_000
  * @version 1.0
@@ -32,10 +30,6 @@ public class VariableImplFactory extends TypedElementImplFactory {
 	
 	public VariableImplFactory(NamedElementImpl m_NamedElementImpl){
 		super(m_NamedElementImpl);
-	}
-
-	public void finalize() throws Throwable {
-		super.finalize();
 	}
 	
 	@Override

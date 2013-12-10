@@ -16,12 +16,9 @@ import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.Ocl2SwrlException;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
-
-
 
 /**
  * @author fredd_000
@@ -54,10 +51,6 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 			return true;
 		}
 		return false;
-	}
-	
-	public void finalize() throws Throwable {
-		super.finalize();
 	}
 
 	@Override

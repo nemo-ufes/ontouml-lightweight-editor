@@ -4,8 +4,6 @@ import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 
 import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl.TypedElementImplFactory;
 
-
-
 /**
  * @author fredd_000
  * @version 1.0
@@ -15,10 +13,6 @@ public class CollectionLiteralPartImplFactory extends TypedElementImplFactory {
 
 	public CollectionLiteralPartImplFactory(NamedElementImpl m_NamedElementImpl){
 		super(m_NamedElementImpl);	
-	}
-	
-	public void finalize() throws Throwable {
-		super.finalize();
 	}
 
 }

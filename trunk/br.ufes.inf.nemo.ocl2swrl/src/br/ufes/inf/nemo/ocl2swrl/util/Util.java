@@ -12,11 +12,19 @@ import uk.ac.manchester.cs.owl.owlapi.SWRLLiteralArgumentImpl;
 import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
 
 public class Util {
+	/**
+	 * This method generate a variable name according to the involved expression and a possible referred argument
+	 * 
+	 * @param expression - contains the expression
+	 * @param referredArgument - contains the referred argument (can be null)
+	 */
 	public static String generateVarName(Object expression, SWRLDArgument referredArgument){
 		String varName = "";
 		
+		//considers the case of non null referred argument
 		if(referredArgument != null){
 			Class<? extends SWRLDArgument> c = referredArgument.getClass();
+			//if the referred argument class is SWRLVariableImpl, its name is added to the resulting variable name
 			if(c.equals(SWRLVariableImpl.class)){
 				SWRLVariable var = (SWRLVariableImpl) referredArgument;
 				IRI iri = var.getIRI();
@@ -24,7 +32,7 @@ public class Util {
 				varName += iri.getFragment();
 				
 				
-			}else if(c.equals(SWRLLiteralArgumentImpl.class)){
+			}else if(c.equals(SWRLLiteralArgumentImpl.class)){//if the referred argument class is SWRLLiteralArgumentImpl, its name is added to the resulting variable name
 				SWRLLiteralArgument arg = (SWRLLiteralArgumentImpl) referredArgument;
 				arg.getLiteral();
 			}
@@ -34,8 +42,8 @@ public class Util {
 			return varName;
 		}
 		
+		//increment the variable name according to the expression type
 		if(expression.getClass().equals(PropertyCallExpImpl.class)){
-			//varName += generateVarName(((CallExpImpl) expression).getSource(), null);
 			varName += ".";
 			varName += ((PropertyCallExpImpl) expression).getReferredProperty().getName();
 		}else if(expression.getClass().equals(VariableExpImpl.class)){
@@ -50,15 +58,13 @@ public class Util {
 		}else if(expression.getClass().equals(PropertyImpl.class)){
 			varName += ".";
 			varName += ((PropertyImpl) expression).getName();
-			//varName += iri.getFragment();
 		}else if(expression.getClass().equals(ClassImpl.class) && referredArgument == null){
 			varName += ((ClassImpl) expression).getName();
-			//varName += iri.getFragment();
 		}else if(expression.getClass().equals(TypeExpImpl.class)){
 			varName = ((TypeExpImpl) expression).getReferredType().getName();
-			//varName += iri.getFragment();
 		}
 		
+		//replace all spaces with underscores, following the OntoUML2OWL+SWRL transformation
 		varName = varName.replace(" ", "_");
 		
 		return varName;

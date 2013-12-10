@@ -15,22 +15,13 @@ import org.semanticweb.owlapi.model.SWRLLiteralArgument;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-
-
-
 /**
- * @author fredd_000
- * @version 1.0
- * @created 24-set-2013 09:16:12
+ * @author Freddy Brasileiro Silva {freddybrasileiro@gmail.com}
  */
 public class BooleanLiteralExpImplFactory extends PrimitiveLiteralExpImplFactory {
 
 	public BooleanLiteralExpImplFactory(NamedElementImpl m_NamedElementImpl){
 		super(m_NamedElementImpl);
-	}
-	
-	public void finalize() throws Throwable {
-		super.finalize();
 	}
 
 	@Override

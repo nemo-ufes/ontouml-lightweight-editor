@@ -46,15 +46,12 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 import uk.ac.manchester.cs.owl.owlapi.SWRLLiteralArgumentImpl;
 import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.Ocl2SwrlException;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.UnexpectedOperator;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
-
-
 
 /**
  * @author fredd_000
@@ -99,10 +96,6 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			return true;
 		}
 		return false;
-	}
-	
-	public void finalize() throws Throwable {
-		super.finalize();
 	}
 
 	@Override

@@ -14,12 +14,8 @@ import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
-import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.Ocl2SwrlException;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
-
-
 
 /**
  * @author fredd_000
@@ -32,10 +28,6 @@ public class LetExpImplFactory extends OCLExpressionImplFactory {
 	
 	public LetExpImplFactory(NamedElementImpl m_NamedElementImpl){
 		super(m_NamedElementImpl);
-	}
-	
-	public void finalize() throws Throwable {
-		super.finalize();
 	}
 
 	@SuppressWarnings({ "unused", "rawtypes" })

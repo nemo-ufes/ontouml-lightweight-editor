@@ -2,8 +2,6 @@ package br.ufes.inf.nemo.ocl2swrl.factory.ocl.uml.impl;
 
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 
-
-
 /**
  * @author fredd_000
  * @version 1.0
@@ -14,9 +12,4 @@ public class StringLiteralExpImplFactory extends PrimitiveLiteralExpImplFactory 
 	public StringLiteralExpImplFactory(NamedElementImpl m_NamedElementImpl){
 		super(m_NamedElementImpl);
 	}
-	
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-
 }

@@ -15,8 +15,6 @@ import org.semanticweb.owlapi.model.SWRLLiteralArgument;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-
-
 /**
  * @author fredd_000
  * @version 1.0
@@ -26,10 +24,6 @@ public class RealLiteralExpImplFactory extends NumericLiteralExpImplFactory {
 
 	public RealLiteralExpImplFactory(NamedElementImpl m_NamedElementImpl){
 		super(m_NamedElementImpl);
-	}
-	
-	public void finalize() throws Throwable {
-		super.finalize();
 	}
 
 	@Override

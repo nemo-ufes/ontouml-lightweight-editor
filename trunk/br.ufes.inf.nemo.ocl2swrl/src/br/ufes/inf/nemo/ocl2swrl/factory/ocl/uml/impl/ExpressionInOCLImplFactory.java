@@ -25,13 +25,9 @@ import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2swrl.exceptions.NonImplemented;
-import br.ufes.inf.nemo.ocl2swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.Ocl2SwrlException;
 import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl.NamedElementImplFactory;
 import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
-
-
 
 /**
  * @author fredd_000
@@ -47,18 +43,6 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 	public ExpressionInOCLImplFactory(NamedElementImpl m_NamedElementImpl){
 		super(m_NamedElementImpl);
 	}
-
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-	
-	public void setElement(Element element) {
-		this.element = element;
-	}
-	
-	public Element getElement() {
-		return element;
-	}
 	
 	@Override
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws Ocl2SwrlException{
@@ -66,7 +50,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		OCLExpressionImpl bodyExpression = (OCLExpressionImpl) expressionInOCLImpl.getBodyExpression();
 		
 		bodyExpressionFactory = (OCLExpressionImplFactory) NamedElementImplFactory.constructor(bodyExpression, this.m_NamedElementImpl);
-		bodyExpressionFactory.setIsBodyExpression(true);
+		//bodyExpressionFactory.setIsBodyExpression(true);
 		/*
 		if(bodyExpressionFactory.isImpliesOperation()){
 			oclConsequentShouldBeNegated = true;
