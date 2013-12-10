@@ -10,12 +10,16 @@ import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.DataType;
+import RefOntoUML.Derivation;
 import RefOntoUML.FormalAssociation;
+import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Mixin;
 import RefOntoUML.Mode;
 import RefOntoUML.Phase;
+import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
@@ -30,9 +34,13 @@ public class OntoUMLModelStatistic {
 	
 	OntoUMLParser parser;
 	
+	ArrayList<Generalization> generalizations;
+	ArrayList<GeneralizationSet> genSets;
+	ArrayList<Property> attributes;
+	
 	private ArrayList<Object> 	classifiers, classes, kinds, quantities, collectives, subkinds, roles, phases, categories,
-								roleMixins, mixins, relators, modes, datatypes, associations, materials, mediations,
-								characterizations, componentOfs, subCollectionOfs, memberOfs, subQuantityOfs, formals;
+								roleMixins, mixins, relators, modes, datatypes, associations, materials, mediations, derivations,
+								characterizations, componentOfs, subCollectionOfs, memberOfs, subQuantityOfs, formals, unknownClasses, unknownAssociations;
 	
 	private TypeDetail 	kindDetail, collectiveDetail, quantityDetail, subkindDetail, roleDetail, phaseDetail,
 						mixinDetail, categoryDetail, roleMixinDetail, datatypeDetail, materialDetail, mediationDetail,
@@ -65,6 +73,13 @@ public class OntoUMLModelStatistic {
 		subQuantityOfs = new ArrayList<>();
 		formals = new ArrayList<>();
 		classifiers = new ArrayList<>();
+		unknownClasses = new ArrayList<>();
+		unknownAssociations = new ArrayList<>();
+		derivations = new ArrayList<>();
+		
+		generalizations = new ArrayList<>();
+		attributes = new ArrayList<>();
+		genSets = new ArrayList<>();
 		
 		this.parser = parser;
 		
@@ -73,9 +88,16 @@ public class OntoUMLModelStatistic {
 	
 	public void run () {
 		
-		Set<Classifier> classi = parser.getAllInstances(Classifier.class);
-	   
-			  	   
+		this.generalizations.addAll(parser.getAllInstances(Generalization.class));
+		
+		this.genSets.addAll(parser.getAllInstances(GeneralizationSet.class));
+		
+		for (Property p : parser.getAllInstances(Property.class)) {
+			if(p.getAssociation()==null)
+				attributes.add(p);
+		}
+		
+		Set<Classifier> classi = parser.getAllInstances(Classifier.class);	  	   
 		for (Object c : classi) {
 			
 			if (c instanceof Classifier){
@@ -115,6 +137,8 @@ public class OntoUMLModelStatistic {
 				   
 					else if (c instanceof Relator)
 						relators.add((Relator) c);
+					else
+						unknownClasses.add(c);
 				}
 			   
 				else if (c instanceof Association){
@@ -144,6 +168,12 @@ public class OntoUMLModelStatistic {
 				   
 					else if (c instanceof subQuantityOf)
 						subQuantityOfs.add((subQuantityOf) c);
+					
+					else if (c instanceof Derivation)
+						derivations.add(c);
+					
+					else
+						unknownAssociations.add(c);
 					
 				}
 			   
@@ -291,6 +321,41 @@ public class OntoUMLModelStatistic {
 	
 	public String datatypeResults(){
 		return datatypeDetail.toString();
+	}
+	
+	public String generateCSVLine(){
+		return 
+			parser.getModelName()+","+
+			classes.size()+","+
+			generalizations.size()+","+
+			genSets.size()+","+
+			associations.size()+","+
+			attributes.size()+","+
+    
+			kinds.size()+","+
+			collectives.size()+","+
+			quantities.size()+","+
+			subkinds.size()+","+
+			roles.size()+","+
+			phases.size()+","+
+			categories.size()+","+
+			roleMixins.size()+","+
+			mixins.size()+","+
+			relators.size()+","+
+			modes.size()+","+
+			datatypes.size()+","+
+			unknownClasses.size()+","+
+			
+    		materials.size()+","+
+    		formals.size()+","+
+    		mediations.size()+","+
+    		characterizations.size()+","+
+    		componentOfs.size()+","+
+    		memberOfs.size()+","+
+    		subCollectionOfs.size()+","+
+    		subQuantityOfs.size()+","+
+    		derivations.size()+","+
+    		unknownAssociations.size()+"\n";
 	}
 	
 	private class TypeDetail{
