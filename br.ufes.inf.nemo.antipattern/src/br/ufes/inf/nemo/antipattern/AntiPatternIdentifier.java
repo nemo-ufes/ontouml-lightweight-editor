@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.antipattern;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,14 +22,9 @@ import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverVariation1Occurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverVariation4Occurrence;
-import br.ufes.inf.nemo.antipattern.depphase.DepPhaseOccurrence;
-import br.ufes.inf.nemo.antipattern.experimental.MMAntiPattern;
 import br.ufes.inf.nemo.antipattern.experimental.MRBSAntiPattern;
-import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
-import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompOccurrence;
-import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
@@ -637,10 +631,6 @@ public class AntiPatternIdentifier {
 		return GSRigAntipattern.identify(parser);
 	}*/
 	
-		
-	public static ArrayList<MMAntiPattern> identifyMM(OntoUMLParser parser) {
-		return MMAntiPattern.identify(parser);
-	}
 
 	/**
 	 * Auxiliary method. Get original element. 
