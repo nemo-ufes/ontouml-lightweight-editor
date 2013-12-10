@@ -291,7 +291,7 @@ public class AntiPatternListPane extends JFrame {
 		{
 			ImpAbsAntiPatternPane iaView =  new ImpAbsAntiPatternPane(iaModel,frame);
 			@SuppressWarnings("unused")
-			ImpAbsAntiPatternController iaController = new ImpAbsAntiPatternController(iaView,iaModel);
+			ImpAbsAntipatternController iaController = new ImpAbsAntipatternController(iaView,iaModel);
 			impAbsTabPanel.add(iaView);			
 		}
 		impAbsTabPanel.validate();

@@ -97,7 +97,7 @@ public class BinOverAntiPatternController {
 	    		AlloySpecification alloymodel = new AlloySpecification();
 	    		
 	    		//set parser...
-	    		strModel.setSelected(refparser);
+	    		strModel.setSelected();
 	    		
 	    		// set options to false, because the simulated model is partial
 	    		refOptions.identityPrinciple = false;
