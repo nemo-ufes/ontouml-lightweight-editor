@@ -154,8 +154,8 @@ public class MaterialInference {
 		else
 			throw new Exception("Invalid Material Association");
 		
-		Relator m1Relator = parser.getRelator(m1);
-		Relator m2Relator = parser.getRelator(m2);
+		Classifier m1Relator = parser.getRelator(m1);
+		Classifier m2Relator = parser.getRelator(m2);
 	
 		p1Lower = p1RelatorEnd.getLower()*p2MediatedEnd.getLower();
 		p2Lower = p2RelatorEnd.getLower()*p1MediatedEnd.getLower();
