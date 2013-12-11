@@ -192,7 +192,7 @@ public class InfoManager extends JTabbedPane {
 		if(clear)
 			outputPane.write(text);
 		else
-			outputPane.apped(text);
+			outputPane.append(text);
 				
 		if(showOutput){
 			outputPane.setVisible(true);
