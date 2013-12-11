@@ -30,12 +30,14 @@ public class CollectionItemImplFactory extends CollectionLiteralPartImplFactory 
 	
 	@Override
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies)  throws Ocl2SwrlException {
+		//since the factory is created according to the rule fragment, the fragment is got as a collection item fragment
 		CollectionItemImpl collectionItemImpl = (CollectionItemImpl) this.m_NamedElementImpl;
-		
+		//then, the item of the collection is got
 		OCLExpressionImpl item = (OCLExpressionImpl)collectionItemImpl.getItem();
-		
+		//and a factory is created according to the item class 
 		this.itemFactory = (OCLExpressionImplFactory) Factory.constructor(item, this.m_NamedElementImpl);
 		
+		//the item is solved and the and the returned arguments from the itemSolveMethod above are returned 
 		ArrayList<SWRLDArgument> retArgsX = this.itemFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, operatorNot, repeatNumber, leftSideOfImplies);
 		
 		return retArgsX;
@@ -43,12 +45,15 @@ public class CollectionItemImplFactory extends CollectionLiteralPartImplFactory 
 	
 	@Override
 	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws Ocl2SwrlException{
-		
+		//since the factory is created according to the rule fragment, the fragment is got as a collection item fragment
 		CollectionItemImpl collectionItemImpl = (CollectionItemImpl) this.m_NamedElementImpl;
+		//then, the item of the collection is got
 		OCLExpressionImpl item = (OCLExpressionImpl)collectionItemImpl.getItem();	
 		
+		//and a factory is create according to the item class 
 		this.itemFactory = (OCLExpressionImplFactory) Factory.constructor(item, this.m_NamedElementImpl);
 		
+		//the factory found the OWL Object Property and return it
 		return this.itemFactory.getOWLObjectProperty(nameSpace, refParser, factory);
 		
 	}
