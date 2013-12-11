@@ -1,8 +1,10 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,9 +14,13 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JSeparator;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
@@ -42,7 +48,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
-import javax.swing.JLabel;
 
 /**
  * @author John Guerson
@@ -77,8 +82,11 @@ public class AntiPatternListDialog extends JDialog {
 	private JCheckBox cbxUndefPhase;
 	private JCheckBox cbxWholeOver;
 	
+	private JProgressBar progressBar;
 	private JButton identifyButton;
-	private JButton cancelButton;
+	private JSeparator separator;
+	private JLabel lblNewLabel_1;
+	private JLabel progressBarDescr;
 		
 	/** 
 	 * Check if AntiPattern is selected.
@@ -133,8 +141,8 @@ public class AntiPatternListDialog extends JDialog {
 		this.frame = frame;
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/antipattern.png")));
-		setTitle("Anti-Pattern Detection");
-		setBounds(100, 100, 332, 629);
+		setTitle("Anti-Pattern Search");
+		setBounds(100, 100, 637, 437);
 		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -201,94 +209,7 @@ public class AntiPatternListDialog extends JDialog {
 		cbxWholeOver = new JCheckBox(WholeOverAntipattern.getAntipatternInfo().getAcronym()+" : "+WholeOverAntipattern.getAntipatternInfo().getName());
 		cbxWholeOver.setBackground(UIManager.getColor("Panel.background"));
 		
-		JLabel lblChooseWhichAntipattern = new JLabel("Choose which anti-pattern do you want to detect:");
-		
-		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
-		gl_contentPanel.setHorizontalGroup(
-			gl_contentPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(17)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxRelOver, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxRelRig, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxWholeOver, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxUndefPhase, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxUndefFormal, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxRepRel, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxRelSpec, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxRelComp, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxMultiDep, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxMixRig, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxMixIden, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxImpPart, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxImpAbs, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxHomoFunc, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxHetColl, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxGSRig, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxFreeRole, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxDepPhase, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxBinOver, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(cbxAssCyc, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-						.addComponent(lblChooseWhichAntipattern, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
-					.addContainerGap())
-		);
-		gl_contentPanel.setVerticalGroup(
-			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(21)
-					.addComponent(lblChooseWhichAntipattern)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(cbxAssCyc)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxBinOver)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxDepPhase)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxFreeRole)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxGSRig)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxHetColl)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxHomoFunc)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxImpAbs)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxImpPart)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxMixIden)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxMixRig)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxMultiDep)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxRelComp)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxRelOver)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxRelRig)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxRelSpec)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxRepRel)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxUndefFormal)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxUndefPhase)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxWholeOver)
-					.addGap(0, 0, Short.MAX_VALUE))
-		);
-		contentPanel.setLayout(gl_contentPanel);
-		
-		JPanel buttonPane = new JPanel();
-		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-		buttonPane.setPreferredSize(new Dimension(60, 70));
-		
-		createIdentifyButton(buttonPane);
-		createEnableallButton(buttonPane);
-		createDisableallButton(buttonPane);
-		createCancelButton(buttonPane);		
+		JLabel lblChooseWhichAntipattern = new JLabel("Choose which anti-pattern do you want to search:");
 		JButton btnEnableall = new JButton("Enable All");
 		
 		btnEnableall.addActionListener(new ActionListener() 
@@ -344,44 +265,127 @@ public class AntiPatternListDialog extends JDialog {
        			if (UndefPhaseisSelected()) cbxUndefPhase.setSelected(false);
        			if (WholeOverisSelected()) cbxWholeOver.setSelected(false);
        		}
-       	});
-		GroupLayout gl_buttonPane = new GroupLayout(buttonPane);
-		gl_buttonPane.setHorizontalGroup(
-			gl_buttonPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_buttonPane.createSequentialGroup()
-					.addGap(69)
-					.addGroup(gl_buttonPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnEnableall, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
-						.addComponent(identifyButton, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_buttonPane.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(cancelButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnDisableall, GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
-					.addContainerGap(57, Short.MAX_VALUE))
-		);
-		gl_buttonPane.setVerticalGroup(
-			gl_buttonPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_buttonPane.createSequentialGroup()
-					.addGap(5)
-					.addGroup(gl_buttonPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnDisableall)
-						.addComponent(btnEnableall))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_buttonPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cancelButton)
-						.addComponent(identifyButton))
+       	});;
+		
+		separator = new JSeparator();
+		
+		lblNewLabel_1 = new JLabel("Version 1.0  ");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		
+		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
+		gl_contentPanel.setHorizontalGroup(
+			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+					.addGap(17)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(cbxMixIden, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxImpPart, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxImpAbs, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxHomoFunc, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxHetColl, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxGSRig, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxFreeRole, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxDepPhase, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxBinOver, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxAssCyc, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblChooseWhichAntipattern, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(cbxMixRig, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxMultiDep, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxRelComp, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxRelOver, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxRelRig, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxRelSpec, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxRepRel, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxUndefFormal, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxUndefPhase, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbxWholeOver, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(separator, GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+								.addGroup(gl_contentPanel.createSequentialGroup()
+									.addComponent(btnEnableall)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnDisableall)
+									.addPreferredGap(ComponentPlacement.RELATED, 281, Short.MAX_VALUE)
+									.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)))))
 					.addContainerGap())
 		);
-		buttonPane.setLayout(gl_buttonPane);
-	}
-	
-	/**
-	 * Create a Identify Button.
-	 * @param buttonPane
-	 */
-	public void createIdentifyButton(JPanel buttonPane)
-	{
-		identifyButton = new JButton("Detect");
+		gl_contentPanel.setVerticalGroup(
+			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addGap(21)
+					.addComponent(lblChooseWhichAntipattern)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxAssCyc)
+						.addComponent(cbxMixRig))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxBinOver)
+						.addComponent(cbxMultiDep))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxDepPhase)
+						.addComponent(cbxRelComp))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxFreeRole)
+						.addComponent(cbxRelOver))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxGSRig)
+						.addComponent(cbxRelRig))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxHetColl)
+						.addComponent(cbxRelSpec))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxHomoFunc)
+						.addComponent(cbxRepRel))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxImpAbs)
+						.addComponent(cbxUndefFormal))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxImpPart)
+						.addComponent(cbxUndefPhase))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxMixIden)
+						.addComponent(cbxWholeOver))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(btnEnableall, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnDisableall, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(lblNewLabel_1))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(22, Short.MAX_VALUE))
+		);
+		contentPanel.setLayout(gl_contentPanel);
+		
+		JPanel buttonPane = new JPanel();
+		getContentPane().add(buttonPane, BorderLayout.SOUTH);
+		buttonPane.setPreferredSize(new Dimension(60, 80));
+		
+		createIdentifyButton(buttonPane);
+		createEnableallButton(buttonPane);
+		createDisableallButton(buttonPane);
+		createCancelButton(buttonPane);
+		
+		progressBar = new JProgressBar();		
+				
+		identifyButton = new JButton("Run");
+		identifyButton.setIcon(null);
 		
 		identifyButton.addActionListener(new ActionListener() 
 		{
@@ -390,6 +394,45 @@ public class AntiPatternListDialog extends JDialog {
        			IdentifyButtonActionPerformed(event);
        		}
        	});
+		
+		progressBarDescr = new JLabel("Click to start the search for anti-patterns...");		
+		progressBarDescr.setForeground(Color.BLUE);
+		progressBarDescr.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		
+		GroupLayout gl_buttonPane = new GroupLayout(buttonPane);
+		gl_buttonPane.setHorizontalGroup(
+			gl_buttonPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_buttonPane.createSequentialGroup()
+					.addContainerGap(24, Short.MAX_VALUE)
+					.addGroup(gl_buttonPane.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(Alignment.LEADING, gl_buttonPane.createSequentialGroup()
+							.addComponent(identifyButton, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(progressBarDescr, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGap(80))
+						.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 587, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
+		gl_buttonPane.setVerticalGroup(
+			gl_buttonPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_buttonPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_buttonPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(progressBarDescr, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(identifyButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(17, Short.MAX_VALUE))
+		);
+		buttonPane.setLayout(gl_buttonPane);
+	}
+			 
+	/**
+	 * Create a Identify Button.
+	 * @param buttonPane
+	 */
+	public void createIdentifyButton(JPanel buttonPane)
+	{
 	}
 		
 	/**
@@ -415,15 +458,6 @@ public class AntiPatternListDialog extends JDialog {
 	 */
 	public void createCancelButton (JPanel buttonPane)
 	{
-		cancelButton = new JButton("Cancel");
-		
-		cancelButton.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			dispose();
-       		}
-       	});
 	}
 	
 	/**
@@ -434,6 +468,12 @@ public class AntiPatternListDialog extends JDialog {
 	public void IdentifyButtonActionPerformed(ActionEvent event)
 	{
 		try{
+									
+			progressBar.setStringPainted(true);
+			progressBar.setMinimum(0);
+			progressBar.setMaximum(100);
+			
+			identifyButton.setEnabled(false);
 			
 			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 						
@@ -464,65 +504,147 @@ public class AntiPatternListDialog extends JDialog {
 			
 			if (parser.getElements() == null) return;
 			
-			if (AssCycisSelected()) 
+			if (AssCycisSelected()) {
+				progressBar.setValue(0);
+				progressBarDescr.setText("Searching AssCyc...");
 				assCyc.identify();
+				progressBar.setValue(5);
+				progressBarDescr.setText("Searching AssCyc... "+assCyc.getOccurrences().size()+" items found");
+				
+			}
 			
-			if (BinOverisSelected())	
+			if (BinOverisSelected()){
+				progressBarDescr.setText("Searching BinOver... ");
 				binOver.identify();
+				progressBar.setValue(10);
+				progressBarDescr.setText("Searching BinOver... "+binOver.getOccurrences().size()+" items found");
+			}
 			
-			if (DepPhaseisSelected())	
+			if (DepPhaseisSelected()){		
+				progressBarDescr.setText("Searching DepPhase... ");
 				depPhase.identify();
+				progressBar.setValue(15);
+				progressBarDescr.setText("Searching DepPhase... "+depPhase.getOccurrences().size()+" items found");
+			}
 			
-			if (FreeRoleisSelected())	
+			if (FreeRoleisSelected()){			
+				progressBarDescr.setText("Searching FreeRole... ");
 				freeRole.identify();
+				progressBar.setValue(20);
+				progressBarDescr.setText("Searching FreeRole... "+freeRole.getOccurrences().size()+" items found");
+			}
 			
-			if (GSRigisSelected())	
+			if (GSRigisSelected()){
+				progressBarDescr.setText("Searching GSRig... ");
 				gsRig.identify();
+				progressBar.setValue(25);
+				progressBarDescr.setText("Searching GSRig... "+gsRig.getOccurrences().size()+" items found");
+			}
 			
-			if (HetCollisSelected())	
+			if (HetCollisSelected()){	
+				progressBarDescr.setText("Searching HetColl... ");
 				hetColl.identify();
+				progressBar.setValue(30);
+				progressBarDescr.setText("Searching HetColl... "+hetColl.getOccurrences().size()+" items found");
+			}
 			
-			if (HomoFuncisSelected())	
+			if (HomoFuncisSelected()){	
+				progressBarDescr.setText("Searching HomoFunc... ");
 				homoFunc.identify();
+				progressBar.setValue(35);
+				progressBarDescr.setText("Searching HomoFunc... "+homoFunc.getOccurrences().size()+" items found");
+			}
 			
-			if (ImpAbsisSelected())	
+			if (ImpAbsisSelected()){
+				progressBarDescr.setText("Searching ImpAbs... ");
 				impAbs.identify();
+				progressBar.setValue(40);
+				progressBarDescr.setText("Searching ImpAbs... "+impAbs.getOccurrences().size()+" items found");				
+			}
 			
-			if (ImpPartisSelected())	
+			if (ImpPartisSelected()){	
+				progressBarDescr.setText("Searching ImpPart... ");
 				impPart.identify();
+				progressBar.setValue(45);
+				progressBarDescr.setText("Searching ImpPart... "+impPart.getOccurrences().size()+" items found");	
+			}
 			
-			if (MixIdenisSelected())	
+			if (MixIdenisSelected()){	
+				progressBarDescr.setText("Searching MixIden... ");
 				mixIden.identify();
+				progressBar.setValue(50);
+				progressBarDescr.setText("Searching MixIden... "+mixIden.getOccurrences().size()+" items found");	
+			}
 			
-			if (MixRigisSelected())	
+			if (MixRigisSelected()){
+				progressBarDescr.setText("Searching MixRig... ");
 				mixRig.identify();
+				progressBar.setValue(55);
+				progressBarDescr.setText("Searching MixRig... "+mixRig.getOccurrences().size()+" items found");
+			}
 			
-			if (MultiDepisSelected())	
-				relSpec.identify();
+			if (MultiDepisSelected()){	
+				progressBarDescr.setText("Searching MultiDep... ");
+				multiDep.identify();
+				progressBar.setValue(60);
+				progressBarDescr.setText("Searching MultiDep... "+multiDep.getOccurrences().size()+" items found");
+			}
 			
-			if (RelCompisSelected())	
+			if (RelCompisSelected()){				
+				progressBarDescr.setText("Searching RelComp... ");
 				relComp.identify();
+				progressBar.setValue(65);
+				progressBarDescr.setText("Searching RelComp... "+relComp.getOccurrences().size()+" items found");
+			}
 			
-			if (RelOverisSelected())	
+			if (RelOverisSelected()){	
+				progressBarDescr.setText("Searching RelOver... ");
 				relOver.identify();
+				progressBar.setValue(70);
+				progressBarDescr.setText("Searching RelOver... "+relOver.getOccurrences().size()+" items found");
+			}
 			
-			if (RelRigisSelected())	
+			if (RelRigisSelected()){	
+				progressBarDescr.setText("Searching RelRig... ");
 				relRig.identify();
+				progressBar.setValue(75);
+				progressBarDescr.setText("Searching RelRig... "+relRig.getOccurrences().size()+" items found");
+			}
 			
-			if (RelSpecisSelected())	
+			if (RelSpecisSelected()){	
+				progressBarDescr.setText("Searching RelSpec... ");
 				relSpec.identify();
+				progressBar.setValue(80);
+				progressBarDescr.setText("Searching RelSpec... "+relSpec.getOccurrences().size()+" items found");
+			}
 			
-			if (RepRelisSelected())	
+			if (RepRelisSelected()){	
+				progressBarDescr.setText("Searching RepRel... ");
 				repRel.identify();
+				progressBar.setValue(85);
+				progressBarDescr.setText("Searching RepRel... "+repRel.getOccurrences().size()+" items found");
+			}
 			
-			if (UndefFormalisSelected())	
+			if (UndefFormalisSelected()){	
+				progressBarDescr.setText("Searching UndefFormal... ");
 				undefFormal.identify();
+				progressBar.setValue(90);
+				progressBarDescr.setText("Searching UndefFormal... "+undefFormal.getOccurrences().size()+" items found");
+			}
 			
-			if (UndefPhaseisSelected())	
+			if (UndefPhaseisSelected()){	
+				progressBarDescr.setText("Searching UndefPhase... ");
 				undefPhase.identify();
+				progressBar.setValue(95);
+				progressBarDescr.setText("Searching UndefPhase... "+undefPhase.getOccurrences().size()+" items found");
+			}
 			
-			if (WholeOverisSelected())	
-				wholeOver.identify();
+			if (WholeOverisSelected()){	
+				progressBarDescr.setText("Searching WholeOver... ");
+				wholeOver.identify();				
+				progressBar.setValue(100);
+				progressBarDescr.setText("Searching WholeOver... "+wholeOver.getOccurrences().size()+" items found");
+			}
 			
 		String result = new String();
 		
@@ -549,10 +671,13 @@ public class AntiPatternListDialog extends JDialog {
 		
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		
-		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No anti-patterns found.","Managing AntiPatterns",JOptionPane.INFORMATION_MESSAGE); 
+		identifyButton.setEnabled(true);
+		progressBarDescr.setText("done!");
+		
+		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No anti-pattern found.","Anti-Pattern Detection",JOptionPane.INFORMATION_MESSAGE); 
 		else 
 		{
-			JOptionPane.showMessageDialog(this,result,"Managing Anti-Patterns",JOptionPane.INFORMATION_MESSAGE);			
+			JOptionPane.showMessageDialog(this,result,"Anti-Pattern Detection",JOptionPane.INFORMATION_MESSAGE);			
 			
 			AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, impPart, mixIden,
 																	mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver	);
@@ -563,10 +688,8 @@ public class AntiPatternListDialog extends JDialog {
 		}		 
 		
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(this,e.getMessage(),"Managing Anti-Pattern",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this,e.getMessage(),"Anti-Pattern Detection",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
-		}
-		
-		dispose();		
+		}			
 	}
 }
