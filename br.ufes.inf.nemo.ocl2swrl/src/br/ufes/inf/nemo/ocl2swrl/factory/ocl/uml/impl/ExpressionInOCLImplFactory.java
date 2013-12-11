@@ -26,6 +26,8 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.exceptions.Ocl2SwrlException;
+import br.ufes.inf.nemo.ocl2swrl.exceptions.UnexpectedResultingRule;
+import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 import br.ufes.inf.nemo.ocl2swrl.factory.uml2.uml.internal.impl.NamedElementImplFactory;
 import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 
@@ -44,16 +46,16 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 	
 	@Override
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws Ocl2SwrlException{
+		//since the factory is created according to the rule fragment, the fragment is got as a expression fragment
 		ExpressionInOCLImpl expressionInOCLImpl = (ExpressionInOCLImpl) this.m_NamedElementImpl;
+		//then, the body of the expression is got
 		OCLExpressionImpl bodyExpression = (OCLExpressionImpl) expressionInOCLImpl.getBodyExpression();
 		
+		//and a factory is created according to the bodyExpression class 
 		bodyExpressionFactory = (OCLExpressionImplFactory) NamedElementImplFactory.constructor(bodyExpression, this.m_NamedElementImpl);
 		//bodyExpressionFactory.setIsBodyExpression(true);
-		/*
-		if(bodyExpressionFactory.isImpliesOperation()){
-			oclConsequentShouldBeNegated = true;
-		}
-		*/
+
+		//then, the context variable of the expression is got
 		Variable<Classifier, Parameter> contextVariable = expressionInOCLImpl.getContextVariable();
 		Classifier classContVar = contextVariable.getType();
 		
@@ -64,8 +66,10 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		IRI iri = IRI.create(iriName);
 		SWRLVariable contextVar = factory.getSWRLVariable(iri);
 		
+		//the bodyExpression is solved and the and the returned arguments from the bodyExpressionSolveMethod above are returned 
 		bodyExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, repeatNumber, leftSideOfImplies);
 		
+		//verify if is the stereotype is a tag
 		Boolean isTag = Tag.isTag(ctStereotype);
 		/*Boolean isTag = true;
 		try {
@@ -79,7 +83,9 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			String strRule = bodyExpression.toString();
 			int isImpliesOperation = strRule.indexOf("implies");
 			
+			//the tag DERIVE is used combined with the IMPLIES operator
 			if(ctStereotype.equals(Tag.derive.toString()) && isImpliesOperation < 0){
+				//then, the context class is inserted as the unique atom on the antecedent
 				OWLClass owlClass = factory.getOWLClass(iri);
 				SWRLClassAtom atom = factory.getSWRLClassAtom(owlClass, contextVar);
 				antecedent.add(atom);
@@ -87,6 +93,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		}else{
 			
 			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+				//in case of invariants, the complement of the context class is always considered the unique atom on the consequent
 				OWLClass owlClass = factory.getOWLClass(iri);
 				//get the complement of the self
 				OWLObjectComplementOf complementOf = factory.getOWLObjectComplementOf(owlClass);
@@ -96,18 +103,36 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 				
 				
 			}else if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
+				//in the derivations case, the context is always considered the unique atom on the consequent
 				this.elementFactory = new PropertyCallExpImplFactory(m_NamedElementImpl, (Property) element);
-				this.elementFactory.solveProperty(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, 1);
-				
+				this.elementFactory.solvePropertyAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, 1);
 			}
 		}
 		
-		if(antecedent.size()>0 || consequent.size()>0){
+		if(antecedent.size()>0 && consequent.size()>0){
 			//create a rule with the incremented antecedents and consequents
 			SWRLRule rule = factory.getSWRLRule(antecedent,consequent);
 			
 			//apply changes in the owl manager
 			manager.applyChange(new AddAxiom(ontology, rule));
+		}else{
+			//get the string of the rule
+			String strRule = Factory.getStrRule(this.m_NamedElementImpl);
+			
+			//get the null atoms
+			String atoms = "";
+			if(antecedent.size()==0){
+				atoms += "antecedent";
+			}
+			if(antecedent.size()==0 && consequent.size()==0){
+				atoms += "/";
+			}
+			if(consequent.size()==0){
+				atoms += "consequent";
+			}
+			
+			//throw a new exception
+			throw new UnexpectedResultingRule(atoms, strRule);
 		}
 		
 		return null;		

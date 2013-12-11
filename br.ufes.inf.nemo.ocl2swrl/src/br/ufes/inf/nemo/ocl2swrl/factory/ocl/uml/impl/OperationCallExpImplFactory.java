@@ -63,6 +63,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	public OperationCallExpImplFactory(NamedElementImpl m_NamedElementImpl) throws Ocl2SwrlException{
 		super(m_NamedElementImpl);
 		
+		//verify if the operator is unsupported and throw a new exception
 		if(this.isUnsupported()){
 			OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl;
 			Operation operation = operationCallExpImpl.getReferredOperation();
@@ -98,57 +99,62 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 
 	@Override
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies)  throws Ocl2SwrlException{
+		//since the factory is created according to the rule fragment, the fragment is got as a operation fragment
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
-		//Boolean operationNegated = false;
-		/*
-		if(this.isNegatedOperation() && !expressionIsNegated){
-			operationNegated = true;
-		}else if(!this.isNegatedOperation() && expressionIsNegated){
-			operationNegated = true;
-		}
-		*/
+		
+		//the source will be considered as on the left side of the operator implies if the actual operator is implies or if the owner is on the left side 
 		Boolean sourceIsLeftSideOfImplies = false;
 		if(this.isImpliesOperation() || leftSideOfImplies == true){
 			sourceIsLeftSideOfImplies = true;
 		}
 		
+		//verify if is not operator
 		if(this.isNotOperation() && operatorNot == false){
 			operatorNot = true;
 		}
+		
+		//the source of the operation is got
 		OCLExpressionImpl source = (OCLExpressionImpl) operationCallExpImpl.getSource();
 		
+		//the arguments of the operation is got
 		EList<OCLExpression<Classifier>> arguments = operationCallExpImpl.getArgument();
 		
 		SWRLDArgument varY = null;
 		ArrayList<SWRLDArgument> retArgsY = null;
 		if(arguments.size()>0){
+			//verify if is includes or excludes operations to determine the repetition of recurrence
 			if(this.isIncludesOperation() || this.isExcludesOperation()){
 				repeatNumber=2;
 			}
 			
+			//the argument of the operation is got
 			OCLExpressionImpl argument = (OCLExpressionImpl) operationCallExpImpl.getArgument().get(0);
+			//and a factory is created according to the argument class 
 			this.argumentFactory = (OCLExpressionImplFactory) Factory.constructor(argument, this.m_NamedElementImpl);
+			//the argument is solved and the and the returned arguments from the argumentSolveMethod above are returned 
 			retArgsY = this.argumentFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, leftSideOfImplies);
-			varY = retArgsY.get(retArgsY.size()-1);//pega o ultimo
+			varY = retArgsY.get(retArgsY.size()-1);//get the last
 			
+			//verify if is includes or excludes operations to reset the variable
 			if(this.isIncludesOperation() || this.isExcludesOperation()){
 				repeatNumber=1;
 			}
 		}
-		/*
-		Boolean sourceOclConsequentShouldBeNegated = oclConsequentShouldBeNegated;
-		if(this.isBodyExpression()){
-			sourceOclConsequentShouldBeNegated = false;
-		}
-		*/
+		
+		//and a factory is created according to the source class 
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source, this.m_NamedElementImpl);
+		
+		//do refArgAux as referredArgument, excepting cases that source is part of a LET
 		SWRLDArgument refArgAux = referredArgument;
 		if(isPartOfLetExp(source)){
 			refArgAux = null;
 		}
-		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, refArgAux, operatorNot, repeatNumber, sourceIsLeftSideOfImplies);
-		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//pega o ultimo
 		
+		//the source is solved and the and the returned arguments from the sourceSolveMethod above are returned 
+		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, refArgAux, operatorNot, repeatNumber, sourceIsLeftSideOfImplies);
+		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//get the last
+		
+		//above, specific methods are called according to the operator
 		ArrayList<SWRLDArgument> retArgsZ = null;
 		if(!ctStereotype.equals(Tag.cardinality.toString()) && this.isSizeOperation()){
 			throw new UnexpectedOperator(operationCallExpImpl.getReferredOperation().getName(), ctStereotype, getStrRule(operationCallExpImpl));
@@ -236,10 +242,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 	
 	public void solveCardinality(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
+		//the source of the operation is got
+		//and a factory is created according to the source class 
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
+		//get the relation of the source
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
 		
+		//get the cardinality
 		int cardinality = 0;
 		if(operationCallExpImpl.getArgument().size()>0){
 			@SuppressWarnings("rawtypes")
@@ -250,6 +260,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			}
 		}
 				
+		//get the operation
 		String referredOperation = operationCallExpImpl.getReferredOperation().getName();
 		
 		if(referredOperation.equals("<")){
@@ -258,6 +269,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			cardinality += 1;
 		}
 		
+		//get the context class and create de cardinality restriction
 		OWLClass contextClass = this.getContextClass(nameSpace, factory);
 		OWLObjectCardinalityRestriction cardRest = null;
 		
@@ -275,6 +287,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 				break;
 		}
 		
+		//set the axiom at the subClassOf
 		OWLSubClassOfAxiom subClassOf = factory.getOWLSubClassOfAxiom(contextClass, cardRest);
 		manager.applyChange(new AddAxiom(ontology, subClassOf));
 		
@@ -288,6 +301,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 	
 	public OWLClass getContextClass(String nameSpace, OWLDataFactory factory){
+		//get the owner
 		Element owner = this.m_NamedElementImpl.getOwner();
 		Variable<Classifier, Parameter> contextVariable = null;
 		while(owner!=null){
@@ -300,6 +314,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 						
 		}
 		
+		//get the type of the context var
 		Classifier classContVar = contextVariable.getType();
 		
 		//create a swrl variable with the self name
@@ -316,8 +331,10 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	public void solveSymmetric(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
+		//get the relation
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
 		
+		//set the relation as symmetric
 		OWLSymmetricObjectPropertyAxiom symmetric = factory.getOWLSymmetricObjectPropertyAxiom(relation);
 		
 		//apply changes in the owl manager
@@ -329,8 +346,10 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	public void solveAsymmetric(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
+		//get the relation
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
 		
+		//set the relation as asymmetric
 		OWLAsymmetricObjectPropertyAxiom asymmetric = factory.getOWLAsymmetricObjectPropertyAxiom(relation);
 		
 		//apply changes in the owl manager
@@ -342,8 +361,10 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	public void solveReflexive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
+		//get the relation
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
 		
+		//set the relation as reflexive
 		OWLReflexiveObjectPropertyAxiom reflexive = factory.getOWLReflexiveObjectPropertyAxiom(relation);
 		
 		//apply changes in the owl manager
@@ -355,8 +376,10 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	public void solveTransitive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
+		//get the relation
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
 		
+		//set the relation as transition
 		OWLTransitiveObjectPropertyAxiom transitive = factory.getOWLTransitiveObjectPropertyAxiom(relation);
 		
 		//apply changes in the owl manager
@@ -368,14 +391,17 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	public void solveSubRelationOf(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
+		//get the relation1
 		OWLObjectProperty relation1 = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
 		
 		if(operationCallExpImpl.getArgument().size()>0){
 			this.argumentFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getArgument().get(0), this.m_NamedElementImpl);
 		}
 		
+		//get the relation2
 		OWLObjectProperty relation2 = this.argumentFactory.getOWLObjectProperty(nameSpace, refParser, factory);
 		
+		//set relation2 as subRelationOf relation1
 		OWLSubObjectPropertyOfAxiom subRelationOf = factory.getOWLSubObjectPropertyOfAxiom(relation2, relation1);
 		//apply changes in the owl manager
 		manager.applyChange(new AddAxiom(ontology, subRelationOf));
@@ -394,8 +420,10 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	public void solveIrreflexive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
+		//get the relation
 		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
 		
+		//set the relations as irreflexive
 		OWLIrreflexiveObjectPropertyAxiom irreflexive = factory.getOWLIrreflexiveObjectPropertyAxiom(relation);
 		
 		//apply changes in the owl manager
@@ -412,6 +440,8 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		SWRLDArgument varY2 = referredArgsY.get(1);
 		
 		SWRLAtom atom = null;
+		//in invariants case that the fragment are in the right side, varX1 and varY1 are differents
+		//else, they are the same
 		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && leftSideOfImplies == false){
 			SWRLDifferentIndividualsAtom diff = factory.getSWRLDifferentIndividualsAtom((SWRLVariable)varX1, (SWRLVariable)varY1);
 			//antecedent.add(diff);
@@ -429,6 +459,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			antecedent.add(atom);
 		}
 		*/
+		//varX2 and varY2 are always the same
 		SWRLSameIndividualAtom same2 = factory.getSWRLSameIndividualAtom((SWRLVariable)varX2, (SWRLVariable)varY2);
 		//antecedent.add(same2);
 		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, same2);
@@ -449,6 +480,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		SWRLDArgument varY1 = referredArgsY.get(0);
 		SWRLDArgument varY2 = referredArgsY.get(1);
 		
+		//varX1 and varY1 are always the same
 		SWRLSameIndividualAtom same1 = factory.getSWRLSameIndividualAtom((SWRLVariable)varX1, (SWRLVariable)varY1);
 		//antecedent.add(same1);
 		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, same1);
@@ -460,6 +492,8 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		}
 		*/
 		SWRLAtom atom = null;
+		//in invariants case that the fragment are in the right side, varX2 and varY2 are differents
+		//else, they are the same
 		if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && leftSideOfImplies == false){
 			SWRLSameIndividualAtom same2 = factory.getSWRLSameIndividualAtom((SWRLVariable)varX2, (SWRLVariable)varY2);
 			//antecedent.add(same2);
@@ -481,6 +515,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 	
 	public ArrayList<SWRLDArgument> solveAbs(String ctStereotype, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, Boolean operatorNot, Boolean leftSideOfImplies) {
+		//generate the variable name of the absolute value
 		String varName = "abs.";
 		if(referredArgX.getClass().equals(SWRLLiteralArgumentImpl.class)){
 			OWLLiteral literal = ((SWRLLiteralArgumentImpl)referredArgX).getLiteral();
@@ -492,6 +527,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		
 		SWRLVariable varZ = factory.getSWRLVariable(IRI.create(nameSpace+varName));
 		
+		//create the builtin abs
 		List<SWRLDArgument> args = new ArrayList<SWRLDArgument>();
 		args.add(referredArgX);
 		args.add(varZ);
@@ -511,20 +547,20 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		
 		return retArgs;
 	}
-		
+	/*	
 	public ArrayList<SWRLDArgument> solveIsEmpty(String ctStereotype, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean operatorNot, Boolean leftSideOfImplies) {
 		IRI iri = ((SWRLVariableImpl) referredArgX).getIRI();
 		OWLClass owlClass = factory.getOWLClass(iri);
 		SWRLClassAtom atom = factory.getSWRLClassAtom(owlClass, (SWRLIArgument) referredArgY);
 		//antecedent.add(atom);
 		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, atom);
-		/*
-		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
-			consequent.add(atom);
-		}else{
-			antecedent.add(atom);
+		
+		//if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
+		//	consequent.add(atom);
+		//}else{
+		//	antecedent.add(atom);
 		}
-		*/
+		
 		return null;
 	}
 	
@@ -536,16 +572,16 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		atom = factory.getSWRLClassAtom(complementOf, (SWRLIArgument) referredArgY);
 		//antecedent.add(atom);
 		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, atom);
-		/*
-		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
-			consequent.add(atom);
-		}else{
-			antecedent.add(atom);
-		}
-		*/
+		
+		//if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
+		//	consequent.add(atom);
+		//}else{
+		//	antecedent.add(atom);
+		//}
+		
 		return null;
 	}
-	
+	*/
 	public ArrayList<SWRLDArgument> solveOCLIsKindOf(String ctStereotype, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgX, SWRLDArgument referredArgY, Boolean operatorNot, Boolean leftSideOfImplies) {
 		//OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl;
 		//String referredOperationName = operationCallExpImpl.getReferredOperation().getName();
@@ -554,6 +590,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		SWRLClassAtom atom = null;
 		OWLClass owlClass = factory.getOWLClass(iri);
 		
+		//complement of is created only when the fragment is INVARIANT and is in the left side
 		Boolean creationOfComplementOf = false;
 		if(operatorNot == false && org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && leftSideOfImplies == false){
 			creationOfComplementOf = true;
