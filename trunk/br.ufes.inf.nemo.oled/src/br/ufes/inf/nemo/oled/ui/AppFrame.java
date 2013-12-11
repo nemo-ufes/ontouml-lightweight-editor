@@ -6,6 +6,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -231,6 +233,9 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		
 		getContentPane().add(browserArea, BorderLayout.CENTER);
 		
+		PrintStream interceptor = new Interceptor(System.out);
+        System.setOut(interceptor);
+        
 		//to end...
 		diagramManager.addStartPanel();		
 		editorArea.setDividerLocation(0);
@@ -585,5 +590,26 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public boolean isFocusedOnOclEditor()
 	{
 		return infoManager.getSelectedIndex()==4;
+	}
+	
+	public class Interceptor extends PrintStream
+	{
+	    public Interceptor(OutputStream out)
+	    {
+	        super(out,true);
+	    }
+	    @Override
+	    public void print(String s)
+	    {
+	        super.print(s);
+	        infoManager.getOutput().append(s);
+	    }
+
+	    @Override 
+	    public void println(String s)
+	    {
+	        super.println(s);
+	        infoManager.getOutput().append("\n");
+	    }       
 	}
 }

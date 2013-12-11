@@ -34,7 +34,7 @@ public class OutputPane extends JPanel
 		this.setMinimumSize(new Dimension(0, 0));		
 	}
 	
-	public void apped(String text)
+	public void append(String text)
 	{
 		output.setText(output.getText() + text);
 	}

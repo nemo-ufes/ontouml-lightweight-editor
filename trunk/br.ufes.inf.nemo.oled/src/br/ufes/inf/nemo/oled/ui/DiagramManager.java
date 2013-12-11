@@ -379,10 +379,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.showInfoManager();
 				frame.showToolBox();
 				
-				//triggers the search for errors and warnings in the model
-				searchWarnings();
-				searchErrors();
-				
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, ex.getMessage(),
 						getResourceString("error.readfile.title"),
@@ -428,9 +424,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.showInfoManager();
 				frame.showToolBox();
 				
-				//triggers the search for errors and warnings in the model
-				searchWarnings();
-				searchErrors();
 			}
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
@@ -570,10 +563,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					frame.setTitle("OLED - "+projectFile.getName()+"");
 					frame.showInfoManager();
 					frame.showToolBox();
-									
-					//triggers the search for errors and warnings in the model
-					searchWarnings();
-					searchErrors();
+					
+					getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 					
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(this, ex.getMessage(),
