@@ -26,20 +26,19 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 
 import RefOntoUML.Classifier;
-import RefOntoUML.Model;
 import RefOntoUML.Property;
 import RefOntoUML.impl.ClassImpl;
 import RefOntoUML.impl.DataTypeImpl;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
 import br.ufes.inf.nemo.oled.draw.Compartment;
+import br.ufes.inf.nemo.oled.draw.Compartment.Alignment;
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.draw.DoubleDimension;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
+import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
-import br.ufes.inf.nemo.oled.draw.Compartment.Alignment;
-import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlModelElementLabelSource;
@@ -271,7 +270,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 		//In case of deserialization, attempts to retrieve the element from model
 		if(classData == null && classUUID != null)
 		{
-			Model model = ((StructureDiagram)getDiagram()).getModel();
+			RefOntoUML.Package model = ((StructureDiagram)getDiagram()).getRootPackage();
 			classData = (Classifier) ModelHelper.getElementByUUID(model, classUUID);
 		}
 		

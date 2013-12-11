@@ -318,20 +318,19 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void handleCommand(String command) {
 		MethodCall methodcall = selectorMap.get(command);
 		if (methodcall != null) {
-			  Object target = manager.getCurrentDiagramEditor();
-			  if(target != null)
-			  {
-			      // in order to catch the self calling methods
-			      if (methodcall.getMethod().getDeclaringClass() == DiagramEditorCommandDispatcher.class) {
-			        target = this;
-			      }
-			      methodcall.call(target);
-			  }
+			  Object target = manager.getCurrentDiagramEditor();			 
+		      // in order to catch the self calling methods
+		      if (methodcall.getMethod().getDeclaringClass() == DiagramEditorCommandDispatcher.class) {
+		        target = this;
+		      }
+		      if(target != null) methodcall.call(target);			  
 		} 
 	}
 
 	public void generatesAlloy()
-	{	
+	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.parseOCL(false);
 		OCL2AlloyOptions oclOptions = ProjectBrowser.getOCLOptionsFor(manager.getCurrentProject());
 		
@@ -347,12 +346,16 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	}
 	
 	public void manageAntiPatterns()
-	{
+	{			
+		if (manager.isProjectLoaded()==false) return;
+		
 		AntiPatternListDialog.open(manager.getFrame());		
 	}
 	
 	public void undo()
-	{
+	{		
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.getCurrentDiagramEditor().undo();
 		
 		//This method recreates the tree
@@ -361,6 +364,8 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	
 	public void redo()
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.getCurrentDiagramEditor().redo();
 		
 		//This method recreates the tree
@@ -369,27 +374,35 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	
 	public void find()
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.find();
 	}
 	
 	public void parseOCL()
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.parseOCL(true);		
 	}
 	
 	public void showOutputPane()
-	{
+	{	
 		manager.showOutputPane();
 	}
 	
 	public void searchWarnings()
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.searchWarnings();
 		manager.getFrame().focusOnWarnings();
 	}
 	
 	public void searchErrors()
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.searchErrors();
 		manager.getFrame().focusOnErrors();
 	}
@@ -401,51 +414,71 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	
 	public void autoComplete()
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		AutoCompletionDialog.open(manager.getFrame(),manager.getCurrentProject());
 	}
 	
 	public void validateModel() 
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.verifyCurrentModel();
 	}
 	
 	public void verifySettings() 
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.verificationSettings();
 	}
 	
 	public void deriveRelations() 
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.deriveRelations();
 	}
 	
 	public void verifyModel() 
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.validateCurrentModel();
 	}
 	
 	public void verifyModelFile()
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.verifyCurrentModelFile();
 	}
 	
 	public void generateOwlSettings() 
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.generateOwlSettings();
 	}
 	
 	public void generateOwl() 
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.generateOwl();
 	}
 	
 	public void generateSbvr()
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.generateSbvr();
 	}
 	
 	public void generateText()
 	{
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.generateText();
 	}
 	
@@ -454,6 +487,8 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	 */
 
 	public void showGrid() {
+		if (manager.isProjectLoaded()==false) return;
+		
 		manager.getCurrentDiagramEditor().showGrid(getMenuManager().isSelected("SHOW_GRID"));
 		manager.getCurrentDiagramEditor().redraw();
 	}

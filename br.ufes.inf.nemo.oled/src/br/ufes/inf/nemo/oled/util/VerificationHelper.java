@@ -7,10 +7,8 @@ import java.util.Map;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 
-import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
-
 import RefOntoUML.Element;
-import RefOntoUML.Model;
+import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 
 /**
  * Helper class for dealing with model validation
@@ -26,7 +24,7 @@ public class VerificationHelper {
 	 * @param model
 	 * @return OperationResult the sintatical validation result
 	 */
-	public static OperationResult verifyModel(Model model)
+	public static OperationResult verifyModel(RefOntoUML.Package model)
 	{
 		Map<Object, Object> context = new HashMap<Object, Object>();
 		BasicDiagnostic diag = new BasicDiagnostic();

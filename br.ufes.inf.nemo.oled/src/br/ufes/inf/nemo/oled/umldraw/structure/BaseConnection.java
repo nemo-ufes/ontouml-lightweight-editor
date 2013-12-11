@@ -30,7 +30,6 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 
-import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Relationship;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
@@ -136,7 +135,7 @@ public class BaseConnection implements UmlConnection, Adapter {
 		//In case of deserialization, attempts to retrieve the element from model
 		if(relationship == null && relationshipUUID != null)
 		{
-			Model model = ((StructureDiagram)getDiagram()).getModel();
+			RefOntoUML.Package model = ((StructureDiagram)getDiagram()).getRootPackage();
 			relationship = (Relationship) ModelHelper.getElementByUUID(model, relationshipUUID);
 		}
 		

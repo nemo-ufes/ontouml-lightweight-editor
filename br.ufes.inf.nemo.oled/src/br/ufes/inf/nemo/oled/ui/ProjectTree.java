@@ -98,7 +98,7 @@ public class ProjectTree extends CheckboxTree {
 		            		StructureDiagram diagram = (StructureDiagram)currentNode.getUserObject();
 		            		if (!ProjectTree.this.frame.getDiagramManager().isDiagramOpened(diagram)) {
 		            			// create the diagram visualization again
-		            			ProjectTree.this.frame.getDiagramManager().createEditor(diagram);
+		            			ProjectTree.this.frame.getDiagramManager().createDiagramEditor(diagram);
 		            		}
 		            	}
 	            	}

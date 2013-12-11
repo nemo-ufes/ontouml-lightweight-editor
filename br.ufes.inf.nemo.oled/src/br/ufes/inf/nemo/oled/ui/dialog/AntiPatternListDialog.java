@@ -674,10 +674,10 @@ public class AntiPatternListDialog extends JDialog {
 		identifyButton.setEnabled(true);
 		progressBarDescr.setText("done!");
 		
-		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No anti-pattern found.","Anti-Pattern Detection",JOptionPane.INFORMATION_MESSAGE); 
+		if (result.isEmpty()) JOptionPane.showMessageDialog(this,"No anti-pattern found.","Anti-Pattern Search",JOptionPane.INFORMATION_MESSAGE); 
 		else 
 		{
-			JOptionPane.showMessageDialog(this,result,"Anti-Pattern Detection",JOptionPane.INFORMATION_MESSAGE);			
+			JOptionPane.showMessageDialog(this,result,"Anti-Pattern Search",JOptionPane.INFORMATION_MESSAGE);			
 			
 			AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, impPart, mixIden,
 																	mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver	);
@@ -688,7 +688,7 @@ public class AntiPatternListDialog extends JDialog {
 		}		 
 		
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(this,e.getMessage(),"Anti-Pattern Detection",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this,e.getMessage(),"Anti-Pattern Search",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}			
 	}

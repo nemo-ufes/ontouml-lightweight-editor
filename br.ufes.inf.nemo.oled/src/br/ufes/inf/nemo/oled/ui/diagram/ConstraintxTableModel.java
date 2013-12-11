@@ -5,7 +5,6 @@ import java.util.List;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Constraintx;
-import RefOntoUML.Model;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.StringExpression;
 import RefOntoUML.impl.ConstraintxImpl;
@@ -21,10 +20,10 @@ public class ConstraintxTableModel extends BaseTableModel {
 	
 	private static final long serialVersionUID = 156864519388945910L;
 	private Classifier owner;
-	private Model model;
+	private RefOntoUML.Package model;
 	private List<Constraintx> entries;
 	
-	public ConstraintxTableModel(Classifier owner, Model model)
+	public ConstraintxTableModel(Classifier owner, RefOntoUML.Package model)
 	{
 		super(new String[]{"Type", "Constraint", ""});
 		this.owner = owner;

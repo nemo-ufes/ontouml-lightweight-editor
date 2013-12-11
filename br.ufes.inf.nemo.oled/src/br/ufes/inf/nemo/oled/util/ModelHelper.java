@@ -32,7 +32,6 @@ import RefOntoUML.Element;
 import RefOntoUML.LiteralInteger;
 import RefOntoUML.LiteralUnlimitedNatural;
 import RefOntoUML.Meronymic;
-import RefOntoUML.Model;
 import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.Relationship;
@@ -153,7 +152,7 @@ public class ModelHelper {
 		return element.eResource().getURIFragment(element);
 	}
 	
-	public static Element getElementByUUID(Model model, String uuid)
+	public static Element getElementByUUID(RefOntoUML.Package model, String uuid)
 	{
 		return (Element) model.eResource().getEObject(uuid);
 	}
@@ -197,7 +196,7 @@ public class ModelHelper {
 		return cloned;
 	}
 
-	public static boolean validate(Model model, DiagnosticChain diagnostics,
+	public static boolean validate(RefOntoUML.Package model, DiagnosticChain diagnostics,
 			Map<Object, Object> context) {
 
 		if (!initialized) {

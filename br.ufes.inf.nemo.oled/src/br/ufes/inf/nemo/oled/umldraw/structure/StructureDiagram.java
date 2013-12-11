@@ -56,7 +56,6 @@ import RefOntoUML.Comment;
 import RefOntoUML.Dependency;
 import RefOntoUML.DirectedRelationship;
 import RefOntoUML.Element;
-import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Namespace;
 import RefOntoUML.Package;
@@ -833,6 +832,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		return possible.get(generator.nextInt(possible.size()));
 	}
 	
+	
 	@Override
 	public void unsetName() { }
 
@@ -994,10 +994,15 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	}
 
 	@Override
-	public Model getModel() {
-		return project.getModel();
+	public RefOntoUML.Model getModel() {
+		if (project.getModel() instanceof RefOntoUML.Model) return (RefOntoUML.Model)project.getModel();
+		else return null;
 	}
 
+	public RefOntoUML.Package getRootPackage(){
+		return project.getModel();
+	}
+	
 	@Override
 	public void getApplicableStereotype(String qualifiedName) {
 	}
