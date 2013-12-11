@@ -18,11 +18,9 @@ import br.ufes.inf.nemo.ocl2swrl.exceptions.Ocl2SwrlException;
 import br.ufes.inf.nemo.ocl2swrl.factory.Factory;
 
 /**
- * @author fredd_000
- * @version 1.0
- * @created 24-set-2013 09:16:12
+ * @author Freddy Brasileiro Silva {freddybrasileiro@gmail.com}
  */
-public class LetExpImplFactory extends OCLExpressionImplFactory {
+public class LetExpImplFactory extends OCLExpressionImplFactory {	
 	OCLExpressionImplFactory inFactory;
 	VariableImplFactory variableFactory;
 	
@@ -33,14 +31,21 @@ public class LetExpImplFactory extends OCLExpressionImplFactory {
 	@SuppressWarnings({ "unused", "rawtypes" })
 	@Override
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws Ocl2SwrlException{
+		//since the factory is created according to the rule fragment, the fragment is got as a let fragment
 		LetExpImpl let = (LetExpImpl) this.m_NamedElementImpl;
+		//then, the variable of the let is got
 		Variable variable = let.getVariable();
+		//and the IN of the let is got
 		OCLExpression in = let.getIn();
 		
+		//and a factory is created according to the variable class 
 		this.variableFactory = (VariableImplFactory) Factory.constructor(variable, this.m_NamedElementImpl);
+		//the variable is solved and the and the returned arguments from the variableSolveMethod above are returned 
 		ArrayList<SWRLDArgument> retArgsX = this.variableFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, leftSideOfImplies); 
 		
+		//and a factory is created according to the IN class 
 		this.inFactory = (OCLExpressionImplFactory) Factory.constructor(in, this.m_NamedElementImpl);
+		//the IN is solved and the and the returned arguments from the inSolveMethod above are returned 
 		ArrayList<SWRLDArgument> retArgsY = this.inFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, leftSideOfImplies);
 		
 		return null;

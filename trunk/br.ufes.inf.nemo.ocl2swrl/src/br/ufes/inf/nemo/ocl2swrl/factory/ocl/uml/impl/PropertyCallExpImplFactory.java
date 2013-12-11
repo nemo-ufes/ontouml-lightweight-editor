@@ -33,9 +33,7 @@ import br.ufes.inf.nemo.ocl2swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
 
 /**
- * @author fredd_000
- * @version 1.0
- * @created 24-set-2013 09:16:13
+ * @author Freddy Brasileiro Silva {freddybrasileiro@gmail.com}
  */
 public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 	Property property;

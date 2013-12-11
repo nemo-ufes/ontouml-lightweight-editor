@@ -17,9 +17,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2swrl.util.Util;
 
 /**
- * @author fredd_000
- * @version 1.0
- * @created 24-set-2013 09:16:13
+ * @author Freddy Brasileiro Silva {freddybrasileiro@gmail.com}
  */
 public class VariableExpImplFactory extends OCLExpressionImplFactory {
 
@@ -29,20 +27,27 @@ public class VariableExpImplFactory extends OCLExpressionImplFactory {
 	
 	@Override
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) {
+		//since the factory is created according to the rule fragment, the fragment is got as a variable exp fragment
 		VariableExpImpl variableExpImpl = (VariableExpImpl) this.m_NamedElementImpl;
-		//String varName = variableExpImpl.getReferredVariable().getType().getName();
+		//a variable name is generated from the variable exp name and the referred argument
 		String varName = Util.generateVarName(variableExpImpl.getReferredVariable().getType(), referredArgument);
+		//if the generated variable name returns null or a blank name, we ge the variableExpImpl name
 		if(varName == null){
 			varName = variableExpImpl.getName();
 		}
 		if(varName.equals("")){
 			varName = variableExpImpl.getName();
 		}
+		//if the repeat number is greater than 1, the number is added to the end of variable name
+		//the repeat number is used in cases that is necessary to compare more than one individual of the same type and names like ?individual and ?individual2 are created
 		if(repeatNumber > 1){
 			varName += repeatNumber;
 		}
+		
+		//and a swrl variable is created from the varName
 		SWRLVariable var = factory.getSWRLVariable(IRI.create(nameSpace+varName));
 		
+		//the variable is added to a variable array and returned
 		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
 		retArgs.add(var);
 		
