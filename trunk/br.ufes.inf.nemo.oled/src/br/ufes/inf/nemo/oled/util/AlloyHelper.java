@@ -3,12 +3,11 @@ package br.ufes.inf.nemo.oled.util;
 import java.io.File;
 import java.util.List;
 
-import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 
 public class AlloyHelper {
 	
-   public static OperationResult validateModel(final Model refmodel, List<SimulationElement> simulationElements, String tempDir)
+   public static OperationResult validateModel(final RefOntoUML.Package refmodel, List<SimulationElement> simulationElements, String tempDir)
    {/*	   
 	   	String directoryPath	= ConfigurationHelper.getCanonPath(tempDir,"");	
 

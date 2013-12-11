@@ -83,7 +83,7 @@ public class TreePopupMenu extends JPopupMenu {
     					tree.setSelectionPath(new TreePath(tree.getModelRootNode().getPath()));
     				}else if (TreePopupMenu.this.element instanceof StructureDiagram)
     				{
-    					frame.getDiagramManager().deleteDiagram((StructureDiagram)TreePopupMenu.this.element);
+    					frame.getDiagramManager().removeDiagram((StructureDiagram)TreePopupMenu.this.element);
     					// FIXME every modification creates a new tree
     					ProjectBrowser.rebuildTree(frame.getDiagramManager().getCurrentProject());
     				}

@@ -52,7 +52,7 @@ public class MainWindow {
 		initGUI();
 	}
 	
-	public MainWindow(JFrame frame, RefOntoUML.Model refmodel)
+	public MainWindow(JFrame frame, RefOntoUML.Package refmodel)
 	{
 		this.mainframe = frame;
 		this.ontoParser = new OntoUMLParser(refmodel);

@@ -30,14 +30,13 @@ import java.util.List;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
-import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
+import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.RectilinearConnection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
-import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlLabelFormatter;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlModelElementLabelSource;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
@@ -86,13 +85,13 @@ public final class GeneralizationElement extends BaseConnection {
 	
 	public Classifier getSpecific()
 	{
-		Model model = ((StructureDiagram)getDiagram()).getModel();
+		RefOntoUML.Package model = ((StructureDiagram)getDiagram()).getRootPackage();
 		return (Classifier) ModelHelper.getElementByUUID(model, specificUUID);
 	}
 	
 	public Classifier getGeneral()
 	{
-		Model model = ((StructureDiagram)getDiagram()).getModel();
+		RefOntoUML.Package model = ((StructureDiagram)getDiagram()).getRootPackage();
 		return (Classifier) ModelHelper.getElementByUUID(model, generalUUID);
 	}
 	

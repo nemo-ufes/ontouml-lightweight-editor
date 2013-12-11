@@ -36,7 +36,6 @@ import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import RefOntoUML.Model;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.impl.GeneralizationSetImpl;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
@@ -66,14 +65,14 @@ public class UmlProject implements Serializable {
 		super();
 		properties = new Properties();
 		resource = ModelHelper.createResource();
-		Model model = ModelHelper.getFactory().createModel();
+		RefOntoUML.Package model = ModelHelper.getFactory().createModel();
 		if(model.getName()==null || model.getName()=="") model.setName("Model");
 		resource.getContents().add(model);		
 		getEditingDomain();
 		name = "New Project";		
 	}
 	
-	public UmlProject(Model model) {
+	public UmlProject(RefOntoUML.Package model) {
 		super();
 		properties = new Properties();
 		resource = ModelHelper.createResource();
@@ -106,8 +105,8 @@ public class UmlProject implements Serializable {
 		return diagrams;
 	}
 
-	public Model getModel() {
-		return (Model) resource.getContents().get(0);
+	public RefOntoUML.Package getModel() {
+		return (RefOntoUML.Package) resource.getContents().get(0);
 	}
 
 	//CLEANUP
@@ -226,7 +225,7 @@ public class UmlProject implements Serializable {
 	}
 
 	public void setSaveModelNeeded(boolean saveNeeded) {
-		this.saveNeeded = saveNeeded;
+		this.saveNeeded = saveNeeded;		
 	}
 
 	public boolean isSaveModelNeeded() {

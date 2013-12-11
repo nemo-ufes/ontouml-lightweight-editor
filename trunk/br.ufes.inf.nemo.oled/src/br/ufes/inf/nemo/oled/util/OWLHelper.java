@@ -1,17 +1,16 @@
 package br.ufes.inf.nemo.oled.util;
 
-import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.ontouml2owl_swrl.OntoUML2OWL;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
-import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.OWLStructure;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.tree.TreeProcessor;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.verbose.FileManager;
+import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
 import br.ufes.inf.nemo.ontouml2simpleowl.OntoUML2SimpleOWL;
 
 public class OWLHelper {
 
-	public static OperationResult generateOwl(Model model, String ontologyIRI, MappingType mappingType, boolean fileOutput, String filePath, String oclRules)
+	public static OperationResult generateOwl(RefOntoUML.Package model, String ontologyIRI, MappingType mappingType, boolean fileOutput, String filePath, String oclRules)
 	{
 		//System.out.println(ontologyIRI);
 		br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType mp = null;
@@ -24,10 +23,10 @@ public class OWLHelper {
     		String owlOutput;
     		if(mappingType == null)
     		{
-    			owlOutput = OntoUML2SimpleOWL.Transformation(model, ontologyIRI);
+    			owlOutput = OntoUML2SimpleOWL.Transformation((RefOntoUML.Model)model, ontologyIRI);
     		}else if(mappingType.equals(MappingType.RULES)){
     			OntoUML2OWL ontoUML2OWL = new OntoUML2OWL();
-    			owlOutput = ontoUML2OWL.Transformation(model, ontologyIRI, oclRules);
+    			owlOutput = ontoUML2OWL.Transformation((RefOntoUML.Model)model, ontologyIRI, oclRules);
     			errors = ontoUML2OWL.errors;
     		}else
     		{
