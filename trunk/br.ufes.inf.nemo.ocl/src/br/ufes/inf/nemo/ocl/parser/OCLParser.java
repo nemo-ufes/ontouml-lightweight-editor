@@ -240,7 +240,7 @@ public class OCLParser {
     @SuppressWarnings("rawtypes") public  org.eclipse.ocl.utilities.UMLReflection getUMLReflection() { return umlreflection; }    
     public CSTNode getCSTree() { return cstree; }      
     public OntoUMLParser getOntoUMLParser() { return refparser; }
-    
+    /*
     @Deprecated
     public OCLParser (String oclConstraints, OntoUMLParser refparser, String umlPath) throws ParserException,Exception
     {   
@@ -271,6 +271,6 @@ public class OCLParser {
         umlconstraintsList = myOCL.parse(document);        
         umlreflection = umlenv.getUMLReflection();      
     }
-    
+    */
         
 }
