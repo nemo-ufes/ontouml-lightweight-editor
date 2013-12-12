@@ -60,13 +60,13 @@ public class AntiPatternListDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 		
-	private AppFrame frame;
-	
-	private final JPanel contentPanel = new JPanel();	
+	private AppFrame frame;	
+	private final JPanel contentPanel = new JPanel();
+	private Thread searchThread;
 	
 	private JCheckBox cbxAssCyc;	
-	private JCheckBox cbxBinOver;
-	private JCheckBox cbxDepPhase;
+	private JCheckBox cbxBinOver;	
+	private JCheckBox cbxDepPhase_1;
 	private JCheckBox cbxFreeRole;
 	private JCheckBox cbxGSRig;
 	private JCheckBox cbxHetColl;
@@ -131,15 +131,14 @@ public class AntiPatternListDialog extends JDialog {
 	private JLabel lblUndefFormalRes;
 	private JLabel lblUndefPhaseRes;
 	private JLabel lblWholeOverRes;
-	private JButton btnNewButton_1;
-	
+	private JButton btnNewButton_1;	
 			
 	/** 
 	 * Check if AntiPattern is selected.
 	 */
 	public Boolean AssCycisSelected() { return cbxAssCyc.isSelected(); }
 	public Boolean BinOverisSelected() { return cbxBinOver.isSelected(); }
-	public Boolean DepPhaseisSelected() { return cbxDepPhase.isSelected(); }
+	public Boolean DepPhaseisSelected() { return cbxDepPhase_1.isSelected(); }
 	public Boolean FreeRoleisSelected() { return cbxFreeRole.isSelected(); }
 	public Boolean GSRigisSelected() { return cbxGSRig.isSelected(); }
 	public Boolean HetCollisSelected() { return cbxHetColl.isSelected(); }
@@ -229,7 +228,7 @@ public class AntiPatternListDialog extends JDialog {
 	{
 		cbxAssCyc.setFont(new Font("Tahoma", Font.PLAIN, 11));	
 		cbxBinOver.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		cbxDepPhase.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxDepPhase_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		cbxFreeRole.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		cbxGSRig.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		cbxHetColl.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -238,15 +237,15 @@ public class AntiPatternListDialog extends JDialog {
 		cbxImpPart.setFont(new Font("Tahoma", Font.PLAIN, 11));	
 		cbxMixIden.setFont(new Font("Tahoma", Font.PLAIN, 11));	
 		cbxMixRig.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxMultiDep.setFont(new Font("Tahoma", Font.PLAIN, 11));	
+		cbxMultiDep.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		cbxRelComp.setFont(new Font("Tahoma", Font.PLAIN, 11));	
 		cbxRelOver.setFont(new Font("Tahoma", Font.PLAIN, 11));	
 		cbxRelRig.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxRelSpec.setFont(new Font("Tahoma", Font.PLAIN, 11));		
+		cbxRelSpec.setFont(new Font("Tahoma", Font.PLAIN, 11));	
 		cbxRepRel.setFont(new Font("Tahoma", Font.PLAIN, 11));	
 		cbxUndefFormal.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxUndefPhase.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxWholeOver.setFont(new Font("Tahoma", Font.PLAIN, 11));		
+		cbxUndefPhase.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxWholeOver.setFont(new Font("Tahoma", Font.PLAIN, 11));	
 	}
 	
 	/**
@@ -260,7 +259,7 @@ public class AntiPatternListDialog extends JDialog {
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/antipattern.png")));
 		setTitle("Anti-Pattern Search");
-		setBounds(100, 100, 757, 469);
+		setBounds(100, 100, 824, 469);
 		 
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setPreferredSize(new Dimension(180, 350));
@@ -277,7 +276,7 @@ public class AntiPatternListDialog extends JDialog {
        		{
        			if (!AssCycisSelected()) cbxAssCyc.setSelected(true);
        			if (!BinOverisSelected()) cbxBinOver.setSelected(true);
-       			if (!DepPhaseisSelected()) cbxDepPhase.setSelected(true);
+       			if (!DepPhaseisSelected()) cbxDepPhase_1.setSelected(true);
        			if (!FreeRoleisSelected()) cbxFreeRole.setSelected(true);
        			if (!GSRigisSelected()) cbxGSRig.setSelected(true);
        			if (!HetCollisSelected()) cbxHetColl.setSelected(true);
@@ -305,7 +304,7 @@ public class AntiPatternListDialog extends JDialog {
        		{
        			if (AssCycisSelected()) cbxAssCyc.setSelected(false);
        			if (BinOverisSelected()) cbxBinOver.setSelected(false);
-       			if (DepPhaseisSelected()) cbxDepPhase.setSelected(false);
+       			if (DepPhaseisSelected()) cbxDepPhase_1.setSelected(false);
        			if (FreeRoleisSelected()) cbxFreeRole.setSelected(false);
        			if (GSRigisSelected()) cbxGSRig.setSelected(false);
        			if (HetCollisSelected()) cbxHetColl.setSelected(false);
@@ -338,22 +337,24 @@ public class AntiPatternListDialog extends JDialog {
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(10)
-							.addComponent(btnEnableall)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDisableall))
-						.addComponent(lblChooseWhichAntipattern, GroupLayout.PREFERRED_SIZE, 698, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap()
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPanel.createSequentialGroup()
+									.addGap(10)
+									.addComponent(btnEnableall)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnDisableall))
+								.addComponent(lblChooseWhichAntipattern, GroupLayout.PREFERRED_SIZE, 698, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPanel.createSequentialGroup()
+									.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 385, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, 387, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, 348, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(10)
-							.addComponent(separator, GroupLayout.PREFERRED_SIZE, 690, GroupLayout.PREFERRED_SIZE)))
-					.addGap(21))
+							.addGap(20)
+							.addComponent(separator, GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)))
+					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -370,15 +371,16 @@ public class AntiPatternListDialog extends JDialog {
 						.addComponent(btnDisableall))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 11, GroupLayout.PREFERRED_SIZE)
-					.addGap(39))
+					.addContainerGap())
 		);
 		
-		cbxMixRig = new JCheckBox(MixRigAntipattern.getAntipatternInfo().getAcronym()+" : "+MixRigAntipattern.getAntipatternInfo().getName());
-		cbxMixRig.setPreferredSize(new Dimension(180, 20));
+		cbxMixRig = new JCheckBox("MixRig: Mixin with same Rigidity");
+		cbxMixRig.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxMixRig.setPreferredSize(new Dimension(210, 20));
 		cbxMixRig.setBackground(UIManager.getColor("Panel.background"));
 		
-		cbxMultiDep = new JCheckBox("MultiDep : Multiple Relational Dependecy\r\n");
-		cbxMultiDep.setPreferredSize(new Dimension(220, 20));
+		cbxMultiDep = new JCheckBox("MultiDep: Multiple Relational Dependecy\r\n");
+		cbxMultiDep.setPreferredSize(new Dimension(255, 20));
 		cbxMultiDep.setBackground(UIManager.getColor("Panel.background"));
 	
 		lblMixRigIco  = new JButton();
@@ -397,8 +399,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblMultiDepIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
 		lblMultiDepIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 				
-		cbxRelComp = new JCheckBox(RelCompAntipattern.getAntipatternInfo().getAcronym()+" : "+RelCompAntipattern.getAntipatternInfo().getName());
-		cbxRelComp.setPreferredSize(new Dimension(180, 20));
+		cbxRelComp = new JCheckBox("RelComp: Relation Composition");
+		cbxRelComp.setPreferredSize(new Dimension(215, 20));
 		cbxRelComp.setBackground(UIManager.getColor("Panel.background"));
 		
 		lblRelCompIco = new JButton();
@@ -409,8 +411,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblRelCompIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
 		lblRelCompIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 				
-		cbxRelOver = new JCheckBox(RelOverAntipattern.getAntipatternInfo().getAcronym()+" : "+RelOverAntipattern.getAntipatternInfo().getName());
-		cbxRelOver.setPreferredSize(new Dimension(252, 20));
+		cbxRelOver = new JCheckBox("RelOver: Relator Mediating Overlapping Types");
+		cbxRelOver.setPreferredSize(new Dimension(287, 20));
 		cbxRelOver.setBackground(UIManager.getColor("Panel.background"));
 		
 		lblRelOverIco  = new JButton();
@@ -421,12 +423,12 @@ public class AntiPatternListDialog extends JDialog {
 		lblRelOverIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
 		lblRelOverIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 				
-		cbxRelRig = new JCheckBox(RelRigAntipattern.getAntipatternInfo().getAcronym()+" : "+RelRigAntipattern.getAntipatternInfo().getName());
-		cbxRelRig.setPreferredSize(new Dimension(210, 20));
+		cbxRelRig = new JCheckBox("RelRig: Relator Mediating Rigid Types");
+		cbxRelRig.setPreferredSize(new Dimension(245, 20));
 		cbxRelRig.setBackground(UIManager.getColor("Panel.background"));
 				
-		cbxRelSpec = new JCheckBox(RelSpecAntipattern.getAntipatternInfo().getAcronym()+" : "+RelSpecAntipattern.getAntipatternInfo().getName());
-		cbxRelSpec.setPreferredSize(new Dimension(180, 20));
+		cbxRelSpec = new JCheckBox("RelSpec: Relation Specialization");
+		cbxRelSpec.setPreferredSize(new Dimension(215, 20));
 		cbxRelSpec.setBackground(UIManager.getColor("Panel.background"));
 		
 		lblRelSpecIco = new JButton();
@@ -437,8 +439,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblRelSpecIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
 		lblRelSpecIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 				
-		cbxRepRel = new JCheckBox(RepRelAntipattern.getAntipatternInfo().getAcronym()+" : "+RepRelAntipattern.getAntipatternInfo().getName());
-		cbxRepRel.setPreferredSize(new Dimension(215, 20));
+		cbxRepRel = new JCheckBox("RepRel: Repeatable Relator Instances");
+		cbxRepRel.setPreferredSize(new Dimension(250, 20));
 		cbxRepRel.setBackground(UIManager.getColor("Panel.background"));
 		
 		lblRepRelIco = new JButton();
@@ -449,8 +451,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblRepRelIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
 		lblRepRelIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 				
-		cbxUndefFormal = new JCheckBox(UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" : "+UndefFormalAntipattern.getAntipatternInfo().getName());
-		cbxUndefFormal.setPreferredSize(new Dimension(260, 20));
+		cbxUndefFormal = new JCheckBox("UndefFormal: Undefined Domain Formal Relation");
+		cbxUndefFormal.setPreferredSize(new Dimension(295, 20));
 		cbxUndefFormal.setBackground(UIManager.getColor("Panel.background"));
 		
 		lblUndefFormalIco = new JButton();
@@ -461,8 +463,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblUndefFormalIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
 		lblUndefFormalIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 				
-		cbxUndefPhase = new JCheckBox(UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" : "+UndefPhaseAntipattern.getAntipatternInfo().getName());
-		cbxUndefPhase.setPreferredSize(new Dimension(220, 20));
+		cbxUndefPhase = new JCheckBox("UndefPhase: Undefined Phase Partition");
+		cbxUndefPhase.setPreferredSize(new Dimension(255, 20));
 		cbxUndefPhase.setBackground(UIManager.getColor("Panel.background"));
 		
 		lblUndefPhaseIco = new JButton();
@@ -479,37 +481,37 @@ public class AntiPatternListDialog extends JDialog {
 		lblMixRigRes.setForeground(Color.BLUE);
 		
 		lblMultiDepRes = new JLabel("");
-		lblMultiDepRes.setPreferredSize(new Dimension(80, 20));
+		lblMultiDepRes.setPreferredSize(new Dimension(75, 20));
 		lblMultiDepRes.setForeground(Color.BLUE);
 		lblMultiDepRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		lblRelCompRes = new JLabel("");
-		lblRelCompRes.setPreferredSize(new Dimension(120, 20));
+		lblRelCompRes.setPreferredSize(new Dimension(115, 20));
 		lblRelCompRes.setForeground(Color.BLUE);
 		lblRelCompRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		lblRelOverRes = new JLabel("");
-		lblRelOverRes.setPreferredSize(new Dimension(48, 20));
+		lblRelOverRes.setPreferredSize(new Dimension(43, 20));
 		lblRelOverRes.setForeground(Color.BLACK);
 		lblRelOverRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		lblRelSpecRes = new JLabel("");
-		lblRelSpecRes.setPreferredSize(new Dimension(120, 20));
+		lblRelSpecRes.setPreferredSize(new Dimension(115, 20));
 		lblRelSpecRes.setForeground(Color.BLUE);
 		lblRelSpecRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		lblRepRelRes = new JLabel("");
-		lblRepRelRes.setPreferredSize(new Dimension(85, 20));
+		lblRepRelRes.setPreferredSize(new Dimension(80, 20));
 		lblRepRelRes.setForeground(Color.BLUE);
 		lblRepRelRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		lblUndefFormalRes = new JLabel("");
-		lblUndefFormalRes.setPreferredSize(new Dimension(40, 20));
+		lblUndefFormalRes.setPreferredSize(new Dimension(35, 20));
 		lblUndefFormalRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblUndefFormalRes.setForeground(Color.BLUE);
 		
 		lblUndefPhaseRes = new JLabel("");
-		lblUndefPhaseRes.setPreferredSize(new Dimension(80, 20));
+		lblUndefPhaseRes.setPreferredSize(new Dimension(75, 20));
 		lblUndefPhaseRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblUndefPhaseRes.setForeground(Color.BLUE);
 		rightPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -540,7 +542,7 @@ public class AntiPatternListDialog extends JDialog {
 		rightPanel.add(lblRelRigIco);
 		
 		lblRelRigRes = new JLabel("");
-		lblRelRigRes.setPreferredSize(new Dimension(90, 20));
+		lblRelRigRes.setPreferredSize(new Dimension(85, 20));
 		lblRelRigRes.setForeground(Color.BLUE);
 		lblRelRigRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		rightPanel.add(lblRelRigRes);
@@ -554,8 +556,8 @@ public class AntiPatternListDialog extends JDialog {
 		rightPanel.add(lblUndefFormalIco);
 		rightPanel.add(lblUndefFormalRes);
 		
-		cbxWholeOver = new JCheckBox(WholeOverAntipattern.getAntipatternInfo().getAcronym()+" : "+WholeOverAntipattern.getAntipatternInfo().getName());
-		cbxWholeOver.setPreferredSize(new Dimension(275, 20));
+		cbxWholeOver = new JCheckBox("WholeOver: Whole Composed of Overlapping Parts");
+		cbxWholeOver.setPreferredSize(new Dimension(310, 20));
 		cbxWholeOver.setBackground(UIManager.getColor("Panel.background"));
 		rightPanel.add(cbxWholeOver);
 		
@@ -569,16 +571,17 @@ public class AntiPatternListDialog extends JDialog {
 		rightPanel.add(lblWholeOverIco);
 		
 		lblWholeOverRes = new JLabel("");
-		lblWholeOverRes.setPreferredSize(new Dimension(25, 20));
+		lblWholeOverRes.setPreferredSize(new Dimension(20, 20));
 		lblWholeOverRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblWholeOverRes.setForeground(Color.BLUE);
 		rightPanel.add(lblWholeOverRes);
 				
-		cbxDepPhase = new JCheckBox(DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" : "+DepPhaseAntipattern.getAntipatternInfo().getName());
-		cbxDepPhase.setBackground(UIManager.getColor("Panel.background"));
+		cbxDepPhase_1 = new JCheckBox(DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" : "+DepPhaseAntipattern.getAntipatternInfo().getName());
+		cbxDepPhase_1.setBackground(UIManager.getColor("Panel.background"));
 				
-		cbxHetColl = new JCheckBox(HetCollAntipattern.getAntipatternInfo().getAcronym()+" : "+HetCollAntipattern.getAntipatternInfo().getName());
-		cbxHetColl.setPreferredSize(new Dimension(195, 20));
+		cbxHetColl = new JCheckBox("HetColl: Heterogeneous Collective");
+		cbxHetColl.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxHetColl.setPreferredSize(new Dimension(220, 20));
 		cbxHetColl.setBackground(UIManager.getColor("Panel.background"));
 		
 		lblHetCollIco = new JButton();
@@ -589,8 +592,9 @@ public class AntiPatternListDialog extends JDialog {
 		lblHetCollIco.setBorderPainted(false);
 		lblHetCollIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 				
-		cbxMixIden = new JCheckBox(MixIdenAntipattern.getAntipatternInfo().getAcronym()+" : "+MixIdenAntipattern.getAntipatternInfo().getName());
-		cbxMixIden.setPreferredSize(new Dimension(190, 20));
+		cbxMixIden = new JCheckBox("MixIden: Mixin with same Identity");
+		cbxMixIden.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxMixIden.setPreferredSize(new Dimension(220, 20));
 		cbxMixIden.setBackground(UIManager.getColor("Panel.background"));
 		
 		lblMixIdenIco = new JButton();
@@ -602,7 +606,7 @@ public class AntiPatternListDialog extends JDialog {
 		lblMixIdenIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		
 		lblHetCollRes = new JLabel("");
-		lblHetCollRes.setPreferredSize(new Dimension(105, 20));
+		lblHetCollRes.setPreferredSize(new Dimension(110, 20));
 		lblHetCollRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblHetCollRes.setForeground(Color.BLUE);		
 		
@@ -612,8 +616,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblMixIdenRes.setForeground(Color.BLUE);
 		leftPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		cbxAssCyc = new JCheckBox(AssCycAntipattern.getAntipatternInfo().getAcronym()+" : "+AssCycAntipattern.getAntipatternInfo().getName());
-		cbxAssCyc.setPreferredSize(new Dimension(155, 20));
+		cbxAssCyc = new JCheckBox("AssCyc: Association Cycle");
+		cbxAssCyc.setPreferredSize(new Dimension(175, 20));
 		cbxAssCyc.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxAssCyc);
 		
@@ -627,13 +631,14 @@ public class AntiPatternListDialog extends JDialog {
 		leftPanel.add(lblAssCycIco);
 		
 		lblAssCycRes = new JLabel("");		
-		lblAssCycRes.setPreferredSize(new Dimension(145, 20));
+		lblAssCycRes.setPreferredSize(new Dimension(155, 20));
 		lblAssCycRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblAssCycRes.setForeground(Color.BLUE);
 		leftPanel.add(lblAssCycRes);
 		
-		cbxBinOver = new JCheckBox(BinOverAntipattern.getAntipatternInfo().getAcronym()+" : "+BinOverAntipattern.getAntipatternInfo().getName());
-		cbxBinOver.setPreferredSize(new Dimension(260, 20));
+		cbxBinOver = new JCheckBox("BinOver: Binary Relation With Overlapping Ends");
+		cbxBinOver.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxBinOver.setPreferredSize(new Dimension(295, 20));
 		cbxBinOver.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxBinOver);
 		
@@ -647,14 +652,15 @@ public class AntiPatternListDialog extends JDialog {
 		leftPanel.add(lblBinOverIco);
 		
 		lblBinOverRes = new JLabel("");		
-		lblBinOverRes.setPreferredSize(new Dimension(40, 20));
+		lblBinOverRes.setPreferredSize(new Dimension(35, 20));
 		lblBinOverRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblBinOverRes.setForeground(Color.BLUE);
 		leftPanel.add(lblBinOverRes);
 		
-		cbxDepPhase = new JCheckBox(DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" : "+DepPhaseAntipattern.getAntipatternInfo().getName());
-		cbxDepPhase.setPreferredSize(new Dimension(230, 20));
-		leftPanel.add(cbxDepPhase);
+		cbxDepPhase_1 = new JCheckBox("DepPhase: Relationally Dependent Phase");
+		cbxDepPhase_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxDepPhase_1.setPreferredSize(new Dimension(265, 20));
+		leftPanel.add(cbxDepPhase_1);
 		
 		lblDepPhaseIco = new JButton();
 		lblDepPhaseIco.setPreferredSize(new Dimension(20, 20));
@@ -666,13 +672,14 @@ public class AntiPatternListDialog extends JDialog {
 		leftPanel.add(lblDepPhaseIco);
 		
 		lblDepPhaseRes = new JLabel("");		
-		lblDepPhaseRes.setPreferredSize(new Dimension(70, 20));
+		lblDepPhaseRes.setPreferredSize(new Dimension(65, 20));
 		lblDepPhaseRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblDepPhaseRes.setForeground(Color.BLUE);
 		leftPanel.add(lblDepPhaseRes);
 		
-		cbxFreeRole = new JCheckBox(FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" : "+FreeRoleAntipattern.getAntipatternInfo().getName());
-		cbxFreeRole.setPreferredSize(new Dimension(195, 20));
+		cbxFreeRole = new JCheckBox("FreeRole: Free Role Specialization");
+		cbxFreeRole.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxFreeRole.setPreferredSize(new Dimension(220, 20));
 		cbxFreeRole.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxFreeRole);
 		
@@ -686,13 +693,14 @@ public class AntiPatternListDialog extends JDialog {
 		leftPanel.add(lblFreeRoleIco);
 		
 		lblFreeRoleRes = new JLabel("");		
-		lblFreeRoleRes.setPreferredSize(new Dimension(105, 20));
+		lblFreeRoleRes.setPreferredSize(new Dimension(110, 20));
 		lblFreeRoleRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblFreeRoleRes.setForeground(Color.BLUE);
 		leftPanel.add(lblFreeRoleRes);
 		
-		cbxGSRig = new JCheckBox(GSRigAntipattern.getAntipatternInfo().getAcronym()+" : "+GSRigAntipattern.getAntipatternInfo().getName());
-		cbxGSRig.setPreferredSize(new Dimension(245, 20));
+		cbxGSRig = new JCheckBox("GSRig: Generalization Set with Mixed Rigidity");
+		cbxGSRig.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxGSRig.setPreferredSize(new Dimension(290, 20));
 		cbxGSRig.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxGSRig);
 		
@@ -706,7 +714,7 @@ public class AntiPatternListDialog extends JDialog {
 		leftPanel.add(lblGSRigIco);
 		
 		lblGSRigRes = new JLabel("");
-		lblGSRigRes.setPreferredSize(new Dimension(55, 20));
+		lblGSRigRes.setPreferredSize(new Dimension(40, 20));
 		lblGSRigRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblGSRigRes.setForeground(Color.BLUE);		
 		leftPanel.add(lblGSRigRes);
@@ -714,8 +722,9 @@ public class AntiPatternListDialog extends JDialog {
 		leftPanel.add(lblHetCollIco);
 		leftPanel.add(lblHetCollRes);
 		
-		cbxHomoFunc = new JCheckBox(HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" : "+HomoFuncAntipattern.getAntipatternInfo().getName());
-		cbxHomoFunc.setPreferredSize(new Dimension(250, 20));
+		cbxHomoFunc = new JCheckBox("HomoFunc: Homogeneous Functional Complex");
+		cbxHomoFunc.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxHomoFunc.setPreferredSize(new Dimension(290, 20));
 		cbxHomoFunc.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxHomoFunc);
 		
@@ -729,13 +738,14 @@ public class AntiPatternListDialog extends JDialog {
 		leftPanel.add(lblHomoFuncIco);
 		
 		lblHomoFuncRes = new JLabel("");
-		lblHomoFuncRes.setPreferredSize(new Dimension(50, 20));
+		lblHomoFuncRes.setPreferredSize(new Dimension(40, 20));
 		lblHomoFuncRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblHomoFuncRes.setForeground(Color.BLUE);		
 		leftPanel.add(lblHomoFuncRes);
 		
-		cbxImpAbs = new JCheckBox(ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" : "+ImpAbsAntipattern.getAntipatternInfo().getName());
-		cbxImpAbs.setPreferredSize(new Dimension(175, 20));
+		cbxImpAbs = new JCheckBox("ImpAbs: Imprecise Abstraction");
+		cbxImpAbs.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxImpAbs.setPreferredSize(new Dimension(210, 20));
 		cbxImpAbs.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxImpAbs);
 		
@@ -749,13 +759,14 @@ public class AntiPatternListDialog extends JDialog {
 		leftPanel.add(lblImpAbsIco);
 		
 		lblImpAbsRes = new JLabel("");
-		lblImpAbsRes.setPreferredSize(new Dimension(125, 20));
+		lblImpAbsRes.setPreferredSize(new Dimension(120, 20));
 		lblImpAbsRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblImpAbsRes.setForeground(Color.BLUE);		
 		leftPanel.add(lblImpAbsRes);
 		
-		cbxImpPart = new JCheckBox(ImpPartAntipattern.getAntipatternInfo().getAcronym()+" : "+ImpPartAntipattern.getAntipatternInfo().getName());
-		cbxImpPart.setPreferredSize(new Dimension(205, 20));
+		cbxImpPart = new JCheckBox("ImpPart: Imprecise Part Specification");
+		cbxImpPart.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxImpPart.setPreferredSize(new Dimension(240, 20));
 		cbxImpPart.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxImpPart);
 		
@@ -769,7 +780,7 @@ public class AntiPatternListDialog extends JDialog {
 		leftPanel.add(lblImpPartIco);
 		
 		lblImpPartRes = new JLabel("");
-		lblImpPartRes.setPreferredSize(new Dimension(95, 20));
+		lblImpPartRes.setPreferredSize(new Dimension(90, 20));
 		lblImpPartRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblImpPartRes.setForeground(Color.BLUE);		
 		leftPanel.add(lblImpPartRes);
@@ -805,7 +816,21 @@ public class AntiPatternListDialog extends JDialog {
 		btnNewButton_1.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				dispose();				
+				if (searchThread!=null){
+					searchThread.interrupt();
+				}	
+				dispose();
+				
+			}
+		});
+		
+		JButton btnStop = new JButton("Stop");
+		btnStop.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (searchThread!=null){
+					searchThread.interrupt();
+				}
 			}
 		});
 		
@@ -815,16 +840,18 @@ public class AntiPatternListDialog extends JDialog {
 				.addGroup(gl_buttonPane.createSequentialGroup()
 					.addGap(24)
 					.addGroup(gl_buttonPane.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 686, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_buttonPane.createSequentialGroup()
 							.addComponent(identifyButton, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(progressBarDescr, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnStop, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnNewButton_1)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnNewButton)))
-					.addGap(310))
+							.addComponent(btnNewButton))
+						.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 775, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		gl_buttonPane.setVerticalGroup(
 			gl_buttonPane.createParallelGroup(Alignment.TRAILING)
@@ -836,8 +863,9 @@ public class AntiPatternListDialog extends JDialog {
 						.addComponent(progressBarDescr)
 						.addComponent(identifyButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnNewButton)
-						.addComponent(btnNewButton_1))
-					.addContainerGap(19, Short.MAX_VALUE))
+						.addComponent(btnNewButton_1)
+						.addComponent(btnStop))
+					.addContainerGap(18, Short.MAX_VALUE))
 		);
 		buttonPane.setLayout(gl_buttonPane);
 		
@@ -859,390 +887,399 @@ public class AntiPatternListDialog extends JDialog {
 	public void IdentifyButtonActionPerformed(ActionEvent event)
 	{
 		try{
-						
-			cleanAllResultlabels();
-			HideBoldnessOnAllCheckBoxes();
 			
-			frame.focusOnOutput();
-					
-			progressBar.setStringPainted(true);
-			progressBar.setMinimum(0);
-			progressBar.setMaximum(100);
-					
-			identifyButton.setEnabled(false);
-			
-			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-						
-			OntoUMLParser parser = ProjectBrowser.getParserFor(frame.getDiagramManager().getCurrentProject());
+		cleanAllResultlabels();
+		HideBoldnessOnAllCheckBoxes();
 		
-			 final AssCycAntipattern assCyc = new AssCycAntipattern(parser); 	
-			 final BinOverAntipattern binOver = new BinOverAntipattern(parser);		
-			 final DepPhaseAntipattern depPhase = new DepPhaseAntipattern(parser);
-			 final FreeRoleAntipattern freeRole = new FreeRoleAntipattern(parser);
-			 final GSRigAntipattern gsRig = new GSRigAntipattern(parser);
-			 final HetCollAntipattern hetColl = new HetCollAntipattern(parser);
-			 final HomoFuncAntipattern homoFunc = new HomoFuncAntipattern(parser);
-			 final ImpAbsAntipattern impAbs = new ImpAbsAntipattern(parser);
-			 final ImpPartAntipattern impPart = new ImpPartAntipattern(parser);
-			 final MixIdenAntipattern mixIden = new MixIdenAntipattern(parser);
-			 final MixRigAntipattern mixRig = new MixRigAntipattern(parser);
-			 final MultiDepAntipattern multiDep = new MultiDepAntipattern(parser);
-			 final RelCompAntipattern relComp = new RelCompAntipattern(parser);
-			 final RelOverAntipattern relOver = new RelOverAntipattern(parser);
-			 final RelRigAntipattern relRig = new RelRigAntipattern(parser);
-			 final RelSpecAntipattern relSpec = new RelSpecAntipattern(parser);
-			 final RepRelAntipattern repRel = new RepRelAntipattern(parser);
-			 final UndefFormalAntipattern undefFormal = new UndefFormalAntipattern(parser);
-			 final UndefPhaseAntipattern undefPhase = new UndefPhaseAntipattern(parser);
-			 final WholeOverAntipattern wholeOver = new WholeOverAntipattern(parser);	
-		
-			 frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,frame.getDiagramManager().getCurrentProject());
-			
-			if (parser.getElements() == null) return;
-			
-			int totalItemsSelected = 0;			
-			if (AssCycisSelected()) totalItemsSelected++;
-			if (BinOverisSelected()) totalItemsSelected++;
-			if (DepPhaseisSelected()) totalItemsSelected++;
-			if (FreeRoleisSelected()) totalItemsSelected++;
-			if (GSRigisSelected()) totalItemsSelected++;
-			if (HetCollisSelected()) totalItemsSelected++;
-			if (HomoFuncisSelected()) totalItemsSelected++;
-			if (ImpAbsisSelected()) totalItemsSelected++;
-			if (ImpPartisSelected()) totalItemsSelected++;
-			if (MixIdenisSelected()) totalItemsSelected++;
-			if (MixRigisSelected()) totalItemsSelected++;
-			if (MultiDepisSelected()) totalItemsSelected++;
-			if (RelCompisSelected()) totalItemsSelected++;
-			if (RelOverisSelected()) totalItemsSelected++;
-			if (RelRigisSelected()) totalItemsSelected++;
-			if (RelSpecisSelected()) totalItemsSelected++;
-			if (RepRelisSelected()) totalItemsSelected++;			
-			if (UndefFormalisSelected()) totalItemsSelected++;
-			if (UndefPhaseisSelected()) totalItemsSelected++;
-			if (WholeOverisSelected()) totalItemsSelected++;
-			final int incrementalValue=100/totalItemsSelected;		
-			
-			if (AssCycisSelected()) {	
-				updateStatus("Identifying AssCyc...");
-				assCyc.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);						
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("AssCyc: "+assCyc.getOccurrences().size()+" items found");
-			}			
-			
-			if (BinOverisSelected()){
-				updateStatus("Identifying BinOver... ");
-				binOver.identify();				
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("BinOver: "+binOver.getOccurrences().size()+" items found");
-			}
-			
-			if (DepPhaseisSelected()){		
-				updateStatus("Identifying DepPhase... ");
-				depPhase.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("DepPhase: "+depPhase.getOccurrences().size()+" items found");				
-			}
-			
-			if (FreeRoleisSelected()){			
-				updateStatus("Identifying FreeRole... ");
-				freeRole.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("FreeRole: "+freeRole.getOccurrences().size()+" items found");				
-			}
-			
-			if (GSRigisSelected()){
-				updateStatus("Identifying GSRig... ");
-				gsRig.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("GSRig: "+gsRig.getOccurrences().size()+" items found");				
-			}
-			
-			if (HetCollisSelected()){	
-				updateStatus("Identifying HetColl... ");
-				hetColl.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("HetColl: "+hetColl.getOccurrences().size()+" items found");				
-			}
-			
-			if (HomoFuncisSelected()){	
-				updateStatus("Identifying HomoFunc... ");
-				homoFunc.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("HomoFunc: "+homoFunc.getOccurrences().size()+" items found");				
-			}
-			
-			if (ImpAbsisSelected()){
-				updateStatus("Identifying ImpAbs... ");
-				impAbs.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("ImpAbs: "+impAbs.getOccurrences().size()+" items found");				
-			}
-			
-			if (ImpPartisSelected()){	
-				updateStatus("Identifying ImpPart... ");
-				impPart.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("ImpPart: "+impPart.getOccurrences().size()+" items found");				
-			}
-			
-			if (MixIdenisSelected()){	
-				updateStatus("Identifying MixIden... ");
-				mixIden.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("MixIden: "+mixIden.getOccurrences().size()+" items found");				
-			}
-			
-			if (MixRigisSelected()){
-				updateStatus("Identifying MixRig... ");
-				mixRig.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("MixRig: "+mixRig.getOccurrences().size()+" items found");				
-			}
-			
-			if (MultiDepisSelected()){	
-				updateStatus("Identifying MultiDep... ");
-				multiDep.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("MultiDep: "+multiDep.getOccurrences().size()+" items found");				
-			}
-			
-			if (RelCompisSelected()){				
-				updateStatus("Identifying RelComp... ");
-				relComp.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("RelComp: "+relComp.getOccurrences().size()+" items found");				
-			}
-			
-			if (RelOverisSelected()){	
-				updateStatus("Identifying RelOver... ");
-				relOver.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("RelOver: "+relOver.getOccurrences().size()+" items found");				
-			}
-			
-			if (RelRigisSelected()){	
-				updateStatus("Identifying RelRig... ");
-				relRig.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("RelRig... "+relRig.getOccurrences().size()+" items found");				
-			}
-			
-			if (RelSpecisSelected()){	
-				updateStatus("Identifying RelSpec... ");
-				relSpec.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("RelSpec: "+relSpec.getOccurrences().size()+" items found");				
-			}
-			
-			if (RepRelisSelected()){	
-				updateStatus("Identifying RepRel... ");
-				repRel.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("RepRel: "+repRel.getOccurrences().size()+" items found");				
-			}
-			
-			if (UndefFormalisSelected()){	
-				updateStatus("Identifying UndefFormal... ");
-				undefFormal.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("UndefFormal: "+undefFormal.getOccurrences().size()+" items found");				
-			}
-			
-			if (UndefPhaseisSelected()){	
-				updateStatus("Identifying UndefPhase... ");
-				undefPhase.identify();
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("UndefPhase: "+undefPhase.getOccurrences().size()+" items found");				
-			}
-			
-			if (WholeOverisSelected()){	
-				updateStatus("Identifying WholeOver... ");
-				wholeOver.identify();				
-				progressBar.setValue(progressBar.getValue()+incrementalValue);
-				progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-				updateStatus("WholeOver: "+wholeOver.getOccurrences().size()+" items found");				
-			}
-			
-		@SuppressWarnings("unused")
-		String result = new String();
-		int totalOccurrences = 0;
-		
-		if (assCyc.getOccurrences().size()>0) { 
-			result += AssCycAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+assCyc.getOccurrences().size()+" items found.\n";
-			totalOccurrences += assCyc.getOccurrences().size();
-			lblAssCycRes.setText("("+assCyc.getOccurrences().size()+")");
-			cbxAssCyc.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}
-		
-		if (binOver.getOccurrences().size()>0) { 
-			result += BinOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+binOver.getOccurrences().size()+" items found.\n"; 
-			totalOccurrences += binOver.getOccurrences().size();
-			lblBinOverRes.setText("("+binOver.getOccurrences().size()+")");
-			cbxBinOver.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}  
-		
-		if (depPhase.getOccurrences().size()>0) {
-			result += DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+depPhase.getOccurrences().size()+" items found.\n";
-			totalOccurrences += depPhase.getOccurrences().size();
-			lblDepPhaseRes.setText("("+depPhase.getOccurrences().size()+")");
-			cbxDepPhase.setFont(new Font("Tahoma", Font.BOLD, 11));
-		} 
-		
-		if (freeRole.getOccurrences().size()>0) {
-			result += FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+freeRole.getOccurrences().size()+" items found.\n";
-			totalOccurrences += freeRole.getOccurrences().size();
-			lblFreeRoleRes.setText("("+freeRole.getOccurrences().size()+")");
-			cbxFreeRole.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (gsRig.getOccurrences().size()>0) {
-			result += GSRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+gsRig.getOccurrences().size()+" items found.\n";		
-			totalOccurrences += gsRig.getOccurrences().size();
-			lblGSRigRes.setText("("+gsRig.getOccurrences().size()+")");			
-			cbxGSRig.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (hetColl.getOccurrences().size()>0) {
-			result += HetCollAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+hetColl.getOccurrences().size()+" items found.\n";
-			totalOccurrences += hetColl.getOccurrences().size();
-			lblHetCollRes.setText("("+hetColl.getOccurrences().size()+")");		
-			cbxHetColl.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (homoFunc.getOccurrences().size()>0) {
-			result += HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+homoFunc.getOccurrences().size()+" items found.\n";
-			totalOccurrences += homoFunc.getOccurrences().size();
-			lblHomoFuncRes.setText("("+homoFunc.getOccurrences().size()+")");
-			cbxHomoFunc.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (impAbs.getOccurrences().size()>0) {
-			result += ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impAbs.getOccurrences().size()+" items found.\n";
-			totalOccurrences += impAbs.getOccurrences().size();
-			lblImpAbsRes.setText("("+impAbs.getOccurrences().size()+")");
-			cbxImpAbs.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (impPart.getOccurrences().size()>0) {
-			result += ImpPartAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impPart.getOccurrences().size()+" items found.\n";
-			totalOccurrences += impPart.getOccurrences().size();
-			lblImpPartRes.setText("("+impPart.getOccurrences().size()+")");		
-			cbxImpPart.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}  
-		
-		if (mixIden.getOccurrences().size()>0) {
-			result += MixIdenAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixIden.getOccurrences().size()+" items found.\n";
-			totalOccurrences += mixIden.getOccurrences().size();
-			lblMixIdenRes.setText("("+mixIden.getOccurrences().size()+")");
-			cbxMixIden.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (mixRig.getOccurrences().size()>0) {
-			result += MixRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixRig.getOccurrences().size()+" items found.\n";
-			totalOccurrences += mixRig.getOccurrences().size();
-			lblMixRigRes.setText("("+mixRig.getOccurrences().size()+")");
-			cbxMixRig.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}  
-		
-		if (multiDep.getOccurrences().size()>0) {
-			result += MultiDepAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multiDep.getOccurrences().size()+" items found.\n";
-			totalOccurrences += multiDep.getOccurrences().size();
-			lblMultiDepRes.setText("("+multiDep.getOccurrences().size()+")");
-			cbxMultiDep.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (relComp.getOccurrences().size()>0) {
-			result += RelCompAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relComp.getOccurrences().size()+" items found.\n";
-			totalOccurrences += relComp.getOccurrences().size();
-			lblRelCompRes.setText("("+relComp.getOccurrences().size()+")");	
-			cbxRelComp.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (relOver.getOccurrences().size()>0) {
-			result += RelOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relOver.getOccurrences().size()+" items found.\n";
-			totalOccurrences += relOver.getOccurrences().size();
-			lblRelOverRes.setText("("+relOver.getOccurrences().size()+")");
-			cbxRelOver.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}  
-		
-		if (relRig.getOccurrences().size()>0) {
-			result += RelRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relRig.getOccurrences().size()+" items found.\n";
-			totalOccurrences += relRig.getOccurrences().size();
-			lblRelRigRes.setText("("+relRig.getOccurrences().size()+")");
-			cbxRelRig.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (relSpec.getOccurrences().size()>0) {
-			result += RelSpecAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relSpec.getOccurrences().size()+" items found.\n";
-			totalOccurrences += relSpec.getOccurrences().size();
-			lblRelSpecRes.setText("("+relSpec.getOccurrences().size()+")");
-			cbxRelSpec.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (repRel.getOccurrences().size()>0) {
-			result += RepRelAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+repRel.getOccurrences().size()+" items found.\n";
-			totalOccurrences += repRel.getOccurrences().size();
-			lblRepRelRes.setText("("+repRel.getOccurrences().size()+")");		
-			cbxRepRel.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (undefFormal.getOccurrences().size()>0) {
-			result += UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefFormal.getOccurrences().size()+" items found.\n";
-			totalOccurrences += undefFormal.getOccurrences().size();
-			lblUndefFormalRes.setText("("+undefFormal.getOccurrences().size()+")");
-			cbxUndefFormal.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (undefPhase.getOccurrences().size()>0) {
-			result += UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefPhase.getOccurrences().size()+" items found.\n";
-			totalOccurrences += undefPhase.getOccurrences().size();
-			lblUndefPhaseRes.setText("("+undefPhase.getOccurrences().size()+")");
-			cbxUndefPhase.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		if (wholeOver.getOccurrences().size()>0) {
-			result += WholeOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
-			totalOccurrences += wholeOver.getOccurrences().size();
-			lblWholeOverRes.setText("("+wholeOver.getOccurrences().size()+")");
-			cbxWholeOver.setFont(new Font("Tahoma", Font.BOLD, 11));
-		}   
-		
-		frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		
-		identifyButton.setEnabled(true);
-		progressBar.setValue(100);
-		progressBarDescr.setText("Completed. "+totalOccurrences+" occurrences found.");
-						
-		AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, impPart, mixIden,
-															   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver	);
-
-		ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
-
-		//frame.getDiagramManager().openAntiPatternManager();
+		frame.focusOnOutput();
 				
+		progressBar.setStringPainted(true);
+		progressBar.setMinimum(0);
+		progressBar.setMaximum(100);
+				
+		identifyButton.setEnabled(false);
+		
+		frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			
+		searchThread= new Thread(new Runnable() {			
+			@Override
+			public void run() {
+								
+				OntoUMLParser parser = ProjectBrowser.getParserFor(frame.getDiagramManager().getCurrentProject());
+			
+				 final AssCycAntipattern assCyc = new AssCycAntipattern(parser); 	
+				 final BinOverAntipattern binOver = new BinOverAntipattern(parser);		
+				 final DepPhaseAntipattern depPhase = new DepPhaseAntipattern(parser);
+				 final FreeRoleAntipattern freeRole = new FreeRoleAntipattern(parser);
+				 final GSRigAntipattern gsRig = new GSRigAntipattern(parser);
+				 final HetCollAntipattern hetColl = new HetCollAntipattern(parser);
+				 final HomoFuncAntipattern homoFunc = new HomoFuncAntipattern(parser);
+				 final ImpAbsAntipattern impAbs = new ImpAbsAntipattern(parser);
+				 final ImpPartAntipattern impPart = new ImpPartAntipattern(parser);
+				 final MixIdenAntipattern mixIden = new MixIdenAntipattern(parser);
+				 final MixRigAntipattern mixRig = new MixRigAntipattern(parser);
+				 final MultiDepAntipattern multiDep = new MultiDepAntipattern(parser);
+				 final RelCompAntipattern relComp = new RelCompAntipattern(parser);
+				 final RelOverAntipattern relOver = new RelOverAntipattern(parser);
+				 final RelRigAntipattern relRig = new RelRigAntipattern(parser);
+				 final RelSpecAntipattern relSpec = new RelSpecAntipattern(parser);
+				 final RepRelAntipattern repRel = new RepRelAntipattern(parser);
+				 final UndefFormalAntipattern undefFormal = new UndefFormalAntipattern(parser);
+				 final UndefPhaseAntipattern undefPhase = new UndefPhaseAntipattern(parser);
+				 final WholeOverAntipattern wholeOver = new WholeOverAntipattern(parser);	
+			
+				 frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,frame.getDiagramManager().getCurrentProject());
+				
+				if (parser.getElements() == null) return;
+				
+				int totalItemsSelected = 0;			
+				if (AssCycisSelected()) totalItemsSelected++;
+				if (BinOverisSelected()) totalItemsSelected++;
+				if (DepPhaseisSelected()) totalItemsSelected++;
+				if (FreeRoleisSelected()) totalItemsSelected++;
+				if (GSRigisSelected()) totalItemsSelected++;
+				if (HetCollisSelected()) totalItemsSelected++;
+				if (HomoFuncisSelected()) totalItemsSelected++;
+				if (ImpAbsisSelected()) totalItemsSelected++;
+				if (ImpPartisSelected()) totalItemsSelected++;
+				if (MixIdenisSelected()) totalItemsSelected++;
+				if (MixRigisSelected()) totalItemsSelected++;
+				if (MultiDepisSelected()) totalItemsSelected++;
+				if (RelCompisSelected()) totalItemsSelected++;
+				if (RelOverisSelected()) totalItemsSelected++;
+				if (RelRigisSelected()) totalItemsSelected++;
+				if (RelSpecisSelected()) totalItemsSelected++;
+				if (RepRelisSelected()) totalItemsSelected++;			
+				if (UndefFormalisSelected()) totalItemsSelected++;
+				if (UndefPhaseisSelected()) totalItemsSelected++;
+				if (WholeOverisSelected()) totalItemsSelected++;
+				final int incrementalValue=100/totalItemsSelected;		
+				
+				@SuppressWarnings("unused")
+				String result = new String();
+				int totalOccurrences = 0;
+				
+				if (AssCycisSelected()) {	
+					updateStatus("Identifying AssCyc...");
+					assCyc.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);						
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("AssCyc: "+assCyc.getOccurrences().size()+" items found");
+					
+					if (assCyc.getOccurrences().size()>0) { 
+						result += AssCycAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+assCyc.getOccurrences().size()+" items found.\n";
+						totalOccurrences += assCyc.getOccurrences().size();
+						lblAssCycRes.setText("("+assCyc.getOccurrences().size()+")");						
+						cbxAssCyc.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}
+				}			
+				
+				if (BinOverisSelected()){
+					updateStatus("Identifying BinOver... ");
+					binOver.identify();				
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("BinOver: "+binOver.getOccurrences().size()+" items found");						
+
+					if (binOver.getOccurrences().size()>0) { 
+						result += BinOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+binOver.getOccurrences().size()+" items found.\n"; 
+						totalOccurrences += binOver.getOccurrences().size();
+						lblBinOverRes.setText("("+binOver.getOccurrences().size()+")");
+						cbxBinOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}  
+				}
+				
+				if (DepPhaseisSelected()){		
+					updateStatus("Identifying DepPhase... ");
+					depPhase.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("DepPhase: "+depPhase.getOccurrences().size()+" items found");			
+					
+					if (depPhase.getOccurrences().size()>0) {
+						result += DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+depPhase.getOccurrences().size()+" items found.\n";
+						totalOccurrences += depPhase.getOccurrences().size();
+						lblDepPhaseRes.setText("("+depPhase.getOccurrences().size()+")");
+						cbxDepPhase_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+					} 
+				}
+				
+				if (FreeRoleisSelected()){			
+					updateStatus("Identifying FreeRole... ");
+					freeRole.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("FreeRole: "+freeRole.getOccurrences().size()+" items found");		
+					
+					if (freeRole.getOccurrences().size()>0) {
+						result += FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+freeRole.getOccurrences().size()+" items found.\n";
+						totalOccurrences += freeRole.getOccurrences().size();
+						lblFreeRoleRes.setText("("+freeRole.getOccurrences().size()+")");
+						cbxFreeRole.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}  
+				}
+				
+				if (GSRigisSelected()){
+					updateStatus("Identifying GSRig... ");
+					gsRig.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("GSRig: "+gsRig.getOccurrences().size()+" items found");	
+					
+					if (gsRig.getOccurrences().size()>0) {
+						result += GSRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+gsRig.getOccurrences().size()+" items found.\n";		
+						totalOccurrences += gsRig.getOccurrences().size();
+						lblGSRigRes.setText("("+gsRig.getOccurrences().size()+")");	
+						cbxGSRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}  
+				}
+				
+				if (HetCollisSelected()){	
+					updateStatus("Identifying HetColl... ");
+					hetColl.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("HetColl: "+hetColl.getOccurrences().size()+" items found");
+					
+					if (hetColl.getOccurrences().size()>0) {
+						result += HetCollAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+hetColl.getOccurrences().size()+" items found.\n";
+						totalOccurrences += hetColl.getOccurrences().size();
+						lblHetCollRes.setText("("+hetColl.getOccurrences().size()+")");	
+						cbxHetColl.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}   
+					
+				}
+				
+				if (HomoFuncisSelected()){	
+					updateStatus("Identifying HomoFunc... ");
+					homoFunc.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("HomoFunc: "+homoFunc.getOccurrences().size()+" items found");						
+
+					if (homoFunc.getOccurrences().size()>0) {
+						result += HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+homoFunc.getOccurrences().size()+" items found.\n";
+						totalOccurrences += homoFunc.getOccurrences().size();
+						lblHomoFuncRes.setText("("+homoFunc.getOccurrences().size()+")");
+						cbxHomoFunc.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}   
+				}
+				
+				if (ImpAbsisSelected()){
+					updateStatus("Identifying ImpAbs... ");
+					impAbs.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("ImpAbs: "+impAbs.getOccurrences().size()+" items found");	
+					
+					if (impAbs.getOccurrences().size()>0) {
+						result += ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impAbs.getOccurrences().size()+" items found.\n";
+						totalOccurrences += impAbs.getOccurrences().size();
+						lblImpAbsRes.setText("("+impAbs.getOccurrences().size()+")");
+						cbxImpAbs.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}   
+				}
+				
+				if (ImpPartisSelected()){	
+					updateStatus("Identifying ImpPart... ");
+					impPart.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("ImpPart: "+impPart.getOccurrences().size()+" items found");	
+					
+					if (impPart.getOccurrences().size()>0) {
+						result += ImpPartAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impPart.getOccurrences().size()+" items found.\n";
+						totalOccurrences += impPart.getOccurrences().size();
+						lblImpPartRes.setText("("+impPart.getOccurrences().size()+")");	
+						cbxImpPart.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}  
+				}
+				
+				if (MixIdenisSelected()){	
+					updateStatus("Identifying MixIden... ");
+					mixIden.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("MixIden: "+mixIden.getOccurrences().size()+" items found");		
+					
+					if (mixIden.getOccurrences().size()>0) {
+						result += MixIdenAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixIden.getOccurrences().size()+" items found.\n";
+						totalOccurrences += mixIden.getOccurrences().size();
+						lblMixIdenRes.setText("("+mixIden.getOccurrences().size()+")");
+						cbxMixIden.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}   
+				}
+				
+				if (MixRigisSelected()){
+					updateStatus("Identifying MixRig... ");
+					mixRig.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("MixRig: "+mixRig.getOccurrences().size()+" items found");		
+					
+					if (mixRig.getOccurrences().size()>0) {
+						result += MixRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixRig.getOccurrences().size()+" items found.\n";
+						totalOccurrences += mixRig.getOccurrences().size();
+						lblMixRigRes.setText("("+mixRig.getOccurrences().size()+")");
+						cbxMixRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}  
+				}
+				
+				if (MultiDepisSelected()){	
+					updateStatus("Identifying MultiDep... ");
+					multiDep.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("MultiDep: "+multiDep.getOccurrences().size()+" items found");	
+					
+					if (multiDep.getOccurrences().size()>0) {
+						result += MultiDepAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multiDep.getOccurrences().size()+" items found.\n";
+						totalOccurrences += multiDep.getOccurrences().size();
+						lblMultiDepRes.setText("("+multiDep.getOccurrences().size()+")");
+						cbxMultiDep.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}   
+				}
+				
+				if (RelCompisSelected()){				
+					updateStatus("Identifying RelComp... ");
+					relComp.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("RelComp: "+relComp.getOccurrences().size()+" items found");
+					
+					if (relComp.getOccurrences().size()>0) {
+						result += RelCompAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relComp.getOccurrences().size()+" items found.\n";
+						totalOccurrences += relComp.getOccurrences().size();
+						lblRelCompRes.setText("("+relComp.getOccurrences().size()+")");	
+						cbxRelComp.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}   
+				}
+				
+				if (RelOverisSelected()){	
+					updateStatus("Identifying RelOver... ");
+					relOver.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("RelOver: "+relOver.getOccurrences().size()+" items found");						
+					
+					if (relOver.getOccurrences().size()>0) {
+						result += RelOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relOver.getOccurrences().size()+" items found.\n";
+						totalOccurrences += relOver.getOccurrences().size();
+						lblRelOverRes.setText("("+relOver.getOccurrences().size()+")");
+						cbxRelOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}  
+				}
+				
+				if (RelRigisSelected()){	
+					updateStatus("Identifying RelRig... ");
+					relRig.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("RelRig... "+relRig.getOccurrences().size()+" items found");	
+					
+					if (relRig.getOccurrences().size()>0) {
+						result += RelRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relRig.getOccurrences().size()+" items found.\n";
+						totalOccurrences += relRig.getOccurrences().size();
+						lblRelRigRes.setText("("+relRig.getOccurrences().size()+")");
+						cbxRelRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}   						
+				}
+				
+				if (RelSpecisSelected()){	
+					updateStatus("Identifying RelSpec... ");
+					relSpec.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("RelSpec: "+relSpec.getOccurrences().size()+" items found");
+					
+					if (relSpec.getOccurrences().size()>0) {
+						result += RelSpecAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relSpec.getOccurrences().size()+" items found.\n";
+						totalOccurrences += relSpec.getOccurrences().size();
+						lblRelSpecRes.setText("("+relSpec.getOccurrences().size()+")");
+						cbxRelSpec.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}  
+				}
+				
+				if (RepRelisSelected()){	
+					updateStatus("Identifying RepRel... ");
+					repRel.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("RepRel: "+repRel.getOccurrences().size()+" items found");		
+					
+					if (repRel.getOccurrences().size()>0) {
+						result += RepRelAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+repRel.getOccurrences().size()+" items found.\n";
+						totalOccurrences += repRel.getOccurrences().size();
+						lblRepRelRes.setText("("+repRel.getOccurrences().size()+")");	
+						cbxRepRel.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}   
+				}
+				
+				if (UndefFormalisSelected()){	
+					updateStatus("Identifying UndefFormal... ");
+					undefFormal.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("UndefFormal: "+undefFormal.getOccurrences().size()+" items found");	
+					
+					if (undefFormal.getOccurrences().size()>0) {
+						result += UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefFormal.getOccurrences().size()+" items found.\n";
+						totalOccurrences += undefFormal.getOccurrences().size();
+						lblUndefFormalRes.setText("("+undefFormal.getOccurrences().size()+")");
+						cbxUndefFormal.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}   						
+				}
+				
+				if (UndefPhaseisSelected()){	
+					updateStatus("Identifying UndefPhase... ");
+					undefPhase.identify();
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("UndefPhase: "+undefPhase.getOccurrences().size()+" items found");	
+					
+					if (undefPhase.getOccurrences().size()>0) {
+						result += UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefPhase.getOccurrences().size()+" items found.\n";
+						totalOccurrences += undefPhase.getOccurrences().size();
+						lblUndefPhaseRes.setText("("+undefPhase.getOccurrences().size()+")");
+						cbxUndefPhase.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}   
+				}
+				
+				if (WholeOverisSelected()){	
+					updateStatus("Identifying WholeOver... ");
+					wholeOver.identify();				
+					progressBar.setValue(progressBar.getValue()+incrementalValue);
+					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+					updateStatus("WholeOver: "+wholeOver.getOccurrences().size()+" items found");			
+					
+					if (wholeOver.getOccurrences().size()>0) {
+						result += WholeOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
+						totalOccurrences += wholeOver.getOccurrences().size();
+						lblWholeOverRes.setText("("+wholeOver.getOccurrences().size()+")");
+						cbxWholeOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+					}   
+				}
+			
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				
+				identifyButton.setEnabled(true);
+				progressBar.setValue(100);
+				progressBarDescr.setText("Completed. "+totalOccurrences+" occurrences found.");
+								
+				AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, impPart, mixIden,
+																	   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver	);
+
+				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
+
+				//frame.getDiagramManager().openAntiPatternManager();				
+			}
+		});		
+		
+		searchThread.start();
+		
 		}catch(Exception e){
 			JOptionPane.showMessageDialog(this,e.getMessage(),"Anti-Pattern Search",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
-		}			
+		}	
 	}
 }

@@ -233,8 +233,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		
 		getContentPane().add(browserArea, BorderLayout.CENTER);
 		
-		PrintStream interceptor = new Interceptor(System.out);
-        System.setOut(interceptor);
+		//PrintStream interceptor = new Interceptor(System.out);
+        //System.setOut(interceptor);
         
 		//to end...
 		diagramManager.addStartPanel();		
