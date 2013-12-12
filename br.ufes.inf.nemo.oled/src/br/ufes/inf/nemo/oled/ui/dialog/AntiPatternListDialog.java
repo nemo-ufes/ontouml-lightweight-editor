@@ -2,8 +2,10 @@ package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -83,26 +85,26 @@ public class AntiPatternListDialog extends JDialog {
 	private JCheckBox cbxUndefPhase;
 	private JCheckBox cbxWholeOver;
 	
-	private JLabel lblAssCycIco;	
-	private JLabel lblBinOverIco;	
-	private JLabel lblDepPhaseIco;
-	private JLabel lblFreeRoleIco;
-	private JLabel lblGSRigIco;
-	private JLabel lblHetCollIco;
-	private JLabel lblHomoFuncIco;
-	private JLabel lblImpAbsIco;
-	private JLabel lblImpPartIco;
-	private JLabel lblMixIdenIco;
-	private JLabel lblMixRigIco;
-	private JLabel lblMultiDepIco;
-	private JLabel lblRelCompIco;
-	private JLabel lblRelOverIco;
-	private JLabel lblRelRigIco;
-	private JLabel lblRelSpecIco;
-	private JLabel lblRepRelIco;
-	private JLabel lblUndefFormalIco;
-	private JLabel lblUndefPhaseIco;
-	private JLabel lblWholeOverIco;
+	private JButton lblAssCycIco;	
+	private JButton lblBinOverIco;	
+	private JButton lblDepPhaseIco;
+	private JButton lblFreeRoleIco;
+	private JButton lblGSRigIco;
+	private JButton lblHetCollIco;
+	private JButton lblHomoFuncIco;
+	private JButton lblImpAbsIco;
+	private JButton lblImpPartIco;
+	private JButton lblMixIdenIco;
+	private JButton lblMixRigIco;
+	private JButton lblMultiDepIco;
+	private JButton lblRelCompIco;
+	private JButton lblRelOverIco;
+	private JButton lblRelRigIco;
+	private JButton lblRelSpecIco;
+	private JButton lblRepRelIco;
+	private JButton lblUndefFormalIco;
+	private JButton lblUndefPhaseIco;
+	private JButton lblWholeOverIco;
 		
 	private DefaultBoundedRangeModel progressModel = new DefaultBoundedRangeModel();
 	private JProgressBar progressBar = new JProgressBar(progressModel);
@@ -258,10 +260,10 @@ public class AntiPatternListDialog extends JDialog {
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/antipattern.png")));
 		setTitle("Anti-Pattern Search");
-		setBounds(100, 100, 757, 485);
+		setBounds(100, 100, 757, 469);
 		 
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setPreferredSize(new Dimension(200, 365));
+		contentPanel.setPreferredSize(new Dimension(180, 350));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		getContentPane().add(contentPanel, BorderLayout.NORTH);
@@ -327,6 +329,7 @@ public class AntiPatternListDialog extends JDialog {
 		JPanel leftPanel = new JPanel();
 		
 		JPanel rightPanel = new JPanel();
+		rightPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.GRAY);
@@ -337,6 +340,11 @@ public class AntiPatternListDialog extends JDialog {
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addGap(10)
+							.addComponent(btnEnableall)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnDisableall))
 						.addComponent(lblChooseWhichAntipattern, GroupLayout.PREFERRED_SIZE, 698, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE)
@@ -344,12 +352,7 @@ public class AntiPatternListDialog extends JDialog {
 							.addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, 348, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addGap(10)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(separator, GroupLayout.PREFERRED_SIZE, 690, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addComponent(btnEnableall)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnDisableall)))))
+							.addComponent(separator, GroupLayout.PREFERRED_SIZE, 690, GroupLayout.PREFERRED_SIZE)))
 					.addGap(21))
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -359,8 +362,8 @@ public class AntiPatternListDialog extends JDialog {
 					.addComponent(lblChooseWhichAntipattern)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(rightPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-						.addComponent(leftPanel, Alignment.TRAILING, 0, 0, Short.MAX_VALUE))
+						.addComponent(rightPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(leftPanel, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnEnableall)
@@ -371,484 +374,408 @@ public class AntiPatternListDialog extends JDialog {
 		);
 		
 		cbxMixRig = new JCheckBox(MixRigAntipattern.getAntipatternInfo().getAcronym()+" : "+MixRigAntipattern.getAntipatternInfo().getName());
+		cbxMixRig.setPreferredSize(new Dimension(180, 20));
 		cbxMixRig.setBackground(UIManager.getColor("Panel.background"));
 		
 		cbxMultiDep = new JCheckBox("MultiDep : Multiple Relational Dependecy\r\n");
+		cbxMultiDep.setPreferredSize(new Dimension(220, 20));
 		cbxMultiDep.setBackground(UIManager.getColor("Panel.background"));
 	
-		lblMixRigIco = new JLabel();
+		lblMixRigIco  = new JButton();
+		lblMixRigIco.setPreferredSize(new Dimension(20, 20));
+		lblMixRigIco.setOpaque(false);
+		lblMixRigIco.setContentAreaFilled(false);
+		lblMixRigIco.setBorderPainted(false);
 		lblMixRigIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
-		lblMultiDepIco = new JLabel();
+		lblMixRigIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+				
+		lblMultiDepIco = new JButton();
+		lblMultiDepIco.setPreferredSize(new Dimension(20, 20));
+		lblMultiDepIco.setOpaque(false);
+		lblMultiDepIco.setContentAreaFilled(false);
+		lblMultiDepIco.setBorderPainted(false);
 		lblMultiDepIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
+		lblMultiDepIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+				
 		cbxRelComp = new JCheckBox(RelCompAntipattern.getAntipatternInfo().getAcronym()+" : "+RelCompAntipattern.getAntipatternInfo().getName());
+		cbxRelComp.setPreferredSize(new Dimension(180, 20));
 		cbxRelComp.setBackground(UIManager.getColor("Panel.background"));
 		
-		lblRelCompIco = new JLabel();
+		lblRelCompIco = new JButton();
+		lblRelCompIco.setPreferredSize(new Dimension(20, 20));
+		lblRelCompIco.setOpaque(false);
+		lblRelCompIco.setContentAreaFilled(false);
+		lblRelCompIco.setBorderPainted(false);
 		lblRelCompIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
+		lblRelCompIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+				
 		cbxRelOver = new JCheckBox(RelOverAntipattern.getAntipatternInfo().getAcronym()+" : "+RelOverAntipattern.getAntipatternInfo().getName());
+		cbxRelOver.setPreferredSize(new Dimension(252, 20));
 		cbxRelOver.setBackground(UIManager.getColor("Panel.background"));
 		
-		lblRelOverIco = new JLabel();
+		lblRelOverIco  = new JButton();
+		lblRelOverIco.setPreferredSize(new Dimension(20, 20));
+		lblRelOverIco.setOpaque(false);
+		lblRelOverIco.setContentAreaFilled(false);
+		lblRelOverIco.setBorderPainted(false);
 		lblRelOverIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
+		lblRelOverIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+				
 		cbxRelRig = new JCheckBox(RelRigAntipattern.getAntipatternInfo().getAcronym()+" : "+RelRigAntipattern.getAntipatternInfo().getName());
+		cbxRelRig.setPreferredSize(new Dimension(210, 20));
 		cbxRelRig.setBackground(UIManager.getColor("Panel.background"));
-		
-		lblRelRigIco = new JLabel();
-		lblRelRigIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
+				
 		cbxRelSpec = new JCheckBox(RelSpecAntipattern.getAntipatternInfo().getAcronym()+" : "+RelSpecAntipattern.getAntipatternInfo().getName());
+		cbxRelSpec.setPreferredSize(new Dimension(180, 20));
 		cbxRelSpec.setBackground(UIManager.getColor("Panel.background"));
 		
-		lblRelSpecIco = new JLabel();
+		lblRelSpecIco = new JButton();
+		lblRelSpecIco.setPreferredSize(new Dimension(20, 20));
+		lblRelSpecIco.setOpaque(false);
+		lblRelSpecIco.setContentAreaFilled(false);
+		lblRelSpecIco.setBorderPainted(false);
 		lblRelSpecIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
+		lblRelSpecIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+				
 		cbxRepRel = new JCheckBox(RepRelAntipattern.getAntipatternInfo().getAcronym()+" : "+RepRelAntipattern.getAntipatternInfo().getName());
+		cbxRepRel.setPreferredSize(new Dimension(215, 20));
 		cbxRepRel.setBackground(UIManager.getColor("Panel.background"));
 		
-		lblRepRelIco = new JLabel();
+		lblRepRelIco = new JButton();
+		lblRepRelIco.setPreferredSize(new Dimension(20, 20));
+		lblRepRelIco.setOpaque(false);
+		lblRepRelIco.setContentAreaFilled(false);
+		lblRepRelIco.setBorderPainted(false);
 		lblRepRelIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
+		lblRepRelIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+				
 		cbxUndefFormal = new JCheckBox(UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" : "+UndefFormalAntipattern.getAntipatternInfo().getName());
+		cbxUndefFormal.setPreferredSize(new Dimension(260, 20));
 		cbxUndefFormal.setBackground(UIManager.getColor("Panel.background"));
 		
-		lblUndefFormalIco = new JLabel();
+		lblUndefFormalIco = new JButton();
+		lblUndefFormalIco.setPreferredSize(new Dimension(20, 20));
+		lblUndefFormalIco.setOpaque(false);
+		lblUndefFormalIco.setContentAreaFilled(false);
+		lblUndefFormalIco.setBorderPainted(false);
 		lblUndefFormalIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
+		lblUndefFormalIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+				
 		cbxUndefPhase = new JCheckBox(UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" : "+UndefPhaseAntipattern.getAntipatternInfo().getName());
+		cbxUndefPhase.setPreferredSize(new Dimension(220, 20));
 		cbxUndefPhase.setBackground(UIManager.getColor("Panel.background"));
 		
-		lblUndefPhaseIco = new JLabel();
+		lblUndefPhaseIco = new JButton();
+		lblUndefPhaseIco.setPreferredSize(new Dimension(20, 20));
+		lblUndefPhaseIco.setOpaque(false);
+		lblUndefPhaseIco.setContentAreaFilled(false);
+		lblUndefPhaseIco.setBorderPainted(false);
 		lblUndefPhaseIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
-		cbxWholeOver = new JCheckBox(WholeOverAntipattern.getAntipatternInfo().getAcronym()+" : "+WholeOverAntipattern.getAntipatternInfo().getName());
-		cbxWholeOver.setBackground(UIManager.getColor("Panel.background"));
-		
-		lblWholeOverIco = new JLabel();
-		lblWholeOverIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
+		lblUndefPhaseIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+				
 		lblMixRigRes = new JLabel("");
+		lblMixRigRes.setPreferredSize(new Dimension(120, 20));
 		lblMixRigRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblMixRigRes.setForeground(Color.BLUE);
 		
 		lblMultiDepRes = new JLabel("");
+		lblMultiDepRes.setPreferredSize(new Dimension(80, 20));
 		lblMultiDepRes.setForeground(Color.BLUE);
 		lblMultiDepRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		lblRelCompRes = new JLabel("");
+		lblRelCompRes.setPreferredSize(new Dimension(120, 20));
 		lblRelCompRes.setForeground(Color.BLUE);
 		lblRelCompRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		lblRelOverRes = new JLabel("");
+		lblRelOverRes.setPreferredSize(new Dimension(48, 20));
 		lblRelOverRes.setForeground(Color.BLACK);
 		lblRelOverRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
-		lblRelRigRes = new JLabel("");
-		lblRelRigRes.setForeground(Color.BLUE);
-		lblRelRigRes.setFont(new Font("Tahoma", Font.BOLD, 11));
-		
 		lblRelSpecRes = new JLabel("");
+		lblRelSpecRes.setPreferredSize(new Dimension(120, 20));
 		lblRelSpecRes.setForeground(Color.BLUE);
 		lblRelSpecRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		lblRepRelRes = new JLabel("");
+		lblRepRelRes.setPreferredSize(new Dimension(85, 20));
 		lblRepRelRes.setForeground(Color.BLUE);
 		lblRepRelRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		lblUndefFormalRes = new JLabel("");
+		lblUndefFormalRes.setPreferredSize(new Dimension(40, 20));
 		lblUndefFormalRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblUndefFormalRes.setForeground(Color.BLUE);
 		
 		lblUndefPhaseRes = new JLabel("");
+		lblUndefPhaseRes.setPreferredSize(new Dimension(80, 20));
 		lblUndefPhaseRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblUndefPhaseRes.setForeground(Color.BLUE);
+		rightPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		rightPanel.add(cbxMixRig);
+		rightPanel.add(lblMixRigIco);
+		rightPanel.add(lblMixRigRes);
+		rightPanel.add(cbxMultiDep);
+		rightPanel.add(lblMultiDepIco);
+		rightPanel.add(lblMultiDepRes);
+		rightPanel.add(cbxRelComp);
+		rightPanel.add(lblRelCompIco);
+		rightPanel.add(lblRelCompRes);
+		rightPanel.add(cbxRelOver);
+		rightPanel.add(lblRelOverIco);
+		rightPanel.add(lblRelOverRes);
+		rightPanel.add(cbxRepRel);
+		rightPanel.add(lblRepRelIco);
+		rightPanel.add(lblRepRelRes);
+		rightPanel.add(cbxRelRig);
+		
+		lblRelRigIco = new JButton();
+		lblRelRigIco.setPreferredSize(new Dimension(20, 20));
+		lblRelRigIco.setOpaque(false);
+		lblRelRigIco.setContentAreaFilled(false);
+		lblRelRigIco.setBorderPainted(false);
+		lblRelRigIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
+		lblRelRigIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		rightPanel.add(lblRelRigIco);
+		
+		lblRelRigRes = new JLabel("");
+		lblRelRigRes.setPreferredSize(new Dimension(90, 20));
+		lblRelRigRes.setForeground(Color.BLUE);
+		lblRelRigRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		rightPanel.add(lblRelRigRes);
+		rightPanel.add(cbxRelSpec);
+		rightPanel.add(lblRelSpecIco);
+		rightPanel.add(lblRelSpecRes);
+		rightPanel.add(cbxUndefPhase);
+		rightPanel.add(lblUndefPhaseIco);
+		rightPanel.add(lblUndefPhaseRes);
+		rightPanel.add(cbxUndefFormal);
+		rightPanel.add(lblUndefFormalIco);
+		rightPanel.add(lblUndefFormalRes);
+		
+		cbxWholeOver = new JCheckBox(WholeOverAntipattern.getAntipatternInfo().getAcronym()+" : "+WholeOverAntipattern.getAntipatternInfo().getName());
+		cbxWholeOver.setPreferredSize(new Dimension(275, 20));
+		cbxWholeOver.setBackground(UIManager.getColor("Panel.background"));
+		rightPanel.add(cbxWholeOver);
+		
+		lblWholeOverIco = new JButton();
+		lblWholeOverIco.setPreferredSize(new Dimension(20, 20));
+		lblWholeOverIco.setOpaque(false);
+		lblWholeOverIco.setContentAreaFilled(false);
+		lblWholeOverIco.setBorderPainted(false);
+		lblWholeOverIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
+		lblWholeOverIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		rightPanel.add(lblWholeOverIco);
 		
 		lblWholeOverRes = new JLabel("");
+		lblWholeOverRes.setPreferredSize(new Dimension(25, 20));
 		lblWholeOverRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblWholeOverRes.setForeground(Color.BLUE);
-		
-		GroupLayout gl_rightPanel = new GroupLayout(rightPanel);
-		gl_rightPanel.setHorizontalGroup(
-			gl_rightPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_rightPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addComponent(cbxMixRig)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblMixRigIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblMixRigRes, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addComponent(cbxMultiDep)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblMultiDepIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblMultiDepRes, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addComponent(cbxRelComp)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblRelCompIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblRelCompRes, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addComponent(cbxRelOver)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblRelOverIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblRelOverRes, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addComponent(cbxRepRel)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblRepRelIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblRepRelRes, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addComponent(cbxWholeOver)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblWholeOverIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblWholeOverRes, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(cbxRelRig)
-								.addGroup(gl_rightPanel.createSequentialGroup()
-									.addComponent(cbxRelSpec)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblRelSpecIco)))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING, false)
-								.addGroup(gl_rightPanel.createSequentialGroup()
-									.addComponent(lblRelRigIco)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblRelRigRes, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
-								.addComponent(lblRelSpecRes, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addComponent(cbxUndefPhase)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblUndefPhaseIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblUndefPhaseRes, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addComponent(cbxUndefFormal)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblUndefFormalIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblUndefFormalRes, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
-		);
-		gl_rightPanel.setVerticalGroup(
-			gl_rightPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_rightPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxMixRig)
-						.addGroup(gl_rightPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblMixRigRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblMixRigIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addGap(1)
-					.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxMultiDep)
-						.addGroup(gl_rightPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblMultiDepRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblMultiDepIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxRelComp)
-						.addGroup(gl_rightPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblRelCompRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblRelCompIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxRelOver)
-						.addGroup(gl_rightPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblRelOverRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblRelOverIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addComponent(cbxRelRig)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblRelSpecIco, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-								.addComponent(cbxRelSpec)))
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addGroup(gl_rightPanel.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(lblRelRigRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(lblRelRigIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblRelSpecRes, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxRepRel)
-						.addGroup(gl_rightPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblRepRelRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblRepRelIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxUndefFormal)
-						.addGroup(gl_rightPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblUndefFormalRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblUndefFormalIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxUndefPhase)
-						.addComponent(lblUndefPhaseIco)
-						.addGroup(gl_rightPanel.createSequentialGroup()
-							.addGap(2)
-							.addComponent(lblUndefPhaseRes, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_rightPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxWholeOver)
-						.addGroup(gl_rightPanel.createParallelGroup(Alignment.TRAILING)
-							.addComponent(lblWholeOverRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-							.addComponent(lblWholeOverIco, Alignment.LEADING)))
-					.addContainerGap(13, Short.MAX_VALUE))
-		);
-		rightPanel.setLayout(gl_rightPanel);
-		
-		cbxAssCyc = new JCheckBox(AssCycAntipattern.getAntipatternInfo().getAcronym()+" : "+AssCycAntipattern.getAntipatternInfo().getName());
-		cbxAssCyc.setBackground(UIManager.getColor("Panel.background"));
-		
-		lblAssCycIco = new JLabel();
-		lblAssCycIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
-		cbxBinOver = new JCheckBox(BinOverAntipattern.getAntipatternInfo().getAcronym()+" : "+BinOverAntipattern.getAntipatternInfo().getName());
-		cbxBinOver.setBackground(UIManager.getColor("Panel.background"));
-		
-		lblBinOverIco = new JLabel();
-		lblBinOverIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
+		rightPanel.add(lblWholeOverRes);
+				
 		cbxDepPhase = new JCheckBox(DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" : "+DepPhaseAntipattern.getAntipatternInfo().getName());
 		cbxDepPhase.setBackground(UIManager.getColor("Panel.background"));
-		
-		lblDepPhaseIco = new JLabel();
-		lblDepPhaseIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
-		cbxFreeRole = new JCheckBox(FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" : "+FreeRoleAntipattern.getAntipatternInfo().getName());
-		cbxFreeRole.setBackground(UIManager.getColor("Panel.background"));
-		
-		lblFreeRoleIco = new JLabel();
-		lblFreeRoleIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
-		cbxGSRig = new JCheckBox(GSRigAntipattern.getAntipatternInfo().getAcronym()+" : "+GSRigAntipattern.getAntipatternInfo().getName());
-		cbxGSRig.setBackground(UIManager.getColor("Panel.background"));
-		
-		lblGSRigIco = new JLabel();
-		lblGSRigIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
+				
 		cbxHetColl = new JCheckBox(HetCollAntipattern.getAntipatternInfo().getAcronym()+" : "+HetCollAntipattern.getAntipatternInfo().getName());
+		cbxHetColl.setPreferredSize(new Dimension(195, 20));
 		cbxHetColl.setBackground(UIManager.getColor("Panel.background"));
 		
-		lblHetCollIco = new JLabel();
+		lblHetCollIco = new JButton();
+		lblHetCollIco.setPreferredSize(new Dimension(20, 20));
 		lblHetCollIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
-		cbxHomoFunc = new JCheckBox(HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" : "+HomoFuncAntipattern.getAntipatternInfo().getName());
-		cbxHomoFunc.setBackground(UIManager.getColor("Panel.background"));
-		
-		lblHomoFuncIco = new JLabel();
-		lblHomoFuncIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
-		cbxImpAbs = new JCheckBox(ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" : "+ImpAbsAntipattern.getAntipatternInfo().getName());
-		cbxImpAbs.setBackground(UIManager.getColor("Panel.background"));
-		
-		lblImpAbsIco = new JLabel();
-		lblImpAbsIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
-		cbxImpPart = new JCheckBox(ImpPartAntipattern.getAntipatternInfo().getAcronym()+" : "+ImpPartAntipattern.getAntipatternInfo().getName());
-		cbxImpPart.setBackground(UIManager.getColor("Panel.background"));
-		
-		lblImpPartIco = new JLabel();
-		lblImpPartIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
+		lblHetCollIco.setOpaque(false);
+		lblHetCollIco.setContentAreaFilled(false);
+		lblHetCollIco.setBorderPainted(false);
+		lblHetCollIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+				
 		cbxMixIden = new JCheckBox(MixIdenAntipattern.getAntipatternInfo().getAcronym()+" : "+MixIdenAntipattern.getAntipatternInfo().getName());
+		cbxMixIden.setPreferredSize(new Dimension(190, 20));
 		cbxMixIden.setBackground(UIManager.getColor("Panel.background"));
 		
-		lblMixIdenIco = new JLabel();
+		lblMixIdenIco = new JButton();
+		lblMixIdenIco.setPreferredSize(new Dimension(20, 20));
 		lblMixIdenIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
-		
-		lblAssCycRes = new JLabel("");		
-		lblAssCycRes.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblAssCycRes.setForeground(Color.BLUE);
-		
-		lblBinOverRes = new JLabel("");		
-		lblBinOverRes.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblBinOverRes.setForeground(Color.BLUE);
-		
-		lblDepPhaseRes = new JLabel("");		
-		lblDepPhaseRes.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblDepPhaseRes.setForeground(Color.BLUE);
-		
-		lblFreeRoleRes = new JLabel("");		
-		lblFreeRoleRes.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblFreeRoleRes.setForeground(Color.BLUE);
-		
-		lblGSRigRes = new JLabel("");
-		lblGSRigRes.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblGSRigRes.setForeground(Color.BLUE);		
+		lblMixIdenIco.setOpaque(false);
+		lblMixIdenIco.setContentAreaFilled(false);
+		lblMixIdenIco.setBorderPainted(false);
+		lblMixIdenIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		
 		lblHetCollRes = new JLabel("");
+		lblHetCollRes.setPreferredSize(new Dimension(105, 20));
 		lblHetCollRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblHetCollRes.setForeground(Color.BLUE);		
 		
-		lblHomoFuncRes = new JLabel("");
-		lblHomoFuncRes.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblHomoFuncRes.setForeground(Color.BLUE);		
-		
-		lblImpAbsRes = new JLabel("");
-		lblImpAbsRes.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblImpAbsRes.setForeground(Color.BLUE);		
-		
-		lblImpPartRes = new JLabel("");
-		lblImpPartRes.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblImpPartRes.setForeground(Color.BLUE);		
-		
 		lblMixIdenRes = new JLabel("");
+		lblMixIdenRes.setPreferredSize(new Dimension(110, 20));
 		lblMixIdenRes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblMixIdenRes.setForeground(Color.BLUE);
+		leftPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		GroupLayout gl_leftPanel = new GroupLayout(leftPanel);
-		gl_leftPanel.setHorizontalGroup(
-			gl_leftPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_leftPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_leftPanel.createSequentialGroup()
-							.addComponent(cbxAssCyc)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblAssCycIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblAssCycRes, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_leftPanel.createSequentialGroup()
-							.addComponent(cbxBinOver)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblBinOverIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblBinOverRes, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_leftPanel.createSequentialGroup()
-							.addComponent(cbxDepPhase)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblDepPhaseIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblDepPhaseRes, GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
-						.addGroup(gl_leftPanel.createSequentialGroup()
-							.addComponent(cbxFreeRole)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblFreeRoleIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblFreeRoleRes, GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
-						.addGroup(gl_leftPanel.createSequentialGroup()
-							.addComponent(cbxGSRig)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblGSRigIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblGSRigRes, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_leftPanel.createSequentialGroup()
-							.addComponent(cbxHetColl)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblHetCollIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblHetCollRes, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_leftPanel.createSequentialGroup()
-							.addComponent(cbxHomoFunc)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblHomoFuncIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblHomoFuncRes, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_leftPanel.createSequentialGroup()
-							.addComponent(cbxImpAbs)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblImpAbsIco)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblImpAbsRes, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_leftPanel.createSequentialGroup()
-							.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING, false)
-								.addGroup(gl_leftPanel.createSequentialGroup()
-									.addComponent(cbxMixIden)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblMixIdenIco, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-								.addComponent(cbxImpPart))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_leftPanel.createSequentialGroup()
-									.addComponent(lblImpPartIco)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblImpPartRes, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE))
-								.addComponent(lblMixIdenRes, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-					.addContainerGap())
-		);
-		gl_leftPanel.setVerticalGroup(
-			gl_leftPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_leftPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxAssCyc)
-						.addGroup(gl_leftPanel.createParallelGroup(Alignment.TRAILING)
-							.addComponent(lblAssCycRes, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblAssCycIco, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxBinOver)
-						.addGroup(gl_leftPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblBinOverRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblBinOverIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxDepPhase)
-						.addGroup(gl_leftPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblDepPhaseRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblDepPhaseIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxFreeRole)
-						.addGroup(gl_leftPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblFreeRoleRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblFreeRoleIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxGSRig)
-						.addGroup(gl_leftPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblGSRigRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblGSRigIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)))
-					.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_leftPanel.createSequentialGroup()
-							.addGap(1)
-							.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(cbxHetColl)
-								.addComponent(lblHetCollIco, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_leftPanel.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblHetCollRes, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxHomoFunc)
-						.addGroup(gl_leftPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblHomoFuncRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblHomoFuncIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxImpAbs)
-						.addGroup(gl_leftPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblImpAbsRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblImpAbsIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(cbxImpPart)
-						.addGroup(gl_leftPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblImpPartRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblImpPartIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_leftPanel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(cbxMixIden, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(gl_leftPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblMixIdenRes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblMixIdenIco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addContainerGap(13, Short.MAX_VALUE))
-		);
-		leftPanel.setLayout(gl_leftPanel);
+		cbxAssCyc = new JCheckBox(AssCycAntipattern.getAntipatternInfo().getAcronym()+" : "+AssCycAntipattern.getAntipatternInfo().getName());
+		cbxAssCyc.setPreferredSize(new Dimension(155, 20));
+		cbxAssCyc.setBackground(UIManager.getColor("Panel.background"));
+		leftPanel.add(cbxAssCyc);
+		
+		lblAssCycIco = new JButton();
+		lblAssCycIco.setPreferredSize(new Dimension(20, 20));
+		lblAssCycIco.setOpaque(false);
+		lblAssCycIco.setContentAreaFilled(false);
+		lblAssCycIco.setBorderPainted(false);
+		lblAssCycIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
+		lblAssCycIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		leftPanel.add(lblAssCycIco);
+		
+		lblAssCycRes = new JLabel("");		
+		lblAssCycRes.setPreferredSize(new Dimension(145, 20));
+		lblAssCycRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblAssCycRes.setForeground(Color.BLUE);
+		leftPanel.add(lblAssCycRes);
+		
+		cbxBinOver = new JCheckBox(BinOverAntipattern.getAntipatternInfo().getAcronym()+" : "+BinOverAntipattern.getAntipatternInfo().getName());
+		cbxBinOver.setPreferredSize(new Dimension(260, 20));
+		cbxBinOver.setBackground(UIManager.getColor("Panel.background"));
+		leftPanel.add(cbxBinOver);
+		
+		lblBinOverIco = new JButton();
+		lblBinOverIco.setPreferredSize(new Dimension(20, 20));
+		lblBinOverIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
+		lblBinOverIco.setOpaque(false);
+		lblBinOverIco.setContentAreaFilled(false);
+		lblBinOverIco.setBorderPainted(false);
+		lblBinOverIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		leftPanel.add(lblBinOverIco);
+		
+		lblBinOverRes = new JLabel("");		
+		lblBinOverRes.setPreferredSize(new Dimension(40, 20));
+		lblBinOverRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblBinOverRes.setForeground(Color.BLUE);
+		leftPanel.add(lblBinOverRes);
+		
+		cbxDepPhase = new JCheckBox(DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" : "+DepPhaseAntipattern.getAntipatternInfo().getName());
+		cbxDepPhase.setPreferredSize(new Dimension(230, 20));
+		leftPanel.add(cbxDepPhase);
+		
+		lblDepPhaseIco = new JButton();
+		lblDepPhaseIco.setPreferredSize(new Dimension(20, 20));
+		lblDepPhaseIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
+		lblDepPhaseIco.setOpaque(false);
+		lblDepPhaseIco.setContentAreaFilled(false);
+		lblDepPhaseIco.setBorderPainted(false);
+		lblDepPhaseIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		leftPanel.add(lblDepPhaseIco);
+		
+		lblDepPhaseRes = new JLabel("");		
+		lblDepPhaseRes.setPreferredSize(new Dimension(70, 20));
+		lblDepPhaseRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblDepPhaseRes.setForeground(Color.BLUE);
+		leftPanel.add(lblDepPhaseRes);
+		
+		cbxFreeRole = new JCheckBox(FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" : "+FreeRoleAntipattern.getAntipatternInfo().getName());
+		cbxFreeRole.setPreferredSize(new Dimension(195, 20));
+		cbxFreeRole.setBackground(UIManager.getColor("Panel.background"));
+		leftPanel.add(cbxFreeRole);
+		
+		lblFreeRoleIco = new JButton();
+		lblFreeRoleIco.setPreferredSize(new Dimension(20, 20));
+		lblFreeRoleIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
+		lblFreeRoleIco.setOpaque(false);
+		lblFreeRoleIco.setContentAreaFilled(false);
+		lblFreeRoleIco.setBorderPainted(false);
+		lblFreeRoleIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		leftPanel.add(lblFreeRoleIco);
+		
+		lblFreeRoleRes = new JLabel("");		
+		lblFreeRoleRes.setPreferredSize(new Dimension(105, 20));
+		lblFreeRoleRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblFreeRoleRes.setForeground(Color.BLUE);
+		leftPanel.add(lblFreeRoleRes);
+		
+		cbxGSRig = new JCheckBox(GSRigAntipattern.getAntipatternInfo().getAcronym()+" : "+GSRigAntipattern.getAntipatternInfo().getName());
+		cbxGSRig.setPreferredSize(new Dimension(245, 20));
+		cbxGSRig.setBackground(UIManager.getColor("Panel.background"));
+		leftPanel.add(cbxGSRig);
+		
+		lblGSRigIco = new JButton();
+		lblGSRigIco.setPreferredSize(new Dimension(20, 20));
+		lblGSRigIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
+		lblGSRigIco.setOpaque(false);
+		lblGSRigIco.setContentAreaFilled(false);
+		lblGSRigIco.setBorderPainted(false);
+		lblGSRigIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		leftPanel.add(lblGSRigIco);
+		
+		lblGSRigRes = new JLabel("");
+		lblGSRigRes.setPreferredSize(new Dimension(55, 20));
+		lblGSRigRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblGSRigRes.setForeground(Color.BLUE);		
+		leftPanel.add(lblGSRigRes);
+		leftPanel.add(cbxHetColl);
+		leftPanel.add(lblHetCollIco);
+		leftPanel.add(lblHetCollRes);
+		
+		cbxHomoFunc = new JCheckBox(HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" : "+HomoFuncAntipattern.getAntipatternInfo().getName());
+		cbxHomoFunc.setPreferredSize(new Dimension(250, 20));
+		cbxHomoFunc.setBackground(UIManager.getColor("Panel.background"));
+		leftPanel.add(cbxHomoFunc);
+		
+		lblHomoFuncIco = new JButton();
+		lblHomoFuncIco.setPreferredSize(new Dimension(20, 20));
+		lblHomoFuncIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
+		lblHomoFuncIco.setOpaque(false);
+		lblHomoFuncIco.setContentAreaFilled(false);
+		lblHomoFuncIco.setBorderPainted(false);
+		lblHomoFuncIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		leftPanel.add(lblHomoFuncIco);
+		
+		lblHomoFuncRes = new JLabel("");
+		lblHomoFuncRes.setPreferredSize(new Dimension(50, 20));
+		lblHomoFuncRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblHomoFuncRes.setForeground(Color.BLUE);		
+		leftPanel.add(lblHomoFuncRes);
+		
+		cbxImpAbs = new JCheckBox(ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" : "+ImpAbsAntipattern.getAntipatternInfo().getName());
+		cbxImpAbs.setPreferredSize(new Dimension(175, 20));
+		cbxImpAbs.setBackground(UIManager.getColor("Panel.background"));
+		leftPanel.add(cbxImpAbs);
+		
+		lblImpAbsIco  = new JButton();
+		lblImpAbsIco.setPreferredSize(new Dimension(20, 20));
+		lblImpAbsIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
+		lblImpAbsIco.setOpaque(false);
+		lblImpAbsIco.setContentAreaFilled(false);
+		lblImpAbsIco.setBorderPainted(false);
+		lblImpAbsIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		leftPanel.add(lblImpAbsIco);
+		
+		lblImpAbsRes = new JLabel("");
+		lblImpAbsRes.setPreferredSize(new Dimension(125, 20));
+		lblImpAbsRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblImpAbsRes.setForeground(Color.BLUE);		
+		leftPanel.add(lblImpAbsRes);
+		
+		cbxImpPart = new JCheckBox(ImpPartAntipattern.getAntipatternInfo().getAcronym()+" : "+ImpPartAntipattern.getAntipatternInfo().getName());
+		cbxImpPart.setPreferredSize(new Dimension(205, 20));
+		cbxImpPart.setBackground(UIManager.getColor("Panel.background"));
+		leftPanel.add(cbxImpPart);
+		
+		lblImpPartIco = new JButton();
+		lblImpPartIco.setPreferredSize(new Dimension(20, 20));
+		lblImpPartIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation.png")));
+		lblImpPartIco.setOpaque(false);
+		lblImpPartIco.setContentAreaFilled(false);
+		lblImpPartIco.setBorderPainted(false);
+		lblImpPartIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		leftPanel.add(lblImpPartIco);
+		
+		lblImpPartRes = new JLabel("");
+		lblImpPartRes.setPreferredSize(new Dimension(95, 20));
+		lblImpPartRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblImpPartRes.setForeground(Color.BLUE);		
+		leftPanel.add(lblImpPartRes);
+		leftPanel.add(cbxMixIden);
+		leftPanel.add(lblMixIdenIco);
+		leftPanel.add(lblMixIdenRes);
 		contentPanel.setLayout(gl_contentPanel);
 		
 		JPanel buttonPane = new JPanel();
