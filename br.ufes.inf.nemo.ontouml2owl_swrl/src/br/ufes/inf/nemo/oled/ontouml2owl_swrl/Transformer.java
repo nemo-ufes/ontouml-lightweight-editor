@@ -76,7 +76,7 @@ import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2swrl.OCL2SWRL;
+import br.ufes.inf.nemo.ocl2owl_swrl.OCL2OWL_SWRL;
 
 public class Transformer {
 	public String errors = "";
@@ -238,11 +238,11 @@ public class Transformer {
 				int result = JOptionPane.showConfirmDialog (null, "Do You Wish To Transform the OCL rules?","Warning",dialogButton);
                 
                 if(result == JOptionPane.YES_OPTION){
-                	OCL2SWRL ocl2swrl = new OCL2SWRL(oclRules, ontoParser, manager, nameSpace);
+                	OCL2OWL_SWRL ocl2owl_swrl = new OCL2OWL_SWRL(oclRules, ontoParser, manager, nameSpace);
         			//OCL2SWRL ocl2swrl = new OCL2SWRL(oclParser, ontoParser, manager, nameSpace);
-        			ocl2swrl.Transformation();
+                	ocl2owl_swrl.Transformation();
         			
-        			this.errors = ocl2swrl.errors;
+        			this.errors += "\n" + ocl2owl_swrl.errors;
                 }
 			}
 			
