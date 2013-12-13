@@ -62,7 +62,28 @@ public class AntiPatternListDialog extends JDialog {
 		
 	private AppFrame frame;	
 	private final JPanel contentPanel = new JPanel();
+	
 	private Thread searchThread;
+	private Thread AssCycThread;
+	private Thread BinOverThread;
+	private Thread DepPhaseThread;
+	private Thread FreeRoleThread;
+	private Thread GSRigThread;
+	private Thread HetCollThread;
+	private Thread HomoFuncThread;
+	private Thread ImpAbsThread;
+	private Thread ImpPartThread;
+	private Thread MixIdenThread;
+	private Thread MixRigThread;
+	private Thread MultiDepThread;
+	private Thread RelCompThread;
+	private Thread RelOverThread;
+	private Thread RelRigThread;
+	private Thread RelSpecThread;
+	private Thread RepRelThread;
+	private Thread UndefFormalThread;
+	private Thread UndefPhaseThread;
+	private Thread WholeOverThread;
 	
 	private JCheckBox cbxAssCyc;	
 	private JCheckBox cbxBinOver;	
@@ -108,9 +129,8 @@ public class AntiPatternListDialog extends JDialog {
 		
 	private DefaultBoundedRangeModel progressModel = new DefaultBoundedRangeModel();
 	private JProgressBar progressBar = new JProgressBar(progressModel);
-	private JLabel progressBarDescr;	
-	private JButton identifyButton;
-	
+	private JLabel progressBarDescr;
+		
 	private JLabel lblAssCycRes;
 	private JLabel lblBinOverRes;
 	private JLabel lblDepPhaseRes;
@@ -131,8 +151,14 @@ public class AntiPatternListDialog extends JDialog {
 	private JLabel lblUndefFormalRes;
 	private JLabel lblUndefPhaseRes;
 	private JLabel lblWholeOverRes;
+	
+	private JButton identifyButton;
 	private JButton btnNewButton_1;	
-			
+	
+	@SuppressWarnings("unused")
+	private String result = new String();
+	private int totalOccurrences = 0;
+	
 	/** 
 	 * Check if AntiPattern is selected.
 	 */
@@ -959,312 +985,473 @@ public class AntiPatternListDialog extends JDialog {
 				if (UndefPhaseisSelected()) totalItemsSelected++;
 				if (WholeOverisSelected()) totalItemsSelected++;
 				final int incrementalValue=100/totalItemsSelected;		
-				
-				@SuppressWarnings("unused")
-				String result = new String();
-				int totalOccurrences = 0;
-				
-				if (AssCycisSelected()) {	
-					updateStatus("Identifying AssCyc...");
-					assCyc.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);						
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("AssCyc: "+assCyc.getOccurrences().size()+" items found");
-					
-					if (assCyc.getOccurrences().size()>0) { 
-						result += AssCycAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+assCyc.getOccurrences().size()+" items found.\n";
-						totalOccurrences += assCyc.getOccurrences().size();
-						lblAssCycRes.setText("("+assCyc.getOccurrences().size()+")");						
-						cbxAssCyc.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}
+												
+				if (AssCycisSelected()) 
+				{
+					AssCycThread = new Thread(new Runnable() {						
+						@Override
+						public void run() {
+							updateStatus("Identifying AssCyc...");
+							assCyc.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);						
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("AssCyc: "+assCyc.getOccurrences().size()+" items found");
+							
+							if (assCyc.getOccurrences().size()>0) { 
+								result += AssCycAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+assCyc.getOccurrences().size()+" items found.\n";
+								totalOccurrences += assCyc.getOccurrences().size();
+								lblAssCycRes.setText("("+assCyc.getOccurrences().size()+")");						
+								cbxAssCyc.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}
+							
+						}
+					});		
+					AssCycThread.start();
 				}			
 				
-				if (BinOverisSelected()){
-					updateStatus("Identifying BinOver... ");
-					binOver.identify();				
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("BinOver: "+binOver.getOccurrences().size()+" items found");						
-
-					if (binOver.getOccurrences().size()>0) { 
-						result += BinOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+binOver.getOccurrences().size()+" items found.\n"; 
-						totalOccurrences += binOver.getOccurrences().size();
-						lblBinOverRes.setText("("+binOver.getOccurrences().size()+")");
-						cbxBinOver.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}  
+				if (BinOverisSelected())
+				{
+					BinOverThread = new Thread(new Runnable() {						
+						@Override
+						public void run() {
+							updateStatus("Identifying BinOver... ");
+							binOver.identify();				
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("BinOver: "+binOver.getOccurrences().size()+" items found");						
+		
+							if (binOver.getOccurrences().size()>0) { 
+								result += BinOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+binOver.getOccurrences().size()+" items found.\n"; 
+								totalOccurrences += binOver.getOccurrences().size();
+								lblBinOverRes.setText("("+binOver.getOccurrences().size()+")");
+								cbxBinOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}
+						}
+					});
+					BinOverThread.start();
 				}
 				
-				if (DepPhaseisSelected()){		
-					updateStatus("Identifying DepPhase... ");
-					depPhase.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("DepPhase: "+depPhase.getOccurrences().size()+" items found");			
-					
-					if (depPhase.getOccurrences().size()>0) {
-						result += DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+depPhase.getOccurrences().size()+" items found.\n";
-						totalOccurrences += depPhase.getOccurrences().size();
-						lblDepPhaseRes.setText("("+depPhase.getOccurrences().size()+")");
-						cbxDepPhase_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-					} 
+				if (DepPhaseisSelected())
+				{		
+					DepPhaseThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {
+							updateStatus("Identifying DepPhase... ");
+							depPhase.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("DepPhase: "+depPhase.getOccurrences().size()+" items found");			
+							
+							if (depPhase.getOccurrences().size()>0) {
+								result += DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+depPhase.getOccurrences().size()+" items found.\n";
+								totalOccurrences += depPhase.getOccurrences().size();
+								lblDepPhaseRes.setText("("+depPhase.getOccurrences().size()+")");
+								cbxDepPhase_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+							} 
+						}
+					});
+					DepPhaseThread.start();
 				}
 				
-				if (FreeRoleisSelected()){			
-					updateStatus("Identifying FreeRole... ");
-					freeRole.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("FreeRole: "+freeRole.getOccurrences().size()+" items found");		
-					
-					if (freeRole.getOccurrences().size()>0) {
-						result += FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+freeRole.getOccurrences().size()+" items found.\n";
-						totalOccurrences += freeRole.getOccurrences().size();
-						lblFreeRoleRes.setText("("+freeRole.getOccurrences().size()+")");
-						cbxFreeRole.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}  
+				if (FreeRoleisSelected())
+				{
+					FreeRoleThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {			
+							updateStatus("Identifying FreeRole... ");
+							freeRole.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("FreeRole: "+freeRole.getOccurrences().size()+" items found");		
+							
+							if (freeRole.getOccurrences().size()>0) {
+								result += FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+freeRole.getOccurrences().size()+" items found.\n";
+								totalOccurrences += freeRole.getOccurrences().size();
+								lblFreeRoleRes.setText("("+freeRole.getOccurrences().size()+")");
+								cbxFreeRole.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}  
+						}
+					});
+					FreeRoleThread.start();
 				}
 				
-				if (GSRigisSelected()){
-					updateStatus("Identifying GSRig... ");
-					gsRig.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("GSRig: "+gsRig.getOccurrences().size()+" items found");	
-					
-					if (gsRig.getOccurrences().size()>0) {
-						result += GSRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+gsRig.getOccurrences().size()+" items found.\n";		
-						totalOccurrences += gsRig.getOccurrences().size();
-						lblGSRigRes.setText("("+gsRig.getOccurrences().size()+")");	
-						cbxGSRig.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}  
+				if (GSRigisSelected())
+				{
+					GSRigThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying GSRig... ");
+							gsRig.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("GSRig: "+gsRig.getOccurrences().size()+" items found");	
+							
+							if (gsRig.getOccurrences().size()>0) {
+								result += GSRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+gsRig.getOccurrences().size()+" items found.\n";		
+								totalOccurrences += gsRig.getOccurrences().size();
+								lblGSRigRes.setText("("+gsRig.getOccurrences().size()+")");	
+								cbxGSRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}   
+						}
+					});
+					GSRigThread.start();
 				}
 				
-				if (HetCollisSelected()){	
-					updateStatus("Identifying HetColl... ");
-					hetColl.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("HetColl: "+hetColl.getOccurrences().size()+" items found");
-					
-					if (hetColl.getOccurrences().size()>0) {
-						result += HetCollAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+hetColl.getOccurrences().size()+" items found.\n";
-						totalOccurrences += hetColl.getOccurrences().size();
-						lblHetCollRes.setText("("+hetColl.getOccurrences().size()+")");	
-						cbxHetColl.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}   
-					
+				if (HetCollisSelected())
+				{	
+					HetCollThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying HetColl... ");
+							hetColl.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("HetColl: "+hetColl.getOccurrences().size()+" items found");
+							
+							if (hetColl.getOccurrences().size()>0) {
+								result += HetCollAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+hetColl.getOccurrences().size()+" items found.\n";
+								totalOccurrences += hetColl.getOccurrences().size();
+								lblHetCollRes.setText("("+hetColl.getOccurrences().size()+")");	
+								cbxHetColl.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}   
+						}
+					});
+					HetCollThread.start();					
 				}
 				
-				if (HomoFuncisSelected()){	
-					updateStatus("Identifying HomoFunc... ");
-					homoFunc.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("HomoFunc: "+homoFunc.getOccurrences().size()+" items found");						
-
-					if (homoFunc.getOccurrences().size()>0) {
-						result += HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+homoFunc.getOccurrences().size()+" items found.\n";
-						totalOccurrences += homoFunc.getOccurrences().size();
-						lblHomoFuncRes.setText("("+homoFunc.getOccurrences().size()+")");
-						cbxHomoFunc.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}   
+				if (HomoFuncisSelected())
+				{
+					HomoFuncThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {						
+							updateStatus("Identifying HomoFunc... ");
+							homoFunc.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("HomoFunc: "+homoFunc.getOccurrences().size()+" items found");						
+		
+							if (homoFunc.getOccurrences().size()>0) {
+								result += HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+homoFunc.getOccurrences().size()+" items found.\n";
+								totalOccurrences += homoFunc.getOccurrences().size();
+								lblHomoFuncRes.setText("("+homoFunc.getOccurrences().size()+")");
+								cbxHomoFunc.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}   
+						}
+					});
+					HomoFuncThread.start();	
 				}
 				
-				if (ImpAbsisSelected()){
-					updateStatus("Identifying ImpAbs... ");
-					impAbs.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("ImpAbs: "+impAbs.getOccurrences().size()+" items found");	
-					
-					if (impAbs.getOccurrences().size()>0) {
-						result += ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impAbs.getOccurrences().size()+" items found.\n";
-						totalOccurrences += impAbs.getOccurrences().size();
-						lblImpAbsRes.setText("("+impAbs.getOccurrences().size()+")");
-						cbxImpAbs.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}   
+				if (ImpAbsisSelected())
+				{					
+					ImpAbsThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying ImpAbs... ");
+							impAbs.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("ImpAbs: "+impAbs.getOccurrences().size()+" items found");	
+							
+							if (impAbs.getOccurrences().size()>0) {
+								result += ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impAbs.getOccurrences().size()+" items found.\n";
+								totalOccurrences += impAbs.getOccurrences().size();
+								lblImpAbsRes.setText("("+impAbs.getOccurrences().size()+")");
+								cbxImpAbs.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}    
+						}
+					});
+					ImpAbsThread.start();	
 				}
 				
-				if (ImpPartisSelected()){	
-					updateStatus("Identifying ImpPart... ");
-					impPart.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("ImpPart: "+impPart.getOccurrences().size()+" items found");	
-					
-					if (impPart.getOccurrences().size()>0) {
-						result += ImpPartAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impPart.getOccurrences().size()+" items found.\n";
-						totalOccurrences += impPart.getOccurrences().size();
-						lblImpPartRes.setText("("+impPart.getOccurrences().size()+")");	
-						cbxImpPart.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}  
+				if (ImpPartisSelected())
+				{				
+					ImpPartThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying ImpPart... ");
+							impPart.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("ImpPart: "+impPart.getOccurrences().size()+" items found");	
+							
+							if (impPart.getOccurrences().size()>0) {
+								result += ImpPartAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impPart.getOccurrences().size()+" items found.\n";
+								totalOccurrences += impPart.getOccurrences().size();
+								lblImpPartRes.setText("("+impPart.getOccurrences().size()+")");	
+								cbxImpPart.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}  
+						}
+					});
+					ImpPartThread.start();	
 				}
 				
-				if (MixIdenisSelected()){	
-					updateStatus("Identifying MixIden... ");
-					mixIden.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("MixIden: "+mixIden.getOccurrences().size()+" items found");		
-					
-					if (mixIden.getOccurrences().size()>0) {
-						result += MixIdenAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixIden.getOccurrences().size()+" items found.\n";
-						totalOccurrences += mixIden.getOccurrences().size();
-						lblMixIdenRes.setText("("+mixIden.getOccurrences().size()+")");
-						cbxMixIden.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}   
+				if (MixIdenisSelected())
+				{				
+					MixIdenThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying MixIden... ");
+							mixIden.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("MixIden: "+mixIden.getOccurrences().size()+" items found");		
+							
+							if (mixIden.getOccurrences().size()>0) {
+								result += MixIdenAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixIden.getOccurrences().size()+" items found.\n";
+								totalOccurrences += mixIden.getOccurrences().size();
+								lblMixIdenRes.setText("("+mixIden.getOccurrences().size()+")");
+								cbxMixIden.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}   
+						}
+					});
+					MixIdenThread.start();
 				}
 				
-				if (MixRigisSelected()){
-					updateStatus("Identifying MixRig... ");
-					mixRig.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("MixRig: "+mixRig.getOccurrences().size()+" items found");		
-					
-					if (mixRig.getOccurrences().size()>0) {
-						result += MixRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixRig.getOccurrences().size()+" items found.\n";
-						totalOccurrences += mixRig.getOccurrences().size();
-						lblMixRigRes.setText("("+mixRig.getOccurrences().size()+")");
-						cbxMixRig.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}  
+				if (MixRigisSelected())
+				{			
+					MixRigThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying MixRig... ");
+							mixRig.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("MixRig: "+mixRig.getOccurrences().size()+" items found");		
+							
+							if (mixRig.getOccurrences().size()>0) {
+								result += MixRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixRig.getOccurrences().size()+" items found.\n";
+								totalOccurrences += mixRig.getOccurrences().size();
+								lblMixRigRes.setText("("+mixRig.getOccurrences().size()+")");
+								cbxMixRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}  
+						}
+					});
+					MixRigThread.start();
 				}
 				
-				if (MultiDepisSelected()){	
-					updateStatus("Identifying MultiDep... ");
-					multiDep.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("MultiDep: "+multiDep.getOccurrences().size()+" items found");	
-					
-					if (multiDep.getOccurrences().size()>0) {
-						result += MultiDepAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multiDep.getOccurrences().size()+" items found.\n";
-						totalOccurrences += multiDep.getOccurrences().size();
-						lblMultiDepRes.setText("("+multiDep.getOccurrences().size()+")");
-						cbxMultiDep.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}   
+				if (MultiDepisSelected())
+				{			
+					MultiDepThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying MultiDep... ");
+							multiDep.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("MultiDep: "+multiDep.getOccurrences().size()+" items found");	
+							
+							if (multiDep.getOccurrences().size()>0) {
+								result += MultiDepAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multiDep.getOccurrences().size()+" items found.\n";
+								totalOccurrences += multiDep.getOccurrences().size();
+								lblMultiDepRes.setText("("+multiDep.getOccurrences().size()+")");
+								cbxMultiDep.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}    
+						}
+					});
+					MultiDepThread.start();
 				}
 				
-				if (RelCompisSelected()){				
-					updateStatus("Identifying RelComp... ");
-					relComp.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("RelComp: "+relComp.getOccurrences().size()+" items found");
-					
-					if (relComp.getOccurrences().size()>0) {
-						result += RelCompAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relComp.getOccurrences().size()+" items found.\n";
-						totalOccurrences += relComp.getOccurrences().size();
-						lblRelCompRes.setText("("+relComp.getOccurrences().size()+")");	
-						cbxRelComp.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}   
+				if (RelCompisSelected())
+				{				
+					RelCompThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying RelComp... ");
+							relComp.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("RelComp: "+relComp.getOccurrences().size()+" items found");
+							
+							if (relComp.getOccurrences().size()>0) {
+								result += RelCompAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relComp.getOccurrences().size()+" items found.\n";
+								totalOccurrences += relComp.getOccurrences().size();
+								lblRelCompRes.setText("("+relComp.getOccurrences().size()+")");	
+								cbxRelComp.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}     
+						}
+					});
+					RelCompThread.start();
 				}
 				
-				if (RelOverisSelected()){	
-					updateStatus("Identifying RelOver... ");
-					relOver.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("RelOver: "+relOver.getOccurrences().size()+" items found");						
-					
-					if (relOver.getOccurrences().size()>0) {
-						result += RelOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relOver.getOccurrences().size()+" items found.\n";
-						totalOccurrences += relOver.getOccurrences().size();
-						lblRelOverRes.setText("("+relOver.getOccurrences().size()+")");
-						cbxRelOver.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}  
+				if (RelOverisSelected())
+				{				
+					RelOverThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying RelOver... ");
+							relOver.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("RelOver: "+relOver.getOccurrences().size()+" items found");						
+							
+							if (relOver.getOccurrences().size()>0) {
+								result += RelOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relOver.getOccurrences().size()+" items found.\n";
+								totalOccurrences += relOver.getOccurrences().size();
+								lblRelOverRes.setText("("+relOver.getOccurrences().size()+")");
+								cbxRelOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}  
+						}
+					});
+					RelOverThread.start();
 				}
 				
-				if (RelRigisSelected()){	
-					updateStatus("Identifying RelRig... ");
-					relRig.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("RelRig... "+relRig.getOccurrences().size()+" items found");	
-					
-					if (relRig.getOccurrences().size()>0) {
-						result += RelRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relRig.getOccurrences().size()+" items found.\n";
-						totalOccurrences += relRig.getOccurrences().size();
-						lblRelRigRes.setText("("+relRig.getOccurrences().size()+")");
-						cbxRelRig.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}   						
+				if (RelRigisSelected())
+				{			
+					RelRigThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying RelRig... ");
+							relRig.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("RelRig... "+relRig.getOccurrences().size()+" items found");	
+							
+							if (relRig.getOccurrences().size()>0) {
+								result += RelRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relRig.getOccurrences().size()+" items found.\n";
+								totalOccurrences += relRig.getOccurrences().size();
+								lblRelRigRes.setText("("+relRig.getOccurrences().size()+")");
+								cbxRelRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}   	
+						}
+					});
+					RelRigThread.start();					
 				}
 				
-				if (RelSpecisSelected()){	
-					updateStatus("Identifying RelSpec... ");
-					relSpec.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("RelSpec: "+relSpec.getOccurrences().size()+" items found");
-					
-					if (relSpec.getOccurrences().size()>0) {
-						result += RelSpecAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relSpec.getOccurrences().size()+" items found.\n";
-						totalOccurrences += relSpec.getOccurrences().size();
-						lblRelSpecRes.setText("("+relSpec.getOccurrences().size()+")");
-						cbxRelSpec.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}  
+				if (RelSpecisSelected())
+				{	
+					RelSpecThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying RelSpec... ");
+							relSpec.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("RelSpec: "+relSpec.getOccurrences().size()+" items found");
+							
+							if (relSpec.getOccurrences().size()>0) {
+								result += RelSpecAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relSpec.getOccurrences().size()+" items found.\n";
+								totalOccurrences += relSpec.getOccurrences().size();
+								lblRelSpecRes.setText("("+relSpec.getOccurrences().size()+")");
+								cbxRelSpec.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}  
+						}
+					});
+					RelSpecThread.start();		
 				}
 				
-				if (RepRelisSelected()){	
-					updateStatus("Identifying RepRel... ");
-					repRel.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("RepRel: "+repRel.getOccurrences().size()+" items found");		
-					
-					if (repRel.getOccurrences().size()>0) {
-						result += RepRelAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+repRel.getOccurrences().size()+" items found.\n";
-						totalOccurrences += repRel.getOccurrences().size();
-						lblRepRelRes.setText("("+repRel.getOccurrences().size()+")");	
-						cbxRepRel.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}   
+				if (RepRelisSelected())
+				{	
+					RepRelThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying RepRel... ");
+							repRel.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("RepRel: "+repRel.getOccurrences().size()+" items found");		
+							
+							if (repRel.getOccurrences().size()>0) {
+								result += RepRelAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+repRel.getOccurrences().size()+" items found.\n";
+								totalOccurrences += repRel.getOccurrences().size();
+								lblRepRelRes.setText("("+repRel.getOccurrences().size()+")");	
+								cbxRepRel.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}   
+						}
+					});
+					RepRelThread.start();	
 				}
 				
-				if (UndefFormalisSelected()){	
-					updateStatus("Identifying UndefFormal... ");
-					undefFormal.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("UndefFormal: "+undefFormal.getOccurrences().size()+" items found");	
-					
-					if (undefFormal.getOccurrences().size()>0) {
-						result += UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefFormal.getOccurrences().size()+" items found.\n";
-						totalOccurrences += undefFormal.getOccurrences().size();
-						lblUndefFormalRes.setText("("+undefFormal.getOccurrences().size()+")");
-						cbxUndefFormal.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}   						
+				if (UndefFormalisSelected())
+				{	
+					UndefFormalThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying UndefFormal... ");
+							undefFormal.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("UndefFormal: "+undefFormal.getOccurrences().size()+" items found");	
+							
+							if (undefFormal.getOccurrences().size()>0) {
+								result += UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefFormal.getOccurrences().size()+" items found.\n";
+								totalOccurrences += undefFormal.getOccurrences().size();
+								lblUndefFormalRes.setText("("+undefFormal.getOccurrences().size()+")");
+								cbxUndefFormal.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}   	
+						}
+					});
+					UndefFormalThread.start();						
 				}
 				
-				if (UndefPhaseisSelected()){	
-					updateStatus("Identifying UndefPhase... ");
-					undefPhase.identify();
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("UndefPhase: "+undefPhase.getOccurrences().size()+" items found");	
-					
-					if (undefPhase.getOccurrences().size()>0) {
-						result += UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefPhase.getOccurrences().size()+" items found.\n";
-						totalOccurrences += undefPhase.getOccurrences().size();
-						lblUndefPhaseRes.setText("("+undefPhase.getOccurrences().size()+")");
-						cbxUndefPhase.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}   
+				if (UndefPhaseisSelected())
+				{	
+					UndefPhaseThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying UndefPhase... ");
+							undefPhase.identify();
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("UndefPhase: "+undefPhase.getOccurrences().size()+" items found");	
+							
+							if (undefPhase.getOccurrences().size()>0) {
+								result += UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefPhase.getOccurrences().size()+" items found.\n";
+								totalOccurrences += undefPhase.getOccurrences().size();
+								lblUndefPhaseRes.setText("("+undefPhase.getOccurrences().size()+")");
+								cbxUndefPhase.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}   	
+						}
+					});
+					UndefPhaseThread.start();		
 				}
 				
-				if (WholeOverisSelected()){	
-					updateStatus("Identifying WholeOver... ");
-					wholeOver.identify();				
-					progressBar.setValue(progressBar.getValue()+incrementalValue);
-					progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-					updateStatus("WholeOver: "+wholeOver.getOccurrences().size()+" items found");			
-					
-					if (wholeOver.getOccurrences().size()>0) {
-						result += WholeOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
-						totalOccurrences += wholeOver.getOccurrences().size();
-						lblWholeOverRes.setText("("+wholeOver.getOccurrences().size()+")");
-						cbxWholeOver.setFont(new Font("Tahoma", Font.BOLD, 11));
-					}   
+				if (WholeOverisSelected())
+				{	
+					WholeOverThread = new Thread(new Runnable() {				
+						@Override
+						public void run() {	
+							updateStatus("Identifying WholeOver... ");
+							wholeOver.identify();				
+							progressBar.setValue(progressBar.getValue()+incrementalValue);
+							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+							updateStatus("WholeOver: "+wholeOver.getOccurrences().size()+" items found");			
+							
+							if (wholeOver.getOccurrences().size()>0) {
+								result += WholeOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
+								totalOccurrences += wholeOver.getOccurrences().size();
+								lblWholeOverRes.setText("("+wholeOver.getOccurrences().size()+")");
+								cbxWholeOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+							}   
+						}
+					});
+					WholeOverThread.start();									
 				}
 			
+				try {
+					AssCycThread.join();				
+					BinOverThread.join();
+					DepPhaseThread.join();
+					FreeRoleThread.join();
+					GSRigThread.join();
+					HetCollThread.join();
+					HomoFuncThread.join();
+					ImpAbsThread.join();
+					ImpPartThread.join();
+					MixIdenThread.join();
+					MixRigThread.join();
+					MultiDepThread.join();
+					RelCompThread.join();
+					RelOverThread.join();
+					RelRigThread.join();
+					RelSpecThread.join();
+					RepRelThread.join();
+					UndefFormalThread.join();
+					UndefPhaseThread.join();
+					WholeOverThread.join();
+				} catch (InterruptedException e) {				
+					e.printStackTrace();
+				}
+				
 				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				
 				identifyButton.setEnabled(true);

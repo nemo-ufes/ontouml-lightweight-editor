@@ -77,7 +77,7 @@ public class TreePopupMenu extends JPopupMenu {
     				if (TreePopupMenu.this.element instanceof OntoUMLElement)
     				{
     					OntoUMLElement ontoElem = (OntoUMLElement) ((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).getUserObject();
-    					frame.getDiagramManager().deleteElementOfProject((RefOntoUML.Element)ontoElem.getElement());													
+    					frame.getDiagramManager().deleteFromCurrentProject((RefOntoUML.Element)ontoElem.getElement());													
     					// FIXME every modification creates a new tree
     					ProjectBrowser.rebuildTree(frame.getDiagramManager().getCurrentProject());					
     					tree.setSelectionPath(new TreePath(tree.getModelRootNode().getPath()));
