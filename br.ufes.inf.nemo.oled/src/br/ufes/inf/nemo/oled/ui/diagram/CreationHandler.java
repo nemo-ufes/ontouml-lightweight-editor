@@ -77,9 +77,23 @@ public class CreationHandler implements EditorMode {
   }
 
   /**
+   * Generic Method to create a Node (by John) 
+   */
+  public void createNode(ElementType elementType, double x, double y)
+  {
+	  setElementType(elementType);
+	  CompositeNode parent = editor.getDiagram();
+	  DiagramElement possibleParent = editor.getDiagram().getChildAt(x, y);
+	  if (isNestingCondition(possibleParent)) parent = (CompositeNode) possibleParent;
+	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, element, x, y, editor.getDiagram().getProject());
+	  editor.execute(createCommand);
+  }
+  
+  /**
    * {@inheritDoc}
    */
-  public void mouseClicked(EditorMouseEvent event) { 
+  public void mouseClicked(EditorMouseEvent event) 
+  { 
 	  
   }
 

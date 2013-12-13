@@ -31,10 +31,16 @@ import RefOntoUML.DataType;
 import RefOntoUML.Element;
 import RefOntoUML.LiteralInteger;
 import RefOntoUML.LiteralUnlimitedNatural;
+import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.Relationship;
+import RefOntoUML.VisibilityKind;
+import RefOntoUML.componentOf;
+import RefOntoUML.memberOf;
+import RefOntoUML.subCollectionOf;
+import RefOntoUML.subQuantityOf;
 import RefOntoUML.impl.AssociationImpl;
 import RefOntoUML.impl.DataTypeImpl;
 import RefOntoUML.impl.MeronymicImpl;
@@ -42,6 +48,8 @@ import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.impl.RefOntoUMLPackageImpl;
 import RefOntoUML.provider.RefOntoUMLItemProviderAdapterFactory;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.model.ElementType;
+import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 
 public class ModelHelper {
@@ -179,6 +187,7 @@ public class ModelHelper {
 			associationCloned.setName(association.getName());
 			associationCloned.setIsAbstract(association.isIsAbstract());
 			associationCloned.setVisibility(association.getVisibility());
+			associationCloned.setIsDerived(association.isIsDerived());
 			
 			if(cloned instanceof MeronymicImpl)
 			{
@@ -196,6 +205,52 @@ public class ModelHelper {
 		return cloned;
 	}
 
+	  /**
+	   * Create only the RefOntoUML Type element and do not create the referred UmlNode on the Diagram.
+	   */
+	  public static RefOntoUML.Type createType(ElementType elementType, String name)
+	  {
+		  RefOntoUML.Type type = null;
+		  if (elementType.equals(ElementType.KIND)) type = factory.createKind();
+		  if (elementType.equals(ElementType.COLLECTIVE)) type = factory.createCollective();
+		  if (elementType.equals(ElementType.QUANTITY)) type = factory.createQuantity();
+		  if (elementType.equals(ElementType.SUBKIND)) type = factory.createSubKind();
+		  if (elementType.equals(ElementType.PHASE)) type = factory.createPhase();
+		  if (elementType.equals(ElementType.ROLE)) type = factory.createRole();
+		  if (elementType.equals(ElementType.CATEGORY)) { type = factory.createCategory(); ((Classifier)type).setIsAbstract(true); }	  
+		  if (elementType.equals(ElementType.ROLEMIXIN)) { type = factory.createRoleMixin(); ((Classifier)type).setIsAbstract(true); }
+		  if (elementType.equals(ElementType.MIXIN)) { type = factory.createMixin(); ((Classifier)type).setIsAbstract(true); }
+		  if (elementType.equals(ElementType.MODE)) { type = factory.createMode();}
+		  if (elementType.equals(ElementType.RELATOR)) { type = factory.createRelator();  }
+		  if (elementType.equals(ElementType.DATATYPE)) { type = factory.createDataType();  }	  
+		  type.setName(name);
+		  type.setVisibility(VisibilityKind.PUBLIC);	  	
+		  return type;			  
+	  }
+	  
+	  /**
+	   * Create only the RefOntoUML Relationship element and do not create the referred UmlConnection on the Diagram.
+	   */
+	  public static RefOntoUML.Relationship createRelationship(RelationType relationType, String name)
+	  {
+		  RefOntoUML.Relationship rel = null;
+		  if (relationType.equals(RelationType.GENERALIZATION)) rel = factory.createGeneralization();
+		  if (relationType.equals(RelationType.CHARACTERIZATION)) rel = factory.createCharacterization();
+		  if (relationType.equals(RelationType.FORMAL)) rel = factory.createFormalAssociation();
+		  if (relationType.equals(RelationType.MATERIAL)) { rel = factory.createMaterialAssociation(); ((MaterialAssociation)rel).setIsDerived(true); }
+		  if (relationType.equals(RelationType.MEDIATION)) rel = factory.createMediation();
+		  if (relationType.equals(RelationType.MEMBEROF)) { rel = factory.creatememberOf(); ((memberOf)rel).setIsShareable(true); }
+		  if (relationType.equals(RelationType.SUBQUANTITYOF)) { rel = factory.createsubQuantityOf(); ((subQuantityOf)rel).setIsShareable(false); } 
+		  if (relationType.equals(RelationType.SUBCOLLECTIONOF)) { rel = factory.createsubCollectionOf(); ((subCollectionOf)rel).setIsShareable(true); } 
+		  if (relationType.equals(RelationType.COMPONENTOF)) { rel = factory.createcomponentOf(); ((componentOf)rel).setIsShareable(true); }
+		  if (relationType.equals(RelationType.DERIVATION)) rel = factory.createDerivation();
+		  if (relationType.equals(RelationType.ASSOCIATION)) rel = factory.createAssociation();	  
+		  if (rel instanceof Classifier){			  
+			  ((Classifier)rel).setName(name);		  
+			  ((Classifier)rel).setVisibility(VisibilityKind.PUBLIC);
+		  }
+		  return rel;			  
+	  }
 	public static boolean validate(RefOntoUML.Package model, DiagnosticChain diagnostics,
 			Map<Object, Object> context) {
 

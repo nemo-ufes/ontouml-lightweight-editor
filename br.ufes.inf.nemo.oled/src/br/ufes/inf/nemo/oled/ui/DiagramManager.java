@@ -695,6 +695,47 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/**
+	 * Adds a new tab.
+	 * @param text the tabs text
+	 * @param component the component to be added as tab's content
+	 * */
+	@Override
+	public Component add(String text, Component component)
+	{
+		super.add(text, component);
+		this.setTabComponentAt(this.getTabCount()-1, new ClosableTabPanel(this));
+		this.setSelectedIndex(this.getTabCount()-1);
+		return component;
+	}
+	
+	/**
+	 * Add Non Closable Tab
+	 */
+	public Component addNonClosable(String text, Component component)
+	{
+		super.add(text, component);
+		this.setTabComponentAt(this.getTabCount()-1,null);
+		this.setSelectedIndex(this.getTabCount()-1);
+		return component;
+	}
+
+	/**
+	 * Dispose
+	 */
+	@Override
+	public void dispose() {
+		int totalTabs = getTabCount();
+		for(int i = 0; i < totalTabs; i++)
+		{
+			IDisposable disposable = (IDisposable) getComponentAt(i);
+			if(disposable != null)
+			{
+				disposable.dispose();
+			}
+		}
+	}
+	
+	/**
 	 * Open Isse Report Link
 	 */
 	public void openIssueReport()
@@ -827,7 +868,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/**
-	 * Deletes an element from the UmlPoject. Do not delete of the Diagram.
+	 * Deletes an element from the UmlPoject.
 	 * 
 	 * @param elem
 	 */
@@ -856,115 +897,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
-	//===================================== @Inherited =======================================
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void stateChanged(DiagramEditor editor, ChangeType changeType) {
-
-		if(changeType == ChangeType.ELEMENTS_ADDED)
-			frame.selectPaletteDefaultElement();
-
-		frame.updateMenuAndToolbars(editor);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void selectionStateChanged() {
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void mouseMoved(EditorMouseEvent event) {
-	}
-	
-	/**
-	 * Sintatically validate the current model (the model behind the current DiagramEditor).
-	 */
-	public void validateCurrentModel() {
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		
-		UmlProject project = getCurrentEditor().getProject();
-		OperationResult result = VerificationHelper.verifyModel(project.getModel());
-		frame.getInfoManager().showOutputText(result.toString(), true, true);
-				
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-	}
-
-	/**
-	 * Shows a dialog for choosing the elements to simulate and the style settings 
-	 */
-	public void verificationSettings() {
-		VerificationSettingsDialog dialog = new VerificationSettingsDialog(frame, this, true);
-		dialog.setLocationRelativeTo(frame);
-		dialog.setVisible(true);
-	}	
-
-	/**
-	 * Simulate the selected model elements using Alloy.
-	 */
-	public void verifyCurrentModel() {
-
-		UmlProject project = getCurrentEditor().getProject();
-		StructureDiagram diagram = (StructureDiagram) getCurrentEditor().getDiagram();
-
-		List<SimulationElement> simulationElements = diagram.getSimulationElements();
-		OperationResult result = AlloyHelper.validateModel(project.getModel(), simulationElements, project.getTempDir());
-
-		if(result.getResultType() != ResultType.ERROR)
-		{
-			frame.getInfoManager().showOutputText(result.toString(), true, false); 
-			/*
-			 * 
-			A4Solution solution = (A4Solution) result.getData()[0];
-			Module module = (Module) result.getData()[1];
-			ConstMap<String, String> alloySources = (ConstMap<String, String>) result.getData()[2];
-
-			showModelInstances(diagram, solution, module, alloySources, simulationElements);
-			 */
-		}
-		else
-		{
-			frame.getInfoManager().showOutputText(result.toString(), true, true); 
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public void verifyCurrentModelFile() {
-
-		StructureDiagram diagram = (StructureDiagram) getCurrentWrapper().getDiagram();
-		UmlProject project = getCurrentProject();
-
-		List<SimulationElement> simulationElements = diagram.getSimulationElements();
-		OperationResult result = AlloyHelper.verifyModelFromAlloyFile(project.getTempDir());
-
-		if(result.getResultType() != ResultType.ERROR)
-		{
-			frame.getInfoManager().showOutputText(result.toString(), true, false); 
-
-			A4Solution solution = (A4Solution) result.getData()[0];
-			Module module = (Module) result.getData()[1];
-			ConstMap<String, String> alloySources = (ConstMap<String, String>) result.getData()[2];
-
-			showModelInstances(diagram, solution, module, alloySources, simulationElements);
-		}
-		else
-		{
-			frame.getInfoManager().showOutputText(result.toString(), true, true); 
-		}
-	}
-	
-	// =============================================================================== 
-	// ===============================================================================
-	// ===============================================================================
-	
 	/**
 	 * Shows or hides the output pane, in case the current editor is a DiagramEditor. 
 	 */
@@ -981,7 +913,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		frame.focusOnOclEditor();
 	}
 	
-	public void find() {
+	/**
+	 * Find (Match String) in the Project Browser
+	 */
+	public void find() 
+	{
 	    String response = JOptionPane.showInputDialog(null,
             "Type the text to be found:",
             "Find",
@@ -1062,7 +998,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		try {
 			refparser = mi.infer();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 			
@@ -1296,35 +1231,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		umlfile.deleteOnExit();
 	}
 
-	// ===============================================================================
-	// ===============================================================================
-	// ===============================================================================
-	
-	/**
-	 * Shows model instances for a given Alloy Solution/Module. 
-	 */
-	private void showModelInstances(StructureDiagram diagram, A4Solution solution, Module module, ConstMap<String, String> alloySources, List<SimulationElement> simulationElements)
-	{
-		InstanceVisualizer instanceViz = (InstanceVisualizer) getEditorForDiagram(diagram, EditorNature.INSTANCE_VISUALIZER);
-		if(instanceViz == null)
-		{
-			//TODO Localize this;
-			this.add("Verification Output", new InstanceVisualizer(diagram, solution, module, alloySources, simulationElements)); 
-		}
-		else
-		{
-			List<SimulationElement> simElements = ((StructureDiagram) getCurrentWrapper().getDiagram()).getSimulationElements();
-
-			instanceViz.setSolution(solution);
-			instanceViz.setModule(module);
-			instanceViz.setAlloySources(alloySources);
-			instanceViz.loadSolution();
-			instanceViz.setSimulationElements(simElements);
-			setSelectedComponent(instanceViz);
-		}
-
-	}
-
 	/**
 	 * Shows a dialog for choosing the owl seneration settings 
 	 */
@@ -1474,22 +1380,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
-	//TODO Remove-me
-	private Editor getEditorForDiagram(StructureDiagram diagram, EditorNature nature)
-	{
-		int totalTabs = getTabCount();
-		for(int i = 0; i < totalTabs; i++)
-		{
-			Editor editor = (Editor)getComponentAt(i);
-
-			if(editor.getEditorNature() == nature && editor.getDiagram() == diagram)
-			{
-				return editor;
-			}
-		}
-		return null;
-	}
-
 	private Editor getEditorForProject(UmlProject project, EditorNature nature)
 	{
 		int totalTabs = getTabCount();
@@ -1505,39 +1395,142 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return null;
 	}
 
-	/**
-	 * Adds a new tab.
-	 * @param text the tabs text
-	 * @param component the component to be added as tab's content
-	 * */
-	@Override
-	public Component add(String text, Component component)
-	{
-		super.add(text, component);
-		this.setTabComponentAt(this.getTabCount()-1, new ClosableTabPanel(this));
-		this.setSelectedIndex(this.getTabCount()-1);
-		return component;
-	}
+	//===================================== @Inherited =======================================
 	
-	public Component addNonClosable(String text, Component component)
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void stateChanged(DiagramEditor editor, ChangeType changeType) 
 	{
-		super.add(text, component);
-		this.setTabComponentAt(this.getTabCount()-1,null);
-		this.setSelectedIndex(this.getTabCount()-1);
-		return component;
+		if(changeType == ChangeType.ELEMENTS_ADDED) frame.selectPaletteDefaultElement();
+		frame.updateMenuAndToolbars(editor);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void dispose() {
+	public void selectionStateChanged() {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mouseMoved(EditorMouseEvent event) {}
+
+	//===================================== @Older =======================================
+	
+	/**
+	 * Sintatically validate the current model (the model behind the current DiagramEditor).
+	 */
+	public void validateCurrentModel() {
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		
+		UmlProject project = getCurrentEditor().getProject();
+		OperationResult result = VerificationHelper.verifyModel(project.getModel());
+		frame.getInfoManager().showOutputText(result.toString(), true, true);
+				
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+	}
+
+	/**
+	 * Shows a dialog for choosing the elements to simulate and the style settings 
+	 */
+	public void verificationSettings() {
+		VerificationSettingsDialog dialog = new VerificationSettingsDialog(frame, this, true);
+		dialog.setLocationRelativeTo(frame);
+		dialog.setVisible(true);
+	}	
+
+	/**
+	 * Simulate the selected model elements using Alloy.
+	 */
+	public void verifyCurrentModel() {
+
+		UmlProject project = getCurrentEditor().getProject();
+		StructureDiagram diagram = (StructureDiagram) getCurrentEditor().getDiagram();
+
+		List<SimulationElement> simulationElements = diagram.getSimulationElements();
+		OperationResult result = AlloyHelper.validateModel(project.getModel(), simulationElements, project.getTempDir());
+
+		if(result.getResultType() != ResultType.ERROR)
+		{
+			frame.getInfoManager().showOutputText(result.toString(), true, false); 
+			
+//			A4Solution solution = (A4Solution) result.getData()[0];
+//			Module module = (Module) result.getData()[1];
+//			ConstMap<String, String> alloySources = (ConstMap<String, String>) result.getData()[2];
+//
+//			showModelInstances(diagram, solution, module, alloySources, simulationElements);			
+		}
+		else
+		{
+			frame.getInfoManager().showOutputText(result.toString(), true, true); 
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void verifyCurrentModelFile() {
+
+		StructureDiagram diagram = (StructureDiagram) getCurrentWrapper().getDiagram();
+		UmlProject project = getCurrentProject();
+
+		List<SimulationElement> simulationElements = diagram.getSimulationElements();
+		OperationResult result = AlloyHelper.verifyModelFromAlloyFile(project.getTempDir());
+
+		if(result.getResultType() != ResultType.ERROR)
+		{
+			frame.getInfoManager().showOutputText(result.toString(), true, false); 
+
+			A4Solution solution = (A4Solution) result.getData()[0];
+			Module module = (Module) result.getData()[1];
+			ConstMap<String, String> alloySources = (ConstMap<String, String>) result.getData()[2];
+
+			showModelInstances(diagram, solution, module, alloySources, simulationElements);
+		}
+		else
+		{
+			frame.getInfoManager().showOutputText(result.toString(), true, true); 
+		}
+	}
+		
+	/**
+	 * Shows model instances for a given Alloy Solution/Module. 
+	 */
+	private void showModelInstances(StructureDiagram diagram, A4Solution solution, Module module, ConstMap<String, String> alloySources, List<SimulationElement> simulationElements)
+	{
+		InstanceVisualizer instanceViz = (InstanceVisualizer) getEditorForDiagram(diagram, EditorNature.INSTANCE_VISUALIZER);
+		if(instanceViz == null)
+		{
+			//TODO Localize this;
+			this.add("Verification Output", new InstanceVisualizer(diagram, solution, module, alloySources, simulationElements)); 
+		}
+		else
+		{
+			List<SimulationElement> simElements = ((StructureDiagram) getCurrentWrapper().getDiagram()).getSimulationElements();
+
+			instanceViz.setSolution(solution);
+			instanceViz.setModule(module);
+			instanceViz.setAlloySources(alloySources);
+			instanceViz.loadSolution();
+			instanceViz.setSimulationElements(simElements);
+			setSelectedComponent(instanceViz);
+		}
+	}	
+
+	private Editor getEditorForDiagram(StructureDiagram diagram, EditorNature nature)
+	{
 		int totalTabs = getTabCount();
 		for(int i = 0; i < totalTabs; i++)
 		{
-			IDisposable disposable = (IDisposable) getComponentAt(i);
-			if(disposable != null)
+			Editor editor = (Editor)getComponentAt(i);
+			if(editor.getEditorNature() == nature && editor.getDiagram() == diagram)
 			{
-				disposable.dispose();
+				return editor;
 			}
 		}
+		return null;
 	}
 
 
