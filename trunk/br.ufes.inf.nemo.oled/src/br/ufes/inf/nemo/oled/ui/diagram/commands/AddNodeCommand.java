@@ -108,11 +108,13 @@ public class AddNodeCommand extends BaseDiagramCommand {
 			
 			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), classElement.getClassifier());
 			project.getEditingDomain().getCommandStack().execute(cmd);
+						
+//			SetLabelTextCommand lblCommand = new SetLabelTextCommand(project.getEditingDomain(), classElement.getLabel(), String aText,  project); 
+//			project.getEditingDomain().getCommandStack().execute(lblCommand);
 			
 			//Add mapping from the refontouml element to the diagram element
 			ModelHelper.addMapping(classElement.getClassifier(), classElement);
-			project.getEditingDomain().getCommandStack().execute(cmd);
-			
+			project.getEditingDomain().getCommandStack().execute(cmd);			
 		}
 		
 		//Adds the element to the diagram

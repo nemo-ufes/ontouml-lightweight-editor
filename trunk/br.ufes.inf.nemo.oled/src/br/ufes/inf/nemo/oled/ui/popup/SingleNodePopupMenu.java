@@ -13,6 +13,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
+import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -21,8 +22,9 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
-	@SuppressWarnings("unused")
 	private UmlNode node;
+	final JMenuItem showAttrItem;
+	final JMenuItem showOperItem;
 	
 	public SingleNodePopupMenu()
 	{
@@ -35,6 +37,36 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		createMenuItem(drawOrderMenu, "draworder.tofront");
 		createMenuItem(drawOrderMenu, "draworder.toback");
 		
+		JMenu visibilityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.visibility.name"));
+		add(visibilityMenu);
+		
+		showOperItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showoperation");
+		showOperItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (node instanceof ClassElement) ((ClassElement)node).setShowOperations(showOperItem.isSelected());
+			}
+		});
+		
+		showAttrItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showattribute");
+		showAttrItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (node instanceof ClassElement) ((ClassElement)node).setShowAttributes(showAttrItem.isSelected());
+			}
+		});
+		
+//		final JMenuItem showStereoItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showstereotype");
+//		showStereoItem.addActionListener(new ActionListener() {			
+//			@Override
+//			public void actionPerformed(ActionEvent arg0) {
+//				
+//				if (node instanceof ClassElement) ((ClassElement)node).setShowStereotypes(showStereoItem.isSelected());
+//			}
+//		});
+		
 		addSeparator();
 		
 		createMenuItem(this, "delete");		
@@ -43,6 +75,10 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	public void setNode (UmlNode node)
 	{
 		this.node = node;
+		if (node instanceof ClassElement){
+			showAttrItem.setSelected(((ClassElement)node).showAttributes());
+			showOperItem.setSelected(((ClassElement)node).showOperations());
+		}
 	}	
 	
 	/**
@@ -113,7 +149,6 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	 *            the menuitem name
 	 * @return the menu item
 	 */
-	@SuppressWarnings("unused")
 	private JCheckBoxMenuItem createCheckBoxMenuItem(JComponent menu,
 			String name) {
 		String prefix = "menuitem." + name;

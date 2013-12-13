@@ -7,11 +7,13 @@ import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
 import br.ufes.inf.nemo.oled.draw.Connection;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -20,8 +22,11 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 
 	private static final long serialVersionUID = 1L;
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
-	@SuppressWarnings("unused")
 	private Connection con;
+	final JMenuItem showRolesItem;
+	final JMenuItem showNameItem;
+	final JMenuItem showMultiplicitiesItem;
+	final JMenuItem showStereotypeItem;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -37,6 +42,46 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			createMenuItem(this, "directtorect");
 		//}
 		//addNavigabilityMenu(this, (UmlConnection) conn);
+		addSeparator();
+		
+		JMenu visibilityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.visibility.name"));
+		add(visibilityMenu);
+			
+		showRolesItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showroles");
+		showRolesItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (con instanceof AssociationElement) ((AssociationElement)con).setShowRoles(showRolesItem.isSelected());
+			}
+		});
+		
+		showMultiplicitiesItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showmultiplicities");
+		showMultiplicitiesItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (con instanceof AssociationElement) ((AssociationElement)con).setShowMultiplicities(showMultiplicitiesItem.isSelected());
+			}
+		});
+		
+		showNameItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showname");
+		showNameItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (con instanceof AssociationElement) ((AssociationElement)con).setShowName(showNameItem.isSelected());
+			}
+		});
+			
+		showStereotypeItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showstereotype");
+		showStereotypeItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (con instanceof AssociationElement) ((AssociationElement)con).setShowOntoUmlStereotype(showStereotypeItem.isSelected());
+			}
+		});
 		
 		addSeparator();
 		createMenuItem(this, "delete");
@@ -46,6 +91,12 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	public void setConnection(Connection con)
 	{
 		this.con = con;
+		if (con instanceof AssociationElement){
+			showMultiplicitiesItem.setSelected(((AssociationElement)con).showMultiplicities());
+			showRolesItem.setSelected(((AssociationElement)con).showRoles());
+			showNameItem.setSelected(((AssociationElement)con).showName());
+			showStereotypeItem.setSelected(((AssociationElement)con).showOntoUmlStereotype());
+		}
 	}		
 	
 	/**
@@ -144,7 +195,6 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	 *            the menuitem name
 	 * @return the menu item
 	 */
-	@SuppressWarnings("unused")
 	private JCheckBoxMenuItem createCheckBoxMenuItem(JComponent menu,
 			String name) {
 		String prefix = "menuitem." + name;
