@@ -863,6 +863,30 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		selectionHandler.selectAll();
 	}
 	
+	public void showAttribute()
+	{
+		DiagramElement element = diagram.getChildAt(currentPointerPosition.getX(),currentPointerPosition.getY());
+		if (element instanceof ClassElement) ((ClassElement)element).setShowAttributes(true);
+	}
+	
+	public void showOperation()
+	{
+		DiagramElement element = diagram.getChildAt(currentPointerPosition.getX(),currentPointerPosition.getY());
+		if (element instanceof ClassElement) ((ClassElement)element).setShowOperations(true);
+	}
+	
+	public void showOperationsOnSelected()
+	{
+		DiagramElement element = selectionHandler.getSelection().getElement();
+		if (element instanceof ClassElement) ((ClassElement)element).setShowOperations(true);		
+	}
+	
+	public void showAttributesOnSelected()
+	{
+		DiagramElement element = selectionHandler.getSelection().getElement();
+		if (element instanceof ClassElement) ((ClassElement)element).setShowAttributes(true);	
+	}
+	
 	/**
 	 * Edits the current selection's properties.
 	 */

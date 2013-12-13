@@ -86,7 +86,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		restoreDefaults();
 		
 		//for modelling assistant
-		instance = this;
+		instance = this;		
 	}
 	
 	/** Restore default sizes of the split panes. */

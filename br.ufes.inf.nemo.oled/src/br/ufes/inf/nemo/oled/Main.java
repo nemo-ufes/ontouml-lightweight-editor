@@ -194,6 +194,7 @@ public final class Main {
 					frame.initializeAlloyAnalyzer();				
 					frame.setLocationByPlatform(true);
 					frame.setVisible(true);
+					frame.toFront();
 					
 				} catch (Exception ex) {
 					ex.printStackTrace();

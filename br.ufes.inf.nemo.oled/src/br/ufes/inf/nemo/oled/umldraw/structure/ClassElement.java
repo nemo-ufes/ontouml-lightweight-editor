@@ -98,7 +98,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 		
 		setupOntoUmlLabelSource();
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
