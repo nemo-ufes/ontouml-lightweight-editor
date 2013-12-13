@@ -577,53 +577,54 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
-	
-	
-	
-	
-	
 	/**
-	 * Deletes the current selection.
+	 * Imports a model from a XMI file.
 	 */
-	public void delete() {
-
+	public void importXMI()
+	{		
+		new ImportXMIDialog(frame, true, this);
 	}
 
 	/**
-	 * Returns the FileFilter for the TinyUML serialized model files.
-	 * @return the FileFilter
+	 * Exports a Complete OCL document
 	 */
-	//private FileNameExtensionFilter createModelFileFilter() {
-	//	return new FileNameExtensionFilter(
-	//			"OLED Project (*.oled)", "oled");
-	//}
-
-
+	public void exportOCL() 
+	{
+		try{
+			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
+			String path = FileChoosersUtil.saveOCLPathLocation(frame,oclmodel.getOCLPath());	    		
+			if (path==null) return;		
+			oclmodel.setConstraints(frame.getInfoManager().getConstraints(),"CONTENT");
+			oclmodel.setOCLPath(path);
+			FileUtil.copyStringToFile(frame.getInfoManager().getConstraints(), path);
+		}catch(IOException exception){
+			String msg = "An error ocurred while saving the constraints to an OCL document.\n"+exception.getMessage();
+			frame.showErrorMessageDialog("Saving OCL",msg);		       			
+			exception.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Get Resource as String
+	 * @return
+	 */
+	private String getResourceString(String property) 
+	{
+		return ApplicationResources.getInstance().getString(property);
+	}
+		
 	/**
 	 * Exports graphics as PNG.
 	 */
-	public void exportGfx() {
-
+	public void exportGfx() 
+	{
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle(getResourceString("dialog.exportgfx.title"));
-		//FileNameExtensionFilter svgFilter = new FileNameExtensionFilter(
-		//  "Scalable Vector Graphics file (*.svg)", "svg");
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Portable Network Graphics file (*.png)", "png");
-		//fileChooser.addChoosableFileFilter(svgFilter);
 		fileChooser.addChoosableFileFilter(filter);
 		fileChooser.setFileFilter(filter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-			//if (fileChooser.getFileFilter() == svgFilter) {
-			//  try {
-			//    SvgExporter exporter = new SvgExporter();
-			//    exporter.writeSVG(getCurrentEditor(), fileChooser.getSelectedFile());
-			//  } catch (IOException ex) {
-			//    JOptionPane.showMessageDialog(this, ex.getMessage(),
-			//      getResourceString("error.exportgfx.title"),
-			//      JOptionPane.ERROR_MESSAGE);
-			//  }
-			//} else 
+		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {			
 			if (fileChooser.getFileFilter() == filter) {
 				try {
 					PngExporter exporter = new PngExporter();
@@ -637,23 +638,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
-	private String getResourceString(String property) {
-		return ApplicationResources.getInstance().getString(property);
-	}
-
-	/**
-	 * Generates OWL from the current model (the model behind the current DiagramEditor).
-	 * */
-	public void exportOwl() {
-		//CLEANUP
-	}
-
 	/**
 	 * Saves the current model as an Ecore-based file.
 	 * */
-	public void exportEcore() {
-		if(getCurrentEditor() != null)
-		{
+	public void exportEcore() 
+	{
+		if(getCurrentEditor() != null) {
 			JFileChooser fileChooser = new JFileChooser(lastExportEcorePath);
 			fileChooser.setDialogTitle(getResourceString("dialog.exportecore.title"));
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
@@ -662,7 +652,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			fileChooser.setAcceptAllFileFilterUsed(false);
 			if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 				if (fileChooser.getFileFilter() == filter) {
-					try {						
+					try {
 						EcoreExporter exporter = new EcoreExporter();
 						exporter.writeEcore(this, fileChooser.getSelectedFile(), getCurrentEditor().getProject());
 						lastExportEcorePath = fileChooser.getSelectedFile().getAbsolutePath();
@@ -676,81 +666,23 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
-
-	/**
-	 * Exports a Complete OCL document
-	 */
-	public void exportOCL() 
-	{
-		try{
-
-			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
-
-			String path = FileChoosersUtil.saveOCLPathLocation(frame,oclmodel.getOCLPath());	    		
-			if (path==null) return;		
-
-			oclmodel.setConstraints(frame.getInfoManager().getConstraints(),"CONTENT");
-			oclmodel.setOCLPath(path);
-
-			FileUtil.copyStringToFile(frame.getInfoManager().getConstraints(), path);
-
-		}catch(IOException exception){
-
-			String msg = "An error ocurred while saving the constraints to an OCL document.\n"+exception.getMessage();
-			frame.showErrorMessageDialog("Saving OCL",msg);		       			
-			exception.printStackTrace();
-		}
-	}
-
-
 	/**
 	 * Imports a Complete OCL document
 	 */
 	public void importOCL() 
 	{
 		try{
-
-			if (getCurrentProject()==null) newProject();
-			
+			if (getCurrentProject()==null) newProject();			
 			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
-
 			String path = FileChoosersUtil.openOCLPathLocation(frame,oclmodel.getOCLPath());
-
 			if (path==null) return;
-
 			oclmodel.setConstraints(path,"PATH");
-
 			frame.getInfoManager().addConstraints("\n"+oclmodel.getOCLString());
-
 		} catch (IOException exception) {				
 			String msg = "An error ocurred while opening the OCL document.\n"+exception.getMessage();
 			frame.showErrorMessageDialog("Opening OCL",msg);
 			exception.printStackTrace();
 		}				
-	}
-	
-	/**
-	 * Imports a model from a XMI file.
-	 */
-	public void importXMI()
-	{		
-//		JFileChooser fileChooser = new JFileChooser(lastImportEAPath);
-//		fileChooser.setDialogTitle(getResourceString("dialog.importxmi.title"));
-//		FileNameExtensionFilter filter = new FileNameExtensionFilter("XMI, XML (*.xmi, *.xml)", "xmi", "xml");
-//		fileChooser.addChoosableFileFilter(filter);
-//		fileChooser.setFileFilter(filter);
-//		fileChooser.setAcceptAllFileFilterUsed(false);
-//		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-//		{
-//			if (fileChooser.getFileFilter() == filter)
-//			{
-//				File file = fileChooser.getSelectedFile();
-//				lastImportEAPath = file.getAbsolutePath();
-//				ImportXMIDialog inst = new ImportXMIDialog(frame, file, this, true);
-//				inst.setLocationRelativeTo(frame);
-//			}
-//		}
-		new ImportXMIDialog(frame, true, this);
 	}
 
 	/**
@@ -762,11 +694,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		this.addNonClosable("Start", start);
 	}
 	
+	/**
+	 * Open Isse Report Link
+	 */
 	public void openIssueReport()
 	{
 		openLinkWithBrowser("https://code.google.com/p/ontouml-lightweight-editor/issues/list");
 	}
-
+	
+	/**
+	 * Open Link With Browser
+	 */
 	public void openLinkWithBrowser(String link)
 	{
 		Desktop desktop = Desktop.getDesktop();
@@ -784,6 +722,142 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			ex.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Sets the dispatcher for the editor events
+	 * 
+	 * @param editorDispatcher the dispatcher responsible for routing events 
+	 * */
+	public void setEditorDispatcher(DiagramEditorCommandDispatcher editorDispatcher) 
+	{
+		this.editorDispatcher = editorDispatcher;
+	}
+
+	/**
+	 * Gets the dispatcher for the editor events
+	 * 
+	 * @return DiagramEditorCommandDispatcher the dispatcher responsible for routing events
+	 * */
+	public DiagramEditorCommandDispatcher getEditorDispatcher() 
+	{
+		return editorDispatcher;
+	}
+
+	/**
+	 * Gets the current DiagramEditor (the editor displayed in the focused tab).
+	 * If there's no suitable editor, returns null.
+	 * 
+	 * @return DiagramEditor the current focused DiagramEditor
+	 * */
+	public Editor getCurrentEditor() 
+	{
+		if(this.getSelectedIndex() != -1)
+		{
+			Object obj = this.getSelectedComponent();
+			if(obj instanceof Editor)
+				return (Editor) obj;	
+		}
+		return null;
+	}
+
+	/**
+	 * Gets the project being edited 
+	 * 
+	 * @return {@link UmlProject} the project
+	 */
+	public UmlProject getCurrentProject() 
+	{
+		return currentProject;
+	}
+
+	/**
+	 * Gets the wrapper for the selected DiagramEditor
+	 * 
+	 * @return {@link UmlProject} the project
+	 */
+	public DiagramEditorWrapper getCurrentWrapper()
+	{
+		if(this.getSelectedComponent() instanceof DiagramEditorWrapper)
+			return ((DiagramEditorWrapper) this.getSelectedComponent());
+		return null;
+	}
+
+	/**
+	 * Gets the wrapper for the selected DiagramEditor
+	 * 
+	 * @return {@link UmlProject} the project
+	 */
+	public DiagramEditor getCurrentDiagramEditor() 
+	{
+		if(this.getSelectedComponent() instanceof DiagramEditorWrapper)
+			return ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor();
+		return null;
+	}
+
+	/**
+	 * Gets the file associated with the model.
+	 * 
+	 * @return File the model file
+	 * */
+	public File getProjectFile()
+	{
+		return projectFile;
+	}
+
+	/**
+	 * Sets the file associated with the model.
+	 * 
+	 * @param modelFile the model file
+	 * */
+	public void setProjectFile(File modelFile)
+	{
+		projectFile = modelFile;
+		if((this.getSelectedIndex() != -1)&& !(this.getSelectedComponent() instanceof StartPanel))
+			((DiagramEditorWrapper) this.getSelectedComponent()).setModelFile(modelFile);
+	}
+
+	/**
+	 * Gets the MainMenu from the application frame
+	 * 
+	 * @return MainMenu the applications' main menu
+	 * */
+	public MainMenu getMainMenu() 
+	{
+		return frame.getMainMenu();
+	}
+
+	/**
+	 * Deletes an element from the UmlPoject. Do not delete of the Diagram.
+	 * 
+	 * @param elem
+	 */
+	public void deleteFromCurrentProject(RefOntoUML.Element elem)
+	{
+		// Here we delete the element both of the diagram and model project
+		if (ModelHelper.getDiagramElement(elem)!=null) {
+			DiagramElement diagramElem = ModelHelper.getDiagramElement(elem);
+			ArrayList<DiagramElement> elements = new ArrayList<DiagramElement>();					
+			elements.add(diagramElem);					
+			getCurrentDiagramEditor().execute(new DeleteElementCommand((DiagramNotification)getCurrentDiagramEditor(), elements, frame.getDiagramManager().getCurrentProject()));
+		}{
+			//Here instead we only delete it from the model
+			if (elem instanceof RefOntoUML.Type)
+			{
+				//delete associations and generalizations of the element 
+				ArrayList<Relationship> relList = ProjectBrowser.getParserFor(getCurrentProject()).getSelectedAndNonSelectedRelationshipsOf(elem);
+				for(Relationship rel: relList)
+				{							
+					DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(getCurrentProject().getEditingDomain(), rel);
+					getCurrentProject().getEditingDomain().getCommandStack().execute(cmd);
+				}
+			}
+			DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(frame.getDiagramManager().getCurrentProject().getEditingDomain(), elem);
+			getCurrentProject().getEditingDomain().getCommandStack().execute(cmd);			
+		}
+	}
+	
+	//===================================== @Inherited =======================================
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -810,102 +884,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	@Override
 	public void mouseMoved(EditorMouseEvent event) {
 	}
-
-	/**
-	 * Sets the dispatcher for the editor events
-	 * @param editorDispatcher the dispatcher responsible for routing events 
-	 * */
-	public void setEditorDispatcher(DiagramEditorCommandDispatcher editorDispatcher) {
-		this.editorDispatcher = editorDispatcher;
-	}
-
-	/**
-	 * Gets the dispatcher for the editor events
-	 * @return DiagramEditorCommandDispatcher the dispatcher responsible for routing events
-	 * */
-	public DiagramEditorCommandDispatcher getEditorDispatcher() {
-		return editorDispatcher;
-	}
-
-	/**
-	 * Gets the current DiagramEditor (the editor displayed in the focused tab).
-	 * If there's no suitable editor, returns null.
-	 * @return DiagramEditor the current focused DiagramEditor
-	 * */
-	public Editor getCurrentEditor() {
-		if(this.getSelectedIndex() != -1)
-		{
-			Object obj = this.getSelectedComponent();
-			if(obj instanceof Editor)
-				return (Editor) obj;	
-		}
-		return null;
-	}
-
-	/**
-	 * Gets the project being edited 
-	 * @return {@link UmlProject} the project
-	 */
-	public UmlProject getCurrentProject() {
-//		Editor editor = getCurrentDiagramEditor();
-//		if(editor instanceof DiagramEditor)
-//			return ((DiagramEditor)editor).getProject();
-		return currentProject;
-	}
-
-	/**
-	 * Gets the wrapper for the selected DiagramEditor
-	 * @return {@link UmlProject} the project
-	 */
-	public DiagramEditorWrapper getCurrentWrapper()
-	{
-		if(this.getSelectedComponent() instanceof DiagramEditorWrapper)
-			return ((DiagramEditorWrapper) this.getSelectedComponent());
-		return null;
-	}
-
-	/**
-	 * Gets the wrapper for the selected DiagramEditor
-	 * @return {@link UmlProject} the project
-	 */
-	public DiagramEditor getCurrentDiagramEditor() 
-	{
-		if(this.getSelectedComponent() instanceof DiagramEditorWrapper)
-			return ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor();
-		return null;
-	}
-
-	/**
-	 * Gets the file associated with the model.
-	 * @return File the model file
-	 * */
-	public File getProjectFile()
-	{
-		return projectFile;
-//		if((this.getSelectedIndex() != -1)&& !(this.getSelectedComponent() instanceof StartPanel))
-//			return ((DiagramEditorWrapper) this.getSelectedComponent()).getModelFile();
-//		return null;
-	}
-
-	/**
-	 * Sets the file associated with the model.
-	 * @param modelFile the model file
-	 * */
-	public void setProjectFile(File modelFile)
-	{
-		projectFile = modelFile;
-		if((this.getSelectedIndex() != -1)&& !(this.getSelectedComponent() instanceof StartPanel))
-			((DiagramEditorWrapper) this.getSelectedComponent()).setModelFile(modelFile);
-	}
-
-	/**
-	 * Gets the MainMenu from the application frame
-	 * @return MainMenu the applications' main menu
-	 * */
-	public MainMenu getMainMenu() {
-		return frame.getMainMenu();
-	}
-
+	
 	/**
 	 * Sintatically validate the current model (the model behind the current DiagramEditor).
 	 */
@@ -979,36 +958,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		else
 		{
 			frame.getInfoManager().showOutputText(result.toString(), true, true); 
-		}
-	}
-		
-	/**
-	 * Deletes an element from the UmlPoject. Do not delete of the Diagram.
-	 * 
-	 * @param elem
-	 */
-	public void deleteElementOfProject(RefOntoUML.Element elem)
-	{
-		// Here we delete the element both of the diagram and model project
-		if (ModelHelper.getDiagramElement(elem)!=null) {
-			DiagramElement diagramElem = ModelHelper.getDiagramElement(elem);
-			ArrayList<DiagramElement> elements = new ArrayList<DiagramElement>();					
-			elements.add(diagramElem);					
-			getCurrentDiagramEditor().execute(new DeleteElementCommand((DiagramNotification)getCurrentDiagramEditor(), elements, frame.getDiagramManager().getCurrentProject()));
-		}{
-			//Here instead we only delete it from the model
-			if (elem instanceof RefOntoUML.Type)
-			{
-				//delete associations and generalizations of the element 
-				ArrayList<Relationship> relList = ProjectBrowser.getParserFor(getCurrentProject()).getSelectedAndNonSelectedRelationshipsOf(elem);
-				for(Relationship rel: relList)
-				{							
-					DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(getCurrentProject().getEditingDomain(), rel);
-					getCurrentProject().getEditingDomain().getCommandStack().execute(cmd);
-				}
-			}
-			DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(frame.getDiagramManager().getCurrentProject().getEditingDomain(), elem);
-			getCurrentProject().getEditingDomain().getCommandStack().execute(cmd);			
 		}
 	}
 	

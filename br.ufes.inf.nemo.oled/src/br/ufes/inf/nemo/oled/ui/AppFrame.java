@@ -272,8 +272,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 					new MethodCall(DiagramManager.class.getMethod("saveProject")));
 			selectorMap.put("EXPORT_GFX",
 					new MethodCall(DiagramManager.class.getMethod("exportGfx")));
-			selectorMap.put("EXPORT_OWL",
-					new MethodCall(DiagramManager.class.getMethod("exportOwl")));
 			selectorMap.put("EXPORT_ECORE",
 					new MethodCall(DiagramManager.class.getMethod("exportEcore")));
 			selectorMap.put("IMPORT_ECORE",
@@ -284,8 +282,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 					new MethodCall(DiagramManager.class.getMethod("exportOCL")));
 			selectorMap.put("IMPORT_OCL",
 					new MethodCall(DiagramManager.class.getMethod("importOCL")));
-			selectorMap.put("DELETE",
-					new MethodCall(DiagramManager.class.getMethod("delete")));
 			selectorMap.put("EDIT_SETTINGS", new MethodCall(getClass()
 					.getMethod("editSettings")));
 			selectorMap.put("QUIT",
