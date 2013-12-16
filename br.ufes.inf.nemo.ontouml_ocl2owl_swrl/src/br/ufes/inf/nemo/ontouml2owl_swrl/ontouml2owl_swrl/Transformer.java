@@ -117,7 +117,7 @@ public class Transformer {
 		return errors;
 	}
 
-	
+
 	/**
 	 * Initialize the Transformer
 	 * */
@@ -169,144 +169,144 @@ public class Transformer {
 			processClass();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was creating the OWL classes;\n");
+			throw new Exception("Error: An unexpected exception happened when creating the OWL classes;\n");			
 		}
 
 		try{
 			processDataType();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing Datatypes;\n");
+			throw new Exception("Error: An unexpected exception happened when processing Datatypes;\n");
 		}
 
 		try{
 			processGeneralizations();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing Generalizations;\n");
+			throw new Exception("Error: An unexpected exception happened when processing Generalizations;\n");
 		}
-		
+
 		try{
 			processCharacterization();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing Characterization Associations;\n");
+			throw new Exception("Error: An unexpected exception happened when processing Characterization Associations;\n");
 		}
-		
+
 		try{
 			processFormal();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing Formal Associations;\n");
+			throw new Exception("Error: An unexpected exception happened when processing Formal Associations;\n");
 		}
-		
+
 		try{
 			processMediation();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing Mediation Associations;\n");
+			throw new Exception("Error: An unexpected exception happened when processing Mediation Associations;\n");
 		}
-		
+
 		try{
 			processMaterial();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing Material Associations;\n");
+			throw new Exception("Error: An unexpected exception happened when processing Material Associations;\n");
 		}
-		
+
 		try{
 			processRelator();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing Relators;\n");
+			throw new Exception("Error: An unexpected exception happened when processing Relators;\n");
 		}
-		
+
 		try{
 			processComponentOf();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing ComponentOf Association;\n");
+			throw new Exception("Error: An unexpected exception happened when processing ComponentOf Association;\n");
 		}
-		
+
 		try{
 			processSubCollectionOf();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing SubCollectionOf Association;\n");
+			throw new Exception("Error: An unexpected exception happened when processing SubCollectionOf Association;\n");
 		}
-		
+
 		try{
 			processSubQuantityOf();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing SubQuantityOf Association;\n");
+			throw new Exception("Error: An unexpected exception happened when processing SubQuantityOf Association;\n");
 		}
-		
+
 		try{
 			processSubQuantityOf();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing SubQuantityOf Association;\n");
+			throw new Exception("Error: An unexpected exception happened when processing SubQuantityOf Association;\n");
 		}
-		
+
 		try{
 			processMemberOf();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was processing MemberOf Association;\n");
+			throw new Exception("Error: An unexpected exception happened when processing MemberOf Association;\n");
 		}
-		
+
 		try{
 			processDisjointClass();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was creating the disjointness of the classes;\n");
+			throw new Exception("Error: An unexpected exception happened when creating the disjointness of the Classes;\n");
 		}
-		
+
 		try{
 			processDisjointAssociation();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was creating the disjointness of the Associations;\n");
+			throw new Exception("Error: An unexpected exception happened when creating the disjointness of the Associations;\n");
 		}
-		
+
 		try{
 			processDisjointDataType();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was creating the disjointness of the Datatypes;\n");
+			throw new Exception("Error: An unexpected exception happened when creating the disjointness of the Datatypes;\n");
 		}
-		
+
 		try{
 			processAnnotation();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was creating the Annotations;\n");
+			throw new Exception("Error: An unexpected exception happened when creating the Annotations;\n");
 		}
 
 		try{
 			processAxiom();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error:An unexpected exception happend when was creating the Axioms;\n");
+			throw new Exception("Error: An unexpected exception happened when creating the Axioms;\n");
 		}
-		
+
 		if(oclRules != null){
 			if(!oclRules.equals("")){
 				int dialogButton = JOptionPane.YES_NO_OPTION;
-				int result = JOptionPane.showConfirmDialog (null, "Do You Wish To Transform the OCL rules?","Warning",dialogButton);
-                
-                if(result == JOptionPane.YES_OPTION){
-                	OCL2OWL_SWRL ocl2owl_swrl = new OCL2OWL_SWRL(oclRules, ontoParser, manager, nameSpace);
-        			//OCL2SWRL ocl2swrl = new OCL2SWRL(oclParser, ontoParser, manager, nameSpace);
-                	ocl2owl_swrl.Transformation();
-        			
-        			this.errors += "\n" + ocl2owl_swrl.errors;
-                }
+				int result = JOptionPane.showConfirmDialog (null, "Do you want to perform the OCL transformation to OWL and SWRL?","Warning",dialogButton);
+
+				if(result == JOptionPane.YES_OPTION){
+					OCL2OWL_SWRL ocl2owl_swrl = new OCL2OWL_SWRL(oclRules, ontoParser, manager, nameSpace);
+					//OCL2SWRL ocl2swrl = new OCL2SWRL(oclParser, ontoParser, manager, nameSpace);
+					ocl2owl_swrl.Transformation();
+
+					this.errors += "\n" + ocl2owl_swrl.errors;
+				}
 			}
-			
+
 		}
-		
+
 		try {	
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			manager.saveOntology(ontology, os);
@@ -564,7 +564,7 @@ public class Transformer {
 					}
 				}
 			}catch(Exception e){
-				errors += "The Relator dosen't exist;\n";
+				errors += "The Relator does not exist;\n";
 			}
 		}
 	}
@@ -869,12 +869,12 @@ public class Transformer {
 	}
 
 	private OWLObjectProperty getObjectProperty(Association ass, String src, String dst) {
-		OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName()+"."+src+"."+dst));
+		OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName().replaceAll(" ","_")+"."+src+"."+dst));
 		return prop;
 	}
 
 	private OWLObjectProperty getInverseObjectProperty(Association ass, String src, String dst) {
-		OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+ass.getName()+"."+src+"."+dst));
+		OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+ass.getName().replaceAll(" ","_")+"."+src+"."+dst));
 		return prop;
 	}
 
@@ -958,7 +958,7 @@ public class Transformer {
 			//Verify the name of the property
 			prop = getObjectProperty(ass);
 			if(prop == null){
-				errors += "Warning: An Association without name was mapped to <"+getObjectPropertyName(ass,stereotype)+">;\n";
+				errors += "Warning: An unnamed Association from X (source class) to Y (target class) was mapped to OWL <"+getObjectPropertyName(ass,stereotype)+">;\n";
 
 				//The name of the property is null
 				nameNull = true;
@@ -978,7 +978,7 @@ public class Transformer {
 						match++;
 					}
 					if(match > 1){
-						errors += "Warning: An Association with replyed name was mapped to a subPropertyOf <"+getObjectPropertyName(ass, stereotype)+"> with the name <"+getObjectPropertyName(ass, stereotype)+"."+getName(ass.getMemberEnd().get(0).getType())+"."+getName(ass.getMemberEnd().get(1).getType())+">;\n";
+						errors += "Warning: The association X with repeted name was mapped to X.Y.Z (association.sourceClass.targetClass), OWL subPropertyOf X <"+getObjectPropertyName(ass, stereotype)+"> with the name <"+getObjectPropertyName(ass, stereotype)+"."+getName(ass.getMemberEnd().get(0).getType())+"."+getName(ass.getMemberEnd().get(1).getType())+">;\n";
 
 						//If has some associations with the same name
 						//Create a top property with the name of the associations
@@ -1295,7 +1295,7 @@ public class Transformer {
 			}
 		}
 		if(flag){
-			errors += "Warning: An type of Datatype was not found. This attribute was ignored in the mapping;\n";
+			errors += "Warning: Attribute "+_attributeName.substring(_attributeName.indexOf("#")+1)+" of class "+getName(_RefOntoOwnerClass)+" was not mapped to OWL due to unknown datatype;\n";
 		}
 	}
 
