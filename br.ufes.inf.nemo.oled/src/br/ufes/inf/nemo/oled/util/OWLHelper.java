@@ -1,12 +1,12 @@
 package br.ufes.inf.nemo.oled.util;
 
-import br.ufes.inf.nemo.oled.ontouml2owl_swrl.OntoUML2OWL;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.OWLStructure;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.tree.TreeProcessor;
 import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.verbose.FileManager;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
 import br.ufes.inf.nemo.ontouml2simpleowl.OntoUML2SimpleOWL;
+import br.ufes.inf.nemo.root.OntoUML2OWL;
 
 public class OWLHelper {
 
@@ -64,7 +64,7 @@ public class OWLHelper {
     	}
     	catch (Exception ex)
     	{
-    		//ex.printStackTrace();
+    		ex.printStackTrace();
     		return new OperationResult(ResultType.ERROR, "Error while generating the OWL for the model. Details: " + ex.getMessage() + errors, null);
     	}
 	}
