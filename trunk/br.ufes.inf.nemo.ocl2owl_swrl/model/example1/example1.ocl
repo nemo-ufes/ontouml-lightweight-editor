@@ -1,9 +1,0 @@
-
-package EA_Model
-
-context Person
-inv: (self.mother.age + self.father.age) > self.age
-inv: self <> self.mother
-inv: self <> self.father
-
-endpackage

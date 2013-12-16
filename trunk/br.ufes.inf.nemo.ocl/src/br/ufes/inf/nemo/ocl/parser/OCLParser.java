@@ -63,7 +63,7 @@ public class OCLParser {
     	
     	String umlPath = new String();
     	
-    	if (backgroundModelName.isEmpty() || backgroundModelName ==null) backgroundModelName = "model";
+    	if (backgroundModelName == null || backgroundModelName.isEmpty()) backgroundModelName = "model";
     	
     	if (tempDirPath.endsWith(File.separator)) umlPath += tempDirPath + backgroundModelName + ".uml";
     	else umlPath += tempDirPath + File.separator + backgroundModelName + ".uml";
