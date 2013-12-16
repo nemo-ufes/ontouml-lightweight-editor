@@ -81,6 +81,7 @@ public class Transformer {
 	/**
 	 * Considerations:
 	 * - Chain of DataTypes can be infinity if a datatype x has a datatype y and y has a datatype x
+	 * - Multiply the bounds of the associations in chain of datatypes
 	 * */
 	//Global Variables
 	private OntoUMLParser ontoParser;
@@ -325,7 +326,6 @@ public class Transformer {
 		for (Class cls : hashDataProperty.keySet()) {
 			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointDataPropertiesAxiom(hashDataProperty.get(cls))));
 		}
-
 	}
 
 	/**
@@ -956,9 +956,10 @@ public class Transformer {
 
 		for (Association ass : lstAssociation) {
 			//Verify the name of the property
+
 			prop = getObjectProperty(ass);
 			if(prop == null){
-				errors += "Warning: An unnamed Association from X (source class) to Y (target class) was mapped to OWL <"+getObjectPropertyName(ass,stereotype)+">;\n";
+				errors += "Warning: An unnamed Association from <"+getName(ass.getMemberEnd().get(0).getType())+"> (source class) to <"+getName(ass.getMemberEnd().get(1).getType())+"> (target class) was mapped to OWL <"+getObjectPropertyName(ass,stereotype)+">;\n";
 
 				//The name of the property is null
 				nameNull = true;
@@ -978,7 +979,7 @@ public class Transformer {
 						match++;
 					}
 					if(match > 1){
-						errors += "Warning: The association X with repeted name was mapped to X.Y.Z (association.sourceClass.targetClass), OWL subPropertyOf X <"+getObjectPropertyName(ass, stereotype)+"> with the name <"+getObjectPropertyName(ass, stereotype)+"."+getName(ass.getMemberEnd().get(0).getType())+"."+getName(ass.getMemberEnd().get(1).getType())+">;\n";
+						errors += "Warning: The association <"+getObjectPropertyName(ass,stereotype)+"> with repeted name was mapped as subPropertyOf <"+getObjectPropertyName(ass, stereotype)+"> with the name <"+getObjectPropertyName(ass, stereotype)+"."+getName(ass.getMemberEnd().get(0).getType())+"."+getName(ass.getMemberEnd().get(1).getType())+">;\n";
 
 						//If has some associations with the same name
 						//Create a top property with the name of the associations
@@ -1177,20 +1178,26 @@ public class Transformer {
 	private String _attributeName = "";
 	private OWLClass _OWLownerClass = null;
 	private RefOntoUML.Class _RefOntoOwnerClass = null;
+	private Property _prop = null;
 
 
 	/**
 	 * Used to create the Class attributes
 	 * */
 	private void createAttribute(Property prop) {
+		
 		OWLDatatype tipoAtributo = null;
 		OWLDataProperty atributo = null;
-		String _aux = "";
+		
 		//If the type of this property isn't in the model.
-		if(prop.getType() == null){
+		if(prop == null){
 			//Than create a generic type for this property (RDFS_LITERAL)
 			tipoAtributo = factory.getOWLDatatype(OWL2Datatype.RDFS_LITERAL.getIRI());
+			atributo = factory.getOWLDataProperty(IRI.create(_attributeName));
+			prop = _prop;
 		}else{
+			_prop = prop;
+			String _aux = "";
 			tipoAtributo = getDataTypeRange(prop.getType());
 			if(tipoAtributo == null){
 				//Isn't a simple DataType
@@ -1224,58 +1231,59 @@ public class Transformer {
 				if(!hashDataProperty.containsKey(_RefOntoOwnerClass)){
 					hashDataProperty.put(_RefOntoOwnerClass, new HashSet<OWLDataProperty>());
 				}
-				hashDataProperty.get(_RefOntoOwnerClass).add(atributo);
-
-				//Set the Range of the DataProperty
-				OWLDataPropertyRangeAxiom axRange = factory.getOWLDataPropertyRangeAxiom(atributo, tipoAtributo);
-				manager.applyChange(new AddAxiom(ontology, axRange));
-
-				//set the owner of this datatype (Domain)
-
-				OWLDataPropertyDomainAxiom axDomain = factory.getOWLDataPropertyDomainAxiom(atributo, _OWLownerClass);
-				manager.applyChange(new AddAxiom(ontology, axDomain));
 			}
+		}
+		
+		hashDataProperty.get(_RefOntoOwnerClass).add(atributo);
 
-			//Solving the cardinality of the attribute			
-			int upperCard = prop.getUpper();
-			int lowerCard = prop.getLower();			
+		//Set the Range of the DataProperty
+		OWLDataPropertyRangeAxiom axRange = factory.getOWLDataPropertyRangeAxiom(atributo, tipoAtributo);
+		manager.applyChange(new AddAxiom(ontology, axRange));
 
-			OWLEquivalentClassesAxiom ax = null;
-			OWLSubClassOfAxiom sax = null; 
+		//set the owner of this datatype (Domain)
 
-			if(upperCard == lowerCard){
-				//x..x
-				OWLClassExpression oecr = factory.getOWLDataExactCardinality(lowerCard, atributo, tipoAtributo);
-				ax = factory.getOWLEquivalentClassesAxiom(_OWLownerClass, oecr);
-			}else if(upperCard == -1 && lowerCard == 1){
-				//1..*
-				OWLDataSomeValuesFrom oecr = factory.getOWLDataSomeValuesFrom(atributo, tipoAtributo);
-				ax = factory.getOWLEquivalentClassesAxiom(_OWLownerClass, oecr);
-			}else if (upperCard != -1 && lowerCard == 0){
-				//0..*
-				OWLDataMaxCardinality maxcard = factory.getOWLDataMaxCardinality(upperCard, atributo,tipoAtributo);
-				sax = factory.getOWLSubClassOfAxiom(_OWLownerClass, maxcard);
-			}else if(upperCard == -1 && lowerCard != 0){
-				//x..*
-				OWLDataMinCardinality mincard = factory.getOWLDataMinCardinality(lowerCard, atributo,tipoAtributo);
-				ax = factory.getOWLEquivalentClassesAxiom(_OWLownerClass, mincard);	
-			}else if(upperCard != -1 && lowerCard > 0){
-				//x..n
-				OWLDataMaxCardinality maxcard = factory.getOWLDataMaxCardinality(upperCard, atributo,tipoAtributo);
-				OWLDataMinCardinality mincard = factory.getOWLDataMinCardinality(lowerCard, atributo,tipoAtributo);
-				OWLObjectIntersectionOf oio =  factory.getOWLObjectIntersectionOf(maxcard,mincard);
-				ax = factory.getOWLEquivalentClassesAxiom(_OWLownerClass, oio);
-			}else{
-				errors += "Warning: The cardinality 0..* is not mapped to OWL;\n";
-			}
+		OWLDataPropertyDomainAxiom axDomain = factory.getOWLDataPropertyDomainAxiom(atributo, _OWLownerClass);
+		manager.applyChange(new AddAxiom(ontology, axDomain));
+		
+		//Solving the cardinality of the attribute			
+		int upperCard = prop.getUpper();
+		int lowerCard = prop.getLower();			
 
-			if(ax != null){
-				manager.applyChange(new AddAxiom(ontology, ax));
-			}
+		OWLEquivalentClassesAxiom ax = null;
+		OWLSubClassOfAxiom sax = null; 
 
-			if(sax != null){
-				manager.applyChange(new AddAxiom(ontology, sax));
-			}
+		if(upperCard == lowerCard){
+			//x..x
+			OWLClassExpression oecr = factory.getOWLDataExactCardinality(lowerCard, atributo, tipoAtributo);
+			ax = factory.getOWLEquivalentClassesAxiom(_OWLownerClass, oecr);
+		}else if(upperCard == -1 && lowerCard == 1){
+			//1..*
+			OWLDataSomeValuesFrom oecr = factory.getOWLDataSomeValuesFrom(atributo, tipoAtributo);
+			ax = factory.getOWLEquivalentClassesAxiom(_OWLownerClass, oecr);
+		}else if (upperCard != -1 && lowerCard == 0){
+			//0..*
+			OWLDataMaxCardinality maxcard = factory.getOWLDataMaxCardinality(upperCard, atributo,tipoAtributo);
+			sax = factory.getOWLSubClassOfAxiom(_OWLownerClass, maxcard);
+		}else if(upperCard == -1 && lowerCard != 0){
+			//x..*
+			OWLDataMinCardinality mincard = factory.getOWLDataMinCardinality(lowerCard, atributo,tipoAtributo);
+			ax = factory.getOWLEquivalentClassesAxiom(_OWLownerClass, mincard);	
+		}else if(upperCard != -1 && lowerCard > 0){
+			//x..n
+			OWLDataMaxCardinality maxcard = factory.getOWLDataMaxCardinality(upperCard, atributo,tipoAtributo);
+			OWLDataMinCardinality mincard = factory.getOWLDataMinCardinality(lowerCard, atributo,tipoAtributo);
+			OWLObjectIntersectionOf oio =  factory.getOWLObjectIntersectionOf(maxcard,mincard);
+			ax = factory.getOWLEquivalentClassesAxiom(_OWLownerClass, oio);
+		}else{
+			errors += "Warning: The cardinality 0..* is not mapped to OWL;\n";
+		}
+
+		if(ax != null){
+			manager.applyChange(new AddAxiom(ontology, ax));
+		}
+
+		if(sax != null){
+			manager.applyChange(new AddAxiom(ontology, sax));
 		}
 	}
 
@@ -1284,18 +1292,20 @@ public class Transformer {
 	 * @param The actual property of the chain
 	 */
 	private void processDataTypeProperty(Property prop){
-		boolean flag = false;
+		int c = 0;
 		for(DataType dt:lstDataType){	
 			//search in all datatypes from the model
+			//System.out.println(prop.getType().getName()+"--"+dt.getName());
 			if(dt.getName().equals(prop.getType().getName())){
 				for (Property dtProp : dt.getAttribute()) {
-					flag = true;
 					createAttribute(dtProp);
 				}
+				c++;
 			}
 		}
-		if(flag){
-			errors += "Warning: Attribute "+_attributeName.substring(_attributeName.indexOf("#")+1)+" of class "+getName(_RefOntoOwnerClass)+" was not mapped to OWL due to unknown datatype;\n";
+		if(c==1){
+			errors += "Unknown datatype "+_attributeName.substring(_attributeName.indexOf("#")+1)+" of (class "+getName(_RefOntoOwnerClass)+") mapped to OWL Literal;\n";
+			createAttribute(null);
 		}
 	}
 
