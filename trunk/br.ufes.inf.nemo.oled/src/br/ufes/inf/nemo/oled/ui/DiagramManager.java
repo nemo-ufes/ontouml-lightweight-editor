@@ -113,7 +113,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public final AppFrame frame;
 	private DiagramEditorCommandDispatcher editorDispatcher;
 	private UmlProject currentProject;
-	private File projectFile;	
+	private File projectFile;
 	public String lastOpenPath = new String();
 	public String lastSavePath = new String();
 	public String lastImportEAPath = new String();
@@ -868,7 +868,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/**
-	 * Deletes an element from the UmlPoject.
+	 * Verify syntactically the current project i.e., reference ontouml model instance
+	 */
+	public void verifyCurrentProject() {
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		
+		if(currentProject!=null){
+			OperationResult result = VerificationHelper.verifyModel(currentProject.getModel());
+			frame.getInfoManager().showOutputText(result.toString(), true, true);
+		}
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+	}
+
+	/**
+	 * Deletes an element from the UmlPoject (and consequently from the structure diagram it belongs if any).
 	 * 
 	 * @param elem
 	 */
@@ -918,15 +931,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void find() 
 	{
-	    String response = JOptionPane.showInputDialog(null,
-            "Type the text to be found:",
-            "Find",
-            JOptionPane.PLAIN_MESSAGE
-            );		
-	   if(response!=null){
+		String text = frame.getSecondaryBar().getText().toLowerCase();	    		
+		if(text!=null)
+		{
 		   ProjectBrowser pbrowser = ProjectBrowser.getProjectBrowserFor(getFrame(), getCurrentProject());
-		   pbrowser.getTree().selectModelElement(response);		   
-	   }
+		   pbrowser.find(text);		   
+	    }
 	}
 	
 	/**
@@ -1420,20 +1430,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void mouseMoved(EditorMouseEvent event) {}
 
 	//===================================== @Older =======================================
-	
-	/**
-	 * Sintatically validate the current model (the model behind the current DiagramEditor).
-	 */
-	public void validateCurrentModel() {
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		
-		UmlProject project = getCurrentEditor().getProject();
-		OperationResult result = VerificationHelper.verifyModel(project.getModel());
-		frame.getInfoManager().showOutputText(result.toString(), true, true);
-				
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-	}
-
 	/**
 	 * Shows a dialog for choosing the elements to simulate and the style settings 
 	 */

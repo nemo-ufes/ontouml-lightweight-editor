@@ -37,6 +37,12 @@ public class ProjectBrowser extends JPanel{
 	
 	private JScrollPane scroll;
 	private ProjectTree tree; 
+	
+	//find feature
+	private ArrayList<DefaultMutableTreeNode> resultFindList;	
+	private int indexActualFind=0;
+	private String oldText = new String();
+	
 	private UmlProject project;	
 	private OntoUMLParser refparser;	
 	private AlloySpecification alloySpec;
@@ -85,6 +91,30 @@ public class ProjectBrowser extends JPanel{
 		emptyTempPanel.setPreferredSize(new Dimension(200,250));
 		
 		updateUI();
+	}
+	
+	public void select()
+	{
+		if (indexActualFind >= resultFindList.size())
+		{
+			indexActualFind=0;			
+		}
+		getTree().select(resultFindList.get(indexActualFind));			
+		indexActualFind++;		
+	}
+	
+	public void find(String text)
+	{
+		if (!oldText.equals(text))
+		{
+			resultFindList = getTree().find(text);		
+			indexActualFind=0;
+			oldText = text;
+		}
+		if (oldText.equals(text))
+		{
+			select();
+		}
 	}
 	
 	public ProjectBrowser(AppFrame appframe, UmlProject project)

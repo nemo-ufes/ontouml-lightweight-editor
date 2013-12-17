@@ -166,20 +166,6 @@ public final class Main {
 	 * @param args the command line parameters
 	 */
 	public static void main(String[] args) {
-
-		//Needed for the embedded SWT Browser in Linux systems
-		System.setProperty("sun.awt.xembedserver", "true");
-		
-		 // Enable better look-and-feel
-        if (onMac() || onWindows()) {
-            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "OLED ");
-            System.setProperty("com.apple.mrj.application.growbox.intrudes","true");
-            System.setProperty("com.apple.mrj.application.live-resize","true");
-            System.setProperty("com.apple.macos.useScreenMenuBar","true");
-            System.setProperty("apple.laf.useScreenMenuBar","true");
-            System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode","false");
-            System.setProperty("apple.awt.fileDialogForDirectories", "true");
-        }
         
 		SwingUtilities.invokeLater(new Runnable() {
 			/**
@@ -187,6 +173,21 @@ public final class Main {
 			 */
 			public void run() {
 				try {
+
+					//Needed for the embedded SWT Browser in Linux systems
+					//System.setProperty("sun.awt.xembedserver", "true");
+					
+					 // Enable better look-and-feel
+			        if (onMac() || onWindows()) {
+			            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "OLED");
+			            System.setProperty("com.apple.mrj.application.growbox.intrudes","true");
+			            System.setProperty("com.apple.mrj.application.live-resize","true");
+			            System.setProperty("com.apple.macos.useScreenMenuBar","true");
+			            System.setProperty("apple.laf.useScreenMenuBar","true");                        
+			            //System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode","false");
+			            //System.setProperty("apple.awt.fileDialogForDirectories", "true");
+			        }
+			        
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					UIManager.put("TabbedPane.focus", new Color(0, 0, 0, 0));					
 					

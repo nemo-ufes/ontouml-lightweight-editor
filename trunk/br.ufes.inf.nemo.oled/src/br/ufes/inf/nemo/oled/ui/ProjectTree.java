@@ -367,28 +367,44 @@ public class ProjectTree extends CheckboxTree {
 	    }	    
 	}
 	
+	public void select (DefaultMutableTreeNode  node)
+	{
+		this.setSelectionPath(new TreePath(node.getPath()));
+		InfoManager.getProperties().setData(node);
+	}
+		
 	@SuppressWarnings("rawtypes")
-	public void selectModelElement(String elementName)
+	public ArrayList<DefaultMutableTreeNode> find(String elementName)
 	{		
+		ArrayList<DefaultMutableTreeNode> list = new ArrayList<DefaultMutableTreeNode>();
 		Enumeration e = modelRootNode.breadthFirstEnumeration();
 	    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)e.nextElement();
 	    while (e.hasMoreElements()) 
 	    {
 	    	EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
-	    	if (((RefOntoUML.NamedElement)obj).getName().matches(elementName)) { 
-	    		this.setSelectionPath(new TreePath(node.getPath()));
-	    		InfoManager.getProperties().setData(node);
+	    	if (obj instanceof RefOntoUML.NamedElement){
+	    		RefOntoUML.NamedElement namedElem = ((RefOntoUML.NamedElement)obj);	    		
+	    		if(namedElem.getName()!=null && !namedElem.getName().isEmpty()){
+			    	if (namedElem.getName().contains(elementName) || namedElem.getName().equalsIgnoreCase(elementName)) {			    		
+			    		list.add(node);			    		
+			    	}
+	    		}
 	    	}
-	    		
 	    	node = (DefaultMutableTreeNode)e.nextElement();
 	    }
 	    //last element
 	    EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
-	    if (((RefOntoUML.NamedElement)obj).getName().matches(elementName)) { 
-	    	this.setSelectionPath(new TreePath(node.getPath()));
-	    	InfoManager.getProperties().setData(node);
-	    }	    
+	    if (obj instanceof RefOntoUML.NamedElement){
+    		RefOntoUML.NamedElement namedElem = ((RefOntoUML.NamedElement)obj);    		
+    		if(namedElem.getName()!=null && !namedElem.getName().isEmpty()){
+		    	if (namedElem.getName().contains(elementName) || namedElem.getName().equalsIgnoreCase(elementName)) {		    		
+		    		list.add(node);		    		
+		    	}
+    		}
+    	}    
+	    return list;
 	}
+	
 	/**
 	 * Check this elements.
 	 * 

@@ -74,7 +74,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			
 			selectorMap.put("UNDO", new MethodCall(
 					getClass().getMethod("undo")));
-				
+					
 			selectorMap.put("FIND", new MethodCall(
 					getClass().getMethod("find")));
 			
@@ -265,7 +265,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					getClass().getMethod("autoComplete")));
 			
 			selectorMap.put("VALIDATE_MODEL", new MethodCall(
-					getClass().getMethod("validateModel")));
+					getClass().getMethod("verifyCurrentProject")));
 			
 			selectorMap.put("GENERATE_ALLOY", new MethodCall(
 					getClass().getMethod("generatesAlloy")));
@@ -362,6 +362,13 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		ProjectBrowser.rebuildTree(manager.getCurrentProject());
 	}
 	
+	public void find()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		
+		manager.find();
+	}
+	
 	public void redo()
 	{
 		if (manager.isProjectLoaded()==false) return;
@@ -371,14 +378,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		//This method recreates the tree
 		ProjectBrowser.rebuildTree(manager.getCurrentProject());
 	}
-	
-	public void find()
-	{
-		if (manager.isProjectLoaded()==false) return;
 		
-		manager.find();
-	}
-	
 	public void parseOCL()
 	{
 		if (manager.isProjectLoaded()==false) return;
@@ -419,7 +419,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		AutoCompletionDialog.open(manager.getFrame(),manager.getCurrentProject());
 	}
 	
-	public void validateModel() 
+	public void verifyCurrentProject() 
 	{
 		if (manager.isProjectLoaded()==false) return;
 		
@@ -444,7 +444,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{
 		if (manager.isProjectLoaded()==false) return;
 		
-		manager.validateCurrentModel();
+		manager.verifyCurrentProject();
 	}
 	
 	public void verifyModelFile()

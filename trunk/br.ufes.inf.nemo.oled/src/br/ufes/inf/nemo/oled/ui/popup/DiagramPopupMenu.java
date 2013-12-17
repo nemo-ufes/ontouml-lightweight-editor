@@ -44,7 +44,7 @@ public class DiagramPopupMenu extends JPopupMenu {
     		@Override
     		public void mousePressed(MouseEvent e) 
     		{   
-    			frame.getDiagramManager().validateCurrentModel();
+    			frame.getDiagramManager().verifyCurrentProject();
     		}
 	    });
     }

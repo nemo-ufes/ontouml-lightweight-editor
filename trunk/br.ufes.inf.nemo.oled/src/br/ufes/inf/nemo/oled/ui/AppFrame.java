@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.BorderLayout;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -14,6 +15,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
@@ -35,6 +37,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	
 	private transient MainMenu mainMenu;
 	private transient MainToolbar mainToolBar;
+	private transient SecondaryToolbar secondaryToolBar;
 	
 	private transient ToolManager toolManager;
 	private transient DiagramManager diagramManager;
@@ -157,11 +160,21 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	/**
 	 * Adds the main toolbar
 	 */
-	private void installMainToolBar() {
+	private void installMainToolBar() 
+	{		
 		mainToolBar = new MainToolbar();
 		mainToolBar.addCommandListener(this);
 		mainToolBar.addCommandListener(diagramManager.getEditorDispatcher());
-		this.getContentPane().add(mainToolBar.getToolbar(), BorderLayout.NORTH);
+		secondaryToolBar = new SecondaryToolbar(this);
+		secondaryToolBar.addCommandListener(this);
+		secondaryToolBar.addCommandListener(diagramManager.getEditorDispatcher());		
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout(5,5));
+		panel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		panel.add(mainToolBar.getToolbar(), BorderLayout.WEST);
+		panel.add(secondaryToolBar.getToolbar(), BorderLayout.EAST);
+		this.getContentPane().add(panel, BorderLayout.NORTH);
+		//this.getContentPane().add(mainToolBar.getToolbar(), BorderLayout.NORTH);
 	}
 
 	public DiagramManager getDiagramManager() {
@@ -181,6 +194,11 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public MainToolbar getMainToolBar()
 	{
 		return mainToolBar;
+	}
+	
+	public SecondaryToolbar getSecondaryBar()
+	{
+		return secondaryToolBar;
 	}
 	
 	public static int GetScreenWorkingWidth() {
@@ -226,7 +244,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		browserArea.setDividerLocation(GetScreenWorkingWidth()-250);
 		browserArea.setResizeWeight(1);
 		
-		toolManager.setMinimumSize(new Dimension(0,0));		
+		toolManager.setMinimumSize(new Dimension(0,0));	
+		toolManager.setPreferredSize(new Dimension(230,300));
 		toolArea.add(toolManager.getPalleteAccordion(), JSplitPane.LEFT);
 		toolArea.add(diagramManager, JSplitPane.RIGHT);
 		toolArea.setDividerLocation(0.0d);
