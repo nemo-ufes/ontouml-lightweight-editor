@@ -61,7 +61,6 @@ import RefOntoUML.DataType;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
@@ -86,7 +85,7 @@ public class Transformer {
 	
 	private IRI ontologyIRI;
 	private OWLOntology ontology;
-	private Model model;
+	private Package model;
 	private OWLOntologyManager manager; 
 	private Map<Element, Object> owlMappings; 	//Keep track of the mapped items
 	private Map<Element, Set<String>> owlAnnotations; 	//Keep track of the elements' annotations 
@@ -97,7 +96,7 @@ public class Transformer {
 	 * @param model - the model to be transformed
 	 * @throws OWLOntologyCreationException
 	 */
- 	public Transformer(String ontologyIRI, Model model) throws OWLOntologyCreationException {
+ 	public Transformer(String ontologyIRI, Package model) throws OWLOntologyCreationException {
 		
 		this.model = model;
 		owlMappings = new HashMap<Element, Object>();

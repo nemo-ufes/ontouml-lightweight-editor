@@ -7,7 +7,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import br.ufes.inf.nemo.ontouml2simpleowl.transform.Transformer;
 
-import RefOntoUML.Model;
 
 /***
  * This class aims to provide a simple alternative for transforming a RefontoUML
@@ -42,7 +41,7 @@ public class OntoUML2SimpleOWL {
 	 * @return OWL ontology
 	 * @throws OWLOntologyCreationException
 	 */
-	public static String Transformation(Model model, String ontologyIRI) {
+	public static String Transformation(RefOntoUML.Package model, String ontologyIRI) {
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			OWLXMLOntologyFormat owlxmlFormat = new OWLXMLOntologyFormat();

@@ -23,10 +23,10 @@ public class OWLHelper {
     		String owlOutput;
     		if(mappingType == null)
     		{
-    			owlOutput = OntoUML2SimpleOWL.Transformation((RefOntoUML.Model)model, ontologyIRI);
+    			owlOutput = OntoUML2SimpleOWL.Transformation(model, ontologyIRI);
     		}else if(mappingType.equals(MappingType.RULES)){
     			OntoUML2OWL ontoUML2OWL = new OntoUML2OWL();
-    			owlOutput = ontoUML2OWL.Transformation((RefOntoUML.Model)model, ontologyIRI, oclRules);
+    			owlOutput = ontoUML2OWL.Transformation(model, ontologyIRI, oclRules);
     			errors = ontoUML2OWL.errors;
     		}else
     		{
@@ -50,22 +50,22 @@ public class OWLHelper {
 					fileManager.write(owlOutput);
 					fileManager.done();
 					
-					return new OperationResult(ResultType.SUCESS, "OWL generated successfully" + errors, new Object[] { owlFileName });
+					return new OperationResult(ResultType.SUCESS, errors + "\n\nOWL generated successfully", new Object[] { owlFileName });
 				}
 				else
 				{
-					return new OperationResult(ResultType.SUCESS, "OWL generated successfully" + errors, new Object[] { owlOutput });
+					return new OperationResult(ResultType.SUCESS, errors + "\n\nOWL generated successfully", new Object[] { owlOutput });
 				}
     		}
     		else
     		{
-    			return new OperationResult(ResultType.ERROR, "No OWL generated" + errors, null);
+    			return new OperationResult(ResultType.ERROR, errors + "\n\nNo OWL generated", null);
     		}
     	}
     	catch (Exception ex)
     	{
     		ex.printStackTrace();
-    		return new OperationResult(ResultType.ERROR, "Error while generating the OWL for the model. Details: " + ex.getMessage() + errors, null);
+    		return new OperationResult(ResultType.ERROR, "Error while generating the OWL for the model. \nDetails: " + ex.getMessage() + errors, null);
     	}
 	}
 }
