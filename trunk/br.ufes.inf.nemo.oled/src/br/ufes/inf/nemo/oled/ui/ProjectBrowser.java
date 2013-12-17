@@ -99,8 +99,11 @@ public class ProjectBrowser extends JPanel{
 		{
 			indexActualFind=0;			
 		}
-		getTree().select(resultFindList.get(indexActualFind));			
-		indexActualFind++;		
+		if(resultFindList.size()>0){
+			getTree().select(resultFindList.get(indexActualFind));
+			indexActualFind++;
+		}
+				
 	}
 	
 	public void find(String text)

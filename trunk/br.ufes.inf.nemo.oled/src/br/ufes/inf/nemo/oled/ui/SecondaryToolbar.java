@@ -59,12 +59,12 @@ public class SecondaryToolbar implements ActionListener {
 		findField.getDocument().addDocumentListener(new DocumentListener() {			
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
-				
+				frame.getDiagramManager().find();
 			}
 			
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
-				
+				frame.getDiagramManager().find();
 			}
 			
 			@Override
