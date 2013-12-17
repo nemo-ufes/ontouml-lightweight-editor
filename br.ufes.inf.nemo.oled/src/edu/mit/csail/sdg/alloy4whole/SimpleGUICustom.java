@@ -32,8 +32,6 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.File;
@@ -74,7 +72,6 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -90,7 +87,6 @@ import edu.mit.csail.sdg.alloy4.ErrorFatal;
 import edu.mit.csail.sdg.alloy4.ErrorType;
 import edu.mit.csail.sdg.alloy4.Listener;
 import edu.mit.csail.sdg.alloy4.MacUtil;
-import edu.mit.csail.sdg.alloy4.MailBug;
 import edu.mit.csail.sdg.alloy4.OurAntiAlias;
 import edu.mit.csail.sdg.alloy4.OurBorder;
 import edu.mit.csail.sdg.alloy4.OurCombobox;
@@ -1764,7 +1760,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     	if(themepath!=null) themePath = themepath;
     	
         // Register an exception handler for uncaught exceptions
-        MailBug.setup();
+        //MailBug.setup();
 
         // Enable better look-and-feel
         if (Util.onMac() || Util.onWindows()) {
@@ -2059,23 +2055,23 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
         }*/
 
         // Periodically ask the MailBug thread to see if there is a newer version or not
-        final long now = System.currentTimeMillis();
-        final Timer t = new Timer(800, null);
-        t.addActionListener(new ActionListener() {
-           public void actionPerformed(ActionEvent e) {
-              int n = MailBug.latestBuildNumber();
-              // If beyond 3 seconds, then we should stop because the log message may run into other user messages
-              if (System.currentTimeMillis() - now >= 3000 || n <= Version.buildNumber()) { t.stop(); return; }
-              latestAlloyVersion = n;
-              latestAlloyVersionName = MailBug.latestBuildName();
-              log.logBold("An updated version of the Alloy Analyzer has been released.\n");
-              log.log("Please visit alloy.mit.edu to download the latest version:\nVersion " + latestAlloyVersionName + "\n");
-              log.logDivider();
-              log.flush();
-              t.stop();
-          }
-        });
-        t.start();
+//        final long now = System.currentTimeMillis();
+//        final Timer t = new Timer(800, null);
+//        t.addActionListener(new ActionListener() {
+//           public void actionPerformed(ActionEvent e) {
+//              int n = MailBug.latestBuildNumber();
+//              // If beyond 3 seconds, then we should stop because the log message may run into other user messages
+//              if (System.currentTimeMillis() - now >= 3000 || n <= Version.buildNumber()) { t.stop(); return; }
+//              latestAlloyVersion = n;
+//              latestAlloyVersionName = MailBug.latestBuildName();
+//              log.logBold("An updated version of the Alloy Analyzer has been released.\n");
+//              log.log("Please visit alloy.mit.edu to download the latest version:\nVersion " + latestAlloyVersionName + "\n");
+//              log.logDivider();
+//              log.flush();
+//              t.stop();
+//          }
+//        });
+//        t.start();
     }
 
     /** {@inheritDoc} */

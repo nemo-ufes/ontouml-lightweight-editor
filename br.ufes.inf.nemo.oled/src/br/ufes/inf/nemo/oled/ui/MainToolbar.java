@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
@@ -67,25 +68,25 @@ public class MainToolbar implements ActionListener {
 		toolbar.addSeparator();
 		createButton("warning");
 		createButton("error");
+		toolbar.addSeparator();
 		createButton("verify");
+		toolbar.addSeparator();		
+		createButton("antipattern");
 		toolbar.addSeparator();		
 		createButton("generatealloy");
 		createButton("generateowlsettings");
 		createButton("generatesbvr");
 		createButton("generatetext");
-		toolbar.addSeparator();
-		createButton("antipattern");
-		//toolbar.addSeparator();
-		//createButton("assistant");
 		
 		enableButton("UNDO", false);
 		enableButton("REDO", false);
 		enableButton("CUT", false);
 		enableButton("COPY", false);
 		enableButton("PASTE", false);
-		enableButton("DELETE", false);
+		enableButton("DELETE", true);
 	
 		toolbar.setFloatable(false);
+		toolbar.setMargin(new Insets(5,5,5,5));
 	}
 
 	/**
