@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.ocl.ParserException;
 
 import RefOntoUML.Model;
+import RefOntoUML.Package;
 import br.ufes.inf.nemo.common.resource.RefOntoUMLResourceFactoryImpl;
 import br.ufes.inf.nemo.ontouml2owl_swrl.ontouml2owl_swrl.Transformer;
 
@@ -24,7 +25,7 @@ public class OntoUML2OWL {
 	 * @throws ParserException 
 	 * @throws OWLOntologyCreationException
 	 */
-	public String Transformation(Model ecoreModel, String nameSpace, String oclRules) throws ParserException, Exception {
+	public String Transformation(Package ecoreModel, String nameSpace, String oclRules) throws ParserException, Exception {
 		Transformer transformer = new Transformer(nameSpace);
 		String transform = transformer.transform(ecoreModel, oclRules);
 		this.errors = transformer.getErrors();

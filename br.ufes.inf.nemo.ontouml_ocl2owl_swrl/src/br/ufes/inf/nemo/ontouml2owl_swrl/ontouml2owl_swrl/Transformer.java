@@ -47,6 +47,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.SWRLAtom;
+import org.semanticweb.owlapi.model.SWRLObjectPropertyAtom;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLVariable;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
@@ -136,7 +137,7 @@ public class Transformer {
 	/**
 	 * Initialize some variables used in many methods 
 	 * */
-	private void init(RefOntoUML.Model model) {
+	private void init(RefOntoUML.Package model) {
 		ontoParser = new OntoUMLParser(model);
 		lstOntClass = ontoParser.getAllInstances(RefOntoUML.Class.class);
 		lstGenSets = ontoParser.getAllInstances(GeneralizationSet.class);
@@ -163,7 +164,7 @@ public class Transformer {
 	 * @return a String with the OWL code
 	 * @throws Exception 
 	 */
-	public String transform(RefOntoUML.Model ecoreModel, String oclRules) throws Exception {
+	public String transform(RefOntoUML.Package ecoreModel, String oclRules) throws Exception {
 		init(ecoreModel);
 
 		try{
@@ -324,7 +325,9 @@ public class Transformer {
 
 	private void processDisjointDataType() {
 		for (Class cls : hashDataProperty.keySet()) {
-			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointDataPropertiesAxiom(hashDataProperty.get(cls))));
+			if(hashDataProperty.get(cls).size() > 1){
+				manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointDataPropertiesAxiom(hashDataProperty.get(cls))));
+			}
 		}
 	}
 
@@ -544,6 +547,9 @@ public class Transformer {
 
 				//Get the triple <Mediation,Material,Mediation>
 				for (MaterialAssociation material : materials) {
+					//Clean up the variables
+					mediation0 = null;
+					mediation1 = null;
 					for (Mediation mediation : mediations) {
 						//Verify source of the material
 						if(material.getMemberEnd().get(0).getType().equals(mediation.getMemberEnd().get(0).getType()) 
@@ -607,8 +613,10 @@ public class Transformer {
 		antecedent.add(typeOfMaterialSource); //A(?x)
 		antecedent.add(typeOfMaterialDestiny); //B(?y)
 		antecedent.add(typeOfRelator); //relator(?z)
-		antecedent.add(factory.getSWRLObjectPropertyAtom(propMediation0, varRelator, varMaterialSource)); //propMediation0(?x,?z)
-		antecedent.add(factory.getSWRLObjectPropertyAtom(propMediation1, varRelator, varMaterialDestiny)); //propMediation1(?z,?y)
+		SWRLObjectPropertyAtom sopa = factory.getSWRLObjectPropertyAtom(propMediation0, varRelator, varMaterialSource); 
+		antecedent.add(sopa); //propMediation0(?x,?z)
+		sopa = factory.getSWRLObjectPropertyAtom(propMediation1, varRelator, varMaterialDestiny);
+		antecedent.add(sopa); //propMediation1(?z,?y)
 
 		Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
 		consequent.add(factory.getSWRLObjectPropertyAtom(propMaterial, varMaterialSource, varMaterialDestiny)); //propMaterial(?x,?y)
@@ -1166,7 +1174,11 @@ public class Transformer {
 					_OWLownerClass = getOwlClass(ontCls);
 					_RefOntoOwnerClass = ontCls;
 					createAttribute(prop);
+
+					//Clean up variables
 					_attributeName = "";
+					_upperCard = 0;
+					_lowerCard = 0;
 				}
 			}
 		}
@@ -1179,16 +1191,19 @@ public class Transformer {
 	private OWLClass _OWLownerClass = null;
 	private RefOntoUML.Class _RefOntoOwnerClass = null;
 	private Property _prop = null;
+	private int _upperCard = 1;
+	private int _lowerCard = 1;
+
 
 
 	/**
 	 * Used to create the Class attributes
 	 * */
 	private void createAttribute(Property prop) {
-		
+
 		OWLDatatype tipoAtributo = null;
 		OWLDataProperty atributo = null;
-		
+
 		//If the type of this property isn't in the model.
 		if(prop == null){
 			//Than create a generic type for this property (RDFS_LITERAL)
@@ -1198,6 +1213,8 @@ public class Transformer {
 		}else{
 			_prop = prop;
 			String _aux = "";
+			int _auxUpper = _upperCard;
+			int _auxLower = _lowerCard;
 			tipoAtributo = getDataTypeRange(prop.getType());
 			if(tipoAtributo == null){
 				//Isn't a simple DataType
@@ -1210,6 +1227,14 @@ public class Transformer {
 					_aux = _attributeName;
 					//concat the name of the current property
 					_attributeName+="."+getPropertyName(prop);
+				}
+
+				//Used for structured datatypes 
+				_lowerCard *= prop.getLower();
+				if(_upperCard == -1 || prop.getUpper() == -1){
+					_upperCard = -1;
+				}else{
+					_upperCard *= prop.getUpper();
 				}
 
 				processDataTypeProperty(prop);
@@ -1233,7 +1258,7 @@ public class Transformer {
 				}
 			}
 		}
-		
+
 		hashDataProperty.get(_RefOntoOwnerClass).add(atributo);
 
 		//Set the Range of the DataProperty
@@ -1244,10 +1269,13 @@ public class Transformer {
 
 		OWLDataPropertyDomainAxiom axDomain = factory.getOWLDataPropertyDomainAxiom(atributo, _OWLownerClass);
 		manager.applyChange(new AddAxiom(ontology, axDomain));
-		
-		//Solving the cardinality of the attribute			
+
+		//Solving the cardinality of the attribute
+		//		int upperCard = _upperCard;
+		//		int lowerCard = _lowerCard;
+
 		int upperCard = prop.getUpper();
-		int lowerCard = prop.getLower();			
+		int lowerCard = prop.getLower();
 
 		OWLEquivalentClassesAxiom ax = null;
 		OWLSubClassOfAxiom sax = null; 
