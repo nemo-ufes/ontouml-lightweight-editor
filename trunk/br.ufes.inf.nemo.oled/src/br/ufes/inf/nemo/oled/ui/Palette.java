@@ -118,7 +118,8 @@ public class Palette extends JPanel
 			}	
 		}
 		
-		parent.getFrame().getDiagramManager().getCurrentDiagramEditor().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		if(parent.getFrame().getDiagramManager().getCurrentDiagramEditor()!=null)
+			parent.getFrame().getDiagramManager().getCurrentDiagramEditor().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		selectedElement = item;
 		parent.NotifySelection(item);
