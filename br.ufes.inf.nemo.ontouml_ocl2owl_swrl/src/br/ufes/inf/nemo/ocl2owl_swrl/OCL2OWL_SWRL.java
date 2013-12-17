@@ -15,6 +15,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonInitialized;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonSupported;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnexpectedOperator;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.ExpressionInOCLImplFactory;
 import br.ufes.inf.nemo.ocl2owl_swrl.tags.Tag;
 
@@ -149,12 +150,9 @@ public class OCL2OWL_SWRL {
 		int blockEnd = oclRules.indexOf("--@");
 		OCLParser oclParser  = null;
 		
-		try{
 		//create a ocl parser to create a referent uml model based on the ontouml model
 		oclParser = new OCLParser(ontoParser, null, null);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+
 		while(true){
 			//if doesn't exist more tags, the of block is setted as the end of the oclRules
 			if(blockEnd < 0){
@@ -167,6 +165,8 @@ public class OCL2OWL_SWRL {
 			
 			//since the string "--@" starts at the blockBegin, the tag name will end at the occurrence of '\n'
 			int endOfTag = oclRules.indexOf("\n", blockBegin);
+			int iTag = oclRules.indexOf("--@", blockBegin);
+			if(iTag >= endOfTag || iTag >= blockEnd){endOfTag=0;}
 			//get the tag and replace all unexpected chars
 			String tag = oclRules.substring(blockBegin, endOfTag);
 			tag = tag.replace("--@", "");
@@ -174,6 +174,9 @@ public class OCL2OWL_SWRL {
 			tag = tag.replace("\r", "");
 			tag = tag.replace(" ", "");
 			tag = tag.toLowerCase();
+			if(tag.equals("transitive")){
+				System.out.println();
+			}
 			//get the block of rules desconsidering the tag
 			String strBlockOclConstraints = oclRules.substring(endOfTag, blockEnd);
 			
@@ -233,6 +236,10 @@ public class OCL2OWL_SWRL {
 						exprFactory.solve(stereotype, this.ontoParser, this.nameSpace, this.manager, this.factory, this.ontology, antecedent, consequent, null, false, 1, false);
 						//increment the successfully transformed rules
 						successfullyTransformedRules++;
+					}catch(UnexpectedOperator un){
+						//increment the error message and the unsuccessfully transformed rules
+						this.errors += un.getMessage() + "\n";
+						unsuccessfullyTransformedRules++;
 					}catch (Exception e) {
 						//increment the error message and the unsuccessfully transformed rules
 						this.errors += e.getMessage() + "\n";
