@@ -22,7 +22,7 @@ public class OutcomeFixer {
 	
 	public OutcomeFixer(DiagramEditor editor)
 	{
-		this.diagramEditor = editor;
+		this.diagramEditor = editor;		
 		this.project = this.diagramEditor.getDiagram().getProject();
 		this.manager = diagramEditor.getDiagramManager();
 		this.diagramFactory = this.diagramEditor.getDiagram().getElementFactory();
@@ -35,7 +35,7 @@ public class OutcomeFixer {
 	 * @param element: elem to be changed
 	 * @param stereotype: new stereotype
 	 */
-	public RefOntoUML.Element changeStereotypeFromModel(RefOntoUML.Element element, ElementType stereotype)
+	public RefOntoUML.Element changeStereotype(RefOntoUML.Element element, ElementType stereotype)
 	{
 		//Create new element with given stereotype
 		RefOntoUML.Type newElement = ModelHelper.createType(stereotype, ((Classifier)element).getName());
@@ -43,7 +43,7 @@ public class OutcomeFixer {
 		//Add element to the model and its parser
 		element.eContainer().eContents().add(newElement);
 		
-		//Make model elements reference the new element
+		//Make model elements refer the new element
 		for(Relationship r: refparser.getAllInstances(RefOntoUML.Relationship.class))
 		{
 			if(r instanceof Generalization){
@@ -59,6 +59,7 @@ public class OutcomeFixer {
 		}
 
 		//Delete old element with old stereotype of the model
+		
 		//manager.deleteFromCurrentModel(element);
 		
 		return newElement;

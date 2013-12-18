@@ -104,46 +104,56 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	}
 
 	/**
-	 * deletion
-	 * @param elements
+	 * {@inheritDoc}
 	 */
-	public void delete(Collection<DiagramElement> elements)
-	{
-		for (DiagramElement element : elements) 
+	public void run() {
+
+		ArrayList<DiagramElement> bidingConnections = new ArrayList<DiagramElement>();
+				
+		for (DiagramElement elem : diagramElementList) 
 		{			
-			if(deleteFromModel){
-				if(element instanceof ClassElement)
-				{
-					ClassElement classElement = (ClassElement) element;
-					deleteFromModel(classElement.getClassifier());
-				}			
-				else if(element instanceof BaseConnection)
-				{
-					BaseConnection connection = (BaseConnection) element;				
-					deleteFromModel(connection.getRelationship());
+			if (elem instanceof Connection) {  for (Connection c: ((Connection)elem).getConnections()) { bidingConnections.add(c); } }
+		}
+				
+		delete(bidingConnections, ModelHelper.getElements(bidingConnections));
+		delete(diagramElementList, elementList);			
+	}
+	
+	/**
+	 * deletion
+	 * @param diagramElemList
+	 */
+	public void delete(Collection<DiagramElement> diagramElemList, Collection<Element> elemList)
+	{
+		if(deleteFromModel){
+			for(Element elem: elemList)
+			{				
+				deleteFromModel(elem);
+
+				if(deleteFromModel && deleteFromDiagram){
+					ModelHelper.removeMapping(elem);
 				}
 			}
+		}
 		
-			if(deleteFromDiagram)
+		if(deleteFromDiagram)
+		{
+			for (DiagramElement element : diagramElemList) 
 			{			
 				deleteFromDiagram(element);
 			}
-				
-			if(deleteFromModel && deleteFromDiagram){
-				ModelHelper.removeMapping(element);
-			}
-			
-			//FIXME - Removes the inferred elements. After creating the visual objects, use the delete command.			
-			ArrayList<Element> inferred = ProjectBrowser.getInferences(project).getInferredElements();			
-			OntoUMLParser parser = ProjectBrowser.getParserFor(project);
-			for (Element e : inferred) {
-				parser.removeElement(e);
-			}		
-			
-			//triggers the search for errors and warnings in the model
-			ProjectBrowser.frame.getDiagramManager().searchWarnings();
-			ProjectBrowser.frame.getDiagramManager().searchErrors();
+		}	
+					
+		//FIXME - Removes the inferred elements. After creating the visual objects, use the delete command.			
+		ArrayList<Element> inferred = ProjectBrowser.getInferences(project).getInferredElements();			
+		OntoUMLParser parser = ProjectBrowser.getParserFor(project);
+		for (Element e : inferred) {
+			parser.removeElement(e);
 		}		
+		
+		//triggers the search for errors and warnings in the model
+		ProjectBrowser.frame.getDiagramManager().searchWarnings();
+		ProjectBrowser.frame.getDiagramManager().searchErrors();				
 	}
 	
 	/**
@@ -226,22 +236,6 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		ProjectBrowser.rebuildTree(project);
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	public void run() {
-
-		ArrayList<DiagramElement> bidingConnections = new ArrayList<DiagramElement>();
-				
-		for (DiagramElement elem : diagramElementList) 
-		{			
-			if (elem instanceof Connection) {  for (Connection c: ((Connection)elem).getConnections()) { bidingConnections.add(c); } }
-		}
-				
-		delete(bidingConnections);
-		delete(diagramElementList);			
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */

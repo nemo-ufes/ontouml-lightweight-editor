@@ -356,9 +356,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{		
 		if (manager.isProjectLoaded()==false) return;
 		
-		manager.getCurrentDiagramEditor().undo();
+		if(manager.getCurrentDiagramEditor()!=null) manager.getCurrentDiagramEditor().undo();
 		
-		//This method recreates the tree
+		//FIXME - Do not rebuild the tree, only update it!			
 		ProjectBrowser.rebuildTree(manager.getCurrentProject());
 	}
 	
@@ -373,9 +373,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{
 		if (manager.isProjectLoaded()==false) return;
 		
-		manager.getCurrentDiagramEditor().redo();
+		if(manager.getCurrentDiagramEditor()!=null) manager.getCurrentDiagramEditor().redo();
 		
-		//This method recreates the tree
+		//FIXME - Do not rebuild the tree, only update it!			
 		ProjectBrowser.rebuildTree(manager.getCurrentProject());
 	}
 		
