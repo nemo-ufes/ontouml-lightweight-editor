@@ -1173,12 +1173,13 @@ public class Transformer {
 					//Set the owner class of the datatype
 					_OWLownerClass = getOwlClass(ontCls);
 					_RefOntoOwnerClass = ontCls;
+					_upperCard.add(1);
+					_lowerCard.add(1);
 					createAttribute(prop);
-
 					//Clean up variables
 					_attributeName = "";
-					_upperCard = 0;
-					_lowerCard = 0;
+					_upperCard = new ArrayList<Integer>();
+					_lowerCard = new ArrayList<Integer>();
 				}
 			}
 		}
@@ -1191,10 +1192,8 @@ public class Transformer {
 	private OWLClass _OWLownerClass = null;
 	private RefOntoUML.Class _RefOntoOwnerClass = null;
 	private Property _prop = null;
-	private int _upperCard = 1;
-	private int _lowerCard = 1;
-
-
+	private ArrayList<Integer> _upperCard = new ArrayList<Integer>();
+	private ArrayList<Integer> _lowerCard = new ArrayList<Integer>();
 
 	/**
 	 * Used to create the Class attributes
@@ -1210,11 +1209,15 @@ public class Transformer {
 			tipoAtributo = factory.getOWLDatatype(OWL2Datatype.RDFS_LITERAL.getIRI());
 			atributo = factory.getOWLDataProperty(IRI.create(_attributeName));
 			prop = _prop;
+			//Removing the current cardinality
+			if(_lowerCard.size() > 1){
+				_lowerCard.remove(_lowerCard.size()-1);
+				_upperCard.remove(_upperCard.size()-1);
+			}
 		}else{
 			_prop = prop;
 			String _aux = "";
-			int _auxUpper = _upperCard;
-			int _auxLower = _lowerCard;
+
 			tipoAtributo = getDataTypeRange(prop.getType());
 			if(tipoAtributo == null){
 				//Isn't a simple DataType
@@ -1230,14 +1233,16 @@ public class Transformer {
 				}
 
 				//Used for structured datatypes 
-				_lowerCard *= prop.getLower();
-				if(_upperCard == -1 || prop.getUpper() == -1){
-					_upperCard = -1;
-				}else{
-					_upperCard *= prop.getUpper();
-				}
+				_lowerCard.add(prop.getLower());
+				_upperCard.add(prop.getUpper());
 
 				processDataTypeProperty(prop);
+				
+				//Removing the current cardinality
+				if(_lowerCard.size() > 1){
+					_lowerCard.remove(_lowerCard.size()-1);
+					_upperCard.remove(_upperCard.size()-1);
+				}
 				//returning a level of the chain of datatypes
 				_attributeName = _aux;
 				return;
@@ -1252,13 +1257,12 @@ public class Transformer {
 					atributo = factory.getOWLDataProperty(IRI.create(_attributeName));
 					_attributeName = _aux;
 				}
-
-				if(!hashDataProperty.containsKey(_RefOntoOwnerClass)){
-					hashDataProperty.put(_RefOntoOwnerClass, new HashSet<OWLDataProperty>());
-				}
 			}
 		}
 
+		if(!hashDataProperty.containsKey(_RefOntoOwnerClass)){
+			hashDataProperty.put(_RefOntoOwnerClass, new HashSet<OWLDataProperty>());
+		}
 		hashDataProperty.get(_RefOntoOwnerClass).add(atributo);
 
 		//Set the Range of the DataProperty
@@ -1266,17 +1270,30 @@ public class Transformer {
 		manager.applyChange(new AddAxiom(ontology, axRange));
 
 		//set the owner of this datatype (Domain)
-
 		OWLDataPropertyDomainAxiom axDomain = factory.getOWLDataPropertyDomainAxiom(atributo, _OWLownerClass);
 		manager.applyChange(new AddAxiom(ontology, axDomain));
 
 		//Solving the cardinality of the attribute
-		//		int upperCard = _upperCard;
-		//		int lowerCard = _lowerCard;
+		int upperCard = 1;
+		int lowerCard = 1;
 
-		int upperCard = prop.getUpper();
-		int lowerCard = prop.getLower();
-
+		//Multiply all last cardinality
+		for(int i = 0; i < _lowerCard.size(); i++){
+			lowerCard *= _lowerCard.get(i);
+			if(upperCard == -1 || _upperCard.get(i) == -1){
+				upperCard = -1;
+			}else{
+				upperCard *= _upperCard.get(i);
+			}
+		}
+		
+		if(upperCard ==-1 || prop.getUpper() == -1){
+			upperCard = -1;
+		}else{
+			upperCard *= prop.getUpper();
+		}
+		lowerCard *= prop.getLower();
+		
 		OWLEquivalentClassesAxiom ax = null;
 		OWLSubClassOfAxiom sax = null; 
 
@@ -1321,20 +1338,24 @@ public class Transformer {
 	 */
 	private void processDataTypeProperty(Property prop){
 		int c = 0;
+		boolean f = false;
 		for(DataType dt:lstDataType){	
 			//search in all datatypes from the model
-			//System.out.println(prop.getType().getName()+"--"+dt.getName());
 			if(dt.getName().equals(prop.getType().getName())){
 				for (Property dtProp : dt.getAttribute()) {
 					createAttribute(dtProp);
+					f = true;
+				}
+				if(f){
+					return;
 				}
 				c++;
 			}
 		}
-		if(c==1){
+//		if(c==1){
 			errors += "Unknown datatype "+_attributeName.substring(_attributeName.indexOf("#")+1)+" of (class "+getName(_RefOntoOwnerClass)+") mapped to OWL Literal;\n";
 			createAttribute(null);
-		}
+//		}
 	}
 
 	/**
