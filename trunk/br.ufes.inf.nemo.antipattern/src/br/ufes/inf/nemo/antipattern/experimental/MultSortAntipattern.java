@@ -8,9 +8,9 @@ import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class MultSortInhAntipattern extends Antipattern<MultSortInhOccurrence> {
+public class MultSortAntipattern extends Antipattern<MultSortOccurrence> {
 
-	public MultSortInhAntipattern(OntoUMLParser parser) throws NullPointerException {
+	public MultSortAntipattern(OntoUMLParser parser) throws NullPointerException {
 		super(parser);
 	}
 	
@@ -33,7 +33,7 @@ public class MultSortInhAntipattern extends Antipattern<MultSortInhOccurrence> {
 	}
 	
 	@Override
-	public ArrayList<MultSortInhOccurrence> identify() {
+	public ArrayList<MultSortOccurrence> identify() {
 		ArrayList<SortalClass> query_result;
 		
 		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, SortalClass.class);
@@ -42,7 +42,7 @@ public class MultSortInhAntipattern extends Antipattern<MultSortInhOccurrence> {
 		{
 			try {
 				
-					MultSortInhOccurrence occurrence = new MultSortInhOccurrence(subtype, this.parser);
+					MultSortOccurrence occurrence = new MultSortOccurrence(subtype, this.parser);
 					super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Provided information does not characterize an occurrence of the anti-pattern!");
