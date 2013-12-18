@@ -281,6 +281,17 @@ public class ModelHelper {
 	  }
 	  
 	  /**
+	   * Create a Type with the given stereotype which contains all the features of the given Type.
+	   */
+	  public static RefOntoUML.Type createType(ElementType elementType, RefOntoUML.Type type)
+	  {
+		  RefOntoUML.Type newType = createType(elementType,type.getName());
+		  newType.setVisibility(type.getVisibility());
+		  ((Classifier)newType).setIsAbstract(((Classifier)type).isIsAbstract());
+		  return newType;
+	  }
+	  
+	  /**
 	   * Create only the RefOntoUML Relationship element and do not create the referred UmlConnection on the Diagram.
 	   */
 	  public static RefOntoUML.Relationship createRelationship(RelationType relationType, String name)
