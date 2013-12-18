@@ -25,7 +25,6 @@ package br.ufes.inf.nemo.oled.ui.diagram.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 
@@ -47,14 +46,12 @@ import RefOntoUML.impl.componentOfImpl;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
+import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
-import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
-import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 
@@ -67,10 +64,14 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 public class AddConnectionCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = 2924451842640450250L;
-	private DiagramElement element;
+	private DiagramElement diagramElement;
+	@SuppressWarnings("unused")
+	private RefOntoUML.Element relationship;
 	private CompositeElement parent;
 	private Classifier source;
 	private Classifier target;
+	private boolean addToModel;
+	private boolean addToDiagram;
 
 	/**
 	 * Constructor.
@@ -80,11 +81,14 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 * @param aTarget 
 	 * @param aSource 
 	 */
-	public AddConnectionCommand(DiagramNotification editorNotification, CompositeElement parent, UmlConnection conn, Classifier aSource, Classifier aTarget, UmlProject project) {
+	public AddConnectionCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element relationship, Classifier aSource, Classifier aTarget, UmlProject project, boolean addToModel, boolean addToDiagram) {
 		this.parent = parent;
 		this.project = project;
 		this.notification = editorNotification;
-		element = conn;
+		this.addToModel = addToModel;
+		this.addToDiagram = addToDiagram;
+		this.relationship = relationship;
+		diagramElement = ModelHelper.getDiagramElement(relationship);
 		source = aSource;
 		target = aTarget;
 	}
@@ -96,8 +100,8 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	public void undo() {
 		super.undo();
 				
-		if (element instanceof BaseConnection) {
-			BaseConnection connection = (BaseConnection) element;
+		if (diagramElement instanceof BaseConnection) {
+			BaseConnection connection = (BaseConnection) diagramElement;
 			
 			if (connection.getRelationship() instanceof GeneralizationImpl == false)
 			{
@@ -110,9 +114,9 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			}
 		}
 				
-		parent.removeChild(element);
+		parent.removeChild(diagramElement);
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		elements.add(element);
+		elements.add(diagramElement);
 		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);
 	}
 
@@ -131,10 +135,12 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 */
 	public void run() {
 	    
+		if (addToDiagram && !addToModel) return;
+		
 		//Adds the element to the model
-		if (element instanceof BaseConnection) {
+		if (diagramElement instanceof BaseConnection) {
 			
-			BaseConnection connection = (BaseConnection) element;
+			BaseConnection connection = (BaseConnection) diagramElement;
 			
 			if (connection.getRelationship() instanceof GeneralizationImpl)
 			{
@@ -146,76 +152,68 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			{
 				AssociationImpl association  = (AssociationImpl) connection.getRelationship();
 												
-	    		Property node1Property, node2Property;
-	    		
-	    		node1Property = ModelHelper.getDefaultOwnedEnd(source, 1, 1);
-	    		
+	    		Property node1Property, node2Property;	    		
+	    		node1Property = ModelHelper.getDefaultOwnedEnd(source, 1, 1);	    		
 	    		//If the association is a ComponentOf, set the default cardinality to 2..*, to help in validation
-	    		if(association instanceof componentOfImpl)
-	    			node2Property = ModelHelper.getDefaultOwnedEnd(target, 2, -1);
-	    		else
-	    			node2Property = ModelHelper.getDefaultOwnedEnd(target, 1, 1);
+	    		if(association instanceof componentOfImpl) node2Property = ModelHelper.getDefaultOwnedEnd(target, 2, -1);
+	    		else node2Property = ModelHelper.getDefaultOwnedEnd(target, 1, 1);
 	    		
 	    		if(association instanceof MeronymicImpl)
 	    		{
-	    			if(((Meronymic)association).isIsShareable())
-	    			{
-	    				node1Property.setAggregation(AggregationKind.SHARED);
-	    			}
-	    			else
-	    			{
-	    				node1Property.setAggregation(AggregationKind.COMPOSITE);
-	    			}	
+	    			if(((Meronymic)association).isIsShareable()) node1Property.setAggregation(AggregationKind.SHARED);	    			
+	    			else node1Property.setAggregation(AggregationKind.COMPOSITE);	    				
 	    		}
 	    		
-	    		String node1Name = node1Property.getType().getName();
+	    		String node1Name = node1Property.getType().getName();	    		
+	    		if(node1Name==null || node1Name.trim().isEmpty()) node1Name = "source";
+	    		else node1Name = node1Name.trim().toLowerCase();
 	    		
-	    		if(node1Name==null || node1Name.trim().isEmpty())
-	    			node1Name = "source";
-	    		else
-	    			node1Name = node1Name.trim().toLowerCase();
-	    		
-	    		String node2Name = node2Property.getType().getName();
-	    		
-	    		if(node2Name==null || node2Name.trim().isEmpty())
-	    			node2Name = "target";
-	    		else
-	    			node2Name = node2Name.trim().toLowerCase();
+	    		String node2Name = node2Property.getType().getName();	    		
+	    		if(node2Name==null || node2Name.trim().isEmpty()) node2Name = "target";
+	    		else node2Name = node2Name.trim().toLowerCase();
 	    		
 	    		node1Property.setName(node1Name);
-	    		node2Property.setName(node2Name);
-	    		
+	    		node2Property.setName(node2Name);	    		
 	    		association.getOwnedEnd().add(node1Property);
-	    		association.getOwnedEnd().add(node2Property);
-	    		
+	    		association.getOwnedEnd().add(node2Property);	    		
 	    		association.getMemberEnd().add(node1Property);
 	    		association.getMemberEnd().add(node2Property);
 	    		
 	    		if(association instanceof DirectedBinaryAssociationImpl || association instanceof FormalAssociationImpl || association instanceof MaterialAssociationImpl)
 	    		{
 	    			association.getNavigableOwnedEnd().add(node1Property);
-	    			association.getNavigableOwnedEnd().add(node2Property);
-	    			
+	    			association.getNavigableOwnedEnd().add(node2Property);	    			
 	    			//If the association is Mediation or Characterization, set target readonly to help in validation
-	    			if(association instanceof MediationImpl || association instanceof CharacterizationImpl || association instanceof DerivationImpl)
-	    			{
-	    				node2Property.setIsReadOnly(true);
-	    			}
+	    			if(association instanceof MediationImpl || association instanceof CharacterizationImpl || association instanceof DerivationImpl) node2Property.setIsReadOnly(true);
 	    		}
 	    		else
 	    		{
-		    		if(node1Property.getType() instanceof DataTypeImpl)
-		    			association.getNavigableOwnedEnd().add(node1Property);
-		    		
-		    		if(node2Property.getType() instanceof DataTypeImpl)
-		    			association.getNavigableOwnedEnd().add(node2Property);
+		    		if(node1Property.getType() instanceof DataTypeImpl) association.getNavigableOwnedEnd().add(node1Property);	    		
+		    		if(node2Property.getType() instanceof DataTypeImpl) association.getNavigableOwnedEnd().add(node2Property);
 	    		}
 	    		
-				AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), connection.getRelationship());
-				project.getEditingDomain().getCommandStack().execute(cmd);
+	    		if(addToModel){
+	    			addToModel(connection.getRelationship());
+	    		}
 			}			
 		}
 		
+		if(addToDiagram){
+			addToDiagram(diagramElement,redo);
+		}
+		
+		//triggers the search for errors and warnings in the model
+		ProjectBrowser.frame.getDiagramManager().searchWarnings();
+		ProjectBrowser.frame.getDiagramManager().searchErrors();
+	}
+		
+	/**
+	 * Add a element to the diagram (not to the model instance behind the scenes). In fact, the element instance already exists inside the diagram element.
+	 * @param element
+	 * @param redo
+	 */
+	public void addToDiagram (DiagramElement element, boolean redo)
+	{
 		//Adds the element to the diagram
 		parent.addChild(element);
 		
@@ -224,29 +222,32 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
 		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
+	}
+	
+	/**
+	 * Add a element to the model instance behind the scenes and updates the application accordingly.
+	 * @param elem
+	 */
+	public void addToModel(RefOntoUML.Element element)
+	{
+		AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(),element);
+		project.getEditingDomain().getCommandStack().execute(cmd);
+	
+		ProjectBrowser.getParserFor(project).addElement(element);
 		
-		EObject refElem=null;
-		if (element instanceof AssociationElement){
-			
-			//Update the project tree: FIXME every modification creates a new tree
-			refElem = ((AssociationElement)element).getAssociation();
-			ProjectBrowser.getParserFor(project).addElement(refElem);
-			ProjectBrowser.rebuildTree(project);
-			//Select this element in the tree
-			ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
-			tree.selectModelElement(refElem);
-			//Include this element in the Auto Completion of OCL Editor
-			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Association)refElem);
-			
-		}else if (element instanceof GeneralizationElement){
-			
-			//Update the project tree: FIXME every modification creates a new tree
-			refElem = ((GeneralizationElement)element).getGeneralization();
-			ProjectBrowser.rebuildTree(project);
-		}		
+		//============ Updating application... ==============
 		
-		//triggers the search for errors and warnings in the model
-		ProjectBrowser.frame.getDiagramManager().searchWarnings();
-		ProjectBrowser.frame.getDiagramManager().searchErrors();
+		//FIXME - Do not rebuild the tree, only update it!
+		ProjectBrowser.rebuildTree(project);
+		
+		//Select this element in the tree
+		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
+		tree.selectModelElement(element);
+		
+		if (element instanceof RefOntoUML.Association){
+			//	Include this element in the Auto Completion of OCL Editor
+			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Association)element);
+		}
+		
 	}
 }

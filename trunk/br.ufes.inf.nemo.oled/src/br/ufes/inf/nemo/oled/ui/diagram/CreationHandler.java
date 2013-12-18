@@ -29,6 +29,8 @@ import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
+import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 
 /**
@@ -72,6 +74,10 @@ public class CreationHandler implements EditorMode {
   public void setElementType(ElementType type) {
     elementType = type;
     element = editor.getDiagram().getElementFactory().createNode(elementType);
+
+    //Add mapping from the refontouml element to the diagram element
+    ModelHelper.addMapping(((ClassElement)element).getClassifier(), element);
+    
     element.setParent(editor.getDiagram());
     cachedBounds = null;
   }
@@ -85,7 +91,7 @@ public class CreationHandler implements EditorMode {
 	  CompositeNode parent = editor.getDiagram();
 	  DiagramElement possibleParent = editor.getDiagram().getChildAt(x, y);
 	  if (isNestingCondition(possibleParent)) parent = (CompositeNode) possibleParent;
-	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, element, x, y, editor.getDiagram().getProject());
+	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), x, y, editor.getDiagram().getProject(),true,true);
 	  editor.execute(createCommand);
   }
   
@@ -108,7 +114,7 @@ public class CreationHandler implements EditorMode {
     	parent = (CompositeNode) possibleParent;
     }
     
-    AddNodeCommand createCommand = new AddNodeCommand(editor, parent, element, tmpPos.getX(), tmpPos.getY(), editor.getDiagram().getProject());
+    AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), tmpPos.getX(), tmpPos.getY(), editor.getDiagram().getProject(),true,true);
     editor.execute(createCommand);
    	  
     //CLEANUP

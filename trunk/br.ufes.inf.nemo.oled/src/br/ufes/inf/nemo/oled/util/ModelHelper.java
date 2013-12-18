@@ -114,18 +114,34 @@ public class ModelHelper {
 	//Returns true if the element was successfully added;
 	public static boolean addMapping (Element element, DiagramElement diagramElement){
 		DiagramElement result;
-		if (!initialized)
-			initializeHelper();
-		
-		if (element==null || diagramElement==null)
-			return false;
-		
-		result = mappings.put(element, diagramElement);
-		
-		if (result!=null)
-			return true;
-		else
-			return false;
+		if (!initialized) initializeHelper();		
+		if (element==null || diagramElement==null) return false;		
+		result = mappings.put(element, diagramElement);		
+		if (result!=null) return true;
+		else return false;
+	}
+	
+	public static boolean removeMapping(Element element)
+	{
+		DiagramElement result;		
+		if (!initialized) initializeHelper();		
+		if (element==null) return false;				
+		result = mappings.remove(element);		
+		if (result!=null) return true;
+		else return false;
+	}
+	
+	public static boolean removeMapping(DiagramElement element)
+	{
+		DiagramElement result;		
+		if (!initialized) initializeHelper();		
+		if (element==null) return false;
+		Element elem = getElement(element);
+		if (elem!=null) {
+			result = mappings.remove(elem);
+			if (result!=null) return true;
+		}		
+		return false;
 	}
 	
 	public static DiagramElement getDiagramElement (Element element){

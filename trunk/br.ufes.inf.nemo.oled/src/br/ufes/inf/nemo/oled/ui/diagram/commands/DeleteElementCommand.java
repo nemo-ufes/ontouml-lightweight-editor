@@ -129,6 +129,10 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				deleteFromDiagram(element);
 			}
 				
+			if(deleteFromModel && deleteFromDiagram){
+				ModelHelper.removeMapping(element);
+			}
+			
 			//FIXME - Removes the inferred elements. After creating the visual objects, use the delete command.			
 			ArrayList<Element> inferred = ProjectBrowser.getInferences(project).getInferredElements();			
 			OntoUMLParser parser = ProjectBrowser.getParserFor(project);
