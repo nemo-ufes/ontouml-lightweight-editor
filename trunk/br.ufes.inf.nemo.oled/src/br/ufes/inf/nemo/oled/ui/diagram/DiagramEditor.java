@@ -136,6 +136,16 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	
 	private transient ModellingAssistant assistant;
 
+	public CreationHandler getCreationHandler()
+	{
+		return creationHandler;
+	}
+	
+	public LineHandler getLineHandler()
+	{
+		return lineHandler;
+	}
+	
 	/**
 	 * Reset the transient values for serialization.
 	 * @param stream an ObjectInputStream

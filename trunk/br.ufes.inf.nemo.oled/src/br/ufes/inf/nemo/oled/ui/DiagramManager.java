@@ -151,6 +151,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		frame.getInfoManager().setProject(currentProject);
 		frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 		for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
+		if(currentProject.getDiagrams().size()==0) newDiagram();
 		
 		frame.showInfoManager();	
 		return currentProject;
@@ -566,6 +567,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 								
 					ConfigurationHelper.addRecentProject(projectFile.getCanonicalPath());
 					
+					newDiagram();
+					
 					frame.setTitle("OLED - "+projectFile.getName()+"");
 					frame.showInfoManager();
 					frame.showToolBox();
@@ -836,8 +839,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public DiagramEditor getCurrentDiagramEditor() 
 	{
-		if(this.getSelectedComponent() instanceof DiagramEditorWrapper)
+		if(this.getSelectedComponent() instanceof DiagramEditorWrapper){
 			return ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor();
+		}
 		return null;
 	}
 

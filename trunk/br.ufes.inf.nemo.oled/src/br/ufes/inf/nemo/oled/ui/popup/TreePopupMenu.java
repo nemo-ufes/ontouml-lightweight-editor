@@ -86,10 +86,10 @@ public class TreePopupMenu extends JPopupMenu {
     					
     					DiagramEditor editor = frame.getDiagramManager().getCurrentDiagramEditor();
     					    					
+    					DeleteElementCommand cmd = new DeleteElementCommand(editor, elements, frame.getDiagramManager().getCurrentProject(),true,true);
     					if (editor!=null){
-    						editor.execute(new DeleteElementCommand(editor, elements, frame.getDiagramManager().getCurrentProject(),true,true));
-    					}else{
-    						DeleteElementCommand cmd = new DeleteElementCommand(editor, elements, frame.getDiagramManager().getCurrentProject(),true,true);
+    						editor.execute(cmd);
+    					}else{    						
     						cmd.deleteFromModel(elemForDeletion);
     					}
 	    				tree.setSelectionPath(new TreePath(tree.getModelRootNode().getPath()));    					    					
