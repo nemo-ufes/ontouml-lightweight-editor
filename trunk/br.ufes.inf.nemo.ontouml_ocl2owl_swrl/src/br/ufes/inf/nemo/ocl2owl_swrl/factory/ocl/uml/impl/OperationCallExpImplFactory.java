@@ -247,7 +247,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		//get the relation of the source
-		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(operationCallExpImpl, nameSpace, refParser, factory);
 		
 		//get the cardinality
 		int cardinality = 0;
@@ -332,7 +332,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		//get the relation
-		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(operationCallExpImpl, nameSpace, refParser, factory);
 		
 		//set the relation as symmetric
 		OWLSymmetricObjectPropertyAxiom symmetric = factory.getOWLSymmetricObjectPropertyAxiom(relation);
@@ -347,7 +347,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		//get the relation
-		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(operationCallExpImpl, nameSpace, refParser, factory);
 		
 		//set the relation as asymmetric
 		OWLAsymmetricObjectPropertyAxiom asymmetric = factory.getOWLAsymmetricObjectPropertyAxiom(relation);
@@ -362,7 +362,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		//get the relation
-		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(operationCallExpImpl, nameSpace, refParser, factory);
 		
 		//set the relation as reflexive
 		OWLReflexiveObjectPropertyAxiom reflexive = factory.getOWLReflexiveObjectPropertyAxiom(relation);
@@ -377,7 +377,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		//get the relation
-		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(operationCallExpImpl, nameSpace, refParser, factory);
 		
 		//set the relation as transition
 		OWLTransitiveObjectPropertyAxiom transitive = factory.getOWLTransitiveObjectPropertyAxiom(relation);
@@ -392,14 +392,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		//get the relation1
-		OWLObjectProperty relation1 = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		OWLObjectProperty relation1 = this.sourceFactory.getOWLObjectProperty(operationCallExpImpl, nameSpace, refParser, factory);
 		
 		if(operationCallExpImpl.getArgument().size()>0){
 			this.argumentFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getArgument().get(0), this.m_NamedElementImpl);
 		}
 		
 		//get the relation2
-		OWLObjectProperty relation2 = this.argumentFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		OWLObjectProperty relation2 = this.argumentFactory.getOWLObjectProperty(operationCallExpImpl, nameSpace, refParser, factory);
 		
 		//set relation2 as subRelationOf relation1
 		OWLSubObjectPropertyOfAxiom subRelationOf = factory.getOWLSubObjectPropertyOfAxiom(relation2, relation1);
@@ -410,18 +410,18 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 	
 	@Override
-	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory)  throws Ocl2Owl_SwrlException{
+	public OWLObjectProperty getOWLObjectProperty(OCLExpressionImpl oclExpression, String nameSpace, OntoUMLParser refParser, OWLDataFactory factory)  throws Ocl2Owl_SwrlException{
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
-		return this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		return this.sourceFactory.getOWLObjectProperty(oclExpression, nameSpace, refParser, factory);
 	}
 	
 	public void solveIrreflexive(OperationCallExpImpl operationCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2Owl_SwrlException{
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(operationCallExpImpl.getSource(), this.m_NamedElementImpl);
 		
 		//get the relation
-		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		OWLObjectProperty relation = this.sourceFactory.getOWLObjectProperty(operationCallExpImpl, nameSpace, refParser, factory);
 		
 		//set the relations as irreflexive
 		OWLIrreflexiveObjectPropertyAxiom irreflexive = factory.getOWLIrreflexiveObjectPropertyAxiom(relation);

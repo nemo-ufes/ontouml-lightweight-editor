@@ -22,4 +22,23 @@ public enum Tag {
 		}
 		return isTag;
 	}
+	
+	/**
+	 * This function verifies if a stereotype is a tag related to object properties
+	 * 
+	 * @param ctStereotype
+	 */
+	public static Boolean isObjectPropertyTag(String ctStereotype){
+		if(	Tag.functional.toString().equals(ctStereotype) ||
+			Tag.inversefunctional.toString().equals(ctStereotype) ||
+			Tag.transitive.toString().equals(ctStereotype) ||
+			Tag.symmetric.toString().equals(ctStereotype) ||
+			Tag.reflexive.toString().equals(ctStereotype) ||
+			Tag.irreflexive.toString().equals(ctStereotype) ||
+			Tag.subrelationof.toString().equals(ctStereotype) )
+		{
+			return true;
+		}
+		return false;
+	}
 }

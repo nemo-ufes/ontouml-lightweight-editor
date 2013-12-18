@@ -119,7 +119,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			
 			//apply changes in the owl manager
 			manager.applyChange(new AddAxiom(ontology, rule));
-		}else{
+		}else if(!Tag.isObjectPropertyTag(ctStereotype)){
 			//get the string of the rule
 			String strRule = Factory.getStrRule(this.m_NamedElementImpl);
 			

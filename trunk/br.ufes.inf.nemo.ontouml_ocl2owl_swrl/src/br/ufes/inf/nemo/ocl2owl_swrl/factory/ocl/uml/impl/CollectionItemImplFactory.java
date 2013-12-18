@@ -44,7 +44,7 @@ public class CollectionItemImplFactory extends CollectionLiteralPartImplFactory 
 	}
 	
 	@Override
-	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws Ocl2Owl_SwrlException{
+	public OWLObjectProperty getOWLObjectProperty(OCLExpressionImpl oclExpression, String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws Ocl2Owl_SwrlException{
 		//since the factory is created according to the rule fragment, the fragment is got as a collection item fragment
 		CollectionItemImpl collectionItemImpl = (CollectionItemImpl) this.m_NamedElementImpl;
 		//then, the item of the collection is got
@@ -54,7 +54,7 @@ public class CollectionItemImplFactory extends CollectionLiteralPartImplFactory 
 		this.itemFactory = (OCLExpressionImplFactory) Factory.constructor(item, this.m_NamedElementImpl);
 		
 		//the factory found the OWL Object Property and return it
-		return this.itemFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		return this.itemFactory.getOWLObjectProperty(oclExpression, nameSpace, refParser, factory);
 		
 	}
 }

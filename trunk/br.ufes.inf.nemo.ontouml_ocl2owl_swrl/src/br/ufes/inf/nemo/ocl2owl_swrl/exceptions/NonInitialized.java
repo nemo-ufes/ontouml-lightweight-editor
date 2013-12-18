@@ -9,7 +9,7 @@ public class NonInitialized extends Ocl2Owl_SwrlException {
 	 */
 	public NonInitialized(String argument) 
     {		
-		super("\nThe necessary arguments was not passed to the OCL2SWRL constructor. Verify the '" + argument + "' argument used in the rule:\n");
+		super("\nError: Unable to perform the OCL transformation because of insufficient arguments. Verify the '" + argument + "'.\n");
     }
 	
 	private static final long serialVersionUID = 1L;

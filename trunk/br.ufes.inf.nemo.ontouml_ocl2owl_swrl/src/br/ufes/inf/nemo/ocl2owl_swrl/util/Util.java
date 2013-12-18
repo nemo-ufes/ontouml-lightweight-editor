@@ -67,6 +67,10 @@ public class Util {
 		//replace all spaces with underscores, following the OntoUML2OWL+SWRL transformation
 		varName = varName.replace(" ", "_");
 		
+		if(varName.toLowerCase().equals("pm_lc_bi_component")){
+			System.out.println();
+		}
+		
 		return varName;
 	}
 }

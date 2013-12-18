@@ -227,7 +227,8 @@ public class Factory {
 	 * This function returns the OWLObjectProperty based in a namespace
 	 * 
 	 */
-	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws Ocl2Owl_SwrlException{
-		return null;
+	public OWLObjectProperty getOWLObjectProperty(OCLExpressionImpl oclExpression, String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws Ocl2Owl_SwrlException{
+		String ruleString = Factory.getStrRule(oclExpression);
+		throw new NonImplemented("getOWLObjectProperty", ruleString);
 	}
 }
