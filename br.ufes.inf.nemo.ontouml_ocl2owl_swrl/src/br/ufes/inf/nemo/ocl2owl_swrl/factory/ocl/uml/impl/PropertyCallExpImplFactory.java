@@ -360,7 +360,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 	}
 	
 	@Override
-	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) {
+	public OWLObjectProperty getOWLObjectProperty(OCLExpressionImpl oclExpression, String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) {
 		//since the factory is created according to the rule fragment, the fragment is got as a property call fragment
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
 		//then, the referred property of the property call is got

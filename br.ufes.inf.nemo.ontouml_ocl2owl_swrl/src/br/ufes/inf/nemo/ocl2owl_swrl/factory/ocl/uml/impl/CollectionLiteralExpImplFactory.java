@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.CollectionItemImpl;
 import org.eclipse.ocl.uml.impl.CollectionLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -46,7 +47,7 @@ public class CollectionLiteralExpImplFactory extends LiteralExpImplFactory {
 	}
 	
 	@Override
-	public OWLObjectProperty getOWLObjectProperty(String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws Ocl2Owl_SwrlException{
+	public OWLObjectProperty getOWLObjectProperty(OCLExpressionImpl oclExpression, String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws Ocl2Owl_SwrlException{
 		//since the factory is created according to the rule fragment, the fragment is got as a collection literal fragment
 		CollectionLiteralExpImpl collectionLiteralExpImpl = (CollectionLiteralExpImpl) this.m_NamedElementImpl;
 		//then, the part of the colllection item is got
@@ -56,7 +57,7 @@ public class CollectionLiteralExpImplFactory extends LiteralExpImplFactory {
 		this.partFactory = (TypedElementImplFactory) Factory.constructor(part, this.m_NamedElementImpl);
 		
 		//the factory found the OWL Object Property and return it
-		return this.partFactory.getOWLObjectProperty(nameSpace, refParser, factory);
+		return this.partFactory.getOWLObjectProperty(oclExpression, nameSpace, refParser, factory);
 		
 		
 	}

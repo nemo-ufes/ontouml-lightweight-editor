@@ -12,7 +12,7 @@ public class NonSupported extends Ocl2Owl_SwrlException {
 	 */
 	public NonSupported(String operator, String rule) 
     {		
-		super("\nThe rule above was not translated because this transformation does not support the operator or tag '" + operator + "' used in the rule:\n" + rule);
+		super("\nWarning: Unable to process the following OCL rule because it uses the unsupported operator '" + operator + "':\n" + rule);
     }
 	
 	

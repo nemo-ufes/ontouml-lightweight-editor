@@ -7,6 +7,7 @@ import org.eclipse.ocl.uml.impl.IteratorExpImpl;
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
@@ -193,5 +194,18 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public OWLObjectProperty getOWLObjectProperty(OCLExpressionImpl oclExpression, String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws Ocl2Owl_SwrlException {
+		//since the factory is created according to the rule fragment, the fragment is got as a iterator fragment
+		IteratorExpImpl iteratorExpImpl = (IteratorExpImpl) this.m_NamedElementImpl; 
+		//then, the source of the iterator is got
+		OCLExpressionImpl source = (OCLExpressionImpl) iteratorExpImpl.getSource();
+		//and a factory is created according to the source class 
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source, this.m_NamedElementImpl);
+		
+		return this.sourceFactory.getOWLObjectProperty(oclExpression, nameSpace, refParser, factory);
+		
 	}
 }

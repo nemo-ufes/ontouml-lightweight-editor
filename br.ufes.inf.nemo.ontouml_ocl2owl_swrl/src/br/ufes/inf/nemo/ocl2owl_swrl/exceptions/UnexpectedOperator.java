@@ -11,7 +11,7 @@ public class UnexpectedOperator extends Ocl2Owl_SwrlException {
 	 */
 	public UnexpectedOperator(String operator, String tag, String rule) 
     {		
-		super("\nThe rule above was not translated because the use of operator '" + operator + "' combined with the tag '" + tag + "' was unexpected:\n" + rule);
+		super("\nWarning: Unable to process the following OCL rule because of unexpected combination (operator: '" + operator + "' and tag: : '" + tag + "') :\n" +rule);
     }
 	
 	private static final long serialVersionUID = 1L;

@@ -11,7 +11,7 @@ import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonImplemented;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.Factory;
 
@@ -37,8 +37,9 @@ public class NamedElementImplFactory extends Factory {
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) throws Ocl2Owl_SwrlException {
 		//get the string of the rule
 		String rule = getStrRule(this.m_NamedElementImpl);
+		String className = this.m_NamedElementImpl.getClass().getName();
 		//throw as non implemented method
-		throw new NonImplemented("solve()", rule);
+		throw new NonSupported(className, rule);
 	}
 	
 	
