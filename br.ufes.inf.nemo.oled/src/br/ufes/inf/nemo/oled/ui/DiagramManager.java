@@ -43,7 +43,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
@@ -51,7 +50,6 @@ import org.eclipse.ocl.SemanticException;
 import RefOntoUML.Association;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
-import RefOntoUML.Relationship;
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
@@ -77,12 +75,12 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorMouseEvent;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorStateListener;
 import br.ufes.inf.nemo.oled.ui.diagram.SelectionListener;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.AlloyHelper;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -112,8 +110,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	private static final long serialVersionUID = 5019191384767258996L;
 	public final AppFrame frame;
 	private DiagramEditorCommandDispatcher editorDispatcher;
+	
 	private UmlProject currentProject;
 	private File projectFile;
+	
 	public String lastOpenPath = new String();
 	public String lastSavePath = new String();
 	public String lastImportEAPath = new String();
@@ -264,6 +264,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		editor.addEditorStateListener(this);
 		editor.addSelectionListener(this);
 		editor.addAppCommandListener(editorDispatcher);
+
+		// Includes the elements opened in the ModelHelper mapping for future accesses
+		for(DiagramElement dElem: editor.getDiagram().getChildren()){
+			if (dElem instanceof ClassElement) ModelHelper.addMapping(((ClassElement)dElem).getClassifier(), dElem);
+			if (dElem instanceof AssociationElement) ModelHelper.addMapping(((AssociationElement)dElem).getRelationship(), dElem);
+		}
 		
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
@@ -276,7 +282,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				//DiagramManager.this.setTitleAt(DiagramManager.this.indexOfComponent(comp), label.getNameLabelText());
 				//DiagramManager.this.updateUI();
 			}
-		});		
+		});
 		
 		return editor;
 	}
@@ -879,37 +885,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
-
-	/**
-	 * Deletes an element from the UmlPoject (and consequently from the structure diagram it belongs if any).
-	 * 
-	 * @param elem
-	 */
-	public void deleteFromCurrentProject(RefOntoUML.Element elem)
-	{
-		// Here we delete the element both of the diagram and model project
-		if (ModelHelper.getDiagramElement(elem)!=null) {
-			DiagramElement diagramElem = ModelHelper.getDiagramElement(elem);
-			ArrayList<DiagramElement> elements = new ArrayList<DiagramElement>();					
-			elements.add(diagramElem);					
-			getCurrentDiagramEditor().execute(new DeleteElementCommand((DiagramNotification)getCurrentDiagramEditor(), elements, frame.getDiagramManager().getCurrentProject()));
-		}{
-			//Here instead we only delete it from the model
-			if (elem instanceof RefOntoUML.Type)
-			{
-				//delete associations and generalizations of the element 
-				ArrayList<Relationship> relList = ProjectBrowser.getParserFor(getCurrentProject()).getSelectedAndNonSelectedRelationshipsOf(elem);
-				for(Relationship rel: relList)
-				{							
-					DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(getCurrentProject().getEditingDomain(), rel);
-					getCurrentProject().getEditingDomain().getCommandStack().execute(cmd);
-				}
-			}
-			DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(frame.getDiagramManager().getCurrentProject().getEditingDomain(), elem);
-			getCurrentProject().getEditingDomain().getCommandStack().execute(cmd);			
-		}
-	}
-	
+		
 	/**
 	 * Shows or hides the output pane, in case the current editor is a DiagramEditor. 
 	 */

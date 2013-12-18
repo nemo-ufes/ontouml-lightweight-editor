@@ -219,6 +219,8 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		//Adds the element to the diagram
 		parent.addChild(element);
 		
+		ModelHelper.addMapping(((AssociationElement)element).getRelationship(), element);
+		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
 		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);

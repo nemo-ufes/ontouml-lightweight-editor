@@ -341,8 +341,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Removes the current selection.
 	 */
 	public void deleteSelection() {
-		Collection<DiagramElement> elements = getSelectedElements();
-		execute(new DeleteElementCommand(this, elements, diagram.getProject()));
+		Collection<DiagramElement> diagramElementsList = getSelectedElements();
+		execute(new DeleteElementCommand(this, ModelHelper.getElements(diagramElementsList), diagram.getProject(),true,true));
 	}
 	
 	/**
@@ -953,7 +953,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		if (command instanceof DeleteElementCommand){
 
 			DeleteElementCommand delete = (DeleteElementCommand) command;
-			for (DiagramElement elem : delete.getElements()) {
+			for (DiagramElement elem : delete.getDiagramElements()) {
 
 				if(elem instanceof Node){
 
@@ -963,7 +963,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 					for (DiagramElement diagramElement : dependencies) {
 						Collection<DiagramElement> removeList = new ArrayList<>();
 						removeList.add(diagramElement);
-						execute(new DeleteElementCommand(delete.getNotification(), removeList, delete.getProject()));
+						execute(new DeleteElementCommand(delete.getNotification(), ModelHelper.getElements(removeList), delete.getProject(),true,true));
 					}		
 				}
 			}

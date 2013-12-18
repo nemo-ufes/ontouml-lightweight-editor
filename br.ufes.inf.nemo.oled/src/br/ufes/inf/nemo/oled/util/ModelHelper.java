@@ -2,12 +2,14 @@ package br.ufes.inf.nemo.oled.util;
 
 import java.text.MessageFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
@@ -134,6 +136,40 @@ public class ModelHelper {
 		return mappings.get(element);
 	}
 
+    public static RefOntoUML.Element getElement(DiagramElement value) 
+    {    	
+        for (Entry<RefOntoUML.Element,DiagramElement> entry : mappings.entrySet()) 
+        {
+            if (value.equals(entry.getValue())) 
+            {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+	    
+	   
+	public static Collection<DiagramElement> getDiagramElements(Collection<Element> elements)
+	{
+		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();		
+		for(Element elem: elements){
+			DiagramElement dElem = mappings.get(elem);
+			if(dElem!=null) list.add(dElem);
+		}
+		return list;
+	}
+	
+ 
+	public static Collection<Element> getElements(Collection<DiagramElement> diagramElements)
+	{
+		ArrayList<Element> list = new ArrayList<Element>();		
+		for(DiagramElement e: diagramElements){
+			Element elem = getElement(e);
+			if(elem!=null) list.add(elem);
+		}
+		return list;
+	}
+	
 	public static Collection<DiagramElement> getAllDiagramElements()
 	{
 		return mappings.values();
