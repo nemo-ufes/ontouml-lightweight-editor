@@ -35,6 +35,7 @@ import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
  * This class is a handler for line shaped allElements.
@@ -68,7 +69,7 @@ public class LineHandler implements EditorMode {
   public void setRelationType(RelationType anAssociationType,
     LineConnectMethod aConnectMethod) {
     connectMethod = aConnectMethod;
-    relationType = anAssociationType;
+    relationType = anAssociationType;   
   }
 
   /**
@@ -151,13 +152,21 @@ public class LineHandler implements EditorMode {
 	        	 (relationType == RelationType.MEDIATION && ! (((UmlNode)source).getClassifier() instanceof RefOntoUML.Relator) && (((UmlNode)target).getClassifier() instanceof RefOntoUML.Relator)) )
 	        {
 	        	UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) target, (UmlNode) source);
+	        	
+	        	//Add mapping from the refontouml element to the diagram element
+	            ModelHelper.addMapping(((UmlConnection)conn).getRelationship(), conn);
+	            
 		  	    connectMethod.generateAndSetPointsToConnection(conn, (UmlNode) target, (UmlNode)source, anchor, tmpPos);      
-		  	    AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((UmlNode)target).getClassifier(), (Classifier) ((UmlNode)source).getClassifier(), editor.getDiagram().getProject());
+		  	    AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn.getRelationship(), (Classifier) ((UmlNode)target).getClassifier(), (Classifier) ((UmlNode)source).getClassifier(), editor.getDiagram().getProject(),true,true);
 		  	    editor.execute(command);        	
 	        }else{
 		        UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlNode) source, (UmlNode) target);
+		        
+		        //Add mapping from the refontouml element to the diagram element
+	            ModelHelper.addMapping(((UmlConnection)conn).getRelationship(), conn);
+	            
 		        connectMethod.generateAndSetPointsToConnection(conn, (UmlNode)source, (UmlNode) target, anchor, tmpPos);      
-		        AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((UmlNode)source).getClassifier(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject());
+		        AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn.getRelationship(), (Classifier) ((UmlNode)source).getClassifier(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject(),true,true);
 		        editor.execute(command);
 	        }
 	    }
@@ -167,9 +176,13 @@ public class LineHandler implements EditorMode {
 	    {    	 
 	    	 //invert sides if derivation is pushed from the UmlNode (relator), it should be from the UmlConnection (material)
 	         if (relationType == RelationType.DERIVATION) { 
-	    	     UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlConnection) target, (UmlNode) source);    	 
+	    	     UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlConnection) target, (UmlNode) source);   
+	    	     
+	    	     //Add mapping from the refontouml element to the diagram element
+		         ModelHelper.addMapping(((UmlConnection)conn).getRelationship(), conn);
+		            
 	             connectMethod.generateAndSetPointsToConnection(conn, (UmlConnection) target, (UmlNode)source, anchor, tmpPos);         
-		         AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((AssociationElement)target).getRelationship(), (Classifier) ((UmlNode)source).getClassifier(), editor.getDiagram().getProject());
+		         AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn.getRelationship(), (Classifier) ((AssociationElement)target).getRelationship(), (Classifier) ((UmlNode)source).getClassifier(), editor.getDiagram().getProject(),true,true);
 		         editor.execute(command);
 	         }
 	    }
@@ -177,8 +190,12 @@ public class LineHandler implements EditorMode {
 	    if(target!=null && target instanceof UmlNode && source instanceof UmlConnection && target != source)
 	    {
 	    	 UmlConnection conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlConnection) source, (UmlNode) target);
+	    	 
+	    	 //Add mapping from the refontouml element to the diagram element
+	         ModelHelper.addMapping(((UmlConnection)conn).getRelationship(), conn);
+	            
 	         connectMethod.generateAndSetPointsToConnection(conn, (UmlConnection)source,  (UmlNode)target, anchor, tmpPos);         
-	         AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn, (Classifier) ((AssociationElement)source).getRelationship(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject());
+	         AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn.getRelationship(), (Classifier) ((AssociationElement)source).getRelationship(), (Classifier) ((UmlNode)target).getClassifier(), editor.getDiagram().getProject(),true,true);
 	         editor.execute(command);
 	    }	  
   }

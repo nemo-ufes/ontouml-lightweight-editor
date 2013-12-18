@@ -50,10 +50,14 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 public class AddNodeCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = -3148409380703192555L;
-	private Node element;
+	@SuppressWarnings("unused")
+	private RefOntoUML.Element element;
+	private Node diagramElement;
 	private CompositeElement parent;
 	private double absx, absy;
-
+	private boolean addToModel;
+	private boolean addToDiagram;
+	
 	/**
 	 * Constructor.
 	 * @param editorNotification a ModelNotification object
@@ -62,11 +66,14 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 * @param x the absolute x position
 	 * @param y the absolute y position
 	 */
-	public AddNodeCommand(DiagramNotification editorNotification, CompositeElement parent, Node aNode, double x, double y, UmlProject project) {
+	public AddNodeCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element element, double x, double y, UmlProject project, boolean addToModel, boolean addToDiagram) {
 		this.parent = parent;
 		this.project = project;
 		this.notification = editorNotification;
-		element = aNode;
+		this.addToModel = addToModel;
+		this.addToDiagram = addToDiagram;
+		this.element = element;		
+		this.diagramElement = (Node)ModelHelper.getDiagramElement(element);
 		absx = x;
 		absy = y;
 	}
@@ -79,10 +86,10 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		super.undo();
 		
 		project.getEditingDomain().getCommandStack().undo();
-		parent.removeChild(element);
+		parent.removeChild(diagramElement);
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		elements.add(element);
+		elements.add(diagramElement);
 		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);
 	}
 
@@ -99,41 +106,72 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void run() {
-		
-		//Adds the element to the model
-		if(element instanceof ClassElement)
+	public void run() 
+	{		
+		if (addToDiagram && !addToModel) return;
+				
+		if(diagramElement instanceof ClassElement)
 		{
-			ClassElement classElement = (ClassElement) element;
+			ClassElement classElement = (ClassElement) diagramElement;
 			
-			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), classElement.getClassifier());
-			project.getEditingDomain().getCommandStack().execute(cmd);
+			if(addToModel){
+				addToModel(classElement.getClassifier());
+			}
 			
-			//Add mapping from the refontouml element to the diagram element
-			ModelHelper.addMapping(classElement.getClassifier(), classElement);
-			project.getEditingDomain().getCommandStack().execute(cmd);			
+			if(addToDiagram){
+				addToDiagram(diagramElement,redo);
+			}
+		
+			if(addToModel && addToDiagram){
+				//Add mapping from the refontouml element to the diagram element
+				ModelHelper.addMapping(classElement.getClassifier(), classElement);
+			}
 		}
-		
-		//Adds the element to the diagram
-		parent.addChild(element);
-		element.setAbsolutePos(absx, absy);		
-		
-		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		elements.add(element);
-		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
-		
-		RefOntoUML.Classifier c = ((ClassElement)element).getClassifier();
-		//Update the Project Tree: FIXME every modification creates a new tree				
-		ProjectBrowser.getParserFor(project).addElement(c);
-		ProjectBrowser.rebuildTree(project);		
-		//Select the element in the Tree
-		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
-		tree.selectModelElement(c);
-		//Include this element in the Auto Completion of OCL Editor
-		ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Type)c);
-		
+						
 		//triggers the search for errors and warnings in the model
 		ProjectBrowser.frame.getDiagramManager().searchWarnings();
 		ProjectBrowser.frame.getDiagramManager().searchErrors();
+	}	
+	
+	/**
+	 * Add a element to the diagram (not to the model instance behind the scenes). In fact, the element instance already exists inside the diagram element.
+	 * @param element
+	 * @param redo
+	 */
+	public void addToDiagram (DiagramElement element, boolean redo)
+	{
+		//Adds the element to the diagram
+		parent.addChild(element);
+		if(element instanceof Node) ((Node)element).setAbsolutePos(absx, absy);		
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		elements.add(element);
+		
+		if(notification!=null)notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
 	}
+	
+	/**
+	 * Add a element to the model instance behind the scenes and updates the application accordingly.
+	 * @param elem
+	 */
+	public void addToModel(RefOntoUML.Element element)
+	{
+		AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), element);
+		project.getEditingDomain().getCommandStack().execute(cmd);
+				
+		ProjectBrowser.getParserFor(project).addElement(element);
+		
+		//============ Updating application... ==============
+		
+		//FIXME - Do not rebuild the tree, only update it!
+		ProjectBrowser.rebuildTree(project);
+		
+		//Select the element in the Tree
+		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
+		tree.selectModelElement(element);
+		
+		//Include this element in the Auto Completion of OCL Editor
+		ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Type)element);
+	}
+	
 }
