@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.eclipse.emf.edit.command.DeleteCommand;
 
+import RefOntoUML.Classifier;
 import RefOntoUML.Element;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
@@ -39,6 +40,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
  * A command class to remove allElements from a diagram.
@@ -49,8 +51,11 @@ import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 public class DeleteElementCommand extends BaseDiagramCommand{
 
 	private static final long serialVersionUID = 2456036038567915529L;
-	private Collection<DiagramElement> elements;
-
+	private Collection<DiagramElement> diagramElementList;
+	private Collection<Element> elementList;
+	private boolean deleteFromModel;
+	private boolean deleteFromDiagram;
+	
 	/**
 	 * A helper class to store the original parent child relation.
 	 */
@@ -82,17 +87,20 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * @param theElements
 	 *            the DiagramElements to remove, each must have a parent
 	 */
-	public DeleteElementCommand(DiagramNotification aNotification, Collection<DiagramElement> theElements, UmlProject project) {
+	public DeleteElementCommand(DiagramNotification aNotification, Collection<Element> theElements, UmlProject project, boolean deleteFromModel, boolean deleteFromDiagram) {
 		this.project = project;
-		this.notification = aNotification;		
-		elements = theElements;
-		for (DiagramElement elem : elements) {
+		this.notification = aNotification;	
+		this.deleteFromDiagram = deleteFromDiagram;
+		this.deleteFromModel = deleteFromModel;
+		elementList = theElements;
+		diagramElementList = ModelHelper.getDiagramElements(elementList);
+		for (DiagramElement elem : diagramElementList) {
 			parentChildRelations.add(new ParentChildRelation(elem, elem.getParent()));
 		}
 	}
-
-	public Collection<DiagramElement> getElements() {
-		return elements;
+	
+	public Collection<DiagramElement> getDiagramElements() {
+		return diagramElementList;
 	}
 
 	/**
@@ -103,68 +111,115 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	{
 		for (DiagramElement element : elements) 
 		{			
-			if (element instanceof Connection) {
-				detachConnectionFromNodes((Connection) element);
-			}
-			
-			//FIXME In the execute method whithin the DiagramEditor, previously to deleting a class, it deletes all the nodes connections.
-			// So this part of the code is no longer needed.
-			/*else if (element instanceof Node) {
-				detachNodeConnections((Node) element);
-			}*/
-			
-			//Removes the element from model
-			if(element instanceof ClassElement)
-			{
-				ClassElement classElement = (ClassElement) element;
-				
-				DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), classElement.getClassifier());
-				project.getEditingDomain().getCommandStack().execute(cmd);
-				
-				//Remove the element from the auto completion of the OCL editor
-				ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(classElement.getClassifier());
-			}
-			
-			else if(element instanceof BaseConnection)
-			{
-				BaseConnection connection = (BaseConnection) element;
-				
-				DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), connection.getRelationship());
-				project.getEditingDomain().getCommandStack().execute(cmd);
-				
-				//Remove the element from the auto completion of the OCL editor
-				Relationship rel = connection.getRelationship();
-				if (rel instanceof RefOntoUML.Association){
-					Property source = ((RefOntoUML.Association) rel).getMemberEnd().get(0);
-					Property target = ((RefOntoUML.Association) rel).getMemberEnd().get(1);					
-					ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(source);
-					ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(target);
+			if(deleteFromModel){
+				if(element instanceof ClassElement)
+				{
+					ClassElement classElement = (ClassElement) element;
+					deleteFromModel(classElement.getClassifier());
+				}			
+				else if(element instanceof BaseConnection)
+				{
+					BaseConnection connection = (BaseConnection) element;				
+					deleteFromModel(connection.getRelationship());
 				}
 			}
-			
-			//Removes the element from diagram
-			if(element instanceof BaseConnection || element instanceof ClassElement) {				
-				element.getParent().removeChild(element);
-				notification.notifyChange((List<DiagramElement>) elements, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);
-				
-				
-				//FIXME -- Removes the inferred elements. After creating the visual objects, use the delete command.
-				
-				ArrayList<Element> inferred = ProjectBrowser.getInferences(project).getInferredElements();
-				
-				OntoUMLParser parser = ProjectBrowser.getParserFor(project);
-				for (Element e : inferred) {
-					parser.removeElement(e);
-				}
-				
-				// FIXME every modification creates a new tree
-				ProjectBrowser.rebuildTree(project);		
+		
+			if(deleteFromDiagram)
+			{			
+				deleteFromDiagram(element);
 			}
+				
+			//FIXME - Removes the inferred elements. After creating the visual objects, use the delete command.			
+			ArrayList<Element> inferred = ProjectBrowser.getInferences(project).getInferredElements();			
+			OntoUMLParser parser = ProjectBrowser.getParserFor(project);
+			for (Element e : inferred) {
+				parser.removeElement(e);
+			}		
 			
 			//triggers the search for errors and warnings in the model
 			ProjectBrowser.frame.getDiagramManager().searchWarnings();
 			ProjectBrowser.frame.getDiagramManager().searchErrors();
 		}		
+	}
+	
+	/**
+	 * Deletes a diagram element from the diagram (not from the model instance behind the scenes)
+	 * @param elem
+	 */
+	public void deleteFromDiagram (DiagramElement element)
+	{
+		if (element instanceof Connection) detachConnectionFromNodes((Connection) element);				
+		
+		// In the execute method whithin the DiagramEditor, previously to deleting a class, it deletes all the nodes connections.
+		// else if (element instanceof Node)  detachNodeConnections((Node) element);
+		
+		if(element instanceof BaseConnection || element instanceof ClassElement) 
+		{				
+			element.getParent().removeChild(element);
+			if (notification!=null){
+				notification.notifyChange((List<DiagramElement>) diagramElementList, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);
+			}
+		}
+	}
+	
+	/**
+	 * Deletes a relationship from the model instance behind the scenes and updates the application accordingly.
+	 * @param elem
+	 */
+	public void deleteFromModel (RefOntoUML.Relationship elem)
+	{
+		//deletes associated relationships  
+		ArrayList<Relationship> relList = ProjectBrowser.getParserFor(project).getSelectedAndNonSelectedRelationshipsOf(elem);
+		for(Relationship rel: relList) deleteFromModel(rel); 
+		
+		DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), elem);
+		project.getEditingDomain().getCommandStack().execute(cmd);
+		
+		//============ Updating application... ==============
+		
+		//Remove the element from the auto completion of the OCL editor			
+		if (elem instanceof RefOntoUML.Association)
+		{
+			Property source = ((RefOntoUML.Association) elem).getMemberEnd().get(0);
+			Property target = ((RefOntoUML.Association) elem).getMemberEnd().get(1);					
+			ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(source);
+			ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(target);
+		}
+		
+		//FIXME - Do not rebuild the tree, only update it!
+		ProjectBrowser.rebuildTree(project);
+	}
+	
+	/**
+	 * Deletes a element(type or relationship) from the model instance behind the scenes and updates the application accordingly. 
+	 * @param elem
+	 */
+	public void deleteFromModel(RefOntoUML.Element elem)
+	{
+		if (elem instanceof RefOntoUML.Type) deleteFromModel((RefOntoUML.Type)elem);
+		else if (elem instanceof RefOntoUML.Relationship) deleteFromModel((RefOntoUML.Relationship)elem);		
+	}
+	
+	/**
+	 * Deletes a type from the model instance behind the scenes and updates the application accordingly. 
+	 * @param elem
+	 */
+	public void deleteFromModel(RefOntoUML.Type elem)
+	{
+		//deletes associated relationships  
+		ArrayList<Relationship> relList = ProjectBrowser.getParserFor(project).getSelectedAndNonSelectedRelationshipsOf(elem);
+		for(Relationship rel: relList) deleteFromModel(rel); 
+
+		DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), elem);
+		project.getEditingDomain().getCommandStack().execute(cmd);
+	
+		//============ Updating application... ==============
+		
+		//Remove the element from the auto completion of the OCL editor
+		ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion((Classifier)elem);
+		
+		//FIXME - Do not rebuild the tree, only update it!
+		ProjectBrowser.rebuildTree(project);
 	}
 	
 	/**
@@ -174,13 +229,13 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 
 		ArrayList<DiagramElement> bidingConnections = new ArrayList<DiagramElement>();
 				
-		for (DiagramElement elem : elements) 
+		for (DiagramElement elem : diagramElementList) 
 		{			
 			if (elem instanceof Connection) {  for (Connection c: ((Connection)elem).getConnections()) { bidingConnections.add(c); } }
 		}
 				
 		delete(bidingConnections);
-		delete(elements);			
+		delete(diagramElementList);			
 	}
 
 	/**
@@ -211,8 +266,9 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			relation.parent.addChild(relation.element);
 		}
 		
-		notification.notifyChange((List<DiagramElement>) elements, ChangeType.ELEMENTS_REMOVED, NotificationType.UNDO);
-
+		if(notification!=null){
+			notification.notifyChange((List<DiagramElement>) diagramElementList, ChangeType.ELEMENTS_REMOVED, NotificationType.UNDO);
+		}
 	}
 
 	/**
