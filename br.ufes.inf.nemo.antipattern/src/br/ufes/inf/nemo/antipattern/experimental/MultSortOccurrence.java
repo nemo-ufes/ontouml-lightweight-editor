@@ -13,19 +13,19 @@ import RefOntoUML.SortalClass;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class MultSortInhOccurrence extends AntipatternOccurrence {
+public class MultSortOccurrence extends AntipatternOccurrence {
 
 	Class subtype, identityProvider;
 	ArrayList<Class> sortalParents;
 	
 	
-	public MultSortInhOccurrence(Class subtype, OntoUMLParser parser) throws Exception {
+	public MultSortOccurrence(Class subtype, OntoUMLParser parser) throws Exception {
 		super(parser);
 		
 		if(subtype == null)
-			throw new Exception(MultSortInhAntipattern.getAntipatternInfo().acronym+": provided input class is null. Can't create occurrence!");
+			throw new Exception(MultSortAntipattern.getAntipatternInfo().acronym+": provided input class is null. Can't create occurrence!");
 		else if(!(subtype instanceof SortalClass))
-			throw new Exception(MultSortInhAntipattern.getAntipatternInfo().acronym+": "+parser.getStringRepresentation(subtype)+" is not a Sortal Class. Can't create occurrence!");
+			throw new Exception(MultSortAntipattern.getAntipatternInfo().acronym+": "+parser.getStringRepresentation(subtype)+" is not a Sortal Class. Can't create occurrence!");
 		
 		this.subtype = subtype;
 		this.identityProvider = null;
@@ -35,7 +35,7 @@ public class MultSortInhOccurrence extends AntipatternOccurrence {
 		
 			if (supertype instanceof Kind || supertype instanceof Quantity || supertype instanceof Collective){
 				if(identityProvider!=null && !supertype.equals(identityProvider)) 
-					throw new Exception(MultSortInhAntipattern.getAntipatternInfo().acronym+": there is more than one identity provider for "+
+					throw new Exception(MultSortAntipattern.getAntipatternInfo().acronym+": there is more than one identity provider for "+
 									parser.getStringRepresentation(subtype)+". Can't create occurrence!");
 				else
 					identityProvider = (Class) supertype;
@@ -48,7 +48,7 @@ public class MultSortInhOccurrence extends AntipatternOccurrence {
 		}
 		
 		if (sortalParents.size()<2)
-			throw new Exception(MultSortInhAntipattern.getAntipatternInfo().acronym+": "+parser.getStringRepresentation(subtype)+" has less than 2 sortal parents. Can't create occurrence!");
+			throw new Exception(MultSortAntipattern.getAntipatternInfo().acronym+": "+parser.getStringRepresentation(subtype)+" has less than 2 sortal parents. Can't create occurrence!");
 	}
 
 	@Override
