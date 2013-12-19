@@ -44,7 +44,13 @@ import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
 import RefOntoUML.impl.AssociationImpl;
+import RefOntoUML.impl.CharacterizationImpl;
 import RefOntoUML.impl.DataTypeImpl;
+import RefOntoUML.impl.DerivationImpl;
+import RefOntoUML.impl.DirectedBinaryAssociationImpl;
+import RefOntoUML.impl.FormalAssociationImpl;
+import RefOntoUML.impl.MaterialAssociationImpl;
+import RefOntoUML.impl.MediationImpl;
 import RefOntoUML.impl.MeronymicImpl;
 import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.impl.RefOntoUMLPackageImpl;
@@ -252,8 +258,68 @@ public class ModelHelper {
 				meronymicCloned.setIsImmutableWhole(meronymic.isIsImmutableWhole());
 				meronymicCloned.setIsImmutablePart(meronymic.isIsImmutablePart());
 			}
+			
+			RefOntoUML.Property p1Cloned = (RefOntoUML.Property)factory.create(association.getMemberEnd().get(0).eClass());
+			RefOntoUML.Property p2Cloned = (RefOntoUML.Property)factory.create(association.getMemberEnd().get(1).eClass());
+			RefOntoUML.Property p1 = association.getMemberEnd().get(0);
+			RefOntoUML.Property p2 = association.getMemberEnd().get(1);
+			
+			p1Cloned.setType(p1.getType());
+			p2Cloned.setType(p2.getType());
+			
+			LiteralInteger lower1Cloned = factory.createLiteralInteger();
+			lower1Cloned.setValue(p1.getLower());
+			LiteralUnlimitedNatural upper1Cloned = factory.createLiteralUnlimitedNatural();
+			upper1Cloned.setValue(p1.getUpper());
+			
+			p1Cloned.setLowerValue(lower1Cloned);			
+			p1Cloned.setUpperValue(upper1Cloned);
+			
+			LiteralInteger lower2Cloned = factory.createLiteralInteger();
+			lower2Cloned.setValue(p2.getLower());
+			LiteralUnlimitedNatural upper2Cloned = factory.createLiteralUnlimitedNatural();
+			upper2Cloned.setValue(p2.getUpper());
+			
+			p2Cloned.setLowerValue(lower2Cloned);			
+			p2Cloned.setUpperValue(upper2Cloned);
+			
+			String node1Name  = new String();		
+			if(p1.getType()!=null)
+			{ 
+				node1Name = p1.getType().getName();	    		
+				if(node1Name==null || node1Name.trim().isEmpty()) node1Name = "source";
+				else node1Name = node1Name.trim().toLowerCase();
+			}
+			String node2Name  = new String();
+			if(p2.getType()!=null)
+			{ 
+				node2Name = p2.getType().getName();	    		
+				if(node2Name==null || node2Name.trim().isEmpty()) node2Name = "target";
+				else node2Name = node2Name.trim().toLowerCase();
+			}
+			
+			p1Cloned.setName(node1Name);
+			p2Cloned.setName(node2Name);	
+						
+			associationCloned.getMemberEnd().add(p1Cloned);
+			associationCloned.getMemberEnd().add(p2Cloned);
+			associationCloned.getOwnedEnd().add(p1Cloned);
+			associationCloned.getOwnedEnd().add(p2Cloned);
+			
+			if(association instanceof DirectedBinaryAssociationImpl || association instanceof FormalAssociationImpl || association instanceof MaterialAssociationImpl)
+			{
+				associationCloned.getNavigableOwnedEnd().add(p1Cloned);
+				associationCloned.getNavigableOwnedEnd().add(p2Cloned);	    			
+				//If the association is Mediation or Characterization, set target readonly to help in validation
+				if(association instanceof MediationImpl || association instanceof CharacterizationImpl || association instanceof DerivationImpl) p2Cloned.setIsReadOnly(true);
+			}
+			else
+			{
+				if(p1Cloned.getType() instanceof DataTypeImpl) associationCloned.getNavigableOwnedEnd().add(p1Cloned);	    		
+				if(p2Cloned.getType() instanceof DataTypeImpl) associationCloned.getNavigableOwnedEnd().add(p2Cloned);
+			}	
 		}
-		
+						
 		return cloned;
 	}
 
@@ -350,7 +416,7 @@ public class ModelHelper {
 	 * Helper method which creates a property with default multiplicity 1..1 as a owned end to associations
 	 * of a given classifier
 	 */
-	public static Property getDefaultOwnedEnd(Classifier classifier, int lower, int upper) {
+	public static Property createDefaultOwnedEnd(Classifier classifier, int lower, int upper) {
 		if (!initialized) {
 			initializeHelper();
 		}

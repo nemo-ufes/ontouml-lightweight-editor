@@ -41,7 +41,8 @@ public interface DiagramElementFactory {
    * @return the UMLNode for the element type
    */
   UmlNode createNode(ElementType elementType);
-
+  UmlNode createNode(RefOntoUML.Type type);
+  
   /**
    * Creates a connection between the two given nodes using the specified
    * relation type.

@@ -794,7 +794,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * @param elementType the ElementType that indicates what to create
 	 */
 	public void setCreationMode(ElementType elementType) {
-		creationHandler.setElementType(elementType);
+		creationHandler.create(elementType);
 		editorMode = creationHandler;
 	}
 

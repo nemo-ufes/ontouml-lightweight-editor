@@ -29,6 +29,7 @@ import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
@@ -69,10 +70,10 @@ public class CreationHandler implements EditorMode {
 
   /**
    * Sets the ElementType.
-   * @param type the ElementType
+   * @param stereotype the ElementType
    */
-  public void setElementType(ElementType type) {
-    elementType = type;
+  public Node create(ElementType stereotype) {
+    elementType = stereotype;
     element = editor.getDiagram().getElementFactory().createNode(elementType);
 
     //Add mapping from the refontouml element to the diagram element
@@ -80,18 +81,65 @@ public class CreationHandler implements EditorMode {
     
     element.setParent(editor.getDiagram());
     cachedBounds = null;
+    
+    return element;
   }
 
+  public Node create(RefOntoUML.Type type) {
+    elementType = ElementType.valueOf(type.eClass().getName().toUpperCase());
+    element = editor.getDiagram().getElementFactory().createNode(type);
+
+    //Add mapping from the refontouml element to the diagram element
+    ModelHelper.addMapping(((ClassElement)element).getClassifier(), element);
+    
+    element.setParent(editor.getDiagram());
+    cachedBounds = null;
+    
+    return element;
+  }
   /**
-   * Generic Method to create a Node (by John) 
+   * Sets the ElementType.
+   * @param stereotype the ElementType
    */
-  public void createNode(ElementType elementType, double x, double y)
+  public Node createCloning(ElementType stereotype, RefOntoUML.Type type) {
+    elementType = stereotype;
+    element = editor.getDiagram().getElementFactory().createNode(elementType);
+
+    //Add mapping from the refontouml element to the diagram element
+    ModelHelper.addMapping(((ClassElement)element).getClassifier(), element);
+    
+    if(((ClassElement)element).getClassifier() != null) 
+	{
+		  RefOntoUML.Classifier classifier = (RefOntoUML.Classifier)((ClassElement)element).getClassifier();
+		  classifier.setName(((RefOntoUML.Classifier)type).getName());
+		  classifier.setVisibility(type.getVisibility());		  
+	}
+    
+    element.setParent(editor.getDiagram());
+    cachedBounds = null;
+    
+    return element;
+  }
+  
+  /**
+   * Generic Methods to create a Node (by John) 
+   */
+  public void addNode(ElementType elementType, double x, double y)
   {
-	  setElementType(elementType);
+	  create(elementType);
 	  CompositeNode parent = editor.getDiagram();
 	  DiagramElement possibleParent = editor.getDiagram().getChildAt(x, y);
 	  if (isNestingCondition(possibleParent)) parent = (CompositeNode) possibleParent;
 	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), x, y, editor.getDiagram().getProject(),true,true);
+	  editor.execute(createCommand);
+  }
+  
+  public void addNode(UmlNode umlnode, double x, double y)
+  {
+	  CompositeNode parent = editor.getDiagram();
+	  DiagramElement possibleParent = editor.getDiagram().getChildAt(x, y);
+	  if (isNestingCondition(possibleParent)) parent = (CompositeNode) possibleParent;
+	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)umlnode).getClassifier(), x, y, editor.getDiagram().getProject(),true,true);
 	  editor.execute(createCommand);
   }
   
