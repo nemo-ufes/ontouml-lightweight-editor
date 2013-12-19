@@ -28,21 +28,11 @@ import java.util.List;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 
-import RefOntoUML.AggregationKind;
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import RefOntoUML.impl.AssociationImpl;
-import RefOntoUML.impl.CharacterizationImpl;
-import RefOntoUML.impl.DataTypeImpl;
-import RefOntoUML.impl.DerivationImpl;
-import RefOntoUML.impl.DirectedBinaryAssociationImpl;
-import RefOntoUML.impl.FormalAssociationImpl;
 import RefOntoUML.impl.GeneralizationImpl;
-import RefOntoUML.impl.MaterialAssociationImpl;
-import RefOntoUML.impl.MediationImpl;
-import RefOntoUML.impl.MeronymicImpl;
-import RefOntoUML.impl.componentOfImpl;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -151,47 +141,9 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			else if(connection.getRelationship() instanceof AssociationImpl)
 			{
 				AssociationImpl association  = (AssociationImpl) connection.getRelationship();
-												
-	    		Property node1Property, node2Property;	    		
-	    		node1Property = ModelHelper.getDefaultOwnedEnd(source, 1, 1);	    		
-	    		//If the association is a ComponentOf, set the default cardinality to 2..*, to help in validation
-	    		if(association instanceof componentOfImpl) node2Property = ModelHelper.getDefaultOwnedEnd(target, 2, -1);
-	    		else node2Property = ModelHelper.getDefaultOwnedEnd(target, 1, 1);
-	    		
-	    		if(association instanceof MeronymicImpl)
-	    		{
-	    			if(((Meronymic)association).isIsShareable()) node1Property.setAggregation(AggregationKind.SHARED);	    			
-	    			else node1Property.setAggregation(AggregationKind.COMPOSITE);	    				
-	    		}
-	    		
-	    		String node1Name = node1Property.getType().getName();	    		
-	    		if(node1Name==null || node1Name.trim().isEmpty()) node1Name = "source";
-	    		else node1Name = node1Name.trim().toLowerCase();
-	    		
-	    		String node2Name = node2Property.getType().getName();	    		
-	    		if(node2Name==null || node2Name.trim().isEmpty()) node2Name = "target";
-	    		else node2Name = node2Name.trim().toLowerCase();
-	    		
-	    		node1Property.setName(node1Name);
-	    		node2Property.setName(node2Name);	    		
-	    		association.getOwnedEnd().add(node1Property);
-	    		association.getOwnedEnd().add(node2Property);	    		
-	    		association.getMemberEnd().add(node1Property);
-	    		association.getMemberEnd().add(node2Property);
-	    		
-	    		if(association instanceof DirectedBinaryAssociationImpl || association instanceof FormalAssociationImpl || association instanceof MaterialAssociationImpl)
-	    		{
-	    			association.getNavigableOwnedEnd().add(node1Property);
-	    			association.getNavigableOwnedEnd().add(node2Property);	    			
-	    			//If the association is Mediation or Characterization, set target readonly to help in validation
-	    			if(association instanceof MediationImpl || association instanceof CharacterizationImpl || association instanceof DerivationImpl) node2Property.setIsReadOnly(true);
-	    		}
-	    		else
-	    		{
-		    		if(node1Property.getType() instanceof DataTypeImpl) association.getNavigableOwnedEnd().add(node1Property);	    		
-		    		if(node2Property.getType() instanceof DataTypeImpl) association.getNavigableOwnedEnd().add(node2Property);
-	    		}
-	    		
+				association.getMemberEnd().get(0).setType(source);
+				association.getMemberEnd().get(1).setType(target);
+				
 	    		if(addToModel){
 	    			addToModel(connection.getRelationship());
 	    		}
@@ -234,6 +186,13 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		project.getEditingDomain().getCommandStack().execute(cmd);
 	
 		ProjectBrowser.getParserFor(project).addElement(element);
+		
+		if (element instanceof Association){
+			Property p1 = ((Association)element).getMemberEnd().get(0);
+			Property p2 = ((Association)element).getMemberEnd().get(1);
+			ProjectBrowser.getParserFor(project).addElement(p1);
+			ProjectBrowser.getParserFor(project).addElement(p2);
+		}
 		
 		//============ Updating application... ==============
 		
