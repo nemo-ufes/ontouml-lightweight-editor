@@ -75,6 +75,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorMouseEvent;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorStateListener;
 import br.ufes.inf.nemo.oled.ui.diagram.SelectionListener;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
@@ -253,6 +254,23 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram)) remove(c);
 			}
 		}		
+	}
+	
+	/**
+	 * Delete from model and from the diagram (if necessary). In latter case, you can attribute null to DiagramEditor variable to not delete from the Diagram.
+	 * @param element
+	 */
+	public void delete(RefOntoUML.Element element, DiagramEditor diagramEditor)
+	{		
+		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
+		deletionList.add(element);		
+		if(diagramEditor!=null){
+			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
+			diagramEditor.execute(cmd);
+		}else{
+			DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,true);
+			cmd.deleteFromModel(element);
+		}
 	}
 	
 	/**
