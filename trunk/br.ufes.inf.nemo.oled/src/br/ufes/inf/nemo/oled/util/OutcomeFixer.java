@@ -1,7 +1,5 @@
 package br.ufes.inf.nemo.oled.util;
 
-import java.util.ArrayList;
-
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
@@ -18,10 +16,15 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.LineHandler;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 
+/** 
+ * Teste Version!
+ * 
+ * @author Guerson
+ *
+ */
 public class OutcomeFixer {
 	
 	public DiagramManager manager;	
@@ -36,23 +39,6 @@ public class OutcomeFixer {
 		this.diagramEditor = manager.getCurrentDiagramEditor();
 		this.creationHandler = diagramEditor.getCreationHandler();
 		this.lineHandler = diagramEditor.getLineHandler();				
-	}
-	 
-	/**
-	 * Delete from model and from the diagram (if necessary)
-	 * @param element
-	 */
-	public void delete(RefOntoUML.Element element, DiagramEditor diagramEditor)
-	{		
-		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
-		deletionList.add(element);		
-		if(diagramEditor!=null){
-			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
-			diagramEditor.execute(cmd);
-		}else{
-			DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, manager.getCurrentProject(),true,true);
-			cmd.deleteFromModel(element);
-		}
 	}
 	
 	/**
@@ -93,8 +79,8 @@ public class OutcomeFixer {
 		//Add element/node to model/diagram
 		if(diagramEditor!=null){
 			AddNodeCommand addCmd = new AddNodeCommand(diagramEditor, diagramEditor.getDiagram(), umlnode.getClassifier(), 10, 10, diagramEditor.getProject(), true, true, null);
-			diagramEditor.execute(addCmd);
-		}else{
+			diagramEditor.execute(addCmd);		
+//		}else{
 //			AddNodeCommand addCmd = new AddNodeCommand(null, null, umlnode.getClassifier(), 10, 10, manager.getCurrentProject(), true, false,null);
 //			addCmd.addToModel(umlnode.getClassifier());
 		}
@@ -210,7 +196,7 @@ public class OutcomeFixer {
 		}
 	
 		//Delete old element/node from model/diagram
-		delete(element,diagramEditor);
+		manager.delete(element,diagramEditor);
 		
 		return newElement;
 	}
@@ -245,7 +231,7 @@ public class OutcomeFixer {
 		}
 	
 		//Delete old element/node from model/diagram
-		delete(element,diagramEditor);
+		manager.delete(element,diagramEditor);
 		
 		return newElement;
 	}

@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.oled.ui.popup;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
@@ -15,7 +14,6 @@ import br.ufes.inf.nemo.oled.ui.OntoUMLElement;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 public class TreePopupMenu extends JPopupMenu {
@@ -81,17 +79,9 @@ public class TreePopupMenu extends JPopupMenu {
     				{
     					OntoUMLElement ontoElem = (OntoUMLElement) ((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).getUserObject();
     					RefOntoUML.Element elemForDeletion = (RefOntoUML.Element)ontoElem.getElement();
-    					ArrayList<RefOntoUML.Element> elements = new ArrayList<RefOntoUML.Element>();
-    					elements.add(elemForDeletion);
-    					
-    					DiagramEditor editor = frame.getDiagramManager().getCurrentDiagramEditor();
-    					    					
-    					DeleteElementCommand cmd = new DeleteElementCommand(editor, elements, frame.getDiagramManager().getCurrentProject(),true,true);
-    					if (editor!=null){
-    						editor.execute(cmd);
-    					}else{    						
-    						cmd.deleteFromModel(elemForDeletion);
-    					}
+    					for(DiagramEditor d: frame.getDiagramManager().getDiagramEditors(elemForDeletion)){
+    						frame.getDiagramManager().delete(elemForDeletion, d);
+    					}    					
 	    				tree.setSelectionPath(new TreePath(tree.getModelRootNode().getPath()));    					    					
     				}
     				else if (TreePopupMenu.this.element instanceof StructureDiagram)

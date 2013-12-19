@@ -158,7 +158,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 */
 	public void addToModel(RefOntoUML.Element element)
 	{
-		if(eContainer!=null){
+		if(eContainer==null){
 			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), element);
 			project.getEditingDomain().getCommandStack().execute(cmd);
 		}else{

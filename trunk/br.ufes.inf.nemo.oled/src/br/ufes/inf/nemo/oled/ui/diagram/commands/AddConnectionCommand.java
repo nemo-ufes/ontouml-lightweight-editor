@@ -144,14 +144,14 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 				association.getMemberEnd().get(0).setType(source);
 				association.getMemberEnd().get(1).setType(target);
 				
-	    		if(addToModel){
-	    			addToModel(connection.getRelationship());
-	    		}
-			}			
-		}
-		
-		if(addToDiagram){
-			addToDiagram(diagramElement,redo);
+				if(addToModel){
+					addToModel(connection.getRelationship());
+				}
+			}
+			
+			if(addToDiagram){
+				addToDiagram(diagramElement,redo);
+			}
 		}
 		
 		//triggers the search for errors and warnings in the model
@@ -181,13 +181,14 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 * @param elem
 	 */
 	public void addToModel(RefOntoUML.Element element)
-	{
-		AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(),element);
-		project.getEditingDomain().getCommandStack().execute(cmd);
-	
-		ProjectBrowser.getParserFor(project).addElement(element);
-		
+	{		
 		if (element instanceof Association){
+			
+			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(),element);
+			project.getEditingDomain().getCommandStack().execute(cmd);			
+			
+			ProjectBrowser.getParserFor(project).addElement(element);
+			
 			Property p1 = ((Association)element).getMemberEnd().get(0);
 			Property p2 = ((Association)element).getMemberEnd().get(1);
 			ProjectBrowser.getParserFor(project).addElement(p1);
