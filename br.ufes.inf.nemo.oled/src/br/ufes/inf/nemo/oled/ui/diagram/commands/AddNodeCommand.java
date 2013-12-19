@@ -52,8 +52,9 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	private static final long serialVersionUID = -3148409380703192555L;
 	@SuppressWarnings("unused")
 	private RefOntoUML.Element element;
+	private RefOntoUML.Package eContainer;
 	private Node diagramElement;
-	private CompositeElement parent;
+	private CompositeElement parent;	
 	private double absx, absy;
 	private boolean addToModel;
 	private boolean addToDiagram;
@@ -66,13 +67,14 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 * @param x the absolute x position
 	 * @param y the absolute y position
 	 */
-	public AddNodeCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element element, double x, double y, UmlProject project, boolean addToModel, boolean addToDiagram) {
+	public AddNodeCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element element, double x, double y, UmlProject project, boolean addToModel, boolean addToDiagram, RefOntoUML.Package eContainer) {
 		this.parent = parent;
 		this.project = project;
 		this.notification = editorNotification;
 		this.addToModel = addToModel;
 		this.addToDiagram = addToDiagram;
 		this.element = element;		
+		this.eContainer = eContainer;
 		this.diagramElement = (Node)ModelHelper.getDiagramElement(element);
 		absx = x;
 		absy = y;
@@ -156,9 +158,13 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 */
 	public void addToModel(RefOntoUML.Element element)
 	{
-		AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), element);
-		project.getEditingDomain().getCommandStack().execute(cmd);
-				
+		if(eContainer!=null){
+			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), element);
+			project.getEditingDomain().getCommandStack().execute(cmd);
+		}else{
+			AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Package)eContainer).getPackagedElement(), element);
+			project.getEditingDomain().getCommandStack().execute(cmd);
+		}		
 		ProjectBrowser.getParserFor(project).addElement(element);
 		
 		//============ Updating application... ==============

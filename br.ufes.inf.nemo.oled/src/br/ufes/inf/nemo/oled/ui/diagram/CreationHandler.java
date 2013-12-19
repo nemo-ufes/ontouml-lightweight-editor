@@ -130,7 +130,7 @@ public class CreationHandler implements EditorMode {
 	  CompositeNode parent = editor.getDiagram();
 	  DiagramElement possibleParent = editor.getDiagram().getChildAt(x, y);
 	  if (isNestingCondition(possibleParent)) parent = (CompositeNode) possibleParent;
-	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), x, y, editor.getDiagram().getProject(),true,true);
+	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), x, y, editor.getDiagram().getProject(),true,true, null);
 	  editor.execute(createCommand);
   }
   
@@ -139,7 +139,7 @@ public class CreationHandler implements EditorMode {
 	  CompositeNode parent = editor.getDiagram();
 	  DiagramElement possibleParent = editor.getDiagram().getChildAt(x, y);
 	  if (isNestingCondition(possibleParent)) parent = (CompositeNode) possibleParent;
-	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)umlnode).getClassifier(), x, y, editor.getDiagram().getProject(),true,true);
+	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)umlnode).getClassifier(), x, y, editor.getDiagram().getProject(),true,true,null);
 	  editor.execute(createCommand);
   }
   
@@ -162,7 +162,7 @@ public class CreationHandler implements EditorMode {
     	parent = (CompositeNode) possibleParent;
     }
     
-    AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), tmpPos.getX(), tmpPos.getY(), editor.getDiagram().getProject(),true,true);
+    AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), tmpPos.getX(), tmpPos.getY(), editor.getDiagram().getProject(),true,true,null);
     editor.execute(createCommand);
    	  
     //CLEANUP

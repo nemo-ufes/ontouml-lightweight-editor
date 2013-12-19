@@ -40,7 +40,7 @@ import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
-import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
@@ -169,7 +169,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		//Adds the element to the diagram
 		parent.addChild(element);
 		
-		ModelHelper.addMapping(((AssociationElement)element).getRelationship(), element);
+		ModelHelper.addMapping(((UmlConnection)element).getRelationship(), element);
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);

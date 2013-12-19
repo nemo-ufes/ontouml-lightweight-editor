@@ -76,7 +76,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		installMainMenu();
 		installMainToolBar();
 		installStatusBar();
-
+	  
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				quitApplication();
