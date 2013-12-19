@@ -844,7 +844,44 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		return null;
 	}
+	
+	/**
+	 * Gets all DiagramEditors
+	 * @return
+	 */
+	public ArrayList<DiagramEditor> getDiagramEditors()
+	{
+		ArrayList<DiagramEditor> list = new ArrayList<DiagramEditor>();
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) list.add(((DiagramEditorWrapper)c).getDiagramEditor());
+		}
+		return list;
+	}
 
+	/**
+	 * Gets all DiagramEditors that contains a given element.
+	 */
+	public ArrayList<DiagramEditor> getDiagramEditors(RefOntoUML.Element element)
+	{
+		ArrayList<DiagramEditor> list = new ArrayList<DiagramEditor>();
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) {
+				DiagramEditor d = ((DiagramEditorWrapper)c).getDiagramEditor();
+				for(DiagramElement e: d.getDiagram().getChildren()){
+					if (e instanceof ClassElement){
+						ClassElement elem = (ClassElement)e;
+						if(elem.getClassifier().equals(element)) list.add(((DiagramEditorWrapper)c).getDiagramEditor()); 
+					}
+					if (e instanceof AssociationElement){
+						AssociationElement elem = ((AssociationElement)e);
+						if(elem.getRelationship().equals(element)) list.add(((DiagramEditorWrapper)c).getDiagramEditor());
+					}
+				}				
+			}
+		}
+		return list;
+	}
+	
 	/**
 	 * Gets the file associated with the model.
 	 * 
