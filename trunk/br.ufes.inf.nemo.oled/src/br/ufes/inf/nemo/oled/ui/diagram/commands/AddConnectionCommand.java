@@ -142,11 +142,11 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			{
 				AssociationImpl association  = (AssociationImpl) connection.getRelationship();
 				association.getMemberEnd().get(0).setType(source);
-				association.getMemberEnd().get(1).setType(target);
-				
-				if(addToModel){
-					addToModel(connection.getRelationship());
-				}
+				association.getMemberEnd().get(1).setType(target);				
+			}
+
+			if(addToModel){
+				addToModel(connection.getRelationship());
 			}
 			
 			if(addToDiagram){
@@ -181,11 +181,11 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 * @param elem
 	 */
 	public void addToModel(RefOntoUML.Element element)
-	{		
+	{			
 		if (element instanceof Association){
-			
+
 			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(),element);
-			project.getEditingDomain().getCommandStack().execute(cmd);			
+			project.getEditingDomain().getCommandStack().execute(cmd);
 			
 			ProjectBrowser.getParserFor(project).addElement(element);
 			

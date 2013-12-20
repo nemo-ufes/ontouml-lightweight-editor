@@ -614,7 +614,7 @@ public class OntoUMLParser {
 		}
 		for(Generalization gen : c.getGeneralization())
 		{
-			if (isSelected(gen)) getAllMeronymics(gen.getGeneral(),result);			
+			if (isSelected(gen.getGeneral())) getAllMeronymics(gen.getGeneral(),result);			
 		}
 	}
 			
