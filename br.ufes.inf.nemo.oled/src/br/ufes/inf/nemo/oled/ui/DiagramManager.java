@@ -50,6 +50,7 @@ import org.eclipse.ocl.SemanticException;
 import RefOntoUML.Association;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
+import RefOntoUML.PackageableElement;
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
@@ -76,11 +77,13 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorMouseEvent;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorStateListener;
 import br.ufes.inf.nemo.oled.ui.diagram.SelectionListener;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.DiagramElementFactoryImpl;
@@ -265,9 +268,40 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}		
 	}
 	
-	public void add(ElementType elementType)
+	public void add(ElementType stereotype, RefOntoUML.Type forClone)
 	{
 		
+	}
+	
+	/**
+	 * Add element to the model (do not insert it into diagrams).
+	 * 
+	 * This method create a corresponding DiagramElement to the RefOntoUML element but do not insert it into any diagram.
+	 * 
+	 * @param stereotype
+	 * @param eContainer
+	 */
+	public void add(ElementType stereotype, RefOntoUML.Package eContainer)
+	{
+		//avoid null container
+		if (eContainer==null) eContainer = getCurrentProject().getModel();
+		
+		RefOntoUML.PackageableElement element=null;
+		if (stereotype == ElementType.PACKAGE) element = elementFactory.createPackage();			
+		else {			
+			// note that we are creating a DiagramElement, that should be further added into a diagram if required
+			UmlNode diagramElement = elementFactory.createNode(stereotype);		    		    
+			element = (PackageableElement) diagramElement.getClassifier();			
+			ModelHelper.addMapping(element, diagramElement);
+			
+			//When adding to a diagram, this code below must be performed
+			//diagramElement.setParent(editor.getDiagram());
+			//diagramElement.addNodeChangeListener(getCurrentDiagramEditor());
+		}
+		
+		//to add only in the model do exactly as follow
+		AddNodeCommand addCmd = new AddNodeCommand(null,null,element,0,0,getCurrentProject(),true,false,eContainer);
+		addCmd.addToModel(element);		
 	}
 	
 	/**
@@ -285,12 +319,16 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
 		deletionList.add(element);	
 		//From diagrams & model
-		for(DiagramEditor diagramEditor: getDiagramEditors(element)){			
+		for(DiagramEditor diagramEditor: getDiagramEditors(element)){
+			
+			//to delete from the diagrams and consequently from the model do exactly as follow
 			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
 			diagramEditor.execute(cmd);		
 		}
 		//From model
 		if(getDiagramEditors(element).size()==0){
+			
+			//to delete only from the model do exactly as follow
 			DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
 			cmd.deleteFromModel(element);
 		}

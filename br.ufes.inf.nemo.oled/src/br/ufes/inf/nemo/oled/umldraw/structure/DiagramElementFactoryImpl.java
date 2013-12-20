@@ -83,7 +83,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   private Map<ElementType, Integer> elementCounters = new HashMap<ElementType, Integer>();
   private Map<RelationType, Integer> relationCounters = new HashMap<RelationType, Integer>();
   private StructureDiagram diagram;
-  @SuppressWarnings("unused")
   private RefOntoUMLFactory factory;
   
   /**
@@ -107,6 +106,8 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   private void setupElementMaps() {
 	
 	factory = ModelHelper.getFactory();
+	
+	elementCounters.put(ElementType.PACKAGE, 0);
 	
 	NoteElement notePrototype = (NoteElement)
     NoteElement.getPrototype().clone();
@@ -338,6 +339,17 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     
     relationPrototypes.put(RelationType.NOTE_CONNECTOR, NoteConnection.getPrototype());
     relationCounters.put(RelationType.NOTE_CONNECTOR, 0);  
+  }
+  
+  public RefOntoUML.Package createPackage()
+  {
+	  RefOntoUML.Package pack = factory.createPackage();
+	  pack.setName("Package"+nextElementCount(ElementType.PACKAGE));	  
+	  return pack;
+  }
+  
+  public RefOntoUMLFactory getFactory(){
+	  return factory;
   }
   
   /**

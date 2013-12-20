@@ -178,7 +178,9 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		tree.selectModelElement(element);
 		
 		//Include this element in the Auto Completion of OCL Editor
-		ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Type)element);
+		if (element instanceof RefOntoUML.Type){
+			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Type)element);
+		}
 	}
 	
 }
