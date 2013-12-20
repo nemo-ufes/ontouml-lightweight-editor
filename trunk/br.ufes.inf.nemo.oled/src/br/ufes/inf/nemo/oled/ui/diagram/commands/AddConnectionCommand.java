@@ -31,6 +31,7 @@ import org.eclipse.emf.edit.command.AddCommand;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
+import RefOntoUML.Relationship;
 import RefOntoUML.impl.AssociationImpl;
 import RefOntoUML.impl.GeneralizationImpl;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
@@ -169,7 +170,9 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		//Adds the element to the diagram
 		parent.addChild(element);
 		
-		ModelHelper.addMapping(((UmlConnection)element).getRelationship(), element);
+		Relationship relationship = ((UmlConnection)element).getRelationship();
+		
+		ModelHelper.addMapping(relationship, element);
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
@@ -187,12 +190,13 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(),element);
 			project.getEditingDomain().getCommandStack().execute(cmd);
 			
-			ProjectBrowser.getParserFor(project).addElement(element);
-			
+			ProjectBrowser.getParserFor(project).addElement(element); 
+						
 			Property p1 = ((Association)element).getMemberEnd().get(0);
 			Property p2 = ((Association)element).getMemberEnd().get(1);
-			ProjectBrowser.getParserFor(project).addElement(p1);
-			ProjectBrowser.getParserFor(project).addElement(p2);
+			
+			ProjectBrowser.getParserFor(project).addElement(p1); 	
+			ProjectBrowser.getParserFor(project).addElement(p2); 
 		}
 		
 		//============ Updating application... ==============

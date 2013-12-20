@@ -115,9 +115,11 @@ public class OntoUMLParser {
 	 */
 	public void addElement(EObject obj)
 	{		
-		ParsingElement e = new ParsingElement(obj, true, nameHandler.treatName((NamedElement)obj));
-		this.elementsHash.put(obj,e);
-		elementsHash = new HashMap<EObject,ParsingElement>();		
+		ParsingElement e = new ParsingElement(obj, true, nameHandler.treatName((NamedElement)obj));		
+		if (this.elementsHash.get(obj)==null)
+		{
+			this.elementsHash.put(obj,e); // only add if it is not there already
+		}				
 	}
 
 	/**

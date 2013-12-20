@@ -95,12 +95,16 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     setupElementMaps();
     setupConnectionMaps();
   }
+  
+  public void setDiagram(StructureDiagram diagram){
+	  this.diagram = diagram;
+  }
 
   /**
    * Initializes the element map with the element prototypes.
    */
 
-private void setupElementMaps() {
+  private void setupElementMaps() {
 	
 	factory = ModelHelper.getFactory();
 	
