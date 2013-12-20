@@ -53,7 +53,7 @@ public class ProjectTree extends CheckboxTree {
 		setModel(treeModel);
 				
 		modelRootNode = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
-		StructureDiagram diagram = new StructureDiagram(project);
+		StructureDiagram diagram = new StructureDiagram(project, frame.getDiagramManager().getElementFactory());
 		diagram.setName("Diagram");
 		diagramRootNode = new DefaultMutableTreeNode(diagram);
 		rootNode.add(diagramRootNode);

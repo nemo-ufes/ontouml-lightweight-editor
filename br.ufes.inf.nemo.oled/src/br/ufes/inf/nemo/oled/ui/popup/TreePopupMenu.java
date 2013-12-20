@@ -13,7 +13,6 @@ import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.ui.OntoUMLElement;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.ProjectTree;
-import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 public class TreePopupMenu extends JPopupMenu {
@@ -79,9 +78,7 @@ public class TreePopupMenu extends JPopupMenu {
     				{
     					OntoUMLElement ontoElem = (OntoUMLElement) ((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).getUserObject();
     					RefOntoUML.Element elemForDeletion = (RefOntoUML.Element)ontoElem.getElement();
-    					for(DiagramEditor d: frame.getDiagramManager().getDiagramEditors(elemForDeletion)){
-    						frame.getDiagramManager().delete(elemForDeletion, d);
-    					}    					
+    					frame.getDiagramManager().delete(elemForDeletion);    					    					
 	    				tree.setSelectionPath(new TreePath(tree.getModelRootNode().getPath()));    					    					
     				}
     				else if (TreePopupMenu.this.element instanceof StructureDiagram)

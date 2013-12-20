@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.eclipse.emf.edit.command.AddCommand;
 
+import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Node;
@@ -123,11 +124,6 @@ public class AddNodeCommand extends BaseDiagramCommand {
 			if(addToDiagram){
 				addToDiagram(diagramElement,redo);
 			}
-		
-			if(addToModel && addToDiagram){
-				//Add mapping from the refontouml element to the diagram element
-				ModelHelper.addMapping(classElement.getClassifier(), classElement);
-			}
 		}
 						
 		//triggers the search for errors and warnings in the model
@@ -145,6 +141,10 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		//Adds the element to the diagram
 		parent.addChild(element);
 		if(element instanceof Node) ((Node)element).setAbsolutePos(absx, absy);		
+				
+		Classifier classifier = ((ClassElement)element).getClassifier();
+		
+		ModelHelper.addMapping(classifier, ((ClassElement)element));
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
@@ -164,7 +164,8 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		}else{
 			AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Package)eContainer).getPackagedElement(), element);
 			project.getEditingDomain().getCommandStack().execute(cmd);
-		}		
+		}
+		
 		ProjectBrowser.getParserFor(project).addElement(element);
 		
 		//============ Updating application... ==============

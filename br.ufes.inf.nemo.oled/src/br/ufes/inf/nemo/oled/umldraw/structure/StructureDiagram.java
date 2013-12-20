@@ -110,7 +110,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	private List<Connection> connections = new ArrayList<Connection>();
 	private Label nameLabel = new SimpleLabel();
 	private UmlProject project;
-	private DiagramElementFactory elementFactory = new DiagramElementFactoryImpl(this);
+	private DiagramElementFactory elementFactory;
 	private List<SimulationElement> simulationElements = new ArrayList<SimulationElement>();
 
 	private transient boolean generateTheme = true;
@@ -163,11 +163,12 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	/**
 	 * Constructor.
 	 */
-	public StructureDiagram(UmlProject project) {
+	public StructureDiagram(UmlProject project, DiagramElementFactoryImpl elementFactory) {
 		initializeNameLabel();		
 		this.project = project;
 		setSize((AppFrame.GetScreenWorkingWidth()-230)*2, AppFrame.GetScreenWorkingHeight());
 		simulationElements.add(getStateSimulationElement());
+		this.elementFactory = elementFactory;
 	}
 
 	/**
@@ -199,8 +200,8 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	// }
 
 	public DiagramElementFactory getElementFactory() {
-		if (elementFactory == null)
-			elementFactory = new DiagramElementFactoryImpl(this);
+		if(elementFactory==null) elementFactory = new DiagramElementFactoryImpl(this);
+		elementFactory.setDiagram(this);
 		return elementFactory;
 	}
 	

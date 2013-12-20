@@ -70,29 +70,6 @@ public class OutcomeFixer {
 	 * @param toBeCloned
 	 * @return
 	 */
-	public UmlNode add (ElementType stereotype, DiagramEditor diagramEditor)
-	{
-		//Create a new element with a given stereotype	
-		CreationHandler cHandler = diagramEditor.getCreationHandler();
-		UmlNode umlnode = (UmlNode) cHandler.create(stereotype);
-		
-		//Add element/node to model/diagram
-		if(diagramEditor!=null){
-			AddNodeCommand addCmd = new AddNodeCommand(diagramEditor, diagramEditor.getDiagram(), umlnode.getClassifier(), 10, 10, diagramEditor.getProject(), true, true, null);
-			diagramEditor.execute(addCmd);		
-//		}else{
-//			AddNodeCommand addCmd = new AddNodeCommand(null, null, umlnode.getClassifier(), 10, 10, manager.getCurrentProject(), true, false,null);
-//			addCmd.addToModel(umlnode.getClassifier());
-		}
-		return umlnode;
-	}
-	
-	/**
-	 * Add to model and to the diagram (if necessary)
-	 * @param stereotype
-	 * @param toBeCloned
-	 * @return
-	 */
 	public UmlConnection add (RelationType stereotype, RefOntoUML.Relationship toBeCloned, DiagramEditor diagramEditor)
 	{		
 		//Create a new element with a given stereotype	
@@ -196,7 +173,7 @@ public class OutcomeFixer {
 		}
 	
 		//Delete old element/node from model/diagram
-		manager.delete(element,diagramEditor);
+		manager.delete(element);
 		
 		return newElement;
 	}
@@ -231,7 +208,7 @@ public class OutcomeFixer {
 		}
 	
 		//Delete old element/node from model/diagram
-		manager.delete(element,diagramEditor);
+		manager.delete(element);
 		
 		return newElement;
 	}

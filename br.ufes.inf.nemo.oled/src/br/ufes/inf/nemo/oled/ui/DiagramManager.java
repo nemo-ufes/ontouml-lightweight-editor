@@ -62,6 +62,7 @@ import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
+import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -82,6 +83,7 @@ import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.DiagramElementFactoryImpl;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.AlloyHelper;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -111,6 +113,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	private static final long serialVersionUID = 5019191384767258996L;
 	public final AppFrame frame;
 	private DiagramEditorCommandDispatcher editorDispatcher;
+	private DiagramElementFactoryImpl elementFactory;
 	
 	private UmlProject currentProject;
 	private File projectFile;
@@ -126,6 +129,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return frame;
 	}
 
+	public DiagramElementFactoryImpl getElementFactory()
+	{
+		return elementFactory;
+	}
+	
 	/**
 	 * Constructor for the DiagramManager class.
 	 * @param frame the parent window {@link AppFrame}
@@ -133,7 +141,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public DiagramManager(final AppFrame frame) {
 		super();
 		this.frame = frame;		
-		editorDispatcher = new DiagramEditorCommandDispatcher(this,frame); 
+		editorDispatcher = new DiagramEditorCommandDispatcher(this,frame);
+		elementFactory = new DiagramElementFactoryImpl(null); //doesn't have yet any diagram
 		ModelHelper.initializeHelper();		
 		setBorder(new EmptyBorder(0,0,0,0));
 	}
@@ -214,7 +223,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void newDiagram(UmlProject project)
 	{
-		StructureDiagram diagram = new StructureDiagram(project);
+		StructureDiagram diagram = new StructureDiagram(project,elementFactory);
 		diagram.setLabelText("New Diagram");
 		project.addDiagram(diagram);
 		project.setSaveModelNeeded(true);
@@ -230,7 +239,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void newDiagram()
 	{
 		if (currentProject!=null){
-			StructureDiagram diagram = new StructureDiagram(getCurrentProject());
+			StructureDiagram diagram = new StructureDiagram(getCurrentProject(), elementFactory);
 			diagram.setLabelText("New Diagram");
 			getCurrentProject().addDiagram(diagram);
 			getCurrentProject().setSaveModelNeeded(true);
@@ -256,19 +265,33 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}		
 	}
 	
+	public void add(ElementType elementType)
+	{
+		
+	}
+	
 	/**
-	 * Delete from model and from the diagram (if necessary). In latter case, you can attribute null to DiagramEditor variable to not delete from the Diagram.
+	 * Delete element from the model and from the diagram.
+	 * 
+	 * If the element appears in at least one opened diagram, it deletes the element from that diagram.
+	 * on the contrary, if there is no opened diagram in which the element appears, it will only delete from the model.
+	 * If that happens, the element will no longer exists in the model, but still might exists in some diagrams that were not opened in
+	 * the deletion moment.
+	 * 
 	 * @param element
 	 */
-	public void delete(RefOntoUML.Element element, DiagramEditor diagramEditor)
-	{		
+	public void delete(RefOntoUML.Element element)
+	{	
 		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
-		deletionList.add(element);		
-		if(diagramEditor!=null){
+		deletionList.add(element);	
+		//From diagrams & model
+		for(DiagramEditor diagramEditor: getDiagramEditors(element)){			
 			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
-			diagramEditor.execute(cmd);
-		}else{
-			DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,true);
+			diagramEditor.execute(cmd);		
+		}
+		//From model
+		if(getDiagramEditors(element).size()==0){
+			DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
 			cmd.deleteFromModel(element);
 		}
 	}

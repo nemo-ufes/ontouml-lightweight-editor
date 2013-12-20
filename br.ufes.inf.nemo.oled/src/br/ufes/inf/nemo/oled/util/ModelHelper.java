@@ -122,7 +122,11 @@ public class ModelHelper {
 		DiagramElement result;
 		if (!initialized) initializeHelper();		
 		if (element==null || diagramElement==null) return false;		
-		result = mappings.put(element, diagramElement);		
+		if(mappings.get(element)==null){ // only add if it is not there already
+			result = mappings.put(element, diagramElement);
+		}else{
+			result = null;
+		}
 		if (result!=null) return true;
 		else return false;
 	}
@@ -158,6 +162,11 @@ public class ModelHelper {
 		return mappings.get(element);
 	}
 
+	public static HashMap<Element,DiagramElement> getMapping()
+	{
+		return mappings;
+	}
+	
     public static RefOntoUML.Element getElement(DiagramElement value) 
     {    	
         for (Entry<RefOntoUML.Element,DiagramElement> entry : mappings.entrySet()) 
