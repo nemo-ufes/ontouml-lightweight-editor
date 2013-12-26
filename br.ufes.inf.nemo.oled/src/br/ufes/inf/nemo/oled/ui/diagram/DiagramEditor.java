@@ -48,7 +48,6 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
 
@@ -126,7 +125,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private transient SelectionHandler selectionHandler;
 	private transient CreationHandler creationHandler;
 	private transient LineHandler lineHandler;
-	private transient List<UndoableEditListener> editListeners = new ArrayList<UndoableEditListener>();
+	public transient List<UndoableEditListener> editListeners = new ArrayList<UndoableEditListener>();
 	private transient Scaling scaling = Scaling.SCALING_100;
 	private double widthWithZoom;
 	private double heightWithZoom;
@@ -957,39 +956,12 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * @param command the command to run
 	 */
 	public void execute(Command command) {
-
-		//DeleteCommands may delete elements which must cascade the deletion to others. 
-		//It is the case for Classes and associations and generalizations connected to them.
-		if (command instanceof DeleteElementCommand){
-
-			DeleteElementCommand delete = (DeleteElementCommand) command;
-			for (DiagramElement elem : delete.getDiagramElements()) {
-
-				if(elem instanceof Node){
-
-					Collection<DiagramElement> dependencies = new ArrayList<>();
-					dependencies.addAll(((Node)elem).getConnections());
-
-					for (DiagramElement diagramElement : dependencies) {
-						Collection<DiagramElement> removeList = new ArrayList<>();
-						removeList.add(diagramElement);
-						execute(new DeleteElementCommand(delete.getNotification(), ModelHelper.getElements(removeList), delete.getProject(),true,true));
-					}		
-				}
-			}
-		}
-
-		UndoableEditEvent event = new UndoableEditEvent(this, command);
-		for (UndoableEditListener l : editListeners) {
-			l.undoableEditHappened(event);
-		}
-
+		
 		// We need to run() after notifying the UndoManager in order to ensure
 		// correct menu behaviour
 		command.run();
 
 		diagramManager.updateUI();
-
 	}
 
 	/*

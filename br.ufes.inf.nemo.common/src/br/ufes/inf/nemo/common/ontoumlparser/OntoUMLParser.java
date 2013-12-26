@@ -357,7 +357,10 @@ public class OntoUMLParser {
 	 */
 	public Boolean isSelected (EObject elem) 
 	{		
-		return elementsHash.get(elem).getSelected();
+		if (elem!=null)
+			return elementsHash.get(elem).getSelected();
+		else
+			return false;
 	}
 	
 	/**

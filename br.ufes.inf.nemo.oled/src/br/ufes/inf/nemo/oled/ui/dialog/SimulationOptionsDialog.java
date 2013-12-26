@@ -160,7 +160,7 @@ public class SimulationOptionsDialog extends JDialog {
 		  
     	dispose();
     
-    	frame.getDiagramManager().generatesAlloy();    	
+    	frame.getDiagramManager().generatesAlloy();		  		
 	}
 	
 	public AppFrame getFrame()

@@ -57,13 +57,15 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 public class AddConnectionCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = 2924451842640450250L;
-	private DiagramElement diagramElement;
-	@SuppressWarnings("unused")
-	private RefOntoUML.Element relationship;
-	private EObject eContainer;
+	
 	private CompositeElement parent;
+	private DiagramElement diagramElement;
+	
+	private RefOntoUML.Element relationship;
 	private Classifier source;
 	private Classifier target;
+	private EObject eContainer;
+	
 	private boolean addToModel;
 	private boolean addToDiagram;
 
@@ -95,24 +97,21 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	public void undo() {
 		super.undo();
 				
-		if (diagramElement instanceof BaseConnection) {
-			BaseConnection connection = (BaseConnection) diagramElement;
-			
-			if (connection.getRelationship() instanceof GeneralizationImpl == false)
-			{
+		if (relationship!=null){
+			if (relationship instanceof GeneralizationImpl == false){
 				project.getEditingDomain().getCommandStack().undo();
-			}	
-			else
-			{
-				GeneralizationImpl generalization  = (GeneralizationImpl) connection.getRelationship();
+			} else {
+				GeneralizationImpl generalization  = (GeneralizationImpl)relationship;
 	    		EcoreUtil.delete(generalization);
 			}
 		}
-				
-		parent.removeChild(diagramElement);
-		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		elements.add(diagramElement);
-		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);
+		
+		if(diagramElement!=null){				
+			parent.removeChild(diagramElement);
+			List<DiagramElement> elements = new ArrayList<DiagramElement>();
+			elements.add(diagramElement);
+			notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);	
+		}		
 	}
 
 	/**
@@ -130,38 +129,37 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 */
 	public void run() {
 	    
-		if (addToDiagram && !addToModel) return;
-		
-		//Adds the element to the model
-		if (diagramElement instanceof BaseConnection) {
-			
-			BaseConnection connection = (BaseConnection) diagramElement;
-			
-			if (connection.getRelationship() instanceof GeneralizationImpl)
-			{
-				GeneralizationImpl generalization  = (GeneralizationImpl) connection.getRelationship();
-	    		generalization.setSpecific(source);
-	    		generalization.setGeneral(target);
-			}
-			else if(connection.getRelationship() instanceof AssociationImpl)
-			{
-				AssociationImpl association  = (AssociationImpl) connection.getRelationship();
-				association.getMemberEnd().get(0).setType(source);
-				association.getMemberEnd().get(1).setType(target);				
-			}
-
-			if(addToModel){
-				addToModel(connection.getRelationship());
-			}
-			
-			if(addToDiagram){
-				addToDiagram(diagramElement,redo);
-			}
+		if (addToDiagram && !addToModel){
+			return;
 		}
 		
-		//triggers the search for errors and warnings in the model
+		if(addToModel && relationship!=null){			
+			addToModel(relationship);			
+		}
+		
+		if(addToDiagram && diagramElement != null){
+			
+			if (diagramElement instanceof BaseConnection) {				
+				BaseConnection connection = (BaseConnection) diagramElement;				
+				if (connection.getRelationship() instanceof GeneralizationImpl)
+				{
+					GeneralizationImpl generalization  = (GeneralizationImpl) connection.getRelationship();
+		    		generalization.setSpecific(source);
+		    		generalization.setGeneral(target);
+				}
+				else if(connection.getRelationship() instanceof AssociationImpl)
+				{
+					AssociationImpl association  = (AssociationImpl) connection.getRelationship();
+					association.getMemberEnd().get(0).setType(source);
+					association.getMemberEnd().get(1).setType(target);				
+				}
+				addToDiagram(diagramElement,redo);
+			}			
+		}
+				
 		ProjectBrowser.frame.getDiagramManager().searchWarnings();
 		ProjectBrowser.frame.getDiagramManager().searchErrors();
+		ProjectBrowser.frame.getDiagramManager().updateUI();
 	}
 		
 	/**
@@ -205,9 +203,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			Property p2 = ((Association)element).getMemberEnd().get(1);
 			
 			ProjectBrowser.getParserFor(project).addElement(p1); 	
-			ProjectBrowser.getParserFor(project).addElement(p2);
-			
-			System.out.println(ProjectBrowser.getParserFor(project).getElements());
+			ProjectBrowser.getParserFor(project).addElement(p2);			
 		}
 		
 		if (element instanceof Generalization){			

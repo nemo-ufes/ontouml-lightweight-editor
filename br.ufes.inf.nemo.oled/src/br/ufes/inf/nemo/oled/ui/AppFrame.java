@@ -111,7 +111,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		editorArea.setDividerLocation(GetScreenWorkingHeight());
 	}
 	
-	public void initializeAlloyAnalyzer()
+	public Thread initializeAlloyAnalyzer() throws InterruptedException
 	{
 		// extract alloy jar file and open alloy
 		try {			
@@ -119,13 +119,16 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		} catch (IOException e) {			
 			e.printStackTrace();
 		}		
-		SwingUtilities.invokeLater(new Runnable() {
+		Thread t = new Thread(new Runnable() {
 	        public void run() 
 	        {
 	        	String[] args = {""};
 	        	analyzer = new SimpleGUICustom(args,false,"");	        	
 	        }
 		});
+		t.start();
+		t.join();
+		return t;
 	}
 
 	/**
