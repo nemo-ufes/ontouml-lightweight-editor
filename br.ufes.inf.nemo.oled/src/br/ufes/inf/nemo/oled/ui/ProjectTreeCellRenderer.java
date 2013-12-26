@@ -20,15 +20,14 @@ import javax.swing.tree.TreePath;
 
 import org.eclipse.emf.ecore.EObject;
 
-import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
-
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 /**
  * OntoUML Cell Renderer for CheckBox Tree

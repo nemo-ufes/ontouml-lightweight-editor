@@ -25,11 +25,13 @@ package br.ufes.inf.nemo.oled.ui.diagram.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Generalization;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.impl.AssociationImpl;
@@ -58,6 +60,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	private DiagramElement diagramElement;
 	@SuppressWarnings("unused")
 	private RefOntoUML.Element relationship;
+	private EObject eContainer;
 	private CompositeElement parent;
 	private Classifier source;
 	private Classifier target;
@@ -72,13 +75,14 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 * @param aTarget 
 	 * @param aSource 
 	 */
-	public AddConnectionCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element relationship, Classifier aSource, Classifier aTarget, UmlProject project, boolean addToModel, boolean addToDiagram) {
+	public AddConnectionCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element relationship, Classifier aSource, Classifier aTarget, UmlProject project, boolean addToModel, boolean addToDiagram, EObject eContainer) {
 		this.parent = parent;
 		this.project = project;
 		this.notification = editorNotification;
 		this.addToModel = addToModel;
 		this.addToDiagram = addToDiagram;
 		this.relationship = relationship;
+		this.eContainer = eContainer;
 		diagramElement = ModelHelper.getDiagramElement(relationship);
 		source = aSource;
 		target = aTarget;
@@ -187,16 +191,28 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	{			
 		if (element instanceof Association){
 
-			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(),element);
-			project.getEditingDomain().getCommandStack().execute(cmd);
-			
+			if(eContainer==null){
+				AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), element);
+				project.getEditingDomain().getCommandStack().execute(cmd);
+			}else{				
+				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Package)eContainer).getPackagedElement(), element);
+				project.getEditingDomain().getCommandStack().execute(cmd);
+			}
+
 			ProjectBrowser.getParserFor(project).addElement(element); 
 						
 			Property p1 = ((Association)element).getMemberEnd().get(0);
 			Property p2 = ((Association)element).getMemberEnd().get(1);
 			
 			ProjectBrowser.getParserFor(project).addElement(p1); 	
-			ProjectBrowser.getParserFor(project).addElement(p2); 
+			ProjectBrowser.getParserFor(project).addElement(p2);
+			
+			System.out.println(ProjectBrowser.getParserFor(project).getElements());
+		}
+		
+		if (element instanceof Generalization){			
+			((Generalization) element).setSpecific(source);
+			((Generalization) element).setGeneral(target);
 		}
 		
 		//============ Updating application... ==============

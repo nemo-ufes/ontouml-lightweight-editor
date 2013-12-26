@@ -65,6 +65,7 @@ import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
+import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
@@ -77,12 +78,14 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorMouseEvent;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorStateListener;
 import br.ufes.inf.nemo.oled.ui.diagram.SelectionListener;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
@@ -268,20 +271,56 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}		
 	}
 	
-	public void add(ElementType stereotype, RefOntoUML.Type forClone)
+	/**
+	 * Add relationship to the model (do not insert it into diagrams).
+	 * 
+	 * This method create a corresponding DiagramElement to the RefOntoUML relationship but do not insert it into any diagram.
+	 * 
+	 * To insert the created element in the diagram you need to include this code:
+	 * DiagramElement assocDiagramElement = ModelHelper.getDiagramElement(assocCreatedElement);
+	 * bindConnection(assocDiagramElement,sourceDiagramElement,targetDiagramElement);
+	 * 
+	 * @param stereotype
+	 * @param eContainer
+	 * @return
+	 */
+	public RefOntoUML.Relationship add(RelationType stereotype, EObject eContainer)
 	{
+		//avoid null container
+		if (eContainer==null) eContainer = getCurrentProject().getModel();
 		
+		RefOntoUML.Relationship element=null;
+		// note that we are creating a DiagramElement, that should be further added into a diagram
+		UmlConnection diagramElement = elementFactory.createConnection(stereotype,null,null);		    		    
+		element = diagramElement.getRelationship();			
+		ModelHelper.addMapping(element, diagramElement);
+		
+		//to add only in the model do exactly as follow
+		if (stereotype==RelationType.GENERALIZATION) {
+			AddConnectionCommand addCmd = new AddConnectionCommand(null,null,element,(RefOntoUML.Classifier)eContainer,null,getCurrentProject(),true,false,null);
+			addCmd.addToModel(element);
+		}else{
+			AddConnectionCommand addCmd = new AddConnectionCommand(null,null,element,null,null,getCurrentProject(),true,false,eContainer);
+			addCmd.addToModel(element);
+		}
+		
+		return element;
 	}
 	
 	/**
 	 * Add element to the model (do not insert it into diagrams).
 	 * 
 	 * This method create a corresponding DiagramElement to the RefOntoUML element but do not insert it into any diagram.
+	 *
+	 * To insert the created element in the diagram you need to include this code:
+	 * DiagramElement diagramElement = ModelHelper.getDiagramElement(createdElement);
+	 * diagramElement.setParent(editor.getDiagram());
+	 * diagramElement.addNodeChangeListener(specificDiagramEditor);
 	 * 
 	 * @param stereotype
 	 * @param eContainer
 	 */
-	public void add(ElementType stereotype, RefOntoUML.Package eContainer)
+	public RefOntoUML.PackageableElement add(ElementType stereotype, RefOntoUML.Package eContainer)
 	{
 		//avoid null container
 		if (eContainer==null) eContainer = getCurrentProject().getModel();
@@ -289,19 +328,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		RefOntoUML.PackageableElement element=null;
 		if (stereotype == ElementType.PACKAGE) element = elementFactory.createPackage();			
 		else {			
-			// note that we are creating a DiagramElement, that should be further added into a diagram if required
+			// note that we are creating a DiagramElement, that should be further added into a diagram
 			UmlNode diagramElement = elementFactory.createNode(stereotype);		    		    
 			element = (PackageableElement) diagramElement.getClassifier();			
 			ModelHelper.addMapping(element, diagramElement);
-			
-			//When adding to a diagram, this code below must be performed
-			//diagramElement.setParent(editor.getDiagram());
-			//diagramElement.addNodeChangeListener(getCurrentDiagramEditor());
 		}
 		
 		//to add only in the model do exactly as follow
 		AddNodeCommand addCmd = new AddNodeCommand(null,null,element,0,0,getCurrentProject(),true,false,eContainer);
-		addCmd.addToModel(element);		
+		addCmd.addToModel(element);
+		
+		return element;
 	}
 	
 	/**

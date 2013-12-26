@@ -80,7 +80,11 @@ public class OntoUMLElement {
 		
 		if (element instanceof Generalization)
 		{			
-			return type +" " + ((Generalization)element).getGeneral().getName();
+			if (((Generalization)element).getGeneral()==null){
+				return type + " null";
+			}else{
+				return type +" " + ((Generalization)element).getGeneral().getName();
+			}
 		}
 		
 		if (element instanceof RefOntoUML.Classifier)
