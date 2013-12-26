@@ -363,7 +363,8 @@ public final class ClassElement extends AbstractCompositeNode implements
 	 * {@inheritDoc}
 	 */
 	public String getLabelText() {
-		return getClassifier().getName();
+		if (getClassifier()==null) return "";
+		else return getClassifier().getName();
 	}
 
 	/**
