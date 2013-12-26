@@ -295,14 +295,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		element = diagramElement.getRelationship();			
 		ModelHelper.addMapping(element, diagramElement);
 		
+		AddConnectionCommand cmd=null;
 		//to add only in the model do exactly as follow
 		if (stereotype==RelationType.GENERALIZATION) {
-			AddConnectionCommand addCmd = new AddConnectionCommand(null,null,element,(RefOntoUML.Classifier)eContainer,null,getCurrentProject(),true,false,null);
-			addCmd.addToModel(element);
+			cmd = new AddConnectionCommand(null,null,element,(RefOntoUML.Classifier)eContainer,null,getCurrentProject(),true,false,null);
 		}else{
-			AddConnectionCommand addCmd = new AddConnectionCommand(null,null,element,null,null,getCurrentProject(),true,false,eContainer);
-			addCmd.addToModel(element);
+			cmd = new AddConnectionCommand(null,null,element,null,null,getCurrentProject(),true,false,eContainer);			
 		}
+		
+		cmd.run();
 		
 		return element;
 	}
@@ -335,8 +336,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		
 		//to add only in the model do exactly as follow
-		AddNodeCommand addCmd = new AddNodeCommand(null,null,element,0,0,getCurrentProject(),true,false,eContainer);
-		addCmd.addToModel(element);
+		AddNodeCommand cmd = new AddNodeCommand(null,null,element,0,0,getCurrentProject(),true,false,eContainer);		
+		cmd.run();
 		
 		return element;
 	}
@@ -353,6 +354,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void delete(RefOntoUML.Element element)
 	{	
+		//deletes associated relationships  
+//		ArrayList<Relationship> relList = ProjectBrowser.getParserFor(project).getSelectedAndNonSelectedRelationshipsOf(elem);
+//		for(Relationship rel: relList) deleteFromModel(rel); 
+
+		
 		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
 		deletionList.add(element);	
 		//From diagrams & model
@@ -1289,7 +1295,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (alloymodel.getAlloyPath().isEmpty() || alloymodel.getAlloyPath()==null) return;
 
 		try {
-
+			
 			frame.getAlloyAnalyzer().setTheme(alloymodel.getDirectory() + "standart_theme.thm");
 
 			frame.getAlloyAnalyzer().setVisible(showAnalyzer);
@@ -1361,17 +1367,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 	/**
 	 * Generates Alloy from OntoUML+OCL model
+	 * @throws InterruptedException 
 	 */
-	public void generatesAlloy() 
-	{
-		transformsOntoUMLintoAlloy();		
-		transformsOCLintoAlloy();		
+	public void generatesAlloy()  
+	{									
+		transformsOntoUMLintoAlloy();
+		transformsOCLintoAlloy();
 		if (ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) 
 			openAlloyAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),true, -1);
 		else openAlloyAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),false, 0);	
 		String umlpath = ProjectBrowser.getAlloySpecFor(getCurrentProject()).getAlloyPath().replace(".als", ".uml");
 		File umlfile = new File(umlpath);
-		umlfile.deleteOnExit();
+		umlfile.deleteOnExit();		
 	}
 
 	/**

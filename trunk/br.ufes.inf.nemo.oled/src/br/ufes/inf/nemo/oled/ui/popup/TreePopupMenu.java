@@ -13,6 +13,7 @@ import javax.swing.tree.TreePath;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
+import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.OntoUMLElement;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.ProjectTree;
@@ -98,31 +99,6 @@ public class TreePopupMenu extends JPopupMenu {
     			}
     		});
     	}
-    	
-    	// Delete 
-    	if (!tree.getModelRootNode().equals(node) && !tree.getDiagramRootNode().equals(node) && !tree.getRootNode().equals(node)){    		
-    		add(deleteItem);
-    		deleteItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete.png")));
-    		deleteItem.addActionListener(new ActionListener() {				
-    			@Override
-    			public void actionPerformed(ActionEvent e) {			
-    							
-    				if (TreePopupMenu.this.element instanceof OntoUMLElement)
-    				{
-    					OntoUMLElement ontoElem = (OntoUMLElement) ((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).getUserObject();
-    					RefOntoUML.Element elemForDeletion = (RefOntoUML.Element)ontoElem.getElement();
-    					frame.getDiagramManager().delete(elemForDeletion);    					    					
-	    				tree.setSelectionPath(new TreePath(tree.getModelRootNode().getPath()));    					    					
-    				}
-    				else if (TreePopupMenu.this.element instanceof StructureDiagram)
-    				{
-    					frame.getDiagramManager().removeDiagram((StructureDiagram)TreePopupMenu.this.element);
-    					// FIXME every modification creates a new tree
-    					ProjectBrowser.rebuildTree(frame.getDiagramManager().getCurrentProject());
-    				}
-    			}
-    		});
-    	}  
     	
     	// Add Element 	    		
 		if (node.getUserObject() instanceof OntoUMLElement)
@@ -210,7 +186,20 @@ public class TreePopupMenu extends JPopupMenu {
         			public void actionPerformed(ActionEvent e) {
         				frame.getDiagramManager().add(ElementType.DATATYPE,eContainer);
         			}
-        		});        		
+        		});
+        		packageItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/package.png")));
+                kindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
+                quantityItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
+                collectiveItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
+                subkindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
+                phaseItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
+                roleItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
+                categoryItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
+                rolemixinItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
+                mixinItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
+                modeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
+                relatorItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
+                datatypeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/class.png")));
     		}
 		}
 		
@@ -292,6 +281,16 @@ public class TreePopupMenu extends JPopupMenu {
 	   	        		frame.getDiagramManager().add(RelationType.DERIVATION,eContainer);
 	   	        	}
        	        });      			
+    			associationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/association-arrow.png")));
+    	        materialItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/association.png")));
+    	        formalItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/association.png")));
+    	        characterizationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/association.png")));
+    	        mediationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/association.png")));
+    	        componentOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/aggregation.png")));
+    	        memberOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/aggregation-m.png")));
+    	        subcollectionOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/aggregation-c.png")));
+    	        subquantityOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/aggregation-q.png")));
+    	        derivationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/derivation.png")));
     		}
 		}
 		
@@ -309,7 +308,33 @@ public class TreePopupMenu extends JPopupMenu {
 	   	        		frame.getDiagramManager().add(RelationType.GENERALIZATION,eContainer);
 	   	        	}
        	        });
+    			addGenItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/inheritance.png")));
     		}
 		}
+		
+    	// Delete 
+    	if (!tree.getModelRootNode().equals(node) && !tree.getDiagramRootNode().equals(node) && !tree.getRootNode().equals(node)){    		
+    		add(deleteItem);
+    		deleteItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete.png")));
+    		deleteItem.addActionListener(new ActionListener() {				
+    			@Override
+    			public void actionPerformed(ActionEvent e) {			
+    							
+    				if (TreePopupMenu.this.element instanceof OntoUMLElement)
+    				{
+    					OntoUMLElement ontoElem = (OntoUMLElement) ((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).getUserObject();
+    					RefOntoUML.Element elemForDeletion = (RefOntoUML.Element)ontoElem.getElement();
+    					frame.getDiagramManager().delete(elemForDeletion);    					    					
+	    				tree.setSelectionPath(new TreePath(tree.getModelRootNode().getPath()));    					    					
+    				}
+    				else if (TreePopupMenu.this.element instanceof StructureDiagram)
+    				{
+    					frame.getDiagramManager().removeDiagram((StructureDiagram)TreePopupMenu.this.element);
+    					// FIXME every modification creates a new tree
+    					ProjectBrowser.rebuildTree(frame.getDiagramManager().getCurrentProject());
+    				}
+    			}
+    		});
+    	}  
     }
 }

@@ -191,8 +191,8 @@ public final class Main {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					UIManager.put("TabbedPane.focus", new Color(0, 0, 0, 0));					
 					
-					frame = new AppFrame();					
-					frame.initializeAlloyAnalyzer();				
+					frame = new AppFrame();				
+					frame.initializeAlloyAnalyzer();
 					frame.setLocationByPlatform(true);
 					frame.setVisible(true);
 					frame.toFront();

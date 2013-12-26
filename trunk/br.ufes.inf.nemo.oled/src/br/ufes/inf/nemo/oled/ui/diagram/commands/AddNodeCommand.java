@@ -51,12 +51,14 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 public class AddNodeCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = -3148409380703192555L;
-	@SuppressWarnings("unused")
-	private RefOntoUML.Element element;
-	private RefOntoUML.Package eContainer;
+	
+	private CompositeElement parent;
 	private Node diagramElement;
-	private CompositeElement parent;	
 	private double absx, absy;
+	
+	private RefOntoUML.Element element;
+	private RefOntoUML.Package eContainer;		
+	
 	private boolean addToModel;
 	private boolean addToDiagram;
 	
@@ -87,13 +89,17 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	@Override
 	public void undo() {
 		super.undo();
+	
+		if(element!=null){
+			project.getEditingDomain().getCommandStack().undo();
+		}
 		
-		project.getEditingDomain().getCommandStack().undo();
-		parent.removeChild(diagramElement);
-		
-		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		elements.add(diagramElement);
-		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);
+		if(diagramElement != null){
+			parent.removeChild(diagramElement);			
+			List<DiagramElement> elements = new ArrayList<DiagramElement>();
+			elements.add(diagramElement);
+			notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);	
+		}		
 	}
 
 	/**
@@ -111,24 +117,21 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 */
 	public void run() 
 	{		
-		if (addToDiagram && !addToModel) return;
+		if (addToDiagram && !addToModel){
+			return;
+		}
 				
-		if(diagramElement instanceof ClassElement)
-		{
-			ClassElement classElement = (ClassElement) diagramElement;
-			
-			if(addToModel){
-				addToModel(classElement.getClassifier());
-			}
-			
-			if(addToDiagram){
-				addToDiagram(diagramElement,redo);
-			}
+		if(addToModel && element!=null) {			
+			addToModel(element);			
+		}
+		
+		if(addToDiagram && diagramElement !=null){						
+			addToDiagram(diagramElement,redo);
 		}
 						
-		//triggers the search for errors and warnings in the model
 		ProjectBrowser.frame.getDiagramManager().searchWarnings();
 		ProjectBrowser.frame.getDiagramManager().searchErrors();
+		ProjectBrowser.frame.getDiagramManager().updateUI();
 	}	
 	
 	/**
@@ -167,7 +170,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		}
 		
 		ProjectBrowser.getParserFor(project).addElement(element);
-		System.out.println(ProjectBrowser.getParserFor(project).getElements());
+		
 		//============ Updating application... ==============
 		
 		//FIXME - Do not rebuild the tree, only update it!
