@@ -19,8 +19,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.eclipse.emf.ecore.EObject;
 
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.util.ColorPalette;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
  * @author John Guerson
@@ -355,8 +358,31 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	     
 	     if(elem instanceof RefOntoUML.Property)
 	     {
+	    	 RefOntoUML.Property p = (RefOntoUML.Property)elem;
 	    	 if(property.equals("Name")) ((RefOntoUML.Property)elem).setName((String)value);
-	    	 if(property.equals("Type")) ((RefOntoUML.Property)elem).setType((RefOntoUML.Type)((OntoUMLElement)value).getElement());	    	 
+	    	 if(property.equals("Type")) {
+	    		 RefOntoUML.Type type = (RefOntoUML.Type)((OntoUMLElement)value).getElement();
+	    		 ((RefOntoUML.Property)elem).setType(type);
+	    		 
+	    		 //================================================
+	    		 //Propagate the type change to the diagram element
+	    		 //================================================
+	    		 RefOntoUML.Association referredAssoc = ((RefOntoUML.Property)elem).getAssociation();
+	    		 UmlConnection referredConn = (UmlConnection)ModelHelper.getDiagramElement(referredAssoc);	    		 
+	    		 if(type instanceof RefOntoUML.Relationship)
+	    		 {
+	    			 UmlConnection connType = (UmlConnection)ModelHelper.getDiagramElement(type);
+	    			 if (p.equals(referredAssoc.getMemberEnd().get(0))){
+		    			 ProjectBrowser.frame.getDiagramManager().getElementFactory().bindConnection(referredConn, connType, null);
+		    		 }else if (p.equals(referredAssoc.getMemberEnd().get(1))){
+		    		 	 ProjectBrowser.frame.getDiagramManager().getElementFactory().bindConnection(referredConn, null, connType);
+		    	 	 }
+	    		 }else{
+	    			 UmlNode nodeType = (UmlNode)ModelHelper.getDiagramElement(type);
+	    			 ProjectBrowser.frame.getDiagramManager().getElementFactory().bindConnection(referredConn, nodeType, (UmlNode)null);
+	    		 }
+	    		 //================================================
+	    	 }
 	    	 
 	    	 RefOntoUML.RefOntoUMLFactory factory = RefOntoUML.RefOntoUMLFactory.eINSTANCE;         
 	    	 if(property.equals("Upper")) {

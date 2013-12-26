@@ -411,7 +411,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
    * {@inheritDoc} This method also create the referred RefOntoUML Relationship of the UmlConnection. 
    */
   @Override
-  public UmlConnection createConnection(RelationType relationType, UmlConnection c1, UmlNode node2) 
+  public UmlConnection createConnectionFromCon(RelationType relationType, UmlConnection c1, UmlNode node2) 
   {
 	  UmlConnection prototype = relationPrototypes.get(relationType);
 	  
@@ -432,7 +432,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   /**
    * {@inheritDoc} This method also create the referred RefOntoUML Relationship of the UmlConnection. 
    */
-  public UmlConnection createConnection(RelationType relationType, UmlNode node1, UmlConnection c2) 
+  public UmlConnection createConnectionToCon(RelationType relationType, UmlNode node1, UmlConnection c2) 
   {
     UmlConnection prototype = relationPrototypes.get(relationType);    
     
@@ -474,25 +474,25 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
    * @param node1 the Node 1
    * @param node2 the Node 2
    */
-  private void bindConnection(UmlConnection conn, UmlNode node1, UmlNode node2) {
+  public void bindConnection(UmlConnection conn, UmlNode node1, UmlNode node2) {
     conn.setNode1(node1);
     conn.setNode2(node2);
-    node1.addConnection(conn);
-    node2.addConnection(conn);
+    if(node1!=null) node1.addConnection(conn);
+    if(node2!=null) node2.addConnection(conn);
   }
   
-  private void bindConnection(UmlConnection conn, UmlNode node1, Connection c2) {
+  public void bindConnection(UmlConnection conn, UmlNode node1, Connection c2) {
 	  conn.setNode1(node1);
 	  conn.setConnection2(c2);
-	  node1.addConnection(conn);
-	  c2.addConnection(conn);  
+	  if(node1!=null) node1.addConnection(conn);
+	  if(c2!=null) c2.addConnection(conn);  
   }
   
-  private void bindConnection(UmlConnection conn, Connection c1, UmlNode node2) {
+  public void bindConnection(UmlConnection conn, Connection c1, UmlNode node2) {
 	  conn.setNode2(node2);
 	  conn.setConnection1(c1);
-	  node2.addConnection(conn);
-	  c1.addConnection(conn);  
+	  if(node2!=null) node2.addConnection(conn);
+	  if(c1!=null) c1.addConnection(conn);  
   }
 
 }

@@ -187,7 +187,7 @@ public class LineHandler implements EditorMode {
 		}
 			  
 	    if(aSource !=null && aTarget != null){
-	    	AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn.getRelationship(), aSource, aTarget, editor.getDiagram().getProject(),true,true);
+	    	AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn.getRelationship(), aSource, aTarget, editor.getDiagram().getProject(),true,true,null);
 	    	editor.execute(command);
 	    }
   }
@@ -244,7 +244,7 @@ public class LineHandler implements EditorMode {
 	  //UmlConnection ->(connectedTo) -> UmlNode
 	  if (source instanceof UmlConnection && target instanceof UmlNode)
 	  {
-		  conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlConnection) source, (UmlNode) target);		
+		  conn = editor.getDiagram().getElementFactory().createConnectionFromCon(relationType, (UmlConnection) source, (UmlNode) target);		
 	  	  connectMethod.generateAndSetPointsToConnection(conn, (UmlConnection)source,  (UmlNode)target, anchor, tmpPos);	
 	  }
 	  // UmlNode ->(connectedTo) -> UmlConnection
@@ -252,7 +252,7 @@ public class LineHandler implements EditorMode {
 	  {
 		  //invert sides if derivation is pushed from the UmlNode (relator), it should be from the UmlConnection (material)
 		  if (relationType == RelationType.DERIVATION) { 
-			  conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlConnection) target, (UmlNode) source);   
+			  conn = editor.getDiagram().getElementFactory().createConnectionFromCon(relationType, (UmlConnection) target, (UmlNode) source);   
               connectMethod.generateAndSetPointsToConnection(conn, (UmlConnection) target, (UmlNode)source, anchor, tmpPos); 
 		  }
 	  }

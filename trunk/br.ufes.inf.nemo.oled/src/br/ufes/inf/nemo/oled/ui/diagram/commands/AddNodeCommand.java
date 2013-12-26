@@ -167,7 +167,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		}
 		
 		ProjectBrowser.getParserFor(project).addElement(element);
-		
+		System.out.println(ProjectBrowser.getParserFor(project).getElements());
 		//============ Updating application... ==============
 		
 		//FIXME - Do not rebuild the tree, only update it!

@@ -80,10 +80,10 @@ public class OutcomeFixer {
 		//Add element/node to model/diagram
 		 
 		if( diagramEditor!=null && (ModelHelper.getDiagramElement(getSource(conn.getRelationship())) != null) && (ModelHelper.getDiagramElement(getTarget(conn.getRelationship()))!=null) ) {
-			AddConnectionCommand addCmd = new AddConnectionCommand(diagramEditor, diagramEditor.getDiagram(), conn.getRelationship(), getSource(conn.getRelationship()), getTarget(conn.getRelationship()), manager.getCurrentProject(), true, true);
+			AddConnectionCommand addCmd = new AddConnectionCommand(diagramEditor, diagramEditor.getDiagram(), conn.getRelationship(), getSource(conn.getRelationship()), getTarget(conn.getRelationship()), manager.getCurrentProject(), true, true, null);
 			diagramEditor.execute(addCmd);
 		}else{
-			AddConnectionCommand addCmd = new AddConnectionCommand(null, null, conn.getRelationship(), getSource(conn.getRelationship()), getTarget(conn.getRelationship()), manager.getCurrentProject(), true, false);
+			AddConnectionCommand addCmd = new AddConnectionCommand(null, null, conn.getRelationship(), getSource(conn.getRelationship()), getTarget(conn.getRelationship()), manager.getCurrentProject(), true, false, null);
 			addCmd.addToModel(conn.getRelationship());
 		}
 		return conn;

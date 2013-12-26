@@ -73,16 +73,15 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
 	    	comboBox.setFocusable(false);
 	    	comboBox.setBackground(Color.WHITE);
 	    	ArrayList<OntoUMLElement> list = new ArrayList<OntoUMLElement>();
-	    	OntoUMLParser refparser = ProjectBrowser.getParserFor(project);
-	    	
+	    	OntoUMLParser refparser = ProjectBrowser.getParserFor(project);	    	
 	    	for(RefOntoUML.Type t: refparser.getAllInstances(RefOntoUML.Type.class))
 	    	{
-	    		if(t instanceof RefOntoUML.Class || t instanceof RefOntoUML.DataType){
+	    		if(t instanceof RefOntoUML.Class || t instanceof RefOntoUML.DataType || t instanceof RefOntoUML.Association){
 	    			if (t.equals(((OntoUMLElement) value).getElement())) list.add((OntoUMLElement)value);
-	    			else list.add(new OntoUMLElement(t,""));
+	    			else list.add(new OntoUMLElement(t,""));	    			
 	    		}	    			
 	    	}
-	    	Collections.sort(list,new CustomComparator());
+	    	Collections.sort(list,new CustomComparator());	    	
 	    	comboBox.setModel(new DefaultComboBoxModel(list.toArray()));	    	
 	        editor = new DefaultCellEditor(comboBox);
 	    	
