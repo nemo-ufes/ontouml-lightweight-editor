@@ -343,7 +343,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/**
-	 * Delete element from the model and from the diagram.
+	 * Delete element from the model and if opended from the diagram too.
 	 * 
 	 * If the element appears in at least one opened diagram, it deletes the element from that diagram.
 	 * on the contrary, if there is no opened diagram in which the element appears, it will only delete from the model.
@@ -354,27 +354,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void delete(RefOntoUML.Element element)
 	{	
-		//deletes associated relationships  
-//		ArrayList<Relationship> relList = ProjectBrowser.getParserFor(project).getSelectedAndNonSelectedRelationshipsOf(elem);
-//		for(Relationship rel: relList) deleteFromModel(rel); 
-
-		
 		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
-		deletionList.add(element);	
-		//From diagrams & model
-		for(DiagramEditor diagramEditor: getDiagramEditors(element)){
-			
+		deletionList.add(element);
+		DeleteElementCommand cmd = null;
+		for(DiagramEditor diagramEditor: getDiagramEditors(element)){			
 			//to delete from the diagrams and consequently from the model do exactly as follow
-			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
-			diagramEditor.execute(cmd);		
+			cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);					
 		}
-		//From model
-		if(getDiagramEditors(element).size()==0){
-			
+		if(getDiagramEditors(element).size()==0){			
 			//to delete only from the model do exactly as follow
-			DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
-			cmd.deleteFromModel(element);
+			cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
 		}
+		cmd.run();
 	}
 	
 	/**

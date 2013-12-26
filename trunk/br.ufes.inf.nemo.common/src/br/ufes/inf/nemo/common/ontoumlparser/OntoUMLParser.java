@@ -619,7 +619,7 @@ public class OntoUMLParser {
 		}
 		for(Generalization gen : c.getGeneralization())
 		{
-			if (isSelected(gen.getGeneral())) getAllMeronymics(gen.getGeneral(),result);			
+			if (isSelected(gen.getGeneral()) && !gen.getGeneral().equals(c)) getAllMeronymics(gen.getGeneral(),result);			
 		}
 	}
 			
@@ -654,7 +654,7 @@ public class OntoUMLParser {
 		ArrayList<Mediation> result = new ArrayList<Mediation>();
 		
 		for (Mediation m : getAllInstances(Mediation.class)) {
-			if(getRelator(m).equals(relator))
+			if(getRelator(m)!=null && getRelator(m).equals(relator))
 				result.add(m);
 		}
 		
@@ -1035,16 +1035,15 @@ public class OntoUMLParser {
 		else if (m.targetEnd().getType() instanceof Relator)
 			return m.targetEnd();
 		else {
-			for (Classifier c : ((Classifier)m.sourceEnd().getType()).allParents()) {
-				if (c instanceof Relator)
-					return m.sourceEnd();
+			if(m.sourceEnd().getType()!=null){
+				for (Classifier c : ((Classifier)m.sourceEnd().getType()).allParents()) {
+					if (c instanceof Relator) return m.sourceEnd();
+				}
+				for (Classifier c : ((Classifier)m.targetEnd().getType()).allParents()) {
+					if (c instanceof Relator) return m.targetEnd();
+				}
 			}
-			for (Classifier c : ((Classifier)m.targetEnd().getType()).allParents()) {
-				if (c instanceof Relator)
-					return m.targetEnd();
-			}
-		}
-		
+		}		
 		return m.sourceEnd();
 		
 	}

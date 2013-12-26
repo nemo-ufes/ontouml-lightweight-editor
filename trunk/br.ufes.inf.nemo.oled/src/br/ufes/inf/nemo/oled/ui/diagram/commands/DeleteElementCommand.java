@@ -163,22 +163,25 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 */
 	public void delete(Collection<DiagramElement> diagramElemList, Collection<Element> elemList)
 	{
-		if(deleteFromModel){
-			for(Element elem: elemList)
-			{				
-				deleteFromModel(elem);
-
-				if(deleteFromModel && deleteFromDiagram){
-					ModelHelper.removeMapping(elem);
-				}
-			}
+		if(deleteFromDiagram) {
+			for (DiagramElement element : diagramElemList) deleteFromDiagram(element);			
 		}
 		
-		if(deleteFromDiagram)
-		{
-			for (DiagramElement element : diagramElemList) 
-			{			
-				deleteFromDiagram(element);
+		if(deleteFromModel){
+			//delete first the derivations
+			for(Element elem: elemList) {				
+				if (elem instanceof RefOntoUML.Derivation) deleteFromModel(elem);				
+				if(deleteFromModel && deleteFromDiagram) ModelHelper.removeMapping(elem);
+			}
+			//then the rest of relationships
+			for(Element elem: elemList) {				
+				if (elem instanceof RefOntoUML.Relationship) deleteFromModel(elem);				
+				if(deleteFromModel && deleteFromDiagram) ModelHelper.removeMapping(elem);
+			}
+			//then the classes and datatypes
+			for(Element elem: elemList) {
+				if (elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType) deleteFromModel(elem);
+				if(deleteFromModel && deleteFromDiagram) ModelHelper.removeMapping(elem);
 			}
 		}	
 					
