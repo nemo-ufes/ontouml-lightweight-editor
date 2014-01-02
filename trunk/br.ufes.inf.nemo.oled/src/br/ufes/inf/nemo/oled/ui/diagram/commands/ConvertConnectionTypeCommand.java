@@ -61,7 +61,10 @@ public class ConvertConnectionTypeCommand extends BaseDiagramCommand {
 		oldconnection = connection.getConnection();
 		newconnection.copyData(oldconnection);
 		connection.setConnection(newconnection);
-		
+		//in case of a derivation connected to a material, reset derivation's points
+		for(Connection c: connection.getConnections()){
+			c.resetPoints();
+		}
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(connection);
 		notification.notifyChange(elements, ChangeType.CONNECTION_TYPE_CONVERTED, redo ? NotificationType.REDO : NotificationType.DO);
