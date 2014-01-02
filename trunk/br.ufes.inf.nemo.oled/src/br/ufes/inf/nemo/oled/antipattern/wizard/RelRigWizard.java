@@ -14,18 +14,13 @@ public class RelRigWizard extends Wizard {
 		this.ap = ap;
 		setWindowTitle(RelRigAntipattern.getAntipatternInfo().name);
 	}
-
-	public String[]  divide(String text){		
-		String[] array = text.split("\n");
-		return array;
-	}
 	
 	@Override
 	public void addPages() {		
 		presentation = new PresentationPage(
 			RelRigAntipattern.getAntipatternInfo().name,
 			RelRigAntipattern.getAntipatternInfo().acronym,
-			divide(ap.toString())
+			ap.toString()
 		);		
 		addPage(presentation);
 	}
