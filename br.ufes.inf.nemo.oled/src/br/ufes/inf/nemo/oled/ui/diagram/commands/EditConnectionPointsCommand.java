@@ -60,7 +60,9 @@ public class EditConnectionPointsCommand extends BaseDiagramCommand {
 	public void run() {
 		oldpoints = clonePointList(connection.getPoints());
 		connection.setPoints(newpoints);
-		
+		for(Connection c : connection.getConnections()){
+			c.resetPoints();
+		}
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(connection);
 		notification.notifyChange(elements, ChangeType.CONNECTION_POINT_EDITED, redo ? NotificationType.REDO : NotificationType.DO);

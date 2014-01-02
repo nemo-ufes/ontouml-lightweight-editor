@@ -551,12 +551,18 @@ public abstract class AbstractConnection implements Connection,
 		setNode2(conn.getNode2());
 		setConnection1(conn.getConnection1());
 		setConnection2(conn.getConnection2());
+		setConnections(conn.getConnections());
 	}
 	
 	// *************************************************************************
 	// ***** Connections
 	// ********************
 
+	public void setConnections(Collection<? extends Connection> connList) {
+		connections.clear();
+		connections.addAll(connList);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

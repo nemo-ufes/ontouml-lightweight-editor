@@ -54,10 +54,7 @@ public class TranslateConnectionOperation extends MoveOperation {
 	 * {@inheritDoc}
 	 */
 	public void run() {
-		translateConnection(connection);
-//		for(Connection c: connection.getConnections()){
-//			translateConnection(c);
-//		}
+		translateConnection(connection);		
 	}
 
 	private void translateConnection(Connection connection){

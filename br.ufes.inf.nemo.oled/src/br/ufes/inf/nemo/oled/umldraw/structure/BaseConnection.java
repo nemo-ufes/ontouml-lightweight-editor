@@ -550,4 +550,9 @@ public class BaseConnection implements UmlConnection, Adapter {
 		return connection.getAbsoluteY1();
 	}
 
+	@Override
+	public void setConnections(Collection<? extends Connection> connList) {
+		connection.setConnections(connList);		
+	}
+
 }

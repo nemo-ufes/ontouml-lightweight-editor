@@ -927,7 +927,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
 			execute(new ConvertConnectionTypeCommand(this, conn, new RectilinearConnection()));
 			// we can only tell the selection handler to forget about the selection
-			selectionHandler.deselectAll();
+			selectionHandler.deselectAll();			
 		}
 	}
 

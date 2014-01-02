@@ -77,6 +77,8 @@ public interface Connection extends DiagramElement {
   
   Connection getConnection1();
   
+  void setConnections(Collection<? extends Connection> connList);
+  
   /**
    * Returns the connection points. The first and last point of the connection
    * represent the start and the end points.

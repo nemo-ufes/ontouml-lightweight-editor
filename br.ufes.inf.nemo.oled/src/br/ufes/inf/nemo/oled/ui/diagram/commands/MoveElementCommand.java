@@ -26,6 +26,7 @@ import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.MoveNodeOperation;
 import br.ufes.inf.nemo.oled.draw.MoveOperation;
+import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.draw.TranslateConnectionOperation;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
@@ -68,24 +69,34 @@ public class MoveElementCommand extends BaseDiagramCommand {
 		
 		for (MoveOperation moveOperation : moveOperations) {
 			moveOperation.run();
-			if(moveOperation instanceof MoveNodeOperation)
-				elements.add(((MoveNodeOperation)moveOperation).getNode());
-			else if(moveOperation instanceof TranslateConnectionOperation)				
-				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
+			if(moveOperation instanceof MoveNodeOperation){
+				elements.add(((MoveNodeOperation)moveOperation).getNode());				
+			}else if(moveOperation instanceof TranslateConnectionOperation){				
+				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());				
+			}
 		}
 		
 		//move the connections related to every connection moved
 		//this should be done through the MoveOperation and not by reseting points
-		for(DiagramElement elem: elements){
-			if (elem instanceof Connection){
-				Connection con = (Connection)elem;
-				if(notification instanceof DiagramEditor) ((DiagramEditor)notification).resetConnectionPoints(con);
+		for(DiagramElement elem: elements){			
+			if (elem instanceof Node){
+				Node node = (Node)elem;
+				for(Connection c: node.getConnections()){	
+					resetRelatedConnectionPoints((DiagramEditor)notification, c);
+				}
 			}
-		}
-		
+		}		
 		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
 	}
 
+	public void resetRelatedConnectionPoints(DiagramEditor notification, Connection con)
+	{
+		for(Connection c2: con.getConnections()) { 
+			c2.resetPoints();
+			c2.invalidate();
+		}	
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

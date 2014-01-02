@@ -84,7 +84,7 @@ public class TreePopupMenu extends JPopupMenu {
     			@Override
     			public void actionPerformed(ActionEvent e) {
     				//FIXME every modification creates a new tree
-    				ProjectBrowser.rebuildTree(frame.getDiagramManager().getCurrentProject());
+    				ProjectBrowser.refreshTree(frame.getDiagramManager().getCurrentProject());
     			}
     		});
     	}    	

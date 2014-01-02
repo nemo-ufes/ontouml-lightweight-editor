@@ -106,7 +106,7 @@ public class ProjectTree extends CheckboxTree {
 	        }
 	    });		
 	}	
-	
+
 	/** 
 	 * Remove all nodes except the root node. 
 	 */
@@ -224,6 +224,7 @@ public class ProjectTree extends CheckboxTree {
 		{
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),""));
 			parent.add(newNode);
+			expandPath(new TreePath(newNode.getPath()));
 			
 			EList<EObject> contents = ((EObject)object).eContents();
 			for (EObject eobj : contents) 

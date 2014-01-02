@@ -31,6 +31,7 @@ import org.eclipse.emf.edit.command.AddCommand;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
@@ -173,6 +174,8 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		parent.addChild(element);
 		
 		Relationship relationship = ((UmlConnection)element).getRelationship();
+		
+		if (relationship instanceof Derivation) element.invalidate(); // bug in designing. not best solution, but works.
 		
 		ModelHelper.addMapping(relationship, element);
 		
