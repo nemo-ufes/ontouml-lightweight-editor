@@ -2,28 +2,29 @@ package br.ufes.inf.nemo.oled.antipattern.wizard;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class PresentationPage extends WizardPage {
 	
-	public String[] elements;
-	public String apType;
 	public String title;
+	public String apType;
+	public String elements;	
 	
+	//GUI
 	public Label lblModelElements;
-	public List elemList;
 	public Button btnGoOptions;
-	public Button btnGoWizard;	
+	public Button btnGoWizard;
+	public StyledText styledText;
 	
 	/**
 	 * Create the wizard.
 	 */
-	public PresentationPage(String title, String apType, String[] elements) 
+	public PresentationPage(String title, String apType, String elements) 
 	{
 		super(title);
 		if (this.apType==null) this.apType = "";
@@ -31,6 +32,9 @@ public class PresentationPage extends WizardPage {
 		this.elements = elements;
 		setTitle(title);
 		setDescription("This Wizard will help you decide if the occurrence of the "+apType+" antipattern characterizes an error.");
+		if (lblModelElements!=null){
+			lblModelElements.setText("The combination of the following elements characterize an occurence of the "+this.apType+" antipattern:");
+		}
 	}
 
 	/**
@@ -44,10 +48,6 @@ public class PresentationPage extends WizardPage {
 		
 		lblModelElements = new Label(container, SWT.NONE);
 		lblModelElements.setText("The combination of the following elements characterize an occurence of the "+this.apType+" antipattern:");
-		lblModelElements.redraw();
-		
-		elemList = new List(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		elemList.setItems((String[])elements);
 		
 		Label lblWouldYouLike = new Label(container, SWT.NONE);
 		lblWouldYouLike.setText("Would you like to:");
@@ -57,16 +57,19 @@ public class PresentationPage extends WizardPage {
 		btnGoWizard.setSelection(true);
 		
 		btnGoOptions = new Button(container, SWT.RADIO);
-		btnGoOptions.setText("go directly to the refactoring options?");		
-		
+		btnGoOptions.setText("go directly to the refactoring options?");
+				
+		styledText = new StyledText(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI | SWT.WRAP);
+		styledText.setText(elements);
+	    
 		GroupLayout gl_container = new GroupLayout(container);
 		gl_container.setHorizontalGroup(
-			gl_container.createParallelGroup(GroupLayout.LEADING)
-				.add(gl_container.createSequentialGroup()
+			gl_container.createParallelGroup(GroupLayout.TRAILING)
+				.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
 					.addContainerGap()
 					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(styledText, GroupLayout.PREFERRED_SIZE, 544, GroupLayout.PREFERRED_SIZE)
 						.add(lblModelElements, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
-						.add(elemList, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
 						.add(GroupLayout.TRAILING, lblWouldYouLike, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
 						.add(btnGoWizard, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
 						.add(btnGoOptions, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
@@ -78,7 +81,7 @@ public class PresentationPage extends WizardPage {
 					.addContainerGap()
 					.add(lblModelElements)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(elemList, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.RELATED)
 					.add(lblWouldYouLike)
 					.addPreferredGap(LayoutStyle.RELATED)
@@ -87,7 +90,7 @@ public class PresentationPage extends WizardPage {
 					.add(btnGoOptions)
 					.addContainerGap(74, Short.MAX_VALUE))
 		);
+		
 		container.setLayout(gl_container);
-	}
-	
+	}	
 }
