@@ -175,7 +175,7 @@ public final class Main {
 				try {
 
 					//Needed for the embedded SWT Browser in Linux systems
-					//System.setProperty("sun.awt.xembedserver", "true");
+					System.setProperty("sun.awt.xembedserver", "true");
 					
 					 // Enable better look-and-feel
 			        if (onMac() || onWindows()) {
@@ -184,8 +184,8 @@ public final class Main {
 			            System.setProperty("com.apple.mrj.application.live-resize","true");
 			            System.setProperty("com.apple.macos.useScreenMenuBar","true");
 			            System.setProperty("apple.laf.useScreenMenuBar","true");                        
-			            //System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode","false");
-			            //System.setProperty("apple.awt.fileDialogForDirectories", "true");
+			            System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode","false");
+			            System.setProperty("apple.awt.fileDialogForDirectories", "true");
 			        }
 			        
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -195,14 +195,12 @@ public final class Main {
 					frame.initializeAlloyAnalyzer();
 					frame.setLocationByPlatform(true);
 					frame.setVisible(true);
-					frame.toFront();
+					frame.toFront();					
 					
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}				
 			}
-		});
-		
+		});		
 	}
-
 }

@@ -9,7 +9,6 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
-import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
