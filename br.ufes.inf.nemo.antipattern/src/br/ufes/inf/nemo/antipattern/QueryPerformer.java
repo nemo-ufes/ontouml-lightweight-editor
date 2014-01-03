@@ -1,69 +1,34 @@
 package br.ufes.inf.nemo.antipattern;
 
 import java.io.File;
-import java.nio.file.WatchEvent.Kind;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.ocl.ParserException;
 
-import RefOntoUML.AntiRigidSortalClass;
-import RefOntoUML.Association;
-import RefOntoUML.Category;
-import RefOntoUML.Characterization;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
-import RefOntoUML.Collective;
 import RefOntoUML.DataType;
-import RefOntoUML.Derivation;
-import RefOntoUML.FormalAssociation;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import RefOntoUML.LiteralInteger;
-import RefOntoUML.LiteralUnlimitedNatural;
-import RefOntoUML.MaterialAssociation;
-import RefOntoUML.Mediation;
-import RefOntoUML.Meronymic;
-import RefOntoUML.Mixin;
-import RefOntoUML.MixinClass;
 import RefOntoUML.Mode;
 import RefOntoUML.Model;
 import RefOntoUML.MomentClass;
 import RefOntoUML.ObjectClass;
-import RefOntoUML.Package;
 import RefOntoUML.Phase;
-import RefOntoUML.Property;
-import RefOntoUML.Quantity;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
-import RefOntoUML.RoleMixin;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
-import RefOntoUML.Type;
-import RefOntoUML.componentOf;
-import RefOntoUML.memberOf;
-import RefOntoUML.subCollectionOf;
-import RefOntoUML.subQuantityOf;
-import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
-import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
-import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
-import br.ufes.inf.nemo.common.list.Combination;
-import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
-import br.ufes.inf.nemo.common.ontoumlparser.MaterialInference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 public class QueryPerformer {
 	

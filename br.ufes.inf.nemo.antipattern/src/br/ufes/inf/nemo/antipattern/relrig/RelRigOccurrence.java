@@ -19,6 +19,24 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 	
 	private ArrayList<Mediation> allMediations, rigidMediations;
 	private ArrayList<Property> allMediatedProperties, rigidMediatedProperties;
+	public ArrayList<Mediation> getAllMediations() {
+		return allMediations;
+	}
+	
+	public OntoUMLParser getOntoUMLParser(){ return parser; }
+
+	public ArrayList<Mediation> getRigidMediations() {
+		return rigidMediations;
+	}
+
+	public ArrayList<Property> getAllMediatedProperties() {
+		return allMediatedProperties;
+	}
+
+	public ArrayList<Property> getRigidMediatedProperties() {
+		return rigidMediatedProperties;
+	}
+
 	public CreationalRelator creationalInstantiationPattern;
 	public ChangingRelator changingInstantiationPattern;
 	

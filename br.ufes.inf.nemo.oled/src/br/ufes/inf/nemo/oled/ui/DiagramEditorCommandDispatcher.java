@@ -24,7 +24,7 @@ import java.util.Map;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
-import br.ufes.inf.nemo.oled.antipattern.AntiPatternListDialog;
+import br.ufes.inf.nemo.oled.antipattern.AntiPatternSearchDialog;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
@@ -349,7 +349,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{			
 		if (manager.isProjectLoaded()==false) return;
 		
-		AntiPatternListDialog.open(manager.getFrame());		
+		AntiPatternSearchDialog.open(manager.getFrame());		
 	}
 	
 	public void undo()

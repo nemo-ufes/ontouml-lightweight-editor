@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.antipattern.wizard;
 
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -8,6 +9,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
+
+/**
+ * @author Tiago Sales
+ * @author John Guerson
+ *
+ */
 
 public class PresentationPage extends WizardPage {
 	
@@ -21,20 +28,26 @@ public class PresentationPage extends WizardPage {
 	public Button btnGoWizard;
 	public StyledText styledText;
 	
+	// Next page
+	public WizardPage stepByStep;
+	public WizardPage optionPage;
+	
 	/**
 	 * Create the wizard.
 	 */
-	public PresentationPage(String title, String apType, String elements) 
+	public PresentationPage(String title, String apType, String elements, WizardPage stepByStep, WizardPage optionPage) 
 	{
 		super(title);
+		
 		if (this.apType==null) this.apType = "";
 		else this.apType = apType;
+		
 		this.elements = elements;
+		this.stepByStep = stepByStep;
+		this.optionPage = optionPage;
+		
 		setTitle(title);
-		setDescription("This Wizard will help you decide if the occurrence of the "+apType+" antipattern characterizes an error.");
-		if (lblModelElements!=null){
-			lblModelElements.setText("The combination of the following elements characterize an occurence of the "+this.apType+" antipattern:");
-		}
+		setDescription("This Wizard will help you decide if the occurrence of the "+apType+" antipattern characterizes an error.");		
 	}
 
 	/**
@@ -46,8 +59,8 @@ public class PresentationPage extends WizardPage {
 		
 		setControl(container);
 		
-		lblModelElements = new Label(container, SWT.NONE);
-		lblModelElements.setText("The combination of the following elements characterize an occurence of the "+this.apType+" antipattern:");
+		lblModelElements = new Label(container, SWT.NONE);		
+		lblModelElements.setText("The combination of the following elements characterize an occurence of the "+apType+" antipattern:");
 		
 		Label lblWouldYouLike = new Label(container, SWT.NONE);
 		lblWouldYouLike.setText("Would you like to:");
@@ -60,6 +73,7 @@ public class PresentationPage extends WizardPage {
 		btnGoOptions.setText("go directly to the refactoring options?");
 				
 		styledText = new StyledText(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI | SWT.WRAP);
+		styledText.setEditable(false);
 		styledText.setText(elements);
 	    
 		GroupLayout gl_container = new GroupLayout(container);
@@ -89,8 +103,15 @@ public class PresentationPage extends WizardPage {
 					.addPreferredGap(LayoutStyle.RELATED)
 					.add(btnGoOptions)
 					.addContainerGap(74, Short.MAX_VALUE))
-		);
-		
+		);		
 		container.setLayout(gl_container);
 	}	
+	
+	@Override
+	public IWizardPage getNextPage() 
+	{
+		if(btnGoOptions.getSelection()) return optionPage;
+		else if(btnGoWizard.getSelection()) return stepByStep;
+		else return super.getNextPage();
+	}
 }

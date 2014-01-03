@@ -31,6 +31,7 @@ public class DuplicateRelators extends InstantiationPattern {
 
 	*/
 	
+	@SuppressWarnings("unused")
 	@Override
 	public String predicate(ArrayList<InstantiationPatternParameter> parameter, OntoUMLParser parser) throws Exception{
 

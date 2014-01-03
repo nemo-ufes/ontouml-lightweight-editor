@@ -11,6 +11,12 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
+/**
+ * @author Tiago Sales
+ * @author John Guerson
+ *
+ */
+
 public class FinishingPage extends WizardPage {
 
 	public Label statusLabel;	

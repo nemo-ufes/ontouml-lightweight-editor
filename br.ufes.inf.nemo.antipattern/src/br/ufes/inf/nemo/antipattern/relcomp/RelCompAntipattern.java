@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.antipattern.relcomp;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
@@ -10,7 +9,6 @@ import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.antipattern.SimpleTuple;
-import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
@@ -24,6 +22,7 @@ public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
 	}
 	
 	/*TODO: Check if the new one works*/
+	@SuppressWarnings("unused")
 	private static final String oclQuery_unidented =	
 			"Association.allInstances()->product(Association.allInstances())->collect( x | "+
 			"Tuple {	a1:Association = x.first, a1Source:Classifier = x.first.memberEnd.type->at(1).oclAsType(Classifier), a1Target:Classifier = x.first.memberEnd.type->at(2).oclAsType(Classifier), a2:Association = x.second}) "+

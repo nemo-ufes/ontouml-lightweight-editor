@@ -51,16 +51,18 @@ import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalAntipattern;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.oled.antipattern.wizard.RelRigWizard;
+import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 
 /**
+ * @author Tiago Sales
  * @author John Guerson
+ *
  */
 
-public class AntiPatternListDialog extends JDialog {
+public class AntiPatternSearchDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 		
@@ -196,7 +198,7 @@ public class AntiPatternListDialog extends JDialog {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
-			AntiPatternListDialog dialog = new AntiPatternListDialog(parent);
+			AntiPatternSearchDialog dialog = new AntiPatternSearchDialog(parent);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 			dialog.setLocationRelativeTo(parent);
@@ -281,13 +283,13 @@ public class AntiPatternListDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public AntiPatternListDialog(AppFrame frame) 
+	public AntiPatternSearchDialog(AppFrame frame) 
 	{
 		super(frame);
 		
 		this.frame = frame;
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/antipattern.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/antipattern.png")));
 		setTitle("Anti-Pattern Search");
 		setBounds(100, 100, 824, 469);
 		 
@@ -490,8 +492,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblMixRigIco.setOpaque(false);
 		lblMixRigIco.setContentAreaFilled(false);
 		lblMixRigIco.setBorderPainted(false);
-		lblMixRigIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
-		lblMixRigIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblMixRigIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblMixRigIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		rightPanel.add(lblMixRigIco);
 		rightPanel.add(cbxMixRig);
 		rightPanel.add(lblMixRigRes);
@@ -501,8 +503,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblMultiDepIco.setOpaque(false);
 		lblMultiDepIco.setContentAreaFilled(false);
 		lblMultiDepIco.setBorderPainted(false);
-		lblMultiDepIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
-		lblMultiDepIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblMultiDepIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblMultiDepIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		rightPanel.add(lblMultiDepIco);
 		rightPanel.add(cbxMultiDep);
 		rightPanel.add(lblMultiDepRes);
@@ -512,8 +514,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblRelCompIco.setOpaque(false);
 		lblRelCompIco.setContentAreaFilled(false);
 		lblRelCompIco.setBorderPainted(false);
-		lblRelCompIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
-		lblRelCompIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblRelCompIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblRelCompIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		rightPanel.add(lblRelCompIco);
 		rightPanel.add(cbxRelComp);
 		rightPanel.add(lblRelCompRes);
@@ -523,8 +525,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblRelOverIco.setOpaque(false);
 		lblRelOverIco.setContentAreaFilled(false);
 		lblRelOverIco.setBorderPainted(false);
-		lblRelOverIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
-		lblRelOverIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblRelOverIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblRelOverIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		rightPanel.add(lblRelOverIco);
 		rightPanel.add(cbxRelOver);
 		rightPanel.add(lblRelOverRes);
@@ -534,8 +536,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblRepRelIco.setOpaque(false);
 		lblRepRelIco.setContentAreaFilled(false);
 		lblRepRelIco.setBorderPainted(false);
-		lblRepRelIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
-		lblRepRelIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblRepRelIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblRepRelIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		rightPanel.add(lblRepRelIco);
 		rightPanel.add(cbxRepRel);
 		rightPanel.add(lblRepRelRes);
@@ -545,8 +547,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblRelRigIco.setOpaque(false);
 		lblRelRigIco.setContentAreaFilled(false);
 		lblRelRigIco.setBorderPainted(false);
-		lblRelRigIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
-		lblRelRigIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblRelRigIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblRelRigIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		rightPanel.add(lblRelRigIco);
 		rightPanel.add(cbxRelRig);
 		
@@ -561,8 +563,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblRelSpecIco.setOpaque(false);
 		lblRelSpecIco.setContentAreaFilled(false);
 		lblRelSpecIco.setBorderPainted(false);
-		lblRelSpecIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
-		lblRelSpecIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblRelSpecIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblRelSpecIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		rightPanel.add(lblRelSpecIco);
 		rightPanel.add(cbxRelSpec);
 		rightPanel.add(lblRelSpecRes);
@@ -572,8 +574,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblUndefPhaseIco.setOpaque(false);
 		lblUndefPhaseIco.setContentAreaFilled(false);
 		lblUndefPhaseIco.setBorderPainted(false);
-		lblUndefPhaseIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
-		lblUndefPhaseIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblUndefPhaseIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblUndefPhaseIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		rightPanel.add(lblUndefPhaseIco);
 		rightPanel.add(cbxUndefPhase);
 		rightPanel.add(lblUndefPhaseRes);
@@ -583,8 +585,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblUndefFormalIco.setOpaque(false);
 		lblUndefFormalIco.setContentAreaFilled(false);
 		lblUndefFormalIco.setBorderPainted(false);
-		lblUndefFormalIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
-		lblUndefFormalIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblUndefFormalIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblUndefFormalIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		rightPanel.add(lblUndefFormalIco);
 		rightPanel.add(cbxUndefFormal);
 		rightPanel.add(lblUndefFormalRes);
@@ -594,8 +596,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblWholeOverIco.setOpaque(false);
 		lblWholeOverIco.setContentAreaFilled(false);
 		lblWholeOverIco.setBorderPainted(false);
-		lblWholeOverIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
-		lblWholeOverIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblWholeOverIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblWholeOverIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		rightPanel.add(lblWholeOverIco);
 		
 		cbxWholeOver = new JCheckBox("WholeOver: Whole Composed of Overlapping Parts");
@@ -638,8 +640,8 @@ public class AntiPatternListDialog extends JDialog {
 		lblAssCycIco.setOpaque(false);
 		lblAssCycIco.setContentAreaFilled(false);
 		lblAssCycIco.setBorderPainted(false);
-		lblAssCycIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
-		lblAssCycIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblAssCycIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblAssCycIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblAssCycIco);
 		
 		cbxAssCyc = new JCheckBox("AssCyc: Association Cycle");
@@ -655,11 +657,11 @@ public class AntiPatternListDialog extends JDialog {
 		
 		lblBinOverIco = new JButton();
 		lblBinOverIco.setPreferredSize(new Dimension(20, 20));
-		lblBinOverIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblBinOverIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
 		lblBinOverIco.setOpaque(false);
 		lblBinOverIco.setContentAreaFilled(false);
 		lblBinOverIco.setBorderPainted(false);
-		lblBinOverIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblBinOverIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblBinOverIco);
 		
 		cbxBinOver = new JCheckBox("BinOver: Binary Relation With Overlapping Ends");
@@ -676,11 +678,11 @@ public class AntiPatternListDialog extends JDialog {
 		
 		lblDepPhaseIco = new JButton();
 		lblDepPhaseIco.setPreferredSize(new Dimension(20, 20));
-		lblDepPhaseIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblDepPhaseIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
 		lblDepPhaseIco.setOpaque(false);
 		lblDepPhaseIco.setContentAreaFilled(false);
 		lblDepPhaseIco.setBorderPainted(false);
-		lblDepPhaseIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblDepPhaseIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblDepPhaseIco);
 		
 		cbxDepPhase_1 = new JCheckBox("DepPhase: Relationally Dependent Phase");
@@ -696,11 +698,11 @@ public class AntiPatternListDialog extends JDialog {
 		
 		lblFreeRoleIco = new JButton();
 		lblFreeRoleIco.setPreferredSize(new Dimension(20, 20));
-		lblFreeRoleIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblFreeRoleIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
 		lblFreeRoleIco.setOpaque(false);
 		lblFreeRoleIco.setContentAreaFilled(false);
 		lblFreeRoleIco.setBorderPainted(false);
-		lblFreeRoleIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblFreeRoleIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblFreeRoleIco);
 		
 		cbxFreeRole = new JCheckBox("FreeRole: Free Role Specialization");
@@ -717,11 +719,11 @@ public class AntiPatternListDialog extends JDialog {
 		
 		lblGSRigIco = new JButton();
 		lblGSRigIco.setPreferredSize(new Dimension(20, 20));
-		lblGSRigIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblGSRigIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
 		lblGSRigIco.setOpaque(false);
 		lblGSRigIco.setContentAreaFilled(false);
 		lblGSRigIco.setBorderPainted(false);
-		lblGSRigIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblGSRigIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblGSRigIco);
 		
 		cbxGSRig = new JCheckBox("GSRig: Generalization Set with Mixed Rigidity");
@@ -738,22 +740,22 @@ public class AntiPatternListDialog extends JDialog {
 		
 		lblHetCollIco = new JButton();
 		lblHetCollIco.setPreferredSize(new Dimension(20, 20));
-		lblHetCollIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblHetCollIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
 		lblHetCollIco.setOpaque(false);
 		lblHetCollIco.setContentAreaFilled(false);
 		lblHetCollIco.setBorderPainted(false);
-		lblHetCollIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblHetCollIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblHetCollIco);
 		leftPanel.add(cbxHetColl);
 		leftPanel.add(lblHetCollRes);
 		
 		lblHomoFuncIco = new JButton();
 		lblHomoFuncIco.setPreferredSize(new Dimension(20, 20));
-		lblHomoFuncIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblHomoFuncIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
 		lblHomoFuncIco.setOpaque(false);
 		lblHomoFuncIco.setContentAreaFilled(false);
 		lblHomoFuncIco.setBorderPainted(false);
-		lblHomoFuncIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblHomoFuncIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblHomoFuncIco);
 		
 		cbxHomoFunc = new JCheckBox("HomoFunc: Homogeneous Functional Complex");
@@ -770,11 +772,11 @@ public class AntiPatternListDialog extends JDialog {
 		
 		lblImpAbsIco  = new JButton();
 		lblImpAbsIco.setPreferredSize(new Dimension(20, 20));
-		lblImpAbsIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblImpAbsIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
 		lblImpAbsIco.setOpaque(false);
 		lblImpAbsIco.setContentAreaFilled(false);
 		lblImpAbsIco.setBorderPainted(false);
-		lblImpAbsIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblImpAbsIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblImpAbsIco);
 		
 		cbxImpAbs = new JCheckBox("ImpAbs: Imprecise Abstraction");
@@ -791,11 +793,11 @@ public class AntiPatternListDialog extends JDialog {
 		
 		lblImpPartIco = new JButton();
 		lblImpPartIco.setPreferredSize(new Dimension(20, 20));
-		lblImpPartIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblImpPartIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
 		lblImpPartIco.setOpaque(false);
 		lblImpPartIco.setContentAreaFilled(false);
 		lblImpPartIco.setBorderPainted(false);
-		lblImpPartIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblImpPartIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblImpPartIco);
 		
 		cbxImpPart = new JCheckBox("ImpPart: Imprecise Part Specification");
@@ -812,11 +814,11 @@ public class AntiPatternListDialog extends JDialog {
 		
 		lblMixIdenIco = new JButton();
 		lblMixIdenIco.setPreferredSize(new Dimension(20, 20));
-		lblMixIdenIco.setIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
+		lblMixIdenIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-inverse.png")));
 		lblMixIdenIco.setOpaque(false);
 		lblMixIdenIco.setContentAreaFilled(false);
 		lblMixIdenIco.setBorderPainted(false);
-		lblMixIdenIco.setRolloverIcon(new ImageIcon(AntiPatternListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
+		lblMixIdenIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblMixIdenIco);
 		leftPanel.add(cbxMixIden);
 		leftPanel.add(lblMixIdenRes);
@@ -1468,7 +1470,7 @@ public class AntiPatternListDialog extends JDialog {
 				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
 
 				WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard(relRig.getOccurrences().get(0)));
-				wizardDialog.open();
+				wizardDialog.open();				
 					    
 				//frame.getDiagramManager().openAntiPatternManager();				
 			}

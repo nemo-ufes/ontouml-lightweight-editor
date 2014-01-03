@@ -59,7 +59,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
-import br.ufes.inf.nemo.oled.antipattern.AntiPatternListPane;
+import br.ufes.inf.nemo.oled.antipattern.old.AntiPatternListPane;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;

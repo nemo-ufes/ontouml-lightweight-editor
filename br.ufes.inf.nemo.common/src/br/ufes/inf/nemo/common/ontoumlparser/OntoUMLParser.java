@@ -294,7 +294,7 @@ public class OntoUMLParser {
 			return "Unknown Element";
 		else return parsingElem.toString();
 	}
-	
+
 	public String getStereotype(EObject elem)
 	{
 		ParsingElement parsingElem = elementsHash.get(elem);
