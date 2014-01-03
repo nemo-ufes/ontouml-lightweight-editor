@@ -17,6 +17,7 @@ import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.OntoUMLElement;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.ProjectTree;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 public class TreePopupMenu extends JPopupMenu {
@@ -27,7 +28,8 @@ public class TreePopupMenu extends JPopupMenu {
 	public JMenuItem autoCompleteItem = new JMenuItem("Complete selection");
 	public JMenuItem refreshItem = new JMenuItem("Refresh");
 	public JMenuItem addDiagramItem = new JMenuItem("Add Diagram");
-		
+	public JMenuItem moveToDiagramItem = new JMenuItem("Move to Diagram");
+	
 	public JMenu addElementMenu = new JMenu("Add Element");
 	public JMenuItem packageItem = new JMenuItem("Package");
 	public JMenuItem kindItem = new JMenuItem("Kind");
@@ -99,7 +101,27 @@ public class TreePopupMenu extends JPopupMenu {
     			}
     		});
     	}
-    	
+
+    	// Move To Diagram 	    		
+		if (node.getUserObject() instanceof OntoUMLElement)
+		{
+    		OntoUMLElement ontoElement = ((OntoUMLElement)node.getUserObject());    		
+    		if(ontoElement.getElement() instanceof RefOntoUML.Class || ontoElement.getElement() instanceof RefOntoUML.DataType)
+    		{
+    			add(moveToDiagramItem);
+    			final RefOntoUML.Type type = (RefOntoUML.Type)ontoElement.getElement();    			
+    			moveToDiagramItem.addActionListener(new ActionListener() {				
+        			@Override
+        			public void actionPerformed(ActionEvent e) {
+        				DiagramEditor d = frame.getDiagramManager().getCurrentDiagramEditor();
+        				if(d!=null){
+        					d.setCreationMode(type,type.eContainer());
+        				}
+        			}
+        		});    			
+    		}
+		}
+		
     	// Add Element 	    		
 		if (node.getUserObject() instanceof OntoUMLElement)
 		{

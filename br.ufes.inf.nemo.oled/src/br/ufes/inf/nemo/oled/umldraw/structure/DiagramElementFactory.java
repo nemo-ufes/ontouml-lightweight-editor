@@ -20,6 +20,8 @@
 package br.ufes.inf.nemo.oled.umldraw.structure;
 
 
+import org.eclipse.emf.ecore.EObject;
+
 import br.ufes.inf.nemo.oled.draw.LineConnectMethod;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationType;
@@ -43,7 +45,7 @@ public interface DiagramElementFactory {
    * @return the UMLNode for the element type
    */
   UmlNode createNode(ElementType elementType);
-  UmlNode createNode(RefOntoUML.Type type);
+  UmlNode createNode(RefOntoUML.Type type, EObject eContainer);
   
   /**
    * Creates a connection between the two given nodes using the specified

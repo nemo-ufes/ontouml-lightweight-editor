@@ -51,6 +51,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
 
+import org.eclipse.emf.ecore.EObject;
+
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
@@ -797,6 +799,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		editorMode = creationHandler;
 	}
 
+	public void setCreationMode(RefOntoUML.Type type, EObject eContainer){
+		creationHandler.create(type,eContainer);
+		editorMode = creationHandler;
+	}
+	
 	/**
 	 * Switches the editor into connection creation mode.
 	 * @param relationType the RelationType to create
