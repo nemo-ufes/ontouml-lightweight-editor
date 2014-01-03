@@ -951,8 +951,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * @return {@link UmlProject} the project
 	 */
 	public DiagramEditor getCurrentDiagramEditor() 
-	{
-		if(this.getSelectedComponent() instanceof DiagramEditorWrapper){
+	{		
+		if(this.getSelectedComponent() instanceof DiagramEditorWrapper){			
 			return ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor();
 		}
 		return null;

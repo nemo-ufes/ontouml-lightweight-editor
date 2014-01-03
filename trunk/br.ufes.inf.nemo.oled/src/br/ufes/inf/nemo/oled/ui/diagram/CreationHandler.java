@@ -23,6 +23,8 @@ import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.eclipse.emf.ecore.EObject;
+
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
@@ -84,11 +86,12 @@ public class CreationHandler implements EditorMode {
     
     return element;
   }
-
-  public Node create(RefOntoUML.Type type) {
+  
+  public Node create(RefOntoUML.Type type, EObject eContainer) {
     elementType = ElementType.valueOf(type.eClass().getName().toUpperCase());
-    element = editor.getDiagram().getElementFactory().createNode(type);
-
+    
+    element = editor.getDiagram().getElementFactory().createNode(type,eContainer);
+    
     //Add mapping from the refontouml element to the diagram element
     ModelHelper.addMapping(((ClassElement)element).getClassifier(), element);
     

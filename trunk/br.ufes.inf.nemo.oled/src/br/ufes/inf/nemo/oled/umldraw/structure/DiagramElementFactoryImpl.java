@@ -22,6 +22,8 @@ package br.ufes.inf.nemo.oled.umldraw.structure;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.EObject;
+
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Category;
@@ -376,12 +378,12 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     return umlnode;
   }
   
-  public UmlNode createNode(RefOntoUML.Type type) 
+  public UmlNode createNode(RefOntoUML.Type type, EObject eContainer) 
   {
     UmlNode umlnode = (UmlNode) elementPrototypes.get(ElementType.valueOf(type.eClass().getName().toUpperCase())).clone();
     
     ((ClassElement)umlnode).setClassifier((RefOntoUML.Classifier)type);
-    
+        
     umlnode.addNodeChangeListener(diagram);
     
     return umlnode;

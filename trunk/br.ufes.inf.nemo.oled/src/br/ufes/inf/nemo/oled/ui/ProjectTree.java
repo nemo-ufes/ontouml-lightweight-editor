@@ -59,6 +59,8 @@ public class ProjectTree extends CheckboxTree {
 		rootNode.add(diagramRootNode);
 		rootNode.add(modelRootNode);		
 		
+		setDragEnabled(true);
+		
 		getCheckingModel().setCheckingMode(TreeCheckingModel.CheckingMode.PROPAGATE);
 		
 		ProjectTreeCellRenderer ontoCellRenderer = new ProjectTreeCellRenderer();
