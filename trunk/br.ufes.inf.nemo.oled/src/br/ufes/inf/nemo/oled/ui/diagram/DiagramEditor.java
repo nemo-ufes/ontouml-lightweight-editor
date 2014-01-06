@@ -799,7 +799,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		editorMode = creationHandler;
 	}
 
-	public void setCreationMode(RefOntoUML.Type type, EObject eContainer){
+	public void setDragElementMode(RefOntoUML.Type type, EObject eContainer){		
 		creationHandler.create(type,eContainer);
 		editorMode = creationHandler;
 	}
@@ -814,6 +814,34 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		editorMode = lineHandler;
 	}
 
+	public void setDragRelationMode(RefOntoUML.Relationship relationship)
+	{		
+		RelationType relationType = RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase());
+		lineHandler.setRelationType(relationType, getDiagram().getElementFactory().getConnectMethod(relationType));
+		editorMode = lineHandler;		
+		
+		RefOntoUML.Type source = null;
+		RefOntoUML.Type target = null;
+		if(relationship instanceof RefOntoUML.Association){
+			RefOntoUML.Association assoc = (RefOntoUML.Association)relationship;
+			source = assoc.getMemberEnd().get(0).getType();
+			target = assoc.getMemberEnd().get(1).getType();
+			if(source==null || target==null) return; 
+		}
+		if(relationship instanceof RefOntoUML.Generalization){
+			RefOntoUML.Generalization gen = (RefOntoUML.Generalization)relationship;
+			target = gen.getGeneral();
+			source = gen.getSpecific();
+			if(source==null || target==null) return;		  
+		}
+		  
+		DiagramElement src = ModelHelper.getDiagramElement(source);
+		DiagramElement tgt = ModelHelper.getDiagramElement(target);
+		if(src==null || tgt==null) return;
+		
+		lineHandler.createAndAddConnection(this, relationship, src, tgt);
+	}
+		  
 	/**
 	 * Immediate redraw of the view.
 	 */

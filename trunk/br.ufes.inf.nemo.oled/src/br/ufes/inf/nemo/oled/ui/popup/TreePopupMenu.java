@@ -105,17 +105,32 @@ public class TreePopupMenu extends JPopupMenu {
     	// Move To Diagram 	    		
 		if (node.getUserObject() instanceof OntoUMLElement)
 		{
-    		OntoUMLElement ontoElement = ((OntoUMLElement)node.getUserObject());    		
-    		if(ontoElement.getElement() instanceof RefOntoUML.Class || ontoElement.getElement() instanceof RefOntoUML.DataType)
+    		final OntoUMLElement ontoElement = ((OntoUMLElement)node.getUserObject());    		
+    		if(ontoElement.getElement() instanceof RefOntoUML.Type || ontoElement.getElement() instanceof RefOntoUML.Generalization)
     		{
-    			add(moveToDiagramItem);
-    			final RefOntoUML.Type type = (RefOntoUML.Type)ontoElement.getElement();    			
+    			add(moveToDiagramItem);    			    			
     			moveToDiagramItem.addActionListener(new ActionListener() {				
         			@Override
         			public void actionPerformed(ActionEvent e) {
         				DiagramEditor d = frame.getDiagramManager().getCurrentDiagramEditor();
         				if(d!=null){
-        					d.setCreationMode(type,type.eContainer());
+        					
+        					if (ontoElement.getElement() instanceof RefOntoUML.Class) {
+        						RefOntoUML.Class oClass = (RefOntoUML.Class)ontoElement.getElement();
+        						d.setDragElementMode(oClass,oClass.eContainer());
+        					}
+        					
+        					if ((ontoElement.getElement() instanceof RefOntoUML.DataType)&&
+        					!(ontoElement.getElement() instanceof RefOntoUML.PrimitiveType)&&
+        					!(ontoElement.getElement() instanceof RefOntoUML.Enumeration))
+        					{
+        						RefOntoUML.DataType oClass = (RefOntoUML.DataType)ontoElement.getElement();
+        						d.setDragElementMode(oClass,oClass.eContainer()); 
+        					}
+        					
+        					if (ontoElement.getElement() instanceof RefOntoUML.Relationship) {        						
+        						d.setDragRelationMode((RefOntoUML.Relationship)ontoElement.getElement());
+        					}
         				}
         			}
         		});    			
