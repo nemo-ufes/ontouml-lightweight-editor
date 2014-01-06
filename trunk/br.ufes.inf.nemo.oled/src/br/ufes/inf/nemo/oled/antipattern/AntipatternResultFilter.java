@@ -13,7 +13,6 @@ public class AntipatternResultFilter extends ViewerFilter {
 		this.searchString = ".*" + s + ".*";
 	}
 	
-	@SuppressWarnings("static-access")
 	@Override
 	public boolean select(Viewer viewer, 
 	    Object parentElement, 
