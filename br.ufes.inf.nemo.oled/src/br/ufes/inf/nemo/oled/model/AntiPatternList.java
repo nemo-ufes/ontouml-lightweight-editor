@@ -1,5 +1,8 @@
 package br.ufes.inf.nemo.oled.model;
 
+import java.util.ArrayList;
+
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
@@ -85,8 +88,35 @@ public class AntiPatternList {
 	}
 	
 	public AntiPatternList() {
-		// TODO Auto-generated constructor stub
+
 	}
+	
+	public ArrayList<AntipatternOccurrence> getAll()
+	{
+		ArrayList<AntipatternOccurrence> result = new ArrayList<AntipatternOccurrence>();
+		result.addAll(assCyc.getOccurrences());
+		result.addAll(binOver.getOccurrences());
+		result.addAll(depPhase.getOccurrences());
+		result.addAll(freeRole.getOccurrences());
+		result.addAll(gsRig.getOccurrences());
+		result.addAll(hetColl.getOccurrences());
+		result.addAll(homoFunc.getOccurrences());
+		result.addAll(impAbs.getOccurrences());
+		result.addAll(impPart.getOccurrences());
+		result.addAll(mixIden.getOccurrences());
+		result.addAll(mixRig.getOccurrences());
+		result.addAll(multiDep.getOccurrences());
+		result.addAll(relComp.getOccurrences());
+		result.addAll(relOver.getOccurrences());
+		result.addAll(relRig.getOccurrences());
+		result.addAll(relSpec.getOccurrences());
+		result.addAll(repRel.getOccurrences());
+		result.addAll(undefFormal.getOccurrences());
+		result.addAll(undefPhase.getOccurrences());
+		result.addAll(wholeOver.getOccurrences());
+		return result;
+	}
+	
 	public void setAssCyc(AssCycAntipattern assCyc) {
 		this.assCyc = assCyc;
 	}

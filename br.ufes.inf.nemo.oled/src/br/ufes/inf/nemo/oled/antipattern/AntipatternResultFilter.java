@@ -25,9 +25,9 @@ public class AntipatternResultFilter extends ViewerFilter {
 	  if (occurrence.getShortName().matches(searchString)) {
 	    return true;
 	  }
-	  if (occurrence.getaAntiPatternType().getAntipatternInfo().getAcronym().matches(searchString)) {
-	    return true;
-	  }
+//	  if (occurrence.getAntiPatternType().getAntipatternInfo().getAcronym().matches(searchString)) {
+//	    return true;
+//	  }
 	   return false;
 	}
 }

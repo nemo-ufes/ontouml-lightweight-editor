@@ -47,7 +47,7 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/wizard/swt-grouplayout.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/wizard/org.eclipse.ui_3.104.0.v20121024-145224.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/wizard/org.eclipse.ui.workbench_3.104.0.v20130204-164612.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/wizard/org.eclipse.core.runtime_3.8.0.v20120912-155025.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/wizard/org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.core.runtime_3.6.0.v20100505.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

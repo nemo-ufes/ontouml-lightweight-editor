@@ -34,9 +34,7 @@ public abstract class AntipatternOccurrence {
 		return isFixed;
 	}
 	
-	public Antipattern<?> getaAntiPatternType(){
-		return antipattern;
-	}
+	
 	
 	
 	
