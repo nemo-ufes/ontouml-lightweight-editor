@@ -17,8 +17,8 @@ public class ImpPartOccurrence extends AntipatternOccurrence {
 	Meronymic meronymic;
 	Property partEnd, wholeEnd;
 	
-	public ImpPartOccurrence(Property partEnd, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public ImpPartOccurrence(Property partEnd, ImpPartAntipattern ap) throws Exception {
+		super(ap);
 		
 		this.partEnd = partEnd;
 		this.wholeEnd = partEnd.getOpposite();
@@ -62,6 +62,11 @@ public class ImpPartOccurrence extends AntipatternOccurrence {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(meronymic);
 	}
 
 }

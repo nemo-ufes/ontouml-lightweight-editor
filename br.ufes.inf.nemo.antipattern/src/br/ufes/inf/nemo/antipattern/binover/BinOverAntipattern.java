@@ -1,13 +1,9 @@
 package br.ufes.inf.nemo.antipattern.binover;
 
 import java.util.ArrayList;
-import java.util.Set;
 
-import RefOntoUML.Association;
-import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
-import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class BinOverAntipattern extends Antipattern<BinOverOccurrence> {
@@ -39,6 +35,20 @@ public class BinOverAntipattern extends Antipattern<BinOverOccurrence> {
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
+	
+	@Override
+	public ArrayList<BinOverOccurrence> getOccurrences(){
+		ArrayList<BinOverOccurrence> occurrences = new ArrayList<BinOverOccurrence>();
+		
+		occurrences.addAll(var1.getOccurrences());
+		occurrences.addAll(var2.getOccurrences());
+		occurrences.addAll(var3.getOccurrences());
+		occurrences.addAll(var4.getOccurrences());
+		occurrences.addAll(var5.getOccurrences());
+		occurrences.addAll(var6.getOccurrences());
+		
+		return occurrences;
+	}
 
 	public ArrayList<BinOverOccurrence> identifyOCL() {
 		
@@ -50,7 +60,7 @@ public class BinOverAntipattern extends Antipattern<BinOverOccurrence> {
 		return super.getOccurrences();
 	}
 	
-	@Override
+	/*@Override
 	public ArrayList<BinOverOccurrence> identify() {
 		
 		Set<Association> allAssociations = parser.getAllInstances(Association.class);
@@ -104,6 +114,18 @@ public class BinOverAntipattern extends Antipattern<BinOverOccurrence> {
 		this.occurrence.addAll(var4.getOccurrences());
 		this.occurrence.addAll(var5.getOccurrences());
 		this.occurrence.addAll(var6.getOccurrences());
+		
+		return this.getOccurrences();
+	}*/
+	
+	@Override
+	public ArrayList<BinOverOccurrence> identify() {
+		var1.identify();
+		var2.identify();
+		var3.identify();
+		var4.identify();
+		var5.identify();
+		var6.identify();
 		
 		return this.getOccurrences();
 	}

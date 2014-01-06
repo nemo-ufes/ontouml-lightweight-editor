@@ -16,8 +16,8 @@ public class PartOverOccurrence extends AntipatternOccurrence{
 	
 	/*TODO: Adapt methods from RelOver to get supertypes...*/
 	
-	public PartOverOccurrence(Classifier part, ArrayList<Property> wholeEnds, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public PartOverOccurrence(Classifier part, ArrayList<Property> wholeEnds, PartOverAntipattern ap) throws Exception {
+		super(ap);
 		
 		if(part == null)
 			throw new Exception(PartOverAntipattern.getAntipatternInfo().acronym+": provided input class is null. Can't create occurrence!");
@@ -79,6 +79,11 @@ public class PartOverOccurrence extends AntipatternOccurrence{
 			i++;
 		}*/
 		return result;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(part);
 	}
 	
 

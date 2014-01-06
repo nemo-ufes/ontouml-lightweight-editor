@@ -110,7 +110,7 @@ public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
 		for (Classifier relator : query_result.keySet()) 
 		{
 			try {
-					RelOverOccurrence occurrence = new RelOverOccurrence(relator, query_result.get(relator), this.parser);
+					RelOverOccurrence occurrence = new RelOverOccurrence(relator, query_result.get(relator), this);
 					super.occurrence.add(occurrence);
 				
 			} catch (Exception e) {
@@ -168,7 +168,7 @@ public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
 									//System.out.println("M2End: "+parser.getStringRepresentation(parser.getMediated(m2)));
 									if(OverlappingTypesIdentificator.isVariation1(parser.getMediated(m1),parser.getMediated(m2))) {
 										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this.parser));
+											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
 											foundOccurrence = true;
 										//	System.out.println("Found Variation 1!");
 										} catch (Exception e) { System.out.println("RelOver: Can't create variation 1.\n"+e.getMessage());}
@@ -176,7 +176,7 @@ public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
 									}
 									else if(OverlappingTypesIdentificator.isVariation2(parser.getMediated(m1),parser.getMediated(m2))) {
 										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this.parser));
+											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
 											foundOccurrence = true;
 										//	System.out.println("Found Variation 2!");
 										} catch (Exception e) { System.out.println("RelOver: Can't create variation 2.\n"+e.getMessage());}
@@ -184,7 +184,7 @@ public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
 									}
 									else if(OverlappingTypesIdentificator.isVariation3(parser.getMediated(m1),parser.getMediated(m2))) {
 										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this.parser));
+											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
 											foundOccurrence = true;
 										//	System.out.println("Found Variation 3!");
 										} catch (Exception e) { System.out.println("RelOver: Can't create variation 3.\n"+e.getMessage());}
@@ -192,7 +192,7 @@ public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
 									}
 									else if(OverlappingTypesIdentificator.isVariation4(parser.getMediated(m1),parser.getMediated(m2))) {
 										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this.parser));
+											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
 											foundOccurrence = true;
 										//	System.out.println("Found Variation 4!");
 										} catch (Exception e) { System.out.println("RelOver: Can't create variation 4.\n"+e.getMessage());}
@@ -200,7 +200,7 @@ public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
 									}
 									else if(OverlappingTypesIdentificator.isVariation5(parser.getMediated(m1),parser.getMediated(m2))) {
 										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this.parser));
+											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
 											foundOccurrence = true;
 										//	System.out.println("Found Variation 5!");
 										} catch (Exception e) { System.out.println("RelOver: Can't create variation 5.\n"+e.getMessage());}
@@ -208,7 +208,7 @@ public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
 									}
 									else if(OverlappingTypesIdentificator.isVariation6(parser.getMediated(m1),parser.getMediated(m2))) {
 										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this.parser));
+											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
 											foundOccurrence = true;
 										//	System.out.println("Found Variation 6!");
 										} catch (Exception e) { System.out.println("RelOver: Can't create variation 6.\n"+e.getMessage());}

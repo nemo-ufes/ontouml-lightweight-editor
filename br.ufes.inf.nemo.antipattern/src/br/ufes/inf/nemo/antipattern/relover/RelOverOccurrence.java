@@ -34,8 +34,8 @@ public class RelOverOccurrence extends AntipatternOccurrence{
 	private Classifier supertype;
 	
 	
-	public RelOverOccurrence(Classifier relator, ArrayList<Property> mediatedEnds, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public RelOverOccurrence(Classifier relator, ArrayList<Property> mediatedEnds, RelOverAntipattern ap) throws Exception {
+		super(ap);
 				
 		verifyInput(relator, mediatedEnds);
 		
@@ -499,6 +499,11 @@ public class RelOverOccurrence extends AntipatternOccurrence{
 		
 		return predicate;
 		
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(relator);
 	}
 	
 	

@@ -41,7 +41,7 @@ public class ImpPartAntipattern extends Antipattern<ImpPartOccurrence> {
 		for (Property partEnd : query_result) 
 		{
 			try {
-				super.occurrence.add(new ImpPartOccurrence(partEnd, super.parser));
+				super.occurrence.add(new ImpPartOccurrence(partEnd, this));
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");
 				System.out.println(e.getMessage());

@@ -12,9 +12,9 @@ public class BinOverVariation6Occurrence extends BinOverOccurrence {
 
 	private ArrayList<Classifier> commonSubtypes;
 	
-	public BinOverVariation6Occurrence(Association association, OntoUMLParser parser) throws Exception {
+	public BinOverVariation6Occurrence(Association association, BinOverVariation6Antipattern ap) throws Exception {
 		
-		super(association,parser);
+		super(association,ap);
 		
 		this.commonSubtypes = new ArrayList<>();
 		

@@ -19,8 +19,8 @@ public class HetCollOccurrence extends AntipatternOccurrence {
 	private Classifier whole;
 	private ArrayList<Property> memberEnds;
 	
-	public HetCollOccurrence(Classifier whole, ArrayList<Property> memberEnds, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public HetCollOccurrence(Classifier whole, ArrayList<Property> memberEnds, HetCollAntipattern ap) throws Exception {
+		super(ap);
 		
 		if(whole==null || memberEnds==null || parser==null)
 			throw new NullPointerException("HetColl: null inputs!");
@@ -64,6 +64,11 @@ public class HetCollOccurrence extends AntipatternOccurrence {
 		
 		return result;
 		
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(whole);
 	}
 
 }

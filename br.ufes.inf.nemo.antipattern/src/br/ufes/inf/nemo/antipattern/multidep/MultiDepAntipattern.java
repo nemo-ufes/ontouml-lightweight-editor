@@ -41,7 +41,7 @@ public class MultiDepAntipattern extends Antipattern<MultiDepOccurrence> {
 		for (ObjectClass type : query_result) 
 		{
 			try {
-				MultiDepOccurrence occurrence = new MultiDepOccurrence(type, super.parser);
+				MultiDepOccurrence occurrence = new MultiDepOccurrence(type, this);
 				super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");

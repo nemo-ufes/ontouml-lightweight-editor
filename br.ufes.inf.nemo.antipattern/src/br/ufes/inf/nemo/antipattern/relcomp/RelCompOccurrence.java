@@ -20,9 +20,9 @@ public class RelCompOccurrence extends AntipatternOccurrence {
 	 * @param parser
 	 * @throws Exception
 	 */
-	public RelCompOccurrence(Association a1, Association a2, OntoUMLParser parser) throws Exception 
+	public RelCompOccurrence(Association a1, Association a2, RelCompAntipattern ap) throws Exception 
 	{
-		super(parser);
+		super(ap);
 		
 		verifyInputs(a1, a2);
 		
@@ -79,6 +79,11 @@ public class RelCompOccurrence extends AntipatternOccurrence {
 						" - " + parser.getStringRepresentation(a2) + 
 						" - " + parser.getStringRepresentation(a2.getMemberEnd().get(1));
 		return result;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(a1)+" & "+parser.getStringRepresentation(a2);
 	}
 	
 }

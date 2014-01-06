@@ -75,7 +75,7 @@ public class RepRelAntipattern extends Antipattern<RepRelOccurrence> {
 		for (Relator relator : query_result) 
 		{
 			try {
-				RepRelOccurrence occurrence = new RepRelOccurrence(relator, super.parser);
+				RepRelOccurrence occurrence = new RepRelOccurrence(relator, this);
 				super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");

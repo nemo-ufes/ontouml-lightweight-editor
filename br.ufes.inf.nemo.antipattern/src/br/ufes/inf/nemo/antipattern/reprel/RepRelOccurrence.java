@@ -48,9 +48,9 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 	 * @param parser
 	 * @throws Exception
 	 */
-	public RepRelOccurrence(Relator relator, OntoUMLParser parser) throws Exception 
+	public RepRelOccurrence(Relator relator, RepRelAntipattern ap) throws Exception 
 	{
-		super(parser);
+		super(ap);
 		this.setRelator(relator,parser);
 		duplicateInstantiationPattern = new DuplicateRelators(this);
 		distinctInstantiationPatter = new DistinctRelators(this);
@@ -183,6 +183,11 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 		}
 			
 		return expl;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(relator);
 	}
 	
 	

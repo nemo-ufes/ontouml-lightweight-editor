@@ -16,14 +16,35 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 //Undefined Role Specialization
 public class FreeRoleOccurrence extends AntipatternOccurrence{
 
+	public Role getDefinedRole() {
+		return definedRole;
+	}
+
+	public ArrayList<Property> getDefiningRelatorEnds() {
+		return definingRelatorEnds;
+	}
+
+	public HashMap<Role, ArrayList<Property>> getSubRoleHash() {
+		return subRoleHash;
+	}
+
+	public ArrayList<Role> getFreeRoles() {
+		return freeRoles;
+	}
+
+	public ArrayList<Role> getDefinedRoles() {
+		return definedRoles;
+	}
+
+
 	private Role definedRole;
 	private ArrayList<Property> definingRelatorEnds;
 	private HashMap<Role,ArrayList<Property>> subRoleHash;
 	private ArrayList<Role> freeRoles;
 	private ArrayList<Role> definedRoles;
 	
-	public FreeRoleOccurrence(Role role, ArrayList<Property> relatorEnds, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public FreeRoleOccurrence(Role role, ArrayList<Property> relatorEnds, FreeRoleAntipattern ap) throws Exception {
+		super(ap);
 		
 		if (role==null || relatorEnds==null || parser==null)
 			throw new NullPointerException("FreeRole: It is not possible to create an occurence of the anti-pattern if one of the parameters is null");
@@ -122,6 +143,11 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 		
 		return result;
 		
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(getDefinedRole());
 	}
 
 }

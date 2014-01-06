@@ -16,8 +16,8 @@ public class MixIdenOccurrence extends AntipatternOccurrence {
 	ArrayList<Classifier> subtypes;
 	Classifier identityProvider; 
 	
-	public MixIdenOccurrence(Mixin mixin, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public MixIdenOccurrence(Mixin mixin, MixIdenAntipattern ap) throws Exception {
+		super(ap);
 		
 		if(mixin==null)
 			throw new NullPointerException("MixIden: null mixin provided.");
@@ -76,6 +76,11 @@ public class MixIdenOccurrence extends AntipatternOccurrence {
 			result+="\n\t"+super.parser.getStringRepresentation(subtype);
 		}
 		return result;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(mixin);
 	}
 
 

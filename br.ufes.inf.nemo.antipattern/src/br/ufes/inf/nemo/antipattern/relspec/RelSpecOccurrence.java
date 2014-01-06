@@ -22,8 +22,8 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 	
 	public static int SUBSET = 1, REDEFINE = 2, NONSUBSET = 3, DISJOINT = 4;
 		
-	public RelSpecOccurrence (Association specific, Association general, OntoUMLParser parser) throws Exception{
-		super(parser);
+	public RelSpecOccurrence (Association specific, Association general, RelSpecAntipattern ap) throws Exception{
+		super(ap);
 		this.setGeneral(general);
 		this.setSpecific(specific);
 		
@@ -307,5 +307,10 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		parser.selectThisElements(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.ALL_ANCESTORS, false);
 		return parser;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(general)+" & "+parser.getStringRepresentation(specific);
 	}
 }

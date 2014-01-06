@@ -78,7 +78,7 @@ public class PartOverAntipattern extends Antipattern<PartOverOccurrence> {
 		for (Classifier part : query_result.keySet()) 
 		{
 			try {
-				super.occurrence.add(new PartOverOccurrence(part, query_result.get(part), this.parser));
+				super.occurrence.add(new PartOverOccurrence(part, query_result.get(part), this));
 			} catch (Exception e) {
 				System.out.println(info.acronym+": Provided information does not characterize an occurrence of the anti-pattern!");
 				System.out.println(e.getMessage());
@@ -131,7 +131,7 @@ public class PartOverAntipattern extends Antipattern<PartOverOccurrence> {
 							System.out.println("M2End: "+parser.getStringRepresentation(partEnd2.getType()));
 							if(OverlappingTypesIdentificator.isVariation1((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 1!");
 								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 1.\n"+e.getMessage());}
@@ -139,7 +139,7 @@ public class PartOverAntipattern extends Antipattern<PartOverOccurrence> {
 							}
 							else if(OverlappingTypesIdentificator.isVariation2((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 2!");
 								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 2.\n"+e.getMessage());}
@@ -147,7 +147,7 @@ public class PartOverAntipattern extends Antipattern<PartOverOccurrence> {
 							}
 							else if(OverlappingTypesIdentificator.isVariation3((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 3!");
 								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 3.\n"+e.getMessage());}
@@ -155,7 +155,7 @@ public class PartOverAntipattern extends Antipattern<PartOverOccurrence> {
 							}
 							else if(OverlappingTypesIdentificator.isVariation4((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 4!");
 								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 4.\n"+e.getMessage());}
@@ -163,7 +163,7 @@ public class PartOverAntipattern extends Antipattern<PartOverOccurrence> {
 							}
 							else if(OverlappingTypesIdentificator.isVariation5((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 5!");
 								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 5.\n"+e.getMessage());}
@@ -171,7 +171,7 @@ public class PartOverAntipattern extends Antipattern<PartOverOccurrence> {
 							}
 							else if(OverlappingTypesIdentificator.isVariation6((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 6!");
 								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 6.\n"+e.getMessage());}

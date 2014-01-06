@@ -15,10 +15,9 @@ public class BinOverVariation1Occurrence extends BinOverOccurrence{
 	private Classifier type;
 	
 	
-	public BinOverVariation1Occurrence (Association association, OntoUMLParser parser) throws Exception{
-		super(association, parser);
-		this.setAssociation(association);
-		
+	public BinOverVariation1Occurrence (Association association, BinOverVariation1Antipattern ap) throws Exception{
+		super(association,ap);
+		this.type = (Classifier) association.getMemberEnd().get(0).getType();
 	}
 	
 	public String generateIrreflexiveOcl(OntoUMLParser parser)

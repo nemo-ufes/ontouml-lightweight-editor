@@ -48,7 +48,7 @@ public class RelRigAntipattern extends Antipattern<RelRigOccurrence> {
 		for (Relator relator : query_result) 
 		{
 			try {
-				RelRigOccurrence occurrence = new RelRigOccurrence(relator, super.parser);
+				RelRigOccurrence occurrence = new RelRigOccurrence(relator, this);
 				super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");
