@@ -23,11 +23,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
-import javax.swing.SwingUtilities;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
@@ -848,14 +848,8 @@ public class AntiPatternSearchDialog extends JDialog {
 		
 		btnShowResult.addActionListener(new ActionListener() {			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				
-				final AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());				
-				if (apList!=null && !apList.getAll().isEmpty()){
-					AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(new Shell(),	apList.getAll());					
-					resultDIalog.create();
-					resultDIalog.open();							
-				}
+			public void actionPerformed(ActionEvent arg0) {				
+
 			}
 		});
 		
@@ -1483,8 +1477,18 @@ public class AntiPatternSearchDialog extends JDialog {
 				
 				btnShowResult.setEnabled(true);
 				
-//				WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard(relRig.getOccurrences().get(0)));
-//				wizardDialog.open();				
+				//================
+				
+				Display.getDefault().syncExec(new Runnable() {
+				    public void run() {
+				    	final AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());				
+						if (apList!=null && !apList.getAll().isEmpty()){
+							AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(new Shell(),	apList.getAll());					
+							resultDIalog.create();
+							resultDIalog.open();							
+						}
+				    }
+				});
 			}
 		});		
 		

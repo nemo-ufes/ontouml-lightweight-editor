@@ -8,21 +8,31 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
+import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard;
 
 public class AntiPatternResultDialog extends Dialog {
 
@@ -52,7 +62,7 @@ public class AntiPatternResultDialog extends Dialog {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite container = (Composite) super.createDialogArea(parent);		
-//		createPartControl(container);
+		createPartControl(container);
 		return container;
 	}
 
@@ -105,6 +115,7 @@ public class AntiPatternResultDialog extends Dialog {
 	  {
 	    viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 	    createColumns(parent, viewer);
+	    
 	    final Table table = viewer.getTable();
 	    table.setHeaderVisible(true);
 	    table.setLinesVisible(true);
@@ -123,8 +134,36 @@ public class AntiPatternResultDialog extends Dialog {
 	    gridData.horizontalSpan = 2;
 	    gridData.grabExcessHorizontalSpace = true;
 	    gridData.grabExcessVerticalSpace = true;
-	    gridData.horizontalAlignment = GridData.FILL;
+	    gridData.horizontalAlignment = GridData.FILL;	    
 	    viewer.getControl().setLayoutData(gridData);
+	    
+	    //set buttons
+	    TableItem[] items = table.getItems();
+	    for (int i = 0; i < items.length; i++) {	     
+	      TableEditor editor = new TableEditor(table);	      
+	      Button button = new Button(table, SWT.NONE);	      
+	      final AntipatternOccurrence apOccur = result.get(i);
+	      
+	      Listener listener = new Listener() {
+	        public void handleEvent(Event event) {	      
+	        	Display.getDefault().syncExec(new Runnable() {
+				    public void run() {
+			        	if (apOccur instanceof RelRigOccurrence) {	        		
+			        		WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));
+			        		wizardDialog.open();
+			        	}
+				    }
+	        	});
+	        }
+	      };
+	      button.addListener(SWT.Selection,listener);
+	      
+	      button.setText("Open");
+	      button.pack();
+	      editor.minimumWidth = button.getSize().x;
+	      editor.horizontalAlignment = SWT.LEFT;
+	      editor.setEditor(button, items[i], 3);
+	    }
 	  }
 
 	  public TableViewer getViewer() {
@@ -141,7 +180,7 @@ public class AntiPatternResultDialog extends Dialog {
 	    col.setLabelProvider(new ColumnLabelProvider() {
 	      @Override
 	      public String getText(Object element) {
-	    	return "";//((AntipatternOccurrence)element).getShortName();
+	    	return ((AntipatternOccurrence)element).getShortName();
 	      }
 	    });
 
@@ -150,7 +189,7 @@ public class AntiPatternResultDialog extends Dialog {
 	    col.setLabelProvider(new ColumnLabelProvider() {
 		@Override
 	      public String getText(Object element) {
-	    	  //if  (element instanceof RelRigOccurrence) return RelRigAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof RelRigOccurrence) return RelRigAntipattern.getAntipatternInfo().getAcronym();
 	    	  return "";
 	    	  //return ((AntipatternOccurrence)element).getAntiPatternType().getAntipatternInfo().getAcronym();
 	      }
@@ -161,10 +200,10 @@ public class AntiPatternResultDialog extends Dialog {
 	    col.setLabelProvider(new ColumnLabelProvider() {
 	      @Override
 	      public String getText(Object element) {
-	        return "true";//new Boolean(((AntipatternOccurrence) element).isFixed()).toString();
+	        return new Boolean(((AntipatternOccurrence) element).isFixed()).toString();
 	      }
 	    });
-
+	    
 	    // show the button to investigate the occurrence
 	    col = createTableViewerColumn(titles[3], bounds[3], 3);
 	    col.setLabelProvider(new ColumnLabelProvider() {
