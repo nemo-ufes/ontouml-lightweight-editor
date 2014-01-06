@@ -55,14 +55,14 @@ public interface DiagramElementFactory {
    * @param node2 the second node
    * @return the created connection
    */
-  UmlConnection createConnection(RelationType relationType, UmlNode node1,
-    UmlNode node2);
+  UmlConnection createConnection(RelationType relationType, UmlNode node1, UmlNode node2);
+  UmlConnection createConnection(RefOntoUML.Relationship relationship, UmlNode node1, UmlNode node2);
   
-  UmlConnection createConnectionToCon(RelationType relationType, UmlNode node1,
-		    UmlConnection c2);
-
-  UmlConnection createConnectionFromCon(RelationType relationType, UmlConnection c1, 
-		  UmlNode node2);
+  UmlConnection createConnectionToCon(RelationType relationType, UmlNode node1, UmlConnection c2);
+  UmlConnection createConnectionToCon(RefOntoUML.Relationship relationship, UmlNode node1, UmlConnection c2);
+  
+  UmlConnection createConnectionFromCon(RelationType relationType, UmlConnection c1, UmlNode node2);
+  UmlConnection createConnectionFromCon(RefOntoUML.Relationship relationship, UmlConnection c1, UmlNode node2);
   /**
    * Asks the factory for the connect method of the specified RelationType.
    * @param relationType the RelationType

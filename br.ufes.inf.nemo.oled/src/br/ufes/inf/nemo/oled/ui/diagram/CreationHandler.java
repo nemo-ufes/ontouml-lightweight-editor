@@ -165,8 +165,8 @@ public class CreationHandler implements EditorMode {
     	parent = (CompositeNode) possibleParent;
     }
     
-    AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), tmpPos.getX(), tmpPos.getY(), editor.getDiagram().getProject(),(RefOntoUML.Package)((ClassElement)element).getClassifier().eContainer());
-    editor.execute(createCommand);
+    AddNodeCommand addcmd = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), tmpPos.getX(), tmpPos.getY(), editor.getDiagram().getProject(),(RefOntoUML.Package)((ClassElement)element).getClassifier().eContainer());
+    editor.execute(addcmd);
    	  
     //CLEANUP
     //if(element instanceof ClassElement)

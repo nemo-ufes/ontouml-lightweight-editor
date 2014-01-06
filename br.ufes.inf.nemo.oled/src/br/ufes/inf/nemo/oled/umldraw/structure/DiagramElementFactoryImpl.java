@@ -459,7 +459,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   public UmlConnection createConnection(RelationType relationType, UmlNode node1, UmlNode node2) 
   {
     UmlConnection prototype = relationPrototypes.get(relationType);    
-    
     UmlConnection conn = null;
     if (prototype != null) 
     {
@@ -470,8 +469,23 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     	  Association association = (Association) conn.getRelationship();
     	  association.setName(association.getName() + nextRelationCount(relationType));
       }
+    }    
+    return conn;
+  }
+  
+  /**
+   * Create a UmlConnection from a relationship 
+   */
+  public UmlConnection createConnection(RefOntoUML.Relationship relationship, UmlNode node1, UmlNode node2) 
+  {	
+    UmlConnection prototype = relationPrototypes.get(RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase()));    
+    UmlConnection conn = null;
+    if (prototype != null) 
+    {
+		conn = (UmlConnection) prototype.clone();
+		conn.setRelationship(relationship);
+		bindConnection(conn, node1, node2);
     }
-    
     return conn;
   }
   
@@ -481,8 +495,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   @Override
   public UmlConnection createConnectionFromCon(RelationType relationType, UmlConnection c1, UmlNode node2) 
   {
-	  UmlConnection prototype = relationPrototypes.get(relationType);
-	  
+	  UmlConnection prototype = relationPrototypes.get(relationType);	  
       UmlConnection conn = null;
       if (prototype != null) 
       {
@@ -498,12 +511,28 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   }
 
   /**
+   * Create a UmlConnection from a relationship 
+   */
+  @Override
+  public UmlConnection createConnectionFromCon(RefOntoUML.Relationship relationship, UmlConnection c1, UmlNode node2) 
+  {
+	  UmlConnection prototype = relationPrototypes.get(RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase()));	  
+      UmlConnection conn = null;
+      if (prototype != null) 
+      {
+	      conn = (UmlConnection) prototype.clone();
+	      conn.setRelationship(relationship);
+	      bindConnection(conn, c1, node2);
+      }
+      return conn;
+  }
+  
+  /**
    * {@inheritDoc} This method also create the referred RefOntoUML Relationship of the UmlConnection. 
    */
   public UmlConnection createConnectionToCon(RelationType relationType, UmlNode node1, UmlConnection c2) 
   {
     UmlConnection prototype = relationPrototypes.get(relationType);    
-    
     UmlConnection conn = null;
     if (prototype != null) 
     {
@@ -514,11 +543,26 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     	  Association association = (Association) conn.getRelationship();
     	  association.setName(association.getName() + nextRelationCount(relationType));
       }
-    }
-    
+    }    
     return conn;
   }
 
+  /**
+   *  Create a UmlConnection from a relationship
+   */
+  public UmlConnection createConnectionToCon(RefOntoUML.Relationship relationship, UmlNode node1, UmlConnection c2) 
+  {
+    UmlConnection prototype = relationPrototypes.get(RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase()));    
+    UmlConnection conn = null;
+    if (prototype != null) 
+    {
+      conn = (UmlConnection) prototype.clone();
+      conn.setRelationship(relationship);
+      bindConnection(conn, node1, c2);
+    }    
+    return conn;
+  }
+  
   public String nextRelationCount(RelationType relationType)
   {	  
 	  int count = 0;

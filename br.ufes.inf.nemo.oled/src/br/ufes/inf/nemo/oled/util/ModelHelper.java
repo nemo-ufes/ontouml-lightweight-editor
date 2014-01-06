@@ -356,11 +356,12 @@ public class ModelHelper {
 				.replace("association", "");
 		return "<<" + ret + ">>";
 	}
-	
+		
 	public static String getStereotype(RefOntoUML.Element element){
 		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
 	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
+	    type = Normalizer.normalize(type, Normalizer.Form.NFD);	    
+	    type = type.replace("Association","");	    
 	    return type;
 	}
     
