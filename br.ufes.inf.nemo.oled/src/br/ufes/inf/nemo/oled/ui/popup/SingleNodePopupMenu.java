@@ -69,6 +69,10 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		
 		addSeparator();
 		
+		createMenuItem(this, "exclude");
+		
+		addSeparator();
+		
 		createMenuItem(this, "delete");		
 	}
 	

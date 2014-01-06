@@ -61,6 +61,8 @@ public class MainToolbar implements ActionListener {
 		createButton("cut");
 		createButton("copy");
 		createButton("paste");
+		toolbar.addSeparator();		
+		createButton("erase");
 		createButton("delete");
 		toolbar.addSeparator();
 		createButton("undo");

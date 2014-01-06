@@ -119,6 +119,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("DELETE", new MethodCall(
 					DiagramEditor.class.getMethod("deleteSelection")));
+
+			selectorMap.put("EXCLUDE", new MethodCall(
+					DiagramEditor.class.getMethod("excludeSelection")));
 			
 			//Commands for creating classes
 			selectorMap.put("CREATE_KIND", new MethodCall(
