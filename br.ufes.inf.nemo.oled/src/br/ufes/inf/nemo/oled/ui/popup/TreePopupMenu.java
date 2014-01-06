@@ -134,79 +134,79 @@ public class TreePopupMenu extends JPopupMenu {
     	        packageItem.addActionListener(new ActionListener() {				
     	        	@Override
     	        	public void actionPerformed(ActionEvent e) {
-    	        		frame.getDiagramManager().add(ElementType.PACKAGE,eContainer);
+    	        		frame.getDiagramManager().addElement(ElementType.PACKAGE,eContainer);
     	        	}
     	        });
         		addElementMenu.add(kindItem);
         		kindItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.KIND,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.KIND,eContainer);
         			}
         		});
         		addElementMenu.add(quantityItem);
         		quantityItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.QUANTITY,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.QUANTITY,eContainer);
         			}
         		});
         		addElementMenu.add(collectiveItem);        
         		collectiveItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.COLLECTIVE,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.COLLECTIVE,eContainer);
         			}
         		});
         		addElementMenu.add(subkindItem);        
         		subkindItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.SUBKIND,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.SUBKIND,eContainer);
         			}
         		});
         		addElementMenu.add(phaseItem);
         		phaseItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.PHASE,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.PHASE,eContainer);
         			}
         		});
         		addElementMenu.add(roleItem);
         		roleItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.ROLE,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.ROLE,eContainer);
         			}
         		});
         		addElementMenu.add(categoryItem);        
         		categoryItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.CATEGORY,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.CATEGORY,eContainer);
         			}
         		});
         		addElementMenu.add(rolemixinItem);
         		rolemixinItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.ROLEMIXIN,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.ROLEMIXIN,eContainer);
         			}
         		});    		
         		addElementMenu.add(mixinItem);
         		mixinItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.MIXIN,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.MIXIN,eContainer);
         			}
         		});  
         		addElementMenu.add(modeItem); 
         		modeItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.MODE,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.MODE,eContainer);
         			}
         		});    		
         		addElementMenu.add(relatorItem);
         		relatorItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.RELATOR,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.RELATOR,eContainer);
         			}
         		});    		
         		addElementMenu.add(datatypeItem);
         		datatypeItem.addActionListener(new ActionListener() {				
         			public void actionPerformed(ActionEvent e) {
-        				frame.getDiagramManager().add(ElementType.DATATYPE,eContainer);
+        				frame.getDiagramManager().addElement(ElementType.DATATYPE,eContainer);
         			}
         		});
         		packageItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/package.png")));
@@ -237,70 +237,70 @@ public class TreePopupMenu extends JPopupMenu {
     			materialItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		frame.getDiagramManager().add(RelationType.MATERIAL,eContainer);
+	   	        		frame.getDiagramManager().addRelation(RelationType.MATERIAL,eContainer);
 	   	        	}
        	        });
     			addRelationMenu.add(formalItem);
     			formalItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		frame.getDiagramManager().add(RelationType.FORMAL,eContainer);
+	   	        		frame.getDiagramManager().addRelation(RelationType.FORMAL,eContainer);
 	   	        	}
        	        });    			
     			addRelationMenu.add(characterizationItem);
     			characterizationItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		frame.getDiagramManager().add(RelationType.CHARACTERIZATION,eContainer);
+	   	        		frame.getDiagramManager().addRelation(RelationType.CHARACTERIZATION,eContainer);
 	   	        	}
        	        });    			
     			addRelationMenu.add(mediationItem);
     			mediationItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		frame.getDiagramManager().add(RelationType.MEDIATION,eContainer);
+	   	        		frame.getDiagramManager().addRelation(RelationType.MEDIATION,eContainer);
 	   	        	}
        	        });
     			addRelationMenu.add(componentOfItem);
     			componentOfItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		frame.getDiagramManager().add(RelationType.COMPONENTOF,eContainer);
+	   	        		frame.getDiagramManager().addRelation(RelationType.COMPONENTOF,eContainer);
 	   	        	}
        	        });
     			addRelationMenu.add(memberOfItem);        
     			memberOfItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		frame.getDiagramManager().add(RelationType.MEMBEROF,eContainer);
+	   	        		frame.getDiagramManager().addRelation(RelationType.MEMBEROF,eContainer);
 	   	        	}
        	        });
     			addRelationMenu.add(subcollectionOfItem);
     			subcollectionOfItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		frame.getDiagramManager().add(RelationType.SUBCOLLECTIONOF,eContainer);
+	   	        		frame.getDiagramManager().addRelation(RelationType.SUBCOLLECTIONOF,eContainer);
 	   	        	}
        	        });    			
     			addRelationMenu.add(subquantityOfItem);
     			subquantityOfItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		frame.getDiagramManager().add(RelationType.SUBQUANTITYOF,eContainer);
+	   	        		frame.getDiagramManager().addRelation(RelationType.SUBQUANTITYOF,eContainer);
 	   	        	}
        	        });    			
     			addRelationMenu.add(associationItem);
     			associationItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		frame.getDiagramManager().add(RelationType.ASSOCIATION,eContainer);
+	   	        		frame.getDiagramManager().addRelation(RelationType.ASSOCIATION,eContainer);
 	   	        	}
        	        });  
     			addRelationMenu.add(derivationItem);
     			derivationItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		frame.getDiagramManager().add(RelationType.DERIVATION,eContainer);
+	   	        		frame.getDiagramManager().addRelation(RelationType.DERIVATION,eContainer);
 	   	        	}
        	        });      			
     			associationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/association-arrow.png")));
@@ -327,7 +327,7 @@ public class TreePopupMenu extends JPopupMenu {
     			addGenItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		frame.getDiagramManager().add(RelationType.GENERALIZATION,eContainer);
+	   	        		frame.getDiagramManager().addRelation(RelationType.GENERALIZATION,eContainer);
 	   	        	}
        	        });
     			addGenItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/inheritance.png")));

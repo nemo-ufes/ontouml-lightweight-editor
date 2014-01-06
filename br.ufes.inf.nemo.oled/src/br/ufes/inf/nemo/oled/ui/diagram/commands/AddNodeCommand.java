@@ -59,7 +59,6 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	private RefOntoUML.Element element;
 	private RefOntoUML.Package eContainer;		
 	
-	private boolean addToModel;
 	private boolean addToDiagram;
 	
 	/**
@@ -70,12 +69,11 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 * @param x the absolute x position
 	 * @param y the absolute y position
 	 */
-	public AddNodeCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element element, double x, double y, UmlProject project, boolean addToModel, boolean addToDiagram, RefOntoUML.Package eContainer) {
+	public AddNodeCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element element, double x, double y, UmlProject project, RefOntoUML.Package eContainer) {
 		this.parent = parent;
 		this.project = project;
-		this.notification = editorNotification;
-		this.addToModel = addToModel;
-		this.addToDiagram = addToDiagram;
+		this.notification = editorNotification;		
+		if(notification==null) this.addToDiagram = false; else this.addToDiagram=true;
 		this.element = element;		
 		this.eContainer = eContainer;
 		this.diagramElement = (Node)ModelHelper.getDiagramElement(element);
@@ -116,19 +114,13 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 * {@inheritDoc}
 	 */
 	public void run() 
-	{		
-		if (addToDiagram && !addToModel){
-			return;
-		}
-				
-		if(addToModel && element!=null) {			
-			addToModel(element);			
-		}
+	{				
+		addToModel(element);		
 		
 		if(addToDiagram && diagramElement !=null){						
 			addToDiagram(diagramElement,redo);
 		}
-						
+
 		ProjectBrowser.frame.getDiagramManager().searchWarnings();
 		ProjectBrowser.frame.getDiagramManager().searchErrors();
 		ProjectBrowser.frame.getDiagramManager().updateUI();
