@@ -23,11 +23,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
+import javax.swing.SwingUtilities;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
@@ -51,7 +51,6 @@ import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalAntipattern;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
@@ -159,7 +158,8 @@ public class AntiPatternSearchDialog extends JDialog {
 	private JLabel lblWholeOverRes;
 	
 	private JButton identifyButton;
-	private JButton btnNewButton_1;	
+	private JButton btnNewButton_1;
+	private JButton btnShowResult;
 	
 	@SuppressWarnings("unused")
 	private String result = new String();
@@ -843,11 +843,23 @@ public class AntiPatternSearchDialog extends JDialog {
 		progressBarDescr.setForeground(Color.BLUE);
 		progressBarDescr.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
-		JButton btnNewButton = new JButton("Show Result");
-		btnNewButton.setEnabled(false);
+		btnShowResult = new JButton("Show Result");
+		btnShowResult.setEnabled(false);
+		
+		btnShowResult.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				final AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());				
+				if (apList!=null && !apList.getAll().isEmpty()){
+					AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(new Shell(),	apList.getAll());					
+					resultDIalog.create();
+					resultDIalog.open();							
+				}
+			}
+		});
 		
 		btnNewButton_1 = new JButton("Close");
-		
 		btnNewButton_1.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -884,7 +896,7 @@ public class AntiPatternSearchDialog extends JDialog {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnStop, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnNewButton))
+							.addComponent(btnShowResult))
 						.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 775, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
@@ -895,7 +907,7 @@ public class AntiPatternSearchDialog extends JDialog {
 					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_buttonPane.createParallelGroup(Alignment.BASELINE, false)
-						.addComponent(btnNewButton)
+						.addComponent(btnShowResult)
 						.addComponent(btnStop)
 						.addComponent(btnNewButton_1)
 						.addComponent(identifyButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
@@ -1434,26 +1446,26 @@ public class AntiPatternSearchDialog extends JDialog {
 				}
 			
 				try {
-					AssCycThread.join();				
-					BinOverThread.join();
-					DepPhaseThread.join();
-					FreeRoleThread.join();
-					GSRigThread.join();
-					HetCollThread.join();
-					HomoFuncThread.join();
-					ImpAbsThread.join();
-					ImpPartThread.join();
-					MixIdenThread.join();
-					MixRigThread.join();
-					MultiDepThread.join();
-					RelCompThread.join();
-					RelOverThread.join();
-					RelRigThread.join();
-					RelSpecThread.join();
-					RepRelThread.join();
-					UndefFormalThread.join();
-					UndefPhaseThread.join();
-					WholeOverThread.join();
+					if(AssCycThread!=null)AssCycThread.join();				
+					if(BinOverThread!=null) BinOverThread.join();
+					if(DepPhaseThread!=null) DepPhaseThread.join();
+					if(FreeRoleThread!=null) FreeRoleThread.join();
+					if(GSRigThread!=null) GSRigThread.join();
+					if(HetCollThread!=null) HetCollThread.join();
+					if(HomoFuncThread!=null) HomoFuncThread.join();
+					if(ImpAbsThread!=null) ImpAbsThread.join();
+					if(ImpPartThread!=null) ImpPartThread.join();
+					if(MixIdenThread!=null) MixIdenThread.join();
+					if(MixRigThread!=null) MixRigThread.join();
+					if(MultiDepThread!=null) MultiDepThread.join();
+					if(RelCompThread!=null) RelCompThread.join();
+					if(RelOverThread!=null) RelOverThread.join();
+					if(RelRigThread!=null) RelRigThread.join();
+					if(RelSpecThread!=null) RelSpecThread.join();
+					if(RepRelThread!=null) RepRelThread.join();
+					if(UndefFormalThread!=null) UndefFormalThread.join();
+					if(UndefPhaseThread!=null) UndefPhaseThread.join();
+					if(WholeOverThread!=null) WholeOverThread.join();
 				} catch (InterruptedException e) {				
 					e.printStackTrace();
 				}
@@ -1468,11 +1480,11 @@ public class AntiPatternSearchDialog extends JDialog {
 																	   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver	);
 
 				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
-
-				WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard(relRig.getOccurrences().get(0)));
-				wizardDialog.open();				
-					    
-				//frame.getDiagramManager().openAntiPatternManager();				
+				
+				btnShowResult.setEnabled(true);
+				
+//				WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard(relRig.getOccurrences().get(0)));
+//				wizardDialog.open();				
 			}
 		});		
 		

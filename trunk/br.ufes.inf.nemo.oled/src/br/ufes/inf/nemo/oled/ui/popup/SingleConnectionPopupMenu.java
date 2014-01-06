@@ -84,6 +84,11 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		});
 		
 		addSeparator();
+		
+		createMenuItem(this, "exclude");
+		
+		addSeparator();
+		
 		createMenuItem(this, "delete");
 		//addEditConnectionPropertiesMenu(menu, (UmlConnection) conn);				
 	}
