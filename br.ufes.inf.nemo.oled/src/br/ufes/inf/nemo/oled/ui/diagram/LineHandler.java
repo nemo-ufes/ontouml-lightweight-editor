@@ -24,6 +24,8 @@ package br.ufes.inf.nemo.oled.ui.diagram;
 
 import java.awt.geom.Point2D;
 
+import org.eclipse.emf.ecore.EObject;
+
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
@@ -118,7 +120,7 @@ public class LineHandler implements EditorMode {
     tmpPos.setLocation(mx, my);
     if(source !=null && target !=null){
     	UmlConnection conn = createConnection(editor, connectMethod, relationType, source, target, anchor, tmpPos); 
-    	addConnection(editor, conn, source, target);
+    	addConnection(editor, conn, source, target, null);
     }
     isDragging = false;
     editor.redraw();
@@ -127,7 +129,7 @@ public class LineHandler implements EditorMode {
   /**
    * Create a connection and add it to the Diagram (from a RelationType)
    */
-  public UmlConnection createAndAddConnection(DiagramEditor editor, RelationType relationType, DiagramElement source, DiagramElement target)
+  public UmlConnection createAndAddConnection(DiagramEditor editor, RelationType relationType, DiagramElement source, DiagramElement target, EObject eContainer)
   {
 	  Point2D sourcePoint = new Point2D.Double();
 	  Point2D targetPoint = new Point2D.Double();	  
@@ -137,7 +139,7 @@ public class LineHandler implements EditorMode {
 	  if(target instanceof AssociationElement) targetPoint.setLocation(((AssociationElement)target).getAbsCenterX(),((AssociationElement)target).getAbsCenterY());	  
 	  LineConnectMethod connectMethod = editor.getDiagram().getElementFactory().getConnectMethod(relationType);	  
 	  UmlConnection conn = createConnection(editor, connectMethod, relationType, source, target, sourcePoint, targetPoint);	  
-	  addConnection(editor, conn, source, target);  	  
+	  addConnection(editor, conn, source, target, eContainer);  	  
 	  editor.redraw();	  
 	  return conn;
   }
@@ -145,7 +147,7 @@ public class LineHandler implements EditorMode {
   /**
    * Create a connection and add it to the Diagram (from a Relationship)
    */
-  public UmlConnection createAndAddConnection(DiagramEditor editor, RefOntoUML.Relationship relationship, DiagramElement source, DiagramElement target)
+  public UmlConnection createAndAddConnection(DiagramEditor editor, RefOntoUML.Relationship relationship, DiagramElement source, DiagramElement target, EObject eContainer)
   {
 	  Point2D sourcePoint = new Point2D.Double();
 	  Point2D targetPoint = new Point2D.Double();	  
@@ -156,7 +158,7 @@ public class LineHandler implements EditorMode {
 	  RelationType relationType = RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase());
 	  LineConnectMethod connectMethod = editor.getDiagram().getElementFactory().getConnectMethod(relationType);	  
 	  UmlConnection conn = createConnection(editor, connectMethod, relationship, source, target, sourcePoint, targetPoint);	  
-	  addConnection(editor, conn, source, target);  	  
+	  addConnection(editor, conn, source, target, eContainer);  	  
 	  editor.redraw();	  
 	  return conn;
   }
@@ -250,7 +252,7 @@ public class LineHandler implements EditorMode {
   /**
    * Add Connection
    */
-  public void addConnection(DiagramEditor editor, UmlConnection conn, DiagramElement source, DiagramElement target)
+  public void addConnection(DiagramEditor editor, UmlConnection conn, DiagramElement source, DiagramElement target, EObject eContainer)
   {	    
 	    RefOntoUML.Classifier aSource = null;
 	    RefOntoUML.Classifier aTarget = null;
@@ -286,7 +288,7 @@ public class LineHandler implements EditorMode {
 		}
 			  
 	    if(aSource !=null && aTarget != null){
-	    	AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn.getRelationship(), aSource, aTarget, editor.getDiagram().getProject(),null);
+	    	AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn.getRelationship(), aSource, aTarget, editor.getDiagram().getProject(),eContainer);
 	    	editor.execute(command);
 	    }
   }

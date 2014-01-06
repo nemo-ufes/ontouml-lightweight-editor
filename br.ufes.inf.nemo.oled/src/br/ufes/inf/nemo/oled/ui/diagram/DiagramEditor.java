@@ -814,7 +814,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		editorMode = lineHandler;
 	}
 
-	public void setDragRelationMode(RefOntoUML.Relationship relationship)
+	public void setDragRelationMode(RefOntoUML.Relationship relationship, EObject eContainer)
 	{		
 		RelationType relationType = RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase());
 		lineHandler.setRelationType(relationType, getDiagram().getElementFactory().getConnectMethod(relationType));
@@ -839,7 +839,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		DiagramElement tgt = ModelHelper.getDiagramElement(target);
 		if(src==null || tgt==null) return;
 		
-		lineHandler.createAndAddConnection(this, relationship, src, tgt);
+		lineHandler.createAndAddConnection(this, relationship, src, tgt, eContainer);
 	}
 		  
 	/**

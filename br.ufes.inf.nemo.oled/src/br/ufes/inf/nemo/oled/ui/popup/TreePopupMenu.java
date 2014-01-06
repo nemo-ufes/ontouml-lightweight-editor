@@ -128,11 +128,12 @@ public class TreePopupMenu extends JPopupMenu {
         						d.setDragElementMode(oClass,oClass.eContainer()); 
         					}
         					
-        					if (ontoElement.getElement() instanceof RefOntoUML.Relationship) {        						
-        						d.setDragRelationMode((RefOntoUML.Relationship)ontoElement.getElement());
+        					if (ontoElement.getElement() instanceof RefOntoUML.Relationship) {
+        						RefOntoUML.Relationship rel = (RefOntoUML.Relationship)ontoElement.getElement();
+        						d.setDragRelationMode(rel,rel.eContainer());
         					}
         				}
-        			}
+        			};
         		});    			
     		}
 		}
