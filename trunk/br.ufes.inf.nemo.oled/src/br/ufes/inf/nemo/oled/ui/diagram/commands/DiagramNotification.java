@@ -46,7 +46,8 @@ public interface DiagramNotification {
 	 * @author Antognoni Albuquerque
 	 */
 	public enum ChangeType {
-		ELEMENTS_ADDED, 
+		ELEMENTS_ADDED,
+		ELEMENTS_DRAGGED, 
 		ELEMENTS_REMOVED, 
 		ELEMENTS_CHANGED, 
 		ELEMENTS_MOVED, 

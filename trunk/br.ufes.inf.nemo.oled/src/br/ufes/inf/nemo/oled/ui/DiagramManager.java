@@ -50,7 +50,6 @@ import org.eclipse.ocl.SemanticException;
 import RefOntoUML.Association;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
-import RefOntoUML.PackageableElement;
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
@@ -85,8 +84,6 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
-import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
-import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.DiagramElementFactoryImpl;
@@ -271,72 +268,32 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}		
 	}
 	
-	/**
-	 * Add relationship to the model (do not insert it into diagrams).
-	 * 
-	 * This method create a corresponding DiagramElement to the RefOntoUML relationship but do not insert it into any diagram.
-	 * 
-	 * To insert the created element in the diagram you need to include this code:
-	 * DiagramElement assocDiagramElement = ModelHelper.getDiagramElement(assocCreatedElement);
-	 * bindConnection(assocDiagramElement,sourceDiagramElement,targetDiagramElement);
-	 * 
-	 * @param stereotype
-	 * @param eContainer
-	 * @return
-	 */
-	public RefOntoUML.Relationship add(RelationType stereotype, EObject eContainer)
+	/** Add relationship to the model (not to diagrams). */
+	public RefOntoUML.Relationship addRelation(RelationType stereotype, EObject eContainer)
 	{
-		//avoid null container
-		if (eContainer==null) eContainer = getCurrentProject().getModel();
+		RefOntoUML.Relationship relationship = elementFactory.createRelationship(stereotype);
 		
-		RefOntoUML.Relationship element=null;
-		// note that we are creating a DiagramElement, that should be further added into a diagram
-		UmlConnection diagramElement = elementFactory.createConnection(stereotype,null,null);		    		    
-		element = diagramElement.getRelationship();			
-		ModelHelper.addMapping(element, diagramElement);
+		// add default properties
+		if(relationship instanceof RefOntoUML.Association) elementFactory.createPropertiesByDefault((RefOntoUML.Association)relationship);
 		
-		AddConnectionCommand cmd=null;
-		//to add only in the model do exactly as follow
+		//to add only in the model do exactly as follow				
 		if (stereotype==RelationType.GENERALIZATION) {
-			cmd = new AddConnectionCommand(null,null,element,(RefOntoUML.Classifier)eContainer,null,getCurrentProject(),true,false,null);
+			AddConnectionCommand cmd = new AddConnectionCommand(null,null,relationship,(RefOntoUML.Classifier)eContainer,null,getCurrentProject(),null);
+			cmd.run();
 		}else{
-			cmd = new AddConnectionCommand(null,null,element,null,null,getCurrentProject(),true,false,eContainer);			
-		}
-		
-		cmd.run();
-		
-		return element;
+			AddConnectionCommand cmd = new AddConnectionCommand(null,null,relationship,null,null,getCurrentProject(),eContainer);
+			cmd.run();
+		}		
+		return relationship;
 	}
 	
-	/**
-	 * Add element to the model (do not insert it into diagrams).
-	 * 
-	 * This method create a corresponding DiagramElement to the RefOntoUML element but do not insert it into any diagram.
-	 *
-	 * To insert the created element in the diagram you need to include this code:
-	 * DiagramElement diagramElement = ModelHelper.getDiagramElement(createdElement);
-	 * diagramElement.setParent(editor.getDiagram());
-	 * diagramElement.addNodeChangeListener(specificDiagramEditor);
-	 * 
-	 * @param stereotype
-	 * @param eContainer
-	 */
-	public RefOntoUML.PackageableElement add(ElementType stereotype, RefOntoUML.Package eContainer)
+	/** Add element to the model (not to diagrams).  */
+	public RefOntoUML.PackageableElement addElement(ElementType stereotype, RefOntoUML.Package eContainer)
 	{
-		//avoid null container
-		if (eContainer==null) eContainer = getCurrentProject().getModel();
+		RefOntoUML.PackageableElement element = elementFactory.createElement(stereotype);		
 		
-		RefOntoUML.PackageableElement element=null;
-		if (stereotype == ElementType.PACKAGE) element = elementFactory.createPackage();			
-		else {			
-			// note that we are creating a DiagramElement, that should be further added into a diagram
-			UmlNode diagramElement = elementFactory.createNode(stereotype);		    		    
-			element = (PackageableElement) diagramElement.getClassifier();			
-			ModelHelper.addMapping(element, diagramElement);
-		}
-		
-		//to add only in the model do exactly as follow
-		AddNodeCommand cmd = new AddNodeCommand(null,null,element,0,0,getCurrentProject(),true,false,eContainer);		
+		//to add only in the model do exactly as follow		
+		AddNodeCommand cmd = new AddNodeCommand(null,null,element,0,0,getCurrentProject(),eContainer);		
 		cmd.run();
 		
 		return element;
@@ -355,17 +312,19 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void delete(RefOntoUML.Element element)
 	{	
 		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
-		deletionList.add(element);
-		DeleteElementCommand cmd = null;
-		for(DiagramEditor diagramEditor: getDiagramEditors(element)){			
-			//to delete from the diagrams and consequently from the model do exactly as follow
-			cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);					
-		}
-		if(getDiagramEditors(element).size()==0){			
-			//to delete only from the model do exactly as follow
-			cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
-		}
-		cmd.run();
+		deletionList.add(element);		
+		//from diagrams & model
+		for(DiagramEditor diagramEditor: getDiagramEditors(element))
+		{
+			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
+			cmd.run();
+		}		
+		// only from model
+		if(getDiagramEditors(element).size()==0)
+		{		
+			DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
+			cmd.run();
+		}		
 	}
 	
 	/**

@@ -67,7 +67,6 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	private Classifier target;
 	private EObject eContainer;
 	
-	private boolean addToModel;
 	private boolean addToDiagram;
 
 	/**
@@ -78,12 +77,11 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 * @param aTarget 
 	 * @param aSource 
 	 */
-	public AddConnectionCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element relationship, Classifier aSource, Classifier aTarget, UmlProject project, boolean addToModel, boolean addToDiagram, EObject eContainer) {
+	public AddConnectionCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element relationship, Classifier aSource, Classifier aTarget, UmlProject project, EObject eContainer) {
 		this.parent = parent;
 		this.project = project;
 		this.notification = editorNotification;
-		this.addToModel = addToModel;
-		this.addToDiagram = addToDiagram;
+		if (notification==null) this.addToDiagram = false; else this.addToDiagram=true;
 		this.relationship = relationship;
 		this.eContainer = eContainer;
 		diagramElement = ModelHelper.getDiagramElement(relationship);
@@ -128,15 +126,9 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void run() {
-	    
-		if (addToDiagram && !addToModel){
-			return;
-		}
-		
-		if(addToModel && relationship!=null){			
-			addToModel(relationship);			
-		}
+	public void run() {	    
+					
+		addToModel(relationship);		
 		
 		if(addToDiagram && diagramElement != null){
 			

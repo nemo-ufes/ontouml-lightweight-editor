@@ -1019,7 +1019,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 		//In case of the three commands  
 		if(changeType == ChangeType.ELEMENTS_ADDED || changeType == ChangeType.ELEMENTS_REMOVED || changeType == ChangeType.LABEL_TEXT_SET || changeType == ChangeType.CONNECTION_NAVEGABILITY_SET 
-		  || changeType == ChangeType.ELEMENTS_MOVED)				 
+		  || changeType == ChangeType.ELEMENTS_MOVED || changeType == ChangeType.ELEMENTS_DRAGGED)				 
 		{
 			frame.getMainToolBar().enableSaveButton(true);
 			getProject().setSaveModelNeeded(true);
@@ -1053,6 +1053,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			break;
 		case ELEMENTS_REMOVED:
 			if(notificationType == NotificationType.DO) sb.append("removed"); else sb.append(" remove");
+			break;
+		case ELEMENTS_DRAGGED:
+			if(notificationType == NotificationType.DO) sb.append("dragged"); else sb.append(" drag");
 			break;
 		case ELEMENTS_MOVED:
 			if(notificationType == NotificationType.DO) sb.append("moved"); else sb.append(" move");
