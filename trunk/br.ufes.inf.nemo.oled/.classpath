@@ -32,7 +32,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.emf.query.ocl_2.0.0.v20091215-1624.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/lpg.runtime.java_2.0.17.v201004271640.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.core.jobs_3.5.1.R36x_v20100824.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.core.runtime_3.6.0.v20100505.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.equinox.common_3.6.0.v20100503.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.osgi_3.6.2.R36x_v20110210.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/net.sourceforge.lpg.lpgjavaruntime_1.1.0.v201004271650.jar"/>
@@ -46,5 +45,9 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/wizard/org.eclipse.swt.win32.win32.x86_64_3.100.0.v4233d.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.core.commands_3.6.0.I20100512-1500.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/wizard/swt-grouplayout.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/wizard/org.eclipse.ui_3.104.0.v20121024-145224.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/wizard/org.eclipse.ui.workbench_3.104.0.v20130204-164612.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/wizard/org.eclipse.core.runtime_3.8.0.v20120912-155025.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/wizard/org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

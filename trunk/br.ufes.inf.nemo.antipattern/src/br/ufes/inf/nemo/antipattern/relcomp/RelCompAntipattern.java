@@ -80,7 +80,7 @@ public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
 		for (SimpleTuple<Association,Association> tuple : query_result) 
 		{
 			try {
-					RelCompOccurrence occurrence = new RelCompOccurrence(tuple.getFirst(), tuple.getSecond(), this.parser);
+					RelCompOccurrence occurrence = new RelCompOccurrence(tuple.getFirst(), tuple.getSecond(), this);
 					super.occurrence.add(occurrence);
 				
 			} catch (Exception e) {
@@ -119,7 +119,7 @@ public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
 					
 					if(a2DependsOnA1){
 							try {
-								this.occurrence.add(new RelCompOccurrence(a1, a2, parser));
+								this.occurrence.add(new RelCompOccurrence(a1, a2, this));
 							} catch (Exception e) {
 								System.out.println(info.acronym+"[java]: Provided information does not characterize an occurrence of the anti-pattern!");
 								System.out.println(e.getMessage());
@@ -136,7 +136,7 @@ public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
 						
 						if(a1DependsOnA2){
 						try {
-							this.occurrence.add(new RelCompOccurrence(a2, a1, parser));
+							this.occurrence.add(new RelCompOccurrence(a2, a1, this));
 						} catch (Exception e) {
 							System.out.println(info.acronym+"[java]: Provided information does not characterize an occurrence of the anti-pattern!");
 							System.out.println(e.getMessage());

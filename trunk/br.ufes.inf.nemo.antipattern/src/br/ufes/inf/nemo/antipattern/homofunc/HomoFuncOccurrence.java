@@ -21,8 +21,8 @@ public class HomoFuncOccurrence extends AntipatternOccurrence {
 	private Classifier whole;
 	private Property partEnd;
 	
-	public HomoFuncOccurrence(Association compOf, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public HomoFuncOccurrence(Association compOf, HomoFuncAntipattern ap) throws Exception {
+		super(ap);
 		
 		if (compOf==null)
 			throw new NullPointerException("HomoFunc: null inputs!");
@@ -75,6 +75,11 @@ public class HomoFuncOccurrence extends AntipatternOccurrence {
 				"Functional Complex: "+super.parser.getStringRepresentation(this.whole) + "\n" +
 				"Part: "+super.parser.getStringRepresentation(partEnd);
 		return result;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(whole);
 	}
 
 }

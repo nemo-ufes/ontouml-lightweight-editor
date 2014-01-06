@@ -42,7 +42,7 @@ public class MultSortAntipattern extends Antipattern<MultSortOccurrence> {
 		{
 			try {
 				
-					MultSortOccurrence occurrence = new MultSortOccurrence(subtype, this.parser);
+					MultSortOccurrence occurrence = new MultSortOccurrence(subtype, this);
 					super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Provided information does not characterize an occurrence of the anti-pattern!");

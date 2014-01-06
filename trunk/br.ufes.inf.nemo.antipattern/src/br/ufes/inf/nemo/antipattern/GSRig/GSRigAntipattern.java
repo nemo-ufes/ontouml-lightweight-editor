@@ -63,7 +63,7 @@ public class GSRigAntipattern extends Antipattern<GSRigOccurrence> {
 		for (GeneralizationSet gs : query_result) 
 		{
 			try {
-				GSRigOccurrence occurrence = new GSRigOccurrence(gs, super.parser);
+				GSRigOccurrence occurrence = new GSRigOccurrence(gs, this);
 				super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");

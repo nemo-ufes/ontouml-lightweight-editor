@@ -15,8 +15,8 @@ public class UndefFormalOccurrence extends AntipatternOccurrence {
 	FormalAssociation formal;
 	Classifier source, target;
 	
-	public UndefFormalOccurrence(FormalAssociation formal, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public UndefFormalOccurrence(FormalAssociation formal, UndefFormalAntipattern ap) throws Exception {
+		super(ap);
 
 		if (formal==null)
 			throw new NullPointerException("UndefFormal: null formal association provided.");
@@ -52,6 +52,11 @@ public class UndefFormalOccurrence extends AntipatternOccurrence {
 						"Formal: "+super.parser.getStringRepresentation(this.formal);
 		
 		return result;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(formal);
 	}
 
 }

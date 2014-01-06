@@ -13,8 +13,8 @@ public class BinOverVariation5Occurrence extends BinOverOccurrence {
 
 	private Classifier supertype;
 	
-	public BinOverVariation5Occurrence(Association association, OntoUMLParser parser) {
-		super(association, parser);
+	public BinOverVariation5Occurrence(Association association, BinOverVariation5Antipattern ap) {
+		super(association, ap);
 		
 		EList<Classifier> parentsSource=source.allParents();
 		EList<Classifier> parentsTarget=target.allParents();

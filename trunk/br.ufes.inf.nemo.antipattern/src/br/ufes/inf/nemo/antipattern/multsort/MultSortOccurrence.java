@@ -19,8 +19,8 @@ public class MultSortOccurrence extends AntipatternOccurrence {
 	ArrayList<Class> sortalParents;
 	
 	
-	public MultSortOccurrence(Class subtype, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public MultSortOccurrence(Class subtype, MultSortAntipattern ap) throws Exception {
+		super(ap);
 		
 		if(subtype == null)
 			throw new Exception(MultSortAntipattern.getAntipatternInfo().acronym+": provided input class is null. Can't create occurrence!");
@@ -77,6 +77,11 @@ public class MultSortOccurrence extends AntipatternOccurrence {
 		
 		return result;
 		
+	}
+	
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(this.subtype);
 	}
 
 }

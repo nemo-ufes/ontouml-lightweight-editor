@@ -51,7 +51,7 @@ public class UndefFormalAntipattern extends Antipattern<UndefFormalOccurrence> {
 		for (FormalAssociation formal : query_result) 
 		{
 			try {
-				UndefFormalOccurrence occurrence = new UndefFormalOccurrence(formal, super.parser);
+				UndefFormalOccurrence occurrence = new UndefFormalOccurrence(formal, this);
 				super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");

@@ -77,7 +77,7 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 		{
 			try {
 				if (role instanceof Role){
-					FreeRoleOccurrence occurrence = new FreeRoleOccurrence((Role) role, query_result.get(role), this.parser);
+					FreeRoleOccurrence occurrence = new FreeRoleOccurrence((Role) role, query_result.get(role), this);
 					super.occurrence.add(occurrence);
 				}else throw new Exception();
 			} catch (Exception e) {

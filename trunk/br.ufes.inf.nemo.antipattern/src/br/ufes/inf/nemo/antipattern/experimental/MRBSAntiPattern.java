@@ -17,7 +17,7 @@ public class MRBSAntiPattern extends AntipatternOccurrence {
 	 * @throws Exception
 	 */
 	public MRBSAntiPattern(OntoUMLParser parser) throws Exception{
-		super(parser);
+		super( null);
 	}
 
 	/**
@@ -42,5 +42,11 @@ public class MRBSAntiPattern extends AntipatternOccurrence {
 		String result=new String();
 	
 		return result;
+	}
+
+	@Override
+	public String getShortName() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }

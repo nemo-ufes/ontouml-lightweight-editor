@@ -18,8 +18,8 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 	
 	private ArrayList<Classifier> sourceChildren, targetChildren;
 	
-	public ImpAbsOccurrence(Association a, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public ImpAbsOccurrence(Association a, ImpAbsAntipattern ap) throws Exception {
+		super(ap);
 		this.setAssociation(a);
 	}
 	 
@@ -306,6 +306,11 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		parser.selectThisElements(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
 		return parser;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(association);
 	}
 
 }

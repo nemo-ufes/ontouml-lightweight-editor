@@ -40,7 +40,7 @@ public class ImpAbsAntipattern extends Antipattern<ImpAbsOccurrence> {
 		for (Association assoc : query_result) 
 		{
 			try {
-				super.occurrence.add(new ImpAbsOccurrence(assoc, super.parser));
+				super.occurrence.add(new ImpAbsOccurrence(assoc, this));
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");
 				System.out.println(e.getMessage());

@@ -16,6 +16,10 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Association Cycle Anti-Pattern*/
 public class AssCycOccurrence extends AntipatternOccurrence{
+	public ArrayList<Relationship> getCycleRelationship() {
+		return cycleRelationship;
+	}
+
 	ArrayList<Class> cycle;
 	ArrayList<Relationship> cycleRelationship;
 	public static int OPEN=0, CLOSED=1;
@@ -153,8 +157,8 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		
 	}
 	
-	public AssCycOccurrence(ArrayList<Class> cycle, ArrayList<Relationship> cycleRelationship, OntoUMLParser parser){
-		super(parser);
+	public AssCycOccurrence(ArrayList<Class> cycle, ArrayList<Relationship> cycleRelationship, AssCycAntipattern ap){
+		super(ap);
 		setCycle(cycle);
 		setCycleRelationship(cycleRelationship);
 	}
@@ -212,6 +216,11 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		parser.selectThisElements(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
 		return parser;
+	}
+
+	@Override
+	public String getShortName() {
+		return (parser.getStringRepresentation(cycle.get(0))+" ... "+parser.getStringRepresentation(cycle.get(cycle.size()-1)));
 	}
 	
 	/*public String generateClosedCyclePredicate(OntoUMLParser mapper, int cardinality) {

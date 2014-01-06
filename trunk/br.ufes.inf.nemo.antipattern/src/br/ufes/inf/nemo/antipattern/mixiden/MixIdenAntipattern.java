@@ -50,7 +50,7 @@ public class MixIdenAntipattern extends Antipattern<MixIdenOccurrence> {
 		for (Mixin mixin : query_result) 
 		{
 			try {
-				MixIdenOccurrence occurrence = new MixIdenOccurrence(mixin, super.parser);
+				MixIdenOccurrence occurrence = new MixIdenOccurrence(mixin, this);
 				super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");

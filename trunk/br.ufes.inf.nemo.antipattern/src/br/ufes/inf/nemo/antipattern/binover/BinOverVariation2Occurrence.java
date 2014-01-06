@@ -5,8 +5,8 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class BinOverVariation2Occurrence extends BinOverOccurrence {
 
-	public BinOverVariation2Occurrence(Association a, OntoUMLParser parser) {
-		super(a,parser);
+	public BinOverVariation2Occurrence(Association a, BinOverVariation2Antipattern ap) {
+		super(a,ap);
 	}
 
 	@Override

@@ -76,7 +76,7 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 		for (Classifier relator : query_result.keySet()) 
 		{
 			try {
-				super.occurrence.add(new WholeOverOccurrence(relator, query_result.get(relator), this.parser));
+				super.occurrence.add(new WholeOverOccurrence(relator, query_result.get(relator), this));
 			} catch (Exception e) {
 				System.out.println(info.acronym+": Provided information does not characterize an occurrence of the anti-pattern!");
 				System.out.println(e.getMessage());
@@ -129,7 +129,7 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 							System.out.println("M2End: "+parser.getStringRepresentation(partEnd2.getType()));
 							if(OverlappingTypesIdentificator.isVariation1((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 1!");
 								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 1.\n"+e.getMessage());}
@@ -137,7 +137,7 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 							}
 							else if(OverlappingTypesIdentificator.isVariation2((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 2!");
 								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 2.\n"+e.getMessage());}
@@ -145,7 +145,7 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 							}
 							else if(OverlappingTypesIdentificator.isVariation3((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 3!");
 								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 3.\n"+e.getMessage());}
@@ -153,7 +153,7 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 							}
 							else if(OverlappingTypesIdentificator.isVariation4((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 4!");
 								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 4.\n"+e.getMessage());}
@@ -161,7 +161,7 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 							}
 							else if(OverlappingTypesIdentificator.isVariation5((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 5!");
 								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 5.\n"+e.getMessage());}
@@ -169,7 +169,7 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 							}
 							else if(OverlappingTypesIdentificator.isVariation6((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
 								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this.parser));
+									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
 									foundOccurrence = true;
 //									System.out.println("Found Variation 6!");
 								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 6.\n"+e.getMessage());}

@@ -53,7 +53,7 @@ public class HetCollAntipattern extends Antipattern<HetCollOccurrence> {
 		for (Classifier whole : query_result.keySet()) 
 		{
 			try {
-					HetCollOccurrence occurrence = new HetCollOccurrence(whole, query_result.get(whole), this.parser);
+					HetCollOccurrence occurrence = new HetCollOccurrence(whole, query_result.get(whole), this);
 					super.occurrence.add(occurrence);
 				
 			} catch (Exception e) {

@@ -18,8 +18,8 @@ public class UndefPhaseOccurrence extends AntipatternOccurrence {
 	ArrayList<Phase> phases;
 	
 	
-	public UndefPhaseOccurrence(GeneralizationSet gs, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public UndefPhaseOccurrence(GeneralizationSet gs, UndefPhaseAntipattern ap) throws Exception {
+		super(ap);
 		
 		if(gs==null)
 			throw new NullPointerException("UndefPhase: Can't create occurrence with null generalization set.");
@@ -73,6 +73,11 @@ public class UndefPhaseOccurrence extends AntipatternOccurrence {
 		
 	
 		return result;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(general);
 	}
 
 }

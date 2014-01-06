@@ -16,8 +16,8 @@ public class WholeOverOccurrence extends AntipatternOccurrence{
 	
 	/*TODO: Adapt methods from RelOver to get supertypes...*/
 	
-	public WholeOverOccurrence(Classifier whole, ArrayList<Property> partEnds, OntoUMLParser parser) {
-		super(parser);
+	public WholeOverOccurrence(Classifier whole, ArrayList<Property> partEnds, WholeOverAntipattern ap) {
+		super(ap);
 		
 		this.whole = whole;
 		this.partEnds = partEnds;
@@ -61,6 +61,11 @@ public class WholeOverOccurrence extends AntipatternOccurrence{
 			i++;
 		}*/
 		return result;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(whole);
 	}
 	
 

@@ -18,15 +18,35 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 //Mixed Rigidity in Generalization Set
 public class GSRigOccurrence extends AntipatternOccurrence{
 
+	public GeneralizationSet getGs() {
+		return gs;
+	}
+
+	public ArrayList<Classifier> getSpecifics() {
+		return specifics;
+	}
+
+	public ArrayList<Classifier> getRigidSpecifics() {
+		return rigidSpecifics;
+	}
+
+	public ArrayList<Classifier> getAntiRigidSpecifics() {
+		return antiRigidSpecifics;
+	}
+
+	public ArrayList<Classifier> getSemiRigidSpecifics() {
+		return semiRigidSpecifics;
+	}
+
 	GeneralizationSet gs;
 	ArrayList<Classifier> specifics;
 	ArrayList<Classifier> rigidSpecifics;
 	ArrayList<Classifier> antiRigidSpecifics;
 	ArrayList<Classifier> semiRigidSpecifics;
 	
-	public GSRigOccurrence(GeneralizationSet gs, OntoUMLParser parser) throws Exception {
+	public GSRigOccurrence(GeneralizationSet gs, GSRigAntipattern ap) throws Exception {
 		
-		super(parser);
+		super(ap);
 		
 		this.gs = gs;
 		this.specifics = new ArrayList<Classifier>();
@@ -101,6 +121,11 @@ public class GSRigOccurrence extends AntipatternOccurrence{
 		
 		return result;
 		
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(getGs());
 	}
 
 }

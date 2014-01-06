@@ -41,9 +41,9 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 	public ChangingRelator changingInstantiationPattern;
 	
 	
-	public RelRigOccurrence(Relator relator, OntoUMLParser parser) throws Exception 
+	public RelRigOccurrence(Relator relator, RelRigAntipattern ap) throws Exception 
 	{
-		super(parser);
+		super(ap);
 		
 		this.setRelator(relator, parser);
 		
@@ -147,6 +147,11 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 		}
 		
 		return expl;
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(relator);
 	}
 }
 

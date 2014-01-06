@@ -49,7 +49,7 @@ public class HomoFuncAntipattern extends Antipattern<HomoFuncOccurrence> {
 		{
 			try {
 				
-				HomoFuncOccurrence occurrence = new HomoFuncOccurrence(a, super.parser);
+				HomoFuncOccurrence occurrence = new HomoFuncOccurrence(a, this);
 				super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");

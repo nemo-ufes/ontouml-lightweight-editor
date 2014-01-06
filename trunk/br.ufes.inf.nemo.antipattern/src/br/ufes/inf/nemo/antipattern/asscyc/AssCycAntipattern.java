@@ -91,7 +91,7 @@ public class AssCycAntipattern extends Antipattern<AssCycOccurrence> {
 					}	
 				}
 			}
-			super.occurrence.add(new AssCycOccurrence(cycle,cycle_ass,parser));
+			super.occurrence.add(new AssCycOccurrence(cycle,cycle_ass,this));
 		}
 		return super.getOccurrences();
 	}

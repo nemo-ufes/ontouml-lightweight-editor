@@ -16,10 +16,19 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 public class DepPhaseOccurrence extends AntipatternOccurrence{
 
 	private Phase phase;
+	public Phase getPhase() {
+		return phase;
+	}
+
+	public ArrayList<Property> getRelatorEnds() {
+		return relatorEnds;
+	}
+
+
 	private ArrayList<Property> relatorEnds;
 	
-	public DepPhaseOccurrence(Phase phase, ArrayList<Property> relatorEnds, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public DepPhaseOccurrence(Phase phase, ArrayList<Property> relatorEnds, DepPhaseAntipattern ap) throws Exception {
+		super(ap);
 		this.phase = phase;
 				
 		for (Property p : relatorEnds) {
@@ -75,6 +84,11 @@ public class DepPhaseOccurrence extends AntipatternOccurrence{
 		
 		return result;
 		
+	}
+
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(getPhase());
 	}
 	
 }

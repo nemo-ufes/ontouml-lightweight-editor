@@ -54,7 +54,7 @@ private static final String oclQuery =
 		for (GeneralizationSet gs : query_result) 
 		{
 			try {
-				UndefPhaseOccurrence occurrence = new UndefPhaseOccurrence(gs, super.parser);
+				UndefPhaseOccurrence occurrence = new UndefPhaseOccurrence(gs, this);
 				super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");

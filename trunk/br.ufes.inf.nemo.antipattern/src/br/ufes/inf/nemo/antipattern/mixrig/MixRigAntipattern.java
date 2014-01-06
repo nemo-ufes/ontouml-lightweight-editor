@@ -49,7 +49,7 @@ public class MixRigAntipattern extends Antipattern<MixRigOccurrence> {
 		for (Mixin mixin : query_result) 
 		{
 			try {
-				MixRigOccurrence occurrence = new MixRigOccurrence(mixin, super.parser);
+				MixRigOccurrence occurrence = new MixRigOccurrence(mixin, this);
 				super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");

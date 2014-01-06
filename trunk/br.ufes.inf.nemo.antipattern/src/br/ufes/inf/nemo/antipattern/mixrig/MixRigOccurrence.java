@@ -18,8 +18,8 @@ public class MixRigOccurrence extends AntipatternOccurrence {
 	ArrayList<Classifier> subtypes;
 	boolean isRigid; 
 	
-	public MixRigOccurrence(Mixin mixin, OntoUMLParser parser) throws Exception {
-		super(parser);
+	public MixRigOccurrence(Mixin mixin, MixRigAntipattern ap) throws Exception {
+		super(ap);
 		
 		if(mixin==null)
 			throw new NullPointerException("MixRig: null mixin provided.");
@@ -79,6 +79,11 @@ public class MixRigOccurrence extends AntipatternOccurrence {
 			result+="\n\t"+super.parser.getStringRepresentation(subtype);
 		}
 		return result;
+	}
+	
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(mixin);
 	}
 
 }

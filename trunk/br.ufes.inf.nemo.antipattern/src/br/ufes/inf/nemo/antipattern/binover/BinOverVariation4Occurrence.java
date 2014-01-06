@@ -15,9 +15,8 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 public class BinOverVariation4Occurrence extends BinOverOccurrence{
 	private Classifier supertype;
 	
-	public BinOverVariation4Occurrence (Association association, OntoUMLParser parser) throws Exception{
-		super(association, parser);
-		this.setAssociation(association);
+	public BinOverVariation4Occurrence (Association association, BinOverVariation4Antipattern ap) throws Exception{
+		super(association, ap);
 	}
 	
 	public String generateIrreflexiveOcl(OntoUMLParser parser){

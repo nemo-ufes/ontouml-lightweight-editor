@@ -18,8 +18,8 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 	Classifier type;
 	ArrayList<Property> relatorEnds;
 
-	public MultiDepOccurrence (Classifier type, OntoUMLParser parser) throws Exception{
-		super(parser);
+	public MultiDepOccurrence (Classifier type, MultiDepAntipattern ap) throws Exception{
+		super(ap);
 		
 		if(type==null)
 			throw new NullPointerException("MultiDep: type is null");
@@ -72,5 +72,10 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 		
 		return result;
 		
+	}
+	
+	@Override
+	public String getShortName() {
+		return parser.getStringRepresentation(this.type);
 	}
 }
