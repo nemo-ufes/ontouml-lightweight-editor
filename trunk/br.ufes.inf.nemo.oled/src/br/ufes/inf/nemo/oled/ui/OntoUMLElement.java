@@ -37,6 +37,7 @@ public class OntoUMLElement {
 			type = refElement.getClass().toString().replaceAll("class RefOntoUML.impl.","");
 		    type = type.replaceAll("Impl","");
 		    type = Normalizer.normalize(type, Normalizer.Form.NFD);	
+		    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
 		}
 		if(refElement==null){
 			type = "null";

@@ -121,85 +121,70 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 	
 	factory = ModelHelper.getFactory();
 	
-	elementCounters.put(ElementType.PACKAGE, 0);
-	
 	NoteElement notePrototype = (NoteElement)
     NoteElement.getPrototype().clone();
     elementPrototypes.put(ElementType.NOTE, notePrototype);
-    elementCounters.put(ElementType.NOTE, 0);
     
-    Kind kind = (RefOntoUML.Kind)createElement(ElementType.KIND);
+    Kind kind = (RefOntoUML.Kind)createElement(ElementType.KIND);    
     ClassElement kindElement = (ClassElement) ClassElement.getPrototype().clone();
     kindElement.setClassifier(kind);
     elementPrototypes.put(ElementType.KIND, kindElement);
-    elementCounters.put(ElementType.KIND, 0);
-    
+        
     Quantity quantity = (RefOntoUML.Quantity)createElement(ElementType.QUANTITY);
     ClassElement quantityElement = (ClassElement) ClassElement.getPrototype().clone();
     quantityElement.setClassifier(quantity);
     elementPrototypes.put(ElementType.QUANTITY, quantityElement);
-    elementCounters.put(ElementType.QUANTITY, 0);
         
     Collective collective = (RefOntoUML.Collective)createElement(ElementType.COLLECTIVE);   
     ClassElement collectiveElement = (ClassElement) ClassElement.getPrototype().clone();
     collectiveElement.setClassifier(collective);
     elementPrototypes.put(ElementType.COLLECTIVE, collectiveElement);
-    elementCounters.put(ElementType.COLLECTIVE, 0);
         
     SubKind subkind = (RefOntoUML.SubKind)createElement(ElementType.SUBKIND);   
     ClassElement subkindElement = (ClassElement) ClassElement.getPrototype().clone();
     subkindElement.setClassifier(subkind);
     elementPrototypes.put(ElementType.SUBKIND, subkindElement);
-    elementCounters.put(ElementType.SUBKIND, 0);
         
     Phase phase = (RefOntoUML.Phase)createElement(ElementType.PHASE);    
     ClassElement phaseElement = (ClassElement) ClassElement.getPrototype().clone();
     phaseElement.setClassifier(phase);
     elementPrototypes.put(ElementType.PHASE, phaseElement);
-    elementCounters.put(ElementType.PHASE, 0);
         
     Role role = (RefOntoUML.Role)createElement(ElementType.ROLE);  
     ClassElement roleElement = (ClassElement) ClassElement.getPrototype().clone();
     roleElement.setClassifier(role);
     elementPrototypes.put(ElementType.ROLE, roleElement);
-    elementCounters.put(ElementType.ROLE, 0);
         
     Category category = (RefOntoUML.Category)createElement(ElementType.CATEGORY);  
     ClassElement categoryElement = (ClassElement) ClassElement.getPrototype().clone();
     categoryElement.setClassifier(category);
     elementPrototypes.put(ElementType.CATEGORY, categoryElement);
-    elementCounters.put(ElementType.CATEGORY, 0);
         
     RoleMixin rolemixin = (RefOntoUML.RoleMixin)createElement(ElementType.ROLEMIXIN);   
     ClassElement rolemixinElement = (ClassElement) ClassElement.getPrototype().clone();
     rolemixinElement.setClassifier(rolemixin);
     elementPrototypes.put(ElementType.ROLEMIXIN, rolemixinElement);
-    elementCounters.put(ElementType.ROLEMIXIN, 0);
         
     Mixin mixin = (RefOntoUML.Mixin)createElement(ElementType.MIXIN);   
     ClassElement mixinElement = (ClassElement) ClassElement.getPrototype().clone();
     mixinElement.setClassifier(mixin);
     elementPrototypes.put(ElementType.MIXIN, mixinElement);
-    elementCounters.put(ElementType.MIXIN, 0);
         
     Mode mode = (RefOntoUML.Mode)createElement(ElementType.MODE);   
     ClassElement modeElement = (ClassElement) ClassElement.getPrototype().clone();
     modeElement.setClassifier(mode);
     elementPrototypes.put(ElementType.MODE, modeElement);
-    elementCounters.put(ElementType.MODE, 0);
         
     Relator relator = (RefOntoUML.Relator)createElement(ElementType.RELATOR);   
     ClassElement relatorElement = (ClassElement) ClassElement.getPrototype().clone();
     relatorElement.setClassifier(relator);
     elementPrototypes.put(ElementType.RELATOR, relatorElement);
-    elementCounters.put(ElementType.RELATOR, 0);
         
     DataType datatype = (RefOntoUML.DataType)createElement(ElementType.DATATYPE);
     ClassElement datatypeElement = (ClassElement) ClassElement.getPrototype().clone();
     datatypeElement.setClassifier(datatype);
     datatypeElement.setShowAttributes(true);
     elementPrototypes.put(ElementType.DATATYPE, datatypeElement);
-    elementCounters.put(ElementType.DATATYPE, 0);
   }
 
   public void createPropertiesByDefault(Association association)
@@ -264,7 +249,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     GeneralizationElement generalizationElement = (GeneralizationElement) GeneralizationElement.getPrototype().clone();
     generalizationElement.setRelationship(generalization);
     relationPrototypes.put(RelationType.GENERALIZATION, generalizationElement);
-    relationCounters.put(RelationType.GENERALIZATION, 0);
         
     Characterization characterization = (RefOntoUML.Characterization)createRelationship(RelationType.CHARACTERIZATION);   
     AssociationElement characterizationElement = (AssociationElement) AssociationElement.getPrototype().clone();
@@ -272,7 +256,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     characterizationElement.setAssociationType(RelationType.CHARACTERIZATION);
     characterizationElement.setShowOntoUmlStereotype(true);
     relationPrototypes.put(RelationType.CHARACTERIZATION, characterizationElement);
-    relationCounters.put(RelationType.CHARACTERIZATION, 0);
     createPropertiesByDefault(characterization);
     
     FormalAssociation formalAssociation = (RefOntoUML.FormalAssociation)createRelationship(RelationType.FORMAL);
@@ -281,7 +264,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     formalAssociationElement.setAssociationType(RelationType.FORMAL);
     formalAssociationElement.setShowOntoUmlStereotype(true);
     relationPrototypes.put(RelationType.FORMAL, formalAssociationElement);
-    relationCounters.put(RelationType.FORMAL, 0);
     createPropertiesByDefault(formalAssociation);
           
     MaterialAssociation materialAssociation = (RefOntoUML.MaterialAssociation)createRelationship(RelationType.MATERIAL);    
@@ -290,7 +272,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     materialAssociationElement.setAssociationType(RelationType.MATERIAL);
     materialAssociationElement.setShowOntoUmlStereotype(true);
     relationPrototypes.put(RelationType.MATERIAL, materialAssociationElement);
-    relationCounters.put(RelationType.MATERIAL, 0);
     createPropertiesByDefault(materialAssociation);
     
     Mediation mediation = (RefOntoUML.Mediation)createRelationship(RelationType.MEDIATION);   
@@ -299,7 +280,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     mediationElement.setAssociationType(RelationType.MEDIATION);
     mediationElement.setShowOntoUmlStereotype(true);
     relationPrototypes.put(RelationType.MEDIATION, mediationElement);
-    relationCounters.put(RelationType.MEDIATION, 0);
     createPropertiesByDefault(mediation);
         
     memberOf memberof = (RefOntoUML.memberOf)createRelationship(RelationType.MEMBEROF);   
@@ -307,7 +287,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     memberofElement.setAssociationType(RelationType.MEMBEROF);
     memberofElement.setRelationship(memberof);
     relationPrototypes.put(RelationType.MEMBEROF, memberofElement);
-    relationCounters.put(RelationType.MEMBEROF, 0);
     createPropertiesByDefault(memberof);
     
     subQuantityOf subquantityof = (RefOntoUML.subQuantityOf)createRelationship(RelationType.SUBQUANTITYOF);    
@@ -315,7 +294,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     subquantityofElement.setAssociationType(RelationType.SUBQUANTITYOF);
     subquantityofElement.setRelationship(subquantityof);
     relationPrototypes.put(RelationType.SUBQUANTITYOF, subquantityofElement);
-    relationCounters.put(RelationType.SUBQUANTITYOF, 0);  
     createPropertiesByDefault(subquantityof);    
     
     subCollectionOf subcollectionof = (RefOntoUML.subCollectionOf)createRelationship(RelationType.SUBCOLLECTIONOF);    
@@ -323,7 +301,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     subcollectionofElement.setAssociationType(RelationType.SUBCOLLECTIONOF);
     subcollectionofElement.setRelationship(subcollectionof);
     relationPrototypes.put(RelationType.SUBCOLLECTIONOF, subcollectionofElement);
-    relationCounters.put(RelationType.SUBCOLLECTIONOF, 0);
     createPropertiesByDefault(subcollectionof);     
     
     componentOf componentof = (RefOntoUML.componentOf)createRelationship(RelationType.COMPONENTOF);    
@@ -331,7 +308,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     componentofElement.setAssociationType(RelationType.COMPONENTOF);
     componentofElement.setRelationship(componentof);
     relationPrototypes.put(RelationType.COMPONENTOF, componentofElement);
-    relationCounters.put(RelationType.COMPONENTOF, 0);
     createPropertiesByDefault(componentof); 
     
     Derivation derivation = (RefOntoUML.Derivation)createRelationship(RelationType.DERIVATION); 
@@ -340,7 +316,6 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     derivationeElement.setRelationship(derivation);
     derivationeElement.setIsDashed(true);
     relationPrototypes.put(RelationType.DERIVATION, derivationeElement);
-    relationCounters.put(RelationType.DERIVATION, 0); 
     createPropertiesByDefault(derivation); 
     
     Association datatyperelationship = (RefOntoUML.Association)createRelationship(RelationType.ASSOCIATION);
@@ -348,11 +323,9 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     datatyperelationshipElement.setRelationship(datatyperelationship);
     datatyperelationshipElement.setAssociationType(RelationType.ASSOCIATION);
     relationPrototypes.put(RelationType.ASSOCIATION, datatyperelationshipElement);     
-    relationCounters.put(RelationType.ASSOCIATION, 0);
     createPropertiesByDefault(datatyperelationship); 
     
     relationPrototypes.put(RelationType.NOTE_CONNECTOR, NoteConnection.getPrototype());
-    relationCounters.put(RelationType.NOTE_CONNECTOR, 0);  
   }
   
   /**
@@ -378,7 +351,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 	  type.setVisibility(VisibilityKind.PUBLIC);	  	
 	  return type;			  
   }
-
+    
   /**
    * Create an Element with the given stereotype that contains all the features of the given Type. 
    */
@@ -445,12 +418,15 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   }
   
   public String nextElementCount(ElementType elementType)
-  {
-	  int count=0;
-	  if (elementCounters.get(elementType)!=null) count = elementCounters.get(elementType);
-	  elementCounters.put(elementType, count);
-	  count += 1;	  
-	  return Integer.toString(count);
+  {	  
+	  if (elementCounters.get(elementType)!=null) {
+		  int count = elementCounters.get(elementType);
+		  elementCounters.put(elementType, count+1);
+		  return Integer.toString(count+1);
+	  }else{
+		  elementCounters.put(elementType, 0);
+		  return "";
+	  }
   }
   
   /**
@@ -565,11 +541,14 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   
   public String nextRelationCount(RelationType relationType)
   {	  
-	  int count = 0;
-	  if(relationCounters.get(relationType)!=null) count=relationCounters.get(relationType);	  
-	  relationCounters.put(relationType, count);
-	  count += 1;
-	  return Integer.toString(count);
+	  if (relationCounters.get(relationType)!=null) {
+		  int count = relationCounters.get(relationType);
+		  relationCounters.put(relationType, count+1);
+		  return Integer.toString(count+1);
+	  }else{
+		  relationCounters.put(relationType, 0);
+		  return "";
+	  }	  
   }
   
   /**

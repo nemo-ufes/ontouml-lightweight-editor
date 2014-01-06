@@ -44,6 +44,7 @@ public class ParsingElement {
 		type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
 	    type = type.replaceAll("Impl","");
 	    type = Normalizer.normalize(type, Normalizer.Form.NFD);	
+	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
 	}
 
 	/** Get OntoUML Element. */

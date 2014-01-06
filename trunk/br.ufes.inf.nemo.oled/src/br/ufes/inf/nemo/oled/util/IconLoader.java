@@ -104,6 +104,7 @@ public final class IconLoader {
 		REMOVE,
 		GREEN_LIGHT,
 		RED_LIGHT,
+		EXCLUDE,
 		GREY_LIGHT,
 		ARROW_UP,
 		COPYRIGHTS,		
@@ -180,6 +181,7 @@ public final class IconLoader {
 		urlMap.put(IconType.COPY, "resources/br/ufes/inf/nemo/oled/ui/copy.png");
 		urlMap.put(IconType.PASTE, "resources/br/ufes/inf/nemo/oled/ui/paste.png");
 		urlMap.put(IconType.DELETE, "resources/br/ufes/inf/nemo/oled/ui/delete.png");
+		urlMap.put(IconType.EXCLUDE, "resources/br/ufes/inf/nemo/oled/ui/exclude.png");
 		urlMap.put(IconType.UNDO, "resources/br/ufes/inf/nemo/oled/ui/undo.png");
 		urlMap.put(IconType.REDO, "resources/br/ufes/inf/nemo/oled/ui/redo.png");
 		urlMap.put(IconType.ABOUT, "resources/br/ufes/inf/nemo/oled/ui/about.png");

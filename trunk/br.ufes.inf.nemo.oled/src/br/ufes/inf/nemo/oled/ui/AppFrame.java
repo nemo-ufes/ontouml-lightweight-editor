@@ -252,6 +252,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		toolArea.add(toolManager.getPalleteAccordion(), JSplitPane.LEFT);
 		toolArea.add(diagramManager, JSplitPane.RIGHT);
 		toolArea.setDividerLocation(0.0d);
+		toolArea.setResizeWeight(0);
 		
 		getContentPane().add(browserArea, BorderLayout.CENTER);
 		
@@ -260,9 +261,14 @@ public class AppFrame extends JFrame implements AppCommandListener {
         
 		//to end...
 		diagramManager.addStartPanel();		
-		editorArea.setDividerLocation(0);
+		editorArea.setDividerLocation(0.0d);
 	}
 
+	public void showToolBox()
+	{
+		toolArea.setDividerLocation(0.22d);
+	}
+	
 	/**
 	 * Adds the status bar.
 	 * */
@@ -315,11 +321,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
 		}
-	}
-
-	public void showToolBox()
-	{
-		toolArea.setDividerLocation(0.13d);
 	}
 	
 	public void hideToolBox()

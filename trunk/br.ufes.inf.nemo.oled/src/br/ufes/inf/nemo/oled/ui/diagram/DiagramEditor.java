@@ -313,9 +313,27 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			/** {@inheritDoc} */
 			public void actionPerformed(ActionEvent e) { cancelEditing(); }
 		});
-				
+
+		// install Erase KeyBinding
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DELETE"),"excludeSelection");		
+		getActionMap().put("excludeSelection", new AbstractAction() {
+
+			private static final long serialVersionUID = -6375878624042384546L;
+			
+			/** {@inheritDoc} */
+			public void actionPerformed(ActionEvent e) { excludeSelection(); }
+		});				
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, InputEvent.META_MASK),"excludeSelection");
+		getActionMap().put("excludeSelection", new AbstractAction() {
+					
+			private static final long serialVersionUID = -6375878624042384546L;
+		
+			/** {@inheritDoc} */
+			public void actionPerformed(ActionEvent e) { excludeSelection(); }
+		});
+		
 		// install Delete KeyBinding
-		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DELETE"),"deleteSelection");		
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, ActionEvent.CTRL_MASK),"deleteSelection");		
 		getActionMap().put("deleteSelection", new AbstractAction() {
 
 			private static final long serialVersionUID = -6375878624042384546L;
@@ -323,7 +341,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			/** {@inheritDoc} */
 			public void actionPerformed(ActionEvent e) { deleteSelection(); }
 		});				
-		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, InputEvent.META_MASK),"deleteSelection");
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, ActionEvent.CTRL_MASK),"deleteSelection");
 		getActionMap().put("deleteSelection", new AbstractAction() {
 					
 			private static final long serialVersionUID = -6375878624042384546L;
@@ -349,11 +367,20 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	}
 
 	/**
-	 * Removes the current selection.
+	 * Removes the elements selected. From the diagram and the model.
 	 */
 	public void deleteSelection() {
+		//TODO: Call a dialog before.
 		Collection<DiagramElement> diagramElementsList = getSelectedElements();
 		execute(new DeleteElementCommand(this, ModelHelper.getElements(diagramElementsList), diagram.getProject(),true,true));
+	}
+	
+	/**
+	 * Removes the elements selected only from the diagram
+	 */
+	public void excludeSelection() {
+		Collection<DiagramElement> diagramElementsList = getSelectedElements();
+		execute(new DeleteElementCommand(this, ModelHelper.getElements(diagramElementsList), diagram.getProject(),false,true));
 	}
 	
 	/**
