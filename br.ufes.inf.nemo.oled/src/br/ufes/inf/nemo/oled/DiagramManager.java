@@ -34,8 +34,6 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -58,7 +56,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
-import br.ufes.inf.nemo.oled.antipattern.old.AntiPatternListPane;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
@@ -72,10 +69,10 @@ import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorCommandDispatcher;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.Editor;
+import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.InstanceVisualizer;
 import br.ufes.inf.nemo.oled.ui.StartPanel;
 import br.ufes.inf.nemo.oled.ui.TextEditor;
-import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
 import br.ufes.inf.nemo.oled.ui.commands.PngExporter;
 import br.ufes.inf.nemo.oled.ui.commands.ProjectReader;
@@ -1265,32 +1262,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			frame.showErrorMessageDialog("Open Alloy Analyzer",e.getLocalizedMessage());					
 			e.printStackTrace();
 		}			
-	}
-
-	/**
-	 * Open AntiPattern Manager
-	 */
-	public void openAntiPatternManager() 
-	{
-		SwingUtilities.invokeLater(new Runnable() {
-			/**
-			 * {@inheritDoc}
-			 */
-			public void run() {
-				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());	
-					
-					AntiPatternListPane antipatternApp = new AntiPatternListPane(ProjectBrowser.getAntiPatternListFor(getCurrentProject()),frame);
-					
-					antipatternApp.setAntiPatternListModel(ProjectBrowser.getAntiPatternListFor(getCurrentProject()));
-					antipatternApp.setVisible(true);
-					antipatternApp.setLocationRelativeTo(frame);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
-
 	}
 
 	/**

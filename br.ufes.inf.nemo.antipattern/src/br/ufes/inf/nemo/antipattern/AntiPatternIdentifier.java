@@ -18,6 +18,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class AntiPatternIdentifier {
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T extends EObject, S extends EObject> Map<T,ArrayList<S>> runOCLQuery (OntoUMLParser parser, 
 			String oclQuery, java.lang.Class<T> queryReturnType1, java.lang.Class<S> queryReturnType2, String tupleField1, String tupleField2){
 		
@@ -62,6 +63,7 @@ public class AntiPatternIdentifier {
 		return queryResult;
 	}
 		
+	@SuppressWarnings("unchecked")
 	public static <T extends EObject> ArrayList<T> runOCLQuery (OntoUMLParser parser, String oclQuery, java.lang.Class<T> queryReturnType){
 		ArrayList<T> queryResult = new ArrayList<T>();
 		
@@ -92,6 +94,7 @@ public class AntiPatternIdentifier {
 		return queryResult;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T extends EObject, S extends EObject> ArrayList<SimpleTuple<T,S>> runOCLQuerySimpleTuple (OntoUMLParser parser, 
 			String oclQuery, java.lang.Class<T> queryReturnType1, java.lang.Class<S> queryReturnType2, String tupleField1, String tupleField2){
 		
