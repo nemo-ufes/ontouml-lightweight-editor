@@ -87,7 +87,6 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 				oprName.equals("symmetricDifference")|
 				oprName.equals("product")|
 				oprName.equals("union")|
-				oprName.equals("and")|
 				oprName.equals("or")|
 				oprName.equals("xor")|
 				oprName.equals("oclIsUndefined")|
@@ -101,6 +100,13 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies)  throws Ocl2Owl_SwrlException{
 		//since the factory is created according to the rule fragment, the fragment is got as a operation fragment
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
+		
+		Operation operation = operationCallExpImpl.getReferredOperation();
+		String oprName = operation.getName();
+		if(oprName.equals("and") && !this.isImpliesOperation() && org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype)){
+			String rule = getStrRule(this.m_NamedElementImpl);
+			throw new UnexpectedOperator(oprName, ctStereotype, rule);
+		}
 		
 		//the source will be considered as on the left side of the operator implies if the actual operator is implies or if the owner is on the left side 
 		Boolean sourceIsLeftSideOfImplies = false;
