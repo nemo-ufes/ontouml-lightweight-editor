@@ -165,7 +165,7 @@ public class OCL2OWL_SWRL {
 			//since the string "--@" starts at the blockBegin, the tag name will end at the occurrence of '\n'
 			int endOfTag = oclRules.indexOf("\n", blockBegin);
 			int iTag = oclRules.indexOf("--@", blockBegin);
-			if(iTag >= endOfTag || iTag >= blockEnd){endOfTag=0;}
+			if(iTag >= endOfTag || iTag >= blockEnd || iTag < 0){endOfTag=0;}
 			//get the tag and replace all unexpected chars
 			String tag = oclRules.substring(blockBegin, endOfTag);
 			tag = tag.replace("--@", "");
