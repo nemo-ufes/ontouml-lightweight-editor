@@ -2,9 +2,8 @@ package br.ufes.inf.nemo.oled.antipattern;
 
 import java.util.ArrayList;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -32,11 +31,59 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
+import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
+import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
+import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
+import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
+import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
+import br.ufes.inf.nemo.antipattern.depphase.DepPhaseOccurrence;
+import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
+import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
+import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
+import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
+import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
+import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
+import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
+import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
+import br.ufes.inf.nemo.antipattern.imppart.ImpPartAntipattern;
+import br.ufes.inf.nemo.antipattern.imppart.ImpPartOccurrence;
+import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
+import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
+import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
+import br.ufes.inf.nemo.antipattern.mixrig.MixRigOccurrence;
+import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
+import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
+import br.ufes.inf.nemo.antipattern.multsort.MultSortAntipattern;
+import br.ufes.inf.nemo.antipattern.multsort.MultSortOccurrence;
+import br.ufes.inf.nemo.antipattern.partover.PartOverAntipattern;
+import br.ufes.inf.nemo.antipattern.partover.PartOverOccurrence;
+import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
+import br.ufes.inf.nemo.antipattern.relcomp.RelCompOccurrence;
+import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
+import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
+import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
+import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
+import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalAntipattern;
+import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
+import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
+import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
+import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
+import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard;
+import br.ufes.inf.nemo.oled.model.AntiPatternList;
 
-public class AntiPatternResultDialog extends TitleAreaDialog {
+/**
+ * @author Tiago Sales
+ * @author John Guerson
+ *
+ */
+public class AntiPatternResultDialog extends Dialog {
 
 	private ArrayList<AntipatternOccurrence> result;
 	private TableViewer viewer;
@@ -48,15 +95,16 @@ public class AntiPatternResultDialog extends TitleAreaDialog {
 	 */
 	public AntiPatternResultDialog(Shell parentShell, ArrayList<AntipatternOccurrence> result) 
 	{
-		super(parentShell);
-		this.result = result;				
+		super(parentShell);		
+		this.result = result;		
+		setDefaultImage(new Image(Display.getDefault(),AntiPatternResultDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/antipattern.png")));
 	}
 	
 	@Override
 	public void create() {
 	    super.create();
-	    setTitle("Result: List of Occurrences");
-	    setMessage("This is the result list of antipatterns found.", IMessageProvider.INFORMATION);
+	    setShellStyle(SWT.TITLE);
+	    getShell().setText("Anti-Pattern Occurrences");	    
 	}
 
 	/**
@@ -67,10 +115,35 @@ public class AntiPatternResultDialog extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) 
 	{
 		Composite container = (Composite) super.createDialogArea(parent);		
+		
 		createPartControl(container);		
+		
 		return container;
 	}
 
+	public static void openDialog(final AntiPatternList apList)
+	{
+			
+		if (apList!=null &&  !apList.getAll().isEmpty())
+		{					
+	    	Display display = Display.getDefault();
+			Shell shell = display.getActiveShell();										
+			AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(shell,apList.getAll());					
+			resultDIalog.create();
+			resultDIalog.open();
+		}
+	}
+	
+	@Override
+	protected void okPressed() {	
+		super.okPressed();
+	}
+	
+	@Override
+	protected void cancelPressed() {	
+		super.cancelPressed();
+	}
+	
 	/**
 	 * Create contents of the button bar.
 	 * @param parent
@@ -88,7 +161,7 @@ public class AntiPatternResultDialog extends TitleAreaDialog {
 	@Override
 	protected Point getInitialSize() 
 	{
-		return new Point(450, 300);
+		return new Point(650, 450);
 	}
 	
 	public void createPartControl(Composite parent) 
@@ -97,7 +170,7 @@ public class AntiPatternResultDialog extends TitleAreaDialog {
 	    parent.setLayout(layout);
 	    
 	    Label searchLabel = new Label(parent, SWT.NONE);
-	    searchLabel.setText("Search: ");
+	    searchLabel.setText("Find: ");
 	    
 	    final Text searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
 	    searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
@@ -145,33 +218,23 @@ public class AntiPatternResultDialog extends TitleAreaDialog {
 	    TableItem[] items = table.getItems();
 	    for (int i = 0; i < items.length; i++) 
 	    {	     
-	      TableEditor editor = new TableEditor(table);	      
+	      TableEditor editor = new TableEditor(table);
+	      
 	      Button button = new Button(table, SWT.NONE);	   
-	      button.setImage(new Image(getShell().getDisplay(),AntiPatternResultDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/fix.png")));
-	      
-	      final AntipatternOccurrence apOccur = result.get(i);
-	      
-	      Listener listener = new Listener() {
-	        public void handleEvent(Event event) {	      
-	        	Display.getDefault().syncExec(new Runnable() {
-				    public void run() {
-				    	
-			        	if (apOccur instanceof RelRigOccurrence) {	        		
-			        		WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));
-			        		wizardDialog.open();
-			        	}
-				    }
-	        	});
-	        }
-	      };
-
-	      button.addListener(SWT.Selection,listener);
-
+	      button.setImage(new Image(getShell().getDisplay(),AntiPatternResultDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/fix.png")));	      
+	      final AntipatternOccurrence apOccur = result.get(i);	      
+	      button.addListener(SWT.Selection,new Listener() {
+		        public void handleEvent(Event event) {
+		        	showWizard(apOccur);
+		        }
+		      }
+	      );
 	      button.pack();
+	      
 	      editor.minimumWidth = button.getSize().x;
-	      editor.horizontalAlignment = SWT.LEFT;
+	      editor.horizontalAlignment = SWT.CENTER;
 	      editor.setEditor(button, items[i], 3);
-	    }
+	    }	    
 	  }
 
 	  public TableViewer getViewer() { return viewer; }
@@ -181,8 +244,8 @@ public class AntiPatternResultDialog extends TitleAreaDialog {
 	   */
 	  private void createColumns(final Composite parent, final TableViewer viewer) 
 	  {
-	    String[] titles = { "Name", "Type", "Status", "Analyze?" };
-	    int[] bounds = { 100, 100, 100, 100 };
+	    String[] titles = { "Name", "Type", "Status", "" };
+	    int[] bounds = { 250, 100, 100, 100 };
 
 	    // First column is for a short description of the antipattern
 	    TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
@@ -192,6 +255,10 @@ public class AntiPatternResultDialog extends TitleAreaDialog {
 	      public String getText(Object element) {
 	    	return ((AntipatternOccurrence)element).getShortName();
 	      }
+	      @Override
+	    	public Image getImage(Object element) {
+	    	  	return super.getImage(element);
+	    	}
 	    });
 
 	    // Sets the type of the antipattern
@@ -199,10 +266,30 @@ public class AntiPatternResultDialog extends TitleAreaDialog {
 	    
 	    col.setLabelProvider(new ColumnLabelProvider() {
 		@Override
-	      public String getText(Object element) {
+	      public String getText(Object element) {	    	  
+	    	  if  (element instanceof AssCycOccurrence) return AssCycAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof BinOverOccurrence) return BinOverAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof DepPhaseOccurrence) return DepPhaseAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof FreeRoleOccurrence) return FreeRoleAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof GSRigOccurrence) return GSRigAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof HetCollOccurrence) return HetCollAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof HomoFuncOccurrence) return HomoFuncAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof ImpAbsOccurrence) return ImpAbsAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof ImpPartOccurrence) return ImpPartAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof MixIdenOccurrence) return MixIdenAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof MixRigOccurrence) return MixRigAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof MultiDepOccurrence) return MultiDepAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof MultSortOccurrence) return MultSortAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof PartOverOccurrence) return PartOverAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof RelCompOccurrence) return RelCompAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof RelOverOccurrence) return RelOverAntipattern.getAntipatternInfo().getAcronym();
 	    	  if  (element instanceof RelRigOccurrence) return RelRigAntipattern.getAntipatternInfo().getAcronym();
-	    	  return "";
-	    	  //return ((AntipatternOccurrence)element).getAntiPatternType().getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof RelSpecOccurrence) return RelSpecAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof RepRelOccurrence) return RepRelAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof UndefFormalOccurrence) return UndefFormalAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof UndefPhaseOccurrence) return UndefPhaseAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof WholeOverOccurrence) return WholeOverAntipattern.getAntipatternInfo().getAcronym();
+	    	  return "<error>";
 	      }
 	    });
 
@@ -212,7 +299,9 @@ public class AntiPatternResultDialog extends TitleAreaDialog {
 	    col.setLabelProvider(new ColumnLabelProvider() {
 	      @Override
 	      public String getText(Object element) {
-	        return new Boolean(((AntipatternOccurrence) element).isFixed()).toString();
+	        String value = new Boolean(((AntipatternOccurrence) element).isFixed()).toString();
+	        if (value.equals("true")) return "Fixed";
+	        else return "Open";
 	      }
 	    });
 	    
@@ -227,16 +316,34 @@ public class AntiPatternResultDialog extends TitleAreaDialog {
 	    });
 	  }
 
-	  private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) 
-	  {
-	    final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
-	    final TableColumn column = viewerColumn.getColumn();
-	    column.setText(title);
-	    column.setWidth(bound);
-	    column.setResizable(true);
-	    column.setMoveable(true);
-	    return viewerColumn;
-	  }
+	  @Override
+	protected boolean isResizable() {	
+		return true;
+	}
+	  
+	private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) 
+	{
+	  final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
+	  final TableColumn column = viewerColumn.getColumn();
+	  column.setText(title);
+	  column.setWidth(bound);
+	  column.setResizable(true);
+	  column.setMoveable(true);
+	  return viewerColumn;
+	}
+	
+	public void setFocus() {  viewer.getControl().setFocus();  }
 
-	  public void setFocus() {  viewer.getControl().setFocus();  }
+	public void showWizard(final AntipatternOccurrence apOccur)
+	{
+    	Display.getDefault().syncExec(new Runnable() {
+		    public void run() {
+		    	
+	        	if (apOccur instanceof RelRigOccurrence) {	        		
+	        		WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));
+	        		wizardDialog.open();
+	        	}
+		    }
+    	});		
+	}
 }

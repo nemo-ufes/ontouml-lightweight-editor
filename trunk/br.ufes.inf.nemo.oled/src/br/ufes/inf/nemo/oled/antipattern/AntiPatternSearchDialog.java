@@ -27,9 +27,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
@@ -69,7 +66,6 @@ public class AntiPatternSearchDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	
 	private Thread searchThread;
-	private Thread resultThread;
 	
 	private Thread AssCycThread;
 	private Thread BinOverThread;
@@ -945,6 +941,8 @@ public class AntiPatternSearchDialog extends JDialog {
 		
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			
+		if (searchThread!=null) searchThread.interrupt();
+		
 		searchThread= new Thread(new Runnable() {			
 			@Override
 			public void run() {
@@ -1476,15 +1474,14 @@ public class AntiPatternSearchDialog extends JDialog {
 
 				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
 				
-				ProjectBrowser.refreshTree(frame.getDiagramManager().getCurrentProject());
+				ProjectBrowser pb = ProjectBrowser.getProjectBrowserFor(frame, frame.getDiagramManager().getCurrentProject());
+				pb.getTree().updateUI();
 				
 				btnShowResult.setEnabled(true);		
 			}
 		});		
 		
 		searchThread.start();		
-		
-		searchThread.join();
 		
 		}catch(Exception e){
 			JOptionPane.showMessageDialog(this,e.getMessage(),"Anti-Pattern Search",JOptionPane.ERROR_MESSAGE);
@@ -1497,35 +1494,7 @@ public class AntiPatternSearchDialog extends JDialog {
 	 */
 	public void showResult()
 	{	
-		try {
-		
-			resultThread = new Thread (new Runnable() {					
-			@Override
-			public void run() {
-		
-				frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				
-				Display.getDefault().syncExec(new Runnable() {
-				    public void run() 
-				    {
-						final AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());				
-						if (apList!=null && !apList.getAll().isEmpty()){
-							AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(new Shell(),	apList.getAll());					
-							resultDIalog.create();
-							resultDIalog.open();
-						}
-				    }
-				});
-				
-				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			}
-			});
-		
-			resultThread.start();		
-			resultThread.join();
-			
-		} catch (InterruptedException e) {		
-			e.printStackTrace();
-		}		
+		AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+		AntiPatternResultDialog.openDialog(apList);
 	}
 }

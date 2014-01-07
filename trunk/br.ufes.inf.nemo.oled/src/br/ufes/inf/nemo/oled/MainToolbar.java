@@ -62,7 +62,7 @@ public class MainToolbar implements ActionListener {
 		createButton("copy");
 		createButton("paste");
 		toolbar.addSeparator();		
-		createButton("erase");
+		createButton("exclude");
 		createButton("delete");
 		toolbar.addSeparator();
 		createButton("undo");
@@ -86,7 +86,8 @@ public class MainToolbar implements ActionListener {
 		enableButton("COPY", false);
 		enableButton("PASTE", false);
 		enableButton("DELETE", true);
-	
+		enableButton("EXCLUDE", true);
+		
 		toolbar.setFloatable(false);
 		toolbar.setMargin(new Insets(5,5,5,5));
 	}
