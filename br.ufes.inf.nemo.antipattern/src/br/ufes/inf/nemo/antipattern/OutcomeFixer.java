@@ -169,24 +169,38 @@ public class OutcomeFixer {
 	/** Change a class stereotype */
 	public Fix changeClassStereotype(EObject element, ClassStereotype newStereo)
 	{
-		Fix fixes = new Fix();
-		
+		Fix fixes = new Fix();		
+		// create new element
 		RefOntoUML.PackageableElement newElement = createClass(newStereo);		
-		copyMetaAttributes(element,newElement); // copy name, isAbstract, isLeaf and visibility
-		
-		Fix references = changeModelReferences(element,newElement);		
-		fixes.includeAllModified(references.getModified());
-		
-		EcoreUtil.delete(element);
-		fixes.includeDeleted(element);
-		
+		copyMetaAttributes(element,newElement);		
+		// the same container
+		element.eContainer().eContents().add(newElement); 
+		fixes.includeModified(element.eContainer());		
+		// change references
+		Fix references = changeModelReferences(element,newElement); 		
+		fixes.includeAllModified(references.getModified());		
+		// delete element
+		EcoreUtil.delete(element); 
+		fixes.includeDeleted(element);		
 		return fixes;
 	}
 
-	/** in construction... */
+	/** Change a relationship stereotype [IN CONSTRUCTION] */
 	public Fix changeRelationStereotype(EObject relationship, RelationStereotype newStereo)
 	{
-		Fix fixex = new Fix();
+		Fix fixes = new Fix();		
+		// create new relationship
+		RefOntoUML.Relationship newRelationship = createRelationship(newStereo);		
+		copyMetaAttributes(relationship,newRelationship); //FIXME - copy the properties too
+		// the same container
+		relationship.eContainer().eContents().add(newRelationship); 
+		fixes.includeModified(relationship.eContainer());		
+		// change references
+		Fix references = changeModelReferences(relationship,newRelationship); 		
+		fixes.includeAllModified(references.getModified());		
+		// delete relationship
+		EcoreUtil.delete(relationship); 
+		fixes.includeDeleted(relationship);
 		return fixes;
 	}
 }
