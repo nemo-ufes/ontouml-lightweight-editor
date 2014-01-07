@@ -113,7 +113,8 @@ public class Factory {
 		if(m_NamedElementImpl == null){
 			return "";
 		}
-		Element owner = m_NamedElementImpl.getOwner();
+		//Element owner = m_NamedElementImpl.getOwner();
+		Element owner = m_NamedElementImpl;
 		while(!owner.getClass().equals(ExpressionInOCLImpl.class)){
 			owner = owner.getOwner();
 		}

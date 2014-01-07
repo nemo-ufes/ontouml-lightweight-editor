@@ -40,8 +40,11 @@ public class LetExpImplFactory extends OCLExpressionImplFactory {
 		
 		//and a factory is created according to the variable class 
 		this.variableFactory = (VariableImplFactory) Factory.constructor(variable, this.m_NamedElementImpl);
+		
+		//the let is always on the left side of the operator implies
+		Boolean variableLeftSideOfImplies = true;
 		//the variable is solved and the and the returned arguments from the variableSolveMethod above are returned 
-		ArrayList<SWRLDArgument> retArgsX = this.variableFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, leftSideOfImplies); 
+		ArrayList<SWRLDArgument> retArgsX = this.variableFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, variableLeftSideOfImplies); 
 		
 		//and a factory is created according to the IN class 
 		this.inFactory = (OCLExpressionImplFactory) Factory.constructor(in, this.m_NamedElementImpl);

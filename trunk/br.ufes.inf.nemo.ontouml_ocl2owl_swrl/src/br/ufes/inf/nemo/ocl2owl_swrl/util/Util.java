@@ -47,7 +47,7 @@ public class Util {
 			varName += ".";
 			varName += ((PropertyCallExpImpl) expression).getReferredProperty().getName();
 		}else if(expression.getClass().equals(VariableExpImpl.class)){
-			//varName += ((VariableExpImpl) expression).getReferredVariable().getType().getName();
+			varName = ((VariableExpImpl) expression).getName();
 		}else if(expression.getClass().equals(VariableImpl.class)){
 			varName += ((VariableImpl) expression).getType().getName();
 		}else if(expression.getClass().equals(SWRLLiteralArgumentImpl.class)){
