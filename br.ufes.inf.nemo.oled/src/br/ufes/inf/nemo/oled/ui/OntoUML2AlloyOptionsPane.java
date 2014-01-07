@@ -19,6 +19,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 
 /**

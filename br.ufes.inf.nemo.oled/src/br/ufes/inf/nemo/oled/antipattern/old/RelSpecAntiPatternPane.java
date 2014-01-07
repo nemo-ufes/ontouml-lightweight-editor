@@ -18,7 +18,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
-import br.ufes.inf.nemo.oled.ui.AppFrame;
+import br.ufes.inf.nemo.oled.AppFrame;
 
 /**
  * @author John Guerson

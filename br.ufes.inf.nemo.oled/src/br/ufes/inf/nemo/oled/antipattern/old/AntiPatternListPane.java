@@ -23,8 +23,8 @@ import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
 import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
-import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 
 /**

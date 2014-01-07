@@ -38,7 +38,7 @@ import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.error.ErrorInfo;
 
 import RefOntoUML.Model;
-import br.ufes.inf.nemo.oled.ui.DiagramManager;
+import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.xmi2ontouml.Creator;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefConstraint;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefModel;

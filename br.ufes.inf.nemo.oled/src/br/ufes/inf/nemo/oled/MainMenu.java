@@ -17,7 +17,7 @@
  * along with TinyUML; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 
 public class PropertyTableCellEditor extends AbstractCellEditor implements TableCellEditor

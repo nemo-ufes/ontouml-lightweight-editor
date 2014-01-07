@@ -53,6 +53,8 @@ import javax.swing.undo.UndoManager;
 
 import org.eclipse.emf.ecore.EObject;
 
+import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
@@ -75,9 +77,7 @@ import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.modellingassistant.core.LogAssistant;
 import br.ufes.inf.nemo.oled.modellingassistant.core.ModellingAssistant;
-import br.ufes.inf.nemo.oled.ui.AppFrame;
 import br.ufes.inf.nemo.oled.ui.BaseEditor;
-import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.ConvertConnectionTypeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;

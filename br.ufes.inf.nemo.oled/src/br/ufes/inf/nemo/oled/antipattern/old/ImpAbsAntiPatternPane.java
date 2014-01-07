@@ -22,7 +22,7 @@ import javax.swing.border.TitledBorder;
 
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
-import br.ufes.inf.nemo.oled.ui.AppFrame;
+import br.ufes.inf.nemo.oled.AppFrame;
 
 /**
  * @author John Guerson

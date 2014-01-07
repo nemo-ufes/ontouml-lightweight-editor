@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Timer;
@@ -16,6 +16,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
+
+import br.ufes.inf.nemo.oled.ui.StatusListener;
 
 
 public class StatusBar extends JPanel implements StatusListener{

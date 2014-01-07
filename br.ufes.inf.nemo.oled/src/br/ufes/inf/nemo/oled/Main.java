@@ -28,7 +28,6 @@ import java.util.Locale;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 /*
  * Features TO-DO

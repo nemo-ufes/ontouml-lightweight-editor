@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
-import br.ufes.inf.nemo.oled.ui.AppFrame;
+import br.ufes.inf.nemo.oled.AppFrame;
 
 
 public class AboutDialog extends JDialog {

@@ -1,6 +1,24 @@
-package br.ufes.inf.nemo.oled.ui;
+/**
+ * Copyright 2007 Wei-ju Wu
+ *
+ * This file is part of TinyUML.
+ *
+ * TinyUML is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * TinyUML is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TinyUML; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+package br.ufes.inf.nemo.oled;
 
-import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,70 +28,69 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
-import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 
-public class SecondaryToolbar implements ActionListener {
-	
+/**
+ * This class manages and creates the application's main toolbar.
+ *
+ * @author Wei-ju Wu
+ * @version 1.0
+ */
+public class MainToolbar implements ActionListener {
+
 	JToolBar toolbar = new JToolBar();
-	private List<AppCommandListener> listeners = new ArrayList<AppCommandListener>();
+	private List<AppCommandListener> listeners =
+		new ArrayList<AppCommandListener>();
 	private Map<String, JButton> buttonMap = new HashMap<String, JButton>();
-	final JTextField findField;
-	@SuppressWarnings("unused")
-	private AppFrame frame;
-	
-	public String getText()
-	{
-		return findField.getText();
-	}
-	
-	public SecondaryToolbar(final AppFrame frame)
-	{
-		this.frame = frame;
+	private JButton save;
+
+	/**
+	 * Constructor.
+	 */
+	public MainToolbar() {
 		
+		createButton("new");
+		//createButton("newdiagram");
+		createButton("open");
+		save = createButton("save");
 		toolbar.addSeparator();
+		createButton("cut");
+		createButton("copy");
+		createButton("paste");
+		toolbar.addSeparator();		
+		createButton("erase");
+		createButton("delete");
+		toolbar.addSeparator();
+		createButton("undo");
+		createButton("redo");
+		toolbar.addSeparator();
+		createButton("warning");
+		createButton("error");
+		toolbar.addSeparator();
+		createButton("verify");
+		toolbar.addSeparator();		
+		createButton("antipattern");
+		toolbar.addSeparator();		
+		createButton("generatealloy");
+		createButton("generateowlsettings");
+		createButton("generatesbvr");
+		createButton("generatetext");
 		
-		findField = new JTextField();
-		findField.setPreferredSize(new Dimension(250,22));
-		//toolbar.add(Box.createHorizontalStrut(50));
-		//toolbar.add(Box.createHorizontalStrut(7));
-		toolbar.add(findField);		
-		toolbar.setMargin(new Insets(5,5,5,5));
-		toolbar.setFloatable(false);
-		//toolbar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);  
-		//toolbar.add(Box.createHorizontalStrut(7));		
-		
-		findField.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e)
-            {
-            	frame.getDiagramManager().find();
-            }
-		});
-		
-		findField.getDocument().addDocumentListener(new DocumentListener() {			
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				frame.getDiagramManager().find();
-			}
-			
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				frame.getDiagramManager().find();
-			}
-			
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				
-			}
-		});
-	}
+		enableButton("UNDO", false);
+		enableButton("REDO", false);
+		enableButton("CUT", false);
+		enableButton("COPY", false);
+		enableButton("PASTE", false);
+		enableButton("DELETE", true);
 	
+		toolbar.setFloatable(false);
+		toolbar.setMargin(new Insets(5,5,5,5));
+	}
+
 	/**
 	 * Returns the toolbar.
 	 * @return the toolbar
@@ -87,13 +104,17 @@ public class SecondaryToolbar implements ActionListener {
 	public void addCommandListener(AppCommandListener l) {
 		listeners.add(l);
 	}
+
+	public void enableSaveButton(boolean value)
+	{
+		save.setEnabled(value);
+	}
 	
 	/**
 	 * Creates the button with the specified name.
 	 * @param name the resource name
 	 * @return the button
 	 */
-	@SuppressWarnings("unused")
 	private JButton createButton(String name) {
 		String prefix = "maintoolbar." + name;
 		JButton button = new JButton(

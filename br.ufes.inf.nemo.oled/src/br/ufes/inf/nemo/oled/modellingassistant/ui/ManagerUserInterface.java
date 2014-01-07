@@ -9,8 +9,8 @@ import javax.swing.JPanel;
 import RefOntoUML.NamedElement;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.modellingassistant.core.ManagerDesignPatter;
-import br.ufes.inf.nemo.oled.ui.AppFrame;
 
 public class ManagerUserInterface {
 	private static MainFrame mainFrame;
