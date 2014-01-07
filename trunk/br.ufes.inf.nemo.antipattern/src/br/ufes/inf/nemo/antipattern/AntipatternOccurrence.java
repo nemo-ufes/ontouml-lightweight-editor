@@ -18,9 +18,9 @@ public abstract class AntipatternOccurrence {
 		
 		this.antipattern = antipattern;
 		this.parser = antipattern.parser;
-		this.isFixed = false;
-		
+		this.isFixed = false;		
 	}
+	
 	/**
 	 * Sets the elements to be transformed to alloy on the provided parser
 	 * 
@@ -30,13 +30,6 @@ public abstract class AntipatternOccurrence {
 	
 	public abstract String getShortName();
 	
-	public boolean isFixed(){
-		return isFixed;
-	}
-	
-	
-	
-	
-	
+	public boolean isFixed(){ return isFixed; }
 	
 }
