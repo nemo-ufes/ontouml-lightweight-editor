@@ -102,7 +102,8 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		//since the factory is created according to the rule fragment, the fragment is got as a property call fragment
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
 		//then, the source of the property call is got
-		OCLExpressionImpl source = (OCLExpressionImpl) propertyCallExpImpl.getSource();
+		//OCLExpressionImpl source = (OCLExpressionImpl) propertyCallExpImpl.getSource();
+		
 		//then, the referred property of the property call is got
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
 		
@@ -135,9 +136,9 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		//verifing the correct order of the OWL Object Properties arguments
 		if(assocEndName.equals(assocEnd0Name)){
 			nameVarX = Util.generateVarName(referredProperty, referredArgument);
-			nameVarY = Util.generateVarName(source, referredArgument);
+			nameVarY = Util.generateVarName(null, referredArgument);
 		}else{
-			nameVarX = Util.generateVarName(source, referredArgument);
+			nameVarX = Util.generateVarName(null, referredArgument);
 			nameVarY = Util.generateVarName(referredProperty, referredArgument);
 		}
 		if(repeatNumber>1){

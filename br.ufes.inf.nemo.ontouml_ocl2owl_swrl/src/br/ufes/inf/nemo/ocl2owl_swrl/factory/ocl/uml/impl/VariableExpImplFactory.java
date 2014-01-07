@@ -29,8 +29,17 @@ public class VariableExpImplFactory extends OCLExpressionImplFactory {
 	public ArrayList<SWRLDArgument> solve(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber, Boolean leftSideOfImplies) {
 		//since the factory is created according to the rule fragment, the fragment is got as a variable exp fragment
 		VariableExpImpl variableExpImpl = (VariableExpImpl) this.m_NamedElementImpl;
+		
+		Object type;
+		if(variableExpImpl.getName().equals("self")){
+			type = variableExpImpl.getReferredVariable().getType();
+		}else{
+			type = variableExpImpl;
+			referredArgument = null;
+		}
+		
 		//a variable name is generated from the variable exp name and the referred argument
-		String varName = Util.generateVarName(variableExpImpl.getReferredVariable().getType(), referredArgument);
+		String varName = Util.generateVarName(type, referredArgument);
 		//if the generated variable name returns null or a blank name, we ge the variableExpImpl name
 		if(varName == null){
 			varName = variableExpImpl.getName();
