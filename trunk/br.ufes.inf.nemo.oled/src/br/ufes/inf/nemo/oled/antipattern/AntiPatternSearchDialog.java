@@ -51,9 +51,9 @@ import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalAntipattern;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
-import br.ufes.inf.nemo.oled.ui.AppFrame;
-import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 
 /**
  * @author Tiago Sales
@@ -69,6 +69,8 @@ public class AntiPatternSearchDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	
 	private Thread searchThread;
+	private Thread resultThread;
+	
 	private Thread AssCycThread;
 	private Thread BinOverThread;
 	private Thread DepPhaseThread;
@@ -844,12 +846,11 @@ public class AntiPatternSearchDialog extends JDialog {
 		progressBarDescr.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		btnShowResult = new JButton("Show Result");
-		btnShowResult.setEnabled(false);
-		
+		btnShowResult.setEnabled(false);		
 		btnShowResult.addActionListener(new ActionListener() {			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {				
-
+			public void actionPerformed(ActionEvent arg0) {
+				showResult();
 			}
 		});
 		
@@ -1475,28 +1476,56 @@ public class AntiPatternSearchDialog extends JDialog {
 
 				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
 				
-				btnShowResult.setEnabled(true);
+				ProjectBrowser.refreshTree(frame.getDiagramManager().getCurrentProject());
 				
-				//================
-				
-				Display.getDefault().syncExec(new Runnable() {
-				    public void run() {
-				    	final AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());				
-						if (apList!=null && !apList.getAll().isEmpty()){
-							AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(new Shell(),	apList.getAll());					
-							resultDIalog.create();
-							resultDIalog.open();							
-						}
-				    }
-				});
+				btnShowResult.setEnabled(true);		
 			}
 		});		
 		
-		searchThread.start();
+		searchThread.start();		
+		
+		searchThread.join();
 		
 		}catch(Exception e){
 			JOptionPane.showMessageDialog(this,e.getMessage(),"Anti-Pattern Search",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
-		}	
+		}
+	}
+	
+	/**
+	 * Show Result
+	 */
+	public void showResult()
+	{	
+		try {
+		
+			resultThread = new Thread (new Runnable() {					
+			@Override
+			public void run() {
+		
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				
+				Display.getDefault().syncExec(new Runnable() {
+				    public void run() 
+				    {
+						final AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());				
+						if (apList!=null && !apList.getAll().isEmpty()){
+							AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(new Shell(),	apList.getAll());					
+							resultDIalog.create();
+							resultDIalog.open();
+						}
+				    }
+				});
+				
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
+			});
+		
+			resultThread.start();		
+			resultThread.join();
+			
+		} catch (InterruptedException e) {		
+			e.printStackTrace();
+		}		
 	}
 }

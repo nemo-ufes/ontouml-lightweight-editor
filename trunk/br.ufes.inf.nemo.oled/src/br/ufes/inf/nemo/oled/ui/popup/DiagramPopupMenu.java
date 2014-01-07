@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import br.ufes.inf.nemo.oled.ui.AppFrame;
+import br.ufes.inf.nemo.oled.AppFrame;
 
 public class DiagramPopupMenu extends JPopupMenu {
 

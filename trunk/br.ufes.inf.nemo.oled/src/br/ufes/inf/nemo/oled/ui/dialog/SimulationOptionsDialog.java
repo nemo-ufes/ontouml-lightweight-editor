@@ -15,9 +15,9 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
+import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
-import br.ufes.inf.nemo.oled.ui.AppFrame;
-import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.OCL2AlloyOptionsPane;
 import br.ufes.inf.nemo.oled.ui.OntoUML2AlloyOptionsPane;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;

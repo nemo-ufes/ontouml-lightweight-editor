@@ -24,6 +24,10 @@ import java.util.Map;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
+import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.MainMenu;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.antipattern.AntiPatternSearchDialog;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;

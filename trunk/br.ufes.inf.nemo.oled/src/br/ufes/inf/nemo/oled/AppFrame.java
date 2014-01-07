@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled;
 
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
@@ -21,7 +21,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
-import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.util.AlloyExtractorUtil;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;

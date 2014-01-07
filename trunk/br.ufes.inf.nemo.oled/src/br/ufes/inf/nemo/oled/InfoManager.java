@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,6 +13,11 @@ import javax.swing.event.DocumentListener;
 
 import br.ufes.inf.nemo.ocl.editor.OCLEditorPanel;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
+import br.ufes.inf.nemo.oled.ui.ErrorTablePanel;
+import br.ufes.inf.nemo.oled.ui.OutputPane;
+import br.ufes.inf.nemo.oled.ui.PropertyTablePanel;
+import br.ufes.inf.nemo.oled.ui.WarningTablePanel;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 

@@ -2,8 +2,9 @@ package br.ufes.inf.nemo.oled.antipattern;
 
 import java.util.ArrayList;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -13,6 +14,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -34,25 +36,27 @@ import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
 import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard;
 
-public class AntiPatternResultDialog extends Dialog {
+public class AntiPatternResultDialog extends TitleAreaDialog {
 
 	private ArrayList<AntipatternOccurrence> result;
 	private TableViewer viewer;
 	private AntipatternResultFilter filter;
 	
-	public static void main(String[] args)
-	{
-		AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(new Shell(),	new ArrayList<AntipatternOccurrence>());					
-		resultDIalog.open();
-	}
-	
 	/**
 	 * Create the dialog.
 	 * @param parentShell
 	 */
-	public AntiPatternResultDialog(Shell parentShell, ArrayList<AntipatternOccurrence> result) {
+	public AntiPatternResultDialog(Shell parentShell, ArrayList<AntipatternOccurrence> result) 
+	{
 		super(parentShell);
-		this.result = result;
+		this.result = result;				
+	}
+	
+	@Override
+	public void create() {
+	    super.create();
+	    setTitle("Result: List of Occurrences");
+	    setMessage("This is the result list of antipatterns found.", IMessageProvider.INFORMATION);
 	}
 
 	/**
@@ -60,9 +64,10 @@ public class AntiPatternResultDialog extends Dialog {
 	 * @param parent
 	 */
 	@Override
-	protected Control createDialogArea(Composite parent) {
+	protected Control createDialogArea(Composite parent) 
+	{
 		Composite container = (Composite) super.createDialogArea(parent);		
-		createPartControl(container);
+		createPartControl(container);		
 		return container;
 	}
 
@@ -71,18 +76,18 @@ public class AntiPatternResultDialog extends Dialog {
 	 * @param parent
 	 */
 	@Override
-	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
-				true);
-		createButton(parent, IDialogConstants.CANCEL_ID,
-				IDialogConstants.CANCEL_LABEL, false);
+	protected void createButtonsForButtonBar(Composite parent) 
+	{
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	/**
 	 * Return the initial size of the dialog.
 	 */
 	@Override
-	protected Point getInitialSize() {
+	protected Point getInitialSize() 
+	{
 		return new Point(450, 300);
 	}
 	
@@ -98,8 +103,7 @@ public class AntiPatternResultDialog extends Dialog {
 	    searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 	    
 	    createViewer(parent);
-	    
-	    // New to support the search
+	    	    
 	    searchText.addKeyListener(new KeyAdapter() {
 	    	public void keyReleased(KeyEvent ke) {
 	    		filter.setSearchText(searchText.getText());
@@ -111,6 +115,10 @@ public class AntiPatternResultDialog extends Dialog {
 	    viewer.addFilter(filter);
 	  }
 	    
+	/**
+	 * Create Table Viewer
+	 * @param parent
+	 */
 	  private void createViewer(Composite parent) 
 	  {
 	    viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
@@ -120,15 +128,11 @@ public class AntiPatternResultDialog extends Dialog {
 	    table.setHeaderVisible(true);
 	    table.setLinesVisible(true);
 
+	    // Get the content for the viewer, setInput will call getElements in the contentProvider
 	    viewer.setContentProvider(new ArrayContentProvider());
-	    // get the content for the viewer, setInput will call getElements in the
-	    // contentProvider
-	    //TODO: o parâmetro do setInput deve ser a lista com todos antipatterns. 
 	    viewer.setInput(result);
 
-	    // set the sorter for the table
-
-	    // define layout for the viewer
+	    // Define layout for the viewer
 	    GridData gridData = new GridData();
 	    gridData.verticalAlignment = GridData.FILL;
 	    gridData.horizontalSpan = 2;
@@ -137,17 +141,21 @@ public class AntiPatternResultDialog extends Dialog {
 	    gridData.horizontalAlignment = GridData.FILL;	    
 	    viewer.getControl().setLayoutData(gridData);
 	    
-	    //set buttons
+	    // Set buttons
 	    TableItem[] items = table.getItems();
-	    for (int i = 0; i < items.length; i++) {	     
+	    for (int i = 0; i < items.length; i++) 
+	    {	     
 	      TableEditor editor = new TableEditor(table);	      
-	      Button button = new Button(table, SWT.NONE);	      
+	      Button button = new Button(table, SWT.NONE);	   
+	      button.setImage(new Image(getShell().getDisplay(),AntiPatternResultDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/fix.png")));
+	      
 	      final AntipatternOccurrence apOccur = result.get(i);
 	      
 	      Listener listener = new Listener() {
 	        public void handleEvent(Event event) {	      
 	        	Display.getDefault().syncExec(new Runnable() {
 				    public void run() {
+				    	
 			        	if (apOccur instanceof RelRigOccurrence) {	        		
 			        		WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));
 			        		wizardDialog.open();
@@ -156,9 +164,9 @@ public class AntiPatternResultDialog extends Dialog {
 	        	});
 	        }
 	      };
+
 	      button.addListener(SWT.Selection,listener);
-	      
-	      button.setText("Open");
+
 	      button.pack();
 	      editor.minimumWidth = button.getSize().x;
 	      editor.horizontalAlignment = SWT.LEFT;
@@ -166,17 +174,19 @@ public class AntiPatternResultDialog extends Dialog {
 	    }
 	  }
 
-	  public TableViewer getViewer() {
-	    return viewer;
-	  }
+	  public TableViewer getViewer() { return viewer; }
 
-	  // create the columns for the table
-	  private void createColumns(final Composite parent, final TableViewer viewer) {
+	  /** 
+	   * Create the columns for the table 
+	   */
+	  private void createColumns(final Composite parent, final TableViewer viewer) 
+	  {
 	    String[] titles = { "Name", "Type", "Status", "Analyze?" };
 	    int[] bounds = { 100, 100, 100, 100 };
 
-	    // first column is for a short description of the antipattern
+	    // First column is for a short description of the antipattern
 	    TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
+	    
 	    col.setLabelProvider(new ColumnLabelProvider() {
 	      @Override
 	      public String getText(Object element) {
@@ -184,8 +194,9 @@ public class AntiPatternResultDialog extends Dialog {
 	      }
 	    });
 
-	    // sets the type of the antipattern
+	    // Sets the type of the antipattern
 	    col = createTableViewerColumn(titles[1], bounds[1], 1);
+	    
 	    col.setLabelProvider(new ColumnLabelProvider() {
 		@Override
 	      public String getText(Object element) {
@@ -195,8 +206,9 @@ public class AntiPatternResultDialog extends Dialog {
 	      }
 	    });
 
-	    // set if the occurrence of the antipattern was fixed or not
+	    // Set if the occurrence of the antipattern was fixed or not
 	    col = createTableViewerColumn(titles[2], bounds[2], 2);
+	    
 	    col.setLabelProvider(new ColumnLabelProvider() {
 	      @Override
 	      public String getText(Object element) {
@@ -204,30 +216,20 @@ public class AntiPatternResultDialog extends Dialog {
 	      }
 	    });
 	    
-	    // show the button to investigate the occurrence
+	    // Show the button to investigate the occurrence
 	    col = createTableViewerColumn(titles[3], bounds[3], 3);
+	    
 	    col.setLabelProvider(new ColumnLabelProvider() {
 	      @Override
 	      public String getText(Object element) {
 	        return "";
 	      }
-
-//	      @Override
-//	      public Image getImage(Object element) {
-//	        if (((Person) element).isMarried()) {
-//	          return PRESSED_BTN;
-//	        } else {
-//	          return UNPRESSED_BTN;
-//	        }
-//	      }
-	      
 	    });
-
 	  }
 
-	  private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) {
-	    final TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
-	        SWT.NONE);
+	  private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) 
+	  {
+	    final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
 	    final TableColumn column = viewerColumn.getColumn();
 	    column.setText(title);
 	    column.setWidth(bound);
@@ -236,8 +238,5 @@ public class AntiPatternResultDialog extends Dialog {
 	    return viewerColumn;
 	  }
 
-	  public void setFocus() {
-	    viewer.getControl().setFocus();
-	  }
-
+	  public void setFocus() {  viewer.getControl().setFocus();  }
 }

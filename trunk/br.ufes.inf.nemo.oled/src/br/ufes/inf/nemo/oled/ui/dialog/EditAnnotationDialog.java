@@ -26,8 +26,8 @@ import RefOntoUML.NamedElement;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.impl.ConstraintxImpl;
 import RefOntoUML.impl.PropertyImpl;
-import br.ufes.inf.nemo.oled.ui.DiagramManager;
-import br.ufes.inf.nemo.oled.ui.ProjectBrowser;
+import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.diagram.CommentTableModel;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 

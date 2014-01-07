@@ -23,9 +23,9 @@ import javax.swing.JTextPane;
 import javax.swing.LayoutStyle;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.AppFrame;
-import br.ufes.inf.nemo.oled.ui.DiagramManager;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;

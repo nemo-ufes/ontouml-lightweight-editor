@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled;
 
 import java.awt.Component;
 import java.awt.Cursor;
@@ -68,6 +68,13 @@ import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
+import br.ufes.inf.nemo.oled.ui.DiagramEditorCommandDispatcher;
+import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
+import br.ufes.inf.nemo.oled.ui.Editor;
+import br.ufes.inf.nemo.oled.ui.InstanceVisualizer;
+import br.ufes.inf.nemo.oled.ui.StartPanel;
+import br.ufes.inf.nemo.oled.ui.TextEditor;
 import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
 import br.ufes.inf.nemo.oled.ui.commands.PngExporter;
