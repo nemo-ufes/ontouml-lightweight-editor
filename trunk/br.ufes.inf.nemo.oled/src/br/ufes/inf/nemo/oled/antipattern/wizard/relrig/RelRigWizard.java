@@ -18,11 +18,13 @@ import br.ufes.inf.nemo.oled.antipattern.wizard.PresentationPage;
 
 public class RelRigWizard extends Wizard {
 
+	public boolean canFinish;
+	
 	protected RelRigOccurrence ap;
 	
 	protected PresentationPage presentation;
 	protected FinishingPage finishing;
-	
+		  
 	protected RelRigRefactoringPage options;
 	
 	protected ArrayList<RelRigFirstPage> firstpageList = new ArrayList<RelRigFirstPage>();
@@ -32,9 +34,16 @@ public class RelRigWizard extends Wizard {
 		
 	public RelRigWizard(RelRigOccurrence ap) {
 		this.ap = ap;
+	    canFinish=false;
+	    setNeedsProgressMonitor(true); 
 		setWindowTitle(RelRigAntipattern.getAntipatternInfo().name);		
 	}
 	
+    @Override
+    public boolean canFinish() {	 
+    	return canFinish;	  
+    };
+    
 	@Override
 	public void addPages() 
 	{		
@@ -109,7 +118,8 @@ public class RelRigWizard extends Wizard {
 	
 	@Override
 	public boolean performFinish() {
-		return false;
+		
+		return true;
 	}
 
 }
