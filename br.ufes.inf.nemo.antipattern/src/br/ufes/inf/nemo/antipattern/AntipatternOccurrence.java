@@ -8,6 +8,9 @@ public abstract class AntipatternOccurrence {
 	protected Antipattern<?> antipattern;
 	protected OntoUMLParser parser; 
 	
+	protected OutcomeFixer fixer;
+	protected Fix fix;
+	
 	public AntipatternOccurrence(Antipattern<?> antipattern){
 		
 		if (antipattern==null)
@@ -18,7 +21,14 @@ public abstract class AntipatternOccurrence {
 		
 		this.antipattern = antipattern;
 		this.parser = antipattern.parser;
+		this.fixer = new OutcomeFixer(parser.getModel());
+		this.fix = new Fix();
 		this.isFixed = false;		
+	}
+	
+	public Fix getFix()
+	{
+		return fix;
 	}
 	
 	/**

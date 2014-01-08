@@ -8,8 +8,16 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Button;
 
+import br.ufes.inf.nemo.antipattern.Fix;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.FinishingPage;
+
+/**
+ * @author Tiago Sales
+ * @author John Guerson
+ *
+ */
 
 public class RelRigFourthPage extends WizardPage {
 
@@ -25,14 +33,15 @@ public class RelRigFourthPage extends WizardPage {
 	 * Create the wizard.
 	 */
 	public RelRigFourthPage(RelRigOccurrence relRig, int rigid) {
-		super("wizardPage");
-		setTitle(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - Fourth Question");
+		super(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 4/4");
+		setTitle(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 4/4");
 		this.relRig = relRig;
 		this.rigid = rigid;
 		
 		rigidType = relRig.getRigidMediatedProperties().get(rigid).getType();
 		String text = relRig.getOntoUMLParser().getStringRepresentation(rigidType);
-		setDescription("Rigid Type #"+rigid+1+" : "+text);
+		int n = (rigid+1);
+		setDescription("Rigid Type #"+n+" : "+text);
 	}
 
 	/**
@@ -62,10 +71,25 @@ public class RelRigFourthPage extends WizardPage {
 	@Override
 	public IWizardPage getNextPage() {
 		
-		if(btnNo.getSelection()) {
-			//TODO execute action			
-		}else if(btnYes.getSelection()){			
-			//TODO execute action						
+		if(btnNo.getSelection()) 
+		{
+			// Action =====================
+			
+			Fix partialFix = relRig.setBothReadOnly(relRig.getRigidMediation(rigidType));
+			FinishingPage finishing = (FinishingPage) ((RelRigWizard)getWizard()).getFinishingPage();
+			finishing.addFix(partialFix);
+			
+			//=============================
+			
+		}else if(btnYes.getSelection())
+		{	
+			// Action =====================
+			
+			Fix partialFix = relRig.changeToMode(rigidType,relRig.getRigidMediation(rigidType));
+			FinishingPage finishing = (FinishingPage) ((RelRigWizard)getWizard()).getFinishingPage();
+			finishing.addFix(partialFix);
+			
+			//=============================
 		}
 		
 		if(rigid < relRig.getRigidMediatedProperties().size()-1){		

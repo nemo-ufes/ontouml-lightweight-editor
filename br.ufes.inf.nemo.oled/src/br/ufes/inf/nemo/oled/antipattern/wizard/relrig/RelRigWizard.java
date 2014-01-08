@@ -89,6 +89,10 @@ public class RelRigWizard extends Wizard {
 		return null;
 	}
 	
+	public WizardPage getFinishingPage(){
+		return finishing;		
+	}
+	
 	public WizardPage getThirdPage(int rigid){
 		for(RelRigThirdPage page: thirdpageList){
 			if (page.rigid == rigid) return page;

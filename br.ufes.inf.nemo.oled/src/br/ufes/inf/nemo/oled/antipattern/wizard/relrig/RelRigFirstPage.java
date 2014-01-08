@@ -10,8 +10,16 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import br.ufes.inf.nemo.antipattern.Fix;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.FinishingPage;
+
+/**
+ * @author Tiago Sales
+ * @author John Guerson
+ *
+ */
 
 public class RelRigFirstPage extends WizardPage {
 
@@ -28,15 +36,16 @@ public class RelRigFirstPage extends WizardPage {
 	 */
 	public RelRigFirstPage(RelRigOccurrence relRig, int rigid) 
 	{
-		super(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - First Question");		
-		setTitle(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - First Question");
+		super(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 1/4");		
+		setTitle(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 1/4");
 		
 		this.relRig = relRig;
 		this.rigid = rigid;
 		
 		rigidType = relRig.getRigidMediatedProperties().get(rigid).getType();
 		String text = relRig.getOntoUMLParser().getStringRepresentation(rigidType);
-		setDescription("Rigid Type #"+rigid+1+" : "+text);
+		int n = (rigid+1);
+		setDescription("Rigid Type #"+n+" : "+text);
 	}
 
 	/**
@@ -76,7 +85,16 @@ public class RelRigFirstPage extends WizardPage {
 			return ((RelRigWizard)getWizard()).getSecondPage(rigid);
 			
 		else if(btnYes.getSelection()){			
-			//TODO execute action			
+			
+			// Action =====================			
+			
+			Fix partialFix = relRig.changeToRole(rigidType);
+			//Fix partialFix = relRig.changeToRoleMixin(rigidType);
+			FinishingPage finishing = (FinishingPage) ((RelRigWizard)getWizard()).getFinishingPage();
+			finishing.addFix(partialFix);
+			
+			//=============================
+			
 			if(rigid < relRig.getRigidMediatedProperties().size()-1)
 				return ((RelRigWizard)getWizard()).getFirstPage(rigid+1);				
 			else

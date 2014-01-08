@@ -11,6 +11,8 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
+import br.ufes.inf.nemo.antipattern.Fix;
+
 /**
  * @author Tiago Sales
  * @author John Guerson
@@ -19,6 +21,9 @@ import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class FinishingPage extends WizardPage {
 
+	public Fix fix;
+
+	//GUI
 	public Label statusLabel;	
 	public List modifiedList;			
 	public List addedList;			
@@ -29,14 +34,23 @@ public class FinishingPage extends WizardPage {
 	 * Create the wizard.
 	 */
 	public FinishingPage() {
-		super("Finishing Page");
+		super("Finishing Page");		
 		setTitle("Finishing Page");
 		setDescription("");
 	}
 
+	public void addFix(Fix fix)
+	{
+		this.fix = fix;
+		for(Object obj: fix.getModified()) modifiedList.add(obj.toString());
+		for(Object obj: fix.getAdded()) addedList.add(obj.toString());
+		for(Object obj: fix.getDeleted()) removedList.add(obj.toString());
+		rulesText.setText(rulesText.getText()+"\n"+fix.getAddedString());		
+	}
+	
 	public void showStatus (boolean value)
 	{
-		statusLabel.setVisible(value);
+		statusLabel.setVisible(value);		
 	}
 	
 	/**

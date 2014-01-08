@@ -8,8 +8,16 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Button;
 
+import br.ufes.inf.nemo.antipattern.Fix;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.FinishingPage;
+
+/**
+ * @author Tiago Sales
+ * @author John Guerson
+ *
+ */
 
 public class RelRigSecondPage extends WizardPage {
 
@@ -25,15 +33,16 @@ public class RelRigSecondPage extends WizardPage {
 	 * Create the wizard.
 	 */
 	public RelRigSecondPage(RelRigOccurrence relRig, int rigid) {
-		super("wizardPage");
-		setTitle(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - Second Question");
+		super(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 2/4");
+		setTitle(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 2/4");
 		
 		this.relRig = relRig;
 		this.rigid = rigid;
 		
 		rigidType = relRig.getRigidMediatedProperties().get(rigid).getType();
 		String text = relRig.getOntoUMLParser().getStringRepresentation(rigidType);
-		setDescription("Rigid Type #"+rigid+1+" : "+text);
+		int n = (rigid+1);
+		setDescription("Rigid Type #"+n+" : "+text);
 	}
 
 	/**
@@ -67,7 +76,15 @@ public class RelRigSecondPage extends WizardPage {
 			return ((RelRigWizard)getWizard()).getThirdPage(rigid);
 			
 		else if(btnNo.getSelection()){			
-			//TODO execute action			
+			
+			// Action =====================
+			
+			Fix partialFix = relRig.createRoleSubType(rigidType,relRig.getRigidMediation(rigidType));
+			FinishingPage finishing = (FinishingPage) ((RelRigWizard)getWizard()).getFinishingPage();
+			finishing.addFix(partialFix);
+			
+			//=============================
+									
 			if(rigid < relRig.getRigidMediatedProperties().size()-1)
 				return ((RelRigWizard)getWizard()).getFirstPage(rigid+1);				
 			else
