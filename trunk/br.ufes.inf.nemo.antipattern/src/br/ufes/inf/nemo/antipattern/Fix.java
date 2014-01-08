@@ -9,15 +9,54 @@ public class Fix {
 	private ArrayList<Object> modifiedElements = new ArrayList<Object>();
 	private ArrayList<String> addedRules = new ArrayList<String>();
 	
-	public Fix(){}
+	public void addAll(Fix fix)
+	{
+		this.includeAllAdded(fix.getAdded());
+		this.includeAllDeleted(fix.getDeleted());
+		this.includeAllModified(fix.getModified());
+		this.includeAllRule(fix.getAddedRules());
+	}
 	
-	// Include All and Exclude All methods...
+	//get String methods...
+	public String getDeletedString()
+	{
+		String result = new String();
+		for(Object obj: deletedElements){
+			result += obj.toString()+"\n";
+		}
+		return result;
+	}	
+	public String getAddedString()
+	{
+		String result = new String();
+		for(Object obj: addedElements){
+			result += obj.toString()+"\n";
+		}
+		return result;
+	}
+	public String getModifiedString()
+	{
+		String result = new String();
+		for(Object obj: modifiedElements){
+			result += obj.toString()+"\n";
+		}
+		return result;
+	}
+	public String getRulesString()
+	{
+		String result = new String();
+		for(String obj: addedRules){
+			result += obj+"\n";
+		}
+		return result;
+	}
 	
+	// Include All and Exclude All methods...	
 	public void includeAllModified(ArrayList<Object> modified){
 		for(Object obj: modified) includeModified(obj);
 	}
 	public void includeAllRule(ArrayList<String> rules){
-		for(String obj: rules) includeModified(obj);
+		for(String obj: rules) includeRule(obj);
 	}	
 	public void includeAllAdded(ArrayList<Object> added){
 		for(Object obj: added) includeAdded(obj);
@@ -38,8 +77,7 @@ public class Fix {
 		for(Object obj: deleted) excludeDeleted(obj);
 	}
 	
-	// Include and exclude methods...
-	
+	// Include and exclude methods...	
 	public void includeModified(Object modified){
 		if (!modifiedElements.contains(modified)) modifiedElements.add(modified);
 	}
@@ -65,8 +103,7 @@ public class Fix {
 		deletedElements.remove(deleted);	
 	}
 	
-	// Getters and Setters...
-	
+	// Getters and Setters...	
 	public ArrayList<Object> getDeleted() 
 	{
 		return deletedElements;

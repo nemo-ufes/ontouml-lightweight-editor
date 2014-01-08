@@ -8,6 +8,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+/**
+ * @author Tiago Sales
+ * @author John Guerson
+ *
+ */
+
 public class RefactoringPage extends WizardPage {
 
 	public Label lblChooseTheAppropriate;

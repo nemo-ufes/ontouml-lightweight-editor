@@ -11,14 +11,17 @@ import RefOntoUML.Relator;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.antipattern.Fix;
+import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.antipattern.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelRigOccurrence extends AntipatternOccurrence {
 	
-	private Relator relator;
-	
+	private Relator relator;	
 	private ArrayList<Mediation> allMediations, rigidMediations;
 	private ArrayList<Property> allMediatedProperties, rigidMediatedProperties;
+		
 	public ArrayList<Mediation> getAllMediations() {
 		return allMediations;
 	}
@@ -29,6 +32,14 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 		return rigidMediations;
 	}
 
+	public Mediation getRigidMediation (EObject rigidType){
+		for(Mediation med: rigidMediations){
+			if (med.getMemberEnd().get(0).getType().equals(rigidType)) return med;
+			if (med.getMemberEnd().get(1).getType().equals(rigidType)) return med;
+		}
+		return null;
+	}
+	
 	public ArrayList<Property> getAllMediatedProperties() {
 		return allMediatedProperties;
 	}
@@ -152,6 +163,50 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 	@Override
 	public String getShortName() {
 		return parser.getStringRepresentation(relator);
+	}
+	
+	// ========== OUTCOME FIXES =========
+	
+	public Fix changeToRole(EObject rigid)
+	{
+		Fix result = fixer.changeClassStereotype(rigid, ClassStereotype.ROLE);
+		this.fix.addAll(result);
+		return result;
+	}
+	
+	public Fix changeToRoleMixin(EObject rigid)
+	{
+		Fix result = fixer.changeClassStereotype(rigid, ClassStereotype.ROLEMIXIN);
+		this.fix.addAll(result);
+		return result;
+	}
+	
+	public Fix changeToMode(EObject rigid, EObject rigidMediation)
+	{
+		Fix result = fixer.changeClassStereotype(rigid, ClassStereotype.MODE);		
+		result.addAll(fixer.changeRelationStereotype(rigidMediation, RelationStereotype.CHARACTERIZATION));
+		this.fix.addAll(result);
+		return result;
+	}
+	
+	public Fix setBothReadOnly (EObject mediation)
+	{		
+		if (mediation instanceof Mediation){
+			Mediation med = (Mediation)mediation;
+			med.getMemberEnd().get(0).setIsReadOnly(true);
+			med.getMemberEnd().get(1).setIsReadOnly(true);
+		}		
+		Fix result = new Fix();
+		result.includeModified(mediation);
+		this.fix.includeModified(mediation);
+		return result;
+	}
+	
+	public Fix createRoleSubType(EObject rigid, EObject rigidMediation)
+	{
+		Fix result = fixer.createSubTypeInvolvingLink(rigid, ClassStereotype.ROLE,rigidMediation);
+		this.fix.addAll(result);
+		return result;
 	}
 }
 

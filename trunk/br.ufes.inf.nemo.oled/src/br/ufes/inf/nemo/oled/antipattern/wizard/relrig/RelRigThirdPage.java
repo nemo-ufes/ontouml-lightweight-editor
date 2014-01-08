@@ -11,6 +11,12 @@ import org.eclipse.swt.widgets.Button;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
 
+/**
+ * @author Tiago Sales
+ * @author John Guerson
+ *
+ */
+
 public class RelRigThirdPage extends WizardPage {
 
 	public RelRigOccurrence relRig;
@@ -25,14 +31,15 @@ public class RelRigThirdPage extends WizardPage {
 	 * Create the wizard.
 	 */
 	public RelRigThirdPage(RelRigOccurrence relRig, int rigid) {
-		super("wizardPage");
-		setTitle(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - Third Question");
+		super(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 3/4");
+		setTitle(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 3/4");
 		this.relRig = relRig;
 		this.rigid = rigid;
 		
 		rigidType = relRig.getRigidMediatedProperties().get(rigid).getType();
 		String text = relRig.getOntoUMLParser().getStringRepresentation(rigidType);
-		setDescription("Rigid Type #"+rigid+1+" : "+text);
+		int n = (rigid+1);
+		setDescription("Rigid Type #"+n+" : "+text);
 	}
 
 	/**
@@ -66,7 +73,11 @@ public class RelRigThirdPage extends WizardPage {
 			return ((RelRigWizard)getWizard()).getFourthPage(rigid);
 			
 		else if(btnYes.getSelection()){		
-			//TODO execute action			
+
+			// Action =====================			
+			// <do nothing>
+			//=============================
+			
 			if(rigid < relRig.getRigidMediatedProperties().size()-1)
 				return ((RelRigWizard)getWizard()).getFirstPage(rigid+1);				
 			else

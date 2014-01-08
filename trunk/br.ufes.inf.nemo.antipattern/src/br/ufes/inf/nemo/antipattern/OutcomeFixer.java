@@ -3,9 +3,11 @@ package br.ufes.inf.nemo.antipattern;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.MaterialAssociation;
+import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.Type;
@@ -26,7 +28,7 @@ public class OutcomeFixer {
 	}
 	
 	public RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
-	public RefOntoUML.Package root;
+	public RefOntoUML.Package root;	
 	
 	/** Constructor */
 	public OutcomeFixer (RefOntoUML.Package root)
@@ -75,6 +77,23 @@ public class OutcomeFixer {
 			((Classifier)rel).setVisibility(VisibilityKind.PUBLIC);
 		}
 		return rel;			  
+	}
+	
+	/**
+	 * Copy all the ends (properties) from a association source to a receiver
+	 */
+	public void copyEnds(EObject source, EObject receiver)
+	{
+		if(source instanceof RefOntoUML.Association && receiver instanceof RefOntoUML.Association)
+		{
+			RefOntoUML.Association assoc = (RefOntoUML.Association)source;
+			RefOntoUML.Association rcvAssoc = (RefOntoUML.Association)receiver;
+			Property end0 = assoc.getMemberEnd().get(0);
+			Property end1 = assoc.getMemberEnd().get(1);
+			rcvAssoc.getMemberEnd().add(end0);
+			rcvAssoc.getMemberEnd().add(end1);			
+			assoc.getMemberEnd().clear();
+		}
 	}
 	
 	/** Copy all the meta-attributes from a source to a receiver: 
@@ -173,9 +192,13 @@ public class OutcomeFixer {
 		// create new element
 		RefOntoUML.PackageableElement newElement = createClass(newStereo);		
 		copyMetaAttributes(element,newElement);		
+		fixes.includeAdded(newElement);
 		// the same container
-		element.eContainer().eContents().add(newElement); 
-		fixes.includeModified(element.eContainer());		
+		EObject container = element.eContainer();
+		if(container instanceof RefOntoUML.Package){
+			((RefOntoUML.Package)container).getPackagedElement().add(newElement);
+			fixes.includeModified(element.eContainer());
+		}				
 		// change references
 		Fix references = changeModelReferences(element,newElement); 		
 		fixes.includeAllModified(references.getModified());		
@@ -191,10 +214,15 @@ public class OutcomeFixer {
 		Fix fixes = new Fix();		
 		// create new relationship
 		RefOntoUML.Relationship newRelationship = createRelationship(newStereo);		
-		copyMetaAttributes(relationship,newRelationship); //FIXME - copy the properties too
+		copyMetaAttributes(relationship,newRelationship); 
+		copyEnds(relationship,newRelationship);
+		fixes.includeAdded(newRelationship);
 		// the same container
-		relationship.eContainer().eContents().add(newRelationship); 
-		fixes.includeModified(relationship.eContainer());		
+		EObject container = relationship.eContainer();
+		if(container instanceof RefOntoUML.Package && newRelationship instanceof PackageableElement){
+			((RefOntoUML.Package)container).getPackagedElement().add((PackageableElement)newRelationship);
+			fixes.includeModified(relationship.eContainer());
+		}		
 		// change references
 		Fix references = changeModelReferences(relationship,newRelationship); 		
 		fixes.includeAllModified(references.getModified());		
@@ -203,4 +231,51 @@ public class OutcomeFixer {
 		fixes.includeDeleted(relationship);
 		return fixes;
 	}
+	
+	/** Create a subtype and connect it through a generalization to its type. */
+	public Fix createSubType (EObject type, ClassStereotype subtypeStereo)
+	{
+		Fix fixes = new Fix();
+		// create subtype
+		RefOntoUML.PackageableElement subtype = createClass(subtypeStereo);
+		subtype.setName(((Classifier)type).getName()+"SubType");
+		fixes.includeAdded(subtype);
+		//create generalization
+		Generalization gen = (Generalization)createRelationship(RelationStereotype.GENERALIZATION);
+		gen.setSpecific((RefOntoUML.Classifier)subtype);
+		gen.setGeneral((RefOntoUML.Classifier)type);
+		fixes.includeAdded(gen);		
+		return fixes;
+	}
+	
+	/** Create a subtype and connect it through a generalization to its type.
+	 *  It also change the references in relation to point to the subtype instead of the type.
+	 */	
+	public Fix createSubTypeInvolvingLink (EObject type, ClassStereotype subtypeStereo, EObject relation)
+	{
+		Fix fixes = new Fix();		
+		// create subtype
+		RefOntoUML.PackageableElement subtype = createClass(subtypeStereo);
+		subtype.setName(((Classifier)type).getName()+"SubType");
+		fixes.includeAdded(subtype);
+		//create generalization
+		Generalization gen = (Generalization)createRelationship(RelationStereotype.GENERALIZATION);
+		gen.setSpecific((RefOntoUML.Classifier)subtype);
+		gen.setGeneral((RefOntoUML.Classifier)type);
+		fixes.includeAdded(gen);		
+		//change reference in relation
+		if(!(relation instanceof Association)) return fixes;
+		Property src = ((Association)relation).getMemberEnd().get(0);
+		Property tgt = ((Association)relation).getMemberEnd().get(1);
+		if (src.getType().equals(type)){
+			src.setType((Type)subtype);
+			fixes.includeModified(src);
+		}
+		if (tgt.getType().equals(type)){
+			tgt.setType((Type)subtype);
+			fixes.includeModified(tgt);
+		}
+		return fixes;
+	}	
+	
 }
