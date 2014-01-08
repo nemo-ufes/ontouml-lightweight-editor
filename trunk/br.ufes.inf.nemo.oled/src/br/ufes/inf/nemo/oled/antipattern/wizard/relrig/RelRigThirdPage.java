@@ -3,12 +3,11 @@ package br.ufes.inf.nemo.oled.antipattern.wizard.relrig;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.wb.swt.SWTResourceManager;
 
-import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
 
 /**
@@ -31,15 +30,16 @@ public class RelRigThirdPage extends WizardPage {
 	 * Create the wizard.
 	 */
 	public RelRigThirdPage(RelRigOccurrence relRig, int rigid) {
-		super(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 3/4");
-		setTitle(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 3/4");
+		super("RelRigThirdPage");		
 		this.relRig = relRig;
 		this.rigid = rigid;
 		
 		rigidType = relRig.getRigidMediatedProperties().get(rigid).getType();
 		String text = relRig.getOntoUMLParser().getStringRepresentation(rigidType);
 		int n = (rigid+1);
-		setDescription("Rigid Type #"+n+" : "+text);
+		
+		setTitle("Rigid Type #"+n+": "+text);
+		setDescription("3/4");		
 	}
 
 	/**
@@ -80,8 +80,10 @@ public class RelRigThirdPage extends WizardPage {
 			
 			if(rigid < relRig.getRigidMediatedProperties().size()-1)
 				return ((RelRigWizard)getWizard()).getFirstPage(rigid+1);				
-			else
-				return ((RelRigWizard)getWizard()).finishing;			
+			else{
+				((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix()); 
+				return ((RelRigWizard)getWizard()).finishing;
+			}
 		}
 		return super.getNextPage();
 	}

@@ -190,35 +190,46 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			}else{				
 				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Package)eContainer).getPackagedElement(), element);
 				project.getEditingDomain().getCommandStack().execute(cmd);
-			}
-
-			ProjectBrowser.getParserFor(project).addElement(element); 
-						
+			}						
 			Property p1 = ((Association)element).getMemberEnd().get(0);
 			Property p2 = ((Association)element).getMemberEnd().get(1);
-			
-			ProjectBrowser.getParserFor(project).addElement(p1); 	
-			ProjectBrowser.getParserFor(project).addElement(p2);			
+			p1.setType(source);
+			p2.setType(target);
 		}
-		
 		if (element instanceof Generalization){			
 			((Generalization) element).setSpecific(source);
 			((Generalization) element).setGeneral(target);
 		}
 		
-		//============ Updating application... ==============
+		//Update the application accordingly
+		updateApplication(element);
+	}
+	
+	/** Update the application acordingly */
+	public static void updateApplication(RefOntoUML.Element addedElement)
+	{			
+		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
+		
+		// update the parser
+		if (addedElement instanceof Association)
+		{
+			ProjectBrowser.getParserFor(project).addElement(addedElement);			
+			Property p1 = ((Association)addedElement).getMemberEnd().get(0);
+			Property p2 = ((Association)addedElement).getMemberEnd().get(1);			
+			ProjectBrowser.getParserFor(project).addElement(p1); 	
+			ProjectBrowser.getParserFor(project).addElement(p2);
+		}
 		
 		//FIXME - Do not rebuild the tree, only update it!
 		ProjectBrowser.rebuildTree(project);
 		
 		//Select this element in the tree
 		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
-		tree.selectModelElement(element);
+		tree.selectModelElement(addedElement);
 		
-		if (element instanceof RefOntoUML.Association){
+		if (addedElement instanceof RefOntoUML.Association){
 			//	Include this element in the Auto Completion of OCL Editor
-			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Association)element);
-		}
-		
+			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Association)addedElement);
+		}		
 	}
 }

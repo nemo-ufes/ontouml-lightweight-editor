@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -19,6 +20,10 @@ import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
+import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 
 /**
  * @author Tiago Sales
@@ -28,6 +33,8 @@ import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 
 public class RelRigRefactoringPage extends WizardPage {
 	
+	public RelRigOccurrence relRig;
+	
 	//GUI
 	public ScrolledComposite scroll;
 	public Composite content;
@@ -36,9 +43,10 @@ public class RelRigRefactoringPage extends WizardPage {
 	/**
 	 * Create the wizard.
 	 */
-	public RelRigRefactoringPage(ArrayList<Property> rigidTypeList) 
+	public RelRigRefactoringPage(RelRigOccurrence relRig) 
 	{
-		super(RelRigAntipattern.getAntipatternInfo().acronym+" Refactoring Options");
+		super("RelRigRefactoringPage");	
+		this.relRig = relRig;
 		
 		setTitle(RelRigAntipattern.getAntipatternInfo().acronym+" Refactoring Options");
 		setDescription("The follwing options can be used to refactor the model.");
@@ -94,7 +102,7 @@ public class RelRigRefactoringPage extends WizardPage {
 
 	private void createOptions()	
 	{	
-		ArrayList<Property> list = ((RelRigWizard)getWizard()).ap.getRigidMediatedProperties();				
+		ArrayList<Property> list = relRig.getRigidMediatedProperties();				
 		for(Property p: list)
 		{	
 			Label stereoLabel = new Label(content, SWT.NONE);
@@ -130,6 +138,7 @@ public class RelRigRefactoringPage extends WizardPage {
 		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
 	    type = type.replaceAll("Impl","");
 	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
+	    type = type.replace("Association","");
 	    return type;
 	}
 	
@@ -143,6 +152,54 @@ public class RelRigRefactoringPage extends WizardPage {
 		Combo combo = mapping.get(typeName);
 		if (combo!=null) return combo.getText();
 		else return "<unknown>";
+	}
+	
+	@Override
+	public IWizardPage getNextPage() {
+		
+		// Action =====================			
+		for(Property p: mapping.keySet())
+		{
+			Combo c = mapping.get(p);
+			
+			if(c.getSelectionIndex()==0) {
+				relRig.changeToRole(p.getType());
+				//relRig.changeToRoleMixin(p.getType());
+			}
+			if(c.getSelectionIndex()==1) {
+				relRig.createRoleSubType(p.getType(), p.getAssociation());
+				//relRig.createRoleMixinSubType(p.getType(), p.getAssociation());
+			}
+			if(c.getSelectionIndex()==2) {
+				relRig.changeToMode(p.getType(), p.getAssociation());				
+			}
+			if(c.getSelectionIndex()==3) {
+				relRig.setBothReadOnly(p.getAssociation());				
+			}
+		}		
+		
+		//set fixes
+		((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix());
+		
+		//update OLED
+		for(Object obj: relRig.getFix().getAdded()) {
+			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
+				AddNodeCommand.updateApplication((RefOntoUML.Element)obj);
+		}
+		for(Object obj: relRig.getFix().getAdded()) {
+			if (obj instanceof RefOntoUML.Relationship)
+				AddConnectionCommand.updateApplication((RefOntoUML.Element)obj);
+		}
+		for(Object obj: relRig.getFix().getDeleted()) {
+			if (obj instanceof RefOntoUML.Element)
+				DeleteElementCommand.updateApplication((RefOntoUML.Element)obj);
+		}
+		
+		//=============================
+		
+		return ((RelRigWizard)getWizard()).finishing;
+		
+				
 	}
 	
 }

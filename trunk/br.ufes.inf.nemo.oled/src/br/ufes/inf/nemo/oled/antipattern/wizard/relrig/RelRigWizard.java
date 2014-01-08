@@ -53,7 +53,7 @@ public class RelRigWizard extends Wizard {
 			fourthpageList.add(fourthpage);
 		}		
 		
-		options = new RelRigRefactoringPage(ap.getRigidMediatedProperties());
+		options = new RelRigRefactoringPage(ap);
 		
 		presentation = new PresentationPage(
 			RelRigAntipattern.getAntipatternInfo().name,
