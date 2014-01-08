@@ -847,6 +847,7 @@ public class AntiPatternSearchDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				showResult();
+				btnShowResult.setEnabled(false);
 			}
 		});
 		
@@ -917,6 +918,11 @@ public class AntiPatternSearchDialog extends JDialog {
 		progressBarDescr.revalidate();	
 	}
 	
+	public void activateShowResult()
+	{
+		btnShowResult.setEnabled(true);
+	}
+	
 	/**
 	 * Identifying AntiPatterns...
 	 * 
@@ -942,13 +948,15 @@ public class AntiPatternSearchDialog extends JDialog {
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			
 		if (searchThread!=null) searchThread.interrupt();
+	
 		
 		searchThread= new Thread(new Runnable() {			
 			@Override
 			public void run() {
 								
-				OntoUMLParser parser = ProjectBrowser.getParserFor(frame.getDiagramManager().getCurrentProject());
-			
+				 OntoUMLParser parser = ProjectBrowser.getParserFor(frame.getDiagramManager().getCurrentProject());
+				 frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,frame.getDiagramManager().getCurrentProject());
+				 
 				 final AssCycAntipattern assCyc = new AssCycAntipattern(parser); 	
 				 final BinOverAntipattern binOver = new BinOverAntipattern(parser);		
 				 final DepPhaseAntipattern depPhase = new DepPhaseAntipattern(parser);
@@ -970,9 +978,7 @@ public class AntiPatternSearchDialog extends JDialog {
 				 final UndefPhaseAntipattern undefPhase = new UndefPhaseAntipattern(parser);
 				 final WholeOverAntipattern wholeOver = new WholeOverAntipattern(parser);	
 			
-				 frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,frame.getDiagramManager().getCurrentProject());
-				
-				if (parser.getElements() == null) return;
+				 if (parser.getElements() == null) return;
 				
 				int totalItemsSelected = 0;			
 				if (AssCycisSelected()) totalItemsSelected++;
@@ -995,8 +1001,12 @@ public class AntiPatternSearchDialog extends JDialog {
 				if (UndefFormalisSelected()) totalItemsSelected++;
 				if (UndefPhaseisSelected()) totalItemsSelected++;
 				if (WholeOverisSelected()) totalItemsSelected++;
-				final int incrementalValue=100/totalItemsSelected;		
-												
+				
+				int incValue=0;
+				if(totalItemsSelected==0) incValue=100;
+				else incValue=100/totalItemsSelected; 
+				
+				final int incrementalValue = incValue;						
 				if (AssCycisSelected()) 
 				{
 					AssCycThread = new Thread(new Runnable() {						
@@ -1462,22 +1472,22 @@ public class AntiPatternSearchDialog extends JDialog {
 				} catch (InterruptedException e) {				
 					e.printStackTrace();
 				}
-				
+			
+				AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, impPart, mixIden,
+						   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver	);
+
+				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
+
 				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				
+
 				identifyButton.setEnabled(true);
 				progressBar.setValue(100);
 				progressBarDescr.setText("Completed. "+totalOccurrences+" occurrences found.");
-								
-				AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, impPart, mixIden,
-																	   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver	);
-
-				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
 				
-				ProjectBrowser pb = ProjectBrowser.getProjectBrowserFor(frame, frame.getDiagramManager().getCurrentProject());
-				pb.getTree().updateUI();
+//				ProjectBrowser pb = ProjectBrowser.getProjectBrowserFor(frame, frame.getDiagramManager().getCurrentProject());
+//				pb.getTree().updateUI();
 				
-				btnShowResult.setEnabled(true);		
+				btnShowResult.setEnabled(true);						
 			}
 		});		
 		

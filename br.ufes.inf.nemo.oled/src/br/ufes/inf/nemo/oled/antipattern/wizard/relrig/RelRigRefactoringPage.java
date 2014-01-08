@@ -197,6 +197,8 @@ public class RelRigRefactoringPage extends WizardPage {
 		
 		//=============================
 		
+		((RelRigWizard)getWizard()).canFinish=true;
+		
 		return ((RelRigWizard)getWizard()).finishing;
 		
 				
