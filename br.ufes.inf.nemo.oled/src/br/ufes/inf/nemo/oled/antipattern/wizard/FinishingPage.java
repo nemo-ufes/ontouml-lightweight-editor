@@ -35,7 +35,7 @@ public class FinishingPage extends WizardPage {
 	 */
 	public FinishingPage() {
 		super("Finishing Page");		
-		setTitle("Finishing Page");
+		setTitle("Finished.");
 		setDescription("");
 	}
 
@@ -45,7 +45,12 @@ public class FinishingPage extends WizardPage {
 		for(Object obj: fix.getModified()) modifiedList.add(obj.toString());
 		for(Object obj: fix.getAdded()) addedList.add(obj.toString());
 		for(Object obj: fix.getDeleted()) removedList.add(obj.toString());
-		rulesText.setText(rulesText.getText()+"\n"+fix.getAddedString());		
+		rulesText.setText(rulesText.getText()+"\n"+fix.getRulesString());
+		
+		int qtde= modifiedList.getItemCount()+addedList.getItemCount()+removedList.getItemCount();
+		if (!fix.getRulesString().isEmpty()) qtde++;
+		if(qtde==0) showStatus(true);
+		else showStatus(false);
 	}
 	
 	public void showStatus (boolean value)

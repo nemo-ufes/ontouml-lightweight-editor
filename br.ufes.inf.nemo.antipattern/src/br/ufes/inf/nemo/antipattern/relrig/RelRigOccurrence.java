@@ -11,7 +11,6 @@ import RefOntoUML.Relator;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.antipattern.Fix;
 import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.antipattern.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -167,46 +166,35 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 	
 	// ========== OUTCOME FIXES =========
 	
-	public Fix changeToRole(EObject rigid)
+	public void changeToRole(EObject rigid)
 	{
-		Fix result = fixer.changeClassStereotype(rigid, ClassStereotype.ROLE);
-		this.fix.addAll(result);
-		return result;
+		this.fix.addAll(fixer.changeClassStereotype(rigid, ClassStereotype.ROLE));
 	}
 	
-	public Fix changeToRoleMixin(EObject rigid)
+	public void changeToRoleMixin(EObject rigid)
 	{
-		Fix result = fixer.changeClassStereotype(rigid, ClassStereotype.ROLEMIXIN);
-		this.fix.addAll(result);
-		return result;
+		this.fix.addAll(fixer.changeClassStereotype(rigid, ClassStereotype.ROLEMIXIN));
 	}
 	
-	public Fix changeToMode(EObject rigid, EObject rigidMediation)
-	{
-		Fix result = fixer.changeClassStereotype(rigid, ClassStereotype.MODE);		
-		result.addAll(fixer.changeRelationStereotype(rigidMediation, RelationStereotype.CHARACTERIZATION));
-		this.fix.addAll(result);
-		return result;
+	public void changeToMode(EObject rigid, EObject rigidMediation)
+	{				
+		this.fix.addAll(fixer.changeRelationStereotype(rigidMediation, RelationStereotype.CHARACTERIZATION));
+		this.fix.addAll(fixer.changeClassStereotype(rigid, ClassStereotype.MODE));
 	}
 	
-	public Fix setBothReadOnly (EObject mediation)
+	public void setBothReadOnly (EObject mediation)
 	{		
 		if (mediation instanceof Mediation){
 			Mediation med = (Mediation)mediation;
 			med.getMemberEnd().get(0).setIsReadOnly(true);
 			med.getMemberEnd().get(1).setIsReadOnly(true);
 		}		
-		Fix result = new Fix();
-		result.includeModified(mediation);
 		this.fix.includeModified(mediation);
-		return result;
 	}
 	
-	public Fix createRoleSubType(EObject rigid, EObject rigidMediation)
+	public void createRoleSubType(EObject rigid, EObject rigidMediation)
 	{
-		Fix result = fixer.createSubTypeInvolvingLink(rigid, ClassStereotype.ROLE,rigidMediation);
-		this.fix.addAll(result);
-		return result;
+		this.fix.addAll(fixer.createSubTypeInvolvingLink(rigid, ClassStereotype.ROLE,rigidMediation));
 	}
 }
 

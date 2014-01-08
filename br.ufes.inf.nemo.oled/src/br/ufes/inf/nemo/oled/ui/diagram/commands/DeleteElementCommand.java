@@ -185,7 +185,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			}
 		}	
 					
-		//FIXME - Removes the inferred elements. After creating the visual objects, use the delete command.			
+		//FIXME - Tiago, you need to fix this part of the code (John).  
+		//Removes the inferred elements. After creating the visual objects, use the delete command.			
 		ArrayList<Element> inferred = ProjectBrowser.getInferences(project).getInferredElements();			
 		OntoUMLParser parser = ProjectBrowser.getParserFor(project);
 		for (Element e : inferred) {
@@ -230,53 +231,39 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * Deletes a relationship from the model instance behind the scenes and updates the application accordingly.
 	 * @param elem
 	 */
-	public void deleteFromModel (RefOntoUML.Relationship elem)
+	public void deleteFromModel (RefOntoUML.Element elem)
 	{
 		DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), elem);
 		project.getEditingDomain().getCommandStack().execute(cmd);
 		
-		ProjectBrowser.getParserFor(project).removeElement(elem);
+		//update the application accordingly
+		updateApplication(elem);
+	}
+	
+	/** Update the application accordingly */
+	public static void updateApplication(RefOntoUML.Element deletedElement)
+	{		
+		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
 		
-		//============ Updating application... ==============
+		ProjectBrowser.getParserFor(project).removeElement(deletedElement);
 		
 		//Remove the element from the auto completion of the OCL editor			
-		if (elem instanceof RefOntoUML.Association)
-		{
-			Property source = ((RefOntoUML.Association) elem).getMemberEnd().get(0);
-			Property target = ((RefOntoUML.Association) elem).getMemberEnd().get(1);					
-			ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(source);
-			ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(target);
+		if (deletedElement instanceof RefOntoUML.Association)
+		{			
+			if (!((RefOntoUML.Association) deletedElement).getMemberEnd().isEmpty())
+			{			
+				Property source = ((RefOntoUML.Association) deletedElement).getMemberEnd().get(0);
+				Property target = ((RefOntoUML.Association) deletedElement).getMemberEnd().get(1);			
+				
+				ProjectBrowser.getParserFor(project).removeElement(source);
+				ProjectBrowser.getParserFor(project).removeElement(target);
+			
+				ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(source);
+				ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(target);
+			}
+		}else if (deletedElement instanceof RefOntoUML.Class || deletedElement instanceof RefOntoUML.DataType){		
+			ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion((Classifier)deletedElement);			
 		}
-		
-		//FIXME - Do not rebuild the tree, only update it!
-		ProjectBrowser.rebuildTree(project);
-	}
-	
-	/**
-	 * Deletes a element(type or relationship) from the model instance behind the scenes and updates the application accordingly. 
-	 * @param elem
-	 */
-	public void deleteFromModel(RefOntoUML.Element elem)
-	{
-		if (elem instanceof RefOntoUML.Type) deleteFromModel((RefOntoUML.Type)elem);
-		else if (elem instanceof RefOntoUML.Relationship) deleteFromModel((RefOntoUML.Relationship)elem);		
-	}
-	
-	/**
-	 * Deletes a type from the model instance behind the scenes and updates the application accordingly. 
-	 * @param elem
-	 */
-	public void deleteFromModel(RefOntoUML.Type elem)
-	{
-		DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), elem);
-		project.getEditingDomain().getCommandStack().execute(cmd);
-	
-		ProjectBrowser.getParserFor(project).removeElement(elem);
-		
-		//============ Updating application... ==============
-		
-		//Remove the element from the auto completion of the OCL editor
-		ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion((Classifier)elem);
 		
 		//FIXME - Do not rebuild the tree, only update it!
 		ProjectBrowser.rebuildTree(project);

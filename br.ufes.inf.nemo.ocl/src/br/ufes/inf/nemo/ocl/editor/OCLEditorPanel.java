@@ -172,7 +172,7 @@ public class OCLEditorPanel extends JPanel {
 		   }
 	   }	   
    }
-      
+   
    public void updateCompletion(EObject elem)
    {
 	   removeCompletion(elem);

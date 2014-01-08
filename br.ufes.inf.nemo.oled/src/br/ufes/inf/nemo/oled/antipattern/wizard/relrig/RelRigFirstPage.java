@@ -10,10 +10,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import br.ufes.inf.nemo.antipattern.Fix;
-import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
-import br.ufes.inf.nemo.oled.antipattern.wizard.FinishingPage;
 
 /**
  * @author Tiago Sales
@@ -36,16 +33,16 @@ public class RelRigFirstPage extends WizardPage {
 	 */
 	public RelRigFirstPage(RelRigOccurrence relRig, int rigid) 
 	{
-		super(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 1/4");		
-		setTitle(RelRigAntipattern.getAntipatternInfo().getAcronym() + " - 1/4");
-		
+		super("RelRigFirstPage");				
 		this.relRig = relRig;
 		this.rigid = rigid;
 		
 		rigidType = relRig.getRigidMediatedProperties().get(rigid).getType();
 		String text = relRig.getOntoUMLParser().getStringRepresentation(rigidType);
 		int n = (rigid+1);
-		setDescription("Rigid Type #"+n+" : "+text);
+		
+		setTitle("Rigid Type #"+n+": "+text);
+		setDescription("1/4");
 	}
 
 	/**
@@ -87,18 +84,16 @@ public class RelRigFirstPage extends WizardPage {
 		else if(btnYes.getSelection()){			
 			
 			// Action =====================			
-			
-			Fix partialFix = relRig.changeToRole(rigidType);
-			//Fix partialFix = relRig.changeToRoleMixin(rigidType);
-			FinishingPage finishing = (FinishingPage) ((RelRigWizard)getWizard()).getFinishingPage();
-			finishing.addFix(partialFix);
-			
+			relRig.changeToRole(rigidType);
+			//relRig.changeToRoleMixin(rigidType);			
 			//=============================
 			
 			if(rigid < relRig.getRigidMediatedProperties().size()-1)
 				return ((RelRigWizard)getWizard()).getFirstPage(rigid+1);				
-			else
-				return ((RelRigWizard)getWizard()).finishing;			
+			else { 
+				((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix()); 
+				return ((RelRigWizard)getWizard()).finishing;
+			}			
 		}
 		return super.getNextPage();
 	}
