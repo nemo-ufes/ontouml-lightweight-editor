@@ -5,6 +5,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -12,6 +13,9 @@ import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import br.ufes.inf.nemo.antipattern.Fix;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
 
 /**
  * @author Tiago Sales
@@ -50,7 +54,45 @@ public class FinishingPage extends WizardPage {
 		int qtde= modifiedList.getItemCount()+addedList.getItemCount()+removedList.getItemCount();
 		if (!fix.getRulesString().isEmpty()) qtde++;
 		if(qtde==0) showStatus(true);
-		else showStatus(false);
+		else showStatus(false);		
+	}
+	
+	public void updateOLED ()
+	{
+		if (fix==null) return;
+		
+		Display.getDefault().asyncExec(new Runnable() {
+		    public void run() {
+		    	
+//		    	Thread t = new Thread(new Runnable() {					
+//					@Override
+//					public void run() {
+//						SwingUtilities.invokeLater(new Runnable() {			
+//							@Override
+//							public void run() {
+								for(Object obj: fix.getAdded()) {
+									if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
+										AddNodeCommand.updateApplication((RefOntoUML.Element)obj);
+								}
+								for(Object obj: fix.getAdded()) {
+									if (obj instanceof RefOntoUML.Relationship)
+										AddConnectionCommand.updateApplication((RefOntoUML.Element)obj);
+								}
+								for(Object obj: fix.getDeleted()) {
+									if (obj instanceof RefOntoUML.Relationship)
+										ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
+								}
+								for(Object obj: fix.getDeleted()) {
+									if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
+										ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
+								}				
+//							}
+//						});						
+//					}
+//				});
+//		    	t.start();
+		    }
+		});
 	}
 	
 	public void showStatus (boolean value)

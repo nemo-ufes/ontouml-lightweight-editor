@@ -88,7 +88,8 @@ public class RelRigFourthPage extends WizardPage {
 		}else{
 
 			//set fixes
-			((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix());						
+			((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix());
+			((RelRigWizard)getWizard()).finishing.updateOLED();
 			((RelRigWizard)getWizard()).canFinish=true;			
 			return ((RelRigWizard)getWizard()).finishing;
 		}

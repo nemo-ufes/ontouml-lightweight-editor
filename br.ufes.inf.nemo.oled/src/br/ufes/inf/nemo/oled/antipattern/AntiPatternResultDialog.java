@@ -97,16 +97,25 @@ public class AntiPatternResultDialog extends Dialog {
 	{
 		super(parentShell);		
 		this.result = result;
-		setDefaultImage(new Image(Display.getDefault(),AntiPatternResultDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/antipattern.png")));
+		setDefaultImage(new Image(Display.getDefault(),AntiPatternResultDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/antipattern-36x36.png")));		
 	}
 	
 	@Override
 	public void create() {
 	    super.create();
 	    setShellStyle(SWT.TITLE);
+	    bringToFront(getShell());
 	    getShell().setText("Anti-Pattern Result");	    
 	}
 
+	public void bringToFront(final Shell shell) {
+	    shell.getDisplay().asyncExec(new Runnable() {
+	        public void run() {
+	            shell.forceActive();
+	        }
+	    });
+	}
+	
 	/**
 	 * Create contents of the dialog.
 	 * @param parent
@@ -336,13 +345,15 @@ public class AntiPatternResultDialog extends Dialog {
 	}
 	
 	public void setFocus() {  viewer.getControl().setFocus();  }
-
+	
 	public void showWizard(final AntipatternOccurrence apOccur)
 	{
     	Display.getDefault().syncExec(new Runnable() {
-		    public void run() {		    	
-	        	if (apOccur instanceof RelRigOccurrence) {	        		
-	        		WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));
+		    public void run() {
+		    	
+	        	if (apOccur instanceof RelRigOccurrence) 
+	        	{	        		
+	        		WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));	        		
 	        		wizardDialog.open();
 	        	}
 		    }
