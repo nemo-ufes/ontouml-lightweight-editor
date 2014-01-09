@@ -192,7 +192,7 @@ public class RelRigRefactoringPage extends WizardPage {
 		}
 		for(Object obj: relRig.getFix().getDeleted()) {
 			if (obj instanceof RefOntoUML.Element)
-				DeleteElementCommand.updateApplication((RefOntoUML.Element)obj);
+				DeleteElementCommand.updateApplication((RefOntoUML.Element)obj); //FIXME - deletar do diagrama tbm.
 		}
 		
 		//=============================
