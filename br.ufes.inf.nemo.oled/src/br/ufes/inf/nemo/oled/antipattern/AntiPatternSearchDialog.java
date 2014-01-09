@@ -834,7 +834,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		{
        		public void actionPerformed(ActionEvent event) 
        		{
-       			IdentifyButtonActionPerformed(event);
+       			IdentifyButtonActionPerformed(event);				
        		}
        	});
 		
@@ -855,9 +855,8 @@ public class AntiPatternSearchDialog extends JDialog {
 		btnNewButton_1.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (searchThread!=null){
-					searchThread.interrupt();
-				}	
+				interruptAll();
+				if (searchThread!=null) searchThread.interrupt();				
 				dispose();
 				
 			}
@@ -867,9 +866,8 @@ public class AntiPatternSearchDialog extends JDialog {
 		btnStop.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (searchThread!=null){
-					searchThread.interrupt();
-				}
+				interruptAll();
+				if (searchThread!=null) searchThread.interrupt();				
 			}
 		});
 		
@@ -938,6 +936,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		try{
 		
 		totalOccurrences=0;
+		interruptAll();
 		if (searchThread!=null) searchThread.interrupt();
 		
 		searchThread= new Thread(new Runnable() {			
@@ -1531,23 +1530,18 @@ public class AntiPatternSearchDialog extends JDialog {
 						   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver	);
 
 				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
-
+				
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
-					public void run() {				
-						try {
-						    Thread.sleep(1000);
-						} catch(InterruptedException ex) {
-						    Thread.currentThread().interrupt();
-						}
+					public void run() {
 						setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));				
 						identifyButton.setEnabled(true);
 						progressBar.setValue(100);
-						progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-						progressBarDescr.setText("Completed. "+totalOccurrences+" occurrences found.");												
-						btnShowResult.setEnabled(true);					
+						progressBar.setString(Integer.toString(progressBar.getValue()) + "%");												
+						btnShowResult.setEnabled(true);
+						updateStatus("Completed. "+totalOccurrences+" occurrences found.");
 					}
-				});
+				});				
 			}
 		});		
 		searchThread.start();		
@@ -1609,8 +1603,33 @@ public class AntiPatternSearchDialog extends JDialog {
 		} catch (InterruptedException e) {				
 			e.printStackTrace();
 		}
+	}
+	
+	public void interruptAll()
+	{
+		if(AssCycThread!=null)AssCycThread.interrupt();				
+		if(BinOverThread!=null) BinOverThread.interrupt();
+		if(DepPhaseThread!=null) DepPhaseThread.interrupt();
+		if(FreeRoleThread!=null) FreeRoleThread.interrupt();
+		if(GSRigThread!=null) GSRigThread.interrupt();
+		if(HetCollThread!=null) HetCollThread.interrupt();
+		if(HomoFuncThread!=null) HomoFuncThread.interrupt();
+		if(ImpAbsThread!=null) ImpAbsThread.interrupt();
+		if(ImpPartThread!=null) ImpPartThread.interrupt();
+		if(MixIdenThread!=null) MixIdenThread.interrupt();
+		if(MixRigThread!=null) MixRigThread.interrupt();
+		if(MultiDepThread!=null) MultiDepThread.interrupt();
+		if(RelCompThread!=null) RelCompThread.interrupt();
+		if(RelOverThread!=null) RelOverThread.interrupt();
+		if(RelRigThread!=null) RelRigThread.interrupt();
+		if(RelSpecThread!=null) RelSpecThread.interrupt();
+		if(RepRelThread!=null) RepRelThread.interrupt();
+		if(UndefFormalThread!=null) UndefFormalThread.interrupt();
+		if(UndefPhaseThread!=null) UndefPhaseThread.interrupt();
+		if(WholeOverThread!=null) WholeOverThread.interrupt();
 
 	}
+
 	public void updateGUI()
 	{
 		SwingUtilities.invokeLater(new Runnable() {					
