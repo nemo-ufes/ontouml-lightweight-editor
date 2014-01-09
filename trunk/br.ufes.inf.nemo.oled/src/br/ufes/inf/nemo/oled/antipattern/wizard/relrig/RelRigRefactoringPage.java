@@ -21,9 +21,6 @@ import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 
 /**
  * @author Tiago Sales
@@ -163,7 +160,7 @@ public class RelRigRefactoringPage extends WizardPage {
 			Combo c = mapping.get(p);
 			
 			if(c.getSelectionIndex()==0) {
-				relRig.changeToRole(p.getType());
+				relRig.changeToRoleOrRoleMixin(p.getType());
 				//relRig.changeToRoleMixin(p.getType());
 			}
 			if(c.getSelectionIndex()==1) {
@@ -176,32 +173,14 @@ public class RelRigRefactoringPage extends WizardPage {
 			if(c.getSelectionIndex()==3) {
 				relRig.setBothReadOnly(p.getAssociation());				
 			}
-		}		
+		}
 		
 		//set fixes
 		((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix());
 		
-		//update OLED
-		for(Object obj: relRig.getFix().getAdded()) {
-			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
-				AddNodeCommand.updateApplication((RefOntoUML.Element)obj);
-		}
-		for(Object obj: relRig.getFix().getAdded()) {
-			if (obj instanceof RefOntoUML.Relationship)
-				AddConnectionCommand.updateApplication((RefOntoUML.Element)obj);
-		}
-		for(Object obj: relRig.getFix().getDeleted()) {
-			if (obj instanceof RefOntoUML.Element)
-				DeleteElementCommand.updateApplication((RefOntoUML.Element)obj); //FIXME - deletar do diagrama tbm.
-		}
-		
-		//=============================
-		
 		((RelRigWizard)getWizard()).canFinish=true;
 		
 		return ((RelRigWizard)getWizard()).finishing;
-		
-				
 	}
 	
 }

@@ -5,11 +5,14 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Category;
 import RefOntoUML.Mediation;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
+import RefOntoUML.SubKind;
+import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.antipattern.OutcomeFixer.RelationStereotype;
@@ -166,20 +169,27 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 	
 	// ========== OUTCOME FIXES =========
 	
-	public void changeToRole(EObject rigid)
+	public void changeToRoleOrRoleMixin(EObject rigid)
 	{
-		this.fix.addAll(fixer.changeClassStereotype(rigid, ClassStereotype.ROLE));
+		if (rigid instanceof SubKind){			
+			this.fix.addAll(fixer.changeClassStereotypeTo(rigid, ClassStereotype.ROLE));			
+		}
+		if (rigid instanceof SubstanceSortal){
+			this.fix.addAll(fixer.changeClassStereotypeSubtyping(rigid, ClassStereotype.ROLE));
+		}
+		if(rigid instanceof Category){
+			if (((Category) rigid).allParents().isEmpty()){
+				this.fix.addAll(fixer.changeClassStereotypeSubtyping(rigid, ClassStereotype.ROLEMIXIN));
+			}else{
+				this.fix.addAll(fixer.changeClassStereotypeTo(rigid, ClassStereotype.ROLEMIXIN));
+			}
+		}
 	}
-	
-	public void changeToRoleMixin(EObject rigid)
-	{
-		this.fix.addAll(fixer.changeClassStereotype(rigid, ClassStereotype.ROLEMIXIN));
-	}
-	
+		
 	public void changeToMode(EObject rigid, EObject rigidMediation)
 	{				
-		this.fix.addAll(fixer.changeRelationStereotype(rigidMediation, RelationStereotype.CHARACTERIZATION));
-		this.fix.addAll(fixer.changeClassStereotype(rigid, ClassStereotype.MODE));
+		this.fix.addAll(fixer.changeRelationStereotypeTo(rigidMediation, RelationStereotype.CHARACTERIZATION));
+		this.fix.addAll(fixer.changeClassStereotypeTo(rigid, ClassStereotype.MODE));
 	}
 	
 	public void setBothReadOnly (EObject mediation)
@@ -194,7 +204,12 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 	
 	public void createRoleSubType(EObject rigid, EObject rigidMediation)
 	{
-		this.fix.addAll(fixer.createSubTypeInvolvingLink(rigid, ClassStereotype.ROLE,rigidMediation));
+		if(rigid instanceof SubKind || rigid instanceof SubstanceSortal){
+			this.fix.addAll(fixer.createSubTypeAsInvolvingLink(rigid, ClassStereotype.ROLE,rigidMediation));
+		}
+		if(rigid instanceof Category){
+			this.fix.addAll(fixer.createSubTypeAsInvolvingLink(rigid, ClassStereotype.ROLEMIXIN,rigidMediation));
+		}
 	}
 }
 

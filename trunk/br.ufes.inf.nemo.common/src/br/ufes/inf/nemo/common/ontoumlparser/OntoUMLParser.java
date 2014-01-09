@@ -357,10 +357,20 @@ public class OntoUMLParser {
 	 */
 	public Boolean isSelected (EObject elem) 
 	{		
-		if (elem!=null)
-			return elementsHash.get(elem).getSelected();
-		else
+		if (elem!=null){
+			if (elementsHash.get(elem)!=null)
+				return elementsHash.get(elem).getSelected();
+			else{
+				try {
+					throw new Exception("Element not contained in OntoUML parser.");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return false;
+			}
+		}else{
 			return false;
+		}
 	}
 	
 	/**

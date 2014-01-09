@@ -847,8 +847,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		btnShowResult.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				showResult();
-				btnShowResult.setEnabled(false);
+				showResult();				
 			}
 		});
 		
@@ -978,35 +977,14 @@ public class AntiPatternSearchDialog extends JDialog {
 				 final UndefPhaseAntipattern undefPhase = new UndefPhaseAntipattern(parser);
 				 final WholeOverAntipattern wholeOver = new WholeOverAntipattern(parser);	
 			
-				 if (parser.getElements() == null) return;
+				if (parser.getElements() == null) return;
 				
-				int totalItemsSelected = 0;			
-				if (AssCycisSelected()) totalItemsSelected++;
-				if (BinOverisSelected()) totalItemsSelected++;
-				if (DepPhaseisSelected()) totalItemsSelected++;
-				if (FreeRoleisSelected()) totalItemsSelected++;
-				if (GSRigisSelected()) totalItemsSelected++;
-				if (HetCollisSelected()) totalItemsSelected++;
-				if (HomoFuncisSelected()) totalItemsSelected++;
-				if (ImpAbsisSelected()) totalItemsSelected++;
-				if (ImpPartisSelected()) totalItemsSelected++;
-				if (MixIdenisSelected()) totalItemsSelected++;
-				if (MixRigisSelected()) totalItemsSelected++;
-				if (MultiDepisSelected()) totalItemsSelected++;
-				if (RelCompisSelected()) totalItemsSelected++;
-				if (RelOverisSelected()) totalItemsSelected++;
-				if (RelRigisSelected()) totalItemsSelected++;
-				if (RelSpecisSelected()) totalItemsSelected++;
-				if (RepRelisSelected()) totalItemsSelected++;			
-				if (UndefFormalisSelected()) totalItemsSelected++;
-				if (UndefPhaseisSelected()) totalItemsSelected++;
-				if (WholeOverisSelected()) totalItemsSelected++;
-				
+				int totalItemsSelected = getTotalSelected();				
 				int incValue=0;
 				if(totalItemsSelected==0) incValue=100;
-				else incValue=100/totalItemsSelected; 
+				else incValue=100/totalItemsSelected; 				
+				final int incrementalValue = incValue;
 				
-				final int incrementalValue = incValue;						
 				if (AssCycisSelected()) 
 				{
 					AssCycThread = new Thread(new Runnable() {						
@@ -1467,31 +1445,8 @@ public class AntiPatternSearchDialog extends JDialog {
 					WholeOverThread.start();									
 				}
 			
-				try {
-					if(AssCycThread!=null)AssCycThread.join();				
-					if(BinOverThread!=null) BinOverThread.join();
-					if(DepPhaseThread!=null) DepPhaseThread.join();
-					if(FreeRoleThread!=null) FreeRoleThread.join();
-					if(GSRigThread!=null) GSRigThread.join();
-					if(HetCollThread!=null) HetCollThread.join();
-					if(HomoFuncThread!=null) HomoFuncThread.join();
-					if(ImpAbsThread!=null) ImpAbsThread.join();
-					if(ImpPartThread!=null) ImpPartThread.join();
-					if(MixIdenThread!=null) MixIdenThread.join();
-					if(MixRigThread!=null) MixRigThread.join();
-					if(MultiDepThread!=null) MultiDepThread.join();
-					if(RelCompThread!=null) RelCompThread.join();
-					if(RelOverThread!=null) RelOverThread.join();
-					if(RelRigThread!=null) RelRigThread.join();
-					if(RelSpecThread!=null) RelSpecThread.join();
-					if(RepRelThread!=null) RepRelThread.join();
-					if(UndefFormalThread!=null) UndefFormalThread.join();
-					if(UndefPhaseThread!=null) UndefPhaseThread.join();
-					if(WholeOverThread!=null) WholeOverThread.join();
-				} catch (InterruptedException e) {				
-					e.printStackTrace();
-				}
-			
+				joinAll();
+				
 				AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, impPart, mixIden,
 						   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver	);
 
@@ -1517,6 +1472,59 @@ public class AntiPatternSearchDialog extends JDialog {
 		}
 	}
 	
+	public int getTotalSelected()
+	{
+		int totalItemsSelected = 0;			
+		if (AssCycisSelected()) totalItemsSelected++;
+		if (BinOverisSelected()) totalItemsSelected++;
+		if (DepPhaseisSelected()) totalItemsSelected++;
+		if (FreeRoleisSelected()) totalItemsSelected++;
+		if (GSRigisSelected()) totalItemsSelected++;
+		if (HetCollisSelected()) totalItemsSelected++;
+		if (HomoFuncisSelected()) totalItemsSelected++;
+		if (ImpAbsisSelected()) totalItemsSelected++;
+		if (ImpPartisSelected()) totalItemsSelected++;
+		if (MixIdenisSelected()) totalItemsSelected++;
+		if (MixRigisSelected()) totalItemsSelected++;
+		if (MultiDepisSelected()) totalItemsSelected++;
+		if (RelCompisSelected()) totalItemsSelected++;
+		if (RelOverisSelected()) totalItemsSelected++;
+		if (RelRigisSelected()) totalItemsSelected++;
+		if (RelSpecisSelected()) totalItemsSelected++;
+		if (RepRelisSelected()) totalItemsSelected++;			
+		if (UndefFormalisSelected()) totalItemsSelected++;
+		if (UndefPhaseisSelected()) totalItemsSelected++;
+		if (WholeOverisSelected()) totalItemsSelected++;
+		return totalItemsSelected;
+	}
+	public void joinAll()
+	{
+		try {
+			if(AssCycThread!=null)AssCycThread.join();				
+			if(BinOverThread!=null) BinOverThread.join();
+			if(DepPhaseThread!=null) DepPhaseThread.join();
+			if(FreeRoleThread!=null) FreeRoleThread.join();
+			if(GSRigThread!=null) GSRigThread.join();
+			if(HetCollThread!=null) HetCollThread.join();
+			if(HomoFuncThread!=null) HomoFuncThread.join();
+			if(ImpAbsThread!=null) ImpAbsThread.join();
+			if(ImpPartThread!=null) ImpPartThread.join();
+			if(MixIdenThread!=null) MixIdenThread.join();
+			if(MixRigThread!=null) MixRigThread.join();
+			if(MultiDepThread!=null) MultiDepThread.join();
+			if(RelCompThread!=null) RelCompThread.join();
+			if(RelOverThread!=null) RelOverThread.join();
+			if(RelRigThread!=null) RelRigThread.join();
+			if(RelSpecThread!=null) RelSpecThread.join();
+			if(RepRelThread!=null) RepRelThread.join();
+			if(UndefFormalThread!=null) UndefFormalThread.join();
+			if(UndefPhaseThread!=null) UndefPhaseThread.join();
+			if(WholeOverThread!=null) WholeOverThread.join();
+		} catch (InterruptedException e) {				
+			e.printStackTrace();
+		}
+
+	}
 	public void updateGUI()
 	{
 		SwingUtilities.invokeLater(new Runnable() {					
@@ -1533,7 +1541,7 @@ public class AntiPatternSearchDialog extends JDialog {
 	 */
 	public void showResult()
 	{	
-		AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
-		AntiPatternResultDialog.openDialog(apList);
+    	AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+    	AntiPatternResultDialog.openDialog(apList);
 	}
 }

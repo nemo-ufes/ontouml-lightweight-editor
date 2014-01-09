@@ -7,8 +7,11 @@ import org.eclipse.jface.wizard.WizardPage;
 
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.oled.antipattern.wizard.PresentationPage;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
 
 /**
  * @author Tiago Sales
@@ -119,6 +122,24 @@ public class RelRigWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		
+		//update OLED with the fixes
+		for(Object obj: ap.getFix().getAdded()) {
+			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
+				AddNodeCommand.updateApplication((RefOntoUML.Element)obj);
+		}
+		for(Object obj: ap.getFix().getAdded()) {
+			if (obj instanceof RefOntoUML.Relationship)
+				AddConnectionCommand.updateApplication((RefOntoUML.Element)obj);
+		}
+		for(Object obj: ap.getFix().getDeleted()) {
+			if (obj instanceof RefOntoUML.Relationship)
+				ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
+		}
+		for(Object obj: ap.getFix().getDeleted()) {
+			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
+				ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
+		}				
+
 		return true;
 	}
 
