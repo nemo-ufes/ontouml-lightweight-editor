@@ -934,25 +934,36 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return list;
 	}
 
+	public DiagramEditor getDiagramEditor(StructureDiagram diagram)
+	{		
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) {
+				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram))
+					return ((DiagramEditorWrapper)c).getDiagramEditor();
+			}
+		}
+		return null;
+	}
+	
 	/**
-	 * Gets all DiagramEditors that contains a given element.
+	 * Gets all DiagramEditors that contains a given element. 
+	 * Some of them might appear opened in the Tab but others don't.
 	 */
 	public ArrayList<DiagramEditor> getDiagramEditors(RefOntoUML.Element element)
 	{
 		ArrayList<DiagramEditor> list = new ArrayList<DiagramEditor>();
-		for(Component c: getComponents()){
-			if(c instanceof DiagramEditorWrapper) {
-				DiagramEditor d = ((DiagramEditorWrapper)c).getDiagramEditor();
-				for(DiagramElement e: d.getDiagram().getChildren()){
-					if (e instanceof ClassElement){
-						ClassElement elem = (ClassElement)e;
-						if(elem.getClassifier().equals(element)) list.add(((DiagramEditorWrapper)c).getDiagramEditor()); 
-					}
-					if (e instanceof AssociationElement){
-						AssociationElement elem = ((AssociationElement)e);
-						if(elem.getRelationship().equals(element)) list.add(((DiagramEditorWrapper)c).getDiagramEditor());
-					}
-				}				
+		for(UmlDiagram d: currentProject.getDiagrams()){
+			if(d instanceof StructureDiagram){
+				StructureDiagram diagram = (StructureDiagram)d;
+				DiagramEditor editor = getDiagramEditor(diagram);
+				if (editor!=null && diagram.containsChild(element)) list.add(editor);
+				else if (editor==null && diagram.containsChild(element)){
+					DiagramEditor newEditor = new DiagramEditor(frame, this, diagram);
+					newEditor.addEditorStateListener(this);
+					newEditor.addSelectionListener(this);
+					newEditor.addAppCommandListener(editorDispatcher);
+					list.add(newEditor);
+				}
 			}
 		}
 		return list;

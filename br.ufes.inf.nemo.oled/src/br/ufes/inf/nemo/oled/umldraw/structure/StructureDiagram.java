@@ -518,6 +518,35 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		return result;
 	}
 
+	public boolean containsChild(DiagramElement elem)
+	{
+		List<DiagramElement> children = new ArrayList<DiagramElement>();
+		children.addAll(super.getChildren());
+		children.addAll(connections);
+		for(DiagramElement element: children){
+			if(element.equals(elem)) return true;
+		}
+		return false;
+	}
+	
+	public boolean containsChild(RefOntoUML.Element element)
+	{
+		List<DiagramElement> children = new ArrayList<DiagramElement>();
+		children.addAll(super.getChildren());
+		children.addAll(connections);
+		for(DiagramElement e: children){
+			if (e instanceof ClassElement){
+				ClassElement elem = (ClassElement)e;
+				if(elem.getClassifier().equals(element)) return true; 
+			}
+			if (e instanceof AssociationElement){
+				AssociationElement elem = ((AssociationElement)e);
+				if(elem.getRelationship().equals(element)) return true;
+			}
+		}
+		return false;
+	}
+	
 	public Connection getConnectionForGeneralization(Relationship relationship) {
 		for (Connection item : connections) {
 			if (((BaseConnection) item).getRelationship() == relationship)

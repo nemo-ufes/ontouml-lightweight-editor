@@ -5,15 +5,27 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
+import RefOntoUML.Category;
 import RefOntoUML.Classifier;
+import RefOntoUML.Collective;
+import RefOntoUML.DataType;
 import RefOntoUML.Generalization;
+import RefOntoUML.Kind;
 import RefOntoUML.LiteralInteger;
 import RefOntoUML.LiteralUnlimitedNatural;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Meronymic;
+import RefOntoUML.Mixin;
+import RefOntoUML.Mode;
 import RefOntoUML.PackageableElement;
+import RefOntoUML.Phase;
 import RefOntoUML.Property;
+import RefOntoUML.Quantity;
 import RefOntoUML.RefOntoUMLFactory;
+import RefOntoUML.Relator;
+import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
+import RefOntoUML.SubKind;
 import RefOntoUML.Type;
 import RefOntoUML.VisibilityKind;
 import RefOntoUML.componentOf;
@@ -307,9 +319,18 @@ public class OutcomeFixer {
 		}
 		return fix;
 	}
+
+	/** Copy eContainer from element to the receiver. Both will be in the same container. */
+	public void copyContainer(EObject element, EObject receiver)
+	{		
+		EObject container = element.eContainer();
+		if(container instanceof RefOntoUML.Package){
+			((RefOntoUML.Package)container).getPackagedElement().add((PackageableElement)receiver);			
+		}		
+	}
 	
 	/** Change a class stereotype */
-	public Fix changeClassStereotype(EObject element, ClassStereotype newStereo)
+	public Fix changeClassStereotypeTo(EObject element, ClassStereotype newStereo)
 	{
 		Fix fixes = new Fix();		
 		// create new element
@@ -317,11 +338,8 @@ public class OutcomeFixer {
 		copyMetaAttributes(element,newElement);		
 		fixes.includeAdded(newElement);
 		// the same container
-		EObject container = element.eContainer();
-		if(container instanceof RefOntoUML.Package){
-			((RefOntoUML.Package)container).getPackagedElement().add(newElement);
-			fixes.includeModified(element.eContainer());
-		}				
+		copyContainer(element,newElement);
+		fixes.includeModified(element.eContainer());						
 		// change references
 		Fix references = changeModelReferences(element,newElement); 		
 		fixes.includeAllModified(references.getModified());		
@@ -331,8 +349,59 @@ public class OutcomeFixer {
 		return fixes;
 	}
 
+	/** Get class stereotype */
+	public ClassStereotype getClassStereotype(EObject element)
+	{		
+		if(element instanceof Kind) return ClassStereotype.KIND;
+		else if (element instanceof SubKind) return ClassStereotype.SUBKIND;
+		else if(element instanceof Collective) return ClassStereotype.COLLECTIVE;
+		else if(element instanceof Quantity) return ClassStereotype.QUANTITY;
+		else if(element instanceof Phase) return ClassStereotype.PHASE;
+		else if(element instanceof Role) return ClassStereotype.ROLE;
+		else if(element instanceof Category) return ClassStereotype.CATEGORY;
+		else if(element instanceof Mixin) return ClassStereotype.MIXIN;
+		else if(element instanceof RoleMixin) return ClassStereotype.ROLEMIXIN;
+		else if(element instanceof Relator) return ClassStereotype.RELATOR;
+		else if(element instanceof Mode) return ClassStereotype.MODE;
+		else if(element instanceof DataType) return ClassStereotype.DATATYPE;
+		else return ClassStereotype.KIND;
+	}
+	
+	/** Change element to Role and add a supertype for it */
+	public Fix changeClassStereotypeSubtyping(EObject element, ClassStereotype stereo){
+		Fix fixes = new Fix();
+		ClassStereotype stereoSupertype = getClassStereotype(element);
+		//change to role
+		Fix aux = changeClassStereotypeTo(element, stereo);
+		EObject newElem = (EObject)aux.getAdded().get(0);
+		fixes.addAll(aux);		
+		//create a supertype for it
+		Fix aux2 = addSuperType(newElem, stereoSupertype);
+		fixes.addAll(aux2);
+		return fixes;
+	}
+	
+	/** Add a super-type with the given stereotype to the element*/
+	public Fix addSuperType(EObject element, ClassStereotype stereoSuperType)
+	{
+		Fix fixes = new Fix();
+		//create supertye
+		RefOntoUML.PackageableElement supertype = createClass(stereoSuperType);
+		supertype.setName("Supertype");
+		fixes.includeAdded(supertype);
+		//the same container as
+		copyContainer(element,supertype);
+		fixes.includeModified(element.eContainer());
+		//create generalization
+		Generalization gen = (Generalization)createRelationship(RelationStereotype.GENERALIZATION);
+		gen.setSpecific((RefOntoUML.Classifier)element);
+		gen.setGeneral((RefOntoUML.Classifier)supertype);
+		fixes.includeAdded(gen);
+		return fixes;
+	}
+	
 	/** Change a relationship stereotype */
-	public Fix changeRelationStereotype(EObject relationship, RelationStereotype newStereo)
+	public Fix changeRelationStereotypeTo(EObject relationship, RelationStereotype newStereo)
 	{
 		Fix fixes = new Fix();		
 		// create new relationship
@@ -340,12 +409,9 @@ public class OutcomeFixer {
 		copyMetaAttributes(relationship,newRelationship);
 		copyPropertiesDatas(relationship,newRelationship);
 		fixes.includeAdded(newRelationship);
-		// the same container
-		EObject container = relationship.eContainer();
-		if(container instanceof RefOntoUML.Package && newRelationship instanceof PackageableElement){
-			((RefOntoUML.Package)container).getPackagedElement().add((PackageableElement)newRelationship);
-			fixes.includeModified(relationship.eContainer());
-		}
+		// the same container as
+		copyContainer(relationship,newRelationship);
+		fixes.includeModified(relationship.eContainer());		
 		// change references
 		Fix references = changeModelReferences(relationship,newRelationship); 		
 		fixes.includeAllModified(references.getModified());
@@ -356,7 +422,7 @@ public class OutcomeFixer {
 	}
 	
 	/** Create a subtype and connect it through a generalization to its type. */
-	public Fix createSubType (EObject type, ClassStereotype subtypeStereo)
+	public Fix createSubTypeAs (EObject type, ClassStereotype subtypeStereo)
 	{
 		Fix fixes = new Fix();
 		// create subtype
@@ -374,7 +440,7 @@ public class OutcomeFixer {
 	/** Create a subtype and connect it through a generalization to its type.
 	 *  It also change the references in relation to point to the subtype instead of the type.
 	 */	
-	public Fix createSubTypeInvolvingLink (EObject type, ClassStereotype subtypeStereo, EObject relation)
+	public Fix createSubTypeAsInvolvingLink (EObject type, ClassStereotype subtypeStereo, EObject relation)
 	{
 		Fix fixes = new Fix();		
 		// create subtype

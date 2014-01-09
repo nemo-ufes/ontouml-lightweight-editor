@@ -86,7 +86,10 @@ public class RelRigFourthPage extends WizardPage {
 		if(rigid < relRig.getRigidMediatedProperties().size()-1){		
 			return ((RelRigWizard)getWizard()).getFirstPage(rigid+1);				
 		}else{
-			((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix()); 
+
+			//set fixes
+			((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix());						
+			((RelRigWizard)getWizard()).canFinish=true;			
 			return ((RelRigWizard)getWizard()).finishing;
 		}
 	}

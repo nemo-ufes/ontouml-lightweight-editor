@@ -83,6 +83,9 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		return editor;
 	}
 	
+	public boolean contains(RefOntoUML.Element element){
+		return editor.getDiagram().containsChild(element);
+	}
 	
 	public void setModelFile(File modelFile) {
 		this.projectFile = modelFile;

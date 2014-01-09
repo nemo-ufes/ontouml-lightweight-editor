@@ -88,7 +88,7 @@ public class AntiPatternResultDialog extends Dialog {
 	private ArrayList<AntipatternOccurrence> result;
 	private TableViewer viewer;
 	private AntipatternResultFilter filter;
-	
+		
 	/**
 	 * Create the dialog.
 	 * @param parentShell
@@ -96,7 +96,7 @@ public class AntiPatternResultDialog extends Dialog {
 	public AntiPatternResultDialog(Shell parentShell, ArrayList<AntipatternOccurrence> result) 
 	{
 		super(parentShell);		
-		this.result = result;		
+		this.result = result;
 		setDefaultImage(new Image(Display.getDefault(),AntiPatternResultDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/antipattern.png")));
 	}
 	
@@ -122,15 +122,18 @@ public class AntiPatternResultDialog extends Dialog {
 	}
 
 	public static void openDialog(final AntiPatternList apList)
-	{
-			
+	{			
 		if (apList!=null &&  !apList.getAll().isEmpty())
-		{					
-	    	Display display = Display.getDefault();
-			Shell shell = display.getActiveShell();										
-			AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(shell,apList.getAll());					
-			resultDIalog.create();
-			resultDIalog.open();
+		{
+	    	Display.getDefault().syncExec(new Runnable() {
+			    public void run() {
+			    	Display display = Display.getDefault();	    	
+					Shell shell = display.getActiveShell();			
+					AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(shell,apList.getAll());					
+					resultDIalog.create();
+					resultDIalog.open();
+			    }
+	    	});
 		}
 	}
 	
@@ -337,8 +340,7 @@ public class AntiPatternResultDialog extends Dialog {
 	public void showWizard(final AntipatternOccurrence apOccur)
 	{
     	Display.getDefault().syncExec(new Runnable() {
-		    public void run() {
-		    	
+		    public void run() {		    	
 	        	if (apOccur instanceof RelRigOccurrence) {	        		
 	        		WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));
 	        		wizardDialog.open();

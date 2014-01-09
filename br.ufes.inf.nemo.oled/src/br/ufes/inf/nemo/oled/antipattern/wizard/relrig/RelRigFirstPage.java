@@ -82,10 +82,9 @@ public class RelRigFirstPage extends WizardPage {
 			return ((RelRigWizard)getWizard()).getSecondPage(rigid);
 			
 		else if(btnYes.getSelection()){			
-			
+		
 			// Action =====================			
-			relRig.changeToRole(rigidType);
-			//relRig.changeToRoleMixin(rigidType);			
+			relRig.changeToRoleOrRoleMixin(rigidType);
 			//=============================
 			
 			if(rigid < relRig.getRigidMediatedProperties().size()-1)
