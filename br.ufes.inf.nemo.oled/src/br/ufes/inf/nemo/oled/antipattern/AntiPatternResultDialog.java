@@ -104,7 +104,7 @@ public class AntiPatternResultDialog extends Dialog {
 	public void create() {
 	    super.create();
 	    setShellStyle(SWT.TITLE);
-	    getShell().setText("Anti-Pattern Occurrences");	    
+	    getShell().setText("Anti-Pattern Result");	    
 	}
 
 	/**

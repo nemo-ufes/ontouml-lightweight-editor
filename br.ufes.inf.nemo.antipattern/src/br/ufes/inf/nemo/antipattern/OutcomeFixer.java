@@ -337,7 +337,7 @@ public class OutcomeFixer {
 		Fix fixes = new Fix();		
 		// create new relationship
 		RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);		
-		copyMetaAttributes(relationship,newRelationship); 
+		copyMetaAttributes(relationship,newRelationship);
 		copyPropertiesDatas(relationship,newRelationship);
 		fixes.includeAdded(newRelationship);
 		// the same container

@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
@@ -940,16 +941,15 @@ public class AntiPatternSearchDialog extends JDialog {
 		progressBar.setStringPainted(true);
 		progressBar.setMinimum(0);
 		progressBar.setMaximum(100);
-				
-		identifyButton.setEnabled(false);
-		identifyButton.repaint();
-		identifyButton.revalidate();
+	
+		totalOccurrences=0;
 		
+		identifyButton.setEnabled(false);
+			
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			
 		if (searchThread!=null) searchThread.interrupt();
-	
-		
+			
 		searchThread= new Thread(new Runnable() {			
 			@Override
 			public void run() {
@@ -1024,7 +1024,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblAssCycRes.setText("("+assCyc.getOccurrences().size()+")");						
 								cbxAssCyc.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}
-							
+							updateGUI();
 						}
 					});		
 					AssCycThread.start();
@@ -1047,6 +1047,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblBinOverRes.setText("("+binOver.getOccurrences().size()+")");
 								cbxBinOver.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}
+							updateGUI();
 						}
 					});
 					BinOverThread.start();
@@ -1069,6 +1070,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblDepPhaseRes.setText("("+depPhase.getOccurrences().size()+")");
 								cbxDepPhase_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 							} 
+							updateGUI();
 						}
 					});
 					DepPhaseThread.start();
@@ -1091,6 +1093,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblFreeRoleRes.setText("("+freeRole.getOccurrences().size()+")");
 								cbxFreeRole.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}  
+							updateGUI();
 						}
 					});
 					FreeRoleThread.start();
@@ -1113,6 +1116,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblGSRigRes.setText("("+gsRig.getOccurrences().size()+")");	
 								cbxGSRig.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}   
+							updateGUI();
 						}
 					});
 					GSRigThread.start();
@@ -1135,6 +1139,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblHetCollRes.setText("("+hetColl.getOccurrences().size()+")");	
 								cbxHetColl.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}   
+							updateGUI();
 						}
 					});
 					HetCollThread.start();					
@@ -1157,6 +1162,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblHomoFuncRes.setText("("+homoFunc.getOccurrences().size()+")");
 								cbxHomoFunc.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}   
+							updateGUI();
 						}
 					});
 					HomoFuncThread.start();	
@@ -1179,6 +1185,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblImpAbsRes.setText("("+impAbs.getOccurrences().size()+")");
 								cbxImpAbs.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}    
+							updateGUI();
 						}
 					});
 					ImpAbsThread.start();	
@@ -1201,6 +1208,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblImpPartRes.setText("("+impPart.getOccurrences().size()+")");	
 								cbxImpPart.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}  
+							updateGUI();
 						}
 					});
 					ImpPartThread.start();	
@@ -1223,6 +1231,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblMixIdenRes.setText("("+mixIden.getOccurrences().size()+")");
 								cbxMixIden.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}   
+							updateGUI();
 						}
 					});
 					MixIdenThread.start();
@@ -1245,6 +1254,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblMixRigRes.setText("("+mixRig.getOccurrences().size()+")");
 								cbxMixRig.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}  
+							updateGUI();
 						}
 					});
 					MixRigThread.start();
@@ -1267,6 +1277,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblMultiDepRes.setText("("+multiDep.getOccurrences().size()+")");
 								cbxMultiDep.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}    
+							updateGUI();
 						}
 					});
 					MultiDepThread.start();
@@ -1289,6 +1300,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblRelCompRes.setText("("+relComp.getOccurrences().size()+")");	
 								cbxRelComp.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}     
+							updateGUI();
 						}
 					});
 					RelCompThread.start();
@@ -1311,6 +1323,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblRelOverRes.setText("("+relOver.getOccurrences().size()+")");
 								cbxRelOver.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}  
+							updateGUI();
 						}
 					});
 					RelOverThread.start();
@@ -1333,6 +1346,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblRelRigRes.setText("("+relRig.getOccurrences().size()+")");
 								cbxRelRig.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}   	
+							updateGUI();
 						}
 					});
 					RelRigThread.start();					
@@ -1355,6 +1369,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblRelSpecRes.setText("("+relSpec.getOccurrences().size()+")");
 								cbxRelSpec.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}  
+							updateGUI();
 						}
 					});
 					RelSpecThread.start();		
@@ -1376,8 +1391,9 @@ public class AntiPatternSearchDialog extends JDialog {
 								totalOccurrences += repRel.getOccurrences().size();
 								lblRepRelRes.setText("("+repRel.getOccurrences().size()+")");	
 								cbxRepRel.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}   
-						}
+							}
+							updateGUI();
+						}						
 					});
 					RepRelThread.start();	
 				}
@@ -1399,6 +1415,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblUndefFormalRes.setText("("+undefFormal.getOccurrences().size()+")");
 								cbxUndefFormal.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}   	
+							updateGUI();
 						}
 					});
 					UndefFormalThread.start();						
@@ -1421,6 +1438,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblUndefPhaseRes.setText("("+undefPhase.getOccurrences().size()+")");
 								cbxUndefPhase.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}   	
+							updateGUI();
 						}
 					});
 					UndefPhaseThread.start();		
@@ -1443,6 +1461,7 @@ public class AntiPatternSearchDialog extends JDialog {
 								lblWholeOverRes.setText("("+wholeOver.getOccurrences().size()+")");
 								cbxWholeOver.setFont(new Font("Tahoma", Font.BOLD, 11));
 							}   
+							updateGUI();
 						}
 					});
 					WholeOverThread.start();									
@@ -1483,9 +1502,8 @@ public class AntiPatternSearchDialog extends JDialog {
 				identifyButton.setEnabled(true);
 				progressBar.setValue(100);
 				progressBarDescr.setText("Completed. "+totalOccurrences+" occurrences found.");
-				
-//				ProjectBrowser pb = ProjectBrowser.getProjectBrowserFor(frame, frame.getDiagramManager().getCurrentProject());
-//				pb.getTree().updateUI();
+
+				updateGUI();
 				
 				btnShowResult.setEnabled(true);						
 			}
@@ -1497,6 +1515,17 @@ public class AntiPatternSearchDialog extends JDialog {
 			JOptionPane.showMessageDialog(this,e.getMessage(),"Anti-Pattern Search",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateGUI()
+	{
+		SwingUtilities.invokeLater(new Runnable() {					
+			@Override
+			public void run() {
+				ProjectBrowser pb = ProjectBrowser.getProjectBrowserFor(frame, frame.getDiagramManager().getCurrentProject());
+				pb.getTree().updateUI();						
+			}
+		});
 	}
 	
 	/**
