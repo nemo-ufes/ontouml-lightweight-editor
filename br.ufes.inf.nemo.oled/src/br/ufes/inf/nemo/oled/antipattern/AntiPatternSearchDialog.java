@@ -911,11 +911,16 @@ public class AntiPatternSearchDialog extends JDialog {
 		ShowAllAntiPatternIconLabels(true);
 	}
 		
-	public void updateStatus(String text)
+	public void updateStatus(final String text)
 	{
-		progressBarDescr.setText(text);
-		progressBarDescr.repaint();
-		progressBarDescr.revalidate();	
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				progressBarDescr.setText(text);
+				progressBarDescr.repaint();
+				progressBarDescr.revalidate();
+			}
+		});
 	}
 	
 	public void activateShowResult()
@@ -931,30 +936,41 @@ public class AntiPatternSearchDialog extends JDialog {
 	public void IdentifyButtonActionPerformed(ActionEvent event)
 	{
 		try{
-			
-		cleanAllResultlabels();
-		HideBoldnessOnAllCheckBoxes();
 		
-		frame.focusOnOutput();
-				
-		progressBar.setStringPainted(true);
-		progressBar.setMinimum(0);
-		progressBar.setMaximum(100);
-	
 		totalOccurrences=0;
-		
-		identifyButton.setEnabled(false);
-			
-		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			
 		if (searchThread!=null) searchThread.interrupt();
-			
+		
 		searchThread= new Thread(new Runnable() {			
 			@Override
 			public void run() {
-								
+				
+				 SwingUtilities.invokeLater(new Runnable() {					
+					@Override
+					public void run() {
+						cleanAllResultlabels();
+						HideBoldnessOnAllCheckBoxes();		
+						frame.focusOnOutput();				
+						progressBar.setStringPainted(true);
+						progressBar.setMinimum(0);
+						progressBar.setMaximum(100);								
+						progressBar.setValue(0);
+						progressBar.setString("0%");
+						identifyButton.setEnabled(false);			
+						setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));						
+					}
+				 });
+				
 				 OntoUMLParser parser = ProjectBrowser.getParserFor(frame.getDiagramManager().getCurrentProject());
-				 frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,frame.getDiagramManager().getCurrentProject());
+
+				 SwingUtilities.invokeLater(new Runnable() {			
+					@Override
+					public void run() {
+						frame.getDiagramManager().autoCompleteSelection(
+							OntoUMLParser.NO_HIERARCHY,
+							frame.getDiagramManager().getCurrentProject()
+						);							
+					}
+				 });				 
 				 
 				 final AssCycAntipattern assCyc = new AssCycAntipattern(parser); 	
 				 final BinOverAntipattern binOver = new BinOverAntipattern(parser);		
@@ -992,17 +1008,21 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {
 							updateStatus("Identifying AssCyc...");
 							assCyc.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);						
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("AssCyc: "+assCyc.getOccurrences().size()+" items found");
-							
-							if (assCyc.getOccurrences().size()>0) { 
-								result += AssCycAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+assCyc.getOccurrences().size()+" items found.\n";
-								totalOccurrences += assCyc.getOccurrences().size();
-								lblAssCycRes.setText("("+assCyc.getOccurrences().size()+")");						
-								cbxAssCyc.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {
+									progressBar.setValue(progressBar.getValue()+incrementalValue);						
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("AssCyc: "+assCyc.getOccurrences().size()+" items found");
+									
+									if (assCyc.getOccurrences().size()>0) { 
+										result += AssCycAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+assCyc.getOccurrences().size()+" items found.\n";
+										totalOccurrences += assCyc.getOccurrences().size();
+										lblAssCycRes.setText("("+assCyc.getOccurrences().size()+")");						
+										cbxAssCyc.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}
+								}
+							});
 						}
 					});		
 					AssCycThread.start();
@@ -1015,17 +1035,21 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {
 							updateStatus("Identifying BinOver... ");
 							binOver.identify();				
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("BinOver: "+binOver.getOccurrences().size()+" items found");						
-		
-							if (binOver.getOccurrences().size()>0) { 
-								result += BinOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+binOver.getOccurrences().size()+" items found.\n"; 
-								totalOccurrences += binOver.getOccurrences().size();
-								lblBinOverRes.setText("("+binOver.getOccurrences().size()+")");
-								cbxBinOver.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("BinOver: "+binOver.getOccurrences().size()+" items found");						
+				
+									if (binOver.getOccurrences().size()>0) { 
+										result += BinOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+binOver.getOccurrences().size()+" items found.\n"; 
+										totalOccurrences += binOver.getOccurrences().size();
+										lblBinOverRes.setText("("+binOver.getOccurrences().size()+")");
+										cbxBinOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}
+								}
+							});		
 						}
 					});
 					BinOverThread.start();
@@ -1038,17 +1062,21 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {
 							updateStatus("Identifying DepPhase... ");
 							depPhase.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("DepPhase: "+depPhase.getOccurrences().size()+" items found");			
-							
-							if (depPhase.getOccurrences().size()>0) {
-								result += DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+depPhase.getOccurrences().size()+" items found.\n";
-								totalOccurrences += depPhase.getOccurrences().size();
-								lblDepPhaseRes.setText("("+depPhase.getOccurrences().size()+")");
-								cbxDepPhase_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-							} 
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("DepPhase: "+depPhase.getOccurrences().size()+" items found");			
+									
+									if (depPhase.getOccurrences().size()>0) {
+										result += DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+depPhase.getOccurrences().size()+" items found.\n";
+										totalOccurrences += depPhase.getOccurrences().size();
+										lblDepPhaseRes.setText("("+depPhase.getOccurrences().size()+")");
+										cbxDepPhase_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}								
+								}
+							});
 						}
 					});
 					DepPhaseThread.start();
@@ -1061,17 +1089,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {			
 							updateStatus("Identifying FreeRole... ");
 							freeRole.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("FreeRole: "+freeRole.getOccurrences().size()+" items found");		
-							
-							if (freeRole.getOccurrences().size()>0) {
-								result += FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+freeRole.getOccurrences().size()+" items found.\n";
-								totalOccurrences += freeRole.getOccurrences().size();
-								lblFreeRoleRes.setText("("+freeRole.getOccurrences().size()+")");
-								cbxFreeRole.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}  
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("FreeRole: "+freeRole.getOccurrences().size()+" items found");									
+									if (freeRole.getOccurrences().size()>0) {
+										result += FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+freeRole.getOccurrences().size()+" items found.\n";
+										totalOccurrences += freeRole.getOccurrences().size();
+										lblFreeRoleRes.setText("("+freeRole.getOccurrences().size()+")");
+										cbxFreeRole.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}									
+								}
+							});
 						}
 					});
 					FreeRoleThread.start();
@@ -1084,17 +1115,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying GSRig... ");
 							gsRig.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("GSRig: "+gsRig.getOccurrences().size()+" items found");	
-							
-							if (gsRig.getOccurrences().size()>0) {
-								result += GSRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+gsRig.getOccurrences().size()+" items found.\n";		
-								totalOccurrences += gsRig.getOccurrences().size();
-								lblGSRigRes.setText("("+gsRig.getOccurrences().size()+")");	
-								cbxGSRig.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}   
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("GSRig: "+gsRig.getOccurrences().size()+" items found");									
+									if (gsRig.getOccurrences().size()>0) {
+										result += GSRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+gsRig.getOccurrences().size()+" items found.\n";		
+										totalOccurrences += gsRig.getOccurrences().size();
+										lblGSRigRes.setText("("+gsRig.getOccurrences().size()+")");	
+										cbxGSRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}
+								}
+							});									
 						}
 					});
 					GSRigThread.start();
@@ -1107,17 +1141,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying HetColl... ");
 							hetColl.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("HetColl: "+hetColl.getOccurrences().size()+" items found");
-							
-							if (hetColl.getOccurrences().size()>0) {
-								result += HetCollAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+hetColl.getOccurrences().size()+" items found.\n";
-								totalOccurrences += hetColl.getOccurrences().size();
-								lblHetCollRes.setText("("+hetColl.getOccurrences().size()+")");	
-								cbxHetColl.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}   
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("HetColl: "+hetColl.getOccurrences().size()+" items found");									
+									if (hetColl.getOccurrences().size()>0) {
+										result += HetCollAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+hetColl.getOccurrences().size()+" items found.\n";
+										totalOccurrences += hetColl.getOccurrences().size();
+										lblHetCollRes.setText("("+hetColl.getOccurrences().size()+")");	
+										cbxHetColl.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}   
+								}
+							});
 						}
 					});
 					HetCollThread.start();					
@@ -1130,17 +1167,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {						
 							updateStatus("Identifying HomoFunc... ");
 							homoFunc.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("HomoFunc: "+homoFunc.getOccurrences().size()+" items found");						
-		
-							if (homoFunc.getOccurrences().size()>0) {
-								result += HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+homoFunc.getOccurrences().size()+" items found.\n";
-								totalOccurrences += homoFunc.getOccurrences().size();
-								lblHomoFuncRes.setText("("+homoFunc.getOccurrences().size()+")");
-								cbxHomoFunc.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}   
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("HomoFunc: "+homoFunc.getOccurrences().size()+" items found");		
+									if (homoFunc.getOccurrences().size()>0) {
+										result += HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+homoFunc.getOccurrences().size()+" items found.\n";
+										totalOccurrences += homoFunc.getOccurrences().size();
+										lblHomoFuncRes.setText("("+homoFunc.getOccurrences().size()+")");
+										cbxHomoFunc.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}									
+								}
+							});
 						}
 					});
 					HomoFuncThread.start();	
@@ -1153,17 +1193,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying ImpAbs... ");
 							impAbs.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("ImpAbs: "+impAbs.getOccurrences().size()+" items found");	
-							
-							if (impAbs.getOccurrences().size()>0) {
-								result += ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impAbs.getOccurrences().size()+" items found.\n";
-								totalOccurrences += impAbs.getOccurrences().size();
-								lblImpAbsRes.setText("("+impAbs.getOccurrences().size()+")");
-								cbxImpAbs.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}    
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("ImpAbs: "+impAbs.getOccurrences().size()+" items found");							
+									if (impAbs.getOccurrences().size()>0) {
+										result += ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impAbs.getOccurrences().size()+" items found.\n";
+										totalOccurrences += impAbs.getOccurrences().size();
+										lblImpAbsRes.setText("("+impAbs.getOccurrences().size()+")");
+										cbxImpAbs.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}    
+								}
+							});
 						}
 					});
 					ImpAbsThread.start();	
@@ -1176,17 +1219,21 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying ImpPart... ");
 							impPart.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("ImpPart: "+impPart.getOccurrences().size()+" items found");	
-							
-							if (impPart.getOccurrences().size()>0) {
-								result += ImpPartAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impPart.getOccurrences().size()+" items found.\n";
-								totalOccurrences += impPart.getOccurrences().size();
-								lblImpPartRes.setText("("+impPart.getOccurrences().size()+")");	
-								cbxImpPart.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}  
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("ImpPart: "+impPart.getOccurrences().size()+" items found");	
+									
+									if (impPart.getOccurrences().size()>0) {
+										result += ImpPartAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impPart.getOccurrences().size()+" items found.\n";
+										totalOccurrences += impPart.getOccurrences().size();
+										lblImpPartRes.setText("("+impPart.getOccurrences().size()+")");	
+										cbxImpPart.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}  
+								}
+							});
 						}
 					});
 					ImpPartThread.start();	
@@ -1199,17 +1246,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying MixIden... ");
 							mixIden.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("MixIden: "+mixIden.getOccurrences().size()+" items found");		
-							
-							if (mixIden.getOccurrences().size()>0) {
-								result += MixIdenAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixIden.getOccurrences().size()+" items found.\n";
-								totalOccurrences += mixIden.getOccurrences().size();
-								lblMixIdenRes.setText("("+mixIden.getOccurrences().size()+")");
-								cbxMixIden.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}   
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("MixIden: "+mixIden.getOccurrences().size()+" items found");							
+									if (mixIden.getOccurrences().size()>0) {
+										result += MixIdenAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixIden.getOccurrences().size()+" items found.\n";
+										totalOccurrences += mixIden.getOccurrences().size();
+										lblMixIdenRes.setText("("+mixIden.getOccurrences().size()+")");
+										cbxMixIden.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}									
+								}
+							});
 						}
 					});
 					MixIdenThread.start();
@@ -1222,17 +1272,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying MixRig... ");
 							mixRig.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("MixRig: "+mixRig.getOccurrences().size()+" items found");		
-							
-							if (mixRig.getOccurrences().size()>0) {
-								result += MixRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixRig.getOccurrences().size()+" items found.\n";
-								totalOccurrences += mixRig.getOccurrences().size();
-								lblMixRigRes.setText("("+mixRig.getOccurrences().size()+")");
-								cbxMixRig.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}  
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("MixRig: "+mixRig.getOccurrences().size()+" items found");							
+									if (mixRig.getOccurrences().size()>0) {
+										result += MixRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixRig.getOccurrences().size()+" items found.\n";
+										totalOccurrences += mixRig.getOccurrences().size();
+										lblMixRigRes.setText("("+mixRig.getOccurrences().size()+")");
+										cbxMixRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}  
+								}
+							});
 						}
 					});
 					MixRigThread.start();
@@ -1245,17 +1298,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying MultiDep... ");
 							multiDep.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("MultiDep: "+multiDep.getOccurrences().size()+" items found");	
-							
-							if (multiDep.getOccurrences().size()>0) {
-								result += MultiDepAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multiDep.getOccurrences().size()+" items found.\n";
-								totalOccurrences += multiDep.getOccurrences().size();
-								lblMultiDepRes.setText("("+multiDep.getOccurrences().size()+")");
-								cbxMultiDep.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}    
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("MultiDep: "+multiDep.getOccurrences().size()+" items found");							
+									if (multiDep.getOccurrences().size()>0) {
+										result += MultiDepAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multiDep.getOccurrences().size()+" items found.\n";
+										totalOccurrences += multiDep.getOccurrences().size();
+										lblMultiDepRes.setText("("+multiDep.getOccurrences().size()+")");
+										cbxMultiDep.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}									
+								}
+							});
 						}
 					});
 					MultiDepThread.start();
@@ -1268,17 +1324,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying RelComp... ");
 							relComp.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("RelComp: "+relComp.getOccurrences().size()+" items found");
-							
-							if (relComp.getOccurrences().size()>0) {
-								result += RelCompAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relComp.getOccurrences().size()+" items found.\n";
-								totalOccurrences += relComp.getOccurrences().size();
-								lblRelCompRes.setText("("+relComp.getOccurrences().size()+")");	
-								cbxRelComp.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}     
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("RelComp: "+relComp.getOccurrences().size()+" items found");							
+									if (relComp.getOccurrences().size()>0) {
+										result += RelCompAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relComp.getOccurrences().size()+" items found.\n";
+										totalOccurrences += relComp.getOccurrences().size();
+										lblRelCompRes.setText("("+relComp.getOccurrences().size()+")");	
+										cbxRelComp.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}									
+								}
+							});
 						}
 					});
 					RelCompThread.start();
@@ -1291,17 +1350,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying RelOver... ");
 							relOver.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("RelOver: "+relOver.getOccurrences().size()+" items found");						
-							
-							if (relOver.getOccurrences().size()>0) {
-								result += RelOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relOver.getOccurrences().size()+" items found.\n";
-								totalOccurrences += relOver.getOccurrences().size();
-								lblRelOverRes.setText("("+relOver.getOccurrences().size()+")");
-								cbxRelOver.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}  
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("RelOver: "+relOver.getOccurrences().size()+" items found");							
+									if (relOver.getOccurrences().size()>0) {
+										result += RelOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relOver.getOccurrences().size()+" items found.\n";
+										totalOccurrences += relOver.getOccurrences().size();
+										lblRelOverRes.setText("("+relOver.getOccurrences().size()+")");
+										cbxRelOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}								
+								}
+							});
 						}
 					});
 					RelOverThread.start();
@@ -1314,17 +1376,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying RelRig... ");
 							relRig.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("RelRig... "+relRig.getOccurrences().size()+" items found");	
-							
-							if (relRig.getOccurrences().size()>0) {
-								result += RelRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relRig.getOccurrences().size()+" items found.\n";
-								totalOccurrences += relRig.getOccurrences().size();
-								lblRelRigRes.setText("("+relRig.getOccurrences().size()+")");
-								cbxRelRig.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}   	
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("RelRig... "+relRig.getOccurrences().size()+" items found");							
+									if (relRig.getOccurrences().size()>0) {
+										result += RelRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relRig.getOccurrences().size()+" items found.\n";
+										totalOccurrences += relRig.getOccurrences().size();
+										lblRelRigRes.setText("("+relRig.getOccurrences().size()+")");
+										cbxRelRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}									
+								}
+							});
 						}
 					});
 					RelRigThread.start();					
@@ -1337,17 +1402,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying RelSpec... ");
 							relSpec.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("RelSpec: "+relSpec.getOccurrences().size()+" items found");
-							
-							if (relSpec.getOccurrences().size()>0) {
-								result += RelSpecAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relSpec.getOccurrences().size()+" items found.\n";
-								totalOccurrences += relSpec.getOccurrences().size();
-								lblRelSpecRes.setText("("+relSpec.getOccurrences().size()+")");
-								cbxRelSpec.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}  
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("RelSpec: "+relSpec.getOccurrences().size()+" items found");							
+									if (relSpec.getOccurrences().size()>0) {
+										result += RelSpecAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relSpec.getOccurrences().size()+" items found.\n";
+										totalOccurrences += relSpec.getOccurrences().size();
+										lblRelSpecRes.setText("("+relSpec.getOccurrences().size()+")");
+										cbxRelSpec.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}									
+								}
+							});
 						}
 					});
 					RelSpecThread.start();		
@@ -1360,17 +1428,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying RepRel... ");
 							repRel.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("RepRel: "+repRel.getOccurrences().size()+" items found");		
-							
-							if (repRel.getOccurrences().size()>0) {
-								result += RepRelAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+repRel.getOccurrences().size()+" items found.\n";
-								totalOccurrences += repRel.getOccurrences().size();
-								lblRepRelRes.setText("("+repRel.getOccurrences().size()+")");	
-								cbxRepRel.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("RepRel: "+repRel.getOccurrences().size()+" items found");							
+									if (repRel.getOccurrences().size()>0) {
+										result += RepRelAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+repRel.getOccurrences().size()+" items found.\n";
+										totalOccurrences += repRel.getOccurrences().size();
+										lblRepRelRes.setText("("+repRel.getOccurrences().size()+")");	
+										cbxRepRel.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}
+								}
+							});
 						}						
 					});
 					RepRelThread.start();	
@@ -1383,17 +1454,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying UndefFormal... ");
 							undefFormal.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("UndefFormal: "+undefFormal.getOccurrences().size()+" items found");	
-							
-							if (undefFormal.getOccurrences().size()>0) {
-								result += UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefFormal.getOccurrences().size()+" items found.\n";
-								totalOccurrences += undefFormal.getOccurrences().size();
-								lblUndefFormalRes.setText("("+undefFormal.getOccurrences().size()+")");
-								cbxUndefFormal.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}   	
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("UndefFormal: "+undefFormal.getOccurrences().size()+" items found");							
+									if (undefFormal.getOccurrences().size()>0) {
+										result += UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefFormal.getOccurrences().size()+" items found.\n";
+										totalOccurrences += undefFormal.getOccurrences().size();
+										lblUndefFormalRes.setText("("+undefFormal.getOccurrences().size()+")");
+										cbxUndefFormal.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}
+								}
+							});							
 						}
 					});
 					UndefFormalThread.start();						
@@ -1406,17 +1480,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying UndefPhase... ");
 							undefPhase.identify();
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("UndefPhase: "+undefPhase.getOccurrences().size()+" items found");	
-							
-							if (undefPhase.getOccurrences().size()>0) {
-								result += UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefPhase.getOccurrences().size()+" items found.\n";
-								totalOccurrences += undefPhase.getOccurrences().size();
-								lblUndefPhaseRes.setText("("+undefPhase.getOccurrences().size()+")");
-								cbxUndefPhase.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}   	
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("UndefPhase: "+undefPhase.getOccurrences().size()+" items found");							
+									if (undefPhase.getOccurrences().size()>0) {
+										result += UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefPhase.getOccurrences().size()+" items found.\n";
+										totalOccurrences += undefPhase.getOccurrences().size();
+										lblUndefPhaseRes.setText("("+undefPhase.getOccurrences().size()+")");
+										cbxUndefPhase.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}   	
+								}
+							});
 						}
 					});
 					UndefPhaseThread.start();		
@@ -1429,17 +1506,20 @@ public class AntiPatternSearchDialog extends JDialog {
 						public void run() {	
 							updateStatus("Identifying WholeOver... ");
 							wholeOver.identify();				
-							progressBar.setValue(progressBar.getValue()+incrementalValue);
-							progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-							updateStatus("WholeOver: "+wholeOver.getOccurrences().size()+" items found");			
-							
-							if (wholeOver.getOccurrences().size()>0) {
-								result += WholeOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
-								totalOccurrences += wholeOver.getOccurrences().size();
-								lblWholeOverRes.setText("("+wholeOver.getOccurrences().size()+")");
-								cbxWholeOver.setFont(new Font("Tahoma", Font.BOLD, 11));
-							}   
-							updateGUI();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {									
+									progressBar.setValue(progressBar.getValue()+incrementalValue);
+									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+									updateStatus("WholeOver: "+wholeOver.getOccurrences().size()+" items found");							
+									if (wholeOver.getOccurrences().size()>0) {
+										result += WholeOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
+										totalOccurrences += wholeOver.getOccurrences().size();
+										lblWholeOverRes.setText("("+wholeOver.getOccurrences().size()+")");
+										cbxWholeOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+									}								
+								}
+							});
 						}
 					});
 					WholeOverThread.start();									
@@ -1452,18 +1532,24 @@ public class AntiPatternSearchDialog extends JDialog {
 
 				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
 
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
-				identifyButton.setEnabled(true);
-				progressBar.setValue(100);
-				progressBarDescr.setText("Completed. "+totalOccurrences+" occurrences found.");
-
-				updateGUI();
-				
-				btnShowResult.setEnabled(true);						
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {				
+						try {
+						    Thread.sleep(1000);
+						} catch(InterruptedException ex) {
+						    Thread.currentThread().interrupt();
+						}
+						setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));				
+						identifyButton.setEnabled(true);
+						progressBar.setValue(100);
+						progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
+						progressBarDescr.setText("Completed. "+totalOccurrences+" occurrences found.");												
+						btnShowResult.setEnabled(true);					
+					}
+				});
 			}
 		});		
-		
 		searchThread.start();		
 		
 		}catch(Exception e){
