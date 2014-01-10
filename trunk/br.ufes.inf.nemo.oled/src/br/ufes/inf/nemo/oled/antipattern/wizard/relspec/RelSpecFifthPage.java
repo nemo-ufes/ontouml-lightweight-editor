@@ -50,6 +50,7 @@ public class RelSpecFifthPage extends RelSpecPage {
 		btnGeneral = new Button(container, SWT.RADIO);
 		btnGeneral.setText(relSpec.getParser().getStringRepresentation(relSpec.getSpecific()));
 		btnGeneral.setBounds(10, 32, 449, 16);
+		btnGeneral.setSelection(true);
 		
 		btnSpecific = new Button(container, SWT.RADIO);
 		btnSpecific.setText(relSpec.getParser().getStringRepresentation(relSpec.getGeneral()));

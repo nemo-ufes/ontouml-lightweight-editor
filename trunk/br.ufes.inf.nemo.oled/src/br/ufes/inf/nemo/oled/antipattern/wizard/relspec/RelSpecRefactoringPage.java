@@ -93,6 +93,10 @@ public class RelSpecRefactoringPage extends RelSpecPage {
 												relSpec.getParser().getStringRepresentation(relSpec.getSpecific())});
 			comboDelete.setBounds(194, 160, 216, 21);
 		}
+		else {
+			btnSpecializeRedefine = null;
+			btnDelete = null;
+		}
 	}
 
 	public static String getStereotype(EObject element)
@@ -119,7 +123,8 @@ public class RelSpecRefactoringPage extends RelSpecPage {
 			// Action =====================
 			//TODO: <Specific> is disjoint from <General>
 		}
-		if (btnSpecializeRedefine.getSelection()){
+		
+		if (btnSpecializeRedefine!=null && btnSpecializeRedefine.getSelection()){
 			if (comboSpecializeRedefine.getSelectionIndex()==0 || comboSpecializeRedefine.getSelectionIndex()==2){
 				// Action =====================
 				//TODO: specialize <GeneralSourceEnd>
@@ -145,7 +150,7 @@ public class RelSpecRefactoringPage extends RelSpecPage {
 				}
 			}
 		}
-		if (btnDelete.getSelection()){
+		if (btnDelete!=null && btnDelete.getSelection()){
 			if(comboDelete.getSelectionIndex()==0){
 				//ACTION
 				//TODO: DELETE GENERAL

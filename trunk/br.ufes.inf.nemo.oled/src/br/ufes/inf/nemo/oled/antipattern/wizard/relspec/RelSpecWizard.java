@@ -45,13 +45,6 @@ public class RelSpecWizard extends Wizard {
 	@Override
 	public void addPages() 
 	{	
-		presentation = new PresentationPage(
-			RelSpecAntipattern.getAntipatternInfo().name,
-			RelSpecAntipattern.getAntipatternInfo().acronym,
-			ap.toString(),
-			firstPage,
-			options
-		);
 		options = new RelSpecRefactoringPage(ap);
 		finishing = new FinishingPage();
 		
@@ -60,6 +53,14 @@ public class RelSpecWizard extends Wizard {
 		thirdPage = new RelSpecThirdPage(ap);
 		fourthPage = new RelSpecFourthPage(ap);
 		fifthPage = new RelSpecFifthPage(ap);
+		
+		presentation = new PresentationPage(
+			RelSpecAntipattern.getAntipatternInfo().name,
+			RelSpecAntipattern.getAntipatternInfo().acronym,
+			ap.toString(),
+			firstPage,
+			options
+		);
 		
 		addPage(presentation);		
 		addPage(firstPage);
