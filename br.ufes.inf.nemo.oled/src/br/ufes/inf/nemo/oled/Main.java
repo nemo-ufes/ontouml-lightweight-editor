@@ -243,7 +243,8 @@ public final class Main {
 		String swtFileName = "<empty>";
 	    try {
 	        String osName = System.getProperty("os.name").toLowerCase();
-	        String osArch = System.getProperty("os.arch").toLowerCase();	        
+	        String osArch = System.getProperty("os.arch").toLowerCase();
+	        URLClassLoader classLoader = (URLClassLoader) Main.class.getClassLoader();
 	        Method addUrlMethod = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
 	        addUrlMethod.setAccessible(true);
 
@@ -257,10 +258,13 @@ public final class Main {
 	        
 	        swtFileName = "org.eclipse.swt_4.3."+swtFileNameOsPart+"."+swtFileNameArchPart+".jar";
 	        
-	        File swtJar = new File("/br/ufes/inf/nemo/common/lib/swt/"+swtFileName); 
-	        addJarToClasspath(swtJar);
+	        URL swtFileUrl = new URL("rsrc:"+swtFileName); // I am using Jar-in-Jar class loader which understands this URL; adjust accordingly if you don't
+	        addUrlMethod.invoke(classLoader, swtFileUrl);
+	        
+	        //File swtJar = new File("br/ufes/inf/nemo/common/lib/swt/"+swtFileName); 
+	        //addJarToClasspath(swtJar);
 
-	        System.out.println(swtJar);
+	        System.out.println(swtFileUrl);
 	    }
 	    catch(Exception e) {
 	        System.out.println("Unable to add the swt jar to the class path: "+swtFileName);
@@ -314,7 +318,7 @@ public final class Main {
 			        setUIFont(new FontUIResource(new Font(fontName, 0, fontSize)));
 	
 			        //SWT
-			        addSwtJarToClassPath();
+			        //addSwtJarToClassPath();
 			        
 					frame = new AppFrame();					
 	
