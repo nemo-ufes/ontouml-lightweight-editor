@@ -45,4 +45,8 @@ public abstract class AntipatternOccurrence {
 	public OntoUMLParser getParser(){
 		return antipattern.getParser();
 	}
+	
+	protected String addQuotes (String name){
+		return "_'"+name+"'";
+	}
 }
