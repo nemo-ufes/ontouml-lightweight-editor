@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project br.ufes.inf.nemo.oled with Jar-in-Jar Loader">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="C:/Users/John/Documents/oled0.8.35-macosx.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="br.ufes.inf.nemo.oled.Main"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ forms-1.1.0.jar swingx-all-1.6.3.jar alloy4.2.jar br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar org.eclipse.emf.common_2.6.0.v20100914-1218.jar org.eclipse.emf.ecore_2.6.1.v20100914-1218.jar org.eclipse.emf.ecore.xmi_2.5.0.v20100521-1846.jar org.eclipse.ocl_3.0.2.R30x_v201101110610.jar org.eclipse.ocl.ecore_3.0.2.R30x_v201101110610.jar br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar owlapi-bin.jar lablib-checkboxtree-3.3.jar lpg.runtime.java_2.0.17.v201004271640.jar flamingo-7.2.1.jar org.eclipse.core.runtime_3.8.0.v20120521-2346.jar org.eclipse.osgi_3.8.0.v20120529-1548.jar org.eclipse.equinox.common_3.6.100.v20120522-1841.jar org.eclipse.core.jobs_3.5.200.v20120521-2346.jar runtime_registry_compatibility.jar org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar org.eclipse.equinox.preferences_3.5.0.v20120522-1841.jar org.eclipse.core.contenttype_3.4.200.v20120523-2004.jar org.eclipse.equinox.app_1.3.100.v20120522-1841.jar org.eclipse.emf.ecore_2.8.3.v20130125-0546.jar org.eclipse.emf.common_2.8.0.v20130125-0546.jar org.eclipse.emf.ecore.xmi_2.8.1.v20130125-0546.jar org.eclipse.emf.query_1.2.100.v200903190031.jar org.eclipse.emf.query.ocl_2.0.0.v20091215-1624.jar org.eclipse.core.jobs_3.5.1.R36x_v20100824.jar org.eclipse.core.runtime_3.6.0.v20100505.jar org.eclipse.equinox.common_3.6.0.v20100503.jar org.eclipse.osgi_3.6.2.R36x_v20110210.jar org.eclipse.ocl.edit_3.0.2.R30x_v201101181635.jar org.eclipse.uml2_3.0.0.v201005031530.jar org.eclipse.uml2.common_1.5.0.v201005031530.jar org.eclipse.uml2.uml_3.1.2.v201010261927.jar org.eclipse.uml2.uml.resources_3.1.1.v201008191505.jar org.eclipse.emf.edit_2.6.0.v20100914-1218.jar org.eclipse.ocl.uml_3.0.2.R30x_v201101181635.jar autocomplete.jar rstaui.jar rsyntaxtextarea.jar br.ufes.inf.nemo.ontouml.refontouml.edit_1.0.0.201209061023.jar owlapi-distribution-3.4.4-bin.jar org.eclipse.emf.ecore.edit_2.6.0.v20100914-1218.jar org.eclipse.emf.ecore.change_2.5.1.v20100907-1643.jar org.eclipse.emf.mapping.ecore2xml_2.5.0.v20100521-1847.jar net.sourceforge.lpg.lpgjavaruntime_1.1.0.v201004271650.jar org.eclipse.core.commands_3.6.0.I20100512-1500.jar org.eclipse.jface_3.8.0.v20120521-2329.jar org.eclipse.wb.swt.layout.grouplayout_1.6.0.r37x201305212046.jar org.eclipse.wb.swt.widgets.baseline_1.6.0.r37x201305212028.jar org.eclipse.jdt.ui_3.8.0.v20120524-1551.jar org.eclipse.wb.swt_1.6.0.r37x201305212024.jar org.eclipse.swt_4.3.macosx.x64.jar org.eclipse.swt_4.3.macosx.x86.jar"/>
+            </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.oled/bin"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.oled\lib" includes="forms-1.1.0.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.oled\lib" includes="swingx-all-1.6.3.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.oled\lib" includes="alloy4.2.jar"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.ontouml2sbvr/bin"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\refontouml" includes="br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.emf.common_2.6.0.v20100914-1218.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.emf.ecore_2.6.1.v20100914-1218.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.emf.ecore.xmi_2.5.0.v20100521-1846.jar"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.common/bin"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.ocl_3.0.2.R30x_v201101110610.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.ocl.ecore_3.0.2.R30x_v201101110610.jar"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.ontouml2simpleowl/bin"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\refontouml" includes="br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\owl" includes="owlapi-bin.jar"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.xmi2ontouml/bin"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\checkboxtree" includes="lablib-checkboxtree-3.3.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="lpg.runtime.java_2.0.17.v201004271640.jar"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.ontouml2text/bin"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\flamingo" includes="flamingo-7.2.1.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins" includes="org.eclipse.core.runtime_3.8.0.v20120521-2346.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins" includes="org.eclipse.osgi_3.8.0.v20120529-1548.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins" includes="org.eclipse.equinox.common_3.6.100.v20120522-1841.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins" includes="org.eclipse.core.jobs_3.5.200.v20120521-2346.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins\org.eclipse.core.runtime.compatibility.registry_3.5.100.v20120521-2346" includes="runtime_registry_compatibility.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins" includes="org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins" includes="org.eclipse.equinox.preferences_3.5.0.v20120522-1841.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins" includes="org.eclipse.core.contenttype_3.4.200.v20120523-2004.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins" includes="org.eclipse.equinox.app_1.3.100.v20120522-1841.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins" includes="org.eclipse.emf.ecore_2.8.3.v20130125-0546.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins" includes="org.eclipse.emf.common_2.8.0.v20130125-0546.jar"/>
+            <zipfileset dir="C:\Eclipse Modeling Juno 4.2\plugins" includes="org.eclipse.emf.ecore.xmi_2.8.1.v20130125-0546.jar"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.alloy/bin"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.antipattern/bin"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.emf.query_1.2.100.v200903190031.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.emf.query.ocl_2.0.0.v20091215-1624.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.core.jobs_3.5.1.R36x_v20100824.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.core.runtime_3.6.0.v20100505.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.equinox.common_3.6.0.v20100503.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.osgi_3.6.2.R36x_v20110210.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.ocl.edit_3.0.2.R30x_v201101181635.jar"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.ocl/bin"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.ontouml2uml/bin"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.uml2_3.0.0.v201005031530.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.uml2.common_1.5.0.v201005031530.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.uml2.uml_3.1.2.v201010261927.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.uml2.uml.resources_3.1.1.v201008191505.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.emf.edit_2.6.0.v20100914-1218.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.ocl.uml_3.0.2.R30x_v201101181635.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\text-editor\autocomplete_2.5.0" includes="autocomplete.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\text-editor\rstaui_2.5.0" includes="rstaui.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\text-editor\rsyntaxtextarea_2.5.0" includes="rsyntaxtextarea.jar"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.ontouml2alloy/bin"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\refontouml" includes="br.ufes.inf.nemo.ontouml.refontouml.edit_1.0.0.201209061023.jar"/>
+            <fileset dir="C:/Users/John/SVNs/SVN-OLED/br.ufes.inf.nemo.ontouml_ocl2owl_swrl/bin"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\owl" includes="owlapi-distribution-3.4.4-bin.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.emf.ecore.edit_2.6.0.v20100914-1218.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.emf.ecore.change_2.5.1.v20100907-1643.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.emf.mapping.ecore2xml_2.5.0.v20100521-1847.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="net.sourceforge.lpg.lpgjavaruntime_1.1.0.v201004271650.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-helios" includes="org.eclipse.core.commands_3.6.0.I20100512-1500.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-juno" includes="org.eclipse.jface_3.8.0.v20120521-2329.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-juno" includes="org.eclipse.wb.swt.layout.grouplayout_1.6.0.r37x201305212046.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-juno" includes="org.eclipse.wb.swt.widgets.baseline_1.6.0.r37x201305212028.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-juno" includes="org.eclipse.jdt.ui_3.8.0.v20120524-1551.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\eclipse-juno" includes="org.eclipse.wb.swt_1.6.0.r37x201305212024.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\swt" includes="org.eclipse.swt_4.3.macosx.x64.jar"/>
+            <zipfileset dir="C:\Users\John\SVNs\SVN-OLED\br.ufes.inf.nemo.common\lib\swt" includes="org.eclipse.swt_4.3.macosx.x86.jar"/>
+        </jar>
+    </target>
+</project>
