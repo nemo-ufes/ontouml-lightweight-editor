@@ -45,11 +45,8 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.jface_3.8.0.v20120521-2329.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.wb.swt.layout.grouplayout_1.6.0.r37x201305212046.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.wb.swt.widgets.baseline_1.6.0.r37x201305212028.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.jdt.ui_3.8.0.v20120524-1551.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.wb.swt_1.6.0.r37x201305212024.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.win32.x64.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.win32.x86.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.linux.x64.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.linux.x86.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.macosx.x64.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.macosx.x86.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

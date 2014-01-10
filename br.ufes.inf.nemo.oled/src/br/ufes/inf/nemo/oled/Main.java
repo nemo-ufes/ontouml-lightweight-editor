@@ -25,6 +25,10 @@ package br.ufes.inf.nemo.oled;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -216,7 +220,54 @@ public final class Main {
 		d.dispose();
 		return p.getValue();
 	}
+	
+	public static void addJarToClasspath(File jarFile) 
+	{ 
+	   try 
+	   { 
+	       URL url = jarFile.toURI().toURL(); 
+	       URLClassLoader urlClassLoader = (URLClassLoader) ClassLoader.getSystemClassLoader(); 
+	       Class<?> urlClass = URLClassLoader.class; 
+	       Method method = urlClass.getDeclaredMethod("addURL", new Class<?>[] { URL.class }); 
+	       method.setAccessible(true);         
+	       method.invoke(urlClassLoader, new Object[] { url });             
+	   } 
+	   catch (Throwable t) 
+	   { 
+	       t.printStackTrace(); 
+	   } 
+	}
+	
+	public static void addSwtJarToClassPath() 
+	{
+		String swtFileName = "<empty>";
+	    try {
+	        String osName = System.getProperty("os.name").toLowerCase();
+	        String osArch = System.getProperty("os.arch").toLowerCase();	        
+	        Method addUrlMethod = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+	        addUrlMethod.setAccessible(true);
 
+	        String swtFileNameOsPart = 
+	            osName.contains("win") ? "win32" :
+	            osName.contains("mac") ? "macosx" :
+	            osName.contains("linux") || osName.contains("nix") ? "linux" :
+	            ""; // throw new RuntimeException("Unknown OS name: "+osName)
+
+	        String swtFileNameArchPart = osArch.contains("64") ? "x64" : "x86";
+	        
+	        swtFileName = "org.eclipse.swt_4.3."+swtFileNameOsPart+"."+swtFileNameArchPart+".jar";
+	        
+	        File swtJar = new File("/br/ufes/inf/nemo/common/lib/swt/"+swtFileName); 
+	        addJarToClasspath(swtJar);
+
+	        System.out.println(swtJar);
+	    }
+	    catch(Exception e) {
+	        System.out.println("Unable to add the swt jar to the class path: "+swtFileName);
+	        e.printStackTrace();
+	    }
+	}
+	
 	/**  
 	 * The start method for this application.
 	 * @param args the command line parameters
@@ -245,6 +296,7 @@ public final class Main {
 			        }
 			        
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					
 					if (!onMac()&&!onWindows()) UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 					
 					UIManager.put("TabbedPane.focus", new Color(0, 0, 0, 0));					
@@ -260,10 +312,12 @@ public final class Main {
 			            break;
 			        }			        
 			        setUIFont(new FontUIResource(new Font(fontName, 0, fontSize)));
+	
+			        //SWT
+			        addSwtJarToClassPath();
 			        
-					frame = new AppFrame();
-					
-					frame.loadAppropriateSwtJar(); //SWT
+					frame = new AppFrame();					
+	
 					frame.initializeAlloyAnalyzer();//Alloy
 					
 					frame.setLocationByPlatform(true);
