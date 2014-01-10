@@ -60,7 +60,7 @@ public class OutcomeFixer {
 	{
 		this.root = root;
 	}
-
+	
 	/** Create class from stereotype. */
 	public RefOntoUML.PackageableElement createClass(ClassStereotype stereo)
 	{
@@ -465,6 +465,15 @@ public class OutcomeFixer {
 			fixes.includeModified(tgt);
 		}
 		return fixes;
-	}	
+	}
+	
+	public Fix generateOCLRule (String contextName, String invName, String invRule){
+		String oclRule ="context _'"+contextName+"'\n"+
+						"inv "+invName+" : "+invRule;
+		
+		Fix fix = new Fix();
+		fix.includeRule(oclRule);
+		return fix;
+	}
 	
 }
