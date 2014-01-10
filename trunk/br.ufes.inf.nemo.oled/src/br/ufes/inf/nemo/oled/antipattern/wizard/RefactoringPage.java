@@ -3,10 +3,10 @@ package br.ufes.inf.nemo.oled.antipattern.wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 /**
  * @author Tiago Sales

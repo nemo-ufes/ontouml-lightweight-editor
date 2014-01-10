@@ -2,28 +2,25 @@ package br.ufes.inf.nemo.ontouml2text.core;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import RefOntoUML.Association;
+import RefOntoUML.Classifier;
+import RefOntoUML.Comment;
+import RefOntoUML.Generalization;
+import RefOntoUML.Package;
+import RefOntoUML.PrimitiveType;
+import RefOntoUML.Property;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 //import org.cogroo.analyzer.Analyzer;
 //import org.cogroo.analyzer.ComponentFactory;
 //import org.cogroo.checker.CheckDocument;
 //import org.cogroo.checker.GrammarChecker;
 //import org.cogroo.entities.Mistake;
-
-import RefOntoUML.Association;
-import RefOntoUML.Classifier;
-import RefOntoUML.Comment;
-import RefOntoUML.Package;
-import RefOntoUML.Generalization;
-import RefOntoUML.PrimitiveType;
-import RefOntoUML.Property;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 
 public class Writer {
