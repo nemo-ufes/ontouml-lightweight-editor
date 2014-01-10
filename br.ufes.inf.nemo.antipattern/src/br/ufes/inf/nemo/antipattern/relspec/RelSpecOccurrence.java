@@ -6,19 +6,18 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
-import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Relation Specialization*/
 public class RelSpecOccurrence extends AntipatternOccurrence{
-	private Association general;
-	private Association specific;
-	private Classifier generalSource;
-	private Classifier generalTarget;
-	private Classifier specificSource;
-	private Classifier specificTarget;
+	private Association general, specific;
+	private Classifier generalSource, generalTarget, specificSource, specificTarget;
+	private Property generalSourceEnd, generalTargetEnd, specificSourceEnd, specificTargetEnd;
+	private boolean isReverse;
+	
 	
 	public static int SUBSET = 1, REDEFINE = 2, NONSUBSET = 3, DISJOINT = 4;
 		
@@ -30,12 +29,76 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		/*This methods are only necessary because the provided model may not correctly instantiante the RefOntoUML Metamodel. 
 		 * In this case, it is necessary to correct who is the source and who is the target in the association, according to the logic in the metamodel.
 		 * For instance, in a mediation, the relator is always the source and the mediated type is always the target*/
-		specificSource = (Classifier) SourceTargetAssociation.getSourceAlloy(specific);
+		/*specificSource = (Classifier) SourceTargetAssociation.getSourceAlloy(specific);
 		specificTarget = (Classifier) SourceTargetAssociation.getTargetAlloy(specific);
 		generalSource = (Classifier) SourceTargetAssociation.getSourceAlloy(general);
 		generalTarget = (Classifier) SourceTargetAssociation.getTargetAlloy(general);
-				
+		*/
+		
+		specificSourceEnd = specific.getMemberEnd().get(0);
+		specificTargetEnd = specific.getMemberEnd().get(1);
+		generalSourceEnd = general.getMemberEnd().get(0);
+		generalTargetEnd = general.getMemberEnd().get(1);
+		
+		specificSource = (Classifier) specificSourceEnd.getType();
+		specificTarget = (Classifier) specificTargetEnd.getType();
+		generalSource = (Classifier) generalSourceEnd.getType();
+		generalTarget = (Classifier) generalTargetEnd.getType();
+		
+		if((specificSource.equals(generalSource) || specificSource.allParents().contains(generalSource))&&(specificTarget.equals(generalTarget) || specificTarget.allParents().contains(generalTarget)))
+			isReverse = false;
+		else if((specificSource.equals(generalTarget) || specificSource.allParents().contains(generalTarget))&&(specificTarget.equals(generalSource) || specificTarget.allParents().contains(generalSource)))
+			isReverse = true;
+		else 
+			throw new Exception(RelSpecAntipattern.getAntipatternInfo().getAcronym()+": The provided associations don't characterize an occurrence of the antipattern.");
 	}
+	
+	public Classifier getAlignedSpecificSource(){
+		if (isReverse)
+			return specificTarget;
+		else
+			return specificSource;
+		
+	}
+	public Classifier getAlignedSpecificTarget(){
+		if (isReverse)
+			return specificSource;
+		else
+			return specificTarget;
+	}
+	
+	public boolean isVariation1(){
+		return (!generalSource.equals(generalTarget) && !generalSource.equals(specificSource) && !generalSource.equals(specificTarget) 
+				&& !generalTarget.equals(specificSource) && !generalTarget.equals(specificTarget) && !specificSource.equals(specificTarget));
+	}
+	
+	public boolean isVariation2(){
+		return (generalSource.equals(specificSource) && !generalSource.equals(generalTarget) &&  !generalSource.equals(specificTarget) 
+				&& !generalTarget.equals(specificTarget));
+	}
+	
+	public boolean isVariation3(){
+		return (generalTarget.equals(specificTarget) && !generalTarget.equals(generalSource) &&  !generalTarget.equals(specificSource) 
+				&& !generalSource.equals(specificSource));
+	}
+	
+	public boolean isVariation4(){
+		return (generalSource.equals(specificSource) && generalTarget.equals(specificTarget) && !generalSource.equals(generalTarget));
+	}
+	
+	public boolean isVariation5(){
+		return (generalSource.equals(specificSource) && specificSource.equals(specificTarget) && specificTarget.equals(generalTarget));
+	}
+	
+	public boolean isVariation6(){
+		return (generalSource.equals(generalTarget) && specificSource.equals(specificTarget) && !generalSource.equals(specificSource));
+	}
+	
+	public boolean isVariation7(){
+		return (generalSource.equals(generalTarget) && !generalSource.equals(specificSource) && !generalSource.equals(specificTarget)
+				&& !specificSource.equals(specificTarget));
+	}
+	
 	
 	public String generateOcl(int type, OntoUMLParser parser) throws Exception{
 		String invName = new String(), contextName = new String(), invRule = new String();
