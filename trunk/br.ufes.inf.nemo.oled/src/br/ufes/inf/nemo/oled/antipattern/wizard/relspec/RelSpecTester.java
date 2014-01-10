@@ -122,6 +122,7 @@ public class RelSpecTester {
 			    }
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public static int runAntipattern (String antiPatternAcronym, String model,Antipattern ap) throws IOException {
 		System.out.print("("+getCurrentDateAndTime() + ") " + model + ": ");
 		System.out.println(antiPatternAcronym+": Analyzing model...");

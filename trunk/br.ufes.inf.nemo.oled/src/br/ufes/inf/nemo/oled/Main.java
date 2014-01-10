@@ -23,11 +23,17 @@
 package br.ufes.inf.nemo.oled;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.util.Enumeration;
 import java.util.Locale;
 
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
+import javax.swing.plaf.FontUIResource;
 
 /*
  * Features TO-DO
@@ -141,10 +147,14 @@ import javax.swing.UIManager;
 
 /**
  * This is the start class of the OLED application. OLED is based on the TinyUML project by Wei-ju Wu.
+ * It also benefits from MIT's project called Alloy developed by Daniel Jackson (see http://alloy.mit.edu/)
  */
 public final class Main {
 	
 	public static AppFrame frame;
+	/** This caches the result of the call to get all fonts. */
+	private static String[] allFonts = null;	
+    	   
 	/**
 	 * Private constructor.
 	 */
@@ -159,6 +169,53 @@ public final class Main {
 	public static boolean onMac() {
       return System.getProperty("mrj.version")!=null || System.getProperty("os.name").toLowerCase(Locale.US).startsWith("mac ");
 	}	
+	
+	/** Returns true if a font with that name exists on the system (comparison is case-insensitive). */
+	public synchronized static boolean hasFont(String fontname) {
+		if (allFonts == null) allFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+		for(int i = 0; i < allFonts.length; i++) if (fontname.compareToIgnoreCase(allFonts[i]) == 0) return true;
+		return false;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static void setUIFont(FontUIResource f) 
+	{
+       Enumeration keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof FontUIResource) {
+                FontUIResource orig = (FontUIResource) value;
+                Font font = new Font(f.getFontName(), orig.getStyle(), f.getSize());
+                UIManager.put(key, new FontUIResource(font));
+            }
+        }
+    }
+	    
+	/** Asks the user to choose a font; returns "" if the user cancels the request. */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public synchronized static String askFont() {
+		if (allFonts == null) allFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+		JComboBox jcombo = new JComboBox(allFonts);
+		Object ans = show("Font", JOptionPane.INFORMATION_MESSAGE,
+				new Object[] {"Please choose the new font:", jcombo}, new Object[] {"Ok", "Cancel"}, "Cancel"
+				);
+		Object value = jcombo.getSelectedItem();
+		if (ans=="Ok" && (value instanceof String)) return (String)value; else return "";
+	}
+	
+	/** Helper method for constructing an always-on-top modal dialog. */
+	private static Object show(String title, int type, Object message, Object[] options, Object initialOption) {
+		if (options == null) { options = new Object[]{"Ok"};  initialOption = "Ok"; }
+		JOptionPane p = new JOptionPane(message, type, JOptionPane.DEFAULT_OPTION, null, options, initialOption);
+		p.setInitialValue(initialOption);
+		JDialog d = p.createDialog(null, title);
+		p.selectInitialValue();
+		d.setAlwaysOnTop(true);
+		d.setVisible(true);
+		d.dispose();
+		return p.getValue();
+	}
 	   
 	/**  
 	 * The start method for this application.
@@ -188,8 +245,22 @@ public final class Main {
 			        }
 			        
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					if (!onMac()&&!onWindows()) UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+					
 					UIManager.put("TabbedPane.focus", new Color(0, 0, 0, 0));					
 					
+				     // Choose the appropriate font		
+					int fontSize=11;
+			        String fontName="";
+			        while(true) {
+			            if (!hasFont(fontName)) { fontName="Arial"; fontSize = 12;} else break; 
+			            if (!hasFont(fontName)) { fontName="Verdana"; fontSize=10; } else break; 
+			            if (!hasFont(fontName)) { fontName="Courier New"; } else break; 
+			            if (!hasFont(fontName)) { fontName="Lucida Grande"; fontSize=10; } 
+			            break;
+			        }			        
+			        setUIFont(new FontUIResource(new Font(fontName, 0, fontSize)));
+			        
 					frame = new AppFrame();				
 					frame.initializeAlloyAnalyzer();
 					frame.setLocationByPlatform(true);

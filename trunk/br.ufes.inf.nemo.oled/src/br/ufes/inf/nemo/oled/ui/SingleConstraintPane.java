@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -62,28 +61,24 @@ public class SingleConstraintPane extends JPanel {
 		setBackground(UIManager.getColor("Panel.background"));
 		setPreferredSize(new Dimension(576, 41));
 		
-		comboTransformationType = new JComboBox();
-		comboTransformationType.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		comboTransformationType = new JComboBox();		
 		comboTransformationType.setModel(new DefaultComboBoxModel(new String[] {"FACT ", "SIMULATE", "CHECK"}));		
 				
 		txtConstraintName = new JTextField();
 		txtConstraintName.setBorder(new LineBorder(Color.LIGHT_GRAY));
 		txtConstraintName.setHorizontalAlignment(SwingConstants.LEFT);
-		txtConstraintName.setEditable(false);
-		txtConstraintName.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		txtConstraintName.setEditable(false);		
 		txtConstraintName.setColumns(10);
 		
 		checkEnforce = new JCheckBox("");
-		checkEnforce.setBackground(UIManager.getColor("Panel.background"));
-		checkEnforce.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		checkEnforce.setBackground(UIManager.getColor("Panel.background"));		
 		checkEnforce.setSelected(true);
 		
 		spinCommandScope = new JSpinner();
 		spinCommandScope.setModel(new SpinnerNumberModel(10, 0, 32, 1));
 		
 		lblScope = new JLabel("Scope:");
-		lblScope.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
+				
 		GroupLayout gl_panel = new GroupLayout(this);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
