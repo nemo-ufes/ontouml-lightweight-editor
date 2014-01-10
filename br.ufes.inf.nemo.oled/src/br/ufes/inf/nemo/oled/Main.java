@@ -251,7 +251,7 @@ public final class Main {
 					
 				     // Choose the appropriate font		
 					int fontSize=11;
-			        String fontName="";
+			        String fontName="Tahoma";
 			        while(true) {
 			            if (!hasFont(fontName)) { fontName="Arial"; fontSize = 12;} else break; 
 			            if (!hasFont(fontName)) { fontName="Verdana"; fontSize=10; } else break; 

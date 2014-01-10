@@ -257,7 +257,7 @@ public class RefOntoUMLUtil {
     			elementType = "diagram";
     		
     		label.setIcon(new ImageIcon(getClass().getClassLoader().
-    				getResource("resources/br/ufes/inf/nemo/oled/ui/xmi2ontoref/"+
+    				getResource("resources/br/ufes/inf/nemo/xmi2ontouml/"+
     				elementType.toLowerCase()+".png")));
     		
     		if (selected)
