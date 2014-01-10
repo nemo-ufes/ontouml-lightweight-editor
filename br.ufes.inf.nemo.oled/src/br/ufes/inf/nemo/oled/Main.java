@@ -216,7 +216,7 @@ public final class Main {
 		d.dispose();
 		return p.getValue();
 	}
-	   
+
 	/**  
 	 * The start method for this application.
 	 * @param args the command line parameters
@@ -261,8 +261,11 @@ public final class Main {
 			        }			        
 			        setUIFont(new FontUIResource(new Font(fontName, 0, fontSize)));
 			        
-					frame = new AppFrame();				
-					frame.initializeAlloyAnalyzer();
+					frame = new AppFrame();
+					
+					frame.loadAppropriateSwtJar(); //SWT
+					frame.initializeAlloyAnalyzer();//Alloy
+					
 					frame.setLocationByPlatform(true);
 					frame.setVisible(true);
 					frame.toFront();					

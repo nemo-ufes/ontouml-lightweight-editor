@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -128,6 +131,35 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		t.start();
 		t.join();
 		return t;
+	}
+
+	public void loadAppropriateSwtJar() 
+	{
+		String swtFileName = "<empty>";
+	    try {
+	        String osName = System.getProperty("os.name").toLowerCase();
+	        String osArch = System.getProperty("os.arch").toLowerCase();
+	        URLClassLoader classLoader = (URLClassLoader) getClass().getClassLoader();
+	        Method addUrlMethod = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+	        addUrlMethod.setAccessible(true);
+
+	        String swtFileNameOsPart = 
+	            osName.contains("win") ? "win32" :
+	            osName.contains("mac") ? "macosx" :
+	            osName.contains("linux") || osName.contains("nix") ? "linux" :
+	            ""; // throw new RuntimeException("Unknown OS name: "+osName)
+
+	        String swtFileNameArchPart = osArch.contains("64") ? "x64" : "x86";
+	        
+	        swtFileName = "org.eclipse.swt_4.3."+swtFileNameOsPart+"."+swtFileNameArchPart+".jar";
+	        
+	        URL swtFileUrl = classLoader.getResource("/br/ufes/inf/nemo/common/lib/swt/"+swtFileName); // I am using Jar-in-Jar class loader which understands this URL; adjust accordingly if you don't
+	        addUrlMethod.invoke(classLoader, swtFileUrl);
+	    }
+	    catch(Exception e) {
+	        System.out.println("Unable to add the swt jar to the class path: "+swtFileName);
+	        e.printStackTrace();
+	    }
 	}
 
 	/**
