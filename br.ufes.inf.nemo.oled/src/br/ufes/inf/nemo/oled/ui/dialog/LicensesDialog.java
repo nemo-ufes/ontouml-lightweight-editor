@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.oled.ui.dialog;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
@@ -85,8 +84,7 @@ public class LicensesDialog extends JDialog {
 		
 		JLabel labelSee = new JLabel("See copyrights: ");
 		
-		textArea = new JTextArea();
-		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		textArea = new JTextArea();		
 		textArea.setEditable(false);
 		textArea.setCaretPosition(0);
 		

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -87,8 +86,7 @@ public class AboutDialog extends JDialog {
 		labelDescription = new JLabel("https://code.google.com/p/ontouml-lightweight-editor/");
 		labelDescription.setHorizontalAlignment(SwingConstants.CENTER);
 		labelDescription.setForeground(Color.BLACK);
-		labelDescription.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
+				
 		JPanel panel = new JPanel();
 				
 		GroupLayout gl_CenterPanel = new GroupLayout(CenterPanel);

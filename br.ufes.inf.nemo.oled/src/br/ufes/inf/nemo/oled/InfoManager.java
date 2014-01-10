@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.oled;
 
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -111,7 +110,6 @@ public class InfoManager extends JTabbedPane {
 			}
 		});
 		
-		setFont(new Font("Tahoma", Font.PLAIN, 11));
 		setBorder(null);
 		setBackground(UIManager.getColor("Panel.background"));
 					

@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.oled.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -169,21 +168,17 @@ public class OntoUML2AlloyOptionsPane extends JPanel {
 		lblDescriptionAntirigidity = new JLabel("Mark to visualize an instance of an anti-rigid type in a World and not an instance of it in another World.");
 		lblDescriptionAntirigidity.setForeground(Color.GRAY);
 		
-		lblSateRelator = new JLabel("");
-		lblSateRelator.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblSateRelator = new JLabel("");		
 		lblSateRelator.setForeground(Color.RED);
 		
-		lblStateWeak = new JLabel("");
-		lblStateWeak.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblStateWeak = new JLabel("");		
 		lblStateWeak.setForeground(Color.RED);
 		
-		lblStateIdentity = new JLabel("");
-		lblStateIdentity.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblStateIdentity = new JLabel("");		
 		lblStateIdentity.setForeground(Color.RED);
 		
 		lblStateAntirigidity = new JLabel("");
-		lblStateAntirigidity.setForeground(Color.RED);
-		lblStateAntirigidity.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblStateAntirigidity.setForeground(Color.RED);		
 		
 		GroupLayout gl_cbxPanel = new GroupLayout(cbxPanel);
 		gl_cbxPanel.setHorizontalGroup(

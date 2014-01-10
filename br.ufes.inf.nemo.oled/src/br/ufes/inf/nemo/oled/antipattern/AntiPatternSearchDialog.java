@@ -257,26 +257,26 @@ public class AntiPatternSearchDialog extends JDialog {
 	
 	public void HideBoldnessOnAllCheckBoxes()
 	{
-		cbxAssCyc.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxBinOver.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		cbxDepPhase_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		cbxFreeRole.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		cbxGSRig.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		cbxHetColl.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		cbxHomoFunc.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		cbxImpAbs.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxImpPart.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxMixIden.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxMixRig.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxMultiDep.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		cbxRelComp.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxRelOver.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxRelRig.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxRelSpec.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxRepRel.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxUndefFormal.setFont(new Font("Tahoma", Font.PLAIN, 11));	
-		cbxUndefPhase.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		cbxWholeOver.setFont(new Font("Tahoma", Font.PLAIN, 11));	
+		cbxAssCyc.setFont(new Font(cbxAssCyc.getFont().getName(), Font.PLAIN, cbxAssCyc.getFont().getSize()));	
+		cbxBinOver.setFont(new Font(cbxBinOver.getFont().getName(), Font.PLAIN, cbxBinOver.getFont().getSize()));
+		cbxDepPhase_1.setFont(new Font(cbxDepPhase_1.getFont().getName(), Font.PLAIN, cbxDepPhase_1.getFont().getSize()));
+		cbxFreeRole.setFont(new Font(cbxFreeRole.getFont().getName(), Font.PLAIN, cbxFreeRole.getFont().getSize()));
+		cbxGSRig.setFont(new Font(cbxGSRig.getFont().getName(), Font.PLAIN, cbxGSRig.getFont().getSize()));
+		cbxHetColl.setFont(new Font(cbxHetColl.getFont().getName(), Font.PLAIN, cbxHetColl.getFont().getSize()));
+		cbxHomoFunc.setFont(new Font(cbxHomoFunc.getFont().getName(), Font.PLAIN, cbxHomoFunc.getFont().getSize()));
+		cbxImpAbs.setFont(new Font(cbxImpAbs.getFont().getName(), Font.PLAIN, cbxImpAbs.getFont().getSize()));	
+		cbxImpPart.setFont(new Font(cbxImpPart.getFont().getName(), Font.PLAIN, cbxImpPart.getFont().getSize()));	
+		cbxMixIden.setFont(new Font(cbxMixIden.getFont().getName(), Font.PLAIN, cbxMixIden.getFont().getSize()));	
+		cbxMixRig.setFont(new Font(cbxMixRig.getFont().getName(), Font.PLAIN, cbxMixRig.getFont().getSize()));	
+		cbxMultiDep.setFont(new Font(cbxMultiDep.getFont().getName(), Font.PLAIN, cbxMultiDep.getFont().getSize()));
+		cbxRelComp.setFont(new Font(cbxRelComp.getFont().getName(), Font.PLAIN, cbxRelComp.getFont().getSize()));	
+		cbxRelOver.setFont(new Font(cbxRelOver.getFont().getName(), Font.PLAIN, cbxRelOver.getFont().getSize()));	
+		cbxRelRig.setFont(new Font(cbxRelRig.getFont().getName(), Font.PLAIN, cbxRelRig.getFont().getSize()));	
+		cbxRelSpec.setFont(new Font(cbxRelSpec.getFont().getName(), Font.PLAIN, cbxRelSpec.getFont().getSize()));	
+		cbxRepRel.setFont(new Font(cbxRepRel.getFont().getName(), Font.PLAIN, cbxRepRel.getFont().getSize()));	
+		cbxUndefFormal.setFont(new Font(cbxUndefFormal.getFont().getName(), Font.PLAIN, cbxUndefFormal.getFont().getSize()));	
+		cbxUndefPhase.setFont(new Font(cbxUndefPhase.getFont().getName(), Font.PLAIN, cbxUndefPhase.getFont().getSize()));
+		cbxWholeOver.setFont(new Font(cbxWholeOver.getFont().getName(), Font.PLAIN, cbxWholeOver.getFont().getSize()));	
 	}
 	
 	/**
@@ -407,8 +407,7 @@ public class AntiPatternSearchDialog extends JDialog {
 					.addContainerGap())
 		);
 		
-		cbxMixRig = new JCheckBox("MixRig: Mixin with same Rigidity");
-		cbxMixRig.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxMixRig = new JCheckBox("MixRig: Mixin with same Rigidity");		
 		cbxMixRig.setPreferredSize(new Dimension(210, 20));
 		cbxMixRig.setBackground(UIManager.getColor("Panel.background"));
 		
@@ -436,8 +435,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		cbxRepRel.setPreferredSize(new Dimension(250, 20));
 		cbxRepRel.setBackground(UIManager.getColor("Panel.background"));
 				
-		cbxUndefFormal = new JCheckBox("UndefFormal: Undefined Domain Formal Relation");
-		cbxUndefFormal.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxUndefFormal = new JCheckBox("UndefFormal: Undefined Domain Formal Relation");		
 		cbxUndefFormal.setPreferredSize(new Dimension(300, 20));
 		cbxUndefFormal.setBackground(UIManager.getColor("Panel.background"));
 				
@@ -446,43 +444,35 @@ public class AntiPatternSearchDialog extends JDialog {
 		cbxUndefPhase.setBackground(UIManager.getColor("Panel.background"));
 				
 		lblMixRigRes = new JLabel("");
-		lblMixRigRes.setPreferredSize(new Dimension(120, 20));
-		lblMixRigRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblMixRigRes.setPreferredSize(new Dimension(120, 20));		
 		lblMixRigRes.setForeground(Color.BLUE);
 		
 		lblMultiDepRes = new JLabel("");
 		lblMultiDepRes.setPreferredSize(new Dimension(75, 20));
-		lblMultiDepRes.setForeground(Color.BLUE);
-		lblMultiDepRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblMultiDepRes.setForeground(Color.BLUE);		
 		
 		lblRelCompRes = new JLabel("");
 		lblRelCompRes.setPreferredSize(new Dimension(115, 20));
-		lblRelCompRes.setForeground(Color.BLUE);
-		lblRelCompRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblRelCompRes.setForeground(Color.BLUE);		
 		
 		lblRelOverRes = new JLabel("");
 		lblRelOverRes.setPreferredSize(new Dimension(43, 20));
-		lblRelOverRes.setForeground(Color.BLACK);
-		lblRelOverRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblRelOverRes.setForeground(Color.BLACK);		
 		
 		lblRelSpecRes = new JLabel("");
 		lblRelSpecRes.setPreferredSize(new Dimension(115, 20));
-		lblRelSpecRes.setForeground(Color.BLUE);
-		lblRelSpecRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblRelSpecRes.setForeground(Color.BLUE);		
 		
 		lblRepRelRes = new JLabel("");
 		lblRepRelRes.setPreferredSize(new Dimension(80, 20));
-		lblRepRelRes.setForeground(Color.BLUE);
-		lblRepRelRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblRepRelRes.setForeground(Color.BLUE);		
 		
 		lblUndefFormalRes = new JLabel("");
-		lblUndefFormalRes.setPreferredSize(new Dimension(30, 20));
-		lblUndefFormalRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblUndefFormalRes.setPreferredSize(new Dimension(30, 20));		
 		lblUndefFormalRes.setForeground(Color.BLUE);
 		
 		lblUndefPhaseRes = new JLabel("");
-		lblUndefPhaseRes.setPreferredSize(new Dimension(75, 20));
-		lblUndefPhaseRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblUndefPhaseRes.setPreferredSize(new Dimension(75, 20));		
 		lblUndefPhaseRes.setForeground(Color.BLUE);
 		rightPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -553,8 +543,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		
 		lblRelRigRes = new JLabel("");
 		lblRelRigRes.setPreferredSize(new Dimension(85, 20));
-		lblRelRigRes.setForeground(Color.BLUE);
-		lblRelRigRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblRelRigRes.setForeground(Color.BLUE);		
 		rightPanel.add(lblRelRigRes);
 		
 		lblRelSpecIco = new JButton();
@@ -605,32 +594,27 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(cbxWholeOver);
 		
 		lblWholeOverRes = new JLabel("");
-		lblWholeOverRes.setPreferredSize(new Dimension(20, 20));
-		lblWholeOverRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblWholeOverRes.setPreferredSize(new Dimension(20, 20));		
 		lblWholeOverRes.setForeground(Color.BLUE);
 		rightPanel.add(lblWholeOverRes);
 				
 		cbxDepPhase_1 = new JCheckBox(DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" : "+DepPhaseAntipattern.getAntipatternInfo().getName());
 		cbxDepPhase_1.setBackground(UIManager.getColor("Panel.background"));
 				
-		cbxHetColl = new JCheckBox("HetColl: Heterogeneous Collective");
-		cbxHetColl.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxHetColl = new JCheckBox("HetColl: Heterogeneous Collective");		
 		cbxHetColl.setPreferredSize(new Dimension(220, 20));
 		cbxHetColl.setBackground(UIManager.getColor("Panel.background"));
 				
-		cbxMixIden = new JCheckBox("MixIden: Mixin with same Identity");
-		cbxMixIden.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxMixIden = new JCheckBox("MixIden: Mixin with same Identity");		
 		cbxMixIden.setPreferredSize(new Dimension(220, 20));
 		cbxMixIden.setBackground(UIManager.getColor("Panel.background"));
 		
 		lblHetCollRes = new JLabel("");
-		lblHetCollRes.setPreferredSize(new Dimension(110, 20));
-		lblHetCollRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblHetCollRes.setPreferredSize(new Dimension(110, 20));		
 		lblHetCollRes.setForeground(Color.BLUE);		
 		
 		lblMixIdenRes = new JLabel("");
-		lblMixIdenRes.setPreferredSize(new Dimension(110, 20));
-		lblMixIdenRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblMixIdenRes.setPreferredSize(new Dimension(110, 20));		
 		lblMixIdenRes.setForeground(Color.BLUE);
 		leftPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -649,8 +633,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(cbxAssCyc);
 		
 		lblAssCycRes = new JLabel("");		
-		lblAssCycRes.setPreferredSize(new Dimension(155, 20));
-		lblAssCycRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblAssCycRes.setPreferredSize(new Dimension(155, 20));		
 		lblAssCycRes.setForeground(Color.BLUE);
 		leftPanel.add(lblAssCycRes);
 		
@@ -663,15 +646,13 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblBinOverIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblBinOverIco);
 		
-		cbxBinOver = new JCheckBox("BinOver: Binary Relation With Overlapping Ends");
-		cbxBinOver.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxBinOver = new JCheckBox("BinOver: Binary Relation With Overlapping Ends");		
 		cbxBinOver.setPreferredSize(new Dimension(295, 20));
 		cbxBinOver.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxBinOver);
 		
 		lblBinOverRes = new JLabel("");		
-		lblBinOverRes.setPreferredSize(new Dimension(35, 20));
-		lblBinOverRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblBinOverRes.setPreferredSize(new Dimension(35, 20));		
 		lblBinOverRes.setForeground(Color.BLUE);
 		leftPanel.add(lblBinOverRes);
 		
@@ -684,14 +665,12 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblDepPhaseIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblDepPhaseIco);
 		
-		cbxDepPhase_1 = new JCheckBox("DepPhase: Relationally Dependent Phase");
-		cbxDepPhase_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxDepPhase_1 = new JCheckBox("DepPhase: Relationally Dependent Phase");		
 		cbxDepPhase_1.setPreferredSize(new Dimension(265, 20));
 		leftPanel.add(cbxDepPhase_1);
 		
 		lblDepPhaseRes = new JLabel("");		
-		lblDepPhaseRes.setPreferredSize(new Dimension(65, 20));
-		lblDepPhaseRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblDepPhaseRes.setPreferredSize(new Dimension(65, 20));		
 		lblDepPhaseRes.setForeground(Color.BLUE);
 		leftPanel.add(lblDepPhaseRes);
 		
@@ -704,15 +683,13 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblFreeRoleIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblFreeRoleIco);
 		
-		cbxFreeRole = new JCheckBox("FreeRole: Free Role Specialization");
-		cbxFreeRole.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxFreeRole = new JCheckBox("FreeRole: Free Role Specialization");		
 		cbxFreeRole.setPreferredSize(new Dimension(220, 20));
 		cbxFreeRole.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxFreeRole);
 		
 		lblFreeRoleRes = new JLabel("");		
-		lblFreeRoleRes.setPreferredSize(new Dimension(110, 20));
-		lblFreeRoleRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblFreeRoleRes.setPreferredSize(new Dimension(110, 20));		
 		lblFreeRoleRes.setForeground(Color.BLUE);
 		leftPanel.add(lblFreeRoleRes);
 		
@@ -725,15 +702,13 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblGSRigIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblGSRigIco);
 		
-		cbxGSRig = new JCheckBox("GSRig: Generalization Set with Mixed Rigidity");
-		cbxGSRig.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxGSRig = new JCheckBox("GSRig: Generalization Set with Mixed Rigidity");		
 		cbxGSRig.setPreferredSize(new Dimension(290, 20));
 		cbxGSRig.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxGSRig);
 		
 		lblGSRigRes = new JLabel("");
-		lblGSRigRes.setPreferredSize(new Dimension(40, 20));
-		lblGSRigRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblGSRigRes.setPreferredSize(new Dimension(40, 20));		
 		lblGSRigRes.setForeground(Color.BLUE);		
 		leftPanel.add(lblGSRigRes);
 		
@@ -757,15 +732,13 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblHomoFuncIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblHomoFuncIco);
 		
-		cbxHomoFunc = new JCheckBox("HomoFunc: Homogeneous Functional Complex");
-		cbxHomoFunc.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxHomoFunc = new JCheckBox("HomoFunc: Homogeneous Functional Complex");		
 		cbxHomoFunc.setPreferredSize(new Dimension(290, 20));
 		cbxHomoFunc.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxHomoFunc);
 		
 		lblHomoFuncRes = new JLabel("");
-		lblHomoFuncRes.setPreferredSize(new Dimension(40, 20));
-		lblHomoFuncRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblHomoFuncRes.setPreferredSize(new Dimension(40, 20));		
 		lblHomoFuncRes.setForeground(Color.BLUE);		
 		leftPanel.add(lblHomoFuncRes);
 		
@@ -778,15 +751,13 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblImpAbsIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblImpAbsIco);
 		
-		cbxImpAbs = new JCheckBox("ImpAbs: Imprecise Abstraction");
-		cbxImpAbs.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxImpAbs = new JCheckBox("ImpAbs: Imprecise Abstraction");		
 		cbxImpAbs.setPreferredSize(new Dimension(210, 20));
 		cbxImpAbs.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxImpAbs);
 		
 		lblImpAbsRes = new JLabel("");
-		lblImpAbsRes.setPreferredSize(new Dimension(120, 20));
-		lblImpAbsRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblImpAbsRes.setPreferredSize(new Dimension(120, 20));		
 		lblImpAbsRes.setForeground(Color.BLUE);		
 		leftPanel.add(lblImpAbsRes);
 		
@@ -799,15 +770,13 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblImpPartIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/annotation-rollover.png")));
 		leftPanel.add(lblImpPartIco);
 		
-		cbxImpPart = new JCheckBox("ImpPart: Imprecise Part Specification");
-		cbxImpPart.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		cbxImpPart = new JCheckBox("ImpPart: Imprecise Part Specification");		
 		cbxImpPart.setPreferredSize(new Dimension(240, 20));
 		cbxImpPart.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxImpPart);
 		
 		lblImpPartRes = new JLabel("");
-		lblImpPartRes.setPreferredSize(new Dimension(90, 20));
-		lblImpPartRes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblImpPartRes.setPreferredSize(new Dimension(90, 20));		
 		lblImpPartRes.setForeground(Color.BLUE);		
 		leftPanel.add(lblImpPartRes);
 		
@@ -839,8 +808,7 @@ public class AntiPatternSearchDialog extends JDialog {
        	});
 		
 		progressBarDescr = new JLabel("Click in SEARCH to find anti-patterns in the model.");		
-		progressBarDescr.setForeground(Color.BLUE);
-		progressBarDescr.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		progressBarDescr.setForeground(Color.BLUE);		
 		
 		btnShowResult = new JButton("Show Result");
 		btnShowResult.setEnabled(false);		
@@ -1018,7 +986,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += AssCycAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+assCyc.getOccurrences().size()+" items found.\n";
 										totalOccurrences += assCyc.getOccurrences().size();
 										lblAssCycRes.setText("("+assCyc.getOccurrences().size()+")");						
-										cbxAssCyc.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxAssCyc.setFont(new Font(cbxAssCyc.getFont().getFontName(), Font.BOLD,cbxAssCyc.getFont().getSize()));
 									}
 								}
 							});
@@ -1045,7 +1013,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += BinOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+binOver.getOccurrences().size()+" items found.\n"; 
 										totalOccurrences += binOver.getOccurrences().size();
 										lblBinOverRes.setText("("+binOver.getOccurrences().size()+")");
-										cbxBinOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxBinOver.setFont(new Font(cbxBinOver.getFont().getFontName(), Font.BOLD,cbxBinOver.getFont().getSize()));
 									}
 								}
 							});		
@@ -1072,7 +1040,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+depPhase.getOccurrences().size()+" items found.\n";
 										totalOccurrences += depPhase.getOccurrences().size();
 										lblDepPhaseRes.setText("("+depPhase.getOccurrences().size()+")");
-										cbxDepPhase_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxDepPhase_1.setFont(new Font(cbxDepPhase_1.getFont().getFontName(), Font.BOLD,cbxDepPhase_1.getFont().getSize()));
 									}								
 								}
 							});
@@ -1098,7 +1066,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+freeRole.getOccurrences().size()+" items found.\n";
 										totalOccurrences += freeRole.getOccurrences().size();
 										lblFreeRoleRes.setText("("+freeRole.getOccurrences().size()+")");
-										cbxFreeRole.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxFreeRole.setFont(new Font(cbxFreeRole.getFont().getFontName(), Font.BOLD,cbxFreeRole.getFont().getSize()));
 									}									
 								}
 							});
@@ -1124,7 +1092,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += GSRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+gsRig.getOccurrences().size()+" items found.\n";		
 										totalOccurrences += gsRig.getOccurrences().size();
 										lblGSRigRes.setText("("+gsRig.getOccurrences().size()+")");	
-										cbxGSRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxGSRig.setFont(new Font(cbxGSRig.getFont().getFontName(), Font.BOLD,cbxGSRig.getFont().getSize()));
 									}
 								}
 							});									
@@ -1150,7 +1118,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += HetCollAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+hetColl.getOccurrences().size()+" items found.\n";
 										totalOccurrences += hetColl.getOccurrences().size();
 										lblHetCollRes.setText("("+hetColl.getOccurrences().size()+")");	
-										cbxHetColl.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxHetColl.setFont(new Font(cbxHetColl.getFont().getFontName(), Font.BOLD,cbxHetColl.getFont().getSize()));
 									}   
 								}
 							});
@@ -1176,7 +1144,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+homoFunc.getOccurrences().size()+" items found.\n";
 										totalOccurrences += homoFunc.getOccurrences().size();
 										lblHomoFuncRes.setText("("+homoFunc.getOccurrences().size()+")");
-										cbxHomoFunc.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxHomoFunc.setFont(new Font(cbxHomoFunc.getFont().getFontName(), Font.BOLD,cbxHomoFunc.getFont().getSize()));
 									}									
 								}
 							});
@@ -1202,7 +1170,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impAbs.getOccurrences().size()+" items found.\n";
 										totalOccurrences += impAbs.getOccurrences().size();
 										lblImpAbsRes.setText("("+impAbs.getOccurrences().size()+")");
-										cbxImpAbs.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxImpAbs.setFont(new Font(cbxImpAbs.getFont().getFontName(), Font.BOLD,cbxImpAbs.getFont().getSize()));
 									}    
 								}
 							});
@@ -1229,7 +1197,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += ImpPartAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impPart.getOccurrences().size()+" items found.\n";
 										totalOccurrences += impPart.getOccurrences().size();
 										lblImpPartRes.setText("("+impPart.getOccurrences().size()+")");	
-										cbxImpPart.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxImpPart.setFont(new Font(cbxImpPart.getFont().getFontName(), Font.BOLD,cbxImpPart.getFont().getSize()));
 									}  
 								}
 							});
@@ -1255,7 +1223,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += MixIdenAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixIden.getOccurrences().size()+" items found.\n";
 										totalOccurrences += mixIden.getOccurrences().size();
 										lblMixIdenRes.setText("("+mixIden.getOccurrences().size()+")");
-										cbxMixIden.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxMixIden.setFont(new Font(cbxMixIden.getFont().getFontName(), Font.BOLD,cbxMixIden.getFont().getSize()));
 									}									
 								}
 							});
@@ -1281,7 +1249,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += MixRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixRig.getOccurrences().size()+" items found.\n";
 										totalOccurrences += mixRig.getOccurrences().size();
 										lblMixRigRes.setText("("+mixRig.getOccurrences().size()+")");
-										cbxMixRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxMixRig.setFont(new Font(cbxMixRig.getFont().getFontName(), Font.BOLD,cbxMixRig.getFont().getSize()));
 									}  
 								}
 							});
@@ -1307,7 +1275,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += MultiDepAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multiDep.getOccurrences().size()+" items found.\n";
 										totalOccurrences += multiDep.getOccurrences().size();
 										lblMultiDepRes.setText("("+multiDep.getOccurrences().size()+")");
-										cbxMultiDep.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxMultiDep.setFont(new Font(cbxMultiDep.getFont().getFontName(), Font.BOLD,cbxMultiDep.getFont().getSize()));
 									}									
 								}
 							});
@@ -1333,7 +1301,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += RelCompAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relComp.getOccurrences().size()+" items found.\n";
 										totalOccurrences += relComp.getOccurrences().size();
 										lblRelCompRes.setText("("+relComp.getOccurrences().size()+")");	
-										cbxRelComp.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxRelComp.setFont(new Font(cbxRelComp.getFont().getFontName(), Font.BOLD,cbxRelComp.getFont().getSize()));
 									}									
 								}
 							});
@@ -1359,7 +1327,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += RelOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relOver.getOccurrences().size()+" items found.\n";
 										totalOccurrences += relOver.getOccurrences().size();
 										lblRelOverRes.setText("("+relOver.getOccurrences().size()+")");
-										cbxRelOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxRelOver.setFont(new Font(cbxRelOver.getFont().getFontName(), Font.BOLD,cbxRelOver.getFont().getSize()));
 									}								
 								}
 							});
@@ -1385,7 +1353,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += RelRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relRig.getOccurrences().size()+" items found.\n";
 										totalOccurrences += relRig.getOccurrences().size();
 										lblRelRigRes.setText("("+relRig.getOccurrences().size()+")");
-										cbxRelRig.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxRelRig.setFont(new Font(cbxRelRig.getFont().getFontName(), Font.BOLD,cbxRelRig.getFont().getSize()));
 									}									
 								}
 							});
@@ -1411,7 +1379,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += RelSpecAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relSpec.getOccurrences().size()+" items found.\n";
 										totalOccurrences += relSpec.getOccurrences().size();
 										lblRelSpecRes.setText("("+relSpec.getOccurrences().size()+")");
-										cbxRelSpec.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxRelSpec.setFont(new Font(cbxRelSpec.getFont().getFontName(), Font.BOLD,cbxRelSpec.getFont().getSize()));
 									}									
 								}
 							});
@@ -1437,7 +1405,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += RepRelAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+repRel.getOccurrences().size()+" items found.\n";
 										totalOccurrences += repRel.getOccurrences().size();
 										lblRepRelRes.setText("("+repRel.getOccurrences().size()+")");	
-										cbxRepRel.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxRepRel.setFont(new Font(cbxRepRel.getFont().getFontName(), Font.BOLD,cbxRepRel.getFont().getSize()));
 									}
 								}
 							});
@@ -1463,7 +1431,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefFormal.getOccurrences().size()+" items found.\n";
 										totalOccurrences += undefFormal.getOccurrences().size();
 										lblUndefFormalRes.setText("("+undefFormal.getOccurrences().size()+")");
-										cbxUndefFormal.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxUndefFormal.setFont(new Font(cbxUndefFormal.getFont().getFontName(), Font.BOLD,cbxUndefFormal.getFont().getSize()));
 									}
 								}
 							});							
@@ -1489,7 +1457,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefPhase.getOccurrences().size()+" items found.\n";
 										totalOccurrences += undefPhase.getOccurrences().size();
 										lblUndefPhaseRes.setText("("+undefPhase.getOccurrences().size()+")");
-										cbxUndefPhase.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxUndefPhase.setFont(new Font(cbxUndefPhase.getFont().getFontName(), Font.BOLD,cbxUndefPhase.getFont().getSize()));
 									}   	
 								}
 							});
@@ -1515,7 +1483,7 @@ public class AntiPatternSearchDialog extends JDialog {
 										result += WholeOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
 										totalOccurrences += wholeOver.getOccurrences().size();
 										lblWholeOverRes.setText("("+wholeOver.getOccurrences().size()+")");
-										cbxWholeOver.setFont(new Font("Tahoma", Font.BOLD, 11));
+										cbxWholeOver.setFont(new Font(cbxWholeOver.getFont().getFontName(), Font.BOLD,cbxWholeOver.getFont().getSize()));
 									}								
 								}
 							});
