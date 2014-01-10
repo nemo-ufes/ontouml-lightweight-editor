@@ -19,7 +19,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 	private boolean isReverse;
 	
 	
-	public static int SUBSET = 1, REDEFINE = 2, NONSUBSET = 3, DISJOINT = 4;
+	public static final int SUBSET = 1, REDEFINE = 2, NONSUBSET = 3, DISJOINT = 4;
 		
 	public RelSpecOccurrence (Association specific, Association general, RelSpecAntipattern ap) throws Exception{
 		super(ap);
@@ -60,11 +60,27 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 			return specificSource;
 		
 	}
+	
+	public Property getAlignedSpecificSourceEnd(){
+		if (isReverse)
+			return specificTargetEnd;
+		else
+			return specificSourceEnd;
+		
+	}
+	
 	public Classifier getAlignedSpecificTarget(){
 		if (isReverse)
 			return specificSource;
 		else
 			return specificTarget;
+	}
+	
+	public Property getAlignedSpecificTargetEnd(){
+		if (isReverse)
+			return specificSourceEnd;
+		else
+			return specificTargetEnd;
 	}
 	
 	public boolean isVariation1(){
@@ -145,6 +161,61 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		return 	"context _'"+contextName+"'\n"+
 				"inv "+invName+" : \n    "+invRule;
 		
+	}
+	
+	public void generateOCL(int type){
+		
+		String invRule = "self.";
+		String invName = specific.getName()+"_";
+		String oclOperation, contextName;
+		
+		Property context, generalContext;
+		
+		if (!getAlignedSpecificTarget().equals(getGeneralTarget()) && getAlignedSpecificSource().equals(getGeneralSource())){
+			context = getAlignedSpecificTargetEnd();
+			generalContext = generalTargetEnd;
+		}
+		else{
+			context = getAlignedSpecificSourceEnd();
+			generalContext = generalSourceEnd;
+		} 
+		
+		invRule += addQuotes(context.getOpposite().getName())+"->asSet()";
+		contextName = context.getType().getName();
+		
+		switch (type) {
+		case SUBSET:
+			oclOperation = "->includesAll(";
+			invName += "subsets";
+			break;
+
+		case REDEFINE:
+			oclOperation = "=";
+			invName += "redefines";
+			break;
+			
+		case DISJOINT:
+			oclOperation = "->excludesAll(";
+			invName += "disjointWith";
+			break;
+		default :
+			oclOperation = "ERROR";
+			invName += "ERROR";
+		}
+		
+		invRule+=oclOperation+"self";
+		
+		if(!generalContext.getType().equals(context.getType()))
+			invRule += ".oclAsType("+addQuotes(generalContext.getType().getName())+")";
+		
+		invRule += "."+addQuotes(generalContext.getOpposite().getName())+"->asSet()";
+		
+		if(type==SUBSET || type==DISJOINT)
+			invRule += ")";
+		
+		invName += "_"+general.getName();
+		
+		super.fix.addAll(fixer.generateOCLRule(contextName, invName, invRule));
 	}
 	
 		
@@ -376,4 +447,6 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 	public String getShortName() {
 		return parser.getStringRepresentation(general)+" & "+parser.getStringRepresentation(specific);
 	}
+	
+	
 }
