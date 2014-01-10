@@ -33,4 +33,8 @@ public abstract class Antipattern<T extends AntipatternOccurrence> {
 	public ArrayList<T> getOccurrences(){
 		return occurrence;
 	}
+	
+	public OntoUMLParser getParser(){
+		return parser;
+	}
 }

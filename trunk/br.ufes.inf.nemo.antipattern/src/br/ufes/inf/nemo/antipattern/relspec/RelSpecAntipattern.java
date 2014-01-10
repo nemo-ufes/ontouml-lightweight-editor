@@ -114,13 +114,23 @@ public class RelSpecAntipattern extends Antipattern<RelSpecOccurrence> {
 	private <T extends Association> void identifyByStereotype( Set<T> associationList){
 		int current = 1, total = associationList.size()*associationList.size(); 
 		for (Association a1 : associationList) {
+			
+			if(a1.getMemberEnd()==null || a1.getMemberEnd().size()!=2)
+				continue;
+			
+			Classifier 	sourceA1 = (Classifier) a1.getMemberEnd().get(0).getType(), 
+						targetA1 = (Classifier) a1.getMemberEnd().get(1).getType();
+			
 			for (Association a2 : associationList) {
 				current++;
-				System.out.println("("+current+" of "+total+") "+parser.getStringRepresentation(a1)+", "+parser.getStringRepresentation(a2)+": Analyzing...");
-				Classifier 	sourceA1 = (Classifier) a1.getMemberEnd().get(0).getType(), 
-							targetA1 = (Classifier) a1.getMemberEnd().get(1).getType(), 
-							sourceA2 = (Classifier) a2.getMemberEnd().get(0).getType(), 
+				//System.out.println("("+current+" of "+total+") "+parser.getStringRepresentation(a1)+", "+parser.getStringRepresentation(a2)+": Analyzing...");
+				
+				if(a2.getMemberEnd()==null || a2.getMemberEnd().size()!=2)
+					continue;
+				
+				Classifier 	sourceA2 = (Classifier) a2.getMemberEnd().get(0).getType(), 
 							targetA2 = (Classifier) a2.getMemberEnd().get(1).getType();
+				
 				if (!a1.equals(a2)){
 					
 					boolean isSpecialization = 
