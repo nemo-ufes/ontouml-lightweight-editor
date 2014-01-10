@@ -105,24 +105,58 @@ public class RelSpecTester {
 		
 		System.out.println("#VAR1: "+var1.size()+"\n#VAR2: "+var2.size()+"\n#VAR3: "+var3.size()+"\n#VAR4: "+var4.size()+"\n#VAR5: "+var5.size()+"\n#VAR6: "+var6.size()+"\n#VAR7: "+var7.size()+"\n#NO VAR: "+var0.size());
 		
-		for (RelSpecOccurrence rs : var0) {
+		/*for (RelSpecOccurrence rs : var0) {
 			System.out.println("G SOURCE: "+rs.getGeneralSource());
 			System.out.println("S SOURCE: "+rs.getSpecificSource());
 			System.out.println("G TARGET: "+rs.getGeneralTarget());
 			System.out.println("S TARGET: "+rs.getSpecificTarget());
 			System.out.println();
-		}
+		}*/
 		
-		WizardDialog wizardDialog = new WizardDialog(new Shell(SWT.ON_TOP),
-			    new RelSpecWizard(var1.get(0)));
+		var1.get(0).generateOCL(RelSpecOccurrence.SUBSET);
+		var1.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
+		var1.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		System.out.println(var1.get(0).getFix().getRulesString());
+		
+		var2.get(0).generateOCL(RelSpecOccurrence.SUBSET);
+		var2.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
+		var2.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		System.out.println(var2.get(0).getFix().getRulesString());
+		
+		var3.get(0).generateOCL(RelSpecOccurrence.SUBSET);
+		var3.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
+		var3.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		System.out.println(var3.get(0).getFix().getRulesString());
+		
+		var4.get(0).generateOCL(RelSpecOccurrence.SUBSET);
+		var4.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
+		var4.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		System.out.println(var4.get(0).getFix().getRulesString());
+		
+		var5.get(0).generateOCL(RelSpecOccurrence.SUBSET);
+		var5.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
+		var5.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		System.out.println(var5.get(0).getFix().getRulesString());
+		
+//		var6.get(0).generateOCL(RelSpecOccurrence.SUBSET);
+//		var6.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
+//		var6.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		
+		var7.get(0).generateOCL(RelSpecOccurrence.SUBSET);
+		var7.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
+		var7.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		System.out.println(var7.get(0).getFix().getRulesString());
+		
+		/*WizardDialog wizardDialog = new WizardDialog(new Shell(SWT.ON_TOP),
+			    new RelSpecWizard(var4.get(0)));
 			    if (wizardDialog.open() == Window.OK) {
 			      System.out.println("Ok pressed");
 			    } else {
 			      System.out.println("Cancel pressed");
-			    }
+			    }*/
+		
 	}
 	
-	@SuppressWarnings("rawtypes")
 	public static int runAntipattern (String antiPatternAcronym, String model,Antipattern ap) throws IOException {
 		System.out.print("("+getCurrentDateAndTime() + ") " + model + ": ");
 		System.out.println(antiPatternAcronym+": Analyzing model...");
