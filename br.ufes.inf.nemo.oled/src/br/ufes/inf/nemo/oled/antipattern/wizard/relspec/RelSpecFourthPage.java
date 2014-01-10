@@ -55,6 +55,7 @@ public class RelSpecFourthPage extends RelSpecPage {
 		btnSpecificSource = new Button(container, SWT.RADIO);
 		btnSpecificSource.setBounds(10, 104, 449, 16);
 		btnSpecificSource.setText(relSpec.getParser().getStringRepresentation(relSpec.getSpecificSource())+" (source end of "+relSpec.getParser().getStringRepresentation(relSpec.getSpecific())+")");
+		btnSpecificSource.setSelection(true);
 		
 		btnSpecificTarget = new Button(container, SWT.RADIO);
 		btnSpecificTarget.setText(relSpec.getParser().getStringRepresentation(relSpec.getSpecificTarget())+" (target end of "+relSpec.getParser().getStringRepresentation(relSpec.getSpecific())+")");

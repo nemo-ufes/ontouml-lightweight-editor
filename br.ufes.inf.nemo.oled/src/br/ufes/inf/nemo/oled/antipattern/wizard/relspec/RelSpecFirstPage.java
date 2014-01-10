@@ -47,19 +47,20 @@ public class RelSpecFirstPage extends RelSpecPage {
 							relSpec.getAlignedSpecificTarget().getName()+", through relation "+relSpec.getSpecific().getName()+". What can be said" +
 							" about ‘x’ being connected to ‘y’ through "+relSpec.getGeneral().getName()+"?");
 		styledText.setEditable(false);
-		styledText.setBounds(10, 10, 554, 38);
+		styledText.setBounds(10, 10, 554, 63);
 		
 		btnRequired = new Button(container, SWT.RADIO);
-		btnRequired.setBounds(10, 54, 90, 16);
+		btnRequired.setBounds(10, 79, 90, 16);
 		btnRequired.setText("Required");
+		btnRequired.setSelection(true);
 		
 		btnForbidden = new Button(container, SWT.RADIO);
 		btnForbidden.setText("Forbbiden");
-		btnForbidden.setBounds(10, 76, 90, 16);
+		btnForbidden.setBounds(10, 101, 90, 16);
 		
 		btnPossible = new Button(container, SWT.RADIO);
 		btnPossible.setText("Possible, but not required");
-		btnPossible.setBounds(10, 98, 156, 16);
+		btnPossible.setBounds(10, 123, 156, 16);
 	}
 	
 	@Override

@@ -55,6 +55,7 @@ public class RelSpecThirdPage extends RelSpecPage {
 		btnSpecialize = new Button(container, SWT.RADIO);
 		btnSpecialize.setBounds(10, 144, 449, 16);
 		btnSpecialize.setText("Specialize ends and include the redefinition constraint");
+		btnSpecialize.setSelection(true);
 		
 		btnKeep = new Button(container, SWT.RADIO);
 		btnKeep.setText("Keep the model as it is and include the redefinition constraint");

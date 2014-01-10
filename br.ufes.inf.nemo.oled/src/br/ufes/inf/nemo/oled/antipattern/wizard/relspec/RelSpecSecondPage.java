@@ -55,6 +55,7 @@ public class RelSpecSecondPage extends RelSpecPage {
 		btnYes = new Button(container, SWT.RADIO);
 		btnYes.setBounds(10, 122, 163, 16);
 		btnYes.setText("Yes (Redefinition)");
+		btnYes.setSelection(true);
 		
 		btnNo = new Button(container, SWT.RADIO);
 		btnNo.setText("No (Subsetting)");
