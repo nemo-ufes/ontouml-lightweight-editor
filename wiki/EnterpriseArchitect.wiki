@@ -7,7 +7,7 @@
 
   * Copy the file *ontoumlMDG.xml* to the folder MDGTechnologies at EA home, usually C:\Program Files\Sparx Systems\EA\MDGTechnologies .
 
-  _Available at_: https://ontouml-lightweight-editor.googlecode.com/files/ontoumlMDG.xml
+  _Download_: [https://drive.google.com/#folders/0B7WqSwi56QipOGNiMUlxd21Cc0U ontoumlMDG1.2.xml]
  
   * Copy the file *ontoumlPatterns.xml* to the folder ModelPatterns at EA home, usually C:\Program Files\Sparx Systems\EA\ModelPatterns.
 
