@@ -52,6 +52,7 @@ public class OntoUMLError extends Throwable {
 	 * @param multElem element with the multiplicity undefined
 	 * @return the error String, identifying the element and its path
 	 */
+	@SuppressWarnings("unused")
 	public static String undefinedMultiplicityError(MultiplicityElement multElem)
 	{
 		String error = new String(), elementType;
@@ -76,6 +77,7 @@ public class OntoUMLError extends Throwable {
 		return error += getElementPath(prop)+"\n\n";
 	}
 	
+	@SuppressWarnings("unused")
 	public static String wrongMultiplicityFormat(MultiplicityElement multElem)
 	{
 		String error = new String(), elementType;

@@ -117,7 +117,8 @@ public class RelRigWizard extends Wizard {
 	}
 	
 	@Override
-	public boolean performFinish() {		
+	public boolean performFinish() {	
+		
 		return true;
 	}
 	

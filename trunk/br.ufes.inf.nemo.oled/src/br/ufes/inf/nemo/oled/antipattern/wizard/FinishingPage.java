@@ -1,11 +1,12 @@
 package br.ufes.inf.nemo.oled.antipattern.wizard;
 
+import javax.swing.SwingUtilities;
+
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -59,41 +60,35 @@ public class FinishingPage extends WizardPage {
 	
 	public void updateOLED ()
 	{
-		if (fix==null) return;
-		
-		Display.getDefault().asyncExec(new Runnable() {
-		    public void run() {
-		    	
-//		    	Thread t = new Thread(new Runnable() {					
-//					@Override
-//					public void run() {
-//						SwingUtilities.invokeLater(new Runnable() {			
-//							@Override
-//							public void run() {
-								for(Object obj: fix.getAdded()) {
-									if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
-										AddNodeCommand.updateApplication((RefOntoUML.Element)obj);
-								}
-								for(Object obj: fix.getAdded()) {
-									if (obj instanceof RefOntoUML.Relationship)
-										AddConnectionCommand.updateApplication((RefOntoUML.Element)obj);
-								}
-								for(Object obj: fix.getDeleted()) {
-									if (obj instanceof RefOntoUML.Relationship)
-										ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
-								}
-								for(Object obj: fix.getDeleted()) {
-									if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
-										ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
-								}				
-//							}
-//						});						
-//					}
-//				});
-//		    	t.start();
-		    }
+		if (fix==null) return;		
+    	Thread t = new Thread(new Runnable() {					
+			@Override
+			public void run() {
+				SwingUtilities.invokeLater(new Runnable() {			
+					@Override
+					public void run() {
+						for(Object obj: fix.getAdded()) {
+							if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
+								AddNodeCommand.updateApplication((RefOntoUML.Element)obj);
+						}
+						for(Object obj: fix.getAdded()) {
+							if (obj instanceof RefOntoUML.Relationship)
+								AddConnectionCommand.updateApplication((RefOntoUML.Element)obj);
+						}
+						for(Object obj: fix.getDeleted()) {
+							if (obj instanceof RefOntoUML.Relationship)
+								ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
+						}
+						for(Object obj: fix.getDeleted()) {
+							if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
+								ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
+						}				
+					}
+				});						
+			}
 		});
-	}
+    	t.start();
+    }
 	
 	public void showStatus (boolean value)
 	{
