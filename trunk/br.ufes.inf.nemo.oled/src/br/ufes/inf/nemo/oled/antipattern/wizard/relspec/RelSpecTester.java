@@ -7,11 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Shell;
-
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
@@ -145,7 +140,6 @@ public class RelSpecTester {
 		var7.get(0).generateOCL(RelSpecOccurrence.SUBSET);
 		var7.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
 		var7.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
-		System.out.println(var7.get(0).getFix().getRulesString());
 		
 		/*WizardDialog wizardDialog = new WizardDialog(new Shell(SWT.ON_TOP),
 			    new RelSpecWizard(var4.get(0)));
@@ -157,6 +151,7 @@ public class RelSpecTester {
 		
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public static int runAntipattern (String antiPatternAcronym, String model,Antipattern ap) throws IOException {
 		System.out.print("("+getCurrentDateAndTime() + ") " + model + ": ");
 		System.out.println(antiPatternAcronym+": Analyzing model...");
