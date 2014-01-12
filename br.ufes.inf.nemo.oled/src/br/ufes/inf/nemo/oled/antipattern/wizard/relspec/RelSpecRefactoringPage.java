@@ -10,8 +10,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
  * @author Tiago Sales
@@ -113,41 +115,52 @@ public class RelSpecRefactoringPage extends RelSpecPage {
 		
 		if (btnSubsets.getSelection()){
 			// Action =====================
-			//TODO: <Specific> subsets <General>
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SUBSET);
 		}
 		if (btnRedefine.getSelection()){
 			// Action =====================
-			//TODO: <Specific> redefines <General>
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.REDEFINE);
 		}
 		if (btnDisjoint.getSelection()){
 			// Action =====================
-			//TODO: <Specific> is disjoint from <General>
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.DISJOINT);
 		}
 		
 		if (btnSpecializeRedefine!=null && btnSpecializeRedefine.getSelection()){
-			if (comboSpecializeRedefine.getSelectionIndex()==0 || comboSpecializeRedefine.getSelectionIndex()==2){
+			ClassStereotype sourceStereotype = ClassStereotype.ROLE;
+			ClassStereotype targetStereotype = ClassStereotype.ROLE;
+			
+			if(comboSpecializeRedefine.getSelectionIndex()==0) {
 				// Action =====================
-				//TODO: specialize <GeneralSourceEnd>
-				//TODO: <General> redefines <Specific>, context newGeneralSourceSubtype
+				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_SOURCE_REDEFINE);
+				getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
 			}
-			if (comboSpecializeRedefine.getSelectionIndex()==1 || comboSpecializeRedefine.getSelectionIndex()==2){
+			if(comboSpecializeRedefine.getSelectionIndex()==1) {
 				// Action =====================
-				//TODO: specialize <GeneralTargetEnd>
-				if(comboSpecializeRedefine.getSelectionIndex()==1){
-				//TODO: <General> redefines <Specific>, context newGeneralTargetSubtype
-				}
+				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_TARGET_REDEFINE);
+				getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
 			}
-			if (comboSpecializeRedefine.getSelectionIndex()==3 || comboSpecializeRedefine.getSelectionIndex()==5){
+			if(comboSpecializeRedefine.getSelectionIndex()==2) {
 				// Action =====================
-				//TODO: specialize <SpecificSourceEnd>
-				//TODO: <Specific> redefines <General>, context newSpecificSourceSubtype
+				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_BOTH_REDEFINE);
+				getRelSpecWizard().getAction().addParameter("sourceStereotype", sourceStereotype);
+				getRelSpecWizard().getAction().addParameter("targetStereotype", targetStereotype);
 			}
-			if (comboSpecializeRedefine.getSelectionIndex()==4 || comboSpecializeRedefine.getSelectionIndex()==5){
+			if(comboSpecializeRedefine.getSelectionIndex()==3) {
 				// Action =====================
-				//TODO: specialize <SpecificTargetEnd>
-				if(comboSpecializeRedefine.getSelectionIndex()==4){
-				//TODO: <Specific> redefines <General>, context newSpecificTargetSubtype
-				}
+				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_SOURCE_REDEFINE);			
+				getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+			}
+			if(comboSpecializeRedefine.getSelectionIndex()==4) {
+				// Action =====================
+				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_TARGET_REDEFINE);
+				getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+			}
+			if(comboSpecializeRedefine.getSelectionIndex()==5) {
+				// Action =====================
+				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_BOTH_REDEFINE);
+				getRelSpecWizard().getAction().addParameter("sourceStereotype", sourceStereotype);
+				getRelSpecWizard().getAction().addParameter("targetStereotype", targetStereotype);
 			}
 		}
 		if (btnDelete!=null && btnDelete.getSelection()){

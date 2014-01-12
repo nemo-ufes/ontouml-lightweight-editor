@@ -76,6 +76,7 @@ import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard;
+import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 
 /**
@@ -354,6 +355,12 @@ public class AntiPatternResultDialog extends Dialog {
 	        	if (apOccur instanceof RelRigOccurrence) 
 	        	{	        		
 	        		WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));	        		
+	        		wizardDialog.open();
+	        	}
+	        	
+	        	if (apOccur instanceof RelSpecOccurrence) 
+	        	{	        		
+	        		WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
 	        		wizardDialog.open();
 	        	}
 		    }
