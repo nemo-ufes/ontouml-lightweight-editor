@@ -8,7 +8,7 @@ import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Relation Specialization*/
@@ -18,23 +18,17 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 	private Property generalSourceEnd, generalTargetEnd, specificSourceEnd, specificTargetEnd;
 	private boolean isReverse;
 	
-	
-	public static final int SUBSET = 1, REDEFINE = 2, NONSUBSET = 3, DISJOINT = 4;
-		
+	public enum OperationType { SUBSET, REDEFINE, DISJOINT }
+			
 	public RelSpecOccurrence (Association specific, Association general, RelSpecAntipattern ap) throws Exception{
 		super(ap);
 		this.setGeneral(general);
 		this.setSpecific(specific);
-		
-		/*This methods are only necessary because the provided model may not correctly instantiante the RefOntoUML Metamodel. 
-		 * In this case, it is necessary to correct who is the source and who is the target in the association, according to the logic in the metamodel.
-		 * For instance, in a mediation, the relator is always the source and the mediated type is always the target*/
-		/*specificSource = (Classifier) SourceTargetAssociation.getSourceAlloy(specific);
-		specificTarget = (Classifier) SourceTargetAssociation.getTargetAlloy(specific);
-		generalSource = (Classifier) SourceTargetAssociation.getSourceAlloy(general);
-		generalTarget = (Classifier) SourceTargetAssociation.getTargetAlloy(general);
-		*/
-		
+				
+		setProperties(specific, general);
+	}
+
+	private void setProperties(Association specific, Association general){
 		specificSourceEnd = specific.getMemberEnd().get(0);
 		specificTargetEnd = specific.getMemberEnd().get(1);
 		generalSourceEnd = general.getMemberEnd().get(0);
@@ -49,8 +43,6 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 			isReverse = false;
 		else if((specificSource.equals(generalTarget) || specificSource.allParents().contains(generalTarget))&&(specificTarget.equals(generalSource) || specificTarget.allParents().contains(generalSource)))
 			isReverse = true;
-		else 
-			throw new Exception(RelSpecAntipattern.getAntipatternInfo().getAcronym()+": The provided associations don't characterize an occurrence of the antipattern.");
 	}
 	
 	public Classifier getAlignedSpecificSource(){
@@ -115,7 +107,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 				&& !specificSource.equals(specificTarget));
 	}
 	
-	
+	/*
 	public String generateOcl(int type, OntoUMLParser parser) throws Exception{
 		String invName = new String(), contextName = new String(), invRule = new String();
 		String aes_name, aeg_name;
@@ -162,64 +154,13 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 				"inv "+invName+" : \n    "+invRule;
 		
 	}
+	*/
 	
-	public void generateOCL(int type){
-		
-		String invRule = "self.";
-		String invName = specific.getName()+"_";
-		String oclOperation, contextName;
-		
-		Property context, generalContext;
-		
-		if (!getAlignedSpecificTarget().equals(getGeneralTarget()) && getAlignedSpecificSource().equals(getGeneralSource())){
-			context = getAlignedSpecificTargetEnd();
-			generalContext = generalTargetEnd;
-		}
-		else{
-			context = getAlignedSpecificSourceEnd();
-			generalContext = generalSourceEnd;
-		} 
-		
-		invRule += addQuotes(context.getOpposite().getName())+"->asSet()";
-		contextName = context.getType().getName();
-		
-		switch (type) {
-		case SUBSET:
-			oclOperation = "->includesAll(";
-			invName += "subsets";
-			break;
-
-		case REDEFINE:
-			oclOperation = "=";
-			invName += "redefines";
-			break;
-			
-		case DISJOINT:
-			oclOperation = "->excludesAll(";
-			invName += "disjointWith";
-			break;
-		default :
-			oclOperation = "ERROR";
-			invName += "ERROR";
-		}
-		
-		invRule+=oclOperation+"self";
-		
-		if(!generalContext.getType().equals(context.getType()))
-			invRule += ".oclAsType("+addQuotes(generalContext.getType().getName())+")";
-		
-		invRule += "."+addQuotes(generalContext.getOpposite().getName())+"->asSet()";
-		
-		if(type==SUBSET || type==DISJOINT)
-			invRule += ")";
-		
-		invName += "_"+general.getName();
-		
-		super.fix.addAll(fixer.generateOCLRule(contextName, invName, invRule));
-	}
 	
 		
+	
 	/*This method generates alloy predicates for the RS AntiPattern. */
+	/*
 	public String generatePredicate (OntoUMLParser parser, int type) throws Exception {
 		String predicate, rules, name = new String();
 		String generalName, specificName, specificSourceName, specificTargetName, generalSourceName, generalTargetName;
@@ -376,11 +317,12 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
 		
 		return predicate;
-	}
+	}*/
 	
 	public Association getSpecific() {
 		return specific;
 	}
+	
 	public void setSpecific(Association specific) throws Exception {
 		/*TODO: Provide a test to ensure that the provided associations characterize indeed this antipattern*/
 		if (specific==null)
@@ -448,5 +390,118 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		return parser.getStringRepresentation(general)+" & "+parser.getStringRepresentation(specific);
 	}
 	
+	////////////////FIX OUTCOMES//////////////
+	
+
+	public void generateOCL(OperationType type){
+		
+		String invRule = "self.";
+		String invName = specific.getName()+"_";
+		String oclOperation, contextName;
+		
+		Property context, generalContext;
+		
+		if (!getAlignedSpecificTarget().equals(getGeneralTarget()) && getAlignedSpecificSource().equals(getGeneralSource())){
+			context = getAlignedSpecificTargetEnd();
+			generalContext = generalTargetEnd;
+		}
+		else{
+			context = getAlignedSpecificSourceEnd();
+			generalContext = generalSourceEnd;
+		} 
+		
+		invRule += addQuotes(context.getOpposite().getName())+"->asSet()";
+		contextName = context.getType().getName();
+		
+		switch (type) {
+		case SUBSET:
+			oclOperation = "->includesAll(";
+			invName += "subsets";
+			break;
+
+		case REDEFINE:
+			oclOperation = "=";
+			invName += "redefines";
+			break;
+			
+		case DISJOINT:
+			oclOperation = "->excludesAll(";
+			invName += "disjointWith";
+			break;
+		default :
+			oclOperation = "ERROR";
+			invName += "ERROR";
+		}
+		
+		invRule+=oclOperation+"self";
+		
+		if(!generalContext.getType().equals(context.getType()))
+			invRule += ".oclAsType("+addQuotes(generalContext.getType().getName())+")";
+		
+		invRule += "."+addQuotes(generalContext.getOpposite().getName())+"->asSet()";
+		
+		if(type==OperationType.SUBSET || type==OperationType.DISJOINT)
+			invRule += ")";
+		
+		invName += "_"+general.getName();
+		
+		super.fix.addAll(fixer.generateOCLRule(contextName, invName, invRule));
+	}
+	
+	public void createSpecificSourceSubTypeAndRedefine(ClassStereotype stereotype)
+	{
+		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(specificSource, stereotype, specific));
+		setProperties(specific, general);
+		generateOCL(OperationType.REDEFINE);
+	}
+	
+	public void createSpecificTargetSubTypeAndRedefine(ClassStereotype stereotype)
+	{
+		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(specificTarget, stereotype, specific));
+		setProperties(specific, general);
+		generateOCL(OperationType.REDEFINE);
+	}
+	
+	public void createGeneralSourceSubTypeAndRedefine(ClassStereotype stereotype)
+	{
+		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(generalSource, stereotype, general));
+		setProperties(specific, general);
+		generateOCL(OperationType.REDEFINE);
+	}
+	
+	public void createGeneralTargetSubTypeAndRedefine(ClassStereotype stereotype)
+	{
+		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(generalTarget, stereotype, general));
+		setProperties(specific, general);
+		generateOCL(OperationType.REDEFINE);
+	}
+	
+	public void createGeneralBothSubTypesAndRedefine(ClassStereotype sourceStereotype, ClassStereotype targetStereotype)
+	{
+		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(generalSource, sourceStereotype, general));
+		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(generalTarget, targetStereotype, general));
+		setProperties(specific, general);
+		generateOCL(OperationType.REDEFINE);
+	}
+	
+	public void createSpecificBothSubTypesAndRedefine(ClassStereotype sourceStereotype, ClassStereotype targetStereotype)
+	{
+		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(specificSource, sourceStereotype, general));
+		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(specificTarget, targetStereotype, general));
+		setProperties(specific, general);
+		generateOCL(OperationType.REDEFINE);
+	}
+	
+	public void deleteSpecific(){
+		this.fix.addAll(fixer.deleteElement(specific));
+	}
+	
+	public void deleteGeneral(){
+		this.fix.addAll(fixer.deleteElement(general));
+	}
+	
+	public boolean isEqual(Association a1, Association a2){
+		return a1.equals(general) && a2.equals(specific);
+	}
 	
 }

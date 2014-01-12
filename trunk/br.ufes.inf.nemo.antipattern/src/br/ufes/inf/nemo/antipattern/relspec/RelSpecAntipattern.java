@@ -142,7 +142,14 @@ public class RelSpecAntipattern extends Antipattern<RelSpecOccurrence> {
 					
 					if(isSpecialization|| isReverseSpecialization){
 							try {
-								this.occurrence.add(new RelSpecOccurrence(a1, a2, this));
+								//verify if there is a similar occurrence created
+								boolean exists = false;
+								for (RelSpecOccurrence rs : getOccurrences()) {
+									if(rs.isEqual(a1, a2))
+										exists = true;
+								}
+								if(!exists)
+									this.occurrence.add(new RelSpecOccurrence(a2, a1, this));
 							} catch (Exception e) {
 								System.out.println(info.acronym+"[java]: Provided information does not characterize an occurrence of the anti-pattern!");
 								System.out.println(e.getMessage());
@@ -152,5 +159,7 @@ public class RelSpecAntipattern extends Antipattern<RelSpecOccurrence> {
 			}
 		}
 	}
+	
+	
 
 }

@@ -344,9 +344,16 @@ public class OutcomeFixer {
 		Fix references = changeModelReferences(element,newElement); 		
 		fixes.includeAllModified(references.getModified());		
 		// delete element
-		EcoreUtil.delete(element); 
-		fixes.includeDeleted(element);		
+		fixes.addAll(deleteElement(element));		
 		return fixes;
+	}
+	
+	/** Delete an element from the model*/
+	public Fix deleteElement (EObject element){
+		Fix fix = new Fix();
+		EcoreUtil.delete(element); 
+		fix.includeDeleted(element);
+		return fix;
 	}
 
 	/** Get class stereotype */
@@ -428,6 +435,7 @@ public class OutcomeFixer {
 		// create subtype
 		RefOntoUML.PackageableElement subtype = createClass(subtypeStereo);
 		subtype.setName(((Classifier)type).getName()+"Subtype");
+		copyContainer(type,subtype);
 		fixes.includeAdded(subtype);
 		//create generalization
 		Generalization gen = (Generalization)createRelationship(RelationStereotype.GENERALIZATION);
@@ -446,6 +454,7 @@ public class OutcomeFixer {
 		// create subtype
 		RefOntoUML.PackageableElement subtype = createClass(subtypeStereo);
 		subtype.setName(((Classifier)type).getName()+"Subtype");
+		copyContainer(type,subtype);
 		fixes.includeAdded(subtype);
 		//create generalization
 		Generalization gen = (Generalization)createRelationship(RelationStereotype.GENERALIZATION);
