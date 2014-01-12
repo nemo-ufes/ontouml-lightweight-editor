@@ -49,20 +49,13 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 	public ArrayList<Property> getRigidMediatedProperties() {
 		return rigidMediatedProperties;
 	}
-
-	public CreationalRelator creationalInstantiationPattern;
-	public ChangingRelator changingInstantiationPattern;
-	
 	
 	public RelRigOccurrence(Relator relator, RelRigAntipattern ap) throws Exception 
 	{
 		super(ap);
 		
 		this.setRelator(relator, parser);
-		
-		this.changingInstantiationPattern = new ChangingRelator(this);
-		this.creationalInstantiationPattern = new CreationalRelator(this);
-				
+			
 	}
 	
 	private void setRelator (Relator relator, OntoUMLParser parser) throws Exception {
