@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
  * @author Tiago Sales
@@ -71,10 +72,7 @@ public class RelSpecFirstPage extends RelSpecPage {
 			
 		else if(btnForbidden.getSelection()){			
 			
-			// Action =====================			
-			//TODO: <Specific> is disjoint from <General>		
-			//=============================
-			
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.DISJOINT);
 			return getRelSpecWizard().getFinishing();
 		}
 		else if(btnRequired.getSelection()){

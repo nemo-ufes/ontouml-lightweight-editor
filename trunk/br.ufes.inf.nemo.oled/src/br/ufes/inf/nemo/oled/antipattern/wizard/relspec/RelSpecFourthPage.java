@@ -7,7 +7,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
  * @author Tiago Sales
@@ -83,29 +85,40 @@ public class RelSpecFourthPage extends RelSpecPage {
 	@Override
 	public IWizardPage getNextPage() {
 		
-		if(btnGeneralSource.getSelection() || btnGeneralBoth.getSelection()) {
+		ClassStereotype sourceStereotype = ClassStereotype.ROLE;
+		ClassStereotype targetStereotype = ClassStereotype.ROLE;
+		
+		if(btnGeneralSource.getSelection()) {
 			// Action =====================
-			//TODO: specialize <GeneralSourceEnd>
-			//TODO: <General> redefines <Specific>, context newGeneralSourceSubtype
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_SOURCE_REDEFINE);			
+			getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
 		}
-		if(btnGeneralTarget.getSelection() || btnGeneralBoth.getSelection()) {
+		if(btnGeneralTarget.getSelection()) {
 			// Action =====================
-			//TODO: specialize <GeneralTargetEnd>
-			if(!btnGeneralBoth.getSelection()){
-			//TODO: <General> redefines <Specific>, context newGeneralTargetSubtype
-			}
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_TARGET_REDEFINE);
+			getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
 		}
-		if(btnSpecificSource.getSelection() || btnSpecificBoth.getSelection()) {
+		if(btnGeneralBoth.getSelection()) {
 			// Action =====================
-			//TODO: specialize <SpecificSourceEnd>
-			//TODO: <Specific> redefines <General>, context newSpecificSourceSubtype
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_BOTH_REDEFINE);
+			getRelSpecWizard().getAction().addParameter("sourceStereotype", sourceStereotype);
+			getRelSpecWizard().getAction().addParameter("targetStereotype", targetStereotype);
 		}
-		if(btnSpecificTarget.getSelection() || btnSpecificBoth.getSelection()) {
+		if(btnSpecificSource.getSelection()) {
 			// Action =====================
-			//TODO: specialize <SpecificTargetEnd>
-			if(!btnSpecificBoth.getSelection()){
-			//TODO: <Specific> redefines <General>, context newSpecificTargetSubtype
-			}
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_SOURCE_REDEFINE);
+			getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+		}
+		if(btnSpecificTarget.getSelection()) {
+			// Action =====================
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_TARGET_REDEFINE);
+			getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+		}
+		if(btnSpecificBoth.getSelection()) {
+			// Action =====================
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_BOTH_REDEFINE);
+			getRelSpecWizard().getAction().addParameter("sourceStereotype", sourceStereotype);
+			getRelSpecWizard().getAction().addParameter("targetStereotype", targetStereotype);
 		}
 		
 		return getRelSpecWizard().getFinishing();

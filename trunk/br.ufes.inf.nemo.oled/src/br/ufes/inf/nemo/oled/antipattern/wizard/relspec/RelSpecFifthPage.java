@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
  * @author Tiago Sales
@@ -62,12 +63,12 @@ public class RelSpecFifthPage extends RelSpecPage {
 		
 		if(btnGeneral.getSelection()) {
 			//ACTION
-			//TODO: REMOVE GENERAL
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.DELETE_GENERAL);
 		}
 		if(btnSpecific.getSelection()) {
 			//ACTION
-			//TODO: REMOVE SPECIFIC
-		}
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.DELETE_SPECIFIC);
+			}
 			
 		return getRelSpecWizard().getFinishing();
 	}

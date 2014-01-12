@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
  * @author Tiago Sales
@@ -73,7 +74,7 @@ public class RelSpecThirdPage extends RelSpecPage {
 		
 		if(btnKeep.getSelection()) {
 			// Action =====================
-			//TODO: <Specific> redefines <General>
+			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.REDEFINE);
 			return getRelSpecWizard().getFinishing();
 		}	
 		else if(btnSpecialize.getSelection()){			

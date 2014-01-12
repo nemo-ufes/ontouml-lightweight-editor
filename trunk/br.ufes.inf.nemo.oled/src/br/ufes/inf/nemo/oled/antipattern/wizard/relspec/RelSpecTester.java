@@ -7,6 +7,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Shell;
+
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
@@ -107,47 +112,66 @@ public class RelSpecTester {
 			System.out.println("S TARGET: "+rs.getSpecificTarget());
 			System.out.println();
 		}*/
+		if(var1.size()>0) {
+			System.out.println("VAR 1");
+			var1.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
+			var1.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
+			var1.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
+			System.out.println(var1.get(0).getFix().getRulesString());
+		} 
 		
-		var1.get(0).generateOCL(RelSpecOccurrence.SUBSET);
-		var1.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
-		var1.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
-		System.out.println(var1.get(0).getFix().getRulesString());
-		
-		var2.get(0).generateOCL(RelSpecOccurrence.SUBSET);
-		var2.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
-		var2.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		if(var2.size()>0) {
+			System.out.println("VAR 2");
+		var2.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
+		var2.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
+		var2.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
 		System.out.println(var2.get(0).getFix().getRulesString());
+		}
 		
-		var3.get(0).generateOCL(RelSpecOccurrence.SUBSET);
-		var3.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
-		var3.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		if(var3.size()>0) {
+			System.out.println("VAR 3");
+		var3.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
+		var3.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
+		var3.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
 		System.out.println(var3.get(0).getFix().getRulesString());
+		}
 		
-		var4.get(0).generateOCL(RelSpecOccurrence.SUBSET);
-		var4.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
-		var4.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		if(var4.size()>0) {
+			System.out.println("VAR 4");
+		var4.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
+		var4.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
+		var4.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
 		System.out.println(var4.get(0).getFix().getRulesString());
+		}
 		
-		var5.get(0).generateOCL(RelSpecOccurrence.SUBSET);
-		var5.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
-		var5.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		if(var5.size()>0) {
+			System.out.println("VAR 5");
+		var5.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
+		var5.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
+		var5.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
 		System.out.println(var5.get(0).getFix().getRulesString());
+		}
 		
-//		var6.get(0).generateOCL(RelSpecOccurrence.SUBSET);
-//		var6.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
-//		var6.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
+		if(var6.size()>0) {
+			System.out.println("VAR 6");
+		var6.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
+		var6.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
+		var6.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
+		}
 		
-		var7.get(0).generateOCL(RelSpecOccurrence.SUBSET);
-		var7.get(0).generateOCL(RelSpecOccurrence.REDEFINE);
-		var7.get(0).generateOCL(RelSpecOccurrence.DISJOINT);
-		
-		/*WizardDialog wizardDialog = new WizardDialog(new Shell(SWT.ON_TOP),
-			    new RelSpecWizard(var4.get(0)));
+		if(var7.size()>0) {
+			System.out.println("VAR 7");
+		var7.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
+		var7.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
+		var7.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
+		}
+		WizardDialog wizardDialog = new WizardDialog(new Shell(SWT.ON_TOP),
+			    new RelSpecWizard(var1.get(5)));
 			    if (wizardDialog.open() == Window.OK) {
 			      System.out.println("Ok pressed");
 			    } else {
 			      System.out.println("Cancel pressed");
-			    }*/
+			    }
 		
 	}
 	
