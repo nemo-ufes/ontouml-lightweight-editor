@@ -10,8 +10,6 @@ public class RelSpecAction extends AntiPatternAction <RelSpecOccurrence> {
 	{
 		super(ap);	
 	}
-
-	public Action code;
 	
 	public enum Action {
 		SUBSET, REDEFINE, DISJOINT, SPEC_SPECIFIC_SOURCE_REDEFINE, SPEC_SPECIFIC_TARGET_REDEFINE,
@@ -25,28 +23,27 @@ public class RelSpecAction extends AntiPatternAction <RelSpecOccurrence> {
 	@Override
 	public void run()
 	{
-		if(code==Action.SUBSET){
+		if(code==Action.SUBSET)
 			ap.generateOCL(RelSpecOccurrence.OperationType.SUBSET);
-		}
-		if(code==Action.REDEFINE)
+		else if(code==Action.REDEFINE)
 			ap.generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
-		if(code==Action.DISJOINT)
+		else if(code==Action.DISJOINT)
 			ap.generateOCL(RelSpecOccurrence.OperationType.DISJOINT);		
-		if(code==Action.DELETE_GENERAL)
+		else if(code==Action.DELETE_GENERAL)
 			ap.deleteGeneral();
-		if(code==Action.DELETE_SPECIFIC)		
+		else if(code==Action.DELETE_SPECIFIC)		
 			ap.deleteSpecific();
-		if(code==Action.SPEC_GENERAL_SOURCE_REDEFINE)		
+		else if(code==Action.SPEC_GENERAL_SOURCE_REDEFINE)		
 			ap.createGeneralSourceSubTypeAndRedefine(source);
-		if(code==Action.SPEC_GENERAL_TARGET_REDEFINE)
+		else if(code==Action.SPEC_GENERAL_TARGET_REDEFINE)
 			ap.createGeneralTargetSubTypeAndRedefine(target);
-		if(code==Action.SPEC_GENERAL_BOTH_REDEFINE)
+		else if(code==Action.SPEC_GENERAL_BOTH_REDEFINE)
 			ap.createGeneralBothSubTypesAndRedefine(source,target);
-		if(code==Action.SPEC_SPECIFIC_SOURCE_REDEFINE)
+		else if(code==Action.SPEC_SPECIFIC_SOURCE_REDEFINE)
 			ap.createSpecificSourceSubTypeAndRedefine(source);
-		if(code==Action.SPEC_SPECIFIC_SOURCE_REDEFINE)
+		else if(code==Action.SPEC_SPECIFIC_SOURCE_REDEFINE)
 			ap.createSpecificTargetSubTypeAndRedefine(target);
-		if(code==Action.SPEC_SPECIFIC_BOTH_REDEFINE)
+		else if(code==Action.SPEC_SPECIFIC_BOTH_REDEFINE)
 			ap.createSpecificBothSubTypesAndRedefine(source,target);
 	}
 	

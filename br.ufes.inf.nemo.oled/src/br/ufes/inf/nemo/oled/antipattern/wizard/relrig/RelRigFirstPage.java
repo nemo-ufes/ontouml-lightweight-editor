@@ -10,8 +10,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
-import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
-import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard.RelRigAction;
 
 /**
  * @author Tiago Sales
@@ -20,9 +18,6 @@ import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard.RelRigAction
  */
 
 public class RelRigFirstPage extends RelRigPage {
-
-	public int rigid;
-	public RefOntoUML.Type rigidType;
 	
 	//GUI
 	public Button btnYes;
@@ -33,10 +28,8 @@ public class RelRigFirstPage extends RelRigPage {
 	 */
 	public RelRigFirstPage(RelRigOccurrence relRig, int rigid) 
 	{
-		super(relRig);			
+		super(relRig,rigid);			
 		
-		this.rigid = rigid;		
-		rigidType = relRig.getRigidMediatedProperties().get(rigid).getType();
 		String text = relRig.getOntoUMLParser().getStringRepresentation(rigidType);
 		int n = (rigid+1);		
 		setTitle("Rigid Type #"+n+": "+text);
@@ -59,18 +52,22 @@ public class RelRigFirstPage extends RelRigPage {
 		styledText.setEditable(false);
 		styledText.setBounds(10, 10, 554, 38);
 		
+		SelectionAdapter listener = new SelectionAdapter() {
+		      public void widgetSelected(SelectionEvent e) {
+		        if (isPageComplete()==false) setPageComplete(true);
+		      }
+		    };
+		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-			}
-		});
 		btnYes.setBounds(10, 54, 90, 16);
 		btnYes.setText("Yes");
+		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setText("No");
 		btnNo.setBounds(10, 78, 90, 16);
+		btnNo.setText("No");
+		btnYes.addSelectionListener(listener);
+
 	}
 	
 	@Override
@@ -82,9 +79,10 @@ public class RelRigFirstPage extends RelRigPage {
 		else if(btnYes.getSelection()){			
 		
 			// Action =====================			
-			//relRig.changeToRoleOrRoleMixin(rigidType);
-			WizardAction<RelRigAction> newAction = new WizardAction<RelRigAction>(RelRigAction.CHANGE_TO_ROLE_OR_ROLEMIXIN);;
-			getRelRigWizard().getActions().add(rigid,newAction);								
+			RelRigAction newAction = new RelRigAction(relRig);
+			newAction.setChangeStereotypeToRole(rigidType);
+			getRelRigWizard().addAction(rigid,newAction);
+			
 			//=============================
 			
 			if(rigid < relRig.getRigidMediatedProperties().size()-1)

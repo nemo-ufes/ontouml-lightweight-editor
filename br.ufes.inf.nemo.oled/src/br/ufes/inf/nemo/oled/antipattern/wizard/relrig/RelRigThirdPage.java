@@ -3,6 +3,8 @@ package br.ufes.inf.nemo.oled.antipattern.wizard.relrig;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -17,9 +19,6 @@ import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
 
 public class RelRigThirdPage extends RelRigPage {
 
-	public int rigid;
-	public RefOntoUML.Type rigidType;
-	
 	//GUI
 	public Button btnYes;
 	public Button btnNo;
@@ -28,10 +27,8 @@ public class RelRigThirdPage extends RelRigPage {
 	 * Create the wizard.
 	 */
 	public RelRigThirdPage(RelRigOccurrence relRig, int rigid) {
-		super(relRig);		
+		super(relRig, rigid);		
 		
-		this.rigid = rigid;		
-		rigidType = relRig.getRigidMediatedProperties().get(rigid).getType();
 		String text = relRig.getOntoUMLParser().getStringRepresentation(rigidType);
 		int n = (rigid+1);		
 		setTitle("Rigid Type #"+n+": "+text);
@@ -53,13 +50,21 @@ public class RelRigThirdPage extends RelRigPage {
 		styledText.setText("Is it possible for an instance of "+rigidType.getName()+" to change the instances of "+relRig.getRelator().getName()+" it is connected to?");
 		styledText.setBounds(10, 10, 554, 15);
 		
+		SelectionAdapter listener = new SelectionAdapter() {
+		      public void widgetSelected(SelectionEvent e) {
+		        if (isPageComplete()==false) setPageComplete(true);
+		      }
+		    };
+		
 		btnYes = new Button(container, SWT.RADIO);
 		btnYes.setText("Yes");
 		btnYes.setBounds(10, 31, 90, 16);
+		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(container, SWT.RADIO);
 		btnNo.setText("No");
 		btnNo.setBounds(10, 55, 90, 16);
+		btnNo.addSelectionListener(listener);
 	}
 	
 	@Override
@@ -71,7 +76,7 @@ public class RelRigThirdPage extends RelRigPage {
 		else if(btnYes.getSelection()){		
 
 			// Action =====================			
-			// <do nothing>
+			getRelRigWizard().clearActions();
 			//=============================
 			
 			if(rigid < relRig.getRigidMediatedProperties().size()-1)

@@ -53,6 +53,10 @@ public abstract class AntipatternWizard extends Wizard {
 		actions.clear();
 	}
 	
+	public void removeAction(int pos){
+		actions.remove(pos);
+	}
+	
 	@SuppressWarnings("rawtypes")
 	public void addAction(int pos, AntiPatternAction action)
 	{		

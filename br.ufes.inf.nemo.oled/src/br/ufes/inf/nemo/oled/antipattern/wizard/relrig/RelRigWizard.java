@@ -4,14 +4,12 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.wizard.WizardPage;
 
-import RefOntoUML.Mediation;
-import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.oled.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.oled.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.oled.antipattern.wizard.PresentationPage;
-import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
 
 /**
  * @author Tiago Sales
@@ -25,8 +23,6 @@ public class RelRigWizard extends AntipatternWizard {
 	protected ArrayList<RelRigSecondPage> secondpageList= new ArrayList<RelRigSecondPage>();
 	protected ArrayList<RelRigThirdPage> thirdpageList= new ArrayList<RelRigThirdPage>();
 	protected ArrayList<RelRigFourthPage> fourthpageList= new ArrayList<RelRigFourthPage>();;
-		
-	public enum RelRigAction {CHANGE_TO_ROLE_OR_ROLEMIXIN, ADD_ROLE_SUBTYPE, BOTH_READ_ONLY, CHANGE_TO_MODE}
 		
 	public RelRigWizard(RelRigOccurrence ap) {
 		super(ap,RelRigAntipattern.getAntipatternInfo().name);		
@@ -104,31 +100,11 @@ public class RelRigWizard extends AntipatternWizard {
 		return null;
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean performFinish() {	
 		
-		RelRigOccurrence ap = getAp();	
-		int i=0;
-		for(WizardAction action: getActions())
-		{
-			Type rigidType = ap.getRigidMediatedProperties().get(i).getType();
-			Mediation mediation = (Mediation)ap.getRigidMediatedProperties().get(i).getAssociation();
-			
-			if(action.getCode()==RelRigAction.CHANGE_TO_ROLE_OR_ROLEMIXIN)
-				ap.changeToRoleOrRoleMixin(rigidType);
-			
-			if(action.getCode()==RelRigAction.CHANGE_TO_MODE);
-				ap.createRoleSubType(rigidType,mediation);
-			
-			if(action.getCode()==RelRigAction.ADD_ROLE_SUBTYPE);
-				ap.changeToMode(rigidType,mediation);
-			
-			if(action.getCode()==RelRigAction.BOTH_READ_ONLY);	
-				ap.setBothReadOnly(mediation);
-			
-			i++;
-		}
+		for(AntiPatternAction<?> action: super.getActions())
+			action.run();
 				
 		return true;
 	}

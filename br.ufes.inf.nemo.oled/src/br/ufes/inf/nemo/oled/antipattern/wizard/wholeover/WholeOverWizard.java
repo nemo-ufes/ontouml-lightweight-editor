@@ -1,13 +1,7 @@
 package br.ufes.inf.nemo.oled.antipattern.wizard.wholeover;
 
-import org.eclipse.jface.wizard.Wizard;
-
-import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
-import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
-import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
 import br.ufes.inf.nemo.oled.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.oled.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.oled.antipattern.wizard.PresentationPage;
@@ -20,8 +14,6 @@ import br.ufes.inf.nemo.oled.antipattern.wizard.PresentationPage;
 
 public class WholeOverWizard extends AntipatternWizard {
 
-	public boolean canFinish = true;
-	
 	protected WholeOverFirstPage firstPage;
 //	protected WholeOverSecondPage secondPage;
 //	protected WholeOverThirdPage thirdPage;
@@ -29,15 +21,10 @@ public class WholeOverWizard extends AntipatternWizard {
 	
 	public enum WholeOverAction {MAKE_DIJSOINT, MAKE_EXCLUSIVE}
 	
-	private WizardAction<WholeOverAction> action;
+//	private WizardAction<WholeOverAction> action;
 	
-	public WizardAction<WholeOverAction> getAction() {
-		return action;
-	}
-
 	public WholeOverWizard(WholeOverOccurrence ap) {
 		super(ap, WholeOverAntipattern.getAntipatternInfo().getName());
-		action = new WizardAction<WholeOverAction>();
 	}
 	
 	@Override
@@ -74,10 +61,6 @@ public class WholeOverWizard extends AntipatternWizard {
 	}
 		@Override
 	public boolean performFinish() {
-		
-		System.out.println("ACTION: "+action.getCode());
-		System.out.println("PAR: "+action.getParameters());
-		
 		return true;
 	}
 

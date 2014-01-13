@@ -17,12 +17,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
+import RefOntoUML.Classifier;
+import RefOntoUML.Mediation;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
 import br.ufes.inf.nemo.oled.antipattern.wizard.RefactoringPage;
-import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
-import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard.RelRigAction;
 
 /**
  * @author Tiago Sales
@@ -164,23 +164,27 @@ public class RelRigRefactoringPage extends RefactoringPage {
 		// Action =====================			
 		for(Property p: mapping.keySet())
 		{
+			RelRigAction newAction = new RelRigAction(relRig);
 			Combo c = mapping.get(p);
 			
 			if(c.getSelectionIndex()==0) {
-				WizardAction<RelRigAction> newAction = new WizardAction<RelRigAction>(RelRigAction.CHANGE_TO_ROLE_OR_ROLEMIXIN);
-				getRelRigWizard().getActions().add(rigid,newAction);
+				newAction.setChangeStereotypeToRole((Classifier) p.getType());
+				getRelRigWizard().addAction(rigid,newAction);
 			}
-			if(c.getSelectionIndex()==1) {
-				WizardAction<RelRigAction> newAction = new WizardAction<RelRigAction>(RelRigAction.ADD_ROLE_SUBTYPE);
-				getRelRigWizard().getActions().add(rigid,newAction);
+			else if(c.getSelectionIndex()==1) {
+				newAction.setAddRoleSubtype((Classifier) p.getType(), (Mediation) p.getAssociation());
+				getRelRigWizard().addAction(rigid,newAction);
 			}
-			if(c.getSelectionIndex()==2) {
-				WizardAction<RelRigAction> newAction = new WizardAction<RelRigAction>(RelRigAction.CHANGE_TO_MODE);
-				getRelRigWizard().getActions().add(rigid,newAction);
+			else if(c.getSelectionIndex()==2) {
+				newAction.setChangeStereotypeToMode((Classifier) p.getType(), (Mediation) p.getAssociation());
+				getRelRigWizard().addAction(rigid,newAction);
 			}
-			if(c.getSelectionIndex()==3) {				
-				WizardAction<RelRigAction> newAction = new WizardAction<RelRigAction>(RelRigAction.ADD_ROLE_SUBTYPE);
-				getRelRigWizard().getActions().add(rigid,newAction);
+			else if(c.getSelectionIndex()==3) {				
+				newAction.setBothReadOnly((Mediation) p.getAssociation());
+				getRelRigWizard().addAction(rigid,newAction);
+			}
+			else if(c.getSelectionIndex()==4) {				
+				getRelRigWizard().removeAction(rigid);
 			}
 			rigid++;
 		}
