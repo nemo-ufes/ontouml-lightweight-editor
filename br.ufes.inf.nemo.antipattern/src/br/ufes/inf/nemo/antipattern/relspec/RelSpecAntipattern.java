@@ -111,6 +111,7 @@ public class RelSpecAntipattern extends Antipattern<RelSpecOccurrence> {
 		return this.getOccurrences();
 	}
 	
+	@SuppressWarnings("unused")
 	private <T extends Association> void identifyByStereotype( Set<T> associationList){
 		int current = 1, total = associationList.size()*associationList.size(); 
 		for (Association a1 : associationList) {

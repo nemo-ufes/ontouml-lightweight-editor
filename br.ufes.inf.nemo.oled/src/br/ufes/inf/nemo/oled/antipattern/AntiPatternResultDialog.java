@@ -368,11 +368,14 @@ public class AntiPatternResultDialog extends Dialog {
 	        	}
 	        	
         		if(wizardDialog.open()==Window.OK){
-        			
-        			System.out.println("okPressed");
-        			AntiPatternModificationsDialog.openDialog(apOccur.getFix(), frame);
-        			frame.getDiagramManager().updateOLED(apOccur.getFix());
+        			apOccur.setIsFixed(true);
+        			if(!apOccur.getFix().isEmpty()){
+        				AntiPatternModificationsDialog.openDialog(apOccur.getFix(), frame);
+        				frame.getDiagramManager().updateOLED(apOccur.getFix());        				
+        			}
         		}
+        		
+        		
 //		    }
 //    	});		
 	}

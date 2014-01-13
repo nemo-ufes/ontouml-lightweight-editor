@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.oled.antipattern.wizard;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -19,6 +19,7 @@ import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 public class FinishingPage extends WizardPage {
 	
 	public List actionsList;
+	public Label rulesLabel;
 	
 	/**
 	 * Create the wizard.
@@ -29,11 +30,36 @@ public class FinishingPage extends WizardPage {
 		setDescription("");
 	}
 
-	public void addActions(ArrayList<String> actions)
+	@SuppressWarnings("rawtypes")
+	public void addActions(Collection<AntiPatternAction> actions)
 	{		
-		actionsList.setItems((String[])actions.toArray());
+		actionsList.removeAll();
+		actionsList.setVisible(true);
+		for(AntiPatternAction a: actions){
+			String str = a.toString();			
+			for(String s: str.split("\n")){
+				actionsList.add(s);
+			}
+		}
 	}
-		
+	
+	@Override
+	public void setVisible(boolean visible) {	
+		super.setVisible(visible);
+		if(visible){
+			if(((AntipatternWizard)getWizard()).getActions().size()==0)
+				hideActionList();
+			else
+				addActions(((AntipatternWizard)getWizard()).getActions());			
+		}		
+	}
+	
+	public void hideActionList()
+	{
+		actionsList.setVisible(false);
+		rulesLabel.setText("Your model was already correct."); 
+	}
+	
 	/**
 	 * Create contents of the wizard.
 	 * @param parent
@@ -46,11 +72,11 @@ public class FinishingPage extends WizardPage {
 		Label introLabel = new Label(container, SWT.NONE);
 		introLabel.setText("Congratulations! You successfully verified the antipattern.");
 		
-		Label rulesLabel = new Label(container, SWT.NONE);
+		rulesLabel = new Label(container, SWT.NONE);
 		rulesLabel.setText("The antipattern characterizes an error and the following actions will be performed to improve your model:");
 		
 		actionsList = new List(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-				
+
 		GroupLayout gl_container = new GroupLayout(container);
 		gl_container.setHorizontalGroup(
 			gl_container.createParallelGroup(GroupLayout.LEADING)

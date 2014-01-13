@@ -3,13 +3,13 @@ package br.ufes.inf.nemo.oled.antipattern.wizard.relspec;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
-import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
-import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
  * @author Tiago Sales
@@ -54,20 +54,28 @@ public class RelSpecThirdPage extends RelSpecPage {
 		styledText.setEditable(false);
 		styledText.setBounds(10, 10, 554, 128);
 				
+		SelectionAdapter listener = new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	        if (isPageComplete()==false) setPageComplete(true);
+	      }
+	    };
+		    
+	    setPageComplete(false);
+		    
 		btnSpecialize = new Button(container, SWT.RADIO);
 		btnSpecialize.setBounds(10, 144, 449, 16);
 		btnSpecialize.setText("Specialize ends and include the redefinition constraint");
-		btnSpecialize.setSelection(true);
+		btnSpecialize.addSelectionListener(listener);
 		
 		btnKeep = new Button(container, SWT.RADIO);
 		btnKeep.setText("Keep the model as it is and include the redefinition constraint");
 		btnKeep.setBounds(10, 166, 449, 16);
+		btnKeep.addSelectionListener(listener);
 		
 		btnDelete = new Button(container, SWT.RADIO);
 		btnDelete.setText("Delete one of the associations (redefinition constraint will not be included)");
 		btnDelete.setBounds(10, 188, 449, 16);
-		
-		
+		btnDelete.addSelectionListener(listener);		
 	}
 	
 	@Override
@@ -75,9 +83,10 @@ public class RelSpecThirdPage extends RelSpecPage {
 		
 		if(btnKeep.getSelection()) {
 			// Action =====================
-			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.REDEFINE);
-			getRelSpecWizard().getActions().add(0,newAction);
-			
+			RelSpecAction newAction = new RelSpecAction(relSpec);
+			newAction.setRedefine();
+			getRelSpecWizard().addAction(0,newAction);
+						
 			return getRelSpecWizard().getFinishing();
 		}	
 		else if(btnSpecialize.getSelection()){			

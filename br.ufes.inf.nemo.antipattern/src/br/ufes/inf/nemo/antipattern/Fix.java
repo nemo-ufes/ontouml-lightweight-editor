@@ -17,6 +17,12 @@ public class Fix {
 		this.includeAllRule(fix.getAddedRules());
 	}
 	
+	public boolean isEmpty()
+	{
+		return modifiedElements.size()==0 &&  addedElements.size()==0 && deletedElements.size()==0
+				&& addedRules.size()==0;
+	}
+	
 	//get String methods...
 	public String getDeletedString()
 	{

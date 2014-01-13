@@ -20,7 +20,7 @@ public abstract class RelSpecPage extends WizardPage {
 	 */
 	public RelSpecPage(RelSpecOccurrence rs) 
 	{
-		super("RelRigFirstPage");				
+		super("RelSpecPage");				
 		this.relSpec = rs;
 				
 		setTitle(RelSpecAntipattern.getAntipatternInfo().getName());

@@ -42,6 +42,8 @@ public abstract class AntipatternOccurrence {
 	
 	public boolean isFixed(){ return isFixed; }
 	
+	public void setIsFixed(boolean value) { isFixed=value; }
+	
 	public OntoUMLParser getParser(){
 		return antipattern.getParser();
 	}

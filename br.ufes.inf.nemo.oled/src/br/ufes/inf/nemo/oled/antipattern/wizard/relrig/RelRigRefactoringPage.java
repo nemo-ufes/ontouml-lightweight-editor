@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.FillLayout;
@@ -21,6 +20,9 @@ import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.RefactoringPage;
+import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
+import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard.RelRigAction;
 
 /**
  * @author Tiago Sales
@@ -28,7 +30,7 @@ import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
  *
  */
 
-public class RelRigRefactoringPage extends WizardPage {
+public class RelRigRefactoringPage extends RefactoringPage {
 	
 	public RelRigOccurrence relRig;
 	
@@ -42,13 +44,17 @@ public class RelRigRefactoringPage extends WizardPage {
 	 */
 	public RelRigRefactoringPage(RelRigOccurrence relRig) 
 	{
-		super("RelRigRefactoringPage");	
+		super();	
 		this.relRig = relRig;
 		
 		setTitle(RelRigAntipattern.getAntipatternInfo().acronym+" Refactoring Options");
 		setDescription("The follwing options can be used to refactor the model.");
 	}
 
+	public RelRigWizard getRelRigWizard(){
+		return (RelRigWizard)getWizard();
+	}
+	
 	/**
 	 * Create contents of the wizard.
 	 * @param parent
@@ -154,32 +160,32 @@ public class RelRigRefactoringPage extends WizardPage {
 	@Override
 	public IWizardPage getNextPage() {
 		
+		int rigid=0;
 		// Action =====================			
 		for(Property p: mapping.keySet())
 		{
 			Combo c = mapping.get(p);
 			
 			if(c.getSelectionIndex()==0) {
-				relRig.changeToRoleOrRoleMixin(p.getType());
-				//relRig.changeToRoleMixin(p.getType());
+				WizardAction<RelRigAction> newAction = new WizardAction<RelRigAction>(RelRigAction.CHANGE_TO_ROLE_OR_ROLEMIXIN);
+				getRelRigWizard().getActions().add(rigid,newAction);
 			}
 			if(c.getSelectionIndex()==1) {
-				relRig.createRoleSubType(p.getType(), p.getAssociation());
-				//relRig.createRoleMixinSubType(p.getType(), p.getAssociation());
+				WizardAction<RelRigAction> newAction = new WizardAction<RelRigAction>(RelRigAction.ADD_ROLE_SUBTYPE);
+				getRelRigWizard().getActions().add(rigid,newAction);
 			}
 			if(c.getSelectionIndex()==2) {
-				relRig.changeToMode(p.getType(), p.getAssociation());				
+				WizardAction<RelRigAction> newAction = new WizardAction<RelRigAction>(RelRigAction.CHANGE_TO_MODE);
+				getRelRigWizard().getActions().add(rigid,newAction);
 			}
-			if(c.getSelectionIndex()==3) {
-				relRig.setBothReadOnly(p.getAssociation());				
+			if(c.getSelectionIndex()==3) {				
+				WizardAction<RelRigAction> newAction = new WizardAction<RelRigAction>(RelRigAction.ADD_ROLE_SUBTYPE);
+				getRelRigWizard().getActions().add(rigid,newAction);
 			}
+			rigid++;
 		}
-		
-		//set fixes
-		((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix());		
-		((RelRigWizard)getWizard()).canFinish=true;
-		
-		return ((RelRigWizard)getWizard()).finishing;
+	
+		return ((RelRigWizard)getWizard()).getFinishing();
 	}
 	
 }
