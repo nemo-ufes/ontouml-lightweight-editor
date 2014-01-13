@@ -12,6 +12,14 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 public class WholeOverOccurrence extends AntipatternOccurrence{
 
 	Classifier whole;
+	public Classifier getWhole() {
+		return whole;
+	}
+
+	public ArrayList<Property> getPartEnds() {
+		return partEnds;
+	}
+
 	ArrayList<Property> partEnds;
 	
 	/*TODO: Adapt methods from RelOver to get supertypes...*/
