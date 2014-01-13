@@ -3,13 +3,13 @@ package br.ufes.inf.nemo.oled.antipattern.wizard.relspec;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
-import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
-import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
  * @author Tiago Sales
@@ -49,31 +49,40 @@ public class RelSpecFifthPage extends RelSpecPage {
 		styledText.setEditable(false);
 		styledText.setBounds(10, 10, 554, 16);
 		
+		SelectionAdapter listener = new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	        if (isPageComplete()==false) setPageComplete(true);
+	      }
+	    };
+		    
+	    setPageComplete(false);
+		    
 		btnGeneral = new Button(container, SWT.RADIO);
 		btnGeneral.setText(relSpec.getParser().getStringRepresentation(relSpec.getSpecific()));
-		btnGeneral.setBounds(10, 32, 449, 16);
-		btnGeneral.setSelection(true);
+		btnGeneral.setBounds(10, 32, 449, 16);		
+		btnGeneral.addSelectionListener(listener);
 		
 		btnSpecific = new Button(container, SWT.RADIO);
 		btnSpecific.setText(relSpec.getParser().getStringRepresentation(relSpec.getGeneral()));
 		btnSpecific.setBounds(10, 54, 449, 16);
+		btnSpecific.addSelectionListener(listener);
 	}
 	
 	@Override
 	public IWizardPage getNextPage() {
 		
+		RelSpecAction newAction = new RelSpecAction(relSpec);
 		if(btnGeneral.getSelection()) {
-			//ACTION
-			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.DELETE_GENERAL);
-			getRelSpecWizard().getActions().add(0,newAction);			
-
+			//ACTION			
+			newAction.setDeleteGeneral();
+			getRelSpecWizard().addAction(0,newAction);
 		}
 		if(btnSpecific.getSelection()) {
-			//ACTION
-			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.DELETE_SPECIFIC);
-			getRelSpecWizard().getActions().add(0,newAction);			
+			//ACTION			
+			newAction.setDeleteSpecific();
+			getRelSpecWizard().addAction(0,newAction);
 		}
-			
+		
 		return getRelSpecWizard().getFinishing();
 	}
 }

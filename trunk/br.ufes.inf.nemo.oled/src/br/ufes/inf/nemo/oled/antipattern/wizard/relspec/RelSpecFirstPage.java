@@ -3,13 +3,13 @@ package br.ufes.inf.nemo.oled.antipattern.wizard.relspec;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
-import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
-import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
  * @author Tiago Sales
@@ -51,36 +51,52 @@ public class RelSpecFirstPage extends RelSpecPage {
 		styledText.setEditable(false);
 		styledText.setBounds(10, 10, 554, 63);
 		
+		SelectionAdapter listener = new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	        if (isPageComplete()==false) setPageComplete(true);
+	      }
+	    };
+		    
+	    setPageComplete(false);
+
 		btnRequired = new Button(container, SWT.RADIO);
 		btnRequired.setBounds(10, 79, 90, 16);
-		btnRequired.setText("Required");
-		btnRequired.setSelection(true);
+		btnRequired.setText("Required");		
+		btnRequired.addSelectionListener(listener);
 		
 		btnForbidden = new Button(container, SWT.RADIO);
 		btnForbidden.setText("Forbbiden");
-		btnForbidden.setBounds(10, 101, 90, 16);
+		btnForbidden.setBounds(10, 101, 90, 16);		
+		btnForbidden.addSelectionListener(listener);
 		
 		btnPossible = new Button(container, SWT.RADIO);
 		btnPossible.setText("Possible, but not required");
 		btnPossible.setBounds(10, 123, 156, 16);
+		btnPossible.addSelectionListener(listener);
 	}
 	
 	@Override
 	public IWizardPage getNextPage() {
 		
-		if(btnPossible.getSelection()) 
+		if(btnPossible.getSelection()) {
+			
+			getRelSpecWizard().clearActions();
+			
 			return getRelSpecWizard().getFinishing();
 			
-		else if(btnForbidden.getSelection()){			
+		}else if(btnForbidden.getSelection()){			
 						
-			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.DISJOINT);
-			getRelSpecWizard().getActions().add(0,newAction);
+			RelSpecAction newAction = new RelSpecAction(relSpec);
+			newAction.setDisjoint();
+			getRelSpecWizard().addAction(0,newAction);
 			
 			return getRelSpecWizard().getFinishing();
 		}
 		else if(btnRequired.getSelection()){
+			
 			return getRelSpecWizard().getSecondPage();
 		}
 		return super.getNextPage();
 	}
+	
 }

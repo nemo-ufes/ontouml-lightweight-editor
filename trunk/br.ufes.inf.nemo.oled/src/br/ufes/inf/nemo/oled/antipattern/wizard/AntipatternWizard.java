@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.oled.antipattern.wizard;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 import org.eclipse.jface.wizard.Wizard;
 
@@ -14,11 +15,11 @@ import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 
 public abstract class AntipatternWizard extends Wizard {
 
-	public boolean canFinish = true;
+	protected boolean canFinish = true;
 	
 	protected AntipatternOccurrence ap;
 	@SuppressWarnings("rawtypes")
-	protected ArrayList<WizardAction> actions = new ArrayList<WizardAction>();
+	protected HashMap<Integer, AntiPatternAction> actions = new HashMap<Integer,AntiPatternAction>();
 	
 	//GUI
 	protected PresentationPage presentation;
@@ -31,17 +32,33 @@ public abstract class AntipatternWizard extends Wizard {
 	    setNeedsProgressMonitor(true); 
 		setWindowTitle(windowTitle);
 	}
-
+	
 	@SuppressWarnings("rawtypes")
-	public ArrayList<WizardAction> getActions() {
-		return actions;
+	public Collection<AntiPatternAction> getActions() {
+		return actions.values();
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void addActions(ArrayList<WizardAction> actions) {
-		this.actions = actions;
+	public AntiPatternAction getAction(int pos){
+		int i=0;
+		for(AntiPatternAction action: actions.values()){
+			if (i==pos) return action;
+			i++;
+		}
+		return null;
 	}
 	
+	public void clearActions()
+	{
+		actions.clear();
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public void addAction(int pos, AntiPatternAction action)
+	{		
+		actions.put(pos, action);		
+	}
+		
     @Override
     public boolean canFinish() {	 
     	return canFinish;	  
@@ -56,10 +73,11 @@ public abstract class AntipatternWizard extends Wizard {
 	}
 
 	public FinishingPage getFinishing() {
-		canFinish=true;
+		canFinish=true;	
+		finishing.addActions(getActions());
 		return finishing;
 	}
-
+	
 	public RefactoringPage getOptions() {
 		return options;
 	}

@@ -3,13 +3,13 @@ package br.ufes.inf.nemo.oled.antipattern.wizard.relspec;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
-import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
-import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
  * @author Tiago Sales
@@ -54,15 +54,23 @@ public class RelSpecSecondPage extends RelSpecPage {
 		styledText.setEditable(false);
 		styledText.setBounds(10, 10, 554, 97);
 		
+		SelectionAdapter listener = new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	        if (isPageComplete()==false) setPageComplete(true);
+	      }
+	    };
+		    
+	    setPageComplete(false);
+		    
 		btnYes = new Button(container, SWT.RADIO);
 		btnYes.setBounds(10, 122, 163, 16);
 		btnYes.setText("Yes (Redefinition)");
-		btnYes.setSelection(true);
+		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(container, SWT.RADIO);
 		btnNo.setText("No (Subsetting)");
 		btnNo.setBounds(10, 144, 163, 16);
-		
+		btnNo.addSelectionListener(listener);		
 	}
 	
 	@Override
@@ -70,9 +78,10 @@ public class RelSpecSecondPage extends RelSpecPage {
 		
 		if(btnNo.getSelection()) {
 			// Action =====================
-			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SUBSET);
-			getRelSpecWizard().getActions().add(0,newAction);
-			
+			RelSpecAction newAction = new RelSpecAction(relSpec);
+			newAction.setSubset();
+			getRelSpecWizard().addAction(0,newAction);
+						
 			return getRelSpecWizard().getFinishing(); 
 		}
 			
@@ -83,8 +92,9 @@ public class RelSpecSecondPage extends RelSpecPage {
 				return getRelSpecWizard().getThirdPage();
 			else{
 				// Action =====================
-				WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.REDEFINE);
-				getRelSpecWizard().getActions().add(0,newAction);				
+				RelSpecAction newAction = new RelSpecAction(relSpec);
+				newAction.setRedefine();
+				getRelSpecWizard().addAction(0,newAction);
 				
 				return getRelSpecWizard().getFinishing();
 			}

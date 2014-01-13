@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.oled.antipattern.wizard.relrig;
 
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -11,6 +10,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
+import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard.RelRigAction;
 
 /**
  * @author Tiago Sales
@@ -18,9 +19,8 @@ import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
  *
  */
 
-public class RelRigFirstPage extends WizardPage {
+public class RelRigFirstPage extends RelRigPage {
 
-	public RelRigOccurrence relRig;
 	public int rigid;
 	public RefOntoUML.Type rigidType;
 	
@@ -33,14 +33,12 @@ public class RelRigFirstPage extends WizardPage {
 	 */
 	public RelRigFirstPage(RelRigOccurrence relRig, int rigid) 
 	{
-		super("RelRigFirstPage");				
-		this.relRig = relRig;
-		this.rigid = rigid;
+		super(relRig);			
 		
+		this.rigid = rigid;		
 		rigidType = relRig.getRigidMediatedProperties().get(rigid).getType();
 		String text = relRig.getOntoUMLParser().getStringRepresentation(rigidType);
-		int n = (rigid+1);
-		
+		int n = (rigid+1);		
 		setTitle("Rigid Type #"+n+": "+text);
 		setDescription("1/4");
 	}
@@ -84,16 +82,18 @@ public class RelRigFirstPage extends WizardPage {
 		else if(btnYes.getSelection()){			
 		
 			// Action =====================			
-			relRig.changeToRoleOrRoleMixin(rigidType);
+			//relRig.changeToRoleOrRoleMixin(rigidType);
+			WizardAction<RelRigAction> newAction = new WizardAction<RelRigAction>(RelRigAction.CHANGE_TO_ROLE_OR_ROLEMIXIN);;
+			getRelRigWizard().getActions().add(rigid,newAction);								
 			//=============================
 			
 			if(rigid < relRig.getRigidMediatedProperties().size()-1)
 				return ((RelRigWizard)getWizard()).getFirstPage(rigid+1);				
-			else { 
-				((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix()); 
-				return ((RelRigWizard)getWizard()).finishing;
-			}			
+			else { 								 
+				return ((RelRigWizard)getWizard()).getFinishing();
+			}
 		}
 		return super.getNextPage();
 	}
+	
 }
