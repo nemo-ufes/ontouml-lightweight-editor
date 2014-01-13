@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/eclipse-helios/org.eclipse.emf.ecore.xmi_2.5.0.v20100521-1846.jar"/>
 	<classpathentry kind="lib" path="lib/eclipse-helios/org.eclipse.ocl_3.0.2.R30x_v201101110610.jar"/>
 	<classpathentry kind="lib" path="lib/eclipse-helios/org.eclipse.ocl.ecore_3.0.2.R30x_v201101110610.jar"/>
+	<classpathentry kind="lib" path="lib/swt/org.eclipse.swt_4.3.win32.x64.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
