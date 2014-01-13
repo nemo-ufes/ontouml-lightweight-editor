@@ -91,6 +91,12 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		instance = this;		
 	}
 	
+	public void createSysOutInterceptor()
+	{
+		PrintStream interceptor = new Interceptor(System.out);
+		System.setOut(interceptor);
+	}
+    
 	/** Restore default sizes of the split panes. */
 	public void restoreDefaults() 
 	{
@@ -254,9 +260,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		toolArea.setResizeWeight(0);
 		
 		getContentPane().add(browserArea, BorderLayout.CENTER);
-		
-		//PrintStream interceptor = new Interceptor(System.out);
-        //System.setOut(interceptor);
         
 		//to end...
 		diagramManager.addStartPanel();		

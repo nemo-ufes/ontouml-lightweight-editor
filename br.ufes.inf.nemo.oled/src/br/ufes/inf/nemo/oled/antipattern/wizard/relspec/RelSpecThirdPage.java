@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
 import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
@@ -74,7 +75,9 @@ public class RelSpecThirdPage extends RelSpecPage {
 		
 		if(btnKeep.getSelection()) {
 			// Action =====================
-			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.REDEFINE);
+			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.REDEFINE);
+			getRelSpecWizard().getActions().add(0,newAction);
+			
 			return getRelSpecWizard().getFinishing();
 		}	
 		else if(btnSpecialize.getSelection()){			

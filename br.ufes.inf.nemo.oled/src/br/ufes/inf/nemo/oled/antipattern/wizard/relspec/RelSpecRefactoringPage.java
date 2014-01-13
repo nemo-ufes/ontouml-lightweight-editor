@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.Label;
 import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.RefactoringPage;
+import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
 import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
@@ -21,7 +23,10 @@ import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAct
  *
  */
 
-public class RelSpecRefactoringPage extends RelSpecPage {
+public class RelSpecRefactoringPage extends RefactoringPage {
+	
+	protected RelSpecOccurrence relSpec;
+	
 	private Button btnSubsets;
 	private Button btnRedefine;
 	private Button btnDisjoint;
@@ -36,12 +41,17 @@ public class RelSpecRefactoringPage extends RelSpecPage {
 	 */
 	public RelSpecRefactoringPage(RelSpecOccurrence relSpec) 
 	{
-		super(relSpec);	
-		
+		super();	
+		this.relSpec = relSpec;
+				
 		setTitle(RelSpecAntipattern.getAntipatternInfo().acronym+" Refactoring Options");
 		setDescription("The follwing options can be used to refactor the model.");
 	}
 
+	public RelSpecWizard getRelSpecWizard(){
+		return (RelSpecWizard)getWizard();
+	}
+	
 	/**
 	 * Create contents of the wizard.
 	 * @param parent
@@ -115,15 +125,18 @@ public class RelSpecRefactoringPage extends RelSpecPage {
 		
 		if (btnSubsets.getSelection()){
 			// Action =====================
-			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SUBSET);
+			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SUBSET);			
+			getRelSpecWizard().getActions().add(0,newAction);			
 		}
 		if (btnRedefine.getSelection()){
 			// Action =====================
-			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.REDEFINE);
+			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.REDEFINE);			
+			getRelSpecWizard().getActions().add(0,newAction);			
 		}
 		if (btnDisjoint.getSelection()){
 			// Action =====================
-			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.DISJOINT);
+			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.DISJOINT);			
+			getRelSpecWizard().getActions().add(0,newAction);			
 		}
 		
 		if (btnSpecializeRedefine!=null && btnSpecializeRedefine.getSelection()){
@@ -132,35 +145,41 @@ public class RelSpecRefactoringPage extends RelSpecPage {
 			
 			if(comboSpecializeRedefine.getSelectionIndex()==0) {
 				// Action =====================
-				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_SOURCE_REDEFINE);
-				getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+				WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_SPECIFIC_SOURCE_REDEFINE);
+				newAction.addParameter("stereotype", sourceStereotype);
+				getRelSpecWizard().getActions().add(0,newAction);				
 			}
 			if(comboSpecializeRedefine.getSelectionIndex()==1) {
 				// Action =====================
-				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_TARGET_REDEFINE);
-				getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+				WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_SPECIFIC_TARGET_REDEFINE);
+				newAction.addParameter("stereotype", sourceStereotype);
+				getRelSpecWizard().getActions().add(0,newAction);
 			}
 			if(comboSpecializeRedefine.getSelectionIndex()==2) {
 				// Action =====================
-				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_BOTH_REDEFINE);
-				getRelSpecWizard().getAction().addParameter("sourceStereotype", sourceStereotype);
-				getRelSpecWizard().getAction().addParameter("targetStereotype", targetStereotype);
+				WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_SPECIFIC_BOTH_REDEFINE);
+				newAction.addParameter("sourceStereotype", sourceStereotype);
+				newAction.addParameter("targetStereotype", targetStereotype);
+				getRelSpecWizard().getActions().add(0,newAction);
 			}
 			if(comboSpecializeRedefine.getSelectionIndex()==3) {
 				// Action =====================
-				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_SOURCE_REDEFINE);			
-				getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+				WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_GENERAL_SOURCE_REDEFINE);
+				newAction.addParameter("stereotype", sourceStereotype);				
+				getRelSpecWizard().getActions().add(0,newAction);				
 			}
 			if(comboSpecializeRedefine.getSelectionIndex()==4) {
 				// Action =====================
-				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_TARGET_REDEFINE);
-				getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+				WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_GENERAL_TARGET_REDEFINE);
+				newAction.addParameter("stereotype", sourceStereotype);				
+				getRelSpecWizard().getActions().add(0,newAction);
 			}
 			if(comboSpecializeRedefine.getSelectionIndex()==5) {
 				// Action =====================
-				getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_BOTH_REDEFINE);
-				getRelSpecWizard().getAction().addParameter("sourceStereotype", sourceStereotype);
-				getRelSpecWizard().getAction().addParameter("targetStereotype", targetStereotype);
+				WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_GENERAL_BOTH_REDEFINE);
+				newAction.addParameter("sourceStereotype", sourceStereotype);				
+				newAction.addParameter("targetStereotype", targetStereotype);
+				getRelSpecWizard().getActions().add(0,newAction);				
 			}
 		}
 		if (btnDelete!=null && btnDelete.getSelection()){

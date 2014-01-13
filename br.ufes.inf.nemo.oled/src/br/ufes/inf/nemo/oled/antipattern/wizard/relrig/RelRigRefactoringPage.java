@@ -176,8 +176,7 @@ public class RelRigRefactoringPage extends WizardPage {
 		}
 		
 		//set fixes
-		((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix());
-		((RelRigWizard)getWizard()).finishing.updateOLED();
+		((RelRigWizard)getWizard()).finishing.addFix(relRig.getFix());		
 		((RelRigWizard)getWizard()).canFinish=true;
 		
 		return ((RelRigWizard)getWizard()).finishing;

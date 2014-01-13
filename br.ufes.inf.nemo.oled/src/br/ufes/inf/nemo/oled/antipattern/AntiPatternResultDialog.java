@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -75,6 +76,7 @@ import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
+import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard;
 import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
@@ -86,6 +88,7 @@ import br.ufes.inf.nemo.oled.model.AntiPatternList;
  */
 public class AntiPatternResultDialog extends Dialog {
 
+	private AppFrame frame;
 	private ArrayList<AntipatternOccurrence> result;
 	private TableViewer viewer;
 	private AntipatternResultFilter filter;
@@ -94,10 +97,11 @@ public class AntiPatternResultDialog extends Dialog {
 	 * Create the dialog.
 	 * @param parentShell
 	 */
-	public AntiPatternResultDialog(Shell parentShell, ArrayList<AntipatternOccurrence> result) 
+	public AntiPatternResultDialog(Shell parentShell, ArrayList<AntipatternOccurrence> result, AppFrame frame) 
 	{
 		super(parentShell);		
 		this.result = result;
+		this.frame = frame;
 		setDefaultImage(new Image(Display.getDefault(),AntiPatternResultDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/antipattern-36x36.png")));		
 	}
 	
@@ -131,7 +135,7 @@ public class AntiPatternResultDialog extends Dialog {
 		return container;
 	}
 
-	public static void openDialog(final AntiPatternList apList)
+	public static void openDialog(final AntiPatternList apList, final AppFrame frame)
 	{			
 		if (apList!=null &&  !apList.getAll().isEmpty())
 		{
@@ -139,7 +143,7 @@ public class AntiPatternResultDialog extends Dialog {
 			    public void run() {
 			    	Display display = Display.getDefault();	    	
 					Shell shell = display.getActiveShell();			
-					AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(shell,apList.getAll());					
+					AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(shell,apList.getAll(), frame);					
 					resultDIalog.create();
 					resultDIalog.open();
 			    }
@@ -329,7 +333,7 @@ public class AntiPatternResultDialog extends Dialog {
 	    });
 	  }
 
-	  @Override
+	@Override
 	protected boolean isResizable() {	
 		return true;
 	}
@@ -349,21 +353,27 @@ public class AntiPatternResultDialog extends Dialog {
 	
 	public void showWizard(final AntipatternOccurrence apOccur)
 	{
-    	Display.getDefault().syncExec(new Runnable() {
-		    public void run() {
+//    	Display.getDefault().syncExec(new Runnable() {
+//		    public void run() {
+		    	WizardDialog wizardDialog = null;
 		    	
 	        	if (apOccur instanceof RelRigOccurrence) 
 	        	{	        		
-	        		WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));	        		
-	        		wizardDialog.open();
+	        		wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));	        		
 	        	}
 	        	
 	        	if (apOccur instanceof RelSpecOccurrence) 
 	        	{	        		
-	        		WizardDialog wizardDialog = new WizardDialog(new Shell(), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
-	        		wizardDialog.open();
+	        		wizardDialog = new WizardDialog(new Shell(), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
 	        	}
-		    }
-    	});		
+	        	
+        		if(wizardDialog.open()==Window.OK){
+        			
+        			System.out.println("okPressed");
+        			AntiPatternModificationsDialog.openDialog(apOccur.getFix(), frame);
+        			frame.getDiagramManager().updateOLED(apOccur.getFix());
+        		}
+//		    }
+//    	});		
 	}
 }

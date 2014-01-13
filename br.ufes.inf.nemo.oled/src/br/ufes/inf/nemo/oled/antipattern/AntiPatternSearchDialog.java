@@ -1615,6 +1615,6 @@ public class AntiPatternSearchDialog extends JDialog {
 	public void showResult()
 	{	
     	AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
-    	AntiPatternResultDialog.openDialog(apList);
+    	AntiPatternResultDialog.openDialog(apList,frame);
 	}
 }

@@ -34,6 +34,7 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -49,6 +50,7 @@ import RefOntoUML.Association;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.componentOf;
+import br.ufes.inf.nemo.antipattern.Fix;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
 import br.ufes.inf.nemo.common.ontoumlparser.MaterialInference;
@@ -330,6 +332,39 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			cmd.run();
 		}		
 	}
+	
+	/** Update OLED according to AntiPatterns actions */
+	public void updateOLED (final Fix fix)
+	{
+		if (fix==null) return;		
+    	Thread t = new Thread(new Runnable() {					
+			@Override
+			public void run() {
+				SwingUtilities.invokeLater(new Runnable() {			
+					@Override
+					public void run() {
+						for(Object obj: fix.getAdded()) {
+							if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
+								AddNodeCommand.updateApplication((RefOntoUML.Element)obj);
+						}
+						for(Object obj: fix.getAdded()) {
+							if (obj instanceof RefOntoUML.Relationship)
+								AddConnectionCommand.updateApplication((RefOntoUML.Element)obj);
+						}
+						for(Object obj: fix.getDeleted()) {
+							if (obj instanceof RefOntoUML.Relationship)
+								ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
+						}
+						for(Object obj: fix.getDeleted()) {
+							if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
+								ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
+						}				
+					}
+				});						
+			}
+		});
+    	t.start();
+    }
 	
 	/**
 	 * Creates an editor for a given Diagram.
