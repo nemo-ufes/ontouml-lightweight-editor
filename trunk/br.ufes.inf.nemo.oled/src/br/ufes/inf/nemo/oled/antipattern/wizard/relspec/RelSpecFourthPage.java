@@ -9,6 +9,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
 import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard.RelSpecAction;
 
 /**
@@ -84,41 +85,47 @@ public class RelSpecFourthPage extends RelSpecPage {
 	
 	@Override
 	public IWizardPage getNextPage() {
-		
+
 		ClassStereotype sourceStereotype = ClassStereotype.ROLE;
 		ClassStereotype targetStereotype = ClassStereotype.ROLE;
 		
 		if(btnGeneralSource.getSelection()) {
-			// Action =====================
-			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_SOURCE_REDEFINE);			
-			getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+			// Action =====================			
+			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_GENERAL_SOURCE_REDEFINE);
+			newAction.addParameter("stereotype", sourceStereotype);
+			getRelSpecWizard().getActions().add(0,newAction);			
 		}
 		if(btnGeneralTarget.getSelection()) {
 			// Action =====================
-			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_TARGET_REDEFINE);
-			getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_GENERAL_TARGET_REDEFINE);
+			newAction.addParameter("stereotype", targetStereotype);
+			getRelSpecWizard().getActions().add(0,newAction);
 		}
 		if(btnGeneralBoth.getSelection()) {
 			// Action =====================
-			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_GENERAL_BOTH_REDEFINE);
-			getRelSpecWizard().getAction().addParameter("sourceStereotype", sourceStereotype);
-			getRelSpecWizard().getAction().addParameter("targetStereotype", targetStereotype);
+			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_GENERAL_BOTH_REDEFINE);
+			newAction.addParameter("sourceStereotype", sourceStereotype);
+			newAction.addParameter("targetStereotype", targetStereotype);
+			getRelSpecWizard().getActions().add(0,newAction);
 		}
 		if(btnSpecificSource.getSelection()) {
 			// Action =====================
-			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_SOURCE_REDEFINE);
-			getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_SPECIFIC_SOURCE_REDEFINE);
+			newAction.addParameter("stereotype", sourceStereotype);
+			getRelSpecWizard().getActions().add(0,newAction);
 		}
 		if(btnSpecificTarget.getSelection()) {
 			// Action =====================
-			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_TARGET_REDEFINE);
-			getRelSpecWizard().getAction().addParameter("stereotype", sourceStereotype);
+			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_SPECIFIC_TARGET_REDEFINE);
+			newAction.addParameter("stereotype", sourceStereotype);
+			getRelSpecWizard().getActions().add(0,newAction);
 		}
 		if(btnSpecificBoth.getSelection()) {
 			// Action =====================
-			getRelSpecWizard().getAction().setCodeAndCleanParameters(RelSpecAction.SPEC_SPECIFIC_BOTH_REDEFINE);
-			getRelSpecWizard().getAction().addParameter("sourceStereotype", sourceStereotype);
-			getRelSpecWizard().getAction().addParameter("targetStereotype", targetStereotype);
+			WizardAction<RelSpecAction> newAction = new WizardAction<RelSpecAction>(RelSpecAction.SPEC_SPECIFIC_BOTH_REDEFINE);
+			newAction.addParameter("sourceStereotype", sourceStereotype);
+			newAction.addParameter("targetStereotype", targetStereotype);
+			getRelSpecWizard().getActions().add(0,newAction);			
 		}
 		
 		return getRelSpecWizard().getFinishing();

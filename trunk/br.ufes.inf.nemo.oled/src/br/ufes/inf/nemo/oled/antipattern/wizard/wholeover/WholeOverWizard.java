@@ -7,7 +7,7 @@ import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
-import br.ufes.inf.nemo.oled.antipattern.wizard.ActionWizard;
+import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
 import br.ufes.inf.nemo.oled.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.oled.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.oled.antipattern.wizard.PresentationPage;
@@ -29,15 +29,15 @@ public class WholeOverWizard extends AntipatternWizard {
 	
 	public enum WholeOverAction {MAKE_DIJSOINT, MAKE_EXCLUSIVE}
 	
-	private ActionWizard<WholeOverAction> action;
+	private WizardAction<WholeOverAction> action;
 	
-	public ActionWizard<WholeOverAction> getAction() {
+	public WizardAction<WholeOverAction> getAction() {
 		return action;
 	}
 
 	public WholeOverWizard(WholeOverOccurrence ap) {
 		super(ap, WholeOverAntipattern.getAntipatternInfo().getName());
-		action = new ActionWizard<WholeOverAction>();
+		action = new WizardAction<WholeOverAction>();
 	}
 	
 	@Override

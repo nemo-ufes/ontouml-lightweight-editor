@@ -221,33 +221,13 @@ public final class Main {
 		return p.getValue();
 	}
 	
-	public static void addJarToClasspath(File jarFile) 
-	{ 
-	   try 
-	   { 
-	       URL url = jarFile.toURI().toURL(); 
-	       URLClassLoader urlClassLoader = (URLClassLoader) ClassLoader.getSystemClassLoader(); 
-	       Class<?> urlClass = URLClassLoader.class; 
-	       Method method = urlClass.getDeclaredMethod("addURL", new Class<?>[] { URL.class }); 
-	       method.setAccessible(true);         
-	       method.invoke(urlClassLoader, new Object[] { url });             
-	   } 
-	   catch (Throwable t) 
-	   { 
-	       t.printStackTrace(); 
-	   } 
-	}
-	
 	public static void addSwtJarToClassPath() 
 	{
 		String swtFileName = "<empty>";
 	    try {
 	        String osName = System.getProperty("os.name").toLowerCase();
 	        String osArch = System.getProperty("os.arch").toLowerCase();
-	        URLClassLoader classLoader = (URLClassLoader) Main.class.getClassLoader();
-	        Method addUrlMethod = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-	        addUrlMethod.setAccessible(true);
-
+	        
 	        String swtFileNameOsPart = 
 	            osName.contains("win") ? "win32" :
 	            osName.contains("mac") ? "macosx" :
@@ -257,14 +237,30 @@ public final class Main {
 	        String swtFileNameArchPart = osArch.contains("64") ? "x64" : "x86";
 	        
 	        swtFileName = "org.eclipse.swt_4.3."+swtFileNameOsPart+"."+swtFileNameArchPart+".jar";
+	               
+	        String workingDir = System.getProperty("user.dir").replace("oled","common").concat(File.separator);
+	        String libDir = "lib"+File.separator+"swt"+File.separator;
+	        	        	        
+	        URLClassLoader classLoader = (URLClassLoader) Main.class.getClassLoader ();
+	        Method addUrlMethod = URLClassLoader.class.getDeclaredMethod ("addURL", URL.class);
+	        addUrlMethod.setAccessible (true);
+	            
+            //URL swtFileUrl = new URL("rsrc:"+swtFileName);
+	        String path = Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+	        System.out.println(System.getProperty("user.dir"));
+	        //path += swtFileName;
+	        //String jarPath = URLDecoder.decode(path, "UTF-8");
 	        
-	        URL swtFileUrl = new URL("rsrc:"+swtFileName); // I am using Jar-in-Jar class loader which understands this URL; adjust accordingly if you don't
-	        addUrlMethod.invoke(classLoader, swtFileUrl);
+	        URL swtFileUrl = classLoader.getResource(swtFileName);	        
+	        if(swtFileUrl==null){
+	        	File file = new File(workingDir.concat(libDir), swtFileName);
+	        	if (!file.exists ()) System.out.println("Can't locate SWT Jar " + file.getAbsolutePath());
+	        	else swtFileUrl = file.toURI().toURL();
+	        }
 	        
-	        //File swtJar = new File("br/ufes/inf/nemo/common/lib/swt/"+swtFileName); 
-	        //addJarToClasspath(swtJar);
-
-	        System.out.println(swtFileUrl);
+            System.out.println("Adding to classpath: " + swtFileUrl);
+            
+            addUrlMethod.invoke (classLoader, swtFileUrl);
 	    }
 	    catch(Exception e) {
 	        System.out.println("Unable to add the swt jar to the class path: "+swtFileName);
@@ -284,7 +280,7 @@ public final class Main {
 			 */
 			public void run() {
 				try {
-
+					
 					//Needed for the embedded SWT Browser in Linux systems
 					System.setProperty("sun.awt.xembedserver", "true");
 					
@@ -317,11 +313,13 @@ public final class Main {
 			        }			        
 			        setUIFont(new FontUIResource(new Font(fontName, 0, fontSize)));
 	
-			        //SWT
-			        //addSwtJarToClassPath();
+					frame = new AppFrame();
+					
+					//frame.createSysOutInterceptor();
+					
+			        //add the appropriate SWT jar to the classpath according to the OS
+			        addSwtJarToClassPath();
 			        
-					frame = new AppFrame();					
-	
 					frame.initializeAlloyAnalyzer();//Alloy
 					
 					frame.setLocationByPlatform(true);

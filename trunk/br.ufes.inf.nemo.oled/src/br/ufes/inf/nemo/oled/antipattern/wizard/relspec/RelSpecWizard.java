@@ -1,13 +1,12 @@
 package br.ufes.inf.nemo.oled.antipattern.wizard.relspec;
 
-import org.eclipse.jface.wizard.Wizard;
-
 import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
-import br.ufes.inf.nemo.oled.antipattern.wizard.ActionWizard;
+import br.ufes.inf.nemo.oled.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.oled.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.oled.antipattern.wizard.PresentationPage;
+import br.ufes.inf.nemo.oled.antipattern.wizard.WizardAction;
 
 /**
  * @author Tiago Sales
@@ -15,17 +14,8 @@ import br.ufes.inf.nemo.oled.antipattern.wizard.PresentationPage;
  *
  */
 
-public class RelSpecWizard extends Wizard {
+public class RelSpecWizard extends AntipatternWizard {
 
-	public boolean canFinish = true;
-	
-	protected RelSpecOccurrence ap;
-	
-	protected PresentationPage presentation;
-	protected FinishingPage finishing;
-		  
-	protected RelSpecRefactoringPage options;
-	
 	protected RelSpecFirstPage firstPage;
 	protected RelSpecSecondPage secondPage;
 	protected RelSpecThirdPage thirdPage;
@@ -34,37 +24,22 @@ public class RelSpecWizard extends Wizard {
 	
 	public enum RelSpecAction {SUBSET, REDEFINE, DISJOINT, SPEC_SPECIFIC_SOURCE_REDEFINE, SPEC_SPECIFIC_TARGET_REDEFINE
 		, SPEC_GENERAL_SOURCE_REDEFINE, SPEC_GENERAL_TARGET_REDEFINE, DELETE_SPECIFIC, DELETE_GENERAL, SPEC_GENERAL_BOTH_REDEFINE, SPEC_SPECIFIC_BOTH_REDEFINE }
-	
-	private ActionWizard<RelSpecAction> action;
-	
-	public ActionWizard<RelSpecAction> getAction() {
-		return action;
-	}
-
+		
 	public RelSpecWizard(RelSpecOccurrence ap) {
-		this.ap = ap;
-	    canFinish=false;
-	    action = new ActionWizard<RelSpecAction>();
-	    setNeedsProgressMonitor(true); 
-		setWindowTitle(RelSpecAntipattern.getAntipatternInfo().name);
+		super(ap, RelSpecAntipattern.getAntipatternInfo().name);	    
 	}
-	
-    @Override
-    public boolean canFinish() {	 
-    	return canFinish;	  
-    };
     
 	@Override
 	public void addPages() 
 	{	
-		options = new RelSpecRefactoringPage(ap);
+		options = new RelSpecRefactoringPage((RelSpecOccurrence)ap);
 		finishing = new FinishingPage();
 		
-		firstPage = new RelSpecFirstPage(ap);
-		secondPage = new RelSpecSecondPage(ap);
-		thirdPage = new RelSpecThirdPage(ap);
-		fourthPage = new RelSpecFourthPage(ap);
-		fifthPage = new RelSpecFifthPage(ap);
+		firstPage = new RelSpecFirstPage((RelSpecOccurrence)ap);
+		secondPage = new RelSpecSecondPage((RelSpecOccurrence)ap);
+		thirdPage = new RelSpecThirdPage((RelSpecOccurrence)ap);
+		fourthPage = new RelSpecFourthPage((RelSpecOccurrence)ap);
+		fifthPage = new RelSpecFifthPage((RelSpecOccurrence)ap);
 		
 		presentation = new PresentationPage(
 			RelSpecAntipattern.getAntipatternInfo().name,
@@ -83,26 +58,9 @@ public class RelSpecWizard extends Wizard {
 		addPage(options);
 		addPage(finishing);
 	}
-		
-	public boolean isCanFinish() {
-		return canFinish;
-	}
-
+	
 	public RelSpecOccurrence getAp() {
-		return ap;
-	}
-
-	public PresentationPage getPresentation() {
-		return presentation;
-	}
-
-	public FinishingPage getFinishing() {
-		canFinish=true;
-		return finishing;
-	}
-
-	public RelSpecRefactoringPage getOptions() {
-		return options;
+		return (RelSpecOccurrence)ap;
 	}
 
 	public RelSpecFirstPage getFirstPage() {
@@ -125,8 +83,11 @@ public class RelSpecWizard extends Wizard {
 		return fifthPage;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean performFinish() {
+		WizardAction action = getActions().get(0);
+		RelSpecOccurrence ap = getAp();
 		
 		if(action.getCode()==RelSpecAction.SUBSET)
 			ap.generateOCL(RelSpecOccurrence.OperationType.SUBSET);
