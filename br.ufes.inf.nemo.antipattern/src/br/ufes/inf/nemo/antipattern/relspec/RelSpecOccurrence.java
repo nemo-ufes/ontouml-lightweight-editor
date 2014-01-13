@@ -410,6 +410,9 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 			generalContext = generalSourceEnd;
 		} 
 		
+		//include end's name if null or empty
+		fixPropertyName(context.getOpposite());
+		
 		invRule += addQuotes(context.getOpposite().getName())+"->asSet()";
 		contextName = context.getType().getName();
 		
@@ -438,6 +441,9 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		if(!generalContext.getType().equals(context.getType()))
 			invRule += ".oclAsType("+addQuotes(generalContext.getType().getName())+")";
 		
+		//include end's name if null or empty
+		fixPropertyName(generalContext.getOpposite());
+		
 		invRule += "."+addQuotes(generalContext.getOpposite().getName())+"->asSet()";
 		
 		if(type==OperationType.SUBSET || type==OperationType.DISJOINT)
@@ -446,6 +452,15 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		invName += "_"+general.getName();
 		
 		super.fix.addAll(fixer.generateOCLRule(contextName, invName, invRule));
+	}
+
+	private void fixPropertyName(Property property) {
+		if(property.getName()==null || property.getName().trim().isEmpty()){
+			if(property.getType()==null || property.getType().getName()==null || property.getType().getName().trim().isEmpty())
+				property.setName("property");
+			else
+				property.setName(property.getType().toString().trim().toLowerCase());
+		}
 	}
 	
 	public void createSpecificSourceSubTypeAndRedefine(ClassStereotype stereotype)
