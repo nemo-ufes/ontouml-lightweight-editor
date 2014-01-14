@@ -76,9 +76,9 @@ import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.relrig.RelRigWizard;
+import br.ufes.inf.nemo.antipattern.wizard.relspec.RelSpecWizard;
 import br.ufes.inf.nemo.oled.AppFrame;
-import br.ufes.inf.nemo.oled.antipattern.wizard.relrig.RelRigWizard;
-import br.ufes.inf.nemo.oled.antipattern.wizard.relspec.RelSpecWizard;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 
 /**
@@ -370,7 +370,7 @@ public class AntiPatternResultDialog extends Dialog {
         		if(wizardDialog.open()==Window.OK){
         			apOccur.setIsFixed(true);
         			if(!apOccur.getFix().isEmpty()){
-        				AntiPatternModificationsDialog.openDialog(apOccur.getFix(), frame);
+        				AntiPatternModifDialog.openDialog(apOccur.getFix(), frame);
         				frame.getDiagramManager().updateOLED(apOccur.getFix());        				
         			}
         		}
