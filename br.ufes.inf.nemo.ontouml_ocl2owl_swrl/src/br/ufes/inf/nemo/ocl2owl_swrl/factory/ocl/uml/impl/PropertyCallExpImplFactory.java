@@ -57,13 +57,18 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source, this.m_NamedElementImpl);
 		int sourceRepeatNumber = repeatNumber;
 		//the source is solved and the and the returned arguments from the sourceSolveMethod above are returned 
-		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, operatorNot, sourceRepeatNumber, leftSideOfImplies);
+		//esse trecho foi modificado para que fosse possivel passar o referredArgument para frente e resolver problemas de SameAs com variáveis (regra: 70/71)
+		//ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, operatorNot, sourceRepeatNumber, leftSideOfImplies);
+		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, sourceRepeatNumber, leftSideOfImplies);
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//get the last
 		
+		//esse trecho foi comentado para atender o uso de variáveis, o varX era passado como referredArgument e as variáveis a frente ficavam com nome errado (regra: 70/71)
+		/*
 		//the varX turns the referredArgument if varX is null or if is not about self
 		if(referredArgument != null && !initiatedBySelf(source)){
 			varX = referredArgument;
 		}
+		*/
 		
 		//then, the referred property of the property call is got
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
