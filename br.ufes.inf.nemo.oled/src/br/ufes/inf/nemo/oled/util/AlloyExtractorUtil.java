@@ -26,9 +26,8 @@ public class AlloyExtractorUtil {
 		if (alloyJarFile.exists()) return alloyJarFile.getAbsolutePath();
 				
 		// Copy "alloy4.2.jar" 
-		InputStream is = AlloyExtractorUtil.class.getClassLoader().getResourceAsStream("alloy4.2.jar");
-		if(is == null) is = new FileInputStream("lib/"+"alloy4.2.jar");	
-		
+		InputStream is = AlloyExtractorUtil.class.getClassLoader().getResourceAsStream("alloy4.2.jar");		
+		if(is == null) is = new FileInputStream("lib/"+"alloy4.2.jar");		
 		OutputStream out = new FileOutputStream(alloyJarFile);
 				
 		// copy data flow -> MB x MB

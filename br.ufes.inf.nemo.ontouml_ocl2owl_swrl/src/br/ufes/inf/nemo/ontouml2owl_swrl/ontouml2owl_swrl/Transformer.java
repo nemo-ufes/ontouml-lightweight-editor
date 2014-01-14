@@ -1336,6 +1336,7 @@ public class Transformer {
 	 * Process the chain of the properties
 	 * @param The actual property of the chain
 	 */
+	@SuppressWarnings("unused")
 	private void processDataTypeProperty(Property prop){
 		int c = 0;
 		boolean f = false;

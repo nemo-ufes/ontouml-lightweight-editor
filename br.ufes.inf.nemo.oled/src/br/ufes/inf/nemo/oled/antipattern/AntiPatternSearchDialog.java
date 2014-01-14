@@ -814,8 +814,8 @@ public class AntiPatternSearchDialog extends JDialog {
 		btnShowResult.setEnabled(false);		
 		btnShowResult.addActionListener(new ActionListener() {			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				showResult();				
+			public void actionPerformed(ActionEvent arg0) {				
+				showResult();
 			}
 		});
 		

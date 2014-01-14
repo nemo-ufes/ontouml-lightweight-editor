@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="resources/org/ontouml/ui/" kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/forms-1.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/swingx-all-1.6.3.jar"/>
+	<classpathentry kind="src" path="src">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="br.ufes.inf.nemo.common"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/alloy4.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2sbvr"/>
@@ -47,11 +49,13 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.wb.swt.widgets.baseline_1.6.0.r37x201305212028.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.jdt.ui_3.8.0.v20120524-1551.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-juno/org.eclipse.wb.swt_1.6.0.r37x201305212024.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.win32.x64.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.linux.x64.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.linux.x86.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.macosx.x64.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.macosx.x86.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt/org.eclipse.swt_4.3.win32.x86.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/forms-1.1.0.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swingx-all-1.6.3.jar"/>
+	<classpathentry kind="lib" path="/org.eclipse.swt/src/swt/win/x64/swt.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="org.eclipse.swt"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

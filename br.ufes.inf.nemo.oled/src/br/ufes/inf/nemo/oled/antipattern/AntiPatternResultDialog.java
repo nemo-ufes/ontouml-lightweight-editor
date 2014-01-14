@@ -139,6 +139,7 @@ public class AntiPatternResultDialog extends Dialog {
 	{			
 		if (apList!=null &&  !apList.getAll().isEmpty())
 		{
+			System.out.println("thread");
 	    	Display.getDefault().syncExec(new Runnable() {
 			    public void run() {
 			    	Display display = Display.getDefault();	    	
