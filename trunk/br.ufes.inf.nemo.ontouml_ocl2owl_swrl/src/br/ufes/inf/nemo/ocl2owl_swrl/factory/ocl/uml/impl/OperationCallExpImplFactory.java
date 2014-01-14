@@ -12,6 +12,8 @@ import org.eclipse.ocl.uml.impl.IntegerLiteralExpImpl;
 import org.eclipse.ocl.uml.impl.LetExpImpl;
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
 import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
+import org.eclipse.ocl.uml.impl.VariableExpImpl;
+import org.eclipse.ocl.uml.impl.VariableImpl;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Operation;
@@ -159,6 +161,17 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		//the source is solved and the and the returned arguments from the sourceSolveMethod above are returned 
 		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, refArgAux, operatorNot, repeatNumber, sourceIsLeftSideOfImplies);
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//get the last
+
+		//esse trecho foi incluído para tratar uso variáveis (regra: 70/71)
+		if(source.getClass().equals(VariableExpImpl.class) && refArgAux != null){
+			VariableExpImpl variable = (VariableExpImpl)source;
+			if(!variable.getName().equals("self")){
+				SWRLSameIndividualAtom sameAs = factory.getSWRLSameIndividualAtom((SWRLVariable)varX, (SWRLVariable)refArgAux);
+				if(!antecedent.contains(sameAs)){
+					this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, sameAs);
+				}				
+			}			
+		}
 		
 		//above, specific methods are called according to the operator
 		ArrayList<SWRLDArgument> retArgsZ = null;
