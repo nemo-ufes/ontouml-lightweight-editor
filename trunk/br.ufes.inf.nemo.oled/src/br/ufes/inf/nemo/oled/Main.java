@@ -310,6 +310,7 @@ public final class Main {
 			            System.setProperty("apple.awt.fileDialogForDirectories", "true");
 			        }
 			        
+			        
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					
 					if (!onMac()&&!onWindows()) UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
