@@ -13,12 +13,12 @@ import java.net.URLDecoder;
  *  
  */
 
-public class AlloyExtractorUtil {
+public class ExtractorUtil {
 
-	public static String alloyAnalyzerJAR() throws IOException
+	public static String extractAlloyJar() throws IOException
 	{
 		//Tony's Edit: Made these changes to correct an error while copying the alloy file to folders with space " " in the path.
-		String destFolderPath = AlloyExtractorUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();	
+		String destFolderPath = ExtractorUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();	
 		destFolderPath += "alloy4.2.jar";
 		String alloyPath = URLDecoder.decode(destFolderPath, "UTF-8");
 		
@@ -26,7 +26,7 @@ public class AlloyExtractorUtil {
 		if (alloyJarFile.exists()) return alloyJarFile.getAbsolutePath();
 				
 		// Copy "alloy4.2.jar" 
-		InputStream is = AlloyExtractorUtil.class.getClassLoader().getResourceAsStream("alloy4.2.jar");		
+		InputStream is = ExtractorUtil.class.getClassLoader().getResourceAsStream("alloy4.2.jar");		
 		if(is == null) is = new FileInputStream("lib/"+"alloy4.2.jar");		
 		OutputStream out = new FileOutputStream(alloyJarFile);
 				
@@ -40,6 +40,7 @@ public class AlloyExtractorUtil {
 		out.flush();
 		out.close();
 		
+		System.out.println("Extracted: "+alloyJarFile.getAbsolutePath());
 		return alloyJarFile.getAbsolutePath();
-	}
+	}	
 }

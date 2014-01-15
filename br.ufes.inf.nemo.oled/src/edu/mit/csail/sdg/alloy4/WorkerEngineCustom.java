@@ -30,7 +30,7 @@ import java.io.PrintStream;
 import java.io.Serializable;
 import java.lang.Thread.UncaughtExceptionHandler;
 
-import br.ufes.inf.nemo.oled.util.AlloyExtractorUtil;
+import br.ufes.inf.nemo.oled.util.ExtractorUtil;
 
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.Util;
@@ -172,7 +172,7 @@ public final class WorkerEngineCustom {
                      "-Djava.library.path=" + jniPath,
                      "-Ddebug=" + debug,
                      "-cp", 
-                     classPath+";"+AlloyExtractorUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"alloy4.2.jar", 
+                     classPath+";"+ExtractorUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"alloy4.2.jar", 
                      WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
@@ -184,7 +184,7 @@ public final class WorkerEngineCustom {
                      "-Xss" + newstack + "k",
                      "-Ddebug=" + debug,
                      "-cp", 
-                     classPath+";"+AlloyExtractorUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"alloy4.2.jar", 
+                     classPath+";"+ExtractorUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"alloy4.2.jar", 
                      WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
@@ -198,7 +198,7 @@ public final class WorkerEngineCustom {
                      "-Djava.library.path=" + jniPath,
                      "-Ddebug=" + debug,
                      "-cp", 
-                     classPath+":"+AlloyExtractorUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"alloy4.2.jar", 
+                     classPath+":"+ExtractorUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"alloy4.2.jar", 
                      WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
@@ -210,7 +210,7 @@ public final class WorkerEngineCustom {
                      "-Xss" + newstack + "k",
                      "-Ddebug=" + debug,
                      "-cp", 
-                     classPath+":"+AlloyExtractorUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"alloy4.2.jar", 
+                     classPath+":"+ExtractorUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"alloy4.2.jar", 
                      WorkerEngineCustom.class.getName(),
                      Version.buildDate(), 
                      ""+Version.buildNumber()
