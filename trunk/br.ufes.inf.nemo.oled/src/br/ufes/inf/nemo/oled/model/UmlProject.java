@@ -247,4 +247,11 @@ public class UmlProject implements Serializable {
 		
 		return tempDir;
 	}
+	
+	public static String createTempDir()
+	{
+		if(tempDir == null)
+			tempDir = ConfigurationHelper.makeTempDir();		
+		return tempDir;
+	}
 }
