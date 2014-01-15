@@ -56,7 +56,7 @@ public class UmlProject implements Serializable {
 	private transient AdapterFactoryEditingDomain editingDomain;
 	private transient Resource resource;
 	private transient boolean saveNeeded = false;
-	private transient String tempDir;
+	public static transient String tempDir;
 	private List<UmlDiagram> diagrams = new ArrayList<UmlDiagram>();
 	private Properties properties;
 	private String name = new String();
