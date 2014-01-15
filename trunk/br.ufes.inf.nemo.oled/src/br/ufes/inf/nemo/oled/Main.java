@@ -236,24 +236,44 @@ public final class Main {
 			e.printStackTrace();		
 		}
 	}
+
+	public static String getSwtWorkingDir()
+	{
+		String dir = System.getProperty("user.dir");
+		if (dir.contains("br.ufes.inf.nemo.oled")) { 
+			dir = dir.replace("br.ufes.inf.nemo.oled","org.eclipse.swt").concat(File.separator).concat("src"+File.separator);			
+		}else{
+			dir = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		}
+		return dir;
+	}
+	
+	public static String getSwtFileName()
+	{
+		String swtFileName = "<empty>";
+        String osName = System.getProperty("os.name").toLowerCase();
+        String osArch = System.getProperty("os.arch").toLowerCase();
+        
+        String os = 
+            osName.contains("win") ? "win" :
+            osName.contains("mac") ? "mac" :
+            osName.contains("linux") || osName.contains("nix") ? "linux" :
+            ""; // throw new RuntimeException("Unknown OS name: "+osName)
+
+        String arch = osArch.contains("64") ? "x64" : "x86";
+        
+        swtFileName = "swt"+File.separator+os+File.separator+arch+File.separator+"swt.jar";
+        return swtFileName;
+		
+	}
 	
 	/** Add the correct SWT Jar to the classpath according to the OS*/
 	public static URL addSwtJarToClassPath() 
 	{
 		String swtFileName = "<empty>";
 	    try {
-	        String osName = System.getProperty("os.name").toLowerCase();
-	        String osArch = System.getProperty("os.arch").toLowerCase();
-	        
-	        String os = 
-	            osName.contains("win") ? "win" :
-	            osName.contains("mac") ? "mac" :
-	            osName.contains("linux") || osName.contains("nix") ? "linux" :
-	            ""; // throw new RuntimeException("Unknown OS name: "+osName)
-
-	        String arch = osArch.contains("64") ? "x64" : "x86";
-	        
-	        swtFileName = "swt"+File.separator+os+File.separator+arch+File.separator+"swt.jar";	        		
+	    	
+	        swtFileName = getSwtFileName();  		
 	        	        	        
 	        URLClassLoader classLoader = (URLClassLoader) Main.class.getClassLoader ();
 	        Method addUrlMethod = URLClassLoader.class.getDeclaredMethod ("addURL", URL.class);
@@ -263,9 +283,8 @@ public final class Main {
 	        try{
 	        	swtFileUrl = new URL("rsrc:"+swtFileName);
 	        }catch(MalformedURLException e){
-	        	String workingDir = System.getProperty("user.dir").replace("br.ufes.inf.nemo.oled","org.eclipse.swt").concat(File.separator);
-		        String path = "src/swt"+File.separator+os+File.separator+arch+File.separator+"swt.jar";
-	        	File file = new File(workingDir.concat(path));
+	        	String workingDir = getSwtWorkingDir();		        
+	        	File file = new File(workingDir.concat(swtFileName));
 	        	swtFileUrl = file.toURI().toURL();
 	        	if (!file.exists ()) System.out.println("Can't locate SWT Jar File" + file.getAbsolutePath());
 	    	}
@@ -308,8 +327,7 @@ public final class Main {
 			            System.setProperty("apple.laf.useScreenMenuBar","true");                        
 			            System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode","false");
 			            System.setProperty("apple.awt.fileDialogForDirectories", "true");
-			        }
-			        
+			        }			        
 			        
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					
@@ -334,12 +352,12 @@ public final class Main {
 					// this makes System.out content to be printed in the output pane of the app.
 					//frame.createSysOutInterceptor();
 					
-			        //add the appropriate SWT jar to the classpath according to the OS
+			        //add and load the appropriate SWT jar to the classpath according to the OS
 			        URL swtJarURL = addSwtJarToClassPath();
 			        URL[] urls = new URL[1];
 			        urls[0] = swtJarURL;
 			        loadSwtJar(urls);
-			        
+			        			        
 			        //Extracts alloy and initialize it. We need to fix this ASAP.
 					frame.initializeAlloyAnalyzer();
 					
