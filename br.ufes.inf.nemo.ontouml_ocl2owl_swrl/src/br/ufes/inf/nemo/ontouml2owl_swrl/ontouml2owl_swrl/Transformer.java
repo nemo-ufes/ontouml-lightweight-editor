@@ -272,12 +272,12 @@ public class Transformer {
 			throw new Exception("Error: An unexpected exception happened when creating the disjointness of the Associations;\n");
 		}
 
-		try{
-			processDisjointDataType();
-		}catch (Exception e){
-			errors = "";
-			throw new Exception("Error: An unexpected exception happened when creating the disjointness of the Datatypes;\n");
-		}
+//		try{
+//			processDisjointDataType();
+//		}catch (Exception e){
+//			errors = "";
+//			throw new Exception("Error: An unexpected exception happened when creating the disjointness of the Datatypes;\n");
+//		}
 
 		try{
 			processAnnotation();
