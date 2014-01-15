@@ -40,6 +40,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
+import br.ufes.inf.nemo.oled.util.BinaryLoader;
+
 /*
  * Features TO-DO
  * ======================================================
@@ -171,6 +173,8 @@ public final class Main {
       return System.getProperty("os.name").toLowerCase(Locale.US).startsWith("windows");
 	};
 
+	public static String getOSx(){ if (onWindows()) return "win"; else if (onMac()) return "mac"; else return "linux"; }
+			
 	/** Returns true iff running on Mac OS X. **/
 	public static boolean onMac() {
       return System.getProperty("mrj.version")!=null || System.getProperty("os.name").toLowerCase(Locale.US).startsWith("mac ");
@@ -306,14 +310,14 @@ public final class Main {
 	 * The start method for this application.
 	 * @param args the command line parameters
 	 */
-	public static void main(String[] args) {
-        
+	public static void main(String[] args) 
+	{        
 		SwingUtilities.invokeLater(new Runnable() {
 			/**
 			 * {@inheritDoc}
 			 */
 			public void run() {
-				try {
+				try {					
 					
 					//Needed for the embedded SWT Browser in Linux systems
 					System.setProperty("sun.awt.xembedserver", "true");
@@ -334,6 +338,11 @@ public final class Main {
 					if (!onMac()&&!onWindows()) UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 					
 					UIManager.put("TabbedPane.focus", new Color(0, 0, 0, 0));					
+					
+					//binary files 
+					BinaryLoader loader = new BinaryLoader("oled.jar");					
+					loader.extractBinaryFiles(getOSx());
+					loader.addBinariesToJavaPath2();
 					
 				     // Choose the appropriate font		
 					int fontSize=11;
@@ -357,7 +366,7 @@ public final class Main {
 			        URL[] urls = new URL[1];
 			        urls[0] = swtJarURL;
 			        loadSwtJar(urls);
-			        			        
+			        
 			        //Extracts alloy and initialize it. We need to fix this ASAP.
 					frame.initializeAlloyAnalyzer();
 					
