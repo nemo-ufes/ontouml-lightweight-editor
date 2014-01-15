@@ -55,6 +55,7 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import RefOntoUML.Association;
 import RefOntoUML.Characterization;
 import RefOntoUML.Class;
+import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.FormalAssociation;
@@ -74,6 +75,7 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
+import RefOntoUML.util.RefOntoUMLAdapterFactory;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2owl_swrl.OCL2OWL_SWRL;
 
@@ -101,8 +103,9 @@ public class Transformer {
 	private Set<subQuantityOf> lstSubQuantityOf;
 	private Set<memberOf> lstMemberOf;
 	private Set<DataType> lstDataType;
-	private HashMap<RefOntoUML.Class,Set<OWLDataProperty>> hashDataProperty;
+	private HashMap<RefOntoUML.Classifier,Set<OWLDataProperty>> hashDataProperty;
 	private HashMap<String,Set<OWLObjectProperty>> hashAssociations;
+	private ArrayList<Property> dataTypesProcesseds = new ArrayList<>();
 
 	//OWL
 	private String nameSpace;
@@ -178,7 +181,8 @@ public class Transformer {
 			processDataType();
 		}catch (Exception e){
 			errors = "";
-			throw new Exception("Error: An unexpected exception happened when processing Datatypes;\n");
+			//throw new Exception("Error: An unexpected exception happened when processing Datatypes;\n");
+			e.printStackTrace();
 		}
 
 		try{
@@ -272,12 +276,12 @@ public class Transformer {
 			throw new Exception("Error: An unexpected exception happened when creating the disjointness of the Associations;\n");
 		}
 
-//		try{
-//			processDisjointDataType();
-//		}catch (Exception e){
-//			errors = "";
-//			throw new Exception("Error: An unexpected exception happened when creating the disjointness of the Datatypes;\n");
-//		}
+		//		try{
+		//			processDisjointDataType();
+		//		}catch (Exception e){
+		//			errors = "";
+		//			throw new Exception("Error: An unexpected exception happened when creating the disjointness of the Datatypes;\n");
+		//		}
 
 		try{
 			processAnnotation();
@@ -324,7 +328,7 @@ public class Transformer {
 	}
 
 	private void processDisjointDataType() {
-		for (Class cls : hashDataProperty.keySet()) {
+		for (Classifier cls : hashDataProperty.keySet()) {
 			if(hashDataProperty.get(cls).size() > 1){
 				manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointDataPropertiesAxiom(hashDataProperty.get(cls))));
 			}
@@ -740,6 +744,9 @@ public class Transformer {
 	 * This method make a unique for to create a string name for an Type
 	 * */
 	private String getName(RefOntoUML.Type ontType){
+		if(ontType == null){
+			return "unnamed_class";
+		}
 		return ontType.getName().replaceAll(" ", "_");
 	}
 
@@ -751,6 +758,9 @@ public class Transformer {
 	 * Create a unique name for DataProperty
 	 * */
 	private String getDataPropertyName(RefOntoUML.Classifier ontCls, RefOntoUML.Property prop){
+		if(ontCls == null){
+			return nameSpace + prop.getName().replaceAll(" ", "_");	
+		}
 		return nameSpace + getAbsoluteName(ontCls)+"."+prop.getName().replaceAll(" ", "_");
 	}
 
@@ -1049,6 +1059,9 @@ public class Transformer {
 
 		//Process Generalizations
 		for(Generalization gen : lstGen){
+			if(gen.getGeneral() instanceof DataType){
+				continue;
+			}
 			OWLClass father = getOwlClass(gen.getGeneral());
 
 			OWLClass son = 	getOwlClass(gen.getSpecific());
@@ -1064,6 +1077,9 @@ public class Transformer {
 	 * */
 	private void processGeneralizationSet() {
 		for(GeneralizationSet gen : lstGenSets){
+			if(gen.getGeneralization().get(0).getGeneral() instanceof DataType){
+				continue;
+			}
 			if(!gen.getGeneralization().isEmpty()){
 				if((gen.isIsDisjoint() && gen.isIsCovering()) || gen.getGeneralization().get(0).getSpecific() instanceof Phase){
 					//{disjoint, complete} or is a Phase Partition
@@ -1183,6 +1199,27 @@ public class Transformer {
 				}
 			}
 		}
+
+		_RefOntoOwnerClass = null;
+		for(RefOntoUML.DataType dtcls: lstDataType){
+			if(!dtcls.getAttribute().isEmpty()){
+				for(Property prop:dtcls.getAttribute()){
+					if(dataTypesProcesseds.contains(prop)){
+						continue;
+					}
+					//Set the owner class of the datatype
+					_OWLownerClass = null;
+					_RefOntoOwnerClass = dtcls;
+					_upperCard.add(1);
+					_lowerCard.add(1);
+					createAttribute(prop);
+					//Clean up variables
+					_attributeName = "";
+					_upperCard = new ArrayList<Integer>();
+					_lowerCard = new ArrayList<Integer>();
+				}
+			}
+		}
 	}
 
 	/**
@@ -1190,7 +1227,7 @@ public class Transformer {
 	 * */
 	private String _attributeName = "";
 	private OWLClass _OWLownerClass = null;
-	private RefOntoUML.Class _RefOntoOwnerClass = null;
+	private RefOntoUML.Classifier _RefOntoOwnerClass = null;
 	private Property _prop = null;
 	private ArrayList<Integer> _upperCard = new ArrayList<Integer>();
 	private ArrayList<Integer> _lowerCard = new ArrayList<Integer>();
@@ -1214,7 +1251,9 @@ public class Transformer {
 				_lowerCard.remove(_lowerCard.size()-1);
 				_upperCard.remove(_upperCard.size()-1);
 			}
+			dataTypesProcesseds.add(prop);
 		}else{
+			dataTypesProcesseds.add(prop);
 			_prop = prop;
 			String _aux = "";
 
@@ -1237,7 +1276,7 @@ public class Transformer {
 				_upperCard.add(prop.getUpper());
 
 				processDataTypeProperty(prop);
-				
+
 				//Removing the current cardinality
 				if(_lowerCard.size() > 1){
 					_lowerCard.remove(_lowerCard.size()-1);
@@ -1259,16 +1298,23 @@ public class Transformer {
 				}
 			}
 		}
-
-		if(!hashDataProperty.containsKey(_RefOntoOwnerClass)){
-			hashDataProperty.put(_RefOntoOwnerClass, new HashSet<OWLDataProperty>());
+		
+		if(_RefOntoOwnerClass != null){
+			if(!hashDataProperty.containsKey(_RefOntoOwnerClass)){
+				hashDataProperty.put(_RefOntoOwnerClass, new HashSet<OWLDataProperty>());
+			}
+			hashDataProperty.get(_RefOntoOwnerClass).add(atributo);
 		}
-		hashDataProperty.get(_RefOntoOwnerClass).add(atributo);
 
 		//Set the Range of the DataProperty
 		OWLDataPropertyRangeAxiom axRange = factory.getOWLDataPropertyRangeAxiom(atributo, tipoAtributo);
 		manager.applyChange(new AddAxiom(ontology, axRange));
 
+		if(_OWLownerClass == null){
+			//get here if are processing alone datatypes
+			return;
+		}
+		
 		//set the owner of this datatype (Domain)
 		OWLDataPropertyDomainAxiom axDomain = factory.getOWLDataPropertyDomainAxiom(atributo, _OWLownerClass);
 		manager.applyChange(new AddAxiom(ontology, axDomain));
@@ -1286,14 +1332,14 @@ public class Transformer {
 				upperCard *= _upperCard.get(i);
 			}
 		}
-		
+
 		if(upperCard ==-1 || prop.getUpper() == -1){
 			upperCard = -1;
 		}else{
 			upperCard *= prop.getUpper();
 		}
 		lowerCard *= prop.getLower();
-		
+
 		OWLEquivalentClassesAxiom ax = null;
 		OWLSubClassOfAxiom sax = null; 
 
@@ -1353,10 +1399,10 @@ public class Transformer {
 				c++;
 			}
 		}
-//		if(c==1){
-			errors += "Unknown datatype "+_attributeName.substring(_attributeName.indexOf("#")+1)+" of (class "+getName(_RefOntoOwnerClass)+") mapped to OWL Literal;\n";
-			createAttribute(null);
-//		}
+		//		if(c==1){
+		errors += "Unknown datatype "+_attributeName.substring(_attributeName.indexOf("#")+1)+" of (class "+getName(_RefOntoOwnerClass)+") mapped to OWL Literal;\n";
+		createAttribute(null);
+		//		}
 	}
 
 	/**
