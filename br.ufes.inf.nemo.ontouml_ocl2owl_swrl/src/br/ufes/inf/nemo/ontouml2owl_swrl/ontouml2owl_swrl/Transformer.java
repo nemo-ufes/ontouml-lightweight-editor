@@ -1014,7 +1014,8 @@ public class Transformer {
 				}
 			}
 
-			if(match > 1 || nameNull){
+//			if(match > 1 || nameNull){
+			if(match > 1){
 				//set same properties subPropertyOf the topProperty
 				sopa = factory.getOWLSubObjectPropertyOfAxiom(prop,topProperty);
 				manager.applyChange(new AddAxiom(ontology, sopa));
