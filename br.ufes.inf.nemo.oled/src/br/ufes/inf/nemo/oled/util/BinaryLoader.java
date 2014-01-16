@@ -174,7 +174,7 @@ public class BinaryLoader {
 				doExtraction("libswt-awt-cocoa-4332.jnilib");
 				doExtraction("libswt-cocoa-4332.jnilib");				
 				doExtraction("libswt-pi-cocoa-4332.jnilib");
-				doExtraction("libswt-xlurunner-cocoa-4332.jnilib");				
+				doExtraction("libswt-xulrunner-cocoa-4332.jnilib");				
 			}
 			if(osx=="linux"){
 				doExtraction("libswt-atk-gtk-4332.so");
