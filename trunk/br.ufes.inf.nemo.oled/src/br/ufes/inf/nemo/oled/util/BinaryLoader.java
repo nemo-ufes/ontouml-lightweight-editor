@@ -10,10 +10,13 @@
 package br.ufes.inf.nemo.oled.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,15 +40,22 @@ public class BinaryLoader {
 
 	public File BinDir = null;
 	public File jarFile = null;
-
+	public String osx = "undef";
+	public String arch = "undef";
+	public String binTemp="oled_bin";
+	
 	/**
 	 * Constructs a new loader.
 	 * 
 	 * @param jarName
 	 *            the name of the jar file which contains this class.
+	 * @throws URISyntaxException 
 	 */
-	public BinaryLoader(String jarName) {
-		String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();			
+	public BinaryLoader(String jarName, String osx, String arch, String binTemp) throws URISyntaxException {
+		this.osx = osx;
+		this.binTemp = binTemp;
+		this.arch = arch;		
+		String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();		
 		String fileName = path+jarName;
 		
 		try{
@@ -61,12 +71,14 @@ public class BinaryLoader {
 	}
 
 	@SuppressWarnings("unused")
-	public void addBinariesToJavaPath() throws LoadingException {		
+	public void addBinariesToJavaPathByExec() throws LoadingException {		
 		try {			
 			if (isInstalled() == false) {
 				
 				if (!jarFile.exists()) return ;
-										        
+										     
+				//String param1 = "";
+				//if (osx=="mac") param1="-XstartOnFirstThread";
 				String[] command = {"java", "-Djava.library.path=" + getOLEDBin(), "-jar", getJarFile().getName()};
 				String[] environment = null;
 				String workPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -100,7 +112,7 @@ public class BinaryLoader {
 		return jarFile;
 	}
 
-	public void addBinariesToJavaPath2()
+	public void addBinariesToJavaPathBySet()
 	{
 		// Add the new JNI location to the java.library.path
         try {
@@ -124,7 +136,7 @@ public class BinaryLoader {
 				System.out.println("Error. JVM need to specify a temporary directory using java.io.tmpdir property.");
 			
 			//String username = System.getProperty("user.name");
-			File tempfile = new File(temp + File.separatorChar + "oled_bin");
+			File tempfile = new File(temp + File.separatorChar + binTemp);
 			
 			tempfile.mkdirs();
 			String ans = ConfigurationHelper.canon(tempfile.getPath());
@@ -145,13 +157,56 @@ public class BinaryLoader {
 		return BinDir;
 	}
 
+	public void extractSWTBinaryFiles()
+	{
+		try {
+			if(osx=="win"){		
+				doExtraction("swt-awt-win32-4332.dll");
+				doExtraction("swt-gdip-win32-4332.dll");								
+				doExtraction("swt-wgl-win32-4332.dll");
+				doExtraction("swt-win32-4332.dll");
+				doExtraction("swt-xulrunner-win32-4332.dll");
+			}
+			if(osx=="win" && arch=="x86"){
+				doExtraction("swt-webkit-win32-4332.dll");
+			}
+			if(osx=="mac"){
+				doExtraction("libswt-awt-cocoa-4332.jnilib");
+				doExtraction("libswt-cocoa-4332.jnilib");				
+				doExtraction("libswt-pi-cocoa-4332.jnilib");
+				doExtraction("libswt-xlurunner-cocoa-4332.jnilib");				
+			}
+			if(osx=="linux"){
+				doExtraction("libswt-atk-gtk-4332.so");
+				doExtraction("libswt-awt-gtk-4332.so");				
+				doExtraction("libswt-cairo-gtk-4332.so");
+				doExtraction("libswt-glx-gtk-4332.so");				
+				doExtraction("libswt-gnome-gtk-4332.so");
+				doExtraction("libswt-gtk-4332.so");
+				doExtraction("libswt-mozilla-gtk-4332.so");
+				doExtraction("libswt-pi-gtk-4332.so");
+				doExtraction("libswt-pi3-gtk-4332.so");
+				doExtraction("libswt-webkit-gtk-4332.so");
+				doExtraction("libswt-xpcominit-gtk-4332.so");
+				doExtraction("libswt-xulrunner-fix.so");
+				doExtraction("libswt-xulrunner-gtk-4332.so");
+			}
+			
+		} catch (LoadingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		addBinariesToJavaPathBySet();
+	}
+		
 	/**
 	 * Extracts the SWT native files in a temporary directory.
 	 */
 	@SuppressWarnings("rawtypes")
-	public File extractBinaryFiles(String osx) throws LoadingException {
-		if (!jarFile.exists()) return null;
-		
+	public File extractBinaryFiles() throws LoadingException {		
+		if (jarFile==null) return null;
+		if (!jarFile.exists()) return null;		
 		File outputDir = getOLEDBin();
 		try {
 			File currentArchive = getJarFile();			
@@ -181,18 +236,20 @@ public class BinaryLoader {
 			throw new LoadingException(e);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}		
+		addBinariesToJavaPathBySet();		
 		return outputDir;
 	}
 
+	/** More general: for each entry in the Jar file */
 	public void doExtraction(File outputDir, ZipFile zf, ZipEntry entry, String pathname) throws Exception
 	{
 		// eliminates parent packages of pathname
 		Path p = Paths.get(pathname);
-		String outfileName = p.getFileName().toString(); 
+		String outfileName = p.getFileName().toString();		
 		InputStream in = zf.getInputStream(entry);
-		File outFile = new File(outputDir, outfileName);
-		outFile.deleteOnExit();
+		File outFile = new File(outputDir, outfileName);		
+		if (outFile.exists()) return;
 		FileOutputStream out = new FileOutputStream(outFile);
 		byte[] buf = new byte[1024];
 		while (true) {
@@ -205,6 +262,45 @@ public class BinaryLoader {
 		out.close();
 		//System.out.println("Extracted: "+outFile.getAbsolutePath());
 	}
+	
+	public String getBinWorkingDir()
+	{
+		String dir = System.getProperty("user.dir");
+		if (dir.contains("br.ufes.inf.nemo.oled")) 
+			dir = dir.replace("br.ufes.inf.nemo.oled","org.eclipse.swt").concat(File.separator).concat("src"+File.separator);
+		else
+			dir = "";
+		return dir;
+	}
+	
+	/** More specific: Particularly to SWT libraries in the project org.eclipse.swt. */
+	public String doExtraction(String binName) throws LoadingException, IOException
+	{
+		String destFolderPath = getOLEDBin().getAbsolutePath()+File.separator+binName;		
+		String binPath = URLDecoder.decode(destFolderPath, "UTF-8");		
+		File binFile = new File(binPath);
+		if (binFile.exists()) return binFile.getAbsolutePath();
+				
+		// Copy 
+		String packPath = "swt"+File.separator+osx+File.separator+arch+File.separator;
+		InputStream is = ExtractorUtil.class.getClassLoader().getResourceAsStream(packPath+binName);		
+		if(is == null) is = new FileInputStream(getBinWorkingDir()+packPath+binName);
+		OutputStream out = new FileOutputStream(binFile);
+				
+		// copy data flow -> MB x MB
+		byte[] src = new byte[1024];
+		int read = 0;
+		while ((read = is.read(src)) != -1){
+			out.write(src, 0, read);
+		}
+		is.close();
+		out.flush();
+		out.close();
+		
+		System.out.println("Extracted: "+binFile.getAbsolutePath());
+		return binFile.getAbsolutePath();
+
+	}
 	/**
 	 * Checks if SWT isn't already loaded.
 	 * 
@@ -212,7 +308,12 @@ public class BinaryLoader {
 	 */
 	public boolean isInstalled() {
 		try {
-			Display.getDefault().dispose();
+			Display.getDefault().syncExec(new Runnable() {
+			    public void run() {
+			    	Display display = Display.getDefault();	 
+			    	display.dispose();
+			    }
+			});
 		} catch (UnsatisfiedLinkError e) {
 			return false;
 		}

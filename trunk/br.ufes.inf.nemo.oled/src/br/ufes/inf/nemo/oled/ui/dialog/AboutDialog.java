@@ -20,6 +20,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
 import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.Main;
 
 
 public class AboutDialog extends JDialog {
@@ -32,6 +33,7 @@ public class AboutDialog extends JDialog {
 	private JLabel labelAuthor1;
 	private JPanel NorthPanel;
 	private JLabel label;
+	private JLabel lblVersion;
 	
 	/**
 	 * Launch the Dialog.
@@ -88,16 +90,24 @@ public class AboutDialog extends JDialog {
 		labelDescription.setForeground(Color.BLACK);
 				
 		JPanel panel = new JPanel();
+		
+		lblVersion = new JLabel("OLED v"+Main.OLED_VERSION);
+		lblVersion.setHorizontalAlignment(SwingConstants.CENTER);
 				
 		GroupLayout gl_CenterPanel = new GroupLayout(CenterPanel);
 		gl_CenterPanel.setHorizontalGroup(
 			gl_CenterPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_CenterPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_CenterPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panel, 0, 0, Short.MAX_VALUE)
-						.addComponent(labelDescription, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
-					.addGap(11))
+					.addGroup(gl_CenterPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_CenterPanel.createSequentialGroup()
+							.addGroup(gl_CenterPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(panel, 0, 0, Short.MAX_VALUE)
+								.addComponent(labelDescription, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
+							.addGap(11))
+						.addGroup(Alignment.TRAILING, gl_CenterPanel.createSequentialGroup()
+							.addComponent(lblVersion, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+							.addContainerGap())))
 		);
 		gl_CenterPanel.setVerticalGroup(
 			gl_CenterPanel.createParallelGroup(Alignment.LEADING)
@@ -105,7 +115,9 @@ public class AboutDialog extends JDialog {
 					.addComponent(labelDescription)
 					.addGap(11)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(61))
+					.addGap(1)
+					.addComponent(lblVersion)
+					.addContainerGap())
 		);
 		
 		JLabel lblViniciusSobralVictor = new JLabel("Vinicius Sobral - EA Compatibility");

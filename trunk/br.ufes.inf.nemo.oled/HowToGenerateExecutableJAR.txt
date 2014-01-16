@@ -1,0 +1,18 @@
+Hot to generate an executable JAR for OLED. Follow the steps:
+
+1. Change the attribute OLED_VERSION in class Main.java to point to the version you're building.
+   ex: String OLED_VERSION = "x.x.xx";
+
+2. Double click on the Main.java, go to Export -> Runnable Jar. 
+   Choose to package the libraries instead of extract them. Also,you do not need to generate a ANT build script.
+   But importantly, rename the jar name to "oled"+OLEd_VERSION_".jar, where OLED_VERSION is your build version.
+   
+3. After generating the jar, open it with WinRAR/Unzip and delete the swt.jar file on the root of the jar.
+   It is among the other libraries. This is because this swt.jar in specific of Win32 platform and we used it
+   only in the development process. We don't need it anymore.
+   
+4. Double click on the jar file created or type in a console java -jar oled+OLED_VERSION+.jar to execute OLED application.
+
+=) 
+
+John - Updated: 16 Jan 2014
