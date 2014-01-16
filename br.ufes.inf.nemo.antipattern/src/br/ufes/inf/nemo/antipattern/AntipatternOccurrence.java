@@ -31,6 +31,10 @@ public abstract class AntipatternOccurrence {
 		return fix;
 	}
 	
+	public OutcomeFixer getFixer() {
+		return fixer;
+	}
+	
 	/**
 	 * Sets the elements to be transformed to alloy on the provided parser
 	 * 
@@ -48,7 +52,7 @@ public abstract class AntipatternOccurrence {
 		return antipattern.getParser();
 	}
 	
-	protected String addQuotes (String name){
+	public String addQuotes (String name){
 		return "_'"+name+"'";
 	}
 }

@@ -1,10 +1,10 @@
 package br.ufes.inf.nemo.antipattern.wholeover;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import RefOntoUML.AggregationKind;
-import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Package;
@@ -13,6 +13,7 @@ import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
+import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
@@ -87,119 +88,99 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 	}
 	
 	@Override
-	public ArrayList<WholeOverOccurrence> identify() {
+	public ArrayList<WholeOverOccurrence> identify(){
+		HashMap<Classifier,ArrayList<Property>> hash = new HashMap<Classifier,ArrayList<Property>>();
 		
-		ArrayList<Class> allClasses = new ArrayList<Class>();
-		allClasses.addAll(parser.getAllInstances(Class.class));
-		int i = 1, total=allClasses.size();
-		for (Class c : allClasses) {
-			i++;
+		for (Meronymic m : parser.getAllInstances(Meronymic.class)) {
 			
-			System.out.println("("+i+" of "+total+") " +parser.getStringRepresentation(c)+": Analyzing...");
-			ArrayList<Meronymic> meronymics = new ArrayList<Meronymic>();
-			ArrayList<Property> partEnds = new ArrayList<Property>();
+			try{
+				Property wholeEnd = getWholeEnd(m),
+						 partEnd = getPartEnd(m);
+				Classifier whole = (Classifier) wholeEnd.getType();
 				
-			parser.getAllMeronymics(c, meronymics);
-			for (Meronymic m : meronymics)
-				partEnds.add(getPartEnd(m));
-			
-			boolean existsEndWithUnlimitedUpperCardinality = false;
-			int upperCardinalituSum = 0;
-			
-			for (Property end : partEnds) {
-			
-				if (end.getUpper()==-1)
-					existsEndWithUnlimitedUpperCardinality=true;
-				else
-					upperCardinalituSum+=end.getUpper();
+				if (hash.keySet().contains(whole))
+					hash.get(whole).add(partEnd);
+				else{
+					ArrayList<Property> partEnds = new ArrayList<Property>();
+					partEnds.add(partEnd);
+					hash.put((Classifier) wholeEnd.getType(), partEnds);
+				}
 			}
+			catch(Exception e){ }
+		}
 				
-//			System.out.println("\nMemberEnds size: "+meronymics.size());
-//			System.out.println("\tCarinality Sum: "+upperCardinalituSum);
-//			System.out.println("\tExists Unlimited: "+existsEndWithUnlimitedUpperCardinality);
+		//only checks whole that have at least one type of part directly connected to it
+		for (Classifier whole : hash.keySet()) {
+			
+			ArrayList<Property> typePartEnds = hash.get(whole);
+			ArrayList<Property> superPartEnds = new ArrayList<Property>();
+			ArrayList<Property> partEnds = new ArrayList<Property>();
+			
+			//gets parents partEnds
+			for (Classifier parent : whole.allParents()) {
+				if(hash.keySet().contains(parent))
+					superPartEnds.addAll(hash.get(parent));
+			}
+			
+			//merges the parts exclusives to the type with its supertypes parts
+			partEnds.addAll(typePartEnds);
+			partEnds.addAll(superPartEnds);
+			
+			//to characterize the occurrence the whole must have at least two parts directly or indirectly connected to it
+			if(partEnds.size()>=2) { 
 				
-			if (meronymics.size()>1 && (existsEndWithUnlimitedUpperCardinality || upperCardinalituSum>2)){
+				//calculates the upper cardinality sum and verifies if there is any unlimited
+				boolean existsEndWithUnlimitedUpperCardinality = false;
+				int upperCardinalituSum = 0;
 				
-				boolean foundOccurrence = false;
+				for (Property end : partEnds) {
+				
+					if (end.getUpper()==-1)
+						existsEndWithUnlimitedUpperCardinality=true;
+					else
+						upperCardinalituSum+=end.getUpper();
+				}
+				
+				if (existsEndWithUnlimitedUpperCardinality || upperCardinalituSum>2){
 					
-				for (Property partEnd1 : partEnds) {
-					for (Property partEnd2 : partEnds) {
-						if(!partEnd1.equals(partEnd2)){
-							System.out.println("M1End: "+parser.getStringRepresentation(partEnd1.getType()));
-							System.out.println("M2End: "+parser.getStringRepresentation(partEnd2.getType()));
-							if(OverlappingTypesIdentificator.isVariation1((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 1!");
-								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 1.\n"+e.getMessage());}
-								
-							}
-							else if(OverlappingTypesIdentificator.isVariation2((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 2!");
-								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 2.\n"+e.getMessage());}
-								
-							}
-							else if(OverlappingTypesIdentificator.isVariation3((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 3!");
-								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 3.\n"+e.getMessage());}
-								
-							}
-							else if(OverlappingTypesIdentificator.isVariation4((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 4!");
-								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 4.\n"+e.getMessage());}
-								
-							}
-							else if(OverlappingTypesIdentificator.isVariation5((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 5!");
-								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 5.\n"+e.getMessage());}
-								
-							}
-							else if(OverlappingTypesIdentificator.isVariation6((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new WholeOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 6!");
-								} catch (Exception e) { System.out.println("WholeOver: Can't create variation 6.\n"+e.getMessage());}
-								
-							}
-						}
+					//goes through every combination of part properties
+					Combination comb = new Combination(partEnds, 2);
+					boolean overlappingPartsFound = false;
+					while(comb.hasNext() && !overlappingPartsFound){
+						ArrayList<Property> combination = comb.next();
+						Classifier part1 = (Classifier) combination.get(0).getType();
+						Classifier part2 = (Classifier) combination.get(1).getType();
 						
-						if (foundOccurrence) {
-//							System.out.println("("+i+" of "+total+")" +parser.getStringRepresentation(c)+": 1 - BREAK IT");
-							break;
+						if(OverlappingTypesIdentificator.isVariation1(part1, part2)
+								|| OverlappingTypesIdentificator.isVariation2(part1, part2)
+								|| OverlappingTypesIdentificator.isVariation3(part1, part2)
+								|| OverlappingTypesIdentificator.isVariation4(part1, part2)
+								|| OverlappingTypesIdentificator.isVariation5(part1, part2)
+								|| OverlappingTypesIdentificator.isVariation6(part1, part2)
+								) {
+							try {
+								super.occurrence.add(new WholeOverOccurrence(whole, partEnds, this));
+								overlappingPartsFound = true;
+							} catch (Exception e) { System.out.println("WholeOver: Can't create variation 1.\n"+e.getMessage());}
+							
 						}
-					}
-						
-					if (foundOccurrence) {
-//						System.out.println("("+i+" of "+total+")" +parser.getStringRepresentation(c)+": 2 - BREAK IT");
-						break;
 					}
 				}
 			}
-	
-	}
+		}
 		
 		return super.getOccurrences();
 		
-	}	
+	}
 	
 	private Property getPartEnd(Meronymic m){
-		if(m.getMemberEnd().get(1).getAggregation()==AggregationKind.NONE)
-			return m.getMemberEnd().get(1);
-		else
+		if(m.getMemberEnd().get(1).getAggregation()!=AggregationKind.NONE && m.getMemberEnd().get(0).getAggregation()==AggregationKind.NONE)
 			return m.getMemberEnd().get(0);
+		else
+			return m.getMemberEnd().get(1);
 	}
+	
+	private Property getWholeEnd(Meronymic m){
+		return getPartEnd(m).getOpposite();
+	}	
 }
