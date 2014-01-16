@@ -2,79 +2,53 @@ package br.ufes.inf.nemo.antipattern.wholeover;
 
 import java.util.ArrayList;
 
-import org.eclipse.emf.ecore.EObject;
-
 import RefOntoUML.Classifier;
+import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesVariation;
 
-public class WholeOverOccurrence extends AntipatternOccurrence{
+public class WholeOverOccurrence extends OverlappingOccurrence {
 
-	Classifier whole;
-	public Classifier getWhole() {
-		return whole;
-	}
-
-	public ArrayList<Property> getPartEnds() {
-		return partEnds;
-	}
-
-	ArrayList<Property> partEnds;
-	
-	/*TODO: Adapt methods from RelOver to get supertypes...*/
-	
-	public WholeOverOccurrence(Classifier whole, ArrayList<Property> partEnds, WholeOverAntipattern ap) {
-		super(ap);
+	public WholeOverOccurrence(Classifier whole, ArrayList<Property> partEnds, WholeOverAntipattern ap) throws Exception {
+		super(ap, whole, partEnds);
 		
-		this.whole = whole;
-		this.partEnds = partEnds;
-	}
-
-	@Override
-	public OntoUMLParser setSelected() {
-		ArrayList<EObject> selection = new ArrayList<EObject>();
-		
-		for (Property p : this.partEnds){
-			selection.add(p.getType());
-			selection.add(p.getAssociation());
+		for (Property p : getAllPartEnds()) {
+			if(!(p.getAssociation() instanceof Meronymic))
+				throw new Exception(WholeOverAntipattern.getAntipatternInfo().getAcronym()+": All provided properties must belong to a meronymc.");
 		}
 		
-		selection.add(whole);
+		if(!verifyMinimumUpperCardinalitySum(3))
+			throw new Exception(WholeOverAntipattern.getAntipatternInfo().getAcronym()+": The sum of the upper cardinality is lower than 3.");
 		
-		parser.selectThisElements(selection,true);
-		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
-		return parser;
+	}
+	
+	public Classifier getWhole() {
+		return getMainType();
+	}
+
+	public ArrayList<Property> getAllPartEnds() {
+		return getAllProperties();
 	}
 	
 	@Override
 	public String toString() {
 		String result;
 		
-		result = "Whole: "+super.parser.getStringRepresentation(this.whole)+
-				"\nParts: ";
+		result = "Whole: "+getParser().getStringRepresentation(getWhole())+"\n"+
+				"All Parts: ";
 				
-		for (Property p : this.partEnds)
-			result+="\n\t"+super.parser.getStringRepresentation(p.getType());
-		/*
-		result+="\nSupertypes: ";
-		
-		int i = 1;
-		for (Classifier supertype : this.commonSupertypes.keySet()) {
-			result += "\n\tSupertype #"+i+": "+super.parser.getStringRepresentation(supertype);
-			for (Property p : this.commonSupertypes.get(supertype)) {
-				result += "\n\t\t"+super.parser.getStringRepresentation(p);
-			}
-			
-			i++;
-		}*/
+		for (Property p : getAllPartEnds())
+			result+="\n\t"+getParser().getStringRepresentation(p);
+				
+		for (OverlappingTypesVariation variation : getVariations()) {
+			result+="\n\n"+variation.toString();
+		}
 		return result;
 	}
 
 	@Override
 	public String getShortName() {
-		return parser.getStringRepresentation(whole);
-	}
-	
-
+		return "Whole: "+ parser.getStringRepresentation(getWhole());
+	}	
 }

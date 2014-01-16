@@ -35,23 +35,35 @@ public class WholeOverFirstPage extends WholeOverPage {
 
 		setControl(container);
 		
-		StyledText styledText = new StyledText(container, SWT.WRAP);
+		StyledText styledText = new StyledText(container, SWT.WRAP | SWT.H_SCROLL);
 		styledText.setMarginColor(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		String text="To start the analysis, lets focus on the part types.\n\n" +
+					"Is it possible for an object to be a part of wholes through relations";
 		
-		styledText.setText("Is it possible for an object to be an instance of <Part-1>, <Part-2>, … and <Part-n> at the same time?");
+		
+		for (int i = 0; i < wholeOver.getAllPartEnds().size(); i++) {
+			text+=" "+wholeOver.getParser().getStringRepresentation(wholeOver.getAllPartEnds().get(i).getAssociation())+
+				  " ( as instance of "+wholeOver.getParser().getStringRepresentation(wholeOver.getAllPartEnds().get(i).getType())+")";
+			if(i==wholeOver.getAllPartEnds().size()-2)
+				text+=" and";
+			else if (i<wholeOver.getAllPartEnds().size()-2)
+				text+=",";
+				
+		}
+		text+=" at the same time?";
 
+		styledText.setText(text);
 		styledText.setEditable(false);
-		styledText.setBounds(10, 10, 554, 16);
+		styledText.setBounds(10, 10, 554, 123);
 		
 		btnYes = new Button(container, SWT.RADIO);
 		btnYes.setText("Yes");
-		btnYes.setBounds(10, 32, 449, 16);
-		btnYes.setSelection(true);
+		btnYes.setBounds(10, 139, 449, 16);
 		
 		btnNo = new Button(container, SWT.RADIO);
 		btnNo.setText("No");
-		btnNo.setBounds(10, 54, 449, 16);
+		btnNo.setBounds(10, 161, 449, 16);
 	}
 	
 	@Override

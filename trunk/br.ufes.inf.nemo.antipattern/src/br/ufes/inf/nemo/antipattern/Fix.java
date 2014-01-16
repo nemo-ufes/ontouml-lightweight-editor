@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.antipattern;
 
 import java.util.ArrayList;
 
+import RefOntoUML.Class;
+
 public class Fix {
 
 	private ArrayList<Object> deletedElements = new ArrayList<Object>();
@@ -141,5 +143,14 @@ public class Fix {
 	public void setAddedRules(ArrayList<String> addedRules) 
 	{
 		this.addedRules = addedRules;
+	}
+	
+	public <T> ArrayList<T> getAddedByType(java.lang.Class<T> type){
+		ArrayList<T> added = new ArrayList<T>();
+		for (Object elem : this.addedElements) {
+			if(type.isInstance(elem))
+				added.add(type.cast(elem));
+		}
+		return added;
 	}
 }

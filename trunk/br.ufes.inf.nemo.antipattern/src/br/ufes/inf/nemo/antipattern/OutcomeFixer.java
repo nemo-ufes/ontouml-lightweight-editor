@@ -1,19 +1,26 @@
 package br.ufes.inf.nemo.antipattern;
 
+import java.util.ArrayList;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Category;
+import RefOntoUML.Characterization;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.DataType;
+import RefOntoUML.Derivation;
+import RefOntoUML.FormalAssociation;
 import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Kind;
 import RefOntoUML.LiteralInteger;
 import RefOntoUML.LiteralUnlimitedNatural;
 import RefOntoUML.MaterialAssociation;
+import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Mixin;
 import RefOntoUML.Mode;
@@ -102,7 +109,14 @@ public class OutcomeFixer {
 			((Classifier)rel).setVisibility(VisibilityKind.PUBLIC);
 		}		
 		return rel;			  
-	}	
+	}
+	
+	private GeneralizationSet createBasicGeneralizationSet(boolean isCovering, boolean isDisjoint){
+		GeneralizationSet gs = factory.createGeneralizationSet();
+		gs.setIsCovering(isCovering);
+		gs.setIsDisjoint(isDisjoint);
+		return gs;
+	}
 
 	/** Creates an association with default properties */
 	public RefOntoUML.Relationship createAssociationWithProperties(RelationStereotype stereo)
@@ -445,6 +459,23 @@ public class OutcomeFixer {
 		return fixes;
 	}
 	
+	/** Create a supertype and connect it through a generalization to its type. */
+	public Fix createSuperTypeAs (EObject type, ClassStereotype supertypeStereo)
+	{
+		Fix fixes = new Fix();
+		// create subtype
+		RefOntoUML.PackageableElement supertype = createClass(supertypeStereo);
+		supertype.setName(((Classifier)type).getName()+"Subtype");
+		copyContainer(type,supertype);
+		fixes.includeAdded(supertype);
+		//create generalization
+		Generalization gen = (Generalization)createRelationship(RelationStereotype.GENERALIZATION);
+		gen.setGeneral((RefOntoUML.Classifier)supertype);
+		gen.setSpecific((RefOntoUML.Classifier)type);
+		fixes.includeAdded(gen);	
+		return fixes;
+	}
+	
 	/** Create a subtype and connect it through a generalization to its type.
 	 *  It also change the references in relation to point to the subtype instead of the type.
 	 */	
@@ -484,5 +515,63 @@ public class OutcomeFixer {
 		fix.includeRule(oclRule);
 		return fix;
 	}
+	
+	public Fix createGeneralizationSet(ArrayList<Generalization> generalizations){
+		Fix fix = new Fix();
+		
+		GeneralizationSet gs = createBasicGeneralizationSet(true, true);
+		gs.getGeneralization().addAll(generalizations);
+		
+		fix.includeAdded(gs);
+		fix.includeModified(generalizations);
+		
+		return fix;
+	}
+	
+	public Fix createGeneralizationSet(Classifier supertype, ArrayList<Classifier> subtypes){
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+		
+		for (Classifier c : subtypes) {
+			for (Generalization g : c.getGeneralization()) {
+				if (g.getGeneral().equals(supertype) || g.getGeneral().allParents().contains(supertype))
+					generalizations.add(g);
+			}
+		}
+		
+		return createGeneralizationSet(generalizations);
+	}
+	
+	public Fix createGeneralization(Classifier specific, Classifier general){
+		Fix fix = new Fix();
+		
+		Generalization g = (Generalization) createRelationship(RelationStereotype.GENERALIZATION);
+		g.setGeneral(general);
+		g.setSpecific(specific);
+		
+		fix.includeAdded(g);
+		fix.includeModified(general);
+		fix.includeModified(specific);
+		
+		return fix;
+	}
+
+	public RelationStereotype getRelationshipStereotype(EObject object) {
+
+		if(object instanceof Mediation) return RelationStereotype.MEDIATION;
+		if(object instanceof Characterization) return RelationStereotype.CHARACTERIZATION;
+		if(object instanceof memberOf) return RelationStereotype.MEMBEROF;
+		if(object instanceof componentOf) return RelationStereotype.COMPONENTOF;
+		if(object instanceof subCollectionOf) return RelationStereotype.SUBCOLLECTIONOF;
+		if(object instanceof subQuantityOf) return RelationStereotype.SUBQUANTITYOF;
+		if(object instanceof FormalAssociation) return RelationStereotype.FORMAL;
+		if(object instanceof MaterialAssociation) return RelationStereotype.MATERIAL;
+		if(object instanceof Derivation) return RelationStereotype.DERIVATION;
+		if(object instanceof Characterization) return RelationStereotype.CHARACTERIZATION;
+		if(object instanceof Generalization) return RelationStereotype.GENERALIZATION;
+		if(object instanceof Association) return RelationStereotype.ASSOCIATION;
+		
+		return null;
+	}
+	
 	
 }

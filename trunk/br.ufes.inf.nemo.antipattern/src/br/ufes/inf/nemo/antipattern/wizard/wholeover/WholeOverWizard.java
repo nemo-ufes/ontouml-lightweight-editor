@@ -56,7 +56,7 @@ public class WholeOverWizard extends AntipatternWizard {
 //		addPage(secondPage);
 //		addPage(thirdPage);
 //		addPage(fourthPage);
-		addPage(options);
+//		addPage(options);
 		addPage(finishing);
 	}
 		@Override
