@@ -223,9 +223,18 @@ public final class Main {
 	{
 		//add and load the appropriate SWT jar to the classpath according to the OS
         URL swtJarURL = addSwtJarToClassPath();
-        URL[] urls = new URL[1];
+        final URL[] urls = new URL[1];
         urls[0] = swtJarURL;
-        loadSwtJar(urls);
+        if(onMac()){
+	        com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
+				@Override
+				public void run() {
+					loadSwtJar(urls);
+				}
+			});        
+        }else{
+        	loadSwtJar(urls);
+        }
 	}
 	
 	/** Makes System.out content to be printed in the output pane of the app. */
@@ -234,33 +243,29 @@ public final class Main {
 		frame.createSysOutInterceptor();
 	}
 	
+	public static void runOLED() throws Exception
+	{
+		setSystemProperties();				
+		chooseFont();					
+		frame = new AppFrame(); 
+		loadAppropriateSwtJar();  
+		loadBinaryFiles("oled_bin");					
+		frame.initializeAlloyAnalyzer();					
+		frame.setLocationByPlatform(true);
+		frame.setVisible(true);
+		frame.toFront();
+	}
+	
 	/**  
 	 * The start method for this application.
 	 * @param args the command line parameters
 	 */
 	public static void main(final String[] args) 
-	{        
+	{				
 		SwingUtilities.invokeLater(new Runnable() {
-			/**
-			 * {@inheritDoc}
-			 */
 			public void run() {
-				try {															
-					setSystemProperties();				
-					chooseFont();															
-					
-					frame = new AppFrame(); 
-					loadAppropriateSwtJar();  
-					loadBinaryFiles("oled_bin"); 
-					
-					//FIXME: extract alloy and initialize it. We need to fix this ASAP.
-					frame.initializeAlloyAnalyzer(); 					
-					
-					frame.setLocationByPlatform(true);
-					frame.setVisible(true);
-					frame.toFront();
-					//redirectSystemOut(frame);					
-					
+				try {
+					runOLED();					
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}				

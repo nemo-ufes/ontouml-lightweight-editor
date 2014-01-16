@@ -50,6 +50,7 @@ import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 
@@ -814,8 +815,9 @@ public class AntiPatternSearchDialog extends JDialog {
 		btnShowResult.setEnabled(false);		
 		btnShowResult.addActionListener(new ActionListener() {			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {				
-				showResult();
+			public void actionPerformed(ActionEvent arg0) 
+			{	
+				showResult();								
 			}
 		});
 		
@@ -1613,8 +1615,18 @@ public class AntiPatternSearchDialog extends JDialog {
 	 * Show Result
 	 */
 	public void showResult()
-	{	
-    	AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
-    	AntiPatternResultDialog.openDialog(apList,frame);
+	{
+		if(Main.onMac()){
+			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
+				@Override
+				public void run() {
+			    	AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+			    	AntiPatternResultDialog.openDialog(apList,frame);
+				}
+			});
+		}else{
+	    	AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+	    	AntiPatternResultDialog.openDialog(apList,frame);
+		}
 	}
 }
