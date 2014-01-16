@@ -22,9 +22,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
-import br.ufes.inf.nemo.oled.util.ExtractorUtil;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
+import br.ufes.inf.nemo.oled.util.ExtractorUtil;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.MethodCall;
 import edu.mit.csail.sdg.alloy4.OurBorder;
@@ -61,7 +61,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public AppFrame() {
 		super();
 		super.setIconImage(IconLoader.getInstance().getImage("WINDOW"));
-		setTitle(getResourceString("application.title"));
+		setTitle(getResourceString("application.title")+" v"+Main.OLED_VERSION);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		Dimension size = new Dimension(1000, 648);
@@ -127,8 +127,12 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		Thread t = new Thread(new Runnable() {
 	        public void run() 
 	        {
+	        	try{
 	        	String[] args = {""};
-	        	analyzer = new SimpleGUICustom(args,false,"");	        	
+	        	analyzer = new SimpleGUICustom(args,false,"");
+	        	}catch(Exception e){
+	        		e.printStackTrace();
+	        	}	        	
 	        }
 		});
 		t.start();
