@@ -130,8 +130,8 @@ public class Transformer {
 		this.nameSpace = nameSpace+"#";
 
 		try {
-			this.ontology = manager.createOntology(IRI.create(nameSpace));
 			this.factory = manager.getOWLDataFactory();
+			this.ontology = manager.createOntology(IRI.create(nameSpace));
 		} catch (OWLOntologyCreationException e) {
 			e.printStackTrace();
 		}	
@@ -181,8 +181,8 @@ public class Transformer {
 			processDataType();
 		}catch (Exception e){
 			errors = "";
-			//throw new Exception("Error: An unexpected exception happened when processing Datatypes;\n");
 			e.printStackTrace();
+			throw new Exception("Error: An unexpected exception happened when processing Datatypes;\n");
 		}
 
 		try{
@@ -761,7 +761,7 @@ public class Transformer {
 		if(ontCls == null){
 			return nameSpace + prop.getName().replaceAll(" ", "_");	
 		}
-		return nameSpace + getAbsoluteName(ontCls)+"."+prop.getName().replaceAll(" ", "_");
+		return  nameSpace + getAbsoluteName(ontCls)+"."+prop.getName().replaceAll(" ", "_");
 	}
 
 	private String getPropertyName(RefOntoUML.Property prop){
