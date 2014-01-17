@@ -422,7 +422,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
-		addTab(diagram.getLabelText(), wrapper);
+		add(diagram.getLabelText(), wrapper);		
 		
 		diagram.addNameLabelChangeListener(new LabelChangeListener() {
 			/** {@inheritDoc} */
@@ -860,8 +860,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public Component add(String text, Component component)
 	{
 		super.addTab(text, component);
-		this.setTabComponentAt(this.getTabCount()-1, new ClosableTabPanel(this));
-		this.setSelectedIndex(this.getTabCount()-1);
+		this.setTabComponentAt(indexOfComponent(component), new ClosableTabPanel(this));
+		setSelectedComponent(component);
 		return component;
 	}
 	
@@ -871,8 +871,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public Component addNonClosable(String text, Component component)
 	{
 		super.addTab(text, component);
-		this.setTabComponentAt(this.getTabCount()-1,null);
-		this.setSelectedIndex(this.getTabCount()-1);
+		this.setTabComponentAt(indexOfComponent(component),null);
+		setSelectedComponent(component);
 		return component;
 	}
 
