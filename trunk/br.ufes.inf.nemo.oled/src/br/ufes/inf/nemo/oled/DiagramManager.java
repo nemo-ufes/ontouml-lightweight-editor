@@ -309,16 +309,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return element;
 	}
 	
-	/**
-	 * Delete element from the model and if opended from the diagram too.
-	 * 
-	 * If the element appears in at least one opened diagram, it deletes the element from that diagram.
-	 * on the contrary, if there is no opened diagram in which the element appears, it will only delete from the model.
-	 * If that happens, the element will no longer exists in the model, but still might exists in some diagrams that were not opened in
-	 * the deletion moment.
-	 * 
-	 * @param element
-	 */
+	/** Delete element from the model and every diagram in each it appears. */
 	public void delete(RefOntoUML.Element element)
 	{	
 		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
@@ -335,6 +326,48 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
 			cmd.run();
 		}		
+	}
+	
+	/** Delete element from all diagrams in the project. (not from the model) */
+	public void deleteFromAllDiagrams(RefOntoUML.Element element)
+	{
+		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
+		deletionList.add(element);
+		
+		for(DiagramEditor diagramEditor: getDiagramEditors(element))
+		{
+			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
+			cmd.run();
+		}
+	}
+	
+	/** Delete element from a particular diagram (do not delete it from the model). */
+	public void deleteFromDiagram(RefOntoUML.Element element, DiagramEditor diagramEditor)
+	{
+		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
+		deletionList.add(element);		
+		DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
+		cmd.run();
+	}
+	
+	/** Move element to a Diagram */
+	public void moveToDiagram(RefOntoUML.Element element, DiagramEditor d)
+	{
+		if(d!=null) {			
+			if (element instanceof RefOntoUML.Class) {
+				RefOntoUML.Class oClass = (RefOntoUML.Class)element;
+				d.setDragElementMode(oClass,oClass.eContainer());
+			}			
+			if ((element instanceof RefOntoUML.DataType)&&!(element instanceof RefOntoUML.PrimitiveType)&&!(element instanceof RefOntoUML.Enumeration))
+			{
+				RefOntoUML.DataType oClass = (RefOntoUML.DataType)element;
+				d.setDragElementMode(oClass,oClass.eContainer()); 
+			}			
+			if (element instanceof RefOntoUML.Relationship) {
+				RefOntoUML.Relationship rel = (RefOntoUML.Relationship)element;
+				d.setDragRelationMode(rel,rel.eContainer());
+			}
+		}	
 	}
 	
 	/** Update OLED according to AntiPatterns actions */
@@ -389,8 +422,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
-		add(diagram.getLabelText(), wrapper);
-						
+		addTab(diagram.getLabelText(), wrapper);
+		
 		diagram.addNameLabelChangeListener(new LabelChangeListener() {
 			/** {@inheritDoc} */
 			public void labelTextChanged(Label label) {
@@ -826,7 +859,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	@Override
 	public Component add(String text, Component component)
 	{
-		super.add(text, component);
+		super.addTab(text, component);
 		this.setTabComponentAt(this.getTabCount()-1, new ClosableTabPanel(this));
 		this.setSelectedIndex(this.getTabCount()-1);
 		return component;
@@ -837,7 +870,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public Component addNonClosable(String text, Component component)
 	{
-		super.add(text, component);
+		super.addTab(text, component);
 		this.setTabComponentAt(this.getTabCount()-1,null);
 		this.setSelectedIndex(this.getTabCount()-1);
 		return component;
