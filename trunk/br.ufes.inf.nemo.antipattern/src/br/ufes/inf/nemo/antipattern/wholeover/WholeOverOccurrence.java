@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.antipattern.wholeover;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
@@ -10,7 +10,7 @@ import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesVariation;
 
 public class WholeOverOccurrence extends OverlappingOccurrence {
 
-	public WholeOverOccurrence(Classifier whole, ArrayList<Property> partEnds, WholeOverAntipattern ap) throws Exception {
+	public WholeOverOccurrence(Classifier whole, HashSet<Property> partEnds, WholeOverAntipattern ap) throws Exception {
 		super(ap, whole, partEnds);
 		
 		for (Property p : getAllPartEnds()) {
@@ -27,7 +27,7 @@ public class WholeOverOccurrence extends OverlappingOccurrence {
 		return getMainType();
 	}
 
-	public ArrayList<Property> getAllPartEnds() {
+	public HashSet<Property> getAllPartEnds() {
 		return getAllProperties();
 	}
 	

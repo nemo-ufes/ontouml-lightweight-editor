@@ -43,8 +43,8 @@ public class WholeOverFirstPage extends WholeOverPage {
 		
 		
 		for (int i = 0; i < wholeOver.getAllPartEnds().size(); i++) {
-			text+=" "+wholeOver.getParser().getStringRepresentation(wholeOver.getAllPartEnds().get(i).getAssociation())+
-				  " ( as instance of "+wholeOver.getParser().getStringRepresentation(wholeOver.getAllPartEnds().get(i).getType())+")";
+//			text+=" "+wholeOver.getParser().getStringRepresentation(wholeOver.getAllPartEnds().get(i).getAssociation())+
+//				  " ( as instance of "+wholeOver.getParser().getStringRepresentation(wholeOver.getAllPartEnds().get(i).getType())+")";
 			if(i==wholeOver.getAllPartEnds().size()-2)
 				text+=" and";
 			else if (i<wholeOver.getAllPartEnds().size()-2)

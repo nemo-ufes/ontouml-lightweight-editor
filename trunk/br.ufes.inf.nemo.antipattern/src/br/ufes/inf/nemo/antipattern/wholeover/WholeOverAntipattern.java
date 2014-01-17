@@ -2,21 +2,23 @@ package br.ufes.inf.nemo.antipattern.wholeover;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import RefOntoUML.AggregationKind;
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
-import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingAntipattern;
 import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
+public class WholeOverAntipattern extends OverlappingAntipattern<WholeOverOccurrence> {
 
 	public WholeOverAntipattern(OntoUMLParser parser) throws NullPointerException {
 		super(parser);
@@ -77,7 +79,7 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 		for (Classifier relator : query_result.keySet()) 
 		{
 			try {
-				super.occurrence.add(new WholeOverOccurrence(relator, query_result.get(relator), this));
+				super.occurrence.add(new WholeOverOccurrence(relator, new HashSet<>(query_result.get(relator)), this));
 			} catch (Exception e) {
 				System.out.println(info.acronym+": Provided information does not characterize an occurrence of the anti-pattern!");
 				System.out.println(e.getMessage());
@@ -89,21 +91,86 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 	
 	@Override
 	public ArrayList<WholeOverOccurrence> identify(){
+		
+		HashMap<Classifier,HashSet<Property>> hash = super.buildMainTypeAndPropertiesHash(Meronymic.class);
+		
+		for (Classifier whole : hash.keySet()) {
+			
+			System.out.println("WHOLE: "+whole.getName());
+			try {
+				WholeOverOccurrence wholeOver = new WholeOverOccurrence(whole, hash.get(whole), this);
+				getOccurrences().add(wholeOver);
+			}
+			catch (Exception e){
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		return getOccurrences();
+	}
+	
+	//returns the property (association end) connected to the part end (Required for supertype method buildMainTypeAndPropertiesHash to work)
+	@Override
+	public Property getProperty(Association m){
+		if(m.getMemberEnd().get(1).getAggregation()!=AggregationKind.NONE && m.getMemberEnd().get(0).getAggregation()==AggregationKind.NONE)
+			return m.getMemberEnd().get(0);
+		else
+			return m.getMemberEnd().get(1);
+	}
+	
+	//returns the whole of the meronymic (Required for supertype method buildMainTypeAndPropertiesHash to work)
+	@Override
+	public Classifier getMainType(Association m){
+		return (Classifier) getProperty(m).getOpposite().getType();
+	}	
+	
+//	private HashMap<Classifier,HashSet<Property>> buildWholeAndPropertyPartsHash(){
+//		HashMap<Classifier,HashSet<Property>> hash = new HashMap<Classifier,HashSet<Property>>();
+//		
+//		//builds initial hash, with meronymics that are directly connected to the types
+//		for (Meronymic m : parser.getAllInstances(Meronymic.class)) {
+//			
+//			try{
+//				Property wholeEnd = getMainType(m),
+//						 partEnd = getProperty(m);
+//				Classifier whole = (Classifier) wholeEnd.getType();
+//				
+//				if (hash.keySet().contains(whole))
+//					hash.get(whole).add(partEnd);
+//				else{
+//					HashSet<Property> partEnds = new HashSet<Property>();
+//					partEnds.add(partEnd);
+//					hash.put((Classifier) wholeEnd.getType(), partEnds);
+//				}
+//			}
+//			catch(Exception e){ }
+//		}
+//		
+//		//adds supertypes' parts
+//		for (Classifier whole : hash.keySet()) 
+//			for (Classifier parent : whole.allParents()) 
+//				if(hash.keySet().contains(parent))
+//					hash.get(whole).addAll(hash.get(parent));
+//			
+//		return hash;
+//	}
+	
+	
+	public ArrayList<WholeOverOccurrence> identifyOLD(){
 		HashMap<Classifier,ArrayList<Property>> hash = new HashMap<Classifier,ArrayList<Property>>();
 		
 		for (Meronymic m : parser.getAllInstances(Meronymic.class)) {
 			
 			try{
-				Property wholeEnd = getWholeEnd(m),
-						 partEnd = getPartEnd(m);
-				Classifier whole = (Classifier) wholeEnd.getType();
+				Property  partEnd = getProperty(m);
+				Classifier whole = getMainType(m);
 				
 				if (hash.keySet().contains(whole))
 					hash.get(whole).add(partEnd);
 				else{
 					ArrayList<Property> partEnds = new ArrayList<Property>();
 					partEnds.add(partEnd);
-					hash.put((Classifier) wholeEnd.getType(), partEnds);
+					hash.put(whole, partEnds);
 				}
 			}
 			catch(Exception e){ }
@@ -159,7 +226,7 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 								|| OverlappingTypesIdentificator.isVariation6(part1, part2)
 								) {
 							try {
-								super.occurrence.add(new WholeOverOccurrence(whole, partEnds, this));
+								super.occurrence.add(new WholeOverOccurrence(whole, new HashSet<>(partEnds), this));
 								overlappingPartsFound = true;
 							} catch (Exception e) { System.out.println("WholeOver: Can't create variation 1.\n"+e.getMessage());}
 							
@@ -173,14 +240,5 @@ public class WholeOverAntipattern extends Antipattern<WholeOverOccurrence> {
 		
 	}
 	
-	private Property getPartEnd(Meronymic m){
-		if(m.getMemberEnd().get(1).getAggregation()!=AggregationKind.NONE && m.getMemberEnd().get(0).getAggregation()==AggregationKind.NONE)
-			return m.getMemberEnd().get(0);
-		else
-			return m.getMemberEnd().get(1);
-	}
 	
-	private Property getWholeEnd(Meronymic m){
-		return getPartEnd(m).getOpposite();
-	}	
 }

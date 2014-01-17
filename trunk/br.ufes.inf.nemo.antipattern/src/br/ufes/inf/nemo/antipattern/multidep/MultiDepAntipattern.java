@@ -22,10 +22,10 @@ public class MultiDepAntipattern extends Antipattern<MultiDepOccurrence> {
 
 	private static final String oclQuery = "ObjectClass.allInstances()->select(c:ObjectClass | Mediation.allInstances()->select(m:Mediation | m.endType->includes(c))->size()>=2)";
 	
-	public static final AntipatternInfo info = new AntipatternInfo("Mixin with same Rigidity", 
-			"MixRig", 
-			"This anti-pattern occurs when a «mixin» is specialized only by type whose rigidity meta-property are the same, i.e., only rigid types («kind», «quantity», «collective», " +
-			"«subkind» or «category») or only by anti-rigid types («role», «phase», «roleMixin») ",
+	public static final AntipatternInfo info = new AntipatternInfo("Multiple Relational Dependency", 
+			"MultDep", 
+			"This anti-pattern is identified when an object class is connected to two distinct «relator» types through «mediation» associations.  " +
+			"The relators may not specialize one another.",
 			oclQuery); 
 		
 	public static AntipatternInfo getAntipatternInfo(){

@@ -2,8 +2,6 @@ package br.ufes.inf.nemo.antipattern;
 
 import java.util.ArrayList;
 
-import RefOntoUML.Class;
-
 public class Fix {
 
 	private ArrayList<Object> deletedElements = new ArrayList<Object>();

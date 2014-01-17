@@ -1,21 +1,25 @@
 package br.ufes.inf.nemo.antipattern.relover;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
+import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
-import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
+public class RelOverAntipattern extends OverlappingAntipattern<RelOverOccurrence> {
 
 	public RelOverAntipattern(OntoUMLParser parser) throws NullPointerException {
 		super(parser);
@@ -110,7 +114,7 @@ public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
 		for (Classifier relator : query_result.keySet()) 
 		{
 			try {
-					RelOverOccurrence occurrence = new RelOverOccurrence(relator, query_result.get(relator), this);
+					RelOverOccurrence occurrence = new RelOverOccurrence(relator, new HashSet<>(query_result.get(relator)), this);
 					super.occurrence.add(occurrence);
 				
 			} catch (Exception e) {
@@ -122,8 +126,30 @@ public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
 		return this.getOccurrences();
 	}
 	
+	
+	
+	
 	@Override
-	public ArrayList<RelOverOccurrence> identify() {
+	public ArrayList<RelOverOccurrence> identify(){
+		
+		HashMap<Classifier,HashSet<Property>> hash = super.buildMainTypeAndPropertiesHash(Mediation.class);
+		
+		for (Classifier relator : hash.keySet()) {
+			
+			System.out.println("RELATOR: "+relator.getName());
+			try {
+				RelOverOccurrence relOver = new RelOverOccurrence(relator, hash.get(relator), this);
+				getOccurrences().add(relOver);
+			}
+			catch (Exception e){
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		return getOccurrences();
+	}
+	
+	public ArrayList<RelOverOccurrence> identifyOLD() {
 		
 		ArrayList<Class> allClasses = new ArrayList<Class>();
 		allClasses.addAll(parser.getAllInstances(Class.class));
@@ -134,7 +160,7 @@ public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
 				
 				System.out.println("("+i+" of "+total+") " +parser.getStringRepresentation(c)+": Analyzing...");
 				ArrayList<Mediation> mediations = new ArrayList<Mediation>();
-				ArrayList<Property> mediatedEnds = new ArrayList<Property>();
+				HashSet<Property> mediatedEnds = new HashSet<Property>();
 				
 				try {
 					parser.getAllMediations(c, mediations);
@@ -238,16 +264,31 @@ public class RelOverAntipattern extends Antipattern<RelOverOccurrence> {
 		
 	}
 	
-	private boolean isRelator (Class c){
+	private boolean isRelator (Type c){
 		if (c instanceof Relator)
 			return true;
 		
-		for (Classifier parent : c.allParents()) {
+		for (Classifier parent : ((Classifier) c).allParents()) {
 			if (parent instanceof Relator)
 				return true;
 		}
 		
 		return false;
+	}
+
+	@Override
+	//returns mediatedEnd
+	public Property getProperty(Association a) {
+		if( isRelator(a.getMemberEnd().get(1).getType()) && !isRelator(a.getMemberEnd().get(0).getType()) )
+			return a.getMemberEnd().get(0);
+		else
+			return a.getMemberEnd().get(1);
+	}
+
+	@Override
+	//returns relator
+	public Classifier getMainType(Association a) {
+		return (Classifier) getProperty(a).getOpposite().getType();
 	}
 
 }

@@ -1,21 +1,22 @@
 package br.ufes.inf.nemo.antipattern.partover;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import RefOntoUML.AggregationKind;
-import RefOntoUML.Class;
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
-import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
-import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingAntipattern;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class PartOverAntipattern extends Antipattern<PartOverOccurrence> {
+public class PartOverAntipattern extends OverlappingAntipattern<PartOverOccurrence> {
 
 	public PartOverAntipattern(OntoUMLParser parser) throws NullPointerException {
 		super(parser);
@@ -78,7 +79,7 @@ public class PartOverAntipattern extends Antipattern<PartOverOccurrence> {
 		for (Classifier part : query_result.keySet()) 
 		{
 			try {
-				super.occurrence.add(new PartOverOccurrence(part, query_result.get(part), this));
+				super.occurrence.add(new PartOverOccurrence(part, new HashSet<>(query_result.get(part)), this));
 			} catch (Exception e) {
 				System.out.println(info.acronym+": Provided information does not characterize an occurrence of the anti-pattern!");
 				System.out.println(e.getMessage());
@@ -89,119 +90,148 @@ public class PartOverAntipattern extends Antipattern<PartOverOccurrence> {
 	}
 	
 	@Override
-	public ArrayList<PartOverOccurrence> identify() {
+	public ArrayList<PartOverOccurrence> identify(){
 		
-		ArrayList<Class> allClasses = new ArrayList<Class>();
-		allClasses.addAll(parser.getAllInstances(Class.class));
-		int i = 1, total=allClasses.size();
-		for (Class c : allClasses) {
-			i++;
+		HashMap<Classifier,HashSet<Property>> hash = super.buildMainTypeAndPropertiesHash(Meronymic.class);
+		
+		for (Classifier part : hash.keySet()) {
 			
-			System.out.println("("+i+" of "+total+") " +parser.getStringRepresentation(c)+": Analyzing...");
-			ArrayList<Meronymic> meronymics = new ArrayList<Meronymic>();
-			ArrayList<Property> partEnds = new ArrayList<Property>();
-				
-			parser.getAllMeronymics(c, meronymics);
-			for (Meronymic m : meronymics)
-				partEnds.add(getPartEnd(m));
-			
-			boolean existsEndWithUnlimitedUpperCardinality = false;
-			int upperCardinalituSum = 0;
-			
-			for (Property end : partEnds) {
-			
-				if (end.getUpper()==-1)
-					existsEndWithUnlimitedUpperCardinality=true;
-				else
-					upperCardinalituSum+=end.getUpper();
+			System.out.println("RELATOR: "+part.getName());
+			try {
+				PartOverOccurrence partOver = new PartOverOccurrence(part, hash.get(part), this);
+				getOccurrences().add(partOver);
 			}
-				
-//			System.out.println("\nMemberEnds size: "+meronymics.size());
-//			System.out.println("\tCarinality Sum: "+upperCardinalituSum);
-//			System.out.println("\tExists Unlimited: "+existsEndWithUnlimitedUpperCardinality);
-				
-			if (meronymics.size()>1 && (existsEndWithUnlimitedUpperCardinality || upperCardinalituSum>2)){
-				
-				boolean foundOccurrence = false;
-					
-				for (Property partEnd1 : partEnds) {
-					for (Property partEnd2 : partEnds) {
-						if(!partEnd1.equals(partEnd2)){
-							System.out.println("M1End: "+parser.getStringRepresentation(partEnd1.getType()));
-							System.out.println("M2End: "+parser.getStringRepresentation(partEnd2.getType()));
-							if(OverlappingTypesIdentificator.isVariation1((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 1!");
-								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 1.\n"+e.getMessage());}
-								
-							}
-							else if(OverlappingTypesIdentificator.isVariation2((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 2!");
-								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 2.\n"+e.getMessage());}
-								
-							}
-							else if(OverlappingTypesIdentificator.isVariation3((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 3!");
-								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 3.\n"+e.getMessage());}
-								
-							}
-							else if(OverlappingTypesIdentificator.isVariation4((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 4!");
-								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 4.\n"+e.getMessage());}
-								
-							}
-							else if(OverlappingTypesIdentificator.isVariation5((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 5!");
-								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 5.\n"+e.getMessage());}
-								
-							}
-							else if(OverlappingTypesIdentificator.isVariation6((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
-								try {
-									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
-									foundOccurrence = true;
-//									System.out.println("Found Variation 6!");
-								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 6.\n"+e.getMessage());}
-								
-							}
-						}
-						
-						if (foundOccurrence) {
-//							System.out.println("("+i+" of "+total+")" +parser.getStringRepresentation(c)+": 1 - BREAK IT");
-							break;
-						}
-					}
-						
-					if (foundOccurrence) {
-//						System.out.println("("+i+" of "+total+")" +parser.getStringRepresentation(c)+": 2 - BREAK IT");
-						break;
-					}
-				}
+			catch (Exception e){
+				System.out.println(e.getMessage());
 			}
-	
+		}
+		
+		return getOccurrences();
 	}
-		
-		return super.getOccurrences();
-		
-	}	
 	
-	private Property getPartEnd(Meronymic m){
-		if(m.getMemberEnd().get(1).getAggregation()==AggregationKind.NONE)
+	//returns the property (association end) connected to the whole end (Required for supertype method buildMainTypeAndPropertiesHash to work)
+	@Override
+	public Property getProperty(Association m){
+		if(m.getMemberEnd().get(1).getAggregation()!=AggregationKind.NONE && m.getMemberEnd().get(0).getAggregation()==AggregationKind.NONE)
 			return m.getMemberEnd().get(1);
 		else
 			return m.getMemberEnd().get(0);
 	}
+	
+	//returns the part of the meronymic (Required for supertype method buildMainTypeAndPropertiesHash to work)
+	@Override
+	public Classifier getMainType(Association m){
+		return (Classifier) getProperty(m).getOpposite().getType();
+	}	
+	
+//	public ArrayList<PartOverOccurrence> identifyOLD() {
+//		
+//		ArrayList<Class> allClasses = new ArrayList<Class>();
+//		allClasses.addAll(parser.getAllInstances(Class.class));
+//		int i = 1, total=allClasses.size();
+//		for (Class c : allClasses) {
+//			i++;
+//			
+//			System.out.println("("+i+" of "+total+") " +parser.getStringRepresentation(c)+": Analyzing...");
+//			ArrayList<Meronymic> meronymics = new ArrayList<Meronymic>();
+//			HashSet<Property> partEnds = new HashSet<Property>();
+//				
+//			parser.getAllMeronymics(c, meronymics);
+//			for (Meronymic m : meronymics)
+//				partEnds.add(getPartEnd(m));
+//			
+//			boolean existsEndWithUnlimitedUpperCardinality = false;
+//			int upperCardinalituSum = 0;
+//			
+//			for (Property end : partEnds) {
+//			
+//				if (end.getUpper()==-1)
+//					existsEndWithUnlimitedUpperCardinality=true;
+//				else
+//					upperCardinalituSum+=end.getUpper();
+//			}
+//				
+////			System.out.println("\nMemberEnds size: "+meronymics.size());
+////			System.out.println("\tCarinality Sum: "+upperCardinalituSum);
+////			System.out.println("\tExists Unlimited: "+existsEndWithUnlimitedUpperCardinality);
+//				
+//			if (meronymics.size()>1 && (existsEndWithUnlimitedUpperCardinality || upperCardinalituSum>2)){
+//				
+//				boolean foundOccurrence = false;
+//					
+//				for (Property partEnd1 : partEnds) {
+//					for (Property partEnd2 : partEnds) {
+//						if(!partEnd1.equals(partEnd2)){
+//							System.out.println("M1End: "+parser.getStringRepresentation(partEnd1.getType()));
+//							System.out.println("M2End: "+parser.getStringRepresentation(partEnd2.getType()));
+//							if(OverlappingTypesIdentificator.isVariation1((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
+//								try {
+//									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
+//									foundOccurrence = true;
+////									System.out.println("Found Variation 1!");
+//								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 1.\n"+e.getMessage());}
+//								
+//							}
+//							else if(OverlappingTypesIdentificator.isVariation2((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
+//								try {
+//									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
+//									foundOccurrence = true;
+////									System.out.println("Found Variation 2!");
+//								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 2.\n"+e.getMessage());}
+//								
+//							}
+//							else if(OverlappingTypesIdentificator.isVariation3((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
+//								try {
+//									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
+//									foundOccurrence = true;
+////									System.out.println("Found Variation 3!");
+//								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 3.\n"+e.getMessage());}
+//								
+//							}
+//							else if(OverlappingTypesIdentificator.isVariation4((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
+//								try {
+//									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
+//									foundOccurrence = true;
+////									System.out.println("Found Variation 4!");
+//								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 4.\n"+e.getMessage());}
+//								
+//							}
+//							else if(OverlappingTypesIdentificator.isVariation5((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
+//								try {
+//									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
+//									foundOccurrence = true;
+////									System.out.println("Found Variation 5!");
+//								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 5.\n"+e.getMessage());}
+//								
+//							}
+//							else if(OverlappingTypesIdentificator.isVariation6((Classifier)partEnd1.getType(), (Classifier)partEnd2.getType())) {
+//								try {
+//									super.occurrence.add(new PartOverOccurrence(c, partEnds, this));
+//									foundOccurrence = true;
+////									System.out.println("Found Variation 6!");
+//								} catch (Exception e) { System.out.println(PartOverAntipattern.getAntipatternInfo().acronym+": Can't create variation 6.\n"+e.getMessage());}
+//								
+//							}
+//						}
+//						
+//						if (foundOccurrence) {
+////							System.out.println("("+i+" of "+total+")" +parser.getStringRepresentation(c)+": 1 - BREAK IT");
+//							break;
+//						}
+//					}
+//						
+//					if (foundOccurrence) {
+////						System.out.println("("+i+" of "+total+")" +parser.getStringRepresentation(c)+": 2 - BREAK IT");
+//						break;
+//					}
+//				}
+//			}
+//	
+//	}
+//		
+//		return super.getOccurrences();
+//		
+//	}	
+	
+	
 }
