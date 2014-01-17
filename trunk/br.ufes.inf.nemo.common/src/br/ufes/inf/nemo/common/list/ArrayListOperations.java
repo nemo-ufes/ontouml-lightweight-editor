@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.common.list;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,4 +30,12 @@ public class ArrayListOperations {
 
 	        return list;
 	    }
+
+	public static <T,S> boolean hasIntersection(Collection<T> list1, Collection<S> list2){
+		for (T o : list1) {
+			if(list2.contains(o))
+				return true;
+		}
+		return false;
+	}
 }

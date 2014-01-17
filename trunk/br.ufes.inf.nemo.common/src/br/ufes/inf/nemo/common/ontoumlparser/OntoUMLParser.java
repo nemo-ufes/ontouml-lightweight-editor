@@ -18,12 +18,14 @@ import RefOntoUML.Association;
 import RefOntoUML.Category;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
+import RefOntoUML.Collective;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.Enumeration;
 import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import RefOntoUML.Kind;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
@@ -34,11 +36,14 @@ import RefOntoUML.PackageableElement;
 import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
+import RefOntoUML.Quantity;
 import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
+import RefOntoUML.SortalClass;
+import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
@@ -1185,4 +1190,5 @@ public class OntoUMLParser {
 		}
 		return relations;
 	}
+	
 }
