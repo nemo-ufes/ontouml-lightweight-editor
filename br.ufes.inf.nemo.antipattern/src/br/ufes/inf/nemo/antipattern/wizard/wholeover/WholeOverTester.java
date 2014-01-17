@@ -7,14 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Shell;
-
 import br.ufes.inf.nemo.antipattern.Antipattern;
-import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
-import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -37,7 +30,7 @@ public class WholeOverTester {
 		
 		System.out.println("("+getCurrentDateAndTime() +") Valid refontouml files in folder: "+folder.listFiles(filter).length);
 		
-		ArrayList<WholeOverOccurrence> 	var0 = new ArrayList<WholeOverOccurrence>(); 
+//		ArrayList<WholeOverOccurrence> 	var0 = new ArrayList<WholeOverOccurrence>(); 
 //										var1 = new ArrayList<RelSpecOccurrence>(), 
 //										var2 = new ArrayList<RelSpecOccurrence>(), 
 //										var3 = new ArrayList<RelSpecOccurrence>(), 
@@ -64,6 +57,9 @@ public class WholeOverTester {
 			ap = new WholeOverAntipattern(parser);
 			runAntipattern(antiPatternName, model, ap);
 			
+			for (WholeOverOccurrence wholeOverOccurrence : ap.getOccurrences()) {
+				System.out.println(wholeOverOccurrence);
+			}
 //			int i = 1;
 //			for (WholeOverOccurrence rs : ap.getOccurrences()) {
 //				//System.out.println(i+": ");

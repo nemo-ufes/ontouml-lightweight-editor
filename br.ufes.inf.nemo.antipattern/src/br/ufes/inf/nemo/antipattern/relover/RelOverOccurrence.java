@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.antipattern.relover;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -17,7 +18,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelOverOccurrence extends OverlappingOccurrence{
 	
-	public RelOverOccurrence(Classifier relator, ArrayList<Property> allMediatedEnds, RelOverAntipattern ap) throws Exception {
+	public RelOverOccurrence(Classifier relator, HashSet<Property> allMediatedEnds, RelOverAntipattern ap) throws Exception {
 		super(ap, relator, allMediatedEnds);
 		
 		//verifies the classifier inputted as relator is a relator or a specialization of one
@@ -53,7 +54,7 @@ public class RelOverOccurrence extends OverlappingOccurrence{
 		return getMainType();
 	}
 	
-	public ArrayList<Property> getAllMediatedProperties() {
+	public HashSet<Property> getAllMediatedProperties() {
 		return getAllProperties();
 	}
 	
@@ -67,7 +68,7 @@ public class RelOverOccurrence extends OverlappingOccurrence{
 		return mediations;
 	}
 	
-	public ArrayList<Classifier> getAllMediatedTypes(){
+	public HashSet<Classifier> getAllMediatedTypes(){
 		return getAllOverlappingTypes();
 	}
 	

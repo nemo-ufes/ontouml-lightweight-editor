@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.antipattern.overlapping;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -15,10 +16,10 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 
 	Classifier mainType;
 	ArrayList<OverlappingTypesVariation> variations;
-	ArrayList<Property> allProperties;
-	ArrayList<Classifier> allOverlappingTypes;
+	HashSet<Property> allProperties;
+	HashSet<Classifier> allOverlappingTypes;
 	
-	public OverlappingOccurrence(Antipattern<?> antipattern, Classifier mainType, ArrayList<Property> allProperties) throws Exception {
+	public OverlappingOccurrence(Antipattern<?> antipattern, Classifier mainType, HashSet<Property> allProperties) throws Exception {
 		super(antipattern);
 		
 		if(mainType == null)
@@ -27,21 +28,25 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 			throw new Exception("Overlapping: provided input properties list is null. Can't create occurrence!");
 		
 		if(allProperties.size()<2)
-			throw new Exception("Can't creat occurrence! At least 2 properties are required");
+			throw new Exception("Overlapping: Can't creat occurrence! At least 2 properties are required");
 		
-		allOverlappingTypes = new ArrayList<Classifier>();
+		allOverlappingTypes = new HashSet<Classifier>();
 		
 		for (Property p : allProperties) {
 			
 			allOverlappingTypes.add((Classifier) p.getType());
 			
-			if(p.getAssociation()!=null) {
-				//all association ends in allProperties must have the opposite equals to mainType or one of its supertypes
-				if (!p.getOpposite().getType().equals(mainType) && !mainType.allParents().contains(p.getOpposite().getType()))
-					throw new Exception("All association ends must have the opposite equal to mainType or one of its supertypes.");
-				//all attributes must belong to mainType or one of its supertypes
-				else if (!p.eContainer().equals(mainType) && !(((Classifier) p.eContainer()).allParents().contains(mainType)))
-					throw new Exception("All attributes must belong to mainType or one of its supertypes.");
+			//all association ends in allProperties must have the opposite equals to mainType or one of its supertypes
+			if(p.getAssociation()!=null){
+				if (!p.getOpposite().getType().equals(mainType) && !mainType.allParents().contains(p.getOpposite().getType())) {
+					throw new Exception("Overlapping: All association ends must have the opposite equal to mainType or one of its supertypes.");
+				}
+			}
+			//all attributes must belong to mainType or one of its supertypes
+			else {
+				if (!p.eContainer().equals(mainType) && !(((Classifier) p.eContainer()).allParents().contains(mainType))) {
+					throw new Exception("Overlapping: All attributes must belong to mainType or one of its supertypes.");
+				}
 			}
 		}
 		
@@ -52,65 +57,66 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		identifyVariations();
 		
 		if(variations.size()==0)
-			throw new Exception("Could not find any variation in the occurrence");
+			throw new Exception("Overlapping: Could not find any variation in the occurrence");
 	}
 	
 	public void identifyVariations(){
-		Combination comb = new Combination(allProperties, 0);
+		Combination comb = new Combination(new ArrayList<>(allProperties), 0);
 		
 		while(comb.hasNext()) {
 			ArrayList<Property> result = comb.next();
-			OverlappingTypesVariation var;
-			try {
-				var = new OverlappingTypesVariation1(this, result);
-				addVariation(var);
-				continue;
-			}
-			catch(Exception e){	}
-			try {
-//				var = new WholeOverVariation2(this, result);
-//				addVariation(var);
-//				continue;
-			}
-			catch(Exception e){	}
-			try {
-//				var = new WholeOverVariation3(this, result);
-//				addVariation(var);
-//				continue;
-			}
-			catch(Exception e){	}
-			try {
-				var = new OverlappingTypesVariation4(this, result);
-				addVariation(var);
-				continue;
-			}
-			catch(Exception e){	}
-			try {
-				var = new OverlappingTypesVariation5(this, result);
-				addVariation(var);
-				continue;
-			}
-			catch(Exception e){	}
-			try {
-				var = new OverlappingTypesVariation6(this, result);
-				addVariation(var);
-				continue;
-			}
-			catch(Exception e){	}
-			
+			if(result.size()>1) {
+				OverlappingTypesVariation var;
+				try {
+					var = new OverlappingTypesVariation1(this, result);
+					addVariation(var);
+					continue;
+				}
+				catch(Exception e){	}
+				try {
+	//				var = new WholeOverVariation2(this, result);
+	//				addVariation(var);
+	//				continue;
+				}
+				catch(Exception e){	}
+				try {
+	//				var = new WholeOverVariation3(this, result);
+	//				addVariation(var);
+	//				continue;
+				}
+				catch(Exception e){	}
+				try {
+					var = new OverlappingTypesVariation4(this, result);
+					addVariation(var);
+					continue;
+				}
+				catch(Exception e){	}
+				try {
+					var = new OverlappingTypesVariation5(this, result);
+					addVariation(var);
+					continue;
+				}
+				catch(Exception e){	}
+				try {
+					var = new OverlappingTypesVariation6(this, result);
+					addVariation(var);
+					continue;
+				}
+				catch(Exception e){	}
+		}
 			
 		}
 	}
 	
 	private void addVariation(OverlappingTypesVariation varToAdd){
-		System.out.println("#EXISTING: "+variations.size());
+		
 		ArrayList<OverlappingTypesVariation> variationsToRemove = new ArrayList<OverlappingTypesVariation>();
 		
 		for (OverlappingTypesVariation existingVariation : variations) {
 			if(existingVariation.getClass().equals(varToAdd.getClass())){
 				
 				if(varToAdd.overlappingProperties.containsAll(existingVariation.overlappingProperties)){
-					System.out.println("REPLACING..");
+				
 					variationsToRemove.add(existingVariation);
 				}
 				else if(existingVariation.overlappingProperties.containsAll(varToAdd.overlappingProperties)){
@@ -121,7 +127,6 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		
 		variations.removeAll(variationsToRemove);
 		variations.add(varToAdd);
-		System.out.println("#AFTER: "+variations.size()+"\n");
 	}
 
 	@Override
@@ -144,11 +149,11 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		return variations;
 	}
 
-	public ArrayList<Property> getAllProperties() {
+	public HashSet<Property> getAllProperties() {
 		return allProperties;
 	}
 
-	public ArrayList<Classifier> getAllOverlappingTypes() {
+	public HashSet<Classifier> getAllOverlappingTypes() {
 		return allOverlappingTypes;
 	}
 	

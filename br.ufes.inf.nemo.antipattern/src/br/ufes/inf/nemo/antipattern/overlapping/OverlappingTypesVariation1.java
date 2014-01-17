@@ -23,10 +23,18 @@ public class OverlappingTypesVariation1 extends OverlappingTypesVariation {
 		commonType = null;
 		
 		for (Property p : overlappingProperties) {
-			if(commonType==null)
+			System.out.println(occurrence.getParser().getStringRepresentation(p));
+		}
+		
+		for (Property p : overlappingProperties) {
+			if(commonType==null){
 				commonType=(Classifier) p.getType();
-			else if(!commonType.equals(p));
-				throw new Exception("VAR1: all part types must be the same!");
+			}
+			else{ 
+				if(!commonType.equals(p.getType())){
+					throw new Exception("VAR1: all part types must be the same!");
+				}
+			}
 		}
 		
 		super.validVariation = true;

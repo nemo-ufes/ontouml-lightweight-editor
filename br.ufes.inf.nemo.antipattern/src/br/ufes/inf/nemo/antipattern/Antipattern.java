@@ -23,8 +23,6 @@ public abstract class Antipattern<T extends AntipatternOccurrence> {
 		this(new OntoUMLParser(pack));
 	}
 	
-	/*basic methods*/
-			
 	public static AntipatternInfo getAntipatternInfo(){
 		throw new IllegalStateException("Antipattern info hasn't been set up in the subclass");
 	}
