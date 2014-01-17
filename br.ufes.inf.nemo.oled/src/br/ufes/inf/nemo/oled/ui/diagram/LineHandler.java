@@ -145,7 +145,8 @@ public class LineHandler implements EditorMode {
   }
 
   /**
-   * Create a connection and add it to the Diagram (from a Relationship)
+   * Create a connection and add it to the Diagram (from a Relationship).
+   * See DiagramEditor.setDragRelationMode();
    */
   public UmlConnection createAndAddConnection(DiagramEditor editor, RefOntoUML.Relationship relationship, DiagramElement source, DiagramElement target, EObject eContainer)
   {
@@ -162,6 +163,7 @@ public class LineHandler implements EditorMode {
 	  editor.redraw();	  
 	  return conn;
   }
+  
   
   /**
    * Create connection from a Relationship.

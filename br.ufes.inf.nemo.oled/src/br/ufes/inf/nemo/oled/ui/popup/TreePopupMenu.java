@@ -113,26 +113,7 @@ public class TreePopupMenu extends JPopupMenu {
         			@Override
         			public void actionPerformed(ActionEvent e) {
         				DiagramEditor d = frame.getDiagramManager().getCurrentDiagramEditor();
-        				if(d!=null){
-        					
-        					if (ontoElement.getElement() instanceof RefOntoUML.Class) {
-        						RefOntoUML.Class oClass = (RefOntoUML.Class)ontoElement.getElement();
-        						d.setDragElementMode(oClass,oClass.eContainer());
-        					}
-        					
-        					if ((ontoElement.getElement() instanceof RefOntoUML.DataType)&&
-        					!(ontoElement.getElement() instanceof RefOntoUML.PrimitiveType)&&
-        					!(ontoElement.getElement() instanceof RefOntoUML.Enumeration))
-        					{
-        						RefOntoUML.DataType oClass = (RefOntoUML.DataType)ontoElement.getElement();
-        						d.setDragElementMode(oClass,oClass.eContainer()); 
-        					}
-        					
-        					if (ontoElement.getElement() instanceof RefOntoUML.Relationship) {
-        						RefOntoUML.Relationship rel = (RefOntoUML.Relationship)ontoElement.getElement();
-        						d.setDragRelationMode(rel,rel.eContainer());
-        					}
-        				}
+        				frame.getDiagramManager().moveToDiagram((RefOntoUML.Element)ontoElement.getElement(), d);        			
         			};
         		});    			
     		}
