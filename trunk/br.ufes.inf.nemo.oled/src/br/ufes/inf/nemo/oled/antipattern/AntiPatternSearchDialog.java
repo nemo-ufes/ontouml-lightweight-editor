@@ -1511,17 +1511,17 @@ public class AntiPatternSearchDialog extends JDialog {
 						@Override
 						public void run() {	
 							updateStatus("Identifying PartOver... ");
-							wholeOver.identify();				
+							partOver.identify();				
 							SwingUtilities.invokeLater(new Runnable() {
 								@Override
 								public void run() {									
 									progressBar.setValue(progressBar.getValue()+incrementalValue);
 									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("PartOver: "+wholeOver.getOccurrences().size()+" items found");							
-									if (wholeOver.getOccurrences().size()>0) {
-										result += PartOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
-										totalOccurrences += wholeOver.getOccurrences().size();
-										lblPartOverRes.setText("("+wholeOver.getOccurrences().size()+")");
+									updateStatus("PartOver: "+partOver.getOccurrences().size()+" items found");							
+									if (partOver.getOccurrences().size()>0) {
+										result += PartOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+partOver.getOccurrences().size()+" items found.\n";
+										totalOccurrences += partOver.getOccurrences().size();
+										lblPartOverRes.setText("("+partOver.getOccurrences().size()+")");
 										cbxPartOver.setFont(new Font(cbxPartOver.getFont().getFontName(), Font.BOLD,cbxPartOver.getFont().getSize()));
 									}								
 								}
@@ -1537,17 +1537,17 @@ public class AntiPatternSearchDialog extends JDialog {
 						@Override
 						public void run() {	
 							updateStatus("Identifying MultSort... ");
-							wholeOver.identify();				
+							multSort.identify();				
 							SwingUtilities.invokeLater(new Runnable() {
 								@Override
 								public void run() {									
 									progressBar.setValue(progressBar.getValue()+incrementalValue);
 									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("MultSort: "+wholeOver.getOccurrences().size()+" items found");							
-									if (wholeOver.getOccurrences().size()>0) {
-										result += MultSortAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
-										totalOccurrences += wholeOver.getOccurrences().size();
-										lblMultSortRes.setText("("+wholeOver.getOccurrences().size()+")");
+									updateStatus("MultSort: "+multSort.getOccurrences().size()+" items found");							
+									if (multSort.getOccurrences().size()>0) {
+										result += MultSortAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multSort.getOccurrences().size()+" items found.\n";
+										totalOccurrences += multSort.getOccurrences().size();
+										lblMultSortRes.setText("("+multSort.getOccurrences().size()+")");
 										cbxMultSort.setFont(new Font(cbxMultSort.getFont().getFontName(), Font.BOLD,cbxMultSort.getFont().getSize()));
 									}								
 								}
