@@ -20,6 +20,7 @@ public class MultiDepAntipattern extends Antipattern<MultiDepOccurrence> {
 		this(new OntoUMLParser(pack));
 	}
 
+	//TODO: remove the cases where all mediations are with the same relator
 	private static final String oclQuery = "ObjectClass.allInstances()->select(c:ObjectClass | Mediation.allInstances()->select(m:Mediation | m.endType->includes(c))->size()>=2)";
 	
 	public static final AntipatternInfo info = new AntipatternInfo("Multiple Relational Dependency", 
