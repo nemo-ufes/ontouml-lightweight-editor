@@ -60,7 +60,7 @@ public class PartOverAntipattern extends OverlappingAntipattern<PartOverOccurren
 			"	) ";
 	 
 	
-	public static final AntipatternInfo info = new AntipatternInfo("Whole Composed of Overlapping Parts", 
+	public static final AntipatternInfo info = new AntipatternInfo("Part Composing Overlapping Wholes", 
 			"PartOver", 
 			"This anti-pattern occurs when a part is connected through meronymic associations to two or more overlapping wholes, stereotyped as  «subkind», «role», «phase», whose extensions are possibly overlapping, i.e., the types inherit the same identity principle and are not made explicitly disjoint by"+ 
 			"a generalization sets. The sum of the minimum cardinalities on the parts ends must be grater than 2.",
