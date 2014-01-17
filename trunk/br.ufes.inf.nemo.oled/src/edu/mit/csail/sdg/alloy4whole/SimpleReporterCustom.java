@@ -45,8 +45,8 @@ import edu.mit.csail.sdg.alloy4.Pos;
 import edu.mit.csail.sdg.alloy4.Util;
 import edu.mit.csail.sdg.alloy4.Version;
 import edu.mit.csail.sdg.alloy4.XMLNode;
-import edu.mit.csail.sdg.alloy4.WorkerEngineCustom.WorkerCallback;
-import edu.mit.csail.sdg.alloy4.WorkerEngineCustom.WorkerTask;
+import edu.mit.csail.sdg.alloy4.WorkerEngineCustom.WorkerCallbackCustom;
+import edu.mit.csail.sdg.alloy4.WorkerEngineCustom.WorkerTaskCustom;
 import edu.mit.csail.sdg.alloy4compiler.ast.Command;
 import edu.mit.csail.sdg.alloy4compiler.ast.Sig;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
@@ -63,7 +63,7 @@ import edu.mit.csail.sdg.alloy4viz.VizGUICustom;
 
 final class SimpleReporterCustom extends A4Reporter {
 
-    public static final class SimpleCallback1 implements WorkerCallback {
+    public static final class SimpleCallback1 implements WorkerCallbackCustom {
         private final SimpleGUICustom gui;
         private final VizGUICustom viz;
         private final SwingLogPanelCustom span;
@@ -317,7 +317,7 @@ final class SimpleReporterCustom extends A4Reporter {
         else cb("unsat", cmd.check, cmd.expects, minimized-lastTime, formulafilename, corefilename, minimizedBefore, minimizedAfter, (System.currentTimeMillis()-minimized));
     }
 
-    private final WorkerCallback cb;
+    private final WorkerCallbackCustom cb;
 
     //========== These fields should be set each time we execute a set of commands
 
@@ -360,7 +360,7 @@ final class SimpleReporterCustom extends A4Reporter {
     private static String latestMetamodelXML=null;
 
     /** Constructor is private. */
-    private SimpleReporterCustom(WorkerCallback cb, boolean recordKodkod) { this.cb=cb; this.recordKodkod=recordKodkod; }
+    private SimpleReporterCustom(WorkerCallbackCustom cb, boolean recordKodkod) { this.cb=cb; this.recordKodkod=recordKodkod; }
 
     /** Helper method to write out a full XML file. */
     private static void writeXML(A4Reporter rep, Module mod, String filename, A4Solution sol, Map<String,String> sources) throws Exception {
@@ -371,12 +371,12 @@ final class SimpleReporterCustom extends A4Reporter {
     private int warn=0;
 
     /** Task that performs solution enumeration. */
-    static final class SimpleTask2 implements WorkerTask {
+    static final class SimpleTask2 implements WorkerTaskCustom {
         private static final long serialVersionUID = 0;
         public String filename = "";
-        public transient WorkerCallback out = null;
+        public transient WorkerCallbackCustom out = null;
         private void cb(Object... objs) throws Exception { out.callback(objs); }
-        public void run(WorkerCallback out) throws Exception {
+        public void run(WorkerCallbackCustom out) throws Exception {
             this.out = out;
             cb("S2", "Enumerating...\n");
             A4Solution sol;
@@ -422,7 +422,7 @@ final class SimpleReporterCustom extends A4Reporter {
     }
 
     /** Task that perform one command. */
-    static final class SimpleTask1 implements WorkerTask {
+    static final class SimpleTask1 implements WorkerTaskCustom {
         private static final long serialVersionUID = 0;
         public A4Options options;
         public String tempdir;
@@ -431,8 +431,8 @@ final class SimpleReporterCustom extends A4Reporter {
         public int resolutionMode;
         public Map<String,String> map;
         public SimpleTask1() { }
-        public void cb(WorkerCallback out, Object... objs) throws IOException { out.callback(objs); }
-        public void run(WorkerCallback out) throws Exception {
+        public void cb(WorkerCallbackCustom out, Object... objs) throws IOException { out.callback(objs); }
+        public void run(WorkerCallbackCustom out) throws Exception {
             cb(out, "S2", "Starting the solver...\n\n");
             final SimpleReporterCustom rep = new SimpleReporterCustom(out, options.recordKodkod);
             final Module world = CompUtil.parseEverything_fromFile(rep, map, options.originalFilename, resolutionMode);

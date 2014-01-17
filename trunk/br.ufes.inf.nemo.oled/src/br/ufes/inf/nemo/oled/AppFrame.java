@@ -24,7 +24,6 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
-import br.ufes.inf.nemo.oled.util.ExtractorUtil;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.MethodCall;
 import edu.mit.csail.sdg.alloy4.OurBorder;
@@ -116,30 +115,10 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		editorArea.setDividerLocation(GetScreenWorkingHeight());
 	}
 	
-	public Thread initializeAlloyAnalyzer() throws InterruptedException
-	{
-		// extract alloy jar file and open alloy
-		try {			
-			ExtractorUtil.extractAlloyJar();
-		} catch (IOException e) {			
-			e.printStackTrace();
-		}		
-		Thread t = new Thread(new Runnable() {
-	        public void run() 
-	        {
-	        	try{
-	        	String[] args = {""};
-	        	analyzer = new SimpleGUICustom(args,false,"");
-	        	}catch(Exception e){
-	        		e.printStackTrace();
-	        	}	        	
-	        }
-		});
-		t.start();
-		t.join();
-		return t;
+	public void setAlloyAnalyzer(SimpleGUICustom analyzer){
+		this.analyzer = analyzer;
 	}
-
+	
 	/**
 	 * Adds the main menu.
 	 */

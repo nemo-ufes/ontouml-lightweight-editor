@@ -105,7 +105,7 @@ import edu.mit.csail.sdg.alloy4.Util.IntPref;
 import edu.mit.csail.sdg.alloy4.Util.StringPref;
 import edu.mit.csail.sdg.alloy4.Version;
 import edu.mit.csail.sdg.alloy4.WorkerEngineCustom;
-import edu.mit.csail.sdg.alloy4.WorkerEngineCustom.WorkerCallback;
+import edu.mit.csail.sdg.alloy4.WorkerEngineCustom.WorkerCallbackCustom;
 import edu.mit.csail.sdg.alloy4.XMLNode;
 import edu.mit.csail.sdg.alloy4compiler.ast.Browsable;
 import edu.mit.csail.sdg.alloy4compiler.ast.Command;
@@ -161,7 +161,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
 
     //======== The Preferences ======================================================================================//
     //======== Note: you must make sure each preference has a unique key ============================================//
-
+    
     /** The list of allowable memory sizes. */
     private List<Integer> allowedMemorySizes;
 
@@ -364,9 +364,13 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     
     /** theme path. */
     public String themePath="";
-        
-    //====== helper methods =================================================//
 
+    private boolean initialized=false;
+    public boolean isInitialized()  { return initialized;  }
+    public void setIsInitialized(boolean value)  { initialized=value;  }
+    
+    //====== helper methods =================================================//
+    
     /** Inserts "filename" into the "recently opened file list". */
     private void addHistory(String filename) {
         String name0=Model0.get(), name1=Model1.get(), name2=Model2.get();
@@ -1187,7 +1191,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
         {
         	if (wrap) return wrapMe();
         	OurUtil.show(frame);
-        	text.get().requestFocusInWindow();
+        	if(text.get()!=null) text.get().requestFocusInWindow();
         }
         return null;
     }
@@ -1736,9 +1740,9 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
     }
 
     /** Create a dummy task object for testing purpose. */
-    private static final WorkerEngineCustom.WorkerTask dummyTask = new WorkerEngineCustom.WorkerTask() {
+    private static final WorkerEngineCustom.WorkerTaskCustom dummyTask = new WorkerEngineCustom.WorkerTaskCustom() {
         private static final long serialVersionUID = 0;
-        public void run(WorkerCallback out) { }
+        public void run(WorkerCallbackCustom out) { }
     };       
     
     /** Set this Frame Visible */
@@ -1764,11 +1768,11 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
 
         // Enable better look-and-feel
         if (Util.onMac() || Util.onWindows()) {
-            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Alloy Analyzer "+Version.version());
+            //System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Alloy Analyzer "+Version.version());
             System.setProperty("com.apple.mrj.application.growbox.intrudes","true");
             System.setProperty("com.apple.mrj.application.live-resize","true");
-            System.setProperty("com.apple.macos.useScreenMenuBar","true");
-            System.setProperty("apple.laf.useScreenMenuBar","true");
+            //System.setProperty("com.apple.macos.useScreenMenuBar","true");
+            //System.setProperty("apple.laf.useScreenMenuBar","true");
             //try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); } catch (Throwable e) { }
         }
 
@@ -1806,7 +1810,7 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
         // since we want the minimized window title on Linux/FreeBSD to just say Alloy Analyzer
 
         // Test the allowed memory sizes
-        final WorkerEngineCustom.WorkerCallback c = new WorkerEngineCustom.WorkerCallback() {
+        final WorkerEngineCustom.WorkerCallbackCustom c = new WorkerEngineCustom.WorkerCallbackCustom() {
             private final List<Integer> allowed = new ArrayList<Integer>();
             private final List<Integer> toTry = new ArrayList<Integer>(Arrays.asList(256,512,768,1024,1536,2048,2560,3072,3584,4096));
             private int mem;
@@ -1992,8 +1996,9 @@ public final class SimpleGUICustom implements ComponentListener, Listener {
                 log.log("For faster performance, go to Options menu and try another solver like MiniSat.\n");
                 log.log("If these native solvers fail on your computer, remember to change back to SAT4J.\n");
                 log.logDivider();
-                log.flush();
+                log.flush();            
             }
+            initialized=true;
         }
 
         // If the temporary directory has become too big, then tell the user they can "clear temporary directory".

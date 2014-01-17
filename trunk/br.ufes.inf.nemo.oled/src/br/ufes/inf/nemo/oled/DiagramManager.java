@@ -25,6 +25,8 @@ package br.ufes.inf.nemo.oled;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -113,6 +116,7 @@ import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
+import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 /**
  * Class responsible for managing and organizing the {@link DiagramEditor}s in tabs.
@@ -1287,27 +1291,66 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}	
 
+	public Thread initAlloyAnalyzer(final boolean visible)
+	{		
+		Thread t = new Thread(new Runnable(){					
+			@Override
+			public void run() {
+				try{
+					if(frame.getAlloyAnalyzer()==null){
+						String[] args = {""};
+						frame.setAlloyAnalyzer(new SimpleGUICustom(args,visible,""));
+					}
+				}catch(Exception e){
+					if(e.getLocalizedMessage().isEmpty())
+						frame.showErrorMessageDialog("Creating Alloy Analyzer Instance", "A unexpected error has occurred. Please, report this to developers.");
+					else
+						frame.showErrorMessageDialog("Creating Alloy Analyzer Instance", e.getLocalizedMessage());
+					e.printStackTrace();
+				}	
+			}
+		});
+		t.start();
+		return t;
+	}
+	
 	/**
 	 * Open Alloy Analyzer
 	 */
-	public void openAlloyAnalyzer (AlloySpecification alloymodel, boolean showAnalyzer, int cmdIndexToExecute) 
+	public void openAlloyAnalyzer (final AlloySpecification alloymodel, final boolean showAnalyzer, final int cmdIndexToExecute) 
 	{
 		if (alloymodel.getAlloyPath().isEmpty() || alloymodel.getAlloyPath()==null) return;
-
-		try {
+		
+		try{
+			//open analyer
+			if(frame.getAlloyAnalyzer()==null){
+				String[] args = {""};
+				frame.setAlloyAnalyzer(new SimpleGUICustom(args,true,""));
+			}
 			
-			frame.getAlloyAnalyzer().setTheme(alloymodel.getDirectory() + "standart_theme.thm");
+			final Timer timer = new Timer(100, null);			
+			ActionListener listener = new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					if (frame.getAlloyAnalyzer().isInitialized())
+					{
+						frame.getAlloyAnalyzer().setTheme(alloymodel.getDirectory() + "standart_theme.thm");				
+						frame.getAlloyAnalyzer().doOpenFile(alloymodel.getAlloyPath());				
+						if (cmdIndexToExecute>=0)frame.getAlloyAnalyzer().doRun(cmdIndexToExecute);						
+						timer.stop();
+					}
+				}
+			};
+			timer.addActionListener(listener);
+			timer.start();					
 
-			frame.getAlloyAnalyzer().setVisible(showAnalyzer);
-
-			frame.getAlloyAnalyzer().doOpenFile(alloymodel.getAlloyPath());
-
-			if (cmdIndexToExecute>=0)frame.getAlloyAnalyzer().doRun(cmdIndexToExecute);
-
-		} catch (Exception e) {			
-			frame.showErrorMessageDialog("Open Alloy Analyzer",e.getLocalizedMessage());					
+		}catch(Exception e){
 			e.printStackTrace();
-		}			
+			if(e.getLocalizedMessage().isEmpty())
+				frame.showErrorMessageDialog("Opening alloy file", "A unexpected error has occurred. please report this to developers.");
+			else
+				frame.showErrorMessageDialog("Opening alloy file", e.getLocalizedMessage());					
+		}
 	}
 
 	/**
