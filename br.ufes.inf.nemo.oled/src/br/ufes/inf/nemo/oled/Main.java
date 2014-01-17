@@ -21,6 +21,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
 
 import br.ufes.inf.nemo.oled.util.BinaryLoader;
+import br.ufes.inf.nemo.oled.util.ExtractorUtil;
 import br.ufes.inf.nemo.oled.util.LoadingException;
 
 /**
@@ -191,7 +192,7 @@ public final class Main {
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
         }        
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());		
-		if (!onMac()&&!onWindows()) UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");		
+		//if (!onMac()&&!onWindows()) UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");		
 		UIManager.put("TabbedPane.focus", new Color(0, 0, 0, 0));
 	}
 
@@ -249,8 +250,8 @@ public final class Main {
 		chooseFont();					
 		frame = new AppFrame(); 
 		loadAppropriateSwtJar();  
-		loadBinaryFiles("oled_bin");					
-		frame.initializeAlloyAnalyzer();					
+		loadBinaryFiles("oled_bin");		
+		ExtractorUtil.extractAlloyJar();
 		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 		frame.toFront();

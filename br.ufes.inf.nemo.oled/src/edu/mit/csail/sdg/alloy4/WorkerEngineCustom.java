@@ -54,13 +54,13 @@ import edu.mit.csail.sdg.alloy4.Version;
 public final class WorkerEngineCustom {
 
    /** This defines an interface for performing tasks in a subprocess. */
-   public interface WorkerTask extends Serializable {
+   public interface WorkerTaskCustom extends Serializable {
       /** The task should send zero or more non-null Objects to out.callback(msg) to report progress to the parent process. */
-      public void run(WorkerCallback out) throws Exception;
+      public void run(WorkerCallbackCustom out) throws Exception;
    }
 
    /** This defines an interface for receiving results from a subprocess. */
-   public interface WorkerCallback {
+   public interface WorkerCallbackCustom {
       /** The task would send zero or more non-null Objects to this handler
        * (the objects will be serialized by the sub JVM and deserialized in the parent JVM). */
       public void callback(Object msg);
@@ -121,7 +121,7 @@ public final class WorkerEngineCustom {
     * @param callback - the handler that will receive outputs from the task
     * @throws IOException - if a previous task is still busy executing
     */
-   public static void runLocally(final WorkerTask task, final WorkerCallback callback) throws Exception {
+   public static void runLocally(final WorkerTaskCustom task, final WorkerCallbackCustom callback) throws Exception {
       synchronized(WorkerEngineCustom.class) {
          if (latest_manager!=null && latest_manager.isAlive()) throw new IOException("Subprocess still performing the last task.");
          try { task.run(callback); callback.done(); } catch(Throwable ex) { callback.callback(ex); callback.fail(); }
@@ -143,7 +143,7 @@ public final class WorkerEngineCustom {
     * @throws IOException - if an error occurred in launching a sub JVM or talking to it
     */
    public static void run
-   (final WorkerTask task, int newmem, int newstack, String jniPath, String classPath, final WorkerCallback callback)
+   (final WorkerTaskCustom task, int newmem, int newstack, String jniPath, String classPath, final WorkerCallbackCustom callback)
    throws IOException {
       if (classPath==null || classPath.length()==0) classPath = System.getProperty("java.class.path");
       synchronized(WorkerEngineCustom.class) {
@@ -295,11 +295,11 @@ public final class WorkerEngineCustom {
       // Now we repeat the following read-then-execute loop
       Thread t = null;
       while(true) {
-         final WorkerTask task;
+         final WorkerTaskCustom task;
          try {
             System.gc(); // while we're waiting for the next task, we might as well encourage garbage collection
             ObjectInputStream oin = new ObjectInputStream(wrap(in));
-            task = (WorkerTask) oin.readObject();
+            task = (WorkerTaskCustom) oin.readObject();
             oin.close();
          } catch(Throwable ex) {
             halt("Can't read task: "+ex, 1);
@@ -322,7 +322,7 @@ public final class WorkerEngineCustom {
                try {
                   x = new ObjectOutputStream(wrap(out));
                   final ObjectOutputStream xx = x;
-                  WorkerCallback y = new WorkerCallback() {
+                  WorkerCallbackCustom y = new WorkerCallbackCustom() {
                      public void callback(Object x) { try {xx.writeObject(x);} catch(IOException ex) {halt("Callback: "+ex, 1);} }
                      public void done() { }
                      public void fail() { }
