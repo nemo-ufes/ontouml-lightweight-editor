@@ -15,6 +15,8 @@ import br.ufes.inf.nemo.antipattern.imppart.ImpPartAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
+import br.ufes.inf.nemo.antipattern.multsort.MultSortAntipattern;
+import br.ufes.inf.nemo.antipattern.partover.PartOverAntipattern;
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
 import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
@@ -54,6 +56,8 @@ public class AntiPatternList {
 	private UndefFormalAntipattern undefFormal;
 	private UndefPhaseAntipattern undefPhase;
 	private WholeOverAntipattern wholeOver;
+	private PartOverAntipattern partOver;
+	private MultSortAntipattern multSort;
 	
 	public AssCycAntipattern getAssCyc() {
 		return assCyc;
@@ -63,7 +67,8 @@ public class AntiPatternList {
 			HetCollAntipattern hetColl, HomoFuncAntipattern homoFunc, ImpAbsAntipattern impAbs, ImpPartAntipattern impPart,
 			MixIdenAntipattern mixIden, MixRigAntipattern mixRig, MultiDepAntipattern multiDep, RelCompAntipattern relComp,
 			RelOverAntipattern relOver, RelRigAntipattern relRig, RelSpecAntipattern relSpec, RepRelAntipattern repRel,
-			UndefFormalAntipattern undefFormal, UndefPhaseAntipattern undefPhase, WholeOverAntipattern wholeOver) {
+			UndefFormalAntipattern undefFormal, UndefPhaseAntipattern undefPhase, WholeOverAntipattern wholeOver,
+			PartOverAntipattern partOver, MultSortAntipattern multSort) {
 
 		this.assCyc = assCyc;
 		this.binOver = binOver;
@@ -85,6 +90,8 @@ public class AntiPatternList {
 		this.undefFormal = undefFormal;
 		this.undefPhase = undefPhase;
 		this.wholeOver = wholeOver;
+		this.partOver = partOver;
+		this.multSort = multSort;
 	}
 	
 	public AntiPatternList() {
@@ -114,9 +121,23 @@ public class AntiPatternList {
 		result.addAll(undefFormal.getOccurrences());
 		result.addAll(undefPhase.getOccurrences());
 		result.addAll(wholeOver.getOccurrences());
+		result.addAll(partOver.getOccurrences());
+		result.addAll(multSort.getOccurrences());
 		return result;
 	}
 	
+	public PartOverAntipattern getPartOver() {
+		return partOver;
+	}
+	public void setPartOver(PartOverAntipattern partOver) {
+		this.partOver = partOver;
+	}
+	public MultSortAntipattern getMultSort() {
+		return multSort;
+	}
+	public void setMultSort(MultSortAntipattern multSort) {
+		this.multSort = multSort;
+	}
 	public void setAssCyc(AssCycAntipattern assCyc) {
 		this.assCyc = assCyc;
 	}
