@@ -828,8 +828,8 @@ public class AntiPatternSearchDialog extends JDialog {
 		btnShowResult.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
-			{	
-				showResult();								
+			{					
+				showResult();				
 			}
 		});
 		

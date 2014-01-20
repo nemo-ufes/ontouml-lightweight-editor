@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -11,6 +12,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.Locale;
+import java.util.jar.Manifest;
 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -113,17 +115,41 @@ public final class Main {
 	/** Load the correct SWT Jar to the classpath according to the OS*/
 	@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
 	public static void loadSwtJar(URL[] swtJarURLs){		
-		try {					
-			URLClassLoader child = new URLClassLoader (swtJarURLs, Main.class.getClassLoader());
-			Class classToLoad = Class.forName ("org.eclipse.swt.widgets.Display", true, child);			
+		try {			
+			ClassLoader parent = Main.class.getClassLoader();
+			ClassLoader cl = new URLClassLoader(swtJarURLs, parent);
+			Thread.currentThread().setContextClassLoader(cl);
+			Class classToLoad=null;
+			try {
+				classToLoad = Class.forName("org.eclipse.swt.widgets.Display",true,cl);		
+				if(classToLoad!=null) System.out.println("SWT loaded: org.eclipse.swt.widgets.Display");						        
+			} catch (ClassNotFoundException exx) {
+				System.err.println("Launch failed: Failed to load SWT class from jar: " + swtJarURLs[0]);
+				throw new RuntimeException(exx);
+			}
 			Method method = classToLoad.getDeclaredMethod ("getDefault");
-			Object instance = classToLoad.newInstance ();
+			Object instance = classToLoad.newInstance();
 			Object result = method.invoke (instance);
 		} catch (Exception e) {
-			e.printStackTrace();		
+			e.printStackTrace();
+		}
+	}	
+
+	/** For now, useless. */
+	public static Manifest getManifest() throws IOException
+	{
+		Class<?> clazz = Main.class;
+		String className = clazz.getSimpleName() + ".class";
+		String classPath = clazz.getResource(className).toString();
+		if (!classPath.startsWith("jar")) {
+			// Class not from JAR
+			return null;
+		}else{
+			String manifestPath = classPath.substring(0, classPath.lastIndexOf("!") + 1) +"/META-INF/MANIFEST.MF";
+			return new Manifest(new URL(manifestPath).openStream());
 		}
 	}
-
+			
 	/** SWT working directory. 
 	 *  At runtime this is the jar's directory, otherwise if at development in eclipse this is the path of the swt library folder. */
 	public static String getSwtWorkingDir()
@@ -163,14 +189,15 @@ public final class Main {
 	        	String workingDir = getSwtWorkingDir();		        
 	        	File file = new File(workingDir.concat(swtFileName));
 	        	swtFileUrl = file.toURI().toURL();
-	        	if (!file.exists ()) System.out.println("Can't locate SWT Jar File" + file.getAbsolutePath());
+	        	if (!file.exists ()) System.err.println("Can't locate SWT Jar File" + file.getAbsolutePath());
 	    	}	    	
             System.out.println("Adding to classpath: " + swtFileUrl);            
-            addUrlMethod.invoke (classLoader, swtFileUrl);            
+            addUrlMethod.invoke (classLoader, swtFileUrl);		
+                        
             return swtFileUrl;
 	    }
 	    catch(Exception e) {
-	        System.out.println("Unable to add the swt jar to the class path: "+swtFileName);
+	        System.err.println("Unable to add the swt jar to the class path: "+swtFileName);
 	        e.printStackTrace();
 	    }	    
 	    return null;
@@ -213,18 +240,19 @@ public final class Main {
 	}
 	
 	/** Load the SWT binaries (*.dlls, *.jnilib, *.so) according to the appropriate Operating System.  */
-	public static void loadBinaryFiles(String binTemp) throws LoadingException, URISyntaxException
+	public static BinaryLoader loadBinaryFiles(String binTemp) throws LoadingException, URISyntaxException
 	{
-		BinaryLoader loader = new BinaryLoader(null, getOSx(), getArch(), binTemp);
+		BinaryLoader loader = new BinaryLoader("oled"+OLED_VERSION+".jar", getOSx(), getArch(), binTemp);
 		loader.extractSWTBinaryFiles();
+		return loader;
 	}
 	
 	/** Add and load the appropriate SWT jar to the classpath according to the operating system. */
 	public static void loadAppropriateSwtJar()
 	{
 		//add and load the appropriate SWT jar to the classpath according to the OS
-        URL swtJarURL = addSwtJarToClassPath();
-        final URL[] urls = new URL[1];
+		final URL[] urls = new URL[1];
+		URL swtJarURL = addSwtJarToClassPath();
         urls[0] = swtJarURL;
         if(onMac()){
 	        com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
@@ -248,9 +276,11 @@ public final class Main {
 	{
 		setSystemProperties();				
 		chooseFont();					
-		frame = new AppFrame(); 
-		loadAppropriateSwtJar();  
-		loadBinaryFiles("oled_bin");		
+		frame = new AppFrame();		  
+		
+		loadBinaryFiles("oled_bin");
+		loadAppropriateSwtJar();
+				
 		ExtractorUtil.extractAlloyJar();
 		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
