@@ -199,7 +199,7 @@ public class BinaryLoader {
 		}
 		addBinariesToJavaPathBySet();
 	}
-		
+
 	/**
 	 * Extracts the SWT native files in a temporary directory.
 	 */

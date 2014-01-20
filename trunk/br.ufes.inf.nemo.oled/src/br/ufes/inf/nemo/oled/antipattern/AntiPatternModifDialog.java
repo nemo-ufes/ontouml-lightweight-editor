@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.antipattern;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Image;
@@ -56,7 +57,15 @@ public class AntiPatternModifDialog extends Dialog {
 				Shell shell = display.getActiveShell();			
 				AntiPatternModifDialog resultDIalog = new AntiPatternModifDialog(shell, fix, frame);				
 				resultDIalog.create();				
-				resultDIalog.open();
+				if(resultDIalog.open()==Window.OK)
+				{
+					AntiPatternResultDialog.refresh();
+//					Display.getDefault().syncExec(new Runnable() {
+//					    public void run() {
+					    	frame.getDiagramManager().updateOLED(fix);
+//					    }
+//					});					    	
+				}
 //		    }
 //    	});		
 	}

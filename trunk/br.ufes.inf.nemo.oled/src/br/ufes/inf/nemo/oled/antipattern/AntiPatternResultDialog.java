@@ -91,7 +91,7 @@ public class AntiPatternResultDialog extends Dialog {
 
 	private AppFrame frame;
 	private ArrayList<AntipatternOccurrence> result;
-	private TableViewer viewer;
+	private static TableViewer viewer;
 	private AntipatternResultFilter filter;
 		
 	/**
@@ -352,38 +352,41 @@ public class AntiPatternResultDialog extends Dialog {
 	
 	public void setFocus() {  viewer.getControl().setFocus();  }
 	
+	public static void refresh()
+	{
+		Display.getDefault().syncExec(new Runnable() {
+		    public void run() {
+		    	viewer.refresh();
+		    }
+		});
+	}
+	
 	public void showWizard(final AntipatternOccurrence apOccur)
 	{
-//    	Display.getDefault().syncExec(new Runnable() {
-//		    public void run() {
-		    	WizardDialog wizardDialog = null;
-		    	
-	        	if (apOccur instanceof RelRigOccurrence) 
-	        	{	        		
-	        		wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));	        		
-	        	}
-	        	
-	        	if (apOccur instanceof RelSpecOccurrence) 
-	        	{	        		
-	        		wizardDialog = new WizardDialog(new Shell(), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
-	        	}
-	        	
-	        	if (apOccur instanceof WholeOverOccurrence) 
-	        	{	        		
-	        		wizardDialog = new WizardDialog(new Shell(), new WholeOverWizard((WholeOverOccurrence)apOccur));	        		
-	        	}
-	        	
-	        	
-        		if(wizardDialog.open()==Window.OK){
-        			apOccur.setIsFixed(true);
-        			if(!apOccur.getFix().isEmpty()){
-        				AntiPatternModifDialog.openDialog(apOccur.getFix(), frame);
-        				frame.getDiagramManager().updateOLED(apOccur.getFix());        				
-        			}
-        		}
-        		
-        		
-//		    }
-//    	});		
+    	WizardDialog wizardDialog = null;
+    	
+    	if (apOccur instanceof RelRigOccurrence) 
+    	{	        		
+    		wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));	        		
+    	}
+    	
+    	if (apOccur instanceof RelSpecOccurrence) 
+    	{	        		
+    		wizardDialog = new WizardDialog(new Shell(), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
+    	}
+    	
+    	if (apOccur instanceof WholeOverOccurrence) 
+    	{	        		
+    		wizardDialog = new WizardDialog(new Shell(), new WholeOverWizard((WholeOverOccurrence)apOccur));	        		
+    	}	        	
+        	
+		if(wizardDialog.open()==Window.OK)
+		{
+			apOccur.setIsFixed(true);			
+			if(!apOccur.getFix().isEmpty())
+			{
+				AntiPatternModifDialog.openDialog(apOccur.getFix(), frame);
+			}
+		}	
 	}
 }

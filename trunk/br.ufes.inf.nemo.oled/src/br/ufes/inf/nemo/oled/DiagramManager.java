@@ -370,16 +370,19 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}	
 	}
 	
-	/** Update OLED according to AntiPatterns actions */
+	/** Update OLED according to AntiPatterns actions 
+	 * @throws InterruptedException */
 	public void updateOLED (final Fix fix)
 	{
 		if (fix==null) return;		
     	Thread t = new Thread(new Runnable() {					
 			@Override
 			public void run() {
+				System.out.println("thread to update oled");
 				SwingUtilities.invokeLater(new Runnable() {			
 					@Override
 					public void run() {
+						System.out.println("updating oled");
 						for(Object obj: fix.getAdded()) {
 							if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
 								AddNodeCommand.updateApplication((RefOntoUML.Element)obj);
@@ -395,9 +398,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 						for(Object obj: fix.getDeleted()) {
 							if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
 								ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
-						}				
+						}						
 					}
-				});						
+				});				
 			}
 		});
     	t.start();
