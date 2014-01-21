@@ -53,6 +53,7 @@ import RefOntoUML.Association;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.componentOf;
+import RefOntoUML.util.RefOntoUMLAdapterFactory;
 import br.ufes.inf.nemo.antipattern.Fix;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
@@ -113,6 +114,7 @@ import br.ufes.inf.nemo.oled.util.TextDescriptionHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
+import br.ufes.inf.nemo.ontouml2text.Test.Glossary;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
@@ -1550,37 +1552,32 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Generates a text description of the model 
 	 */
 	public void generateText() {
-
-		UmlProject project = getCurrentEditor().getProject();
+		UmlProject project = getCurrentProject();
+		Glossary g = new Glossary();
+		g.TextExecute(ProjectBrowser.getParserFor(project));
+		
+		/*UmlProject project = getCurrentEditor().getProject();
 		OperationResult result = TextDescriptionHelper.generateText(project.getModel(), frame);
-
-		if(result.getResultType() != ResultType.ERROR)
-		{
+	
+		if(result.getResultType() != ResultType.ERROR){
 			frame.getInfoManager().showOutputText(result.toString(), true, true); 
 
-			if (!result.getData()[0].equals("CSV"))
-			{
+			if (!result.getData()[0].equals("CSV")){
 				TextEditor textViz = (TextEditor) getEditorForProject(project, EditorNature.TEXT);
 
-				if(textViz == null)
-				{
+				if(textViz == null){
 					textViz = new TextEditor(project);
-
-					//TODO Localize this;
 					add("Text Description Generated", textViz);
 				}
-				else
-				{
+				else{
 					setSelectedComponent(textViz);
 				}
 				textViz.setText((String) result.getData()[0]);
 			}
-
 		}
-		else
-		{
+		else{
 			frame.getInfoManager().showOutputText(result.toString(), true, true); 
-		}
+		}*/
 	}
 
 	private Editor getEditorForProject(UmlProject project, EditorNature nature)
