@@ -375,7 +375,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}	
 	}
-
+ 
 	/** Move generalizations of an element to the diagram. 
 	 *  It will only move the generalizations in which the general and specific clasifiers are contained in the diagram.
 	 */
