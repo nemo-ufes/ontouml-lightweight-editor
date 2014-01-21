@@ -145,7 +145,7 @@ public final class Main {
            if (!hasFont(fontName)) { fontName="Lucida Grande"; fontSize=10; } 
            break;
        }			        
-       setUIFont(new FontUIResource(new Font(fontName, 0, fontSize)));
+       setUIFont(new FontUIResource(new Font(fontName, Font.PLAIN, fontSize)));
 	}
 	
 	/** Makes System.out content to be printed in the output pane of the app. */
