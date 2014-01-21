@@ -15,4 +15,4 @@ Hot to generate an executable JAR for OLED. Follow the steps:
 
 =) 
 
-John - Updated: 16 Jan 2014
+John - Updated: 21 Jan 2014
