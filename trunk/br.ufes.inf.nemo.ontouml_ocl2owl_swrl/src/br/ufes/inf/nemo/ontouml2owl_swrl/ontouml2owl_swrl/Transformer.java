@@ -948,7 +948,7 @@ public class Transformer {
 			OWLObjectIntersectionOf oio =  factory.getOWLObjectIntersectionOf(maxcard,mincard);
 			ax = factory.getOWLEquivalentClassesAxiom(src, oio);
 		}else{
-			errors += "Warning: The cardinality 0..* is not mapped to OWL;\n";
+			errors += "Warning: The cardinality 0..* is not mapped to OWL (occurrence at association "+prop.getIRI().toString().substring(prop.getIRI().toString().indexOf("#")+1)+" , from classe "+src.getIRI().toString().substring(src.getIRI().toString().indexOf("#")+1)+" to class "+dst.getIRI().toString().substring(dst.getIRI().toString().indexOf("#")+1)+");\n";
 		}
 
 		if(ax != null){
@@ -1367,7 +1367,7 @@ public class Transformer {
 			OWLObjectIntersectionOf oio =  factory.getOWLObjectIntersectionOf(maxcard,mincard);
 			ax = factory.getOWLEquivalentClassesAxiom(_OWLownerClass, oio);
 		}else{
-			errors += "Warning: The cardinality 0..* is not mapped to OWL;\n";
+			errors += "Warning: The cardinality 0..* is not mapped to OWL (occurrence at datatype "+atributo.getIRI().toString().substring(atributo.getIRI().toString().indexOf("#")+1)+" , from classe "+_OWLownerClass.getIRI().toString().substring(_OWLownerClass.getIRI().toString().indexOf("#")+1)+");\n";
 		}
 
 		if(ax != null){

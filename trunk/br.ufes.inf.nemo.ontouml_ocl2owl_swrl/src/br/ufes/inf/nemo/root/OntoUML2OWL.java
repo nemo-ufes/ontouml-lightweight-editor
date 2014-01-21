@@ -95,5 +95,4 @@ public class OntoUML2OWL {
 	//		}
 	//		System.out.println("foi");
 	//	}
-
 }
