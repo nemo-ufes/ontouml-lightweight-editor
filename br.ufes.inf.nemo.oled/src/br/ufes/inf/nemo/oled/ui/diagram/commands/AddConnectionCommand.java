@@ -149,9 +149,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 				addToDiagram(diagramElement,redo);
 			}			
 		}
-				
-		ProjectBrowser.frame.getDiagramManager().searchWarnings();
-		ProjectBrowser.frame.getDiagramManager().searchErrors();
+
 		ProjectBrowser.frame.getDiagramManager().updateUI();
 	}
 		

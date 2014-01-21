@@ -100,6 +100,7 @@ public class CreationHandler implements EditorMode {
     
     return element;
   }
+  
   /**
    * Sets the ElementType.
    * @param stereotype the ElementType

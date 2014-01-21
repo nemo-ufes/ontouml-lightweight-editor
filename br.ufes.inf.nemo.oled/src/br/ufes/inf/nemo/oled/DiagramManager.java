@@ -53,7 +53,6 @@ import RefOntoUML.Association;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.componentOf;
-import RefOntoUML.util.RefOntoUMLAdapterFactory;
 import br.ufes.inf.nemo.antipattern.Fix;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
@@ -110,7 +109,6 @@ import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
 import br.ufes.inf.nemo.oled.util.SBVRHelper;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
-import br.ufes.inf.nemo.oled.util.TextDescriptionHelper;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
@@ -352,24 +350,42 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		cmd.run();
 	}
 	
+	public void updateDiagramElement(RefOntoUML.Element element)
+	{
+		
+	}
+	
 	/** Move element to a Diagram */
 	public void moveToDiagram(RefOntoUML.Element element, DiagramEditor d)
 	{
 		if(d!=null) {			
 			if (element instanceof RefOntoUML.Class) {
 				RefOntoUML.Class oClass = (RefOntoUML.Class)element;
-				d.setDragElementMode(oClass,oClass.eContainer());
+				d.setDragElementMode(oClass,oClass.eContainer());				
 			}			
 			if ((element instanceof RefOntoUML.DataType)&&!(element instanceof RefOntoUML.PrimitiveType)&&!(element instanceof RefOntoUML.Enumeration))
 			{
 				RefOntoUML.DataType oClass = (RefOntoUML.DataType)element;
-				d.setDragElementMode(oClass,oClass.eContainer()); 
+				d.setDragElementMode(oClass,oClass.eContainer());
+				moveGeneralizationsToDiagram(oClass,oClass.eContainer(), d);
 			}			
 			if (element instanceof RefOntoUML.Relationship) {
 				RefOntoUML.Relationship rel = (RefOntoUML.Relationship)element;
 				d.setDragRelationMode(rel,rel.eContainer());
 			}
 		}	
+	}
+
+	/** Move generalizations of an element to the diagram. 
+	 *  It will only move the generalizations in which the general and specific clasifiers are contained in the diagram.
+	 */
+	public void moveGeneralizationsToDiagram(RefOntoUML.Element element, EObject eContainer, DiagramEditor d)
+	{
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
+		for(RefOntoUML.Generalization gen: refparser.getGeneralizations((RefOntoUML.Classifier)element))
+		{
+			d.setDragRelationMode(gen,gen.eContainer());
+		}
 	}
 	
 	/** Update OLED according to AntiPatterns actions 
@@ -380,11 +396,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
     	Thread t = new Thread(new Runnable() {					
 			@Override
 			public void run() {
-				System.out.println("thread to update oled");
 				SwingUtilities.invokeLater(new Runnable() {			
 					@Override
 					public void run() {
-						System.out.println("updating oled");
 						for(Object obj: fix.getAdded()) {
 							if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
 								AddNodeCommand.updateApplication((RefOntoUML.Element)obj);
@@ -400,7 +414,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 						for(Object obj: fix.getDeleted()) {
 							if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
 								ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
-						}						
+						}
+						for(Object obj: fix.getModified()){
+							if (obj instanceof RefOntoUML.Association); 
+						}
 					}
 				});				
 			}
@@ -427,7 +444,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
-		add(diagram.getLabelText(), wrapper);		
+		addClosable(diagram.getLabelText(), wrapper);		
 		
 		diagram.addNameLabelChangeListener(new LabelChangeListener() {
 			/** {@inheritDoc} */
@@ -861,11 +878,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * @param text the tabs text
 	 * @param component the component to be added as tab's content
 	 * */
-	@Override
-	public Component add(String text, Component component)
+	public Component addClosable(String text, Component component)
 	{
-		super.addTab(text, component);
-		this.setTabComponentAt(indexOfComponent(component), new ClosableTabPanel(this));
+		addTab(text, component);
+		setTabComponentAt(indexOfComponent(component), new ClosableTabPanel(this));
 		setSelectedComponent(component);
 		return component;
 	}
@@ -875,8 +891,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public Component addNonClosable(String text, Component component)
 	{
-		super.addTab(text, component);
-		this.setTabComponentAt(indexOfComponent(component),null);
+		addTab(text, component);
+		setTabComponentAt(indexOfComponent(component),null);
 		setSelectedComponent(component);
 		return component;
 	}
@@ -1483,7 +1499,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					textViz = new TextEditor(project);
 
 					//TODO Localize this;
-					add("OWL Generated", textViz);
+					addClosable("OWL Generated", textViz);
 				}
 				else
 				{
@@ -1523,7 +1539,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				htmlViz = new HTMLVisualizer(diagram);
 
 				//TODO Localize this;
-				add("SBVR Generated", htmlViz);
+				addClosable("SBVR Generated", htmlViz);
 			}
 			else
 			{
@@ -1567,7 +1583,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 				if(textViz == null){
 					textViz = new TextEditor(project);
-					add("Text Description Generated", textViz);
+					addClosable("Text Description Generated", textViz);
 				}
 				else{
 					setSelectedComponent(textViz);
@@ -1691,7 +1707,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if(instanceViz == null)
 		{
 			//TODO Localize this;
-			this.add("Verification Output", new InstanceVisualizer(diagram, solution, module, alloySources, simulationElements)); 
+			addClosable("Verification Output", new InstanceVisualizer(diagram, solution, module, alloySources, simulationElements)); 
 		}
 		else
 		{
