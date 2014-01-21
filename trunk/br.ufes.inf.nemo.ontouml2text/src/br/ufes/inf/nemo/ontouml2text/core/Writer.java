@@ -16,12 +16,6 @@ import RefOntoUML.Package;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-//import org.cogroo.analyzer.Analyzer;
-//import org.cogroo.analyzer.ComponentFactory;
-//import org.cogroo.checker.CheckDocument;
-//import org.cogroo.checker.GrammarChecker;
-//import org.cogroo.entities.Mistake;
-
 
 public class Writer {
 	
@@ -40,22 +34,7 @@ public class Writer {
 	 * Creates a Writer from an already instantiated OntoUML Parser
 	 * @param ontoParser class that reads and interprets the model
 	 */
-	public Writer(OntoUMLParser ontoParser)
-	{
-//		this.ontoParser = ontoParser;
-//		//Rotina para verificar sintaxe
-//		ComponentFactory factory = ComponentFactory.create(new Locale("pt", "BR"));
-//		Analyzer pipe = factory.createPipe();
-//		try {
-//			gc = new GrammarChecker(pipe);
-//		} catch (IllegalArgumentException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-	}
+	public Writer(OntoUMLParser ontoParser){}
 	
 	/**
 	 * Creates a Writer from a root OntoUML Package/Model, instantiating the OntoUML Parser
@@ -74,8 +53,7 @@ public class Writer {
 	public void runDescriptionGeneration(Map<Association,Integer> assDirectionMap, boolean importDef, 
 			boolean importGen, boolean importSpec, boolean importAtt, boolean importAssoc)
 	{		
-		Set<Classifier> classfSet = ontoParser.getAllInstances(Classifier.class);
-		
+		Set<Classifier> classfSet = ontoParser.getAllInstances(Classifier.class);	
 		for (Classifier classf : classfSet)
 		{
 			if (!(classf instanceof Association) && !(classf instanceof PrimitiveType))
