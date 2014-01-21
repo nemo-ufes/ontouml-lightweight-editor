@@ -215,6 +215,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			element.getParent().removeChild(element);			
 		}
 		
+		ModelHelper.removeMapping(element);
+		
 		if (notification!=null){
 			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 			list.add(element);
@@ -263,7 +265,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			}
 		}else if (deletedElement instanceof RefOntoUML.Class || deletedElement instanceof RefOntoUML.DataType){		
 			ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion((Classifier)deletedElement);			
-		}
+		}		
 		
 		//FIXME - Do not rebuild the tree, only update it!
 		ProjectBrowser.rebuildTree(project);

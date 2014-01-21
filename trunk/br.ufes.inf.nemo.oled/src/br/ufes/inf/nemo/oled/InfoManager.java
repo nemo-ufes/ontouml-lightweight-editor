@@ -23,7 +23,6 @@ import br.ufes.inf.nemo.oled.util.IconLoader;
 public class InfoManager extends JTabbedPane {
 
 	private static final long serialVersionUID = 1L;
-	public static JTabbedPane infoTabbedPane;
 	public static PropertyTablePanel properties;
 	public static ErrorTablePanel errors;
 	public static WarningTablePanel warnings;
@@ -113,26 +112,20 @@ public class InfoManager extends JTabbedPane {
 		setBorder(null);
 		setBackground(UIManager.getColor("Panel.background"));
 					
-		add(properties);	
-		setTitleAt(0," Properties ");
-		setIconAt(0,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/table.png")));
+		addTab(" Properties ",properties);		
+		setIconAt(indexOfComponent(properties),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/table.png")));
 		
-		add(warnings);	
-		setTitleAt(1," Warnings ");
-		setIconAt(1,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/warning.png")));
+		addTab(" Warnings ",warnings);		
+		setIconAt(indexOfComponent(warnings),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/warning.png")));
 		
-		add(errors);	
-		setTitleAt(2," Errors ");
-		setIconAt(2,new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/error.png")));
+		addTab(" Errors ",errors);	
+		setIconAt(indexOfComponent(errors),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/error.png")));
 		
-		add(outputPane);	
-		setTitleAt(3," Output ");		
-		setIconAt(3,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.output.icon")));
+		addTab(" Output ",outputPane);	
+		setIconAt(indexOfComponent(outputPane),IconLoader.getInstance().getIcon(getResourceString("editortoolbar.output.icon")));
 		
-		add(ocleditor);	
-		setTitleAt(4," OCL Editor ");
-		setSelectedIndex(4);
-		setIconAt(4,IconLoader.getInstance().getIcon(getResourceString("editortoolbar.ocleditor.icon")));
+		addTab(" OCL Editor ",ocleditor);	
+		setIconAt(indexOfComponent(ocleditor),IconLoader.getInstance().getIcon(getResourceString("editortoolbar.ocleditor.icon")));
 		
 		setTabPlacement(JTabbedPane.BOTTOM);				
 	}
@@ -155,12 +148,12 @@ public class InfoManager extends JTabbedPane {
 		
 	public void setTitleWarning(String text)
 	{
-		setTitleAt(1,text);
+		setTitleAt(indexOfComponent(warnings),text);
 	}
 	
 	public void setTitleErrors(String text)
 	{
-		setTitleAt(2,text);
+		setTitleAt(indexOfComponent(errors),text);
 	}
 	
 	/**

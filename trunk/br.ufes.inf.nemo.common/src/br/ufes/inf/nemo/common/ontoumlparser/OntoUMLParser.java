@@ -1166,6 +1166,17 @@ public class OntoUMLParser {
 		return genSets;
 	}
 	
+	public ArrayList<Generalization> getGeneralizations(RefOntoUML.Classifier type)
+	{
+		ArrayList<RefOntoUML.Generalization> genList = new ArrayList<RefOntoUML.Generalization>();
+		for(RefOntoUML.Generalization gen: getAllInstances(RefOntoUML.Generalization.class))
+		{			
+			if(type.equals(gen.getGeneral())) genList.add(gen); 
+			if(type.equals(gen.getSpecific())) genList.add(gen);
+		}
+		return genList;
+	}
+	
 	/**
 	 *	Return all (selected and non selected) direct relationships (generalizations and associations) of the classifier c  
 	 */

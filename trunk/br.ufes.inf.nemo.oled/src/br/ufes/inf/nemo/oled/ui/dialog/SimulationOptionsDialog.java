@@ -132,8 +132,8 @@ public class SimulationOptionsDialog extends JDialog {
 		tabbedPane = new JTabbedPane();		
 		tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		tabbedPane.setBackground(UIManager.getColor("Panel.background"));
-		tabbedPane.add(ontoumlOptPane,"OntoUML Model");
-		tabbedPane.add(oclOptPane,"OCL Constraints");
+		tabbedPane.addTab("OntoUML Model",ontoumlOptPane);
+		tabbedPane.addTab("OCL Constraints",oclOptPane);
 		
 		getContentPane().setLayout(new BorderLayout(0, 0));		
 		getContentPane().add(btnpanel, BorderLayout.SOUTH);		
