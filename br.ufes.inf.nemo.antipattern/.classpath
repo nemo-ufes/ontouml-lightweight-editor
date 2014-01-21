@@ -26,6 +26,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.wb.swt.layout.grouplayout_1.6.0.r36x201305212046.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.wb.swt.widgets.baseline_1.6.0.r36x201305212028.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.jface_3.6.2.M20110210-1200.jar"/>
-	<classpathentry kind="lib" path="/org.eclipse.swt/src/swt/win/x64/swt.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt-win-x64/swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

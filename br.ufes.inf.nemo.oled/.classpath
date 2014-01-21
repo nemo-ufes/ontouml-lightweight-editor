@@ -46,12 +46,16 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.core.runtime_3.6.0.v20100505.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/forms-1.1.0.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swingx-all-1.6.3.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="org.eclipse.swt"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.jface_3.6.2.M20110210-1200.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.wb.swt_1.6.0.r36x201305212024.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.wb.swt.layout.grouplayout_1.6.0.r36x201305212046.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.wb.swt.widgets.baseline_1.6.0.r36x201305212028.jar"/>
-	<classpathentry kind="lib" path="/org.eclipse.swt/src/swt/win/x64/swt.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/jar-in-jar-loader.zip"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt-win-x64/swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

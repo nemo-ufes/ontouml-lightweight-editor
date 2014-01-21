@@ -34,7 +34,7 @@ public final class Main {
 	
 	public static AppFrame frame; 
 
-	public static String OLED_VERSION = "0.9"; //Build: 17-01-2014
+	public static String OLED_VERSION = "0.9.1"; //Build: 21-01-2014
 	
 	/** This caches the result of the call to get all fonts. */
 	private static String[] allFonts = null;	
@@ -112,97 +112,6 @@ public final class Main {
 		return p.getValue();
 	}
 	
-	/** Load the correct SWT Jar to the classpath according to the OS*/
-	@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
-	public static void loadSwtJar(URL[] swtJarURLs){		
-		try {			
-			ClassLoader parent = Main.class.getClassLoader();
-			ClassLoader cl = new URLClassLoader(swtJarURLs, parent);
-			Thread.currentThread().setContextClassLoader(cl);
-			Class classToLoad=null;
-			try {
-				classToLoad = Class.forName("org.eclipse.swt.widgets.Display",true,cl);		
-				if(classToLoad!=null) System.out.println("SWT loaded: org.eclipse.swt.widgets.Display");						        
-			} catch (ClassNotFoundException exx) {
-				System.err.println("Launch failed: Failed to load SWT class from jar: " + swtJarURLs[0]);
-				throw new RuntimeException(exx);
-			}
-			Method method = classToLoad.getDeclaredMethod ("getDefault");
-			Object instance = classToLoad.newInstance();
-			Object result = method.invoke (instance);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}	
-
-	/** For now, useless. */
-	public static Manifest getManifest() throws IOException
-	{
-		Class<?> clazz = Main.class;
-		String className = clazz.getSimpleName() + ".class";
-		String classPath = clazz.getResource(className).toString();
-		if (!classPath.startsWith("jar")) {
-			// Class not from JAR
-			return null;
-		}else{
-			String manifestPath = classPath.substring(0, classPath.lastIndexOf("!") + 1) +"/META-INF/MANIFEST.MF";
-			return new Manifest(new URL(manifestPath).openStream());
-		}
-	}
-			
-	/** SWT working directory. 
-	 *  At runtime this is the jar's directory, otherwise if at development in eclipse this is the path of the swt library folder. */
-	public static String getSwtWorkingDir()
-	{
-		String dir = System.getProperty("user.dir");
-		if (dir.contains("br.ufes.inf.nemo.oled")) dir = dir.replace("br.ufes.inf.nemo.oled","org.eclipse.swt").concat(File.separator).concat("src"+File.separator);			
-		else dir = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();		
-		return dir;
-	}
-	
-	/** SWT file name according to the architecture and the operation system. */
-	public static String getSwtFileName()
-	{
-		String swtFileName = "<empty>";
-        String osName = System.getProperty("os.name").toLowerCase();
-        String osArch = System.getProperty("os.arch").toLowerCase();        
-        String os = osName.contains("win") ? "win" : osName.contains("mac") ? "mac" : osName.contains("linux") || osName.contains("nix") ? "linux" : ""; 
-        // throw new RuntimeException("Unknown OS name: "+osName)
-        String arch = osArch.contains("64") ? "x64" : "x86";
-        swtFileName = "swt"+File.separator+os+File.separator+arch+File.separator+"swt.jar";
-        return swtFileName;		
-	}
-	
-	/** Add the correct SWT Jar to the classpath according to the Operating System*/
-	public static URL addSwtJarToClassPath() 
-	{
-		String swtFileName = "<empty>";
-	    try {	    	
-	        swtFileName = getSwtFileName();	        	        	        
-	        URLClassLoader classLoader = (URLClassLoader) Main.class.getClassLoader ();
-	        Method addUrlMethod = URLClassLoader.class.getDeclaredMethod ("addURL", URL.class);
-	        addUrlMethod.setAccessible (true);	        	        
-	        URL swtFileUrl = null;
-	        try{
-	        	swtFileUrl = new URL("rsrc:"+swtFileName);
-	        }catch(MalformedURLException e){
-	        	String workingDir = getSwtWorkingDir();		        
-	        	File file = new File(workingDir.concat(swtFileName));
-	        	swtFileUrl = file.toURI().toURL();
-	        	if (!file.exists ()) System.err.println("Can't locate SWT Jar File" + file.getAbsolutePath());
-	    	}	    	
-            System.out.println("Adding to classpath: " + swtFileUrl);            
-            addUrlMethod.invoke (classLoader, swtFileUrl);		
-                        
-            return swtFileUrl;
-	    }
-	    catch(Exception e) {
-	        System.err.println("Unable to add the swt jar to the class path: "+swtFileName);
-	        e.printStackTrace();
-	    }	    
-	    return null;
-	}
-
 	/** Set System properties according to each Operating System */
 	public static void setSystemProperties() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
 	{
@@ -239,16 +148,122 @@ public final class Main {
        setUIFont(new FontUIResource(new Font(fontName, 0, fontSize)));
 	}
 	
+	/** Makes System.out content to be printed in the output pane of the app. */
+	public static void redirectSystemOut()
+	{
+		frame.createSysOutInterceptor();
+	}	
+	
+	/** For now, useless. */
+	public static Manifest getManifest() throws IOException
+	{
+		Class<?> clazz = Main.class;
+		String className = clazz.getSimpleName() + ".class";
+		String classPath = clazz.getResource(className).toString();
+		if (!classPath.startsWith("jar")) {
+			// Class not from JAR
+			return null;
+		}else{
+			String manifestPath = classPath.substring(0, classPath.lastIndexOf("!") + 1) +"/META-INF/MANIFEST.MF";
+			return new Manifest(new URL(manifestPath).openStream());
+		}
+	}
+			
+	/** SWT working directory. 
+	 *  At runtime this is the jar's directory, otherwise if at development in eclipse this is the path of the swt library folder. */
+	public static String getSwtWorkingDir()
+	{
+		String dir = System.getProperty("user.dir");
+		if (dir.contains("br.ufes.inf.nemo.oled")) dir = dir.replace("br.ufes.inf.nemo.oled","org.eclipse.swt").concat(File.separator).concat("src"+File.separator);			
+		else dir = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();		
+		return dir;
+	}
+	
+	/** SWT working directory. 
+	 *  At runtime this is the jar's directory, otherwise if at development in eclipse this is the path of the swt library folder. */
+	public static String getSwtWorkingDir2()
+	{
+		String dir = System.getProperty("user.dir");
+		if (dir.contains("br.ufes.inf.nemo.oled")) dir = dir.replace("br.ufes.inf.nemo.oled","org.eclipse.swt").concat(File.separator).concat("src"+File.separator);			
+		else dir = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();		
+		return dir;
+	}
+	
+	/** SWT file name according to the architecture and the operation system. */
+	public static String getSwtFileName()
+	{
+		return "swt"+File.separator+getOSx()+File.separator+getArch()+File.separator+"swt.jar";        		
+	}
+	
+	/** SWT file name according to the architecture and the operation system. */
+	public static String getSwtFileName2()
+	{
+		return "swt-"+getOSx()+"-"+getArch()+".jar";    	
+	}
+	
+	/** Add the correct SWT Jar to the classpath according to the Operating System*/
+	public static URL addSwtJarToClassPath() 
+	{
+		String swtFileName = "<empty>";
+	    try {	    	
+	        swtFileName = getSwtFileName2();	        	        	        
+	        URLClassLoader classLoader = (URLClassLoader) Main.class.getClassLoader();
+	        Method addUrlMethod = URLClassLoader.class.getDeclaredMethod ("addURL", URL.class);
+	        addUrlMethod.setAccessible (true);	        	        
+	        URL swtFileUrl = null;
+	        try{
+	        	swtFileUrl = new URL("rsrc:"+swtFileName);
+	        }catch(MalformedURLException e){
+	        	String workingDir = getSwtWorkingDir2();		        
+	        	File file = new File(workingDir.concat(swtFileName));
+	        	swtFileUrl = file.toURI().toURL();
+	        	if (!file.exists ()) System.err.println("Can't locate SWT Jar File" + file.getAbsolutePath());
+	    	}	    	
+            System.out.println("Adding to classpath: " + swtFileUrl);            
+            addUrlMethod.invoke (classLoader, swtFileUrl);		
+            
+            return swtFileUrl;
+	    }
+	    catch(Exception e) {
+	        System.err.println("Unable to add the swt jar to the class path: "+swtFileName);
+	        e.printStackTrace();
+	    }	    
+	    return null;
+	}
+
+	/** Load the correct SWT Jar to the classpath according to the OS*/
+	@SuppressWarnings({ "unchecked", "unused", "rawtypes", "resource" })
+	public static void loadSwtJar(URL[] swtJarURLs){		
+		try {			
+			ClassLoader parent = Main.class.getClassLoader();			
+			ClassLoader cl = new URLClassLoader(swtJarURLs,parent);
+			Class classToLoad=null;
+			try {
+				classToLoad = cl.loadClass("org.eclipse.swt.widgets.Display");
+				if(classToLoad!=null) System.out.println("SWT loaded from org.eclipse.swt.widgets.Display in "+swtJarURLs[0]);						        
+			} catch (ClassNotFoundException exx) {
+				System.err.println("Launch failed: Failed to load SWT class from jar: " + swtJarURLs[0]);
+				throw new RuntimeException(exx);
+			}
+			Method method = classToLoad.getDeclaredMethod ("getDefault");
+			Object instance = classToLoad.newInstance();
+			Object result = method.invoke (instance);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/** Load the SWT binaries (*.dlls, *.jnilib, *.so) according to the appropriate Operating System.  */
 	public static BinaryLoader loadBinaryFiles(String binTemp) throws LoadingException, URISyntaxException
 	{
-		BinaryLoader loader = new BinaryLoader("oled"+OLED_VERSION+".jar", getOSx(), getArch(), binTemp);
+		BinaryLoader loader = new BinaryLoader(null, getOSx(), getArch(), binTemp);
 		loader.extractSWTBinaryFiles();
+		loader.addBinariesToJavaPathBySystem();
 		return loader;
 	}
 	
 	/** Add and load the appropriate SWT jar to the classpath according to the operating system. */
-	public static void loadAppropriateSwtJar()
+	public static void loadAppropriateSwtJar() throws LoadingException, URISyntaxException
 	{
 		//add and load the appropriate SWT jar to the classpath according to the OS
 		final URL[] urls = new URL[1];
@@ -265,28 +280,7 @@ public final class Main {
         	loadSwtJar(urls);
         }
 	}
-	
-	/** Makes System.out content to be printed in the output pane of the app. */
-	public static void redirectSystemOut(AppFrame frame)
-	{
-		frame.createSysOutInterceptor();
-	}
-	
-	public static void runOLED() throws Exception
-	{
-		setSystemProperties();				
-		chooseFont();					
-		frame = new AppFrame();		  
 		
-		loadBinaryFiles("oled_bin");
-		loadAppropriateSwtJar();
-				
-		ExtractorUtil.extractAlloyJar();
-		frame.setLocationByPlatform(true);
-		frame.setVisible(true);
-		frame.toFront();
-	}
-	
 	/**  
 	 * The start method for this application.
 	 * @param args the command line parameters
@@ -295,8 +289,17 @@ public final class Main {
 	{				
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					runOLED();					
+				try {										
+					setSystemProperties();				
+					chooseFont();	
+					frame = new AppFrame();	
+					loadAppropriateSwtJar();
+					loadBinaryFiles("oled_bin");
+					ExtractorUtil.extractAlloyJar();
+					frame.setLocationByPlatform(true);
+					frame.setVisible(true);
+					frame.toFront();
+					//redirectSystemout();					
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}				

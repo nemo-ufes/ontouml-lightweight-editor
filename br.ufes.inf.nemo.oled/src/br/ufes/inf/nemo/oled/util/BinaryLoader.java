@@ -44,6 +44,10 @@ public class BinaryLoader {
 	public String arch = "undef";
 	public String binTemp="oled_bin";
 	
+	public File getJarFile() {
+		return jarFile;
+	}
+		
 	/**
 	 * Constructs a new loader.
 	 * 
@@ -54,40 +58,174 @@ public class BinaryLoader {
 	public BinaryLoader(String jarName, String osx, String arch, String binTemp) throws URISyntaxException {
 		this.osx = osx;
 		this.binTemp = binTemp;
-		this.arch = arch;		
-		String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();		
-		String fileName = path+jarName;
-		
-		try{
-			String decodedPath = URLDecoder.decode(fileName, "UTF-8");
+		this.arch = arch;
+		if (jarName!=null  && !jarName.isEmpty()) 
+		{		
+			String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();		
+			String fileName = path+jarName;		
+			try{
+				String decodedPath = URLDecoder.decode(fileName, "UTF-8");			
+			    jarFile = new File(decodedPath);
+			    if(!jarFile.exists()) return;
+			}
+			catch(UnsupportedEncodingException cantHappen){ /*Never gets here*/ }
+			System.out.println("Jar file: "+jarFile.getAbsolutePath());
+		}
+	}
+	
+	public File getOLEDBin() throws LoadingException 
+	{
+		if (BinDir == null) {			
+			String temp = System.getProperty("java.io.tmpdir");			
+			if (temp == null || temp.length() == 0) System.out.println("Error. JVM need to specify a temporary directory using java.io.tmpdir property.");			
+			//String username = System.getProperty("user.name");
+			File tempfile = new File(temp + File.separatorChar + binTemp);			
+			tempfile.mkdirs();
+			String ans = ConfigurationHelper.canon(tempfile.getPath());			
+			if (!tempfile.isDirectory()) System.out.println("Error. Cannot create the temporary directory "	+ ans);
+			if (!ConfigurationHelper.onWindows()) {
+				String[] args = { "chmod", "700", ans };
+				try {
+					Runtime.getRuntime().exec(args).waitFor();
+				} catch (Throwable ex) {
+				} // We only intend to make a best effort.
+			}				
+			BinDir = tempfile.getAbsoluteFile();
+		}
+		return BinDir;
+	}
+	
+	public void addBinariesToJavaPathBySystem()
+	{
+        try {
+            System.setProperty("java.library.path", getOLEDBin().getAbsolutePath());
+            // The above line is actually useless on Sun JDK/JRE (see Sun's bug ID 4280189)
+            // The following 4 lines should work for Sun's JDK/JRE (though they probably won't work for others)
+            String[] newarray = new String[]{getOLEDBin().getAbsolutePath()};
+            java.lang.reflect.Field old = ClassLoader.class.getDeclaredField("usr_paths");
+            old.setAccessible(true);
+            old.set(null,newarray);
+        } catch (Throwable ex) { }
+	}
+	
+	public void extractSWTBinaryFiles()
+	{
+		try {
+			if(osx=="win"&& arch=="x64"){		
+				doExtraction("swt-awt-win32-4332-x64.dll");
+				doExtraction("swt-gdip-win32-4332-x64.dll");								
+				doExtraction("swt-wgl-win32-4332-x64.dll");
+				doExtraction("swt-win32-4332-x64.dll");
+				doExtraction("swt-xulrunner-win32-4332-x64.dll");
+			}
+			if(osx=="win" && arch=="x86"){
+				doExtraction("swt-awt-win32-4332-x86.dll");
+				doExtraction("swt-gdip-win32-4332-x86.dll");								
+				doExtraction("swt-wgl-win32-4332-x86.dll");
+				doExtraction("swt-win32-4332-x86.dll");
+				doExtraction("swt-xulrunner-win32-4332-x86.dll");
+				doExtraction("swt-webkit-win32-4332-x86.dll");
+			}
+			if(osx=="mac" && arch=="x86"){
+				doExtraction("libswt-awt-cocoa-4332-x86.jnilib");
+				doExtraction("libswt-cocoa-4332-x86.jnilib");				
+				doExtraction("libswt-pi-cocoa-4332-x86.jnilib");
+				doExtraction("libswt-xulrunner-cocoa-4332-x86.jnilib");				
+			}
+			if(osx=="mac" && arch=="x64"){
+				doExtraction("libswt-awt-cocoa-4332-x64.jnilib");
+				doExtraction("libswt-cocoa-4332-x64.jnilib");				
+				doExtraction("libswt-pi-cocoa-4332-x64.jnilib");
+				doExtraction("libswt-xulrunner-cocoa-4332-x64.jnilib");				
+			}
+			if(osx=="linux" && arch=="x64"){
+				doExtraction("libswt-atk-gtk-4332-x64.so");
+				doExtraction("libswt-awt-gtk-4332-x64.so");				
+				doExtraction("libswt-cairo-gtk-4332-x64.so");
+				doExtraction("libswt-glx-gtk-4332-x64.so");				
+				doExtraction("libswt-gnome-gtk-4332-x64.so");
+				doExtraction("libswt-gtk-4332-x64.so");
+				doExtraction("libswt-mozilla-gtk-4332-x64.so");
+				doExtraction("libswt-pi-gtk-4332-x64.so");
+				doExtraction("libswt-pi3-gtk-4332-x64.so");
+				doExtraction("libswt-webkit-gtk-4332-x64.so");
+				doExtraction("libswt-xpcominit-gtk-4332-x64.so");
+				doExtraction("libswt-xulrunner-fix-x64.so");
+				doExtraction("libswt-xulrunner-gtk-4332-x64.so");
+			}
+			if(osx=="linux" && arch=="x86"){
+				doExtraction("libswt-atk-gtk-4332-x86.so");
+				doExtraction("libswt-awt-gtk-4332-x86.so");				
+				doExtraction("libswt-cairo-gtk-4332-x86.so");
+				doExtraction("libswt-glx-gtk-4332-x86.so");				
+				doExtraction("libswt-gnome-gtk-4332-x86.so");
+				doExtraction("libswt-gtk-4332-x86.so");
+				doExtraction("libswt-mozilla-gtk-4332-x86.so");
+				doExtraction("libswt-pi-gtk-4332-x86.so");
+				doExtraction("libswt-pi3-gtk-4332-x86.so");
+				doExtraction("libswt-webkit-gtk-4332-x86.so");
+				doExtraction("libswt-xpcominit-gtk-4332-x86.so");
+				doExtraction("libswt-xulrunner-fix-x86.so");
+				doExtraction("libswt-xulrunner-gtk-4332-x86.so");
+			}
 			
-		    jarFile = new File(decodedPath);
-		    if(!jarFile.exists()) return;
+		} catch (LoadingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		catch(UnsupportedEncodingException cantHappen){
-			//Never gets here
+	}
+	
+	/** More specific: Particularly to SWT libraries in the project org.eclipse.swt. */
+	private String doExtraction(String binName) throws LoadingException, IOException
+	{
+		//String binPackage = "swt"+File.separator+osx+File.separator+arch+File.separator;
+		String binPackage = "";
+		
+		String outFolder = getOLEDBin().getAbsolutePath()+File.separator+binName;		
+		String outPath = URLDecoder.decode(outFolder, "UTF-8");		
+		File outFile = new File(outPath);
+		if (outFile.exists()) return outFile.getAbsolutePath();
+				 
+		// Copy 		
+		String binResource = URLDecoder.decode(binPackage+binName,"UTF-8");
+		String binWorkingDir = URLDecoder.decode(getBinWorkingDir()+binPackage+File.separator+binName,"UTF-8");
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream(binResource);	
+		if(is==null) is = this.getClass().getClassLoader().getResourceAsStream(File.separator+binResource);	
+		if(is !=null) System.out.println("Reading from: "+binResource);
+		if(is ==null) System.out.println("Reading from: "+binWorkingDir);
+		if(is == null) is = new FileInputStream(binWorkingDir);
+		
+		OutputStream out = new FileOutputStream(outFile);
+				
+		// copy data flow -> MB x MB
+		byte[] src = new byte[1024];
+		int read = 0;
+		while ((read = is.read(src)) != -1){
+			out.write(src, 0, read);
 		}
-		System.out.println("Jar file: "+jarFile.getAbsolutePath());
+		is.close();
+		out.flush();
+		out.close();
+		
+		System.out.println("Extracted: "+outFile.getAbsolutePath());
+		return outFile.getAbsolutePath();
+
 	}
 
 	@SuppressWarnings("unused")
-	public void addBinariesToJavaPathByExec() throws LoadingException {		
+	public void addBinariesToJavaPathByCmd() throws LoadingException {		
 		try {			
-			if (isInstalled() == false) {
-				
+			if (isInstalled() == false) 
+			{				
 				if (!jarFile.exists()) return ;
-										     
-				//String param1 = "";
-				//if (osx=="mac") param1="-XstartOnFirstThread";
 				String[] command = {"java", "-Djava.library.path=" + getOLEDBin(), "-jar", getJarFile().getName()};
 				String[] environment = null;
 				String workPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 				String decodedPath = URLDecoder.decode(workPath, "UTF-8");
-				File workDir = new File(decodedPath);
-				
+				File workDir = new File(decodedPath);				
 				System.out.println("Working Dir: "+workDir.getAbsolutePath());
 				Process p = Runtime.getRuntime().exec(command, environment, workDir);
-
 				// Implementation to get the standard output, requires two VMs
 				// running
 				/*
@@ -103,101 +241,6 @@ public class BinaryLoader {
 		} catch (IOException e) {
 			throw new LoadingException(e);
 		}
-	}
-
-	/**
-	 * @return Returns the jarFile.
-	 */
-	public File getJarFile() {
-		return jarFile;
-	}
-
-	public void addBinariesToJavaPathBySet()
-	{
-		// Add the new JNI location to the java.library.path
-        try {
-            System.setProperty("java.library.path", getOLEDBin().getAbsolutePath());
-            // The above line is actually useless on Sun JDK/JRE (see Sun's bug ID 4280189)
-            // The following 4 lines should work for Sun's JDK/JRE (though they probably won't work for others)
-            String[] newarray = new String[]{getOLEDBin().getAbsolutePath()};
-            java.lang.reflect.Field old = ClassLoader.class.getDeclaredField("usr_paths");
-            old.setAccessible(true);
-            old.set(null,newarray);
-        } catch (Throwable ex) { }
-	}
-	
-	public File getOLEDBin() throws LoadingException 
-	{
-		if (BinDir == null) {
-			
-			String temp = System.getProperty("java.io.tmpdir");
-			
-			if (temp == null || temp.length() == 0)
-				System.out.println("Error. JVM need to specify a temporary directory using java.io.tmpdir property.");
-			
-			//String username = System.getProperty("user.name");
-			File tempfile = new File(temp + File.separatorChar + binTemp);
-			
-			tempfile.mkdirs();
-			String ans = ConfigurationHelper.canon(tempfile.getPath());
-			
-			if (!tempfile.isDirectory()) {
-				System.out.println("Error. Cannot create the temporary directory "	+ ans);
-			}
-			if (!ConfigurationHelper.onWindows()) {
-				String[] args = { "chmod", "700", ans };
-				try {
-					Runtime.getRuntime().exec(args).waitFor();
-				} catch (Throwable ex) {
-				} // We only intend to make a best effort.
-			}				
-
-			BinDir = tempfile.getAbsoluteFile();
-		}
-		return BinDir;
-	}
-
-	public void extractSWTBinaryFiles()
-	{
-		try {
-			if(osx=="win"){		
-				doExtraction("swt-awt-win32-4332.dll");
-				doExtraction("swt-gdip-win32-4332.dll");								
-				doExtraction("swt-wgl-win32-4332.dll");
-				doExtraction("swt-win32-4332.dll");
-				doExtraction("swt-xulrunner-win32-4332.dll");
-			}
-			if(osx=="win" && arch=="x86"){
-				doExtraction("swt-webkit-win32-4332.dll");
-			}
-			if(osx=="mac"){
-				doExtraction("libswt-awt-cocoa-4332.jnilib");
-				doExtraction("libswt-cocoa-4332.jnilib");				
-				doExtraction("libswt-pi-cocoa-4332.jnilib");
-				doExtraction("libswt-xulrunner-cocoa-4332.jnilib");				
-			}
-			if(osx=="linux"){
-				doExtraction("libswt-atk-gtk-4332.so");
-				doExtraction("libswt-awt-gtk-4332.so");				
-				doExtraction("libswt-cairo-gtk-4332.so");
-				doExtraction("libswt-glx-gtk-4332.so");				
-				doExtraction("libswt-gnome-gtk-4332.so");
-				doExtraction("libswt-gtk-4332.so");
-				doExtraction("libswt-mozilla-gtk-4332.so");
-				doExtraction("libswt-pi-gtk-4332.so");
-				doExtraction("libswt-pi3-gtk-4332.so");
-				doExtraction("libswt-webkit-gtk-4332.so");
-				doExtraction("libswt-xpcominit-gtk-4332.so");
-				doExtraction("libswt-xulrunner-fix.so");
-				doExtraction("libswt-xulrunner-gtk-4332.so");
-			}
-			
-		} catch (LoadingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		addBinariesToJavaPathBySet();
 	}
 
 	/**
@@ -237,12 +280,12 @@ public class BinaryLoader {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
-		addBinariesToJavaPathBySet();		
+		addBinariesToJavaPathBySystem();		
 		return outputDir;
 	}
 
 	/** More general: for each entry in the Jar file */
-	public void doExtraction(File outputDir, ZipFile zf, ZipEntry entry, String pathname) throws Exception
+	private void doExtraction(File outputDir, ZipFile zf, ZipEntry entry, String pathname) throws Exception
 	{
 		// eliminates parent packages of pathname
 		Path p = Paths.get(pathname);
@@ -260,8 +303,8 @@ public class BinaryLoader {
 		}
 		in.close();
 		out.close();
-		//System.out.println("Extracted: "+outFile.getAbsolutePath());
-	}
+		System.out.println("Extracted: "+outFile.getAbsolutePath());
+	}	
 	
 	public String getBinWorkingDir()
 	{
@@ -273,34 +316,6 @@ public class BinaryLoader {
 		return dir;
 	}
 	
-	/** More specific: Particularly to SWT libraries in the project org.eclipse.swt. */
-	public String doExtraction(String binName) throws LoadingException, IOException
-	{
-		String destFolderPath = getOLEDBin().getAbsolutePath()+File.separator+binName;		
-		String binPath = URLDecoder.decode(destFolderPath, "UTF-8");		
-		File binFile = new File(binPath);
-		if (binFile.exists()) return binFile.getAbsolutePath();
-				
-		// Copy 
-		String packPath = "swt"+File.separator+osx+File.separator+arch+File.separator;
-		InputStream is = ExtractorUtil.class.getClassLoader().getResourceAsStream(packPath+binName);		
-		if(is == null) is = new FileInputStream(getBinWorkingDir()+packPath+binName);
-		OutputStream out = new FileOutputStream(binFile);
-				
-		// copy data flow -> MB x MB
-		byte[] src = new byte[1024];
-		int read = 0;
-		while ((read = is.read(src)) != -1){
-			out.write(src, 0, read);
-		}
-		is.close();
-		out.flush();
-		out.close();
-		
-		System.out.println("Extracted: "+binFile.getAbsolutePath());
-		return binFile.getAbsolutePath();
-
-	}
 	/**
 	 * Checks if SWT isn't already loaded.
 	 * 
