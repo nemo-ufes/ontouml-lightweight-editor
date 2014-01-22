@@ -828,8 +828,9 @@ public class AntiPatternSearchDialog extends JDialog {
 		btnShowResult.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
-			{					
-				showResult();				
+			{
+				//dispose();
+				showResult();
 			}
 		});
 		
@@ -1669,17 +1670,6 @@ public class AntiPatternSearchDialog extends JDialog {
 		if(WholeOverThread!=null) WholeOverThread.interrupt();
 
 	}
-
-	public void updateGUI()
-	{
-		SwingUtilities.invokeLater(new Runnable() {					
-			@Override
-			public void run() {
-				ProjectBrowser pb = ProjectBrowser.getProjectBrowserFor(frame, frame.getDiagramManager().getCurrentProject());
-				pb.getTree().updateUI();						
-			}
-		});
-	}
 	
 	/**
 	 * Show Result
@@ -1695,7 +1685,7 @@ public class AntiPatternSearchDialog extends JDialog {
 				}
 			});
 		}else{
-	    	AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+			AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
 	    	AntiPatternResultDialog.openDialog(apList,frame);
 		}
 	}

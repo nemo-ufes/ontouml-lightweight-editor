@@ -235,7 +235,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
 						generalizationPanel = new JPanel();
 						GroupLayout generalizationPanelLayout = new GroupLayout((JComponent)generalizationPanel);
 						generalizationPanel.setLayout(generalizationPanelLayout);
-						contentTabbedPane.addTab(ApplicationResources.getInstance().getString("dialog.gen.generalization"), null, generalizationPanel, null);
+						contentTabbedPane.addTab(ApplicationResources.getInstance().getString("dialog.gen.generalization"), null, generalizationPanel, "");
 						{
 							parentPanel = new JPanel();
 							GroupLayout jPanel1Layout = new GroupLayout((JComponent)parentPanel);
@@ -320,7 +320,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
 						generalizationSetPanel = new JPanel();
 						GroupLayout generalizationSetPanelLayout = new GroupLayout((JComponent)generalizationSetPanel);
 						generalizationSetPanel.setLayout(generalizationSetPanelLayout);
-						contentTabbedPane.addTab(ApplicationResources.getInstance().getString("dialog.gen.generalizationset"), null, generalizationSetPanel, null);
+						contentTabbedPane.addTab(ApplicationResources.getInstance().getString("dialog.gen.generalizationset"), null, generalizationSetPanel, "");
 						{
 							genSetPropertiesPanel = new JPanel();
 							GroupLayout createGeneratizationSetPanelLayout = new GroupLayout((JComponent)genSetPropertiesPanel);

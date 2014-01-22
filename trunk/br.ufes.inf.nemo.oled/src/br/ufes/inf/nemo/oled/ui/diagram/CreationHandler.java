@@ -25,6 +25,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
@@ -166,9 +167,14 @@ public class CreationHandler implements EditorMode {
     	parent = (CompositeNode) possibleParent;
     }
     
+    Classifier elem = ((ClassElement)element).getClassifier();
+    
     AddNodeCommand addcmd = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), tmpPos.getX(), tmpPos.getY(), editor.getDiagram().getProject(),(RefOntoUML.Package)((ClassElement)element).getClassifier().eContainer());
     editor.execute(addcmd);
-   	  
+   	 
+    //move all its generalizations too
+    editor.getDiagramManager().moveGeneralizationsToDiagram(elem, elem.eContainer(), editor);
+    
     //CLEANUP
     //if(element instanceof ClassElement)
 	//	editor.editLabel(((ClassElement)element).getMainLabel());
