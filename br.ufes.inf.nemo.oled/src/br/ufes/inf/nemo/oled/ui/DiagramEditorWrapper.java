@@ -17,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /** 
  * Wrapper class for {@link DiagramEditor} responsible for providing toolbar and handling the model file.  
@@ -84,7 +85,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	}
 	
 	public boolean contains(RefOntoUML.Element element){
-		return editor.getDiagram().containsChild(element);
+		return editor.getDiagram().containsChild(ModelHelper.getDiagramElement(element));
 	}
 	
 	public void setModelFile(File modelFile) {

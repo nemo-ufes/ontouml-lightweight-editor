@@ -93,8 +93,6 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
-import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.DiagramElementFactoryImpl;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.AlloyHelper;
@@ -329,7 +327,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/** Delete element from all diagrams in the project. (not from the model) */
-	public void deleteFromAllDiagrams(RefOntoUML.Element element)
+	public void deleteFromDiagrams(RefOntoUML.Element element)
 	{
 		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
 		deletionList.add(element);
@@ -350,15 +348,29 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		cmd.run();
 	}
 	
+	/** Update element in the diagram . This actually deletes the current diagram element and creates another diagram element for it.*/
+	public void updateDiagramElement(RefOntoUML.Element element, DiagramEditor d)
+	{
+		if(element instanceof RefOntoUML.Relationship){
+			deleteFromDiagram(element, d);
+			moveToDiagram(element, d); 
+		}
+	}
+	
+	/** Update element in all diagrams it appears. This actually deletes all the diagram elements and creates others diagram elements for it. */
 	public void updateDiagramElement(RefOntoUML.Element element)
 	{
-		
+		for(DiagramEditor diagramEditor: getDiagramEditors(element))
+		{
+			updateDiagramElement(element,diagramEditor);
+		}
 	}
 	
 	/** Move element to a Diagram */
 	public void moveToDiagram(RefOntoUML.Element element, DiagramEditor d)
 	{
-		if(d!=null) {			
+		if (d!=null && d.getDiagram().containsChild(element)) return;			
+		if (d!=null) {			
 			if (element instanceof RefOntoUML.Class) {
 				RefOntoUML.Class oClass = (RefOntoUML.Class)element;
 				d.setDragElementMode(oClass,oClass.eContainer());				
@@ -366,12 +378,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if ((element instanceof RefOntoUML.DataType)&&!(element instanceof RefOntoUML.PrimitiveType)&&!(element instanceof RefOntoUML.Enumeration))
 			{
 				RefOntoUML.DataType oClass = (RefOntoUML.DataType)element;
-				d.setDragElementMode(oClass,oClass.eContainer());
-				moveGeneralizationsToDiagram(oClass,oClass.eContainer(), d);
+				d.setDragElementMode(oClass,oClass.eContainer());				
 			}			
 			if (element instanceof RefOntoUML.Relationship) {
 				RefOntoUML.Relationship rel = (RefOntoUML.Relationship)element;
-				d.setDragRelationMode(rel,rel.eContainer());
+				d.dragRelation(rel,rel.eContainer());
 			}
 		}	
 	}
@@ -384,7 +395,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
 		for(RefOntoUML.Generalization gen: refparser.getGeneralizations((RefOntoUML.Classifier)element))
 		{
-			d.setDragRelationMode(gen,gen.eContainer());
+			d.dragRelation(gen,gen.eContainer());
 		}
 	}
 	
@@ -406,6 +417,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 						for(Object obj: fix.getAdded()) {
 							if (obj instanceof RefOntoUML.Relationship)
 								AddConnectionCommand.updateApplication((RefOntoUML.Element)obj);
+						}				
+						for(Object obj: fix.getModified()){
+							if (obj instanceof RefOntoUML.Property){
+								Association assoc= ((RefOntoUML.Property)obj).getAssociation();								
+								if (assoc!=null) updateDiagramElement((RefOntoUML.Element)assoc);																
+							}							
 						}
 						for(Object obj: fix.getDeleted()) {
 							if (obj instanceof RefOntoUML.Relationship)
@@ -414,9 +431,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 						for(Object obj: fix.getDeleted()) {
 							if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
 								ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
-						}
-						for(Object obj: fix.getModified()){
-							if (obj instanceof RefOntoUML.Association); 
 						}
 					}
 				});				
@@ -436,11 +450,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		editor.addSelectionListener(this);
 		editor.addAppCommandListener(editorDispatcher);
 
-		// Includes the elements opened in the ModelHelper mapping for future accesses
-		for(DiagramElement dElem: editor.getDiagram().getChildren()){
-			if (dElem instanceof ClassElement) ModelHelper.addMapping(((ClassElement)dElem).getClassifier(), dElem);
-			if (dElem instanceof AssociationElement) ModelHelper.addMapping(((AssociationElement)dElem).getRelationship(), dElem);
-		}
+		// Add all the diagram elements of 'diagram' to the ModelHelper mapping.
+		// Keeps trace of mappings between DiagramElement <-> Element.
+		ModelHelper.addMapping(editor.getDiagram());
 		
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
@@ -1047,15 +1059,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ArrayList<DiagramEditor> list = new ArrayList<DiagramEditor>();
 		for(UmlDiagram d: currentProject.getDiagrams()){
 			if(d instanceof StructureDiagram){
-				StructureDiagram diagram = (StructureDiagram)d;
-				DiagramEditor editor = getDiagramEditor(diagram);
-				if (editor!=null && diagram.containsChild(element)) list.add(editor);
-				else if (editor==null && diagram.containsChild(element)){
-					DiagramEditor newEditor = new DiagramEditor(frame, this, diagram);
-					newEditor.addEditorStateListener(this);
-					newEditor.addSelectionListener(this);
-					newEditor.addAppCommandListener(editorDispatcher);
-					list.add(newEditor);
+				StructureDiagram diagram = (StructureDiagram)d;				
+				DiagramElement elem = ModelHelper.getDiagramElement(element);
+				if (diagram.containsChild(elem)) {
+					DiagramEditor editor = getDiagramEditor(diagram);
+					if (editor==null){
+						editor = new DiagramEditor(frame, this, diagram);
+						editor.addEditorStateListener(this);
+						editor.addSelectionListener(this);
+						editor.addAppCommandListener(editorDispatcher);						
+					}
+					list.add(editor);
 				}
 			}
 		}

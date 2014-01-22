@@ -8,8 +8,8 @@ Hot to generate an executable JAR for OLED. Follow the steps:
    Rename the jar name to "oled"+OLEd_VERSION_".jar, where OLED_VERSION is your build version.
    
 3. After generating the jar, open it with WinRAR/Unzip and delete the swt.jar file on the root of the jar.
-   It is among the other libraries. This is because this swt.jar in specific of Win32 platform and we used it
-   only in the development process. We don't need it anymore.
+   It is among the other libraries. This is because this swt.jar in specific of Winx64 platform and we used it
+   only in the development process. We don't need it at runtime.
    
 4. Double click on the jar file created or type in a console java -jar oled+OLED_VERSION+.jar to execute OLED application.
 

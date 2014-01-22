@@ -558,6 +558,17 @@ public final class AssociationElement extends BaseConnection {
 		label.setAbsolutePos(x, y);
 	}
 
+	@Override
+	public String toString()
+	{
+		if(getRelationship() instanceof RefOntoUML.Association){
+			return "<<"+ModelHelper.getStereotype(getRelationship())+">> "+((RefOntoUML.Association)getRelationship()).getName();
+		}else if (getRelationship() instanceof RefOntoUML.Generalization){
+			return ModelHelper.getStereotype(getRelationship())+" "+((RefOntoUML.Generalization)getRelationship()).getSpecific()+" -> "+((RefOntoUML.Generalization)getRelationship()).getGeneral();
+		}
+		return "!UNKNOWN";
+	}
+	
 	/**
 	 * A direction of an end point relative to its connected node.
 	 */
