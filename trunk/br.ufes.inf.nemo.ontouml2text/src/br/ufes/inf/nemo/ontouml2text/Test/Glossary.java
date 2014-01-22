@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.ontouml2text.Test;
 
 import java.util.*;
 
+import org.eclipse.emf.common.util.EList;
+
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
@@ -87,7 +89,7 @@ public class Glossary {
 			
 			for (Classifier classf : classfSet){
 				
-				if(classf instanceof RefOntoUML.Association){
+			/*	if(classf instanceof RefOntoUML.Association){
 					source = FindCategory(((Association) classf).getEndType().get(0));
 					target = FindCategory(((Association) classf).getEndType().get(1));
 					
@@ -99,14 +101,9 @@ public class Glossary {
 					targetUpper = FindUpperMultiplicity(((Association) classf).getMemberEnd().get(1));
 					
 					if(classf instanceof RefOntoUML.Characterization){	
-						// verificar se o 
-					/*	if(!ExisteLista(space.getCategories(),((RefOntoUML.Association) classf).getEndType().get(0).getName())){//se o source nao existir na lista, cria
-							source = FindCategory(((Association) classf).getEndType().get(0));
-							DescriptionFunction mat = new Characterization(classf.getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
-							space.getFunctions().add(mat);
-							source.getFunctions().add(e)
-							}*/
-					}
+						DescriptionFunction mat = new Characterization(classf.getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
+						space.getFunctions().add(mat);
+						}
 					if(classf instanceof RefOntoUML.componentOf){
 						DescriptionFunction mat = new ComponentOf(classf.getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
 						space.getFunctions().add(mat);
@@ -139,49 +136,118 @@ public class Glossary {
 					//	if(classf instanceof RefOntoUML.partof){}
 						
 				} else {/*
-				
+				*/
 				if(classf instanceof RefOntoUML.Category){
 					DescriptionCategory mat = new Category(classf.getName());
-					categories.add(mat);
+					System.out.println("NUMERO DE RELATIONSHIPS" + classf.getRelationships());
+					PopulateRelationships(space.getFunctions(),classf.getRelationships(), space, mat);	
+					space.getCategories().add(mat);
 				}
 				
 				if(classf instanceof RefOntoUML.Collective){
 					DescriptionCategory mat = new Collective(classf.getName());
-					categories.add(mat);
+					PopulateRelationships(space.getFunctions(),classf.getRelationships(), space, mat);	
+					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.Kind){
 					DescriptionCategory mat = new Kind(classf.getName());
-					categories.add(mat);
+					//PopulateRelationships(space.getFunctions(),getRelationships(classf), space, mat);	
+					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.Mixin){
 					DescriptionCategory mat = new Mixin(classf.getName());
-					categories.add(mat);
+					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.Mode){
 					DescriptionCategory mat = new Mode(classf.getName());
-					categories.add(mat);
+					space.getCategories().add(mat);
 				}			
 				if(classf instanceof RefOntoUML.Quantity){
 					DescriptionCategory mat = new Quantity(classf.getName());
-					categories.add(mat);
+					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.Relator){
 					DescriptionCategory mat = new Relator(classf.getName());
-					categories.add(mat);
+					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.Role){
 					DescriptionCategory mat = new Role(classf.getName());
-					categories.add(mat);
+					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.RoleMixin){
 					DescriptionCategory mat = new RoleMixin(classf.getName());
-					categories.add(mat);
-				}*/
+					space.getCategories().add(mat);
+				}
 				}
 				
-			}
+		//	}
 		}
 		
+		
+		// Método que percorre a lista de relationships de uma categoria , cria instancias das functions, adiciona na lista de function do space e na lista de function da categoria.
+		private void PopulateRelationships(List<DescriptionFunction> functions, EList<Relationship> relationships, DescriptionSpace space, DescriptionCategory mat2 ) {
+			
+			int sourceLower,sourceUpper,targetLower,targetUpper;
+			DescriptionCategory source;
+			DescriptionCategory target;
+			
+			for(Relationship r : relationships){
+				
+				if(r instanceof RefOntoUML.Association){
+					source = FindCategory(((Association) r).getEndType().get(0));
+					target = FindCategory(((Association) r).getEndType().get(1));
+					
+					//Find Multiplicity
+					sourceLower = FindLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+					sourceUpper = FindUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+					
+					targetLower = FindLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+					targetUpper = FindUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+					
+					if(r instanceof RefOntoUML.Characterization){	
+						DescriptionFunction mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
+						space.getFunctions().add(mat);
+						mat2.getFunctions().add(mat);
+						}
+					if(r instanceof RefOntoUML.componentOf){
+						DescriptionFunction mat = new ComponentOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
+						space.getFunctions().add(mat);
+						mat2.getFunctions().add(mat);
+					}
+					if(r instanceof RefOntoUML.FormalAssociation){
+						DescriptionFunction mat = new Formal(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
+						space.getFunctions().add(mat);
+						mat2.getFunctions().add(mat);
+					}
+					if(r instanceof RefOntoUML.MaterialAssociation){
+						DescriptionFunction mat = new Material(((Association)r).getName(), source,target, sourceLower, sourceUpper,targetLower, targetUpper);
+						space.getFunctions().add(mat);
+						mat2.getFunctions().add(mat);
+					}
+					if(r instanceof RefOntoUML.Mediation){			
+						DescriptionFunction mat = new Mediation(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper);
+						space.getFunctions().add(mat);
+						mat2.getFunctions().add(mat);
+					}
+					if(r instanceof RefOntoUML.memberOf){
+						DescriptionFunction mat = new MemberOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper, false, false, false);
+						space.getFunctions().add(mat);
+						mat2.getFunctions().add(mat);
+					}
+					if(r instanceof RefOntoUML.subCollectionOf){
+						DescriptionFunction mat = new SubcollectiveOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper, false, false, false);
+						space.getFunctions().add(mat);
+						mat2.getFunctions().add(mat);
+					}
+					if(r instanceof RefOntoUML.subQuantityOf){
+						DescriptionFunction mat = new SubquantityOf(((Association)r).getName(), source, target, sourceLower, sourceUpper,targetLower,targetUpper, false, false, false);
+						space.getFunctions().add(mat);
+						mat2.getFunctions().add(mat);
+					}
+				}
+			}
+		}
+
 		public int FindLowerMultiplicity(Property p){
 			return p.getLower();
 

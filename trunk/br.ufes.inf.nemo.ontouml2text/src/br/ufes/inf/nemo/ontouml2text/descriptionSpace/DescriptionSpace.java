@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ontouml2text.descriptionSpace;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public class DescriptionSpace {
 	public OntoUMLParser ontoParser;
 	
 	public DescriptionSpace(){
-		this.categories = new ArrayList<DescriptionCategory>();
+		this.categories = new ArrayList <DescriptionCategory>();
 		this.functions = new ArrayList<DescriptionFunction>();
 	}
 	
