@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.oled.antipattern;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Image;
@@ -49,25 +48,13 @@ public class AntiPatternModifDialog extends Dialog {
 		setDefaultImage(new Image(Display.getDefault(),AntiPatternModifDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/antipattern-36x36.png")));	
 	}
 	
-	public static void openDialog(final Fix fix, final AppFrame frame)
-	{			
-//		Display.getDefault().syncExec(new Runnable() {
-//		    public void run() {
-		    	Display display = Display.getDefault();	    	
-				Shell shell = display.getActiveShell();			
-				AntiPatternModifDialog resultDIalog = new AntiPatternModifDialog(shell, fix, frame);				
-				resultDIalog.create();				
-				if(resultDIalog.open()==Window.OK)
-				{
-					AntiPatternResultDialog.refresh();
-//					Display.getDefault().syncExec(new Runnable() {
-//					    public void run() {
-					    	frame.getDiagramManager().updateOLED(fix);
-//					    }
-//					});					    	
-				}
-//		    }
-//    	});		
+	public static int openDialog(final Fix fix, final AppFrame frame)
+	{
+    	Display display = Display.getDefault();	    	
+		Shell shell = display.getActiveShell();			
+		AntiPatternModifDialog resultDialog = new AntiPatternModifDialog(shell, fix, frame);				
+		resultDialog.create();				
+		return resultDialog.open();							
 	}
 	
 	public void addFix()

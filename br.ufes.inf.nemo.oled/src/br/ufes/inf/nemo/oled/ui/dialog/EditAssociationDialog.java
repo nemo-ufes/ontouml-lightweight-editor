@@ -167,7 +167,7 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 					associationPropertiesPanel = new JPanel();
 					GroupLayout associationPropertiesPanelLayout = new GroupLayout((JComponent)associationPropertiesPanel);
 					associationPropertiesPanel.setLayout(associationPropertiesPanelLayout);
-					contentTabbedPane.addTab(ApplicationResources.getInstance().getString("dialog.assoc.association"), null, associationPropertiesPanel, null);
+					contentTabbedPane.addTab(ApplicationResources.getInstance().getString("dialog.assoc.association"), null, associationPropertiesPanel, "");
 					associationPropertiesPanel.setPreferredSize(new java.awt.Dimension(579, 244));
 					{
 						associatioNameLabel = new JLabel();
@@ -447,7 +447,7 @@ public class EditAssociationDialog extends javax.swing.JDialog {
 					meronymicPropertiesPanel = new JPanel();
 					GroupLayout meronymicPropertiesPanelLayout = new GroupLayout((JComponent)meronymicPropertiesPanel);
 					meronymicPropertiesPanel.setLayout(meronymicPropertiesPanelLayout);
-					contentTabbedPane.addTab(ApplicationResources.getInstance().getString("dialog.assoc.meronymic"), null, meronymicPropertiesPanel, null);
+					contentTabbedPane.addTab(ApplicationResources.getInstance().getString("dialog.assoc.meronymic"), null, meronymicPropertiesPanel, "");
 					{
 						wholePanel = new JPanel();
 						GroupLayout wholePanelLayout = new GroupLayout((JComponent)wholePanel);

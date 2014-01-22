@@ -140,15 +140,11 @@ public class AntiPatternResultDialog extends Dialog {
 	{			
 		if (apList!=null &&  !apList.getAll().isEmpty())
 		{
-	    	Display.getDefault().syncExec(new Runnable() {
-			    public void run() {
-			    	Display display = Display.getDefault();	    	
-					Shell shell = display.getActiveShell();			
-					AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(shell,apList.getAll(), frame);					
-					resultDIalog.create();
-					resultDIalog.open();
-			    }
-	    	});
+			Display display = Display.getDefault();	    	
+			Shell shell = display.getActiveShell();			
+			AntiPatternResultDialog resultDIalog = new AntiPatternResultDialog(shell,apList.getAll(), frame);					
+			resultDIalog.create();
+			resultDIalog.open();	
 		}
 	}
 	
@@ -242,7 +238,8 @@ public class AntiPatternResultDialog extends Dialog {
 	      button.setImage(new Image(getShell().getDisplay(),AntiPatternResultDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/fix.png")));	      
 	      final AntipatternOccurrence apOccur = result.get(i);	      
 	      button.addListener(SWT.Selection,new Listener() {
-		        public void handleEvent(Event event) {
+		        public void handleEvent(Event event) 
+		        {
 		        	showWizard(apOccur);
 		        }
 		      }
@@ -354,39 +351,29 @@ public class AntiPatternResultDialog extends Dialog {
 	
 	public static void refresh()
 	{
-		Display.getDefault().syncExec(new Runnable() {
-		    public void run() {
-		    	viewer.refresh();
-		    }
-		});
+    	viewer.refresh();
+	}
+	
+	public WizardDialog getWizardDialog(final AntipatternOccurrence apOccur)
+	{
+    	WizardDialog wizardDialog = null;    	
+    	if (apOccur instanceof RelRigOccurrence) wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));
+    	if (apOccur instanceof RelSpecOccurrence) wizardDialog = new WizardDialog(new Shell(), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
+    	if (apOccur instanceof WholeOverOccurrence) wizardDialog = new WizardDialog(new Shell(), new WholeOverWizard((WholeOverOccurrence)apOccur));	        		
+    	return wizardDialog;
 	}
 	
 	public void showWizard(final AntipatternOccurrence apOccur)
 	{
-    	WizardDialog wizardDialog = null;
-    	
-    	if (apOccur instanceof RelRigOccurrence) 
-    	{	        		
-    		wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));	        		
-    	}
-    	
-    	if (apOccur instanceof RelSpecOccurrence) 
-    	{	        		
-    		wizardDialog = new WizardDialog(new Shell(), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
-    	}
-    	
-    	if (apOccur instanceof WholeOverOccurrence) 
-    	{	        		
-    		wizardDialog = new WizardDialog(new Shell(), new WholeOverWizard((WholeOverOccurrence)apOccur));	        		
-    	}	        	
-        	
-		if(wizardDialog.open()==Window.OK)
-		{
-			apOccur.setIsFixed(true);			
-			if(!apOccur.getFix().isEmpty())
-			{
-				AntiPatternModifDialog.openDialog(apOccur.getFix(), frame);
+		WizardDialog wizardDialog = getWizardDialog(apOccur);		
+		if(wizardDialog!=null && wizardDialog.open()==Window.OK){
+			apOccur.setIsFixed(true);
+			if(!apOccur.getFix().isEmpty()){
+				if(AntiPatternModifDialog.openDialog(apOccur.getFix(), frame)==Window.OK){
+					refresh();
+					frame.getDiagramManager().updateOLED(apOccur.getFix());					
+				}
 			}
-		}	
-	}
+		}
+	}		
 }
