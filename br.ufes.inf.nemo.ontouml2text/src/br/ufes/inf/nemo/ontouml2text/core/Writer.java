@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ontouml2text.core;
+/*package br.ufes.inf.nemo.ontouml2text.core;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -21,11 +21,11 @@ public class Writer {
 	
 	/**
 	 * The class that parses the model to obtain information
-	 */
+	 
 	OntoUMLParser ontoParser;
 	/**
 	 * Map that contains the class description (both model description and term definition)
-	 */
+	 
 	Map<Classifier, String[]> descrMap = new HashMap<Classifier, String[]>();
 	
 //	GrammarChecker gc;
@@ -33,13 +33,13 @@ public class Writer {
 	/**
 	 * Creates a Writer from an already instantiated OntoUML Parser
 	 * @param ontoParser class that reads and interprets the model
-	 */
+	 
 	public Writer(OntoUMLParser ontoParser){}
 	
 	/**
 	 * Creates a Writer from a root OntoUML Package/Model, instantiating the OntoUML Parser
 	 * @param root the root OntoUML Package/Model
-	 */
+	 
 	public Writer(Package root)
 	{
 		this.ontoParser = new OntoUMLParser(root);
@@ -319,4 +319,4 @@ public class Writer {
 		return textDescr;
 	}
 	
-}
+}*/

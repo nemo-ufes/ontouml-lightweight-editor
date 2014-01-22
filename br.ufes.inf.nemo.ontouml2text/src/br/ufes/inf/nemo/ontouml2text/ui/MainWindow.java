@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ontouml2text.ui;
+/*package br.ufes.inf.nemo.ontouml2text.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -55,7 +55,7 @@ public class MainWindow {
 
 	/**
 	 * Launch the application.
-	 */
+	 
 	public static void main(String[] args)
 	{
 		EventQueue.invokeLater(new Runnable() {
@@ -72,7 +72,7 @@ public class MainWindow {
 
 	/**
 	 * Create the application.
-	 */
+	 
 	public MainWindow(){
 		initGUI();
 	}
@@ -86,7 +86,7 @@ public class MainWindow {
 
 	/**
 	 * Initialize the contents of the frame.
-	 */
+	 
 	private void initGUI()
 	{
 		OntoUML2TextDialog = new JDialog(mainframe, true);
@@ -109,7 +109,7 @@ public class MainWindow {
 			{
 				assocOptions = new AssociationsPanel(this.ontoParser);
 				optionsPane.addTab("Associations", null, assocOptions, null);
-			}*/
+			}
 		}
 		{ // Text Sample Bar
 			JPanel samplePane = new JPanel();
@@ -120,7 +120,7 @@ public class MainWindow {
 			samplePane.add(lblSample);
 			
 			JLabel sample = new JLabel("Homem \u00E9 um tipo de Pessoa. Homem pode ser Crian\u00E7a, Adulto, Idoso. Homem possui um nome e um CPF.");
-			samplePane.add(sample);*/
+			samplePane.add(sample);
 		}
 	}
 	
@@ -254,7 +254,7 @@ public class MainWindow {
 		writer.runDescriptionGeneration(assocMap, optionsList[0], optionsList[1], 
 				optionsList[2], optionsList[3], optionsList[4]);
 		
-		this.modelDescr = writer.getTextDescription();*/
+		this.modelDescr = writer.getTextDescription();
 	}
 	
 	public DescriptionCategory FindCategory(Type type){
@@ -333,4 +333,4 @@ public class MainWindow {
 		
 		this.modelDescr = "CSV";
 	}
-}
+}*/
