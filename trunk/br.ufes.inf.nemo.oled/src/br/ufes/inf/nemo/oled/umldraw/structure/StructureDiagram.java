@@ -528,7 +528,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		}
 		return false;
 	}
-	
+		
 	public boolean containsChild(RefOntoUML.Element element)
 	{
 		List<DiagramElement> children = new ArrayList<DiagramElement>();

@@ -197,6 +197,12 @@ public final class GeneralizationElement extends BaseConnection {
 		nameLabel.setAbsolutePos(x, y);
 	}
 	
+	@Override
+	public String toString()
+	{
+		return ModelHelper.getStereotype(getRelationship())+" "+((RefOntoUML.Generalization)getRelationship()).getSpecific()+" -> "+((RefOntoUML.Generalization)getRelationship()).getGeneral();
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.eclipse.emf.edit.command.AddCommand;
 
-import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
@@ -119,6 +118,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		
 		if(addToDiagram && diagramElement !=null){						
 			addToDiagram(diagramElement,redo);
+			ModelHelper.addMapping(element, ((ClassElement)diagramElement));
 		}
 
 		ProjectBrowser.frame.getDiagramManager().updateUI();
@@ -134,11 +134,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		//Adds the element to the diagram
 		parent.addChild(element);
 		if(element instanceof Node) ((Node)element).setAbsolutePos(absx, absy);		
-				
-		Classifier classifier = ((ClassElement)element).getClassifier();
-		
-		ModelHelper.addMapping(classifier, ((ClassElement)element));
-		
+								
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
 		

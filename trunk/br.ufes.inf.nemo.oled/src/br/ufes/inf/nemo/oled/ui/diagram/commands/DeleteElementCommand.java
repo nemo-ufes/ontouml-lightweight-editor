@@ -164,24 +164,27 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	public void delete(Collection<DiagramElement> diagramElemList, Collection<Element> elemList)
 	{
 		if(deleteFromDiagram) {
-			for (DiagramElement element : diagramElemList) deleteFromDiagram(element);			
+			for (DiagramElement element : diagramElemList) {
+				deleteFromDiagram(element);
+				ModelHelper.removeMapping(element);
+			}
 		}
 		
 		if(deleteFromModel){
 			//delete first the derivations
 			for(Element elem: elemList) {				
 				if (elem instanceof RefOntoUML.Derivation) deleteFromModel(elem);				
-				if(deleteFromModel && deleteFromDiagram) ModelHelper.removeMapping(elem);
+				if(deleteFromModel) ModelHelper.removeMapping(elem);
 			}
 			//then the rest of relationships
 			for(Element elem: elemList) {				
 				if (elem instanceof RefOntoUML.Relationship) deleteFromModel(elem);				
-				if(deleteFromModel && deleteFromDiagram) ModelHelper.removeMapping(elem);
+				if(deleteFromModel) ModelHelper.removeMapping(elem);
 			}
 			//then the classes and datatypes
 			for(Element elem: elemList) {
 				if (elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType) deleteFromModel(elem);
-				if(deleteFromModel && deleteFromDiagram) ModelHelper.removeMapping(elem);
+				if(deleteFromModel) ModelHelper.removeMapping(elem);
 			}
 		}	
 					
@@ -192,9 +195,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		for (Element e : inferred) {
 			parser.removeElement(e);
 		}		
-				
-		ProjectBrowser.frame.getDiagramManager().searchWarnings();
-		ProjectBrowser.frame.getDiagramManager().searchErrors();
+			
 		ProjectBrowser.frame.getDiagramManager().updateUI();
 	}
 	
@@ -214,8 +215,6 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		{				
 			element.getParent().removeChild(element);			
 		}
-		
-		ModelHelper.removeMapping(element);
 		
 		if (notification!=null){
 			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();

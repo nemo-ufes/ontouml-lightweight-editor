@@ -52,6 +52,10 @@ import RefOntoUML.impl.RefOntoUMLPackageImpl;
 import RefOntoUML.provider.RefOntoUMLItemProviderAdapterFactory;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 public class ModelHelper {
 
@@ -115,18 +119,35 @@ public class ModelHelper {
 		DiagramElement result;
 		if (!initialized) initializeHelper();		
 		if (element==null || diagramElement==null) return false;		
-		if(mappings.get(element)==null){ // only add if it is not there already
-			result = mappings.put(element, diagramElement);
-		}else{
-			result = null;
-		}
+		result = mappings.put(element, diagramElement);		
 		if (result!=null) return true;
 		else return false;
 	}
 	
+	public static boolean addMapping (StructureDiagram diagram)
+	{
+		boolean succeeds=false;
+		for(DiagramElement dElem: diagram.getChildren())
+		{
+			if (dElem instanceof ClassElement) {
+				ModelHelper.addMapping(((ClassElement)dElem).getClassifier(), dElem);
+				succeeds=true;
+			}
+			if (dElem instanceof AssociationElement) {
+				ModelHelper.addMapping(((AssociationElement)dElem).getRelationship(), dElem);
+				succeeds=true;
+			}
+			if (dElem instanceof GeneralizationElement) {
+				ModelHelper.addMapping(((GeneralizationElement)dElem).getRelationship(), dElem);
+				succeeds=true;
+			}
+		}
+		return succeeds;
+	}
+	
 	public static boolean removeMapping(Element element)
 	{
-		DiagramElement result;		
+		DiagramElement result;
 		if (!initialized) initializeHelper();		
 		if (element==null) return false;				
 		result = mappings.remove(element);		
@@ -197,6 +218,15 @@ public class ModelHelper {
 	public static Collection<DiagramElement> getAllDiagramElements()
 	{
 		return mappings.values();
+	}
+	
+	public static String getAllDiagramElementsString()
+	{
+		String result = new String("Diagram Elements:");
+		for(DiagramElement elem: mappings.values()){
+			result += elem.toString()+"\n";
+		}
+		return result;
 	}
 	
 	public static RefOntoUMLFactory getFactory() {

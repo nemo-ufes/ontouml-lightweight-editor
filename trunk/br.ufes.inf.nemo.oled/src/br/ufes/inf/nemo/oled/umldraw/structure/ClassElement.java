@@ -464,7 +464,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 	 */
 	@Override
 	public String toString() {
-		return getClassifier().getName();
+		return"<<"+ModelHelper.getStereotype(getClassifier())+">> "+getClassifier().getName();
 	}
 
 	// ************************************************************************
@@ -732,3 +732,4 @@ public final class ClassElement extends AbstractCompositeNode implements
 	}
 
 }
+

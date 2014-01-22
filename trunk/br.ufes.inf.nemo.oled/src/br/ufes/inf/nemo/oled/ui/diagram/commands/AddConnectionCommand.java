@@ -147,6 +147,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 					association.getMemberEnd().get(1).setType(target);				
 				}
 				addToDiagram(diagramElement,redo);
+				ModelHelper.addMapping(relationship, diagramElement);
 			}			
 		}
 
@@ -166,8 +167,6 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		Relationship relationship = ((UmlConnection)element).getRelationship();
 		
 		if (relationship instanceof Derivation) element.invalidate(); // bug in designing. not best solution, but works.
-		
-		ModelHelper.addMapping(relationship, element);
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);

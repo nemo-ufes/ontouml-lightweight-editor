@@ -841,7 +841,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		editorMode = lineHandler;
 	}
 
-	public void setDragRelationMode(RefOntoUML.Relationship relationship, EObject eContainer)
+	public void dragRelation(RefOntoUML.Relationship relationship, EObject eContainer)
 	{		
 		RelationType relationType = RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase());
 		lineHandler.setRelationType(relationType, getDiagram().getElementFactory().getConnectMethod(relationType));
