@@ -1180,10 +1180,10 @@ public class OntoUMLParser {
 	/**
 	 *	Return all (selected and non selected) direct relationships (generalizations and associations) of the classifier c  
 	 */
-	public ArrayList<Relationship> getSelectedAndNonSelectedRelationshipsOf(EObject eObject)
+	public ArrayList<Relationship> getRelationships(EObject eObject)
 	{
 		ArrayList<Relationship> relations = new ArrayList<>();		
-		for (EObject a : elementsHash.keySet()) {
+		for (EObject a : getAllInstances(Relationship.class)) {
 			if (a instanceof Generalization){
 				Generalization g = (Generalization)a;
 				if(g.getGeneral().equals(eObject) || g.getSpecific().equals(eObject)) relations.add(g);						

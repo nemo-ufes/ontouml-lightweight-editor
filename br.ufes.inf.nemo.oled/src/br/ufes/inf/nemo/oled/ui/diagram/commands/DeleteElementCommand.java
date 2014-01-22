@@ -113,7 +113,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		//Dependencies
 		for (Element elem : theElements) 
 		{			
-			ArrayList<Relationship> depList = ProjectBrowser.getParserFor(project).getSelectedAndNonSelectedRelationshipsOf(elem);
+			ArrayList<Relationship> depList = ProjectBrowser.getParserFor(project).getRelationships(elem);
 			elementDependenceList_L1.addAll(depList);
 			diagramDependenceList_L1.addAll(ModelHelper.getDiagramElements(elementDependenceList_L1));			
 			
