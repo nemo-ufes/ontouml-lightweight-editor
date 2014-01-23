@@ -8,6 +8,21 @@ import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.binaryPatterns.*;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.naryPatterns.*;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.unaryPatterns.*;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.*;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Category;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Collective;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Kind;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Phase;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Relator;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Role;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.RoleMixin;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Subkind;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Characterization;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.ComponentOf;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Formal;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Generalization;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Mediation;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.MemberOf;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.SubcollectiveOf;
 import br.ufes.inf.nemo.ontouml2text.glossaryExporter.*;
 
 public class StringGenerator {
