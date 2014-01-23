@@ -342,7 +342,7 @@ public class Transformer {
 
 		for (String stereotype : hashAssociations.keySet()) {
 			for (String _stereotype : hashAssociations.keySet()) {
-				if(!stereotype.equals(_stereotype)){
+				if(!stereotype.equals(_stereotype) && !stereotype.equals("formal") && !stereotype.equals("material") && !_stereotype.equals("formal") && !_stereotype.equals("material")){
 					for (OWLObjectProperty prop : hashAssociations.get(stereotype)) {
 						//For each ObjectProperty of a key (stereotype) make different for the 
 						//properties of the other stereotypes (_stereotype)
@@ -1014,7 +1014,7 @@ public class Transformer {
 				}
 			}
 
-//			if(match > 1 || nameNull){
+			//			if(match > 1 || nameNull){
 			if(match > 1){
 				//set same properties subPropertyOf the topProperty
 				sopa = factory.getOWLSubObjectPropertyOfAxiom(prop,topProperty);
@@ -1027,7 +1027,7 @@ public class Transformer {
 				manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(topProperty, invTopProperty)));
 
 				//Make the inverse top property disjoint of the top property
-				manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(topProperty, invTopProperty)));
+				//				manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(topProperty, invTopProperty)));
 
 				//Used after to make associations disjoints
 				putInHash(stereotype, topProperty);
@@ -1046,7 +1046,7 @@ public class Transformer {
 			manager.applyChange(new AddAxiom(ontology,factory.getOWLInverseObjectPropertiesAxiom(prop, invProp)));
 
 			//Make the inverse property disjoint of the property
-			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
+			//			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
 
 			//clean the flag variables
 			nameNull = false;
@@ -1299,7 +1299,7 @@ public class Transformer {
 				}
 			}
 		}
-		
+
 		if(_RefOntoOwnerClass != null){
 			if(!hashDataProperty.containsKey(_RefOntoOwnerClass)){
 				hashDataProperty.put(_RefOntoOwnerClass, new HashSet<OWLDataProperty>());
@@ -1315,7 +1315,7 @@ public class Transformer {
 			//get here if are processing alone datatypes
 			return;
 		}
-		
+
 		//set the owner of this datatype (Domain)
 		OWLDataPropertyDomainAxiom axDomain = factory.getOWLDataPropertyDomainAxiom(atributo, _OWLownerClass);
 		manager.applyChange(new AddAxiom(ontology, axDomain));
