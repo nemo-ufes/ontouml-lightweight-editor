@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ontouml2text.descriptionSpace;
 
+
 public abstract class BinaryDescriptionFunction extends DescriptionFunction {
 
 	private String label;

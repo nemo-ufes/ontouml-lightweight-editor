@@ -1,8 +1,10 @@
-package br.ufes.inf.nemo.ontouml2text.descriptionSpace;
+package br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions;
 
-public class SubcollectiveOf extends PartOf {
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 
-	public SubcollectiveOf(String label, 
+public class ComponentOf extends PartOf {
+
+	public ComponentOf(String label, 
 			DescriptionCategory source,
 			DescriptionCategory target, 
 			int sourceMinMultiplicity,

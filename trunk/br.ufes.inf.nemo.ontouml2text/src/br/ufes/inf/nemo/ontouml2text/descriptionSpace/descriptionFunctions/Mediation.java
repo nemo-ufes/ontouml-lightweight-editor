@@ -1,8 +1,11 @@
-package br.ufes.inf.nemo.ontouml2text.descriptionSpace;
+package br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions;
 
-public class Generalization extends BinaryDescriptionFunction {
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.BinaryDescriptionFunction;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 
-	public Generalization(String label, 
+public class Mediation extends BinaryDescriptionFunction {
+
+	public Mediation(String label, 
 			DescriptionCategory source,
 			DescriptionCategory target, 
 			int sourceMinMultiplicity,

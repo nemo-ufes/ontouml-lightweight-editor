@@ -1,8 +1,11 @@
-package br.ufes.inf.nemo.ontouml2text.descriptionSpace;
+package br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions;
 
-public class Characterization extends BinaryDescriptionFunction {
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.BinaryDescriptionFunction;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 
-	public Characterization(String label, 
+public class Material extends BinaryDescriptionFunction {
+
+	public Material(String label, 
 			DescriptionCategory source,
 			DescriptionCategory target, 
 			int sourceMinMultiplicity,
