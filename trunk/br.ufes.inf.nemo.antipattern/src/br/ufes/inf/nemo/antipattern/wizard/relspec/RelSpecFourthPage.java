@@ -9,8 +9,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 
 /**
  * @author Tiago Sales

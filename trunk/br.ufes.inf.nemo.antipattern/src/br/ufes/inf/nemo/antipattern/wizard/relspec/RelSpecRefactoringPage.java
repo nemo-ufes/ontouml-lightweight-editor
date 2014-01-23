@@ -12,10 +12,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 
 /**
  * @author Tiago Sales

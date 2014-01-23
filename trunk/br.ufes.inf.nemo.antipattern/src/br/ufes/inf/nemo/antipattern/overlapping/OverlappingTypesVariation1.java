@@ -9,7 +9,7 @@ import RefOntoUML.Mode;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.SortalClass;
-import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 
 //partEnds with the same type
 public class OverlappingTypesVariation1 extends OverlappingTypesVariation {

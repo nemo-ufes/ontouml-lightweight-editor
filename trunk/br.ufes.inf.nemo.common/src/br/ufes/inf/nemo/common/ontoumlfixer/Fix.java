@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern;
+package br.ufes.inf.nemo.common.ontoumlfixer;
 
 import java.util.ArrayList;
 

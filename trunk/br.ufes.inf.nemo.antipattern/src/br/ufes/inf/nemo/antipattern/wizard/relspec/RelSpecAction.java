@@ -1,8 +1,8 @@
 package br.ufes.inf.nemo.antipattern.wizard.relspec;
 
-import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 
 public class RelSpecAction extends AntiPatternAction <RelSpecOccurrence> {
 

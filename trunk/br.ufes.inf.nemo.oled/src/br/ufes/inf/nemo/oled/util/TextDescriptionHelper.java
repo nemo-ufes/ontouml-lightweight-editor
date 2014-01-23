@@ -1,9 +1,5 @@
 package br.ufes.inf.nemo.oled.util;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-
-import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 
 public class TextDescriptionHelper {
 	/*

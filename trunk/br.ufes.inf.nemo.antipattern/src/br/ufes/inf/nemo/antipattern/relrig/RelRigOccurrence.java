@@ -14,8 +14,8 @@ import RefOntoUML.RigidSortalClass;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.antipattern.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelRigOccurrence extends AntipatternOccurrence {
