@@ -2,11 +2,8 @@ package br.ufes.inf.nemo.ontouml2text.Test;
 
 import java.util.*;
 
-import org.eclipse.emf.common.util.EList;
-
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import RefOntoUML.Generalization;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
@@ -24,9 +21,7 @@ public class Glossary {
 		space.SetParser(parser);
 		
 		Popular(space, parser);
-		
-		// Cria classes a partir do RefOntoUML
-		//space.PopulateLists();
+
 		
 /*
 	DescriptionCategory auxS = new Relator("Transporte Rodoviário de Cargas");
@@ -81,101 +76,53 @@ public class Glossary {
 		public void Popular(DescriptionSpace space, OntoUMLParser parser){
 			
 			Set <Classifier> classfSet = parser.getAllInstances(Classifier.class);	
-			Set<Generalization> gen = parser.getAllInstances(Generalization.class);
-			
-			int sourceLower,sourceUpper,targetLower,targetUpper;
-			DescriptionCategory source;
-			DescriptionCategory target;
 			
 			for (Classifier classf : classfSet){
-				
-			/*	if(classf instanceof RefOntoUML.Association){
-					source = FindCategory(((Association) classf).getEndType().get(0));
-					target = FindCategory(((Association) classf).getEndType().get(1));
-					
-					//Find Multiplicity
-					sourceLower = FindLowerMultiplicity(((Association) classf).getMemberEnd().get(0));
-					sourceUpper = FindUpperMultiplicity(((Association) classf).getMemberEnd().get(0));
-					
-					targetLower = FindLowerMultiplicity(((Association) classf).getMemberEnd().get(1));
-					targetUpper = FindUpperMultiplicity(((Association) classf).getMemberEnd().get(1));
-					
-					if(classf instanceof RefOntoUML.Characterization){	
-						DescriptionFunction mat = new Characterization(classf.getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
-						space.getFunctions().add(mat);
-						}
-					if(classf instanceof RefOntoUML.componentOf){
-						DescriptionFunction mat = new ComponentOf(classf.getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
-						space.getFunctions().add(mat);
-					}
-					if(classf instanceof RefOntoUML.FormalAssociation){
-						DescriptionFunction mat = new Formal(classf.getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
-						space.getFunctions().add(mat);
-					}
-					if(classf instanceof RefOntoUML.MaterialAssociation){
-						DescriptionFunction mat = new Material(classf.getName(), source,target, sourceLower, sourceUpper,targetLower, targetUpper);
-						space.getFunctions().add(mat);
-					}
-					if(classf instanceof RefOntoUML.Mediation){			
-						DescriptionFunction mat = new Mediation(classf.getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper);
-						space.getFunctions().add(mat);
-					}
-					if(classf instanceof RefOntoUML.memberOf){
-						DescriptionFunction mat = new MemberOf(classf.getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper, false, false, false);
-						space.getFunctions().add(mat);
-					}
-					if(classf instanceof RefOntoUML.subCollectionOf){
-						DescriptionFunction mat = new SubcollectiveOf(classf.getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper, false, false, false);
-						space.getFunctions().add(mat);
-					}
-					if(classf instanceof RefOntoUML.subQuantityOf){
-						DescriptionFunction mat = new SubquantityOf(classf.getName(), source, target, sourceLower, sourceUpper,targetLower,targetUpper, false, false, false);
-						space.getFunctions().add(mat);
-					}
-					//Categoria abstrata
-					//	if(classf instanceof RefOntoUML.partof){}
-						
-				} else {/*
-				*/
+
 				if(classf instanceof RefOntoUML.Category){
 					DescriptionCategory mat = new Category(classf.getName());
-					System.out.println("NUMERO DE RELATIONSHIPS" + classf.getRelationships());
-					PopulateRelationships(space.getFunctions(),classf.getRelationships(), space, mat);	
+					PopulateRelationships(parser.getRelationships(classf),space,mat,parser);
 					space.getCategories().add(mat);
 				}
 				
 				if(classf instanceof RefOntoUML.Collective){
 					DescriptionCategory mat = new Collective(classf.getName());
-					PopulateRelationships(space.getFunctions(),classf.getRelationships(), space, mat);	
+					PopulateRelationships(parser.getRelationships(classf),space,mat,parser);
 					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.Kind){
 					DescriptionCategory mat = new Kind(classf.getName());
-					//PopulateRelationships(space.getFunctions(),getRelationships(classf), space, mat);	
+					PopulateRelationships(parser.getRelationships(classf),space,mat,parser);
 					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.Mixin){
 					DescriptionCategory mat = new Mixin(classf.getName());
+					PopulateRelationships(parser.getRelationships(classf),space,mat,parser);
 					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.Mode){
 					DescriptionCategory mat = new Mode(classf.getName());
+					PopulateRelationships(parser.getRelationships(classf),space,mat,parser);
 					space.getCategories().add(mat);
 				}			
 				if(classf instanceof RefOntoUML.Quantity){
 					DescriptionCategory mat = new Quantity(classf.getName());
+					PopulateRelationships(parser.getRelationships(classf),space,mat,parser);
 					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.Relator){
 					DescriptionCategory mat = new Relator(classf.getName());
+					PopulateRelationships(parser.getRelationships(classf),space,mat,parser);
 					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.Role){
 					DescriptionCategory mat = new Role(classf.getName());
+					PopulateRelationships(parser.getRelationships(classf),space,mat,parser);
 					space.getCategories().add(mat);
 				}
 				if(classf instanceof RefOntoUML.RoleMixin){
 					DescriptionCategory mat = new RoleMixin(classf.getName());
+					PopulateRelationships(parser.getRelationships(classf),space,mat,parser);
 					space.getCategories().add(mat);
 				}
 				}
@@ -185,13 +132,14 @@ public class Glossary {
 		
 		
 		// Método que percorre a lista de relationships de uma categoria , cria instancias das functions, adiciona na lista de function do space e na lista de function da categoria.
-		private void PopulateRelationships(List<DescriptionFunction> functions, EList<Relationship> relationships, DescriptionSpace space, DescriptionCategory mat2 ) {
+		// FALTA implementar a parte das Generalizations 
+		private void PopulateRelationships(ArrayList<Relationship> eList, DescriptionSpace space, DescriptionCategory mat2, OntoUMLParser parser) {
 			
 			int sourceLower,sourceUpper,targetLower,targetUpper;
 			DescriptionCategory source;
 			DescriptionCategory target;
 			
-			for(Relationship r : relationships){
+			for(Relationship r : eList){
 				
 				if(r instanceof RefOntoUML.Association){
 					source = FindCategory(((Association) r).getEndType().get(0));
@@ -244,6 +192,18 @@ public class Glossary {
 						space.getFunctions().add(mat);
 						mat2.getFunctions().add(mat);
 					}
+				}
+				
+				// IMPLEMENTAR PARA AS GENERALIZATIONS
+				if(r instanceof RefOntoUML.Generalization){
+					source = FindCategory(((RefOntoUML.Generalization) r).getGeneral());
+					//source = FindCategory(((RefOntoUML.Generalization) r).getSource().get(0));
+
+					System.out.println("getsource"+((RefOntoUML.Generalization) r).getSource().toString()+"/n");
+
+					//DescriptionFunction mat = new br.ufes.inf.nemo.ontouml2text.descriptionSpace.Generalization("", source, target, 1, 1, 1, 1);
+					//space.getFunctions().add(mat);
+					//mat2.getFunctions().add(mat);
 				}
 			}
 		}
