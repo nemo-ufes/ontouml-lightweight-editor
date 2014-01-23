@@ -4,10 +4,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
-import br.ufes.inf.nemo.ontouml2text.ui.MainWindow;
 
 public class TextDescriptionHelper {
-	
+	/*
 	private static JDialog writer;
 	
 	public static OperationResult generateText(final RefOntoUML.Package refmodel, JFrame frame)
@@ -37,5 +36,5 @@ public class TextDescriptionHelper {
 			ex.printStackTrace();
 			return new OperationResult(ResultType.ERROR, "Error while generating the model description. Details: " + ex.getMessage(), null);
 		}
-	}
+	}*/
 }
