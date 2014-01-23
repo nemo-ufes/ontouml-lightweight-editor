@@ -22,7 +22,7 @@ public class RelRigWizard extends AntipatternWizard {
 	protected ArrayList<RelRigFirstPage> firstpageList = new ArrayList<RelRigFirstPage>();
 	protected ArrayList<RelRigSecondPage> secondpageList= new ArrayList<RelRigSecondPage>();
 	protected ArrayList<RelRigThirdPage> thirdpageList= new ArrayList<RelRigThirdPage>();
-	protected ArrayList<RelRigFourthPage> fourthpageList= new ArrayList<RelRigFourthPage>();;
+	protected ArrayList<RelRigFourthPage> fourthpageList= new ArrayList<RelRigFourthPage>();
 		
 	public RelRigWizard(RelRigOccurrence ap) {
 		super(ap,RelRigAntipattern.getAntipatternInfo().name);		

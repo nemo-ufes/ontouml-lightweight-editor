@@ -15,9 +15,9 @@ import RefOntoUML.RoleMixin;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
-import br.ufes.inf.nemo.antipattern.Fix;
-import br.ufes.inf.nemo.antipattern.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 
 
 public class OverlappingTypesVariation6 extends OverlappingTypesVariation {

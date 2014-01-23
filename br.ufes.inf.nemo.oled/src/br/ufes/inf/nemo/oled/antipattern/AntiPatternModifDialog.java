@@ -16,7 +16,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
-import br.ufes.inf.nemo.antipattern.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.oled.AppFrame;
 
 public class AntiPatternModifDialog extends Dialog {
