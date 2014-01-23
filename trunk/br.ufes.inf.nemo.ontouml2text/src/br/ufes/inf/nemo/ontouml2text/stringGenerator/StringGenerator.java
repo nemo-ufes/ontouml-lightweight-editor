@@ -3,12 +3,12 @@ package br.ufes.inf.nemo.ontouml2text.stringGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ufes.inf.nemo.ontouml2text.descriptionSpace.*;
-import br.ufes.inf.nemo.ontouml2text.glossaryExporter.GlossaryExporter;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.*;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.binaryPatterns.*;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.naryPatterns.*;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.unaryPatterns.*;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.*;
+import br.ufes.inf.nemo.ontouml2text.glossaryExporter.*;
 
 public class StringGenerator {
 	private DescriptionSpace descriptionSpace;
