@@ -55,7 +55,7 @@ public abstract class BinaryDescriptionFunction extends DescriptionFunction {
 		this.sourceMaxMultiplicity = sourceMaxMultiplicity;
 	}
 	
-	public DescriptionCategory getInput() {
+	public DescriptionCategory getSource() {
 		return source;
 	}
 }
