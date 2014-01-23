@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.DescriptionPattern;
 
 public abstract class NaryPattern extends DescriptionPattern {
 	private List<PatternCategory> targetCategories;

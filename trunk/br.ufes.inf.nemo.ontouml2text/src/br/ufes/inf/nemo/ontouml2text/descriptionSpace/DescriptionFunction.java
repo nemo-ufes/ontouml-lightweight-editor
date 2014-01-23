@@ -39,7 +39,7 @@ public abstract class DescriptionFunction {
 		this.targetMaxMultiplicity = targetMaxMultiplicity;
 	}
 	
-	public DescriptionCategory getOutput() {
+	public DescriptionCategory getTarget() {
 		return target;
 	}
 }
