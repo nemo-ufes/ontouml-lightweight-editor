@@ -18,7 +18,7 @@ public class Glossary {
 
 		// Criando Description Space
 		DescriptionSpace space = new DescriptionSpace();		
-		space.SetParser(parser);
+	//	space.SetParser(parser);
 		
 		Popular(space, parser);
 

@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.ontouml2text.stringGenerator;
 
-import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.*;
 
 public class PatternCategory extends DescriptionCategory{
 
