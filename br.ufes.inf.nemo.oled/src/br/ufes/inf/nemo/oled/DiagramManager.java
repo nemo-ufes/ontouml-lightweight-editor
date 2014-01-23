@@ -108,7 +108,7 @@ import br.ufes.inf.nemo.oled.util.SimulationElement;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
-import br.ufes.inf.nemo.ontouml2text.Test.Glossary;
+import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.*;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
@@ -1572,7 +1572,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void generateText() {
 		UmlProject project = getCurrentProject();
-		Glossary g = new Glossary();
+		OntoUmlGlossary g = new OntoUmlGlossary();
 		g.TextExecute(ProjectBrowser.getParserFor(project));
 		
 		/*UmlProject project = getCurrentEditor().getProject();
