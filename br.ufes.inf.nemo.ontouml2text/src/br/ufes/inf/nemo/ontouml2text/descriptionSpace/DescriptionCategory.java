@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.ontouml2text.descriptionSpace;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DescriptionCategory {
+public class DescriptionCategory {
 	private String label;
 	private List<DescriptionFunction> functions;
 	

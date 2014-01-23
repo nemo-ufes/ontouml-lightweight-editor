@@ -1,7 +1,10 @@
-package br.ufes.inf.nemo.ontouml2text.descriptionSpace;
+package br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.NaryDescriptionFunction;
 
 public abstract class GeneralizationSet extends NaryDescriptionFunction {
 	

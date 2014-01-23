@@ -1,8 +1,11 @@
-package br.ufes.inf.nemo.ontouml2text.descriptionSpace;
+package br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions;
 
-public class Material extends BinaryDescriptionFunction {
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.BinaryDescriptionFunction;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 
-	public Material(String label, 
+public class Formal extends BinaryDescriptionFunction {
+
+	public Formal(String label, 
 			DescriptionCategory source,
 			DescriptionCategory target, 
 			int sourceMinMultiplicity,
@@ -11,6 +14,6 @@ public class Material extends BinaryDescriptionFunction {
 			int targetMaxMultiplicity) {
 		super(label, source, target, sourceMinMultiplicity, sourceMaxMultiplicity,
 				targetMinMultiplicity, targetMaxMultiplicity);
-	}	
+	}
 
 }
