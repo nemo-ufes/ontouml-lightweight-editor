@@ -141,22 +141,22 @@ public class RelSpecRefactoringPage extends RefactoringPage {
 
 	@Override
 	public IWizardPage getNextPage() {
-		
+		getRelSpecWizard().removeAllActions(0);
 		RelSpecAction newAction = new RelSpecAction(relSpec);
 		if (btnSubsets.getSelection()){
 			// Action =====================
 			newAction.setSubset();
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 		if (btnRedefine.getSelection()){
 			// Action =====================
 			newAction.setRedefine();			
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 		if (btnDisjoint.getSelection()){
 			// Action =====================
 			newAction.setDisjoint();
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 		
 		if (btnSpecializeRedefine!=null && btnSpecializeRedefine.getSelection()){
@@ -187,7 +187,7 @@ public class RelSpecRefactoringPage extends RefactoringPage {
 				// Action =====================
 				newAction.setSpec_General_Both_Redefine(source,target);			
 			}			
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 		
 		if (btnDelete!=null && btnDelete.getSelection()){
@@ -199,10 +199,10 @@ public class RelSpecRefactoringPage extends RefactoringPage {
 				//ACTION
 				newAction.setDeleteSpecific();
 			}
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}				
 		if(btnNothing.getSelection()){
-			getRelSpecWizard().clearActions();
+			getRelSpecWizard().removeAllActions();
 		}
 	
 		return 	getRelSpecWizard().getFinishing();				

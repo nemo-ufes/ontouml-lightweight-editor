@@ -105,32 +105,32 @@ public class RelSpecFourthPage extends RelSpecPage {
 		if(btnGeneralSource.getSelection()) {
 			// Action =====================	
 			newAction.setSpec_General_Source_Redefine(source);
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 		if(btnGeneralTarget.getSelection()) {
 			// Action =====================
 			newAction.setSpec_General_Target_Redefine(target);
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 		if(btnGeneralBoth.getSelection()) {
 			// Action =====================
 			newAction.setSpec_General_Both_Redefine(source,target);
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 		if(btnSpecificSource.getSelection()) {			
 			// Action =====================
 			newAction.setSpec_Specific_Source_Redefine(source);
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 		if(btnSpecificTarget.getSelection()) {
 			// Action =====================
 			newAction.setSpec_Specific_Target_Redefine(target);
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 		if(btnSpecificBoth.getSelection()) {
 			// Action =====================
 			newAction.setSpec_Specific_Both_Redefine(source,target);
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 				
 		return getRelSpecWizard().getFinishing();

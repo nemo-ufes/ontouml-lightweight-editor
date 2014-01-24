@@ -51,4 +51,20 @@ public abstract class OverlappingTypesVariation {
 		
 		return true;
 	}
+	
+	public OverlappingOccurrence getOccurrence() {
+		return occurrence;
+	}
+
+	public ArrayList<Property> getOverlappingProperties() {
+		return overlappingProperties;
+	}
+
+	public ArrayList<Classifier> getOverlappingTypes() {
+		return overlappingTypes;
+	}
+
+	public boolean isValidVariation() {
+		return validVariation;
+	}
 }

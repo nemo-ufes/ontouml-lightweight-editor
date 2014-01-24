@@ -103,7 +103,7 @@ public class RelRigWizard extends AntipatternWizard {
 	@Override
 	public boolean performFinish() {	
 		
-		for(AntiPatternAction<?> action: super.getActions())
+		for(AntiPatternAction<?> action: super.getAllActions())
 			action.run();
 				
 		return true;
