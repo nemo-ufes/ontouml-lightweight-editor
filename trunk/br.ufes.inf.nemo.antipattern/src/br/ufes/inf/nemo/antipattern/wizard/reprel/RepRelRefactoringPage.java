@@ -104,10 +104,13 @@ public class RepRelRefactoringPage extends RefactoringPage {
 		createOptions();
 		
 		currentSpinner = new Spinner(container, SWT.BORDER);
-		currentSpinner.setBounds(11, 243, 47, 22);
+		currentSpinner.setBounds(11, 193, 47, 22);
+		currentSpinner.setSelection(1);
 		
 		historicalSpinner = new Spinner(container, SWT.BORDER);
-		historicalSpinner.setBounds(11, 193, 47, 22);
+		historicalSpinner.setBounds(11, 243, 47, 22);
+		historicalSpinner.setSelection(1);
+		
 		container.redraw();
 	}
 	
@@ -182,10 +185,11 @@ public class RepRelRefactoringPage extends RefactoringPage {
 		if(currentCheck.getSelection()){
 			// Action =====================	
 			RepRelAction newAction = new RepRelAction(repRel);
-			newAction.setCreateInvariant(repRel.getMediations(), historicalSpinner.getSelection());
+			newAction.setCreateInvariant(repRel.getMediations(), currentSpinner.getSelection());
 			getRepRelWizard().addAction(repRel.getMediations().size()+1,newAction);
 			//=============================			
 		}
+		
 		return ((RepRelWizard)getWizard()).getFinishing();	
 	}
 }
