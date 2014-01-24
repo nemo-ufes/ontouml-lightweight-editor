@@ -95,15 +95,11 @@ public class WholeOverAntipattern extends OverlappingAntipattern<WholeOverOccurr
 		HashMap<Classifier,HashSet<Property>> hash = super.buildMainTypeAndPropertiesHash(Meronymic.class);
 		
 		for (Classifier whole : hash.keySet()) {
-			
-			System.out.println("WHOLE: "+whole.getName());
 			try {
 				WholeOverOccurrence wholeOver = new WholeOverOccurrence(whole, hash.get(whole), this);
 				getOccurrences().add(wholeOver);
 			}
-			catch (Exception e){
-				System.out.println(e.getMessage());
-			}
+			catch (Exception e){}
 		}
 		
 		return getOccurrences();
