@@ -81,7 +81,8 @@ public class RelRigFirstPage extends RelRigPage {
 			// Action =====================			
 			RelRigAction newAction = new RelRigAction(relRig);
 			newAction.setChangeStereotypeToRole(rigidType);
-			getRelRigWizard().addAction(rigid,newAction);
+			
+			getRelRigWizard().replaceAction(rigid,newAction);
 			
 			//=============================
 			

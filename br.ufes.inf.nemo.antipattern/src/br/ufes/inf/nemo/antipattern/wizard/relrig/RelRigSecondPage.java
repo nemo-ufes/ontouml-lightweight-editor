@@ -78,7 +78,7 @@ public class RelRigSecondPage extends RelRigPage {
 
 			RelRigAction newAction = new RelRigAction(relRig);
 			newAction.setAddRoleSubtype(rigidType,(Mediation) rigidEnd.getAssociation());
-			getRelRigWizard().addAction(rigid,newAction);
+			getRelRigWizard().replaceAction(rigid,newAction);
 			
 			//=============================
 									
