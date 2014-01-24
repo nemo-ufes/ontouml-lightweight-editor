@@ -4,8 +4,12 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Shell;
 
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
@@ -52,135 +56,24 @@ public class WholeOverTester {
 			System.out.print("("+getCurrentDateAndTime() + ") " + model + ": ");
 			System.out.println("Model loaded!");
 		
-			//RELSPEC: Relation Specialization
+			//WHOLEOVER
 			antiPatternName = WholeOverAntipattern.getAntipatternInfo().getAcronym();
 			ap = new WholeOverAntipattern(parser);
 			runAntipattern(antiPatternName, model, ap);
 			
 			for (WholeOverOccurrence wholeOverOccurrence : ap.getOccurrences()) {
-				System.out.println(wholeOverOccurrence);
+				WizardDialog wizardDialog = new WizardDialog(new Shell(SWT.ON_TOP),new WholeOverWizard(wholeOverOccurrence));
+				if (wizardDialog.open() == Window.OK) {
+					System.out.println("Ok pressed");
+				} 
+				else {
+				    System.out.println("Cancel pressed");
+				}
 			}
-//			int i = 1;
-//			for (WholeOverOccurrence rs : ap.getOccurrences()) {
-//				//System.out.println(i+": ");
-//				//System.out.println(rs);
-//				if(rs.isVariation1()){
-//					System.out.println("Variation 1");
-//					var1.add(rs);
-//				}
-//				if(rs.isVariation2()){
-//					System.out.println("Variation 2");
-//					var2.add(rs);
-//				}
-//				if(rs.isVariation3()){
-//					System.out.println("Variation 3");
-//					var3.add(rs);
-//				}
-//				if(rs.isVariation4()){
-//					System.out.println("Variation 4");
-//					var4.add(rs);
-//				}
-//				if(rs.isVariation5()){
-//					System.out.println("Variation 5");
-//					var5.add(rs);
-//				}
-//				if(rs.isVariation6()){
-//					System.out.println("Variation 6");
-//					var6.add(rs);
-//				}
-//				if(rs.isVariation7()){
-//					System.out.println("Variation 7");
-//					var7.add(rs);
-//				}
-//				
-//				if (!rs.isVariation1() && !rs.isVariation2() && !rs.isVariation3() && !rs.isVariation4() && !rs.isVariation5() &&!rs.isVariation6() && !rs.isVariation7()) {
-//					System.out.println("NO VARIATION!============================");
-//					var0.add(rs);
-//				}
-//				
-//				i++;
-//			}
 			
-//			WizardDialog wizardDialog = new WizardDialog(new Shell(SWT.ON_TOP),new WholeOverWizard(ap.getOccurrences().get(0)));
-//			if (wizardDialog.open() == Window.OK) {
-//				System.out.println("Ok pressed");
-//			} 
-//			else {
-//			    System.out.println("Cancel pressed");
-//			}
+			
+		 
 		}
-		
-		
-		
-//		System.out.println("#VAR1: "+var1.size()+"\n#VAR2: "+var2.size()+"\n#VAR3: "+var3.size()+"\n#VAR4: "+var4.size()+"\n#VAR5: "+var5.size()+"\n#VAR6: "+var6.size()+"\n#VAR7: "+var7.size()+"\n#NO VAR: "+var0.size());
-		
-		/*for (RelSpecOccurrence rs : var0) {
-			System.out.println("G SOURCE: "+rs.getGeneralSource());
-			System.out.println("S SOURCE: "+rs.getSpecificSource());
-			System.out.println("G TARGET: "+rs.getGeneralTarget());
-			System.out.println("S TARGET: "+rs.getSpecificTarget());
-			System.out.println();
-		}*/
-//		if(var1.size()>0) {
-//			System.out.println("VAR 1");
-//			var1.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
-//			var1.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
-//			var1.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
-//			System.out.println(var1.get(0).getFix().getRulesString());
-//		} 
-//		
-//		if(var2.size()>0) {
-//			System.out.println("VAR 2");
-//		var2.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
-//		var2.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
-//		var2.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
-//		System.out.println(var2.get(0).getFix().getRulesString());
-//		}
-//		
-//		if(var3.size()>0) {
-//			System.out.println("VAR 3");
-//		var3.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
-//		var3.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
-//		var3.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
-//		System.out.println(var3.get(0).getFix().getRulesString());
-//		}
-//		
-//		if(var4.size()>0) {
-//			System.out.println("VAR 4");
-//		var4.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
-//		var4.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
-//		var4.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
-//		System.out.println(var4.get(0).getFix().getRulesString());
-//		}
-//		
-//		if(var5.size()>0) {
-//			System.out.println("VAR 5");
-//		var5.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
-//		var5.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
-//		var5.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
-//		System.out.println(var5.get(0).getFix().getRulesString());
-//		}
-//		
-//		if(var6.size()>0) {
-//			System.out.println("VAR 6");
-//		var6.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
-//		var6.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
-//		var6.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
-//		}
-//		
-//		if(var7.size()>0) {
-//			System.out.println("VAR 7");
-//		var7.get(0).generateOCL(RelSpecOccurrence.OperationType.SUBSET);
-//		var7.get(0).generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
-//		var7.get(0).generateOCL(RelSpecOccurrence.OperationType.DISJOINT);
-//		}
-//		WizardDialog wizardDialog = new WizardDialog(new Shell(SWT.ON_TOP),
-//			    new WholeOverWizard(var1.get(5)));
-//			    if (wizardDialog.open() == Window.OK) {
-//			      System.out.println("Ok pressed");
-//			    } else {
-//			      System.out.println("Cancel pressed");
-//			    }
 		
 	}
 	

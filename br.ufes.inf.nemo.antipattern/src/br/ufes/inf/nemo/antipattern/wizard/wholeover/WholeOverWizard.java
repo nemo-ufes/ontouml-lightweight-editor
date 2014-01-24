@@ -1,10 +1,13 @@
 package br.ufes.inf.nemo.antipattern.wizard.wholeover;
 
+import java.util.ArrayList;
+
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
+import br.ufes.inf.nemo.antipattern.wizard.overlapping.OverlappingRefactoringPage;
 
 /**
  * @author Tiago Sales
@@ -14,17 +17,13 @@ import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
 
 public class WholeOverWizard extends AntipatternWizard {
 
-	protected WholeOverFirstPage firstPage;
-//	protected WholeOverSecondPage secondPage;
-//	protected WholeOverThirdPage thirdPage;
-//	protected WholeOverFourthPage fourthPage;
-	
-	public enum WholeOverAction {MAKE_DIJSOINT, MAKE_EXCLUSIVE}
-	
-//	private WizardAction<WholeOverAction> action;
+	protected ArrayList<DisjointWholeOverPage> disjointPages;
+	protected ArrayList<ExclusiveWholeOverPage> exclusivePages;
 	
 	public WholeOverWizard(WholeOverOccurrence ap) {
 		super(ap, WholeOverAntipattern.getAntipatternInfo().getName());
+		disjointPages = new ArrayList<DisjointWholeOverPage>();
+		exclusivePages = new ArrayList<ExclusiveWholeOverPage>();	
 	}
 	
 	@Override
@@ -35,33 +34,61 @@ public class WholeOverWizard extends AntipatternWizard {
 	@Override
 	public void addPages() 
 	{	
-//		options = new WholeOverRefactoringPage(getAp());
-		finishing = new FinishingPage();
 		
-		firstPage = new WholeOverFirstPage(getAp());
-//		secondPage = new WholeOverSecondPage(getAp());
-//		thirdPage = new WholeOverThirdPage(getAp());
-//		fourthPage = new WholeOverFourthPage(getAp());
+		finishing = new FinishingPage();
+		options = new OverlappingRefactoringPage(getAp());
+		
+		for (Integer variationIndex = 0; variationIndex < getAp().getVariations().size(); variationIndex++){
+			disjointPages.add(new DisjointWholeOverPage("DisjointPage "+variationIndex.toString(),getAp(),variationIndex));
+			exclusivePages.add(new ExclusiveWholeOverPage("ExclusivePage "+variationIndex.toString(),getAp(),variationIndex));
+		}
 		
 		presentation = new PresentationPage(
 			WholeOverAntipattern.getAntipatternInfo().name,
 			WholeOverAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
-			firstPage,
+			disjointPages.get(0),
 			options
 		);
+				
+		addPage(presentation);
 		
-		addPage(presentation);		
-		addPage(firstPage);
-//		addPage(secondPage);
-//		addPage(thirdPage);
-//		addPage(fourthPage);
-//		addPage(options);
+		for (int i = 0; i < getAp().getVariations().size(); i++) {        
+			addPage(disjointPages.get(i));
+			addPage(exclusivePages.get(i));
+		}
+		
+		addPage(options);
 		addPage(finishing);
+		
 	}
-		@Override
+	
+	public DisjointWholeOverPage getDisjointPage(int variationIndex){
+		for (DisjointWholeOverPage page : this.disjointPages) {
+			if (page.getVariationIndex()== variationIndex)
+				return page;
+		}
+		return null;
+	}
+	
+	public ExclusiveWholeOverPage getExclusivePage(int variationIndex){
+		for (ExclusiveWholeOverPage page : this.exclusivePages) {
+			if (page.getVariationIndex()== variationIndex)
+				return page;
+		}
+		return null;
+	}
+	
+	@Override
 	public boolean performFinish() {
+		runAllActions();
 		return true;
+	}
+	
+	
+	
+	public boolean hasNextVariation(int variationIndex){
+		return variationIndex<getAp().getVariations().size()-1;
 	}
 
 }
