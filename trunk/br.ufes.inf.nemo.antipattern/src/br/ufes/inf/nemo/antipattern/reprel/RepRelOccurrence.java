@@ -189,7 +189,20 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 	public String getShortName() {
 		return parser.getStringRepresentation(relator);
 	}
+
+	// ========== OUTCOMING FIXES =========
 	
+	public void changeUpperMult(Mediation m, int n) {
+		
+	}
+
+	public void createInvariantWithQualities(ArrayList<Mediation> mediationList, int n) {
+		
+	}
+
+	public void createInvariant(ArrayList<Mediation> mediationList, int n) {
+		
+	}
 	
 		
 }

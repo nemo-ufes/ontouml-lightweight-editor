@@ -160,7 +160,7 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 		return parser.getStringRepresentation(relator);
 	}
 	
-	// ========== OUTCOME FIXES =========
+	// ========== OUTCOMING FIXES =========
 	
 	public void changeToRoleOrRoleMixin(EObject rigid)
 	{

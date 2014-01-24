@@ -69,14 +69,15 @@ public class RepRelFirstPage extends RepRelPage{
 	{
 		boolean needToGoToSecondPage = false;
 		ArrayList<Type> rigids = new ArrayList<Type>();
+		int i = 0;
 		for(TimeOptionComposite timeOpt: typesList)
 		{
 			if (timeOpt.isLifeTime()) 
 			{
 				// Action =====================			
 				RepRelAction newAction = new RepRelAction(repRel);
-				newAction.setChangeUpperMult(timeOpt.getN());
-				//getRepRelWizard().addAction(newAction);				
+				newAction.setChangeUpperMult(repRel.getMediations().get(i),timeOpt.getN());
+				getRepRelWizard().addAction(i,newAction);				
 				//=============================
 			}
 			if (timeOpt.isSame() && timeOpt.isYes())
@@ -87,6 +88,7 @@ public class RepRelFirstPage extends RepRelPage{
 				needToGoToSecondPage = true;				
 				((RepRelWizard)getWizard()).getSecondPage().setRigids(rigids);
 			}
+			i++;
 		}
 		if(needToGoToSecondPage){
 			return ((RepRelWizard)getWizard()).getSecondPage();
