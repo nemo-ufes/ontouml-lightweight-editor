@@ -1,7 +1,9 @@
 package br.ufes.inf.nemo.antipattern.wizard;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.eclipse.jface.wizard.Wizard;
 
@@ -18,8 +20,7 @@ public abstract class AntipatternWizard extends Wizard {
 	protected boolean canFinish = true;
 	
 	protected AntipatternOccurrence ap;
-	@SuppressWarnings("rawtypes")
-	protected HashMap<Integer, AntiPatternAction> actions = new HashMap<Integer,AntiPatternAction>();
+	protected HashMap<Integer, ArrayList<AntiPatternAction<?>>> actions = new HashMap<Integer,ArrayList<AntiPatternAction<?>>>();
 	
 	//GUI
 	protected PresentationPage presentation;
@@ -34,33 +35,58 @@ public abstract class AntipatternWizard extends Wizard {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public Collection<AntiPatternAction> getActions() {
-		return actions.values();
+	public Collection<AntiPatternAction> getAllActions() {
+		
+		ArrayList<AntiPatternAction> result = new ArrayList<AntiPatternAction>();
+		
+		for (Integer i : actions.keySet()) {
+			result.addAll(actions.get(i));
+		}
+		
+		return result;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public AntiPatternAction getAction(int pos){
-		int i=0;
-		for(AntiPatternAction action: actions.values()){
-			if (i==pos) return action;
-			i++;
-		}
-		return null;
+	public ArrayList<AntiPatternAction<?>> getAction(int pos){
+		return actions.get(pos);
 	}
 	
-	public void clearActions()
+	public void removeAllActions()
 	{
 		actions.clear();
 	}
 	
-	public void removeAction(int pos){
+	public void removeAllActions(int pos){
 		actions.remove(pos);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public void addAction(int pos, AntiPatternAction action)
-	{		
-		actions.put(pos, action);		
+	public void removeAllActions(int pos, Enum<?> e){
+		
+		if(actions.get(pos)!=null){
+			Iterator<AntiPatternAction<?>> iterator = actions.get(pos).iterator();
+			while(iterator.hasNext()){
+				AntiPatternAction<?> action = iterator.next();
+				if(action.getCode().equals(e))
+					iterator.remove();
+			}
+		}
+	}
+	
+	public void replaceAction(int pos, AntiPatternAction<?> action)
+	{	
+		ArrayList<AntiPatternAction<?>> indexedActions = new ArrayList<AntiPatternAction<?>>();
+		indexedActions.add(action);
+		actions.put(pos, indexedActions);	
+	}
+	
+	public void addAction(int pos, AntiPatternAction<?> action){
+		
+		if(actions.get(pos)!=null)
+			actions.get(pos).add(action);
+		else {
+			ArrayList<AntiPatternAction<?>> indexedActions = new ArrayList<AntiPatternAction<?>>();
+			indexedActions.add(action);
+			actions.put(pos, indexedActions);
+		}
 	}
 		
     @Override
@@ -78,12 +104,18 @@ public abstract class AntipatternWizard extends Wizard {
 
 	public FinishingPage getFinishing() {
 		canFinish=true;	
-		finishing.addActions(getActions());
+		finishing.addActions(getAllActions());
 		return finishing;
 	}
 	
 	public RefactoringPage getOptions() {
 		return options;
+	}
+	
+	public void runAllActions(){
+		for (AntiPatternAction<?> action : getAllActions()) {
+			action.run();
+		}
 	}
 
 }

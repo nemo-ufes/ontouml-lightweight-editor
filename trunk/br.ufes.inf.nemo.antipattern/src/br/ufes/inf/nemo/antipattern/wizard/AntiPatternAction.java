@@ -18,4 +18,8 @@ public abstract class AntiPatternAction <T extends AntipatternOccurrence> {
 	{
 		return ap;
 	}
+
+	public Enum<?> getCode(){
+		return code;
+	}
 }
