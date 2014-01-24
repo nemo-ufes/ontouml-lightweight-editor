@@ -1573,7 +1573,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void generateText() {
 		UmlProject project = getCurrentProject();
 		OntoUmlGlossary g = new OntoUmlGlossary();
-		g.TextExecute(ProjectBrowser.getParserFor(project));
+		g.TextExecute(ProjectBrowser.getParserFor(project) );
 		
 		/*UmlProject project = getCurrentEditor().getProject();
 		OperationResult result = TextDescriptionHelper.generateText(project.getModel(), frame);
