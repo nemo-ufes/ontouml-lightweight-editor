@@ -19,6 +19,7 @@ public class RefactoringPage extends WizardPage {
 	public Label lblChooseTheAppropriate;
 	public Label lblnoteThatSome;
 	public Composite checkListContainer;
+	public Composite container;
 	
 	/**
 	 * Create the wizard.
@@ -34,7 +35,7 @@ public class RefactoringPage extends WizardPage {
 	 * @param parent
 	 */
 	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NULL);
+		container = new Composite(parent, SWT.NULL);
 
 		setControl(container);
 		
@@ -71,5 +72,16 @@ public class RefactoringPage extends WizardPage {
 					.addContainerGap())
 		);
 		container.setLayout(gl_container);
+	}
+	
+	public Composite getCheckListContainer(){
+		return checkListContainer;
+	}
+	
+	public void setCheckListContainer(Composite c){
+		checkListContainer = c;
+	}
+	public void setContainer(Composite c){
+		container = c;
 	}
 }

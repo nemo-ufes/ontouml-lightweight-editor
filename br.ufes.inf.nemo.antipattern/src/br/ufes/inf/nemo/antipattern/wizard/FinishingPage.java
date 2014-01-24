@@ -47,10 +47,10 @@ public class FinishingPage extends WizardPage {
 	public void setVisible(boolean visible) {	
 		super.setVisible(visible);
 		if(visible){
-			if(((AntipatternWizard)getWizard()).getActions().size()==0)
+			if(((AntipatternWizard)getWizard()).getAllActions().size()==0)
 				hideActionList();
 			else
-				addActions(((AntipatternWizard)getWizard()).getActions());			
+				addActions(((AntipatternWizard)getWizard()).getAllActions());			
 		}		
 	}
 	
