@@ -193,16 +193,88 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 	// ========== OUTCOMING FIXES =========
 	
 	public void changeUpperMult(Mediation m, int n) {
-		
+		fix.addAll(fixer.setUpperCardinalityOnRelatorSide(m, n));
 	}
 
 	public void createInvariantWithQualities(ArrayList<Mediation> mediationList, int n) {
-		
+		fix.includeRule(generateOCLInvariantWithQualities(mediationList,n));
 	}
 
 	public void createInvariant(ArrayList<Mediation> mediationList, int n) {
-		
+		fix.includeRule(generateOCLInvariant(mediationList,n));
 	}
 	
+	public String generateOCLInvariant(ArrayList<Mediation> mediationList, int n)
+	{
+		String relator = "_'"+mediationList.get(0).relator().getName()+"'";
 		
+		String expr = new String();
+		int i=0;
+		for(Mediation m: mediationList)
+		{
+			Property src = m.getMemberEnd().get(0);
+			String srcName = new String();
+			Property tgt = m.getMemberEnd().get(1);
+			String tgtName = new String();
+			if(src.getName()==null || src.getName().isEmpty())  srcName = src.getType().getName().toLowerCase().trim();
+			if(tgt.getName()==null || tgt.getName().isEmpty())  tgtName = tgt.getType().getName().toLowerCase().trim();
+			srcName = "_'"+srcName+"'";
+			tgtName = "_'"+tgtName+"'";			
+			String localExpr = new String();
+			if (src.getType() instanceof Relator){
+				localExpr += "r."+srcName+" = self."+tgtName;
+			}else if (tgt.getType() instanceof Relator){
+				localExpr += "r."+srcName+" = self."+tgtName;
+			}
+			if(i==0) expr += localExpr;
+			else expr += " and "+localExpr;			
+			i++;
+		}
+		return
+		"context "+relator+"\n"+
+		"inv: "+relator+".allInstances()->select( r : "+relator+" | r<>self and "+expr+")->size() = "+n;
+	}
+	
+	public String generateOCLDerivationConcurrentWith(String relatorName)
+	{
+		return 
+		"context "+relatorName+"::concurrentWith(r: Relator):Boolean"+"\n"+
+		"body: self.startTime=r.startTime and self.endTime=r.endTime or"+"\n"+
+		"self.startTime<r.startTime and self.endTime>r.endTime or"+"\n"+		
+		"self.startTime>r.startTime and self.endTime<r.endTime or"+"\n"+
+		"self.startTime>r.startTime and self.startTime<r.endTime or"+"\n"+
+		"self.startTime<r.startTime and self.endTime>r.endTime ";
+	}
+	
+	public String generateOCLInvariantWithQualities(ArrayList<Mediation> mediationList, int n)
+	{
+		String relator = "_'"+mediationList.get(0).relator().getName()+"'";
+		
+		String expr = new String();
+		int i=0;
+		for(Mediation m: mediationList)
+		{
+			Property src = m.getMemberEnd().get(0);
+			String srcName = new String();
+			Property tgt = m.getMemberEnd().get(1);
+			String tgtName = new String();
+			if(src.getName()==null || src.getName().isEmpty())  srcName = src.getType().getName().toLowerCase().trim();
+			if(tgt.getName()==null || tgt.getName().isEmpty())  tgtName = tgt.getType().getName().toLowerCase().trim();
+			srcName = "_'"+srcName+"'";
+			tgtName = "_'"+tgtName+"'";			
+			String localExpr = new String();
+			if (src.getType() instanceof Relator){
+				localExpr += "r."+srcName+" = self."+tgtName;
+			}else if (tgt.getType() instanceof Relator){
+				localExpr += "r."+srcName+" = self."+tgtName;
+			}
+			if(i==0) expr += localExpr;
+			else if (i<=mediationList.size()) expr += " and "+localExpr;			
+			i++;
+		}
+		expr+= " r.concurrentWith(self)";
+		return generateOCLDerivationConcurrentWith(relator)+"\n\n"+
+		"context "+relator+"\n"+
+		"inv: "+relator+".allInstances()->select( r : "+relator+" | r<>self and "+expr+")->size() = "+n+"\n";		
+	}
 }
