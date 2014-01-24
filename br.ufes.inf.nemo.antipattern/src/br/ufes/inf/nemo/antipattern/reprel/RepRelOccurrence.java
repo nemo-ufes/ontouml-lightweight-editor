@@ -10,6 +10,7 @@ import RefOntoUML.Mediation;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RepRelOccurrence extends AntipatternOccurrence {
@@ -198,6 +199,8 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 
 	public void createInvariantWithQualities(ArrayList<Mediation> mediationList, int n) {
 		fix.includeRule(generateOCLInvariantWithQualities(mediationList,n));
+		fix.addAll(fixer.createAttribute(relator, "startTime", ClassStereotype.DATATYPE));
+		fix.addAll(fixer.createAttribute(relator, "endTime", ClassStereotype.DATATYPE));
 	}
 
 	public void createInvariant(ArrayList<Mediation> mediationList, int n) {
