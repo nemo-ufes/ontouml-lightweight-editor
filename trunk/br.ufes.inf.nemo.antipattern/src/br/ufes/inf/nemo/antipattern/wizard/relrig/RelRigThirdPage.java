@@ -76,7 +76,7 @@ public class RelRigThirdPage extends RelRigPage {
 		else if(btnYes.getSelection()){		
 
 			// Action =====================			
-			getRelRigWizard().clearActions();
+			getRelRigWizard().removeAllActions();
 			//=============================
 			
 			if(rigid < relRig.getRigidMediatedProperties().size()-1)

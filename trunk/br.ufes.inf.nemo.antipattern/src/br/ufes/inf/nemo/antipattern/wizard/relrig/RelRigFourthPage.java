@@ -76,14 +76,14 @@ public class RelRigFourthPage extends RelRigPage {
 		{
 			// Action =====================			
 			newAction.setBothReadOnly((Mediation) rigidEnd.getAssociation());
-			getRelRigWizard().addAction(rigid, newAction);
+			getRelRigWizard().replaceAction(rigid, newAction);
 			//=============================
 			
 		}else if(btnYes.getSelection())
 		{
 			// Action =====================			
 			newAction.setChangeStereotypeToMode(rigidType, (Mediation) rigidEnd.getAssociation());
-			getRelRigWizard().addAction(rigid, newAction);
+			getRelRigWizard().replaceAction(rigid, newAction);
 			//=============================
 		}
 		

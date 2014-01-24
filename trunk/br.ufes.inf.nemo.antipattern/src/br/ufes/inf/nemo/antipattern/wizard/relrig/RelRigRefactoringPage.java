@@ -169,22 +169,22 @@ public class RelRigRefactoringPage extends RefactoringPage {
 			
 			if(c.getSelectionIndex()==0) {
 				newAction.setChangeStereotypeToRole((Classifier) p.getType());
-				getRelRigWizard().addAction(rigid,newAction);
+				getRelRigWizard().replaceAction(rigid,newAction);
 			}
 			else if(c.getSelectionIndex()==1) {
 				newAction.setAddRoleSubtype((Classifier) p.getType(), (Mediation) p.getAssociation());
-				getRelRigWizard().addAction(rigid,newAction);
+				getRelRigWizard().replaceAction(rigid,newAction);
 			}
 			else if(c.getSelectionIndex()==2) {
 				newAction.setChangeStereotypeToMode((Classifier) p.getType(), (Mediation) p.getAssociation());
-				getRelRigWizard().addAction(rigid,newAction);
+				getRelRigWizard().replaceAction(rigid,newAction);
 			}
 			else if(c.getSelectionIndex()==3) {				
 				newAction.setBothReadOnly((Mediation) p.getAssociation());
-				getRelRigWizard().addAction(rigid,newAction);
+				getRelRigWizard().replaceAction(rigid,newAction);
 			}
 			else if(c.getSelectionIndex()==4) {				
-				getRelRigWizard().removeAction(rigid);
+				getRelRigWizard().removeAllActions(rigid);
 			}
 			rigid++;
 		}
