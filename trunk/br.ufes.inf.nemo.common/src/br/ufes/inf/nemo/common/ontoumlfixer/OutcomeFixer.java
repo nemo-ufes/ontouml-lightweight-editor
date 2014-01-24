@@ -24,6 +24,8 @@ import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Mixin;
 import RefOntoUML.Mode;
+import RefOntoUML.NamedElement;
+import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Phase;
 import RefOntoUML.Property;
@@ -573,5 +575,68 @@ public class OutcomeFixer {
 		return null;
 	}
 	
+	public Fix setUpperCardinalityOnRelatorSide (Mediation m, int upper)
+	{
+		Fix fix = new Fix();
+		
+		Type source = m.getMemberEnd().get(0).getType();
+		Type target = m.getMemberEnd().get(1).getType();
+		if(source instanceof Relator){
+			Property src = m.getMemberEnd().get(0);
+			LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
+			upperBound.setValue(upper);			
+			src.setUpperValue(upperBound);
+			fix.includeModified(src);
+		}
+		if(target instanceof Relator){
+			Property tgt = m.getMemberEnd().get(1);
+			LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
+			upperBound.setValue(upper);			
+			tgt.setUpperValue(upperBound);
+			fix.includeModified(tgt);
+		}
+		return fix;
+	}
+	
+	/** Verifies if there is already a element in the model root with the same name as the object obj. If true, it returns that element. */
+	public RefOntoUML.PackageableElement containsNameBased(RefOntoUML.Package root, EObject obj)
+	{
+		for(PackageableElement pe: root.getPackagedElement())
+		{
+			if(pe instanceof DataType){
+				if (pe.getName().trim().compareToIgnoreCase(((NamedElement) obj).getName())==0) return pe;
+			}
+			if(pe instanceof RefOntoUML.Package || pe instanceof RefOntoUML.Model) return containsNameBased((Package) pe,obj);
+		}
+		return null;
+	}
+	
+	public Fix createAttribute(EObject object, String attrName, ClassStereotype attrType)
+	{
+		Fix fix = new Fix();
+		
+		//create type
+		EObject type = createClass(attrType);
+		((NamedElement)type).setName(attrName);
+		// verify if it already exists
+		RefOntoUML.NamedElement elem = (NamedElement)containsNameBased(root,type);
+		if (elem==null){
+			copyContainer(object, type);
+			fix.includeAdded(type);
+			fix.includeModified(object.eContainer());
+		}else{
+			type = elem;
+		}
+		//create the attribute (property)
+		Property attr = createProperty((Classifier)type, 1, 1);
+		attr.setType((Type)type);
+		fix.includeAdded(attr);
+		//include it on object
+		if (object instanceof RefOntoUML.Class) ((RefOntoUML.Class)object).getOwnedAttribute().add(attr);
+		if (object instanceof RefOntoUML.DataType) ((RefOntoUML.DataType)object).getOwnedAttribute().add(attr);		
+		fix.includeModified(object);
+		
+		return fix;
+	}
 	
 }
