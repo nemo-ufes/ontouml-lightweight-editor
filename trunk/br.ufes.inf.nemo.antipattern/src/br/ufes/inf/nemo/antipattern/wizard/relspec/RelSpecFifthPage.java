@@ -75,12 +75,12 @@ public class RelSpecFifthPage extends RelSpecPage {
 		if(btnGeneral.getSelection()) {
 			//ACTION			
 			newAction.setDeleteGeneral();
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 		if(btnSpecific.getSelection()) {
 			//ACTION			
 			newAction.setDeleteSpecific();
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 		}
 		
 		return getRelSpecWizard().getFinishing();

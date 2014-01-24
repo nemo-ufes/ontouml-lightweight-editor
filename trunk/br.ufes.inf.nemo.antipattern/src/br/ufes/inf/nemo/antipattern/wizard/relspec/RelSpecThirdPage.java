@@ -85,7 +85,7 @@ public class RelSpecThirdPage extends RelSpecPage {
 			// Action =====================
 			RelSpecAction newAction = new RelSpecAction(relSpec);
 			newAction.setRedefine();
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 						
 			return getRelSpecWizard().getFinishing();
 		}	

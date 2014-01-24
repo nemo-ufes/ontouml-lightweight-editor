@@ -80,7 +80,7 @@ public class RelSpecFirstPage extends RelSpecPage {
 		
 		if(btnPossible.getSelection()) {
 			
-			getRelSpecWizard().clearActions();
+			getRelSpecWizard().removeAllActions();
 			
 			return getRelSpecWizard().getFinishing();
 			
@@ -88,7 +88,7 @@ public class RelSpecFirstPage extends RelSpecPage {
 						
 			RelSpecAction newAction = new RelSpecAction(relSpec);
 			newAction.setDisjoint();
-			getRelSpecWizard().addAction(0,newAction);
+			getRelSpecWizard().replaceAction(0,newAction);
 			
 			return getRelSpecWizard().getFinishing();
 		}

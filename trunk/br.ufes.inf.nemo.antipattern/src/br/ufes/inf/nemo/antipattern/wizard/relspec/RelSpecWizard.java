@@ -81,10 +81,10 @@ public class RelSpecWizard extends AntipatternWizard {
 		return fifthPage;
 	}
 
-	@SuppressWarnings("rawtypes")
+
 	@Override
 	public boolean performFinish() {
-		AntiPatternAction action = getAction(0);			
+		AntiPatternAction<?> action = getAction(0).get(0);			
 		if(action!=null) action.run();		
 		return true;
 	}
