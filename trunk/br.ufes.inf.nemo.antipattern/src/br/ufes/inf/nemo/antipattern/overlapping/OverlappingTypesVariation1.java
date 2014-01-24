@@ -23,10 +23,6 @@ public class OverlappingTypesVariation1 extends OverlappingTypesVariation {
 		commonType = null;
 		
 		for (Property p : overlappingProperties) {
-			System.out.println(occurrence.getParser().getStringRepresentation(p));
-		}
-		
-		for (Property p : overlappingProperties) {
 			if(commonType==null){
 				commonType=(Classifier) p.getType();
 			}
