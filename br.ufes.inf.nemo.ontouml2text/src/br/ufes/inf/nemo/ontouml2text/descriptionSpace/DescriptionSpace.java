@@ -39,7 +39,17 @@ public class DescriptionSpace {
 	}
 	
 	public DescriptionCategory findCategory(String label){
+		for(DescriptionCategory c: categories){
+			if (c.getLabel().equals(label))
+				return c;
+		}
+		return null;
+	}
+	
+	/*
+	public DescriptionCategory findCategory(String label){
 		Collections.binarySearch(this.categories, new DescriptionCategory(label), new Comparator<DescriptionCategory>(){		
+			
 			public int compare(DescriptionCategory d1, DescriptionCategory d2){
 				int res = String.CASE_INSENSITIVE_ORDER.compare(d1.getLabel(), d2.getLabel());
 		        if (res == 0) {
@@ -50,5 +60,5 @@ public class DescriptionSpace {
 		});
 		
 		return null;
-	}
+	}*/
 }
