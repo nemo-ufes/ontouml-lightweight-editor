@@ -1,10 +1,12 @@
 package br.ufes.inf.nemo.ontouml2text.descriptionSpaceGenerator;
 
+import java.awt.List;
 import java.util.ArrayList;
 import java.util.Set;
 
 import RefOntoUML.Association;
 import RefOntoUML.Class;
+import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
@@ -25,6 +27,7 @@ import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Subk
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Characterization;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.ComponentOf;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Formal;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Generalization;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Material;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Mediation;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.MemberOf;
@@ -50,20 +53,27 @@ public void PopulateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 			
 			DescriptionCategory mat;
 			
-			if(generalizationSpace.findCategory(classf.getName()) == null){			//verificar se a classe já foi criada
+			if(generalizationSpace.findCategory(classf.getName()) == null){			
 				mat = CreateCategoryClass(classf);
 				generalizationSpace.addCategory(mat);
-			}else											//se ja for criada, retorne a propria
+			}else											
 				mat = generalizationSpace.findCategory(classf.getName());
 			
 			PopulateRelationships(parser.getRelationships(classf),generalizationSpace,mat,parser,hashCategories);
 		}
+		
+		for (DescriptionCategory c : generalizationSpace.getCategories()){
+			System.out.println("Nome: "+c.getLabel()+ "\n  Lista de funções: "+c.getFunctions()+ "\n");
+			for( DescriptionFunction d:c.getFunctions() ){
+				System.out.println(d.getTarget().getLabel());
+			}
+		}
+		
 		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
 }
 
 
-public DescriptionCategory CreateCategoryClass(Class classf) {
-	
+public DescriptionCategory CreateCategoryClass(Class classf) {	
 	if(classf instanceof RefOntoUML.Category){
 		DescriptionCategory mat = new Category(classf.getName());
 		return mat;
@@ -109,38 +119,37 @@ public DescriptionCategory CreateCategoryClass(Class classf) {
 }
 
 
-// FALTA implementar a parte das Generalizations 
+// FALTA implementar a parte das GeneralizationsSets
 private void PopulateRelationships(ArrayList<Relationship> eList, DescriptionSpace space, DescriptionCategory source, OntoUMLParser parser, Set<String> hashCategories) {
 	
 	int classNumberTarget;
 	DescriptionCategory target;
+	
 	
 	for(Relationship r : eList){
 
 		if(r instanceof RefOntoUML.Association){			
 			
 			classNumberTarget = ChooseTarget(((RefOntoUML.Association) r).getEndType().get(0).getName(),((RefOntoUML.Association) r).getEndType().get(1).getName(),source.getLabel());
-
-			// Autorelação
+			
 			if(((RefOntoUML.Association) r).getEndType().get(0).getName().equals(((RefOntoUML.Association) r).getEndType().get(1).getName())){
 				DescriptionCategory targetCreated = space.findCategory(((RefOntoUML.Association) r).getEndType().get(1).getName());
 				createRelationship(r, targetCreated, source);
-				break;
+				continue;
 			}
+			if(space.findCategory(((Association) r).getEndType().get(classNumberTarget).getName()) == null){
 				
-			if(space.findCategory(((Association) r).getEndType().get(classNumberTarget).getName()) == null){ // se a classe nao foi criada
 				target = CreateCategory(((Association) r).getEndType().get(classNumberTarget));
 				createRelationship(r,target,source);
 				space.addCategory(target);
-				break;//vai para a proxima iteracao do for
+				continue;
 			}
 
-			else{ //se a classe ja foi criada
-				if(hashCategories.contains(((RefOntoUML.Association) r).getEndType().get(1).getName())) //verifica se ta na hash,se ja foi percorrido
-					break;	//sai do for e vai pra proxima relaçao
+			else{
+				if(hashCategories.contains(((RefOntoUML.Association) r).getEndType().get(classNumberTarget).getName())) //verifica se ta na hash,se ja foi percorrido
+					continue;
 				else{
-					//acha a classe target e cria a relaçao
-					DescriptionCategory targetCreated = space.findCategory(((RefOntoUML.Association) r).getEndType().get(1).getName());
+					DescriptionCategory targetCreated = space.findCategory(((RefOntoUML.Association) r).getEndType().get(classNumberTarget).getName());
 					createRelationship(r, targetCreated, source);
 				} 
 			}
@@ -148,27 +157,44 @@ private void PopulateRelationships(ArrayList<Relationship> eList, DescriptionSpa
 		
 		if(r instanceof RefOntoUML.Generalization){
 			
-		/*	if(space.findCategory(((RefOntoUML.Generalization) r).getGeneral().getName()) == null){ // se a classe nao foi criada
-				target = CreateCategoryClass(((RefOntoUML.Generalization) r).getGeneral());
-				createRelationship(r,target,source);
+			Classifier searchObject;
+		 	boolean isSon;
+		 	
+			if(source.getLabel().equals(((RefOntoUML.Generalization) r).getSpecific().getName())){
+		 		searchObject = ((RefOntoUML.Generalization) r).getGeneral();
+		 		isSon = true;
+		 	}
+		 	else{ 
+		 		searchObject = ((RefOntoUML.Generalization) r).getSpecific(); 
+		 		isSon = false;
+		 	}		
+		 	
+			if(space.findCategory(searchObject.getName()) == null){
+
+				target = CreateCategoryClass((Class) searchObject);
+				
+				if(isSon)
+					createRelationship(r,target,source);
+				else
+					createRelationship(r,source,target);
+
 				space.addCategory(target);
-				break;//vai para a proxima iteracao do for
+				continue;
 			}
 
-			else{ //se a classe ja foi criada
-				if(hashCategories.contains(((RefOntoUML.Association) r).getEndType().get(1).getName())) //verifica se ta na hash,se ja foi percorrido
-					break;	
+			else{ 
+				
+				if(hashCategories.contains(searchObject.getName())) 
+					continue;	
+				
 				else{
-					//acha a classe target e cria a relaçao
-					DescriptionCategory targetCreated = space.findCategory(((RefOntoUML.Association) r).getEndType().get(1).getName());
-					createRelationship(r, targetCreated, source);
-				} 
+					DescriptionCategory targetCreated = space.findCategory(searchObject.getName());			
+					if(isSon)
+						createRelationship(r,targetCreated,source);
+					else
+						createRelationship(r,source,targetCreated);
+				}
 			}
-			
-			System.out.println("É uma generalization");
-			System.out.println("source : " + ((RefOntoUML.Generalization) r).getSource());
-			System.out.println("target : " + ((RefOntoUML.Generalization) r).getGeneral());
-		 	*/
 		}
 	}
 	hashCategories.add(source.getLabel());
@@ -184,10 +210,15 @@ public int ChooseTarget(String name, String name2, String label) {
 	return -1;	
 }
 
-
 private void createRelationship(Relationship r, DescriptionCategory target,DescriptionCategory source) {
 	
 	int sourceLower,sourceUpper,targetLower,targetUpper;
+		
+		if(r instanceof RefOntoUML.Generalization){
+			DescriptionFunction mat = new Generalization("",source,target,1,1,1,1);
+			source.getFunctions().add(mat);
+			return;
+			}
 	
 		//Find multiplicity source and target
 		sourceLower = FindLowerMultiplicity(((Association) r).getMemberEnd().get(0));
