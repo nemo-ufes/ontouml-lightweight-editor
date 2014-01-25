@@ -52,14 +52,12 @@ public class OntoUmlGlossary {
 public void TextExecute(OntoUMLParser parser) {		
 	System.out.println("\n\n======= TEST =======\n\n");
 
-		// Criando Description Space
 		DescriptionSpace space = new DescriptionSpace();		
 		
-		// Hash que contém os labels das categorias.
+		// Hash containing the labels of the categories already covered
 		Set<String> hashCategories = new HashSet<String>();
 		
 		DescriptionSpaceGenerator generator = new DescriptionSpaceGenerator(space);
 		generator.PopulateDescriptionSpace(parser, hashCategories);
 	}
-
 }
