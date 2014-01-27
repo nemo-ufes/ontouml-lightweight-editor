@@ -27,11 +27,11 @@ public class DescriptionSpace {
 		
 		Collections.sort(this.categories, new Comparator<DescriptionCategory>(){		
 			public int compare(DescriptionCategory d1, DescriptionCategory d2){
-				int res = String.CASE_INSENSITIVE_ORDER.compare(d1.getLabel(), d2.getLabel());
-		        if (res == 0) {
-		            res = d1.getLabel().compareTo(d2.getLabel());
-		        }
-		        return res;
+					int res = String.CASE_INSENSITIVE_ORDER.compare(d1.getLabel(), d2.getLabel());
+			        if (res == 0) {
+			            res = d1.getLabel().compareTo(d2.getLabel());
+			        }
+			        return res;
 			}
 		});
 		
@@ -40,6 +40,7 @@ public class DescriptionSpace {
 	
 	public DescriptionCategory findCategory(String label){
 		for(DescriptionCategory c: categories){
+			
 			if (c.getLabel().equals(label))
 				return c;
 		}
