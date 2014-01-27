@@ -61,13 +61,9 @@ public class RepRelWizard extends AntipatternWizard {
 		return secondPage;
 	}
 		
-	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean performFinish() {
-		for(AntiPatternAction action: actions.values())
-		{						
-			if(action!=null) { action.run(); }			
-		}		
+		runAllActions();	
 		return true;
 	}
 }

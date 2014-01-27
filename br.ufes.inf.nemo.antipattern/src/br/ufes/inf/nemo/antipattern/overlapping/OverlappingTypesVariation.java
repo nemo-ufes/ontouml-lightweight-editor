@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.AntiPatternUtil;
 import br.ufes.inf.nemo.common.list.Combination;
 
 public abstract class OverlappingTypesVariation {
@@ -31,9 +32,14 @@ public abstract class OverlappingTypesVariation {
 		if(!this.overlappingProperties.containsAll(selectedProperties) || selectedProperties.size()<2)
 			return false;
 		
+		for (Property p : selectedProperties) {
+			if(AntiPatternUtil.fixPropertyName(p))
+				occurrence.getFix().includeAdded(p);
+		}
+		
 		String contextName, invName = "exclusiveTypes", invRule="";
 		
-		contextName = occurrence.addQuotes(occurrence.getMainType().getName());
+		contextName = occurrence.getMainType().getName();
 		
 		Combination comb = new Combination(selectedProperties, 2);
 		

@@ -78,16 +78,14 @@ public class OverlappingTypesVariation5 extends OverlappingTypesVariation {
 	
 	private void getClosestSupertype(){
 		
-		Classifier closest = null;
+		closestSupertpe = null;
 		
 		for (Classifier supertype : this.commonSupertypes) {
-			if(closest == null)
-				closest = supertype;
-			else if (supertype.allParents().contains(closest))
-				closest = supertype;
-				
+			if(closestSupertpe == null)
+				closestSupertpe = supertype;
+			else if (supertype.allParents().contains(closestSupertpe))
+				closestSupertpe = supertype;				
 		}
-		
 	}
 	
 	@Override

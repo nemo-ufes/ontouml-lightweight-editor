@@ -46,7 +46,7 @@ public abstract class OverlappingWizardPage extends WizardPage {
 		
 		String contextualizationContent = getQuestion();
 		
-		contextualizationText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL);
+		contextualizationText = new StyledText(container, SWT.WRAP );
 		contextualizationText.setBackground(container.getBackground());
 		contextualizationText.setText(contextualizationContent);
 		contextualizationText.setEditable(false);
@@ -100,5 +100,15 @@ public abstract class OverlappingWizardPage extends WizardPage {
 		return variation;
 	}
 	
+	public OverlappingWizard getOverlappingWizard(){
+		
+		if(getWizard() instanceof OverlappingWizard)
+			return (OverlappingWizard) getWizard();
+		
+		return null;
+	}
+	
 	public abstract String getQuestion();
+	
+	public abstract void registerActions(); 
 }

@@ -46,7 +46,7 @@ public class OverlappingCheckBoxTableBuilder{
 			else
 				columnName += " (unnamed)";
 			TableColumn tableColumn = new TableColumn(table, SWT.CENTER);
-			tableColumn.setWidth(100);
+			tableColumn.setWidth(200);
 			tableColumn.setText(columnName);
 		}
 		
