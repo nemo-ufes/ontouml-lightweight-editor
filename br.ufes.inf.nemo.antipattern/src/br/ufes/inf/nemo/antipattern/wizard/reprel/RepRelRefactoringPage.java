@@ -78,6 +78,7 @@ public class RepRelRefactoringPage extends RefactoringPage {
 		scroll.setAlwaysShowScrollBars(false);
 		
 		content = new Composite(scroll, SWT.NONE);
+		content.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		scroll.setBounds(11, 36, 552, 130);
 		content.setLayout(new GridLayout(4, false));
 		
@@ -177,17 +178,17 @@ public class RepRelRefactoringPage extends RefactoringPage {
 			i++;
 		}	
 		if(historicalCheck.getSelection()){
-			// Action =====================	
-			RepRelAction newAction = new RepRelAction(repRel);
-			newAction.setCreateInvariantWithQualities(repRel.getMediations(), historicalSpinner.getSelection());
-			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);
+//			// Action =====================	
+//			RepRelAction newAction = new RepRelAction(repRel);
+//			newAction.setCreateInvariantWithQualities(repRel.getMediations(), historicalSpinner.getSelection());
+//			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);
 			//=============================
 		}
 		if(currentCheck.getSelection()){
-			// Action =====================	
-			RepRelAction newAction = new RepRelAction(repRel);
-			newAction.setCreateInvariant(repRel.getMediations(), currentSpinner.getSelection());
-			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);
+//			// Action =====================	
+//			RepRelAction newAction = new RepRelAction(repRel);
+//			newAction.setCreateInvariant(repRel.getMediations(), currentSpinner.getSelection());
+//			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);
 			//=============================			
 		}
 		

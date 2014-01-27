@@ -1,18 +1,25 @@
 package br.ufes.inf.nemo.antipattern.wizard.reprel;
 
+import java.util.ArrayList;
+
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import RefOntoUML.Mediation;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
 
 public class RepRelThirdPage extends RepRelPage {
 
-	public 	RepRelTable rrtable;
+	public RepRelTable rrtable;
+	public Button btnCurrent;
+	public Button btnHistorical;
 	
 	public RepRelThirdPage(RepRelOccurrence rr) 
 	{
@@ -40,20 +47,49 @@ public class RepRelThirdPage extends RepRelPage {
 		btnAddLine.setBounds(489, 201, 75, 25);
 		btnAddLine.setText("Add Line");
 		
+		Label lblDoesIsIntended = new Label(container, SWT.NONE);
+		lblDoesIsIntended.setBounds(10, 233, 554, 15);
+		lblDoesIsIntended.setText("Does "+repRel.getRelator().getName()+" is intended with current or historical semantics");
+		
+		btnCurrent = new Button(container, SWT.RADIO);
+		btnCurrent.setBounds(10, 254, 90, 16);
+		btnCurrent.setText("Current");
+		
+		btnHistorical = new Button(container, SWT.RADIO);
+		btnHistorical.setBounds(106, 254, 90, 16);
+		btnHistorical.setText("Historical");
+		
 		btnAddLine.addSelectionListener(new SelectionAdapter() {
 			 @Override
 	            public void widgetSelected(SelectionEvent e) {
-				 rrtable.addLine();
-				 
-//				 for (ArrayList<Mediation> line : rrtable.getSelections()) {
-//					 System.out.print("Line: ");
-//					 for (Mediation m : line) {
-//						System.out.print(m.getType().getName()+", ");
-//					 }
-//					 System.out.println();
-//				}
+				 rrtable.addLine();				 
 			 }
-		});		
+		});				
+	}
+	
+	@Override
+	public IWizardPage getNextPage() 
+	{		
+		if(btnCurrent.getSelection()){
+			ArrayList<ArrayList<Mediation>> mMatrix = rrtable.getSelections();
+			ArrayList<Integer> ns = rrtable.getNs();
+			// Action =====================	
+			RepRelAction newAction = new RepRelAction(repRel);
+			newAction.setCreateInvariant(mMatrix, ns);
+			getRepRelWizard().replaceAction(repRel.getMediations().size(), newAction);
+			//=============================
+		}
+		if(btnHistorical.getSelection()){			
+			ArrayList<ArrayList<Mediation>> mMatrix = rrtable.getSelections();
+			ArrayList<Integer> ns = rrtable.getNs();			
+			// Action =====================	
+			RepRelAction newAction = new RepRelAction(repRel);
+			newAction.setCreateInvariantWithQualities(mMatrix,ns);
+			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);	
+			//=============================
+		}
+		if(btnHistorical.getSelection() || btnCurrent.getSelection()) return ((RepRelWizard)getWizard()).getFinishing();
 		
+		return super.getNextPage();
 	}
 }

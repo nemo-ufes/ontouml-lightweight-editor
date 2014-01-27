@@ -67,21 +67,6 @@ public class RepRelSecondPage extends RepRelPage {
 	@Override
 	public IWizardPage getNextPage() 
 	{		
-//		if(btnCurrent.getSelection()){
-//			// Action =====================	
-//			RepRelAction newAction = new RepRelAction(repRel);
-//			newAction.setCreateInvariant(repRel.getMediations(), getValue());
-//			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);	
-//			//=============================
-//		}
-//		if(btnHistorical.getSelection()){
-//			// Action =====================	
-//			RepRelAction newAction = new RepRelAction(repRel);
-//			newAction.setCreateInvariantWithQualities(repRel.getMediations(),getValue());
-//			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);	
-//			//=============================			
-//		}
-		
 		if(btnYes.getSelection()) return ((RepRelWizard)getWizard()).getFinishing();
 		else if(btnNo.getSelection()) return ((RepRelWizard)getWizard()).getThirdPage();	
 

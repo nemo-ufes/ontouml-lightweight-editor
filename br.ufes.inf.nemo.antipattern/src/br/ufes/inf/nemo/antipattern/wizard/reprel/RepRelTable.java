@@ -66,6 +66,7 @@ public class RepRelTable {
 		}
 		TableEditor editor = new TableEditor(table);
 		Spinner spinner = new Spinner(table, SWT.CHECK);
+		spinner.setSelection(1);
 		spinner.pack();
 		editor.minimumWidth = spinner.getSize().x;
 		editor.horizontalAlignment = SWT.CENTER;
@@ -76,29 +77,33 @@ public class RepRelTable {
 	public Table getTable() {
 		return table;
 	}
-	
-	public ArrayList<ArrayList<Mediation>> getSelections (){
-		ArrayList<ArrayList<Mediation>> result = new ArrayList<ArrayList<Mediation>>();
-		
+
+	public ArrayList<Integer> getNs (){
+		ArrayList<Integer> result = new ArrayList<Integer>();		
 		for (TableItem ti : table.getItems()){			
-			ArrayList<Mediation> selectedProperties = getSelected(ti);
-			if(selectedProperties.size()>=2)
-				result.add(selectedProperties);
-		}
-		
-		return result;
-		
+			int n = getN(ti);			
+			result.add(n);
+		}		
+		return result;		
 	}
 	
-	@SuppressWarnings("unused")
+	public ArrayList<ArrayList<Mediation>> getSelections (){
+		ArrayList<ArrayList<Mediation>> result = new ArrayList<ArrayList<Mediation>>();		
+		for (TableItem ti : table.getItems()){			
+			ArrayList<Mediation> selectedProperties = getSelected(ti);
+			if(selectedProperties.size()==2)
+				result.add(selectedProperties);
+		}		
+		return result;		
+	}
+	
 	private int getN(TableItem ti){		
 		Spinner spinner = (Spinner) ti.getData(Integer.toString(mediations.size()));
 		return spinner.getSelection();		
 	}
 	
 	private ArrayList<Mediation> getSelected(TableItem ti){
-		ArrayList<Mediation> line = new ArrayList<Mediation>();
-		
+		ArrayList<Mediation> line = new ArrayList<Mediation>();		
 		for (Integer i = 0; i < mediations.size(); i++) {
 			Button checkBox = (Button) ti.getData(i.toString());
 			if (checkBox.getSelection())
