@@ -131,7 +131,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		ArrayList<SWRLDArgument> retArgsY = null;
 		if(arguments.size()>0){
 			//verify if is includes or excludes operations to determine the repetition of recurrence
-			if(this.isIncludesOperation() || this.isExcludesOperation()){
+			if((this.isIncludesOperation() || this.isExcludesOperation()) && !ctStereotype.equals(Tag.derive.toString())){
 				repeatNumber=2;
 			}
 			
@@ -452,12 +452,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 	
 	public ArrayList<SWRLDArgument> solveIncludes(String ctStereotype, OWLDataFactory factory, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean leftSideOfImplies) {
-		SWRLDArgument varX1 = referredArgsX.get(0);
+		//SWRLDArgument varX1 = referredArgsX.get(0);
+		SWRLDArgument varX1 = referredArgsX.get(referredArgsX.size()-1);
 		SWRLDArgument varX2 = null;
 		if(referredArgsX.size()>1){
 			varX2 = referredArgsX.get(1);
 		}
-		SWRLDArgument varY1 = referredArgsY.get(0);
+		//SWRLDArgument varY1 = referredArgsY.get(0);
+		SWRLDArgument varY1 = referredArgsY.get(referredArgsY.size()-1);
 		SWRLDArgument varY2 = null;
 		if(referredArgsY.size()>1){
 			varY2 = referredArgsY.get(1);
