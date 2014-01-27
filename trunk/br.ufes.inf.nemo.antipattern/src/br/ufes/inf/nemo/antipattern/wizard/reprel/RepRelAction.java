@@ -55,16 +55,16 @@ public class RepRelAction extends AntiPatternAction<RepRelOccurrence>{
 					
 		else if(code==Action.CREATE_INVARIANT){
 			for(ArrayList<Mediation> mList: mMatrix){
-				result += "Create OCL invariant limiting to "+nList.get(mMatrix.indexOf(mList))+" the instances of the current relator that mediates the pair: ";
-				int i =0; for(Mediation m: mList) { if(i==mList.size()-1) result += m.mediated().getName(); else result += m.mediated().getName()+", "; i++; }
+				result += "Create OCL invariant limiting to "+nList.get(mMatrix.indexOf(mList))+" the instances of the current relator that mediates the pair: (";
+				int i =0; for(Mediation m: mList) { if(i==mList.size()-1) result += m.mediated().getName()+")"; else result += m.mediated().getName()+","; i++; }
 				result+="\n";
 			}		
 					
 		}else if(code==Action.CREATE_INVARIANT_WITH_QUALITIES){
 			result = "Create two DataTypes namely startTime and endTime"+"\n";
 			for(ArrayList<Mediation> mList: mMatrix){
-				result += "Create OCL invariant limiting to "+nqList.get(mMatrix.indexOf(mList))+" the instances of the historical relator that mediates the pair: ";
-				int i =0; for(Mediation m: mList) { if(i==mList.size()-1) result += m.mediated().getName(); else result += m.mediated().getName()+", ";  i++; }
+				result += "Create OCL invariant limiting to "+nqList.get(mMatrix.indexOf(mList))+" the instances of the historical relator that mediates the pair (";
+				int i =0; for(Mediation m: mList) { if(i==mList.size()-1) result += m.mediated().getName()+")"; else result += m.mediated().getName()+",";  i++; }
 				result+="\n";
 			}			
 		}	

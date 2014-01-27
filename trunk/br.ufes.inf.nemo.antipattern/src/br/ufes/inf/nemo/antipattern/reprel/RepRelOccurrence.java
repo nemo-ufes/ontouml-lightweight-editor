@@ -198,8 +198,8 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 	}
 
 	public void createInvariantWithQualities(ArrayList<ArrayList<Mediation>> mMatrix, ArrayList<Integer> nList) {
-		fix.addAll(fixer.createAttribute(relator, "startTime", ClassStereotype.DATATYPE));
-		fix.addAll(fixer.createAttribute(relator, "endTime", ClassStereotype.DATATYPE));
+		fix.addAll(fixer.createAttribute(relator, "startTime", ClassStereotype.DATATYPE, "DateTime"));
+		fix.addAll(fixer.createAttribute(relator, "endTime", ClassStereotype.DATATYPE,"DateTime"));
 		fix.includeRule(generateOCLDerivationConcurrentWith((Relator)relator)+"\n\n");
 		for(ArrayList<Mediation> mList: mMatrix){
 			fix.includeRule(generateOCLInvariantWithQualities(mList,nList.get(mMatrix.indexOf(mList))));	

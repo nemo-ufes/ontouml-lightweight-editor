@@ -69,9 +69,7 @@ public class UmlModelElementLabelSource implements LabelSource, Serializable {
    */
   public String getLabelText() {
 	  getNamedElement();
-	  String text = UmlLabelFormatter.getLabelTextFor(namedElement);
-	  if (text!=null) text = "null";
-	  return text;
+	  return  UmlLabelFormatter.getLabelTextFor(namedElement);	  
   }
 
   /**

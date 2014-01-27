@@ -49,15 +49,25 @@ public class RepRelThirdPage extends RepRelPage {
 		
 		Label lblDoesIsIntended = new Label(container, SWT.NONE);
 		lblDoesIsIntended.setBounds(10, 233, 554, 15);
-		lblDoesIsIntended.setText("Does "+repRel.getRelator().getName()+" is intended with current or historical semantics");
+		lblDoesIsIntended.setText("Does "+repRel.getRelator().getName()+" is intended with current or historical semantics?");
 		
+		SelectionAdapter listener = new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	        if (isPageComplete()==false) setPageComplete(true);
+	      }
+	    };
+			    
+		setPageComplete(false);
+			
 		btnCurrent = new Button(container, SWT.RADIO);
 		btnCurrent.setBounds(10, 254, 90, 16);
 		btnCurrent.setText("Current");
+		btnCurrent.addSelectionListener(listener);
 		
 		btnHistorical = new Button(container, SWT.RADIO);
 		btnHistorical.setBounds(106, 254, 90, 16);
 		btnHistorical.setText("Historical");
+		btnHistorical.addSelectionListener(listener);
 		
 		btnAddLine.addSelectionListener(new SelectionAdapter() {
 			 @Override

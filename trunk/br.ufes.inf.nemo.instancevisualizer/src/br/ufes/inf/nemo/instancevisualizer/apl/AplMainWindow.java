@@ -98,7 +98,7 @@ public class AplMainWindow {
 					fr.read(cbuf);
 					String beginning = new String(cbuf);
 					fr.close();
-					
+										
 					// We detect if the file is an alloy xml by checking if it starts with "<alloy": 
 					if(!beginning.equals("<alloy")) {
 						CompModule model = null;
@@ -121,8 +121,7 @@ public class AplMainWindow {
 						   	
 						   	mainWindow.setStatus("Done!");
 						} catch(Err e) {
-							//e.printStackTrace();
-							
+							//e.printStackTrace();							
 						}
 					}
 					System.out.println(f.getAbsolutePath());

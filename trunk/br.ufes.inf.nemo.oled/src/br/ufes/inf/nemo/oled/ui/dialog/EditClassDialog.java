@@ -393,16 +393,13 @@ public class EditClassDialog extends JDialog {
 		transferDataToClass();
 		addDataTypesToModel();
 		
-		//update model tree
-		ProjectBrowser.rebuildTree(diagramManager.getCurrentProject());
-		
 		dispose();
 	}
 
 	private void addDataTypesToModel() {
 		List<Property> classAttributes = attributesTableModel.getEntries();
 		for (Property property : classAttributes) {
-			//Avoid the creation of duplicate types			
+			//Avoid the creation of duplicated types			
 			if(modelDataTypes.keySet().contains(property.getType().getName().trim()) == false)
 			{
 				
@@ -413,7 +410,9 @@ public class EditClassDialog extends JDialog {
 				
 				modelDataTypes.put(property.getType().getName(),(DataType)property.getType());
 			}
-		}	
+		}
+		//update model tree
+		ProjectBrowser.rebuildTree(diagramManager.getCurrentProject());
 	}
 
 	protected void attributeAddButtonActionPerformed(ActionEvent evt) {

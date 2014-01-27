@@ -613,13 +613,13 @@ public class OutcomeFixer {
 		return null;
 	}
 	
-	public Fix createAttribute(EObject object, String attrName, ClassStereotype attrType)
+	public Fix createAttribute(EObject object, String attrName, ClassStereotype attrType, String attrTypeName)
 	{
 		Fix fix = new Fix();
 		
 		//create type
 		EObject type = createClass(attrType);
-		((NamedElement)type).setName(attrName);
+		((NamedElement)type).setName(attrTypeName);
 		// verify if it already exists
 		RefOntoUML.NamedElement elem = (NamedElement)containsNameBased(root,type);
 		if (elem==null){
@@ -632,6 +632,7 @@ public class OutcomeFixer {
 		//create the attribute (property)
 		Property attr = createProperty((Classifier)type, 1, 1);
 		attr.setType((Type)type);
+		attr.setName(attrName);
 		fix.includeAdded(attr);
 		//include it on object
 		if (object instanceof RefOntoUML.Class) ((RefOntoUML.Class)object).getOwnedAttribute().add(attr);

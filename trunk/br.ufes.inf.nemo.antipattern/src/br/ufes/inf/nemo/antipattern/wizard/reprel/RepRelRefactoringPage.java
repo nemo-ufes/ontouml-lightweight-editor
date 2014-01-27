@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -31,13 +30,13 @@ public class RepRelRefactoringPage extends RefactoringPage {
 		
 	//GUI
 	protected Composite content;
-	public Spinner currentSpinner;
-	public Spinner historicalSpinner;
 	public Button historicalCheck;
 	public Button currentCheck;
 	public ScrolledComposite scroll;
 	public HashMap<Button,Spinner> mapping = new HashMap<Button,Spinner>();
-	
+	private Button btnAddLine;
+	private RepRelTable rrtable;
+
 	/**
 	 * Create the wizard.
 	 */
@@ -73,51 +72,44 @@ public class RepRelRefactoringPage extends RefactoringPage {
 		lblChooseTheAppropriate.setBounds(11, 13, 552, 15);
 		lblChooseTheAppropriate.setText("Choose the appropriate refactoring options:");
 		
-		scroll = new ScrolledComposite(container, SWT.NONE | SWT.V_SCROLL | SWT.H_SCROLL);		
+		scroll = new ScrolledComposite(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);		
 		scroll.setLayout(new FillLayout());		
 		scroll.setAlwaysShowScrollBars(false);
 		
 		content = new Composite(scroll, SWT.NONE);
 		content.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		scroll.setBounds(11, 36, 552, 130);
-		content.setLayout(new GridLayout(4, false));
+		scroll.setBounds(11, 36, 552, 95);
+		content.setLayout(new GridLayout(3, false));
 		
 		currentCheck = new Button(container, SWT.RADIO);
-		currentCheck.setBounds(11, 172, 552, 15);
+		currentCheck.setBounds(10, 222, 472, 15);
 		currentCheck.setText("(Current Relator) "+repRel.getRelator().getName());
 		
-		StyledText styledText = new StyledText(container, SWT.WRAP);
-		styledText.setMarginColor(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		styledText.setText("Limit the number of relators which can exist simultaneously mediating the same instances");
-		styledText.setBounds(64, 193, 499, 19);
-		
 		historicalCheck = new Button(container, SWT.RADIO);
-		historicalCheck.setBounds(11, 221, 552, 16);
+		historicalCheck.setBounds(11, 243, 471, 16);
 		historicalCheck.setText("(Historical Relator) "+repRel.getRelator().getName());
 		
-		StyledText styledText_1 = new StyledText(container, SWT.WRAP);
-		styledText_1.setMarginColor(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		styledText_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		styledText_1.setText("Limit the number of relators which are concurent and mediate the same instances");
-		styledText_1.setBounds(64, 243, 499, 19);
+		rrtable = new RepRelTable(container,SWT.BORDER, repRel.getMediations(),repRel.getRelator().getName());
+		rrtable.getTable().setBounds(10, 147, 554, 64);
+		
+		btnAddLine = new Button(container, SWT.NONE);
+		btnAddLine.setBounds(488, 217, 75, 25);
+		btnAddLine.setText("Add Line");
 				
+		btnAddLine.addSelectionListener(new SelectionAdapter() {
+			 @Override
+	            public void widgetSelected(SelectionEvent e) {
+				 rrtable.addLine();				 
+			 }
+		});	
+		
 		createOptions();
-		
-		currentSpinner = new Spinner(container, SWT.BORDER);
-		currentSpinner.setBounds(11, 193, 47, 22);
-		currentSpinner.setSelection(1);
-		
-		historicalSpinner = new Spinner(container, SWT.BORDER);
-		historicalSpinner.setBounds(11, 243, 47, 22);
-		historicalSpinner.setSelection(1);
 		
 		container.redraw();
 	}
 	
 	private void createOptions()	
-	{	
-		
+	{			
 		ArrayList<Mediation> list = repRel.getMediations();				
 		for(Mediation m: list)
 		{	
@@ -131,11 +123,11 @@ public class RepRelRefactoringPage extends RefactoringPage {
 			Label name = new Label(content, SWT.NONE);
 			name.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));						
 			name.setText(target.getName()+" -> ["+lowerSource+","+upperSource+"] "+source.getName());
-			
-			new Label(content, SWT.NONE);
+			name.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 			    
 			final Button checkButton = new Button(content, SWT.CHECK);
-			checkButton.setText("Change upper cardinality: ");
+			checkButton.setText("Change upper cardinality to ");
+			checkButton.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 			
 			final Spinner spinner = new Spinner(content, SWT.BORDER);
 			spinner.setSelection(1);
@@ -163,8 +155,11 @@ public class RepRelRefactoringPage extends RefactoringPage {
 	}
 	
 	@Override
-	public IWizardPage getNextPage() {
-		((RepRelWizard)getWizard()).removeAllActions();
+	public IWizardPage getNextPage() 
+	{
+		//do the former group of actions (changing upper cardinalities)
+		ArrayList<Integer> upperList = new ArrayList<Integer>();		
+		((RepRelWizard)getWizard()).removeAllActions();		
 		int i=0;
 		for(Button b: mapping.keySet())
 		{
@@ -174,24 +169,51 @@ public class RepRelRefactoringPage extends RefactoringPage {
 				newAction.setChangeUpperMult(repRel.getMediations().get(i), mapping.get(b).getSelection());
 				getRepRelWizard().replaceAction(i,newAction);
 				//=============================
-			}			
+				upperList.add(mapping.get(b).getSelection());
+			}else{
+				int upper = repRel.getMediations().get(i).getMemberEnd().get(0).getUpper();
+				upperList.add(upper);
+			}
 			i++;
-		}	
-		if(historicalCheck.getSelection()){
-//			// Action =====================	
-//			RepRelAction newAction = new RepRelAction(repRel);
-//			newAction.setCreateInvariantWithQualities(repRel.getMediations(), historicalSpinner.getSelection());
-//			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);
+		}
+		
+		//verifies if, with the former options, we still characterize an anti-pattern...
+		int greater = 0;
+		for(int j=0; j<upperList.size();j++){
+			if (upperList.get(j)==-1) greater++;
+			else if (upperList.get(j)>1) greater++;
+		}
+		if(upperList.size()>0){
+			if(greater>1) {
+				// still an anti-pattern... so, do the final actions (creating OCL invariants)
+				doFinalActions();
+			}else{
+				return ((RepRelWizard)getWizard()).getFinishing();	
+			}
+		}
+				
+		return ((RepRelWizard)getWizard()).getFinishing();	
+	}
+	
+	private void doFinalActions()
+	{
+		if(historicalCheck.getSelection()){	
+			ArrayList<ArrayList<Mediation>> mMatrix = rrtable.getSelections();
+			ArrayList<Integer> ns = rrtable.getNs();			
+			// Action =====================	
+			RepRelAction newAction = new RepRelAction(repRel);
+			newAction.setCreateInvariantWithQualities(mMatrix,ns);
+			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);	
 			//=============================
 		}
 		if(currentCheck.getSelection()){
-//			// Action =====================	
-//			RepRelAction newAction = new RepRelAction(repRel);
-//			newAction.setCreateInvariant(repRel.getMediations(), currentSpinner.getSelection());
-//			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);
-			//=============================			
+			ArrayList<ArrayList<Mediation>> mMatrix = rrtable.getSelections();
+			ArrayList<Integer> ns = rrtable.getNs();
+			// Action =====================	
+			RepRelAction newAction = new RepRelAction(repRel);
+			newAction.setCreateInvariant(mMatrix, ns);
+			getRepRelWizard().replaceAction(repRel.getMediations().size(), newAction);
+			//=============================
 		}
-		
-		return ((RepRelWizard)getWizard()).getFinishing();	
 	}
 }

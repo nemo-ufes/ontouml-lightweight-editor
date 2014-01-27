@@ -50,6 +50,7 @@ import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
 import RefOntoUML.Association;
+import RefOntoUML.Classifier;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.componentOf;
@@ -91,6 +92,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
+import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.DiagramElementFactoryImpl;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.AlloyHelper;
@@ -108,7 +110,7 @@ import br.ufes.inf.nemo.oled.util.SimulationElement;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
-import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.*;
+import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.OntoUmlGlossary;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
@@ -350,6 +352,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if(element instanceof RefOntoUML.Relationship){
 			deleteFromDiagram(element, d);
 			moveToDiagram(element, d); 
+		}
+		if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType){
+			if (d!=null && d.getDiagram().containsChild(element)) return;
+			if (d!=null) {		
+				if(element instanceof RefOntoUML.Class) {
+					ClassElement ce = (ClassElement)ModelHelper.getDiagramElement(element);
+					System.out.println(ce.getClassifier());
+					ce.setClassifier((Classifier)element);
+					ce.invalidate();
+				}
+			}
 		}
 	}
 	
