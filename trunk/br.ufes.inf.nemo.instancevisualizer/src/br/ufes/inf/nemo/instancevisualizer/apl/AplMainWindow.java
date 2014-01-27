@@ -1,0 +1,342 @@
+package br.ufes.inf.nemo.instancevisualizer.apl;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
+import javax.swing.JFileChooser;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.graphstream.graph.Graph;
+import org.xml.sax.SAXException;
+
+import edu.mit.csail.sdg.alloy4.Err;
+import edu.mit.csail.sdg.alloy4compiler.ast.Command;
+import edu.mit.csail.sdg.alloy4compiler.parser.CompModule;
+import edu.mit.csail.sdg.alloy4compiler.parser.CompUtil;
+import edu.mit.csail.sdg.alloy4compiler.translator.A4Options;
+import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
+import edu.mit.csail.sdg.alloy4compiler.translator.TranslateAlloyToKodkod;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.instancevisualizer.gui.MainWindow;
+import br.ufes.inf.nemo.instancevisualizer.gui.OpenXML;
+import br.ufes.inf.nemo.instancevisualizer.util.Choice;
+import br.ufes.inf.nemo.instancevisualizer.util.DialogUtil;
+
+import br.ufes.inf.nemo.instancevisualizer.*;
+import br.ufes.inf.nemo.instancevisualizer.apl.*;
+import br.ufes.inf.nemo.instancevisualizer.graph.*;
+import br.ufes.inf.nemo.instancevisualizer.gui.*;
+import br.ufes.inf.nemo.instancevisualizer.xml.*;
+
+public class AplMainWindow {
+	
+	public static MainWindow mainWindow;
+	public static boolean popOutEnabled = false;
+	public static A4Solution solution;
+	public static GraphManager graphManager;
+		
+	/**
+	 * Opens a file chooser dialog. 
+	 */
+	private static File openFileChooserDialog(boolean mustExist, String... filters) {
+		// Opening file dialog:
+		File f = DialogUtil.fileDialog("Open", "./", filters, false);
+		
+		
+		// Checking if file exists (it must exist!):
+		// If f==null, the file chooser dialog has been canceled.
+		while(f != null && !f.exists() && mustExist) {
+			DialogUtil.errorDialog(mainWindow, "No such file", "Specified file doesn't exist. Please, select another file.");
+			f = DialogUtil.fileDialog("Open", f.getParent(), filters, false);
+		}
+		
+		return f;
+	}
+	
+	/**
+	 * Calls the "Open File" menu item on the main window. A file chooser dialog is opened to select the file. 
+	 */
+	public static void openFile() {
+		new Thread() {
+	   		public void run() {
+				try {
+					// Opening file dialog:
+					File f = openFileChooserDialog(true, "XML Instance$xml", "Alloy code$als");
+					if(f == null) {
+						// If f==null, the file chooser dialog has been canceled.
+						return;
+					}
+					
+					/* The .refontouml file is used to get types' stereotypes.
+					 * It muts be located on the same directory of the selected .als/.xml file.
+					 * This file is not required. 
+					 */
+					// Loading .refontouml file:
+					String fWithoutExt = f.getParent() + "\\" + f.getName().replaceFirst("[.][^.]+$", "");
+					
+					File refontoFile = new File(fWithoutExt + ".refontouml");
+					if(!refontoFile.exists()) {
+						refontoFile = null;
+						//DialogUtil.errorDialog(mainWindow, ".refontouml not found", "Proceed without it?");
+						// TODO check if this error dialog stops the thread!
+					}
+					
+					// Disabling the main window:
+					mainWindow.setEnabled(false);
+					
+					mainWindow.setStatus("Detecting file type...");
+					FileReader fr = new FileReader(f);
+					char cbuf[] = new char[6];
+					fr.read(cbuf);
+					String beginning = new String(cbuf);
+					fr.close();
+					
+					// We detect if the file is an alloy xml by checking if it starts with "<alloy": 
+					if(!beginning.equals("<alloy")) {
+						CompModule model = null;
+						Command cmd = null;
+						try {
+							mainWindow.setStatus("Parsing file...");
+							model = CompUtil.parseEverything_fromFile(null, null, f.getAbsolutePath());
+							cmd = model.getAllCommands().get(0);
+							
+							mainWindow.setStatus("Generating solution...");
+						   	solution = TranslateAlloyToKodkod.execute_command(null, model.getAllReachableSigs(), cmd, new A4Options());
+						   	
+						   	mainWindow.setStatus("Writing solution .xml...");
+						   	String xmlFilePath = fWithoutExt + "_temp.xml";
+						   	solution.writeXML(xmlFilePath);
+						   	// Setting f variable, so the xml can be loaded:
+						   	f = new File(xmlFilePath);
+						   	// Enabling the "Next Instance" menu item on the main window:
+						   	mainWindow.getMntmNextInstance().setEnabled(true);
+						   	
+						   	mainWindow.setStatus("Done!");
+						} catch(Err e) {
+							//e.printStackTrace();
+							
+						}
+					}
+					System.out.println(f.getAbsolutePath());
+					loadFile(f, refontoFile);
+					mainWindow.setEnabled(true);
+				   	displayAllGraphs();
+				   	System.out.println("FOI");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	   		}
+	   	}.start();
+	}
+	
+	/**
+	 * Loads an specific file and refontoFile. This method creates the graph manager.
+	 * @param f
+	 * @param refontoFile
+	 */
+	public static void loadFile(File f, File refontoFile) {
+		OntoUMLParser ontoUmlParser = null;
+		// If refontoFile is null, then it will not be loaded.
+		if(refontoFile != null) {
+			try {
+				ontoUmlParser = new OntoUMLParser(refontoFile.getAbsolutePath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		XMLFile xmlFile = null;
+		try {
+			xmlFile = new XMLFile(f, ontoUmlParser);
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		graphManager = new GraphManager(xmlFile, ontoUmlParser, mainWindow);	// Creation of GraphManager
+		for(Graph g : graphManager.getGraphList()) {
+			if(g.getId().equals("world_structure/CurrentWorld$0")) {
+				graphManager.setSelectedGraph(g);
+            	break;
+            }
+		}
+		        
+	}
+	
+	// TODO
+	public static void openTheme() {
+
+		// Setting file dialog filters:
+		String filters[] = new String[1];
+		filters[0] = "Instance Visualizer Theme$thm";
+		
+		// Opening file dialog:
+		File f = DialogUtil.fileDialog("Open", "./", filters, false);
+		
+		// f==null means cancelled dialog.
+		if(f != null) {
+			// Checking if file exists (it must exist!) :
+			if(!f.exists()) {
+				DialogUtil.errorDialog(mainWindow, "No such file", "Specified file doesn't exist.");
+				openTheme();
+				return;
+			}
+			
+			mainWindow.setStatus("Validating theme file...");
+			FileReader fr;
+			String beginning = null;
+			try {
+				fr = new FileReader(f);
+				char cbuf[] = new char[6];
+				fr.read(cbuf);
+				beginning = new String(cbuf);
+				fr.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			// Valid theme files contain the following header:
+			if(beginning.equals("ivthmc")) {
+				try {
+					String theme = readFile(f.getAbsolutePath(), Charset.defaultCharset());
+					//System.out.println(theme);
+					graphManager.getLegendManager().loadString(theme.substring(6));
+					graphManager.setGraphList(new ArrayList());
+					graphManager.createSelectedWorldToList();
+					for(Graph g : graphManager.getGraphList()) {
+		            	if(g.getId().equals(graphManager.getSelectedWorld())) {
+		            		graphManager.setSelectedGraph(g);
+		            		break;
+		            	}
+		            }
+					refreshGraphs();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}else{
+				DialogUtil.errorDialog(mainWindow, "Invalid theme", "Specified theme isn't valid.");
+				mainWindow.setEnabled(true);
+				mainWindow.setStatus("");
+				openTheme();
+				return;
+			}
+		}
+    		
+	}
+			
+	public static void saveTheme() {
+		String theme = graphManager.getLegendManager().saveToString();
+		
+		// Setting file dialog filters:
+		String filters[] = new String[1];
+		filters[0] = "Instance Visualizer Theme$thm";
+		
+		// Opening file dialog:
+		File f = DialogUtil.fileDialog("Save", "./", filters, false);
+		
+		// f==null means cancelled dialog.
+		if(f != null) {
+			// Checking if file exists. If it does, it'll be asked if it can be overwritten:
+			while(f.exists()) {
+				Choice choice = new Choice();
+				DialogUtil.chooseDialog(choice, mainWindow, "File already exists", "Overwrite" + f.getAbsoluteFile() + "?", "Yes", "No");
+				if(choice.isChoice()) {
+					break;
+				}
+				saveTheme();
+				return;
+			}
+	    		//File file = fileChooser.getSelectedFile();
+			try {
+				FileWriter fw = new FileWriter(f);
+				fw.write("ivthmc" + theme);
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Function to read a file to a string.
+	 * @param path
+	 * @param encoding
+	 * @return
+	 * @throws IOException
+	 */
+	static String readFile(String path, Charset encoding) throws IOException {
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return encoding.decode(ByteBuffer.wrap(encoded)).toString();
+	}
+	
+	/**
+	 * Load/Reload the graphs onto the scroll panes. 
+	 */
+	public static void refreshGraphs() {
+		mainWindow.getSelectedWorld().getViewport().removeAll();
+		mainWindow.getSelectedWorld().setViewportView(graphManager.showSelectedGraph());
+		
+		mainWindow.getWorldMap().getViewport().removeAll();
+		mainWindow.getWorldMap().setViewportView(graphManager.showWorldGraph());
+		
+		mainWindow.getTabbedPane().removeAll();
+		mainWindow.getTabbedPane().addTab("Legend", null, new LegendPanel(graphManager));
+	}
+	
+	/**
+	 * Displays everything - legend, selected world and world map - on the main window.]
+	 */
+	public static void displayAllGraphs() {
+		graphManager.setSelectedWorld("world_structure/CurrentWorld$0");
+        refreshGraphs();
+	}
+	
+	/*
+	 *if (returnVal == JFileChooser.APPROVE_OPTION) {
+			try {
+				File refontoFile = new File(refontoPath);
+				if(refontoFile.exists()) {
+					OntoUMLParser ontoUmlParser = new OntoUMLParser(refontoPath);
+					XMLFile xmlFile = new XMLFile(openFile, ontoUmlParser);	// Creation of XMLFile object
+					GraphManager graphManager = new GraphManager(xmlFile, ontoUmlParser, mainWindow);	// Creation of GraphManager
+					mainWindow.setxGraph(graphManager);
+					for(Graph g : graphManager.getGraphList()) {
+						if(g.getId().equals("world_structure/CurrentWorld$0")) {
+							graphManager.setSelectedGraph(g);
+	                    	break;
+	                    }
+					}
+	                graphManager.setSelectedWorld("world_structure/CurrentWorld$0");
+	                mainWindow.setScrollPanes1();
+	                mainWindow.setScrollPanes();
+				}else{
+					System.out.println("Couldn't find " + refontoPath + " You need to put it on the same directory of the loaded file ...");
+				}
+			} catch (ParserConfigurationException | SAXException | IOException ex) {
+				Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}else{
+			if(exitIfCancel) {
+				System.exit(0);
+			}
+			 
+		}
+		mainWindow.setStatus("Done!"); 
+	 */
+	
+	/**
+	 * <empty method> Disable all interactive components of the pointed mainWindow. Useful when using threads to open files and such.  
+	 */
+	private static void disableAll() {
+		
+	}
+}

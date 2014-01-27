@@ -1,0 +1,25 @@
+3$Kind3$Kind$Kind3$.\resources\gur project\1 (1).png$text-offset: 0px, 0px;
+ shape: circle;
+ text-background-mode: plain;
+ text-background-color: rgba(255,255,255,192);
+ stroke-mode: none;
+ size: 32px;
+ fill-mode: image-scaled;
+ fill-image: url('.\resources\gur project\1 (1).png');
+$6$Kind2$Kind$Kind2$.\resources\gur project\1 (10).png$text-offset: 0px, 0px;
+ shape: circle;
+ text-background-mode: plain;
+ text-background-color: rgba(255,255,255,192);
+ stroke-mode: none;
+ size: 32px;
+ fill-mode: image-scaled;
+ fill-image: url('.\resources\gur project\1 (10).png');
+$6$Kind1$Kind$Kind1$.\resources\gur project\1 (11).png$text-offset: 0px, 0px;
+ shape: circle;
+ text-background-mode: plain;
+ text-background-color: rgba(255,255,255,192);
+ stroke-mode: none;
+ size: 32px;
+ fill-mode: image-scaled;
+ fill-image: url('.\resources\gur project\1 (11).png');
+$6$
