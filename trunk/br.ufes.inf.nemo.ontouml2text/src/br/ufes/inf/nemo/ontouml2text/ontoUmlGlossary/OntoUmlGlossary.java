@@ -46,12 +46,12 @@ public class OntoUmlGlossary {
 					new TerminalGlossaryExporter(), new PortugueseLanguageAdaptor(new PortugueseDictionary()));
 			
 			glossaryGenerator.generateGlossary();
-}
+	}
 
 
-public void TextExecute(OntoUMLParser parser) {		
-	System.out.println("\n\n======= TEST =======\n\n");
-
+	public void xmiToText(OntoUMLParser parser) {		
+		System.out.println("\n\n======= TEST =======\n\n");
+	
 		DescriptionSpace space = new DescriptionSpace();		
 		
 		// Hash containing the labels of the categories already covered
@@ -60,4 +60,5 @@ public void TextExecute(OntoUMLParser parser) {
 		DescriptionSpaceGenerator generator = new DescriptionSpaceGenerator(space);
 		generator.PopulateDescriptionSpace(parser, hashCategories);
 	}
+
 }
