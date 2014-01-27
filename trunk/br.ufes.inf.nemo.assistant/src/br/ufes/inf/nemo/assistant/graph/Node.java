@@ -71,4 +71,9 @@ public class Node {
 	public void run(){
 		this.win.run(this);
 	}
+	
+	@Override
+	public String toString() {
+		return win.getClass().getName();
+	}
 }

@@ -28,7 +28,7 @@ public class GraphAssistant {
 	}
 	
 	public void print(Node n){
-		System.out.println("\t"+n.getWin().getClass());
+		//System.out.println("\t"+n.getWin().getClass());
 		if(n.getGoTrue() != null){
 			System.out.print("True: ");
 			print(n.getGoTrue());
