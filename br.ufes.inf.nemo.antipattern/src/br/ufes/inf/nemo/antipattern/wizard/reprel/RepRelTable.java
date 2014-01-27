@@ -90,6 +90,7 @@ public class RepRelTable {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	private int getN(TableItem ti){		
 		Spinner spinner = (Spinner) ti.getData(Integer.toString(mediations.size()));
 		return spinner.getSelection();		
