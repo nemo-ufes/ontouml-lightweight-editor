@@ -378,6 +378,9 @@ public class OverlappingTypesIdentificator {
 	
 	//Get generalization sets from a classifier's generalization
 	public static ArrayList<GeneralizationSet> getSubtypesGeneralizationSets(Classifier c){
+		if(c==null)
+			return null;
+		
 		Set<GeneralizationSet> genSets = new HashSet<GeneralizationSet>();
 		for (Classifier child : c.children()) {
 			genSets.addAll(getGeneralizationSets(child));
