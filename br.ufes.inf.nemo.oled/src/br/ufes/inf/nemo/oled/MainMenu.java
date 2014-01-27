@@ -67,30 +67,42 @@ public class MainMenu implements ActionListener {
 		createHelpMenu();
 	}
 
+	@SuppressWarnings("unused")
 	private void createTransformationMenu()
 	{
+		JMenu simulationMenu = createMenu("simulation");
+		menubar.add(simulationMenu);
+		
+		JMenuItem alloyItem = createMenuItem(simulationMenu, "generatealloy");
+		//alloyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+		
+		JMenuItem vizItem = createMenuItem(simulationMenu, "visualizer");
+		//vizItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+		vizItem.setEnabled(false);
+		
 		JMenu transformMenu = createMenu("transformation");
 		menubar.add(transformMenu);
 		
-		JMenuItem alloyItem = createMenuItem(transformMenu, "generatealloy");
-		alloyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
-		
 		JMenuItem owlItem = createMenuItem(transformMenu, "generateowlsettings");
-		owlItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+		//owlItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 		
 		JMenuItem sbvrItem = createMenuItem(transformMenu, "generatesbvr");
-		sbvrItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+		//sbvrItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 		
 		JMenuItem textItem = createMenuItem(transformMenu, "generatetext");
-		textItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+		//textItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+
+		JMenu toolMenu = createMenu("tool");
+		menubar.add(toolMenu);
 		
-		JMenuItem antipatternItem = createMenuItem(transformMenu, "antipattern");
-		antipatternItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+		JMenuItem antipatternItem = createMenuItem(toolMenu, "antipattern");
+		//antipatternItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 		
-		JMenuItem assistantItem = createCheckBoxMenuItem(transformMenu, "assistant");
+		JMenuItem assistantItem = createCheckBoxMenuItem(toolMenu, "assistant");
 		assistantItem.setSelected(true);
-		assistantItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 		assistantItem.setEnabled(false);
+		//assistantItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));		
+		
 	}
 	
 	/**

@@ -50,7 +50,6 @@ import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
 import RefOntoUML.Association;
-import RefOntoUML.Classifier;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.componentOf;
@@ -92,7 +91,6 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
-import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.DiagramElementFactoryImpl;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.AlloyHelper;
@@ -357,10 +355,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if (d!=null && d.getDiagram().containsChild(element)) return;
 			if (d!=null) {		
 				if(element instanceof RefOntoUML.Class) {
-					ClassElement ce = (ClassElement)ModelHelper.getDiagramElement(element);
-					System.out.println(ce.getClassifier());
-					ce.setClassifier((Classifier)element);
-					ce.invalidate();
+//					ClassElement ce = (ClassElement)ModelHelper.getDiagramElement(element);				
 				}
 			}
 		}

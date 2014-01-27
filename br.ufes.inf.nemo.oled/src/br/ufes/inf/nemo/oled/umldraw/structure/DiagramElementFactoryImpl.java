@@ -67,7 +67,6 @@ import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.LineConnectMethod;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationType;
-import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlDiagramElement;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
@@ -100,15 +99,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     setupConnectionMaps();
   }
   
-  public void load(UmlProject project)
-  {
-//	  OntoUMLParser refparser = ProjectBrowser.getParserFor(project);
-//	  for(RefOntoUML.NamedElement elem: refparser.getAllInstances(RefOntoUML.NamedElement)){
-//		  if (elem instanceof )
-//	  }
-	  
-  }
-  
+ 
   public void setDiagram(StructureDiagram diagram){
 	  this.diagram = diagram;
   }
