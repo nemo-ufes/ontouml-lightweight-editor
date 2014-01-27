@@ -337,9 +337,9 @@ public class OutcomeFixer {
 	}
 
 	/** Copy eContainer from element to the receiver. Both will be in the same container. */
-	public void copyContainer(EObject element, EObject receiver)
+	public void copyContainer(EObject source, EObject receiver)
 	{		
-		EObject container = element.eContainer();
+		EObject container = source.eContainer();
 		if(container instanceof RefOntoUML.Package){
 			((RefOntoUML.Package)container).getPackagedElement().add((PackageableElement)receiver);			
 		}		
@@ -526,6 +526,8 @@ public class OutcomeFixer {
 		
 		fix.includeAdded(gs);
 		fix.includeModified(generalizations);
+		
+		copyContainer(generalizations.get(0).getGeneral(),gs);
 		
 		return fix;
 	}
