@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.assistant.astah2graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import br.ufes.inf.nemo.assistant.graph.Node;
 import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
@@ -37,11 +38,11 @@ import br.ufes.inf.nemo.assistant.window.Question;
  * Criar uma janela que mostre as associacoes de uma classe (usar para o relator, quando tem member-ends < 2)
  * */
 public class AstahParser {
-	
+
 	public static void main(String[] args) {
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = doParser("./Patterns.asta");
 
-		GraphAssistant tree = hashTree.get(StereotypeOntoUMLEnum.SUBKIND);
+		GraphAssistant tree = hashTree.get(StereotypeOntoUMLEnum.ROLE);
 
 		tree.print(tree.getStart());
 
@@ -69,18 +70,15 @@ public class AstahParser {
 				IActivity root = activityDiagram.getActivity();
 				IActivityNode[] nodes = root.getActivityNodes();
 
-				System.out.println(root.getName());
-
-				//verify the activity graph name (from activity) to define how type will be the tree
-				for (StereotypeOntoUMLEnum s : StereotypeOntoUMLEnum.values()) {
-					if(s.toString().equalsIgnoreCase(root.getName())){
-						//for each diagram, create a tree
-						hashTree.put(s,processNodes(nodes));
-						break;
-					}
-				}
+				//for each diagram, create a tree
+				hashTree.put(StereotypeOntoUMLEnum.valueOf(root.getName().toUpperCase()),processNodes(nodes));
 			}		
 
+			//For each link to another pattern
+			for (Map.Entry<StereotypeOntoUMLEnum, Node> entry : linkNode.entrySet()) {
+				//All link node has its next set to the start node from the patter destiny
+				entry.getValue().setNext(hashTree.get(entry.getKey()).getStart());
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -90,6 +88,7 @@ public class AstahParser {
 
 	//Usado para verificar os nodos criados
 	private static HashMap<IActivityNode,Node> hashNode;
+	private static HashMap<StereotypeOntoUMLEnum,Node> linkNode = new HashMap<>();
 
 	private static GraphAssistant processNodes(IActivityNode[] nodes){
 		GraphAssistant tree = new GraphAssistant();
@@ -114,11 +113,15 @@ public class AstahParser {
 	}
 
 	/**
+	 * Both variables are used to connect a pattern with another one.
+	 * */	
+	private static Node _lastNode;
+
+	/**
 	 * Process node, add to the tree and, recursively, process the next nodes
 	 * return node created 
 	 * */
 	public static Node processNode(IActivityNode aNode, GraphAssistant tree){
-		//		System.out.println(aNode.getName());
 		if(aNode.getTaggedValue("stereotype").equalsIgnoreCase("END")){
 			return null;
 		}
@@ -139,12 +142,8 @@ public class AstahParser {
 			node.setWin(nc);
 		}else if(window.equalsIgnoreCase("Action")){
 			Action a = new Action();
-			for(ActionEnum ae: ActionEnum.values()){
-				if(ae.toString().equalsIgnoreCase(aNode.getTaggedValue("action"))){
-					a.setAction(ae);
-					break;
-				}
-			}
+			a.setAction(ActionEnum.valueOf(aNode.getTaggedValue("action").toUpperCase()));
+
 			if(!aNode.getTaggedValue("connectFilter").isEmpty()){
 				//usa o filtro
 				a.addFilter(aNode.getTaggedValue("connectFilter"));
@@ -186,7 +185,13 @@ public class AstahParser {
 		}else if(window.equalsIgnoreCase("NewPhases")){
 			NewPhases np = new NewPhases();
 			node.setWin(np);
+		}else if(window.equalsIgnoreCase("LinkToPattern")){
+			//toUpperCase is used because all enumerations are in upper case
+			linkNode.put(StereotypeOntoUMLEnum.valueOf(aNode.getTaggedValue("linkToPattern").toUpperCase()), _lastNode);
 		}
+		
+		//Keep the last node in memory
+		_lastNode = node;			
 
 		//To verify duplicity
 		hashNode.put(aNode, node);		

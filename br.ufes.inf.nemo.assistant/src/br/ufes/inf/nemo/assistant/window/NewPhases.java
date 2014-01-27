@@ -41,18 +41,6 @@ public class NewPhases  extends AbstractWindow{
 		setSize( 415, 300 );
 		getContentPane().setLayout(null);
 
-		// Create columns names
-		String columnNames[] = { "Column 1", "Column 2", "Column 3" };
-
-		// Create some data
-		String dataValues[][] =
-			{
-				{ "12", "234", "67" },
-				{ "-123", "43", "853" },
-				{ "93", "89.2", "109" },
-				{ "279", "9033", "3092" }
-			};
-
 		// Create a panel to hold all other components
 		topPanel = new JPanel();
 		topPanel.setBounds(0, 0, 413, 150);
@@ -60,7 +48,7 @@ public class NewPhases  extends AbstractWindow{
 		getContentPane().add( topPanel );
 
 		// Create a new table instance
-		table = new JTable( dataValues, columnNames );
+		table = new JTable();
 		model = new DefaultTableModel(
 				new String[][] {
 						{"", ""},
