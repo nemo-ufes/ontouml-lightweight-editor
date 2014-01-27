@@ -32,7 +32,8 @@ public class UmlLabelFormatter {
 			return genSet.getName() + (genSet.isIsCovering() || genSet.isIsDisjoint() ? params : "" );
 		}*/
 		
-		return namedElement.getName(); 
+		if (namedElement.getName()==null) return "<null>";
+		else return namedElement.getName(); 
 	}
 
 }

@@ -197,14 +197,19 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 		fix.addAll(fixer.setUpperCardinalityOnRelatorSide(m, n));
 	}
 
-	public void createInvariantWithQualities(ArrayList<Mediation> mediationList, int n) {
-		fix.includeRule(generateOCLInvariantWithQualities(mediationList,n));
+	public void createInvariantWithQualities(ArrayList<ArrayList<Mediation>> mMatrix, ArrayList<Integer> nList) {
 		fix.addAll(fixer.createAttribute(relator, "startTime", ClassStereotype.DATATYPE));
 		fix.addAll(fixer.createAttribute(relator, "endTime", ClassStereotype.DATATYPE));
+		fix.includeRule(generateOCLDerivationConcurrentWith((Relator)relator)+"\n\n");
+		for(ArrayList<Mediation> mList: mMatrix){
+			fix.includeRule(generateOCLInvariantWithQualities(mList,nList.get(mMatrix.indexOf(mList))));	
+		}		
 	}
 
-	public void createInvariant(ArrayList<Mediation> mediationList, int n) {
-		fix.includeRule(generateOCLInvariant(mediationList,n));
+	public void createInvariant(ArrayList<ArrayList<Mediation>> mMatrix, ArrayList<Integer> nList) {
+		for(ArrayList<Mediation> mList: mMatrix){
+			fix.includeRule(generateOCLInvariant(mList,nList.get(mMatrix.indexOf(mList))));	
+		}		
 	}
 	
 	public String generateOCLInvariant(ArrayList<Mediation> mediationList, int n)
@@ -225,9 +230,9 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 			tgtName = "_'"+tgtName+"'";			
 			String localExpr = new String();
 			if (src.getType() instanceof Relator){
-				localExpr += "r."+srcName+" = self."+tgtName;
+				localExpr += "r."+srcName+" = self."+srcName;
 			}else if (tgt.getType() instanceof Relator){
-				localExpr += "r."+srcName+" = self."+tgtName;
+				localExpr += "r."+tgtName+" = self."+tgtName;
 			}
 			if(i==0) expr += localExpr;
 			else expr += " and "+localExpr;			
@@ -238,8 +243,9 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 		"inv: "+relator+".allInstances()->select( r : "+relator+" | r<>self and "+expr+")->size() = "+n;
 	}
 	
-	public String generateOCLDerivationConcurrentWith(String relatorName)
+	public String generateOCLDerivationConcurrentWith(Relator relator)
 	{
+		String relatorName = "_'"+relator.getName()+"'";
 		return 
 		"context "+relatorName+"::concurrentWith(r: Relator):Boolean"+"\n"+
 		"body: self.startTime=r.startTime and self.endTime=r.endTime or"+"\n"+
@@ -267,16 +273,16 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 			tgtName = "_'"+tgtName+"'";			
 			String localExpr = new String();
 			if (src.getType() instanceof Relator){
-				localExpr += "r."+srcName+" = self."+tgtName;
+				localExpr += "r."+srcName+" = self."+srcName;
 			}else if (tgt.getType() instanceof Relator){
-				localExpr += "r."+srcName+" = self."+tgtName;
+				localExpr += "r."+tgtName+" = self."+tgtName;
 			}
 			if(i==0) expr += localExpr;
 			else if (i<=mediationList.size()) expr += " and "+localExpr;			
 			i++;
 		}
-		expr+= " r.concurrentWith(self)";
-		return generateOCLDerivationConcurrentWith(relator)+"\n\n"+
+		expr+= " and r.concurrentWith(self)";
+		return 
 		"context "+relator+"\n"+
 		"inv: "+relator+".allInstances()->select( r : "+relator+" | r<>self and "+expr+")->size() = "+n+"\n";		
 	}
