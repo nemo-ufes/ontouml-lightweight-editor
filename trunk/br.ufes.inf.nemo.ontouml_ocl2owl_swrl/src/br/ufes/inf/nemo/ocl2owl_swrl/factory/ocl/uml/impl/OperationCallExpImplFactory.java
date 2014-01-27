@@ -453,10 +453,15 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	
 	public ArrayList<SWRLDArgument> solveIncludes(String ctStereotype, OWLDataFactory factory, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean leftSideOfImplies) {
 		SWRLDArgument varX1 = referredArgsX.get(0);
-		SWRLDArgument varX2 = referredArgsX.get(1);
-		
+		SWRLDArgument varX2 = null;
+		if(referredArgsX.size()>1){
+			varX2 = referredArgsX.get(1);
+		}
 		SWRLDArgument varY1 = referredArgsY.get(0);
-		SWRLDArgument varY2 = referredArgsY.get(1);
+		SWRLDArgument varY2 = null;
+		if(referredArgsY.size()>1){
+			varY2 = referredArgsY.get(1);
+		}		
 		
 		SWRLAtom atom = null;
 		//in invariants case that the fragment are in the right side, varX1 and varY1 are differents
@@ -479,9 +484,12 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		}
 		*/
 		//varX2 and varY2 are always the same
-		SWRLSameIndividualAtom same2 = factory.getSWRLSameIndividualAtom((SWRLVariable)varX2, (SWRLVariable)varY2);
-		//antecedent.add(same2);
-		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, same2);
+		if(varY2 != null && varX2 != null){
+			SWRLSameIndividualAtom same2 = factory.getSWRLSameIndividualAtom((SWRLVariable)varX2, (SWRLVariable)varY2);
+			//antecedent.add(same2);
+			this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, same2);
+		}
+		
 		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(same2);
