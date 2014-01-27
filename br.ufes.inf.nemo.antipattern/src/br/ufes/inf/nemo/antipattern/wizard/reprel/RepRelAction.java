@@ -57,7 +57,7 @@ public class RepRelAction extends AntiPatternAction<RepRelOccurrence>{
 			result = "Create an OCL invariant limiting to "+N+" the instances of simoutaneous, current relator "+mediationList.get(0).relator().getName();
 					
 		else if(code==Action.CREATE_INVARIANT_WITH_QUALITIES)
-			result = "Create two Qualities and an OCL invariant limiting to "+N+" the instances of simoutaneous, historical relator "+mediationList.get(0).relator().getName();
+			result = "Create two DataTypes and an OCL invariant limiting to "+N+" the instances of simoutaneous, historical relator "+mediationList.get(0).relator().getName();
 		
 		return result; 
 	}
