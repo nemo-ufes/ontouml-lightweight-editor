@@ -63,21 +63,14 @@ public class RepRelWizard extends AntipatternWizard {
 		return secondPage;
 	}
 		
-<<<<<<< .mine
 	public RepRelThirdPage getThirdPage()
 	{
 		return thirdPage;
 	}
 	
-=======
->>>>>>> .r1306
 	@Override
 	public boolean performFinish() {
-<<<<<<< .mine
 		runAllActions();
-=======
-		runAllActions();	
->>>>>>> .r1306
 		return true;
 	}
 }
