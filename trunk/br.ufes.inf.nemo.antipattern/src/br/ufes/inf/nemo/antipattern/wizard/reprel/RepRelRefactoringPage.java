@@ -81,7 +81,7 @@ public class RepRelRefactoringPage extends RefactoringPage {
 		scroll.setBounds(11, 36, 552, 130);
 		content.setLayout(new GridLayout(4, false));
 		
-		currentCheck = new Button(container, SWT.CHECK);
+		currentCheck = new Button(container, SWT.RADIO);
 		currentCheck.setBounds(11, 172, 552, 15);
 		currentCheck.setText("(Current Relator) "+repRel.getRelator().getName());
 		
@@ -91,7 +91,7 @@ public class RepRelRefactoringPage extends RefactoringPage {
 		styledText.setText("Limit the number of relators which can exist simultaneously mediating the same instances");
 		styledText.setBounds(64, 193, 499, 19);
 		
-		historicalCheck = new Button(container, SWT.CHECK);
+		historicalCheck = new Button(container, SWT.RADIO);
 		historicalCheck.setBounds(11, 221, 552, 16);
 		historicalCheck.setText("(Historical Relator) "+repRel.getRelator().getName());
 		
@@ -116,6 +116,7 @@ public class RepRelRefactoringPage extends RefactoringPage {
 	
 	private void createOptions()	
 	{	
+		
 		ArrayList<Mediation> list = repRel.getMediations();				
 		for(Mediation m: list)
 		{	
@@ -162,7 +163,7 @@ public class RepRelRefactoringPage extends RefactoringPage {
 	
 	@Override
 	public IWizardPage getNextPage() {
-		
+		((RepRelWizard)getWizard()).removeAllActions();
 		int i=0;
 		for(Button b: mapping.keySet())
 		{
@@ -170,7 +171,7 @@ public class RepRelRefactoringPage extends RefactoringPage {
 				// Action =====================	
 				RepRelAction newAction = new RepRelAction(repRel);
 				newAction.setChangeUpperMult(repRel.getMediations().get(i), mapping.get(b).getSelection());
-				getRepRelWizard().addAction(i,newAction);
+				getRepRelWizard().replaceAction(i,newAction);
 				//=============================
 			}			
 			i++;
@@ -179,14 +180,14 @@ public class RepRelRefactoringPage extends RefactoringPage {
 			// Action =====================	
 			RepRelAction newAction = new RepRelAction(repRel);
 			newAction.setCreateInvariantWithQualities(repRel.getMediations(), historicalSpinner.getSelection());
-			getRepRelWizard().addAction(repRel.getMediations().size(),newAction);
+			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);
 			//=============================
 		}
 		if(currentCheck.getSelection()){
 			// Action =====================	
 			RepRelAction newAction = new RepRelAction(repRel);
 			newAction.setCreateInvariant(repRel.getMediations(), currentSpinner.getSelection());
-			getRepRelWizard().addAction(repRel.getMediations().size()+1,newAction);
+			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);
 			//=============================			
 		}
 		

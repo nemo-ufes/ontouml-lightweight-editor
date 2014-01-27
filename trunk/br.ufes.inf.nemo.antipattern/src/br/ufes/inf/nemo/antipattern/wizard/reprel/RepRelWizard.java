@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.antipattern.wizard.reprel;
 
 import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
@@ -17,6 +16,7 @@ public class RepRelWizard extends AntipatternWizard {
 
 	protected RepRelFirstPage firstPage;
 	protected RepRelSecondPage secondPage;
+	protected RepRelThirdPage thirdPage;
 	
 	public RepRelWizard(RepRelOccurrence ap) {
 		super(ap, RepRelAntipattern.getAntipatternInfo().name);	    
@@ -32,6 +32,7 @@ public class RepRelWizard extends AntipatternWizard {
 				
 		firstPage = new RepRelFirstPage((RepRelOccurrence)ap);
 		secondPage = new RepRelSecondPage((RepRelOccurrence)ap);
+		thirdPage = new RepRelThirdPage((RepRelOccurrence)ap);
 		
 		presentation = new PresentationPage(
 			RepRelAntipattern.getAntipatternInfo().name,
@@ -44,6 +45,7 @@ public class RepRelWizard extends AntipatternWizard {
 		addPage(presentation);		
 		addPage(firstPage);
 		addPage(secondPage);
+		addPage(thirdPage);
 		addPage(options);
 		addPage(finishing);
 	}
@@ -61,9 +63,21 @@ public class RepRelWizard extends AntipatternWizard {
 		return secondPage;
 	}
 		
+<<<<<<< .mine
+	public RepRelThirdPage getThirdPage()
+	{
+		return thirdPage;
+	}
+	
+=======
+>>>>>>> .r1306
 	@Override
 	public boolean performFinish() {
+<<<<<<< .mine
+		runAllActions();
+=======
 		runAllActions();	
+>>>>>>> .r1306
 		return true;
 	}
 }

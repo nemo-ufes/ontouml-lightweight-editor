@@ -12,29 +12,33 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import RefOntoUML.Mediation;
-import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
 
 public class RepRelFirstPage extends RepRelPage{
 	
 	ArrayList<TimeOptionComposite> typesList = new ArrayList<TimeOptionComposite>();
+	public Composite parent;
 	
 	/**
 	 * Create the wizard.
 	 */
 	public RepRelFirstPage(RepRelOccurrence repRel) 
 	{
-		super(repRel);		
+		super(repRel);
+		setDescription("Page 1");
 	}
 
 	@Override
-	public void createControl(Composite parent) {
+	public void createControl(Composite parent) 
+	{
+		this.parent = parent;
 		Composite container = new Composite(parent, SWT.NULL);
 
 		StyledText styledText = new StyledText(container, SWT.WRAP);
 		styledText.setMarginColor(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		styledText.setText("Each instance of the mediated types are connected to various instances of "+repRel.getRelator().getName()+". But do you mean at the same time or during its life cycle?\r\n");
+		styledText.setText("Each instance of the mediated types can be connected to various instances of "+repRel.getRelator().getName()+". " +
+				"Do you mean they are connected to various relators at the same time or during its life cycle?\r\n");
 		styledText.setEditable(false);
 		styledText.setBounds(10, 10, 554, 38);
 				
@@ -48,13 +52,12 @@ public class RepRelFirstPage extends RepRelPage{
 		Composite composite = new Composite(sc, SWT.NONE);
 		composite.setLayout(new FillLayout(SWT.VERTICAL));
 						
-		//int i=1;
-		for(Mediation m: repRel.getMediations()){			
+		for(Mediation m: repRel.getMediations())
+		{			
 			TimeOptionComposite optComposite = new TimeOptionComposite(composite,SWT.NONE,repRel,m);
+			optComposite.selectSameTime();
 			typesList.add(optComposite);
-			//if(i % 2 == 0) optComposite.setColor(new Color(Display.getCurrent(),235,235,235));
 			optComposite.setColor(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
-			//i++;
 		}
 		
 		sc.setContent(composite);
@@ -63,12 +66,12 @@ public class RepRelFirstPage extends RepRelPage{
 		sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));		
 	}	
 	
-	
 	@Override
 	public IWizardPage getNextPage() 
-	{
-		boolean needToGoToSecondPage = false;
-		ArrayList<Type> rigids = new ArrayList<Type>();
+	{		
+		ArrayList<Integer> upperList = new ArrayList<Integer>();
+		((RepRelWizard)getWizard()).removeAllActions();
+		
 		int i = 0;
 		for(TimeOptionComposite timeOpt: typesList)
 		{
@@ -77,23 +80,35 @@ public class RepRelFirstPage extends RepRelPage{
 				// Action =====================			
 				RepRelAction newAction = new RepRelAction(repRel);
 				newAction.setChangeUpperMult(repRel.getMediations().get(i),timeOpt.getN());
-				getRepRelWizard().addAction(i,newAction);				
+				getRepRelWizard().replaceAction(i,newAction);				
 				//=============================
+				upperList.add(timeOpt.getN());
 			}
-			if (timeOpt.isSame() && timeOpt.isYes())
+			if (timeOpt.isSame())
 			{
-				//do nothing
-			}
-			if(timeOpt.isSame() && timeOpt.isNo()){
-				needToGoToSecondPage = true;				
-				((RepRelWizard)getWizard()).getSecondPage().setRigids(rigids);
-			}
+				// Action ===================
+				
+				//============================
+				Mediation m = repRel.getMediations().get(i);
+				upperList.add(m.getMemberEnd().get(0).getUpper());
+			}			
 			i++;
 		}
-		if(needToGoToSecondPage){
-			return ((RepRelWizard)getWizard()).getSecondPage();
-		}else{
-			return ((RepRelWizard)getWizard()).getFinishing();
-		}		
+		int greater = 0;
+		for(int j=0; j<upperList.size();j++){
+			if (upperList.get(j)==-1) greater++;
+			else if (upperList.get(j)>1) greater++;
+		}
+
+		if(upperList.size()>0){
+			if(greater>1) {
+				// still an antipattern..
+				return ((RepRelWizard)getWizard()).getSecondPage();		
+			}else {
+				//MessageDialog.openInformation(parent.getShell(), "Information", "The occurrence of the anti-pattern did not characterize an error anymore");
+				return ((RepRelWizard)getWizard()).getFinishing();				
+			}
+		}
+		return super.getNextPage();
 	}
 }

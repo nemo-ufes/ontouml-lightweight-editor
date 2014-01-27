@@ -7,18 +7,18 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Spinner;
 
 import RefOntoUML.Mediation;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
 
 public class TimeOptionComposite extends Composite {
-
-	public SameTimeComposite sameTimeComposite;
-	public LifeTimeComposite throughtTimeOptComposite;
 	public Button btnAtTheSame;
 	public Button btnThroughoutTime;
 	public Label lblType;
+	private Label lblHowManySimoutanesouly;
+	private Spinner spinner;
 	
 	public TimeOptionComposite(Composite arg0, int arg1, RepRelOccurrence repRel, Mediation m) {
 		super(arg0, arg1);		
@@ -30,7 +30,7 @@ public class TimeOptionComposite extends Composite {
 		String lowerSource = "*";
 		if (m.getMemberEnd().get(0).getLower() != -1) lowerSource = Integer.toString(m.getMemberEnd().get(0).getLower());	
 		
-		setSize(560,157);
+		setSize(560,97);
 		
 		lblType = new Label(this,SWT.NONE);
 		lblType.setBounds(10, 10, 540, 15);
@@ -39,35 +39,37 @@ public class TimeOptionComposite extends Composite {
 		SelectionAdapter listener = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
 	        if(btnAtTheSame.getSelection()){
-	        	throughtTimeOptComposite.disableAll();
-	        	sameTimeComposite.enableAll();
+	        	disableLifeTime();
 	        }
 	        if(btnThroughoutTime.getSelection()){
-	        	sameTimeComposite.disableAll();
-	        	throughtTimeOptComposite.enableAll();
+	        	enableLifeTime();
 	        }
 	      }
 	    };
 		    
 		btnAtTheSame = new Button(this, SWT.RADIO);
-		btnAtTheSame.setBounds(10, 62, 109, 25);
+		btnAtTheSame.setBounds(10, 62, 118, 25);
 		btnAtTheSame.setText("at the same time");
 		btnAtTheSame.addSelectionListener(listener);
 		
 		btnThroughoutTime = new Button(this, SWT.RADIO);
-		btnThroughoutTime.setBounds(10, 31, 109, 25);
-		btnThroughoutTime.setText("throughout time");		
+		btnThroughoutTime.setBounds(10, 31, 118, 25);
+		btnThroughoutTime.setText("throughout time...");		
+		
+		lblHowManySimoutanesouly = new Label(this, SWT.NONE);
+		lblHowManySimoutanesouly.setBounds(134, 36, 206, 15);
+		lblHowManySimoutanesouly.setText("How many simoutanesouly? (at most)");
+		
+		spinner = new Spinner(this, SWT.BORDER);
+		spinner.setBounds(346, 31, 47, 22);
+		spinner.setSelection(1);
 		btnThroughoutTime.addSelectionListener(listener);
 		
-		throughtTimeOptComposite = new LifeTimeComposite(this, SWT.NONE);
-		throughtTimeOptComposite.setBounds(125, 31, 425, 31);
-		
-		sameTimeComposite = new SameTimeComposite(this, SWT.NONE, repRel.getRelator(), target);
-		sameTimeComposite.setBounds(125, 62, 425, 86);
-		
-		sameTimeComposite.disableAll();
-		throughtTimeOptComposite.disableAll();
-		
+	}
+	
+	public void selectSameTime()
+	{
+		btnAtTheSame.setSelection(true);
 	}
 	
 	public boolean isSame()
@@ -80,24 +82,27 @@ public class TimeOptionComposite extends Composite {
 		return btnThroughoutTime.getSelection();
 	}
 	
-	public boolean isYes(){
-		return sameTimeComposite.isYes();
-	}
-	
 	public int getN()
 	{
-		return throughtTimeOptComposite.getN();
-	}
-	
-	public boolean isNo(){
-		return sameTimeComposite.isNo();
+		return spinner.getSelection();
 	}
 		
+	public void disableLifeTime()
+	{
+		spinner.setEnabled(false);
+		lblHowManySimoutanesouly.setEnabled(false);
+	}
+	
+	public void enableLifeTime()
+	{
+		spinner.setEnabled(true);
+		lblHowManySimoutanesouly.setEnabled(true);
+	}
+	
 	public void setColor(Color swtColor)
 	{
-		throughtTimeOptComposite.setColor(swtColor);
-		sameTimeComposite.setColor(swtColor);
-		lblType.setBackground(swtColor);
+		lblHowManySimoutanesouly.setBackground(swtColor);
+		//lblType.setBackground(swtColor);
 		btnAtTheSame.setBackground(swtColor);
 		btnThroughoutTime.setBackground(swtColor);
 		setBackground(swtColor);
