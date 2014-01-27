@@ -103,7 +103,8 @@ public class AntiPatternModifDialog extends Dialog {
 		Label rulesLabel = new Label(container, SWT.NONE);
 		rulesLabel.setText("Added OCL rules:");
 		
-		rulesText = new StyledText(container, SWT.BORDER);
+		rulesText = new StyledText(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL );
+		rulesText.setEditable(false);
 		
 		statusLabel = new Label(container, SWT.NONE);
 		statusLabel.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
@@ -157,7 +158,7 @@ public class AntiPatternModifDialog extends Dialog {
 					.addPreferredGap(LayoutStyle.RELATED)
 					.add(rulesLabel)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(rulesText, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+					.add(rulesText, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.RELATED)
 					.add(statusLabel)
 					.addContainerGap())
