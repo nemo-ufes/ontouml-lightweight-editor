@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.Main;
+import java.awt.Font;
 
 
 public class AboutDialog extends JDialog {
@@ -62,7 +63,7 @@ public class AboutDialog extends JDialog {
 		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
 		setIconImage(icon);
 		setTitle("About");
-		setBounds(100, 100, 338, 469);
+		setBounds(100, 100, 338, 502);
 		
 		getContentPane().setLayout(new BorderLayout());
 		
@@ -92,7 +93,11 @@ public class AboutDialog extends JDialog {
 		JPanel panel = new JPanel();
 		
 		lblVersion = new JLabel("OLED v"+Main.OLED_VERSION);
+		lblVersion.setFont(new Font(lblVersion.getFont().getFontName(), Font.BOLD, 11));
 		lblVersion.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		JLabel lblNemoinfufesbr = new JLabel("nemo.inf.ufes.br");
+		lblNemoinfufesbr.setHorizontalAlignment(SwingConstants.CENTER);
 				
 		GroupLayout gl_CenterPanel = new GroupLayout(CenterPanel);
 		gl_CenterPanel.setHorizontalGroup(
@@ -100,33 +105,39 @@ public class AboutDialog extends JDialog {
 				.addGroup(gl_CenterPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_CenterPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_CenterPanel.createSequentialGroup()
-							.addGroup(gl_CenterPanel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(panel, 0, 0, Short.MAX_VALUE)
-								.addComponent(labelDescription, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
+						.addGroup(Alignment.TRAILING, gl_CenterPanel.createSequentialGroup()
+							.addComponent(labelDescription, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
 							.addGap(11))
 						.addGroup(Alignment.TRAILING, gl_CenterPanel.createSequentialGroup()
 							.addComponent(lblVersion, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(gl_CenterPanel.createSequentialGroup()
+							.addComponent(panel, 0, 0, Short.MAX_VALUE)
+							.addGap(11))
+						.addGroup(gl_CenterPanel.createSequentialGroup()
+							.addComponent(lblNemoinfufesbr, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
 							.addContainerGap())))
 		);
 		gl_CenterPanel.setVerticalGroup(
 			gl_CenterPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_CenterPanel.createSequentialGroup()
 					.addComponent(labelDescription)
-					.addGap(11)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(1)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblVersion)
-					.addContainerGap())
+					.addGap(3)
+					.addComponent(lblNemoinfufesbr)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(26, Short.MAX_VALUE))
 		);
 		
 		JLabel lblViniciusSobralVictor = new JLabel("Vinicius Sobral - EA Compatibility");
 		lblViniciusSobralVictor.setHorizontalAlignment(SwingConstants.LEFT);
 		
-		JLabel lblTiagoPrinceSales = new JLabel("Tiago Prince Sales - Alloy and AntiPatterns");
+		JLabel lblTiagoPrinceSales = new JLabel("Tiago Prince Sales - Alloy and Anti-Patterns");
 		lblTiagoPrinceSales.setHorizontalAlignment(SwingConstants.LEFT);
 		
-		JLabel lblJohnGuerson = new JLabel("John Guerson - Co-Author");
+		JLabel lblJohnGuerson = new JLabel("John Guerson - Author");
 		lblJohnGuerson.setHorizontalAlignment(SwingConstants.LEFT);
 		labelAuthor1 = new JLabel("Antognoni Albuquerque - Author");
 		labelAuthor1.setForeground(Color.BLACK);
@@ -134,22 +145,20 @@ public class AboutDialog extends JDialog {
 		
 		JLabel lblVictorAmorim = new JLabel("Victor Amorim - OWL and Modeling Assistant");
 		lblVictorAmorim.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		JLabel lblCssioReginato = new JLabel("Cássio Reginato - OWL and Derived Types");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(20)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(20)
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblVictorAmorim, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-								.addComponent(lblViniciusSobralVictor, GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(20)
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblTiagoPrinceSales, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-								.addComponent(lblJohnGuerson, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-								.addComponent(labelAuthor1, GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))))
+						.addComponent(lblVictorAmorim, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+						.addComponent(lblViniciusSobralVictor, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+						.addComponent(lblTiagoPrinceSales, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+						.addComponent(lblJohnGuerson, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+						.addComponent(labelAuthor1, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+						.addComponent(lblCssioReginato, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -165,6 +174,8 @@ public class AboutDialog extends JDialog {
 					.addComponent(lblViniciusSobralVictor)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblVictorAmorim, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblCssioReginato)
 					.addContainerGap(15, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
