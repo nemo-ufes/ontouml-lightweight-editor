@@ -15,8 +15,8 @@ import RefOntoUML.Relator;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
-import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingAntipattern;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesIdentificator;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelOverAntipattern extends OverlappingAntipattern<RelOverOccurrence> {
