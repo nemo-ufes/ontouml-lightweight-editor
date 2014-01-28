@@ -8,7 +8,7 @@ public class TerminalGlossaryExporter extends GlossaryExporter {
 
 	}
 	
-	public void openExportFile(){
+	public void initilizeExportFile(){
 		
 	}
 	
@@ -18,7 +18,7 @@ public class TerminalGlossaryExporter extends GlossaryExporter {
 		System.out.println("DESCRIÇÃO: "+description);
 	}
 	
-	public void closeExportFile(){
+	public void finalizeExportFile(){
 		
 	}
 

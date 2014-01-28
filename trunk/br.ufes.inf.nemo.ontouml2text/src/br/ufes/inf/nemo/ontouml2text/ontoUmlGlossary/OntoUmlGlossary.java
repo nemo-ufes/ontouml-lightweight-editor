@@ -22,30 +22,42 @@ public class OntoUmlGlossary {
 		
 		DescriptionCategory auxS = new Relator("Transporte Rodoviário de Cargas");
 		
-		space.getCategories().add(auxS);
+		space.addCategory(auxS);
 		
 		// Funcoes da categoria descrita
 		DescriptionCategory auxT1 = new Relator("Execução de Serviço");	
 		DescriptionFunction func = new Generalization("",auxS,auxT1,1,1,1,1);
 		auxS.getFunctions().add(func);
+		auxT1.getFunctions().add(func);
+		
+		space.addCategory(auxT1);
 		
 		DescriptionCategory auxT2 = new Role("Motorista em Transporte de Cargas");	
 		func = new Mediation("",auxS,auxT2,1,-1,1,-1);
 		auxS.getFunctions().add(func);
+		auxT2.getFunctions().add(func);
+		
+		space.addCategory(auxT2);
 		
 		DescriptionCategory auxT3 = new Role("Veículo em Transporte de Cargas");	
 		func = new Mediation("",auxS,auxT3,1,-1,1,1);
 		auxS.getFunctions().add(func);
+		auxT3.getFunctions().add(func);
+		
+		space.addCategory(auxT3);
 		
 		DescriptionCategory auxT4 = new Role("Trecho percorrido por Transporte Rodoviário de Cargas");	
 		func = new Mediation("",auxS,auxT4,1,-1,1,-1);
 		auxS.getFunctions().add(func);
+		auxT4.getFunctions().add(func);
+		
+		space.addCategory(auxT4);
 		
 		// Gerando glossário
-			StringGenerator glossaryGenerator = new StringGenerator(space, 
-					new TerminalGlossaryExporter(), new PortugueseLanguageAdaptor(new PortugueseDictionary()));
-			
-			glossaryGenerator.generateGlossary();
+		StringGenerator glossaryGenerator = new StringGenerator(space, 
+				new HtmlGlossaryExporter("Glossary","","Glossário ANTT"), new PortugueseLanguageAdaptor(new PortugueseDictionary()));
+		
+		glossaryGenerator.generateGlossary();
 	}
 
 
