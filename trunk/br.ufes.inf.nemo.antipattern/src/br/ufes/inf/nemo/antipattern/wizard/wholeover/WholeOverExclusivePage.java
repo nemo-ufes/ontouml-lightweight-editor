@@ -15,7 +15,7 @@ public class WholeOverExclusivePage extends ExclusiveOverlappingPage {
 	@Override
 	public String getQuestion() {
 		
-		String question = 	"Your previous answer show that it is correct for the part types to have an overlappable extension. \n\nWith that in mid, answer the following: "+
+		String question = 	"Your previous answer shows that it is correct for at least some of the part types to have an overlappable extension. \n\nWith that in mid, answer the following: "+
 							"Can an instance of the whole '"+getOccurrence().getParser().getStringRepresentation(getOccurrence().getMainType())+"' be composed by an object acting as different part types? "+
 							"If there is any restriction of such nature, select the part types on the table below. (Each line on the table creates a restriction involving the selected types)";
 		
