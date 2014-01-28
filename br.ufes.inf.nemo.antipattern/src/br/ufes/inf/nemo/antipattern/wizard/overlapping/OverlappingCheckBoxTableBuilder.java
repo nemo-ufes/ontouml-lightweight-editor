@@ -46,7 +46,7 @@ public class OverlappingCheckBoxTableBuilder{
 			else
 				columnName += " (unnamed)";
 			TableColumn tableColumn = new TableColumn(table, SWT.CENTER);
-			tableColumn.setWidth(200);
+			tableColumn.setWidth(150);
 			tableColumn.setText(columnName);
 		}
 		
@@ -69,14 +69,6 @@ public class OverlappingCheckBoxTableBuilder{
 			 @Override
 	            public void widgetSelected(SelectionEvent e) {
 				 addLine();
-				 
-				 for (ArrayList<Property> line : getSelections()) {
-					 System.out.print("Line: ");
-					 for (Property p : line) {
-						System.out.print(p.getType().getName()+", ");
-					 }
-					 System.out.println();
-				}
 			 }
 		});		
 	}
