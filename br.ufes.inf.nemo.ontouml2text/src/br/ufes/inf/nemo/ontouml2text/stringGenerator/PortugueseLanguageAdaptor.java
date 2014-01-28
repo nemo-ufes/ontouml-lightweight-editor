@@ -38,23 +38,25 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		DescriptionPattern pattern; 
 		DescriptionPattern previousPattern = null;
 		
-		priorizeDescriptionPatterns(patterns);
-		
-		description += patterns.get(0).getDescribedCategory().getLabel();
-
-		for(i = 0; i < patterns.size(); i++){
-			pattern = patterns.get(i);
+		if(patterns.size() > 0){
+			priorizeDescriptionPatterns(patterns);
 			
-			if(pattern instanceof UnaryPattern)
-				description += processUnaryPattern(pattern, previousPattern);
-			
-			if(pattern instanceof BinaryPattern)
-				description += processBinaryPattern(pattern, previousPattern);
-			
-			if(pattern instanceof NaryPattern)
-				description += processNaryPattern(pattern, previousPattern);
-			
-			previousPattern = pattern;
+			description += patterns.get(0).getDescribedCategory().getLabel();
+	
+			for(i = 0; i < patterns.size(); i++){
+				pattern = patterns.get(i);
+				
+				if(pattern instanceof UnaryPattern)
+					description += processUnaryPattern(pattern, previousPattern);
+				
+				if(pattern instanceof BinaryPattern)
+					description += processBinaryPattern(pattern, previousPattern);
+				
+				if(pattern instanceof NaryPattern)
+					description += processNaryPattern(pattern, previousPattern);
+				
+				previousPattern = pattern;
+			}
 		}
 		
 		return description+".";
@@ -99,29 +101,33 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		String parcialDescription = "";
 		
 		if(pattern instanceof HomogeneousGeneralizationPattern){
+			// Generating specific description
 			parcialDescription += " é " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 		}
 		
 		if(pattern instanceof RigidHeterogeneousGeneralizationPattern){
+			// Generating specific description
 			parcialDescription += " é uma categoria de " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
 		}
 		
 		if(pattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern){
+			// Generating specific description
 			parcialDescription += " é um papel que " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true) +
 					" pode desempenhar";
 		}
 		
 		if(pattern instanceof AntiRigidHeterogeneousGeneralizationPattern){
+			// Generating specific description
 			parcialDescription += " é " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 		}
 		
 		if(pattern instanceof CharacterizationAssociationPattern){
 			// Integration
-			if(previousPattern instanceof HomogeneousGeneralizationPattern) parcialDescription += ",";
+			if(previousIsGeneralization(previousPattern)) parcialDescription += ",";
 			
 			// Generating specific description
 			parcialDescription += " é caracterizado por ter " + 
@@ -129,26 +135,34 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		}
 		
 		if(pattern instanceof FormalAssociationPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += ", o qual";
+						
+			// Generating specific description			
 			parcialDescription += " está associado a " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 		}
 		
 		if(pattern instanceof ComponentOfPattern){
+			// Generating specific description
 			parcialDescription += " compõe " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
 		}
 		
 		if(pattern instanceof MemberOfPattern){
+			// Generating specific description
 			parcialDescription += " é membro de " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 		}
 		
 		if(pattern instanceof SubcollectiveOfPattern){
+			// Generating specific description
 			parcialDescription += " é um subcoletivo de " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
 		}
 		
 		if(pattern instanceof AbstractMediationPattern){
+			// Generating specific description
 			parcialDescription += " é um papel envolvido em " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 		}
@@ -168,13 +182,17 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		}
 		
 		if(pattern instanceof PhaseDescriptionPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+			
+			// Generating specific description
 			parcialDescription += " tem como fases: " + 
 					insertListing((NaryPattern)pattern, false);
 		}
 		
 		if(pattern instanceof OrdinaryMediationPattern){
 			// Integration
-			if(previousPattern instanceof HomogeneousGeneralizationPattern) parcialDescription += " que";
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " que";
 			
 			// Generating specific description
 			parcialDescription += " envolve " + 
@@ -192,7 +210,7 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		
 		if(pattern instanceof DirectMediationPattern){
 			// Integration
-			if(previousPattern instanceof HomogeneousGeneralizationPattern) parcialDescription += " que";
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " que";
 			
 			// Generating specific description
 			parcialDescription += " envolve " + 
@@ -227,11 +245,36 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		}
 		
 		if(pattern instanceof GeneralizationSetRevPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+			
+			if(previousIsOptionalHeterogeneousMediation(previousPattern)) parcialDescription += ";";
+			
+			// Generating specific description
 			parcialDescription += " pode ser dos tipos: " + 
 					insertListing((NaryPattern)pattern, false);
 		}
 		
 		return parcialDescription;
+	}
+	
+	private boolean previousIsGeneralization(DescriptionPattern previousPattern){
+		return previousPattern instanceof HomogeneousGeneralizationPattern ||
+				previousPattern instanceof RigidHeterogeneousGeneralizationPattern ||
+				previousPattern instanceof AntiRigidHeterogeneousGeneralizationPattern ||
+				previousPattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern ||
+				previousPattern instanceof ContextualAntiRigidHeterogeneousGeneralizationIdPattern;
+	}
+	
+	private boolean previousIsHeterogeneousMediation(DescriptionPattern previousPattern){
+		return previousPattern instanceof OrdinaryMediationPattern ||
+				previousPattern instanceof DirectMediationPattern ||
+				previousPattern instanceof AbstractMediationPattern;
+	}
+	
+	private boolean previousIsOptionalHeterogeneousMediation(DescriptionPattern previousPattern){
+		return previousPattern instanceof OrdinaryOptionalMediationPattern ||
+				previousPattern instanceof OptionalDirectMediationPattern;
 	}
 	
 	private String insertTarget(PatternCategory target, boolean withMultiplicity){
