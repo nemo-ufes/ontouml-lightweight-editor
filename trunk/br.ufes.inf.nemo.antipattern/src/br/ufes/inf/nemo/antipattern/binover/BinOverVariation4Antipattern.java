@@ -9,7 +9,7 @@ import RefOntoUML.Package;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
-import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesIdentificator;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class BinOverVariation4Antipattern extends

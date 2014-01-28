@@ -6,7 +6,7 @@ import java.util.Set;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
-import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesIdentificator;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class BinOverVariation2Antipattern extends Antipattern<BinOverVariation2Occurrence> {
