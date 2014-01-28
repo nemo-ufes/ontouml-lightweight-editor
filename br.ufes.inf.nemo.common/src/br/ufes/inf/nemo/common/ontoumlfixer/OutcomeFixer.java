@@ -113,10 +113,11 @@ public class OutcomeFixer {
 		return rel;			  
 	}
 	
-	private GeneralizationSet createBasicGeneralizationSet(boolean isCovering, boolean isDisjoint){
+	private GeneralizationSet createBasicGeneralizationSet(boolean isDisjoint, boolean isCovering){
 		GeneralizationSet gs = factory.createGeneralizationSet();
 		gs.setIsCovering(isCovering);
 		gs.setIsDisjoint(isDisjoint);
+		gs.setName("");
 		return gs;
 	}
 
@@ -421,7 +422,32 @@ public class OutcomeFixer {
 		gen.setGeneral((RefOntoUML.Classifier)supertype);
 		fixes.includeAdded(gen);
 		return fixes;
+		
 	}
+	
+	public Fix addCommonSuperType (ArrayList<Classifier> subtypes, ClassStereotype stereoSuperType){
+		Fix fixes = new Fix();
+		
+		//create supertye
+		RefOntoUML.PackageableElement supertype = createClass(stereoSuperType);
+		supertype.setName("CommonSupertype");
+		fixes.includeAdded(supertype);
+		
+		//the same container as
+		copyContainer(subtypes.get(0),supertype);
+		fixes.includeModified(subtypes.get(0).eContainer());
+		
+		for (Classifier subtype : subtypes) {
+			Generalization gen = (Generalization)createRelationship(RelationStereotype.GENERALIZATION);
+			gen.setSpecific(subtype);
+			gen.setGeneral((RefOntoUML.Classifier)supertype);
+			fixes.includeAdded(gen);
+			fixes.includeModified(subtype);
+		}
+		
+		return fixes;
+	}
+	
 	
 	/** Change a relationship stereotype */
 	public Fix changeRelationStereotypeTo(EObject relationship, RelationStereotype newStereo)
@@ -501,10 +527,16 @@ public class OutcomeFixer {
 		if (src.getType().equals(type)){
 			src.setType((Type)subtype);
 			fixes.includeModified(src);
+			
+			if(src.getName()!=null && !src.getName().isEmpty())
+				subtype.setName(src.getName());	
 		}
 		if (tgt.getType().equals(type)){
 			tgt.setType((Type)subtype);
 			fixes.includeModified(tgt);
+			
+			if(tgt.getName()!=null && !tgt.getName().isEmpty())
+				subtype.setName(tgt.getName());	
 		}
 		return fixes;
 	}
@@ -519,14 +551,26 @@ public class OutcomeFixer {
 	}
 	
 	public Fix createGeneralizationSet(ArrayList<Generalization> generalizations){
+		return createGeneralizationSet(generalizations, true, true, null);
+	}
+	
+	
+	public Fix createGeneralizationSet(ArrayList<Generalization> generalizations, boolean isDisjoint, boolean isCovering, String gsName){
 		Fix fix = new Fix();
 		
-		GeneralizationSet gs = createBasicGeneralizationSet(true, true);
+		GeneralizationSet gs = createBasicGeneralizationSet(isDisjoint, isCovering);
 		gs.getGeneralization().addAll(generalizations);
 		
-		fix.includeAdded(gs);
-		fix.includeModified(generalizations);
+		if(gsName!=null)
+			gs.setName(gsName);
+		else
+			gs.setName("NewGS_"+generalizations.get(0).getGeneral().getName());
 		
+		fix.includeAdded(gs);
+		
+		for (Generalization generalization : generalizations) {
+			fix.includeModified(generalization);
+		}
 		copyContainer(generalizations.get(0).getGeneral(),gs);
 		
 		return fix;
