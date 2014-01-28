@@ -8,14 +8,11 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Mixin;
 import RefOntoUML.MixinClass;
-import RefOntoUML.Phase;
 import RefOntoUML.Property;
-import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
-import RefOntoUML.SortalClass;
-import RefOntoUML.SubKind;
-import RefOntoUML.SubstanceSortal;
-import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
+import br.ufes.inf.nemo.antipattern.partover.PartOverOccurrence;
+import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
+import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 
@@ -45,12 +42,11 @@ public class OverlappingTypesVariation6 extends OverlappingTypesVariation {
 		
 		super.validVariation = true;
 		
-		
 	}
 	
 	@Override
 	public String toString(){
-		String result =	"VAR6" +
+		String result =	"Overllaping Group: Mixin Classes with Common Subtypes" +
 						"\nCommon Subtypes: ";
 		
 		for (Classifier parent : this.commonSubtypes) {
@@ -68,70 +64,117 @@ public class OverlappingTypesVariation6 extends OverlappingTypesVariation {
 
 	@Override
 	public boolean makeEndsDisjoint(ArrayList<Property> mixinProperties) {
+		ClassStereotype supertypeStereotype;
+		ArrayList<Classifier> partTypes = new ArrayList<Classifier>();
+		ArrayList<Generalization> createdGeneralizations;
+		Fix fix1,fix2,fix3;
+		int numbeOfCategory = 0, numberOfRoleMixin = 0; 
+		boolean hasMixin = false;
+		
 		if(!this.overlappingProperties.containsAll(mixinProperties) || mixinProperties.size()<1)
 			return false;
 		
-		//For each common subtype
-		for (Classifier sub : commonSubtypes) {
-			ArrayList<Classifier> subtypes = new ArrayList<Classifier>();
-			
-			
-			for (Property mixinProperty : mixinProperties) {
-				ClassStereotype newStereotype = defineDefaultStereotype((Classifier) mixinProperty.getType(),sub);
-				
-				//creates a subtype of the partEnd
-				Fix currentFix = occurrence.getFixer().createSubTypeAs(sub, newStereotype);
-				occurrence.getFix().addAll(currentFix);
-				subtypes.addAll(currentFix.getAddedByType(RefOntoUML.Class.class));
-				
-				//move the generalization specific from the common subtype to the created subtype
-				for (Generalization g : sub.getGeneralization()) {
-					if(g.getGeneral().equals(mixinProperty.getType()) || g.getGeneral().allParents().contains(mixinProperty.getType()))
-						g.setSpecific(currentFix.getAddedByType(RefOntoUML.Class.class).get(0));
-				}
+		//define new supertype stereotype --roleMixin if all roleMixin, category if allCategory, mixin otherwise
+		for (Property property : mixinProperties) {
+			if(property.getType() instanceof Category)
+				numbeOfCategory++;
+			if(property.getType() instanceof RoleMixin)
+				numberOfRoleMixin++;
+			if(property.getType() instanceof Mixin){
+				hasMixin=true;
+				break;
 			}
-			occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(sub, subtypes));
 		}
+		
+		if(hasMixin)
+			supertypeStereotype = ClassStereotype.MIXIN;
+		else if (numberOfRoleMixin==mixinProperties.size())
+			supertypeStereotype = ClassStereotype.ROLEMIXIN;
+		else if (numbeOfCategory==mixinProperties.size())
+			supertypeStereotype = ClassStereotype.CATEGORY;
+		else
+			supertypeStereotype = ClassStereotype.MIXIN;
+		
+		for (Property mixinProperty : mixinProperties) 
+			partTypes.add((Classifier) mixinProperty.getType());
+		
+		//create common supertype and generalizationSet complete
+		fix1 = getOccurrence().getFixer().addCommonSuperType(partTypes, supertypeStereotype);
+		createdGeneralizations = new ArrayList<Generalization>();
+		createdGeneralizations.addAll(fix1.getAddedByType(Generalization.class));
+		fix1.addAll(getOccurrence().getFixer().createGeneralizationSet(createdGeneralizations, false, true, "NewGS1"));
+		
+		createdGeneralizations = new ArrayList<Generalization>();
+		fix2 = new Fix();
+		int i = 1;
+		for (Property p : mixinProperties) {
+			//create new type as a subytpe of the created supertype
+			Fix auxFix = getOccurrence().getFixer().createSubTypeAs(fix1.getAddedByType(MixinClass.class).get(0), supertypeStereotype);
+			Classifier newSubtype = auxFix.getAddedByType(MixinClass.class).get(0);
+			
+			if(getOccurrence() instanceof WholeOverOccurrence)
+				newSubtype.setName("NewPartType"+i);
+			else if (getOccurrence() instanceof PartOverOccurrence)
+				newSubtype.setName("NewWholeType"+i);
+			else if (getOccurrence() instanceof RelOverOccurrence)
+				newSubtype.setName("NewMediatedType"+i);
+			else
+				newSubtype.setName("NewType"+i);
+			i++;
+			
+			//modify property type to new type
+			p.setType(auxFix.getAddedByType(MixinClass.class).get(0));
+			createdGeneralizations.addAll(auxFix.getAddedByType(Generalization.class));
+			fix2.addAll(auxFix);
+			fix2.includeModified(p);
+		}
+		
+		fix3 = getOccurrence().getFixer().createGeneralizationSet(createdGeneralizations);
+		
+		getOccurrence().getFix().addAll(fix1);
+		getOccurrence().getFix().addAll(fix2);
+		getOccurrence().getFix().addAll(fix3);
 		
 		return true;
 	}
 	
-	private ClassStereotype defineDefaultStereotype(Classifier mixinSupertype, Classifier commonSubtype){
-		
-		if(mixinSupertype instanceof Mixin){
-			if(commonSubtype instanceof SubstanceSortal || commonSubtype instanceof SubKind)
-				return ClassStereotype.SUBKIND;
-			else if(commonSubtype instanceof Phase)
-				return ClassStereotype.PHASE;
-			else if(commonSubtype instanceof Role)
-				return ClassStereotype.ROLE;
-			else if(commonSubtype instanceof Mixin)
-				return ClassStereotype.MIXIN;
-			else if(commonSubtype instanceof RoleMixin)
-				return ClassStereotype.ROLEMIXIN;
-			else if(commonSubtype instanceof Category)
-				return ClassStereotype.CATEGORY;
-		}
-		
-		if(mixinSupertype instanceof RoleMixin){
-			if(commonSubtype instanceof SortalClass)
-				return ClassStereotype.ROLE;
-			else if(commonSubtype instanceof RoleMixin)
-				return ClassStereotype.ROLEMIXIN;
-			else
-				return null;
-		}
-		
-		else if(mixinSupertype instanceof Category){
-			if(commonSubtype instanceof SubstanceSortal || commonSubtype instanceof SubKind)
-				return ClassStereotype.SUBKIND;
-			else if(commonSubtype instanceof Category)
-				return ClassStereotype.CATEGORY;
-			else
-				return null;
-		}
-		return null;
-	
-	}
+//	
+//	private ClassStereotype defineDefaultStereotype(Classifier mixinSupertype, Classifier commonSubtype){
+//		
+//		if(mixinSupertype instanceof Mixin){
+//			if(commonSubtype instanceof SubstanceSortal || commonSubtype instanceof SubKind)
+//				return ClassStereotype.SUBKIND;
+//			else if(commonSubtype instanceof Phase)
+//				return ClassStereotype.PHASE;
+//			else if(commonSubtype instanceof Role)
+//				return ClassStereotype.ROLE;
+//			else if(commonSubtype instanceof Mixin)
+//				return ClassStereotype.MIXIN;
+//			else if(commonSubtype instanceof RoleMixin)
+//				return ClassStereotype.ROLEMIXIN;
+//			else if(commonSubtype instanceof Category)
+//				return ClassStereotype.CATEGORY;
+//		}
+//		
+//		if(mixinSupertype instanceof RoleMixin){
+//			if(commonSubtype instanceof SortalClass)
+//				return ClassStereotype.ROLE;
+//			else if(commonSubtype instanceof RoleMixin)
+//				return ClassStereotype.ROLEMIXIN;
+//			else
+//				return null;
+//		}
+//		
+//		else if(mixinSupertype instanceof Category){
+//			if(commonSubtype instanceof SubstanceSortal || commonSubtype instanceof SubKind)
+//				return ClassStereotype.SUBKIND;
+//			else if(commonSubtype instanceof Category)
+//				return ClassStereotype.CATEGORY;
+//			else
+//				return null;
+//		}
+//		return null;
+//	
+//	}
 	
 }

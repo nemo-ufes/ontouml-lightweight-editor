@@ -38,7 +38,7 @@ public class OverlappingTypesVariation1 extends OverlappingTypesVariation {
 	
 	@Override
 	public String toString(){
-		String result =	"VAR1" +
+		String result =	"Overllaping Group: Same Types" +
 						"\nCommon Type: "+occurrence.getParser().getStringRepresentation(commonType)+
 						"\nProperties: ";
 		

@@ -7,7 +7,6 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
 
 //partEnds with the same type
 public class OverlappingTypesVariation5 extends OverlappingTypesVariation {
@@ -90,7 +89,7 @@ public class OverlappingTypesVariation5 extends OverlappingTypesVariation {
 	
 	@Override
 	public String toString(){
-		String result =	"VAR5" +
+		String result =	"Overllaping Group: Mixin Classes with Common Supertype" +
 						"\nCommon Supertypes: ";
 		
 		for (Classifier parent : this.commonSupertypes) {
