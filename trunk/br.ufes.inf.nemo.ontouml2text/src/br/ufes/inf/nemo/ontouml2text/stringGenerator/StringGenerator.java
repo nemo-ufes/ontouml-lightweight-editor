@@ -74,8 +74,6 @@ public class StringGenerator {
 		DescriptionFunction function = null;
 		List<DescriptionPattern> patterns = new ArrayList<DescriptionPattern>();
 		
-		System.out.println(describedCategory.getLabel()+" "+describedCategory.getFunctions().size());
-		
 		// Matching top pattern (without relations)
 		if(describedCategory.getFunctions().size() == 0){
 			patterns.add(new TopPattern(describedCategory));
