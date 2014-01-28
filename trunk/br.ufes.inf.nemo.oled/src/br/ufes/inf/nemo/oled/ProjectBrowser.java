@@ -18,6 +18,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.eclipse.emf.ecore.EObject;
 
+import br.ufes.inf.nemo.assistant.ModellingAssistant;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
@@ -55,6 +56,7 @@ public class ProjectBrowser extends JPanel{
 	private OntoUML2AlloyOptions refOptions;
 	private OCL2AlloyOptions oclOptions;
 	public static AppFrame frame;
+	private ModellingAssistant assistant;
 		
 	public void setProject(UmlProject project)
 	{
@@ -75,6 +77,8 @@ public class ProjectBrowser extends JPanel{
 		refOptions = new OntoUML2AlloyOptions();
 		antipatterns = new AntiPatternList();
 		inferences = new InferenceList();
+		
+		assistant = new ModellingAssistant();
 		
 		scroll.setViewportView(tree);
 		
