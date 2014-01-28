@@ -25,6 +25,7 @@ import br.ufes.inf.nemo.assistant.window.Alert;
 import br.ufes.inf.nemo.assistant.window.NewClass;
 import br.ufes.inf.nemo.assistant.window.NewGeneralizationSet;
 import br.ufes.inf.nemo.assistant.window.NewPhases;
+import br.ufes.inf.nemo.assistant.window.NewRelator;
 import br.ufes.inf.nemo.assistant.window.Question;
 
 /*
@@ -42,7 +43,7 @@ public class AstahParser {
 	public static void main(String[] args) {
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = doParser("./Patterns.asta");
 
-		GraphAssistant tree = hashTree.get(StereotypeOntoUMLEnum.ROLE);
+		GraphAssistant tree = hashTree.get(StereotypeOntoUMLEnum.SUBKIND);
 
 		tree.print(tree.getStart());
 
@@ -185,6 +186,9 @@ public class AstahParser {
 		}else if(window.equalsIgnoreCase("NewPhases")){
 			NewPhases np = new NewPhases();
 			node.setWin(np);
+		}else if(window.equalsIgnoreCase("NewRelator")){
+			NewRelator nr = new NewRelator();
+			node.setWin(nr);
 		}else if(window.equalsIgnoreCase("LinkToPattern")){
 			//toUpperCase is used because all enumerations are in upper case
 			linkNode.put(StereotypeOntoUMLEnum.valueOf(aNode.getTaggedValue("linkToPattern").toUpperCase()), _lastNode);
