@@ -55,7 +55,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.assistant.notifier.AssistantNotifier;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
@@ -134,8 +133,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	// this might be null when the application is started and the pointer still did not move or had the focus of the editor
 	private static MouseEvent currentPointerPosition;
 	
-	private transient AssistantNotifier assistantNotifier;
-
 	public CreationHandler getCreationHandler()
 	{
 		return creationHandler;
@@ -219,9 +216,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		this.diagram = diagram;
 		this.diagram.addNodeChangeListener(this);
 		initEditorMembers();
-
-		//It is used for the modelling Assitant be notified about changes in the diagrams  
-		assistantNotifier = new AssistantNotifier();
 
 		// Make sure the this component has no layout diagramManager, is opaque and has
 		// no double buffer
@@ -1083,9 +1077,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		diagram.setSaveNeeded(true);		
 
 		showStatus(elements, changeType, notificationType);
-
-		//Notify the assistant notifier of the diagrams' changes 	
-		assistantNotifier.notifyChange(elements, changeType, notificationType);
 	}
 
 	private void showStatus(List<DiagramElement> elements, ChangeType commandType, NotificationType notificationType)

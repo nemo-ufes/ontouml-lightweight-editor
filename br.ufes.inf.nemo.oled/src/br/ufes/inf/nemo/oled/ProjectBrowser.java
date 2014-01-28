@@ -56,7 +56,7 @@ public class ProjectBrowser extends JPanel{
 	private OntoUML2AlloyOptions refOptions;
 	private OCL2AlloyOptions oclOptions;
 	public static AppFrame frame;
-	private ModellingAssistant assistant;
+//	private ModellingAssistant assistant;
 		
 	public void setProject(UmlProject project)
 	{
@@ -78,7 +78,7 @@ public class ProjectBrowser extends JPanel{
 		antipatterns = new AntiPatternList();
 		inferences = new InferenceList();
 		
-		assistant = new ModellingAssistant(refparser);
+//		assistant = new ModellingAssistant(refparser);
 		
 		scroll.setViewportView(tree);
 		
