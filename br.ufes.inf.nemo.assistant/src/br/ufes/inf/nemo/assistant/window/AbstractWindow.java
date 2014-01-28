@@ -5,6 +5,8 @@ import javax.swing.JDialog;
 import br.ufes.inf.nemo.assistant.graph.Node;
 
 public abstract class AbstractWindow extends JDialog {
+	
+	private static final long serialVersionUID = 1L;
 	protected Node myNode;
 	protected AbstractWindow instance;
 	protected boolean autoGetConceptName = false;

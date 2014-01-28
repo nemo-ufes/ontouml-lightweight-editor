@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.5.jar"/>
 	<classpathentry kind="lib" path="lib/astah-pro.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.common"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
