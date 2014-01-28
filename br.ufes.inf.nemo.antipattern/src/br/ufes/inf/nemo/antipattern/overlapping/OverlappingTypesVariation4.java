@@ -10,7 +10,6 @@ import RefOntoUML.Property;
 import RefOntoUML.Role;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
-import br.ufes.inf.nemo.antipattern.OverlappingTypesIdentificator;
 
 //partEnds with the same type
 public class OverlappingTypesVariation4 extends OverlappingTypesVariation {
@@ -68,7 +67,7 @@ public class OverlappingTypesVariation4 extends OverlappingTypesVariation {
 	
 	@Override
 	public String toString(){
-		String result =	"VAR4" +
+		String result =	"Overllaping Group: Sortals with Common Identity Provider" +
 						"\nIdentity Provider: "+occurrence.getParser().getStringRepresentation(identityProvider)+
 						"\nCommon Supertypes: ";
 		
