@@ -76,6 +76,8 @@ import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.partover.PartOverWizard;
+import br.ufes.inf.nemo.antipattern.wizard.relover.RelOverWizard;
 import br.ufes.inf.nemo.antipattern.wizard.relrig.RelRigWizard;
 import br.ufes.inf.nemo.antipattern.wizard.relspec.RelSpecWizard;
 import br.ufes.inf.nemo.antipattern.wizard.reprel.RepRelWizard;
@@ -360,7 +362,9 @@ public class AntiPatternResultDialog extends Dialog {
     	WizardDialog wizardDialog = null;    	
     	if (apOccur instanceof RelRigOccurrence) wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));
     	if (apOccur instanceof RelSpecOccurrence) wizardDialog = new WizardDialog(new Shell(), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
-    	if (apOccur instanceof WholeOverOccurrence) wizardDialog = new WizardDialog(new Shell(), new WholeOverWizard((WholeOverOccurrence)apOccur));	        		
+    	if (apOccur instanceof WholeOverOccurrence) wizardDialog = new WizardDialog(new Shell(), new WholeOverWizard((WholeOverOccurrence)apOccur));
+    	if (apOccur instanceof PartOverOccurrence) wizardDialog = new WizardDialog(new Shell(), new PartOverWizard((PartOverOccurrence)apOccur));	
+    	if (apOccur instanceof RelOverOccurrence) wizardDialog = new WizardDialog(new Shell(), new RelOverWizard((RelOverOccurrence)apOccur));	
     	if (apOccur instanceof RepRelOccurrence) wizardDialog = new WizardDialog(new Shell(), new RepRelWizard((RepRelOccurrence)apOccur));
     	return wizardDialog;
 	}
