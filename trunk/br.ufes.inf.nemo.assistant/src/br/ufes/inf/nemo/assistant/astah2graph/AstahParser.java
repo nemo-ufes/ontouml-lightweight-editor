@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.assistant.astah2graph;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +42,7 @@ import br.ufes.inf.nemo.assistant.window.Question;
 public class AstahParser {
 
 	public static void main(String[] args) {
-		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = doParser("./Patterns.asta");
+		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = doParser("src/Patterns.asta");
 
 		GraphAssistant tree = hashTree.get(StereotypeOntoUMLEnum.SUBKIND);
 
@@ -54,6 +55,38 @@ public class AstahParser {
 		}			
 	}
 
+	public static HashMap<StereotypeOntoUMLEnum, GraphAssistant> doParser(InputStream astahFile){
+		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = new HashMap<>();
+		try{
+			ProjectAccessor prjAccessor = AstahAPI.getAstahAPI().getProjectAccessor();
+			prjAccessor.open(astahFile);
+
+			// Get a project model
+			IModel project = prjAccessor.getProject();
+
+			ArrayList<IActivityDiagram> lst = getActivityDiagram(project);
+
+			//Interate on all activity diagrams
+			for (IActivityDiagram activityDiagram : lst) {
+				IActivity root = activityDiagram.getActivity();
+				IActivityNode[] nodes = root.getActivityNodes();
+
+				//for each diagram, create a tree
+				hashTree.put(StereotypeOntoUMLEnum.valueOf(root.getName().toUpperCase()),processNodes(nodes));
+			}		
+
+			//For each link to another pattern
+			for (Map.Entry<StereotypeOntoUMLEnum, Node> entry : linkNode.entrySet()) {
+				//All link node has its next set to the start node from the patter destiny
+				entry.getValue().setNext(hashTree.get(entry.getKey()).getStart());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		return hashTree;
+	}
+	
 	public static HashMap<StereotypeOntoUMLEnum, GraphAssistant> doParser(String astahFile){
 
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = new HashMap<>();

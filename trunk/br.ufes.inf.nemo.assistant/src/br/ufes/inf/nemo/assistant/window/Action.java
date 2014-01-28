@@ -6,6 +6,8 @@ import br.ufes.inf.nemo.assistant.util.ActionEnum;
 
 
 public class Action extends AbstractWindow{
+
+	private static final long serialVersionUID = 1L;
 	private ActionEnum action;
 	private String filter = null;
 

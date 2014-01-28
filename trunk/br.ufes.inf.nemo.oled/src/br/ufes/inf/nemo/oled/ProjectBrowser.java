@@ -78,7 +78,7 @@ public class ProjectBrowser extends JPanel{
 		antipatterns = new AntiPatternList();
 		inferences = new InferenceList();
 		
-		assistant = new ModellingAssistant();
+		assistant = new ModellingAssistant(refparser);
 		
 		scroll.setViewportView(tree);
 		
