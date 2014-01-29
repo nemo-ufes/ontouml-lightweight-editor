@@ -7,54 +7,69 @@ public class PortugueseDictionary implements Dictionary{
 	}
 	
 	public boolean isMale(String label){
-		String firstWord = firstWord(label);
+		String completeLabel[] = label.split(" ");
+		// completeLabel[0] represents the first word
 		
-		if(firstWord.endsWith("ista")) return true;
-		if(firstWord.endsWith("ção")) return false;
-		if(firstWord.endsWith("são")) return false;
-		if(firstWord.endsWith("dão")) return false;
-		if(firstWord.endsWith("ez")) return false;
-		if(firstWord.endsWith("tude")) return false;
-		if(firstWord.endsWith("or")) return true;
-		if(firstWord.endsWith("nte")) return true;
-		if(firstWord.endsWith("il")) return true;
-		if(firstWord.endsWith("agem")) return false;
-		if(firstWord.endsWith("al")) return true;
-		if(firstWord.endsWith("ame")) return true;
-		if(firstWord.endsWith("edo")) return true;
-		if(firstWord.endsWith("ume")) return true;
-		if(firstWord.endsWith("ite")) return false;
-		if(firstWord.endsWith("ol")) return true;
-		if(firstWord.endsWith("a")) return false;
+		if(completeLabel[0].endsWith("ista")) return true;
+		if(completeLabel[0].endsWith("ção")) return false;
+		if(completeLabel[0].endsWith("são")) return false;
+		if(completeLabel[0].endsWith("dão")) return false;
+		if(completeLabel[0].endsWith("ez")) return false;
+		if(completeLabel[0].endsWith("tude")) return false;
+		if(completeLabel[0].endsWith("or")) return true;
+		if(completeLabel[0].endsWith("nte")) return true;
+		if(completeLabel[0].endsWith("il")) return true;
+		if(completeLabel[0].endsWith("agem")) return false;
+		if(completeLabel[0].endsWith("al")) return true;
+		if(completeLabel[0].endsWith("ame")) return true;
+		if(completeLabel[0].endsWith("edo")) return true;
+		if(completeLabel[0].endsWith("ume")) return true;
+		if(completeLabel[0].endsWith("ite")) return false;
+		if(completeLabel[0].endsWith("ol")) return true;
+		if(completeLabel[0].endsWith("a")) return false;
 		
 		return true;
 	}
 	
 	public String getPlural(String label){
-		String firstWord = firstWord(label);
-		String complement = label.replaceAll(firstWord, "");
+		String completeLabel[] = label.split(" ");	
 		
-		if(firstWord.endsWith("ão")) return firstWord.substring(0,label.length() - 3) + "ões";
+		completeLabel[0] = processPlural(completeLabel[0]);
 		
-		return firstWord + "s" + complement;
+		if(completeLabel.length > 1){
+			int j = 1;
+			
+			System.out.println(completeLabel[1].replace(" ", "#"));
+			
+			if(completeLabel[1].equals("de")) // the second word is a conjunction?
+				j = 2; // The third word became the "second word"	
+			else if(completeLabel[1].equals("em"))
+				j = -1;
+			
+			if(j != -1)
+				completeLabel[j] = processPlural(completeLabel[j]);
+		}
+		
+		return join(" ", completeLabel);
 	}
 	
-//	public String getPlural(String label){
-//		String firstWord = firstWord(label);
-//		String secondWord = secondWord(label);
-//		String complement = label.replaceAll(firstWord, "");
-//		
-//		if(firstWord.endsWith("ão")) return firstWord.substring(0,label.length() - 3) + "ões";
-//		
-//		return firstWord + "s" + complement;
-//	}
-	
-	private String firstWord(String label){
-		return label.replaceAll(" .*", "");
+	private String processPlural(String word){
+		if(word.endsWith("ão")) 
+			return word.substring(0,word.length() - 3) + "ões";
+		else if(word.endsWith("al"))
+			return word.substring(0,word.length() - 2) + "is";
+		else
+			return word + "s";
 	}
 	
-//	private String secondWord(String label){
-//		return "";
-//	}
+	private String join(String separator, String[] splitedText){
+		int i;
+		String joinedText = splitedText[0];
+		
+		for(i = 1; i < splitedText.length; i++)
+			joinedText += separator + splitedText[i];
+		
+		return joinedText;
+	}	
 
 }
