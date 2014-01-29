@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.window;
+package br.ufes.inf.nemo.assistant.window.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -123,7 +123,9 @@ public class NewGeneralizationSet extends AbstractWindow{
 		lbConceptName.setBounds(289, 12, 256, 15);
 		getContentPane().add(lbConceptName);
 	}
-
+	/**
+	 * Set all possible general classes
+	 * */
 	public void setGeneralClasses(String[] generalClasses){
 		cbGeneral.setModel(new DefaultComboBoxModel<String>(generalClasses));
 	}

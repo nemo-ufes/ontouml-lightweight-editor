@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.window;
+package br.ufes.inf.nemo.assistant.window.swing;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
