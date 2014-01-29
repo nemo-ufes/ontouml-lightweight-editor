@@ -10,7 +10,7 @@ public class NonImplemented extends Ocl2Owl_SwrlException {
 	 */
 	public NonImplemented(String method, String rule) 
     {		
-		super("\nThe rule above was not translated because the " + method + " method is not implemented to solve it:\n" + rule);
+		super("\nThe rule below was not translated because the " + method + " method is not implemented to solve it:\n" + rule);
     }
 	
 	private static final long serialVersionUID = 1L;
