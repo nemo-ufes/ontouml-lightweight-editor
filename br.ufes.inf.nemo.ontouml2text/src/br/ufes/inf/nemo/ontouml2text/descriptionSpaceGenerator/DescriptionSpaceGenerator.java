@@ -53,7 +53,6 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
 		
 		for (RefOntoUML.Class classf : classfSet){
-			
 			DescriptionCategory mat;
 					
 			if(generalizationSpace.findCategory(classf.getName()) == null){
@@ -136,7 +135,6 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 	
 	for(Relationship r : eList){
 
-		if(r instanceof RefOntoUML.componentOf){}
 		if(r instanceof RefOntoUML.Association){			
 			
 			classNumberTarget = chooseTarget(((RefOntoUML.Association) r).getEndType().get(0).getName(),((RefOntoUML.Association) r).getEndType().get(1).getName(),source.getLabel());
@@ -400,9 +398,9 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			targetUpper = ((RefOntoUML.componentOf) r).partEnd().getUpper();
 			
 			if(((RefOntoUML.componentOf) r).whole().getName().equals(source.getLabel()))
-				mat = new ComponentOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
-			else
 				mat = new ComponentOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, false, false, false);
+			else
+				mat = new ComponentOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
 
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
@@ -443,10 +441,10 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			targetUpper = ((RefOntoUML.memberOf) r).partEnd().getUpper();
 						
 			if(((RefOntoUML.memberOf) r).whole().getName().equals(source.getLabel()))
-				mat = new MemberOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
-			else
 				mat = new MemberOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, false, false, false);
-			
+			else
+				mat = new MemberOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
+
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
@@ -461,10 +459,10 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			targetUpper = ((RefOntoUML.subCollectionOf) r).partEnd().getUpper();
 						
 			if(((RefOntoUML.subCollectionOf) r).whole().getName().equals(source.getLabel()))
-				mat = new SubcollectiveOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
-			else
 				mat = new SubcollectiveOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, false, false, false);
-			
+			else
+				mat = new SubcollectiveOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
+
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
@@ -479,10 +477,10 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			targetUpper = ((RefOntoUML.subQuantityOf) r).partEnd().getUpper();
 						
 			if(((RefOntoUML.subQuantityOf) r).whole().getName().equals(source.getLabel()))
-				mat = new SubquantityOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
-			else
 				mat = new SubquantityOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, false, false, false);
-			
+			else
+				mat = new SubquantityOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
+
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
