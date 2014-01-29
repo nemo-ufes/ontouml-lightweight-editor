@@ -163,21 +163,11 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		
 		if(pattern instanceof OrdinaryMediationRevPattern){
 			// Integration
-			if(previousIsGeneralization(previousPattern)) parcialDescription += " ao se envolver";
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " quando envolvido";
 			if(previousPattern == null) parcialDescription += " se envolve";
 			
 			// Generating specific description
-			parcialDescription += " com " + 
-					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
-		}
-		
-		if(pattern instanceof DirectMediationRevPattern){
-			// Integration
-			if(previousIsGeneralization(previousPattern)) parcialDescription += " ao se envolver";
-			if(previousPattern == null) parcialDescription += " se envolve";
-			
-			// Generating specific description
-			parcialDescription += " com " + 
+			parcialDescription += " em " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 		}
 		
@@ -190,10 +180,6 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 	
 	private String  processNaryPattern(DescriptionPattern pattern, DescriptionPattern previousPattern){
 		String parcialDescription = "";
-		
-		if(pattern instanceof ContextualAntiRigidHeterogeneousGeneralizationIdPattern){
-			
-		}
 		
 		if(pattern instanceof PhaseDescriptionPattern){
 			// Integration
@@ -288,8 +274,7 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		return previousPattern instanceof HomogeneousGeneralizationPattern ||
 				previousPattern instanceof RigidHeterogeneousGeneralizationPattern ||
 				previousPattern instanceof AntiRigidHeterogeneousGeneralizationPattern ||
-				previousPattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern ||
-				previousPattern instanceof ContextualAntiRigidHeterogeneousGeneralizationIdPattern;
+				previousPattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern;
 	}
 	
 	private boolean previousIsHeterogeneousMediation(DescriptionPattern previousPattern){
