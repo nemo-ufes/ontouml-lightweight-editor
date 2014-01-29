@@ -168,7 +168,7 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 			
 			// Generating specific description
 			parcialDescription += " com " + 
-					insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
+					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 		}
 		
 		if(pattern instanceof DirectMediationRevPattern){
@@ -178,7 +178,7 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 			
 			// Generating specific description
 			parcialDescription += " com " + 
-					insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
+					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 		}
 		
 		if(pattern instanceof CustomPattern){

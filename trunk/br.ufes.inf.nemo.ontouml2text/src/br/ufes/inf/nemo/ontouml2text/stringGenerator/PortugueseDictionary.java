@@ -39,8 +39,22 @@ public class PortugueseDictionary implements Dictionary{
 		return firstWord + "s" + complement;
 	}
 	
+//	public String getPlural(String label){
+//		String firstWord = firstWord(label);
+//		String secondWord = secondWord(label);
+//		String complement = label.replaceAll(firstWord, "");
+//		
+//		if(firstWord.endsWith("ão")) return firstWord.substring(0,label.length() - 3) + "ões";
+//		
+//		return firstWord + "s" + complement;
+//	}
+	
 	private String firstWord(String label){
 		return label.replaceAll(" .*", "");
 	}
+	
+//	private String secondWord(String label){
+//		return "";
+//	}
 
 }
