@@ -148,9 +148,7 @@ public class StringGenerator {
 	}
 	
 	private void identifyGeneralizationSetPattern(List<DescriptionPattern> patterns, 
-			DescriptionCategory describedCategory,  DescriptionFunction function){
-		DescriptionCategory target = function.getTarget(); 
-		
+			DescriptionCategory describedCategory,  DescriptionFunction function){		
 		NaryPattern naryPattern = (NaryPattern)searchPattern(patterns, "GeneralizationSetRevPattern");
 		
 		if(naryPattern == null){
@@ -158,8 +156,13 @@ public class StringGenerator {
 			patterns.add(naryPattern);
 		}		
 		
-		naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
-				function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));
+		int i;
+		for(i = 0; i < ((GeneralizationSet)function).getGeneralizationElements().size(); i++){
+			Generalization generalizationElement = ((GeneralizationSet)function).getGeneralizationElements().get(i);
+			
+			naryPattern.getTargetCategories().add(new PatternCategory(generalizationElement.getSource().getLabel(), 
+					generalizationElement.getSourceMinMultiplicity(), generalizationElement.getSourceMaxMultiplicity()));
+		}
 	}
 	
 	private void identifyCharacterizationPattern(List<DescriptionPattern> patterns, 
@@ -342,6 +345,22 @@ public class StringGenerator {
 					naryPattern = new AbstractMediationRevPattern(describedCategory);
 					patterns.add(naryPattern);
 				}															
+			}
+			
+			// Ordinary Mediation Rev Pattern
+			if(target instanceof Role && source instanceof Relator){
+				patterns.add(new OrdinaryMediationRevPattern(describedCategory, 
+						new PatternCategory(source.getLabel(), 
+								((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
+								((BinaryDescriptionFunction)function).getSourceMaxMultiplicity())));														
+			}
+			
+			// Direct Mediation Rev Pattern
+			if(target instanceof Kind && source instanceof Relator){
+				patterns.add(new DirectMediationRevPattern(describedCategory, 
+						new PatternCategory(source.getLabel(), 
+								((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
+								((BinaryDescriptionFunction)function).getSourceMaxMultiplicity())));														
 			}
 			
 			if(naryPattern != null)
