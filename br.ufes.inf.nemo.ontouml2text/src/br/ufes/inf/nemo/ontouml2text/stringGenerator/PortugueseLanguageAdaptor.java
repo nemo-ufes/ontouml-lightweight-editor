@@ -190,6 +190,24 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 					insertListing((NaryPattern)pattern, false);
 		}
 		
+		if(pattern instanceof ComponentOfRevPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+			
+			// Generating specific description
+			parcialDescription += " é composto por: " + 
+					insertListing((NaryPattern)pattern, true);
+		}
+		
+		if(pattern instanceof MemberOfRevPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+			
+			// Generating specific description
+			parcialDescription += " tem como membros: " + 
+					insertListing((NaryPattern)pattern, true);
+		}
+		
 		if(pattern instanceof OrdinaryMediationPattern){
 			// Integration
 			if(previousIsGeneralization(previousPattern)) parcialDescription += " que";
