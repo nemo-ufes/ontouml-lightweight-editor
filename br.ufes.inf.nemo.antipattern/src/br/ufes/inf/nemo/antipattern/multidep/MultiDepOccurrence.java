@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Generalization;
 import RefOntoUML.Mediation;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
@@ -17,6 +20,14 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 
 	Classifier type;
 	ArrayList<Property> relatorEnds;
+
+	public Classifier getType() {
+		return type;
+	}
+
+	public ArrayList<Property> getRelatorEnds() {
+		return relatorEnds;
+	}
 
 	public MultiDepOccurrence (Classifier type, MultiDepAntipattern ap) throws Exception{
 		super(ap);
@@ -77,5 +88,25 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 	@Override
 	public String getShortName() {
 		return parser.getStringRepresentation(this.type);
+	}
+
+	
+	// OUTCOMING FIXER =====================================================
+	//======================================================================
+		
+	public void createFormalAssociations(ArrayList<ArrayList<Property>> binFormalCombo) {
+		
+	}
+
+	public void addSubTypeInvolvingMediation(Type type, Association m) {
+		
+	}
+
+	public void addSubTypeWithIntermediate(Type type, Association m) {
+		
+	}
+
+	public void createGenSet(ArrayList<Generalization> genList) {
+		
 	}
 }
