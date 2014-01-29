@@ -251,9 +251,9 @@ public class StringGenerator {
 		DescriptionCategory target = function.getTarget(); 
 		DescriptionCategory	source = ((BinaryDescriptionFunction)function).getSource();;
 		
-		if(describedCategory == source){ // Ensuring unidirectionality
-			NaryPattern naryPattern = null;
-			
+		NaryPattern naryPattern = null;
+		
+		if(describedCategory == source){ // Ensuring unidirectionality		
 			// Ordinary Mediation Pattern
 			if(target instanceof Role && source instanceof Relator){					
 				if(function.getTargetMinMultiplicity() > 0){
@@ -333,7 +333,22 @@ public class StringGenerator {
 			if(naryPattern != null)
 				naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
 						function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
-		}
+		}else{
+			// Abstract Mediation Pattern
+			if(target instanceof RoleMixin && source instanceof Relator){
+				naryPattern = (NaryPattern)searchPattern(patterns, "AbstractMediationRevPattern");
+				
+				if(naryPattern == null){
+					naryPattern = new AbstractMediationRevPattern(describedCategory);
+					patterns.add(naryPattern);
+				}															
+			}
+			
+			if(naryPattern != null)
+				naryPattern.getTargetCategories().add(new PatternCategory(source.getLabel(), 
+						((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
+						((BinaryDescriptionFunction)function).getSourceMaxMultiplicity()));	
+		}	
 	}
 	
 	

@@ -161,10 +161,24 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
 		}
 		
-		if(pattern instanceof AbstractMediationPattern){
+		if(pattern instanceof OrdinaryMediationRevPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " ao se envolver";
+			if(previousPattern == null) parcialDescription += " se envolve";
+			
 			// Generating specific description
-			parcialDescription += " é um papel envolvido em " + 
-					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
+			parcialDescription += " com " + 
+					insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
+		}
+		
+		if(pattern instanceof DirectMediationRevPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " ao se envolver";
+			if(previousPattern == null) parcialDescription += " se envolve";
+			
+			// Generating specific description
+			parcialDescription += " com " + 
+					insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
 		}
 		
 		if(pattern instanceof CustomPattern){
@@ -203,7 +217,7 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 			// Integration
 			if(previousIsHeterogeneousMediation(previousPattern)) parcialDescription += ", além de poder"; 
 			if(previousPattern instanceof ExceptionMediationPattern) parcialDescription += " e pode"; 
-			if(previousPattern != null) parcialDescription += " pode";			
+			if(previousPattern == null) parcialDescription += " pode";			
 			
 			// Generating specific description
 			parcialDescription += " envolver " + 
@@ -223,7 +237,7 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 			// Integration
 			if(previousIsHeterogeneousMediation(previousPattern)) parcialDescription += ", além de poder"; 
 			if(previousPattern instanceof ExceptionMediationPattern) parcialDescription += " e pode"; 
-			if(previousPattern != null) parcialDescription += " pode";
+			if(previousPattern == null) parcialDescription += " pode";
 			
 			// Generating specific description
 			parcialDescription += " envolver " + 
@@ -233,7 +247,7 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		if(pattern instanceof ExceptionMediationPattern){
 			// Integration
 			if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além de estar";
-			if(previousPattern != null) parcialDescription += " está";
+			if(previousPattern == null) parcialDescription += " está";
 			
 			// Generating specific description
 			parcialDescription += " relacionado com " + 
@@ -243,10 +257,16 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		if(pattern instanceof OptionalExceptionMediationPattern){
 			// Integration
 			if(previousIsHeterogeneousMediation(previousPattern) || previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
-			if(previousPattern != null) parcialDescription += " pode";
+			if(previousPattern == null) parcialDescription += " pode";
 			
 			// Generating specific description
 			parcialDescription += " estar relacionado com " + 
+					insertListing((NaryPattern)pattern, true);
+		}
+		
+		if(pattern instanceof AbstractMediationPattern){
+			// Generating specific description
+			parcialDescription += " é um papel envolvido em " + 
 					insertListing((NaryPattern)pattern, true);
 		}
 		
