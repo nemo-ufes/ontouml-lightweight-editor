@@ -51,6 +51,30 @@ public class RelCompOccurrence extends AntipatternOccurrence {
 			throw new Exception("RelComp: Association 2 has one of its end types as null.");
 	}
 
+	public Association getA1() {
+		return a1;
+	}
+
+	public Association getA2() {
+		return a2;
+	}
+
+	public Classifier getA1Source() {
+		return a1Source;
+	}
+
+	public Classifier getA1Target() {
+		return a1Target;
+	}
+
+	public Classifier getA2Source() {
+		return a2Source;
+	}
+
+	public Classifier getA2Target() {
+		return a2Target;
+	}
+	
 	/**
 	 * Select in the OntoUML model only those elements related with this antipattern...
 	 */
@@ -84,6 +108,16 @@ public class RelCompOccurrence extends AntipatternOccurrence {
 	@Override
 	public String getShortName() {
 		return parser.getStringRepresentation(a1)+" & "+parser.getStringRepresentation(a2);
+	}
+	
+	public boolean a2EndsSpecializeA1Target(){
+		if((a2Source.equals(a1Target) || a2Source.allParents().contains(a1Target)) && (a2Target.equals(a1Target)||a2Target.allParents().contains(a1Target)))
+			return true;
+		return false;
+	}
+	
+	public boolean a2EndsSpecializeA1Source(){
+		return !a2EndsSpecializeA1Target();
 	}
 	
 }
