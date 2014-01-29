@@ -13,7 +13,6 @@ import org.eclipse.ocl.uml.impl.LetExpImpl;
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
 import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
 import org.eclipse.ocl.uml.impl.VariableExpImpl;
-import org.eclipse.ocl.uml.impl.VariableImpl;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Operation;
@@ -477,7 +476,13 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			//antecedent.add(same1);
 			atom = same1;
 		}
-		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, atom);
+
+		if(!Factory.variableExistsInAtom(antecedent, (SWRLVariable) varX1) && leftSideOfImplies == false){
+			Factory.replaceNonexistentVariableInAtom(factory, consequent, (SWRLVariable) varX1, (SWRLVariable) varY1);
+		}else{
+			this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, atom);
+		}		
+		
 		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(atom);

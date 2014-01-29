@@ -1,18 +1,27 @@
 package br.ufes.inf.nemo.ocl2owl_swrl.factory;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.*;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.SWRLArgument;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
+import org.semanticweb.owlapi.model.SWRLIArgument;
+import org.semanticweb.owlapi.model.SWRLVariable;
 
+import uk.ac.manchester.cs.owl.owlapi.SWRLObjectPropertyAtomImpl;
+import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.*;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.*;
@@ -65,6 +74,80 @@ public class Factory {
 		}
 	}
 	
+	public static Boolean variableExistsInAtom(Set<SWRLAtom> swrlAtoms, SWRLVariable variable){
+		for (SWRLAtom atom : swrlAtoms) {
+			Collection<SWRLArgument> swrlArguments = atom.getAllArguments();
+			for (SWRLArgument argument : swrlArguments) {
+				if(argument.equals(variable)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static String allConsequentVariablesExistsInAntecedent(Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
+		String variableName = "";
+		for (SWRLAtom cons : consequent) {
+			Collection<SWRLArgument> swrlArguments = cons.getAllArguments();
+			for (SWRLArgument swrlArgument : swrlArguments) {
+				if(!variableExistsInAtom(antecedent, (SWRLVariable) swrlArgument)){
+					SWRLVariableImpl var = (SWRLVariableImpl) swrlArgument;
+					IRI iri = var.getIRI();
+					variableName = iri.getFragment();
+					return variableName;
+				}
+			}
+		}
+		
+		return variableName;
+	}
+	
+	public static void replaceNonexistentVariableInAtom(OWLDataFactory factory, Set<SWRLAtom> swrlAtoms, SWRLVariable oldVariable, SWRLVariable newVariable){
+		//int i = 0;
+		//Set<SWRLAtom> swrlAtomsArray = new HashSet<SWRLAtom>();
+		
+		//for (int atomIndex = 0; atomIndex < swrlAtomsArray.size(); atomIndex++) {
+		for (SWRLAtom swrlAtom : swrlAtoms) {
+			ArrayList<SWRLArgument> swrlArguments = (ArrayList<SWRLArgument>) swrlAtom.getAllArguments();
+			Boolean newAtomCreated = false;
+			SWRLAtom atomNew = null;
+			for (int argIndex = 0; argIndex < swrlArguments.size(); argIndex++) {
+				if(swrlArguments.get(argIndex).equals(oldVariable)){
+					SWRLVariable var1 = null;
+					SWRLVariable var2 = null;
+					if(swrlAtom.getClass().equals(SWRLObjectPropertyAtomImpl.class)){
+						if(argIndex == 0){
+							var1 = newVariable;
+							var2 = (SWRLVariable) swrlArguments.get(1);
+						}else{
+							var1 = (SWRLVariable) swrlArguments.get(0);
+							var2 = newVariable;
+						}
+						atomNew = factory.getSWRLObjectPropertyAtom((OWLObjectPropertyExpression) swrlAtom.getPredicate(), var1, var2);
+						newAtomCreated = true;
+					}
+					//swrlAtomsArray.remove(atomIndex);
+					//swrlAtomsArray.add(atomNew);
+					
+					//return;
+				}else if(!newAtomCreated){
+					newAtomCreated = false;
+					
+				}
+			}
+			if(newAtomCreated){
+				
+				swrlAtoms.remove(swrlAtom);
+				swrlAtoms.add(atomNew);
+			}else{
+				//swrlAtomsArray.add(swrlAtom);
+			}
+			newAtomCreated = false;
+			//atomIndex++;
+		}
+		//return swrlAtomsArray;
+	}
 	
 	/**
 	 * This function creates a new factory according to the type of the rule fragment

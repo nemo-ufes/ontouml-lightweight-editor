@@ -25,6 +25,7 @@ import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.ConsequentVariableNonDeclaredOnAntecedent;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnexpectedResultingRule;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.Factory;
@@ -137,6 +138,12 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			
 			//throw a new exception
 			throw new UnexpectedResultingRule(atoms, strRule);
+		}
+
+		String nonDeclVar = Factory.allConsequentVariablesExistsInAntecedent(antecedent, consequent);
+		if(!nonDeclVar.equals("")){
+			String strRule = Factory.getStrRule(this.m_NamedElementImpl);
+			throw new ConsequentVariableNonDeclaredOnAntecedent(nonDeclVar, strRule);
 		}
 		
 		return null;		

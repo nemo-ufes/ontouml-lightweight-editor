@@ -120,7 +120,9 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		IRI iriRelation = IRI.create(iriRelationName);
 		//get the OWL object property
 		OWLObjectProperty relation = factory.getOWLObjectProperty(iriRelation);
-		
+		if(relation.getNamedProperty().equals("path")){
+			System.out.println();
+		}
 		//get the association end name used in the rule
 		String assocEndName = referredProperty.getName();
 		//get the association end name of the association with 0 index
