@@ -69,8 +69,7 @@ public void PopulateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 		
 		for (DescriptionFunction c : generalizationSpace.getFunctions()){
 			if(c instanceof Generalization){
-				System.out.println("Source: "+((Generalization)c).getSource().getLabel()+" <-> Nome do target: "+c.getTarget().getLabel()+"\n");
-				//System.out.println("tamanho da genset: "+ ((Generalization)c).getGeneralizationElements().size());
+				System.out.println("Source: "+((Generalization)c).getSource().getLabel()+" --> Nome do target: "+c.getTarget().getLabel()+"\n");
 			}
 		}
 		
@@ -137,8 +136,8 @@ public void PopulateRelationships(ArrayList<Relationship> eList, DescriptionCate
 	for(Relationship r : eList){
 
 		if(r instanceof RefOntoUML.componentOf){ 
-			System.out.println(((RefOntoUML.componentOf)r).getEndType().get(0));
-		System.out.println(((RefOntoUML.componentOf)r).getEndType().get(1));
+			System.out.println(((RefOntoUML.componentOf)r).getEndType().get(0).getName());
+			System.out.println(((RefOntoUML.componentOf)r).getEndType().get(1).getName()+"\n");
 		}
 		if(r instanceof RefOntoUML.Association){			
 			
@@ -410,7 +409,12 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 
 		}
 		if(r instanceof RefOntoUML.Mediation){	
-			DescriptionFunction mat = new Mediation(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper);
+			DescriptionFunction mat;
+			if(source instanceof Relator)
+				mat = new Mediation(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper);
+			else
+				mat = new Mediation(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower,targetUpper);
+			
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
