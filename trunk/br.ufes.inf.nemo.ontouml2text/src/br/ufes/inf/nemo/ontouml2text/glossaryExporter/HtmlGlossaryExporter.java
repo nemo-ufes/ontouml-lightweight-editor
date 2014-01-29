@@ -44,7 +44,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 	private void createHeader(){
 		out.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\">\n");
 		out.write("<html>\n");
-		out.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
+		out.write("    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n");
 		out.write("    <head>\n");
 		out.write("    <title>"+this.title+"</title>\n");
 		out.write("    <style>\n");
@@ -70,7 +70,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 		out.write("        container:#E3F2D3\n");
 		out.write("        width:700px;\n");
 		out.write("        border-radius:10px;\n");
-		out.write("        box-shadow: 7px 7px 20px 0px rgba(50, 50, 50, 0.31);\n");
+		out.write("        box-shadow: 5px 5px 16px 0px rgba(50, 50, 50, 0.31);\n");
 		out.write("    }\n");
 		out.write("    hr {\n");
 		out.write("        background: #02704F  no-repeat scroll center;\n");
