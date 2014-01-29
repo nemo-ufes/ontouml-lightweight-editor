@@ -18,7 +18,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.eclipse.emf.ecore.EObject;
 
-import br.ufes.inf.nemo.assistant.ModellingAssistant;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
