@@ -379,7 +379,7 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		
 		
 		if(r instanceof RefOntoUML.Characterization){	
-			if(source instanceof Relator)
+			if(source instanceof Mode)
 				mat = new Characterization(((Association)r).getName(),source, target, sourceLower, sourceUpper, targetLower, targetUpper);
 			else
 				mat = new Characterization(((Association)r).getName(),target, source, sourceLower, sourceUpper, targetLower, targetUpper);
