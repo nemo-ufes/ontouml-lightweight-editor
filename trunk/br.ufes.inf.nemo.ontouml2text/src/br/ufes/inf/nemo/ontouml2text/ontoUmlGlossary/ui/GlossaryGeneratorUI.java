@@ -1,8 +1,5 @@
 package br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -16,35 +13,24 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 
-import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
 public class GlossaryGeneratorUI extends JFrame {
 
+	/**
+	 * 
+	 */
 	private JPanel contentPane;
 	private JTextField edtInput;
 	private JTextField edtOutputDirectory;
+	private JCheckBox chkAnalyseDescriptiveConsistency;
 	private JButton btnSelectInput;
 	private JButton btnSelectOutputDirectory;
 	private JButton btnGenerateGlossary;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GlossaryGeneratorUI frame = new GlossaryGeneratorUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
+	private boolean doGlossaryGeneration;
 
 	/**
 	 * Create the frame.
@@ -73,8 +59,8 @@ public class GlossaryGeneratorUI extends JFrame {
 		
 		btnSelectOutputDirectory = new JButton("...");
 		
-		JCheckBox chckbxAnalyseDescriptionConsistency = new JCheckBox("Analyse Descriptive Consistency");
-		chckbxAnalyseDescriptionConsistency.setSelected(true);
+		chkAnalyseDescriptiveConsistency = new JCheckBox("Analyse Descriptive Consistency");
+		chkAnalyseDescriptiveConsistency.setSelected(true);
 		
 		btnGenerateGlossary = new JButton("Generate Glossary");
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -85,7 +71,7 @@ public class GlossaryGeneratorUI extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 							.addGroup(gl_contentPane.createSequentialGroup()
-								.addComponent(chckbxAnalyseDescriptionConsistency)
+								.addComponent(chkAnalyseDescriptiveConsistency)
 								.addContainerGap())
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane.createSequentialGroup()
@@ -123,7 +109,7 @@ public class GlossaryGeneratorUI extends JFrame {
 						.addComponent(edtOutputDirectory, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnSelectOutputDirectory))
 					.addGap(18)
-					.addComponent(chckbxAnalyseDescriptionConsistency)
+					.addComponent(chkAnalyseDescriptiveConsistency)
 					.addPreferredGap(ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
 					.addComponent(btnGenerateGlossary)
 					.addContainerGap())
@@ -184,9 +170,25 @@ public class GlossaryGeneratorUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				  
+				doGlossaryGeneration = true;
+				
+				setVisible(false);
 			}
 			
 		});
+		
+		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	}
+	
+	public String getOutputDirectory(){
+		return edtOutputDirectory.getText();
+	}
+	
+	public boolean doDescriptiveConsistency(){
+		return chkAnalyseDescriptiveConsistency.isSelected();
+	}
+	
+	public boolean doGlossaryGeneration(){
+		return doGlossaryGeneration;
 	}
 }

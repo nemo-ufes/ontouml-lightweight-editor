@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary;
 
+import java.awt.EventQueue;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,20 +12,21 @@ import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Gener
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Mediation;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpaceGenerator.DescriptionSpaceGenerator;
 import br.ufes.inf.nemo.ontouml2text.glossaryExporter.*;
+import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui.GlossaryGeneratorUI;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.*;
 
 public class OntoUmlGlossary {
 
 	public static void main(String[] args) {
 		
-		// Criando Description Space
+		// Creating Description Space
 		DescriptionSpace space = new DescriptionSpace();
 		
 		DescriptionCategory auxS = new Relator("Transporte Rodoviário de Cargas");
 		
 		space.addCategory(auxS);
 		
-		// Funcoes da categoria descrita
+		// Described Category Functions
 		DescriptionCategory auxT1 = new Relator("Execução de Serviço");	
 		DescriptionFunction func = new Generalization("",auxS,auxT1,1,1,1,1);
 		auxS.getFunctions().add(func);
@@ -53,24 +55,43 @@ public class OntoUmlGlossary {
 		
 		space.addCategory(auxT4);
 		
-		// Gerando glossário
+		// Generating glossary
 		StringGenerator glossaryGenerator = new StringGenerator(space, 
-				new HtmlGlossaryExporter("Glossary","","Glossário ANTT"), new PortugueseLanguageAdaptor(new PortugueseDictionary()));
+				new HtmlGlossaryExporter("Glossary","C:/Users/Dio.Dio/Desktop","Glossário ANTT"), 
+				new PortugueseLanguageAdaptor(new PortugueseDictionary()));
 		
 		glossaryGenerator.generateGlossary();
 	}
 
 
 	public void xmiToText(OntoUMLParser parser) {		
-		System.out.println("\n\n======= TEST =======\n\n");
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GlossaryGeneratorUI settings = new GlossaryGeneratorUI();
+					settings.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	
-		DescriptionSpace space = new DescriptionSpace();		
-		
-		// Hash containing the labels of the categories already covered
-		Set<String> hashCategories = new HashSet<String>();
-		
-		DescriptionSpaceGenerator generator = new DescriptionSpaceGenerator(space);
-		generator.PopulateDescriptionSpace(parser, hashCategories);
+		//if(settings.doGlossaryGeneration()){
+			DescriptionSpace space = new DescriptionSpace();		
+			
+			// Hash containing the labels of the categories already covered
+			Set<String> hashCategories = new HashSet<String>();
+			
+			DescriptionSpaceGenerator generator = new DescriptionSpaceGenerator(space);
+			generator.PopulateDescriptionSpace(parser, hashCategories);
+			
+			// Processing description space
+			StringGenerator glossaryGenerator = new StringGenerator(space, 
+					new HtmlGlossaryExporter("Glossary","C:/Users/Dio.Dio/Desktop","Glossário ANTT"), 
+					new PortugueseLanguageAdaptor(new PortugueseDictionary()));
+			
+			glossaryGenerator.generateGlossary();
+		//}
 	}
 
 }
