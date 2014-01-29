@@ -201,7 +201,9 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		
 		if(pattern instanceof OrdinaryOptionalMediationPattern){
 			// Integration
-			if(previousPattern != null) parcialDescription += " pode"; else parcialDescription += " poder";
+			if(previousIsHeterogeneousMediation(previousPattern)) parcialDescription += ", além de poder"; 
+			if(previousPattern instanceof ExceptionMediationPattern) parcialDescription += " e pode"; 
+			if(previousPattern != null) parcialDescription += " pode";			
 			
 			// Generating specific description
 			parcialDescription += " envolver " + 
@@ -219,7 +221,9 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		
 		if(pattern instanceof OptionalDirectMediationPattern){
 			// Integration
-			if(previousPattern != null) parcialDescription += " pode"; else parcialDescription += " poder";
+			if(previousIsHeterogeneousMediation(previousPattern)) parcialDescription += ", além de poder"; 
+			if(previousPattern instanceof ExceptionMediationPattern) parcialDescription += " e pode"; 
+			if(previousPattern != null) parcialDescription += " pode";
 			
 			// Generating specific description
 			parcialDescription += " envolver " + 
@@ -228,7 +232,8 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		
 		if(pattern instanceof ExceptionMediationPattern){
 			// Integration
-			if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += " está"; else parcialDescription += ", além de estar";
+			if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além de estar";
+			if(previousPattern != null) parcialDescription += " está";
 			
 			// Generating specific description
 			parcialDescription += " relacionado com " + 
@@ -237,7 +242,8 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		
 		if(pattern instanceof OptionalExceptionMediationPattern){
 			// Integration
-			if(previousPattern != null) parcialDescription += " pode"; else parcialDescription += " poder";
+			if(previousIsHeterogeneousMediation(previousPattern) || previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
+			if(previousPattern != null) parcialDescription += " pode";
 			
 			// Generating specific description
 			parcialDescription += " estar relacionado com " + 
@@ -248,7 +254,7 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 			// Integration
 			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
 			
-			if(previousIsOptionalHeterogeneousMediation(previousPattern)) parcialDescription += ";";
+			if(previousIsHeterogeneousMediation(previousPattern) || previousIsOptionalHeterogeneousMediation(previousPattern)) parcialDescription += ";";
 			
 			// Generating specific description
 			parcialDescription += " pode ser dos tipos: " + 
