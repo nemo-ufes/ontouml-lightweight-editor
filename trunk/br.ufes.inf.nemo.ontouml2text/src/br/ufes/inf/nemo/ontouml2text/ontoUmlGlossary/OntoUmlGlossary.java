@@ -83,7 +83,7 @@ public class OntoUmlGlossary {
 			Set<String> hashCategories = new HashSet<String>();
 			
 			DescriptionSpaceGenerator generator = new DescriptionSpaceGenerator(space);
-			generator.PopulateDescriptionSpace(parser, hashCategories);
+			generator.populateDescriptionSpace(parser, hashCategories);
 			
 			// Processing description space
 			StringGenerator glossaryGenerator = new StringGenerator(space, 

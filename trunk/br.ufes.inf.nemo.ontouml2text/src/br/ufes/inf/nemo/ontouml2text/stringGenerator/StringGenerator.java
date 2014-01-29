@@ -348,19 +348,15 @@ public class StringGenerator {
 			}
 			
 			// Ordinary Mediation Rev Pattern
-			if(target instanceof Role && source instanceof Relator){
-				patterns.add(new OrdinaryMediationRevPattern(describedCategory, 
-						new PatternCategory(source.getLabel(), 
-								((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
-								((BinaryDescriptionFunction)function).getSourceMaxMultiplicity())));														
-			}
-			
-			// Direct Mediation Rev Pattern
-			if(target instanceof Kind && source instanceof Relator){
-				patterns.add(new DirectMediationRevPattern(describedCategory, 
-						new PatternCategory(source.getLabel(), 
-								((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
-								((BinaryDescriptionFunction)function).getSourceMaxMultiplicity())));														
+			// Verifying if there is just one mediation relationship
+			if(countFunctionType(describedCategory,"Mediation") == 1){
+				// Processing Pattern
+				if(target instanceof Role && source instanceof Relator){
+					patterns.add(new OrdinaryMediationRevPattern(describedCategory, 
+							new PatternCategory(source.getLabel(), 
+									((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
+									((BinaryDescriptionFunction)function).getSourceMaxMultiplicity())));														
+				}
 			}
 			
 			if(naryPattern != null)
@@ -380,6 +376,17 @@ public class StringGenerator {
 		}
 		
 		return null;
+	}
+	
+	private int countFunctionType(DescriptionCategory describedCategory, String functionType){
+		int i, count = 0;
+		
+		for(i = 0; i < describedCategory.getFunctions().size(); i++){
+			if(describedCategory.getFunctions().get(i).getClass().toString().contains(functionType))
+				count++;
+		}
+		
+		return count;
 	}
 	
 }
