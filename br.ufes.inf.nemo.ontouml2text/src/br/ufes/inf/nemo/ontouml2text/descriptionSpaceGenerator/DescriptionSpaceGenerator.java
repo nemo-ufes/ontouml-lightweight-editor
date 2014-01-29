@@ -68,9 +68,9 @@ public void PopulateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 			System.out.println("Nome: "+c.getLabel()+ "\n  Lista de funções: "+c.getFunctions()+ "\n");
 		
 		for (DescriptionFunction c : generalizationSpace.getFunctions()){
-			if(c instanceof GeneralizationSet){
-				System.out.println("Nome do target: "+c.getTarget().getLabel()+"Nome da generalizationSet: "+((GeneralizationSet)c).getLabel()+"\n");
-				System.out.println("tamanho da genset: "+ ((GeneralizationSet)c).getGeneralizationElements().size());
+			if(c instanceof Generalization){
+				System.out.println("Source: "+((Generalization)c).getSource().getLabel()+" <-> Nome do target: "+c.getTarget().getLabel()+"\n");
+				//System.out.println("tamanho da genset: "+ ((Generalization)c).getGeneralizationElements().size());
 			}
 		}
 		
