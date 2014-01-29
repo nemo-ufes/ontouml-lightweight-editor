@@ -33,6 +33,10 @@ import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Media
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.MemberOf;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.SubcollectiveOf;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.SubquantityOf;
+import br.ufes.inf.nemo.ontouml2text.glossaryExporter.HtmlGlossaryExporter;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.PortugueseDictionary;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.PortugueseLanguageAdaptor;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.StringGenerator;
 
 public class DescriptionSpaceGenerator {
 	private DescriptionSpace generalizationSpace;
@@ -62,9 +66,21 @@ public void PopulateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 
 		for (DescriptionCategory c : generalizationSpace.getCategories())
 			System.out.println("Nome: "+c.getLabel()+ "\n  Lista de funções: "+c.getFunctions()+ "\n");
-
+		
+		for (DescriptionFunction c : generalizationSpace.getFunctions()){
+			if(c instanceof GeneralizationSet){
+				System.out.println("Nome do target: "+c.getTarget().getLabel()+"Nome da generalizationSet: "+((GeneralizationSet)c).getLabel()+"\n");
+				System.out.println("tamanho da genset: "+ ((GeneralizationSet)c).getGeneralizationElements().size());
+			}
+		}
+		
 		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
 		System.out.println("Tamanho da functions no DescriptionSpace:  " + generalizationSpace.getFunctions().size());
+		
+		StringGenerator glossaryGenerator = new StringGenerator(generalizationSpace, 
+				new HtmlGlossaryExporter("Glossary","D:/","Glossário ANTT"), new PortugueseLanguageAdaptor(new PortugueseDictionary()));
+		
+		glossaryGenerator.generateGlossary();
 
 }
 
@@ -120,6 +136,10 @@ public void PopulateRelationships(ArrayList<Relationship> eList, DescriptionCate
 	
 	for(Relationship r : eList){
 
+		if(r instanceof RefOntoUML.componentOf){ 
+			System.out.println(((RefOntoUML.componentOf)r).getEndType().get(0));
+		System.out.println(((RefOntoUML.componentOf)r).getEndType().get(1));
+		}
 		if(r instanceof RefOntoUML.Association){			
 			
 			classNumberTarget = ChooseTarget(((RefOntoUML.Association) r).getEndType().get(0).getName(),((RefOntoUML.Association) r).getEndType().get(1).getName(),source.getLabel());
@@ -210,8 +230,6 @@ public void PopulateRelationships(ArrayList<Relationship> eList, DescriptionCate
 	hashCategories.add(source.getLabel());
 }
 
-
-		
 private void processRule05(RefOntoUML.Generalization r, DescriptionCategory source, Set<String> hashCategories) {
 	Classifier searchObject;
 	DescriptionCategory target;
@@ -222,12 +240,12 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
  	GeneralizationSet existsGenSet;
  	
 
- 	for(RefOntoUML.GeneralizationSet genSet : r.getGeneralizationSet()){ // percorro as gensets da generalization r 		
+ 	for(RefOntoUML.GeneralizationSet genSet : r.getGeneralizationSet()){ 		
  		complete = genSet.isIsCovering();
  		disjoint = genSet.isIsDisjoint();
  		genSetName = genSet.getName();
 
-	 	//Verifico se to no source ou no target da generalization
+ 		
 		if(source.getLabel().equals(r.getSpecific().getName())){ //se o source for a classe de baixo, procura o de cima
 	 		searchObject = r.getGeneral();
 	 		isSon = false;
@@ -242,13 +260,17 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 			
 			if(isSon){
 				existsGenSet = FindGenSet(source, genSet.getName());
-				if(existsGenSet != null){//verificar se ja existe a genSet no source
-					Generalization gen = new Generalization("",target,source,1,1,1,1);//se existe, cria a generalization invertida
-					existsGenSet.getGeneralizationElements().add(gen);//adiciona na genSet existente
+				if(existsGenSet != null){
+					Generalization gen = new Generalization("",target,source,1,1,1,1);
+					source.getFunctions().add(gen);
+					target.getFunctions().add(gen);
+					existsGenSet.getGeneralizationElements().add(gen);
 
-				}else{//se nao existe, 
+				}else{
 					GeneralizationSet gs = new GeneralizationSet(source,1,1,disjoint, complete, genSetName);
-					Generalization gen = new Generalization("",target,source,1,1,1,1);//cria a genSet, cria a generalization, adiciona a generalization adiciona no source e na genSet
+					Generalization gen = new Generalization("",target,source,1,1,1,1);
+					source.getFunctions().add(gen);
+					target.getFunctions().add(gen);
 					gs.getGeneralizationElements().add(gen);
 					source.getFunctions().add(gs);
 					generalizationSpace.getFunctions().add(gs);
@@ -258,6 +280,8 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 				GeneralizationSet gs = new GeneralizationSet(target,1,1,disjoint, complete, genSetName);
 				Generalization gen = new Generalization("",source,target,1,1,1,1);
 				gs.getGeneralizationElements().add(gen);
+				source.getFunctions().add(gen);
+				target.getFunctions().add(gen);
 				target.getFunctions().add(gs);
 				generalizationSpace.getFunctions().add(gs);
 
@@ -265,7 +289,6 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 			generalizationSpace.addCategory(target);
 			continue;
 		}
-		
 		else{ 		
 			if(hashCategories.contains(searchObject.getName()))
 				continue;	
@@ -275,14 +298,18 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 				
 				if(isSon){
 					existsGenSet = FindGenSet(source, genSet.getName());
-					
+
 					if(existsGenSet != null){
 						Generalization gen = new Generalization("",targetCreated,source,1,1,1,1);
+						source.getFunctions().add(gen);
+						targetCreated.getFunctions().add(gen);
 						existsGenSet.getGeneralizationElements().add(gen);
 
 					}else{
 						GeneralizationSet gs = new GeneralizationSet(source,1,1,disjoint, complete, genSetName);
 						Generalization gen = new Generalization("",targetCreated,source,1,1,1,1);
+						source.getFunctions().add(gen);
+						targetCreated.getFunctions().add(gen);
 						gs.getGeneralizationElements().add(gen);
 						source.getFunctions().add(gs);
 						generalizationSpace.getFunctions().add(gs);
@@ -292,15 +319,18 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 					existsGenSet = FindGenSet(targetCreated, genSet.getName());
 					if(existsGenSet != null){
 						Generalization gen = new Generalization("",source,targetCreated,1,1,1,1);
+						source.getFunctions().add(gen);
+						targetCreated.getFunctions().add(gen);
 						existsGenSet.getGeneralizationElements().add(gen);
 						
 					}else{
-						GeneralizationSet gs = new GeneralizationSet(source,1,1,disjoint, complete, genSetName);
+						GeneralizationSet gs = new GeneralizationSet(targetCreated,1,1,disjoint, complete, genSetName);
 						Generalization gen = new Generalization("",source,targetCreated,1,1,1,1);
+						source.getFunctions().add(gen);
+						targetCreated.getFunctions().add(gen);
 						gs.getGeneralizationElements().add(gen);
 						targetCreated.getFunctions().add(gs);
 						generalizationSpace.getFunctions().add(gs);
-
 					}
 				}
 			}
@@ -338,6 +368,7 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		if(r instanceof RefOntoUML.Generalization){
 			DescriptionFunction mat = new Generalization("",source,target,1,1,1,1);
 			source.getFunctions().add(mat);
+			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
 			return;
 			}
@@ -353,48 +384,56 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		if(r instanceof RefOntoUML.Characterization){	
 			DescriptionFunction mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
 			source.getFunctions().add(mat);
+			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
 
 			}
 		if(r instanceof RefOntoUML.componentOf){
 			DescriptionFunction mat = new ComponentOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
 			source.getFunctions().add(mat);
+			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
 
 		}
 		if(r instanceof RefOntoUML.FormalAssociation){
 			DescriptionFunction mat = new Formal(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
 			source.getFunctions().add(mat);
+			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
 
 		}
 		if(r instanceof RefOntoUML.MaterialAssociation){
 			DescriptionFunction mat = new Material(((Association)r).getName(), source,target, sourceLower, sourceUpper,targetLower, targetUpper);
 			source.getFunctions().add(mat);
+			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
 
 		}
 		if(r instanceof RefOntoUML.Mediation){	
 			DescriptionFunction mat = new Mediation(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper);
 			source.getFunctions().add(mat);
+			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
 
 		}
 		if(r instanceof RefOntoUML.memberOf){
 			DescriptionFunction mat = new MemberOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper, false, false, false);
 			source.getFunctions().add(mat);
+			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
 
 		}
 		if(r instanceof RefOntoUML.subCollectionOf){
 			DescriptionFunction mat = new SubcollectiveOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper, false, false, false);
 			source.getFunctions().add(mat);
+			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
 
 		}
 		if(r instanceof RefOntoUML.subQuantityOf){
 			DescriptionFunction mat = new SubquantityOf(((Association)r).getName(), source, target, sourceLower, sourceUpper,targetLower,targetUpper, false, false, false);
 			source.getFunctions().add(mat);
+			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
 		}
 	}
