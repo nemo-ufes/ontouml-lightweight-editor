@@ -18,7 +18,9 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 	
 	public void initilizeExportFile(){
 		try {
-			out = new PrintWriter(new BufferedWriter(new FileWriter(this.outputDirectory+this.outputName+".html")));
+			String fullPath = this.outputDirectory+"/"+this.outputName+".html";
+			System.out.println(fullPath);
+			out = new PrintWriter(new BufferedWriter(new FileWriter(fullPath)));
 			
 			createHeader();
 		} catch (IOException e) {
@@ -27,11 +29,12 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 		}
 	}
 	
-	public void saveDescription(DescriptionCategory category, String description){
+	public void saveDescription(DescriptionCategory category, String description){	
 		out.write("        <div>\n");
 		out.write("            <p><h1>"+category.getLabel()+"</h1><br /><hr />\n");
 		out.write("            "+description+"</p>\n");
-		out.write("        </div>\n<p></p>\n");
+		out.write("        </div>\n");
+		out.write("        <p></p>\n");
 	}
 	
 	public void finalizeExportFile(){
@@ -41,6 +44,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 	private void createHeader(){
 		out.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\">\n");
 		out.write("<html>\n");
+		out.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
 		out.write("    <head>\n");
 		out.write("    <title>"+this.title+"</title>\n");
 		out.write("    <style>\n");
