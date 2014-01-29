@@ -74,8 +74,8 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 		out.write("    }\n");
 		out.write("    hr {\n");
 		out.write("        background: #02704F  no-repeat scroll center;\n");
-		out.write("        height:.05em;\n");
-		out.write("        box-shadow: 2px 2px 5px 0px rgba(50, 50, 50, 0.20);\n");
+		out.write("        height:.01em;\n");
+		out.write("        box-shadow: 1px 1px 3px 0px rgba(50, 50, 50, 0.20);\n");
 		out.write("    }\n");
 		out.write("    </style>\n");
 		out.write("    </head>\n");
