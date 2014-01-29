@@ -21,13 +21,13 @@ import com.change_vision.jude.api.inf.model.IModel;
 import com.change_vision.jude.api.inf.model.IPackage;
 import com.change_vision.jude.api.inf.project.ProjectAccessor;
 
-import br.ufes.inf.nemo.assistant.window.Action;
-import br.ufes.inf.nemo.assistant.window.Alert;
-import br.ufes.inf.nemo.assistant.window.NewClass;
-import br.ufes.inf.nemo.assistant.window.NewGeneralizationSet;
-import br.ufes.inf.nemo.assistant.window.NewPhases;
-import br.ufes.inf.nemo.assistant.window.NewRelator;
-import br.ufes.inf.nemo.assistant.window.Question;
+import br.ufes.inf.nemo.assistant.window.swing.Action;
+import br.ufes.inf.nemo.assistant.window.swing.Alert;
+import br.ufes.inf.nemo.assistant.window.swing.NewClass;
+import br.ufes.inf.nemo.assistant.window.swing.NewGeneralizationSet;
+import br.ufes.inf.nemo.assistant.window.swing.NewPhases;
+import br.ufes.inf.nemo.assistant.window.swing.NewRelator;
+import br.ufes.inf.nemo.assistant.window.swing.Question;
 
 /*
  * 

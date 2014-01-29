@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.window;
+package br.ufes.inf.nemo.assistant.window.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

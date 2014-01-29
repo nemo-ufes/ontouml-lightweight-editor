@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.window;
+package br.ufes.inf.nemo.assistant.window.swing;
 
 import br.ufes.inf.nemo.assistant.graph.Node;
 import br.ufes.inf.nemo.assistant.manager.ManagerNode;

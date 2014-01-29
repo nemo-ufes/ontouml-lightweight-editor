@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.assistant.graph;
 
-import br.ufes.inf.nemo.assistant.window.AbstractWindow;
+import br.ufes.inf.nemo.assistant.window.swing.AbstractWindow;
 
 public class Node {
 	private GraphAssistant tree;

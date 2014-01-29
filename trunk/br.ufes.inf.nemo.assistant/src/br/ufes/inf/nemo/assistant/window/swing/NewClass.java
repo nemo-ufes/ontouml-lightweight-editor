@@ -1,16 +1,16 @@
-package br.ufes.inf.nemo.assistant.window;
+package br.ufes.inf.nemo.assistant.window.swing;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.DefaultComboBoxModel;
 
 import br.ufes.inf.nemo.assistant.manager.ManagerNode;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class NewClass extends AbstractWindow{
 

@@ -1,35 +1,89 @@
 package br.ufes.inf.nemo.assistant.manager;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Iterator;
+import java.util.Set;
 
-public  class ManagerPattern {
-	
-	protected ArrayList<String> listClass = new ArrayList<>();
-	protected ArrayList<String> listStereotype = new ArrayList<>();
-	protected ArrayList<String> listGeneralizationSet = new ArrayList<>();
-	protected String ontoParser;
-	
-	protected ManagerOLED managerOLED = new ManagerOLED();
-	
-	public String getParser(){
-		return ontoParser;
-	}
-	
-	public void callback_newClass(String cls, String stereotype) {
-		this.listClass.add(cls); 
-		this.listStereotype.add(stereotype);
+import RefOntoUML.GeneralizationSet;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-		this.managerOLED.createClass(cls, stereotype);
+public class ManagerPattern {
+
+	private ArrayList<String> listClass = new ArrayList<>();
+	private ArrayList<String> listStereotype = new ArrayList<>();
+	private ArrayList<String> listGeneralizationSet = new ArrayList<>();
+
+	private OntoUMLParser ontoParser;
+	private OutcomeFixer of;
+	private Fix fix = new Fix();
+
+	private ManagerOLED managerOLED = new ManagerOLED();
+
+	public Fix getFix(){
+		return fix;
 	}
-	
-	public void connectGeneralizationSet() {
-		managerOLED.connectGeneralizationSet(listClass.get(listClass.size()),listStereotype.get(listStereotype.size()),listClass.get(listClass.size()-1),listStereotype.get(listStereotype.size()-1));		
+
+	public void setOntoPaser(OntoUMLParser ontoParser) {
+		this.ontoParser = ontoParser;
+		of = new OutcomeFixer(ontoParser.getModel());
 	}
-	
-	public void createGeneralizationSet() {
-		System.out.println("CREATE A GENERALIZATION SET");		
-		listGeneralizationSet.add("GS");
+
+	public void callback_newClass(String className, String stereotype) {
+		RefOntoUML.Classifier classifier =  (RefOntoUML.Classifier) of.createClass(ClassStereotype.valueOf(stereotype.toUpperCase()));
+		classifier.setName(className);
+		fix.includeAdded(classifier);
+		System.out.println("Callback_newClass.fix: "+fix.getAddedString());
+	}
+
+	/**
+	 * Return a String array with all generalizationSets with the stereotype has
+	 * a general of the generalization
+	 * */
+	public String[] getStringGeneralizationSet(String stereotype) {
+		Set<GeneralizationSet> genSets = ontoParser.getAllInstances(GeneralizationSet.class);
+		Iterator<GeneralizationSet> iterator = genSets.iterator();
+
+		ArrayList<String> genSetList = new ArrayList<String>();
+
+		while(iterator.hasNext()){
+			GeneralizationSet genSet = iterator.next();
+			String genSetName = genSet.getName();
+			if(genSetName == null || genSetName.equals("")){
+				genSetName = "unnamed";
+			}
+		}
+		return (String[]) genSetList.toArray();
+	}
+
+	/**
+	 * Return the metaproperties for the generalizationset with the name genSetName
+	 * */
+
+	public boolean[] getStringMetaPropertiesGeneralizationSet(String genSetName) {
+		Set<GeneralizationSet> genSets = ontoParser.getAllInstances(GeneralizationSet.class);
+		Iterator<GeneralizationSet> iterator = genSets.iterator();
+		boolean metaProperties[] = new boolean[2];
+		while(iterator.hasNext()){
+			GeneralizationSet genSet = iterator.next();
+			if(genSet.getName().equals(genSetName)){
+				metaProperties[0] = genSet.isIsDisjoint();
+				metaProperties[1] = genSet.isIsCovering();	
+			}
+		}
+		return metaProperties;
+	}
+
+	public void callback_newGeneralizationSet(String stereotype_classe,String generalizationSet, boolean isDisjoint, boolean isComplete) {
+		managerOLED.createGeneralizationSet(stereotype_classe,generalizationSet,isDisjoint,isComplete);
+
+	}
+
+	public void createNewGeneralizationSet(String newGeneralizationSet) {
+
+
 	}
 
 	public void callback_selectClass(String class_Stereotype) {
@@ -37,47 +91,11 @@ public  class ManagerPattern {
 		listStereotype.add(class_Stereotype.split(" | ")[0]);
 		listClass.add(class_Stereotype.split(" | ")[1]);
 	}
-	
+
 	public void callback_selectGeneralizationSet(String gs) {
 		listGeneralizationSet.add(gs);
 	}
-	
-	public String[] getStringGeneralizationSets() {
-		//Pega a Ultima classe e verifica os GneralizationSets dela
-		return new String[]{"gs:Tipo de Sexo", "gs:Profissao", "gs:Linha de Produto"};
-	}
-	
-	public String getCurrentStereotype_Class() {
-		return listStereotype.get(listStereotype.size())+" | "+listClass.get(listClass.size());
-	}
 
-	String[] aux1 = new String[]{"Reino Animal", "Tipo de especie", "gs:Cor de cabelo"};
-	String[] aux2 = new String[]{"gs:Tipo de Sexo", "Profissao", "Linha de Produto"};
-	public String[] getStringGeneralizationSet(String stereotype_classe) {
-		//Consulta o GS da classe informada
-		if(stereotype_classe.contains("Category")){
-			return aux1;	
-		}
-		return aux2;
-	}
-
-	public boolean[] getStringMetaPropertiesGeneralizationSet(String selectedItem) {
-		Random r = new Random();
-		boolean[] b = {r.nextBoolean(),r.nextBoolean()};
-		return b;
-	}
-
-	public void callback_newGeneralizationSet(String stereotype_classe,String generalizationSet, boolean isDisjoint, boolean isComplete) {
-		managerOLED.createGeneralizationSet(stereotype_classe,generalizationSet,isDisjoint,isComplete);
-		
-	}
-
-	public void createNewGeneralizationSet(String newGeneralizationSet) {
-		aux1 = new String[]{"Reino Animal", "Tipo de especie", "gs:Cor de cabelo",newGeneralizationSet};
-		aux2 = new String[]{"gs:Tipo de Sexo", "Profissao", "Linha de Produto",newGeneralizationSet};
-		
-	}
-	
 	public boolean existSomeMixinUniversal(){
 		//!this.parser.getExistSomeMixinUniversal().isEmpty();
 		System.out.println("existSomeMixinUniversal");
@@ -87,13 +105,13 @@ public  class ManagerPattern {
 	public void connectLastClasses() {
 		System.out.println("General: <"+listStereotype.get(listStereotype.size()-1)+"> "+listClass.get(listClass.size()-1)+" Specific: <"+listStereotype.get(listStereotype.size()-2)+"> "+listClass.get(listClass.size()-2));
 	}
-	
+
 	public String[] getGeneralClasses(String[] stereotypes) {
 		/*Para cada um dos stereotypes informados:
 		 * - Procurar nos que existem
 		 * - retornar todos 
 		 * */
-		 
+
 		String [] ret = new String[]{"<Kind> | Pessoa", "<Collective> | Sala de aula","<Quanity> | Cachaca", "<Subkind> | Homem"};
 		return ret;
 	}
@@ -101,13 +119,13 @@ public  class ManagerPattern {
 	public String getCurrentClass(){
 		return listClass.get(listClass.size()-1);
 	}
-	
+
 	public void callback_newPhases(ArrayList<String> phases, ArrayList<String> rules){
 		for (String s : phases) {
 			listClass.add(s);
 			listStereotype.add("Phase");
 		}
-		
+
 	}
 
 	public String[] getGeneralClasses(String[] split, String filter) {
@@ -125,10 +143,16 @@ public  class ManagerPattern {
 
 	public void connectLastClasses(String filter) {
 		if(filter.equalsIgnoreCase("_allLastClasses")){
-				System.out.println("General: <"+listStereotype.get(listStereotype.size()-1)+"> "+listClass.get(listClass.size()-1)+" Specific: ");
-				for (int i = 0; i < listClass.size()-1; i++) {
-					System.out.println("<"+listStereotype.get(i)+"> "+listClass.get(i));
-				}
+			System.out.println("General: <"+listStereotype.get(listStereotype.size()-1)+"> "+listClass.get(listClass.size()-1)+" Specific: ");
+			for (int i = 0; i < listClass.size()-1; i++) {
+				System.out.println("<"+listStereotype.get(i)+"> "+listClass.get(i));
+			}
 		}
 	}
+	
+	public void acabou(){
+		
+		
+	}
+	
 }
