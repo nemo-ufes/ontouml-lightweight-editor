@@ -56,6 +56,8 @@ public class PortugueseDictionary implements Dictionary{
 			return word.substring(0, word.length() - 2) + "ões";
 		else if(word.endsWith("al"))
 			return word.substring(0, word.length() - 1) + "is";
+		else if(word.endsWith("r"))
+			return word + "es";
 		else
 			return word + "s";
 	}
