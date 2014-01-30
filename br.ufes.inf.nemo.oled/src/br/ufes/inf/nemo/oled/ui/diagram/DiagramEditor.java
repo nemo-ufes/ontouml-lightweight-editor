@@ -473,9 +473,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 		restoreRenderingHints(g2d);
 		diagram.setGridVisible(gridVisible);
-			
-		revalidate();
-		repaint();
 	}
 
 	public double getWidthConsideringZoom()
