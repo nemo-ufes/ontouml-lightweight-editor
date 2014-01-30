@@ -14,6 +14,7 @@ public class MultiDepWizard extends AntipatternWizard {
 
 	public MultiDepFirstPage firstPage;
 	public MultiDepSecondPage secondPage;
+	public MultiDepThirdPage thirdPage;
 	
 	public MultiDepWizard(MultiDepOccurrence ap) {
 		super(ap,MultiDepAntipattern.getAntipatternInfo().name);		
@@ -23,7 +24,8 @@ public class MultiDepWizard extends AntipatternWizard {
 	public void addPages() 
 	{
 		firstPage = new MultiDepFirstPage((MultiDepOccurrence)ap);
-				
+		thirdPage = new MultiDepThirdPage((MultiDepOccurrence)ap);
+		
 		finishing = new FinishingPage();
 		options = new MultiDepRefactoringPage(getAp());
 		
@@ -37,6 +39,7 @@ public class MultiDepWizard extends AntipatternWizard {
 			
 		addPage(presentation);	
 		addPage(firstPage);
+		addPage(thirdPage);
 		addPage(options);
 		addPage(finishing);
 	}
@@ -53,6 +56,11 @@ public class MultiDepWizard extends AntipatternWizard {
 	public MultiDepSecondPage getSecondPage()
 	{
 		return secondPage;
+	}
+	
+	public MultiDepThirdPage getThirdPage()
+	{
+		return thirdPage;
 	}
 	
 	public MultiDepSecondPage addSecondPage(ArrayList<Property> properties)

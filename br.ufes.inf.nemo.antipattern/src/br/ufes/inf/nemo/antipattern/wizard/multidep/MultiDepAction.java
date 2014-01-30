@@ -2,17 +2,14 @@ package br.ufes.inf.nemo.antipattern.wizard.multidep;
 
 import java.util.ArrayList;
 
-import RefOntoUML.Association;
 import RefOntoUML.Property;
-import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 
 public class MultiDepAction extends AntiPatternAction<MultiDepOccurrence>{
 
 	public ArrayList<ArrayList<Property>> binFormalCombo = new ArrayList<ArrayList<Property>>();
-	public Type type;
-	public Association m;
+	public ArrayList<Property> properties;
 	
 	public MultiDepAction(MultiDepOccurrence ap) {
 		super(ap);
@@ -21,8 +18,8 @@ public class MultiDepAction extends AntiPatternAction<MultiDepOccurrence>{
 	@Override
 	public void run() {
 		if(code==Action.CREATE_FORMAL_ASSOCIATIONS) ap.createFormalAssociations(binFormalCombo);
-		else if(code==Action.ADD_SUBTYPE_INVOLVING_MEDIATION) ap.addSubTypeInvolvingMediation(type,m);
-		else if(code==Action.ADD_SUBTYPE_WITH_INTERMEDIATE_TYPE) ap.addSubTypeWithIntermediate(type,m);
+		else if(code==Action.ADD_SUBTYPE_INVOLVING_MEDIATION) ap.addSubTypeInvolvingMediation(properties);
+		else if(code==Action.ADD_SUBTYPE_WITH_INTERMEDIATE_TYPE) ap.addSubTypeWithIntermediate(properties);
 	}
 	
 	public enum Action {CREATE_FORMAL_ASSOCIATIONS, ADD_SUBTYPE_INVOLVING_MEDIATION, ADD_SUBTYPE_WITH_INTERMEDIATE_TYPE, CREATE_GENERALIZATION_SET}
@@ -32,16 +29,14 @@ public class MultiDepAction extends AntiPatternAction<MultiDepOccurrence>{
 		this.binFormalCombo = binFormalCombo;
 	}
 	
-	public void setAddSubTypeInvolvingMediation(Type type, Association m){
+	public void setAddSubTypeInvolvingMediation(ArrayList<Property> properties){
 		code = Action.ADD_SUBTYPE_INVOLVING_MEDIATION;
-		this.type = type;
-		this.m = m;
+		this.properties=properties;
 	}
 	
-	public void setAddSubTypeWithIntermediate(Type type, Association m){
+	public void setAddSubTypeWithIntermediate(ArrayList<Property> properties){
 		code = Action.ADD_SUBTYPE_WITH_INTERMEDIATE_TYPE;
-		this.type = type;
-		this.m = m;
+		this.properties=properties;
 	}
 		
 	@Override
