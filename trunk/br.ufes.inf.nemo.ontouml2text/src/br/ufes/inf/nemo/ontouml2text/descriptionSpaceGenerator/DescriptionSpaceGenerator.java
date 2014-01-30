@@ -51,21 +51,15 @@ public class DescriptionSpaceGenerator {
 	
 public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories){
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
-		Set <RefOntoUML.Comment> comment = parser.getAllInstances(RefOntoUML.Comment.class);
-		
-		System.out.println("tamanho dos comentarios: " +comment.size());
-		
+		/*System.out.println("tamanho dos comentarios: " +parser.getAllInstances(RefOntoUML.Comment.class).size());
 		for(RefOntoUML.Comment c : comment){
 			System.out.println("Body: "+c.getBody());
 			System.out.println("Elemento " + c.getAnnotatedElement().get(0)); // primeira classe
-		}
+		}*/
 		
 		for (RefOntoUML.Class classf : classfSet){
 			DescriptionCategory mat;
-			
-		
-			System.out.println(classf.getEAnnotations().toString());
-			
+						
 			if(generalizationSpace.findCategory(classf.getName()) == null){
 				mat = createCategoryClass(classf);
 				generalizationSpace.addCategory(mat);
@@ -151,10 +145,9 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 			classNumberTarget = chooseTarget(((RefOntoUML.Association) r).getEndType().get(0).getName(),((RefOntoUML.Association) r).getEndType().get(1).getName(),source.getLabel());
 
 			// Rule01's initial condition
-			if(r instanceof RefOntoUML.Generalization && ((RefOntoUML.Generalization) r).getGeneral() instanceof RefOntoUML.Relator && ((RefOntoUML.Generalization) r).getSpecific() instanceof RefOntoUML.Relator){
+		/*	if(r instanceof RefOntoUML.Generalization && ((RefOntoUML.Generalization) r).getGeneral() instanceof RefOntoUML.Relator && ((RefOntoUML.Generalization) r).getSpecific() instanceof RefOntoUML.Relator){
 				RealtorsInheritance(r);
-				
-			}
+			}*/
 			
 			// Rule09's condition 
 			if(r instanceof RefOntoUML.MaterialAssociation && existsRelator(((Association) r).getEndType().get(0),((Association) r).getEndType().get(1))){
