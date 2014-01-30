@@ -4,15 +4,16 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.Mediation;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
-import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Multiple Relational Dependency
@@ -94,16 +95,39 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 	// OUTCOMING FIXER =====================================================
 	//======================================================================
 		
-	public void createFormalAssociations(ArrayList<ArrayList<Property>> binFormalCombo) {
-		
+	public void createFormalAssociations(ArrayList<ArrayList<Property>> matrix) 
+	{
+		for(ArrayList<Property> list: matrix){
+			if (list.size()==2){
+				fix.addAll( fixer.createAssociationBetween(RelationStereotype.FORMAL, "", list.get(0).getType(), list.get(1).getType()) );
+			}
+		}		
 	}
 
-	public void addSubTypeInvolvingMediation(ArrayList<Property> properties) {
-		
+	public void addSubTypeInvolvingMediation(ArrayList<Property> properties) 
+	{
+		ArrayList<Generalization> genList = new ArrayList<Generalization>();
+		for(Property p : properties)
+		{
+			Fix partial = fixer.createSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLE, p.getAssociation());
+			
+			for(Object obj: fix.getAdded()) { if (obj instanceof Generalization) genList.add((Generalization)obj); }
+			
+			fix.addAll(partial);
+		}
+		fix.addAll(fixer.createGeneralizationSet(genList, false, true, ""));
 	}
 
 	public void addSubTypeWithIntermediate(ArrayList<Property> properties) {
-		
+		ArrayList<Generalization> genList = new ArrayList<Generalization>();
+		for(Property p : properties)
+		{
+			Fix partial = fixer.createSubSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLE, ClassStereotype.ROLE, p.getAssociation());
+			
+			for(Object obj: fix.getAdded()) { if (obj instanceof Generalization) genList.add((Generalization)obj); }
+			
+			fix.addAll(partial);
+		}		
 	}
 
 	public void createGenSet(ArrayList<Generalization> genList) {
