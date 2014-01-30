@@ -98,11 +98,11 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 		
 	}
 
-	public void addSubTypeInvolvingMediation(Type type, Association m) {
+	public void addSubTypeInvolvingMediation(ArrayList<Property> properties) {
 		
 	}
 
-	public void addSubTypeWithIntermediate(Type type, Association m) {
+	public void addSubTypeWithIntermediate(ArrayList<Property> properties) {
 		
 	}
 
