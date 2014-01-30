@@ -51,10 +51,21 @@ public class DescriptionSpaceGenerator {
 	
 public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories){
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
+		Set <RefOntoUML.Comment> comment = parser.getAllInstances(RefOntoUML.Comment.class);
+		
+		System.out.println("tamanho dos comentarios: " +comment.size());
+		
+		for(RefOntoUML.Comment c : comment){
+			System.out.println("Body: "+c.getBody());
+			System.out.println("Elemento " + c.getAnnotatedElement().get(0)); // primeira classe
+		}
 		
 		for (RefOntoUML.Class classf : classfSet){
 			DescriptionCategory mat;
-					
+			
+		
+			System.out.println(classf.getEAnnotations().toString());
+			
 			if(generalizationSpace.findCategory(classf.getName()) == null){
 				mat = createCategoryClass(classf);
 				generalizationSpace.addCategory(mat);
@@ -139,6 +150,12 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 			
 			classNumberTarget = chooseTarget(((RefOntoUML.Association) r).getEndType().get(0).getName(),((RefOntoUML.Association) r).getEndType().get(1).getName(),source.getLabel());
 
+			// Rule01's initial condition
+			if(r instanceof RefOntoUML.Generalization && ((RefOntoUML.Generalization) r).getGeneral() instanceof RefOntoUML.Relator && ((RefOntoUML.Generalization) r).getSpecific() instanceof RefOntoUML.Relator){
+				RealtorsInheritance();
+				
+			}
+			
 			// Rule09's condition 
 			if(r instanceof RefOntoUML.MaterialAssociation && existsRelator(((Association) r).getEndType().get(0),((Association) r).getEndType().get(1))){
 				if(source instanceof Relator){
@@ -359,6 +376,7 @@ public int chooseTarget(String name, String name2, String label) {
 private void createRelationship(Relationship r, DescriptionCategory target,DescriptionCategory source) {
 	DescriptionFunction mat;
 	int sourceLower,sourceUpper,targetLower,targetUpper;
+	boolean essential, inseparable, shareable;
 		
 		if(r instanceof RefOntoUML.Generalization){
 			mat = new Generalization("",source,target,1,1,1,1);
@@ -391,6 +409,10 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			}
 		if(r instanceof RefOntoUML.componentOf){
 			
+			inseparable = ((RefOntoUML.componentOf) r).isIsInseparable();
+			essential = ((RefOntoUML.componentOf) r).isIsEssential();
+			shareable = ((RefOntoUML.componentOf) r).isIsShareable();
+						
 			sourceLower = ((RefOntoUML.componentOf) r).wholeEnd().getLower();
 			sourceUpper = ((RefOntoUML.componentOf) r).wholeEnd().getUpper();
 			
@@ -398,16 +420,17 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			targetUpper = ((RefOntoUML.componentOf) r).partEnd().getUpper();
 			
 			if(((RefOntoUML.componentOf) r).whole().getName().equals(source.getLabel()))
-				mat = new ComponentOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, false, false, false);
+				mat = new ComponentOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, essential, inseparable, shareable);
 			else
-				mat = new ComponentOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
-
+				mat = new ComponentOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, essential, inseparable, shareable);
+			
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
 
 		}
 		if(r instanceof RefOntoUML.FormalAssociation){
+			
 			mat = new Formal(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
@@ -434,6 +457,10 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		}
 		if(r instanceof RefOntoUML.memberOf){
 			
+			inseparable = ((RefOntoUML.memberOf) r).isIsInseparable();
+			essential = ((RefOntoUML.memberOf) r).isIsEssential();
+			shareable = ((RefOntoUML.memberOf) r).isIsShareable();
+			
 			sourceLower = ((RefOntoUML.memberOf) r).wholeEnd().getLower();
 			sourceUpper = ((RefOntoUML.memberOf) r).wholeEnd().getUpper();
 			
@@ -441,9 +468,9 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			targetUpper = ((RefOntoUML.memberOf) r).partEnd().getUpper();
 						
 			if(((RefOntoUML.memberOf) r).whole().getName().equals(source.getLabel()))
-				mat = new MemberOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, false, false, false);
+				mat = new MemberOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, essential, inseparable, shareable);
 			else
-				mat = new MemberOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
+				mat = new MemberOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, essential, inseparable, shareable);
 
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
@@ -452,6 +479,10 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		}
 		if(r instanceof RefOntoUML.subCollectionOf){
 			
+			inseparable = ((RefOntoUML.subCollectionOf) r).isIsInseparable();
+			essential = ((RefOntoUML.subCollectionOf) r).isIsEssential();
+			shareable = ((RefOntoUML.subCollectionOf) r).isIsShareable();
+			
 			sourceLower = ((RefOntoUML.subCollectionOf) r).wholeEnd().getLower();
 			sourceUpper = ((RefOntoUML.subCollectionOf) r).wholeEnd().getUpper();
 			
@@ -459,9 +490,9 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			targetUpper = ((RefOntoUML.subCollectionOf) r).partEnd().getUpper();
 						
 			if(((RefOntoUML.subCollectionOf) r).whole().getName().equals(source.getLabel()))
-				mat = new SubcollectiveOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, false, false, false);
+				mat = new SubcollectiveOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, essential, inseparable, shareable);
 			else
-				mat = new SubcollectiveOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
+				mat = new SubcollectiveOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, essential, inseparable, shareable);
 
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
@@ -470,16 +501,20 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		}
 		if(r instanceof RefOntoUML.subQuantityOf){
 			
+			inseparable = ((RefOntoUML.subQuantityOf) r).isIsInseparable();
+			essential = ((RefOntoUML.subQuantityOf) r).isIsEssential();
+			shareable = ((RefOntoUML.subQuantityOf) r).isIsShareable();
+			
 			sourceLower = ((RefOntoUML.subQuantityOf) r).wholeEnd().getLower();
 			sourceUpper = ((RefOntoUML.subQuantityOf) r).wholeEnd().getUpper();
 			
 			targetLower = ((RefOntoUML.subQuantityOf) r).partEnd().getLower();
 			targetUpper = ((RefOntoUML.subQuantityOf) r).partEnd().getUpper();
-						
+									
 			if(((RefOntoUML.subQuantityOf) r).whole().getName().equals(source.getLabel()))
-				mat = new SubquantityOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, false, false, false);
+				mat = new SubquantityOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, essential, inseparable, shareable);
 			else
-				mat = new SubquantityOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, false, false, false);
+				mat = new SubquantityOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, essential, inseparable,shareable);
 
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
