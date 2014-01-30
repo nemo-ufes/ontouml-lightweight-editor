@@ -17,10 +17,17 @@ public class MultiDepSecondPage extends MultiDepPage {
 	public Button btnYesTheOrder;
 	public Button btnNoTheOrder;
 	public MultiDepSpinnerTable table;
+	public Composite container;
 	
-	public MultiDepSecondPage(MultiDepOccurrence multiDep, ArrayList<Property> properties) {
+	public MultiDepSecondPage(MultiDepOccurrence multiDep) {
 		super(multiDep);
+	}
+	
+	public void setProperties(ArrayList<Property> properties)
+	{
 		this.properties = properties;
+		table = new MultiDepSpinnerTable(container,SWT.BORDER,properties);
+		table.getTable().setBounds(23, 42, 527, 156);
 	}
 	
 	/**
@@ -28,14 +35,14 @@ public class MultiDepSecondPage extends MultiDepPage {
 	 * @param parent
 	 */
 	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NULL);
+		container = new Composite(parent, SWT.NULL);
 
 		setControl(container);
 		
 //		Composite composite = new Composite(container, SWT.NONE);
 //		composite.setBounds(23, 42, 527, 156);
-		table = new MultiDepSpinnerTable(container,SWT.BORDER,properties);
-		table.getTable().setBounds(23, 42, 527, 156);
+		//table = new MultiDepSpinnerTable(container,SWT.BORDER,properties);
+		//table.getTable().setBounds(23, 42, 527, 156);
 		
 		btnYesTheOrder = new Button(container, SWT.RADIO);
 		btnYesTheOrder.setBounds(23, 204, 526, 16);

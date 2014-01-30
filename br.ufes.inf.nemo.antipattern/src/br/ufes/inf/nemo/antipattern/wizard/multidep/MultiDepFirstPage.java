@@ -78,7 +78,11 @@ public class MultiDepFirstPage  extends MultiDepPage {
 				for(String str: connectedList.getSelection()){
 					if(!contains(remainderList,str)) { remainderList.add(str); remainderList.select(remainderList.indexOf(str)); } 
 				}
-				if(connectedList.getSelectionIndex()>=0) {connectedList.select(connectedList.getSelectionIndex()-1); connectedList.remove(connectedList.getSelectionIndex());}				
+				if(connectedList.getSelectionIndex()>=0) { 
+					int prev = connectedList.getSelectionIndex()-1;
+					connectedList.remove(connectedList.getSelectionIndex());
+					connectedList.select(prev); 
+				}				
 			}
 		});
 		
@@ -91,7 +95,11 @@ public class MultiDepFirstPage  extends MultiDepPage {
 				for(String str: remainderList.getSelection()){
 					if(!contains(connectedList,str)) { connectedList.add(str); connectedList.select(connectedList.indexOf(str));  } 
 				}
-				if(remainderList.getSelectionIndex()>=0) {remainderList.select(remainderList.getSelectionIndex()-1); remainderList.remove(remainderList.getSelectionIndex()); }
+				if(remainderList.getSelectionIndex()>=0) {
+					int prev = remainderList.getSelectionIndex()-1;
+					remainderList.remove(remainderList.getSelectionIndex());
+					remainderList.select(prev);					 
+				}
 			}
 		});
 		
@@ -147,7 +155,8 @@ public class MultiDepFirstPage  extends MultiDepPage {
 			MultiDepThirdPage thirdPage = ((MultiDepWizard)getWizard()).getThirdPage();
 			return thirdPage;
 		}else{
-			MultiDepSecondPage secondPage = ((MultiDepWizard)getWizard()).addSecondPage(getRemainderSelected());
+			MultiDepSecondPage secondPage = ((MultiDepWizard)getWizard()).getSecondPage();
+			secondPage.setProperties(getRemainderSelected());			
 			return secondPage;
 		}
 	}
