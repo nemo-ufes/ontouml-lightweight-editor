@@ -39,8 +39,6 @@ public class PortugueseDictionary implements Dictionary{
 		if(completeLabel.length > 1){
 			int j = 1;
 			
-			System.out.println(completeLabel[1].replace(" ", "#"));
-			
 			if(completeLabel[1].equals("de")) // the second word is a conjunction?
 				j = 2; // The third word became the "second word"	
 			else if(completeLabel[1].equals("em"))
@@ -55,9 +53,9 @@ public class PortugueseDictionary implements Dictionary{
 	
 	private String processPlural(String word){
 		if(word.endsWith("ão")) 
-			return word.substring(0,word.length() - 3) + "ões";
+			return word.substring(0, word.length() - 2) + "ões";
 		else if(word.endsWith("al"))
-			return word.substring(0,word.length() - 2) + "is";
+			return word.substring(0, word.length() - 1) + "is";
 		else
 			return word + "s";
 	}
