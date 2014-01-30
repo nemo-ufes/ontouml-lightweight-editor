@@ -478,7 +478,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		}
 
 		if(!Factory.variableExistsInAtom(antecedent, (SWRLVariable) varX1) && leftSideOfImplies == false){
-			Factory.replaceNonexistentVariableInAtom(factory, consequent, (SWRLVariable) varX1, (SWRLVariable) varY1);
+			Factory.replaceNonexistentVariableInAtom(factory, consequent, (SWRLVariable) varX1, (SWRLVariable) varY1); 
 		}else{
 			this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, atom);
 		}		
