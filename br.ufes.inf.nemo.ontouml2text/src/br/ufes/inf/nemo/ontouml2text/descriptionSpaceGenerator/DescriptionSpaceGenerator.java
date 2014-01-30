@@ -18,6 +18,7 @@ import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Coll
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Kind;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Mixin;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Mode;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Phase;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Quantity;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Relator;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Role;
@@ -51,11 +52,6 @@ public class DescriptionSpaceGenerator {
 	
 public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories){
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
-		/*System.out.println("tamanho dos comentarios: " +parser.getAllInstances(RefOntoUML.Comment.class).size());
-		for(RefOntoUML.Comment c : comment){
-			System.out.println("Body: "+c.getBody());
-			System.out.println("Elemento " + c.getAnnotatedElement().get(0)); // primeira classe
-		}*/
 		
 		for (RefOntoUML.Class classf : classfSet){
 			DescriptionCategory mat;
@@ -67,16 +63,11 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 				mat = generalizationSpace.findCategory(classf.getName());
 			
 			populateRelationships(parser.getRelationships(classf),mat,parser,hashCategories);	
+			
 		}
 
 		for (DescriptionCategory c : generalizationSpace.getCategories())
 			System.out.println("Nome: "+c.getLabel()+ "\n  Lista de funções: "+c.getFunctions()+ "\n");
-		
-		for (DescriptionFunction c : generalizationSpace.getFunctions()){
-			if(c instanceof Generalization){
-				System.out.println("Source: "+((Generalization)c).getSource().getLabel()+" --> Nome do target: "+c.getTarget().getLabel()+"\n");
-			}
-		}
 		
 		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
 		System.out.println("Tamanho da functions no DescriptionSpace:  " + generalizationSpace.getFunctions().size());
@@ -93,6 +84,11 @@ public DescriptionCategory createCategoryClass(Class classf) {
 		DescriptionCategory mat = new Category(classf.getName());
 		return mat;
 	}
+	if(classf instanceof RefOntoUML.Phase){
+		DescriptionCategory mat = new Phase(classf.getName());
+		return mat;
+	}
+	
 	if(classf instanceof RefOntoUML.Collective){
 		DescriptionCategory mat = new Collective(classf.getName());
 		return mat;
@@ -139,13 +135,12 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 	DescriptionCategory target;
 	
 	for(Relationship r : eList){
-
 		if(r instanceof RefOntoUML.Association){			
 			
 			classNumberTarget = chooseTarget(((RefOntoUML.Association) r).getEndType().get(0).getName(),((RefOntoUML.Association) r).getEndType().get(1).getName(),source.getLabel());
-
+			
 			// Rule01's initial condition
-		/*	if(r instanceof RefOntoUML.Generalization && ((RefOntoUML.Generalization) r).getGeneral() instanceof RefOntoUML.Relator && ((RefOntoUML.Generalization) r).getSpecific() instanceof RefOntoUML.Relator){
+			/*if(r instanceof RefOntoUML.Generalization && ((RefOntoUML.Generalization) r).getGeneral() instanceof RefOntoUML.Relator && ((RefOntoUML.Generalization) r).getSpecific() instanceof RefOntoUML.Relator){
 				RealtorsInheritance(r);
 			}*/
 			
@@ -162,9 +157,9 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 				}
 			}
 			
+			//Autorelacao
 			if(((RefOntoUML.Association) r).getEndType().get(0).getName().equals(((RefOntoUML.Association) r).getEndType().get(1).getName())){
-				DescriptionCategory targetCreated = generalizationSpace.findCategory(((RefOntoUML.Association) r).getEndType().get(1).getName());
-				createRelationship(r, targetCreated, source);
+				createRelationship(r, source, source);
 				continue;
 			}
 			
@@ -187,7 +182,7 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 		if(r instanceof RefOntoUML.Generalization){
 			Classifier searchObject;
 		 	boolean isSon;
-		 	
+		 			 	
 			// Rule05's condition 
 			if(((RefOntoUML.Generalization) r).getGeneralizationSet().size() > 0){
 				processRule05(((RefOntoUML.Generalization) r),source,hashCategories);
@@ -199,19 +194,18 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 		 		isSon = true;
 		 	}
 		 	else{ 
-		 		searchObject = ((RefOntoUML.Generalization) r).getSpecific(); 
+		 		searchObject = ((RefOntoUML.Generalization) r).getSpecific();
 		 		isSon = false;
 		 	}		
 		 	
 			if(generalizationSpace.findCategory(searchObject.getName()) == null){
-
 				target = createCategoryClass((Class) searchObject);
 				
-				if(isSon)
+				if(isSon){
 					createRelationship(r,target,source);
-				else
+				}else{
 					createRelationship(r,source,target);
-
+				}
 				generalizationSpace.addCategory(target);
 				continue;
 			}
@@ -223,11 +217,11 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 				
 				else{
 					DescriptionCategory targetCreated = generalizationSpace.findCategory(searchObject.getName());			
-					
-					if(isSon)
+
+					if(isSon){
 						createRelationship(r,targetCreated,source);
-					else
-						createRelationship(r,source,targetCreated);
+					}else{
+						createRelationship(r,source,targetCreated);}
 				}
 			}
 		}
@@ -376,7 +370,7 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 	boolean essential, inseparable, shareable;
 		
 		if(r instanceof RefOntoUML.Generalization){
-			mat = new Generalization("",source,target,1,1,1,1);
+			mat = new Generalization("",source,target,1,1,1,1);			
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
@@ -531,6 +525,10 @@ public DescriptionCategory createCategory(Type type){
 	
 	if(type instanceof RefOntoUML.Category){
 		DescriptionCategory mat = new Category(type.getName());
+		return mat;
+	}
+	if(type instanceof RefOntoUML.Phase){
+		DescriptionCategory mat = new Phase(type.getName());
 		return mat;
 	}
 	if(type instanceof RefOntoUML.Collective){
