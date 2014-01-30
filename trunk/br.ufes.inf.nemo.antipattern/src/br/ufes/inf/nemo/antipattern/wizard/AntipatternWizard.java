@@ -114,6 +114,7 @@ public abstract class AntipatternWizard extends Wizard {
 	
 	public void runAllActions(){
 		for (AntiPatternAction<?> action : getAllActions()) {
+			System.out.println("Run action - "+action);
 			action.run();
 		}
 	}
