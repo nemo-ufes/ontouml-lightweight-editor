@@ -7,7 +7,10 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.AntiPatternUtil;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelCompOccurrence extends AntipatternOccurrence {
@@ -120,9 +123,98 @@ public class RelCompOccurrence extends AntipatternOccurrence {
 		return !a2EndsSpecializeA1Target();
 	}
 	
+	private String generateOCL(Property contextProperty, int type, int value){
+		
+		String context, oppositeProperty, oppositeType, generalOppositePropertyName, rule;
+		String castContext = "", castOpposite = "";
+		Property generalOppositeProperty;
+		
+		if(AntiPatternUtil.fixPropertyName(contextProperty.getOpposite()))
+			fix.includeModified(contextProperty.getOpposite());
+		
+		context = contextProperty.getType().getName();
+		oppositeProperty = addQuotes(contextProperty.getOpposite().getName());
+		oppositeType = addQuotes(contextProperty.getOpposite().getType().getName());
+		
+		if (a2EndsSpecializeA1Source())
+			generalOppositeProperty = a1.getMemberEnd().get(1);
+		else
+			generalOppositeProperty = a1.getMemberEnd().get(0);
+		
+		if(AntiPatternUtil.fixPropertyName(generalOppositeProperty))
+			fix.includeModified(generalOppositeProperty);
+	
+		generalOppositePropertyName = addQuotes(generalOppositeProperty.getName());
+		rule = "self."+oppositeProperty+"->asSet()->forAll( x: "+oppositeType+" | self";
+		
+		if(!contextProperty.getType().equals(generalOppositeProperty.getOpposite().getType())){
+			castContext = ".oclAsType("+addQuotes(generalOppositeProperty.getOpposite().getType().getName())+")";
+		}
+		
+		rule += castContext+"."+generalOppositePropertyName+"->asSet()->";
+		
+		if(!contextProperty.getOpposite().getType().equals(generalOppositeProperty.getOpposite().getType())){
+			castOpposite = ".oclAsType("+addQuotes(generalOppositeProperty.getOpposite().getType().getName())+")";
+		}
+		
+		if(type==1)
+			rule += "includesAll(x"+castOpposite+"."+generalOppositePropertyName+"->asSet())";
+		else if(type==2)
+			rule += "excludesAll(x"+castOpposite+"."+generalOppositePropertyName+"->asSet())";
+		else if (type==3)
+			rule += "intersection(x"+castOpposite+"."+generalOppositePropertyName+"->asSet())->size()>="+value;
+		
+		rule +=")";
+		
+		Fix auxFix = fixer.generateOCLRule(context, "", rule);
+		fix.addAll(auxFix);
+		
+		return auxFix.getAddedRules().get(0);
+	}
+	
+	public String generateOCLIncludesAll(Property p){
+		if(a2.getMemberEnd().contains(p))
+			return generateOCL(p, 1, 0);
+		return null;
+	}
+	
+	public String generateOCLExcludesAll(Property p){
+		if(a2.getMemberEnd().contains(p))
+			return generateOCL(p, 2, 0);
+		return null;
+	}
+	
+	public String generateOCLAtLeast(Property p, int value){
+		if(a2.getMemberEnd().contains(p))
+			return generateOCL(p, 3, value);
+		return null;
+	}
+	
+
+	
 }
 
 /*
+context BSource
+inv : self.btarget->asSet()->forAll( x : BTarget | self.asource->asSet()->includesAll(x.asource->asSet()))
+
+context BSource
+inv : self.btarget->asSet()->forAll( x : BTarget | self.asource->excludesAll(x.asource))
+
+context BSource
+inv : self.btarget->asSet()->forAll( x : BTarget | self.asource->intersection(x.asource)->size()>=n)
+
+
+
+context BTarget
+inv : self.bsource->asSet()->forAll( x : BSource | self.asource->includesAll(x.asource))
+
+context BSource
+inv : self.btarget->asSet()->forAll( x : BTarget | self.atarget->includesAll(x.atarget))
+
+context BTarget
+inv : self.bsource->asSet()->forAll( x : BSource | self.atarget->includesAll(x.atarget))
+
  context _'Space Traveller'
 inv closed : self.destination->forAll( x | x.oclIsTypeOf(_'System') implies self.destination->includesAll(x.oclAsType(_'System').galaxy->asSet()))
 
