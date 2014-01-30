@@ -64,6 +64,7 @@ public class MultiDepComboTable {
 		editor.grabHorizontal = true;
 		editor.horizontalAlignment = SWT.CENTER;
 		editor.setEditor(combo, tableItem, 0);
+		tableItem.setData(Integer.toString(0),combo);
 		
 		editor = new TableEditor(table);
 		combo = new Combo(table, SWT.NONE);
@@ -74,7 +75,8 @@ public class MultiDepComboTable {
 		//editor.minimumWidth = combo.getSize().x;
 		editor.grabHorizontal = true;
 		editor.horizontalAlignment = SWT.CENTER;
-		editor.setEditor(combo, tableItem, 1);						
+		editor.setEditor(combo, tableItem, 1);		
+		tableItem.setData(Integer.toString(1),combo);
 	}
 	
 	public Table getTable() {
@@ -101,8 +103,11 @@ public class MultiDepComboTable {
 		ArrayList<Property> line = new ArrayList<Property>();		
 		for (Integer i = 0; i < 2; i++) {
 			Combo combo = (Combo) ti.getData(i.toString());
-			Property p = getProperty(combo.getItem(combo.getSelectionIndex())); 
-			if (p!=null) line.add(p);
+			String selected = combo.getText();
+			if (selected!=null){
+				Property p = getProperty(selected);
+				if (p!=null) line.add(p);
+			}			
 		}		
 		return line;
 	}

@@ -1,8 +1,5 @@
 package br.ufes.inf.nemo.antipattern.wizard.multidep;
 
-import java.util.ArrayList;
-
-import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
@@ -24,6 +21,7 @@ public class MultiDepWizard extends AntipatternWizard {
 	public void addPages() 
 	{
 		firstPage = new MultiDepFirstPage((MultiDepOccurrence)ap);
+		secondPage = new MultiDepSecondPage((MultiDepOccurrence)ap);
 		thirdPage = new MultiDepThirdPage((MultiDepOccurrence)ap);
 		
 		finishing = new FinishingPage();
@@ -39,6 +37,7 @@ public class MultiDepWizard extends AntipatternWizard {
 			
 		addPage(presentation);	
 		addPage(firstPage);
+		addPage(secondPage);
 		addPage(thirdPage);
 		addPage(options);
 		addPage(finishing);
@@ -63,12 +62,12 @@ public class MultiDepWizard extends AntipatternWizard {
 		return thirdPage;
 	}
 	
-	public MultiDepSecondPage addSecondPage(ArrayList<Property> properties)
-	{
-		secondPage = new MultiDepSecondPage((MultiDepOccurrence)ap, properties);
-		addPage(secondPage);
-		return secondPage;
-	}
+//	public MultiDepSecondPage addSecondPage(ArrayList<Property> properties)
+//	{
+//		secondPage = new MultiDepSecondPage((MultiDepOccurrence)ap, properties);
+//		addPage(secondPage);
+//		return secondPage;
+//	}
 		
 	@Override
 	public boolean performFinish() {

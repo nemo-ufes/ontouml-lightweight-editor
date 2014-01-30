@@ -68,6 +68,7 @@ public class MultiDepSpinnerTable {
 		    editor.grabHorizontal = true;
 			editor.horizontalAlignment = SWT.CENTER;
 			editor.setEditor(text, items[i], 0);	
+			items[i].setData(Integer.toString(0),text);
 			
 			editor = new TableEditor(table);			
 			Spinner spinner = new Spinner(table, SWT.NONE);
@@ -75,7 +76,8 @@ public class MultiDepSpinnerTable {
 			spinner.setSelection(i);
 			editor.grabHorizontal = true;
 			editor.horizontalAlignment = SWT.CENTER;
-			editor.setEditor(spinner, items[i], 1);			
+			editor.setEditor(spinner, items[i], 1);	
+			items[i].setData(Integer.toString(1),spinner);
 		}		
 	}
 	
