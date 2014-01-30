@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.antipattern.AntiPatternUtil;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -129,8 +128,7 @@ public class RelCompOccurrence extends AntipatternOccurrence {
 		String castContext = "", castOpposite = "";
 		Property generalOppositeProperty;
 		
-		if(AntiPatternUtil.fixPropertyName(contextProperty.getOpposite()))
-			fix.includeModified(contextProperty.getOpposite());
+		fix.addAll(fixer.fixPropertyName(contextProperty.getOpposite()));
 		
 		context = contextProperty.getType().getName();
 		oppositeProperty = addQuotes(contextProperty.getOpposite().getName());
@@ -141,9 +139,8 @@ public class RelCompOccurrence extends AntipatternOccurrence {
 		else
 			generalOppositeProperty = a1.getMemberEnd().get(0);
 		
-		if(AntiPatternUtil.fixPropertyName(generalOppositeProperty))
-			fix.includeModified(generalOppositeProperty);
-	
+		fix.addAll(fixer.fixPropertyName(generalOppositeProperty));
+		
 		generalOppositePropertyName = addQuotes(generalOppositeProperty.getName());
 		rule = "self."+oppositeProperty+"->asSet()->forAll( x: "+oppositeType+" | self";
 		
