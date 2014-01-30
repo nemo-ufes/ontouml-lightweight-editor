@@ -152,7 +152,7 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 
 			// Rule01's initial condition
 			if(r instanceof RefOntoUML.Generalization && ((RefOntoUML.Generalization) r).getGeneral() instanceof RefOntoUML.Relator && ((RefOntoUML.Generalization) r).getSpecific() instanceof RefOntoUML.Relator){
-				RealtorsInheritance();
+				RealtorsInheritance(r);
 				
 			}
 			
@@ -240,6 +240,10 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 		}
 	}
 	hashCategories.add(source.getLabel());
+}
+
+private void RealtorsInheritance(Relationship r) {
+	
 }
 
 private void processRule05(RefOntoUML.Generalization r, DescriptionCategory source, Set<String> hashCategories) {
