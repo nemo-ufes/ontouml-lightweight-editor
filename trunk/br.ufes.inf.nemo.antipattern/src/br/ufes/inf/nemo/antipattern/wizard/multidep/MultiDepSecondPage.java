@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -39,6 +41,14 @@ public class MultiDepSecondPage extends MultiDepPage {
 
 		setControl(container);
 		
+		SelectionAdapter listener = new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	        if (isPageComplete()==false) setPageComplete(true);
+	      }
+	    };
+			    
+		setPageComplete(false);
+		
 //		Composite composite = new Composite(container, SWT.NONE);
 //		composite.setBounds(23, 42, 527, 156);
 		//table = new MultiDepSpinnerTable(container,SWT.BORDER,properties);
@@ -47,10 +57,12 @@ public class MultiDepSecondPage extends MultiDepPage {
 		btnYesTheOrder = new Button(container, SWT.RADIO);
 		btnYesTheOrder.setBounds(23, 204, 526, 16);
 		btnYesTheOrder.setText("Yes, in this particular order");
+		btnYesTheOrder.addSelectionListener(listener);
 		
 		btnNoTheOrder = new Button(container, SWT.RADIO);
 		btnNoTheOrder.setBounds(23, 226, 526, 16);
 		btnNoTheOrder.setText("No, the order does not matter");
+		btnNoTheOrder.addSelectionListener(listener);
 		
 		Label lblAreTheseOptional = new Label(container, SWT.NONE);
 		lblAreTheseOptional.setBounds(23, 10, 526, 15);
