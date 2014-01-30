@@ -2,18 +2,20 @@ package br.ufes.inf.nemo.antipattern.wizard.relcomp;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Spinner;
 
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.widgets.Spinner;
 
 /**
  * @author Tiago Sales
@@ -24,7 +26,9 @@ import org.eclipse.swt.widgets.Spinner;
 public class RelCompRefactoringPage extends RefactoringPage {
 	
 	protected RelCompOccurrence relComp;
-	
+	public CCombo comboSourceDependsOnTarget, comboTargetDependsOnSource;
+	public Button btnSourceDependsOnTarget, btnTargetDependsOnSource;
+	public Spinner spinnerM, spinnerN;
 	
 	/**
 	 * Create the wizard.
@@ -51,9 +55,59 @@ public class RelCompRefactoringPage extends RefactoringPage {
 
 		setControl(container);
 		
+		SelectionAdapter listener = new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+	  
+			  if (btnSourceDependsOnTarget.getSelection()){
+				  comboSourceDependsOnTarget.setEnabled(true);
+				  Device device = Display.getCurrent ();
+				  comboSourceDependsOnTarget.setBackground(new Color(device, 255, 255, 255));
+				  
+				  if(comboSourceDependsOnTarget.getSelectionIndex()==1)
+					  spinnerN.setEnabled(true);
+			  }
+			  else{
+				  comboSourceDependsOnTarget.setEnabled(false);
+				  spinnerN.setEnabled(false);
+			  }
+			  
+			  if(btnTargetDependsOnSource.getSelection()){
+				  comboTargetDependsOnSource.setEnabled(true);
+				  Device device = Display.getCurrent ();
+				  comboTargetDependsOnSource.setBackground(new Color(device, 255, 255, 255));
+				  
+				  if(comboTargetDependsOnSource.getSelectionIndex()==1)
+					  spinnerM.setEnabled(true);
+			  }
+			  else {
+				  comboTargetDependsOnSource.setEnabled(false);
+				  spinnerM.setEnabled(false);
+			  }		      
+			}
+		};
+		
+		SelectionAdapter listenerCombo = new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				
+				if(comboSourceDependsOnTarget.getSelectionIndex()==1)
+					spinnerN.setEnabled(true);
+				else
+					spinnerN.setEnabled(false);
+				
+				if(comboTargetDependsOnSource.getSelectionIndex()==1)
+					spinnerM.setEnabled(true);
+				else
+					spinnerM.setEnabled(false);
+			}
+		};
+			    
+	    setPageComplete(true);
+		
 		Label lblChooseTheAppropriate = new Label(container, SWT.NONE);
-		lblChooseTheAppropriate.setText("Choose the appropriate refactoring option by answering the following question:\r\n\r\nIf an instance 'x' of '<dynamic>' is connected to an instance 'y' of '<dynamic>', through '<dynamic>', is it NECESSARY that:");
-		lblChooseTheAppropriate.setBounds(10, 10, 694, 65);
+		lblChooseTheAppropriate.setText("Choose the appropriate refactoring option by answering the following question:\r\n\r\n" +
+										"If an instance 'x' of '"+getRelComp().getA2Source().getName()+"' is connected to an instance 'y' of '"+getRelComp().getA2Target().getName()+
+										"', through '"+getRelComp().getParser().getStringRepresentation(getRelComp().getA2())+"', is it NECESSARY that:");
+		lblChooseTheAppropriate.setBounds(10, 10, 699, 65);
 		
 		Label label = new Label(container, SWT.NONE);
 		label.setText("for n = ");
@@ -63,51 +117,102 @@ public class RelCompRefactoringPage extends RefactoringPage {
 		label_1.setText("for m = ");
 		label_1.setBounds(10, 173, 39, 15);
 		
-		Button btnx = new Button(container, SWT.CHECK);
-		btnx.setBounds(10, 81, 112, 21);
-		btnx.setText("'x' is connected to ");
+		btnSourceDependsOnTarget = new Button(container, SWT.CHECK);
+		btnSourceDependsOnTarget.setBounds(10, 81, 112, 21);
+		btnSourceDependsOnTarget.setText("'x' is connected to ");
+		btnSourceDependsOnTarget.addSelectionListener(listener);
 		
-		CCombo combo = new CCombo(container, SWT.BORDER);
-		combo.setItems(new String[] {"all", "at least <n>", "none"});
-		combo.setBounds(128, 81, 94, 21);
+		comboSourceDependsOnTarget = new CCombo(container, SWT.BORDER);
+		comboSourceDependsOnTarget.setBounds(128, 81, 94, 21);
+		comboSourceDependsOnTarget.addSelectionListener(listenerCombo);
 		
-		Label lblNewLabel = new Label(container, SWT.NONE);
-		lblNewLabel.setBounds(228, 84, 476, 21);
-		lblNewLabel.setText("instances of '' that 'y' is connected to, through ''");
+		spinnerN = new Spinner(container, SWT.BORDER);
+		spinnerN.setBounds(55, 108, 47, 22);
 		
-		Button btnyIsConnected = new Button(container, SWT.CHECK);
-		btnyIsConnected.setText("'y' is connected to ");
-		btnyIsConnected.setBounds(10, 146, 112, 21);
+		setUiDefaultProperties(spinnerN, comboSourceDependsOnTarget);
 		
-		CCombo combo_1 = new CCombo(container, SWT.BORDER);
-		combo_1.setItems(new String[] {"all", "at least <n>", "none"});
-		combo_1.setBounds(128, 146, 94, 21);
+		String oppositeGeneralType = "";
 		
-		Label lblInstancesOf = new Label(container, SWT.NONE);
-		lblInstancesOf.setText("instances of '' that 'x' is connected to, through ''");
-		lblInstancesOf.setBounds(228, 149, 476, 21);
+		if(getRelComp().a2EndsSpecializeA1Target())
+			oppositeGeneralType = relComp.getA1Source().getName();
+		else
+			oppositeGeneralType = relComp.getA1Target().getName();
 		
-		Spinner spinner = new Spinner(container, SWT.BORDER);
-		spinner.setBounds(55, 170, 47, 22);
+		Label lblNewLabel = new Label(container, SWT.WRAP);
+		lblNewLabel.setBounds(228, 84, 481, 39);
+		lblNewLabel.setText("instances of '"+oppositeGeneralType+"' to which 'y' is connected to through '"+getRelComp().getParser().getStringRepresentation(getRelComp().getA1())+"'");
 		
-		Spinner spinner_1 = new Spinner(container, SWT.BORDER);
-		spinner_1.setBounds(55, 108, 47, 22);
+		btnTargetDependsOnSource = new Button(container, SWT.CHECK);
+		btnTargetDependsOnSource.setText("'y' is connected to ");
+		btnTargetDependsOnSource.setBounds(10, 146, 112, 21);
+		btnTargetDependsOnSource.addSelectionListener(listener);
 		
-		SelectionAdapter listener = new SelectionAdapter() {
-	      public void widgetSelected(SelectionEvent e) {
-	        if (isPageComplete()==false) setPageComplete(true);
-	      }
-	    };
-		    
-	    setPageComplete(false);
-	    
+		comboTargetDependsOnSource = new CCombo(container, SWT.BORDER);
+		comboTargetDependsOnSource.setBounds(128, 146, 94, 21);
+		comboTargetDependsOnSource.addSelectionListener(listenerCombo);
+		
+		spinnerM = new Spinner(container, SWT.BORDER);
+		spinnerM.setBounds(55, 170, 47, 22);
+		
+		setUiDefaultProperties(spinnerM,comboTargetDependsOnSource);
+		
+		Label lblInstancesOf = new Label(container, SWT.WRAP);
+		
+		
+		lblInstancesOf.setText("instances of '"+oppositeGeneralType+"' to which 'x' is connected to through '"+getRelComp().getParser().getStringRepresentation(getRelComp().getA1())+"'");
+		lblInstancesOf.setBounds(228, 149, 481, 39);
 		
 	}
+	
+	private void setUiDefaultProperties(Spinner spin, CCombo combo){
+		spin.setSelection(1);
+		spin.setMinimum(1);
+		spin.setEnabled(false);
+		combo.setItems(new String[] {"all", "at least <n>", "no"});
+		combo.select(0);
+		combo.setEnabled(false);
+		combo.setEditable(false);
+	}
 
-
+	public RelCompOccurrence getRelComp(){
+		return relComp;
+	}
 
 	@Override
 	public IWizardPage getNextPage() {
+		RelCompAction action;
+		getRelSpecWizard().removeAllActions();
+		
+		if(btnSourceDependsOnTarget.getSelection()){
+			action = new RelCompAction(relComp);
+			//includesAll
+			if(comboSourceDependsOnTarget.getSelectionIndex()==0)
+				action.setIncludesAllSource();
+			//excludesAll
+			if(comboSourceDependsOnTarget.getSelectionIndex()==1)
+				action.setAtLeastSource(spinnerN.getSelection());			
+			//atLeast
+			if(comboSourceDependsOnTarget.getSelectionIndex()==2)
+				action.setExcludesAllSource();
+			
+			getRelSpecWizard().addAction(0, action);
+		}
+		
+		if(btnTargetDependsOnSource.getSelection()){
+			action = new RelCompAction(relComp);
+			//includesAll
+			if(comboTargetDependsOnSource.getSelectionIndex()==0)
+				action.setIncludesAllTarget();
+			//excludesAll
+			if(comboTargetDependsOnSource.getSelectionIndex()==1)
+				action.setAtLeastTarget(spinnerM.getSelection());			
+			//atLeast
+			if(comboTargetDependsOnSource.getSelectionIndex()==2)
+				action.setExcludesAllTarget();
+			
+			getRelSpecWizard().addAction(0, action);
+		}
+		
 		return 	getRelSpecWizard().getFinishing();				
 	}
 }
