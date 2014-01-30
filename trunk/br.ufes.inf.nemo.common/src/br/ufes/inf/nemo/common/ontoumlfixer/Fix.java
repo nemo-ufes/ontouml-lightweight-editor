@@ -88,7 +88,7 @@ public class Fix {
 		if (!modifiedElements.contains(modified)) modifiedElements.add(modified);
 	}
 	public void includeRule(String rule){
-		if (!addedRules.contains(rule)) addedRules.add(rule);
+		addedRules.add(rule);
 	}	
 	public void includeAdded(Object added){
 		if (!addedElements.contains(added)) addedElements.add(added);
