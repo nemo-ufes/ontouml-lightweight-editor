@@ -113,7 +113,9 @@ public class OutcomeFixer {
 		return rel;			  
 	}
 	
-	private GeneralizationSet createBasicGeneralizationSet(boolean isDisjoint, boolean isCovering){
+	/** Create a basic generalization Set with an empty name */
+	private GeneralizationSet createBasicGeneralizationSet(boolean isDisjoint, boolean isCovering)
+	{
 		GeneralizationSet gs = factory.createGeneralizationSet();
 		gs.setIsCovering(isCovering);
 		gs.setIsDisjoint(isDisjoint);
@@ -425,26 +427,26 @@ public class OutcomeFixer {
 		
 	}
 	
-	public Fix addCommonSuperType (ArrayList<Classifier> subtypes, ClassStereotype stereoSuperType){
-		Fix fixes = new Fix();
-		
+	/** Add a common supertype to a list of subtypes. It creates a supertype and all the generalizations linking a subtype to the common supertype. */
+	public Fix addCommonSuperType (ArrayList<Classifier> subtypes, ClassStereotype stereoSuperType)
+	{
+		Fix fixes = new Fix();		
 		//create supertye
 		RefOntoUML.PackageableElement supertype = createClass(stereoSuperType);
 		supertype.setName("CommonSupertype");
-		fixes.includeAdded(supertype);
-		
+		fixes.includeAdded(supertype);		
 		//the same container as
 		copyContainer(subtypes.get(0),supertype);
-		fixes.includeModified(subtypes.get(0).eContainer());
-		
-		for (Classifier subtype : subtypes) {
+		fixes.includeModified(subtypes.get(0).eContainer());		
+		for (Classifier subtype : subtypes) 
+		{
+			// create generalization
 			Generalization gen = (Generalization)createRelationship(RelationStereotype.GENERALIZATION);
 			gen.setSpecific(subtype);
 			gen.setGeneral((RefOntoUML.Classifier)supertype);
 			fixes.includeAdded(gen);
 			fixes.includeModified(subtype);
-		}
-		
+		}		
 		return fixes;
 	}
 	
@@ -541,70 +543,75 @@ public class OutcomeFixer {
 		return fixes;
 	}
 	
-	public Fix generateOCLRule (String contextName, String invName, String invRule){
-		String oclRule ="context _'"+contextName+"'\n"+
-						"inv "+invName+" : "+invRule;
-		
+	/** Generate an OCL invariant */
+	public Fix generateOCLRule (String contextName, String invName, String invRule)
+	{
+		String oclRule ="context _'"+contextName+"'\n"+"inv "+invName+" : "+invRule;		
 		Fix fix = new Fix();
 		fix.includeRule(oclRule);
 		return fix;
 	}
 	
-	public Fix createGeneralizationSet(ArrayList<Generalization> generalizations){
+	/** Create a default generalization set which is covering=true and disjoint=true and its name is null */
+	public Fix createGeneralizationSet(ArrayList<Generalization> generalizations)
+	{
 		return createGeneralizationSet(generalizations, true, true, null);
-	}
+	}	
 	
-	
-	public Fix createGeneralizationSet(ArrayList<Generalization> generalizations, boolean isDisjoint, boolean isCovering, String gsName){
+	/** Create a default generalization set from a list of generalizations */
+	public Fix createGeneralizationSet(ArrayList<Generalization> generalizations, boolean isDisjoint, boolean isCovering, String gsName)
+	{
 		Fix fix = new Fix();
-		
+		//create generalization set
 		GeneralizationSet gs = createBasicGeneralizationSet(isDisjoint, isCovering);
-		gs.getGeneralization().addAll(generalizations);
-		
-		if(gsName!=null)
-			gs.setName(gsName);
-		else
-			gs.setName("NewGS_"+generalizations.get(0).getGeneral().getName());
-		
+		gs.getGeneralization().addAll(generalizations);		
+		if(gsName!=null) gs.setName(gsName);
+		else gs.setName("NewGS_"+generalizations.get(0).getGeneral().getName());		
 		fix.includeAdded(gs);
-		
-		for (Generalization generalization : generalizations) {
+		//modified all generalizations
+		for (Generalization generalization : generalizations) 
+		{
 			fix.includeModified(generalization);
 		}
-		copyContainer(generalizations.get(0).getGeneral(),gs);
-		
+		//same container as...
+		copyContainer(generalizations.get(0).getGeneral(),gs);		
 		return fix;
 	}
 	
-	public Fix createGeneralizationSet(Classifier supertype, ArrayList<Classifier> subtypes){
-		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-		
-		for (Classifier c : subtypes) {
-			for (Generalization g : c.getGeneralization()) {
-				if (g.getGeneral().equals(supertype) || g.getGeneral().allParents().contains(supertype))
-					generalizations.add(g);
+	/** Create a generalization set between a supertype and a list of subtypes. 
+	 *  Note that this method assumes the existence of generalizations between the supertype and all the subtypes */
+	public Fix createGeneralizationSet(Classifier supertype, ArrayList<Classifier> subtypes)
+	{
+		// get existent generalizations
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();		
+		for (Classifier c : subtypes) 
+		{
+			for (Generalization g : c.getGeneralization()) 
+			{
+				if (g.getGeneral().equals(supertype) || g.getGeneral().allParents().contains(supertype)) generalizations.add(g);
 			}
 		}
-		
+		//create generalization set from the generalizations
 		return createGeneralizationSet(generalizations);
 	}
 	
-	public Fix createGeneralization(Classifier specific, Classifier general){
+	/** Create a Generalization from a specific and general classifiers */
+	public Fix createGeneralization(Classifier specific, Classifier general)
+	{
 		Fix fix = new Fix();
-		
+		//create generalization
 		Generalization g = (Generalization) createRelationship(RelationStereotype.GENERALIZATION);
 		g.setGeneral(general);
-		g.setSpecific(specific);
-		
+		g.setSpecific(specific);		
 		fix.includeAdded(g);
 		fix.includeModified(general);
-		fix.includeModified(specific);
-		
+		fix.includeModified(specific);		
 		return fix;
 	}
 
-	public RelationStereotype getRelationshipStereotype(EObject object) {
-
+	/** Get relationship stereotype from element */
+	public RelationStereotype getRelationshipStereotype(EObject object) 
+	{
 		if(object instanceof Mediation) return RelationStereotype.MEDIATION;
 		if(object instanceof Characterization) return RelationStereotype.CHARACTERIZATION;
 		if(object instanceof memberOf) return RelationStereotype.MEMBEROF;
@@ -616,18 +623,18 @@ public class OutcomeFixer {
 		if(object instanceof Derivation) return RelationStereotype.DERIVATION;
 		if(object instanceof Characterization) return RelationStereotype.CHARACTERIZATION;
 		if(object instanceof Generalization) return RelationStereotype.GENERALIZATION;
-		if(object instanceof Association) return RelationStereotype.ASSOCIATION;
-		
+		if(object instanceof Association) return RelationStereotype.ASSOCIATION;		
 		return null;
 	}
 	
+	/** Set up the upper cardinality on relator's side */
 	public Fix setUpperCardinalityOnRelatorSide (Mediation m, int upper)
 	{
-		Fix fix = new Fix();
-		
+		Fix fix = new Fix();		
 		Type source = m.getMemberEnd().get(0).getType();
 		Type target = m.getMemberEnd().get(1).getType();
 		if(source instanceof Relator){
+			//change upper value of property
 			Property src = m.getMemberEnd().get(0);
 			LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
 			upperBound.setValue(upper);			
@@ -635,6 +642,7 @@ public class OutcomeFixer {
 			fix.includeModified(src);
 		}
 		if(target instanceof Relator){
+			//change upper value of property
 			Property tgt = m.getMemberEnd().get(1);
 			LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
 			upperBound.setValue(upper);			
@@ -657,19 +665,19 @@ public class OutcomeFixer {
 		return null;
 	}
 	
-	public Fix createAttribute(EObject object, String attrName, ClassStereotype attrType, String attrTypeName)
+	/** Create an attribute in the class 'owner' */
+	public Fix createAttribute(EObject owner, String attrName, ClassStereotype attrType, String attrTypeName)
 	{
-		Fix fix = new Fix();
-		
+		Fix fix = new Fix();		
 		//create type
 		EObject type = createClass(attrType);
 		((NamedElement)type).setName(attrTypeName);
 		// verify if it already exists
 		RefOntoUML.NamedElement elem = (NamedElement)containsNameBased(root,type);
 		if (elem==null){
-			copyContainer(object, type);
+			copyContainer(owner, type);
 			fix.includeAdded(type);
-			fix.includeModified(object.eContainer());
+			fix.includeModified(owner.eContainer());
 		}else{
 			type = elem;
 		}
@@ -679,11 +687,11 @@ public class OutcomeFixer {
 		attr.setName(attrName);
 		fix.includeAdded(attr);
 		//include it on object
-		if (object instanceof RefOntoUML.Class) ((RefOntoUML.Class)object).getOwnedAttribute().add(attr);
-		if (object instanceof RefOntoUML.DataType) ((RefOntoUML.DataType)object).getOwnedAttribute().add(attr);		
-		fix.includeModified(object);
-		
+		if (owner instanceof RefOntoUML.Class) ((RefOntoUML.Class)owner).getOwnedAttribute().add(attr);
+		if (owner instanceof RefOntoUML.DataType) ((RefOntoUML.DataType)owner).getOwnedAttribute().add(attr);		
+		fix.includeModified(owner);		
 		return fix;
 	}
+	
 	
 }

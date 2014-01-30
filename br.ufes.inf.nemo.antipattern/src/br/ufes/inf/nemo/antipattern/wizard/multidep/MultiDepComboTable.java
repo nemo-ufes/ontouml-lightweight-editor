@@ -41,9 +41,7 @@ public class MultiDepComboTable {
 			tableWidth+=tc.getWidth();
 		}
 		
-		table.setSize(418, 117);
-		
-		addLine();
+		table.setSize(418, 117);		
 	}
 		
 	public ArrayList<Property> getProperties() {
@@ -60,6 +58,7 @@ public class MultiDepComboTable {
 			combo.add(p.getType().getName());
 		}
 		combo.pack();
+		combo.select(0);
 		//editor.minimumWidth = combo.getSize().x;
 		editor.grabHorizontal = true;
 		editor.horizontalAlignment = SWT.CENTER;
@@ -71,6 +70,7 @@ public class MultiDepComboTable {
 		for(Property p: properties){
 			combo.add(p.getType().getName());
 		}
+		combo.select(1);
 		combo.pack();
 		//editor.minimumWidth = combo.getSize().x;
 		editor.grabHorizontal = true;
@@ -104,7 +104,7 @@ public class MultiDepComboTable {
 		for (Integer i = 0; i < 2; i++) {
 			Combo combo = (Combo) ti.getData(i.toString());
 			String selected = combo.getText();
-			if (selected!=null){
+			if (selected!=null && !selected.isEmpty()){
 				Property p = getProperty(selected);
 				if (p!=null) line.add(p);
 			}			
