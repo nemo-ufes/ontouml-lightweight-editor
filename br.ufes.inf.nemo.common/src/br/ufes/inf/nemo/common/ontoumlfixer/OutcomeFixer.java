@@ -774,4 +774,39 @@ public class OutcomeFixer {
 		return fix;
 	}
 
+	//return true if the name was fixed and false otherwise
+	public Fix fixPropertyName(Property p){
+		Fix fix = new Fix();
+		
+		if(p!=null && (p.getName()==null || p.getName().trim().isEmpty())){
+			String p1Name, p2Name;
+			
+			//if self-type relationship and both ends have null name, fix both ends of the relation
+			Property opposite = p.getOpposite();
+			if(opposite!=null && opposite.getType().equals(p.getType()) && (opposite.getName()==null || opposite.getName().trim().isEmpty())){
+				p1Name = p.getType().getName().trim().toLowerCase()+"_1";
+				p1Name.replaceAll("\\s+","");
+				p.setName(p1Name);
+				p2Name = p.getType().getName().trim().toLowerCase()+"_2";
+				p2Name.replaceAll("\\s+","");
+				p.getOpposite().setName(p2Name);
+				fix.includeAdded(p);
+				fix.includeAdded(p.getOpposite());
+			}
+			else{
+				p1Name = p.getType().getName().trim().toLowerCase();
+				p1Name.replaceAll("\\s+","");
+				p.setName(p1Name);
+				fix.includeAdded(p);
+			}			
+		}
+		
+		if(p!=null && p.getOpposite()!=null && p.getName()!=null && p.getOpposite().getName()!=null && p.getName().compareToIgnoreCase(p.getOpposite().getName())==0){
+			p.setName(p.getName()+"_1");
+			fix.includeAdded(p);
+		}
+		
+		return fix;
+	}
+
 }
