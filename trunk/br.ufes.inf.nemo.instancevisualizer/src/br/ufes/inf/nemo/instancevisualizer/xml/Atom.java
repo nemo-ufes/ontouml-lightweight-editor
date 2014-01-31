@@ -1,15 +1,8 @@
 package br.ufes.inf.nemo.instancevisualizer.xml;
 
-import java.util.ArrayList;
-
-/**
- *
- * @author Mauricio
- */
 public class Atom {
     private Sig sig;
     private String label;
-    
     
     public Atom(org.w3c.dom.Element node, Sig sigVar) {
         sig = sigVar;
@@ -68,7 +61,7 @@ public class Atom {
     }
     
     public boolean isObject() {
-        return sig.isObejct();
+        return sig.isObject();
     }
     
     public boolean isProperty() {

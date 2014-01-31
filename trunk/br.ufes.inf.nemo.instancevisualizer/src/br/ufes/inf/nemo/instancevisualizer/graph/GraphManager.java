@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.instancevisualizer.graph;
 
 import java.awt.MouseInfo;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -12,12 +13,16 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.ui.geom.Point3;
 import org.graphstream.ui.graphicGraph.GraphicElement;
+import org.graphstream.ui.graphicGraph.GraphicSprite;
 import org.graphstream.ui.layout.springbox.implementations.SpringBox;
 
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.Viewer;
+import org.graphstream.ui.swingViewer.util.Camera;
 import org.graphstream.ui.swingViewer.util.DefaultMouseManager; 
+import org.graphstream.ui.swingViewer.util.DefaultShortcutManager;
 
 import br.ufes.inf.nemo.instancevisualizer.*;
 import br.ufes.inf.nemo.instancevisualizer.apl.*;
@@ -92,8 +97,8 @@ public class GraphManager {
         
         int i, j;
         worldGraph = new MultiGraph("World Map");
-        ArrayList<ArrayList<String>> tuplesList;
-        ArrayList<String> tuple;
+        ArrayList<Tuple> tuplesList;
+        Tuple tuple;
         int current=1, past=-2, future=2;
         
         // Getting only world atoms.
@@ -220,7 +225,7 @@ public class GraphManager {
 	        graph.addAttribute("layout.quality", 4);
 	        
 	        graph.addAttribute("ui.stylesheet", "graph {\n" +
-	"    padding: 100px, 100px, 0px;\n" +
+	//"    padding: 100px, 100px, 0px;\n" +
 	"}\n" +
 	"node {\n" +
 	"    text-size: 12;\n" +
@@ -423,19 +428,124 @@ public class GraphManager {
         //layout.configure(2, 2, false, 1);
         selectedViewer.enableAutoLayout(layout);
         selectedView = selectedViewer.addDefaultView(false);   // false indicates "no JFrame".
+        
+        DefaultShortcutManager shortcutManager = new DefaultShortcutManager() {
+        	public void keyPressed(KeyEvent event) {
+        		Camera camera = view.getCamera();
+        		
+        		if (event.getKeyCode() == KeyEvent.VK_PAGE_UP && camera.getViewPercent() > 0.05) {
+        			//camera.setViewPercent(camera.getViewPercent() - 0.05f);
+        		} else if (event.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+        			//camera.setViewPercent(camera.getViewPercent() + 0.05f);
+        		} else if (event.getKeyCode() == KeyEvent.VK_LEFT) {
+        			if ((event.getModifiers() & KeyEvent.ALT_MASK) != 0) {
+        				double r = camera.getViewRotation();
+        				camera.setViewRotation(r - 5);
+        			} else {
+        				double delta = 0;
+
+        				if ((event.getModifiers() & KeyEvent.SHIFT_MASK) != 0)
+        					delta = camera.getGraphDimension() * 0.1f;
+        				else
+        					delta = camera.getGraphDimension() * 0.01f;
+
+        				Point3 p = camera.getViewCenter();
+        				camera.setViewCenter(p.x - delta, p.y, 0);
+        			}
+        		} else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
+        			if ((event.getModifiers() & KeyEvent.ALT_MASK) != 0) {
+        				double r = camera.getViewRotation();
+        				camera.setViewRotation(r + 5);
+        			} else {
+        				double delta = 0;
+
+        				if ((event.getModifiers() & KeyEvent.SHIFT_MASK) != 0)
+        					delta = camera.getGraphDimension() * 0.1f;
+        				else
+        					delta = camera.getGraphDimension() * 0.01f;
+
+        				Point3 p = camera.getViewCenter();
+        				camera.setViewCenter(p.x + delta, p.y, 0);
+        			}
+        		} else if (event.getKeyCode() == KeyEvent.VK_UP) {
+        			double delta = 0;
+
+        			if ((event.getModifiers() & KeyEvent.SHIFT_MASK) != 0)
+        				delta = camera.getGraphDimension() * 0.1f;
+        			else
+        				delta = camera.getGraphDimension() * 0.01f;
+
+        			Point3 p = camera.getViewCenter();
+        			camera.setViewCenter(p.x, p.y + delta, 0);
+        		} else if (event.getKeyCode() == KeyEvent.VK_DOWN) {
+        			double delta = 0;
+
+        			if ((event.getModifiers() & KeyEvent.SHIFT_MASK) != 0)
+        				delta = camera.getGraphDimension() * 0.1f;
+        			else
+        				delta = camera.getGraphDimension() * 0.01f;
+
+        			Point3 p = camera.getViewCenter();
+        			camera.setViewCenter(p.x, p.y - delta, 0);
+        		}
+        	}
+        };
+
+        selectedView.setShortcutManager(shortcutManager);
+        //shortcutManager.
         //selectedView.getCamera().setViewPercent(1);
         
         DefaultMouseManager selectedManager = new DefaultMouseManager() {
-        	/*
+        	Point3 origPx;
+        	protected void mouseButtonPress(MouseEvent event) {
+        		if(event.getButton() != MouseEvent.BUTTON2) {
+	        		origPx = new Point3(event.getX(), event.getY(), 0);
+	        		view.requestFocus();
+	        		// Unselect all.
+	        		if (!event.isShiftDown()) {
+	        			for (Node node : graph) {
+	        				if (node.hasAttribute("ui.selected"))
+	        					node.removeAttribute("ui.selected");
+	        			}
+	
+	        			for (GraphicSprite sprite : graph.spriteSet()) {
+	        				if (sprite.hasAttribute("ui.selected"))
+	        					sprite.removeAttribute("ui.selected");
+	        			}
+	        		}
+        		}else{
+        			Camera camera = view.getCamera();
+	        		Point3 p3 = camera.transformPxToGu(event.getX(), event.getY());//.getMetrics()..setViewCenter(event.getX(), event.getY(), 0);
+	        		camera.setViewCenter(p3.x, p3.y, p3.z);
+        		}
+        	}
+
+        	protected void mouseButtonRelease(MouseEvent event,
+        			ArrayList<GraphicElement> elementsInArea) {
+        		for (GraphicElement element : elementsInArea) {
+        			if (!element.hasAttribute("ui.selected"))
+        				element.addAttribute("ui.selected");
+        		}
+        	}
+        	
         	public void mouseDragged(MouseEvent event) {
         		if (curElement != null) {
         			elementMoving(curElement, event);
         		} else {
-        			Point3 p = view.getCamera().transformPxToGu(event.getX(), event.getY());
-        			view.getCamera().setViewCenter(-p.x+view.getCamera().getViewCenter().x, -p.y+view.getCamera().getViewCenter().y, 0);
+        			// px:
+        			// -1 : down and left
+        			// +1 : up and right
+        			Point3 diffPx = new Point3(event.getX()-origPx.x, origPx.y-event.getY(), 0);
+        			Point3 origGu = view.getCamera().getViewCenter();
+        			//Point3 diffGu = new Point3(origGu.x + diffPx.x*Math.pow(10, -16), origGu.y + diffPx.y*Math.pow(10, -16), 0);
+        			double deltaX = view.getCamera().getGraphDimension() * (0.001f * diffPx.x);
+        			double deltaY = view.getCamera().getGraphDimension() * (0.001f * diffPx.y);
+        			//System.out.println(diffPx);
+        			view.getCamera().setViewCenter(origGu.x+deltaX, origGu.y+deltaY, 0);//-p.x+view.getCamera().getViewCenter().x, -p.y+view.getCamera().getViewCenter().y, 0);
+        			origPx = new Point3(event.getX(), event.getY(), 0);
         		}
         	}
-        	*/
+        	
         	protected void mouseButtonPressOnElement(GraphicElement element, MouseEvent event) {
         		view.freezeElement(element, true);
         		if (event.getButton() != 3) {
@@ -443,7 +553,11 @@ public class GraphManager {
         		} else {
         			element.addAttribute("ui.clicked");
         		}
-        		
+        		if(event.getButton() == MouseEvent.BUTTON2) {
+        			Camera camera = view.getCamera();
+        	        Point3 p3 = camera.transformPxToGu(event.getX(), event.getY());//.getMetrics()..setViewCenter(event.getX(), event.getY(), 0);
+        	        camera.setViewCenter(p3.x, p3.y, p3.z);
+        		}
         	}
         	
         	protected void elementMoving(GraphicElement element, MouseEvent event) {
@@ -485,6 +599,7 @@ public class GraphManager {
         	}
         	
         };
+        
         selectedView.setMouseManager(selectedManager);
     
         //You can find two layouts in gs-core, LinLog and SpringBox. There is also an adaptation of the OpenOrd layout here : https://github.com/gsavin/gs-openord

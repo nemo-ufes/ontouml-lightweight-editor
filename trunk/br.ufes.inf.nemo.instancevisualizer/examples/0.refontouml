@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_Q6MZsWKyEeOMaqHHCAicQA" name="Model">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_5OHKIWQKEeOGL9QPlFKgIg" name="Kind1" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_6pbRkGQKEeOGL9QPlFKgIg" name="Kind2" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_7B2_sGQKEeOGL9QPlFKgIg" name="Kind3" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_7x25QGQKEeOGL9QPlFKgIg" name="Association1" visibility="public" memberEnd="_7x25QWQKEeOGL9QPlFKgIg _7x25RGQKEeOGL9QPlFKgIg">
+    <ownedEnd xmi:id="_7x25QWQKEeOGL9QPlFKgIg" name="kind1" type="_5OHKIWQKEeOGL9QPlFKgIg" association="_7x25QGQKEeOGL9QPlFKgIg">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_7x25QmQKEeOGL9QPlFKgIg" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_7x25Q2QKEeOGL9QPlFKgIg" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_7x25RGQKEeOGL9QPlFKgIg" name="kind2" type="_6pbRkGQKEeOGL9QPlFKgIg" association="_7x25QGQKEeOGL9QPlFKgIg">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_7x25RWQKEeOGL9QPlFKgIg" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_7x25RmQKEeOGL9QPlFKgIg" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_8V2XIGQKEeOGL9QPlFKgIg" name="Association2" visibility="public" memberEnd="_8V2XIWQKEeOGL9QPlFKgIg _8V2XJGQKEeOGL9QPlFKgIg">
+    <ownedEnd xmi:id="_8V2XIWQKEeOGL9QPlFKgIg" name="kind1" type="_5OHKIWQKEeOGL9QPlFKgIg" association="_8V2XIGQKEeOGL9QPlFKgIg">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_8V2XImQKEeOGL9QPlFKgIg" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_8V2XI2QKEeOGL9QPlFKgIg" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_8V2XJGQKEeOGL9QPlFKgIg" name="kind3" type="_7B2_sGQKEeOGL9QPlFKgIg" association="_8V2XIGQKEeOGL9QPlFKgIg">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_8V2XJWQKEeOGL9QPlFKgIg" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_8V2XJmQKEeOGL9QPlFKgIg" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Model>

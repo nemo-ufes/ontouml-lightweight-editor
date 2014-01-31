@@ -1,15 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.ufes.inf.nemo.instancevisualizer.xml;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.common.util.EList;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -25,117 +27,97 @@ public class XMLFile {
     private ArrayList<Sig> sigList;
     private ArrayList<Field> fieldList;
     
-    private ArrayList<Atom> worldList;
-    private ArrayList<Atom> objectList;
-    private ArrayList<Atom> propertyList;
-    private ArrayList<Atom> dataTypeList;
-    
     private OntoUMLParser ontoUmlParser;
     
     public XMLFile(java.io.File file, OntoUMLParser onto) throws ParserConfigurationException, SAXException, IOException {
         
-        // Initialization of parameters
-        atomList = new ArrayList();
-        sigList = new ArrayList();
-        fieldList = new ArrayList();
-        
-        worldList = new ArrayList();
-        objectList = new ArrayList();
-        propertyList = new ArrayList();
-        dataTypeList = new ArrayList();
+        atomList = new ArrayList<Atom>();
+        sigList = new ArrayList<Sig>();
+        fieldList = new ArrayList<Field>();
         
         ontoUmlParser = onto;
         
-        //integers = new ArrayList();
+        // Reading xml file:
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse(file.getAbsolutePath());
+        doc.getDocumentElement().normalize();
         
-        // Auxiliary variables
-        int i, j, k;
-        ReadXML xml = new ReadXML(file);
+        // Getting elements from .xml file:
+        NodeList sigl = doc.getElementsByTagName("sig");
+        NodeList atoml;	// This one will change on each sig - aux variable.
+        NodeList fieldl = doc.getElementsByTagName("field");
+        
+        // Auxiliary variables:
+        int i, j;
         Sig sig;
-        Field field;
-        org.w3c.dom.Element aux;
-        
-        // Getting elements from .xml file
-        NodeList sigl = xml.getDoc().getElementsByTagName("sig");
-        NodeList atoml;	// This one will change on each sig
-        NodeList fieldl = xml.getDoc().getElementsByTagName("field");
-        
-        // Getting sigs
+        Element elem;
+        // Getting sigs one by one:
         for(i=0; i<sigl.getLength(); i++) {
-            //System.out.println("NUM");
-            aux = (org.w3c.dom.Element) sigl.item(i);
-            sig = new Sig(aux);
-            atoml = aux.getElementsByTagName("atom");
+        	elem = (Element) sigl.item(i);
+            sig = new Sig(elem);
+            atoml = elem.getElementsByTagName("atom");
             
             sigList.add(sig);
             
             for(j=0; j<atoml.getLength(); j++) {
-                aux = (org.w3c.dom.Element) atoml.item(j);
-                //System.out.println(atoml.getLength());
-                Atom atom = new Atom(aux, sig);
-                if(!sig.isBuiltin()){
-                	atomList.add(atom);
-                }
-                if(sig.isWorld()) {
-                    // Could be a world atom... if it is, adding it to worldList
-                    worldList.add(atom);
-                }
-                //System.out.println(aux.getAttribute("label"));
+            	elem = (org.w3c.dom.Element) atoml.item(j);
+                Atom atom = new Atom(elem, sig);
+                atomList.add(atom);
+                sig.addAtom(atom);
             }
         }
         
         // Getting fields and its tuples. 
-        for(i=0; i<fieldl.getLength(); i++) {
-            //System.out.println("NUM2");
-            fieldList.add(new Field((org.w3c.dom.Element) fieldl.item(i), atomList));
-        }
-        
-        // Getting parent ids:
-        for(i=0; i<sigList.size(); i++){
-        	for(j=0; j<sigList.size(); j++){
-        		if(sigList.get(i).getParentId() == sigList.get(j).getId()) {
-        			sigList.get(i).setParentSig(sigList.get(j));
-        			break;
-        		}
-        	}
-        	if(sigList.get(i).getParentSig() != null) {
-    			break;
-    		}
-        	for(j=0; j<fieldList.size(); j++){
-        		if(sigList.get(i).getParentId() == fieldList.get(j).getId()) {
-        			sigList.get(i).setParentSig(fieldList.get(j));
-        			break;
-        		}
-        	}
-        }
-        
-        for(i=0; i<fieldList.size(); i++){
-        	for(j=0; j<fieldList.size(); j++){
-        		if(fieldList.get(i).getParentId() == sigList.get(j).getId()) {
-        			fieldList.get(i).setParentSig(sigList.get(j));
-        			break;
-        		}
-        	}
-        	if(fieldList.get(i).getParentSig() != null) {
-    			break;
-    		}
-        	for(j=0; j<fieldList.size(); j++){
-        		if(fieldList.get(i).getParentId() == fieldList.get(j).getId()) {
-        			fieldList.get(i).setParentSig(fieldList.get(j));
-        			break;
-        		}
-        	}
-        }
+        for(i=0; i<fieldl.getLength(); i++)
+            fieldList.add(new Field((org.w3c.dom.Element) fieldl.item(i)));
         
     }
     
+    public void setAllParentId() {
+        for(int i=0; i<sigList.size(); i++){
+        	for(int j=0; j<sigList.size(); j++){
+        		if(sigList.get(i).getParentId() == sigList.get(j).getId()) {
+        			sigList.get(i).setParent(sigList.get(j));
+        			break;
+        		}
+        	}
+        	if(sigList.get(i).getParent() != null) {
+    			break;
+    		}
+        	for(int j=0; j<fieldList.size(); j++){
+        		if(sigList.get(i).getParentId() == fieldList.get(j).getId()) {
+        			sigList.get(i).setParent(fieldList.get(j));
+        			break;
+        		}
+        	}
+        }
+        
+        for(int i=0; i<fieldList.size(); i++){
+        	for(int j=0; j<fieldList.size(); j++){
+        		if(fieldList.get(i).getParentId() == sigList.get(j).getId()) {
+        			fieldList.get(i).setParent(sigList.get(j));
+        			break;
+        		}
+        	}
+        	if(fieldList.get(i).getParent() != null) {
+    			break;
+    		}
+        	for(int j=0; j<fieldList.size(); j++){
+        		if(fieldList.get(i).getParentId() == fieldList.get(j).getId()) {
+        			fieldList.get(i).setParent(fieldList.get(j));
+        			break;
+        		}
+        	}
+        }
+    }
+    
     public ArrayList<String> getExistingAtomsOnWorld(String worldLabel) {
-    	ArrayList<String> stringList = new ArrayList();
-        int i, j, k;
-        for(i=0; i<fieldList.size(); i++) {
+    	ArrayList<String> stringList = new ArrayList<String>();
+        for(int i=0; i<fieldList.size(); i++) {
             if(!fieldList.get(i).getTuples().isEmpty()) {
                 if(fieldList.get(i).getTuple(0).size() == 2) {
-                    for(j=0; j<fieldList.get(i).getTuples().size(); j++) {
+                    for(int j=0; j<fieldList.get(i).getTuples().size(); j++) {
                     	if(fieldList.get(i).getTuple(j).get(0).equals(worldLabel)
                     			&& fieldList.get(i).getLabel().equals("exists")) {
                     		stringList.add(fieldList.get(i).getTuple(j).get(1));
@@ -172,9 +154,9 @@ public class XMLFile {
     	for(int i=0; i<fieldList.size(); i++) {
             if(!fieldList.get(i).getTuples().isEmpty()) {
                 if(fieldList.get(i).getTuples().get(0).size() > 2) {	// relation field has 3 atoms; 
-                    ArrayList<ArrayList<String>> tuplesList = fieldList.get(i).getTuples();
+                    ArrayList<Tuple> tuplesList = fieldList.get(i).getTuples();
                     for(int j=0; j<tuplesList.size(); j++) {
-                        ArrayList<String> tuple = tuplesList.get(j);
+                        Tuple tuple = tuplesList.get(j);
                         if(worldLabel.equals(tuple.get(0))) {
                         	String edgeName = fieldList.get(i).getLabel() + "\n" + getReductedId(tuple.get(1)) + "\n" + getReductedId(tuple.get(2));
                         	relationList.add(edgeName);
@@ -214,9 +196,9 @@ public class XMLFile {
     	for(int i=0; i<fieldList.size(); i++) {
             if(!fieldList.get(i).getTuples().isEmpty()) {
                 if(fieldList.get(i).getTuples().get(0).size() > 2) {	// relation field has 3 atoms; 
-                    ArrayList<ArrayList<String>> tuplesList = fieldList.get(i).getTuples();
+                    ArrayList<Tuple> tuplesList = fieldList.get(i).getTuples();
                     for(int j=0; j<tuplesList.size(); j++) {
-                    	ArrayList<String> tuple = tuplesList.get(j);
+                    	Tuple tuple = tuplesList.get(j);
                     	if(!relationList.contains(tuple.get(0))) {
                     		relationList.add(tuple.get(0));
                     	}
@@ -232,9 +214,9 @@ public class XMLFile {
     	for(int i=0; i<fieldList.size(); i++) {
             if(!fieldList.get(i).getTuples().isEmpty()) {
                 if(fieldList.get(i).getTuples().get(0).size() > 2) {	// relation field has 3 atoms; 
-                    ArrayList<ArrayList<String>> tuplesList = fieldList.get(i).getTuples();
+                    ArrayList<Tuple> tuplesList = fieldList.get(i).getTuples();
                     for(int j=0; j<tuplesList.size(); j++) {
-                    	ArrayList<String> tuple = tuplesList.get(j);
+                    	Tuple tuple = tuplesList.get(j);
                     	if(tuple.get(1).equals(tuple1) && tuple.get(2).equals(tuple2) && !relationList.contains(tuple.get(0))) {
                     		relationList.add(tuple.get(0));
                     	}
@@ -410,7 +392,7 @@ public class XMLFile {
         for(i=0; i<fieldList.size(); i++) {
             if(!fieldList.get(i).getTuples().isEmpty() &&
             		fieldList.get(i).getTuple(0).size() == 3 && 
-            			findSigById(fieldList.get(i).getTypes().get(0).get(2)).isBuiltin()) {
+            			findSigById(fieldList.get(i).getTypeIdsList().get(0).get(2)).isBuiltin()) {
             	stringList.add(fieldList.get(i).getLabel());
             	for(j=0; j<fieldList.get(i).getTuples().size(); j++) {
             		if(fieldList.get(i).getTuple(j).get(0).equals(worldLabel)
@@ -464,35 +446,12 @@ public class XMLFile {
     }
 
     public ArrayList<Atom> getWorldList() {
+    	ArrayList<Atom> worldList = new ArrayList();
+    	for(Atom atom : atomList) {
+    		if(atom.isWorld())
+    			worldList.add(atom);
+    	}
         return worldList;
-    }
-
-    public void setWorldList(ArrayList<Atom> worldList) {
-        this.worldList = worldList;
-    }
-
-    public ArrayList<Atom> getObjectList() {
-        return objectList;
-    }
-
-    public void setObjectList(ArrayList<Atom> objectList) {
-        this.objectList = objectList;
-    }
-
-    public ArrayList<Atom> getPropertyList() {
-        return propertyList;
-    }
-
-    public void setPropertyList(ArrayList<Atom> propertyList) {
-        this.propertyList = propertyList;
-    }
-
-    public ArrayList<Atom> getDataTypeList() {
-        return dataTypeList;
-    }
-
-    public void setDataTypeList(ArrayList<Atom> dataTypeList) {
-        this.dataTypeList = dataTypeList;
     }
     
     public OntoUMLParser getOntoUmlParser() {

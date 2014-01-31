@@ -30,15 +30,15 @@ public class EdgeLegendManager {
     	    	
 		switch(stereotype) {
 			case "Material":
-				imagePath = ".\\resources\\edges\\dashes.png";
+				imagePath = "." + File.separator + "resources" + File.separator + "edges" + File.separator + "dashes.png";
 				style = "size: 0.25; stroke-width: 1px; stroke-mode: dashes;";
 				break;
 			case "Characterization":
-				imagePath = ".\\resources\\edges\\cubic-curve.png";
+				imagePath = "." + File.separator + "resources" + File.separator + "edges" + File.separator + "cubic-curve.png";
 				style = "size: 0.25; stroke-width: 1px; shape: cubic-curve; stroke-mode: plain;";
 				break;
 			default:
-				imagePath = ".\\resources\\edges\\plain.png";
+				imagePath = "." + File.separator + "resources" + File.separator + "edges" + File.separator + "plain.png";
 				style = "size: 0.25; stroke-width: 1px; stroke-mode: plain;";
 				break;
 		}

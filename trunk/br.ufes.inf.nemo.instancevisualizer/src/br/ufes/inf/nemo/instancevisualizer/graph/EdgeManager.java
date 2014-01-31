@@ -9,6 +9,7 @@ import org.graphstream.graph.Edge;
 import br.ufes.inf.nemo.instancevisualizer.xml.Atom;
 import br.ufes.inf.nemo.instancevisualizer.xml.Field;
 import br.ufes.inf.nemo.instancevisualizer.xml.Sig;
+import br.ufes.inf.nemo.instancevisualizer.xml.Tuple;
 import br.ufes.inf.nemo.instancevisualizer.xml.XMLFile;
 
 import br.ufes.inf.nemo.common.resource.TypeName;
@@ -29,14 +30,14 @@ public class EdgeManager {
         
         int i, j, k;
         
-        ArrayList<ArrayList<String>> tuplesList;
-        ArrayList<String> tuple;
+        ArrayList<Tuple> tuplesList;
+        Tuple tuple;
         ArrayList<ArrayList<Integer>> typesList;
         
         ArrayList<String> alreadyAdded = new ArrayList();
 
         for(i=0; i<fieldList.size(); i++) {
-        	typesList = fieldList.get(i).getTypes();
+        	typesList = fieldList.get(i).getTypeIdsList();
             if(!fieldList.get(i).getTuples().isEmpty()) {
                 if(fieldList.get(i).getTuples().get(0).size() > 2) {	// relation field has 3 atoms;
                 	//if(!edgeLegendManager.getTypeList().contains(fieldList.get(i))) {
