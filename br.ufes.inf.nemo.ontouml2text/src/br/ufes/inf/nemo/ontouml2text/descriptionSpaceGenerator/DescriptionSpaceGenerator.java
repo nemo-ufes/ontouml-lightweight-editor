@@ -76,7 +76,6 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 				new HtmlGlossaryExporter("Glossary","D:/","Glossário ANTT"), new PortugueseLanguageAdaptor(new PortugueseDictionary()));
 		
 		glossaryGenerator.generateGlossary();
-
 }
 
 public DescriptionCategory createCategoryClass(Class classf) {	
@@ -258,10 +257,9 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 
  	for(RefOntoUML.GeneralizationSet genSet : r.getGeneralizationSet()){ 		
  		complete = genSet.isIsCovering();
- 		disjoint = genSet.isIsDisjoint();
+ 		disjoint = genSet.isIsDisjoint(); 			
  		genSetName = genSet.getName();
 
- 		
 		if(source.getLabel().equals(r.getSpecific().getName())){ //se o source for a classe de baixo, procura o de cima
 	 		searchObject = r.getGeneral();
 	 		isSon = false;
@@ -275,9 +273,16 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 			target = createCategoryClass((Class) searchObject);
 			
 			if(isSon){
-				existsGenSet = findGenSet(source, genSet.getName());
+				if(genSetName == null){
+		 			genSetName = source.getLabel();
+		 			existsGenSet = findGenSet(source, genSetName);
+				}else{
+					existsGenSet = findGenSet(source, genSetName);
+				}
+				
 				if(existsGenSet != null){
 					Generalization gen = new Generalization("",target,source,1,1,1,1);
+					System.out.println(target.getLabel() + " --> " + source.getLabel());
 					source.getFunctions().add(gen);
 					target.getFunctions().add(gen);
 					existsGenSet.getGeneralizationElements().add(gen);
@@ -285,6 +290,8 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 				}else{
 					GeneralizationSet gs = new GeneralizationSet(source,1,1,disjoint, complete, genSetName);
 					Generalization gen = new Generalization("",target,source,1,1,1,1);
+					System.out.println(target.getLabel() + " --> " + source.getLabel());
+
 					source.getFunctions().add(gen);
 					target.getFunctions().add(gen);
 					gs.getGeneralizationElements().add(gen);
@@ -292,10 +299,19 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 					generalizationSpace.getFunctions().add(gs);
 				}
 			}
-			else{				
+			else{	
+				if(genSetName == null){
+		 			genSetName = target.getLabel();
+		 			existsGenSet = findGenSet(target, genSetName);
+				}else{
+					existsGenSet = findGenSet(target, genSetName);
+				}
+				
 				GeneralizationSet gs = new GeneralizationSet(target,1,1,disjoint, complete, genSetName);
 				Generalization gen = new Generalization("",source,target,1,1,1,1);
 				gs.getGeneralizationElements().add(gen);
+				System.out.println(source.getLabel() + " --> " + target.getLabel());
+
 				source.getFunctions().add(gen);
 				target.getFunctions().add(gen);
 				target.getFunctions().add(gs);
@@ -313,10 +329,18 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 				DescriptionCategory targetCreated = generalizationSpace.findCategory(searchObject.getName());			
 				
 				if(isSon){
-					existsGenSet = findGenSet(source, genSet.getName());
-
+					
+					if(genSetName == null){
+			 			genSetName = source.getLabel();
+			 			existsGenSet = findGenSet(source, genSetName);
+					}else{
+						existsGenSet = findGenSet(source, genSetName);
+					}
+										
 					if(existsGenSet != null){
 						Generalization gen = new Generalization("",targetCreated,source,1,1,1,1);
+						System.out.println(targetCreated.getLabel() + " --> " + source.getLabel());
+
 						source.getFunctions().add(gen);
 						targetCreated.getFunctions().add(gen);
 						existsGenSet.getGeneralizationElements().add(gen);
@@ -324,6 +348,8 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 					}else{
 						GeneralizationSet gs = new GeneralizationSet(source,1,1,disjoint, complete, genSetName);
 						Generalization gen = new Generalization("",targetCreated,source,1,1,1,1);
+						System.out.println(targetCreated.getLabel() + " --> " + source.getLabel());
+
 						source.getFunctions().add(gen);
 						targetCreated.getFunctions().add(gen);
 						gs.getGeneralizationElements().add(gen);
@@ -332,9 +358,18 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 
 						}
 				}else{
-					existsGenSet = findGenSet(targetCreated, genSet.getName());
+
+					if(genSetName == null){
+			 			genSetName = targetCreated.getLabel();
+			 			existsGenSet = findGenSet(targetCreated, genSetName);
+					}else{
+						existsGenSet = findGenSet(targetCreated, genSetName);
+					}
+					
 					if(existsGenSet != null){
 						Generalization gen = new Generalization("",source,targetCreated,1,1,1,1);
+						System.out.println(source.getLabel() + " --> " + targetCreated.getLabel());
+
 						source.getFunctions().add(gen);
 						targetCreated.getFunctions().add(gen);
 						existsGenSet.getGeneralizationElements().add(gen);
@@ -342,6 +377,8 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 					}else{
 						GeneralizationSet gs = new GeneralizationSet(targetCreated,1,1,disjoint, complete, genSetName);
 						Generalization gen = new Generalization("",source,targetCreated,1,1,1,1);
+						System.out.println(source.getLabel() + " --> " + targetCreated.getLabel());
+
 						source.getFunctions().add(gen);
 						targetCreated.getFunctions().add(gen);
 						gs.getGeneralizationElements().add(gen);
@@ -383,7 +420,8 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 	boolean essential, inseparable, shareable;
 		
 		if(r instanceof RefOntoUML.Generalization){
-			mat = new Generalization("",source,target,1,1,1,1);			
+			mat = new Generalization("",source,target,1,1,1,1);	
+			System.out.println(source.getLabel() + " --> " + target.getLabel());
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
