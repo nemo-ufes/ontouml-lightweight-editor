@@ -51,9 +51,7 @@ public class MultiDepSecondPage extends MultiDepPage {
 		
 //		Composite composite = new Composite(container, SWT.NONE);
 //		composite.setBounds(23, 42, 527, 156);
-		//table = new MultiDepSpinnerTable(container,SWT.BORDER,properties);
-		//table.getTable().setBounds(23, 42, 527, 156);
-		
+				
 		btnYesTheOrder = new Button(container, SWT.RADIO);
 		btnYesTheOrder.setBounds(23, 204, 526, 16);
 		btnYesTheOrder.setText("Yes, in this particular order");

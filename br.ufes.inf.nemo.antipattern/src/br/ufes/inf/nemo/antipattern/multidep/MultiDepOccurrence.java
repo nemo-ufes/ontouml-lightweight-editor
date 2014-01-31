@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Category;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.Mediation;
@@ -109,28 +110,34 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 		ArrayList<Generalization> genList = new ArrayList<Generalization>();
 		for(Property p : properties)
 		{
-			Fix partial = fixer.createSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLE, p.getAssociation());
-			
-			for(Object obj: fix.getAdded()) { if (obj instanceof Generalization) genList.add((Generalization)obj); }
+			Fix partial = new Fix();
+			if(getType() instanceof Category){
+				partial = fixer.createSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLEMIXIN, p.getAssociation());
+			}else{
+				partial = fixer.createSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLE, p.getAssociation());
+			}
+			for(Object obj: fix.getAdded()) { if (obj instanceof Generalization) { genList.add((Generalization)obj); }}
 			
 			fix.addAll(partial);
 		}
-		fix.addAll(fixer.createGeneralizationSet(genList, false, true, ""));
+		if (genList.size()>1) fix.addAll(fixer.createGeneralizationSet(genList, false, true, ""));
 	}
 
 	public void addSubTypeWithIntermediate(ArrayList<Property> properties) {
 		ArrayList<Generalization> genList = new ArrayList<Generalization>();
 		for(Property p : properties)
 		{
-			Fix partial = fixer.createSubSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLE, ClassStereotype.ROLE, p.getAssociation());
+			Fix partial = new Fix();
+			if(getType() instanceof Category){
+				partial = fixer.createSubSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLEMIXIN, ClassStereotype.ROLEMIXIN, p.getAssociation());
+			}else{
+				partial = fixer.createSubSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLE, ClassStereotype.ROLE, p.getAssociation());
+			}
 			
-			for(Object obj: fix.getAdded()) { if (obj instanceof Generalization) genList.add((Generalization)obj); }
+			for(Object obj: fix.getAdded()) { if (obj instanceof Generalization && ((Generalization)obj).getGeneral().equals(getType())) genList.add((Generalization)obj); }
 			
 			fix.addAll(partial);
 		}		
-	}
-
-	public void createGenSet(ArrayList<Generalization> genList) {
-		
+		if (genList.size()>1) fix.addAll(fixer.createGeneralizationSet(genList, false, true, ""));
 	}
 }
