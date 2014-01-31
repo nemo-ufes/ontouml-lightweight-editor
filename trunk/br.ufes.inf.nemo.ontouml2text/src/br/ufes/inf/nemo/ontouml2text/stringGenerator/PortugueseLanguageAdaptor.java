@@ -144,18 +144,30 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		}
 		
 		if(pattern instanceof ComponentOfPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+			if(previousPattern instanceof FormalPattern) parcialDescription += " e";
+			
 			// Generating specific description
 			parcialDescription += " compõe " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
 		}
 		
 		if(pattern instanceof MemberOfPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+			if(previousPattern instanceof FormalPattern) parcialDescription += " e";
+						
 			// Generating specific description
 			parcialDescription += " é membro de " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 		}
 		
 		if(pattern instanceof SubcollectiveOfPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+			if(previousPattern instanceof FormalPattern) parcialDescription += " e";
+						
 			// Generating specific description
 			parcialDescription += " é um subcoletivo de " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
@@ -193,6 +205,7 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		if(pattern instanceof ComponentOfRevPattern){
 			// Integration
 			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+			if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso, ";
 			
 			// Generating specific description
 			parcialDescription += " é composto por: " + 
@@ -202,6 +215,7 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		if(pattern instanceof MemberOfRevPattern){
 			// Integration
 			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+			if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso, ";
 			
 			// Generating specific description
 			parcialDescription += " tem como membros: " + 
@@ -278,7 +292,9 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 			// Integration
 			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
 			
-			if(previousIsHeterogeneousMediation(previousPattern) || previousIsOptionalHeterogeneousMediation(previousPattern)) parcialDescription += ";";
+			if(previousIsHeterogeneousMediation(previousPattern) || 
+					previousIsOptionalHeterogeneousMediation(previousPattern) ||
+					previousPattern instanceof FormalPattern) parcialDescription += ";";
 			
 			// Generating specific description
 			parcialDescription += " pode ser dos tipos: " + 
@@ -327,6 +343,20 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 		
 		if(target.getMinMultiplicity() == 1 && target.getMaxMultiplicity() == -1) // (1,*)
 			return insertIndefiniteArticle(target.getLabel()) + "ou mais ";
+		
+		if(target.getMinMultiplicity() == 2 && target.getMaxMultiplicity() == -1){ // (2,*)
+			if(dictionary.isMale(target.getLabel()))
+				return "dois ou mais ";
+			else
+				return "duas ou mais ";
+		}
+		
+		if(target.getMinMultiplicity() == 0 && target.getMaxMultiplicity() == -1){ // (0,*)
+			if(dictionary.isMale(target.getLabel()))
+				return "vários ";
+			else
+				return "várias ";
+		}
 		
 		return "$INDEF$";
 	}

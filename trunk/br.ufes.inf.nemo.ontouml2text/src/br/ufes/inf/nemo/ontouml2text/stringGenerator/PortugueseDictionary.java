@@ -10,6 +10,7 @@ public class PortugueseDictionary implements Dictionary{
 		String completeLabel[] = label.split(" ");
 		// completeLabel[0] represents the first word
 		
+		if(completeLabel[0].endsWith("dade")) return false;
 		if(completeLabel[0].endsWith("ista")) return true;
 		if(completeLabel[0].endsWith("ção")) return false;
 		if(completeLabel[0].endsWith("são")) return false;
