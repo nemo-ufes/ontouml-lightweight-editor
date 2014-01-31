@@ -140,8 +140,8 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 			classNumberTarget = chooseTarget(((RefOntoUML.Association) r).getEndType().get(0).getName(),((RefOntoUML.Association) r).getEndType().get(1).getName(),source.getLabel());
 			
 			// Rule01's initial condition
-			/*if(r instanceof RefOntoUML.Generalization && ((RefOntoUML.Generalization) r).getGeneral() instanceof RefOntoUML.Relator && ((RefOntoUML.Generalization) r).getSpecific() instanceof RefOntoUML.Relator){
-				RealtorsInheritance(r);
+	/*		if(r instanceof RefOntoUML.Generalization && ((RefOntoUML.Generalization) r).getGeneral() instanceof RefOntoUML.Relator && ((RefOntoUML.Generalization) r).getSpecific() instanceof RefOntoUML.Relator){
+				RealtorsInheritance(r,source);
 			}*/
 			
 			// Rule09's condition 
@@ -229,7 +229,20 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 	hashCategories.add(source.getLabel());
 }
 
-private void RealtorsInheritance(Relationship r) {
+private void RealtorsInheritance(RefOntoUML.Generalization r, DescriptionCategory source) {
+	
+	boolean isSon;
+	Classifier searchObject;
+	
+	if(source.getLabel().equals(((RefOntoUML.Generalization) r).getSpecific().getName())){ //se o source for a classe de baixo, procura o de cima
+ 		searchObject = r.getGeneral();
+ 		isSon = false;
+ 	}
+ 	else{ 																	//se o source for a classe de cima, procura o de baixo
+ 		searchObject = r.getSpecific(); 
+ 		isSon = true;
+ 	}	
+	
 	
 }
 
