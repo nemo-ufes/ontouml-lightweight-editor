@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -30,7 +31,11 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.instancevisualizer.apl.AplMainWindow;
+import br.ufes.inf.nemo.instancevisualizer.util.DialogUtil;
+
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseWheelEvent;
 
 public class MainWindow extends JFrame {
 	
@@ -152,16 +157,7 @@ public class MainWindow extends JFrame {
 		mntmNextInstance = new JMenuItem("Next Instance");
 		mntmNextInstance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*
-				try {
-					solution = solution.next();
-					solution.writeXML("C:\\Users\\Mauricio\\0n.xml");
-					callOpenXML("C:\\Users\\Mauricio\\0.als", "C:\\Users\\Mauricio\\0n.xml");
-				} catch (Err e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				*/
+				AplMainWindow.nextInstance();
 			}
 		});
 		mntmNextInstance.setEnabled(false);
@@ -176,6 +172,8 @@ public class MainWindow extends JFrame {
 		mntmNewMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_EQUALS, 0));
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				AplMainWindow.graphManager.getSelectedView().setAutoscrolls(true);
+				//AplMainWindow.graphManager.getSelectedView().
 				/*
 				Camera cam = cam = xGraph.getSelectedView().getCamera();
 				if(xGraph.getSelectedView().getCamera().getViewPercent() > 0.2)
@@ -204,12 +202,11 @@ public class MainWindow extends JFrame {
 		chckbxmntmNewCheckItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, 0));
 		chckbxmntmNewCheckItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*
 				if(chckbxmntmNewCheckItem.isSelected()) {
-					xGraph.getSelectedViewer().enableAutoLayout();
+					AplMainWindow.graphManager.getSelectedViewer().enableAutoLayout();
 				}else{
-					xGraph.getSelectedViewer().disableAutoLayout();
-				}*/
+					AplMainWindow.graphManager.getSelectedViewer().disableAutoLayout();
+				}
 			}
 		});
 		mnView.add(mntmNewMenuItem);
@@ -218,7 +215,7 @@ public class MainWindow extends JFrame {
 		JMenuItem mntmRefresh = new JMenuItem("Refresh");
 		mntmRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//setScrollPanes1();
+				AplMainWindow.refreshGraphs();
 			}
 		});
 		mntmRefresh.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
@@ -240,6 +237,11 @@ public class MainWindow extends JFrame {
 		worldMap = new JScrollPane();
 		
 		selectedWorld = new JScrollPane();
+		selectedWorld.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent arg0) {
+				AplMainWindow.zoomSelectedView(arg0);
+			}
+		});
 		selectedWorld.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent arg0) {
@@ -296,6 +298,13 @@ public class MainWindow extends JFrame {
 					.addGap(4))
 		);
 		getContentPane().setLayout(groupLayout);
+		/*
+		ArrayList x = new ArrayList();
+		try{
+			AplMainWindow.graphManager.showSelectedGraph();
+		} catch(Exception e) {
+			DialogUtil.bugDialog(this, e);
+		}*/
 	}
 
 	public JScrollPane getScrollPane() {
@@ -436,7 +445,7 @@ public class MainWindow extends JFrame {
 	public void setStatus(String status) {
 		lblStatus.setText(status);
 	}
-	
+	/*
 	public void callOpenXML() {
 		new OpenXML(this, false);
 	}
@@ -444,7 +453,7 @@ public class MainWindow extends JFrame {
 	public void callOpenXML(String alsFile, String xmlFile) {
 		new OpenXML(this, alsFile, xmlFile);
 	}
-	
+	*/
 	public void setStatusText(String status) {
 		new StatusManager(this, status);
 	}

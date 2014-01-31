@@ -2,78 +2,41 @@ package br.ufes.inf.nemo.instancevisualizer.xml;
 
 import java.util.ArrayList;
 import org.w3c.dom.NodeList;
-/**
- *
- * @author Mauricio
- */
-public class Field extends Sig {
+import org.w3c.dom.Element;
+
+public class Field extends AlloyElement {
 	
-    private ArrayList<ArrayList<String>> tuples;
-    private ArrayList<ArrayList<Integer>> types;
+    private ArrayList<Tuple> xmlTuples;
+    private ArrayList<ArrayList<Integer>> typeIdsList;
+    private ArrayList<Sig> sigs;
     
-    public Field(org.w3c.dom.Element node, ArrayList<Atom> atomList) {
+    public Field(org.w3c.dom.Element node) {
         super(node);
-        tuples = new ArrayList();
-        types = new ArrayList();
+        xmlTuples = new ArrayList<Tuple>();
+        typeIdsList = new ArrayList<ArrayList<Integer>>();
+        sigs = new ArrayList<Sig>();
         
-        int i, j, k;
-        ArrayList<String> tuple;
-        ArrayList<Integer> type;
-        org.w3c.dom.Element xmlTuple;
-        org.w3c.dom.Element xmlTypes;
-        org.w3c.dom.Element xmlTypeTuple;
-        NodeList xmlAtomList;
-        NodeList xmlTypeList;
-        String attrLabel;
-        int attrID;
-        Atom atom;
+        // Getting tuples:
         NodeList tupleList = node.getElementsByTagName("tuple");
-        NodeList typesList = node.getElementsByTagName("types");
-        
-        for(i=0; i<tupleList.getLength(); i++) {
-            //System.out.println("NUM0");
-            tuple = new ArrayList();
-            xmlTuple = (org.w3c.dom.Element) tupleList.item(i);
-            xmlAtomList = xmlTuple.getElementsByTagName("atom");
-            for(j=0; j<xmlAtomList.getLength(); j++) {
-                //System.out.println("CONTA");
-                xmlTuple = (org.w3c.dom.Element) xmlAtomList.item(j);
-                attrLabel = xmlTuple.getAttribute("label");
-                //atom = findAtom(atomList, attrLabel);
-                tuple.add(attrLabel);
-                //System.out.println("        " + atom.getLabel());
-                /*
-                //System.out.println("    ".concat(aux2.getAttribute("label")));
-                for(k=0; k<atomList.size(); k++) {
-                    if(aux2.getAttribute("label").compareTo(atomList.get(k).getLabel()) == 0) {
-                        //System.out.println(atomList.get(k).getLabel());
-                        aux.add(atomList.get(k));
-                    }
-                    */
-            }
-            tuples.add(tuple);
-            /*
-            System.out.println("		" + tuple.get(0));
-            System.out.println("		" + tuple.get(1));
-            try {
-            	System.out.println("		" + tuple.get(2));
-            } catch (Exception e) {
-            	
-            }
-            */
+        for(int i=0; i<tupleList.getLength(); i++) {
+            Element xmlTuple = (org.w3c.dom.Element) tupleList.item(i);
+            NodeList xmlAtomList = xmlTuple.getElementsByTagName("atom");
+            xmlTuples.add(new Tuple(xmlAtomList));
         }
         
-        for(i=0; i<typesList.getLength(); i++) {
-        	type = new ArrayList();
-            xmlTypes = (org.w3c.dom.Element) typesList.item(i);
-            xmlTypeList = xmlTypes.getElementsByTagName("type");
-            for(j=0; j<xmlTypeList.getLength(); j++) {
-                xmlTuple = (org.w3c.dom.Element) xmlTypeList.item(j);
-                attrID = Integer.parseInt(xmlTuple.getAttribute("ID"));
+        // Getting types:
+        NodeList typesList = node.getElementsByTagName("types");
+        for(int i=0; i<typesList.getLength(); i++) {
+        	ArrayList<Integer> type = new ArrayList<Integer>();
+        	Element xmlTypes = (org.w3c.dom.Element) typesList.item(i);
+            NodeList xmlTypeList = xmlTypes.getElementsByTagName("type");
+            for(int j=0; j<xmlTypeList.getLength(); j++) {
+            	Element xmlTuple = (org.w3c.dom.Element) xmlTypeList.item(j);
+                int attrID = Integer.parseInt(xmlTuple.getAttribute("ID"));
                 type.add(attrID);
-                //System.out.println("        " + attrID);
             }
-            types.add(type);
+            typeIdsList.add(type);
+            sigs.add(null);
         }
         
     }
@@ -93,9 +56,8 @@ public class Field extends Sig {
             System.out.println("This field is not a 'exist' field OR Given atom is not a world atom");
             return null;
         }
-        ArrayList<String> atomList = new ArrayList();
-        int i, j, k;
-        for(i=0; i<getTuples().size(); i++) {
+        ArrayList<String> atomList = new ArrayList<String>();
+        for(int i=0; i<getTuples().size(); i++) {
             if(getTuple(i).get(0).equals(world)) {
                 atomList.add(getTuple(i).get(1));
             }
@@ -103,29 +65,20 @@ public class Field extends Sig {
         return atomList;
     }
 
-    public ArrayList<String> getTuple(int i) {
+    public Tuple getTuple(int i) {
         try {
-            return tuples.get(i);
+            return xmlTuples.get(i);
         } catch (Exception e) {
             
         }
         return null;
     }
     
-    public ArrayList<ArrayList<String>> getTuples() {
-        return tuples;
+    public ArrayList<Tuple> getTuples() {
+        return xmlTuples;
     }
-
-    public void setTuples(ArrayList<ArrayList<String>> tuples) {
-        this.tuples = tuples;
-    }
-
-	public ArrayList<ArrayList<Integer>> getTypes() {
-		return types;
-	}
-
-	public void setTypes(ArrayList<ArrayList<Integer>> types) {
-		this.types = types;
-	}
     
+    public ArrayList<ArrayList<Integer>> getTypeIdsList() {
+    	return typeIdsList;
+    }
 }

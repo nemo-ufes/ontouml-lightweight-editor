@@ -1,7 +1,8 @@
 package br.ufes.inf.nemo.instancevisualizer.apl;
 
+import java.awt.Point;
+import java.awt.event.MouseWheelEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,10 +12,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import javax.swing.JFileChooser;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.graphstream.graph.Graph;
+import org.graphstream.ui.geom.Point3;
+import org.graphstream.ui.swingViewer.View;
+import org.graphstream.ui.swingViewer.util.Camera;
 import org.xml.sax.SAXException;
 
 import edu.mit.csail.sdg.alloy4.Err;
@@ -26,12 +29,9 @@ import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 import edu.mit.csail.sdg.alloy4compiler.translator.TranslateAlloyToKodkod;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.instancevisualizer.gui.MainWindow;
-import br.ufes.inf.nemo.instancevisualizer.gui.OpenXML;
 import br.ufes.inf.nemo.instancevisualizer.util.Choice;
 import br.ufes.inf.nemo.instancevisualizer.util.DialogUtil;
 
-import br.ufes.inf.nemo.instancevisualizer.*;
-import br.ufes.inf.nemo.instancevisualizer.apl.*;
 import br.ufes.inf.nemo.instancevisualizer.graph.*;
 import br.ufes.inf.nemo.instancevisualizer.gui.*;
 import br.ufes.inf.nemo.instancevisualizer.xml.*;
@@ -42,6 +42,8 @@ public class AplMainWindow {
 	public static boolean popOutEnabled = false;
 	public static A4Solution solution;
 	public static GraphManager graphManager;
+	public static String fWithoutExt;
+	public static boolean alsOpen = false; 
 		
 	/**
 	 * Opens a file chooser dialog. 
@@ -80,8 +82,7 @@ public class AplMainWindow {
 					 * This file is not required. 
 					 */
 					// Loading .refontouml file:
-					String fWithoutExt = f.getParent() + "\\" + f.getName().replaceFirst("[.][^.]+$", "");
-					
+					fWithoutExt = f.getParent() + File.separator + f.getName().replaceFirst("[.][^.]+$", "");
 					File refontoFile = new File(fWithoutExt + ".refontouml");
 					if(!refontoFile.exists()) {
 						refontoFile = null;
@@ -101,6 +102,7 @@ public class AplMainWindow {
 										
 					// We detect if the file is an alloy xml by checking if it starts with "<alloy": 
 					if(!beginning.equals("<alloy")) {
+						alsOpen = true;
 						CompModule model = null;
 						Command cmd = null;
 						try {
@@ -119,16 +121,11 @@ public class AplMainWindow {
 						   	// Enabling the "Next Instance" menu item on the main window:
 						   	mainWindow.getMntmNextInstance().setEnabled(true);
 						   	
-						   	mainWindow.setStatus("Done!");
 						} catch(Err e) {
 							//e.printStackTrace();							
 						}
 					}
-					System.out.println(f.getAbsolutePath());
 					loadFile(f, refontoFile);
-					mainWindow.setEnabled(true);
-				   	displayAllGraphs();
-				   	System.out.println("FOI");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -138,36 +135,53 @@ public class AplMainWindow {
 	}
 	
 	/**
-	 * Loads an specific file and refontoFile. This method creates the graph manager.
+	 * Loads an specific instance file and refontoFile.
+	 * This method creates the graph manager.
 	 * @param f
 	 * @param refontoFile
 	 */
-	public static void loadFile(File f, File refontoFile) {
-		OntoUMLParser ontoUmlParser = null;
-		// If refontoFile is null, then it will not be loaded.
-		if(refontoFile != null) {
-			try {
-				ontoUmlParser = new OntoUMLParser(refontoFile.getAbsolutePath());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	public static void loadFile(final File f, final File refontoFile) {
+		new Thread() {
+			public void run() {
+				if(alsOpen) {
+					mainWindow.getMntmNextInstance().setEnabled(true);
+					alsOpen = false;
+				}else{
+					mainWindow.getMntmNextInstance().setEnabled(false);
+				}
+				mainWindow.setEnabled(false);
+				mainWindow.setStatus("Loading instance .xml...");
+				OntoUMLParser ontoUmlParser = null;
+				// If refontoFile is null, then it will not be loaded.
+				if(refontoFile != null) {
+					try {
+						ontoUmlParser = new OntoUMLParser(refontoFile.getAbsolutePath());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				mainWindow.setStatus("Parsing instance .xml...");
+				XMLFile xmlFile = null;
+				try {
+					xmlFile = new XMLFile(f, ontoUmlParser);
+				} catch (ParserConfigurationException | SAXException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				mainWindow.setStatus("Creating graph...");
+				graphManager = new GraphManager(xmlFile, ontoUmlParser, mainWindow);	// Creation of GraphManager
+				for(Graph g : graphManager.getGraphList()) {
+					if(g.getId().equals("world_structure/CurrentWorld$0")) {
+						graphManager.setSelectedGraph(g);
+		            	break;
+		            }
+				}
+			   	displayAllGraphs();
+			   	mainWindow.setEnabled(true);
+			   	mainWindow.setStatus("Done!");
 			}
-		}
-		XMLFile xmlFile = null;
-		try {
-			xmlFile = new XMLFile(f, ontoUmlParser);
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		graphManager = new GraphManager(xmlFile, ontoUmlParser, mainWindow);	// Creation of GraphManager
-		for(Graph g : graphManager.getGraphList()) {
-			if(g.getId().equals("world_structure/CurrentWorld$0")) {
-				graphManager.setSelectedGraph(g);
-            	break;
-            }
-		}
-		        
+		}.start();
 	}
 	
 	// TODO
@@ -265,6 +279,19 @@ public class AplMainWindow {
 		}
 	}
 	
+	public static void nextInstance() {
+		try {
+			solution = solution.next();
+			String xmlPath = fWithoutExt + "_temp.xml";
+			String refontoPath = fWithoutExt + ".refontouml";
+			solution.writeXML(xmlPath);
+			loadFile(new File(xmlPath), new File(refontoPath));
+		} catch (Err e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Function to read a file to a string.
 	 * @param path
@@ -337,5 +364,27 @@ public class AplMainWindow {
 	 */
 	private static void disableAll() {
 		
+	}
+
+	public static void zoomSelectedView(MouseWheelEvent arg0) {
+		// TODO better zoom system
+		
+		View view = graphManager.getSelectedView();
+		//Point posPx = view.getMousePosition();
+		Camera camera = view.getCamera();
+		//Point3 posGu = camera.transformPxToGu(posPx.x, posPx.y);
+		/*
+		//Point3 origCam = camera.getViewCenter();
+		view.getSize();
+		double deltaX = view.getCamera().getGraphDimension() * (0.01f * posGu.x);
+		double deltaY = view.getCamera().getGraphDimension() * (0.01f * posGu.y);
+		camera.setViewCenter(deltaX, deltaY, 0);
+		*/
+		if(arg0.getWheelRotation() < 0) {
+			if(camera.getViewPercent() > 0.1)
+				camera.setViewPercent(camera.getViewPercent() - 0.05f);
+		}else{
+			camera.setViewPercent(camera.getViewPercent() + 0.05f);
+		}
 	}
 }

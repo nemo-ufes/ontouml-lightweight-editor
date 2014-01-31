@@ -44,7 +44,7 @@ public class NodeLegendManager {
                     	String stereotype = TypeName.getTypeName(mainTypeClassif);
                     	
                     	// Getting image file path:
-                    	String imagePath = imageFolder.getPath() + "\\" + imageFolder.list()[imageNo];
+                    	String imagePath = imageFolder.getPath() + File.separator + imageFolder.list()[imageNo];
                     	imageNo++;
                     	
                     	// Getting style:
@@ -124,7 +124,7 @@ public class NodeLegendManager {
     	String prefix = "" + typeName.charAt(0);
     	for(int i=1; i<typeName.length(); i++) {
     		String verify = "" + typeName.charAt(i);
-    		if(!verify.matches("a|e|i|o|u|á|é|í|ó|ú|â|ê|ô|ã|A|E|I|O|U|Á|É|Í|Ó|Ú|Â|Ê|Ã| ")) {
+    		if(!verify.matches("a|e|i|o|u|ï¿½|ï¿½|ï¿½|ï¿½|ï¿½|ï¿½|ï¿½|ï¿½|ï¿½|A|E|I|O|U|ï¿½|ï¿½|ï¿½|ï¿½|ï¿½|ï¿½|ï¿½|ï¿½| ")) {
     			if(verify.matches(" ")){
     				verify.toUpperCase();
     			}
