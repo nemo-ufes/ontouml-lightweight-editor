@@ -14,16 +14,16 @@ import br.ufes.inf.nemo.ontouml2text.stringGenerator.*;
 public class OntoUmlGlossary {
 
 	public void xmiToText(OntoUMLParser parser) {		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GlossaryGeneratorUI settings = new GlossaryGeneratorUI();
-					settings.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					GlossaryGeneratorUI settings = new GlossaryGeneratorUI();
+//					settings.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
 	
 		//if(settings.doGlossaryGeneration()){
 			DescriptionSpace space = new DescriptionSpace();		
