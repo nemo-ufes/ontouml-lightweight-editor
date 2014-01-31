@@ -53,13 +53,13 @@ public class MultiDepAction extends AntiPatternAction<MultiDepOccurrence>{
 			for(Property p: properties){
 				result+= "Add Subtype to "+ap.getType().getName()+" and connect the Subtype to "+p.getType().getName()+" through the mediation"+"\n";
 			}
-			result+= "Create a generalization set between all the Subtypes created to the type "+ap.getType().getName()+"\n";
+			if (properties.size()>1) result+= "Create a generalization set between all the Subtypes created to the type "+ap.getType().getName()+"\n";
 					
 		}else if(code==Action.ADD_SUBTYPE_WITH_INTERMEDIATE_TYPE){
 			for(Property p: properties){
 				result+= "Add an intermediate type and a Subtype to "+ap.getType().getName()+" and connect the Subtype to "+p.getType().getName()+" through the mediation"+"\n";
 			}
-			result+= "Create a generalization set between all the Subtypes created to the intermediate type "+ap.getType().getName()+"\n";			
+			if (properties.size()>1) result+= "Create a generalization set between all the Subtypes created to the intermediate type "+ap.getType().getName()+"\n";			
 		} 
 		
 		return result;
