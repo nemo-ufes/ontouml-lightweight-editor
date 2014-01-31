@@ -20,15 +20,21 @@ public class MultiDepAntipattern extends Antipattern<MultiDepOccurrence> {
 		this(new OntoUMLParser(pack));
 	}
 
-	//remove the cases where all mediations are with the same relator
-	private static final String oclQuery = "ObjectClass.allInstances()->select(c:ObjectClass | Mediation.allInstances()->select(m:Mediation | m.endType->includes(c))->size()>=2)";
+	// do not remove the cases where all mediations are with the same relator
+	// String old_query = "ObjectClass.allInstances()->select(c:ObjectClass | Mediation.allInstances()->select(m:Mediation | m.endType->includes(c))->size()>=2)";
+	
+	private static final String oclQuery =  "ObjectClass.allInstances()->select(c:ObjectClass | "+
+		    "let mediations : Set(Mediation) = Mediation.allInstances()->select(m:Mediation | m.endType->includes(c))" +
+		    "in mediations->size()>=2 and mediations->collect(m: Mediation | m.relator())->asSet()"+
+		    "->size() = mediations->size()"+
+			")";
 	
 	public static final AntipatternInfo info = new AntipatternInfo("Multiple Relational Dependency", 
 			"MultDep", 
 			"This anti-pattern is identified when an object class is connected to two distinct «relator» types through «mediation» associations.  " +
 			"The relators may not specialize one another.",
 			oclQuery); 
-		
+
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
