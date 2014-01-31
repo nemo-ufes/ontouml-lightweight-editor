@@ -5,9 +5,9 @@ import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.BinaryPattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.PatternCategory;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.PhasePattern;
 
-public class PhaseDescriptionRevPattern extends BinaryPattern implements PhasePattern {
+public class PhaseDescriptionPattern extends BinaryPattern implements PhasePattern {
 
-	public PhaseDescriptionRevPattern(DescriptionCategory describedCategory,
+	public PhaseDescriptionPattern(DescriptionCategory describedCategory,
 			PatternCategory targetCategory) {
 		super(describedCategory, targetCategory);
 	}
