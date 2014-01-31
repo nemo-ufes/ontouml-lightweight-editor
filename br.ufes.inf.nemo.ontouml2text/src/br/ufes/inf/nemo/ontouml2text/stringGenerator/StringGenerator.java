@@ -191,21 +191,39 @@ public class StringGenerator {
 		NaryPattern naryPattern = null;
 		
 		if(describedCategory == source){ // Ensuring unidirectionality
-			naryPattern = (NaryPattern)searchPattern(patterns, "FormalAssociationPattern");
-			
-			if(naryPattern == null){
-				naryPattern = new FormalAssociationPattern(describedCategory);
-				patterns.add(naryPattern);
+			if(function.getTargetMinMultiplicity() > 0){
+				naryPattern = (NaryPattern)searchPattern(patterns, "FormalAssociationPattern");
+				
+				if(naryPattern == null){
+					naryPattern = new FormalAssociationPattern(describedCategory);
+					patterns.add(naryPattern);
+				}				
+			}else{
+				naryPattern = (NaryPattern)searchPattern(patterns, "OptionalFormalAssociationPattern");
+				
+				if(naryPattern == null){
+					naryPattern = new OptionalFormalAssociationPattern(describedCategory);
+					patterns.add(naryPattern);
+				}
 			}
 			
 			naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
 					function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
 		}else{ // Formal Association Rev Pattern
-			naryPattern = (NaryPattern)searchPattern(patterns, "FormalAssociationRevPattern");
-			
-			if(naryPattern == null){
-				naryPattern = new FormalAssociationRevPattern(describedCategory);
-				patterns.add(naryPattern);
+			if(function.getTargetMinMultiplicity() > 0){
+				naryPattern = (NaryPattern)searchPattern(patterns, "FormalAssociationRevPattern");
+				
+				if(naryPattern == null){
+					naryPattern = new FormalAssociationRevPattern(describedCategory);
+					patterns.add(naryPattern);
+				}	
+			}else{
+				naryPattern = (NaryPattern)searchPattern(patterns, "OptionalFormalAssociationRevPattern");
+				
+				if(naryPattern == null){
+					naryPattern = new OptionalFormalAssociationRevPattern(describedCategory);
+					patterns.add(naryPattern);
+				}
 			}
 			
 			naryPattern.getTargetCategories().add(new PatternCategory(source.getLabel(), 

@@ -1,13 +1,14 @@
 package br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.naryPatterns;
 
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
-import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.MediationPattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.NaryPattern;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.FormalPattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.OptionalMultiplicityPattern;
 
-public class OptionalExceptionMediationPattern extends NaryPattern implements MediationPattern, OptionalMultiplicityPattern {
+public class OptionalFormalAssociationPattern extends NaryPattern implements
+		FormalPattern, OptionalMultiplicityPattern {
 
-	public OptionalExceptionMediationPattern(
+	public OptionalFormalAssociationPattern(
 			DescriptionCategory describedCategory) {
 		super(describedCategory);
 	}
