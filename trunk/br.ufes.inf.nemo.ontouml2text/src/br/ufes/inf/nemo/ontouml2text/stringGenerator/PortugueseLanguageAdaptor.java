@@ -125,6 +125,15 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 		}
 		
+		if(pattern instanceof PhaseDescriptionPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+			
+			// Generating specific description
+			parcialDescription += " é " + 
+					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
+		}
+		
 		if(pattern instanceof CharacterizationAssociationPattern){
 			// Integration
 			if(previousIsGeneralization(previousPattern)) parcialDescription += ",";
@@ -134,12 +143,12 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
 		}
 		
-		if(pattern instanceof FormalAssociationPattern){
+		if(pattern instanceof CharacterizationAssociationRevPattern){
 			// Integration
-			if(previousIsGeneralization(previousPattern)) parcialDescription += ", o qual";
-						
-			// Generating specific description			
-			parcialDescription += " está associado a " + 
+			if(previousIsGeneralization(previousPattern)) parcialDescription += ",";
+			
+			// Generating specific description
+			parcialDescription += " é uma característica de " + 
 					insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 		}
 		
@@ -193,13 +202,32 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 	private String  processNaryPattern(DescriptionPattern pattern, DescriptionPattern previousPattern){
 		String parcialDescription = "";
 		
-		if(pattern instanceof PhaseDescriptionPattern){
+		if(pattern instanceof PhaseDescriptionRevPattern){
 			// Integration
 			if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
 			
 			// Generating specific description
 			parcialDescription += " tem como fases: " + 
 					insertListing((NaryPattern)pattern, false);
+		}
+		
+		if(pattern instanceof FormalAssociationPattern){
+			// Integration
+			if(previousPattern instanceof PhaseDescriptionRevPattern) parcialDescription += "; como também";
+			if(previousIsGeneralization(previousPattern)) parcialDescription += ", o qual";
+						
+			// Generating specific description			
+			parcialDescription += " está associado a " + 
+					insertListing((NaryPattern)pattern, true);
+		}
+		
+		if(pattern instanceof FormalAssociationRevPattern){
+			// Integration
+			if(previousIsGeneralization(previousPattern)) parcialDescription += ", o qual";
+						
+			// Generating specific description			
+			parcialDescription += " está associado a " + 
+					insertListing((NaryPattern)pattern, true);
 		}
 		
 		if(pattern instanceof ComponentOfRevPattern){
@@ -358,7 +386,7 @@ public class PortugueseLanguageAdaptor implements LanguageAdaptor {
 				return "várias ";
 		}
 		
-		return "$INDEF$";
+		return "$INDEF$ ";
 	}
 	
 	private String insertListing(NaryPattern pattern, boolean withMultiplicity){

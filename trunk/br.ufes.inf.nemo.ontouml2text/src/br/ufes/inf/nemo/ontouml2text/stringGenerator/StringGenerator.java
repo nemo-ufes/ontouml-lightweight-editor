@@ -126,23 +126,23 @@ public class StringGenerator {
 			
 			// Phase Description Pattern
 			if((target instanceof Kind || target instanceof Subkind) && source instanceof Phase){
-				NaryPattern naryPattern = (NaryPattern)searchPattern(patterns, "PhaseDescriptionPattern");
-				
-				if(naryPattern == null){
-					naryPattern = new PhaseDescriptionPattern(describedCategory);
-					patterns.add(naryPattern);
-				}		
-				
-				naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
-						function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));
+				patterns.add(new PhaseDescriptionPattern(describedCategory, 
+						new PatternCategory(target.getLabel(), 
+								function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));
 			}
 		}else{
 			// Phase Description Rev Pattern
 			if((target instanceof Kind || target instanceof Subkind) && source instanceof Phase){
-				patterns.add(new PhaseDescriptionRevPattern(describedCategory, 
-						new PatternCategory(source.getLabel(), 
-								((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
-								((BinaryDescriptionFunction)function).getSourceMaxMultiplicity())));
+				NaryPattern naryPattern = (NaryPattern)searchPattern(patterns, "PhaseDescriptionRevPattern");
+				
+				if(naryPattern == null){
+					naryPattern = new PhaseDescriptionRevPattern(describedCategory);
+					patterns.add(naryPattern);
+				}		
+				
+				naryPattern.getTargetCategories().add(new PatternCategory(source.getLabel(),
+						((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
+						((BinaryDescriptionFunction)function).getSourceMaxMultiplicity()));			
 			}
 		}
 	}
@@ -188,16 +188,30 @@ public class StringGenerator {
 		DescriptionCategory target = function.getTarget(); 
 		DescriptionCategory	source = ((BinaryDescriptionFunction)function).getSource();;
 		
+		NaryPattern naryPattern = null;
+		
 		if(describedCategory == source){ // Ensuring unidirectionality
-			patterns.add(new FormalAssociationPattern(describedCategory, 
-					new PatternCategory(target.getLabel(), 
-							function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));
+			naryPattern = (NaryPattern)searchPattern(patterns, "FormalAssociationPattern");
+			
+			if(naryPattern == null){
+				naryPattern = new FormalAssociationPattern(describedCategory);
+				patterns.add(naryPattern);
+			}
+			
+			naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
+					function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
 		}else{ // Formal Association Rev Pattern
-			patterns.add(new FormalAssociationRevPattern(describedCategory, 
-					new PatternCategory(source.getLabel(), 
-							((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
-							((BinaryDescriptionFunction)function).getSourceMaxMultiplicity())));
-		}
+			naryPattern = (NaryPattern)searchPattern(patterns, "FormalAssociationRevPattern");
+			
+			if(naryPattern == null){
+				naryPattern = new FormalAssociationRevPattern(describedCategory);
+				patterns.add(naryPattern);
+			}
+			
+			naryPattern.getTargetCategories().add(new PatternCategory(source.getLabel(), 
+					((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
+					((BinaryDescriptionFunction)function).getSourceMaxMultiplicity()));	
+		}	
 	}
 	
 	
