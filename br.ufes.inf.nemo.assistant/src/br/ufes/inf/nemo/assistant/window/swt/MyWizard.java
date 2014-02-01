@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.assistant.window.swt;
 import java.io.Serializable;
 
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -17,12 +18,23 @@ public class MyWizard extends Wizard implements Serializable{
 		setHelpAvailable(true);
 	}
 
+	static String srcname = "";
 	@Override
 	public void addPages() {
-		one = new MyPageOne();
-		two = new MyPageTwo();
-		addPage(one);
-		addPage(two);
+		
+		NewClass page1 = new NewClass();
+		page1.setStereotypes(new String[]{"Kind","Subkind"});
+		page1.setSrcName(srcname);
+		addPage(page1);
+		
+//		NewClass page2 = new NewClass();
+//		page2.setStereotypes(new String[]{"Role","Phase"});
+//		addPage(page2);
+		
+		NewGenericRelation page3 = new NewGenericRelation();
+		page3.setClassName(srcname);
+		addPage(page3);
+		
 	}
 
 	@Override
@@ -40,5 +52,9 @@ public class MyWizard extends Wizard implements Serializable{
 		} else {
 			System.out.println("Cancel pressed");
 		}
+	}
+	@Override
+	public boolean performCancel() {
+		return false;
 	}
 }
