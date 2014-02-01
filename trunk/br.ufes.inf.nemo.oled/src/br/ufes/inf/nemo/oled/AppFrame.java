@@ -51,9 +51,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	
 	private transient SimpleGUICustom analyzer;
 	
-	//For modelling assistant
-	private static transient AppFrame instance;
-
 	/**
 	 * Default constructor.
 	 * */
@@ -85,9 +82,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		initSelectorMap();
 		
 		restoreDefaults();
-		
-		//for modelling assistant
-		instance = this;		
+
 	}
 	
 	public void createSysOutInterceptor()
@@ -550,15 +545,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public SimpleGUICustom getAlloyAnalyzer()
 	{
 		return analyzer;
-	}
-	
-	/**
-	 * Return a current instance of AppFrame. 
-	 * It s used for Modelling Instance project.
-	 * @return current AppFrame instance 
-	 */
-	public static AppFrame getInstance(){
-		return instance;
 	}
 
 	public void focusOnProperties()
