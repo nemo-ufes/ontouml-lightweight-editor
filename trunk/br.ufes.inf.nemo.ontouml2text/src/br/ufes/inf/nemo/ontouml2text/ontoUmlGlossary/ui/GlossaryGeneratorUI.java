@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFileChooser;
@@ -13,22 +12,30 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionSpace;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpaceGenerator.DescriptionSpaceGenerator;
+import br.ufes.inf.nemo.ontouml2text.glossaryExporter.HtmlGlossaryExporter;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.PortugueseDictionary;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.PortugueseLanguageAdaptor;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.StringGenerator;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GlossaryGeneratorUI extends JFrame {
 
-	/**
-	 * 
-	 */
+	private OntoUMLParser parser;
 	private JPanel contentPane;
-	private JTextField edtInput;
+	private JTextField outputFileName;
 	private JTextField edtOutputDirectory;
 	private JCheckBox chkAnalyseDescriptiveConsistency;
-	private JButton btnSelectInput;
 	private JButton btnSelectOutputDirectory;
 	private JButton btnGenerateGlossary;
+	private static final long serialVersionUID = 1L;
 	
 	private boolean doGlossaryGeneration;
 
@@ -45,12 +52,10 @@ public class GlossaryGeneratorUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JLabel lblNewLabel = new JLabel("Model File (XMI Input)");
+		JLabel lblNewLabel = new JLabel("Output File Name");
 		
-		edtInput = new JTextField();
-		edtInput.setColumns(10);
-		
-		btnSelectInput = new JButton("...");
+		outputFileName = new JTextField();
+		outputFileName.setColumns(10);
 		
 		JLabel lblOutputDirectory = new JLabel("Output Directory");
 		
@@ -80,11 +85,10 @@ public class GlossaryGeneratorUI extends JFrame {
 										.addGroup(gl_contentPane.createSequentialGroup()
 											.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 												.addComponent(edtOutputDirectory, Alignment.LEADING)
-												.addComponent(edtInput, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE))
+												.addComponent(outputFileName, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE))
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addComponent(btnSelectOutputDirectory, 0, 0, Short.MAX_VALUE)
-												.addComponent(btnSelectInput, GroupLayout.PREFERRED_SIZE, 29, Short.MAX_VALUE))))
+												.addComponent(btnSelectOutputDirectory, 0, 0, Short.MAX_VALUE))))
 									.addContainerGap())
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addComponent(lblOutputDirectory)
@@ -100,8 +104,7 @@ public class GlossaryGeneratorUI extends JFrame {
 					.addComponent(lblNewLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(edtInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSelectInput))
+						.addComponent(outputFileName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblOutputDirectory)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -118,33 +121,8 @@ public class GlossaryGeneratorUI extends JFrame {
 		
 		setLocationRelativeTo(null);
 		
-		btnSelectInput.setActionCommand("inputSelection");
 		btnSelectOutputDirectory.setActionCommand("outputSelection");
 		btnGenerateGlossary.setActionCommand("generateGlossary");
-		
-		btnSelectInput.addActionListener(new ActionListener(){
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				  JFileChooser chooser = new JFileChooser();
-			      chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-	
-			      FileNameExtensionFilter filter = new FileNameExtensionFilter(
-			        ".xmi model files", "xmi");
-			      chooser.setFileFilter(filter);
-	
-			      try {
-			            int code = chooser.showOpenDialog(contentPane);
-			            if (code == JFileChooser.APPROVE_OPTION) {
-			               File selectedFile = chooser.getSelectedFile();
-			               edtInput.setText(selectedFile.getName());
-			            }
-			      } catch (Exception f) {
-			         f.printStackTrace();
-			      }
-			}
-			
-		});
 		
 		btnSelectOutputDirectory.addActionListener(new ActionListener(){
 
@@ -172,6 +150,23 @@ public class GlossaryGeneratorUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				doGlossaryGeneration = true;
 				
+				//if(settings.doGlossaryGeneration()){
+				DescriptionSpace space = new DescriptionSpace();		
+				
+				// Hash containing the labels of the categories already covered
+				Set<String> hashCategories = new HashSet<String>();
+				
+				DescriptionSpaceGenerator generator = new DescriptionSpaceGenerator(space);
+				generator.populateDescriptionSpace(parser, hashCategories);
+				
+				// Processing description space
+				StringGenerator glossaryGenerator = new StringGenerator(space, 
+						new HtmlGlossaryExporter(outputFileName.getText(),"C:/Users/jose anholetti/Desktop","Glossário ANTT"), 
+						new PortugueseLanguageAdaptor(new PortugueseDictionary()));
+				
+				glossaryGenerator.generateGlossary();
+				//}
+ 
 				setVisible(false);
 			}
 			
@@ -190,5 +185,9 @@ public class GlossaryGeneratorUI extends JFrame {
 	
 	public boolean doGlossaryGeneration(){
 		return doGlossaryGeneration;
+	}
+	
+	public void getParser(OntoUMLParser p){
+		this.parser = p;
 	}
 }
