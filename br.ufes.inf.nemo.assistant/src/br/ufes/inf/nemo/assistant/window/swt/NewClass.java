@@ -1,36 +1,23 @@
 package br.ufes.inf.nemo.assistant.window.swt;
 
-import java.awt.Event;
-
-import javax.swing.DefaultComboBoxModel;
-
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-public class NewClass extends WizardPage {
+public class NewClass extends WizardPageAssistant {
 	private Text text;
 
 	/**
 	 * Create the wizard.
 	 */
 	public NewClass() {
-		super("wizardPage");
+		super("Create new class");
 		setTitle("Create a new OntoUML class");
 		setDescription("NEWCLASS.description");
 	}
@@ -39,7 +26,6 @@ public class NewClass extends WizardPage {
 	private String[] stereotypes;
 	private Label warning;
 	
-	private String srcName;
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 
@@ -60,7 +46,6 @@ public class NewClass extends WizardPage {
 				}else{
 					warning.setVisible(false);
 					setPageComplete(true);
-					srcName = text.getText();
 				}
 			}
 		});
@@ -98,15 +83,29 @@ public class NewClass extends WizardPage {
 	    shell.open();
 	}
 
-	public String getClassName() {
+	public String getCurrentClass() {
 		return text.getText();
+	}
+	
+	public String getCurrentStereotype(){
+		return cbStereotypes.getItem(cbStereotypes.getSelectionIndex());
 	}
 	
 	public void setStereotypes(String[] sts){
 		stereotypes = sts;
 	}
 	
-	public void setSrcName(String s){
-		srcName = s;
+	@Override
+	public boolean next() {
+		return true;
 	}
+	
+	@Override
+	public boolean canFlipToNextPage() {
+		if(text.getText().isEmpty()){
+			return false;
+		}
+		return true;
+	}
+	
 }
