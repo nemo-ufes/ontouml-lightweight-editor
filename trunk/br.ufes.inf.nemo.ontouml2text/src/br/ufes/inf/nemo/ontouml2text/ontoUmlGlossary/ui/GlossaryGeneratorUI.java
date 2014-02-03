@@ -7,24 +7,18 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionSpace;
-import br.ufes.inf.nemo.ontouml2text.descriptionSpaceGenerator.DescriptionSpaceGenerator;
-import br.ufes.inf.nemo.ontouml2text.glossaryExporter.HtmlGlossaryExporter;
-import br.ufes.inf.nemo.ontouml2text.stringGenerator.PortugueseDictionary;
-import br.ufes.inf.nemo.ontouml2text.stringGenerator.PortugueseLanguageAdaptor;
-import br.ufes.inf.nemo.ontouml2text.stringGenerator.StringGenerator;
+import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.OntoUmlGlossary;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 
 public class GlossaryGeneratorUI extends JFrame {
 
@@ -39,10 +33,16 @@ public class GlossaryGeneratorUI extends JFrame {
 	
 	private boolean doGlossaryGeneration;
 
+	public GlossaryGeneratorUI(OntoUMLParser parser)
+	{
+		this();		
+		this.parser = parser;		
+	}
+	
 	/**
 	 * Create the frame.
 	 */
-	public GlossaryGeneratorUI() {
+	public GlossaryGeneratorUI() {		
 		setResizable(false);
 		setType(Type.UTILITY);
 		setTitle("OntoUML Glossary Generator");
@@ -148,31 +148,32 @@ public class GlossaryGeneratorUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				doGlossaryGeneration = true;
 				
-				//if(settings.doGlossaryGeneration()){
-				DescriptionSpace space = new DescriptionSpace();		
 				
-				// Hash containing the labels of the categories already covered
-				Set<String> hashCategories = new HashSet<String>();
+				if(outputFileName.getText().equals(""))
+					this.showErrorMessage(this,"There is no output name.","Output Name Error",JOptionPane.ERROR_MESSAGE,null);	
 				
-				DescriptionSpaceGenerator generator = new DescriptionSpaceGenerator(space);
-				generator.populateDescriptionSpace(parser, hashCategories);
+				else{				
+					OntoUmlGlossary.xmiToText(parser, outputFileName.getText());
+					dispose();
+					}
+			}
+
+			private void showErrorMessage(ActionListener actionListener,
+					String message, String title, int errorMessage,
+					Object object) {
+				JOptionPane.showMessageDialog(contentPane, message, title, 0);//(this,message,title,JOptionPane.ERROR_MESSAGE,null);
 				
-				// Processing description space
-				StringGenerator glossaryGenerator = new StringGenerator(space, 
-						new HtmlGlossaryExporter(outputFileName.getText(),"C:/Users/jose anholetti/Desktop","Glossário ANTT"), 
-						new PortugueseLanguageAdaptor(new PortugueseDictionary()));
-				
-				glossaryGenerator.generateGlossary();
-				//}
- 
-				setVisible(false);
 			}
 			
 		});
 		
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	}
+	
+	public void showErrorMessage(String title, String message)
+	{
+		JOptionPane.showMessageDialog(this,message,title,JOptionPane.ERROR_MESSAGE,null);	
 	}
 	
 	public String getOutputDirectory(){
@@ -185,9 +186,5 @@ public class GlossaryGeneratorUI extends JFrame {
 	
 	public boolean doGlossaryGeneration(){
 		return doGlossaryGeneration;
-	}
-	
-	public void getParser(OntoUMLParser p){
-		this.parser = p;
 	}
 }
