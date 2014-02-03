@@ -6,10 +6,11 @@ import java.util.List;
 public class DescriptionCategory {
 	private String label;
 	private String userDescription;
+	private boolean isDerived = false;
 	private List<DescriptionFunction> functions;
 	
 	public DescriptionCategory(String label){
-		this.label = label;
+		this.label = processLabel(label);
 		this.functions = new ArrayList<DescriptionFunction>();
 	}
 	
@@ -18,7 +19,7 @@ public class DescriptionCategory {
 	}
 	
 	public void setLabel(String label) {
-		this.label = label;
+		this.label = processLabel(label);
 	}
 	
 	public String getUserDescription() {
@@ -29,7 +30,19 @@ public class DescriptionCategory {
 		this.userDescription = userDescription;
 	}
 	
+	public boolean isDerived(){
+		return isDerived;
+	}
+	
 	public List<DescriptionFunction> getFunctions() {
 		return functions;
+	}
+	
+	public String processLabel(String label) {
+		if(label.startsWith("/")){
+			isDerived = true;
+			return label.substring(1,label.length());
+		}else
+			return label;
 	}
 }
