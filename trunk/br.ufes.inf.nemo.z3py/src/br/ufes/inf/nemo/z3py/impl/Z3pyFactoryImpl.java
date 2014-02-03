@@ -56,8 +56,18 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case Z3pyPackage.EXPRESSION: return createExpression();
-			case Z3pyPackage.FUNCTION: return createFunction();
+			case Z3pyPackage.FUNCTION_CALL: return createFunctionCall();
+			case Z3pyPackage.UNIVERSAL: return createUniversal();
+			case Z3pyPackage.EXISTENTIAL: return createExistential();
+			case Z3pyPackage.CONJUNCTION: return createConjunction();
+			case Z3pyPackage.DISJUNCTION: return createDisjunction();
+			case Z3pyPackage.EXCLUSIVE_DISJUNCTION: return createExclusiveDisjunction();
+			case Z3pyPackage.LOGICAL_NEGATION: return createLogicalNegation();
+			case Z3pyPackage.IMPLICATION: return createImplication();
+			case Z3pyPackage.EQUIVALENCE: return createEquivalence();
+			case Z3pyPackage.BOOLEAN_FUNCTION_DEFINITION: return createBooleanFunctionDefinition();
+			case Z3pyPackage.INT_CONSTANT: return createIntConstant();
+			case Z3pyPackage.ONTO_UMLZ3_SYSTEM: return createOntoUMLZ3System();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -68,9 +78,9 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Expression createExpression() {
-		ExpressionImpl expression = new ExpressionImpl();
-		return expression;
+	public FunctionCall createFunctionCall() {
+		FunctionCallImpl functionCall = new FunctionCallImpl();
+		return functionCall;
 	}
 
 	/**
@@ -78,9 +88,109 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Function createFunction() {
-		FunctionImpl function = new FunctionImpl();
-		return function;
+	public Universal createUniversal() {
+		UniversalImpl universal = new UniversalImpl();
+		return universal;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Existential createExistential() {
+		ExistentialImpl existential = new ExistentialImpl();
+		return existential;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Conjunction createConjunction() {
+		ConjunctionImpl conjunction = new ConjunctionImpl();
+		return conjunction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Disjunction createDisjunction() {
+		DisjunctionImpl disjunction = new DisjunctionImpl();
+		return disjunction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ExclusiveDisjunction createExclusiveDisjunction() {
+		ExclusiveDisjunctionImpl exclusiveDisjunction = new ExclusiveDisjunctionImpl();
+		return exclusiveDisjunction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public LogicalNegation createLogicalNegation() {
+		LogicalNegationImpl logicalNegation = new LogicalNegationImpl();
+		return logicalNegation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Implication createImplication() {
+		ImplicationImpl implication = new ImplicationImpl();
+		return implication;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Equivalence createEquivalence() {
+		EquivalenceImpl equivalence = new EquivalenceImpl();
+		return equivalence;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public BooleanFunctionDefinition createBooleanFunctionDefinition() {
+		BooleanFunctionDefinitionImpl booleanFunctionDefinition = new BooleanFunctionDefinitionImpl();
+		return booleanFunctionDefinition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IntConstant createIntConstant() {
+		IntConstantImpl intConstant = new IntConstantImpl();
+		return intConstant;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public OntoUMLZ3System createOntoUMLZ3System() {
+		OntoUMLZ3SystemImpl ontoUMLZ3System = new OntoUMLZ3SystemImpl();
+		return ontoUMLZ3System;
 	}
 
 	/**

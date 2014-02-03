@@ -22,22 +22,112 @@ public interface Z3pyFactory extends EFactory {
 	Z3pyFactory eINSTANCE = br.ufes.inf.nemo.z3py.impl.Z3pyFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Expression</em>'.
+	 * Returns a new object of class '<em>Function Call</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Expression</em>'.
+	 * @return a new object of class '<em>Function Call</em>'.
 	 * @generated
 	 */
-	Expression createExpression();
+	FunctionCall createFunctionCall();
 
 	/**
-	 * Returns a new object of class '<em>Function</em>'.
+	 * Returns a new object of class '<em>Universal</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Function</em>'.
+	 * @return a new object of class '<em>Universal</em>'.
 	 * @generated
 	 */
-	Function createFunction();
+	Universal createUniversal();
+
+	/**
+	 * Returns a new object of class '<em>Existential</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Existential</em>'.
+	 * @generated
+	 */
+	Existential createExistential();
+
+	/**
+	 * Returns a new object of class '<em>Conjunction</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Conjunction</em>'.
+	 * @generated
+	 */
+	Conjunction createConjunction();
+
+	/**
+	 * Returns a new object of class '<em>Disjunction</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Disjunction</em>'.
+	 * @generated
+	 */
+	Disjunction createDisjunction();
+
+	/**
+	 * Returns a new object of class '<em>Exclusive Disjunction</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Exclusive Disjunction</em>'.
+	 * @generated
+	 */
+	ExclusiveDisjunction createExclusiveDisjunction();
+
+	/**
+	 * Returns a new object of class '<em>Logical Negation</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Logical Negation</em>'.
+	 * @generated
+	 */
+	LogicalNegation createLogicalNegation();
+
+	/**
+	 * Returns a new object of class '<em>Implication</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Implication</em>'.
+	 * @generated
+	 */
+	Implication createImplication();
+
+	/**
+	 * Returns a new object of class '<em>Equivalence</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Equivalence</em>'.
+	 * @generated
+	 */
+	Equivalence createEquivalence();
+
+	/**
+	 * Returns a new object of class '<em>Boolean Function Definition</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Boolean Function Definition</em>'.
+	 * @generated
+	 */
+	BooleanFunctionDefinition createBooleanFunctionDefinition();
+
+	/**
+	 * Returns a new object of class '<em>Int Constant</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Int Constant</em>'.
+	 * @generated
+	 */
+	IntConstant createIntConstant();
+
+	/**
+	 * Returns a new object of class '<em>Onto UMLZ3 System</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Onto UMLZ3 System</em>'.
+	 * @generated
+	 */
+	OntoUMLZ3System createOntoUMLZ3System();
 
 	/**
 	 * Returns the package supported by this factory.

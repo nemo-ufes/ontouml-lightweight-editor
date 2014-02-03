@@ -2,29 +2,27 @@
  */
 package br.ufes.inf.nemo.z3py.impl;
 
-import br.ufes.inf.nemo.z3py.Function;
+import br.ufes.inf.nemo.z3py.Implication;
 import br.ufes.inf.nemo.z3py.Z3pyPackage;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Function</b></em>'.
+ * An implementation of the model object '<em><b>Implication</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class FunctionImpl extends EObjectImpl implements Function {
+public class ImplicationImpl extends LogicalBinaryImpl implements Implication {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected FunctionImpl() {
+	protected ImplicationImpl() {
 		super();
 	}
 
@@ -35,7 +33,7 @@ public class FunctionImpl extends EObjectImpl implements Function {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return Z3pyPackage.Literals.FUNCTION;
+		return Z3pyPackage.Literals.IMPLICATION;
 	}
 
-} //FunctionImpl
+} //ImplicationImpl
