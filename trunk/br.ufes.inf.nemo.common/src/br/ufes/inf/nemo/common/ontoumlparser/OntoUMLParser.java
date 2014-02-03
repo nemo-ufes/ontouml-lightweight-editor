@@ -640,15 +640,15 @@ public class OntoUMLParser {
 	 * @param result
 	 * @throws Exception 
 	 */
-	public void getAllMediations(Classifier relator, ArrayList<Mediation> result) throws Exception
+	public void getAllMediations(Classifier relator, ArrayList<Mediation> result)
 	{
 		result.addAll(getRelatorsMediations(relator));
 		
 		for(Generalization gen : relator.getGeneralization())
 		{						
-			if(isSelected(gen))	
-				if (gen.getGeneral() instanceof Relator) 
-					getAllMediations((Relator)gen.getGeneral(),result);			
+			if(isSelected(gen))	{
+				if (gen.getGeneral() instanceof Relator) getAllMediations((Relator)gen.getGeneral(),result);
+			}
 		}
 	}
 	
@@ -659,7 +659,7 @@ public class OntoUMLParser {
 	 * @param result
 	 * @throws Exception 
 	 */
-	public ArrayList<Mediation> getRelatorsMediations(Classifier relator) throws Exception
+	public ArrayList<Mediation> getRelatorsMediations(Classifier relator) 
 	{
 		ArrayList<Mediation> result = new ArrayList<Mediation>();
 		
@@ -1063,7 +1063,7 @@ public class OntoUMLParser {
 		return getRelatorEnd(m).getOpposite();
 	}
 	
-	public Classifier getRelator(Mediation m) throws Exception
+	public Classifier getRelator(Mediation m) 
 	{
 		return (Classifier) getRelatorEnd(m).getType();
 	}
@@ -1166,6 +1166,7 @@ public class OntoUMLParser {
 		return genSets;
 	}
 	
+	/** Get Generalizations which the type participates */
 	public ArrayList<Generalization> getGeneralizations(RefOntoUML.Classifier type)
 	{
 		ArrayList<RefOntoUML.Generalization> genList = new ArrayList<RefOntoUML.Generalization>();
@@ -1173,6 +1174,18 @@ public class OntoUMLParser {
 		{			
 			if(type.equals(gen.getGeneral())) genList.add(gen); 
 			if(type.equals(gen.getSpecific())) genList.add(gen);
+		}
+		return genList;
+	}
+	
+
+	/** Get all the generalizations in which this type is the General type*/
+	public ArrayList<Generalization> getSpecializations(RefOntoUML.Classifier type)
+	{
+		ArrayList<RefOntoUML.Generalization> genList = new ArrayList<RefOntoUML.Generalization>();
+		for(RefOntoUML.Generalization gen: getAllInstances(RefOntoUML.Generalization.class))
+		{			
+			if(type.equals(gen.getGeneral())) genList.add(gen);	
 		}
 		return genList;
 	}
