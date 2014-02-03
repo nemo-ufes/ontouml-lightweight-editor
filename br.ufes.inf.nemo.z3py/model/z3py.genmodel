@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/br.ufes.inf.nemo.z3py/src" modelPluginID="br.ufes.inf.nemo.z3py"
+    modelName="Z3py" importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0"
+    copyrightFields="false">
+  <foreignModel>z3py.ecore</foreignModel>
+  <genPackages prefix="Z3py" basePackage="br.ufes.inf.nemo" disposableProviderFactory="true"
+      ecorePackage="z3py.ecore#/">
+    <genClasses ecoreClass="z3py.ecore#//Expression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference z3py.ecore#//Expression/teste"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute z3py.ecore#//Expression/name"/>
+    </genClasses>
+    <genClasses ecoreClass="z3py.ecore#//Function"/>
+  </genPackages>
+</genmodel:GenModel>
