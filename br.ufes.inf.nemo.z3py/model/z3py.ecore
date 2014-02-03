@@ -12,7 +12,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//Expression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constants" lowerBound="1"
-        upperBound="-1" containment="true"/>
+        upperBound="-1" eType="#//IntConstant" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="quantifiesOver" lowerBound="1"
         upperBound="-1" eType="#//IntConstant"/>
   </eClassifiers>
@@ -42,8 +42,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OntoUMLZ3System">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="functions" upperBound="-1"
-        eType="#//BooleanFunctionDefinition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="functions" lowerBound="1"
+        upperBound="-1" eType="#//BooleanFunctionDefinition" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constants" lowerBound="1"
         upperBound="-1" eType="#//IntConstant" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" lowerBound="1"

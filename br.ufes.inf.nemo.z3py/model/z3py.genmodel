@@ -6,10 +6,42 @@
   <foreignModel>z3py.ecore</foreignModel>
   <genPackages prefix="Z3py" basePackage="br.ufes.inf.nemo" disposableProviderFactory="true"
       ecorePackage="z3py.ecore#/">
-    <genClasses ecoreClass="z3py.ecore#//Expression">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference z3py.ecore#//Expression/teste"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute z3py.ecore#//Expression/name"/>
+    <genClasses image="false" ecoreClass="z3py.ecore#//Expression"/>
+    <genClasses ecoreClass="z3py.ecore#//FunctionCall">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference z3py.ecore#//FunctionCall/calledFunction"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference z3py.ecore#//FunctionCall/arguments"/>
     </genClasses>
-    <genClasses ecoreClass="z3py.ecore#//Function"/>
+    <genClasses image="false" ecoreClass="z3py.ecore#//Quantification">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference z3py.ecore#//Quantification/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference z3py.ecore#//Quantification/constants"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference z3py.ecore#//Quantification/quantifiesOver"/>
+    </genClasses>
+    <genClasses ecoreClass="z3py.ecore#//Universal"/>
+    <genClasses ecoreClass="z3py.ecore#//Existential"/>
+    <genClasses ecoreClass="z3py.ecore#//Conjunction"/>
+    <genClasses ecoreClass="z3py.ecore#//Disjunction"/>
+    <genClasses ecoreClass="z3py.ecore#//ExclusiveDisjunction"/>
+    <genClasses ecoreClass="z3py.ecore#//LogicalNegation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference z3py.ecore#//LogicalNegation/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="z3py.ecore#//Implication"/>
+    <genClasses ecoreClass="z3py.ecore#//Equivalence"/>
+    <genClasses image="false" ecoreClass="z3py.ecore#//LogicalBinary">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference z3py.ecore#//LogicalBinary/operand1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference z3py.ecore#//LogicalBinary/operand2"/>
+    </genClasses>
+    <genClasses ecoreClass="z3py.ecore#//BooleanFunctionDefinition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute z3py.ecore#//BooleanFunctionDefinition/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute z3py.ecore#//BooleanFunctionDefinition/numberOfArguments"/>
+    </genClasses>
+    <genClasses ecoreClass="z3py.ecore#//IntConstant">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute z3py.ecore#//IntConstant/name"/>
+    </genClasses>
+    <genClasses ecoreClass="z3py.ecore#//OntoUMLZ3System">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference z3py.ecore#//OntoUMLZ3System/functions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference z3py.ecore#//OntoUMLZ3System/constants"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute z3py.ecore#//OntoUMLZ3System/fileName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference z3py.ecore#//OntoUMLZ3System/formulas"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

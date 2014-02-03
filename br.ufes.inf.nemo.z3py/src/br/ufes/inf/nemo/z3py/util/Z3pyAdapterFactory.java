@@ -72,8 +72,60 @@ public class Z3pyAdapterFactory extends AdapterFactoryImpl {
 				return createExpressionAdapter();
 			}
 			@Override
-			public Adapter caseFunction(Function object) {
-				return createFunctionAdapter();
+			public Adapter caseFunctionCall(FunctionCall object) {
+				return createFunctionCallAdapter();
+			}
+			@Override
+			public Adapter caseQuantification(Quantification object) {
+				return createQuantificationAdapter();
+			}
+			@Override
+			public Adapter caseUniversal(Universal object) {
+				return createUniversalAdapter();
+			}
+			@Override
+			public Adapter caseExistential(Existential object) {
+				return createExistentialAdapter();
+			}
+			@Override
+			public Adapter caseConjunction(Conjunction object) {
+				return createConjunctionAdapter();
+			}
+			@Override
+			public Adapter caseDisjunction(Disjunction object) {
+				return createDisjunctionAdapter();
+			}
+			@Override
+			public Adapter caseExclusiveDisjunction(ExclusiveDisjunction object) {
+				return createExclusiveDisjunctionAdapter();
+			}
+			@Override
+			public Adapter caseLogicalNegation(LogicalNegation object) {
+				return createLogicalNegationAdapter();
+			}
+			@Override
+			public Adapter caseImplication(Implication object) {
+				return createImplicationAdapter();
+			}
+			@Override
+			public Adapter caseEquivalence(Equivalence object) {
+				return createEquivalenceAdapter();
+			}
+			@Override
+			public Adapter caseLogicalBinary(LogicalBinary object) {
+				return createLogicalBinaryAdapter();
+			}
+			@Override
+			public Adapter caseBooleanFunctionDefinition(BooleanFunctionDefinition object) {
+				return createBooleanFunctionDefinitionAdapter();
+			}
+			@Override
+			public Adapter caseIntConstant(IntConstant object) {
+				return createIntConstantAdapter();
+			}
+			@Override
+			public Adapter caseOntoUMLZ3System(OntoUMLZ3System object) {
+				return createOntoUMLZ3SystemAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -110,16 +162,198 @@ public class Z3pyAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Function <em>Function</em>}'.
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.FunctionCall <em>Function Call</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see br.ufes.inf.nemo.z3py.Function
+	 * @see br.ufes.inf.nemo.z3py.FunctionCall
 	 * @generated
 	 */
-	public Adapter createFunctionAdapter() {
+	public Adapter createFunctionCallAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Quantification <em>Quantification</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.Quantification
+	 * @generated
+	 */
+	public Adapter createQuantificationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Universal <em>Universal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.Universal
+	 * @generated
+	 */
+	public Adapter createUniversalAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Existential <em>Existential</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.Existential
+	 * @generated
+	 */
+	public Adapter createExistentialAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Conjunction <em>Conjunction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.Conjunction
+	 * @generated
+	 */
+	public Adapter createConjunctionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Disjunction <em>Disjunction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.Disjunction
+	 * @generated
+	 */
+	public Adapter createDisjunctionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.ExclusiveDisjunction <em>Exclusive Disjunction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.ExclusiveDisjunction
+	 * @generated
+	 */
+	public Adapter createExclusiveDisjunctionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.LogicalNegation <em>Logical Negation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.LogicalNegation
+	 * @generated
+	 */
+	public Adapter createLogicalNegationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Implication <em>Implication</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.Implication
+	 * @generated
+	 */
+	public Adapter createImplicationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Equivalence <em>Equivalence</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.Equivalence
+	 * @generated
+	 */
+	public Adapter createEquivalenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.LogicalBinary <em>Logical Binary</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.LogicalBinary
+	 * @generated
+	 */
+	public Adapter createLogicalBinaryAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.BooleanFunctionDefinition <em>Boolean Function Definition</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.BooleanFunctionDefinition
+	 * @generated
+	 */
+	public Adapter createBooleanFunctionDefinitionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.IntConstant <em>Int Constant</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.IntConstant
+	 * @generated
+	 */
+	public Adapter createIntConstantAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.OntoUMLZ3System <em>Onto UMLZ3 System</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.OntoUMLZ3System
+	 * @generated
+	 */
+	public Adapter createOntoUMLZ3SystemAdapter() {
 		return null;
 	}
 
