@@ -83,6 +83,7 @@ import br.ufes.inf.nemo.antipattern.wizard.relover.RelOverWizard;
 import br.ufes.inf.nemo.antipattern.wizard.relrig.RelRigWizard;
 import br.ufes.inf.nemo.antipattern.wizard.relspec.RelSpecWizard;
 import br.ufes.inf.nemo.antipattern.wizard.reprel.RepRelWizard;
+import br.ufes.inf.nemo.antipattern.wizard.undefformal.UndefFormalWizard;
 import br.ufes.inf.nemo.antipattern.wizard.wholeover.WholeOverWizard;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
@@ -370,6 +371,7 @@ public class AntiPatternResultDialog extends Dialog {
     	if (apOccur instanceof RepRelOccurrence) wizardDialog = new WizardDialog(new Shell(), new RepRelWizard((RepRelOccurrence)apOccur));
     	if (apOccur instanceof MultiDepOccurrence) wizardDialog = new WizardDialog(new Shell(), new MultiDepWizard((MultiDepOccurrence)apOccur));
     	if (apOccur instanceof RelCompOccurrence) wizardDialog = new WizardDialog(new Shell(), new RelCompWizard((RelCompOccurrence)apOccur));
+    	if (apOccur instanceof UndefFormalOccurrence) wizardDialog = new WizardDialog(new Shell(), new UndefFormalWizard((UndefFormalOccurrence)apOccur));
     	return wizardDialog;
 	}
 	
