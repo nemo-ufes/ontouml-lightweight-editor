@@ -149,31 +149,31 @@ public class GlossaryGeneratorUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				//GlossaryGeneratorAnalisysUI gga = new GlossaryGeneratorAnalisysUI();
 				
+
 				if(outputFileName.getText().equals(""))
 					this.showErrorMessage(this,"There is no output name.","Output Name Error",JOptionPane.ERROR_MESSAGE,null);	
 				
 				else{				
 					OntoUmlGlossary.xmiToText(parser, outputFileName.getText());
+					OntoUmlGlossary.getConceptsWithoutDesc();
+					System.out.println("tamanho " + OntoUmlGlossary.getConceptsWithoutDesc().size());
 					dispose();
 					}
+				
 			}
 
 			private void showErrorMessage(ActionListener actionListener,
 					String message, String title, int errorMessage,
 					Object object) {
-				JOptionPane.showMessageDialog(contentPane, message, title, 0);//(this,message,title,JOptionPane.ERROR_MESSAGE,null);
+				JOptionPane.showMessageDialog(contentPane, message, title, 0);
 				
 			}
 			
 		});
 		
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-	}
-	
-	public void showErrorMessage(String title, String message)
-	{
-		JOptionPane.showMessageDialog(this,message,title,JOptionPane.ERROR_MESSAGE,null);	
 	}
 	
 	public String getOutputDirectory(){
