@@ -338,27 +338,42 @@ public final class AssociationElement extends BaseConnection {
 
 		//Then, draw decorations
 		if (associationType == RelationType.DERIVATION) {
+			
 			drawCircle(drawingContext, calculateRotationInEndPoint2(), true);
 		}
 
 		else if (associationType == RelationType.COMPONENTOF) {
 
-			drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), null);
+			if((Meronymic)getRelationship()!=null){
+				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), null);
+			}else{
+				System.err.println("Trying to draw a memberOf decoration... null relationship!");
+			}
 		}
 		
 		else if (associationType == RelationType.MEMBEROF) {
-
-			drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "M");
+			if((Meronymic)getRelationship()!=null){
+				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "M");
+			}else{
+				System.err.println("Trying to draw a memberOf decoration... null relationship!");
+			}
 		}
 
 		else if (associationType == RelationType.SUBQUANTITYOF) {
-
-			drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "Q");
+			if((Meronymic)getRelationship()!=null){
+				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "Q");
+			}else{
+				System.err.println("Trying to draw a subQuantityOf decoration... null relationship!");
+			}
 		}
 
 		else if (associationType == RelationType.SUBCOLLECTIONOF) {
-
-			drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "C");
+			
+			if((Meronymic)getRelationship()!=null){
+				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "C");
+			}else{
+				System.err.println("Trying to draw a subCollectionOf decoration... null relationship!");
+			}
 		}
 
 		//Then, draw navegability arrows and labels
@@ -565,6 +580,8 @@ public final class AssociationElement extends BaseConnection {
 			return "<<"+ModelHelper.getStereotype(getRelationship())+">> "+((RefOntoUML.Association)getRelationship()).getName();
 		}else if (getRelationship() instanceof RefOntoUML.Generalization){
 			return ModelHelper.getStereotype(getRelationship())+" "+((RefOntoUML.Generalization)getRelationship()).getSpecific()+" -> "+((RefOntoUML.Generalization)getRelationship()).getGeneral();
+		}else if (getRelationship()==null){
+			return "null";
 		}
 		return "!UNKNOWN";
 	}

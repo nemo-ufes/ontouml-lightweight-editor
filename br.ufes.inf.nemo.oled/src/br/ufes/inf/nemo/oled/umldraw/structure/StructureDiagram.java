@@ -33,6 +33,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -142,15 +143,14 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	 * @throws ClassNotFoundException
 	 *             if class was not found
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked" })
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		gridSize = stream.readInt();
 		name = stream.readUTF();
-		connections = (List<Connection>) stream.readObject();
+		connections = (List<Connection>) stream.readObject();		
 		nameLabel = (Label) stream.readObject();
 		project = (UmlProject) stream.readObject();
-		simulationElements = (List<SimulationElement>) stream.readObject();
-		
+		simulationElements = (List<SimulationElement>) stream.readObject();		
 		gridVisible = true;
 		snapToGrid = true;
 		saveNeeded = false;
@@ -158,6 +158,38 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		nodeChangeListeners = new HashSet<NodeChangeListener>();
 		generateTheme = true;		
 		
+	}
+	
+	@SuppressWarnings("rawtypes")
+	/** Delete connections that have a null relationship. This should not happen. */
+	public void eliminateTrash(List<Connection> connections)
+	{
+		Iterator iter = connections.iterator();
+		while(iter.hasNext())
+		{
+			Object obj = iter.next();
+			if (obj instanceof AssociationElement){
+				AssociationElement assocElem = (AssociationElement)obj;
+				if (assocElem.getRelationship() ==null) {
+					System.err.println("Draw Exception: Association Element "+assocElem+" cannot be drawed! Cause: null relationship. ");
+					System.err.print("Fixing the problem... ");
+					if(ModelHelper.removeMapping(assocElem)) System.err.print("Association Element "+assocElem+" removed. ");
+					else System.err.print("Association Element "+assocElem+" ignored. ");
+					iter.remove();
+				} 
+			}
+			
+			else if (obj instanceof GeneralizationElement) {
+				GeneralizationElement genElem = (GeneralizationElement)obj;
+				if (genElem.getRelationship() ==null) {
+					System.err.println("Draw Exception: Generalization Element "+genElem+" cannot be drawed! Cause: null generalization. ");
+					System.err.print("Fixing the problem... ");
+					if(ModelHelper.removeMapping(genElem)) System.err.print("Generalization Element "+genElem+" removed. ");
+					else System.err.print("Generalization Element "+genElem+" ignored. ");
+					iter.remove();
+				}
+			}			
+		}		
 	}
 	
 	/**
@@ -370,12 +402,12 @@ public class StructureDiagram extends AbstractCompositeNode implements
 
 		// Draw container children
 		super.draw(drawingContext);
-
+		
+		//eliminate problematic connections...
+		eliminateTrash(connections);
+		
 		// Draw associations
-		for (Connection assoc : connections) {
-			assoc.draw(drawingContext);
-		}
-
+		for (Connection assoc : connections) assoc.draw(drawingContext);		
 	}
 
 	/**
