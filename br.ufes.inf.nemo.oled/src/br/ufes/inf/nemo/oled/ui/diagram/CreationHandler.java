@@ -26,6 +26,10 @@ import java.awt.geom.Rectangle2D;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
+import br.ufes.inf.nemo.assistant.ModellingAssistant;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.oled.Main;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
@@ -54,6 +58,8 @@ public class CreationHandler implements EditorMode {
   private Node element;
   private Point2D tmpPos = new Point2D.Double();
   private Rectangle2D cachedBounds;
+  
+  public boolean isDragging =false;
 
   /**
    * Constructor.
@@ -76,6 +82,7 @@ public class CreationHandler implements EditorMode {
    * @param stereotype the ElementType
    */
   public Node create(ElementType stereotype) {
+	isDragging = false;
     elementType = stereotype;
     element = editor.getDiagram().getElementFactory().createNode(elementType);
 
@@ -89,6 +96,7 @@ public class CreationHandler implements EditorMode {
   }
   
   public Node create(RefOntoUML.Type type, EObject eContainer) {
+	isDragging = true;
     elementType = ElementType.valueOf(type.eClass().getName().toUpperCase());
     
     element = editor.getDiagram().getElementFactory().createNode(type,eContainer);
@@ -159,7 +167,8 @@ public class CreationHandler implements EditorMode {
   /**
    * {@inheritDoc}
    */
-  public void mousePressed(EditorMouseEvent event) {
+  @SuppressWarnings("unused")
+public void mousePressed(EditorMouseEvent event) {
     CompositeNode parent = editor.getDiagram();
     DiagramElement possibleParent = editor.getDiagram().getChildAt(tmpPos.getX(), tmpPos.getY());
     
@@ -175,9 +184,28 @@ public class CreationHandler implements EditorMode {
     //move all its generalizations too
     editor.getDiagramManager().moveGeneralizationsToDiagram(elem, elem.eContainer(), editor);
     
-    //CLEANUP
-    //if(element instanceof ClassElement)
-	//	editor.editLabel(((ClassElement)element).getMainLabel());
+    if (!isDragging) {
+
+    	//===================================================
+    	// move latter to diagramManager class
+    	boolean runAssistant = editor.getDiagramManager().getFrame().getMainMenu().isAssistantChecked();
+    	if(runAssistant){
+    		ModellingAssistant assistant = ProjectBrowser.getAssistantFor(editor.getDiagramManager().getCurrentProject());
+    		Fix fix = new Fix();    		
+    		if(Main.onMac()){
+    			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
+    				@Override
+    				public void run() {
+    					//fix = assistant.runPattern(elem);
+    				}
+    			});
+    		}else{
+    			//fix = assistant.runPattern(elem);
+    		}    		
+    		editor.getDiagramManager().updateOLED(fix);
+    	}	
+    	//===================================================
+    }
   }
 
   /**

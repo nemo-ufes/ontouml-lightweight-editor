@@ -99,10 +99,15 @@ public class MainMenu implements ActionListener {
 		//antipatternItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 		
 		JMenuItem assistantItem = createCheckBoxMenuItem(toolMenu, "assistant");
-		assistantItem.setSelected(true);
-		assistantItem.setEnabled(false);
+		assistantItem.setSelected(false);
+//		assistantItem.setEnabled(false);
 		//assistantItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));		
 		
+	}
+	
+	public boolean isAssistantChecked()
+	{
+		return itemMap.get("ASSISTANT").isSelected();
 	}
 	
 	/**
