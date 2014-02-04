@@ -18,7 +18,7 @@ public class OntoUmlGlossary {
 	// List containing concepts without user description
 	public static ArrayList <String> conceptsWithoutDesc = new ArrayList<String>();
 	
-	public static void xmiToText(final OntoUMLParser parser, final String outputName) {		
+	public static void xmiToText(final OntoUMLParser parser, final String outputName, final String outputdirectory) {		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {														
@@ -32,7 +32,7 @@ public class OntoUmlGlossary {
 					
 					// Processing description space
 					StringGenerator glossaryGenerator = new StringGenerator(space, 
-							new HtmlGlossaryExporter(outputName,"C:/Users/jose anholetti/Desktop","Glossário ANTT"), 
+							new HtmlGlossaryExporter(outputName,outputdirectory,"Glossário ANTT"), 
 							new PortugueseLanguageAdaptor(new PortugueseDictionary()));
 					
 					glossaryGenerator.generateGlossary();
