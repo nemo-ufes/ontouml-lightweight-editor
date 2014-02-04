@@ -1,23 +1,33 @@
 package br.ufes.inf.nemo.antipattern.wizard.undefformal;
 
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 
 public class UndefFormalThirdPage extends UndefFormalPage{
 
 	public Composite parent;
-	public UndefFormalAttrTable sourceTable;
+	
+	public Label lblTarget;
+	public Button btnTargetCreate;
 	private UndefFormalAttrTable targetTable;
-	public List dataTypeList;
-	public Label lblSourceAttr;
-	public Label lblTargetAttr;
-	public Button btnSourceNew;
-	public Button btnTargetNew;
+	private Combo sourceList;
+	
+	public Label lblSource;
+	public Button btnSourceCreate;
+	public UndefFormalAttrTable sourceTable;
+	private Combo targetList;
+	
+	public StyledText oclTextComp;
 	
 	/**
 	 * Create the wizard.
@@ -32,41 +42,91 @@ public class UndefFormalThirdPage extends UndefFormalPage{
 	public void createControl(Composite parent) 
 	{
 		this.parent = parent;
-		Composite container = new Composite(parent, SWT.NULL);
 		
+		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.BORDER);
+		sc.setAlwaysShowScrollBars(true);
+		sc.setBounds(10, 60, 554, 212);
+		
+		Composite container = new Composite(sc, SWT.NONE);		
 		setControl(container);
+
+//		Composite composite2 = new Composite(container, SWT.NONE);	
+//		composite2.setBounds(10, 45, 260, 87);
 		
 		sourceTable = new UndefFormalAttrTable(container, SWT.BORDER, ((RefOntoUML.Class)uf.getSource()).getOwnedAttribute());
-		sourceTable.getTable().setBounds(286, 45, 278, 87);
-				
-		btnSourceNew = new Button(container, SWT.NONE);
-		btnSourceNew.setBounds(469, 138, 95, 25);
-		btnSourceNew.setText("New attribute");
+		sourceTable.getTable().setBounds(10, 45, 260, 87);
 		
-		Label lblDatatypes = new Label(container, SWT.NONE);
-		lblDatatypes.setBounds(71, 252, 493, 15);
-		lblDatatypes.setText("Create new data types in your model...");
+		btnSourceCreate = new Button(container, SWT.NONE);
+		btnSourceCreate.setBounds(211, 138, 59, 25);
+		btnSourceCreate.setText("Create");
+		btnSourceCreate.addSelectionListener(new SelectionAdapter() {
+			 @Override
+	            public void widgetSelected(SelectionEvent e) {
+				 if (sourceList.getItem(sourceList.getSelectionIndex()).equals("Primitive type attribute"))
+					 sourceTable.addNewPrimitiveType("","");
+				 if (sourceList.getItem(sourceList.getSelectionIndex()).equals("DataType type attribute"))
+					 sourceTable.addNewDataType("","");
+				 if (sourceList.getItem(sourceList.getSelectionIndex()).equals("Enumeration attribute"))
+					 sourceTable.addNewEnumeration("","");
+			 }
+		});	
 		
-		dataTypeList = new List(container, SWT.BORDER);
-		dataTypeList.setBounds(10, 169, 554, 74);
-		
-		Button btnCreate = new Button(container, SWT.NONE);
-		btnCreate.setBounds(10, 247, 55, 25);
-		btnCreate.setText("Create");
+		lblSource = new Label(container, SWT.NONE);
+		lblSource.setBounds(10, 24, 260, 15);
+		lblSource.setText("(attributes) "+uf.getSource().getName());
 		
 		targetTable = new UndefFormalAttrTable(container, SWT.BORDER, ((RefOntoUML.Class)uf.getTarget()).getOwnedAttribute());
-		targetTable.getTable().setBounds(10, 45, 270, 87);
+		targetTable.getTable().setBounds(283, 45, 260, 87);
 				
-		lblSourceAttr = new Label(container, SWT.NONE);
-		lblSourceAttr.setBounds(10, 24, 270, 15);
-		lblSourceAttr.setText("Attributes: "+uf.getSource().getName());
+//		Composite composite = new Composite(container, SWT.NONE);	
+//		composite.setBounds(283, 45, 260, 87);
 		
-		lblTargetAttr = new Label(container, SWT.NONE);
-		lblTargetAttr.setBounds(287, 24, 277, 15);
-		lblTargetAttr.setText("Attributes:"+uf.getTarget().getName());
+		lblTarget = new Label(container, SWT.NONE);
+		lblTarget.setBounds(283, 24, 260, 15);
+		lblTarget.setText("(attributes) "+uf.getTarget().getName());
 		
-		btnTargetNew = new Button(container, SWT.NONE);
-		btnTargetNew.setBounds(185, 138, 95, 25);
-		btnTargetNew.setText("New attribute");
+		btnTargetCreate = new Button(container, SWT.NONE);
+		btnTargetCreate.setBounds(484, 138, 59, 25);
+		btnTargetCreate.setText("Create");		
+		btnTargetCreate.addSelectionListener(new SelectionAdapter() {
+			 @Override
+	            public void widgetSelected(SelectionEvent e) {
+				 if (targetList.getItem(targetList.getSelectionIndex()).equals("Primitive type attribute"))
+					 targetTable.addNewPrimitiveType("","");
+				 if (targetList.getItem(targetList.getSelectionIndex()).equals("DataType type attribute"))
+					 targetTable.addNewDataType("","");
+				 if (targetList.getItem(targetList.getSelectionIndex()).equals("Enumeration attribute"))
+					 targetTable.addNewEnumeration("","");				 
+			 }
+		});	
+
+		oclTextComp = new StyledText(container,  SWT.V_SCROLL | SWT.BORDER);
+		oclTextComp.setText("\r\ncontext <Source>::<target> : <Target>\r\nderive : Target.allInstances()->select( t : Target | <CONDITION>)");
+		oclTextComp.setBounds(10, 184, 533, 66);
+		
+		Label lblOclTemplate = new Label(container, SWT.NONE);
+		lblOclTemplate.setBounds(10, 256, 533, 15);
+		lblOclTemplate.setText(" OCL Template");
+		
+		sourceList = new Combo(container, SWT.READ_ONLY);
+		sourceList.setItems(new String[] {"Primitive type attribute", "Data type attribute", "Enumeration attribute"});
+		sourceList.setBounds(10, 138, 195, 23);
+		sourceList.select(0);
+		
+		targetList = new Combo(container, SWT.READ_ONLY);
+		targetList.setBounds(283, 140, 195, 23);
+		targetList.setItems(new String[] {"Primitive type attribute", "Data type attribute", "Enumeration attribute"});
+		targetList.select(0);
+		
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
+		sc.setContent(container);
+		sc.setMinSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));		
+	}
+	
+	@Override
+	public IWizardPage getNextPage() 
+	{	
+		return super.getNextPage();	
 	}
 }

@@ -1,8 +1,10 @@
 package br.ufes.inf.nemo.antipattern.wizard.undefformal;
 
-import java.util.ArrayList;
+import java.text.Normalizer;
+import java.util.HashMap;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -15,6 +17,7 @@ import RefOntoUML.Property;
 public class UndefFormalAttrTable  {
 
 	private EList<Property> properties;
+	private HashMap<String,String> attrMap = new HashMap<String,String>();
 	private Table table;
 	
 	@SuppressWarnings("unused")
@@ -36,6 +39,11 @@ public class UndefFormalAttrTable  {
 		tableColumn2.setWidth(100);
 		tableColumn2.setText(columnName2);
 	
+		String columnName3 = "";
+		TableColumn tableColumn3 = new TableColumn(table, SWT.CENTER);
+		tableColumn3.setWidth(100);
+		tableColumn3.setText(columnName3);
+		
 		int tableWidth = 0;		
 		for (TableColumn tc : table.getColumns()) {
 			tableWidth+=tc.getWidth();
@@ -43,14 +51,14 @@ public class UndefFormalAttrTable  {
 			
 		table.setSize(418, 117);
 		
-		addLines();	
+		addExistentAttributes();
 	}
 		
 	public EList<Property> getProperties() {
 		return properties;
 	}
 
-	public void addLine(String str, String type)
+	public void addNewPrimitiveType(String str, String type)
 	{
 		TableItem item = new TableItem(table, SWT.NONE);
 		
@@ -64,9 +72,47 @@ public class UndefFormalAttrTable  {
 		editor.horizontalAlignment = SWT.CENTER;		
 
 		item.setText(1,type);
+		
+		item.setText(2,"(PrimitiveType)");
 	}
 	
-	public void addLines()
+	public void addNewDataType(String str, String type)
+	{
+		TableItem item = new TableItem(table, SWT.NONE);
+		
+		TableEditor editor = new TableEditor(table);
+	    editor.grabHorizontal = true;
+		editor.horizontalAlignment = SWT.CENTER;
+		item.setText(0,str);
+		
+		editor = new TableEditor(table);			
+		editor.grabHorizontal = true;
+		editor.horizontalAlignment = SWT.CENTER;		
+
+		item.setText(1,type);
+		
+		item.setText(2,"(DataType)");
+	}	
+	
+	public void addNewEnumeration(String str, String type)
+	{
+		TableItem item = new TableItem(table, SWT.NONE);
+		
+		TableEditor editor = new TableEditor(table);
+	    editor.grabHorizontal = true;
+		editor.horizontalAlignment = SWT.CENTER;
+		item.setText(0,str);
+		
+		editor = new TableEditor(table);			
+		editor.grabHorizontal = true;		
+		editor.horizontalAlignment = SWT.CENTER;		
+
+		item.setText(1,type);
+		
+		item.setText(2,"(Enumeration)");
+	}
+	
+	private void addExistentAttributes()
 	{
 		for (int i = 0; i < properties.size(); i++) {
 			 new TableItem(table, SWT.NONE);
@@ -83,29 +129,64 @@ public class UndefFormalAttrTable  {
 			editor.grabHorizontal = true;
 			editor.horizontalAlignment = SWT.CENTER;
 			items[i].setText(1,properties.get(i).getType().getName());
+			
+			items[i].setText(2,"("+getStereotype(properties.get(i).getType())+")");
+			
+			attrMap.put(properties.get(i).getName(), properties.get(i).getType().getName());
 		}		
+	}
+	
+	public static String getStereotype(EObject element)
+	{
+		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+	    type = type.replaceAll("Impl","");
+	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
+	    type = type.replace("Association","");
+	    return type;
 	}
 	
 	public Table getTable() {
 		return table;
 	}
 
-	public Property getProperty (String name, String typeName){
-		for(Property p: properties){
-			if(p.getType().getName().compareToIgnoreCase(typeName)==0 && p.getName().compareToIgnoreCase(name)==0) return p;			
-		}
-		return null;
-	}
+//	public Property getProperty (String name, String typeName){
+//		for(Property p: properties){
+//			if(p.getType().getName().compareToIgnoreCase(typeName)==0 && p.getName().compareToIgnoreCase(name)==0) return p;			
+//		}
+//		return null;
+//	}
+//	
+//	public Classifier getType(String name)
+//	{
+//		for(Classifier classifier: uf.getParser().getAllInstances(RefOntoUML.Classifier.class)){
+//			if (classifier.getName().compareToIgnoreCase(name)==0) return classifier;
+//		}
+//		return null;
+//	}
 	
-	public ArrayList<Property> getValues()
+	public HashMap<String,String> getValues()
 	{
-		ArrayList<Property> list = new ArrayList<Property>();
+		HashMap<String,String> map = new HashMap<String,String>();
 		for (TableItem ti : table.getItems()){	
 			String name = ti.getText(0);
-			String type = ti.getText(1);
-			Property p = getProperty(name, type);			
-			list.add(p);			
+			String type = ti.getText(1);			
+			if (name!= null && !name.isEmpty() && type!=null && !type.isEmpty()){
+				if (attrMap.get(name)==null){
+					map.put(name,type);	
+				}
+			}
 		}
-		return list;
-	}	
+		return map;
+	}
+	
+	public String getStereotypeFromAttrName(String attrName)
+	{
+		for (TableItem ti : table.getItems()){	
+			String name = ti.getText(0);				
+			if (attrName!= null && !attrName.isEmpty() && name.equals(attrName)){
+				return ti.getText(2);
+			}
+		}
+		return "";
+	}
 }

@@ -17,7 +17,8 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 
 	public enum Action {
 		CHANGE_TO_MEDIATION, 
-		CHANGE_TO_CHARACTERIZATION, 
+		CHANGE_TO_CHARACTERIZATION,
+		CHANGE_TO_CHARACTERIZATION_INVERTING_SIDES,
 		CHANGE_TO_MATERIAL,
 		CHANGE_TO_SUBCOLLECTIONOF_SRC_WHOLE, 
 		CHANGE_TO_SUBCOLLECTIONOF_TGT_WHOLE,
@@ -41,6 +42,12 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 		this.target=target;
 	}
 	
+	public void setChangeToCharacterizationInvertingSides(Association assoc, Classifier source, Classifier target){
+		code = Action.CHANGE_TO_CHARACTERIZATION_INVERTING_SIDES;
+		this.assoc = assoc;
+		this.source=source;
+		this.target=target;		
+	}
 	public void setChangeToSubQuantityOfSrcWhole(Association assoc, Classifier source, Classifier target){
 		code = Action.CHANGE_TO_SUBQUANTITYOF_SRC_WHOLE;
 		this.assoc = assoc;
@@ -92,7 +99,15 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 	
 	@Override
 	public void run() {
-		
+		if(code==Action.CHANGE_TO_MEDIATION) ap.changeToMediation(assoc,source,target);		
+		else if(code==Action.CHANGE_TO_CHARACTERIZATION) ap.changeToCharacterization(assoc,source,target); 
+		else if(code==Action.CHANGE_TO_MATERIAL) ap.changeToMaterial(assoc,source,target);			
+		else if(code==Action.CHANGE_TO_SUBCOLLECTIONOF_SRC_WHOLE) ap.changeToSubCollectionOfSrcWhole(assoc,source,target);
+		else if(code==Action.CHANGE_TO_SUBCOLLECTIONOF_TGT_WHOLE) ap.changeToSubCollectionOfTgtWhole(assoc,source,target);
+		else if(code==Action.CHANGE_TO_MEMBEROF_SRC_WHOLE) ap.changeToMemberOfSrcWhole(assoc,source,target);			
+		else if(code==Action.CHANGE_TO_MEMBEROF_TGT_WHOLE) ap.changeToMemberOfTgtWhole(assoc,source,target);			
+		else if(code==Action.CHANGE_TO_SUBQUANTITYOF_SRC_WHOLE) ap.changeToSubQuantityOfSrcWhole(assoc,source,target);			
+		else if(code==Action.CHANGE_TO_SUBQUANTITYOF_TGT_WHOLE) ap.changeToSubQuantityOfTgtWhole(assoc,source,target);			 
 	}
 	
 	@Override
@@ -124,8 +139,7 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 			result = "Change formal association "+assoc.getName()+" to <<subQuantityOf>> with "+source.getName()+" as whole";
 			
 		}else if(code==Action.CHANGE_TO_SUBQUANTITYOF_TGT_WHOLE){
-			result = "Change formal association "+assoc.getName()+" to <<subQuantityOf>> with "+target.getName()+" as whole";
-			 
+			result = "Change formal association "+assoc.getName()+" to <<subQuantityOf>> with "+target.getName()+" as whole";			 
 		}
 				
 		return result; 
