@@ -9,6 +9,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
+import RefOntoUML.util.RefOntoUMLAdapterFactory;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionFunction;
@@ -52,10 +53,6 @@ public class DescriptionSpaceGenerator {
 	
 public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories, ArrayList<String> conceptsWithoutDesc){
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
-		
-		conceptsWithoutDesc.add("objeto1");
-		conceptsWithoutDesc.add("objeto2");
-		conceptsWithoutDesc.add("objeto3");
 		
 		for (RefOntoUML.Class classf : classfSet){
 			DescriptionCategory mat;
@@ -139,6 +136,11 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 	for(Relationship r : eList){
 		if(r instanceof RefOntoUML.Association){			
 			classNumberTarget = chooseTarget(((RefOntoUML.Association) r).getEndType().get(0).getName(),((RefOntoUML.Association) r).getEndType().get(1).getName(),source.getLabel());
+			
+			if(r instanceof RefOntoUML.Derivation){
+				System.out.println("É uma instancia de Derivation");
+				continue;
+			}
 			
 			// Rule09's condition 
 			if(r instanceof RefOntoUML.MaterialAssociation && existsRelator(((Association) r).getEndType().get(0),((Association) r).getEndType().get(1))){
@@ -655,6 +657,8 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 	int sourceLower,sourceUpper,targetLower,targetUpper;
 	boolean essential, inseparable, shareable;
 		
+		
+	
 		if(r instanceof RefOntoUML.Generalization){
 			mat = new Generalization("",source,target,1,1,1,1);	
 			System.out.println(source.getLabel() + " --> " + target.getLabel());
