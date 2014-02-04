@@ -79,7 +79,7 @@ public class ProjectBrowser extends JPanel{
 		inferences = new InferenceList();
 		
 		assistant = new ModellingAssistant(refparser);
-		
+	
 		scroll.setViewportView(tree);
 		
 		treeMap.put(project, this);
@@ -323,4 +323,8 @@ public class ProjectBrowser extends JPanel{
 	public UmlProject getProject() {
 		return project;
 	}
+
+//	public static ModellingAssistant getAssistantFor(UmlProject currentProject) {
+//		return ProjectBrowser.getProjectBrowserFor(frame,currentProject).assistant;
+//	}
 }

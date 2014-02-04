@@ -72,52 +72,52 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		try {
 			selectorMap.put("SELECT_MODE", new MethodCall(
 					DiagramEditor.class.getMethod("setSelectionMode")));
-			
+
 			selectorMap.put("REDO", new MethodCall(
 					getClass().getMethod("redo")));
-			
+
 			selectorMap.put("UNDO", new MethodCall(
 					getClass().getMethod("undo")));
-					
+
 			selectorMap.put("FIND", new MethodCall(
 					getClass().getMethod("find")));
-			
+
 			selectorMap.put("REDRAW", new MethodCall(
 					DiagramEditor.class.getMethod("redraw")));
-			
-//			selectorMap.put("ZOOM_50", new MethodCall(
-//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-//					Scaling.SCALING_50));
-//			
-//			selectorMap.put("ZOOM_75", new MethodCall(
-//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-//					Scaling.SCALING_75));
-//			
-//			selectorMap.put("ZOOM_100", new MethodCall(
-//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-//					Scaling.SCALING_100));
-//			
-//			selectorMap.put("ZOOM_150", new MethodCall(
-//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-//					Scaling.SCALING_150));
+
+			//			selectorMap.put("ZOOM_50", new MethodCall(
+			//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
+			//					Scaling.SCALING_50));
+			//			
+			//			selectorMap.put("ZOOM_75", new MethodCall(
+			//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
+			//					Scaling.SCALING_75));
+			//			
+			//			selectorMap.put("ZOOM_100", new MethodCall(
+			//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
+			//					Scaling.SCALING_100));
+			//			
+			//			selectorMap.put("ZOOM_150", new MethodCall(
+			//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
+			//					Scaling.SCALING_150));
 
 			selectorMap.put("ZOOM_IN", new MethodCall(
 					DiagramEditor.class.getMethod("zoomIn"))
-			);
+					);
 
 			selectorMap.put("ZOOM_OUT", new MethodCall(
 					DiagramEditor.class.getMethod("zoomOut"))
-			);
-			
+					);
+
 			selectorMap.put("SELECT_ALL", new MethodCall(
 					DiagramEditor.class.getMethod("selectAll")));
-			
+
 			selectorMap.put("BRING_TO_FRONT", new MethodCall(
 					DiagramEditor.class.getMethod("bringToFront")));
-			
+
 			selectorMap.put("PUT_TO_BACK", new MethodCall(
 					DiagramEditor.class.getMethod("putToBack")));
-			
+
 			selectorMap.put("EDIT_PROPERTIES", new MethodCall(
 					DiagramEditor.class.getMethod("editProperties")));
 
@@ -126,93 +126,93 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("EXCLUDE", new MethodCall(
 					DiagramEditor.class.getMethod("excludeSelection")));
-			
+
 			//Commands for creating classes
 			selectorMap.put("CREATE_KIND", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.KIND));
-			
+
 			selectorMap.put("CREATE_QUANTITY", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.QUANTITY));
-			
+
 			selectorMap.put("CREATE_COLLECTIVE", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.COLLECTIVE));
-			
+
 			selectorMap.put("CREATE_SUBKIND", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.SUBKIND));
-		
+
 			selectorMap.put("CREATE_PHASE", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.PHASE));
-		
+
 			selectorMap.put("CREATE_ROLE", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.ROLE));
-		
+
 			selectorMap.put("CREATE_CATEGORY", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.CATEGORY));
-		
+
 			selectorMap.put("CREATE_ROLEMIXIN", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.ROLEMIXIN));
-		
+
 			selectorMap.put("CREATE_MIXIN", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.MIXIN));
-		
+
 			selectorMap.put("CREATE_MODE", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.MODE));
-		
+
 			selectorMap.put("CREATE_RELATOR", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.RELATOR));
-			
+
 			selectorMap.put("CREATE_DATATYPE", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.DATATYPE));
-			
+
 			//Commands for creating relations		
 			selectorMap.put("CREATE_GENERALIZATION", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.GENERALIZATION));
-			
+
 			selectorMap.put("CREATE_CHARACTERIZATION", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.CHARACTERIZATION));
-			
+
 			selectorMap.put("CREATE_FORMAL", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.FORMAL));
-			
+
 			selectorMap.put("CREATE_MATERIAL", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.MATERIAL));
-						
+
 			selectorMap.put("CREATE_MEDIATION", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.MEDIATION));
-			
+
 			selectorMap.put("CREATE_MEMBEROF", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.MEMBEROF));
-			
+
 			selectorMap.put("CREATE_SUBQUANTITYOF", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.SUBQUANTITYOF));
-			
+
 			selectorMap.put("CREATE_SUBCOLLECTIONOF", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.SUBCOLLECTIONOF));
-			
+
 			selectorMap.put("CREATE_COMPONENTOF", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.COMPONENTOF));
-			
+
 			selectorMap.put("CREATE_DERIVATION", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.DERIVATION));
@@ -220,40 +220,40 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("CREATE_ASSOCIATION", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.ASSOCIATION));
-			
+
 			//selectorMap.put("CREATE_CONDITION", new MethodCall(
 			//		DiagramEditor.class.getMethod("setCreateConnectionMode",
 			//				RelationType.class), RelationType.ASSOCIATION));//Asso
-			
+
 			//selectorMap.put("CREATE_DERIVATIONRULE", new MethodCall(
 			//		DiagramEditor.class.getMethod("setCreateConnectionMode",
 			//				RelationType.class), RelationType.ASSOCIATION));//Asso
-			
+
 			//selectorMap.put("CREATE_CONCLUSION", new MethodCall(
 			//		DiagramEditor.class.getMethod("setCreateConnectionMode",
 			//				RelationType.class), RelationType.ASSOCIATION));//Asso
-			
+
 			//selectorMap.put("CREATE_NOTE", new MethodCall(
 			//		DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 			//		ElementType.NOTE));
-			
+
 			selectorMap.put("CREATE_NOTE_CONNECTION", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.NOTE_CONNECTOR));
-			
+
 			selectorMap.put("RESET_POINTS", new MethodCall(
 					DiagramEditor.class.getMethod("resetConnectionPoints")));
-			
+
 			selectorMap.put("RECT_TO_DIRECT", new MethodCall(
 					DiagramEditor.class.getMethod("rectilinearToDirect")));
-			
+
 			selectorMap.put("DIRECT_TO_RECT", new MethodCall(
 					DiagramEditor.class.getMethod("directToRectilinear")));
-			
+
 			selectorMap.put("NAVIGABLE_TO_SOURCE", new MethodCall(
 					DiagramEditor.class.getMethod("setNavigability", RelationEndType.class),
 					RelationEndType.SOURCE));
-			
+
 			selectorMap.put("NAVIGABLE_TO_TARGET", new MethodCall(
 					DiagramEditor.class.getMethod("setNavigability", RelationEndType.class),
 					RelationEndType.TARGET));
@@ -261,61 +261,64 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			// Self-calls
 			selectorMap.put("SHOW_GRID", new MethodCall(
 					getClass().getMethod("showGrid")));
-			
+
 			selectorMap.put("SNAP_TO_GRID", new MethodCall(
 					getClass().getMethod("snapToGrid")));
-			
+
 			selectorMap.put("PARSE_OCL", new MethodCall(
 					getClass().getMethod("parseOCL")));
-			
+
+			selectorMap.put("ASSISTANT", new MethodCall(
+					getClass().getMethod("enableAssistant")));
+
 			selectorMap.put("AUTO_SELECTION", new MethodCall(
 					getClass().getMethod("autoComplete")));
-			
+
 			selectorMap.put("VALIDATE_MODEL", new MethodCall(
 					getClass().getMethod("verifyCurrentProject")));
-			
+
 			selectorMap.put("GENERATE_ALLOY", new MethodCall(
 					getClass().getMethod("generatesAlloy")));
-			
+
 			selectorMap.put("ANTIPATTERN", new MethodCall(
 					getClass().getMethod("manageAntiPatterns")));
-			
+
 			selectorMap.put("VERIFY_SETTINGS", new MethodCall(
 					getClass().getMethod("verifySettings")));
-			
+
 			selectorMap.put("VERIFY_MODEL", new MethodCall(
 					getClass().getMethod("verifyModel")));
-			
+
 			selectorMap.put("VERIFY_MODEL_FILE", new MethodCall(
 					getClass().getMethod("verifyModelFile")));
-			
+
 			selectorMap.put("GENERATE_OWL_SETTINGS", new MethodCall(
 					getClass().getMethod("generateOwlSettings")));
-			
+
 			selectorMap.put("GENERATE_OWL", new MethodCall(
 					getClass().getMethod("generateOwl")));
-			
+
 			selectorMap.put("GENERATE_SBVR", new MethodCall(
 					getClass().getMethod("generateSbvr")));
-			
+
 			selectorMap.put("GENERATE_TEXT", new MethodCall(
 					getClass().getMethod("generateText")));
-			
+
 			selectorMap.put("ERROR", new MethodCall(
 					getClass().getMethod("searchErrors")));
 
 			selectorMap.put("WARNING", new MethodCall(
 					getClass().getMethod("searchWarnings")));
-			
+
 			selectorMap.put("OCLEDITOR", new MethodCall(
 					getClass().getMethod("showOclEditor")));
-			
+
 			selectorMap.put("OUTPUT", new MethodCall(
 					getClass().getMethod("showOutputPane")));
 
 			selectorMap.put("DERIVERELATIONS", new MethodCall(
 					getClass().getMethod("deriveRelations")));
-			
+
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
 		}
@@ -325,177 +328,184 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void handleCommand(String command) {
 		MethodCall methodcall = selectorMap.get(command);
 		if (methodcall != null) {
-			  Object target = manager.getCurrentDiagramEditor();			 
-		      // in order to catch the self calling methods
-		      if (methodcall.getMethod().getDeclaringClass() == DiagramEditorCommandDispatcher.class) {
-		        target = this;
-		      }
-		      if(target != null) methodcall.call(target);			  
+			Object target = manager.getCurrentDiagramEditor();			 
+			// in order to catch the self calling methods
+			if (methodcall.getMethod().getDeclaringClass() == DiagramEditorCommandDispatcher.class) {
+				target = this;
+			}
+			if(target != null) methodcall.call(target);			  
 		} 
 	}
 
 	public void generatesAlloy()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.parseOCL(false);
 		OCL2AlloyOptions oclOptions = ProjectBrowser.getOCLOptionsFor(manager.getCurrentProject());
-		
+
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(manager.getCurrentProject());
 		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(manager.getCurrentProject());
-		
+
 		refOptions.openAnalyzer=true;    	
-    	if (!refparser.getElementsWithIdentityMissing().isEmpty()) refOptions.identityPrinciple = false;    		    	
-    	if (!refparser.getRelatorsWithInvalidAxiom().isEmpty()) refOptions.relatorAxiom = false;    	
-    	if (!refparser.getWholesWithInvalidWeakSupplementation().isEmpty()) refOptions.weakSupplementationAxiom = false;
-		
+		if (!refparser.getElementsWithIdentityMissing().isEmpty()) refOptions.identityPrinciple = false;    		    	
+		if (!refparser.getRelatorsWithInvalidAxiom().isEmpty()) refOptions.relatorAxiom = false;    	
+		if (!refparser.getWholesWithInvalidWeakSupplementation().isEmpty()) refOptions.weakSupplementationAxiom = false;
+
 		SimulationOptionsDialog.open(refOptions, oclOptions, manager.getFrame());
 	}
-	
+
 	public void manageAntiPatterns()
 	{			
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		AntiPatternSearchDialog.open(manager.getFrame());		
 	}
-	
+
 	public void undo()
 	{		
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		if(manager.getCurrentDiagramEditor()!=null) manager.getCurrentDiagramEditor().undo();
-		
+
 		//FIXME - Do not rebuild the tree, only update it!			
 		ProjectBrowser.rebuildTree(manager.getCurrentProject());
 	}
-	
+
 	public void find()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.find();
 	}
-	
+
 	public void redo()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		if(manager.getCurrentDiagramEditor()!=null) manager.getCurrentDiagramEditor().redo();
-		
+
 		//FIXME - Do not rebuild the tree, only update it!			
 		ProjectBrowser.rebuildTree(manager.getCurrentProject());
 	}
-		
+
+	public void enableAssistant()
+	{
+		//	System.out.println("assitant opened");
+		// 	isAssitantEnable = !isAssitantEnable; 
+
+	}
+
 	public void parseOCL()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.parseOCL(true);		
 	}
-	
+
 	public void showOutputPane()
 	{	
 		manager.showOutputPane();
 	}
-	
+
 	public void searchWarnings()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.searchWarnings();
 		manager.getFrame().focusOnWarnings();
 	}
-	
+
 	public void searchErrors()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.searchErrors();
 		manager.getFrame().focusOnErrors();
 	}
-	
+
 	public void showOclEditor()
 	{
 		manager.showOclEditor();
 	}
-	
+
 	public void autoComplete()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		AutoCompletionDialog.open(manager.getFrame(),manager.getCurrentProject());
 	}
-	
+
 	public void verifyCurrentProject() 
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.verifyCurrentModel();
 	}
-	
+
 	public void verifySettings() 
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.verificationSettings();
 	}
-	
+
 	public void deriveRelations() 
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.deriveRelations();
 	}
-	
+
 	public void verifyModel() 
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.verifyCurrentProject();
 	}
-	
+
 	public void verifyModelFile()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.verifyCurrentModelFile();
 	}
-	
+
 	public void generateOwlSettings() 
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.generateOwlSettings();
 	}
-	
+
 	public void generateOwl() 
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.generateOwl();
 	}
-	
+
 	public void generateSbvr()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.generateSbvr();
 	}
-	
+
 	public void generateText()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.generateText();
 	}
-	
+
 	/**
 	 * Displays the grid depending on the selection state of the menu item.
 	 */
 
 	public void showGrid() {
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.getCurrentDiagramEditor().showGrid(getMenuManager().isSelected("SHOW_GRID"));
 		manager.getCurrentDiagramEditor().redraw();
 	}

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import temp.old.GraphAssistant;
+import RefOntoUML.Classifier;
+import RefOntoUML.Kind;
 import br.ufes.inf.nemo.assistant.astah2graph.AstahParser;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
@@ -35,11 +37,17 @@ public class ModellingAssistant {
 
 	}
 
-	public Fix runPattern(StereotypeOntoUMLEnum stereotype){
-		GraphAssistant graph = hashGraph.get(stereotype);
+	public Fix runPattern(Classifier elem){
+		GraphAssistant graph = hashGraph.get(getStereotypeFromClassifier(elem));
 		graph.getStart().run();		
 		return graph.getManagerPatern().getFix();
 	}
 
+	private StereotypeOntoUMLEnum getStereotypeFromClassifier(Classifier elem){
+		if(elem instanceof Kind){
+			return StereotypeOntoUMLEnum.KIND;
+		}
+		return StereotypeOntoUMLEnum.KIND;
+	}
 
 }

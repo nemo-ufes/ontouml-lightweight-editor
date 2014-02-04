@@ -185,26 +185,7 @@ public void mousePressed(EditorMouseEvent event) {
     editor.getDiagramManager().moveGeneralizationsToDiagram(elem, elem.eContainer(), editor);
     
     if (!isDragging) {
-
-    	//===================================================
-    	// move latter to diagramManager class
-    	boolean runAssistant = editor.getDiagramManager().getFrame().getMainMenu().isAssistantChecked();
-    	if(runAssistant){
-    		ModellingAssistant assistant = ProjectBrowser.getAssistantFor(editor.getDiagramManager().getCurrentProject());
-    		Fix fix = new Fix();    		
-    		if(Main.onMac()){
-    			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
-    				@Override
-    				public void run() {
-    					//fix = assistant.runPattern(elem);
-    				}
-    			});
-    		}else{
-    			//fix = assistant.runPattern(elem);
-    		}    		
-    		editor.getDiagramManager().updateOLED(fix);
-    	}	
-    	//===================================================
+    	editor.getDiagramManager().openModellingAssistant(elem);
     }
   }
 
