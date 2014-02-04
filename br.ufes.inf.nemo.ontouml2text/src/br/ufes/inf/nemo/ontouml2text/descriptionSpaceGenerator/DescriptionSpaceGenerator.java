@@ -9,7 +9,6 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
-import RefOntoUML.util.RefOntoUMLAdapterFactory;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionFunction;
@@ -35,10 +34,6 @@ import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Media
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.MemberOf;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.SubcollectiveOf;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.SubquantityOf;
-import br.ufes.inf.nemo.ontouml2text.glossaryExporter.HtmlGlossaryExporter;
-import br.ufes.inf.nemo.ontouml2text.stringGenerator.PortugueseDictionary;
-import br.ufes.inf.nemo.ontouml2text.stringGenerator.PortugueseLanguageAdaptor;
-import br.ufes.inf.nemo.ontouml2text.stringGenerator.StringGenerator;
 
 public class DescriptionSpaceGenerator {
 	private DescriptionSpace generalizationSpace;
@@ -72,15 +67,12 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 		
 		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
 		System.out.println("Tamanho da functions no DescriptionSpace:  " + generalizationSpace.getFunctions().size());
-		
-		StringGenerator glossaryGenerator = new StringGenerator(generalizationSpace, 
-				new HtmlGlossaryExporter("Glossary","D:/","Glossário ANTT"), new PortugueseLanguageAdaptor(new PortugueseDictionary()));
-		
-		glossaryGenerator.generateGlossary();
+
 }
 
 public DescriptionCategory createCategoryClass(Class classf) {	
-	if(classf instanceof RefOntoUML.Category){
+
+	if(classf instanceof RefOntoUML.Category || classf instanceof RefOntoUML.Class){
 		DescriptionCategory mat = new Category(classf.getName());
 		return mat;
 	}
@@ -131,17 +123,30 @@ public DescriptionCategory createCategoryClass(Class classf) {
 
 public void populateRelationships(ArrayList<Relationship> eList, DescriptionCategory source, OntoUMLParser parser, Set<String> hashCategories) {
 	DescriptionCategory target;
+	String endType0;
+	String endType1;
+
 	int classNumberTarget;
 
 	for(Relationship r : eList){
-		if(r instanceof RefOntoUML.Association){			
-			classNumberTarget = chooseTarget(((RefOntoUML.Association) r).getEndType().get(0).getName(),((RefOntoUML.Association) r).getEndType().get(1).getName(),source.getLabel());
+
+		if(r instanceof RefOntoUML.Association){	
 			
-			if(r instanceof RefOntoUML.Derivation){
-				System.out.println("É uma instancia de Derivation");
+			if(r instanceof RefOntoUML.Derivation || r.toString().contains("RefOntoUML.impl.AssociationImpl@") ){
 				continue;
 			}
 			
+			endType0 = ((RefOntoUML.Association) r).getEndType().get(0).getName();
+			endType1 = ((RefOntoUML.Association) r).getEndType().get(1).getName();
+			
+			if(((RefOntoUML.Association) r).getEndType().get(0).getName().contains("/"))
+				endType0 = ((RefOntoUML.Association) r).getEndType().get(0).getName().replace("/","");
+			
+			if(((RefOntoUML.Association) r).getEndType().get(1).getName().contains("/"))
+				endType1 = ((RefOntoUML.Association) r).getEndType().get(1).getName().replace("/","");
+			
+			classNumberTarget = chooseTarget(endType0,endType1,source.getLabel());
+
 			// Rule09's condition 
 			if(r instanceof RefOntoUML.MaterialAssociation && existsRelator(((Association) r).getEndType().get(0),((Association) r).getEndType().get(1))){
 				if(source instanceof Relator){
@@ -156,13 +161,14 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 			}
 			
 			//Autorelacao
-			if(((RefOntoUML.Association) r).getEndType().get(0).getName().equals(((RefOntoUML.Association) r).getEndType().get(1).getName())){
+			if(endType0.equals(endType1)){
 				createRelationship(r, source, source);
 				continue;
 			}
 			
 			if(generalizationSpace.findCategory(((Association) r).getEndType().get(classNumberTarget).getName()) == null){
 				target = createCategory(((Association) r).getEndType().get(classNumberTarget));
+				
 				createRelationship(r,target,source);
 				generalizationSpace.addCategory(target);
 				continue;
@@ -814,7 +820,7 @@ public int findUpperMultiplicity(Property p){
 		
 public DescriptionCategory createCategory(Type type){
 	
-	if(type instanceof RefOntoUML.Category){
+	if(type instanceof RefOntoUML.Category || type instanceof RefOntoUML.Class){
 		DescriptionCategory mat = new Category(type.getName());
 		return mat;
 	}
