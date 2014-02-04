@@ -51,6 +51,7 @@ import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
 import RefOntoUML.Association;
+import RefOntoUML.Classifier;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.componentOf;
@@ -1731,5 +1732,24 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return null;
 	}
 
+	public void openModellingAssistant(final Classifier elem){
+	  	boolean runAssistant = getFrame().getMainMenu().isAssistantChecked();
+  	
+    	if(runAssistant){
+    		if(Main.onMac()){//To work on Mac
+    			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
+    				@Override
+    				public void run() {
+    					Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
+    					updateOLED(fix);
+    				}
+    			});
+    		}else{//To work in others
+    			Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
+    			updateOLED(fix);
+    		}    		
+    	}	
+	}
+	
 
 }
