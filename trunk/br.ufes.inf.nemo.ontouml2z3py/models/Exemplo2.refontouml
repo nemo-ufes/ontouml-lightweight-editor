@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_8tQ2IY3OEeOd-_t_YtUuug" name="Model">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_9UPWkI3OEeOd-_t_YtUuug" name="Person" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_-vcJQI3OEeOd-_t_YtUuug" name="Man" visibility="public">
+    <generalization xmi:id="_AxdrYI3PEeOd-_t_YtUuug" general="_9UPWkI3OEeOd-_t_YtUuug"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="__uOFsI3OEeOd-_t_YtUuug" name="Woman" visibility="public">
+    <generalization xmi:id="_BTh2oI3PEeOd-_t_YtUuug" general="_9UPWkI3OEeOd-_t_YtUuug"/>
+  </packagedElement>
+</RefOntoUML:Model>
