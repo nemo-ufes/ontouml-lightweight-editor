@@ -157,8 +157,7 @@ public class GlossaryGeneratorUI extends JFrame {
 				
 				else{				
 					OntoUmlGlossary.xmiToText(parser, outputFileName.getText());
-					OntoUmlGlossary.getConceptsWithoutDesc();
-					System.out.println("tamanho " + OntoUmlGlossary.getConceptsWithoutDesc().size());
+					//System.out.println("tamanho " + OntoUmlGlossary.getConceptsWithoutDesc().size());
 					dispose();
 					}
 				
