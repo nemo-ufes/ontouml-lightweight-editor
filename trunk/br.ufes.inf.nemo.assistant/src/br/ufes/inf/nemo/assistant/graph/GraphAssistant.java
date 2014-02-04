@@ -1,47 +1,66 @@
 package br.ufes.inf.nemo.assistant.graph;
 
-import br.ufes.inf.nemo.assistant.manager.*;
+import java.util.ArrayList;
+
+import br.ufes.inf.nemo.assistant.manager.ManagerPattern;
+import br.ufes.inf.nemo.assistant.wizard.WizardAssitant;
 
 public class GraphAssistant {
-	Node start;
-	Node current;
+	private WizardAssitant wizardAssistant;
+	private ManagerPattern managerPattern;
+
+	private NodeAssistant startNode;
+	private NodeAssistant currentNode;
+
+	private ArrayList<NodeAssistant> nodes = new ArrayList<NodeAssistant>();
+
+	public WizardAssitant getWizardAssistant() {
+		return wizardAssistant;
+	}
+	public void setWizardAssistant(WizardAssitant wizardAssistant) {
+		this.wizardAssistant = wizardAssistant;
+	}
+	public ManagerPattern getManagerPattern() {
+		return managerPattern;
+	}
+	public void setManagerPattern(ManagerPattern managerPattern) {
+		this.managerPattern = managerPattern;
+	}
+	public NodeAssistant getStartNode() {
+		currentNode = startNode;
+		return startNode;
+	}
+	public void setStartNode(NodeAssistant startNode) {
+		this.startNode = startNode;
+		this.currentNode = startNode;
+	}
+
+	public NodeAssistant getCurrentNode() {
+		return currentNode;
+	}
+	public void setCurrentNode(NodeAssistant node) {
+		currentNode = node;
+	}
+
+	public ArrayList<NodeAssistant> getNodeList(){
+		return nodes;
+	}
 	
-	ManagerPattern mp;
-	
-	public ManagerPattern getManagerPatern() {
-		return mp;
+	public void updateNodeList() {
+		updateNode(startNode);
+		currentNode = startNode;
 	}
-	public void setManagerPatern(ManagerPattern mp) {
-		this.mp = mp;
-	}
-	public Node getStart() {
-		return start;
-	}
-	public void setStart(Node start) {
-		this.start = start;
-	}
-	public Node getCurrent() {
-		return current;
-	}
-	public void setCurrent(Node current) {
-		this.current = current;
+
+	private void updateNode(NodeAssistant node){
+		if(node == null)
+			return;
+		if(nodes.contains(node))
+			return;
+		nodes.add(node);
+		updateNode(node.getNextNode());
+		updateNode(node.getFalseNode());
+		updateNode(node.getTrueNode());
 	}
 	
-	public void print(Node n){
-		//System.out.println("\t"+n.getWin().getClass());
-		if(n.getGoTrue() != null){
-			System.out.print("True: ");
-			print(n.getGoTrue());
-		}
-		if(n.getGoFalse() != null){
-			System.out.print("False: ");
-			print(n.getGoFalse());
-		}
-		if(n.getNext() != null){
-			System.out.print("Next: ");
-			print(n.getNext());
-		}
-		System.out.println("-----");
-	}
-	
+
 }

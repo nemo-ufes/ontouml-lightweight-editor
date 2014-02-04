@@ -1,22 +1,15 @@
 package br.ufes.inf.nemo.assistant.astah2graph;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import temp.old.Action;
-import temp.old.Alert;
-import temp.old.GraphAssistant;
-import temp.old.NewClass;
-import temp.old.NewGeneralizationSet;
-import temp.old.NewPhases;
-import temp.old.NewRelator;
-import temp.old.Node;
-import temp.old.Question;
+import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
+import br.ufes.inf.nemo.assistant.graph.NodeAssistant;
 import br.ufes.inf.nemo.assistant.manager.ManagerPattern;
-import br.ufes.inf.nemo.assistant.util.ActionEnum;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
+import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewClass;
+import br.ufes.inf.nemo.assistant.wizard.pageassistant.Question;
 
 import com.change_vision.jude.api.inf.AstahAPI;
 import com.change_vision.jude.api.inf.model.IActivity;
@@ -28,33 +21,23 @@ import com.change_vision.jude.api.inf.model.IModel;
 import com.change_vision.jude.api.inf.model.IPackage;
 import com.change_vision.jude.api.inf.project.ProjectAccessor;
 
-/*
- * 
- * COLOCAR NO NewGeneralizationSet QUE TODOS OS GS SAO DE UM TIPO ESPECIFICO (generalizationSetFilter)
- * e que tem que vir as todas as classes do stereotypes e que elas podem não ter gs
- * 
- * */
-
-/*
- * Criar uma janela que mostre as associacoes de uma classe (usar para o relator, quando tem member-ends < 2)
- * */
-public class AstahParser {
+public class SWTAstahParser {
 
 	public static void main(String[] args) {
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = doParser("src/Patterns.asta");
 
-		GraphAssistant tree = hashTree.get(StereotypeOntoUMLEnum.SUBKIND);
+		GraphAssistant graph = hashTree.get(StereotypeOntoUMLEnum.SUBKIND);
 
-		tree.print(tree.getStart());
+		//graph.print(tree.getStart());
 
 		try{
-			tree.getStart().run();
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}			
 	}
 
-	public static HashMap<StereotypeOntoUMLEnum, GraphAssistant> doParser(InputStream astahFile){
+	/*public static HashMap<StereotypeOntoUMLEnum, GraphAssistant> doParser(InputStream astahFile){
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = new HashMap<>();
 		try{
 			ProjectAccessor prjAccessor = AstahAPI.getAstahAPI().getProjectAccessor();
@@ -84,7 +67,7 @@ public class AstahParser {
 		}
 
 		return hashTree;
-	}
+	}*/
 	
 	public static HashMap<StereotypeOntoUMLEnum, GraphAssistant> doParser(String astahFile){
 
@@ -108,9 +91,9 @@ public class AstahParser {
 			}		
 
 			//For each link to another pattern
-			for (Map.Entry<StereotypeOntoUMLEnum, Node> entry : linkNode.entrySet()) {
+			for (Map.Entry<StereotypeOntoUMLEnum, NodeAssistant> entry : linkNode.entrySet()) {
 				//All link node has its next set to the start node from the patter destiny
-				entry.getValue().setNext(hashTree.get(entry.getKey()).getStart());
+				entry.getValue().setNextNode(hashTree.get(entry.getKey()).getStartNode());
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -120,41 +103,41 @@ public class AstahParser {
 	}
 
 	//Usado para verificar os nodos criados
-	private static HashMap<IActivityNode,Node> hashNode;
-	private static HashMap<StereotypeOntoUMLEnum,Node> linkNode = new HashMap<>();
+	private static HashMap<IActivityNode,NodeAssistant> hashNode;
+	private static HashMap<StereotypeOntoUMLEnum,NodeAssistant> linkNode = new HashMap<>();
 
 	private static GraphAssistant processNodes(IActivityNode[] nodes){
-		GraphAssistant tree = new GraphAssistant();
+		GraphAssistant graph = new GraphAssistant();
 		ManagerPattern pattern = new ManagerPattern();
 
-		tree.setManagerPatern(pattern);
+		graph.setManagerPattern(pattern);
 
 		//Limpa o hashNode a cada diagrama
-		hashNode = new HashMap<IActivityNode,Node>();
+		hashNode = new HashMap<IActivityNode,NodeAssistant>();
 
 		for (IActivityNode node : nodes) {
 			if(node.getTaggedValue("stereotype").equalsIgnoreCase("START")){
 				//Start to instantiate the node's tree	
 				for (IFlow flow : node.getOutgoings()) {
-					Node startNode = processNode(flow.getTarget(), tree);
-					tree.setStart(startNode);
+					NodeAssistant startNode = processNode(flow.getTarget(), graph);
+					graph.setStartNode(startNode);
 				}
 			}
 		}	
 
-		return tree;
+		return graph;
 	}
 
 	/**
 	 * Both variables are used to connect a pattern with another one.
 	 * */	
-	private static Node _lastNode;
+	private static NodeAssistant _lastNode;
 
 	/**
 	 * Process node, add to the tree and, recursively, process the next nodes
 	 * return node created 
 	 * */
-	public static Node processNode(IActivityNode aNode, GraphAssistant tree){
+	public static NodeAssistant processNode(IActivityNode aNode, GraphAssistant tree){
 		if(aNode.getTaggedValue("stereotype").equalsIgnoreCase("END")){
 			return null;
 		}
@@ -164,7 +147,7 @@ public class AstahParser {
 			return hashNode.get(aNode);
 		}
 
-		Node node = new Node(tree);
+		NodeAssistant node = new NodeAssistant(tree);
 
 		//Process which window is each activity
 		String window = aNode.getTaggedValue("window");
@@ -172,8 +155,8 @@ public class AstahParser {
 			NewClass nc = new NewClass();
 			String stereotypes = aNode.getTaggedValue("stereotypes");
 			nc.setStereotypes(stereotypes.split(","));
-			node.setWin(nc);
-		}else if(window.equalsIgnoreCase("Action")){
+			node.setPage(nc);
+		}/*else if(window.equalsIgnoreCase("Action")){
 			Action a = new Action();
 			a.setAction(ActionEnum.valueOf(aNode.getTaggedValue("action").toUpperCase()));
 
@@ -207,11 +190,11 @@ public class AstahParser {
 				}	
 			}
 			node.setWin(ngs);
-		}else if(window.equalsIgnoreCase("Question")){
+		}*/else if(window.equalsIgnoreCase("Question")){
 			Question q = new Question();
 			q.setQuestion(aNode.getTaggedValue("question"));
-			node.setWin(q);
-		}else if(window.equalsIgnoreCase("Alert")){
+			node.setPage(q);
+		}/*else if(window.equalsIgnoreCase("Alert")){
 			Alert a = new Alert();
 			a.setAlert(aNode.getTaggedValue("alert"));
 			node.setWin(a);
@@ -224,7 +207,7 @@ public class AstahParser {
 		}else if(window.equalsIgnoreCase("LinkToPattern")){
 			//toUpperCase is used because all enumerations are in upper case
 			linkNode.put(StereotypeOntoUMLEnum.valueOf(aNode.getTaggedValue("linkToPattern").toUpperCase()), _lastNode);
-		}
+		}*/
 		
 		//Keep the last node in memory
 		_lastNode = node;			
@@ -236,12 +219,12 @@ public class AstahParser {
 		for (IFlow flow : aNode.getOutgoings()) {
 			if(!flow.getTaggedValue("stereotype").isEmpty()){
 				if(flow.getTaggedValue("value").equalsIgnoreCase("true")){
-					node.setGoTrue(processNode(flow.getTarget(),tree));
+					node.setTrueNode(processNode(flow.getTarget(),tree));
 				}else if(flow.getTaggedValue("value").equalsIgnoreCase("false")){
-					node.setGoFalse(processNode(flow.getTarget(),tree));
+					node.setFalseNode(processNode(flow.getTarget(),tree));
 				}
 			}else{
-				node.setNext(processNode(flow.getTarget(),tree));
+				node.setNextNode(processNode(flow.getTarget(),tree));
 			}
 		}		
 		return node;

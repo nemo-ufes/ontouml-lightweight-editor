@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.jface.wizard.IWizardPage;
+
 import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
@@ -152,6 +154,11 @@ public class ManagerPattern {
 	
 	public void acabou(){
 		
+		
+	}
+
+	public void run(IWizardPage currentPage) {
+		System.out.println("running for: "+currentPage.getName());
 		
 	}
 	
