@@ -50,8 +50,12 @@ public class DescriptionSpaceGenerator {
 		return generalizationSpace;
 	}	
 	
-public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories){
+public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories, ArrayList<String> conceptsWithoutDesc){
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
+		
+		conceptsWithoutDesc.add("objeto1");
+		conceptsWithoutDesc.add("objeto2");
+		conceptsWithoutDesc.add("objeto3");
 		
 		for (RefOntoUML.Class classf : classfSet){
 			DescriptionCategory mat;
