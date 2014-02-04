@@ -151,6 +151,20 @@ public class OutcomeFixer {
 		}
 	}
 
+	/** Invert sides of an association */
+	public Fix invertEnds(Association association)
+	{
+		Fix fix = new Fix();
+		Property src = association.getMemberEnd().get(0);
+		Property tgt = association.getMemberEnd().get(1);
+		association.getOwnedEnd().clear();
+		association.getOwnedMember().clear();
+		association.getNavigableOwnedEnd().clear();
+		setEnds(association,tgt,src);
+		fix.includeModified(association);
+		return fix;
+	}
+	
 	/** Create a Property */
 	public Property createProperty(Classifier classifier, int lower, int upper) 
 	{
@@ -502,6 +516,29 @@ public class OutcomeFixer {
 		return fixes;
 	}
 
+	/** Change a relationship stereotype */
+	public Fix changeRelationStereotypeTo(EObject relationship, RelationStereotype newStereo, boolean invertSides) 
+	{
+		Fix fixes = new Fix();
+		// create new relationship
+		RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);
+		copyMetaAttributes(relationship, newRelationship);
+		copyPropertiesDatas(relationship, newRelationship);
+		fixes.includeAdded(newRelationship);
+		// the same container as
+		copyContainer(relationship, newRelationship);
+		fixes.includeModified(relationship.eContainer());
+		// change references
+		Fix references = changeModelReferences(relationship, newRelationship);
+		fixes.includeAllModified(references.getModified());
+		// delete relationship
+		EcoreUtil.delete(relationship, false);
+		fixes.includeDeleted(relationship);
+		//invert sides
+		if (relationship instanceof RefOntoUML.Association) fixes.addAll(invertEnds((RefOntoUML.Association)newRelationship));
+		return fixes;
+	}
+	
 	/** Create a subtype and connect it through a generalization to its type. */
 	public Fix createSubTypeAs(EObject type, ClassStereotype subtypeStereo) 
 	{

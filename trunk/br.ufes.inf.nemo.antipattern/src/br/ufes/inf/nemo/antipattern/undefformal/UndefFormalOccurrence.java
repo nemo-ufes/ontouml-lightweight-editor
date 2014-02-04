@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Association;
 import RefOntoUML.Category;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
@@ -19,6 +20,7 @@ import RefOntoUML.Role;
 import RefOntoUML.SubKind;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class UndefFormalOccurrence extends AntipatternOccurrence {
@@ -137,6 +139,44 @@ public class UndefFormalOccurrence extends AntipatternOccurrence {
 	@Override
 	public String getShortName() {
 		return parser.getStringRepresentation(formal);
+	}
+
+	// OUTCOMING FIXES ======================================================================
+	
+	public void changeToMediation(Association assoc, Classifier source, Classifier target) {
+		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.MEDIATION, false));
+	}
+
+	public void changeToCharacterization(Association assoc, Classifier source, Classifier target) {
+		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.CHARACTERIZATION, false));
+	}
+
+	public void changeToMaterial(Association assoc, Classifier source, Classifier target) {
+		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.MATERIAL, false));
+	}
+
+	public void changeToSubCollectionOfSrcWhole(Association assoc, Classifier source, Classifier target) {
+		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.SUBCOLLECTIONOF, false));
+	}
+
+	public void changeToSubCollectionOfTgtWhole(Association assoc, Classifier source, Classifier target) {
+		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.SUBCOLLECTIONOF, true));
+	}
+
+	public void changeToMemberOfSrcWhole(Association assoc, Classifier source, Classifier target) {
+		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.MEMBEROF, false));
+	}
+
+	public void changeToMemberOfTgtWhole(Association assoc, Classifier source, Classifier target) {
+		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.MEMBEROF, true));
+	}
+
+	public void changeToSubQuantityOfSrcWhole(Association assoc, Classifier source, Classifier target) {
+		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.SUBQUANTITYOF, false));
+	}
+
+	public void changeToSubQuantityOfTgtWhole(Association assoc, Classifier source, Classifier target) {
+		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.SUBQUANTITYOF, true));
 	}
 
 }
