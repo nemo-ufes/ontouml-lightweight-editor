@@ -4,6 +4,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
@@ -135,7 +136,9 @@ public class WizardAssitant extends Wizard {
 		graph.setStartNode(n1);
 		graph.updateNodeList();
 		
-		WizardDialog wizardDialog = new WizardDialog(new Shell(),new WizardAssitant(graph));
+		Display display = Display.getDefault();	    	
+		Shell shell = display.getActiveShell();
+		WizardDialog wizardDialog = new WizardDialog(shell,new WizardAssitant(graph));
 		if (wizardDialog.open() == Window.OK) {
 			System.out.println("Ok pressed");
 		} else {
