@@ -16,7 +16,7 @@ import br.ufes.inf.nemo.ontouml2text.stringGenerator.StringGenerator;
 public class OntoUmlGlossary {
 	
 	// List containing concepts without user description
-	static ArrayList <String> conceptsWithoutDesc = new ArrayList<String>();
+	public static ArrayList <String> conceptsWithoutDesc = new ArrayList<String>();
 	
 	public static void xmiToText(final OntoUMLParser parser, final String outputName) {		
 		EventQueue.invokeLater(new Runnable() {
