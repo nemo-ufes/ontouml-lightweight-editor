@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
+import RefOntoUML.Generalization;
 import RefOntoUML.Kind;
 import RefOntoUML.PrimitiveType;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -33,6 +34,11 @@ public class OntoUML2Z3py {
 				if (p instanceof Kind){
 					System.out.println("KIND");
 				}
+				
+			}
+			
+			for(Generalization p: ontoparser.getAllInstances(Generalization.class)){
+				System.out.println("Generalization: "+ p.getGeneral() +" / " +p.getSpecific());
 			}
 			
 		} catch (IOException e) {
