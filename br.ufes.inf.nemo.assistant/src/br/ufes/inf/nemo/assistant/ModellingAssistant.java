@@ -4,8 +4,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import temp.old.GraphAssistant;
 import br.ufes.inf.nemo.assistant.astah2graph.AstahParser;
-import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;

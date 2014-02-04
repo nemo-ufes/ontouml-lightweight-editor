@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.assistant.manager;
 
-import br.ufes.inf.nemo.assistant.graph.Node;
+import temp.old.Node;
 
 public class ManagerNode {
 	public static void goTrue(Node n){
