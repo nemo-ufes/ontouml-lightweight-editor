@@ -151,16 +151,13 @@ public class GlossaryGeneratorUI extends JFrame {
 				
 				//GlossaryGeneratorAnalisysUI gga = new GlossaryGeneratorAnalisysUI();
 				
-
-				if(outputFileName.getText().equals(""))
-					this.showErrorMessage(this,"There is no output name.","Output Name Error",JOptionPane.ERROR_MESSAGE,null);	
+				if(outputFileName.getText().equals("") || edtOutputDirectory.getText().equals(""))
+					this.showErrorMessage(this,"There is no output name or output directory. Please, complete the fields.","Output Name Error",JOptionPane.ERROR_MESSAGE,null);	
 				
 				else{				
-					OntoUmlGlossary.xmiToText(parser, outputFileName.getText());
-					//System.out.println("tamanho " + OntoUmlGlossary.getConceptsWithoutDesc().size());
+					OntoUmlGlossary.xmiToText(parser, outputFileName.getText(), edtOutputDirectory.getText());
 					dispose();
 					}
-				
 			}
 
 			private void showErrorMessage(ActionListener actionListener,
