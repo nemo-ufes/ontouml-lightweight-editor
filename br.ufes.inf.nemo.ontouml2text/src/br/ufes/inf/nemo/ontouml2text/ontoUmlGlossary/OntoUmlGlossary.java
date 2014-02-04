@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,8 +14,10 @@ import br.ufes.inf.nemo.ontouml2text.stringGenerator.PortugueseLanguageAdaptor;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.StringGenerator;
 
 public class OntoUmlGlossary {
-
-
+	
+	// List containing concepts without user description
+	static ArrayList <String> conceptsWithoutDesc = new ArrayList<String>();
+	
 	public static void xmiToText(final OntoUMLParser parser, final String outputName) {		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -25,7 +28,7 @@ public class OntoUmlGlossary {
 					Set<String> hashCategories = new HashSet<String>();
 					
 					DescriptionSpaceGenerator generator = new DescriptionSpaceGenerator(space);
-					generator.populateDescriptionSpace(parser, hashCategories);
+					generator.populateDescriptionSpace(parser, hashCategories , conceptsWithoutDesc);
 					
 					// Processing description space
 					StringGenerator glossaryGenerator = new StringGenerator(space, 
@@ -41,5 +44,7 @@ public class OntoUmlGlossary {
 		});
 	}
 
-
+	public static ArrayList<String> getConceptsWithoutDesc() {
+		return conceptsWithoutDesc; 
+	}
 }
