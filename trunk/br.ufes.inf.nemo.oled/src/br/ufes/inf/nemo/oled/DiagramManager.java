@@ -37,6 +37,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -108,7 +109,7 @@ import br.ufes.inf.nemo.oled.util.SimulationElement;
 import br.ufes.inf.nemo.oled.util.VerificationHelper;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
-import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.OntoUmlGlossary;
+import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui.GlossaryGeneratorUI;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
@@ -1579,33 +1580,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Generates a text description of the model 
 	 */
 	public void generateText() {
-		UmlProject project = getCurrentProject();
-		OntoUmlGlossary g = new OntoUmlGlossary();
-		g.xmiToText(ProjectBrowser.getParserFor(project) );
-		//g.TextExecute(ProjectBrowser.getParserFor(project) );
-		
-		/*UmlProject project = getCurrentEditor().getProject();
-		OperationResult result = TextDescriptionHelper.generateText(project.getModel(), frame);
-	
-		if(result.getResultType() != ResultType.ERROR){
-			frame.getInfoManager().showOutputText(result.toString(), true, true); 
-
-			if (!result.getData()[0].equals("CSV")){
-				TextEditor textViz = (TextEditor) getEditorForProject(project, EditorNature.TEXT);
-
-				if(textViz == null){
-					textViz = new TextEditor(project);
-					addClosable("Text Description Generated", textViz);
-				}
-				else{
-					setSelectedComponent(textViz);
-				}
-				textViz.setText((String) result.getData()[0]);
+				
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+				UmlProject project = getCurrentProject();
+				GlossaryGeneratorUI settings = new GlossaryGeneratorUI(ProjectBrowser.getParserFor(project));
+				settings.setVisible(true);				
 			}
-		}
-		else{
-			frame.getInfoManager().showOutputText(result.toString(), true, true); 
-		}*/
+		});
 	}
 
 	private Editor getEditorForProject(UmlProject project, EditorNature nature)
