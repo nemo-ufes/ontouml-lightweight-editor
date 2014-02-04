@@ -18,6 +18,7 @@ import RefOntoUML.Association;
 import RefOntoUML.Category;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
+import RefOntoUML.Comment;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.Enumeration;
@@ -184,6 +185,13 @@ public class OntoUMLParser {
 	private void addToElementsHashMap(PackageableElement pe, NameHandler h2)
 	{
 		ParsingElement e;
+		
+		//Comments
+		for (Comment c: pe.getOwnedComment()) 
+		{
+			e = new ParsingElement(c, true, "Comment");
+			this.elementsHash.put(c,e);
+		}
 		
 		//Class and DataType
 		if(pe instanceof Class || ((pe instanceof DataType)&&!(pe instanceof PrimitiveType)&&!(pe instanceof Enumeration)) )
