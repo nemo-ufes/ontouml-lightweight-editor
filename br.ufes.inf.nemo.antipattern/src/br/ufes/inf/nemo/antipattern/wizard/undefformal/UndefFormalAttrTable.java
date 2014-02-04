@@ -31,17 +31,17 @@ public class UndefFormalAttrTable  {
 		
 		String columnName1 = "Name";
 		TableColumn tableColumn1 = new TableColumn(table, SWT.CENTER);
-		tableColumn1.setWidth(100);
+		tableColumn1.setWidth(75);
 		tableColumn1.setText(columnName1);
 		
 		String columnName2 = "Type";
 		TableColumn tableColumn2 = new TableColumn(table, SWT.CENTER);
-		tableColumn2.setWidth(100);
+		tableColumn2.setWidth(75);
 		tableColumn2.setText(columnName2);
 	
 		String columnName3 = "";
 		TableColumn tableColumn3 = new TableColumn(table, SWT.CENTER);
-		tableColumn3.setWidth(100);
+		tableColumn3.setWidth(85);
 		tableColumn3.setText(columnName3);
 		
 		int tableWidth = 0;		
@@ -49,7 +49,7 @@ public class UndefFormalAttrTable  {
 			tableWidth+=tc.getWidth();
 		}
 			
-		table.setSize(418, 117);
+		table.setSize(240, 82);
 		
 		addExistentAttributes();
 	}
@@ -74,6 +74,8 @@ public class UndefFormalAttrTable  {
 		item.setText(1,type);
 		
 		item.setText(2,"(PrimitiveType)");
+		
+		getTable().select(getTable().getItemCount()-1);
 	}
 	
 	public void addNewDataType(String str, String type)
@@ -92,6 +94,7 @@ public class UndefFormalAttrTable  {
 		item.setText(1,type);
 		
 		item.setText(2,"(DataType)");
+		getTable().select(getTable().getItemCount()-1);
 	}	
 	
 	public void addNewEnumeration(String str, String type)
@@ -110,6 +113,17 @@ public class UndefFormalAttrTable  {
 		item.setText(1,type);
 		
 		item.setText(2,"(Enumeration)");
+		getTable().select(getTable().getItemCount()-1);
+	}
+	
+	public void removeLine()
+	{
+		if(getTable().getSelectionIndex()>=0) {	
+			int prev = getTable().getSelectionIndex()-1;				
+			getTable().remove(getTable().getSelectionIndices());					
+			getTable().select(prev);		
+			getTable().setRedraw(true);
+		}
 	}
 	
 	private void addExistentAttributes()
@@ -184,7 +198,7 @@ public class UndefFormalAttrTable  {
 		for (TableItem ti : table.getItems()){	
 			String name = ti.getText(0);				
 			if (attrName!= null && !attrName.isEmpty() && name.equals(attrName)){
-				return ti.getText(2);
+				return ti.getText(2).replace("(", "").replace(")","");
 			}
 		}
 		return "";

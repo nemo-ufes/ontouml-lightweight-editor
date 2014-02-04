@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
+import org.eclipse.swt.widgets.Text;
 
 public class UndefFormalThirdPage extends UndefFormalPage{
 
@@ -20,14 +21,17 @@ public class UndefFormalThirdPage extends UndefFormalPage{
 	public Label lblTarget;
 	public Button btnTargetCreate;
 	private UndefFormalAttrTable targetTable;
-	private Combo sourceList;
-	
 	public Label lblSource;
 	public Button btnSourceCreate;
 	public UndefFormalAttrTable sourceTable;
-	private Combo targetList;
+	
+	private Combo typeList;	
+	private Text nameText;
+	private Text typeNameText;
 	
 	public StyledText oclTextComp;
+	private Button btnSourceDelete;
+	private Button btnTargetDelete;
 	
 	/**
 	 * Create the wizard.
@@ -51,73 +55,105 @@ public class UndefFormalThirdPage extends UndefFormalPage{
 		setControl(container);
 
 //		Composite composite2 = new Composite(container, SWT.NONE);	
-//		composite2.setBounds(10, 45, 260, 87);
+//		composite2.setBounds(10, 112, 260, 87);
 		
 		sourceTable = new UndefFormalAttrTable(container, SWT.BORDER, ((RefOntoUML.Class)uf.getSource()).getOwnedAttribute());
-		sourceTable.getTable().setBounds(10, 45, 260, 87);
+		sourceTable.getTable().setBounds(10, 112, 260, 87);
 		
 		btnSourceCreate = new Button(container, SWT.NONE);
-		btnSourceCreate.setBounds(211, 138, 59, 25);
+		btnSourceCreate.setBounds(225, 81, 45, 25);
 		btnSourceCreate.setText("Create");
 		btnSourceCreate.addSelectionListener(new SelectionAdapter() {
 			 @Override
 	            public void widgetSelected(SelectionEvent e) {
-				 if (sourceList.getItem(sourceList.getSelectionIndex()).equals("Primitive type attribute"))
-					 sourceTable.addNewPrimitiveType("","");
-				 if (sourceList.getItem(sourceList.getSelectionIndex()).equals("DataType type attribute"))
-					 sourceTable.addNewDataType("","");
-				 if (sourceList.getItem(sourceList.getSelectionIndex()).equals("Enumeration attribute"))
-					 sourceTable.addNewEnumeration("","");
+				 if (typeList.getItem(typeList.getSelectionIndex()).equals("Primitive type"))
+					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) sourceTable.addNewPrimitiveType(nameText.getText(),typeNameText.getText());
+				 if (typeList.getItem(typeList.getSelectionIndex()).equals("DataType type"))
+					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) sourceTable.addNewDataType(nameText.getText(),typeNameText.getText());
+				 if (typeList.getItem(typeList.getSelectionIndex()).equals("Enumeration"))
+					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) sourceTable.addNewEnumeration(nameText.getText(),typeNameText.getText());
 			 }
 		});	
 		
 		lblSource = new Label(container, SWT.NONE);
-		lblSource.setBounds(10, 24, 260, 15);
-		lblSource.setText("(attributes) "+uf.getSource().getName());
+		lblSource.setBounds(10, 91, 158, 15);
+		lblSource.setText(""+uf.getSource().getName());
 		
 		targetTable = new UndefFormalAttrTable(container, SWT.BORDER, ((RefOntoUML.Class)uf.getTarget()).getOwnedAttribute());
-		targetTable.getTable().setBounds(283, 45, 260, 87);
+		targetTable.getTable().setBounds(283, 112, 260, 87);
 				
 //		Composite composite = new Composite(container, SWT.NONE);	
-//		composite.setBounds(283, 45, 260, 87);
+//		composite.setBounds(283, 112, 260, 87);
 		
 		lblTarget = new Label(container, SWT.NONE);
-		lblTarget.setBounds(283, 24, 260, 15);
-		lblTarget.setText("(attributes) "+uf.getTarget().getName());
+		lblTarget.setBounds(283, 91, 158, 15);
+		lblTarget.setText(""+uf.getTarget().getName());
 		
 		btnTargetCreate = new Button(container, SWT.NONE);
-		btnTargetCreate.setBounds(484, 138, 59, 25);
+		btnTargetCreate.setBounds(498, 81, 45, 25);
 		btnTargetCreate.setText("Create");		
 		btnTargetCreate.addSelectionListener(new SelectionAdapter() {
 			 @Override
 	            public void widgetSelected(SelectionEvent e) {
-				 if (targetList.getItem(targetList.getSelectionIndex()).equals("Primitive type attribute"))
-					 targetTable.addNewPrimitiveType("","");
-				 if (targetList.getItem(targetList.getSelectionIndex()).equals("DataType type attribute"))
-					 targetTable.addNewDataType("","");
-				 if (targetList.getItem(targetList.getSelectionIndex()).equals("Enumeration attribute"))
-					 targetTable.addNewEnumeration("","");				 
+				 if (typeList.getItem(typeList.getSelectionIndex()).equals("Primitive type"))
+					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) targetTable.addNewPrimitiveType(nameText.getText(),typeNameText.getText());  
+				 if (typeList.getItem(typeList.getSelectionIndex()).equals("DataType type"))
+					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) targetTable.addNewDataType(nameText.getText(),typeNameText.getText());
+				 if (typeList.getItem(typeList.getSelectionIndex()).equals("Enumeration"))
+					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) targetTable.addNewEnumeration(nameText.getText(),typeNameText.getText());				 
 			 }
 		});	
 
 		oclTextComp = new StyledText(container,  SWT.V_SCROLL | SWT.BORDER);
 		oclTextComp.setText("\r\ncontext <Source>::<target> : <Target>\r\nderive : Target.allInstances()->select( t : Target | <CONDITION>)");
-		oclTextComp.setBounds(10, 184, 533, 66);
+		oclTextComp.setBounds(10, 205, 533, 66);
 		
-		Label lblOclTemplate = new Label(container, SWT.NONE);
-		lblOclTemplate.setBounds(10, 256, 533, 15);
-		lblOclTemplate.setText(" OCL Template");
+		typeList = new Combo(container, SWT.READ_ONLY);
+		typeList.setItems(new String[] {"Primitive type", "Data type", "Enumeration"});
+		typeList.setBounds(10, 31, 195, 23);
+		typeList.select(0);
 		
-		sourceList = new Combo(container, SWT.READ_ONLY);
-		sourceList.setItems(new String[] {"Primitive type attribute", "Data type attribute", "Enumeration attribute"});
-		sourceList.setBounds(10, 138, 195, 23);
-		sourceList.select(0);
+		nameText = new Text(container, SWT.BORDER);
+		nameText.setBounds(211, 31, 150, 23);
 		
-		targetList = new Combo(container, SWT.READ_ONLY);
-		targetList.setBounds(283, 140, 195, 23);
-		targetList.setItems(new String[] {"Primitive type attribute", "Data type attribute", "Enumeration attribute"});
-		targetList.select(0);
+		typeNameText = new Text(container, SWT.BORDER);
+		typeNameText.setBounds(367, 31, 176, 23);
 		
+		Label lblAttributeType = new Label(container, SWT.NONE);
+		lblAttributeType.setBounds(10, 10, 195, 15);
+		lblAttributeType.setText("Attribute Type:");
+		
+		Label lblAttributeName = new Label(container, SWT.NONE);
+		lblAttributeName.setBounds(211, 10, 150, 15);
+		lblAttributeName.setText("Attribute Name:");
+		
+		Label lblAttributeTypeName = new Label(container, SWT.NONE);
+		lblAttributeTypeName.setBounds(367, 10, 176, 15);
+		lblAttributeTypeName.setText("Attribute Type Name:");
+		
+		Label label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
+		label.setBounds(10, 71, 533, 4);
+		
+		btnSourceDelete = new Button(container, SWT.NONE);
+		btnSourceDelete.setBounds(174, 81, 45, 25);
+		btnSourceDelete.setText("Delete");
+		btnSourceDelete.addSelectionListener(new SelectionAdapter() {
+			 @Override
+	            public void widgetSelected(SelectionEvent e) {
+				 sourceTable.removeLine();				 
+			 }
+		});	
+		
+		btnTargetDelete = new Button(container, SWT.NONE);
+		btnTargetDelete.setBounds(447, 81, 45, 25);
+		btnTargetDelete.setText("Delete");
+		btnTargetDelete.addSelectionListener(new SelectionAdapter() {
+			 @Override
+	            public void widgetSelected(SelectionEvent e) {
+				targetTable.removeLine();				 
+			 }
+		});	
+				
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		sc.setContent(container);
@@ -127,6 +163,6 @@ public class UndefFormalThirdPage extends UndefFormalPage{
 	@Override
 	public IWizardPage getNextPage() 
 	{	
-		return super.getNextPage();	
+		return ((UndefFormalWizard)getWizard()).getFinishing();	
 	}
 }
