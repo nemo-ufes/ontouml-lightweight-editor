@@ -81,7 +81,7 @@ public class XMI2RefConstraint extends XMI2RefNamedElement
 		if (((Constraintx)RefOntoUMLElement).getName() != null && !((Constraintx)RefOntoUMLElement).getName().equals(""))
 			rule += "--"+((Constraintx)RefOntoUMLElement).getName()+"\n";
 		
-		if (!(body.toLowerCase().startsWith("context")))
+		if (!(body.toLowerCase().startsWith("context")) && !(body.toLowerCase().startsWith("--")) && !(body.toLowerCase().startsWith("/*")))
 		{
 			for (Element e : ((Constraintx)RefOntoUMLElement).getConstrainedElement())
 			{
