@@ -1,48 +1,37 @@
 package br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui;
 
-import java.awt.EventQueue;
-
-import javax.swing.JInternalFrame;
 import java.awt.Color;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
-import javax.swing.JScrollPane;
+import javax.swing.JList;
 
 
-public class GlossaryGeneratorAnalisysUI extends JInternalFrame {
+public class GlossaryGeneratorAnalisysUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	//private DefaultListModel<String> listModel = new DefaultListModel<String>();
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					
-					GlossaryGeneratorAnalisysUI frame = new GlossaryGeneratorAnalisysUI();
-					System.out.println("Criei uma GlossaryGeneratorAnalisysUI");
-					frame.setVisible(true);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the frame.
+	 * @param conceptsWithoutDesc 
 	 */
-	public GlossaryGeneratorAnalisysUI() {
-		setBounds(100, 100, 491, 435);
-		
+	public GlossaryGeneratorAnalisysUI(DefaultListModel<String> conceptsWithoutDesc) {
+		setBounds(400, 400, 491, 460);
+		this.setLocationRelativeTo(null); 
+		setTitle("OntoUML Glossary Generator");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
@@ -56,19 +45,11 @@ public class GlossaryGeneratorAnalisysUI extends JInternalFrame {
 		panelOne.add(surroundPanel1);
 		surroundPanel1.setLayout(null);
 		
-		JLabel lblNewLabel_2 = new JLabel("New label");
-		lblNewLabel_2.setBounds(12, 28, 56, 16);
-		surroundPanel1.add(lblNewLabel_2);
-		
 		JPanel surroundPanel2 = new JPanel();
 		surroundPanel2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Direction", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		surroundPanel2.setBounds(12, 130, 431, 57);
 		panelOne.add(surroundPanel2);
 		surroundPanel2.setLayout(null);
-		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setBounds(12, 28, 56, 16);
-		surroundPanel2.add(lblNewLabel_1);
 		
 		JPanel surroundPanel3 = new JPanel();
 		surroundPanel3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Gender", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -76,23 +57,25 @@ public class GlossaryGeneratorAnalisysUI extends JInternalFrame {
 		panelOne.add(surroundPanel3);
 		surroundPanel3.setLayout(null);
 		
-		JLabel lblNewLabel_3 = new JLabel("New label");
-		lblNewLabel_3.setBounds(12, 28, 56, 16);
-		surroundPanel3.add(lblNewLabel_3);
-		
 		JPanel surroundPanel4 = new JPanel();
 		surroundPanel4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Plural", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		surroundPanel4.setBounds(12, 284, 431, 57);
 		panelOne.add(surroundPanel4);
 		surroundPanel4.setLayout(null);
 		
-		JLabel lblNewLabel_4 = new JLabel("New label");
-		lblNewLabel_4.setBounds(12, 28, 56, 16);
-		surroundPanel4.add(lblNewLabel_4);
-		
 		JLabel lblResults = new JLabel("Results of Analisys");
 		lblResults.setBounds(12, 13, 147, 16);
 		panelOne.add(lblResults);
+		
+		JButton btnOk = new JButton("Ok");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+		});
+		
+		btnOk.setBounds(183, 355, 97, 25);
+		panelOne.add(btnOk);
 		
 		JPanel panelTwo = new JPanel();
 		tabbedPane.addTab("Missing User Descriptions", null, panelTwo, null);
@@ -109,16 +92,14 @@ public class GlossaryGeneratorAnalisysUI extends JInternalFrame {
 		panel.add(lblNewLabel);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(16, 47, 147, 224);
+		scrollPane.setBounds(26, 68, 178, 234);
 		panel.add(scrollPane);
+			
+		JList<String> list = new JList<String>(conceptsWithoutDesc);		
+		list.setBackground(UIManager.getColor("Button.disabledShadow"));
+		list.setBounds(31, 47, 144, 234);
+		//panel.add(list);	
 		
-		/*JList <String> list = new JList<String>(listModel);
 		scrollPane.setViewportView(list);
-		
-		ArrayList<String> a = new ArrayList<String>();
-		a.add("Ariane");
-
-		listModel.add(0,a.get(0));*/
-
 	}
 }
