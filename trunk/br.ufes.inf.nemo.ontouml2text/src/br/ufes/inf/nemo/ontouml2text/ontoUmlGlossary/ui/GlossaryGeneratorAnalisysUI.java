@@ -18,9 +18,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import javax.swing.JList;
 
-
 public class GlossaryGeneratorAnalisysUI extends JFrame {
 
+	Integer missingDesc;
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Create the frame.
@@ -45,11 +45,21 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		panelOne.add(surroundPanel1);
 		surroundPanel1.setLayout(null);
 		
+		
+		missingDesc = conceptsWithoutDesc.size();
+		JLabel label1 = new JLabel(missingDesc.toString() + " cases found.");
+		label1.setBounds(23, 28, 128, 16);
+		surroundPanel1.add(label1);
+		
 		JPanel surroundPanel2 = new JPanel();
 		surroundPanel2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Direction", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		surroundPanel2.setBounds(12, 130, 431, 57);
 		panelOne.add(surroundPanel2);
 		surroundPanel2.setLayout(null);
+		
+		JLabel label2 = new JLabel("New label");
+		label2.setBounds(23, 28, 129, 16);
+		surroundPanel2.add(label2);
 		
 		JPanel surroundPanel3 = new JPanel();
 		surroundPanel3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Gender", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -57,11 +67,19 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		panelOne.add(surroundPanel3);
 		surroundPanel3.setLayout(null);
 		
+		JLabel label3 = new JLabel("New label");
+		label3.setBounds(23, 28, 105, 16);
+		surroundPanel3.add(label3);
+		
 		JPanel surroundPanel4 = new JPanel();
 		surroundPanel4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Plural", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		surroundPanel4.setBounds(12, 284, 431, 57);
 		panelOne.add(surroundPanel4);
 		surroundPanel4.setLayout(null);
+		
+		JLabel label4 = new JLabel("New label");
+		label4.setBounds(24, 28, 118, 16);
+		surroundPanel4.add(label4);
 		
 		JLabel lblResults = new JLabel("Results of Analisys");
 		lblResults.setBounds(12, 13, 147, 16);
