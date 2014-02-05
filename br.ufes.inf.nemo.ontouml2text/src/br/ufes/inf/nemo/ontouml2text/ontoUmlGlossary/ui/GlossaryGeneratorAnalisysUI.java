@@ -24,7 +24,7 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Create the frame.
-	 * @param conceptsWithoutDesc 
+	 * @param conceptsWithoutDesc : concepts without user description list
 	 */
 	public GlossaryGeneratorAnalisysUI(DefaultListModel<String> conceptsWithoutDesc) {
 		setBounds(400, 400, 491, 460);
