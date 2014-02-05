@@ -88,7 +88,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 				oprName.equals("symmetricDifference")|
 				oprName.equals("product")|
 				oprName.equals("union")|
-				oprName.equals("or")|
+				//oprName.equals("or")|
 				oprName.equals("xor")|
 				oprName.equals("oclIsUndefined")|
 				oprName.equals("allInstances")){
