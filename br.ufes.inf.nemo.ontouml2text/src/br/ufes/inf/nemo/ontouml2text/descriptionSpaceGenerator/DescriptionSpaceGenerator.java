@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.DefaultListModel;
+
 import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
@@ -47,7 +49,7 @@ public class DescriptionSpaceGenerator {
 		return generalizationSpace;
 	}	
 	
-public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories, ArrayList<String> conceptsWithoutDesc){
+public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories, DefaultListModel<String> conceptsWithoutDesc){
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
 		
 		for (RefOntoUML.Class classf : classfSet){
@@ -62,10 +64,10 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 			populateRelationships(parser.getRelationships(classf),mat,parser,hashCategories);	
 		}
 		
-		relatorIheritance(generalizationSpace.getCategories());
+		//relatorIheritance(generalizationSpace.getCategories());
 		
 		for (DescriptionCategory c : generalizationSpace.getCategories())
-			System.out.println("Nome: "+c.getLabel()+ "\n  Lista de funções: "+c.getFunctions()+ "\n");
+			System.out.println("Nome: "+c.getLabel() + "  type: "+c.toString() +"\n  Lista de funções: "+c.getFunctions()+ "\n");
 		
 		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
 		System.out.println("Tamanho da functions no DescriptionSpace:  " + generalizationSpace.getFunctions().size());
@@ -97,6 +99,7 @@ public DescriptionCategory upFunction(Generalization gen) {
 	Generalization genTarget;
 	
 	while(true){
+		System.out.println("loop Up");
 		genTarget = (Generalization) verifyGeneralization(target.getFunctions(),target); //verifica se tem algo acima
 		if(genTarget != null)
 			target = genTarget.getTarget();
@@ -111,7 +114,7 @@ private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory
 	DescriptionCategory downCategory = null;
 	
 	while(true){ //enquanto  nao chegar na categoria source
-	
+
 		gen = (Generalization) verifyGeneralizationTarget(upCategory.getFunctions(), upCategory);		//verifica se tem alguem embaixo dele
 
 		if( gen != null){// existe alguem embaixo, passa todas as mediations
@@ -119,7 +122,12 @@ private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory
 			
 			addMediations(upCategory.getFunctions(),downCategory);					//Passa as informações
 		}
-		
+		System.out.println("loop Down");
+		System.out.println("upCategory: " + upCategory.getLabel());
+		if(downCategory != null)
+			System.out.println(" downCategory: " + downCategory.getLabel());
+		System.out.println("C: " + c.getLabel());
+		System.out.println("resultado equals: "+downCategory.equals(c));
 		if(downCategory.equals(c))		//se for a categoria source, adiciono e saio do while.
 			break;
 		
@@ -166,7 +174,7 @@ private DescriptionFunction verifyGeneralization(List <DescriptionFunction> arra
 
 public DescriptionCategory createCategoryClass(Class classf) {	
 
-	if(classf instanceof RefOntoUML.Category/* || classf instanceof RefOntoUML.Class*/){
+	if(classf instanceof RefOntoUML.Category || classf.toString().contains("RefOntoUML.impl.ClassImpl@")){
 		DescriptionCategory mat = new Category(classf.getName());
 		return mat;
 	}
@@ -280,18 +288,9 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 		
 		if(r instanceof RefOntoUML.Generalization){
 			
-				Classifier searchObject;
-			 	boolean isSon;
+			Classifier searchObject;
+			boolean isSon;
 			 	
-				// Rule01's initial condition
-		/*	if(r instanceof RefOntoUML.Generalization && ((RefOntoUML.Generalization) r).getGeneral() instanceof RefOntoUML.Relator && ((RefOntoUML.Generalization) r).getSpecific() instanceof RefOntoUML.Relator){
-				System.out.println("Source: "+source.getLabel());
-				//RealtorsInheritance(r,source, parser, hashCategories);
-				//addMedidations(r, source, parser, hashCategories);
-				
-				//System.out.println("sai");
-				return;
-			}*/
 		 	
 			// Rule05's condition 
 			if(((RefOntoUML.Generalization) r).getGeneralizationSet().size() > 0){
@@ -670,7 +669,7 @@ public int findUpperMultiplicity(Property p){
 		
 public DescriptionCategory createCategory(Type type){
 	
-	if(type instanceof RefOntoUML.Category /*|| type instanceof RefOntoUML.Class*/){
+	if(type instanceof RefOntoUML.Category || type.toString().contains("RefOntoUML.impl.ClassImpl@")){
 		DescriptionCategory mat = new Category(type.getName());
 		return mat;
 	}
