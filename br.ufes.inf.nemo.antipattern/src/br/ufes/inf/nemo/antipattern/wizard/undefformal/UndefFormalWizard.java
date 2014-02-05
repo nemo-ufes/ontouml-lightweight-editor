@@ -12,6 +12,7 @@ public class UndefFormalWizard extends AntipatternWizard {
 		protected UndefFormalSecondPage secondPage;
 		protected UndefFormalThirdPage thirdPage;
 		protected UndefFormalFourthPage fourthPage;
+		protected UndefFormalFifthPage fifthPage;
 		
 		public UndefFormalWizard(UndefFormalOccurrence ap) {
 			super(ap, UndefFormalAntipattern.getAntipatternInfo().name);	    
@@ -29,6 +30,7 @@ public class UndefFormalWizard extends AntipatternWizard {
 			secondPage = new UndefFormalSecondPage((UndefFormalOccurrence)ap);
 			thirdPage = new UndefFormalThirdPage((UndefFormalOccurrence)ap);
 			fourthPage = new UndefFormalFourthPage((UndefFormalOccurrence)ap);
+			fifthPage = new UndefFormalFifthPage((UndefFormalOccurrence)ap);
 			
 			presentation = new PresentationPage(
 				UndefFormalAntipattern.getAntipatternInfo().name,
@@ -43,6 +45,7 @@ public class UndefFormalWizard extends AntipatternWizard {
 			addPage(secondPage);
 			addPage(thirdPage);
 			addPage(fourthPage);
+			addPage(fifthPage);
 			addPage(options);
 			addPage(finishing);
 		}
@@ -68,6 +71,11 @@ public class UndefFormalWizard extends AntipatternWizard {
 		public UndefFormalFourthPage getFourthPage()
 		{
 			return fourthPage;
+		}
+		
+		public UndefFormalFifthPage getFifthPage()
+		{
+			return fifthPage;
 		}
 		
 		@Override

@@ -208,7 +208,7 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 				uf.getParser().getAllMediations(relator, mediations);
 				
 				if (mediations.size()>0) return ((UndefFormalWizard)getWizard()).getFinishing();
-				else return ((UndefFormalWizard)getWizard()).getFourthPage();
+				else return ((UndefFormalWizard)getWizard()).getFifthPage();
 			}
 			if(btnNo.getSelection()){
 				return ((UndefFormalWizard)getWizard()).getThirdPage();

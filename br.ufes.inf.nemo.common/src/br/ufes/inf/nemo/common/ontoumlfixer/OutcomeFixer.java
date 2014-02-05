@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.common.ontoumlfixer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -54,7 +55,7 @@ import RefOntoUML.impl.componentOfImpl;
 public class OutcomeFixer {
 
 	public enum ClassStereotype {
-		KIND, SUBKIND, COLLECTIVE, QUANTITY, PHASE, ROLE, ROLEMIXIN, CATEGORY, MIXIN, RELATOR, MODE, DATATYPE
+		KIND, SUBKIND, COLLECTIVE, QUANTITY, PHASE, ROLE, ROLEMIXIN, CATEGORY, MIXIN, RELATOR, MODE, DATATYPE, PRIMITIVETYPE
 	}
 
 	public enum RelationStereotype {
@@ -85,6 +86,7 @@ public class OutcomeFixer {
 		if (stereo.equals(ClassStereotype.MODE)) { type = factory.createMode(); }
 		if (stereo.equals(ClassStereotype.RELATOR)) { type = factory.createRelator(); }
 		if (stereo.equals(ClassStereotype.DATATYPE)) { type = factory.createDataType(); }
+		if (stereo.equals(ClassStereotype.PRIMITIVETYPE)) { type = factory.createPrimitiveType(); }
 		type.setName("");
 		type.setVisibility(VisibilityKind.PUBLIC);
 		return type;
@@ -157,9 +159,12 @@ public class OutcomeFixer {
 		Fix fix = new Fix();
 		Property src = association.getMemberEnd().get(0);
 		Property tgt = association.getMemberEnd().get(1);
-		association.getOwnedEnd().clear();
-		association.getOwnedMember().clear();
-		association.getNavigableOwnedEnd().clear();
+		association.getOwnedEnd().remove(1);
+		association.getOwnedEnd().remove(0);
+		association.getOwnedMember().remove(0);
+		association.getOwnedMember().remove(1);
+		association.getNavigableOwnedEnd().remove(1);
+		association.getNavigableOwnedEnd().remove(0);
 		setEnds(association,tgt,src);
 		fix.includeModified(association);
 		return fix;
@@ -369,8 +374,8 @@ public class OutcomeFixer {
 		if (!(newElement instanceof Type)) return fix;
 		for (RefOntoUML.PackageableElement p : root.getPackagedElement()) 
 		{
-			fix.addAll(changeReferencesInAssociation((Association)p,(Type)element,(Type)newElement));			
-			fix.addAll(changeReferencesInGeneralization((Generalization)p, (Type)element, (Type)newElement));
+			if (p instanceof Association) fix.addAll(changeReferencesInAssociation((Association)p,(Type)element,(Type)newElement));			
+			if (p instanceof Generalization) fix.addAll(changeReferencesInGeneralization((Generalization)p, (Type)element, (Type)newElement));
 		}
 		return fix;
 	}
@@ -434,6 +439,25 @@ public class OutcomeFixer {
 		else return ClassStereotype.KIND;
 	}
 
+	/** Get class stereotype */
+	public ClassStereotype getClassStereotype(String stereo) 
+	{
+		if (stereo.compareToIgnoreCase("Kind")==0) return ClassStereotype.KIND;
+		else if (stereo.compareToIgnoreCase("SubKind")==0) return ClassStereotype.SUBKIND;
+		else if (stereo.compareToIgnoreCase("Collective")==0) return ClassStereotype.COLLECTIVE;
+		else if (stereo.compareToIgnoreCase("Quantity")==0) return ClassStereotype.QUANTITY;
+		else if (stereo.compareToIgnoreCase("Phase")==0) return ClassStereotype.PHASE;
+		else if (stereo.compareToIgnoreCase("Phase")==0) return ClassStereotype.ROLE;
+		else if (stereo.compareToIgnoreCase("Category")==0) return ClassStereotype.CATEGORY;
+		else if (stereo.compareToIgnoreCase("Mixin")==0) return ClassStereotype.MIXIN;
+		else if (stereo.compareToIgnoreCase("RoleMixin")==0) return ClassStereotype.ROLEMIXIN;
+		else if (stereo.compareToIgnoreCase("Relator")==0) return ClassStereotype.RELATOR;
+		else if (stereo.compareToIgnoreCase("Mode")==0) return ClassStereotype.MODE;
+		else if (stereo.compareToIgnoreCase("DataType")==0) return ClassStereotype.DATATYPE;
+		else if (stereo.compareToIgnoreCase("PrimitiveType")==0) return ClassStereotype.PRIMITIVETYPE;
+		else return ClassStereotype.KIND;
+	}
+	
 	/** Change element to Role and add a supertype for it */
 	public Fix changeClassStereotypeSubtyping(EObject element, ClassStereotype stereo) 
 	{
@@ -535,7 +559,9 @@ public class OutcomeFixer {
 		EcoreUtil.delete(relationship, false);
 		fixes.includeDeleted(relationship);
 		//invert sides
-		if (relationship instanceof RefOntoUML.Association) fixes.addAll(invertEnds((RefOntoUML.Association)newRelationship));
+		if(invertSides){
+			if (relationship instanceof RefOntoUML.Association) fixes.addAll(invertEnds((RefOntoUML.Association)newRelationship));
+		}
 		return fixes;
 	}
 	
@@ -746,6 +772,33 @@ public class OutcomeFixer {
 		return fix;
 	}
 
+	/** Set up the upper cardinality on  mediated side */
+	public Fix setUpperCardinalityOnMediatedSide(Mediation m, int upper) 
+	{
+		Fix fix = new Fix();
+		Type source = m.getMemberEnd().get(0).getType();
+		Type target = m.getMemberEnd().get(1).getType();
+		if (!(source instanceof Relator)) 
+		{
+			// change upper value of property
+			Property src = m.getMemberEnd().get(0);
+			LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
+			upperBound.setValue(upper);
+			src.setUpperValue(upperBound);
+			fix.includeModified(src);
+		}
+		if (!(target instanceof Relator)) 
+		{
+			// change upper value of property
+			Property tgt = m.getMemberEnd().get(1);
+			LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
+			upperBound.setValue(upper);
+			tgt.setUpperValue(upperBound);
+			fix.includeModified(tgt);
+		}
+		return fix;
+	}
+	
 	/**
 	 * Verifies if there is already a element in the model with the same name as
 	 * the object obj. If true, it returns that element.
@@ -813,8 +866,7 @@ public class OutcomeFixer {
 
 	//return true if the name was fixed and false otherwise
 	public Fix fixPropertyName(Property p){
-		Fix fix = new Fix();
-		
+		Fix fix = new Fix();		
 		if(p!=null && (p.getName()==null || p.getName().trim().isEmpty())){
 			String p1Name, p2Name;
 			
@@ -843,6 +895,33 @@ public class OutcomeFixer {
 			fix.includeAdded(p);
 		}
 		
+		return fix;
+	}
+
+	public Fix createNewMediatedTypes(Mediation assoc, HashMap<String,String> nameAndStereotypeMap) 
+	{
+		Fix fix = new Fix();
+		for(String name: nameAndStereotypeMap.keySet()){
+			String stereo = nameAndStereotypeMap.get(name);
+			ClassStereotype classStereo = getClassStereotype(stereo);
+			//create new class with given stereotype
+			EObject obj = createClass(classStereo);
+			((NamedElement) obj).setName(name);
+			fix.includeAdded(obj);
+			//same container as...
+			copyContainer(assoc, obj);
+			fix.includeModified(assoc.eContainer());
+			//create mediation
+			EObject rel = createAssociationWithProperties(RelationStereotype.MEDIATION);
+			fix.includeAdded(rel);
+			//the same container as...
+			copyContainer(assoc, rel);
+			fix.includeModified(assoc.eContainer());
+			// set types on mediation sides
+			((Association)rel).setName("med_"+assoc.relator().getName()+"_"+((Type)obj).getName());
+			((Association)rel).getMemberEnd().get(0).setType(assoc.relator());
+			((Association)rel).getMemberEnd().get(1).setType((Type)obj);
+		}
 		return fix;
 	}
 
