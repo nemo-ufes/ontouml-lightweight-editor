@@ -1,9 +1,8 @@
 package br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import javax.swing.DefaultListModel;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionSpace;
@@ -14,34 +13,41 @@ import br.ufes.inf.nemo.ontouml2text.stringGenerator.PortugueseLanguageAdaptor;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.StringGenerator;
 
 public class OntoUmlGlossary {
+	
+	public static final int PT_BR = 10;
+	public static final int EN_US = 20;
+	
+	private DescriptionSpace descriptionSpace;
+	private StringGenerator stringGenerator;
+	
+	public OntoUmlGlossary(final int idiom, final OntoUMLParser parser, final String outputName, final String outputdirectory){
+		descriptionSpace = new DescriptionSpace();
 		
-	public static DefaultListModel<String> xmiToText(final OntoUMLParser parser, final String outputName, final String outputdirectory) {		
-		
-		// List containing concepts without user description
-		DefaultListModel<String> conceptsWithoutDesc = new DefaultListModel<String>();
-		
-		DescriptionSpace space = new DescriptionSpace();		
-		
-		/*int i;
-		for(i=0;i<10;i++){
-			DescriptionCategory obj = new Category("Cat"+i);
-			conceptsWithoutDesc.add(i,obj);
-		}*/
-
 		// Hash containing the labels of the categories already covered
 		Set<String> hashCategories = new HashSet<String>();
+				
+		DescriptionSpaceGenerator generator = new DescriptionSpaceGenerator(descriptionSpace);
+		generator.populateDescriptionSpace(parser, hashCategories);
 		
-		DescriptionSpaceGenerator generator = new DescriptionSpaceGenerator(space);
-		generator.populateDescriptionSpace(parser, hashCategories , conceptsWithoutDesc);
+		// Preparing for text generation
+		switch(idiom){
+		case PT_BR:
+			stringGenerator = new StringGenerator(descriptionSpace, 
+					new HtmlGlossaryExporter(outputName,outputdirectory,"Glossário ANTT"), 
+					new PortugueseLanguageAdaptor(new PortugueseDictionary()));
+			break;
+		case EN_US:
+			System.out.println("Not implemented yet");
+			System.exit(0);
+		}
+	}
+	
+	public List<String> verifiyDescriptionConsistency(){
+		return stringGenerator.verifyDescriptionConsistency();
+	}
 		
-		// Processing description space
-		StringGenerator glossaryGenerator = new StringGenerator(space, 
-				new HtmlGlossaryExporter(outputName,outputdirectory,"Glossário ANTT"), 
-				new PortugueseLanguageAdaptor(new PortugueseDictionary()));
-		
-		glossaryGenerator.generateGlossary();
-		
-		return conceptsWithoutDesc;
+	public void modelToText() {		
+		stringGenerator.generateGlossary();
 	}
 
 
