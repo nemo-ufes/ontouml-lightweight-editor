@@ -51,20 +51,16 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 		
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
 		
-		Set <RefOntoUML.Comment> comment = parser.getAllInstances(RefOntoUML.Comment.class);
-		
-		System.out.println("Tamanho da lista de Comments: " + comment.size());
-		
 		for (RefOntoUML.Class classf : classfSet){
 			DescriptionCategory mat;
 						
 			if(generalizationSpace.findCategory(classf.getName()) == null){
-				mat = createCategoryClass(classf);
+				mat = createCategoryClass(classf, classfSet);
 				generalizationSpace.addCategory(mat);
 			}else											
 				mat = generalizationSpace.findCategory(classf.getName());
 			
-			populateRelationships(parser.getRelationships(classf),mat,parser,hashCategories);	
+			populateRelationships(parser.getRelationships(classf),mat,parser,hashCategories,classfSet);	
 		}
 		
 		relatorIheritance(generalizationSpace.getCategories(),hashCategories);
@@ -120,34 +116,26 @@ private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory
 	DescriptionCategory downCategory = null;
 	
 	while(true){ //enquanto  nao chegar em uma generalization
-//		System.out.println("loop down");
 		genSet = VerifyGeneralizationSet(upCategory.getFunctions(), upCategory);
 		gen = (Generalization) verifyGeneralizationTarget(upCategory.getFunctions(), upCategory);		//verifica se tem alguem embaixo dele
 
-//		System.out.println("upCategory : "  + upCategory.getLabel() + " DownCategory : " + downCategory);
-//		System.out.println("GEN: " + gen);
 		if(genSet != null){ // o elemento tem uma genSet
-//			System.out.println("Tem genSet");
-			// Iteração para chamar os ramos da genSet
-			for(Generalization g : genSet.getGeneralizationElements()){
-//				System.out.println("loop for");
-//				System.out.println("Adiciono do : " + upCategory.getLabel() + "  para o " + g.getSource().getLabel());
+			
+			for(Generalization g : genSet.getGeneralizationElements()){			// Iteração para chamar os ramos da genSet
+				
+				//Verifico a regra
 				addMediations(upCategory.getFunctions(), g.getSource());
 				getDownMediation(g.getSource(),c,hashCategories);   
 			}
 		}
 		if( gen != null){// existe alguem embaixo, passa todas as mediations
-//			System.out.println("Tem generalization");
 			downCategory = gen.getSource();
-			
 			addMediations(upCategory.getFunctions(),downCategory);					//Passa as informações
 		}
 		
-		if(/*downCategory.equals(c) ||*/ gen == null){		//se for a categoria source, adiciono e saio do while.
-//			System.out.println("objeto : " + upCategory.getLabel() +" gen: "+ gen);
+		if(gen == null)		//se for a categoria source, adiciono e saio do while.
 			break;
-			
-		}
+		
 		upCategory = downCategory;
 	}
 	
@@ -198,58 +186,65 @@ private DescriptionFunction verifyGeneralization(List <DescriptionFunction> arra
 	return null;
 }
 
-public DescriptionCategory createCategoryClass(Class classf) {	
+public DescriptionCategory createCategoryClass(Class classf, Set<Class> classfSet) {	
 
-	if(classf instanceof RefOntoUML.Category || classf.toString().contains("RefOntoUML.impl.ClassImpl@")){
-		DescriptionCategory mat = new Category(classf.getName());
-		return mat;
-	}
-	if(classf instanceof RefOntoUML.Phase){
-		DescriptionCategory mat = new Phase(classf.getName());
-		return mat;
-	}
+	DescriptionCategory mat = null;
+	String userDesc;
 	
-	if(classf instanceof RefOntoUML.Collective){
-		DescriptionCategory mat = new Collective(classf.getName());
-		return mat;
-	}	
-	if(classf instanceof RefOntoUML.Kind){
-		DescriptionCategory mat = new Kind(classf.getName());
-		return mat;
-	}
-	if(classf instanceof RefOntoUML.SubKind){
-		DescriptionCategory mat = new Subkind(classf.getName());
-		return mat;	
-	}
-	if(classf instanceof RefOntoUML.Mixin){
-		DescriptionCategory mat = new Mixin(classf.getName());
-		return mat;
-	}
-	if(classf instanceof RefOntoUML.Mode){
-		DescriptionCategory mat = new Mode(classf.getName());
-		return mat;
-	}
-	if(classf instanceof RefOntoUML.Quantity){
-		DescriptionCategory mat = new Quantity(classf.getName());
-		return mat;
-	}
-	if(classf instanceof RefOntoUML.Relator){
-		DescriptionCategory mat = new Relator(classf.getName());
-		return mat;
-	}
-	if(classf instanceof RefOntoUML.Role){
-		DescriptionCategory mat = new Role(classf.getName());
-		return mat;
-	}
-	if(classf instanceof RefOntoUML.RoleMixin){
-		DescriptionCategory mat = new RoleMixin(classf.getName());
-		return mat;
-	}
+	if(classf instanceof RefOntoUML.Category || classf.toString().contains("RefOntoUML.impl.ClassImpl@"))
+		mat = new Category(classf.getName());
+
+	if(classf instanceof RefOntoUML.Phase)
+		mat = new Phase(classf.getName());
+
+	if(classf instanceof RefOntoUML.Collective)
+		mat = new Collective(classf.getName());
+		
+	if(classf instanceof RefOntoUML.Kind)
+		mat = new Kind(classf.getName());
 	
+	if(classf instanceof RefOntoUML.SubKind)
+		mat = new Subkind(classf.getName());
+	
+	if(classf instanceof RefOntoUML.Mixin)
+		mat = new Mixin(classf.getName());
+	
+	if(classf instanceof RefOntoUML.Mode)
+		mat = new Mode(classf.getName());
+	
+	if(classf instanceof RefOntoUML.Quantity)
+		mat = new Quantity(classf.getName());
+	
+	if(classf instanceof RefOntoUML.Relator)
+		mat = new Relator(classf.getName());
+	
+	if(classf instanceof RefOntoUML.Role)
+		mat = new Role(classf.getName());
+	
+	if(classf instanceof RefOntoUML.RoleMixin)
+		mat = new RoleMixin(classf.getName());
+	
+	
+	//Verifica se o objeto tem descrição
+	userDesc = getUserDescription(mat.getLabel(),classfSet);
+	if(userDesc != null)
+		mat.setUserDescription(userDesc);
+	
+	return mat;
+}
+
+public String getUserDescription(String string, Set<Class> classfSet) {
+	for(Class cl : classfSet){
+		if(cl.getName().equals(string)){
+			return cl.getOwnedComment().get(0).getBody().replace("Definition=", "");
+		}
+	}
 	return null;
 }
 
-public void populateRelationships(ArrayList<Relationship> eList, DescriptionCategory source, OntoUMLParser parser, Set<String> hashCategories) {
+public void populateRelationships(ArrayList<Relationship> eList, DescriptionCategory source, OntoUMLParser parser, 
+		Set<String> hashCategories, Set<Class> classfSet) {
+	
 	DescriptionCategory target;
 	String endType0;
 	String endType1;
@@ -283,7 +278,7 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 					if(generalizationSpace.findCategory(source.getLabel())!= null)
 						continue;
 					else{
-						createCategory(((Association) r).getEndType().get(classNumberTarget));
+						createCategory(((Association) r).getEndType().get(classNumberTarget),classfSet);
 					}		
 				}
 			}
@@ -295,7 +290,7 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 			}
 			
 			if(generalizationSpace.findCategory(((Association) r).getEndType().get(classNumberTarget).getName()) == null){
-				target = createCategory(((Association) r).getEndType().get(classNumberTarget));
+				target = createCategory(((Association) r).getEndType().get(classNumberTarget),classfSet);
 				
 				createRelationship(r,target,source);
 				generalizationSpace.addCategory(target);
@@ -320,7 +315,7 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 		 	
 			// Rule05's condition 
 			if(((RefOntoUML.Generalization) r).getGeneralizationSet().size() > 0){
-				processRule05(((RefOntoUML.Generalization) r),source,hashCategories);
+				processRule05(((RefOntoUML.Generalization) r),source,hashCategories, classfSet);
 				continue;
 			}
 		 	
@@ -334,7 +329,7 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 		 	}		
 		 	
 			if(generalizationSpace.findCategory(searchObject.getName()) == null){
-				target = createCategoryClass((Class) searchObject);
+				target = createCategoryClass((Class) searchObject, classfSet);
 				
 				if(isSon){
 					createRelationship(r,target,source);
@@ -364,7 +359,7 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 	hashCategories.add(source.getLabel());
 }
 
-private void processRule05(RefOntoUML.Generalization r, DescriptionCategory source, Set<String> hashCategories) {
+private void processRule05(RefOntoUML.Generalization r, DescriptionCategory source, Set<String> hashCategories, Set<Class> classfSet) {
 	Classifier searchObject;
 	DescriptionCategory target;
  	boolean isSon;
@@ -389,7 +384,7 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 	 	}	
 		
 		if(generalizationSpace.findCategory(searchObject.getName()) == null){
-			target = createCategoryClass((Class) searchObject);
+			target = createCategoryClass((Class) searchObject, classfSet);
 			
 			if(isSon){
 				if(genSetName == null){
@@ -401,7 +396,6 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 				
 				if(existsGenSet != null){
 					Generalization gen = new Generalization("",target,source,1,1,1,1);
-					//System.out.println(target.getLabel() + " --> " + source.getLabel());
 					source.getFunctions().add(gen);
 					target.getFunctions().add(gen);
 					existsGenSet.getGeneralizationElements().add(gen);
@@ -409,7 +403,6 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 				}else{
 					GeneralizationSet gs = new GeneralizationSet(source,1,1,disjoint, complete, genSetName);
 					Generalization gen = new Generalization("",target,source,1,1,1,1);
-					//System.out.println(target.getLabel() + " --> " + source.getLabel());
 
 					source.getFunctions().add(gen);
 					target.getFunctions().add(gen);
@@ -429,7 +422,6 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 				GeneralizationSet gs = new GeneralizationSet(target,1,1,disjoint, complete, genSetName);
 				Generalization gen = new Generalization("",source,target,1,1,1,1);
 				gs.getGeneralizationElements().add(gen);
-				//System.out.println(source.getLabel() + " --> " + target.getLabel());
 
 				source.getFunctions().add(gen);
 				target.getFunctions().add(gen);
@@ -458,7 +450,6 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 										
 					if(existsGenSet != null){
 						Generalization gen = new Generalization("",targetCreated,source,1,1,1,1);
-						//System.out.println(targetCreated.getLabel() + " --> " + source.getLabel());
 
 						source.getFunctions().add(gen);
 						targetCreated.getFunctions().add(gen);
@@ -467,7 +458,6 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 					}else{
 						GeneralizationSet gs = new GeneralizationSet(source,1,1,disjoint, complete, genSetName);
 						Generalization gen = new Generalization("",targetCreated,source,1,1,1,1);
-						//System.out.println(targetCreated.getLabel() + " --> " + source.getLabel());
 
 						source.getFunctions().add(gen);
 						targetCreated.getFunctions().add(gen);
@@ -487,7 +477,6 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 					
 					if(existsGenSet != null){
 						Generalization gen = new Generalization("",source,targetCreated,1,1,1,1);
-						//System.out.println(source.getLabel() + " --> " + targetCreated.getLabel());
 
 						source.getFunctions().add(gen);
 						targetCreated.getFunctions().add(gen);
@@ -496,7 +485,6 @@ private void processRule05(RefOntoUML.Generalization r, DescriptionCategory sour
 					}else{
 						GeneralizationSet gs = new GeneralizationSet(targetCreated,1,1,disjoint, complete, genSetName);
 						Generalization gen = new Generalization("",source,targetCreated,1,1,1,1);
-						//System.out.println(source.getLabel() + " --> " + targetCreated.getLabel());
 
 						source.getFunctions().add(gen);
 						targetCreated.getFunctions().add(gen);
@@ -692,53 +680,49 @@ public int findUpperMultiplicity(Property p){
 			return p.getUpper();
 		}
 		
-public DescriptionCategory createCategory(Type type){
+public DescriptionCategory createCategory(Type type, Set<Class> classfSet){
 	
-	if(type instanceof RefOntoUML.Category || type.toString().contains("RefOntoUML.impl.ClassImpl@")){
-		DescriptionCategory mat = new Category(type.getName());
-		return mat;
-	}
-	if(type instanceof RefOntoUML.Phase){
-		DescriptionCategory mat = new Phase(type.getName());
-		return mat;
-	}
-	if(type instanceof RefOntoUML.Collective){
-		DescriptionCategory mat = new Collective(type.getName());
-		return mat;
-	}	
-	if(type instanceof RefOntoUML.Kind){
-		DescriptionCategory mat = new Kind(type.getName());
-		return mat;
-	}		
-	if(type instanceof RefOntoUML.SubKind){
-		DescriptionCategory mat = new Subkind(type.getName());
-		return mat;	
-	}
-	if(type instanceof RefOntoUML.Mixin){
-		DescriptionCategory mat = new Mixin(type.getName());
-		return mat;
-	}
-	if(type instanceof RefOntoUML.Mode){
-		DescriptionCategory mat = new Mode(type.getName());
-		return mat;
-	}
-	if(type instanceof RefOntoUML.Quantity){
-		DescriptionCategory mat = new Quantity(type.getName());
-		return mat;
-	}
-	if(type instanceof RefOntoUML.Relator){
-		DescriptionCategory mat = new Relator(type.getName());
-		return mat;
-	}
-	if(type instanceof RefOntoUML.Role){
-		DescriptionCategory mat = new Role(type.getName());
-		return mat;
-	}
-	if(type instanceof RefOntoUML.RoleMixin){
-		DescriptionCategory mat = new RoleMixin(type.getName());
-		return mat;
-	}
-	return null;
+	DescriptionCategory mat = null;
+	String userDesc;
+	
+	if(type instanceof RefOntoUML.Category || type.toString().contains("RefOntoUML.impl.ClassImpl@"))
+		mat = new Category(type.getName());
+	
+	if(type instanceof RefOntoUML.Phase)
+		mat = new Phase(type.getName());
+	
+	if(type instanceof RefOntoUML.Collective)
+		mat = new Collective(type.getName());
+		
+	if(type instanceof RefOntoUML.Kind)
+		mat = new Kind(type.getName());
+		
+	if(type instanceof RefOntoUML.SubKind)
+		mat = new Subkind(type.getName());
+	
+	if(type instanceof RefOntoUML.Mixin)
+		mat = new Mixin(type.getName());
+	
+	if(type instanceof RefOntoUML.Mode)
+		mat = new Mode(type.getName());
+	
+	if(type instanceof RefOntoUML.Quantity)
+		mat = new Quantity(type.getName());
+	
+	if(type instanceof RefOntoUML.Relator)
+		mat = new Relator(type.getName());
+	
+	if(type instanceof RefOntoUML.Role)
+		mat = new Role(type.getName());
+	
+	if(type instanceof RefOntoUML.RoleMixin)
+		mat = new RoleMixin(type.getName());
+	
+	userDesc = getUserDescription(mat.getLabel(),classfSet);
+	if(userDesc != null)
+		mat.setUserDescription(userDesc);
+	
+	return mat;
 }		
 
 }
