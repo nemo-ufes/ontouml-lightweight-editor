@@ -12,6 +12,8 @@ import br.ufes.inf.nemo.assistant.graph.NodeAssistant;
 import br.ufes.inf.nemo.assistant.manager.ManagerPattern;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewClass;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGenericRelation;
+import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewPhase;
+import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewRelator;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.Question;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.WizardPageAssistant;
 
@@ -102,14 +104,22 @@ public class WizardAssitant extends Wizard {
 		graph.setManagerPattern(mp);
 
 		//Node 1
-		NewClass nc = new NewClass();
-		nc.setStereotypes(new String[]{"Kind","Sukind","Role"});
-		NodeAssistant n1 = new NodeAssistant(graph, nc);
+//		NewClass nc = new NewClass();
+//		nc.setStereotypes(new String[]{"Kind","Sukind","Role"});
+//		NodeAssistant n1 = new NodeAssistant(graph, nc);
+//		
+		//Node 2
+		NewPhase np = new NewPhase();
+		NodeAssistant n1 = new NodeAssistant(graph, np);
+		
+//		Node 2
+//		NewRelator nr = new NewRelator();
+//		NodeAssistant n1 = new NodeAssistant(graph, nr);
 		
 		//Node 2
-		Question q = new Question();
-		q.setQuestion("chose your destination");
-		NodeAssistant n2 = new NodeAssistant(graph, q);
+//		Question q = new Question();
+//		q.setQuestion("chose your destination");
+//		NodeAssistant n2 = new NodeAssistant(graph, q);
 		
 //		//Node 2
 //		NodeAction n2 = new NodeAction(graph);
@@ -124,14 +134,15 @@ public class WizardAssitant extends Wizard {
 		nc2.setStereotypes(new String[]{"Phase","Collective","Role"});
 		NodeAssistant n4 = new NodeAssistant(graph, nc2);
 		
-//		n1.setNextNode(n3);
-//		n3.setNextNode(null);
-		
-		n1.setNextNode(n2);
-		n2.setTrueNode(n3);
-		n2.setFalseNode(n4);
+		n1.setNextNode(n3);
+//		n2.setNextNode(n3);
 		n3.setNextNode(null);
-		n4.setNextNode(null);
+		
+//		n1.setNextNode(n2);
+//		n2.setTrueNode(n3);
+//		n2.setFalseNode(n4);
+//		n3.setNextNode(null);
+//		n4.setNextNode(null);
 		
 		graph.setStartNode(n1);
 		graph.updateNodeList();
