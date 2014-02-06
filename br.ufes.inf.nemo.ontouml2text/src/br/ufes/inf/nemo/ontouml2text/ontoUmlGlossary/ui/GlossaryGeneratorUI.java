@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFileChooser;
@@ -22,11 +21,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.JComboBox;
+
 public class GlossaryGeneratorUI extends JFrame {
 	
-	public DefaultListModel<String> conceptsWithoutDesc = new DefaultListModel<String>();
+	private OntoUmlGlossary ontoUmlGlossary;
 	private OntoUMLParser parser;
 	private JPanel contentPane;
+	private JComboBox<String> cmbLanguage;
 	private JTextField outputFileName;
 	private JTextField edtOutputDirectory;
 	private JCheckBox chkAnalyseDescriptiveConsistency;
@@ -37,7 +39,8 @@ public class GlossaryGeneratorUI extends JFrame {
 	private boolean doGlossaryGeneration;
 	private JButton btnCancel;
 
-	public GlossaryGeneratorUI(OntoUMLParser parser){
+	public GlossaryGeneratorUI(OntoUMLParser parser)
+	{
 		this();		
 		this.parser = parser;		
 	}
@@ -50,7 +53,7 @@ public class GlossaryGeneratorUI extends JFrame {
 		setType(Type.UTILITY);
 		setTitle("OntoUML Glossary Generator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 401, 233);
+		setBounds(100, 100, 401, 275);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -78,6 +81,12 @@ public class GlossaryGeneratorUI extends JFrame {
 				dispose();
 			}
 		});
+		
+		cmbLanguage = new JComboBox<String>();
+		cmbLanguage.addItem("Português - BR");
+		cmbLanguage.setSelectedIndex(0);
+		
+		JLabel lblLanguage = new JLabel("Target Language");
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -87,27 +96,41 @@ public class GlossaryGeneratorUI extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 								.addComponent(edtOutputDirectory, Alignment.LEADING)
-								.addComponent(outputFileName, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE))
+								.addComponent(outputFileName, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE))
 							.addGap(18)
-							.addComponent(btnSelectOutputDirectory, GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE)
-							.addGap(36))
+							.addComponent(btnSelectOutputDirectory, GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblNewLabel)
 								.addComponent(lblOutputDirectory)
-								.addComponent(chkAnalyseDescriptiveConsistency))
-							.addContainerGap(164, Short.MAX_VALUE))))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(chkAnalyseDescriptiveConsistency)
+									.addGap(154)))
+							.addPreferredGap(ComponentPlacement.RELATED, 32, GroupLayout.PREFERRED_SIZE)))
+					.addGap(8))
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(92)
 					.addComponent(btnGenerateGlossary)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnCancel)
-					.addContainerGap(108, Short.MAX_VALUE))
+					.addContainerGap(101, Short.MAX_VALUE))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(cmbLanguage, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(367, Short.MAX_VALUE))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblLanguage)
+					.addContainerGap(328, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
+					.addComponent(lblLanguage)
+					.addGap(9)
+					.addComponent(cmbLanguage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblNewLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(outputFileName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -119,7 +142,7 @@ public class GlossaryGeneratorUI extends JFrame {
 						.addComponent(btnSelectOutputDirectory))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(chkAnalyseDescriptiveConsistency)
-					.addPreferredGap(ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCancel)
 						.addComponent(btnGenerateGlossary))
@@ -159,17 +182,22 @@ public class GlossaryGeneratorUI extends JFrame {
 				if(outputFileName.getText().equals("") || edtOutputDirectory.getText().equals(""))
 					this.showErrorMessage(this,"There is no output file name or output directory. Please, complete the fields.","Output Name Error",JOptionPane.ERROR_MESSAGE,null);	
 				
-				else{				
-					conceptsWithoutDesc = OntoUmlGlossary.xmiToText(parser, outputFileName.getText(), edtOutputDirectory.getText());
-
-					SwingUtilities.invokeLater(new Runnable() {			
-					public void run() {
-						GlossaryGeneratorAnalisysUI analisys = new GlossaryGeneratorAnalisysUI(conceptsWithoutDesc);
-						analisys.setVisible(true);	
-						}
-					});
-					
+				else{					
+					if(cmbLanguage.getSelectedIndex() == 0){ // Brazilian Portuguese
+						ontoUmlGlossary = new OntoUmlGlossary(OntoUmlGlossary.PT_BR, parser, outputFileName.getText(), edtOutputDirectory.getText()); 
 					}
+					
+					if(chkAnalyseDescriptiveConsistency.isSelected()){
+						SwingUtilities.invokeLater(new Runnable() {			
+							public void run() {
+								GlossaryGeneratorAnalisysUI analisys = new GlossaryGeneratorAnalisysUI(ontoUmlGlossary, ontoUmlGlossary.verifiyDescriptionConsistency());
+								analisys.setVisible(true);	
+							}
+						});		
+					}else{
+						ontoUmlGlossary.modelToText();
+					}
+				}
 			}
 
 			private void showErrorMessage(ActionListener actionListener,
