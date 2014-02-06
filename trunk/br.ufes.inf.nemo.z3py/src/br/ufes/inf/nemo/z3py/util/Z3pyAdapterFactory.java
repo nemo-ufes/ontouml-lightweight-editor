@@ -80,12 +80,12 @@ public class Z3pyAdapterFactory extends AdapterFactoryImpl {
 				return createQuantificationAdapter();
 			}
 			@Override
-			public Adapter caseUniversal(Universal object) {
-				return createUniversalAdapter();
+			public Adapter caseUniversalQuantification(UniversalQuantification object) {
+				return createUniversalQuantificationAdapter();
 			}
 			@Override
-			public Adapter caseExistential(Existential object) {
-				return createExistentialAdapter();
+			public Adapter caseExistentialQuantification(ExistentialQuantification object) {
+				return createExistentialQuantificationAdapter();
 			}
 			@Override
 			public Adapter caseConjunction(Conjunction object) {
@@ -112,8 +112,8 @@ public class Z3pyAdapterFactory extends AdapterFactoryImpl {
 				return createEquivalenceAdapter();
 			}
 			@Override
-			public Adapter caseLogicalBinary(LogicalBinary object) {
-				return createLogicalBinaryAdapter();
+			public Adapter caseLogicalBinaryExpression(LogicalBinaryExpression object) {
+				return createLogicalBinaryExpressionAdapter();
 			}
 			@Override
 			public Adapter caseBooleanFunctionDefinition(BooleanFunctionDefinition object) {
@@ -190,30 +190,30 @@ public class Z3pyAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Universal <em>Universal</em>}'.
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.UniversalQuantification <em>Universal Quantification</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see br.ufes.inf.nemo.z3py.Universal
+	 * @see br.ufes.inf.nemo.z3py.UniversalQuantification
 	 * @generated
 	 */
-	public Adapter createUniversalAdapter() {
+	public Adapter createUniversalQuantificationAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Existential <em>Existential</em>}'.
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.ExistentialQuantification <em>Existential Quantification</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see br.ufes.inf.nemo.z3py.Existential
+	 * @see br.ufes.inf.nemo.z3py.ExistentialQuantification
 	 * @generated
 	 */
-	public Adapter createExistentialAdapter() {
+	public Adapter createExistentialQuantificationAdapter() {
 		return null;
 	}
 
@@ -302,16 +302,16 @@ public class Z3pyAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.LogicalBinary <em>Logical Binary</em>}'.
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.LogicalBinaryExpression <em>Logical Binary Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see br.ufes.inf.nemo.z3py.LogicalBinary
+	 * @see br.ufes.inf.nemo.z3py.LogicalBinaryExpression
 	 * @generated
 	 */
-	public Adapter createLogicalBinaryAdapter() {
+	public Adapter createLogicalBinaryExpressionAdapter() {
 		return null;
 	}
 

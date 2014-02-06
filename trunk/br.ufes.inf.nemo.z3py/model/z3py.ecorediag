@@ -35,6 +35,10 @@
   <children xmi:type="notation:Node" xmi:id="_4viX0IzHEeOmCPWZc61EhQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_4vi-4IzHEeOmCPWZc61EhQ" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="_4vjl8IzHEeOmCPWZc61EhQ" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_AvADwI9wEeOK-vKtT2eCig" type="2001">
+        <element xmi:type="ecore:EAttribute" href="z3py.ecore#//Quantification/comments"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_AvADwY9wEeOK-vKtT2eCig"/>
+      </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_4vjl8YzHEeOmCPWZc61EhQ"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="_4vjl8ozHEeOmCPWZc61EhQ"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_4vjl84zHEeOmCPWZc61EhQ"/>
@@ -63,8 +67,8 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_HqeGE4zIEeOmCPWZc61EhQ"/>
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_HqcQ4YzIEeOmCPWZc61EhQ" fontColor="4210752" fontName="Segoe UI" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
-    <element xmi:type="ecore:EClass" href="z3py.ecore#//Universal"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HqcQ4ozIEeOmCPWZc61EhQ" x="215" y="270"/>
+    <element xmi:type="ecore:EClass" href="z3py.ecore#//UniversalQuantification"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HqcQ4ozIEeOmCPWZc61EhQ" x="210" y="275"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_KnaYUIzIEeOmCPWZc61EhQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_Kna_YIzIEeOmCPWZc61EhQ" type="4001"/>
@@ -79,8 +83,8 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_Knbmd4zIEeOmCPWZc61EhQ"/>
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_KnaYUYzIEeOmCPWZc61EhQ" fontColor="4210752" fontName="Segoe UI" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
-    <element xmi:type="ecore:EClass" href="z3py.ecore#//Existential"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KnaYUozIEeOmCPWZc61EhQ" x="105" y="270"/>
+    <element xmi:type="ecore:EClass" href="z3py.ecore#//ExistentialQuantification"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KnaYUozIEeOmCPWZc61EhQ" x="50" y="275"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_wCG4MIzIEeOmCPWZc61EhQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_wCIGUIzIEeOmCPWZc61EhQ" type="4001"/>
@@ -191,7 +195,7 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_VOoZN4zJEeOmCPWZc61EhQ"/>
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_VOnLEYzJEeOmCPWZc61EhQ" fontColor="4210752" fontName="Segoe UI" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
-    <element xmi:type="ecore:EClass" href="z3py.ecore#//LogicalBinary"/>
+    <element xmi:type="ecore:EClass" href="z3py.ecore#//LogicalBinaryExpression"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VOnLEozJEeOmCPWZc61EhQ" x="470" y="300"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_FuAckIzMEeOmCPWZc61EhQ" type="1001">
@@ -283,7 +287,7 @@
     </children>
     <styles xmi:type="notation:ConnectorStyle" xmi:id="__sl-oYzJEeOmCPWZc61EhQ" lineColor="4210752"/>
     <styles xmi:type="notation:FontStyle" xmi:id="__sl-oozJEeOmCPWZc61EhQ" fontColor="4210752" fontName="Segoe UI" fontHeight="10"/>
-    <element xmi:type="ecore:EReference" href="z3py.ecore#//LogicalBinary/operand1"/>
+    <element xmi:type="ecore:EReference" href="z3py.ecore#//LogicalBinaryExpression/operand1"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="__sl-o4zJEeOmCPWZc61EhQ" points="[50, 0, 89, 151]$[70, 0, 109, 151]$[70, -151, 109, 0]$[18, -151, 57, 0]"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_LlrsgIzKEeOmCPWZc61EhQ" type="3002" source="_VOnLEIzJEeOmCPWZc61EhQ" target="_bC82sIqkEeOKl_niVuY1uw">
@@ -295,7 +299,7 @@
     </children>
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_LlrsgYzKEeOmCPWZc61EhQ" lineColor="4210752"/>
     <styles xmi:type="notation:FontStyle" xmi:id="_LlrsgozKEeOmCPWZc61EhQ" fontColor="4210752" fontName="Segoe UI" fontHeight="10"/>
-    <element xmi:type="ecore:EReference" href="z3py.ecore#//LogicalBinary/operand2"/>
+    <element xmi:type="ecore:EReference" href="z3py.ecore#//LogicalBinaryExpression/operand2"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Llrsg4zKEeOmCPWZc61EhQ" points="[50, 10, 131, 167]$[120, 10, 201, 167]$[120, -170, 201, -13]$[18, -164, 99, -7]"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_LlvW4IzKEeOmCPWZc61EhQ" id="(0.13043478260869565,0.37254901960784315)"/>
   </edges>

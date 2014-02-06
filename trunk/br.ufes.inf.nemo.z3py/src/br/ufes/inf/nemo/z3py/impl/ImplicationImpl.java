@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class ImplicationImpl extends LogicalBinaryImpl implements Implication {
+public class ImplicationImpl extends LogicalBinaryExpressionImpl implements Implication {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

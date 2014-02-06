@@ -13,5 +13,5 @@ package br.ufes.inf.nemo.z3py;
  * @model
  * @generated
  */
-public interface Disjunction extends LogicalBinary {
+public interface Disjunction extends LogicalBinaryExpression {
 } // Disjunction

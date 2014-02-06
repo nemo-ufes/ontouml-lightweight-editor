@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class ConjunctionImpl extends LogicalBinaryImpl implements Conjunction {
+public class ConjunctionImpl extends LogicalBinaryExpressionImpl implements Conjunction {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

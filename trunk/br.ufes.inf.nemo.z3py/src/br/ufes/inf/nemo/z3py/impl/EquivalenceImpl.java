@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class EquivalenceImpl extends LogicalBinaryImpl implements Equivalence {
+public class EquivalenceImpl extends LogicalBinaryExpressionImpl implements Equivalence {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

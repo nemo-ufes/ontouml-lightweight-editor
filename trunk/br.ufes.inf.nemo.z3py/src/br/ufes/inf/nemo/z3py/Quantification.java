@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link br.ufes.inf.nemo.z3py.Quantification#getExpression <em>Expression</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.z3py.Quantification#getConstants <em>Constants</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.z3py.Quantification#getQuantifiesOver <em>Quantifies Over</em>}</li>
+ *   <li>{@link br.ufes.inf.nemo.z3py.Quantification#getComments <em>Comments</em>}</li>
  * </ul>
  * </p>
  *
@@ -80,5 +81,31 @@ public interface Quantification extends Expression {
 	 * @generated
 	 */
 	EList<IntConstant> getQuantifiesOver();
+
+	/**
+	 * Returns the value of the '<em><b>Comments</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Comments</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Comments</em>' attribute.
+	 * @see #setComments(String)
+	 * @see br.ufes.inf.nemo.z3py.Z3pyPackage#getQuantification_Comments()
+	 * @model
+	 * @generated
+	 */
+	String getComments();
+
+	/**
+	 * Sets the value of the '{@link br.ufes.inf.nemo.z3py.Quantification#getComments <em>Comments</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Comments</em>' attribute.
+	 * @see #getComments()
+	 * @generated
+	 */
+	void setComments(String value);
 
 } // Quantification

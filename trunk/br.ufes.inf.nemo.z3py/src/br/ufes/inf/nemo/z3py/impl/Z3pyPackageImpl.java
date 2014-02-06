@@ -7,16 +7,16 @@ import br.ufes.inf.nemo.z3py.Conjunction;
 import br.ufes.inf.nemo.z3py.Disjunction;
 import br.ufes.inf.nemo.z3py.Equivalence;
 import br.ufes.inf.nemo.z3py.ExclusiveDisjunction;
-import br.ufes.inf.nemo.z3py.Existential;
+import br.ufes.inf.nemo.z3py.ExistentialQuantification;
 import br.ufes.inf.nemo.z3py.Expression;
 import br.ufes.inf.nemo.z3py.FunctionCall;
 import br.ufes.inf.nemo.z3py.Implication;
 import br.ufes.inf.nemo.z3py.IntConstant;
-import br.ufes.inf.nemo.z3py.LogicalBinary;
+import br.ufes.inf.nemo.z3py.LogicalBinaryExpression;
 import br.ufes.inf.nemo.z3py.LogicalNegation;
 import br.ufes.inf.nemo.z3py.OntoUMLZ3System;
 import br.ufes.inf.nemo.z3py.Quantification;
-import br.ufes.inf.nemo.z3py.Universal;
+import br.ufes.inf.nemo.z3py.UniversalQuantification;
 import br.ufes.inf.nemo.z3py.Z3pyFactory;
 import br.ufes.inf.nemo.z3py.Z3pyPackage;
 
@@ -60,14 +60,14 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass universalEClass = null;
+	private EClass universalQuantificationEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass existentialEClass = null;
+	private EClass existentialQuantificationEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -116,7 +116,7 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass logicalBinaryEClass = null;
+	private EClass logicalBinaryExpressionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -277,8 +277,8 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getUniversal() {
-		return universalEClass;
+	public EAttribute getQuantification_Comments() {
+		return (EAttribute)quantificationEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -286,8 +286,17 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getExistential() {
-		return existentialEClass;
+	public EClass getUniversalQuantification() {
+		return universalQuantificationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getExistentialQuantification() {
+		return existentialQuantificationEClass;
 	}
 
 	/**
@@ -358,8 +367,8 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getLogicalBinary() {
-		return logicalBinaryEClass;
+	public EClass getLogicalBinaryExpression() {
+		return logicalBinaryExpressionEClass;
 	}
 
 	/**
@@ -367,8 +376,8 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getLogicalBinary_Operand1() {
-		return (EReference)logicalBinaryEClass.getEStructuralFeatures().get(0);
+	public EReference getLogicalBinaryExpression_Operand1() {
+		return (EReference)logicalBinaryExpressionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -376,8 +385,8 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getLogicalBinary_Operand2() {
-		return (EReference)logicalBinaryEClass.getEStructuralFeatures().get(1);
+	public EReference getLogicalBinaryExpression_Operand2() {
+		return (EReference)logicalBinaryExpressionEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -508,10 +517,11 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 		createEReference(quantificationEClass, QUANTIFICATION__EXPRESSION);
 		createEReference(quantificationEClass, QUANTIFICATION__CONSTANTS);
 		createEReference(quantificationEClass, QUANTIFICATION__QUANTIFIES_OVER);
+		createEAttribute(quantificationEClass, QUANTIFICATION__COMMENTS);
 
-		universalEClass = createEClass(UNIVERSAL);
+		universalQuantificationEClass = createEClass(UNIVERSAL_QUANTIFICATION);
 
-		existentialEClass = createEClass(EXISTENTIAL);
+		existentialQuantificationEClass = createEClass(EXISTENTIAL_QUANTIFICATION);
 
 		conjunctionEClass = createEClass(CONJUNCTION);
 
@@ -526,9 +536,9 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 
 		equivalenceEClass = createEClass(EQUIVALENCE);
 
-		logicalBinaryEClass = createEClass(LOGICAL_BINARY);
-		createEReference(logicalBinaryEClass, LOGICAL_BINARY__OPERAND1);
-		createEReference(logicalBinaryEClass, LOGICAL_BINARY__OPERAND2);
+		logicalBinaryExpressionEClass = createEClass(LOGICAL_BINARY_EXPRESSION);
+		createEReference(logicalBinaryExpressionEClass, LOGICAL_BINARY_EXPRESSION__OPERAND1);
+		createEReference(logicalBinaryExpressionEClass, LOGICAL_BINARY_EXPRESSION__OPERAND2);
 
 		booleanFunctionDefinitionEClass = createEClass(BOOLEAN_FUNCTION_DEFINITION);
 		createEAttribute(booleanFunctionDefinitionEClass, BOOLEAN_FUNCTION_DEFINITION__NAME);
@@ -574,15 +584,15 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 		// Add supertypes to classes
 		functionCallEClass.getESuperTypes().add(this.getExpression());
 		quantificationEClass.getESuperTypes().add(this.getExpression());
-		universalEClass.getESuperTypes().add(this.getQuantification());
-		existentialEClass.getESuperTypes().add(this.getQuantification());
-		conjunctionEClass.getESuperTypes().add(this.getLogicalBinary());
-		disjunctionEClass.getESuperTypes().add(this.getLogicalBinary());
-		exclusiveDisjunctionEClass.getESuperTypes().add(this.getLogicalBinary());
+		universalQuantificationEClass.getESuperTypes().add(this.getQuantification());
+		existentialQuantificationEClass.getESuperTypes().add(this.getQuantification());
+		conjunctionEClass.getESuperTypes().add(this.getLogicalBinaryExpression());
+		disjunctionEClass.getESuperTypes().add(this.getLogicalBinaryExpression());
+		exclusiveDisjunctionEClass.getESuperTypes().add(this.getLogicalBinaryExpression());
 		logicalNegationEClass.getESuperTypes().add(this.getExpression());
-		implicationEClass.getESuperTypes().add(this.getLogicalBinary());
-		equivalenceEClass.getESuperTypes().add(this.getLogicalBinary());
-		logicalBinaryEClass.getESuperTypes().add(this.getExpression());
+		implicationEClass.getESuperTypes().add(this.getLogicalBinaryExpression());
+		equivalenceEClass.getESuperTypes().add(this.getLogicalBinaryExpression());
+		logicalBinaryExpressionEClass.getESuperTypes().add(this.getExpression());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(expressionEClass, Expression.class, "Expression", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -595,10 +605,11 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 		initEReference(getQuantification_Expression(), this.getExpression(), null, "expression", null, 1, 1, Quantification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getQuantification_Constants(), this.getIntConstant(), null, "constants", null, 1, -1, Quantification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getQuantification_QuantifiesOver(), this.getIntConstant(), null, "quantifiesOver", null, 1, -1, Quantification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getQuantification_Comments(), ecorePackage.getEString(), "comments", null, 0, 1, Quantification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(universalEClass, Universal.class, "Universal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(universalQuantificationEClass, UniversalQuantification.class, "UniversalQuantification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(existentialEClass, Existential.class, "Existential", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(existentialQuantificationEClass, ExistentialQuantification.class, "ExistentialQuantification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(conjunctionEClass, Conjunction.class, "Conjunction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -613,9 +624,9 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 
 		initEClass(equivalenceEClass, Equivalence.class, "Equivalence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(logicalBinaryEClass, LogicalBinary.class, "LogicalBinary", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getLogicalBinary_Operand1(), this.getExpression(), null, "operand1", null, 1, 1, LogicalBinary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getLogicalBinary_Operand2(), this.getExpression(), null, "operand2", null, 1, 1, LogicalBinary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(logicalBinaryExpressionEClass, LogicalBinaryExpression.class, "LogicalBinaryExpression", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getLogicalBinaryExpression_Operand1(), this.getExpression(), null, "operand1", null, 1, 1, LogicalBinaryExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLogicalBinaryExpression_Operand2(), this.getExpression(), null, "operand2", null, 1, 1, LogicalBinaryExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(booleanFunctionDefinitionEClass, BooleanFunctionDefinition.class, "BooleanFunctionDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBooleanFunctionDefinition_Name(), ecorePackage.getEString(), "name", null, 1, 1, BooleanFunctionDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

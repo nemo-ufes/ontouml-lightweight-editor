@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class DisjunctionImpl extends LogicalBinaryImpl implements Disjunction {
+public class DisjunctionImpl extends LogicalBinaryExpressionImpl implements Disjunction {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

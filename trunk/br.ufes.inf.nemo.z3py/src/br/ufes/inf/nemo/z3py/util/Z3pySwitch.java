@@ -86,26 +86,26 @@ public class Z3pySwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Z3pyPackage.UNIVERSAL: {
-				Universal universal = (Universal)theEObject;
-				T result = caseUniversal(universal);
-				if (result == null) result = caseQuantification(universal);
-				if (result == null) result = caseExpression(universal);
+			case Z3pyPackage.UNIVERSAL_QUANTIFICATION: {
+				UniversalQuantification universalQuantification = (UniversalQuantification)theEObject;
+				T result = caseUniversalQuantification(universalQuantification);
+				if (result == null) result = caseQuantification(universalQuantification);
+				if (result == null) result = caseExpression(universalQuantification);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Z3pyPackage.EXISTENTIAL: {
-				Existential existential = (Existential)theEObject;
-				T result = caseExistential(existential);
-				if (result == null) result = caseQuantification(existential);
-				if (result == null) result = caseExpression(existential);
+			case Z3pyPackage.EXISTENTIAL_QUANTIFICATION: {
+				ExistentialQuantification existentialQuantification = (ExistentialQuantification)theEObject;
+				T result = caseExistentialQuantification(existentialQuantification);
+				if (result == null) result = caseQuantification(existentialQuantification);
+				if (result == null) result = caseExpression(existentialQuantification);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case Z3pyPackage.CONJUNCTION: {
 				Conjunction conjunction = (Conjunction)theEObject;
 				T result = caseConjunction(conjunction);
-				if (result == null) result = caseLogicalBinary(conjunction);
+				if (result == null) result = caseLogicalBinaryExpression(conjunction);
 				if (result == null) result = caseExpression(conjunction);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -113,7 +113,7 @@ public class Z3pySwitch<T> extends Switch<T> {
 			case Z3pyPackage.DISJUNCTION: {
 				Disjunction disjunction = (Disjunction)theEObject;
 				T result = caseDisjunction(disjunction);
-				if (result == null) result = caseLogicalBinary(disjunction);
+				if (result == null) result = caseLogicalBinaryExpression(disjunction);
 				if (result == null) result = caseExpression(disjunction);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -121,7 +121,7 @@ public class Z3pySwitch<T> extends Switch<T> {
 			case Z3pyPackage.EXCLUSIVE_DISJUNCTION: {
 				ExclusiveDisjunction exclusiveDisjunction = (ExclusiveDisjunction)theEObject;
 				T result = caseExclusiveDisjunction(exclusiveDisjunction);
-				if (result == null) result = caseLogicalBinary(exclusiveDisjunction);
+				if (result == null) result = caseLogicalBinaryExpression(exclusiveDisjunction);
 				if (result == null) result = caseExpression(exclusiveDisjunction);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -136,7 +136,7 @@ public class Z3pySwitch<T> extends Switch<T> {
 			case Z3pyPackage.IMPLICATION: {
 				Implication implication = (Implication)theEObject;
 				T result = caseImplication(implication);
-				if (result == null) result = caseLogicalBinary(implication);
+				if (result == null) result = caseLogicalBinaryExpression(implication);
 				if (result == null) result = caseExpression(implication);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -144,15 +144,15 @@ public class Z3pySwitch<T> extends Switch<T> {
 			case Z3pyPackage.EQUIVALENCE: {
 				Equivalence equivalence = (Equivalence)theEObject;
 				T result = caseEquivalence(equivalence);
-				if (result == null) result = caseLogicalBinary(equivalence);
+				if (result == null) result = caseLogicalBinaryExpression(equivalence);
 				if (result == null) result = caseExpression(equivalence);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Z3pyPackage.LOGICAL_BINARY: {
-				LogicalBinary logicalBinary = (LogicalBinary)theEObject;
-				T result = caseLogicalBinary(logicalBinary);
-				if (result == null) result = caseExpression(logicalBinary);
+			case Z3pyPackage.LOGICAL_BINARY_EXPRESSION: {
+				LogicalBinaryExpression logicalBinaryExpression = (LogicalBinaryExpression)theEObject;
+				T result = caseLogicalBinaryExpression(logicalBinaryExpression);
+				if (result == null) result = caseExpression(logicalBinaryExpression);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -224,32 +224,32 @@ public class Z3pySwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Universal</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Universal Quantification</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Universal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Universal Quantification</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseUniversal(Universal object) {
+	public T caseUniversalQuantification(UniversalQuantification object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Existential</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Existential Quantification</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Existential</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Existential Quantification</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseExistential(Existential object) {
+	public T caseExistentialQuantification(ExistentialQuantification object) {
 		return null;
 	}
 
@@ -344,17 +344,17 @@ public class Z3pySwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Logical Binary</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Logical Binary Expression</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Logical Binary</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Logical Binary Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseLogicalBinary(LogicalBinary object) {
+	public T caseLogicalBinaryExpression(LogicalBinaryExpression object) {
 		return null;
 	}
 

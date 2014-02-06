@@ -149,69 +149,32 @@ public interface Z3pyPackage extends EPackage {
 	int QUANTIFICATION__QUANTIFIES_OVER = EXPRESSION_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Comments</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUANTIFICATION__COMMENTS = EXPRESSION_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Quantification</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int QUANTIFICATION_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 3;
+	int QUANTIFICATION_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 4;
 
 	/**
-	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.UniversalImpl <em>Universal</em>}' class.
+	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.UniversalQuantificationImpl <em>Universal Quantification</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see br.ufes.inf.nemo.z3py.impl.UniversalImpl
-	 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getUniversal()
+	 * @see br.ufes.inf.nemo.z3py.impl.UniversalQuantificationImpl
+	 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getUniversalQuantification()
 	 * @generated
 	 */
-	int UNIVERSAL = 3;
-
-	/**
-	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UNIVERSAL__EXPRESSION = QUANTIFICATION__EXPRESSION;
-
-	/**
-	 * The feature id for the '<em><b>Constants</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UNIVERSAL__CONSTANTS = QUANTIFICATION__CONSTANTS;
-
-	/**
-	 * The feature id for the '<em><b>Quantifies Over</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UNIVERSAL__QUANTIFIES_OVER = QUANTIFICATION__QUANTIFIES_OVER;
-
-	/**
-	 * The number of structural features of the '<em>Universal</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UNIVERSAL_FEATURE_COUNT = QUANTIFICATION_FEATURE_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.ExistentialImpl <em>Existential</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see br.ufes.inf.nemo.z3py.impl.ExistentialImpl
-	 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getExistential()
-	 * @generated
-	 */
-	int EXISTENTIAL = 4;
+	int UNIVERSAL_QUANTIFICATION = 3;
 
 	/**
 	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -220,7 +183,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXISTENTIAL__EXPRESSION = QUANTIFICATION__EXPRESSION;
+	int UNIVERSAL_QUANTIFICATION__EXPRESSION = QUANTIFICATION__EXPRESSION;
 
 	/**
 	 * The feature id for the '<em><b>Constants</b></em>' containment reference list.
@@ -229,7 +192,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXISTENTIAL__CONSTANTS = QUANTIFICATION__CONSTANTS;
+	int UNIVERSAL_QUANTIFICATION__CONSTANTS = QUANTIFICATION__CONSTANTS;
 
 	/**
 	 * The feature id for the '<em><b>Quantifies Over</b></em>' reference list.
@@ -238,26 +201,90 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXISTENTIAL__QUANTIFIES_OVER = QUANTIFICATION__QUANTIFIES_OVER;
+	int UNIVERSAL_QUANTIFICATION__QUANTIFIES_OVER = QUANTIFICATION__QUANTIFIES_OVER;
 
 	/**
-	 * The number of structural features of the '<em>Existential</em>' class.
+	 * The feature id for the '<em><b>Comments</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXISTENTIAL_FEATURE_COUNT = QUANTIFICATION_FEATURE_COUNT + 0;
+	int UNIVERSAL_QUANTIFICATION__COMMENTS = QUANTIFICATION__COMMENTS;
 
 	/**
-	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.LogicalBinaryImpl <em>Logical Binary</em>}' class.
+	 * The number of structural features of the '<em>Universal Quantification</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see br.ufes.inf.nemo.z3py.impl.LogicalBinaryImpl
-	 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getLogicalBinary()
+	 * @generated
+	 * @ordered
+	 */
+	int UNIVERSAL_QUANTIFICATION_FEATURE_COUNT = QUANTIFICATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.ExistentialQuantificationImpl <em>Existential Quantification</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see br.ufes.inf.nemo.z3py.impl.ExistentialQuantificationImpl
+	 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getExistentialQuantification()
 	 * @generated
 	 */
-	int LOGICAL_BINARY = 11;
+	int EXISTENTIAL_QUANTIFICATION = 4;
+
+	/**
+	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXISTENTIAL_QUANTIFICATION__EXPRESSION = QUANTIFICATION__EXPRESSION;
+
+	/**
+	 * The feature id for the '<em><b>Constants</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXISTENTIAL_QUANTIFICATION__CONSTANTS = QUANTIFICATION__CONSTANTS;
+
+	/**
+	 * The feature id for the '<em><b>Quantifies Over</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXISTENTIAL_QUANTIFICATION__QUANTIFIES_OVER = QUANTIFICATION__QUANTIFIES_OVER;
+
+	/**
+	 * The feature id for the '<em><b>Comments</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXISTENTIAL_QUANTIFICATION__COMMENTS = QUANTIFICATION__COMMENTS;
+
+	/**
+	 * The number of structural features of the '<em>Existential Quantification</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXISTENTIAL_QUANTIFICATION_FEATURE_COUNT = QUANTIFICATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.LogicalBinaryExpressionImpl <em>Logical Binary Expression</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see br.ufes.inf.nemo.z3py.impl.LogicalBinaryExpressionImpl
+	 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getLogicalBinaryExpression()
+	 * @generated
+	 */
+	int LOGICAL_BINARY_EXPRESSION = 11;
 
 	/**
 	 * The feature id for the '<em><b>Operand1</b></em>' containment reference.
@@ -266,7 +293,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LOGICAL_BINARY__OPERAND1 = EXPRESSION_FEATURE_COUNT + 0;
+	int LOGICAL_BINARY_EXPRESSION__OPERAND1 = EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
@@ -275,16 +302,16 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LOGICAL_BINARY__OPERAND2 = EXPRESSION_FEATURE_COUNT + 1;
+	int LOGICAL_BINARY_EXPRESSION__OPERAND2 = EXPRESSION_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of structural features of the '<em>Logical Binary</em>' class.
+	 * The number of structural features of the '<em>Logical Binary Expression</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LOGICAL_BINARY_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
+	int LOGICAL_BINARY_EXPRESSION_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.ConjunctionImpl <em>Conjunction</em>}' class.
@@ -303,7 +330,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONJUNCTION__OPERAND1 = LOGICAL_BINARY__OPERAND1;
+	int CONJUNCTION__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
 
 	/**
 	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
@@ -312,7 +339,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONJUNCTION__OPERAND2 = LOGICAL_BINARY__OPERAND2;
+	int CONJUNCTION__OPERAND2 = LOGICAL_BINARY_EXPRESSION__OPERAND2;
 
 	/**
 	 * The number of structural features of the '<em>Conjunction</em>' class.
@@ -321,7 +348,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONJUNCTION_FEATURE_COUNT = LOGICAL_BINARY_FEATURE_COUNT + 0;
+	int CONJUNCTION_FEATURE_COUNT = LOGICAL_BINARY_EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.DisjunctionImpl <em>Disjunction</em>}' class.
@@ -340,7 +367,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DISJUNCTION__OPERAND1 = LOGICAL_BINARY__OPERAND1;
+	int DISJUNCTION__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
 
 	/**
 	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
@@ -349,7 +376,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DISJUNCTION__OPERAND2 = LOGICAL_BINARY__OPERAND2;
+	int DISJUNCTION__OPERAND2 = LOGICAL_BINARY_EXPRESSION__OPERAND2;
 
 	/**
 	 * The number of structural features of the '<em>Disjunction</em>' class.
@@ -358,7 +385,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DISJUNCTION_FEATURE_COUNT = LOGICAL_BINARY_FEATURE_COUNT + 0;
+	int DISJUNCTION_FEATURE_COUNT = LOGICAL_BINARY_EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.ExclusiveDisjunctionImpl <em>Exclusive Disjunction</em>}' class.
@@ -377,7 +404,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXCLUSIVE_DISJUNCTION__OPERAND1 = LOGICAL_BINARY__OPERAND1;
+	int EXCLUSIVE_DISJUNCTION__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
 
 	/**
 	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
@@ -386,7 +413,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXCLUSIVE_DISJUNCTION__OPERAND2 = LOGICAL_BINARY__OPERAND2;
+	int EXCLUSIVE_DISJUNCTION__OPERAND2 = LOGICAL_BINARY_EXPRESSION__OPERAND2;
 
 	/**
 	 * The number of structural features of the '<em>Exclusive Disjunction</em>' class.
@@ -395,7 +422,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXCLUSIVE_DISJUNCTION_FEATURE_COUNT = LOGICAL_BINARY_FEATURE_COUNT + 0;
+	int EXCLUSIVE_DISJUNCTION_FEATURE_COUNT = LOGICAL_BINARY_EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.LogicalNegationImpl <em>Logical Negation</em>}' class.
@@ -442,7 +469,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IMPLICATION__OPERAND1 = LOGICAL_BINARY__OPERAND1;
+	int IMPLICATION__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
 
 	/**
 	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
@@ -451,7 +478,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IMPLICATION__OPERAND2 = LOGICAL_BINARY__OPERAND2;
+	int IMPLICATION__OPERAND2 = LOGICAL_BINARY_EXPRESSION__OPERAND2;
 
 	/**
 	 * The number of structural features of the '<em>Implication</em>' class.
@@ -460,7 +487,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IMPLICATION_FEATURE_COUNT = LOGICAL_BINARY_FEATURE_COUNT + 0;
+	int IMPLICATION_FEATURE_COUNT = LOGICAL_BINARY_EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.EquivalenceImpl <em>Equivalence</em>}' class.
@@ -479,7 +506,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EQUIVALENCE__OPERAND1 = LOGICAL_BINARY__OPERAND1;
+	int EQUIVALENCE__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
 
 	/**
 	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
@@ -488,7 +515,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EQUIVALENCE__OPERAND2 = LOGICAL_BINARY__OPERAND2;
+	int EQUIVALENCE__OPERAND2 = LOGICAL_BINARY_EXPRESSION__OPERAND2;
 
 	/**
 	 * The number of structural features of the '<em>Equivalence</em>' class.
@@ -497,7 +524,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EQUIVALENCE_FEATURE_COUNT = LOGICAL_BINARY_FEATURE_COUNT + 0;
+	int EQUIVALENCE_FEATURE_COUNT = LOGICAL_BINARY_EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.BooleanFunctionDefinitionImpl <em>Boolean Function Definition</em>}' class.
@@ -706,24 +733,35 @@ public interface Z3pyPackage extends EPackage {
 	EReference getQuantification_QuantifiesOver();
 
 	/**
-	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.Universal <em>Universal</em>}'.
+	 * Returns the meta object for the attribute '{@link br.ufes.inf.nemo.z3py.Quantification#getComments <em>Comments</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Universal</em>'.
-	 * @see br.ufes.inf.nemo.z3py.Universal
+	 * @return the meta object for the attribute '<em>Comments</em>'.
+	 * @see br.ufes.inf.nemo.z3py.Quantification#getComments()
+	 * @see #getQuantification()
 	 * @generated
 	 */
-	EClass getUniversal();
+	EAttribute getQuantification_Comments();
 
 	/**
-	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.Existential <em>Existential</em>}'.
+	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.UniversalQuantification <em>Universal Quantification</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Existential</em>'.
-	 * @see br.ufes.inf.nemo.z3py.Existential
+	 * @return the meta object for class '<em>Universal Quantification</em>'.
+	 * @see br.ufes.inf.nemo.z3py.UniversalQuantification
 	 * @generated
 	 */
-	EClass getExistential();
+	EClass getUniversalQuantification();
+
+	/**
+	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.ExistentialQuantification <em>Existential Quantification</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Existential Quantification</em>'.
+	 * @see br.ufes.inf.nemo.z3py.ExistentialQuantification
+	 * @generated
+	 */
+	EClass getExistentialQuantification();
 
 	/**
 	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.Conjunction <em>Conjunction</em>}'.
@@ -797,36 +835,36 @@ public interface Z3pyPackage extends EPackage {
 	EClass getEquivalence();
 
 	/**
-	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.LogicalBinary <em>Logical Binary</em>}'.
+	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.LogicalBinaryExpression <em>Logical Binary Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Logical Binary</em>'.
-	 * @see br.ufes.inf.nemo.z3py.LogicalBinary
+	 * @return the meta object for class '<em>Logical Binary Expression</em>'.
+	 * @see br.ufes.inf.nemo.z3py.LogicalBinaryExpression
 	 * @generated
 	 */
-	EClass getLogicalBinary();
+	EClass getLogicalBinaryExpression();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link br.ufes.inf.nemo.z3py.LogicalBinary#getOperand1 <em>Operand1</em>}'.
+	 * Returns the meta object for the containment reference '{@link br.ufes.inf.nemo.z3py.LogicalBinaryExpression#getOperand1 <em>Operand1</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Operand1</em>'.
-	 * @see br.ufes.inf.nemo.z3py.LogicalBinary#getOperand1()
-	 * @see #getLogicalBinary()
+	 * @see br.ufes.inf.nemo.z3py.LogicalBinaryExpression#getOperand1()
+	 * @see #getLogicalBinaryExpression()
 	 * @generated
 	 */
-	EReference getLogicalBinary_Operand1();
+	EReference getLogicalBinaryExpression_Operand1();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link br.ufes.inf.nemo.z3py.LogicalBinary#getOperand2 <em>Operand2</em>}'.
+	 * Returns the meta object for the containment reference '{@link br.ufes.inf.nemo.z3py.LogicalBinaryExpression#getOperand2 <em>Operand2</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Operand2</em>'.
-	 * @see br.ufes.inf.nemo.z3py.LogicalBinary#getOperand2()
-	 * @see #getLogicalBinary()
+	 * @see br.ufes.inf.nemo.z3py.LogicalBinaryExpression#getOperand2()
+	 * @see #getLogicalBinaryExpression()
 	 * @generated
 	 */
-	EReference getLogicalBinary_Operand2();
+	EReference getLogicalBinaryExpression_Operand2();
 
 	/**
 	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.BooleanFunctionDefinition <em>Boolean Function Definition</em>}'.
@@ -1028,24 +1066,32 @@ public interface Z3pyPackage extends EPackage {
 		EReference QUANTIFICATION__QUANTIFIES_OVER = eINSTANCE.getQuantification_QuantifiesOver();
 
 		/**
-		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.UniversalImpl <em>Universal</em>}' class.
+		 * The meta object literal for the '<em><b>Comments</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see br.ufes.inf.nemo.z3py.impl.UniversalImpl
-		 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getUniversal()
 		 * @generated
 		 */
-		EClass UNIVERSAL = eINSTANCE.getUniversal();
+		EAttribute QUANTIFICATION__COMMENTS = eINSTANCE.getQuantification_Comments();
 
 		/**
-		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.ExistentialImpl <em>Existential</em>}' class.
+		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.UniversalQuantificationImpl <em>Universal Quantification</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see br.ufes.inf.nemo.z3py.impl.ExistentialImpl
-		 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getExistential()
+		 * @see br.ufes.inf.nemo.z3py.impl.UniversalQuantificationImpl
+		 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getUniversalQuantification()
 		 * @generated
 		 */
-		EClass EXISTENTIAL = eINSTANCE.getExistential();
+		EClass UNIVERSAL_QUANTIFICATION = eINSTANCE.getUniversalQuantification();
+
+		/**
+		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.ExistentialQuantificationImpl <em>Existential Quantification</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see br.ufes.inf.nemo.z3py.impl.ExistentialQuantificationImpl
+		 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getExistentialQuantification()
+		 * @generated
+		 */
+		EClass EXISTENTIAL_QUANTIFICATION = eINSTANCE.getExistentialQuantification();
 
 		/**
 		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.ConjunctionImpl <em>Conjunction</em>}' class.
@@ -1116,14 +1162,14 @@ public interface Z3pyPackage extends EPackage {
 		EClass EQUIVALENCE = eINSTANCE.getEquivalence();
 
 		/**
-		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.LogicalBinaryImpl <em>Logical Binary</em>}' class.
+		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.LogicalBinaryExpressionImpl <em>Logical Binary Expression</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see br.ufes.inf.nemo.z3py.impl.LogicalBinaryImpl
-		 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getLogicalBinary()
+		 * @see br.ufes.inf.nemo.z3py.impl.LogicalBinaryExpressionImpl
+		 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getLogicalBinaryExpression()
 		 * @generated
 		 */
-		EClass LOGICAL_BINARY = eINSTANCE.getLogicalBinary();
+		EClass LOGICAL_BINARY_EXPRESSION = eINSTANCE.getLogicalBinaryExpression();
 
 		/**
 		 * The meta object literal for the '<em><b>Operand1</b></em>' containment reference feature.
@@ -1131,7 +1177,7 @@ public interface Z3pyPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference LOGICAL_BINARY__OPERAND1 = eINSTANCE.getLogicalBinary_Operand1();
+		EReference LOGICAL_BINARY_EXPRESSION__OPERAND1 = eINSTANCE.getLogicalBinaryExpression_Operand1();
 
 		/**
 		 * The meta object literal for the '<em><b>Operand2</b></em>' containment reference feature.
@@ -1139,7 +1185,7 @@ public interface Z3pyPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference LOGICAL_BINARY__OPERAND2 = eINSTANCE.getLogicalBinary_Operand2();
+		EReference LOGICAL_BINARY_EXPRESSION__OPERAND2 = eINSTANCE.getLogicalBinaryExpression_Operand2();
 
 		/**
 		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.BooleanFunctionDefinitionImpl <em>Boolean Function Definition</em>}' class.
