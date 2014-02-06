@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui;
 
 import java.awt.Color;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -125,15 +126,23 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		lblNewLabel.setBounds(6, 18, 249, 16);
 		panel.add(lblNewLabel);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(26, 68, 178, 234);
-		panel.add(scrollPane);
-			
-		JList<String> list = new JList<String>();		
+		DefaultListModel<String> modelList = new DefaultListModel<String>();
+		int i = 0;
+
+		for(String s : conceptsWithoutDesc){
+			modelList.add(i, s);
+			i++;
+		}
+
+		JList<String> list = new JList<String>(modelList);		
 		list.setBackground(UIManager.getColor("Button.disabledShadow"));
 		list.setBounds(31, 47, 144, 234);
 		//panel.add(list);	
 		
+		JScrollPane scrollPane = new JScrollPane(list);
+		scrollPane.setBounds(26, 68, 178, 234);
+		panel.add(scrollPane);
+
 		scrollPane.setViewportView(list);
 	}
 }
