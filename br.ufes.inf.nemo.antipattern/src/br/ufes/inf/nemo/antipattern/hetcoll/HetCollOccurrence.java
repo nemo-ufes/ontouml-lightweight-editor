@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.Phase;
@@ -15,6 +16,14 @@ import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class HetCollOccurrence extends AntipatternOccurrence {
+
+	public Classifier getWhole() {
+		return whole;
+	}
+
+	public ArrayList<Property> getMemberEnds() {
+		return memberEnds;
+	}
 
 	private Classifier whole;
 	private ArrayList<Property> memberEnds;
@@ -69,6 +78,19 @@ public class HetCollOccurrence extends AntipatternOccurrence {
 	@Override
 	public String getShortName() {
 		return parser.getStringRepresentation(whole);
+	}
+
+	// OUTCOMING FIXES ===============================================
+	
+	public void changeAllToComponentOf(ArrayList<Association> partOfList) 
+	{
+	
+		fix.addAll(fixer.changeAllToComponentOf(partOfList));
+	}
+
+	public void changeAllToCollectionAndSubCollectionOf(ArrayList<Association> partOfList) 
+	{
+		fix.addAll(fixer.changeAllToCollectionAndSubCollectionOf(partOfList));
 	}
 
 }

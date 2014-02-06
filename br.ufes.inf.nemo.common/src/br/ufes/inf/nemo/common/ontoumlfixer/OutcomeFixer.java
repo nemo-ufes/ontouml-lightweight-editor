@@ -925,4 +925,15 @@ public class OutcomeFixer {
 		return fix;
 	}
 
+	public Fix changeAllToComponentOf(ArrayList<Association> partOfList)
+	{
+
+		return null;
+	}
+
+	public Fix changeAllToCollectionAndSubCollectionOf(ArrayList<Association> partOfList) 
+	{
+		return null;
+	}
+
 }
