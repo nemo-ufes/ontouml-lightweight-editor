@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.DefaultListModel;
-
 import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
@@ -49,7 +47,7 @@ public class DescriptionSpaceGenerator {
 		return generalizationSpace;
 	}	
 	
-public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories, DefaultListModel<String> conceptsWithoutDesc){
+public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories){
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
 		
 		for (RefOntoUML.Class classf : classfSet){
