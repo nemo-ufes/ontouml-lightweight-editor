@@ -435,6 +435,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
 				ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
 		}
+		for(String str: fix.getAddedRules()){
+			getFrame().getInfoManager().addConstraints(str+"\n");
+		}
     	return ;
     }
 	

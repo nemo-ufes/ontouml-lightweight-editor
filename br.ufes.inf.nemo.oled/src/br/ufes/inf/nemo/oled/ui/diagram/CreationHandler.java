@@ -26,10 +26,6 @@ import java.awt.geom.Rectangle2D;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.assistant.ModellingAssistant;
-import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.oled.Main;
-import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
@@ -167,8 +163,7 @@ public class CreationHandler implements EditorMode {
   /**
    * {@inheritDoc}
    */
-  @SuppressWarnings("unused")
-public void mousePressed(EditorMouseEvent event) {
+  public void mousePressed(EditorMouseEvent event) {
     CompositeNode parent = editor.getDiagram();
     DiagramElement possibleParent = editor.getDiagram().getChildAt(tmpPos.getX(), tmpPos.getY());
     
