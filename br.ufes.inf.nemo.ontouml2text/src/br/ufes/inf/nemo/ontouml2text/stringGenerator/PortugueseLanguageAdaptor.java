@@ -169,7 +169,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += ",";
+		if(previousIsGeneralization(previousPattern)) parcialDescription += ", que ";
 		
 		// Generating specific description
 		parcialDescription += " é caracterizado por ter " + 
@@ -184,7 +184,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += ",";
+		if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
 		
 		// Generating specific description
 		parcialDescription += " é uma característica de " + 
