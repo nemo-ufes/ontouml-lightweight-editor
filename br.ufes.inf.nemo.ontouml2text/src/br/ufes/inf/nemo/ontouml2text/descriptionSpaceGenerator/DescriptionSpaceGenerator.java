@@ -64,7 +64,7 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 			populateRelationships(parser.getRelationships(classf),mat,parser,hashCategories);	
 		}
 		
-		//relatorIheritance(generalizationSpace.getCategories());
+		relatorIheritance(generalizationSpace.getCategories(),hashCategories);
 		
 		for (DescriptionCategory c : generalizationSpace.getCategories())
 			System.out.println("Nome: "+c.getLabel() + "  type: "+c.toString() +"\n  Lista de funções: "+c.getFunctions()+ "\n");
@@ -74,9 +74,10 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 
 }
 
-public void relatorIheritance(List<DescriptionCategory> categories) {
+public void relatorIheritance(List<DescriptionCategory> categories, Set<String> hashCategories) {
 	Generalization gen;
 	DescriptionCategory upCategory;
+	hashCategories.clear();
 	
 	for(DescriptionCategory c : categories){	//Percorro a lista de categorias, já populada.
 		if(c instanceof Relator){				//Se for um relator, verifico se há generalization onde ele é o de baixo(source)
@@ -86,7 +87,7 @@ public void relatorIheritance(List<DescriptionCategory> categories) {
 				
 				upCategory = upFunction(gen); // sobe todos os niveis de hierarquia e retorna o elemento topo
 				// desço adicionando as mediations, até encontrar uma genSet
-				getDownMediation(upCategory,c);	// desce os niveis ate chegar no elemento c, adicionando as mediations
+				getDownMediation(upCategory,c,hashCategories);	// desce os niveis ate chegar no elemento c, adicionando as mediations
 			
 			}else
 				continue;
@@ -100,7 +101,7 @@ public DescriptionCategory upFunction(Generalization gen) {
 	Generalization genTarget;
 	
 	while(true){
-		System.out.println("loop Up");
+//		System.out.println("loop Up");
 		genTarget = (Generalization) verifyGeneralization(target.getFunctions(),target); //verifica se tem algo acima
 		if(genTarget != null)
 			target = genTarget.getTarget();
@@ -110,24 +111,41 @@ public DescriptionCategory upFunction(Generalization gen) {
 	return target;
 }
 
-private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory c) {
-	GeneralizationSet gen;
+private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory c, Set<String> hashCategories) {
+	Generalization gen;
+	GeneralizationSet genSet;
 	DescriptionCategory downCategory = null;
 	
 	while(true){ //enquanto  nao chegar em uma generalization
+//		System.out.println("loop down");
+		genSet = VerifyGeneralizationSet(upCategory.getFunctions(), upCategory);
+		gen = (Generalization) verifyGeneralizationTarget(upCategory.getFunctions(), upCategory);		//verifica se tem alguem embaixo dele
 
-	/*	gen =  VerifyGeneralizationSet(upCategory.getFunctions(), upCategory);		//verifica se tem alguem embaixo dele
-
+//		System.out.println("upCategory : "  + upCategory.getLabel() + " DownCategory : " + downCategory);
+//		System.out.println("GEN: " + gen);
+		if(genSet != null){ // o elemento tem uma genSet
+//			System.out.println("Tem genSet");
+			// Iteração para chamar os ramos da genSet
+			for(Generalization g : genSet.getGeneralizationElements()){
+//				System.out.println("loop for");
+//				System.out.println("Adiciono do : " + upCategory.getLabel() + "  para o " + g.getSource().getLabel());
+				addMediations(upCategory.getFunctions(), g.getSource());
+				getDownMediation(g.getSource(),c,hashCategories);   
+			}
+		}
 		if( gen != null){// existe alguem embaixo, passa todas as mediations
+//			System.out.println("Tem generalization");
 			downCategory = gen.getSource();
 			
 			addMediations(upCategory.getFunctions(),downCategory);					//Passa as informações
 		}
 		
-		if(downCategory.equals(c))		//se for a categoria source, adiciono e saio do while.
+		if(/*downCategory.equals(c) ||*/ gen == null){		//se for a categoria source, adiciono e saio do while.
+//			System.out.println("objeto : " + upCategory.getLabel() +" gen: "+ gen);
 			break;
-		
-		upCategory = downCategory;*/
+			
+		}
+		upCategory = downCategory;
 	}
 	
 }
