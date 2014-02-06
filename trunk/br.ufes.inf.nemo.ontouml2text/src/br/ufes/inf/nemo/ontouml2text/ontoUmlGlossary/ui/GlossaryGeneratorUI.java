@@ -39,16 +39,16 @@ public class GlossaryGeneratorUI extends JFrame {
 	private boolean doGlossaryGeneration;
 	private JButton btnCancel;
 
-	public GlossaryGeneratorUI(OntoUMLParser parser)
-	{
+	public GlossaryGeneratorUI(OntoUMLParser parser){
 		this();		
-		this.parser = parser;		
+		this.parser = parser;
 	}
 	
 	/**
 	 * Create the frame.
 	 */
-	public GlossaryGeneratorUI() {		
+	public GlossaryGeneratorUI() {
+		
 		setResizable(false);
 		setType(Type.UTILITY);
 		setTitle("OntoUML Glossary Generator");
