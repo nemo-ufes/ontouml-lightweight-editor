@@ -1588,7 +1588,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		SwingUtilities.invokeLater(new Runnable() {			
 			@Override
 			public void run() {
-				UmlProject project = getCurrentProject();
+				UmlProject project = getCurrentProject();				
 				GlossaryGeneratorUI settings = new GlossaryGeneratorUI(ProjectBrowser.getParserFor(project));
 				settings.setVisible(true);				
 			}

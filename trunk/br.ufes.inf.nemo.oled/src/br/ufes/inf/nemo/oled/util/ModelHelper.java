@@ -288,13 +288,16 @@ public class ModelHelper {
 				meronymicCloned.setIsEssential(meronymic.isIsEssential());
 				meronymicCloned.setIsInseparable(meronymic.isIsInseparable());
 				meronymicCloned.setIsImmutableWhole(meronymic.isIsImmutableWhole());
-				meronymicCloned.setIsImmutablePart(meronymic.isIsImmutablePart());
+				meronymicCloned.setIsImmutablePart(meronymic.isIsImmutablePart());				
 			}
 			
 			RefOntoUML.Property p1Cloned = (RefOntoUML.Property)factory.create(association.getMemberEnd().get(0).eClass());
 			RefOntoUML.Property p2Cloned = (RefOntoUML.Property)factory.create(association.getMemberEnd().get(1).eClass());
 			RefOntoUML.Property p1 = association.getMemberEnd().get(0);
 			RefOntoUML.Property p2 = association.getMemberEnd().get(1);
+			
+			p1Cloned.setAggregation(p1.getAggregation());
+			p2Cloned.setAggregation(p2.getAggregation());
 			
 			p1Cloned.setType(p1.getType());
 			p2Cloned.setType(p2.getType());
