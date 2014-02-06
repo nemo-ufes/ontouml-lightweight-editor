@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui;
 
 import java.awt.Color;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,20 +12,27 @@ import javax.swing.JTabbedPane;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import javax.swing.JList;
 
+import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.OntoUmlGlossary;
+
 public class GlossaryGeneratorAnalisysUI extends JFrame {
 
-	Integer missingDesc;
+	private final OntoUmlGlossary ontoUmlGlossary;
+	private Integer missingDesc;
+	
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Create the frame.
 	 * @param conceptsWithoutDesc : concepts without user description list
 	 */
-	public GlossaryGeneratorAnalisysUI(DefaultListModel<String> conceptsWithoutDesc) {
+	public GlossaryGeneratorAnalisysUI(final OntoUmlGlossary ontoUmlGlossary, List<String> conceptsWithoutDesc) {
+		this.ontoUmlGlossary = ontoUmlGlossary;
+		
 		setBounds(400, 400, 491, 460);
 		this.setLocationRelativeTo(null); 
 		setTitle("OntoUML Glossary Generator");
@@ -85,15 +91,25 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		lblResults.setBounds(12, 13, 147, 16);
 		panelOne.add(lblResults);
 		
-		JButton btnOk = new JButton("Ok");
-		btnOk.addActionListener(new ActionListener() {
+		JButton btnCancel = new JButton("Cancel Generation");
+		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
 		});
 		
-		btnOk.setBounds(183, 355, 97, 25);
-		panelOne.add(btnOk);
+		btnCancel.setBounds(246, 355, 139, 25);
+		panelOne.add(btnCancel);
+		
+		JButton btnContinue = new JButton("Continue Anyway");
+		btnContinue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ontoUmlGlossary.modelToText();
+			}
+		});
+		
+		btnContinue.setBounds(97, 356, 139, 23);
+		panelOne.add(btnContinue);
 		
 		JPanel panelTwo = new JPanel();
 		tabbedPane.addTab("Missing User Descriptions", null, panelTwo, null);
@@ -109,19 +125,15 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		lblNewLabel.setBounds(6, 18, 249, 16);
 		panel.add(lblNewLabel);
 		
-		JLabel lblList = new JLabel("Concepts : ");
-		lblList.setBounds(26, 47, 75, 16);
-		panel.add(lblList);
-		
-		JList<String> list = new JList<String>(conceptsWithoutDesc);		
-		panel.add(list);
-		
-		JScrollPane scrollPane = new JScrollPane(list);
-		scrollPane.setBounds(26, 68, 178, 209);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(26, 68, 178, 234);
 		panel.add(scrollPane);
-		
-		
+			
+		JList<String> list = new JList<String>();		
 		list.setBackground(UIManager.getColor("Button.disabledShadow"));
-		list.setBounds(26, 68, 176, 209);
+		list.setBounds(31, 47, 144, 234);
+		//panel.add(list);	
+		
+		scrollPane.setViewportView(list);
 	}
 }
