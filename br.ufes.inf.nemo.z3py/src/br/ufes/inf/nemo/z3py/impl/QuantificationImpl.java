@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link br.ufes.inf.nemo.z3py.impl.QuantificationImpl#getExpression <em>Expression</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.z3py.impl.QuantificationImpl#getConstants <em>Constants</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.z3py.impl.QuantificationImpl#getQuantifiesOver <em>Quantifies Over</em>}</li>
+ *   <li>{@link br.ufes.inf.nemo.z3py.impl.QuantificationImpl#getComments <em>Comments</em>}</li>
  * </ul>
  * </p>
  *
@@ -68,6 +69,26 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 	 * @ordered
 	 */
 	protected EList<IntConstant> quantifiesOver;
+
+	/**
+	 * The default value of the '{@link #getComments() <em>Comments</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getComments()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String COMMENTS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getComments() <em>Comments</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getComments()
+	 * @generated
+	 * @ordered
+	 */
+	protected String comments = COMMENTS_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -160,6 +181,27 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getComments() {
+		return comments;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setComments(String newComments) {
+		String oldComments = comments;
+		comments = newComments;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Z3pyPackage.QUANTIFICATION__COMMENTS, oldComments, comments));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -185,6 +227,8 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 				return getConstants();
 			case Z3pyPackage.QUANTIFICATION__QUANTIFIES_OVER:
 				return getQuantifiesOver();
+			case Z3pyPackage.QUANTIFICATION__COMMENTS:
+				return getComments();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -209,6 +253,9 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 				getQuantifiesOver().clear();
 				getQuantifiesOver().addAll((Collection<? extends IntConstant>)newValue);
 				return;
+			case Z3pyPackage.QUANTIFICATION__COMMENTS:
+				setComments((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -230,6 +277,9 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 			case Z3pyPackage.QUANTIFICATION__QUANTIFIES_OVER:
 				getQuantifiesOver().clear();
 				return;
+			case Z3pyPackage.QUANTIFICATION__COMMENTS:
+				setComments(COMMENTS_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -248,8 +298,26 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 				return constants != null && !constants.isEmpty();
 			case Z3pyPackage.QUANTIFICATION__QUANTIFIES_OVER:
 				return quantifiesOver != null && !quantifiesOver.isEmpty();
+			case Z3pyPackage.QUANTIFICATION__COMMENTS:
+				return COMMENTS_EDEFAULT == null ? comments != null : !COMMENTS_EDEFAULT.equals(comments);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (comments: ");
+		result.append(comments);
+		result.append(')');
+		return result.toString();
 	}
 
 } //QuantificationImpl

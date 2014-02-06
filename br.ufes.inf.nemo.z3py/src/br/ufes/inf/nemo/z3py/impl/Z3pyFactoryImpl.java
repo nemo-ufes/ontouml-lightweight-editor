@@ -57,8 +57,8 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case Z3pyPackage.FUNCTION_CALL: return createFunctionCall();
-			case Z3pyPackage.UNIVERSAL: return createUniversal();
-			case Z3pyPackage.EXISTENTIAL: return createExistential();
+			case Z3pyPackage.UNIVERSAL_QUANTIFICATION: return createUniversalQuantification();
+			case Z3pyPackage.EXISTENTIAL_QUANTIFICATION: return createExistentialQuantification();
 			case Z3pyPackage.CONJUNCTION: return createConjunction();
 			case Z3pyPackage.DISJUNCTION: return createDisjunction();
 			case Z3pyPackage.EXCLUSIVE_DISJUNCTION: return createExclusiveDisjunction();
@@ -88,9 +88,9 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Universal createUniversal() {
-		UniversalImpl universal = new UniversalImpl();
-		return universal;
+	public UniversalQuantification createUniversalQuantification() {
+		UniversalQuantificationImpl universalQuantification = new UniversalQuantificationImpl();
+		return universalQuantification;
 	}
 
 	/**
@@ -98,9 +98,9 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Existential createExistential() {
-		ExistentialImpl existential = new ExistentialImpl();
-		return existential;
+	public ExistentialQuantification createExistentialQuantification() {
+		ExistentialQuantificationImpl existentialQuantification = new ExistentialQuantificationImpl();
+		return existentialQuantification;
 	}
 
 	/**

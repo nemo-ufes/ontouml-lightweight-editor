@@ -31,22 +31,22 @@ public interface Z3pyFactory extends EFactory {
 	FunctionCall createFunctionCall();
 
 	/**
-	 * Returns a new object of class '<em>Universal</em>'.
+	 * Returns a new object of class '<em>Universal Quantification</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Universal</em>'.
+	 * @return a new object of class '<em>Universal Quantification</em>'.
 	 * @generated
 	 */
-	Universal createUniversal();
+	UniversalQuantification createUniversalQuantification();
 
 	/**
-	 * Returns a new object of class '<em>Existential</em>'.
+	 * Returns a new object of class '<em>Existential Quantification</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Existential</em>'.
+	 * @return a new object of class '<em>Existential Quantification</em>'.
 	 * @generated
 	 */
-	Existential createExistential();
+	ExistentialQuantification createExistentialQuantification();
 
 	/**
 	 * Returns a new object of class '<em>Conjunction</em>'.

@@ -13,5 +13,5 @@ package br.ufes.inf.nemo.z3py;
  * @model
  * @generated
  */
-public interface Implication extends LogicalBinary {
+public interface Implication extends LogicalBinaryExpression {
 } // Implication

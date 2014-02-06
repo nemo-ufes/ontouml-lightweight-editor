@@ -13,5 +13,5 @@ package br.ufes.inf.nemo.z3py;
  * @model
  * @generated
  */
-public interface Equivalence extends LogicalBinary {
+public interface Equivalence extends LogicalBinaryExpression {
 } // Equivalence
