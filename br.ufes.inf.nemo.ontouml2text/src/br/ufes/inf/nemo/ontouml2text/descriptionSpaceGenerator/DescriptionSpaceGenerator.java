@@ -116,7 +116,7 @@ private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory
 	
 	while(true){ //enquanto  nao chegar em uma generalization
 
-		gen =  VerifyGeneralizationSet(upCategory.getFunctions(), upCategory);		//verifica se tem alguem embaixo dele
+	/*	gen =  VerifyGeneralizationSet(upCategory.getFunctions(), upCategory);		//verifica se tem alguem embaixo dele
 
 		if( gen != null){// existe alguem embaixo, passa todas as mediations
 			downCategory = gen.getSource();
