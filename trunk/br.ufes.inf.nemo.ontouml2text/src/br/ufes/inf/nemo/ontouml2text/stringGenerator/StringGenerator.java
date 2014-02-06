@@ -27,9 +27,20 @@ public class StringGenerator {
 	public List<String> verifyDescriptionConsistency(){
 		List<String> missingUserDescriptionCategories = new ArrayList<String>();
 		
-		for(DescriptionCategory category : descriptionSpace.getCategories())
-			if(category.getUserDescription().isEmpty())
-				missingUserDescriptionCategories.add(category.getLabel());
+		for(DescriptionCategory category : descriptionSpace.getCategories()){
+			if(category.getFunctions().size() < 2){
+				if(category.getFunctions().size() == 1){
+					if((category.getFunctions().get(0) instanceof Generalization) && 
+							(((DescriptionFunction)category.getFunctions().get(0)).getTarget() == category)){
+						if(category.getUserDescription().isEmpty())
+							missingUserDescriptionCategories.add(category.getLabel());
+					}
+				}else{
+					if(category.getUserDescription().isEmpty())
+						missingUserDescriptionCategories.add(category.getLabel());
+				}
+			}
+		}
 
 		return missingUserDescriptionCategories;
 	}
