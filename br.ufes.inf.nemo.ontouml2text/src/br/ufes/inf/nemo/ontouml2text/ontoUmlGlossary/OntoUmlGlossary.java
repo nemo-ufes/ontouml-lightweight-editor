@@ -20,26 +20,14 @@ public class OntoUmlGlossary {
 		// List containing concepts without user description
 		DefaultListModel<String> conceptsWithoutDesc = new DefaultListModel<String>();
 		
-		conceptsWithoutDesc.addElement("Object2");
-		conceptsWithoutDesc.addElement("Object3");
-		conceptsWithoutDesc.addElement("Object4");
-		conceptsWithoutDesc.addElement("Object5");
-		conceptsWithoutDesc.addElement("Object6");
-		conceptsWithoutDesc.addElement("Object7");
-		conceptsWithoutDesc.addElement("Object8");
-		conceptsWithoutDesc.addElement("Object9");
-		conceptsWithoutDesc.addElement("Object10");
-		conceptsWithoutDesc.addElement("Object11");
-		conceptsWithoutDesc.addElement("Object12");
-		conceptsWithoutDesc.addElement("Object13");
-		conceptsWithoutDesc.addElement("Object14");
-		conceptsWithoutDesc.addElement("Object15");
-		conceptsWithoutDesc.addElement("Object16");
-		conceptsWithoutDesc.addElement("Object44");
-		conceptsWithoutDesc.addElement("Object1");
-		
 		DescriptionSpace space = new DescriptionSpace();		
 		
+		/*int i;
+		for(i=0;i<10;i++){
+			DescriptionCategory obj = new Category("Cat"+i);
+			conceptsWithoutDesc.add(i,obj);
+		}*/
+
 		// Hash containing the labels of the categories already covered
 		Set<String> hashCategories = new HashSet<String>();
 		
