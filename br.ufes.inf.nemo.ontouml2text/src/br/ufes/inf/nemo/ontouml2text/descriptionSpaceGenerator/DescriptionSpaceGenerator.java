@@ -48,7 +48,12 @@ public class DescriptionSpaceGenerator {
 	}	
 	
 public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories){
+		
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
+		
+		Set <RefOntoUML.Comment> comment = parser.getAllInstances(RefOntoUML.Comment.class);
+		
+		System.out.println("Tamanho da lista de Comments: " + comment.size());
 		
 		for (RefOntoUML.Class classf : classfSet){
 			DescriptionCategory mat;
@@ -64,8 +69,8 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 		
 		relatorIheritance(generalizationSpace.getCategories(),hashCategories);
 		
-		for (DescriptionCategory c : generalizationSpace.getCategories())
-			System.out.println("Nome: "+c.getLabel() + "  type: "+c.toString() +"\n  Lista de funções: "+c.getFunctions()+ "\n");
+		/*for (DescriptionCategory c : generalizationSpace.getCategories())
+			System.out.println("Nome: "+c.getLabel() + "  type: "+c.toString() +"\n  Lista de funções: "+c.getFunctions()+ "\n");*/
 		
 		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
 		System.out.println("Tamanho da functions no DescriptionSpace:  " + generalizationSpace.getFunctions().size());
@@ -537,7 +542,6 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 	
 		if(r instanceof RefOntoUML.Generalization){
 			mat = new Generalization("",source,target,1,1,1,1);	
-			//System.out.println(source.getLabel() + " --> " + target.getLabel());
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
