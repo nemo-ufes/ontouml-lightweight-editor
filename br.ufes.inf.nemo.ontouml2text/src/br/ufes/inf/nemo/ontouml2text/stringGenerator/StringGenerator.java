@@ -24,6 +24,16 @@ public class StringGenerator {
 		this.languageAdaptor = languageAdaptor;
 	}
 	
+	public List<String> verifyDescriptionConsistency(){
+		List<String> missingUserDescriptionCategories = new ArrayList<String>();
+		
+		for(DescriptionCategory category : descriptionSpace.getCategories())
+			if(category.getUserDescription().isEmpty())
+				missingUserDescriptionCategories.add(category.getLabel());
+
+		return missingUserDescriptionCategories;
+	}
+	
 	public void generateGlossary(){
 		int i;
 		List<DescriptionPattern> patterns = null;

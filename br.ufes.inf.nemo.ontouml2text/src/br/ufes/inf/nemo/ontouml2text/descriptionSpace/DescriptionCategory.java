@@ -5,7 +5,7 @@ import java.util.List;
 
 public class DescriptionCategory {
 	private String label;
-	private String userDescription;
+	private String userDescription = "";
 	private boolean isDerived = false;
 	private List<DescriptionFunction> functions;
 	
