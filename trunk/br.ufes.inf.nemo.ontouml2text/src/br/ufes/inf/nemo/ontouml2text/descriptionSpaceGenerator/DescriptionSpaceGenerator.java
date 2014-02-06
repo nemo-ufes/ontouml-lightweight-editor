@@ -85,6 +85,7 @@ public void relatorIheritance(List<DescriptionCategory> categories) {
 			if( gen != null){ // se existir gen onde o elemento é o source, é pq tem mais pra cima.
 				
 				upCategory = upFunction(gen); // sobe todos os niveis de hierarquia e retorna o elemento topo
+				// desço adicionando as mediations, até encontrar uma genSet
 				getDownMediation(upCategory,c);	// desce os niveis ate chegar no elemento c, adicionando as mediations
 			
 			}else
@@ -110,30 +111,34 @@ public DescriptionCategory upFunction(Generalization gen) {
 }
 
 private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory c) {
-	Generalization gen;
+	GeneralizationSet gen;
 	DescriptionCategory downCategory = null;
 	
-	while(true){ //enquanto  nao chegar na categoria source
+	while(true){ //enquanto  nao chegar em uma generalization
 
-		gen = (Generalization) verifyGeneralizationTarget(upCategory.getFunctions(), upCategory);		//verifica se tem alguem embaixo dele
+		gen =  VerifyGeneralizationSet(upCategory.getFunctions(), upCategory);		//verifica se tem alguem embaixo dele
 
 		if( gen != null){// existe alguem embaixo, passa todas as mediations
 			downCategory = gen.getSource();
 			
 			addMediations(upCategory.getFunctions(),downCategory);					//Passa as informações
 		}
-		System.out.println("loop Down");
-		System.out.println("upCategory: " + upCategory.getLabel());
-		if(downCategory != null)
-			System.out.println(" downCategory: " + downCategory.getLabel());
-		System.out.println("C: " + c.getLabel());
-		System.out.println("resultado equals: "+downCategory.equals(c));
+		
 		if(downCategory.equals(c))		//se for a categoria source, adiciono e saio do while.
 			break;
 		
-		upCategory = downCategory;
+		upCategory = downCategory;*/
 	}
 	
+}
+
+public GeneralizationSet VerifyGeneralizationSet(List <DescriptionFunction> arrayList, DescriptionCategory element){
+	for(DescriptionFunction r : arrayList){
+		if(r instanceof GeneralizationSet){
+			return (GeneralizationSet) r;		//Se tiver uma generalizationSet, retorna a GenSet
+		}
+	}
+	return null;
 }
 
 public void addMediations(List<DescriptionFunction> list, DescriptionCategory downCategory){
