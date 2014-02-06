@@ -109,15 +109,19 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		lblNewLabel.setBounds(6, 18, 249, 16);
 		panel.add(lblNewLabel);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(26, 68, 178, 234);
-		panel.add(scrollPane);
-			
-		JList<String> list = new JList<String>(conceptsWithoutDesc);		
-		list.setBackground(UIManager.getColor("Button.disabledShadow"));
-		list.setBounds(31, 47, 144, 234);
-		//panel.add(list);	
+		JLabel lblList = new JLabel("Concepts : ");
+		lblList.setBounds(26, 47, 75, 16);
+		panel.add(lblList);
 		
-		scrollPane.setViewportView(list);
+		JList<String> list = new JList<String>(conceptsWithoutDesc);		
+		panel.add(list);
+		
+		JScrollPane scrollPane = new JScrollPane(list);
+		scrollPane.setBounds(26, 68, 178, 209);
+		panel.add(scrollPane);
+		
+		
+		list.setBackground(UIManager.getColor("Button.disabledShadow"));
+		list.setBounds(26, 68, 176, 209);
 	}
 }
