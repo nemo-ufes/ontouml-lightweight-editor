@@ -212,5 +212,9 @@ public class EqualityImpl extends ExpressionImpl implements Equality {
 		}
 		return super.eIsSet(featureID);
 	}
-
+	
+	@Override
+	public String toString() {
+		return this.operand1.getName() + " == " + this.operand2.getName();
+	}
 } //EqualityImpl

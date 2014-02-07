@@ -35,5 +35,9 @@ public class ImplicationImpl extends LogicalBinaryExpressionImpl implements Impl
 	protected EClass eStaticClass() {
 		return Z3pyPackage.Literals.IMPLICATION;
 	}
+	
+	public String toString() {
+		return "Implies(" + this.operand1.toString() + ", "+ this.operand2.toString() + ")";
+	}
 
 } //ImplicationImpl

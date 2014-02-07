@@ -36,4 +36,7 @@ public class ConjunctionImpl extends LogicalBinaryExpressionImpl implements Conj
 		return Z3pyPackage.Literals.CONJUNCTION;
 	}
 
+	public String toString() {
+		return "And(" + this.operand1.toString() + ", "+ this.operand2.toString() + ")";
+	}
 } //ConjunctionImpl

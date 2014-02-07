@@ -35,5 +35,7 @@ public class ExistentialQuantificationImpl extends QuantificationImpl implements
 	protected EClass eStaticClass() {
 		return Z3pyPackage.Literals.EXISTENTIAL_QUANTIFICATION;
 	}
+	
+
 
 } //ExistentialQuantificationImpl

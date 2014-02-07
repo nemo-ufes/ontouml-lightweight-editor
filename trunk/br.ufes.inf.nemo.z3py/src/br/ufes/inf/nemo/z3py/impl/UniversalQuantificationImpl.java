@@ -35,5 +35,7 @@ public class UniversalQuantificationImpl extends QuantificationImpl implements U
 	protected EClass eStaticClass() {
 		return Z3pyPackage.Literals.UNIVERSAL_QUANTIFICATION;
 	}
+	
+
 
 } //UniversalQuantificationImpl

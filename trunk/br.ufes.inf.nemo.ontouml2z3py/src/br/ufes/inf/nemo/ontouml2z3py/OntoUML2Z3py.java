@@ -17,10 +17,7 @@ import br.ufes.inf.nemo.z3py.impl.Z3pyFactoryImpl;
 public class OntoUML2Z3py {
 	
 	
-	//public OntoUMLParser ontoparser;
-	//public Z3pyFactory factory;
-	private int constId=1;
-	
+
 	public Hashtable<Classifier, Classifier> getGeneralizationSets (OntoUMLParser ontoparser){
 		Hashtable<Classifier, Classifier> sets = new Hashtable<Classifier, Classifier>();
 		for(Generalization p: ontoparser.getAllInstances(Generalization.class)){
@@ -35,7 +32,7 @@ public class OntoUML2Z3py {
 	public static void main(String[]args){
 		
 		
-		try {
+/*		try {
 			
 			Resource resource = ResourceUtil.loadReferenceOntoUML("models/Exemplo2.refontouml");
 			RefOntoUML.Package root  = (RefOntoUML.Package)resource.getContents().get(0);
@@ -61,10 +58,16 @@ public class OntoUML2Z3py {
 			for(Generalization p: ontoparser.getAllInstances(Generalization.class)){
 				System.out.println("Generalization: "+ p.getGeneral() +" / " +p.getSpecific());
 			}
+*/
+			Transformer t = new Transformer();
+			OntoUMLZ3System system = t.run();
+			System.out.println(system);
 			
+/*			
 		} catch (IOException e) {
 
 			e.printStackTrace();
 		}
+*/
 	}
 }

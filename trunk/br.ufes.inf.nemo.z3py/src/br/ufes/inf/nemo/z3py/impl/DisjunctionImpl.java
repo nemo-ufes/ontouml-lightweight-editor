@@ -36,4 +36,7 @@ public class DisjunctionImpl extends LogicalBinaryExpressionImpl implements Disj
 		return Z3pyPackage.Literals.DISJUNCTION;
 	}
 
+	public String toString() {
+		return "Or(" + this.operand1.toString() + ", "+ this.operand2.toString() + ")";
+	}	
 } //DisjunctionImpl

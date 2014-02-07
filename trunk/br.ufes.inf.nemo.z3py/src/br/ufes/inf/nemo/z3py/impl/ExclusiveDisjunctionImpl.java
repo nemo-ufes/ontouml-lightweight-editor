@@ -36,4 +36,7 @@ public class ExclusiveDisjunctionImpl extends LogicalBinaryExpressionImpl implem
 		return Z3pyPackage.Literals.EXCLUSIVE_DISJUNCTION;
 	}
 
+	public String toString() {
+		return "Xor(" + this.operand1.toString() + ", "+ this.operand2.toString() + ")";
+	}
 } //ExclusiveDisjunctionImpl
