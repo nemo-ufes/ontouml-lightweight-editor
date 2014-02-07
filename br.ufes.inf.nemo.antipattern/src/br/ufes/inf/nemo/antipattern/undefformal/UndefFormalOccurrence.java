@@ -216,7 +216,7 @@ public class UndefFormalOccurrence extends AntipatternOccurrence {
 			}
 		}
 		if (med != null){
-			fix.addAll(fixer.createNewMediatedTypes(med, newMediatedMap));
+			fix.addAll(fixer.createNewMediatedTypes((Relator)med.relator(), newMediatedMap));
 		}
 	}
 

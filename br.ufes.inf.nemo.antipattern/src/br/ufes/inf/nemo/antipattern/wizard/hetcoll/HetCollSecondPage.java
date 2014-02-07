@@ -158,7 +158,13 @@ public class HetCollSecondPage extends HetCollPage {
 	public IWizardPage getNextPage() 
 	{
 		if(getNoList().size()>0){
-			
+			ArrayList<Association> assocList = new ArrayList<Association>();
+			for(Property p: getYesList()) { if (p!=null) assocList.add(p.getAssociation()); }
+			//Action =============================
+			HetCollAction newAction = new HetCollAction(hetColl);
+			newAction.setChangeAllToOneSuperMember(assocList); 
+			getHetCollWizard().replaceAction(1,newAction);	
+			//======================================	
 		}
 		if(getYesList().size()>0){
 			ArrayList<Association> assocList = new ArrayList<Association>();
@@ -166,9 +172,9 @@ public class HetCollSecondPage extends HetCollPage {
 			//Action =============================
 			HetCollAction newAction = new HetCollAction(hetColl);
 			newAction.setChangeAllToCollectionAndSubCollectionOf(assocList); 
-			getHetCollWizard().replaceAction(1,newAction);	
+			getHetCollWizard().replaceAction(2,newAction);	
 			//======================================
 		}
-		return super.getNextPage();
+		return ((HetCollWizard)getWizard()).getFinishing();		
 	}	
 }

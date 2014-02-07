@@ -93,4 +93,9 @@ public class HetCollOccurrence extends AntipatternOccurrence {
 		fix.addAll(fixer.changeAllToCollectionAndSubCollectionOf(partOfList));
 	}
 
+	public void changeAllToOneSuperMember(ArrayList<Association> partOfList) 
+	{		
+		fix.addAll(fixer.changeAllToOneSuperMember(partOfList));
+	}
+
 }
