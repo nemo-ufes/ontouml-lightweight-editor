@@ -2,26 +2,21 @@
  */
 package br.ufes.inf.nemo.z3py.impl;
 
+import java.util.Collection;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+
 import br.ufes.inf.nemo.z3py.Expression;
 import br.ufes.inf.nemo.z3py.IntConstant;
 import br.ufes.inf.nemo.z3py.Quantification;
 import br.ufes.inf.nemo.z3py.Z3pyPackage;
 
-import java.util.Collection;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -271,9 +266,9 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 *
 	 */
-	@Override
+/*	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
@@ -283,5 +278,28 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 		result.append(')');
 		return result.toString();
 	}
+	*/
+	public String toString() {
+		int i;
+		
+		String result;
+		if (this instanceof UniversalQuantificationImpl)
+			result = "ForAll (";
+		else
+			result = "Exists (";
+		
+		if (this.quantifiesOver.size()==1)
+			result = result.concat(this.quantifiesOver.get(0).getName() + ", ");
+		else{
+			result = result.concat("[");
+			for(i=0; i<this.quantifiesOver.size()-1;i++){
+				result = result.concat(this.quantifiesOver.get(0).getName()+",");
+			}
+			result = result.concat(this.quantifiesOver.get(0).getName()+"], ");
+		}
+		result = result.concat(this.expression.toString() + ")");
+		return result;
+	}
+
 
 } //QuantificationImpl

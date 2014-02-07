@@ -182,7 +182,6 @@ public class FunctionCallImpl extends ExpressionImpl implements FunctionCall {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
@@ -193,6 +192,17 @@ public class FunctionCallImpl extends ExpressionImpl implements FunctionCall {
 				return arguments != null && !arguments.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+	
+	@Override
+	public String toString() {
+		int i;
+		String result = this.calledFunction.getName() + "(";
+		for(i=0; i<this.arguments.size()-1;i++){
+			result = result.concat(this.arguments.get(i).getName()+",");
+		}
+		result = result.concat(this.arguments.get(i).getName()+")");		
+		return result;
 	}
 
 } //FunctionCallImpl

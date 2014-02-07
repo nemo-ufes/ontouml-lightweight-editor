@@ -2,27 +2,23 @@
  */
 package br.ufes.inf.nemo.z3py.impl;
 
+import java.util.Collection;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
 import br.ufes.inf.nemo.z3py.BooleanFunctionDefinition;
 import br.ufes.inf.nemo.z3py.IntConstant;
 import br.ufes.inf.nemo.z3py.OntoUMLZ3System;
 import br.ufes.inf.nemo.z3py.Quantification;
 import br.ufes.inf.nemo.z3py.Z3pyPackage;
-
-import java.util.Collection;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -280,17 +276,36 @@ public class OntoUMLZ3SystemImpl extends EObjectImpl implements OntoUMLZ3System 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	*/
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		/*if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (fileName: ");
 		result.append(fileName);
 		result.append(')');
-		return result.toString();
+		return result.toString();*/
+		
+		String result = "from z3 import * \n";
+		for(IntConstant c: this.constants){
+			result = result.concat(c.toString() + "\n");
+		}
+		
+		for(BooleanFunctionDefinition f: this.functions){
+			result = result.concat(f.toString() + "\n");
+		}
+		
+		int i = 1;
+		for(Quantification e: this.formulas){			
+			result = result.concat("F" + i + " = "+ e.toString() + "\n");
+			i++;
+		}
+		
+		return result;
+		
 	}
+	
+	
 
 } //OntoUMLZ3SystemImpl

@@ -199,10 +199,10 @@ public class BooleanFunctionDefinitionImpl extends EObjectImpl implements Boolea
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	@Override
 	public String toString() {
+		/*//CODIGO GERADO PELO EMF
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
@@ -212,6 +212,13 @@ public class BooleanFunctionDefinitionImpl extends EObjectImpl implements Boolea
 		result.append(numberOfArguments);
 		result.append(')');
 		return result.toString();
+		*/
+		
+		String result = this.name + " = Function ('" + this.name + "', ";
+		for(int i=1; i<=this.numberOfArguments;i++)
+			result=result.concat("IntSort(), ");
+		result=result.concat("BoolSort())");
+		return result;
 	}
 
 } //BooleanFunctionDefinitionImpl

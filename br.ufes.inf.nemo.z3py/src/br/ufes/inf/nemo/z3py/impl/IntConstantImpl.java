@@ -147,10 +147,10 @@ public class IntConstantImpl extends EObjectImpl implements IntConstant {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	@Override
 	public String toString() {
+		/*//Código gerado:
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
@@ -158,6 +158,10 @@ public class IntConstantImpl extends EObjectImpl implements IntConstant {
 		result.append(name);
 		result.append(')');
 		return result.toString();
+		*/
+		return this.name + " = Int('" + this.name + "')"; 
+		
 	}
+		
 
 } //IntConstantImpl

@@ -17,7 +17,7 @@ import br.ufes.inf.nemo.z3py.impl.Z3pyFactoryImpl.LogicalBinaryExpressionTypes;
 public class Transformer {
 	
 	private OntoUMLParser ontoparser;
-	private Z3pyFactoryImpl factory = new MyZ3pyFactory();
+	private Z3pyFactoryImpl factory = new Z3pyFactoryImpl();
 	private String sourceModelPath;
 	private OntoUMLZ3System generatedModel;
 	
@@ -26,10 +26,16 @@ public class Transformer {
 		
 	}
 	
+	public OntoUMLZ3System run(){
+		generatedModel = factory.createOntoUMLZ3System();
+		populateWithWorldStructure();
+		return generatedModel;
+		
+	}
+	
 	private void populateWithWorldStructure(){
 		
-		//Crio as funções que utilizarei
-		BooleanFunctionDefinition world, current, past, counterfactual, future, next, recursiveNext;
+		//Crio as funções que utilizarei		
 		addFunction("World",1);
 		addFunction("CurrentWorld",1);
 		addFunction("PastWorld",1);
@@ -99,11 +105,5 @@ public class Transformer {
 		return newConst;		
 	}
 	
-	public OntoUMLZ3System run(){
-		generatedModel = factory.createOntoUMLZ3System();
-		populateWithWorldStructure();
-		return generatedModel;
-		
-	}
 
 }

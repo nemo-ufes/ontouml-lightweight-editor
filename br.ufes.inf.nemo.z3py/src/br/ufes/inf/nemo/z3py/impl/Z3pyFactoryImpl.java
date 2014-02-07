@@ -241,7 +241,7 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	
 	public IntConstant createConstant(){
 		IntConstant newConst = this.createIntConstant();
-		newConst.setName("C!" + constId);
+		newConst.setName("C" + constId);
 		constId++;		
 		return newConst;		
 	}
@@ -311,7 +311,7 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	public Equality createEquality(List<IntConstant> args){
 		Equality newEquality = this.createEquality();
 		newEquality.setOperand1(args.get(0));
-		newEquality.setOperand1(args.get(1));
+		newEquality.setOperand2(args.get(1));
 		return newEquality;
 	}
 

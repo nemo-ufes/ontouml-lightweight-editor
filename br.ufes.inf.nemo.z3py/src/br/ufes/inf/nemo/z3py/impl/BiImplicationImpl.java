@@ -35,5 +35,9 @@ public class BiImplicationImpl extends LogicalBinaryExpressionImpl implements Bi
 	protected EClass eStaticClass() {
 		return Z3pyPackage.Literals.BI_IMPLICATION;
 	}
+	
+	public String toString() {
+		return this.operand1.toString() + " == "+ this.operand2.toString();
+	}
 
 } //BiImplicationImpl

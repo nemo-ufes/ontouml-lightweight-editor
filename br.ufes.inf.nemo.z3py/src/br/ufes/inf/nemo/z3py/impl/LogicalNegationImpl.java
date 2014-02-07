@@ -171,5 +171,8 @@ public class LogicalNegationImpl extends ExpressionImpl implements LogicalNegati
 		}
 		return super.eIsSet(featureID);
 	}
-
+	
+	public String toString() {
+		return "Not(" + this.operand.toString() + ")";
+	}
 } //LogicalNegationImpl
