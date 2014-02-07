@@ -13,7 +13,6 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link br.ufes.inf.nemo.z3py.Quantification#getExpression <em>Expression</em>}</li>
- *   <li>{@link br.ufes.inf.nemo.z3py.Quantification#getConstants <em>Constants</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.z3py.Quantification#getQuantifiesOver <em>Quantifies Over</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.z3py.Quantification#getComments <em>Comments</em>}</li>
  * </ul>
@@ -51,22 +50,6 @@ public interface Quantification extends Expression {
 	void setExpression(Expression value);
 
 	/**
-	 * Returns the value of the '<em><b>Constants</b></em>' containment reference list.
-	 * The list contents are of type {@link br.ufes.inf.nemo.z3py.IntConstant}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Constants</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Constants</em>' containment reference list.
-	 * @see br.ufes.inf.nemo.z3py.Z3pyPackage#getQuantification_Constants()
-	 * @model containment="true" required="true"
-	 * @generated
-	 */
-	EList<IntConstant> getConstants();
-
-	/**
 	 * Returns the value of the '<em><b>Quantifies Over</b></em>' reference list.
 	 * The list contents are of type {@link br.ufes.inf.nemo.z3py.IntConstant}.
 	 * <!-- begin-user-doc -->
@@ -77,7 +60,7 @@ public interface Quantification extends Expression {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Quantifies Over</em>' reference list.
 	 * @see br.ufes.inf.nemo.z3py.Z3pyPackage#getQuantification_QuantifiesOver()
-	 * @model required="true"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
 	EList<IntConstant> getQuantifiesOver();

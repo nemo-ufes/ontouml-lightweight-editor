@@ -2,6 +2,10 @@
  */
 package br.ufes.inf.nemo.z3py.impl;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import br.ufes.inf.nemo.z3py.*;
 
 import org.eclipse.emf.ecore.EClass;
@@ -19,6 +23,10 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  * @generated
  */
 public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
+	
+	public enum LogicalBinaryExpressionTypes {IMPLICATION, DISJUNCTION, CONJUNCTION, BIIMPLICATION, EXCLUSIVEDISJUNCTION};
+	private int constId=1;
+	
 	/**
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
@@ -64,10 +72,11 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 			case Z3pyPackage.EXCLUSIVE_DISJUNCTION: return createExclusiveDisjunction();
 			case Z3pyPackage.LOGICAL_NEGATION: return createLogicalNegation();
 			case Z3pyPackage.IMPLICATION: return createImplication();
-			case Z3pyPackage.EQUIVALENCE: return createEquivalence();
+			case Z3pyPackage.BI_IMPLICATION: return createBiImplication();
 			case Z3pyPackage.BOOLEAN_FUNCTION_DEFINITION: return createBooleanFunctionDefinition();
 			case Z3pyPackage.INT_CONSTANT: return createIntConstant();
 			case Z3pyPackage.ONTO_UMLZ3_SYSTEM: return createOntoUMLZ3System();
+			case Z3pyPackage.EQUALITY: return createEquality();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -158,9 +167,9 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Equivalence createEquivalence() {
-		EquivalenceImpl equivalence = new EquivalenceImpl();
-		return equivalence;
+	public BiImplication createBiImplication() {
+		BiImplicationImpl biImplication = new BiImplicationImpl();
+		return biImplication;
 	}
 
 	/**
@@ -198,6 +207,16 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Equality createEquality() {
+		EqualityImpl equality = new EqualityImpl();
+		return equality;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Z3pyPackage getZ3pyPackage() {
 		return (Z3pyPackage)getEPackage();
 	}
@@ -211,6 +230,89 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	@Deprecated
 	public static Z3pyPackage getPackage() {
 		return Z3pyPackage.eINSTANCE;
+	}
+	
+	public BooleanFunctionDefinition createFunction(String name, int numberOfArguments){
+		BooleanFunctionDefinition newFunction = this.createBooleanFunctionDefinition();
+		newFunction.setName(name);
+		newFunction.setNumberOfArguments(numberOfArguments);
+		return newFunction;
+	}
+	
+	public IntConstant createConstant(){
+		IntConstant newConst = this.createIntConstant();
+		newConst.setName("C!" + constId);
+		constId++;		
+		return newConst;		
+	}
+	
+	public Quantification createQuantification(boolean isUniversal, Expression exp, String comments){
+		Quantification newFormula;
+		if (isUniversal) 
+			newFormula = this.createUniversalQuantification();
+		else
+			newFormula = this.createExistentialQuantification();
+		//Obtenho as constantes utilizadas na expressão para atribuir ao quantifiesOver
+		newFormula.getQuantifiesOver().addAll(getExpressionConstants(exp));
+		newFormula.setExpression(exp);
+		newFormula.setComments(comments);
+		return newFormula;
+	}
+	
+	//Retorna as constantes utilizadas em uma expressão
+	private Set<IntConstant> getExpressionConstants (Expression exp){
+		Set<IntConstant> c = new HashSet<IntConstant>();
+		if (exp instanceof FunctionCall)
+			c.addAll(((FunctionCall) exp).getArguments());
+		else if (exp instanceof LogicalBinaryExpression){
+			c.addAll(getExpressionConstants(((LogicalBinaryExpression) exp).getOperand1()));
+			c.addAll(getExpressionConstants(((LogicalBinaryExpression) exp).getOperand2()));
+		}else if (exp instanceof LogicalNegation)
+			c.addAll(getExpressionConstants(((LogicalNegation) exp).getOperand()));
+		else if (exp instanceof Quantification)
+			c.addAll(((Quantification) exp).getQuantifiesOver());	
+		return c;
+	}
+	
+	public FunctionCall createFunctionCall(BooleanFunctionDefinition called, List<IntConstant> arguments){
+		FunctionCall newFunction = null;
+		if (called.getNumberOfArguments()==arguments.size()){
+			newFunction = this.createFunctionCall();
+			newFunction.setCalledFunction(called);
+			newFunction.getArguments().addAll(arguments);
+		}
+		return newFunction;
+	}
+	
+	public LogicalBinaryExpression createBinaryExpression(Expression op1, Expression op2, LogicalBinaryExpressionTypes type){
+		LogicalBinaryExpression newExpression=null;
+		switch (type){
+		case CONJUNCTION:
+			newExpression = this.createConjunction();
+			break;
+		case DISJUNCTION:
+			newExpression = this.createDisjunction();
+			break;
+		case BIIMPLICATION:
+			newExpression = this.createBiImplication();
+			break;
+		case EXCLUSIVEDISJUNCTION:
+			newExpression = this.createExclusiveDisjunction();
+			break;
+		case IMPLICATION:
+			newExpression = this.createImplication();
+			break;
+		}
+		newExpression.setOperand1(op1);
+		newExpression.setOperand2(op2);
+		return newExpression;
+	}
+	
+	public Equality createEquality(List<IntConstant> args){
+		Equality newEquality = this.createEquality();
+		newEquality.setOperand1(args.get(0));
+		newEquality.setOperand1(args.get(1));
+		return newEquality;
 	}
 
 } //Z3pyFactoryImpl

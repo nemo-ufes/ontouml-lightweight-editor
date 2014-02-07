@@ -2,10 +2,11 @@
  */
 package br.ufes.inf.nemo.z3py.impl;
 
+import br.ufes.inf.nemo.z3py.BiImplication;
 import br.ufes.inf.nemo.z3py.BooleanFunctionDefinition;
 import br.ufes.inf.nemo.z3py.Conjunction;
 import br.ufes.inf.nemo.z3py.Disjunction;
-import br.ufes.inf.nemo.z3py.Equivalence;
+import br.ufes.inf.nemo.z3py.Equality;
 import br.ufes.inf.nemo.z3py.ExclusiveDisjunction;
 import br.ufes.inf.nemo.z3py.ExistentialQuantification;
 import br.ufes.inf.nemo.z3py.Expression;
@@ -109,7 +110,7 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass equivalenceEClass = null;
+	private EClass biImplicationEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -138,6 +139,13 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * @generated
 	 */
 	private EClass ontoUMLZ3SystemEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass equalityEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -259,7 +267,7 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getQuantification_Constants() {
+	public EReference getQuantification_QuantifiesOver() {
 		return (EReference)quantificationEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -268,17 +276,8 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getQuantification_QuantifiesOver() {
-		return (EReference)quantificationEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getQuantification_Comments() {
-		return (EAttribute)quantificationEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)quantificationEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -358,8 +357,8 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getEquivalence() {
-		return equivalenceEClass;
+	public EClass getBiImplication() {
+		return biImplicationEClass;
 	}
 
 	/**
@@ -484,6 +483,33 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getEquality() {
+		return equalityEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getEquality_Operand1() {
+		return (EReference)equalityEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getEquality_Operand2() {
+		return (EReference)equalityEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Z3pyFactory getZ3pyFactory() {
 		return (Z3pyFactory)getEFactoryInstance();
 	}
@@ -515,7 +541,6 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 
 		quantificationEClass = createEClass(QUANTIFICATION);
 		createEReference(quantificationEClass, QUANTIFICATION__EXPRESSION);
-		createEReference(quantificationEClass, QUANTIFICATION__CONSTANTS);
 		createEReference(quantificationEClass, QUANTIFICATION__QUANTIFIES_OVER);
 		createEAttribute(quantificationEClass, QUANTIFICATION__COMMENTS);
 
@@ -534,7 +559,7 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 
 		implicationEClass = createEClass(IMPLICATION);
 
-		equivalenceEClass = createEClass(EQUIVALENCE);
+		biImplicationEClass = createEClass(BI_IMPLICATION);
 
 		logicalBinaryExpressionEClass = createEClass(LOGICAL_BINARY_EXPRESSION);
 		createEReference(logicalBinaryExpressionEClass, LOGICAL_BINARY_EXPRESSION__OPERAND1);
@@ -552,6 +577,10 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 		createEReference(ontoUMLZ3SystemEClass, ONTO_UMLZ3_SYSTEM__CONSTANTS);
 		createEAttribute(ontoUMLZ3SystemEClass, ONTO_UMLZ3_SYSTEM__FILE_NAME);
 		createEReference(ontoUMLZ3SystemEClass, ONTO_UMLZ3_SYSTEM__FORMULAS);
+
+		equalityEClass = createEClass(EQUALITY);
+		createEReference(equalityEClass, EQUALITY__OPERAND1);
+		createEReference(equalityEClass, EQUALITY__OPERAND2);
 	}
 
 	/**
@@ -591,8 +620,9 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 		exclusiveDisjunctionEClass.getESuperTypes().add(this.getLogicalBinaryExpression());
 		logicalNegationEClass.getESuperTypes().add(this.getExpression());
 		implicationEClass.getESuperTypes().add(this.getLogicalBinaryExpression());
-		equivalenceEClass.getESuperTypes().add(this.getLogicalBinaryExpression());
+		biImplicationEClass.getESuperTypes().add(this.getLogicalBinaryExpression());
 		logicalBinaryExpressionEClass.getESuperTypes().add(this.getExpression());
+		equalityEClass.getESuperTypes().add(this.getExpression());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(expressionEClass, Expression.class, "Expression", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -603,8 +633,7 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 
 		initEClass(quantificationEClass, Quantification.class, "Quantification", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getQuantification_Expression(), this.getExpression(), null, "expression", null, 1, 1, Quantification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getQuantification_Constants(), this.getIntConstant(), null, "constants", null, 1, -1, Quantification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getQuantification_QuantifiesOver(), this.getIntConstant(), null, "quantifiesOver", null, 1, -1, Quantification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getQuantification_QuantifiesOver(), this.getIntConstant(), null, "quantifiesOver", null, 1, -1, Quantification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getQuantification_Comments(), ecorePackage.getEString(), "comments", null, 0, 1, Quantification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(universalQuantificationEClass, UniversalQuantification.class, "UniversalQuantification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -622,7 +651,7 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 
 		initEClass(implicationEClass, Implication.class, "Implication", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(equivalenceEClass, Equivalence.class, "Equivalence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(biImplicationEClass, BiImplication.class, "BiImplication", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(logicalBinaryExpressionEClass, LogicalBinaryExpression.class, "LogicalBinaryExpression", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getLogicalBinaryExpression_Operand1(), this.getExpression(), null, "operand1", null, 1, 1, LogicalBinaryExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -640,6 +669,10 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 		initEReference(getOntoUMLZ3System_Constants(), this.getIntConstant(), null, "constants", null, 1, -1, OntoUMLZ3System.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getOntoUMLZ3System_FileName(), ecorePackage.getEString(), "fileName", null, 1, 1, OntoUMLZ3System.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getOntoUMLZ3System_Formulas(), this.getQuantification(), null, "formulas", null, 1, -1, OntoUMLZ3System.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(equalityEClass, Equality.class, "Equality", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEquality_Operand1(), this.getIntConstant(), null, "operand1", null, 1, 1, Equality.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEquality_Operand2(), this.getIntConstant(), null, "operand2", null, 1, 1, Equality.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
