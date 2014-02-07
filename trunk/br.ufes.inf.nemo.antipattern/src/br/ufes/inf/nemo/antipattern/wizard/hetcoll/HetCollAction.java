@@ -15,7 +15,7 @@ public class HetCollAction extends AntiPatternAction<HetCollOccurrence>{
 		super(ap);
 	}
 
-	public enum Action { CHANGE_ALL_TO_COMPONENTOF, CHANGE_ALL_TO_COLLECTION_AND_SUBCOLLECTIONOF }
+	public enum Action { CHANGE_ALL_TO_COMPONENTOF, CHANGE_ALL_TO_COLLECTION_AND_SUBCOLLECTIONOF, CHANGE_ALL_TO_ONE_SUPER_MEMBER }
 	
 	public void setChangeAllToComponentOf(ArrayList<Association> partOfList)
 	{
@@ -28,12 +28,18 @@ public class HetCollAction extends AntiPatternAction<HetCollOccurrence>{
 		code = Action.CHANGE_ALL_TO_COLLECTION_AND_SUBCOLLECTIONOF;
 		this.partOfList = partOfList;
 	}
+
+	public void setChangeAllToOneSuperMember(ArrayList<Association> partOfList) {
+		code = Action.CHANGE_ALL_TO_ONE_SUPER_MEMBER;
+		this.partOfList = partOfList;		
+	}
 	
 	@Override
 	public void run() 
 	{
 		if(code==Action.CHANGE_ALL_TO_COMPONENTOF) ap.changeAllToComponentOf(partOfList);
 		else if(code==Action.CHANGE_ALL_TO_COLLECTION_AND_SUBCOLLECTIONOF) ap.changeAllToCollectionAndSubCollectionOf(partOfList);		
+		else if(code==Action.CHANGE_ALL_TO_ONE_SUPER_MEMBER) ap.changeAllToOneSuperMember(partOfList);
 	}
 	
 	@Override
@@ -46,6 +52,11 @@ public class HetCollAction extends AntiPatternAction<HetCollOccurrence>{
 		if(code==Action.CHANGE_ALL_TO_COLLECTION_AND_SUBCOLLECTIONOF) {
 			result += "Change all partOfs relations to <<subCollectionOf>>"+"\n";
 			result += "Change all parts to <<Collection>>";
+		}
+		if(code==Action.CHANGE_ALL_TO_ONE_SUPER_MEMBER) {
+			result += "Create a type, named MemberPart, and stereotype it accordingly"+"\n";
+			result += "Create a «memberOf», named newMemberOf, between the Whole and the new MemberPart"+"\n";
+			result += "Create generalizations from all the parts to the new MemberPart";
 		}
 		
 		return result;

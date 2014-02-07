@@ -1,12 +1,18 @@
 package br.ufes.inf.nemo.common.ontoumlfixer;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import RefOntoUML.AggregationKind;
+import RefOntoUML.AntiRigidMixinClass;
+import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Association;
 import RefOntoUML.Category;
 import RefOntoUML.Characterization;
@@ -33,6 +39,8 @@ import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.Relator;
+import RefOntoUML.RigidMixinClass;
+import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
@@ -125,7 +133,7 @@ public class OutcomeFixer {
 	}
 
 	/** Creates an association with default properties */
-	public RefOntoUML.Relationship createAssociationWithProperties(	RelationStereotype stereo) 
+	public RefOntoUML.Relationship createAssociationWithProperties(RelationStereotype stereo) 
 	{
 		if (stereo == RelationStereotype.GENERALIZATION) return null;
 		Association association = (RefOntoUML.Association) createRelationship(stereo);
@@ -242,14 +250,14 @@ public class OutcomeFixer {
 	 * association's properties. It also copy the meta-attributes such as
 	 * isDerived, isReadOnly, etc.
 	 */
-	public void copyPropertiesDatas(EObject source, EObject receiver) 
+	public void copyPropertiesDatas(EObject srcAssoc, EObject receiverAssoc, boolean copyMetaAttributes) 
 	{
-		if (source instanceof RefOntoUML.Association && receiver instanceof RefOntoUML.Association) 
+		if (srcAssoc instanceof RefOntoUML.Association && receiverAssoc instanceof RefOntoUML.Association) 
 		{
-			RefOntoUML.Association assoc = (RefOntoUML.Association) source;
-			RefOntoUML.Association rcvAssoc = (RefOntoUML.Association) receiver;
-			copyPropertyData(assoc.getMemberEnd().get(0), rcvAssoc.getMemberEnd().get(0));
-			copyPropertyData(assoc.getMemberEnd().get(1), rcvAssoc.getMemberEnd().get(1));
+			RefOntoUML.Association assoc = (RefOntoUML.Association) srcAssoc;
+			RefOntoUML.Association rcvAssoc = (RefOntoUML.Association) receiverAssoc;
+			copyPropertyData(assoc.getMemberEnd().get(0), rcvAssoc.getMemberEnd().get(0),copyMetaAttributes);
+			copyPropertyData(assoc.getMemberEnd().get(1), rcvAssoc.getMemberEnd().get(1),copyMetaAttributes);
 		}
 	}
 
@@ -258,7 +266,7 @@ public class OutcomeFixer {
 	 * property. It also copy the meta-attributes such as isDerived, isReadOnly,
 	 * etc.
 	 */
-	public void copyPropertyData(EObject source, EObject receiver) 
+	public void copyPropertyData(Property source, Property receiver, boolean copyMetaAttributes) 
 	{
 		if (source instanceof RefOntoUML.Property && receiver instanceof RefOntoUML.Property) 
 		{
@@ -271,7 +279,7 @@ public class OutcomeFixer {
 			upperBound.setValue(property.getUpper());
 			rcvProperty.setUpperValue(upperBound);
 			rcvProperty.setLowerValue(lowerBound);
-			copyMetaAttributes(source, receiver);
+			if (copyMetaAttributes) copyMetaAttributes(source, receiver);
 		}
 	}
 
@@ -524,9 +532,8 @@ public class OutcomeFixer {
 	{
 		Fix fixes = new Fix();
 		// create new relationship
-		RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);
-		copyMetaAttributes(relationship, newRelationship);
-		copyPropertiesDatas(relationship, newRelationship);
+		RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);		
+		copyPropertiesDatas(relationship, newRelationship,false);
 		fixes.includeAdded(newRelationship);
 		// the same container as
 		copyContainer(relationship, newRelationship);
@@ -545,9 +552,8 @@ public class OutcomeFixer {
 	{
 		Fix fixes = new Fix();
 		// create new relationship
-		RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);
-		copyMetaAttributes(relationship, newRelationship);
-		copyPropertiesDatas(relationship, newRelationship);
+		RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);		
+		copyPropertiesDatas(relationship, newRelationship,false);
 		fixes.includeAdded(newRelationship);
 		// the same container as
 		copyContainer(relationship, newRelationship);
@@ -721,9 +727,7 @@ public class OutcomeFixer {
 		Generalization g = (Generalization) createRelationship(RelationStereotype.GENERALIZATION);
 		g.setGeneral(general);
 		g.setSpecific(specific);
-		fix.includeAdded(g);
-		fix.includeModified(general);
-		fix.includeModified(specific);
+		fix.includeAdded(g);		
 		return fix;
 	}
 
@@ -738,13 +742,29 @@ public class OutcomeFixer {
 		if (object instanceof subQuantityOf) return RelationStereotype.SUBQUANTITYOF;
 		if (object instanceof FormalAssociation) return RelationStereotype.FORMAL;
 		if (object instanceof MaterialAssociation) return RelationStereotype.MATERIAL;
-		if (object instanceof Derivation) return RelationStereotype.DERIVATION;
-		if (object instanceof Characterization) return RelationStereotype.CHARACTERIZATION;
+		if (object instanceof Derivation) return RelationStereotype.DERIVATION;		
 		if (object instanceof Generalization) return RelationStereotype.GENERALIZATION;
 		if (object instanceof Association) return RelationStereotype.ASSOCIATION;
-		return null;
+		return RelationStereotype.ASSOCIATION;
 	}
 
+	/** Get relationship stereotype from element */
+	public RelationStereotype getRelationshipStereotype(String stereo) 
+	{
+		if (stereo.compareToIgnoreCase("Mediation")==0)  return RelationStereotype.MEDIATION;
+		else if (stereo.compareToIgnoreCase("Characterization")==0) return RelationStereotype.CHARACTERIZATION;
+		else if (stereo.compareToIgnoreCase("MemberOf")==0) return RelationStereotype.MEMBEROF;
+		else if (stereo.compareToIgnoreCase("ComponentOf")==0) return RelationStereotype.COMPONENTOF;
+		else if (stereo.compareToIgnoreCase("SubCollectionOf")==0) return RelationStereotype.SUBCOLLECTIONOF;
+		else if (stereo.compareToIgnoreCase("SubQuantityOf")==0) return RelationStereotype.SUBQUANTITYOF;
+		else if (stereo.compareToIgnoreCase("Formal")==0) return RelationStereotype.FORMAL;
+		else if (stereo.compareToIgnoreCase("Material")==0) return RelationStereotype.MATERIAL;
+		else if (stereo.compareToIgnoreCase("Derivation")==0) return RelationStereotype.DERIVATION;		
+		else if (stereo.compareToIgnoreCase("Generalization")==0) return RelationStereotype.GENERALIZATION;
+		else if (stereo.compareToIgnoreCase("Association")==0) return RelationStereotype.ASSOCIATION;
+		return RelationStereotype.ASSOCIATION;
+	}
+	
 	/** Set up the upper cardinality on relator's side */
 	public Fix setUpperCardinalityOnRelatorSide(Mediation m, int upper) 
 	{
@@ -898,7 +918,8 @@ public class OutcomeFixer {
 		return fix;
 	}
 
-	public Fix createNewMediatedTypes(Mediation assoc, HashMap<String,String> nameAndStereotypeMap) 
+	/** Create new mediated types in the relator from a mapping containing the name and stereotype of the new mediated type. */
+	public Fix createNewMediatedTypes(Relator relator, HashMap<String,String> nameAndStereotypeMap) 
 	{
 		Fix fix = new Fix();
 		for(String name: nameAndStereotypeMap.keySet()){
@@ -909,31 +930,203 @@ public class OutcomeFixer {
 			((NamedElement) obj).setName(name);
 			fix.includeAdded(obj);
 			//same container as...
-			copyContainer(assoc, obj);
-			fix.includeModified(assoc.eContainer());
+			copyContainer(relator, obj);
+			fix.includeModified(relator.eContainer());
 			//create mediation
 			EObject rel = createAssociationWithProperties(RelationStereotype.MEDIATION);
 			fix.includeAdded(rel);
 			//the same container as...
-			copyContainer(assoc, rel);
-			fix.includeModified(assoc.eContainer());
+			copyContainer(relator, rel);
+			fix.includeModified(relator.eContainer());
 			// set types on mediation sides
-			((Association)rel).setName("med_"+assoc.relator().getName()+"_"+((Type)obj).getName());
-			((Association)rel).getMemberEnd().get(0).setType(assoc.relator());
+			((Association)rel).setName("med_"+relator.getName()+"_"+((Type)obj).getName());
+			((Association)rel).getMemberEnd().get(0).setType(relator);
 			((Association)rel).getMemberEnd().get(1).setType((Type)obj);
 		}
 		return fix;
 	}
 
+	/** Convenient method for getting the stereotype of an refontouml element */
+	public static String getStereotype(EObject element)
+	{
+		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+	    type = type.replaceAll("Impl","");
+	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
+	    type = type.replace("Association","");
+	    return type;
+	}	
+	
+	/** Change all partOf relations to ComponentOf relations */
 	public Fix changeAllToComponentOf(ArrayList<Association> partOfList)
 	{
-
-		return null;
+		Fix fix = new Fix();		
+		for(Association assoc: partOfList)
+		{
+			fix.addAll(changeRelationStereotypeTo(assoc, RelationStereotype.COMPONENTOF));		
+		}
+		return fix;
 	}
 
+	/** Change all parts to Collection and all partOfs relations to SubCollectionOf relations */
 	public Fix changeAllToCollectionAndSubCollectionOf(ArrayList<Association> partOfList) 
 	{
-		return null;
+		Fix fix = new Fix();
+		for(Association assoc: partOfList)
+		{
+			fix.addAll(changeClassStereotypeTo(((Meronymic)assoc).part(), ClassStereotype.COLLECTIVE));
+			fix.addAll(changeRelationStereotypeTo(assoc, RelationStereotype.SUBCOLLECTIONOF));
+		}
+		return fix;
+	}
+		
+	/** Convenient method for getting duplicated elements of a list */
+	@SuppressWarnings({ "rawtypes", "hiding", "serial" })
+	public static <T,Integer> HashMap getDuplicated(Collection<T> list) {
+
+	    final HashMap<T,Integer> duplicatedObjects = new HashMap<T,Integer>();
+	    Set<T> set = new HashSet<T>() {
+	    @SuppressWarnings("unchecked")
+		@Override
+	    public boolean add(T e) {
+	        if (!contains(e)) {
+	            duplicatedObjects.put(e, (Integer) new java.lang.Integer(0));
+	        }else{
+	        	int actual = (java.lang.Integer) duplicatedObjects.get(e);
+	        	duplicatedObjects.put(e, (Integer) new java.lang.Integer(actual+1));	        	
+	        }
+	        return super.add(e);
+	    }
+	    };
+	   for (T t : list) {
+	        set.add(t);
+	    }
+	    return duplicatedObjects;
+	}
+	
+	/** Get direct super types in common */
+	@SuppressWarnings("unchecked")
+	public ArrayList<Classifier> getDirectSuperTypeInCommon (ArrayList<Classifier> typeList)
+	{
+		ArrayList<Classifier> result = new ArrayList<Classifier>();
+		
+		// unite all direct parents in one list
+		ArrayList<Classifier> directParentsList = new ArrayList<Classifier>();
+		for(Classifier c: typeList) directParentsList.addAll(c.parents()); 
+		
+		// get the duplicated elements and the number of duplicates from the united direct parents list
+		HashMap<Classifier ,Integer> map = getDuplicated(directParentsList);
+		
+		// give the result
+		for(Classifier c: map.keySet()){
+			int n = map.get(c);
+			if (n==typeList.size()) result.add(c);
+		}
+		
+		return result;
+	}
+	
+	/** Create a super-type in common to a list of classes using a particular algorithm */
+	public Fix createSuperTypeInCommonTo(ArrayList<Classifier> typeList, String superTypeName)
+	{
+		Fix fix = new Fix();
+		
+		// if all rigid, then create a category
+		// if all anti-rigid, then create a roleMixin
+		// if rigid and anti-rigid mixed, then create a Mixin
+		// if all subkind and a super-type in common is found, then create a super-subkind, and specialize it from the former super-type
+		// if all role and a super-type in common is found, then create a super-role, and specialize it from the former super-type
+		// if all phase and a super-type in common is found, then create a super-phase, and specialize it from the former super-type
+		
+		int nRigid=0,nAntiRigid=0,nSubKind=0,nRole=0,nPhase=0;
+		for(Classifier obj: typeList)
+		{			
+			if (obj instanceof RigidSortalClass || obj instanceof RigidMixinClass) nRigid++;			
+			if (obj instanceof AntiRigidSortalClass || obj instanceof AntiRigidMixinClass) nAntiRigid++;
+			if (obj instanceof SubKind) nSubKind++;
+			if (obj instanceof Role) nRole++;
+			if (obj instanceof Phase) nPhase++;
+		}
+		// create new Class
+		EObject newSuperType = null;
+		if (nSubKind==typeList.size()) { 
+			Classifier supertype = getDirectSuperTypeInCommon(typeList).get(0); 
+			if (supertype!=null) newSuperType = createClass(ClassStereotype.SUBKIND); 
+			if (supertype!=null && newSuperType!=null) fix.addAll(createGeneralization((Classifier)newSuperType, supertype));
+		}
+		else if (nRole==typeList.size()) { 
+			Classifier supertype = getDirectSuperTypeInCommon(typeList).get(0); 
+			if (supertype!=null) newSuperType = createClass(ClassStereotype.ROLE); 
+			if (supertype!=null && newSuperType!=null) fix.addAll(createGeneralization((Classifier)newSuperType, supertype));
+		}
+		else if (nPhase==typeList.size()) { 
+			Classifier supertype = getDirectSuperTypeInCommon(typeList).get(0); 
+			if (supertype!=null) newSuperType = createClass(ClassStereotype.PHASE); 
+			if (supertype!=null && newSuperType!=null) fix.addAll(createGeneralization((Classifier)newSuperType, supertype));
+		}
+		else if(nRigid==typeList.size()) {
+			newSuperType = createClass(ClassStereotype.CATEGORY);
+		}
+		else if(nAntiRigid==typeList.size()) {
+			newSuperType = createClass(ClassStereotype.ROLEMIXIN);
+		}
+		else if (nRigid>0 && nAntiRigid >0) {
+			newSuperType = createClass(ClassStereotype.MIXIN);	
+		}
+		if (newSuperType!=null){
+			((Classifier)newSuperType).setName(superTypeName);
+			fix.includeAdded(newSuperType);
+			// the same container
+			copyContainer(typeList.get(0), newSuperType);
+			fix.includeModified(typeList.get(0).eContainer());	
+		}
+		//create the generalizations from the classes to the new SuperType created 
+		for(Classifier obj: typeList){
+			fix.addAll(createGeneralization((Classifier)obj, (Classifier)newSuperType));
+		}
+		return fix;
+	}
+	
+	public Fix changeAllToOneSuperMember(ArrayList<Association> partOfList) 
+	{	
+		Fix fix = new Fix();
+	
+		//create a super type in common to all the parts, named MemberPart
+		ArrayList<Classifier> parts = new ArrayList<Classifier>();
+		Classifier whole = ((Meronymic)partOfList.get(0)).whole();
+		for(Association assoc: partOfList){
+			parts.add(((Meronymic)assoc).part());
+		}
+		Fix partialFix = createSuperTypeInCommonTo(parts,"MemberPart");
+		fix.addAll(partialFix);
+
+		//Get created class namely MemberPart
+		Object memberPart = null;		
+		for(Object obj: partialFix.getAdded()) if (obj instanceof RefOntoUML.Class) memberPart = obj;
+		
+		// create new <<memberOf>>
+		EObject rel = createAssociationWithProperties(RelationStereotype.MEMBEROF);
+		((NamedElement) rel).setName("NewMemberOf");
+		fix.includeAdded(rel);
+		// same container
+		copyContainer(partOfList.get(0), rel);
+		fix.includeModified(partOfList.get(0).eContainer());
+		
+		//link the new <<memberOf>> from Whole to MemberPart
+		if(memberPart!=null) {
+			((Meronymic)rel).getMemberEnd().get(0).setType(whole);
+			((Meronymic)rel).getMemberEnd().get(1).setType((Type)memberPart);
+		}
+		
+		// change references from partOf relations to point to the new <<memberOf>> relation
+		for(Association assoc: partOfList)
+		{		
+			Fix references = changeModelReferences(assoc, rel);
+			fix.includeAllModified(references.getModified());
+			// delete relationship
+			EcoreUtil.delete(assoc, false);
+			fix.includeDeleted(assoc);
+		}
+		return fix;
 	}
 
 }
