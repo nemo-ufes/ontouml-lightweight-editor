@@ -40,7 +40,7 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		setTitle("OntoUML Glossary Generator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
 		JPanel panelOne = new JPanel();
@@ -59,15 +59,21 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		label1.setBounds(23, 28, 128, 16);
 		surroundPanel1.add(label1);
 		
+		JButton btnDetails = new JButton("Details");
+		
+		btnDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tabbedPane.setSelectedIndex(1);
+			}
+		});
+		btnDetails.setBounds(322, 19, 97, 25);
+		surroundPanel1.add(btnDetails);
+		
 		JPanel surroundPanel2 = new JPanel();
 		surroundPanel2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Direction", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		surroundPanel2.setBounds(12, 130, 431, 57);
 		panelOne.add(surroundPanel2);
 		surroundPanel2.setLayout(null);
-		
-		JLabel label2 = new JLabel("New label");
-		label2.setBounds(23, 28, 129, 16);
-		surroundPanel2.add(label2);
 		
 		JPanel surroundPanel3 = new JPanel();
 		surroundPanel3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Gender", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -75,19 +81,11 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		panelOne.add(surroundPanel3);
 		surroundPanel3.setLayout(null);
 		
-		JLabel label3 = new JLabel("New label");
-		label3.setBounds(23, 28, 105, 16);
-		surroundPanel3.add(label3);
-		
 		JPanel surroundPanel4 = new JPanel();
 		surroundPanel4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Plural", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		surroundPanel4.setBounds(12, 284, 431, 57);
 		panelOne.add(surroundPanel4);
 		surroundPanel4.setLayout(null);
-		
-		JLabel label4 = new JLabel("New label");
-		label4.setBounds(24, 28, 118, 16);
-		surroundPanel4.add(label4);
 		
 		JLabel lblResults = new JLabel("Results of Analisys");
 		lblResults.setBounds(12, 13, 147, 16);
@@ -136,16 +134,13 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 			modelList.add(i, s);
 			i++;
 		}
-
-		JList<String> list = new JList<String>(modelList);		
-		list.setBackground(UIManager.getColor("Button.disabledShadow"));
-		list.setBounds(31, 47, 144, 234);
-		//panel.add(list);	
 		
-		JScrollPane scrollPane = new JScrollPane(list);
-		scrollPane.setBounds(26, 68, 178, 234);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(122, 45, 178, 275);
 		panel.add(scrollPane);
-
+		
+		JList<String> list = new JList<String>(modelList);
 		scrollPane.setViewportView(list);
+		list.setBackground(UIManager.getColor("Button.disabledShadow"));
 	}
 }
