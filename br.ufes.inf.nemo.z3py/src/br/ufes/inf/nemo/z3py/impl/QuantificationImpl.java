@@ -31,7 +31,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link br.ufes.inf.nemo.z3py.impl.QuantificationImpl#getExpression <em>Expression</em>}</li>
- *   <li>{@link br.ufes.inf.nemo.z3py.impl.QuantificationImpl#getConstants <em>Constants</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.z3py.impl.QuantificationImpl#getQuantifiesOver <em>Quantifies Over</em>}</li>
  *   <li>{@link br.ufes.inf.nemo.z3py.impl.QuantificationImpl#getComments <em>Comments</em>}</li>
  * </ul>
@@ -49,16 +48,6 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 	 * @ordered
 	 */
 	protected Expression expression;
-
-	/**
-	 * The cached value of the '{@link #getConstants() <em>Constants</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConstants()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<IntConstant> constants;
 
 	/**
 	 * The cached value of the '{@link #getQuantifiesOver() <em>Quantifies Over</em>}' reference list.
@@ -157,18 +146,6 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<IntConstant> getConstants() {
-		if (constants == null) {
-			constants = new EObjectContainmentEList<IntConstant>(IntConstant.class, this, Z3pyPackage.QUANTIFICATION__CONSTANTS);
-		}
-		return constants;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<IntConstant> getQuantifiesOver() {
 		if (quantifiesOver == null) {
 			quantifiesOver = new EObjectResolvingEList<IntConstant>(IntConstant.class, this, Z3pyPackage.QUANTIFICATION__QUANTIFIES_OVER);
@@ -207,8 +184,6 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 		switch (featureID) {
 			case Z3pyPackage.QUANTIFICATION__EXPRESSION:
 				return basicSetExpression(null, msgs);
-			case Z3pyPackage.QUANTIFICATION__CONSTANTS:
-				return ((InternalEList<?>)getConstants()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -223,8 +198,6 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 		switch (featureID) {
 			case Z3pyPackage.QUANTIFICATION__EXPRESSION:
 				return getExpression();
-			case Z3pyPackage.QUANTIFICATION__CONSTANTS:
-				return getConstants();
 			case Z3pyPackage.QUANTIFICATION__QUANTIFIES_OVER:
 				return getQuantifiesOver();
 			case Z3pyPackage.QUANTIFICATION__COMMENTS:
@@ -244,10 +217,6 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 		switch (featureID) {
 			case Z3pyPackage.QUANTIFICATION__EXPRESSION:
 				setExpression((Expression)newValue);
-				return;
-			case Z3pyPackage.QUANTIFICATION__CONSTANTS:
-				getConstants().clear();
-				getConstants().addAll((Collection<? extends IntConstant>)newValue);
 				return;
 			case Z3pyPackage.QUANTIFICATION__QUANTIFIES_OVER:
 				getQuantifiesOver().clear();
@@ -271,9 +240,6 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 			case Z3pyPackage.QUANTIFICATION__EXPRESSION:
 				setExpression((Expression)null);
 				return;
-			case Z3pyPackage.QUANTIFICATION__CONSTANTS:
-				getConstants().clear();
-				return;
 			case Z3pyPackage.QUANTIFICATION__QUANTIFIES_OVER:
 				getQuantifiesOver().clear();
 				return;
@@ -294,8 +260,6 @@ public abstract class QuantificationImpl extends ExpressionImpl implements Quant
 		switch (featureID) {
 			case Z3pyPackage.QUANTIFICATION__EXPRESSION:
 				return expression != null;
-			case Z3pyPackage.QUANTIFICATION__CONSTANTS:
-				return constants != null && !constants.isEmpty();
 			case Z3pyPackage.QUANTIFICATION__QUANTIFIES_OVER:
 				return quantifiesOver != null && !quantifiesOver.isEmpty();
 			case Z3pyPackage.QUANTIFICATION__COMMENTS:

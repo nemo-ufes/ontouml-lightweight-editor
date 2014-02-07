@@ -141,11 +141,11 @@ public class Z3pySwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Z3pyPackage.EQUIVALENCE: {
-				Equivalence equivalence = (Equivalence)theEObject;
-				T result = caseEquivalence(equivalence);
-				if (result == null) result = caseLogicalBinaryExpression(equivalence);
-				if (result == null) result = caseExpression(equivalence);
+			case Z3pyPackage.BI_IMPLICATION: {
+				BiImplication biImplication = (BiImplication)theEObject;
+				T result = caseBiImplication(biImplication);
+				if (result == null) result = caseLogicalBinaryExpression(biImplication);
+				if (result == null) result = caseExpression(biImplication);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -171,6 +171,13 @@ public class Z3pySwitch<T> extends Switch<T> {
 			case Z3pyPackage.ONTO_UMLZ3_SYSTEM: {
 				OntoUMLZ3System ontoUMLZ3System = (OntoUMLZ3System)theEObject;
 				T result = caseOntoUMLZ3System(ontoUMLZ3System);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Z3pyPackage.EQUALITY: {
+				Equality equality = (Equality)theEObject;
+				T result = caseEquality(equality);
+				if (result == null) result = caseExpression(equality);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -329,17 +336,17 @@ public class Z3pySwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Equivalence</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Bi Implication</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Equivalence</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Bi Implication</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseEquivalence(Equivalence object) {
+	public T caseBiImplication(BiImplication object) {
 		return null;
 	}
 
@@ -400,6 +407,21 @@ public class Z3pySwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseOntoUMLZ3System(OntoUMLZ3System object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Equality</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Equality</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEquality(Equality object) {
 		return null;
 	}
 

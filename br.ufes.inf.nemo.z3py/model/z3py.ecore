@@ -11,10 +11,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="Quantification" abstract="true" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//Expression" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="constants" lowerBound="1"
-        upperBound="-1" eType="#//IntConstant" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="quantifiesOver" lowerBound="1"
-        upperBound="-1" eType="#//IntConstant"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="quantifiesOver" ordered="false"
+        lowerBound="1" upperBound="-1" eType="#//IntConstant"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="comments" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UniversalQuantification" eSuperTypes="#//Quantification"/>
@@ -27,7 +25,7 @@
         eType="#//Expression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Implication" eSuperTypes="#//LogicalBinaryExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Equivalence" eSuperTypes="#//LogicalBinaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="BiImplication" eSuperTypes="#//LogicalBinaryExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="LogicalBinaryExpression" abstract="true"
       eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="operand1" lowerBound="1"
@@ -52,5 +50,11 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="formulas" lowerBound="1"
         upperBound="-1" eType="#//Quantification" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Equality" eSuperTypes="#//Expression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operand1" lowerBound="1"
+        eType="#//IntConstant"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operand2" lowerBound="1"
+        eType="#//IntConstant"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -108,8 +108,8 @@ public class Z3pyAdapterFactory extends AdapterFactoryImpl {
 				return createImplicationAdapter();
 			}
 			@Override
-			public Adapter caseEquivalence(Equivalence object) {
-				return createEquivalenceAdapter();
+			public Adapter caseBiImplication(BiImplication object) {
+				return createBiImplicationAdapter();
 			}
 			@Override
 			public Adapter caseLogicalBinaryExpression(LogicalBinaryExpression object) {
@@ -126,6 +126,10 @@ public class Z3pyAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseOntoUMLZ3System(OntoUMLZ3System object) {
 				return createOntoUMLZ3SystemAdapter();
+			}
+			@Override
+			public Adapter caseEquality(Equality object) {
+				return createEqualityAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -288,16 +292,16 @@ public class Z3pyAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Equivalence <em>Equivalence</em>}'.
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.BiImplication <em>Bi Implication</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see br.ufes.inf.nemo.z3py.Equivalence
+	 * @see br.ufes.inf.nemo.z3py.BiImplication
 	 * @generated
 	 */
-	public Adapter createEquivalenceAdapter() {
+	public Adapter createBiImplicationAdapter() {
 		return null;
 	}
 
@@ -354,6 +358,20 @@ public class Z3pyAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createOntoUMLZ3SystemAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link br.ufes.inf.nemo.z3py.Equality <em>Equality</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see br.ufes.inf.nemo.z3py.Equality
+	 * @generated
+	 */
+	public Adapter createEqualityAdapter() {
 		return null;
 	}
 

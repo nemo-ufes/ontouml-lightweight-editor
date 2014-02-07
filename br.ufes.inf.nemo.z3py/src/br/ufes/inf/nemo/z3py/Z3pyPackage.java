@@ -131,22 +131,13 @@ public interface Z3pyPackage extends EPackage {
 	int QUANTIFICATION__EXPRESSION = EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Constants</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int QUANTIFICATION__CONSTANTS = EXPRESSION_FEATURE_COUNT + 1;
-
-	/**
 	 * The feature id for the '<em><b>Quantifies Over</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int QUANTIFICATION__QUANTIFIES_OVER = EXPRESSION_FEATURE_COUNT + 2;
+	int QUANTIFICATION__QUANTIFIES_OVER = EXPRESSION_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Comments</b></em>' attribute.
@@ -155,7 +146,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int QUANTIFICATION__COMMENTS = EXPRESSION_FEATURE_COUNT + 3;
+	int QUANTIFICATION__COMMENTS = EXPRESSION_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Quantification</em>' class.
@@ -164,7 +155,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int QUANTIFICATION_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 4;
+	int QUANTIFICATION_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.UniversalQuantificationImpl <em>Universal Quantification</em>}' class.
@@ -184,15 +175,6 @@ public interface Z3pyPackage extends EPackage {
 	 * @ordered
 	 */
 	int UNIVERSAL_QUANTIFICATION__EXPRESSION = QUANTIFICATION__EXPRESSION;
-
-	/**
-	 * The feature id for the '<em><b>Constants</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UNIVERSAL_QUANTIFICATION__CONSTANTS = QUANTIFICATION__CONSTANTS;
 
 	/**
 	 * The feature id for the '<em><b>Quantifies Over</b></em>' reference list.
@@ -239,15 +221,6 @@ public interface Z3pyPackage extends EPackage {
 	 * @ordered
 	 */
 	int EXISTENTIAL_QUANTIFICATION__EXPRESSION = QUANTIFICATION__EXPRESSION;
-
-	/**
-	 * The feature id for the '<em><b>Constants</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXISTENTIAL_QUANTIFICATION__CONSTANTS = QUANTIFICATION__CONSTANTS;
 
 	/**
 	 * The feature id for the '<em><b>Quantifies Over</b></em>' reference list.
@@ -490,14 +463,14 @@ public interface Z3pyPackage extends EPackage {
 	int IMPLICATION_FEATURE_COUNT = LOGICAL_BINARY_EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.EquivalenceImpl <em>Equivalence</em>}' class.
+	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.BiImplicationImpl <em>Bi Implication</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see br.ufes.inf.nemo.z3py.impl.EquivalenceImpl
-	 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getEquivalence()
+	 * @see br.ufes.inf.nemo.z3py.impl.BiImplicationImpl
+	 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getBiImplication()
 	 * @generated
 	 */
-	int EQUIVALENCE = 10;
+	int BI_IMPLICATION = 10;
 
 	/**
 	 * The feature id for the '<em><b>Operand1</b></em>' containment reference.
@@ -506,7 +479,7 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EQUIVALENCE__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
+	int BI_IMPLICATION__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
 
 	/**
 	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
@@ -515,16 +488,16 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EQUIVALENCE__OPERAND2 = LOGICAL_BINARY_EXPRESSION__OPERAND2;
+	int BI_IMPLICATION__OPERAND2 = LOGICAL_BINARY_EXPRESSION__OPERAND2;
 
 	/**
-	 * The number of structural features of the '<em>Equivalence</em>' class.
+	 * The number of structural features of the '<em>Bi Implication</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EQUIVALENCE_FEATURE_COUNT = LOGICAL_BINARY_EXPRESSION_FEATURE_COUNT + 0;
+	int BI_IMPLICATION_FEATURE_COUNT = LOGICAL_BINARY_EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.BooleanFunctionDefinitionImpl <em>Boolean Function Definition</em>}' class.
@@ -648,6 +621,44 @@ public interface Z3pyPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link br.ufes.inf.nemo.z3py.impl.EqualityImpl <em>Equality</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see br.ufes.inf.nemo.z3py.impl.EqualityImpl
+	 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getEquality()
+	 * @generated
+	 */
+	int EQUALITY = 15;
+
+	/**
+	 * The feature id for the '<em><b>Operand1</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EQUALITY__OPERAND1 = EXPRESSION_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Operand2</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EQUALITY__OPERAND2 = EXPRESSION_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Equality</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EQUALITY_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
+
+
+	/**
 	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.Expression <em>Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -709,17 +720,6 @@ public interface Z3pyPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getQuantification_Expression();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link br.ufes.inf.nemo.z3py.Quantification#getConstants <em>Constants</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Constants</em>'.
-	 * @see br.ufes.inf.nemo.z3py.Quantification#getConstants()
-	 * @see #getQuantification()
-	 * @generated
-	 */
-	EReference getQuantification_Constants();
 
 	/**
 	 * Returns the meta object for the reference list '{@link br.ufes.inf.nemo.z3py.Quantification#getQuantifiesOver <em>Quantifies Over</em>}'.
@@ -825,14 +825,14 @@ public interface Z3pyPackage extends EPackage {
 	EClass getImplication();
 
 	/**
-	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.Equivalence <em>Equivalence</em>}'.
+	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.BiImplication <em>Bi Implication</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Equivalence</em>'.
-	 * @see br.ufes.inf.nemo.z3py.Equivalence
+	 * @return the meta object for class '<em>Bi Implication</em>'.
+	 * @see br.ufes.inf.nemo.z3py.BiImplication
 	 * @generated
 	 */
-	EClass getEquivalence();
+	EClass getBiImplication();
 
 	/**
 	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.LogicalBinaryExpression <em>Logical Binary Expression</em>}'.
@@ -974,6 +974,38 @@ public interface Z3pyPackage extends EPackage {
 	EReference getOntoUMLZ3System_Formulas();
 
 	/**
+	 * Returns the meta object for class '{@link br.ufes.inf.nemo.z3py.Equality <em>Equality</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Equality</em>'.
+	 * @see br.ufes.inf.nemo.z3py.Equality
+	 * @generated
+	 */
+	EClass getEquality();
+
+	/**
+	 * Returns the meta object for the reference '{@link br.ufes.inf.nemo.z3py.Equality#getOperand1 <em>Operand1</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Operand1</em>'.
+	 * @see br.ufes.inf.nemo.z3py.Equality#getOperand1()
+	 * @see #getEquality()
+	 * @generated
+	 */
+	EReference getEquality_Operand1();
+
+	/**
+	 * Returns the meta object for the reference '{@link br.ufes.inf.nemo.z3py.Equality#getOperand2 <em>Operand2</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Operand2</em>'.
+	 * @see br.ufes.inf.nemo.z3py.Equality#getOperand2()
+	 * @see #getEquality()
+	 * @generated
+	 */
+	EReference getEquality_Operand2();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1048,14 +1080,6 @@ public interface Z3pyPackage extends EPackage {
 		 * @generated
 		 */
 		EReference QUANTIFICATION__EXPRESSION = eINSTANCE.getQuantification_Expression();
-
-		/**
-		 * The meta object literal for the '<em><b>Constants</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference QUANTIFICATION__CONSTANTS = eINSTANCE.getQuantification_Constants();
 
 		/**
 		 * The meta object literal for the '<em><b>Quantifies Over</b></em>' reference list feature.
@@ -1152,14 +1176,14 @@ public interface Z3pyPackage extends EPackage {
 		EClass IMPLICATION = eINSTANCE.getImplication();
 
 		/**
-		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.EquivalenceImpl <em>Equivalence</em>}' class.
+		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.BiImplicationImpl <em>Bi Implication</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see br.ufes.inf.nemo.z3py.impl.EquivalenceImpl
-		 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getEquivalence()
+		 * @see br.ufes.inf.nemo.z3py.impl.BiImplicationImpl
+		 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getBiImplication()
 		 * @generated
 		 */
-		EClass EQUIVALENCE = eINSTANCE.getEquivalence();
+		EClass BI_IMPLICATION = eINSTANCE.getBiImplication();
 
 		/**
 		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.LogicalBinaryExpressionImpl <em>Logical Binary Expression</em>}' class.
@@ -1272,6 +1296,32 @@ public interface Z3pyPackage extends EPackage {
 		 * @generated
 		 */
 		EReference ONTO_UMLZ3_SYSTEM__FORMULAS = eINSTANCE.getOntoUMLZ3System_Formulas();
+
+		/**
+		 * The meta object literal for the '{@link br.ufes.inf.nemo.z3py.impl.EqualityImpl <em>Equality</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see br.ufes.inf.nemo.z3py.impl.EqualityImpl
+		 * @see br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl#getEquality()
+		 * @generated
+		 */
+		EClass EQUALITY = eINSTANCE.getEquality();
+
+		/**
+		 * The meta object literal for the '<em><b>Operand1</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EQUALITY__OPERAND1 = eINSTANCE.getEquality_Operand1();
+
+		/**
+		 * The meta object literal for the '<em><b>Operand2</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EQUALITY__OPERAND2 = eINSTANCE.getEquality_Operand2();
 
 	}
 

@@ -94,13 +94,13 @@ public interface Z3pyFactory extends EFactory {
 	Implication createImplication();
 
 	/**
-	 * Returns a new object of class '<em>Equivalence</em>'.
+	 * Returns a new object of class '<em>Bi Implication</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Equivalence</em>'.
+	 * @return a new object of class '<em>Bi Implication</em>'.
 	 * @generated
 	 */
-	Equivalence createEquivalence();
+	BiImplication createBiImplication();
 
 	/**
 	 * Returns a new object of class '<em>Boolean Function Definition</em>'.
@@ -128,6 +128,15 @@ public interface Z3pyFactory extends EFactory {
 	 * @generated
 	 */
 	OntoUMLZ3System createOntoUMLZ3System();
+
+	/**
+	 * Returns a new object of class '<em>Equality</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Equality</em>'.
+	 * @generated
+	 */
+	Equality createEquality();
 
 	/**
 	 * Returns the package supported by this factory.
