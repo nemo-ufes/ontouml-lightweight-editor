@@ -48,7 +48,6 @@ public class DescriptionSpaceGenerator {
 	}	
 	
 public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories){
-		
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
 		
 		for (RefOntoUML.Class classf : classfSet){
@@ -62,11 +61,11 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 			
 			populateRelationships(parser.getRelationships(classf),mat,parser,hashCategories,classfSet);	
 		}
-		
+
 		relatorIheritance(generalizationSpace.getCategories(),hashCategories);
 		
-		/*for (DescriptionCategory c : generalizationSpace.getCategories())
-			System.out.println("Nome: "+c.getLabel() + "  type: "+c.toString() +"\n  Lista de funções: "+c.getFunctions()+ "\n");*/
+		for (DescriptionCategory c : generalizationSpace.getCategories())
+			System.out.println("Nome: "+c.getLabel() + "  type: "+c.toString() +"\n  Lista de funções: "+c.getFunctions()+ "\n");
 		
 		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
 		System.out.println("Tamanho da functions no DescriptionSpace:  " + generalizationSpace.getFunctions().size());
@@ -85,7 +84,6 @@ public void relatorIheritance(List<DescriptionCategory> categories, Set<String> 
 			if( gen != null){ // se existir gen onde o elemento é o source, é pq tem mais pra cima.
 				
 				upCategory = upFunction(gen); // sobe todos os niveis de hierarquia e retorna o elemento topo
-				// desço adicionando as mediations, até encontrar uma genSet
 				getDownMediation(upCategory,c,hashCategories);	// desce os niveis ate chegar no elemento c, adicionando as mediations
 			
 			}else
@@ -100,7 +98,6 @@ public DescriptionCategory upFunction(Generalization gen) {
 	Generalization genTarget;
 	
 	while(true){
-//		System.out.println("loop Up");
 		genTarget = (Generalization) verifyGeneralization(target.getFunctions(),target); //verifica se tem algo acima
 		if(genTarget != null)
 			target = genTarget.getTarget();
@@ -111,9 +108,11 @@ public DescriptionCategory upFunction(Generalization gen) {
 }
 
 private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory c, Set<String> hashCategories) {
+	
+	ArrayList<DescriptionFunction> noIheritanceMeds = null;
+	DescriptionCategory downCategory = null;
 	Generalization gen;
 	GeneralizationSet genSet;
-	DescriptionCategory downCategory = null;
 	
 	while(true){ //enquanto  nao chegar em uma generalization
 		genSet = VerifyGeneralizationSet(upCategory.getFunctions(), upCategory);
@@ -124,21 +123,61 @@ private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory
 			for(Generalization g : genSet.getGeneralizationElements()){			// Iteração para chamar os ramos da genSet
 				
 				//Verifico a regra
-				addMediations(upCategory.getFunctions(), g.getSource());
+				noIheritanceMeds = deleteMediations(g);
+				addMediations(upCategory.getFunctions(), g.getSource(), noIheritanceMeds);
 				getDownMediation(g.getSource(),c,hashCategories);   
 			}
 		}
 		if( gen != null){// existe alguem embaixo, passa todas as mediations
+			//Verifico se há mediations que nao devem ser passadas para a classe abaixo
+			
+			noIheritanceMeds = deleteMediations(gen);
 			downCategory = gen.getSource();
-			addMediations(upCategory.getFunctions(),downCategory);					//Passa as informações
+			addMediations(upCategory.getFunctions(),downCategory, noIheritanceMeds);					//Passa as informações
 		}
 		
-		if(gen == null)		//se for a categoria source, adiciono e saio do while.
+		if(gen == null)		//se for a categoria source (folha), saio do while.
 			break;
 		
 		upCategory = downCategory;
 	}
 	
+}
+
+public ArrayList<DescriptionFunction> deleteMediations(Generalization gen){
+	
+	ArrayList<DescriptionFunction> noIheritanceMeds = new ArrayList<>();
+	DescriptionCategory up = gen.getTarget();
+	DescriptionCategory down = gen.getSource();
+	DescriptionCategory sourceMed;
+	DescriptionCategory targetMed;
+	
+	for(DescriptionFunction medUp : up.getFunctions()){	//Iteração das mediations da classe de cima
+			if(medUp instanceof Mediation){				
+				
+				targetMed = medUp.getTarget();		//pega o outro lado da mediation
+				
+				for(DescriptionFunction medDown : down.getFunctions()){	//Iteração das mediations da classe de baixo
+						
+					sourceMed = medDown.getTarget();
+					
+					if (MedIheritance(sourceMed, targetMed));		//verifica se a target e a source tem uma generalization no meio
+						noIheritanceMeds.add(medUp);				//se tiver, coloca na lista para nao ser inserida
+				}
+			
+			}
+	}
+	return noIheritanceMeds;
+	
+}
+
+private boolean MedIheritance(DescriptionCategory sourceMed, DescriptionCategory targetMed) {
+	for(DescriptionFunction g :sourceMed.getFunctions()){
+		if(g instanceof Generalization)
+			if(g.getTarget().equals(targetMed))
+				return true;
+	}
+	return false;
 }
 
 public GeneralizationSet VerifyGeneralizationSet(List <DescriptionFunction> arrayList, DescriptionCategory element){
@@ -150,12 +189,22 @@ public GeneralizationSet VerifyGeneralizationSet(List <DescriptionFunction> arra
 	return null;
 }
 
-public void addMediations(List<DescriptionFunction> list, DescriptionCategory downCategory){
+public void addMediations(List<DescriptionFunction> list, DescriptionCategory downCategory, ArrayList<DescriptionFunction> noIheritanceMeds){
 	for(DescriptionFunction m : list){
-		if(m instanceof Mediation)
-			if(!verifyEqualMediation(downCategory.getFunctions(),m))
+		if(m instanceof Mediation){
+			if(  (!verifyEqualMediation(downCategory.getFunctions(),m)) && (!notAddMediation (noIheritanceMeds, m))  )
 				downCategory.getFunctions().add(m);
+		}
 	}
+}
+
+private boolean notAddMediation(ArrayList<DescriptionFunction> noIheritanceMeds, DescriptionFunction m) {
+
+	for(DescriptionFunction med : noIheritanceMeds ) //se a mediation que eu quiser adicionar festiver na lista de nao adicionar, retorna true
+		if(med.equals(m))
+			return true;
+
+	return false;
 }
 
 public boolean verifyEqualMediation(List<DescriptionFunction> list ,DescriptionFunction m){
@@ -226,10 +275,10 @@ public DescriptionCategory createCategoryClass(Class classf, Set<Class> classfSe
 	
 	
 	//Verifica se o objeto tem descrição
-	userDesc = getUserDescription(mat.getLabel(),classfSet);
+	/*userDesc = getUserDescription(mat.getLabel(),classfSet);
 	if(userDesc != null)
-		mat.setUserDescription(userDesc);
-	
+		mat.setUserDescription(userDesc);*/
+
 	return mat;
 }
 
@@ -248,7 +297,6 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 	DescriptionCategory target;
 	String endType0;
 	String endType1;
-
 	int classNumberTarget;
 
 	for(Relationship r : eList){
@@ -315,7 +363,7 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 		 	
 			// Rule05's condition 
 			if(((RefOntoUML.Generalization) r).getGeneralizationSet().size() > 0){
-				processRule05(((RefOntoUML.Generalization) r),source,hashCategories, classfSet);
+				processGeneralizationSet(((RefOntoUML.Generalization) r),source,hashCategories, classfSet);
 				continue;
 			}
 		 	
@@ -359,7 +407,7 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 	hashCategories.add(source.getLabel());
 }
 
-private void processRule05(RefOntoUML.Generalization r, DescriptionCategory source, Set<String> hashCategories, Set<Class> classfSet) {
+private void processGeneralizationSet(RefOntoUML.Generalization r, DescriptionCategory source, Set<String> hashCategories, Set<Class> classfSet) {
 	Classifier searchObject;
 	DescriptionCategory target;
  	boolean isSon;
@@ -681,7 +729,7 @@ public int findUpperMultiplicity(Property p){
 		}
 		
 public DescriptionCategory createCategory(Type type, Set<Class> classfSet){
-	
+
 	DescriptionCategory mat = null;
 	String userDesc;
 	
@@ -718,9 +766,9 @@ public DescriptionCategory createCategory(Type type, Set<Class> classfSet){
 	if(type instanceof RefOntoUML.RoleMixin)
 		mat = new RoleMixin(type.getName());
 	
-	userDesc = getUserDescription(mat.getLabel(),classfSet);
+	/*userDesc = getUserDescription(mat.getLabel(),classfSet);
 	if(userDesc != null)
-		mat.setUserDescription(userDesc);
+		mat.setUserDescription(userDesc);*/
 	
 	return mat;
 }		
