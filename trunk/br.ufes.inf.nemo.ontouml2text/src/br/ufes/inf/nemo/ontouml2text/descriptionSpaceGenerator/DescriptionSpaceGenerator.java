@@ -273,18 +273,16 @@ public DescriptionCategory createCategoryClass(Class classf, Set<Class> classfSe
 	if(classf instanceof RefOntoUML.RoleMixin)
 		mat = new RoleMixin(classf.getName());
 	
-	
-	//Verifica se o objeto tem descrição
-	/*userDesc = getUserDescription(mat.getLabel(),classfSet);
+	userDesc = getUserDescription(mat.getLabel(),classfSet);
 	if(userDesc != null)
-		mat.setUserDescription(userDesc);*/
+		mat.setUserDescription(userDesc);
 
 	return mat;
 }
 
 public String getUserDescription(String string, Set<Class> classfSet) {
 	for(Class cl : classfSet){
-		if(cl.getName().equals(string)){
+		if(cl.getName().equals(string) && cl.getOwnedComment().size() != 0){
 			return cl.getOwnedComment().get(0).getBody().replace("Definition=", "");
 		}
 	}
@@ -766,9 +764,9 @@ public DescriptionCategory createCategory(Type type, Set<Class> classfSet){
 	if(type instanceof RefOntoUML.RoleMixin)
 		mat = new RoleMixin(type.getName());
 	
-	/*userDesc = getUserDescription(mat.getLabel(),classfSet);
+	userDesc = getUserDescription(mat.getLabel(),classfSet);
 	if(userDesc != null)
-		mat.setUserDescription(userDesc);*/
+		mat.setUserDescription(userDesc);
 	
 	return mat;
 }		
