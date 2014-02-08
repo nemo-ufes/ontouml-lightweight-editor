@@ -82,8 +82,17 @@ public class StringGenerator {
 		List<DescriptionPattern> patterns = new ArrayList<DescriptionPattern>();
 		
 		// Matching top pattern (without relations)
-		if(describedCategory.getFunctions().size() == 0){
-			patterns.add(new TopPattern(describedCategory));
+		if(describedCategory.getFunctions().size() < 2){
+			if(describedCategory.getFunctions().size() == 1){
+				if((describedCategory.getFunctions().get(0) instanceof Generalization) && 
+						(((DescriptionFunction)describedCategory.getFunctions().get(0)).getTarget() == describedCategory)){
+					if(describedCategory.getUserDescription().isEmpty())
+						patterns.add(new TopPattern(describedCategory));
+				}
+			}else{
+				if(describedCategory.getUserDescription().isEmpty())
+					patterns.add(new TopPattern(describedCategory));
+			}
 		}
 		
 		for(j = 0; j < describedCategory.getFunctions().size(); j++){
@@ -120,12 +129,35 @@ public class StringGenerator {
 		DescriptionCategory target = function.getTarget(); 
 		DescriptionCategory	source = ((BinaryDescriptionFunction)function).getSource();;
 		
+		NaryPattern naryPattern;
+		
 		if(describedCategory == source){ // Ensuring unidirectionality
 			// Homogeneous Generalization Pattern
-			if(target.getClass() == source.getClass())
-				patterns.add(new HomogeneousGeneralizationPattern(describedCategory, 
-						new PatternCategory(target.getLabel(), 
-								function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));
+			if(target.getClass() == source.getClass() || 
+					(target instanceof Kind && source instanceof Subkind)){
+				naryPattern = (NaryPattern)searchPattern(patterns, "HomogeneousGeneralizationPattern");
+				
+				if(naryPattern == null){
+					naryPattern = new HomogeneousGeneralizationPattern(describedCategory);
+					patterns.add(naryPattern);
+				}	
+				
+				naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
+						function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
+			}
+			
+			// Anti-Rigid Heterogeneous Generalization Pattern
+			if(target instanceof RoleMixin && source instanceof Role){
+				naryPattern = (NaryPattern)searchPattern(patterns, "AntiRigidHeterogeneousGeneralizationPattern");
+				
+				if(naryPattern == null){
+					naryPattern = new AntiRigidHeterogeneousGeneralizationPattern(describedCategory);
+					patterns.add(naryPattern);
+				}	
+				
+				naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
+						function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
+			}
 		
 			// Rigid Heterogeneous Generalization Pattern
 			if(target instanceof Category && (source instanceof Kind || source instanceof Collective))
@@ -138,12 +170,6 @@ public class StringGenerator {
 				patterns.add(new AntiRigidHeterogeneousGeneralizationIdPattern(describedCategory, 
 						new PatternCategory(target.getLabel(), 
 								function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));
-		
-			// Anti-Rigid Heterogeneous Generalization Pattern
-			if(target instanceof RoleMixin && source instanceof Role)
-				patterns.add(new AntiRigidHeterogeneousGeneralizationPattern(describedCategory, 
-						new PatternCategory(target.getLabel(), 
-								function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));
 			
 			// Phase Description Pattern
 			if((target instanceof Kind || target instanceof Subkind) && source instanceof Phase){
@@ -151,33 +177,32 @@ public class StringGenerator {
 						new PatternCategory(target.getLabel(), 
 								function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));
 			}
-		}else{
-			// Phase Description Rev Pattern
-			if((target instanceof Kind || target instanceof Subkind) && source instanceof Phase){
-				NaryPattern naryPattern = (NaryPattern)searchPattern(patterns, "PhaseDescriptionRevPattern");
-				
-				if(naryPattern == null){
-					naryPattern = new PhaseDescriptionRevPattern(describedCategory);
-					patterns.add(naryPattern);
-				}		
-				
-				naryPattern.getTargetCategories().add(new PatternCategory(source.getLabel(),
-						((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
-						((BinaryDescriptionFunction)function).getSourceMaxMultiplicity()));			
-			}
 		}
 	}
 	
 	private void identifyGeneralizationSetPattern(List<DescriptionPattern> patterns, 
-			DescriptionCategory describedCategory,  DescriptionFunction function){		
-		NaryPattern naryPattern = (NaryPattern)searchPattern(patterns, "GeneralizationSetRevPattern");
-		
-		if(naryPattern == null){
-			naryPattern = new GeneralizationSetRevPattern(describedCategory);
-			patterns.add(naryPattern);
-		}		
-		
+			DescriptionCategory describedCategory,  DescriptionFunction function){	
 		int i;
+		NaryPattern naryPattern;
+		DescriptionCategory sourceElementSample = ((Generalization)((GeneralizationSet)function).getGeneralizationElements().get(0)).getSource();
+		
+		// Phase Description Rev Pattern
+		if(sourceElementSample instanceof Phase){
+			naryPattern = (NaryPattern)searchPattern(patterns, "PhaseDescriptionRevPattern");
+			
+			if(naryPattern == null){
+				naryPattern = new PhaseDescriptionRevPattern(describedCategory);
+				patterns.add(naryPattern);
+			}	
+		}else{ // Generalization Set Rev Pattern
+			naryPattern = (NaryPattern)searchPattern(patterns, "GeneralizationSetRevPattern");
+			
+			if(naryPattern == null){
+				naryPattern = new GeneralizationSetRevPattern(describedCategory);
+				patterns.add(naryPattern);
+			}				
+		}
+		
 		for(i = 0; i < ((GeneralizationSet)function).getGeneralizationElements().size(); i++){
 			Generalization generalizationElement = ((GeneralizationSet)function).getGeneralizationElements().get(i);
 			
@@ -262,12 +287,21 @@ public class StringGenerator {
 		if(describedCategory == source){ // Ensuring unidirectionality
 			patterns.add(new ComponentOfPattern(describedCategory, 
 					new PatternCategory(target.getLabel(), 
-							function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));
+							function.getTargetMinMultiplicity(), 
+							function.getTargetMaxMultiplicity())));	
+							
 		}else{ //Component Of Rev Pattern
-			patterns.add(new ComponentOfRevPattern(describedCategory, 
-					new PatternCategory(source.getLabel(), 
-							((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
-							((BinaryDescriptionFunction)function).getSourceMaxMultiplicity())));
+			NaryPattern naryPattern = (NaryPattern)searchPattern(patterns, "ComponentOfRevPattern");
+			
+			if(naryPattern == null){
+				naryPattern = new ComponentOfRevPattern(describedCategory);
+				patterns.add(naryPattern);
+			}
+			
+			naryPattern.getTargetCategories().add(new PatternCategory(source.getLabel(), 
+					((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
+					((BinaryDescriptionFunction)function).getSourceMaxMultiplicity()));
+					
 		}
 	}
 	
@@ -280,12 +314,19 @@ public class StringGenerator {
 		if(describedCategory == source){ // Ensuring unidirectionality
 			patterns.add(new MemberOfPattern(describedCategory, 
 					new PatternCategory(target.getLabel(), 
-							function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));
+							function.getTargetMinMultiplicity(), 
+							function.getTargetMaxMultiplicity())));	
 		}else{ // Member Of Rev Pattern
-			patterns.add(new MemberOfRevPattern(describedCategory, 
-					new PatternCategory(source.getLabel(), 
-							((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
-							((BinaryDescriptionFunction)function).getSourceMaxMultiplicity())));
+			NaryPattern naryPattern = (NaryPattern)searchPattern(patterns, "MemberOfRevPattern");
+			
+			if(naryPattern == null){
+				naryPattern = new MemberOfRevPattern(describedCategory);
+				patterns.add(naryPattern);
+			}
+			
+			naryPattern.getTargetCategories().add(new PatternCategory(source.getLabel(), 
+					((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
+					((BinaryDescriptionFunction)function).getSourceMaxMultiplicity()));
 		}
 	}
 	
@@ -311,7 +352,8 @@ public class StringGenerator {
 		
 		if(describedCategory == source){ // Ensuring unidirectionality		
 			// Ordinary Mediation Pattern
-			if(target instanceof Role && source instanceof Relator){					
+			if((target instanceof Role || target instanceof RoleMixin || 
+					target instanceof Kind || target instanceof Category) && source instanceof Relator){					
 				if(function.getTargetMinMultiplicity() > 0){
 					naryPattern = (NaryPattern)searchPattern(patterns, "OrdinaryMediationPattern");
 					
@@ -327,25 +369,6 @@ public class StringGenerator {
 						patterns.add(naryPattern);
 					}	
 				}
-			}
-			
-			// Direct Mediation Pattern
-			if(target instanceof Kind && source instanceof Relator){
-				if(function.getTargetMinMultiplicity() > 0){
-					naryPattern = (NaryPattern)searchPattern(patterns, "DirectMediationPattern");
-					
-					if(naryPattern == null){
-						naryPattern = new DirectMediationPattern(describedCategory);
-						patterns.add(naryPattern);
-					}															
-				}else{
-					naryPattern = (NaryPattern)searchPattern(patterns, "OptionalDirectMediationPattern");
-					
-					if(naryPattern == null){
-						naryPattern = new OptionalDirectMediationPattern(describedCategory);
-						patterns.add(naryPattern);
-					}	
-				}								
 			}
 			
 			// Exception Mediation Pattern
@@ -365,25 +388,6 @@ public class StringGenerator {
 						patterns.add(naryPattern);
 					}	
 				}								
-			}
-			
-			// Abstract Mediation Pattern
-			if(target instanceof RoleMixin && source instanceof Relator){
-				if(function.getTargetMinMultiplicity() > 0){
-					naryPattern = (NaryPattern)searchPattern(patterns, "AbstractMediationPattern");
-					
-					if(naryPattern == null){
-						naryPattern = new AbstractMediationPattern(describedCategory);
-						patterns.add(naryPattern);
-					}															
-				}else{
-					naryPattern = (NaryPattern)searchPattern(patterns, "OptionalAbstractMediationPattern");
-					
-					if(naryPattern == null){
-						naryPattern = new OptionalAbstractMediationPattern(describedCategory);
-						patterns.add(naryPattern);
-					}	
-				}
 			}
 			
 			if(naryPattern != null)
@@ -410,6 +414,25 @@ public class StringGenerator {
 									((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
 									((BinaryDescriptionFunction)function).getSourceMaxMultiplicity())));														
 				}
+			}
+			
+			// Exception Mediation Rev Pattern
+			if(source instanceof Relator && target instanceof Relator){
+				if(((BinaryDescriptionFunction)function).getSourceMinMultiplicity() > 0){
+					naryPattern = (NaryPattern)searchPattern(patterns, "ExceptionMediationRevPattern");
+					
+					if(naryPattern == null){
+						naryPattern = new ExceptionMediationRevPattern(describedCategory);
+						patterns.add(naryPattern);
+					}															
+				}else{
+					naryPattern = (NaryPattern)searchPattern(patterns, "OptionalExceptionMediationRevPattern");
+					
+					if(naryPattern == null){
+						naryPattern = new OptionalExceptionMediationRevPattern(describedCategory);
+						patterns.add(naryPattern);
+					}	
+				}								
 			}
 			
 			if(naryPattern != null)
