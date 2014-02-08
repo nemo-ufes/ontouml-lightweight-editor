@@ -61,17 +61,18 @@ public class GlossaryGeneratorUI extends JFrame {
 		JLabel lblNewLabel = new JLabel("Output File Name");
 		
 		outputFileName = new JTextField();
+		outputFileName.setText("Glossary Output");
 		outputFileName.setColumns(10);
 		
 		JLabel lblOutputDirectory = new JLabel("Output Directory");
 		
 		edtOutputDirectory = new JTextField();
+		edtOutputDirectory.setText("C:\\Users\\Dio.Dio\\Desktop");
 		edtOutputDirectory.setColumns(10);
 		
 		btnSelectOutputDirectory = new JButton("...");
 		
 		chkAnalyseDescriptiveConsistency = new JCheckBox("Analyse Descriptive Consistency");
-		chkAnalyseDescriptiveConsistency.setSelected(true);
 		
 		btnGenerateGlossary = new JButton("Generate Glossary");
 		
@@ -196,6 +197,8 @@ public class GlossaryGeneratorUI extends JFrame {
 						});		
 					}else{
 						ontoUmlGlossary.modelToText();
+						JOptionPane.showMessageDialog(null, "Glossary generated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+						dispose();
 					}
 				}
 			}
