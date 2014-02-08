@@ -4,9 +4,11 @@ import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.MediationPattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.NaryPattern;
 
-public class DirectMediationPattern extends NaryPattern implements MediationPattern {
+public class OptionalExceptionMediationRevPattern extends NaryPattern implements
+		MediationPattern {
 
-	public DirectMediationPattern(DescriptionCategory describedCategory) {
+	public OptionalExceptionMediationRevPattern(
+			DescriptionCategory describedCategory) {
 		super(describedCategory);
 	}
 

@@ -1,11 +1,20 @@
 package br.ufes.inf.nemo.ontouml2text.stringGenerator;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.BinaryPattern;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.CharacterizationPattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.DescriptionPattern;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.FormalPattern;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.GeneralizationPattern;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.MediationPattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.NaryPattern;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.OptionalMultiplicityPattern;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.PartOfPattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.PatternCategory;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.PhasePattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.UnaryPattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.binaryPatterns.*;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.naryPatterns.*;
@@ -17,6 +26,55 @@ public abstract class LanguageAdaptor {
 	
 	public LanguageAdaptor(Dictionary dictionary){
 		this.dictionary = dictionary;
+	}
+	
+	protected void priorizeDescriptionPatterns(List<DescriptionPattern> patterns){
+		Collections.sort(patterns, new Comparator<DescriptionPattern>(){
+			private Integer determineValue(DescriptionPattern d){
+				if(d instanceof GeneralizationPattern){ 
+					if(d instanceof AntiRigidHeterogeneousGeneralizationIdPattern)
+						return 15;
+					else
+						return 10;		
+				}else if(d instanceof PhasePattern){ 
+					return 20;	
+				}else if(d instanceof CharacterizationPattern){ 
+					return 30;	
+				}else if(d instanceof PartOfPattern){ 
+					return 40;	
+				}else if(d instanceof FormalPattern){ 
+					if(d instanceof OptionalMultiplicityPattern)
+						return 50;	
+					else
+						return 45;	
+				}else if(d instanceof MediationPattern){ 
+					if(d instanceof OptionalMultiplicityPattern){
+						if(d instanceof OptionalExceptionMediationPattern || 
+								d instanceof OptionalExceptionMediationRevPattern){
+							return 75;	
+						}else{
+							return 70;
+						}
+					}else{
+						if(d instanceof ExceptionMediationPattern || 
+								d instanceof ExceptionMediationRevPattern){
+							return 65;	
+						}else{
+							return 60;
+						}
+					}
+				}else if(d instanceof GeneralizationSetRevPattern){
+					return 90;	
+				}else if(d instanceof CustomPattern) 
+					return 100;		
+				
+				return 200;	
+			}
+			
+			public int compare(DescriptionPattern d1, DescriptionPattern d2){
+				return Integer.compare(determineValue(d1), determineValue(d2));
+			}
+		});
 	}
 
 	public String generateCategoryDescription(List<DescriptionPattern> patterns){
@@ -60,14 +118,10 @@ public abstract class LanguageAdaptor {
 	private String processBinaryPattern(DescriptionPattern pattern, DescriptionPattern previousPattern){
 		String parcialDescription = "";
 		
-		if(pattern instanceof HomogeneousGeneralizationPattern){
-			return processHomogeneousGeneralizationPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof RigidHeterogeneousGeneralizationPattern){
+		if(pattern instanceof RigidHeterogeneousGeneralizationPattern){
 			return processRigidHeterogeneousGeneralizationPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern){
 			return processAntiRigidHeterogeneousGeneralizationIdPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof AntiRigidHeterogeneousGeneralizationPattern){
-			return processAntiRigidHeterogeneousGeneralizationPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof PhaseDescriptionPattern){
 			return processPhaseDescriptionPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof CharacterizationAssociationPattern){
@@ -92,34 +146,38 @@ public abstract class LanguageAdaptor {
 	private String processNaryPattern(DescriptionPattern pattern, DescriptionPattern previousPattern){
 		String parcialDescription = "";
 		
-		if(pattern instanceof PhaseDescriptionRevPattern){
+		if(pattern instanceof HomogeneousGeneralizationPattern){
+			return processHomogeneousGeneralizationPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof AntiRigidHeterogeneousGeneralizationPattern){
+			return processAntiRigidHeterogeneousGeneralizationPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof PhaseDescriptionRevPattern){
 			return processPhaseDescriptionRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof FormalAssociationPattern){
 			return processFormalAssociationPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof FormalAssociationRevPattern){
 			return processFormalAssociationRevPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof OptionalFormalAssociationPattern){
-			return processOptionalFormalAssociationPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof OptionalFormalAssociationRevPattern){
-			return processOptionalFormalAssociationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof ComponentOfRevPattern){
 			return processComponentOfRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof MemberOfRevPattern){
 			return processMemberOfRevPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof OptionalFormalAssociationPattern){
+			return processOptionalFormalAssociationPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof OptionalFormalAssociationRevPattern){
+			return processOptionalFormalAssociationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof OrdinaryMediationPattern){
 			return processOrdinaryMediationPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof OrdinaryOptionalMediationPattern){
 			return processOrdinaryOptionalMediationPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof DirectMediationPattern){
-			return processDirectMediationPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof OptionalDirectMediationPattern){
-			return processOptionalDirectMediationPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof ExceptionMediationPattern){
 			return processExceptionMediationPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof ExceptionMediationRevPattern){
+			return processExceptionMediationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof OptionalExceptionMediationPattern){
 			return processOptionalExceptionMediationPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof AbstractMediationPattern){
-			return processAbstractMediationPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof OptionalExceptionMediationRevPattern){
+			return processOptionalExceptionMediationRevPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof AbstractMediationRevPattern){
+			return processAbstractMediationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof GeneralizationSetRevPattern){
 			return processGeneralizationSetRevPattern(pattern, previousPattern, parcialDescription);
 		}
@@ -135,14 +193,12 @@ public abstract class LanguageAdaptor {
 	}
 	
 	protected boolean previousIsHeterogeneousMediation(DescriptionPattern previousPattern){
-		return previousPattern instanceof OrdinaryMediationPattern ||
-				previousPattern instanceof DirectMediationPattern ||
-				previousPattern instanceof AbstractMediationPattern;
+		return previousPattern instanceof OrdinaryMediationPattern;
 	}
 	
-	protected boolean previousIsOptionalHeterogeneousMediation(DescriptionPattern previousPattern){
+	protected boolean previousIsOptionalMediation(DescriptionPattern previousPattern){
 		return previousPattern instanceof OrdinaryOptionalMediationPattern ||
-				previousPattern instanceof OptionalDirectMediationPattern;
+				previousPattern instanceof OptionalExceptionMediationPattern;
 	}
 	
 	protected String insertTarget(PatternCategory target, boolean withMultiplicity){
@@ -175,8 +231,6 @@ public abstract class LanguageAdaptor {
 		
 		return listing;
 	}
-	
-	protected abstract void priorizeDescriptionPatterns(List<DescriptionPattern> patterns);
 	
 	protected abstract String insertMultiplicity(PatternCategory target);
 	
@@ -224,15 +278,15 @@ public abstract class LanguageAdaptor {
 	
 	protected abstract String processOrdinaryOptionalMediationPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
-	protected abstract String processDirectMediationPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
-	
-	protected abstract String processOptionalDirectMediationPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
-	
 	protected abstract String processExceptionMediationPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
+	
+	protected abstract String processExceptionMediationRevPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
 	protected abstract String processOptionalExceptionMediationPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
-	protected abstract String processAbstractMediationPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
+	protected abstract String processOptionalExceptionMediationRevPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
+	
+	protected abstract String processAbstractMediationRevPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
 	protected abstract String processGeneralizationSetRevPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
