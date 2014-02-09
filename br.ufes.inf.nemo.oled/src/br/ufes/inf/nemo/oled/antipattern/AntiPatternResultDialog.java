@@ -76,6 +76,7 @@ import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.impabs.ImpAbsWizard;
 import br.ufes.inf.nemo.antipattern.wizard.hetcoll.HetCollWizard;
 import br.ufes.inf.nemo.antipattern.wizard.multidep.MultiDepWizard;
 import br.ufes.inf.nemo.antipattern.wizard.partover.PartOverWizard;
@@ -372,8 +373,10 @@ public class AntiPatternResultDialog extends Dialog {
     	if (apOccur instanceof RepRelOccurrence) wizardDialog = new WizardDialog(new Shell(), new RepRelWizard((RepRelOccurrence)apOccur));
     	if (apOccur instanceof MultiDepOccurrence) wizardDialog = new WizardDialog(new Shell(), new MultiDepWizard((MultiDepOccurrence)apOccur));
     	if (apOccur instanceof RelCompOccurrence) wizardDialog = new WizardDialog(new Shell(), new RelCompWizard((RelCompOccurrence)apOccur));
+    	if (apOccur instanceof ImpAbsOccurrence) wizardDialog = new WizardDialog(new Shell(), new ImpAbsWizard((ImpAbsOccurrence)apOccur));
     	if (apOccur instanceof UndefFormalOccurrence) wizardDialog = new WizardDialog(new Shell(), new UndefFormalWizard((UndefFormalOccurrence)apOccur));
     	if (apOccur instanceof HetCollOccurrence) wizardDialog = new WizardDialog(new Shell(), new HetCollWizard((HetCollOccurrence)apOccur));
+
     	return wizardDialog;
 	}
 	
