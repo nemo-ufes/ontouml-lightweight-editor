@@ -9,6 +9,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.SpecializationType;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Relation Specialization*/
@@ -463,11 +464,22 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		}
 	}
 	
+	public void subsetRelations(){
+		generateOCL(OperationType.SUBSET);
+		fix.addAll(fixer.subsetProperty(generalTargetEnd, specificTargetEnd, SpecializationType.SUBSET, true));
+	}
+	
+	public void redefineRelations(){
+		generateOCL(OperationType.REDEFINE);
+		fix.addAll(fixer.subsetProperty(generalTargetEnd, specificTargetEnd, SpecializationType.REDEFINE, true));
+	}
+	
 	public void createSpecificSourceSubTypeAndRedefine(ClassStereotype stereotype)
 	{
 		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(specificSource, stereotype, specific));
 		setProperties(specific, general);
 		generateOCL(OperationType.REDEFINE);
+		fix.addAll(fixer.subsetProperty(generalTargetEnd, specificTargetEnd, SpecializationType.REDEFINE, true));
 	}
 	
 	public void createSpecificTargetSubTypeAndRedefine(ClassStereotype stereotype)
@@ -475,6 +487,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(specificTarget, stereotype, specific));
 		setProperties(specific, general);
 		generateOCL(OperationType.REDEFINE);
+		fix.addAll(fixer.subsetProperty(generalSourceEnd, specificSourceEnd, SpecializationType.REDEFINE, true));
 	}
 	
 	public void createGeneralSourceSubTypeAndRedefine(ClassStereotype stereotype)
@@ -482,6 +495,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(generalSource, stereotype, general));
 		setProperties(specific, general);
 		generateOCL(OperationType.REDEFINE);
+		fix.addAll(fixer.subsetProperty(specificTargetEnd, generalTargetEnd, SpecializationType.REDEFINE, true));
 	}
 	
 	public void createGeneralTargetSubTypeAndRedefine(ClassStereotype stereotype)
@@ -489,6 +503,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(generalTarget, stereotype, general));
 		setProperties(specific, general);
 		generateOCL(OperationType.REDEFINE);
+		fix.addAll(fixer.subsetProperty(specificSourceEnd, generalSourceEnd, SpecializationType.REDEFINE, true));
 	}
 	
 	public void createGeneralBothSubTypesAndRedefine(ClassStereotype sourceStereotype, ClassStereotype targetStereotype)
@@ -497,6 +512,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(generalTarget, targetStereotype, general));
 		setProperties(specific, general);
 		generateOCL(OperationType.REDEFINE);
+		fix.addAll(fixer.subsetProperty(specificTargetEnd, generalTargetEnd, SpecializationType.REDEFINE, true));
 	}
 	
 	public void createSpecificBothSubTypesAndRedefine(ClassStereotype sourceStereotype, ClassStereotype targetStereotype)
@@ -505,6 +521,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		this.fix.addAll(fixer.createSubTypeAsInvolvingLink(specificTarget, targetStereotype, general));
 		setProperties(specific, general);
 		generateOCL(OperationType.REDEFINE);
+		fix.addAll(fixer.subsetProperty(generalTargetEnd, specificTargetEnd, SpecializationType.REDEFINE, true));
 	}
 	
 	public void deleteSpecific(){
@@ -516,7 +533,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 	}
 	
 	public boolean isEqual(Association a1, Association a2){
-		return a1.equals(general) && a2.equals(specific);
+		return (a1.equals(general) && a2.equals(specific)) || (a1.equals(specific) && a2.equals(general)) ;
 	}
 	
 }
