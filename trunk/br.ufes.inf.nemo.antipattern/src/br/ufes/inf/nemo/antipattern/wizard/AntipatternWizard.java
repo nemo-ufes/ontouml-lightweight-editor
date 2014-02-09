@@ -79,13 +79,18 @@ public abstract class AntipatternWizard extends Wizard {
 	}
 	
 	public void addAction(int pos, AntiPatternAction<?> action){
-		
+		System.out.println("NEW ACTION: "+action);
 		if(actions.get(pos)!=null)
 			actions.get(pos).add(action);
 		else {
 			ArrayList<AntiPatternAction<?>> indexedActions = new ArrayList<AntiPatternAction<?>>();
 			indexedActions.add(action);
 			actions.put(pos, indexedActions);
+		}
+		
+		System.out.println("ADD ACTION - Actions size: "+getAllActions().size());
+		for (AntiPatternAction<?> a : getAllActions()) {
+			System.out.println(a);
 		}
 	}
 		
@@ -103,8 +108,12 @@ public abstract class AntipatternWizard extends Wizard {
 	}
 
 	public FinishingPage getFinishing() {
-		canFinish=true;	
+		canFinish=true;
 		finishing.addActions(getAllActions());
+		System.out.println("Actions size: "+getAllActions().size());
+		for (AntiPatternAction<?> action : getAllActions()) {
+			System.out.println(action);
+		}
 		return finishing;
 	}
 	
