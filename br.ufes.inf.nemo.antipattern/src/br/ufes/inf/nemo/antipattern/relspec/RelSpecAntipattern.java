@@ -12,6 +12,7 @@ import RefOntoUML.FormalAssociation;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Package;
+import RefOntoUML.Property;
 import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
@@ -111,9 +112,7 @@ public class RelSpecAntipattern extends Antipattern<RelSpecOccurrence> {
 		return this.getOccurrences();
 	}
 	
-	@SuppressWarnings("unused")
 	private <T extends Association> void identifyByStereotype( Set<T> associationList){
-		int current = 1, total = associationList.size()*associationList.size(); 
 		for (Association a1 : associationList) {
 			
 			if(a1.getMemberEnd()==null || a1.getMemberEnd().size()!=2)
@@ -121,27 +120,33 @@ public class RelSpecAntipattern extends Antipattern<RelSpecOccurrence> {
 			
 			Classifier 	sourceA1 = (Classifier) a1.getMemberEnd().get(0).getType(), 
 						targetA1 = (Classifier) a1.getMemberEnd().get(1).getType();
+			Property sourceEndA1 = a1.getMemberEnd().get(0),
+					 targetEndA1 = a1.getMemberEnd().get(1);
 			
 			for (Association a2 : associationList) {
-				current++;
-				//System.out.println("("+current+" of "+total+") "+parser.getStringRepresentation(a1)+", "+parser.getStringRepresentation(a2)+": Analyzing...");
-				
+								
 				if(a2.getMemberEnd()==null || a2.getMemberEnd().size()!=2)
 					continue;
 				
 				Classifier 	sourceA2 = (Classifier) a2.getMemberEnd().get(0).getType(), 
 							targetA2 = (Classifier) a2.getMemberEnd().get(1).getType();
+				Property sourceEndA2 = a2.getMemberEnd().get(0),
+						 targetEndA2 = a2.getMemberEnd().get(1);
 				
 				if (!a1.equals(a2)){
 					
 					boolean isSpecialization = 
 						(sourceA1.equals(sourceA2) || sourceA1.allParents().contains(sourceA2)) &&
-						(targetA1.equals(targetA2) || targetA1.allParents().contains(targetA2));
+						(targetA1.equals(targetA2) || targetA1.allParents().contains(targetA2)) && 
+						!(sourceEndA1.getSubsettedProperty().contains(sourceEndA2) || sourceEndA1.getRedefinedProperty().contains(sourceEndA2)) &&
+						!(targetEndA1.getSubsettedProperty().contains(targetEndA2) || targetEndA1.getRedefinedProperty().contains(targetEndA2));
 					boolean isReverseSpecialization = 
 						(sourceA1.equals(targetA2) || sourceA1.allParents().contains(targetA2)) &&
-						(targetA1.equals(sourceA2) || targetA1.allParents().contains(sourceA2));
+						(targetA1.equals(sourceA2) || targetA1.allParents().contains(sourceA2)) &&
+						!(sourceEndA1.getSubsettedProperty().contains(targetEndA2) || sourceEndA1.getRedefinedProperty().contains(targetEndA2)) &&
+						!(targetEndA1.getSubsettedProperty().contains(sourceEndA2) || targetEndA1.getRedefinedProperty().contains(sourceEndA2));;
 					
-					if(isSpecialization|| isReverseSpecialization){
+					if(isSpecialization || isReverseSpecialization){
 							try {
 								//verify if there is a similar occurrence created
 								boolean exists = false;
@@ -150,7 +155,7 @@ public class RelSpecAntipattern extends Antipattern<RelSpecOccurrence> {
 										exists = true;
 								}
 								if(!exists)
-									this.occurrence.add(new RelSpecOccurrence(a2, a1, this));
+									this.occurrence.add(new RelSpecOccurrence(a1, a2, this));
 							} catch (Exception e) {
 								System.out.println(info.acronym+"[java]: Provided information does not characterize an occurrence of the anti-pattern!");
 								System.out.println(e.getMessage());
