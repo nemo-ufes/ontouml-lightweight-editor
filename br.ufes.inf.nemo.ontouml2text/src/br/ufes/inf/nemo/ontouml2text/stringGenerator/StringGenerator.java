@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ontouml2text.stringGenerator;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,10 +46,13 @@ public class StringGenerator {
 		return missingUserDescriptionCategories;
 	}
 	
+	
 	public void generateGlossary(){
 		int i;
 		List<DescriptionPattern> patterns = null;
 		DescriptionCategory describedCategory = null;
+		String initialLetter;
+		PrintWriter htmlLetter;
 		
 		exporter.initilizeExportFile();
 		
@@ -57,8 +61,11 @@ public class StringGenerator {
 			
 			// Identifying patterns
 			patterns = identifyPatterns(describedCategory);
-					
-			exporter.saveDescription(describedCategory, languageAdaptor.generateCategoryDescription(patterns));
+			
+			initialLetter = describedCategory.getLabel().substring(0, 1); 
+			htmlLetter = exporter.findLetter(initialLetter);
+			
+			exporter.saveDescription(describedCategory, languageAdaptor.generateCategoryDescription(patterns),htmlLetter);
 		}
 		
 		exporter.finalizeExportFile();
