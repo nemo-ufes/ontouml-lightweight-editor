@@ -252,23 +252,6 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 	}
 
 	@Override
-	protected String processOrdinaryMediationRevPattern(
-			DescriptionPattern pattern, DescriptionPattern previousPattern,
-			String parcialDescription) {
-
-		// Integration
-		if(previousPattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern) parcialDescription += " quando envolvido";
-		else if(previousIsGeneralization(previousPattern)) parcialDescription += " e se envolve";
-		else if(previousPattern == null) parcialDescription += " se envolve";
-		 
-		// Generating specific description
-		parcialDescription += " em " + 
-				insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
-					
-		return parcialDescription;
-	}
-
-	@Override
 	protected String processPhaseDescriptionRevPattern(
 			DescriptionPattern pattern, DescriptionPattern previousPattern,
 			String parcialDescription) {
@@ -358,10 +341,28 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 
 		// Integration
 		if(previousIsGeneralization(previousPattern)) parcialDescription += " que";
+		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 		
 		// Generating specific description
 		parcialDescription += " envolve " + 
 				insertListing((NaryPattern)pattern, true, "e");
+					
+		return parcialDescription;
+	}
+	
+	@Override
+	protected String processOrdinaryMediationRevPattern(
+			DescriptionPattern pattern, DescriptionPattern previousPattern,
+			String parcialDescription) {
+
+		// Integration
+		if(previousPattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern) parcialDescription += " quando envolvido";
+		else if(previousIsGeneralization(previousPattern)) parcialDescription += " e se envolve";
+		else if(previousPattern == null) parcialDescription += " se envolve";
+		 
+		// Generating specific description
+		parcialDescription += " em " + 
+				insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
 					
 		return parcialDescription;
 	}
@@ -372,7 +373,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsHeterogeneousMediation(previousPattern)) parcialDescription += ", além de poder"; 
+		if(previousIsHeterogeneousMediation(previousPattern) || previousPattern instanceof FormalPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern instanceof ExceptionMediationPattern || previousPattern instanceof ExceptionMediationRevPattern) parcialDescription += " e poder"; 
 		else if(previousPattern == null) parcialDescription += " pode";			
 		
@@ -389,12 +390,12 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " que está";
-		else if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além de estar";
-		else if(previousPattern == null) parcialDescription += " está";
+		if(previousIsGeneralization(previousPattern)) parcialDescription += " que";
+		else if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além disso,";
+		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 		
 		// Generating specific description
-		parcialDescription += " relacionado com " + 
+		parcialDescription += " se relaciona com " + 
 				insertListing((NaryPattern)pattern, true, "e");
 					
 		return parcialDescription;
@@ -406,12 +407,12 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " que está";
-		else if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além de estar";
-		else if(previousPattern == null) parcialDescription += " está";
+		if(previousIsGeneralization(previousPattern)) parcialDescription += " que";
+		else if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além disso,";
+		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 		
 		// Generating specific description
-		parcialDescription += " relacionado com " + 
+		parcialDescription += " se relaciona com " + 
 				insertListing((NaryPattern)pattern, true, "e");
 					
 		return parcialDescription;
