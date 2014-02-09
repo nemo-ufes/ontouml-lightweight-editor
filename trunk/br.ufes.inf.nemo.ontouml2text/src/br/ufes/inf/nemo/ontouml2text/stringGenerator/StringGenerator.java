@@ -65,7 +65,7 @@ public class StringGenerator {
 			initialLetter = describedCategory.getLabel().substring(0, 1); 
 			htmlLetter = exporter.findLetter(initialLetter);
 			
-			exporter.saveDescription(describedCategory, languageAdaptor.generateCategoryDescription(patterns),htmlLetter);
+			exporter.saveDescription(describedCategory, languageAdaptor.generateCategoryDescription(patterns), htmlLetter);
 		}
 		
 		exporter.finalizeExportFile();
