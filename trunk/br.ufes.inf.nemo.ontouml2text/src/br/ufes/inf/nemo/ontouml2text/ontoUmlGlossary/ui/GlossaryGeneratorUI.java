@@ -183,7 +183,9 @@ public class GlossaryGeneratorUI extends JFrame {
 				if(outputFileName.getText().equals("") || edtOutputDirectory.getText().equals(""))
 					this.showErrorMessage(this,"There is no output file name or output directory. Please, complete the fields.","Output Name Error",JOptionPane.ERROR_MESSAGE,null);	
 				
-				else{					
+				else{
+					 File dir = new File(edtOutputDirectory.getText()+"/alphabet");  
+					 dir.mkdir(); 
 					if(cmbLanguage.getSelectedIndex() == 0){ // Brazilian Portuguese
 						ontoUmlGlossary = new OntoUmlGlossary(OntoUmlGlossary.PT_BR, parser, outputFileName.getText(), edtOutputDirectory.getText()); 
 					}
