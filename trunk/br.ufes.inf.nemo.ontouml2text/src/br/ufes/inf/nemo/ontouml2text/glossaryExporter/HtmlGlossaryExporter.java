@@ -8,7 +8,7 @@ import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 
 public class HtmlGlossaryExporter extends GlossaryExporter {
 	private HashMap<String, PrintWriter> alphabetHash = new HashMap<String, PrintWriter>();
-	private PrintWriter out;
+	private PrintWriter index;
 	private String outputName;
 	private String outputDirectory;
 	private String title;
@@ -27,7 +27,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 			File alphabet = new File(this.outputDirectory+"/"+this.outputName+"/"+"alphabet/");
 			alphabet.mkdir();
 			
-			out = new PrintWriter(new BufferedWriter(new FileWriter(this.outputDirectory+"/"+this.outputName+"/"+"index"+".html")));
+			index = new PrintWriter(new BufferedWriter(new FileWriter(this.outputDirectory+"/"+this.outputName+"/"+"index"+".html")));
 			 
 			createHeader();					// create alphabet index
 			createCssFile();				// create css style file
@@ -99,11 +99,15 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 	}
 	
 	public void saveDescription(DescriptionCategory category, String description, PrintWriter out){	
-		out.write("        <div>\n");
-		out.write("            <p><h1>"+category.getLabel()+"</h1><br /><hr />\n");
-		out.write("            "+description+"</p>\n");
-		out.write("        </div>\n");
-		out.write("        <p></p>\n");
+		if(out != null){
+			out.write("        <div>\n");
+			out.write("            <p><h1>"+category.getLabel()+"</h1><br /><hr />\n");
+			out.write("            "+description+"</p>\n");
+			out.write("        </div>\n");
+			out.write("        <p></p>\n");
+		}else{
+			System.out.println("Error: Null reference. Category: "+category.getLabel()+".");
+		}
 	}
 	
 	public PrintWriter findLetter(String letter){
@@ -158,16 +162,16 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 	}
 	
 	private void createHeader(){
-		out.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\">\n");
-		out.write("<html>\n");
-		out.write("    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n");
-		out.write("    <head>\n");
-		out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"alphabet/style.css\" />\n");
-		out.write("    <title>"+this.title+"</title>\n");
-		out.write("    </head>\n");
-		out.write("    <body>\n");	
+		index.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\">\n");
+		index.write("<html>\n");
+		index.write("    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n");
+		index.write("    <head>\n");
+		index.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"alphabet/style.css\" />\n");
+		index.write("    <title>"+this.title+"</title>\n");
+		index.write("    </head>\n");
+		index.write("    <body>\n");	
 		
-		out.write("        <div class=\"alphabet\"> <a href=" + "alphabet/letterA.html" + ">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp[A]&nbsp&nbsp</a>"
+		index.write("        <div class=\"alphabet\"> <a href=" + "alphabet/letterA.html" + ">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp[A]&nbsp&nbsp</a>"
 			+ " <a href=" + "alphabet/letterB.html" + ">&nbsp&nbsp[B]&nbsp&nbsp</a>"
 			+ " <a href=" + "alphabet/letterC.html" + ">&nbsp&nbsp[C]&nbsp&nbsp</a>"
 			+ " <a href=" + "alphabet/letterD.html" + ">&nbsp&nbsp[D]&nbsp&nbsp</a>"
@@ -193,9 +197,8 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 			+ " <a href=" + "alphabet/letterX.html" + ">&nbsp&nbsp[X]&nbsp&nbsp</a>"
 			+ " <a href=" + "alphabet/letterY.html" + ">&nbsp&nbsp[Y]&nbsp&nbsp</a>"
 			+ " <a href=" + "alphabet/letterZ.html" + ">&nbsp&nbsp[Z]&nbsp&nbsp</a> </div>\n\n"
-			+ "     </body>\n" + "</html>\n");
-			out.close();
-		
+			+ "     </body>\n" + "</html>\n");	
+		index.close();
 	}
 	/*
 	
