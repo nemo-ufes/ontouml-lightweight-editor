@@ -24,9 +24,9 @@ public class RelSpecAction extends AntiPatternAction <RelSpecOccurrence> {
 	public void run()
 	{
 		if(code==Action.SUBSET)
-			ap.generateOCL(RelSpecOccurrence.OperationType.SUBSET);
+			ap.subsetRelations(); 
 		else if(code==Action.REDEFINE)
-			ap.generateOCL(RelSpecOccurrence.OperationType.REDEFINE);
+			ap.redefineRelations();
 		else if(code==Action.DISJOINT)
 			ap.generateOCL(RelSpecOccurrence.OperationType.DISJOINT);		
 		else if(code==Action.DELETE_GENERAL)
