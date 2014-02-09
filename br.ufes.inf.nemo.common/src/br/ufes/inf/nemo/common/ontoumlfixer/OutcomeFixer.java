@@ -62,6 +62,10 @@ import RefOntoUML.impl.componentOfImpl;
 
 public class OutcomeFixer {
 
+	public enum SpecializationType {
+		SUBSET, REDEFINE, SPECIALIZE
+	}
+	
 	public enum ClassStereotype {
 		KIND, SUBKIND, COLLECTIVE, QUANTITY, PHASE, ROLE, ROLEMIXIN, CATEGORY, MIXIN, RELATOR, MODE, DATATYPE, PRIMITIVETYPE
 	}
@@ -281,6 +285,31 @@ public class OutcomeFixer {
 			rcvProperty.setLowerValue(lowerBound);
 			if (copyMetaAttributes) copyMetaAttributes(source, receiver);
 		}
+	}
+	
+	/**
+	 * Copy all meta-atributes of an association but the types and names
+	 */
+	public void copyOnlyMetaProperties(Association source, Association receiver) 
+	{
+			copyOnlyMetaProperty(source.getMemberEnd().get(0), receiver.getMemberEnd().get(0));
+			copyOnlyMetaProperty(source.getMemberEnd().get(1), receiver.getMemberEnd().get(1));
+	}
+
+	/**
+	 * Copy multiplicities and type from a source property to a receiver
+	 * property. It also copy the meta-attributes such as isDerived, isReadOnly,
+	 * etc.
+	 */
+	public void copyOnlyMetaProperty(Property source, Property receiver) 
+	{
+			LiteralInteger lowerBound = factory.createLiteralInteger();
+			lowerBound.setValue(source.getLower());
+			LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
+			upperBound.setValue(source.getUpper());
+			receiver.setUpperValue(upperBound);
+			receiver.setLowerValue(lowerBound);
+			copyMetaAttributes(source, receiver);
 	}
 
 	/**
@@ -914,6 +943,45 @@ public class OutcomeFixer {
 			p.setName(p.getName()+"_1");
 			fix.includeAdded(p);
 		}
+		
+		return fix;
+	}
+	
+	public Fix changePropertyMultiplicity(Property property, int lower, int upper, boolean addToModified){
+		Fix fix = new Fix();
+	
+		LiteralInteger lowerBound = factory.createLiteralInteger();
+		lowerBound.setValue(lower);
+		LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
+		upperBound.setValue(upper);
+		property.setUpperValue(upperBound);
+		property.setLowerValue(lowerBound);
+		
+		if(addToModified){
+			fix.includeModified(property);
+		}
+		
+		return fix;
+	}
+	
+	public Fix subsetProperty(Property general, Property specific, SpecializationType option, boolean includeModified){
+		Fix fix = new Fix();
+		
+		if (option==SpecializationType.SUBSET)
+			specific.getSubsettedProperty().add(general);
+		
+		else if (option==SpecializationType.REDEFINE)
+			specific.getRedefinedProperty().add(general);
+		
+		else if (option==SpecializationType.SPECIALIZE && specific.getAssociation() instanceof Association && general.getAssociation() instanceof Association){	
+			Generalization g = (Generalization) createRelationship(RelationStereotype.GENERALIZATION);
+			g.setGeneral(general.getAssociation());
+			g.setSpecific(specific.getAssociation());
+			fix.includeAdded(g);
+		}
+		
+		if (includeModified && (option==SpecializationType.SUBSET || option==SpecializationType.REDEFINE))
+			fix.includeModified(specific);
 		
 		return fix;
 	}

@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Category;
+import RefOntoUML.Characterization;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Comment;
@@ -28,6 +29,7 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
+import RefOntoUML.Mode;
 import RefOntoUML.MomentClass;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Package;
@@ -1216,6 +1218,27 @@ public class OntoUMLParser {
 			}
 		}
 		return relations;
+	}
+	
+	public Property getWholeEnd(Meronymic m){
+		if (m.targetEnd().getAggregation()!=AggregationKind.NONE && m.sourceEnd().getAggregation()==AggregationKind.NONE)
+			return m.targetEnd();
+		else
+			return m.sourceEnd();
+	}
+	
+	public Property getPartEnd(Meronymic m){
+		return getWholeEnd(m).getOpposite();
+	}
+	
+	public Property getCharacterizingEnd(Characterization c){
+		if (c.getMemberEnd().get(1).getType() instanceof Mode && !(c.getMemberEnd().get(0).getType() instanceof Mode))
+			return c.getMemberEnd().get(1);
+		return c.getMemberEnd().get(0);
+	}
+	
+	public Property getCharacterizedEnd(Characterization c){
+		return getCharacterizingEnd(c).getOpposite();
 	}
 	
 }
