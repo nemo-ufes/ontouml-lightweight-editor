@@ -5,22 +5,30 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
+import RefOntoUML.Characterization;
 import RefOntoUML.Classifier;
+import RefOntoUML.Mediation;
+import RefOntoUML.Meronymic;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
 import br.ufes.inf.nemo.common.list.Combination;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.SpecializationType;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class ImpAbsOccurrence extends AntipatternOccurrence{
 	private Association association;
-	private Classifier source, target;
-	
+	private Classifier sourceType, targetType;
 	private ArrayList<Classifier> sourceChildren, targetChildren;
+	
+	private ArrayList<Association> createdAssociations;
 	
 	public ImpAbsOccurrence(Association a, ImpAbsAntipattern ap) throws Exception {
 		super(ap);
 		this.setAssociation(a);
+		createdAssociations = new ArrayList<Association>();
 	}
 	 
 	public String generateTargetOcl(ArrayList<Classifier> subtypes, OntoUMLParser parser)
@@ -28,7 +36,7 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		String result;
 		String aet_name = association.getMemberEnd().get(1).getName();
 		
-		result = "context _'"+source.getName()+"'\n"+
+		result = "context _'"+sourceType.getName()+"'\n"+
 				 "inv: ";	
 		
 		if(subtypes!=null && subtypes.size()>0 && targetChildren.containsAll(subtypes))
@@ -53,7 +61,7 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		String result;
 		String aes_name = association.getMemberEnd().get(0).getName();
 		
-		result = "context _'"+target.getName()+"'\n"+
+		result = "context _'"+targetType.getName()+"'\n"+
 				 "inv: ";	
 		
 		if(subtypes!=null && subtypes.size()>0 && sourceChildren.containsAll(subtypes)){
@@ -77,7 +85,7 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		
 		//maps to the names of the objects in alloy
 		associationName = parser.getAlias(association);
-		sourceName = parser.getAlias(this.source);
+		sourceName = parser.getAlias(this.sourceType);
 		
 		//builds the basic structure for the generated predicate
 		predicateName = "imprecise_abstraction_"+sourceName+"_"+associationName;
@@ -116,7 +124,7 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 			
 			//maps to the names of the objects in alloy
 			associationName = parser.getAlias(association);
-			targetName = parser.getAlias(this.target);
+			targetName = parser.getAlias(this.targetType);
 			
 			//builds the basic structure for the generated predicate
 			predicateName = "imprecise_abstraction_"+targetName+"_"+associationName;
@@ -158,8 +166,8 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		String associationName, sourceName, targetName;
 		ArrayList<String> sourceChildrenName, targetChildrenName;
 		associationName = parser.getAlias(association);
-		sourceName = parser.getAlias(this.source);
-		targetName = parser.getAlias(this.target);
+		sourceName = parser.getAlias(this.sourceType);
+		targetName = parser.getAlias(this.targetType);
 		
 		sourceChildrenName = new ArrayList<String>();
 		for (Classifier c : this.sourceChildren) {
@@ -244,23 +252,23 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		if(association.getMemberEnd().size()!=2)
 			throw new Exception("The provided association must relate exactly two elements. MemberEnd may be null or undefined");
 		
-		this.source = (Classifier) SourceTargetAssociation.getSourceAlloy(association);
+		this.sourceType = (Classifier) SourceTargetAssociation.getSourceAlloy(association);
 		
 		this.sourceChildren = new ArrayList<Classifier>();
-		this.sourceChildren.addAll(source.allChildren());
+		this.sourceChildren.addAll(sourceType.allChildren());
 		//this.sourceChildren.addAll(source.children());
 		
-		this.target = (Classifier) SourceTargetAssociation.getTargetAlloy(association);
+		this.targetType = (Classifier) SourceTargetAssociation.getTargetAlloy(association);
 		
 		this.targetChildren = new ArrayList<Classifier>();
 		/*If the method get all the children, the number of combinations will be too big*/
-		this.targetChildren.addAll(target.allChildren());
+		this.targetChildren.addAll(targetType.allChildren());
 		//this.targetChildren.addAll(target.children());
 		
 	}
 
 	public Classifier getSource() {
-		return source;
+		return sourceType;
 	}
 
 	public ArrayList<Classifier> getSourceChildren() {
@@ -268,7 +276,7 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 	}
 
 	public Classifier getTarget() {
-		return target;
+		return targetType;
 	}
 
 	public ArrayList<Classifier> getTargetChildren() {
@@ -279,13 +287,13 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 	public String toString() {
 		String result = 
 				"Association: "+parser.getStringRepresentation(association)+
-				"\nSource: "+parser.getStringRepresentation(source);
+				"\nSource: "+parser.getStringRepresentation(sourceType);
 
 		for (Classifier subtype : sourceChildren) {
 			result+="\n\t"+parser.getStringRepresentation(subtype);
 		}
 		
-		result+="\nTarget: "+parser.getStringRepresentation(target);
+		result+="\nTarget: "+parser.getStringRepresentation(targetType);
 		
 		for (Classifier subtype : targetChildren) {
 			result+="\n\t"+parser.getStringRepresentation(subtype);
@@ -300,8 +308,8 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
 		selection.add(association);
-		selection.add(source);
-		selection.add(target);
+		selection.add(sourceType);
+		selection.add(targetType);
 				
 		parser.selectThisElements(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
@@ -312,5 +320,222 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 	public String getShortName() {
 		return parser.getStringRepresentation(association);
 	}
-
+	
+	
+	//******************** FIXES ************************\\
+	
+	public boolean setIsEssential(Classifier whole, Classifier part, boolean isEssential, boolean isImmutablePart){
+		if(association instanceof Meronymic){
+			Meronymic meronymic = (Meronymic) getOrCreateRelation(whole,part);
+			meronymic.setIsEssential(isEssential);
+			if(isEssential)
+				isImmutablePart = true;
+			meronymic.setIsImmutablePart(isImmutablePart);
+			
+			if(!createdAssociations.contains(meronymic))
+				fix.includeModified(meronymic);
+			
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean setIsInseparable(Classifier whole, Classifier part, boolean isInseparable, boolean isImmutableWhole){
+		if(association instanceof Meronymic){
+			
+			Meronymic meronymic = (Meronymic) getOrCreateRelation(whole,part);
+			meronymic.setIsInseparable(isInseparable);
+			if(isInseparable)
+				isImmutableWhole = true;
+			meronymic.setIsImmutableWhole(isImmutableWhole);
+			
+			if(!createdAssociations.contains(meronymic))
+				fix.includeModified(meronymic);
+			
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean setIsShareable(Classifier whole, Classifier part, boolean isShareable){
+		if(association instanceof Meronymic){
+			Meronymic meronymic = (Meronymic) getOrCreateRelation(whole,part);
+			meronymic.setIsShareable(isShareable);
+			Property wholeEnd = parser.getWholeEnd(meronymic);
+			
+			boolean addToModified = !createdAssociations.contains(meronymic);
+			fix.addAll(fixer.changePropertyMultiplicity(wholeEnd, wholeEnd.getLower(), wholeEnd.getUpper(), addToModified));
+			
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean setIsReadOnly(Classifier source, Classifier target, boolean isReadOnlySource, boolean isReadOnlyTarget){
+		
+		Property pSource, pTarget;
+		Association a = getOrCreateRelation(source, target);
+		
+		if(a instanceof Meronymic){
+			pSource=parser.getWholeEnd((Meronymic) a);
+			pTarget=parser.getPartEnd((Meronymic) a);
+		}
+		else if (a instanceof Mediation){
+			pSource=parser.getRelatorEnd((Mediation) a);
+			pTarget=parser.getMediatedEnd((Mediation) a);
+			isReadOnlyTarget=true;
+		}
+		else if (a instanceof Characterization){
+			pSource=parser.getCharacterizingEnd((Characterization) a);
+			pTarget=parser.getCharacterizedEnd((Characterization) a);
+			isReadOnlyTarget=true;
+		}
+		else{
+			pSource = a.getMemberEnd().get(0);
+			pTarget = a.getMemberEnd().get(1);
+		}
+		
+		if(!createdAssociations.contains(a)){
+			fix.includeModified(pSource);
+			fix.includeModified(pTarget);
+		}
+		
+		pSource.setIsReadOnly(isReadOnlySource);
+		pTarget.setIsReadOnly(isReadOnlyTarget);
+		
+		return true;
+	}
+	
+	public boolean setIsDerived(Classifier source, Classifier target, boolean isDerivedSource, boolean isDerivedTarget){
+		
+		Property pSource, pTarget;
+		Association a = getOrCreateRelation(source, target);
+		
+		if(a instanceof Meronymic){
+			pSource=parser.getWholeEnd((Meronymic) a);
+			pTarget=parser.getPartEnd((Meronymic) a);
+		}
+		else if (a instanceof Mediation){
+			pSource=parser.getRelatorEnd((Mediation) a);
+			pTarget=parser.getMediatedEnd((Mediation) a);
+		}
+		else if (a instanceof Characterization){
+			pSource=parser.getCharacterizingEnd((Characterization) a);
+			pTarget=parser.getCharacterizedEnd((Characterization) a);
+		}
+		else{
+			pSource = a.getMemberEnd().get(0);
+			pTarget = a.getMemberEnd().get(1);
+		}
+		
+		if(!createdAssociations.contains(a)){
+			fix.includeModified(pSource);
+			fix.includeModified(pTarget);
+		}
+		
+		pSource.setIsDerived(isDerivedSource);
+		pTarget.setIsDerived(isDerivedTarget);
+		
+		return true;
+	}
+	
+	public boolean setMultiplicity(Classifier source, Classifier target, int lowerSource, int upperSource, int lowerTarget, int upperTarget){
+		
+		Property pSource, pTarget;
+		Association a = getOrCreateRelation(source, target);
+		
+		if(a instanceof Meronymic){
+			pSource=parser.getWholeEnd((Meronymic) a);
+			pTarget=parser.getPartEnd((Meronymic) a);
+		}
+		else if (a instanceof Mediation){
+			pSource=parser.getRelatorEnd((Mediation) a);
+			pTarget=parser.getMediatedEnd((Mediation) a);
+		}
+		else if (a instanceof Characterization){
+			pSource=parser.getCharacterizingEnd((Characterization) a);
+			pTarget=parser.getCharacterizedEnd((Characterization) a);
+		}
+		else{
+			pSource = a.getMemberEnd().get(0);
+			pTarget = a.getMemberEnd().get(1);
+		}
+		
+		boolean addToModified = !createdAssociations.contains(a);
+		
+		fix.addAll(fixer.changePropertyMultiplicity(pSource,lowerSource,upperSource,addToModified));
+		fix.addAll(fixer.changePropertyMultiplicity(pTarget,lowerTarget,upperTarget,addToModified));
+		
+		return true;
+	}
+		
+	private Association getExistingRelation (Classifier source, Classifier target){
+		
+		for (Association assoc : parser.getAllInstances(association.getClass()))
+			if ((assoc.getMemberEnd().get(0).getType().equals(source) && assoc.getMemberEnd().get(1).getType().equals(target)) || (assoc.getMemberEnd().get(0).getType().equals(target) && assoc.getMemberEnd().get(1).getType().equals(source)))
+				return assoc;
+		
+		return null;
+	}
+	
+	private Association getCreatedRelation (Classifier source, Classifier target){
+		
+		if (!createdAssociations.isEmpty()){
+			for (Association created : createdAssociations) {
+				if ((created.getMemberEnd().get(0).getType().equals(source) && created.getMemberEnd().get(1).getType().equals(target)) || 
+						(created.getMemberEnd().get(0).getType().equals(target) && created.getMemberEnd().get(1).getType().equals(source)))
+					return created;
+			}
+		}
+		
+		return null;
+	}
+	
+	private Association createNewRelation(Classifier source, Classifier target){
+		Association newAssoc;
+		Property generalTarget, specificTarget;
+		
+		String newName = "new_"+source.getName().trim()+"_"+target.getName().trim();
+		newName.replaceAll("\\s+","");
+		
+		Fix fixAux = fixer.createAssociationBetween(fixer.getRelationshipStereotype(association),newName, source, target);
+		newAssoc = fixAux.getAddedByType(Association.class).get(0);
+		fixer.copyOnlyMetaProperties(association, newAssoc);
+		newAssoc.setName(newName);
+		fix.addAll(fixAux);
+		createdAssociations.add(newAssoc);
+		
+		if(newAssoc instanceof Meronymic){
+			generalTarget=parser.getPartEnd((Meronymic) association);
+			specificTarget=parser.getPartEnd((Meronymic) newAssoc);
+		}
+		else if (newAssoc instanceof Mediation){
+			generalTarget=parser.getMediatedEnd((Mediation) association);
+			specificTarget=parser.getMediatedEnd((Mediation) newAssoc);
+		}
+		else if (newAssoc instanceof Characterization){
+			generalTarget=parser.getCharacterizedEnd((Characterization) association);
+			specificTarget=parser.getCharacterizedEnd((Characterization) newAssoc);
+		}
+		else{
+			generalTarget = association.getMemberEnd().get(1);
+			specificTarget = newAssoc.getMemberEnd().get(1);
+		}
+		
+		fix.addAll(fixer.subsetProperty(generalTarget, specificTarget, SpecializationType.SUBSET, true));
+		
+		return newAssoc;
+	}
+	
+	private Association getOrCreateRelation(Classifier source, Classifier target){
+		Association a = getExistingRelation(source, target);
+		if(a!=null)
+			return a;
+		a = getCreatedRelation(source, target);
+		if(a!=null)
+			return a;
+		return createNewRelation(source, target);
+		
+	}
+	 
 }
