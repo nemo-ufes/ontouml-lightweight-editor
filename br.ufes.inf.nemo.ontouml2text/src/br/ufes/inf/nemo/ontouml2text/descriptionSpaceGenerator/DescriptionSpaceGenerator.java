@@ -65,7 +65,10 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 		relatorIheritance(generalizationSpace.getCategories(),hashCategories);
 		
 		for (DescriptionCategory c : generalizationSpace.getCategories())
-			System.out.println("Nome: "+c.getLabel() + "  type: "+c.toString() +"\n  Lista de funções: "+c.getFunctions()+ "\n");
+			System.out.println("Nome: "+c.getLabel() + "  type: "+
+					c.toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.", "") +
+					"\n  Lista de funções: "+
+					c.getFunctions().toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.", "")+ "\n");
 		
 		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
 		System.out.println("Tamanho da functions no DescriptionSpace:  " + generalizationSpace.getFunctions().size());
