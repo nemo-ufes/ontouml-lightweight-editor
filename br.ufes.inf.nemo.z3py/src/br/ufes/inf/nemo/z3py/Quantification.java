@@ -24,26 +24,26 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Quantification extends Expression {
 	/**
-	 * Returns the value of the '<em><b>Expression</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Expression</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Expression</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Expression</em>' containment reference.
+	 * @return the value of the '<em>Expression</em>' reference.
 	 * @see #setExpression(Expression)
 	 * @see br.ufes.inf.nemo.z3py.Z3pyPackage#getQuantification_Expression()
-	 * @model containment="true" required="true"
+	 * @model required="true"
 	 * @generated
 	 */
 	Expression getExpression();
 
 	/**
-	 * Sets the value of the '{@link br.ufes.inf.nemo.z3py.Quantification#getExpression <em>Expression</em>}' containment reference.
+	 * Sets the value of the '{@link br.ufes.inf.nemo.z3py.Quantification#getExpression <em>Expression</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Expression</em>' containment reference.
+	 * @param value the new value of the '<em>Expression</em>' reference.
 	 * @see #getExpression()
 	 * @generated
 	 */

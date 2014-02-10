@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class LogicalNegationImpl extends ExpressionImpl implements LogicalNegation {
 	/**
-	 * The cached value of the '{@link #getOperand() <em>Operand</em>}' containment reference.
+	 * The cached value of the '{@link #getOperand() <em>Operand</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getOperand()
@@ -63,6 +63,14 @@ public class LogicalNegationImpl extends ExpressionImpl implements LogicalNegati
 	 * @generated
 	 */
 	public Expression getOperand() {
+		if (operand != null && operand.eIsProxy()) {
+			InternalEObject oldOperand = (InternalEObject)operand;
+			operand = (Expression)eResolveProxy(oldOperand);
+			if (operand != oldOperand) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Z3pyPackage.LOGICAL_NEGATION__OPERAND, oldOperand, operand));
+			}
+		}
 		return operand;
 	}
 
@@ -71,14 +79,8 @@ public class LogicalNegationImpl extends ExpressionImpl implements LogicalNegati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetOperand(Expression newOperand, NotificationChain msgs) {
-		Expression oldOperand = operand;
-		operand = newOperand;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Z3pyPackage.LOGICAL_NEGATION__OPERAND, oldOperand, newOperand);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
+	public Expression basicGetOperand() {
+		return operand;
 	}
 
 	/**
@@ -87,31 +89,10 @@ public class LogicalNegationImpl extends ExpressionImpl implements LogicalNegati
 	 * @generated
 	 */
 	public void setOperand(Expression newOperand) {
-		if (newOperand != operand) {
-			NotificationChain msgs = null;
-			if (operand != null)
-				msgs = ((InternalEObject)operand).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Z3pyPackage.LOGICAL_NEGATION__OPERAND, null, msgs);
-			if (newOperand != null)
-				msgs = ((InternalEObject)newOperand).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Z3pyPackage.LOGICAL_NEGATION__OPERAND, null, msgs);
-			msgs = basicSetOperand(newOperand, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Z3pyPackage.LOGICAL_NEGATION__OPERAND, newOperand, newOperand));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Z3pyPackage.LOGICAL_NEGATION__OPERAND:
-				return basicSetOperand(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
+		Expression oldOperand = operand;
+		operand = newOperand;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Z3pyPackage.LOGICAL_NEGATION__OPERAND, oldOperand, operand));
 	}
 
 	/**
@@ -123,7 +104,8 @@ public class LogicalNegationImpl extends ExpressionImpl implements LogicalNegati
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Z3pyPackage.LOGICAL_NEGATION__OPERAND:
-				return getOperand();
+				if (resolve) return getOperand();
+				return basicGetOperand();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}

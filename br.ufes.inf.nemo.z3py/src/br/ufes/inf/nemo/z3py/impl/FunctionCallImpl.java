@@ -182,6 +182,7 @@ public class FunctionCallImpl extends ExpressionImpl implements FunctionCall {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {

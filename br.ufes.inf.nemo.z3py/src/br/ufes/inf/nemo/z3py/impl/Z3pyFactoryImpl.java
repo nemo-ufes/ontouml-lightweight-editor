@@ -35,7 +35,7 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	 */
 	public static Z3pyFactory init() {
 		try {
-			Z3pyFactory theZ3pyFactory = (Z3pyFactory)EPackage.Registry.INSTANCE.getEFactory("http://z3py/1.0"); 
+			Z3pyFactory theZ3pyFactory = (Z3pyFactory)EPackage.Registry.INSTANCE.getEFactory(Z3pyPackage.eNS_URI);
 			if (theZ3pyFactory != null) {
 				return theZ3pyFactory;
 			}
@@ -246,20 +246,24 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 		return newConst;		
 	}
 	
-	public Quantification createQuantification(boolean isUniversal, Expression exp, String comments){
+	public Quantification createQuantification(boolean isUniversal, Expression exp, Set<IntConstant> qtf, String comments){
 		Quantification newFormula;
 		if (isUniversal) 
 			newFormula = this.createUniversalQuantification();
 		else
 			newFormula = this.createExistentialQuantification();
-		//Obtenho as constantes utilizadas na express�o para atribuir ao quantifiesOver
-		newFormula.getQuantifiesOver().addAll(getExpressionConstants(exp));
+		newFormula.getQuantifiesOver().addAll(qtf);
 		newFormula.setExpression(exp);
 		newFormula.setComments(comments);
 		return newFormula;
 	}
 	
-	//Retorna as constantes utilizadas em uma express�o
+	public Quantification createFormula(boolean isUniversal, Expression exp, String comments){
+		return createQuantification(isUniversal, exp, getExpressionConstants(exp) , comments);
+	}
+	
+	
+	//Retorna as constantes utilizadas em uma expressão
 	private Set<IntConstant> getExpressionConstants (Expression exp){
 		Set<IntConstant> c = new HashSet<IntConstant>();
 		if (exp instanceof FunctionCall)
@@ -269,8 +273,13 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 			c.addAll(getExpressionConstants(((LogicalBinaryExpression) exp).getOperand2()));
 		}else if (exp instanceof LogicalNegation)
 			c.addAll(getExpressionConstants(((LogicalNegation) exp).getOperand()));
-		else if (exp instanceof Quantification)
-			c.addAll(((Quantification) exp).getQuantifiesOver());	
+		else if (exp instanceof Quantification){
+			c.addAll(getExpressionConstants(((Quantification) exp).getExpression()));
+			//Removo as variáveis já quantificadas por esse quantificador. Assim evito que elas sejam repassadas para um quantificador mais externo
+			//Isso me permitira fazer formulas como ∀x,y (recursiveNext(x,y) ↔ next(x,y) ∨ ∃z (next(z,y) ∧ recursiveNext(x,z))) ou
+			//∀x, ∃z (f(x,z))
+			c.removeAll(((Quantification) exp).getQuantifiesOver());	
+		}
 		return c;
 	}
 	
@@ -279,6 +288,8 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 		if (called.getNumberOfArguments()==arguments.size()){
 			newFunction = this.createFunctionCall();
 			newFunction.setCalledFunction(called);
+//			for(IntConstant c: arguments)
+//				newFunction.getArguments().add(c);
 			newFunction.getArguments().addAll(arguments);
 		}
 		return newFunction;
@@ -313,6 +324,12 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 		newEquality.setOperand1(args.get(0));
 		newEquality.setOperand2(args.get(1));
 		return newEquality;
+	}
+	
+	public LogicalNegation createLogicalNegation(Expression op){
+		LogicalNegation l = this.createLogicalNegation();
+		l.setOperand(op);
+		return l;
 	}
 
 } //Z3pyFactoryImpl

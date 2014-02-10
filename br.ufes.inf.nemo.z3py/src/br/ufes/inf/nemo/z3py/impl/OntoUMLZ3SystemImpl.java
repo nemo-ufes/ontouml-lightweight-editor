@@ -288,18 +288,30 @@ public class OntoUMLZ3SystemImpl extends EObjectImpl implements OntoUMLZ3System 
 		return result.toString();*/
 		
 		String result = "from z3 import * \n";
+		result = result.concat("\n''' ----- Constants definitions -----''' \n");
 		for(IntConstant c: this.constants){
 			result = result.concat(c.toString() + "\n");
 		}
 		
+		result = result.concat("\n''' ----- Functions definitions -----''' \n");
 		for(BooleanFunctionDefinition f: this.functions){
 			result = result.concat(f.toString() + "\n");
 		}
 		
 		int i = 1;
-		for(Quantification e: this.formulas){			
+		result = result.concat("\n''' ----- Formulas definitions -----''' \n");
+		
+		for(Quantification e: this.formulas){
+			result = result.concat("\n'''" + e.getComments() +"''' \n");
 			result = result.concat("F" + i + " = "+ e.toString() + "\n");
 			i++;
+		}
+		
+		result = result.concat("\n''' ----- Solver Configuration -----''' \n");
+		result = result.concat("\ns=Solver()\n");
+		//result = result.concat("\n''' ----- Constants Definition to allow unsat_core verification-----''' \n");
+		for (int j = 1; j<i; j++){
+			result = result.concat("s.add(F"+j+")\n");
 		}
 		
 		return result;

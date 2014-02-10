@@ -13,4 +13,12 @@
             genModel="model/z3py.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated z3py -->
+      <package
+            uri="http://z3py/1.0"
+            class="br.ufes.inf.nemo.z3py.Z3pyPackage"
+            genModel="model/z3py.genmodel"/>
+   </extension>
+
 </plugin>
