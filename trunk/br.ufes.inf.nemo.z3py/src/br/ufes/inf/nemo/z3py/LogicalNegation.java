@@ -21,26 +21,26 @@ package br.ufes.inf.nemo.z3py;
  */
 public interface LogicalNegation extends Expression {
 	/**
-	 * Returns the value of the '<em><b>Operand</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Operand</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Operand</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Operand</em>' containment reference.
+	 * @return the value of the '<em>Operand</em>' reference.
 	 * @see #setOperand(Expression)
 	 * @see br.ufes.inf.nemo.z3py.Z3pyPackage#getLogicalNegation_Operand()
-	 * @model containment="true" required="true"
+	 * @model required="true"
 	 * @generated
 	 */
 	Expression getOperand();
 
 	/**
-	 * Sets the value of the '{@link br.ufes.inf.nemo.z3py.LogicalNegation#getOperand <em>Operand</em>}' containment reference.
+	 * Sets the value of the '{@link br.ufes.inf.nemo.z3py.LogicalNegation#getOperand <em>Operand</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Operand</em>' containment reference.
+	 * @param value the new value of the '<em>Operand</em>' reference.
 	 * @see #getOperand()
 	 * @generated
 	 */

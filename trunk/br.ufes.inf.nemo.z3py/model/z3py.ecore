@@ -5,12 +5,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="FunctionCall" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="calledFunction" lowerBound="1"
         eType="#//BooleanFunctionDefinition"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="arguments" lowerBound="1"
-        upperBound="-1" eType="#//IntConstant"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="arguments" unique="false"
+        lowerBound="1" upperBound="-1" eType="#//IntConstant"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Quantification" abstract="true" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
-        eType="#//Expression" containment="true"/>
+        eType="#//Expression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="quantifiesOver" ordered="false"
         lowerBound="1" upperBound="-1" eType="#//IntConstant"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="comments" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -22,16 +22,16 @@
   <eClassifiers xsi:type="ecore:EClass" name="ExclusiveDisjunction" eSuperTypes="#//LogicalBinaryExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="LogicalNegation" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="operand" lowerBound="1"
-        eType="#//Expression" containment="true"/>
+        eType="#//Expression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Implication" eSuperTypes="#//LogicalBinaryExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="BiImplication" eSuperTypes="#//LogicalBinaryExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="LogicalBinaryExpression" abstract="true"
       eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="operand1" lowerBound="1"
-        eType="#//Expression" containment="true"/>
+        eType="#//Expression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="operand2" lowerBound="1"
-        eType="#//Expression" containment="true"/>
+        eType="#//Expression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BooleanFunctionDefinition">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

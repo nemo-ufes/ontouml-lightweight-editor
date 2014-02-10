@@ -122,7 +122,7 @@ public interface Z3pyPackage extends EPackage {
 	int QUANTIFICATION = 2;
 
 	/**
-	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
+	 * The feature id for the '<em><b>Expression</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -168,7 +168,7 @@ public interface Z3pyPackage extends EPackage {
 	int UNIVERSAL_QUANTIFICATION = 3;
 
 	/**
-	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
+	 * The feature id for the '<em><b>Expression</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -214,7 +214,7 @@ public interface Z3pyPackage extends EPackage {
 	int EXISTENTIAL_QUANTIFICATION = 4;
 
 	/**
-	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
+	 * The feature id for the '<em><b>Expression</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -260,7 +260,7 @@ public interface Z3pyPackage extends EPackage {
 	int LOGICAL_BINARY_EXPRESSION = 11;
 
 	/**
-	 * The feature id for the '<em><b>Operand1</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand1</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -269,7 +269,7 @@ public interface Z3pyPackage extends EPackage {
 	int LOGICAL_BINARY_EXPRESSION__OPERAND1 = EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand2</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -297,7 +297,7 @@ public interface Z3pyPackage extends EPackage {
 	int CONJUNCTION = 5;
 
 	/**
-	 * The feature id for the '<em><b>Operand1</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand1</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -306,7 +306,7 @@ public interface Z3pyPackage extends EPackage {
 	int CONJUNCTION__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
 
 	/**
-	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand2</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -334,7 +334,7 @@ public interface Z3pyPackage extends EPackage {
 	int DISJUNCTION = 6;
 
 	/**
-	 * The feature id for the '<em><b>Operand1</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand1</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -343,7 +343,7 @@ public interface Z3pyPackage extends EPackage {
 	int DISJUNCTION__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
 
 	/**
-	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand2</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -371,7 +371,7 @@ public interface Z3pyPackage extends EPackage {
 	int EXCLUSIVE_DISJUNCTION = 7;
 
 	/**
-	 * The feature id for the '<em><b>Operand1</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand1</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -380,7 +380,7 @@ public interface Z3pyPackage extends EPackage {
 	int EXCLUSIVE_DISJUNCTION__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
 
 	/**
-	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand2</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -408,7 +408,7 @@ public interface Z3pyPackage extends EPackage {
 	int LOGICAL_NEGATION = 8;
 
 	/**
-	 * The feature id for the '<em><b>Operand</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -436,7 +436,7 @@ public interface Z3pyPackage extends EPackage {
 	int IMPLICATION = 9;
 
 	/**
-	 * The feature id for the '<em><b>Operand1</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand1</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -445,7 +445,7 @@ public interface Z3pyPackage extends EPackage {
 	int IMPLICATION__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
 
 	/**
-	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand2</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -473,7 +473,7 @@ public interface Z3pyPackage extends EPackage {
 	int BI_IMPLICATION = 10;
 
 	/**
-	 * The feature id for the '<em><b>Operand1</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand1</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -482,7 +482,7 @@ public interface Z3pyPackage extends EPackage {
 	int BI_IMPLICATION__OPERAND1 = LOGICAL_BINARY_EXPRESSION__OPERAND1;
 
 	/**
-	 * The feature id for the '<em><b>Operand2</b></em>' containment reference.
+	 * The feature id for the '<em><b>Operand2</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -711,10 +711,10 @@ public interface Z3pyPackage extends EPackage {
 	EClass getQuantification();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link br.ufes.inf.nemo.z3py.Quantification#getExpression <em>Expression</em>}'.
+	 * Returns the meta object for the reference '{@link br.ufes.inf.nemo.z3py.Quantification#getExpression <em>Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Expression</em>'.
+	 * @return the meta object for the reference '<em>Expression</em>'.
 	 * @see br.ufes.inf.nemo.z3py.Quantification#getExpression()
 	 * @see #getQuantification()
 	 * @generated
@@ -804,10 +804,10 @@ public interface Z3pyPackage extends EPackage {
 	EClass getLogicalNegation();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link br.ufes.inf.nemo.z3py.LogicalNegation#getOperand <em>Operand</em>}'.
+	 * Returns the meta object for the reference '{@link br.ufes.inf.nemo.z3py.LogicalNegation#getOperand <em>Operand</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Operand</em>'.
+	 * @return the meta object for the reference '<em>Operand</em>'.
 	 * @see br.ufes.inf.nemo.z3py.LogicalNegation#getOperand()
 	 * @see #getLogicalNegation()
 	 * @generated
@@ -845,10 +845,10 @@ public interface Z3pyPackage extends EPackage {
 	EClass getLogicalBinaryExpression();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link br.ufes.inf.nemo.z3py.LogicalBinaryExpression#getOperand1 <em>Operand1</em>}'.
+	 * Returns the meta object for the reference '{@link br.ufes.inf.nemo.z3py.LogicalBinaryExpression#getOperand1 <em>Operand1</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Operand1</em>'.
+	 * @return the meta object for the reference '<em>Operand1</em>'.
 	 * @see br.ufes.inf.nemo.z3py.LogicalBinaryExpression#getOperand1()
 	 * @see #getLogicalBinaryExpression()
 	 * @generated
@@ -856,10 +856,10 @@ public interface Z3pyPackage extends EPackage {
 	EReference getLogicalBinaryExpression_Operand1();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link br.ufes.inf.nemo.z3py.LogicalBinaryExpression#getOperand2 <em>Operand2</em>}'.
+	 * Returns the meta object for the reference '{@link br.ufes.inf.nemo.z3py.LogicalBinaryExpression#getOperand2 <em>Operand2</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Operand2</em>'.
+	 * @return the meta object for the reference '<em>Operand2</em>'.
 	 * @see br.ufes.inf.nemo.z3py.LogicalBinaryExpression#getOperand2()
 	 * @see #getLogicalBinaryExpression()
 	 * @generated
@@ -1074,7 +1074,7 @@ public interface Z3pyPackage extends EPackage {
 		EClass QUANTIFICATION = eINSTANCE.getQuantification();
 
 		/**
-		 * The meta object literal for the '<em><b>Expression</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Expression</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1158,7 +1158,7 @@ public interface Z3pyPackage extends EPackage {
 		EClass LOGICAL_NEGATION = eINSTANCE.getLogicalNegation();
 
 		/**
-		 * The meta object literal for the '<em><b>Operand</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Operand</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1196,7 +1196,7 @@ public interface Z3pyPackage extends EPackage {
 		EClass LOGICAL_BINARY_EXPRESSION = eINSTANCE.getLogicalBinaryExpression();
 
 		/**
-		 * The meta object literal for the '<em><b>Operand1</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Operand1</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1204,7 +1204,7 @@ public interface Z3pyPackage extends EPackage {
 		EReference LOGICAL_BINARY_EXPRESSION__OPERAND1 = eINSTANCE.getLogicalBinaryExpression_Operand1();
 
 		/**
-		 * The meta object literal for the '<em><b>Operand2</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Operand2</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
