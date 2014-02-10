@@ -62,13 +62,38 @@ public class StringGenerator {
 			// Identifying patterns
 			patterns = identifyPatterns(describedCategory);
 			
-			initialLetter = describedCategory.getLabel().substring(0, 1); 
+			initialLetter = getInitialLetter (describedCategory.getLabel()); 
+			
 			htmlLetter = exporter.findLetter(initialLetter);
+			
+			System.out.println("Category : "+ describedCategory.getLabel() +"initialLetter : " + initialLetter + "  htmlLetter: " + htmlLetter );
 			
 			exporter.saveDescription(describedCategory, languageAdaptor.generateCategoryDescription(patterns), htmlLetter);
 		}
 		
 		exporter.finalizeExportFile();
+	}
+	
+	public String getInitialLetter(String letter){ 
+		int i = 0;
+		int j = 1;
+		
+		while(true){
+			
+			if(letter.substring(i,j).equals("Á") || letter.substring(i,j).equals("Â") )
+				return "A";
+			if (letter.substring(i,j).equals("Ô") ||letter.substring(i,j).equals("Ó"))
+				return "O";
+			if ( letter.substring(i,j).equals("Í") )
+				return "I";
+			if ( letter.substring(i,j).equals("Ú") )
+				return "U";
+			
+			if(!letter.substring(i,j).equals(" "))
+				return letter.substring(i,j);
+			i++;
+			j++;
+		}
 	}
 	
 	public DescriptionSpace getGeneralizationSpace() {
