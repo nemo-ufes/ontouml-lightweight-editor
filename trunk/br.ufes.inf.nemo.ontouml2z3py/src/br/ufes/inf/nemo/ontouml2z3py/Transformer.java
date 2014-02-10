@@ -14,8 +14,10 @@ import br.ufes.inf.nemo.z3py.LogicalBinaryExpression;
 import br.ufes.inf.nemo.z3py.LogicalNegation;
 import br.ufes.inf.nemo.z3py.OntoUMLZ3System;
 import br.ufes.inf.nemo.z3py.Quantification;
+import br.ufes.inf.nemo.z3py.Z3pyPackage;
 import br.ufes.inf.nemo.z3py.impl.Z3pyFactoryImpl;
 import br.ufes.inf.nemo.z3py.impl.Z3pyFactoryImpl.LogicalBinaryExpressionTypes;
+import br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl;
 public class Transformer {
 	
 	private OntoUMLParser ontoparser;
@@ -29,6 +31,7 @@ public class Transformer {
 	}
 	
 	public OntoUMLZ3System run(){
+		
 		generatedModel = factory.createOntoUMLZ3System();
 		populateWithBranchInTimeWorldStructure();
 		return generatedModel;
