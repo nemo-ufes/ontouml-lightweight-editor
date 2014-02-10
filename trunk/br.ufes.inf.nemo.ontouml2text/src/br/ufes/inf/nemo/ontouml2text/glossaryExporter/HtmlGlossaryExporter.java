@@ -131,35 +131,34 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 		"    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />\n"+
 		"    </head>\n"+
 		"    <body>\n"+
-		"        <div class=\"alphabet\"> <a href=" + "letterA.html" + ">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp[A]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterB.html" + ">&nbsp&nbsp[B]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterC.html" + ">&nbsp&nbsp[C]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterD.html" + ">&nbsp&nbsp[D]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterE.html" + ">&nbsp&nbsp[E]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterF.html" + ">&nbsp&nbsp[F]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterG.html" + ">&nbsp&nbsp[G]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterH.html" + ">&nbsp&nbsp[H]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterI.html" + ">&nbsp&nbsp[I]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterJ.html" + ">&nbsp&nbsp[J]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterK.html" + ">&nbsp&nbsp[K]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterL.html" + ">&nbsp&nbsp[L]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterM.html" + ">&nbsp&nbsp[M]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterN.html" + ">&nbsp&nbsp[N]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterO.html" + ">&nbsp&nbsp[O]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterP.html" + ">&nbsp&nbsp[P]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterQ.html" + ">&nbsp&nbsp[Q]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterR.html" + ">&nbsp&nbsp[R]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterS.html" + ">&nbsp&nbsp[S]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterT.html" + ">&nbsp&nbsp[T]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterU.html" + ">&nbsp&nbsp[U]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterV.html" + ">&nbsp&nbsp[V]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterW.html" + ">&nbsp&nbsp[W]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterX.html" + ">&nbsp&nbsp[X]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterY.html" + ">&nbsp&nbsp[Y]&nbsp&nbsp</a>"
-		+ "<a href=" + "letterZ.html" + ">&nbsp&nbsp[Z]&nbsp&nbsp</a> </div>\n\n";
-		
+		"    <div class=\"alphabet\"> <a href=" + "letterA.html" + " style=\"text-decoration:none;\" >[A]&nbsp</a>"
+		+ "<a href=" + "letterB.html" + " style=\"text-decoration:none;\">[B]&nbsp</a>"
+		+ "<a href=" + "letterC.html" + " style=\"text-decoration:none;\">[C]&nbsp</a>"
+		+ "<a href=" + "letterD.html" + " style=\"text-decoration:none;\">[D]&nbsp</a>"
+		+ "<a href=" + "letterE.html" + " style=\"text-decoration:none;\">[E]&nbsp</a>"
+		+ "<a href=" + "letterF.html" + " style=\"text-decoration:none;\">[F]&nbsp</a>"
+		+ "<a href=" + "letterG.html" + " style=\"text-decoration:none;\">[G]&nbsp</a>"
+		+ "<a href=" + "letterH.html" + " style=\"text-decoration:none;\">[H]&nbsp</a>"
+		+ "<a href=" + "letterI.html" + " style=\"text-decoration:none;\">[I]&nbsp</a>"
+		+ "<a href=" + "letterJ.html" + " style=\"text-decoration:none;\">[J]&nbsp</a>"
+		+ "<a href=" + "letterK.html" + " style=\"text-decoration:none;\">[K]&nbsp</a>"
+		+ "<a href=" + "letterL.html" + " style=\"text-decoration:none;\">[L]&nbsp</a>"
+		+ "<a href=" + "letterM.html" + " style=\"text-decoration:none;\">[M]&nbsp</a>"
+		+ "<a href=" + "letterN.html" + " style=\"text-decoration:none;\">[N]&nbsp</a>"
+		+ "<a href=" + "letterO.html" + " style=\"text-decoration:none;\">[O]&nbsp</a>"
+		+ "<a href=" + "letterP.html" + " style=\"text-decoration:none;\">[P]&nbsp</a>"
+		+ "<a href=" + "letterQ.html" + " style=\"text-decoration:none;\">[Q]&nbsp</a>"
+		+ "<a href=" + "letterR.html" + " style=\"text-decoration:none;\">[R]&nbsp</a>"
+		+ "<a href=" + "letterS.html" + " style=\"text-decoration:none;\">[S]&nbsp</a>"
+		+ "<a href=" + "letterT.html" + " style=\"text-decoration:none;\">[T]&nbsp</a>"
+		+ "<a href=" + "letterU.html" + " style=\"text-decoration:none;\">[U]&nbsp</a>"
+		+ "<a href=" + "letterV.html" + " style=\"text-decoration:none;\">[V]&nbsp</a>"
+		+ "<a href=" + "letterW.html" + " style=\"text-decoration:none;\">[W]&nbsp</a>"
+		+ "<a href=" + "letterX.html" + " style=\"text-decoration:none;\">[X]&nbsp</a>"
+		+ "<a href=" + "letterY.html" + " style=\"text-decoration:none;\">[Y]&nbsp</a>"
+		+ "<a href=" + "letterZ.html" + " style=\"text-decoration:none;\">[Z]&nbsp</a> </div>\n\n";
 		return header;
-	}
+		}
 	
 	private void createHeader(){
 		index.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\">\n");
@@ -171,68 +170,35 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 		index.write("    </head>\n");
 		index.write("    <body>\n");	
 		
-		index.write("        <div class=\"alphabet\"> <a href=" + "alphabet/letterA.html" + ">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp[A]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterB.html" + ">&nbsp&nbsp[B]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterC.html" + ">&nbsp&nbsp[C]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterD.html" + ">&nbsp&nbsp[D]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterE.html" + ">&nbsp&nbsp[E]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterF.html" + ">&nbsp&nbsp[F]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterG.html" + ">&nbsp&nbsp[G]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterH.html" + ">&nbsp&nbsp[H]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterI.html" + ">&nbsp&nbsp[I]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterJ.html" + ">&nbsp&nbsp[J]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterK.html" + ">&nbsp&nbsp[K]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterL.html" + ">&nbsp&nbsp[L]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterM.html" + ">&nbsp&nbsp[M]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterN.html" + ">&nbsp&nbsp[N]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterO.html" + ">&nbsp&nbsp[O]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterP.html" + ">&nbsp&nbsp[P]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterQ.html" + ">&nbsp&nbsp[Q]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterR.html" + ">&nbsp&nbsp[R]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterS.html" + ">&nbsp&nbsp[S]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterT.html" + ">&nbsp&nbsp[T]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterU.html" + ">&nbsp&nbsp[U]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterV.html" + ">&nbsp&nbsp[V]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterW.html" + ">&nbsp&nbsp[W]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterX.html" + ">&nbsp&nbsp[X]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterY.html" + ">&nbsp&nbsp[Y]&nbsp&nbsp</a>"
-			+ " <a href=" + "alphabet/letterZ.html" + ">&nbsp&nbsp[Z]&nbsp&nbsp</a> </div>\n\n"
+		index.write("	 <div class=\"alphabet\"> <a href=" + "alphabet/letterA.html" + "  style=\"text-decoration:none;\" >[A]</a>"
+			+ " <a href=" + "alphabet/letterB.html" + " style=\"text-decoration:none;\">[B]</a>"
+			+ " <a href=" + "alphabet/letterC.html" + " style=\"text-decoration:none;\">[C]</a>"
+			+ " <a href=" + "alphabet/letterD.html" + " style=\"text-decoration:none;\">[D]</a>"
+			+ " <a href=" + "alphabet/letterE.html" + " style=\"text-decoration:none;\">[E]</a>"
+			+ " <a href=" + "alphabet/letterF.html" + " style=\"text-decoration:none;\">[F]</a>"
+			+ " <a href=" + "alphabet/letterG.html" + " style=\"text-decoration:none;\">[G]</a>"
+			+ " <a href=" + "alphabet/letterH.html" + " style=\"text-decoration:none;\">[H]</a>"
+			+ " <a href=" + "alphabet/letterI.html" + " style=\"text-decoration:none;\">[I]</a>"
+			+ " <a href=" + "alphabet/letterJ.html" + " style=\"text-decoration:none;\">[J]</a>"
+			+ " <a href=" + "alphabet/letterK.html" + " style=\"text-decoration:none;\">[K]</a>"
+			+ " <a href=" + "alphabet/letterL.html" + " style=\"text-decoration:none;\">[L]</a>"
+			+ " <a href=" + "alphabet/letterM.html" + " style=\"text-decoration:none;\">[M]</a>"
+			+ " <a href=" + "alphabet/letterN.html" + " style=\"text-decoration:none;\">[N]</a>"
+			+ " <a href=" + "alphabet/letterO.html" + " style=\"text-decoration:none;\">[O]</a>"
+			+ " <a href=" + "alphabet/letterP.html" + " style=\"text-decoration:none;\">[P]</a>"
+			+ " <a href=" + "alphabet/letterQ.html" + " style=\"text-decoration:none;\">[Q]</a>"
+			+ " <a href=" + "alphabet/letterR.html" + " style=\"text-decoration:none;\">[R]</a>"
+			+ " <a href=" + "alphabet/letterS.html" + " style=\"text-decoration:none;\">[S]</a>"
+			+ " <a href=" + "alphabet/letterT.html" + " style=\"text-decoration:none;\">[T]</a>"
+			+ " <a href=" + "alphabet/letterU.html" + " style=\"text-decoration:none;\">[U]</a>"
+			+ " <a href=" + "alphabet/letterV.html" + " style=\"text-decoration:none;\">[V]</a>"
+			+ " <a href=" + "alphabet/letterW.html" + " style=\"text-decoration:none;\">[W]</a>"
+			+ " <a href=" + "alphabet/letterX.html" + " style=\"text-decoration:none;\">[X]</a>"
+			+ " <a href=" + "alphabet/letterY.html" + " style=\"text-decoration:none;\">[Y]</a>"
+			+ " <a href=" + "alphabet/letterZ.html" + " style=\"text-decoration:none;\">[Z]</a> </div>\n\n"
 			+ "     </body>\n" + "</html>\n");	
 		index.close();
 	}
-	/*
-	
-	public void createAlphabet(){
-		out.write("<div> <ahref=" + "alphabet/letterA.html" + ">[A]</a>"
-		+ " <ahref=" + "alphabet/letterB.html" + ">[B]</a>"
-		+ " <ahref=" + "alphabet/letterC.html" + ">[C]</a>"
-		+ " <ahref=" + "alphabet/letterD.html" + ">[D]</a>"
-		+ " <ahref=" + "alphabet/letterE.html" + ">[E]</a>"
-		+ " <ahref=" + "alphabet/letterF.html" + ">[F]</a>"
-		+ " <ahref=" + "alphabet/letterG.html" + ">[G]</a>"
-		+ " <ahref=" + "alphabet/letterH.html" + ">[H]</a>"
-		+ " <ahref=" + "alphabet/letterI.html" + ">[I]</a>"
-		+ " <ahref=" + "alphabet/letterJ.html" + ">[J]</a>"
-		+ " <ahref=" + "alphabet/letterK.html" + ">[K]</a>"
-		+ " <ahref=" + "alphabet/letterL.html" + ">[L]</a>"
-		+ " <ahref=" + "alphabet/letterM.html" + ">[M]</a>"
-		+ " <ahref=" + "alphabet/letterN.html" + ">[N]</a>"
-		+ " <ahref=" + "alphabet/letterO.html" + ">[O]</a>"
-		+ " <ahref=" + "alphabet/letterP.html" + ">[P]</a>"
-		+ " <ahref=" + "alphabet/letterQ.html" + ">[Q]</a>"
-		+ " <ahref=" + "alphabet/letterR.html" + ">[R]</a>"
-		+ " <ahref=" + "alphabet/letterS.html" + ">[S]</a>"
-		+ " <ahref=" + "alphabet/letterT.html" + ">[T]</a>"
-		+ " <ahref=" + "alphabet/letterU.html" + ">[U]</a>"
-		+ " <ahref=" + "alphabet/letterV.html" + ">[V]</a>"
-		+ " <ahref=" + "alphabet/letterW.html" + ">[W]</a>"
-		+ " <ahref=" + "alphabet/letterX.html" + ">[X]</a>"
-		+ " <ahref=" + "alphabet/letterY.html" + ">[Y]</a>"
-		+ " <ahref=" + "alphabet/letterZ.html" + ">[Z]</a> </div>\n\n"
-		+ "   </body>\n" + "</html>\n");
-		out.close();
-	}
-	*/
 	
 	private void createCssFile(){
 		PrintWriter cssFile;
@@ -240,6 +206,8 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 			cssFile = new PrintWriter(new BufferedWriter(new FileWriter(this.outputDirectory+"/"+this.outputName+"/"+"alphabet/"+"style"+".css")));
 		
 			cssFile.write(
+					
+					
 					"h1 {\n"+
 					"    font-family:\"Calibri\";\n"+
 					"    font-style:bold;\n"+
@@ -263,10 +231,13 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 					"    width:700px;\n"+
 					"    border-radius:10px;\n"+
 					"    box-shadow: 5px 5px 16px 0px rgba(50, 50, 50, 0.31);\n"+
+					"	 margin-bottom: 20px"+
 					"}\n"+
 					"div.alphabet {\n"+
 					"	border:1px solid #4D7010;\n"+
 					"	padding:10px 0px;\n"+ 
+					"	word-spacing: 1.0em;"+
+					"	padding-left: 11%;"+
 					"	text:#666666\n"+
 					"	background:#FFFFFF;\n"+
 					"	container:#E3F2D3\n"+
@@ -277,7 +248,10 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 					"    background: #02704F  no-repeat scroll center;\n"+
 					"    height:.01em;\n"+
 					"    box-shadow: 1px 1px 3px 0px rgba(50, 50, 50, 0.20);\n"+
-					"}\n"
+					"}\n"+
+					"a{\n"+
+					    "word-spacing: 1.0em;"+
+					"}"
 					);
 			
 			cssFile.close();	
