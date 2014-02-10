@@ -59,7 +59,7 @@ public interface FunctionCall extends Expression {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Arguments</em>' reference list.
 	 * @see br.ufes.inf.nemo.z3py.Z3pyPackage#getFunctionCall_Arguments()
-	 * @model required="true"
+	 * @model resolveProxies="false" required="true" ordered="false"
 	 * @generated
 	 */
 	EList<IntConstant> getArguments();

@@ -288,8 +288,11 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 		if (called.getNumberOfArguments()==arguments.size()){
 			newFunction = this.createFunctionCall();
 			newFunction.setCalledFunction(called);
-//			for(IntConstant c: arguments)
-//				newFunction.getArguments().add(c);
+/*			int i=0;
+			for(IntConstant c: arguments){
+				newFunction.getArguments().add(i,c);
+				i++;
+			}*/
 			newFunction.getArguments().addAll(arguments);
 		}
 		return newFunction;

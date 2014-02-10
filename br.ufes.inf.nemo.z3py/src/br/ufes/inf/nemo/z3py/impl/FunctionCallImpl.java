@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -115,11 +116,19 @@ public class FunctionCallImpl extends ExpressionImpl implements FunctionCall {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public EList<IntConstant> getArguments() {
 		if (arguments == null) {
-			arguments = new EObjectResolvingEList<IntConstant>(IntConstant.class, this, Z3pyPackage.FUNCTION_CALL__ARGUMENTS);
+			arguments = new EObjectEList<IntConstant>(IntConstant.class, this, Z3pyPackage.FUNCTION_CALL__ARGUMENTS) {
+//Tive de fazer isso pois, devido a um bug do eclipse o isUNique nao funciona. Esse workaround foi proposto no site de bugs do Eclipse:
+//https://bugs.eclipse.org/bugs/show_bug.cgi?id=331209
+//https://bugs.eclipse.org/bugs/show_bug.cgi?id=89325
+				@Override
+			      protected boolean isUnique() {
+			        return false;
+			      }
+			    };
 		}
 		return arguments;
 	}
