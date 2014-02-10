@@ -59,16 +59,16 @@ public class HetCollSecondPage extends HetCollPage {
 
 		setControl(container);
 		
-		Label lblAreTheParts = new Label(container, SWT.NONE);
+		Label lblAreTheParts = new Label(container, SWT.WRAP);
 		lblAreTheParts.setBounds(10, 10, 554, 15);
 		lblAreTheParts.setText("Are the parts of the "+hetColl.getWhole().getName()+"’s parts also a part of "+hetColl.getWhole().getName()+"? ");
 		
-		Label lblNewLabel = new Label(container, SWT.NONE);
-		lblNewLabel.setBounds(10, 53, 227, 15);
-		lblNewLabel.setText("Yes");
+		Label lblNewLabel = new Label(container, SWT.WRAP);
+		lblNewLabel.setBounds(10, 63, 227, 37);
+		lblNewLabel.setText("Yes... Therefore, the following parts are members of "+hetColl.getWhole().getName()+":");
 		
 		yesList = new List(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		yesList.setBounds(10, 74, 227, 125);
+		yesList.setBounds(10, 106, 227, 125);
 		
 		for(Property p: hetColl.getMemberEnds())
 		{		
@@ -78,7 +78,7 @@ public class HetCollSecondPage extends HetCollPage {
 		yesList.setSelection(0);
 		
 		btnArrowRight = new Button(container, SWT.NONE);
-		btnArrowRight.setBounds(243, 74, 37, 25);
+		btnArrowRight.setBounds(243, 105, 37, 25);
 		btnArrowRight.setText("->");
 		btnArrowRight.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -95,7 +95,7 @@ public class HetCollSecondPage extends HetCollPage {
 		});
 				
 		btnArrowLeft = new Button(container, SWT.NONE);
-		btnArrowLeft.setBounds(243, 105, 37, 25);
+		btnArrowLeft.setBounds(243, 136, 37, 25);
 		btnArrowLeft.setText("<-");
 		btnArrowLeft.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -112,19 +112,11 @@ public class HetCollSecondPage extends HetCollPage {
 		});
 				
 		noList = new List(container, SWT.BORDER);
-		noList.setBounds(286, 74, 227, 125);
+		noList.setBounds(286, 106, 227, 125);
 		
-		Label lblNewLabel_1 = new Label(container, SWT.NONE);
-		lblNewLabel_1.setBounds(10, 205, 227, 39);
-		lblNewLabel_1.setText("These parts are also members of <Whole>");
-		
-		Label lblNewLabel_2 = new Label(container, SWT.NONE);
-		lblNewLabel_2.setBounds(286, 205, 227, 39);
-		lblNewLabel_2.setText("These parts are subcollections of <Whole>");
-		
-		Label lblNewLabel_3 = new Label(container, SWT.NONE);
-		lblNewLabel_3.setBounds(286, 53, 227, 15);
-		lblNewLabel_3.setText("No");
+		Label lblNewLabel_3 = new Label(container, SWT.WRAP);
+		lblNewLabel_3.setBounds(286, 63, 227, 37);
+		lblNewLabel_3.setText("No... Therefore, the following parts are subcollections of "+hetColl.getWhole().getName()+":");
 	}
 	
 	public Property getProperty (String typeName){
@@ -138,7 +130,7 @@ public class HetCollSecondPage extends HetCollPage {
 	{
 		ArrayList<Property> result = new ArrayList<Property>();
 		for(String str: yesList.getItems()){
-			Property p = getProperty(str.substring(str.indexOf(" ")));
+			Property p = getProperty(str.substring(str.indexOf(" ")+1));
 			if (p!=null) result.add(p);
 		}
 		return result;
@@ -148,7 +140,7 @@ public class HetCollSecondPage extends HetCollPage {
 	{
 		ArrayList<Property> result = new ArrayList<Property>();
 		for(String str: noList.getItems()){
-			Property p = getProperty(str.substring(str.indexOf(" ")));
+			Property p = getProperty(str.substring(str.indexOf(" ")+1));
 			if (p!=null) result.add(p);
 		}
 		return result;
@@ -157,23 +149,28 @@ public class HetCollSecondPage extends HetCollPage {
 	@Override
 	public IWizardPage getNextPage() 
 	{
-		if(getNoList().size()>0){
-			ArrayList<Association> assocList = new ArrayList<Association>();
-			for(Property p: getYesList()) { if (p!=null) assocList.add(p.getAssociation()); }
-			//Action =============================
-			HetCollAction newAction = new HetCollAction(hetColl);
-			newAction.setChangeAllToOneSuperMember(assocList); 
-			getHetCollWizard().replaceAction(1,newAction);	
-			//======================================	
-		}
 		if(getYesList().size()>0){
 			ArrayList<Association> assocList = new ArrayList<Association>();
 			for(Property p: getYesList()) { if (p!=null) assocList.add(p.getAssociation()); }		
-			//Action =============================
-			HetCollAction newAction = new HetCollAction(hetColl);
-			newAction.setChangeAllToCollectionAndSubCollectionOf(assocList); 
-			getHetCollWizard().replaceAction(2,newAction);	
-			//======================================
+			if(assocList.size()>0){
+				//Action =============================
+				HetCollAction newAction = new HetCollAction(hetColl);
+				newAction.setChangeAllToCollectionAndSubCollectionOf(assocList); 
+				getHetCollWizard().replaceAction(0,newAction);	
+				//======================================
+			}
+		}
+		if(getNoList().size()>0){
+			ArrayList<Association> assocList = new ArrayList<Association>();
+			for(Property p: getNoList()) { if (p!=null) assocList.add(p.getAssociation()); }
+			if(assocList.size()>=2){
+				//Action =============================
+				HetCollAction newAction = new HetCollAction(hetColl);
+				newAction.setChangeAllToOneSuperMember(assocList); 
+				if (getYesList().size()>0) getHetCollWizard().replaceAction(1,newAction);
+				else getHetCollWizard().replaceAction(0,newAction);
+				//======================================
+			}			
 		}
 		return ((HetCollWizard)getWizard()).getFinishing();		
 	}	

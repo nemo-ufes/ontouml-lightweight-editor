@@ -53,7 +53,7 @@ public class HetCollFirstPage extends HetCollPage {
 		
 		btnNo = new Button(container, SWT.RADIO);
 		btnNo.setBounds(10, 116, 554, 16);
-		btnNo.setText("No, "+hetColl.getWhole().getName()+"is a functional complex.");
+		btnNo.setText("No, "+hetColl.getWhole().getName()+" is a functional complex.");
 		
 		Label lblMustAnInstance = new Label(container, SWT.NONE);
 		lblMustAnInstance.setBounds(10, 40, 554, 48);
@@ -75,13 +75,15 @@ public class HetCollFirstPage extends HetCollPage {
 		
 		if(btnNo.getSelection()){
 			ArrayList<Association> assocList = new ArrayList<Association>();
-			for(Property p: hetColl.getMemberEnds()) { if (p!=null) assocList.add(p.getAssociation()); }			
-			//Action =============================
-			HetCollAction newAction = new HetCollAction(hetColl);
-			newAction.setChangeAllToComponentOf(assocList); 
-			getHetCollWizard().replaceAction(0,newAction);	
-			//======================================
+			for(Property p: hetColl.getMemberEnds()) { if (p!=null) assocList.add(p.getAssociation()); }
+			if(assocList.size()>0){
+				//Action =============================
+				HetCollAction newAction = new HetCollAction(hetColl);
+				newAction.setChangeAllToComponentOf(assocList); 
+				getHetCollWizard().replaceAction(0,newAction);	
+				//======================================
+			}
 		}
-		return super.getNextPage();
+		return ((HetCollWizard)getWizard()).getFinishing();
 	}
 }
