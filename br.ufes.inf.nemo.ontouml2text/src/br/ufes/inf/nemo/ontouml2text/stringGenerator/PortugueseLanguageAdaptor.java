@@ -83,7 +83,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {	
 		
 		// Integration
-		if(previousIsGeneralization(previousPattern) || 
+		if(previousPattern instanceof GeneralizationPattern || 
 				previousPattern instanceof OrdinaryMediationRevPattern) parcialDescription += " e";
 		
 		// Generating specific description
@@ -99,7 +99,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 		
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
 
 		// Generating specific description
 		parcialDescription += " é um papel que " + 
@@ -115,7 +115,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 		
 		// Integration
-		if(previousIsGeneralization(previousPattern) || 
+		if(previousPattern instanceof GeneralizationPattern || 
 				previousPattern instanceof OrdinaryMediationRevPattern) parcialDescription += ", como também ";
 
 		// Generating specific description
@@ -131,11 +131,26 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
 		
 		// Generating specific description
 		parcialDescription += " é " + 
 				insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
+					
+		return parcialDescription;
+	}
+	
+	@Override
+	protected String processPhaseDescriptionRevPattern(
+			DescriptionPattern pattern, DescriptionPattern previousPattern,
+			String parcialDescription) {
+
+		// Integration
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		
+		// Generating specific description
+		parcialDescription += " tem como fases: " + 
+				insertListing((NaryPattern)pattern, false, "e");
 					
 		return parcialDescription;
 	}
@@ -146,7 +161,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += ", que é";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += ", que é";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ". É";
 		
 		// Generating specific description
@@ -162,7 +177,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
 		
 		// Generating specific description
 		parcialDescription += " é uma característica de " + 
@@ -177,7 +192,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += ", e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 		
 		// Generating specific description
@@ -193,7 +209,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += ", e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 					
 		// Generating specific description
@@ -209,8 +226,9 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
-		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso, ";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += ", além disso,";
+		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso,";
 		
 		// Generating specific description
 		parcialDescription += " é composto por: " + 
@@ -225,7 +243,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += ", além disso,";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso, ";
 		
 		// Generating specific description
@@ -241,7 +260,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += ", além disso,";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 					
 		// Generating specific description
@@ -252,29 +272,15 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 	}
 
 	@Override
-	protected String processPhaseDescriptionRevPattern(
-			DescriptionPattern pattern, DescriptionPattern previousPattern,
-			String parcialDescription) {
-
-		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " e";
-		
-		// Generating specific description
-		parcialDescription += " tem como fases: " + 
-				insertListing((NaryPattern)pattern, false, "e");
-					
-		return parcialDescription;
-	}
-
-	@Override
 	protected String processFormalAssociationPattern(
 			DescriptionPattern pattern, DescriptionPattern previousPattern,
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
-		if(previousPattern instanceof PhaseDescriptionRevPattern) parcialDescription += "; como também";
-		if(previousIsGeneralization(previousPattern)) parcialDescription += ", o qual";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += ", o qual";
+		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += "; como também";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += "; como também";
 					
 		// Generating specific description			
 		parcialDescription += " se associa a " + 
@@ -289,9 +295,10 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
-		else if(previousPattern instanceof PhaseDescriptionRevPattern) parcialDescription += "; como também";
-		else if(previousIsGeneralization(previousPattern)) parcialDescription += ", o qual";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += ", o qual";
+		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += "; como também";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += "; como também";
 					
 		// Generating specific description			
 		parcialDescription += " se associa a " + 
@@ -306,7 +313,10 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " que pode";
+		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += "; como também pode";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += "; como também pode";
 		else if(previousPattern instanceof FormalAssociationPattern || previousPattern instanceof FormalAssociationRevPattern) parcialDescription += ", em adição, pode"; 
 		else if(previousPattern == null) parcialDescription += " pode";
 		
@@ -323,7 +333,10 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 		
 		// Integration
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " que pode";
 		if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += "; como também pode";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += "; como também pode";
 		else if(previousPattern instanceof FormalAssociationPattern || previousPattern instanceof FormalAssociationRevPattern) parcialDescription += ", em adição, pode"; 
 		else if(previousPattern == null) parcialDescription += " pode";
 		
@@ -340,9 +353,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " que";	
-		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
-		else if(previousPattern instanceof PartOfPattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " que";	
+		else if(previousPattern instanceof PhasePattern) parcialDescription += ", e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 		
 		// Generating specific description
@@ -358,8 +370,11 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern) parcialDescription += " quando envolvido";
-		else if(previousIsGeneralization(previousPattern)) parcialDescription += " e se envolve";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e se envolve";
+		else if(previousPattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern) parcialDescription += " quando envolvido";
+		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " , além disso, se envolve";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += " , além disso, se envolve";
+		else if(previousPattern instanceof FormalPattern) parcialDescription += " , além disso, se envolve";
 		else if(previousPattern == null) parcialDescription += " se envolve";
 		 
 		// Generating specific description
@@ -375,9 +390,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsHeterogeneousMediation(previousPattern) || previousPattern instanceof FormalPattern) parcialDescription += ", além de poder"; 
-		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e pode";
-		else if(previousPattern instanceof PartOfPattern) parcialDescription += " e pode";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += "e pode";
+		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof FormalPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern instanceof ExceptionMediationPattern || previousPattern instanceof ExceptionMediationRevPattern) parcialDescription += " e poder"; 
 		else if(previousPattern == null) parcialDescription += " pode";			
 		
@@ -394,10 +408,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " que";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " que";
 		else if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além disso,";
-		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
-		else if(previousPattern instanceof PartOfPattern) parcialDescription += " e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 		
 		// Generating specific description
@@ -413,10 +425,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += " que";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " que";
 		else if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além disso,";
-		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
-		else if(previousPattern instanceof PartOfPattern) parcialDescription += " e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 		
 		// Generating specific description
@@ -432,9 +442,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsHeterogeneousMediation(previousPattern) || previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
-		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e pode";
-		else if(previousPattern instanceof PartOfPattern) parcialDescription += " e pode";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e pode";
+		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e pode";
 		else if(previousPattern == null) parcialDescription += " pode";
 		
@@ -451,7 +460,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsHeterogeneousMediation(previousPattern) || previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e pode";
+		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern == null) parcialDescription += " pode";
 		
 		// Generating specific description
@@ -467,7 +477,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern)) parcialDescription += ", o qual";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += ", o qual";
 		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof PartOfPattern) parcialDescription += " e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
@@ -485,10 +495,15 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousIsGeneralization(previousPattern) || 
+		if(previousPattern instanceof GeneralizationPattern || 
 				previousPattern instanceof OrdinaryMediationRevPattern) parcialDescription += " e";	
-		else if(previousIsHeterogeneousMediation(previousPattern) || 
-				previousIsOptionalMediation(previousPattern) ||
+		else if(previousPattern instanceof OrdinaryMediationPattern || 
+				previousPattern instanceof ExceptionMediationPattern ||
+				previousPattern instanceof ExceptionMediationRevPattern ||
+				previousPattern instanceof OrdinaryOptionalMediationPattern ||
+				previousPattern instanceof OptionalExceptionMediationPattern ||
+				previousPattern instanceof OptionalExceptionMediationRevPattern ||
+				previousPattern instanceof PhasePattern ||
 				previousPattern instanceof FormalPattern ||
 				previousPattern instanceof CharacterizationPattern ||
 				previousPattern instanceof PartOfPattern) parcialDescription += ";";

@@ -86,6 +86,10 @@ public abstract class LanguageAdaptor {
 		if(patterns.size() > 0){
 			priorizeDescriptionPatterns(patterns);
 			
+//			System.out.println("");
+//			System.out.println(patterns.get(0).getDescribedCategory().getLabel());
+//			System.out.println(patterns.toString().replace("br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.", ""));
+			
 			description += patterns.get(0).getDescribedCategory().getLabel();
 	
 			for(i = 0; i < patterns.size(); i++){
@@ -183,22 +187,6 @@ public abstract class LanguageAdaptor {
 		}
 		
 		return parcialDescription;
-	}
-	
-	protected boolean previousIsGeneralization(DescriptionPattern previousPattern){
-		return previousPattern instanceof HomogeneousGeneralizationPattern ||
-				previousPattern instanceof RigidHeterogeneousGeneralizationPattern ||
-				previousPattern instanceof AntiRigidHeterogeneousGeneralizationPattern ||
-				previousPattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern;
-	}
-	
-	protected boolean previousIsHeterogeneousMediation(DescriptionPattern previousPattern){
-		return previousPattern instanceof OrdinaryMediationPattern;
-	}
-	
-	protected boolean previousIsOptionalMediation(DescriptionPattern previousPattern){
-		return previousPattern instanceof OrdinaryOptionalMediationPattern ||
-				previousPattern instanceof OptionalExceptionMediationPattern;
 	}
 	
 	protected String insertTarget(PatternCategory target, boolean withMultiplicity){

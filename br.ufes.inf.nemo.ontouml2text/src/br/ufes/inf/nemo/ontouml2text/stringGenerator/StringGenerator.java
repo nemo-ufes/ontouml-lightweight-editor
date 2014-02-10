@@ -134,10 +134,10 @@ public class StringGenerator {
 	private void identifyGeneralizationPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
 		DescriptionCategory target = function.getTarget(); 
-		DescriptionCategory	source = ((BinaryDescriptionFunction)function).getSource();;
+		DescriptionCategory	source = ((BinaryDescriptionFunction)function).getSource();
 		
 		NaryPattern naryPattern;
-		
+			
 		if(describedCategory == source){ // Ensuring unidirectionality
 			// Homogeneous Generalization Pattern
 			if(target.getClass() == source.getClass() || 
@@ -147,10 +147,15 @@ public class StringGenerator {
 				if(naryPattern == null){
 					naryPattern = new HomogeneousGeneralizationPattern(describedCategory);
 					patterns.add(naryPattern);
-				}	
-				
+				}
+							
 				naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
 						function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
+				
+//				if(describedCategory.getLabel().equals("Operação de Transporte Rodoviário de Cargas")){
+//					System.out.println("><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><");
+//					System.out.println(naryPattern.getTargetCategories().toString().replace("br.ufes.inf.nemo.ontouml2text.",""));
+//				}				
 			}
 			
 			// Anti-Rigid Heterogeneous Generalization Pattern
