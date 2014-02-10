@@ -112,8 +112,10 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 		{"    Type", new OntoUMLElement(p.getType(),"")},
 		{"    Upper", (new Integer(p.getUpper()))},
 		{"    Lower", (new Integer(p.getLower()))},
+		{"    Derived", p.isIsDerived()},
 		{"    Read Only", p.isIsReadOnly()},
-		{"    Aggregation Kind", p.getAggregation()},		
+		{"    Aggregation Kind", p.getAggregation()},
+		{"    Redefined", p.getRedefinedProperty()},
 		};		
 		String[] columnNames = {"Property","Value"};
 		tablemodel = new PropertyTableModel(columnNames,data);
@@ -359,29 +361,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	    	 if(property.equals("Name")) ((RefOntoUML.Property)elem).setName((String)value);
 	    	 if(property.equals("Type")) {
 	    		 RefOntoUML.Type type = (RefOntoUML.Type)((OntoUMLElement)value).getElement();
-	    		 ((RefOntoUML.Property)elem).setType(type);
-	    		 
-//	    		 ================================================
-//	    		 Propagate the type change to the diagram element
-//	    		 FIXME I will need this code further in other part of the code
-//	    		 ================================================
-//	    		 
-//	    		 RefOntoUML.Association referredAssoc = ((RefOntoUML.Property)elem).getAssociation();
-//	    		 UmlConnection referredConn = (UmlConnection)ModelHelper.getDiagramElement(referredAssoc);	    		 
-//	    		 if(type instanceof RefOntoUML.Relationship)
-//	    		 {
-//	    			 UmlConnection connType = (UmlConnection)ModelHelper.getDiagramElement(type);
-//	    			 if (p.equals(referredAssoc.getMemberEnd().get(0))){
-//		    			 ProjectBrowser.frame.getDiagramManager().getElementFactory().bindConnection(referredConn, connType, null);
-//		    		 }else if (p.equals(referredAssoc.getMemberEnd().get(1))){
-//		    		 	 ProjectBrowser.frame.getDiagramManager().getElementFactory().bindConnection(referredConn, null, connType);
-//		    	 	 }
-//	    		 }else{
-//	    			 UmlNode nodeType = (UmlNode)ModelHelper.getDiagramElement(type);
-//	    			 ProjectBrowser.frame.getDiagramManager().getElementFactory().bindConnection(referredConn, nodeType, (UmlNode)null);
-//	    		 }	    		 
-//	    		 ===============================================
-	    		 
+	    		 ((RefOntoUML.Property)elem).setType(type);	    		 
 	    	 }
 	    	 
 	    	 RefOntoUML.RefOntoUMLFactory factory = RefOntoUML.RefOntoUMLFactory.eINSTANCE;         
@@ -401,6 +381,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	    	 }
 	    	 
 	    	 if(property.equals("Read Only")) ((RefOntoUML.Property)elem).setIsReadOnly((Boolean)value);
+	    	 if(property.equals("Derived")) ((RefOntoUML.Property)elem).setIsDerived((Boolean)value);
 	    	 if(property.equals("Aggregation Kind")) ((RefOntoUML.Property)elem).setAggregation((RefOntoUML.AggregationKind)value);			
 	     }
 	     

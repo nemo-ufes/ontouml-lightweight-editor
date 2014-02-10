@@ -8,7 +8,9 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.List;
 
 import RefOntoUML.Association;
 import RefOntoUML.Property;
@@ -16,8 +18,6 @@ import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.List;
 
 public class HetCollRefactoringPage extends RefactoringPage {
 	
@@ -73,35 +73,39 @@ public class HetCollRefactoringPage extends RefactoringPage {
 
 		setControl(container);
 		
-		SelectionAdapter listener = new SelectionAdapter() {
+		SelectionAdapter listener1 = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
 	    	  if (btnFirstOption.getSelection()){
 	    		  btnSecondOption.setSelection(false);
 	    		  btnThirdOption.setSelection(false);
-	    	  }
-	    	  if (btnSecondOption.getSelection()){
-	    		  btnFirstOption.setSelection(false);
-	    	  }
-	    	  if (btnThirdOption.getSelection()){
-	    		  btnFirstOption.setSelection(false);
-	    	  }  
+	    	  }	    	 
 	      }
+	    };
+	    SelectionAdapter listener2 = new SelectionAdapter() {
+	    	public void widgetSelected(SelectionEvent e) {
+	    		if (btnSecondOption.getSelection()){
+		    		  btnFirstOption.setSelection(false);
+		    	  }
+	    		if (btnThirdOption.getSelection()){
+		    		  btnFirstOption.setSelection(false);
+		    	  }  
+	    	}
 	    };
 	    
 		btnFirstOption = new Button(container, SWT.CHECK);
 		btnFirstOption.setBounds(10, 10, 554, 27);		
 		btnFirstOption.setText(hetColl.getWhole().getName()+" is a functional complex and all partOf relations are stereotyped as «componentOf»");
-		btnFirstOption.addSelectionListener(listener);
+		btnFirstOption.addSelectionListener(listener1);
 		
 		btnSecondOption = new Button(container, SWT.CHECK | SWT.WRAP);
 		btnSecondOption.setBounds(10, 43, 250, 85);
 		btnSecondOption.setText("The parts are also collectives and their respective relations are stereotyped as «subCollectionOf»");
-		btnSecondOption.addSelectionListener(listener);
+		btnSecondOption.addSelectionListener(listener2);
 		
 		btnThirdOption = new Button(container, SWT.CHECK | SWT.WRAP);
 		btnThirdOption.setBounds(314, 43, 250, 85);
 		btnThirdOption.setText("There is a new type, named MemberPart, which is the super-type of all parts and is connected to "+hetColl.getWhole().getName()+" through a single «memberOf» relation. In addition, all other partOf relations are deleted.");		
-		btnThirdOption.addSelectionListener(listener);
+		btnThirdOption.addSelectionListener(listener2);
 		
 		yesList = new List(container,SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		yesList.setBounds(10, 135, 250, 137);
@@ -162,8 +166,8 @@ public class HetCollRefactoringPage extends RefactoringPage {
 	{
 		ArrayList<Property> result = new ArrayList<Property>();
 		for(String str: yesList.getItems()){
-			Property p = getProperty(str.substring(str.indexOf(" ")));
-			if (p!=null) result.add(p);
+			Property p = getProperty(str.substring(str.indexOf(" ")+1));
+			if (p!=null) { result.add(p); }
 		}
 		return result;
 	}
@@ -172,7 +176,7 @@ public class HetCollRefactoringPage extends RefactoringPage {
 	{
 		ArrayList<Property> result = new ArrayList<Property>();
 		for(String str: noList.getItems()){
-			Property p = getProperty(str.substring(str.indexOf(" ")));
+			Property p = getProperty(str.substring(str.indexOf(" ")+1));
 			if (p!=null) result.add(p);
 		}
 		return result;
@@ -181,32 +185,41 @@ public class HetCollRefactoringPage extends RefactoringPage {
 	@Override
 	public IWizardPage getNextPage() 
 	{
+		((HetCollWizard)getWizard()).removeAllActions();
+		
 		if(btnFirstOption.getSelection()){
 			ArrayList<Association> assocList = new ArrayList<Association>();
-			for(Property p: hetColl.getMemberEnds()) { if (p!=null) assocList.add(p.getAssociation()); }			
-			//Action =============================
-			HetCollAction newAction = new HetCollAction(hetColl);
-			newAction.setChangeAllToComponentOf(assocList); 
-			getHetCollWizard().replaceAction(0,newAction);	
-			//======================================
+			for(Property p: hetColl.getMemberEnds()) { if (p!=null) assocList.add(p.getAssociation()); }
+			if(assocList.size()>0){
+				//Action =============================
+				HetCollAction newAction = new HetCollAction(hetColl);
+				newAction.setChangeAllToComponentOf(assocList); 
+				getHetCollWizard().replaceAction(0,newAction);	
+				//======================================
+			}
 		}
 		if(btnSecondOption.getSelection()){
 			ArrayList<Association> assocList = new ArrayList<Association>();
 			for(Property p: getYesList()) { if (p!=null) assocList.add(p.getAssociation()); }		
-			//Action =============================
-			HetCollAction newAction = new HetCollAction(hetColl);
-			newAction.setChangeAllToCollectionAndSubCollectionOf(assocList); 
-			getHetCollWizard().replaceAction(1,newAction);	
-			//======================================
+			if(assocList.size()>0){
+				//Action =============================
+				HetCollAction newAction = new HetCollAction(hetColl);
+				newAction.setChangeAllToCollectionAndSubCollectionOf(assocList); 
+				getHetCollWizard().replaceAction(0,newAction);	
+				//======================================
+			}
 		}
 		if(btnThirdOption.getSelection()){
 			ArrayList<Association> assocList = new ArrayList<Association>();
-			for(Property p: getYesList()) { if (p!=null) assocList.add(p.getAssociation()); }
-			//Action =============================
-			HetCollAction newAction = new HetCollAction(hetColl);
-			newAction.setChangeAllToOneSuperMember(assocList); 
-			getHetCollWizard().replaceAction(2,newAction);	
-			//======================================	
+			for(Property p: getNoList()) { if (p!=null) assocList.add(p.getAssociation()); }
+			if(assocList.size()>=2){
+				//Action =============================
+				HetCollAction newAction = new HetCollAction(hetColl);
+				newAction.setChangeAllToOneSuperMember(assocList); 
+				if (btnSecondOption.getSelection()) getHetCollWizard().replaceAction(1,newAction);
+				else getHetCollWizard().replaceAction(0,newAction);
+				//======================================	
+			}
 		}
 		return ((HetCollWizard)getWizard()).getFinishing();	
 	}

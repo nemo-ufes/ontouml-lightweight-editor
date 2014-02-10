@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.antipattern.wizard.hetcoll;
 import java.util.ArrayList;
 
 import RefOntoUML.Association;
+import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 
@@ -46,17 +47,44 @@ public class HetCollAction extends AntiPatternAction<HetCollOccurrence>{
 	public String toString(){
 		String result = new String();
 		
-		if (code == Action.CHANGE_ALL_TO_COMPONENTOF){
+		if (code == Action.CHANGE_ALL_TO_COMPONENTOF)
+		{
 			result += "Change all partOfs relations to <<componentOf>>";
 		}
-		if(code==Action.CHANGE_ALL_TO_COLLECTION_AND_SUBCOLLECTIONOF) {
-			result += "Change all partOfs relations to <<subCollectionOf>>"+"\n";
-			result += "Change all parts to <<Collection>>";
+		
+		if(code==Action.CHANGE_ALL_TO_COLLECTION_AND_SUBCOLLECTIONOF) 
+		{
+			result += "Change the partOf relations: {";
+			int i=0;
+			for(Association a: partOfList) { 
+				if(i==partOfList.size()-1) result += ((Meronymic)a).getName()+"";
+				else result += ((Meronymic)a).getName()+", ";
+				i++;
+			}
+			result += "} to <<subCollectionOf>>"+"\n";
+			
+			result += "Change the parts: {";
+			i=0;
+			for(Association a: partOfList) { 
+				if(i==partOfList.size()-1) result += ((Meronymic)a).part().getName()+"";
+				else result += ((Meronymic)a).part().getName()+", ";
+				i++;
+			}
+			result += "} to <<Collection>>";
 		}
-		if(code==Action.CHANGE_ALL_TO_ONE_SUPER_MEMBER) {
+		
+		if(code==Action.CHANGE_ALL_TO_ONE_SUPER_MEMBER) 
+		{
 			result += "Create a type, named MemberPart, and stereotype it accordingly"+"\n";
-			result += "Create a «memberOf», named newMemberOf, between the Whole and the new MemberPart"+"\n";
-			result += "Create generalizations from all the parts to the new MemberPart";
+			result += "Create a «memberOf», named newMemberOf, between "+((Meronymic)partOfList.get(0)).whole().getName()+" and MemberPart"+"\n";
+			result += "Create generalizations from the parts: {";
+			int i=0;
+			for(Association a: partOfList) { 
+				if(i==partOfList.size()-1) result += ((Meronymic)a).part().getName()+"";
+				else result += ((Meronymic)a).part().getName()+", ";
+				i++;
+			}
+			result += "} to MemberPart";
 		}
 		
 		return result;

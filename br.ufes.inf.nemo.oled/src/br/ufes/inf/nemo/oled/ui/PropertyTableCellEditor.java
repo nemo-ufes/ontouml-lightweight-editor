@@ -5,11 +5,13 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
@@ -96,9 +98,14 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
 	    		RefOntoUML.AggregationKind.SHARED, 
 	    		RefOntoUML.AggregationKind.COMPOSITE})
 	    	);
-	        editor = new DefaultCellEditor(comboBox);
-	    }
+	        editor = new DefaultCellEditor(comboBox);	    
 
+	    }else if (value instanceof List) {
+	    	
+	    	JOptionPane.showMessageDialog(ProjectBrowser.frame, "Teste");
+	        editor = new DefaultCellEditor(new JTextField("oi"));
+	    }
+	    
         return editor.getTableCellEditorComponent(table, value, isSelected, row, column);
     }   
 }	
