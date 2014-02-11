@@ -1,18 +1,11 @@
 package br.ufes.inf.nemo.ontouml2z3py;
 
-import java.io.IOException;
 import java.util.Hashtable;
-
-import org.eclipse.emf.ecore.resource.Resource;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
-import RefOntoUML.Kind;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.z3py.OntoUMLZ3System;
-import br.ufes.inf.nemo.z3py.Z3pyFactory;
-import br.ufes.inf.nemo.z3py.impl.Z3pyFactoryImpl;
 
 public class OntoUML2Z3py {
 	
@@ -61,6 +54,8 @@ public class OntoUML2Z3py {
 */
 			Transformer t = new Transformer("models/Exemplo2.refontouml");
 			OntoUMLZ3System system = t.run();
+			
+		
 			System.out.println(system);
 			
 /*			

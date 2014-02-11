@@ -18,7 +18,8 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  *
  * @see br.ufes.inf.nemo.z3py.Z3pyPackage#getFunctionCall()
- * @model
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='FunctionCallNumberOfArguments'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot FunctionCallNumberOfArguments='self.calledFunction.numberOfArguments = self.arguments->size()'"
  * @generated
  */
 public interface FunctionCall extends Expression {
