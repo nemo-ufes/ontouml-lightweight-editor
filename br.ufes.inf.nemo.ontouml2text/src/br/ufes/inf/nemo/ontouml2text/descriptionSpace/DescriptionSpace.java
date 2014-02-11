@@ -39,6 +39,10 @@ public class DescriptionSpace {
 	}
 	
 	public DescriptionCategory findCategory(String label){
+		
+		if(label.contains("/"))
+			label = label.replace("/","");
+		
 		for(DescriptionCategory c: categories){
 			
 			if (c.getLabel().equals(label))
@@ -49,6 +53,10 @@ public class DescriptionSpace {
 	
 	/*
 	public DescriptionCategory findCategory(String label){
+	
+		if(label.contains("/"))
+			label = label.replace("/","");
+			
 		Collections.binarySearch(this.categories, new DescriptionCategory(label), new Comparator<DescriptionCategory>(){		
 			
 			public int compare(DescriptionCategory d1, DescriptionCategory d2){
