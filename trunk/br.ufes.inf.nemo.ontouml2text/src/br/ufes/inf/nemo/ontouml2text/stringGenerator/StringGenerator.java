@@ -66,8 +66,6 @@ public class StringGenerator {
 			
 			htmlLetter = exporter.findLetter(initialLetter);
 			
-			System.out.println("Category : "+ describedCategory.getLabel() +"initialLetter : " + initialLetter + "  htmlLetter: " + htmlLetter );
-			
 			exporter.saveDescription(describedCategory, languageAdaptor.generateCategoryDescription(patterns), htmlLetter);
 		}
 		
@@ -110,6 +108,7 @@ public class StringGenerator {
 	
 	private List<DescriptionPattern> identifyPatterns(DescriptionCategory describedCategory){
 		int j;
+		boolean isTopPattern = false;
 		DescriptionFunction function = null;
 		List<DescriptionPattern> patterns = new ArrayList<DescriptionPattern>();
 		
@@ -118,37 +117,43 @@ public class StringGenerator {
 			if(describedCategory.getFunctions().size() == 1){
 				if((describedCategory.getFunctions().get(0) instanceof Generalization) && 
 						(((DescriptionFunction)describedCategory.getFunctions().get(0)).getTarget() == describedCategory)){
-					if(describedCategory.getUserDescription().isEmpty())
+					if(describedCategory.getUserDescription().isEmpty()){
 						patterns.add(new TopPattern(describedCategory));
+						isTopPattern = true;
+					}
 				}
 			}else{
-				if(describedCategory.getUserDescription().isEmpty())
+				if(describedCategory.getUserDescription().isEmpty()){
 					patterns.add(new TopPattern(describedCategory));
+					isTopPattern = true;
+				}
 			}
 		}
 		
-		for(j = 0; j < describedCategory.getFunctions().size(); j++){
-			function = describedCategory.getFunctions().get(j);
-			
-			if(function instanceof BinaryDescriptionFunction){// Binary Functions	
-				if(function instanceof Generalization){
-					identifyGeneralizationPattern(patterns, describedCategory, function);				
-				}else if(function instanceof Mediation){
-					identifyMediationPattern(patterns, describedCategory, function);
-				}else if(function instanceof Formal){ 
-					identifyFormalPattern(patterns, describedCategory, function);
-				}else if(function instanceof Characterization){ 
-					identifyCharacterizationPattern(patterns, describedCategory, function);			
-				}else if(function instanceof ComponentOf){ 
-					identifyComponentOfPattern(patterns, describedCategory, function);
-				}else if(function instanceof MemberOf){
-					identifyMemberOfPattern(patterns, describedCategory, function);
-				}else if(function instanceof SubcollectiveOf){
-					identifySubcollectiveOfPattern(patterns, describedCategory, function);
-				}
-			}else{ // N-ary functions
-				if(function instanceof GeneralizationSet){
-					identifyGeneralizationSetPattern(patterns, describedCategory, function);
+		if(!isTopPattern){
+			for(j = 0; j < describedCategory.getFunctions().size(); j++){
+				function = describedCategory.getFunctions().get(j);
+				
+				if(function instanceof BinaryDescriptionFunction){// Binary Functions	
+					if(function instanceof Generalization){
+						identifyGeneralizationPattern(patterns, describedCategory, function);				
+					}else if(function instanceof Mediation){
+						identifyMediationPattern(patterns, describedCategory, function);
+					}else if(function instanceof Formal){ 
+						identifyFormalPattern(patterns, describedCategory, function);
+					}else if(function instanceof Characterization){ 
+						identifyCharacterizationPattern(patterns, describedCategory, function);			
+					}else if(function instanceof ComponentOf){ 
+						identifyComponentOfPattern(patterns, describedCategory, function);
+					}else if(function instanceof MemberOf){
+						identifyMemberOfPattern(patterns, describedCategory, function);
+					}else if(function instanceof SubcollectiveOf){
+						identifySubcollectiveOfPattern(patterns, describedCategory, function);
+					}
+				}else{ // N-ary functions
+					if(function instanceof GeneralizationSet){
+						identifyGeneralizationSetPattern(patterns, describedCategory, function);
+					}
 				}
 			}
 		}
@@ -273,7 +278,7 @@ public class StringGenerator {
 		
 		NaryPattern naryPattern = null;
 		
-		if(describedCategory == source){ // Ensuring unidirectionality
+		if(target != source){ // Checking if is reflexive, if not, identify formal pattern, otherwise, create reflexive pattern			
 			if(function.getTargetMinMultiplicity() > 0){
 				naryPattern = (NaryPattern)searchPattern(patterns, "FormalAssociationPattern");
 				
@@ -290,29 +295,25 @@ public class StringGenerator {
 				}
 			}
 			
-			naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
-					function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
-		}else{ // Formal Association Rev Pattern
-			if(function.getTargetMinMultiplicity() > 0){
-				naryPattern = (NaryPattern)searchPattern(patterns, "FormalAssociationRevPattern");
-				
-				if(naryPattern == null){
-					naryPattern = new FormalAssociationRevPattern(describedCategory);
-					patterns.add(naryPattern);
-				}	
-			}else{
-				naryPattern = (NaryPattern)searchPattern(patterns, "OptionalFormalAssociationRevPattern");
-				
-				if(naryPattern == null){
-					naryPattern = new OptionalFormalAssociationRevPattern(describedCategory);
-					patterns.add(naryPattern);
-				}
+			if(describedCategory == source){ // Ensuring correct multiplicity assignment			
+				naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
+						function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
+			}else{ // Formal Association Rev Pattern				
+				naryPattern.getTargetCategories().add(new PatternCategory(source.getLabel(), 
+						((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
+						((BinaryDescriptionFunction)function).getSourceMaxMultiplicity()));	
+			}	
+		}else{ // Creating reflexive pattern
+			naryPattern = (NaryPattern)searchPattern(patterns, "ReflexivePattern");
+			
+			if(naryPattern == null){
+				naryPattern = new ReflexivePattern(describedCategory);
+				patterns.add(naryPattern);
 			}
 			
-			naryPattern.getTargetCategories().add(new PatternCategory(source.getLabel(), 
-					((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
-					((BinaryDescriptionFunction)function).getSourceMaxMultiplicity()));	
-		}	
+			naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
+					function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
+		}
 	}
 	
 	

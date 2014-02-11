@@ -6,4 +6,12 @@ public interface Dictionary {
 	
 	public String getPlural(String label);
 	
+	public String getMaleArticle();
+	
+	public String getFemaleArticle();
+	
+	public String getAditionSeparator();
+	
+	public String getAlternativeSeparator();
+	
 }

@@ -33,9 +33,11 @@ public abstract class LanguageAdaptor {
 			private Integer determineValue(DescriptionPattern d){
 				if(d instanceof GeneralizationPattern){ 
 					if(d instanceof AntiRigidHeterogeneousGeneralizationIdPattern)
-						return 15;
+						return 10;
 					else
-						return 10;		
+						return 5;	
+				}else if(d instanceof ReflexivePattern){ 
+					return 15;	
 				}else if(d instanceof PhasePattern){ 
 					return 20;	
 				}else if(d instanceof CharacterizationPattern){ 
@@ -86,9 +88,9 @@ public abstract class LanguageAdaptor {
 		if(patterns.size() > 0){
 			priorizeDescriptionPatterns(patterns);
 			
-//			System.out.println("");
-//			System.out.println(patterns.get(0).getDescribedCategory().getLabel());
-//			System.out.println(patterns.toString().replace("br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.", ""));
+			System.out.println("");
+			System.out.println(patterns.get(0).getDescribedCategory().getLabel());
+			System.out.println(patterns.toString().replace("br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.", ""));
 			
 			description += patterns.get(0).getDescribedCategory().getLabel();
 	
@@ -158,16 +160,12 @@ public abstract class LanguageAdaptor {
 			return processPhaseDescriptionRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof FormalAssociationPattern){
 			return processFormalAssociationPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof FormalAssociationRevPattern){
-			return processFormalAssociationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof ComponentOfRevPattern){
 			return processComponentOfRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof MemberOfRevPattern){
 			return processMemberOfRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof OptionalFormalAssociationPattern){
 			return processOptionalFormalAssociationPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof OptionalFormalAssociationRevPattern){
-			return processOptionalFormalAssociationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof OrdinaryMediationPattern){
 			return processOrdinaryMediationPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof OrdinaryOptionalMediationPattern){
@@ -184,6 +182,8 @@ public abstract class LanguageAdaptor {
 			return processAbstractMediationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof GeneralizationSetRevPattern){
 			return processGeneralizationSetRevPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof ReflexivePattern){
+			return processReflexivePattern(pattern, previousPattern, parcialDescription);
 		}
 		
 		return parcialDescription;
@@ -218,6 +218,13 @@ public abstract class LanguageAdaptor {
 		listing += insertTarget(pattern.getTargetCategories().get(i), withMultiplicity);
 		
 		return listing;
+	}
+	
+	protected String insertArticle(String label){
+		if(dictionary.isMale(label))
+			return dictionary.getMaleArticle();
+		else
+			return dictionary.getFemaleArticle();
 	}
 	
 	protected abstract String insertMultiplicity(PatternCategory target);
@@ -279,5 +286,7 @@ public abstract class LanguageAdaptor {
 	protected abstract String processGeneralizationSetRevPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
 	protected abstract String processCustomPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
+	
+	protected abstract String processReflexivePattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
 }
