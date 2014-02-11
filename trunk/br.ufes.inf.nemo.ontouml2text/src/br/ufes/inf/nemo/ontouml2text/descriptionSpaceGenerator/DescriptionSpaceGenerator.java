@@ -315,7 +315,6 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 		if(r instanceof RefOntoUML.Association){	
 			
 			if(r instanceof RefOntoUML.Derivation || r.toString().contains("RefOntoUML.impl.AssociationImpl@") ){
-				System.out.println("É uma derivation ou uma Association! : "+ r);
 				continue;
 			}
 			
