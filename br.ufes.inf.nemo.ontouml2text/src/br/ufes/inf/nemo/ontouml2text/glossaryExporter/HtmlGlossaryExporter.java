@@ -12,11 +12,13 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 	private String outputName;
 	private String outputDirectory;
 	private String title;
+	private String subtitle;
 
-	public HtmlGlossaryExporter(String outputName, String outputDirectory, String title) {
+	public HtmlGlossaryExporter(String outputName, String outputDirectory, String title, String subtitle) {
 		this.outputName = outputName;
 		this.outputDirectory = outputDirectory;
 		this.title = title;
+		this.subtitle = subtitle;
 	}
 	
 	public void initilizeExportFile(){
@@ -202,6 +204,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 		+"	  	  </div>\n\n"
 		+"        <br>\n"
 		+"        <p style=\"font-size:70px; color:#307E06\" align=center>"+this.title+"</p>\n"
+		+"        <p style=\"font-size:30px; color:#307E06\" align=center>"+this.subtitle+"</p>\n"
 		+"	  </body>\n" 
 		+"</html>\n");	
 		index.close();
