@@ -59,7 +59,7 @@ public class OntoUML2Z3py {
 				System.out.println("Generalization: "+ p.getGeneral() +" / " +p.getSpecific());
 			}
 */
-			Transformer t = new Transformer();
+			Transformer t = new Transformer("models/Exemplo2.refontouml");
 			OntoUMLZ3System system = t.run();
 			System.out.println(system);
 			
