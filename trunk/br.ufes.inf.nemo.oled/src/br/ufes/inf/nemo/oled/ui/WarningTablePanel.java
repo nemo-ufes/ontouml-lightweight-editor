@@ -97,6 +97,11 @@ public class WarningTablePanel extends JPanel {
 		tablemodel = new WarningTableModel(columnNames,data);
 		
 		table.setModel(tablemodel);
+		
+		for(int j=0;j<table.getRowCount();j++){
+			table.setRowHeight(j, 18);	
+	    }
+		
 		table.repaint();
 		table.validate();
 		

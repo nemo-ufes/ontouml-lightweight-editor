@@ -221,9 +221,9 @@ public class FeatureListDialog extends JDialog {
 		JLabel lblFeature = new JLabel("Feature:");
 		
 		JLabel lblChooseWhichProperties = new JLabel();
-		if (attributeName.compareToIgnoreCase("redefined")==0)
+		if (attributeName.trim().compareToIgnoreCase("redefined")==0)
 			lblChooseWhichProperties.setText("Choose which properties redefine "+refparser.getStereotype(element)+" "+((NamedElement)element).getName()+": "+((Property)element).getType().getName());
-		else if (attributeName.compareToIgnoreCase("subsetted")==0){
+		else if (attributeName.trim().compareToIgnoreCase("subsetted")==0){
 			lblChooseWhichProperties.setText("Choose which properties subset "+refparser.getStereotype(element)+" "+((NamedElement)element).getName()+": "+((Property)element).getType().getName());
 		}else{
 			lblChooseWhichProperties.setText("");
@@ -234,7 +234,7 @@ public class FeatureListDialog extends JDialog {
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 						.addComponent(lblChooseWhichProperties, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
@@ -254,8 +254,8 @@ public class FeatureListDialog extends JDialog {
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblChooseWhichProperties)
-					.addGap(7)
+					.addComponent(lblChooseWhichProperties, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 						.addComponent(lblFeature)
 						.addComponent(lblChoices))
@@ -270,7 +270,7 @@ public class FeatureListDialog extends JDialog {
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(scrollLeft, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
 								.addComponent(scrollRight, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(24, Short.MAX_VALUE))
+					.addContainerGap(28, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
