@@ -31,7 +31,6 @@ import org.eclipse.emf.edit.command.AddCommand;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
@@ -159,6 +158,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 * @param element
 	 * @param redo
 	 */
+	@SuppressWarnings("unused")
 	public void addToDiagram (DiagramElement element, boolean redo)
 	{
 		//Adds the element to the diagram
@@ -166,7 +166,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		
 		Relationship relationship = ((UmlConnection)element).getRelationship();
 		
-		if (relationship instanceof Derivation) element.invalidate(); // bug in designing. not best solution, but works.
+		if (source instanceof Relationship || target instanceof Relationship)  element.invalidate(); // bug in designing. not best solution, but works.
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);

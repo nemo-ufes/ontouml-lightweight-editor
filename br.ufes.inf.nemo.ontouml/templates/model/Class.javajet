@@ -1,0 +1,3 @@
+<%@ jet package="org.eclipse.ocl.examples.codegen.templates.model" imports="java.util.* org.eclipse.emf.codegen.ecore.genmodel.* org.eclipse.emf.ecore.*" class="Class" %>
+<% final String oclNsURI = "http://www.eclipse.org/ocl/examples/OCL"; %>
+<%@ include file="Class.javajet"%>

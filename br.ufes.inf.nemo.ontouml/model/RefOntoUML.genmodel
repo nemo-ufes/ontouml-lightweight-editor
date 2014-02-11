@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/br.ufes.inf.nemo.ontouml.refontouml/src"
+    modelPluginID="br.ufes.inf.nemo.ontouml.refontouml" templateDirectory="/br.ufes.inf.nemo.ontouml.refontouml/templates"
+    dynamicTemplates="true" modelName="RefOntoUML" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
+  <foreignModel>file:/A:/Desenvolvimento/Oracle%20Java/Workspace-Modeling/model/RefOntoUML.ecore</foreignModel>
+  <modelPluginVariables>OCL_ECORE=org.eclipse.ocl.ecore</modelPluginVariables>
+  <genPackages prefix="RefOntoUML" resource="XML" disposableProviderFactory="true"
+      loadInitialization="true" literalsInterface="false" ecorePackage="RefOntoUML.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RefOntoUML.ecore#//VisibilityKind">
+      <genEnumLiterals ecoreEnumLiteral="RefOntoUML.ecore#//VisibilityKind/public"/>
+      <genEnumLiterals ecoreEnumLiteral="RefOntoUML.ecore#//VisibilityKind/private"/>
+      <genEnumLiterals ecoreEnumLiteral="RefOntoUML.ecore#//VisibilityKind/protected"/>
+      <genEnumLiterals ecoreEnumLiteral="RefOntoUML.ecore#//VisibilityKind/package"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="RefOntoUML.ecore#//AggregationKind">
+      <genEnumLiterals ecoreEnumLiteral="RefOntoUML.ecore#//AggregationKind/none"/>
+      <genEnumLiterals ecoreEnumLiteral="RefOntoUML.ecore#//AggregationKind/shared"/>
+      <genEnumLiterals ecoreEnumLiteral="RefOntoUML.ecore#//AggregationKind/composite"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="RefOntoUML.ecore#//Integer"/>
+    <genDataTypes ecoreDataType="RefOntoUML.ecore#//Boolean"/>
+    <genDataTypes ecoreDataType="RefOntoUML.ecore#//String"/>
+    <genDataTypes ecoreDataType="RefOntoUML.ecore#//UnlimitedNatural"/>
+    <genDataTypes ecoreDataType="RefOntoUML.ecore#//Decimal"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Comment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Comment/body"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Comment/annotatedElement"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//Element">
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Element/ownedElement"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Element/owner"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Element/ownedComment"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/not_own_self">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/not_own_self/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/not_own_self/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/has_owner">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/has_owner/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/has_owner/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/destroy"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/hasKeyword">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/hasKeyword/keyword"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getKeywords"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/addKeyword">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/addKeyword/keyword"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/removeKeyword">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/removeKeyword/keyword"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getNearestPackage"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getModel"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getApplicableStereotype">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/getApplicableStereotype/qualifiedName"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getStereotypeApplications"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getRequiredStereotype">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/getRequiredStereotype/qualifiedName"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getAppliedStereotype">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/getAppliedStereotype/qualifiedName"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/createEAnnotation">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/createEAnnotation/source"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getRelationships"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getRelationships.1">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/getRelationships.1/eClass"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getSourceDirectedRelationships"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getSourceDirectedRelationships.1">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/getSourceDirectedRelationships.1/eClass"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getTargetDirectedRelationships"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/getTargetDirectedRelationships.1">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Element/getTargetDirectedRelationships.1/eClass"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/allOwnedElements"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Element/mustBeOwned"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Package">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Package/ownedType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Package/packageMerge"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Package/packagedElement"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Package/nestedPackage"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Package/nestingPackage"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Package/elements_public_or_private">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Package/elements_public_or_private/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Package/elements_public_or_private/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Package/createOwnedClass">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Package/createOwnedClass/name"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Package/createOwnedClass/isAbstract"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Package/createOwnedEnumeration">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Package/createOwnedEnumeration/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Package/createOwnedPrimitiveType">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Package/createOwnedPrimitiveType/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Package/createOwnedInterface">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Package/createOwnedInterface/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Package/getAppliedProfile">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Package/getAppliedProfile/qualifiedName"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Package/getAppliedProfile.1">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Package/getAppliedProfile.1/qualifiedName"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Package/getAppliedProfile.1/recurse"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Package/isModelLibrary"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Package/visibleMembers"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Package/makesVisible">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Package/makesVisible/el"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//PackageableElement"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//NamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//NamedElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//NamedElement/visibility"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//NamedElement/qualifiedName"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//NamedElement/clientDependency"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//NamedElement/namespace"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//NamedElement/nameExpression"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/has_no_qualified_name">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//NamedElement/has_no_qualified_name/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//NamedElement/has_no_qualified_name/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/has_qualified_name">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//NamedElement/has_qualified_name/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//NamedElement/has_qualified_name/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/visibility_needs_ownership">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//NamedElement/visibility_needs_ownership/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//NamedElement/visibility_needs_ownership/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/createDependency">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//NamedElement/createDependency/supplier"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/getLabel"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/getLabel.1">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//NamedElement/getLabel.1/localize"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/createUsage">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//NamedElement/createUsage/supplier"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/getQualifiedName"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/allNamespaces"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/isDistinguishableFrom">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//NamedElement/isDistinguishableFrom/n"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//NamedElement/isDistinguishableFrom/ns"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/separator"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//NamedElement/allOwningPackages"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Dependency">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Dependency/supplier"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Dependency/client"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//DirectedRelationship">
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//DirectedRelationship/source"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//DirectedRelationship/target"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//Relationship">
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Relationship/relatedElement"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//Namespace">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Namespace/elementImport"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Namespace/packageImport"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Namespace/ownedRule"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Namespace/member"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Namespace/importedMember"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Namespace/ownedMember"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Namespace/members_distinguishable">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Namespace/members_distinguishable/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Namespace/members_distinguishable/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Namespace/createElementImport">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Namespace/createElementImport/element"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Namespace/createElementImport/visibility"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Namespace/createPackageImport">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Namespace/createPackageImport/package_"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Namespace/createPackageImport/visibility"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Namespace/getImportedElements"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Namespace/getImportedPackages"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Namespace/getImportedMembers"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Namespace/getNamesOfMember">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Namespace/getNamesOfMember/element"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Namespace/membersAreDistinguishable"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Namespace/importMembers">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Namespace/importMembers/imps"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Namespace/excludeCollisions">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Namespace/excludeCollisions/imps"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//ElementImport">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//ElementImport/visibility"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//ElementImport/alias"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//ElementImport/importedElement"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//ElementImport/importingNamespace"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//ElementImport/visibility_public_or_private">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//ElementImport/visibility_public_or_private/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//ElementImport/visibility_public_or_private/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//ElementImport/imported_element_is_public">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//ElementImport/imported_element_is_public/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//ElementImport/imported_element_is_public/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//ElementImport/getName"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//PackageImport">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//PackageImport/visibility"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//PackageImport/importedPackage"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//PackageImport/importingNamespace"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//PackageImport/public_or_private">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//PackageImport/public_or_private/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//PackageImport/public_or_private/context"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Constraintx">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Constraintx/constrainedElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Constraintx/specification"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Constraintx/context"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Constraintx/not_apply_to_self">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Constraintx/not_apply_to_self/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Constraintx/not_apply_to_self/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Constraintx/value_specification_boolean">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Constraintx/value_specification_boolean/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Constraintx/value_specification_boolean/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Constraintx/boolean_value">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Constraintx/boolean_value/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Constraintx/boolean_value/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Constraintx/no_side_effects">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Constraintx/no_side_effects/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Constraintx/no_side_effects/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Constraintx/not_applied_to_self">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Constraintx/not_applied_to_self/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Constraintx/not_applied_to_self/context"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//ValueSpecification">
+      <genOperations ecoreOperation="RefOntoUML.ecore#//ValueSpecification/isComputable"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//ValueSpecification/integerValue"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//ValueSpecification/booleanValue"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//ValueSpecification/stringValue"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//ValueSpecification/unlimitedValue"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//ValueSpecification/isNull"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//TypedElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//TypedElement/type"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//Type">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Type/package"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Type/createAssociation">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/createAssociation/end1IsNavigable"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/createAssociation/end1Aggregation"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/createAssociation/end1Name"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/createAssociation/end1Lower"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/createAssociation/end1Upper"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/createAssociation/end1Type"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/createAssociation/end2IsNavigable"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/createAssociation/end2Aggregation"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/createAssociation/end2Name"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/createAssociation/end2Lower"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/createAssociation/end2Upper"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Type/getAssociations"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Type/conformsTo">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Type/conformsTo/other"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Association">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Association/ownedEnd"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Association/memberEnd"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Association/isDerived"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Association/endType"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Association/navigableOwnedEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Association/specialized_end_number">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Association/specialized_end_number/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Association/specialized_end_number/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Association/specialized_end_types">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Association/specialized_end_types/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Association/specialized_end_types/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Association/binary_associations">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Association/binary_associations/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Association/binary_associations/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Association/association_ends">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Association/association_ends/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Association/association_ends/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Association/isBinary"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Association/getEndTypes"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//Classifier">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Classifier/isAbstract"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Classifier/generalization"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Classifier/powertypeExtent"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Classifier/feature"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Classifier/inheritedMember"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Classifier/redefinedClassifier"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Classifier/general"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Classifier/attribute"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/no_cycles_in_generalization">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/no_cycles_in_generalization/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/no_cycles_in_generalization/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/generalization_hierarchies">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/generalization_hierarchies/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/generalization_hierarchies/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/specialize_type">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/specialize_type/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/specialize_type/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/maps_to_generalization_set">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/maps_to_generalization_set/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/maps_to_generalization_set/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/getAllAttributes"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/getGenerals"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/getInheritedMembers"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/allFeatures"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/parents"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/inheritableMembers">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/inheritableMembers/c"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/hasVisibilityOf">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/hasVisibilityOf/n"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/conformsTo">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/conformsTo/other"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/inherit">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/inherit/inhs"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/maySpecializeType">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Classifier/maySpecializeType/c"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/allParents"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/hasKindAncestor"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/hasQuantityAncestor"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/hasCollectiveAncestor"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/hasKindOffspring"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/hasQuantityOffspring"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/hasCollectiveOffspring"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/hasFunctionalComplexInstances"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/hasQuantityInstances"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/hasCollectiveInstances"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/children"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/allChildren"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Classifier/partitions"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//RedefinableElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//RedefinableElement/isLeaf"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//RedefinableElement/redefinedElement"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//RedefinableElement/redefinitionContext"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//RedefinableElement/redefinition_context_valid">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//RedefinableElement/redefinition_context_valid/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//RedefinableElement/redefinition_context_valid/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//RedefinableElement/redefinition_consistent">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//RedefinableElement/redefinition_consistent/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//RedefinableElement/redefinition_consistent/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//RedefinableElement/isConsistentWith">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//RedefinableElement/isConsistentWith/redefinee"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//RedefinableElement/isRedefinitionContextValid">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//RedefinableElement/isRedefinitionContextValid/redefined"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Generalization">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Generalization/isSubstitutable"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Generalization/general"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Generalization/generalizationSet"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Generalization/specific"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Generalization/generalization_same_classifier">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Generalization/generalization_same_classifier/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Generalization/generalization_same_classifier/context"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//GeneralizationSet">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//GeneralizationSet/isCovering"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//GeneralizationSet/isDisjoint"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//GeneralizationSet/powertype"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//GeneralizationSet/generalization"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//GeneralizationSet/generalization_same_classifier">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//GeneralizationSet/generalization_same_classifier/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//GeneralizationSet/generalization_same_classifier/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//GeneralizationSet/maps_to_generalization_set">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//GeneralizationSet/maps_to_generalization_set/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//GeneralizationSet/maps_to_generalization_set/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//GeneralizationSet/parent"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//GeneralizationSet/children"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//Feature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Feature/isStatic"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Feature/featuringClassifier"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//OpaqueExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//OpaqueExpression/body"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//OpaqueExpression/language"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//OpaqueExpression/language_body_size">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//OpaqueExpression/language_body_size/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//OpaqueExpression/language_body_size/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//OpaqueExpression/only_return_result_parameters">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//OpaqueExpression/only_return_result_parameters/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//OpaqueExpression/only_return_result_parameters/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//OpaqueExpression/one_return_result_parameter">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//OpaqueExpression/one_return_result_parameter/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//OpaqueExpression/one_return_result_parameter/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//OpaqueExpression/getResult"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//OpaqueExpression/value"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//OpaqueExpression/isIntegral"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//OpaqueExpression/isPositive"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//OpaqueExpression/isNonNegative"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MultiplicityElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//MultiplicityElement/isOrdered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//MultiplicityElement/isUnique"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//MultiplicityElement/upper"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//MultiplicityElement/lower"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MultiplicityElement/upperValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MultiplicityElement/lowerValue"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/lower_ge_0">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/lower_ge_0/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/lower_ge_0/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/upper_ge_lower">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/upper_ge_lower/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/upper_ge_lower/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/value_specification_no_side_effects">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/value_specification_no_side_effects/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/value_specification_no_side_effects/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/value_specification_constant">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/value_specification_constant/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/value_specification_constant/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/setLower">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/setLower/newLower"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/setUpper">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/setUpper/newUpper"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/getLower"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/getUpper"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/isMultivalued"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/includesCardinality">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/includesCardinality/C"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/includesMultiplicity">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/includesMultiplicity/M"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/lowerBound"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/upperBound"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/compatibleWith">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/compatibleWith/other"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MultiplicityElement/is">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/is/lowerbound"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//MultiplicityElement/is/upperbound"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Property">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Property/class"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Property/datatype"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Property/isDerived"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Property/isDerivedUnion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Property/default"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Property/aggregation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Property/isComposite.1"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Property/redefinedProperty"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Property/owningAssociation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Property/defaultValue"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Property/opposite"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Property/subsettedProperty"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Property/association"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/multiplicity_of_composite">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/multiplicity_of_composite/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/multiplicity_of_composite/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/subsetting_context_conforms">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/subsetting_context_conforms/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/subsetting_context_conforms/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/redefined_property_inherited">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/redefined_property_inherited/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/redefined_property_inherited/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/subsetting_rules">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/subsetting_rules/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/subsetting_rules/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/navigable_readonly">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/navigable_readonly/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/navigable_readonly/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/derived_union_is_derived">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/derived_union_is_derived/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/derived_union_is_derived/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/derived_union_is_read_only">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/derived_union_is_read_only/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/derived_union_is_read_only/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/subsetted_property_names">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/subsetted_property_names/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/subsetted_property_names/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/deployment_target">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/deployment_target/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/deployment_target/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/binding_to_attribute">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/binding_to_attribute/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/binding_to_attribute/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/getDefault"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/isSetDefault"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/setDefault">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/setDefault/newDefault"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/setIsComposite">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/setIsComposite/newIsComposite"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/setOpposite">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/setOpposite/newOpposite"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/unsetDefault"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/setIsNavigable">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/setIsNavigable/isNavigable"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/getOtherEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/setBooleanDefaultValue">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/setBooleanDefaultValue/value"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/setIntegerDefaultValue">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/setIntegerDefaultValue/value"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/setStringDefaultValue">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/setStringDefaultValue/value"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/setUnlimitedNaturalDefaultValue">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/setUnlimitedNaturalDefaultValue/value"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/setNullDefaultValue"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/isAttribute">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Property/isAttribute/p"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/getOpposite"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/isComposite"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/subsettingContext"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Property/isNavigable"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Class">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Class/nestedClassifier"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Class/superClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Class/isActive"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Class/ownedAttribute"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Class/passive_class">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Class/passive_class/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Class/passive_class/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Class/createOwnedOperation">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Class/createOwnedOperation/name"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Class/createOwnedOperation/parameterNames"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Class/createOwnedOperation/parameterTypes"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//Class/createOwnedOperation/returnType"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Class/isMetaclass"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Model">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Model/viewpoint"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Model/isMetamodel"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//DataType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//DataType/ownedAttribute"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//DataType/createOwnedOperation">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//DataType/createOwnedOperation/name"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//DataType/createOwnedOperation/parameterNames"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//DataType/createOwnedOperation/parameterTypes"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//DataType/createOwnedOperation/returnType"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//DataType/createOwnedAttribute">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//DataType/createOwnedAttribute/name"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//DataType/createOwnedAttribute/type"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//DataType/createOwnedAttribute/lower"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//DataType/createOwnedAttribute/upper"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//StructuralFeature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//StructuralFeature/isReadOnly"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//StringExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//StringExpression/subExpression"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//StringExpression/owningExpression"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//StringExpression/operands">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//StringExpression/operands/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//StringExpression/operands/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//StringExpression/subexpressions">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//StringExpression/subexpressions/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//StringExpression/subexpressions/context"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Expression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Expression/symbol"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Expression/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//PackageMerge">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//PackageMerge/mergedPackage"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//PackageMerge/receivingPackage"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//InstanceSpecification">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//InstanceSpecification/classifier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//InstanceSpecification/slot"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//InstanceSpecification/specification"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//InstanceSpecification/defining_feature">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//InstanceSpecification/defining_feature/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//InstanceSpecification/defining_feature/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//InstanceSpecification/structural_feature">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//InstanceSpecification/structural_feature/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//InstanceSpecification/structural_feature/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//InstanceSpecification/deployment_target">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//InstanceSpecification/deployment_target/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//InstanceSpecification/deployment_target/context"/>
+      </genOperations>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//InstanceSpecification/deployment_artifact">
+        <genParameters ecoreParameter="RefOntoUML.ecore#//InstanceSpecification/deployment_artifact/diagnostics"/>
+        <genParameters ecoreParameter="RefOntoUML.ecore#//InstanceSpecification/deployment_artifact/context"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Slot">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Slot/definingFeature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Slot/value"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Slot/owningInstance"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//LiteralSpecification"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Enumeration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//Enumeration/ownedLiteral"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//EnumerationLiteral">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//EnumerationLiteral/enumeration"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//OrdinalEnumeration"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//OrdinalLiteral"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//PrimitiveType"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//ReferenceStructure">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//ReferenceStructure/ownedRegions"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//NominalStructure"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//StringNominalStructure"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MeasurementStructure"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MeasurementDimension">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MeasurementDimension/domain"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//MeasurementDimension/unitOfMeasure"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MeasurementDimension/lowerBound"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MeasurementDimension/upperBound"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MeasurementDimension/isNonBoundary"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MeasurementDimension/isOneBoundary"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MeasurementDimension/isCircular"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//OrdinalDimension"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//IntegerOrdinalDimension"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//DecimalOrdinalDimension"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//IntervalDimension"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//IntegerIntervalDimension"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//DecimalIntervalDimension"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//RationalDimension"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//IntegerRationalDimension"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//DecimalRationalDimension"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//MeasurementDomain">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MeasurementDomain/ownedDimensions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MeasurementDomain/compositionRule"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//MeasurementDomain/isScientific"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//ReferenceRegion">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//ReferenceRegion/structure"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MeasurementRegion"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//BasicMeasurementRegion"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//DecimalMeasurementRegion"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//IntegerMeasurementRegion"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//ComposedMeasurementRegion">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//ComposedMeasurementRegion/ownedRegions"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//NominalRegion"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//StringNominalRegion"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//LiteralInteger">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//LiteralInteger/value"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//LiteralDecimal">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//LiteralDecimal/value"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//LiteralDecimal/decimalValue"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//LiteralString">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//LiteralString/value"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//LiteralBoolean">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//LiteralBoolean/value"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//LiteralNull"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//InstanceValue">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//InstanceValue/instance"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//LiteralUnlimitedNatural">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//LiteralUnlimitedNatural/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//ObjectClass"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MomentClass"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//SortalClass"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MixinClass"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//RigidSortalClass"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//AntiRigidSortalClass">
+      <genOperations ecoreOperation="RefOntoUML.ecore#//AntiRigidSortalClass/rigidParent"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//SubstanceSortal"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//SubKind"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Kind"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Quantity"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Collective">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Collective/isExtensional"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Phase"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Role">
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Role/mediation"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Role/relator"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//RigidMixinClass"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//NonRigidMixinClass"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Category"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//AntiRigidMixinClass"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//SemiRigidMixinClass"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//RoleMixin">
+      <genOperations ecoreOperation="RefOntoUML.ecore#//RoleMixin/mediation"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//RoleMixin/relator"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//RoleMixin/roles"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//RoleMixin/rigidSortals"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Mixin"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//IntrinsicMomentClass">
+      <genOperations ecoreOperation="RefOntoUML.ecore#//IntrinsicMomentClass/characterization"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//IntrinsicMomentClass/characterized"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Mode"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Quality"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Relator">
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Relator/mediations"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Relator/mediated"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//DirectedBinaryAssociation">
+      <genOperations ecoreOperation="RefOntoUML.ecore#//DirectedBinaryAssociation/sourceEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//DirectedBinaryAssociation/targetEnd"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//Meronymic">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Meronymic/isShareable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Meronymic/isEssential"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Meronymic/isInseparable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Meronymic/isImmutablePart"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//Meronymic/isImmutableWhole"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Meronymic/wholeEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Meronymic/partEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Meronymic/whole"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Meronymic/part"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//subQuantityOf"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//subCollectionOf"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//memberOf"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//componentOf"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//DependencyRelationship"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Characterization">
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Characterization/characterizingEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Characterization/characterizedEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Characterization/characterizing"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Characterization/characterized"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Mediation">
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Mediation/relatorEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Mediation/mediatedEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Mediation/relator"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Mediation/mediated"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Derivation">
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Derivation/materialEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Derivation/relatorEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Derivation/relator"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Derivation/material"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//Structuration">
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Structuration/structuringEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Structuration/structuredEnd"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Structuration/structuring"/>
+      <genOperations ecoreOperation="RefOntoUML.ecore#//Structuration/structured"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//FormalAssociation"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//MaterialAssociation"/>
+  </genPackages>
+</genmodel:GenModel>
