@@ -44,9 +44,23 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 				return "dois ou mais ";
 			else
 				return "duas ou mais ";
-		}	
+		}else if(target.getMinMultiplicity() == 3 && target.getMaxMultiplicity() == -1){ // (3,*)
+			return "três ou mais ";
+		}else if(target.getMinMultiplicity() == 4 && target.getMaxMultiplicity() == -1){ // (4,*)
+			return "quatro ou mais ";
+		}else if(target.getMinMultiplicity() == 5 && target.getMaxMultiplicity() == -1){ // (5,*)
+			return "cinco ou mais ";
+		}else if(target.getMinMultiplicity() == 10 && target.getMaxMultiplicity() == -1){ // (10,*)
+			return "dez ou mais ";
+		}else if(target.getMinMultiplicity() == 20 && target.getMaxMultiplicity() == -1){ // (20,*)
+			return "vinte ou mais ";
+		}				
 		
-		return "$INDEF$ ";
+		// Standard description. Exception case
+		if(dictionary.isMale(target.getLabel()))
+			return "vários ";
+		else
+			return "várias ";
 	}
 	
 	@Override
@@ -391,9 +405,9 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
+		if(previousPattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern) parcialDescription += " quando envolvido";	
+		else if(previousPattern instanceof GeneralizationPattern || 
 				previousPattern instanceof ReflexivePattern) parcialDescription += " e se envolve";
-		else if(previousPattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern) parcialDescription += " quando envolvido";
 		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " , além disso, se envolve";
 		else if(previousPattern instanceof PartOfPattern) parcialDescription += " , além disso, se envolve";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " , além disso, se envolve";
@@ -415,7 +429,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		if(previousPattern instanceof GeneralizationPattern || 
 				previousPattern instanceof ReflexivePattern) parcialDescription += "e pode";
 		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof FormalPattern) parcialDescription += ", além de poder"; 
-		else if(previousPattern instanceof ExceptionMediationPattern || previousPattern instanceof ExceptionMediationRevPattern) parcialDescription += " e poder"; 
+		else if(previousPattern instanceof ExceptionMediationPattern) parcialDescription += " e poder"; 
 		else if(previousPattern == null) parcialDescription += " pode";			
 		
 		// Generating specific description
@@ -442,24 +456,6 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 					
 		return parcialDescription;
 	}
-
-	@Override
-	protected String processExceptionMediationRevPattern(
-			DescriptionPattern pattern, DescriptionPattern previousPattern,
-			String parcialDescription) {
-
-		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " que";
-		else if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além disso,";
-		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
-		
-		// Generating specific description
-		parcialDescription += " se relaciona com " + 
-				insertListing((NaryPattern)pattern, true, "e");
-					
-		return parcialDescription;
-	}
 	
 	@Override
 	protected String processOptionalExceptionMediationPattern(
@@ -471,24 +467,6 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 				previousPattern instanceof ReflexivePattern) parcialDescription += " e pode";
 		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e pode";
-		else if(previousPattern == null) parcialDescription += " pode";
-		
-		// Generating specific description
-		parcialDescription += " estar relacionado com " + 
-				insertListing((NaryPattern)pattern, true, "ou");
-					
-		return parcialDescription;
-	}
-	
-	@Override
-	protected String processOptionalExceptionMediationRevPattern(
-			DescriptionPattern pattern, DescriptionPattern previousPattern,
-			String parcialDescription) {
-
-		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e pode";
-		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern == null) parcialDescription += " pode";
 		
 		// Generating specific description
@@ -528,10 +506,9 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 				previousPattern instanceof ReflexivePattern) parcialDescription += " e";	
 		else if(previousPattern instanceof OrdinaryMediationPattern || 
 				previousPattern instanceof ExceptionMediationPattern ||
-				previousPattern instanceof ExceptionMediationRevPattern ||
 				previousPattern instanceof OrdinaryOptionalMediationPattern ||
 				previousPattern instanceof OptionalExceptionMediationPattern ||
-				previousPattern instanceof OptionalExceptionMediationRevPattern ||
+				previousPattern instanceof AbstractMediationRevPattern ||
 				previousPattern instanceof PhasePattern ||
 				previousPattern instanceof FormalPattern ||
 				previousPattern instanceof CharacterizationPattern ||
