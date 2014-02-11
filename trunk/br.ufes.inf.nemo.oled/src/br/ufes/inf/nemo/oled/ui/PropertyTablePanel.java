@@ -3,13 +3,15 @@ package br.ufes.inf.nemo.oled.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 
-import javax.swing.DefaultCellEditor;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -18,8 +20,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Element;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.dialog.FeatureListDialog;
 import br.ufes.inf.nemo.oled.util.ColorPalette;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 
@@ -37,6 +41,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	private JTable table;	
 	private PropertyTableModel tablemodel;
 	private DefaultMutableTreeNode node;
+	private RefOntoUML.Element element;
 	
 	public PropertyTablePanel(UmlProject project)
 	{
@@ -55,81 +60,88 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	
 	private PropertyTableModel createCollectiveTableModel (RefOntoUML.Collective c)
 	{
+		this.element=c;
 		Object[][] data = {
-		{"    Name", c.getName()},			
-		{"    Abstract", c.isIsAbstract()},
-		{"    Extensional", c.isIsExtensional()},
+		{"    Name", c.getName(),""},			
+		{"    Abstract", c.isIsAbstract(),""},
+		{"    Extensional", c.isIsExtensional(),""},
 		};
-		String[] columnNames = {"Property","Value"};
+		String[] columnNames = {"Property","Value",""};
 		tablemodel = new PropertyTableModel(columnNames,data);
 		return tablemodel;
 	}
 	
 	private PropertyTableModel createClassAndDataTypeTableModel (RefOntoUML.Classifier c)
 	{
+		this.element=c;
 		Object[][] data = {
-		{"    Name", c.getName()},			
-		{"    Abstract", c.isIsAbstract()},		
+		{"    Name", c.getName(),""},			
+		{"    Abstract", c.isIsAbstract(),""},		
 		};
-		String[] columnNames = {"Property","Value"};
+		String[] columnNames = {"Property","Value",""};
 		tablemodel = new PropertyTableModel(columnNames,data);
 		return tablemodel;
 	}	
 	
 	private PropertyTableModel createAssociationTableModel (RefOntoUML.Association c)
 	{
+		this.element=c;
 		Object[][] data = {
-		{"    Name", c.getName()},			
-		{"    Abstract", c.isIsAbstract()},
-		{"    Derived", c.isIsDerived()},
+		{"    Name", c.getName(),""},				
+		{"    Abstract", c.isIsAbstract(),""},	
+		{"    Derived", c.isIsDerived(),""},	
 		};		
-		String[] columnNames = {"Property","Value"};
+		String[] columnNames = {"Property","Value",""};
 		tablemodel = new PropertyTableModel(columnNames,data);
 		return tablemodel;
 	}
 	
 	private PropertyTableModel createMeronymicTableModel (RefOntoUML.Meronymic m)
 	{
+		this.element=m;
 		Object[][] data = {
-		{"    Name", m.getName()},			
-		{"    Abstract", m.isIsAbstract()},
-		{"    Derived", m.isIsDerived()},			
-		{"    Essential", m.isIsEssential()},
-		{"    Inseparable", m.isIsInseparable()},
-		{"    Shareable", m.isIsShareable()},
-		{"    ImmutablePart", m.isIsImmutablePart()},
-		{"    ImmutableWhole", m.isIsImmutableWhole()},
+		{"    Name", m.getName(),""},				
+		{"    Abstract", m.isIsAbstract(),""},	
+		{"    Derived", m.isIsDerived(),""},				
+		{"    Essential", m.isIsEssential(),""},	
+		{"    Inseparable", m.isIsInseparable(),""},	
+		{"    Shareable", m.isIsShareable(),""},	
+		{"    ImmutablePart", m.isIsImmutablePart(),""},	
+		{"    ImmutableWhole", m.isIsImmutableWhole(),""},	
 		};		
-		String[] columnNames = {"Property","Value"};
+		String[] columnNames = {"Property","Value",""};
 		tablemodel = new PropertyTableModel(columnNames,data);
 		return tablemodel;
 	}
 	
 	private PropertyTableModel createPropertyTableModel (RefOntoUML.Property p)
 	{
+		this.element=p;
 		Object[][] data = {
-		{"    Name", p.getName()},			
-		{"    Type", new OntoUMLElement(p.getType(),"")},
-		{"    Upper", (new Integer(p.getUpper()))},
-		{"    Lower", (new Integer(p.getLower()))},
-		{"    Derived", p.isIsDerived()},
-		{"    Read Only", p.isIsReadOnly()},
-		{"    Aggregation Kind", p.getAggregation()},
-		{"    Redefined", p.getRedefinedProperty()},
+		{"    Name", p.getName(),""},				
+		{"    Type", new OntoUMLElement(p.getType(),""),""},	
+		{"    Upper", (new Integer(p.getUpper())),""},	
+		{"    Lower", (new Integer(p.getLower())),""},	
+		{"    Derived", p.isIsDerived(),""},	
+		{"    Read Only", p.isIsReadOnly(),""},	
+		{"    Aggregation Kind", p.getAggregation(),""},	
+		{"    Redefined", p.getRedefinedProperty(),""},
+		{"    Subsetted", p.getSubsettedProperty(),""},	
 		};		
-		String[] columnNames = {"Property","Value"};
+		String[] columnNames = {"Property","Value",""};
 		tablemodel = new PropertyTableModel(columnNames,data);
 		return tablemodel;
 	}
 	
 	private PropertyTableModel createGeneralizationSetTableModel (RefOntoUML.GeneralizationSet p)
 	{
+		this.element=p;
 		Object[][] data = {
-		{"    Name", p.getName()},				
-		{"    Covering", p.isIsCovering()},
-		{"    Disjoint", p.isIsDisjoint()},		
+		{"    Name", p.getName(),""},					
+		{"    Covering", p.isIsCovering(),""},	
+		{"    Disjoint", p.isIsDisjoint(),""},			
 		};		
-		String[] columnNames = {"Property","Value"};
+		String[] columnNames = {"Property","Value",""};
 		tablemodel = new PropertyTableModel(columnNames,data);		
 		/*ArrayList<String> generalizations = new ArrayList<String>(); 
 		for(RefOntoUML.Generalization g: c.getGeneralization()){
@@ -144,37 +156,64 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	
 	private PropertyTableModel createGeneralizationTableModel (RefOntoUML.Generalization p)
 	{
+		this.element=p;
 		Object[][] data = {
-		{"    General", new OntoUMLElement(p.getGeneral(),"")},
+		{"    General", new OntoUMLElement(p.getGeneral(),""),""},
 		//{"    Specific", new OntoUMLElem(p.getSpecific(),"")},				
 		};		
-		String[] columnNames = {"Property","Value"};
+		String[] columnNames = {"Property","Value",""};
 		tablemodel = new PropertyTableModel(columnNames,data);
 		return tablemodel;
 	}
 	
 	private PropertyTableModel createPackageTableModel (RefOntoUML.Package p)
 	{
+		this.element=p;
 		Object[][] data = {
-		{"    Name", p.getName()},			
+		{"    Name", p.getName(),""},			
 		};		
-		String[] columnNames = {"Property","Value"};
+		String[] columnNames = {"Property","Value",""};
 		tablemodel = new PropertyTableModel(columnNames,data);
 		return tablemodel;
 	}
 	
+
 	private void configureTable ()
 	{
 		table.getModel().addTableModelListener(this);
 		
 		// edit table on the single click
-	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
-	    singleclick.setClickCountToStart(1);	
-        table.setDefaultEditor(table.getColumnClass(1), singleclick);
+//	    DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
+//	    singleclick.setClickCountToStart(1);	
+//	    table.setDefaultEditor(table.getColumnClass(1), singleclick);
         
-        table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(project));
-        
-		table.repaint();
+	    table.getColumnModel().getColumn(1).setCellEditor(new PropertyTableCellEditor(project, table));
+	    
+	    Action action = new AbstractAction()
+	    {
+			private static final long serialVersionUID = 1L;
+			public void actionPerformed(ActionEvent e)
+	        {	        		            
+	        	final int modelRow = Integer.valueOf( e.getActionCommand() );	        		
+	        	String value = (String) tablemodel.getValueAt(modelRow,0);
+	        	
+	        	if(value.trim().compareToIgnoreCase("redefined")==0 || (value.trim().compareToIgnoreCase("subsetted")==0))
+	        	{
+		        	SwingUtilities.invokeLater(new Runnable() {					
+						@Override
+						public void run() {
+							FeatureListDialog.open((PropertyTableModel)table.getModel(), modelRow, 1, ProjectBrowser.getParserFor(project));						
+						}
+					});		
+ 				}
+	        }
+	    };
+	    new ButtonColumn(table, action, 2);	    
+	    for(int i=0;i<table.getRowCount();i++){
+	    	table.setRowHeight(i, 18);	
+	    }	    
+	    
+	    table.repaint();
 		table.validate();	
 	}
 	
@@ -294,7 +333,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 				
 		setLayout(new BorderLayout(0, 0));		
 
-		String[] columnNames = {"Property","Value"};
+		String[] columnNames = {"Property","Value",""};
         Object[][] data = {};
         
         scrollpane = new JScrollPane();		
@@ -308,7 +347,6 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 		scrollpane.setViewportView(table);
 
 		table.setBorder(new EmptyBorder(0, 0, 0, 0));
-		//table.setPreferredScrollableViewportSize(new Dimension(500, 150));		
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.LIGHT_GRAY);		
 	    table.setSelectionBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_MEDIUM));
@@ -320,17 +358,16 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	
 	@Override
 	public void tableChanged(TableModelEvent e) 
-	{
+	{		
  		 int row = e.getFirstRow();
 	     int column = e.getColumn();
+	     if (column==2) return; // these changes are only made through the components at the column 1. See line 201 for changes through column 2.
+	     
 	     TableModel model = (TableModel)e.getSource();
-	     //String columnName = model.getColumnName(column);
 	     String property = ((String)model.getValueAt(row, 0)).trim();
 	     Object value = model.getValueAt(row, column);
 	     EObject elem = ((OntoUMLElement)node.getUserObject()).getElement();	     
 	     
-	     // Do something with the value... modifying the correspondent OntoUML elem
-
 	     if(elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType)
 	     {
 	    	 if(property.equals("Name")) ((RefOntoUML.Classifier)elem).setName((String)value);
@@ -395,7 +432,6 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	     if(elem instanceof RefOntoUML.Generalization)
 	     {
 	    	 if(property.equals("General")) ((RefOntoUML.Generalization)elem).setGeneral((RefOntoUML.Classifier)((OntoUMLElement)value).getElement());
-	    	 //if(property.equals("Specific")) ((RefOntoUML.Generalization)elem).setSpecific((RefOntoUML.Classifier)((OntoUMLElem)value).getElement());
 	     }
 	     
 	     if(elem instanceof RefOntoUML.Package)
@@ -410,5 +446,13 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	public void setProject(UmlProject project)
 	{
 		this.project = project;
+	}
+
+	public Element getElement() {		
+		return element;
+	}
+
+	public JTable getTable() {
+		return table;
 	}
 }

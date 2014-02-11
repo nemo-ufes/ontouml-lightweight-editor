@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,11 +12,13 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
+import org.eclipse.emf.ecore.EObject;
+
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -25,12 +28,15 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
 	private static final long serialVersionUID = 1L;
 	
 	private TableCellEditor editor;
+	@SuppressWarnings("unused")
+	private JTable table;
 	private UmlProject project;
 	
-	public PropertyTableCellEditor(UmlProject project)
+	public PropertyTableCellEditor(UmlProject project, JTable table)
 	{
 		super();
 		this.project = project;
+		this.table=table;
 	}
 	
     @Override
@@ -52,11 +58,14 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) 
+    public Component getTableCellEditorComponent(final JTable table, Object value, boolean isSelected, int row, int column) 
     {
     	if (value==null){
     		
-    		editor = new DefaultCellEditor(new JTextField());
+    		JTextField textField = new JTextField();
+    		textField.setEditable(false);
+	    	textField.setEnabled(false);
+    		editor = new DefaultCellEditor(textField);
     		
     	} else if (value instanceof String || value instanceof Integer) {
         	
@@ -101,11 +110,35 @@ public class PropertyTableCellEditor extends AbstractCellEditor implements Table
 	        editor = new DefaultCellEditor(comboBox);	    
 
 	    }else if (value instanceof List) {
+	    	List<Object> valueList = (List<Object>)value;
 	    	
-	    	JOptionPane.showMessageDialog(ProjectBrowser.frame, "Teste");
-	        editor = new DefaultCellEditor(new JTextField("oi"));
+	    	String str = new String();
+	    	int i=0;
+	    	for(Object p: valueList){
+	    		if(p instanceof Property){
+	    			Property p2 = (Property)p;
+	    			if (i==valueList.size()-1) str += "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+"";
+	    			else str += "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+", ";
+	    		}
+	    		i++;
+	    	}		
+	    	
+	    	JTextField textField = new JTextField(str);
+	    	textField.setEditable(false);
+	    	textField.setEnabled(false);
+	    	editor = new DefaultCellEditor(textField);
 	    }
 	    
         return editor.getTableCellEditorComponent(table, value, isSelected, row, column);
-    }   
+    }
+    
+    public static String getStereotype(EObject element)
+	{
+		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+	    type = type.replaceAll("Impl","");
+	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
+	    type = type.replace("Association","");
+	    return type;
+	}
+	
 }	
