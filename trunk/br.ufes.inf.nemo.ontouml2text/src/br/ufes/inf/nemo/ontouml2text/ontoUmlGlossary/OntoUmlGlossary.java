@@ -20,7 +20,8 @@ public class OntoUmlGlossary {
 	private DescriptionSpace descriptionSpace;
 	private StringGenerator stringGenerator;
 	
-	public OntoUmlGlossary(final int idiom, final OntoUMLParser parser, final String outputName, final String outputdirectory){
+	public OntoUmlGlossary(final int idiom, final OntoUMLParser parser, final String outputName, 
+			final String outputdirectory, final String title, final String subtitle){
 		descriptionSpace = new DescriptionSpace();
 		
 		// Hash containing the labels of the categories already covered
@@ -33,7 +34,7 @@ public class OntoUmlGlossary {
 		switch(idiom){
 		case PT_BR:
 			stringGenerator = new StringGenerator(descriptionSpace, 
-					new HtmlGlossaryExporter(outputName,outputdirectory,"Glossário ANTT"), 
+					new HtmlGlossaryExporter(outputName,outputdirectory,title,subtitle), 
 					new PortugueseLanguageAdaptor(new PortugueseDictionary()));
 			break;
 		case EN_US:
