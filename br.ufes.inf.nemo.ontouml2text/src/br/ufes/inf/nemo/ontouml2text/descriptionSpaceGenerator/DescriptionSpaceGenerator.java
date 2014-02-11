@@ -371,15 +371,21 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 			
 			Classifier searchObject;
 			boolean isSon;
-			 	
-		 	
+			String specificName=null;
+			String searchObjName =null;
+			
 			// Rule05's condition 
 			if(((RefOntoUML.Generalization) r).getGeneralizationSet().size() > 0){
 				processGeneralizationSet(((RefOntoUML.Generalization) r),source,hashCategories, classfSet);
 				continue;
 			}
 		 	
-			if(source.getLabel().equals(((RefOntoUML.Generalization) r).getSpecific().getName())){
+			specificName = ((RefOntoUML.Generalization) r).getSpecific().getName();
+		
+			if(specificName.contains("/"))
+				specificName = specificName.replace("/","");
+			
+			if(source.getLabel().equals(specificName)){
 		 		searchObject = ((RefOntoUML.Generalization) r).getGeneral();
 		 		isSon = true;
 		 	}
@@ -388,6 +394,7 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 		 		isSon = false;
 		 	}		
 		 	
+		
 			if(generalizationSpace.findCategory(searchObject.getName()) == null){
 				target = createCategoryClass((Class) searchObject, classfSet);
 				
@@ -402,7 +409,13 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 			
 			else{ 
 				
-				if(hashCategories.contains(searchObject.getName())) 
+				searchObjName = searchObject.getName();
+				
+				if(searchObjName.contains("/")){
+					searchObjName = searchObjName.replace("/","");
+				}
+				
+				if(hashCategories.contains(searchObjName)) 
 					continue;	
 				
 				else{
@@ -427,14 +440,21 @@ private void processGeneralizationSet(RefOntoUML.Generalization r, DescriptionCa
  	boolean complete;
  	String genSetName;
  	GeneralizationSet existsGenSet;
- 	
+ 	String searchObjName = null;
+	String specificName = null;
 
  	for(RefOntoUML.GeneralizationSet genSet : r.getGeneralizationSet()){ 		
  		complete = genSet.isIsCovering();
  		disjoint = genSet.isIsDisjoint(); 			
  		genSetName = genSet.getName();
 
-		if(source.getLabel().equals(r.getSpecific().getName())){ //se o source for a classe de baixo, procura o de cima
+ 		specificName = ((RefOntoUML.Generalization) r).getSpecific().getName();
+		
+		if(specificName.contains("/"))
+			specificName = specificName.replace("/","");
+		
+ 		
+		if(source.getLabel().equals(specificName)){ //se o source for a classe de baixo, procura o de cima
 	 		searchObject = r.getGeneral();
 	 		isSon = false;
 	 	}
@@ -493,7 +513,14 @@ private void processGeneralizationSet(RefOntoUML.Generalization r, DescriptionCa
 			continue;
 		}
 		else{ 		
-			if(hashCategories.contains(searchObject.getName()))
+			
+			searchObjName = searchObject.getName();
+			
+			if(searchObjName.contains("/")){
+				searchObjName = searchObjName.replace("/","");
+			}
+			
+			if(hashCategories.contains(searchObjName))
 				continue;	
 			
 			else{	
@@ -587,6 +614,7 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 	boolean essential, inseparable, shareable;
 	
 		if(r instanceof RefOntoUML.Generalization){
+					
 			mat = new Generalization("",source,target,1,1,1,1);	
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
