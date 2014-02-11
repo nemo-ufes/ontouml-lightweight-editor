@@ -39,6 +39,7 @@ import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
@@ -244,6 +245,12 @@ public class LineHandler implements EditorMode {
 		      connectMethod.generateAndSetPointsToConnection(conn, (UmlNode) source, (UmlNode)target, anchor, tmpPos);
 		    }	
 	  }
+	  // UmlNode ->(connectedTo) -> UmlNode
+	  if (source instanceof UmlConnection && target instanceof UmlConnection)
+	  {
+		  conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlConnection) source, (UmlConnection) target);
+		  connectMethod.generateAndSetPointsToConnection(conn, (UmlConnection) source, (UmlConnection)target, anchor, tmpPos);
+	  }
 	  if (conn!=null){
 		  //Add mapping from the refontouml element to the diagram element		  
 		  ModelHelper.addMapping(((UmlConnection)conn).getRelationship(), conn);
@@ -262,16 +269,26 @@ public class LineHandler implements EditorMode {
 		//UmlConnection ->(connectedTo) -> UmlNode
 		if (source instanceof UmlConnection && target instanceof UmlNode)
 		{
-			aSource =  (Classifier) ((AssociationElement)source).getRelationship(); 
-	    	aTarget =  (Classifier) ((UmlNode)target).getClassifier();
+			if (source instanceof GeneralizationElement){
+				aSource =  (Classifier) ((GeneralizationElement)source).getRelationship(); 
+				aTarget =  (Classifier) ((UmlNode)target).getClassifier();
+			}else {
+				aSource =  (Classifier) ((AssociationElement)source).getRelationship(); 
+				aTarget =  (Classifier) ((UmlNode)target).getClassifier();
+			}
 		}
 	    // UmlNode ->(connectedTo) -> UmlConnection
 		if (source instanceof UmlNode && target instanceof UmlConnection)
 		{
 			//invert sides if derivation is pushed from the UmlNode (relator), it should be from the UmlConnection (material)
 			if (relationType == RelationType.DERIVATION) { 
-				aSource =  (Classifier) ((AssociationElement)target).getRelationship(); 
-		    	aTarget =  (Classifier) ((UmlNode)source).getClassifier();
+				if (target instanceof GeneralizationElement){
+					aSource =  (Classifier) ((GeneralizationElement)target).getRelationship(); 
+					aTarget =  (Classifier) ((UmlNode)source).getClassifier();
+				}else{
+					aSource =  (Classifier) ((AssociationElement)target).getRelationship(); 
+					aTarget =  (Classifier) ((UmlNode)source).getClassifier();
+				}				
 			}
 		}
 	    // UmlNode ->(connectedTo) -> UmlNode
@@ -288,8 +305,24 @@ public class LineHandler implements EditorMode {
 		    	aTarget =  (Classifier) ((UmlNode)target).getClassifier();
 		    }		    	
 		}
-			  
-	    if(aSource !=null && aTarget != null){
+	    
+	    // UmlConnection ->(connectedTo) -> UmlConnection
+	    if (source instanceof UmlConnection && target instanceof UmlConnection)
+	    {
+	    	if (source instanceof GeneralizationElement){
+		    	aSource =  (Classifier) ((GeneralizationElement)source).getRelationship();		    	
+	    	}else{
+	    		aSource =  (Classifier) ((AssociationElement)source).getRelationship(); 
+	    	}
+	    	if (target instanceof GeneralizationElement){
+	    		aTarget =  (Classifier) ((GeneralizationElement)target).getRelationship();
+	    	}else{
+	    		aTarget =  (Classifier) ((AssociationElement)target).getRelationship();
+	    	}
+	    }
+	    
+	    if(aSource !=null && aTarget != null)
+	    {
 	    	AddConnectionCommand command = new AddConnectionCommand(editor, editor.getDiagram(), conn.getRelationship(), aSource, aTarget, editor.getDiagram().getProject(),eContainer);
 	    	editor.execute(command);
 	    }

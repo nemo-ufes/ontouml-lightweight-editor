@@ -1,0 +1,2 @@
+<%// same body as for multivalued derived feature %>
+<%@ include file="getGenFeature.TODO.override.javajetinc"%>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://nemo.inf.ufes.br/ontouml/refontouml"
+            class="RefOntoUML.RefOntoUMLPackage"
+            genModel="model/RefOntoUML.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <parser
+            type="refontouml"
+            class="RefOntoUML.util.RefOntoUMLResourceFactoryImpl"/>
+   </extension>
+
+</plugin>

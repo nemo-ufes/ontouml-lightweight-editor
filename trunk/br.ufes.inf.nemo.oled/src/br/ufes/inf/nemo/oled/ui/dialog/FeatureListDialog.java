@@ -218,7 +218,7 @@ public class FeatureListDialog extends JDialog {
 		});
 				
 		JLabel lblChoices = new JLabel("Choices:");		
-		JLabel lblFeature = new JLabel("Feature:");
+		JLabel lblFeature = new JLabel("Features:");
 		
 		JLabel lblChooseWhichProperties = new JLabel();
 		if (attributeName.trim().compareToIgnoreCase("redefined")==0)

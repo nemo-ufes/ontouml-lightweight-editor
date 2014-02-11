@@ -12,8 +12,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
+import RefOntoUML.Association;
+import RefOntoUML.Generalization;
+import RefOntoUML.Relationship;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -27,6 +32,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	final JMenuItem showNameItem;
 	final JMenuItem showMultiplicitiesItem;
 	final JMenuItem showStereotypeItem;
+	final JMenuItem rectMenuItem;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -36,12 +42,9 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		addSeparator();
 		
 		createMenuItem(this, "resetpoints");
-		//if (conn.isRectilinear()) {
-			createMenuItem(this, "recttodirect");
-		//} else {
-			createMenuItem(this, "directtorect");
-		//}
-		//addNavigabilityMenu(this, (UmlConnection) conn);
+		createMenuItem(this, "recttodirect");
+		rectMenuItem = createMenuItem(this, "directtorect");
+		
 		addSeparator();
 		
 		JMenu visibilityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.visibility.name"));
@@ -101,6 +104,27 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			showRolesItem.setSelected(((AssociationElement)con).showRoles());
 			showNameItem.setSelected(((AssociationElement)con).showName());
 			showStereotypeItem.setSelected(((AssociationElement)con).showOntoUmlStereotype());
+		}
+		rectMenuItem.setEnabled(true);
+		
+		if((con.getConnection1()!=null || con.getConnection2()!=null))
+		{
+			if (con instanceof AssociationElement){
+				Relationship rel = ((AssociationElement)con).getRelationship();
+				if (rel instanceof Association){
+					Type source = ((Association)rel).getMemberEnd().get(0).getType();
+					Type target = ((Association)rel).getMemberEnd().get(1).getType();
+					if (source instanceof Relationship || target instanceof Relationship) rectMenuItem.setEnabled(false);
+				}
+			}
+			if (con instanceof GeneralizationElement){
+				Relationship rel = ((GeneralizationElement)con).getRelationship();
+				if (rel instanceof Generalization){
+					Type source = ((Generalization)rel).getGeneral();
+					Type target = ((Generalization)rel).getSpecific();
+					if (source instanceof Relationship || target instanceof Relationship) rectMenuItem.setEnabled(false);
+				}	
+			}			
 		}
 	}		
 	

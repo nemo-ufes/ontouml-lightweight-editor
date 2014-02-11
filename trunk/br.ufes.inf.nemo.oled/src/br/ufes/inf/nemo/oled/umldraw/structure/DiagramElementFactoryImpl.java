@@ -530,6 +530,42 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     return conn;
   }
   
+  /**
+   * {@inheritDoc} This method also create the referred RefOntoUML Relationship of the UmlConnection. 
+   */
+  public UmlConnection createConnection(RelationType relationType, UmlConnection c1, UmlConnection c2) 
+  {
+    UmlConnection prototype = relationPrototypes.get(relationType);    
+    UmlConnection conn = null;
+    if (prototype != null) 
+    {
+      conn = (UmlConnection) prototype.clone();
+      bindConnection(conn, c1, c2);
+      if(conn.getRelationship() != null && conn.getRelationship() instanceof AssociationImpl)
+      {
+    	  Association association = (Association) conn.getRelationship();
+    	  association.setName(association.getName() + nextRelationCount(relationType));
+      }
+    }    
+    return conn;
+  }
+
+  /**
+   *  Create a UmlConnection from a RefOntoUML Relationship
+   */
+  public UmlConnection createConnection(RefOntoUML.Relationship relationship, UmlConnection c1, UmlConnection c2) 
+  {
+    UmlConnection prototype = relationPrototypes.get(RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase()));    
+    UmlConnection conn = null;
+    if (prototype != null) 
+    {
+      conn = (UmlConnection) prototype.clone();
+      conn.setRelationship(relationship);
+      bindConnection(conn, c1, c2);
+    }    
+    return conn;
+  }
+  
   public String nextRelationCount(RelationType relationType)
   {	  
 	  if (relationCounters.get(relationType)!=null) {
@@ -571,10 +607,17 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 	  if(c2!=null) c2.addConnection(conn);  
   }
   
-  public void bindConnection(UmlConnection conn, Connection c1, UmlNode node2) {
+  public void bindConnection(UmlConnection conn, UmlConnection c1, UmlNode node2) {
 	  conn.setNode2(node2);
 	  conn.setConnection1(c1);
 	  if(node2!=null) node2.addConnection(conn);
+	  if(c1!=null) c1.addConnection(conn);  
+  }
+  
+  public void bindConnection(UmlConnection conn, UmlConnection c1, UmlConnection c2) {
+	  conn.setConnection2(c2);
+	  conn.setConnection1(c1);
+	  if(c2!=null) c2.addConnection(conn);
 	  if(c1!=null) c1.addConnection(conn);  
   }
 
