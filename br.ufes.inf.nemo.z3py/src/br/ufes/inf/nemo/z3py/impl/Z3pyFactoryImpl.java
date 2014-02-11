@@ -35,7 +35,7 @@ public class Z3pyFactoryImpl extends EFactoryImpl implements Z3pyFactory {
 	 */
 	public static Z3pyFactory init() {
 		try {
-			Z3pyFactory theZ3pyFactory = (Z3pyFactory)EPackage.Registry.INSTANCE.getEFactory(Z3pyPackage.eNS_URI);
+			Z3pyFactory theZ3pyFactory = (Z3pyFactory)EPackage.Registry.INSTANCE.getEFactory("http://z3py/1.0"); 
 			if (theZ3pyFactory != null) {
 				return theZ3pyFactory;
 			}

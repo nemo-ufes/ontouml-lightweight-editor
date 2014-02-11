@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -43,14 +44,14 @@ public class Transformer {
 		generatedModel = factory.createOntoUMLZ3System();
 		//Gero toda a axiomatização referente a estrutura de mundos
 		populateWithBranchInTimeWorldStructure();
-		//Adiciono a função que utilizarei para verificar se um dado elemento existe em um dado mundo
-		addFunction("exists", 2);
+		//Adiciono a estrutura que utilizarei para verificar se um dado elemento existe em um dado mundo
+		populateWithExistenceAxioms();		
 		Resource resource;
 		try {
 			resource = ResourceUtil.loadReferenceOntoUML(sourceModelPath);
 			RefOntoUML.Package root  = (RefOntoUML.Package)resource.getContents().get(0);
 			ontoparser = new OntoUMLParser(root);	
-			populateWithObjectClasses();
+			populateWithObjectClasses();			
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -63,18 +64,60 @@ public class Transformer {
 		
 	}
 	
+	private void populateWithExistenceAxioms() {
+		addFunction("exists", 2);
+		
+	}
+
 	private void populateWithObjectClasses(){
+		List<RefOntoUML.Class> identityProviderTypes = new ArrayList<RefOntoUML.Class>();
+		
 		for(RefOntoUML.Class p: ontoparser.getAllInstances(ObjectClass.class)){
 			//Crio a função que representa o fato de um dado individuo ser daquele tipo em um dado mundo
 			addFunction(p.getName(),2);
+
+			//Tipagem dos argumentos da função: crio fórmula afirmando que se a função criada retorna true, então o primeiro argumento é world e o segundo existe nesse world. 
+			FunctionCall fc1 = factory.createFunctionCall(getFunction(p.getName()), getConstants(new int[]{1, 2}));
+			FunctionCall fc2 = factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
+			FunctionCall fc3 = factory.createFunctionCall(getFunction("exists"), getConstants(new int[]{1,2}));
+			LogicalBinaryExpression lbe1 = factory.createBinaryExpression(fc2, fc3, LogicalBinaryExpressionTypes.CONJUNCTION);
+			LogicalBinaryExpression lbe2 = factory.createBinaryExpression(fc1, lbe1, LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, lbe2, "If "+ p.getName() + "(x,y) holds then x is a world and y exists in x as a " + p.getName());
+
+			//Crio fórumla para evitar trivialização, ou seja, evitar que gere um modelo no qual nao existam elementos daquele tipo
+			addFormula(false, fc1, "Exists at least one "+ p.getName() + " in one world");
+			
 			if (p instanceof Kind){
-				System.out.println("KIND");
-						
+				//Como Kind provê identidade, adiciono o tipo ao conjunto de tipos provedores de identidade para no final criar a fórmula que garante que todo mundo tem identidade
+				identityProviderTypes.add(p);
+				//Crio formula que garante que o tipo é rígido
+				addRigidityFormula(p);						
 			}
+			
+			if (identityProviderTypes.size()>0)
+				addIdentityFormula(identityProviderTypes);
 			
 		}
 	}
 	
+	private void addIdentityFormula(List<RefOntoUML.Class> identityProviderTypes){
+		FunctionCall fc1 = factory.createFunctionCall(getFunction(identityProviderTypes.get(0).getName()), getConstants(new int[]{1, 2}));
+		FunctionCall fc1 
+		for(i = 1; i<identityProviderTypes.size();i++){
+			fc1 = factory.createFunctionCall(getFunction(p.getName()), getConstants(new int[]{1, 2}));
+		}
+	}
+	
+	
+	private void addRigidityFormula(RefOntoUML.Class type){
+		FunctionCall fc1 = factory.createFunctionCall(getFunction(type.getName()), getConstants(new int[]{1, 2}));
+		FunctionCall fc2 = factory.createFunctionCall(getFunction("exists"), getConstants(new int[]{3,2}));
+		FunctionCall fc3 = factory.createFunctionCall(getFunction(type.getName()), getConstants(new int[]{3,2}));
+		LogicalBinaryExpression lbe1 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
+		LogicalBinaryExpression lbe2 = factory.createBinaryExpression(lbe1, fc3, LogicalBinaryExpressionTypes.IMPLICATION);
+		addFormula(true, lbe2, type.getName() + " is a rigid type");
+		
+	}
 	
 	private void populateWithBranchInTimeWorldStructure(){
 		
@@ -246,6 +289,8 @@ public class Transformer {
 		lbe1 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
 		lbe2 = factory.createBinaryExpression(lbe1, fc3, LogicalBinaryExpressionTypes.IMPLICATION);
 		addFormula(true, lbe2, "A contrafactual world is acessible from all past worlds by the recursiveNext transitive closure");
+			
+		
 	}
 	
 	private BooleanFunctionDefinition addFunction(String name, int numberOfArguments){

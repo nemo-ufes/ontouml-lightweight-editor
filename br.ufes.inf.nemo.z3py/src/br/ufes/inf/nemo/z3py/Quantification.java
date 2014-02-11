@@ -20,6 +20,8 @@ import org.eclipse.emf.common.util.EList;
  *
  * @see br.ufes.inf.nemo.z3py.Z3pyPackage#getQuantification()
  * @model abstract="true"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore constraints='IrreflexiveQuant'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot IrreflexiveQuant='self.expression <> self'"
  * @generated
  */
 public interface Quantification extends Expression {

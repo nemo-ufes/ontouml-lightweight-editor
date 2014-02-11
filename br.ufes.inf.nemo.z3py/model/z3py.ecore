@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="z3py" nsURI="http://z3py/1.0" nsPrefix="z3py">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="settingDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+  </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Expression" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="FunctionCall" eSuperTypes="#//Expression">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="FunctionCallNumberOfArguments"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="FunctionCallNumberOfArguments" value="self.calledFunction.numberOfArguments = self.arguments->size()"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="calledFunction" lowerBound="1"
         eType="#//BooleanFunctionDefinition"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="arguments" ordered="false"
         unique="false" lowerBound="1" upperBound="-1" eType="#//IntConstant" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Quantification" abstract="true" eSuperTypes="#//Expression">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="IrreflexiveQuant"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="IrreflexiveQuant" value="self.expression &lt;> self"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//Expression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="quantifiesOver" ordered="false"

@@ -21,11 +21,13 @@ import br.ufes.inf.nemo.z3py.UniversalQuantification;
 import br.ufes.inf.nemo.z3py.Z3pyFactory;
 import br.ufes.inf.nemo.z3py.Z3pyPackage;
 
+import br.ufes.inf.nemo.z3py.util.Z3pyValidator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -198,6 +200,15 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 
 		// Initialize created meta-data
 		theZ3pyPackage.initializePackageContents();
+
+		// Register package validator
+		EValidator.Registry.INSTANCE.put
+			(theZ3pyPackage, 
+			 new EValidator.Descriptor() {
+				 public EValidator getEValidator() {
+					 return Z3pyValidator.INSTANCE;
+				 }
+			 });
 
 		// Mark meta-data to indicate it can't be changed
 		theZ3pyPackage.freeze();
@@ -676,6 +687,64 @@ public class Z3pyPackageImpl extends EPackageImpl implements Z3pyPackage {
 
 		// Create resource
 		createResource(eNS_URI);
+
+		// Create annotations
+		// http://www.eclipse.org/emf/2002/Ecore
+		createEcoreAnnotations();
+		// http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot
+		createPivotAnnotations();
+	}
+
+	/**
+	 * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createEcoreAnnotations() {
+		String source = "http://www.eclipse.org/emf/2002/Ecore";		
+		addAnnotation
+		  (this, 
+		   source, 
+		   new String[] {
+			 "invocationDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
+			 "settingDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
+			 "validationDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"
+		   });		
+		addAnnotation
+		  (functionCallEClass, 
+		   source, 
+		   new String[] {
+			 "constraints", "FunctionCallNumberOfArguments"
+		   });			
+		addAnnotation
+		  (quantificationEClass, 
+		   source, 
+		   new String[] {
+			 "constraints", "IrreflexiveQuant"
+		   });	
+	}
+
+	/**
+	 * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createPivotAnnotations() {
+		String source = "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot";				
+		addAnnotation
+		  (functionCallEClass, 
+		   source, 
+		   new String[] {
+			 "FunctionCallNumberOfArguments", "self.calledFunction.numberOfArguments = self.arguments->size()"
+		   });			
+		addAnnotation
+		  (quantificationEClass, 
+		   source, 
+		   new String[] {
+			 "IrreflexiveQuant", "self.expression <> self"
+		   });
 	}
 
 } //Z3pyPackageImpl
