@@ -24,8 +24,8 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 			File general = new File(this.outputDirectory+"/"+this.outputName);
 			general.mkdir();
 			
-			File alphabet = new File(this.outputDirectory+"/"+this.outputName+"/"+"alphabet/");
-			alphabet.mkdir();
+			//File alphabet = new File(this.outputDirectory+"/"+this.outputName+"/"+"alphabet/");
+			//alphabet.mkdir();
 			
 			index = new PrintWriter(new BufferedWriter(new FileWriter(this.outputDirectory+"/"+this.outputName+"/"+"index"+".html")));
 			 
