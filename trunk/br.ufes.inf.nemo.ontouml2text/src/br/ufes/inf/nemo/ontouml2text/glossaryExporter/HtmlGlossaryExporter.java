@@ -201,7 +201,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 		+" 		  	  <a href=" + "alphabet/letterZ.html><div class=\"letter\">Z</div></a>\n"
 		+"	  	  </div>\n\n"
 		+"        <br>\n"
-		+"        <p style=\"font-size:70px; color:#307E06\" align=center>"+this.title+"</p>"
+		+"        <p style=\"font-size:70px; color:#307E06\" align=center>"+this.title+"</p>\n"
 		+"	  </body>\n" 
 		+"</html>\n");	
 		index.close();
