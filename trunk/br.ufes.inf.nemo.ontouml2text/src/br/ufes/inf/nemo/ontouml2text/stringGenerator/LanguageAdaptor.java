@@ -32,10 +32,14 @@ public abstract class LanguageAdaptor {
 		Collections.sort(patterns, new Comparator<DescriptionPattern>(){
 			private Integer determineValue(DescriptionPattern d){
 				if(d instanceof GeneralizationPattern){ 
-					if(d instanceof AntiRigidHeterogeneousGeneralizationIdPattern)
+					if(d instanceof AntiRigidHeterogeneousGeneralizationPattern){
 						return 10;
-					else
-						return 5;	
+					}else{
+						if(d instanceof AntiRigidHeterogeneousGeneralizationIdPattern)
+							return 5;
+						else
+							return 0;	
+					}
 				}else if(d instanceof ReflexivePattern){ 
 					return 15;	
 				}else if(d instanceof PhasePattern){ 
@@ -51,15 +55,13 @@ public abstract class LanguageAdaptor {
 						return 45;	
 				}else if(d instanceof MediationPattern){ 
 					if(d instanceof OptionalMultiplicityPattern){
-						if(d instanceof OptionalExceptionMediationPattern || 
-								d instanceof OptionalExceptionMediationRevPattern){
+						if(d instanceof OptionalExceptionMediationPattern){
 							return 75;	
 						}else{
 							return 70;
 						}
 					}else{
-						if(d instanceof ExceptionMediationPattern || 
-								d instanceof ExceptionMediationRevPattern){
+						if(d instanceof ExceptionMediationPattern){
 							return 65;	
 						}else{
 							return 60;
@@ -172,12 +174,8 @@ public abstract class LanguageAdaptor {
 			return processOrdinaryOptionalMediationPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof ExceptionMediationPattern){
 			return processExceptionMediationPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof ExceptionMediationRevPattern){
-			return processExceptionMediationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof OptionalExceptionMediationPattern){
 			return processOptionalExceptionMediationPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof OptionalExceptionMediationRevPattern){
-			return processOptionalExceptionMediationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof AbstractMediationRevPattern){
 			return processAbstractMediationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof GeneralizationSetRevPattern){
@@ -275,11 +273,7 @@ public abstract class LanguageAdaptor {
 	
 	protected abstract String processExceptionMediationPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
-	protected abstract String processExceptionMediationRevPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
-	
 	protected abstract String processOptionalExceptionMediationPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
-	
-	protected abstract String processOptionalExceptionMediationRevPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
 	protected abstract String processAbstractMediationRevPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
