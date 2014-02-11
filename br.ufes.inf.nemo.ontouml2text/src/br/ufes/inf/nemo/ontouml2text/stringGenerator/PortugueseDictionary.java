@@ -77,6 +77,26 @@ public class PortugueseDictionary implements Dictionary{
 			joinedText += separator + splitedText[i];
 		
 		return joinedText;
+	}
+
+	@Override
+	public String getMaleArticle() {
+		return "o";
+	}
+
+	@Override
+	public String getFemaleArticle() {
+		return "a";
+	}
+
+	@Override
+	public String getAditionSeparator() {
+		return "e";
+	}
+
+	@Override
+	public String getAlternativeSeparator() {
+		return "ou";
 	}	
 
 }
