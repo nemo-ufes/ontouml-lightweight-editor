@@ -275,7 +275,7 @@ public class ProjectBrowser extends JPanel{
 		this.tree.setBorder(new EmptyBorder(2,2,2,2));
 		
 		this.addTreeSelectionListener(new ProjectTreeSelectionListener());
-		
+	
 		scroll = new JScrollPane();
 		scroll.setViewportView(tree);
 		add(scroll, BorderLayout.CENTER);		
@@ -288,6 +288,7 @@ public class ProjectBrowser extends JPanel{
 	
 	class ProjectTreeSelectionListener implements TreeSelectionListener 
 	 {
+		
 		@Override
 		public void valueChanged(TreeSelectionEvent e) 
 		{
