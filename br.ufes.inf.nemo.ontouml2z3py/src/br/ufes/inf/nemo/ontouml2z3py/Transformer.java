@@ -1,10 +1,16 @@
 package br.ufes.inf.nemo.ontouml2z3py;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.eclipse.emf.ecore.resource.Resource;
+
+import RefOntoUML.Kind;
+import RefOntoUML.ObjectClass;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.z3py.BooleanFunctionDefinition;
 import br.ufes.inf.nemo.z3py.Equality;
 import br.ufes.inf.nemo.z3py.Expression;
@@ -14,15 +20,13 @@ import br.ufes.inf.nemo.z3py.LogicalBinaryExpression;
 import br.ufes.inf.nemo.z3py.LogicalNegation;
 import br.ufes.inf.nemo.z3py.OntoUMLZ3System;
 import br.ufes.inf.nemo.z3py.Quantification;
-import br.ufes.inf.nemo.z3py.Z3pyPackage;
 import br.ufes.inf.nemo.z3py.impl.Z3pyFactoryImpl;
 import br.ufes.inf.nemo.z3py.impl.Z3pyFactoryImpl.LogicalBinaryExpressionTypes;
-import br.ufes.inf.nemo.z3py.impl.Z3pyPackageImpl;
 public class Transformer {
 	
 	private OntoUMLParser ontoparser;
-	private Z3pyFactoryImpl factory = new Z3pyFactoryImpl();
 	private String sourceModelPath;
+	private Z3pyFactoryImpl factory = new Z3pyFactoryImpl();
 	private OntoUMLZ3System generatedModel;
 	
 	
@@ -30,17 +34,51 @@ public class Transformer {
 		
 	}
 	
+	public Transformer(String sourceModelPath){
+		this.sourceModelPath= sourceModelPath;
+		
+	}
 	public OntoUMLZ3System run(){
 		
 		generatedModel = factory.createOntoUMLZ3System();
+		//Gero toda a axiomatização referente a estrutura de mundos
 		populateWithBranchInTimeWorldStructure();
+		//Adiciono a função que utilizarei para verificar se um dado elemento existe em um dado mundo
+		addFunction("exists", 2);
+		Resource resource;
+		try {
+			resource = ResourceUtil.loadReferenceOntoUML(sourceModelPath);
+			RefOntoUML.Package root  = (RefOntoUML.Package)resource.getContents().get(0);
+			ontoparser = new OntoUMLParser(root);	
+			populateWithObjectClasses();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		return generatedModel;
 		
 	}
 	
+	private void populateWithObjectClasses(){
+		for(RefOntoUML.Class p: ontoparser.getAllInstances(ObjectClass.class)){
+			//Crio a função que representa o fato de um dado individuo ser daquele tipo em um dado mundo
+			addFunction(p.getName(),2);
+			if (p instanceof Kind){
+				System.out.println("KIND");
+						
+			}
+			
+		}
+	}
+	
+	
 	private void populateWithBranchInTimeWorldStructure(){
 		
-		//Crio as funÃ§Ãµes que utilizarei		
+		//Crio as funções que utilizarei		
 		addFunction("World",1);
 		addFunction("CurrentWorld",1);
 		addFunction("PastWorld",1);
@@ -50,7 +88,7 @@ public class Transformer {
 		addFunction("recursiveNext", 2);
 
 
-		//Crio as fÃ³rmulas
+		//Crio as fórmulas
 		//1.	1.	∀x,y (next(x,y) → World(x) ∧ World(y))		
 		FunctionCall fc1 = factory.createFunctionCall(getFunction("next"), getConstants(new int[]{1, 2}));
 		FunctionCall fc2 = factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
