@@ -12,9 +12,7 @@ import br.ufes.inf.nemo.assistant.graph.NodeAssistant;
 import br.ufes.inf.nemo.assistant.manager.ManagerPattern;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewClass;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGenericRelation;
-import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewPhase;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewRelator;
-import br.ufes.inf.nemo.assistant.wizard.pageassistant.Question;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.WizardPageAssistant;
 
 //http://krishnanmohan.wordpress.com/2011/11/22/jface-wizard-explained-enablingdisabling-next-finish-buttons/
@@ -109,12 +107,13 @@ public class WizardAssitant extends Wizard {
 //		NodeAssistant n1 = new NodeAssistant(graph, nc);
 //		
 		//Node 2
-		NewPhase np = new NewPhase();
-		NodeAssistant n1 = new NodeAssistant(graph, np);
-		
+//		NewPhase np = new NewPhase();
+//		NodeAssistant n1 = new NodeAssistant(graph, np);
+//		
 //		Node 2
-//		NewRelator nr = new NewRelator();
-//		NodeAssistant n1 = new NodeAssistant(graph, nr);
+		NewRelator nr = new NewRelator();
+		nr.setPossbileClasses(new String[]{"Kind Pessoa", "Subkind Mulher", "Role Aluno"});
+		NodeAssistant n1 = new NodeAssistant(graph, nr);
 		
 		//Node 2
 //		Question q = new Question();
