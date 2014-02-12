@@ -28,22 +28,45 @@ public class StringGenerator {
 	public List<String> verifyDescriptionConsistency(){
 		List<String> missingUserDescriptionCategories = new ArrayList<String>();
 		
-		for(DescriptionCategory category : descriptionSpace.getCategories()){
-			if(category.getFunctions().size() < 2){
-				if(category.getFunctions().size() == 1){
-					if((category.getFunctions().get(0) instanceof Generalization) && 
-							(((DescriptionFunction)category.getFunctions().get(0)).getTarget() == category)){
-						if(category.getUserDescription().isEmpty())
-							missingUserDescriptionCategories.add(category.getLabel());
-					}
-				}else{
-					if(category.getUserDescription().isEmpty())
-						missingUserDescriptionCategories.add(category.getLabel());
-				}
+		for(DescriptionCategory category : descriptionSpace.getCategories()){ // Simple case, the category is 'isolated'
+			if(!hasRelationsToDescribe(category)){
+				if(category.getUserDescription().isEmpty())
+					missingUserDescriptionCategories.add(category.getLabel());
 			}
 		}
 
 		return missingUserDescriptionCategories;
+	}
+	
+	private boolean hasRelationsToDescribe(DescriptionCategory category){
+		int relationCount = category.getFunctions().size();
+		int targetCount;
+		
+		if(relationCount < 2){
+			if(relationCount == 1){
+				if((category.getFunctions().get(0) instanceof Generalization) && 
+						(((DescriptionFunction)category.getFunctions().get(0)).getTarget() == category))
+					return false;
+			}else{
+				return false;
+			}
+		}else{ // Special case, analyzing the generalization relationship	
+			if(countFunctionType(category,"GeneralizationSet") == 0){ // There is only generalizations (not generalization sets)
+				if(countFunctionType(category,"Generalization") == relationCount){
+					targetCount = 0;
+					
+					for(DescriptionFunction function : category.getFunctions()){ // Verifying if the category is target at all
+						if(function.getTarget() == category)
+							targetCount++;					
+					}
+					
+					if(targetCount == relationCount)
+						return false;
+				}
+			}
+		}
+		
+		return true;
 	}
 	
 	
@@ -108,52 +131,33 @@ public class StringGenerator {
 	
 	private List<DescriptionPattern> identifyPatterns(DescriptionCategory describedCategory){
 		int j;
-		boolean isTopPattern = false;
 		DescriptionFunction function = null;
 		List<DescriptionPattern> patterns = new ArrayList<DescriptionPattern>();
 		
-		// Matching top pattern (without relations)
-		if(describedCategory.getFunctions().size() < 2){
-			if(describedCategory.getFunctions().size() == 1){
-				if((describedCategory.getFunctions().get(0) instanceof Generalization) && 
-						(((DescriptionFunction)describedCategory.getFunctions().get(0)).getTarget() == describedCategory)){
-					if(describedCategory.getUserDescription().isEmpty()){
-						patterns.add(new TopPattern(describedCategory));
-						isTopPattern = true;
-					}
+		for(j = 0; j < describedCategory.getFunctions().size(); j++){
+			function = describedCategory.getFunctions().get(j);
+			
+			if(function instanceof BinaryDescriptionFunction){// Binary Functions	
+				if(function instanceof Generalization){
+					identifyGeneralizationPattern(patterns, describedCategory, function);				
+				}else if(function instanceof Mediation){
+					identifyMediationPattern(patterns, describedCategory, function);
+				}else if(function instanceof Formal){ 
+					identifyFormalPattern(patterns, describedCategory, function);
+				}else if(function instanceof Characterization){ 
+					identifyCharacterizationPattern(patterns, describedCategory, function);			
+				}else if(function instanceof ComponentOf){ 
+					identifyComponentOfPattern(patterns, describedCategory, function);
+				}else if(function instanceof MemberOf){
+					identifyMemberOfPattern(patterns, describedCategory, function);
+				}else if(function instanceof SubcollectiveOf){
+					identifySubcollectiveOfPattern(patterns, describedCategory, function);
 				}
-			}else{
-				if(describedCategory.getUserDescription().isEmpty()){
-					patterns.add(new TopPattern(describedCategory));
-					isTopPattern = true;
-				}
-			}
-		}
-		
-		if(!isTopPattern){
-			for(j = 0; j < describedCategory.getFunctions().size(); j++){
-				function = describedCategory.getFunctions().get(j);
-				
-				if(function instanceof BinaryDescriptionFunction){// Binary Functions	
-					if(function instanceof Generalization){
-						identifyGeneralizationPattern(patterns, describedCategory, function);				
-					}else if(function instanceof Mediation){
-						identifyMediationPattern(patterns, describedCategory, function);
-					}else if(function instanceof Formal){ 
-						identifyFormalPattern(patterns, describedCategory, function);
-					}else if(function instanceof Characterization){ 
-						identifyCharacterizationPattern(patterns, describedCategory, function);			
-					}else if(function instanceof ComponentOf){ 
-						identifyComponentOfPattern(patterns, describedCategory, function);
-					}else if(function instanceof MemberOf){
-						identifyMemberOfPattern(patterns, describedCategory, function);
-					}else if(function instanceof SubcollectiveOf){
-						identifySubcollectiveOfPattern(patterns, describedCategory, function);
-					}
-				}else{ // N-ary functions
-					if(function instanceof GeneralizationSet){
-						identifyGeneralizationSetPattern(patterns, describedCategory, function);
-					}
+			}else{ // N-ary and Unary functions
+				if(function instanceof GeneralizationSet){
+					identifyGeneralizationSetPattern(patterns, describedCategory, function);
+				}else{
+					identifyTopPattern(patterns, describedCategory, function);
 				}
 			}
 		}
@@ -161,6 +165,15 @@ public class StringGenerator {
 		return patterns;
 	}
 	
+	// Top Pattern
+	private void identifyTopPattern(List<DescriptionPattern> patterns, 
+			DescriptionCategory describedCategory,  DescriptionFunction function){
+		if(!hasRelationsToDescribe(describedCategory)){
+			patterns.add(new TopPattern(describedCategory));
+		}
+	}
+	
+	// Generalization
 	private void identifyGeneralizationPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
 		DescriptionCategory target = function.getTarget(); 
@@ -218,6 +231,7 @@ public class StringGenerator {
 		}
 	}
 	
+	// Generalization Set
 	private void identifyGeneralizationSetPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){	
 		int i;
@@ -249,6 +263,7 @@ public class StringGenerator {
 		}
 	}
 	
+	// Characterization
 	private void identifyCharacterizationPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
 		DescriptionCategory target = function.getTarget(); 
@@ -266,7 +281,7 @@ public class StringGenerator {
 		}
 	}
 	
-	
+	// Formal
 	private void identifyFormalPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
 		DescriptionCategory target = function.getTarget(); 
@@ -328,7 +343,7 @@ public class StringGenerator {
 		}
 	}
 	
-	
+	// Component of
 	private void identifyComponentOfPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
 		DescriptionCategory target = function.getTarget(); 
@@ -355,7 +370,7 @@ public class StringGenerator {
 		}
 	}
 	
-	
+	// Member of
 	private void identifyMemberOfPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
 		DescriptionCategory target = function.getTarget(); 
@@ -380,7 +395,7 @@ public class StringGenerator {
 		}
 	}
 	
-	
+	// Subcollective of
 	private void identifySubcollectiveOfPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
 		DescriptionCategory target = function.getTarget(); 
@@ -393,6 +408,7 @@ public class StringGenerator {
 		}
 	}	
 	
+	// Mediation
 	private void identifyMediationPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
 		DescriptionCategory target = function.getTarget(); 
@@ -443,7 +459,7 @@ public class StringGenerator {
 			if(naryPattern != null)
 				naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
 						function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
-		}else{
+		}else{ // Described is the target
 			// Abstract Mediation Pattern
 			if(target instanceof RoleMixin && source instanceof Relator){
 				naryPattern = (NaryPattern)searchPattern(patterns, "AbstractMediationRevPattern");
@@ -458,7 +474,8 @@ public class StringGenerator {
 			// Verifying if there is just one mediation relationship
 			if(countFunctionType(describedCategory,"Mediation") == 1){
 				// Processing Pattern
-				if(target instanceof Role && source instanceof Relator){
+				if((target instanceof Role || target instanceof Kind || 
+						target instanceof Subkind || target instanceof Category) && source instanceof Relator){
 					patterns.add(new OrdinaryMediationRevPattern(describedCategory, 
 							new PatternCategory(source.getLabel(), 
 									((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
