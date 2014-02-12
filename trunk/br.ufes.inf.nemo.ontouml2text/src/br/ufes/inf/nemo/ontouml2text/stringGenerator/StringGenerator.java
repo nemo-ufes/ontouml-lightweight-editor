@@ -92,6 +92,9 @@ public class StringGenerator {
 			
 			categoryDescription = languageAdaptor.generateCategoryDescription(patterns);
 			
+			if(categoryDescription.equals("."))
+				categoryDescription = describedCategory.getUserDescription();
+			
 			exporter.saveDescription(describedCategory, categoryDescription, htmlLetter);
 		}
 		
