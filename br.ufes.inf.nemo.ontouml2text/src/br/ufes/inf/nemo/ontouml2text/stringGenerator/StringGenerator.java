@@ -76,6 +76,7 @@ public class StringGenerator {
 		DescriptionCategory describedCategory = null;
 		String initialLetter;
 		PrintWriter htmlLetter;
+		String categoryDescription;
 		
 		exporter.initilizeExportFile();
 		
@@ -89,7 +90,9 @@ public class StringGenerator {
 			
 			htmlLetter = exporter.findLetter(initialLetter);
 			
-			exporter.saveDescription(describedCategory, languageAdaptor.generateCategoryDescription(patterns), htmlLetter);
+			categoryDescription = languageAdaptor.generateCategoryDescription(patterns);
+			
+			exporter.saveDescription(describedCategory, categoryDescription, htmlLetter);
 		}
 		
 		exporter.finalizeExportFile();
@@ -168,6 +171,9 @@ public class StringGenerator {
 	// Top Pattern
 	private void identifyTopPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
+		
+		System.out.println("TopPattern");
+		
 		if(!hasRelationsToDescribe(describedCategory)){
 			patterns.add(new TopPattern(describedCategory));
 		}
@@ -180,7 +186,7 @@ public class StringGenerator {
 		DescriptionCategory	source = ((BinaryDescriptionFunction)function).getSource();
 		
 		NaryPattern naryPattern;
-			
+	
 		if(describedCategory == source){ // Ensuring unidirectionality
 			// Homogeneous Generalization Pattern
 			if(target.getClass() == source.getClass() || 
