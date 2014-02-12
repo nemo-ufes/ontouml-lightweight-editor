@@ -60,9 +60,7 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 			}else											
 				mat = generalizationSpace.findCategory(classf.getName());
 			
-			
 			populateRelationships(parser.getRelationships(classf),mat,parser,hashCategories,classfSet);	
-
 		}
 
 		relatorIheritance(generalizationSpace.getCategories(),hashCategories);
@@ -79,7 +77,7 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 					System.out.print(f.toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.", "")+" // ");
 			}
 		}*/
-		
+				
 		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
 		System.out.println("Tamanho da functions no DescriptionSpace:  " + generalizationSpace.getFunctions().size());
 
@@ -287,7 +285,7 @@ public DescriptionCategory createCategoryClass(Class classf, Set<Class> classfSe
 		mat = new RoleMixin(classf.getName());
 	
 	userDesc = getUserDescription(mat.getLabel(),classfSet);
-	if(userDesc != null)
+	if(!userDesc.equals(""))
 		mat.setUserDescription(userDesc);
 
 	return mat;
@@ -299,7 +297,7 @@ public String getUserDescription(String string, Set<Class> classfSet) {
 			return cl.getOwnedComment().get(0).getBody().replace("Definition=", "");
 		}
 	}
-	return null;
+	return "";
 }
 
 public void populateRelationships(ArrayList<Relationship> eList, DescriptionCategory source, OntoUMLParser parser, 
@@ -666,14 +664,55 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		}
 		if(r instanceof RefOntoUML.FormalAssociation){
 			
-			mat = new Formal(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
+			if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
+								
+				sourceLower = ((Association) r).getMemberEnd().get(0).getLower();
+				sourceUpper = ((Association) r).getMemberEnd().get(0).getUpper();
+				
+				targetLower = ((Association) r).getMemberEnd().get(1).getLower();
+				targetUpper = ((Association) r).getMemberEnd().get(1).getUpper();
+
+				mat = new Formal(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
+			
+			}else{
+							
+				sourceLower = ((Association) r).getMemberEnd().get(1).getLower();
+				sourceUpper = ((Association) r).getMemberEnd().get(1).getUpper();
+				
+				targetLower = ((Association) r).getMemberEnd().get(0).getLower();
+				targetUpper = ((Association) r).getMemberEnd().get(0).getUpper();
+
+				mat = new Formal(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
+			}
+			
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
 
 		}
 		if(r instanceof RefOntoUML.MaterialAssociation){
-			mat = new Material(((Association)r).getName(), source,target, sourceLower, sourceUpper,targetLower, targetUpper);
+			
+			if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
+				
+				sourceLower = ((Association) r).getMemberEnd().get(0).getLower();
+				sourceUpper = ((Association) r).getMemberEnd().get(0).getUpper();
+				
+				targetLower = ((Association) r).getMemberEnd().get(1).getLower();
+				targetUpper = ((Association) r).getMemberEnd().get(1).getUpper();
+
+				mat = new Material(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
+			
+			}else{
+							
+				sourceLower = ((Association) r).getMemberEnd().get(1).getLower();
+				sourceUpper = ((Association) r).getMemberEnd().get(1).getUpper();
+				
+				targetLower = ((Association) r).getMemberEnd().get(0).getLower();
+				targetUpper = ((Association) r).getMemberEnd().get(0).getUpper();
+
+				mat = new Material(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
+			}
+				
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
@@ -681,11 +720,11 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		}
 		if(r instanceof RefOntoUML.Mediation){	
 			
-			if(source instanceof Relator && target instanceof Relator)
+			/*if(source instanceof Relator && target instanceof Relator)
 				try {
 					if (parser.getMediated((RefOntoUML.Mediation) r).getName().equals(source.getLabel())){		//se o target da med for o relator source
 						mat = new Mediation(((Association)r).getName(),target,source, targetLower,targetUpper, sourceLower, sourceUpper);
-									
+						
 						source.getFunctions().add(mat);
 						target.getFunctions().add(mat);
 						generalizationSpace.getFunctions().add(mat);
@@ -709,6 +748,27 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 				mat = new Mediation(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper);
 			else
 				mat = new Mediation(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower,targetUpper);
+			*/
+			if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
+				
+				sourceLower = ((Association) r).getMemberEnd().get(0).getLower();
+				sourceUpper = ((Association) r).getMemberEnd().get(0).getUpper();
+				
+				targetLower = ((Association) r).getMemberEnd().get(1).getLower();
+				targetUpper = ((Association) r).getMemberEnd().get(1).getUpper();
+
+				mat = new Mediation(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
+			
+			}else{
+							
+				sourceLower = ((Association) r).getMemberEnd().get(1).getLower();
+				sourceUpper = ((Association) r).getMemberEnd().get(1).getUpper();
+				
+				targetLower = ((Association) r).getMemberEnd().get(0).getLower();
+				targetUpper = ((Association) r).getMemberEnd().get(0).getUpper();
+
+				mat = new Mediation(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
+			}
 			
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
@@ -829,9 +889,9 @@ public DescriptionCategory createCategory(Type type, Set<Class> classfSet){
 		mat = new RoleMixin(type.getName());
 	
 	userDesc = getUserDescription(mat.getLabel(),classfSet);
-	if(userDesc != null)
+	if(!userDesc.equals(""))
 		mat.setUserDescription(userDesc);
-	
+
 	return mat;
 }		
 
