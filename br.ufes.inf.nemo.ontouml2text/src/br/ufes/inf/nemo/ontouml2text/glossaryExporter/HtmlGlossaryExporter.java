@@ -234,9 +234,10 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 					"}\n"+
 					"div {\n"+
 					"    border:2px solid #4D7010;\n"+
-					"    padding:6px 30px; \n"+
+					"    padding:6px 30px;\n"+
 					"    text:#666666\n"+
 					"    background:#FFFFFF;\n"+
+					"	 background-color:#F3FFF9;\n"+
 					"    container:#E3F2D3\n"+
 					"    width:700px;\n"+
 					"    border-radius:10px;\n"+
@@ -244,31 +245,33 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 					"	 margin-bottom: 20px"+
 					"}\n"+
 					"div.alphabet {\n"+
-					"   text-align: center;\n"+
-					"	border:3px solid #4D7010;\n"+
-					"	padding:10px 0px;\n"+ 
-					"	word-spacing: 0.0em;\n"+
-					"	padding-left: 0%;\n"+
-					"	text:#666666\n"+
-					"	background:#FFFFFF;\n"+
-					"	container:#E3F2D3\n"+
-					"	width:700px;\n"+
-					"   height:30px;\n"+
-					"   border-radius:5px;\n"+
-					"	box-shadow: 5px 5px 16px 0px rgba(50, 50, 50, 0.31);\n"+
+					"	 text-align: center;\n"+
+					"	 border:3px solid #4D7010;\n"+
+					"	 padding:10px 0px;\n"+ 
+					"	 word-spacing: 0.0em;\n"+
+					"	 padding-left: 0%;\n"+
+					"	 text:#666666\n"+
+					"	 background:#FFFFFF;\n"+
+					"	 background-color:#36C77A;\n"+
+					"	 container:#E3F2D3\n"+
+					"	 width:700px;\n"+
+					"    height:30px;\n"+
+					"    border-radius:5px;\n"+
+					"	 box-shadow: 5px 5px 16px 0px rgba(50, 50, 50, 0.31);\n"+
 					"}\n"+		
 					"div.letter {\n"+
-					"   display:inline-block;\n"+
-					"	border:1px solid #4D7010;\n"+
-					"	padding:0px 6px;\n"+ 
-					"	word-spacing: 0.6em;\n"+
-					"	padding-left: 0.4%;\n"+
-					"	text:#666666\n"+
-					"	background:#FFFFFF;\n"+
-					"	container:#E3F2D3\n"+
-					"	width:15px;\n"+
-					"   border-radius:4px;\n"+
-					"	box-shadow: 2px 2px 5px 0px rgba(50, 50, 50, 0.31);\n"+
+					"    display:inline-block;\n"+
+					" 	 border:1px solid #4D7010;\n"+
+					"	 padding:0px 6px;\n"+ 
+					" 	 word-spacing: 0.6em;\n"+
+					"	 padding-left: 0.4%;\n"+
+					"	 text:#666666\n"+
+					"	 background:#FFFFFF;\n"+
+					"	 background-color:#FFFFFF;\n"+
+					"	 container:#E3F2D3\n"+
+					"	 width:15px;\n"+
+					"    border-radius:4px;\n"+
+					"	 box-shadow: 2px 2px 5px 0px rgba(50, 50, 50, 0.31);\n"+
 					"}\n"+	
 					"hr {\n"+
 					"    background: #02704F  no-repeat scroll center;\n"+
@@ -276,7 +279,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 					"    box-shadow: 1px 1px 3px 0px rgba(50, 50, 50, 0.20);\n"+
 					"}\n"+
 					"a{\n"+
-					    "word-spacing: 1.0em;"+
+					"    word-spacing: 1.0em;"+
 					"}"
 					);
 			
