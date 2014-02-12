@@ -19,21 +19,21 @@ public class ModellingAssistant {
 
 	public ModellingAssistant(OntoUMLParser ontoParser) {
 
-		String path = "Patterns.asta";
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);	
-		if(is == null) {
-			//Runtime (eclipse)
-			hashGraph = AstahParser.doParser("src/"+path);
-		}else{
-			//Running in .jar
-			hashGraph = AstahParser.doParser(is);	
-		}
-		//For each link to another pattern
-		Iterator<GraphAssistant> graphs = hashGraph.values().iterator();
-		while(graphs.hasNext()){
-			GraphAssistant graph = graphs.next();
-			graph.getManagerPatern().setOntoPaser(ontoParser);
-		}
+//		String path = "Patterns.asta";
+//		InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);	
+//		if(is == null) {
+//			//Runtime (eclipse)
+//			hashGraph = AstahParser.doParser("src/"+path);
+//		}else{
+//			//Running in .jar
+//			hashGraph = AstahParser.doParser(is);	
+//		}
+//		//For each link to another pattern
+//		Iterator<GraphAssistant> graphs = hashGraph.values().iterator();
+//		while(graphs.hasNext()){
+//			GraphAssistant graph = graphs.next();
+//			graph.getManagerPatern().setOntoPaser(ontoParser);
+//		}
 
 	}
 
