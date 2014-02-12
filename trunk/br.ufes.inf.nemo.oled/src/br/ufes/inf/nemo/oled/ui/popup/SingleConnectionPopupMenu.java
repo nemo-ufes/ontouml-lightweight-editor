@@ -2,14 +2,17 @@ package br.ufes.inf.nemo.oled.ui.popup;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 import RefOntoUML.Association;
@@ -17,7 +20,12 @@ import RefOntoUML.Generalization;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.oled.draw.Connection;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -28,11 +36,15 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private static final long serialVersionUID = 1L;
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
 	private Connection con;
+	private DiagramEditor editor;
 	final JMenuItem showRolesItem;
 	final JMenuItem showNameItem;
 	final JMenuItem showMultiplicitiesItem;
 	final JMenuItem showStereotypeItem;
 	final JMenuItem rectMenuItem;
+	final JMenuItem readToSourceItem;
+	final JMenuItem readToDestinationItem;
+	final JMenuItem readNoIndicatorItem;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -54,17 +66,26 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		showRolesItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				if (con instanceof AssociationElement) ((AssociationElement)con).setShowRoles(showRolesItem.isSelected());
+				if (con instanceof AssociationElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setShowRoles(showRolesItem.isSelected());
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}
 			}
 		});
 		
 		showMultiplicitiesItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showmultiplicities");
 		showMultiplicitiesItem.addActionListener(new ActionListener() {			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {				
 				
-				if (con instanceof AssociationElement) ((AssociationElement)con).setShowMultiplicities(showMultiplicitiesItem.isSelected());
+				if (con instanceof AssociationElement) {					
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setShowMultiplicities(showMultiplicitiesItem.isSelected());
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}								
 			}
 		});
 		
@@ -72,8 +93,12 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		showNameItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				if (con instanceof AssociationElement) ((AssociationElement)con).setShowName(showNameItem.isSelected());
+				if (con instanceof AssociationElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setShowName(showNameItem.isSelected());
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}				
 			}
 		});
 			
@@ -81,8 +106,60 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		showStereotypeItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				if (con instanceof AssociationElement) ((AssociationElement)con).setShowOntoUmlStereotype(showStereotypeItem.isSelected());
+				if (con instanceof AssociationElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setShowOntoUmlStereotype(showStereotypeItem.isSelected());
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}				
+			}
+		});
+		
+		JMenu readingDirectionMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.readingdirection.name"));
+		add(readingDirectionMenu);
+		
+		ButtonGroup group = new ButtonGroup();
+		
+		readToSourceItem = createRadioMenuItem(readingDirectionMenu, "readingdirection.source");
+		group.add(readToSourceItem);
+		readToSourceItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (con instanceof AssociationElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setNameReadingDirection(ReadingDirection.RIGHT_LEFT);
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}
+			}
+		});
+
+		readToDestinationItem = createRadioMenuItem(readingDirectionMenu, "readingdirection.destination");
+		group.add(readToDestinationItem);
+		readToDestinationItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (con instanceof AssociationElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setNameReadingDirection(ReadingDirection.LEFT_RIGHT);
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}							
+			}
+		});
+		
+		readNoIndicatorItem = createRadioMenuItem(readingDirectionMenu, "readingdirection.none");
+		readNoIndicatorItem.setSelected(true);
+		group.add(readNoIndicatorItem);
+		readNoIndicatorItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {				
+				if (con instanceof AssociationElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();					
+					((AssociationElement)con).setNameReadingDirection(ReadingDirection.UNDEFINED);
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}														
 			}
 		});
 		
@@ -96,9 +173,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		//addEditConnectionPropertiesMenu(menu, (UmlConnection) conn);				
 	}
 	
-	public void setConnection(Connection con)
+	public void setConnection(Connection con, DiagramEditor editor)
 	{
 		this.con = con;
+		this.editor = editor;
 		if (con instanceof AssociationElement){
 			showMultiplicitiesItem.setSelected(((AssociationElement)con).showMultiplicities());
 			showRolesItem.setSelected(((AssociationElement)con).showRoles());
@@ -227,13 +305,25 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private JCheckBoxMenuItem createCheckBoxMenuItem(JComponent menu,
 			String name) {
 		String prefix = "menuitem." + name;
-		JCheckBoxMenuItem menuitem = new JCheckBoxMenuItem(
-				getResourceString(prefix + ".name"));
-
+		JCheckBoxMenuItem menuitem = new JCheckBoxMenuItem(getResourceString(prefix + ".name"));
 		// Command
 		String actionCommand = getResourceString(prefix + ".command");
 		menuitem.setActionCommand(actionCommand);
 		menuitem.addActionListener(this);
+		
+		menu.add(menuitem);
+		return menuitem;
+	}
+	
+	private JRadioButtonMenuItem createRadioMenuItem(JMenu menu, String name) {
+		String prefix = "menuitem." + name;
+		JRadioButtonMenuItem menuitem = new JRadioButtonMenuItem(
+				getResourceString(prefix + ".name"));
+		// Command
+		String actionCommand = getResourceString(prefix + ".command");
+		menuitem.setActionCommand(actionCommand);
+		menuitem.addActionListener(this);
+		
 		menu.add(menuitem);
 		return menuitem;
 	}

@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.ui.popup;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
@@ -25,6 +30,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	private UmlNode node;
 	final JMenuItem showAttrItem;
 	final JMenuItem showOperItem;
+	private DiagramEditor editor;
 	
 	public SingleNodePopupMenu()
 	{
@@ -44,8 +50,12 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		showOperItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				if (node instanceof ClassElement) ((ClassElement)node).setShowOperations(showOperItem.isSelected());
+				if (node instanceof ClassElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((ClassElement)node).setShowOperations(showOperItem.isSelected());
+					list.add(node);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}				
 			}
 		});
 		
@@ -53,17 +63,26 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		showAttrItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				if (node instanceof ClassElement) ((ClassElement)node).setShowAttributes(showAttrItem.isSelected());
+				if (node instanceof ClassElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((ClassElement)node).setShowAttributes(showAttrItem.isSelected());
+					list.add(node);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}				
 			}
 		});
-		
+
+		// FIXME: Trying to hide the stereotype displays a bug
 //		final JMenuItem showStereoItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showstereotype");
 //		showStereoItem.addActionListener(new ActionListener() {			
 //			@Override
-//			public void actionPerformed(ActionEvent arg0) {
-//				
-//				if (node instanceof ClassElement) ((ClassElement)node).setShowStereotypes(showStereoItem.isSelected());
+//			public void actionPerformed(ActionEvent arg0) {				
+//				if (node instanceof ClassElement) {	
+//					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+//					((ClassElement)node).setShowStereotypes(showStereoItem.isSelected());
+//					list.add(node);
+//					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+//				}				
 //			}
 //		});
 		
@@ -76,9 +95,10 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		createMenuItem(this, "delete");		
 	}
 	
-	public void setNode (UmlNode node)
+	public void setNode (UmlNode node, DiagramEditor editor)
 	{
 		this.node = node;
+		this.editor = editor;
 		if (node instanceof ClassElement){
 			showAttrItem.setSelected(((ClassElement)node).showAttributes());
 			showOperItem.setSelected(((ClassElement)node).showOperations());

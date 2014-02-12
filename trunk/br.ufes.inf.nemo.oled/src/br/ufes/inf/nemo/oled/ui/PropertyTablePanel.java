@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.text.Normalizer;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -21,6 +22,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Element;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.dialog.FeatureListDialog;
@@ -113,11 +115,37 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 		tablemodel = new PropertyTableModel(columnNames,data);
 		return tablemodel;
 	}
-	
+	 
+	public static String getStereotype(EObject element)
+	{
+		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+	    type = type.replaceAll("Impl","");
+	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
+	    type = type.replace("Association","");
+	    return type;
+	}
+	 
 	private PropertyTableModel createPropertyTableModel (RefOntoUML.Property p)
 	{
 		this.element=p;
-		Object[][] data = {
+		
+		String subsetted = new String();
+    	int i=0;
+    	for(Property p2: p.getSubsettedProperty()){    		
+			if (i==p.getSubsettedProperty().size()-1) subsetted += "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+"";
+			else subsetted += "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+", ";
+			i++;
+		}		
+    	
+    	String redefined = new String();
+    	i=0;
+    	for(Property p2: p.getRedefinedProperty()){    		
+			if (i==p.getRedefinedProperty().size()-1) subsetted += "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+"";
+			else subsetted += "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+", ";
+			i++;
+		}
+    	
+		Object[][] data = {		
 		{"    Name", p.getName(),""},				
 		{"    Type", new OntoUMLElement(p.getType(),""),""},	
 		{"    Upper", (new Integer(p.getUpper())),""},	
@@ -125,8 +153,8 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 		{"    Derived", p.isIsDerived(),""},	
 		{"    Read Only", p.isIsReadOnly(),""},	
 		{"    Aggregation Kind", p.getAggregation(),""},	
-		{"    Redefined", p.getRedefinedProperty(),""},
-		{"    Subsetted", p.getSubsettedProperty(),""},	
+		{"    Redefined", redefined,""},
+		{"    Subsetted", subsetted,""},	
 		};		
 		String[] columnNames = {"Property","Value",""};
 		tablemodel = new PropertyTableModel(columnNames,data);

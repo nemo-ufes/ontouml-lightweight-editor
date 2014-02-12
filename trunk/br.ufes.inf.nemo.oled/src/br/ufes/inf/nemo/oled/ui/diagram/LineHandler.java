@@ -248,12 +248,12 @@ public class LineHandler implements EditorMode {
 	  // UmlNode ->(connectedTo) -> UmlNode
 	  if (source instanceof UmlConnection && target instanceof UmlConnection)
 	  {
-		  conn = editor.getDiagram().getElementFactory().createConnection(relationType, (UmlConnection) source, (UmlConnection) target);
+		  conn = editor.getDiagram().getElementFactory().createConnectionBetweenCon(relationType, (UmlConnection) source, (UmlConnection) target);
 		  connectMethod.generateAndSetPointsToConnection(conn, (UmlConnection) source, (UmlConnection)target, anchor, tmpPos);
 	  }
 	  if (conn!=null){
 		  //Add mapping from the refontouml element to the diagram element		  
-		  ModelHelper.addMapping(((UmlConnection)conn).getRelationship(), conn);
+		  ModelHelper.addMapping(((UmlConnection)conn).getRelationship(), conn);		  
 	  }
 	  return conn;
   }

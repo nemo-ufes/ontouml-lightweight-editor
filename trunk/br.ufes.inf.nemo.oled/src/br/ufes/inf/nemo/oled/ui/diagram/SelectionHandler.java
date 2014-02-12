@@ -55,7 +55,7 @@ public class SelectionHandler implements EditorMode {
 	private Selection selection = NullSelection.getInstance();
 	private Set<SelectionListener> listeners =
 		new HashSet<SelectionListener>();
-	private ContextMenusBuilder contextMenuBuilder = new ContextMenusBuilder();
+	private ContextMenusBuilder contextMenuBuilder;
 	private Point2D startPoint = new Point2D.Double();
 	
 	/**
@@ -87,6 +87,7 @@ public class SelectionHandler implements EditorMode {
 	public SelectionHandler(DiagramEditor anEditor) {
 		editor = anEditor;
 		selector.setDiagram(editor.getDiagram());
+		contextMenuBuilder = new ContextMenusBuilder(editor);
 	}
 
 	public Selection getSelection() {

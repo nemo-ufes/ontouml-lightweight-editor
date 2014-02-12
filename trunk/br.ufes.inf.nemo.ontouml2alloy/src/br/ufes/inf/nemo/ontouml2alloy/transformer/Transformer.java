@@ -58,7 +58,9 @@ import br.ufes.inf.nemo.ontouml2alloy.rules.AbstractnessClassRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.CardinalityRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.GeneralizationRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.GeneralizationSetRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.RedefinesRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.RelatorAxiomRule;
+import br.ufes.inf.nemo.ontouml2alloy.rules.SubsetsRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TopLevelClassRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.WeakSupplementationAxiomRule;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyAPI;
@@ -105,6 +107,7 @@ public class Transformer {
 	public ArrayList<FactDeclaration> meronymicAcyclicFactList = new ArrayList<FactDeclaration>();
 	public ArrayList<FactDeclaration> characterizationAcyclicFactList = new ArrayList<FactDeclaration>();
 	public ArrayList<FactDeclaration> derivationRelationshipFactList = new ArrayList<FactDeclaration>();
+	public ArrayList<FactDeclaration> subsettedPropertiesFactList = new ArrayList<FactDeclaration>();
 	
 	/**
 	 * Constructor
@@ -916,7 +919,35 @@ public class Transformer {
 				} 
 				
 				FunctionDeclaration fun = AlloyAPI.createFunctionDeclaration(factory, world, isSourceProperty, functionName, paramName, returnName, assocName, materialIsTernary);				
-				module.getParagraph().add(fun);				
+				module.getParagraph().add(fun);		
+				
+				// SubSetted properties
+				if (p.getSubsettedProperty().size()>0) {
+					FactDeclaration subSFact = factory.createFactDeclaration();		
+					subSFact.setName("subsetted");
+					subSFact.setBlock(factory.createBlock());	
+					subsettedPropertiesFactList.add(subSFact);				
+					for(Property subsetted: p.getSubsettedProperty())
+					{
+						QuantificationExpression qe = SubsetsRule.createQuantificationExpression(factory, ontoparser, p, subsetted);
+						subSFact.getBlock().getExpression().add(qe);	
+					}				
+					module.getParagraph().add(subSFact);
+				}
+				
+				// Redefined properties
+				if (p.getRedefinedProperty().size()>0){
+					FactDeclaration redefFact = factory.createFactDeclaration();		
+					redefFact.setName("redefined");
+					redefFact.setBlock(factory.createBlock());	
+					subsettedPropertiesFactList.add(redefFact);				
+					for(Property redefined: p.getRedefinedProperty())
+					{
+						QuantificationExpression qe = RedefinesRule.createQuantificationExpression(factory, ontoparser, p, redefined);
+						redefFact.getBlock().getExpression().add(qe);	
+					}				
+					module.getParagraph().add(redefFact);
+				}				
 			}
 		}
 	}
