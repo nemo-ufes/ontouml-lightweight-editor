@@ -21,6 +21,9 @@ import javax.swing.UIManager;
 import javax.swing.JList;
 
 import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.OntoUmlGlossary;
+import javax.swing.ListSelectionModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class GlossaryGeneratorAnalisysUI extends JFrame {
 
@@ -115,16 +118,17 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		
 		JPanel panelTwo = new JPanel();
 		tabbedPane.addTab("Missing User Descriptions", null, panelTwo, null);
-		panelTwo.setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Objects without User Description", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(6, 20, 452, 338);
-		panelTwo.add(panel);
 		panel.setLayout(null);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(24, 32, 404, 275);
+		panel.add(scrollPane);
+		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(6, 18, 249, 16);
+		lblNewLabel.setBounds(24, 11, 249, 16);
 		panel.add(lblNewLabel);
 		
 		DefaultListModel<String> modelList = new DefaultListModel<String>();
@@ -135,12 +139,26 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 			i++;
 		}
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(122, 45, 178, 275);
-		panel.add(scrollPane);
-		
 		JList<String> list = new JList<String>(modelList);
 		scrollPane.setViewportView(list);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBackground(UIManager.getColor("Button.disabledShadow"));
+		
+		GroupLayout gl_panelTwo = new GroupLayout(panelTwo);
+		gl_panelTwo.setHorizontalGroup(
+			gl_panelTwo.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelTwo.createSequentialGroup()
+					.addGap(6)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 452, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_panelTwo.setVerticalGroup(
+			gl_panelTwo.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelTwo.createSequentialGroup()
+					.addGap(20)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 338, GroupLayout.PREFERRED_SIZE))
+		);
+		panelTwo.setLayout(gl_panelTwo);
+		
+		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 }
