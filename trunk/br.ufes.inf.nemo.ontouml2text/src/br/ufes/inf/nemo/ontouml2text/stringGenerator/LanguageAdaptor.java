@@ -99,12 +99,12 @@ public abstract class LanguageAdaptor {
 			for(i = 0; i < patterns.size(); i++){
 				pattern = patterns.get(i);
 				
-				if(pattern instanceof UnaryPattern){
-					description += processUnaryPattern(pattern, previousPattern);
+				if(pattern instanceof NaryPattern){
+					description += processNaryPattern(pattern, previousPattern);
 				}else if(pattern instanceof BinaryPattern){
 					description += processBinaryPattern(pattern, previousPattern);			
-				}else if(pattern instanceof NaryPattern){
-					description += processNaryPattern(pattern, previousPattern);
+				}else if(pattern instanceof UnaryPattern){
+					description += processUnaryPattern(pattern, previousPattern);
 				}
 				
 				previousPattern = pattern;
