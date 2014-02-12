@@ -1,6 +1,8 @@
 package br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -10,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -21,6 +24,7 @@ import javax.swing.UIManager;
 import javax.swing.JList;
 
 import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.OntoUmlGlossary;
+
 import javax.swing.ListSelectionModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -107,9 +111,17 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		JButton btnContinue = new JButton("Continue Anyway");
 		btnContinue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ontoUmlGlossary.modelToText();
-				JOptionPane.showMessageDialog(null, "Glossary generated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-				dispose();
+				Component root = SwingUtilities.getRoot((JButton) arg0.getSource());
+				
+				try{				
+	                root.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	                
+					ontoUmlGlossary.modelToText();
+					JOptionPane.showMessageDialog(null, "Glossary generated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+					dispose();
+				}finally{
+					root.setCursor(Cursor.getDefaultCursor());
+				}
 			}
 		});
 		
