@@ -182,7 +182,7 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 		{
 			if (((Association)RefOntoUMLElement).getMemberEnd().size() < 2 && ignoreErrorElements)
 	    	{
-				System.out.println("Debug: removing association with error ("+((Association)RefOntoUMLElement).getName()+")");
+				System.err.println("Debug: removing association with error ("+((Association)RefOntoUMLElement).getName()+")");
 	    		EcoreUtil.remove(RefOntoUMLElement);
 //	    		elemMap.remove(Mapper.getID(XMIElement));
 	    	}

@@ -46,7 +46,7 @@ public class XMI2RefGeneralization extends XMI2RefElement
 		{
 			if (((Generalization)RefOntoUMLElement).getGeneral() == null && ignoreErrorElements)
 			{
-				System.out.println("Debug: removing generalization with error (Container: "+((Classifier)RefOntoUMLElement.eContainer()).getName()+")");
+				System.err.println("Debug: removing generalization with error (Container: "+((Classifier)RefOntoUMLElement.eContainer()).getName()+")");
 	    		EcoreUtil.remove(RefOntoUMLElement);
 //	    		elemMap.remove(Mapper.getID(XMIElement));
 	    	}

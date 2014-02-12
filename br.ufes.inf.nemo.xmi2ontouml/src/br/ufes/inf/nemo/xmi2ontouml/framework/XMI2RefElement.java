@@ -45,7 +45,7 @@ public abstract class XMI2RefElement
         	if (!ignoreErrorElements)
         		throw new Exception(error);
         	
-        	System.out.println("Debug: removing class without ID ("+hashProp.get("Name")+")");
+        	System.err.println("Debug: removing class without ID ("+hashProp.get("Name")+")");
     		Creator.warningLog += error;
     		EcoreUtil.remove(RefOntoUMLElement);
 		}
