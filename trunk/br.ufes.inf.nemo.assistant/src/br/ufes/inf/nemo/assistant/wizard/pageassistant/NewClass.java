@@ -102,4 +102,25 @@ public class NewClass extends WizardPageAssistant {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		String s;
+		s = "Page: "+getName()+"{";
+		s += "\nclass: "+getClassName();
+		s += "\nstereotype: "+getStereotype();
+		s += "\n}";
+		return s;
+	}
+	
+	/* get operations */
+	
+	public String getClassName(){
+		return text.getText();
+	}
+	
+	public String getStereotype(){
+		return cbStereotypes.getItem(cbStereotypes.getSelectionIndex());
+	}
+	
 }

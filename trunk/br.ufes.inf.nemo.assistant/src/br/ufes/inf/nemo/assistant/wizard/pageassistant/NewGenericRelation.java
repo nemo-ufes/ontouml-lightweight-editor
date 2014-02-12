@@ -12,8 +12,8 @@ public class NewGenericRelation extends WizardPageAssistant{
 	private Text srcMinCard;
 	private Text srcMaxCard;
 	private Text relationName;
-	private Text text;
-	private Text text_1;
+	private Text trgMinCard;
+	private Text trgMaxCard;
 
 	/**
 	 * Create the wizard.
@@ -77,7 +77,7 @@ public class NewGenericRelation extends WizardPageAssistant{
 		relationName.addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				if(text.getText().isEmpty()){
+				if(trgMinCard.getText().isEmpty()){
 					//					warning.setVisible(true);
 					setPageComplete(false);
 				}else{
@@ -100,7 +100,7 @@ public class NewGenericRelation extends WizardPageAssistant{
 		lblTargetClass.setBounds(370, 31, 89, 15);
 		lblTargetClass.setText("Target Class");
 
-		cbClasses = new Combo(container, SWT.NONE);
+		cbClasses = new Combo(container, SWT.READ_ONLY);
 		cbClasses.setBounds(327, 48, 169, 23);
 
 		Label label_1 = new Label(container, SWT.NONE);
@@ -113,28 +113,19 @@ public class NewGenericRelation extends WizardPageAssistant{
 		label_4.setFont(SWTResourceManager.getFont("Arial", 9, SWT.BOLD));
 		label_4.setBounds(418, 73, 25, 15);
 
-		text = new Text(container, SWT.BORDER | SWT.CENTER);
-		text.setText("1");
-		text.setBounds(380, 90, 21, 21);
+		trgMinCard = new Text(container, SWT.BORDER | SWT.CENTER);
+		trgMinCard.setText("1");
+		trgMinCard.setBounds(380, 90, 21, 21);
 
-		text_1 = new Text(container, SWT.BORDER | SWT.CENTER);
-		text_1.setText("1");
-		text_1.setBounds(420, 90, 21, 21);
+		trgMaxCard = new Text(container, SWT.BORDER | SWT.CENTER);
+		trgMaxCard.setText("1");
+		trgMaxCard.setBounds(420, 90, 21, 21);
 
 		Label label_5 = new Label(container, SWT.NONE);
 		label_5.setText("...");
 		label_5.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		label_5.setBounds(406, 92, 8, 15);
 	}
-
-	//	public void setClassName(String className){
-	//		srcClsNameMinCard.setText(className);
-	//		srcClsName.setText(className);
-	//	}
-	//
-	//	public void setRelationStereotype(String relationStereotype){
-	//		this.relationStereotype.setText(relationStereotype);
-	//	}
 
 	public void setTargetClasses(String[] classes){
 		cbClasses.setItems(classes);
@@ -163,5 +154,48 @@ public class NewGenericRelation extends WizardPageAssistant{
 			srcClsName.setText(getCurrentClass());
 		}
 	}
+	
+	@Override
+	public String toString() {
+		String s;
+		s = "Page: "+getName()+"{";
+		s += "\nclass: "+getClassName();
+		s += getSourceMinCardinality()+".."+getSourceMaxCardinality()+" <"+getStereotype()+"> "+getRelationName()+" "+getTargetMinCardinality()+".."+getTargetMaxCardinality()+" to class "+getTargetClass();
+		s += "\n}";
+		return s;
+	}
+	
+	/* get operations */
+	
+	public String getClassName(){
+		return srcClsName.getText();
+	}
+	
+	public String getRelationName(){
+		return relationName.getText(); 
+	}
+	
+	public String getStereotype(){
+		return relationStereotype.getText(); 
+	}
+	
+	public String getSourceMinCardinality(){
+		return srcMinCard.getText(); 
+	}
 
+	public String getSourceMaxCardinality(){
+		return srcMaxCard.getText(); 
+	}
+	
+	public String getTargetMinCardinality(){
+		return trgMinCard.getText(); 
+	}
+	
+	public String getTargetMaxCardinality(){
+		return trgMaxCard.getText(); 
+	}
+	
+	public String getTargetClass(){
+		return cbClasses.getItem(cbClasses.getSelectionIndex()); 
+	}
 }

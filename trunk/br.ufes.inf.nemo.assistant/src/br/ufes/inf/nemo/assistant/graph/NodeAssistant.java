@@ -100,6 +100,15 @@ public class NodeAssistant {
 		this.graph = graph;
 	}
 
+	public boolean canGoFalse(){
+		return falseNode != null;
+	}
+	
+	public boolean canGoTrue(){
+		return trueNode != null;
+	}
+	
+	
 	protected boolean isAction = false;
 	public boolean isAction(){
 		return isAction;
