@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -32,6 +34,8 @@ public class NewPhase extends WizardPageAssistant {
 	private int contPhases = 0;
 	private int currentItemSelection;
 	private Button btDeletePhase;
+	private Label className;
+	
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 
@@ -84,9 +88,9 @@ public class NewPhase extends WizardPageAssistant {
 		/* Select Row Listener */
 		final TableEditor editor = new TableEditor (table);
 		
-		Label label = new Label(container, SWT.NONE);
-		label.setBounds(94, 5, 360, 15);
-		label.setText("<currentClass>");
+		className = new Label(container, SWT.NONE);
+		className.setBounds(94, 5, 360, 15);
+		className.setText("<currentClass>");
 		
 		btDeletePhase = new Button(container, SWT.NONE);
 		btDeletePhase.addSelectionListener(new SelectionAdapter() {
@@ -187,5 +191,37 @@ public class NewPhase extends WizardPageAssistant {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		String s;
+		s = "Page: "+getName()+"{";
+		s += "\nclass: "+getClassName();
+		ArrayList<String[]> list = getPhases();
+		for(String[] row : list){
+			s += "\nPhase: "+row[0]+" - Rule: "+row[1];
+		}
+		s += "\n}";
+		return s;
+	}
+	
+	/* get operations */
+	
+	public String getClassName(){
+		return className.getText();
+	}
+	
+	public ArrayList<String[]> getPhases(){
+		ArrayList<String[]> list = new ArrayList<>();
+		String[] row;
+		for(TableItem ti : table.getItems()){
+			row = new String[table.getColumnCount()];
+			for (int i = 0; i < table.getColumnCount(); i++) {
+				row[i] = ti.getText(i);
+			}
+			list.add(row);
+		}
+		return list;
 	}
 }

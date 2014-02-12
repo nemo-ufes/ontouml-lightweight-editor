@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -33,12 +34,14 @@ public class Question extends WizardPageAssistant {
 		btTrue.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				setPageComplete(true);
+				if(canGoTrue)
+					setPageComplete(true);
+				else
+					MessageDialog.openInformation(getShell(), "Finish", "Has no actions to do in this case. \nPlease finish the wizard.");
 			}
 		});
 		btTrue.setBounds(10, 96, 90, 16);
 		btTrue.setText("True");
-		//btTrue.setSelection(true);
 		
 		btFalse = new Button(container, SWT.RADIO);
 		btFalse.setBounds(10, 117, 90, 16);
@@ -46,9 +49,13 @@ public class Question extends WizardPageAssistant {
 		btFalse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				setPageComplete(true);
+				if(canGoFalse)
+					setPageComplete(true);
+				else
+					MessageDialog.openInformation(getShell(), "Finish", "Has no actions to do in this case. \nPlease finish the wizard.");
 			}
 		});
+		setPageComplete(false);
 	}
 	
 	@Override
@@ -63,12 +70,35 @@ public class Question extends WizardPageAssistant {
 
 	@Override
 	public boolean canFlipToNextPage() {
+		if(!canGoFalse)
+			return btTrue.getSelection();
+		if(!canGoTrue)
+			return btFalse.getSelection();
+		
 		return btTrue.getSelection() || btFalse.getSelection();
 	}
 
+	private boolean canGoTrue = true;
+	private boolean canGoFalse = true;
+	
+	public void setTrue(boolean b){
+		canGoTrue = b;
+	}
+	
+	public void setFalse(boolean b){
+		canGoFalse = b;
+	}
+	
+	
 	private String question = "<Question>";
 	public void setQuestion(String question) {
 		this.question = question;
-		
+	}
+
+	@Override
+	public String toString() {
+		String s;
+		s = "Question: "+question;
+		return s;
 	}
 }

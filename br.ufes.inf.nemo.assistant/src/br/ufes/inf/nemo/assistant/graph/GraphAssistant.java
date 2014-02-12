@@ -62,5 +62,16 @@ public class GraphAssistant {
 		updateNode(node.getTrueNode());
 	}
 	
+	@Override
+	public String toString() {
+		String s = "";
+		for(NodeAssistant node :nodes){
+			if(!node.isAction()){
+				s += node.getPage().toString(); 
+			}
+		}
+		return s;
+	}
+	
 
 }

@@ -26,6 +26,9 @@ public abstract class WizardPageAssistant extends WizardPage {
 	 * */
 	@Override
 	public abstract boolean canFlipToNextPage();
+	
+	@Override
+	public abstract String toString();
 
 	protected boolean isEndPage = false;
 	

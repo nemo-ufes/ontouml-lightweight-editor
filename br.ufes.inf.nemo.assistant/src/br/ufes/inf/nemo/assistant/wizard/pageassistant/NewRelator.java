@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -310,5 +311,37 @@ public class NewRelator extends WizardPageAssistant {
 		}
 		
 		return isValid;
+	}
+	
+	@Override
+	public String toString() {
+		String s;
+		s = "Page: "+getName()+"{";
+		s += "\nrelator: "+getRelatorName();
+		ArrayList<String[]> list = getMediations();
+		for(String[] row : list){
+			s += "\nSrcCard: "+row[1]+" - MedName: "+row[2]+" - TrgCard: "+row[3]+" - ClassTrg: "+row[4];
+		}
+		s += "\n}";
+		return s;
+	}
+	
+	/* get operations */
+	
+	public ArrayList<String[]> getMediations(){
+		ArrayList<String[]> list = new ArrayList<>();
+		String[] row;
+		for(TableItem ti : table.getItems()){
+			row = new String[table.getColumnCount()];
+			for (int i = 0; i < table.getColumnCount(); i++) {
+				row[i] = ti.getText(i);
+			}
+			list.add(row);
+		}
+		return list;
+	}
+	
+	public String getRelatorName(){
+		return relatorName.getText();
 	}
 }

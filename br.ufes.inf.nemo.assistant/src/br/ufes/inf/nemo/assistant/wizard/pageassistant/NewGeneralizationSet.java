@@ -39,14 +39,14 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		lblSelectTheGeneral_1.setBounds(38, 50, 135, 15);
 		lblSelectTheGeneral_1.setText("Select the General class:");
 		
-		Combo cbGeneral = new Combo(container, SWT.NONE);
+		Combo cbGeneral = new Combo(container, SWT.READ_ONLY);
 		cbGeneral.setBounds(203, 44, 204, 23);
 		
 		Label lblSelectTheGeneralizationset = new Label(container, SWT.NONE);
 		lblSelectTheGeneralizationset.setBounds(38, 84, 156, 15);
 		lblSelectTheGeneralizationset.setText("Select the GeneralizationSet:");
 		
-		Combo cbGeneralizationSet = new Combo(container, SWT.NONE);
+		Combo cbGeneralizationSet = new Combo(container, SWT.READ_ONLY);
 		cbGeneralizationSet.setEnabled(false);
 		cbGeneralizationSet.setBounds(203, 77, 204, 23);
 		
@@ -101,5 +101,11 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		if(isEndPage)
 			return false;
 		return false;
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
