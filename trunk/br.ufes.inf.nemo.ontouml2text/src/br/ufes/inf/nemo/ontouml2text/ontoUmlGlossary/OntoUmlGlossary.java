@@ -48,7 +48,13 @@ public class OntoUmlGlossary {
 	}
 		
 	public void modelToText() {		
+		long startTime = System.currentTimeMillis();
+		
 		stringGenerator.generateGlossary();
+		
+		long endTime   = System.currentTimeMillis();
+		long totalTime = endTime - startTime;
+		System.out.println("Time to process: "+totalTime+" miliseconds");
 	}
 
 
