@@ -86,13 +86,13 @@ public abstract class LanguageAdaptor {
 		String description = "";
 		DescriptionPattern pattern; 
 		DescriptionPattern previousPattern = null;
-		
+			
 		if(patterns.size() > 0){
 			priorizeDescriptionPatterns(patterns);
 			
-			System.out.println("");
-			System.out.println(patterns.get(0).getDescribedCategory().getLabel());
-			System.out.println(patterns.toString().replace("br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.", ""));
+//			System.out.println("");
+//			System.out.println(patterns.get(0).getDescribedCategory().getLabel());
+//			System.out.println(patterns.toString().replace("br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.", ""));
 			
 			description += patterns.get(0).getDescribedCategory().getLabel();
 	
