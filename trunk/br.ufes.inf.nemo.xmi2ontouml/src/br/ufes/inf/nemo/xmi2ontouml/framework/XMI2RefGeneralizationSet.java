@@ -51,7 +51,7 @@ public class XMI2RefGeneralizationSet extends XMI2RefNamedElement
 		{
 			if (((GeneralizationSet)RefOntoUMLElement).getGeneralization().size() == 0 && ignoreErrorElements)
 	    	{
-				System.out.println("Debug: removing generalization set with no generalization ("+((GeneralizationSet)RefOntoUMLElement).getName()+")");
+				System.err.println("Debug: removing generalization set with no generalization ("+((GeneralizationSet)RefOntoUMLElement).getName()+")");
 	    		EcoreUtil.remove(RefOntoUMLElement);
 //	    		elemMap.remove(Mapper.getID(XMIElement));
 	    	}

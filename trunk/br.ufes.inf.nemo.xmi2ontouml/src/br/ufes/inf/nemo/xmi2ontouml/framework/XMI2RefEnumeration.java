@@ -26,7 +26,6 @@ public class XMI2RefEnumeration extends XMI2RefDatatype
 			XMI2RefEnumerationLiteral xmi2refenumlit = new XMI2RefEnumerationLiteral(enumlit, Mapper);
 			if (xmi2refenumlit.RefOntoUMLElement != null)
 			{
-//				listProperties.add(xmi2refenumlit.getRefOntoUMLElement());
 				((Enumeration)RefOntoUMLElement).getOwnedLiteral().add((EnumerationLiteral)xmi2refenumlit.getRefOntoUMLElement());
 			}
 		}
