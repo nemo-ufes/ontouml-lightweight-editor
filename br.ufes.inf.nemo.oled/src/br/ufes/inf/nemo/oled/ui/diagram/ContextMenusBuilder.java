@@ -38,12 +38,14 @@ import br.ufes.inf.nemo.oled.util.AppCommandListener;
  */
 public class ContextMenusBuilder {
 	
+	private DiagramEditor editor;
 	private SingleNodePopupMenu singleNodePopup;
 	private SingleConnectionPopupMenu singleConnectionPopup;
 	private MultiSelectionPopupMenu multiSelectinoPopup;
 	
-	public ContextMenusBuilder()
+	public ContextMenusBuilder(DiagramEditor editor)
 	{
+		this.editor = editor;
 		singleNodePopup = new SingleNodePopupMenu();
 		singleConnectionPopup = new SingleConnectionPopupMenu();
 		multiSelectinoPopup = new MultiSelectionPopupMenu();
@@ -62,10 +64,10 @@ public class ContextMenusBuilder {
 		} else {
 			UmlDiagramElement elem = (UmlDiagramElement) selection.getElement();
 			if (elem instanceof Connection) {
-				singleConnectionPopup.setConnection((Connection)elem);
+				singleConnectionPopup.setConnection((Connection)elem,editor);
 				return singleConnectionPopup;
 			}
-			singleNodePopup.setNode((UmlNode)elem);
+			singleNodePopup.setNode((UmlNode)elem,editor);
 			return singleNodePopup;
 		}
 	}

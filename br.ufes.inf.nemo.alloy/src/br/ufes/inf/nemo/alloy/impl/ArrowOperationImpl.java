@@ -351,13 +351,17 @@ public class ArrowOperationImpl extends ExpressionImpl implements ArrowOperation
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer();
+		
 		result.append(getLeftExpression());
-		if(getLeftMultiplicity() != null)
-			result.append(" "+getLeftMultiplicity()+" ");
-		result.append("->");
-		if(getRightMultiplicity() != null)
-			result.append(" "+getRightMultiplicity()+" ");
+		
+		if(getLeftMultiplicity() != null) result.append(" "+getLeftMultiplicity()+"");
+		
+		result.append(" -> ");
+		
+		if(getRightMultiplicity() != null) result.append(""+getRightMultiplicity()+" ");
+		
 		result.append(getRightExpression());
+		
 		return result.toString();
 	}
 

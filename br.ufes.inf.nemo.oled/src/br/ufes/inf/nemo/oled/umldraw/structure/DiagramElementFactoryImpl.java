@@ -508,7 +508,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
       if(conn.getRelationship() != null && conn.getRelationship() instanceof AssociationImpl)
       {
     	  Association association = (Association) conn.getRelationship();
-    	  association.setName(association.getName() + nextRelationCount(relationType));
+    	  association.setName(association.getName() + nextRelationCount(relationType));    	 
       }
     }    
     return conn;
@@ -533,7 +533,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   /**
    * {@inheritDoc} This method also create the referred RefOntoUML Relationship of the UmlConnection. 
    */
-  public UmlConnection createConnection(RelationType relationType, UmlConnection c1, UmlConnection c2) 
+  public UmlConnection createConnectionBetweenCon(RelationType relationType, UmlConnection c1, UmlConnection c2) 
   {
     UmlConnection prototype = relationPrototypes.get(relationType);    
     UmlConnection conn = null;
@@ -544,7 +544,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
       if(conn.getRelationship() != null && conn.getRelationship() instanceof AssociationImpl)
       {
     	  Association association = (Association) conn.getRelationship();
-    	  association.setName(association.getName() + nextRelationCount(relationType));
+    	  association.setName(association.getName() + nextRelationCount(relationType));    	  
       }
     }    
     return conn;
@@ -553,7 +553,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   /**
    *  Create a UmlConnection from a RefOntoUML Relationship
    */
-  public UmlConnection createConnection(RefOntoUML.Relationship relationship, UmlConnection c1, UmlConnection c2) 
+  public UmlConnection createConnectionBetweenCon(RefOntoUML.Relationship relationship, UmlConnection c1, UmlConnection c2) 
   {
     UmlConnection prototype = relationPrototypes.get(RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase()));    
     UmlConnection conn = null;

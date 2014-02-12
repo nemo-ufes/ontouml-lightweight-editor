@@ -329,13 +329,13 @@ public final class AssociationElement extends BaseConnection {
 	 */
 	@Override
 	public void draw(DrawingContext drawingContext) {
-
+		super.draw(drawingContext);
+		
 		//Frist, draw the line
 		if (associationType == RelationType.DERIVATION) {
 			drawingContext.setStrokeType(StrokeType.DASHED_BOLD);
 		}
-		super.draw(drawingContext);
-
+		
 		//Then, draw decorations
 		if (associationType == RelationType.DERIVATION) {
 			

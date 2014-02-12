@@ -160,7 +160,7 @@ public class FeatureListDialog extends JDialog {
 		
 		for(RefOntoUML.Property p : refparser.getAllInstances(RefOntoUML.Property.class)) 
 		{
-			if(!featureList.contains(p)){
+			if(!featureList.contains(p) && !p.equals(element)){
 				FeatureElement elem = new FeatureElement(p);
 				leftListModel.addElement(elem);
 			}
@@ -292,7 +292,8 @@ public class FeatureListDialog extends JDialog {
 			    	    		if(p instanceof Property){
 			    	    			Property p2 = (Property)p;
 			    	    			if (i==getFeatures().size()-1) str += "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+"";
-			    	    			else str += "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+", ";			    	    			
+			    	    			else str += "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+", ";	
+			    	    			
 			    	    			if (attributeName.trim().compareToIgnoreCase("Redefined")==0) ((Property)element).getRedefinedProperty().add(p2);
 			    	    			else if (attributeName.trim().compareToIgnoreCase("Subsetted")==0) ((Property)element).getSubsettedProperty().add(p2);
 			    	    		}

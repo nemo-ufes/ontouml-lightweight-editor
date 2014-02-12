@@ -100,7 +100,7 @@ public class AlloyAPI {
 	
 
 	/**
-	 * Creates an Arrow Operation. e.g. sourceName lowerSrc/upperSrc -> upperSrc/lowerSrc midName lowerTgt/upperTgt -> targetName lowerTgt/upperTgt.
+	 * Creates an Arrow Operation. e.g. sourceName  -> midName  -> targetName.
 	 */
 	public static ArrowOperation createArrowOperation(AlloyFactory factory, String sourceName, int lowerSrc, int upperSrc, 
 			String midName, int lowerMidSrc, int upperMidSrc, int lowerMidTgt, int upperMidTgt, String targetName, int lowerTgt, int upperTgt)
@@ -116,27 +116,27 @@ public class AlloyAPI {
 		target.setVariable(targetName);
 		
 		//source
-		if(lowerSrc == 1 && upperSrc == 1) aOp.setLeftMultiplicity(Multiplicity.ONE);		
-		else if(lowerSrc == 0 && upperSrc == 1) aOp.setLeftMultiplicity(Multiplicity.LONE);
-		else if(lowerSrc >= 1) aOp.setLeftMultiplicity(Multiplicity.SOME);
-	    else aOp.setLeftMultiplicity(Multiplicity.SET);	
+//		if(lowerSrc == 1 && upperSrc == 1) aOp.setLeftMultiplicity(Multiplicity.ONE);		
+//		else if(lowerSrc == 0 && upperSrc == 1) aOp.setLeftMultiplicity(Multiplicity.LONE);
+//		else if(lowerSrc >= 1) aOp.setLeftMultiplicity(Multiplicity.SOME);
+//	    else aOp.setLeftMultiplicity(Multiplicity.SET);	
 		//mid source
-		if(lowerMidSrc == 1 && upperMidSrc == 1) aOp.setRightMultiplicity(Multiplicity.ONE);		
-		else if(lowerMidSrc == 0 && upperMidSrc == 1) aOp.setRightMultiplicity(Multiplicity.LONE);
-		else if(lowerMidSrc >= 1) aOp.setRightMultiplicity(Multiplicity.SOME);
-	    else aOp.setRightMultiplicity(Multiplicity.SET);
+//		if(lowerMidSrc == 1 && upperMidSrc == 1) aOp.setRightMultiplicity(Multiplicity.ONE);		
+//		else if(lowerMidSrc == 0 && upperMidSrc == 1) aOp.setRightMultiplicity(Multiplicity.LONE);
+//		else if(lowerMidSrc >= 1) aOp.setRightMultiplicity(Multiplicity.SOME);
+//	    else aOp.setRightMultiplicity(Multiplicity.SET);
 		aOp.setLeftExpression(source);
 				
 		//mid target
-		if(lowerMidTgt == 1 && upperMidTgt == 1) aOp2.setLeftMultiplicity(Multiplicity.ONE);		
-		else if(lowerMidTgt == 0 && upperMidTgt == 1) aOp2.setLeftMultiplicity(Multiplicity.LONE);
-		else if(lowerMidTgt >= 1) aOp2.setLeftMultiplicity(Multiplicity.SOME);
-	    else aOp2.setLeftMultiplicity(Multiplicity.SET);
+//		if(lowerMidTgt == 1 && upperMidTgt == 1) aOp2.setLeftMultiplicity(Multiplicity.ONE);		
+//		else if(lowerMidTgt == 0 && upperMidTgt == 1) aOp2.setLeftMultiplicity(Multiplicity.LONE);
+//		else if(lowerMidTgt >= 1) aOp2.setLeftMultiplicity(Multiplicity.SOME);
+//	    else aOp2.setLeftMultiplicity(Multiplicity.SET);
 		//target
-		if(lowerTgt == 1 && upperTgt == 1) aOp2.setRightMultiplicity(Multiplicity.ONE);
-		else if(lowerTgt == 0 && upperTgt == 1) aOp2.setRightMultiplicity(Multiplicity.LONE);
-		else if(lowerTgt >= 1) aOp2.setRightMultiplicity(Multiplicity.SOME);
-		else aOp2.setRightMultiplicity(Multiplicity.SET);		
+//		if(lowerTgt == 1 && upperTgt == 1) aOp2.setRightMultiplicity(Multiplicity.ONE);
+//		else if(lowerTgt == 0 && upperTgt == 1) aOp2.setRightMultiplicity(Multiplicity.LONE);
+//		else if(lowerTgt >= 1) aOp2.setRightMultiplicity(Multiplicity.SOME);
+//		else aOp2.setRightMultiplicity(Multiplicity.SET);		
 		aOp2.setLeftExpression(mid);
 		aOp2.setRightExpression(target);
 
@@ -438,6 +438,35 @@ public class AlloyAPI {
 		BinaryOperation bo = createBinaryOperation(factory,variableName2,BinaryOperator.JOIN,typeName);		
 		decl.setExpression(bo);
 		qe.getDeclaration().add(decl);
+		return qe;
+	}
+	
+	/**
+	 * Creates a specific Quantification Expression in Alloy.
+	 * QuantificationExpression = "quantificator varibleName: variableName2.typeName, variableName3: variableName4.typeName2".
+	 * For Example: "all x: w.Enrollment, s: w.Student".
+	 */	 
+	public static QuantificationExpression createQuantificationExpression(AlloyFactory factory, Quantificator quantificator, String variableName1, String variableName2, String typeName, String variableName3, String variableName4, String typeName2)
+	{
+		QuantificationExpression qe = factory.createQuantificationExpression();
+		qe.setQuantificator(quantificator);
+		
+		Declaration decl = factory.createDeclaration();
+		Variable varx = factory.createVariable();
+		varx.setName(variableName1);
+		varx.setDeclaration(decl);
+		BinaryOperation bo = createBinaryOperation(factory,variableName2,BinaryOperator.JOIN,typeName);		
+		decl.setExpression(bo);
+		qe.getDeclaration().add(decl);
+		
+		Declaration decl2 = factory.createDeclaration();
+		Variable varx2 = factory.createVariable();
+		varx2.setName(variableName3);
+		varx2.setDeclaration(decl2);
+		BinaryOperation bo2 = createBinaryOperation(factory,variableName4,BinaryOperator.JOIN,typeName2);		
+		decl2.setExpression(bo2);
+		qe.getDeclaration().add(decl2);
+		
 		return qe;
 	}
 	
