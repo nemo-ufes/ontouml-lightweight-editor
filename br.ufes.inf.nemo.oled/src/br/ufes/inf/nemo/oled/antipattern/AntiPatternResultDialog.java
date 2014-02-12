@@ -78,6 +78,7 @@ import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.impabs.ImpAbsWizard;
 import br.ufes.inf.nemo.antipattern.wizard.hetcoll.HetCollWizard;
+import br.ufes.inf.nemo.antipattern.wizard.homofunc.HomoFuncWizard;
 import br.ufes.inf.nemo.antipattern.wizard.multidep.MultiDepWizard;
 import br.ufes.inf.nemo.antipattern.wizard.partover.PartOverWizard;
 import br.ufes.inf.nemo.antipattern.wizard.relcomp.RelCompWizard;
@@ -376,6 +377,7 @@ public class AntiPatternResultDialog extends Dialog {
     	if (apOccur instanceof ImpAbsOccurrence) wizardDialog = new WizardDialog(new Shell(), new ImpAbsWizard((ImpAbsOccurrence)apOccur));
     	if (apOccur instanceof UndefFormalOccurrence) wizardDialog = new WizardDialog(new Shell(), new UndefFormalWizard((UndefFormalOccurrence)apOccur));
     	if (apOccur instanceof HetCollOccurrence) wizardDialog = new WizardDialog(new Shell(), new HetCollWizard((HetCollOccurrence)apOccur));
+    	if (apOccur instanceof HomoFuncOccurrence) wizardDialog = new WizardDialog(new Shell(), new HomoFuncWizard((HomoFuncOccurrence)apOccur));
 
     	return wizardDialog;
 	}
