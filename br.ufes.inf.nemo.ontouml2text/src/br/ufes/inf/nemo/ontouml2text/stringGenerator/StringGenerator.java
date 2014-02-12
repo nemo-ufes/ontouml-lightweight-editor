@@ -216,7 +216,7 @@ public class StringGenerator {
 			}
 		
 			// Rigid Heterogeneous Generalization Pattern
-			if(target instanceof Category && (source instanceof Kind || source instanceof Collective))
+			if((target instanceof Category || target instanceof Mixin) && (source instanceof Kind || source instanceof Collective))
 				patterns.add(new RigidHeterogeneousGeneralizationPattern(describedCategory, 
 						new PatternCategory(target.getLabel(), 
 								function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));	
