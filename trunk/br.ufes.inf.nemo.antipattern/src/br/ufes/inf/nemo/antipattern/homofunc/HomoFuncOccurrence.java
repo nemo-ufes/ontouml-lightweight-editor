@@ -19,6 +19,15 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 public class HomoFuncOccurrence extends AntipatternOccurrence {
 	
 	private Classifier whole;
+	
+	public Classifier getWhole() {
+		return whole;
+	}
+
+	public Property getPartEnd() {
+		return partEnd;
+	}
+
 	private Property partEnd;
 	
 	public HomoFuncOccurrence(Association compOf, HomoFuncAntipattern ap) throws Exception {
