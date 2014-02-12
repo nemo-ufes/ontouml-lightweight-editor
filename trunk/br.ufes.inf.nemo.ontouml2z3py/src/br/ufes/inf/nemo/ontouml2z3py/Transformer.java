@@ -3,16 +3,22 @@ package br.ufes.inf.nemo.ontouml2z3py;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
+import RefOntoUML.Classifier;
+import RefOntoUML.Generalization;
 import RefOntoUML.Kind;
 import RefOntoUML.ObjectClass;
+import RefOntoUML.Phase;
+import RefOntoUML.Role;
+import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.z3py.BooleanFunctionDefinition;
+import br.ufes.inf.nemo.z3py.Conjunction;
 import br.ufes.inf.nemo.z3py.Equality;
 import br.ufes.inf.nemo.z3py.Expression;
 import br.ufes.inf.nemo.z3py.FunctionCall;
@@ -29,7 +35,7 @@ public class Transformer {
 	private String sourceModelPath;
 	private Z3pyFactoryImpl factory = new Z3pyFactoryImpl();
 	private OntoUMLZ3System generatedModel;
-	
+	List<RefOntoUML.Class> identityProviderTypes = new ArrayList<RefOntoUML.Class>();
 	
 	public Transformer(){
 		
@@ -51,7 +57,11 @@ public class Transformer {
 			resource = ResourceUtil.loadReferenceOntoUML(sourceModelPath);
 			RefOntoUML.Package root  = (RefOntoUML.Package)resource.getContents().get(0);
 			ontoparser = new OntoUMLParser(root);	
-			populateWithObjectClasses();			
+			populateWithObjectClasses();
+			
+			//Crio fórmula que garante que todo elemento de mundo é instância de um tipo que provê identidade
+			addIdentityFormula(identityProviderTypes);
+
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -66,11 +76,11 @@ public class Transformer {
 	
 	private void populateWithExistenceAxioms() {
 		addFunction("exists", 2);
+		//Pensar se precisa de uma formula que faça a tipagem dos argumentos de exists
 		
 	}
 
 	private void populateWithObjectClasses(){
-		List<RefOntoUML.Class> identityProviderTypes = new ArrayList<RefOntoUML.Class>();
 		
 		for(RefOntoUML.Class p: ontoparser.getAllInstances(ObjectClass.class)){
 			//Crio a função que representa o fato de um dado individuo ser daquele tipo em um dado mundo
@@ -82,10 +92,10 @@ public class Transformer {
 			FunctionCall fc3 = factory.createFunctionCall(getFunction("exists"), getConstants(new int[]{1,2}));
 			LogicalBinaryExpression lbe1 = factory.createBinaryExpression(fc2, fc3, LogicalBinaryExpressionTypes.CONJUNCTION);
 			LogicalBinaryExpression lbe2 = factory.createBinaryExpression(fc1, lbe1, LogicalBinaryExpressionTypes.IMPLICATION);
-			addFormula(true, lbe2, "If "+ p.getName() + "(x,y) holds then x is a world and y exists in x as a " + p.getName());
+			addFormula(true, lbe2, "Typing the arguments: If "+ p.getName() + "(x,y) holds then x is a world and y exists in x as a " + p.getName());
 
 			//Crio fórumla para evitar trivialização, ou seja, evitar que gere um modelo no qual nao existam elementos daquele tipo
-			addFormula(false, fc1, "Exists at least one "+ p.getName() + " in one world");
+			addFormula(false, fc1, "Formula to avoid Trivialization: Exists at least one "+ p.getName() + " in one world");
 			
 			if (p instanceof Kind){
 				//Como Kind provê identidade, adiciono o tipo ao conjunto de tipos provedores de identidade para no final criar a fórmula que garante que todo mundo tem identidade
@@ -93,31 +103,20 @@ public class Transformer {
 				//Crio formula que garante que o tipo é rígido
 				addRigidityFormula(p);						
 			}
-			
-			if (identityProviderTypes.size()>0)
-				addIdentityFormula(identityProviderTypes);
-			
+			else if (p instanceof SubKind){
+				addRigidityFormula(p);
+			}
+			else if (p instanceof Phase){
+				addAntiRigidityFormulaConsideringBranchInTime(p);
+			}
+			else if (p instanceof Role){
+				addAntiRigidityFormulaConsideringBranchInTime(p);
+			}
 		}
-	}
-	
-	private void addIdentityFormula(List<RefOntoUML.Class> identityProviderTypes){
-		FunctionCall fc1 = factory.createFunctionCall(getFunction(identityProviderTypes.get(0).getName()), getConstants(new int[]{1, 2}));
-		FunctionCall fc1 
-		for(i = 1; i<identityProviderTypes.size();i++){
-			fc1 = factory.createFunctionCall(getFunction(p.getName()), getConstants(new int[]{1, 2}));
-		}
-	}
-	
-	
-	private void addRigidityFormula(RefOntoUML.Class type){
-		FunctionCall fc1 = factory.createFunctionCall(getFunction(type.getName()), getConstants(new int[]{1, 2}));
-		FunctionCall fc2 = factory.createFunctionCall(getFunction("exists"), getConstants(new int[]{3,2}));
-		FunctionCall fc3 = factory.createFunctionCall(getFunction(type.getName()), getConstants(new int[]{3,2}));
-		LogicalBinaryExpression lbe1 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
-		LogicalBinaryExpression lbe2 = factory.createBinaryExpression(lbe1, fc3, LogicalBinaryExpressionTypes.IMPLICATION);
-		addFormula(true, lbe2, type.getName() + " is a rigid type");
+			
 		
 	}
+	
 	
 	private void populateWithBranchInTimeWorldStructure(){
 		
@@ -171,51 +170,16 @@ public class Transformer {
 		lbe1 = factory.createBinaryExpression(fc1, ln, LogicalBinaryExpressionTypes.IMPLICATION);
 		addFormula(true,lbe1,"The next function is assimetric when considering its transitive closure");
 		
-		//6.	∀x (World(x) ↔ CurrentWorld(x) ∨ PastWorld(x) ∨ CounterFactualWorld(x) ∨ FutureWorld(x))
-		fc1= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{1}));
-		fc2= factory.createFunctionCall(getFunction("FutureWorld"), getConstants(new int[]{1}));
-		lbe1 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.DISJUNCTION);
-		fc1= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{1}));
-		lbe2 = factory.createBinaryExpression(fc1, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
-		fc1= factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{1}));
-		lbe1 = factory.createBinaryExpression(fc1, lbe2, LogicalBinaryExpressionTypes.DISJUNCTION);
+		//World tem especialização disjunta e completa com CurrentWorld, PastWorld, FutureWorld e CounterfactualWorld
 		fc1= factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
-		lbe2 = factory.createBinaryExpression(fc1, lbe1, LogicalBinaryExpressionTypes.BIIMPLICATION);
-		addFormula(true, lbe2, "There are four World types: Past, Counterfactual, Current and Future");
+		List<FunctionCall> subClasses = new ArrayList<FunctionCall>();
+		subClasses.add(factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{1})));
+		subClasses.add(factory.createFunctionCall(getFunction("FutureWorld"), getConstants(new int[]{1})));
+		subClasses.add(factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{1})));
+		subClasses.add(factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{1})));
 		
-/*		∀x (CurrentWorld(x) ∧ ¬(PastWorld(x) ∨ CounterFactualWorld(x) ∨ FutureWorld(x))) ∨
-		(PastWorld (x) ∧ ¬ (CurrentWorld (x) ∨ CounterFactualWorld(x) ∨ FutureWorld(x))) ∨
-		(CounterFactualWorld(x) ∧ ¬ (CurrentWorld (x) ∨ PastWorld(x) ∨ FutureWorld(x))) ∨
-		(FutureWorld(x) ∧ ¬ (CurrentWorld (x) ∨ CounterFactualWorld(x) ∨ PastWorld(x))) */
-		fc1= factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{1}));
-		fc2= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{1}));
-		fc3= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{1}));
-		FunctionCall fc4= factory.createFunctionCall(getFunction("FutureWorld"), getConstants(new int[]{1}));
+		addSpecializationFormulas(fc1,subClasses, true, true);		
 		
-		lbe1 = factory.createBinaryExpression(fc3, fc4, LogicalBinaryExpressionTypes.DISJUNCTION);
-		lbe2 = factory.createBinaryExpression(fc2, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
-		ln = factory.createLogicalNegation(lbe2);
-		LogicalBinaryExpression lbe3 = factory.createBinaryExpression(fc1, ln, LogicalBinaryExpressionTypes.CONJUNCTION);
-		
-		lbe1 = factory.createBinaryExpression(fc3, fc4, LogicalBinaryExpressionTypes.DISJUNCTION);
-		lbe2 = factory.createBinaryExpression(fc1, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
-		ln = factory.createLogicalNegation(lbe2);
-		lbe1 = factory.createBinaryExpression(fc2, ln, LogicalBinaryExpressionTypes.CONJUNCTION);
-		lbe3 = factory.createBinaryExpression(lbe3, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
-		
-		lbe1 = factory.createBinaryExpression(fc2, fc4, LogicalBinaryExpressionTypes.DISJUNCTION);
-		lbe2 = factory.createBinaryExpression(fc1, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
-		ln = factory.createLogicalNegation(lbe2);
-		lbe1 = factory.createBinaryExpression(fc3, ln, LogicalBinaryExpressionTypes.CONJUNCTION);
-		lbe3 = factory.createBinaryExpression(lbe3, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
-		
-		lbe1 = factory.createBinaryExpression(fc2, fc3, LogicalBinaryExpressionTypes.DISJUNCTION);
-		lbe2 = factory.createBinaryExpression(fc1, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
-		ln = factory.createLogicalNegation(lbe2);
-		lbe1 = factory.createBinaryExpression(fc4, ln, LogicalBinaryExpressionTypes.CONJUNCTION);
-		lbe3 = factory.createBinaryExpression(lbe3, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
-		
-		addFormula(true, lbe3, "The four world types are disjoint");
 		//8.	∃x (CurrentWorld(x))
 		fc1= factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{1}));
 		addFormula(false, fc1, "There is at least one current world");
@@ -257,7 +221,7 @@ public class Transformer {
 		fc1= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{1}));
 		fc2= factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{2}));
 		fc3= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{2}));
-		fc4= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{2}));
+		FunctionCall fc4= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{2}));
 		lbe1 = factory.createBinaryExpression(fc3, fc4, LogicalBinaryExpressionTypes.DISJUNCTION);
 		lbe1 = factory.createBinaryExpression(fc2, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
 		fc2= factory.createFunctionCall(getFunction("next"), getConstants(new int[]{1,2}));
@@ -289,9 +253,61 @@ public class Transformer {
 		lbe1 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
 		lbe2 = factory.createBinaryExpression(lbe1, fc3, LogicalBinaryExpressionTypes.IMPLICATION);
 		addFormula(true, lbe2, "A contrafactual world is acessible from all past worlds by the recursiveNext transitive closure");
-			
-		
 	}
+	
+	
+	//To do: vou ter de alterar form de tratar generalizations. Ver métodos populatesWithGeneralizations e populatesWithGeneralizationSets do transformer de Alloy
+	//A ideia é criar a primeira formula no populatewithgeneralization e as formulas de completeness e disjointness no segundo.
+	//Detalhe: Ele usa métodos do parser para obter generalization e generalizationSets
+
+	private void addSpecializationFormulas (FunctionCall superClass, List<FunctionCall> subClasses, boolean isComplete, boolean isDisjoint){
+		if (subClasses.size()>0){
+			Expression subDisjunction = subClasses.get(0);
+			FunctionCall f1,f2;
+			int i, subClassesNumber = subClasses.size();
+			//Adiciono a formula que garante que a especilização existe 			
+			String subClassesNames = ((FunctionCall)subDisjunction).getCalledFunction().getName();
+			for(i = 1; i<subClassesNumber;i++){
+				f1 = subClasses.get(i);
+				subDisjunction = factory.createBinaryExpression(f1, subDisjunction, LogicalBinaryExpressionTypes.DISJUNCTION);
+				subClassesNames = subClassesNames.concat(", " + f1.getCalledFunction().getName());
+			}
+			Expression e = factory.createBinaryExpression(subDisjunction, superClass, LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, e, subClassesNames + " are subtypes of " + superClass.getCalledFunction().getName());
+			
+			//Se for complete, adiciono a formula que garante completude
+			if(isComplete){
+				e = factory.createBinaryExpression(superClass, subDisjunction, LogicalBinaryExpressionTypes.IMPLICATION);
+				addFormula(true, e, "The Specializazion from " + superClass.getCalledFunction().getName() + " in " + subClassesNames + " is complete");
+			}
+			
+			//Se for disjoint adiciono formula que garante disjointness
+			if(isDisjoint && subClassesNumber>1){
+				//quero garantir qualquer que seja o elemento ele não satisfaz mais de um dos subtipos
+				//Então, quero negar a disjuncão entre as conunções de dois subtipos quaisquer
+				//Por exemplo, se pessoa pode ser homem ou mulher, vou dizer que para todo x em todo mundo w, not(homem(w,x) e mulher(w,x)
+				//Se pensarmos em nulher (M), Homem(H) ou bicha (B), teria que fazer que para todo x,w tenho:
+				//not ((H(w,x) and M(w,x)) or (H(w,x) and B(w,x)) or (B(w,x) and M(w,x)))
+				Conjunction conj;
+				Expression disjointness=null;
+				for (i=0;i<subClassesNumber-1; i++){
+					f1 = subClasses.get(i);
+					for (int j = i+1; j<subClassesNumber; j++){
+						f2 = subClasses.get(j);
+						conj = (Conjunction) factory.createBinaryExpression(f1, f2, LogicalBinaryExpressionTypes.CONJUNCTION);
+						if (disjointness==null)
+							disjointness = conj;
+						else
+							disjointness = factory.createBinaryExpression(disjointness, conj, LogicalBinaryExpressionTypes.DISJUNCTION);
+					}
+				}
+				disjointness = factory.createLogicalNegation(disjointness);
+				addFormula(true,disjointness,"The Specializazion from " + superClass.getCalledFunction().getName() + " in " + subClassesNames + " is disjoint");
+				
+			}			
+		}
+	}
+	
 	
 	private BooleanFunctionDefinition addFunction(String name, int numberOfArguments){
 		BooleanFunctionDefinition newFunction = factory.createFunction(name, numberOfArguments);
@@ -304,6 +320,47 @@ public class Transformer {
 		generatedModel.getFormulas().add(newFormula);
 		return newFormula;
 	}
+	
+	private void addIdentityFormula(List<RefOntoUML.Class> identityProviderTypes){
+		if (identityProviderTypes.size()>0){
+			FunctionCall fc1;
+			Expression e1 = factory.createFunctionCall(getFunction(identityProviderTypes.get(0).getName()), getConstants(new int[]{1, 2}));		 
+			for(int i = 1; i<identityProviderTypes.size();i++){
+				fc1 = factory.createFunctionCall(getFunction(identityProviderTypes.get(i).getName()), getConstants(new int[]{1, 2}));
+				e1 = factory.createBinaryExpression(fc1, e1, LogicalBinaryExpressionTypes.DISJUNCTION);
+			}
+			fc1 = factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
+			e1 = factory.createBinaryExpression(fc1, e1, LogicalBinaryExpressionTypes.CONJUNCTION);
+			fc1 = factory.createFunctionCall(getFunction("exists"), getConstants(new int[]{1,2}));
+			e1 = factory.createBinaryExpression(fc1, e1, LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, e1, "Everything that exists in a world must be of a type that provides an identity principle");
+		}
+	}
+	
+	
+	private void addRigidityFormula(RefOntoUML.Class type){
+		//Ex.:ForAll([w1,w2,x], Implies(And(Pessoa(w1,x), existe(w2,x)),Pessoa(w2,x)))
+		FunctionCall fc1 = factory.createFunctionCall(getFunction(type.getName()), getConstants(new int[]{1, 2}));
+		FunctionCall fc2 = factory.createFunctionCall(getFunction("exists"), getConstants(new int[]{3,2}));
+		FunctionCall fc3 = factory.createFunctionCall(getFunction(type.getName()), getConstants(new int[]{3,2}));
+		LogicalBinaryExpression lbe1 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
+		LogicalBinaryExpression lbe2 = factory.createBinaryExpression(lbe1, fc3, LogicalBinaryExpressionTypes.IMPLICATION);
+		addFormula(true, lbe2, type.getName() + " is a rigid type");	
+	}
+
+	private void addAntiRigidityFormulaConsideringBranchInTime(RefOntoUML.Class type){
+		//Ex.: ForAll([w1,x], Implies(Aluno(w1,x),Exists(w2,And(existe(w2,x),Not(Aluno(w2,x))))))
+		FunctionCall fc1 = factory.createFunctionCall(getFunction(type.getName()), getConstants(new int[]{2, 3}));
+		FunctionCall fc2 = factory.createFunctionCall(getFunction("exists"), getConstants(new int[]{2 ,3}));
+		LogicalNegation ln = factory.createLogicalNegation(fc1);		
+		LogicalBinaryExpression lbe1 = factory.createBinaryExpression(fc2, ln, LogicalBinaryExpressionTypes.CONJUNCTION);
+		Quantification qt = factory.createQuantification(false, lbe1, new HashSet<IntConstant>(getConstants(new int[]{2})), "");
+		fc1 = factory.createFunctionCall(getFunction(type.getName()), getConstants(new int[]{1, 3}));
+		lbe1 = factory.createBinaryExpression(fc1, qt, LogicalBinaryExpressionTypes.IMPLICATION);
+		addFormula(true, lbe1, type.getName() + " is a anti-rigid type (this formula considers a branch-in-time structure and so, that counterfactual worlds exist");	
+	}
+
+	
 	
 	private BooleanFunctionDefinition getFunction (String name){
 		for (BooleanFunctionDefinition i:generatedModel.getFunctions()){
@@ -333,5 +390,13 @@ public class Transformer {
 		return newConst;		
 	}
 	
+	public Hashtable<Classifier, Classifier> getGeneralizationSets (){
+		Hashtable<Classifier, Classifier> sets = new Hashtable<Classifier, Classifier>();
+		for(Generalization p: ontoparser.getAllInstances(Generalization.class)){
+			System.out.println("Generalization: "+ p.getGeneral() +" / " +p.getSpecific());
+			sets.put(p.getGeneral(), p.getSpecific());
+		}
+		return sets;		
+	}
 
 }
