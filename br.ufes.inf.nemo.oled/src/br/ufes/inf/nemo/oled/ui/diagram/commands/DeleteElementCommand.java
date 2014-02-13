@@ -51,7 +51,7 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 /**
  * A command class to remove allElements from a diagram.
  * 
- * @author Wei-ju Wu, Antognoni Albuquerque
+ * @author Wei-ju Wu, Antognoni Albuquerque, John Guerson
  * @version 1.1
  */
 public class DeleteElementCommand extends BaseDiagramCommand{
@@ -176,11 +176,18 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				if (elem instanceof RefOntoUML.Derivation) deleteFromModel(elem);				
 				if(deleteFromModel) ModelHelper.removeMapping(elem);
 			}
+			//then the comments
+			for(Element elem: elemList){
+				if (elem instanceof RefOntoUML.Comment) deleteFromModel(elem);
+				if(deleteFromModel) ModelHelper.removeMapping(elem);
+			}
+			
 			//then the rest of relationships
 			for(Element elem: elemList) {				
 				if (elem instanceof RefOntoUML.Relationship) deleteFromModel(elem);				
 				if(deleteFromModel) ModelHelper.removeMapping(elem);
 			}
+			
 			//then the classes and datatypes
 			for(Element elem: elemList) {
 				if (elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType) deleteFromModel(elem);
@@ -194,7 +201,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		OntoUMLParser parser = ProjectBrowser.getParserFor(project);
 		for (Element e : inferred) {
 			parser.removeElement(e);
-		}		
+		}
 			
 		ProjectBrowser.frame.getDiagramManager().updateUI();
 	}

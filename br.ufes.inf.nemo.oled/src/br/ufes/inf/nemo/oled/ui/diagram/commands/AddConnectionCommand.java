@@ -149,7 +149,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			}			
 		}
 
-		ProjectBrowser.frame.getDiagramManager().updateOLED(relationship);
+		ProjectBrowser.frame.getDiagramManager().doOLEDInclusion(relationship);
 	}
 		
 	/**

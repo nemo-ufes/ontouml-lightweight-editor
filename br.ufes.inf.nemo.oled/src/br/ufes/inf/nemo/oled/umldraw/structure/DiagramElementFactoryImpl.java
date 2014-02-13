@@ -344,7 +344,8 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 	  return type;			  
   }
     
-  public Comment createComment(){
+  public Comment createComment()
+  {
 	  Comment c = factory.createComment();
 	  c.setBody("");
 	  return c;

@@ -349,7 +349,9 @@ public class ClassDialog extends JDialog{
 	public void saveCommentActionPerformed()
 	{
 		Comment c = ((CommentElement)commentCombo.getSelectedItem()).getComment();
-		c.setBody(descriptionText.getText());
+		c.setBody(descriptionText.getText());	
+		commentCombo.repaint();
+		commentCombo.validate();
 	}
 	
 	public void deleteCommentActionPerformed()
@@ -371,11 +373,20 @@ public class ClassDialog extends JDialog{
 	
 	public void transferComments()
 	{
+		// added
 		for(Comment c: getComments()){
 			if (!element.getOwnedComment().contains(c)){
-				
+				diagramManager.addComment(c, element);
 			}
 		}
+		//removed
+		ArrayList<Comment> toBeDeleted = new ArrayList<Comment>();
+		for(Comment c: element.getOwnedComment()){
+			if (!getComments().contains(c)){
+				toBeDeleted.add(c);
+			}
+		}
+		for(Comment cmt: toBeDeleted) { diagramManager.delete(cmt); }
 	}
 	
 	public void okActionPerformed(ActionEvent arg0)
@@ -384,7 +395,7 @@ public class ClassDialog extends JDialog{
 		if (element instanceof Collective) ((Collective) element).setIsExtensional(btnExtensional.isSelected());
 		element.setIsAbstract(btnAbstract.isSelected());
 		classElement.setShowAttributes(btnShowAttributes.isSelected());
-		
-		diagramManager.updateOLED(element);		
+		transferComments();
+		diagramManager.doOLEDInclusion(element);		
 	}
 }
