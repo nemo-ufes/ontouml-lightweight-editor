@@ -45,6 +45,8 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	final JMenuItem readToSourceItem;
 	final JMenuItem readToDestinationItem;
 	final JMenuItem readNoIndicatorItem;
+	final JMenu visibilityMenu;
+	final JMenu readingDirectionMenu;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -59,7 +61,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		
 		addSeparator();
 		
-		JMenu visibilityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.visibility.name"));
+		visibilityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.visibility.name"));
 		add(visibilityMenu);
 			
 		showRolesItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showroles");
@@ -115,7 +117,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			}
 		});
 		
-		JMenu readingDirectionMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.readingdirection.name"));
+		readingDirectionMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.readingdirection.name"));
 		add(readingDirectionMenu);
 		
 		ButtonGroup group = new ButtonGroup();
@@ -178,11 +180,17 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		this.con = con;
 		this.editor = editor;
 		if (con instanceof AssociationElement){
+			visibilityMenu.setEnabled(true);
+			readingDirectionMenu.setEnabled(true);
 			showMultiplicitiesItem.setSelected(((AssociationElement)con).showMultiplicities());
 			showRolesItem.setSelected(((AssociationElement)con).showRoles());
 			showNameItem.setSelected(((AssociationElement)con).showName());
 			showStereotypeItem.setSelected(((AssociationElement)con).showOntoUmlStereotype());
+		}else{
+			visibilityMenu.setEnabled(false);
+			readingDirectionMenu.setEnabled(false);
 		}
+		
 		rectMenuItem.setEnabled(true);
 		
 		if((con.getConnection1()!=null || con.getConnection2()!=null))

@@ -41,8 +41,6 @@ import RefOntoUML.Property;
 import RefOntoUML.impl.DataTypeImpl;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.diagram.AttributeTableModel;
-import br.ufes.inf.nemo.oled.ui.diagram.BaseTableModel;
 import br.ufes.inf.nemo.oled.ui.diagram.ConstraintxTableModel;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.ChangeNodeCommand;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;

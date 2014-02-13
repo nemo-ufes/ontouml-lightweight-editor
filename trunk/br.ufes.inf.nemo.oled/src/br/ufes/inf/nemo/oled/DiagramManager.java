@@ -54,6 +54,7 @@ import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
+import RefOntoUML.Property;
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
@@ -74,6 +75,7 @@ import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorCommandDispatcher;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.Editor;
+import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.InstanceVisualizer;
 import br.ufes.inf.nemo.oled.ui.StartPanel;
@@ -90,6 +92,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
@@ -346,30 +349,49 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		cmd.run();
 	}
 	
-	/** Update element in the diagram . This actually deletes the current diagram element and creates another diagram element for it.*/
-	public void updateDiagramElement(RefOntoUML.Element element, DiagramEditor d)
+	/** Re-make element in the diagram . 
+	 *  This actually deletes the current diagramElement and creates another diagramElement, including it in the diagram.*/
+	public void remakeDiagramElement(RefOntoUML.Element element, DiagramEditor d)
 	{
 		if(element instanceof RefOntoUML.Relationship){
 			deleteFromDiagram(element, d);
 			moveToDiagram(element, d); 
-		}
-		if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType){
-			if (d!=null && d.getDiagram().containsChild(element)) return;
-			if (d!=null) {		
-				if(element instanceof RefOntoUML.Class) {
-//					ClassElement ce = (ClassElement)ModelHelper.getDiagramElement(element);				
-				}
-			}
-		}
+		}		
 	}
 	
-	/** Update element in all diagrams it appears. This actually deletes all the diagram elements and creates others diagram elements for it. */
-	public void updateDiagramElement(RefOntoUML.Element element)
+	/** Re-make element in all diagrams it appears. 
+	 *  This actually deletes all the diagramElements and creates other diagramElements, including them in their specific diagrams. */
+	public void remakeDiagramElement(RefOntoUML.Element element)
 	{
 		for(DiagramEditor diagramEditor: getDiagramEditors(element))
 		{
-			updateDiagramElement(element,diagramEditor);
+			remakeDiagramElement(element,diagramEditor);
 		}
+	}
+	
+	/** Refresh element in all diagrams it appears. Just "redraw" the diagramElements. 
+	 *  If the element is an association and the end-points are changed, call the remakeDiagramElement() method instead. */
+	public void refreshDiagramElement(RefOntoUML.Element element)
+	{
+		for(DiagramEditor diagramEditor: getDiagramEditors(element))
+		{
+			refreshDiagramElement(element,diagramEditor);
+		}
+	}
+	
+	/** Refresh a diagram element. Just "redraw" it. 
+	 *  If the element is an association and the end-points are changed, call the remakeDiagramElement() method instead. */
+	public void refreshDiagramElement (RefOntoUML.Element element, DiagramEditor d)
+	{		
+		if (d!=null && !d.getDiagram().containsChild(element)) return;
+		if (d!=null) {
+			DiagramElement diagramElem = ModelHelper.getDiagramElement(element);
+			if(diagramElem!=null){				
+				ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+				list.add(diagramElem);
+				d.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+			}			
+		}		
 	}
 	
 	/** Move element to a Diagram */
@@ -408,24 +430,80 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
-	/** Update OLED according to AntiPatterns actions 
-	 * @throws InterruptedException */
+	/** 
+	 * Update the application accordingly
+	 * 
+	 * @param element: added or modified element
+	 */
+	public void updateOLED(RefOntoUML.Element element)
+	{
+		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
+
+		// =================================
+		// OntoUML Parser
+		// =================================
+		ProjectBrowser.getParserFor(project).addElement(element);		
+		if (element instanceof Association)
+		{
+			Property p1 = ((Association)element).getMemberEnd().get(0);
+			Property p2 = ((Association)element).getMemberEnd().get(1);			
+			ProjectBrowser.getParserFor(project).addElement(p1); 	
+			ProjectBrowser.getParserFor(project).addElement(p2);
+		}
+		if (element instanceof Property){
+			ProjectBrowser.getParserFor(project).addElement((Property)element); 
+		}
+		
+		// =================================
+		// Project Tree
+		// =================================
+		// Do not rebuild the tree, we need to only update it without creating a new instance of it.
+		ProjectBrowser.rebuildTree(project);		
+		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
+		tree.selectModelElement(element);
+		
+		// =================================
+		// OCL Completion
+		// =================================		
+		ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(element);
+		
+		// =================================
+		// Diagrams
+		// =================================					
+		if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType){
+			refreshDiagramElement((Classifier)element);
+		}
+		if (element instanceof RefOntoUML.Association){
+			remakeDiagramElement((RefOntoUML.Element)element);
+		}
+		if (element instanceof RefOntoUML.Property){
+			Association assoc= ((RefOntoUML.Property)element).getAssociation();								
+			if (assoc!=null) remakeDiagramElement((RefOntoUML.Element)assoc);
+			else refreshDiagramElement((RefOntoUML.Element)(element).eContainer());
+		}			
+	}
+	
+	/** Update OLED according to a Fix.  */
 	public void updateOLED (final Fix fix)
 	{
 		if (fix==null) return;
 		for(Object obj: fix.getAdded()) {
 			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
-				AddNodeCommand.updateApplication((RefOntoUML.Element)obj);
+				updateOLED((RefOntoUML.Element)obj);
 		}
 		for(Object obj: fix.getAdded()) {
 			if (obj instanceof RefOntoUML.Relationship)
-				AddConnectionCommand.updateApplication((RefOntoUML.Element)obj);
+				updateOLED((RefOntoUML.Element)obj);
 		}				
 		for(Object obj: fix.getModified()){
 			if (obj instanceof RefOntoUML.Property){
 				Association assoc= ((RefOntoUML.Property)obj).getAssociation();								
-				if (assoc!=null) updateDiagramElement((RefOntoUML.Element)assoc);																
+				if (assoc!=null) remakeDiagramElement((RefOntoUML.Element)assoc);
+				else refreshDiagramElement((RefOntoUML.Element)((RefOntoUML.Element)obj).eContainer());
 			}							
+			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType){
+				refreshDiagramElement((Classifier)obj);
+			}
 		}
 		for(Object obj: fix.getDeleted()) {
 			if (obj instanceof RefOntoUML.Relationship)

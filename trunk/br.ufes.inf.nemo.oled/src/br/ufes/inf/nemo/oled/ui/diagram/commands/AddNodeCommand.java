@@ -32,7 +32,6 @@ import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
@@ -121,7 +120,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 			ModelHelper.addMapping(element, ((ClassElement)diagramElement));
 		}
 
-		ProjectBrowser.frame.getDiagramManager().updateUI();
+		ProjectBrowser.frame.getDiagramManager().updateOLED(element);
 	}	
 	
 	/**
@@ -153,30 +152,6 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		}else{
 			AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Package)eContainer).getPackagedElement(), element);
 			project.getEditingDomain().getCommandStack().execute(cmd);
-		}
-		
-		//Update the application accordingly
-		updateApplication(element);
+		}		
 	}	
-
-	/** Update the application accordingly */
-	public static void updateApplication(RefOntoUML.Element addedElement)
-	{
-		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
-		
-		ProjectBrowser.getParserFor(project).addElement(addedElement);
-		
-		//FIXME - Do not rebuild the tree, only update it!
-		ProjectBrowser.rebuildTree(project);
-		
-		//Select the element in the Tree
-		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
-		tree.selectModelElement(addedElement);
-		
-		//Include this element in the Auto Completion of OCL Editor
-		if (addedElement instanceof RefOntoUML.Type){
-			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Type)addedElement);
-		}
-	}
-	
 }

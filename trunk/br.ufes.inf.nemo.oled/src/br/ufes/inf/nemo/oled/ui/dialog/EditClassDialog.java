@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.AddCommand;
 
 import RefOntoUML.Class;
@@ -40,7 +42,6 @@ import RefOntoUML.impl.CollectiveImpl;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.diagram.AttributeTableModel;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -83,12 +84,21 @@ public class EditClassDialog extends JDialog {
 		myPostInit();
 	}
 	
+	public static String getStereotype(EObject element)
+	{
+		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+	    type = type.replaceAll("Impl","");
+	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
+	    type = type.replace("Association","");
+	    return type;
+	}
+	
 	private void initGUI() {
 		try {
 			{
 				{
 					setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-					setTitle(ApplicationResources.getInstance().getString("dialog.classproperties.title"));
+					setTitle("Properties"+" - "+getStereotype(classElement.getClassifier())+" "+classElement.getClassifier().getName());
 				}
 				
 				GroupLayout layout = new GroupLayout((JComponent) getContentPane());
@@ -224,11 +234,11 @@ public class EditClassDialog extends JDialog {
 				}
 				{
 					abstractCheck = new JCheckBox();
-					abstractCheck.setText(ApplicationResources.getInstance().getString("stdcaption.abstract"));
+					abstractCheck.setText("Abstract");
 				}
 				{
 					extensionalCheck = new JCheckBox();
-					extensionalCheck.setText(ApplicationResources.getInstance().getString("dialog.classproperties.extensional"));
+					extensionalCheck.setText("Extensional");
 				}
 				{
 					cancelButton = new JButton();

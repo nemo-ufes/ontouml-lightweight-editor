@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Classifier;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.NamedElement;
@@ -160,7 +161,7 @@ public class FeatureListDialog extends JDialog {
 		
 		for(RefOntoUML.Property p : refparser.getAllInstances(RefOntoUML.Property.class)) 
 		{
-			if(!featureList.contains(p) && !p.equals(element)){
+			if(!featureList.contains(p) && !p.equals(element) && ((Classifier)(((Property)element).getType())).allParents().contains(p.getType())){
 				FeatureElement elem = new FeatureElement(p);
 				leftListModel.addElement(elem);
 			}
@@ -222,9 +223,9 @@ public class FeatureListDialog extends JDialog {
 		
 		JLabel lblChooseWhichProperties = new JLabel();
 		if (attributeName.trim().compareToIgnoreCase("redefined")==0)
-			lblChooseWhichProperties.setText("Choose which properties redefine "+refparser.getStereotype(element)+" "+((NamedElement)element).getName()+": "+((Property)element).getType().getName());
+			lblChooseWhichProperties.setText("Choose which properties are redefined "+refparser.getStereotype(element)+" "+((NamedElement)element).getName()+": "+((Property)element).getType().getName());
 		else if (attributeName.trim().compareToIgnoreCase("subsetted")==0){
-			lblChooseWhichProperties.setText("Choose which properties subset "+refparser.getStereotype(element)+" "+((NamedElement)element).getName()+": "+((Property)element).getType().getName());
+			lblChooseWhichProperties.setText("Choose which properties are subsetted "+refparser.getStereotype(element)+" "+((NamedElement)element).getName()+": "+((Property)element).getType().getName());
 		}else{
 			lblChooseWhichProperties.setText("");
 		}			

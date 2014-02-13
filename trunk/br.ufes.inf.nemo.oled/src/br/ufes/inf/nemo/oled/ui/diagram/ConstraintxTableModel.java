@@ -8,6 +8,7 @@ import RefOntoUML.Constraintx;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.StringExpression;
 import RefOntoUML.impl.ConstraintxImpl;
+import br.ufes.inf.nemo.oled.ui.dialog.BaseTableModel;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**

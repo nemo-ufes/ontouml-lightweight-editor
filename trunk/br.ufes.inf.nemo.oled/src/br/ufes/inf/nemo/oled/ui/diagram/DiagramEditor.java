@@ -1163,10 +1163,13 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		if (element instanceof ClassElement) {
 			ClassElement classElement = (ClassElement) element;
 			EditClassDialog dialog = new EditClassDialog(frame, diagramManager, classElement, true);
+			//ClassDialog dialog2 = new ClassDialog(frame,diagramManager,classElement,true);
 			//EditClassDialog2 dialog = new EditClassDialog2(frame);
 			//EditClassDialog2 dialog = new EditClassDialog2(frame, diagramManager, classElement, true);
 			dialog.setLocationRelativeTo(frame);
 			dialog.setVisible(true);
+			//dialog2.setLocationRelativeTo(frame);
+			//dialog2.setVisible(true);
 			redraw();
 		} else if (element instanceof AssociationElement) {
 			AssociationElement association = (AssociationElement) element;

@@ -4,6 +4,7 @@ import org.eclipse.emf.common.util.EList;
 
 import RefOntoUML.Comment;
 import RefOntoUML.NamedElement;
+import br.ufes.inf.nemo.oled.ui.dialog.BaseTableModel;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
