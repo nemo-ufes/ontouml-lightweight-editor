@@ -67,7 +67,7 @@ public class GraphAssistant {
 		String s = "";
 		for(NodeAssistant node :nodes){
 			if(!node.isAction()){
-				s += node.getPage().toString(); 
+				s += "\n"+node.getPage().getName(); 
 			}
 		}
 		return s;

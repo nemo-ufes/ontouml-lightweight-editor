@@ -25,74 +25,77 @@ public class Question extends WizardPageAssistant {
 		Composite container = new Composite(parent, SWT.NULL);
 
 		setControl(container);
-		
+
 		Label lbQuestion = new Label(container, SWT.NONE);
 		lbQuestion.setBounds(10, 10, 554, 70);
 		lbQuestion.setText(question);
-		
+
 		btTrue = new Button(container, SWT.RADIO);
 		btTrue.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(canGoTrue)
-					setPageComplete(true);
-				else
-					MessageDialog.openInformation(getShell(), "Finish", "Has no actions to do in this case. \nPlease finish the wizard.");
+				setPageComplete(true);
+				selected = true;
 			}
 		});
 		btTrue.setBounds(10, 96, 90, 16);
 		btTrue.setText("True");
-		
+
 		btFalse = new Button(container, SWT.RADIO);
 		btFalse.setBounds(10, 117, 90, 16);
 		btFalse.setText("False");
 		btFalse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(canGoFalse)
-					setPageComplete(true);
-				else
-					MessageDialog.openInformation(getShell(), "Finish", "Has no actions to do in this case. \nPlease finish the wizard.");
+				setPageComplete(true);
+				selected = true;
 			}
 		});
-		setPageComplete(false);
 	}
-	
+
 	@Override
 	public boolean nextTrue() {
+		System.out.println("nextTrue: "+btTrue.getSelection());
 		return btTrue.getSelection();
 	}
-	
+
 	@Override
 	public boolean nextFalse() {
+		System.out.println("nextFalse: "+btFalse.getSelection());
 		return btFalse.getSelection();
 	}
 
 	@Override
 	public boolean canFlipToNextPage() {
-		if(!canGoFalse)
-			return btTrue.getSelection();
-		if(!canGoTrue)
-			return btFalse.getSelection();
-		
 		return btTrue.getSelection() || btFalse.getSelection();
 	}
 
 	private boolean canGoTrue = true;
 	private boolean canGoFalse = true;
-	
-	public void setTrue(boolean b){
+	private boolean selected = false;
+
+	public void setCanGoTrue(boolean b){
+		btTrue.setEnabled(false);
 		canGoTrue = b;
 	}
-	
-	public void setFalse(boolean b){
+
+	public void setCanGoFalse(boolean b){
+		btFalse.setEnabled(false);
 		canGoFalse = b;
 	}
-	
-	
+
+
 	private String question = "<Question>";
 	public void setQuestion(String question) {
 		this.question = question;
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		if((!canGoTrue || !canGoFalse) && !selected){
+			MessageDialog.openInformation(getShell(), "Warning", "There is just one options in this case, but you can finish the wizard.");
+		}
 	}
 
 	@Override
