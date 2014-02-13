@@ -237,7 +237,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 					"    padding:6px 30px;\n"+
 					"    text:#666666\n"+
 					"    background:#FFFFFF;\n"+
-					"	 background-color:#F3FFF9;\n"+
+					"	 background-color:#FAFFFD;\n"+
 					"    container:#E3F2D3\n"+
 					"    width:700px;\n"+
 					"    border-radius:10px;\n"+
