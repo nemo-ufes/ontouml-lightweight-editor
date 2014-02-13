@@ -11,7 +11,6 @@ import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2text.descriptionSpace.BinaryDescriptionFunction;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionFunction;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionSpace;
@@ -619,7 +618,7 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			return;
 			}
 	
-		//AJEITAR MULTIPLICIDADE
+/*		//AJEITAR MULTIPLICIDADE
 		
 		//Find multiplicity source and target
 		sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
@@ -627,13 +626,35 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		
 		targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
 		targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
-				
+		*/		
 		if(r instanceof RefOntoUML.Characterization){
 						
-			if(source instanceof Mode)
+			/*if(source instanceof Mode)
 				mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
 			else
 				mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
+			*/
+			if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
+				
+				sourceLower = ((Association) r).getMemberEnd().get(0).getLower();
+				sourceUpper = ((Association) r).getMemberEnd().get(0).getUpper();
+				
+				targetLower = ((Association) r).getMemberEnd().get(1).getLower();
+				targetUpper = ((Association) r).getMemberEnd().get(1).getUpper();
+
+				mat = new Characterization(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
+			
+			}else{
+							
+				sourceLower = ((Association) r).getMemberEnd().get(1).getLower();
+				sourceUpper = ((Association) r).getMemberEnd().get(1).getUpper();
+				
+				targetLower = ((Association) r).getMemberEnd().get(0).getLower();
+				targetUpper = ((Association) r).getMemberEnd().get(0).getUpper();
+
+				mat = new Characterization(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
+			}
+			
 			
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
@@ -720,35 +741,6 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		}
 		if(r instanceof RefOntoUML.Mediation){	
 			
-			/*if(source instanceof Relator && target instanceof Relator)
-				try {
-					if (parser.getMediated((RefOntoUML.Mediation) r).getName().equals(source.getLabel())){		//se o target da med for o relator source
-						mat = new Mediation(((Association)r).getName(),target,source, targetLower,targetUpper, sourceLower, sourceUpper);
-						
-						source.getFunctions().add(mat);
-						target.getFunctions().add(mat);
-						generalizationSpace.getFunctions().add(mat);
-						return;
-
-					}else{				
-						mat = new Mediation(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper);
-
-						source.getFunctions().add(mat);
-						target.getFunctions().add(mat);
-						generalizationSpace.getFunctions().add(mat);
-						return;
-					}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
-					
-			if(source instanceof Relator)
-				mat = new Mediation(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower,targetUpper);
-			else
-				mat = new Mediation(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower,targetUpper);
-			*/
 			if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
 				
 				sourceLower = ((Association) r).getMemberEnd().get(0).getLower();
