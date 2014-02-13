@@ -75,9 +75,9 @@ import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorCommandDispatcher;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.Editor;
-import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.InstanceVisualizer;
+import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.StartPanel;
 import br.ufes.inf.nemo.oled.ui.TextEditor;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
@@ -292,8 +292,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}else{
 			AddConnectionCommand cmd = new AddConnectionCommand(null,null,relationship,null,null,getCurrentProject(),eContainer);
 			cmd.run();
-		}		
+		}
+		
 		return relationship;
+	}
+	
+	/** Add comment to the model (not to diagrams) */
+	public RefOntoUML.Comment addComment(RefOntoUML.Element eContainer)
+	{
+		RefOntoUML.Comment comment = elementFactory.createComment();
+		
+		//to add only in the model do exactly as follow		
+		AddNodeCommand cmd = new AddNodeCommand(null,null,comment,0,0,getCurrentProject(),eContainer);		
+		cmd.run();
+		
+		return comment;
 	}
 	
 	/** Add element to the model (not to diagrams).  */

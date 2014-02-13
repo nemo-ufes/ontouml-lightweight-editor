@@ -55,7 +55,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	private double absx, absy;
 	
 	private RefOntoUML.Element element;
-	private RefOntoUML.Package eContainer;		
+	private RefOntoUML.Element eContainer;		
 	
 	private boolean addToDiagram;
 	
@@ -67,7 +67,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 * @param x the absolute x position
 	 * @param y the absolute y position
 	 */
-	public AddNodeCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element element, double x, double y, UmlProject project, RefOntoUML.Package eContainer) {
+	public AddNodeCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element element, double x, double y, UmlProject project, RefOntoUML.Element eContainer) {
 		this.parent = parent;
 		this.project = project;
 		this.notification = editorNotification;		
@@ -150,8 +150,19 @@ public class AddNodeCommand extends BaseDiagramCommand {
 			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), element);
 			project.getEditingDomain().getCommandStack().execute(cmd);
 		}else{
-			AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Package)eContainer).getPackagedElement(), element);
-			project.getEditingDomain().getCommandStack().execute(cmd);
+			if (eContainer instanceof RefOntoUML.Package){
+				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Package)eContainer).getPackagedElement(), element);
+				project.getEditingDomain().getCommandStack().execute(cmd);
+			}else if (eContainer instanceof RefOntoUML.Element && element instanceof RefOntoUML.Comment){
+				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Element)eContainer).getOwnedComment(), element);
+				project.getEditingDomain().getCommandStack().execute(cmd);
+			}else if (eContainer instanceof RefOntoUML.Class && element instanceof RefOntoUML.Property){
+				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Class)eContainer).getOwnedAttribute(), element);
+				project.getEditingDomain().getCommandStack().execute(cmd);
+			}else if (eContainer instanceof RefOntoUML.DataType && element instanceof RefOntoUML.Property){
+				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.DataType)eContainer).getOwnedAttribute(), element);
+				project.getEditingDomain().getCommandStack().execute(cmd);
+			}			
 		}		
 	}	
 }

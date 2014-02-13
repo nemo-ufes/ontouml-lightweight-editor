@@ -30,6 +30,7 @@ import RefOntoUML.Category;
 import RefOntoUML.Characterization;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
+import RefOntoUML.Comment;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.FormalAssociation;
@@ -343,6 +344,12 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 	  return type;			  
   }
     
+  public Comment createComment(){
+	  Comment c = factory.createComment();
+	  c.setBody("");
+	  return c;
+  }
+  
   /**
    * Create an Element with the given stereotype that contains all the features of the given Type. 
    */
