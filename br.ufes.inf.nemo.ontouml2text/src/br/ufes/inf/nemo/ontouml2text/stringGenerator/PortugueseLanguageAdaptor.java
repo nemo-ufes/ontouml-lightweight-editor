@@ -187,6 +187,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		if(previousPattern instanceof GeneralizationPattern || 
 				previousPattern instanceof ReflexivePattern) parcialDescription += ", que é";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ". É";
+		else if(previousPattern == null) parcialDescription += " é";
 		
 		// Generating specific description
 		parcialDescription += " caracterizado por ter " + 
