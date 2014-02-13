@@ -86,13 +86,18 @@ public class StringGenerator {
 			// Identifying patterns
 			patterns = identifyPatterns(describedCategory);
 			
+			///////////
+			if(patterns.size() == 0)
+				System.out.println("WPC: "+describedCategory.getLabel());
+			///////////
+			
 			initialLetter = getInitialLetter (describedCategory.getLabel()); 
 			
 			htmlLetter = exporter.findLetter(initialLetter);
 			
-			categoryDescription = languageAdaptor.generateCategoryDescription(patterns);
-			
-			if(categoryDescription.equals("."))
+			if(patterns.size() > 0)
+				categoryDescription = languageAdaptor.generateCategoryDescription(patterns);		
+			else
 				categoryDescription = describedCategory.getUserDescription();
 			
 			exporter.saveDescription(describedCategory, categoryDescription, htmlLetter);
@@ -219,7 +224,7 @@ public class StringGenerator {
 			}
 		
 			// Rigid Heterogeneous Generalization Pattern
-			if((target instanceof Category || target instanceof Mixin) && (source instanceof Kind || source instanceof Collective))
+			if((target instanceof Category || target instanceof Mixin) && (source instanceof Kind || source instanceof Subkind || source instanceof Collective))
 				patterns.add(new RigidHeterogeneousGeneralizationPattern(describedCategory, 
 						new PatternCategory(target.getLabel(), 
 								function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));	
@@ -428,7 +433,8 @@ public class StringGenerator {
 		if(describedCategory == source){ // Ensuring unidirectionality		
 			// Ordinary Mediation Pattern
 			if((target instanceof Role || target instanceof RoleMixin || 
-					target instanceof Kind || target instanceof Subkind || target instanceof Category) && source instanceof Relator){					
+					target instanceof Kind || target instanceof Subkind || 
+					target instanceof Category || target instanceof Mixin) && source instanceof Relator){					
 				if(function.getTargetMinMultiplicity() > 0){
 					naryPattern = (NaryPattern)searchPattern(patterns, "OrdinaryMediationPattern");
 					
@@ -484,7 +490,8 @@ public class StringGenerator {
 			if(countFunctionType(describedCategory,"Mediation") == 1){
 				// Processing Pattern
 				if((target instanceof Role || target instanceof Kind || 
-						target instanceof Subkind || target instanceof Category) && source instanceof Relator){
+						target instanceof Subkind || target instanceof Category || 
+						target instanceof Mixin) && source instanceof Relator){
 					patterns.add(new OrdinaryMediationRevPattern(describedCategory, 
 							new PatternCategory(source.getLabel(), 
 									((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
