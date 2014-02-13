@@ -102,8 +102,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Integration
 		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof OrdinaryMediationRevPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+				previousPattern instanceof OrdinaryMediationRevPattern) parcialDescription += " e";
 		
 		// Generating specific description
 		parcialDescription += " é uma categoria de " + 
@@ -118,8 +117,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 		
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
 
 		// Generating specific description
 		parcialDescription += " é um papel que " + 
@@ -136,8 +134,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Integration
 		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof OrdinaryMediationRevPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += ", como também ";
+				previousPattern instanceof OrdinaryMediationRevPattern) parcialDescription += ", como também ";
 
 		// Generating specific description
 		parcialDescription += " é " + 
@@ -152,8 +149,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
 		
 		// Generating specific description
 		parcialDescription += " é " + 
@@ -168,8 +165,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
 		
 		// Generating specific description
 		parcialDescription += " tem como fases: " + 
@@ -184,14 +181,14 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += ", que é";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += ", que é";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ". É";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ". É";
 		else if(previousPattern == null) parcialDescription += " é";
 		
 		// Generating specific description
 		parcialDescription += " caracterizado por ter " + 
-				insertTarget(((BinaryPattern)pattern).getTargetCategory(), false);
+				insertListing((NaryPattern)pattern, false, "e");
 					
 		return parcialDescription;
 	}
@@ -202,8 +199,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ". É";
 		
 		// Generating specific description
 		parcialDescription += " é uma característica de " + 
@@ -218,8 +215,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 		
@@ -236,8 +233,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", além disso,";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso,";
 		
@@ -254,8 +251,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 					
@@ -272,8 +269,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", além disso,";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso, ";
 		
@@ -290,8 +287,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", além disso,";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 					
@@ -308,8 +305,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += ", "+insertArticle(pattern.getDescribedCategory().getLabel())+" qual";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += ", "+insertArticle(pattern.getDescribedCategory().getLabel())+" qual";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
 		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += "; como também";
 		else if(previousPattern instanceof PartOfPattern) parcialDescription += "; como também";
@@ -327,8 +324,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += ", "+insertArticle(pattern.getDescribedCategory().getLabel())+" qual";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += ", "+insertArticle(pattern.getDescribedCategory().getLabel())+" qual";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
 		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += "; como também";
 		else if(previousPattern instanceof PartOfPattern) parcialDescription += "; como também";
@@ -346,8 +343,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " que pode";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " que pode";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
 		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += "; como também pode";
 		else if(previousPattern instanceof PartOfPattern) parcialDescription += "; como também pode";
@@ -367,9 +364,9 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 		
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " que pode";
-		if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " que pode";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += "; como também pode";
 		else if(previousPattern instanceof PartOfPattern) parcialDescription += "; como também pode";
 		else if(previousPattern instanceof FormalAssociationPattern) parcialDescription += ", em adição, pode"; 
@@ -388,8 +385,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " que";	
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " que";	
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ", e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 		
@@ -407,11 +404,11 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 
 		// Integration
 		if(previousPattern instanceof AntiRigidHeterogeneousGeneralizationIdPattern) parcialDescription += " quando envolvido";	
-		else if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e se envolve";
+		else if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e se envolve";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ", além disso, se envolve";
 		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " , além disso, se envolve";
-		else if(previousPattern instanceof PartOfPattern) parcialDescription += " , além disso, se envolve";
-		else if(previousPattern instanceof FormalPattern) parcialDescription += " , além disso, se envolve";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += ", além disso, se envolve";
+		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso, se envolve";
 		else if(previousPattern == null) parcialDescription += " se envolve";
 		 
 		// Generating specific description
@@ -427,8 +424,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += "e pode";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += "e pode";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ", além de poder";
 		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof FormalPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern instanceof ExceptionMediationPattern) parcialDescription += " e poder"; 
 		else if(previousPattern == null) parcialDescription += " pode";			
@@ -446,8 +443,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " que";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " que"; 
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " , além disso,";
 		else if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além disso,";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 		
@@ -464,8 +461,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += " e pode";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e pode";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ", além disso, pode";
 		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e pode";
 		else if(previousPattern == null) parcialDescription += " pode";
@@ -483,8 +480,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern || 
-				previousPattern instanceof ReflexivePattern) parcialDescription += ", "+insertArticle(pattern.getDescribedCategory().getLabel())+" qual";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += ", "+insertArticle(pattern.getDescribedCategory().getLabel())+" qual";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
 		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof PartOfPattern) parcialDescription += " e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
