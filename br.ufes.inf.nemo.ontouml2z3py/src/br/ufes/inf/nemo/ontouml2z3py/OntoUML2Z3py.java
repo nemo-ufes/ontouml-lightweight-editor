@@ -15,18 +15,6 @@ import br.ufes.inf.nemo.z3py.OntoUMLZ3System;
 public class OntoUML2Z3py {
 	
 	
-
-	public Hashtable<Classifier, Classifier> getGeneralizationSets (OntoUMLParser ontoparser){
-		Hashtable<Classifier, Classifier> sets = new Hashtable<Classifier, Classifier>();
-		for(Generalization p: ontoparser.getAllInstances(Generalization.class)){
-			System.out.println("Generalization: "+ p.getGeneral() +" / " +p.getSpecific());
-			sets.put(p.getGeneral(), p.getSpecific());
-		}
-		return sets;
-		
-	}
-	
-		
 	public static void main(String[]args) throws IOException{
 		
 		
@@ -57,26 +45,11 @@ public class OntoUML2Z3py {
 				System.out.println("Generalization: "+ p.getGeneral() +" / " +p.getSpecific());
 			}
 */
-			Transformer t = new Transformer("models/Exemplo2.refontouml");
+			Transformer t = new Transformer("models/ErroKindHerdaDeSub.refontouml");
 			OntoUMLZ3System system = t.run();
 			
 		
 			System.out.println(system);
 			
-			Resource resource = ResourceUtil.loadReferenceOntoUML("models/Exemplo2.refontouml");
-			RefOntoUML.Package root  = (RefOntoUML.Package)resource.getContents().get(0);
-			OntoUMLParser ontoparser = new OntoUMLParser(root);
-			for(GeneralizationSet p: ontoparser.getAllInstances(GeneralizationSet.class)){
-				//System.out.println("Generalization: "+ p.getGeneral() +" / " +p.getSpecific());
-				System.out.println(p.getGeneralization());
-				
-			}
-			
-/*			
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
-*/
 	}
 }
