@@ -296,7 +296,7 @@ public class StringGenerator {
 			naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
 					function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
 		}else{ // Characterization Association Rev Pattern
-naryPattern = (NaryPattern)searchPattern(patterns, "CharacterizationAssociationRevPattern");
+			naryPattern = (NaryPattern)searchPattern(patterns, "CharacterizationAssociationRevPattern");
 			
 			if(naryPattern == null){
 				naryPattern = new CharacterizationAssociationRevPattern(describedCategory);
