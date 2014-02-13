@@ -1814,23 +1814,35 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	public void openModellingAssistant(final Classifier elem){
-	  	boolean runAssistant = getFrame().getMainMenu().isAssistantChecked();
-  	
-    	if(runAssistant){
-    		if(Main.onMac()){//To work on Mac
-    			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
-    				@Override
-    				public void run() {
-    					Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
-    					updateOLED(fix);
-    				}
-    			});
-    		}else{//To work in others
-    			Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
-    			updateOLED(fix);
-    		}    		
-    	}	
+		boolean runAssistant = getFrame().getMainMenu().isAssistantChecked();
+
+		if(runAssistant){
+			if(Main.onMac()){//To work on Mac
+				com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
+					@Override
+					public void run() {
+						Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
+						if(fix != null)
+							updateOLED(fix);
+						else
+							System.out.println("canceled");
+					}
+				});
+			}else{//To work in others
+				final Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
+				if(fix != null){
+					SwingUtilities.invokeLater(new Runnable() {						
+						@Override
+						public void run() {
+							System.out.println("thread");
+							updateOLED(fix);	
+						}
+					});
+				}					
+				else
+					System.out.println("canceled");
+			}    		
+		}	
 	}
-	
 
 }

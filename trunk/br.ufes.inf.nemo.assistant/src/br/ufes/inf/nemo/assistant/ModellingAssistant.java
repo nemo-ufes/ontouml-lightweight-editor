@@ -44,9 +44,11 @@ public class ModellingAssistant {
 	}
 
 	public Fix runPattern(Classifier elem){
-//		GraphAssistant graph = hashGraph.get(getStereotypeFromClassifier(elem));
-		GraphAssistant graph = hashGraph.get(StereotypeOntoUMLEnum.RELATOR);
+		GraphAssistant graph = hashGraph.get(getStereotypeFromClassifier(elem));
+//		GraphAssistant graph = hashGraph.get(StereotypeOntoUMLEnum.RELATOR);
 		graph.updateNodeList();
+		graph.getManagerPattern().setClassifierOrigem(elem);
+		
 		System.out.println(graph.toString());
 		
 		Fix fix = null;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.wizard.IWizardPage;
 
+import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewClass;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGenericRelation;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewPhase;
@@ -25,6 +26,8 @@ public class ManagerPattern {
 
 	private ManagerOLED managerOLED = new ManagerOLED();
 
+	private Classifier origem;
+	
 	public Fix getFix(){
 		return fix;
 	}
@@ -32,6 +35,11 @@ public class ManagerPattern {
 	public void setOntoPaser(OntoUMLParser ontoParser) {
 		this.ontoParser = ontoParser;
 		of = new OutcomeFixer(ontoParser.getModel());
+	}
+	
+	
+	public void setClassifierOrigem(Classifier org){
+		origem = org;
 	}
 
 //	public void callback_newClass(String className, String stereotype) {
@@ -179,9 +187,13 @@ public class ManagerPattern {
 	}
 
 	private void process(NewClass page) {
-		RefOntoUML.Classifier classifier =  (RefOntoUML.Classifier) of.createClass(ClassStereotype.valueOf(page.getStereotype().toUpperCase()));
-		classifier.setName(page.getClassName());
-		fix.includeAdded(classifier);
+		RefOntoUML.Classifier newClassifier =  (RefOntoUML.Classifier) of.createClass(ClassStereotype.valueOf(page.getStereotype().toUpperCase()));
+		newClassifier.setName(page.getClassName());
+		fix.includeAdded(newClassifier);
+		
+		of.copyContainer(origem, newClassifier);
+		fix.includeModified(origem.eContainer());
+		
 		System.out.println(page.toString());
 	}
 
