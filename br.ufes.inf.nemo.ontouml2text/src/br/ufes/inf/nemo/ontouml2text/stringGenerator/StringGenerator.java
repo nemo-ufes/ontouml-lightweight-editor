@@ -281,17 +281,31 @@ public class StringGenerator {
 	private void identifyCharacterizationPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
 		DescriptionCategory target = function.getTarget(); 
-		DescriptionCategory	source = ((BinaryDescriptionFunction)function).getSource();;
+		DescriptionCategory	source = ((BinaryDescriptionFunction)function).getSource();
+		
+		NaryPattern naryPattern;
 		
 		if(describedCategory == source){ // Ensuring unidirectionality
-			patterns.add(new CharacterizationAssociationPattern(describedCategory, 
-					new PatternCategory(target.getLabel(), 
-							function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));
+			naryPattern = (NaryPattern)searchPattern(patterns, "CharacterizationAssociationPattern");
+			
+			if(naryPattern == null){
+				naryPattern = new CharacterizationAssociationPattern(describedCategory);
+				patterns.add(naryPattern);
+			}
+			
+			naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
+					function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
 		}else{ // Characterization Association Rev Pattern
-			patterns.add(new CharacterizationAssociationRevPattern(describedCategory, 
-					new PatternCategory(source.getLabel(), 
-							((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
-							((BinaryDescriptionFunction)function).getSourceMaxMultiplicity())));
+naryPattern = (NaryPattern)searchPattern(patterns, "CharacterizationAssociationRevPattern");
+			
+			if(naryPattern == null){
+				naryPattern = new CharacterizationAssociationRevPattern(describedCategory);
+				patterns.add(naryPattern);
+			}
+			
+			naryPattern.getTargetCategories().add(new PatternCategory(source.getLabel(), 
+					((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
+					((BinaryDescriptionFunction)function).getSourceMaxMultiplicity()));	
 		}
 	}
 	
