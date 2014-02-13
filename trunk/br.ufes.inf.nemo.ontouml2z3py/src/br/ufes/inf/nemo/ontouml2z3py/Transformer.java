@@ -59,7 +59,7 @@ public class Transformer {
 			RefOntoUML.Package root  = (RefOntoUML.Package)resource.getContents().get(0);
 			ontoparser = new OntoUMLParser(root);	
 			populateWithObjectClasses();
-			populatesWithGeneralizations();
+			populatesWithObjectsClassesGeneralizations();
 			
 			//Crio fórmula que garante que todo elemento de mundo é instância de um tipo que provê identidade
 			addIdentityFormula(identityProviderTypes);	
@@ -70,57 +70,7 @@ public class Transformer {
 		return generatedModel;	
 	}
 	
-	private void populatesWithGeneralizations()
-	{
-		FunctionCall general,specific;
-		Expression e;
-		for(Generalization g: ontoparser.getAllInstances(Generalization.class))
-		{
-			general = factory.createFunctionCall(getFunction(g.getGeneral().getName()), getConstants(new int[]{1, 2}));
-			specific = factory.createFunctionCall(getFunction(g.getSpecific().getName()), getConstants(new int[]{1, 2})); 
-			e = factory.createBinaryExpression(specific, general, LogicalBinaryExpressionTypes.IMPLICATION);
-			addFormula(true, e, specific.getCalledFunction().getName() + " is subtypes of " + general.getCalledFunction().getName());
-		}
-	}
 	
-	private void populatesWithGeneralizationSets()
-	{
-		FunctionCall general,specific;
-		Expression e;
-		Generalization g;
-		boolean isCovering, isDisjoint;
-		for(GeneralizationSet gs: ontoparser.getAllInstances(GeneralizationSet.class))
-		{	
-			isCovering = gs.isIsCovering();
-			isDisjoint = gs.isIsDisjoint();
-			List<Generalization> generalizations = gs.getGeneralization();
-			if(generalizations.size() ==1 && isCovering){
-				g = generalizations.get(0);
-				general = factory.createFunctionCall(getFunction(g.getGeneral().getName()), getConstants(new int[]{1, 2}));
-				specific = factory.createFunctionCall(getFunction(g.getSpecific().getName()), getConstants(new int[]{1, 2})); 
-				e = factory.createBinaryExpression(general, specific, LogicalBinaryExpressionTypes.IMPLICATION);
-				addFormula(true, e, "The generalization set is complete. Thus, every "+ general.getCalledFunction().getName() + " is also a " + specific.getCalledFunction().getName());
-			}else if(generalizations.size() >2){
-				if (isCovering){
-					for(Generalization g1: generalizations){
-						//Fazer or entre todos os specifics
-						
-						
-					}	
-					//Fazer implies do general para o or entre todos os specifics
-				}
-				if (isDisjoint){
-					for(Generalization g1: generalizations){
-						//quero garantir qualquer que seja o elemento ele não satisfaz mais de um dos subtipos
-						//Então, quero negar a disjuncão entre as conunções de dois subtipos quaisquer
-						//Por exemplo, se pessoa pode ser homem ou mulher, vou dizer que para todo x em todo mundo w, not(homem(w,x) e mulher(w,x)
-						//Se pensarmos em nulher (M), Homem(H) ou bicha (B), teria que fazer que para todo x,w tenho:
-						//not ((H(w,x) and M(w,x)) or (H(w,x) and B(w,x)) or (B(w,x) and M(w,x)))
-					}	
-				}
-			}	
-		}
-	}
 	private void populateWithExistenceAxioms() {
 		addFunction("exists", 2);
 		//Pensar se precisa de uma formula que faça a tipagem dos argumentos de exists
@@ -164,7 +114,90 @@ public class Transformer {
 		
 	}
 	
+	private void populatesWithObjectsClassesGeneralizations()
+	{
+		FunctionCall general,specific;
+		Expression e;
+		for(Generalization g: ontoparser.getAllInstances(Generalization.class))
+		{
+			general = factory.createFunctionCall(getFunction(g.getGeneral().getName()), getConstants(new int[]{1, 2}));
+			specific = factory.createFunctionCall(getFunction(g.getSpecific().getName()), getConstants(new int[]{1, 2})); 
+			e = factory.createBinaryExpression(specific, general, LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, e, specific.getCalledFunction().getName() + " is subtype of " + general.getCalledFunction().getName());
+		}
+	}
 	
+	private void populatesWithObjectClassesGeneralizationSets()
+	{
+		FunctionCall general;
+		List<FunctionCall> specifics = new ArrayList<FunctionCall>();
+		for(GeneralizationSet gs: ontoparser.getAllInstances(GeneralizationSet.class))
+		{	
+			List<Generalization> generalizations = gs.getGeneralization();
+			for(Generalization g1: generalizations){
+				specifics.add(factory.createFunctionCall(getFunction(g1.getSpecific().getName()), getConstants(new int[]{1, 2})));						
+			}	
+			general = factory.createFunctionCall(getFunction(generalizations.get(0).getGeneral().getName()), getConstants(new int[]{1, 2}));		
+			if (gs.isIsCovering()){
+				addGeneralizationsetCompletenessFormulas(general, specifics);
+			}
+			if (gs.isIsDisjoint()){
+				addGeneralizationsetDisjointnessFormulas(general, specifics);
+			}	
+		}
+	}
+	
+	
+	private void addGeneralizationsetCompletenessFormulas (FunctionCall superClass, List<FunctionCall> subClasses){
+		if (subClasses.size()>0){
+			FunctionCall f1;
+			int i, subClassesNumber = subClasses.size();
+			Expression subDisjunction = subClasses.get(0);
+			String subClassesNames = ((FunctionCall)subDisjunction).getCalledFunction().getName();
+			for(i = 1; i<subClassesNumber;i++){
+				f1 = subClasses.get(i);
+				subDisjunction = factory.createBinaryExpression(f1, subDisjunction, LogicalBinaryExpressionTypes.DISJUNCTION);
+				subClassesNames = subClassesNames.concat(", " + f1.getCalledFunction().getName());
+			}
+			Expression e = factory.createBinaryExpression(superClass, subDisjunction, LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, e, "The Specializazion from " + superClass.getCalledFunction().getName() + " in " + subClassesNames + " is complete");
+		}
+	}
+	
+	private void addGeneralizationsetDisjointnessFormulas (FunctionCall superClass, List<FunctionCall> subClasses){
+		int i, subClassesNumber = subClasses.size();	
+		if (subClassesNumber>1){
+			//Expression subDisjunction = subClasses.get(0);
+			FunctionCall f1,f2;					
+			String subClassesNames="";
+			//quero garantir qualquer que seja o elemento ele não satisfaz mais de um dos subtipos
+			//Então, quero negar a disjuncão entre as conunções de dois subtipos quaisquer
+			//Por exemplo, se pessoa pode ser homem ou mulher, vou dizer que para todo x em todo mundo w, not(homem(w,x) e mulher(w,x)
+			//Se pensarmos em nulher (M), Homem(H) ou bicha (B), teria que fazer que para todo x,w tenho:
+			//not ((H(w,x) and M(w,x)) or (H(w,x) and B(w,x)) or (B(w,x) and M(w,x)))
+			Conjunction conj;
+			Expression disjointness=null;
+			for (i=0;i<subClassesNumber-1; i++){
+				f1 = subClasses.get(i);
+				subClassesNames = subClassesNames.concat(f1.getCalledFunction().getName() + ", ");
+				for (int j = i+1; j<subClassesNumber; j++){
+					f2 = subClasses.get(j);
+					conj = (Conjunction) factory.createBinaryExpression(f1, f2, LogicalBinaryExpressionTypes.CONJUNCTION);
+					if (disjointness==null)
+						disjointness = conj;
+					else
+						disjointness = factory.createBinaryExpression(disjointness, conj, LogicalBinaryExpressionTypes.DISJUNCTION);
+				}
+			}
+			subClassesNames = subClassesNames.concat(subClasses.get(i).getCalledFunction().getName());
+			disjointness = factory.createLogicalNegation(disjointness);
+			addFormula(true,disjointness,"Disjoint Specialization Set: The Specializazion from " + superClass.getCalledFunction().getName() + " in " + subClassesNames + " is disjoint");
+		}
+	}
+
+	//Alterar para ser populateWithWorldStructure que receba um boolean para escolher entre linear e branchintime
+	//para linear, acrescentar à formula 2 o fato de que todo mundo tem apenas um mundo posterior, na criação da hierarquia de mundos tirar o counterfactual
+	//na fórmula 13 tirar o counterFactual e eliminar as fórmulas 15 e 16
 	private void populateWithBranchInTimeWorldStructure(){
 		
 		//Crio as funções que utilizarei		
@@ -303,14 +336,10 @@ public class Transformer {
 	}
 	
 	
-	//To do: vou ter de alterar form de tratar generalizations. Ver métodos populatesWithGeneralizations e populatesWithGeneralizationSets do transformer de Alloy
-	//A ideia é criar a primeira formula no populatewithgeneralization e as formulas de completeness e disjointness no segundo.
-	//Detalhe: Ele usa métodos do parser para obter generalization e generalizationSets
-
 	private void addSpecializationFormulas (FunctionCall superClass, List<FunctionCall> subClasses, boolean isComplete, boolean isDisjoint){
 		if (subClasses.size()>0){
 			Expression subDisjunction = subClasses.get(0);
-			FunctionCall f1,f2;
+			FunctionCall f1;
 			int i, subClassesNumber = subClasses.size();
 			//Adiciono a formula que garante que a especilização existe 			
 			String subClassesNames = ((FunctionCall)subDisjunction).getCalledFunction().getName();
@@ -330,27 +359,7 @@ public class Transformer {
 			
 			//Se for disjoint adiciono formula que garante disjointness
 			if(isDisjoint && subClassesNumber>1){
-				//quero garantir qualquer que seja o elemento ele não satisfaz mais de um dos subtipos
-				//Então, quero negar a disjuncão entre as conunções de dois subtipos quaisquer
-				//Por exemplo, se pessoa pode ser homem ou mulher, vou dizer que para todo x em todo mundo w, not(homem(w,x) e mulher(w,x)
-				//Se pensarmos em nulher (M), Homem(H) ou bicha (B), teria que fazer que para todo x,w tenho:
-				//not ((H(w,x) and M(w,x)) or (H(w,x) and B(w,x)) or (B(w,x) and M(w,x)))
-				Conjunction conj;
-				Expression disjointness=null;
-				for (i=0;i<subClassesNumber-1; i++){
-					f1 = subClasses.get(i);
-					for (int j = i+1; j<subClassesNumber; j++){
-						f2 = subClasses.get(j);
-						conj = (Conjunction) factory.createBinaryExpression(f1, f2, LogicalBinaryExpressionTypes.CONJUNCTION);
-						if (disjointness==null)
-							disjointness = conj;
-						else
-							disjointness = factory.createBinaryExpression(disjointness, conj, LogicalBinaryExpressionTypes.DISJUNCTION);
-					}
-				}
-				disjointness = factory.createLogicalNegation(disjointness);
-				addFormula(true,disjointness,"The Specializazion from " + superClass.getCalledFunction().getName() + " in " + subClassesNames + " is disjoint");
-				
+				addGeneralizationsetDisjointnessFormulas(superClass, subClasses);
 			}			
 		}
 	}
