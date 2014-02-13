@@ -45,8 +45,10 @@ public class OntoUML2Z3py {
 				System.out.println("Generalization: "+ p.getGeneral() +" / " +p.getSpecific());
 			}
 */
+			
+		//TO DO: DESCOBRIR PQ D ERRADO COM LINEAR TIME... ACHO QUE TEM ALGO FAZENDO FICAR INFINITO....
 			Transformer t = new Transformer("models/ErroKindHerdaDeSub.refontouml");
-			OntoUMLZ3System system = t.run();
+			OntoUMLZ3System system = t.run(false);
 			
 		
 			System.out.println(system);

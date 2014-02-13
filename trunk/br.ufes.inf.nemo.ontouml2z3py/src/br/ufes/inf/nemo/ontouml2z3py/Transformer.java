@@ -46,11 +46,11 @@ public class Transformer {
 		this.sourceModelPath= sourceModelPath;
 		
 	}
-	public OntoUMLZ3System run(){
+	public OntoUMLZ3System run(boolean isBranchInTime){
 		
 		generatedModel = factory.createOntoUMLZ3System();
 		//Gero toda a axiomatização referente a estrutura de mundos
-		populateWithBranchInTimeWorldStructure();
+		populateWithBranchInTimeWorldStructure(isBranchInTime);
 		//Adiciono a estrutura que utilizarei para verificar se um dado elemento existe em um dado mundo
 		populateWithExistenceAxioms();		
 		Resource resource;
@@ -195,10 +195,8 @@ public class Transformer {
 		}
 	}
 
-	//Alterar para ser populateWithWorldStructure que receba um boolean para escolher entre linear e branchintime
-	//para linear, acrescentar à formula 2 o fato de que todo mundo tem apenas um mundo posterior, na criação da hierarquia de mundos tirar o counterfactual
-	//na fórmula 13 tirar o counterFactual e eliminar as fórmulas 15 e 16
-	private void populateWithBranchInTimeWorldStructure(){
+	
+	private void populateWithBranchInTimeWorldStructure(boolean isBranchIntime){
 		
 		//Crio as funções que utilizarei		
 		addFunction("World",1);
@@ -220,12 +218,25 @@ public class Transformer {
 		addFormula(true, lbe2, "The two arguments fo the function next are worlds");
 		
 		//2.	∀x,y,z (next(x,y) ∧ next(z,y)) →x=z
+		//Todo mundo é next de apenas um outro
 		fc1 = factory.createFunctionCall(getFunction("next"), getConstants(new int[]{1, 2}));
 		fc2 = factory.createFunctionCall(getFunction("next"), getConstants(new int[]{3, 2}));
 		lbe1 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
 		Equality e1 = factory.createEquality(getConstants(new int[]{1, 3}));
 		lbe2 = factory.createBinaryExpression(lbe1, e1 , LogicalBinaryExpressionTypes.IMPLICATION);
 		addFormula(true, lbe2, "Every world is the next of, at most, one world");
+		
+		if (!isBranchIntime){
+			//Se for estrutura linear, todo mundo tem apenas um next
+			fc1 = factory.createFunctionCall(getFunction("next"), getConstants(new int[]{1, 2}));
+			fc2 = factory.createFunctionCall(getFunction("next"), getConstants(new int[]{1, 3}));
+			lbe1 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
+			e1 = factory.createEquality(getConstants(new int[]{2, 3}));
+			lbe2 = factory.createBinaryExpression(lbe1, e1 , LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, lbe2, "In a Linear Time Structure, Every world has at most one next world");			
+		}
+		
+		
 		
 		//3.	∀x (¬next(x,x))
 		fc1 = factory.createFunctionCall(getFunction("next"), getConstants(new int[]{1, 1}));
@@ -250,15 +261,17 @@ public class Transformer {
 		lbe1 = factory.createBinaryExpression(fc1, ln, LogicalBinaryExpressionTypes.IMPLICATION);
 		addFormula(true,lbe1,"The next function is assimetric when considering its transitive closure");
 		
-		//World tem especialização disjunta e completa com CurrentWorld, PastWorld, FutureWorld e CounterfactualWorld
+		//No caso de branchInTime World tem especialização disjunta e completa com CurrentWorld, PastWorld, FutureWorld e CounterfactualWorld
+		//No caso de linear World tem especialização disjunta e completa com CurrentWorld, PastWorld e FutureWorld 
 		fc1= factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
 		List<FunctionCall> subClasses = new ArrayList<FunctionCall>();
 		subClasses.add(factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{1})));
 		subClasses.add(factory.createFunctionCall(getFunction("FutureWorld"), getConstants(new int[]{1})));
 		subClasses.add(factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{1})));
-		subClasses.add(factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{1})));
+		if (isBranchIntime)
+			subClasses.add(factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{1})));
+		addSpecializationFormulas(fc1,subClasses, true, true);
 		
-		addSpecializationFormulas(fc1,subClasses, true, true);		
 		
 		//8.	∃x (CurrentWorld(x))
 		fc1= factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{1}));
@@ -298,12 +311,14 @@ public class Transformer {
 		addFormula(true, lbe1, "Every future world is acessible from the current world by the recursiveNext transitive closure");
 		
 		//13.	∀x,y (PastWorld(x) ∧ next(x,y) → (CurrentWorld(y) ∨ PastWorld(y) ∨ CounterFactualWorld(y)))
+		//No caso de linear, não tem o counterfactual
 		fc1= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{1}));
 		fc2= factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{2}));
 		fc3= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{2}));
 		FunctionCall fc4= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{2}));
-		lbe1 = factory.createBinaryExpression(fc3, fc4, LogicalBinaryExpressionTypes.DISJUNCTION);
-		lbe1 = factory.createBinaryExpression(fc2, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
+		lbe1 = factory.createBinaryExpression(fc2, fc4, LogicalBinaryExpressionTypes.DISJUNCTION);
+		if (isBranchIntime)	
+			lbe1 = factory.createBinaryExpression(fc3, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
 		fc2= factory.createFunctionCall(getFunction("next"), getConstants(new int[]{1,2}));
 		lbe2 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
 		lbe2 = factory.createBinaryExpression(lbe2, lbe1, LogicalBinaryExpressionTypes.IMPLICATION);
@@ -318,21 +333,23 @@ public class Transformer {
 		lbe1 = factory.createBinaryExpression(fc1, qt, LogicalBinaryExpressionTypes.IMPLICATION);
 		addFormula(true, lbe1, "The current world is acessible from all past worlds by the recursiveNext transitive closure");
 		
-		//15.	∀x,y (CounterFactualWorld (x) ∧ next(x,y) → CounterFactualWorld (y))
-		fc1= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{1}));
-		fc2= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{2}));
-		fc3= factory.createFunctionCall(getFunction("next"), getConstants(new int[]{1,2}));
-		lbe1 = factory.createBinaryExpression(fc1, fc3, LogicalBinaryExpressionTypes.CONJUNCTION);
-		lbe2 = factory.createBinaryExpression(lbe1, fc2, LogicalBinaryExpressionTypes.IMPLICATION);
-		addFormula(true, lbe2, "The next world of a contrafactual world is another contrafactual world");
-		
-		//16.	∀x,y (PastWorld(x) ∧ CounterFactualWorld (y) →  recursiveNext(x,y))
-		fc1= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{1}));
-		fc2= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{2}));
-		fc3= factory.createFunctionCall(getFunction("recursiveNext"), getConstants(new int[]{1,2}));
-		lbe1 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
-		lbe2 = factory.createBinaryExpression(lbe1, fc3, LogicalBinaryExpressionTypes.IMPLICATION);
-		addFormula(true, lbe2, "A contrafactual world is acessible from all past worlds by the recursiveNext transitive closure");
+		if (isBranchIntime){
+			//15.	∀x,y (CounterFactualWorld (x) ∧ next(x,y) → CounterFactualWorld (y))
+			fc1= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{1}));
+			fc2= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{2}));
+			fc3= factory.createFunctionCall(getFunction("next"), getConstants(new int[]{1,2}));
+			lbe1 = factory.createBinaryExpression(fc1, fc3, LogicalBinaryExpressionTypes.CONJUNCTION);
+			lbe2 = factory.createBinaryExpression(lbe1, fc2, LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, lbe2, "The next world of a contrafactual world is another contrafactual world");
+			
+			//16.	∀x,y (PastWorld(x) ∧ CounterFactualWorld (y) →  recursiveNext(x,y))
+			fc1= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{1}));
+			fc2= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{2}));
+			fc3= factory.createFunctionCall(getFunction("recursiveNext"), getConstants(new int[]{1,2}));
+			lbe1 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
+			lbe2 = factory.createBinaryExpression(lbe1, fc3, LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, lbe2, "A contrafactual world is acessible from all past worlds by the recursiveNext transitive closure");
+		}
 	}
 	
 	
