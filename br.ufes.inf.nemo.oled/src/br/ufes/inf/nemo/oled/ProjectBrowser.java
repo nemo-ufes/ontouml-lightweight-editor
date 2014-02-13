@@ -324,8 +324,4 @@ public class ProjectBrowser extends JPanel{
 	public UmlProject getProject() {
 		return project;
 	}
-
-//	public static ModellingAssistant getAssistantFor(UmlProject currentProject) {
-//		return ProjectBrowser.getProjectBrowserFor(frame,currentProject).assistant;
-//	}
 }
