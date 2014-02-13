@@ -396,6 +396,8 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	     Object value = model.getValueAt(row, column);
 	     EObject elem = ((OntoUMLElement)node.getUserObject()).getElement();	     
 	     
+	     this.element = (RefOntoUML.Element)elem;
+	     
 	     if(elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType)
 	     {
 	    	 if(property.equals("Name")) ((RefOntoUML.Classifier)elem).setName((String)value);
@@ -410,7 +412,16 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	     {
 	    	 if(property.equals("Name")) ((RefOntoUML.Association)elem).setName((String)value);
 	    	 if(property.equals("Abstract")) ((RefOntoUML.Association)elem).setIsAbstract((Boolean)value);
-	    	 if(property.equals("Derived")) ((RefOntoUML.Association)elem).setIsDerived((Boolean)value);
+	    	 if(property.equals("Derived")) {
+	    		 ((RefOntoUML.Association)elem).setIsDerived((Boolean)value);
+	    		 if((Boolean)value==true){
+	    			 ((RefOntoUML.Association)elem).setName("/"+((RefOntoUML.Association)elem).getName());
+	    			 model.setValueAt(((RefOntoUML.Association)elem).getName(),0, 1);
+	    		 }else{
+	    			 ((RefOntoUML.Association)elem).setName(((RefOntoUML.Association)elem).getName().replace("/", ""));
+	    			 model.setValueAt(((RefOntoUML.Association)elem).getName(),0, 1);
+	    		 }
+	    	 }
 	    	 
 	    	 if(elem instanceof RefOntoUML.Meronymic){
 	    		 if(property.equals("Essential"))((RefOntoUML.Meronymic)elem).setIsEssential((Boolean)value);
@@ -446,7 +457,16 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	    	 }
 	    	 
 	    	 if(property.equals("Read Only")) ((RefOntoUML.Property)elem).setIsReadOnly((Boolean)value);
-	    	 if(property.equals("Derived")) ((RefOntoUML.Property)elem).setIsDerived((Boolean)value);
+	    	 if(property.equals("Derived")) {
+	    		 ((RefOntoUML.Property)elem).setIsDerived((Boolean)value);
+	    		 if((Boolean)value==true){
+	    			 ((RefOntoUML.Property)elem).setName("/"+((RefOntoUML.Property)elem).getName());
+	    			 model.setValueAt(((RefOntoUML.Property)elem).getName(),0, 1);
+	    		 }else{
+	    			 ((RefOntoUML.Property)elem).setName(((RefOntoUML.Property)elem).getName().replace("/", ""));
+	    			 model.setValueAt(((RefOntoUML.Property)elem).getName(),0, 1);
+	    		 }
+	    	 }
 	    	 if(property.equals("Aggregation Kind")) ((RefOntoUML.Property)elem).setAggregation((RefOntoUML.AggregationKind)value);			
 	     }
 	     
@@ -469,6 +489,19 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	     
 	     //update the Tree 
 	     ProjectBrowser.refreshTree(project);
+	     
+	     //update diagram element
+	     if (elem instanceof Property){
+	    	 Property p = (Property)elem;
+	    	 if(p.getAssociation()!=null){
+	    		 ProjectBrowser.frame.getDiagramManager().refreshDiagramElement(p.getAssociation());
+	    	 }else{
+	    		 ProjectBrowser.frame.getDiagramManager().refreshDiagramElement((RefOntoUML.Element)p.eContainer());
+	    	 }
+	     }else{
+	    	 ProjectBrowser.frame.getDiagramManager().refreshDiagramElement((RefOntoUML.Element)elem);
+	     }
+	     
 	}
 	
 	public void setProject(UmlProject project)

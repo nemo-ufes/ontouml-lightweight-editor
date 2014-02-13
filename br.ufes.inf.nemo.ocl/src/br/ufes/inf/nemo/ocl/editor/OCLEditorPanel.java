@@ -176,7 +176,7 @@ public class OCLEditorPanel extends JPanel {
    public void updateCompletion(EObject elem)
    {
 	   removeCompletion(elem);
-	   if (elem instanceof RefOntoUML.Class) addCompletion((RefOntoUML.Class)elem);
+	   if (elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType) addCompletion((RefOntoUML.Type)elem);
 	   else if (elem instanceof RefOntoUML.Association) addCompletion((RefOntoUML.Association)elem);
 	   else if (elem instanceof RefOntoUML.Property) addCompletion((RefOntoUML.Property)elem);
    }

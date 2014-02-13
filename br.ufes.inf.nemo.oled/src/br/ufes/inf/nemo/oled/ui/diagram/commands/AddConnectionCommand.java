@@ -40,7 +40,6 @@ import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
@@ -150,7 +149,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			}			
 		}
 
-		ProjectBrowser.frame.getDiagramManager().updateUI();
+		ProjectBrowser.frame.getDiagramManager().updateOLED(relationship);
 	}
 		
 	/**
@@ -196,37 +195,6 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		if (element instanceof Generalization){			
 			((Generalization) element).setSpecific(source);
 			((Generalization) element).setGeneral(target);
-		}
-		
-		//Update the application accordingly
-		updateApplication(element);
-	}
-	
-	/** Update the application acordingly */
-	public static void updateApplication(RefOntoUML.Element addedElement)
-	{			
-		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
-		
-		// update the parser
-		if (addedElement instanceof Association)
-		{
-			ProjectBrowser.getParserFor(project).addElement(addedElement);			
-			Property p1 = ((Association)addedElement).getMemberEnd().get(0);
-			Property p2 = ((Association)addedElement).getMemberEnd().get(1);			
-			ProjectBrowser.getParserFor(project).addElement(p1); 	
-			ProjectBrowser.getParserFor(project).addElement(p2);
-		}
-		
-		//FIXME - Do not rebuild the tree, only update it!
-		ProjectBrowser.rebuildTree(project);
-		
-		//Select this element in the tree
-		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
-		tree.selectModelElement(addedElement);
-		
-		if (addedElement instanceof RefOntoUML.Association){
-			//	Include this element in the Auto Completion of OCL Editor
-			ProjectBrowser.frame.getInfoManager().getOcleditor().addCompletion((RefOntoUML.Association)addedElement);
 		}		
 	}
 }
