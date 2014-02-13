@@ -10,6 +10,7 @@ import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewPhase;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewRelator;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class ManagerPattern {
@@ -178,11 +179,20 @@ public class ManagerPattern {
 	}
 
 	private void process(NewClass page) {
+		RefOntoUML.Classifier classifier =  (RefOntoUML.Classifier) of.createClass(ClassStereotype.valueOf(page.getStereotype().toUpperCase()));
+		classifier.setName(page.getClassName());
+		fix.includeAdded(classifier);
 		System.out.println(page.toString());
 	}
 
 	private void process(NewRelator page){
 		System.out.println(page.toString());
+		
+	}
+
+	public Object getGeneralClasses(String[] split) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

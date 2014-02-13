@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.assistant.astah2graph;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,7 @@ import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewRelator;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.Question;
 
 import com.change_vision.jude.api.inf.AstahAPI;
+import com.change_vision.jude.api.inf.exception.ProjectNotFoundException;
 import com.change_vision.jude.api.inf.model.IActivity;
 import com.change_vision.jude.api.inf.model.IActivityDiagram;
 import com.change_vision.jude.api.inf.model.IActivityNode;
@@ -36,11 +38,9 @@ public class SWTAstahParser {
 	public static void main(String[] args) {
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = doParser("src/Patterns.asta");
 
-		GraphAssistant graph = hashTree.get(StereotypeOntoUMLEnum.KIND);
+		GraphAssistant graph = hashTree.get(StereotypeOntoUMLEnum.SUBKIND);
 		graph.updateNodeList();
-		
-		System.out.println(graph.getNodeList().size());
-		
+
 		WizardDialog wizardDialog = new WizardDialog(new Shell(),new WizardAssitant(graph));
 		if (wizardDialog.open() == Window.OK) {
 			System.out.println("Ok pressed");
@@ -49,70 +49,57 @@ public class SWTAstahParser {
 		}
 	}
 
-	/*public static HashMap<StereotypeOntoUMLEnum, GraphAssistant> doParser(InputStream astahFile){
-		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = new HashMap<>();
-		try{
-			ProjectAccessor prjAccessor = AstahAPI.getAstahAPI().getProjectAccessor();
-			prjAccessor.open(astahFile);
+	private static HashMap<StereotypeOntoUMLEnum, GraphAssistant> processParser(ProjectAccessor prjAccessor) throws Exception{
+		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraphs = new HashMap<>();
+		// Get a project model
+		IModel project = prjAccessor.getProject();
 
-			// Get a project model
-			IModel project = prjAccessor.getProject();
+		ArrayList<IActivityDiagram> lst = getActivityDiagram(project);
 
-			ArrayList<IActivityDiagram> lst = getActivityDiagram(project);
+		//Interate on all activity diagrams
+		for (IActivityDiagram activityDiagram : lst) {
+			IActivity root = activityDiagram.getActivity();
+			IActivityNode[] nodes = root.getActivityNodes();
 
-			//Interate on all activity diagrams
-			for (IActivityDiagram activityDiagram : lst) {
-				IActivity root = activityDiagram.getActivity();
-				IActivityNode[] nodes = root.getActivityNodes();
+			//for each diagram, create a graph
+			hashGraphs.put(StereotypeOntoUMLEnum.valueOf(root.getName().toUpperCase()),processNodes(nodes));
+		}		
 
-				//for each diagram, create a tree
-				hashTree.put(StereotypeOntoUMLEnum.valueOf(root.getName().toUpperCase()),processNodes(nodes));
-			}		
-
-			//For each link to another pattern
-			for (Map.Entry<StereotypeOntoUMLEnum, Node> entry : linkNode.entrySet()) {
-				//All link node has its next set to the start node from the patter destiny
-				entry.getValue().setNext(hashTree.get(entry.getKey()).getStart());
-			}
-		}catch(Exception e){
-			e.printStackTrace();
+		//For each link to another pattern
+		for (Map.Entry<StereotypeOntoUMLEnum, NodeAssistant> entry : linkNode.entrySet()) {
+			//All link node has its next set to the start node from the patter destiny
+			entry.getValue().setNextNode(hashGraphs.get(entry.getKey()).getStartNode());
 		}
-
-		return hashTree;
-	}*/
-
+		
+		return hashGraphs;
+	}
+	
 	public static HashMap<StereotypeOntoUMLEnum, GraphAssistant> doParser(String astahFile){
 
-		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = new HashMap<>();
+		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraphs = new HashMap<>();
 		try{
 			ProjectAccessor prjAccessor = AstahAPI.getAstahAPI().getProjectAccessor();
 			prjAccessor.open(astahFile, true, false, true);
-
-			// Get a project model
-			IModel project = prjAccessor.getProject();
-
-			ArrayList<IActivityDiagram> lst = getActivityDiagram(project);
-
-			//Interate on all activity diagrams
-			for (IActivityDiagram activityDiagram : lst) {
-				IActivity root = activityDiagram.getActivity();
-				IActivityNode[] nodes = root.getActivityNodes();
-
-				//for each diagram, create a tree
-				if(root.getName().equals("Kind"))
-					hashTree.put(StereotypeOntoUMLEnum.valueOf(root.getName().toUpperCase()),processNodes(nodes));
-			}		
-
-			//For each link to another pattern
-			for (Map.Entry<StereotypeOntoUMLEnum, NodeAssistant> entry : linkNode.entrySet()) {
-				//All link node has its next set to the start node from the patter destiny
-				entry.getValue().setNextNode(hashTree.get(entry.getKey()).getStartNode());
-			}
+			hashGraphs = processParser(prjAccessor);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 
-		return hashTree;
+		return hashGraphs;
+	}
+
+	public static HashMap<StereotypeOntoUMLEnum, GraphAssistant> doParser(InputStream astahFile){
+
+		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraphs = new HashMap<>();
+		try{
+			ProjectAccessor prjAccessor = AstahAPI.getAstahAPI().getProjectAccessor();
+			prjAccessor.open(astahFile);
+			hashGraphs = processParser(prjAccessor);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		return hashGraphs;
 	}
 
 	//Usado para verificar os nodos criados
@@ -154,7 +141,7 @@ public class SWTAstahParser {
 		if(aNode.getTaggedValue("stereotype").equalsIgnoreCase("END")){
 			return null;
 		}
-		
+
 		//To avoid duplicity
 		if(hashNode.get(aNode) != null){
 			return hashNode.get(aNode);
@@ -191,25 +178,23 @@ public class SWTAstahParser {
 			String stereotypes = aNode.getTaggedValue("stereotypes");
 			ngs.setStereotypes(stereotypes.split(","));
 
-//			if(!aNode.getTaggedValue("generalizationSetFilter").isEmpty()){
-//				if(aNode.getTaggedValue("generalizationSetFilter").equalsIgnoreCase("_specificsPhase")){
-//					//usa o filtro
-//					ngs.setGeneralClasses(tree.getManagerPatern().getGeneralClasses(stereotypes.split(","),aNode.getTaggedValue("generalizationSetFilter")));
-//				}	
-//			}else{//Se nao tiver filtro para os valores
-//				ngs.setGeneralClasses(tree.getManagerPatern().getGeneralClasses(stereotypes.split(",")));
-//			}
-//			if(!aNode.getTaggedValue("editableMetaProperties").isEmpty()){
-//				if(aNode.getTaggedValue("editableMetaProperties").equalsIgnoreCase("false")){
-//					//usa o filtro
-//					ngs.setEditableMetaProperties(false);
-//				}	
-//			}
+			//			if(!aNode.getTaggedValue("generalizationSetFilter").isEmpty()){
+			//				if(aNode.getTaggedValue("generalizationSetFilter").equalsIgnoreCase("_specificsPhase")){
+			//					//usa o filtro
+			//					ngs.setGeneralClasses(tree.getManagerPatern().getGeneralClasses(stereotypes.split(","),aNode.getTaggedValue("generalizationSetFilter")));
+			//				}	
+			//			}else{//Se nao tiver filtro para os valores
+			//				ngs.setGeneralClasses(graph.getManagerPattern().getGeneralClasses(stereotypes.split(",")));
+			//			}
+			//			if(!aNode.getTaggedValue("editableMetaProperties").isEmpty()){
+			//				if(aNode.getTaggedValue("editableMetaProperties").equalsIgnoreCase("false")){
+			//					//usa o filtro
+			//					ngs.setEditableMetaProperties(false);
+			//				}	
+			//			}
 			node.setPage(ngs);
 		}
-		if(!node.isAction())
-			System.out.println(node.getPage().getName());
-		
+
 		//Keep the last node in memory
 		_lastNode = node;			
 
