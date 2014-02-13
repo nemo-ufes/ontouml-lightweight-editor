@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Kind;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.Phase;
@@ -58,22 +59,68 @@ public class Transformer {
 			RefOntoUML.Package root  = (RefOntoUML.Package)resource.getContents().get(0);
 			ontoparser = new OntoUMLParser(root);	
 			populateWithObjectClasses();
+			populatesWithGeneralizations();
 			
 			//Crio fórmula que garante que todo elemento de mundo é instância de um tipo que provê identidade
-			addIdentityFormula(identityProviderTypes);
-
-			
+			addIdentityFormula(identityProviderTypes);	
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		return generatedModel;
-		
+		return generatedModel;	
 	}
 	
+	private void populatesWithGeneralizations()
+	{
+		FunctionCall general,specific;
+		Expression e;
+		for(Generalization g: ontoparser.getAllInstances(Generalization.class))
+		{
+			general = factory.createFunctionCall(getFunction(g.getGeneral().getName()), getConstants(new int[]{1, 2}));
+			specific = factory.createFunctionCall(getFunction(g.getSpecific().getName()), getConstants(new int[]{1, 2})); 
+			e = factory.createBinaryExpression(specific, general, LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, e, specific.getCalledFunction().getName() + " is subtypes of " + general.getCalledFunction().getName());
+		}
+	}
+	
+	private void populatesWithGeneralizationSets()
+	{
+		FunctionCall general,specific;
+		Expression e;
+		Generalization g;
+		boolean isCovering, isDisjoint;
+		for(GeneralizationSet gs: ontoparser.getAllInstances(GeneralizationSet.class))
+		{	
+			isCovering = gs.isIsCovering();
+			isDisjoint = gs.isIsDisjoint();
+			List<Generalization> generalizations = gs.getGeneralization();
+			if(generalizations.size() ==1 && isCovering){
+				g = generalizations.get(0);
+				general = factory.createFunctionCall(getFunction(g.getGeneral().getName()), getConstants(new int[]{1, 2}));
+				specific = factory.createFunctionCall(getFunction(g.getSpecific().getName()), getConstants(new int[]{1, 2})); 
+				e = factory.createBinaryExpression(general, specific, LogicalBinaryExpressionTypes.IMPLICATION);
+				addFormula(true, e, "The generalization set is complete. Thus, every "+ general.getCalledFunction().getName() + " is also a " + specific.getCalledFunction().getName());
+			}else if(generalizations.size() >2){
+				if (isCovering){
+					for(Generalization g1: generalizations){
+						//Fazer or entre todos os specifics
+						
+						
+					}	
+					//Fazer implies do general para o or entre todos os specifics
+				}
+				if (isDisjoint){
+					for(Generalization g1: generalizations){
+						//quero garantir qualquer que seja o elemento ele não satisfaz mais de um dos subtipos
+						//Então, quero negar a disjuncão entre as conunções de dois subtipos quaisquer
+						//Por exemplo, se pessoa pode ser homem ou mulher, vou dizer que para todo x em todo mundo w, not(homem(w,x) e mulher(w,x)
+						//Se pensarmos em nulher (M), Homem(H) ou bicha (B), teria que fazer que para todo x,w tenho:
+						//not ((H(w,x) and M(w,x)) or (H(w,x) and B(w,x)) or (B(w,x) and M(w,x)))
+					}	
+				}
+			}	
+		}
+	}
 	private void populateWithExistenceAxioms() {
 		addFunction("exists", 2);
 		//Pensar se precisa de uma formula que faça a tipagem dos argumentos de exists
