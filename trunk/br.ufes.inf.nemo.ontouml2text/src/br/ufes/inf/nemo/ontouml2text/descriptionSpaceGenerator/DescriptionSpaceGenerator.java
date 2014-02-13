@@ -617,8 +617,7 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			generalizationSpace.getFunctions().add(mat);
 			return;
 			}
-	
-/*		//AJEITAR MULTIPLICIDADE
+		//AJEITAR MULTIPLICIDADE
 		
 		//Find multiplicity source and target
 		sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
@@ -626,36 +625,61 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		
 		targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
 		targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
-		*/		
+				
 		if(r instanceof RefOntoUML.Characterization){
 						
-			/*if(source instanceof Mode)
+			if(source instanceof Mode)
 				mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
 			else
 				mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
-			*/
-			if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
-				
-				sourceLower = ((Association) r).getMemberEnd().get(0).getLower();
-				sourceUpper = ((Association) r).getMemberEnd().get(0).getUpper();
-				
-				targetLower = ((Association) r).getMemberEnd().get(1).getLower();
-				targetUpper = ((Association) r).getMemberEnd().get(1).getUpper();
-
-				mat = new Characterization(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
 			
-			}else{
-							
-				sourceLower = ((Association) r).getMemberEnd().get(1).getLower();
-				sourceUpper = ((Association) r).getMemberEnd().get(1).getUpper();
-				
-				targetLower = ((Association) r).getMemberEnd().get(0).getLower();
-				targetUpper = ((Association) r).getMemberEnd().get(0).getUpper();
+			
+			/*if(source instanceof Mode){
+				if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
+					sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+					
+					mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
+				}
+				else{
+					sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+					
+					mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
 
-				mat = new Characterization(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
+				}
+			} else{
+					if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
+						sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+						sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+						targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+						targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+						
+						mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
+					}
+					else{
+						sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+						sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+						targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+						targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+						
+						mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
+
+					}				
 			}
+/*
+
+				if(source instanceof Mode)
+					mat = new Characterization(((Association)r).getName(),target,source, targetLower, targetUpper, sourceLower, sourceUpper);
+				else
+					mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
+
 			
-			
+			*/
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
