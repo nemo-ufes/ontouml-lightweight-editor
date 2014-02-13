@@ -133,10 +133,6 @@ public abstract class LanguageAdaptor {
 			return processAntiRigidHeterogeneousGeneralizationIdPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof PhaseDescriptionPattern){
 			return processPhaseDescriptionPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof CharacterizationAssociationPattern){
-			return processCharacterizationAssociationPattern(pattern, previousPattern, parcialDescription);
-		}else if(pattern instanceof CharacterizationAssociationRevPattern){
-			return processCharacterizationAssociationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof ComponentOfPattern){
 			return processComponentOfPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof MemberOfPattern){
@@ -163,6 +159,10 @@ public abstract class LanguageAdaptor {
 			return processPhaseDescriptionRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof FormalAssociationPattern){
 			return processFormalAssociationPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof CharacterizationAssociationPattern){
+			return processCharacterizationAssociationPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof CharacterizationAssociationRevPattern){
+			return processCharacterizationAssociationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof ComponentOfRevPattern){
 			return processComponentOfRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof MemberOfRevPattern){

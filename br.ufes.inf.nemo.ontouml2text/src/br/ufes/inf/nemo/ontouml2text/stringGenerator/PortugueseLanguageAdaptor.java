@@ -204,7 +204,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " é uma característica de " + 
-				insertTarget(((BinaryPattern)pattern).getTargetCategory(), true);
+				insertListing((NaryPattern)pattern, true, "e");
 					
 		return parcialDescription;
 	}
