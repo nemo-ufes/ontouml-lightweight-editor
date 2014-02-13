@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -57,8 +58,10 @@ public class ClassDialog extends JDialog{
 	private JComboBox commentCombo;
 	private JButton btnCreate;		
 	private JButton btnDelete;
-	private JPanel descriptionPanel;
-			
+	private JPanel descriptionPanel;	
+	private JButton btnSave;
+	private JLabel lblcomments;
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ClassDialog(JFrame parent, DiagramManager diagramManager, ClassElement classElement, boolean modal) 
 	{
@@ -99,34 +102,33 @@ public class ClassDialog extends JDialog{
 		JSeparator separator2 = new JSeparator();		
 		
 		descriptionPanel = new JPanel();
-		descriptionPanel.setBorder(BorderFactory.createTitledBorder("Description"));
+		descriptionPanel.setBorder(BorderFactory.createTitledBorder(""));
 		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnShowAttributes)
+							.addContainerGap()
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(btnShowAttributes)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnAttributes))
+								.addComponent(classPropPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(descriptionPanel, GroupLayout.PREFERRED_SIZE, 426, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(separator2, GroupLayout.PREFERRED_SIZE, 426, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(156)
+							.addComponent(btnOk)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAttributes))
-						.addComponent(classPropPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(btnCancel)))
 					.addContainerGap(16, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(separator2, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
-					.addGap(16))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(descriptionPanel, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
-					.addGap(16))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(154)
-					.addComponent(btnOk)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnCancel)
-					.addContainerGap(158, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -138,14 +140,14 @@ public class ClassDialog extends JDialog{
 						.addComponent(btnAttributes)
 						.addComponent(btnShowAttributes, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(descriptionPanel, GroupLayout.PREFERRED_SIZE, 177, GroupLayout.PREFERRED_SIZE)
+					.addComponent(descriptionPanel, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(separator2, GroupLayout.PREFERRED_SIZE, 9, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnOk)
 						.addComponent(btnCancel))
-					.addGap(18))
+					.addGap(15))
 		);
 		
 		descriptionText = new JTextArea();	
@@ -157,7 +159,7 @@ public class ClassDialog extends JDialog{
 		btnCreate.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				commentCombo.addItem("<empty comment>");				
+				createCommentActionPerformed();				
 			}
 		});
 		
@@ -165,37 +167,41 @@ public class ClassDialog extends JDialog{
 		btnDelete.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				commentCombo.remove(commentCombo.getSelectedIndex());	
+				deleteCommentActionPerformed();
 			}
 		});
 		
 		commentCombo = new JComboBox();
 		commentCombo.setEditable(false);
-		commentCombo.addActionListener(new ActionListener() {			
+		commentCombo.setFocusable(false);
+		
+		btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String str = (String) commentCombo.getSelectedItem();
-				if(str!=null){
-					str = str.replace("Description", "");
-					Comment c = element.getOwnedComment().get(Integer.parseInt(str));
-					descriptionText.setText(c.getBody());
-				}
+				saveCommentActionPerformed();
 			}
 		});
+		
+		lblcomments = new JLabel("Comments:");
+		
 		GroupLayout gl_descriptionPanel = new GroupLayout(descriptionPanel);
 		gl_descriptionPanel.setHorizontalGroup(
 			gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_descriptionPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 392, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_descriptionPanel.createSequentialGroup()
-							.addComponent(commentCombo, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblcomments, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDelete)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnCreate)))
-					.addContainerGap(35, Short.MAX_VALUE))
+							.addComponent(commentCombo, GroupLayout.PREFERRED_SIZE, 262, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scrollPaneText, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnCreate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnSave, GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+						.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_descriptionPanel.setVerticalGroup(
 			gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
@@ -203,11 +209,17 @@ public class ClassDialog extends JDialog{
 					.addContainerGap()
 					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(commentCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnDelete)
-						.addComponent(btnCreate))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(lblcomments))
+					.addGap(18)
+					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_descriptionPanel.createSequentialGroup()
+							.addComponent(btnCreate)
+							.addGap(7)
+							.addComponent(btnSave)
+							.addGap(8)
+							.addComponent(btnDelete))
+						.addComponent(scrollPaneText))
+					.addContainerGap(39, Short.MAX_VALUE))
 		);
 		descriptionPanel.setLayout(gl_descriptionPanel);
 		
@@ -264,7 +276,36 @@ public class ClassDialog extends JDialog{
 		
 		setInitialData();
 		
-		setSize(new Dimension(468, 407));
+		setSize(new Dimension(468, 382));
+		
+		commentCombo.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {				
+				CommentElement ce = (CommentElement) commentCombo.getSelectedItem();
+				if(ce!=null) descriptionText.setText(ce.getComment().getBody());
+			}
+		});
+	}
+	
+	/** Private Class: Comment Element */
+	private class CommentElement 
+	{
+		RefOntoUML.Comment c;
+		public CommentElement(RefOntoUML.Comment c){
+			this.c = c;
+		}
+		@Override
+		public String toString(){
+			String result = new String();
+			if(c.getBody().length()>30)
+				result += c.getBody().substring(0,30) + " (...)";
+			else 
+				result += c.getBody();			
+			return result;
+		}
+		public Comment getComment(){
+			return c;
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -277,12 +318,13 @@ public class ClassDialog extends JDialog{
 		btnAbstract.setSelected(element.isIsAbstract());
 		stereoCombo.setSelectedItem(getStereotype(element).trim());
 		stereoCombo.setEnabled(false);
-		for(Comment c: element.getOwnedComment()){
-			commentCombo.addItem("Description"+element.getOwnedComment().indexOf(c));			
+		
+		for(Comment c: element.getOwnedComment()){			
+			commentCombo.addItem(new CommentElement(c));			
 		}		
 		if (commentCombo.getItemCount()>0) {
 			commentCombo.setSelectedIndex(0);
-			descriptionText.setText(element.getOwnedComment().get(0).getBody()+"\n\n");
+			descriptionText.setText(((CommentElement)commentCombo.getSelectedItem()).getComment().getBody()+"\n\n");
 		}
 	}
 	
@@ -295,14 +337,45 @@ public class ClassDialog extends JDialog{
 	    return type;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void createCommentActionPerformed()
 	{
-		
+		Comment c = diagramManager.getElementFactory().createComment();
+		CommentElement ce = new CommentElement(c);		
+		commentCombo.addItem(ce);
+		descriptionText.setText(c.getBody());		
+	}
+	
+	public void saveCommentActionPerformed()
+	{
+		Comment c = ((CommentElement)commentCombo.getSelectedItem()).getComment();
+		c.setBody(descriptionText.getText());
 	}
 	
 	public void deleteCommentActionPerformed()
 	{
-		
+		commentCombo.removeItem(commentCombo.getSelectedItem());
+		commentCombo.invalidate();	
+		descriptionText.setText("");
+	}
+	
+	public ArrayList<Comment> getComments()
+	{
+		ArrayList<Comment> result = new ArrayList<Comment>();
+		for(int i=0; i<commentCombo.getItemCount();i++){
+			CommentElement ce = (CommentElement)commentCombo.getItemAt(i);
+			if (ce!=null) result.add(ce.getComment());
+		}
+		return result;
+	}
+	
+	public void transferComments()
+	{
+		for(Comment c: getComments()){
+			if (!element.getOwnedComment().contains(c)){
+				
+			}
+		}
 	}
 	
 	public void okActionPerformed(ActionEvent arg0)

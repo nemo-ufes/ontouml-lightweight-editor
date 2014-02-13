@@ -100,7 +100,7 @@ public class MainMenu implements ActionListener {
 		
 		JMenuItem assistantItem = createCheckBoxMenuItem(toolMenu, "assistant");
 		assistantItem.setSelected(false);
-		assistantItem.setEnabled(false);
+		assistantItem.setEnabled(true);
 		//assistantItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));		
 		
 	}

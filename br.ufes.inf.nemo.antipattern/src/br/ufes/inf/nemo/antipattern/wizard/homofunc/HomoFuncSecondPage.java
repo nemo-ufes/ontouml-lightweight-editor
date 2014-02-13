@@ -2,14 +2,11 @@ package br.ufes.inf.nemo.antipattern.wizard.homofunc;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Combo;
 
 public class HomoFuncSecondPage extends HomoFuncPage {
 

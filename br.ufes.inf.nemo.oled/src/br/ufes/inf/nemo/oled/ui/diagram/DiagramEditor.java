@@ -85,8 +85,8 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.ResetConnectionPointsCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.ResizeElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetConnectionNavigabilityCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
+import br.ufes.inf.nemo.oled.ui.dialog.ClassDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.EditAssociationDialog;
-import br.ufes.inf.nemo.oled.ui.dialog.EditClassDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.EditGeneralizationDialogNew;
 import br.ufes.inf.nemo.oled.ui.popup.DiagramPopupMenu;
 import br.ufes.inf.nemo.oled.ui.popup.ToolboxPopupMenu;
@@ -1162,14 +1162,14 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void editProperties(DiagramElement element) {
 		if (element instanceof ClassElement) {
 			ClassElement classElement = (ClassElement) element;
-			EditClassDialog dialog = new EditClassDialog(frame, diagramManager, classElement, true);
-			//ClassDialog dialog2 = new ClassDialog(frame,diagramManager,classElement,true);
+			//EditClassDialog dialog = new EditClassDialog(frame, diagramManager, classElement, true);
+			ClassDialog dialog2 = new ClassDialog(frame,diagramManager,classElement,true);
 			//EditClassDialog2 dialog = new EditClassDialog2(frame);
 			//EditClassDialog2 dialog = new EditClassDialog2(frame, diagramManager, classElement, true);
-			dialog.setLocationRelativeTo(frame);
-			dialog.setVisible(true);
-			//dialog2.setLocationRelativeTo(frame);
-			//dialog2.setVisible(true);
+			//dialog.setLocationRelativeTo(frame);
+			//dialog.setVisible(true);
+			dialog2.setLocationRelativeTo(frame);
+			dialog2.setVisible(true);
 			redraw();
 		} else if (element instanceof AssociationElement) {
 			AssociationElement association = (AssociationElement) element;
