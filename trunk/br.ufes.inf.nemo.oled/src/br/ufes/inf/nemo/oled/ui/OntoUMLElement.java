@@ -93,6 +93,14 @@ public class OntoUMLElement {
 			return type +" "+ ((NamedElement)element).getName();
 		}
 		
+		if (element instanceof RefOntoUML.Comment)
+		{
+			if(((RefOntoUML.Comment)element).getBody().length()>15)
+				return type +" "+ ((RefOntoUML.Comment)element).getBody().substring(0,15)+" (...)";
+			else
+				return type +" "+ ((RefOntoUML.Comment)element).getBody();
+		}
+		
 		if (element instanceof RefOntoUML.GeneralizationSet)
 		{		    
 		    RefOntoUML.GeneralizationSet genset = (RefOntoUML.GeneralizationSet)element;

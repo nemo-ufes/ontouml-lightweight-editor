@@ -21,7 +21,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
+import RefOntoUML.Comment;
 import RefOntoUML.Package;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.InfoManager;
@@ -248,6 +250,11 @@ public class ProjectTree extends CheckboxTree {
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),""));			
 			parent.add(newNode);
 			
+		}else if (object instanceof RefOntoUML.Comment)
+		{
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),""));			
+			parent.add(newNode);	
+			
 		/* Property */
 		}else if (object instanceof RefOntoUML.Property)
 		{
@@ -271,16 +278,36 @@ public class ProjectTree extends CheckboxTree {
 						
 			//modelTree.collapsePath(new TreePath(newNode.getPath()));
 						
-			if (object instanceof RefOntoUML.Class || object instanceof RefOntoUML.DataType)
-			{
-				for (EObject o: ((EObject)object).eContents())
+			if (object instanceof RefOntoUML.Class)
+			{				
+				for (Property o: ((RefOntoUML.Class)object).getOwnedAttribute())
 				{
 					drawModel(newNode,o,checkingModel,refparser);
 				}			
+				for (Comment o: ((RefOntoUML.Class)object).getOwnedComment())
+				{
+					drawModel(newNode,o,checkingModel,refparser);
+				}
+			}		
+			
+			if (object instanceof RefOntoUML.DataType)
+			{				
+				for (Property o: ((RefOntoUML.DataType)object).getOwnedAttribute())
+				{
+					drawModel(newNode,o,checkingModel,refparser);
+				}			
+				for (Comment o: ((RefOntoUML.DataType)object).getOwnedComment())
+				{
+					drawModel(newNode,o,checkingModel,refparser);
+				}
 			}		
 			
 			if (object instanceof RefOntoUML.Association){
 				for (RefOntoUML.Property o: ((RefOntoUML.Association)object).getMemberEnd())
+				{
+					drawModel(newNode,o,checkingModel,refparser);
+				}
+				for (Comment o: ((RefOntoUML.Association)object).getOwnedComment())
 				{
 					drawModel(newNode,o,checkingModel,refparser);
 				}

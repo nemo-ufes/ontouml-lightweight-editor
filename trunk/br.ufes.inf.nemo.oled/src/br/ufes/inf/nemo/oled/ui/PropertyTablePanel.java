@@ -194,6 +194,17 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 		return tablemodel;
 	}
 	
+	private PropertyTableModel createCommentTableModel(RefOntoUML.Comment c)
+	{
+		this.element=c;
+		Object[][] data = {
+		{"    Body", c.getBody(),""},
+		};		
+		String[] columnNames = {"Property","Value",""};
+		tablemodel = new PropertyTableModel(columnNames,data);
+		return tablemodel;
+	}
+	
 	private PropertyTableModel createPackageTableModel (RefOntoUML.Package p)
 	{
 		this.element=p;
@@ -296,6 +307,16 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 		table.setModel(tablemodel);		
 		configureTable();
 	}
+
+	public void setCommentData(OntoUMLElement elem)
+	{
+		RefOntoUML.Comment c = (RefOntoUML.Comment)elem.getElement();
+
+		tablemodel = createCommentTableModel(c);
+		
+		table.setModel(tablemodel);		
+		configureTable();
+	}
 	
 	public void setPackageData(OntoUMLElement elem)
 	{
@@ -338,6 +359,10 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 		{
 			setGeneralizationData(elem);
 		}	
+		if (elem.getElement() instanceof RefOntoUML.Comment)
+		{
+			setCommentData(elem);
+		}
 		if (elem.getElement() instanceof RefOntoUML.Package)
 		{
 			setPackageData(elem);

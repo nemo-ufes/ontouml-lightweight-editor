@@ -288,7 +288,6 @@ public class ProjectBrowser extends JPanel{
 	
 	class ProjectTreeSelectionListener implements TreeSelectionListener 
 	 {
-		
 		@Override
 		public void valueChanged(TreeSelectionEvent e) 
 		{

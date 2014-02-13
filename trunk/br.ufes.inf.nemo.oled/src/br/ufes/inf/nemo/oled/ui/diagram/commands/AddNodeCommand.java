@@ -120,7 +120,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 			ModelHelper.addMapping(element, ((ClassElement)diagramElement));
 		}
 
-		ProjectBrowser.frame.getDiagramManager().updateOLED(element);
+		ProjectBrowser.frame.getDiagramManager().doOLEDInclusion(element);
 	}	
 	
 	/**

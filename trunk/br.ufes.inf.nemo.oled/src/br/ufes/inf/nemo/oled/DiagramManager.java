@@ -309,6 +309,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return comment;
 	}
 	
+	/** Add comment to the model (not to diagrams) */
+	public void addComment(RefOntoUML.Comment c, RefOntoUML.Element eContainer)
+	{
+		//to add only in the model do exactly as follow		
+		AddNodeCommand cmd = new AddNodeCommand(null,null,c,0,0,getCurrentProject(),eContainer);		
+		cmd.run();
+	}
+	
 	/** Add element to the model (not to diagrams).  */
 	public RefOntoUML.PackageableElement addElement(ElementType stereotype, RefOntoUML.Package eContainer)
 	{
@@ -448,7 +456,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * 
 	 * @param element: added or modified element
 	 */
-	public void updateOLED(RefOntoUML.Element element)
+	public void doOLEDInclusion(RefOntoUML.Element element)
 	{
 		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
 
@@ -502,11 +510,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (fix==null) return;
 		for(Object obj: fix.getAdded()) {
 			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
-				updateOLED((RefOntoUML.Element)obj);
+				doOLEDInclusion((RefOntoUML.Element)obj);
 		}
 		for(Object obj: fix.getAdded()) {
 			if (obj instanceof RefOntoUML.Relationship)
-				updateOLED((RefOntoUML.Element)obj);
+				doOLEDInclusion((RefOntoUML.Element)obj);
 		}				
 		for(Object obj: fix.getModified()){
 			if (obj instanceof RefOntoUML.Property){
