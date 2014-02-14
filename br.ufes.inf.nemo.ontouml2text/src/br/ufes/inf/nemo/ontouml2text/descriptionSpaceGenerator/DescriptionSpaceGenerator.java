@@ -628,19 +628,51 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 				
 		if(r instanceof RefOntoUML.Characterization){
 						
-			if(source instanceof Mode)
+		/*	if(source instanceof Mode)
 				mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
 			else
 				mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
 			
+			System.out.println(source.getLabel());
+			System.out.println("get(0) " + ((Association) r).getMemberEnd().get(0).getType().getName());
+			System.out.println("get(1) " + ((Association) r).getMemberEnd().get(1).getType().getName());
+			*/
+			if(source instanceof Mode && target instanceof Mode){
 			
-			/*if(source instanceof Mode){
+				if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
+					sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+					System.out.println(source.getLabel()+"["+ sourceLower+","+sourceUpper+"]" + " --> " + target.getLabel()+"["+ targetLower+","+targetUpper+"]" );
+
+					mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
+				}else{
+					sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+					System.out.println(source.getLabel()+"["+ sourceLower+","+sourceUpper+"]" + " --> " + target.getLabel()+"["+ targetLower+","+targetUpper+"]" );
+
+					mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
+				}
+				
+				source.getFunctions().add(mat);
+				target.getFunctions().add(mat);
+				generalizationSpace.getFunctions().add(mat);
+				return;
+			}
+			
+			if(source instanceof Mode){
 				if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
 					sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
 					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
 					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
 					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+					System.out.println(target.getLabel()+"["+ sourceLower+","+sourceUpper+"]" + " --> " + source.getLabel()+"["+ targetLower+","+targetUpper+"]");
+
 					
+					//mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
 					mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
 				}
 				else{
@@ -648,8 +680,10 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
 					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
 					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
-					
-					mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
+					System.out.println(target.getLabel()+"["+ targetLower+","+targetUpper+"]" + " --> " + source.getLabel()+"["+ sourceLower+","+sourceUpper+"]" );
+
+					//mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
+					mat = new Characterization(((Association)r).getName(),target,source,targetLower, targetUpper, sourceLower, sourceUpper);
 
 				}
 			} else{
@@ -658,7 +692,8 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 						sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
 						targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
 						targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
-						
+						System.out.println(source.getLabel()+"["+ sourceLower+","+sourceUpper+"]" + " --> " + target.getLabel()+"["+ targetLower+","+targetUpper+"]" );
+
 						mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
 					}
 					else{
@@ -667,6 +702,7 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 						targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
 						targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
 						
+						System.out.println(source.getLabel()+"["+ sourceLower+","+sourceUpper+"]" + " --> " + target.getLabel()+"["+ targetLower+","+targetUpper+"]" );
 						mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
 
 					}				
