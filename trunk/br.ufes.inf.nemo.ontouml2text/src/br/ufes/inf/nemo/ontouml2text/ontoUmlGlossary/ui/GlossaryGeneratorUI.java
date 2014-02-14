@@ -72,12 +72,12 @@ public class GlossaryGeneratorUI extends JFrame {
 		JLabel lblOutputDirectory = new JLabel("Output Directory");
 		
 		edtOutputDirectory = new JTextField();
-		edtOutputDirectory.setText("C:\\Users\\Dio.Dio\\Desktop");
 		edtOutputDirectory.setColumns(10);
 		
 		btnSelectOutputDirectory = new JButton("...");
 		
 		chkAnalyseDescriptiveConsistency = new JCheckBox("Analyse Descriptive Consistency");
+		chkAnalyseDescriptiveConsistency.setToolTipText("Check if exists any inconsistency that can be affect the generation of glossary");
 		
 		btnGenerateGlossary = new JButton("Generate Glossary");
 		
@@ -209,7 +209,10 @@ public class GlossaryGeneratorUI extends JFrame {
 					if(chkAnalyseDescriptiveConsistency.isSelected()){
 						SwingUtilities.invokeLater(new Runnable() {			
 							public void run() {
-								GlossaryGeneratorAnalisysUI analisys = new GlossaryGeneratorAnalisysUI(ontoUmlGlossary, ontoUmlGlossary.verifiyDescriptionConsistency());
+								GlossaryGeneratorAnalisysUI analisys = new GlossaryGeneratorAnalisysUI(ontoUmlGlossary, 
+										ontoUmlGlossary.verifiyMissingUserDescriptions(),
+										ontoUmlGlossary.verfifyIsolatedDescriptions(),
+										ontoUmlGlossary.verfifyNonDeterminedRelationships());
 								analisys.setVisible(true);	
 							}
 						});		

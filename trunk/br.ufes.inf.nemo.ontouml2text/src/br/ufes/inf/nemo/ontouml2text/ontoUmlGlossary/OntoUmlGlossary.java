@@ -43,8 +43,16 @@ public class OntoUmlGlossary {
 		}
 	}
 	
-	public List<String> verifiyDescriptionConsistency(){
-		return stringGenerator.verifyDescriptionConsistency();
+	public List<String> verifiyMissingUserDescriptions(){
+		return stringGenerator.verifyMissingUserDescription();
+	}
+	
+	public List<String> verfifyIsolatedDescriptions(){
+		return stringGenerator.verifyIsolatedConcepts();
+	}
+	
+	public List<String> verfifyNonDeterminedRelationships(){
+		return stringGenerator.verfifyNonDeterminedRelationships();
 	}
 		
 	public void modelToText() {		
