@@ -11,7 +11,6 @@ import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ontouml2text.descriptionSpace.BinaryDescriptionFunction;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionFunction;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionSpace;
@@ -64,23 +63,6 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 		}
 
 		relatorIheritance(generalizationSpace.getCategories(),hashCategories);
-		
-//		for (DescriptionCategory c : generalizationSpace.getCategories()){
-//			System.out.println("\n|==> Nome: "+c.getLabel() + "  type: "+
-//					c.toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.", ""));
-//			
-//			for(DescriptionFunction f : c.getFunctions()){
-//				if(f instanceof BinaryDescriptionFunction)
-//					System.out.print(((BinaryDescriptionFunction)f).getSource().getLabel()+" -> "+f.getTarget().getLabel()+
-//							" - TYPE: "+f.getClass().toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.", "")+" // ");
-//				else
-//					System.out.print(f.toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.", "")+" // ");
-//			}
-//		}
-				
-		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
-		System.out.println("Tamanho da functions no DescriptionSpace:  " + generalizationSpace.getFunctions().size());
-
 }
 
 public void relatorIheritance(List<DescriptionCategory> categories, Set<String> hashCategories) {
@@ -88,14 +70,14 @@ public void relatorIheritance(List<DescriptionCategory> categories, Set<String> 
 	DescriptionCategory upCategory;
 	hashCategories.clear();
 	
-	for(DescriptionCategory c : categories){	//Percorro a lista de categorias, já populada.
-		if(c instanceof Relator){				//Se for um relator, verifico se há generalization onde ele é o de baixo(source)
+	for(DescriptionCategory c : categories){	
+		if(c instanceof Relator){				
 			gen = (Generalization) verifyGeneralization(c.getFunctions(),c);
 			
-			if( gen != null){ // se existir gen onde o elemento é o source, é pq tem mais pra cima.
+			if( gen != null){ 
 				
-				upCategory = upFunction(gen); // sobe todos os niveis de hierarquia e retorna o elemento topo
-				getDownMediation(upCategory,c,hashCategories);	// desce os niveis ate chegar no elemento c, adicionando as mediations
+				upCategory = upFunction(gen); 
+				getDownMediation(upCategory,c,hashCategories);	
 			
 			}else
 				continue;
@@ -125,29 +107,26 @@ private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory
 	Generalization gen;
 	GeneralizationSet genSet;
 	
-	while(true){ //enquanto  nao chegar em uma generalization
+	while(true){
 		genSet = VerifyGeneralizationSet(upCategory.getFunctions(), upCategory);
-		gen = (Generalization) verifyGeneralizationTarget(upCategory.getFunctions(), upCategory);		//verifica se tem alguem embaixo dele
+		gen = (Generalization) verifyGeneralizationTarget(upCategory.getFunctions(), upCategory);		
 
-		if(genSet != null){ // o elemento tem uma genSet
+		if(genSet != null){ 
 			
-			for(Generalization g : genSet.getGeneralizationElements()){			// Iteração para chamar os ramos da genSet
+			for(Generalization g : genSet.getGeneralizationElements()){			
 				
-				//Verifico a regra
 				noIheritanceMeds = deleteMediations(g);
 				addMediations(upCategory.getFunctions(), g.getSource(), noIheritanceMeds);
 				getDownMediation(g.getSource(),c,hashCategories);   
 			}
 		}
-		if( gen != null){// existe alguem embaixo, passa todas as mediations
-			//Verifico se há mediations que nao devem ser passadas para a classe abaixo
-			
+		if( gen != null){			
 			noIheritanceMeds = deleteMediations(gen);
 			downCategory = gen.getSource();
-			addMediations(upCategory.getFunctions(),downCategory, noIheritanceMeds);					//Passa as informações
+			addMediations(upCategory.getFunctions(),downCategory, noIheritanceMeds);					
 		}
 		
-		if(gen == null)		//se for a categoria source (folha), saio do while.
+		if(gen == null)		
 			break;
 		
 		upCategory = downCategory;
@@ -163,17 +142,17 @@ public ArrayList<DescriptionFunction> deleteMediations(Generalization gen){
 	DescriptionCategory sourceMed;
 	DescriptionCategory targetMed;
 	
-	for(DescriptionFunction medUp : up.getFunctions()){	//Iteração das mediations da classe de cima
+	for(DescriptionFunction medUp : up.getFunctions()){	
 			if(medUp instanceof Mediation){				
 				
-				targetMed = medUp.getTarget();		//pega o outro lado da mediation
+				targetMed = medUp.getTarget();		
 				
-				for(DescriptionFunction medDown : down.getFunctions()){	//Iteração das mediations da classe de baixo
+				for(DescriptionFunction medDown : down.getFunctions()){	
 						
 					sourceMed = medDown.getTarget();
 					
-					if (MedIheritance(sourceMed, targetMed));		//verifica se a target e a source tem uma generalization no meio
-						noIheritanceMeds.add(medUp);				//se tiver, coloca na lista para nao ser inserida
+					if (MedIheritance(sourceMed, targetMed));		
+						noIheritanceMeds.add(medUp);				
 				}
 			
 			}
@@ -327,7 +306,6 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 			
 			classNumberTarget = chooseTarget(endType0,endType1,source.getLabel());
 
-			// Rule09's condition 
 			if(r instanceof RefOntoUML.MaterialAssociation && existsRelator(((Association) r).getEndType().get(0),((Association) r).getEndType().get(1))){
 				if(source instanceof Relator){
 					continue;
@@ -340,7 +318,6 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 				}
 			}
 			
-			//Autorelacao
 			if(endType0.equals(endType1)){
 				createRelationship(r, source, source,parser);
 				continue;
@@ -371,7 +348,6 @@ public void populateRelationships(ArrayList<Relationship> eList, DescriptionCate
 			String specificName=null;
 			String searchObjName =null;
 			
-			// Rule05's condition 
 			if(((RefOntoUML.Generalization) r).getGeneralizationSet().size() > 0){
 				processGeneralizationSet(((RefOntoUML.Generalization) r),source,hashCategories, classfSet);
 				continue;
@@ -451,11 +427,11 @@ private void processGeneralizationSet(RefOntoUML.Generalization r, DescriptionCa
 			specificName = specificName.replace("/","");
 		
  		
-		if(source.getLabel().equals(specificName)){ //se o source for a classe de baixo, procura o de cima
+		if(source.getLabel().equals(specificName)){ 
 	 		searchObject = r.getGeneral();
 	 		isSon = false;
 	 	}
-	 	else{ 																	//se o source for a classe de cima, procura o de baixo
+	 	else{ 																	
 	 		searchObject =r.getSpecific(); 
 	 		isSon = true;
 	 	}	
@@ -618,26 +594,10 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			generalizationSpace.getFunctions().add(mat);
 			return;
 			}
-		//AJEITAR MULTIPLICIDADE
-		
-		//Find multiplicity source and target
-		sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
-		sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
-		
-		targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
-		targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+
 				
 		if(r instanceof RefOntoUML.Characterization){
-						
-		/*	if(source instanceof Mode)
-				mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
-			else
-				mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
-			
-			System.out.println(source.getLabel());
-			System.out.println("get(0) " + ((Association) r).getMemberEnd().get(0).getType().getName());
-			System.out.println("get(1) " + ((Association) r).getMemberEnd().get(1).getType().getName());
-			*/
+
 			if(source instanceof Mode && target instanceof Mode){
 			
 				if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
@@ -645,7 +605,6 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
 					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
 					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
-					System.out.println(source.getLabel()+"["+ sourceLower+","+sourceUpper+"]" + " --> " + target.getLabel()+"["+ targetLower+","+targetUpper+"]" );
 
 					mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
 				}else{
@@ -653,7 +612,6 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
 					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
 					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
-					System.out.println(source.getLabel()+"["+ sourceLower+","+sourceUpper+"]" + " --> " + target.getLabel()+"["+ targetLower+","+targetUpper+"]" );
 
 					mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
 				}
@@ -670,10 +628,7 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
 					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
 					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
-					System.out.println(target.getLabel()+"["+ sourceLower+","+sourceUpper+"]" + " --> " + source.getLabel()+"["+ targetLower+","+targetUpper+"]");
-
 					
-					//mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
 					mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
 				}
 				else{
@@ -681,9 +636,7 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
 					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
 					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
-					System.out.println(target.getLabel()+"["+ targetLower+","+targetUpper+"]" + " --> " + source.getLabel()+"["+ sourceLower+","+sourceUpper+"]" );
 
-					//mat = new Characterization(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
 					mat = new Characterization(((Association)r).getName(),target,source,targetLower, targetUpper, sourceLower, sourceUpper);
 
 				}
@@ -693,7 +646,6 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 						sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
 						targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
 						targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
-						System.out.println(source.getLabel()+"["+ sourceLower+","+sourceUpper+"]" + " --> " + target.getLabel()+"["+ targetLower+","+targetUpper+"]" );
 
 						mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
 					}
@@ -703,20 +655,11 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 						targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
 						targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
 						
-						System.out.println(source.getLabel()+"["+ sourceLower+","+sourceUpper+"]" + " --> " + target.getLabel()+"["+ targetLower+","+targetUpper+"]" );
 						mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
 
 					}				
 			}
-/*
 
-				if(source instanceof Mode)
-					mat = new Characterization(((Association)r).getName(),target,source, targetLower, targetUpper, sourceLower, sourceUpper);
-				else
-					mat = new Characterization(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
-
-			
-			*/
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
