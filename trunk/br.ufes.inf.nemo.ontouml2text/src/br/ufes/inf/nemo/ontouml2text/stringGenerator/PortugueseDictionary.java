@@ -25,6 +25,7 @@ public class PortugueseDictionary implements Dictionary{
 		if(completeLabel[0].endsWith("ame")) return true;
 		if(completeLabel[0].endsWith("edo")) return true;
 		if(completeLabel[0].endsWith("ume")) return true;
+		if(completeLabel[0].endsWith("ine")) return false;
 		if(completeLabel[0].endsWith("ite")) return false;
 		if(completeLabel[0].endsWith("ol")) return true;
 		if(completeLabel[0].endsWith("a")) return false;
