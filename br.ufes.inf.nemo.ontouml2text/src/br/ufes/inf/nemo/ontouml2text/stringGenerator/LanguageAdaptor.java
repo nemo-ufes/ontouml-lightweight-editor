@@ -189,18 +189,29 @@ public abstract class LanguageAdaptor {
 	}
 	
 	protected String insertTarget(PatternCategory target, boolean withMultiplicity){
+		String targetDescription = "";
+		
 		if(withMultiplicity){
-			String targetDescription = insertMultiplicity(target);
+			targetDescription = insertMultiplicity(target);
+			
+			// Inserting reference
+			targetDescription += "<a class=\"categoryReference\" href=\"Letter"+target.getLabel().charAt(0)+".html#"+target.getLabel().replace(" ", "")+"\">";
 		
 			if(target.getMaxMultiplicity() == -1 || target.getMaxMultiplicity() > 1)
 				targetDescription += dictionary.getPlural(target.getLabel());
 			else
-				targetDescription += target.getLabel();
-		
-			return targetDescription;
+				targetDescription += target.getLabel();			
 		}else{
-			return target.getLabel();
+			// Inserting reference
+			targetDescription += "<a class=\"categoryReference\" href=\"Letter"+target.getLabel().charAt(0)+".html#"+target.getLabel().replace(" ", "")+"\">";
+						
+			targetDescription += target.getLabel();
 		}
+		
+		// Inserting reference
+		targetDescription += "</a>";
+					
+		return targetDescription;
 	}
 	
 	protected String insertListing(NaryPattern pattern, boolean withMultiplicity, String finalSeparator){

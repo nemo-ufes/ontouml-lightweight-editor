@@ -87,7 +87,7 @@ public class StringGenerator {
 			patterns = identifyPatterns(describedCategory);
 			
 			///////////
-			if(patterns.size() == 0)
+			if(describedCategory.getFunctions().size() > 0 && patterns.size() == 0)
 				System.out.println("WPC: "+describedCategory.getLabel());
 			///////////
 			
