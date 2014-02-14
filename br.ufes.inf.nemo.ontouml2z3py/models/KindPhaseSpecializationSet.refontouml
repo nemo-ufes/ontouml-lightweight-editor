@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_svEmkZWOEeOQONG7g3PUug" name="Model">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_ud11gJWOEeOQONG7g3PUug" name="Kind1" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_uyvugJWOEeOQONG7g3PUug" name="Phase1" visibility="public">
+    <generalization xmi:id="_vUmeYJWOEeOQONG7g3PUug" general="_ud11gJWOEeOQONG7g3PUug" generalizationSet="_nyMAYJWPEeOQONG7g3PUug"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_vyJWAJWOEeOQONG7g3PUug" name="Phase2" visibility="public">
+    <generalization xmi:id="_wQb0gJWOEeOQONG7g3PUug" general="_ud11gJWOEeOQONG7g3PUug" generalizationSet="_nyMAYJWPEeOQONG7g3PUug"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_nyMAYJWPEeOQONG7g3PUug" name="g1" isCovering="true" isDisjoint="true" generalization="_vUmeYJWOEeOQONG7g3PUug _wQb0gJWOEeOQONG7g3PUug"/>
+</RefOntoUML:Model>

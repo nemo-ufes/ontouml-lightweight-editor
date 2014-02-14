@@ -307,13 +307,30 @@ public class OntoUMLZ3SystemImpl extends EObjectImpl implements OntoUMLZ3System 
 			i++;
 		}
 		
-		result = result.concat("\n''' ----- Solver Configuration -----''' \n");
+		
+	
+		result = result.concat("\n''' ----- Solver Configuration -----''' \n\n");
+		int j;
+		for (j = 1; j<i-1; j++){
+			result = result.concat("a" + j+", ");
+		}
+		result = result.concat("a" + j+" = Bools('");
+		for (j = 1; j<i-1; j++){
+			result = result.concat("a" + j+" ");
+		}
+		result = result.concat("a" + j+"')\n");
+		
 		result = result.concat("\ns=Solver()\n");
 		//result = result.concat("\n''' ----- Constants Definition to allow unsat_core verification-----''' \n");
-		for (int j = 1; j<i; j++){
-			result = result.concat("s.add(F"+j+")\n");
+		for (j = 1; j<i; j++){
+			result = result.concat("s.add(Implies(a" +j + ", F"+j+"))\n");
 		}
-		
+		result = result.concat("resp = s.check(");
+		for (j = 1; j<i-1; j++){
+			result = result.concat("a" + j+", ");
+		}
+		result = result.concat("a" + j+")\nif resp == sat:\n\tprint 'Modelo satisfativel'\nelse:\n\tprint 'Modelo insatisfativel'\n\tprint s.unsat_core()");
+
 		return result;
 		
 	}

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_MlRd8JWhEeOQONG7g3PUug" name="Model">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_OF3uAJWhEeOQONG7g3PUug" name="Kind1" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_Og9HgJWhEeOQONG7g3PUug" name="Phase1" visibility="public"/>
+</RefOntoUML:Model>
