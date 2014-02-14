@@ -229,7 +229,6 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		
 		JList<String> lstIsolatedConcepts = new JList<String>(isolatedConceptsList);
 		scrollPane_1.setViewportView(lstIsolatedConcepts);
-		lstIsolatedConcepts.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lstIsolatedConcepts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		lstIsolatedConcepts.setBackground(Color.WHITE);
 		panelThree.setLayout(gl_panelThree);
