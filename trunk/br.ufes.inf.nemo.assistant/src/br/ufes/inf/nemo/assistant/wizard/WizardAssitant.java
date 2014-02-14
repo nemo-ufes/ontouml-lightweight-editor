@@ -1,10 +1,14 @@
 package br.ufes.inf.nemo.assistant.wizard;
 
+import java.util.HashMap;
+
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 
 import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
 import br.ufes.inf.nemo.assistant.graph.NodeAssistant;
+import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
+import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGeneralizationSet;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.Question;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.WizardPageAssistant;
 
@@ -61,12 +65,19 @@ public class WizardAssitant extends Wizard {
 		//Set currentNode
 		graph.setCurrentNode(nextNode);
 
-		//An Specific treat to Question's page
+		//Special treats
 		if(nextPage instanceof Question){
 			if(!nextNode.canGoTrue())
 				((Question)nextPage).setCanGoTrue(false);
 			if(!nextNode.canGoFalse())
 				((Question)nextPage).setCanGoFalse(false);
+		}else if(nextPage instanceof NewGeneralizationSet){
+//			NewGeneralizationSet page = (NewGeneralizationSet) nextPage;
+//			HashMap<String, String[]> hash = new HashMap<>();
+//			for (String stereotype : page.getStereotypes()) {
+//				hash.put(stereotype, graph.getManagerPattern().getStereotypesFor(StereotypeOntoUMLEnum.valueOf(stereotype.toUpperCase())));
+//			}
+//			System.out.println(hash.toString());
 		}
 
 		//Execute all alterations in RefOntoUML object from the Manager Pattern 

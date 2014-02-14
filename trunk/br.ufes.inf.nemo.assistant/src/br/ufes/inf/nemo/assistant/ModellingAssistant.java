@@ -21,57 +21,57 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class ModellingAssistant {
 
-	//getFix e limpa toda vez
 	private HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraph;
 
-	public ModellingAssistant(OntoUMLParser ontoParser) {
-		String path = "Patterns.asta";
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);	
-		if(is == null) {
-			//Runtime (eclipse)
-			hashGraph = SWTAstahParser.doParser("src/"+path);
-		}else{
-			//Running in .jar
-			hashGraph = SWTAstahParser.doParser(is);	
-		}
-
-		Iterator<GraphAssistant> graphs = hashGraph.values().iterator();
-		while(graphs.hasNext()){
-			GraphAssistant graph = graphs.next();
-			graph.getManagerPattern().setOntoPaser(ontoParser);
-		}
+	public ModellingAssistant(RefOntoUML.Package root) {
+//		String path = "Patterns.asta";
+//		InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);	
+//		if(is == null) {
+//			//Runtime (eclipse)
+//			hashGraph = SWTAstahParser.doParser("src/"+path);
+//		}else{
+//			//Running in .jar
+//			hashGraph = SWTAstahParser.doParser(is);	
+//		}
+//
+//		Iterator<GraphAssistant> graphs = hashGraph.values().iterator();
+//		while(graphs.hasNext()){
+//			GraphAssistant graph = graphs.next();
+//			graph.getManagerPattern().setRefOntoUML(root);
+//		}
 
 	}
 
 	public Fix runPattern(Classifier elem){
-		GraphAssistant graph = hashGraph.get(getStereotypeFromClassifier(elem));
-//		GraphAssistant graph = hashGraph.get(StereotypeOntoUMLEnum.RELATOR);
-		graph.updateNodeList();
-		graph.getManagerPattern().setClassifierOrigem(elem);
-		
-		System.out.println(graph.toString());
-		
-		Fix fix = null;
-		
-		Display display = Display.getDefault();	    	
-		Shell shell = display.getActiveShell();
-		WizardDialog wizardDialog = new WizardDialog(shell,new WizardAssitant(graph));
-		
-		if (wizardDialog.open() == Window.OK) {
-			fix = graph.getManagerPattern().getFix();
-			System.out.println("added: "+fix.getAddedString());
+		StereotypeOntoUMLEnum stereotype = getStereotypeFromClassifier(elem);
+
+		if(stereotype != null){
+			GraphAssistant graph = hashGraph.get(stereotype);
+			graph.updateNodeList();
+			graph.getManagerPattern().setClassifierOrigem(elem);
+
+			Fix fix = null;
+
+			Display display = Display.getDefault();	    	
+			Shell shell = display.getActiveShell();
+			WizardDialog wizardDialog = new WizardDialog(shell,new WizardAssitant(graph));
+
+			if (wizardDialog.open() == Window.OK) {
+				fix = graph.getManagerPattern().getFix();
+			}
+
+			return fix;
 		}
 		
-		return fix;
+		return null;
 	}
 
-	private StereotypeOntoUMLEnum getStereotypeFromClassifier(Classifier elem){
+	public static StereotypeOntoUMLEnum getStereotypeFromClassifier(Classifier elem){
 		if(elem instanceof Kind){
 			return StereotypeOntoUMLEnum.KIND;
 		}else if(elem instanceof Relator){
 			return StereotypeOntoUMLEnum.RELATOR;
 		}
-		return StereotypeOntoUMLEnum.RELATOR;
+		return null;
 	}
-
 }

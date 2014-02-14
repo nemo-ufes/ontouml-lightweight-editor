@@ -78,7 +78,8 @@ public class ProjectBrowser extends JPanel{
 		antipatterns = new AntiPatternList();
 		inferences = new InferenceList();
 		
-		//assistant = new ModellingAssistant(refparser);
+		//VICTOR comentar
+//		assistant = new ModellingAssistant(project.getModel());
 	
 		scroll.setViewportView(tree);
 		

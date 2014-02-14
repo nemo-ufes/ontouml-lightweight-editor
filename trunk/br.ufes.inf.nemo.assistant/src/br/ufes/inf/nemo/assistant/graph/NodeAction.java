@@ -25,10 +25,10 @@ public class NodeAction extends NodeAssistant {
 	@Override
 	public NodeAssistant getNextNode() {
 		boolean returnAction = false;
-
+		System.out.println("running action");
 		switch (action) {
 		case  EXIST_SOME_ULTIMATE_SORTAL:
-			returnAction = graph.getManagerPattern().existSomeUltimateSortal();
+			returnAction = graph.getManagerPattern().existSomeSubstanceSortal();
 			break;
 		/*case CONNECT_LAST_CLASSES:
 			break;

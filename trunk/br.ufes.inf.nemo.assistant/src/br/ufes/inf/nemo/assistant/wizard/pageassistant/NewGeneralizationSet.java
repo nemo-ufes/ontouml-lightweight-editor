@@ -91,6 +91,10 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		stereotypes = sts;
 	}
 
+	public String[] getStereotypes(){
+		return stereotypes;
+	}
+	
 	@Override
 	public boolean next() {
 		return true;
