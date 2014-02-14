@@ -13,9 +13,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Kind;
 import RefOntoUML.ObjectClass;
-import RefOntoUML.Phase;
-import RefOntoUML.Role;
-import RefOntoUML.SubKind;
+import RefOntoUML.SortalClass;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.z3py.BooleanFunctionDefinition;
@@ -60,7 +58,11 @@ public class Transformer {
 			ontoparser = new OntoUMLParser(root);	
 			populateWithObjectClasses();
 			populatesWithObjectsClassesGeneralizations();
+			populatesWithObjectClassesGeneralizationSets();
+			populatesWithRigidityFormulas();
+			populatesWithAntiRigidityFormulas();
 			
+			addSortalTopLevelDisjointnessFormula();
 			//Crio fórmula que garante que todo elemento de mundo é instância de um tipo que provê identidade
 			addIdentityFormula(identityProviderTypes);	
 		} catch (IOException e) {
@@ -71,6 +73,28 @@ public class Transformer {
 	}
 	
 	
+	//Os sortais topLevel sao disjoint. Isso vai nos permitir falar que é insatisfatível um modelo no qual haja um sortal que nao provê identidade sem herdar de um que proveja
+	private void addSortalTopLevelDisjointnessFormula(){
+		List<FunctionCall> subClasses = new ArrayList<FunctionCall>();
+		for(RefOntoUML.Classifier r: ontoparser.getTopLevelInstances(RefOntoUML.Classifier.class)){
+			if (r instanceof SortalClass){
+				FunctionCall fc1 = factory.createFunctionCall(getFunction(r.getName()), getConstants(new int[]{1, 2}));
+				subClasses.add(fc1);
+			}
+		}
+		addGeneralizationsetDisjointnessFormula(null, subClasses);
+	}
+	private void populatesWithRigidityFormulas(){
+		for(RefOntoUML.Classifier r: ontoparser.getRigidClasses()){
+			addRigidityFormula(r);
+		}
+	}
+	
+	private void populatesWithAntiRigidityFormulas(){
+		for(RefOntoUML.Classifier r: ontoparser.getAntiRigidClasses()){
+			addAntiRigidityFormulaConsideringBranchInTime(r);
+		}
+	}
 	private void populateWithExistenceAxioms() {
 		addFunction("exists", 2);
 		//Pensar se precisa de uma formula que faça a tipagem dos argumentos de exists
@@ -82,7 +106,7 @@ public class Transformer {
 		for(RefOntoUML.Class p: ontoparser.getAllInstances(ObjectClass.class)){
 			//Crio a função que representa o fato de um dado individuo ser daquele tipo em um dado mundo
 			addFunction(p.getName(),2);
-
+			
 			//Tipagem dos argumentos da função: crio fórmula afirmando que se a função criada retorna true, então o primeiro argumento é world e o segundo existe nesse world. 
 			FunctionCall fc1 = factory.createFunctionCall(getFunction(p.getName()), getConstants(new int[]{1, 2}));
 			FunctionCall fc2 = factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
@@ -98,9 +122,9 @@ public class Transformer {
 				//Como Kind provê identidade, adiciono o tipo ao conjunto de tipos provedores de identidade para no final criar a fórmula que garante que todo mundo tem identidade
 				identityProviderTypes.add(p);
 				//Crio formula que garante que o tipo é rígido
-				addRigidityFormula(p);						
+				//addRigidityFormula(p);						
 			}
-			else if (p instanceof SubKind){
+/*			else if (p instanceof SubKind){
 				addRigidityFormula(p);
 			}
 			else if (p instanceof Phase){
@@ -108,7 +132,7 @@ public class Transformer {
 			}
 			else if (p instanceof Role){
 				addAntiRigidityFormulaConsideringBranchInTime(p);
-			}
+			}*/
 		}
 			
 		
@@ -139,16 +163,16 @@ public class Transformer {
 			}	
 			general = factory.createFunctionCall(getFunction(generalizations.get(0).getGeneral().getName()), getConstants(new int[]{1, 2}));		
 			if (gs.isIsCovering()){
-				addGeneralizationsetCompletenessFormulas(general, specifics);
+				addGeneralizationsetCompletenessFormula(general, specifics);
 			}
 			if (gs.isIsDisjoint()){
-				addGeneralizationsetDisjointnessFormulas(general, specifics);
+				addGeneralizationsetDisjointnessFormula(general, specifics);
 			}	
 		}
 	}
 	
 	
-	private void addGeneralizationsetCompletenessFormulas (FunctionCall superClass, List<FunctionCall> subClasses){
+	private void addGeneralizationsetCompletenessFormula (FunctionCall superClass, List<FunctionCall> subClasses){
 		if (subClasses.size()>0){
 			FunctionCall f1;
 			int i, subClassesNumber = subClasses.size();
@@ -164,7 +188,7 @@ public class Transformer {
 		}
 	}
 	
-	private void addGeneralizationsetDisjointnessFormulas (FunctionCall superClass, List<FunctionCall> subClasses){
+	private void addGeneralizationsetDisjointnessFormula (FunctionCall superClass, List<FunctionCall> subClasses){
 		int i, subClassesNumber = subClasses.size();	
 		if (subClassesNumber>1){
 			//Expression subDisjunction = subClasses.get(0);
@@ -191,7 +215,12 @@ public class Transformer {
 			}
 			subClassesNames = subClassesNames.concat(subClasses.get(i).getCalledFunction().getName());
 			disjointness = factory.createLogicalNegation(disjointness);
-			addFormula(true,disjointness,"Disjoint Specialization Set: The Specializazion from " + superClass.getCalledFunction().getName() + " in " + subClassesNames + " is disjoint");
+			String comment;
+			if (superClass != null)
+				comment = "Disjoint Specialization Set: The Specializazion from " + superClass.getCalledFunction().getName() + " in " + subClassesNames + " is disjoint";
+			else
+				comment = "Disjointness between the top level classes or identity providers: " + subClassesNames;
+			addFormula(true,disjointness,comment);
 		}
 	}
 
@@ -201,9 +230,9 @@ public class Transformer {
 		//Crio as funções que utilizarei		
 		addFunction("World",1);
 		addFunction("CurrentWorld",1);
-		addFunction("PastWorld",1);
-		addFunction("CounterfactualWorld", 1);
+		addFunction("PastWorld",1);		
 		addFunction("FutureWorld", 1);
+		if (isBranchIntime) addFunction("CounterfactualWorld", 1);
 		addFunction("next", 2);
 		addFunction("recursiveNext", 2);
 
@@ -265,11 +294,11 @@ public class Transformer {
 		//No caso de linear World tem especialização disjunta e completa com CurrentWorld, PastWorld e FutureWorld 
 		fc1= factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
 		List<FunctionCall> subClasses = new ArrayList<FunctionCall>();
-		subClasses.add(factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{1})));
+		subClasses.add(factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{1})));
 		subClasses.add(factory.createFunctionCall(getFunction("FutureWorld"), getConstants(new int[]{1})));
 		subClasses.add(factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{1})));
 		if (isBranchIntime)
-			subClasses.add(factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{1})));
+			subClasses.add(factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{1})));
 		addSpecializationFormulas(fc1,subClasses, true, true);
 		
 		
@@ -314,11 +343,13 @@ public class Transformer {
 		//No caso de linear, não tem o counterfactual
 		fc1= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{1}));
 		fc2= factory.createFunctionCall(getFunction("CurrentWorld"), getConstants(new int[]{2}));
-		fc3= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{2}));
+
 		FunctionCall fc4= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{2}));
 		lbe1 = factory.createBinaryExpression(fc2, fc4, LogicalBinaryExpressionTypes.DISJUNCTION);
-		if (isBranchIntime)	
+		if (isBranchIntime){
+			fc3= factory.createFunctionCall(getFunction("CounterfactualWorld"), getConstants(new int[]{2}));
 			lbe1 = factory.createBinaryExpression(fc3, lbe1, LogicalBinaryExpressionTypes.DISJUNCTION);
+		}			
 		fc2= factory.createFunctionCall(getFunction("next"), getConstants(new int[]{1,2}));
 		lbe2 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
 		lbe2 = factory.createBinaryExpression(lbe2, lbe1, LogicalBinaryExpressionTypes.IMPLICATION);
@@ -376,7 +407,7 @@ public class Transformer {
 			
 			//Se for disjoint adiciono formula que garante disjointness
 			if(isDisjoint && subClassesNumber>1){
-				addGeneralizationsetDisjointnessFormulas(superClass, subClasses);
+				addGeneralizationsetDisjointnessFormula(superClass, subClasses);
 			}			
 		}
 	}
@@ -396,10 +427,14 @@ public class Transformer {
 	
 	private void addIdentityFormula(List<RefOntoUML.Class> identityProviderTypes){
 		if (identityProviderTypes.size()>0){
+			List<FunctionCall> identityProviders = new ArrayList<FunctionCall>();
 			FunctionCall fc1;
-			Expression e1 = factory.createFunctionCall(getFunction(identityProviderTypes.get(0).getName()), getConstants(new int[]{1, 2}));		 
+			fc1 = factory.createFunctionCall(getFunction(identityProviderTypes.get(0).getName()), getConstants(new int[]{1, 2}));
+			identityProviders.add(fc1);
+			Expression e1 =fc1;
 			for(int i = 1; i<identityProviderTypes.size();i++){
 				fc1 = factory.createFunctionCall(getFunction(identityProviderTypes.get(i).getName()), getConstants(new int[]{1, 2}));
+				identityProviders.add(fc1);
 				e1 = factory.createBinaryExpression(fc1, e1, LogicalBinaryExpressionTypes.DISJUNCTION);
 			}
 			fc1 = factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
@@ -407,11 +442,13 @@ public class Transformer {
 			fc1 = factory.createFunctionCall(getFunction("exists"), getConstants(new int[]{1,2}));
 			e1 = factory.createBinaryExpression(fc1, e1, LogicalBinaryExpressionTypes.IMPLICATION);
 			addFormula(true, e1, "Everything that exists in a world must be of a type that provides an identity principle");
+			//adiciono formula que diz que os tipos que proveem identidade sao disjuntos
+			addGeneralizationsetDisjointnessFormula(null, identityProviders);
 		}
 	}
 	
 	
-	private void addRigidityFormula(RefOntoUML.Class type){
+	private void addRigidityFormula(RefOntoUML.Classifier type){
 		//Ex.:ForAll([w1,w2,x], Implies(And(Pessoa(w1,x), existe(w2,x)),Pessoa(w2,x)))
 		FunctionCall fc1 = factory.createFunctionCall(getFunction(type.getName()), getConstants(new int[]{1, 2}));
 		FunctionCall fc2 = factory.createFunctionCall(getFunction("exists"), getConstants(new int[]{3,2}));
@@ -421,7 +458,7 @@ public class Transformer {
 		addFormula(true, lbe2, type.getName() + " is a rigid type");	
 	}
 
-	private void addAntiRigidityFormulaConsideringBranchInTime(RefOntoUML.Class type){
+	private void addAntiRigidityFormulaConsideringBranchInTime(RefOntoUML.Classifier type){
 		//Ex.: ForAll([w1,x], Implies(Aluno(w1,x),Exists(w2,And(existe(w2,x),Not(Aluno(w2,x))))))
 		FunctionCall fc1 = factory.createFunctionCall(getFunction(type.getName()), getConstants(new int[]{2, 3}));
 		FunctionCall fc2 = factory.createFunctionCall(getFunction("exists"), getConstants(new int[]{2 ,3}));
