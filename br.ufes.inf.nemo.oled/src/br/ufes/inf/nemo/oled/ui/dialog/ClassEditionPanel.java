@@ -25,6 +25,7 @@ public class ClassEditionPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
+	@SuppressWarnings("unused")
 	private ClassElement classElement;
 	private Classifier element;
 	private DiagramManager diagramManager;
@@ -33,7 +34,6 @@ public class ClassEditionPanel extends JPanel {
 	private JCheckBox btnExtensional;
 	private JTextField nameField;
 	private JPanel classPropPanel;
-	private JCheckBox btnShowAttributes;
 	private JLabel lblStereo;
 	@SuppressWarnings("rawtypes")
 	private JComboBox stereoCombo;
@@ -48,29 +48,19 @@ public class ClassEditionPanel extends JPanel {
 		classPropPanel = new JPanel();
 		classPropPanel.setBorder(BorderFactory.createTitledBorder(""));
 		
-		btnShowAttributes = new JCheckBox("Turn attributes visible");
-		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(btnShowAttributes))
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-							.addGap(8)
-							.addComponent(classPropPanel, GroupLayout.PREFERRED_SIZE, 442, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(28, Short.MAX_VALUE))
+					.addGap(8)
+					.addComponent(classPropPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(classPropPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(12)
-					.addComponent(btnShowAttributes, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-					.addGap(12))
+					.addContainerGap(150, Short.MAX_VALUE))
 		);
 		
 		JLabel lblName = new JLabel("Name:");
@@ -126,12 +116,11 @@ public class ClassEditionPanel extends JPanel {
 		
 		setInitialData();
 		
-		setSize(new Dimension(469, 139));
+		setSize(new Dimension(450, 242));
 	}
 	
 	public void setInitialData()
-	{
-		btnShowAttributes.setSelected(classElement.showAttributes());
+	{		
 		nameField.setText(element.getName());
 		if (element instanceof Collective) btnExtensional.setEnabled(true);
 		else btnExtensional.setEnabled(false);
@@ -149,13 +138,17 @@ public class ClassEditionPanel extends JPanel {
 	    return type;
 	}
 	
+	public void selectNameText()
+	{
+		nameField.selectAll();
+	}
+	
 	public void transferClassData()
 	{
 		element.setName(nameField.getText());
 		if (element instanceof Collective) ((Collective) element).setIsExtensional(btnExtensional.isSelected());
 		element.setIsAbstract(btnAbstract.isSelected());
-		classElement.setShowAttributes(btnShowAttributes.isSelected());
-		
+				
 		diagramManager.doOLEDInclusion(element);		
 	}
 }
