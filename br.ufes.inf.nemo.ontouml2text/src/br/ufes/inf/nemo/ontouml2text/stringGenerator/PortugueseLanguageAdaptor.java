@@ -78,7 +78,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		if(!pattern.getDescribedCategory().getUserDescription().isEmpty())
-			return parcialDescription += pattern.getDescribedCategory().getUserDescription();
+			return parcialDescription += pattern.getDescribedCategory().getUserDescription().replace("Descrição:", "");
 		else
 			return "";
 	}
@@ -389,6 +389,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ", e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
+		else if(previousPattern instanceof MaterialPattern) parcialDescription += ", como também,";
 		
 		// Generating specific description
 		parcialDescription += " envolve " + 
@@ -409,6 +410,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " , além disso, se envolve";
 		else if(previousPattern instanceof PartOfPattern) parcialDescription += ", além disso, se envolve";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso, se envolve";
+		else if(previousPattern instanceof MaterialPattern) parcialDescription += ", como também, se envolve";
 		else if(previousPattern == null) parcialDescription += " se envolve";
 		 
 		// Generating specific description
@@ -428,6 +430,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ", além de poder";
 		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof FormalPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern instanceof ExceptionMediationPattern) parcialDescription += " e poder"; 
+		else if(previousPattern instanceof MaterialPattern) parcialDescription += ", além de poder";
 		else if(previousPattern == null) parcialDescription += " pode";			
 		
 		// Generating specific description
@@ -447,6 +450,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " , além disso,";
 		else if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além disso,";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
+		else if(previousPattern instanceof MaterialPattern) parcialDescription += ", além disso";
 		
 		// Generating specific description
 		parcialDescription += " se relaciona com " + 
@@ -465,11 +469,33 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ", além disso, pode";
 		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e pode";
+		else if(previousPattern instanceof MaterialPattern) parcialDescription += " e pode";
 		else if(previousPattern == null) parcialDescription += " pode";
 		
 		// Generating specific description
 		parcialDescription += " estar relacionado com " + 
 				insertListing((NaryPattern)pattern, true, "ou");
+					
+		return parcialDescription;
+	}
+	
+	@Override
+	protected String processMaterialPattern(
+			DescriptionPattern pattern, DescriptionPattern previousPattern, 
+			String parcialDescription){
+		
+		// Integration
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " que pode";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += "; como também pode";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += "; como também pode";
+		else if(previousPattern instanceof FormalAssociationPattern) parcialDescription += ", em adição, pode"; 
+		else if(previousPattern == null) parcialDescription += " pode";
+		
+		// Generating specific description
+		parcialDescription += " se relacionar com " + 
+				insertListing((NaryPattern)pattern, true, "e");
 					
 		return parcialDescription;
 	}
@@ -485,6 +511,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof PartOfPattern) parcialDescription += " e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
+		else if(previousPattern instanceof MaterialPattern) parcialDescription += " e";
 				
 		// Generating specific description
 		parcialDescription += " é um papel envolvido em " + 
@@ -507,6 +534,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 				previousPattern instanceof OrdinaryOptionalMediationPattern ||
 				previousPattern instanceof OptionalExceptionMediationPattern ||
 				previousPattern instanceof AbstractMediationRevPattern ||
+				previousPattern instanceof MaterialPattern ||
 				previousPattern instanceof PhasePattern ||
 				previousPattern instanceof FormalPattern ||
 				previousPattern instanceof CharacterizationPattern ||
