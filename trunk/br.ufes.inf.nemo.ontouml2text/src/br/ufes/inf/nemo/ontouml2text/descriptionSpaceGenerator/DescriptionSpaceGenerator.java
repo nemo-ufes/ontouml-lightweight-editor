@@ -65,18 +65,18 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 
 		relatorIheritance(generalizationSpace.getCategories(),hashCategories);
 		
-		for (DescriptionCategory c : generalizationSpace.getCategories()){
-			System.out.println("\n|==> Nome: "+c.getLabel() + "  type: "+
-					c.toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.", ""));
-			
-			for(DescriptionFunction f : c.getFunctions()){
-				if(f instanceof BinaryDescriptionFunction)
-					System.out.print(((BinaryDescriptionFunction)f).getSource().getLabel()+" -> "+f.getTarget().getLabel()+
-							" - TYPE: "+f.getClass().toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.", "")+" // ");
-				else
-					System.out.print(f.toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.", "")+" // ");
-			}
-		}
+//		for (DescriptionCategory c : generalizationSpace.getCategories()){
+//			System.out.println("\n|==> Nome: "+c.getLabel() + "  type: "+
+//					c.toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.", ""));
+//			
+//			for(DescriptionFunction f : c.getFunctions()){
+//				if(f instanceof BinaryDescriptionFunction)
+//					System.out.print(((BinaryDescriptionFunction)f).getSource().getLabel()+" -> "+f.getTarget().getLabel()+
+//							" - TYPE: "+f.getClass().toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.", "")+" // ");
+//				else
+//					System.out.print(f.toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.", "")+" // ");
+//			}
+//		}
 				
 		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
 		System.out.println("Tamanho da functions no DescriptionSpace:  " + generalizationSpace.getFunctions().size());
