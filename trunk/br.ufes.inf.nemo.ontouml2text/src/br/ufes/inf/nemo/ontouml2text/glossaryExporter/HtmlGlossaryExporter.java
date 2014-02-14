@@ -102,7 +102,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 	
 	public void saveDescription(DescriptionCategory category, String description, PrintWriter out){	
 		if(out != null){
-			out.write("        <div>\n");
+			out.write("        <div id=\""+category.getLabel().replace(" ", "")+"\">\n");
 			out.write("            <p><h1>"+category.getLabel()+"</h1><br /><hr />\n");
 			out.write("            "+description+"</p>\n");
 			out.write("        </div>\n");
@@ -242,7 +242,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 					"    width:700px;\n"+
 					"    border-radius:10px;\n"+
 					"    box-shadow: 5px 5px 16px 0px rgba(50, 50, 50, 0.31);\n"+
-					"	 margin-bottom: 20px"+
+					"    margin-bottom: 20px\n"+
 					"}\n"+
 					"div.alphabet {\n"+
 					"	 text-align: center;\n"+
@@ -278,9 +278,10 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 					"    height:.01em;\n"+
 					"    box-shadow: 1px 1px 3px 0px rgba(50, 50, 50, 0.20);\n"+
 					"}\n"+
-					"a{\n"+
-					"    word-spacing: 1.0em;"+
-					"}"
+					"a.categoryReference{\n"+
+					"   text-decoration: none;\n"+
+					"   color:#0B3D18;\n"+
+					"}\n"
 					);
 			
 			cssFile.close();	
