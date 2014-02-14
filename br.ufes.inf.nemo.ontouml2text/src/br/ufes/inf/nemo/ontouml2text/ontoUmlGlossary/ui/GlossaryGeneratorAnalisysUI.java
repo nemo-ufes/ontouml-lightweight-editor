@@ -28,6 +28,7 @@ import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.OntoUmlGlossary;
 import javax.swing.ListSelectionModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.border.LineBorder;
 
 public class GlossaryGeneratorAnalisysUI extends JFrame {
 
@@ -39,7 +40,8 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 	 * Create the frame.
 	 * @param conceptsWithoutDesc : concepts without user description list
 	 */
-	public GlossaryGeneratorAnalisysUI(final OntoUmlGlossary ontoUmlGlossary, List<String> conceptsWithoutDesc) {
+	public GlossaryGeneratorAnalisysUI(final OntoUmlGlossary ontoUmlGlossary, 
+			List<String> conceptsWithoutDesc, List<String> isolatedConcepts, List<String> nonDeterminedRelationships) {
 		this.ontoUmlGlossary = ontoUmlGlossary;
 		
 		setBounds(400, 400, 491, 460);
@@ -62,37 +64,59 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		
 		
 		missingDesc = conceptsWithoutDesc.size();
-		JLabel label1 = new JLabel(missingDesc.toString() + " cases found.");
-		label1.setBounds(23, 28, 128, 16);
-		surroundPanel1.add(label1);
+		JLabel lblMissingUserDescriptionCounter = new JLabel(missingDesc.toString() + " cases found.");
+		lblMissingUserDescriptionCounter.setBounds(23, 28, 128, 16);
+		surroundPanel1.add(lblMissingUserDescriptionCounter);
 		
-		JButton btnDetails = new JButton("Details");
+		JButton btnMissingUserDescriptionDetails = new JButton("Details");
 		
-		btnDetails.addActionListener(new ActionListener() {
+		btnMissingUserDescriptionDetails.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				tabbedPane.setSelectedIndex(1);
 			}
 		});
-		btnDetails.setBounds(322, 19, 97, 25);
-		surroundPanel1.add(btnDetails);
+		btnMissingUserDescriptionDetails.setBounds(322, 19, 97, 25);
+		surroundPanel1.add(btnMissingUserDescriptionDetails);
 		
 		JPanel surroundPanel2 = new JPanel();
-		surroundPanel2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Direction", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		surroundPanel2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Isolated Concepts", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		surroundPanel2.setBounds(12, 130, 431, 57);
 		panelOne.add(surroundPanel2);
 		surroundPanel2.setLayout(null);
 		
-		JPanel surroundPanel3 = new JPanel();
-		surroundPanel3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Gender", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		surroundPanel3.setBounds(12, 204, 431, 57);
-		panelOne.add(surroundPanel3);
-		surroundPanel3.setLayout(null);
+		JLabel lblIsolatedConceptsCounter = new JLabel(isolatedConcepts.size()+" cases found.");
+		lblIsolatedConceptsCounter.setBounds(21, 30, 128, 16);
+		surroundPanel2.add(lblIsolatedConceptsCounter);
 		
-		JPanel surroundPanel4 = new JPanel();
-		surroundPanel4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Undefined Plural", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		surroundPanel4.setBounds(12, 284, 431, 57);
-		panelOne.add(surroundPanel4);
-		surroundPanel4.setLayout(null);
+		JButton btnIsolatedConceptsDetails = new JButton("Details");
+		
+		btnIsolatedConceptsDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tabbedPane.setSelectedIndex(2);
+			}
+		});
+		btnIsolatedConceptsDetails.setBounds(322, 19, 97, 25);
+		surroundPanel2.add(btnIsolatedConceptsDetails);
+		
+		JPanel group3 = new JPanel();
+		group3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Concepts With Non-Defined Relationship", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		group3.setBounds(12, 204, 431, 57);
+		panelOne.add(group3);
+		group3.setLayout(null);
+		
+		JLabel lblNonDeterminedRelationshipsCounter = new JLabel(nonDeterminedRelationships.size()+" cases found.");
+		lblNonDeterminedRelationshipsCounter.setBounds(23, 30, 128, 16);
+		group3.add(lblNonDeterminedRelationshipsCounter);
+		
+		JButton btnNonDeterminedRelationshipsDetails = new JButton("Details");
+		
+		btnNonDeterminedRelationshipsDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tabbedPane.setSelectedIndex(3);
+			}
+		});
+		btnNonDeterminedRelationshipsDetails.setBounds(324, 19, 97, 25);
+		group3.add(btnNonDeterminedRelationshipsDetails);
 		
 		JLabel lblResults = new JLabel("Results of Analisys");
 		lblResults.setBounds(12, 13, 147, 16);
@@ -131,12 +155,91 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		JPanel panelTwo = new JPanel();
 		tabbedPane.addTab("Missing User Descriptions", null, panelTwo, null);
 		
+		JPanel panelThree = new JPanel();
+		tabbedPane.addTab("Isolated Concepts", null, panelThree, null);
+		
+		JPanel panelFour = new JPanel();
+		tabbedPane.addTab("Non-Determined Relationships", null, panelFour, null);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(null);
+		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Objects with non-determined relationships", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(23, 29, 404, 307);
+		panel_1.add(scrollPane_2);
+		
+		DefaultListModel<String> nonDeterminedRelationshipsList = new DefaultListModel<String>();
+		int i = 0;
+		
+		for(String s : nonDeterminedRelationships){
+			nonDeterminedRelationshipsList.add(i, s);
+			i++;
+		}
+		
+		JList<String> lstNonDeterminedRelationships = new JList<String>(nonDeterminedRelationshipsList);
+		scrollPane_2.setViewportView(lstNonDeterminedRelationships);
+		GroupLayout gl_panelFour = new GroupLayout(panelFour);
+		gl_panelFour.setHorizontalGroup(
+			gl_panelFour.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelFour.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 450, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_panelFour.setVerticalGroup(
+			gl_panelFour.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panelFour.createSequentialGroup()
+					.addContainerGap(20, Short.MAX_VALUE)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 362, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		panelFour.setLayout(gl_panelFour);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setLayout(null);
+		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Objects without relationships", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GroupLayout gl_panelThree = new GroupLayout(panelThree);
+		gl_panelThree.setHorizontalGroup(
+			gl_panelThree.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelThree.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_panelThree.setVerticalGroup(
+			gl_panelThree.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panelThree.createSequentialGroup()
+					.addContainerGap(20, Short.MAX_VALUE)
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 362, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		
+		DefaultListModel<String> isolatedConceptsList = new DefaultListModel<String>();
+		i = 0;
+		
+		for(String s : isolatedConcepts){
+			isolatedConceptsList.add(i, s);
+			i++;
+		}
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(23, 29, 404, 307);
+		panel_2.add(scrollPane_1);
+		
+		JList<String> lstIsolatedConcepts = new JList<String>(isolatedConceptsList);
+		scrollPane_1.setViewportView(lstIsolatedConcepts);
+		lstIsolatedConcepts.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lstIsolatedConcepts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		lstIsolatedConcepts.setBackground(Color.WHITE);
+		panelThree.setLayout(gl_panelThree);
+		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Objects without User Description", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(24, 32, 404, 275);
+		scrollPane.setBounds(24, 32, 404, 307);
 		panel.add(scrollPane);
 		
 		JLabel lblNewLabel = new JLabel("");
@@ -144,30 +247,32 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		panel.add(lblNewLabel);
 		
 		DefaultListModel<String> modelList = new DefaultListModel<String>();
-		int i = 0;
+		i = 0;
 
 		for(String s : conceptsWithoutDesc){
 			modelList.add(i, s);
 			i++;
 		}
 		
-		JList<String> list = new JList<String>(modelList);
-		scrollPane.setViewportView(list);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setBackground(UIManager.getColor("Button.disabledShadow"));
+		JList<String> lstMissingUserDescription = new JList<String>(modelList);
+		scrollPane.setViewportView(lstMissingUserDescription);
+		lstMissingUserDescription.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		lstMissingUserDescription.setBackground(UIManager.getColor("Button.disabledShadow"));
 		
 		GroupLayout gl_panelTwo = new GroupLayout(panelTwo);
 		gl_panelTwo.setHorizontalGroup(
 			gl_panelTwo.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelTwo.createSequentialGroup()
-					.addGap(6)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 452, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 448, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(12, Short.MAX_VALUE))
 		);
 		gl_panelTwo.setVerticalGroup(
 			gl_panelTwo.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelTwo.createSequentialGroup()
 					.addGap(20)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 338, GroupLayout.PREFERRED_SIZE))
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		panelTwo.setLayout(gl_panelTwo);
 		
