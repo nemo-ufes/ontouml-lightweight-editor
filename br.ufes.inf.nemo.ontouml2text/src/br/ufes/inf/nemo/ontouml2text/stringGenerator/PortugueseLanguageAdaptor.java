@@ -179,14 +179,16 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 	protected String processCharacterizationAssociationPattern(
 			DescriptionPattern pattern, DescriptionPattern previousPattern,
 			String parcialDescription) {
-
+		
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += ", que é";
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ". É";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += ". É";
+		else if(previousPattern == null) parcialDescription += " é";
 		
 		// Generating specific description
-		parcialDescription += " é uma característica de " + 
-				insertListing((NaryPattern)pattern, true, "e");
+		parcialDescription += " caracterizado por ter " + 
+				insertListing((NaryPattern)pattern, false, "e");		
 					
 		return parcialDescription;
 	}
@@ -197,14 +199,12 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern) parcialDescription += ", que é";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ". É";
-		else if(previousPattern instanceof PhasePattern) parcialDescription += ". É";
-		else if(previousPattern == null) parcialDescription += " é";
 		
 		// Generating specific description
-		parcialDescription += " caracterizado por ter " + 
-				insertListing((NaryPattern)pattern, false, "e");	
+		parcialDescription += " é uma característica de " + 
+				insertListing((NaryPattern)pattern, true, "e");
 					
 		return parcialDescription;
 	}
