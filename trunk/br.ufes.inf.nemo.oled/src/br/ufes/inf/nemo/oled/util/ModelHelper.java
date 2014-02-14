@@ -421,6 +421,15 @@ public class ModelHelper {
 		return property;
 	}
 
+	public static void setMultiplicity(Property property, int lower, int upper)
+	{
+		LiteralInteger lowerBound = factory.createLiteralInteger();
+		lowerBound.setValue(lower);
+		LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
+		upperBound.setValue(upper);
+		property.setLowerValue(lowerBound);
+		property.setUpperValue(upperBound);	
+	}
 	
 	public static String getMultiplicityString(Property property) {
 		int lowerBound = property.getLower(), upperBound = property.getUpper();
@@ -486,7 +495,7 @@ public class ModelHelper {
 		}
 		else
 		{
-			throw new ParseException("could not parse '" + str + "'", 0);
+			throw new ParseException("could not parse multiplicity string: '" + str + "'", 0);
 		}
 
 		if (property != null) {
