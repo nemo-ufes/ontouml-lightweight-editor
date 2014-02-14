@@ -317,6 +317,18 @@ public class OntoUMLParser {
 		else return parsingElem.getType();
 	}
 	
+	@Override
+	public String toString()
+	{
+		String result = new String();
+		
+		for(EObject obj: getElements())
+		{
+			result += elementsHash.get(obj)+"\n";
+		}
+		return result;
+	}
+	
 	/**
 	 * Get String Representation of All Elements in the model.
 	 * 
