@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.text.ParseException;
-import java.util.Collection;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -26,7 +25,7 @@ public class AttributeTableModel extends BaseTableModel {
 	
 	public AttributeTableModel(Classifier owner)
 	{
-		super(new String[]{"Name", "Type", "Lower/Upper","Derived","Read Only", "Subsetted","Redefined"});
+		super(new String[]{"Name", "Type", "Lower/Upper"});
 		
 		if(owner instanceof DataTypeImpl) attributes = ((DataType) owner).getOwnedAttribute();
 		else attributes = ((RefOntoUML.Class) owner).getOwnedAttribute();
@@ -87,15 +86,17 @@ public class AttributeTableModel extends BaseTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		if(attributes.size() > 0)
 		{
-			Property prp = (Property)attributes.get(rowIndex);			
+			Property prp = (Property)attributes.get(rowIndex);		
+						 
 			switch(columnIndex) {
 				case 0: return prp.getName();
 				case 1: return prp.getType().getName();
-				case 2: return prp.getLower()+".."+prp.getUpper();
-				case 3: return prp.isIsDerived();				
-				case 4: return prp.isIsReadOnly();
-				case 5: return prp.getSubsettedProperty();
-				case 6: return prp.getRedefinedProperty();
+				case 2: {
+					if (prp.getLower()==prp.getUpper() && prp.getUpper()!=-1) return Integer.toString(prp.getLower());
+					else if (prp.getLower()==prp.getUpper() && prp.getUpper()==-1) return "*";
+					else if (prp.getUpper()==-1) return prp.getLower()+".."+"*";
+					else return prp.getLower()+".."+prp.getUpper();
+				}
 			}
 		}
 		return null;
@@ -111,10 +112,6 @@ public class AttributeTableModel extends BaseTableModel {
 				case 0: return String.class;
 				case 1: return String.class;
 				case 2: return String.class;
-				case 3: return Boolean.class;
-				case 4: return Boolean.class;
-				case 5: return EList.class;
-				case 6: return EList.class;
 			}
 		}
 		return Object.class;
@@ -123,7 +120,6 @@ public class AttributeTableModel extends BaseTableModel {
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
 		Property property = (Property) attributes.get(rowIndex);
@@ -141,18 +137,6 @@ public class AttributeTableModel extends BaseTableModel {
 				System.err.println(e.getLocalizedMessage());
 				e.printStackTrace();
 			}
-		}
-		if(columnIndex == 3){
-			property.setIsDerived((Boolean)value);
-		}
-		if(columnIndex == 4){
-			property.setIsReadOnly((Boolean)value);
-		}
-		if(columnIndex == 5){
-			property.getSubsettedProperty().addAll((Collection<Property>)value);
-		}
-		if(columnIndex == 6){
-			property.getRedefinedProperty().addAll((Collection<Property>)value);
 		}
 	}
 	

@@ -37,6 +37,8 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		JMenuItem propertyItem = createMenuItem(this, "editproperties");
 		propertyItem.setAccelerator(KeyStroke.getKeyStroke("F9"));		
 		
+		addSeparator();
+		
 		JMenu drawOrderMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.draworder.name"));
 		add(drawOrderMenu);
 		
