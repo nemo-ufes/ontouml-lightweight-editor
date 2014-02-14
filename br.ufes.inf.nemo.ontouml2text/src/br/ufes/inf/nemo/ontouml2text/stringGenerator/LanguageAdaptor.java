@@ -35,11 +35,12 @@ public abstract class LanguageAdaptor {
 				if(d instanceof GeneralizationPattern){ 
 					if(d instanceof AntiRigidHeterogeneousGeneralizationPattern){
 						return 10;
+					}else if(d instanceof AntiRigidHeterogeneousGeneralizationIdPattern){
+						return 5;
+					}else if(d instanceof RigidHeterogeneousGeneralizationPattern){
+						return 3;	
 					}else{
-						if(d instanceof AntiRigidHeterogeneousGeneralizationIdPattern)
-							return 5;
-						else
-							return 0;	
+						return 0;
 					}
 				}else if(d instanceof ReflexivePattern){ 
 					return 15;	

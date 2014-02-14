@@ -217,8 +217,10 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		// Integration
 		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += ", além disso,";
 		
 		// Generating specific description
 		parcialDescription += " compõe " + 
@@ -233,13 +235,15 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 			String parcialDescription) {
 
 		// Integration
-		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
-		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
-		else if(previousPattern instanceof PhasePattern) parcialDescription += ", além disso,";
-		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso,";
+		if(previousPattern instanceof GeneralizationPattern) parcialDescription += ". É";
+		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e é";
+		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e é";
+		else if(previousPattern instanceof PhasePattern) parcialDescription += ", além disso, é";
+		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso, é";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += ", além disso, é";
 		
 		// Generating specific description
-		parcialDescription += " é composto por: " + 
+		parcialDescription += " composto por " + 
 				insertListing((NaryPattern)pattern, true, "e");
 					
 		return parcialDescription;
@@ -253,8 +257,10 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		// Integration
 		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", e";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += ", além disso,";
 					
 		// Generating specific description
 		parcialDescription += " é membro de " + 
@@ -271,11 +277,13 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		// Integration
 		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", além disso,";
-		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso, ";
+		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso,";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += ", além disso,";
 		
 		// Generating specific description
-		parcialDescription += " tem como membros: " + 
+		parcialDescription += " tem como membros " + 
 				insertListing((NaryPattern)pattern, true, "e");
 					
 		return parcialDescription;
@@ -289,8 +297,10 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		// Integration
 		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += " e";
+		else if(previousPattern instanceof CharacterizationPattern) parcialDescription += " e";
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", além disso,";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
+		else if(previousPattern instanceof PartOfPattern) parcialDescription += ", além disso,";
 					
 		// Generating specific description
 		parcialDescription += " é um subcoletivo de " + 
@@ -387,8 +397,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		// Integration
 		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " que";	
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ", e";
-		else if(previousPattern instanceof PhasePattern) parcialDescription += ", e";
-		else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
+		//else if(previousPattern instanceof PhasePattern) parcialDescription += ", e";
+		//else if(previousPattern instanceof FormalPattern) parcialDescription += " e";
 		else if(previousPattern instanceof MaterialPattern) parcialDescription += ", como também,";
 		
 		// Generating specific description
@@ -428,8 +438,9 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		// Integration
 		if(previousPattern instanceof GeneralizationPattern) parcialDescription += "e pode";
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ", além de poder";
-		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof FormalPattern) parcialDescription += ", além de poder"; 
+		else if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern instanceof ExceptionMediationPattern) parcialDescription += " e poder"; 
+		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além de poder";
 		else if(previousPattern instanceof MaterialPattern) parcialDescription += ", além de poder";
 		else if(previousPattern == null) parcialDescription += " pode";			
 		
@@ -467,7 +478,8 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		// Integration
 		if(previousPattern instanceof GeneralizationPattern) parcialDescription += " e pode";
 		else if(previousPattern instanceof ReflexivePattern) parcialDescription += ", além disso, pode";
-		else if(previousPattern instanceof OrdinaryMediationPattern || previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
+		else if(previousPattern instanceof OrdinaryMediationPattern) parcialDescription += ", além de poder"; 
+		else if(previousPattern instanceof ExceptionMediationPattern) parcialDescription += ", além de poder"; 
 		else if(previousPattern instanceof FormalPattern) parcialDescription += " e pode";
 		else if(previousPattern instanceof MaterialPattern) parcialDescription += " e pode";
 		else if(previousPattern == null) parcialDescription += " pode";
