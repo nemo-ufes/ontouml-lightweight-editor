@@ -57,9 +57,15 @@ public class GraphAssistant {
 		if(nodes.contains(node))
 			return;
 		nodes.add(node);
-		updateNode(node.getNextNode());
-		updateNode(node.getFalseNode());
-		updateNode(node.getTrueNode());
+		
+		if(node.isAction()){
+			updateNode(node.getFalseNode());
+			updateNode(node.getTrueNode());
+		}else{
+			updateNode(node.getNextNode());
+			updateNode(node.getFalseNode());
+			updateNode(node.getTrueNode());	
+		}
 	}
 	
 	@Override
