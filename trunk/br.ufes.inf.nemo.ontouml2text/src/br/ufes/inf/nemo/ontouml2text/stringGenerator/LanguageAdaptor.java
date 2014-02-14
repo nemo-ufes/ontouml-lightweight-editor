@@ -53,6 +53,8 @@ public abstract class LanguageAdaptor {
 						return 50;	
 					else
 						return 45;	
+				}else if(d instanceof MaterialPattern){
+					return 55;
 				}else if(d instanceof MediationPattern){ 
 					if(d instanceof OptionalMultiplicityPattern){
 						if(d instanceof OptionalExceptionMediationPattern){
@@ -177,6 +179,8 @@ public abstract class LanguageAdaptor {
 			return processExceptionMediationPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof OptionalExceptionMediationPattern){
 			return processOptionalExceptionMediationPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof MaterialPattern){
+			return processMaterialPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof AbstractMediationRevPattern){
 			return processAbstractMediationRevPattern(pattern, previousPattern, parcialDescription);
 		}else if(pattern instanceof GeneralizationSetRevPattern){
@@ -286,6 +290,8 @@ public abstract class LanguageAdaptor {
 	protected abstract String processExceptionMediationPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
 	protected abstract String processOptionalExceptionMediationPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
+	
+	protected abstract String processMaterialPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
 	protected abstract String processAbstractMediationRevPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	

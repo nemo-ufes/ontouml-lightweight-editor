@@ -25,7 +25,7 @@ public class StringGenerator {
 		this.languageAdaptor = languageAdaptor;
 	}
 	
-	public List<String> verifyDescriptionConsistency(){
+	public List<String> verifyMissingUserDescription(){
 		List<String> missingUserDescriptionCategories = new ArrayList<String>();
 		
 		for(DescriptionCategory category : descriptionSpace.getCategories()){ // Simple case, the category is 'isolated'
@@ -36,6 +36,30 @@ public class StringGenerator {
 		}
 
 		return missingUserDescriptionCategories;
+	}
+	
+	public List<String> verifyIsolatedConcepts(){
+		List<String> isolatedConcepts = new ArrayList<String>();
+		
+		for(DescriptionCategory category : descriptionSpace.getCategories()){ 
+			if(category.getFunctions().size() == 0){
+				isolatedConcepts.add(category.getLabel());
+			}
+		}
+
+		return isolatedConcepts;
+	}
+	
+	public List<String> verfifyNonDeterminedRelationships(){
+		List<String> nonDeterminedRelationships = new ArrayList<String>();
+		
+		for(DescriptionCategory category : descriptionSpace.getCategories()){ 		
+			if(identifyPatterns(category).size() == 0){
+				nonDeterminedRelationships.add(category.getLabel());
+			}
+		}
+
+		return nonDeterminedRelationships;
 	}
 	
 	private boolean hasRelationsToDescribe(DescriptionCategory category){
@@ -85,11 +109,6 @@ public class StringGenerator {
 			
 			// Identifying patterns
 			patterns = identifyPatterns(describedCategory);
-			
-			///////////
-			if(describedCategory.getFunctions().size() > 0 && patterns.size() == 0)
-				System.out.println("WPC: "+describedCategory.getLabel());
-			///////////
 			
 			initialLetter = getInitialLetter (describedCategory.getLabel()); 
 			
@@ -156,7 +175,9 @@ public class StringGenerator {
 				}else if(function instanceof Formal){ 
 					identifyFormalPattern(patterns, describedCategory, function);
 				}else if(function instanceof Characterization){ 
-					identifyCharacterizationPattern(patterns, describedCategory, function);			
+					identifyCharacterizationPattern(patterns, describedCategory, function);	
+				}else if(function instanceof Material){
+					identifyMaterialPattern(patterns, describedCategory, function);
 				}else if(function instanceof ComponentOf){ 
 					identifyComponentOfPattern(patterns, describedCategory, function);
 				}else if(function instanceof MemberOf){
@@ -167,11 +188,12 @@ public class StringGenerator {
 			}else{ // N-ary and Unary functions
 				if(function instanceof GeneralizationSet){
 					identifyGeneralizationSetPattern(patterns, describedCategory, function);
-				}else{
-					identifyTopPattern(patterns, describedCategory, function);
 				}
 			}
 		}
+		
+		if(patterns.size() == 0)
+			identifyTopPattern(patterns, describedCategory, function);
 		
 		return patterns;
 	}
@@ -179,8 +201,6 @@ public class StringGenerator {
 	// Top Pattern
 	private void identifyTopPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
-		
-		System.out.println("TopPattern");
 		
 		if(!hasRelationsToDescribe(describedCategory)){
 			patterns.add(new TopPattern(describedCategory));
@@ -440,7 +460,7 @@ public class StringGenerator {
 	private void identifyMediationPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
 		DescriptionCategory target = function.getTarget(); 
-		DescriptionCategory	source = ((BinaryDescriptionFunction)function).getSource();;
+		DescriptionCategory	source = ((BinaryDescriptionFunction)function).getSource();
 		
 		NaryPattern naryPattern = null;
 		
@@ -539,6 +559,28 @@ public class StringGenerator {
 		}	
 	}
 	
+	// Material
+	private void identifyMaterialPattern(List<DescriptionPattern> patterns, 
+			DescriptionCategory describedCategory,  DescriptionFunction function){
+		DescriptionCategory target = function.getTarget(); 
+		DescriptionCategory	source = ((BinaryDescriptionFunction)function).getSource();
+		
+		NaryPattern naryPattern = (NaryPattern)searchPattern(patterns, "MaterialPattern");
+		
+		if(naryPattern == null){
+			naryPattern = new MaterialPattern(describedCategory);
+			patterns.add(naryPattern);
+		}
+		
+		if(describedCategory == source){
+			naryPattern.getTargetCategories().add(new PatternCategory(target.getLabel(), 
+					function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity()));	
+		}else{
+			naryPattern.getTargetCategories().add(new PatternCategory(source.getLabel(), 
+					((BinaryDescriptionFunction)function).getSourceMinMultiplicity(), 
+					((BinaryDescriptionFunction)function).getSourceMaxMultiplicity()));	
+		}
+	}
 	
 	private DescriptionPattern searchPattern(List<DescriptionPattern> patterns, String patternName){
 		int i;
