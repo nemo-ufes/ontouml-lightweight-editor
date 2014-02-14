@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.BinaryPattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.CharacterizationPattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.DescriptionPattern;
@@ -83,7 +84,7 @@ public abstract class LanguageAdaptor {
 		});
 	}
 
-	public String generateCategoryDescription(List<DescriptionPattern> patterns){
+	public String generateCategoryDescription(DescriptionCategory describedCategory, List<DescriptionPattern> patterns){
 		int i;
 		String description = "";
 		DescriptionPattern pattern; 
@@ -97,7 +98,7 @@ public abstract class LanguageAdaptor {
 //			System.out.println(patterns.get(0).getDescribedCategory().getLabel());
 //			System.out.println(patterns.toString().replace("br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.", ""));
 			
-			description += patterns.get(0).getDescribedCategory().getLabel();
+			description += describedCategory.getLabel();
 				
 			for(i = 0; i < patterns.size(); i++){
 				pattern = patterns.get(i);
@@ -112,9 +113,11 @@ public abstract class LanguageAdaptor {
 				
 				previousPattern = pattern;
 			}
+			
+			return description+".";
+		}else{				
+			return describedCategory.getUserDescription().replace("Descrição:", "");
 		}
-				
-		return description+".";
 	}
 	
 	private String processUnaryPattern(DescriptionPattern pattern, DescriptionPattern previousPattern){

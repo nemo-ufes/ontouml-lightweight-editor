@@ -114,10 +114,7 @@ public class StringGenerator {
 			
 			htmlLetter = exporter.findLetter(initialLetter);
 			
-			if(patterns.size() > 0)
-				categoryDescription = languageAdaptor.generateCategoryDescription(patterns);		
-			else
-				categoryDescription = describedCategory.getUserDescription();
+			categoryDescription = languageAdaptor.generateCategoryDescription(describedCategory, patterns);				
 			
 			exporter.saveDescription(describedCategory, categoryDescription, htmlLetter);
 		}
