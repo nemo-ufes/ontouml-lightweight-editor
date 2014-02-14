@@ -11,6 +11,7 @@ import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.BinaryDescriptionFunction;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionFunction;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionSpace;
@@ -64,7 +65,7 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 
 		relatorIheritance(generalizationSpace.getCategories(),hashCategories);
 		
-		/*for (DescriptionCategory c : generalizationSpace.getCategories()){
+		for (DescriptionCategory c : generalizationSpace.getCategories()){
 			System.out.println("\n|==> Nome: "+c.getLabel() + "  type: "+
 					c.toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.", ""));
 			
@@ -75,7 +76,7 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 				else
 					System.out.print(f.toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.", "")+" // ");
 			}
-		}*/
+		}
 				
 		System.out.println("Tamanho da categories no DescriptionSpace:  " + generalizationSpace.getCategories().size());
 		System.out.println("Tamanho da functions no DescriptionSpace:  " + generalizationSpace.getFunctions().size());
