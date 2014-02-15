@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.instancevisualizer.gui;
 
+import br.ufes.inf.nemo.instancevisualizer.apl.AplMainWindow;
 import br.ufes.inf.nemo.instancevisualizer.graph.EdgeLegendManager;
 import br.ufes.inf.nemo.instancevisualizer.graph.EdgeLegend;
 import br.ufes.inf.nemo.instancevisualizer.graph.GraphManager;
@@ -8,8 +9,13 @@ import br.ufes.inf.nemo.instancevisualizer.graph.NodeLegendManager;
 import br.ufes.inf.nemo.instancevisualizer.graph.NodeManager;
 
 import java.awt.BorderLayout;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 import javax.swing.GroupLayout;
@@ -18,12 +24,19 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.TypeName;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LegendPanel extends JPanel {
 
@@ -46,43 +59,61 @@ public class LegendPanel extends JPanel {
 		);
 		this.setLayout(gl_contentPane);
 		
-		JPanel panel = new JPanel();
-
+		final JPanel panel = new JPanel();
+		
+		
+		//JPopupMenu popupMenu = new JPopupMenu();
+		//addPopup(selectedWorld, popupMenu);
+		
 		NodeLegendManager nodeLegendManager = graphManager.getLegendManager();
 		int i=0, j=0;
 		Iterator iter = nodeLegendManager.getLegendIterator();
 		//for(i=0; i<nodeLegendManager.getListSize(); i++) {
+		
 		while(iter.hasNext()) {
-			NodeLegend legend = (NodeLegend) iter.next();
-			JButton button = new JButton();
-			final String imagePath = legend.getImagePath();
-			button.setIcon(new ImageIcon(imagePath));
-			//System.out.println(imagePath);
-			button.setBounds(8, 8+(32*(i)), 32, 32);
+			final NodeLegend legend = (NodeLegend) iter.next();
 			
 			final String typeName = legend.getType();
+			final JButton button = new JButton();
+			final String imagePath = legend.getFillImage();
 			
-			button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					if(!(getGraphManager().getMainWindow().getTabbedPane().getTabCount() == 1)) {
-						getGraphManager().getMainWindow().getTabbedPane().removeTabAt(1);
-        			}
-					getGraphManager().getMainWindow().getTabbedPane().addTab(typeName, new NodeLegendPropertiesPanel(typeName, getGraphManager()));
-					getGraphManager().getMainWindow().getTabbedPane().setSelectedIndex(getGraphManager().getMainWindow().getTabbedPane().getTabCount()-1);
-					/*
-					JFrame legendPropertiesWindow = new JFrame();
-					legendPropertiesWindow.setTitle(typeName + "«" + getGraphManager().getLegendManager().getStereoType(typeName) + "»");
-					legendPropertiesWindow.setContentPane(new LegendPropertiesPanel(typeName, getGraphManager()));
-					legendPropertiesWindow.setVisible(true);
-					legendPropertiesWindow.setBounds(0, 50, 180, 360);
-					*/
-				}
-			});
 			
-			JLabel label = new JLabel(typeName + "«" + legend.getStereotype() + "»");
-			label.setBounds(48, 16+(32*(i)), 256, 16);
+			button.setIcon(new ImageIcon(imagePath));
+			button.setBounds(8, 8+(36*(i)), 32, 32);
 			
-			panel.add(label);
+			JPopupMenu menu = new JPopupMenu("Test");
+			menu.setBounds(8, 8+(32*(i)), 129, 129); 
+			
+			button.addMouseListener(new MouseAdapter() {
+	            @Override
+	            public void mouseClicked(MouseEvent e) {
+	                if (e.getButton() == MouseEvent.BUTTON1) {
+	                	JPopupMenu popupMenu;
+						try {
+							popupMenu = new LegendEditorMenu(button, getGraphManager(), legend, null);
+							panel.add(popupMenu);
+		                    popupMenu.show(button, e.getX(), e.getY());
+						} catch (NoSuchMethodException | SecurityException
+								| IllegalAccessException
+								| IllegalArgumentException
+								| InvocationTargetException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+	                }
+	            }
+	        });
+
+			
+			JLabel typeLabel = new JLabel(typeName);
+			JLabel stereotypeLabel = new JLabel("«"+legend.getStereotype()+"»");
+			
+			typeLabel.setBounds(48, 22+(36*(i)), 256, 16);
+			stereotypeLabel.setBounds(48, 10+(36*(i)), 256, 16);
+			
+			panel.add(typeLabel);
+			panel.add(stereotypeLabel);
+			
 			panel.add(button);
 			i++;
 		}
@@ -98,7 +129,7 @@ public class LegendPanel extends JPanel {
 			String imagePath = legend.getImagePath();
 			button.setIcon(new ImageIcon(imagePath));
 			//System.out.println(imagePath);
-			button.setBounds(8, 8+(32*(i) + 32*(j+1)), 32, 32);
+			button.setBounds(8, 8+(36*(i) + 36*(j+1)), 32, 32);
 			
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -111,19 +142,25 @@ public class LegendPanel extends JPanel {
 				}
 			});
 			
-			JLabel label = new JLabel(type + "«" + graphManager.getXmlFile().getFieldStereotype(type) + "»");
-			label.setBounds(48, 16+(32*(i) + 32*(j+1)), 256, 16);
+			JLabel typeLabel = new JLabel(type);
+			JLabel stereotypeLabel = new JLabel("«" + graphManager.getXmlFile().getFieldStereotype(type) + "»");
 			
-			panel.add(label);
+			//typeLabel.setBounds(48, 16+(32*(i) + 32*(j+1)), 256, 16);
+			typeLabel.setBounds(48, 22+(36*(i) + 36*(j+1)), 256, 16);
+			stereotypeLabel.setBounds(48, 10+(36*(i) + 36*(j+1)), 256, 16);
+			
+			panel.add(typeLabel);
+			panel.add(stereotypeLabel);
 			panel.add(button);
 			j++;
 		}
 		
 		scrollPane.setViewportView(panel);
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 360, Short.MAX_VALUE)
+				.addGap(0, 100, Short.MAX_VALUE)
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -135,4 +172,22 @@ public class LegendPanel extends JPanel {
 	public GraphManager getGraphManager() {
 		return graphManager;
 	}
+	/*
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}*/
 }

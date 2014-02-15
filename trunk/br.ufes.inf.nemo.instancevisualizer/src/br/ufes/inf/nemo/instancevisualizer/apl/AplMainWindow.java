@@ -43,20 +43,19 @@ public class AplMainWindow {
 	public static A4Solution solution;
 	public static GraphManager graphManager;
 	public static String fWithoutExt;
-	public static boolean alsOpen = false; 
+	public static boolean alsOpen = false;
 		
 	/**
 	 * Opens a file chooser dialog. 
 	 */
-	private static File openFileChooserDialog(boolean mustExist, String... filters) {
+	private static File openFileChooserDialog(String startingDir, boolean mustExist, String... filters) {
 		// Opening file dialog:
-		File f = DialogUtil.fileDialog("Open", "./", filters, false);
-		
+		File f = DialogUtil.fileDialog("Open", startingDir, filters, false);
 		
 		// Checking if file exists (it must exist!):
 		// If f==null, the file chooser dialog has been canceled.
 		while(f != null && !f.exists() && mustExist) {
-			DialogUtil.errorDialog(mainWindow, "No such file", "Specified file doesn't exist. Please, select another file.");
+			DialogUtil.errorDialog(mainWindow, DialogUtil.ERROR, "No such file", "Specified file doesn't exist. Please, select another file.");
 			f = DialogUtil.fileDialog("Open", f.getParent(), filters, false);
 		}
 		
@@ -66,15 +65,16 @@ public class AplMainWindow {
 	/**
 	 * Calls the "Open File" menu item on the main window. A file chooser dialog is opened to select the file. 
 	 */
-	public static void openFile() {
+	public static void openFile(String startingDir) {
 		new Thread() {
-	   		public void run() {
+	   		@SuppressWarnings("deprecation")
+			public void run() {
 				try {
 					// Opening file dialog:
-					File f = openFileChooserDialog(true, "XML Instance$xml", "Alloy code$als");
+					File f = openFileChooserDialog("."+File.separator, true, "XML Instance$xml", "Alloy code$als");
 					if(f == null) {
 						// If f==null, the file chooser dialog has been canceled.
-						return;
+						stop();
 					}
 					
 					/* The .refontouml file is used to get types' stereotypes.
@@ -85,9 +85,16 @@ public class AplMainWindow {
 					fWithoutExt = f.getParent() + File.separator + f.getName().replaceFirst("[.][^.]+$", "");
 					File refontoFile = new File(fWithoutExt + ".refontouml");
 					if(!refontoFile.exists()) {
+						// TODO make refontouml optional?
 						refontoFile = null;
-						//DialogUtil.errorDialog(mainWindow, ".refontouml not found", "Proceed without it?");
-						// TODO check if this error dialog stops the thread!
+						DialogUtil.errorDialog(mainWindow, DialogUtil.ERROR, ".refontouml not found", "The corresponding .refontouml must be in the same directory as the opened file.");
+						String parent = f.getParent();
+						if(parent == null) {
+							openFile("."+File.separator);
+						}else{
+							openFile(parent);
+						}
+						stop();
 					}
 					
 					// Disabling the main window:
@@ -101,7 +108,9 @@ public class AplMainWindow {
 					fr.close();
 										
 					// We detect if the file is an alloy xml by checking if it starts with "<alloy": 
-					if(!beginning.equals("<alloy")) {
+					if(beginning.equals("<alloy")) {
+						alsOpen = false;
+					}else{
 						alsOpen = true;
 						CompModule model = null;
 						Command cmd = null;
@@ -116,13 +125,19 @@ public class AplMainWindow {
 						   	mainWindow.setStatus("Writing solution .xml...");
 						   	String xmlFilePath = fWithoutExt + "_temp.xml";
 						   	solution.writeXML(xmlFilePath);
+						   	
 						   	// Setting f variable, so the xml can be loaded:
 						   	f = new File(xmlFilePath);
+						   	
 						   	// Enabling the "Next Instance" menu item on the main window:
 						   	mainWindow.getMntmNextInstance().setEnabled(true);
 						   	
 						} catch(Err e) {
-							//e.printStackTrace();							
+							DialogUtil.errorDialog(mainWindow, DialogUtil.ERROR, "Invalid alloy file", "Please, select a valid .als or .xml file.");
+							mainWindow.setEnabled(true);
+							mainWindow.setStatus("");
+							stop();
+							//e.printStackTrace();
 						}
 					}
 					loadFile(f, refontoFile);
@@ -145,7 +160,6 @@ public class AplMainWindow {
 			public void run() {
 				if(alsOpen) {
 					mainWindow.getMntmNextInstance().setEnabled(true);
-					alsOpen = false;
 				}else{
 					mainWindow.getMntmNextInstance().setEnabled(false);
 				}
@@ -171,12 +185,12 @@ public class AplMainWindow {
 				}
 				mainWindow.setStatus("Creating graph...");
 				graphManager = new GraphManager(xmlFile, ontoUmlParser, mainWindow);	// Creation of GraphManager
-				for(Graph g : graphManager.getGraphList()) {
+				/*for(Graph g : graphManager.getGraphList()) {
 					if(g.getId().equals("world_structure/CurrentWorld$0")) {
 						graphManager.setSelectedGraph(g);
 		            	break;
 		            }
-				}
+				}*/
 			   	displayAllGraphs();
 			   	mainWindow.setEnabled(true);
 			   	mainWindow.setStatus("Done!");
@@ -189,7 +203,7 @@ public class AplMainWindow {
 
 		// Setting file dialog filters:
 		String filters[] = new String[1];
-		filters[0] = "Instance Visualizer Theme$thm";
+		filters[0] = "Instance Visualizer Theme$ivt";
 		
 		// Opening file dialog:
 		File f = DialogUtil.fileDialog("Open", "./", filters, false);
@@ -198,7 +212,7 @@ public class AplMainWindow {
 		if(f != null) {
 			// Checking if file exists (it must exist!) :
 			if(!f.exists()) {
-				DialogUtil.errorDialog(mainWindow, "No such file", "Specified file doesn't exist.");
+				DialogUtil.errorDialog(mainWindow, DialogUtil.ERROR, "No such file", "Specified file doesn't exist.");
 				openTheme();
 				return;
 			}
@@ -220,28 +234,31 @@ public class AplMainWindow {
 			// Valid theme files contain the following header:
 			if(beginning.equals("ivthmc")) {
 				try {
+					mainWindow.setStatus("Applying theme file...");
 					String theme = readFile(f.getAbsolutePath(), Charset.defaultCharset());
 					//System.out.println(theme);
 					graphManager.getLegendManager().loadString(theme.substring(6));
-					graphManager.setGraphList(new ArrayList());
+					graphManager.update();
+					/*graphManager.setGraphList(new ArrayList());
 					graphManager.createSelectedWorldToList();
 					for(Graph g : graphManager.getGraphList()) {
 		            	if(g.getId().equals(graphManager.getSelectedWorld())) {
 		            		graphManager.setSelectedGraph(g);
 		            		break;
 		            	}
-		            }
+		            }*/
 					refreshGraphs();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}else{
-				DialogUtil.errorDialog(mainWindow, "Invalid theme", "Specified theme isn't valid.");
+				DialogUtil.errorDialog(mainWindow, DialogUtil.ERROR, "Invalid theme", "Specified theme isn't valid.");
 				mainWindow.setEnabled(true);
 				mainWindow.setStatus("");
 				openTheme();
 				return;
 			}
+			mainWindow.setStatus("Done!");
 		}
     		
 	}
@@ -316,6 +333,8 @@ public class AplMainWindow {
 		
 		mainWindow.getTabbedPane().removeAll();
 		mainWindow.getTabbedPane().addTab("Legend", null, new LegendPanel(graphManager));
+		
+		//mainWindow.miniMapProto();
 	}
 	
 	/**

@@ -66,6 +66,28 @@ public class EdgeLegendManager {
     	return null;
     }
     
+    public void setVisible(String type, boolean visible) {
+    	EdgeLegend legend = getEdgeTypeLegend(type);
+    	String style = legend.getStyle();
+    	if(visible) {
+    		int index = style.indexOf("\nvisibility-mode: hidden;");
+    		if(index > 0) {
+    			style = style.substring(0, index) + "\nvisibility-mode: normal;" + style.substring(index+25);
+    		}else{
+    			style += "\nvisibility-mode: normal;";
+    		}
+    		legend.setStyle(style);
+    	}else{
+    		int index = style.indexOf("\nvisibility-mode: normal;");
+    		if(index > 0) {
+    			style = style.substring(0, index) + "\nvisibility-mode: hidden;" + style.substring(index+25);
+    		}else{
+    			style += "\nvisibility-mode: hidden;";
+    		}
+    		legend.setStyle(style);
+    	}
+    }
+    
     /*public String getResultStyle(String type) {
     	String stereotype = xmlFile.getFieldStereotype(type);
     	EdgeTypeLegend etl = getEdgeTypeLegend(type); 

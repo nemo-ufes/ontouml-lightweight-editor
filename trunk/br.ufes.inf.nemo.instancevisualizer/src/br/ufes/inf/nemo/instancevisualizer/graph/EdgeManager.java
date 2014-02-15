@@ -129,7 +129,7 @@ public class EdgeManager {
 		return connectin1;
 	}
 	
-	public Iterator getEdgeIterator() {
+	public Iterator<EdgeM> getEdgeIterator() {
 		return edgeList.iterator();
 	}
 	

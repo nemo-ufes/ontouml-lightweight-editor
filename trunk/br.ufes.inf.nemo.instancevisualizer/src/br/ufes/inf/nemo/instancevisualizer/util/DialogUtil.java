@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.instancevisualizer.util;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,11 +11,13 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -21,35 +25,49 @@ import sas.swing.plaf.MultiLineLabelUI;
 import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 
 public class DialogUtil {
 	
+	public static final int ERROR = 0;
+	public static final int ATTENTION = 1;
+	public static final int SUCCESS = 2;
+	
 	/**
+	 * @wbp.parser.entryPoint
 	 * Open an error dialog.
 	 * @param parent
 	 * @param errorTitle
 	 * @param errorDescription
 	 */
-	public static void errorDialog(JFrame parent, String errorTitle, String errorDescription) {
+	public static void errorDialog(final JFrame parent, int mode, String errorTitle, String errorDescription) {
 		final JDialog errorDialog = new JDialog(parent, true);
 		errorDialog.setResizable(false);
 		errorDialog.setTitle(errorTitle);
+		errorDialog.setFocusableWindowState(false);
+		errorDialog.setFocusable(false);
 		
-		int lines = 1 + errorDescription.length()/50;
+		int lines = 1 + errorDescription.length()/30;
 		
 		// Setting dimensions:
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Double width = screenSize.getWidth();
 		Double height = screenSize.getHeight();
-		errorDialog.setBounds(width.intValue()/2-180, height.intValue()/2-50-(16)*lines, 360, 84+16*lines);
+		errorDialog.setBounds(width.intValue()/2-180, height.intValue()/2-50-(16)*lines, 360, 140);
 		
 		// 44 upper case chars
 		// 56 lower case chars
 		JLabel lblError = new JLabel(errorDescription);
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
 		lblError.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblError.setBounds(10, 11, 334, 15*lines);
+		lblError.setBounds(76, 12, 268, 54);
 		lblError.setUI(MultiLineLabelUI.labelUI);
 		
 		//final JDialog errorDialogFinal = errorDialog;
@@ -57,12 +75,38 @@ public class DialogUtil {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				errorDialog.dispose();
+				parent.requestFocus();
 			}
 		});
-		btnOk.setBounds(144, 21+16*lines, 65, 23);
+		btnOk.setBounds(144, 77, 65, 23);
 		errorDialog.getContentPane().setLayout(null);
 		errorDialog.getContentPane().add(lblError);
 		errorDialog.getContentPane().add(btnOk);
+		
+		JLabel lblIcon = new JLabel("");
+		lblIcon.setBounds(22, 23, 32, 32);
+		ImageIcon icon;
+		ImageIcon imgIcon;
+		switch(mode) {
+			case ERROR:
+				icon = new ImageIcon("./resources/ui/no.png");
+				imgIcon = new ImageIcon(icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+				lblIcon.setIcon(imgIcon);
+				break;
+			case ATTENTION:
+				icon = new ImageIcon("./resources/ui/signal_attention.png");
+				imgIcon = new ImageIcon(icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+				lblIcon.setIcon(imgIcon);
+				break;
+			case SUCCESS:
+				icon = new ImageIcon("./resources/ui/check.png");
+				imgIcon = new ImageIcon(icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+				lblIcon.setIcon(imgIcon);
+				break;
+			default:
+				break;
+		}
+		errorDialog.getContentPane().add(lblIcon);
 		
 		// Setting visible!
 		errorDialog.setVisible(true);
@@ -77,15 +121,63 @@ public class DialogUtil {
 	 */
 	public static File fileDialog(String approveText, String startingDir, 
 			String extensionFilters[], boolean exitIfCancel) {
-		JFileChooser fc = new JFileChooser();
+		/*
+		final JDialog dialog = new JDialog();
+		dialog.setVisible(true);
+		dialog.setTitle("Preview");
+		dialog.setBounds(0, 0, 180, 200);
+		
+		final JLabel label = new JLabel("");
+		GroupLayout groupLayout = new GroupLayout(dialog.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(label, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(label, GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		dialog.getContentPane().setLayout(groupLayout);
+		*/
+		final JFileChooser fc = new JFileChooser();
+		/*
+		fc.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				if(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(arg0.getPropertyName())) {
+					ImageIcon icon = new ImageIcon(((File)arg0.getNewValue()).getAbsolutePath());
+					//Image img = icon.getImage().getScaledInstance(width, height, hints);
+					
+					//BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+					
+					//Graphics g = bi.createGraphics();
+					
+					//g.drawImage(img, 0, 0, 90, 90, null);
+					ImageIcon newIcon = new ImageIcon(icon.getImage().getScaledInstance(144, 139, BufferedImage.SCALE_SMOOTH));
+					label.setIcon(newIcon);
+				}
+			}
+		});
+		*/
 		fc.setVisible(true);
 		fc.setCurrentDirectory(new File(startingDir));
-		for(String filter : extensionFilters) {
-			int moneyIndex = filter.indexOf('$');
-			String description = filter.substring(0, moneyIndex);
-			String estension = filter.substring(moneyIndex+1);
-			fc.addChoosableFileFilter(new FileNameExtensionFilter(description, estension));
+		if(extensionFilters != null) {
+			for(String filter : extensionFilters) {
+				int moneyIndex = filter.indexOf('$');
+				String description = filter.substring(0, moneyIndex);
+				String estension = filter.substring(moneyIndex+1);
+				fc.addChoosableFileFilter(new FileNameExtensionFilter(description, estension));
+			}
 		}
+		
+		
 		
 		int returnVal = fc.showDialog(null, approveText);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -153,7 +245,7 @@ public class DialogUtil {
 	}
 
 	/**
-	 * @wbp.parser.entryPoint
+	 *
 	 */
 	public static void bugDialog(JFrame parent, Exception e) {
 		final JDialog bugDialog = new JDialog(parent, true);

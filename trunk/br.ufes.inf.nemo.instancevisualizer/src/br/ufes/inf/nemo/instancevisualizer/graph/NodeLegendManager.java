@@ -49,19 +49,7 @@ public class NodeLegendManager {
                     	
                     	// Getting style:
                     	String style = "";
-                    	switch(TypeName.getTypeName(mainTypeClassif)) {
-			                case "Mode":
-			                	style = "text-offset: 0px, 0px;\n shape: circle;\n text-background-mode: plain;\n text-background-color: rgba(255,255,255,192);\n stroke-mode: none;\n size: 16px;\n fill-mode: image-scaled;\n fill-image: url('" + imagePath + "');\n";
-			                	break;
-			                case "Relator":
-			                	style = "text-offset: 0px, 0px;\n shape: circle;\n text-background-mode: plain;\n text-background-color: rgba(255,255,255,192);\n stroke-mode: none;\n size: 48px;\n fill-mode: image-scaled;\n fill-image: url('" + imagePath + "');\n";
-			                	//typeStyles.add("text-offset: 0px, 0px; shape: circle; text-background-mode: plain; text-background-color: rgba(255,255,255,192); stroke-mode: none; size: 48px; fill-mode: image-scaled; fill-image: url('" + imagePath + "');");
-			                	break;
-			                default:
-			                	style = "text-offset: 0px, 0px;\n shape: circle;\n text-background-mode: plain;\n text-background-color: rgba(255,255,255,192);\n stroke-mode: none;\n size: 32px;\n fill-mode: image-scaled;\n fill-image: url('" + imagePath + "');\n";
-			                	//typeStyles.add("text-offset: 0px, 0px; shape: circle; text-background-mode: plain; text-background-color: rgba(255,255,255,192); stroke-mode: none; size: 32px; fill-mode: image-scaled; fill-image: url('" + imagePath + "');");
-			                	break;
-                    	}
+                    	
                     	legendList.add(new NodeLegend(mainTypeName, stereotype, imagePath, style, "oneWord"));
                     	
                     }
@@ -98,7 +86,7 @@ public class NodeLegendManager {
     	for(i=0; i<legendList.size(); i++) {
     		NodeLegend legend = legendList.get(i);
     		theme += legend.getType() + "$" + legend.getStereotype() + "$"
-    				+ legend.getPrefix() + "$" + legend.getImagePath() + "$"
+    				+ legend.getPrefix() + "$" + legend.getFillImage() + "$"
     				+ legend.getStyle() + "$" + legend.getAmount().toString() + "$";
     	}
     	theme = i + "$" + theme;
@@ -144,7 +132,7 @@ public class NodeLegendManager {
     		}else{
     			style += "\nvisibility-mode: normal;";
     		}
-    		legend.setStyle(style);
+    		//legend.setStyle(style);
     	}else{
     		int index = style.indexOf("\nvisibility-mode: normal;");
     		if(index > 0) {
@@ -152,7 +140,7 @@ public class NodeLegendManager {
     		}else{
     			style += "\nvisibility-mode: hidden;";
     		}
-    		legend.setStyle(style);
+    		//legend.setStyle(style);
     	}
     }
 }
