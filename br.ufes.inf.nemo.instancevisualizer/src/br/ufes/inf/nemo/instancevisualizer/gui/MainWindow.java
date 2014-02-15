@@ -1,23 +1,30 @@
 package br.ufes.inf.nemo.instancevisualizer.gui;
 
+import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -26,9 +33,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
+
+import org.graphstream.ui.geom.Point3;
+import org.graphstream.ui.swingViewer.DefaultView;
+import org.graphstream.ui.swingViewer.View;
+import org.graphstream.ui.swingViewer.Viewer;
+import org.graphstream.ui.swingViewer.util.Camera;
 
 import br.ufes.inf.nemo.instancevisualizer.apl.AplMainWindow;
 import br.ufes.inf.nemo.instancevisualizer.util.DialogUtil;
@@ -36,6 +50,13 @@ import br.ufes.inf.nemo.instancevisualizer.util.DialogUtil;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
+import java.awt.image.BufferedImage;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.AncestorEvent;
+import java.awt.event.KeyAdapter;
 
 public class MainWindow extends JFrame {
 	
@@ -61,6 +82,15 @@ public class MainWindow extends JFrame {
 	 * @throws InterruptedException
 	 */
 	public MainWindow(String args[]) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				if(AplMainWindow.alsOpen) {
+					AplMainWindow.graphManager.setXmlFile(null);
+					File temp = new File(AplMainWindow.fWithoutExt + "_temp.xml");
+				}
+			}
+		});
 		getContentPane().addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent arg0) {
@@ -94,7 +124,7 @@ public class MainWindow extends JFrame {
 		JMenuItem mntmOpenFile = new JMenuItem("Open File");
 		mntmOpenFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			   	AplMainWindow.openFile();
+			   	AplMainWindow.openFile("."+File.separator);
 			}
 		});
 		mnFile.add(mntmOpenFile);
@@ -126,13 +156,16 @@ public class MainWindow extends JFrame {
 		JMenuItem mntmSaveImage = new JMenuItem("Save Image");
 		mntmSaveImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				DialogUtil.errorDialog(AplMainWindow.mainWindow, DialogUtil.ERROR, "Not implemented", "This option is not implemented... yet!");
+				
+				/*
 				try {
 					ScreenImage.writeImage(ScreenImage.createImage(getScrollPane()), "graph.jpeg");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+				*/
 			}
 		});
 		mnFile.add(mntmSaveImage);
@@ -169,7 +202,7 @@ public class MainWindow extends JFrame {
 		
 		// Zoom + menu item:
 		JMenuItem mntmNewMenuItem = new JMenuItem("Zoom +");
-		mntmNewMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_EQUALS, 0));
+		//mntmNewMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_EQUALS, 0));
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				AplMainWindow.graphManager.getSelectedView().setAutoscrolls(true);
@@ -184,7 +217,7 @@ public class MainWindow extends JFrame {
 		
 		// Zoom - menu item:
 		JMenuItem mntmZoom = new JMenuItem("Zoom -");
-		mntmZoom.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, 0));
+		//mntmZoom.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, 0));
 		mntmZoom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				/*
@@ -197,9 +230,10 @@ public class MainWindow extends JFrame {
 		
 		// Enable Auto-Layout menu item:
 		chckbxmntmNewCheckItem = new JCheckBoxMenuItem("Enable Auto-Layout");
+		
 		mnView.add(chckbxmntmNewCheckItem);
 		chckbxmntmNewCheckItem.setSelected(true);
-		chckbxmntmNewCheckItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, 0));
+		chckbxmntmNewCheckItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
 		chckbxmntmNewCheckItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(chckbxmntmNewCheckItem.isSelected()) {
@@ -229,8 +263,8 @@ public class MainWindow extends JFrame {
 		tabbedPane.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				if(hiddenTabbedPane)
-					showTabbedPane();
+				//if(hiddenTabbedPane)
+					//showTabbedPane();
 			}
 		});
 		
@@ -245,8 +279,8 @@ public class MainWindow extends JFrame {
 		selectedWorld.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent arg0) {
-				if(shownTabbedPane)
-					hideTabbedPane();
+				//if(shownTabbedPane)
+					//hideTabbedPane();
 			}
 		});
 				
@@ -266,6 +300,13 @@ public class MainWindow extends JFrame {
 				   return parent;
 			   }
 		}
+		//JTextArea x = new JTextArea("asçlfcjweaoiefhioshvoishvoirhrvoirehvoijenroivneroivoervoi");
+		//selectedWorld.setViewportView(x);
+		//selectedWorld.setPreferredSize(new Dimension(9999, 9999));
+		//x.setPreferredSize(new Dimension(9999, 9999));
+		
+		//getSelectedWorld().getViewport().setViewSize(new Dimension(1000, 1000));
+		//getSelectedWorld().getViewport().setBounds(0, 0, 1000, 1000);
 		
 		// Group layout definition:
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
@@ -273,30 +314,61 @@ public class MainWindow extends JFrame {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblStatus, GroupLayout.DEFAULT_SIZE, 1342, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblStatus, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 1342, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 13, GroupLayout.PREFERRED_SIZE)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(worldMap, Alignment.LEADING)
+								.addComponent(tabbedPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(worldMap, GroupLayout.DEFAULT_SIZE, 1323, Short.MAX_VALUE)
-								.addComponent(selectedWorld, GroupLayout.DEFAULT_SIZE, 1323, Short.MAX_VALUE))))
+							.addComponent(selectedWorld, GroupLayout.DEFAULT_SIZE, 1164, Short.MAX_VALUE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(11)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(selectedWorld, GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
+							.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(worldMap, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE))
-						.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE))
+						.addComponent(selectedWorld, GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 					.addGap(4))
 		);
+		/*
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblStatus, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 1344, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 13, GroupLayout.PREFERRED_SIZE)
+								.addComponent(worldMap, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(selectedWorld, GroupLayout.DEFAULT_SIZE, 1214, Short.MAX_VALUE)))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(11)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(worldMap, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE))
+						.addComponent(selectedWorld, GroupLayout.PREFERRED_SIZE, 655, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		*/
 		getContentPane().setLayout(groupLayout);
 		/*
 		ArrayList x = new ArrayList();
@@ -305,8 +377,128 @@ public class MainWindow extends JFrame {
 		} catch(Exception e) {
 			DialogUtil.bugDialog(this, e);
 		}*/
+		//miniMapProto();
 	}
-
+	/**
+	* @wbp.parser.entryPoint
+	*/
+	public void miniMapProto() {
+		JFrame x = new JFrame();
+		x.setTitle("mini map prototype (IT WORKS!)");
+		x.setAlwaysOnTop(true);
+		x.setSize(200, 200);
+		
+		AplMainWindow.graphManager.getSelectedViewer();
+		//Object obj = AplMainWindow.graphManager.getSelectedView().clone();
+		//AplMainWindow.graphManager.getSelectedViewer().addDefaultView(false);
+		final DefaultView v = new DefaultView(AplMainWindow.graphManager.getSelectedViewer(), "A", Viewer.newGraphRenderer());
+		AplMainWindow.graphManager.getSelectedViewer().addView(v);
+		
+		//v.setBounds(0, 0, 100, 100);
+		final JScrollPane sp = new JScrollPane();
+		sp.setViewportView(v);
+		//x.add(sp);
+		
+		//v.setBounds(0,0,200,200);
+		sp.setBounds(0, 0, 1164, 638);
+		final JLabel lblImglabel = new JLabel("");
+		lblImglabel.setBounds(0, 0, 184, 161);
+		v.setAutoscrolls(true);
+		//BufferedImage bfimg = ScreenImage.createImage(sp);
+		lblImglabel.requestFocus();
+		ImageIcon imgIcon;
+		v.setSize(100, 100);
+		x.getContentPane().setLayout(null);
+		//x.add(lblImglabel);
+		JLayeredPane pane = new JLayeredPane();
+		pane.add(lblImglabel, 2, 0);
+	    pane.add(sp, 1, 0);
+	    x.setLayeredPane(pane);
+		
+		//JScrollPane scrollPane = new JScrollPane();
+		//scrollPane.setBounds(0, 0, 1164, 638);
+		//x.getContentPane().add(scrollPane);
+		x.setVisible(true);
+		
+		new Thread() {
+			public void run() {
+				System.out.println("lala");
+				while(true) {
+					try {
+						//Point3 begin = AplMainWindow.graphManager.getSelectedView().getCamera().transformPxToGu(x, y);
+						//Point3 end = AplMainWindow.graphManager.getSelectedView().getCamera().transformPxToGu(x+width-1, y+height-1);
+						Camera cam = AplMainWindow.graphManager.getSelectedView().getCamera();
+						Point3 centerOrig = AplMainWindow.graphManager.getSelectedView().getCamera().transformPxToGu(1164/2, 638/2);
+						double deltaX = AplMainWindow.graphManager.getSelectedView().getCamera().transformPxToGu(0, 638/2).x - centerOrig.x;
+						double deltaY = AplMainWindow.graphManager.getSelectedView().getCamera().transformPxToGu(1164/2, 0).y - centerOrig.y;
+						/*
+						double beginX = AplMainWindow.graphManager.getSelectedView().getCamera().transformPxToGu(0, 638/2).x - centerOrig.x;
+						double beginY = AplMainWindow.graphManager.getSelectedView().getCamera().transformPxToGu(1164/2, 0).y - centerOrig.y;
+						double endX = centerOrig.x + AplMainWindow.graphManager.getSelectedView().getCamera().transformPxToGu(1164, 638/2).x;
+						double endY = centerOrig.y + AplMainWindow.graphManager.getSelectedView().getCamera().transformPxToGu(1164/2, 638).y;
+						*/
+						Point3 centerMini = v.getCamera().transformPxToGu(1164/2, 638/2);
+						//System.out.println(centerMini +""+ centerOrig);
+						//Point3 center = AplMainWindow.graphManager.getSelectedView().getCamera().getViewCenter();
+						//System.out.println(begin.x+"x"+end.x);
+						/*
+						Point3 center = v.getCamera().getViewCenter();
+						System.out.println(center.x+"xXx"+center.y);
+						sleep(1000);
+						Point3 center2 = v.getCamera().transformPxToGu(1164/2, 638/2);
+						System.out.println(center2.x+"x"+center2.y);*/
+						
+						//v.beginSelectionAt(centerOrig.x, centerOrig.y);
+						//v.selectionGrowsAt(centerOrig.x*cam.getViewPercent(), centerOrig.y + cam.getViewPercent());
+						sleep(100);
+						BufferedImage bfimg = ScreenImage.createImage(sp);
+						ImageIcon imgIcon = new ImageIcon(bfimg.getScaledInstance(1164/8, 638/8, BufferedImage.SCALE_SMOOTH));
+						lblImglabel.setIcon(imgIcon);
+					} catch (InterruptedException | NullPointerException e) {
+						run();
+						// TODO Auto-generated catch block
+						// e.printStackTrace();
+					}
+					
+				}
+				//System.out.println("ASDAFAWEG");
+			}
+		}.start();
+		
+		/*
+		//x.setContentPane(contentPane);
+		new Thread() {
+			public void run() {
+				
+				JScrollPane map = new JScrollPane();
+				map.setBounds(0, 0, 1000, 1000);
+				while(true) {
+					try {
+						sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						//e.printStackTrace();
+					}
+					if(AplMainWindow.graphManager != null && AplMainWindow.graphManager.getSelectedView() != null) {
+						//View view2 = AplMainWindow.graphManager.getSelectedViewer().addDefaultView(false);
+						//map.setViewportView(view2);
+						BufferedImage img = null;
+						//try {
+							//img = ScreenImage.createImage(AplMainWindow.graphManager.getSelectedView().createImage(producer));
+							lblImg.setIcon(new ImageIcon(AplMainWindow.graphManager.getSelectedView().createImage(10000, 10000).getScaledInstance(300, 300, BufferedImage.SCALE_SMOOTH)));
+						//} catch (AWTException e) {
+							// TODO Auto-generated catch block
+							//e.printStackTrace();
+						//}
+						
+					}
+				}
+			}
+		}.start();
+		*/
+		//x.getContentPane().add(new JLabel());
+	}
+	
 	public JScrollPane getScrollPane() {
 		return selectedWorld;
 	}
@@ -445,15 +637,7 @@ public class MainWindow extends JFrame {
 	public void setStatus(String status) {
 		lblStatus.setText(status);
 	}
-	/*
-	public void callOpenXML() {
-		new OpenXML(this, false);
-	}
 	
-	public void callOpenXML(String alsFile, String xmlFile) {
-		new OpenXML(this, alsFile, xmlFile);
-	}
-	*/
 	public void setStatusText(String status) {
 		new StatusManager(this, status);
 	}
@@ -585,7 +769,4 @@ public class MainWindow extends JFrame {
 		}.start();
 		
 	}
-
-	
-	
 }

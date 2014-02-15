@@ -53,7 +53,7 @@ public class EdgeLegendPropertiesPanel extends JScrollPane {
 		btnEditStyle.setBounds(10, 61, 88, 23);
 		btnEditStyle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new StyleWindow(imagePath, getGraphManager().getEdgeManager().getEdgeLegendManager().getEdgeTypeLegend(typeName).getStyle(), typeName, getGraphManager(), "edge");//Old(getTypeName(), getGraphManager(), false);
+				//new StyleWindow(imagePath, getGraphManager().getEdgeManager().getEdgeLegendManager().getEdgeTypeLegend(typeName).getStyle(), typeName, getGraphManager(), "edge");//Old(getTypeName(), getGraphManager(), false);
 			}
 		});
 		contentPane.setLayout(null);
@@ -64,11 +64,13 @@ public class EdgeLegendPropertiesPanel extends JScrollPane {
 		chckbxVisible = new JCheckBox("Visible");
 		chckbxVisible.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(chckbxVisible.isSelected()) {
+				//if(chckbxVisible.isSelected()) {
+					getGraphManager().getEdgeManager().getEdgeLegendManager().setVisible(getTypeName(), chckbxVisible.isSelected());
+					getGraphManager().update();
 					///getGraphManager().updateEdgesStyle(getGraphManager().getSelectedGraph(), typeName, "visibility-mode: normal;");
-				}else{
+				//}else{
 					///getGraphManager().updateEdgesStyle(getGraphManager().getSelectedGraph(), typeName, "visibility-mode: hidden;");
-				}
+				//}
 			}
 		});
 		chckbxVisible.setSelected(true);

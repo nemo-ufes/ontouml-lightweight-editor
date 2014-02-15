@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.instancevisualizer.gui;
 
+import br.ufes.inf.nemo.instancevisualizer.apl.AplMainWindow;
 import br.ufes.inf.nemo.instancevisualizer.graph.GraphManager;
 
 import java.awt.BorderLayout;
@@ -30,35 +31,16 @@ import javax.swing.JScrollPane;
 public class StyleWindow extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
 	
 	private GraphManager graphManager;
 	private String typeName;
-	private JTextArea textArea;
 	private final String mode;
+	private JTextArea textArea;
 	
-	/**
-	 * Launch the application.
-	 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StyleWindow frame = new StyleWindow();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-*/
-	/**
-	 * Create the frame.
-	 */
-	public StyleWindow(String imagePath, String attr, String typeName, GraphManager graphManager, final String mode) {
+	
+	public StyleWindow(String attr, String typeName, GraphManager graphManager, final String mode) {
+		super();
+		this.setTitle("Style Editor - "+typeName);
 		this.typeName = typeName;
 		this.graphManager = graphManager;
 		this.mode = mode;
@@ -69,22 +51,28 @@ public class StyleWindow extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		
 		JButton btnOk = new JButton("OK");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//System.out.println("1"+getGraphManager().toString());
-				//System.out.println("1"+getTypeName().toString());
-				//System.out.println("1"+getTextArea().toString());
-				//getGraphManager().updateNodesStyle(getGraphManager().getSelectedGraph(), getTypeName(), getTextArea().getText());
 				switch(mode) {
-				case "node":
-					getGraphManager().getLegendManager().getLegendWithType(getTypeName()).setStyle(getTextArea().getText());
-					break;
-				case "edge":
-					getGraphManager().getEdgeManager().getEdgeLegendManager().getEdgeTypeLegend(getTypeName()).setStyle(getTextArea().getText());
-					break;
+					case "node":
+						//getGraphManager().getLegendManager().getLegendWithType(getTypeName()).setStyle(getTextArea().getText());
+						String text = getTextArea().getText();
+						int begin = text.indexOf("url(");
+						int i = begin;
+						System.out.println("TYPE");
+						while(text.charAt(i+5) != '\'') {
+							System.out.print(text.charAt(i+5));
+							i++;
+						}
+						System.out.print("\n");
+						String imagePath = text.substring(begin+5, i+5);
+						getGraphManager().getLegendManager().getLegendWithType(getTypeName()).setFillImage(imagePath);
+						//AplMainWindow.refreshGraphs();
+						break;
+					case "edge":
+						getGraphManager().getEdgeManager().getEdgeLegendManager().getEdgeTypeLegend(getTypeName()).setStyle(getTextArea().getText());
+						break;
 				}
 				getGraphManager().update();
 				dispose();
@@ -95,22 +83,25 @@ public class StyleWindow extends JFrame {
 		JButton btnCancel = new JButton("Cancel");
 		
 		JButton btnApply = new JButton("Apply");
+		
+		textArea = new JTextArea();
+		textArea.setText("<dynamic>");
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(111, Short.MAX_VALUE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(btnOk)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnCancel)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnApply))
-				.addComponent(tabbedPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+				.addComponent(textArea, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+					.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnApply)
@@ -118,53 +109,6 @@ public class StyleWindow extends JFrame {
 						.addComponent(btnOk))
 					.addGap(0))
 		);
-		
-		JPanel panel = new JPanel();
-		tabbedPane.addTab("Basic", null, panel, null);
-		
-		JLabel lblSize = new JLabel("Size (px):");
-		lblSize.setBounds(10, 14, 56, 14);
-		
-		textField = new JTextField();
-		textField.setBounds(74, 11, 44, 20);
-		textField.setColumns(10);
-		
-		JLabel lblBy = new JLabel("by");
-		lblBy.setBounds(126, 14, 23, 14);
-		
-		textField_1 = new JTextField();
-		textField_1.setBounds(148, 11, 44, 20);
-		textField_1.setColumns(10);
-		
-		JLabel lblIcon = new JLabel("Icon:");
-		lblIcon.setBounds(10, 48, 32, 14);
-		
-		JButton button = new JButton("");
-		button.setBounds(52, 39, 32, 32);
-		button.setIcon(new ImageIcon(imagePath));
-		
-		JLabel lblVisibility = new JLabel("Visibility:");
-		lblVisibility.setBounds(10, 84, 49, 14);
-		
-		textField_2 = new JTextField();
-		textField_2.setBounds(69, 81, 49, 20);
-		textField_2.setColumns(10);
-		panel.setLayout(null);
-		panel.add(lblSize);
-		panel.add(textField);
-		panel.add(lblVisibility);
-		panel.add(textField_2);
-		panel.add(lblIcon);
-		panel.add(button);
-		panel.add(lblBy);
-		panel.add(textField_1);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		tabbedPane.addTab("Text", null, scrollPane, null);
-		
-		textArea = new JTextArea();
-		textArea.setText(attr);
-		scrollPane.setViewportView(textArea);
 		contentPane.setLayout(gl_contentPane);
 	}
 

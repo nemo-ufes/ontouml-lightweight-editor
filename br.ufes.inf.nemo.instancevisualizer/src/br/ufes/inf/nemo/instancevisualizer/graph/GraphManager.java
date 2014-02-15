@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.instancevisualizer.graph;
 
+import java.awt.Cursor;
 import java.awt.MouseInfo;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -53,6 +54,8 @@ public class GraphManager {
     private EdgeManager edgeManager;
     
     private MainWindow mainWindow;
+    
+    private boolean worldChanging;
   
     public GraphManager(XMLFile xmlFile, OntoUMLParser ontoUmlParser, MainWindow mainWindow) {
         this.xmlFile = xmlFile;
@@ -74,9 +77,12 @@ public class GraphManager {
         
         this.mainWindow = mainWindow;
         
+        worldChanging = false;
+        
         //createSelectedWorld("world_structure/PastWorld$0");
-        createSelectedWorldToList();
+        //createSelectedWorldToList();
         createWorldMap();
+        createAllSelectedWorlds();/*
         for(Graph g : graphList) {
         	if(g.getId() == "world_structure/CurrentWorld$0") {
         		setSelectedGraph(g);
@@ -85,7 +91,7 @@ public class GraphManager {
         }
         setSelectedWorld("world_structure/CurrentWorld$0");
         //mainWindow.setScrollPanes1();
-        
+        */
     }
     
     /**
@@ -172,6 +178,212 @@ public class GraphManager {
         return worldGraph;
     }
     
+	public void createAllSelectedWorlds() {
+    	selectedGraph = new MultiGraph("test");
+		for(int i=0; i<nodeManager.getNodeAmount(); i++) {
+			NodeM n = nodeManager.getNode(i);
+			Node node = selectedGraph.addNode(n.getId());
+			//System.out.println(n.getId());
+			if(n.existsInWorld("world_structure/CurrentWorld$0")) {
+				String mainType = n.getMainType("world_structure/CurrentWorld$0");//xmlFile.getAtomMainType(idList.get(i), selectedWorld).getName();
+    			String attrib = nodeLegendManager.getLegendWithType(mainType).getStyle();
+    			node.addAttribute("ui.style", attrib);
+    			Iterator<Attribute> attrs = n.getAttributeIterator("world_structure/CurrentWorld$0");
+    			while(attrs.hasNext()) {
+    				Attribute attr = attrs.next();
+    				node.addAttribute(attr.getName(), attr.getValue());
+    			}
+			}else{
+				node.addAttribute("ui.style", "visibility-mode: hidden;");
+			}
+									/*
+			Node node = selectedGraph.addNode(n.getId());
+			String mainType = "";
+			String attrib = "";
+			String arg0 = "";
+			
+			if(!n.existsInWorld("world_structure/CurrentWorld$0")) {
+				arg0 = "old.";
+			}else{
+				mainType = n.getMainType("world_structure/CurrentWorld$0");//xmlFile.getAtomMainType(idList.get(i), selectedWorld).getName();
+				attrib = nodeLegendManager.getLegendWithType(mainType).getStyle();
+			}
+			node.addAttribute(arg0 + "ui.style", attrib);
+			Iterator<Attribute> attrs = n.getAttributeIterator("world_structure/CurrentWorld$0");
+			while(attrs.hasNext()) {
+    			Attribute attr = attrs.next();
+    			node.addAttribute(attr.getName(), attr.getValue());
+    		}*/
+		}
+		for(int i=0; i<edgeManager.getEdgeAmount(); i++) {
+    		EdgeM e = edgeManager.getEdge(i);
+    		Edge edge = selectedGraph.addEdge(e.getId(), e.getNode0Id(), e.getNode1Id(), true);
+    		e.setEdgeRef("world_structure/CurrentWorld$0", edge);
+    		if(e.existsInWorld("world_structure/CurrentWorld$0")) {
+    			Iterator<Attribute> attrs = e.getAttributeIterator("world_structure/CurrentWorld$0");
+    			while(attrs.hasNext()) {
+    				Attribute attr = attrs.next();
+    				edge.addAttribute(attr.getName(), attr.getValue());
+    			}
+    			String style = edgeManager.getEdgeLegendManager().getEdgeLegendWithStereotype(e.getStereoTypeOnWorld("world_structure/CurrentWorld$0")).getStyle();
+    			edge.addAttribute("ui.style", style);
+    		}else{
+    			edge.addAttribute("ui.style", "visibility-mode: hidden;");
+				edge.addAttribute("invisible", "");
+    		}
+		}
+		
+		selectedGraph.addAttribute("ui.antialias");
+	    selectedGraph.addAttribute("ui.quality");
+	    selectedGraph.addAttribute("layout.quality", 4);
+	        
+	    selectedGraph.addAttribute("ui.stylesheet", "graph {\n" +
+	//"    padding: 100px, 100px, 0px;\n" +
+	"}\n" +
+	"node {\n" +
+	"    text-size: 12;\n" +
+	"	 text-alignment: under;\n" +
+	"    stroke-mode: plain;\n" +
+	"    stroke-color: black;\n" +
+	"    text-visibility-mode: under-zoom;\n" +
+	"    text-visibility: 0.5;\n" +
+	"}\n" +
+	"edge {\n" +
+	"    fill-color: black;\n" +
+	"	 arrow-shape: none;\n" +
+	"}\n");
+	}
+	
+	public void changeSelectedWorld(String world) {
+		if(selectedWorld.equals(world)) {
+			setWorldChanging(false);
+    		return;
+		}
+		
+		Iterator<EdgeM> toBlacken = edgeManager.getEdgeIterator();
+		while(toBlacken.hasNext()) {
+			selectedGraph.getEdge(toBlacken.next().getId()).addAttribute("ui.style", "fill-color: black;");
+		}
+		
+    	final String worldChange = world;
+    	ArrayList<NodeM>[] nodeChange = nodeManager.nodesToKill(selectedWorld, world);	//get nodes that doesn't exist on the next world
+    	ArrayList<EdgeM>[] edgeChange = edgeManager.edgesToKill(selectedWorld, world);	//get nodes that doesn't exist on the next world
+    	final ArrayList<NodeM> nodesToKill = nodeChange[0];
+    	final ArrayList<NodeM> nodesToAdd = nodeChange[1];
+    	final ArrayList<EdgeM> edgesToKill = edgeChange[0];
+    	final ArrayList<EdgeM> edgesToAdd = edgeChange[1];
+    	
+    	new Thread()
+        {
+            public void run() {
+            	//selectedViewer.disableAutoLayout();
+            	int sz = 32;
+            	double szstroke = 1;
+            	double szsize = 0.25;
+            	
+            	while(sz > 0 && !nodesToKill.isEmpty() && !edgesToKill.isEmpty()) {
+        	    	for(NodeM n : nodesToKill) {
+        	    		Node node = selectedGraph.getNode(n.getId());
+        	    		if(node != null) {
+        	    			String attr = selectedGraph.getNode(n.getId()).getAttribute("ui.style");
+            	    		selectedGraph.getNode(n.getId()).addAttribute("ui.style", attr + "\nsize: " + sz + "px;");
+        	    		}else{
+        	    			System.out.println("nao era pra imprimir - nó");
+        	    		}
+        	    	}
+        	    	
+        	    	for(EdgeM e : edgesToKill) {
+        	    		Edge edge = selectedGraph.getEdge(e.getId());
+        	    		if(edge != null) {
+        	    			String attr = edge.getAttribute("ui.style");
+            	    		edge.addAttribute("ui.style", attr + "stroke-width:" + szstroke + ";" + "size:" + szsize +"px;\n");
+        	    		}else{
+        	    			System.out.println("nao era pra imprimir - aresta");
+        	    		}
+        	    	}
+        	    	
+        	    	szstroke -= 0.0625;
+        	    	szsize -= 0.015625;
+        	    	sz -= 2;
+        	    	try {
+						sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+            	}
+            	
+            	for(EdgeM e : edgesToKill) {
+    	    		Edge edge = selectedGraph.getEdge(e.getId());
+    	    		if(edge != null) {
+    	    			edge.addAttribute("ui.style", "visibility-mode: hidden;");
+    	    		}else{
+    	    			System.out.println("nao era pra imprimir - aresta");
+    	    		}
+    	    	}
+            	
+            	for(NodeM n : nodesToKill) {
+    	    		Node node = selectedGraph.getNode(n.getId());
+    	    		if(node != null) {
+    	    			node.addAttribute("ui.style", "visibility-mode: hidden;");
+    	    		}else{
+    	    			System.out.println("nao era pra imprimir - nó");
+    	    		}
+    	    	}
+            	
+            	for(NodeM n : nodesToAdd) {
+    	    		Node node = selectedGraph.getNode(n.getId());
+    	    		node.removeAttribute("ui.style");
+    	    		node.setAttribute("ui.style", "visibility-mode: normal;");
+    	    	}
+            	for(EdgeM e : edgesToAdd) {
+    	    		Edge edge = selectedGraph.getEdge(e.getId());
+    	    		edge.removeAttribute("ui.style");
+    	    		edge.setAttribute("ui.style", "visibility-mode: normal;");
+    	    	}
+            	setSelectedWorld(worldChange);
+            	update();
+            	szstroke = 0.0625;
+    	    	szsize = 0.015625;
+    	    	sz = 2;
+	            while(sz < 32 && !nodesToAdd.isEmpty() && !edgesToAdd.isEmpty()) {
+	            	for(NodeM n : nodesToAdd) {
+	    	    		Node node = selectedGraph.getNode(n.getId());
+        	    		if(node != null) {
+        	    			//String attr = node.getAttribute("ui.style");
+        	    			//if(attr != null)
+            	    		node.addAttribute("ui.style", "\nsize: " + sz + "px;");
+        	    			//selectedGraph.getNode(n.getId()).addAttribute("ui.style", attr + "\nfill-color: rgba(0,0,0,128);");
+        	    		}else{
+        	    			System.out.println("nao era pra imprimir - nó");
+        	    		}
+	    	    	}
+	            	for(EdgeM e : edgesToAdd) {
+	    	    		Edge edge = selectedGraph.getEdge(e.getId());
+        	    		if(edge != null) {
+        	    			//String attr = edge.getAttribute("ui.style");
+            	    		edge.addAttribute("ui.style", "fill-color: red; \nstroke-width:" + szstroke + "; size:" + szsize +"px;\n");
+            	    		//System.out.println("Foi");
+        	    			//selectedGraph.getEdge(e.getId()).addAttribute("ui.style", attr + "\nstroke-width: 0.1;" + "size: 0.1;\n");
+        	    		}else{
+        	    			System.out.println("nao era pra imprimir - aresta");
+        	    		}
+	    	    	}
+	            	szstroke += 0.0625;
+        	    	szsize += 0.015625;
+        	    	sz += 2;
+        	    	try {
+						sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+	            }
+            	
+            	update();
+    			setWorldChanging(false);
+            }
+        }.start();
+	}
+	
     public void createSelectedWorldToList() {
     	ArrayList<Atom> worldList = xmlFile.getWorldList();
     	ArrayList<String> worlds = new ArrayList();
@@ -380,18 +592,21 @@ public class GraphManager {
         	}
         	
         	protected void mouseButtonPressOnElement(GraphicElement element, MouseEvent event) {
-        		view.freezeElement(element, true);
-        		if (event.getButton() != 3) {
-        			element.addAttribute("ui.selected");
-                    String id = element.getId();
-                    //System.out.println("MUNDOW:" + id);
-                    Iterator iter = getWorldGraph().getNodeIterator();
-                    while(iter.hasNext()) {
-                    	org.graphstream.graph.Node nodeAux = (org.graphstream.graph.Node) iter.next();
-                    	nodeAux.addAttribute("ui.style", "fill-color: white;");
-                    }
-                    getWorldGraph().getNode(id).addAttribute("ui.style", "fill-color: green;");
-                    changeWorldNew(id);
+        		if(!worldChanging) {
+        			setWorldChanging(true);
+	        		view.freezeElement(element, true);
+	        		if (event.getButton() != 3) {
+	        			element.addAttribute("ui.selected");
+	                    String id = element.getId();
+	                    //System.out.println("MUNDOW:" + id);
+	                    Iterator iter = getWorldGraph().getNodeIterator();
+	                    while(iter.hasNext()) {
+	                    	org.graphstream.graph.Node nodeAux = (org.graphstream.graph.Node) iter.next();
+	                    	nodeAux.addAttribute("ui.style", "fill-color: white;");
+	                    }
+	                    getWorldGraph().getNode(id).addAttribute("ui.style", "fill-color: green;");
+	                    changeSelectedWorld(id);
+	                    
                     /*
                     for(Graph g : graphList) {
                     	if(g.getId() == id) {
@@ -402,12 +617,11 @@ public class GraphManager {
                     setSelectedWorld(id);
                     */
                     //getMainWindow().setScrollPanes1();
-        		} else {
-        			element.addAttribute("ui.clicked");
+	        		} else {
+	        			element.addAttribute("ui.clicked");
+	        		}
         		}
-        		
         	}
-            
         };
         worldView.setMouseManager(worldManager);
         return worldView;
@@ -526,6 +740,7 @@ public class GraphManager {
         			if (!element.hasAttribute("ui.selected"))
         				element.addAttribute("ui.selected");
         		}
+        		getSelectedView().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         	}
         	
         	public void mouseDragged(MouseEvent event) {
@@ -535,6 +750,7 @@ public class GraphManager {
         			// px:
         			// -1 : down and left
         			// +1 : up and right
+        			getSelectedView().setCursor(new Cursor(Cursor.MOVE_CURSOR));
         			Point3 diffPx = new Point3(event.getX()-origPx.x, origPx.y-event.getY(), 0);
         			Point3 origGu = view.getCamera().getViewCenter();
         			//Point3 diffGu = new Point3(origGu.x + diffPx.x*Math.pow(10, -16), origGu.y + diffPx.y*Math.pow(10, -16), 0);
@@ -576,7 +792,7 @@ public class GraphManager {
 	        		XMLFile xmlFile = getXmlFile();
 	        		//System.out.println("CLICKED ON " + id);
 	        		String mainTypeName = xmlFile.getAtomMainType(id, selectedWorld).getName();
-	        		String imagePath = nodeLegendManager.getLegendWithType(mainTypeName).getImagePath();
+	        		String imagePath = nodeLegendManager.getLegendWithType(mainTypeName).getFillImage();
 	        		if(AplMainWindow.popOutEnabled) {
 	        			JDialog popOutWindow = new JDialog();
 	        			//popOutWindow.setTitle((String)mainWindow.getxGraph().getSelectedGraph().getNode(id).getAttribute("ui.label"));
@@ -614,12 +830,13 @@ public class GraphManager {
     			
     			String mainType = n.getMainType(selectedWorld);	//xmlFile.getAtomMainType(idList.get(i), selectedWorld).getName();
     			String attrib = nodeLegendManager.getLegendWithType(mainType).getStyle();
-    			node.addAttribute("ui.style", attrib);
+    			//node.removeAttribute("ui.style");
+    			node.setAttribute("ui.style", attrib);
     			
     			Iterator<Attribute> attrs = n.getAttributeIterator(selectedWorld);
     			while(attrs.hasNext()) {
     				Attribute attr = attrs.next();
-    				//System.out.println(node.getId() + "Attr" + attr.getName() + attr.getValue());
+    				node.removeAttribute(attr.getName());
     				node.addAttribute(attr.getName(), attr.getValue());
     			}
     		}
@@ -631,11 +848,13 @@ public class GraphManager {
     			
     			String type = e.getTypeOnWorld(selectedWorld);	//xmlFile.getAtomMainType(idList.get(i), selectedWorld).getName();
     			String attrib = edgeManager.getEdgeLegendManager().getEdgeTypeLegend(type).getStyle();
-    			edge.addAttribute("ui.style", attrib);
+    			//edge.removeAttribute("ui.style");
+    			edge.setAttribute("ui.style", attrib);
     			
     			Iterator<Attribute> attrs = e.getAttributeIterator(selectedWorld);
     			while(attrs.hasNext()) {
     				Attribute attr = attrs.next();
+    				edge.removeAttribute(attr.getName());
     				edge.addAttribute(attr.getName(), attr.getValue());
     			}
     		}
@@ -742,6 +961,13 @@ public class GraphManager {
 	public void setGraphList(ArrayList<Graph> graphList) {
 		this.graphList = graphList;
 	}
-	
+
+	public boolean isWorldChanging() {
+		return worldChanging;
+	}
+
+	public void setWorldChanging(boolean worldChanging) {
+		this.worldChanging = worldChanging;
+	}
 	
 }
