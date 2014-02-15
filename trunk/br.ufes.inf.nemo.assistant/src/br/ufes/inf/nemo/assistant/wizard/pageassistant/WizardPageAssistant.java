@@ -75,5 +75,4 @@ public abstract class WizardPageAssistant extends WizardPage {
 	public static void setCurrentStereotype(String currentStereotype) {
 		WizardPageAssistant.currentStereotype = currentStereotype;
 	}
-	
 }

@@ -293,7 +293,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			AddConnectionCommand cmd = new AddConnectionCommand(null,null,relationship,null,null,getCurrentProject(),eContainer);
 			cmd.run();
 		}
-		
+
 		return relationship;
 	}
 
@@ -301,14 +301,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public RefOntoUML.Comment addComment(RefOntoUML.Element eContainer)
 	{
 		RefOntoUML.Comment comment = elementFactory.createComment();
-		
+
 		//to add only in the model do exactly as follow		
 		AddNodeCommand cmd = new AddNodeCommand(null,null,comment,0,0,getCurrentProject(),eContainer);		
 		cmd.run();
-		
+
 		return comment;
 	}
-	
+
 	/** Add comment to the model (not to diagrams) */
 	public void addComment(RefOntoUML.Comment c, RefOntoUML.Element eContainer)
 	{
@@ -316,7 +316,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		AddNodeCommand cmd = new AddNodeCommand(null,null,c,0,0,getCurrentProject(),eContainer);		
 		cmd.run();
 	}
-	
+
 	/** Add element to the model (not to diagrams).  */
 	public RefOntoUML.PackageableElement addElement(ElementType stereotype, RefOntoUML.Package eContainer)
 	{
@@ -1836,30 +1836,30 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 	public void openModellingAssistant(final Classifier elem){
 		//VICTOR COMENTAR
-		//		boolean runAssistant = getFrame().getMainMenu().isAssistantChecked();
+		boolean runAssistant = getFrame().getMainMenu().isAssistantChecked();
 
-//		if(runAssistant){
-//			if(Main.onMac()){//To work on Mac
-//				com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
-//					@Override
-//					public void run() {
-//						Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
-//						if(fix != null)
-//							updateOLED(fix);
-//					}
-//				});
-//			}else{//To work in others
-//				final Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
-//				if(fix != null){
-//					SwingUtilities.invokeLater(new Runnable() {						
-//						@Override
-//						public void run() {
-//							updateOLED(fix);	
-//						}
-//					});
-//				}					
-//			}    		
-//		}	
+		if(runAssistant){
+			if(Main.onMac()){//To work on Mac
+				com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
+					@Override
+					public void run() {
+						Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
+						if(fix != null)
+							updateOLED(fix);
+					}
+				});
+			}else{//To work in others
+				final Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
+				if(fix != null){
+					SwingUtilities.invokeLater(new Runnable() {						
+						@Override
+						public void run() {
+							updateOLED(fix);	
+						}
+					});
+				}					
+			}    		
+		}	
 	}
 
 }

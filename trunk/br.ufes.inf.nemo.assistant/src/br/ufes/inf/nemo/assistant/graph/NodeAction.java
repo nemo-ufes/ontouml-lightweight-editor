@@ -28,7 +28,7 @@ public class NodeAction extends NodeAssistant {
 		System.out.println("running action");
 		switch (action) {
 		case  EXIST_SOME_ULTIMATE_SORTAL:
-			returnAction = graph.getManagerPattern().existSomeSubstanceSortal();
+			returnAction = graph.getManagerPattern().getActionProcessor().existSomeSubstanceSortal();
 			break;
 		/*case CONNECT_LAST_CLASSES:
 			break;

@@ -10,45 +10,50 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import RefOntoUML.Classifier;
-import RefOntoUML.Kind;
-import RefOntoUML.Relator;
 import br.ufes.inf.nemo.assistant.astah2graph.SWTAstahParser;
 import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
+import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.assistant.wizard.WizardAssitant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class ModellingAssistant {
 
 	private HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraph;
 
+	/**
+	 * Instantiating the class and runner the SWTAstahParser or by .jar execution
+	 * or by eclipse running.
+	 * */
 	public ModellingAssistant(RefOntoUML.Package root) {
-//		String path = "Patterns.asta";
-//		InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);	
-//		if(is == null) {
-//			//Runtime (eclipse)
-//			hashGraph = SWTAstahParser.doParser("src/"+path);
-//		}else{
-//			//Running in .jar
-//			hashGraph = SWTAstahParser.doParser(is);	
-//		}
-//
-//		Iterator<GraphAssistant> graphs = hashGraph.values().iterator();
-//		while(graphs.hasNext()){
-//			GraphAssistant graph = graphs.next();
-//			graph.getManagerPattern().setRefOntoUML(root);
-//		}
+		String path = "Patterns.asta";
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);	
+		if(is == null) {
+			//Runtime (eclipse)
+			hashGraph = SWTAstahParser.doParser("src/"+path);
+		}else{
+			//Running in .jar
+			hashGraph = SWTAstahParser.doParser(is);	
+		}
 
+		Iterator<GraphAssistant> graphs = hashGraph.values().iterator();
+		while(graphs.hasNext()){
+			GraphAssistant graph = graphs.next();
+			graph.getManagerPattern().setRefOntoUML(root);
+		}
 	}
 
+	/**
+	 * Run the pattern for the elem.
+	 * Start and show the wizard
+	 * */
 	public Fix runPattern(Classifier elem){
-		StereotypeOntoUMLEnum stereotype = getStereotypeFromClassifier(elem);
+		StereotypeOntoUMLEnum stereotype = UtilAssistant.getStereotypeFromClassifier(elem);
 
 		if(stereotype != null){
 			GraphAssistant graph = hashGraph.get(stereotype);
 			graph.updateNodeList();
-			graph.getManagerPattern().setClassifierOrigem(elem);
+			graph.getManagerPattern().setClassSource(elem);
 
 			Fix fix = null;
 
@@ -63,15 +68,6 @@ public class ModellingAssistant {
 			return fix;
 		}
 		
-		return null;
-	}
-
-	public static StereotypeOntoUMLEnum getStereotypeFromClassifier(Classifier elem){
-		if(elem instanceof Kind){
-			return StereotypeOntoUMLEnum.KIND;
-		}else if(elem instanceof Relator){
-			return StereotypeOntoUMLEnum.RELATOR;
-		}
 		return null;
 	}
 }
