@@ -669,18 +669,19 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			
 			inseparable = ((RefOntoUML.componentOf) r).isIsInseparable();
 			essential = ((RefOntoUML.componentOf) r).isIsEssential();
-			shareable = ((RefOntoUML.componentOf) r).isIsShareable();
-						
-			sourceLower = ((RefOntoUML.componentOf) r).wholeEnd().getLower();
-			sourceUpper = ((RefOntoUML.componentOf) r).wholeEnd().getUpper();
+			shareable = ((RefOntoUML.componentOf) r).isIsShareable();		
 			
-			targetLower = ((RefOntoUML.componentOf) r).partEnd().getLower();
-			targetUpper = ((RefOntoUML.componentOf) r).partEnd().getUpper();
+			targetLower = ((RefOntoUML.componentOf) r).wholeEnd().getLower();
+			targetUpper = ((RefOntoUML.componentOf) r).wholeEnd().getUpper();
 			
-			if(((RefOntoUML.componentOf) r).whole().getName().equals(source.getLabel()))
-				mat = new ComponentOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, essential, inseparable, shareable);
+			sourceLower = ((RefOntoUML.componentOf) r).partEnd().getLower();
+			sourceUpper = ((RefOntoUML.componentOf) r).partEnd().getUpper();
+			
+			if(((RefOntoUML.componentOf) r).whole().getName().equals(source.getLabel()))	
+				mat = new ComponentOf(((Association)r).getName(),target, source, sourceLower, sourceUpper,targetLower, targetUpper, essential, inseparable, shareable);
 			else
 				mat = new ComponentOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, essential, inseparable, shareable);
+			
 			
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
@@ -777,17 +778,17 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			essential = ((RefOntoUML.memberOf) r).isIsEssential();
 			shareable = ((RefOntoUML.memberOf) r).isIsShareable();
 			
-			sourceLower = ((RefOntoUML.memberOf) r).wholeEnd().getLower();
-			sourceUpper = ((RefOntoUML.memberOf) r).wholeEnd().getUpper();
+			targetLower = ((RefOntoUML.memberOf) r).wholeEnd().getLower();
+			targetUpper = ((RefOntoUML.memberOf) r).wholeEnd().getUpper();
 			
-			targetLower = ((RefOntoUML.memberOf) r).partEnd().getLower();
-			targetUpper = ((RefOntoUML.memberOf) r).partEnd().getUpper();
-						
-			if(((RefOntoUML.memberOf) r).whole().getName().equals(source.getLabel()))
-				mat = new MemberOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, essential, inseparable, shareable);
+			sourceLower = ((RefOntoUML.memberOf) r).partEnd().getLower();
+			sourceUpper = ((RefOntoUML.memberOf) r).partEnd().getUpper();
+			
+			if(((RefOntoUML.memberOf) r).whole().getName().equals(source.getLabel()))	
+				mat = new MemberOf(((Association)r).getName(),target, source, sourceLower, sourceUpper,targetLower, targetUpper, essential, inseparable, shareable);
 			else
 				mat = new MemberOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, essential, inseparable, shareable);
-
+			
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
@@ -799,17 +800,17 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			essential = ((RefOntoUML.subCollectionOf) r).isIsEssential();
 			shareable = ((RefOntoUML.subCollectionOf) r).isIsShareable();
 			
-			sourceLower = ((RefOntoUML.subCollectionOf) r).wholeEnd().getLower();
-			sourceUpper = ((RefOntoUML.subCollectionOf) r).wholeEnd().getUpper();
+			targetLower = ((RefOntoUML.subCollectionOf) r).wholeEnd().getLower();
+			targetUpper = ((RefOntoUML.subCollectionOf) r).wholeEnd().getUpper();
 			
-			targetLower = ((RefOntoUML.subCollectionOf) r).partEnd().getLower();
-			targetUpper = ((RefOntoUML.subCollectionOf) r).partEnd().getUpper();
-						
-			if(((RefOntoUML.subCollectionOf) r).whole().getName().equals(source.getLabel()))
-				mat = new SubcollectiveOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, essential, inseparable, shareable);
+			sourceLower = ((RefOntoUML.subCollectionOf) r).partEnd().getLower();
+			sourceUpper = ((RefOntoUML.subCollectionOf) r).partEnd().getUpper();
+			
+			if(((RefOntoUML.subCollectionOf) r).whole().getName().equals(source.getLabel()))	
+				mat = new SubcollectiveOf(((Association)r).getName(),target, source, sourceLower, sourceUpper,targetLower, targetUpper, essential, inseparable, shareable);
 			else
 				mat = new SubcollectiveOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, essential, inseparable, shareable);
-
+			
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
@@ -821,17 +822,17 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 			essential = ((RefOntoUML.subQuantityOf) r).isIsEssential();
 			shareable = ((RefOntoUML.subQuantityOf) r).isIsShareable();
 			
-			sourceLower = ((RefOntoUML.subQuantityOf) r).wholeEnd().getLower();
-			sourceUpper = ((RefOntoUML.subQuantityOf) r).wholeEnd().getUpper();
+			targetLower = ((RefOntoUML.subQuantityOf) r).wholeEnd().getLower();
+			targetUpper = ((RefOntoUML.subQuantityOf) r).wholeEnd().getUpper();
 			
-			targetLower = ((RefOntoUML.subQuantityOf) r).partEnd().getLower();
-			targetUpper = ((RefOntoUML.subQuantityOf) r).partEnd().getUpper();
-									
-			if(((RefOntoUML.subQuantityOf) r).whole().getName().equals(source.getLabel()))
-				mat = new SubquantityOf(((Association)r).getName(),target, source,  targetLower, targetUpper, sourceLower, sourceUpper, essential, inseparable, shareable);
+			sourceLower = ((RefOntoUML.subQuantityOf) r).partEnd().getLower();
+			sourceUpper = ((RefOntoUML.subQuantityOf) r).partEnd().getUpper();
+			
+			if(((RefOntoUML.subQuantityOf) r).whole().getName().equals(source.getLabel()))	
+				mat = new SubquantityOf(((Association)r).getName(),target, source, sourceLower, sourceUpper,targetLower, targetUpper, essential, inseparable, shareable);
 			else
-				mat = new SubquantityOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, essential, inseparable,shareable);
-
+				mat = new SubquantityOf(((Association)r).getName(), source, target, sourceLower, sourceUpper, targetLower, targetUpper, essential, inseparable, shareable);
+		
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
