@@ -94,39 +94,9 @@ public class OCLEditorPanel extends JPanel {
    
    public void addCompletion(RefOntoUML.Association p)
    {
-	   Property source = p.getMemberEnd().get(0);
-	   Property target = p.getMemberEnd().get(1);
-	   
-	   if ((source.getName()!=null)&&!(source.getName().isEmpty())&&(source.getType()!=null))
-	   {
-		   String type = source.getType().getName();
-		   String returnType = type;
-		   if ((source.getUpper()>1)||(source.getUpper()==-1)) returnType = "Set("+type+")";
-		   
-		   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
-				source.getName(),source.toString().substring(0,source.toString().indexOf(" ")),
-				"_'"+source.getName()+"'",
-				returnType,
-				"<b>Should be more of a description here...</b>");		
-		    provider.addCompletion(c);
-		    
-		    modelCompletionList.add(c);
+	   for(Property pp: p.getMemberEnd()){
+		   addCompletion(pp);
 	   }
-	   if ((target.getName()!=null)&&!(target.getName().isEmpty())&&(target.getType()!=null))
-	   {
-		   String type = target.getType().getName();
-		   String returnType = type;
-		   if ((target.getUpper()>1)||(target.getUpper()==-1)) returnType = "Set("+type+")";
-		   
-		   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
-				target.getName(),target.toString().substring(0,target.toString().indexOf(" ")),
-				"_'"+target.getName()+"'",
-				returnType,
-				"<b>Should be more of a description here...</b>");		
-		    provider.addCompletion(c);
-		    modelCompletionList.add(c);
-	   }
-	   
    }   
    
    public void addCompletion(RefOntoUML.Property p)
@@ -155,7 +125,14 @@ public class OCLEditorPanel extends JPanel {
 			null,
 			"<b>Should be more of a description here...</b>");		
 	    provider.addCompletion(c);
-	    modelCompletionList.add(c);	
+	    modelCompletionList.add(c);
+	    
+	    if (oc instanceof RefOntoUML.Class){
+	    	for(Property p: ((RefOntoUML.Class)oc).getOwnedAttribute()) addCompletion(p);	
+	    }
+	    if (oc instanceof RefOntoUML.DataType){
+	    	for(Property p: ((RefOntoUML.DataType)oc).getOwnedAttribute()) addCompletion(p);	
+	    }	    
    }
    
    @SuppressWarnings("rawtypes")

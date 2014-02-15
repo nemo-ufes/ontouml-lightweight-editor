@@ -468,6 +468,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	    	 RefOntoUML.RefOntoUMLFactory factory = RefOntoUML.RefOntoUMLFactory.eINSTANCE;         
 	    	 if(property.equals("Upper")) {
 		         RefOntoUML.LiteralUnlimitedNatural upperValue = factory.createLiteralUnlimitedNatural();		         
+		         if(((String)value).isEmpty()) value = "1";
 		         Integer IntValue = Integer.parseInt((String)value);
 		         if (IntValue<-1) IntValue = -1;
 		         upperValue.setValue(IntValue);
@@ -475,6 +476,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	    	 }
 	    	 if(property.equals("Lower")) {
 		         RefOntoUML.LiteralInteger lowerValue = factory.createLiteralInteger();		         
+		         if(((String)value).isEmpty()) value = "1";
 		         Integer IntValue = Integer.parseInt((String)value);
 		         if (IntValue<-1) IntValue = -1;
 		         lowerValue.setValue(IntValue);
@@ -512,21 +514,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	    	 if(property.equals("Name")) ((RefOntoUML.Package)elem).setName((String)value);
 	     }
 	     
-	     //update the Tree 
-	     ProjectBrowser.refreshTree(project);
-	     
-	     //update diagram element
-	     if (elem instanceof Property){
-	    	 Property p = (Property)elem;
-	    	 if(p.getAssociation()!=null){
-	    		 ProjectBrowser.frame.getDiagramManager().refreshDiagramElement(p.getAssociation());
-	    	 }else{
-	    		 ProjectBrowser.frame.getDiagramManager().refreshDiagramElement((RefOntoUML.Element)p.eContainer());
-	    	 }
-	     }else{
-	    	 ProjectBrowser.frame.getDiagramManager().refreshDiagramElement((RefOntoUML.Element)elem);
-	     }
-	     
+	     ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification((RefOntoUML.Element)elem);
 	}
 	
 	public void setProject(UmlProject project)

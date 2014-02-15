@@ -238,11 +238,14 @@ public class CommentsEditionPanel extends JPanel {
 	public void transferCommentsData()
 	{
 		// added
+		ArrayList<Comment> toBeAdded = new ArrayList<Comment>();
 		for(Comment c: getComments()){
-			if (!element.getOwnedComment().contains(c)){
-				diagramManager.addComment(c, element);
+			if (!element.getOwnedComment().contains(c)){				
+				toBeAdded.add(c);
 			}
 		}
+		for(Comment cmt: toBeAdded) { diagramManager.addComment(cmt, element); } 
+			
 		//removed
 		ArrayList<Comment> toBeDeleted = new ArrayList<Comment>();
 		for(Comment c: element.getOwnedComment()){
@@ -252,6 +255,6 @@ public class CommentsEditionPanel extends JPanel {
 		}
 		for(Comment cmt: toBeDeleted) { diagramManager.delete(cmt); }
 		
-		diagramManager.doOLEDInclusion(element);	
+			
 	}
 }

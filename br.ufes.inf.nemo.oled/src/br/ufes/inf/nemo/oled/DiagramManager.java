@@ -52,6 +52,7 @@ import org.eclipse.ocl.SemanticException;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Comment;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Property;
@@ -454,9 +455,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** 
 	 * Update the application accordingly
 	 * 
-	 * @param element: added or modified element
+	 * @param element: added element on refontouml root instance.
 	 */
-	public void doOLEDInclusion(RefOntoUML.Element element)
+	public void updatedOLEDFromInclusion(RefOntoUML.Element element)
 	{
 		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
 
@@ -471,10 +472,25 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			ProjectBrowser.getParserFor(project).addElement(p1); 	
 			ProjectBrowser.getParserFor(project).addElement(p2);
 		}
-		if (element instanceof Property){
-			ProjectBrowser.getParserFor(project).addElement((Property)element); 
+		if(element instanceof RefOntoUML.Class)
+		{
+			for(Property p: ((RefOntoUML.Class)element).getOwnedAttribute()){
+				ProjectBrowser.getParserFor(project).addElement(p);
+			}
+			for(Comment c: ((RefOntoUML.Class)element).getOwnedComment()){
+				ProjectBrowser.getParserFor(project).addElement(c);
+			}			
 		}
-
+		if(element instanceof RefOntoUML.DataType)
+		{
+			for(Property p: ((RefOntoUML.DataType)element).getOwnedAttribute()){
+				ProjectBrowser.getParserFor(project).addElement(p);
+			}
+			for(Comment c: ((RefOntoUML.DataType)element).getOwnedComment()){
+				ProjectBrowser.getParserFor(project).addElement(c);
+			}			
+		}
+		
 		// =================================
 		// Project Tree
 		// =================================
@@ -487,10 +503,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		// OCL Completion
 		// =================================		
 		ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(element);
-
+	}
+	
+	/**
+	 * Update the application accordingly
+	 * 
+	 * @param element: modified element on the refontouml root instance
+	 */
+	public void updateOLEDFromModification(RefOntoUML.Element element)
+	{
+		updatedOLEDFromInclusion(element);
+		
 		// =================================
 		// Diagrams
-		// =================================					
+		// =================================		
 		if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType){
 			refreshDiagramElement((Classifier)element);
 		}
@@ -510,11 +536,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (fix==null) return;
 		for(Object obj: fix.getAdded()) {
 			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
-				doOLEDInclusion((RefOntoUML.Element)obj);
+				updatedOLEDFromInclusion((RefOntoUML.Element)obj);
 		}
 		for(Object obj: fix.getAdded()) {
 			if (obj instanceof RefOntoUML.Relationship)
-				doOLEDInclusion((RefOntoUML.Element)obj);
+				updatedOLEDFromInclusion((RefOntoUML.Element)obj);
 		}				
 		for(Object obj: fix.getModified()){
 			if (obj instanceof RefOntoUML.Property){
