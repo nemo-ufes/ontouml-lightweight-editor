@@ -518,6 +518,8 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
         
         if(iterName.equals("collect")) result.append("univ.{ ");
         
+        if(iterName.equals("closure")) result.append(sourceResult+".^{ ");
+        
         // Iterator Arguments
         for( java.util.Iterator<String> iter = variableResults.iterator(); iter.hasNext();) 
         {        	     
@@ -557,9 +559,6 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
         if(iterName.equals("collect")) 
         {
         	result.append(var+": "+sourceResult+", res: "+bodyResult+" | no none }");
-        	// @Deprecated
-        	// String sb = substitute(var,bodyResult,sourceResult); //substitute variable "x" in expression "bodyResult" for "sourceResult"         	
-        	// result.append(sb);        	
         }
         
         if(iterName.equals("isUnique")) 
@@ -577,23 +576,7 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
         
         if(iterName.equals("closure")) 
         {        	
-        	String assocAlias = new String();
-        	String propertyAlias = new String();
-        	
-        	String aux1 = new String(bodyResult);
-        	propertyAlias = aux1.replace(var+".", "");
-        	propertyAlias = propertyAlias.replace("[w]", "");
-        	        	
-        	EObject obj = refparser.getElement(propertyAlias);
-        	
-        	if (obj instanceof RefOntoUML.Property) 
-        	{
-        		EObject container = obj.eContainer();
-            	assocAlias = refparser.getAlias(container);	
-        	}        	
-        	
-        	String strFinal = sourceResult+".^(w."+assocAlias+")";        	
-        	result.append(strFinal);
+        	result.append(var+": univ"+", res: "+bodyResult+" | no none }");
         }
         
         if(iterName.equals("sortedBy")) throw new IteratorException("sortedBy()","The type OrderedSet is not supported.");

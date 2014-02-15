@@ -329,7 +329,7 @@ private static final long serialVersionUID = 1L;
 	public void transferAttributesData()
 	{
 		classElement.setShowAttributes(cbxVisible.isSelected());
-		diagramManager.doOLEDInclusion(element);
+		diagramManager.updatedOLEDFromInclusion(element);
 		
 		transferDataTypes();	
 		
@@ -347,7 +347,7 @@ private static final long serialVersionUID = 1L;
 				else				
 					((Class)classElement.getClassifier()).getOwnedAttribute().add(property);
 				
-				diagramManager.doOLEDInclusion(property);
+				diagramManager.updatedOLEDFromInclusion(property);
 			}
 		}
 	}
@@ -369,6 +369,6 @@ private static final long serialVersionUID = 1L;
 			}
 		}		
 		
-		for(Element element: createdList) diagramManager.doOLEDInclusion(element);		
+		for(Element element: createdList) diagramManager.updatedOLEDFromInclusion(element);		
 	}
 }
