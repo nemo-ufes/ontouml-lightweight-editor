@@ -100,6 +100,7 @@ public class NewClass extends WizardPageAssistant {
 		if(text.getText().isEmpty()){
 			return false;
 		}
+		setCurrentClass(text.getText());
 		return true;
 	}
 

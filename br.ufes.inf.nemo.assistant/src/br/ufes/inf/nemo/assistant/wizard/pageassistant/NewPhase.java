@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
-
+//TODO VALIDATE genSetName
 public class NewPhase extends WizardPageAssistant {
 	private Table table;
 
@@ -35,6 +35,7 @@ public class NewPhase extends WizardPageAssistant {
 	private int currentItemSelection;
 	private Button btDeletePhase;
 	private Label className;
+	private Text tfGeneralizationSetName;
 	
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
@@ -110,6 +111,13 @@ public class NewPhase extends WizardPageAssistant {
 		btDeletePhase.setText("Delete Phase");
 		btDeletePhase.setEnabled(false);
 		
+		Label lblGeneralizationsetName = new Label(container, SWT.NONE);
+		lblGeneralizationsetName.setBounds(10, 256, 139, 15);
+		lblGeneralizationsetName.setText("GeneralizationSet name:");
+		
+		tfGeneralizationSetName = new Text(container, SWT.BORDER);
+		tfGeneralizationSetName.setBounds(142, 256, 180, 21);
+		
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
 		
@@ -182,6 +190,12 @@ public class NewPhase extends WizardPageAssistant {
 	}
 	
 	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		className.setText(getCurrentClass());
+	}
+	
+	@Override
 	public boolean canFlipToNextPage() {
 		if(isEndPage)
 			return false;
@@ -223,5 +237,9 @@ public class NewPhase extends WizardPageAssistant {
 			list.add(row);
 		}
 		return list;
+	}
+	
+	public String getGeneralizationSetName(){
+		return tfGeneralizationSetName.getText();
 	}
 }

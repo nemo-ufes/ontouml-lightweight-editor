@@ -100,6 +100,7 @@ public class MainMenu implements ActionListener {
 		
 		JMenuItem assistantItem = createCheckBoxMenuItem(toolMenu, "assistant");
 
+		//Victor comentar
 		assistantItem.setSelected(false);
 		assistantItem.setEnabled(false);
 		//assistantItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));		
