@@ -241,6 +241,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		else if(previousPattern instanceof PhasePattern) parcialDescription += ", além disso, é";
 		else if(previousPattern instanceof FormalPattern) parcialDescription += ", além disso, é";
 		else if(previousPattern instanceof PartOfPattern) parcialDescription += ", além disso, é";
+		else if(previousPattern == null) parcialDescription += " é";
 		
 		// Generating specific description
 		parcialDescription += " composto por " + 
