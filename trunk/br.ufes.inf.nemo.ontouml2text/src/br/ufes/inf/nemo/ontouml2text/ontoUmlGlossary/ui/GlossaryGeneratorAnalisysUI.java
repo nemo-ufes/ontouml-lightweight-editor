@@ -64,7 +64,7 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		
 		
 		missingDesc = conceptsWithoutDesc.size();
-		JLabel lblMissingUserDescriptionCounter = new JLabel(missingDesc.toString() + " cases found.");
+		JLabel lblMissingUserDescriptionCounter = new JLabel(missingDesc.toString() + " case(s) found.");
 		lblMissingUserDescriptionCounter.setBounds(23, 28, 128, 16);
 		surroundPanel1.add(lblMissingUserDescriptionCounter);
 		
@@ -84,7 +84,7 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		panelOne.add(surroundPanel2);
 		surroundPanel2.setLayout(null);
 		
-		JLabel lblIsolatedConceptsCounter = new JLabel(isolatedConcepts.size()+" cases found.");
+		JLabel lblIsolatedConceptsCounter = new JLabel(isolatedConcepts.size()+" case(s) found.");
 		lblIsolatedConceptsCounter.setBounds(21, 30, 128, 16);
 		surroundPanel2.add(lblIsolatedConceptsCounter);
 		
@@ -99,12 +99,12 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		surroundPanel2.add(btnIsolatedConceptsDetails);
 		
 		JPanel group3 = new JPanel();
-		group3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Concepts With Non-Defined Relationship", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		group3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Concepts With Non-Determined Relationship", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		group3.setBounds(12, 204, 431, 57);
 		panelOne.add(group3);
 		group3.setLayout(null);
 		
-		JLabel lblNonDeterminedRelationshipsCounter = new JLabel(nonDeterminedRelationships.size()+" cases found.");
+		JLabel lblNonDeterminedRelationshipsCounter = new JLabel(nonDeterminedRelationships.size()+" case(s) found.");
 		lblNonDeterminedRelationshipsCounter.setBounds(23, 30, 128, 16);
 		group3.add(lblNonDeterminedRelationshipsCounter);
 		
