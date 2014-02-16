@@ -1,17 +1,13 @@
 package br.ufes.inf.nemo.assistant.wizard;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 
 import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
 import br.ufes.inf.nemo.assistant.graph.NodeAssistant;
-import br.ufes.inf.nemo.assistant.manager.ManagerPattern;
 import br.ufes.inf.nemo.assistant.manager.PageProcessor;
-import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGeneralizationSet;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.Question;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.WizardPageAssistant;
@@ -30,9 +26,18 @@ public class WizardAssitant extends Wizard {
 
 	@Override
 	public void addPages() {
-		for(NodeAssistant node:graph.getNodeList()){
-			if(!node.isAction())
-				addPage(node.getPage());
+		ArrayList<NodeAssistant> nodes = graph.getNodeList(); 
+		for (int i = 0; i < nodes.size(); i++) {
+			if(nodes.get(i).isAction()){
+				if(i==0){
+					//TODO se for outra action vai dar problema
+					NodeAssistant firstNode = nodes.get(0).getNextNode();
+					addPage(firstNode.getPage());
+					graph.setCurrentNode(firstNode);
+				}
+			}else{
+				addPage(nodes.get(i).getPage());
+			}
 		}
 	}
 
@@ -41,6 +46,7 @@ public class WizardAssitant extends Wizard {
 	public boolean performFinish() {
 		if(graph.getCurrentNode().isEndNode()){
 			graph.getManagerPattern().run(graph.getCurrentNode().getPage());
+			return true;
 		}
 		return canFinish;
 	}

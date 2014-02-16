@@ -190,16 +190,16 @@ public class AstahParser {
 				ngs.autoGetConceptName(true);
 			}
 
-			String stereotypes = aNode.getTaggedValue("stereotypes");
+//			String stereotypes = aNode.getTaggedValue("stereotypes");
 
-			if(!aNode.getTaggedValue("generalizationSetFilter").isEmpty()){
-				if(aNode.getTaggedValue("generalizationSetFilter").equalsIgnoreCase("_specificsPhase")){
-					//usa o filtro
-					ngs.setGeneralClasses(tree.getManagerPatern().getGeneralClasses(stereotypes.split(","),aNode.getTaggedValue("generalizationSetFilter")));
-				}	
-			}else{//Se nao tiver filtro para os valores
-				ngs.setGeneralClasses(tree.getManagerPatern().getGeneralClasses(stereotypes.split(",")));
-			}
+//			if(!aNode.getTaggedValue("generalizationSetFilter").isEmpty()){
+//				if(aNode.getTaggedValue("generalizationSetFilter").equalsIgnoreCase("_specificsPhase")){
+//					//usa o filtro
+//					ngs.setGeneralClasses(tree.getManagerPatern().getGeneralClasses(stereotypes.split(","),aNode.getTaggedValue("generalizationSetFilter")));
+//				}	
+//			}else{//Se nao tiver filtro para os valores
+//				ngs.setGeneralClasses(tree.getManagerPatern().getGeneralClasses(stereotypes.split(",")));
+//			}
 			if(!aNode.getTaggedValue("editableMetaProperties").isEmpty()){
 				if(aNode.getTaggedValue("editableMetaProperties").equalsIgnoreCase("false")){
 					//usa o filtro

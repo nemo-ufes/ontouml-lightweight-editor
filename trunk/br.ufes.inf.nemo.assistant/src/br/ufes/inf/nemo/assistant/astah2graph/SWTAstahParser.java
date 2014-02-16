@@ -23,7 +23,6 @@ import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewRelator;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.Question;
 
 import com.change_vision.jude.api.inf.AstahAPI;
-import com.change_vision.jude.api.inf.exception.ProjectNotFoundException;
 import com.change_vision.jude.api.inf.model.IActivity;
 import com.change_vision.jude.api.inf.model.IActivityDiagram;
 import com.change_vision.jude.api.inf.model.IActivityNode;
@@ -38,8 +37,9 @@ public class SWTAstahParser {
 	public static void main(String[] args) {
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = doParser("src/Patterns.asta");
 
-		GraphAssistant graph = hashTree.get(StereotypeOntoUMLEnum.SUBKIND);
+		GraphAssistant graph = hashTree.get(StereotypeOntoUMLEnum.KIND);
 		graph.updateNodeList();
+		System.out.println(graph.toString());
 
 		WizardDialog wizardDialog = new WizardDialog(new Shell(),new WizardAssitant(graph));
 		if (wizardDialog.open() == Window.OK) {
@@ -70,10 +70,10 @@ public class SWTAstahParser {
 			//All link node has its next set to the start node from the patter destiny
 			entry.getValue().setNextNode(hashGraphs.get(entry.getKey()).getStartNode());
 		}
-		
+
 		return hashGraphs;
 	}
-	
+
 	public static HashMap<StereotypeOntoUMLEnum, GraphAssistant> doParser(String astahFile){
 
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraphs = new HashMap<>();
@@ -149,7 +149,7 @@ public class SWTAstahParser {
 
 		NodeAssistant node = new NodeAssistant(graph);
 
-		//Process which window is each activity
+		//Process each Activity
 		String window = aNode.getTaggedValue("window");
 		if(window.equalsIgnoreCase("NewClass")){
 			NewClass nc = new NewClass();
@@ -171,27 +171,14 @@ public class SWTAstahParser {
 			NewRelator nr = new NewRelator();
 			node.setPage(nr);
 		}else if(window.equalsIgnoreCase("LinkToPattern")){
-			//toUpperCase is used because all enumerations are in upper case
 			linkNode.put(StereotypeOntoUMLEnum.valueOf(aNode.getTaggedValue("linkToPattern").toUpperCase()), _lastNode);
 		}else if(window.equalsIgnoreCase("NewGeneralizationSet")){
 			NewGeneralizationSet ngs = new NewGeneralizationSet();
 			String stereotypes = aNode.getTaggedValue("stereotypes");
 			ngs.setStereotypes(stereotypes.split(","));
-
-			//			if(!aNode.getTaggedValue("generalizationSetFilter").isEmpty()){
-			//				if(aNode.getTaggedValue("generalizationSetFilter").equalsIgnoreCase("_specificsPhase")){
-			//					//usa o filtro
-			//					ngs.setGeneralClasses(tree.getManagerPatern().getGeneralClasses(stereotypes.split(","),aNode.getTaggedValue("generalizationSetFilter")));
-			//				}	
-			//			}else{//Se nao tiver filtro para os valores
-			//				ngs.setGeneralClasses(graph.getManagerPattern().getGeneralClasses(stereotypes.split(",")));
-			//			}
-			//			if(!aNode.getTaggedValue("editableMetaProperties").isEmpty()){
-			//				if(aNode.getTaggedValue("editableMetaProperties").equalsIgnoreCase("false")){
-			//					//usa o filtro
-			//					ngs.setEditableMetaProperties(false);
-			//				}	
-			//			}
+			if(aNode.getTaggedValue("editableMetaProperties").equalsIgnoreCase("false")){
+				ngs.setEditableMetaProperties(false);
+			}
 			node.setPage(ngs);
 		}
 

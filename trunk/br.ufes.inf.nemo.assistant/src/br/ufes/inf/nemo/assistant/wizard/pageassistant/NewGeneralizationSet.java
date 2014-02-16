@@ -8,7 +8,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
@@ -187,6 +186,13 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 			}
 			cbGenerals.setItems(generals);
 			cbGenerals.select(0);
+			if(!isEditable){
+				isDisjoint.setEnabled(false);
+				isDisjoint.setSelection(true);
+				
+				isComplete.setEnabled(false);
+				isComplete.setSelection(true);
+			}
 		}
 	}
 
@@ -205,5 +211,10 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 	private HashMap<String,HashMap<String,boolean[]>> hashClasses;
 	public void setHashOfClasses(HashMap<String,HashMap<String,boolean[]>> classMetaProperty) {
 		this.hashClasses = classMetaProperty;
+	}
+
+	private boolean isEditable = true;
+	public void setEditableMetaProperties(boolean isEditable) {
+		this.isEditable = isEditable;
 	}
 }

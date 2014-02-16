@@ -29,7 +29,7 @@ public class Action extends AbstractWindow{
 			}
 			break;
 
-		case EXIST_SOME_ULTIMATE_SORTAL:
+		case EXIST_SOME_SUBSTANCE_SORTAL:
 			if(n.getTree().getManagerPatern().existSomeSubstanceSortal()){
 				ManagerNode.goTrue(n);	
 			}else{

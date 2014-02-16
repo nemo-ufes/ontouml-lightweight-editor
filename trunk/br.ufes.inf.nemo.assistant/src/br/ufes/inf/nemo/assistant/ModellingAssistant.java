@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.Package;
 import br.ufes.inf.nemo.assistant.astah2graph.SWTAstahParser;
 import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
@@ -41,20 +42,25 @@ public class ModellingAssistant {
 			GraphAssistant graph = graphs.next();
 			graph.getManagerPattern().setRefOntoUML(root);
 		}
+		p = root;
 	}
 
+	Package p;
+	
 	/**
 	 * Run the pattern for the elem.
 	 * Start and show the wizard
 	 * */
 	public Fix runPattern(Classifier elem){
 		StereotypeOntoUMLEnum stereotype = UtilAssistant.getStereotypeFromClassifier(elem);
-
+		
 		if(stereotype != null){
 			GraphAssistant graph = hashGraph.get(stereotype);
 			graph.updateNodeList();
 			graph.getManagerPattern().setClassSource(elem);
 
+			System.out.println(graph.toString());
+			
 			Fix fix = null;
 
 			Display display = Display.getDefault();	    	
@@ -67,7 +73,8 @@ public class ModellingAssistant {
 
 			return fix;
 		}
-		
+		System.out.println("REFonto: ");
+		UtilAssistant.printRefOntoUML(p);
 		return null;
 	}
 }

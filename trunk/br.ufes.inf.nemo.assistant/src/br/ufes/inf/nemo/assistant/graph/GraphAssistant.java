@@ -71,9 +71,12 @@ public class GraphAssistant {
 	@Override
 	public String toString() {
 		String s = "";
+		s += "Total Nodes: "+nodes.size();
 		for(NodeAssistant node :nodes){
 			if(!node.isAction()){
 				s += "\n"+node.getPage().getName(); 
+			}else{
+				s += "\nAction: "+((NodeAction)node).getAction().toString();
 			}
 		}
 		return s;

@@ -1,8 +1,8 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public class NewClass extends WizardPageAssistant {
-	private Text text;
+	private Text tfClassName;
 
 	/**
 	 * Create the wizard.
@@ -36,22 +36,22 @@ public class NewClass extends WizardPageAssistant {
 		lblClassName.setBounds(10, 66, 83, 15);
 		lblClassName.setText("Class Name");
 
-		text = new Text(container, SWT.BORDER);
-		text.addFocusListener(new FocusAdapter() {
+		tfClassName = new Text(container, SWT.BORDER);
+		tfClassName.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusLost(FocusEvent arg0) {
-				if(text.getText().isEmpty()){
-					warning.setVisible(true);
-					setPageComplete(false);
-				}else{
-					warning.setVisible(false);
-					setPageComplete(true);
-				}
-				setCurrentClass(text.getText());
+			public void keyPressed(KeyEvent owner) {
+				//OMG What is happening here?!:|
+//				if(tfClassName.getText().isEmpty()){
+//					warning.setVisible(true);
+//					setPageComplete(false);
+//				}else{
+//					warning.setVisible(false);
+//					setPageComplete(true);
+//				}
+				setCurrentClass(tfClassName.getText());
 			}
 		});
-		text.setBounds(110, 63, 180, 21);
-
+		tfClassName.setBounds(110, 63, 180, 21);
 
 		Label lblClassStereotype = new Label(container, SWT.NONE);
 		lblClassStereotype.setBounds(10, 102, 93, 15);
@@ -72,6 +72,9 @@ public class NewClass extends WizardPageAssistant {
 		warning.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
 		warning.setBounds(294, 59, 17, 25);
 		warning.setText("!");
+		
+		if(isEndPage)
+			setPageComplete(true);
 	}
 
 	@Override
@@ -97,10 +100,10 @@ public class NewClass extends WizardPageAssistant {
 	public boolean canFlipToNextPage() {
 		if(isEndPage)
 			return false;
-		if(text.getText().isEmpty()){
+		if(tfClassName.getText().isEmpty()){
 			return false;
 		}
-		setCurrentClass(text.getText());
+		setCurrentClass(tfClassName.getText());
 		return true;
 	}
 
@@ -117,11 +120,11 @@ public class NewClass extends WizardPageAssistant {
 	/* get operations */
 	
 	public String getClassName(){
-		return text.getText();
+		return tfClassName.getText();
 	}
 	
 	public String getStereotype(){
 		return cbStereotypes.getItem(cbStereotypes.getSelectionIndex());
 	}
 	
-}
+} 
