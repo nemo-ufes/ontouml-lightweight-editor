@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Comment;
+import RefOntoUML.Generalization;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -277,7 +278,12 @@ public class ProjectTree extends CheckboxTree {
 			parent.add(newNode);					
 						
 			//modelTree.collapsePath(new TreePath(newNode.getPath()));
-						
+			
+			for(Generalization g: ((RefOntoUML.Classifier) object).getGeneralization())
+			{
+				drawModel(newNode,g,checkingModel,refparser);
+			}
+				
 			if (object instanceof RefOntoUML.Class)
 			{				
 				for (Property o: ((RefOntoUML.Class)object).getOwnedAttribute())
