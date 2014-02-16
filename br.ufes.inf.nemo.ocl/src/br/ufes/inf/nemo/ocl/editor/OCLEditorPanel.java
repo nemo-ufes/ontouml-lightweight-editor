@@ -53,6 +53,7 @@ public class OCLEditorPanel extends JPanel {
 	public JMenuItem openMenuItem;
 	public JMenuItem parserMenuItem;
 	public ArrayList<OCLTemplateCompletion> modelCompletionList = new ArrayList<OCLTemplateCompletion>();
+	public ArrayList<OCLTemplateCompletion> oclCompletionList = new ArrayList<OCLTemplateCompletion>();
 	
    /**
     * Constructor
@@ -196,7 +197,12 @@ public class OCLEditorPanel extends JPanel {
 	    ac = new AutoCompletion(provider);	    
 	    ac.setListCellRenderer(new OCLCellRenderer());	    
 		ac.setParameterAssistanceEnabled(true);
+	    
+	    // Allow the completion popup to appear automatically, no need for ctrl+space.
 	    ac.setAutoActivationEnabled(false);
+	    // Milliseconds before popup.  Most editors have a small delay.
+	    //ac.setAutoActivationDelay(100);
+	    
 	    ac.setAutoCompleteSingleChoices(false);
      	ac.setShowDescWindow(true);     	
      	ac.install(textArea);
@@ -351,24 +357,29 @@ public class OCLEditorPanel extends JPanel {
 	 */
 	public DefaultCompletionProvider createDefaultCompletionProvider ()
 	{				
-		DefaultCompletionProvider provider = new DefaultCompletionProvider(); 
-		
+		provider = new DefaultCompletionProvider(){ 
+		   @Override
+		   protected boolean isValidChar(char ch) {
+		      return ch=='.' || ch=='>' || super.isValidChar(ch);
+		   }
+		};
 		provider.setAutoActivationRules(true, ".");
+		provider.setAutoActivationRules(true, ">");
 		
-		createConstraintCompletion(provider);
-		createObjectCompletion(provider);
-		createSetCompletion(provider);
-		createIteratorCompletion(provider);
-		createExpressionCompletion(provider);		
-		createIntegerCompletion(provider);
+		createConstraintCompletion();
+		createObjectCompletion();
+		createSetCompletion();
+		createIteratorCompletion();
+		createExpressionCompletion();		
+		createIntegerCompletion();
 		
-//		createBooleanCompletion(provider);
+//		createBooleanCompletion();
 		
 		return provider;
 	}
 	
 	/** Constraint Completion*/
-	public void createConstraintCompletion(DefaultCompletionProvider provider)
+	public void createConstraintCompletion()
 	{
 		String description = new String();
 		
@@ -380,6 +391,7 @@ public class OCLEditorPanel extends JPanel {
 			"context ${Type}\ninv : ${true} ${cursor}\n",
 			null, description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "<b>context {Type}::{Property}::{Type} derive: {oclexpression} </b><br><br>"+
 		"Derivation constraint.";
@@ -389,6 +401,7 @@ public class OCLEditorPanel extends JPanel {
 			"context ${Type}::${Property}:${propertyType}\nderive : ${cursor}\n",
 			null,description);		
 		provider.addCompletion(c); 
+		oclCompletionList.add(c);
 		
 		description = "<b>context {Type} inv/derive: {oclexpression} </b><br><br>"+
 		"Context declaration.";
@@ -398,10 +411,11 @@ public class OCLEditorPanel extends JPanel {
 			"context ${Type}\n${cursor}\n",
 			null, description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 	}
 	
 	/** Expression Completion*/
-	public void createExpressionCompletion(DefaultCompletionProvider provider)
+	public void createExpressionCompletion()
 	{
 		String description = "<b>let var = {oclexpr} in {oclexpression}</b>";
 		
@@ -411,6 +425,7 @@ public class OCLEditorPanel extends JPanel {
 			null,
 			description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "<b>if {condition} then {expr} else {null} endif</b>";
 		
@@ -420,11 +435,12 @@ public class OCLEditorPanel extends JPanel {
 			null,
 			description);
 		
-		provider.addCompletion(c);			
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
 	}
 	
 	/** Object Completion */
-	public void createObjectCompletion(DefaultCompletionProvider provider)
+	public void createObjectCompletion()
 	{ 
 		String description = "Operation <b>OclAny::=(object2 : OclSelf) : Boolean</b><br><br>"+
 		"True if self is the same object as object2. Infix operator.";
@@ -434,7 +450,8 @@ public class OCLEditorPanel extends JPanel {
 			"= ${cursor}",
 			null, description);		
 		provider.addCompletion(c); 
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>OclAny::&lt&gt(object2 : OclSelf) : Boolean</b><br><br>"+
 		"True if self is a different object from object2. Infix operator.";
 
@@ -443,7 +460,8 @@ public class OCLEditorPanel extends JPanel {
 			"<> ${cursor}",
 			null, description);		
 		provider.addCompletion(c);
-	
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>OclAny::oclAsType(T)(type : AnyClassifier(T)) : T</b><br><br>"+
 		
 		"Evaluates to self, where self is of the type identified by T. The type T may be any classifier " +
@@ -460,7 +478,8 @@ public class OCLEditorPanel extends JPanel {
 			"oclAsType(${T})${cursor}",
 			null, description);		
 		provider.addCompletion(c);
-			
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>OclAny::oclIsKindOf(T)(type : AnyClassifier(T)) : Boolean</b><br><br>"+
 		"Evaluates to true if the type of self conforms to t. That is, self is of type t or a subtype of t.";
 		
@@ -469,7 +488,8 @@ public class OCLEditorPanel extends JPanel {
 			"oclIsKindOf(${T})${cursor}",
 			null, description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "";
 		
 		c = new OCLTemplateCompletion(provider, 
@@ -477,7 +497,8 @@ public class OCLEditorPanel extends JPanel {
 			"allInstances()${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-			
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>OclAny::oclIsTypeOf(T)(type : AnyClassifier(T)) : Boolean</b><br><br>"+
 		"Evaluates to true if self is of the type t but not a subtype of t.";
 		
@@ -486,7 +507,8 @@ public class OCLEditorPanel extends JPanel {
 			"oclIsTypeOf(${T})${cursor}",
 			null, description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>OclAny::oclIsUndefined() : Boolean</b><br><br>"+
 		"Evaluates to true if the self is equal to invalid or equal to null.";
 
@@ -495,10 +517,11 @@ public class OCLEditorPanel extends JPanel {
 			"oclIsUndefined()${cursor}",
 			null, description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 	}
 
 	/** Collection Completion */
-	public void createSetCompletion(DefaultCompletionProvider provider)
+	public void createSetCompletion()
 	{
 		String description = "Operation <b>Collection(T)::size() : Integer</b><br><br>"+
 		"The number of elements in the collection self.";
@@ -508,7 +531,8 @@ public class OCLEditorPanel extends JPanel {
 			"size()${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>Collection(T)::includesAll(T2)(c2 : Collection(T2)) : Boolean</b><br><br>"+
 		"Does self contain all the elements of c2 ?";
 
@@ -517,7 +541,8 @@ public class OCLEditorPanel extends JPanel {
 			"includesAll(${Collection(T)})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>Collection(T)::excludesAll(T2)(c2 : Collection(T2)) : Boolean</b><br><br>"+
 		"Does self contain none of the elements of c2 ?";
 
@@ -526,6 +551,7 @@ public class OCLEditorPanel extends JPanel {
 			"excludesAll(${Collection(T)})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "Operation <b>Collection(T)::includes(object : OclAny) : Boolean</b><br><br>"+
 		"True if object is an element of self, false otherwise.";
@@ -535,7 +561,8 @@ public class OCLEditorPanel extends JPanel {
 			"includes(${Collection(T))${cursor}",
 			null, description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>Collection(T)::excludes(object : OclAny) : Boolean</b><br><br>"+
 		"True if object is not an element of self, false otherwise.";
 		
@@ -544,6 +571,7 @@ public class OCLEditorPanel extends JPanel {
 			"excludes(${object})${cursor}",
 			null, description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "Operation <b>Collection(T)::isEmpty() : Boolean</b><br><br>"+
 		"Is self the empty collection?"+"<br><br>"+ 
@@ -554,6 +582,7 @@ public class OCLEditorPanel extends JPanel {
 			"isEmpty()${cursor}",
 			null,description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "Operation <b>Collection(T)::notEmpty() : Boolean</b><br><br>"+
 		"Is self not the empty collection?"+"<br><br>"+ 
@@ -564,6 +593,7 @@ public class OCLEditorPanel extends JPanel {
 			"notEmpty()${cursor}",
 			null,description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "Operation <b>Collection(T)::asSet() : Set(T)</b><br><br>"+
 		"The Set containing all the elements from self, with duplicates removed.";
@@ -573,7 +603,8 @@ public class OCLEditorPanel extends JPanel {
 			"asSet()${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>Set(T)::union(s : Collection(T)) : Set(T)</b><br><br>"+
 		"The set consisting of all elements in self and all elements in s.";
 
@@ -582,6 +613,7 @@ public class OCLEditorPanel extends JPanel {
 			"union(${Collection(T)})${cursor}",
 			null, description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "Operation <b>Set(T)::intersection(s : Collection(T)) : Set(T)</b><br><br>"+
 		"The intersection of self and s (i.e., the set of all elements that are in both self and s).";
@@ -591,7 +623,8 @@ public class OCLEditorPanel extends JPanel {
 			"intersection${Collection(T)})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>Set(T)::including(object : T) : Set(T)</b><br><br>"+
 		"The set containing all elements of self plus object.";
 
@@ -600,6 +633,7 @@ public class OCLEditorPanel extends JPanel {
 			"including(${object})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "Operation <b>Set(T)::excluding(object : OclAny) : Set(T)</b><br><br>"+
 		"The set containing all elements of self without object.";
@@ -609,7 +643,8 @@ public class OCLEditorPanel extends JPanel {
 			"excluding(${object})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>UniqueCollection(T)::symmetricDifference(s : UniqueCollection(OclAny)) : Set(T)</b><br><br>"+
 		"The set containing all the elements that are in self or s, but not in both.";
 
@@ -618,7 +653,8 @@ public class OCLEditorPanel extends JPanel {
 			"symmetricDifference(${UniqueCollection(OclAny)})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>Set(T)::-(s : UniqueCollection(OclAny)) : Set(T)</b><br><br>"+
 		"The elements of self, which are not in s.";
 				
@@ -627,6 +663,7 @@ public class OCLEditorPanel extends JPanel {
 			"- ${UniqueCollection(OclAny)} ${cursor}",
 			null,description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "Operation <b>Collection(T)::sum() : T</b><br><br>"+
 		
@@ -643,6 +680,7 @@ public class OCLEditorPanel extends JPanel {
 			"sum()${cursor}",
 			null,description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "Operation <b>Collection(T)::product(T2)(c2 : Collection(T2)) : Set(Tuple(first : T, second : T2))</b><br><br>"+
 		"The cartesian product operation of self and c2.";
@@ -652,6 +690,7 @@ public class OCLEditorPanel extends JPanel {
 			"product(${Collection(T)})${cursor}",
 			null, description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "Operation <b>Set(T)::flatten(T2)() : Set(T2)</b><br><br>"+
 		"Redefines the Collection operation. If the element type is not a collection type, " +
@@ -663,6 +702,7 @@ public class OCLEditorPanel extends JPanel {
 			"flatten()${cursor}",
 			null, description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "Operation <b>Collection(T)::count(object : OclAny) : Integer</b><br><br>"+
 		"The number of times that object occurs in the collection self.";
@@ -672,10 +712,11 @@ public class OCLEditorPanel extends JPanel {
 			"count(${object})${cursor}",
 			null, description);		
 		provider.addCompletion(c);		
+		oclCompletionList.add(c);
 	}
 	
 	/** Iterator Completion */
-	public void createIteratorCompletion(DefaultCompletionProvider provider)
+	public void createIteratorCompletion()
 	{
 		String description = "Iteration <b>Collection(T)::exists(j : T, i : T | body : Lambda T() : Boolean) : Boolean</b>";
 		
@@ -684,7 +725,8 @@ public class OCLEditorPanel extends JPanel {
 			"exists(${i,j:T} | ${body})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Iteration <b>Collection(T)::forAll(i : T, j : T | body : Lambda T() : Boolean) : Boolean</b>";
 		
 		c = new OCLTemplateCompletion(provider, 
@@ -692,7 +734,8 @@ public class OCLEditorPanel extends JPanel {
 			"forAll(${i,j:T} | ${body})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Iteration <b>Collection(T)::one(i : T | body : Lambda T() : Boolean) : Boolean</b><br><br>"+
 		"Results in true if there is exactly one element in the source collection for which body is true.";
 
@@ -701,7 +744,8 @@ public class OCLEditorPanel extends JPanel {
 			"one(${i:T} | ${body})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Iteration <b>Set(T)::select(i : T | body : Lambda T() : Boolean) : Set(T)</b><br><br>"+
 		"The subset of set for which expr is true.";
 
@@ -710,7 +754,8 @@ public class OCLEditorPanel extends JPanel {
 			"select(${i:T} | ${body})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Iteration <b>Set(T)::reject(i : T | body : Lambda T() : Boolean) : Set(T)</b><br><br>"+
 		"The subset of the source set for which body is false.";
 
@@ -719,7 +764,8 @@ public class OCLEditorPanel extends JPanel {
 			"reject(${i:T} | ${body})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-	
+		oclCompletionList.add(c);
+		
 		description = "Iteration <b>Bag(T)::closure(i : T | body : Lambda T() : Set(T)) : Set(T)</b><br><br>"+
 		"The closure of applying body transitively to every distinct element of the source collection";
 
@@ -728,7 +774,8 @@ public class OCLEditorPanel extends JPanel {
 			"closure(${i:T} | ${body})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-			
+		oclCompletionList.add(c);
+		
 		description = "Iteration <b>Collection(T)::isUnique(i : T | body : Lambda T() : OclAny) : Boolean</b><br><br>"+
 		"Results in true if body evaluates to a different value for each element in the source collection; " +
 		"otherwise, result is false.";
@@ -738,7 +785,8 @@ public class OCLEditorPanel extends JPanel {
 			"isUnique(${i:T} | ${body})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Iteration <b>Bag(T)::collect(V)(i : T | body : Lambda T() : V) : Bag(V)</b>";
 		
 		c = new OCLTemplateCompletion(provider, 
@@ -746,6 +794,7 @@ public class OCLEditorPanel extends JPanel {
 			"collect(${i:T} | ${body})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		description = "Iteration <b>Collection(T)::any(i : T | body : Lambda T() : Boolean) : T</b><br><br>"+
 		"Returns any element in the source collection for which body evaluates to true. If there is more than one " +
@@ -757,11 +806,11 @@ public class OCLEditorPanel extends JPanel {
 			"any(${i:T} | ${body})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
 	}
 
 	/** Integer Completion */
-	public void createIntegerCompletion(DefaultCompletionProvider provider)
+	public void createIntegerCompletion()
 	{
 		String description = new String();
 		
@@ -773,7 +822,8 @@ public class OCLEditorPanel extends JPanel {
 			"max(${Integer})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-			
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>Integer::min(i : OclSelf) : Integer</b><br><br>"+
 		"The minimum of self an i.";
 
@@ -782,7 +832,8 @@ public class OCLEditorPanel extends JPanel {
 			"min(${Integer})${cursor}",
 			null, description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>Integer::abs() : Integer</b><br><br>"+
 		"The absolute value of self.";
 
@@ -791,7 +842,8 @@ public class OCLEditorPanel extends JPanel {
 			"abs()${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>Real::floor() : Integer</b><br><br>"+
 		"The largest integer that is less than or equal to self";
 
@@ -800,7 +852,8 @@ public class OCLEditorPanel extends JPanel {
 			"floor()${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>Real::round() : Integer</b><br><br>"+
 		"The integer that is closest to self. When there are two such integers, the largest one.";
 
@@ -809,16 +862,18 @@ public class OCLEditorPanel extends JPanel {
 			"round()${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
-		description = "Operation <b>Integer::+(i : OclSelf) : Integer</b><br><br>"+
-		"The value of the addition of self and i.";
-
+		oclCompletionList.add(c);
+		
+//		description = "Operation <b>Integer::+(i : OclSelf) : Integer</b><br><br>"+
+//		"The value of the addition of self and i.";
+//
 //		c = new OCLTemplateCompletion(provider, 
 //			"+","+",
 //			"+ ${<Integer>} ${cursor}",
 //			null, description);		
 //		provider.addCompletion(c);
-//			
+//		oclCompletionList.add(c);
+//		
 //		description = "Operation <b>Integer::*(i : OclSelf) : Integer</b><br><br>"+
 //		"The value of the multiplication of self and i.";
 //
@@ -827,6 +882,7 @@ public class OCLEditorPanel extends JPanel {
 //			"* ${<Integer>} ${cursor}",
 //			null, description);		
 //		provider.addCompletion(c);
+//		oclCompletionList.add(c);
 //		
 //		description = "Operation <b>Integer::-() : Integer</b><br><br>"+
 //		"The negative value of self.";
@@ -836,42 +892,48 @@ public class OCLEditorPanel extends JPanel {
 //			"- ${<Integer>} ${cursor}",
 //			null, description);		
 //		provider.addCompletion(c);
+//		oclCompletionList.add(c);
 //		
 //		c = new OCLTemplateCompletion(provider, 
 //			">",">",
 //			"> ${<Integer>} ${cursor}",
 //			null, description);		
 //		provider.addCompletion(c);
-//
+//		oclCompletionList.add(c);
+//		
 //		c = new OCLTemplateCompletion(provider, 
 //			">=",">=",
 //			">= ${<Integer>} ${cursor}",
 //			null,
 //			description);		
 //		provider.addCompletion(c);
+//		oclCompletionList.add(c);
 //		
 //		c = new OCLTemplateCompletion(provider, 
 //			"<=","<=",
 //			"<= ${<Integer>} ${cursor}",
 //			null,description);		
 //		provider.addCompletion(c);
+//		oclCompletionList.add(c);
 //		
 //		c = new OCLTemplateCompletion(provider, 
 //			"<","<",
 //			"< ${<Integer>} ${cursor}",
 //			null, description);		
 //		provider.addCompletion(c);
-//
+//		oclCompletionList.add(c);
+//		
 //		c = new OCLTemplateCompletion(provider, 
 //			"-","subtraction",
 //			"- ${<Integer>} ${cursor}",
 //			null, description);		
 //		provider.addCompletion(c);
+//		oclCompletionList.add(c);
 
 	}
 	
 	/** Boolean Completion */
-	public void createBooleanCompletion(DefaultCompletionProvider provider)
+	public void createBooleanCompletion()
 	{
 		String description = new String();
 		
@@ -880,29 +942,34 @@ public class OCLEditorPanel extends JPanel {
 			"or ${OCLExpression} ${cursor}",
 			null,description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		c = new OCLTemplateCompletion(provider, 
 			"and","and",
 			"and ${OCLExpression} ${cursor}",
 			null, description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		c = new OCLTemplateCompletion(provider, 
 			"not","not",
 			"not ${OCLExpression} ${cursor}",
 			null, description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		c = new OCLTemplateCompletion(provider, 
 			"implies","implies",
 			"implies ${OCLExpression} ${cursor}",
 			null, description);		
 		provider.addCompletion(c);
-
+		oclCompletionList.add(c);
+		
 		c = new OCLTemplateCompletion(provider, 
 			"xor","xor",
 			"xor ${OCLExpression} ${cursor}",
 			null,description);		
 		provider.addCompletion(c);
+		oclCompletionList.add(c);
 	}	
 }
