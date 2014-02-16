@@ -19,28 +19,10 @@ public class NodeAction extends NodeAssistant {
 		return action;
 	}
 
-	/*
-	 * This method considers the action to be taken
-	 * */
 	@Override
 	public NodeAssistant getNextNode() {
-		boolean returnAction = false;
-		System.out.println("running action");
-		switch (action) {
-		case  EXIST_SOME_ULTIMATE_SORTAL:
-			returnAction = graph.getManagerPattern().getActionProcessor().existSomeSubstanceSortal();
-			break;
-		/*case CONNECT_LAST_CLASSES:
-			break;
-		case EXIST_SOME_CATEGORY_OR_MIXIN:
-			break;
-		case EXIST_SOME_ULTIMATE_SORTAL_OR_SUBKIND:
-			break;*/
-		default:
-			returnAction = true;
-			break;
-		}
-
+		boolean	returnAction = graph.getManagerPattern().getActionProcessor().process(action);
+		
 		/*
 		 * The currentNode attribute will be set by its 
 		 * respectively method
