@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -28,6 +29,8 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import RefOntoUML.Enumeration;
+import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
@@ -82,14 +85,16 @@ public class OCLEditorPanel extends JPanel {
 	   {
 		   addCompletion(oc);
 	   }
-	   for(RefOntoUML.Property p: refparser.getAllInstances(RefOntoUML.Property.class))
+	   for(RefOntoUML.DataType oc: refparser.getAllInstances(RefOntoUML.DataType.class))
 	   {
-		   if (p.getAssociation()==null) addCompletion(p);		   
+		   if ((!(oc instanceof PrimitiveType)) && (!(oc instanceof Enumeration))){
+			   addCompletion(oc);
+		   }
 	   }
 	   for(RefOntoUML.Association p: refparser.getAllInstances(RefOntoUML.Association.class))
 	   {
 		   addCompletion(p);
-	   }   	   
+	   }
    }
    
    public void addCompletion(RefOntoUML.Association p)
@@ -99,19 +104,43 @@ public class OCLEditorPanel extends JPanel {
 	   }
    }   
    
+   public String getStereotype(EObject element)
+   {
+		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+	    type = type.replaceAll("Impl","");
+	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
+	    type = type.replace("Association","");
+	    return type;
+   }
+   
    public void addCompletion(RefOntoUML.Property p)
    {
 	   if ((p.getName()!=null)&&!(p.getName().isEmpty())&&(p.getType()!=null))
 	   {		   		   
-		   String type = p.getType().getName();
-		   String returnType = type;
-		   if ((p.getUpper()>1)||(p.getUpper()==-1)) returnType = "Set("+type+")";
+		   String description = new String();
+		   String owner = new String();
+		   String multiplicity = new String();
+		   
+		   if (p.getAssociation()!=null) 
+			   owner=getStereotype(p.getAssociation())+" "+p.getAssociation().getName();
+		   else if (p.getAssociation()==null && p.getOwner()!=null)
+			   owner = getStereotype(p.getOwner())+" "+((RefOntoUML.NamedElement)p.getOwner()).getName();
+		   else
+			   owner = getStereotype(p.eContainer())+" "+((RefOntoUML.NamedElement)p.eContainer()).getName();
+		   
+		   if (p.getLower()==p.getUpper() && p.getUpper()!=-1) multiplicity = Integer.toString(p.getLower());
+			else if (p.getLower()==p.getUpper() && p.getUpper()==-1) multiplicity = "*";
+			else if (p.getUpper()==-1) multiplicity = p.getLower()+".."+"*";
+			else multiplicity = p.getLower()+".."+p.getUpper();
+		   
+		   description = "<b>Property "+p.getName()+": "+p.getType().getName()+" ["+multiplicity+"] </b><br><br>" +
+		   	"Owner: "+owner;
 		   
 		   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
 				p.getName(),p.toString().substring(0,p.toString().indexOf(" ")),
 				"_'"+p.getName()+"'",
-				returnType,
-				"<b>Should be more of a description here...</b>");		
+				p.getType().getName()+" ["+multiplicity+"]"
+				,description);		
 		    provider.addCompletion(c);
 		    modelCompletionList.add(c);
 	   }	   
@@ -119,11 +148,15 @@ public class OCLEditorPanel extends JPanel {
    
    public void addCompletion(RefOntoUML.Type oc)
    {	   
+	   String description = new String();
+	   
+	   description = "<b>"+getStereotype(oc)+" "+oc.getName()+"</b>";
+			   
 	   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
 			oc.getName(),oc.toString().substring(0,oc.toString().indexOf(" ")),
 			"_'"+oc.getName()+"'",
 			null,
-			"<b>Should be more of a description here...</b>");		
+			description);		
 	    provider.addCompletion(c);
 	    modelCompletionList.add(c);
 	    
@@ -722,6 +755,18 @@ public class OCLEditorPanel extends JPanel {
 			"collect(${i:T} | ${body})${cursor}",
 			null,description);		
 		provider.addCompletion(c);
+		
+		description = "Iteration <b>Collection(T)::any(i : T | body : Lambda T() : Boolean) : T</b><br><br>"+
+		"Returns any element in the source collection for which body evaluates to true. If there is more than one " +
+		"element for which body is true, one of them is returned. There must be at least one element fulfilling body, " +
+		"otherwise the result of this IteratorExp is null.";
+		
+		c = new OCLTemplateCompletion(provider, 
+			"any","any",
+			"any(${i:T} | ${body})${cursor}",
+			null,description);		
+		provider.addCompletion(c);
+
 	}
 
 	/** Integer Completion */

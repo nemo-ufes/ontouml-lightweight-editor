@@ -59,7 +59,8 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("collect")||
 			tc.getDefinitionString().equals("isUnique")||
 			tc.getDefinitionString().equals("closure")||
-			tc.getDefinitionString().equals("one")
+			tc.getDefinitionString().equals("one")||
+			tc.getDefinitionString().equals("any")
 		   ){
 			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/resources/br/ufes/inf/nemo/ocl/editor/operation.gif")));
 		}else
