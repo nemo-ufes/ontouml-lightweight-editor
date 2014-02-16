@@ -307,6 +307,8 @@
         eType="#//Coordenada%20Geográfica" eOpposite="#//Coordenada%20Geográfica/ponto%20espacial"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Região Política" abstract="true" eSuperTypes="#//Elemento%20Espacial"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Class10"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Class34"/>
   <eClassifiers xsi:type="ecore:EClass" name="Imóvel" abstract="true" eSuperTypes="#//Elemento%20Espacial">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="dimensão" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -339,6 +341,4 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="imóvel" lowerBound="1"
         upperBound="-1" eType="#//Imóvel" eOpposite="#//Imóvel/cartório"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Class10"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Class34"/>
 </ecore:EPackage>

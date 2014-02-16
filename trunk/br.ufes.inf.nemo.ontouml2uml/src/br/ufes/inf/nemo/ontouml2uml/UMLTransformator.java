@@ -7,6 +7,8 @@ import org.eclipse.emf.ecore.EObject;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /**
+ * This class reads every OntoUML element to be transformed and run the UML converter to generate its UML counterpart.
+ * 
  * @author John Guerson
  *
  */
@@ -18,14 +20,12 @@ public class UMLTransformator {
 	private org.eclipse.uml2.uml.Package umlRootModel;
 	
 	private HashMap <RefOntoUML.Package,org.eclipse.uml2.uml.Package> packagesMap;
-	private boolean ignorePackageHierarchy = false;	
-	private boolean ignoreDerivation = true;	
+	private OntoUML2UMLOption options;
 	
-	public UMLTransformator(OntoUMLParser refparser, boolean ignorePackageHierarchy, boolean ignoreDerivation)  
+	public UMLTransformator(OntoUMLParser refparser, OntoUML2UMLOption opt)  
     { 
 		this.refparser = refparser;
-		this.ignorePackageHierarchy = ignorePackageHierarchy;
-		this.ignoreDerivation = ignoreDerivation;
+		this.options=opt;
     	uconverter = new UMLElementConverter();  
     	packagesMap = new HashMap<RefOntoUML.Package,org.eclipse.uml2.uml.Package>(); 
     }
@@ -77,7 +77,7 @@ public class UMLTransformator {
             	org.eclipse.uml2.uml.Package umlpackage;
         		String name = ((RefOntoUML.Package)refmodel).getName();
         		
-        		if (!ignorePackageHierarchy) 
+        		if (!options.isIgnorePackageHierarchy()) 
         		{        	
         			umlpackage = umlmodel.createNestedPackage(name);        			   	            		
         		}else {
@@ -106,7 +106,7 @@ public class UMLTransformator {
 	            	boolean isAbstract = ((RefOntoUML.Class)elem).isIsAbstract();
             		String name = ((RefOntoUML.Class)elem).getName();
             		
-	            	if (!ignorePackageHierarchy) 
+	            	if (!options.isIgnorePackageHierarchy()) 
 	           		{
 	            		org.eclipse.uml2.uml.Class umlclass = umlmodel.createOwnedClass(name, isAbstract);
 	           			uconverter.DealClass( (RefOntoUML.Class) elem, umlclass);	           			
@@ -158,7 +158,7 @@ public class UMLTransformator {
 	            {
 					 String name = ((RefOntoUML.PrimitiveType)elem).getName();
 					 
-	                 if (!ignorePackageHierarchy) 
+	                 if (!options.isIgnorePackageHierarchy()) 
 	                 {
 	                	 org.eclipse.uml2.uml.PrimitiveType dt2 = umlmodel.createOwnedPrimitiveType(name);
 	                	 uconverter.DealPrimitiveType(((RefOntoUML.PrimitiveType)elem),dt2);
@@ -187,7 +187,7 @@ public class UMLTransformator {
 	            {
 					 String name = ((RefOntoUML.Enumeration)elem).getName();
 	                 	                 
-	                 if (!ignorePackageHierarchy)
+	                 if (!options.isIgnorePackageHierarchy())
 	                 {
 	                	 org.eclipse.uml2.uml.Enumeration dt2 = umlmodel.createOwnedEnumeration(name);
 	                	 uconverter.DealEnumeration ((RefOntoUML.Enumeration) elem,dt2);
@@ -216,7 +216,7 @@ public class UMLTransformator {
 	            {
 	                 org.eclipse.uml2.uml.DataType dt2 = uconverter.DealDataType ((RefOntoUML.DataType) elem);
 	                 
-	                 if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(dt2);
+	                 if (!options.isIgnorePackageHierarchy()) umlmodel.getPackagedElements().add(dt2);
 		           	 else this.umlRootModel.getPackagedElements().add(dt2);                               
 	            }
 	        }
@@ -233,12 +233,12 @@ public class UMLTransformator {
 	        
 			for (EObject elem : refmodel.eContents())
 	        {        	
-				if(elem instanceof RefOntoUML.Derivation && refparser.isSelected(elem) && !ignoreDerivation)
+				if(elem instanceof RefOntoUML.Derivation && refparser.isSelected(elem) && !options.isIgnoreDerivation())
 				{
 					org.eclipse.uml2.uml.Association assoc = uconverter.DealAssociation ((RefOntoUML.Association) elem);					
 					if(assoc!=null)
 					{
-						if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(assoc);
+						if (!options.isIgnorePackageHierarchy()) umlmodel.getPackagedElements().add(assoc);
 						else this.umlRootModel.getPackagedElements().add(assoc);
 					}
 					
@@ -247,7 +247,7 @@ public class UMLTransformator {
 					org.eclipse.uml2.uml.Association assoc = uconverter.DealAssociation ((RefOntoUML.Association) elem);
 					if(assoc!=null)
 					{
-						if (!ignorePackageHierarchy ) umlmodel.getPackagedElements().add(assoc);
+						if (!options.isIgnorePackageHierarchy() ) umlmodel.getPackagedElements().add(assoc);
 						else this.umlRootModel.getPackagedElements().add(assoc);
 					}
 				}
@@ -289,7 +289,7 @@ public class UMLTransformator {
 				{
 					org.eclipse.uml2.uml.GeneralizationSet gs2 = uconverter.DealGeneralizationSet ((RefOntoUML.GeneralizationSet) elem);        
 					
-					if (!ignorePackageHierarchy) umlmodel.getPackagedElements().add(gs2);
+					if (!options.isIgnorePackageHierarchy()) umlmodel.getPackagedElements().add(gs2);
 		           	else this.umlRootModel.getPackagedElements().add(gs2);					
 				}
 	        }

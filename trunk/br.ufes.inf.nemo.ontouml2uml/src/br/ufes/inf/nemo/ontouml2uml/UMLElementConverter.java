@@ -6,6 +6,10 @@ import java.util.Map.Entry;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 
 /**
+ * This class transforms each OntoUML element into the equivalent UML element. 
+ * We record each pair (OntoUML element, UML element) into a hash map.
+ * We also follow the UML metamodel structure in transformation whenever is possible.
+ * 
  * @author John Guerson
  *
  */

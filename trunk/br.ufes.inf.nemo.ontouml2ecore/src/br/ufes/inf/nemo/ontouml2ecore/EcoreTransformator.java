@@ -12,6 +12,8 @@ import org.eclipse.emf.ecore.EPackage;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /**
+ * This class reads every OntoUML element to be transformed and run the Ecore converter to generate its Ecore counterpart.
+ * 
  * @author John Guerson
  */
 
@@ -22,14 +24,12 @@ public class EcoreTransformator {
 	private EPackage ecoreRootModel;
 	
 	private HashMap <RefOntoUML.Package, EPackage> epackagesMap;
-	private boolean ignorePackageHierarchy = false;	
-	private boolean ignoreDerivation = true;	 
+	private OntoUML2EcoreOption options;
 		
-	public EcoreTransformator(OntoUMLParser refparser, boolean ignorePackageHierarchy, boolean ignoreDerivation)  
+	public EcoreTransformator(OntoUMLParser refparser, OntoUML2EcoreOption opt)  
     { 
 		this.refparser = refparser;
-		this.ignorePackageHierarchy = ignorePackageHierarchy;
-		this.ignoreDerivation = ignoreDerivation;	 
+		this.options=opt;
     	econverter = new EcoreElementConverter(this);  
     	epackagesMap = new HashMap<RefOntoUML.Package, EPackage>();
     }
@@ -87,7 +87,7 @@ public class EcoreTransformator {
         		
         		epackagesMap.put((RefOntoUML.Package)obj, ecorepackage);
         		
-        		if (!ignorePackageHierarchy) ecoremodel.getESubpackages().add(ecorepackage);        		
+        		if (!options.isIgnorePackageHierarchy()) ecoremodel.getESubpackages().add(ecorepackage);        		
         		
         		TransformingPackages((RefOntoUML.Package)obj,ecorepackage);
             }
@@ -109,7 +109,7 @@ public class EcoreTransformator {
             		EClass ecoreclass = org.eclipse.emf.ecore.EcoreFactory.eINSTANCE.createEClass();           		
             		econverter.convertEClass((RefOntoUML.Class) elem, ecoreclass);
             		
-	            	if (!ignorePackageHierarchy) ecoremodel.getEClassifiers().add(ecoreclass);
+	            	if (!options.isIgnorePackageHierarchy()) ecoremodel.getEClassifiers().add(ecoreclass);
 	            	else this.ecoreRootModel.getEClassifiers().add(ecoreclass);
 	            }
 	        }
@@ -130,7 +130,7 @@ public class EcoreTransformator {
 	            {
 					EClass dt2 = org.eclipse.emf.ecore.EcoreFactory.eINSTANCE.createEClass();
 					econverter.convertEDataType ((RefOntoUML.DataType) elem,dt2);
-	                if (!ignorePackageHierarchy) ecoremodel.getEClassifiers().add(dt2);	                 
+	                if (!options.isIgnorePackageHierarchy()) ecoremodel.getEClassifiers().add(dt2);	                 
 		           	else this.ecoreRootModel.getEClassifiers().add(dt2);					
 	            }
 	        }
@@ -152,7 +152,7 @@ public class EcoreTransformator {
 					 EEnum dt2 = org.eclipse.emf.ecore.EcoreFactory.eINSTANCE.createEEnum();  
 					 econverter.convertEEnum((RefOntoUML.Enumeration) elem,dt2);
 					 
-					 if (!ignorePackageHierarchy) ecoremodel.getEClassifiers().add(dt2);	                 
+					 if (!options.isIgnorePackageHierarchy()) ecoremodel.getEClassifiers().add(dt2);	                 
 		           	 else this.ecoreRootModel.getEClassifiers().add(dt2);           
 	            }
 	        }
@@ -191,7 +191,7 @@ public class EcoreTransformator {
 	        
 			for (EObject elem : refmodel.eContents())
 	        {
-				if(elem instanceof RefOntoUML.Derivation && refparser.isSelected(elem) && !ignoreDerivation)
+				if(elem instanceof RefOntoUML.Derivation && refparser.isSelected(elem) && !options.isIgnoreDerivation())
 				{
 					econverter.convertEReference((RefOntoUML.Association) elem);					
 					

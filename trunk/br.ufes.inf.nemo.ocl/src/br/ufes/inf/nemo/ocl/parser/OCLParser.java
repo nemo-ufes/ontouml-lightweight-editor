@@ -18,6 +18,7 @@ import org.eclipse.uml2.uml.Constraint;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
+import br.ufes.inf.nemo.ontouml2uml.OntoUML2UMLOption;
 
 /**
  * @author John Guerson
@@ -68,7 +69,7 @@ public class OCLParser {
     	if (tempDirPath.endsWith(File.separator)) umlPath += tempDirPath + backgroundModelName + ".uml";
     	else umlPath += tempDirPath + File.separator + backgroundModelName + ".uml";
     	
-    	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,true,false);		
+    	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false,false));		
     	umlHashMap = OntoUML2UML.getMap();
     	logDetails = OntoUML2UML.getLog();
     	    	
@@ -113,7 +114,7 @@ public class OCLParser {
     	if (tempDirPath.endsWith(File.separator)) umlPath += tempDirPath + backgroundModelName + ".uml";
     	else umlPath += tempDirPath + File.separator + backgroundModelName + ".uml";
     	
-    	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,true,false);		
+    	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false,false));		
     	umlHashMap = OntoUML2UML.getMap();
     	logDetails = OntoUML2UML.getLog();
     	    	
@@ -144,7 +145,7 @@ public class OCLParser {
 	{ 			
     	this.refparser = new OntoUMLParser(refAbsolutePath);
     	
-    	umlResource = OntoUML2UML.convertToUML(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),true,false);		
+    	umlResource = OntoUML2UML.convertToUML(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),new OntoUML2UMLOption(true,false,false));		
     	umlHashMap = OntoUML2UML.getMap();
     	logDetails = OntoUML2UML.getLog();
 		
