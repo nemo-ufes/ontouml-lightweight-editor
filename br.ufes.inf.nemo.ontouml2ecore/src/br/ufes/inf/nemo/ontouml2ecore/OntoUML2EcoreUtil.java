@@ -15,6 +15,9 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
 /**
+ * 
+ * This class has both methods: reading and recording UML models into resources.
+ * 
  * @author John Guerson
  */
 

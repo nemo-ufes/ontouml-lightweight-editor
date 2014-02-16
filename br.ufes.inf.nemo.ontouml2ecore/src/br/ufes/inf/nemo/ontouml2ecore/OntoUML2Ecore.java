@@ -9,33 +9,37 @@ import org.eclipse.emf.ecore.resource.Resource;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /**
+ * This class transforms OntoUML models into Ecore models. It simply ignores the stereotypes of classes and relations.
+ * The user can optionally ignore the package hierarchy or the derivation relationship in the transformation.
+ * 
  * @author John Guerson
  */
-
 public class OntoUML2Ecore {
 	  
-	private static EcoreTransformator etransformer;	
-	private static OntoUMLParser refparser;
 	public static String log = new String();
+	private static EcoreTransformator etransformer;
+	private static OntoUML2EcoreOption options;
+	private static OntoUMLParser refparser;
 	
 	public static Resource convertToEcore (RefOntoUML.Package refmodel, String ecorePath)
 	{
-		return convertToEcore(refmodel, ecorePath, false, true);
+		return convertToEcore(refmodel, ecorePath, new OntoUML2EcoreOption(false, true));
 	}
 	
 	public static Resource convertToEcore (OntoUMLParser refparser, String ecorePath)
 	{
-		return convertToEcore(refparser, ecorePath, false, true);
+		return convertToEcore(refparser, ecorePath, new OntoUML2EcoreOption(false, true));
 	}
 	
-	public static Resource convertToEcore (RefOntoUML.Package refmodel, String ecorePath, boolean ignorePackageHierarchy, boolean ignoreDerivation)
+	public static Resource convertToEcore (RefOntoUML.Package refmodel, String ecorePath, OntoUML2EcoreOption opt)
 	{
 		log="";
+		options=opt;
 		Resource ecoreResource = null;
 		
 		refparser = new OntoUMLParser(refmodel);
 		
-		etransformer = new EcoreTransformator(refparser,ignorePackageHierarchy, ignoreDerivation);			  
+		etransformer = new EcoreTransformator(refparser,options);			  
 		EPackage ecoremodel = etransformer.run();	
 			   
 		ecoreResource = OntoUML2EcoreUtil.saveEcore(ecorePath,ecoremodel);		   
@@ -43,13 +47,14 @@ public class OntoUML2Ecore {
 	}
 	
 	
-	public static Resource convertToEcore (OntoUMLParser ontoparser, String ecorePath, boolean ignorePackageHierarchy, boolean ignoreDerivation)
+	public static Resource convertToEcore (OntoUMLParser ontoparser, String ecorePath, OntoUML2EcoreOption opt)
 	{
 		log="";
+		options=opt;
 		Resource ecoreResource = null;
 		refparser = ontoparser;
 		
-		etransformer = new EcoreTransformator(refparser,ignorePackageHierarchy,ignoreDerivation);			  
+		etransformer = new EcoreTransformator(refparser,options);			  
 		EPackage ecoremodel = etransformer.run();	
 			   
 		ecoreResource = OntoUML2EcoreUtil.saveEcore(ecorePath,ecoremodel);		   

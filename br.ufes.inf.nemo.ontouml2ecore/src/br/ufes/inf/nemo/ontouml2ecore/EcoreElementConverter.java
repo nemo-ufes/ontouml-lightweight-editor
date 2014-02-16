@@ -22,6 +22,10 @@ import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.PrimitiveType;
 
 /**
+ * This class transforms each OntoUML element into the equivalent Ecore element. 
+ * We record each pair (OntoUML element, Ecore element) into a hash map.
+ * We also follow the Ecore metamodel structure in transformation whenever is possible.
+ * 
  * @author John Guerson
  */
 

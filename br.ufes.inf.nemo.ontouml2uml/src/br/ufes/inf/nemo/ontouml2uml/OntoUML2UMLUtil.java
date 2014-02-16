@@ -11,10 +11,12 @@ import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 
 /**
+ * 
+ * This class has both methods: reading and recording UML models into resources.
+ * 
  * @author John Guerson
  *
  */
-
 public class OntoUML2UMLUtil {
 
 	public static Resource saveUML (String umlpath, org.eclipse.uml2.uml.Package umlmodel) 
