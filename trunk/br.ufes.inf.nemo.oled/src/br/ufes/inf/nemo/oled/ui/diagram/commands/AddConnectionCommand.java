@@ -79,12 +79,17 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		this.parent = parent;
 		this.project = project;
 		this.notification = editorNotification;
-		if (notification==null) this.addToDiagram = false; else this.addToDiagram=true;
-		this.relationship = relationship;
-		this.eContainer = eContainer;
-		diagramElement = ModelHelper.getDiagramElement(relationship);
+		
+		if (notification==null) this.addToDiagram = false; 
+		else this.addToDiagram=true;
+		
+		this.relationship = relationship;		
 		source = aSource;
 		target = aTarget;
+		
+		this.eContainer = eContainer;
+		
+		diagramElement = ModelHelper.getDiagramElement(relationship);
 	}
 
 	/**
@@ -126,27 +131,12 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 */
 	public void run() {	    
 					
-		addToModel(relationship);		
+		addToModel();		
 		
-		if(addToDiagram && diagramElement != null){
-			
-			if (diagramElement instanceof BaseConnection) {				
-				BaseConnection connection = (BaseConnection) diagramElement;				
-				if (connection.getRelationship() instanceof GeneralizationImpl)
-				{
-					GeneralizationImpl generalization  = (GeneralizationImpl) connection.getRelationship();
-		    		generalization.setSpecific(source);
-		    		generalization.setGeneral(target);
-				}
-				else if(connection.getRelationship() instanceof AssociationImpl)
-				{
-					AssociationImpl association  = (AssociationImpl) connection.getRelationship();
-					association.getMemberEnd().get(0).setType(source);
-					association.getMemberEnd().get(1).setType(target);				
-				}
-				addToDiagram(diagramElement,redo);
-				ModelHelper.addMapping(relationship, diagramElement);
-			}			
+		if(addToDiagram && diagramElement != null)
+		{			
+			addToDiagram(redo);
+			ModelHelper.addMapping(relationship, diagramElement);						
 		}
 
 		ProjectBrowser.frame.getDiagramManager().updatedOLEDFromInclusion(relationship);
@@ -158,17 +148,35 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 * @param redo
 	 */
 	@SuppressWarnings("unused")
-	public void addToDiagram (DiagramElement element, boolean redo)
+	public void addToDiagram (boolean redo)
 	{
-		//Adds the element to the diagram
-		parent.addChild(element);
+		//set sides on the diagram element
+		if (diagramElement instanceof BaseConnection) {                         
+            BaseConnection connection = (BaseConnection) diagramElement;                            
+            if (connection.getRelationship() instanceof GeneralizationImpl)
+            {
+            	GeneralizationImpl generalization  = (GeneralizationImpl) connection.getRelationship();
+            	generalization.setSpecific(source);
+            	generalization.setGeneral(target);
+            }
+            else if(connection.getRelationship() instanceof AssociationImpl)
+            {
+                AssociationImpl association  = (AssociationImpl) connection.getRelationship();
+                association.getMemberEnd().get(0).setType(source);
+                association.getMemberEnd().get(1).setType(target);                              
+            }
+		}
 		
-		Relationship relationship = ((UmlConnection)element).getRelationship();
+		//add to diagram
+		parent.addChild(diagramElement);
 		
-		if (source instanceof Relationship || target instanceof Relationship)  element.invalidate(); // bug in designing. not best solution, but works.
+		// bug in designing. not best solution, but works.
+		Relationship relationship = ((UmlConnection)diagramElement).getRelationship();		
+		if (source instanceof Relationship || target instanceof Relationship)  diagramElement.invalidate(); 
 		
+		// notify change on the diagram
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		elements.add(element);
+		elements.add(diagramElement);
 		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
 	}
 	
@@ -176,25 +184,38 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 * Add a element to the model instance behind the scenes and updates the application accordingly.
 	 * @param elem
 	 */
-	public void addToModel(RefOntoUML.Element element)
+	public void addToModel()
 	{			
-		if (element instanceof Association){
-
-			if(eContainer==null){
-				AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), element);
-				project.getEditingDomain().getCommandStack().execute(cmd);
-			}else{				
-				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Package)eContainer).getPackagedElement(), element);
-				project.getEditingDomain().getCommandStack().execute(cmd);
-			}						
-			Property p1 = ((Association)element).getMemberEnd().get(0);
-			Property p2 = ((Association)element).getMemberEnd().get(1);
+		if (relationship instanceof Association){
+			
+			//set sides on the element
+			Property p1 = ((Association)relationship).getMemberEnd().get(0);
+			Property p2 = ((Association)relationship).getMemberEnd().get(1);
 			p1.setType(source);
 			p2.setType(target);
+			
+			// add to model
+			if(eContainer==null){
+				AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), relationship);
+				project.getEditingDomain().getCommandStack().execute(cmd);
+			}else{				
+				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Package)eContainer).getPackagedElement(), relationship);
+				project.getEditingDomain().getCommandStack().execute(cmd);
+			}			
 		}
-		if (element instanceof Generalization){			
-			((Generalization) element).setSpecific(source);
-			((Generalization) element).setGeneral(target);
+		if (relationship instanceof Generalization)
+		{	
+			//set sides on the element
+			((Generalization)relationship).setSpecific(source);
+			((Generalization)relationship).setSpecific(target);
+			
+			//add to model
+			if(source!=null){
+				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Classifier)source).getGeneralization(), (RefOntoUML.Generalization)relationship);
+				project.getEditingDomain().getCommandStack().execute(cmd);				
+			}
+						
 		}		
 	}
 }
+

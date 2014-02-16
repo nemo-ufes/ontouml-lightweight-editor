@@ -443,16 +443,7 @@ public class OCLEditorPanel extends JPanel {
 			"<> ${cursor}",
 			null, description);		
 		provider.addCompletion(c);
-		
-		description = "Operation <b>OclAny::oclAsSet() : Set(OclSelf)</b><br><br>"+
-		"Returns a Set with self as the sole content, unless self is null in which case returns an empty.";
-		
-		c = new OCLTemplateCompletion(provider, 
-			"oclAsSet","oclAsSet",
-			"oclAsSet()${cursor}",
-			null, description);		
-		provider.addCompletion(c);
-			
+	
 		description = "Operation <b>OclAny::oclAsType(T)(type : AnyClassifier(T)) : T</b><br><br>"+
 		
 		"Evaluates to self, where self is of the type identified by T. The type T may be any classifier " +

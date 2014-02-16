@@ -52,10 +52,8 @@ import org.eclipse.ocl.SemanticException;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
-import RefOntoUML.Comment;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
-import RefOntoUML.Property;
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
@@ -458,38 +456,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * @param element: added element on refontouml root instance.
 	 */
 	public void updatedOLEDFromInclusion(RefOntoUML.Element element)
-	{
+	{		
 		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
-
+				
 		// =================================
 		// OntoUML Parser
 		// =================================
 		ProjectBrowser.getParserFor(project).addElement(element);		
-		if (element instanceof Association)
-		{
-			Property p1 = ((Association)element).getMemberEnd().get(0);
-			Property p2 = ((Association)element).getMemberEnd().get(1);			
-			ProjectBrowser.getParserFor(project).addElement(p1); 	
-			ProjectBrowser.getParserFor(project).addElement(p2);
-		}
-		if(element instanceof RefOntoUML.Class)
-		{
-			for(Property p: ((RefOntoUML.Class)element).getOwnedAttribute()){
-				ProjectBrowser.getParserFor(project).addElement(p);
-			}
-			for(Comment c: ((RefOntoUML.Class)element).getOwnedComment()){
-				ProjectBrowser.getParserFor(project).addElement(c);
-			}			
-		}
-		if(element instanceof RefOntoUML.DataType)
-		{
-			for(Property p: ((RefOntoUML.DataType)element).getOwnedAttribute()){
-				ProjectBrowser.getParserFor(project).addElement(p);
-			}
-			for(Comment c: ((RefOntoUML.DataType)element).getOwnedComment()){
-				ProjectBrowser.getParserFor(project).addElement(c);
-			}			
-		}
 		
 		// =================================
 		// Project Tree

@@ -39,7 +39,6 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			
 		if (tc.getDefinitionString().equals("=")||
 			tc.getDefinitionString().equals("<>")||
-			tc.getDefinitionString().equals("oclAsSet")||
 			tc.getDefinitionString().equals("oclIsKindOf")||
 			tc.getDefinitionString().equals("oclIsTypeOf")||
 			tc.getDefinitionString().equals("oclAsType")||

@@ -117,14 +117,26 @@ public class OntoUMLParser {
 	 * But note that this new element must already have been added in the Model (i.e., in the root Package or file in which this parser was created). 
 	 */
 	public void addElement(EObject obj)
-	{		
-		ParsingElement e;
-		if(obj instanceof Comment) e= new ParsingElement(obj, true, "Comment"); 
-		else e= new ParsingElement(obj, true, nameHandler.treatName((NamedElement)obj));
-		
+	{				
+		// only add if it is not there already
 		if (this.elementsHash.get(obj)==null)
 		{
-			this.elementsHash.put(obj,e); // only add if it is not there already
+			if (obj instanceof RefOntoUML.Comment){
+				ParsingElement e = new ParsingElement(obj,true,"");
+				this.elementsHash.put(obj,e);
+				
+			}else if (obj instanceof RefOntoUML.Generalization){
+				
+				ParsingElement e = new ParsingElement(obj,true,"");
+				this.elementsHash.put(obj,e);
+				
+			}else if (obj instanceof RefOntoUML.Property){
+				ParsingElement e = new ParsingElement(obj,true,nameHandler.treatName((NamedElement)obj));
+				this.elementsHash.put(obj,e);
+				
+			}else if (obj instanceof PackageableElement){
+				addToElementsHashMap((PackageableElement)obj, nameHandler);
+			}
 		}				
 	}
 
@@ -137,8 +149,7 @@ public class OntoUMLParser {
 		ParsingElement e = elementsHash.get(obj);
 		if (e!=null) {
 			nameHandler.remove(e.getAlias());
-			this.elementsHash.remove(obj);
-			EcoreUtil.remove(obj);
+			this.elementsHash.remove(obj);			
 		}
 	}
 	
@@ -194,7 +205,7 @@ public class OntoUMLParser {
 		//Comments
 		for (Comment c: pe.getOwnedComment()) 
 		{
-			e = new ParsingElement(c, true, "Comment");
+			e = new ParsingElement(c, true, "");
 			this.elementsHash.put(c,e);
 		}
 		
@@ -211,35 +222,52 @@ public class OntoUMLParser {
 				this.elementsHash.put(g,e);
 			}
 			
-			//Attributes
-			for(Property p: ((Classifier)pe).getAttribute())
-			{				
-				e = new ParsingElement(p, true, h2.treatName(p));
-				this.elementsHash.put(p,e);
+			if (pe instanceof Class){			
+				//Attributes
+				for(Property p: ((Class)pe).getOwnedAttribute())
+				{				
+					e = new ParsingElement(p, true, h2.treatName(p));
+					this.elementsHash.put(p,e);				
+				}
+			}
+			if (pe instanceof DataType){			
+				//Attributes
+				for(Property p: ((DataType)pe).getOwnedAttribute())
+				{				
+					e = new ParsingElement(p, true, h2.treatName(p));
+					this.elementsHash.put(p,e);				
+				}
 			}
 		}
+		
 		//Association
 		else if(pe instanceof Association)
 		{
 			e = new ParsingElement(pe, true, h2.treatName(pe));
 			this.elementsHash.put(pe,e);
 			
-			//Property			
+			//Properties			
 			if(((Association)pe).getMemberEnd().size()>=1)
 			{
 				Property property0 = ((Association)pe).getMemberEnd().get(0);							
 				e = new ParsingElement(property0, true, h2.treatName(property0));
 				this.elementsHash.put(property0,e);
-			}
-			
+			}			
 			if(((Association)pe).getMemberEnd().size()>=2)
 			{
 				Property property1 = ((Association)pe).getMemberEnd().get(1);
 				e = new ParsingElement(property1, true, h2.treatName(property1));
 				this.elementsHash.put(property1,e);
 			}
-							
+			
+			//Generalization
+			for (Generalization g : ((Classifier)pe).getGeneralization()) 
+			{
+				e = new ParsingElement(g, true, "");
+				this.elementsHash.put(g,e);
+			}							
 		}
+		
 		//Enumeration
 		else if (pe instanceof Enumeration)
 		{
