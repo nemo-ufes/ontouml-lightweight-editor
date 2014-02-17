@@ -149,9 +149,9 @@ public ArrayList<DescriptionFunction> deleteMediations(Generalization gen){
 				for(DescriptionFunction medDown : down.getFunctions()){	
 						
 					sourceMed = medDown.getTarget();
-					
-					if (MedIheritance(sourceMed, targetMed))
-						noIheritanceMeds.add(medUp);				
+					if (MedIheritance(sourceMed, targetMed)){
+						noIheritanceMeds.add(medUp);		
+					}
 				}
 			
 			}
@@ -163,8 +163,9 @@ public ArrayList<DescriptionFunction> deleteMediations(Generalization gen){
 private boolean MedIheritance(DescriptionCategory sourceMed, DescriptionCategory targetMed) {
 	for(DescriptionFunction g :sourceMed.getFunctions()){
 		if(g instanceof Generalization)
-			if(g.getTarget().equals(targetMed))
+			if(g.getTarget().equals(targetMed)){
 				return true;
+			}
 	}
 	return false;
 }
@@ -181,8 +182,9 @@ public GeneralizationSet VerifyGeneralizationSet(List <DescriptionFunction> arra
 public void addMediations(List<DescriptionFunction> list, DescriptionCategory downCategory, ArrayList<DescriptionFunction> noIheritanceMeds){
 	for(DescriptionFunction m : list){
 		if(m instanceof Mediation){
-			if(  (!verifyEqualMediation(downCategory.getFunctions(),m)) && (!notAddMediation (noIheritanceMeds, m))  )
+			if(  (!verifyEqualMediation(downCategory.getFunctions(),m)) && (!notAddMediation (noIheritanceMeds, m))  ){
 				downCategory.getFunctions().add(m);
+			}
 		}
 	}
 }
@@ -198,8 +200,9 @@ private boolean notAddMediation(ArrayList<DescriptionFunction> noIheritanceMeds,
 
 public boolean verifyEqualMediation(List<DescriptionFunction> list ,DescriptionFunction m){
 	for(DescriptionFunction df : list){
-		if(df.equals(m))		//se a mediation ja existir
+		if(df.equals(m)){		//se a mediation ja existir
 			return true;
+		}
 	}
 	return false;
 }
@@ -745,7 +748,70 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 		}
 		if(r instanceof RefOntoUML.Mediation){	
 			
-			if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
+			if(source instanceof Relator && target instanceof Relator){
+				
+				if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
+					sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+
+					mat = new Mediation(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
+				}else{
+					sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+
+					mat = new Mediation(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
+				}
+				
+				source.getFunctions().add(mat);
+				target.getFunctions().add(mat);
+				generalizationSpace.getFunctions().add(mat);
+				return;
+			}
+			
+			if(source instanceof Relator){
+				if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
+					
+					sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+										
+					mat = new Mediation(((Association)r).getName(),source,target, sourceLower, sourceUpper, targetLower, targetUpper);
+				}
+				else{
+					sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+					sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+					targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+					targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+					
+					mat = new Mediation(((Association)r).getName(),source,target,targetLower, targetUpper, sourceLower, sourceUpper);
+
+				}
+			} else{
+					if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
+						sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+						sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+						targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+						targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+						
+						mat = new Mediation(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
+					}
+					else{
+						sourceLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(0));
+						sourceUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(0));
+						targetLower = findLowerMultiplicity(((Association) r).getMemberEnd().get(1));
+						targetUpper = findUpperMultiplicity(((Association) r).getMemberEnd().get(1));
+						
+						mat = new Mediation(((Association)r).getName(),target,source, sourceLower, sourceUpper, targetLower, targetUpper);
+
+					}				
+			}
+			
+		/*	if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
 				
 				sourceLower = ((Association) r).getMemberEnd().get(0).getLower();
 				sourceUpper = ((Association) r).getMemberEnd().get(0).getUpper();
@@ -753,6 +819,7 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 				targetLower = ((Association) r).getMemberEnd().get(1).getLower();
 				targetUpper = ((Association) r).getMemberEnd().get(1).getUpper();
 
+				System.out.println("Criei uma relação " + source.getLabel() +" --> "+ target.getLabel());
 				mat = new Mediation(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
 			
 			}else{
@@ -762,9 +829,10 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 				
 				targetLower = ((Association) r).getMemberEnd().get(0).getLower();
 				targetUpper = ((Association) r).getMemberEnd().get(0).getUpper();
+				System.out.println("Criei uma relação " + source.getLabel() +" --> "+ target.getLabel());
 
 				mat = new Mediation(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
-			}
+			}*/
 			
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
