@@ -260,6 +260,11 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			if (elem instanceof RefOntoUML.Comment) delete(elem);
 		}
 		
+		//then the constraints
+		for(Element elem: elemList){
+			if (elem instanceof RefOntoUML.Constraintx) delete(elem);
+		}
+				
 		//then the rest of relationships
 		for(Element elem: elemList) {				
 			if (elem instanceof RefOntoUML.Relationship) delete(elem);

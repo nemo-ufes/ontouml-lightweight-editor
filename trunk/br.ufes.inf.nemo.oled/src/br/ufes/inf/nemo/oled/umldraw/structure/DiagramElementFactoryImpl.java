@@ -31,6 +31,7 @@ import RefOntoUML.Characterization;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.Comment;
+import RefOntoUML.Constraintx;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.FormalAssociation;
@@ -48,6 +49,7 @@ import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
+import RefOntoUML.StringExpression;
 import RefOntoUML.SubKind;
 import RefOntoUML.VisibilityKind;
 import RefOntoUML.componentOf;
@@ -348,6 +350,16 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   {
 	  Comment c = factory.createComment();
 	  c.setBody("");
+	  return c;
+  }
+  
+  public Constraintx createConstraintx()
+  {
+	  Constraintx c = factory.createConstraintx();
+	  c.setName("");
+	  StringExpression expr = ModelHelper.getFactory().createStringExpression();
+	  expr.setSymbol("");
+	  c.setSpecification(expr);
 	  return c;
   }
   

@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Generalization;
 import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
+import RefOntoUML.StringExpression;
 
 /**
  * @author John Guerson
@@ -99,6 +100,16 @@ public class OntoUMLElement {
 				return type +" "+ ((RefOntoUML.Comment)element).getBody().substring(0,15)+" (...)";
 			else
 				return type +" "+ ((RefOntoUML.Comment)element).getBody();
+		}
+		
+		if (element instanceof RefOntoUML.Constraintx)
+		{
+			StringExpression expr = (StringExpression)((RefOntoUML.Constraintx)element).getSpecification();
+			
+			if(expr.getSymbol().length()>15)
+				return type +" "+ expr.getSymbol().substring(0,15)+" (...)";
+			else
+				return type +" "+ expr.getSymbol();
 		}
 		
 		if (element instanceof RefOntoUML.GeneralizationSet)
