@@ -20,6 +20,7 @@ import RefOntoUML.Characterization;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Comment;
+import RefOntoUML.Constraintx;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.Enumeration;
@@ -127,7 +128,7 @@ public class OntoUMLParser {
 			if (obj instanceof RefOntoUML.Comment){
 				ParsingElement e = new ParsingElement(obj,true,"");
 				this.elementsHash.put(obj,e);
-				
+			
 			}else if (obj instanceof RefOntoUML.Generalization){
 				
 				ParsingElement e = new ParsingElement(obj,true,"");
@@ -157,6 +158,12 @@ public class OntoUMLParser {
 			for (Comment c: ((PackageableElement)obj).getOwnedComment()) removeFromMap(c); 
 		} 
 			
+		// Constraintx
+		if (obj instanceof Constraintx) 
+		{ 
+			removeFromMap((Constraintx)obj); 
+		} 
+		
 		// Class and DataType
 		if (obj instanceof RefOntoUML.Class || ((obj instanceof DataType)&&!(obj instanceof PrimitiveType)&&!(obj instanceof Enumeration)))
 		{			
@@ -252,6 +259,13 @@ public class OntoUMLParser {
 		{
 			e = new ParsingElement(c, true, "");
 			this.elementsHash.put(c,e);
+		}
+		
+		//Constraintx
+		if(pe instanceof Constraintx)
+		{
+			e = new ParsingElement(pe, true, h2.treatName(pe));
+			this.elementsHash.put(pe,e);
 		}
 		
 		//Class and DataType
