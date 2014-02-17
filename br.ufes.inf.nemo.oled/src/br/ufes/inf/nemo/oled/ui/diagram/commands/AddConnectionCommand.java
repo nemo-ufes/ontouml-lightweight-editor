@@ -93,7 +93,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} - UNDO
 	 */
 	@Override
 	public void undo() {
@@ -117,7 +117,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} - REDO
 	 */
 	@Override
 	public void redo() {
@@ -127,7 +127,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} - RUN
 	 */
 	public void run() {	    
 					
@@ -148,7 +148,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	 * @param redo
 	 */
 	@SuppressWarnings("unused")
-	public void addToDiagram (boolean redo)
+	private void addToDiagram (boolean redo)
 	{
 		//set sides on the diagram element
 		if (diagramElement instanceof BaseConnection) {                         
@@ -177,14 +177,14 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		// notify change on the diagram
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(diagramElement);
-		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
+		notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);		
 	}
 	
 	/**
 	 * Add a element to the model instance behind the scenes and updates the application accordingly.
 	 * @param elem
 	 */
-	public void addToModel()
+	private void addToModel()
 	{			
 		if (relationship instanceof Association){
 			

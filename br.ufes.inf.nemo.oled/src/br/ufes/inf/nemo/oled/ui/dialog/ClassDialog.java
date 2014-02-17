@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -56,6 +57,7 @@ public class ClassDialog extends JDialog{
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(null);
+		
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
 		JPanel panel = new JPanel();
@@ -99,6 +101,10 @@ public class ClassDialog extends JDialog{
 		tabbedPane.addTab("Class",classEdition);		
 		tabbedPane.addTab("Attributes",attributesEdition);
 		tabbedPane.addTab("Comments",commentsEdition);
+		
+		tabbedPane.setIconAt(0, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/class.png")));
+		tabbedPane.setIconAt(1, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/property.gif")));
+		tabbedPane.setIconAt(2, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/note.png")));
 		
 		setSize(new Dimension(470, 399));
 		

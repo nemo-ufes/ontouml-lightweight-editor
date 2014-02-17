@@ -29,6 +29,9 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import RefOntoUML.Association;
+import RefOntoUML.Class;
+import RefOntoUML.DataType;
 import RefOntoUML.Enumeration;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
@@ -169,8 +172,31 @@ public class OCLEditorPanel extends JPanel {
 	    }	    
    }
    
-   @SuppressWarnings("rawtypes")
    public void removeCompletion(EObject elem)
+   {
+	   // Class and DataTypes
+	   if (elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType) 
+	   {
+		   	removeEntry(elem);
+		   	//Attributes
+			if (elem instanceof Class){ for(Property p: ((Class)elem).getOwnedAttribute()) removeEntry(p); }
+			if (elem instanceof DataType){ for(Property p: ((DataType)elem).getOwnedAttribute()) removeEntry(p); }
+	   }
+	   // Associations
+	   else if (elem instanceof RefOntoUML.Association)
+	   {
+			//Properties			
+			for(Property p: ((Association)elem).getMemberEnd()) { removeEntry(p); }
+	   }
+	   // Properties
+	   else if (elem instanceof RefOntoUML.Property) 
+	   {
+		   removeEntry(elem);
+	   }
+   }
+   
+   @SuppressWarnings("rawtypes")
+   private void removeEntry(EObject elem)
    {	   
 	   Iterator it = modelCompletionList.iterator();
 	   while(it.hasNext())
