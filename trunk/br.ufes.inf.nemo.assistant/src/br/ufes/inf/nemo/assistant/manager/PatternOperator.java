@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.assistant.manager;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import RefOntoUML.Category;
 import RefOntoUML.Classifier;
@@ -19,6 +18,7 @@ import RefOntoUML.Relator;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
+import br.ufes.inf.nemo.assistant.util.GeneralizationClass;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 
@@ -117,21 +117,18 @@ public class PatternOperator {
 	 *	Return a hash with <string with class and stereotype, <a String with the generalizationSet name, the meta property of this class in a array ([0]: isDisjoint.
 	 *  [1]: isCovering)>> for each class with it stereotype.
 	 * */	
-	public HashMap<String, HashMap<String,boolean[]>> getMetaPropertiesForAll(StereotypeOntoUMLEnum stereotype){
-		HashMap<String, HashMap<String,boolean[]>> metaPropertyHash = new HashMap<>();
+	public ArrayList<GeneralizationClass> getMetaPropertiesForAll(StereotypeOntoUMLEnum stereotype){
+		ArrayList<GeneralizationClass> genClassList = new ArrayList<>();
 		for (GeneralizationSet genSet : setGeneralizationSet) {
 			Classifier general = genSet.getGeneralization().get(0).getGeneral(); 
 			if(UtilAssistant.getStereotypeFromClassifier(general) == stereotype){
-				HashMap<String,boolean[]> hash = new HashMap<>();
-				boolean[] metaProperty = new boolean[2];
-				metaProperty[0] = genSet.isIsDisjoint();
-				metaProperty[1] = genSet.isIsCovering();
-
-				hash.put(genSet.getName(), metaProperty);
-				metaPropertyHash.put(getStringRepresentationClassStereotype(general), hash);
+				GeneralizationClass genClass = new GeneralizationClass(getStringRepresentationClass(general), genSet.getName(), genSet.isIsDisjoint(), genSet.isIsCovering());
+				//Victor
+				//Esta colocando repetido
+				genClassList.add(genClass);	
 			}
 		}
-		return metaPropertyHash;
+		return genClassList;
 	}
 
 	public Classifier getClassifierForStringRepresentationClassStereotype(String stringRepresentation){

@@ -1,7 +1,9 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.eclipse.jface.window.Window;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -10,6 +12,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
+import br.ufes.inf.nemo.assistant.util.GeneralizationClass;
 
 public class NewGeneralizationSet extends WizardPageAssistant {
 
@@ -22,8 +26,6 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		setDescription("NewGeneralizationSet.description");
 	}
 
-	private NewGeneralizationSetDialog dialog = null;
-
 	private Combo cbGenerals;
 	private Combo cbGeneralizationSet;
 	private Button isDisjoint;
@@ -32,7 +34,7 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 	private Label className;
 	private Button btnNewGeneralizationset;
 
-	private HashMap<String,boolean[]> hashGeneralizationSet;
+	private ArrayList<GeneralizationClass> listGeneralizationClass;
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 
@@ -55,23 +57,31 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		cbGenerals.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				hashGeneralizationSet = hashClasses.get(cbGenerals.getItem(cbGenerals.getSelectionIndex()));
-				String[] genSets = new String[hashGeneralizationSet.size()];
-				int i = 0;
-				for (String genSetName : hashGeneralizationSet.keySet()) {
-					genSets[i] = genSetName;
-					i++;
-				}
-				cbGeneralizationSet.setItems(genSets);
-				cbGeneralizationSet.select(0);
-				cbGeneralizationSet.setEnabled(true);
+				String selectedClass = cbGenerals.getItem(cbGenerals.getSelectionIndex());
 
-				//change the current buttons
-				boolean[] metaProperty = hashGeneralizationSet.get(cbGeneralizationSet.getItem(cbGeneralizationSet.getSelectionIndex()));
-				isDisjoint.setSelection(metaProperty[0]);
-				isComplete.setSelection(metaProperty[1]);
-				metaProperties.setVisible(true);
-				btnNewGeneralizationset.setEnabled(true);
+				for (ArrayList<GeneralizationClass> genClasses : hashGeneralizationClasses.values()) {
+					for (GeneralizationClass genClass : genClasses) {
+						if(genClass.getGeneral().equals(selectedClass)){
+							String[] genSets = new String[genClasses.size()];
+							int i = 0;
+							for (GeneralizationClass gc : genClasses) {
+								genSets[i] = gc.getGeneralizationName();
+								i++;
+							}
+							//add elements
+							cbGeneralizationSet.setItems(genSets);
+							cbGeneralizationSet.select(0);
+							cbGeneralizationSet.setEnabled(true);
+
+							//change the current buttons
+							GeneralizationClass gc = genClasses.get(0);
+							isDisjoint.setSelection(gc.isDisjoint());
+							isComplete.setSelection(gc.isComplete());
+							metaProperties.setVisible(true);
+							btnNewGeneralizationset.setEnabled(true);
+						}
+					}
+				}
 			}
 		});
 		cbGenerals.setBounds(203, 44, 204, 23);
@@ -84,10 +94,17 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		cbGeneralizationSet.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				boolean[] metaProperty = hashGeneralizationSet.get(cbGeneralizationSet.getItem(cbGeneralizationSet.getSelectionIndex()));
-				isDisjoint.setSelection(metaProperty[0]);
-				isComplete.setSelection(metaProperty[1]);
-				metaProperties.setVisible(true);
+				//to prevent to be a new generalizationSet 
+				isDisjoint.setSelection(false);
+				isComplete.setSelection(false);				
+				for (GeneralizationClass genClass : listGeneralizationClass) {
+					if(genClass.getGeneralizationName().equals(cbGeneralizationSet.getItem(cbGeneralizationSet.getSelectionIndex()))){
+						isDisjoint.setSelection(genClass.isDisjoint());
+						isComplete.setSelection(genClass.isComplete());
+						metaProperties.setVisible(true);	
+					}
+				}
+
 			}
 		});
 		cbGeneralizationSet.setEnabled(false);
@@ -114,21 +131,20 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		btnNewGeneralizationset.setBounds(429, 77, 135, 25);
 		btnNewGeneralizationset.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				if(dialog == null){
-					dialog = new NewGeneralizationSetDialog(getShell());
-				}
-				if (dialog.open() == Window.OK) {
+			public void widgetSelected(SelectionEvent event) {
+				InputDialog dialog = new InputDialog(getShell(),"Creating a new GeneralizationSet","GeneralizationSet name:",null,null);
+				if( dialog.open() == IStatus.OK){ 
 					String [] genSets = new String[cbGeneralizationSet.getItemCount()+1];
 					int i = 0;
 					for (; i < cbGeneralizationSet.getItemCount(); i++) {
 						genSets[i] = cbGeneralizationSet.getItem(i);
 					} 
-					genSets[i] = dialog.getGeneralizationSet();
+					genSets[i] = dialog.getValue();
 					isComplete.setSelection(false);
 					isDisjoint.setSelection(false);
+					cbGeneralizationSet.setItems(genSets);
 					cbGeneralizationSet.select(i);
-				} 
+				}
 			}
 		});
 
@@ -177,21 +193,31 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		super.setVisible(visible);
 		if(visible){
 			className.setText(getCurrentClass());
-			String[] generals = new String[hashClasses.size()];
-			//For each class in hashClasses
-			int i = 0;
-			for (String cls : hashClasses.keySet()) {
-				generals[i] = cls;
-				i++;
-			}
-			cbGenerals.setItems(generals);
-			cbGenerals.select(0);
-			if(!isEditable){
-				isDisjoint.setEnabled(false);
-				isDisjoint.setSelection(true);
-				
-				isComplete.setEnabled(false);
-				isComplete.setSelection(true);
+
+			if(hashGeneralizationClasses != null){
+				ArrayList<String> generalList = new ArrayList<>();
+
+				//For each class in hash
+				for (ArrayList<GeneralizationClass> listGenClass : hashGeneralizationClasses.values()) {
+					for (GeneralizationClass genClass : listGenClass) {
+						generalList.add(genClass.getGeneral());
+					}
+				}
+
+				String[] generals = new String[generalList.size()];
+				for (int j = 0; j < generalList.size(); j++) {
+					generals[j] = generalList.get(j);
+				}
+
+				cbGenerals.setItems(generals);
+				cbGenerals.select(0);
+				if(!isEditable){
+					isDisjoint.setEnabled(false);
+					isDisjoint.setSelection(true);
+
+					isComplete.setEnabled(false);
+					isComplete.setSelection(true);
+				}
 			}
 		}
 	}
@@ -204,13 +230,17 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		return cbGeneralizationSet.getItem(cbGeneralizationSet.getSelectionIndex());		
 	}
 
-	public boolean[] getMetaProperty(){
-		return new boolean[]{isDisjoint.getSelection(),isComplete.getSelection()};
+	public boolean getIsComplete(){
+		return isComplete.getSelection();
 	}
 
-	private HashMap<String,HashMap<String,boolean[]>> hashClasses;
-	public void setHashOfClasses(HashMap<String,HashMap<String,boolean[]>> classMetaProperty) {
-		this.hashClasses = classMetaProperty;
+	public boolean getIsDisjoint(){
+		return isDisjoint.getSelection();
+	}
+
+	private HashMap<String,ArrayList<GeneralizationClass>> hashGeneralizationClasses = null;
+	public void setHashOfClasses(HashMap<String,ArrayList<GeneralizationClass>> hashGenClassList) {
+		this.hashGeneralizationClasses = hashGenClassList;
 	}
 
 	private boolean isEditable = true;

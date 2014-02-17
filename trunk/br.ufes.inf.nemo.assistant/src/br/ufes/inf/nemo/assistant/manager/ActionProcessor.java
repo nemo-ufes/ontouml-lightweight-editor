@@ -11,7 +11,7 @@ public class ActionProcessor {
 
 	public boolean process(ActionEnum action){
 		boolean returnAction = false;
-
+		
 		switch (action) {
 		case  EXIST_SOME_SUBSTANCE_SORTAL:
 			returnAction = existSomeSubstanceSortal();

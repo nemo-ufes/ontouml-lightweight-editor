@@ -22,7 +22,7 @@ public class NodeAction extends NodeAssistant {
 	@Override
 	public NodeAssistant getNextNode() {
 		boolean	returnAction = graph.getManagerPattern().getActionProcessor().process(action);
-		
+
 		/*
 		 * The currentNode attribute will be set by its 
 		 * respectively method
