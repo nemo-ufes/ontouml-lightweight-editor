@@ -112,7 +112,6 @@ private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory
 		gen = (Generalization) verifyGeneralizationTarget(upCategory.getFunctions(), upCategory);		
 
 		if(genSet != null){ 
-			
 			for(Generalization g : genSet.getGeneralizationElements()){			
 				
 				noIheritanceMeds = deleteMediations(g);
@@ -120,7 +119,7 @@ private void getDownMediation(DescriptionCategory upCategory,DescriptionCategory
 				getDownMediation(g.getSource(),c,hashCategories);   
 			}
 		}
-		if( gen != null){			
+		if( gen != null){		
 			noIheritanceMeds = deleteMediations(gen);
 			downCategory = gen.getSource();
 			addMediations(upCategory.getFunctions(),downCategory, noIheritanceMeds);					
@@ -151,7 +150,7 @@ public ArrayList<DescriptionFunction> deleteMediations(Generalization gen){
 						
 					sourceMed = medDown.getTarget();
 					
-					if (MedIheritance(sourceMed, targetMed));		
+					if (MedIheritance(sourceMed, targetMed))
 						noIheritanceMeds.add(medUp);				
 				}
 			
@@ -190,7 +189,7 @@ public void addMediations(List<DescriptionFunction> list, DescriptionCategory do
 
 private boolean notAddMediation(ArrayList<DescriptionFunction> noIheritanceMeds, DescriptionFunction m) {
 
-	for(DescriptionFunction med : noIheritanceMeds ) //se a mediation que eu quiser adicionar festiver na lista de nao adicionar, retorna true
+	for(DescriptionFunction med : noIheritanceMeds ) //se a mediation que eu quiser adicionar estiver na lista de nao adicionar, retorna true
 		if(med.equals(m))
 			return true;
 
