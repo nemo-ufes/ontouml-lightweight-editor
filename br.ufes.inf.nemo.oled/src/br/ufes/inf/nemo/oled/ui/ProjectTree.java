@@ -267,6 +267,11 @@ public class ProjectTree extends CheckboxTree {
 			parent.add(newNode);
 			checkingModel.setPathEnabled(new TreePath(newNode.getPath()),false);		
 		
+		}else if (object instanceof RefOntoUML.Constraintx)
+		{
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),""));			
+			parent.add(newNode);
+			
 		/* Classifier */
 		} else if (object instanceof RefOntoUML.Classifier)		
 		{

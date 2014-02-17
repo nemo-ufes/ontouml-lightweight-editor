@@ -253,8 +253,6 @@ public class CommentsEditionPanel extends JPanel {
 				toBeDeleted.add(c);
 			}
 		}
-		for(Comment cmt: toBeDeleted) { diagramManager.delete(cmt); }
-		
-			
+		for(Comment cmt: toBeDeleted) { diagramManager.delete(cmt); }	
 	}
 }

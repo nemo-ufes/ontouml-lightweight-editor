@@ -39,6 +39,7 @@ public class ClassDialog extends JDialog{
 	private ClassEditionPanel classEdition;
 	private CommentsEditionPanel commentsEdition;
 	private AttributesEditionPanel attributesEdition;
+	private ConstraintEditionPanel constraintsEdition;
 	private JButton btnApply;
 	
 	public ClassDialog(final JFrame parent, final DiagramManager diagramManager, final ClassElement classElement, boolean modal) 
@@ -97,14 +98,17 @@ public class ClassDialog extends JDialog{
 		classEdition = new ClassEditionPanel (diagramManager,classElement,modal);
 		commentsEdition = new CommentsEditionPanel (diagramManager,classElement,modal);
 		attributesEdition = new AttributesEditionPanel(diagramManager,classElement,modal);
+		constraintsEdition = new ConstraintEditionPanel(diagramManager,classElement,modal);
 		
 		tabbedPane.addTab("Class",classEdition);		
 		tabbedPane.addTab("Attributes",attributesEdition);
 		tabbedPane.addTab("Comments",commentsEdition);
+		tabbedPane.addTab("Constraints",constraintsEdition);
 		
 		tabbedPane.setIconAt(0, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/class.png")));
 		tabbedPane.setIconAt(1, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/property.gif")));
 		tabbedPane.setIconAt(2, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/note.png")));
+		tabbedPane.setIconAt(3, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/ocleditor.png")));
 		
 		setSize(new Dimension(470, 399));
 		
@@ -125,5 +129,6 @@ public class ClassDialog extends JDialog{
 		classEdition.transferClassData();
 		commentsEdition.transferCommentsData();
 		attributesEdition.transferAttributesData();		
+		constraintsEdition.transferConstraintsData();
 	}
 }

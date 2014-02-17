@@ -52,6 +52,7 @@ import org.eclipse.ocl.SemanticException;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Constraintx;
 import RefOntoUML.Derivation;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.componentOf;
@@ -310,6 +311,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return comment;
 	}
 
+	public void addConstraintx(Constraintx cmt, RefOntoUML.Element eContainer) 
+	{
+		//to add only in the model do exactly as follow		
+		AddNodeCommand cmd = new AddNodeCommand(null,null,cmt,0,0,getCurrentProject(),eContainer);		
+		cmd.run();
+	}
+	
 	/** Add comment to the model (not to diagrams) */
 	public void addComment(RefOntoUML.Comment c, RefOntoUML.Element eContainer)
 	{
@@ -1900,6 +1908,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 //		}	
 	}
 	
+	@SuppressWarnings("unused")
 	public void deriveByUnion() 
 	{
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
@@ -1923,4 +1932,5 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		System.out.println("derive by union");
 		
 	}
+
 }
