@@ -93,6 +93,7 @@ public class ManagerPattern {
 	 *  Actions 
 	 *  */
 	public ActionProcessor getActionProcessor(){
+		patternOperator.updateLists(root);
 		return actionProcessor;
 	}
 }

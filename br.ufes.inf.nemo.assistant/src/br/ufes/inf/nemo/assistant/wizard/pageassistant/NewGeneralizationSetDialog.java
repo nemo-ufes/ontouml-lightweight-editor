@@ -12,18 +12,21 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class NewGeneralizationSetDialog extends Dialog {
 	private Text genSet;
-
+	private NewGeneralizationSet owner;
 	/**
 	 * Create the dialog.
 	 * @param parentShell
 	 */
-	public NewGeneralizationSetDialog(Shell parentShell) {
+	public NewGeneralizationSetDialog(Shell parentShell, NewGeneralizationSet owner) {
 		super(parentShell);
 		setShellStyle(SWT.DIALOG_TRIM);
 		parentShell.setText("Creating a new GeneralizationSet");
+		this.owner = owner;
 	}
 
 	/**
@@ -64,7 +67,13 @@ public class NewGeneralizationSetDialog extends Dialog {
 	protected void createButtonsForButtonBar(Composite parent) {
 		b = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
 				true);
+		b.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+			}
+		});
 		b.setEnabled(false);
+		
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
 	}
@@ -80,4 +89,5 @@ public class NewGeneralizationSetDialog extends Dialog {
 	public String getGeneralizationSet(){
 		return genSet.getText();
 	}
+	
 }

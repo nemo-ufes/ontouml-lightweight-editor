@@ -7,9 +7,8 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Package;
-import RefOntoUML.PackageableElement;
-import RefOntoUML.Phase;
 import br.ufes.inf.nemo.assistant.graph.NodeAssistant;
+import br.ufes.inf.nemo.assistant.util.GeneralizationClass;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewClass;
@@ -105,8 +104,13 @@ public class PageProcessor{
 			//a new genSet
 			ArrayList<Generalization> gens = new ArrayList<>();
 			gens.add(gen);
-			Fix f = outcomeFixer.createGeneralizationSet(gens, true, true, page.getGeneralizationSet());
+			Fix f = outcomeFixer.createGeneralizationSet(gens, page.getIsDisjoint(), page.getIsComplete(), page.getGeneralizationSet());
+			genSet = (GeneralizationSet)f.getAdded().get(0);
 			fix.addAll(f);
+		}else{
+			//modifications in meta properties
+			genSet.setIsDisjoint(page.getIsDisjoint());
+			genSet.setIsCovering(page.getIsComplete());
 		}
 		genSet.getGeneralization().add(gen);
 		fix.includeModified(genSet);
@@ -117,15 +121,16 @@ public class PageProcessor{
 	 * */
 	public static void treatPage(NodeAssistant node, NewGeneralizationSet page) {
 		ManagerPattern mp = node.getGraph().getManagerPattern();
-		HashMap<String, HashMap<String,boolean[]>> classMetaProperty = new HashMap<>();
+		HashMap<String,ArrayList<GeneralizationClass>> hashGenClassList = new HashMap<>();
 
 		//Get all Generalization and its metaProperties by each class
 		for (String stereotype : page.getPossibleStereotypes()) {
 			StereotypeOntoUMLEnum stereotypeEnum = StereotypeOntoUMLEnum.valueOf(stereotype.toUpperCase());
-			classMetaProperty.putAll(mp.getPatternOperator().getMetaPropertiesForAll(stereotypeEnum));
+			ArrayList<GeneralizationClass> genClassList = mp.getPatternOperator().getMetaPropertiesForAll(stereotypeEnum);
+			hashGenClassList.put(stereotype, genClassList);
 		}
 
-		page.setHashOfClasses(classMetaProperty);
+		page.setHashOfClasses(hashGenClassList);
 	}
 
 	/**

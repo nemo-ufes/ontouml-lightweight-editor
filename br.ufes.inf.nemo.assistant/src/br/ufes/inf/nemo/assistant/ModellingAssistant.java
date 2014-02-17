@@ -27,7 +27,7 @@ public class ModellingAssistant {
 	 * or by eclipse running.
 	 * */
 	public ModellingAssistant(RefOntoUML.Package root) {
-		String path = "Patterns.asta";
+		String path = "Patterns_NEMO.asta";
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);	
 		if(is == null) {
 			//Runtime (eclipse)
@@ -46,35 +46,39 @@ public class ModellingAssistant {
 	}
 
 	Package p;
-	
+
 	/**
 	 * Run the pattern for the elem.
 	 * Start and show the wizard
 	 * */
 	public Fix runPattern(Classifier elem){
 		StereotypeOntoUMLEnum stereotype = UtilAssistant.getStereotypeFromClassifier(elem);
-		
-		if(stereotype != null){
-			GraphAssistant graph = hashGraph.get(stereotype);
-			graph.updateNodeList();
-			graph.getManagerPattern().setClassSource(elem);
+		try{
+			if(stereotype != null){
+				GraphAssistant graph = hashGraph.get(stereotype);
+				graph.updateNodeList();
+				graph.getManagerPattern().setClassSource(elem);
 
-			System.out.println(graph.toString());
-			
-			Fix fix = null;
+				Fix fix = null;
 
-			Display display = Display.getDefault();	    	
-			Shell shell = display.getActiveShell();
-			WizardDialog wizardDialog = new WizardDialog(shell,new WizardAssitant(graph));
+				Display display = Display.getDefault();	    	
+				Shell shell = display.getActiveShell();
+				WizardDialog wizardDialog = new WizardDialog(shell,new WizardAssitant(graph));
 
-			if (wizardDialog.open() == Window.OK) {
-				fix = graph.getManagerPattern().getFix();
+				if (wizardDialog.open() == Window.OK) {
+					fix = graph.getManagerPattern().getFix();
+				}
+				System.out.println("REFonto: {");
+				UtilAssistant.printRefOntoUML(p);
+				System.out.println("}");
+				return fix;
 			}
-
-			return fix;
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		System.out.println("REFonto: ");
+		System.out.println("REFonto: {");
 		UtilAssistant.printRefOntoUML(p);
+		System.out.println("}");
 		return null;
 	}
 }

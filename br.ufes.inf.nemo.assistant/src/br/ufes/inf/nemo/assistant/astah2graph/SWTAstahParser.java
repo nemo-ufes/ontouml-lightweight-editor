@@ -35,7 +35,7 @@ import com.change_vision.jude.api.inf.project.ProjectAccessor;
 public class SWTAstahParser {
 
 	public static void main(String[] args) {
-		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = doParser("src/Patterns.asta");
+		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = doParser("src/Patterns_NEMO.asta");
 
 		GraphAssistant graph = hashTree.get(StereotypeOntoUMLEnum.KIND);
 		graph.updateNodeList();
@@ -93,7 +93,7 @@ public class SWTAstahParser {
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraphs = new HashMap<>();
 		try{
 			ProjectAccessor prjAccessor = AstahAPI.getAstahAPI().getProjectAccessor();
-			prjAccessor.open(astahFile);
+			prjAccessor.open(astahFile,true);
 			hashGraphs = processParser(prjAccessor);
 		}catch(Exception e){
 			e.printStackTrace();

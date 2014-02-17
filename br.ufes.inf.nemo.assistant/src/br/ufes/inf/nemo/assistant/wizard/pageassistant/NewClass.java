@@ -40,14 +40,13 @@ public class NewClass extends WizardPageAssistant {
 		tfClassName.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent owner) {
-				//OMG What is happening here?!:|
-//				if(tfClassName.getText().isEmpty()){
-//					warning.setVisible(true);
-//					setPageComplete(false);
-//				}else{
-//					warning.setVisible(false);
-//					setPageComplete(true);
-//				}
+				if(tfClassName.getText().isEmpty()){
+					warning.setVisible(true);
+					setPageComplete(false);
+				}else{
+					warning.setVisible(false);
+					setPageComplete(true);
+				}
 				setCurrentClass(tfClassName.getText());
 			}
 		});
@@ -72,7 +71,7 @@ public class NewClass extends WizardPageAssistant {
 		warning.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
 		warning.setBounds(294, 59, 17, 25);
 		warning.setText("!");
-		
+
 		if(isEndPage)
 			setPageComplete(true);
 	}
@@ -109,22 +108,23 @@ public class NewClass extends WizardPageAssistant {
 
 	@Override
 	public String toString() {
-		String s;
-		s = "Page: "+getName()+"{";
-		s += "\nclass: "+getClassName();
-		s += "\nstereotype: "+getStereotype();
-		s += "\n}";
-		return s;
+		return "NewClass";
+//		String s;
+//		s = "Page: "+getName()+"{";
+//		s += "\nclass: "+getClassName();
+//		s += "\nstereotype: "+getStereotype();
+//		s += "\n}";
+//		return s;
 	}
-	
+
 	/* get operations */
-	
+
 	public String getClassName(){
 		return tfClassName.getText();
 	}
-	
+
 	public String getStereotype(){
 		return cbStereotypes.getItem(cbStereotypes.getSelectionIndex());
 	}
-	
+
 } 
