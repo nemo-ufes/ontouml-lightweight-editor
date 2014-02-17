@@ -92,6 +92,12 @@ public class MainMenu implements ActionListener {
 		JMenuItem textItem = createMenuItem(transformMenu, "generatetext");
 		//textItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 
+		JMenuItem ecoreItem = createMenuItem(transformMenu, "generateecore");
+		//
+		
+		JMenuItem umlItem = createMenuItem(transformMenu, "generateuml");
+		//
+		
 		JMenu toolMenu = createMenu("tool");
 		menubar.add(toolMenu);
 		

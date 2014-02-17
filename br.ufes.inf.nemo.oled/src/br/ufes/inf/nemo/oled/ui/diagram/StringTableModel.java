@@ -21,6 +21,7 @@ package br.ufes.inf.nemo.oled.ui.diagram;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
 
 /**

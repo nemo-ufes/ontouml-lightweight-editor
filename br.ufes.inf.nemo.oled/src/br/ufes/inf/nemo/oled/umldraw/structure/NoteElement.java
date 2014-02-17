@@ -22,7 +22,6 @@ package br.ufes.inf.nemo.oled.umldraw.structure;
 import java.awt.Color;
 import java.awt.geom.GeneralPath;
 
-
 import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
 import br.ufes.inf.nemo.oled.draw.Defaults;

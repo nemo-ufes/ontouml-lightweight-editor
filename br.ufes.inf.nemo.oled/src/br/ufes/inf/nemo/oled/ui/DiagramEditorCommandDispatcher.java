@@ -303,6 +303,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("GENERATE_TEXT", new MethodCall(
 					getClass().getMethod("generateText")));
+			
+			selectorMap.put("GENERATE_ECORE", new MethodCall(
+					getClass().getMethod("generateEcore")));
+			
+			selectorMap.put("GENERATE_UML", new MethodCall(
+					getClass().getMethod("generateUML")));
 
 			selectorMap.put("ERROR", new MethodCall(
 					getClass().getMethod("searchErrors")));
@@ -499,6 +505,18 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		manager.generateText();
 	}
 
+	public void generateUML()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.generateUML();
+	}
+	
+	public void generateEcore()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.generateEcore();		
+	}
+	
 	/**
 	 * Displays the grid depending on the selection state of the menu item.
 	 */

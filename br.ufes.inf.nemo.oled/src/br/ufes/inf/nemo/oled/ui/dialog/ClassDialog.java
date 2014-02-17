@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
@@ -17,7 +18,6 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
-import java.awt.Toolkit;
 
 public class ClassDialog extends JDialog{
 

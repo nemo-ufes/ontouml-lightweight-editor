@@ -45,8 +45,8 @@ import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
-import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.oled.util.IconLoader.IconType;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 public class EditClassDialog extends JDialog {
 

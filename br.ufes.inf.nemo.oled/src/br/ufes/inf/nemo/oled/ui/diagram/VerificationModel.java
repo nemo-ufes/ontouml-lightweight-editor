@@ -6,15 +6,13 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import RefOntoUML.impl.AntiRigidSortalClassImpl;
+import RefOntoUML.impl.AssociationImpl;
+import br.ufes.inf.nemo.oled.util.SimulationAttribute;
+import br.ufes.inf.nemo.oled.util.SimulationElement;
 import edu.mit.csail.sdg.alloy4graph.DotColor;
 import edu.mit.csail.sdg.alloy4graph.DotShape;
 import edu.mit.csail.sdg.alloy4graph.DotStyle;
-
-import br.ufes.inf.nemo.oled.util.SimulationAttribute;
-import br.ufes.inf.nemo.oled.util.SimulationElement;
-
-import RefOntoUML.impl.AntiRigidSortalClassImpl;
-import RefOntoUML.impl.AssociationImpl;
 
 /**
  * This class implements a BaseTableModel for class Simulation Elements
