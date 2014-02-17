@@ -39,10 +39,12 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import org.graphstream.ui.geom.Point3;
+import org.graphstream.ui.graphicGraph.GraphicElement;
 import org.graphstream.ui.swingViewer.DefaultView;
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.Viewer;
 import org.graphstream.ui.swingViewer.util.Camera;
+import org.graphstream.ui.swingViewer.util.DefaultMouseManager;
 
 import br.ufes.inf.nemo.instancevisualizer.apl.AplMainWindow;
 import br.ufes.inf.nemo.instancevisualizer.util.DialogUtil;
@@ -76,21 +78,13 @@ public class MainWindow extends JFrame {
 	boolean shownTabbedPane = false;
 	
 	/**
+	 * 
 	 * Create the main window.
 	 * @param mainVar the main class
 	 * @param args[] the launch arguments
 	 * @throws InterruptedException
 	 */
 	public MainWindow(String args[]) {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent arg0) {
-				if(AplMainWindow.alsOpen) {
-					AplMainWindow.graphManager.setXmlFile(null);
-					File temp = new File(AplMainWindow.fWithoutExt + "_temp.xml");
-				}
-			}
-		});
 		getContentPane().addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent arg0) {
@@ -104,7 +98,7 @@ public class MainWindow extends JFrame {
 		setTitle("Instance Visualizer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 960, 540);
-		setMinimumSize(new Dimension(960, 540));
+		setMinimumSize(new Dimension(640, 480));
 		setExtendedState(MAXIMIZED_BOTH);
 		
 		// Content pane:
@@ -157,15 +151,6 @@ public class MainWindow extends JFrame {
 		mntmSaveImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DialogUtil.errorDialog(AplMainWindow.mainWindow, DialogUtil.ERROR, "Not implemented", "This option is not implemented... yet!");
-				
-				/*
-				try {
-					ScreenImage.writeImage(ScreenImage.createImage(getScrollPane()), "graph.jpeg");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				*/
 			}
 		});
 		mnFile.add(mntmSaveImage);
@@ -183,8 +168,8 @@ public class MainWindow extends JFrame {
 		mnFile.add(mntmExit);
 		
 		// Menu View:
-		JMenu mnView = new JMenu("View");
-		menuBar.add(mnView);
+		JMenu mnOptions = new JMenu("Options");
+		menuBar.add(mnOptions);
 		
 		// Next Instance menu item:
 		mntmNextInstance = new JMenuItem("Next Instance");
@@ -195,10 +180,10 @@ public class MainWindow extends JFrame {
 		});
 		mntmNextInstance.setEnabled(false);
 		mntmNextInstance.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
-		mnView.add(mntmNextInstance);
+		mnOptions.add(mntmNextInstance);
 		
 		// Next Instance | Zoom + separator: 
-		mnView.add(new JSeparator());
+		mnOptions.add(new JSeparator());
 		
 		// Zoom + menu item:
 		JMenuItem mntmNewMenuItem = new JMenuItem("Zoom +");
@@ -226,12 +211,12 @@ public class MainWindow extends JFrame {
 				*/
 			}
 		});
-		mnView.add(mntmZoom);
+		mnOptions.add(mntmZoom);
 		
 		// Enable Auto-Layout menu item:
 		chckbxmntmNewCheckItem = new JCheckBoxMenuItem("Enable Auto-Layout");
 		
-		mnView.add(chckbxmntmNewCheckItem);
+		mnOptions.add(chckbxmntmNewCheckItem);
 		chckbxmntmNewCheckItem.setSelected(true);
 		chckbxmntmNewCheckItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
 		chckbxmntmNewCheckItem.addActionListener(new ActionListener() {
@@ -243,7 +228,7 @@ public class MainWindow extends JFrame {
 				}
 			}
 		});
-		mnView.add(mntmNewMenuItem);
+		mnOptions.add(mntmNewMenuItem);
 		
 		// Refresh menu item:
 		JMenuItem mntmRefresh = new JMenuItem("Refresh");
@@ -253,10 +238,18 @@ public class MainWindow extends JFrame {
 			}
 		});
 		mntmRefresh.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-		mnView.add(mntmRefresh);
+		mnOptions.add(mntmRefresh);
 		
 		// Separator:
-		mnView.add(new JSeparator());
+		mnOptions.add(new JSeparator());
+		
+		JMenuItem mntmOpenMiniMap = new JMenuItem("Open Mini Map");
+		mntmOpenMiniMap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				miniMapProto();
+			}
+		});
+		mnOptions.add(mntmOpenMiniMap);
 		
 		// Tabbed pane (it's where the legend, properties, etc are).
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -380,13 +373,14 @@ public class MainWindow extends JFrame {
 		//miniMapProto();
 	}
 	/**
-	* @wbp.parser.entryPoint
+	* 
 	*/
 	public void miniMapProto() {
-		JFrame x = new JFrame();
+		final JFrame x = new JFrame();
 		x.setTitle("mini map prototype (IT WORKS!)");
 		x.setAlwaysOnTop(true);
-		x.setSize(200, 200);
+		x.setSize(200, 134);
+		x.setResizable(false);
 		
 		AplMainWindow.graphManager.getSelectedViewer();
 		//Object obj = AplMainWindow.graphManager.getSelectedView().clone();
@@ -402,9 +396,37 @@ public class MainWindow extends JFrame {
 		//v.setBounds(0,0,200,200);
 		sp.setBounds(0, 0, 1164, 638);
 		final JLabel lblImglabel = new JLabel("");
-		lblImglabel.setBounds(0, 0, 184, 161);
+		lblImglabel.setBounds(0, 0, 1164/6, 638/6);
 		v.setAutoscrolls(true);
-		//BufferedImage bfimg = ScreenImage.createImage(sp);
+		v.setMouseManager(new DefaultMouseManager() {
+			protected void mouseButtonPress(MouseEvent event) {
+			}
+
+			protected void mouseButtonRelease(MouseEvent event,
+					ArrayList<GraphicElement> elementsInArea) {
+			}
+
+			protected void mouseButtonPressOnElement(GraphicElement element,
+					MouseEvent event) {
+			}
+
+			protected void elementMoving(GraphicElement element, MouseEvent event) {
+			}
+
+			protected void mouseButtonReleaseOffElement(GraphicElement element,
+					MouseEvent event) {
+			}
+
+			public void mousePressed(MouseEvent event) {
+			}
+
+			public void mouseDragged(MouseEvent event) {
+			}
+
+			public void mouseReleased(MouseEvent event) {
+			}
+		});
+		BufferedImage bfimg = ScreenImage.createImage(sp);
 		lblImglabel.requestFocus();
 		ImageIcon imgIcon;
 		v.setSize(100, 100);
@@ -423,7 +445,7 @@ public class MainWindow extends JFrame {
 		new Thread() {
 			public void run() {
 				System.out.println("lala");
-				while(true) {
+				while(x.isVisible()) {
 					try {
 						//Point3 begin = AplMainWindow.graphManager.getSelectedView().getCamera().transformPxToGu(x, y);
 						//Point3 end = AplMainWindow.graphManager.getSelectedView().getCamera().transformPxToGu(x+width-1, y+height-1);
@@ -452,7 +474,7 @@ public class MainWindow extends JFrame {
 						//v.selectionGrowsAt(centerOrig.x*cam.getViewPercent(), centerOrig.y + cam.getViewPercent());
 						sleep(100);
 						BufferedImage bfimg = ScreenImage.createImage(sp);
-						ImageIcon imgIcon = new ImageIcon(bfimg.getScaledInstance(1164/8, 638/8, BufferedImage.SCALE_SMOOTH));
+						ImageIcon imgIcon = new ImageIcon(bfimg.getScaledInstance(1164/6, 638/6, BufferedImage.SCALE_SMOOTH));
 						lblImglabel.setIcon(imgIcon);
 					} catch (InterruptedException | NullPointerException e) {
 						run();
@@ -465,37 +487,6 @@ public class MainWindow extends JFrame {
 			}
 		}.start();
 		
-		/*
-		//x.setContentPane(contentPane);
-		new Thread() {
-			public void run() {
-				
-				JScrollPane map = new JScrollPane();
-				map.setBounds(0, 0, 1000, 1000);
-				while(true) {
-					try {
-						sleep(2000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						//e.printStackTrace();
-					}
-					if(AplMainWindow.graphManager != null && AplMainWindow.graphManager.getSelectedView() != null) {
-						//View view2 = AplMainWindow.graphManager.getSelectedViewer().addDefaultView(false);
-						//map.setViewportView(view2);
-						BufferedImage img = null;
-						//try {
-							//img = ScreenImage.createImage(AplMainWindow.graphManager.getSelectedView().createImage(producer));
-							lblImg.setIcon(new ImageIcon(AplMainWindow.graphManager.getSelectedView().createImage(10000, 10000).getScaledInstance(300, 300, BufferedImage.SCALE_SMOOTH)));
-						//} catch (AWTException e) {
-							// TODO Auto-generated catch block
-							//e.printStackTrace();
-						//}
-						
-					}
-				}
-			}
-		}.start();
-		*/
 		//x.getContentPane().add(new JLabel());
 	}
 	

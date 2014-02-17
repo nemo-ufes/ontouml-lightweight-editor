@@ -77,6 +77,8 @@ public class LegendPanel extends JPanel {
 			final JButton button = new JButton();
 			final String imagePath = legend.getFillImage();
 			
+			final JLabel typeLabel = new JLabel(typeName);
+			final JLabel stereotypeLabel = new JLabel("«"+legend.getStereotype()+"»");
 			
 			button.setIcon(new ImageIcon(imagePath));
 			button.setBounds(8, 8+(36*(i)), 32, 32);
@@ -90,7 +92,7 @@ public class LegendPanel extends JPanel {
 	                if (e.getButton() == MouseEvent.BUTTON1) {
 	                	JPopupMenu popupMenu;
 						try {
-							popupMenu = new LegendEditorMenu(button, getGraphManager(), legend, null);
+							popupMenu = new LegendEditorMenu(typeLabel, button, getGraphManager(), legend, null);
 							panel.add(popupMenu);
 		                    popupMenu.show(button, e.getX(), e.getY());
 						} catch (NoSuchMethodException | SecurityException
@@ -105,8 +107,7 @@ public class LegendPanel extends JPanel {
 	        });
 
 			
-			JLabel typeLabel = new JLabel(typeName);
-			JLabel stereotypeLabel = new JLabel("«"+legend.getStereotype()+"»");
+			
 			
 			typeLabel.setBounds(48, 22+(36*(i)), 256, 16);
 			stereotypeLabel.setBounds(48, 10+(36*(i)), 256, 16);
@@ -164,7 +165,7 @@ public class LegendPanel extends JPanel {
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 8+(32*(i) + 32*(j+1)), Short.MAX_VALUE)
+				.addGap(0, 8+(36*(i) + 36*(j+1)), Short.MAX_VALUE)
 		);
 		panel.setLayout(gl_panel);
 	}

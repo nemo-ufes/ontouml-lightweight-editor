@@ -36,7 +36,7 @@ public class NodeLegend {
     private String textPadding = "0px, 0px";
     private String visibilityMode = "normal";
     private String visibility = "0";
-    private String zIndex = "1";
+    private String zIndex = "2";
     
     //private String textFont = "sans-serif";
     //private String arrowImage;		UNUSED

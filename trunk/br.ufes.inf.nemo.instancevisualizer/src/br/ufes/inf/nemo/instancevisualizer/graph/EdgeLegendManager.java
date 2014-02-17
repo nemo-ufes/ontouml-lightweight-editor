@@ -31,15 +31,15 @@ public class EdgeLegendManager {
 		switch(stereotype) {
 			case "Material":
 				imagePath = "." + File.separator + "resources" + File.separator + "edges" + File.separator + "dashes.png";
-				style = "size: 0.25; stroke-width: 1px; stroke-mode: dashes;";
+				style = "size: 0.25; stroke-width: 1px; stroke-mode: dashes; z-index: 1;";
 				break;
 			case "Characterization":
 				imagePath = "." + File.separator + "resources" + File.separator + "edges" + File.separator + "cubic-curve.png";
-				style = "size: 0.25; stroke-width: 1px; shape: cubic-curve; stroke-mode: plain;";
+				style = "size: 0.25; stroke-width: 1px; shape: cubic-curve; stroke-mode: plain; z-index: 1;";
 				break;
 			default:
 				imagePath = "." + File.separator + "resources" + File.separator + "edges" + File.separator + "plain.png";
-				style = "size: 0.25; stroke-width: 1px; stroke-mode: plain;";
+				style = "size: 0.25; stroke-width: 1px; stroke-mode: plain; z-index: 1;";
 				break;
 		}
     	

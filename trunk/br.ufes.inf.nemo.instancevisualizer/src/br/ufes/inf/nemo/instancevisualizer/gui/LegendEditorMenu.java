@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.instancevisualizer.gui;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.MenuComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +11,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -31,12 +33,14 @@ import java.util.ArrayList;
 
 public class LegendEditorMenu extends JPopupMenu {
 	
+	final private JLabel buttonLabel;
 	final private JButton legendButton;
 	final private GraphManager graphManager;
 	final private NodeLegend nodeLegend;
 	final private EdgeLegend edgeLegend;
 	
-	public LegendEditorMenu(final JButton legendButton, 
+	public LegendEditorMenu(final JLabel buttonLabel,
+			final JButton legendButton, 
 			final GraphManager graphManager, 
 			final NodeLegend nodeLegend, 
 			final EdgeLegend edgeLegend) 
@@ -46,6 +50,7 @@ public class LegendEditorMenu extends JPopupMenu {
 					IllegalArgumentException, 
 					InvocationTargetException {
 		super();
+		this.buttonLabel = buttonLabel;
 		this.legendButton = legendButton;
 		this.graphManager = graphManager;
 		this.nodeLegend = nodeLegend;
@@ -57,10 +62,16 @@ public class LegendEditorMenu extends JPopupMenu {
 		JMenuItem mntmFillImage = new JMenuItem("Fill Image");
 		mntmFillImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Font font = buttonLabel.getFont();
+				Font boldFont = new Font(font.getFontName(), Font.BOLD, font.getSize()+2);
+				buttonLabel.setFont(boldFont);
 				File imageFile = DialogUtil.fileDialog("Open", "."+File.separator, null, false);
-				nodeLegend.setFillImage(imageFile.getAbsolutePath());
-				legendButton.setIcon(new ImageIcon(imageFile.getAbsolutePath()));
-				graphManager.update();
+				if(imageFile != null) {
+					nodeLegend.setFillImage(imageFile.getAbsolutePath());
+					legendButton.setIcon(new ImageIcon(imageFile.getAbsolutePath()));
+					graphManager.update();
+				}
+				buttonLabel.setFont(font);
 			}
 		});
 		add(mntmFillImage);
@@ -108,157 +119,8 @@ public class LegendEditorMenu extends JPopupMenu {
 		addTextMenu("Visibility");
 		
 		addTextMenu("z Index");
-
-		//addTextMenu("Visibility");
-		
-/*
-		JMenu size = new JMenu("Size");
-		final JTextField sizetxt = new JTextField(nodeLegend.getSize() + "          ");
-		sizetxt.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				if(arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-					String text = sizetxt.getText();
-					int i;
-					for(i=text.length()-1; i>=0; i--)
-						if(text.charAt(i) != ' ')
-							break;
-					nodeLegend.setSize(sizetxt.getText().substring(0, i+1));
-					graphManager.update();
-				}
-			}
-		});
-		size.add(sizetxt);
-		add(size);
-*/		
-		// Text (Label) Visibility Mode:
-		//JMenu lblVisModeItem = new JMenu("Label Visibility Mode");
-		/*
-		JMenuItem mntmNormal = new JMenuItem("Normal");
-		System.out.println(nodeLegend.getVisibilityMode());
-		if(nodeLegend.getVisibilityMode().equals("normal"))
-			mntmNormal.setIcon(new ImageIcon("./resources/green_check_mark.gif"));
-		mntmNormal.setToolTipText("The label is always printed.");
-		mntmNormal.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				nodeLegend.setVisibilityMode("normal");
-				AplMainWindow.graphManager.update();
-			}
-		});
-		lblVisModeItem.add(mntmNormal);
-		
-		JMenuItem mntmHidden = new JMenuItem("Hidden");
-		if(nodeLegend.getVisibilityMode().equals("hidden"))
-			mntmHidden.setIcon(new ImageIcon("./resources/green_check_mark.gif"));
-		mntmHidden.setToolTipText("The label is never printed.");
-		mntmHidden.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				nodeLegend.setVisibilityMode("hidden");
-				AplMainWindow.graphManager.update();
-			}
-		});
-		lblVisModeItem.add(mntmHidden);
-		
-		JMenu mnAtZoom = new JMenu("At Zoom");
-		mnAtZoom.setToolTipText("The label is printed only if the zoom equals the value set.");
-		lblVisModeItem.add(mnAtZoom);
-		
-		JMenu mnUnderZoom = new JMenu("Under Zoom");
-		mnUnderZoom.setToolTipText("The label is printed only if the zoom value is less than the value set.");
-		lblVisModeItem.add(mnUnderZoom);
-		
-		JMenu mnOverZoom = new JMenu("Over Zoom");
-		mnOverZoom.setToolTipText("The label is printed only if the zoom value is larger than the value set.");
-		lblVisModeItem.add(mnOverZoom);
-		
-		JMenu mnZoomRange = new JMenu("Zoom Range");
-		mnZoomRange.setToolTipText("The label is printed only if the zoom value is comprised between the two values set.");
-		lblVisModeItem.add(mnZoomRange);
-		
-		JMenu mnZooms = new JMenu("Zooms");
-		mnZooms.setToolTipText("The label is printed only if the zoom value is one of the values set");
-		lblVisModeItem.add(mnZooms);
-		
-		//add(lblVisModeItem);
-		/*
-		String[] visModes = {
-				"normal: The label is always printed.",
-				"hidden: The label is never printed.",
-				};
-		for(String visMode : visModes) {
-			JMenuItem menuItem = new JMenuItem(visMode);
-			int div = visMode.indexOf(':');
-			final String menuName = visMode.substring(0, div);
-			final String tip = visMode.substring(div+2, visMode.length());
-			menuItem.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					nodeLegend.addStyle("visibility-mode: "+menuName+";");
-				}
-			});
-			lblVisModeItem.add(menuItem);
-		}
-		
-		String[] visModesMenu = {
-			"at-zoom: The label is printed only if the zoom equals the first value of text-visibility.",
-			"under-zoom: The label is printed only if the zoom value is less than the first value of text-visibility.",
-			"over-zoom: The label is printed only if the zoom value is larger than the first value of text-visibility.",
-			"zoom-range: The label is printed only if the zoom value is comprised between the two first values of text-visibility",
-			"zooms: The label is printed only if the zoom value is one of the values of text-visibility"
-		};
-		for(String visMode : visModesMenu) {
-			JMenuItem
-			lblVisModeItem.add();
-		}
-		*/
-		
-		//normalThe label is always printed.
-		//
-		
-		JMenuItem txtEditorItem = new JMenuItem("Style Text Editor...");
-		txtEditorItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				new StyleWindow(nodeLegend.getStyle(), nodeLegend.getType(), graphManager, "node");
-			}
-		});
-		add(txtEditorItem);
-		
-	}
-	/*
-	private void addChoiceMenu(String title, String[] choices) {
-		JMenu mnFillMode = new JMenu(title);
-		//String[] choices = {"none$TODO", "plain$TODO", "image-scaled$TODO"};
-		
-		for(String choice : choices) {
-			int div = -1;
-			ArrayList<Integer> divList = new ArrayList<Integer>();
-			while(true) {
-				div = choice.substring(div+1).indexOf('$');
-				if(div<0) {
-					break;
-				}else{
-					divList.add(div);
-				}
-			}
 			
-			final String choiceTitle = choice.substring(0, div);
-			String choiceTip = choice.substring(div+1);
-			JMenuItem menuItem = new JMenuItem(choiceTitle);
-			menuItem.setToolTipText(choiceTip);
-			menuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					nodeLegend.setFillMode(choiceTitle);
-					graphManager.update();
-				}
-			});
-			mnFillMode.add(menuItem);
-		}
-		add(mnFillMode);
 	}
-	*/
 	
 	private void addChoiceMenu(String title, String[] choices) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		JMenu mnFillMode = new JMenu(title);
@@ -325,11 +187,7 @@ public class LegendEditorMenu extends JPopupMenu {
 					try {
 						Method setMethod = nodeLegend.getClass().getMethod("s" + methodName.substring(1), String.class);
 						setMethod.invoke(nodeLegend, txtfld.getText().substring(0, i+1));
-						try{
-							graphManager.update();
-						} finally {
-							System.out.println("LALALA");
-						}
+						graphManager.update();
 					} catch (IllegalAccessException | IllegalArgumentException |
 							InvocationTargetException | NoSuchMethodException | SecurityException e) {
 						// TODO Auto-generated catch block
