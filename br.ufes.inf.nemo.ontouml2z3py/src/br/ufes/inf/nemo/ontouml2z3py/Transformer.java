@@ -8,11 +8,15 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Kind;
 import RefOntoUML.ObjectClass;
+import RefOntoUML.Property;
+import RefOntoUML.Relationship;
+import RefOntoUML.Relator;
 import RefOntoUML.SortalClass;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
@@ -48,7 +52,7 @@ public class Transformer {
 		
 		generatedModel = factory.createOntoUMLZ3System();
 		//Gero toda a axiomatização referente a estrutura de mundos
-		populateWithBranchInTimeWorldStructure(isBranchInTime);
+		populateWithWorldStructure(isBranchInTime);
 		//Adiciono a estrutura que utilizarei para verificar se um dado elemento existe em um dado mundo
 		populateWithExistenceAxioms();		
 		Resource resource;
@@ -59,8 +63,10 @@ public class Transformer {
 			populateWithObjectClasses();
 			populatesWithObjectsClassesGeneralizations();
 			populatesWithObjectClassesGeneralizationSets();
+			populatesWithRelators();
 			populatesWithRigidityFormulas();
 			populatesWithAntiRigidityFormulas();
+			populatesWithAssociations();
 			
 			addSortalTopLevelDisjointnessFormula();
 			//Crio fórmula que garante que todo elemento de mundo é instância de um tipo que provê identidade
@@ -71,6 +77,43 @@ public class Transformer {
 		}
 		return generatedModel;	
 	}
+	
+	private void populatesWithAssociations(){
+		Property source = null;
+		Property target = null;
+		String assocName;
+		int lowerSource, upperSource, lowerTarget, upperTarget;
+		FunctionCall fc1, fc2, fc3, fc4;
+		LogicalBinaryExpression lbe1;
+		for(RefOntoUML.Association r: ontoparser.getTopLevelInstances(Association.class)){
+			assocName = r.getName();
+			//Crio uma função para representar a associação. Essa função terá 3 argumentos: um mundo, o source e o targe da associação
+			addFunction(assocName,3);
+				
+			source= r.getMemberEnd().get(0);
+			target = r.getMemberEnd().get(1);
+			
+			//Tipagem dos argumentos da função: crio fórmula afirmando que se a função criada retorna true, então o primeiro argumento é world e os outros dois são dos tipos source e Target. 
+			fc1 = factory.createFunctionCall(getFunction(assocName), getConstants(new int[]{1, 2, 3}));
+			fc2 = factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
+			fc3 = factory.createFunctionCall(getFunction(source.getType().getName()), getConstants(new int[]{1,2}));
+			fc4 = factory.createFunctionCall(getFunction(target.getType().getName()), getConstants(new int[]{1,3}));
+			lbe1 = factory.createBinaryExpression(fc2, fc3, LogicalBinaryExpressionTypes.CONJUNCTION);
+			lbe1 = factory.createBinaryExpression(lbe1, fc4, LogicalBinaryExpressionTypes.CONJUNCTION);
+			lbe1 = factory.createBinaryExpression(fc1, lbe1, LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, lbe1, "Typing the arguments: If "+ r.getName() + "(x,y,z) holds then x is a world, y is a " + source.getName() + " and z is a " + source.getName());
+
+			lowerSource = source.getLower();
+			if (lowerSource == 1){
+				//Restrição de cardinalidade mínima = 1
+				
+				
+			}
+			
+		}
+
+	}
+	
 	
 	
 	//Os sortais topLevel sao disjoint. Isso vai nos permitir falar que é insatisfatível um modelo no qual haja um sortal que nao provê identidade sem herdar de um que proveja
@@ -101,6 +144,28 @@ public class Transformer {
 		
 	}
 
+	void populatesWithRelators(){
+		for(RefOntoUML.Class p: ontoparser.getAllInstances(Relator.class)){
+			//Crio a função que representa o fato de um dado individuo ser daquele tipo em um dado mundo
+			addFunction(p.getName(),2);
+			
+			//Tipagem dos argumentos da função: crio fórmula afirmando que se a função criada retorna true, então o primeiro argumento é world e o segundo existe nesse world. 
+			FunctionCall fc1 = factory.createFunctionCall(getFunction(p.getName()), getConstants(new int[]{1, 2}));
+			FunctionCall fc2 = factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
+			FunctionCall fc3 = factory.createFunctionCall(getFunction("exists"), getConstants(new int[]{1,2}));
+			LogicalBinaryExpression lbe1 = factory.createBinaryExpression(fc2, fc3, LogicalBinaryExpressionTypes.CONJUNCTION);
+			LogicalBinaryExpression lbe2 = factory.createBinaryExpression(fc1, lbe1, LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, lbe2, "Typing the arguments: If "+ p.getName() + "(x,y) holds then x is a world and y exists in x as a " + p.getName());
+			
+			//Crio fórumla para evitar trivialização, ou seja, evitar que gere um modelo no qual nao existam elementos daquele tipo
+			addFormula(false, fc1, "Formula to avoid Trivialization: Exists at least one "+ p.getName() + " in one world");
+			
+			//Como Relator provê identidade, adiciono o tipo ao conjunto de tipos provedores de identidade para no final criar a fórmula que garante que todo mundo tem identidade
+			identityProviderTypes.add(p);
+
+		}
+	}
+	
 	private void populateWithObjectClasses(){
 		
 		for(RefOntoUML.Class p: ontoparser.getAllInstances(ObjectClass.class)){
@@ -225,7 +290,7 @@ public class Transformer {
 	}
 
 	
-	private void populateWithBranchInTimeWorldStructure(boolean isBranchIntime){
+	private void populateWithWorldStructure(boolean isBranchIntime){
 		
 		//Crio as funções que utilizarei		
 		addFunction("World",1);
@@ -353,7 +418,7 @@ public class Transformer {
 		fc2= factory.createFunctionCall(getFunction("next"), getConstants(new int[]{1,2}));
 		lbe2 = factory.createBinaryExpression(fc1, fc2, LogicalBinaryExpressionTypes.CONJUNCTION);
 		lbe2 = factory.createBinaryExpression(lbe2, lbe1, LogicalBinaryExpressionTypes.IMPLICATION);
-		addFormula(true, lbe2, "The next world of a past world may be a cuurent world, a counterfactual world or another past world");
+		addFormula(true, lbe2, "The next world of a past world may be a cuurent world, a counterfactual world (only in branch in time structures) or another past world");
 		
 		//14.	∀x (PastWorld(x) → ∃y (CurrentWorld(y) ∧ recursiveNext(x,y)))
 		fc1= factory.createFunctionCall(getFunction("PastWorld"), getConstants(new int[]{1}));

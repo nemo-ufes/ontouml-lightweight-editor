@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_s9DO0ZgYEeOpQ6NTln5Csg" name="Model">
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_uVGm4JgYEeOpQ6NTln5Csg" name="Role1" visibility="public">
+    <generalization xmi:id="_yt3W4JgYEeOpQ6NTln5Csg" general="_ySOjwJgYEeOpQ6NTln5Csg"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_wi6iQJgYEeOpQ6NTln5Csg" name="Relator1" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_xQdkwJgYEeOpQ6NTln5Csg" name="Mediation1" visibility="public" memberEnd="_xQdkwZgYEeOpQ6NTln5Csg _xQdkxJgYEeOpQ6NTln5Csg" navigableOwnedEnd="_xQdkwZgYEeOpQ6NTln5Csg _xQdkxJgYEeOpQ6NTln5Csg">
+    <ownedEnd xmi:id="_xQdkwZgYEeOpQ6NTln5Csg" name="role1" type="_uVGm4JgYEeOpQ6NTln5Csg" association="_xQdkwJgYEeOpQ6NTln5Csg">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3jS0wZgYEeOpQ6NTln5Csg" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3jS0wJgYEeOpQ6NTln5Csg" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_xQdkxJgYEeOpQ6NTln5Csg" name="relator1" type="_wi6iQJgYEeOpQ6NTln5Csg" isReadOnly="true" association="_xQdkwJgYEeOpQ6NTln5Csg">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_3jTb0JgYEeOpQ6NTln5Csg" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_3jS0wpgYEeOpQ6NTln5Csg" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_ySOjwJgYEeOpQ6NTln5Csg" name="Kind1" visibility="public"/>
+</RefOntoUML:Model>
