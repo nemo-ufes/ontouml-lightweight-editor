@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.instancevisualizer.apl;
 
-import java.awt.Point;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.io.FileReader;
@@ -10,16 +9,20 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.graphstream.graph.Graph;
-import org.graphstream.ui.geom.Point3;
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.util.Camera;
 import org.xml.sax.SAXException;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.instancevisualizer.graph.GraphManager;
+import br.ufes.inf.nemo.instancevisualizer.gui.LegendPanel;
+import br.ufes.inf.nemo.instancevisualizer.gui.MainWindow;
+import br.ufes.inf.nemo.instancevisualizer.util.Choice;
+import br.ufes.inf.nemo.instancevisualizer.util.DialogUtil;
+import br.ufes.inf.nemo.instancevisualizer.xml.XMLFile;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4compiler.ast.Command;
 import edu.mit.csail.sdg.alloy4compiler.parser.CompModule;
@@ -27,14 +30,6 @@ import edu.mit.csail.sdg.alloy4compiler.parser.CompUtil;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Options;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 import edu.mit.csail.sdg.alloy4compiler.translator.TranslateAlloyToKodkod;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.instancevisualizer.gui.MainWindow;
-import br.ufes.inf.nemo.instancevisualizer.util.Choice;
-import br.ufes.inf.nemo.instancevisualizer.util.DialogUtil;
-
-import br.ufes.inf.nemo.instancevisualizer.graph.*;
-import br.ufes.inf.nemo.instancevisualizer.gui.*;
-import br.ufes.inf.nemo.instancevisualizer.xml.*;
 
 public class AplMainWindow {
 	
@@ -142,8 +137,7 @@ public class AplMainWindow {
 					}
 					loadFile(f, refontoFile);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					DialogUtil.bugDialog(mainWindow, e);
 				}
 	   		}
 	   	}.start();
@@ -171,8 +165,7 @@ public class AplMainWindow {
 					try {
 						ontoUmlParser = new OntoUMLParser(refontoFile.getAbsolutePath());
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						DialogUtil.bugDialog(mainWindow, e);
 					}
 				}
 				mainWindow.setStatus("Parsing instance .xml...");
@@ -180,17 +173,11 @@ public class AplMainWindow {
 				try {
 					xmlFile = new XMLFile(f, ontoUmlParser);
 				} catch (ParserConfigurationException | SAXException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					DialogUtil.bugDialog(mainWindow, e);
 				}
 				mainWindow.setStatus("Creating graph...");
 				graphManager = new GraphManager(xmlFile, ontoUmlParser, mainWindow);	// Creation of GraphManager
-				/*for(Graph g : graphManager.getGraphList()) {
-					if(g.getId().equals("world_structure/CurrentWorld$0")) {
-						graphManager.setSelectedGraph(g);
-		            	break;
-		            }
-				}*/
+				
 			   	displayAllGraphs();
 			   	mainWindow.setEnabled(true);
 			   	mainWindow.setStatus("Done!");
@@ -227,8 +214,7 @@ public class AplMainWindow {
 				beginning = new String(cbuf);
 				fr.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				DialogUtil.bugDialog(mainWindow, e);
 			}
 			
 			// Valid theme files contain the following header:
@@ -304,8 +290,7 @@ public class AplMainWindow {
 			solution.writeXML(xmlPath);
 			loadFile(new File(xmlPath), new File(refontoPath));
 		} catch (Err e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			DialogUtil.bugDialog(mainWindow, e);
 		}
 	}
 	
@@ -344,39 +329,6 @@ public class AplMainWindow {
 		graphManager.setSelectedWorld("world_structure/CurrentWorld$0");
         refreshGraphs();
 	}
-	
-	/*
-	 *if (returnVal == JFileChooser.APPROVE_OPTION) {
-			try {
-				File refontoFile = new File(refontoPath);
-				if(refontoFile.exists()) {
-					OntoUMLParser ontoUmlParser = new OntoUMLParser(refontoPath);
-					XMLFile xmlFile = new XMLFile(openFile, ontoUmlParser);	// Creation of XMLFile object
-					GraphManager graphManager = new GraphManager(xmlFile, ontoUmlParser, mainWindow);	// Creation of GraphManager
-					mainWindow.setxGraph(graphManager);
-					for(Graph g : graphManager.getGraphList()) {
-						if(g.getId().equals("world_structure/CurrentWorld$0")) {
-							graphManager.setSelectedGraph(g);
-	                    	break;
-	                    }
-					}
-	                graphManager.setSelectedWorld("world_structure/CurrentWorld$0");
-	                mainWindow.setScrollPanes1();
-	                mainWindow.setScrollPanes();
-				}else{
-					System.out.println("Couldn't find " + refontoPath + " You need to put it on the same directory of the loaded file ...");
-				}
-			} catch (ParserConfigurationException | SAXException | IOException ex) {
-				Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-			}
-		}else{
-			if(exitIfCancel) {
-				System.exit(0);
-			}
-			 
-		}
-		mainWindow.setStatus("Done!"); 
-	 */
 	
 	/**
 	 * <empty method> Disable all interactive components of the pointed mainWindow. Useful when using threads to open files and such.  

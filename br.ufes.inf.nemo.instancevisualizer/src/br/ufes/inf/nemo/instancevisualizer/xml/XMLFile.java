@@ -454,6 +454,14 @@ public class XMLFile {
         return worldList;
     }
     
+    public Atom getAtom(String atomLabel) {
+    	for(Atom atom : atomList) {
+    		if(atom.getLabel().equals(atomLabel))
+    			return atom;
+    	}
+    	return null;
+    }
+    
     public OntoUMLParser getOntoUmlParser() {
 		return ontoUmlParser;
 	}

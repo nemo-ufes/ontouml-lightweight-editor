@@ -3,9 +3,9 @@ package br.ufes.inf.nemo.instancevisualizer.main;
 import java.io.File;
 
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 import br.ufes.inf.nemo.instancevisualizer.apl.AplMainWindow;
 import br.ufes.inf.nemo.instancevisualizer.gui.MainWindow;
 import br.ufes.inf.nemo.instancevisualizer.util.DialogUtil;
@@ -14,11 +14,10 @@ public class Main {
 	
     public static void main(String args[]) {
     	try {
-    		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+    		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			DialogUtil.errorDialog(null, DialogUtil.ATTENTION, "Couldn't load System look and feel.", "Will be loading default look and feel...");
 		}
     	System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		MainWindow mw = new MainWindow(args);

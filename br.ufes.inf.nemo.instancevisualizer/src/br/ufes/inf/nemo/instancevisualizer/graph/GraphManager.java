@@ -5,10 +5,12 @@ import java.awt.MouseInfo;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JDialog;
+import javax.swing.JToolTip;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -591,6 +593,42 @@ public class GraphManager {
         	protected void elementMoving(GraphicElement element, MouseEvent event) {
         	}
         	
+        	private JToolTip tip = null;
+        	
+        	public void mouseMoved(MouseEvent event) {
+        		curElement = view.findNodeOrSpriteAt(event.getX(), event.getY());
+        		/*
+        		if(tip != null) {
+        			tip.setLocation(event.getX() - tip.getTipText().length()*3 + 1, event.getY());
+        			tip.repaint();
+        		}
+        		*/
+        		if(curElement == null && tip != null) {
+        			tip.setVisible(false);
+					setTip(null);
+					view.repaint();
+        		}
+        		
+        		if(curElement != null && tip == null) {
+        			String worldId = curElement.getId();
+        			int idSize = worldId.length();
+        			String worldNo = worldId.substring(idSize-1);
+        			String tipText = xmlFile.getAtom(worldId).getWorldType() + " " + worldNo;
+        			tip = new JToolTip();
+        			tip.setTipText(tipText);
+        			tip.setBounds(event.getX() - tipText.length()*3 + 1, event.getY(), tipText.length()*6 + 3, 20);
+        			setTip(tip);
+        			tip.setVisible(true);
+        			
+        			if(tipText.length() > 10) {
+        				tip.setLocation(event.getX()-15, event.getY());
+        			}
+        			
+        			view.add(tip);
+        			tip.repaint();
+        		}
+        	}
+        	
         	protected void mouseButtonPressOnElement(GraphicElement element, MouseEvent event) {
         		if(!worldChanging) {
         			setWorldChanging(true);
@@ -622,8 +660,21 @@ public class GraphManager {
 	        		}
         		}
         	}
+        	protected void setTip(JToolTip toolTip) {
+        		this.tip = toolTip;
+        	}
         };
         worldView.setMouseManager(worldManager);
+        worldView.setShortcutManager(new DefaultShortcutManager() {
+        	public void keyPressed(KeyEvent event) {
+        	}
+
+        	public void keyReleased(KeyEvent event) {
+        	}
+
+        	public void keyTyped(KeyEvent event) {
+        	}
+        });
         return worldView;
     }
     
@@ -832,6 +883,9 @@ public class GraphManager {
     			String attrib = nodeLegendManager.getLegendWithType(mainType).getStyle();
     			//node.removeAttribute("ui.style");
     			node.setAttribute("ui.style", attrib);
+    			//node.addAttribute("layout.weight", 100);
+    			//if(edgeManager.getEdgesConnecting0(n.getId()).isEmpty() && edgeManager.getEdgesConnecting1(n.getId()).isEmpty())
+    				//node.setAttribute("layout.weight", 1);
     			
     			Iterator<Attribute> attrs = n.getAttributeIterator(selectedWorld);
     			while(attrs.hasNext()) {

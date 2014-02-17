@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.instancevisualizer.util;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -41,7 +42,7 @@ public class DialogUtil {
 	public static final int SUCCESS = 2;
 	
 	/**
-	 * @wbp.parser.entryPoint
+	 * 
 	 * Open an error dialog.
 	 * @param parent
 	 * @param errorTitle
@@ -75,7 +76,8 @@ public class DialogUtil {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				errorDialog.dispose();
-				parent.requestFocus();
+				if(parent != null)
+					parent.requestFocus();
 			}
 		});
 		btnOk.setBounds(144, 77, 65, 23);
@@ -121,51 +123,107 @@ public class DialogUtil {
 	 */
 	public static File fileDialog(String approveText, String startingDir, 
 			String extensionFilters[], boolean exitIfCancel) {
-		/*
-		final JDialog dialog = new JDialog();
-		dialog.setVisible(true);
-		dialog.setTitle("Preview");
-		dialog.setBounds(0, 0, 180, 200);
 		
-		final JLabel label = new JLabel("");
-		GroupLayout groupLayout = new GroupLayout(dialog.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(label, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(label, GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		dialog.getContentPane().setLayout(groupLayout);
-		*/
+		//Class taken from http://www.javalobby.org/java/forums/t49462.html
+		class ImagePreviewPanel extends JPanel
+		        implements PropertyChangeListener {
+		    
+		    private int width, height;
+		    private ImageIcon icon;
+		    private Image image;
+		    private static final int ACCSIZE = 155;
+		    private Color bg;
+		    
+		    public ImagePreviewPanel() {
+		        setPreferredSize(new Dimension(ACCSIZE, -1));
+		        bg = getBackground();
+		    }
+		    
+		    public void propertyChange(PropertyChangeEvent e) {
+		        String propertyName = e.getPropertyName();
+		        
+		        // Make sure we are responding to the right event.
+		        if (propertyName.equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
+		            File selection = (File)e.getNewValue();
+		            String name;
+		            
+		            if (selection == null)
+		                return;
+		            else
+		                name = selection.getAbsolutePath();
+		            
+		            /*
+		             * Make reasonably sure we have an image format that AWT can
+		             * handle so we don't try to draw something silly.
+		             */
+		            if ((name != null) &&
+		                    name.toLowerCase().endsWith(".jpg") ||
+		                    name.toLowerCase().endsWith(".jpeg") ||
+		                    name.toLowerCase().endsWith(".gif") ||
+		                    name.toLowerCase().endsWith(".png")) {
+		                icon = new ImageIcon(name);
+		                image = icon.getImage();
+		                scaleImage();
+		                repaint();
+		            }
+		        }
+		    }
+		    
+		    private void scaleImage() {
+		        width = image.getWidth(this);
+		        height = image.getHeight(this);
+		        double ratio = 1.0;
+		       
+		        /* 
+		         * Determine how to scale the image. Since the accessory can expand
+		         * vertically make sure we don't go larger than 150 when scaling
+		         * vertically.
+		         */
+		        if (width >= height) {
+		            ratio = (double)(ACCSIZE-5) / width;
+		            width = ACCSIZE-5;
+		            height = (int)(height * ratio);
+		        }
+		        else {
+		            if (getHeight() > 150) {
+		                ratio = (double)(ACCSIZE-5) / height;
+		                height = ACCSIZE-5;
+		                width = (int)(width * ratio);
+		            }
+		            else {
+		                ratio = (double)getHeight() / height;
+		                height = getHeight();
+		                width = (int)(width * ratio);
+		            }
+		        }
+		                
+		        image = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+		    }
+		    
+		    public void paintComponent(Graphics g) {
+		        g.setColor(bg);
+		        
+		        /*
+		         * If we don't do this, we will end up with garbage from previous
+		         * images if they have larger sizes than the one we are currently
+		         * drawing. Also, it seems that the file list can paint outside
+		         * of its rectangle, and will cause odd behavior if we don't clear
+		         * or fill the rectangle for the accessory before drawing. This might
+		         * be a bug in JFileChooser.
+		         */
+		        g.fillRect(0, 0, ACCSIZE, getHeight());
+		        g.drawImage(image, getWidth() / 2 - width / 2 + 5,
+		                getHeight() / 2 - height / 2, this);
+		    }
+		    
+		}
+		
 		final JFileChooser fc = new JFileChooser();
-		/*
-		fc.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent arg0) {
-				// TODO Auto-generated method stub
-				if(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(arg0.getPropertyName())) {
-					ImageIcon icon = new ImageIcon(((File)arg0.getNewValue()).getAbsolutePath());
-					//Image img = icon.getImage().getScaledInstance(width, height, hints);
-					
-					//BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-					
-					//Graphics g = bi.createGraphics();
-					
-					//g.drawImage(img, 0, 0, 90, 90, null);
-					ImageIcon newIcon = new ImageIcon(icon.getImage().getScaledInstance(144, 139, BufferedImage.SCALE_SMOOTH));
-					label.setIcon(newIcon);
-				}
-			}
-		});
-		*/
+		ImagePreviewPanel preview = new ImagePreviewPanel();
+		fc.setAccessory(preview);
+		
+		fc.addPropertyChangeListener(preview);
+		
 		fc.setVisible(true);
 		fc.setCurrentDirectory(new File(startingDir));
 		if(extensionFilters != null) {
@@ -245,7 +303,7 @@ public class DialogUtil {
 	}
 
 	/**
-	 *
+	 * @wbp.parser.entryPoint
 	 */
 	public static void bugDialog(JFrame parent, Exception e) {
 		final JDialog bugDialog = new JDialog(parent, true);
@@ -273,15 +331,16 @@ public class DialogUtil {
 		bugDialog.getContentPane().add(btnContinue);
 		
 		JLabel lblWhoops = new JLabel("Whoops, a fatal error has occured. Handy details for debugging are included below.");
-		lblWhoops.setBounds(10, 11, 424, 14);
+		lblWhoops.setBounds(10, 11, 424, 37);
 		lblWhoops.setUI(MultiLineLabelUI.labelUI);
 		bugDialog.getContentPane().add(lblWhoops);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 36, 424, 390);
+		scrollPane.setBounds(10, 55, 424, 371);
 		bugDialog.getContentPane().add(scrollPane);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
