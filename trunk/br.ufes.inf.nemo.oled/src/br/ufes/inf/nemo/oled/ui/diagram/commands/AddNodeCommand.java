@@ -80,7 +80,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} - UNDO
 	 */
 	@Override
 	public void undo() {
@@ -91,7 +91,8 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		}
 		
 		if(diagramElement != null){
-			parent.removeChild(diagramElement);			
+			parent.removeChild(diagramElement);	
+			
 			List<DiagramElement> elements = new ArrayList<DiagramElement>();
 			elements.add(diagramElement);
 			notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);	
@@ -99,7 +100,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} - REDO
 	 */
 	@Override
 	public void redo() {
@@ -109,7 +110,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} - RUN
 	 */
 	public void run() 
 	{				
@@ -128,7 +129,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 * @param element
 	 * @param redo
 	 */
-	public void addToDiagram (DiagramElement element, boolean redo)
+	private void addToDiagram (DiagramElement element, boolean redo)
 	{
 		//Adds the element to the diagram
 		parent.addChild(element);
@@ -144,7 +145,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 * Add a element to the model instance behind the scenes and updates the application accordingly.
 	 * @param elem
 	 */
-	public void addToModel(RefOntoUML.Element element)
+	private void addToModel(RefOntoUML.Element element)
 	{
 		if(eContainer==null){
 			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), element);

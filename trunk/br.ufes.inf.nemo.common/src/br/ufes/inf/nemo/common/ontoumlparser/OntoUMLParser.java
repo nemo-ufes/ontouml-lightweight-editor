@@ -88,7 +88,7 @@ public class OntoUMLParser {
 		NameHandler h1 = new NameHandler();
 		this.refmodelname = h1.treatName(model);	
 				
-		initElementsHashMap(model, nameHandler);
+		initMap(model, nameHandler);
 	}
 		
 	/**
@@ -109,15 +109,18 @@ public class OntoUMLParser {
 		NameHandler h1 = new NameHandler();
 		this.refmodelname = h1.treatName(model);
 				
-		initElementsHashMap(model, nameHandler);
+		initMap(model, nameHandler);
 	}	
 	
 	/**
 	 * Add a new Element to this Parser. 
 	 * But note that this new element must already have been added in the Model (i.e., in the root Package or file in which this parser was created). 
+	 * Also, this method do not verify dependences in addition. If the argument is a class, than it will add
+	 * all its attributes, generalization and comments, and so on for associations,  etc.
+	 * 
 	 */
 	public void addElement(EObject obj)
-	{				
+	{
 		// only add if it is not there already
 		if (this.elementsHash.get(obj)==null)
 		{
@@ -135,7 +138,7 @@ public class OntoUMLParser {
 				this.elementsHash.put(obj,e);
 				
 			}else if (obj instanceof PackageableElement){
-				addToElementsHashMap((PackageableElement)obj, nameHandler);
+				addToMap((PackageableElement)obj, nameHandler);
 			}
 		}				
 	}
@@ -143,14 +146,56 @@ public class OntoUMLParser {
 	/**
 	 * Remove an Element from this Parser. 
 	 * But note that this element must already have been removed from the Model (i.e., in the root Package or file in which this parser was created).
+	 * Also, this method do not verify dependences in deletion. If the argument is a class, than it will delete
+	 * all its attributes, generalization and comments, and so on for associations,  etc.
 	 */
 	public void removeElement(EObject obj)
 	{	
+		// Comments
+		if (obj instanceof PackageableElement) 
+		{ 
+			for (Comment c: ((PackageableElement)obj).getOwnedComment()) removeFromMap(c); 
+		} 
+			
+		// Class and DataType
+		if (obj instanceof RefOntoUML.Class || ((obj instanceof DataType)&&!(obj instanceof PrimitiveType)&&!(obj instanceof Enumeration)))
+		{			
+			//Generalization
+			for (Generalization g : ((Classifier)obj).getGeneralization()) removeFromMap(g);
+			//Attributes
+			if (obj instanceof Class){ for(Property p: ((Class)obj).getOwnedAttribute()) removeFromMap(p); }
+			if (obj instanceof DataType){ for(Property p: ((DataType)obj).getOwnedAttribute()) removeFromMap(p); }
+			removeFromMap(obj);
+		}		
+		//Association
+		else if(obj instanceof Association)
+		{
+			removeFromMap(obj);					
+			//Properties			
+			for(Property p: ((Association)obj).getMemberEnd()) { removeFromMap(p); }
+			//Generalization
+			for (Generalization g : ((Classifier)obj).getGeneralization()) removeFromMap(g);
+		}		
+		//Enumeration
+		else if (obj instanceof Enumeration)
+		{						
+			//Enumeration Literals
+			for(EnumerationLiteral p: ((Enumeration)obj).getOwnedLiteral()) removeFromMap(p);			
+			//Enumeration can also have attributes
+			for(Property p: ((Enumeration)obj).getOwnedAttribute()) removeFromMap(p);
+			removeFromMap(obj);
+		}else{
+			removeFromMap(obj);
+		}
+	}
+	
+	private void removeFromMap(EObject obj)
+	{
 		ParsingElement e = elementsHash.get(obj);
 		if (e!=null) {
 			nameHandler.remove(e.getAlias());
 			this.elementsHash.remove(obj);			
-		}
+		}	
 	}
 	
 	public void updateElement(EObject obj)
@@ -178,16 +223,16 @@ public class OntoUMLParser {
 	 * @param rootpack
 	 * @param h2
 	 */
-	private void initElementsHashMap (PackageableElement rootpack, NameHandler h2) 
+	private void initMap (PackageableElement rootpack, NameHandler h2) 
 	{
 		ParsingElement e = new ParsingElement(rootpack, true, h2.treatName(rootpack));
 		this.elementsHash.put(rootpack,e);
 		
 		for(PackageableElement p : ((Package) rootpack).getPackagedElement())
 		{
-			addToElementsHashMap(p, h2);
+			addToMap(p, h2);
 			
-			if(p instanceof Package) initElementsHashMap(p, h2);
+			if(p instanceof Package) initMap(p, h2);
 		}
 	}		
 
@@ -198,7 +243,7 @@ public class OntoUMLParser {
 	 * @param pe
 	 * @param h2
 	 */
-	private void addToElementsHashMap(PackageableElement pe, NameHandler h2)
+	private void addToMap(PackageableElement pe, NameHandler h2)
 	{
 		ParsingElement e;
 		

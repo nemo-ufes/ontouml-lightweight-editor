@@ -109,7 +109,7 @@ public class ProjectTreeCellRenderer extends DefaultTreeCellRenderer implements 
 			    if (elementType.toLowerCase().equals("property"))
 	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/property.gif")));
 	    		else if (elementType.toLowerCase().equals("comment"))
-	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/"+elementType.toLowerCase()+".png")));
+	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/note.png")));
 	    		else
 	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/"+elementType.toLowerCase()+".png")));
 			    label.setText(value.toString());

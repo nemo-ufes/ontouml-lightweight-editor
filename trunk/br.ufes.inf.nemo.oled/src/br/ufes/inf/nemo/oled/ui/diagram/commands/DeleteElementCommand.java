@@ -28,13 +28,10 @@ import javax.swing.event.UndoableEditListener;
 
 import org.eclipse.emf.edit.command.DeleteCommand;
 
-import RefOntoUML.Classifier;
 import RefOntoUML.Derivation;
 import RefOntoUML.Element;
 import RefOntoUML.MaterialAssociation;
-import RefOntoUML.Property;
 import RefOntoUML.Relationship;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.Connection;
@@ -58,17 +55,17 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 
 	private static final long serialVersionUID = 2456036038567915529L;
 	
-	private Collection<DiagramElement> diagramElementList = new ArrayList<DiagramElement>();
-	private Collection<DiagramElement> diagramDependenceList_L1 = new ArrayList<DiagramElement>(); //level1
-	private Collection<DiagramElement> diagramDependenceList_L2 = new ArrayList<DiagramElement>(); //level2 (only true for derivation)
+	private Collection<DiagramElement> diagramElemList = new ArrayList<DiagramElement>();
+	private Collection<DiagramElement> diagramElemDep1List = new ArrayList<DiagramElement>(); //level1 of dependencies
+	private Collection<DiagramElement> diagramElemDep2List = new ArrayList<DiagramElement>(); //level2 of dependencies(only true for derivation)
 		
-	private Collection<Element> elementList= new ArrayList<Element>();
-	private Collection<Element> elementDependenceList_L1= new ArrayList<Element>(); // level1
-	private Collection<Element> elementDependenceList_L2= new ArrayList<Element>(); // level2 (only true for derivation)
+	private Collection<Element> elemList= new ArrayList<Element>();
+	private Collection<Element> elemDep1List= new ArrayList<Element>(); // level1 of dependencies
+	private Collection<Element> elemDep2List= new ArrayList<Element>(); // level2 of dependencies (only true for derivation)
 	
 	private List<ParentChildRelation> parentChildRelations = new ArrayList<ParentChildRelation>();
-	private List<ParentChildRelation> parentChildDependencies_L1 = new ArrayList<ParentChildRelation>();
-	private List<ParentChildRelation> parentChildDependencies_L2 = new ArrayList<ParentChildRelation>();
+	private List<ParentChildRelation> parentChildRelationsDep1 = new ArrayList<ParentChildRelation>(); // level1 of dependencies
+	private List<ParentChildRelation> parentChildRelationsDep2 = new ArrayList<ParentChildRelation>(); // level2 of dependencies 
 	
 	private boolean deleteFromModel;
 	private boolean deleteFromDiagram;
@@ -102,183 +99,54 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * @param theElements
 	 *            the DiagramElements to remove, each must have a parent
 	 */
-	public DeleteElementCommand(DiagramNotification aNotification, Collection<Element> theElements, UmlProject project, boolean deleteFromModel, boolean deleteFromDiagram) {
+	public DeleteElementCommand(DiagramNotification aNotification, Collection<Element> theElements, UmlProject project, boolean deleteFromModel, boolean deleteFromDiagram) 
+	{
 		this.project = project;
 		this.notification = aNotification;	
 		this.deleteFromDiagram = deleteFromDiagram;
 		this.deleteFromModel = deleteFromModel;
-		elementList.addAll(theElements);
-		diagramElementList.addAll(ModelHelper.getDiagramElements(elementList));		
 		
-		//Dependencies
+		// requested element for deletion
+		elemList.addAll(theElements);
+		diagramElemList.addAll(ModelHelper.getDiagramElements(elemList));		
+		
+		// init the dependecies of level 1 and 2.
 		for (Element elem : theElements) 
 		{			
-			ArrayList<Relationship> depList = ProjectBrowser.getParserFor(project).getRelationships(elem);
-			elementDependenceList_L1.addAll(depList);
-			diagramDependenceList_L1.addAll(ModelHelper.getDiagramElements(elementDependenceList_L1));			
+			// level 1 of dependency
+			ArrayList<Relationship> depList = ProjectBrowser.getParserFor(project).getRelationships(elem);			
+			elemDep1List.addAll(depList);
+			diagramElemDep1List.addAll(ModelHelper.getDiagramElements(elemDep1List));			
 			
-			//the case in which there is a material in depList. We must include the derivation too.
-			for(Relationship r: depList ){ if (r instanceof MaterialAssociation) { 
+			// level 2 of dependency
+			// the case in which there is a material in depList. We must include the derivation too.
+			for(Relationship r: depList )
+			{ 
+				if (r instanceof MaterialAssociation) 
+				{ 
 					Derivation d = ProjectBrowser.getParserFor(project).getDerivation((MaterialAssociation)r);
-					if(d!=null){
-						elementDependenceList_L2.add(d);
-						diagramDependenceList_L2.add(ModelHelper.getDiagramElement(d));
+					if(d!=null) {
+						elemDep2List.add(d);
+						diagramElemDep2List.add(ModelHelper.getDiagramElement(d));
 					}
 				}
 			}			
 		}
 		
-		//ParentChilds
-		for (DiagramElement elem : diagramElementList){
+		// Parent children and their dependencies
+		for (DiagramElement elem : diagramElemList){
 			parentChildRelations.add(new ParentChildRelation(elem, elem.getParent()));
 		}
-		for(DiagramElement elem: diagramDependenceList_L1){
-			parentChildDependencies_L1.add(new ParentChildRelation(elem, elem.getParent()));
+		for(DiagramElement elem: diagramElemDep1List){
+			parentChildRelationsDep1.add(new ParentChildRelation(elem, elem.getParent()));
 		}
-		for(DiagramElement elem: diagramDependenceList_L2){
-			parentChildDependencies_L2.add(new ParentChildRelation(elem, elem.getParent()));
+		for(DiagramElement elem: diagramElemDep2List){
+			parentChildRelationsDep2.add(new ParentChildRelation(elem, elem.getParent()));
 		}
-	}
-	
-	public Collection<DiagramElement> getDiagramElements() {
-		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-		list.addAll(diagramElementList);
-		list.addAll(diagramDependenceList_L1);
-		list.addAll(diagramDependenceList_L2);
-		return list;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void run() {
-		delete(diagramDependenceList_L2,elementDependenceList_L2);
-		delete(diagramDependenceList_L1,elementDependenceList_L1);
-		delete(diagramElementList, elementList);			
 	}
 	
 	/**
-	 * deletion
-	 * @param diagramElemList
-	 */
-	public void delete(Collection<DiagramElement> diagramElemList, Collection<Element> elemList)
-	{
-		if(deleteFromDiagram) {
-			for (DiagramElement element : diagramElemList) {
-				deleteFromDiagram(element);
-				ModelHelper.removeMapping(element);
-			}
-		}
-		
-		if(deleteFromModel){
-			//delete first the derivations
-			for(Element elem: elemList) {				
-				if (elem instanceof RefOntoUML.Derivation) deleteFromModel(elem);				
-				if(deleteFromModel) ModelHelper.removeMapping(elem);
-			}
-			//then the comments
-			for(Element elem: elemList){
-				if (elem instanceof RefOntoUML.Comment) deleteFromModel(elem);
-				if(deleteFromModel) ModelHelper.removeMapping(elem);
-			}
-			
-			//then the rest of relationships
-			for(Element elem: elemList) {				
-				if (elem instanceof RefOntoUML.Relationship) deleteFromModel(elem);				
-				if(deleteFromModel) ModelHelper.removeMapping(elem);
-			}
-			
-			//then the classes and datatypes
-			for(Element elem: elemList) {
-				if (elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType) deleteFromModel(elem);
-				if(deleteFromModel) ModelHelper.removeMapping(elem);
-			}
-		}	
-					
-		//FIXME - Tiago, you need to fix this part of the code (John).  
-		//Removes the inferred elements. After creating the visual objects, use the delete command.			
-		ArrayList<Element> inferred = ProjectBrowser.getInferences(project).getInferredElements();			
-		OntoUMLParser parser = ProjectBrowser.getParserFor(project);
-		for (Element e : inferred) {
-			parser.removeElement(e);
-		}
-			
-		ProjectBrowser.frame.getDiagramManager().updateUI();
-	}
-	
-	/**
-	 * Deletes a diagram element from the diagram (not from the model instance behind the scenes)
-	 * @param elem
-	 */
-	public void deleteFromDiagram (DiagramElement element)
-	{
-		if (element instanceof Connection) {			
-			detachConnectionFromNodes((Connection) element);				
-		}else if (element instanceof Node){
-			detachNodeConnections((Node)element);
-		}
-		
-		if(element instanceof BaseConnection || element instanceof ClassElement) 
-		{				
-			element.getParent().removeChild(element);			
-		}
-		
-		if (notification!=null){
-			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-			list.add(element);
-			notification.notifyChange((List<DiagramElement>) list, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);
-			
-			UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)notification), this);
-			for (UndoableEditListener l : ((DiagramEditor)notification).editListeners) {
-				l.undoableEditHappened(event);
-			}
-		}		
-	}
-	
-	/**
-	 * Deletes a relationship from the model instance behind the scenes and updates the application accordingly.
-	 * @param elem
-	 */
-	public void deleteFromModel (RefOntoUML.Element elem)
-	{
-		DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), elem);
-		project.getEditingDomain().getCommandStack().execute(cmd);
-		
-		//update the application accordingly
-		updateApplication(elem);
-	}
-	
-	/** Update the application accordingly */
-	public static void updateApplication(RefOntoUML.Element deletedElement)
-	{		
-		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
-		
-		ProjectBrowser.getParserFor(project).removeElement(deletedElement);
-		
-		//Remove the element from the auto completion of the OCL editor			
-		if (deletedElement instanceof RefOntoUML.Association)
-		{			
-			if (!((RefOntoUML.Association) deletedElement).getMemberEnd().isEmpty())
-			{			
-				Property source = ((RefOntoUML.Association) deletedElement).getMemberEnd().get(0);
-				Property target = ((RefOntoUML.Association) deletedElement).getMemberEnd().get(1);			
-				
-				ProjectBrowser.getParserFor(project).removeElement(source);
-				ProjectBrowser.getParserFor(project).removeElement(target);
-			
-				ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(source);
-				ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(target);
-			}
-		}else if (deletedElement instanceof RefOntoUML.Class || deletedElement instanceof RefOntoUML.DataType){		
-			ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion((Classifier)deletedElement);			
-		}		
-		
-		//FIXME - Do not rebuild the tree, only update it!
-		ProjectBrowser.rebuildTree(project);
-	}
-	
-	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} - REDO
 	 */
 	@Override
 	public void redo() {
@@ -288,12 +156,14 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} - UNDO
 	 */
 	@Override
-	public void undo() {
+	public void undo() 
+	{
 		super.undo();
 		
+		//requested
 		for (ParentChildRelation relation : parentChildRelations) {
 			if (relation.element instanceof Connection) {
 				reattachConnectionToNodes((Connection) relation.element);
@@ -304,7 +174,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			relation.parent.addChild(relation.element);
 		}
 		
-		for (ParentChildRelation relation : parentChildDependencies_L1) {
+		//dependencies of level1
+		for (ParentChildRelation relation : parentChildRelationsDep1) {
 			if (relation.element instanceof Connection) {
 				reattachConnectionToNodes((Connection) relation.element);
 			} else if (relation.element instanceof Node) {
@@ -314,7 +185,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			relation.parent.addChild(relation.element);			
 		}
 		
-		for (ParentChildRelation relation : parentChildDependencies_L2) {
+		//dependecies of level2
+		for (ParentChildRelation relation : parentChildRelationsDep2) {
 			if (relation.element instanceof Connection) {
 				reattachConnectionToNodes((Connection) relation.element);
 			} else if (relation.element instanceof Node) {
@@ -326,13 +198,113 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		
 		if(notification!=null){
 			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-			list.addAll(diagramElementList);
-			list.addAll(diagramDependenceList_L1);
-			list.addAll(diagramDependenceList_L2);
+			list.addAll(diagramElemList);
+			list.addAll(diagramElemDep1List);
+			list.addAll(diagramElemDep2List);
 			notification.notifyChange((List<DiagramElement>) list, ChangeType.ELEMENTS_REMOVED, NotificationType.UNDO);		
 		}
 	}
+	
+	/**
+	 * {@inheritDoc} - RUN
+	 */
+	public void run() 
+	{
+		// deletes dependencies level2 (derivations)
+		delete(diagramElemDep2List,elemDep2List);
+		
+		// deletes dependencies level1
+		delete(diagramElemDep1List,elemDep1List);
 
+		// delete the element requested
+		delete(diagramElemList, elemList); 			
+	}
+	
+	public void delete(Collection<DiagramElement> diagramElemList, Collection<Element> elemList)
+	{
+		if(deleteFromDiagram) deleteFromDiagram(diagramElemList);			
+				
+		if(deleteFromModel) deleteFromModel(elemList);
+		
+		for(RefOntoUML.Element deletedElement: elemList)
+		{
+			ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(deletedElement);	
+		}		
+				  
+//		Removes the inferred elements. After creating the visual objects, use the delete command.			
+//		ArrayList<Element> inferred = ProjectBrowser.getInferences(project).getInferredElements();			
+//		OntoUMLParser parser = ProjectBrowser.getParserFor(project);
+//		for (Element e : inferred) {
+//			parser.removeElement(e);
+//		}
+		
+	}
+	
+	private void deleteFromDiagram(Collection<DiagramElement> diagramElemList)
+	{
+		for (DiagramElement element : diagramElemList) 
+		{
+			delete(element);
+			ModelHelper.removeMapping(element);
+		}
+	}
+	
+	private void deleteFromModel(Collection<Element> elemList)
+	{
+		//delete first the derivations
+		for(Element elem: elemList) {
+			if (elem instanceof RefOntoUML.Derivation) delete(elem);				
+		}
+		//then the comments
+		for(Element elem: elemList){
+			if (elem instanceof RefOntoUML.Comment) delete(elem);
+		}
+		
+		//then the rest of relationships
+		for(Element elem: elemList) {				
+			if (elem instanceof RefOntoUML.Relationship) delete(elem);
+		}
+		
+		//then the classes and datatypes
+		for(Element elem: elemList) {
+			if (elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType) delete(elem);			
+		}
+	}
+	
+	private void delete (DiagramElement element)
+	{
+		//detach ends
+		if (element instanceof Connection) detachConnectionFromNodes((Connection) element);				
+		else if (element instanceof Node) detachNodeConnections((Node)element);
+				
+		// delete
+		if(element instanceof BaseConnection || element instanceof ClassElement) element.getParent().removeChild(element);			
+				
+		//notify
+		if (notification!=null) {
+			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+			list.add(element);
+			notification.notifyChange((List<DiagramElement>) list, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);			
+			UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)notification), this);
+			for (UndoableEditListener l : ((DiagramEditor)notification).editListeners)  l.undoableEditHappened(event);			
+		}		
+	}
+	
+	private void delete (RefOntoUML.Element elem)
+	{
+		DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), elem);
+		project.getEditingDomain().getCommandStack().execute(cmd);		
+	}
+	
+	public Collection<DiagramElement> getDiagramElements() 
+	{
+		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+		list.addAll(diagramElemList);
+		list.addAll(diagramElemDep1List);
+		list.addAll(diagramElemDep2List);
+		return list;
+	}
+	
 	/**
 	 * Called when a node is removed. Detach the connections associated with
 	 * this node from the other end nodes and remove them from their parents.
@@ -341,11 +313,13 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 *            the node that is removed
 	 * @return 
 	 */
-	private Collection<DiagramElement> detachNodeConnections(Node node) {
+	private Collection<DiagramElement> detachNodeConnections(Node node) 
+	{
 		ArrayList<DiagramElement> detachedConnections = new ArrayList<>();
 		detachedConnections.addAll(node.getConnections());
 		
-		for (Connection conn : node.getConnections()) {
+		for (Connection conn : node.getConnections()) 
+		{
 			if (conn.getNode1() != node)
 				if(conn.getNode1()!=null)
 					conn.getNode1().removeConnection(conn);
@@ -371,8 +345,10 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * @param node
 	 *            the node that is readded
 	 */
-	private void reattachNodeConnections(Node node) {
-		for (Connection conn : node.getConnections()) {
+	private void reattachNodeConnections(Node node) 
+	{
+		for (Connection conn : node.getConnections()) 
+		{
 			if (conn.getNode1() != node)
 				if (conn.getNode1()!=null)
 					conn.getNode1().addConnection(conn);
@@ -396,7 +372,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * @param conn
 	 *            the connection that is removed
 	 */
-	private void detachConnectionFromNodes(Connection conn) {
+	private void detachConnectionFromNodes(Connection conn) 
+	{
 		if (conn.getNode1()!=null) conn.getNode1().removeConnection(conn);
 		else conn.getConnection1().removeConnection(conn);
 		if (conn.getNode2()!=null) conn.getNode2().removeConnection(conn);
@@ -410,7 +387,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * @param conn
 	 *            the connection that is readded
 	 */
-	private void reattachConnectionToNodes(Connection conn) {
+	private void reattachConnectionToNodes(Connection conn) 
+	{
 		if (conn.getNode1()!=null)
 			conn.getNode1().addConnection(conn);
 		else

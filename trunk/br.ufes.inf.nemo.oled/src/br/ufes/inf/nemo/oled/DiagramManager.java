@@ -453,7 +453,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/** 
-	 * Update the application accordingly
+	 * Update the application accordingly to the refontouml instance created
 	 * 
 	 * @param element: added element on refontouml root instance.
 	 */
@@ -481,7 +481,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/**
-	 * Update the application accordingly
+	 * Update the application accordingly to the refontouml instance created
 	 * 
 	 * @param element: modified element on the refontouml root instance
 	 */
@@ -504,7 +504,32 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			else refreshDiagramElement((RefOntoUML.Element)(element).eContainer());
 		}			
 	}
-
+	
+	/**
+	 * Update the application accordingly to the refontouml instance created
+	 * 
+	 * @param element: deleted element on the refontouml root instance
+	 */
+	public void updateOLEDFromDeletion(RefOntoUML.Element deletedElement)
+	{		
+		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
+		
+		// =================================
+		// OntoUML Parser
+		// =================================
+		ProjectBrowser.getParserFor(project).removeElement(deletedElement);
+		
+		// =================================
+		// OCL Completion
+		// =================================		
+		ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(deletedElement);			
+		
+		// =================================
+		// Project Tree
+		// =================================
+		ProjectBrowser.rebuildTree(project);
+	}
+	
 	/** Update OLED according to a Fix.  */
 	public void updateOLED (final Fix fix)
 	{

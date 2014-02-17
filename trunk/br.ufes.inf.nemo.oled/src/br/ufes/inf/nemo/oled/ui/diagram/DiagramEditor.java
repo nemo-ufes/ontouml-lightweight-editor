@@ -1072,7 +1072,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 
 		diagram.setSaveNeeded(true);		
-
+		
 		showStatus(elements, changeType, notificationType);
 	}
 
