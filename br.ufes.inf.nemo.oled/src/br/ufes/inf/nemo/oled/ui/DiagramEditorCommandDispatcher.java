@@ -324,6 +324,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("DERIVERELATIONS", new MethodCall(
 					getClass().getMethod("deriveRelations")));
+			
+			selectorMap.put("DERIVED_BY_UNION", new MethodCall(
+					getClass().getMethod("derivedByUnion")));
 
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
@@ -385,6 +388,13 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		manager.find();
 	}
 
+	public void derivedByUnion()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		
+		manager.deriveByUnion();
+	}
+	
 	public void redo()
 	{
 		if (manager.isProjectLoaded()==false) return;
