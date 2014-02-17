@@ -32,10 +32,6 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import br.ufes.inf.nemo.oled.util.ExtractorUtil;
 
-import edu.mit.csail.sdg.alloy4.Err;
-import edu.mit.csail.sdg.alloy4.Util;
-import edu.mit.csail.sdg.alloy4.Version;
-
 
 /** This class allows you to execute tasks in a subprocess, and receive its outputs via callback.
  *

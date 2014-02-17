@@ -23,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;

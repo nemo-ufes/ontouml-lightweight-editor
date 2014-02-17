@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +22,6 @@ import javax.swing.SwingConstants;
 
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.Main;
-import java.awt.Font;
 
 
 public class AboutDialog extends JDialog {

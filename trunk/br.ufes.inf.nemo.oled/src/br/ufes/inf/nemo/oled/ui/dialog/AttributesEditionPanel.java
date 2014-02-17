@@ -17,6 +17,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -26,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -46,8 +48,6 @@ import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.util.ColorPalette;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
-import javax.swing.JCheckBox;
-import javax.swing.SwingConstants;
 
 public class AttributesEditionPanel extends JPanel {
 

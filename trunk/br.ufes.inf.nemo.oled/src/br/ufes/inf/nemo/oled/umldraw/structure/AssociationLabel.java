@@ -25,10 +25,10 @@ import java.awt.geom.GeneralPath;
 import RefOntoUML.Generalization;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
+import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
-import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlModelElementLabelSource;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
 

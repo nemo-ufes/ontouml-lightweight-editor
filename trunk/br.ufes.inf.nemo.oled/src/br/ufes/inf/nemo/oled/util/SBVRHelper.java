@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Collections;
 
-
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.ontouml2sbvr.core.OntoUML2SBVR;

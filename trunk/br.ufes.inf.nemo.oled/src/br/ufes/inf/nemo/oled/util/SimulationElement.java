@@ -2,11 +2,10 @@ package br.ufes.inf.nemo.oled.util;
 
 import java.io.Serializable;
 
+import RefOntoUML.PackageableElement;
 import edu.mit.csail.sdg.alloy4graph.DotColor;
 import edu.mit.csail.sdg.alloy4graph.DotShape;
 import edu.mit.csail.sdg.alloy4graph.DotStyle;
-
-import RefOntoUML.PackageableElement;
 
 public class SimulationElement implements Serializable
 {

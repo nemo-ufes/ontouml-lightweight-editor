@@ -92,8 +92,10 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.dialog.EcoreSettingDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
+import br.ufes.inf.nemo.oled.ui.dialog.UMLSettingDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
 import br.ufes.inf.nemo.oled.umldraw.structure.DiagramElementFactoryImpl;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
@@ -1250,6 +1252,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
+	/** Transform model to UML (*.uml) ignoring all stereotypes. */
+	public void generateUML() 
+	{
+		UMLSettingDialog.open(frame, true,ProjectBrowser.getParserFor(currentProject));		
+	}
+
+	/** Transform model to Ecore (*.ecore) ignoring all stereotypes. */
+	public void generateEcore() 
+	{	
+		EcoreSettingDialog.open(frame, true, ProjectBrowser.getParserFor(currentProject));
+	}
+
 	/**
 	 * Search for warnings in the model
 	 */
@@ -1860,5 +1874,4 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 //			}    		
 //		}	
 	}
-
 }

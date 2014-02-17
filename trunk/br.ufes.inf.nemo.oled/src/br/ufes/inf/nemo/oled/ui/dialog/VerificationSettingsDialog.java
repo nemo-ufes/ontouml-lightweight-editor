@@ -27,17 +27,16 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import edu.mit.csail.sdg.alloy4graph.DotColor;
-import edu.mit.csail.sdg.alloy4graph.DotPalette;
-import edu.mit.csail.sdg.alloy4graph.DotShape;
-import edu.mit.csail.sdg.alloy4graph.DotStyle;
-
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ui.diagram.VerificationModel;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.SimulationAttribute;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
+import edu.mit.csail.sdg.alloy4graph.DotColor;
+import edu.mit.csail.sdg.alloy4graph.DotPalette;
+import edu.mit.csail.sdg.alloy4graph.DotShape;
+import edu.mit.csail.sdg.alloy4graph.DotStyle;
 
 
 /**

@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.oled.ui.dialog;
 import it.cnr.imaa.essi.lablib.gui.checkboxtree.CheckboxTree;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -11,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.logging.Level;
 
+import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -44,8 +46,6 @@ import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefConstraint;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefModel;
 import br.ufes.inf.nemo.xmi2ontouml.util.ChckBoxTreeNodeElem;
 import br.ufes.inf.nemo.xmi2ontouml.util.RefOntoUMLUtil;
-import javax.swing.Box;
-import java.awt.Component;
 
 public class ImportXMIDialog extends JDialog implements ActionListener, TreeSelectionListener
 {
