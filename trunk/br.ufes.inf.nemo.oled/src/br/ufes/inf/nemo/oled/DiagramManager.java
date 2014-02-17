@@ -1899,4 +1899,28 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 //			}    		
 //		}	
 	}
+	
+	public void deriveByUnion() 
+	{
+		DiagramEditor activeEditor = getCurrentDiagramEditor();
+		List<DiagramElement> selected = activeEditor.getSelectedElements();
+		
+		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
+		// diagramElem instnaceof AssociationElement ... diagramElement.getRelationship();
+		// diagramEleme instanceof ClassElement ... diagramElement.getClassifier();
+		
+		//eliminate associations and generalizations
+		
+		//Fix fix = DervideByUnion.run(refontoList);
+		
+		// double pos = calcular posição ... diagramElement.getAbsoluteX1, X2,
+		
+		//updateOLED(fix, double pos_new_Elem); // new method: we need to do this.
+		
+		//String constraint = DerviedByUnion.getConstraints();
+		//getFrame().getInfoManager().getOcleditor().addText(constraint);
+		
+		System.out.println("derive by union");
+		
+	}
 }

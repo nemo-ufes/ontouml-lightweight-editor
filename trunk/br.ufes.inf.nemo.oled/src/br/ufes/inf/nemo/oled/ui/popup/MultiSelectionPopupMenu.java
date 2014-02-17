@@ -21,6 +21,7 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	
 	public MultiSelectionPopupMenu()
 	{		
+		createMenuItem(this, "derivedunion");
 		createMenuItem(this, "delete");	
 	}
 	

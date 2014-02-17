@@ -328,12 +328,18 @@ private static final long serialVersionUID = 1L;
 	
 	public void transferAttributesData()
 	{
+		List<Property> classAttributes = attributesTableModel.getEntries();
+		
+		if(cbxVisible.isSelected()==false){
+			if (classAttributes.size()>0) {
+				cbxVisible.setSelected(true);
+			}
+		}
 		classElement.setShowAttributes(cbxVisible.isSelected());
 		diagramManager.updatedOLEDFromInclusion(element);
 		
 		transferDataTypes();	
-		
-		List<Property> classAttributes = attributesTableModel.getEntries();
+				
 		for (Property property : classAttributes) 
 		{			
 			if(!property.getName().isEmpty() || !property.getType().getName().isEmpty())
