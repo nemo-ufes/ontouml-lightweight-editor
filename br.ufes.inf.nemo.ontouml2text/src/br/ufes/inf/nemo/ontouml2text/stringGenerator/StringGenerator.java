@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.ontouml2text.stringGenerator;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,8 +97,6 @@ public class StringGenerator {
 		int i;
 		List<DescriptionPattern> patterns = null;
 		DescriptionCategory describedCategory = null;
-		String initialLetter;
-		PrintWriter htmlLetter;
 		String categoryDescription;
 		
 		exporter.initilizeExportFile();
@@ -109,39 +106,13 @@ public class StringGenerator {
 			
 			// Identifying patterns
 			patterns = identifyPatterns(describedCategory);
-			
-			initialLetter = getInitialLetter (describedCategory.getLabel()); 
-			
-			htmlLetter = exporter.findLetter(initialLetter);
-			
+						
 			categoryDescription = languageAdaptor.generateCategoryDescription(describedCategory, patterns);				
 			
-			exporter.saveDescription(describedCategory, categoryDescription, htmlLetter);
+			exporter.saveDescription(describedCategory, categoryDescription);
 		}
 		
 		exporter.finalizeExportFile();
-	}
-	
-	public String getInitialLetter(String letter){ 
-		int i = 0;
-		int j = 1;
-		
-		while(true){
-			
-			if(letter.substring(i,j).equals("Á") || letter.substring(i,j).equals("Â") )
-				return "A";
-			if (letter.substring(i,j).equals("Ô") ||letter.substring(i,j).equals("Ó"))
-				return "O";
-			if ( letter.substring(i,j).equals("Í") )
-				return "I";
-			if ( letter.substring(i,j).equals("Ú") )
-				return "U";
-			
-			if(!letter.substring(i,j).equals(" "))
-				return letter.substring(i,j);
-			i++;
-			j++;
-		}
 	}
 	
 	public DescriptionSpace getGeneralizationSpace() {
