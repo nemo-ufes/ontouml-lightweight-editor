@@ -812,29 +812,6 @@ private void createRelationship(Relationship r, DescriptionCategory target,Descr
 					}				
 			}
 			
-		/*	if(source.getLabel().equals(((Association) r).getMemberEnd().get(0).getType().getName())){
-				
-				sourceLower = ((Association) r).getMemberEnd().get(0).getLower();
-				sourceUpper = ((Association) r).getMemberEnd().get(0).getUpper();
-				
-				targetLower = ((Association) r).getMemberEnd().get(1).getLower();
-				targetUpper = ((Association) r).getMemberEnd().get(1).getUpper();
-
-				System.out.println("Criei uma relação " + source.getLabel() +" --> "+ target.getLabel());
-				mat = new Mediation(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
-			
-			}else{
-							
-				sourceLower = ((Association) r).getMemberEnd().get(1).getLower();
-				sourceUpper = ((Association) r).getMemberEnd().get(1).getUpper();
-				
-				targetLower = ((Association) r).getMemberEnd().get(0).getLower();
-				targetUpper = ((Association) r).getMemberEnd().get(0).getUpper();
-				System.out.println("Criei uma relação " + source.getLabel() +" --> "+ target.getLabel());
-
-				mat = new Mediation(((Association)r).getName(), source, target, sourceLower,sourceUpper, targetLower, targetUpper);
-			}*/
-			
 			source.getFunctions().add(mat);
 			target.getFunctions().add(mat);
 			generalizationSpace.getFunctions().add(mat);
