@@ -117,7 +117,7 @@ private static final long serialVersionUID = 1L;
 		
 		cbxVisible = new JCheckBox("Turn attributes visible");
 		cbxVisible.setPreferredSize(new Dimension(400, 20));
-		cbxVisible.setHorizontalAlignment(SwingConstants.RIGHT);
+		cbxVisible.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(cbxVisible);
 		
 		scrollpane = new JScrollPane();		
@@ -183,6 +183,7 @@ private static final long serialVersionUID = 1L;
 		});
 		
 		btnEdit = new JButton("");
+		btnEdit.setEnabled(false);
 		btnEdit.setFocusable(false);
 		btnEdit.setToolTipText("Edit selected attribute");
 		btnEdit.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/edit.png")));

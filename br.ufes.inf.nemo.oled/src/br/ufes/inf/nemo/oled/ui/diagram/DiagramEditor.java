@@ -85,8 +85,8 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.ResetConnectionPointsCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.ResizeElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetConnectionNavigabilityCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
+import br.ufes.inf.nemo.oled.ui.dialog.AssociationDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.ClassDialog;
-import br.ufes.inf.nemo.oled.ui.dialog.EditAssociationDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.EditGeneralizationDialogNew;
 import br.ufes.inf.nemo.oled.ui.popup.DiagramPopupMenu;
 import br.ufes.inf.nemo.oled.ui.popup.ToolboxPopupMenu;
@@ -1168,7 +1168,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			redraw();
 		} else if (element instanceof AssociationElement) {
 			AssociationElement association = (AssociationElement) element;
-			EditAssociationDialog dialog = new EditAssociationDialog(frame, diagramManager, association, true);
+			AssociationDialog dialog = new AssociationDialog(frame,diagramManager,association,true);
+//			EditAssociationDialog dialog = new EditAssociationDialog(frame, diagramManager, association, true);
 			dialog.setLocationRelativeTo(frame);
 			dialog.setVisible(true);
 			redraw();
