@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.antipattern.overlapping;
 
 import java.util.ArrayList;
 
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
@@ -11,16 +13,15 @@ import RefOntoUML.Role;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
 
-//partEnds with the same type
-public class OverlappingTypesVariation4 extends OverlappingTypesVariation {
+public class CommonSortalSupertype extends OverlappingGroup {
 	
 	boolean hasOverlappingGS;
 	Classifier identityProvider,closestSupertpe;
 	ArrayList<Classifier> commonSupertypes;
 	ArrayList<GeneralizationSet> genSets;
 	
-	public OverlappingTypesVariation4 (OverlappingOccurrence wholeOver, ArrayList<Property> sortalOverlappingProperties)throws Exception {
-		super(wholeOver, sortalOverlappingProperties);
+	public CommonSortalSupertype (ArrayList<Property> sortalOverlappingProperties)throws Exception {
+		super(sortalOverlappingProperties);
 		
 		//all types must be subkinds, phases or roles
 		for (Classifier type : super.overlappingTypes) {
@@ -49,7 +50,7 @@ public class OverlappingTypesVariation4 extends OverlappingTypesVariation {
 		
 		getClosestSupertype();
 		
-		super.validVariation = true;
+		super.validGroup = true;
 	}
 
 	private void getClosestSupertype(){
@@ -68,25 +69,23 @@ public class OverlappingTypesVariation4 extends OverlappingTypesVariation {
 	@Override
 	public String toString(){
 		String result =	"Overllaping Group: Sortals with Common Identity Provider" +
-						"\nIdentity Provider: "+occurrence.getParser().getStringRepresentation(identityProvider)+
+						"\nIdentity Provider: "+identityProvider.getName()+
 						"\nCommon Supertypes: ";
 		
-		for (Classifier parent : this.commonSupertypes) {
-			result+="\n\t"+occurrence.getParser().getStringRepresentation(parent);
-		}
-		
+		for (Classifier parent : this.commonSupertypes)
+			result+="\n\t"+parent.getName();
+			
 		result += "\nPart Ends: ";
-		
-		for (Property p : overlappingProperties) {
-			result+="\n\t"+occurrence.getParser().getStringRepresentation(p);
-		}
+	
+		for (Property p : overlappingProperties)
+			result+="\n\t("+p.getName()+") "+p.getType().getName();
 		
 		return result;
 	}
 
 
 	@Override
-	public boolean makeEndsDisjoint(ArrayList<Property> partEnds) {
+	public boolean makeEndsDisjoint(AntipatternOccurrence occurrence, ArrayList<Property> partEnds) {
 		
 		if(!this.overlappingProperties.containsAll(partEnds))
 			return false;

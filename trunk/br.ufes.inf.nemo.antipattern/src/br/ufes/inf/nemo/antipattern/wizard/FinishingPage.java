@@ -30,12 +30,11 @@ public class FinishingPage extends WizardPage {
 		setDescription("");
 	}
 
-	@SuppressWarnings("rawtypes")
-	public void addActions(Collection<AntiPatternAction> actions)
+	public void addActions(Collection<AntiPatternAction<?>> actions)
 	{		
 		actionsList.removeAll();
 		actionsList.setVisible(true);
-		for(AntiPatternAction a: actions){
+		for(AntiPatternAction<?> a: actions){
 			String str = a.toString();			
 			for(String s: str.split("\n")){
 				actionsList.add(s);

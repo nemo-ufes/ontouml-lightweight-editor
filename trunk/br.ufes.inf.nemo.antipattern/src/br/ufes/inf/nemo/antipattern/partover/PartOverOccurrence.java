@@ -6,7 +6,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
-import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesVariation;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 
 public class PartOverOccurrence extends OverlappingOccurrence{
 
@@ -37,7 +37,7 @@ public class PartOverOccurrence extends OverlappingOccurrence{
 		for (Property p : getAllWholeEnds())
 			result+="\n\t"+getParser().getStringRepresentation(p);
 				
-		for (OverlappingTypesVariation variation : getVariations()) {
+		for (OverlappingGroup variation : getVariations()) {
 			result+="\n\n"+variation.toString();
 		}
 		

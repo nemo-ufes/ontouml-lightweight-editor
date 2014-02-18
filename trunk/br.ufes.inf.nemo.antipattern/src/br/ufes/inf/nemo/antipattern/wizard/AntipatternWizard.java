@@ -34,10 +34,9 @@ public abstract class AntipatternWizard extends Wizard {
 		setWindowTitle(windowTitle);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public Collection<AntiPatternAction> getAllActions() {
+	public Collection<AntiPatternAction<?>> getAllActions() {
 		
-		ArrayList<AntiPatternAction> result = new ArrayList<AntiPatternAction>();
+		ArrayList<AntiPatternAction<?>> result = new ArrayList<AntiPatternAction<?>>();
 		
 		for (Integer i : actions.keySet()) {
 			result.addAll(actions.get(i));
