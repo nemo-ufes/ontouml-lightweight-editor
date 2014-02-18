@@ -183,7 +183,8 @@ public void addMediations(List<DescriptionFunction> list, DescriptionCategory do
 	for(DescriptionFunction m : list){
 		if(m instanceof Mediation){
 			if(  (!verifyEqualMediation(downCategory.getFunctions(),m)) && (!notAddMediation (noIheritanceMeds, m))  ){
-				downCategory.getFunctions().add(m);
+				DescriptionFunction med = new Mediation("", downCategory, m.getTarget(), ((Mediation) m).getSourceMinMultiplicity(), ((Mediation) m).getSourceMaxMultiplicity(), m.getTargetMinMultiplicity(), m.getTargetMaxMultiplicity());
+				downCategory.getFunctions().add(med);
 			}
 		}
 	}
@@ -200,7 +201,7 @@ private boolean notAddMediation(ArrayList<DescriptionFunction> noIheritanceMeds,
 
 public boolean verifyEqualMediation(List<DescriptionFunction> list ,DescriptionFunction m){
 	for(DescriptionFunction df : list){
-		if(df.equals(m)){		//se a mediation ja existir
+		if(df.getTarget().equals(m.getTarget())){
 			return true;
 		}
 	}
