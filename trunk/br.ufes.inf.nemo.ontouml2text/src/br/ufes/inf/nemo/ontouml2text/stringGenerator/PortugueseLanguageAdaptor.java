@@ -62,14 +62,6 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		else
 			return "várias ";
 	}
-	
-	@Override
-	protected String insertIndefiniteArticle(String label){
-		if(dictionary.isMale(label))
-			return "um ";
-		else
-			return "uma ";
-	}
 
 	@Override
 	protected String processTopPattern(DescriptionPattern pattern,
@@ -90,7 +82,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " é " + 
-				insertListing((NaryPattern)pattern, true, "e");
+				insertListing((NaryPattern)pattern, true, false);
 		
 		return parcialDescription;
 	}
@@ -138,7 +130,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 
 		// Generating specific description
 		parcialDescription += " é " + 
-				insertListing((NaryPattern)pattern, true, "e");
+				insertListing((NaryPattern)pattern, true, false);
 					
 		return parcialDescription;
 	}
@@ -170,7 +162,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " tem como fases: " + 
-				insertListing((NaryPattern)pattern, false, "e");
+				insertListing((NaryPattern)pattern, false, false);
 					
 		return parcialDescription;
 	}
@@ -188,7 +180,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " caracterizado por ter " + 
-				insertListing((NaryPattern)pattern, false, "e");		
+				insertListing((NaryPattern)pattern, false, false);		
 					
 		return parcialDescription;
 	}
@@ -204,7 +196,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " é uma característica de " + 
-				insertListing((NaryPattern)pattern, true, "e");
+				insertListing((NaryPattern)pattern, true, false);
 					
 		return parcialDescription;
 	}
@@ -245,7 +237,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " composto por " + 
-				insertListing((NaryPattern)pattern, true, "e");
+				insertListing((NaryPattern)pattern, true, false);
 					
 		return parcialDescription;
 	}
@@ -285,7 +277,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " tem como membros " + 
-				insertListing((NaryPattern)pattern, true, "e");
+				insertListing((NaryPattern)pattern, true, false);
 					
 		return parcialDescription;
 	}
@@ -324,7 +316,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 					
 		// Generating specific description			
 		parcialDescription += " se associa a " + 
-				insertListing((NaryPattern)pattern, true, "e");
+				insertListing((NaryPattern)pattern, true, false);
 		
 		return parcialDescription;
 	}
@@ -343,7 +335,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 					
 		// Generating specific description			
 		parcialDescription += " se associa a " + 
-				insertListing((NaryPattern)pattern, true, "e");
+				insertListing((NaryPattern)pattern, true, false);
 					
 		return parcialDescription;
 	}
@@ -364,7 +356,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " se associar a " + 
-				insertListing((NaryPattern)pattern, true, "ou");
+				insertListing((NaryPattern)pattern, true, true);
 					
 		return parcialDescription;
 	}
@@ -385,7 +377,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " se associar a " + 
-				insertListing((NaryPattern)pattern, true, "ou");
+				insertListing((NaryPattern)pattern, true, true);
 					
 		return parcialDescription;
 	}
@@ -404,7 +396,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " envolve " + 
-				insertListing((NaryPattern)pattern, true, "e");
+				insertListing((NaryPattern)pattern, true, false);
 					
 		return parcialDescription;
 	}
@@ -447,7 +439,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " envolver " + 
-				insertListing((NaryPattern)pattern, true, "ou");
+				insertListing((NaryPattern)pattern, true, true);
 					
 		return parcialDescription;
 	}
@@ -466,7 +458,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " se relaciona com " + 
-				insertListing((NaryPattern)pattern, true, "e");
+				insertListing((NaryPattern)pattern, true, false);
 					
 		return parcialDescription;
 	}
@@ -487,7 +479,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " estar relacionado com " + 
-				insertListing((NaryPattern)pattern, true, "ou");
+				insertListing((NaryPattern)pattern, true, true);
 					
 		return parcialDescription;
 	}
@@ -508,7 +500,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " se relacionar com " + 
-				insertListing((NaryPattern)pattern, true, "e");
+				insertListing((NaryPattern)pattern, true, false);
 					
 		return parcialDescription;
 	}
@@ -528,7 +520,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 				
 		// Generating specific description
 		parcialDescription += " é um papel envolvido em " + 
-				insertListing((NaryPattern)pattern, true, "e");
+				insertListing((NaryPattern)pattern, true, false);
 					
 		return parcialDescription;
 	}
@@ -555,7 +547,7 @@ public class PortugueseLanguageAdaptor extends LanguageAdaptor {
 		
 		// Generating specific description
 		parcialDescription += " pode ser dos tipos: " + 
-				insertListing((NaryPattern)pattern, false, "e");
+				insertListing((NaryPattern)pattern, false, false);
 					
 		return parcialDescription;
 	}

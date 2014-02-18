@@ -21,14 +21,14 @@ public class OntoUmlGlossary {
 	private StringGenerator stringGenerator;
 	
 	public OntoUmlGlossary(final int idiom, final OntoUMLParser parser, final String outputName, 
-			final String outputdirectory, final String title, final String subtitle){
+			final String outputdirectory, final String title, final String subtitle, boolean inheritMediations){
 		descriptionSpace = new DescriptionSpace();
 		
 		// Hash containing the labels of the categories already covered
 		Set<String> hashCategories = new HashSet<String>();
 				
 		DescriptionSpaceGenerator generator = new DescriptionSpaceGenerator(descriptionSpace);
-		generator.populateDescriptionSpace(parser, hashCategories);
+		generator.populateDescriptionSpace(parser, hashCategories, inheritMediations);
 		
 		// Preparing for text generation
 		switch(idiom){

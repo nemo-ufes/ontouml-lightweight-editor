@@ -99,5 +99,15 @@ public class PortugueseDictionary implements Dictionary{
 	public String getAlternativeSeparator() {
 		return "ou";
 	}	
+	
+	@Override
+	public String getFemaleIndefiniteArticle() {
+		return "uma";
+	}
+	
+	@Override
+	public String getMaleIndefiniteArticle() {
+		return "um";
+	}
 
 }

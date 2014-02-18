@@ -225,9 +225,15 @@ public abstract class LanguageAdaptor {
 		return targetDescription;
 	}
 	
-	protected String insertListing(NaryPattern pattern, boolean withMultiplicity, String finalSeparator){
+	protected String insertListing(NaryPattern pattern, boolean withMultiplicity, boolean alternativeListing){
 		int i, size = pattern.getTargetCategories().size();
+		String finalSeparator;
 		String listing = "";
+		
+		if(alternativeListing)
+			finalSeparator = dictionary.getAlternativeSeparator();
+		else
+			finalSeparator = dictionary.getAditionSeparator();
 		
 		for(i = 0; i < size - 1; i++){
 			if(i < size - 2)
@@ -248,9 +254,14 @@ public abstract class LanguageAdaptor {
 			return dictionary.getFemaleArticle();
 	}
 	
-	protected abstract String insertMultiplicity(PatternCategory target);
+	protected String insertIndefiniteArticle(String label){
+		if(dictionary.isMale(label))
+			return dictionary.getMaleIndefiniteArticle()+" ";
+		else
+			return dictionary.getFemaleIndefiniteArticle()+" ";
+	}
 	
-	protected abstract String insertIndefiniteArticle(String label);
+	protected abstract String insertMultiplicity(PatternCategory target);
 	
 	protected abstract String processTopPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	

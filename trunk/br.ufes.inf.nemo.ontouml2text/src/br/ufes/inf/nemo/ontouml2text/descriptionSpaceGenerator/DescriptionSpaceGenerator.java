@@ -47,7 +47,7 @@ public class DescriptionSpaceGenerator {
 		return generalizationSpace;
 	}	
 	
-public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories){
+public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCategories, boolean inheritMediations){
 		Set <RefOntoUML.Class> classfSet = parser.getAllInstances(RefOntoUML.Class.class);	
 		
 		for (RefOntoUML.Class classf : classfSet){
@@ -62,7 +62,8 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 			populateRelationships(parser.getRelationships(classf),mat,parser,hashCategories,classfSet);	
 		}
 
-		relatorIheritance(generalizationSpace.getCategories(),hashCategories);
+		if(inheritMediations)
+			relatorIheritance(generalizationSpace.getCategories(),hashCategories);
 }
 
 public void relatorIheritance(List<DescriptionCategory> categories, Set<String> hashCategories) {
