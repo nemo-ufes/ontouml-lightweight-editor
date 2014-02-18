@@ -14,4 +14,8 @@ public interface Dictionary {
 	
 	public String getAlternativeSeparator();
 	
+	public String getFemaleIndefiniteArticle();
+	
+	public String getMaleIndefiniteArticle();
+	
 }

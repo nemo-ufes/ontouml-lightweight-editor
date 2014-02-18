@@ -254,7 +254,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 		+" 		  	  <a href=" + baseDirectory + "letterX.html><div class=\"letter\">X</div></a>\n"
 		+" 		  	  <a href=" + baseDirectory + "letterY.html><div class=\"letter\">Y</div></a>\n"
 		+" 		  	  <a href=" + baseDirectory + "letterZ.html><div class=\"letter\">Z</div></a>\n"
-		+" 		  	  <a href=" + baseDirectory + "all.html><div class=\"letter\">All</div></a>\n"
+		+" 		  	  <a href=" + baseDirectory + "all.html><div class=\"letter\">Todos</div></a>\n"
 		+"	  	  </div>\n\n"
 		);	
 	}

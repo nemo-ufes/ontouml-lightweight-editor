@@ -22,8 +22,10 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.JComboBox;
+import javax.swing.ImageIcon;
 
 public class GlossaryGeneratorUI extends JFrame {
 	
@@ -43,6 +45,7 @@ public class GlossaryGeneratorUI extends JFrame {
 	private JTextField edtSubtitle;
 	private JTextField edtTitle;
 	private JLabel lblTitle;
+	private JCheckBox chkInheritMediations;
 
 	public GlossaryGeneratorUI(OntoUMLParser parser){
 		this();		
@@ -58,7 +61,7 @@ public class GlossaryGeneratorUI extends JFrame {
 		setType(Type.UTILITY);
 		setTitle("OntoUML Glossary Generator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 388, 371);
+		setBounds(100, 100, 388, 395);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -79,15 +82,6 @@ public class GlossaryGeneratorUI extends JFrame {
 		chkAnalyseDescriptiveConsistency = new JCheckBox("Analyse Descriptive Consistency");
 		chkAnalyseDescriptiveConsistency.setToolTipText("Check if exists any inconsistency that can be affect the generation of glossary");
 		
-		btnGenerateGlossary = new JButton("Generate Glossary");
-		
-		btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		
 		cmbLanguage = new JComboBox<String>();
 		cmbLanguage.addItem("Português - BR");
 		cmbLanguage.setSelectedIndex(0);
@@ -105,33 +99,36 @@ public class GlossaryGeneratorUI extends JFrame {
 		edtTitle.setColumns(10);
 		
 		lblTitle = new JLabel("Title");
+		
+		JPanel panel = new JPanel();
+		
+		chkInheritMediations = new JCheckBox("Inherit Mediations of Parent Relators ");
+		chkInheritMediations.setSelected(true);
+		chkInheritMediations.setToolTipText("Check if exists any inconsistency that can be affect the generation of glossary");
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblLanguage)
-						.addComponent(cmbLanguage, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-						.addComponent(chkAnalyseDescriptiveConsistency)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(82)
-							.addComponent(btnGenerateGlossary)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnCancel))
-						.addComponent(lblOutputDirectory)
-						.addComponent(lblNewLabel)
-						.addComponent(lblSubtitle)
-						.addComponent(lblTitle)
-						.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+						.addComponent(lblLanguage, Alignment.LEADING)
+						.addComponent(cmbLanguage, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
+						.addComponent(chkAnalyseDescriptiveConsistency, Alignment.LEADING)
+						.addComponent(lblOutputDirectory, Alignment.LEADING)
+						.addComponent(lblNewLabel, Alignment.LEADING)
+						.addComponent(lblSubtitle, Alignment.LEADING)
+						.addComponent(lblTitle, Alignment.LEADING)
+						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 								.addComponent(edtSubtitle, Alignment.LEADING)
 								.addComponent(edtTitle, Alignment.LEADING)
 								.addComponent(edtOutputDirectory, Alignment.LEADING)
 								.addComponent(edtOutputFileName, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnSelectOutputDirectory, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)))
-					.addGap(18))
+							.addComponent(btnSelectOutputDirectory, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
+						.addComponent(chkInheritMediations, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -160,37 +157,42 @@ public class GlossaryGeneratorUI extends JFrame {
 						.addComponent(btnSelectOutputDirectory))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(chkAnalyseDescriptiveConsistency)
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnCancel)
-						.addComponent(btnGenerateGlossary))
-					.addGap(24))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(chkInheritMediations)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
-		contentPane.setLayout(gl_contentPane);
 		
-		setLocationRelativeTo(null);
-		
-		btnSelectOutputDirectory.setActionCommand("outputSelection");
+		btnGenerateGlossary = new JButton("Generate Glossary");
+		btnGenerateGlossary.setIcon(new ImageIcon(GlossaryGeneratorUI.class.getResource("/resources/icon/1392761208_rich_text_align_left.png")));
 		btnGenerateGlossary.setActionCommand("generateGlossary");
 		
-		btnSelectOutputDirectory.addActionListener(new ActionListener(){
-
-			@Override
+		btnCancel = new JButton("Cancel");
+		btnCancel.setIcon(new ImageIcon(GlossaryGeneratorUI.class.getResource("/resources/icon/cancel.png")));
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(63)
+					.addComponent(btnGenerateGlossary)
+					.addGap(5)
+					.addComponent(btnCancel)
+					.addGap(63))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(5)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnCancel, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+						.addComponent(btnGenerateGlossary, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)))
+		);
+		panel.setLayout(gl_panel);
+		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				  JFileChooser chooser = new JFileChooser();
-			      chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	
-			      try {
-			            int code = chooser.showOpenDialog(contentPane);
-			            if (code == JFileChooser.APPROVE_OPTION) {
-			               File selectedFile = chooser.getSelectedFile();
-			               edtOutputDirectory.setText(selectedFile.getAbsolutePath());
-			            }
-			      } catch (Exception f) {
-			         f.printStackTrace();
-			      }	
+				dispose();
 			}
-			
 		});
 		
 		btnGenerateGlossary.addActionListener(new ActionListener(){
@@ -203,17 +205,27 @@ public class GlossaryGeneratorUI extends JFrame {
 				else{			
 					if(cmbLanguage.getSelectedIndex() == 0){ // Brazilian Portuguese
 						ontoUmlGlossary = new OntoUmlGlossary(OntoUmlGlossary.PT_BR, parser, edtOutputFileName.getText(), 
-								edtOutputDirectory.getText(), edtTitle.getText(), edtSubtitle.getText()); 
+								edtOutputDirectory.getText(), edtTitle.getText(), edtSubtitle.getText(), chkInheritMediations.isSelected()); 
 					}
 					
 					if(chkAnalyseDescriptiveConsistency.isSelected()){
 						SwingUtilities.invokeLater(new Runnable() {			
 							public void run() {
-								GlossaryGeneratorAnalisysUI analisys = new GlossaryGeneratorAnalisysUI(ontoUmlGlossary, 
-										ontoUmlGlossary.verifiyMissingUserDescriptions(),
-										ontoUmlGlossary.verfifyIsolatedDescriptions(),
-										ontoUmlGlossary.verfifyNonDeterminedRelationships());
-								analisys.setVisible(true);	
+								List<String> missingUserDescriptions = ontoUmlGlossary.verifiyMissingUserDescriptions();
+								List<String> isolatedDescriptions = ontoUmlGlossary.verfifyIsolatedDescriptions();
+								List<String> nonDeterminedRelationships = ontoUmlGlossary.verfifyNonDeterminedRelationships();
+								
+								if(missingUserDescriptions.size() + isolatedDescriptions.size() + nonDeterminedRelationships.size() > 0) {
+									GlossaryGeneratorAnalisysUI analisys = new GlossaryGeneratorAnalisysUI(ontoUmlGlossary, 
+											missingUserDescriptions,
+											isolatedDescriptions,
+											nonDeterminedRelationships);
+									analisys.setVisible(true);	
+								}else{
+									ontoUmlGlossary.modelToText();
+									JOptionPane.showMessageDialog(null, "Glossary generated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+									dispose();
+								}
 							}
 						});		
 					}else{
@@ -237,6 +249,31 @@ public class GlossaryGeneratorUI extends JFrame {
 					Object object) {
 				JOptionPane.showMessageDialog(contentPane, message, title, 0);
 				
+			}
+			
+		});
+		contentPane.setLayout(gl_contentPane);
+		
+		setLocationRelativeTo(null);
+		
+		btnSelectOutputDirectory.setActionCommand("outputSelection");
+		
+		btnSelectOutputDirectory.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				  JFileChooser chooser = new JFileChooser();
+			      chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	
+			      try {
+			            int code = chooser.showOpenDialog(contentPane);
+			            if (code == JFileChooser.APPROVE_OPTION) {
+			               File selectedFile = chooser.getSelectedFile();
+			               edtOutputDirectory.setText(selectedFile.getAbsolutePath());
+			            }
+			      } catch (Exception f) {
+			         f.printStackTrace();
+			      }	
 			}
 			
 		});

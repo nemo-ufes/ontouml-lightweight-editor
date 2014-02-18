@@ -28,7 +28,7 @@ import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.OntoUmlGlossary;
 import javax.swing.ListSelectionModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.border.LineBorder;
+import javax.swing.ImageIcon;
 
 public class GlossaryGeneratorAnalisysUI extends JFrame {
 
@@ -69,13 +69,14 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		surroundPanel1.add(lblMissingUserDescriptionCounter);
 		
 		JButton btnMissingUserDescriptionDetails = new JButton("Details");
+		btnMissingUserDescriptionDetails.setIcon(new ImageIcon(GlossaryGeneratorAnalisysUI.class.getResource("/resources/icon/1392762699_find.png")));
 		
 		btnMissingUserDescriptionDetails.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				tabbedPane.setSelectedIndex(1);
 			}
 		});
-		btnMissingUserDescriptionDetails.setBounds(322, 19, 97, 25);
+		btnMissingUserDescriptionDetails.setBounds(322, 14, 97, 33);
 		surroundPanel1.add(btnMissingUserDescriptionDetails);
 		
 		JPanel surroundPanel2 = new JPanel();
@@ -89,13 +90,14 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		surroundPanel2.add(lblIsolatedConceptsCounter);
 		
 		JButton btnIsolatedConceptsDetails = new JButton("Details");
+		btnIsolatedConceptsDetails.setIcon(new ImageIcon(GlossaryGeneratorAnalisysUI.class.getResource("/resources/icon/1392762699_find.png")));
 		
 		btnIsolatedConceptsDetails.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				tabbedPane.setSelectedIndex(2);
 			}
 		});
-		btnIsolatedConceptsDetails.setBounds(322, 19, 97, 25);
+		btnIsolatedConceptsDetails.setBounds(322, 14, 97, 33);
 		surroundPanel2.add(btnIsolatedConceptsDetails);
 		
 		JPanel group3 = new JPanel();
@@ -109,13 +111,14 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		group3.add(lblNonDeterminedRelationshipsCounter);
 		
 		JButton btnNonDeterminedRelationshipsDetails = new JButton("Details");
+		btnNonDeterminedRelationshipsDetails.setIcon(new ImageIcon(GlossaryGeneratorAnalisysUI.class.getResource("/resources/icon/1392762699_find.png")));
 		
 		btnNonDeterminedRelationshipsDetails.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				tabbedPane.setSelectedIndex(3);
 			}
 		});
-		btnNonDeterminedRelationshipsDetails.setBounds(324, 19, 97, 25);
+		btnNonDeterminedRelationshipsDetails.setBounds(324, 14, 97, 33);
 		group3.add(btnNonDeterminedRelationshipsDetails);
 		
 		JLabel lblResults = new JLabel("Results of Analisys");
@@ -123,16 +126,18 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		panelOne.add(lblResults);
 		
 		JButton btnCancel = new JButton("Cancel Generation");
+		btnCancel.setIcon(new ImageIcon(GlossaryGeneratorAnalisysUI.class.getResource("/resources/icon/cancel.png")));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
 		});
 		
-		btnCancel.setBounds(246, 355, 139, 25);
+		btnCancel.setBounds(246, 344, 157, 35);
 		panelOne.add(btnCancel);
 		
 		JButton btnContinue = new JButton("Continue Anyway");
+		btnContinue.setIcon(new ImageIcon(GlossaryGeneratorAnalisysUI.class.getResource("/resources/icon/1392762597_warning.png")));
 		btnContinue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Component root = SwingUtilities.getRoot((JButton) arg0.getSource());
@@ -149,7 +154,7 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 			}
 		});
 		
-		btnContinue.setBounds(97, 356, 139, 23);
+		btnContinue.setBounds(79, 344, 157, 35);
 		panelOne.add(btnContinue);
 		
 		JPanel panelTwo = new JPanel();
