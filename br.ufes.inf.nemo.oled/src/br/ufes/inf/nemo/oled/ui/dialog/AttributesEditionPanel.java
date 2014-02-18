@@ -139,6 +139,7 @@ private static final long serialVersionUID = 1L;
 		table.setRowHeight(23);
 		
 		btnCreate = new JButton("");
+		btnCreate.setFocusable(false);
 		btnCreate.setToolTipText("Add new attribute to this class");
 		btnCreate.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/cross.png")));
 		btnCreate.addActionListener(new ActionListener() {			
@@ -149,6 +150,7 @@ private static final long serialVersionUID = 1L;
 		});
 		
 		btnDelete = new JButton("");
+		btnDelete.setFocusable(false);
 		btnDelete.setToolTipText("Delete selected attribute");
 		btnDelete.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete.png")));
 		btnDelete.addActionListener(new ActionListener() {			
@@ -159,6 +161,7 @@ private static final long serialVersionUID = 1L;
 		});
 		
 		btnUp = new JButton("");
+		btnUp.setFocusable(false);
 		btnUp.setToolTipText("Move up selected attribute");
 		btnUp.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/arrowup.png")));
 		btnUp.addActionListener(new ActionListener() {			
@@ -169,6 +172,7 @@ private static final long serialVersionUID = 1L;
 		});
 		
 		btnDown = new JButton("");
+		btnDown.setFocusable(false);
 		btnDown.setToolTipText("Move down selected attribute");
 		btnDown.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/arrowdown.png")));
 		btnDown.addActionListener(new ActionListener() {			
@@ -179,6 +183,7 @@ private static final long serialVersionUID = 1L;
 		});
 		
 		btnEdit = new JButton("");
+		btnEdit.setFocusable(false);
 		btnEdit.setToolTipText("Edit selected attribute");
 		btnEdit.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/edit.png")));
 		GroupLayout gl_panel = new GroupLayout(panel);
