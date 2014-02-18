@@ -24,6 +24,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Comment;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import javax.swing.JLabel;
 
 public class CommentsEditionPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -42,7 +43,8 @@ public class CommentsEditionPanel extends JPanel {
 	private JButton btnDelete;
 	private JPanel descriptionPanel;	
 	private JButton btnSave;
-
+	private JLabel lblSelectedComment;
+	
 	@SuppressWarnings({ "rawtypes" })
 	public CommentsEditionPanel(DiagramManager diagramManager, ClassElement classElement, boolean modal) 
 	{
@@ -65,18 +67,21 @@ public class CommentsEditionPanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(descriptionPanel, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)
-					.addGap(235))
+					.addComponent(descriptionPanel, GroupLayout.PREFERRED_SIZE, 208, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		
 		descriptionText = new JTextArea();	
+		descriptionText.setToolTipText("Click here to start writing your comment");
 		
 		scrollPaneText = new JScrollPane();
+		scrollPaneText.setToolTipText("Click here to start writing your comment");
 		scrollPaneText.setViewportView(descriptionText);
 		
 		btnCreate = new JButton("");
 		btnCreate.setToolTipText("Add a new comment to this class");
 		btnCreate.setIcon(new ImageIcon(CommentsEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/cross.png")));
+		btnCreate.setFocusable(false);
 		btnCreate.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -85,6 +90,7 @@ public class CommentsEditionPanel extends JPanel {
 		});
 		
 		btnDelete = new JButton("");
+		btnDelete.setFocusable(false);
 		btnDelete.setToolTipText("Delete seletected comment");
 		btnDelete.setIcon(new ImageIcon(CommentsEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete.png")));
 		btnDelete.addActionListener(new ActionListener() {			
@@ -95,6 +101,7 @@ public class CommentsEditionPanel extends JPanel {
 		});
 		
 		btnSave = new JButton("");
+		btnSave.setFocusable(false);
 		btnSave.setToolTipText("Save selected comment");
 		btnSave.setIcon(new ImageIcon(CommentsEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/save.png")));
 		btnSave.addActionListener(new ActionListener() {			
@@ -108,8 +115,19 @@ public class CommentsEditionPanel extends JPanel {
 		commentCombo.setEditable(false);
 		commentCombo.setFocusable(false);
 		commentCombo.setPreferredSize(new Dimension(350, 20));
-		//((JLabel)commentCombo.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
-		
+//		((JLabel)commentCombo.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+//		commentCombo.addItemListener(new ItemListener(){
+//		    @Override
+//		    public void itemStateChanged(ItemEvent event) {
+//		       if (event.getStateChange() == ItemEvent.SELECTED) {
+//		          
+//		    	   Object item = event.getItem();
+//		          		          
+//		           // do something with object
+//		       }
+//		    }
+//		});
+				
 		commentCombo.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
@@ -118,36 +136,42 @@ public class CommentsEditionPanel extends JPanel {
 			}
 		});
 		
+		lblSelectedComment = new JLabel("Selected comment:");
+		
 		GroupLayout gl_descriptionPanel = new GroupLayout(descriptionPanel);
 		gl_descriptionPanel.setHorizontalGroup(
 			gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_descriptionPanel.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_descriptionPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 402, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_descriptionPanel.createSequentialGroup()
-							.addComponent(commentCombo, GroupLayout.PREFERRED_SIZE, 284, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblSelectedComment, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(commentCombo, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnCreate, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
-						.addComponent(scrollPaneText, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 402, GroupLayout.PREFERRED_SIZE))
+							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_descriptionPanel.setVerticalGroup(
-			gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
+			gl_descriptionPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_descriptionPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnSave, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-						.addComponent(btnCreate, GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-						.addComponent(btnDelete, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_descriptionPanel.createSequentialGroup()
+					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnSave, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnCreate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(gl_descriptionPanel.createSequentialGroup()
 							.addGap(5)
-							.addComponent(commentCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(commentCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblSelectedComment))))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		descriptionPanel.setLayout(gl_descriptionPanel);
@@ -155,9 +179,9 @@ public class CommentsEditionPanel extends JPanel {
 		
 		setInitialData();
 		
-		setSize(new Dimension(450, 198));
+		setSize(new Dimension(450, 230));
 	}
-
+	
 	/** Private Class: Comment Element */
 	private class CommentElement 
 	{
@@ -204,6 +228,7 @@ public class CommentsEditionPanel extends JPanel {
 	public void createCommentActionPerformed()
 	{
 		Comment c = diagramManager.getElementFactory().createComment();
+		c.setBody("This is an empty comment...");
 		CommentElement ce = new CommentElement(c);		
 		commentCombo.addItem(ce);
 		descriptionText.setText(c.getBody());
@@ -219,7 +244,7 @@ public class CommentsEditionPanel extends JPanel {
 	}
 
 	public void deleteCommentActionPerformed()
-	{
+	{		
 		commentCombo.removeItem(commentCombo.getSelectedItem());
 		commentCombo.invalidate();	
 		descriptionText.setText("");

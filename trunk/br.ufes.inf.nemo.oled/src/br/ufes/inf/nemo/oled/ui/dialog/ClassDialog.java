@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
@@ -45,7 +44,7 @@ public class ClassDialog extends JDialog{
 	public ClassDialog(final JFrame parent, final DiagramManager diagramManager, final ClassElement classElement, boolean modal) 
 	{
 		super(parent, modal);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
+		//setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
 		
 		this.diagramManager = diagramManager;
 		this.classElement = classElement;
