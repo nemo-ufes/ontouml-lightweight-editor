@@ -16,6 +16,7 @@ import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Association;
 import RefOntoUML.Category;
 import RefOntoUML.Characterization;
+import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.DataType;
@@ -1195,6 +1196,28 @@ public class OutcomeFixer {
 			fix.includeDeleted(assoc);
 		}
 		return fix;
+	}
+	
+	public static ClassStereotype getDefaultSubtypeStereotype(Class type){
+		if (type instanceof Relator)
+			return ClassStereotype.RELATOR;
+		if (type instanceof Mode)
+			return ClassStereotype.MODE;
+		if (type instanceof DataType)
+			return ClassStereotype.DATATYPE;
+		if (type instanceof Category)
+			return ClassStereotype.CATEGORY;
+		if (type instanceof RoleMixin)
+			return ClassStereotype.ROLEMIXIN;
+		if (type instanceof Mixin)
+			return ClassStereotype.MIXIN;
+		if (type instanceof Phase)
+			return ClassStereotype.PHASE;
+		if (type instanceof Role)
+			return ClassStereotype.ROLE;
+		if (type instanceof Kind || type instanceof Collective || type instanceof Quantity || type instanceof SubKind)
+			return ClassStereotype.SUBKIND;
+		else return null;
 	}
 
 }
