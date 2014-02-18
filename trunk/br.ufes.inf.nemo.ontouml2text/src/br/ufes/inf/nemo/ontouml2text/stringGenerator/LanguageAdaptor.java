@@ -97,6 +97,9 @@ public abstract class LanguageAdaptor {
 			
 //			System.out.println("");
 //			System.out.println(patterns.get(0).getDescribedCategory().getLabel());
+//			for(DescriptionFunction function : patterns.get(0).getDescribedCategory().getFunctions())
+//				System.out.println(function.toString().replace("br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.", "")+" T:"+
+//						function.getTarget().getLabel());
 //			System.out.println(patterns.toString().replace("br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.", ""));
 			
 			description += describedCategory.getLabel();
