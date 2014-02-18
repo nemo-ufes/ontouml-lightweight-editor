@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import RefOntoUML.Classifier;
@@ -24,6 +26,8 @@ import RefOntoUML.StringExpression;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
 
@@ -32,7 +36,7 @@ public class ConstraintEditionPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
-	private ClassElement classElement;
+	private DiagramElement diagramElement;
 	private Classifier element;
 	private DiagramManager diagramManager;
 	
@@ -46,15 +50,17 @@ public class ConstraintEditionPanel extends JPanel {
 	private JComboBox comboConstraint;
 	private JScrollPane scrollPaneText;
 	private JTextArea constraintTextArea;
+	private JLabel lblSelected;
 	
 	private ArrayList<Constraintx> constraintList = new ArrayList<Constraintx>();
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ConstraintEditionPanel(DiagramManager diagramManager, ClassElement classElement, boolean modal) 
+	public ConstraintEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement, boolean modal) 
 	{
 		this.diagramManager = diagramManager;
-		this.classElement = classElement;
-		this.element = classElement.getClassifier();
+		this.diagramElement = diagramElement;
+		if (diagramElement instanceof AssociationElement) this.element = (Classifier)((AssociationElement)diagramElement).getRelationship();
+		else this.element = ((ClassElement)diagramElement).getClassifier();
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder(""));
@@ -117,7 +123,7 @@ public class ConstraintEditionPanel extends JPanel {
 		comboConstraintType.setModel(new DefaultComboBoxModel(new String[] {"invariant", "derivation"}));
 //		((JLabel)comboConstraintType.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
 		
-		JLabel lblNewLabel = new JLabel("Selected constraint:");
+		lblSelected = new JLabel("Selected constraint:");
 		
 		btnParse = new JButton("");
 		btnParse.setFocusable(false);
@@ -136,7 +142,7 @@ public class ConstraintEditionPanel extends JPanel {
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblNewLabel)
+							.addComponent(lblSelected)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(comboConstraint, GroupLayout.PREFERRED_SIZE, 302, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createSequentialGroup()
@@ -156,7 +162,7 @@ public class ConstraintEditionPanel extends JPanel {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSelected, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
 						.addComponent(comboConstraint, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
@@ -208,6 +214,18 @@ public class ConstraintEditionPanel extends JPanel {
 		}
 	}
 		
+	private void enableConstraintArea(boolean value)
+	{
+		constraintTextArea.setEnabled(value);
+		scrollPaneText.setEnabled(value);
+		comboConstraint.setEnabled(value);
+		lblSelected.setEnabled(value);
+		if (!value) constraintTextArea.setBackground(UIManager.getColor("Panel.background"));
+		else constraintTextArea.setBackground(Color.WHITE);
+		btnSave.setEnabled(value);
+		btnDelete.setEnabled(value);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void setInitialData()
 	{		
@@ -222,6 +240,8 @@ public class ConstraintEditionPanel extends JPanel {
 			comboConstraint.setSelectedIndex(0);
 			Constraintx c= ((ConstraintElement)comboConstraint.getSelectedItem()).getConstraint();
 			constraintTextArea.setText(((StringExpression)c.getSpecification()).getSymbol()+"\n\n");
+		}else{
+			enableConstraintArea(false);
 		}
 	}
 	
@@ -243,6 +263,7 @@ public class ConstraintEditionPanel extends JPanel {
 			constraintTextArea.setText("context <Type>::<Property>::<propertyType> \nderive: true");
 			((StringExpression)c.getSpecification()).setSymbol("context <Type>::<Property>::<propertyType> \nderive: true");
 		}
+		enableConstraintArea(true);
 	}
 
 	public void saveConstraintActionPerformed()
@@ -262,6 +283,11 @@ public class ConstraintEditionPanel extends JPanel {
 			comboConstraint.invalidate();	
 			constraintTextArea.setText("");
 		}			
+		if (comboConstraint.getItemCount()>0) {
+			enableConstraintArea(true);
+		}else{
+			enableConstraintArea(false);
+		}
 	}
 	
 	public ArrayList<Constraintx> getConstraints()

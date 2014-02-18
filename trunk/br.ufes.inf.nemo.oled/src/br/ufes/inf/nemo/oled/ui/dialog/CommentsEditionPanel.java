@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,14 +24,17 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Classifier;
 import RefOntoUML.Comment;
 import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 public class CommentsEditionPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
-	private ClassElement classElement;
+	private DiagramElement diagramElement;
 	private Classifier element;
 	private DiagramManager diagramManager;
 	@SuppressWarnings("unused")
@@ -46,11 +50,12 @@ public class CommentsEditionPanel extends JPanel {
 	private JLabel lblSelectedComment;
 	
 	@SuppressWarnings({ "rawtypes" })
-	public CommentsEditionPanel(DiagramManager diagramManager, ClassElement classElement, boolean modal) 
+	public CommentsEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement, boolean modal) 
 	{
 		this.diagramManager = diagramManager;
-		this.classElement = classElement;
-		this.element = classElement.getClassifier();
+		this.diagramElement =diagramElement;
+		if (diagramElement instanceof AssociationElement) this.element = (Classifier)((AssociationElement)diagramElement).getRelationship();
+		else this.element = ((ClassElement)diagramElement).getClassifier();
 		
 		descriptionPanel = new JPanel();
 		descriptionPanel.setBorder(BorderFactory.createTitledBorder(""));
@@ -202,6 +207,18 @@ public class CommentsEditionPanel extends JPanel {
 			return c;
 		}
 	}
+	
+	private void enableCommentArea(boolean value)
+	{
+		descriptionText.setEnabled(value);
+		scrollPaneText.setEnabled(value);
+		commentCombo.setEnabled(value);
+		lblSelectedComment.setEnabled(value);
+		if (!value) descriptionText.setBackground(UIManager.getColor("Panel.background"));
+		else descriptionText.setBackground(Color.WHITE);
+		btnSave.setEnabled(value);
+		btnDelete.setEnabled(value);
+	}
 
 	@SuppressWarnings("unchecked")
 	public void setInitialData()
@@ -212,6 +229,8 @@ public class CommentsEditionPanel extends JPanel {
 		if (commentCombo.getItemCount()>0) {
 			commentCombo.setSelectedIndex(0);
 			descriptionText.setText(((CommentElement)commentCombo.getSelectedItem()).getComment().getBody()+"\n\n");
+		}else{
+			enableCommentArea(false);
 		}
 	}
 
@@ -233,6 +252,7 @@ public class CommentsEditionPanel extends JPanel {
 		commentCombo.addItem(ce);
 		descriptionText.setText(c.getBody());
 		commentCombo.setSelectedIndex(commentCombo.getItemCount()-1);
+		enableCommentArea(true);
 	}
 
 	public void saveCommentActionPerformed()
@@ -248,6 +268,11 @@ public class CommentsEditionPanel extends JPanel {
 		commentCombo.removeItem(commentCombo.getSelectedItem());
 		commentCombo.invalidate();	
 		descriptionText.setText("");
+		if (commentCombo.getItemCount()>0) {
+			enableCommentArea(true);
+		}else{
+			enableCommentArea(false);
+		}
 	}
 
 	public ArrayList<Comment> getComments()
