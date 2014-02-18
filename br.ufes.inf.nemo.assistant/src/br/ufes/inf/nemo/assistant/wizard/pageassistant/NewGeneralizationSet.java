@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -34,7 +35,6 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 	private Label className;
 	private Button btnNewGeneralizationset;
 
-	private ArrayList<GeneralizationClass> listGeneralizationClass;
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 
@@ -57,31 +57,30 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		cbGenerals.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				String selectedClass = cbGenerals.getItem(cbGenerals.getSelectionIndex());
+				String generalSelected = cbGenerals.getItem(cbGenerals.getSelectionIndex());
+				ArrayList<GeneralizationClass> genSetList = hashGeneralizationClasses.get(generalSelected);
 
-				for (ArrayList<GeneralizationClass> genClasses : hashGeneralizationClasses.values()) {
-					for (GeneralizationClass genClass : genClasses) {
-						if(genClass.getGeneral().equals(selectedClass)){
-							String[] genSets = new String[genClasses.size()];
-							int i = 0;
-							for (GeneralizationClass gc : genClasses) {
-								genSets[i] = gc.getGeneralizationName();
-								i++;
-							}
-							//add elements
-							cbGeneralizationSet.setItems(genSets);
-							cbGeneralizationSet.select(0);
-							cbGeneralizationSet.setEnabled(true);
-
-							//change the current buttons
-							GeneralizationClass gc = genClasses.get(0);
-							isDisjoint.setSelection(gc.isDisjoint());
-							isComplete.setSelection(gc.isComplete());
-							metaProperties.setVisible(true);
-							btnNewGeneralizationset.setEnabled(true);
-						}
+				if(!genSetList.isEmpty()){
+					String[] genSetArray = new String[genSetList.size()];
+					for (int i = 0; i < genSetList.size(); i++) {
+						genSetArray[i] = genSetList.get(i).getGeneralizationName();
 					}
+
+					//add elements
+					cbGeneralizationSet.setItems(genSetArray);
+					cbGeneralizationSet.select(0);
+					cbGeneralizationSet.setEnabled(true);
+
+					//change the current buttons
+					isDisjoint.setSelection(genSetList.get(0).isDisjoint());
+					isComplete.setSelection(genSetList.get(0).isComplete());
+				}else{
+					cbGeneralizationSet.setItems(new String[0]);
+					isDisjoint.setSelection(false);
+					isComplete.setSelection(false);
 				}
+				metaProperties.setVisible(true);
+				btnNewGeneralizationset.setEnabled(true);
 			}
 		});
 		cbGenerals.setBounds(203, 44, 204, 23);
@@ -96,15 +95,20 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 			public void widgetSelected(SelectionEvent arg0) {
 				//to prevent to be a new generalizationSet 
 				isDisjoint.setSelection(false);
-				isComplete.setSelection(false);				
-				for (GeneralizationClass genClass : listGeneralizationClass) {
-					if(genClass.getGeneralizationName().equals(cbGeneralizationSet.getItem(cbGeneralizationSet.getSelectionIndex()))){
-						isDisjoint.setSelection(genClass.isDisjoint());
-						isComplete.setSelection(genClass.isComplete());
-						metaProperties.setVisible(true);	
+				isComplete.setSelection(false);
+
+				String generalSelected = cbGenerals.getItem(cbGenerals.getSelectionIndex());
+				String genSetSelected = cbGeneralizationSet.getItem(cbGeneralizationSet.getSelectionIndex());
+
+				ArrayList<GeneralizationClass> genSetList = hashGeneralizationClasses.get(generalSelected);
+				if(!genSetList.isEmpty()){
+					for (GeneralizationClass genSet : genSetList) {
+						if(genSet.getGeneralizationName().equals(genSetSelected)){
+							isDisjoint.setSelection(genSet.isDisjoint());
+							isComplete.setSelection(genSet.isComplete());
+						}
 					}
 				}
-
 			}
 		});
 		cbGeneralizationSet.setEnabled(false);
@@ -140,8 +144,13 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 						genSets[i] = cbGeneralizationSet.getItem(i);
 					} 
 					genSets[i] = dialog.getValue();
-					isComplete.setSelection(false);
-					isDisjoint.setSelection(false);
+					if(isEditable){
+						isComplete.setSelection(false);
+						isDisjoint.setSelection(false);
+					}else{
+						isComplete.setSelection(true);
+						isDisjoint.setSelection(true);	
+					}
 					cbGeneralizationSet.setItems(genSets);
 					cbGeneralizationSet.select(i);
 				}
@@ -192,21 +201,21 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		if(visible){
-			className.setText(getCurrentClass());
+			if(isListSpecifics){
+				className.setText("List of specifics");
+				listSpecifics = getClassList();
+			}else{
+				className.setText(getCurrentClass());	
+			}
 
 			if(hashGeneralizationClasses != null){
-				ArrayList<String> generalList = new ArrayList<>();
-
-				//For each class in hash
-				for (ArrayList<GeneralizationClass> listGenClass : hashGeneralizationClasses.values()) {
-					for (GeneralizationClass genClass : listGenClass) {
-						generalList.add(genClass.getGeneral());
-					}
-				}
-
+				Set<String> generalList = hashGeneralizationClasses.keySet();
 				String[] generals = new String[generalList.size()];
-				for (int j = 0; j < generalList.size(); j++) {
-					generals[j] = generalList.get(j);
+
+				int i = 0;
+				for (String general : generalList) {
+					generals[i] = general;
+					i++;
 				}
 
 				cbGenerals.setItems(generals);
@@ -246,5 +255,22 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 	private boolean isEditable = true;
 	public void setEditableMetaProperties(boolean isEditable) {
 		this.isEditable = isEditable;
+	}
+	
+	private boolean isListSpecifics = false;
+	public void setIsListSpecifics(boolean isListSpecifics){
+		this.isListSpecifics = isListSpecifics;
+	}
+	
+	public boolean isListSpecifics(){
+		return isListSpecifics;
+	}
+	
+	private ArrayList<String[]> listSpecifics;
+	public void setListSpecifics(ArrayList<String[]> list){
+		listSpecifics = list;
+	}
+	public ArrayList<String[]> getListSpecifics(){
+		return listSpecifics;
 	}
 }

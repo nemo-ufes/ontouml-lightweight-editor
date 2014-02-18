@@ -179,6 +179,9 @@ public class SWTAstahParser {
 			if(aNode.getTaggedValue("editableMetaProperties").equalsIgnoreCase("false")){
 				ngs.setEditableMetaProperties(false);
 			}
+			if(aNode.getTaggedValue("isListSpecific").equalsIgnoreCase("true")){
+				ngs.setIsListSpecifics(true);
+			}
 			node.setPage(ngs);
 		}
 

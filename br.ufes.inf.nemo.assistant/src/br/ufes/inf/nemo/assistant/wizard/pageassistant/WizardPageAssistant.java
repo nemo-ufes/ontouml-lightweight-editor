@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 
@@ -59,6 +61,7 @@ public abstract class WizardPageAssistant extends WizardPage {
 	
 	private static String currentClass = "";
 	private static String currentStereotype = "";
+	private static ArrayList<String[]> classList;
 	
 	public static String getCurrentClass() {
 		return currentClass;
@@ -74,5 +77,13 @@ public abstract class WizardPageAssistant extends WizardPage {
 
 	public static void setCurrentStereotype(String currentStereotype) {
 		WizardPageAssistant.currentStereotype = currentStereotype;
+	}
+	
+	public static void setClassList(ArrayList<String[]> classList){
+		WizardPageAssistant.classList = classList;
+	}
+	
+	public static ArrayList<String[]> getClassList(){
+		return WizardPageAssistant.classList;
 	}
 }
