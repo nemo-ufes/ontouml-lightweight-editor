@@ -11,13 +11,13 @@ import org.eclipse.swt.widgets.Button;
 
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
-import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesVariation;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 import org.eclipse.swt.custom.StyledText;
 
 public abstract class OverlappingWizardPage extends WizardPage {
 
 	private OverlappingOccurrence occurrence;
-	private OverlappingTypesVariation variation;
+	private OverlappingGroup variation;
 	private OverlappingCheckBoxTableBuilder builder;
 	private StyledText contextualizationText;
 	int variationIndex;
@@ -96,7 +96,7 @@ public abstract class OverlappingWizardPage extends WizardPage {
 		return variationIndex;
 	}
 	
-	public OverlappingTypesVariation getVariation(){
+	public OverlappingGroup getVariation(){
 		return variation;
 	}
 	

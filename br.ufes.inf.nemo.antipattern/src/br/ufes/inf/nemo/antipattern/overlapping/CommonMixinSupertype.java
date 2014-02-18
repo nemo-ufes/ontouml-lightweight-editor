@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.antipattern.overlapping;
 
 import java.util.ArrayList;
 
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
@@ -9,15 +11,15 @@ import RefOntoUML.MixinClass;
 import RefOntoUML.Property;
 
 //partEnds with the same type
-public class OverlappingTypesVariation5 extends OverlappingTypesVariation {
+public class CommonMixinSupertype extends OverlappingGroup {
 
 	boolean hasOverlappingGS;
 	Classifier closestSupertpe;
 	ArrayList<Classifier> commonSupertypes;
 	ArrayList<GeneralizationSet> genSets;
 	
-	public OverlappingTypesVariation5 (OverlappingOccurrence occurrence, ArrayList<Property> mixinProperties) throws Exception {
-		super(occurrence, mixinProperties);
+	public CommonMixinSupertype (ArrayList<Property> mixinProperties) throws Exception {
+		super(mixinProperties);
 		
 		//all types must be mixins
 		for (Classifier type : super.overlappingTypes) {
@@ -72,7 +74,7 @@ public class OverlappingTypesVariation5 extends OverlappingTypesVariation {
 //					this.genSets.add(gs);
 //			}		
 //		}
-		super.validVariation = true;
+		super.validGroup = true;
 	}
 	
 	private void getClosestSupertype(){
@@ -92,21 +94,19 @@ public class OverlappingTypesVariation5 extends OverlappingTypesVariation {
 		String result =	"Overllaping Group: Mixin Classes with Common Supertype" +
 						"\nCommon Supertypes: ";
 		
-		for (Classifier parent : this.commonSupertypes) {
-			result+="\n\t"+occurrence.getParser().getStringRepresentation(parent);
-		}
+		for (Classifier parent : this.commonSupertypes)
+			result+="\n\t"+parent.getName();
 		
 		result += "\nMixin Part Ends: ";
 		
-		for (Property p : overlappingProperties) {
-			result+="\n\t"+occurrence.getParser().getStringRepresentation(p);
-		}
+		for (Property p : overlappingProperties)
+			result+="\n\t("+p.getName()+") "+p.getType().getName();
 		
 		return result;
 	}
 	
 	@Override
-	public boolean makeEndsDisjoint(ArrayList<Property> partEnds) {
+	public boolean makeEndsDisjoint(AntipatternOccurrence occurrence, ArrayList<Property> partEnds) {
 		
 		if(!this.overlappingProperties.containsAll(partEnds))
 			return false;

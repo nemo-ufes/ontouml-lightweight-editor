@@ -11,7 +11,7 @@ import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
-import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesVariation;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -82,7 +82,7 @@ public class RelOverOccurrence extends OverlappingOccurrence{
 		for (Property p : getAllMediatedProperties())
 			result+="\n\t"+getParser().getStringRepresentation(p);
 				
-		for (OverlappingTypesVariation variation : getVariations()) {
+		for (OverlappingGroup variation : getVariations()) {
 			result+="\n\n"+variation.toString();
 		}
 		return result;

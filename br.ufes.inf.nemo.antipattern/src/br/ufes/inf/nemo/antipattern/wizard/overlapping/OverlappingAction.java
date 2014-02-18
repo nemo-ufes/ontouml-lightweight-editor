@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
-import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesVariation;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 
 public class OverlappingAction extends AntiPatternAction<OverlappingOccurrence>{
 
-	OverlappingTypesVariation variation;
+	OverlappingGroup variation;
 	
-	public OverlappingAction(OverlappingOccurrence occurrence, OverlappingTypesVariation variation) {
+	public OverlappingAction(OverlappingOccurrence occurrence, OverlappingGroup variation) {
 		super(occurrence);
 		this.variation = variation;
 	}
@@ -24,10 +24,10 @@ public class OverlappingAction extends AntiPatternAction<OverlappingOccurrence>{
 	public void run() {
 		
 		if(code==Action.DISJOINT){
-			variation.makeEndsDisjoint(partEndList);
+			variation.makeEndsDisjoint(ap, partEndList);
 		}
 		else if(code==Action.EXCLUSIVE){
-			variation.makeEndsExclusive(partEndList);
+			variation.makeEndsExclusive(ap, partEndList);
 		}
 
 	}

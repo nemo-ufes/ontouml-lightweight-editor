@@ -9,16 +9,17 @@ import RefOntoUML.Mode;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.SortalClass;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 
 //partEnds with the same type
-public class OverlappingTypesVariation1 extends OverlappingTypesVariation {
+public class SameType extends OverlappingGroup {
 	
 	//common type of all properties
 	Classifier commonType;
 	
-	public OverlappingTypesVariation1 (OverlappingOccurrence occurrence, ArrayList<Property> overlappingProperties) throws Exception{
-		super(occurrence,overlappingProperties);
+	public SameType (ArrayList<Property> overlappingProperties) throws Exception{
+		super(overlappingProperties);
 		
 		commonType = null;
 		
@@ -28,29 +29,29 @@ public class OverlappingTypesVariation1 extends OverlappingTypesVariation {
 			}
 			else{ 
 				if(!commonType.equals(p.getType())){
-					throw new Exception("VAR1: all part types must be the same!");
+					throw new Exception("OVER_GROUP_1: all part types must be the same!");
 				}
 			}
 		}
 		
-		super.validVariation = true;
+		super.validGroup = true;
 	}
 	
 	@Override
 	public String toString(){
 		String result =	"Overllaping Group: Same Types" +
-						"\nCommon Type: "+occurrence.getParser().getStringRepresentation(commonType)+
+						"\nCommon Type: "+commonType.getName()+
 						"\nProperties: ";
 		
 		for (Property p : overlappingProperties) {
-			result+="\n\t"+occurrence.getParser().getStringRepresentation(p);
+			result+="\n\t("+p.getName()+") "+p.getType().getName();
 		}
 		
 		return result;
 	}
 
 	@Override
-	public boolean makeEndsDisjoint(ArrayList<Property> partEnds) {
+	public boolean makeEndsDisjoint(AntipatternOccurrence occurrence, ArrayList<Property> partEnds) {
 		if(!this.overlappingProperties.containsAll(partEnds))
 			return false;
 		
@@ -73,13 +74,12 @@ public class OverlappingTypesVariation1 extends OverlappingTypesVariation {
 			else
 				return false;
 				
-			this.occurrence.getFix().addAll(occurrence.getFixer().createSubTypeAsInvolvingLink(p.getType(), stereotype, p.getAssociation()));
+			occurrence.getFix().addAll(occurrence.getFixer().createSubTypeAsInvolvingLink(p.getType(), stereotype, p.getAssociation()));
 			
 			subtypes.add((Classifier) p.getType());
 		}
 		
-		this.occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(commonType, subtypes));
-		
+		occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(commonType, subtypes));
 		return true;
 		
 	}

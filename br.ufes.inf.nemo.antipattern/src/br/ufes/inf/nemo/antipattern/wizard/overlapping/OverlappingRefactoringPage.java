@@ -13,7 +13,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
-import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesVariation;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
 
@@ -76,7 +76,7 @@ public class OverlappingRefactoringPage extends RefactoringPage {
 	//actiontype = 0 -> disjoint, actiontype = 1->exclusive
 	private void createComponents(Composite container, int tableYPosition, int variationIndex, int actionType) throws Exception {
 		
-		OverlappingTypesVariation currentVariation = occurrence.getVariations().get(variationIndex);
+		OverlappingGroup currentVariation = occurrence.getVariations().get(variationIndex);
 		int addLineButtonYPosition = tableYPosition - 31;
 		int tableTitleLabelYPosition = tableYPosition - 21;
 		OverlappingCheckBoxTableBuilder builder;

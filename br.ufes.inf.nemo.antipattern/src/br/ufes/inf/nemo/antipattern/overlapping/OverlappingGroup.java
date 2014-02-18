@@ -4,16 +4,17 @@ import java.util.ArrayList;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.list.Combination;
 
-public abstract class OverlappingTypesVariation {
-	OverlappingOccurrence occurrence;
+public abstract class OverlappingGroup {
+
 	protected ArrayList<Property> overlappingProperties;
 	protected ArrayList<Classifier> overlappingTypes;
-	boolean validVariation;
+	boolean validGroup;
 	
-	public OverlappingTypesVariation(OverlappingOccurrence occurrence, ArrayList<Property> overlappingProperties) throws Exception{
-		this.occurrence = occurrence;
+	public OverlappingGroup(ArrayList<Property> overlappingProperties) throws Exception{
+
 		this.overlappingProperties = overlappingProperties;
 		this.overlappingTypes = new ArrayList<Classifier>();
 		
@@ -22,43 +23,40 @@ public abstract class OverlappingTypesVariation {
 		}
 		
 		if(overlappingProperties.size()<2)
-			throw new Exception("VAR: More then one part is required.");
+			throw new Exception("OVER_GROUP: More then one property is required.");
 	}
 	
-	public abstract boolean makeEndsDisjoint(ArrayList<Property> overlappingProperties);
+	public abstract boolean makeEndsDisjoint(AntipatternOccurrence occurrence, ArrayList<Property> overlappingProperties);
 	
-	public boolean makeEndsExclusive(ArrayList<Property> selectedProperties) {
+	public boolean makeEndsExclusive(OverlappingOccurrence overOccurrence, ArrayList<Property> selectedProperties) {
+		
 		if(!this.overlappingProperties.containsAll(selectedProperties) || selectedProperties.size()<2)
 			return false;
 		
 		for (Property p : selectedProperties)
-			occurrence.getFix().addAll(occurrence.getFixer().fixPropertyName(p));
+			overOccurrence.getFix().addAll(overOccurrence.getFixer().fixPropertyName(p));
 		
 		String contextName, invName = "exclusiveTypes", invRule="";
 		
-		contextName = occurrence.getMainType().getName();
+		contextName = overOccurrence.getMainType().getName();
 		
 		Combination comb = new Combination(selectedProperties, 2);
 		
 		while(comb.hasNext()){
 			ArrayList<Property> result = comb.next();
-			String p1 = occurrence.addQuotes(result.get(0).getName());
-			String p2 = occurrence.addQuotes(result.get(1).getName());
+			String p1 = overOccurrence.addQuotes(result.get(0).getName());
+			String p2 = overOccurrence.addQuotes(result.get(1).getName());
 			
 			invRule+= "self."+p1+"->asSet()->excludesAll(self."+p2+"->asSet())";
 			if(comb.hasNext())
 				invRule += " and ";
 		}
 		
-		occurrence.getFix().addAll(occurrence.getFixer().generateOCLRule(contextName, invName, invRule));
+		overOccurrence.getFix().addAll(overOccurrence.getFixer().generateOCLRule(contextName, invName, invRule));
 		
 		return true;
 	}
 	
-	public OverlappingOccurrence getOccurrence() {
-		return occurrence;
-	}
-
 	public ArrayList<Property> getOverlappingProperties() {
 		return overlappingProperties;
 	}
@@ -68,6 +66,6 @@ public abstract class OverlappingTypesVariation {
 	}
 
 	public boolean isValidVariation() {
-		return validVariation;
+		return validGroup;
 	}
 }

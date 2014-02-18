@@ -15,7 +15,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 
 	Classifier mainType;
-	ArrayList<OverlappingTypesVariation> variations;
+	ArrayList<OverlappingGroup> variations;
 	HashSet<Property> allProperties;
 	HashSet<Classifier> allOverlappingTypes;
 	
@@ -53,7 +53,7 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		this.allProperties = allProperties;
 		this.mainType = mainType;
 		
-		variations = new ArrayList<OverlappingTypesVariation>();
+		variations = new ArrayList<OverlappingGroup>();
 		identifyVariations();
 		
 		if(variations.size()==0)
@@ -66,9 +66,9 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		while(comb.hasNext()) {
 			ArrayList<Property> result = comb.next();
 			if(result.size()>1) {
-				OverlappingTypesVariation var;
+				OverlappingGroup var;
 				try {
-					var = new OverlappingTypesVariation1(this, result);
+					var = new SameType(result);
 					addVariation(var);
 					continue;
 				}
@@ -86,19 +86,19 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 				}
 				catch(Exception e){	}
 				try {
-					var = new OverlappingTypesVariation4(this, result);
+					var = new CommonSortalSupertype(result);
 					addVariation(var);
 					continue;
 				}
 				catch(Exception e){	}
 				try {
-					var = new OverlappingTypesVariation5(this, result);
+					var = new CommonMixinSupertype(result);
 					addVariation(var);
 					continue;
 				}
 				catch(Exception e){	}
 				try {
-					var = new OverlappingTypesVariation6(this, result);
+					var = new CommonMixinSubtype(result);
 					addVariation(var);
 					continue;
 				}
@@ -108,11 +108,11 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		}
 	}
 	
-	private void addVariation(OverlappingTypesVariation varToAdd){
+	private void addVariation(OverlappingGroup varToAdd){
 		
-		ArrayList<OverlappingTypesVariation> variationsToRemove = new ArrayList<OverlappingTypesVariation>();
+		ArrayList<OverlappingGroup> variationsToRemove = new ArrayList<OverlappingGroup>();
 		
-		for (OverlappingTypesVariation existingVariation : variations) {
+		for (OverlappingGroup existingVariation : variations) {
 			if(existingVariation.getClass().equals(varToAdd.getClass())){
 				
 				if(varToAdd.overlappingProperties.containsAll(existingVariation.overlappingProperties)){
@@ -145,7 +145,7 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		return parser;
 	}
 	
-	public ArrayList<OverlappingTypesVariation> getVariations() {
+	public ArrayList<OverlappingGroup> getVariations() {
 		return variations;
 	}
 

@@ -10,6 +10,7 @@ import RefOntoUML.Mixin;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Property;
 import RefOntoUML.RoleMixin;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.partover.PartOverOccurrence;
 import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
@@ -17,12 +18,12 @@ import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 
 
-public class OverlappingTypesVariation6 extends OverlappingTypesVariation {
+public class CommonMixinSubtype extends OverlappingGroup {
 	
 	ArrayList<Classifier> commonSubtypes;
 	
-	public OverlappingTypesVariation6 (OverlappingOccurrence occurrence, ArrayList<Property> mixinProperties)throws Exception {
-		super(occurrence, mixinProperties);
+	public CommonMixinSubtype (ArrayList<Property> mixinProperties)throws Exception {
+		super(mixinProperties);
 		
 		//all types must be mixins, roleMixins or categories
 		for (Classifier type : super.overlappingTypes) {
@@ -40,7 +41,7 @@ public class OverlappingTypesVariation6 extends OverlappingTypesVariation {
 		if(!OverlappingTypesIdentificator.allTypesOverlap(super.overlappingTypes, genSets))
 			throw new Exception("VAR6: Disjoint from supertypes.");
 		
-		super.validVariation = true;
+		super.validGroup = true;
 		
 	}
 	
@@ -49,21 +50,19 @@ public class OverlappingTypesVariation6 extends OverlappingTypesVariation {
 		String result =	"Overllaping Group: Mixin Classes with Common Subtypes" +
 						"\nCommon Subtypes: ";
 		
-		for (Classifier parent : this.commonSubtypes) {
-			result+="\n\t"+occurrence.getParser().getStringRepresentation(parent);
-		}
+		for (Classifier child : this.commonSubtypes)
+			result+="\n\t"+child.getName();
 		
 		result += "\nProperties: ";
 		
-		for (Property p : overlappingProperties) {
-			result+="\n\t"+occurrence.getParser().getStringRepresentation(p);
-		}
+		for (Property p : overlappingProperties)
+			result+="\n\t("+p.getName()+") "+p.getType().getName();
 		
 		return result;
 	}
 
 	@Override
-	public boolean makeEndsDisjoint(ArrayList<Property> mixinProperties) {
+	public boolean makeEndsDisjoint(AntipatternOccurrence occurrence, ArrayList<Property> mixinProperties) {
 		ClassStereotype supertypeStereotype;
 		ArrayList<Classifier> partTypes = new ArrayList<Classifier>();
 		ArrayList<Generalization> createdGeneralizations;
@@ -99,24 +98,24 @@ public class OverlappingTypesVariation6 extends OverlappingTypesVariation {
 			partTypes.add((Classifier) mixinProperty.getType());
 		
 		//create common supertype and generalizationSet complete
-		fix1 = getOccurrence().getFixer().addCommonSuperType(partTypes, supertypeStereotype);
+		fix1 = occurrence.getFixer().addCommonSuperType(partTypes, supertypeStereotype);
 		createdGeneralizations = new ArrayList<Generalization>();
 		createdGeneralizations.addAll(fix1.getAddedByType(Generalization.class));
-		fix1.addAll(getOccurrence().getFixer().createGeneralizationSet(createdGeneralizations, false, true, "NewGS1"));
+		fix1.addAll(occurrence.getFixer().createGeneralizationSet(createdGeneralizations, false, true, "NewGS1"));
 		
 		createdGeneralizations = new ArrayList<Generalization>();
 		fix2 = new Fix();
 		int i = 1;
 		for (Property p : mixinProperties) {
 			//create new type as a subytpe of the created supertype
-			Fix auxFix = getOccurrence().getFixer().createSubTypeAs(fix1.getAddedByType(MixinClass.class).get(0), supertypeStereotype);
+			Fix auxFix = occurrence.getFixer().createSubTypeAs(fix1.getAddedByType(MixinClass.class).get(0), supertypeStereotype);
 			Classifier newSubtype = auxFix.getAddedByType(MixinClass.class).get(0);
 			
-			if(getOccurrence() instanceof WholeOverOccurrence)
+			if(occurrence instanceof WholeOverOccurrence)
 				newSubtype.setName("NewPartType"+i);
-			else if (getOccurrence() instanceof PartOverOccurrence)
+			else if (occurrence instanceof PartOverOccurrence)
 				newSubtype.setName("NewWholeType"+i);
-			else if (getOccurrence() instanceof RelOverOccurrence)
+			else if (occurrence instanceof RelOverOccurrence)
 				newSubtype.setName("NewMediatedType"+i);
 			else
 				newSubtype.setName("NewType"+i);
@@ -129,11 +128,11 @@ public class OverlappingTypesVariation6 extends OverlappingTypesVariation {
 			fix2.includeModified(p);
 		}
 		
-		fix3 = getOccurrence().getFixer().createGeneralizationSet(createdGeneralizations);
+		fix3 = occurrence.getFixer().createGeneralizationSet(createdGeneralizations);
 		
-		getOccurrence().getFix().addAll(fix1);
-		getOccurrence().getFix().addAll(fix2);
-		getOccurrence().getFix().addAll(fix3);
+		occurrence.getFix().addAll(fix1);
+		occurrence.getFix().addAll(fix2);
+		occurrence.getFix().addAll(fix3);
 		
 		return true;
 	}

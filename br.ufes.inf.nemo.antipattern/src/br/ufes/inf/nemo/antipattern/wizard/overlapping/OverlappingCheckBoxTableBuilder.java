@@ -13,20 +13,20 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesVariation;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 
 import RefOntoUML.Property;
 
 public class OverlappingCheckBoxTableBuilder{
 
-	private final OverlappingTypesVariation variation;
+	private final OverlappingGroup variation;
 	private final ArrayList<Property> overlappingProperties;
 	private final int variationIndex;
 	private Table table;
 	private Button btnAddLine;
 	private Label lblTableTitle;
 	
-	public OverlappingCheckBoxTableBuilder (Composite parent, int args, OverlappingTypesVariation variation, String title, int variationIndex) throws Exception{
+	public OverlappingCheckBoxTableBuilder (Composite parent, int args, OverlappingGroup variation, String title, int variationIndex) throws Exception{
 		
 		table = new Table(parent, args);
 		
@@ -104,7 +104,7 @@ public class OverlappingCheckBoxTableBuilder{
 		}
 	}
 	
-	public OverlappingTypesVariation getVariation() {
+	public OverlappingGroup getVariation() {
 		return variation;
 	}
 
