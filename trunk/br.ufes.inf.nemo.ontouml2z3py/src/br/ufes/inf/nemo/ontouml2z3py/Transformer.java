@@ -83,8 +83,10 @@ public class Transformer {
 		Property target = null;
 		String assocName;
 		int lowerSource, upperSource, lowerTarget, upperTarget;
-		FunctionCall fc1, fc2, fc3, fc4;
+		FunctionCall fAssoc, fWorld, fSource, fTarget;
 		LogicalBinaryExpression lbe1;
+		Quantification qt;
+		Equality e1;
 		for(RefOntoUML.Association r: ontoparser.getTopLevelInstances(Association.class)){
 			assocName = r.getName();
 			//Crio uma função para representar a associação. Essa função terá 3 argumentos: um mundo, o source e o targe da associação
@@ -94,20 +96,49 @@ public class Transformer {
 			target = r.getMemberEnd().get(1);
 			
 			//Tipagem dos argumentos da função: crio fórmula afirmando que se a função criada retorna true, então o primeiro argumento é world e os outros dois são dos tipos source e Target. 
-			fc1 = factory.createFunctionCall(getFunction(assocName), getConstants(new int[]{1, 2, 3}));
-			fc2 = factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
-			fc3 = factory.createFunctionCall(getFunction(source.getType().getName()), getConstants(new int[]{1,2}));
-			fc4 = factory.createFunctionCall(getFunction(target.getType().getName()), getConstants(new int[]{1,3}));
-			lbe1 = factory.createBinaryExpression(fc2, fc3, LogicalBinaryExpressionTypes.CONJUNCTION);
-			lbe1 = factory.createBinaryExpression(lbe1, fc4, LogicalBinaryExpressionTypes.CONJUNCTION);
-			lbe1 = factory.createBinaryExpression(fc1, lbe1, LogicalBinaryExpressionTypes.IMPLICATION);
-			addFormula(true, lbe1, "Typing the arguments: If "+ r.getName() + "(x,y,z) holds then x is a world, y is a " + source.getName() + " and z is a " + source.getName());
+			fAssoc = factory.createFunctionCall(getFunction(assocName), getConstants(new int[]{1, 2, 3}));
+			fWorld = factory.createFunctionCall(getFunction("World"), getConstants(new int[]{1}));
+			fSource = factory.createFunctionCall(getFunction(source.getType().getName()), getConstants(new int[]{1,2}));
+			fTarget = factory.createFunctionCall(getFunction(target.getType().getName()), getConstants(new int[]{1,3}));
+			lbe1 = factory.createBinaryExpression(fWorld, fSource, LogicalBinaryExpressionTypes.CONJUNCTION);
+			lbe1 = factory.createBinaryExpression(lbe1, fTarget, LogicalBinaryExpressionTypes.CONJUNCTION);
+			lbe1 = factory.createBinaryExpression(fAssoc, lbe1, LogicalBinaryExpressionTypes.IMPLICATION);
+			addFormula(true, lbe1, "Typing the arguments: If "+ r.getName() + "(x,y,z) holds then x is a world, y is a " + source.getName() + " and z is a " + target.getName());
 
 			lowerSource = source.getLower();
+			upperSource = source.getUpper();
 			if (lowerSource == 1){
 				//Restrição de cardinalidade mínima = 1
-				
-				
+				lbe1 = factory.createBinaryExpression(fAssoc, fSource, LogicalBinaryExpressionTypes.CONJUNCTION);
+				qt = factory.createQuantification(false, lbe1, new HashSet<IntConstant>(getConstants(new int[]{2})), "");
+				lbe1 = factory.createBinaryExpression(fTarget, qt, LogicalBinaryExpressionTypes.IMPLICATION);
+				addFormula(true, lbe1, "Every " + fTarget.getCalledFunction().getName() + " has an " + assocName + " association with at least one " + fSource.getCalledFunction().getName());
+			}
+			if (upperSource == 1){
+				//Restrição de cardinalidade máxima = 1
+				FunctionCall fAssoc2 = factory.createFunctionCall(getFunction(assocName), getConstants(new int[]{1, 4, 3}));
+				lbe1 = factory.createBinaryExpression(fAssoc, fAssoc2, LogicalBinaryExpressionTypes.CONJUNCTION);
+				e1 = factory.createEquality(getConstants(new int[]{2,4}));
+				lbe1 = factory.createBinaryExpression(lbe1, e1, LogicalBinaryExpressionTypes.IMPLICATION);
+				addFormula(true, lbe1, "Every " + fTarget.getCalledFunction().getName() + " has an " + assocName + " association with at most one " + fSource.getCalledFunction().getName());
+			}
+
+			lowerTarget = target.getLower();
+			upperTarget = target.getUpper();
+			if (lowerTarget== 1){
+				//Restrição de cardinalidade mínima = 1
+				lbe1 = factory.createBinaryExpression(fAssoc, fTarget, LogicalBinaryExpressionTypes.CONJUNCTION);
+				qt = factory.createQuantification(false, lbe1, new HashSet<IntConstant>(getConstants(new int[]{3})), "");
+				lbe1 = factory.createBinaryExpression(fSource, qt, LogicalBinaryExpressionTypes.IMPLICATION);
+				addFormula(true, lbe1, "Every " + fSource.getCalledFunction().getName() + " has an " + assocName + " association with at least one " + fTarget.getCalledFunction().getName());
+			}
+			if (upperTarget == 1){
+				//Restrição de cardinalidade máxima = 1
+				FunctionCall fAssoc2 = factory.createFunctionCall(getFunction(assocName), getConstants(new int[]{1, 2, 4}));
+				lbe1 = factory.createBinaryExpression(fAssoc, fAssoc2, LogicalBinaryExpressionTypes.CONJUNCTION);
+				e1 = factory.createEquality(getConstants(new int[]{3,4}));
+				lbe1 = factory.createBinaryExpression(lbe1, e1, LogicalBinaryExpressionTypes.IMPLICATION);
+				addFormula(true, lbe1, "Every " + fSource.getCalledFunction().getName() + " has an " + assocName + " association with at most one " + fTarget.getCalledFunction().getName());
 			}
 			
 		}

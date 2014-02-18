@@ -9,7 +9,7 @@ public class OntoUML2Z3py {
 	
 	public static void main(String[]args) throws IOException{
 					
-			Transformer t = new Transformer("models/RoleRelator.refontouml");
+			Transformer t = new Transformer("models/modeloCorretoGrande.refontouml");
 			OntoUMLZ3System system = t.run(true);
 			
 		
