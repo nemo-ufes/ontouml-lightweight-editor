@@ -7,7 +7,7 @@ import org.eclipse.jface.wizard.Wizard;
 
 import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
 import br.ufes.inf.nemo.assistant.graph.NodeAssistant;
-import br.ufes.inf.nemo.assistant.manager.PageProcessor;
+import br.ufes.inf.nemo.assistant.manager.PageTreater;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGeneralizationSet;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.Question;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.WizardPageAssistant;
@@ -94,9 +94,9 @@ public class WizardAssitant extends Wizard {
 
 		//Special treats
 		if(nextPage instanceof Question){
-			PageProcessor.treatPage(nextNode, (Question)nextPage);
+			PageTreater.treatPage(nextNode, (Question)nextPage);
 		}else if(nextPage instanceof NewGeneralizationSet){
-			PageProcessor.treatPage(nextNode, (NewGeneralizationSet)nextPage);
+			PageTreater.treatPage(nextNode, (NewGeneralizationSet)nextPage);
 		}
 
 		//Execute all alterations in RefOntoUML object from the Manager Pattern 

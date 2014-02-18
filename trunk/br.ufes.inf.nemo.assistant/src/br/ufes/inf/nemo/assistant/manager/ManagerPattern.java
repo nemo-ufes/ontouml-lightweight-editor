@@ -79,6 +79,7 @@ public class ManagerPattern {
 	 */
 
 	public PatternOperator getPatternOperator(){
+		patternOperator.updateLists(root);
 		return patternOperator;
 	}
 	

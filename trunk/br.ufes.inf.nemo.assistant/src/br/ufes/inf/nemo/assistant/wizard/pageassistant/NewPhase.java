@@ -35,7 +35,6 @@ public class NewPhase extends WizardPageAssistant {
 	private int currentItemSelection;
 	private Button btDeletePhase;
 	private Label className;
-	private Text tfGeneralizationSetName;
 	
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
@@ -110,13 +109,6 @@ public class NewPhase extends WizardPageAssistant {
 		btDeletePhase.setBounds(342, 256, 91, 25);
 		btDeletePhase.setText("Delete Phase");
 		btDeletePhase.setEnabled(false);
-		
-		Label lblGeneralizationsetName = new Label(container, SWT.NONE);
-		lblGeneralizationsetName.setBounds(10, 256, 139, 15);
-		lblGeneralizationsetName.setText("GeneralizationSet name:");
-		
-		tfGeneralizationSetName = new Text(container, SWT.BORDER);
-		tfGeneralizationSetName.setBounds(142, 256, 180, 21);
 		
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
@@ -202,6 +194,7 @@ public class NewPhase extends WizardPageAssistant {
 		
 		//At least two Phases needs to be created
 		if(contPhases > 0){
+			setClassList(getPhases());
 			return true;
 		}
 		return false;
@@ -237,9 +230,5 @@ public class NewPhase extends WizardPageAssistant {
 			list.add(row);
 		}
 		return list;
-	}
-	
-	public String getGeneralizationSetName(){
-		return tfGeneralizationSetName.getText();
 	}
 }

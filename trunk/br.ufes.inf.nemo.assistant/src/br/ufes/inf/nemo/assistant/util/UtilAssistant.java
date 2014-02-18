@@ -1,11 +1,15 @@
 package br.ufes.inf.nemo.assistant.util;
 
+import java.text.Normalizer;
+import java.util.ArrayList;
+
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import RefOntoUML.Category;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.Kind;
 import RefOntoUML.Mixin;
+import RefOntoUML.NamedElement;
 import RefOntoUML.Package;
 import RefOntoUML.Phase;
 import RefOntoUML.Relator;
@@ -48,5 +52,53 @@ public class UtilAssistant {
 	public static void printRefOntoUML(Package root){
 		OntoUMLParser parser = new OntoUMLParser(root);
 		System.out.println(parser.toString());
+	}
+	
+	/**
+	 * Return a String with the Class
+	 * e.g.: From Kind Person, returns "Person"
+	 * */
+	public static String getStringRepresentationClass(Classifier c){
+		return ((NamedElement)c).getName();
+	}
+
+	/**
+	 * Return a String[] with the Class and its Stereotype of each Classifier in the
+	 * ArrayList
+	 * e.g.: From {"Kind Person", "Collective Students"} returns {"Person", "Students"}
+	 * */
+	public static String[] getStringRepresentationClass(ArrayList<? extends Classifier> set){
+		String[] s = new String[set.size()];
+		int i = 0;
+		for (Classifier cls : set) {
+			s[i] = getStringRepresentationClass(cls);
+		}
+		return s;
+	}
+
+	/**
+	 * Return a String with the Class
+	 * e.g.: From Kind Person, returns "Kind"
+	 * */
+	public static String getStringRepresentationStereotype(Classifier c){
+		String type = c.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+		type = type.replaceAll("Impl","");
+		type = Normalizer.normalize(type, Normalizer.Form.NFD);
+
+		return type;
+	}
+
+	/**
+	 * Return a String[] with the Class and its Stereotype of each Classifier in the
+	 * ArrayList
+	 * e.g.: From {"Kind Person", "Collective Students"} returns {"Kind", "Collective"}
+	 * */
+	public static String[] getStringRepresentationStereotype(ArrayList<? extends Classifier> set){
+		String[] s = new String[set.size()];
+		int i = 0;
+		for (Classifier cls : set) {
+			s[i] = getStringRepresentationStereotype(cls);
+		}
+		return s;
 	}
 }
