@@ -29,6 +29,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
+import java.awt.Toolkit;
 
 public class GlossaryGeneratorAnalisysUI extends JFrame {
 
@@ -42,6 +43,7 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 	 */
 	public GlossaryGeneratorAnalisysUI(final OntoUmlGlossary ontoUmlGlossary, 
 			List<String> conceptsWithoutDesc, List<String> isolatedConcepts, List<String> nonDeterminedRelationships) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(GlossaryGeneratorAnalisysUI.class.getResource("/resources/icon/1392761208_rich_text_align_left.png")));
 		this.ontoUmlGlossary = ontoUmlGlossary;
 		
 		setBounds(400, 400, 491, 460);
@@ -234,7 +236,6 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		
 		JList<String> lstIsolatedConcepts = new JList<String>(isolatedConceptsList);
 		scrollPane_1.setViewportView(lstIsolatedConcepts);
-		lstIsolatedConcepts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		lstIsolatedConcepts.setBackground(Color.WHITE);
 		panelThree.setLayout(gl_panelThree);
 		
@@ -260,7 +261,6 @@ public class GlossaryGeneratorAnalisysUI extends JFrame {
 		
 		JList<String> lstMissingUserDescription = new JList<String>(modelList);
 		scrollPane.setViewportView(lstMissingUserDescription);
-		lstMissingUserDescription.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		lstMissingUserDescription.setBackground(UIManager.getColor("Button.disabledShadow"));
 		
 		GroupLayout gl_panelTwo = new GroupLayout(panelTwo);
