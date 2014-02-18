@@ -46,6 +46,7 @@ public class GlossaryGeneratorUI extends JFrame {
 	private JTextField edtTitle;
 	private JLabel lblTitle;
 	private JCheckBox chkInheritMediations;
+	private JLabel lblNewLabel_1;
 
 	public GlossaryGeneratorUI(OntoUMLParser parser){
 		this();		
@@ -105,21 +106,25 @@ public class GlossaryGeneratorUI extends JFrame {
 		chkInheritMediations = new JCheckBox("Inherit Mediations of Parent Relators ");
 		chkInheritMediations.setSelected(true);
 		chkInheritMediations.setToolTipText("Check if exists any inconsistency that can be affect the generation of glossary");
+		
+		lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setToolTipText("Adds the mediation's description of a parent relator");
+		lblNewLabel_1.setIcon(new ImageIcon(GlossaryGeneratorUI.class.getResource("/resources/icon/1392770960_information.png")));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
-						.addComponent(lblLanguage, Alignment.LEADING)
-						.addComponent(cmbLanguage, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-						.addComponent(chkAnalyseDescriptiveConsistency, Alignment.LEADING)
-						.addComponent(lblOutputDirectory, Alignment.LEADING)
-						.addComponent(lblNewLabel, Alignment.LEADING)
-						.addComponent(lblSubtitle, Alignment.LEADING)
-						.addComponent(lblTitle, Alignment.LEADING)
-						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+						.addComponent(lblLanguage)
+						.addComponent(cmbLanguage, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
+						.addComponent(chkAnalyseDescriptiveConsistency)
+						.addComponent(lblOutputDirectory)
+						.addComponent(lblNewLabel)
+						.addComponent(lblSubtitle)
+						.addComponent(lblTitle)
+						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 								.addComponent(edtSubtitle, Alignment.LEADING)
 								.addComponent(edtTitle, Alignment.LEADING)
@@ -127,7 +132,10 @@ public class GlossaryGeneratorUI extends JFrame {
 								.addComponent(edtOutputFileName, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(btnSelectOutputDirectory, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
-						.addComponent(chkInheritMediations, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(chkInheritMediations, GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblNewLabel_1)))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -158,7 +166,9 @@ public class GlossaryGeneratorUI extends JFrame {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(chkAnalyseDescriptiveConsistency)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(chkInheritMediations)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(chkInheritMediations)
+						.addComponent(lblNewLabel_1))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
