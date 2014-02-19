@@ -160,12 +160,25 @@ public class StringGenerator {
 			}
 		}
 		
+		if(describedCategory.getAttributes().size() > 0)
+			identifyAttributePattern(patterns, describedCategory);
+		
 		if(patterns.size() == 0)
 			identifyTopPattern(patterns, describedCategory, function);
 		
 		return patterns;
 	}
 	
+	private void identifyAttributePattern(List<DescriptionPattern> patterns,
+			DescriptionCategory describedCategory) {
+		AttributePattern pattern = new AttributePattern(describedCategory);
+		
+		for(CategoryAttribute attribute : describedCategory.getAttributes())
+			pattern.getAttributes().add(attribute);
+		
+		patterns.add(pattern);
+	}
+
 	// Top Pattern
 	private void identifyTopPattern(List<DescriptionPattern> patterns, 
 			DescriptionCategory describedCategory,  DescriptionFunction function){
