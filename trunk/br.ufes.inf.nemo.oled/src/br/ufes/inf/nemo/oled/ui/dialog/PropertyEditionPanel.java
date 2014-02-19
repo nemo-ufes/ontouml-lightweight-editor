@@ -75,14 +75,14 @@ public class PropertyEditionPanel extends JPanel {
 	private JTextField subsettedText;
 	private JTextField redefinedText;
 	
-	public PropertyEditionPanel(JDialog owner, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, final Property property, boolean modal)
+	public PropertyEditionPanel(JDialog owner, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, final Property property)
 	{
 		this.owner=owner;
-		initData(diagramManager,ownerDiagramElement,property,modal);
+		initData(diagramManager,ownerDiagramElement,property);
 		initGUI();		
 	}
 	
-	public void initData(final DiagramManager diagramManager, DiagramElement ownerDiagramElement, final Property property, boolean modal)
+	public void initData(final DiagramManager diagramManager, DiagramElement ownerDiagramElement, final Property property)
 	{
 		this.diagramManager = diagramManager;
 		this.property = property;

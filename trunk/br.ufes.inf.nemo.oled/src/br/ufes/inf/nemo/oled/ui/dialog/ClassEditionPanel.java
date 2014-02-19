@@ -40,7 +40,7 @@ public class ClassEditionPanel extends JPanel {
 	private JComboBox stereoCombo;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ClassEditionPanel(final DiagramManager diagramManager, final ClassElement classElement, boolean modal) 
+	public ClassEditionPanel(final DiagramManager diagramManager, final ClassElement classElement) 
 	{	
 		this.diagramManager = diagramManager;
 		this.classElement = classElement;

@@ -60,7 +60,7 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 			}else											
 				mat = generalizationSpace.findCategory(classf.getName());
 			
-			populateRelationships(parser.getRelationships(classf),mat,parser,hashCategories,classfSet);	
+			populateRelationships(parser.getDirectRelationships(classf),mat,parser,hashCategories,classfSet);	
 		}
 
 		if(inheritMediations)

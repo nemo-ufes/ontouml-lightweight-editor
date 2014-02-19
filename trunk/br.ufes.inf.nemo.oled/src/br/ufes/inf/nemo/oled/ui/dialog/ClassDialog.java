@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
@@ -39,12 +40,13 @@ public class ClassDialog extends JDialog{
 	private CommentsEditionPanel commentsEdition;
 	private AttributesEditionPanel attributesEdition;
 	private ConstraintEditionPanel constraintsEdition;
+	//private RelatedElementsPanel relatedElements;
 	private JButton btnApply;
 	
 	public ClassDialog(final JFrame parent, final DiagramManager diagramManager, final ClassElement classElement, boolean modal) 
 	{
 		super(parent, modal);
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
 		
 		this.diagramManager = diagramManager;
 		this.classElement = classElement;
@@ -97,20 +99,23 @@ public class ClassDialog extends JDialog{
 		panel.add(btnCancel);
 		panel.add(btnApply);
 		
-		classEdition = new ClassEditionPanel (diagramManager,classElement,modal);
-		commentsEdition = new CommentsEditionPanel (diagramManager,classElement,modal);
-		attributesEdition = new AttributesEditionPanel(diagramManager,classElement,modal);
-		constraintsEdition = new ConstraintEditionPanel(diagramManager,classElement,modal);
+		classEdition = new ClassEditionPanel (diagramManager,classElement);
+		commentsEdition = new CommentsEditionPanel (diagramManager,classElement);
+		attributesEdition = new AttributesEditionPanel(diagramManager,classElement);
+		constraintsEdition = new ConstraintEditionPanel(diagramManager,classElement);
+		//relatedElements = new RelatedElementsPanel(diagramManager,classElement);
 		
 		tabbedPane.addTab("Class",classEdition);		
 		tabbedPane.addTab("Attributes",attributesEdition);
 		tabbedPane.addTab("Comments",commentsEdition);
 		tabbedPane.addTab("Constraints",constraintsEdition);
+		//tabbedPane.addTab("Related Elements",relatedElements);
 		
 		tabbedPane.setIconAt(0, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/class.png")));
 		tabbedPane.setIconAt(1, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/property.gif")));
 		tabbedPane.setIconAt(2, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/note.png")));
 		tabbedPane.setIconAt(3, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/ocleditor.png")));
+		//tabbedPane.setIconAt(4, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/ocleditor.png")));
 		
 		setSize(new Dimension(470, 399));
 		

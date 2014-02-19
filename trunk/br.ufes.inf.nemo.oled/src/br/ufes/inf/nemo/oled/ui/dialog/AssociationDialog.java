@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
@@ -46,7 +47,7 @@ public class AssociationDialog extends JDialog{
 	public AssociationDialog(final JFrame parent, final DiagramManager diagramManager, final AssociationElement assocElement, boolean modal) 
 	{
 		super(parent, modal);
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
 		
 //		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
 //		setIconImage(icon);
@@ -100,10 +101,10 @@ public class AssociationDialog extends JDialog{
 		panel.add(btnApply);
 		
 		assocEdition = new AssociationEditionPanel (diagramManager,assocElement,modal);
-		end1Edition = new PropertyEditionPanel(this,diagramManager,assocElement,((Association)relationship).getMemberEnd().get(0),modal);
-		end2Edition = new PropertyEditionPanel(this,diagramManager,assocElement,((Association)relationship).getMemberEnd().get(1),modal);
-		commentsEdition = new CommentsEditionPanel (diagramManager,assocElement,modal);
-		constraintsEdition = new ConstraintEditionPanel(diagramManager,assocElement,modal);
+		end1Edition = new PropertyEditionPanel(this,diagramManager,assocElement,((Association)relationship).getMemberEnd().get(0));
+		end2Edition = new PropertyEditionPanel(this,diagramManager,assocElement,((Association)relationship).getMemberEnd().get(1));
+		commentsEdition = new CommentsEditionPanel (diagramManager,assocElement);
+		constraintsEdition = new ConstraintEditionPanel(diagramManager,assocElement);
 		
 		tabbedPane.addTab("Association",assocEdition);
 		tabbedPane.addTab("Source", end1Edition);

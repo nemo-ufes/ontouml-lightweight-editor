@@ -23,6 +23,7 @@ import RefOntoUML.Comment;
 import RefOntoUML.Constraintx;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
+import RefOntoUML.Element;
 import RefOntoUML.Enumeration;
 import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Generalization;
@@ -460,6 +461,16 @@ public class OntoUMLParser {
 		return result;		
 	}
 	
+	public ArrayList<ParsingElement> getParsingElements(ArrayList<Element> list)
+	{
+		ArrayList<ParsingElement> result = new ArrayList<ParsingElement>();
+		for(EObject eobj: list){
+			if (elementsHash.get(eobj)!=null){
+				result.add(elementsHash.get(eobj));
+			}
+		}
+		return result;
+	}
 	
 	/**
 	 * Verifies if a given OntoUML Element is selected or not.
@@ -1303,9 +1314,9 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 *	Return all (selected and non selected) direct relationships (generalizations and associations) of the classifier c  
+	 *	Return all (selected) direct relationships (generalizations and associations) of the classifier c  
 	 */
-	public ArrayList<Relationship> getRelationships(EObject eObject)
+	public ArrayList<Relationship> getDirectRelationships(EObject eObject)
 	{
 		ArrayList<Relationship> relations = new ArrayList<>();		
 		for (EObject a : getAllInstances(Relationship.class)) {
@@ -1321,7 +1332,7 @@ public class OntoUMLParser {
 		}
 		return relations;
 	}
-	
+		
 	public Property getWholeEnd(Meronymic m){
 		if (m.targetEnd().getAggregation()!=AggregationKind.NONE && m.sourceEnd().getAggregation()==AggregationKind.NONE)
 			return m.targetEnd();

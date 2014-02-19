@@ -53,7 +53,7 @@ public class ConstraintEditionPanel extends JPanel {
 	private ArrayList<Constraintx> constraintList = new ArrayList<Constraintx>();
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ConstraintEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement, boolean modal) 
+	public ConstraintEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement) 
 	{
 		this.diagramManager = diagramManager;
 		this.diagramElement = diagramElement;
