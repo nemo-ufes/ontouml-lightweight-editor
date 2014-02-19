@@ -73,7 +73,7 @@ private static final long serialVersionUID = 1L;
 	private JCheckBox cbxVisible;
 		
 	@SuppressWarnings({ })
-	public AttributesEditionPanel(DiagramManager diagramManager, ClassElement classElement, boolean modal) 
+	public AttributesEditionPanel(DiagramManager diagramManager, ClassElement classElement) 
 	{
 		this.diagramManager = diagramManager;
 		this.classElement = classElement;

@@ -48,7 +48,7 @@ public class CommentsEditionPanel extends JPanel {
 	private JLabel lblSelectedComment;
 	
 	@SuppressWarnings({ "rawtypes" })
-	public CommentsEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement, boolean modal) 
+	public CommentsEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement) 
 	{
 		this.diagramManager = diagramManager;
 		this.diagramElement =diagramElement;
