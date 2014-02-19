@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
+import RefOntoUML.MixinClass;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
@@ -121,9 +122,11 @@ public class ClassEditionPanel extends JPanel {
 	
 	public void setInitialData()
 	{		
-		nameField.setText(element.getName());
+		if (element instanceof MixinClass) btnAbstract.setEnabled(false);
+		else btnAbstract.setEnabled(true);
 		if (element instanceof Collective) btnExtensional.setEnabled(true);
 		else btnExtensional.setEnabled(false);
+		nameField.setText(element.getName());		
 		btnAbstract.setSelected(element.isIsAbstract());
 		stereoCombo.setSelectedItem(getStereotype(element).trim());
 		stereoCombo.setEnabled(false);
@@ -149,6 +152,6 @@ public class ClassEditionPanel extends JPanel {
 		if (element instanceof Collective) ((Collective) element).setIsExtensional(btnExtensional.isSelected());
 		element.setIsAbstract(btnAbstract.isSelected());
 				
-		diagramManager.updateOLEDFromModification(element);		
+		diagramManager.updateOLEDFromModification(element,false);		
 	}
 }

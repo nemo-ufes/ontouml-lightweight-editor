@@ -1,10 +1,13 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -12,6 +15,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -22,14 +26,15 @@ import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
+import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
 
 public class AssociationEditionPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@SuppressWarnings("unused")
 	private AssociationElement assocElement;
 	private Classifier element;
 	private DiagramManager diagramManager;
@@ -39,45 +44,74 @@ public class AssociationEditionPanel extends JPanel {
 	private JComboBox stereoCombo;
 	private JCheckBox cbxAbstract;
 	private JCheckBox cbxDerived;
-	private JPanel meronymicPanel;
+	private JPanel shareablePanel;
 	private JPanel assocPanel;
 	private JCheckBox cbxEssential;		
 	private JCheckBox cbxInseparable;	
 	private JCheckBox cbxImmutablepart;
 	private JCheckBox cbxImmutablewhole;
 	private JCheckBox cbxShareable;
+	private JPanel inseparablePanel;
+	private JPanel essentialPanel;
+	private JPanel directionPanel;
+	private JRadioButton btnUndefined;	
+	private JRadioButton btnToSource;
+	private JRadioButton btnToDestination;
+	private JPanel panel;
+	private JCheckBox btnStereotype;
+	private JCheckBox btnEndNames;
+	private JCheckBox btnMultiplicity;
+	private JCheckBox btnName;
 	
 	/**
 	 * Create the panel.
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 	public AssociationEditionPanel(final DiagramManager diagramManager, final AssociationElement assocElement, boolean modal) 
 	{
 		this.diagramManager = diagramManager;
 		this.assocElement = assocElement;
 		this.element = (Classifier)assocElement.getRelationship();
 		
-		meronymicPanel = new JPanel();
-		meronymicPanel.setBorder(BorderFactory.createTitledBorder(""));
+		shareablePanel = new JPanel();
+		shareablePanel.setBorder(BorderFactory.createTitledBorder(""));
 		
 		assocPanel = new JPanel();
 		assocPanel.setBorder(BorderFactory.createTitledBorder(""));
-		
-		cbxEssential = new JCheckBox("Essential");		
-		cbxInseparable = new JCheckBox("Inseparable");		
-		cbxImmutablepart = new JCheckBox("ImmutablePart");		
-		cbxImmutablewhole = new JCheckBox("ImmutableWhole");		
 		cbxShareable = new JCheckBox("Shareable");
+		
+		essentialPanel = new JPanel();
+		essentialPanel.setBorder(BorderFactory.createTitledBorder(""));
+		
+		inseparablePanel = new JPanel();
+		inseparablePanel.setBorder(BorderFactory.createTitledBorder(""));
+		
+		directionPanel = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) directionPanel.getLayout();
+		directionPanel.setBorder(BorderFactory.createTitledBorder("Reading Direction"));
+		
+		panel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		panel.setBorder(BorderFactory.createTitledBorder("Visibility"));
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(assocPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(meronymicPanel, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(assocPanel, GroupLayout.PREFERRED_SIZE, 421, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addComponent(essentialPanel, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(inseparablePanel, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(shareablePanel, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
+							.addGroup(Alignment.LEADING, groupLayout.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(directionPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE))))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -85,22 +119,47 @@ public class AssociationEditionPanel extends JPanel {
 					.addContainerGap()
 					.addComponent(assocPanel, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(meronymicPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(91, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(essentialPanel, GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+							.addComponent(inseparablePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(shareablePanel, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(directionPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(87, Short.MAX_VALUE))
 		);
 		
-		JLabel lblName = new JLabel("Name:");
+		btnName = new JCheckBox("Name");
+		panel.add(btnName);
 		
-		nameField = new JTextField();
-		nameField.setColumns(10);
-
-		// Essential implies in Immutable Part...
-		cbxEssential.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if(cbxEssential.isSelected()) cbxImmutablepart.setSelected(true);								
-			}
-		});
+		btnStereotype = new JCheckBox("Stereotype");
+		panel.add(btnStereotype);
+		
+		btnEndNames = new JCheckBox("End names");
+		panel.add(btnEndNames);
+		
+		btnMultiplicity = new JCheckBox("Multiplicity");
+		panel.add(btnMultiplicity);
+		
+		ButtonGroup group = new ButtonGroup();
+		
+		btnUndefined = new JRadioButton("Undefined");
+		directionPanel.add(btnUndefined);
+		group.add(btnUndefined);
+		
+		btnToSource = new JRadioButton("To source");
+		directionPanel.add(btnToSource);
+		group.add(btnToSource);
+		
+		btnToDestination = new JRadioButton("To destination");
+		directionPanel.add(btnToDestination);
+		group.add(btnToDestination);
+		
+		cbxInseparable = new JCheckBox("Inseparable");
+		inseparablePanel.add(cbxInseparable);
+		cbxInseparable.setPreferredSize(new Dimension(110, 20));
 		// Inseparable implies in Immutable Part...
 		cbxInseparable.addActionListener(new ActionListener() {			
 			@Override
@@ -108,6 +167,29 @@ public class AssociationEditionPanel extends JPanel {
 				if(cbxInseparable.isSelected()) cbxImmutablewhole.setSelected(true);								
 			}
 		});
+		cbxImmutablewhole = new JCheckBox("ImmutableWhole");	
+		inseparablePanel.add(cbxImmutablewhole);
+		cbxImmutablewhole.setPreferredSize(new Dimension(110, 20));
+		
+		cbxEssential = new JCheckBox("Essential");		
+		cbxEssential.setPreferredSize(new Dimension(110, 20));
+		essentialPanel.add(cbxEssential);
+		cbxImmutablepart = new JCheckBox("ImmutablePart");
+		cbxImmutablepart.setPreferredSize(new Dimension(110, 20));
+		essentialPanel.add(cbxImmutablepart);
+		
+		// Essential implies in Immutable Part...
+		cbxEssential.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(cbxEssential.isSelected()) cbxImmutablepart.setSelected(true);								
+			}
+		});
+		
+		JLabel lblName = new JLabel("Name:");
+		
+		nameField = new JTextField();
+		nameField.setColumns(10);
 				
 		// If whole is anti-rigid then Essential is not a possible choice
 		// If part is anti-rigid then Inseparable is not a possible choice
@@ -138,20 +220,19 @@ public class AssociationEditionPanel extends JPanel {
 			gl_assocPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_assocPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblStereo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lblStereo, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(nameField, GroupLayout.PREFERRED_SIZE, 363, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_assocPanel.createSequentialGroup()
-							.addComponent(stereoCombo, GroupLayout.PREFERRED_SIZE, 231, GroupLayout.PREFERRED_SIZE)
+							.addComponent(stereoCombo, GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(cbxAbstract)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cbxDerived)
-							.addGap(0, 0, Short.MAX_VALUE)))
-					.addContainerGap())
+							.addComponent(cbxDerived))
+						.addComponent(nameField, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE))
+					.addGap(12))
 		);
 		gl_assocPanel.setVerticalGroup(
 			gl_assocPanel.createParallelGroup(Alignment.LEADING)
@@ -164,44 +245,14 @@ public class AssociationEditionPanel extends JPanel {
 					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(gl_assocPanel.createParallelGroup(Alignment.BASELINE)
 							.addComponent(stereoCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(cbxAbstract, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(cbxDerived, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addComponent(cbxAbstract, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(lblStereo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addContainerGap(22, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		assocPanel.setLayout(gl_assocPanel);
-		
-		GroupLayout gl_meronymicPanel = new GroupLayout(meronymicPanel);
-		gl_meronymicPanel.setHorizontalGroup(
-			gl_meronymicPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_meronymicPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_meronymicPanel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(cbxImmutablepart, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(cbxEssential, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_meronymicPanel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(cbxImmutablewhole, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(cbxInseparable, GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbxShareable, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		gl_meronymicPanel.setVerticalGroup(
-			gl_meronymicPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_meronymicPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_meronymicPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cbxEssential)
-						.addComponent(cbxInseparable)
-						.addComponent(cbxShareable))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_meronymicPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cbxImmutablepart)
-						.addComponent(cbxImmutablewhole))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		meronymicPanel.setLayout(gl_meronymicPanel);
+		shareablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		shareablePanel.add(cbxShareable);
 		setLayout(groupLayout);
 		
 		setInitialData();
@@ -210,7 +261,9 @@ public class AssociationEditionPanel extends JPanel {
 	
 	public void setMeronymicPanelVisible(boolean value)
 	{
-		meronymicPanel.setVisible(value);
+		shareablePanel.setVisible(value);
+		essentialPanel.setVisible(value);
+		inseparablePanel.setVisible(value);
 	}
 	
 	public static String getStereotype(EObject element)
@@ -251,6 +304,19 @@ public class AssociationEditionPanel extends JPanel {
 			repaint();
 			validate();
 		}
+		
+		if (element instanceof subQuantityOf){
+			cbxShareable.setEnabled(false);
+		}
+		ReadingDirection direction = assocElement.getNameReadingDirection();
+		if (direction.equals(ReadingDirection.LEFT_RIGHT)) btnToDestination.setSelected(true);
+		else if (direction.equals(ReadingDirection.RIGHT_LEFT)) btnToSource.setSelected(true);
+		else btnUndefined.setSelected(true);
+		
+		btnName.setSelected(assocElement.showName());
+		btnMultiplicity.setSelected(assocElement.showMultiplicities());
+		btnEndNames.setSelected(assocElement.showRoles());
+		btnStereotype.setSelected(assocElement.showOntoUmlStereotype());		
 	}	
 	
 	public void transferAssocData()
@@ -259,6 +325,16 @@ public class AssociationEditionPanel extends JPanel {
 		element.setIsAbstract(cbxAbstract.isSelected());
 		((Association)element).setIsDerived(cbxDerived.isSelected());
 				
-		diagramManager.updateOLEDFromModification(element);
+		assocElement.setShowMultiplicities(btnMultiplicity.isSelected());
+		assocElement.setShowRoles(btnEndNames.isSelected());
+		assocElement.setShowOntoUmlStereotype(btnStereotype.isSelected());
+		assocElement.setShowName(btnName.isSelected());
+		
+		if (btnToDestination.isSelected()) assocElement.setNameReadingDirection(ReadingDirection.LEFT_RIGHT);
+		else if (btnToSource.isSelected()) assocElement.setNameReadingDirection(ReadingDirection.RIGHT_LEFT);
+		else assocElement.setNameReadingDirection(ReadingDirection.UNDEFINED);
+		
+		diagramManager.updateOLEDFromModification(element,false);
 	}
 }
+

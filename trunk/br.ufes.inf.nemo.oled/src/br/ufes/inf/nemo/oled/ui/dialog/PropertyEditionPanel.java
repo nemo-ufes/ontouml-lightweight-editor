@@ -1,43 +1,51 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.Normalizer;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
+import org.eclipse.emf.ecore.EObject;
+
+import RefOntoUML.AggregationKind;
+import RefOntoUML.Association;
+import RefOntoUML.Characterization;
 import RefOntoUML.Classifier;
+import RefOntoUML.Mediation;
+import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
-import javax.swing.DefaultComboBoxModel;
-
-import org.eclipse.emf.ecore.EObject;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 public class PropertyEditionPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private JDialog owner;
 	
 	@SuppressWarnings("unused")
 	private DiagramElement ownerDiagramElement;	
-	@SuppressWarnings("unused")
 	private Classifier ownerElement;
 	private Property property;
-	@SuppressWarnings("unused")
 	private DiagramManager diagramManager;
 	@SuppressWarnings("unused")
 	private JFrame parent;
@@ -49,8 +57,6 @@ public class PropertyEditionPanel extends JPanel {
 	private JLabel lblAggregationKind;
 	@SuppressWarnings("rawtypes")
 	private JComboBox aggregCombo;
-	private JLabel lblSubsetted;
-	private JLabel lblRedefined;
 	private JButton btnRedefined;
 	private JButton btnSubsetted;
 	private JCheckBox cbxDerived;
@@ -61,45 +67,44 @@ public class PropertyEditionPanel extends JPanel {
 	private JComboBox typeCombo;
 	private JLabel lblName;
 	private JLabel lblType;
-	@SuppressWarnings("rawtypes")
-	private JList subsettedList;
-	@SuppressWarnings("rawtypes")
-	private JList redefinedList;
-	private JScrollPane scrollSubsetted;
-	private JScrollPane scrollRedefined;
-	private JPanel redefinedPanel;
 	JPanel mainPanel;
 	JPanel optionsPanel;
-	JPanel subsettedPanel;
+	JPanel listPanel;
 	JPanel AggregPanel;
 	JPanel multPanel;
+	private JTextField subsettedText;
+	private JTextField redefinedText;
 	
-	/**
-	 * Create the panel.
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public PropertyEditionPanel(DiagramManager diagramManager, DiagramElement ownerDiagramElement, Property property, boolean modal) 
+	public PropertyEditionPanel(JDialog owner, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, final Property property, boolean modal)
+	{
+		this.owner=owner;
+		initData(diagramManager,ownerDiagramElement,property,modal);
+		initGUI();		
+	}
+	
+	public void initData(final DiagramManager diagramManager, DiagramElement ownerDiagramElement, final Property property, boolean modal)
 	{
 		this.diagramManager = diagramManager;
 		this.property = property;
 		this.ownerDiagramElement = ownerDiagramElement;
 		if (ownerDiagramElement instanceof AssociationElement) this.ownerElement = (Classifier)((AssociationElement)ownerDiagramElement).getRelationship();
 		else if (ownerDiagramElement instanceof ClassElement) this.ownerElement = ((ClassElement)ownerDiagramElement).getClassifier();
-		
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void initGUI () 
+	{	
 		mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createTitledBorder(""));
 		
 		optionsPanel = new JPanel();
 		optionsPanel.setBorder(BorderFactory.createTitledBorder(""));
 		
-		subsettedPanel = new JPanel();
-		subsettedPanel.setBorder(BorderFactory.createTitledBorder(""));
+		listPanel = new JPanel();
+		listPanel.setBorder(BorderFactory.createTitledBorder(""));
 		
 		AggregPanel = new JPanel();
 		AggregPanel.setBorder(BorderFactory.createTitledBorder(""));
-		
-		redefinedPanel = new JPanel();
-		redefinedPanel.setBorder(BorderFactory.createTitledBorder(""));
 		
 		multPanel = new JPanel();
 		multPanel.setBorder(BorderFactory.createTitledBorder(""));
@@ -120,20 +125,17 @@ public class PropertyEditionPanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(mainPanel, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(subsettedPanel, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-								.addComponent(optionsPanel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 190, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(multPanel, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(AggregPanel, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))
-								.addComponent(redefinedPanel, GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))))
-					.addGap(364))
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(listPanel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE)
+						.addGroup(Alignment.LEADING, groupLayout.createParallelGroup(Alignment.TRAILING, false)
+							.addComponent(mainPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addComponent(optionsPanel, GroupLayout.PREFERRED_SIZE, 190, Short.MAX_VALUE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(multPanel, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(AggregPanel, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))))
+					.addGap(25))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -142,51 +144,13 @@ public class PropertyEditionPanel extends JPanel {
 					.addComponent(mainPanel, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(AggregPanel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-						.addComponent(multPanel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-						.addComponent(optionsPanel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
+						.addComponent(AggregPanel, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
+						.addComponent(multPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(optionsPanel, GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(redefinedPanel, 0, 0, Short.MAX_VALUE)
-						.addComponent(subsettedPanel, GroupLayout.PREFERRED_SIZE, 157, Short.MAX_VALUE))
-					.addGap(84))
+					.addComponent(listPanel, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+					.addGap(63))
 		);
-		
-		lblRedefined = new JLabel("Redefined:");
-		
-		redefinedList = new JList();
-		scrollRedefined = new JScrollPane();	
-		scrollRedefined.setViewportView(redefinedList);
-		
-		btnRedefined = new JButton("Browse");
-		
-		GroupLayout gl_redefinedPanel = new GroupLayout(redefinedPanel);
-		gl_redefinedPanel.setHorizontalGroup(
-			gl_redefinedPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_redefinedPanel.createSequentialGroup()
-					.addGroup(gl_redefinedPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_redefinedPanel.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblRedefined, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_redefinedPanel.createSequentialGroup()
-							.addContainerGap()
-							.addGroup(gl_redefinedPanel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(btnRedefined)
-								.addComponent(scrollRedefined, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		gl_redefinedPanel.setVerticalGroup(
-			gl_redefinedPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_redefinedPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblRedefined)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollRedefined, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnRedefined)
-					.addContainerGap(66, Short.MAX_VALUE))
-		);
-		redefinedPanel.setLayout(gl_redefinedPanel);
 		
 		lblAggregationKind = new JLabel("(Aggregation Kind)");
 		AggregPanel.add(lblAggregationKind);
@@ -197,37 +161,81 @@ public class PropertyEditionPanel extends JPanel {
 		AggregPanel.add(aggregCombo);
 		aggregCombo.setPreferredSize(new Dimension(80, 20));
 		
-		lblSubsetted = new JLabel("Subsetted:");
-					
-		subsettedList = new JList();
-		scrollSubsetted = new JScrollPane();	
-		scrollSubsetted.setViewportView(subsettedList);
+		btnSubsetted = new JButton("");
+		btnSubsetted.setPreferredSize(new Dimension(30, 25));
+		btnSubsetted.setIcon(new ImageIcon(PropertyEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/edit.png")));
+		btnSubsetted.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				FeatureListDialog.open(owner,subsettedText, "Subsetted", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));						
+			}
+		});
 		
-		btnSubsetted = new JButton("Browse");
+		subsettedText = new JTextField();
+		subsettedText.setEditable(false);
+		subsettedText.setColumns(10);
+		subsettedText.setPreferredSize(new Dimension(300, 20));
 		
-		GroupLayout gl_subsettedPanel = new GroupLayout(subsettedPanel);
-		gl_subsettedPanel.setHorizontalGroup(
-			gl_subsettedPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_subsettedPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_subsettedPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblSubsetted)
-						.addComponent(btnSubsetted)
-						.addComponent(scrollSubsetted, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE))
-					.addGap(224))
-		);
-		gl_subsettedPanel.setVerticalGroup(
-			gl_subsettedPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_subsettedPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblSubsetted, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollSubsetted, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnSubsetted)
+		redefinedText = new JTextField();
+		redefinedText.setEditable(false);
+		redefinedText.setColumns(10);
+		redefinedText.setSize(new Dimension(100, 50));
+		
+		btnRedefined = new JButton("");
+		btnRedefined.setPreferredSize(new Dimension(30, 25));
+		btnRedefined.setIcon(new ImageIcon(PropertyEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/edit.png")));
+		btnRedefined.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				FeatureListDialog.open(owner,redefinedText, "Redefined", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));						
+			}
+		});
+		
+		JLabel lblSubsetted = new JLabel("Subsetted:");
+		
+		JLabel lblRedefined = new JLabel("Redefined:");
+		
+		GroupLayout gl_listPanel = new GroupLayout(listPanel);
+		gl_listPanel.setHorizontalGroup(
+			gl_listPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_listPanel.createSequentialGroup()
+					.addGap(10)
+					.addGroup(gl_listPanel.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(gl_listPanel.createSequentialGroup()
+							.addComponent(lblSubsetted)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(subsettedText, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnSubsetted, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_listPanel.createSequentialGroup()
+							.addComponent(lblRedefined)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(redefinedText, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnRedefined, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
-		subsettedPanel.setLayout(gl_subsettedPanel);
+		gl_listPanel.setVerticalGroup(
+			gl_listPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_listPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_listPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_listPanel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(subsettedText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblSubsetted))
+						.addComponent(btnSubsetted, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_listPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_listPanel.createSequentialGroup()
+							.addGap(11)
+							.addGroup(gl_listPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(redefinedText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblRedefined)))
+						.addGroup(gl_listPanel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnRedefined, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		listPanel.setLayout(gl_listPanel);
 		
 		cbxDerived = new JCheckBox("Derived");
 		cbxDerived.setPreferredSize(new Dimension(70, 20));
@@ -297,8 +305,7 @@ public class PropertyEditionPanel extends JPanel {
 	    type = type.replace("Association","");
 	    return type;
 	}
-	
-	//TODO: Fazer uma aba de comentarios aqui também
+		
 	public void setInitialData()
 	{
 		nameField.setText(property.getName());
@@ -307,5 +314,71 @@ public class PropertyEditionPanel extends JPanel {
 		cbxReadOnly.setSelected(property.isIsReadOnly());
 		cbxUnique.setSelected(property.isIsUnique());
 		aggregCombo.setSelectedItem(property.getAggregation().getName());
+		
+		if (ownerElement instanceof Mediation || ownerElement instanceof Characterization){
+			if (property.equals(((Association)ownerElement).getMemberEnd().get(0))) cbxReadOnly.setEnabled(true);
+			else cbxReadOnly.setEnabled(false);
+		}		
+		
+		if (ownerElement instanceof Meronymic){
+			aggregCombo.setEnabled(true);
+		}else{
+			aggregCombo.setEnabled(false);			
+		}
+		
+		String multiplicity = new String();
+		if (property.getLower()==property.getUpper() && property.getUpper()!=-1) multiplicity = Integer.toString(property.getLower());
+		else if (property.getLower()==property.getUpper() && property.getUpper()==-1) multiplicity = "*";
+		else if (property.getUpper()==-1) multiplicity = property.getLower()+".."+"*";
+		else multiplicity = property.getLower()+".."+property.getUpper();
+		
+		if(multiplicity.compareToIgnoreCase("1")==0) multCombo.setSelectedIndex(0);
+		else if(multiplicity.compareToIgnoreCase("0..1")==0)multCombo.setSelectedIndex(1);
+		else if(multiplicity.compareToIgnoreCase("0..*")==0)multCombo.setSelectedIndex(2);
+		else if(multiplicity.compareToIgnoreCase("1..*")==0) multCombo.setSelectedIndex(3);
+		else { multCombo.setSelectedItem(multiplicity); }
+		
+		String str = new String();
+    	int i=0;    	
+    	for(Property p: property.getSubsettedProperty())
+    	{    		
+    		if (i==property.getSubsettedProperty().size()-1) str += "<"+getStereotype(p)+"> "+p.getName()+": "+p.getType().getName()+"";
+    		else str += "<"+getStereotype(p)+"> "+p.getName()+": "+p.getType().getName()+", ";    		
+    		i++;
+    	}	
+		subsettedText.setText(str);
+		
+		str = new String();
+    	i=0;    	
+    	for(Property p: property.getRedefinedProperty())
+    	{    		
+    		if (i==property.getRedefinedProperty().size()-1) str += "<"+getStereotype(p)+"> "+p.getName()+": "+p.getType().getName()+"";
+    		else str += "<"+getStereotype(p)+"> "+p.getName()+": "+p.getType().getName()+", ";    		
+    		i++;
+    	}	
+		redefinedText.setText(str);
+		
+	}
+	
+	public void transferPropertyData() 
+	{
+		try{
+			property.setName(nameField.getText());
+			property.setIsDerived(cbxDerived.isSelected());
+			if(cbxDerived.isSelected()) nameField.setText(nameField.getText().replace("/",""));
+			nameField.repaint();
+			nameField.validate();
+			property.setIsOrdered(cbxOrdered.isSelected());
+			property.setIsReadOnly(cbxReadOnly.isSelected());
+			property.setIsUnique(cbxUnique.isSelected());
+			if(((String)aggregCombo.getSelectedItem()).compareToIgnoreCase("shared")==0) property.setAggregation(AggregationKind.SHARED);
+			else if (((String)aggregCombo.getSelectedItem()).compareToIgnoreCase("composite")==0) property.setAggregation(AggregationKind.COMPOSITE);
+			else property.setAggregation(AggregationKind.NONE);			
+			ModelHelper.setMultiplicityFromString(property, (String)multCombo.getSelectedItem());
+		}catch(Exception e){
+			diagramManager.getFrame().showErrorMessageDialog("Transfering data to property", e.getLocalizedMessage());
+		}
+					
+		diagramManager.updateOLEDFromModification(ownerElement, false);
 	}
 }

@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -27,8 +27,6 @@ import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
-import javax.swing.JLabel;
-import javax.swing.UIManager;
 
 public class CommentsEditionPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -210,12 +208,12 @@ public class CommentsEditionPanel extends JPanel {
 	
 	private void enableCommentArea(boolean value)
 	{
-		descriptionText.setEnabled(value);
-		scrollPaneText.setEnabled(value);
+		//descriptionText.setEnabled(value);
+		//scrollPaneText.setEnabled(value);
 		commentCombo.setEnabled(value);
-		lblSelectedComment.setEnabled(value);
-		if (!value) descriptionText.setBackground(UIManager.getColor("Panel.background"));
-		else descriptionText.setBackground(Color.WHITE);
+		//lblSelectedComment.setEnabled(value);
+		//if (!value) descriptionText.setBackground(UIManager.getColor("Panel.background"));
+		//else descriptionText.setBackground(Color.WHITE);
 		btnSave.setEnabled(value);
 		btnDelete.setEnabled(value);
 	}

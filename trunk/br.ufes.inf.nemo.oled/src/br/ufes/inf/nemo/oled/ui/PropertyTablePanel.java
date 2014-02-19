@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Element;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.oled.InfoManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.dialog.FeatureListDialog;
@@ -234,14 +235,15 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 			public void actionPerformed(ActionEvent e)
 	        {	        		            
 	        	final int modelRow = Integer.valueOf( e.getActionCommand() );	        		
-	        	String value = (String) tablemodel.getValueAt(modelRow,0);
+	        	final String value = (String) tablemodel.getValueAt(modelRow,0);
 	        	
 	        	if(value.trim().compareToIgnoreCase("redefined")==0 || (value.trim().compareToIgnoreCase("subsetted")==0))
 	        	{
 		        	SwingUtilities.invokeLater(new Runnable() {					
 						@Override
 						public void run() {
-							FeatureListDialog.open((PropertyTableModel)table.getModel(), modelRow, 1, ProjectBrowser.getParserFor(project));						
+							FeatureListDialog.open(ProjectBrowser.frame,null,(String)value, InfoManager.getProperties().getElement(), ProjectBrowser.getParserFor(project));		
+							tablemodel.setValueAt(FeatureListDialog.getResult(),modelRow,1);
 						}
 					});		
  				}
@@ -422,6 +424,7 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	     EObject elem = ((OntoUMLElement)node.getUserObject()).getElement();	     
 	     
 	     this.element = (RefOntoUML.Element)elem;
+	     boolean redesign = false;
 	     
 	     if(elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType)
 	     {
@@ -462,7 +465,8 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	    	 if(property.equals("Name")) ((RefOntoUML.Property)elem).setName((String)value);
 	    	 if(property.equals("Type")) {
 	    		 RefOntoUML.Type type = (RefOntoUML.Type)((OntoUMLElement)value).getElement();
-	    		 ((RefOntoUML.Property)elem).setType(type);	    		 
+	    		 ((RefOntoUML.Property)elem).setType(type);	  
+	    		 redesign=true;
 	    	 }
 	    	 
 	    	 RefOntoUML.RefOntoUMLFactory factory = RefOntoUML.RefOntoUMLFactory.eINSTANCE;         
@@ -494,7 +498,9 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	    			 model.setValueAt(((RefOntoUML.Property)elem).getName(),0, 1);
 	    		 }
 	    	 }
-	    	 if(property.equals("Aggregation Kind")) ((RefOntoUML.Property)elem).setAggregation((RefOntoUML.AggregationKind)value);			
+	    	 if(property.equals("Aggregation Kind")) {
+	    		 ((RefOntoUML.Property)elem).setAggregation((RefOntoUML.AggregationKind)value);
+	    	 }
 	     }
 	     
 	     if(elem instanceof RefOntoUML.GeneralizationSet)
@@ -514,7 +520,8 @@ public class PropertyTablePanel extends JPanel implements TableModelListener {
 	    	 if(property.equals("Name")) ((RefOntoUML.Package)elem).setName((String)value);
 	     }
 	     
-	     ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification((RefOntoUML.Element)elem);
+	     if(!redesign) ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification((RefOntoUML.Element)elem,false);
+	     else ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification((RefOntoUML.Element)elem,true);
 	}
 	
 	public void setProject(UmlProject project)
