@@ -271,6 +271,11 @@ public DescriptionCategory createCategoryClass(Class classf, Set<Class> classfSe
 	
 	for(Property atribute: classf.getAttribute()){
 
+		if(atribute.getName() != null ){
+			if(atribute.getName().equals(""))
+			System.out.println(mat.getLabel());
+			
+		}
 		if(atribute.getType() != null)
 			t = atribute.getType().getName();
 		
@@ -944,7 +949,10 @@ public DescriptionCategory createCategory(Type type, Set<Class> classfSet){
 		mat = new RoleMixin(type.getName());
 	
 	for(Property atribute: ((Classifier) type).getAttribute()){
-		
+		if(atribute.getName() != null ){
+			if(atribute.getName().equals(""))
+			System.out.println(mat.getLabel());
+		}
 		if(atribute.getType() != null)
 			t = atribute.getType().getName();
 		
