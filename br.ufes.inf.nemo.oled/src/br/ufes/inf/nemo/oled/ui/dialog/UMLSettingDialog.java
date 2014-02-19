@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -67,8 +66,7 @@ public class UMLSettingDialog extends JDialog {
 	public UMLSettingDialog(final JFrame parent, boolean modal, final OntoUMLParser refparser) 
 	{
 		super(parent,modal);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(UMLSettingDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/arrow-blue.png")));
-		
+				
 		setTitle("Transformation -> UML");
 		setBounds(100, 100, 450, 302);
 		getContentPane().setLayout(new BorderLayout());
