@@ -170,7 +170,7 @@ public class StringGenerator {
 	}
 	
 	private void identifyAttributePattern(List<DescriptionPattern> patterns,
-			DescriptionCategory describedCategory) {
+		DescriptionCategory describedCategory) {
 		AttributePattern pattern = new AttributePattern(describedCategory);
 		
 		for(CategoryAttribute attribute : describedCategory.getAttributes())
