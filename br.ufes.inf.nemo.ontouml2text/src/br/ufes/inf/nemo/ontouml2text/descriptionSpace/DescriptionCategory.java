@@ -13,6 +13,7 @@ public class DescriptionCategory {
 	public DescriptionCategory(String label){
 		this.label = processLabel(label);
 		this.functions = new ArrayList<DescriptionFunction>();
+		this.attributes = new ArrayList<CategoryAttribute>();
 	}
 	
 	public String getLabel() {
