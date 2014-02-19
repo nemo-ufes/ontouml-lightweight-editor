@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.unaryPatterns;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.CategoryAttribute;
@@ -12,6 +13,8 @@ public class AttributePattern extends UnaryPattern {
 
 	public AttributePattern(DescriptionCategory describedCategory) {
 		super(describedCategory);	
+		
+		attributes = new ArrayList<CategoryAttribute>();
 	}
 	
 	public List<CategoryAttribute> getAttributes() {

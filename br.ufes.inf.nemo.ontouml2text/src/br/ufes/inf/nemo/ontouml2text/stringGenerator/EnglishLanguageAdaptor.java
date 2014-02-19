@@ -229,4 +229,11 @@ public class EnglishLanguageAdaptor extends LanguageAdaptor {
 		return null;
 	}
 
+	@Override
+	protected String processAttributePatter(DescriptionPattern pattern,
+			DescriptionPattern previousPattern, String parcialDescription) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

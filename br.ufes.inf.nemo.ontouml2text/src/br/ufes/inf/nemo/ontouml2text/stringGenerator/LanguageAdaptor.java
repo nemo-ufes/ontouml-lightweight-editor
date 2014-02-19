@@ -19,6 +19,7 @@ import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.PhasePattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.UnaryPattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.binaryPatterns.*;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.naryPatterns.*;
+import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.unaryPatterns.AttributePattern;
 import br.ufes.inf.nemo.ontouml2text.stringGenerator.patterns.unaryPatterns.TopPattern;
 
 public abstract class LanguageAdaptor {
@@ -42,6 +43,8 @@ public abstract class LanguageAdaptor {
 					}else{
 						return 0;
 					}
+				}else if(d instanceof AttributePattern){
+					return 13;
 				}else if(d instanceof ReflexivePattern){ 
 					return 15;	
 				}else if(d instanceof PhasePattern){ 
@@ -127,8 +130,11 @@ public abstract class LanguageAdaptor {
 	private String processUnaryPattern(DescriptionPattern pattern, DescriptionPattern previousPattern){
 		String parcialDescription = "";
 		
-		if(pattern instanceof TopPattern)
+		if(pattern instanceof TopPattern){
 			return processTopPattern(pattern, previousPattern, parcialDescription);
+		}else if(pattern instanceof AttributePattern){
+			return processAttributePatter(pattern, previousPattern, parcialDescription);
+		}
 		
 		return parcialDescription;
 	}
@@ -264,6 +270,8 @@ public abstract class LanguageAdaptor {
 	protected abstract String insertMultiplicity(PatternCategory target);
 	
 	protected abstract String processTopPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
+	
+	protected abstract String processAttributePatter(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
 	protected abstract String processHomogeneousGeneralizationPattern(DescriptionPattern pattern, DescriptionPattern previousPattern, String parcialDescription);
 	
