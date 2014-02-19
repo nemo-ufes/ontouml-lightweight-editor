@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import RefOntoUML.Classifier;
@@ -216,12 +214,12 @@ public class ConstraintEditionPanel extends JPanel {
 		
 	private void enableConstraintArea(boolean value)
 	{
-		constraintTextArea.setEnabled(value);
-		scrollPaneText.setEnabled(value);
+		//constraintTextArea.setEnabled(value);
+		//scrollPaneText.setEnabled(value);
 		comboConstraint.setEnabled(value);
-		lblSelected.setEnabled(value);
-		if (!value) constraintTextArea.setBackground(UIManager.getColor("Panel.background"));
-		else constraintTextArea.setBackground(Color.WHITE);
+		//lblSelected.setEnabled(value);
+		//if (!value) constraintTextArea.setBackground(UIManager.getColor("Panel.background"));
+		//else constraintTextArea.setBackground(Color.WHITE);
 		btnSave.setEnabled(value);
 		btnDelete.setEnabled(value);
 	}

@@ -46,7 +46,10 @@ public class AssociationDialog extends JDialog{
 	public AssociationDialog(final JFrame parent, final DiagramManager diagramManager, final AssociationElement assocElement, boolean modal) 
 	{
 		super(parent, modal);
-		//setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
+//		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
+		
+//		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
+//		setIconImage(icon);
 		
 		this.diagramManager = diagramManager;
 		this.assocElement = assocElement;
@@ -97,9 +100,9 @@ public class AssociationDialog extends JDialog{
 		panel.add(btnApply);
 		
 		assocEdition = new AssociationEditionPanel (diagramManager,assocElement,modal);
-		end1Edition = new PropertyEditionPanel(diagramManager,assocElement,((Association)relationship).getMemberEnd().get(0),modal);
-		end2Edition = new PropertyEditionPanel(diagramManager,assocElement,((Association)relationship).getMemberEnd().get(1),modal);
-		commentsEdition = new CommentsEditionPanel (diagramManager,assocElement,modal);		
+		end1Edition = new PropertyEditionPanel(this,diagramManager,assocElement,((Association)relationship).getMemberEnd().get(0),modal);
+		end2Edition = new PropertyEditionPanel(this,diagramManager,assocElement,((Association)relationship).getMemberEnd().get(1),modal);
+		commentsEdition = new CommentsEditionPanel (diagramManager,assocElement,modal);
 		constraintsEdition = new ConstraintEditionPanel(diagramManager,assocElement,modal);
 		
 		tabbedPane.addTab("Association",assocEdition);
@@ -114,7 +117,7 @@ public class AssociationDialog extends JDialog{
 		tabbedPane.setIconAt(3, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/note.png")));
 		tabbedPane.setIconAt(4, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/ocleditor.png")));
 		
-		setSize(new Dimension(470, 470));		
+		setSize(new Dimension(470, 430));		
 	}
 		
 	public static String getStereotype(EObject element)
@@ -129,6 +132,8 @@ public class AssociationDialog extends JDialog{
 	public void okActionPerformed(ActionEvent arg0)
 	{
 		assocEdition.transferAssocData();
+		end1Edition.transferPropertyData();
+		end2Edition.transferPropertyData();
 		commentsEdition.transferCommentsData();
 		constraintsEdition.transferConstraintsData();
 	}	

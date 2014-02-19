@@ -25,7 +25,7 @@ public class AttributeTableModel extends BaseTableModel {
 	
 	public AttributeTableModel(Classifier owner)
 	{
-		super(new String[]{"Name", "Type", "Lower/Upper"});
+		super(new String[]{"Name", "Type", "Multiplicity"});
 		
 		if(owner instanceof DataTypeImpl) attributes = ((DataType) owner).getOwnedAttribute();
 		else attributes = ((RefOntoUML.Class) owner).getOwnedAttribute();

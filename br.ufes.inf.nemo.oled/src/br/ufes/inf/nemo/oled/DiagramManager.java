@@ -493,7 +493,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * 
 	 * @param element: modified element on the refontouml root instance
 	 */
-	public void updateOLEDFromModification(RefOntoUML.Element element)
+	public void updateOLEDFromModification(RefOntoUML.Element element, boolean redesign)
 	{
 		updatedOLEDFromInclusion(element);
 		
@@ -501,15 +501,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		// Diagrams
 		// =================================		
 		if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType){
-			refreshDiagramElement((Classifier)element);
+			refreshDiagramElement((Classifier)element);			
 		}
 		if (element instanceof RefOntoUML.Association){
-			remakeDiagramElement((RefOntoUML.Element)element);
+			if (redesign) remakeDiagramElement((RefOntoUML.Element)element);
+			else refreshDiagramElement((RefOntoUML.Element)element);
 		}
 		if (element instanceof RefOntoUML.Property){
 			Association assoc= ((RefOntoUML.Property)element).getAssociation();								
-			if (assoc!=null) remakeDiagramElement((RefOntoUML.Element)assoc);
-			else refreshDiagramElement((RefOntoUML.Element)(element).eContainer());
+			if (assoc!=null) {
+				if(redesign) remakeDiagramElement((RefOntoUML.Element)assoc);
+				else refreshDiagramElement((RefOntoUML.Element)assoc);
+			} else {
+				refreshDiagramElement((RefOntoUML.Element)(element).eContainer());
+			}
 		}			
 	}
 	

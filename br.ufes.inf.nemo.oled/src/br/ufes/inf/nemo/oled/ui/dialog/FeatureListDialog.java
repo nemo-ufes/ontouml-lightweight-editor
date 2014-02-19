@@ -1,6 +1,8 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
@@ -16,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
@@ -27,9 +30,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.oled.InfoManager;
-import br.ufes.inf.nemo.oled.ProjectBrowser;
-import br.ufes.inf.nemo.oled.ui.PropertyTableModel;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 public class FeatureListDialog extends JDialog {
 
@@ -46,11 +47,9 @@ public class FeatureListDialog extends JDialog {
 	private DefaultListModel rightListModel;
 	@SuppressWarnings("rawtypes")
 	private DefaultListModel leftListModel;
-	
-	private PropertyTableModel tablemodel;
+		
 	private OntoUMLParser refparser;
-	private int row;
-	private int column;
+	private Component componentToUpdate;
 	
 	private Element element;
 	private String attributeName;
@@ -58,48 +57,62 @@ public class FeatureListDialog extends JDialog {
 	private JButton okButton;
 	private JButton cancelButton;
 		
+	private static String result = new String();	
+	public static String getResult() { return result; }
+	
 	/**
 	 * Launch the Dialog.
 	 */
-	public static void open(PropertyTableModel tablemodel, int row, int column, OntoUMLParser refparser) 
+	public static void open(JFrame parent, Component componentToUpdate, String featureName, Element element, OntoUMLParser refparser) 
 	{
 		try {
 			
-			FeatureListDialog dialog = new FeatureListDialog(ProjectBrowser.frame, tablemodel, refparser, row, column);
+			FeatureListDialog dialog = new FeatureListDialog(parent, componentToUpdate, element, refparser, featureName);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-			dialog.setLocationRelativeTo(ProjectBrowser.frame);
+			dialog.setLocationRelativeTo(parent);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	/** Constructor */
-	public FeatureListDialog(JFrame parent, PropertyTableModel tablemodel, OntoUMLParser refparser,int row,int column) 
+	/**
+	 * Launch the Dialog.
+	 */
+	public static void open(JDialog parent, Component componentToUpdate, String featureName, Element element, OntoUMLParser refparser) 
 	{
-		super(parent);
-		this.refparser = refparser;
-		this.row=row;
-		this.column=column;
-		this.tablemodel = tablemodel;
-		
-		this.element = InfoManager.getProperties().getElement();
-		this.attributeName = (String) InfoManager.getProperties().getTable().getValueAt(row,0);	
-		
-		if(element instanceof RefOntoUML.Property)
-		{
-			if(attributeName.trim().compareToIgnoreCase("Redefined")==0)
-			{
-				this.featureList.addAll(((RefOntoUML.Property)element).getRedefinedProperty());				
-			}
-			if(attributeName.trim().compareToIgnoreCase("Subsetted")==0)
-			{
-				this.featureList.addAll(((RefOntoUML.Property)element).getSubsettedProperty());				
-			}
-		}
+		try {
+			
+			FeatureListDialog dialog = new FeatureListDialog(parent, componentToUpdate, element, refparser, featureName);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+			dialog.setLocationRelativeTo(parent);
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/** Constructor */
+	public FeatureListDialog(JFrame owner, Component componentToUpdate, Element element, OntoUMLParser refparser, String featureName)
+	{
+		super(owner);
+		initData(componentToUpdate, element,refparser,featureName);
 		initGUI();		
+	}
+	
+	/** Constructor */
+	public FeatureListDialog(JDialog owner, Component componentToUpdate, Element element, OntoUMLParser refparser, String featureName) 
+	{		
+		super(owner);
+		initData(componentToUpdate, element,refparser,featureName);
+		initGUI();		
+	}
+	
+	public FeatureListDialog()
+	{		
+		initGUI();
 	}
 	
 	/** Feature Element class */
@@ -133,6 +146,26 @@ public class FeatureListDialog extends JDialog {
 		}
 	}
 		
+	public void initData(Component componentToUpdate, Element element, OntoUMLParser refparser, String featureName) 
+	{
+		this.refparser = refparser;
+		this.componentToUpdate = componentToUpdate;
+		this.element = element;
+		this.attributeName = featureName;
+		
+		if(element instanceof RefOntoUML.Property)
+		{
+			if(attributeName.trim().compareToIgnoreCase("Redefined")==0)
+			{
+				this.featureList.addAll(((RefOntoUML.Property)element).getRedefinedProperty());				
+			}
+			if(attributeName.trim().compareToIgnoreCase("Subsetted")==0)
+			{
+				this.featureList.addAll(((RefOntoUML.Property)element).getSubsettedProperty());				
+			}
+		}
+	}
+	
 	/**
 	 * Create the dialog.
 	 */
@@ -142,15 +175,17 @@ public class FeatureListDialog extends JDialog {
 //		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
 //		setIconImage(icon);
 		
+		setIconImage(Toolkit.getDefaultToolkit().getImage(FeatureListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/edit.png")));
+		
 		//Title
 		if (element instanceof Property)
-			setTitle(attributeName+" -- "+refparser.getStereotype(element)+" "+((NamedElement)element).getName()+": "+((Property)element).getType().getName());
+			setTitle(attributeName+" - "+refparser.getStereotype(element)+" "+((NamedElement)element).getName()+": "+((Property)element).getType().getName());
 		else if (element instanceof Generalization) 
-			setTitle(attributeName+" -- "+refparser.getStereotype(element)+" "+((Generalization)element).getGeneral().getName()+" -> "+((Generalization)element).getSpecific().getName());			
+			setTitle(attributeName+" - "+refparser.getStereotype(element)+" "+((Generalization)element).getGeneral().getName()+" -> "+((Generalization)element).getSpecific().getName());			
 		else
-			setTitle(attributeName+" -- "+refparser.getStereotype(element)+" "+((NamedElement)element).getName());
+			setTitle(attributeName+" - "+refparser.getStereotype(element)+" "+((NamedElement)element).getName());
 		
-		setBounds(100, 100, 760, 407);
+		setBounds(100, 100, 745, 292);
 		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -218,91 +253,69 @@ public class FeatureListDialog extends JDialog {
 			}
 		});
 				
-		JLabel lblChoices = new JLabel("Choices:");		
-		JLabel lblFeature = new JLabel("Features:");
-		
-		JLabel lblChooseWhichProperties = new JLabel();
-		if (attributeName.trim().compareToIgnoreCase("redefined")==0)
-			lblChooseWhichProperties.setText("Choose which properties are redefined "+refparser.getStereotype(element)+" "+((NamedElement)element).getName()+": "+((Property)element).getType().getName());
-		else if (attributeName.trim().compareToIgnoreCase("subsetted")==0){
-			lblChooseWhichProperties.setText("Choose which properties are subsetted "+refparser.getStereotype(element)+" "+((NamedElement)element).getName()+": "+((Property)element).getType().getName());
-		}else{
-			lblChooseWhichProperties.setText("");
-		}			
-		
+		JLabel lblChoices = new JLabel("Possible choices:");
+		JLabel lblFeature = new JLabel();
+		if(attributeName.trim().compareToIgnoreCase("Redefined")==0)
+		{
+			lblFeature.setText("Subsetted properties:");
+		}
+		if(attributeName.trim().compareToIgnoreCase("Redefined")==0)
+		{
+			lblFeature.setText("Redefined properties:");
+		}
+				
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblChooseWhichProperties, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(lblChoices, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(scrollLeft, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(scrollLeft, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(btnArrowRight)
 								.addComponent(btnArrowLeft))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(lblFeature, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(scrollRight, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))))
-					.addContainerGap(26, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(scrollRight, GroupLayout.PREFERRED_SIZE, 323, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(lblChoices, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+							.addComponent(lblFeature, GroupLayout.PREFERRED_SIZE, 323, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblChooseWhichProperties, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblFeature)
-						.addComponent(lblChoices))
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblChoices)
+						.addComponent(lblFeature))
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(11)
+							.addGap(46)
 							.addComponent(btnArrowRight)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnArrowLeft))
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(scrollLeft, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
-								.addComponent(scrollRight, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(28, Short.MAX_VALUE))
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(scrollLeft, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+								.addComponent(scrollRight, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				okButton = new JButton("Confirm");
+				okButton = new JButton("Ok");
 				okButton.addActionListener(new ActionListener() 
 				{
 		       		public void actionPerformed(ActionEvent event) 
 		       		{
+		       			okActionPerformed();
 		       			dispose();
-		       			
-		       			String str = new String();
-		       			if(attributeName.trim().compareToIgnoreCase("Redefined")==0 || attributeName.trim().compareToIgnoreCase("Subsetted")==0)
-		    			{
-			    	    	int i=0;
-			    	    	for(Object p: getFeatures()){
-			    	    		if(p instanceof Property){
-			    	    			Property p2 = (Property)p;
-			    	    			if (i==getFeatures().size()-1) str += "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+"";
-			    	    			else str += "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+", ";	
-			    	    			
-			    	    			if (attributeName.trim().compareToIgnoreCase("Redefined")==0) ((Property)element).getRedefinedProperty().add(p2);
-			    	    			else if (attributeName.trim().compareToIgnoreCase("Subsetted")==0) ((Property)element).getSubsettedProperty().add(p2);
-			    	    		}
-			    	    		i++;
-			    	    	}		    	    			       				
-		    			}
-		    	    	tablemodel.setValueAt(str, row, column);
-		    	    	tablemodel.fireTableCellUpdated(row, column);
 		       		}
 				});
 				getRootPane().setDefaultButton(okButton);
@@ -321,8 +334,8 @@ public class FeatureListDialog extends JDialog {
 			gl_buttonPane.setHorizontalGroup(
 				gl_buttonPane.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_buttonPane.createSequentialGroup()
-						.addGap(309)
-						.addComponent(okButton)
+						.addGap(295)
+						.addComponent(okButton, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(cancelButton)
 						.addGap(317))
@@ -356,5 +369,50 @@ public class FeatureListDialog extends JDialog {
 	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
 	    type = type.replace("Association","");
 	    return type;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void okActionPerformed()
+	{
+		result = new String();
+		ArrayList<String> resultList = new ArrayList<String>();
+		if(attributeName.trim().compareToIgnoreCase("Redefined")==0 || attributeName.trim().compareToIgnoreCase("Subsetted")==0)
+		{
+	    	int i=0;
+	    	for(Object p: getFeatures())
+	    	{
+	    		if(p instanceof Property)
+	    		{
+	    			Property p2 = (Property)p;
+	    			
+	    			if (i==getFeatures().size()-1) { 
+	    				String str = "<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+" ["+ModelHelper.getMultiplicityString(p2)+"]";
+	    				result += str;
+	    				resultList.add(str);
+	    			} else {
+	    				String str ="<"+getStereotype(p2)+"> "+p2.getName()+": "+p2.getType().getName()+" ["+ModelHelper.getMultiplicityString(p2)+"]"; 
+	    				result += str+", ";
+	    				resultList.add(str);
+	    			}
+	    			
+	    			if (attributeName.trim().compareToIgnoreCase("Redefined")==0) ((Property)element).getRedefinedProperty().add(p2);
+	    			else if (attributeName.trim().compareToIgnoreCase("Subsetted")==0) ((Property)element).getSubsettedProperty().add(p2);
+	    		}
+	    		i++;
+	    	}		    	    			       				
+		}			
+		
+		if (componentToUpdate instanceof JTextField){
+			JTextField textField = (JTextField)componentToUpdate;
+			textField.setText(result);
+		}
+		if (componentToUpdate instanceof JList){
+			DefaultListModel model = new DefaultListModel();  
+			JList list = (JList)componentToUpdate;
+			list.setModel(model);
+			for(String str: resultList){
+				model.addElement(str);
+			}
+		}
 	}
 }

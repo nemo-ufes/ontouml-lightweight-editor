@@ -44,12 +44,15 @@ public class ClassDialog extends JDialog{
 	public ClassDialog(final JFrame parent, final DiagramManager diagramManager, final ClassElement classElement, boolean modal) 
 	{
 		super(parent, modal);
-		//setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
+//		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
 		
 		this.diagramManager = diagramManager;
 		this.classElement = classElement;
 		this.element = classElement.getClassifier();
 		this.parent = parent;
+		
+//		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
+//		setIconImage(icon);
 		
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Settings"+" - "+getStereotype(classElement.getClassifier())+" "+classElement.getClassifier().getName());
