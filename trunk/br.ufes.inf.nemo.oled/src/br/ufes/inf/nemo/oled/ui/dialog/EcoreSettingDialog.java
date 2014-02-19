@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -67,7 +66,6 @@ public class EcoreSettingDialog extends JDialog {
 	public EcoreSettingDialog(final JFrame parent, boolean modal, final OntoUMLParser refparser) 
 	{
 		super(parent,modal);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(EcoreSettingDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/arrow-purple.png")));
 		
 		setTitle("Transformation -> Ecore");
 		setBounds(100, 100, 450, 302);
