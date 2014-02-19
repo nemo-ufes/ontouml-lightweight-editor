@@ -8,6 +8,7 @@ public class DescriptionCategory {
 	private String userDescription = "";
 	private boolean isDerived = false;
 	private List<DescriptionFunction> functions;
+	private List<CategoryAttribute> attributes;
 	
 	public DescriptionCategory(String label){
 		this.label = processLabel(label);
@@ -36,6 +37,10 @@ public class DescriptionCategory {
 	
 	public List<DescriptionFunction> getFunctions() {
 		return functions;
+	}
+	
+	public List<CategoryAttribute> getAttributes() {
+		return attributes;
 	}
 	
 	public String processLabel(String label) {
