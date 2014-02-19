@@ -199,7 +199,9 @@ public class StringGenerator {
 			}
 			
 			// Anti-Rigid Heterogeneous Generalization Pattern
-			if(target instanceof RoleMixin && source instanceof Role){
+			if((target instanceof RoleMixin && source instanceof Role) || 
+					(target instanceof Category && source instanceof RoleMixin) ||
+					(target instanceof Mixin && source instanceof RoleMixin)){
 				naryPattern = (NaryPattern)searchPattern(patterns, "AntiRigidHeterogeneousGeneralizationPattern");
 				
 				if(naryPattern == null){
