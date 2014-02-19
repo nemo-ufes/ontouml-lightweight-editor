@@ -234,6 +234,7 @@ public DescriptionCategory createCategoryClass(Class classf, Set<Class> classfSe
 
 	DescriptionCategory mat = null;
 	String userDesc;
+	String t = null;
 	
 	if(classf instanceof RefOntoUML.Category || classf.toString().contains("RefOntoUML.impl.ClassImpl@"))
 		mat = new Category(classf.getName());
@@ -269,7 +270,10 @@ public DescriptionCategory createCategoryClass(Class classf, Set<Class> classfSe
 		mat = new RoleMixin(classf.getName());
 	
 	for(Property atribute: classf.getAttribute()){
-		CategoryAttribute at = new CategoryAttribute(atribute.getName(), atribute.getType().getName());
+		if(atribute.getType() != null)
+			t = atribute.getType().getName();
+		
+		CategoryAttribute at = new CategoryAttribute(atribute.getName(),t);
 		mat.getAttributes().add(at);
 	}
 	
@@ -903,6 +907,7 @@ public DescriptionCategory createCategory(Type type, Set<Class> classfSet){
 
 	DescriptionCategory mat = null;
 	String userDesc;
+	String t = null;
 	
 	if(type instanceof RefOntoUML.Category || type.toString().contains("RefOntoUML.impl.ClassImpl@"))
 		mat = new Category(type.getName());
@@ -938,7 +943,9 @@ public DescriptionCategory createCategory(Type type, Set<Class> classfSet){
 		mat = new RoleMixin(type.getName());
 	
 	for(Property atribute: ((Classifier) type).getAttribute()){
-		CategoryAttribute at = new CategoryAttribute(atribute.getName(), atribute.getType().getName());
+		if(atribute.getType() != null)
+			t = atribute.getType().getName();
+		CategoryAttribute at = new CategoryAttribute(atribute.getName(), t);
 		mat.getAttributes().add(at);
 	}
 	
