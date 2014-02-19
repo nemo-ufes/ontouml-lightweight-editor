@@ -11,6 +11,7 @@ import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.CategoryAttribute;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionFunction;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionSpace;
@@ -52,7 +53,7 @@ public void populateDescriptionSpace(OntoUMLParser parser, Set<String> hashCateg
 		
 		for (RefOntoUML.Class classf : classfSet){
 			DescriptionCategory mat;
-						
+									
 			if(generalizationSpace.findCategory(classf.getName()) == null){
 				mat = createCategoryClass(classf, classfSet);
 				generalizationSpace.addCategory(mat);
@@ -266,6 +267,11 @@ public DescriptionCategory createCategoryClass(Class classf, Set<Class> classfSe
 	
 	if(classf instanceof RefOntoUML.RoleMixin)
 		mat = new RoleMixin(classf.getName());
+	
+	for(Property atribute: classf.getAttribute()){
+		CategoryAttribute at = new CategoryAttribute(atribute.getName(), atribute.getType().getName());
+		mat.getAttributes().add(at);
+	}
 	
 	userDesc = getUserDescription(mat.getLabel(),classfSet);
 	if(!userDesc.equals(""))
@@ -930,6 +936,11 @@ public DescriptionCategory createCategory(Type type, Set<Class> classfSet){
 	
 	if(type instanceof RefOntoUML.RoleMixin)
 		mat = new RoleMixin(type.getName());
+	
+	for(Property atribute: ((Classifier) type).getAttribute()){
+		CategoryAttribute at = new CategoryAttribute(atribute.getName(), atribute.getType().getName());
+		mat.getAttributes().add(at);
+	}
 	
 	userDesc = getUserDescription(mat.getLabel(),classfSet);
 	if(!userDesc.equals(""))
