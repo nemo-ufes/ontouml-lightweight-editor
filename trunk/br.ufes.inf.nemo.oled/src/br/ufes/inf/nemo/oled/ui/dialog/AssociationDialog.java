@@ -129,10 +129,10 @@ public class AssociationDialog extends JDialog{
 		);
 		panel.setLayout(gl_panel);
 		
-		assocEdition = new AssociationEditionPanel (diagramManager,assocElement,modal);
-		end1Edition = new PropertyEditionPanel(this,diagramManager,assocElement,((Association)relationship).getMemberEnd().get(0));
-		end2Edition = new PropertyEditionPanel(this,diagramManager,assocElement,((Association)relationship).getMemberEnd().get(1));
-		commentsEdition = new CommentsEditionPanel (diagramManager,assocElement);
+		assocEdition = new AssociationEditionPanel (diagramManager,assocElement,(Classifier)relationship,modal);
+		end1Edition = new PropertyEditionPanel(this,diagramManager,assocElement,(Classifier)relationship,((Association)relationship).getMemberEnd().get(0));
+		end2Edition = new PropertyEditionPanel(this,diagramManager,assocElement,(Classifier)relationship,((Association)relationship).getMemberEnd().get(1));
+		commentsEdition = new CommentsEditionPanel (diagramManager,assocElement,(Classifier)relationship);
 //		constraintsEdition = new ConstraintEditionPanel(diagramManager,assocElement);
 //		relatedElements = new RelatedElementsPanel(diagramManager,assocElement);
 				

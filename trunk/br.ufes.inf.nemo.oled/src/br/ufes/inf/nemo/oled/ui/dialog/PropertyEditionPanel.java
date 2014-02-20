@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -30,11 +33,11 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.oled.ui.OntoUMLElement;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 public class PropertyEditionPanel extends JPanel {
@@ -75,20 +78,19 @@ public class PropertyEditionPanel extends JPanel {
 	private JTextField subsettedText;
 	private JTextField redefinedText;
 	
-	public PropertyEditionPanel(JDialog owner, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, final Property property)
+	public PropertyEditionPanel(JDialog owner, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, RefOntoUML.Classifier ownerElem, final Property property)
 	{
 		this.owner=owner;
-		initData(diagramManager,ownerDiagramElement,property);
+		initData(diagramManager,ownerDiagramElement,ownerElem,property);
 		initGUI();		
 	}
 	
-	public void initData(final DiagramManager diagramManager, DiagramElement ownerDiagramElement, final Property property)
+	public void initData(final DiagramManager diagramManager, DiagramElement ownerDiagramElement, RefOntoUML.Classifier ownerElem, final Property property)
 	{
 		this.diagramManager = diagramManager;
 		this.property = property;
 		this.ownerDiagramElement = ownerDiagramElement;
-		if (ownerDiagramElement instanceof AssociationElement) this.ownerElement = (Classifier)((AssociationElement)ownerDiagramElement).getRelationship();
-		else if (ownerDiagramElement instanceof ClassElement) this.ownerElement = ((ClassElement)ownerDiagramElement).getClassifier();
+		this.ownerElement = ownerElem;		
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -261,8 +263,10 @@ public class PropertyEditionPanel extends JPanel {
 		lblType = new JLabel("Type:");
 		
 		typeCombo = new JComboBox();
-		typeCombo.setEnabled(false);
-		typeCombo.setModel(new DefaultComboBoxModel(new String[] {property.getType().getName()}));
+				
+		if (property.getType()!=null){
+			typeCombo.setModel(new DefaultComboBoxModel(new String[] {property.getType().getName()}));
+		}
 		
 		GroupLayout gl_mainPanel = new GroupLayout(mainPanel);
 		gl_mainPanel.setHorizontalGroup(
@@ -306,6 +310,7 @@ public class PropertyEditionPanel extends JPanel {
 	    return type;
 	}
 		
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setInitialData()
 	{
 		nameField.setText(property.getName());
@@ -357,11 +362,39 @@ public class PropertyEditionPanel extends JPanel {
     		i++;
     	}	
 		redefinedText.setText(str);		
+		
+		ArrayList<OntoUMLElement> list = new ArrayList<OntoUMLElement>();
+		OntoUMLElement value = null;
+		if (property.getType()!=null) value = new OntoUMLElement(property.getType(),"");
+		else value = new OntoUMLElement(null,"");
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());	    	
+    	for(RefOntoUML.Type t: refparser.getAllInstances(RefOntoUML.Type.class))
+    	{
+			if(t instanceof RefOntoUML.Class || t instanceof RefOntoUML.DataType || t instanceof RefOntoUML.Association)
+			{
+				if (((OntoUMLElement) value).getElement()!=null && t.equals(((OntoUMLElement) value).getElement())) list.add((OntoUMLElement)value);				
+    			else list.add(new OntoUMLElement(t,""));	    			
+    		}	    					
+    	}
+    	if (((OntoUMLElement) value).getElement()==null) list.add((OntoUMLElement)value);
+    	Collections.sort(list,new CustomComparator());	    	
+    	typeCombo.setModel(new DefaultComboBoxModel(list.toArray()));
+    	typeCombo.setSelectedItem(value);    	
 	}
 	
+	public class CustomComparator implements Comparator<OntoUMLElement> 
+    {
+        @Override
+        public int compare(OntoUMLElement o1, OntoUMLElement o2) {
+            return o1.toString().compareToIgnoreCase(o2.toString());
+        }
+    }
+	 
 	public void transferPropertyData() 
 	{
-		try{
+		boolean redesign = false;
+		
+		try{			
 			property.setName(nameField.getText());
 			property.setIsDerived(cbxDerived.isSelected());
 			if(cbxDerived.isSelected()) nameField.setText(nameField.getText().replace("/",""));
@@ -374,10 +407,14 @@ public class PropertyEditionPanel extends JPanel {
 			else if (((String)aggregCombo.getSelectedItem()).compareToIgnoreCase("composite")==0) property.setAggregation(AggregationKind.COMPOSITE);
 			else property.setAggregation(AggregationKind.NONE);			
 			ModelHelper.setMultiplicityFromString(property, (String)multCombo.getSelectedItem());
+			RefOntoUML.Type type = (RefOntoUML.Type)((OntoUMLElement)typeCombo.getSelectedItem()).getElement();			
+			if (type!=null && !type.equals(property.getType())) redesign = true;
+			property.setType(type);
+
 		}catch(Exception e){
 			diagramManager.getFrame().showErrorMessageDialog("Transfering data to property", e.getLocalizedMessage());
 		}
 					
-		diagramManager.updateOLEDFromModification(ownerElement, false);
+		diagramManager.updateOLEDFromModification(ownerElement, redesign);
 	}
 }

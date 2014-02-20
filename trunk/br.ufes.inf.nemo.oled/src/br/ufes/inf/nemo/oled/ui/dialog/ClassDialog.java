@@ -126,11 +126,11 @@ public class ClassDialog extends JDialog{
 		);
 		panel.setLayout(gl_panel);
 		
-		classEdition = new ClassEditionPanel (diagramManager,classElement);
-		commentsEdition = new CommentsEditionPanel (diagramManager,classElement);		
-		attributesEdition = new AttributesEditionPanel(diagramManager,classElement);
-		constraintsEdition = new ConstraintEditionPanel(diagramManager,classElement);
-		relatedElements = new RelatedElementsPanel(diagramManager,classElement);
+		classEdition = new ClassEditionPanel (diagramManager,classElement,element);
+		commentsEdition = new CommentsEditionPanel (diagramManager,classElement,element);		
+		attributesEdition = new AttributesEditionPanel(diagramManager,classElement,element);
+		constraintsEdition = new ConstraintEditionPanel(diagramManager,classElement,element);
+		relatedElements = new RelatedElementsPanel(diagramManager,classElement,element);
 		
 		tabbedPane.addTab("Class",classEdition);		
 		tabbedPane.addTab("Attributes",attributesEdition);

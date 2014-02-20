@@ -18,15 +18,13 @@ import javax.swing.table.AbstractTableModel;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
+import RefOntoUML.Classifier;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.ColorPalette;
 import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 
@@ -169,13 +167,11 @@ public class RelatedElementsPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public RelatedElementsPanel(final DiagramManager diagramManager, final DiagramElement diagramElement)  
+	public RelatedElementsPanel(final DiagramManager diagramManager, final DiagramElement diagramElement, Classifier element)  
 	{			
 		this.diagramManager = diagramManager;
 		this.diagramElement = diagramElement;
-		if (diagramElement instanceof ClassElement) { this.element = ((ClassElement)diagramElement).getClassifier(); }
-		else if (diagramElement instanceof AssociationElement) this.element = ((AssociationElement)diagramElement).getRelationship();
-		else if (diagramElement instanceof GeneralizationElement) this.element = ((GeneralizationElement)diagramElement).getRelationship();
+		this.element = element;
 		this.refparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
 		
 		lblTop = new JLabel("Related associations:");		

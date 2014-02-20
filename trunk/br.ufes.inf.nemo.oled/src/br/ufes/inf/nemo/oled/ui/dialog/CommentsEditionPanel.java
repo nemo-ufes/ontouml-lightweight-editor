@@ -25,8 +25,6 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Comment;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
 public class CommentsEditionPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -48,12 +46,11 @@ public class CommentsEditionPanel extends JPanel {
 	private JLabel lblSelectedComment;
 	
 	@SuppressWarnings({ "rawtypes" })
-	public CommentsEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement) 
+	public CommentsEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement, Classifier element) 
 	{
 		this.diagramManager = diagramManager;
 		this.diagramElement =diagramElement;
-		if (diagramElement instanceof AssociationElement) this.element = (Classifier)((AssociationElement)diagramElement).getRelationship();
-		else this.element = ((ClassElement)diagramElement).getClassifier();
+		this.element = element;
 		
 		descriptionPanel = new JPanel();
 		descriptionPanel.setBorder(BorderFactory.createTitledBorder(""));

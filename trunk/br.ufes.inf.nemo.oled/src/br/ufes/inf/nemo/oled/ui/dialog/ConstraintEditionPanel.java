@@ -25,8 +25,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
 
 public class ConstraintEditionPanel extends JPanel {
@@ -53,12 +51,11 @@ public class ConstraintEditionPanel extends JPanel {
 	private ArrayList<Constraintx> constraintList = new ArrayList<Constraintx>();
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ConstraintEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement) 
+	public ConstraintEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement, Classifier element) 
 	{
 		this.diagramManager = diagramManager;
 		this.diagramElement = diagramElement;
-		if (diagramElement instanceof AssociationElement) this.element = (Classifier)((AssociationElement)diagramElement).getRelationship();
-		else this.element = ((ClassElement)diagramElement).getClassifier();
+		this.element = element;
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder(""));

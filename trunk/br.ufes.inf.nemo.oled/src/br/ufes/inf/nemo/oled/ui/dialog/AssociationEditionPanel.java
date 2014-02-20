@@ -65,11 +65,11 @@ public class AssociationEditionPanel extends JPanel {
 	 * Create the panel.
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
-	public AssociationEditionPanel(final DiagramManager diagramManager, final AssociationElement assocElement, boolean modal) 
+	public AssociationEditionPanel(final DiagramManager diagramManager, final AssociationElement assocElement, Classifier relationship, boolean modal) 
 	{
 		this.diagramManager = diagramManager;
 		this.assocElement = assocElement;
-		this.element = (Classifier)assocElement.getRelationship();
+		this.element = (Classifier)relationship;
 		
 		assocPanel = new JPanel();
 		assocPanel.setBorder(BorderFactory.createTitledBorder(""));
@@ -346,15 +346,17 @@ public class AssociationEditionPanel extends JPanel {
 		if (element instanceof subQuantityOf){
 			cbxShareable.setEnabled(false);
 		}
-		ReadingDirection direction = assocElement.getNameReadingDirection();
-		if (direction.equals(ReadingDirection.LEFT_RIGHT)) btnToDestination.setSelected(true);
-		else if (direction.equals(ReadingDirection.RIGHT_LEFT)) btnToSource.setSelected(true);
-		else btnUndefined.setSelected(true);
-		
-		btnName.setSelected(assocElement.showName());
-		btnMultiplicity.setSelected(assocElement.showMultiplicities());
-		btnEndNames.setSelected(assocElement.showRoles());
-		btnStereotype.setSelected(assocElement.showOntoUmlStereotype());		
+		if (assocElement!=null) {
+			ReadingDirection direction = assocElement.getNameReadingDirection();
+			if (direction.equals(ReadingDirection.LEFT_RIGHT)) btnToDestination.setSelected(true);
+			else if (direction.equals(ReadingDirection.RIGHT_LEFT)) btnToSource.setSelected(true);
+			else btnUndefined.setSelected(true);
+			
+			btnName.setSelected(assocElement.showName());
+			btnMultiplicity.setSelected(assocElement.showMultiplicities());
+			btnEndNames.setSelected(assocElement.showRoles());
+			btnStereotype.setSelected(assocElement.showOntoUmlStereotype());
+		}		
 	}	
 	
 	public void transferAssocData()
@@ -363,14 +365,16 @@ public class AssociationEditionPanel extends JPanel {
 		element.setIsAbstract(cbxAbstract.isSelected());
 		((Association)element).setIsDerived(cbxDerived.isSelected());
 				
-		assocElement.setShowMultiplicities(btnMultiplicity.isSelected());
-		assocElement.setShowRoles(btnEndNames.isSelected());
-		assocElement.setShowOntoUmlStereotype(btnStereotype.isSelected());
-		assocElement.setShowName(btnName.isSelected());
-		
-		if (btnToDestination.isSelected()) assocElement.setNameReadingDirection(ReadingDirection.LEFT_RIGHT);
-		else if (btnToSource.isSelected()) assocElement.setNameReadingDirection(ReadingDirection.RIGHT_LEFT);
-		else assocElement.setNameReadingDirection(ReadingDirection.UNDEFINED);
+		if (assocElement!=null) {
+			assocElement.setShowMultiplicities(btnMultiplicity.isSelected());
+			assocElement.setShowRoles(btnEndNames.isSelected());
+			assocElement.setShowOntoUmlStereotype(btnStereotype.isSelected());
+			assocElement.setShowName(btnName.isSelected());
+			
+			if (btnToDestination.isSelected()) assocElement.setNameReadingDirection(ReadingDirection.LEFT_RIGHT);
+			else if (btnToSource.isSelected()) assocElement.setNameReadingDirection(ReadingDirection.RIGHT_LEFT);
+			else assocElement.setNameReadingDirection(ReadingDirection.UNDEFINED);
+		}
 		
 		diagramManager.updateOLEDFromModification(element,false);
 	}
