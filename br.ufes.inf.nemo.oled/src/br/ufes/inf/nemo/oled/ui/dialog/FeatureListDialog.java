@@ -135,7 +135,7 @@ public class FeatureListDialog extends JDialog {
 				Property p = (Property)element;
 				String owner = new String();
 				if(p.getAssociation()==null){
-					owner = ""+getStereotype(p.getOwner())+" "+((NamedElement)p.getOwner()).getName();
+					owner = ""+getStereotype(p.eContainer())+" "+((NamedElement)p.eContainer()).getName();
 				}else{
 					owner = ""+getStereotype(p.getAssociation())+" "+((NamedElement)p.getAssociation()).getName();
 				}

@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -21,6 +20,10 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Relationship;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
+import javax.swing.border.EmptyBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class AssociationDialog extends JDialog{
 
@@ -28,6 +31,7 @@ public class AssociationDialog extends JDialog{
 	
 	@SuppressWarnings("unused")
 	private AssociationElement assocElement;
+	@SuppressWarnings("unused")
 	private Relationship relationship;
 	@SuppressWarnings("unused")
 	private DiagramManager diagramManager;
@@ -41,10 +45,16 @@ public class AssociationDialog extends JDialog{
 	private PropertyEditionPanel end1Edition;
 	private PropertyEditionPanel end2Edition;
 	private CommentsEditionPanel commentsEdition;
-	private ConstraintEditionPanel constraintsEdition;
+//	private ConstraintEditionPanel constraintsEdition;
+//	private RelatedElementsPanel relatedElements;
 	private JButton btnApply;
 	
-	public AssociationDialog(final JFrame parent, final DiagramManager diagramManager, final AssociationElement assocElement, boolean modal) 
+	public void selectTab (int index)
+	{
+		tabbedPane.setSelectedIndex(index);
+	}
+	
+	public AssociationDialog(final JFrame parent, final DiagramManager diagramManager, final AssociationElement assocElement, RefOntoUML.Relationship relationship, boolean modal) 
 	{
 		super(parent, modal);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
@@ -54,20 +64,20 @@ public class AssociationDialog extends JDialog{
 		
 		this.diagramManager = diagramManager;
 		this.assocElement = assocElement;
-		this.relationship = assocElement.getRelationship();
+		this.relationship = relationship;
 		this.parent = parent;
 		
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-		setTitle("Settings"+" - "+getStereotype(relationship)+" "+ ((Classifier)relationship).getName());
+		setTitle(""+""+getStereotype(relationship)+" "+ ((Classifier)relationship).getName());
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBorder(null);
+		tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(null);
+		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setPreferredSize(new Dimension(100, 50));
 		
@@ -95,30 +105,45 @@ public class AssociationDialog extends JDialog{
 				okActionPerformed(e);				
 			}
 		});
-		
-		panel.add(btnConfirm);
-		panel.add(btnCancel);
-		panel.add(btnApply);
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(118)
+					.addComponent(btnConfirm, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnCancel)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnApply, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+					.addGap(128))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnConfirm)
+						.addComponent(btnCancel)
+						.addComponent(btnApply))
+					.addContainerGap(16, Short.MAX_VALUE))
+		);
+		panel.setLayout(gl_panel);
 		
 		assocEdition = new AssociationEditionPanel (diagramManager,assocElement,modal);
 		end1Edition = new PropertyEditionPanel(this,diagramManager,assocElement,((Association)relationship).getMemberEnd().get(0));
 		end2Edition = new PropertyEditionPanel(this,diagramManager,assocElement,((Association)relationship).getMemberEnd().get(1));
 		commentsEdition = new CommentsEditionPanel (diagramManager,assocElement);
-		constraintsEdition = new ConstraintEditionPanel(diagramManager,assocElement);
-		
+//		constraintsEdition = new ConstraintEditionPanel(diagramManager,assocElement);
+//		relatedElements = new RelatedElementsPanel(diagramManager,assocElement);
+				
 		tabbedPane.addTab("Association",assocEdition);
 		tabbedPane.addTab("Source", end1Edition);
 		tabbedPane.addTab("Target", end2Edition);
 		tabbedPane.addTab("Comments",commentsEdition);
-		tabbedPane.addTab("Constraints",constraintsEdition);
-		
-		tabbedPane.setIconAt(0, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/association.png")));
-		tabbedPane.setIconAt(1, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/property.gif")));
-		tabbedPane.setIconAt(2, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/property.gif")));
-		tabbedPane.setIconAt(3, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/note.png")));
-		tabbedPane.setIconAt(4, new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/ocleditor.png")));
-		
-		setSize(new Dimension(470, 430));		
+//		tabbedPane.addTab("Constraints",constraintsEdition);
+//		tabbedPane.addTab("Related Elements",relatedElements);
+				
+		setSize(new Dimension(470, 450));		
 	}
 		
 	public static String getStereotype(EObject element)
@@ -136,7 +161,7 @@ public class AssociationDialog extends JDialog{
 		end1Edition.transferPropertyData();
 		end2Edition.transferPropertyData();
 		commentsEdition.transferCommentsData();
-		constraintsEdition.transferConstraintsData();
+//		constraintsEdition.transferConstraintsData();
 	}	
 }
 

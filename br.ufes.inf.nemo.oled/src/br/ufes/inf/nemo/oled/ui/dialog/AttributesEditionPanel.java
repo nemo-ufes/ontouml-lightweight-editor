@@ -354,11 +354,11 @@ private static final long serialVersionUID = 1L;
 				if(existingType != null){ 
 					property.setType(existingType); 
 				}				
-				if(classElement.getClassifier() instanceof DataType)
-					((DataType)classElement.getClassifier()).getOwnedAttribute().add(property);
-				else				
+				if(classElement.getClassifier() instanceof DataType){
+					((DataType)classElement.getClassifier()).getOwnedAttribute().add(property);					
+				}else{				
 					((Class)classElement.getClassifier()).getOwnedAttribute().add(property);
-				
+				}
 				diagramManager.updatedOLEDFromInclusion(property);
 			}
 		}

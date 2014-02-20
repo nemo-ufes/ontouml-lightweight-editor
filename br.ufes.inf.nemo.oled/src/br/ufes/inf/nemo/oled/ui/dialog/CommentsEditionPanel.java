@@ -70,7 +70,7 @@ public class CommentsEditionPanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(descriptionPanel, GroupLayout.PREFERRED_SIZE, 208, GroupLayout.PREFERRED_SIZE)
+					.addComponent(descriptionPanel, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		
@@ -144,9 +144,9 @@ public class CommentsEditionPanel extends JPanel {
 		GroupLayout gl_descriptionPanel = new GroupLayout(descriptionPanel);
 		gl_descriptionPanel.setHorizontalGroup(
 			gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_descriptionPanel.createSequentialGroup()
+				.addGroup(gl_descriptionPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.TRAILING)
+					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 402, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_descriptionPanel.createSequentialGroup()
 							.addComponent(lblSelectedComment, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
@@ -158,23 +158,23 @@ public class CommentsEditionPanel extends JPanel {
 							.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		gl_descriptionPanel.setVerticalGroup(
-			gl_descriptionPanel.createParallelGroup(Alignment.TRAILING)
+			gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_descriptionPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnSave, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnSave, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(btnCreate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(gl_descriptionPanel.createSequentialGroup()
 							.addGap(5)
 							.addGroup(gl_descriptionPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(commentCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblSelectedComment))))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scrollPaneText, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		descriptionPanel.setLayout(gl_descriptionPanel);
@@ -182,7 +182,7 @@ public class CommentsEditionPanel extends JPanel {
 		
 		setInitialData();
 		
-		setSize(new Dimension(450, 230));
+		setSize(new Dimension(450, 300));
 	}
 	
 	/** Private Class: Comment Element */
