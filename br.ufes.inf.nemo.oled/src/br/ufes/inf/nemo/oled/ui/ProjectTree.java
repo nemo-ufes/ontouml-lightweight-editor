@@ -28,7 +28,6 @@ import RefOntoUML.Package;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
-import br.ufes.inf.nemo.oled.InfoManager;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -380,8 +379,7 @@ public class ProjectTree extends CheckboxTree {
 	    {
 	    	EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
 	    	if (obj.equals(element)) { 
-	    		this.setSelectionPath(new TreePath(node.getPath()));
-	    		InfoManager.getProperties().setData(node);
+	    		this.setSelectionPath(new TreePath(node.getPath()));	    		
 	    	}
 	    		
 	    	node = (DefaultMutableTreeNode)e.nextElement();
@@ -389,15 +387,13 @@ public class ProjectTree extends CheckboxTree {
 	    //last element
 	    EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
 	    if (obj.equals(element)){ 
-	    	this.setSelectionPath(new TreePath(node.getPath()));
-	    	InfoManager.getProperties().setData(node);
+	    	this.setSelectionPath(new TreePath(node.getPath()));	    	
 	    }	    
 	}
 	
 	public void select (DefaultMutableTreeNode  node)
 	{
-		this.setSelectionPath(new TreePath(node.getPath()));
-		InfoManager.getProperties().setData(node);
+		this.setSelectionPath(new TreePath(node.getPath()));		
 	}
 		
 	@SuppressWarnings("rawtypes")

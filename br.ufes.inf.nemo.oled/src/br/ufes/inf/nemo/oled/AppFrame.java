@@ -547,29 +547,24 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		return analyzer;
 	}
 
-	public void focusOnProperties()
-	{	
-		infoManager.setSelectedIndex(0);
-	}
-	
 	public void focusOnErrors()
-	{	
-		infoManager.setSelectedIndex(2);
-	}
-	
-	public void focusOnWarnings()
 	{	
 		infoManager.setSelectedIndex(1);
 	}
 	
+	public void focusOnWarnings()
+	{	
+		infoManager.setSelectedIndex(0);
+	}
+	
 	public void focusOnOutput()
 	{	
-		infoManager.setSelectedIndex(3);
+		infoManager.setSelectedIndex(2);
 	}
 	
 	public void focusOnOclEditor()
 	{		
-		infoManager.setSelectedIndex(4);		
+		infoManager.setSelectedIndex(3);		
 	}
 	
 	public void showInfoManager()
@@ -579,7 +574,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	
 	public boolean isFocusedOnOclEditor()
 	{
-		return infoManager.getSelectedIndex()==4;
+		return infoManager.getSelectedIndex()==3;
 	}
 	
 	public class Interceptor extends PrintStream

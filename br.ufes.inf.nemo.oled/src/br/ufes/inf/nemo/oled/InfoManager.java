@@ -15,7 +15,6 @@ import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.ErrorTablePanel;
 import br.ufes.inf.nemo.oled.ui.OutputPane;
-import br.ufes.inf.nemo.oled.ui.PropertyTablePanel;
 import br.ufes.inf.nemo.oled.ui.WarningTablePanel;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -23,7 +22,6 @@ import br.ufes.inf.nemo.oled.util.IconLoader;
 public class InfoManager extends JTabbedPane {
 
 	private static final long serialVersionUID = 1L;
-	public static PropertyTablePanel properties;
 	public static ErrorTablePanel errors;
 	public static WarningTablePanel warnings;
 	public static OutputPane outputPane;
@@ -35,7 +33,6 @@ public class InfoManager extends JTabbedPane {
 	{
 		this.project = project;
 		
-		properties.setProject(project);
 		errors.setProject(project);
 		warnings.setProject(project);
 	}
@@ -44,11 +41,9 @@ public class InfoManager extends JTabbedPane {
 	{
 		this.project = null;
 		
-		properties.setProject(null);
 		errors.setProject(null);
 		warnings.setProject(null);
 		
-		properties.reset();
 		errors.reset();
 		warnings.reset();
 		outputPane.write("");
@@ -62,7 +57,6 @@ public class InfoManager extends JTabbedPane {
 		this.frame=frame;
 		this.project = project;
 				
-		properties = new PropertyTablePanel(project);		
 		errors = new ErrorTablePanel(project);
 		warnings = new WarningTablePanel(project);
 		outputPane = new OutputPane();
@@ -112,9 +106,6 @@ public class InfoManager extends JTabbedPane {
 		setBorder(null);
 		setBackground(UIManager.getColor("Panel.background"));
 					
-		addTab(" Properties ",properties);		
-		setIconAt(indexOfComponent(properties),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/table.png")));
-		
 		addTab(" Warnings ",warnings);		
 		setIconAt(indexOfComponent(warnings),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/warning.png")));
 		
@@ -132,10 +123,6 @@ public class InfoManager extends JTabbedPane {
 	
 	public br.ufes.inf.nemo.ocl.editor.OCLEditorPanel getOcleditor() {
 		return ocleditor;
-	}
-	
-	public static PropertyTablePanel getProperties(){
-		return properties;
 	}
 
 	public OutputPane getOutput(){

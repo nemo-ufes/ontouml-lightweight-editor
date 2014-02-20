@@ -143,7 +143,7 @@ public class AssociationDialog extends JDialog{
 //		tabbedPane.addTab("Constraints",constraintsEdition);
 //		tabbedPane.addTab("Related Elements",relatedElements);
 				
-		setSize(new Dimension(470, 450));		
+		setSize(new Dimension(470, 410));		
 	}
 		
 	public static String getStereotype(EObject element)
