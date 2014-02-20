@@ -40,11 +40,11 @@ public class ClassEditionPanel extends JPanel {
 	private JComboBox stereoCombo;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ClassEditionPanel(final DiagramManager diagramManager, final ClassElement classElement) 
+	public ClassEditionPanel(final DiagramManager diagramManager, final ClassElement classElement, RefOntoUML.Classifier element) 
 	{	
 		this.diagramManager = diagramManager;
 		this.classElement = classElement;
-		this.element = classElement.getClassifier();
+		this.element = element;
 						
 		classPropPanel = new JPanel();
 		classPropPanel.setBorder(BorderFactory.createTitledBorder(""));

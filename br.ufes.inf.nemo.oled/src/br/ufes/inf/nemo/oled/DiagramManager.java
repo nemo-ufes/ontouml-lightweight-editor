@@ -54,7 +54,9 @@ import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Constraintx;
 import RefOntoUML.Derivation;
+import RefOntoUML.Generalization;
 import RefOntoUML.MaterialAssociation;
+import RefOntoUML.Type;
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
@@ -397,6 +399,33 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		{
 			remakeDiagramElement(element,diagramEditor);
 		}
+		// if the element is not in any diagram, redesign it in the diagrams of its types.
+		if(getDiagramEditors(element).size()==0)
+		{
+			if (element instanceof RefOntoUML.Association)
+			{
+				Type source = ((Association)element).getMemberEnd().get(0).getType();
+				Type target = ((Association)element).getMemberEnd().get(1).getType();				
+				for(DiagramEditor diagramEditor: getDiagramEditors(source))
+				{
+					if (getDiagramEditors(target).contains(diagramEditor))
+					{						
+						remakeDiagramElement(element, diagramEditor);
+					}
+				}				
+			}
+			if (element instanceof RefOntoUML.Generalization){
+				Type general = ((Generalization)element).getGeneral();
+				Type specific = ((Generalization)element).getSpecific();
+				for(DiagramEditor diagramEditor: getDiagramEditors(general))
+				{
+					if (getDiagramEditors(specific).contains(diagramEditor))
+					{
+						remakeDiagramElement(element, diagramEditor);
+					}
+				}	
+			}			
+		}
 	}
 
 	/** Refresh element in all diagrams it appears. Just "redraw" the diagramElements. 
@@ -496,7 +525,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void updateOLEDFromModification(RefOntoUML.Element element, boolean redesign)
 	{
 		updatedOLEDFromInclusion(element);
-		
+
 		// =================================
 		// Diagrams
 		// =================================		
@@ -504,7 +533,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			refreshDiagramElement((Classifier)element);			
 		}
 		if (element instanceof RefOntoUML.Association){
-			if (redesign) remakeDiagramElement((RefOntoUML.Element)element);
+			if (redesign) { remakeDiagramElement((RefOntoUML.Element)element); }
 			else refreshDiagramElement((RefOntoUML.Element)element);
 		}
 		if (element instanceof RefOntoUML.Property){

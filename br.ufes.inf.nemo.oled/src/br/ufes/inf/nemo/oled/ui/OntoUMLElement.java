@@ -41,8 +41,8 @@ public class OntoUMLElement {
 		    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
 		}
 		if(refElement==null){
-			type = "null";
-			name = "null";			
+			type = "";
+			name = "";			
 		}
 		
 	    this.uniqueName= uniqueName; 
@@ -162,7 +162,7 @@ public class OntoUMLElement {
 		
 		if (name == null || name.equals("")) 
 		{	    
-		    return type + " "+name;			
+		    return type + ""+name;			
 		}
 		
 		return "<"+name+">";

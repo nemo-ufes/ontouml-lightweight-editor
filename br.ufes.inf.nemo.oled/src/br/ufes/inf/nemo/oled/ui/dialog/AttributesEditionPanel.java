@@ -73,11 +73,11 @@ private static final long serialVersionUID = 1L;
 	private JCheckBox cbxVisible;
 		
 	@SuppressWarnings({ })
-	public AttributesEditionPanel(DiagramManager diagramManager, ClassElement classElement) 
+	public AttributesEditionPanel(DiagramManager diagramManager, ClassElement classElement, Classifier element) 
 	{
 		this.diagramManager = diagramManager;
 		this.classElement = classElement;
-		this.element = classElement.getClassifier();
+		this.element = element;
 						
 		attributesTableModel = new AttributeTableModel(element);
 	    setMinimumSize(new Dimension(0, 0));
@@ -226,7 +226,7 @@ private static final long serialVersionUID = 1L;
 		
 		setSize(450,293);
 		
-		cbxVisible.setSelected(classElement.showAttributes());
+		if (classElement !=null) cbxVisible.setSelected(classElement.showAttributes());
 		
 		myPostInit();
 	}	
@@ -247,14 +247,14 @@ private static final long serialVersionUID = 1L;
 		
 		table.setSurrendersFocusOnKeystroke(true);
 		
-		if(classElement.getClassifier() instanceof DataType)
+		if(element instanceof DataType)
 		{
-			DataType dataType = (DataType) classElement.getClassifier();			
+			DataType dataType = (DataType)element;			
 			for (Property attribute : dataType.getAttribute()) {
 				attributesTableModel.addEntry(attribute);
 			}
 		} else {
-			Class umlclass = (Class) classElement.getClassifier();
+			Class umlclass = (Class) element;
 			for (Property attribute : umlclass.getAttribute()) {
 				attributesTableModel.addEntry(attribute);
 			}			
@@ -341,7 +341,7 @@ private static final long serialVersionUID = 1L;
 				cbxVisible.setSelected(true);
 			}
 		}
-		classElement.setShowAttributes(cbxVisible.isSelected());
+		if (classElement !=null) classElement.setShowAttributes(cbxVisible.isSelected());
 		diagramManager.updatedOLEDFromInclusion(element);
 		
 		transferDataTypes();	
@@ -354,10 +354,10 @@ private static final long serialVersionUID = 1L;
 				if(existingType != null){ 
 					property.setType(existingType); 
 				}				
-				if(classElement.getClassifier() instanceof DataType){
-					((DataType)classElement.getClassifier()).getOwnedAttribute().add(property);					
+				if(element instanceof DataType){
+					((DataType)element).getOwnedAttribute().add(property);					
 				}else{				
-					((Class)classElement.getClassifier()).getOwnedAttribute().add(property);
+					((Class)element).getOwnedAttribute().add(property);
 				}
 				diagramManager.updatedOLEDFromInclusion(property);
 			}
