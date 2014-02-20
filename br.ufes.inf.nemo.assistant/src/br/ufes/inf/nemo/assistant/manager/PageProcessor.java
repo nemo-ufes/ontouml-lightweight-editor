@@ -2,10 +2,15 @@ package br.ufes.inf.nemo.assistant.manager;
 
 import java.util.ArrayList;
 
+import org.eclipse.emf.ecore.EObject;
+
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import RefOntoUML.NamedElement;
 import RefOntoUML.Package;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewClass;
@@ -45,7 +50,31 @@ public class PageProcessor{
 
 	/* Process */
 	public void process(NewGenericRelation page) {
-		System.out.println(page.toString());
+		/*
+		 * source estah vindo com o nome cortado
+		 * exception no tratamento das cardinalidades (tem que fazer * virar -1)
+		 * */
+		
+		RelationStereotype stereotype = RelationStereotype.valueOf(page.getStereotype().toUpperCase());
+		String relName = page.getRelationName();
+		
+		Classifier source = patternOperator.getClassifierForClassName(page.getClassName());
+		Classifier target = patternOperator.getClassifierForStringRepresentationClass(page.getTargetClass());
+		
+		EObject rel = outcomeFixer.createRelationship(stereotype);
+		int l = 1;
+		((NamedElement) rel).setName(relName);
+		fix.includeAdded(rel);
+		// same container
+		outcomeFixer.copyContainer(source, rel);
+		fix.includeModified(source.eContainer());
+		
+		// creating and adding assoc ends...
+		Property srcProperty = outcomeFixer.createProperty(source, page.getSourceMinCardinality(), page.getSourceMaxCardinality(), source.getName().trim().toLowerCase());
+		Property tgtProperty = outcomeFixer.createProperty(target, page.getTargetMinCardinality(), page.getTargetMaxCardinality(), target.getName().trim().toLowerCase());
+		outcomeFixer.setEnds((Association) rel, srcProperty, tgtProperty);
+		
+		fix.includeModified(rel);
 	}
 
 	public void process(NewPhase page) {
@@ -127,7 +156,7 @@ public class PageProcessor{
 			if(genSet == null){
 				//a new genSet
 				Fix f2 = outcomeFixer.createGeneralizationSet(genList, page.getIsDisjoint(), page.getIsComplete(), page.getGeneralizationSet());
-				genSet = (GeneralizationSet)f.getAdded().get(0);
+				genSet = (GeneralizationSet)f2.getAdded().get(0);
 				fix.addAll(f2);
 			}else{
 				//other genSet selected

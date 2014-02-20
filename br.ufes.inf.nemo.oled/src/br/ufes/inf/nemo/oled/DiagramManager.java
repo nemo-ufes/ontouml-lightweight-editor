@@ -1905,7 +1905,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 //					SwingUtilities.invokeLater(new Runnable() {						
 //						@Override
 //						public void run() {
-//							updateOLED(fix);	
+//							updateOLED(fix);
 //						}
 //					});
 //				}					

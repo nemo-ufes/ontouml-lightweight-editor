@@ -9,6 +9,7 @@ import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
 import br.ufes.inf.nemo.assistant.graph.NodeAssistant;
 import br.ufes.inf.nemo.assistant.manager.PageTreater;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGeneralizationSet;
+import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGenericRelation;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.Question;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.WizardPageAssistant;
 
@@ -97,6 +98,8 @@ public class WizardAssitant extends Wizard {
 			PageTreater.treatPage(nextNode, (Question)nextPage);
 		}else if(nextPage instanceof NewGeneralizationSet){
 			PageTreater.treatPage(nextNode, (NewGeneralizationSet)nextPage);
+		}else if(nextPage instanceof NewGenericRelation){
+			PageTreater.treatPage(nextNode, (NewGenericRelation)nextPage);
 		}
 
 		//Execute all alterations in RefOntoUML object from the Manager Pattern 

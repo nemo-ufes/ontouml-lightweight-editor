@@ -72,9 +72,12 @@ public class ModellingAssistant {
 				UtilAssistant.printRefOntoUML(p);
 				System.out.println("}");
 				return fix;
+			}else{
+				System.out.println("stereotype not treated yet");
 			}
 		}catch(Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("pattern not treated yet");
 		}
 		System.out.println("REFonto: {");
 		UtilAssistant.printRefOntoUML(p);
