@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -28,10 +29,16 @@ import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.InfoManager;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.dialog.AssociationDialog;
+import br.ufes.inf.nemo.oled.ui.dialog.ClassDialog;
 import br.ufes.inf.nemo.oled.ui.popup.TreePopupMenu;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 public class ProjectTree extends CheckboxTree {
 
@@ -84,32 +91,9 @@ public class ProjectTree extends CheckboxTree {
 		/** Right Click Mouse Listener */
 		addMouseListener(new MouseAdapter()
 	    {
-	        public void mouseClicked ( MouseEvent e )
-	        {	        	
-	            if (SwingUtilities.isRightMouseButton(e))
-	            {	            	
-	            	TreePath path = getPathForLocation ( e.getX (), e.getY () );
-	            	setSelectionPath(path);
-	                Rectangle pathBounds = getUI().getPathBounds(ProjectTree.this, path);
-	                if (pathBounds != null && pathBounds.contains(e.getX (),e.getY()))
-	                {
-	                	doPopup(e,ProjectTree.this);
-	                }	                
-	            }
-	            if (e.getClickCount()==2 && SwingUtilities.isLeftMouseButton(e))
-	            {
-	            	TreePath path = getPathForLocation ( e.getX (), e.getY () );
-	            	if (path!=null){
-		            	DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode)(path.getLastPathComponent());
-		            	if (currentNode.getUserObject() instanceof StructureDiagram){
-		            		StructureDiagram diagram = (StructureDiagram)currentNode.getUserObject();
-		            		if (!ProjectTree.this.frame.getDiagramManager().isDiagramOpened(diagram)) {
-		            			// create the diagram visualization again
-		            			ProjectTree.this.frame.getDiagramManager().createDiagramEditor(diagram);
-		            		}
-		            	}
-	            	}
-	            }
+	        public void mouseClicked (MouseEvent e)
+	        {	       	
+	            mouseClickedActionPerformed(e);
 	        }
 	    });		
 	}	
@@ -499,4 +483,148 @@ public class ProjectTree extends CheckboxTree {
     		}
     	}	
     }
+	
+	public void mouseClickedActionPerformed(MouseEvent e)
+	{
+		if (SwingUtilities.isRightMouseButton(e))
+        {	            	
+        	TreePath path = getPathForLocation ( e.getX (), e.getY () );
+        	setSelectionPath(path);
+            Rectangle pathBounds = getUI().getPathBounds(ProjectTree.this, path);
+            if (pathBounds != null && pathBounds.contains(e.getX (),e.getY()))
+            {
+            	doPopup(e,ProjectTree.this);
+            }	                
+        }
+        if (e.getClickCount()==2 && SwingUtilities.isLeftMouseButton(e))
+        {
+        	TreePath path = getPathForLocation ( e.getX (), e.getY () );
+        	if (path!=null){
+            	DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode)(path.getLastPathComponent());
+            	
+            	// open diagram
+            	if (currentNode.getUserObject() instanceof StructureDiagram)
+            	{
+            		StructureDiagram diagram = (StructureDiagram)currentNode.getUserObject();
+            		if (!ProjectTree.this.frame.getDiagramManager().isDiagramOpened(diagram)) {
+            			// create the diagram visualization again
+            			ProjectTree.this.frame.getDiagramManager().createDiagramEditor(diagram);
+            		}
+            	}
+            	
+            	if(currentNode.getUserObject() instanceof OntoUMLElement)
+            	{
+            		RefOntoUML.Element element = (RefOntoUML.Element)((OntoUMLElement)currentNode.getUserObject()).getElement();
+
+            		// open class 
+            		if (element instanceof RefOntoUML.Class){
+            			DiagramElement diagramElement = ModelHelper.getDiagramElement(element);
+            			ClassDialog dialog = new ClassDialog(
+            				(JFrame)ProjectTree.this.frame,
+            				ProjectTree.this.frame.getDiagramManager(),
+            				(ClassElement)diagramElement,
+            				(RefOntoUML.Classifier)element,
+            				false
+            			);
+            			dialog.setLocationRelativeTo(ProjectTree.this.frame);
+            			dialog.setVisible(true);
+            		}
+            		
+            		// open properties
+            		else if (element instanceof RefOntoUML.Property){
+            			Property p = (Property)element;
+            			if (p.getAssociation()!=null){
+            				DiagramElement diagramElement = ModelHelper.getDiagramElement(p.getAssociation());
+            				AssociationDialog dialog = new AssociationDialog(
+        						(JFrame)ProjectTree.this.frame,
+	            				ProjectTree.this.frame.getDiagramManager(),
+	            				(AssociationElement)diagramElement,
+	            				(RefOntoUML.Relationship)p.getAssociation(),
+	            				false
+	            			);
+            				dialog.setLocationRelativeTo(ProjectTree.this.frame);
+	            			dialog.setVisible(true);
+	            			if(p.getAssociation().getMemberEnd().get(0).equals(p)) dialog.selectTab(1);
+	            			else dialog.selectTab(2);
+            			}else{
+            				DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)p.eContainer());
+	            			ClassDialog dialog = new ClassDialog(
+	            				(JFrame)ProjectTree.this.frame,
+	            				ProjectTree.this.frame.getDiagramManager(),
+	            				(ClassElement)diagramElement,
+	            				(RefOntoUML.Classifier)p.eContainer(),
+	            				false
+	            			);
+	            			dialog.setLocationRelativeTo(ProjectTree.this.frame);
+	            			dialog.setVisible(true);
+	            			dialog.selectTab(1);
+            			}
+            		}
+            		
+            		// open associations
+            		else if (element instanceof RefOntoUML.Association){
+            			DiagramElement diagramElement = ModelHelper.getDiagramElement(element);
+        				AssociationDialog dialog = new AssociationDialog(
+    						(JFrame)ProjectTree.this.frame,
+            				ProjectTree.this.frame.getDiagramManager(),
+            				(AssociationElement)diagramElement,
+            				(RefOntoUML.Relationship)element,
+            				false
+            			);
+        				dialog.setLocationRelativeTo(ProjectTree.this.frame);
+            			dialog.setVisible(true);
+            		}
+            		
+            		// open comment & constraint
+            		else if (element instanceof RefOntoUML.Comment)
+            		{
+            			if (element.eContainer() instanceof RefOntoUML.Class){
+            				DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)element.eContainer());
+	            			ClassDialog dialog = new ClassDialog(
+	            				(JFrame)ProjectTree.this.frame,
+	            				ProjectTree.this.frame.getDiagramManager(),
+	            				(ClassElement)diagramElement,
+	            				(RefOntoUML.Classifier)element.eContainer(),
+	            				false
+	            			);
+	            			dialog.setLocationRelativeTo(ProjectTree.this.frame);
+	            			dialog.setVisible(true);
+	            			if (element instanceof RefOntoUML.Comment) dialog.selectTab(2);
+            			}
+            			if (element.eContainer() instanceof RefOntoUML.Association){
+            				DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)element.eContainer());
+            				AssociationDialog dialog = new AssociationDialog(
+        						(JFrame)ProjectTree.this.frame,
+                				ProjectTree.this.frame.getDiagramManager(),
+                				(AssociationElement)diagramElement,
+                				(RefOntoUML.Relationship)element.eContainer(),
+                				false
+                			);
+            				dialog.setLocationRelativeTo(ProjectTree.this.frame);
+                			dialog.setVisible(true);                			 
+	            			if (element instanceof RefOntoUML.Comment) dialog.selectTab(3);
+            			}
+            		}
+            		else if (element instanceof RefOntoUML.Constraintx)
+            		{
+            			RefOntoUML.Element context = ((RefOntoUML.Constraintx)element).getConstrainedElement().get(0);
+            			if ( context instanceof RefOntoUML.Class)
+            			{
+            				DiagramElement diagramElement = ModelHelper.getDiagramElement(context);
+	            			ClassDialog dialog = new ClassDialog(
+	            				(JFrame)ProjectTree.this.frame,
+	            				ProjectTree.this.frame.getDiagramManager(),
+	            				(ClassElement)diagramElement,
+	            				(RefOntoUML.Classifier)context,
+	            				false
+	            			);
+	            			dialog.setLocationRelativeTo(ProjectTree.this.frame);
+	            			dialog.setVisible(true);
+            				dialog.selectTab(3);                			
+            			}
+            		}
+            	}
+        	}
+        }
+	}
 }

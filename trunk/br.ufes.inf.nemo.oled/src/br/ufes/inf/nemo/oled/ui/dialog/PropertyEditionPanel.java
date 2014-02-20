@@ -356,8 +356,7 @@ public class PropertyEditionPanel extends JPanel {
     		else str += "<"+getStereotype(p)+"> "+p.getName()+": "+p.getType().getName()+", ";    		
     		i++;
     	}	
-		redefinedText.setText(str);
-		
+		redefinedText.setText(str);		
 	}
 	
 	public void transferPropertyData() 

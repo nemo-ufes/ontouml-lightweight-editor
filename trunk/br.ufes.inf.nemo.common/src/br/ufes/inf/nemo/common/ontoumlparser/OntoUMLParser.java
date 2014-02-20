@@ -1333,6 +1333,59 @@ public class OntoUMLParser {
 		return relations;
 	}
 		
+	public ArrayList<Association> getDirectAssociations(EObject eObject)
+	{
+		ArrayList<Association> relations = new ArrayList<>();		
+		for (EObject a : getAllInstances(Association.class)) 
+		{			
+			Association assoc = (Association)a;
+			RefOntoUML.Type Src = assoc.getMemberEnd().get(0).getType();
+			RefOntoUML.Type Tgt = assoc.getMemberEnd().get(1).getType();
+			if (Src !=null && Src.equals(eObject) || Tgt!=null && Tgt.equals(eObject)) relations.add(assoc);			
+		}
+		return relations;
+	}
+	
+	public ArrayList<Generalization> getDirectGeneralizations(EObject eObject)
+	{
+		ArrayList<Generalization> generalizations = new ArrayList<>();		
+		for (EObject a : getAllInstances(Generalization.class)) 
+		{			
+			Generalization gen = (Generalization)a;
+			RefOntoUML.Type general = gen.getGeneral();
+			RefOntoUML.Type specific = gen.getSpecific();
+			if (general !=null && general.equals(eObject) || specific!=null && specific.equals(eObject)) generalizations.add(gen);				
+		}
+		return generalizations;
+	}
+	
+	public ArrayList<Association> getIndirectAssociations(EObject eObject)
+	{
+		ArrayList<Association> relations = new ArrayList<>();		
+		for (EObject a : getAllInstances(Association.class)) 
+		{			
+			Association assoc = (Association)a;
+			RefOntoUML.Type Src = assoc.getMemberEnd().get(0).getType();
+			RefOntoUML.Type Tgt = assoc.getMemberEnd().get(1).getType();
+			if (((RefOntoUML.Classifier)eObject).allParents().contains(Src)) relations.add(assoc);
+			if(((RefOntoUML.Classifier)eObject).allParents().contains(Tgt)) relations.add(assoc);					
+		}
+		return relations;
+	}
+	
+
+	public ArrayList<Generalization> getIndirectGeneralizations(EObject eObject)
+	{
+		ArrayList<Generalization> generalizations = new ArrayList<>();		
+		for (EObject a : getAllInstances(Generalization.class)) 
+		{			
+			Generalization gen = (Generalization)a;			
+			RefOntoUML.Type specific = gen.getSpecific();			
+			if(((RefOntoUML.Classifier)eObject).allParents().contains(specific)) generalizations.add(gen);					
+		}
+		return generalizations;
+	}
+	
 	public Property getWholeEnd(Meronymic m){
 		if (m.targetEnd().getAggregation()!=AggregationKind.NONE && m.sourceEnd().getAggregation()==AggregationKind.NONE)
 			return m.targetEnd();
