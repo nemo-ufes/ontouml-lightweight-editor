@@ -69,7 +69,7 @@ public class OCLParser {
     	if (tempDirPath.endsWith(File.separator)) umlPath += tempDirPath + backgroundModelName + ".uml";
     	else umlPath += tempDirPath + File.separator + backgroundModelName + ".uml";
     	
-    	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false,false));		
+    	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false));		
     	umlHashMap = OntoUML2UML.getMap();
     	logDetails = OntoUML2UML.getLog();
     	    	
@@ -114,7 +114,7 @@ public class OCLParser {
     	if (tempDirPath.endsWith(File.separator)) umlPath += tempDirPath + backgroundModelName + ".uml";
     	else umlPath += tempDirPath + File.separator + backgroundModelName + ".uml";
     	
-    	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false,false));		
+    	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false));		
     	umlHashMap = OntoUML2UML.getMap();
     	logDetails = OntoUML2UML.getLog();
     	    	
@@ -145,7 +145,7 @@ public class OCLParser {
 	{ 			
     	this.refparser = new OntoUMLParser(refAbsolutePath);
     	
-    	umlResource = OntoUML2UML.convertToUML(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),new OntoUML2UMLOption(true,false,false));		
+    	umlResource = OntoUML2UML.convertToUML(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),new OntoUML2UMLOption(true,false));		
     	umlHashMap = OntoUML2UML.getMap();
     	logDetails = OntoUML2UML.getLog();
 		
