@@ -18,6 +18,7 @@ import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
 import br.ufes.inf.nemo.assistant.wizard.WizardAssitant;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewClass;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGeneralizationSet;
+import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGenericRelation;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewPhase;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewRelator;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.Question;
@@ -79,7 +80,7 @@ public class SWTAstahParser {
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraphs = new HashMap<>();
 		try{
 			ProjectAccessor prjAccessor = AstahAPI.getAstahAPI().getProjectAccessor();
-			prjAccessor.open(astahFile, true, false, true);
+			prjAccessor.open(astahFile, false, false, true);
 			hashGraphs = processParser(prjAccessor);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -93,7 +94,7 @@ public class SWTAstahParser {
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraphs = new HashMap<>();
 		try{
 			ProjectAccessor prjAccessor = AstahAPI.getAstahAPI().getProjectAccessor();
-			prjAccessor.open(astahFile,true);
+			prjAccessor.open(astahFile,false);
 			hashGraphs = processParser(prjAccessor);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -170,6 +171,18 @@ public class SWTAstahParser {
 		}else if(window.equalsIgnoreCase("NewRelator")){
 			NewRelator nr = new NewRelator();
 			node.setPage(nr);
+		}else if(window.equalsIgnoreCase("NewGenericRelation")){
+			NewGenericRelation ngr = new NewGenericRelation();
+			ngr.setRelationStereotype(aNode.getTaggedValue("stereotype"));
+			String targets = aNode.getTaggedValue("targets");
+			ngr.setTargetsStereotype(targets.split(","));
+			if(!aNode.getTaggedValue("minSrcCard").isEmpty()){
+				ngr.setMinSrcCard(aNode.getTaggedValue("minSrcCard"));
+			}
+			if(!aNode.getTaggedValue("minTrgCard").isEmpty()){
+				ngr.setMinTrgCard(aNode.getTaggedValue("minTrgCard"));
+			}
+			node.setPage(ngr);
 		}else if(window.equalsIgnoreCase("LinkToPattern")){
 			linkNode.put(StereotypeOntoUMLEnum.valueOf(aNode.getTaggedValue("linkToPattern").toUpperCase()), _lastNode);
 		}else if(window.equalsIgnoreCase("NewGeneralizationSet")){

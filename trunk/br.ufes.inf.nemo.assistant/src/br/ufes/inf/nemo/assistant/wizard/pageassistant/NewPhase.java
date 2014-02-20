@@ -142,6 +142,7 @@ public class NewPhase extends WizardPageAssistant {
 										case SWT.FocusOut:
 											item.setText (column, text.getText ());
 											text.dispose ();
+											System.out.println("changed");
 											break;
 										case SWT.Traverse:
 											switch (e.detail) {
@@ -193,8 +194,7 @@ public class NewPhase extends WizardPageAssistant {
 			return false;
 		
 		//At least two Phases needs to be created
-		if(contPhases > 0){
-			setClassList(getPhases());
+		if(contPhases > 1){
 			return true;
 		}
 		return false;
@@ -229,6 +229,7 @@ public class NewPhase extends WizardPageAssistant {
 			}
 			list.add(row);
 		}
+		setClassList(list);
 		return list;
 	}
 }

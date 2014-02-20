@@ -5,6 +5,7 @@ public enum StereotypeOntoUMLEnum {
 	SUBKIND,
 	CATEGORY,
 	COLLECTIVE,
+	QUANTITY,
 	ROLE,
 	PHASE,
 	MIXIN,
@@ -18,6 +19,7 @@ public enum StereotypeOntoUMLEnum {
 	      case SUBKIND: return "Subkind";
 	      case CATEGORY: return "Category";
 	      case COLLECTIVE: return "Collective";
+	      case QUANTITY: return "Quantity";
 	      case ROLE: return "Role";
 	      case PHASE: return "Phase";
 	      case MIXIN: return "Mixin";

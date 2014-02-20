@@ -27,6 +27,7 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		setDescription("NewGeneralizationSet.description");
 	}
 
+	private boolean canFinish = false;
 	private Combo cbGenerals;
 	private Combo cbGeneralizationSet;
 	private Button isDisjoint;
@@ -93,6 +94,8 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		cbGeneralizationSet.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				canFinish = true;
+				setPageComplete(true);
 				//to prevent to be a new generalizationSet 
 				isDisjoint.setSelection(false);
 				isComplete.setSelection(false);
@@ -138,6 +141,8 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 			public void widgetSelected(SelectionEvent event) {
 				InputDialog dialog = new InputDialog(getShell(),"Creating a new GeneralizationSet","GeneralizationSet name:",null,null);
 				if( dialog.open() == IStatus.OK){ 
+					canFinish = true;
+					setPageComplete(true);
 					String [] genSets = new String[cbGeneralizationSet.getItemCount()+1];
 					int i = 0;
 					for (; i < cbGeneralizationSet.getItemCount(); i++) {
@@ -189,6 +194,8 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 	public boolean canFlipToNextPage() {
 		if(isEndPage)
 			return false;
+		if(canFinish)
+			return true;
 		return false;
 	}
 

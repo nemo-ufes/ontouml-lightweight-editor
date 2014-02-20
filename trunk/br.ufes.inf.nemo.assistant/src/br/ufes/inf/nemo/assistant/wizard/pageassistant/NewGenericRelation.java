@@ -47,7 +47,7 @@ public class NewGenericRelation extends WizardPageAssistant{
 		srcClsName.setText(getCurrentClass());
 
 		srcClsNameMinCard = new Label(container, SWT.NONE);
-		srcClsNameMinCard.setBounds(10, 52, 115, 15);
+		srcClsNameMinCard.setBounds(10, 52, 291, 15);
 		srcClsNameMinCard.setText("<className>");
 
 		Label lblMin = new Label(container, SWT.NONE);
@@ -86,14 +86,14 @@ public class NewGenericRelation extends WizardPageAssistant{
 				}
 			}
 		});
-		relationName.setBounds(124, 90, 176, 21);
+		relationName.setBounds(124, 99, 176, 21);
 
 		Label label_3 = new Label(container, SWT.CENTER);
-		label_3.setBounds(124, 73, 180, 15);
+		label_3.setBounds(124, 82, 180, 15);
 		label_3.setText("------------------------------");
 
 		relationStereotype = new Label(container, SWT.CENTER);
-		relationStereotype.setBounds(124, 57, 176, 15);
+		relationStereotype.setBounds(124, 66, 176, 15);
 		relationStereotype.setText("<relationStereotype>");
 
 		Label lblTargetClass = new Label(container, SWT.NONE);
@@ -127,10 +127,6 @@ public class NewGenericRelation extends WizardPageAssistant{
 		label_5.setBounds(406, 92, 8, 15);
 	}
 
-	public void setTargetClasses(String[] classes){
-		cbClasses.setItems(classes);
-	}
-
 	@Override
 	public boolean next() {
 		return true;
@@ -140,7 +136,6 @@ public class NewGenericRelation extends WizardPageAssistant{
 	public boolean canFlipToNextPage() {
 		if(isEndPage)
 			return false;
-		System.out.println("canFlipToNextPage");
 		if(relationName.getText().isEmpty()){
 			return false;
 		}
@@ -152,9 +147,30 @@ public class NewGenericRelation extends WizardPageAssistant{
 		super.setVisible(visible);
 		if(visible){
 			srcClsName.setText(getCurrentClass());
+			relationStereotype.setText(relStereotype);
+			if(!minSrcCard.isEmpty()){
+				srcMinCard.setText(minSrcCard);
+				srcMinCard.setEnabled(false);
+			}
+			if(!minTrgCard.isEmpty()){
+				trgMinCard.setText(minTrgCard);
+				trgMinCard.setEnabled(false);
+			}
+			if(!maxSrcCard.isEmpty()){
+				srcMaxCard.setText(maxSrcCard);
+				srcMaxCard.setEnabled(false);
+			}
+			if(!maxTrgCard.isEmpty()){
+				trgMaxCard.setText(maxTrgCard);
+				trgMaxCard.setEnabled(false);
+			}
+			if(targetClasses != null){
+				cbClasses.setItems(targetClasses);
+				cbClasses.select(0);
+			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		String s;
@@ -164,38 +180,89 @@ public class NewGenericRelation extends WizardPageAssistant{
 		s += "\n}";
 		return s;
 	}
-	
+
+	private String[] targetStereotypes;
+	public void setTargetsStereotype(String[] classes){
+		targetStereotypes = classes;
+	}
+
+	public String[] getTargetStereptypes(){
+		return targetStereotypes;
+	}
+
+	private String[] targetClasses;
+	public void setTargetClasses(String[] targetClasses){
+		this.targetClasses = targetClasses;
+		cbClasses.setItems(targetClasses);
+		cbClasses.select(0);
+	}
+
+	private String relStereotype;
+	public void setRelationStereotype(String relStereotype) {
+		this.relStereotype = relStereotype;
+	}
+
+	private String minSrcCard = "";
+	public void setMinSrcCard(String minSrcCard) {
+		this.minSrcCard = minSrcCard;
+	}
+
+	private String minTrgCard = "";
+	public void setMinTrgCard(String minTrgCard) {
+		this.minTrgCard = minTrgCard;
+	}
+
+	private String maxSrcCard = "";
+	public void setMaxSrcCard(String maxSrcCard) {
+		this.maxSrcCard = maxSrcCard;
+	}
+
+	private String maxTrgCard = "";
+	public void setMaxTrgCard(String maxTrgCard) {
+		this.maxTrgCard = maxTrgCard;
+	}
+
 	/* get operations */
-	
+
 	public String getClassName(){
 		return srcClsName.getText();
 	}
-	
+
 	public String getRelationName(){
 		return relationName.getText(); 
 	}
-	
+
 	public String getStereotype(){
 		return relationStereotype.getText(); 
 	}
-	
-	public String getSourceMinCardinality(){
-		return srcMinCard.getText(); 
+
+	public int getSourceMinCardinality(){
+		return cardMinToInt(srcMinCard.getText()); 
 	}
 
-	public String getSourceMaxCardinality(){
-		return srcMaxCard.getText(); 
+	public int getSourceMaxCardinality(){
+		return cardMaxToInt(srcMaxCard.getText()); 
 	}
-	
-	public String getTargetMinCardinality(){
-		return trgMinCard.getText(); 
+
+	public int getTargetMinCardinality(){
+		return cardMinToInt(trgMinCard.getText()); 
 	}
-	
-	public String getTargetMaxCardinality(){
-		return trgMaxCard.getText(); 
+
+	public int getTargetMaxCardinality(){
+		return cardMaxToInt(trgMaxCard.getText()); 
 	}
-	
+
 	public String getTargetClass(){
 		return cbClasses.getItem(cbClasses.getSelectionIndex()); 
+	}
+
+	private int cardMinToInt(String card){
+		String s = card.substring(0, card.indexOf(".."));
+		return Integer.parseInt(s);
+	}
+
+	private int cardMaxToInt(String card){
+		String s = card.substring(card.indexOf(".."));
+		return Integer.parseInt(s);
 	}
 }

@@ -42,6 +42,10 @@ public class ManagerPattern {
 		source = src;
 	}
 
+	public Classifier getClassSource(){
+		return source;
+	}
+	
 	public void setRefOntoUML(RefOntoUML.Package root) {
 		this.root = root;
 	}

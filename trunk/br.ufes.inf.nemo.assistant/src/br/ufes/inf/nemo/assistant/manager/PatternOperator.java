@@ -96,7 +96,7 @@ public class PatternOperator {
 		setGeneralizationSet = new ArrayList<>();
 		_updateLists(root);
 	}
-	
+
 	/**
 	 * Initializing all kind of lists
 	 * */
@@ -215,6 +215,8 @@ public class PatternOperator {
 			return setRoleMixin;
 		case SUBKIND:
 			return setSubkind;
+		case QUANTITY:
+			return setQuantity;
 		}
 		return null;
 	}
@@ -273,6 +275,16 @@ public class PatternOperator {
 			s[i] = getStringRepresentationClassStereotype(cls);
 		}
 		return s;
+	}
+
+	public Classifier getClassifierForClassName(String className) {
+		ArrayList<? extends Classifier> list = setClassifier;
+		for (Classifier classifier : list) {
+			if(UtilAssistant.getStringRepresentationClass(classifier).equals(className)){
+				return classifier;
+			}
+		}
+		return null;
 	}
 
 }
