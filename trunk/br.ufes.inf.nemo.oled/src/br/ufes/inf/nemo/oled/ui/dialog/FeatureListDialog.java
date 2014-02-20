@@ -255,7 +255,7 @@ public class FeatureListDialog extends JDialog {
 				
 		JLabel lblChoices = new JLabel("Possible choices:");
 		JLabel lblFeature = new JLabel();
-		if(attributeName.trim().compareToIgnoreCase("Redefined")==0)
+		if(attributeName.trim().compareToIgnoreCase("Subsetted")==0)
 		{
 			lblFeature.setText("Subsetted properties:");
 		}

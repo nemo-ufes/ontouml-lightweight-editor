@@ -6,10 +6,12 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.ElementType;
@@ -29,6 +31,7 @@ public class TreePopupMenu extends JPopupMenu {
 	public JMenuItem refreshItem = new JMenuItem("Refresh");
 	public JMenuItem addDiagramItem = new JMenuItem("Add Diagram");
 	public JMenuItem moveToDiagramItem = new JMenuItem("Move to Diagram");
+	public JMenuItem setNameItem = new JMenuItem("Rename");
 	
 	public JMenu addElementMenu = new JMenu("Add Element");
 	public JMenuItem packageItem = new JMenuItem("Package");
@@ -102,6 +105,32 @@ public class TreePopupMenu extends JPopupMenu {
     		});
     	}
 
+		//Set name
+    	if (!tree.getModelRootNode().equals(node) && !tree.getDiagramRootNode().equals(node) && !tree.getRootNode().equals(node)){    		
+    		add(setNameItem);    		
+    		setNameItem.addActionListener(new ActionListener() {				
+    			@Override
+    			public void actionPerformed(ActionEvent e) {
+    				if (TreePopupMenu.this.element instanceof OntoUMLElement)
+    				{    					
+    					RefOntoUML.Element element = (RefOntoUML.Element)((OntoUMLElement)TreePopupMenu.this.element).getElement();    					
+    					if (element instanceof NamedElement) {
+    						String value = new String();
+    						value = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename - "+((NamedElement)element).getName(),JOptionPane.INFORMATION_MESSAGE,null,null,((NamedElement)element).getName());    						
+    						if(value!=null){
+    							((NamedElement)element).setName(value);
+    							frame.getDiagramManager().updateOLEDFromModification(element, false);
+    						}
+    					}    					
+    					
+    				}else if (TreePopupMenu.this.element instanceof StructureDiagram)
+    				{
+    					// nothing for now
+    				}
+    			}
+    		});
+    	}
+    	
     	// Move To Diagram 	    		
 		if (node.getUserObject() instanceof OntoUMLElement)
 		{
@@ -354,6 +383,6 @@ public class TreePopupMenu extends JPopupMenu {
     				}
     			}
     		});
-    	}  
+    	}    	
     }
 }
