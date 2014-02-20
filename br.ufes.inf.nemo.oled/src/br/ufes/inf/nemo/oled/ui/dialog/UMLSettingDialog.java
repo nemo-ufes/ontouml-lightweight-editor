@@ -166,7 +166,7 @@ public class UMLSettingDialog extends JDialog {
 						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 						Date date = new Date();
 						try{
-							OntoUML2UML.convertToUML(refparser, pathField.getText(), new OntoUML2UMLOption(cbxIgnorePackage.isSelected(), cbxIgnoreDerivation.isSelected(),false));
+							OntoUML2UML.convertToUML(refparser, pathField.getText(), new OntoUML2UMLOption(cbxIgnorePackage.isSelected(), cbxIgnoreDerivation.isSelected()));
 							lblStatus.setText("Succeesfully generated at "+dateFormat.format(date));
 							lblStatus.setForeground(new Color(34, 139, 34));
 						}catch(Exception e){
