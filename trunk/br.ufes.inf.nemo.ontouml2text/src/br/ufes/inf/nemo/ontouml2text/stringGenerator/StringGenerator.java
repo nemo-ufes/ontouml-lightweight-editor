@@ -240,7 +240,7 @@ public class StringGenerator {
 								function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));
 			
 			// Phase Description Pattern
-			if((target instanceof Kind || target instanceof Subkind) && source instanceof Phase){
+			if((target instanceof Kind || target instanceof Subkind || target instanceof Role) && source instanceof Phase){
 				patterns.add(new PhaseDescriptionPattern(describedCategory, 
 						new PatternCategory(target.getLabel(), 
 								function.getTargetMinMultiplicity(), function.getTargetMaxMultiplicity())));
