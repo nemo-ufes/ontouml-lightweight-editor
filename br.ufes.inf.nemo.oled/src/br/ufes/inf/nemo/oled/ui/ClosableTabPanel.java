@@ -68,7 +68,7 @@ public class ClosableTabPanel extends JPanel {
 			public String getText() {
 				int i = pane.indexOfTabComponent(ClosableTabPanel.this);
 				if (i != -1) {													
-					return ((Editor) pane.getComponentAt(i)).isSaveNeeded() ? pane.getTitleAt(i) + "*" : pane.getTitleAt(i);
+					return ((Editor) pane.getComponentAt(i)).isSaveNeeded() ? pane.getTitleAt(i).replace("*", "")+"*" : pane.getTitleAt(i);
 				}
 				return null;
 			}

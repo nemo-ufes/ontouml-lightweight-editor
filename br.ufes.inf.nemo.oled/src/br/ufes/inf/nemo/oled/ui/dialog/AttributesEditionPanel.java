@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,10 +20,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -51,13 +52,13 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 public class AttributesEditionPanel extends JPanel {
 
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	private ClassElement classElement;	
 	private Classifier element;
 	private DiagramManager diagramManager;
 	@SuppressWarnings("unused")
-	private JFrame parent;
+	private Component parent;
 		
 	private Map<String, DataType> modelDataTypes; 
 	private JButton btnDelete;
@@ -69,56 +70,36 @@ private static final long serialVersionUID = 1L;
 	private AttributeTableModel attributesTableModel;
 	private JPanel panel;
 	private JButton btnEdit;
-	private JPanel panel_1;
 	private JCheckBox cbxVisible;
-		
-	@SuppressWarnings({ })
-	public AttributesEditionPanel(DiagramManager diagramManager, ClassElement classElement, Classifier element) 
+			
+	public AttributesEditionPanel(final Component parent, final DiagramManager diagramManager, final ClassElement classElement, final Classifier element) 
 	{
 		this.diagramManager = diagramManager;
 		this.classElement = classElement;
 		this.element = element;
+		this.parent=parent;
 						
 		attributesTableModel = new AttributeTableModel(element);
 	    setMinimumSize(new Dimension(0, 0));
-	    
-	    JSeparator separator_1 = new JSeparator();
 		
 		panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder(""));
-		
-		panel_1 = new JPanel();
-		panel_1.setBorder(BorderFactory.createTitledBorder(""));
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(429)
-							.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 423, GroupLayout.PREFERRED_SIZE)
-						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 423, GroupLayout.PREFERRED_SIZE))
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 423, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(11, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
+				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 154, Short.MAX_VALUE)
-					.addComponent(separator_1, GroupLayout.PREFERRED_SIZE, 13, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addContainerGap(19, Short.MAX_VALUE))
 		);
-		
-		cbxVisible = new JCheckBox("Turn attributes visible");
-		cbxVisible.setPreferredSize(new Dimension(400, 20));
-		cbxVisible.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(cbxVisible);
 		
 		scrollpane = new JScrollPane();		
 		scrollpane.setMinimumSize(new Dimension(0, 0));
@@ -183,10 +164,33 @@ private static final long serialVersionUID = 1L;
 		});
 		
 		btnEdit = new JButton("");
-		btnEdit.setEnabled(false);
+		btnEdit.setEnabled(true);
 		btnEdit.setFocusable(false);
 		btnEdit.setToolTipText("Edit selected attribute");
 		btnEdit.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/edit.png")));
+		btnEdit.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int row = table.getSelectedRow();
+				if(row>=0){
+					Property p = attributesTableModel.getEntry(row);
+					if (parent instanceof JFrame){
+						AttributeDialog dialog = new AttributeDialog((JFrame)parent,diagramManager,	classElement, element, p, false);
+		    			dialog.setLocationRelativeTo(parent);
+		    			dialog.setVisible(true);	
+					}else if (parent instanceof JDialog) {
+						AttributeDialog dialog = new AttributeDialog((JDialog)parent,diagramManager, classElement, element, p, false);
+		    			dialog.setLocationRelativeTo(parent);
+		    			dialog.setVisible(true);
+					}
+				}
+			}
+		});
+		
+		cbxVisible = new JCheckBox("Turn attributes visible");
+		cbxVisible.setPreferredSize(new Dimension(140, 20));
+		cbxVisible.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -200,7 +204,9 @@ private static final long serialVersionUID = 1L;
 							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(cbxVisible, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnUp, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnDown, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)))
@@ -209,30 +215,40 @@ private static final long serialVersionUID = 1L;
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollpane, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(8)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnCreate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnEdit, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)))
+						.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(cbxVisible, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnDown)
+								.addComponent(btnUp, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnEdit, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(btnCreate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnDown, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnUp, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addComponent(scrollpane, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		panel.setLayout(gl_panel);
 		this.setLayout(groupLayout);
 		
-		setSize(450,293);
+		setSize(450,250);
 		
 		if (classElement !=null) cbxVisible.setSelected(classElement.showAttributes());
 		
 		myPostInit();
 	}	
 
+	public void refreshData()
+	{
+		attributesTableModel.fireTableDataChanged();
+	}
+	
 	private void myPostInit() 
-	{						
+	{
 		modelDataTypes = new HashMap<String, DataType>();
 		List<DataType> dataTypes = ModelHelper.getModelDataTypes(diagramManager.getCurrentEditor().getProject());
 		for (DataType item : dataTypes) {			

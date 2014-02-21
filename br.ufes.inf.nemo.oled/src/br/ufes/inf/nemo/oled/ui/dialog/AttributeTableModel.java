@@ -36,6 +36,21 @@ public class AttributeTableModel extends BaseTableModel {
 		return attributes;
 	}
 	
+	public Property getEntry(int index)
+	{
+		return attributes.get(index);
+	}
+	
+	public Property getEntry(Property property)
+	{
+		for(Property p: attributes)
+		{
+			if (p.equals(property))
+				return p;
+		}
+		return null;
+	}
+	
 	/**
 	 * Adds an entry (item) to the model.
 	 * @param entry the entry to add

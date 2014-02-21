@@ -11,7 +11,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import RefOntoUML.Association;
+import RefOntoUML.Generalization;
 import RefOntoUML.NamedElement;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.ElementType;
@@ -31,7 +34,8 @@ public class TreePopupMenu extends JPopupMenu {
 	public JMenuItem refreshItem = new JMenuItem("Refresh");
 	public JMenuItem addDiagramItem = new JMenuItem("Add Diagram");
 	public JMenuItem moveToDiagramItem = new JMenuItem("Move to Diagram");
-	public JMenuItem setNameItem = new JMenuItem("Rename");
+	public JMenuItem setNameItem = new JMenuItem("Rename...");
+	public JMenuItem invertEndPointsItem = new JMenuItem("Invert End Points");
 	
 	public JMenu addElementMenu = new JMenu("Add Element");
 	public JMenuItem packageItem = new JMenuItem("Package");
@@ -107,7 +111,10 @@ public class TreePopupMenu extends JPopupMenu {
 
 		//Set name
     	if (!tree.getModelRootNode().equals(node) && !tree.getDiagramRootNode().equals(node) && !tree.getRootNode().equals(node)){    		
-    		add(setNameItem);    		
+    		if ( (!(TreePopupMenu.this.element instanceof StructureDiagram)) && !((RefOntoUML.Element)((OntoUMLElement)TreePopupMenu.this.element).getElement() instanceof Generalization) )    			 
+    		{
+    			add(setNameItem);    		
+    		}
     		setNameItem.addActionListener(new ActionListener() {				
     			@Override
     			public void actionPerformed(ActionEvent e) {
@@ -115,17 +122,13 @@ public class TreePopupMenu extends JPopupMenu {
     				{    					
     					RefOntoUML.Element element = (RefOntoUML.Element)((OntoUMLElement)TreePopupMenu.this.element).getElement();    					
     					if (element instanceof NamedElement) {
-    						String value = new String();
+    						String value = new String();    						
     						value = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename - "+((NamedElement)element).getName(),JOptionPane.INFORMATION_MESSAGE,null,null,((NamedElement)element).getName());    						
     						if(value!=null){
     							((NamedElement)element).setName(value);
     							frame.getDiagramManager().updateOLEDFromModification(element, false);
     						}
     					}    					
-    					
-    				}else if (TreePopupMenu.this.element instanceof StructureDiagram)
-    				{
-    					// nothing for now
     				}
     			}
     		});
@@ -357,6 +360,28 @@ public class TreePopupMenu extends JPopupMenu {
 	   	        	}
        	        });
     			addGenItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/inheritance.png")));
+    		}
+		}		
+
+		// invert end-points  	    		
+		if (node.getUserObject() instanceof OntoUMLElement)
+		{
+    		OntoUMLElement ontoElement = ((OntoUMLElement)node.getUserObject());    		
+    		if(ontoElement.getElement() instanceof RefOntoUML.Association)
+    		{    			
+    			final Association association = (Association)ontoElement.getElement();
+    			add(invertEndPointsItem);    			
+    			invertEndPointsItem.addActionListener(new ActionListener() {				
+	   	        	@Override
+	   	        	public void actionPerformed(ActionEvent e) {
+	   	        		Property source = association.getMemberEnd().get(0);
+	   	        		Property target = association.getMemberEnd().get(1);
+	   	        		association.getMemberEnd().clear();
+	   	        		association.getMemberEnd().add(target);
+	   	        		association.getMemberEnd().add(source);
+	   	        		frame.getDiagramManager().updateOLEDFromModification(association, true);
+	   	        	}
+       	        });    			
     		}
 		}
 		

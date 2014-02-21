@@ -229,15 +229,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		for(RefOntoUML.Element deletedElement: elemList)
 		{
 			ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(deletedElement);	
-		}		
-				  
-//		Removes the inferred elements. After creating the visual objects, use the delete command.			
-//		ArrayList<Element> inferred = ProjectBrowser.getInferences(project).getInferredElements();			
-//		OntoUMLParser parser = ProjectBrowser.getParserFor(project);
-//		for (Element e : inferred) {
-//			parser.removeElement(e);
-//		}
-		
+		}				
 	}
 	
 	private void deleteFromDiagram(Collection<DiagramElement> diagramElemList)

@@ -33,9 +33,11 @@ import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.dialog.AssociationDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.ClassDialog;
+import br.ufes.inf.nemo.oled.ui.dialog.GeneralizationDialog;
 import br.ufes.inf.nemo.oled.ui.popup.TreePopupMenu;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
@@ -553,7 +555,7 @@ public class ProjectTree extends CheckboxTree {
 	            			);
 	            			dialog.setLocationRelativeTo(ProjectTree.this.frame);
 	            			dialog.setVisible(true);
-	            			dialog.selectTab(1);
+	            			dialog.selectTab(0);
             			}
             		}
             		
@@ -585,7 +587,7 @@ public class ProjectTree extends CheckboxTree {
 	            			);
 	            			dialog.setLocationRelativeTo(ProjectTree.this.frame);
 	            			dialog.setVisible(true);
-	            			if (element instanceof RefOntoUML.Comment) dialog.selectTab(2);
+	            			if (element instanceof RefOntoUML.Comment) dialog.selectTab(1);
             			}
             			if (element.eContainer() instanceof RefOntoUML.Association){
             				DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)element.eContainer());
@@ -604,7 +606,7 @@ public class ProjectTree extends CheckboxTree {
             		else if (element instanceof RefOntoUML.Constraintx)
             		{
             			RefOntoUML.Element context = ((RefOntoUML.Constraintx)element).getConstrainedElement().get(0);
-            			if ( context instanceof RefOntoUML.Class)
+            			if (context instanceof RefOntoUML.Class)
             			{
             				DiagramElement diagramElement = ModelHelper.getDiagramElement(context);
 	            			ClassDialog dialog = new ClassDialog(
@@ -616,8 +618,20 @@ public class ProjectTree extends CheckboxTree {
 	            			);
 	            			dialog.setLocationRelativeTo(ProjectTree.this.frame);
 	            			dialog.setVisible(true);
-            				dialog.selectTab(3);                			
+            				dialog.selectTab(2);                			
             			}
+            		}else if (element instanceof RefOntoUML.Generalization)
+            		{
+            			DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)element);
+            			GeneralizationDialog dialog = new GeneralizationDialog(
+            				(JFrame)ProjectTree.this.frame,
+            				ProjectTree.this.frame.getDiagramManager(),
+            				(GeneralizationElement)diagramElement,
+            				(RefOntoUML.Generalization)element,
+            				false
+            			);
+            			dialog.setLocationRelativeTo(ProjectTree.this.frame);
+            			dialog.setVisible(true);
             		}
             	}
         	}

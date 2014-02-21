@@ -49,7 +49,6 @@ import RefOntoUML.impl.MediationImpl;
 import RefOntoUML.impl.MeronymicImpl;
 import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.impl.RefOntoUMLPackageImpl;
-import RefOntoUML.provider.RefOntoUMLItemProviderAdapterFactory;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
@@ -95,8 +94,8 @@ public class ModelHelper {
 				ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
 		adapterFactory
 				.addAdapterFactory(new ResourceItemProviderAdapterFactory());
-		adapterFactory
-				.addAdapterFactory(new RefOntoUMLItemProviderAdapterFactory());
+//		adapterFactory
+//				.addAdapterFactory(new RefOntoUMLItemProviderAdapterFactory());
 		adapterFactory
 				.addAdapterFactory(new EcoreItemProviderAdapterFactory());
 		adapterFactory
